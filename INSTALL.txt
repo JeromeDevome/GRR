@@ -1,0 +1,106 @@
+GRR -- Procédure d'installation
+=====================================
+
+****************************************************
+Installation - Etape 0 : téléchargement de l'archive
+****************************************************
+
+L'ensemble des fichiers nécessaires à l'installation sont rassemblés dans
+l'archive que vous avez téléchargée.
+Parmi ces fichiers figure le fichier "connect.inc.php". La configuration
+du fichier "connect.inc.php" n'est pas obligatoire si vous optez pour une
+installation automatisée de la base de donnée. En effet, la procédure
+d'installation vous invitera alors à entrer dans un formulaire vos paramètres
+de connexion.
+
+Dans le cas contraire, vous devez impérativement renseigner ce fichier :
+-  $dbHost : le nom du serveur qui héberge votre base de donnée mysql. Si
+   c'est le même que celui qui héberge les fichiers php, mettre "localhost".
+-  $dbDb : le nom de votre base mysql.
+-  $dbUser : le nom de l'utilisateur mysql qui a les droits sur la base.
+-  $dbPass : le mot de passe de l'utilisateur mysql ci-dessus.
+
+***********
+Pré-requis
+***********
+
+Pour installer et faire fonctionner GRR, vous avez besoin de :
+-> Un serveur web/php et un serveur mysql (éventuellement sur la même
+machine)
+-> Nécessité de disposer d'une version de php version supérieure ou égale à 5.4.0 (gestion des variables de type $_SESSION, fonction mysql_real_escape_string(),  ...)
+
+************************************************
+Installation - Etape 1 : Configuration de GRR
+************************************************
+Bien qu'un grand nombre de paramètres de GRR soient modifiables directement dans l'interface web de GRR,
+le fichier "/include/config.inc.php" contient quelques paramètres à configurer avant de transférer les fichiers vers le serveur web. Toutes les indications à la configuration de ce fichier sont disponibles dans la documentation ainsi que dans le fichier lui-même.
+
+************************************************
+Installation - Etape 2 : transfert des fichiers
+************************************************
+
+La première étape de l'installation consiste à transférer tous les fichiers de
+l'archive que vous avez téléchargée vers le serveur web/php.
+
+Pour cela, munissez-vous des codes des paramètres de connexion au serveur et
+utilisez un logiciel de transfert de fichiers (FTP). Vous aurez besoin de l'adresse du serveur ftp, de votre login, et de votre  mot de passe (fournis par l'hébergeur si vous utilisez un service extérieur, par l'administrateur système si vous utilisez un serveur au sein de l'établissement).
+
+On pourra par exemple créer un répertoire "grr" dans le répertoire
+web du serveur ("htdocs" dans le cas d'Apache).
+
+Modification des droits : les droits d'écriture doivent être attribués
+* au répertoire "/images"       (chargement d'images pour les fiches de présentation des ressources)
+* au fichier "include/connect.inc.php"      (dans le cas d'une installation automatisée)
+* au fichier "include/config_ldap.inc.php"  (dans le cas d'une authentification ldap)
+
+***************************************************
+Installation - Etape 3 : création de la base Mysql
+***************************************************
+
+Vous avez le choix entre deux types d'installation de la base de donnée Mysql:
+
+-  une installation automatisée,
+-  une installation manuelle, réservée aux experts.
+
+
+* Installation automatisée :
+
+Une fois que les fichiers php sont en place sur le serveur web/php (étape 1),
+lancez un navigateur et connectez-vous au site en tapant l'adresse complète du
+genre : http://www.monsite.fr/grr
+Vous n'avez plus qu'à cliquer sur le lien vous proposant d'installer la base
+et à suivre la procédure. Pour ce type d'installation, le fichier connect.inc.php
+doit être autorisé en écriture (la modification des attributs de ce fichier est possible
+avec la plupart des logiciel de transfert FTP).
+
+
+* Installation manuelle :
+
+Si vous optez pour cette installation, il est nécessaire d'avoir renseigné le
+fichier "connect.inc.php" (voir plus haut)
+
+Dans l'archive figure le fichier tables.my.sql à exécuter sur le serveur mysql et qui
+contient l'ensemble des tables mysql ainsi que les données minimales pour
+que ça fonctionne.
+
+-  Sur le seveur mysql :
+* créez une base mysql (avec phpMyAdmin par exemple) en lui donnant un nom (par
+exemple "grr")
+* créez un utilisateur de cette base,
+* n'oubliez pas de relancer le serveur.
+
+-  Connectez-vous à cette base.
+-  Exécuter le  fichier tables.my.sql dans cette base
+(toujours avec phpMyAdmin par exemple)
+
+
+******************************************************
+Après l'installation : configuration de GRR en ligne
+******************************************************
+
+Une fois le système installé, vous pouvez vous connecter à GRR :
+-  nom de connexion : 'administrateur' et mot de passe : 'azerty'),
+-  Par sécurité, CHANGEZ LE MOT DE PASSE de 'admin' grâce au lien "gérer mon
+compte" dans le bandeau en haut !
+-  allez dans la partie "gestion" (lien dans le bandeau en haut)
+

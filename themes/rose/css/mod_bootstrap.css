@@ -1,0 +1,27 @@
+a{color:#FF44F5;text-decoration:none}
+.text-primary{color:#FF44F5}
+.bg-primary{color:#fff;background-color:#FF44F5}
+.btn-primary{color:#fff;background-color:#FF44F5;border-color:#FF44F5}
+.btn-primary.disabled,
+.btn-primary[disabled],
+fieldset[disabled] .btn-primary,
+.btn-primary.disabled:hover,
+.btn-primary[disabled]:hover,
+fieldset[disabled] .btn-primary:hover,
+.btn-primary.disabled:focus,
+.btn-primary[disabled]:focus,
+fieldset[disabled] .btn-primary:focus,
+.btn-primary.disabled.focus,
+.btn-primary[disabled].focus,
+fieldset[disabled] .btn-primary.focus,
+.btn-primary.disabled:active,
+.btn-primary[disabled]:active,
+fieldset[disabled] .btn-primary:active,
+.btn-primary.disabled.active,
+.btn-primary[disabled].active,
+fieldset[disabled] .btn-primary.active{background-color:#FF44F5;border-color:#FF44F5}
+.btn-primary .badge{color:#FF44F5;background-color:#fff}
+.btn-link{color:#FF44F5;font-weight:normal;border-radius:0}
+.panel-primary>.panel-heading .badge{color:#FF44F5;background-color:#fff}
+.panel-primary>.panel-footer+.panel-collapse>.panel-body{border-bottom-color:#FF44F5}
+caption{text-align: center}

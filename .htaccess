@@ -1,0 +1,17 @@
+SetEnv PHP_VER 5
+
+ErrorDocument 403 /erreurs/403.php
+
+ErrorDocument 500 /erreurs/500.php
+
+# Bloquage d'ip de spam
+
+Order Allow,Deny
+Allow from all
+Deny from 82.64.101.97
+
+
+#RewriteEngine on
+#RewriteCond %{REQUEST_URI} !/maintenancep.html$
+#RewriteCond %{REMOTE_ADDR} !^90\.47\.226\.239
+#RewriteRule $ /maintenancep.html [R=302,L]

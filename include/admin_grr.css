@@ -1,0 +1,129 @@
+/* ------------------------------------ *
+ * admin_grr.css
+ * Feuille CSS pour l'administration
+ * Ce script fait partie de l'application GRR
+ * Dernière modification : $Date: 2009-02-27 13:28:20 $
+ * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
+ * @copyright Copyright 2003-2008 Laurent Delineau
+ * @link      http://www.gnu.org/licenses/licenses.html
+ * @package   root
+ * @version   $Id: admin_grr.css,v 1.4 2009-02-27 13:28:20 grr Exp $
+ * @filesource
+ *
+ * This file is part of GRR.
+ *
+ * GRR is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GRR is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with GRR; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+ div.onglet {
+ 	font-family: Arial, Sans, sans-serif;
+ 	font-size: 11px;
+ 	font-weight: bold;
+ 	border: 1px solid #888888;
+ 	margin-right: 3px;
+ 	padding: 5px;
+ 	background-color: white;
+ }
+ div.onglet a {
+ 	color: black;
+ }
+
+ div.onglet_on {
+ 	font-family: Arial, Sans, sans-serif;
+ 	font-size: 11px;
+ 	font-weight: bold;
+ 	border: 1px solid #111111;
+ 	margin-right: 3px;
+ 	padding: 5px;
+ 	background-color: #888888;
+ }
+ div.onglet_on a, div.onglet_on a:hover {
+ 	color: white;
+ 	text-decoration: none;
+ }
+
+ div.onglet_on a:hover {
+ 	color: white;
+ 	text-decoration:underline;
+
+ }
+
+ div.onglet_off {
+ 	font-family: Arial, Sans, sans-serif;
+ 	font-size: 11px;
+ 	font-weight: bold;
+ 	border: 1px solid #888888;
+ 	margin-right: 3px;
+ 	padding: 5px;
+ 	background-color: #888888;
+ 	color: white;
+ }
+  .table_adm {
+ 	border:0;
+ 	border-spacing : 4;
+ 	border-collapse : collapse;
+ }
+ .table_adm {
+ 	border:0;
+ 	border-spacing : 0;
+ 	border-collapse : collapse;
+ }
+/*
+Formatage des administrateurs
+*/
+.style_admin {
+	color: red;
+}
+/*
+Formatage des gestionnaire_utilisateurs
+*/
+.style_gestionnaire_utilisateur {
+	color: red;
+}
+
+/*
+Formatage des visiteurs
+*/
+.style_visiteur {
+	color: yellow;
+}
+/*
+Formatage des utilisateurs
+*/
+.style_utilisateur {
+	color: blue;
+}
+/*
+
+*/
+.style_privilege {
+	color: red;
+	font-weight: bold;
+}
+.fond1 {
+	background-color:#E9E9E4;
+}
+.fond2 {
+	background-color:#AAAAAA;
+}
+/* mise en forme des textes "jours cycles" dans admin_config_calend3.php */
+.jour-cycle {
+	font-size: 1.1em;
+	color:blue;
+}
+/* mise en forme des pages administration sans colonne à gauche */
+.page_sans_col_gauche {
+	margin-left:10%;
+	margin-right:10%;
+}

@@ -1,0 +1,16 @@
+<?php
+# ligne suivante : Domaine utilise(necessaire pour le mail)
+$imap_domaine="";
+# ligne suivante : Adresse du serveur IMAP/POP
+$imap_adresse="";
+# ligne suivante : le port utilise
+$imap_port="143";
+# ligne suivante : IMAP ou POP
+$imap_type="/imap";
+# ligne suivante : SSL
+$imap_ssl="";
+# ligne suivante : Certificat
+$imap_cert="";
+# ligne suivante : TLS
+$imap_tls="";
+?>
