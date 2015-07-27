@@ -38,6 +38,7 @@ $pass_db = isset($_GET["pass_db"]) ? $_GET["pass_db"] : NULL;
 $choix_db = isset($_GET["choix_db"]) ? $_GET["choix_db"] : NULL;
 $table_new = isset($_GET["table_new"]) ? $_GET["table_new"] : NULL;
 $table_prefix = isset($_GET["table_prefix"]) ? $_GET["table_prefix"] : NULL;
+
 // Pour cette page uniquement, on désactive l'UTF8 et on impose l'ISO-8859-1
 $unicode_encoding = 1;
 $charset_html = "utf-8";
@@ -60,7 +61,16 @@ function mysqli_result($res, $row, $field = 0)
 }
 if (@file_exists($nom_fic))
 {
+	/* fix prefix missing */
+	if ( $table_prefix != NULL ) {
+		$table_prefix_from_user = $table_prefix;
+	} else {
+		$table_prefix_from_user = false;
+	}
 	require_once("include/connect.inc.php");
+	if ( empty($table_prefix) &&  $table_prefix_from_user !== false) {
+		$table_prefix = $table_prefix_from_user;
+	}
 	$db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbPort");
 	if ($db)
 	{
@@ -147,6 +157,7 @@ if ($etape == 4)
 			$query = preg_replace("/DROP TABLE IF EXISTS grr/","DROP TABLE IF EXISTS ".$table_prefix,$query);
 			$query = preg_replace("/CREATE TABLE grr/","CREATE TABLE ".$table_prefix,$query);
 			$query = preg_replace("/INSERT INTO grr/","INSERT INTO ".$table_prefix,$query);
+
 			if ($query != '')
 			{
 				$reg = mysqli_query($db, $query);
