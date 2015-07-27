@@ -157,7 +157,7 @@ if ($etape == 4)
 			$query = preg_replace("/DROP TABLE IF EXISTS grr/","DROP TABLE IF EXISTS ".$table_prefix,$query);
 			$query = preg_replace("/CREATE TABLE grr/","CREATE TABLE ".$table_prefix,$query);
 			$query = preg_replace("/INSERT INTO grr/","INSERT INTO ".$table_prefix,$query);
-			var_dump($query);
+
 			if ($query != '')
 			{
 				$reg = mysqli_query($db, $query);
