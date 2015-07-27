@@ -135,6 +135,7 @@ if ($etape == 4)
 {
 	echo begin_page("Installation de GRR");
 	begin_html();
+	echo "<br /><h2>Quatrième étape : Création des tables de la base</h2>";
 	$db = mysqli_connect("$adresse_db", "$login_db", "$pass_db");
 	if ($choix_db == "new_grr")
 	{
