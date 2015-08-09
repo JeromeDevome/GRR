@@ -188,7 +188,7 @@ $tab_couleur[28] = "#FFBB20"; # pêche
 # Actuellement, GRR ne supporte que mysql.
 $dbsys = "mysql";
 # Uncomment this to NOT use PHP persistent (pooled) database connections:
-#$db_nopersist = 1;
+$db_nopersist = 1;
 
 ################################
 # Backup information
