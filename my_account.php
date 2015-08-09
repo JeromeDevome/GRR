@@ -359,7 +359,7 @@ echo ('
 				<tr>
 					<td onclick="clicMenu(\'1\')" class="fontcolor4" style="cursor: inherit" align="center">
 						<span class="bground">
-							<b><a href="#">'.get_vocab('click_here_to_modify_pwd').'</a></b>
+							<b><a href="#"><font color=black>'.get_vocab('click_here_to_modify_pwd').'</font></a></b>
 						</span>
 					</td>
 				</tr>
