@@ -47,6 +47,16 @@ include 'include/resume_session.php';
 include 'include/language.inc.php';
 include 'include/setdate.php';
 Definition_ressource_domaine_site();
+/**
+ * Load des infos pour twig
+ */
+require_once 'vendor/autoload.php';
+$loader = new Twig_Loader_Filesystem('src/Main/Ressources/Views/');
+$twig = new Twig_Environment($loader, array(
+    'cache' => 'app/cache/',
+));
+
+
 $affiche_pview = '1';
 if (!isset($_GET['pview'])) {
     $_GET['pview'] = 0;
@@ -470,4 +480,8 @@ echo '</div>'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
 include 'footer.php';
+
+
+echo $twig->render('day.html.twig', array('name' => 'test'));
 ?>
+
