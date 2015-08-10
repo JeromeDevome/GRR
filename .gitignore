@@ -43,3 +43,4 @@ Temporary Items
 .apdisk
 
 include/connect.inc.php
+vendor
