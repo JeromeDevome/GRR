@@ -22,6 +22,10 @@ Les tags :
     *'Les répertoires suivent la structure d'un projet symfony2'
     * app/cache
     * src/Main/Ressources/Views
+###[Unrelaesed]
+* separation de l'affichage dans le fichier day.php
+* separation de l'affichage des erreurs de day.php
+   
     
 
 [correction] mktine() vers time()

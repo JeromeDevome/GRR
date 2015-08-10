@@ -47,15 +47,6 @@ include 'include/resume_session.php';
 include 'include/language.inc.php';
 include 'include/setdate.php';
 Definition_ressource_domaine_site();
-/**
- * Load des infos pour twig
- */
-require_once 'vendor/autoload.php';
-$loader = new Twig_Loader_Filesystem('src/Main/Ressources/Views/');
-$twig = new Twig_Environment($loader, array(
-    'cache' => 'app/cache/',
-));
-
 
 $affiche_pview = '1';
 if (!isset($_GET['pview'])) {
