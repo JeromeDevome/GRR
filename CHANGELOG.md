@@ -1,3 +1,29 @@
+# Change Log
+Changelog en markdown, en essayant de suivre les conseils de : http://keepachangelog.com/
+Les tags :
+###Added 
+* for new features.
+###Changed 
+* for changes in existing functionality.
+###Deprecated 
+* for once-stable features removed in upcoming releases.
+###Removed 
+* for deprecated features removed in this release.
+###Fixed 
+* for any bug fixes.
+###Security 
+* to invite users to upgrade in case of vulnerabilities.
+
+## [] - 2015-08-10
+###Added
+* composer à la racine du projet
+* twig géré par composer, ajouté dans "vendor"
+* répertoires :
+    *'Les répertoires suivent la structure d'un projet symfony2'
+    * app/cache
+    * src/Main/Ressources/Views
+    
+
 [correction] mktine() vers time()
 [correction] Fonction mysql_ vers mysqli
 [correction] Remise ne place des jours et heures des reservation lors de l'edition
