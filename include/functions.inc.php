@@ -36,7 +36,7 @@ header('Cache-Control:no-cache');
  * Load des infos pour twig
  */
 require_once 'vendor/autoload.php';
-Global $loader, $twig;
+global $loader, $twig;
 $loader = new Twig_Loader_Filesystem('src/Main/Ressources/views/');
 $twig = new Twig_Environment($loader, array(
     'cache' => 'app/cache/',
@@ -846,6 +846,10 @@ function begin_page($title, $page = 'with_session')
      */
     $tplArray = [];
     $tplArray['title'] = $title;
+    /**
+     * global var twig todo voir si peux mieux faire qu'une var globale
+     */
+    global $twig;
 
     if ($page == 'with_session') {
         if (isset($_SESSION['default_style'])) {
@@ -910,11 +914,11 @@ function begin_page($title, $page = 'with_session')
 
     if (@file_exists('admin_accueil.php')) { // Si on est dans l'administration
 
-        $tplArray['admin'] = true;
+        //$tplArray['admin'] = true;
 
 
 
-        return $tplArray;
+        return $twig->render('admin/header.html.twig', $tplArray);
        /* $a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/style.css" />'.PHP_EOL;
         $a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/bootstrap.min.css" />'.PHP_EOL;
         $a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/mod_bootstrap.css" />'.PHP_EOL;
@@ -956,7 +960,7 @@ function begin_page($title, $page = 'with_session')
             $a .= get_vocab('not_php3');
         }*/
     } else {
-        $tplArray['admin'] = false;
+        //$tplArray['admin'] = false;
         $tplArray['sheetcss'] = $sheetcss;
         if (isset($use_admin)) {
             $tplArray['use_admin'] = true;
@@ -1010,7 +1014,8 @@ function begin_page($title, $page = 'with_session')
         if (substr(phpversion(), 0, 1) == 3) {
             $a .= get_vocab('not_php3');
         }*/
-        return $tplArray;
+        return $twig->render('header.html.twig', $tplArray);
+        //return $tplArray;
     }
 
 /*    $a .= '</head>'.PHP_EOL;
