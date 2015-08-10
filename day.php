@@ -473,6 +473,6 @@ echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
 include 'footer.php';
 
 
-echo $twig->render('day.html.twig', array('name' => 'test'));
+//echo $twig->render('day.html.twig', array('name' => 'test'));
 ?>
 

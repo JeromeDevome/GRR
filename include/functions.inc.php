@@ -906,7 +906,9 @@ function begin_page($title, $page = 'with_session')
         $tplArray['selection'] = true;
     }
     if (@file_exists('js/'.$clock_file)) {
-        $tplArray['clock_file'] = true;
+        $tplArray['clock_file'] = $clock_file;
+    } else  {
+        $tplArray['clock_file'] = false;
     }
     if (substr(phpversion(), 0, 1) == 3) {
         $tplArray['notPhp3'] = get_vocab('not_php3');
@@ -1032,6 +1034,11 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 {
     global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
     global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2;
+
+    /**
+     * var global twig
+     */
+    global $twig;
 
     if (!($desactive_VerifNomPrenomUser)) {
         $desactive_VerifNomPrenomUser = 'n';

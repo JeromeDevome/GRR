@@ -18,27 +18,36 @@
         <link rel="stylesheet" type="text/css" href="themes/default/css/select2-bootstrap.css" />
         <link rel="stylesheet" type="text/css" href="themes/default/css/bootstrap-multiselect.css">
         <link rel="stylesheet" type="text/css" href="themes/default/css/bootstrap-clockpicker.min.css">
-        <script type="text/javascript" src="js/bootstrap-clockpicker.js"></script>
-        <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
-        <script type="text/javascript" src="js/select2.js"></script>
-        <script type="text/javascript" src="js/select2_locale_fr.js"></script>
+        <script type="text/javascript" src="src/Main/Ressources/public/js/bootstrap-clockpicker.js"></script>
+        <script type="text/javascript" src="src/Main/Ressources/public/js/bootstrap-multiselect.js"></script>
+        <script type="text/javascript" src="src/Main/Ressources/public/js/select2.js"></script>
+        <script type="text/javascript" src="src/Main/Ressources/public/js/select2_locale_fr.js"></script>
     {% endif %}
     {% if pview %}
         <link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />
     {% endif %}
     <link rel="stylesheet" type="text/css" href="themes/default/css/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" href="themes/default/css/jquery-ui-timepicker-addon.css" >
-    <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="js/jquery.validate.js"></script>
-    <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="src/Main/Ressources/public/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="src/Main/Ressources/public/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="src/Main/Ressources/public/js/jquery.validate.js"></script>
+    <script type="text/javascript" src="src/Main/Ressources/public/js/jquery-ui-timepicker-addon.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/html2canvas.js"></script>
-    <script type="text/javascript" src="js/menu.js"></script>
-    <script type="text/javascript" src="js/jspdf.min.js"></script>
-    <script type="text/javascript" src="js/pdf.js" ></script>
-    <script type="text/javascript" src="js/popup.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/functions.js" ></script>
+    <script type="text/javascript" src="src/Main/Ressources/public/js/html2canvas.js"></script>
+    <script type="text/javascript" src="src/Main/Ressources/public/js/menu.js"></script>
+    <script type="text/javascript" src="src/Main/Ressources/public/js/jspdf.min.js"></script>
+    <script type="text/javascript" src="src/Main/Ressources/public/js/pdf.js" ></script>
+    <script type="text/javascript" src="src/Main/Ressources/public/js/popup.js" charset="utf-8"></script>
+    <script type="text/javascript" src="src/Main/Ressources/public/js/functions.js" ></script>
+    {% if use_tooltip_js %}
+        <script type="text/javascript" src="../include/tooltip.js"></script>
+    {% endif %}
+    {% if selection %}
+        <script type="text/javascript" src="../js/selection.js" ></script>
+    {% endif %}
+    {% if clock_file %}
+        <script type="text/javascript" src="../js/{{ clock_file }}"></script>
+    {% endif %}
     {% if notPhp3 != null %}
         {{ notPhp3 }}
     {% endif %}
