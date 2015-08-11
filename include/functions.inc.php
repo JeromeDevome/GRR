@@ -1239,8 +1239,13 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
                     $tplArray['vocab']['connect'] = get_vocab('connect');
                 }
             } else {
-                echo '<br /> <b>'.get_vocab('welcome_to').htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']).'</b>'.PHP_EOL;
-                echo '<br /> <a href="'.$racine.'my_account.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'.get_vocab('manage_my_account').'</a>'.PHP_EOL;
+                $tplArray['vocab']['welcome_to'] = get_vocab('welcome_to');
+                $tplArray['vocab']['manage_my_account'] = get_vocab('manage_my_account');
+                $tplArray['pathToMyAccount'] = $racine.'my_account.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month;
+                $tplArray['prenom'] = htmlspecialchars($_SESSION['prenom']);
+                $tplArray['nom'] = htmlspecialchars($_SESSION['nom']);
+                /*echo '<br /> <b>'.get_vocab('welcome_to').htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']).'</b>'.PHP_EOL;
+                echo '<br /> <a href="'.$racine.'my_account.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'.get_vocab('manage_my_account').'</a>'.PHP_EOL;*/
                 if (verif_access_search(getUserName())) {
                     echo '<br/><a href="'.$racine.'report.php">'.get_vocab('report').'</a>'.PHP_EOL;
                 }
@@ -3450,9 +3455,12 @@ function UserRoomMaxBooking($user, $id_room, $number)
 
      return true;
  }
-// function verif_access_search : vérifier l'accès à l'outil de recherche
-// $user : le login de l'utilisateur
-// $id_room : l'id de la ressource.
+
+/**
+ * function verif_access_search : vérifier l'accès à l'outil de recherche
+ * @param $user le login de l'utilisateur
+ * @return bool
+ */
  function verif_access_search($user)
  {
      if (authGetUserLevel($user, -1) >= Settings::get('allow_search_level')) {
