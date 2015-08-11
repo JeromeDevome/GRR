@@ -1,0 +1,52 @@
+<div id="toppanel">
+    <div id="panel">
+        <div class="content">
+            <table id="header">
+                <tr>
+                    <td class="logo" height="100">
+                        <a href="{{ homeLink }}">
+                            <img src="{{ nomPicture }}" alt="logo"/>
+                        </a>
+                    </td>
+                    <td class="accueil ">
+                        <h2>
+                            <a href="{{ homeLink }}">
+                                {{ vocab.welcome }} - <b> {{ company }} </b>
+                            </a>
+                        </h2>
+                        {{ messageAcceuil }}
+                        {% if mailEtatDestEtNoSession %}
+                    <td class="contactformulaire">
+                        <input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onClick="javascript:location.href={{ pathToReserver }}" >
+                    </td>
+                    {% endif %}
+                    <td class="administration">
+                        <br><a href="{{ pathToAdmin }}">{{ vocab.admin }}</a>
+                        <br />
+                        <form action="{{ pathToMyslqlSave }}" method='get'><div>
+                                <input type="hidden" name="flag_connect" value="yes" />
+                                <input type="submit" class="btn btn-default" value="'.get_vocab('submit_backup').'" /></div>
+                        </form>
+                        <a href="{{ pathToViewConnexions }}">{{ nb_connect }} {% if nb_connect == 1 %} {{ vocab.one_connected }} {% else %} {{ several.one_connected }} {% endif %}</a>
+                        {% if erreurVersion !== false %}
+                            {# include template ont accès aux données courantes, dans alert.html.twig je peux afficher directement erreurVersion #}
+                            {{ include('helpers/alert.html.twig') }}
+                        {% endif %}
+                    </td>
+                    <script>selection()</script>
+                    <td class="configuration" >
+                        {% if clockFile  !== false %}
+                            <div class="clock">
+                                <div id="Date">
+                                    &nbsp;<span id="hours"></span>
+                                    h
+                                    <span id="min"></span>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <a onclick="charger();" href="{{ pathToReturn }}default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>
+                        <a onclick="charger();" href="{{ pathToReturn }}default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>
+                        <a onclick="charger();" href="{{ pathToReturn }}default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>
+                        <a onclick="charger();" href="{{ pathToReturn }}default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>
+                        <a onclick="charger();" href="{{ pathToReturn }}default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>
+ 

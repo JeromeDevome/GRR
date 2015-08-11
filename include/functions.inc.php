@@ -515,6 +515,8 @@ function bbCode($t, $type)
 /**
  * FUNCTION: how_many_connected()
  * DESCRIPTION: Si c'est un admin qui est connecté, affiche le nombre de personnes actuellement connectées.
+ *
+ * @return int $nb_connect nombre de connectés
  */
 function how_many_connected()
 {
@@ -523,21 +525,26 @@ function how_many_connected()
         $res = grr_sql_query($sql);
         $nb_connect = grr_sql_count($res);
         grr_sql_free($res);
+        /**
+         * remove gestion de la racnie, voir et tester avet twig
+         * remove verif_version, il sera fait dans print_header
+         * changed return nb_connect au lieu de l'html, détouplage view
+         */
 
-        if (@file_exists('./admin_access_area.php')) {
+        /*if (@file_exists('./admin_access_area.php')) {
             $racineAd = './';
         } else {
             $racineAd = './admin/';
-        }
-
-        if ($nb_connect == 1) {
+        }*/
+        return $nb_connect;
+        /*if ($nb_connect == 1) {
             echo "<a href='{$racineAd}admin_view_connexions.php'>".$nb_connect.get_vocab('one_connected').'</a>'.PHP_EOL;
         } else {
             echo "<a href='{$racineAd}admin_view_connexions.php'>".$nb_connect.get_vocab('several_connected').'</a>'.PHP_EOL;
         }
         if (verif_version()) {
             affiche_pop_up(get_vocab('maj_bdd_not_update').get_vocab('please_go_to_admin_maj.php'), 'force');
-        }
+        }*/
     }
 }
 /*
@@ -1036,9 +1043,15 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
     global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2;
 
     /**
+     * Intégration de twig :
+     *  Todo ne pas faire un echo ici et récupérer l'array pour twig, pour pouvoir fusionner les deux templates header et printHeader
+     *  Je laisse les infos dans l'ondre original du script, ça serait plus propre de les grouper, pour remplir
+     *  l'array pour twig, mais ça serait plus compliqier de suivre les modifs du code, à prévoir en refacto plus tard
+     *
      * var global twig
      */
     global $twig;
+    $tplArray = [];
 
     if (!($desactive_VerifNomPrenomUser)) {
         $desactive_VerifNomPrenomUser = 'n';
@@ -1099,67 +1112,120 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
             $day = date('d', $date_);
             $month = date('m', $date_);
             $year = date('Y', $date_);
-            echo '<div id="toppanel">'.PHP_EOL;
+            /*echo '<div id="toppanel">'.PHP_EOL;
             echo '<div id="panel">'.PHP_EOL;
             echo '<div class="content">'.PHP_EOL;
             echo '<table id="header">'.PHP_EOL;
-            echo '<tr>'.PHP_EOL;
+            echo '<tr>'.PHP_EOL;*/
             //Logo
             $nom_picture = $racine.'images/'.Settings::get('logo');
             if ((Settings::get('logo') != '') && (@file_exists($nom_picture))) {
-                echo '<td class="logo" height="100">'.PHP_EOL.'<a href="'.$racine.page_accueil('yes').'day='.$day.'&amp;year='.$year.'&amp;month='.$month.'"><img src="'.$nom_picture.'" alt="logo"/></a>'.PHP_EOL.'</td>'.PHP_EOL;
+                $tplArray['nomPicture'] = $nom_picture;
+                $tplArray['homeLink'] = $racine.page_accueil('yes').'day='.$day.'&amp;year='.$year.'&amp;month='.$month;
+
+                /*echo '<td class="logo" height="100">'.PHP_EOL.'<a href="'.$racine.page_accueil('yes').'day='.$day.'&amp;year='.$year.'&amp;month='.$month.'"><img src="'.$nom_picture.'" alt="logo"/></a>'.PHP_EOL.'</td>'.PHP_EOL;*/
             }
+
             //Accueil
-            echo '<td class="accueil ">',PHP_EOL,'<h2>',PHP_EOL,'<a href="'.$racine.page_accueil('yes'),'day=',$day,'&amp;year=',$year,'&amp;month=',$month,'">',get_vocab('welcome'),' - <b>',Settings::get('company'),'</b></a>',PHP_EOL,'</h2>',PHP_EOL;
+            $tplArray['vocab']['welcome'] = get_vocab('welcome');
+            $tplArray['company'] = Settings::get('company');
+
+            /*echo '<td class="accueil ">',PHP_EOL,'<h2>',PHP_EOL,'<a href="'.$racine.page_accueil('yes'),'day=',$day,'&amp;year=',$year,'&amp;month=',$month,'">',get_vocab('welcome'),' - <b>',Settings::get('company'),'</b></a>',PHP_EOL,'</h2>',PHP_EOL;*/
+
             //Mail réservartion
-            echo Settings::get('message_accueil');
+            $tplArray['messageAcceuil'] = Settings::get('message_accueil');
+            //echo Settings::get('message_accueil');
             $sql = 'SELECT value FROM '.TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
             $res = grr_sql_query1($sql);
+
             //Libère le résultat de la mémoire
             grr_sql_free($res);
+
             if ($res == 1) {
                 if ($type_session == 'no_session') {
-                    echo '<td class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</td>',PHP_EOL;
+                    /*echo '<td class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</td>',PHP_EOL;*/
+                    $tplArray['mailEtatDestEtNoSession'] = true;
+                    $tplArray['pathToReserver'] = 'contactFormulaire.php?day='.$day.'&amp;month='.$month.'&amp;year='.$year;
+
+                } else {
+                    $tplArray['mailEtatDestEtNoSession'] = false;
                 }
             }
             // Administration div Sauvegarde
+            $tplArray['adminUserWithSession'] = false;
             if ($type_session == 'with_session') {
                 if ((authGetUserLevel(getUserName(), -1, 'area') >= 4) || (authGetUserLevel(getUserName(), -1, 'user') == 1)) {
-                    echo '<td class="administration">'.PHP_EOL;
-                    echo "<br><a href='{$racineAd}admin_accueil.php?day={$day}&amp;month={$month}&amp;year={$year}'>".get_vocab('admin').'</a>'.PHP_EOL;
+                    $tplArray['adminUserWithSession'] = true;
+                    //echo '<td class="administration">'.PHP_EOL;
+                    $tplArray['pathToAdmin'] = $racineAd."admin_accueil.php?day=".$day."&amp;month=".$month."&amp;year=".$year;
+                    $tplArray['vocab']['admin'] = get_vocab('admin');
+                    //echo "<br><a href='{$racineAd}admin_accueil.php?day={$day}&amp;month={$month}&amp;year={$year}'>".get_vocab('admin').'</a>'.PHP_EOL;
                     if (authGetUserLevel(getUserName(), -1, 'area') >= 6) {
-                        echo '<br />'.PHP_EOL;
+                        $tplArray['pathToMyslqlSave'] = $racineAd.'admin_save_mysql.php';
+                        $tplArray['vocab']['submit_backup'] = get_vocab('submit_backup');
+                        /*echo '<br />'.PHP_EOL;
                         echo "<form action='{$racineAd}admin_save_mysql.php' method='get'><div>".PHP_EOL;
                         echo '<input type="hidden" name="flag_connect" value="yes" />'.PHP_EOL;
                         echo '<input type="submit" class="btn btn-default" value="'.get_vocab('submit_backup').'" /></div>'.PHP_EOL;
-                        echo '</form>'.PHP_EOL;
-                        how_many_connected();
+                        echo '</form>'.PHP_EOL;*/
+                        $tplArray['vocab']['one_connected'] = get_vocab('one_connected');
+                        $tplArray['vocab']['several_connected'] = get_vocab('several_connected');
+                        $tplArray['nb_connect'] = how_many_connected();
+                        $tplArray['pathToViewConnexions'] = $racineAd.'admin_view_connexions.php';
+
+                        /**
+                         * remove: affiche_pop_up appel, fichier twig alert.html.twig pour gérer les alert,
+                         * ATTENTION paramètre "force" non implémenté dans
+                         * la fonction affiche_pop_up
+                         *
+                         * code original : affiche_pop_up(get_vocab('maj_bdd_not_update').get_vocab('please_go_to_admin_maj.php'), 'force');
+                         * Ici le but était dans tous les cas d'affichier le message si besion, je ne vérifie pas les settings
+                         */
+                        /* if true, afficher une alert */
+                        if (verif_version()) {
+                            $tplArray['erreurVersion'] = get_vocab('maj_bdd_not_update').get_vocab('please_go_to_admin_maj.php');
+                        } else {
+                            $tplArray['erreurVersion'] = false;
+                        }
+
                     }
-                    echo '</td>'.PHP_EOL;
+                    /*echo '</td>'.PHP_EOL;*/
                 }
             }
             if ($type_session != 'with_session') {
-                echo '<script>selection()</script>'.PHP_EOL;
+                /*echo '<script>selection()</script>'.PHP_EOL;*/
+                $tplArray['with_session'] = true;
+            } else {
+                $tplArray['with_session'] = false;
             }
-            echo '<td class="configuration" >'.PHP_EOL;
+            /*echo '<td class="configuration" >'.PHP_EOL;*/
             if (@file_exists('js/'.$clock_file)) {
-                echo '<div class="clock">'.PHP_EOL;
+                $tplArray['clockFile'] = $clock_file;
+                /*echo '<div class="clock">'.PHP_EOL;
                 echo '<div id="Date">'.PHP_EOL;
                 echo '&nbsp;<span id="hours"></span>'.PHP_EOL;
                 echo 'h'.PHP_EOL;
                 echo '<span id="min"></span>'.PHP_EOL;
-                echo '</div></div>'.PHP_EOL;
+                echo '</div></div>'.PHP_EOL;*/
+            } else {
+                $tplArray['clockFile'] = false;
             }
+            /* reset attribut session */
             $_SESSION['chemin_retour'] = '';
             if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != '')) {
-                $parametres_url = htmlspecialchars($_SERVER['QUERY_STRING']).'&amp;';
+                /**
+                 * ajout sécurité : striptags
+                 */
+                $parametres_url = htmlspecialchars(strip_tags($_SERVER['QUERY_STRING'])).'&amp;';
+
                 $_SESSION['chemin_retour'] = traite_grr_url($grr_script_name).'?'.$_SERVER['QUERY_STRING'];
-                echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>'.PHP_EOL;
+                $tplArray['pathToReturn'] = traite_grr_url($grr_script_name).'?'.$parametres_url;
+                /*echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>'.PHP_EOL;
                 echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
                 echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
                 echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
                 echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>'.PHP_EOL;
-            }
+ */           }
             if ($type_session == 'no_session') {
                 if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur')) {
                     echo '<br /> <a href="index.php?force_authentification=y">'.get_vocab('authentification').'</a>'.PHP_EOL;
@@ -4191,12 +4257,12 @@ function affichage_champ_add_mails($id_resa)
 
     return $affichage;
 }
-/*
-Affiche un message pop-up
-$type_affichage = "user" -> Affichage des "pop-up" de confirmation après la création/modification/suppression d'une réservation
-Dans ce cas, l'affichage n'a lieu que si $_SESSION['displ_msg']='yes'
-$type_affichage = "admin" -> Affichage des "pop-up" de confirmation dans les menus d'administration
-$type_affichage = "force" -> On force l'affichage du pop-up même si javascript_info_admin_disabled est true
+/**
+* Affiche un message pop-up
+* $type_affichage = "user" -> Affichage des "pop-up" de confirmation après la création/modification/suppression d'une réservation
+* Dans ce cas, l'affichage n'a lieu que si $_SESSION['displ_msg']='yes'
+* $type_affichage = "admin" -> Affichage des "pop-up" de confirmation dans les menus d'administration
+* $type_affichage = "force" -> On force l'affichage du pop-up même si javascript_info_admin_disabled est true
 */
 function affiche_pop_up($msg = '', $type_affichage = 'user')
 {
@@ -4232,6 +4298,7 @@ function affiche_pop_up($msg = '', $type_affichage = 'user')
     $_SESSION['displ_msg'] = '';
     $_SESSION['msg_a_afficher'] = '';
 }
+
 /*
 Retourne un tableau contenant les nom et prénom et l'email de $_beneficiaire
 */
