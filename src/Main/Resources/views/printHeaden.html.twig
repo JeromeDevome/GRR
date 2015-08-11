@@ -33,7 +33,9 @@
                             {{ include('helpers/alert.html.twig') }}
                         {% endif %}
                     </td>
-                    <script>selection()</script>
+                    {% if session !== false %}
+                        <script>selection()</script>
+                    {% endif %}
                     <td class="configuration" >
                         {% if clockFile  !== false %}
                             <div class="clock">
@@ -49,4 +51,20 @@
                         <a onclick="charger();" href="{{ pathToReturn }}default_language=en"><img src="src/Main/Resources/public/images/base/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>
                         <a onclick="charger();" href="{{ pathToReturn }}default_language=it"><img src="src/Main/Resources/public/images/base/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>
                         <a onclick="charger();" href="{{ pathToReturn }}default_language=es"><img src="src/Main/Resources/public/images/base/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>
+                        {% if session %}
+                            {% if ssoStatus == "cas_visiteur" or ssoStatus == "cas_utilisateur" %}
+                                <br />
+                                <a href="index.php?force_authentification=y">{{ vocab.authentification }}</a>
+                                <br />
+                                <small>
+                                    <i>
+                                        <a href="login.php">{{ vocab.connect_local }}</a>
+                                    </i>
+                                </small>
+                            {% else %}
+                                <br /> <a href="login.php">{{ vocab.connect }}</a>
+                            {% endif %}
+                        {% else %}
+
+                        {% endif %}
  

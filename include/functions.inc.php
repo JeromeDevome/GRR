@@ -1194,9 +1194,9 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
             }
             if ($type_session != 'with_session') {
                 /*echo '<script>selection()</script>'.PHP_EOL;*/
-                $tplArray['with_session'] = true;
+                $tplArray['session'] = false;
             } else {
-                $tplArray['with_session'] = false;
+                $tplArray['session'] = true;
             }
             /*echo '<td class="configuration" >'.PHP_EOL;*/
             if (@file_exists('js/'.$clock_file)) {
@@ -1228,10 +1228,15 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
  */           }
             if ($type_session == 'no_session') {
                 if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur')) {
-                    echo '<br /> <a href="index.php?force_authentification=y">'.get_vocab('authentification').'</a>'.PHP_EOL;
-                    echo '<br /> <small><i><a href="login.php">'.get_vocab('connect_local').'</a></i></small>'.PHP_EOL;
+                    $tplArray['ssoStatus'] = Settings::get('sso_statut');
+                    $tplArray['vocab']['authentification'] = get_vocab('authentification');
+                    $tplArray['vocab']['connect_local'] = get_vocab('connect_local');
+
+                    /*echo '<br /> <a href="index.php?force_authentification=y">'.get_vocab('authentification').'</a>'.PHP_EOL;
+                    echo '<br /> <small><i><a href="login.php">'.get_vocab('connect_local').'</a></i></small>'.PHP_EOL;*/
                 } else {
-                    echo '<br /> <a href="login.php">'.get_vocab('connect').'</a>'.PHP_EOL;
+                    /*echo '<br /> <a href="login.php">'.get_vocab('connect').'</a>'.PHP_EOL;*/
+                    $tplArray['vocab']['connect'] = get_vocab('connect');
                 }
             } else {
                 echo '<br /> <b>'.get_vocab('welcome_to').htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']).'</b>'.PHP_EOL;
