@@ -23,4 +23,5 @@
 * Sauvegarde de la lettre sur le serveur - 0%
 
 # Refacto 
-* Gestion lib externes avec composer 
+* Gestion lib externes avec composer
+* IMPORTANT sécuriser toutes les entrées utilisateurs avec strip_tags, possibilité actuellement d'XSS dans la bdd 
