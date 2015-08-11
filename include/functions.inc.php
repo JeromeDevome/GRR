@@ -37,7 +37,7 @@ header('Cache-Control:no-cache');
  */
 require_once 'vendor/autoload.php';
 global $loader, $twig;
-$loader = new Twig_Loader_Filesystem('src/Main/Ressources/views/');
+$loader = new Twig_Loader_Filesystem('src/Main/Resources/views/');
 $twig = new Twig_Environment($loader, array(
     'cache' => 'app/cache/',
     'debug' => true
@@ -1247,34 +1247,58 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
                 /*echo '<br /> <b>'.get_vocab('welcome_to').htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']).'</b>'.PHP_EOL;
                 echo '<br /> <a href="'.$racine.'my_account.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'.get_vocab('manage_my_account').'</a>'.PHP_EOL;*/
                 if (verif_access_search(getUserName())) {
-                    echo '<br/><a href="'.$racine.'report.php">'.get_vocab('report').'</a>'.PHP_EOL;
+                    $tplArray['searchAccess'] = true;
+                    $tplArray['pathToReport'] = $racine.'report.php';
+                    $tplArray['vocab']['report'] = get_vocab('report');
+                    //echo '<br/><a href="'.$racine.'report.php">'.get_vocab('report').'</a>'.PHP_EOL;
+                } else {
+                    $tplArray['searchAccess'] = false;
                 }
                 $disconnect_link = false;
                 if (!((Settings::get('cacher_lien_deconnecter') == 'y') && (isset($_SESSION['est_authentifie_sso'])))) {
                     $disconnect_link = true;
+                    $tplArray['disconnectLink'] = true;
+                    $tplArray['vocab']['disconnect'] = get_vocab('disconnect');
+
                     if (Settings::get('authentification_obli') == 1) {
-                        echo '<br /> <a href="'.$racine.'logout.php?auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+                        $tplArray['authentificationObli'] = true;
+                        $tplArray['pathToLogout'] = $racine.'logout.php?auto=0';
+
+                        //echo '<br /> <a href="'.$racine.'logout.php?auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
                     } else {
-                        echo '<br /> <a href="'.$racine.'logout.php?auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+                        $tplArray['authentificationObli'] = false;
+                        $tplArray['pathToLogout'] = $racine.'logout.php?auto=0&amp;redirect_page_accueil=yes';
+                        /*echo '<br /> <a href="'.$racine.'logout.php?auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;*/
                     }
+                } else {
+                    $tplArray['disconnectLink'] = false;
                 }
                 if ((Settings::get('Url_portail_sso') != '') && (isset($_SESSION['est_authentifie_sso']))) {
+                    $tplArray['portailSso'] = Settings::get('Url_portail_sso');
+                    $tplArray['vocab']['Portail_accueil'] = get_vocab('Portail_accueil');
                     if ($disconnect_link) {
                         echo ' - '.PHP_EOL;
                     } else {
                         echo '<br />'.PHP_EOL;
                     }
-                    echo '<a href="'.Settings::get('Url_portail_sso').'">'.get_vocab('Portail_accueil').'</a>'.PHP_EOL;
+                    //echo '<a href="'.Settings::get('Url_portail_sso').'">'.get_vocab('Portail_accueil').'</a>'.PHP_EOL;
+                } else {
+                    $tplArray['portailSso'] = false;
                 }
                 if ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_statut') == 'lasso_utilisateur')) {
-                    echo '<br />';
+                    $tplArray['ssoStatus'] = Settings::get('sso_statut');
+                    //echo '<br />';
                     if ($_SESSION['lasso_nameid'] == null) {
-                        echo '<a href="lasso/federate.php">'.get_vocab('lasso_federate_this_account').'</a>'.PHP_EOL;
+                        $tplArray['lasso_nameid'] = false;
+                        $tplArray['vocab']['lasso_federate_this_account'] = get_vocab('lasso_federate_this_account');
+                        /*echo '<a href="lasso/federate.php">'.get_vocab('lasso_federate_this_account').'</a>'.PHP_EOL;*/
                     } else {
-                        echo '<a href="lasso/defederate.php">'.get_vocab('lasso_defederate_this_account').'</a>'.PHP_EOL;
+                        $tplArray['lasso_nameid'] = true;
+                        $tplArray['vocab']['lasso_defederate_this_account'] = get_vocab('lasso_defederate_this_account');
+                        /*echo '<a href="lasso/defederate.php">'.get_vocab('lasso_defederate_this_account').'</a>'.PHP_EOL;*/
                     }
                 }
-            }
+            }/*
             echo '</td>'.PHP_EOL;
             echo '</tr>'.PHP_EOL;
             echo '</table>'.PHP_EOL;
@@ -1287,9 +1311,10 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
         //	echo '</li>'.PHP_EOL;
         //	echo '</ul>'.PHP_EOL;
             echo '</div>'.PHP_EOL;
-            echo '</div>'.PHP_EOL;
+            echo '</div>'.PHP_EOL;*/
         }
     }
+    return $twig->render('printHeader.html.twig', $tplArray);
 }
 
 /**

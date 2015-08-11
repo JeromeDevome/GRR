@@ -51,7 +51,7 @@
                         <a onclick="charger();" href="{{ pathToReturn }}default_language=en"><img src="src/Main/Resources/public/images/base/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>
                         <a onclick="charger();" href="{{ pathToReturn }}default_language=it"><img src="src/Main/Resources/public/images/base/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>
                         <a onclick="charger();" href="{{ pathToReturn }}default_language=es"><img src="src/Main/Resources/public/images/base/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>
-                        {% if session %}
+                        {% if session !== false %}
                             {% if ssoStatus == "cas_visiteur" or ssoStatus == "cas_utilisateur" %}
                                 <br />
                                 <a href="index.php?force_authentification=y">{{ vocab.authentification }}</a>
@@ -65,6 +65,38 @@
                                 <br /> <a href="login.php">{{ vocab.connect }}</a>
                             {% endif %}
                         {% else %}
+                            {% if searchAccess !== false %}
+                                <br/><a href="{{ pathToReport }}">{{ vocab.report }}</a>
+                            {% endif %}
+                            {% if disconnectLink === true %}
+                                {% if authentificationObli === true %}
+                                    <br /> <a href="{{ pathToLogout }}" >{{ vocab.disconnect }}</a>
+                                {% else %}
+                                    <br /> <a href="{{ pathToLogout }}" >{{ vocab.disconnect }}</a>
+                                {% endif %}
+                            {% endif %}
+                            {% if portailSso !== false %}
+                                <a href="{{ portailSso }}" >{{ vocab.Portail_accueil }} </a>
+                            {% endif %}
+                            {% if ssoStatus == "lasso_visiteur" or ssoStatus == "lasso_utilisateur" %}
+                                {% if lasso_nameid === true %}
+                                    <a href="lasso/federate.php">{{ vocab.lasso_federate_this_account }}</a>
+                                {% else %}
+                                    <a href="lasso/defederate.php">{{ vocab.lasso_defederate_this_account }}</a>
+                                {% endif %}
+                            {% endif %}
 
                         {% endif %}
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="tab">
+
+        <a id="open" class="open" href="#">Menu <i>(ouvrir/fermer)</i></a>
+
+    </div>
+</div>
  
