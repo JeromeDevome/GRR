@@ -1,0 +1,54 @@
+{# ########### TYPE SELECT ################## #}
+{% if fieldType == "select" %}
+    <b><i>{{ vocab.rooms}}{{ vocab.deux_points}}</i></b><br />
+    <form id="room_001" action="{{ formAction }}"><div><select class="form-control" name="room" onchange="room_go()">
+                <option value="{{ linkToAllRoom }}">{{ vocab.all_rooms }}</option>
+                {% for room in rooms %}
+                    <option {% if room.current %}selected="selected"{% endif %} value="{{ room.linkToRoom }}" >{{ room.txtOption }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <script type="text/javascript">
+            function room_go()
+            {
+                box = document.getElementById("room_001").room;
+                destination = box.options[box.selectedIndex].value;
+                if (destination) location.href = destination;
+            }
+        </script>
+        <noscript>
+            <div>
+                <input type="submit" value="Change" />
+            </div>
+        </noscript>
+    </form>
+{% elseif fieldType == "list" %}
+    {# ########### TYPE LIST ################## #}
+    <b><i><span class="bground">{{ vocab.rooms}}{{ vocab.deux_points}}</span></i></b><br />
+    {% for room in rooms %}
+        {% if room.current %}
+            <span id="liste_select">&gt; {{ room.txtOption }}</span><br />
+        {% else %}
+            <a id="liste" onclick="charger();" href="{{ room.linkToRoom }} ">{{ room.txtOption }}</a><br />
+        {% endif %}
+
+    {% endfor %}
+
+{% else %}
+    {# ########### TYPE DEFAULT ################## #}
+    <br />
+        <div class="panel panel-default">
+            <div class="panel-heading">{{ vocab.rooms}}{{ vocab.deux_points}}</div>
+    <div class="panel-body">
+    <form class="ressource" id="room_001" action="{{ formAction }}">
+    {% for room in rooms %}
+    <input id="item_select" class="btn btn-primary btn-lg btn-block" name="all_room" value="{{ vocab.all_rooms }}" onclick="location.href='{{ linkToAllRoom }}';charger();"/>
+
+    <input class="btn btn-primary btn-lg btn-block item{% if room.current %}_select{% endif %}" type="button" name="{{ room.txtOption }}" value="{{ room.txtOption }}" onclick="location.href='{{ room.linkToRoom }}';charger();"/>
+
+
+
+
+    {% endfor %}
+        </form></div></div>
+{% endif %}

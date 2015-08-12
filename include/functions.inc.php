@@ -2143,9 +2143,9 @@ function make_area_selection_fields($link, $current_site, $current_area, $year, 
         }
     }
     grr_sql_free($res);
-echo "<pre>";
+/*echo "<pre>";
     var_dump($tplArray);
-echo "</pre>";
+echo "</pre>";*/
     return $twig->render('forms/areaFields.html.twig', $tplArray);
 }
 /**
@@ -2160,28 +2160,38 @@ echo "</pre>";
  *
  * @return string
  */
-function make_room_select_html($link, $current_area, $current_room, $year, $month, $day)
+function make_room_selection_fields($link, $current_area, $current_room, $year, $month, $day, $fieldType)
 {
-    global $vocab;
-    $out_html = '<b><i>'.get_vocab('rooms').get_vocab('deux_points').'</i></b><br /><form id="room_001" action="'.$_SERVER['PHP_SELF'].'"><div><select class="form-control" name="room" onchange="room_go()">';
-    $out_html .= '<option value="'.$link."_all.php?year=$year&amp;month=$month&amp;day=$day&amp;area=$current_area\">".get_vocab('all_rooms').'</option>';
+    global $twig;
+    $tplArray['fieldType'] = $fieldType;
+    $tplArray['vocab']['rooms'] = get_vocab('rooms');
+    $tplArray['vocab']['all_rooms'] = get_vocab('all_rooms');
+    $tplArray['formAction'] = urlencode(strip_tags($_SERVER['PHP_SELF']));
+    $tplArray['linkToAllRoom'] = $link.'_all.php?year='.$year.'&month='.$month.'&day='.$day.'&area='.$current_area;
+
+    /*$out_html = '<b><i>'.get_vocab('rooms').get_vocab('deux_points').'</i></b><br /><form id="room_001" action="'.$_SERVER['PHP_SELF'].'"><div><select class="form-control" name="room" onchange="room_go()">';
+    $out_html .= '<option value="'.$link."_all.php?year=$year&amp;month=$month&amp;day=$day&amp;area=$current_area\">".get_vocab('all_rooms').'</option>';*/
     $sql = 'select id, room_name, description from '.TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($current_area)."' order by order_display,room_name";
     $res = grr_sql_query($sql);
     if ($res) {
         for ($i = 0; ($row = grr_sql_row($res, $i)); ++$i) {
             if (verif_acces_ressource(getUserName(), $row[0])) {
                 if ($row[2]) {
-                    $temp = ' ('.htmlspecialchars($row[2]).')';
+                    $temp = ' ('.$row[2].')';
                 } else {
                     $temp = '';
                 }
-                $selected = ($row[0] == $current_room) ? 'selected="selected"' : '';
-                $link2 = $link.'.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$row[0];
-                $out_html .= "<option $selected value=\"$link2\">".htmlspecialchars($row[1].$temp).'</option>'.PHP_EOL;
+                $tplArray['rooms'][$i]['linkToRoom'] = $link.'.php?year='.$year.'&month='.$month.'&day='.$day.'&room='.$row[0];
+                $tplArray['rooms'][$i]['txtOption'] = htmlspecialchars(strip_tags($row[1].$temp));
+                /*if ($row[0] == $current_area) {*/
+                $tplArray['rooms'][$i]['current'] = ($row[0] == $current_area) ? true : false;
+                //$selected = ($row[0] == $current_room) ? 'selected="selected"' : '';
+                //$link2 = $link.'.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$row[0];
+                //$out_html .= "<option $selected value=\"$link2\">".htmlspecialchars($row[1].$temp).'</option>'.PHP_EOL;
             }
         }
     }
-    $out_html .= '</select>'.PHP_EOL;
+    /*$out_html .= '</select>'.PHP_EOL;
     $out_html .= '</div>'.PHP_EOL;
     $out_html .= '<script type="text/javascript">'.PHP_EOL;
     $out_html .= 'function room_go()'.PHP_EOL;
@@ -2196,9 +2206,9 @@ function make_room_select_html($link, $current_area, $current_room, $year, $mont
     $out_html .= '<input type="submit" value="Change" />'.PHP_EOL;
     $out_html .= '</div>'.PHP_EOL;
     $out_html .= '</noscript>'.PHP_EOL;
-    $out_html .= '</form>'.PHP_EOL;
-
-    return $out_html;
+    $out_html .= '</form>'.PHP_EOL;*/
+    return $twig->render('forms/roomFields.html.twig', $tplArray);
+    //return $out_html;
 }
 /**
  * Affichage des area sous la forme d'une liste.
@@ -2375,8 +2385,6 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
                     $out_html .= '<input class="btn btn-default btn-lg btn-block item" type="button" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\' ;charger();"/>'.PHP_EOL;
                     $all_ressource = 1;
                 } else {
-                    //changed (Ajout de type = " button pr gerer saut de ligne "
-
                     if (isset($all_ressource) && $all_ressource == 0) {
                         $out_html .= '<input class="btn btn-primary btn-lg btn-block item" type="button" name="all_room" value="Toutes les ressources" onclick="location.href=\''.$link_all_room.'\' ;charger();"/>'.PHP_EOL;
                     }
