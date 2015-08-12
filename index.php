@@ -36,6 +36,7 @@ if (file_exists("include/connect.inc.php"))
 require_once("include/misc.inc.php");
 require_once("include/functions.inc.php");
 require_once("include/settings.class.php");
+require_once("include/twigInit.php");
 // Paramètres langage
 include "include/language.inc.php";
 // Dans le cas d'une base mysql, on teste la bonne installation de la base et on propose une installation automatisée.

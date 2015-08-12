@@ -17,21 +17,26 @@ if ($_GET['pview'] != 1) {
     } else {
         $area_list_format = Settings::get('area_list_format');
     }
+   /* echo "<pre>";
+        var_dump($area_list_format);
+    echo "</pre>";*/
+    //$area_list_format = "select";
     echo make_site_selection_fields('week_all.php', $id_site, $year, $month, $day, getUserName(), $area_list_format);
+    echo make_area_selection_fields('week_all.php', $id_site, $area, $year, $month, $day, getUserName(), $area_list_format);
 
     if ($area_list_format != 'list') {
         if ($area_list_format == 'select') {
             //echo make_site_select_html('week_all.php', $id_site, $year, $month, $day, getUserName());
-            echo make_area_select_html('week_all.php', $id_site, $area, $year, $month, $day, getUserName());
+            //echo make_area_select_html('week_all.php', $id_site, $area, $year, $month, $day, getUserName());
             echo make_room_select_html('week', $area, $room, $year, $month, $day);
         } else {
             //echo make_site_item_html('week_all.php', $id_site, $year, $month, $day, getUserName());
-            echo make_area_item_html('week_all.php', $id_site, $area, $year, $month, $day, getUserName());
+            //echo make_area_item_html('week_all.php', $id_site, $area, $year, $month, $day, getUserName());
             echo make_room_item_html('week', $area, $room, $year, $month, $day);
         }
     } else {
         //echo make_site_selection_fields('week_all.php', $id_site, $year, $month, $day, getUserName(), 'list');
-        echo make_area_list_html('week_all.php', $id_site, $area, $year, $month, $day, getUserName());
+        //echo make_area_list_html('week_all.php', $id_site, $area, $year, $month, $day, getUserName());
         echo make_room_list_html('week.php', $area, $room, $year, $month, $day);
     }
     if (Settings::get('legend') == '0') {

@@ -4,7 +4,7 @@ include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
 include "include/$dbsys.inc.php";
-include "include/mrbs_sql.inc.php";
+include "include/mrbs_sql.inc.php"; include 'include/twigInit.php';
 include "phpmailer/class.phpmailer.php";
 
 $grr_script_name = "week_all.php";

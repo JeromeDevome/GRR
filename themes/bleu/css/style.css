@@ -63,7 +63,7 @@ span a{color:#FFF}
 .ressource{text-align:center}
 .item:hover{cursor:pointer}
 b,strong{color:#000;text-align:center}
-#liste_select{color:#17346C;font-weight:700}
+#liste_select{color:#ffffff;font-weight:bold;}
 #liste{color:#CCF}
 table.legende{margin-left:25px;width:250px}
 table.legende td{width:125px;text-align:center}

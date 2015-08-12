@@ -30,6 +30,7 @@
 require_once("include/config.inc.php");
 require_once("include/misc.inc.php");
 require_once("include/functions.inc.php");
+require_once("include/twigInit.php");
 $nom_fic = "include/connect.inc.php";
 $etape = isset($_GET["etape"]) ? $_GET["etape"] : NULL;
 $adresse_db = isset($_GET["adresse_db"]) ? $_GET["adresse_db"] : NULL;

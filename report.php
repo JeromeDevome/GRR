@@ -32,7 +32,7 @@ include "include/config.inc.php";
 include "include/misc.inc.php";
 include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
-include "include/mrbs_sql.inc.php";
+include "include/mrbs_sql.inc.php"; include 'include/twigInit.php';
 $grr_script_name = "view_rights_room.php";
 //Paramètres de connection
 require_once("./include/settings.class.php");
