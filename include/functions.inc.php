@@ -31,7 +31,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 header('Cache-Control:no-cache');
-
 function returnmsg($type, $test, $status, $msg = '')
 {
     echo encode_message_utf8('<div class="alert alert-'.$type.'" role="alert"><h3>'.$test);
@@ -2050,7 +2049,7 @@ function make_site_selection_fields($link, $current_site, $year, $month, $day, $
                 //$link2 = $link.'?year='.$year.'&month='.$month.'&day='.$day.'&area='.$default_area;
                 $tplArray['sites'][$nb_sites_a_afficher]['linkToDomaine'] =  $link.'?year='.$year.'&month='.$month.'&day='.$day.'&area='.$default_area;
                 /* j'a'joute un striptag, car j'ai pu entrer des tag html en bdd */
-                $tplArray['sites'][$nb_sites_a_afficher]['txtOption'] = htmlspecialchars(striptags($row[1]));
+                $tplArray['sites'][$nb_sites_a_afficher]['txtOption'] = htmlspecialchars(strip_tags($row[1]));
                 //$out_html .= '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
             }
         }
@@ -2083,7 +2082,7 @@ function make_site_selection_fields($link, $current_site, $year, $month, $day, $
 }
 
 /**
- * Menu gauche affichage des area via select.
+ * Menu gauche affichage des area via $fieldType
  *
  * @param string $link
  * @param string $current_site
@@ -2092,12 +2091,17 @@ function make_site_selection_fields($link, $current_site, $year, $month, $day, $
  * @param string $month
  * @param string $day
  * @param string $user
+ * @param string $fieldType
  *
  * @return string
  */
-function make_area_select_html($link, $current_site, $current_area, $year, $month, $day, $user)
+function make_area_select_fields($link, $current_site, $current_area, $year, $month, $day, $user, $fieldType)
 {
-    global $vocab;
+    global $twig;
+    $tplArray['fieldType'] = $fieldType;
+    $tplArray['vocab']['areas'] = get_vocab('areas');
+    $tplArray['formAction'] = urlencode(strip_tags($_SERVER['PHP_SELF']));
+
     if (Settings::get('module_multisite') == 'Oui') {
         $use_multi_site = 'y';
     } else {
@@ -2113,22 +2117,29 @@ function make_area_select_html($link, $current_site, $current_area, $year, $mont
     } else {
         $sql = 'SELECT id, area_name,access FROM '.TABLE_PREFIX.'_area ORDER BY order_display, area_name';
     }
-    $out_html = '<b><i>'.get_vocab('areas').'</i></b>'.PHP_EOL;
+    /*$out_html = '<b><i>'.get_vocab('areas').'</i></b>'.PHP_EOL;
     $out_html .= '<form id="area_001" action="'.$_SERVER['PHP_SELF'].'">'.PHP_EOL;
     $out_html .= '<div><select class="form-control" name="area" ';
     $out_html .= ' onchange="area_go()" ';
-    $out_html .= '>'.PHP_EOL;
+    $out_html .= '>'.PHP_EOL;*/
     $res = grr_sql_query($sql);
     if ($res) {
         for ($i = 0; ($row = grr_sql_row($res, $i)); ++$i) {
-            $selected = ($row[0] == $current_area) ? 'selected="selected"' : '';
-            $link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
+            /* si le user n'y à pas access je ne fais rien */
             if (authUserAccesArea($user, $row[0]) == 1) {
-                $out_html .= '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
-            }
+            //$selected = ($row[0] == $current_area) ? 'selected="selected"' : '';
+            $tplArray['areas'][$i]['current'] = ($row[0] == $current_area) ? true : false;
+            //$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
+            $tplArray['areas'][$i]['linkToArea'] = $link.'?year='.$year.'&month='.$month.'&day='.$day.'&area='.$row[0];
+            $tplArray['areas'][$i]['txtOption'] = htmlspecialchars(strip_tags($row[1]));
+            //$tplArray['sites'][$i]['userHasAccess'] = true;
+                //$out_html .= '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
+            }/* else {
+                $tplArray['sites'][$i]['userHasAccess'] = false;
+            }*/
         }
     }
-    $out_html .= '</select>'.PHP_EOL;
+    /*$out_html .= '</select>'.PHP_EOL;
     $out_html .= '</div>'.PHP_EOL;
     $out_html .= '<script type="text/javascript">'.PHP_EOL;
     $out_html .= 'function area_go()'.PHP_EOL;
@@ -2143,9 +2154,9 @@ function make_area_select_html($link, $current_site, $current_area, $year, $mont
     $out_html .= '<input type="submit" value="Change" />'.PHP_EOL;
     $out_html .= '</div>'.PHP_EOL;
     $out_html .= '</noscript>'.PHP_EOL;
-    $out_html .= '</form>'.PHP_EOL;
+    $out_html .= '</form>'.PHP_EOL;*/
 
-    return $out_html;
+    return $twig->render('forms/areaFields.html.twig', $tplArray);
 }
 /**
  * Menu gauche affichage des room via select.
