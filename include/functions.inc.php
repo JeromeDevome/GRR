@@ -32,17 +32,6 @@
  */
 header('Cache-Control:no-cache');
 
-/**
- * Load des infos pour twig
- */
-require_once 'vendor/autoload.php';
-global $loader, $twig;
-$loader = new Twig_Loader_Filesystem('src/Main/Resources/views/');
-$twig = new Twig_Environment($loader, array(
-    'cache' => 'app/cache/',
-    'debug' => true
-));
-
 function returnmsg($type, $test, $status, $msg = '')
 {
     echo encode_message_utf8('<div class="alert alert-'.$type.'" role="alert"><h3>'.$test);
@@ -891,7 +880,7 @@ function begin_page($title, $page = 'with_session')
         }
     }
     global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin;
-    header('Content-Type: text/html; charset=utf-8');
+    //header('Content-Type: text/html; charset=utf-8');
     if (!isset($_COOKIE['open'])) {
         setcookie('open', 'true', time() + 3600);
     }
@@ -2088,7 +2077,7 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user)
     }
 
     /* si je n'ai rien a afficher */
-    return false;
+    return "";
 }
 
 /**

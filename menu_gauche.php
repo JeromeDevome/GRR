@@ -19,7 +19,6 @@ if ($_GET['pview'] != 1) {
     }
     if ($area_list_format != 'list') {
         if ($area_list_format == 'select') {
-
             echo make_site_select_html('week_all.php', $id_site, $year, $month, $day, getUserName());
             echo make_area_select_html('week_all.php', $id_site, $area, $year, $month, $day, getUserName());
             echo make_room_select_html('week', $area, $room, $year, $month, $day);
