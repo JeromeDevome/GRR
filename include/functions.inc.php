@@ -1999,10 +1999,22 @@ function round_t_up($t, $resolution, $am7)
  */
 function make_site_select_html($link, $current_site, $year, $month, $day, $user)
 {
-    global $vocab;
+    //global $vocab;
+    /**
+     * init twig et le tableau
+     */
+    global $twig;
+    $tplArray = [];
+
     $nb_sites_a_afficher = 0;
-    $out_html = '<b><i>'.get_vocab('sites').get_vocab('deux_points').'</i></b><form id="site_001" action="'.$_SERVER['PHP_SELF'].'"><div>';
-    $out_html .= '<select class="form-control" name="site" onchange="site_go()">';
+    $tplArray['vocab']['sites'] = get_vocab('sites');
+    $tplArray['vocab']['deux_points'] = get_vocab('deux_points');
+    $tplArray['formAction'] = $_SERVER['PHP_SELF'];
+    /* todo sanitize php self ? */
+    var_dump($_SERVER['PHP_SELF']);
+    /*$out_html = '<b><i>'.get_vocab('sites').get_vocab('deux_points').'</i></b><form id="site_001" action="'.$_SERVER['PHP_SELF'].'"><div>';
+    $out_html .= '<select class="form-control" name="site" onchange="site_go()">';*/
+
     if (strncmp('4.1', grr_sql_version(), 3) < 0) {
         $sql = 'SELECT id,sitename
 		FROM '.TABLE_PREFIX.'_site
@@ -2042,14 +2054,20 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user)
             if ($default_area != -1) {
                 // on affiche le site uniquement si au moins un domaine est visible par l'utilisateur
                 ++$nb_sites_a_afficher;
-                $selected = ($row[0] == $current_site) ? 'selected="selected"' : '';
-                $link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$default_area;
-                $out_html .= '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
+                //$selected = ($row[0] == $current_site) ? 'selected="selected"' : '';
+                $tplArray['sites'][$nb_sites_a_afficher]['selected'] = ($row[0] == $current_site) ? 'selected="selected"' : '';
+                //$link2 = $link.'?year='.$year.'&month='.$month.'&day='.$day.'&area='.$default_area;
+                $tplArray['sites'][$nb_sites_a_afficher]['linkToDomaine'] =  $link.'?year='.$year.'&month='.$month.'&day='.$day.'&area='.$default_area;
+                /* j'a'joute un striptag, car j'ai pu entrer des tag html en bdd */
+                $tplArray['sites'][$nb_sites_a_afficher]['txtOption'] = htmlspecialchars(striptags($row[1]));
+                //$out_html .= '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
             }
         }
     }
+    /* une fois les vérifications, si j'ai des sites à affichier je renvoi le render du template */
     if ($nb_sites_a_afficher > 1) {
-        $out_html .= '</select>'.PHP_EOL;
+
+/*        $out_html .= '</select>'.PHP_EOL;
         $out_html .= '</div>'.PHP_EOL;
         $out_html .= '<script type="text/javascript">'.PHP_EOL;
         $out_html .= 'function site_go()'.PHP_EOL;
@@ -2064,10 +2082,13 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user)
         $out_html .= '<input type="submit" value="Change" />'.PHP_EOL;
         $out_html .= '</div>'.PHP_EOL;
         $out_html .= '</noscript>'.PHP_EOL;
-        $out_html .= '</form>'.PHP_EOL;
+        $out_html .= '</form>'.PHP_EOL;*/
 
-        return $out_html;
+        return $twig->render('forms/siteSelect.html.twig', $tplArray);
     }
+
+    /* si je n'ai rien a afficher */
+    return false;
 }
 
 /**
