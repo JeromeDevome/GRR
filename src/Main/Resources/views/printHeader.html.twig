@@ -3,10 +3,12 @@
         <div class="content">
             <table id="header">
                 <tr>
-                    <td class="logo" height="100">
+                    <td class="logo" height="100px">
+                        {% if nomPicture == true %}
                         <a href="{{ homeLink }}">
                             <img src="{{ nomPicture }}" alt="logo"/>
                         </a>
+                        {% endif %}
                     </td>
                     <td class="accueil ">
                         <h2>
@@ -23,21 +25,23 @@
                     <td class="administration">
                         <br><a href="{{ pathToAdmin }}">{{ vocab.admin }}</a>
                         <br />
-                        <form action="{{ pathToMyslqlSave }}" method='get'><div>
-                                <input type="hidden" name="flag_connect" value="yes" />
-                                <input type="submit" class="btn btn-default" value="'.get_vocab('submit_backup').'" /></div>
-                        </form>
-                        <a href="{{ pathToViewConnexions }}">{{ nb_connect }} {% if nb_connect == 1 %} {{ vocab.one_connected }} {% else %} {{ several.one_connected }} {% endif %}</a>
-                        {% if erreurVersion !== false %}
-                            {# include template ont accès aux données courantes, dans alert.html.twig je peux afficher directement erreurVersion #}
-                            {{ include('helpers/alert.html.twig') }}
+                        {% if pathToMyslqlSave != false %}
+                            <form action="{{ pathToMyslqlSave }}" method='get'><div>
+                                    <input type="hidden" name="flag_connect" value="yes" />
+                                    <input type="submit" class="btn btn-default" value="{{ vocab.submit_backup }}" /></div>
+                            </form>
+                            <a href="{{ pathToViewConnexions }}">{{ nb_connect }} {% if nb_connect == 1 %} {{ vocab.one_connected }} {% else %} {{ several.one_connected }} {% endif %}</a>
+                            {% if erreurVersion != false %}
+                                {# include template ont accès aux données courantes, dans alert.html.twig je peux afficher directement erreurVersion #}
+                                {{ include('helpers/alert.html.twig') }}
+                            {% endif %}
                         {% endif %}
                     </td>
-                    {% if session !== false %}
+                    {% if session != false %}
                         <script>selection()</script>
                     {% endif %}
                     <td class="configuration" >
-                        {% if clockFile  !== false %}
+                        {% if clockFile  != false %}
                             <div class="clock">
                                 <div id="Date">
                                     &nbsp;<span id="hours"></span>
@@ -46,12 +50,12 @@
                                 </div>
                             </div>
                         {% endif %}
-                        <a onclick="charger();" href="{{ pathToReturn }}default_language=fr"><img src="src/Main/Resources/public/images/base/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>
-                        <a onclick="charger();" href="{{ pathToReturn }}default_language=de"><img src="src/Main/Resources/public/images/base/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>
-                        <a onclick="charger();" href="{{ pathToReturn }}default_language=en"><img src="src/Main/Resources/public/images/base/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>
-                        <a onclick="charger();" href="{{ pathToReturn }}default_language=it"><img src="src/Main/Resources/public/images/base/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>
-                        <a onclick="charger();" href="{{ pathToReturn }}default_language=es"><img src="src/Main/Resources/public/images/base/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>
-                        {% if session !== false %}
+                        <a onclick="charger();" href="{{ pathToReturn }}&default_language=fr"><img src="src/Main/Resources/public/images/base/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>
+                        <a onclick="charger();" href="{{ pathToReturn }}&default_language=de"><img src="src/Main/Resources/public/images/base/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>
+                        <a onclick="charger();" href="{{ pathToReturn }}&default_language=en"><img src="src/Main/Resources/public/images/base/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>
+                        <a onclick="charger();" href="{{ pathToReturn }}&default_language=it"><img src="src/Main/Resources/public/images/base/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>
+                        <a onclick="charger();" href="{{ pathToReturn }}&default_language=es"><img src="src/Main/Resources/public/images/base/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>
+                        {% if session != false %}
                             {% if ssoStatus == "cas_visiteur" or ssoStatus == "cas_utilisateur" %}
                                 <br />
                                 <a href="index.php?force_authentification=y">{{ vocab.authentification }}</a>
@@ -65,21 +69,21 @@
                                 <br /> <a href="login.php">{{ vocab.connect }}</a>
                             {% endif %}
                         {% else %}
-                            {% if searchAccess !== false %}
+                            {% if searchAccess != false %}
                                 <br/><a href="{{ pathToReport }}">{{ vocab.report }}</a>
                             {% endif %}
-                            {% if disconnectLink === true %}
-                                {% if authentificationObli === true %}
+                            {% if disconnectLink == true %}
+                                {% if authentificationObli == true %}
                                     <br /> <a href="{{ pathToLogout }}" >{{ vocab.disconnect }}</a>
                                 {% else %}
                                     <br /> <a href="{{ pathToLogout }}" >{{ vocab.disconnect }}</a>
                                 {% endif %}
                             {% endif %}
-                            {% if portailSso !== false %}
+                            {% if portailSso != false %}
                                 <a href="{{ portailSso }}" >{{ vocab.Portail_accueil }} </a>
                             {% endif %}
                             {% if ssoStatus == "lasso_visiteur" or ssoStatus == "lasso_utilisateur" %}
-                                {% if lasso_nameid === true %}
+                                {% if lasso_nameid == true %}
                                     <a href="lasso/federate.php">{{ vocab.lasso_federate_this_account }}</a>
                                 {% else %}
                                     <a href="lasso/defederate.php">{{ vocab.lasso_defederate_this_account }}</a>

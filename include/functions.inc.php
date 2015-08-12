@@ -335,7 +335,8 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
     return $affichage;
 }
 /**
- *Fonction qui calcule $room, $area et $id_site à partir de $_GET['room'], $_GET['area'], $_GET['id_site'].
+ * Fonction qui calcule $room, $area et $id_site à partir de $_GET['room'], $_GET['area'], $_GET['id_site']
+ * et les rends disponible en variables globales
  */
 function Definition_ressource_domaine_site()
 {
@@ -1124,6 +1125,8 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
                 $tplArray['homeLink'] = $racine.page_accueil('yes').'day='.$day.'&amp;year='.$year.'&amp;month='.$month;
 
                 /*echo '<td class="logo" height="100">'.PHP_EOL.'<a href="'.$racine.page_accueil('yes').'day='.$day.'&amp;year='.$year.'&amp;month='.$month.'"><img src="'.$nom_picture.'" alt="logo"/></a>'.PHP_EOL.'</td>'.PHP_EOL;*/
+            } else {
+                $tplArray['nomPicture'] = false;
             }
 
             //Accueil
@@ -1188,6 +1191,8 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
                             $tplArray['erreurVersion'] = false;
                         }
 
+                    } else {
+                        $tplArray['pathToMyslqlSave'] = false;
                     }
                     /*echo '</td>'.PHP_EOL;*/
                 }
@@ -1214,11 +1219,13 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
             $_SESSION['chemin_retour'] = '';
             if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != '')) {
                 /**
-                 * ajout sécurité : striptags
+                 * filtre rapide + urlencode, todo : voir pour mieux faire
                  */
-                $parametres_url = htmlspecialchars(strip_tags($_SERVER['QUERY_STRING'])).'&amp;';
+                //$parametres_url = htmlspecialchars(strip_tags($_SERVER['QUERY_STRING'])).'&amp;';
+                $parametres_url = urlencode(filter_var(strip_tags($_SERVER['QUERY_STRING']), FILTER_SANITIZE_URL));
 
-                $_SESSION['chemin_retour'] = traite_grr_url($grr_script_name).'?'.$_SERVER['QUERY_STRING'];
+                //$_SESSION['chemin_retour'] = traite_grr_url($grr_script_name).'?'.$_SERVER['QUERY_STRING'];
+                $_SESSION['chemin_retour'] = traite_grr_url($grr_script_name).'?'.$parametres_url;
                 $tplArray['pathToReturn'] = traite_grr_url($grr_script_name).'?'.$parametres_url;
                 /*echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>'.PHP_EOL;
                 echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
@@ -1227,8 +1234,9 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
                 echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>'.PHP_EOL;
  */           }
             if ($type_session == 'no_session') {
+                $tplArray['ssoStatus'] = Settings::get('sso_statut');
                 if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur')) {
-                    $tplArray['ssoStatus'] = Settings::get('sso_statut');
+
                     $tplArray['vocab']['authentification'] = get_vocab('authentification');
                     $tplArray['vocab']['connect_local'] = get_vocab('connect_local');
 
@@ -1312,9 +1320,13 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
         //	echo '</ul>'.PHP_EOL;
             echo '</div>'.PHP_EOL;
             echo '</div>'.PHP_EOL;*/
+            echo "<pre>";
+            var_dump($tplArray);
+            echo "</pre>";
+            echo $twig->render('printHeader.html.twig', $tplArray);
         }
     }
-    return $twig->render('printHeader.html.twig', $tplArray);
+
 }
 
 /**
@@ -3706,7 +3718,7 @@ function MajMysqlModeDemo()
  */
 function showAccessDenied($back)
 {
-    global $vocab;
+    //global $vocab;
     /*
     if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
         $type_session = "no_session";
