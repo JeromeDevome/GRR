@@ -26,3 +26,4 @@
 * Gestion lib externes avec composer
 * IMPORTANT sécuriser toutes les entrées utilisateurs avec strip_tags, possibilité actuellement d'XSS dans la bdd 
 * refacto begin_page pour l'intégrer à print_header puisque les deux préparent les infos pour afficher le début de page
+* dé dupliquer le code des fonctions make_site_*

@@ -1975,6 +1975,113 @@ function round_t_up($t, $resolution, $am7)
 }
 
 /**
+ * Fonction qui fait un render du template de champs de formulaire $fieldType,
+ * pour selectionner le site à afficher.
+ * @param $link
+ * @param $current_site
+ * @param $year
+ * @param $month
+ * @param $day
+ * @param $user
+ * @param $fieldType
+ * @return string
+ */
+function make_site_selection_fields($link, $current_site, $year, $month, $day, $user, $fieldType)
+{
+    /**
+     * init twig et le tableau
+     */
+    global $twig;
+    $tplArray = [];
+
+    $nb_sites_a_afficher = 0;
+    $tplArray['vocab']['sites'] = get_vocab('sites');
+    $tplArray['vocab']['deux_points'] = get_vocab('deux_points');
+    $tplArray['formAction'] = urlencode(strip_tags($_SERVER['PHP_SELF']));
+
+    /*$out_html = '<b><i>'.get_vocab('sites').get_vocab('deux_points').'</i></b><form id="site_001" action="'.$_SERVER['PHP_SELF'].'"><div>';
+    $out_html .= '<select class="form-control" name="site" onchange="site_go()">';*/
+
+    if (strncmp('4.1', grr_sql_version(), 3) < 0) {
+        $sql = 'SELECT id,sitename
+		FROM '.TABLE_PREFIX.'_site
+		WHERE '.TABLE_PREFIX.'_site.id IN (SELECT id_site FROM '.TABLE_PREFIX.'_j_site_area GROUP BY id_site)
+		ORDER BY id ASC';
+    } else {
+        $sql = 'SELECT id, sitename
+		FROM '.TABLE_PREFIX.'_site
+		left join '.TABLE_PREFIX.'_j_site_area on '.TABLE_PREFIX.'_site.id = '.TABLE_PREFIX.'_j_site_area.id_site
+		WHERE '.TABLE_PREFIX.'_j_site_area.id_site is not null
+		GROUP BY id_site
+		ORDER BY id ASC
+		';
+    }
+    $res = grr_sql_query($sql);
+    if ($res) {
+        for ($i = 0; ($row = grr_sql_row($res, $i)); ++$i) {
+            // Pour chaque site, on détermine le premier domaine disponible
+            $sql = 'SELECT id_area
+			FROM '.TABLE_PREFIX.'_j_site_area
+			WHERE '.TABLE_PREFIX."_j_site_area.id_site='".$row[0]."'";
+            $res2 = grr_sql_query($sql);
+            // A on un résultat ?
+            $default_area = -1;
+            if ($res2 && grr_sql_count($res2) > 0) {
+                for ($j = 0; ($row2 = grr_sql_row($res2, $j)); ++$j) {
+                    if (authUserAccesArea($user, $row2[0]) == 1) {
+                        // on a trouvé un domaine autorisé
+                        $default_area = $row2[0];
+                        $j = grr_sql_count($res2) + 1;
+                        // On arrête la boucle
+                    }
+                }
+            }
+            // On libère la ressource2
+            grr_sql_free($res2);
+            if ($default_area != -1) {
+                // on affiche le site uniquement si au moins un domaine est visible par l'utilisateur
+                ++$nb_sites_a_afficher;
+                /**
+                 * dans mon tableau pour chaque site j'ai si oui ou non c'est le site courant, le lien vers le site et le nom du site
+                 * dans le template je construirai le form en fonction
+                 */
+                //$selected = ($row[0] == $current_site) ? 'selected="selected"' : '';
+                $tplArray['sites'][$nb_sites_a_afficher]['selected'] = ($row[0] == $current_site) ? 'selected="selected"' : '';
+                //$link2 = $link.'?year='.$year.'&month='.$month.'&day='.$day.'&area='.$default_area;
+                $tplArray['sites'][$nb_sites_a_afficher]['linkToDomaine'] =  $link.'?year='.$year.'&month='.$month.'&day='.$day.'&area='.$default_area;
+                /* j'a'joute un striptag, car j'ai pu entrer des tag html en bdd */
+                $tplArray['sites'][$nb_sites_a_afficher]['txtOption'] = htmlspecialchars(striptags($row[1]));
+                //$out_html .= '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
+            }
+        }
+    }
+    /* une fois les vérifications, si j'ai des sites à affichier je renvoi le render du template */
+    if ($nb_sites_a_afficher > 1) {
+
+        /*        $out_html .= '</select>'.PHP_EOL;
+                $out_html .= '</div>'.PHP_EOL;
+                $out_html .= '<script type="text/javascript">'.PHP_EOL;
+                $out_html .= 'function site_go()'.PHP_EOL;
+                $out_html .= '{'.PHP_EOL;
+                $out_html .= 'box = document.getElementById("site_001").site;'.PHP_EOL;
+                $out_html .= 'destination = box.options[box.selectedIndex].value;'.PHP_EOL;
+                $out_html .= 'if (destination) location.href = destination;'.PHP_EOL;
+                $out_html .= '}'.PHP_EOL;
+                $out_html .= '</script>'.PHP_EOL;
+                $out_html .= '<noscript>'.PHP_EOL;
+                $out_html .= '<div>'.PHP_EOL;
+                $out_html .= '<input type="submit" value="Change" />'.PHP_EOL;
+                $out_html .= '</div>'.PHP_EOL;
+                $out_html .= '</noscript>'.PHP_EOL;
+                $out_html .= '</form>'.PHP_EOL;*/
+
+        return $twig->render('forms/siteFields.html.twig', $tplArray);
+    }
+
+    /* si je n'ai rien a afficher */
+    return "";
+}
+/**
  * Menu gauche affichage des sites via select.
  *
  * @param string $link
@@ -1985,6 +2092,8 @@ function round_t_up($t, $resolution, $am7)
  * @param string $user
  *
  * @return string
+ *
+ * @deprecated
  */
 function make_site_select_html($link, $current_site, $year, $month, $day, $user)
 {
@@ -2208,12 +2317,13 @@ function make_room_select_html($link, $current_area, $current_room, $year, $mont
  * @param string $user
  *
  * @return string
+ * @deprecated
  */
 function make_site_list_html($link, $current_site, $year, $month, $day, $user)
 {
-    global $vocab;
-    // On affiche le site
-
+    /* twig global et tableau de valeur */
+    global $twig;
+    $tplArray = [];
     if (Settings::get('module_multisite') == 'Oui') {
         $out_html = '
 		<b><i><span class="bground">'.get_vocab('sites').get_vocab('deux_points').'</span></i></b>
@@ -2260,9 +2370,10 @@ function make_site_list_html($link, $current_site, $year, $month, $day, $user)
         }
         if ($nb_sites_a_afficher > 1) {
             return $out_html;
-        } else {
-            return '';
         }
+
+        return '';
+
     }
 }
 /**
@@ -2360,6 +2471,7 @@ function make_room_list_html($link, $current_area, $current_room, $year, $month,
  * @param string $day
  *
  * @return string
+ * @deprecated
  */
 function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 {
