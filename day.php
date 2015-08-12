@@ -50,6 +50,11 @@ include 'include/setdate.php';
  * crée et peuple global $room, $area, $id_site;
  */
 Definition_ressource_domaine_site();
+/**
+ * init du tableau qui contient les données a envoyer au template twig
+ * $tplArray
+ */
+$tplArray = [];
 
 $affiche_pview = '1';
 if (!isset($_GET['pview'])) {
@@ -181,10 +186,14 @@ if (!$res) {
     fatal_error(0, grr_sql_error());
 }
 if (grr_sql_count($res) == 0) {
-    echo '<h1>'.get_vocab('no_rooms_for_area').'</h1>';
+    $tplArray['room'] = false;
+    $tplArray['vocab']['no_room_for_area'] = get_vocab('no_rooms_for_area');
+    //echo '<h1>'.get_vocab('no_rooms_for_area').'</h1>';
     grr_sql_free($res);
 } else {
-    echo '<div class="row">'.PHP_EOL;
+    $tplArray['room'] = true;
+    //echo '<div class="row">'.PHP_EOL;
+    /* ici on va remplacer par un echo d'un template twig menuGauche */
     include 'menu_gauche.php';
     if ($_GET['pview'] != 1) {
         echo '<div class="col-lg-9 col-md-12 col-xs-12">'.PHP_EOL;

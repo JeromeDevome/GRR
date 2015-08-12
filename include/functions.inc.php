@@ -3725,6 +3725,7 @@ function showAccessDenied($back)
     else
         $type_session = "with_session";
     */
+    /* todo refacto twig */
         ?>
 		<h1><?php echo get_vocab('accessdenied')?></h1>
 		<p>
@@ -3823,7 +3824,8 @@ function check_begin_end_bookings($day, $month, $year)
 }
 function showNoBookings($day, $month, $year, $back)
 {
-    global $vocab;
+    //global $vocab;
+    /* todo refacto twig */
     $date = mktime(0, 0, 0, $month, $day, $year);
     echo '<h2>'.get_vocab('nobookings').' '.affiche_date($date).'</h2>';
     echo '<p>'.get_vocab('begin_bookings').'<b>'.affiche_date(Settings::get('begin_bookings')).'</b></p>';
