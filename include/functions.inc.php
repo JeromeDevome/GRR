@@ -866,7 +866,7 @@ function begin_page($title, $page = 'with_session')
         if (Settings::get('default_css')) {
             $sheetcss = 'themes/'.Settings::get('default_css').'/css';
         } else {
-            $sheetcss = 'themes/default/css/style.css';
+            $sheetcss = 'themes/default/css';
         }
         if (isset($_GET['default_language'])) {
             $_SESSION['default_language'] = $_GET['default_language'];
