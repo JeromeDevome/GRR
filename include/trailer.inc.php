@@ -31,7 +31,7 @@
 // Affichage d'un lien pour format imprimable
 //Appel d'une methode en fonction du paramétrage pour le lien imprimable
 if ((!isset($_GET['pview']) || ($_GET['pview'] != 1)) && (isset($affiche_pview))) {
-	$tplArrayTrailer = ['affichePrintableViewNonGet'] = true;
+	$tplArrayTrailer['affichePrintableViewNonGet'] = true;
 
 	if (Settings::get("pview_new_windows") == 1) {
 		$tplArrayTrailer['pviewNewWindows'] = true;
@@ -45,7 +45,7 @@ if ((!isset($_GET['pview']) || ($_GET['pview'] != 1)) && (isset($affiche_pview))
         }
         $tplArrayTrailer['linkToScript'] .= '&pview=1';
 	} else {
-		$tplArrayTrailer = ['pviewNewWindows'] = false;
+		$tplArrayTrailer['pviewNewWindows'] = false;
 
 		/*$s = "<button type=\"button\" class=\"btn btn-default btn-xs\" onclick=\"charger();";
 		$s .= "   javascript:location.href=";
@@ -61,7 +61,7 @@ if ((!isset($_GET['pview']) || ($_GET['pview'] != 1)) && (isset($affiche_pview))
     echo $twig->render('helpers/trailer.html.twig', $tplArrayTrailer);
 
 } else {
-	$tplArrayTrailer = ['affichePrintableViewNonGet'] = false;
+	$tplArrayTrailer['affichePrintableViewNonGet'] = false;
 }
 // Affichage du message d'erreur en cas d'échec de l'envoi de mails automatiques
 if (!(Settings::get("javascript_info_disabled"))) {

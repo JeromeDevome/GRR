@@ -3,6 +3,7 @@
 if ($_GET['pview'] != 1) {
     //global $twig;
     $tplArrayMenuGauche = [];
+    $tplArrayMenuGauche['pview'] = false;
     $path = $_SERVER['PHP_SELF'];
     $file = basename($path);
     if ($file == 'month_all2.php' or Settings::get('menu_gauche') == 0) {
@@ -34,5 +35,6 @@ if ($_GET['pview'] != 1) {
         $tplArrayMenuGauche['showColour'] = show_colour_key($area);
     }
     //var_dump($tplArrayMenuGauche);
-    echo $twig->render('menuGauche.html.twig', $tplArrayMenuGauche);
+    //echo $twig->render('menuGauche.html.twig', $tplArrayMenuGauche);
+    //$tplArrayMenuGauche;
 }

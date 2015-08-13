@@ -2,12 +2,19 @@
     <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
     {#<h4>Erreur</h4>#}
     <p>
-        {% if erreurVersion is defined %}{{ erreurVersion }}{% endif %}
+        {% if erreurVersion is define %}{{ erreurVersion }}{% endif %}
     </p>
     <div class="">
-        {{ vocab.title_automatic_mail }}<br />
-        {{ sessionMessageError }}<br />
-        {{ vocab.technical_contact }}<br />
+        {% if sessionMessageError is define and vocab.title_automatic_mail is define and vocab.technical_contact is define %}
+            {{ vocab.title_automatic_mail }}<br />
+            {{ sessionMessageError }}<br />
+            {{ vocab.technical_contact }}<br />
+        {% endif %}
+
+        {# message générique #}
+        {% if message is define %}
+            {{ message }}
+        {% endif %}
     </div>
     <p>
         {#<button class="btn btn-danger" type="button">Take this action</button>#}

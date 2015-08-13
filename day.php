@@ -202,6 +202,11 @@ if (grr_sql_count($res) == 0) {
     //echo '<div class="row">'.PHP_EOL;
     /* menu_gauche fait un echo render du template menuGauche */
     include 'menu_gauche.php';
+    /**
+     * todo voir pour transformer ces includes en fonction ? Vérifier portée des var par rapport à l'include
+     * menu gauche crée la var tplArrayMenuGauche
+     */
+    $tplArray['tplArrayMenuGauche'] = $tplArrayMenuGauche;
     /*if ($_GET['pview'] != 1) {
         echo '<div class="col-lg-9 col-md-12 col-xs-12">'.PHP_EOL;
         echo '<div id="planning">'.PHP_EOL;
@@ -256,34 +261,49 @@ if (grr_sql_count($res) == 0) {
             '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'day.php?year='.$ty.'&amp;month='.$tm.'&amp;day='.$td.'&amp;area='.$area.'\';">
             '.get_vocab('dayafter').'  <span class="glyphicon glyphicon-forward"></span></button>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;*/
     }
-    echo '<h4 class="titre">'.ucfirst($this_area_name).' - '.get_vocab('all_areas');
+    $tplArray['vocab']['all_areas'] = get_vocab('all_areas');
+    $tplArray['thisAreaName'] = $this_area_name;
+    //echo '<h4 class="titre">'.ucfirst($this_area_name).' - '.get_vocab('all_areas');
+
     if ($settings->get('jours_cycles_actif') == 'Oui' && intval($jour_cycle) > -1) {
-        if (intval($jour_cycle) > 0) {
+        $tplArray['jourCycleInt'] = intval($jour_cycle);
+        $tplArray['jourCycle'] = $jour_cycle;
+        $tplArray['vocab']['rep_type_6'] = get_vocab('rep_type_6');
+        /*if (intval($jour_cycle) > 0) {
             echo ' - '.get_vocab('rep_type_6').' '.$jour_cycle;
         } else {
             echo ' - '.$jour_cycle;
-        }
+        }*/
+    } else {
+        $tplArray['jourCycleInt'] = false;
     }
-    echo '<br>'.ucfirst(utf8_strftime($dformat, $am7)).'</h4>'.PHP_EOL;
-    echo '</div>'.PHP_EOL;
+    $tplArray['time'] = utf8_strftime($dformat, $am7);
+    /*echo '<br>'.ucfirst(utf8_strftime($dformat, $am7)).'</h4>'.PHP_EOL;
+    echo '</div>'.PHP_EOL;*/
     if (isset($_GET['precedent'])) {
         if ($_GET['pview'] == 1 && $_GET['precedent'] == 1) {
-            echo '<span id="lienPrecedent"><button class="btn btn-default btn-xs" onclick="charger();javascript:history.back();">Précedent</button></span>'.PHP_EOL;
+            $tplArray['afficheLienPrecedant'] = true;
+            //echo '<span id="lienPrecedent"><button class="btn btn-default btn-xs" onclick="charger();javascript:history.back();">Précedent</button></span>'.PHP_EOL;
         }
-    }
-    echo '<div class="contenu_planning">'.PHP_EOL;
-    echo '<table class="table-bordered table-striped">'.PHP_EOL;
-    echo '<tr>'.PHP_EOL.'<th style="width:5%;">'.PHP_EOL;
-    if ($enable_periods == 'y') {
-        echo get_vocab('period');
     } else {
-        echo get_vocab('time');
+        $tplArray['afficheLienPrecedant'] = false;
     }
-    echo  '</th>'.PHP_EOL;
+    /*echo '<div class="contenu_planning">'.PHP_EOL;
+    echo '<table class="table-bordered table-striped">'.PHP_EOL;
+    echo '<tr>'.PHP_EOL.'<th style="width:5%;">'.PHP_EOL;*/
+    if ($enable_periods == 'y') {
+        $tplArray['timeOuPeriod'] = get_vocab('period');
+        //echo get_vocab('period');
+    } else {
+        $tplArray['timeOuPeriod'] = get_vocab('time');
+        //echo get_vocab('time');
+    }
+    //echo  '</th>'.PHP_EOL;
     $room_column_width = (int) (90 / grr_sql_count($res));
     $nbcol = 0;
     $rooms = array();
     $a = 0;
+    /*##############WIP HERE##################*/
     for ($i = 0; ($row = grr_sql_row($res, $i)); ++$i) {
         $id_room[$i] = $row['2'];
         ++$nbcol;

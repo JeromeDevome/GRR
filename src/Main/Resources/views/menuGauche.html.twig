@@ -1,14 +1,15 @@
-{% if menuGaucheMonthAll2 %}
+<div class="row">
+    {% if menuGaucheMonthAll2 %}
     <div id="menuGaucheMonthAll2">
-{% else %}
-    <div class="col-lg-3 col-md-12 col-xs-12">
-{% endif %}
-
-        <div id="menuGauche">
-            {% if siteSelection %}
-                {{ include('forms/siteFields.html.twig', siteSelection) }}
+        {% else %}
+        <div class="col-lg-3 col-md-12 col-xs-12">
             {% endif %}
-            {{ include('forms/areaFields.html.twig', areaSelection) }}
-            {{ include('forms/roomFields.html.twig', roomSelection) }}
+
+            <div id="menuGauche">
+                {% if siteSelection %}
+                    {{ include('forms/siteFields.html.twig', siteSelection) }}
+                {% endif %}
+                {{ include('forms/areaFields.html.twig', areaSelection) }}
+                {{ include('forms/roomFields.html.twig', roomSelection) }}
+            </div>
         </div>
-    </div>
