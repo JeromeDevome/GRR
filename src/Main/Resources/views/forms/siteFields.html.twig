@@ -1,0 +1,61 @@
+{# ########### TYPE SELECT ################## #}
+{% if fieldType == "select" %}
+
+    <b><i>{{ vocab.sites}}{{ vocab.deux_points }}</i></b>
+    <form id="site_001" action="{{ formAction }}">
+        <select class="form-control" name="site" onchange="site_go()">
+            {% for site in sites %}
+                <option {% if site.current %}selected="selected"{% endif %} value="{{ site.linkToDomaine }}">{{ site.txtOption }}</option>
+            {% endfor %}
+        </select>
+        <script type="text/javascript">
+            function site_go()
+            {
+                box = document.getElementById("site_001").site;
+                destination = box.options[box.selectedIndex].value;
+                if (destination) location.href = destination;
+            }
+        </script>
+        <noscript>
+            <div>
+                <input type="submit" value="Change" />
+            </div>
+        </noscript>
+    </form>
+
+{% elseif fieldType == "list" %}
+    {# ########### TYPE LIST ################## #}
+
+    <b><i>{{ vocab.sites}}{{ vocab.deux_points }}</i></b>
+    {% for site in sites %}
+        <a id="liste{% if site.current %}_select{% endif %}"   href="{{ site.linkToDomaine }}" title="{{ site.txtOption }}">&gt; {{ site.txtOption }}</a>
+    {% endfor %}
+
+{% else %}
+    {# ########### TYPE DEFAULT ################## #}
+
+    <ul class="list-group">
+        <li class="list-group-item">{{ vocab.sites}}{{ vocab.deux_points }}</li>
+    </ul>
+    <form class="ressource" id="site_001" action="{{ formAction }}">
+        {% for site in sites %}
+            <input {% if site.current %}id="item_select"{% endif %} type="button" class="btn btn-primary btn-xs" name="{{ site.txtOption }}" value="{{ site.txtOption }}" onclick="location.href={{ site.linkToDomaine }};charger();" />
+            <br />
+        {% endfor %}
+    </form>
+
+    {#<script type="text/javascript">
+        function site_go()
+        {
+            box = document.getElementById("site_001").site;
+            destination = box.options[box.selectedIndex].value;
+            if (destination) location.href = destination;
+        }
+    </script>
+    <noscript>
+        <div>
+            <input type="submit" value="change" />
+        </div>
+    </noscript>#}
+
+{%  endif %}

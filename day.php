@@ -56,14 +56,17 @@ Definition_ressource_domaine_site();
  * $tplArray
  */
 $tplArray = [];
+/*$tplArray['area'] = $area;*/
 
 $affiche_pview = '1';
 if (!isset($_GET['pview'])) {
     $_GET['pview'] = 0;
     $class_image = 'image';
+    $tplArray = ['pview'] = false;
 } else {
     $_GET['pview'] = 1;
     $class_image = 'print_image';
+    $tplArray = ['pview'] = true;
 }
 /*if ($_GET['pview'] == 1) {
     $class_image = 'print_image';
@@ -120,6 +123,9 @@ while (($test == 0) && ($ind <= 7)) {
 $yy = date('Y', $i);
 $ym = date('m', $i);
 $yd = date('d', $i);
+/*$tplArray['yy'] = $yy;
+$tplArray['ym'] = $ym;
+$tplArray['yd'] = $yd;*/
 $i = mktime(0, 0, 0, $month, $day, $year);
 $jour_cycle = grr_sql_query1('SELECT Jours FROM '.TABLE_PREFIX."_calendrier_jours_cycle WHERE day='$i'");
 $ind = 1;
@@ -194,41 +200,57 @@ if (grr_sql_count($res) == 0) {
 } else {
     $tplArray['room'] = true;
     //echo '<div class="row">'.PHP_EOL;
-    /* ici on va remplacer par un echo d'un template twig menuGauche */
+    /* menu_gauche fait un echo render du template menuGauche */
     include 'menu_gauche.php';
-    if ($_GET['pview'] != 1) {
+    /*if ($_GET['pview'] != 1) {
         echo '<div class="col-lg-9 col-md-12 col-xs-12">'.PHP_EOL;
         echo '<div id="planning">'.PHP_EOL;
     } else {
         echo '<div id="print_planning">'.PHP_EOL;
-    }
-    include 'chargement.php';
+    }*/
+    /**
+     * intégré direct au template twig
+     * include 'chargement.php';
+     */
     $ferie_true = 0;
     $class = '';
     $title = '';
     if ($settings->get('show_holidays') == 'Oui') {
         $ferie = getHolidays($year);
+        /* init de ferier a false */
+        $tplArray['ferie'] = false;
         $tt = mktime(0, 0, 0, $month, $day, $year);
         foreach ($ferie as $key => $value) {
             if ($tt == $value) {
-                $ferie_true = 1;
+                //$ferie_true = 1;
+                $tplArray['ferie'] = true;
                 break;
             }
         }
         $sh = getSchoolHolidays($tt, $year);
         if ($sh['0'] == true) {
-            $class .= 'vacance ';
-            $title = ' '.$sh['1'];
+            $tplArray['vacances'] = true;
+            $tplArray['vacancesTitle'] = $sh['1'];
+            //$class .= 'vacance ';
+            //$title = ' '.$sh['1'];
+        } else {
+            $tplArray['vacances'] = false;
         }
-        if ($ferie_true) {
+        /*if ($ferie_true) {
             $class .= 'ferie ';
-        }
+        }*/
     }
-    echo '<div class="titre_planning '.$class.'">'.PHP_EOL;
+    //echo '<div class="titre_planning '.$class.'">'.PHP_EOL;
+
     if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1)) {
-        echo '<table class="table-header">',PHP_EOL,'<tr>',PHP_EOL,'<td class="left">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'day.php?year='.$yy.'&amp;month='.$ym.'&amp;day='.$yd.'&amp;area='.$area.'\';"> <span class="glyphicon glyphicon-backward"></span> ',get_vocab('daybefore'),'</button>',PHP_EOL,'</td>',PHP_EOL,'<td>',PHP_EOL;
+        $tplArray['vocab']['daybefore'] = get_vocab('daybefore');
+        /*echo '<table class="table-header">',PHP_EOL,'<tr>',PHP_EOL,'<td class="left">',PHP_EOL,
+            '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'day.php?year='.$yy.'&amp;month='.$ym.'&amp;day='.$yd.'&amp;area='.$area.'\';">
+            <span class="glyphicon glyphicon-backward"></span> ',get_vocab('daybefore'),'</button>',PHP_EOL,'</td>',PHP_EOL,'<td>',PHP_EOL;*/
         include 'include/trailer.inc.php';
-        echo '</td>',PHP_EOL,'<td class="right">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'day.php?year='.$ty.'&amp;month='.$tm.'&amp;day='.$td.'&amp;area='.$area.'\';">  '.get_vocab('dayafter').'  <span class="glyphicon glyphicon-forward"></span></button>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;
+        echo '</td>',PHP_EOL,'<td class="right">',PHP_EOL,
+            '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'day.php?year='.$ty.'&amp;month='.$tm.'&amp;day='.$td.'&amp;area='.$area.'\';">
+            '.get_vocab('dayafter').'  <span class="glyphicon glyphicon-forward"></span></button>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;
     }
     echo '<h4 class="titre">'.ucfirst($this_area_name).' - '.get_vocab('all_areas');
     if ($settings->get('jours_cycles_actif') == 'Oui' && intval($jour_cycle) > -1) {

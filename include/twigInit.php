@@ -13,7 +13,7 @@ if (@file_exists('../include/connect.inc.php')) {
     $racine = '';
 }
 require_once $racine.'vendor/autoload.php';
-global $loader, $twig;
+global $twig;
 $loader = new Twig_Loader_Filesystem($racine.'src/Main/Resources/views/');
 $twig = new Twig_Environment($loader, array(
     'cache' => $racine.'app/cache/',

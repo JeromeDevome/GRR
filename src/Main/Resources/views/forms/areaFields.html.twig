@@ -1,0 +1,43 @@
+{# ########### TYPE SELECT ################## #}
+{% if fieldType == "select" %}
+    <b><i>{{ vocab.areas }}</i></b>
+    <form id="area_001" action="{{ formAction }}">
+        <select class="form-control" name="area" onchange="area_go()">
+            {% for area in areas %}
+                <option {% if area.current %}selected="selected"{% endif %} value="{{ area.linkToArea }}">{{ area.txtOption }}</option>
+            {% endfor %}
+        </select>
+        <script type="text/javascript">
+            function area_go() {
+                box = document.getElementById("area_001").area;
+                destination = box.options[box.selectedIndex].value;
+                if (destination) location.href = destination;
+            }
+        </script>
+        <noscript>
+            <div>
+                <input type="submit" value="Change" />
+            </div>
+        </noscript>
+    </form>
+{% elseif fieldType == "list" %}
+    {# ########### TYPE LIST ################## #}
+    <b><i><span class="bground">{{ vocab.areas }}</span></i></b><br />
+    {% for area in areas %}
+        <a id="liste{% if area.current %}_select{% endif %}" onclick="charger();" href="{{ area.linkToArea }}" >&gt; {{ area.txtOption }}</a><br />
+    {% endfor %}
+
+{% else %}
+    {# ########### TYPE DEFAULT ################## #}
+    <br />
+    <div class="panel panel-default">
+        <div class="panel-heading">{{ vocab.areas }}</div>
+        <div class="panel-body">
+            <form class="ressource" id="area_001" action="{{ formAction }}">
+                {% for area in areas %}
+                    <input class="btn btn-primary btn-lg btn-block item{% if area.current %}_select{% endif %}" name="{{ area.txtOption }}" value="{{ area.txtOption }}" onclick="location.href='{{ area.linkToArea }}';charger();" />
+                {% endfor %}
+            </form>
+        </div>
+    </div>
+{% endif %}

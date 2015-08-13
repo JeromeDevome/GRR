@@ -1,0 +1,18 @@
+<table class="legende">
+    <caption class="titre">Légendes des réservations</caption>
+    {% for type in types %}
+        {# si l'index courant est impair j'ouvre une TR - loop.index commence a 1 #}
+        {% if loop.index is odd %}
+            <tr>
+        {% endif %}
+
+        <td style="background-color:{{ type.color }};">
+            {{ type.name }}
+        </td>
+
+        {# si l'index courant est pair je ferme une TR #}
+        {% if loop.index is even %}
+            </tr>
+        {% endif %}
+    {% endfor %}
+</table>

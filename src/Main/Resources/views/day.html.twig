@@ -3,3 +3,22 @@
 {% else %}
     <div class="row">
 {% endif %} {# fin du else :  if room == false #}
+        {% if pview %}
+            <div class="col-lg-9 col-md-12 col-xs-12">
+                <div id="planning">
+        {% else %}
+                <div id="print_planning">
+        {% endif %}
+                    <div id="chargement">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    <div class="titre_planning {% if vacance %}vacance{% endif %} {% if ferie %}ferie{% endif %}">
+                        {% if pview == false %}
+                        <table class="table-header">
+                            <tr>
+                                <td class="left">
+                                    <button class="btn btn-default btn-xs" onclick="charger();javascript: location.href='{{ link }}';">
+                                        <span class="glyphicon glyphicon-backward"></span> ',get_vocab('daybefore'),'</button>',PHP_EOL,'</td>',PHP_EOL,'<td>',PHP_EOL;*/
+                        {% endif %}

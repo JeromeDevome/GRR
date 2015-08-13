@@ -1881,6 +1881,27 @@ function time_date_string_jma($t, $dformat)
     }
 }
 
+/**
+ * Pour un code couleur du site, lettre de A à Z je renvoie le codecouleur HEXA, ou false sinon
+ * @param $codeCouleur
+ * @return code couleur hexa
+ * @return bool
+ */
+function getColor($codeCouleur)
+{
+    /* si c'est un code couleur valide entre A et Z */
+    if (($codeCouleur >= 'A') && ($codeCouleur <= 'Z')) {
+        /* tableau global de correspondance entre la couleur en bdd et le code hexa pour l'html */
+        global $tab_couleur;
+        /* je récupére en bdd la couleur */
+        $num_couleur = grr_sql_query1('SELECT couleur FROM '.TABLE_PREFIX."_type_area WHERE type_letter='".$codeCouleur."'");
+
+        return $tab_couleur[$num_couleur];
+    } else {
+
+        return false;
+    }
+}
 // Renvoie une balise span avec un style backgrounf-color correspondant au type de  la réservation
 function span_bgground($colclass)
 {
@@ -1923,38 +1944,53 @@ function tdcell_rowspan($colclass, $step)
     }
 }
 
-//Display the entry-type color key. This has up to 2 rows, up to 10 columns.
+
+/**
+ * Display the entry-type color key. This has up to 2 rows, up to 10 columns.
+ * @param $area_id
+ *
+ * @return twig view rendered
+ */
 function show_colour_key($area_id)
 {
-    echo '<table class="legende"><caption class="titre">Légendes des réservations</caption>'.PHP_EOL;
+    global $twig;
+    $tplArray = [];
+    //echo '<table class="legende"><caption class="titre">Légendes des réservations</caption>'.PHP_EOL;
     $sql = 'SELECT DISTINCT t.id, t.type_name, t.type_letter FROM '.TABLE_PREFIX.'_type_area t
 	LEFT JOIN '.TABLE_PREFIX."_j_type_area j on j.id_type=t.id
 	WHERE (j.id_area  IS NULL or j.id_area != '".$area_id."')
 	ORDER BY t.order_display";
     $res = grr_sql_query($sql);
     if ($res) {
-        $nct = -1;
+        $countPrintableResult = 0;
+        //$nct = -1;
         for ($i = 0; ($row = grr_sql_row($res, $i)); ++$i) {
             // La requête sql précédente laisse passer les cas où un type est non valide dans le domaine concerné ET au moins dans un autre domaine, d'où le test suivant
             $test = grr_sql_query1('SELECT id_type FROM '.TABLE_PREFIX."_j_type_area WHERE id_type = '".$row[0]."' and id_area='".$area_id."'");
             if ($test == -1) {
-                $type_name = $row[1];
-                $type_letter = $row[2];
-                if ($nct == -1) {
+                $tplArray['types'][$countPrintableResult]['name'] = $row[1];
+
+                //$type_name = $row[1];
+                //$type_letter = $row[2];
+                /*if ($nct == -1) {
                     echo '<tr>'.PHP_EOL;
                 }
                 if (++$nct == 2) {
                     $nct = 0;
                     echo '</tr>'.PHP_EOL, '<tr>'.PHP_EOL;
-                }
-                tdcell($type_letter);
-                echo $type_name, '</td>'.PHP_EOL;
+                }*/
+                //tdcell($type_letter);
+                $tplArray['types'][$countPrintableResult]['color'] = getColor($row[2]);
+                /*echo $type_name, '</td>'.PHP_EOL;*/
+                /* incrénentation du nombre de résultats à afficher */
+                $countPrintableResult++;
             }
         }
-        if ($i % 2 == 1) {
+        /*if ($i % 2 == 1) {
             echo '<td></td>',PHP_EOL,'</tr>'.PHP_EOL;
         }
-        echo '</table>'.PHP_EOL;
+        echo '</table>'.PHP_EOL;*/
+        return $twig->render('helpers/showColourKey.html.twig', $tplArray);
     }
 }
 //Round time down to the nearest resolution
@@ -2073,12 +2109,12 @@ function make_site_selection_fields($link, $current_site, $year, $month, $day, $
                 $out_html .= '</div>'.PHP_EOL;
                 $out_html .= '</noscript>'.PHP_EOL;
                 $out_html .= '</form>'.PHP_EOL;*/
-
-        return $twig->render('forms/siteFields.html.twig', $tplArray);
+        return $tplArray;
+        //return $twig->render('forms/siteFields.html.twig', $tplArray);
     }
 
     /* si je n'ai rien a afficher */
-    return "";
+    return false;
 }
 
 /**
@@ -2146,7 +2182,8 @@ function make_area_selection_fields($link, $current_site, $current_area, $year, 
 /*echo "<pre>";
     var_dump($tplArray);
 echo "</pre>";*/
-    return $twig->render('forms/areaFields.html.twig', $tplArray);
+    return $tplArray;
+    //return $twig->render('forms/areaFields.html.twig', $tplArray);
 }
 /**
  * Menu gauche affichage des room via select.
@@ -2207,7 +2244,8 @@ function make_room_selection_fields($link, $current_area, $current_room, $year, 
     $out_html .= '</div>'.PHP_EOL;
     $out_html .= '</noscript>'.PHP_EOL;
     $out_html .= '</form>'.PHP_EOL;*/
-    return $twig->render('forms/roomFields.html.twig', $tplArray);
+    return $tplArray;
+    //return $twig->render('forms/roomFields.html.twig', $tplArray);
     //return $out_html;
 }
 /**
