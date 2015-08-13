@@ -1,0 +1,9 @@
+{% if affichePrintableViewNonGet %}
+    {% if pviewNewWindows %}
+        <button type="button" class="btn btn-default btn-xs" onclick="javascript:window.open('{{ linkToScript }}');" >
+    {% else %}
+        <button type="button" class="btn btn-default btn-xs" onclick="charger();javascript:location.href='{{ linkToScript }}';">
+    {% endif %}
+    <span class="glyphicon glyphicon-print"></span>
+    </button>
+{% endif %}

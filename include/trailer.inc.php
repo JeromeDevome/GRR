@@ -27,55 +27,60 @@
  * along with GRR; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-/**
- * $Log: trailer.inc.php,v $
- * Revision 1.4  2009-06-04 15:30:18  grr
- * *** empty log message ***
- *
- * Revision 1.3  2009-01-20 07:19:17  grr
- * *** empty log message ***
- *
- * Revision 1.2  2008-11-16 22:00:59  grr
- * *** empty log message ***
- *
- *
- */
+
 // Affichage d'un lien pour format imprimable
 //Appel d'une methode en fonction du paramétrage pour le lien imprimable
-if ((!isset($_GET['pview']) || ($_GET['pview'] != 1)) && (isset($affiche_pview)))
-{
-	if (Settings::get("pview_new_windows") == 1)
-	{
-		$s = "<button type=\"button\" class=\"btn btn-default btn-xs\" onclick=\"";
+if ((!isset($_GET['pview']) || ($_GET['pview'] != 1)) && (isset($affiche_pview))) {
+	$tplArrayTrailer = ['affichePrintableViewNonGet'] = true;
+
+	if (Settings::get("pview_new_windows") == 1) {
+		$tplArrayTrailer['pviewNewWindows'] = true;
+
+		/*$s = "<button type=\"button\" class=\"btn btn-default btn-xs\" onclick=\"";
 		$s .= "javascript:window.open(";
-		$s .= "'".traite_grr_url($grr_script_name)."?";
-		if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
-			$s .= htmlspecialchars($_SERVER['QUERY_STRING']) . "&amp;";
-		$s .= "pview=1')\"";
-	}
-	else
-	{
-		$s = "<button type=\"button\" class=\"btn btn-default btn-xs\" onclick=\"charger();";
+		$s .= "'".traite_grr_url($grr_script_name)."?";*/
+        $tplArrayTrailer['linkToScript'] = traite_grr_url($grr_script_name);
+		if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != '')) {
+            $tplArrayTrailer['linkToScript'] .= htmlspecialchars($_SERVER['QUERY_STRING']) . "&amp;";
+        }
+        $tplArrayTrailer['linkToScript'] .= '&pview=1';
+	} else {
+		$tplArrayTrailer = ['pviewNewWindows'] = false;
+
+		/*$s = "<button type=\"button\" class=\"btn btn-default btn-xs\" onclick=\"charger();";
 		$s .= "   javascript:location.href=";
-		$s .= "'".traite_grr_url($grr_script_name)."?";
+		$s .= "'".traite_grr_url($grr_script_name)."?";*/
+        $tplArrayTrailer['linkToScript'] = traite_grr_url($grr_script_name);
 		if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
-			$s .= htmlspecialchars($_SERVER['QUERY_STRING']) . "&amp;";
-		$s .= "pview=1&amp;precedent=1'\"";
+            $tplArrayTrailer['linkToScript'] .= htmlspecialchars($_SERVER['QUERY_STRING']) . "&amp;";
+        $tplArrayTrailer['linkToScript'] .= "pview=1&amp;precedent=1'\"";
 	}
-	$s.= "><span class=\"glyphicon glyphicon-print\"></span> </button>";
-	echo $s;
+	/*$s.= "><span class=\"glyphicon glyphicon-print\"></span> </button>";
+	echo $s;*/
+    /* affichage de la partie pview */
+    echo $twig->render('helpers/trailer.html.twig', $tplArrayTrailer);
+
+} else {
+	$tplArrayTrailer = ['affichePrintableViewNonGet'] = false;
 }
 // Affichage du message d'erreur en cas d'échec de l'envoi de mails automatiques
-if (!(Settings::get("javascript_info_disabled")))
-{
-	if ((isset($_SESSION['session_message_error'])) && ($_SESSION['session_message_error'] != ''))
-	{
-		echo "<script type=\"text/javascript\">";
-		echo "<!--\n";
-		echo " alert(\"".get_vocab("title_automatic_mail")."\\n".$_SESSION['session_message_error']."\\n".get_vocab("technical_contact")."\")";
-		echo "//-->";
-		echo "</script>";
-		$_SESSION['session_message_error'] = "";
+if (!(Settings::get("javascript_info_disabled"))) {
+	if ((isset($_SESSION['session_message_error'])) && ($_SESSION['session_message_error'] != '')) {
+        $tplArrayAlert['vocab']['title_automatic_mail'] = get_vocab("title_automatic_mail");
+        $tplArrayAlert['vocab']['technical_contact'] = get_vocab("technical_contact");
+        $tplArrayAlert['sessionMessageError'] = $_SESSION['session_message_error'];
+        unset($_SESSION['session_message_error']);
+
+        /* affichage de la partie alert mail erreur */
+        echo $twig->render('helpers/alert.html.twig', $tplArrayAlert);
+        /*echo "<script type=\"text/javascript\">";
+        echo "<!--\n";
+        echo " alert(\"".get_vocab("title_automatic_mail")."\\n".$_SESSION['session_message_error']."\\n".get_vocab("technical_contact")."\")";
+        echo "//-->";
+        echo "</script>";*/
+		//$_SESSION['session_message_error'] = "";
 	}
 }
-?>
+/* free memory, avoid errors */
+unset($tplArrayTrailer);
+unset($tplArrayAlert);

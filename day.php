@@ -62,11 +62,11 @@ $affiche_pview = '1';
 if (!isset($_GET['pview'])) {
     $_GET['pview'] = 0;
     $class_image = 'image';
-    $tplArray = ['pview'] = false;
+    $tplArray['pview'] = false;
 } else {
     $_GET['pview'] = 1;
     $class_image = 'print_image';
-    $tplArray = ['pview'] = true;
+    $tplArray['pview'] = true;
 }
 /*if ($_GET['pview'] == 1) {
     $class_image = 'print_image';
@@ -244,13 +244,17 @@ if (grr_sql_count($res) == 0) {
 
     if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1)) {
         $tplArray['vocab']['daybefore'] = get_vocab('daybefore');
+        $tplArray['vocab']['dayafter'] = get_vocab('dayafter');
+        $tplArray['linkBefore'] = 'day.php?year='.$yy.'&month='.$ym.'&day='.$yd.'&area='.$area;
+        $tplArray['linkAfter'] = 'day.php?year='.$ty.'&month='.$tm.'&day='.$td.'&area='.$area;
+
         /*echo '<table class="table-header">',PHP_EOL,'<tr>',PHP_EOL,'<td class="left">',PHP_EOL,
             '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'day.php?year='.$yy.'&amp;month='.$ym.'&amp;day='.$yd.'&amp;area='.$area.'\';">
             <span class="glyphicon glyphicon-backward"></span> ',get_vocab('daybefore'),'</button>',PHP_EOL,'</td>',PHP_EOL,'<td>',PHP_EOL;*/
         include 'include/trailer.inc.php';
-        echo '</td>',PHP_EOL,'<td class="right">',PHP_EOL,
+        /*echo '</td>',PHP_EOL,'<td class="right">',PHP_EOL,
             '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'day.php?year='.$ty.'&amp;month='.$tm.'&amp;day='.$td.'&amp;area='.$area.'\';">
-            '.get_vocab('dayafter').'  <span class="glyphicon glyphicon-forward"></span></button>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;
+            '.get_vocab('dayafter').'  <span class="glyphicon glyphicon-forward"></span></button>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;*/
     }
     echo '<h4 class="titre">'.ucfirst($this_area_name).' - '.get_vocab('all_areas');
     if ($settings->get('jours_cycles_actif') == 'Oui' && intval($jour_cycle) > -1) {

@@ -16,9 +16,21 @@
                     </div>
                     <div class="titre_planning {% if vacance %}vacance{% endif %} {% if ferie %}ferie{% endif %}">
                         {% if pview == false %}
-                        <table class="table-header">
-                            <tr>
-                                <td class="left">
-                                    <button class="btn btn-default btn-xs" onclick="charger();javascript: location.href='{{ link }}';">
-                                        <span class="glyphicon glyphicon-backward"></span> ',get_vocab('daybefore'),'</button>',PHP_EOL,'</td>',PHP_EOL,'<td>',PHP_EOL;*/
+                            <table class="table-header">
+                                <tr>
+                                    <td class="left">
+                                        <button class="btn btn-default btn-xs" onclick="charger();javascript: location.href='{{ linkBefore }}';">
+                                            <span class="glyphicon glyphicon-backward"></span>{{ vocab.daybefore }}
+                                            </button>
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                    <td class="right">
+                                        <button class="btn btn-default btn-xs" onclick="charger();javascript: location.href='{{ linkAfter }}';">
+                                        {{ vocab.dayafter }}  <span class="glyphicon glyphicon-forward"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
                         {% endif %}
