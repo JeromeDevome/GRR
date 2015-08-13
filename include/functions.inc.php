@@ -2223,6 +2223,7 @@ function make_room_selection_fields($link, $current_area, $current_room, $year, 
  *
  * @return string
  */
+/*
 function make_area_list_html($link, $current_site, $current_area, $year, $month, $day, $user)
 {
     global $vocab;
@@ -2263,7 +2264,7 @@ function make_area_list_html($link, $current_site, $current_area, $year, $month,
         }
     }
     grr_sql_free($res);
-}
+}*/
 /**
  * Affichage des room sous la forme d'une liste.
  *
@@ -2276,7 +2277,7 @@ function make_area_list_html($link, $current_site, $current_area, $year, $month,
  *
  * @return string
  */
-function make_room_list_html($link, $current_area, $current_room, $year, $month, $day)
+/*function make_room_list_html($link, $current_area, $current_room, $year, $month, $day)
 {
     global $vocab;
     echo '<b><i><span class="bground">'.get_vocab('rooms').get_vocab('deux_points').'</span></i></b><br />';
@@ -2294,7 +2295,7 @@ function make_room_list_html($link, $current_area, $current_room, $year, $month,
             }
         }
     }
-}
+}*/
 /**
  * Affichage des area sous la forme d'un input.
  *
@@ -2307,6 +2308,7 @@ function make_room_list_html($link, $current_area, $current_room, $year, $month,
  *
  * @return string
  */
+ /*
 function make_area_item_html($link, $current_site, $current_area, $year, $month, $day, $user)
 {
     global $vocab;
@@ -2337,7 +2339,7 @@ function make_area_item_html($link, $current_site, $current_area, $year, $month,
         for ($i = 0; ($row = grr_sql_row($res, $i)); ++$i) {
             $link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
             if (authUserAccesArea($user, $row[0]) == 1) {
-                /* Couleur du domaine selectionné*/
+                // Couleur du domaine selectionné
                 if ($current_area != null) {
                     if ($current_area == $row[0]) {
                         $out_html .= '<input class="btn btn-primary btn-lg btn-block item_select" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\' ;charger();"/>'.PHP_EOL;
@@ -2353,7 +2355,7 @@ function make_area_item_html($link, $current_site, $current_area, $year, $month,
     $out_html .= '</form>'.PHP_EOL.'</div>'.PHP_EOL.'</div>'.PHP_EOL;
 
     return $out_html;
-}
+}*/
 //end make_area_select_html
 /**
  * Affichage des rooms sous la forme d'un input.
@@ -2367,7 +2369,7 @@ function make_area_item_html($link, $current_site, $current_area, $year, $month,
  *
  * @return string
  */
-function make_room_item_html($link, $current_area, $current_room, $year, $month, $day)
+/*function make_room_item_html($link, $current_area, $current_room, $year, $month, $day)
 {
     global $vocab;
     $out_html = '<br />'.PHP_EOL.'<div class="panel panel-default">'.PHP_EOL.'<div class="panel-heading">'.get_vocab('rooms').get_vocab('deux_points').'</div>'.PHP_EOL.'<div class="panel-body">'.PHP_EOL.'<form class="ressource" id="room_001" action="'.$_SERVER['PHP_SELF'].'">'.PHP_EOL;
@@ -2401,7 +2403,7 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
     $out_html .= '</form>'.PHP_EOL.'</div>'.PHP_EOL.'</div>'.PHP_EOL;
 
     return $out_html;
-}
+}*/
 # end make_room_item_html
 /**
  * @param int $action
