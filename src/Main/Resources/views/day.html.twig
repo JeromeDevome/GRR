@@ -59,13 +59,13 @@
                                 {% for room in rooms %}
                                     {# gérer le col-lg-xx en fonction du nombre de résultats ? actuellement géré en % #}
                                     <th style="width:{{ 90/rooms|length }}" {% if room.status %}class="avertissement"{% endif %}>
-                                        <a id="afficherBoutonSelection{{ loop.current }}" class="lienPlanning" href="#" onclick="afficherMoisSemaine({{ loop.current }})" style="display:inline;">{{ room.name }}</a>
-                                        <a id="cacherBoutonSelection{{ loop.current }}" class="lienPlanning" href="#" onclick="cacherMoisSemaine({{ loop.current }})" style="display:none;">{{ room.name }}</a>
+                                        <a id="afficherBoutonSelection{{ loop.index }}" class="lienPlanning" href="#" onclick="afficherMoisSemaine({{ loop.index }})" style="display:inline;">{{ room.name }}</a>
+                                        <a id="cacherBoutonSelection{{ loop.index }}" class="lienPlanning" href="#" onclick="cacherMoisSemaine({{ loop.index }})" style="display:none;">{{ room.name }}</a>
                                         {% if room.description != '' %}
                                             {{ room.description }}
                                         {% endif %}
                                         {% if room.capacity and pView == false %}
-                                                <br /><span class="small">{{ room.capacity }}{{ if room.capacity > 1 }}{{ vocab.number_max }}{% else %}{{ vocab.number_max2 }}{% endif %}</span><br />
+                                                <br /><span class="small">{{ room.capacity }}{% if room.capacity > 1 %}{{ vocab.number_max }}{% else %}{{ vocab.number_max2 }}{% endif %}</span><br />
                                         {% endif %}
                                         {% if room.status == 0 %}
                                             <br /><span class="texte_ress_tempo_indispo">{{ vocab.ressource_temporairement_indisponible }}</span><br />
@@ -76,16 +76,22 @@
                                         {# si l'utilisateur à le droit de voir la fiche ressources #}
                                         {% if room.displayFicheRessourceOk %}
                                             <a href="javascript:centrerpopup('view_room.php?id_room={{ room.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ vocab.fiche_ressource }}" >
-                                            <span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
+                                            <span class="glyphcolor glyphicon glyphicon-search"></span></a>
                                         {% endif %}
                                         {# si l'utilisateur est admin de cette room #}
                                         {% if room.userLevel > 2 and pview == false %}
                                             <a href="admin/admin_edit_room.php?room={{ room.id }}"><span class="glyphcolor glyphicon glyphicon-cog"></span></a><br/>
                                         {% endif %}
-
-
-
-
-
-
+                                        {% if room.afficheRessourceEmprunte != 'yes' and room.afficheRessourceEmprunte is iterable %}
+                                            {{ include('helpers/ressourceEmpruntee.html.twig', room.afficheRessourceEmprunte) }}
+                                        {% endif %}
+                                        <span id="boutonSelection{{ loop.index }}" style="display:none;">
+                                            <input type="button" class="btn btn-default btn-xs" title="{{ vocab.see_week_for_this_room }}" onclick="charger();javascript: location.href='{{ room.linkToSeeWeek }}';" value="{{ vocab.week }}"/>
+                                            <input type="button" class="btn btn-default btn-xs" title="{{ vocab.see_month_for_this_room }}" onclick="charger();javascript: location.href='{{ room.linkToSeeMonth }}'" value="{{ vocab.month }}"/>
+                                        </span>
+                                    </th>
                                 {% endfor %}
+                            <tr>
+                                <th style="width:5%;">
+                            </tr>
+                            <tr>

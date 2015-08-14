@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% if type == 'logo' %}
+<a href="view_entry.php?id={{ idRoom }}"><img src="img_grr/buzy_big.png" alt="{{ vocab.ressource_actuellement_empruntee }}" title="{{ vocab.reservation_en_cours }}" width="30" height="30" class="image" /></a>
+{% elseif type == 'texte' %}
+    <br />
+    <b>
+        <span class="avertissement">
+            <img src="img_grr/buzy_big.png" alt="{{ vocab.ressource_actuellement_empruntee }}" title="{{ vocab.ressource_actuellement_empruntee }}" width="30" height="30" class="image" /><br />
+                {{ vocab.ressource_actuellement_empruntee }} {{ vocab.nom_emprunteur}}{{ vocab.deux_points }}{{ nomPrenom }}<br />
+            <a href="view_entry?id={{ idResa }}">{{ vocab.entryid }}{{ idResa }}</a>
+        </span>
+    </b>
+{% endif %}

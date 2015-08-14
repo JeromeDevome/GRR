@@ -379,7 +379,7 @@ function bouton_aller_bas()
  *
  * @param string $id_room
  *
- * @return string
+ * @return array with data for twig template
  */
 function affiche_ressource_empruntee($id_room, $type = 'logo')
 {
@@ -387,16 +387,38 @@ function affiche_ressource_empruntee($id_room, $type = 'logo')
     if ($active_ressource_empruntee == 'y') {
         $id_resa = grr_sql_query1('SELECT id FROM '.TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
         if ($id_resa != -1) {
+
+            $tplArrayRessourceEmpruntee['idResa'] = $id_resa;
+            $tplArrayRessourceEmpruntee['idRoom'] = $id_room;
+            $tplArrayRessourceEmpruntee['vocab']['ressource_actuellement_empruntee'] = get_vocab('ressource_actuellement_empruntee');
+            $tplArrayRessourceEmpruntee['vocab']['reservation_en_cours'] = get_vocab('reservation_en_cours');
+            $tplArrayRessourceEmpruntee['vocab']['nom_emprunteur'] = get_vocab('nom_emprunteur');
+            $tplArrayRessourceEmpruntee['vocab']['reservation_en_cours'] = get_vocab('reservation_en_cours');
+            $tplArrayRessourceEmpruntee['vocab']['deux_points'] = get_vocab('deux_points');
+            $tplArrayRessourceEmpruntee['vocab']['deux_points'] = get_vocab('deux_points');
+            $tplArrayRessourceEmpruntee['vocab']['entryid'] = get_vocab('entryid');
+
             if ($type == 'logo') {
-                echo '<a href="view_entry.php?id='.$id_resa.'"><img src="img_grr/buzy_big.png" alt="'.get_vocab('ressource actuellement empruntee').'" title="'.get_vocab('reservation_en_cours').'" width="30" height="30" class="image" /></a>'.PHP_EOL;
+
+                $tplArrayRessourceEmpruntee['type'] = 'logo';
+                //echo '<a href="view_entry.php?id='.$id_resa.'"><img src="img_grr/buzy_big.png" alt="'.get_vocab('ressource actuellement empruntee').'" title="'.get_vocab('reservation_en_cours').'" width="30" height="30" class="image" /></a>'.PHP_EOL;
+
+                return $tplArrayRessourceEmpruntee;
+
             } elseif ($type == 'texte') {
+
                 $beneficiaire = grr_sql_query1('SELECT beneficiaire FROM '.TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
                 $beneficiaire_ext = grr_sql_query1('SELECT beneficiaire_ext FROM '.TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
-                echo '<br /><b><span class="avertissement">'.PHP_EOL;
+                $tplArrayRessourceEmpruntee['nomPrenom'] = affiche_nom_prenom_email($beneficiaire, $beneficiaire_ext, 'withmail');
+                /*echo '<br /><b><span class="avertissement">'.PHP_EOL;
                 echo '<img src="img_grr/buzy_big.png" alt="'.get_vocab('ressource actuellement empruntee').'" title="'.get_vocab('ressource actuellement empruntee').'" width="30" height="30" class="image" />'.PHP_EOL;
                 echo get_vocab('ressource actuellement empruntee').' '.get_vocab('nom emprunteur').get_vocab('deux_points').affiche_nom_prenom_email($beneficiaire, $beneficiaire_ext, 'withmail');
-                echo '<a href="view_entry?id='.$id_resa.'">'.get_vocab('entryid').$id_resa.'</a>'.PHP_EOL.'</span></b>'.PHP_EOL;
+                echo '<a href="view_entry?id='.$id_resa.'">'.get_vocab('entryid').$id_resa.'</a>'.PHP_EOL.'</span></b>'.PHP_EOL;*/
+
+                return $tplArrayRessourceEmpruntee;
+
             } else {
+
                 return 'yes';
             }
         }

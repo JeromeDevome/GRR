@@ -308,11 +308,14 @@ if (grr_sql_count($res) == 0) {
     /* je remplis le tableau du vocab avant la boucle pour éviter les appels multiples à get_vocab dans le for */
     $tplArray['vocab']['number_max2'] = get_vocab('number_max2');
     $tplArray['vocab']['number_max'] = get_vocab('number_max');
+    $tplArray['vocab']['week'] = get_vocab('week');
+    $tplArray['vocab']['month'] = get_vocab('month');
     $tplArray['vocab']['fiche_ressource'] = get_vocab('fiche_ressource');
     $tplArray['vocab']['ressource_temporairement_indisponible'] = get_vocab('ressource_temporairement_indisponible');
     $tplArray['vocab']['reservations_moderees'] = get_vocab('reservations_moderees');
     $tplArray['vocab']['see_week_for_this_room'] = htmlspecialchars(get_vocab('see_week_for_this_room'));
     $tplArray['vocab']['see_month_for_this_room'] = htmlspecialchars(get_vocab('see_month_for_this_room'));
+
 
     for ($i = 0; ($row = grr_sql_row($res, $i)); ++$i) {
         $id_room[$i] = $row['2'];
@@ -385,37 +388,50 @@ if (grr_sql_count($res) == 0) {
                 $tplArray['rooms'][$roomVisibleForUser]['userLevel'] = authGetUserLevel(getUserName(), $id_room[$i]);
                 //echo '<a href="./admin/admin_edit_room.php?room='.$id_room[$i].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a><br/>'.PHP_EOL;
             }
-            affiche_ressource_empruntee($id_room[$i]);
-            echo '<span id="boutonSelection'.$a.'" style="display:none;">'.PHP_EOL;
-            echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab('see_week_for_this_room')).'" onclick="charger();javascript: location.href=\'week.php?year='.$year.'&amp;month='.$month.'&amp;cher='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('week').'"/>'.PHP_EOL;
-            echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab('see_month_for_this_room')).'" onclick="charger();javascript: location.href=\'month.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('month').'"/>'.PHP_EOL;
+            $tplArray['rooms'][$roomVisibleForUser]['afficheRessourceEmprunte'] = affiche_ressource_empruntee($id_room[$i]);
+
+            $tplArray['rooms'][$roomVisibleForUser]['linkToSeeWeek'] = 'week.php?year='.$year.'&month='.$month.'&cher='.$day.'&room='.$tplArray['rooms'][$roomVisibleForUser]['id'];
+            $tplArray['rooms'][$roomVisibleForUser]['linkToSeeMonth'] = 'month.php?year='.$year.'&month='.$month.'&cher='.$day.'&room='.$tplArray['rooms'][$roomVisibleForUser]['id'];
+
+            /*echo '<span id="boutonSelection'.$a.'" style="display:none;">'.PHP_EOL;
+            echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab('see_week_for_this_room')).'"
+            onclick="charger();javascript: location.href=\'week.php?year='.$year.'&amp;month='.$month.'&amp;cher='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('week').'"/>'.PHP_EOL;
+            echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab('see_month_for_this_room')).'"
+            onclick="charger();javascript: location.href=\'month.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('month').'"/>'.PHP_EOL;
             echo '</span>'.PHP_EOL;
-            echo '</th>'.PHP_EOL;
-            if (htmlspecialchars($row['3']).$temp != '') {
+            echo '</th>'.PHP_EOL;*/
+            /*if (htmlspecialchars($row['3']).$temp != '') {
                 if (htmlspecialchars($row['3']) != '') {
                     $saut = '<br />';
                 } else {
                     $saut = '';
                 }
-            }
+            }*/
             $rooms[] = $row['2'];
             $delais_option_reservation[$row['2']] = $row['6'];
             /* j'incrémente $roomVisibleForUser */
             $roomVisibleForUser++;
         }
     }
+    /*echo "<pre>";
+    var_dump($tplArray);
+    echo "/<pre>";*/
+
     if (count($rooms) == 0) {
+        /* todo intégration twig */
         echo '<br /><h1>'.get_vocab('droits_insuffisants_pour_voir_ressources').'</h1><br />'.PHP_EOL;
         include 'include/trailer.inc.php';
         die();
     }
-    echo '<tr>'.PHP_EOL;
+
+    /*echo '<tr>'.PHP_EOL;
     echo '<th style="width:5%;">'.PHP_EOL;
-    echo '</tr>'.PHP_EOL;
+    echo '</tr>'.PHP_EOL;*/
     $tab_ligne = 3;
     $iii = 0;
     for ($t = $am7; $t <= $pm7; $t += $resolution) {
-        echo '<tr>'.PHP_EOL;
+        //echo '<tr>'.PHP_EOL;
+        /* ne fais pas doublon avec le table_stripped de bootstrap ? remplacé dans twig par loop.index */
         if ($iii % 2 == 1) {
             tdcell('cell_hours');
         } else {
