@@ -56,3 +56,36 @@
                         <table class="table-bordered table-striped">
                             <tr>
                                 <th style="width:5%;">{{ timeOuPeriod }}</th>
+                                {% for room in rooms %}
+                                    {# gérer le col-lg-xx en fonction du nombre de résultats ? actuellement géré en % #}
+                                    <th style="width:{{ 90/rooms|length }}" {% if room.status %}class="avertissement"{% endif %}>
+                                        <a id="afficherBoutonSelection{{ loop.current }}" class="lienPlanning" href="#" onclick="afficherMoisSemaine({{ loop.current }})" style="display:inline;">{{ room.name }}</a>
+                                        <a id="cacherBoutonSelection{{ loop.current }}" class="lienPlanning" href="#" onclick="cacherMoisSemaine({{ loop.current }})" style="display:none;">{{ room.name }}</a>
+                                        {% if room.description != '' %}
+                                            {{ room.description }}
+                                        {% endif %}
+                                        {% if room.capacity and pView == false %}
+                                                <br /><span class="small">{{ room.capacity }}{{ if room.capacity > 1 }}{{ vocab.number_max }}{% else %}{{ vocab.number_max2 }}{% endif %}</span><br />
+                                        {% endif %}
+                                        {% if room.status == 0 %}
+                                            <br /><span class="texte_ress_tempo_indispo">{{ vocab.ressource_temporairement_indisponible }}</span><br />
+                                        {% endif %}
+                                        {% if room.moderate %}
+                                            <br /><span class="texte_ress_moderee">{{ vocab.reservations_moderees }}</span><br />
+                                        {% endif %}
+                                        {# si l'utilisateur à le droit de voir la fiche ressources #}
+                                        {% if room.displayFicheRessourceOk %}
+                                            <a href="javascript:centrerpopup('view_room.php?id_room={{ room.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ vocab.fiche_ressource }}" >
+                                            <span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
+                                        {% endif %}
+                                        {# si l'utilisateur est admin de cette room #}
+                                        {% if room.userLevel > 2 and pview == false %}
+                                            <a href="admin/admin_edit_room.php?room={{ room.id }}"><span class="glyphcolor glyphicon glyphicon-cog"></span></a><br/>
+                                        {% endif %}
+
+
+
+
+
+
+                                {% endfor %}

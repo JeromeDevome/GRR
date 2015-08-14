@@ -303,16 +303,50 @@ if (grr_sql_count($res) == 0) {
     $nbcol = 0;
     $rooms = array();
     $a = 0;
-    /*##############WIP HERE##################*/
+
+    $roomVisibleForUser = 0;
+    /* je remplis le tableau du vocab avant la boucle pour éviter les appels multiples à get_vocab dans le for */
+    $tplArray['vocab']['number_max2'] = get_vocab('number_max2');
+    $tplArray['vocab']['number_max'] = get_vocab('number_max');
+    $tplArray['vocab']['fiche_ressource'] = get_vocab('fiche_ressource');
+    $tplArray['vocab']['ressource_temporairement_indisponible'] = get_vocab('ressource_temporairement_indisponible');
+    $tplArray['vocab']['reservations_moderees'] = get_vocab('reservations_moderees');
+    $tplArray['vocab']['see_week_for_this_room'] = htmlspecialchars(get_vocab('see_week_for_this_room'));
+    $tplArray['vocab']['see_month_for_this_room'] = htmlspecialchars(get_vocab('see_month_for_this_room'));
+
     for ($i = 0; ($row = grr_sql_row($res, $i)); ++$i) {
         $id_room[$i] = $row['2'];
         ++$nbcol;
+        /**
+         * une row = une room
+         * row[0] = room_name
+         * row[1] = capacity
+         * row[2] = id
+         * row[3] = description
+         * row[4] = statut_room
+         * row[5] = show_fic_room
+         * row[6] = delais_option_reservation
+         * row[7] = moderate
+         */
+        /* dans le for on tri les rooms pour ne garder que celles sur lesquelles l'utilisateur courant a les droits */
         if (verif_acces_ressource(getUserName(), $id_room[$i])) {
+            /* informations depuis la bdd */
+            $tplArray['rooms'][$roomVisibleForUser]['name'] = htmlspecialchars($row['0']);
+            $tplArray['rooms'][$roomVisibleForUser]['capacity'] = $row['1'];
+            $tplArray['rooms'][$roomVisibleForUser]['id'] = $row['2'];
+            $tplArray['rooms'][$roomVisibleForUser]['description'] = htmlspecialchars($row['3']);
+            $tplArray['rooms'][$roomVisibleForUser]['status'] = $row['4'];
+            $tplArray['rooms'][$roomVisibleForUser]['showFic'] = $row['5'];
+            $tplArray['rooms'][$roomVisibleForUser]['delaisOptionReservation'] = $row['6'];
+            $tplArray['rooms'][$roomVisibleForUser]['moderate'] = $row['7'];
+            /* informations supplémentaires */
+            $tplArray['rooms'][$roomVisibleForUser]['accessFicheReservation'] = verif_acces_fiche_reservation(getUserName(), $tplArray['rooms'][$roomVisibleForUser]['id']);
+
             $room_name[$i] = $row['0'];
             $statut_room[$id_room[$i]] = $row['4'];
             $statut_moderate[$id_room[$i]] = $row['7'];
             $acces_fiche_reservation = verif_acces_fiche_reservation(getUserName(), $id_room[$i]);
-            if ($row['1']  && $_GET['pview'] != 1) {
+            /*if ($row['1']  && $_GET['pview'] != 1) {
                 $temp = '<br /><span class="small">('.$row['1'].' '.($row['1'] > 1 ? get_vocab('number_max2') : get_vocab('number_max')).')</span>'.PHP_EOL;
             } else {
                 $temp = '';
@@ -322,12 +356,13 @@ if (grr_sql_count($res) == 0) {
             }
             if ($statut_moderate[$id_room[$i]] == '1'  && $_GET['pview'] != 1) {
                 $temp .= '<br /><span class="texte_ress_moderee">'.get_vocab('reservations_moderees').'</span>'.PHP_EOL;
-            }
-            echo '<th style="width:'.$room_column_width.'%;" ';
+            }*/
+            /*echo '<th style="width:'.$room_column_width.'%;" ';
             if ($statut_room[$id_room[$i]] == '0') {
                 echo 'class="avertissement" ';
-            }
-            $a = $a + 1;
+            }*/
+            //$a = $a + 1;
+            /*$a++;
             echo '><a id="afficherBoutonSelection'.$a.'" class="lienPlanning" href="#" onclick="afficherMoisSemaine('.$a.')" style="display:inline;">'.htmlspecialchars($row['0']).'</a>'.PHP_EOL;
             echo '<a id="cacherBoutonSelection'.$a.'" class="lienPlanning" href="#" onclick="cacherMoisSemaine('.$a.')" style="display:none;">'.htmlspecialchars($row['0']).'</a>'.PHP_EOL;
             if (htmlspecialchars($row['3']).$temp != '') {
@@ -338,13 +373,17 @@ if (grr_sql_count($res) == 0) {
                 }
                 echo $saut.htmlspecialchars($row['3']).$temp."\n";
             }
-            echo '<br />';
+            echo '<br />';*/
             if (verif_display_fiche_ressource(getUserName(), $id_room[$i]) && $_GET['pview'] != 1) {
-                echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$id_room[$i].'\',600,480,"scrollbars=yes,statusbar=no,resizable=yes")" title="'.get_vocab('fiche_ressource').'\">
-			<span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
+                $tplArray['rooms'][$roomVisibleForUser]['displayFicheRessourceOk'] = true;
+                /*echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$id_room[$i].'\',600,480,"scrollbars=yes,statusbar=no,resizable=yes")" title="'.get_vocab('fiche_ressource').'\">
+			<span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;*/
+            } else {
+                $tplArray['rooms'][$roomVisibleForUser]['displayFicheRessourceOk'] = false;
             }
             if (authGetUserLevel(getUserName(), $id_room[$i]) > 2 && $_GET['pview'] != 1) {
-                echo '<a href="./admin/admin_edit_room.php?room='.$id_room[$i].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a><br/>'.PHP_EOL;
+                $tplArray['rooms'][$roomVisibleForUser]['userLevel'] = authGetUserLevel(getUserName(), $id_room[$i]);
+                //echo '<a href="./admin/admin_edit_room.php?room='.$id_room[$i].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a><br/>'.PHP_EOL;
             }
             affiche_ressource_empruntee($id_room[$i]);
             echo '<span id="boutonSelection'.$a.'" style="display:none;">'.PHP_EOL;
@@ -361,6 +400,8 @@ if (grr_sql_count($res) == 0) {
             }
             $rooms[] = $row['2'];
             $delais_option_reservation[$row['2']] = $row['6'];
+            /* j'incrémente $roomVisibleForUser */
+            $roomVisibleForUser++;
         }
     }
     if (count($rooms) == 0) {
