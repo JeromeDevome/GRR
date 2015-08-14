@@ -428,22 +428,27 @@ if (grr_sql_count($res) == 0) {
     echo '<th style="width:5%;">'.PHP_EOL;
     echo '</tr>'.PHP_EOL;*/
     $tab_ligne = 3;
-    $iii = 0;
+    //$iii = 0;
+    $indexArray = 0;
+    /* todo refacto le for, pour éviter de faire $t = $am7 à tous les tour de boucle */
+
     for ($t = $am7; $t <= $pm7; $t += $resolution) {
         //echo '<tr>'.PHP_EOL;
         /* ne fais pas doublon avec le table_stripped de bootstrap ? remplacé dans twig par loop.index */
-        if ($iii % 2 == 1) {
+        /*if ($iii % 2 == 1) {
             tdcell('cell_hours');
         } else {
             tdcell('cell_hours2');
         }
-        ++$iii;
+        ++$iii;*/
         if ($enable_periods == 'y') {
             $time_t = date('i', $t);
             $time_t_stripped = preg_replace('/^0/', '', $time_t);
-            echo $periods_name[$time_t_stripped].'</td>'.PHP_EOL;
+            //echo $periods_name[$time_t_stripped].'</td>'.PHP_EOL;
+            $tplArray['creneauxHoraire'][$indexArray]['periodeNameOrHeure'] = $periods_name[$time_t_stripped];
         } else {
-            echo affiche_heure_creneau($t, $resolution).'</td>'.PHP_EOL;
+            $tplArray['creneauxHoraire'][$indexArray]['periodeNameOrHeure'] = affiche_heure_creneau($t, $resolution);
+            //echo affiche_heure_creneau($t, $resolution).'</td>'.PHP_EOL;
         }
         while (list($key, $room) = each($rooms)) {
             if (verif_acces_ressource(getUserName(), $room)) {
@@ -455,12 +460,16 @@ if (grr_sql_count($res) == 0) {
                     unset($id);
                 }
                 if ((isset($id)) && (!est_hors_reservation(mktime(0, 0, 0, $month, $day, $year), $area))) {
+                    $tplArray['creneauxHoraire'][$indexArray]['color'] = $color;
                     $c = $color;
                 } elseif ($statut_room[$room] == '0') {
+                    $tplArray['creneauxHoraire'][$indexArray]['color'] = 'avertissement';
                     $c = 'avertissement';
                 } else {
+                    $tplArray['creneauxHoraire'][$indexArray]['color'] = 'empty_cell';
                     $c = 'empty_cell';
                 }
+                /*################################################*/
                 if ((isset($id)) && (!est_hors_reservation(mktime(0, 0, 0, $month, $day, $year), $area))) {
                     if ($compteur[$id] == 0) {
                         if ($cellules[$id] != 1) {
@@ -557,6 +566,7 @@ if (grr_sql_count($res) == 0) {
         }
         echo '</tr>'.PHP_EOL;
         reset($rooms);
+        $indexArray++;
     }
     echo '</table>'.PHP_EOL;
 }

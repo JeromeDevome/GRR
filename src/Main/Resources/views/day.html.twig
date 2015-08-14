@@ -95,3 +95,51 @@
                                 <th style="width:5%;">
                             </tr>
                             <tr>
+                            {% for creneauHoraire in creneauxHoraire %}
+                                {% if loop.index is pair %}
+                                    <td class="cell_hours">
+                                {% else %}
+                                    <td class="cell_hours2">
+                                {% endif %}
+                                        {{ creneauHoraire.periodeNameOrHeure }}
+                                    </td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            {% endfor %}
