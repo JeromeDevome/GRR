@@ -460,16 +460,18 @@ if (grr_sql_count($res) == 0) {
                     unset($id);
                 }
                 if ((isset($id)) && (!est_hors_reservation(mktime(0, 0, 0, $month, $day, $year), $area))) {
-                    $tplArray['creneauxHoraire'][$indexArray]['color'] = $color;
+                    $tplArray['creneauxHoraire'][$indexArray]['color'] = getColor($color);
+                    $tplArray['creneauxHoraire'][$indexArray]['class'] = false;
                     $c = $color;
                 } elseif ($statut_room[$room] == '0') {
-                    $tplArray['creneauxHoraire'][$indexArray]['color'] = 'avertissement';
+                    $tplArray['creneauxHoraire'][$indexArray]['color'] = false;
+                    $tplArray['creneauxHoraire'][$indexArray]['class'] = 'avertissement';
                     $c = 'avertissement';
                 } else {
-                    $tplArray['creneauxHoraire'][$indexArray]['color'] = 'empty_cell';
+                    $tplArray['creneauxHoraire'][$indexArray]['color'] = false;
+                    $tplArray['creneauxHoraire'][$indexArray]['class'] = 'empty_cell';
                     $c = 'empty_cell';
                 }
-                /*################################################*/
                 if ((isset($id)) && (!est_hors_reservation(mktime(0, 0, 0, $month, $day, $year), $area))) {
                     if ($compteur[$id] == 0) {
                         if ($cellules[$id] != 1) {
@@ -477,6 +479,12 @@ if (grr_sql_count($res) == 0) {
                                 $id_derniere_ligne_du_bloc = $today[$room][$t + ($cellules[$id] - 1) * $resolution]['id'];
                                 if ($id_derniere_ligne_du_bloc != $id) {
                                     $cellules[$id] = $cellules[$id] - 1;
+                                    /* pas sur que ce soit necessaire, mais présent dans la fonction tdcell_rowspan, a vérifier */
+                                    $step = $cellules[$id] - 1;
+                                    if ( $step < 1 ) {
+                                        $step = 1;
+                                    }
+                                    $tplArray['creneauxHoraire'][$indexArray]['notHorsReservationStep'] =  $step;
                                 }
                             }
                         }
@@ -484,8 +492,10 @@ if (grr_sql_count($res) == 0) {
                     }
                     $compteur[$id] = 1;
                 } else {
+                    $tplArray['creneauxHoraire'][$indexArray]['notHorsReservationStep'] = false;
                     tdcell($c);
                 }
+                ################################$
                 if ((!isset($id)) || (est_hors_reservation(mktime(0, 0, 0, $month, $day, $year), $area))) {
                     $hour = date('H', $t);
                     $minute = date('i', $t);

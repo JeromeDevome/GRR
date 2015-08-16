@@ -103,6 +103,10 @@
                                 {% endif %}
                                         {{ creneauHoraire.periodeNameOrHeure }}
                                     </td>
+                                {% if creneauHoraire.notHorsReservationStep != false %}
+                                    <td rowspan="{{ notHorsReservationStep }}"
+                                        {% if creneauHoraire.class != false %}class="{{ creneauHoraire.class }}"{% endif %}
+                                        {% if creneauHoraire.color != false %}style="background-color: {{ creneauHoraire.color }}"{% endif %}
 
 
 
