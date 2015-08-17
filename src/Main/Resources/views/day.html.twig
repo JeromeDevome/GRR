@@ -10,9 +10,9 @@
 {% endif %} {# fin du else :  if room == false #}
         {% if pview %}
             <div class="col-lg-9 col-md-12 col-xs-12">
-                <div id="planning">
-        {% else %}
                 <div id="print_planning">
+        {% else %}
+                <div id="planning">
         {% endif %}
         {# include de template du menu gauche #}
         {{ include('menuGauche.html.twig', tplArrayMenuGauche) }}
@@ -147,53 +147,83 @@
                                         {# boucle for pour les entry #}
                                         {% for entry in creneauHoraire.entries %}
                                             {% if period %}
-
+                                                <br />
+                                                {{ entry.startTime }} {{ vocab.to }} {{ entry.endTime }}
+                                                <br />
+                                            {% endif %}
+                                            {% if entry.typeName != -1 %}
+                                                {{ entry.typeName }}
+                                            {% endif %}
+                                            <br />
+                                            {% if entry.clef == 1 %}
+                                                <img src="img_grr/skey.png" alt="clef">
+                                            {% endif %}
+                                            {% if entry.showCourrier %}
+                                                {% if entry.courrier == 1 %}
+                                                    <img src="img_grr/scourrier.png" alt="courrier">
+                                                {% else %}
+                                                    <img src="img_grr/hourglass.png" alt="buzy">
+                                                {% endif %}
+                                                {% if entry.todayDesc != false %}
+                                                   {{ entry.todayDesc }}
+                                                {% endif %}
                                             {% endif %}
 
                                         {% endfor %}
+                                    {% else %}
+                                        {{  creneauHoraire.descRoomAccessRoomText }}
                                     {% endif %}
-
-
-
-
-
+                                    {% if creneauHoraire.descRoomAccessRoomAndFicheResa %}
+                                        </a>
+                                    {% endif %}
+                                    </td>
                                 {% endif %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                </tr>
                             {% endfor %}
+                            </table>
+                        {% if pview != true %}
+                            <div id="toTop">
+                                <b>{{ vocab.top_of_page }}</b>
+                                <script type="text/javascript">
+                                $(function(){
+                                    $(window).scroll(function(){
+                                        if ($(this).scrollTop() != 0)$("#toTop").fadeIn();
+                                        else $("#toTop").fadeOut();
+                                    });
+                                    $("#toTop").click(function(){
+                                        $("body,html").animate({scrollTop:0},800);
+                                    });
+                                });
+                                </script>
+                            </div>
+                        {% endif %}
+                        </div>
+                </div>
+                    {% if popupMessageRecords != false %}
+                        {{ include('helpers/alert.html.twig', { 'message' : popupMessageRecords }) }}
+                    {% endif %}
+                </div>
+               </div>
+        <div id="popup_name" class="popup_block"></div>
+    </div>
+</div>
+
+                    <script type="text/javascript">
+	$(document).ready(function(){
+		$('table.table-bordered td').each(function(){
+			var $row = $(this);
+			var height = $row.height();
+			var h2 = $row.find('a').height();
+			$row.find('a').css('height', height);
+			$row.find('a').css('padding-top', height/2 - h2/2);
+
+		});
+	});
+	jQuery(document).ready(function($){
+		$("#popup_name").draggable({containment: "#container"});
+		$("#popup_name").resizable();
+	});
+
+</script>
+</body>
+</html>

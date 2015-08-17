@@ -1,5 +1,5 @@
 <?php
-
+/*var_dump($_GET);*/
 if ($_GET['pview'] != 1) {
     //global $twig;
     $tplArrayMenuGauche = [];

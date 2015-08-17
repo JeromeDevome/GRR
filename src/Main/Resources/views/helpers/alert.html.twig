@@ -1,18 +1,23 @@
-<div role="alert" class="alert alert-danger alert-dismissible fade in">
+{% if message is defined %}
+    {% set class = "success success-dismissible" %}
+{% else %}
+    {% set class = "alert alert-danger alert-dismissible" %}
+{% endif %}
+<div role="alert" class="{{ class }} fade in">
     <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
     {#<h4>Erreur</h4>#}
     <p>
-        {% if erreurVersion is define %}{{ erreurVersion }}{% endif %}
+        {% if erreurVersion is defined %}{{ erreurVersion }}{% endif %}
     </p>
     <div class="">
-        {% if sessionMessageError is define and vocab.title_automatic_mail is define and vocab.technical_contact is define %}
+        {% if sessionMessageError is defined and vocab.title_automatic_mail is defined and vocab.technical_contact is defined %}
             {{ vocab.title_automatic_mail }}<br />
             {{ sessionMessageError }}<br />
             {{ vocab.technical_contact }}<br />
         {% endif %}
 
         {# message générique #}
-        {% if message is define %}
+        {% if message is defined %}
             {{ message }}
         {% endif %}
     </div>

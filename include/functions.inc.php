@@ -1330,9 +1330,9 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
         //	echo '</ul>'.PHP_EOL;
             echo '</div>'.PHP_EOL;
             echo '</div>'.PHP_EOL;*/
-            echo "<pre>";
+            /*echo "<pre>";
             var_dump($tplArray);
-            echo "</pre>";
+            echo "</pre>";*/
             echo $twig->render('printHeader.html.twig', $tplArray);
         }
     }
@@ -4286,6 +4286,22 @@ function affiche_pop_up($msg = '', $type_affichage = 'user')
     }
     $_SESSION['displ_msg'] = '';
     $_SESSION['msg_a_afficher'] = '';
+}
+// si true, je dois afficher, mais pas de message session, si false, doit pas afficher, sinon message est return
+function sessionDisplayMessage () {
+if ((isset($_SESSION['displ_msg'])) && ($_SESSION['displ_msg'] == 'yes')) {
+    if ((isset($_SESSION['msg_a_afficher'])) and ($_SESSION['msg_a_afficher'] != '')) {
+        $msg = $_SESSION['msg_a_afficher'];
+            $_SESSION['displ_msg'] = '';
+            $_SESSION['msg_a_afficher'] = '';
+
+            return $msg;
+        } else {
+            return true;
+        }
+
+    }
+    return false;
 }
 
 /*

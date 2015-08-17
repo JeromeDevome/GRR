@@ -602,57 +602,77 @@ if (grr_sql_count($res) == 0) {
                             if ($enable_periods != 'y') {
                                 $tplArray['creneauxHoraire'][$indexArray]['entries'][$i]['startTime'] = date('H:i',$row['1']);
                                 $tplArray['creneauxHoraire'][$indexArray]['entries'][$i]['endTime'] = date('H:i',$row['2']);
-                                echo '<br/>',date('H:i', $start_time),get_vocab('to'),date('H:i', $end_time),'<br/>';
+                                //echo '<br/>',date('H:i', $start_time),get_vocab('to'),date('H:i', $end_time),'<br/>';
                             }
-                            if ($type_name != -1) {
+                            /*if ($type_name != -1) {
                                 echo  $type_name;
-                            }
-                            echo '<br>'.PHP_EOL;
-                            if ($clef == 1) {
+                            }*/
+                            //echo '<br>'.PHP_EOL;
+                            /*if ($clef == 1) {
                                 echo '<img src="img_grr/skey.png" alt="clef">'.PHP_EOL;
-                            }
+                            }*/
                             if (Settings::get('show_courrier') == 'y') {
-                                if ($courrier == 1) {
+                                $tplArray['creneauxHoraire'][$indexArray]['entries'][$i]['showCourrier'] = true;
+                                /*if ($courrier == 1) {
                                     echo '<img src="img_grr/scourrier.png" alt="courrier">'.PHP_EOL;
                                 } else {
                                     echo '<img src="img_grr/hourglass.png" alt="buzy">'.PHP_EOL;
-                                }
+                                }*/
+                            } else {
+                                $tplArray['creneauxHoraire'][$indexArray]['entries'][$i]['showCourrier'] = false;
                             }
                         }
                         if ($today[$room][$t]['description'] != '') {
-                            echo '<br /><i>',$today[$room][$t]['description'],'</i>';
+                            $tplArray['creneauxHoraire'][$indexArray]['entries'][$i]['todayDesc'] = $today[$room][$t]['description'];
+                            //echo '<br /><i>',$today[$room][$t]['description'],'</i>';
+                        } else {
+                            $tplArray['creneauxHoraire'][$indexArray]['entries'][$i]['todayDesc'] = false;
                         }
                     } else {
                         $tplArray['creneauxHoraire'][$indexArray]['descRoomAccessRoom'] = false;
-                        echo ' '.$descr;
+                        //echo ' '.$descr;
                     }
 
-                    if ($acces_fiche_reservation) {
+                    /*if ($acces_fiche_reservation) {
                         echo '</a>'.PHP_EOL;
                     }
-                    echo '</td>'.PHP_EOL;
+                    echo '</td>'.PHP_EOL;*/
                 }
             }
         }
-        echo '</tr>'.PHP_EOL;
+        //echo '</tr>'.PHP_EOL;
         reset($rooms);
         $indexArray++;
     }
-    echo '</table>'.PHP_EOL;
+    //echo '</table>'.PHP_EOL;
 }
 grr_sql_free($res);
 if ($_GET['pview'] != 1) {
-    echo '<div id="toTop">'.PHP_EOL;
-    echo '<b>'.get_vocab('top_of_page').'</b>'.PHP_EOL;
-    bouton_retour_haut();
-    echo '</div>'.PHP_EOL;
+    $tplArray['vocab']['top_of_page'] = get_vocab('top_of_page');
+    /*echo '<div id="toTop">'.PHP_EOL;
+    echo '<b>'.get_vocab('top_of_page').'</b>'.PHP_EOL;*/
+    //bouton_retour_haut();
+    //echo '</div>'.PHP_EOL;
 }
-echo '</div>'.PHP_EOL;
-echo '</div>'.PHP_EOL;
-affiche_pop_up(get_vocab('message_records'), 'user');
+/*echo '</div>'.PHP_EOL;
+echo '</div>'.PHP_EOL;*/
+if (!(Settings::get('javascript_info_disabled'))) {
+   if($msg = sessionDisplayMessage()) {
+       if ( $msg === true ) {
+           $tplArray['popupMessageRecords'] = get_vocab('message_records');
+       } else {
+           $tplArray['popupMessageRecords'] = $msg;
+       }
+   } $tplArray['popupMessageRecords'] = false;
+
+} else {
+    $tplArray['popupMessageRecords'] = false;
+}
+//affiche_pop_up(get_vocab('message_records'), 'user');
 
 ?>
-<script type="text/javascript">
+<?php
+/*<script type="text/javascript">
 	$(document).ready(function(){
 		$('table.table-bordered td').each(function(){
 			var $row = $(this);
@@ -668,13 +688,14 @@ affiche_pop_up(get_vocab('message_records'), 'user');
 		$("#popup_name").resizable();
 	});
 
-</script>
+</script>*/
+?>
 <?php
 unset($row);
+/*echo '</div>'.PHP_EOL;
 echo '</div>'.PHP_EOL;
-echo '</div>'.PHP_EOL;
-echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
-include 'footer.php';
+echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;*/
+//include 'footer.php';
 
 
 echo $twig->render('day.html.twig', $tplArray);
