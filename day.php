@@ -293,8 +293,10 @@ if (grr_sql_count($res) == 0) {
     echo '<tr>'.PHP_EOL.'<th style="width:5%;">'.PHP_EOL;*/
     if ($enable_periods == 'y') {
         $tplArray['timeOuPeriod'] = get_vocab('period');
+        $tplArray['period'] = true;
         //echo get_vocab('period');
     } else {
+        $tplArray['period'] = false;
         $tplArray['timeOuPeriod'] = get_vocab('time');
         //echo get_vocab('time');
     }
@@ -432,6 +434,15 @@ if (grr_sql_count($res) == 0) {
     $indexArray = 0;
     /* todo refacto le for, pour éviter de faire $t = $am7 à tous les tour de boucle */
 
+    /* get_vocab en dehors de la boucle */
+    $tplArray['vocab']['reservation_impossible'] = get_vocab('reservation_impossible');
+    $tplArray['vocab']['cliquez_pour_effectuer_une_reservation'] = get_vocab('cliquez_pour_effectuer_une_reservation');
+    $tplArray['vocab']['ressource_actuellement_empruntee'] = get_vocab('ressource_actuellement_empruntee');
+    $tplArray['vocab']['reservation_a_confirmer_au_plus_tard_le'] = get_vocab('reservation_a_confirmer_au_plus_tard_le');
+    $tplArray['vocab']['en_attente_moderation'] = get_vocab('en_attente_moderation');
+    $tplArray['vocab']['to'] = get_vocab('to');
+
+
     for ($t = $am7; $t <= $pm7; $t += $resolution) {
         //echo '<tr>'.PHP_EOL;
         /* ne fais pas doublon avec le table_stripped de bootstrap ? remplacé dans twig par loop.index */
@@ -488,52 +499,93 @@ if (grr_sql_count($res) == 0) {
                                 }
                             }
                         }
-                        tdcell_rowspan($c, $cellules[$id]);
+                        //tdcell_rowspan($c, $cellules[$id]);
                     }
                     $compteur[$id] = 1;
                 } else {
                     $tplArray['creneauxHoraire'][$indexArray]['notHorsReservationStep'] = false;
-                    tdcell($c);
+                    //tdcell($c);
                 }
-                ################################$
-                if ((!isset($id)) || (est_hors_reservation(mktime(0, 0, 0, $month, $day, $year), $area))) {
+                /* utilisation d'une var pour éviter deux appels à est_hors_reservation et éconnomiser 2 reqêtes sql */
+                $estHorsResa = est_hors_reservation(mktime(0, 0, 0, $month, $day, $year), $area);
+                if ( (!isset($id)) || $estHorsResa ) {
+
                     $hour = date('H', $t);
                     $minute = date('i', $t);
                     $date_booking = mktime($hour, $minute, 0, $month, $day, $year);
-                    if (est_hors_reservation(mktime(0, 0, 0, $month, $day, $year), $area)) {
-                        echo '<img src="img_grr/stop.png" alt="'.get_vocab('reservation_impossible').'"  title="'.get_vocab('reservation_impossible').'" width="16" height="16" class="'.$class_image.'" />'.PHP_EOL;
+                    if ( $estHorsResa ) {
+                        $tplArray['creneauxHoraire'][$indexArray]['EstHorsReservation'] = true;
+                        //$tplArray['vocab']['reservation_impossible'] = get_vocab('reservation_impossible');
+                        //echo '<img src="img_grr/stop.png" alt="'.get_vocab('reservation_impossible').'"  title="'.get_vocab('reservation_impossible').'" width="16" height="16" class="'.$class_image.'" />'.PHP_EOL;
                     } else {
-                        if (((authGetUserLevel(getUserName(), -1) > 1) || (auth_visiteur(getUserName(), $room) == 1)) && (UserRoomMaxBooking(getUserName(), $room, 1) != 0) && verif_booking_date(getUserName(), -1, $room, $date_booking, $date_now, $enable_periods) && verif_delais_max_resa_room(getUserName(), $room, $date_booking) && verif_delais_min_resa_room(getUserName(), $room, $date_booking) && (($statut_room[$room] == '1') || (($statut_room[$room] == '0') && (authGetUserLevel(getUserName(), $room) > 2))) && $_GET['pview'] != 1) {
+                        if (((authGetUserLevel(getUserName(), -1) > 1) || (auth_visiteur(getUserName(), $room) == 1))
+                            && (UserRoomMaxBooking(getUserName(), $room, 1) != 0) && verif_booking_date(getUserName(), -1, $room, $date_booking, $date_now, $enable_periods)
+                            && verif_delais_max_resa_room(getUserName(), $room, $date_booking)
+                            && verif_delais_min_resa_room(getUserName(), $room, $date_booking)
+                            && (($statut_room[$room] == '1') || (($statut_room[$room] == '0')
+                            && (authGetUserLevel(getUserName(), $room) > 2))) && $_GET['pview'] != 1) {
+
+                            $tplArray['creneauxHoraire'][$indexArray]['EstHorsReservation'] = false;
+
                             if ($enable_periods == 'y') {
-                                echo '<a href="edit_entry.php?room='.$room.'&amp;period='.$time_t_stripped.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;page=day" title="'.get_vocab('cliquez_pour_effectuer_une_reservation').'" ><span class="glyphicon glyphicon-plus"></span></a>'.PHP_EOL;
+                                $tplArray['creneauxHoraire'][$indexArray]['period'] = true;
+                                $tplArray['creneauxHoraire'][$indexArray]['linkToResa'] = 'edit_entry.php?room='.$room.'&;period='.$time_t_stripped.'&year='.$year.'&month='.$month.'&day='.$day.'&page=day';
+                                //echo '<a href="" title="'.get_vocab('cliquez_pour_effectuer_une_reservation').'" ><span class="glyphicon glyphicon-plus"></span></a>'.PHP_EOL;
                             } else {
-                                echo '<a href="edit_entry.php?room='.$room.'&amp;hour='.$hour.'&amp;minute='.$minute.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;page=day" title="'.get_vocab('cliquez_pour_effectuer_une_reservation').'" ><span class="glyphicon glyphicon-plus"></span></a>'.PHP_EOL;
+                                $tplArray['creneauxHoraire'][$indexArray]['period'] = true;
+                                $tplArray['creneauxHoraire'][$indexArray]['linkToResa'] = 'edit_entry.php?room='.$room.'&amp;hour='.$hour.'&amp;minute='.$minute.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;page=day';
+                                //echo '<a href="edit_entry.php?room='.$room.'&amp;hour='.$hour.'&amp;minute='.$minute.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;page=day" title="'.get_vocab('cliquez_pour_effectuer_une_reservation').'" ><span class="glyphicon glyphicon-plus"></span></a>'.PHP_EOL;
                             }
                         } else {
-                            echo ' ';
+                            //echo ' ';
+                            $tplArray['creneauxHoraire'][$indexArray]['EstHorsReservation'] = 'empty';
                         }
                     }
-                    echo '</td>'.PHP_EOL;
+                    //echo '</td>'.PHP_EOL;
+                    $tplArray['creneauxHoraire'][$indexArray]['roomIdSet'] = false;
                 } elseif ($descr != '') {
+                    $tplArray['creneauxHoraire'][$indexArray]['roomIdSet'] = true;
+                    $tplArray['creneauxHoraire'][$indexArray]['descRoomAccessRoomText'] = $descr;
+
                     if ((isset($today[$room][$t]['statut'])) && ($today[$room][$t]['statut'] != '-')) {
-                        echo '<img src="img_grr/buzy.png" alt="'.get_vocab('ressource actuellement empruntee').'" title="'.get_vocab('ressource actuellement empruntee').'" width="20" height="20" class="image" />'.PHP_EOL;
+                        $tplArray['creneauxHoraire'][$indexArray]['descRoomEmpruntee'] = true;
+                        //echo '<img src="img_grr/buzy.png" alt="'.get_vocab('ressource actuellement empruntee').'" title="'.get_vocab('ressource actuellement empruntee').'" width="20" height="20" class="image" />'.PHP_EOL;
+                    } else {
+                        $tplArray['creneauxHoraire'][$indexArray]['descRoomEmpruntee'] = false;
                     }
                     if (($delais_option_reservation[$room] > 0) && (isset($today[$room][$t]['option_reser'])) && ($today[$room][$t]['option_reser'] != -1)) {
-                        echo '<img src="img_grr/small_flag.png" alt="'.get_vocab('reservation_a_confirmer_au_plus_tard_le').'" title="'.get_vocab('reservation_a_confirmer_au_plus_tard_le').' '.time_date_string_jma($today[$room][$t]['option_reser'], $dformat).'" width="20" height="20" class="image" />'.PHP_EOL;
+                        $tplArray['creneauxHoraire'][$indexArray]['descRoomResaPlusTard'] = true;
+                        /* todo gérer l'ffichage de la date avec twig */
+                        $tplArray['creneauxHoraire'][$indexArray]['descRoomResaPlusTardDate'] = time_date_string_jma($today[$room][$t]['option_reser'], $dformat);
+
+                        //echo '<img src="img_grr/small_flag.png" alt="'.get_vocab('reservation_a_confirmer_au_plus_tard_le').'" title="'.get_vocab('reservation_a_confirmer_au_plus_tard_le').' '.time_date_string_jma($today[$room][$t]['option_reser'], $dformat).'" width="20" height="20" class="image" />'.PHP_EOL;
+                    } else {
+                        $tplArray['creneauxHoraire'][$indexArray]['descRoomResaPlusTard'] = false;
                     }
                     if ((isset($today[$room][$t]['moderation'])) && ($today[$room][$t]['moderation'] == '1')) {
-                        echo '<img src="img_grr/flag_moderation.png" alt="'.get_vocab('en_attente_moderation').'" title="'.get_vocab('en_attente_moderation').'" class="image" />'.PHP_EOL;
+                        $tplArray['creneauxHoraire'][$indexArray]['descRoomResaModeration'] = true;
+                        //echo '<img src="img_grr/flag_moderation.png" alt="'.get_vocab('en_attente_moderation').'" title="'.get_vocab('en_attente_moderation').'" class="image" />'.PHP_EOL;
+                    } else {
+                        $tplArray['creneauxHoraire'][$indexArray]['descRoomResaModeration'] = false;
                     }
                     if (($statut_room[$room] == '1') || (($statut_room[$room] == '0') && (authGetUserLevel(getUserName(), $room) > 2))) {
+                        $tplArray['creneauxHoraire'][$indexArray]['descRoomAccessRoom'] = true;
                         if ($acces_fiche_reservation) {
+                            $tplArray['creneauxHoraire'][$indexArray]['descRoomAccessRoomAndFicheResa'] = true;
+                            $tplArray['creneauxHoraire'][$indexArray]['descRoomAccessRoomAndFicheResaWho'] = htmlspecialchars($today[$room][$t]['who']);
                             if ($settings->get('display_level_view_entry') == 0) {
                                 $currentPage = 'day';
-                                echo '<a title="'.htmlspecialchars($today[$room][$t]['who']).'" data-width="675" onclick="request('.$id.','.$day.','.$month.','.$year.',\''.$currentPage.'\',readData);" data-rel="popup_name" class="poplight">'.$descr.PHP_EOL;
+                                $tplArray['creneauxHoraire'][$indexArray]['descRoomAccessRoomAndFicheResaDisplay'] = 'levelViewEntry';
+                                $tplArray['creneauxHoraire'][$indexArray]['descRoomAccessRoomAndFicheResaLink'] = 'request('.$id.','.$day.','.$month.','.$year."','".$currentPage."',readData);" ;
+                                //echo '<a title="'.htmlspecialchars($today[$room][$t]['who']).'" data-width="675" onclick="request('.$id.','.$day.','.$month.','.$year.',\''.$currentPage.'\',readData);" data-rel="popup_name" class="poplight">'.$descr.PHP_EOL;
                             } else {
-                                echo '<a class="lienCellule" title="',htmlspecialchars($today[$room][$t]['who']),'" href="view_entry.php?id=',$id,'&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=day\>',$descr;
+                                $tplArray['creneauxHoraire'][$indexArray]['descRoomAccessRoomAndFicheResaDisplay'] = false;
+                                $tplArray['creneauxHoraire'][$indexArray]['descRoomAccessRoomAndFicheResaLink'] = 'view_entry.php?id='.$id.'&day='.$day.'&month='.$month.'&year='.$year.'&page=day';
+                               // echo '<a class="lienCellule" title="',htmlspecialchars($today[$room][$t]['who']),'" href="view_entry.php?id=',$id,'&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=day\>',$descr;
                             }
                         } else {
-                            echo ' '.$descr;
+                            $tplArray['creneauxHoraire'][$indexArray]['descRoomAccessRoomAndFicheResa'] = false;
+                            //echo ' '.$descr;
                         }
                         $sql = 'SELECT type_name,start_time,end_time,clef,courrier FROM '.TABLE_PREFIX.'_type_area ,'.TABLE_PREFIX.'_entry  WHERE  '.TABLE_PREFIX.'_entry.id= '.$today[$room][$t]['id'].' AND '.TABLE_PREFIX.'_entry.type= '.TABLE_PREFIX.'_type_area.type_letter';
                         $res = grr_sql_query($sql);
@@ -543,7 +595,13 @@ if (grr_sql_count($res) == 0) {
                             $end_time = $row['2'];
                             $clef = $row['3'];
                             $courrier = $row['4'];
+                            $tplArray['creneauxHoraire'][$indexArray]['entries'][$i]['typeName'] = $row['0'];
+                            $tplArray['creneauxHoraire'][$indexArray]['entries'][$i]['clef'] = $row['3'];
+                            $tplArray['creneauxHoraire'][$indexArray]['entries'][$i]['courrier'] = $row['4'];
+
                             if ($enable_periods != 'y') {
+                                $tplArray['creneauxHoraire'][$indexArray]['entries'][$i]['startTime'] = date('H:i',$row['1']);
+                                $tplArray['creneauxHoraire'][$indexArray]['entries'][$i]['endTime'] = date('H:i',$row['2']);
                                 echo '<br/>',date('H:i', $start_time),get_vocab('to'),date('H:i', $end_time),'<br/>';
                             }
                             if ($type_name != -1) {
@@ -565,8 +623,10 @@ if (grr_sql_count($res) == 0) {
                             echo '<br /><i>',$today[$room][$t]['description'],'</i>';
                         }
                     } else {
+                        $tplArray['creneauxHoraire'][$indexArray]['descRoomAccessRoom'] = false;
                         echo ' '.$descr;
                     }
+
                     if ($acces_fiche_reservation) {
                         echo '</a>'.PHP_EOL;
                     }

@@ -1,3 +1,8 @@
+{% if pview %}
+    {% set classImage = "print_image" %}
+{% else %}
+    {% set classImage = "image" %}
+{% endif %}
 {% if room == false %}
     <h1>{{ vocab.no_room_for_area}}</h1>
 {% else %}
@@ -96,7 +101,7 @@
                             </tr>
                             <tr>
                             {% for creneauHoraire in creneauxHoraire %}
-                                {% if loop.index is pair %}
+                                {% if loop.index is even %}
                                     <td class="cell_hours">
                                 {% else %}
                                     <td class="cell_hours2">
@@ -104,10 +109,55 @@
                                         {{ creneauHoraire.periodeNameOrHeure }}
                                     </td>
                                 {% if creneauHoraire.notHorsReservationStep != false %}
+                                    {# remplace le tdCellRowspan #}
                                     <td rowspan="{{ notHorsReservationStep }}"
                                         {% if creneauHoraire.class != false %}class="{{ creneauHoraire.class }}"{% endif %}
-                                        {% if creneauHoraire.color != false %}style="background-color: {{ creneauHoraire.color }}"{% endif %}
+                                        {% if creneauHoraire.color != false %}style="background-color: {{ creneauHoraire.color }}"{% endif %} >
+                                {% else %}
+                                    <td {% if creneauHoraire.class != false %}class="{{ creneauHoraire.class }}"{% endif %}
+                                        {% if creneauHoraire.color != false %}style="background-color: {{ creneauHoraire.color }}"{% endif %} >
+                                {% endif %}
+                                {% if creneauHoraire.estHorsReservation == true and creneauHoraire.estHorsReservation != 'empty' %}
+                                    <img src="img_grr/stop.png" alt="{{ vocab.reservation_impossible }}"  title="{{ vocab.reservation_impossible }}" width="16" height="16" class="{{ classImage }}" />
+                                {% elseif creneauHoraire.estHorsReservation == false and creneauHoraire.estHorsReservation != 'empty' %}
+                                    <a href="{{ creneauHoraire.linkToResa }}" title="{{ vocab.cliquez_pour_effectuer_une_reservation }}" ><span class="glyphicon glyphicon-plus"></span></a>
+                                {% endif %}
+                                {% if roomIdSet == true %}
+                                    {% if creneauHoraire.descRoomEmpruntee %}
+                                        <img src="img_grr/buzy.png" alt="{{ vocab.ressource_actuellement_empruntee }}" title="{{ vocab.ressource_actuellement_empruntee }}" width="20" height="20" class="image" />
+                                    {% endif %}
+                                    {% if creneauHoraire.descRoomResaPlusTard %}
+                                        <img src="img_grr/small_flag.png" alt="{{ vocab.reservation_a_confirmer_au_plus_tard_le }}" title="{{ vocab.reservation_a_confirmer_au_plus_tard_le }} {{ creneauHoraire.descRoomResaPlusTardDate }}" width="20" height="20" class="image" />
+                                    {% endif %}
+                                    {% if creneauHoraire.descRoomResaModeration %}
+                                        <img src="img_grr/flag_moderation.png" alt="{{ vocab.en_attente_moderation }}" title="{{ vocab.en_attente_moderation }}" class="image" />
+                                    {% endif %}
+                                    {% if creneauHoraire.descRoomAccessRoom %}
+                                        {% if creneauHoraire.descRoomAccessRoomAndFicheResa %}
+                                            {% if creneauHoraire.descRoomAccessRoomAndFicheResaDisplay == 'levelViewEntry' %}
+                                                <a title="{{ creneauHoraire.descRoomAccessRoomAndFicheResaWho }}" data-width="675" onclick="{{ creneauHoraire.descRoomAccessRoomAndFicheResaLink }}" data-rel="popup_name" class="poplight">
+                                                    {{ creneauHoraire.descRoomAccessRoomText }}
+                                            {% else %}
+                                                <a class="lienCellule" title="{{ creneauHoraire.descRoomAccessRoomAndFicheResaWho }}" href="{{ creneauHoraire.descRoomAccessRoomAndFicheResaLink }}">
+                                                    {{ creneauHoraire.descRoomAccessRoomText }}
+                                            {% endif %}
+                                        {% else %}
+                                            {{ creneauHoraire.descRoomAccessRoomText }}
+                                        {% endif %}
+                                        {# boucle for pour les entry #}
+                                        {% for entry in creneauHoraire.entries %}
+                                            {% if period %}
 
+                                            {% endif %}
+
+                                        {% endfor %}
+                                    {% endif %}
+
+
+
+
+
+                                {% endif %}
 
 
 
