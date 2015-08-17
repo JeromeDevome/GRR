@@ -15,7 +15,15 @@ if (@file_exists('../include/connect.inc.php')) {
 require_once $racine.'vendor/autoload.php';
 global $twig;
 $loader = new Twig_Loader_Filesystem($racine.'src/Main/Resources/views/');
-$twig = new Twig_Environment($loader, array(
+/**
+ * debug true, and profiler, only for dev env, todo : manage env dev or prod
+ */
+/*$twig = new Twig_Environment($loader, array(
     'cache' => $racine.'app/cache/',
-    'debug' => true
+    'debug' => false,
+));*/
+$twig = new Twig_Environment($loader, array(
+    'cache' => false,
+    'debug' => true,
 ));
+$twig->addExtension(new Twig_Extension_Debug());

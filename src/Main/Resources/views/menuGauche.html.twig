@@ -1,10 +1,9 @@
 <div class="row">
     {% if menuGaucheMonthAll2 %}
     <div id="menuGaucheMonthAll2">
-        {% else %}
+    {% else %}
         <div class="col-lg-3 col-md-12 col-xs-12">
-            {% endif %}
-
+    {% endif %}
             <div id="menuGauche">
                 {% if siteSelection %}
                     {{ include('forms/siteFields.html.twig', siteSelection) }}
