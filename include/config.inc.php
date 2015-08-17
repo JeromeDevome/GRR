@@ -205,4 +205,6 @@ $grrSettings = array();
 
 # Make sure notice errors are not reported
 #error_reporting (E_ALL ^ E_NOTICE);
-?>
+
+/* GESTION DES TEMPLATES */
+$template = "Default";

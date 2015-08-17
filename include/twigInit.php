@@ -14,7 +14,7 @@ if (@file_exists('../include/connect.inc.php')) {
 }
 require_once $racine.'vendor/autoload.php';
 global $twig;
-$loader = new Twig_Loader_Filesystem($racine.'src/Main/Resources/views/');
+$loader = new Twig_Loader_Filesystem($racine.'src/Main/Resources/Templates/'.$template.'/views/');
 /**
  * debug true, and profiler, only for dev env, todo : manage env dev or prod
  */

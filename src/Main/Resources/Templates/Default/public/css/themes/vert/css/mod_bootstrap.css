@@ -1,0 +1,27 @@
+a{color:#05BA41;text-decoration:none}
+.text-primary{color:#05BA41}
+.bg-primary{color:#fff;background-color:#05BA41}
+.btn-primary{color:#fff;background-color:#05BA41;border-color:#05BA41}
+.btn-primary.disabled,
+.btn-primary[disabled],
+fieldset[disabled] .btn-primary,
+.btn-primary.disabled:hover,
+.btn-primary[disabled]:hover,
+fieldset[disabled] .btn-primary:hover,
+.btn-primary.disabled:focus,
+.btn-primary[disabled]:focus,
+fieldset[disabled] .btn-primary:focus,
+.btn-primary.disabled.focus,
+.btn-primary[disabled].focus,
+fieldset[disabled] .btn-primary.focus,
+.btn-primary.disabled:active,
+.btn-primary[disabled]:active,
+fieldset[disabled] .btn-primary:active,
+.btn-primary.disabled.active,
+.btn-primary[disabled].active,
+fieldset[disabled] .btn-primary.active{background-color:#05BA41;border-color:#05BA41}
+.btn-primary .badge{color:#05BA41;background-color:#fff}
+.btn-link{color:#05BA41;font-weight:normal;border-radius:0}
+.panel-primary>.panel-heading .badge{color:#05BA41;background-color:#fff}
+.panel-primary>.panel-footer+.panel-collapse>.panel-body{border-bottom-color:#05BA41}
+caption{text-align: center}

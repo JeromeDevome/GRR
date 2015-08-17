@@ -1,0 +1,30 @@
+body {
+	background-color:#FFFFFF;
+	font-size: 12px;
+}
+
+.print_image {
+    visibility: hidden;
+}
+
+#planning {
+    margin-left : 0px;
+}
+
+a:after {content: "" !important;}
+
+tr{
+height : 20px!important;
+}
+
+
+td.cell_hours{
+white-space:nowrap;
+line-height:15px;
+}
+
+
+
+.cell_hours td {
+height: 10px;
+}
