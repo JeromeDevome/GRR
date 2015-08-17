@@ -1924,7 +1924,13 @@ function getColor($codeCouleur)
         return false;
     }
 }
-// Renvoie une balise span avec un style backgrounf-color correspondant au type de  la réservation
+
+/**
+ * Renvoie une balise span avec un style backgrounf-color correspondant au type de  la réservation
+ *
+ * @param $colclass
+ * @deprecated il faut utiliser getColer et construire le html dans un template twig
+ */
 function span_bgground($colclass)
 {
     global $tab_couleur;
@@ -1933,7 +1939,14 @@ function span_bgground($colclass)
     echo '<span style="background-color: '.$tab_couleur[$num_couleur].'; background-image: none; background-repeat: repeat; background-attachment: scroll;">'.PHP_EOL;
 }
 
-//Output a start table cell tag <td> with color class and fallback color.
+
+/**
+ * Output a start table cell tag <td> with color class and fallback color.
+ *
+ * @param $colclass
+ * @param string $width
+ * @deprecated il faut utiliser getColer et construire le html dans un template twig
+ */
 function tdcell($colclass, $width = '')
 {
     if ($width != '') {
@@ -1950,7 +1963,11 @@ function tdcell($colclass, $width = '')
         echo '<td class="'.$colclass.' '.$temp.'">'.PHP_EOL;
     }
 }
-
+/**
+ * @param $colclass
+ * @param $step
+ *@deprecated il faut utiliser getColer et construire le html dans un template twig
+ */
 function tdcell_rowspan($colclass, $step)
 {
     global $tab_couleur;
