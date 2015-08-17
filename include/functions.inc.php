@@ -865,7 +865,7 @@ function begin_page($title, $page = 'with_session')
     $tplArray = [];
     $tplArray['title'] = $title;
     /**
-     * global var twig todo voir si peux mieux faire qu'une var globale
+     * global var twig
      */
     global $twig;
 
@@ -1966,7 +1966,7 @@ function tdcell($colclass, $width = '')
 /**
  * @param $colclass
  * @param $step
- *@deprecated il faut utiliser getColer et construire le html dans un template twig
+ * @deprecated il faut utiliser getColer et construire le html dans un template twig
  */
 function tdcell_rowspan($colclass, $step)
 {
