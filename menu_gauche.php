@@ -16,7 +16,9 @@ if ($_GET['pview'] != 1) {
     //echo '<div id="menuGauche">';
 
     $pageActuel = str_replace('.php', '', basename($_SERVER['PHP_SELF']));
-    minicals($year, $month, $day, $area, $room, $pageActuel);
+    /* todo passer minicals à twig */
+    $tplArrayMenuGauche['returnCalHtml'] = minicals($year, $month, $day, $area, $room, $pageActuel);
+
     if (isset($_SESSION['default_list_type']) || (Settings::get('authentification_obli') == 1)) {
         $area_list_format = $_SESSION['default_list_type'];
     } else {

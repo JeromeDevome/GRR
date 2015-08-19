@@ -83,10 +83,7 @@ if (($settings->get('authentification_obli') == 0) && (getUserName() == '')) {
     $type_session = 'with_session';
 }
 get_planning_area_values($area);
-/**
- * Print_header appel begin_page qui affiche le template views/header.html.twig ou views/admin/header.html.twig
- * puis affiche views/printHeader.html.twig
- */
+
 print_header($day, $month, $year, $type_session);
 
 if ($area <= 0) {
@@ -696,7 +693,6 @@ unset($row);
 echo '</div>'.PHP_EOL;
 echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;*/
 //include 'footer.php';
-
 
 echo $twig->render('day.html.twig', $tplArray);
 ?>

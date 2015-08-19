@@ -1045,9 +1045,13 @@ function begin_page($title, $page = 'with_session')
     //return $a;
 }
 
-/*
-** Fonction qui affiche le header
-*/
+/**
+ * Fonction qui affiche le header,
+* @param string $day
+* @param string $month
+* @param string $year
+* @param string $type_session
+ */
 function print_header($day = '', $month = '', $year = '', $type_session = 'with_session')
 {
     global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
@@ -1069,6 +1073,8 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
     }
     // On vérifie que les noms et prénoms ne sont pas vides
     VerifNomPrenomUser($type_session);
+
+    /* le header <head> de la page est toujours affiché */
     if ($type_session == 'with_session') {
         echo begin_page(Settings::get('company'), 'with_session');
     } else {
@@ -1333,7 +1339,8 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
             /*echo "<pre>";
             var_dump($tplArray);
             echo "</pre>";*/
-            echo $twig->render('printHeader.html.twig', $tplArray);
+
+           echo $twig->render('printHeader.html.twig', $tplArray);
         }
     }
 
