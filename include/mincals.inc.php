@@ -281,11 +281,9 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 			else
 				$flag_surlignage = 0;
 			$cal = new Calendar(date("d",$key), date("m",$key), date("Y",$key), $flag_surlignage, $area, $room, $dmy, $mois_precedent, $mois_suivant);
-			//echo $cal->getHTML();
-			$arrayCalHtml[$ind] = $cal->getHTML();
+			echo $cal->getHTML();
 			$ind++;
 		}
-		return $arrayCalHtml;
 	}
 }
 ?>
