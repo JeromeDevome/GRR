@@ -13,6 +13,7 @@ $vocab['activer_fonctionalite_ressource_empruntee_restituee'] = "Activer la fonc
 $vocab['Activer_module_jours_cycles'] = "Activer les fonctionnalités \"jours cycle\"";
 $vocab['Activer_module_multisite'] = "Activer la fonctionnalité \"multisite\"";
 $vocab['Activer_export_xml'] = "Activer la fonctionnalité \"Export XML\"";
+$vocab['Activer_export_plus_xml'] = "Activer la fonctionnalité \"Export XML +\"";
 $vocab['active_lcs'] = "Activez la prise en compte du service SSO de LCS";
 $vocab['activ_no_activ'] = "Etat";
 $vocab['activ_user'] = "Actif";

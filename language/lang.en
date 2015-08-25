@@ -17,6 +17,7 @@ $vocab['activer_fonctionalite_ressource_empruntee_restituee'] = "Activate the fu
 $vocab['Activer_module_jours_cycles'] = "Activate the functionalities \"cycle days\"";
 $vocab['Activer_module_multisite'] = "Activate the functionality \"multisite\"";
 $vocab['Activer_export_xml'] = "Activate the functionality \"Export XML\"";
+$vocab['Activer_export_plus_xml'] = "Activate the functionality \"Export XML +\"";
 $vocab['active_lcs'] = "Activate the taking into consideration of the service SSO of LCS";
 $vocab['activ_no_activ'] = "State";
 $vocab['activ_user'] = "Active";

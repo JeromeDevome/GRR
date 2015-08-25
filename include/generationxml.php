@@ -8,7 +8,7 @@
  * @copyright Copyright 201-2015 JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  * @package   root
- * @version   $Id: admin.inc.php,v 1.3 2009-01-20 07:19:17 grr Exp $
+ * @version   $Id: generationxml.php,v 1.3 2009-01-20 07:19:17 grr Exp $
  * @filesource
  *
  * This file is part of GRR.
