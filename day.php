@@ -420,7 +420,7 @@ else
 							}
 							else
 							{
-								echo '<a class="lienCellule" title="',htmlspecialchars($today[$room][$t]["who"]),'" href="view_entry.php?id=',$id,'&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=day\>',$descr;
+								echo '<a class="lienCellule" title="',htmlspecialchars($today[$room][$t]["who"]),'" href="view_entry.php?id=',$id,'&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=day">',$descr;
 							}
 						}
 						else
