@@ -1369,12 +1369,12 @@ echo "</form>";
 			webmaster_email:
 			{
 				required: true,
-				email: true
+				email: false
 			},
 			technical_support_email:
 			{
 				required: true,
-				email: true
+				email: false
 			}
 		}
 	});
