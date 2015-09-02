@@ -87,14 +87,14 @@ if ($row['statut_room'] == "0"){ //
 }
 
 // Description
-if (authGetUserLevel($user,-1) >= Settings::get("visu_fiche_description"))
+if (authGetUserLevel($getUserName(),-1) >= Settings::get("visu_fiche_description"))
 {
 	echo "<h3>".get_vocab("description")."</h3>\n";
 	echo "<div>".htmlspecialchars($row["description"])." </div>\n";
 }
 
 // Description complète
-if ((authGetUserLevel($user,-1) >= Settings::get("acces_fiche_reservation")) && ($row["comment_room"] != ''))
+if ((authGetUserLevel($getUserName(),-1) >= Settings::get("acces_fiche_reservation")) && ($row["comment_room"] != ''))
 {
 	echo "<h3>".get_vocab("match_descr")."</h3>\n";
 	echo "<div>".$row["comment_room"]."</div>\n";
