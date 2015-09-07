@@ -190,6 +190,8 @@ function minicals($year, $month, $day, $area, $room, $dmy)
             $tplArray = [];
             $s = '';
             $i = 0;
+            //echo "dans dayOfMonth avant while<br>";
+            //var_dump();
 
             while ($d <= $daysInMonth) {
 
