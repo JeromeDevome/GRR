@@ -11,7 +11,6 @@ if ($_GET['pview'] != 1) {
     }
 
     $pageActuel = str_replace('.php', '', basename($_SERVER['PHP_SELF']));
-
     /* todo passer minicals à twig */
     $tplArrayMenuGauche['returnCalHtml'] = minicals($year, $month, $day, $area, $room, $pageActuel);
 
