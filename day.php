@@ -253,7 +253,13 @@ if (grr_sql_count($res) == 0) {
         /*echo '<table class="table-header">',PHP_EOL,'<tr>',PHP_EOL,'<td class="left">',PHP_EOL,
             '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'day.php?year='.$yy.'&amp;month='.$ym.'&amp;day='.$yd.'&amp;area='.$area.'\';">
             <span class="glyphicon glyphicon-backward"></span> ',get_vocab('daybefore'),'</button>',PHP_EOL,'</td>',PHP_EOL,'<td>',PHP_EOL;*/
-        include 'include/trailer.inc.php';
+        //include 'include/trailer.inc.php';
+        /*if ($tplArrayTrailer !== false) {
+            $tplArray['trailer'] = $tplArrayTrailer;
+        }
+        if ($tplArrayAlert !== false) {
+            $tplArray['alert'] = $tplArrayAlert;
+        }*/
         /*echo '</td>',PHP_EOL,'<td class="right">',PHP_EOL,
             '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'day.php?year='.$ty.'&amp;month='.$tm.'&amp;day='.$td.'&amp;area='.$area.'\';">
             '.get_vocab('dayafter').'  <span class="glyphicon glyphicon-forward"></span></button>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;*/
@@ -693,7 +699,14 @@ unset($row);
 echo '</div>'.PHP_EOL;
 echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;*/
 //include 'footer.php';
+if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1)) {
 
+    include 'include/printAction.inc.php';
+    if ( $tplArrayTrailer['affichePrintableViewNonGet'] !== false ) {
+        $tplArray['printButton'] = $tplArrayTrailer;
+    }
+
+}
 echo $twig->render('day.html.twig', $tplArray);
 ?>
 
