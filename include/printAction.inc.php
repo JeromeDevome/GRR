@@ -2,8 +2,6 @@
 /**
  * Extrait de trailer, gérer les données pour l'affichage de bouton imprimer
  * @author: Bouteillier Nicolas
- * Date: 07/09/15
- * Time: 17:46
  */
 
 if ((!isset($_GET['pview']) || ($_GET['pview'] != 1)) && (isset($affiche_pview))) {
