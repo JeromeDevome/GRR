@@ -208,3 +208,4 @@ $grrSettings = array();
 
 /* GESTION DES TEMPLATES */
 $template = "Modern";
+$template = "Default";
