@@ -190,30 +190,13 @@ function minicals($year, $month, $day, $area, $room, $dmy)
             $tplArray = [];
             $s = '';
             $i = 0;
-            echo "dans dayOfMonth avant while<br>";
-            //var_dump();
-
-            echo "<br>";
-            echo "<br>";
-            echo "Day in month => ".$daysInMonth;
-            echo "<br>";
-            echo "<br>";
-            echo "param $ d avant while => ".$d;
-            echo "<br>";
-            echo "<br>";
 
             while ($d <= $daysInMonth) {
 
-                echo "<br>While, tour num => ".$i."<br>";
-                echo "<br>D => $d<br>";
-                echo "<br>daysInMonth => $daysInMonth<br>";
-                /*echo "<pre>";
-                var_dump($tplArray);
-                echo "</pre>";*/
-                $bg_lign = '';
+                //$bg_lign = '';
                 if (($week_today == $week) && ($this->h) && (($this->dmy == 'week_all') || ($this->dmy == 'week'))) {
                     $tplArray['dayInMonth'][$i]['week'] = true;
-                    $bg_lign = ' class="week"';
+                    //$bg_lign = ' class="week"';
                 } else {
                     $tplArray['dayInMonth'][$i]['week'] = false;
                 }
@@ -241,7 +224,6 @@ function minicals($year, $month, $day, $area, $room, $dmy)
                 $tplArray['dayInMonth'][$i]['numbers'] = $return['data']['numbers'];
                 /*var_dump($tplArray);*/
                 $d = $return['data']['day'];
-                echo "<br>Fin du tour du while d => ".$d."<br>";
                 //$s .= $ret[1];
                 //$s .= "</tr>\n";
                 ++$i;
@@ -249,11 +231,6 @@ function minicals($year, $month, $day, $area, $room, $dmy)
                     break;
                 }*/
             }
-            echo "<br>";
-            echo "<br>";
-            echo "param $ d après while => ".$d;
-            echo "<br>";
-            echo "<br>";
 
             return $tplArray;
         }
@@ -314,12 +291,10 @@ function minicals($year, $month, $day, $area, $room, $dmy)
             if (!isset($weekstarts)) {
                 $weekstarts = 0;
             }
-            $s = '';
+            //$s = '';
             $daysInMonth = $this->getDaysInMonth($this->month, $this->year);
-            /*echo "<br>DAYS IN MONTH".$daysInMonth."<br>";*/
             $date = mktime(12, 0, 0, $this->month, 1, $this->year);
             $first = (strftime('%w', $date) + 7 - $weekstarts) % 7;
-            echo "<br>FIRST => ".$first." <br>";
             $monthName = ucfirst(utf8_strftime('%B', $date));
             //$s .= "\n<table class=\"calendar\">\n";
             //$s .= '<caption>';
@@ -402,8 +377,6 @@ function minicals($year, $month, $day, $area, $room, $dmy)
             } else {
                 $flag_surlignage = 0;
             }
-            //var_dump($key);
-            var_dump($dmy);
             $cal = new Calendar(date('d', $key), date('m', $key), date('Y', $key), $flag_surlignage, $area, $room, $dmy, $mois_precedent, $mois_suivant);
 
             $tplArray['month'][$ind] = $cal->getHTML();
