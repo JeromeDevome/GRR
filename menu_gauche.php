@@ -16,7 +16,7 @@ if ($_GET['pview'] != 1) {
     //echo '<div id="menuGauche">';
 
     $pageActuel = str_replace('.php', '', basename($_SERVER['PHP_SELF']));
-    echo "Page actuelle : ".$pageActuel." <br> ";
+
     /* todo passer minicals à twig */
     $tplArrayMenuGauche['returnCalHtml'] = minicals($year, $month, $day, $area, $room, $pageActuel);
 

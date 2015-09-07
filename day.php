@@ -704,6 +704,8 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1)) {
     include 'include/printAction.inc.php';
     if ( $tplArrayTrailer['affichePrintableViewNonGet'] !== false ) {
         $tplArray['printButton'] = $tplArrayTrailer;
+    } else {
+        $tplArray['printButton'] = false;
     }
 
 }
