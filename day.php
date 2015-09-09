@@ -84,7 +84,7 @@ if (($settings->get('authentification_obli') == 0) && (getUserName() == '')) {
 }
 get_planning_area_values($area);
 
-print_header($day, $month, $year, $type_session);
+print_header($day, $month, $year, $type_session, false);
 
 if ($area <= 0) {
     /* todo refacto avec twig */
