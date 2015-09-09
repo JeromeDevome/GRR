@@ -568,9 +568,9 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 							if ($acces_fiche_reservation)
 								echo"</a>";
 						}
-						if (!isset($d[$weekday][$slot-$decale_slot*$nb_case]["id"])) {
-							echo tdcell($empty_color)."";
-						}
+						//if (!isset($d[$weekday][$slot-$decale_slot*$nb_case]["id"])) {
+						//	echo tdcell($empty_color)."";
+						//}
 						
 						if ((isset($d[$weekday][$slot - $decale_slot * $nb_case]["statut"])) && ($d[$weekday][$slot - $decale_slot * $nb_case]["statut"] != '-'))
 							echo '<img src="img_grr/buzy.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("ressource actuellement empruntee").'" width="20" height="20" class="image" />'.PHP_EOL;
