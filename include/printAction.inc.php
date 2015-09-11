@@ -12,7 +12,7 @@ if ((!isset($_GET['pview']) || ($_GET['pview'] != 1)) && (isset($affiche_pview))
 
         $tplArrayTrailer['linkToScript'] = traite_grr_url($grr_script_name);
         if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != '')) {
-            $tplArrayTrailer['linkToScript'] .= htmlspecialchars($_SERVER['QUERY_STRING']) . "&amp;";
+            $tplArrayTrailer['linkToScript'] .= '?' . htmlspecialchars($_SERVER['QUERY_STRING']) . "&amp;";
         }
         $tplArrayTrailer['linkToScript'] .= '&pview=1';
     } else {
@@ -20,7 +20,7 @@ if ((!isset($_GET['pview']) || ($_GET['pview'] != 1)) && (isset($affiche_pview))
 
         $tplArrayTrailer['linkToScript'] = traite_grr_url($grr_script_name);
         if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
-            $tplArrayTrailer['linkToScript'] .= htmlspecialchars($_SERVER['QUERY_STRING']) . "&amp;";
+            $tplArrayTrailer['linkToScript'] .= '?' . htmlspecialchars($_SERVER['QUERY_STRING']) . "&amp;";
         $tplArrayTrailer['linkToScript'] .= "pview=1&amp;precedent=1'\"";
     }
 

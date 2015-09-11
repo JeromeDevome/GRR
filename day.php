@@ -211,7 +211,7 @@ if (grr_sql_count($res) == 0) {
         echo '<div id="print_planning">'.PHP_EOL;
     }*/
     /**
-     * intégré direct au template twig
+     * intégré direct au template twig fixme voir le fonctionnement de base et debugger
      * include 'chargement.php';
      */
     $ferie_true = 0;
@@ -709,6 +709,7 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1)) {
     }
 
 }
+
 echo $twig->render('day.html.twig', $tplArray);
 ?>
 
