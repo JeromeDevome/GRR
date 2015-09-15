@@ -450,11 +450,11 @@ if (grr_sql_count($res) == 0) {
 
                             if ($enable_periods == 'y') {
                                 $tplArray['creneauxHoraire'][$indexArray]['period'] = true;
-                                $tplArray['creneauxHoraire'][$indexArray]['linkToResa'] = 'edit_entry.php?room='.$room.'&;period='.$time_t_stripped.'&year='.$year.'&month='.$month.'&day='.$day.'&page=day';
+                                $tplArray['creneauxHoraire'][$indexArray]['linkToResa'] = 'edit_entry.php?room='.$room.'&period='.$time_t_stripped.'&year='.$year.'&month='.$month.'&day='.$day.'&page=day';
                                 //echo '<a href="" title="'.get_vocab('cliquez_pour_effectuer_une_reservation').'" ><span class="glyphicon glyphicon-plus"></span></a>'.PHP_EOL;
                             } else {
                                 $tplArray['creneauxHoraire'][$indexArray]['period'] = true;
-                                $tplArray['creneauxHoraire'][$indexArray]['linkToResa'] = 'edit_entry.php?room='.$room.'&amp;hour='.$hour.'&amp;minute='.$minute.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;page=day';
+                                $tplArray['creneauxHoraire'][$indexArray]['linkToResa'] = 'edit_entry.php?room='.$room.'&hour='.$hour.'&minute='.$minute.'&year='.$year.'&month='.$month.'&day='.$day.'&page=day';
                                 //echo '<a href="edit_entry.php?room='.$room.'&amp;hour='.$hour.'&amp;minute='.$minute.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;page=day" title="'.get_vocab('cliquez_pour_effectuer_une_reservation').'" ><span class="glyphicon glyphicon-plus"></span></a>'.PHP_EOL;
                             }
                         } else {
