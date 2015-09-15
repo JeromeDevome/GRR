@@ -44,3 +44,4 @@ Temporary Items
 
 include/connect.inc.php
 vendor
+/composer.lock
