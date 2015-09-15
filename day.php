@@ -204,12 +204,7 @@ if (grr_sql_count($res) == 0) {
      * menu gauche crée la var tplArrayMenuGauche
      */
     $tplArray['tplArrayMenuGauche'] = $tplArrayMenuGauche;
-    /*if ($_GET['pview'] != 1) {
-        echo '<div class="col-lg-9 col-md-12 col-xs-12">'.PHP_EOL;
-        echo '<div id="planning">'.PHP_EOL;
-    } else {
-        echo '<div id="print_planning">'.PHP_EOL;
-    }*/
+
     /**
      * intégré direct au template twig fixme voir le fonctionnement de base et debugger
      * include 'chargement.php';
@@ -238,11 +233,8 @@ if (grr_sql_count($res) == 0) {
         } else {
             $tplArray['vacances'] = false;
         }
-        /*if ($ferie_true) {
-            $class .= 'ferie ';
-        }*/
+
     }
-    //echo '<div class="titre_planning '.$class.'">'.PHP_EOL;
 
     if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1)) {
         $tplArray['vocab']['daybefore'] = get_vocab('daybefore');
@@ -250,19 +242,6 @@ if (grr_sql_count($res) == 0) {
         $tplArray['linkBefore'] = 'day.php?year='.$yy.'&month='.$ym.'&day='.$yd.'&area='.$area;
         $tplArray['linkAfter'] = 'day.php?year='.$ty.'&month='.$tm.'&day='.$td.'&area='.$area;
 
-        /*echo '<table class="table-header">',PHP_EOL,'<tr>',PHP_EOL,'<td class="left">',PHP_EOL,
-            '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'day.php?year='.$yy.'&amp;month='.$ym.'&amp;day='.$yd.'&amp;area='.$area.'\';">
-            <span class="glyphicon glyphicon-backward"></span> ',get_vocab('daybefore'),'</button>',PHP_EOL,'</td>',PHP_EOL,'<td>',PHP_EOL;*/
-        //include 'include/trailer.inc.php';
-        /*if ($tplArrayTrailer !== false) {
-            $tplArray['trailer'] = $tplArrayTrailer;
-        }
-        if ($tplArrayAlert !== false) {
-            $tplArray['alert'] = $tplArrayAlert;
-        }*/
-        /*echo '</td>',PHP_EOL,'<td class="right">',PHP_EOL,
-            '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'day.php?year='.$ty.'&amp;month='.$tm.'&amp;day='.$td.'&amp;area='.$area.'\';">
-            '.get_vocab('dayafter').'  <span class="glyphicon glyphicon-forward"></span></button>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;*/
     }
     $tplArray['vocab']['all_areas'] = get_vocab('all_areas');
     $tplArray['thisAreaName'] = $this_area_name;
@@ -272,11 +251,7 @@ if (grr_sql_count($res) == 0) {
         $tplArray['jourCycleInt'] = intval($jour_cycle);
         $tplArray['jourCycle'] = $jour_cycle;
         $tplArray['vocab']['rep_type_6'] = get_vocab('rep_type_6');
-        /*if (intval($jour_cycle) > 0) {
-            echo ' - '.get_vocab('rep_type_6').' '.$jour_cycle;
-        } else {
-            echo ' - '.$jour_cycle;
-        }*/
+
     } else {
         $tplArray['jourCycleInt'] = false;
     }
@@ -291,19 +266,17 @@ if (grr_sql_count($res) == 0) {
     } else {
         $tplArray['afficheLienPrecedant'] = false;
     }
-    /*echo '<div class="contenu_planning">'.PHP_EOL;
-    echo '<table class="table-bordered table-striped">'.PHP_EOL;
-    echo '<tr>'.PHP_EOL.'<th style="width:5%;">'.PHP_EOL;*/
+
     if ($enable_periods == 'y') {
         $tplArray['timeOuPeriod'] = get_vocab('period');
         $tplArray['period'] = true;
-        //echo get_vocab('period');
+
     } else {
         $tplArray['period'] = false;
         $tplArray['timeOuPeriod'] = get_vocab('time');
-        //echo get_vocab('time');
+
     }
-    //echo  '</th>'.PHP_EOL;
+
     $room_column_width = (int) (90 / grr_sql_count($res));
     $nbcol = 0;
     $rooms = array();
@@ -354,73 +327,28 @@ if (grr_sql_count($res) == 0) {
             $statut_room[$id_room[$i]] = $row['4'];
             $statut_moderate[$id_room[$i]] = $row['7'];
             $acces_fiche_reservation = verif_acces_fiche_reservation(getUserName(), $id_room[$i]);
-            /*if ($row['1']  && $_GET['pview'] != 1) {
-                $temp = '<br /><span class="small">('.$row['1'].' '.($row['1'] > 1 ? get_vocab('number_max2') : get_vocab('number_max')).')</span>'.PHP_EOL;
-            } else {
-                $temp = '';
-            }
-            if ($statut_room[$id_room[$i]] == '0'  && $_GET['pview'] != 1) {
-                $temp .= '<br /><span class="texte_ress_tempo_indispo">'.get_vocab('ressource_temporairement_indisponible').'</span>'.PHP_EOL;
-            }
-            if ($statut_moderate[$id_room[$i]] == '1'  && $_GET['pview'] != 1) {
-                $temp .= '<br /><span class="texte_ress_moderee">'.get_vocab('reservations_moderees').'</span>'.PHP_EOL;
-            }*/
-            /*echo '<th style="width:'.$room_column_width.'%;" ';
-            if ($statut_room[$id_room[$i]] == '0') {
-                echo 'class="avertissement" ';
-            }*/
-            //$a = $a + 1;
-            /*$a++;
-            echo '><a id="afficherBoutonSelection'.$a.'" class="lienPlanning" href="#" onclick="afficherMoisSemaine('.$a.')" style="display:inline;">'.htmlspecialchars($row['0']).'</a>'.PHP_EOL;
-            echo '<a id="cacherBoutonSelection'.$a.'" class="lienPlanning" href="#" onclick="cacherMoisSemaine('.$a.')" style="display:none;">'.htmlspecialchars($row['0']).'</a>'.PHP_EOL;
-            if (htmlspecialchars($row['3']).$temp != '') {
-                if (htmlspecialchars($row['3']) != '') {
-                    $saut = '<br />';
-                } else {
-                    $saut = '';
-                }
-                echo $saut.htmlspecialchars($row['3']).$temp."\n";
-            }
-            echo '<br />';*/
+
             if (verif_display_fiche_ressource(getUserName(), $id_room[$i]) && $_GET['pview'] != 1) {
                 $tplArray['rooms'][$roomVisibleForUser]['displayFicheRessourceOk'] = true;
-                /*echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$id_room[$i].'\',600,480,"scrollbars=yes,statusbar=no,resizable=yes")" title="'.get_vocab('fiche_ressource').'\">
-			<span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;*/
+
             } else {
                 $tplArray['rooms'][$roomVisibleForUser]['displayFicheRessourceOk'] = false;
             }
             if (authGetUserLevel(getUserName(), $id_room[$i]) > 2 && $_GET['pview'] != 1) {
                 $tplArray['rooms'][$roomVisibleForUser]['userLevel'] = authGetUserLevel(getUserName(), $id_room[$i]);
-                //echo '<a href="./admin/admin_edit_room.php?room='.$id_room[$i].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a><br/>'.PHP_EOL;
+
             }
             $tplArray['rooms'][$roomVisibleForUser]['afficheRessourceEmprunte'] = affiche_ressource_empruntee($id_room[$i]);
 
             $tplArray['rooms'][$roomVisibleForUser]['linkToSeeWeek'] = 'week.php?year='.$year.'&month='.$month.'&cher='.$day.'&room='.$tplArray['rooms'][$roomVisibleForUser]['id'];
             $tplArray['rooms'][$roomVisibleForUser]['linkToSeeMonth'] = 'month.php?year='.$year.'&month='.$month.'&cher='.$day.'&room='.$tplArray['rooms'][$roomVisibleForUser]['id'];
 
-            /*echo '<span id="boutonSelection'.$a.'" style="display:none;">'.PHP_EOL;
-            echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab('see_week_for_this_room')).'"
-            onclick="charger();javascript: location.href=\'week.php?year='.$year.'&amp;month='.$month.'&amp;cher='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('week').'"/>'.PHP_EOL;
-            echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab('see_month_for_this_room')).'"
-            onclick="charger();javascript: location.href=\'month.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('month').'"/>'.PHP_EOL;
-            echo '</span>'.PHP_EOL;
-            echo '</th>'.PHP_EOL;*/
-            /*if (htmlspecialchars($row['3']).$temp != '') {
-                if (htmlspecialchars($row['3']) != '') {
-                    $saut = '<br />';
-                } else {
-                    $saut = '';
-                }
-            }*/
             $rooms[] = $row['2'];
             $delais_option_reservation[$row['2']] = $row['6'];
             /* j'incrémente $roomVisibleForUser */
             $roomVisibleForUser++;
         }
     }
-    /*echo "<pre>";
-    var_dump($tplArray);
-    echo "/<pre>";*/
 
     if (count($rooms) == 0) {
         /* todo intégration twig */
@@ -429,11 +357,7 @@ if (grr_sql_count($res) == 0) {
         die();
     }
 
-    /*echo '<tr>'.PHP_EOL;
-    echo '<th style="width:5%;">'.PHP_EOL;
-    echo '</tr>'.PHP_EOL;*/
     $tab_ligne = 3;
-    //$iii = 0;
     $indexArray = 0;
     /* todo refacto le for, pour éviter de faire $t = $am7 à tous les tour de boucle */
 
@@ -447,14 +371,7 @@ if (grr_sql_count($res) == 0) {
 
 
     for ($t = $am7; $t <= $pm7; $t += $resolution) {
-        //echo '<tr>'.PHP_EOL;
-        /* ne fais pas doublon avec le table_stripped de bootstrap ? remplacé dans twig par loop.index */
-        /*if ($iii % 2 == 1) {
-            tdcell('cell_hours');
-        } else {
-            tdcell('cell_hours2');
-        }
-        ++$iii;*/
+
         if ($enable_periods == 'y') {
             $time_t = date('i', $t);
             $time_t_stripped = preg_replace('/^0/', '', $time_t);
@@ -607,20 +524,8 @@ if (grr_sql_count($res) == 0) {
                                 $tplArray['creneauxHoraire'][$indexArray]['entries'][$i]['endTime'] = date('H:i',$row['2']);
                                 //echo '<br/>',date('H:i', $start_time),get_vocab('to'),date('H:i', $end_time),'<br/>';
                             }
-                            /*if ($type_name != -1) {
-                                echo  $type_name;
-                            }*/
-                            //echo '<br>'.PHP_EOL;
-                            /*if ($clef == 1) {
-                                echo '<img src="img_grr/skey.png" alt="clef">'.PHP_EOL;
-                            }*/
                             if (Settings::get('show_courrier') == 'y') {
                                 $tplArray['creneauxHoraire'][$indexArray]['entries'][$i]['showCourrier'] = true;
-                                /*if ($courrier == 1) {
-                                    echo '<img src="img_grr/scourrier.png" alt="courrier">'.PHP_EOL;
-                                } else {
-                                    echo '<img src="img_grr/hourglass.png" alt="buzy">'.PHP_EOL;
-                                }*/
                             } else {
                                 $tplArray['creneauxHoraire'][$indexArray]['entries'][$i]['showCourrier'] = false;
                             }
@@ -636,29 +541,19 @@ if (grr_sql_count($res) == 0) {
                         //echo ' '.$descr;
                     }
 
-                    /*if ($acces_fiche_reservation) {
-                        echo '</a>'.PHP_EOL;
-                    }
-                    echo '</td>'.PHP_EOL;*/
                 }
             }
         }
-        //echo '</tr>'.PHP_EOL;
         reset($rooms);
         $indexArray++;
     }
-    //echo '</table>'.PHP_EOL;
+
 }
 grr_sql_free($res);
 if ($_GET['pview'] != 1) {
     $tplArray['vocab']['top_of_page'] = get_vocab('top_of_page');
-    /*echo '<div id="toTop">'.PHP_EOL;
-    echo '<b>'.get_vocab('top_of_page').'</b>'.PHP_EOL;*/
-    //bouton_retour_haut();
-    //echo '</div>'.PHP_EOL;
 }
-/*echo '</div>'.PHP_EOL;
-echo '</div>'.PHP_EOL;*/
+
 if (!(Settings::get('javascript_info_disabled'))) {
    if($msg = sessionDisplayMessage()) {
        if ( $msg === true ) {
@@ -695,10 +590,7 @@ if (!(Settings::get('javascript_info_disabled'))) {
 ?>
 <?php
 unset($row);
-/*echo '</div>'.PHP_EOL;
-echo '</div>'.PHP_EOL;
-echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;*/
-//include 'footer.php';
+
 if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1)) {
 
     include 'include/printAction.inc.php';

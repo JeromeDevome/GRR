@@ -31,6 +31,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 header('Cache-Control:no-cache');
+
 function returnmsg($type, $test, $status, $msg = '')
 {
     echo encode_message_utf8('<div class="alert alert-'.$type.'" role="alert"><h3>'.$test);
@@ -1339,9 +1340,6 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
         //	echo '</ul>'.PHP_EOL;
             echo '</div>'.PHP_EOL;
             echo '</div>'.PHP_EOL;*/
-            /*echo "<pre>";
-            var_dump($tplArray);
-            echo "</pre>";*/
 
            echo $twig->render('printHeader.html.twig', $tplArray);
         }
@@ -2228,11 +2226,8 @@ function make_area_selection_fields($link, $current_site, $current_area, $year, 
         }
     }
     grr_sql_free($res);
-/*echo "<pre>";
-    var_dump($tplArray);
-echo "</pre>";*/
+
     return $tplArray;
-    //return $twig->render('forms/areaFields.html.twig', $tplArray);
 }
 /**
  * Menu gauche affichage des room via select.
@@ -4939,4 +4934,29 @@ if (isset($_GET['year'])) {
         $year = 2100;
     }
 }
-?>
+
+/**
+ * @author Bouteillier Nicolas
+ * parse and sanitize the query string
+ *
+ */
+function queryStringSanitize ($queryString) {
+    /* explode avec & */
+    $qsArray = explode("&", $queryString);
+    /* foreach htmlspecialchar striptag */
+    foreach ($qsArray as &$param) {
+        /* je fais d'abord une url decode */
+        $param = urldecode($param);
+        $param = filter_var($param, FILTER_SANITIZE_URL);
+        $param = strip_tags($param);
+
+        /* fixme je dois faire deux fois htmlspecialschar pour que ça fonctionne, voir encodage... */
+        $param = htmlspecialchars($param);
+        $param = htmlspecialchars($param);
+
+    }
+    unset ($param);
+
+    return implode("&", $qsArray);
+}
+

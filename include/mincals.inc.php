@@ -30,6 +30,8 @@
  * along with GRR; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
+/* todo nicolas : cleanup */
 function minicals($year, $month, $day, $area, $room, $dmy)
 {
     global $display_day, $vocab;
@@ -380,7 +382,6 @@ function minicals($year, $month, $day, $area, $room, $dmy)
             $tplArray['month'][$ind] = $cal->getHTML();
             ++$ind;
         }
-        //var_dump($tplArray);
 
         return $tplArray;
     }
