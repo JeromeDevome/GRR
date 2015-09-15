@@ -203,7 +203,8 @@ if (grr_sql_count($res) == 0) {
      * todo voir pour transformer ces includes en fonction ? Vérifier portée des var par rapport à l'include
      * menu gauche crée la var tplArrayMenuGauche
      */
-    $tplArray['tplArrayMenuGauche'] = $tplArrayMenuGauche;
+     $tplArray['tplArrayMenuGauche'] = $tplArrayMenuGauche;
+
 
     /**
      * intégré direct au template twig fixme voir le fonctionnement de base et debugger

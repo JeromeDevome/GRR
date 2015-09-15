@@ -4,10 +4,10 @@
 
             {% for key, monthDetail in returnCalHtml['month'] %}
                 <div class="col-md-5">
-                    <table class="table-condensed">
+                    <table class="table-condensed calendar">
                         {# ligne des jours de la semaine #}
                         <tr>
-                            <td>&nbsp;</td>
+                            <td class="cellcalendar">&nbsp;</td>
                             {% for firstDay in monthDetail.firstDays %}
                                 <td>{{ firstDay }}</td>
                             {% endfor %}

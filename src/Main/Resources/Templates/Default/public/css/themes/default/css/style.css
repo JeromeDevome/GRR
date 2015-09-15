@@ -171,3 +171,6 @@ a.buttonsReservation{cursor:pointer}
 	FLOAT:LEFT;
 	}
 }
+.biggerIcon {
+	font-size: 1.3em;
+}

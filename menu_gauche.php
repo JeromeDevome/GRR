@@ -32,4 +32,6 @@ if ($_GET['pview'] != 1) {
     if (Settings::get('legend') == '0') {
         $tplArrayMenuGauche['showColour'] = show_colour_key($area);
     }
+} else {
+    $tplArrayMenuGauche = false;
 }
