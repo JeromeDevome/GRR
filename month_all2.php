@@ -294,12 +294,13 @@ echo "<tr><th></th>\n";
 //$t2 = mktime(0, 0, 0, $month, 1, $year);
 for ($k = 1; $k <= $days_in_month; $k++)
 {
+    $t2 = mktime(0, 0, 0, $month, $k, $year);
 	$cday = date("j", $t2);
 	$cweek = date("w", $t2);
 	$name_day = ucfirst(utf8_strftime("%a %d", $t2));
 	$temp = mktime(0, 0, 0, $month,$cday,$year);
 	$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$temp'");
-    $t2 = mktime(0, 0, 0, $month, $k, $year);
+
 	//$t2 += 86400;
 
 	if ($display_day[$cweek] == 1)
@@ -332,10 +333,10 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++)
 		//$t2 = mktime(0, 0, 0,$month, 1, $year);
 		for ($k = 1; $k <= $days_in_month; $k++)
 		{
+            $t2 = mktime(0, 0, 0,$month, $k, $year);
 			$cday = date("j", $t2);
 			$cweek = date("w", $t2);
 			//$t2 += 86400;
-            $t2 = mktime(0, 0, 0,$month, $k, $year);
 			if ($display_day[$cweek] == 1)
 			{
 				echo "<td class=\"cell_month\"> ";
