@@ -21,3 +21,5 @@
 * Mise en place de la generation de pdf avancé - Partiel
 * Envois d'une lettre en pdf avec le mail de confirmation - 0%
 * Sauvegarde de la lettre sur le serveur - 0%
+
+* Passage en GPL V3 au fur et a mesure des modifications de fichier
