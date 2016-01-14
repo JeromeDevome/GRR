@@ -297,24 +297,118 @@ if (isset($_POST['ok'])) {
     }
     // Enregistrement du logo
     $doc_file = isset($_FILES['doc_file']) ? $_FILES['doc_file'] : null;
-
     /* Test premier, juste pour bloquer les double extensions */
-    if (count(explode('.', $doc_file)) > 1) {
-    }
-    if (preg_match("`\.([^.]+)$`", $doc_file['name'], $match)) {
+    if (count(explode('.', $doc_file['name'])) > 2) {
+
+        $msg .= "L\'image n\'a pas pu être enregistrée : les seules extentions autorisées sont gif, png et jpg.\\n";
+        $ok = 'no';
+
+    } elseif (preg_match("`\.([^.]+)$`", $doc_file['name'], $match)) {
+        /* normalement, si on arrive ici l'image n'a qu'une extension */
+
         $ext = strtolower($match[1]);
         if ($ext != 'jpg' && $ext != 'png' && $ext != 'gif') {
             $msg .= "L\'image n\'a pas pu être enregistrée : les seules extentions autorisées sont gif, png et jpg.\\n";
             $ok = 'no';
         } else {
-            $dest = '../images/';
-            $ok1 = false;
-            if ($f = @fopen("$dest/.test", 'w')) {
+            /* deuxième test passée, l'extension est autorisée */
+
+            /* je fais le 3ème test avec fileinfo */
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $fileType = finfo_file($finfo, $doc_file['tmp_name']);
+
+            /* 4ème test avec gd pour valider que c'est bien une image malgrès tout - nécessaire ou parano ? */
+            switch($fileType) {
+                case "image/gif":
+                    /* recreate l'image, normalement ça supprime les data exif todo : valider que les fonction imagecreate* supprime les data exif */
+                    $logoRecreated = @imagecreatefromgif ( $doc_file['tmp_name'] );
+                    /* fix pour la transparence */
+                    imageAlphaBlending($logoRecreated, true);
+                    imageSaveAlpha($logoRecreated, true);
+                    $extSafe = "gif";
+                    break;
+                case "image/jpeg":
+                    $logoRecreated = @imagecreatefromjpeg ( $doc_file['tmp_name'] );
+                    $extSafe = "jpg";
+                    break;
+                case "image/png":
+                    $logoRecreated = @imagecreatefrompng ( $doc_file['tmp_name'] );
+                    /* fix pour la transparence */
+                    imageAlphaBlending($logoRecreated, true);
+                    imageSaveAlpha($logoRecreated, true);
+                    $extSafe = "png";
+                    break;
+                default:
+                    $msg .= "L\'image n\'a pas pu être enregistrée : type mime incompatible.\\n";
+                    $ok = 'no';
+                    $extSafe = false;
+                    break;
+            }
+            if (!$logoRecreated || $extSafe === false) {
+                /* la fonction imagecreate à échouée, donc l'image est corrompue ou craftée */
+                $msg .= "L\'image n\'a pas pu être enregistrée : fichier corrompu.\\n";
+                $ok = 'no';
+            } else {
+                /* j'ai une image valide, sans data exif, avec un bon type mime */
+
+                /* je test si la destination est writable */
+                $dest = '../images/';
+                $randName = md5(uniqid(rand(), true));
+
+                $pictureName = $randName.'.'.$extSafe;
+                $picturePath = $dest.$pictureName;
+
+                if (is_writable($dest)) {
+                    /* je copie le logo pour valider avec la fonction move_uploaded_file */
+                    $moveUploadReturn = move_uploaded_file($doc_file['tmp_name'], $picturePath);
+                    if (!$moveUploadReturn) {
+                        $msg .= "L\'image n\'a pas pu être enregistrée : problème de transfert. Le fichier n\'a pas pu être transféré sur le répertoire IMAGES. Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
+                        $ok = 'no';
+                    } else {
+                        /* si c'est bon, je supprime l'image et je la remplace par l'image create avec gd */
+                        $unlinkReturn = unlink($picturePath);
+                        if (!$unlinkReturn) {
+                            $msg .= "Erreur lors de l'enregistrement du logo ! (suppression du fichier temporaire)\\n";
+                            $ok = 'no';
+                        } else {
+                            /* j'ai supprimé le logo copié, je  vais enregistrer l'image à la place */
+                            switch($extSafe) {
+                                case "gif":
+                                    $retourSaveImage = imagegif($logoRecreated, $picturePath);
+                                    break;
+                                case "jpg":
+                                    $retourSaveImage = imagejpeg($logoRecreated, $picturePath);
+                                    break;
+                                case "png":
+                                    $retourSaveImage = imagepng($logoRecreated, $picturePath);
+                                    break;
+                            }
+                            $retourDestroy = imagedestroy($logoRecreated);
+                            if (!$retourSaveImage || !$retourDestroy) {
+                                /* gérer un warning juste ? */
+                                $msg .= " (Erreur de imagedestroy)\\n";
+                            }
+                            if (!Settings::set('logo', $pictureName)) {
+                                $msg .= "Erreur lors de l'enregistrement du logo !\\n";
+                                $ok = 'no';
+                            }
+                        }
+                    }
+
+                } else {
+                    $msg .= "L\'image n\'a pas pu être enregistrée : problème d\'écriture sur le répertoire \"images\". Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
+                    $ok = 'no';
+                }
+            }
+
+
+            //$ok1 = false;
+            /*if ($f = @fopen("$dest/.test", 'w')) {
                 @fputs($f, '<'.'?php $ok1 = true; ?'.'>');
                 @fclose($f);
                 include "$dest/.test";
-            }
-            if (!$ok1) {
+            }*/
+            /*if (!$ok1) {
                 $msg .= "L\'image n\'a pas pu être enregistrée : problème d\'écriture sur le répertoire \"images\". Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
                 $ok = 'no';
             } else {
@@ -341,7 +435,7 @@ if (isset($_POST['ok'])) {
                         $ok = 'no';
                     }
                 }
-            }
+            }*/
         }
     } elseif ($doc_file['name'] != '') {
         $msg .= "L\'image n\'a pas pu être enregistrée : le fichier image sélectionné n'est pas valide !\\n";
@@ -513,6 +607,7 @@ if ((Settings::get('logo') != '') && (@file_exists($nom_picture))) {
     echo '<tr>'.PHP_EOL;
     echo '<td>'.get_vocab('supprimer_logo').get_vocab('deux_points').PHP_EOL;
     echo '<img src="'.$nom_picture.'" class="image" alt="logo" title="'.$nom_picture.'"/>'.PHP_EOL;
+    require($nom_picture);
     echo '</td>'.PHP_EOL;
     echo '<td><input type="checkbox" name="sup_img" /></td>'.PHP_EOL;
     echo '</tr>'.PHP_EOL;
