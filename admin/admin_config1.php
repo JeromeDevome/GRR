@@ -320,7 +320,7 @@ if (isset($_POST['ok'])) {
             /* 4ème test avec gd pour valider que c'est bien une image malgrès tout - nécessaire ou parano ? */
             switch($fileType) {
                 case "image/gif":
-                    /* recreate l'image, normalement ça supprime les data exif todo : valider que les fonction imagecreate* supprime les data exif */
+                    /* recreate l'image, supprime les data exif */
                     $logoRecreated = @imagecreatefromgif ( $doc_file['tmp_name'] );
                     /* fix pour la transparence */
                     imageAlphaBlending($logoRecreated, true);
@@ -571,7 +571,6 @@ if ((Settings::get('logo') != '') && (@file_exists($nom_picture))) {
     echo '<tr>'.PHP_EOL;
     echo '<td>'.get_vocab('supprimer_logo').get_vocab('deux_points').PHP_EOL;
     echo '<img src="'.$nom_picture.'" class="image" alt="logo" title="'.$nom_picture.'"/>'.PHP_EOL;
-    require($nom_picture);
     echo '</td>'.PHP_EOL;
     echo '<td><input type="checkbox" name="sup_img" /></td>'.PHP_EOL;
     echo '</tr>'.PHP_EOL;
