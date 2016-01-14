@@ -400,42 +400,6 @@ if (isset($_POST['ok'])) {
                     $ok = 'no';
                 }
             }
-
-
-            //$ok1 = false;
-            /*if ($f = @fopen("$dest/.test", 'w')) {
-                @fputs($f, '<'.'?php $ok1 = true; ?'.'>');
-                @fclose($f);
-                include "$dest/.test";
-            }*/
-            /*if (!$ok1) {
-                $msg .= "L\'image n\'a pas pu être enregistrée : problème d\'écriture sur le répertoire \"images\". Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
-                $ok = 'no';
-            } else {
-                $ok1 = @copy($doc_file['tmp_name'], $dest.$doc_file['name']);
-                if (!$ok1) {
-                    $ok1 = @move_uploaded_file($doc_file['tmp_name'], $dest.$doc_file['name']);
-                }
-                if (!$ok1) {
-                    $msg .= "L\'image n\'a pas pu être enregistrée : problème de transfert. Le fichier n\'a pas pu être transféré sur le répertoire IMAGES. Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
-                    $ok = 'no';
-                } else {
-                    $tab = explode('.', $doc_file['name']);
-                    $ext = strtolower($tab[1]);
-                    if ($dest.$doc_file['name'] != $dest.'logo.'.$ext) {
-                        if (@file_exists($dest.'logo.'.$ext)) {
-                            @unlink($dest.'logo.'.$ext);
-                        }
-                        rename($dest.$doc_file['name'], $dest.'logo.'.$ext);
-                    }
-                    @chmod($dest.'logo.'.$ext, 0666);
-                    $picture_room = 'logo.'.$ext;
-                    if (!Settings::set('logo', $picture_room)) {
-                        $msg .= "Erreur lors de l'enregistrement du logo !\\n";
-                        $ok = 'no';
-                    }
-                }
-            }*/
         }
     } elseif ($doc_file['name'] != '') {
         $msg .= "L\'image n\'a pas pu être enregistrée : le fichier image sélectionné n'est pas valide !\\n";
