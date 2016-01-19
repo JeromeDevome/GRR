@@ -291,15 +291,18 @@ echo '<table class="table-bordered">'.PHP_EOL;
 $sql = "SELECT room_name, capacity, id, description FROM ".TABLE_PREFIX."_room WHERE area_id=$area ORDER BY order_display,room_name";
 $res = grr_sql_query($sql);
 echo "<tr><th></th>\n";
-$t2 = mktime(0, 0, 0, $month, 1, $year);
-for ($k = 0; $k < $days_in_month; $k++)
+//$t2 = mktime(0, 0, 0, $month, 1, $year);
+for ($k = 1; $k <= $days_in_month; $k++)
 {
+    $t2 = mktime(0, 0, 0, $month, $k, $year);
 	$cday = date("j", $t2);
 	$cweek = date("w", $t2);
 	$name_day = ucfirst(utf8_strftime("%a %d", $t2));
 	$temp = mktime(0, 0, 0, $month,$cday,$year);
 	$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$temp'");
-	$t2 += 86400;
+
+	//$t2 += 86400;
+
 	if ($display_day[$cweek] == 1)
 	{
 		echo "<th class=\"tableau_month_all2\">$name_day";
@@ -327,12 +330,13 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++)
 		$acces_fiche_reservation = verif_acces_fiche_reservation(getUserName(), $row[2]);
 		echo "<tr><th class=\"tableau_month_all2\">" . htmlspecialchars($row[0]) ."</th>\n";
 		$li++;
-		$t2 = mktime(0, 0, 0,$month, 1, $year);
-		for ($k = 0; $k < $days_in_month; $k++)
+		//$t2 = mktime(0, 0, 0,$month, 1, $year);
+		for ($k = 1; $k <= $days_in_month; $k++)
 		{
+            $t2 = mktime(0, 0, 0,$month, $k, $year);
 			$cday = date("j", $t2);
 			$cweek = date("w", $t2);
-			$t2 += 86400;
+			//$t2 += 86400;
 			if ($display_day[$cweek] == 1)
 			{
 				echo "<td class=\"cell_month\"> ";
