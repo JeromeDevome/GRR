@@ -279,7 +279,7 @@ else
 			}
 			echo '<br />';
 			if (verif_display_fiche_ressource(getUserName(), $id_room[$i]) && $_GET['pview'] != 1)
-				echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$id_room[$i].'\',600,480,\scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'\">
+				echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$id_room[$i].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'\">
 			<span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
 			if (authGetUserLevel(getUserName(),$id_room[$i]) > 2 && $_GET['pview'] != 1)
 				echo '<a href="./admin/admin_edit_room.php?room='.$id_room[$i].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a><br/>'.PHP_EOL;
