@@ -480,7 +480,7 @@ else
 										echo '<img src="img_grr/buzy.png" alt="',get_vocab("ressource actuellement empruntee"),'" title="',get_vocab("ressource actuellement empruntee"),'" width="20" height="20" class="image" />',PHP_EOL;
 									if ((isset($d[$cday]["option_reser"][$i])) && ($d[$cday]["option_reser"][$i] != -1))
 										echo '<img src="img_grr/small_flag.png" alt="',get_vocab("reservation_a_confirmer_au_plus_tard_le"),'" title="',get_vocab("reservation_a_confirmer_au_plus_tard_le"),' ',time_date_string_jma($d[$cday]["option_reser"][$i],$dformat),'" width="20" height="20" class="image" />',PHP_EOL;
-									if ((isset($d[$cday]["moderation"][$i])) && ($d[$cday]["moderation"][$i == 1]))
+									if ((isset($d[$cday]["moderation"][$i])) && ($d[$cday]["moderation"][$i] == 1))
 										echo '<img src="img_grr/flag_moderation.png" alt="',get_vocab("en_attente_moderation"),'" title="',get_vocab("en_attente_moderation"),'" class="image" />',PHP_EOL;
 									$Son_GenreRepeat = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area,".TABLE_PREFIX."_entry  WHERE  ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter  AND ".TABLE_PREFIX."_entry.id = '".$d[$cday]["id"][$i]."';");
 									if ($Son_GenreRepeat == -1 )
