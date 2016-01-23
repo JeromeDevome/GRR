@@ -2391,7 +2391,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 {
 	global $vocab, $grrSettings, $locale, $weekstarts, $enable_periods, $periods_name;
 
-	$message_erreur = "";
+	$message_erreur = '';
 
 	// $action = 1 -> Création
 	// $action = 2 -> Modification
