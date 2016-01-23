@@ -1,3 +1,6 @@
+# Todos
+* ajouter port smtp aux settings pour l'envoi de mail
+
 # Ajout en cours
 ## Ajout fonction clé donné / rendu
 * Alteration de la table de reservation - OK

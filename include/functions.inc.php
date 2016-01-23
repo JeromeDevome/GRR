@@ -2391,7 +2391,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 {
 	global $vocab, $grrSettings, $locale, $weekstarts, $enable_periods, $periods_name;
 
-	$message_erreur = '';
+	$message_erreur = "";
 
 	// $action = 1 -> Création
 	// $action = 2 -> Modification
@@ -2401,436 +2401,449 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 	// $action = 6 -> Résultat d'une décision de modération
 	// $action = 7 -> Notification d'un retard dans la restitution d'une ressource.
 
-	require_once 'phpmailer/PHPMailerAutoload.php';
-	define('GRR_FROM', Settings::get('grr_mail_from'));
-	define('GRR_FROMNAME', Settings::get('grr_mail_fromname'));
+    /* fixme faire le tri entre phpMailer et la class my_mailer */
+    /* todo ajouter un $port smtp dans les settings */
 
-	require_once './include/mail.inc.php';
-	//$m = new my_phpmailer();
+    require_once 'phpmailer/PHPMailerAutoload.php';
+    define('GRR_FROM', Settings::get('grr_mail_from'));
+    define('GRR_FROMNAME', Settings::get('grr_mail_fromname'));
 
-	$mail = new PHPMailer();
+    require_once './include/mail.inc.php';
+    //$m = new my_phpmailer();
 
-	if (Settings::get('grr_mail_method') == 'smtp') {
-		$smtpUsername = Settings::get('grr_mail_Username');
-		$smtpPassword = Settings::get('grr_mail_Password');
+    $mail = new PHPMailer();
 
-		$mail->isSMTP();
-	}
+    if (Settings::get('grr_mail_method') == 'smtp') {
 
-	if ($smtpUsername != "") {
-		$mail->SMTPAuth = true;
-		$mail->Username = $smtpUsername;
-		$mail->Password = $smtpPassword;
+        $smtpUsername = Settings::get('grr_mail_Username');
+        $smtpPassword = Settings::get('grr_mail_Password');
 
-	} else {
-		$mail->SMTPAuth = true;
-	}
+        if ($smtpUsername != "") {
+            $mail->SMTPAuth = true;
+            $mail->Username = $smtpUsername;
+            $mail->Password = $smtpPassword;
 
-//	$mail->SMTPDebug = 2;
-//	$mail->Debugoutput = 'html';
-	$mail->Host = Settings::get('grr_mail_smtp');
-	$mail->Port = 587;
+        } else {
+            $mail->SMTPAuth = false;
+        }
+
+        $mail->Host = Settings::get('grr_mail_smtp');
+        $mail->Port = 587;
+
+        $mail->isSMTP();
+
+    } else {
+
+        $mail->isSendMail();
+
+    }
+
+    //$mail->SMTPDebug = 2;
+    //$mail->Debugoutput = 'html';
 
 	$mail->CharSet = 'UTF-8';
 	$mail->setFrom(GRR_FROM, GRR_FROMNAME);
 
-	$mail->SetLanguage('fr', './phpmailer/language/');
+	$mail->SetLanguage("fr", "./phpmailer/language/");
 
 	setlocale(LC_ALL, $locale);
 
-	$sql = 'SELECT '.TABLE_PREFIX.'_entry.name,
-	'.TABLE_PREFIX.'_entry.description,
-	'.TABLE_PREFIX.'_entry.beneficiaire,
-	'.TABLE_PREFIX.'_room.room_name,
-	'.TABLE_PREFIX.'_area.area_name,
-	'.TABLE_PREFIX.'_entry.type,
-	'.TABLE_PREFIX.'_entry.room_id,
-	'.TABLE_PREFIX.'_entry.repeat_id,
-	'.grr_sql_syntax_timestamp_to_unix(''.TABLE_PREFIX.'_entry.timestamp').',
-	('.TABLE_PREFIX.'_entry.end_time - '.TABLE_PREFIX.'_entry.start_time),
-	'.TABLE_PREFIX.'_entry.start_time,
-	'.TABLE_PREFIX.'_entry.end_time,
-	'.TABLE_PREFIX.'_room.area_id,
-	'.TABLE_PREFIX.'_room.delais_option_reservation,
-	'.TABLE_PREFIX.'_entry.option_reservation,
-	'.TABLE_PREFIX.'_entry.moderate,
-	'.TABLE_PREFIX.'_entry.beneficiaire_ext,
-	'.TABLE_PREFIX.'_entry.jours,
-	'.TABLE_PREFIX.'_entry.clef,
-	'.TABLE_PREFIX.'_entry.courrier
-	FROM '.TABLE_PREFIX.'_entry, '.TABLE_PREFIX.'_room, '.TABLE_PREFIX.'_area
-	WHERE '.TABLE_PREFIX.'_entry.room_id = '.TABLE_PREFIX.'_room.id
-	AND '.TABLE_PREFIX.'_room.area_id = '.TABLE_PREFIX.'_area.id
-	AND '.TABLE_PREFIX."_entry.id='".protect_data_sql($id_entry)."'
+	$sql = "SELECT ".TABLE_PREFIX."_entry.name,
+	".TABLE_PREFIX."_entry.description,
+	".TABLE_PREFIX."_entry.beneficiaire,
+	".TABLE_PREFIX."_room.room_name,
+	".TABLE_PREFIX."_area.area_name,
+	".TABLE_PREFIX."_entry.type,
+	".TABLE_PREFIX."_entry.room_id,
+	".TABLE_PREFIX."_entry.repeat_id,
+	" . grr_sql_syntax_timestamp_to_unix("".TABLE_PREFIX."_entry.timestamp") . ",
+	(".TABLE_PREFIX."_entry.end_time - ".TABLE_PREFIX."_entry.start_time),
+	".TABLE_PREFIX."_entry.start_time,
+	".TABLE_PREFIX."_entry.end_time,
+	".TABLE_PREFIX."_room.area_id,
+	".TABLE_PREFIX."_room.delais_option_reservation,
+	".TABLE_PREFIX."_entry.option_reservation,
+	".TABLE_PREFIX."_entry.moderate,
+	".TABLE_PREFIX."_entry.beneficiaire_ext,
+	".TABLE_PREFIX."_entry.jours,
+	".TABLE_PREFIX."_entry.clef,
+	".TABLE_PREFIX."_entry.courrier
+	FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
+	WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
+	AND ".TABLE_PREFIX."_room.area_id = ".TABLE_PREFIX."_area.id
+	AND ".TABLE_PREFIX."_entry.id='".protect_data_sql($id_entry)."'
 	";
 	$res = grr_sql_query($sql);
-	if (!$res) {
+	if (!$res)
 		fatal_error(0, grr_sql_error());
-	}
-	if (grr_sql_count($res) < 1) {
+	if (grr_sql_count($res) < 1)
 		fatal_error(0, get_vocab('invalid_entry_id'));
-	}
 	$row = grr_sql_row($res, 0);
 	grr_sql_free($res);
 
 	get_planning_area_values($row[12]);
-	$breve_description = bbcode(removeMailUnicode(htmlspecialchars($row[0])), 'nobbcode');
-	$description = bbcode(removeMailUnicode(htmlspecialchars($row[1])), 'nobbcode');
-	$beneficiaire = htmlspecialchars($row[2]);
-	$room_name = removeMailUnicode(htmlspecialchars($row[3]));
-	$area_name = removeMailUnicode(htmlspecialchars($row[4]));
-	$room_id = $row[6];
-	$repeat_id = $row[7];
-	$date_avis = strftime('%Y/%m/%d', $row[10]);
-	$delais_option_reservation = $row[13];
-	$option_reservation = $row[14];
-	$moderate = $row[15];
-	$beneficiaire_ext = htmlspecialchars($row[16]);
-	$jours_cycle = htmlspecialchars($row[17]);
-	$duration = $row[9];
-	if ($enable_periods == 'y') {
+	$breve_description 			= bbcode(removeMailUnicode(htmlspecialchars($row[0])), 'nobbcode');
+	$description  				= bbcode(removeMailUnicode(htmlspecialchars($row[1])), 'nobbcode');
+	$beneficiaire 				= htmlspecialchars($row[2]);
+	$room_name    				= removeMailUnicode(htmlspecialchars($row[3]));
+	$area_name    				= removeMailUnicode(htmlspecialchars($row[4]));
+	$room_id      				= $row[6];
+	$repeat_id    				= $row[7];
+	$date_avis    				= strftime("%Y/%m/%d", $row[10]);
+	$delais_option_reservation 	= $row[13];
+	$option_reservation 		= $row[14];
+	$moderate 					= $row[15];
+	$beneficiaire_ext			= htmlspecialchars($row[16]);
+	$jours_cycle 				= htmlspecialchars($row[17]);
+	$duration     				= $row[9];
+	if ($enable_periods == 'y')
 		list($start_period, $start_date) = period_date_string($row[10]);
-	} else {
-		$start_date = time_date_string($row[10], $dformat);
-	}
+	else
+		$start_date = time_date_string($row[10],$dformat);
 	$rep_type = 0;
 
-	if ($repeat_id != 0) {
-		$res = grr_sql_query('SELECT rep_type, end_date, rep_opt, rep_num_weeks FROM '.TABLE_PREFIX."_repeat WHERE id='".protect_data_sql($repeat_id)."'");
-		if (!$res) {
+	if ($repeat_id != 0)
+	{
+		$res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks FROM ".TABLE_PREFIX."_repeat WHERE id='".protect_data_sql($repeat_id)."'");
+		if (!$res)
 			fatal_error(0, grr_sql_error());
-		}
 		$test = grr_sql_count($res);
-		if ($test != 1) {
-			fatal_error(0, 'Deux reservation on le meme ID.');
-		} else {
+		if ($test != 1)
+			fatal_error(0, "Deux reservation on le meme ID.");
+		else
+		{
 			$row2 = grr_sql_row($res, 0);
-			$rep_type = $row2[0];
-			$rep_end_date = strftime($dformat, $row2[1]);
-			$rep_opt = $row2[2];
+			$rep_type     = $row2[0];
+			$rep_end_date = strftime($dformat,$row2[1]);
+			$rep_opt      = $row2[2];
 			$rep_num_weeks = $row2[3];
 		}
 		grr_sql_free($res);
 	}
-	if ($enable_periods == 'y') {
+	if ($enable_periods == 'y')
 		toPeriodString($start_period, $duration, $dur_units);
-	} else {
+	else
 		toTimeString($duration, $dur_units);
-	}
-	$weeklist = array('unused', 'every week', 'week 1/2', 'week 1/3', 'week 1/4', 'week 1/5');
-	if ($rep_type == 2) {
+	$weeklist = array("unused", "every week", "week 1/2", "week 1/3", "week 1/4", "week 1/5");
+	if ($rep_type == 2)
 		$affiche_period = $vocab[$weeklist[$rep_num_weeks]];
-	} else {
+	else
 		$affiche_period = $vocab['rep_type_'.$rep_type];
-	}
 
 	// Le bénéficiaire
-	$beneficiaire_email = affiche_nom_prenom_email($beneficiaire, $beneficiaire_ext, 'onlymail');
-	if ($beneficiaire != '') {
-		$beneficiaire_actif = grr_sql_query1('SELECT etat FROM '.TABLE_PREFIX."_utilisateurs WHERE login='$beneficiaire'");
-		if ($beneficiaire_actif == -1) {
-			$beneficiaire_actif = 'actif';
-		} // Cas des admins
-	} elseif (($beneficiaire_ext != '') && ($beneficiaire_email != '')) {
-		$beneficiaire_actif = 'actif';
-	} else {
-		$beneficiaire_actif = 'inactif';
+	$beneficiaire_email = affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"onlymail");
+	if ($beneficiaire != "")
+	{
+		$beneficiaire_actif = grr_sql_query1("SELECT etat FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$beneficiaire'");
+		if ($beneficiaire_actif == -1)
+			$beneficiaire_actif = 'actif'; // Cas des admins
 	}
+	else if (($beneficiaire_ext != "") && ($beneficiaire_email != ""))
+		$beneficiaire_actif = "actif";
+	else
+		$beneficiaire_actif = "inactif";
 
 	// Utilisateur ayant agit sur la réservation
 	$user_login = getUserName();
-	$user_email = grr_sql_query1('SELECT email FROM '.TABLE_PREFIX."_utilisateurs WHERE login='$user_login'");
+	$user_email = grr_sql_query1("SELECT email FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$user_login'");
 	//
 	// Elaboration du message destiné aux utilisateurs désignés par l'admin dans la partie "Mails automatiques"
 	//
 	//Nom de l'établissement et mention "mail automatique"
-	$message = removeMailUnicode(Settings::get('company')).' - '.$vocab['title_mail'];
+	$message = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
 	// Url de GRR
-	$message = $message.traite_grr_url('', 'y')."\n\n";
-	$sujet = $vocab['subject_mail1'].$room_name.' - '.$date_avis;
-	if ($action == 1) {
-		$sujet = $sujet.$vocab['subject_mail_creation'];
-		$message .= $vocab['the_user'].affiche_nom_prenom_email($user_login, '', 'formail');
-		$message = $message.$vocab['creation_booking'];
-		$message = $message.$vocab['the_room'].$room_name.' ('.$area_name.") \n";
-	} elseif ($action == 2) {
-		$sujet = $sujet.$vocab['subject_mail_modify'];
-		if ($moderate == 1) {
-			$sujet .= ' ('.$vocab['en_attente_moderation'].')';
-		}
-		$message .= $vocab['the_user'].affiche_nom_prenom_email($user_login, '', 'formail');
-		$message = $message.$vocab['modify_booking'];
-		$message = $message.$vocab['the_room'].$room_name.' ('.$area_name.') ';
-	} elseif ($action == 3) {
-		$sujet = $sujet.$vocab['subject_mail_delete'];
-		if ($moderate == 1) {
-			$sujet .= ' ('.$vocab['en_attente_moderation'].')';
-		}
-		$message .= $vocab['the_user'].affiche_nom_prenom_email($user_login, '', 'formail');
-		$message = $message.$vocab['delete_booking'];
-		$message = $message.$vocab['the_room'].$room_name.' ('.$area_name.") \n";
-	} elseif ($action == 4) {
-		$sujet = $sujet.$vocab['subject_mail_delete'];
-		$message = $message.$vocab['suppression_automatique'];
-		$message = $message.$vocab['the_room'].$room_name.' ('.$area_name.") \n";
-	} elseif ($action == 5) {
-		$sujet = $sujet.$vocab['subject_mail_moderation'];
-		$message = $message.$vocab['reservation_en_attente_de_moderation'];
-		$message = $message.$vocab['the_room'].$room_name.' ('.$area_name.") \n";
-	} elseif ($action == 6) {
-		$sujet = $sujet.$vocab['subject_mail_decision_moderation'];
-		$resmoderate = grr_sql_query('SELECT moderate, motivation_moderation FROM '.TABLE_PREFIX."_entry_moderate WHERE id ='".protect_data_sql($id_entry)."'");
-		if (!$resmoderate) {
+	$message = $message.traite_grr_url("","y")."\n\n";
+	$sujet = $vocab["subject_mail1"].$room_name." - ".$date_avis;
+	if ($action == 1)
+	{
+		$sujet = $sujet.$vocab["subject_mail_creation"];
+		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
+		$message = $message.$vocab["creation_booking"];
+		$message=$message.$vocab["the_room"].$room_name." (".$area_name.") \n";
+	}
+	else if ($action == 2)
+	{
+		$sujet = $sujet.$vocab["subject_mail_modify"];
+		if ($moderate == 1)
+			$sujet .= " (".$vocab["en_attente_moderation"].")";
+		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
+		$message = $message.$vocab["modify_booking"];
+		$message = $message.$vocab["the_room"].$room_name." (".$area_name.") ";
+	}
+	else if ($action == 3)
+	{
+		$sujet = $sujet.$vocab["subject_mail_delete"];
+		if ($moderate == 1)
+			$sujet .= " (".$vocab["en_attente_moderation"].")";
+		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
+		$message = $message.$vocab["delete_booking"];
+		$message = $message.$vocab["the_room"].$room_name." (".$area_name.") \n";
+	}
+	else if ($action == 4)
+	{
+		$sujet = $sujet.$vocab["subject_mail_delete"];
+		$message = $message.$vocab["suppression_automatique"];
+		$message=$message.$vocab["the_room"].$room_name." (".$area_name.") \n";
+	}
+	else if ($action == 5)
+	{
+		$sujet = $sujet.$vocab["subject_mail_moderation"];
+		$message = $message.$vocab["reservation_en_attente_de_moderation"];
+		$message=$message.$vocab["the_room"].$room_name." (".$area_name.") \n";
+	}
+	else if ($action == 6)
+	{
+		$sujet = $sujet.$vocab["subject_mail_decision_moderation"];
+		$resmoderate = grr_sql_query("SELECT moderate, motivation_moderation FROM ".TABLE_PREFIX."_entry_moderate WHERE id ='".protect_data_sql($id_entry)."'");
+		if (!$resmoderate)
 			fatal_error(0, grr_sql_error());
-		}
-		if (grr_sql_count($resmoderate) < 1) {
+		if (grr_sql_count($resmoderate) < 1)
 			fatal_error(0, get_vocab('invalid_entry_id'));
-		}
 		$rowModerate = grr_sql_row($resmoderate, 0);
 		grr_sql_free($resmoderate);
 		$moderate_decision = $rowModerate[0];
 		$moderate_description = $rowModerate[1];
-		$message .= $vocab['the_user'].affiche_nom_prenom_email($user_login, '', 'formail');
-		$message = $message.$vocab['traite_moderation'];
-		$message = $message.$vocab['the_room'].$room_name.' ('.$area_name.') ';
-		$message = $message.$vocab['reservee au nom de'];
-		$message = $message.$vocab['the_user'].affiche_nom_prenom_email($beneficiaire, $beneficiaire_ext, 'formail')." \n";
-		if ($moderate_decision == 2) {
-			$message .= "\n".$vocab['moderation_acceptee'];
-		} elseif ($moderate_decision == 3) {
-			$message .= "\n".$vocab['moderation_refusee'];
-		}
-		if ($moderate_description != '') {
-			$message .= "\n".$vocab['motif'].$vocab['deux_points'];
+		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
+		$message = $message.$vocab["traite_moderation"];
+		$message=$message.$vocab["the_room"].$room_name." (".$area_name.") ";
+		$message = $message.$vocab["reservee au nom de"];
+		$message = $message.$vocab["the_user"].affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
+		if ($moderate_decision == 2)
+			$message .= "\n".$vocab["moderation_acceptee"];
+		else if ($moderate_decision == 3)
+			$message .= "\n".$vocab["moderation_refusee"];
+		if ($moderate_description != "")
+		{
+			$message .= "\n".$vocab["motif"].$vocab["deux_points"];
 			$message .= $moderate_description." \n----";
 		}
-		$message .= "\n".$vocab['voir_details'].$vocab['deux_points']."\n";
-		if (count($tab_id_moderes) == 0) {
-			$message .= "\n".traite_grr_url('', 'y').'view_entry.php?id='.$id_entry;
-		} else {
-			foreach ($tab_id_moderes as $id_moderes) {
-				$message .= "\n".traite_grr_url('', 'y').'view_entry.php?id='.$id_moderes;
-			}
+		$message .= "\n".$vocab["voir_details"].$vocab["deux_points"]."\n";
+		if (count($tab_id_moderes) == 0 )
+			$message .= "\n".traite_grr_url("","y")."view_entry.php?id=".$id_entry;
+		else
+		{
+			foreach ($tab_id_moderes as $id_moderes)
+				$message .= "\n".traite_grr_url("","y")."view_entry.php?id=".$id_moderes;
 		}
-		$message .= "\n\n".$vocab['rappel_de_la_demande'].$vocab['deux_points']."\n";
-	} elseif ($action == 7) {
-		$sujet .= $vocab['subject_mail_retard'];
-		$message .= $vocab['message_mail_retard'].$vocab['deux_points']." \n";
-		$message .= $room_name.' ('.$area_name.") \n";
-		$message .= $vocab['nom emprunteur'].$vocab['deux_points'];
-		$message .= affiche_nom_prenom_email($beneficiaire, $beneficiaire_ext, 'formail')." \n";
-		if ($beneficiaire_email != '') {
-			$message .= $vocab['un email envoye'].$beneficiaire_email." \n";
-		}
-		$message .= "\n".$vocab['changer statut lorsque ressource restituee'].$vocab['deux_points'];
-		$message .= "\n".traite_grr_url('', 'y').'view_entry.php?id='.$id_entry." \n";
+		$message .= "\n\n".$vocab["rappel_de_la_demande"].$vocab["deux_points"]."\n";
 	}
-	if (($action == 2) || ($action == 3)) {
-		$message = $message.$vocab['reservee au nom de'];
-		$message = $message.$vocab['the_user'].affiche_nom_prenom_email($beneficiaire, $beneficiaire_ext, 'formail')." \n";
+	else if ($action == 7)
+	{
+		$sujet .= $vocab["subject_mail_retard"];
+		$message .= $vocab["message_mail_retard"].$vocab["deux_points"]." \n";
+		$message .=$room_name." (".$area_name.") \n";
+		$message .= $vocab["nom emprunteur"].$vocab["deux_points"];
+		$message .= affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
+		if ($beneficiaire_email != "")
+			$message .= $vocab["un email envoye"].$beneficiaire_email." \n";
+		$message .= "\n".$vocab["changer statut lorsque ressource restituee"].$vocab["deux_points"];
+		$message .= "\n".traite_grr_url("","y")."view_entry.php?id=".$id_entry." \n";
 	}
-	if (($action == 5) || ($action == 7)) {
-		$repondre = Settings::get('webmaster_email');
-	} else {
+	if (($action == 2) || ($action == 3))
+	{
+		$message = $message.$vocab["reservee au nom de"];
+		$message = $message.$vocab["the_user"].affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
+	}
+	if (($action == 5) || ($action == 7))
+		$repondre = Settings::get("webmaster_email");
+	else
 		$repondre = $user_email;
-	}
 
 	//
 	// Infos sur la réservation
-	//
+	//		
 	$reservation = '';
-	$reservation = $reservation.$vocab['start_of_the_booking'].' '.$start_date."\n";
-	$reservation = $reservation.$vocab['duration'].' '.$duration.' '.$dur_units."\n";
-	if (trim($breve_description) != '') {
-		$reservation = $reservation.$vocab['namebooker'].preg_replace('/ /', ' ', $vocab['deux_points']).' '.$breve_description."\n";
-	} else {
-		$reservation = $reservation.$vocab['entryid'].$room_id."\n";
-	}
-	if ($description != '') {
-		$reservation = $reservation.$vocab['description'].' '.$description."\n";
-	}
+	$reservation = $reservation.$vocab["start_of_the_booking"]." ".$start_date."\n";
+	$reservation = $reservation.$vocab["duration"]." ".$duration." ".$dur_units."\n";
+	if (trim($breve_description) != "")
+		$reservation = $reservation.$vocab["namebooker"].preg_replace("/ /", " ",$vocab["deux_points"])." ".$breve_description."\n";
+	else
+		$reservation = $reservation.$vocab["entryid"].$room_id."\n";
+	if ($description !='')
+		$reservation = $reservation.$vocab["description"]." ".$description."\n";
 	// Champ additionnel
 	$reservation .= affichage_champ_add_mails($id_entry);
 	// Type de réservation
-	$temp = grr_sql_query1('SELECT type_name FROM '.TABLE_PREFIX."_type_area WHERE type_letter='".$row[5]."'");
-	if ($temp == -1) {
-		$temp = '?'.$row[5].'?';
-	} else {
+	$temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$row[5]."'");
+	if ($temp == -1)
+		$temp = "?".$row[5]."?";
+	else
 		$temp = removeMailUnicode($temp);
-	}
 
-	$reservation = $reservation.$vocab['type'].preg_replace('/ /', ' ', $vocab['deux_points']).' '.$temp."\n";
+	$reservation = $reservation.$vocab["type"].preg_replace("/ /", " ",$vocab["deux_points"])." ".$temp."\n";
 
-	if ($rep_type != 0) {
-		$reservation = $reservation.$vocab['rep_type'].' '.$affiche_period."\n";
-	}
-	if ($rep_type != 0) {
-		if ($rep_type == 2) {
-			$opt = '';
-			for ($i = 0; $i < 7; ++$i) {
+	if ($rep_type != 0)
+		$reservation = $reservation.$vocab["rep_type"]." ".$affiche_period."\n";
+	if ($rep_type != 0)
+	{
+		if ($rep_type == 2)
+		{
+			$opt = "";
+			for ($i = 0; $i < 7; $i++)
+			{
 				$daynum = ($i + $weekstarts) % 7;
-				if ($rep_opt[$daynum]) {
-					$opt .= day_name($daynum).' ';
-				}
+				if ($rep_opt[$daynum])
+					$opt .= day_name($daynum) . " ";
 			}
-			if ($opt) {
-				$reservation = $reservation.$vocab['rep_rep_day'].' '.$opt."\n";
-			}
+			if ($opt)
+				$reservation = $reservation.$vocab["rep_rep_day"]." ".$opt."\n";
 		}
-		if ($rep_type == 6) {
-			if (Settings::get('jours_cycles_actif') == 'Oui') {
-				$reservation = $reservation.$vocab['rep_type_6'].preg_replace('/ /', ' ', $vocab['deux_points']).ucfirst(substr($vocab['rep_type_6'], 0, 1)).$jours_cycle."\n";
-			}
+		if ($rep_type == 6)
+		{
+			if (Settings::get("jours_cycles_actif") == "Oui")
+				$reservation = $reservation.$vocab["rep_type_6"].preg_replace("/ /", " ",$vocab["deux_points"]).ucfirst(substr($vocab["rep_type_6"],0,1)).$jours_cycle."\n";
 		}
-		$reservation = $reservation.$vocab['rep_end_date'].' '.$rep_end_date."\n";
+		$reservation = $reservation.$vocab["rep_end_date"]." ".$rep_end_date."\n";
 	}
-	if (($delais_option_reservation > 0) && ($option_reservation != -1)) {
-		$reservation = $reservation.'*** '.$vocab['reservation_a_confirmer_au_plus_tard_le'].' '.time_date_string_jma($option_reservation, $dformat)." ***\n";
-	}
+	if (($delais_option_reservation > 0) && ($option_reservation != -1))
+		$reservation = $reservation."*** ".$vocab["reservation_a_confirmer_au_plus_tard_le"]." ".time_date_string_jma($option_reservation,$dformat)." ***\n";
 
 	$reservation = $reservation."-----\n";
 
 	$message = $message.$reservation;
-	$message = $message.$vocab['msg_no_email'].Settings::get('webmaster_email');
+	$message = $message.$vocab["msg_no_email"].Settings::get("webmaster_email");;
 	$message = html_entity_decode($message);
-	$sql = 'SELECT u.email FROM '.TABLE_PREFIX.'_utilisateurs u, '.TABLE_PREFIX."_j_mailuser_room j WHERE (j.id_room='".protect_data_sql($room_id)."' AND u.login=j.login and u.etat='actif') ORDER BY u.nom, u.prenom";
+	$sql = "SELECT u.email FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_mailuser_room j WHERE (j.id_room='".protect_data_sql($room_id)."' AND u.login=j.login and u.etat='actif') ORDER BY u.nom, u.prenom";
 	$res = grr_sql_query($sql);
 	$nombre = grr_sql_count($res);
-	if ($nombre > 0) {
+	if ($nombre > 0)
+	{
 		$tab_destinataire = array();
-		for ($i = 0; ($row = grr_sql_row($res, $i)); ++$i) {
-			if ($row[0] != '') {
+		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+		{
+			if ($row[0] != "")
 				$tab_destinataire[] = $row[0];
-			}
 		}
-		foreach ($tab_destinataire as $value) {
-			if (Settings::get('grr_mail_Bcc') == 'y') {
-				$mail->AddBCC($value);
-			} else {
-				$mail->AddAddress($value);
-			}
+		foreach ($tab_destinataire as $value)
+		{
+			if (Settings::get("grr_mail_Bcc") == "y")
+				$mail->AddBCC( $value );
+			else
+				$mail->AddAddress( $value );
 		}
 		$mail->Subject = $sujet;
 		$mail->Body = $message;
-		$mail->AddReplyTo($repondre);
-		if (!$mail->Send()) {
+		$mail->AddReplyTo( $repondre );
+		if (!$mail->Send())
 			$message_erreur .= $mail->ErrorInfo;
-		}
 	}
 	$mail->ClearAddresses();
 	$mail->ClearBCCs();
 	$mail->ClearReplyTos();
-	if ($action == 7) {
-		$mail_admin = find_user_room($room_id);
-		if (count($mail_admin) > 0) {
-			foreach ($mail_admin as $value) {
-				if (Settings::get('grr_mail_Bcc') == 'y') {
-					$mail->AddBCC($value);
-				} else {
-					$mail->AddAddress($value);
-				}
+	if ($action == 7)
+	{
+		$mail_admin = find_user_room ($room_id);
+		if (count($mail_admin) > 0)
+		{
+			foreach ($mail_admin as $value)
+			{
+				if (Settings::get("grr_mail_Bcc") == "y")
+					$mail->AddBCC( $value );
+				else
+					$mail->AddAddress( $value );
 			}
 			$mail->Subject = $sujet;
 			$mail->Body = $message;
-			$mail->AddReplyTo($repondre);
-			if (!$mail->Send()) {
+			$mail->AddReplyTo( $repondre );
+			if (!$mail->Send())
 				$message_erreur .= $mail->ErrorInfo;
-			}
 		}
 		$mail->ClearAddresses();
 		$mail->ClearBCCs();
 		$mail->ClearReplyTos();
 	}
-	if ($action == 7) {
-		$sujet7 = $vocab['subject_mail1'].$room_name.' - '.$date_avis;
-		$sujet7 .= $vocab['subject_mail_retard'];
-		$message7 = removeMailUnicode(Settings::get('company')).' - '.$vocab['title_mail'];
-		$message7 .= traite_grr_url('', 'y')."\n\n";
-		$message7 .= $vocab['ressource empruntee non restituée']."\n";
-		$message7 .= $room_name.' ('.$area_name.')';
+	if ($action == 7)
+	{
+		$sujet7 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
+		$sujet7 .= $vocab["subject_mail_retard"];
+		$message7 = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
+		$message7 .= traite_grr_url("","y")."\n\n";
+		$message7 .= $vocab["ressource empruntee non restituée"]."\n";
+		$message7 .= $room_name." (".$area_name.")";
 		$message7 .= "\n".$reservation;
 		$message7 = html_entity_decode($message7);
 		$destinataire7 = $beneficiaire_email;
-		$repondre7 = Settings::get('webmaster_email');
-		$mail->AddAddress($destinataire7);
+		$repondre7 = Settings::get("webmaster_email");
+		$mail->AddAddress( $destinataire7 );
 		$mail->Subject = $sujet7;
 		$mail->Body = $message7;
-		$mail->AddReplyTo($repondre7);
-		if (!$mail->Send()) {
+		$mail->AddReplyTo( $repondre7 );
+		if (!$mail->Send())
 			$message_erreur .= $mail->ErrorInfo;
-		}
 		$mail->ClearAddresses();
 		$mail->ClearReplyTos();
 	}
-	if ($action == 4) {
+	if ($action == 4)
+	{
 		$destinataire4 = $beneficiaire_email;
-		$repondre4 = Settings::get('webmaster_email');
-		$mail->AddAddress($destinataire4);
+		$repondre4 = Settings::get("webmaster_email");
+		$mail->AddAddress( $destinataire4 );
 		$mail->Subject = $sujet;
 		$mail->Body = $message;
-		$mail->AddReplyTo($repondre4);
-		if (!$mail->Send()) {
+		$mail->AddReplyTo( $repondre4 );
+		if (!$mail->Send())
 			$message_erreur .= $mail->ErrorInfo;
-		}
 		$mail->ClearAddresses();
 		$mail->ClearReplyTos();
 	}
-	if ($action == 5) {
-		$mail_admin = find_user_room($room_id);
-		if (count($mail_admin) > 0) {
-			foreach ($mail_admin as $value) {
-				if (Settings::get('grr_mail_Bcc') == 'y') {
-					$mail->AddBCC($value);
-				} else {
-					$mail->AddAddress($value);
-				}
+	if ($action == 5)
+	{
+		$mail_admin = find_user_room ($room_id);
+		if (count($mail_admin) > 0)
+		{
+			foreach ($mail_admin as $value)
+			{
+				if (Settings::get("grr_mail_Bcc") == "y")
+					$mail->AddBCC( $value );
+				else
+					$mail->AddAddress( $value );
 			}
-			$sujet5 = $vocab['subject_mail1'].$room_name.' - '.$date_avis;
-			$sujet5 .= $vocab['subject_mail_moderation'];
-			$message5 = removeMailUnicode(Settings::get('company')).' - '.$vocab['title_mail'];
-			$message5 .= traite_grr_url('', 'y')."\n\n";
-			$message5 .= $vocab['subject_a_moderer'];
-			$message5 .= "\n".traite_grr_url('', 'y').'view_entry.php?id='.$id_entry;
-			$message5 .= "\n\n".$vocab['created_by'].affiche_nom_prenom_email($user_login, '', 'formail');
-			$message5 .= "\n".$vocab['room'].$vocab['deux_points'].$room_name.' ('.$area_name.") \n";
+			$sujet5 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
+			$sujet5 .= $vocab["subject_mail_moderation"];
+			$message5 = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
+			$message5 .= traite_grr_url("","y")."\n\n";
+			$message5 .= $vocab["subject_a_moderer"];
+			$message5 .= "\n".traite_grr_url("","y")."validation.php?id=".$id_entry;
+			$message5 .= "\n\n".$vocab['created_by'].affiche_nom_prenom_email($user_login,"","formail");
+			$message5 .= "\n".$vocab['room'].$vocab['deux_points'].$room_name." (".$area_name.") \n";
 			$message5 = html_entity_decode($message5);
-			$repondre5 = Settings::get('webmaster_email');
+			$repondre5 = Settings::get("webmaster_email");
 			$mail->Subject = $sujet5;
 			$mail->Body = $message5;
-			$mail->AddReplyTo($repondre5);
-			if (!$mail->Send()) {
+			$mail->AddReplyTo( $repondre5 );
+			if (!$mail->Send())
 				$message_erreur .= $mail->ErrorInfo;
-			}
 		}
 		$mail->ClearAddresses();
 		$mail->ClearBCCs();
 		$mail->ClearReplyTos();
 	}
-	if (($action == 5) && ($beneficiaire_email != '') && ($beneficiaire_actif == 'actif')) {
-		$sujet5 = $vocab['subject_mail1'].$room_name.' - '.$date_avis;
-		$sujet5 .= $vocab['subject_mail_moderation'];
-		$message5 = removeMailUnicode(Settings::get('company')).' - '.$vocab['title_mail'];
-		$message5 .= traite_grr_url('', 'y')."\n\n";
-		$message5 .= $vocab['texte_en_attente_de_moderation'];
-		$message5 .= "\n".$vocab['rappel_de_la_demande'].$vocab['deux_points'];
-		$message5 .= "\n".$vocab['the_room'].$room_name.' ('.$area_name.')';
+	if (($action == 5) && ($beneficiaire_email != '') && ($beneficiaire_actif == 'actif'))
+	{
+		$sujet5 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
+		$sujet5 .= $vocab["subject_mail_moderation"];
+		$message5 = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
+		$message5 .= traite_grr_url("","y")."\n\n";
+		$message5 .= $vocab["texte_en_attente_de_moderation"];
+		$message5 .= "\n".$vocab["rappel_de_la_demande"].$vocab["deux_points"];
+		$message5 .= "\n".$vocab["the_room"].$room_name." (".$area_name.")";
 		$message5 .= "\n".$reservation;
 		$message5 = html_entity_decode($message5);
 		$destinataire5 = $beneficiaire_email;
-		$repondre5 = Settings::get('webmaster_email');
-		$mail->AddAddress($destinataire5);
+		$repondre5 = Settings::get("webmaster_email");
+		$mail->AddAddress( $destinataire5 );
 		$mail->Subject = $sujet5;
 		$mail->Body = $message5;
-		$mail->AddReplyTo($repondre5);
-		if (!$mail->Send()) {
+		$mail->AddReplyTo( $repondre5 );
+		if (!$mail->Send())
 			$message_erreur .= $mail->ErrorInfo;
-		}
 		$mail->ClearAddresses();
 		$mail->ClearReplyTos();
 	}
-	if (($action == 6) && ($beneficiaire_email != '') && ($beneficiaire_actif == 'actif')) {
-		$sujet6 = $vocab['subject_mail1'].$room_name.' - '.$date_avis;
-		$sujet6 .= $vocab['subject_mail_decision_moderation'];
+	if (($action == 6) && ($beneficiaire_email != '') && ($beneficiaire_actif=='actif'))
+	{
+		$sujet6 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
+		$sujet6 .= $vocab["subject_mail_decision_moderation"];
 		$message6 = $message;
 		$destinataire6 = $beneficiaire_email;
 		$repondre6 = $user_email;
@@ -2838,34 +2851,39 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 		$mail->Subject = $sujet6;
 		$mail->Body = $message6;
 		$mail->AddReplyTo($repondre6);
-		if (!$mail->Send()) {
+		if (!$mail->Send())
 			$message_erreur .= $mail->ErrorInfo;
-		}
 		$mail->ClearAddresses();
 		$mail->ClearReplyTos();
 	}
 
 	// Cas d'une création, modification ou suppression d'un message par un utilisateur différent du bénéficiaire :
 	// On envoie un message au bénéficiaire de la réservation pour l'avertir d'une modif ou d'une suppression
-	if ((($action == 1) || ($action == 2) || ($action == 3)) && ((strtolower($user_login) != strtolower($beneficiaire)) || (Settings::get('send_always_mail_to_creator') == '1')) && ($beneficiaire_email != '') && ($beneficiaire_actif == 'actif')) {
-		$sujet2 = $vocab['subject_mail1'].$room_name.' - '.$date_avis;
-		$message2 = removeMailUnicode(Settings::get('company')).' - '.$vocab['title_mail'];
-		$message2 = $message2.traite_grr_url('', 'y')."\n\n";
-		$message2 = $message2.$vocab['the_user'].affiche_nom_prenom_email($user_login, '', 'formail');
-		if ($action == 1) {
-			$sujet2 = $sujet2.$vocab['subject_mail_creation'];
-			$message2 = $message2.$vocab['creation_booking_for_you'];
-			$message2 = $message2.$vocab['the_room'].$room_name.' ('.$area_name.').';
-		} elseif ($action == 2) {
-			$sujet2 = $sujet2.$vocab['subject_mail_modify'];
-			$message2 = $message2.$vocab['modify_booking'];
-			$message2 = $message2.$vocab['the_room'].$room_name.' ('.$area_name.')';
-			$message2 = $message2.$vocab['created_by_you'];
-		} else {
-			$sujet2 = $sujet2.$vocab['subject_mail_delete'];
-			$message2 = $message2.$vocab['delete_booking'];
-			$message2 = $message2.$vocab['the_room'].$room_name.' ('.$area_name.')';
-			$message2 = $message2.$vocab['created_by_you'];
+	if ((($action == 1) || ($action == 2) || ($action == 3)) && ((strtolower($user_login) != strtolower($beneficiaire)) || (Settings::get('send_always_mail_to_creator') == '1')) && ($beneficiaire_email != '') && ($beneficiaire_actif == 'actif'))
+	{
+		$sujet2 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
+		$message2 = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
+		$message2 = $message2.traite_grr_url("","y")."\n\n";
+		$message2 = $message2.$vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
+		if ($action == 1)
+		{
+			$sujet2 = $sujet2.$vocab["subject_mail_creation"];
+			$message2 = $message2.$vocab["creation_booking_for_you"];
+			$message2=$message2.$vocab["the_room"].$room_name." (".$area_name.").";
+		}
+		else if ($action == 2)
+		{
+			$sujet2 = $sujet2.$vocab["subject_mail_modify"];
+			$message2 = $message2.$vocab["modify_booking"];
+			$message2=$message2.$vocab["the_room"].$room_name." (".$area_name.")";
+			$message2 = $message2.$vocab["created_by_you"];
+		}
+		else
+		{
+			$sujet2 = $sujet2.$vocab["subject_mail_delete"];
+			$message2 = $message2.$vocab["delete_booking"];
+			$message2=$message2.$vocab["the_room"].$room_name." (".$area_name.")";
+			$message2 = $message2.$vocab["created_by_you"];
 		}
 		$message2 = $message2."\n".$reservation;
 		$message2 = html_entity_decode($message2);
@@ -2875,13 +2893,11 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 		$mail->Subject = $sujet2;
 		$mail->Body = $message2;
 		$mail->AddReplyTo($repondre2);
-		if (!$mail->Send()) {
+		if (!$mail->Send())
 			$message_erreur .= $mail->ErrorInfo;
-		}
 		$mail->ClearAddresses();
 		$mail->ClearReplyTos();
 	}
-
 	return $message_erreur;
 } // Fin fonction send_mail
 
