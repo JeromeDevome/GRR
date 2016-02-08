@@ -1,3 +1,4 @@
+[correction] view_room lien cassé depuis l'admin http://board.devome.com/viewtopic.php?f=42&t=385&p=3387&sid=221f96dfb1ccef84dd25e077bc568557#p3387
 [correction] mktine() vers time()
 [correction] Fonction mysql_ vers mysqli
 [correction] Remise ne place des jours et heures des reservation lors de l'edition
