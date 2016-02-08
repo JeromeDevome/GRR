@@ -523,7 +523,7 @@ if ((!empty($room)) || (isset($area_id)))
 		echo "<tr><td>".get_vocab("montrer_fiche_presentation_ressource")."</td><td><input type=\"checkbox\" name=\"show_fic_room\" ";
 		if ($row['show_fic_room'] == "y")
 			echo " checked=\"checked\" ";
-		echo "/><a href='javascript:centrerpopup(\"view_room.php?id_room=$room\",600,480,\"scrollbars=yes,statusbar=no,resizable=yes\")' title=\"".get_vocab("fiche_ressource")."\"><span class=\"glyphicon glyphicon-search\"></span></a></td></tr>\n";
+		echo "/><a href='javascript:centrerpopup(\"../view_room.php?id_room=$room\",600,480,\"scrollbars=yes,statusbar=no,resizable=yes\")' title=\"".get_vocab("fiche_ressource")."\"><span class=\"glyphicon glyphicon-search\"></span></a></td></tr>\n";
 		// Choix de l'image de la ressource
 		echo "<tr><td>".get_vocab("choisir_image_ressource")."</td><td><input type=\"file\" name=\"doc_file\" size=\"30\" /></td></tr>\n";
 		echo "<tr><td>".get_vocab("supprimer_image_ressource").get_vocab("deux_points");
