@@ -28,7 +28,6 @@
  * along with GRR; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-header("Cache-Control:no-cache");
 
 function returnmsg($type,$test, $status, $msg = '')
 {
@@ -156,7 +155,7 @@ function cal($month, $year)
 		$s .= '</tr>'.PHP_EOL;;
 		$is_ligne1 = 'n';
 	}
-	$s .= '</tr>'.PHP_EOL;
+	$s .= '</table>'.PHP_EOL;
 	return $s;
 }
 
@@ -841,7 +840,7 @@ function begin_page($title, $page = "with_session")
 		if (Settings::get("default_css"))
 			$sheetcss = 'themes/'.Settings::get("default_css").'/css';
 		else
-			$sheetcss = 'themes/default/css/style.css';
+			$sheetcss = 'themes/default/css';
 		if (isset($_GET['default_language']))
 		{
 			$_SESSION['default_language'] = $_GET['default_language'];
@@ -1011,6 +1010,9 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			$generationXML = 1;
 			if ((Settings::get("export_xml_actif") == "Oui") && ($adm == 0)){
 				include "{$racine}/include/generationxml.php";
+			}
+			if ((Settings::get("export_xml_plus_actif") == "Oui") && ($adm == 0)){
+				include "{$racine}/include/generationxmlplus.php";
 			}
 
 			// On fabrique une date valide pour la réservation si ce n'est pas le cas

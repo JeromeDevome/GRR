@@ -55,6 +55,7 @@ else
 	if (!$res)
 		fatal_error(0, grr_sql_error());
 	$row = grr_sql_row($res, 0);
+	$cle = $row[18];
 	$sql = "SELECT room_name FROM ".TABLE_PREFIX."_room WHERE id='".$row[5]."'";
 	$res = grr_sql_query($sql);
 	$row2 = grr_sql_row($res, 0);
@@ -81,7 +82,11 @@ else
 	}else{
 		$period = 0;
 	};
-	
-	include 'pdf/form_infoPDF.html';
+
+	if ($period == 0){
+		include 'pdf/form_infoPDF_unique.html';
+	}else{
+		include 'pdf/form_infoPDF.html';
+	}
 
 }

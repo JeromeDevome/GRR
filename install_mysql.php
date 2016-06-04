@@ -194,6 +194,8 @@ if ($etape == 4)
 				$conn .= "\$dbPass=\"$pass_db\";\n";
 				$conn .= "# ligne suivante : préfixe du nom des tables de données\n";
 				$conn .= "\$table_prefix=\"$table_prefix\";\n";
+				$conn .= "# ligne suivante : Port MySQL laissé par défaut\n";
+				$conn .= "\$dbPort=\"\";\n";
 				$conn .= "?".">";
 				@fputs($f, $conn);
 				if (!@fclose($f))

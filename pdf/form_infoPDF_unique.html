@@ -49,8 +49,8 @@
 					<input type="hidden" class="form-control" placeholder="Salle" name="salle" type="text" value="<?php echo $row2[0]; ?>" required>
 					<input type="hidden" class="form-control" placeholder="jour" name="jour" type="text" value="<?php echo utf8_encode(strftime('%A %d %B %Y' ,$row[1])); ?>" required>
 					<input type="hidden" class="form-control" placeholder="Heure de début" name="heure" type="text" value="<?php echo strftime('%H:%M' ,$row[1]); ?>" required>
-					<input type="hidden" class="form-control" placeholder="finPeriode" name="finPeriode" type="text" value="<?php echo $rep_end_date; ?>" required>
-					<input type="hidden" class="form-control" placeholder="jourPeriode" name="jourPeriode" type="text" value="<?php echo utf8_encode(strftime('%A' ,$row6[1])); ?>" required>
+					<input type="hidden" class="form-control" placeholder="finPeriode" name="finPeriode" type="text" value="0" required>
+					<input type="hidden" class="form-control" placeholder="jourPeriode" name="jourPeriode" type="text" value="0" required>
 					<input type="hidden" class="form-control" placeholder="Heure de fin" name="heure2" type="text" value="<?php echo strftime('%H:%M' , $row[2]); ?>" required>
 					<input type="hidden" class="form-control" placeholder="Logo" name="logo" type="text" value="images/<?php echo Settings::get("logo"); ?>" required>
 					<input type="hidden" class="form-control" placeholder="jour2" name="jour2" type="text" value="<?php echo utf8_encode(strftime('%A %d %B %Y' ,$row[2])); ?>" required>

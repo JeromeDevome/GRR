@@ -147,7 +147,7 @@ if ((!@grr_resumeSession()) && $valid!='yes')
 				echo $charset_html;
 			?>">
 			<link REL="stylesheet" href="themes/default/css/style.css" type="text/css">
-			<TITLE> GRR </TITLE>
+			<TITLE>GRR</TITLE>
 			<LINK REL="SHORTCUT ICON" href="./favicon.ico">
 				<script type="text/javascript" src="./functions.js" ></script>
 			</HEAD>
@@ -212,7 +212,7 @@ if ((!@grr_resumeSession()) && $valid!='yes')
 
 					<link rel="stylesheet" href="themes/default/css/style.css" type="text/css">
 					<link rel="shortcut icon" href="favicon.ico">
-						<title> grr </title>
+						<title>GRR</title>
 					</head>
 					<body>
 						<?php
@@ -741,10 +741,21 @@ if ((!@grr_resumeSession()) && $valid!='yes')
 							else
 								$result .= $result_inter;
 							$result_inter = '';
-
-
-
 						}
+
+						if ($version_old < "3.1.0")
+						{
+							$result .= "<b>Mise à jour jusqu'à la version 3.1.0 :</b><br />";
+						
+							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('export_xml_plus_actif', 'Non')");
+
+							if ($result_inter == '')
+								$result .= "<span style=\"color:green;\">Ok !</span><br />";
+							else
+								$result .= $result_inter;
+							$result_inter = '';
+						}
+
 
 						// Vérification du format des champs additionnels
 						// Avant version 1.9.4, les champs add étaient stockés sous la forme <id_champ>champ_encode_en_base_64</id_champ>

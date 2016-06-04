@@ -1,6 +1,6 @@
 function disableselect(e)
 {
-	return false
+	//return false
 }
 
 function reEnable()

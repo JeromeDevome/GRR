@@ -81,6 +81,12 @@ if (isset($_GET['export_xml']))
 	if (!Settings::set("export_xml_actif", $_GET['export_xml']))
 		echo "Erreur lors de l'enregistrement de l'export XML ! <br />";
 }
+// Export XML Plus
+if (isset($_GET['export_xml_plus']))
+{
+	if (!Settings::set("export_xml_plus_actif", $_GET['export_xml_plus']))
+		echo "Erreur lors de l'enregistrement de l'export XML Plus ! <br />";
+}
 // use_fckeditor
 if (isset($_GET['use_fckeditor']))
 {
@@ -140,6 +146,23 @@ echo "<table border='0'>\n<tr>\n<td>\n";
 echo get_vocab("Activer_export_xml").get_vocab("deux_points");
 echo "<select name='export_xml'>\n";
 if (Settings::get("export_xml_actif") == "Oui")
+{
+	echo "<option value=\"Oui\" selected=\"selected\">".get_vocab('YES')."</option>\n";
+	echo "<option value=\"Non\">".get_vocab('NO')."</option>\n";
+}
+else
+{
+	echo "<option value=\"Oui\">".get_vocab('YES')."</option>\n";
+	echo "<option value=\"Non\" selected=\"selected\">".get_vocab('NO')."</option>\n";
+}
+echo "</select>\n</td>\n</tr>\n</table>\n";
+
+// Export XML PLUS
+echo "<h3>".get_vocab("Activer_export_plus_xml")."</h3>\n";
+echo "<table border='0'>\n<tr>\n<td>\n";
+echo get_vocab("Activer_export_plus_xml").get_vocab("deux_points");
+echo "<select name='export_xml_plus'>\n";
+if (Settings::get("export_xml_plus_actif") == "Oui")
 {
 	echo "<option value=\"Oui\" selected=\"selected\">".get_vocab('YES')."</option>\n";
 	echo "<option value=\"Non\">".get_vocab('NO')."</option>\n";
