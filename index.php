@@ -53,7 +53,7 @@ if ($dbsys == "mysql")
 			if (mysqli_select_db($db, "$dbDb"))
 			{
 				// Premier test
-				@mysql_query("SET NAMES utf8");
+				@mysqli_query("SET NAMES utf8");
 
 				$j = '0';
 				while ($j < count($liste_tables))

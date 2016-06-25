@@ -379,7 +379,7 @@ else
 			$authGetUserLevel = authGetUserLevel(getUserName(), -1);
 			$auth_visiteur = auth_visiteur(getUserName(), $row['2']);
 			echo '<tr>'.PHP_EOL;
-			if ($ir % 2 == 1)
+			if ($li % 2 == 1)
 				echo tdcell("cell_hours");
 			else
 				echo tdcell("cell_hours2");

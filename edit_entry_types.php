@@ -79,7 +79,7 @@ $display_type .= '<tr><td class="CL">'.PHP_EOL;
 $display_type .= '<div class="col-xs-3">'.PHP_EOL;
 $display_type .= '<select id="type" class="form-control" name="type" size="1" onclick="setdefault(\'type_default\',\'\')">'.PHP_EOL;
 $display_type .= '<option value="0">'.get_vocab("choose").PHP_EOL;
-$sql = "SELECT DISTINCT t.type_name, t.type_letter, t.id FROM ".TABLE_PREFIX."_type_area t
+$sql = "SELECT DISTINCT t.type_name, t.type_letter, t.id, t.order_display FROM ".TABLE_PREFIX."_type_area t
 LEFT JOIN ".TABLE_PREFIX."_j_type_area j on j.id_type=t.id
 WHERE (j.id_area  IS NULL or j.id_area != '".$areas."') AND (t.disponible<='".$aff_type."')
 ORDER BY t.order_display";

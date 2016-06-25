@@ -417,7 +417,7 @@ if ((!empty($room)) || (isset($area_id)))
 		$nom_picture = '';
 		if ($row['picture_room'] != '') $nom_picture = "../images/".$row['picture_room'];
 		if (Settings::get("use_fckeditor") == 1)
-			echo "<script type=\"text/javascript\" src=\"js/ckeditor/ckeditor.js\"></script>\n";
+			echo "<script type=\"text/javascript\" src=\"../js/ckeditor/ckeditor.js\"></script>\n";
 		echo "<table border=\"1\" cellspacing=\"1\" cellpadding=\"6\">\n";
 		echo "<tr><td>".get_vocab("name").get_vocab("deux_points")."</td><td style=\"width:30%;\">\n";
 		// seul l'administrateur peut modifier le nom de la ressource
