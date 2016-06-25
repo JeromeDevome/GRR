@@ -43,3 +43,6 @@ Temporary Items
 .apdisk
 
 include/connect.inc.php
+include/connect.inc.php
+export/export.xml
+export/exportplus.xml
