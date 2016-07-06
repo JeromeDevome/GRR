@@ -274,12 +274,16 @@
 			<vacances debut="2013/02/23" fin="2013/03/11" libelle="3"/>
 			<vacances debut="2013/04/20" fin="2013/05/06" libelle="4"/>
 			<vacances debut="2013/07/06" fin="2013/09/03" libelle="5"/> 			
+			<!-- mise à jour le 02/01/2013 -->
+			<!-- http://www.education.gouv.fr/cid66320/calendrier-de-l-annee-scolaire-2013-2014.html -->
 			<!-- Année 2013-2014 -->
 			<vacances debut="2013/10/19" fin="2013/11/04" libelle="1"/>
 			<vacances debut="2013/12/21" fin="2014/01/06" libelle="2"/>
 			<vacances debut="2014/03/01" fin="2014/03/17" libelle="3"/>
 			<vacances debut="2014/04/26" fin="2014/05/12" libelle="4"/>
 			<vacances debut="2014/07/05" fin="2014/09/02" libelle="5"/>
+			<!-- mise à jour le 28/01/2014 -->
+			<!-- http://www.education.gouv.fr/pid25058/le-calendrier-scolaire.html -->
 			<!-- Année 2014-2015 -->
 			<vacances debut="2014/10/18" fin="2014/11/03" libelle="1"/>
 			<vacances debut="2014/12/20" fin="2015/01/05" libelle="2"/>
@@ -296,15 +300,8 @@
 			<vacances debut="2016/10/19" fin="2016/11/03" libelle="1"/>
 			<vacances debut="2016/12/17" fin="2017/01/03" libelle="2"/>
 			<vacances debut="2017/02/18" fin="2017/03/06" libelle="3"/>
-			<vacances debut="2017/04/15" fin="2017/05/02" libelle="4"/>
-			<vacances debut="2017/07/08" fin="2017/09/01" libelle="5"/>
-			<!-- Année 2017-2018 -->
-			<vacances debut="2017/10/21" fin="2017/11/06" libelle="1"/>
-			<vacances debut="2017/12/23" fin="2018/01/08" libelle="2"/>
-			<vacances debut="2018/02/10" fin="2018/02/26" libelle="3"/>
-			<vacances debut="2018/04/07" fin="2018/04/23" libelle="4"/>
-			<vacances debut="2018/07/07" fin="2018/09/01" libelle="5"/>
-			<!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+			<vacances debut="2017/04/22" fin="2017/05/09" libelle="4"/>
+			<vacances debut="2017/07/06" fin="2017/09/01" libelle="5"/> 			<!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
 		</zone>
 		<zone libelle="B">
 			<!-- Année 2003-2004 -->
@@ -368,12 +365,16 @@
 			<vacances debut="2013/02/16" fin="2013/03/04" libelle="3"/>
 			<vacances debut="2013/04/13" fin="2013/04/29" libelle="4"/>
 			<vacances debut="2013/07/06" fin="2013/09/03" libelle="5"/> 			
+			<!-- mise à jour le 02/01/2013 -->
+			<!-- http://www.education.gouv.fr/cid66320/calendrier-de-l-annee-scolaire-2013-2014.html -->
 			<!-- Année 2013-2014 -->
 			<vacances debut="2013/10/19" fin="2013/11/04" libelle="1"/>
 			<vacances debut="2013/12/21" fin="2014/01/06" libelle="2"/>
 			<vacances debut="2014/02/22" fin="2014/03/10" libelle="3"/>
 			<vacances debut="2014/04/19" fin="2014/05/05" libelle="4"/>
 			<vacances debut="2014/07/05" fin="2014/09/02" libelle="5"/>
+			<!-- mise à jour le 28/01/2014 -->
+			<!-- http://www.education.gouv.fr/pid25058/le-calendrier-scolaire.html -->
 			<!-- Année 2014-2015 -->
 			<vacances debut="2014/10/18" fin="2014/11/03" libelle="1"/>
 			<vacances debut="2014/12/20" fin="2015/01/05" libelle="2"/>
@@ -390,15 +391,8 @@
 			<vacances debut="2016/10/19" fin="2016/11/03" libelle="1"/>
 			<vacances debut="2016/12/17" fin="2017/01/03" libelle="2"/>
 			<vacances debut="2017/02/11" fin="2017/02/27" libelle="3"/>
-			<vacances debut="2017/04/08" fin="2017/05/24" libelle="4"/>
-			<vacances debut="2017/07/08" fin="2017/09/01" libelle="5"/>
-			<!-- Année 2017-2018 -->
-			<vacances debut="2017/10/21" fin="2017/11/06" libelle="1"/>
-			<vacances debut="2017/12/23" fin="2018/01/08" libelle="2"/>
-			<vacances debut="2018/02/24" fin="2018/03/12" libelle="3"/>
-			<vacances debut="2018/04/21" fin="2018/05/07" libelle="4"/>
-			<vacances debut="2018/07/07" fin="2018/09/01" libelle="5"/>
-			<!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+			<vacances debut="2017/04/15" fin="2017/05/02" libelle="4"/>
+			<vacances debut="2017/07/06" fin="2017/09/01" libelle="5"/> 			<!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
 		</zone>
 		<zone libelle="C">
 			<!-- Année 2003-2004 -->
@@ -462,12 +456,16 @@
 			<vacances debut="2013/03/03" fin="2013/03/18" libelle="3"/>
 			<vacances debut="2013/04/27" fin="2013/05/13" libelle="4"/>
 			<vacances debut="2013/07/06" fin="2013/09/03" libelle="5"/>	
+			<!-- mise à jour le 02/01/2013 -->
+			<!-- http://www.education.gouv.fr/cid66320/calendrier-de-l-annee-scolaire-2013-2014.html -->
 			<!-- Année 2013-2014 -->
 			<vacances debut="2013/10/19" fin="2013/11/04" libelle="1"/>
 			<vacances debut="2013/12/21" fin="2014/01/06" libelle="2"/>
 			<vacances debut="2014/02/15" fin="2014/03/03" libelle="3"/>
 			<vacances debut="2014/04/12" fin="2014/04/28" libelle="4"/>
 			<vacances debut="2014/07/05" fin="2014/09/02" libelle="5"/>
+			<!-- mise à jour le 28/01/2014 -->
+			<!-- http://www.education.gouv.fr/pid25058/le-calendrier-scolaire.html -->
 			<!-- Année 2014-2015 -->
 			<vacances debut="2014/10/18" fin="2014/11/03" libelle="1"/>
 			<vacances debut="2014/12/20" fin="2015/01/05" libelle="2"/>
@@ -484,15 +482,9 @@
 			<vacances debut="2016/10/19" fin="2016/11/03" libelle="1"/>
 			<vacances debut="2016/12/17" fin="2017/01/03" libelle="2"/>
 			<vacances debut="2017/02/04" fin="2017/02/20" libelle="3"/>
-			<vacances debut="2017/04/01" fin="2017/04/18" libelle="4"/>
-			<vacances debut="2017/07/08" fin="2017/09/01" libelle="5"/>
- 			<!-- Année 2017-2018 -->
-			<vacances debut="2017/10/21" fin="2017/11/06" libelle="1"/>
-			<vacances debut="2017/12/23" fin="2018/01/08" libelle="2"/>
-			<vacances debut="2018/02/17" fin="2018/03/05" libelle="3"/>
-			<vacances debut="2018/04/14" fin="2018/04/30" libelle="4"/>
-			<vacances debut="2018/07/07" fin="2018/09/01" libelle="5"/>
-			<!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+			<vacances debut="2017/04/08" fin="2017/04/24" libelle="4"/>
+			<vacances debut="2017/07/06" fin="2017/09/01" libelle="5"/> 			<!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+
 		</zone>
 		<zone libelle="Corse">
 			<!-- Année 2003-2004 -->
@@ -532,6 +524,9 @@
 			<vacances debut="2009/02/21" fin="2009/03/09" libelle="3"/>
 			<vacances debut="2009/04/18" fin="2009/05/04" libelle="4"/>
 			<vacances debut="2009/07/02" fin="2009/09/09" libelle="5"/>
+
+			<!-- mise à jour le 03/03/2010 -->
+			<!-- http://www.ac-corse.fr/Calendrier-scolaire_a1435.html -->
 			<!-- Année 2009-2010 -->
 			<vacances debut="2009/10/25" fin="2009/11/09" libelle="1"/>
 			<vacances debut="2009/12/20" fin="2010/01/04" libelle="2"/>
@@ -555,13 +550,15 @@
 			<vacances debut="2012/12/23" fin="2013/01/07" libelle="2"/>
 			<vacances debut="2013/02/17" fin="2013/03/04" libelle="3"/>
 			<vacances debut="2013/04/14" fin="2013/04/29" libelle="4"/>
-			<vacances debut="2013/07/05" fin="2013/09/06" libelle="5"/> 		
+			<vacances debut="2013/07/05" fin="2013/09/06" libelle="5"/> 	
+			<!-- mise à jour le 07/05/2013 -->		
 			<!-- Année 2013-2014 -->
 			<vacances debut="2013/10/19" fin="2013/11/04" libelle="1"/>
 			<vacances debut="2013/12/21" fin="2014/01/06" libelle="2"/>
 			<vacances debut="2014/02/22" fin="2014/03/10" libelle="3"/>
 			<vacances debut="2014/04/26" fin="2014/05/12" libelle="4"/>
 			<vacances debut="2014/07/09" fin="2014/09/04" libelle="5"/>
+			<!-- mise à jour le 17/04/2014 -->
 			<!-- Année 2014-2015 -->
 			<vacances debut="2014/10/18" fin="2014/11/03" libelle="1"/>
 			<vacances debut="2014/12/20" fin="2015/01/05" libelle="2"/>
