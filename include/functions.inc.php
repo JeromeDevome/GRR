@@ -4361,62 +4361,82 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
  		return $_statut;
  }
 
- function jQuery_DatePicker($typeDate)
- {
+	function jQuery_DatePicker($typeDate){
 
-	 if (@file_exists('../include/connect.inc.php')){
-		$racine = "../";
-	}else{
-		$racine = "./";
-	}
+		if (@file_exists('../include/connect.inc.php')){
+			$racine = "../";
+		} else{
+			$racine = "./";
+		}
 
- 	if ($typeDate == 'rep_end' && isset($_GET['id']))
- 	{
- 		$res = grr_sql_query("SELECT repeat_id FROM ".TABLE_PREFIX."_entry WHERE id=".$_GET['id'].";");
- 		if (!$res)
- 			fatal_error(0, grr_sql_error());
- 		$repeat_id = implode('', grr_sql_row($res, 0));
- 		$res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks, start_time, end_time FROM ".TABLE_PREFIX."_repeat WHERE id=$repeat_id");
- 		if (!$res)
- 			fatal_error(0, grr_sql_error());
- 		if (grr_sql_count($res) == 1)
- 		{
- 			$row6 = grr_sql_row($res, 0);
- 			$date = date_parse(date("Y-m-d H:i:s",$row6[1]));
- 			$day = $date['day'];
- 			$month = $date['month'];
- 			$year = $date['year'];
- 		}
- 		else
- 		{
- 			if (isset ($_GET['day']))
- 				$day = $_GET['day'];
- 			else
- 				$day = date("d");
- 			if (isset ($_GET['month']))
- 				$month = $_GET['month'];
- 			else
- 				$month = date("m");
- 			if (isset ($_GET['year']))
- 				$year = $_GET['year'];
- 			else
- 				$year = date("Y");
- 		}
- 	}
- 	else
- 	{
- 		if (isset ($_GET['day']))
- 			$day = $_GET['day'];
- 		else
- 			$day = date("d");
- 		if (isset ($_GET['month']))
- 			$month = $_GET['month'];
- 		else
- 			$month = date("m");
- 		if (isset ($_GET['year']))
- 			$year = $_GET['year'];
- 		else
- 			$year = date("Y");
+		if ($typeDate == 'rep_end' && isset($_GET['id'])){
+			$res = grr_sql_query("SELECT repeat_id FROM ".TABLE_PREFIX."_entry WHERE id=".$_GET['id'].";");
+			if (!$res){
+				fatal_error(0, grr_sql_error());
+			}
+			$repeat_id = implode('', grr_sql_row($res, 0));
+			$res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks, start_time, end_time FROM ".TABLE_PREFIX."_repeat WHERE id=$repeat_id");
+			if (!$res){
+				fatal_error(0, grr_sql_error());
+			}
+			if (grr_sql_count($res) == 1){
+				$row6 = grr_sql_row($res, 0);
+				$date = date_parse(date("Y-m-d H:i:s",$row6[1]));
+				$day = $date['day'];
+				$month = $date['month'];
+				$year = $date['year'];
+			} else{
+				if (isset ($_GET['day']))
+					$day = $_GET['day'];
+				else
+					$day = date("d");
+				if (isset ($_GET['month']))
+					$month = $_GET['month'];
+				else
+					$month = date("m");
+				if (isset ($_GET['year']))
+					$year = $_GET['year'];
+				else
+					$year = date("Y");
+			}
+		} else{
+			global $start_day, $start_month, $start_year, $end_day, $end_month, $end_year;
+
+			if (isset ($_GET['day'])){
+				$day = $_GET['day'];
+			} else{
+				$day = date("d");
+			}
+
+			if (isset($start_day) && $typeDate=='start'){
+				$day = $start_day;
+			} elseif (isset($end_day) && $typeDate=='end'){
+				$day = $end_day;
+			}
+
+			if (isset ($_GET['month'])){
+				$month = $_GET['month'];
+			} else{
+				$month = date("m");
+			}
+
+			if (isset($start_month) && $typeDate=='start'){
+				$month = $start_month;
+			} elseif (isset($end_month) && $typeDate=='end'){
+				$month = $end_month;
+			}
+
+			if(isset ($_GET['year'])){
+				$year = $_GET['year'];
+			} else{
+				$year = date("Y");
+			}
+
+			if (isset($start_year) && $typeDate=='start'){
+				$year = $start_year;
+			} elseif (isset($end_year) && $typeDate=='end'){
+				$year = $end_year;
+			}
  	}
  	genDateSelector("".$typeDate."_", "$day", "$month", "$year","");
  	echo '<input type="hidden" disabled="disabled" id="mydate_' .$typeDate. '">'.PHP_EOL;
