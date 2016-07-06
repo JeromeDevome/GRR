@@ -94,7 +94,7 @@ if ($res)
 
 for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 {
-
+	$test = grr_sql_query1("SELECT id_type FROM ".TABLE_PREFIX."_j_type_area WHERE id_type = '".$row[2]."' AND id_area='".$areas."'");
 	if ($test == -1)
 	{
 		$nb_type ++;
