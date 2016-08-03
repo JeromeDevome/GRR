@@ -202,20 +202,6 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 						$email_user = $tab_login["email"];
 						$prenom_user = $tab_login["fullname"];
 					}
-			//3ème cas : SSO CAS.
-				}
-				else if ($_user_ext_authentifie == "cas" && !empty($tab_login))
-				{
-				// Cas d'une authentification CAS
-					$nom_user = $tab_login["user_nom"];
-					$email_user = $tab_login["user_email"];
-					$prenom_user = $tab_login["user_prenom"];
-					$code_fonction_user = $tab_login["user_code_fonction"];
-					$libelle_fonction_user = $tab_login["user_libelle_fonction"];
-					$language_user = $tab_login["user_language"];
-					$default_style_user = $tab_login["user_default_style"];
-					if (Settings::get("sso_ac_corr_profil_statut")=='y')
-						$_statut = effectuer_correspondance_profil_statut($code_fonction_user, $libelle_fonction_user);
 				//CAS d'un LDAP avec SSO CAS ou avec SSO Lemonldap
 				//on tente de récupérer des infos dans l'annuaire avant d'importer le profil dans GRR
 				}
@@ -271,6 +257,20 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 					$nom_user = $l_nom;
 					$email_user = $l_email;
 					$prenom_user = $l_prenom;
+				//4ème cas : SSO CAS.
+				}
+				else if ($_user_ext_authentifie == "cas" && !empty($tab_login))
+				{
+					// Cas d'une authentification CAS
+					$nom_user = $tab_login["user_nom"];
+					$email_user = $tab_login["user_email"];
+					$prenom_user = $tab_login["user_prenom"];
+					$code_fonction_user = $tab_login["user_code_fonction"];
+					$libelle_fonction_user = $tab_login["user_libelle_fonction"];
+					$language_user = $tab_login["user_language"];
+					$default_style_user = $tab_login["user_default_style"];
+					if (Settings::get("sso_ac_corr_profil_statut")=='y')
+						$_statut = effectuer_correspondance_profil_statut($code_fonction_user, $libelle_fonction_user);
 				//CAS ou :
 				//LDAP n'est pas configuré,
 				//il peut s'agit d'une authentification "SSO CAS",  "SSO Lemonldap" mais ce n'est alors pas normal
