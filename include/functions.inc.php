@@ -34,7 +34,7 @@ function returnmsg($type,$test, $status, $msg = '')
 	echo encode_message_utf8('<div class="alert alert-'.$type.'" role="alert"><h3>'.$test);
 	echo encode_message_utf8($status)."</h3>";
 	if ($msg != '')
-		echo encode_message_utf8('($msg)'),PHP_EOL;
+		echo encode_message_utf8("($msg)"),PHP_EOL;
 	echo '</div>',PHP_EOL;
 }
 
