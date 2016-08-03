@@ -32,16 +32,18 @@
  */
 // Le package phpCAS doit etre stocké dans un sous-répertoire « CAS »
 // dans un répertoire correspondant a l'include_path du php.ini (exemple : /var/lib/php)
-include_once('CAS/CAS.php');
+include_once(dirname(__FILE__).'/CAS/CAS.php');
 // cas.sso est le fichier d'informations de connexions au serveur cas
 // Le fichier cas.sso doit etre stocké dans un sous-répertoire « CAS »
 // dans un répertoire correspondant a l'include_path du php.ini (exemple : /var/lib/php)
-include('CAS/cas.sso');
+include(dirname(__FILE__).'/CAS/cas.sso');
 /* declare le script comme un client CAS
  Si le dernier argument est à true, cela donne la possibilité à phpCAS d'ouvrir une session php.
 */
  phpCAS::client(CAS_VERSION_2_0,$serveurSSO,$serveurSSOPort,$serveurSSORacine,true);
- phpCAS::setLang('french');
+ phpCAS::setLang(PHPCAS_LANG_FRENCH);
+
+//            phpCAS::setCasServerCACert();
 //Set the fixed URL that will be set as the CAS service parameter. When this method is not called, a phpCAS script uses its own URL.
 //Le paramètre $Url_CAS_setFixedServiceURL est défini dans le fichier config.inc.php
  if (isset($Url_CAS_setFixedServiceURL) && ($Url_CAS_setFixedServiceURL != ''))
