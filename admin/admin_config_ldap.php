@@ -60,6 +60,12 @@ else
 $base_ldap = isset($_POST["base_ldap"]) ? $_POST["base_ldap"] : NULL;
 $base_ldap_autre = isset($_POST["base_ldap_autre"]) ? $_POST["base_ldap_autre"] : NULL;
 $ldap_filter = isset($_POST["ldap_filter"]) ? $_POST["ldap_filter"] : NULL;
+
+$ldap_group_member_attr = isset($_POST["ldap_group_member_attr"]) ? $_POST["ldap_group_member_attr"] : NULL;
+$ldap_group_base = isset($_POST["ldap_group_base"]) ? $_POST["ldap_group_base"] : NULL;
+$ldap_group_filter = isset($_POST["ldap_group_filter"]) ? $_POST["ldap_group_filter"] : NULL;
+$ldap_group_user_field = isset($_POST["ldap_group_user_field"]) ? $_POST["ldap_group_user_field"] : NULL;
+
 $titre_ldap = "Configuration de l'authentification LDAP";
 if (isset($_POST['reg_ldap_statut']))
 {
@@ -269,6 +275,11 @@ if ((!grr_resumeSession()) && $valid != 'yes')
 							$conn .= "# Attention : si vous configurez manuellement ce fichier (sans passer par la configuration en ligne)\n";
 							$conn .= "# vous devez tout de même activer LDAP en choisissant le \"statut par défaut des utilisateurs importés\".\n";
 							$conn .= "# Pour cela, rendez-vous sur la page : configuration -> Configuration LDAP.\n";
+							$conn .= "\n#SE3 variables\n";
+							$conn .= "\$ldap_group_member_attr=\"{$ldap_group_member_attr}\";\n";
+							$conn .= "\$ldap_group_base=\"{$ldap_group_base}\";\n";
+							$conn .= "\$ldap_group_filter=\"{$ldap_group_filter}\";\n";
+							$conn .= "\$ldap_group_user_field=\"{$ldap_group_user_field}\";\n";
 							$conn .= "?".">";
 							@fputs($f, $conn);
 							if (!@fclose($f))
@@ -430,6 +441,7 @@ if ((!grr_resumeSession()) && $valid != 'yes')
 							echo "<input type=\"hidden\" name=\"ldap_filter\" value=\"$ldap_filter\" />";
 						if (isset($ldap_base))
 							echo "<input type=\"hidden\" name=\"ldap_base\" value=\"$ldap_base\" />";
+						//TODO: Ajouter les informations pour les groupes
 						echo encode_message_utf8("<br /><br /><b>Remarque : pour le moment, aucune modification n'a été apportée au fichier de configuration \"config_ldap.inc.php\".</b><br />
 							Les informations ne seront enregistrées qu'à la fin de la procédure de configuration.</div>");
 
