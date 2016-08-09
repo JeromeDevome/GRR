@@ -54,7 +54,7 @@ a.calendar{display:block;color:#FFF;height:100%;width:100%;vertical-align:middle
 .cellcalendar a:hover{background-color:#fff}
 a.lienPlanning:link,a.lienPlanning:visited{color:#fff;display:block}
 a.lienPlanning:hover{display:block ;color:#31A3DD;}
-span a{color:#FFF !important}
+span a{color:#FFF}
 .left{float:left}
 .right{float:right}
 #chargement{left:35%;top:322px;position:absolute;display:none;z-index:10}
