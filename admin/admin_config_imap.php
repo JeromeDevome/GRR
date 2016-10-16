@@ -76,7 +76,7 @@ print_header("", "", "", $type="with_session");
 include "admin_col_gauche.php";
 echo encode_message_utf8("<h2>Configuration de l'authentification IMAP/POP"."</h2>");
 ?>
-<script type="text/javascript" src="./functions.js"></script>
+<script type="text/javascript" src="../js/functions.js"></script>
 <?php
 if ($etape == 1)
 {

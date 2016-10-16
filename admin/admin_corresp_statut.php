@@ -96,7 +96,7 @@ print_header("", "", "", $type="with_session");
 // Affichage de la colonne de gauche
 include "admin_col_gauche.php";
 ?>
-<script src="./functions.js" type="text/javascript"></script>
+<script src="../js/functions.js" type="text/javascript"></script>
 <?php
 echo "<h2>".get_vocab('admin_corresp_statut.php')."</h2>";
 echo get_vocab('admin_corresp_statut_desc');

@@ -149,7 +149,7 @@ if ((!@grr_resumeSession()) && $valid!='yes')
 			<link REL="stylesheet" href="themes/default/css/style.css" type="text/css">
 			<TITLE>GRR</TITLE>
 			<LINK REL="SHORTCUT ICON" href="./favicon.ico">
-				<script type="text/javascript" src="./functions.js" ></script>
+				<script type="text/javascript" src="../js/functions.js" ></script>
 			</HEAD>
 			<BODY>
 				<form action="admin_maj.php" method='post' style="width: 100%; margin-top: 24px; margin-bottom: 48px;">
@@ -219,7 +219,7 @@ if ((!@grr_resumeSession()) && $valid!='yes')
 					}
 
 					?>
-					<script type="text/javascript" src="./functions.js" ></script>
+					<script type="text/javascript" src="../js/functions.js" ></script>
 					<?php
 					$result = '';
 					$result_inter = '';
