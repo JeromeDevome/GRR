@@ -43,6 +43,11 @@ Temporary Items
 .apdisk
 
 include/connect.inc.php
-include/connect.inc.php
+include/CAS
+include/config_CAS.inc.php
+include/config_ldap.inc.php
 export/export.xml
 export/exportplus.xml
+images/9ced9a5214edece4192123246c333e26.png
+images/logo.jpg
+.idea

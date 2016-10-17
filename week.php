@@ -122,6 +122,13 @@ $this_moderate_room = grr_sql_query1("SELECT moderate FROM ".TABLE_PREFIX."_room
 $this_delais_option_reservation = grr_sql_query1("SELECT delais_option_reservation FROM ".TABLE_PREFIX."_room WHERE id=$room");
 $this_area_comment = grr_sql_query1("SELECT comment_room FROM ".TABLE_PREFIX."_room WHERE id=$room");
 $this_area_show_comment = grr_sql_query1("SELECT show_comment FROM ".TABLE_PREFIX."_room WHERE id=$room");
+
+//Pour vérifier si la plage de fin arrive sur un créneau ou non.
+$minutesFinCrenaux = array();
+for($h=0; $h<3600; $h+=$this_area_resolution) {
+	$minutesFinCrenaux[] = date('i', $h);
+}
+
 if ($room <= 0)
 {
 	echo "<h1>".get_vocab("no_rooms_for_area")."</h1>";
@@ -281,6 +288,10 @@ else
 					$d[$weekday][$slot]["horaireDebut"] = $row[0];
 					$d[$weekday][$slot]["horaireFin"] = $row[1];
 					$d[$weekday][$slot]["duree"] = ($row[1]- $row[0]) / $this_area_resolution;
+				}
+				//Si la plage de fin dépasse le créneau, augmenter la durée
+				if(!in_array(date('i', $d[$weekday][$slot]["horaireFin"]), $minutesFinCrenaux)) {
+					$d[$weekday][$slot]["duree"] += 1;
 				}
 				if ($prev_weekday != $weekday)
 				{

@@ -333,15 +333,13 @@ include "admin_col_gauche.php";
 ?>
 <script type='text/javascript'>
 	function display_password_fields(id){
-		if ($(id).value=='locale')
+		if ($('#'+id).val()=='locale')
 		{
-			$('password_fields').style.display='block';
-			$('password_fields').style.visibility='visible';
+			$('#password_fields').show();
 		}
 		else
 		{
-			$('password_fields').style.visibility='hidden';
-			$('password_fields').style.display='none';
+			$('#password_fields').hide();
 		}
 	}
 </script>
