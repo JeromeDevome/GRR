@@ -34,7 +34,7 @@ function returnmsg($type,$test, $status, $msg = '')
 	echo encode_message_utf8('<div class="alert alert-'.$type.'" role="alert"><h3>'.$test);
 	echo encode_message_utf8($status)."</h3>";
 	if ($msg != '')
-		echo encode_message_utf8('($msg)'),PHP_EOL;
+		echo encode_message_utf8("($msg)"),PHP_EOL;
 	echo '</div>',PHP_EOL;
 }
 
@@ -588,28 +588,28 @@ function plages_libre_semaine_ressource($id_room, $month_week, $day_week, $year_
  	$est_membre="non";
 	// LDAP attributs
  	$members_attr = array (
- 		"memberUid"
+		$ldap_group_member_attr
 		// Recherche des Membres du groupe
  		);
 		// Avec des GroupOfNames, ce ne serait pas ça.
  	$ds = @ldap_connect($ldap_adresse, $ldap_port);
  	if ($ds)
  	{
- 		$r = @ldap_bind ($ds);
+ 		$r = @ldap_bind ($ds, $ldap_login, $ldap_pwd);
 		// Bind anonyme
  		if ($r)
  		{
 			// La requête est adaptée à un serveur SE3...
- 			$result = @ldap_read($ds,"cn=$grp,ou=Groups,$ldap_base","cn=*",$members_attr);
+			$result = @ldap_search($ds, "cn={$grp},{$ldap_group_base}",$ldap_group_filter, $members_attr);
 			// Peut-être faudrait-il dans le $tab_grp_autorise mettre des chaines 'cn=$grp,ou=Groups'
  			if ($result)
  			{
  				$info = @ldap_get_entries($ds, $result);
  				if ($info["count"] == 1)
  				{
- 					for ($loop = 0; $loop < $info[0]["memberuid"]["count"]; $loop++)
+ 					for ($loop = 0; $loop < $info[0][$ldap_group_member_attr]["count"]; $loop++)
  					{
- 						if ($info[0]["memberuid"][$loop] == $uid)
+ 						if ($info[0][$ldap_group_member_attr][$loop] == $uid)
  							$est_membre="oui";
  					}
  				}
