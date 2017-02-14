@@ -491,7 +491,7 @@ affiche_pop_up(get_vocab('message_records'), 'user');
 			var $row = $(this);
 			var height = $row.height();
 			var h2 = $row.find('a').height();
-			$row.find('a').css('height', height);
+			$row.find('a').css('min-height', height);
 			$row.find('a').css('padding-top', height/2 - h2/2);
 
 		});
