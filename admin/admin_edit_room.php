@@ -74,7 +74,12 @@ $picture_room = isset($_POST["picture_room"]) ? $_POST["picture_room"] : NULL;
 $comment_room = isset($_POST["comment_room"]) ? $_POST["comment_room"] : NULL;
 $show_comment = isset($_POST["show_comment"]) ? "y" : "n";
 $change_done = isset($_POST["change_done"]) ? $_POST["change_done"] : NULL;
-$area_order = isset($_POST["area_order"]) ? $_POST["area_order"] : NULL;
+if(!isset($_POST["area_order"]) || empty($_POST["area_order"])){
+	$area_order = 0;
+} else{
+	$area_order = $_POST["area_order"];
+}
+
 $room_order = isset($_POST["room_order"]) ? $_POST["room_order"] : NULL;
 $change_room = isset($_POST["change_room"]) ? $_POST["change_room"] : NULL;
 $number_periodes = isset($_POST["number_periodes"]) ? $_POST["number_periodes"] : NULL;
