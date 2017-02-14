@@ -166,7 +166,7 @@ echo get_vocab('admin_type_explications')."<br /><br />";
 	echo "<select name=\"type_letter\" size=\"1\">\n";
 	echo "<option value=''>".get_vocab("choose")."</option>\n";
 	$letter = "A";
-	for ($i = 1; $i <= 100; $i++)
+	for ($i = 1; $i <= 702; $i++)
 	{
 		echo "<option value='".$letter."' ";
 		if ($row['type_letter'] == $letter)
