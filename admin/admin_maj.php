@@ -755,6 +755,21 @@ if ((!@grr_resumeSession()) && $valid!='yes')
 								$result .= $result_inter;
 							$result_inter = '';
 						}
+						
+						if ($version_old < "3.2.0")
+						{
+							$result .= "<b>Mise à jour jusqu'à la version 3.2.0 :</b><br />";
+
+							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('smtp_secure', '')");
+							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('smtp_port', '25')");
+							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('menu_gauche', '1')");
+
+							if ($result_inter == '')
+								$result .= "<span style=\"color:green;\">Ok !</span><br />";
+							else
+								$result .= $result_inter;
+							$result_inter = '';
+						}
 
 
 						// Vérification du format des champs additionnels
@@ -837,24 +852,61 @@ if ((!@grr_resumeSession()) && $valid!='yes')
 					if ($version_grr_RC == "")
 						$display_version_grr = $version_grr.$sous_version_grr;
 					else
-						$display_version_grr = $version_grr."_RC".$version_grr_RC;
+						$display_version_grr = $version_grr." RC".$version_grr_RC;
 					echo "<h2>".get_vocab('admin_maj.php')."</h2>";
 					echo "<hr />";
 					// Numéro de version
-					//Hugo - Mise a jour temporaire du numéro de version à afficher
-					//11/06/2013
-					$display_version_grr = $version_grr.$sous_version_grr." RC".$version_grr_RC;
 					echo "<h3>".get_vocab("num_version_title")."</h3>\n";
-					echo "<p>".get_vocab("num_version").$display_version_grr;
+					echo "<p>".get_vocab("num_version")." ".$display_version_grr;
 					echo "</p>\n";
 					echo get_vocab('database') . grr_sql_version() . "\n";
 					echo "<br />" . get_vocab('system') . php_uname() . "\n";
 					echo "<br />Version PHP : " . phpversion() . "\n";
 					//Hugo - Mise a jour temporaire du lien à afficher
 					//11/06/2013
-					$grr_devel_url = "http://grr.devome.com/";
 					echo "<p>".get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a></p>\n";
+
+
+					echo "<br><p>".get_vocab("maj_recherche_grr").":</p>";
+					$fichier = $grr_devel_url.'versiongrr.xml';
+					
+					if (!$fp = @fopen($fichier,"r")) {
+						echo "<p>".get_vocab("maj_impossible_rechercher")."</p>\n";
+					} else{
+						$reader = new XMLReader();
+						$reader->open($fichier);
+
+						while ($reader->read()) {
+							if ($reader->nodeType == XMLREADER::ELEMENT){
+								if ($reader->name == "numero"){
+									$reader->read();
+									$derniereVersion = $reader->value;
+								}
+								if ($reader->name == "sousversion"){
+									$reader->read();
+									$derniereSousVersion = $reader->value;
+								}
+								if ($reader->name == "rc"){
+									$reader->read();
+									$derniereRC = $reader->value;
+								}
+							}
+						}
+
+						if($version_grr != $derniereVersion || $sous_version_grr != $derniereSousVersion || $version_grr_RC != $derniereRC){
+							if($derniereRC <> ""){
+								$derniereRC = " RC ".$derniereRC;
+							}
+							echo "<p>".get_vocab("maj_dispo")." ".$derniereVersion."".$derniereSousVersion."".$derniereRC."</p>\n";
+						} else{
+							echo "<p>".get_vocab("maj_dispo_aucune")."</p>\n";
+						}
+
+						$reader->close();
+					}
+
 					echo "<hr />\n";
+
 					// Mise à jour de la base de donnée
 					echo "<h3>".get_vocab("maj_bdd")."</h3>";
 					// Vérification du numéro de version
