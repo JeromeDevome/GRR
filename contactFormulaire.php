@@ -16,11 +16,11 @@ include "include/language.inc.php";
 ?>
 
 <?php
-if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
-	$type_session = "no_session";
-print_header("", "", "", $type="with_session");
+
+$type_session = "no_session";
+print_header("", "", "", $type="no_session");
 bouton_retour_haut();
-bouton_aller_bas();
+
 ?>
 	<script>
 	
@@ -69,8 +69,9 @@ bouton_aller_bas();
 			<fieldset>
 				
 				<legend><b>Vos coordonnées</b></legend>
-					
-				<div class="col-lg-6 col-md-6 col-xs-6">
+
+
+				<div class="col-lg-6 col-md-6 col-xs-12">
 					
 					<div class="form-group">
 						<div class="input-group">
@@ -87,7 +88,7 @@ bouton_aller_bas();
 					</div>
 					
 				</div>
-				<div class="col-lg-6 col-md-6 col-xs-6">
+				<div class="col-lg-6 col-md-6 col-xs-12">
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
@@ -189,16 +190,20 @@ bouton_aller_bas();
 				
 		<div class="row">	
 				
-				<br>
+				<div class="col-lg-6 col-md-6 col-xs-12">
+					
+					<div class="form-group">
+						<div class="input-group">
+
 				
 				<legend><b> Date :</b></legend>
-				<fieldset>
+
 
 						<?php
 						jQuery_DatePicker('start');
 						?>
 
-						<label >  Heure début :</label>
+						<label >Heure début :</label>
 						<?php
 							echo " <select class =\"test\" name=\"heure\"> ";
 							for ($h = 1 ; $h < 24 ; $h++)
@@ -207,21 +212,26 @@ bouton_aller_bas();
 							}
 							echo "</select>";
 							echo " <select id = 'debdureemin' class =\"test\" name=\"minutes\"> </select>";
-						
-					
+
 						//~ jQuery_TimePicker('start_','','','');
 						?>
-								
-							<input class="form-control" type="text" id="duree" size="8" name="duree" placeholder="Durée en heure" />
-								
-							<select id="dureemin" name="dureemin" class="form-control">
 
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Durée en heure :</label>
+						<div class="col-sm-3"><input class="form-control" type="number" id="duree" size="8" name="duree" value="1" required/></div>
+						<label class="col-sm-1 control-label"> et </label>
+						<div class="col-lg-5 col-md-5 col-xs-5">
+							<select id="dureemin" name="dureemin" class="form-control col-lg-5 col-md-5 col-xs-5">
 								<option> </option>
 								<option> </option>
-								
 							</select>
+						</div>
+					</div>
 
-			</fieldset>
 		<br/>
 		<br/>
 
@@ -236,10 +246,6 @@ bouton_aller_bas();
 	<?php echo get_vocab('top_of_page'); ?>
 	</div>
 
-	
-	<div id="toBot">
-	<?php echo get_vocab('bot_of_page'); ?>
-	</div>
 	
 	<script>
 	jQuery(document).ready(function() {
