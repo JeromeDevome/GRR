@@ -96,7 +96,7 @@ if (!isset($_GET["sumby"]))
 	$_GET["sumby"] = "6";
 else
 	settype($_GET["sumby"],"integer");
-$sortby = isset($_GET["sortby"]) ? $_GET["sortby"] : "a";
+$sortby = isset($_GET["sortby"]);
 	// Si la table j_user_area est vide, il faut modifier la requête
 $test_grr_j_user_area = grr_sql_count(grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_j_user_area"));
 	// Report on one entry. See below for columns in $row[].
