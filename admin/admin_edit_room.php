@@ -1176,8 +1176,6 @@ if ((!empty($id_area)) || (isset($add_area)))
 			// L'utilisateur ne peut reserver qu'une duree limitee (-1 desactivee), exprimee en minutes
 			echo "<tr>\n<td>".get_vocab("duree_max_resa_area").get_vocab("deux_points");
 			echo "</td>\n<td><input class=\"form-control\" type=\"text\" name=\"duree_max_resa_area1\" size=\"5\" value=\"".$row["duree_max_resa_area"]."\" /></td></tr>\n";
-			echo "</table>";
-			echo "<table>";
 			// Nombre max de reservation par domaine
 			echo "<tr><td>".get_vocab("max_booking")." -  ".get_vocab("all_rooms_of_area").get_vocab("deux_points");
 			echo "</td><td><input class=\"form-control\" type=\"text\" name=\"max_booking\" value=\"".$row['max_booking']."\" /></td>\n";
