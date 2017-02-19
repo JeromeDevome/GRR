@@ -13,6 +13,7 @@ $vocab['accessdeniedtoomanybooking'] = "Acceso rechazado : ¡se rechaza su solic
 $vocab['acces_fiche_reservation_msg'] = "¿Quién tiene acceso a la ficha de reserva detallada de un recurso?";
 $vocab['action'] = "Acción";
 $vocab['activer_fonctionalite_ressource_empruntee_restituee'] = "Activar la funcionalidad \"recurso prestado/restituido\"";
+$vocab['activer_fonctionalite_gestion_cle'] = "Activer la fonctionnalité \"gestion des clés\""; // A traduire
 $vocab['Activer_module_jours_cycles'] = "Activar las funcionalidades \"días ciclo\"";
 $vocab['Activer_module_multisite'] = "Activar la funcionalidad \"multisitio\"";
 $vocab['Activer_export_xml'] = "Activar la funcionalidad \"Export XML\"";

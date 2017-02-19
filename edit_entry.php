@@ -94,6 +94,7 @@ $affiche_mess_asterisque = false;
 $type_affichage_reser = grr_sql_query1("SELECT type_affichage_reser FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $delais_option_reservation  = grr_sql_query1("SELECT delais_option_reservation FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $qui_peut_reserver_pour  = grr_sql_query1("SELECT qui_peut_reserver_pour FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
+$active_cle  = grr_sql_query1("SELECT active_cle FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars( $_SERVER['HTTP_REFERER']);
@@ -166,6 +167,7 @@ if (isset($id))
 	$clef = $row[14];
 	$courrier = $row[15];
 	$modif_option_reservation = 'n';
+
 	if ($entry_type >= 1)
 	{
 		$sql = "SELECT rep_type, start_time, end_date, rep_opt, rep_num_weeks, end_time, type, name, beneficiaire, description
@@ -761,15 +763,18 @@ echo '<div id="div_champs_add">'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;
 
-echo '<tr><td class="E"><br>'.PHP_EOL;
-echo '<b>'.get_vocab("status_clef").get_vocab("deux_points").'</b>'.PHP_EOL;
-echo '</td></tr>'.PHP_EOL;
-echo '<tr><td class="CL">'.PHP_EOL;
-echo '<input name="keys" type="checkbox" value="y" ';
-if (isset($clef) && $clef == 1)
-	echo 'checked';
-echo ' > '.get_vocab("msg_clef");
-echo '</td></tr>'.PHP_EOL;
+if($active_cle == 'y'){
+	echo '<tr><td class="E"><br>'.PHP_EOL;
+	echo '<b>'.get_vocab("status_clef").get_vocab("deux_points").'</b>'.PHP_EOL;
+	echo '</td></tr>'.PHP_EOL;
+	echo '<tr><td class="CL">'.PHP_EOL;
+	echo '<input name="keys" type="checkbox" value="y" ';
+	if (isset($clef) && $clef == 1)
+		echo 'checked';
+	echo ' > '.get_vocab("msg_clef");
+	echo '</td></tr>'.PHP_EOL;
+}
+
 echo '<tr><td class="E"><br>'.PHP_EOL;
 echo '<b>'.get_vocab("status_courrier").get_vocab("deux_points").'</b>'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;

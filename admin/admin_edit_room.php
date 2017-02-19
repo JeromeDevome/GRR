@@ -70,6 +70,14 @@ else
 	// toutes les reservations sont considerees comme restituee
 	grr_sql_query("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id = '".$room."'");
 }
+if (isset($_POST["active_cle"]))
+	$active_cle = 'y';
+else
+{
+	$active_cle = 'n';
+	// toutes les reservations sont considerees comme restituee
+	grr_sql_query("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id = '".$room."'");
+}
 $picture_room = isset($_POST["picture_room"]) ? $_POST["picture_room"] : NULL;
 $comment_room = isset($_POST["comment_room"]) ? $_POST["comment_room"] : NULL;
 $show_comment = isset($_POST["show_comment"]) ? "y" : "n";
@@ -229,6 +237,7 @@ if ((!empty($room)) || (isset($area_id)))
 			area_id='".$area_id."',
 			show_fic_room='".$show_fic_room."',
 			active_ressource_empruntee = '".$active_ressource_empruntee."',
+			active_cle = '".$active_cle."',
 			capacity='".$capacity."',
 			delais_max_resa_room='".$delais_max_resa_room."',
 			delais_min_resa_room='".$delais_min_resa_room."',
@@ -259,6 +268,7 @@ if ((!empty($room)) || (isset($area_id)))
 			comment_room='".protect_data_sql(corriger_caracteres($comment_room))."',
 			show_fic_room='".$show_fic_room."',
 			active_ressource_empruntee = '".$active_ressource_empruntee."',
+			active_cle = '".$active_cle."',
 			capacity='".$capacity."',
 			delais_max_resa_room='".$delais_max_resa_room."',
 			delais_min_resa_room='".$delais_min_resa_room."',
@@ -403,6 +413,7 @@ if ((!empty($room)) || (isset($area_id)))
 		$row['moderate'] = '';
 		$row['show_fic_room'] = '';
 		$row['active_ressource_empruntee'] = 'n';
+		$row['active_cle'] = 'n';
 		$area_name = grr_sql_query1("select area_name from ".TABLE_PREFIX."_area where id='".$area_id."'");
 		echo "<h2>".get_vocab("match_area").get_vocab('deux_points')." ".$area_name."<br />".get_vocab("addroom")."</h2>\n";
 
@@ -648,6 +659,12 @@ if ((!empty($room)) || (isset($area_id)))
 		if ($row['active_ressource_empruntee'] == "y")
 			echo " checked=\"checked\" ";
 		echo "/></td></tr>\n";
+// Activer la gestion des clés
+		echo "<tr><td>".get_vocab("activer_fonctionalite_gestion_cle")."</td><td><input type=\"checkbox\" name=\"active_cle\" ";
+		if ($row['active_cle'] == "y")
+			echo " checked=\"checked\" ";
+		echo "/></td></tr>\n";
+	//
 		echo "</table>\n";
 		echo "<div style=\"text-align:center;\"><br />\n";
 		echo "<input class=\"btn btn-primary\" type=\"submit\" name=\"change_room\"  value=\"".get_vocab("save")."\" />\n";

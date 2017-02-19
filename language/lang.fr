@@ -10,6 +10,7 @@ $vocab['accessdeniedtoomanybooking'] = "Accès refusé : Votre demande de réser
 $vocab['acces_fiche_reservation_msg'] = "Qui a accès à la fiche de réservation détaillée d'une ressource ?";
 $vocab['action'] = "Action";
 $vocab['activer_fonctionalite_ressource_empruntee_restituee'] = "Activer la fonctionnalité \"ressource empruntée/restituée\"";
+$vocab['activer_fonctionalite_gestion_cle'] = "Activer la fonctionnalité \"gestion des clés\"";
 $vocab['Activer_module_jours_cycles'] = "Activer les fonctionnalités \"jours cycle\"";
 $vocab['Activer_module_multisite'] = "Activer la fonctionnalité \"multisite\"";
 $vocab['Activer_export_xml'] = "Activer la fonctionnalité \"Export XML\"";

@@ -14,6 +14,7 @@ $vocab['accessdeniedtoomanybooking'] = "Access denied: Your reservation request 
 $vocab['acces_fiche_reservation_msg'] = "Who has access to the detailed reservation form of a resource?";
 $vocab['action'] = "Action";
 $vocab['activer_fonctionalite_ressource_empruntee_restituee'] = "Activate the functionality \"borrowed / restored resource\"";
+$vocab['activer_fonctionalite_gestion_cle'] = "Activate the functionality \"gestion des clés\""; // A traduire
 $vocab['Activer_module_jours_cycles'] = "Activate the functionalities \"cycle days\"";
 $vocab['Activer_module_multisite'] = "Activate the functionality \"multisite\"";
 $vocab['Activer_export_xml'] = "Activate the functionality \"Export XML\"";

@@ -123,7 +123,9 @@ $sql = "SELECT ".TABLE_PREFIX."_entry.name,
 ".TABLE_PREFIX."_entry.jours,
 ".TABLE_PREFIX."_room.active_ressource_empruntee,
 ".TABLE_PREFIX."_entry.clef,
-".TABLE_PREFIX."_entry.courrier
+".TABLE_PREFIX."_entry.courrier,
+".TABLE_PREFIX."_room.courrier,
+".TABLE_PREFIX."_room.active_cle
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
 WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
 AND ".TABLE_PREFIX."_room.area_id = ".TABLE_PREFIX."_area.id
@@ -191,6 +193,7 @@ $jour_cycle    				= htmlspecialchars($row[19]);
 $active_ressource_empruntee = htmlspecialchars($row[20]);
 $keys						= $row[21];
 $courrier					= $row[22];
+$active_cle					= $row[23];
 $rep_type 					= 0;
 $verif_display_email 		= verif_display_email(getUserName(), $room_id);
 if ($verif_display_email)
@@ -755,11 +758,13 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
 				{
 					echo '<form action="validation.php" method="get">',PHP_EOL;
 					echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("reservation_en_cours")."</legend>\n";
-					echo "<span class=\"larger\">".get_vocab("status_clef").get_vocab("deux_points")."</span>";
-					echo "<br /><input type=\"checkbox\" name=\"clef\" value=\"y\" ";
-					if ($keys == 1)
-						echo " checked ";
-					echo " /> ".get_vocab("msg_clef");
+					if ($active_cle == 'y'){
+						echo "<span class=\"larger\">".get_vocab("status_clef").get_vocab("deux_points")."</span>";
+						echo "<br /><input type=\"checkbox\" name=\"clef\" value=\"y\" ";
+						if ($keys == 1)
+							echo " checked ";
+						echo " /> ".get_vocab("msg_clef");
+					}
 					if (Settings::get('show_courrier') == 'y')
 					{
 						echo "<br /><span class=\"larger\">".get_vocab("status_courrier").get_vocab("deux_points")."</span>";

@@ -763,6 +763,7 @@ if ((!@grr_resumeSession()) && $valid!='yes')
 							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('smtp_secure', '')");
 							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('smtp_port', '25')");
 							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('menu_gauche', '1')");
+							$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_room ADD active_cle CHAR( 1 ) NOT NULL DEFAULT 'y' AFTER active_ressource_empruntee");
 
 							if ($result_inter == '')
 								$result .= "<span style=\"color:green;\">Ok !</span><br />";
