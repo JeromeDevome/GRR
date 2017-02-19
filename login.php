@@ -227,7 +227,6 @@ echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("compan
 	<br />
 	<br />
 	<?php
-	$grr_devel_url = "http://grr.devome.com/";
 	echo "<br /><p class=\"small\"><a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a> - ".get_vocab("grr_version").affiche_version();
 	$email = explode('@',$grr_devel_email);
 	$person = $email[0];
