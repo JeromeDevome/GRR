@@ -52,7 +52,7 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 		 * @param integer $mois_precedent
 		 * @param integer $mois_suivant
 		 */
-		public function Calendar($day, $month, $year, $h, $area, $room, $dmy, $mois_precedent, $mois_suivant)
+		public function __construct($day, $month, $year, $h, $area, $room, $dmy, $mois_precedent, $mois_suivant)
 		{
 			$this->day   = $day;
 			$this->month = $month;
