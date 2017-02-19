@@ -541,11 +541,11 @@ function insertChampsAdd(){
 			}
 			if ($overload_fields[$fieldname]["type"] == "numeric")
 			{
-				echo "if (isNaN((document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) && (document.forms[\"main\"].addon_".$overload_fields[$fieldname]["id"].".value))) {\n";
-				?>
-				$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo $overload_fields[$fieldname]["name"].get_vocab("deux_points"). get_vocab("is_not_numeric") ?></div>');
-				err = 1;
-			}
+	?>
+				if (isNaN((document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) && (document.forms['main'].addon_<?php echo $overload_fields[$fieldname]['id']?>.value))) {
+					$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo addslashes($overload_fields[$fieldname]["name"]).get_vocab("deux_points"). get_vocab("is_not_numeric") ?></div>');
+					err = 1;
+				}
 			<?php
 		}
 	}
