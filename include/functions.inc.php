@@ -1097,8 +1097,9 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 					echo '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>'.PHP_EOL;
 					echo '<br /> <small><i><a href="login.php">'.get_vocab("connect_local").'</a></i></small>'.PHP_EOL;
 				}
-				else
+				else {
 					echo '<br /> <a href="login.php">'.get_vocab("connect").'</a>'.PHP_EOL;
+				}
 			}
 			else
 			{
@@ -2403,52 +2404,9 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 	// $action = 6 -> Résultat d'une décision de modération
 	// $action = 7 -> Notification d'un retard dans la restitution d'une ressource.
 
-    /* fixme faire le tri entre phpMailer et la class my_mailer */
-    /* todo ajouter un $port smtp dans les settings */
-
     require_once 'phpmailer/PHPMailerAutoload.php';
-    define('GRR_FROM', Settings::get('grr_mail_from'));
-    define('GRR_FROMNAME', Settings::get('grr_mail_fromname'));
+	require_once 'include/mail.class.php';
 
-    require_once './include/mail.inc.php';
-    //$m = new my_phpmailer();
-
-    $mail = new PHPMailer();
-
-    if (Settings::get('grr_mail_method') == 'smtp') {
-
-        $smtpUsername = Settings::get('grr_mail_Username');
-        $smtpPassword = Settings::get('grr_mail_Password');
-
-        if ($smtpUsername != "") {
-            $mail->SMTPAuth = true;
-            $mail->Username = $smtpUsername;
-            $mail->Password = $smtpPassword;
-
-        } else {
-            $mail->SMTPAuth = false;
-        }
-
-        $mail->Host = Settings::get('grr_mail_smtp');
-        $mail->Port = 587;
-
-        $mail->isSMTP();
-
-    } else {
-
-        $mail->isSendMail();
-
-    }
-
-    //$mail->SMTPDebug = 2;
-    //$mail->Debugoutput = 'html';
-
-	$mail->CharSet = 'UTF-8';
-	$mail->setFrom(GRR_FROM, GRR_FROMNAME);
-
-	$mail->SetLanguage("fr", "./phpmailer/language/");
-
-	setlocale(LC_ALL, $locale);
 
 	$sql = "SELECT ".TABLE_PREFIX."_entry.name,
 	".TABLE_PREFIX."_entry.description,
@@ -2556,46 +2514,51 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 	// Url de GRR
 	$message = $message.traite_grr_url("","y")."\n\n";
 	$sujet = $vocab["subject_mail1"].$room_name." - ".$date_avis;
-	if ($action == 1)
-	{
+
+	if ($action == 1){
 		$sujet = $sujet.$vocab["subject_mail_creation"];
-		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
-		$message = $message.$vocab["creation_booking"];
-		$message=$message.$vocab["the_room"].$room_name." (".$area_name.") \n";
+		$message .= '<br>'.$vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
+		$message .= $vocab["creation_booking"];
+		$message .= $vocab["the_room"].$room_name." (".$area_name.") \n";
+		$repondre = $user_email;
 	}
-	else if ($action == 2)
-	{
+	elseif ($action == 2){
 		$sujet = $sujet.$vocab["subject_mail_modify"];
 		if ($moderate == 1)
 			$sujet .= " (".$vocab["en_attente_moderation"].")";
 		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
 		$message = $message.$vocab["modify_booking"];
 		$message = $message.$vocab["the_room"].$room_name." (".$area_name.") ";
+		$message = $message.$vocab["reservee au nom de"];
+		$message = $message.$vocab["the_user"].affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
+		$repondre = $user_email;
 	}
-	else if ($action == 3)
-	{
+	elseif ($action == 3){
 		$sujet = $sujet.$vocab["subject_mail_delete"];
 		if ($moderate == 1)
 			$sujet .= " (".$vocab["en_attente_moderation"].")";
 		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
 		$message = $message.$vocab["delete_booking"];
 		$message = $message.$vocab["the_room"].$room_name." (".$area_name.") \n";
+		$message = $message.$vocab["reservee au nom de"];
+		$message = $message.$vocab["the_user"].affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
+		$repondre = $user_email;
 	}
-	else if ($action == 4)
-	{
+	elseif ($action == 4){
 		$sujet = $sujet.$vocab["subject_mail_delete"];
 		$message = $message.$vocab["suppression_automatique"];
 		$message=$message.$vocab["the_room"].$room_name." (".$area_name.") \n";
+		$repondre = $user_email;
 	}
-	else if ($action == 5)
-	{
+	elseif ($action == 5){
 		$sujet = $sujet.$vocab["subject_mail_moderation"];
 		$message = $message.$vocab["reservation_en_attente_de_moderation"];
 		$message=$message.$vocab["the_room"].$room_name." (".$area_name.") \n";
+		$repondre = Settings::get("webmaster_email");
 	}
-	else if ($action == 6)
-	{
+	elseif ($action == 6){
 		$sujet = $sujet.$vocab["subject_mail_decision_moderation"];
+
 		$resmoderate = grr_sql_query("SELECT moderate, motivation_moderation FROM ".TABLE_PREFIX."_entry_moderate WHERE id ='".protect_data_sql($id_entry)."'");
 		if (!$resmoderate)
 			fatal_error(0, grr_sql_error());
@@ -2605,6 +2568,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 		grr_sql_free($resmoderate);
 		$moderate_decision = $rowModerate[0];
 		$moderate_description = $rowModerate[1];
+
 		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
 		$message = $message.$vocab["traite_moderation"];
 		$message=$message.$vocab["the_room"].$room_name." (".$area_name.") ";
@@ -2628,10 +2592,12 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 				$message .= "\n".traite_grr_url("","y")."view_entry.php?id=".$id_moderes;
 		}
 		$message .= "\n\n".$vocab["rappel_de_la_demande"].$vocab["deux_points"]."\n";
+
+		$repondre = $user_email;
 	}
-	else if ($action == 7)
-	{
+	elseif ($action == 7){
 		$sujet .= $vocab["subject_mail_retard"];
+
 		$message .= $vocab["message_mail_retard"].$vocab["deux_points"]." \n";
 		$message .=$room_name." (".$area_name.") \n";
 		$message .= $vocab["nom emprunteur"].$vocab["deux_points"];
@@ -2640,29 +2606,23 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 			$message .= $vocab["un email envoye"].$beneficiaire_email." \n";
 		$message .= "\n".$vocab["changer statut lorsque ressource restituee"].$vocab["deux_points"];
 		$message .= "\n".traite_grr_url("","y")."view_entry.php?id=".$id_entry." \n";
-	}
-	if (($action == 2) || ($action == 3))
-	{
-		$message = $message.$vocab["reservee au nom de"];
-		$message = $message.$vocab["the_user"].affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
-	}
-	if (($action == 5) || ($action == 7))
+
 		$repondre = Settings::get("webmaster_email");
-	else
-		$repondre = $user_email;
+	}
+
 
 	//
 	// Infos sur la réservation
 	//		
 	$reservation = '';
-	$reservation = $reservation.$vocab["start_of_the_booking"]." ".$start_date."\n";
-	$reservation = $reservation.$vocab["duration"]." ".$duration." ".$dur_units."\n";
+	$reservation .= '<br>'.$vocab["start_of_the_booking"]." ".$start_date."\n";
+	$reservation .= '<br>'.$vocab["duration"]." ".$duration." ".$dur_units."\n";
 	if (trim($breve_description) != "")
-		$reservation = $reservation.$vocab["namebooker"].preg_replace("/ /", " ",$vocab["deux_points"])." ".$breve_description."\n";
+		$reservation .= '<br>'.$vocab["namebooker"].preg_replace("/ /", " ",$vocab["deux_points"])." ".$breve_description."\n";
 	else
-		$reservation = $reservation.$vocab["entryid"].$room_id."\n";
+		$reservation .= '<br>'.$vocab["entryid"].$room_id."\n";
 	if ($description !='')
-		$reservation = $reservation.$vocab["description"]." ".$description."\n";
+		$reservation .= '<br>'.$vocab["description"]." ".$description."\n";
 	// Champ additionnel
 	$reservation .= affichage_champ_add_mails($id_entry);
 	// Type de réservation
@@ -2672,10 +2632,10 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 	else
 		$temp = removeMailUnicode($temp);
 
-	$reservation = $reservation.$vocab["type"].preg_replace("/ /", " ",$vocab["deux_points"])." ".$temp."\n";
+	$reservation .= '<br>'.$vocab["type"].preg_replace("/ /", " ",$vocab["deux_points"])." ".$temp."\n";
 
 	if ($rep_type != 0)
-		$reservation = $reservation.$vocab["rep_type"]." ".$affiche_period."\n";
+		$reservation .= '<br>'.$vocab["rep_type"]." ".$affiche_period."\n";
 	if ($rep_type != 0)
 	{
 		if ($rep_type == 2)
@@ -2688,19 +2648,19 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 					$opt .= day_name($daynum) . " ";
 			}
 			if ($opt)
-				$reservation = $reservation.$vocab["rep_rep_day"]." ".$opt."\n";
+				$reservation .= '<br>'.$vocab["rep_rep_day"]." ".$opt."\n";
 		}
 		if ($rep_type == 6)
 		{
 			if (Settings::get("jours_cycles_actif") == "Oui")
-				$reservation = $reservation.$vocab["rep_type_6"].preg_replace("/ /", " ",$vocab["deux_points"]).ucfirst(substr($vocab["rep_type_6"],0,1)).$jours_cycle."\n";
+				$reservation .= '<br>'.$vocab["rep_type_6"].preg_replace("/ /", " ",$vocab["deux_points"]).ucfirst(substr($vocab["rep_type_6"],0,1)).$jours_cycle."\n";
 		}
 		$reservation = $reservation.$vocab["rep_end_date"]." ".$rep_end_date."\n";
 	}
 	if (($delais_option_reservation > 0) && ($option_reservation != -1))
 		$reservation = $reservation."*** ".$vocab["reservation_a_confirmer_au_plus_tard_le"]." ".time_date_string_jma($option_reservation,$dformat)." ***\n";
 
-	$reservation = $reservation."-----\n";
+	$reservation .= '<br>'."-----\n";
 
 	$message = $message.$reservation;
 	$message = $message.$vocab["msg_no_email"].Settings::get("webmaster_email");;
@@ -2710,52 +2670,32 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 	$nombre = grr_sql_count($res);
 	if ($nombre > 0)
 	{
+		$destinataire = "";
 		$tab_destinataire = array();
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
 			if ($row[0] != "")
 				$tab_destinataire[] = $row[0];
 		}
-		foreach ($tab_destinataire as $value)
-		{
-			if (Settings::get("grr_mail_Bcc") == "y")
-				$mail->AddBCC( $value );
-			else
-				$mail->AddAddress( $value );
+		foreach ($tab_destinataire as $value){
+			$destinataire = $destinataire .";". $value;
 		}
-		$mail->Subject = $sujet;
-		$mail->Body = $message;
-		$mail->AddReplyTo( $repondre );
-		if (!$mail->Send())
-			$message_erreur .= $mail->ErrorInfo;
+
+		Email::Envois($destinataire, $sujet, $message, $repondre, '', '');
 	}
-	$mail->ClearAddresses();
-	$mail->ClearBCCs();
-	$mail->ClearReplyTos();
-	if ($action == 7)
-	{
+
+	if ($action == 7){
 		$mail_admin = find_user_room ($room_id);
+		$destinataire = "";
 		if (count($mail_admin) > 0)
 		{
-			foreach ($mail_admin as $value)
-			{
-				if (Settings::get("grr_mail_Bcc") == "y")
-					$mail->AddBCC( $value );
-				else
-					$mail->AddAddress( $value );
+			foreach ($mail_admin as $value){
+				$destinataire = $destinataire .";". $value;
 			}
-			$mail->Subject = $sujet;
-			$mail->Body = $message;
-			$mail->AddReplyTo( $repondre );
-			if (!$mail->Send())
-				$message_erreur .= $mail->ErrorInfo;
+
+			Email::Envois($destinataire, $sujet, $message, $repondre, '', '');
 		}
-		$mail->ClearAddresses();
-		$mail->ClearBCCs();
-		$mail->ClearReplyTos();
-	}
-	if ($action == 7)
-	{
+
 		$sujet7 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
 		$sujet7 .= $vocab["subject_mail_retard"];
 		$message7 = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
@@ -2766,40 +2706,26 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 		$message7 = html_entity_decode($message7);
 		$destinataire7 = $beneficiaire_email;
 		$repondre7 = Settings::get("webmaster_email");
-		$mail->AddAddress( $destinataire7 );
-		$mail->Subject = $sujet7;
-		$mail->Body = $message7;
-		$mail->AddReplyTo( $repondre7 );
-		if (!$mail->Send())
-			$message_erreur .= $mail->ErrorInfo;
-		$mail->ClearAddresses();
-		$mail->ClearReplyTos();
+
+		Email::Envois($destinataire7, $sujet7, $message7, $repondre7, '', '');
 	}
 	if ($action == 4)
 	{
 		$destinataire4 = $beneficiaire_email;
 		$repondre4 = Settings::get("webmaster_email");
-		$mail->AddAddress( $destinataire4 );
-		$mail->Subject = $sujet;
-		$mail->Body = $message;
-		$mail->AddReplyTo( $repondre4 );
-		if (!$mail->Send())
-			$message_erreur .= $mail->ErrorInfo;
-		$mail->ClearAddresses();
-		$mail->ClearReplyTos();
+		
+		Email::Envois($destinataire4, $sujet, $message, $repondre4, '', '');
 	}
 	if ($action == 5)
 	{
 		$mail_admin = find_user_room ($room_id);
-		if (count($mail_admin) > 0)
-		{
-			foreach ($mail_admin as $value)
-			{
-				if (Settings::get("grr_mail_Bcc") == "y")
-					$mail->AddBCC( $value );
-				else
-					$mail->AddAddress( $value );
+		$destinataire = "";
+		if (count($mail_admin) > 0){
+
+			foreach ($mail_admin as $value){
+				$destinataire = $destinataire .";". $value;
 			}
+		
 			$sujet5 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
 			$sujet5 .= $vocab["subject_mail_moderation"];
 			$message5 = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
@@ -2810,15 +2736,10 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 			$message5 .= "\n".$vocab['room'].$vocab['deux_points'].$room_name." (".$area_name.") \n";
 			$message5 = html_entity_decode($message5);
 			$repondre5 = Settings::get("webmaster_email");
-			$mail->Subject = $sujet5;
-			$mail->Body = $message5;
-			$mail->AddReplyTo( $repondre5 );
-			if (!$mail->Send())
-				$message_erreur .= $mail->ErrorInfo;
+
+			Email::Envois($destinataire, $sujet5, $message5, $repondre5, '', '');
 		}
-		$mail->ClearAddresses();
-		$mail->ClearBCCs();
-		$mail->ClearReplyTos();
+
 	}
 	if (($action == 5) && ($beneficiaire_email != '') && ($beneficiaire_actif == 'actif'))
 	{
@@ -2833,14 +2754,8 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 		$message5 = html_entity_decode($message5);
 		$destinataire5 = $beneficiaire_email;
 		$repondre5 = Settings::get("webmaster_email");
-		$mail->AddAddress( $destinataire5 );
-		$mail->Subject = $sujet5;
-		$mail->Body = $message5;
-		$mail->AddReplyTo( $repondre5 );
-		if (!$mail->Send())
-			$message_erreur .= $mail->ErrorInfo;
-		$mail->ClearAddresses();
-		$mail->ClearReplyTos();
+
+		Email::Envois($destinataire5, $sujet5, $message5, $repondre5, '', '');
 	}
 	if (($action == 6) && ($beneficiaire_email != '') && ($beneficiaire_actif=='actif'))
 	{
@@ -2849,14 +2764,8 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 		$message6 = $message;
 		$destinataire6 = $beneficiaire_email;
 		$repondre6 = $user_email;
-		$mail->AddAddress($destinataire6);
-		$mail->Subject = $sujet6;
-		$mail->Body = $message6;
-		$mail->AddReplyTo($repondre6);
-		if (!$mail->Send())
-			$message_erreur .= $mail->ErrorInfo;
-		$mail->ClearAddresses();
-		$mail->ClearReplyTos();
+
+		Email::Envois($destinataire6, $sujet6, $message6, $repondre6, '', '');
 	}
 
 	// Cas d'une création, modification ou suppression d'un message par un utilisateur différent du bénéficiaire :
@@ -2867,21 +2776,18 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 		$message2 = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
 		$message2 = $message2.traite_grr_url("","y")."\n\n";
 		$message2 = $message2.$vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
-		if ($action == 1)
-		{
+		if ($action == 1){
 			$sujet2 = $sujet2.$vocab["subject_mail_creation"];
 			$message2 = $message2.$vocab["creation_booking_for_you"];
 			$message2=$message2.$vocab["the_room"].$room_name." (".$area_name.").";
 		}
-		else if ($action == 2)
-		{
+		elseif ($action == 2){
 			$sujet2 = $sujet2.$vocab["subject_mail_modify"];
 			$message2 = $message2.$vocab["modify_booking"];
 			$message2=$message2.$vocab["the_room"].$room_name." (".$area_name.")";
 			$message2 = $message2.$vocab["created_by_you"];
 		}
-		else
-		{
+		else{
 			$sujet2 = $sujet2.$vocab["subject_mail_delete"];
 			$message2 = $message2.$vocab["delete_booking"];
 			$message2=$message2.$vocab["the_room"].$room_name." (".$area_name.")";
@@ -2891,15 +2797,11 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 		$message2 = html_entity_decode($message2);
 		$destinataire2 = $beneficiaire_email;
 		$repondre2 = $user_email;
-		$mail->AddAddress($destinataire2);
-		$mail->Subject = $sujet2;
-		$mail->Body = $message2;
-		$mail->AddReplyTo($repondre2);
-		if (!$mail->Send())
-			$message_erreur .= $mail->ErrorInfo;
-		$mail->ClearAddresses();
-		$mail->ClearReplyTos();
+
+		Email::Envois($destinataire2, $sujet2, $message2, $repondre2, '', '');
 	}
+
+
 	return $message_erreur;
 } // Fin fonction send_mail
 
