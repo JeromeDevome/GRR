@@ -52,10 +52,9 @@ if (($fin_session == 'y') && (Settings::get("authentification_obli") == 1))
 	header("Location: ./logout.php?auto=1&url=$url");
 	die();
 }
-if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
-	$type_session = "no_session";
-else
-	$type_session = "with_session";
+
+$type_session = "no_session";
+
 header('Content-Type: text/html; charset=utf-8');
 echo begin_page(Settings::get("company"));
 echo "<div class=\"page_sans_col_gauche\">";
@@ -116,34 +115,15 @@ switch ($action)
 	$message .= $vocab["email"].preg_replace("/ /", " ",$vocab["deux_points"]).$email_reponse."\n";
 	$message.="\n".$corps_message."\n";
 	$sujet = $vocab["subject_mail1"]." - ".$objet_message;
-	error_reporting (E_ALL ^ E_NOTICE ^ E_WARNING);
-	require 'phpmailer/PHPMailerAutoload.php';
-	define("GRR_FROM",Settings::get("grr_mail_from"));
-	define("GRR_FROMNAME",Settings::get("grr_mail_fromname"));
-	$mail = new PHPMailer();
-	$mail->isSMTP();
-	$mail->SMTPDebug = 0;
-	$mail->Debugoutput = 'html';
-	$mail->Host = Settings::get("grr_mail_smtp");
-	$mail->Port = 25;
-	$mail->SMTPAuth = false;
-	$mail->CharSet = 'UTF-8';
-	$mail->setFrom(GRR_FROM, GRR_FROMNAME);
-	$mail->SetLanguage("fr", "./phpmailer/language/");
-	setlocale(LC_ALL, $locale);
-	$tab_destinataire = explode(';',preg_replace("/ /", "",$destinataire));
-	foreach ($tab_destinataire as $item_email)
-		$mail->AddAddress($item_email);
-	$mail->Subject = $sujet;
-	$mail->Body = $message;
-	$mail->AddReplyTo( $email_reponse );
-	if (!$mail->Send())
-	{
-		$message_erreur .= $mail->ErrorInfo;
-		echo $message_erreur;
-	}
-	else
-		echo "<p style=\"text-align: center\">Votre message a été envoyé !</p>";
+
+	require_once 'phpmailer/PHPMailerAutoload.php';
+	require_once 'include/mail.class.php';
+
+	$destinataire = Settings::get("webmaster_email");
+	Email::Envois($destinataire, $sujet, $message, $email_reponse, '', '');
+
+	echo "<p style=\"text-align: center\">Votre message a été envoyé !</p>";
+
 	break;
 	default:
 	echo "<table cellpadding='5'>";
@@ -173,7 +153,7 @@ switch ($action)
 		if (($user_email != "") && ($user_email != -1))
 			echo "value='".$user_email."' ";
 	}
-	echo "/>\n";
+	echo "required />\n";
 	echo "<br />\n";
 	echo "<p style=\"text-align:center;\">";
 	echo "<input type='button' value='".get_vocab("submit")."' onclick='verif_et_valide_envoi();' />\n";
