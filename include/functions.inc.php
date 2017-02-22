@@ -1766,10 +1766,9 @@ function tdcell_rowspan($colclass, $step)
 function show_colour_key($area_id)
 {
 	echo '<table class="legende"><caption class="titre">Légendes des réservations</caption>'.PHP_EOL;
-	$sql = "SELECT DISTINCT t.id, t.type_name, t.type_letter FROM ".TABLE_PREFIX."_type_area t
-	LEFT JOIN ".TABLE_PREFIX."_j_type_area j on j.id_type=t.id
-	WHERE (j.id_area  IS NULL or j.id_area != '".$area_id."')
-	ORDER BY t.order_display";
+	$sql = "SELECT DISTINCT t.id, t.type_name, t.type_letter FROM `".TABLE_PREFIX."_type_area` t
+	LEFT JOIN `".TABLE_PREFIX."_j_type_area` j on j.id_type=t.id
+	WHERE (j.id_area  IS NULL or j.id_area != '".$area_id."')";
 	$res = grr_sql_query($sql);
 	if ($res)
 	{
@@ -1777,7 +1776,7 @@ function show_colour_key($area_id)
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
 			// La requête sql précédente laisse passer les cas où un type est non valide dans le domaine concerné ET au moins dans un autre domaine, d'où le test suivant
-			$test = grr_sql_query1("SELECT id_type FROM ".TABLE_PREFIX."_j_type_area WHERE id_type = '".$row[0]."' and id_area='".$area_id."'");
+			$test = grr_sql_query1("SELECT id_type FROM `".TABLE_PREFIX."_j_type_area` WHERE id_type = '".$row[0]."' and id_area='".$area_id."'");
 			if ($test == -1)
 			{
 				$type_name   = $row[1];
@@ -1795,8 +1794,9 @@ function show_colour_key($area_id)
 		}
 		if ($i % 2 == 1)
 			echo '<td></td>',PHP_EOL,'</tr>'.PHP_EOL;
-		echo '</table>'.PHP_EOL;
+		
 	}
+	echo '</table>'.PHP_EOL;
 }
 //Round time down to the nearest resolution
 function round_t_down($t, $resolution, $am7)
