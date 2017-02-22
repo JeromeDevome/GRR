@@ -212,7 +212,7 @@ FROM ".TABLE_PREFIX."_entry
 WHERE room_id=$room
 AND start_time < ".($week_end + $resolution)." AND end_time > $week_start ORDER BY start_time";
 $first_slot = $morningstarts * 3600 / $resolution;
-$last_slot = ($eveningends * 3600 + $eveningends_minutes * 60) / $resolution;
+$last_slot = ($eveningends * 3600 + $eveningends_minutes * 60) / $resolution; 
 if ($debug_flag)
 	echo "<br />DEBUG: query=$sql <br />first_slot=$first_slot - last_slot=$last_slot\n";
 $res = grr_sql_query($sql);
@@ -249,7 +249,7 @@ else
 				$t = $weekday * 86400 + $am7;
 				continue;
 			}
-			if ($slot <= $last_slot-1)
+			if ($slot <= $last_slot)
 			{
 				$d[$weekday][$slot]["color"] = $row[2];
 				if (($row[1]) > mktime(24, 0, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0]))) // changed
@@ -407,6 +407,7 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 	$nb_case = 0;
 	$semaine_changement_heure_ete = 'no';
 	$semaine_changement_heure_hiver = 'no';
+
 	for ($slot = $first_slot; $slot <= $last_slot; $slot++)
 	{
 		echo "<tr>";
