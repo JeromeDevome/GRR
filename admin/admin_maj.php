@@ -118,10 +118,10 @@ if (Settings::get('sso_statut') == 'lcs')
 		// A ce stade, l'utilisateur est authentifié par LCS
 		// Etablir à nouveau la connexion à la base
 		if (empty($db_nopersist))
-			$db_c = mysql_pconnect($dbHost, $dbUser, $dbPass);
+			$db_c = mysqli_connect("p:".$dbHost, $dbUser, $dbPass);
 		else
-			$db_c = mysql_connect($dbHost, $dbUser, $dbPass);
-		if (!$db_c || !mysql_select_db ($dbDb))
+			$db_c = mysqli_connect($dbHost, $dbUser, $dbPass);
+		if (!$db_c || !mysqli_select_db ($db_c, $dbDb))
 		{
 			echo "\n<p>\n" . get_vocab('failed_connect_db') . "\n";
 			exit;
