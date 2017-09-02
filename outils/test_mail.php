@@ -16,9 +16,6 @@ th.thHead { font-size: 12px; border-width: 1px 1px 0px 1px; }
 	text-decoration: none; line-height : 120%; color : #000000;
 }
 .gen { font-size : 12px; color : #000000; }
-.copyright		{ font-size: 10px; font-family: Verdana, Arial, Helvetica, sans-serif; color: #444444; letter-spacing: -1px;}
-a.copyright		{ color: #444444; text-decoration: none;}
-a.copyright:hover { color: #000000; text-decoration: underline;}
 input,textarea, select {
 	color : #000000;
 	font: normal 11px Verdana, Arial, Helvetica, sans-serif;
@@ -38,7 +35,7 @@ input { text-indent : 2px; }
       			<table border="0" cellpadding="0" cellspacing="0" width="100%">
         			<tbody>
         				<tr>
-          					<td align="center" valign="middle" width="100%"><span class="maintitle"><span class="maintitle">Script pour tester la fonction mail()</span></span></td>
+          					<td align="center" valign="middle" width="100%"><span class="maintitle"><span class="maintitle">Script pour tester la fonction mail() du serveur</span></span></td>
         				</tr>
         			</tbody>
       			</table>
@@ -47,7 +44,7 @@ input { text-indent : 2px; }
 					<table class="forumline" align="center" border="0" cellpadding="4" cellspacing="1" width="100%">
   						<tbody>
 							<tr>
-								<th class="thHead" height="25" nowrap>Voici un script qui permet de tester la fonction mail() de votre hebergeur. Si elle n'est pas activ&eacute;e, une erreur appara&icirc;tra.<br /> Indiquez votre adresse email dans le champ ci-dessous puis cliquez sur Envoyer l'email. Un email sera envoy&eacute; &agrave; l'adresse indiqu&eacute;e.</th>
+								<th class="thHead" height="25" nowrap>Si la fonction mail() n'est pas activ&eacute;e, une erreur appara&icirc;tra.<br /> Un email sera envoy&eacute; &agrave; l'adresse indiqu&eacute;e.</th>
   							</tr>
   							<tr>
 								<td class="row1">
@@ -57,7 +54,7 @@ input { text-indent : 2px; }
                   								<td colspan="2" align="center"> </td>
                 							</tr>
                 							<tr>
-                  								<td align="right" width="45%"><span class="gen">Votre adresse email:</span></td>
+                  								<td align="right" width="45%"><span class="gen">Adresse email:</span></td>
                   								<td><input type="text" name="destinataire"></td>
                 							</tr>
                 							<tr align="center">
@@ -91,7 +88,6 @@ $envoi = mail($destinataire, $sujet, $message);
 
 ?>
 				<br />
-				<div align="center" class="copyright">Script pour tester la fonction mail()<br />Copyright &copy; <a href="http://www.phpbb-fr.com/">phpBB-fr.com</a></div>
 			</td>
 		</tr>
 	</tbody>
