@@ -107,6 +107,9 @@ $nb_year_calendar = 10;
 # Sinon, positionnez la variable suivante a "0"; (valeur par defaut = 1)
  $use_function_html_entity_decode = 1;
 
+#Requiert Connexion pour mettre à jour la BDD 0: non ; 1: oui - Defaut 1
+$connexionAdminMAJ = 1;
+
 ###################################
 # Cas d'une authentification SSO  #
 ###################################

@@ -42,6 +42,7 @@ if (!Settings::load())
 require_once("../include/session.inc.php");
 // Paramètres langage
 include "../include/language.inc.php";
+
 function traite_requete($requete = "")
 {
 	mysqli_query($GLOBALS['db_c'], $requete);
@@ -78,7 +79,8 @@ function traite_requete($requete = "")
 		}
 	}
 	return $retour;
-}
+} // Fin de fonction traite_requete
+
 $valid = isset($_POST["valid"]) ? $_POST["valid"] : 'no';
 $version_old = isset($_POST["version_old"]) ? $_POST["version_old"] : '';
 if (isset($_GET["force_maj"]))
@@ -134,7 +136,7 @@ if (Settings::get('sso_statut') == 'lcs')
 		$result = grr_opensession($login,$password,$user_ext_authentifie,$lcs_tab_login,$lcs_groups) ;
 	}
 }
-if ((!@grr_resumeSession()) && $valid!='yes')
+if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 {
 	?>
 	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
@@ -180,11 +182,11 @@ if ((!@grr_resumeSession()) && $valid!='yes')
 			</html>
 			<?php
 			die();
-		};
+};
 		$back = '';
 		if (isset($_SERVER['HTTP_REFERER']))
 			$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-		if ((authGetUserLevel(getUserName(),-1) < 6) && ($valid != 'yes'))
+		if ((authGetUserLevel(getUserName(),-1) < 6) && ($valid != 'yes') && $connexionAdminMAJ == 1)
 		{
 			showAccessDenied($back);
 			exit();
@@ -210,7 +212,7 @@ if ((!@grr_resumeSession()) && $valid!='yes')
 						echo $charset_html;
 					?>">
 
-					<link rel="stylesheet" href="themes/default/css/style.css" type="text/css">
+					<link rel="stylesheet" href="../themes/default/css/style.css" type="text/css">
 					<link rel="shortcut icon" href="favicon.ico">
 						<title>GRR</title>
 					</head>
