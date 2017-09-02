@@ -409,7 +409,7 @@ $vocab['format identifiant incorrect'] = "El identificador contiene caracteres n
 $vocab['formulaire_reservation'] = "Formulario de reserva";
 $vocab['following_year'] = "un año después";
 $vocab['from'] = "a partir de";
-$vocab['fulldescription'] = "Descripción completa: (Número de personas, etc.)";
+$vocab['fulldescription'] = "Descripción completa";
 $vocab['Gestion lien aide bandeau superieur'] = "Gestión del enlace de ayuda del banner superior";
 $vocab['gestionnaire des resources suivantes'] = "Gestor de lo(s) recurso(s) siguiente(s):";
 $vocab['gestionnaires_et_administrateurs'] = "Les gestionnaires et administrateurs"; // A traduire
@@ -466,8 +466,7 @@ $vocab['ldap_chemin_invalide'] = "La búsqueda en el anuario no acabó (problema
 $vocab['ldap_doublon_identifiant'] = "La búsqueda en el anuario con el identificador que usó devolvió varios resultados. Póngase en contacto con el administrador para señalar el problema.";
 $vocab['ldap_recherche_identifiant_aucun_resultats'] = "La búsqueda en el anuario con el identificador que usó devolvió ningún resultado. Póngase en contacto con el administrador para señalar el problema.";
 $vocab['legend_msg'] = "Muestra la leyenda";
-$vocab['legend0'] = "Sí";
-$vocab['legend1'] = "No";
+$vocab['periodicite_msg'] = "Autoriser la périodicité dans les réservations"; // A traduire
 $vocab['lemon_SSO_explain'] = "Si usted tiene a su disposición un contexto <b>Lemonldap</b>, Usted puede activar la consideración de este servicio por <B>GRR</B> a continuación. Diríjase a la documentación de GRR para mayor información.";
 $vocab['les administrateurs restreints'] = "Únicamente los administradores limitados";
 $vocab['les gestionnaires de la ressource'] = "los gestores del recurso";
@@ -663,6 +662,9 @@ $vocab['remplissage_description_breve0'] = "El relleno de la rúbrica \"breve de
 $vocab['remplissage_description_breve1'] = "El relleno de la rúbrica \"breve descripción\" es obligatorio";
 $vocab['remplissage_description_breve2'] = "La rúbrica \"breve descripción\" contiene, por defecto, el apellido del usuario";
 $vocab['remplissage_description_breve_msg'] = "El relleno de la rúbrica \"breve descripción\" en el formulario reserva";
+$vocab['remplissage_description_complete0'] = "Le remplissage de la rubrique \"description complète\" est facultatif"; // A traduire
+$vocab['remplissage_description_complete1'] = "Le remplissage de la rubrique \"description complète\" est obligatoire"; // A traduire
+$vocab['remplissage_description_complete_msg'] = "Remplissage de la rubrique \"description complète\" dans le formulaire réservation"; // A traduire
 $vocab['repeat_id'] = "periodicidad n° ";
 $vocab['report'] = "Búsqueda - Informes - Estadísticas.";
 $vocab['report_and_summary'] = "Detalles de reservas y resumen";
@@ -914,10 +916,11 @@ $vocab['you_have_not_entered'] = "No introdujo los datos ";
 
 //MAJ Hugo FORESTIER - Ajout de vocabs
 //19/05/2013
-$vocab['display_menu'] = "Visualización de la barra de menú de la izquierda ";
-$vocab['display_menu_1'] = "Elija si la barra de menú de la izquierda (calendario, artículos y bienes) se debe mostrar de forma predeterminada";
-$vocab['display_menu_2'] = "Barra de menú de la izquierda no muestra";
-$vocab['display_menu_3'] = "Barra de menú aparece Izquierda";
+$vocab['display_menu'] = "Visualización de la barra de menú de la izquierda "; // A traduire
+$vocab['display_menu_1'] = "Elija si la barra de menú de la izquierda (calendario, artículos y bienes) se debe mostrar de forma predeterminada"; // A traduire
+$vocab['display_menu_2'] = "Barra de menú de la izquierda no muestra"; // A traduire
+$vocab['display_menu_3'] = "Barra de menú aparece Izquierda"; // A traduire
+$vocab['display_menu_4'] = "Le menu s'affiche en haut"; // A traduire
 
 $vocab['display_level_view_entry']= "Visualización de reservas en forma de popup" ;
 $vocab['display_level_view_entry_0']= "Popup aparece." ;

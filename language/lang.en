@@ -416,7 +416,7 @@ $vocab['format identifiant incorrect'] = "The username has some not allowed char
 $vocab['formulaire_reservation'] = "Reservation form";
 $vocab['following_year'] = "Following year";
 $vocab['from'] = "from";
-$vocab['fulldescription'] = "Full description: (number of people, etc.)";
+$vocab['fulldescription'] = "Full description";
 $vocab['Gestion lien aide bandeau superieur'] = "Management of the help link of the superior banner";
 $vocab['gestionnaire des resources suivantes'] = "Manager of the following resource(s):";
 $vocab['gestionnaires_et_administrateurs'] = "Les gestionnaires et administrateurs"; // A traduire
@@ -473,8 +473,7 @@ $vocab['ldap_chemin_invalide'] = " The research in the directory did not succeed
 $vocab['ldap_doublon_identifiant'] = "The research in the directory with this username sent back several results. Contact the administrator to point the problem.";
 $vocab['ldap_recherche_identifiant_aucun_resultats'] = "The research in the directory with this username didn't sent back any results. Contact the administrator to point the problem.";
 $vocab['legend_msg'] = "Display the legend";
-$vocab['legend0'] = "Yes";
-$vocab['legend1'] = "No";
+$vocab['periodicite_msg'] = "Autoriser la périodicité dans les réservations"; // A traduire
 $vocab['lemon_SSO_explain'] = "If you have a <b>Lemonldap</b> environment, you can activate below the consideration of this service by <b>GRR</b>. Refer to the documentation of GRR to know more about it.";
 $vocab['les administrateurs restreints'] = "only restricted administrators";
 $vocab['les gestionnaires de la ressource'] = "resource managers";
@@ -668,6 +667,9 @@ $vocab['remplissage_description_breve0'] = "The filling of the rubric \"short de
 $vocab['remplissage_description_breve1'] = "The filling of the rubric \"short description\" is compulsory";
 $vocab['remplissage_description_breve2'] = "The rubric \"short description\" contains, by default, the username";
 $vocab['remplissage_description_breve_msg'] = "Filling of the rubric \"short description\" in the reservation form";
+$vocab['remplissage_description_complete0'] = "Le remplissage de la rubrique \"description complète\" est facultatif"; // A traduire
+$vocab['remplissage_description_complete1'] = "Le remplissage de la rubrique \"description complète\" est obligatoire"; // A traduire
+$vocab['remplissage_description_complete_msg'] = "Remplissage de la rubrique \"description complète\" dans le formulaire réservation"; // A traduire
 $vocab['repeat_id'] = "periodicity No. ";
 $vocab['report'] = "Search - Report";
 $vocab['report_and_summary'] = "Reservations and summary";
@@ -919,10 +921,11 @@ $vocab['you_have_not_entered'] = "You have not entered ";
 
 //MAJ Hugo FORESTIER - Ajout de vocabs
 //19/05/2013
-$vocab['display_menu'] = "Display of the left menu bar ";
-$vocab['display_menu_1'] = "Choose if the left menu bar (calendar, items and property)  should be displayed by default";
-$vocab['display_menu_2'] = "Left menu bar doesn't display";
-$vocab['display_menu_3'] = "Left menu bar displays";
+$vocab['display_menu'] = "Display of the menu bar "; // A traduire
+$vocab['display_menu_1'] = "Choose if the left menu bar (calendar, items and property)  should be displayed by default"; // A traduire
+$vocab['display_menu_2'] = "Left menu bar doesn't display"; // A traduire
+$vocab['display_menu_3'] = "Left menu bar displays"; // A traduire
+$vocab['display_menu_4'] = "Le menu s'affiche en haut"; // A traduire
 
 $vocab['display_level_view_entry']= "Display of reservations in popup form" ;
 $vocab['display_level_view_entry_0']= "Popup displays." ;
