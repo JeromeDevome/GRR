@@ -400,11 +400,19 @@ function get_vocab($tag)
 	} else {
 		if ($unicode_encoding)
 		{
-			return iconv($charset_html,"utf-8",$vocab[$tag]);
+			if(Settings::get("trad_".$tag) != ""){
+				return Settings::get("trad_".$tag);
+			}else{
+				return iconv($charset_html,"utf-8",$vocab[$tag]);
+			}
 		}
 		else
 		{
-			return $vocab[$tag];
+			if(Settings::get("trad_".$tag) != ""){
+				return Settings::get("trad_".$tag);
+			}else{
+				return $vocab[$tag];
+			}
 		}
 	}
 }

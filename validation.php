@@ -124,7 +124,6 @@ $sql = "SELECT ".TABLE_PREFIX."_entry.name,
 ".TABLE_PREFIX."_room.active_ressource_empruntee,
 ".TABLE_PREFIX."_entry.clef,
 ".TABLE_PREFIX."_entry.courrier,
-".TABLE_PREFIX."_room.courrier,
 ".TABLE_PREFIX."_room.active_cle
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
 WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
