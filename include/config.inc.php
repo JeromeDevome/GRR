@@ -110,6 +110,11 @@ $nb_year_calendar = 10;
 #Requiert Connexion pour mettre à jour la BDD 0: non ; 1: oui - Defaut 1
 $connexionAdminMAJ = 1;
 
+##################################################
+# Cas d'une authentification via config.inc.php  #
+##################################################
+$motDePasseConfig = ""; // vide = ignoré
+
 ###################################
 # Cas d'une authentification SSO  #
 ###################################
