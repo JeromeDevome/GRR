@@ -155,7 +155,7 @@ else
 	echo "<option value=\"Oui\">".get_vocab('YES')."</option>\n";
 	echo "<option value=\"Non\" selected=\"selected\">".get_vocab('NO')."</option>\n";
 }
-echo "</select>\n</td>\n</tr>\n</table>\n";
+echo "</select> (./export/export".TABLE_PREFIX.".xml)\n</td>\n</tr>\n</table>\n";
 
 // Export XML PLUS
 echo "<h3>".get_vocab("Activer_export_plus_xml")."</h3>\n";
@@ -172,7 +172,7 @@ else
 	echo "<option value=\"Oui\">".get_vocab('YES')."</option>\n";
 	echo "<option value=\"Non\" selected=\"selected\">".get_vocab('NO')."</option>\n";
 }
-echo "</select>\n</td>\n</tr>\n</table>\n";
+echo "</select> (./export/exportplus".TABLE_PREFIX.".xml)\n</td>\n</tr>\n</table>\n";
 
 // fckeditor
 echo "\n<hr /><h3>".get_vocab("use_fckeditor_msg")."</h3>";

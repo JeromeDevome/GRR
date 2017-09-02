@@ -92,7 +92,7 @@ $export.="</RESERVATIONS>";
 //file_put_contents("export.xml", $export);
 //echo "<a href='export.xml' target='_blank'>Export database as XML</a>";
 
-$txt_file = "./export/export.xml";
+$txt_file = "./export/export".TABLE_PREFIX.".xml";
 
 $create_xml = fopen($txt_file,"w"); 
 
