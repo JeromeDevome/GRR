@@ -225,6 +225,12 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 			$date = mktime(12, 0, 0, $this->month, 1, $this->year);
 			$first = (strftime("%w",$date) + 7 - $weekstarts) % 7;
 			$monthName = ucfirst(utf8_strftime("%B", $date));
+			if(Settings::get("menu_gauche") == 2){
+				$s .= "\n<div class=\"col-lg-3 col-md-12 col-xs-12\">\n".PHP_EOL;
+			} else{
+				$s .= "\n<div class=\"col-lg-12 col-md-12 col-xs-12\">\n".PHP_EOL;
+			}
+			//$s .= "\n<div class=\"col-lg-3 col-md-12 col-xs-12\">\n";
 			$s .= "\n<table class=\"calendar\">\n";
 			$s .= "<caption>";
 			$week = $this->getWeekNumber($date);
@@ -251,6 +257,7 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 			if ($week - $weekd < 6)
 				$s .= "";
 			$s .= "</table>\n";
+			$s .= "</div>\n";
 			return $s;
 		}
 	}

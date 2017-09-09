@@ -137,7 +137,11 @@ if ($room <= 0)
 echo '<div class="row">'.PHP_EOL;
 include("menu_gauche.php");
 if ($_GET['pview'] != 1){
-	echo '<div class="col-lg-9 col-md-12 col-xs-12">'.PHP_EOL;
+		if(Settings::get("menu_gauche") == 0 || Settings::get("menu_gauche") == 2){
+			echo '<div class="col-lg-12 col-md-12 col-xs-12">'.PHP_EOL;
+		} else{
+			echo '<div class="col-lg-9 col-md-12 col-xs-12">'.PHP_EOL;
+		}
 	echo '<div id="planning">'.PHP_EOL;
 }else{
 	echo '<div id="print_planning">'.PHP_EOL;}
