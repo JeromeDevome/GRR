@@ -845,7 +845,7 @@ else
 			else
 			{
 				// Ligne d'en-tête
-				echo html_entity_decode($vocab["reservee au nom de"]).";".html_entity_decode($vocab["areas"]).";".html_entity_decode($vocab["room"]).html_entity_decode(preg_replace("/ /", " ",$vocab["deux_points"])).";".html_entity_decode($vocab["description"]).";".html_entity_decode($vocab["time"])." - ".html_entity_decode($vocab["duration"]).";".html_entity_decode($vocab["namebooker"]).html_entity_decode(preg_replace("/ /", " ",$vocab["deux_points"])).";".html_entity_decode($vocab["match_descr"]).";".html_entity_decode($vocab["lastupdate"]).";\n";
+				echo html_entity_decode($vocab["reservee au nom de"]).";".html_entity_decode($vocab["areas"]).";".html_entity_decode($vocab["room"]).html_entity_decode(preg_replace("/ /", " ",$vocab["deux_points"])).";".html_entity_decode($vocab["description"]).";".html_entity_decode($vocab["time"])." - ".html_entity_decode($vocab["duration"]).";".html_entity_decode($vocab["namebooker"]).html_entity_decode(preg_replace("/ /", " ",$vocab["deux_points"])).";".html_entity_decode($vocab["match_descr"]).";".html_entity_decode($vocab["type"]).";".html_entity_decode($vocab["lastupdate"]).";\n";
 			}
 			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 			{
@@ -870,6 +870,9 @@ else
 				$texte = str_replace(CHR(10)," ", removeMailUnicode($row[4]));
 				$texte = str_replace(CHR(13)," ", $texte);
 				echo ltrim(rtrim(($texte))) . ";";
+				// Type
+				$leType = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter = '".$row[5]."'");
+				echo $leType .";";
 				//Date derniere modif
 				echo date_time_string($row[7], $dformat) . ";";
 				echo "\r\n";
