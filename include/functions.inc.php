@@ -2409,9 +2409,13 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 	// $action = 6 -> Résultat d'une décision de modération
 	// $action = 7 -> Notification d'un retard dans la restitution d'une ressource.
 
-    require_once 'phpmailer/PHPMailerAutoload.php';
-	require_once 'include/mail.class.php';
-
+	if (@file_exists('include/mail.class.php')){
+		require_once 'phpmailer/PHPMailerAutoload.php';
+		require_once 'include/mail.class.php';
+	}else{
+		require_once '../phpmailer/PHPMailerAutoload.php';
+		require_once '../include/mail.class.php';
+	}
 
 	$sql = "SELECT ".TABLE_PREFIX."_entry.name,
 	".TABLE_PREFIX."_entry.description,
