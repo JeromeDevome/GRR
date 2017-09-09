@@ -227,6 +227,7 @@ function get_request_uri()
  */
 function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 {
+
 	if ($_type_cible == "identifiant:non")
 	{
 		if ($_cible == "contact_administrateur")
@@ -262,6 +263,7 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 			$_identite = "";
 		}
 	}
+
 	if (Settings::get("envoyer_email_avec_formulaire") == "yes")
 	{
 		if ($_email == "")
@@ -307,6 +309,7 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 		{
 			$tab_email = explode(';', trim($_email));
 			$i = 0;
+			$affichage .= '<script>'.PHP_EOL;
 			foreach ($tab_email as $item_email)
 			{
 				$item_email_explode = explode('@',$item_email);
@@ -317,15 +320,17 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 					$domain = $item_email_explode[1];
 					if ($i == 1)
 					{
-						$affichage .= '<script type="text/javascript">'.PHP_EOL;
 						$affichage .=  'encode_adresse("'.$person.'", "'.$domain.'", 1);'.PHP_EOL;
 					}
-					else
+					else{
 						$affichage .=  'encode_adresse("'.$person.'", "'.$domain.'", 0);'.PHP_EOL;
+					}
 				}
 			}
 			$affichage .=  'encode_fin_adresse("'.AddSlashes($_identite).'");'.PHP_EOL;
+			
 			$affichage .=  '</script>'.PHP_EOL;
+			$affichage .= $_identite;
 		}
 	}
 	return $affichage;
@@ -1766,7 +1771,7 @@ function tdcell_rowspan($colclass, $step)
 function show_colour_key($area_id)
 {
 	echo '<table class="legende"><caption class="titre">Légendes des réservations</caption>'.PHP_EOL;
-	$sql = "SELECT DISTINCT t.id, t.type_name, t.type_letter FROM `".TABLE_PREFIX."_type_area` t
+	$sql = "SELECT DISTINCT t.id, t.type_name, t.type_letter, t.order_display FROM `".TABLE_PREFIX."_type_area` t
 	LEFT JOIN `".TABLE_PREFIX."_j_type_area` j on j.id_type=t.id
 	WHERE (j.id_area  IS NULL or j.id_area != '".$area_id."')";
 	$res = grr_sql_query($sql);
@@ -2517,7 +2522,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 
 	if ($action == 1){
 		$sujet = $sujet.$vocab["subject_mail_creation"];
-		$message .= '<br>'.$vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
+		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
 		$message .= $vocab["creation_booking"];
 		$message .= $vocab["the_room"].$room_name." (".$area_name.") \n";
 		$repondre = $user_email;
@@ -2615,14 +2620,14 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 	// Infos sur la réservation
 	//		
 	$reservation = '';
-	$reservation .= '<br>'.$vocab["start_of_the_booking"]." ".$start_date."\n";
-	$reservation .= '<br>'.$vocab["duration"]." ".$duration." ".$dur_units."\n";
+	$reservation .= $vocab["start_of_the_booking"]." ".$start_date."\n";
+	$reservation .= $vocab["duration"]." ".$duration." ".$dur_units."\n";
 	if (trim($breve_description) != "")
-		$reservation .= '<br>'.$vocab["namebooker"].preg_replace("/ /", " ",$vocab["deux_points"])." ".$breve_description."\n";
+		$reservation .= $vocab["namebooker"].preg_replace("/ /", " ",$vocab["deux_points"])." ".$breve_description."\n";
 	else
-		$reservation .= '<br>'.$vocab["entryid"].$room_id."\n";
+		$reservation .= $vocab["entryid"].$room_id."\n";
 	if ($description !='')
-		$reservation .= '<br>'.$vocab["description"]." ".$description."\n";
+		$reservation .= $vocab["description"]." ".$description."\n";
 	// Champ additionnel
 	$reservation .= affichage_champ_add_mails($id_entry);
 	// Type de réservation
@@ -2632,10 +2637,10 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 	else
 		$temp = removeMailUnicode($temp);
 
-	$reservation .= '<br>'.$vocab["type"].preg_replace("/ /", " ",$vocab["deux_points"])." ".$temp."\n";
+	$reservation .= $vocab["type"].preg_replace("/ /", " ",$vocab["deux_points"])." ".$temp."\n";
 
 	if ($rep_type != 0)
-		$reservation .= '<br>'.$vocab["rep_type"]." ".$affiche_period."\n";
+		$reservation .= $vocab["rep_type"]." ".$affiche_period."\n";
 	if ($rep_type != 0)
 	{
 		if ($rep_type == 2)
@@ -2648,19 +2653,19 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 					$opt .= day_name($daynum) . " ";
 			}
 			if ($opt)
-				$reservation .= '<br>'.$vocab["rep_rep_day"]." ".$opt."\n";
+				$reservation .= $vocab["rep_rep_day"]." ".$opt."\n";
 		}
 		if ($rep_type == 6)
 		{
 			if (Settings::get("jours_cycles_actif") == "Oui")
-				$reservation .= '<br>'.$vocab["rep_type_6"].preg_replace("/ /", " ",$vocab["deux_points"]).ucfirst(substr($vocab["rep_type_6"],0,1)).$jours_cycle."\n";
+				$reservation .= $vocab["rep_type_6"].preg_replace("/ /", " ",$vocab["deux_points"]).ucfirst(substr($vocab["rep_type_6"],0,1)).$jours_cycle."\n";
 		}
 		$reservation = $reservation.$vocab["rep_end_date"]." ".$rep_end_date."\n";
 	}
 	if (($delais_option_reservation > 0) && ($option_reservation != -1))
 		$reservation = $reservation."*** ".$vocab["reservation_a_confirmer_au_plus_tard_le"]." ".time_date_string_jma($option_reservation,$dformat)." ***\n";
 
-	$reservation .= '<br>'."-----\n";
+	$reservation .= "-----\n";
 
 	$message = $message.$reservation;
 	$message = $message.$vocab["msg_no_email"].Settings::get("webmaster_email");;
@@ -4167,9 +4172,9 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
 		if ($res_beneficiaire)
 		{
 			$nb_result = grr_sql_count($res_beneficiaire);
-			if ($nb_result == 0)
+			if ($nb_result == 0){
 				$chaine = get_vocab("utilisateur_inconnu").$_beneficiaire;
-			else
+			} else
 			{
 				$row_user = grr_sql_row($res_beneficiaire, 0);
 				if ($type == "formail")
