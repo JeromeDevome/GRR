@@ -95,6 +95,7 @@ $type_affichage_reser = grr_sql_query1("SELECT type_affichage_reser FROM ".TABLE
 $delais_option_reservation  = grr_sql_query1("SELECT delais_option_reservation FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $qui_peut_reserver_pour  = grr_sql_query1("SELECT qui_peut_reserver_pour FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $active_cle  = grr_sql_query1("SELECT active_cle FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
+$periodiciteConfig = Settings::get("periodicite");
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars( $_SERVER['HTTP_REFERER']);
@@ -520,6 +521,16 @@ function insertChampsAdd(){
 			}
 			<?php
 		}
+		 if (Settings::get("remplissage_description_complete") == '1')
+		{
+			?>
+			if (document.forms["main"].description.value == "")
+			{
+				$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("you_have_not_entered").get_vocab("deux_points").get_vocab("fulldescription") ?></div>');
+				err = 1;
+			}
+			<?php
+		}
 		foreach ($allareas_id as $idtmp)
 		{
 			$overload_fields = mrbsOverloadGetFieldslist($idtmp);
@@ -608,6 +619,12 @@ if (Settings::get("remplissage_description_breve") == '1')
 $B .= get_vocab("deux_points");
 $C = htmlspecialchars($breve_description);
 $D = get_vocab("fulldescription");
+if (Settings::get("remplissage_description_complete") == '1')
+{
+	$D .= " *";
+	$affiche_mess_asterisque=true;
+}
+$D .= get_vocab("deux_points");
 $E = htmlspecialchars ( $description );
 $F = get_vocab("date").get_vocab("deux_points");
 $sql = "SELECT area_id FROM ".TABLE_PREFIX."_room WHERE id=$room_id";
@@ -1050,14 +1067,21 @@ $res = grr_sql_query($sql);
 echo '<!-- ************* Periodic edition ***************** -->',PHP_EOL;
 $weeklist = array("unused","every week","week 1/2","week 1/3","week 1/4","week 1/5");
 $monthlist = array("firstofmonth","secondofmonth","thirdofmonth","fouthofmonth","fiveofmonth","lastofmonth");
-if (($edit_type == "series") || (isset($flag_periodicite)))
+if($periodiciteConfig == 'y'){
+if ( ($edit_type == "series") || (isset($flag_periodicite)))
 {
-	echo '<tr>',PHP_EOL,'<td id="ouvrir" style="cursor: inherit" align="center" class="fontcolor4">',PHP_EOL,
-	'<span class="fontcolor1 btn btn-primary"><b><a href="javascript:clicMenu(1);check_5()">',get_vocab("click_here_for_series_open"),'</a></b></span>',PHP_EOL,
-	'</td>',PHP_EOL,'</tr>',PHP_EOL,'<tr>',PHP_EOL,'<td style="display:none; cursor: inherit white" id="fermer" align="center" class="fontcolor4">',PHP_EOL,
-	'<span class="btn btn-primary fontcolor1 white"><b><a href="javascript:clicMenu(1);check_5()">',get_vocab("click_here_for_series_close"),'</a></b></span>',PHP_EOL,
-	'</td>',PHP_EOL,'</tr>',PHP_EOL;
-	echo '<tr>',PHP_EOL,'<td>',PHP_EOL,'<table id="menu1" style="display:none;">',PHP_EOL,'<tr>',PHP_EOL,
+	echo '<tr>',PHP_EOL,
+		'<td id="ouvrir" style="cursor: inherit" align="center" class="fontcolor4">',PHP_EOL,
+			'<span class="fontcolor1 btn btn-primary"><b><a href="javascript:clicMenu(1);check_5()">',get_vocab("click_here_for_series_open"),'</a></b></span>',PHP_EOL,
+		'</td>',PHP_EOL,
+		'</tr>',PHP_EOL,
+		'<tr>',PHP_EOL,
+			'<td style="display:none; cursor: inherit white" id="fermer" align="center" class="fontcolor4">',PHP_EOL,
+				'<span class="btn btn-primary fontcolor1 white"><b><a href="javascript:clicMenu(1);check_5()">',get_vocab("click_here_for_series_close"),'</a></b></span>',PHP_EOL,
+			'</td>',PHP_EOL,
+		'</tr>',PHP_EOL;
+	echo '<tr>',PHP_EOL,
+			'<td>',PHP_EOL,'<table id="menu1" style="display:none;">',PHP_EOL,'<tr>',PHP_EOL,
 	'<td class="F"><b>',get_vocab("rep_type"),'</b></td>',PHP_EOL,'</tr>',PHP_EOL,'<tr>',PHP_EOL,'<td class="CL">',PHP_EOL;
 	echo '<table class="table" >',PHP_EOL;
 	if (Settings::get("jours_cycles_actif") == "Oui")
@@ -1207,7 +1231,8 @@ else
 			echo '<tr><td class="E"><b>'.get_vocab("duration").'</b> '.$duration .' '. $dur_units.'</td></tr>'."\n";
 			echo '<tr><td class="E"><b>'.get_vocab('rep_end_date').'</b> '.$rep_end_date.'</td></tr>'."\n";
 		}
-	}
+}
+}
 	echo '</table>',PHP_EOL;
 	echo '</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;
 	?>

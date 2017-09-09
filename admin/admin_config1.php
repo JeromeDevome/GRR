@@ -197,6 +197,13 @@ if (isset($_POST['remplissage_description_breve'])) {
         die();
     }
 }
+// remplissage de la description complète
+if (isset($_POST['remplissage_description_complete'])) {
+    if (!Settings::set('remplissage_description_complete', $_POST['remplissage_description_complete'])) {
+        echo "Erreur lors de l'enregistrement de remplissage_description_complete !<br />";
+        die();
+    }
+}
 // pview_new_windows
 if (isset($_POST['pview_new_windows'])) {
     if (!Settings::set('pview_new_windows', $_POST['pview_new_windows'])) {
@@ -204,14 +211,21 @@ if (isset($_POST['pview_new_windows'])) {
         die();
     }
 }
-/*-----MAJ Loïs THOMAS  -->Affichage ou non de la legende -----*/
+// Affichage ou non de la legende
 if (isset($_POST['legend'])) {
     if (!Settings::set('legend', $_POST['legend'])) {
         echo "Erreur lors de l'enregistrement de legend !<br />";
         die();
     }
 }
-/*-----MAJ David VOUE 22/01/2014-->Affichage ou non du formulaire de contact et adresse mail du destinataire -----*/
+// Option peridodicite
+if (isset($_POST['periodicite'])) {
+    if (!Settings::set('periodicite', $_POST['periodicite'])) {
+        echo "Erreur lors de l'enregistrement de periodicite !<br />";
+        die();
+    }
+}
+// Affichage ou non du formulaire de contact et adresse mail du destinataire
 if (isset($_POST['mail_destinataire'])) {
     if (!Settings::set('mail_destinataire', $_POST['mail_destinataire'])) {
         echo "Erreur lors de l'enregistrement de mail_destinataire !<br />";
@@ -939,6 +953,7 @@ echo '</table>'.PHP_EOL;
 #Choix  de l'affichage du bouton "afficher le menu de gauche ou non"
 #SQL : menu_gauche==1  //le bouton s'affiche par default
 # menu_gauche==0 //le bouton ne s'affiche pas par default
+# menu_gauche==2 //le menu s'affiche en ahut
 #Test pour savoir la valeur présente dans la base de données : echo Settings::get("menu_gauche");
 echo '<hr />'.PHP_EOL;
 echo '<h3>'.get_vocab('display_menu').'</h3>'.PHP_EOL;
@@ -959,6 +974,16 @@ echo '<td>'.get_vocab('display_menu_3').'</td>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
 echo '<input type="radio" name="menu_gauche" value="1" ';
 if (Settings::get('menu_gauche') == '1') {
+    echo ' checked="checked"';
+}
+echo ' />'.PHP_EOL;
+echo '</td>'.PHP_EOL;
+echo '</tr>'.PHP_EOL;
+echo '<tr>'.PHP_EOL;
+echo '<td>'.get_vocab('display_menu_4').'</td>'.PHP_EOL;
+echo '<td>'.PHP_EOL;
+echo '<input type="radio" name="menu_gauche" value="2" ';
+if (Settings::get('menu_gauche') == '2') {
     echo ' checked="checked"';
 }
 echo ' />'.PHP_EOL;
@@ -1201,6 +1226,31 @@ echo ' />'.PHP_EOL;
 echo '</td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
 echo '</table>'.PHP_EOL;
+# Remplissage de la description complète
+echo '<hr />'.PHP_EOL;
+echo '<h3>'.get_vocab('remplissage_description_complete_msg').'</h3>'.PHP_EOL;
+echo '<table>'.PHP_EOL;
+echo '<tr>'.PHP_EOL;
+echo '<td>'.get_vocab('remplissage_description_complete0').'</td>'.PHP_EOL;
+echo '<td>'.PHP_EOL;
+echo "<input type='radio' name='remplissage_description_complete' value='0' ";
+if (Settings::get('remplissage_description_complete') == '0') {
+    echo 'checked="checked"';
+}
+echo ' />'.PHP_EOL;
+echo '</td>'.PHP_EOL;
+echo '</tr>'.PHP_EOL;
+echo '<tr>'.PHP_EOL;
+echo '<td>'.get_vocab('remplissage_description_complete1').'</td>'.PHP_EOL;
+echo '<td>'.PHP_EOL;
+echo "<input type='radio' name='remplissage_description_complete' value='1' ";
+if (Settings::get('remplissage_description_complete') == '1') {
+    echo 'checked="checked"';
+}
+echo ' />'.PHP_EOL;
+echo '</td>'.PHP_EOL;
+echo '</tr>'.PHP_EOL;
+echo '</table>'.PHP_EOL;
 # Ouvrir les pages au format imprimable dans une nouvelle fenêtre du navigateur (0 pour non et 1 pour oui)
 echo '<hr />'.PHP_EOL;
 echo '<h3>'.get_vocab('pview_new_windows_msg').'</h3>'.PHP_EOL;
@@ -1231,20 +1281,45 @@ echo '<hr />'.PHP_EOL;
 echo '<h3>'.get_vocab('legend_msg').'</h3>'.PHP_EOL;
 echo '<table>'.PHP_EOL;
 echo '<tr>'.PHP_EOL;
-echo '<td>'.get_vocab('legend0').'</td>'.PHP_EOL;
+echo '<td>'.get_vocab('YES').'</td>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
 echo "<input type='radio' name='legend' value='0' ";
-if (Settings::get('legend') == '0') {
+if (Settings::get('YES') == '0') {
     echo 'checked="checked"';
 }
 echo ' />'.PHP_EOL;
 echo '</td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
 echo '<tr>'.PHP_EOL;
-echo '<td>'.get_vocab('legend1').'</td>'.PHP_EOL;
+echo '<td>'.get_vocab('NO').'</td>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
 echo "<input type='radio' name='legend' value='1' ";
 if (Settings::get('legend') == '1') {
+    echo 'checked="checked"';
+}
+echo ' />'.PHP_EOL;
+echo '</td>'.PHP_EOL;
+echo '</tr>'.PHP_EOL;
+echo '</table>'.PHP_EOL;
+# Autoriser la periodicité
+echo '<hr />'.PHP_EOL;
+echo '<h3>'.get_vocab('periodicite_msg').'</h3>'.PHP_EOL;
+echo '<table>'.PHP_EOL;
+echo '<tr>'.PHP_EOL;
+echo '<td>'.get_vocab('YES').'</td>'.PHP_EOL;
+echo '<td>'.PHP_EOL;
+echo "<input type='radio' name='periodicite' value='y' ";
+if (Settings::get('periodicite') == 'y') {
+    echo 'checked="checked"';
+}
+echo ' />'.PHP_EOL;
+echo '</td>'.PHP_EOL;
+echo '</tr>'.PHP_EOL;
+echo '<tr>'.PHP_EOL;
+echo '<td>'.get_vocab('NO').'</td>'.PHP_EOL;
+echo '<td>'.PHP_EOL;
+echo "<input type='radio' name='periodicite' value='n' ";
+if (Settings::get('periodicite') == 'n') {
     echo 'checked="checked"';
 }
 echo ' />'.PHP_EOL;
@@ -1256,7 +1331,7 @@ echo '<hr />'.PHP_EOL;
 echo '<h3>'.get_vocab('courrier_msg').'</h3>'.PHP_EOL;
 echo '<table>'.PHP_EOL;
 echo '<tr>'.PHP_EOL;
-echo '<td>'.get_vocab('legend0').'</td>'.PHP_EOL;
+echo '<td>'.get_vocab('YES').'</td>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
 echo "<input type='radio' name='show_courrier' value='y' ";
 if (Settings::get('show_courrier') == 'y') {
@@ -1266,7 +1341,7 @@ echo ' />'.PHP_EOL;
 echo '</td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
 echo '<tr>'.PHP_EOL;
-echo '<td>'.get_vocab('legend1').'</td>'.PHP_EOL;
+echo '<td>'.get_vocab('NO').'</td>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
 echo "<input type='radio' name='show_courrier' value='n' ";
 if (Settings::get('show_courrier') == 'n') {
@@ -1281,7 +1356,7 @@ echo '<hr />'.PHP_EOL;
 echo '<h3>'.get_vocab('holidays_msg').'</h3>'.PHP_EOL;
 echo '<table>'.PHP_EOL;
 echo '<tr>'.PHP_EOL;
-echo '<td>'.get_vocab('legend0').'</td>'.PHP_EOL;
+echo '<td>'.get_vocab('YES').'</td>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
 echo "<input type='radio' name='show_holidays' value='Oui' ";
 if (Settings::get('show_holidays') == 'Oui') {
@@ -1291,7 +1366,7 @@ echo ' />'.PHP_EOL;
 echo '</td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
 echo '<tr>'.PHP_EOL;
-echo '<td>'.get_vocab('legend1').'</td>'.PHP_EOL;
+echo '<td>'.get_vocab('NO').'</td>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
 echo "<input type='radio' name='show_holidays' value='Non' ";
 if (Settings::get('show_holidays') == 'Non') {
