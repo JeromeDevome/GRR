@@ -92,7 +92,7 @@ class Email{
 				"Reply-To: {$DE}" . "\r\n" .
 				'X-Mailer: PHP/' . phpversion();
 
-			mail($A, $sujet, $message, $headers);
+			mail($A, $sujet, utf8_decode(utf8_encode($message)), $headers);
 		}
 
 	}
