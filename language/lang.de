@@ -493,6 +493,7 @@ $vocab['mail_admin_off'] = "Nicht per E-Mail verständigen";
 $vocab['mail_admin_on'] = "Die Benutzer per E-Mail verständigen";
 $vocab['mail_user'] = "E-Mail";
 $vocab['mail_user_list'] = "Liste der per E-Mail benachrichtigten Benutzer:";
+$vocab['prefixe'] = "Préfixe";  // A traduire
 $vocab['maj_base_locale'] = "Datenbank Reinigung";
 $vocab['maj_bdd'] = "Update der Datenbasis (Administratorenzugang)";
 $vocab['maj_bdd_not_update'] = "ACTUNG: Ihre Datenbasis scheint nicht update zu sein.";

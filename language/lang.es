@@ -493,6 +493,7 @@ $vocab['mail_admin_off'] = "No prevenir por mail";
 $vocab['mail_admin_on'] = "Activar el envío automático de correos electrónicos";
 $vocab['mail_user'] = "Email";
 $vocab['mail_user_list'] = "Lista de los usuarios avisados por mail :";
+$vocab['prefixe'] = "Préfixe";  // A traduire
 $vocab['maj_base_locale'] = "Limpieza de la base local";
 $vocab['maj_bdd'] = "Actualización de la base de datos (acceso administrador)";
 $vocab['maj_bdd_not_update'] = "CUIDADO: Su base de datos no parece estar al día.";

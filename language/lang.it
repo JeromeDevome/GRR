@@ -492,6 +492,7 @@ $vocab['mail_admin_off'] = "Non prevenire per mail";
 $vocab['mail_admin_on'] = "Prevenire per mail gli utenti";
 $vocab['mail_user'] = "Email";
 $vocab['mail_user_list'] = "Elenco degli utenti prevenuti da mail: ";
+$vocab['prefixe'] = "Préfixe";  // A traduire
 $vocab['maj_base_locale'] = "Pulizia della base locale";
 $vocab['maj_bdd'] = "Aggiornamento della base di dati (accesso amministratore)";
 $vocab['maj_bdd_not_update'] = "ATTENZIONE: La vostra base di dati non sembra essere aggiornata.";

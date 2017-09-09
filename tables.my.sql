@@ -31,7 +31,7 @@ CREATE TABLE grr_calendar (DAY int(11) NOT NULL default '0');
 DROP TABLE IF EXISTS grr_calendrier_jours_cycle;
 CREATE TABLE grr_calendrier_jours_cycle (DAY int(11) NOT NULL default '0', Jours varchar(20) NOT NULL default '');
 DROP TABLE IF EXISTS grr_overload;
-CREATE TABLE grr_overload (id int(11) NOT NULL auto_increment, id_area INT NOT NULL, fieldname VARCHAR(25) NOT NULL default '', fieldtype VARCHAR(25) NOT NULL default '', fieldlist text NOT NULL, obligatoire CHAR( 1 ) DEFAULT 'n' NOT NULL, affichage CHAR( 1 ) DEFAULT 'n' NOT NULL, confidentiel CHAR( 1 ) DEFAULT 'n' NOT NULL, overload_mail CHAR( 1 ) DEFAULT 'n' NOT NULL, PRIMARY KEY  (id));
+CREATE TABLE grr_overload (id int(11) NOT NULL auto_increment, id_area INT NOT NULL, fieldname VARCHAR(55) NOT NULL default '', fieldtype VARCHAR(25) NOT NULL default '', fieldlist text NOT NULL, obligatoire CHAR( 1 ) DEFAULT 'n' NOT NULL, affichage CHAR( 1 ) DEFAULT 'n' NOT NULL, confidentiel CHAR( 1 ) DEFAULT 'n' NOT NULL, overload_mail CHAR( 1 ) DEFAULT 'n' NOT NULL, PRIMARY KEY  (id));
 DROP TABLE IF EXISTS grr_entry_moderate;
 CREATE TABLE grr_entry_moderate (id int(11) NOT NULL auto_increment, login_moderateur varchar(40) NOT NULL default '',motivation_moderation text NOT NULL,start_time int(11) NOT NULL default '0',end_time int(11) NOT NULL default '0',entry_type int(11) NOT NULL default '0', repeat_id int(11) NOT NULL default '0',room_id int(11) NOT NULL default '1',timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, create_by varchar(100) NOT NULL default '', beneficiaire_ext varchar(200) NOT NULL default '', beneficiaire varchar(100) NOT NULL default '', name varchar(80) NOT NULL default '',type char(2) default NULL,description text,statut_entry char(1) NOT NULL default '-',option_reservation int(11) NOT NULL default '0',overload_desc text,moderate tinyint(1) default '0', PRIMARY KEY  (id), KEY idxStartTime (start_time), KEY idxEndTime (end_time));
 DROP TABLE IF EXISTS grr_site;
@@ -60,7 +60,7 @@ INSERT INTO grr_setting VALUES ('begin_bookings', '1441058400');
 INSERT INTO grr_setting VALUES ('end_bookings', '1535752800');
 INSERT INTO grr_setting VALUES ('title_home_page', 'Gestion et Réservation de Ressources');
 INSERT INTO grr_setting VALUES ('message_home_page', 'En raison du caractère personnel du contenu, ce site est soumis à des restrictions utilisateurs. Pour accéder aux outils de réservation, identifiez-vous :');
-INSERT INTO grr_setting VALUES ('version', '3.2.0');
+INSERT INTO grr_setting VALUES ('version', '3.3.0');
 INSERT INTO grr_setting VALUES ('versionRC', '');
 INSERT INTO grr_setting VALUES ('default_language', 'fr');
 INSERT INTO grr_setting VALUES ('url_disconnect', '');
@@ -118,3 +118,5 @@ INSERT INTO grr_setting VALUES ('menu_gauche', '1');
 INSERT INTO grr_setting VALUES ('file', '1');
 INSERT INTO grr_setting VALUES ('smtp_secure', '')
 INSERT INTO grr_setting VALUES ('smtp_port', '25')
+INSERT INTO grr_setting VALUES ('periodicite', 'y')
+INSERT INTO grr_setting VALUES ('remplissage_description_complete', '0')

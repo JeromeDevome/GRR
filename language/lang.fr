@@ -489,6 +489,7 @@ $vocab['mail_admin_off'] = "Ne pas activer l'envoi automatique de mails";
 $vocab['mail_admin_on'] = "Activer l'envoi automatique de mails";
 $vocab['mail_user'] = "Email";
 $vocab['mail_user_list'] = "Liste des utilisateurs prévenus par mail :";
+$vocab['prefixe'] = "Préfixe";
 $vocab['maj_base_locale'] = "Nettoyage de la base locale";
 $vocab['maj_bdd'] = "Mise à jour de la base de données (accès administrateur)";
 $vocab['maj_bdd_not_update'] = "ATTENTION : Votre base de données ne semble pas être à jour.";

@@ -774,6 +774,21 @@ if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 							$result_inter = '';
 						}
 
+						if ($version_old < "3.3.0")
+						{
+							$result .= "<b>Mise à jour jusqu'à la version 3.2.0 :</b><br />";
+
+							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('periodicite', 'y')");
+							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('remplissage_description_complete', '0')");
+							$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_overload CHANGE `fieldname` `fieldname` VARCHAR(55) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
+
+							if ($result_inter == '')
+								$result .= "<span style=\"color:green;\">Ok !</span><br />";
+							else
+								$result .= $result_inter;
+							$result_inter = '';
+						}
+
 
 						// Vérification du format des champs additionnels
 						// Avant version 1.9.4, les champs add étaient stockés sous la forme <id_champ>champ_encode_en_base_64</id_champ>
@@ -861,6 +876,8 @@ if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 					// Numéro de version
 					echo "<h3>".get_vocab("num_version_title")."</h3>\n";
 					echo "<p>".get_vocab("num_version")." ".$display_version_grr;
+					echo "</p>\n";
+					echo "<p>".get_vocab("prefixe")." : ".TABLE_PREFIX;
 					echo "</p>\n";
 					echo get_vocab('database') . grr_sql_version() . "\n";
 					echo "<br />" . get_vocab('system') . php_uname() . "\n";

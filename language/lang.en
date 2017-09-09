@@ -499,6 +499,7 @@ $vocab['mail_admin_off'] = "Not inform users by email";
 $vocab['mail_admin_on'] = "Inform users by email";
 $vocab['mail_user'] = "Email";
 $vocab['mail_user_list'] = "List of users to be informed by email:";
+$vocab['prefixe'] = "Préfixe";  // A traduire
 $vocab['maj_base_locale'] = "Cleaning of the local base";
 $vocab['maj_bdd'] = "Update of database (Administrator access)";
 $vocab['maj_bdd_not_update'] = "CAUTION:your database does not seem to have been updated.";
