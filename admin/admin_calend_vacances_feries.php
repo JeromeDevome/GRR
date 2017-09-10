@@ -1,6 +1,6 @@
 <?php
 /**
- * admin_calend_ignore.php
+ * admin_calend_vacances_feries.php
  * Interface permettant la la réservation en bloc de journées entières
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2009-06-04 15:30:17 $
@@ -8,7 +8,7 @@
  * @copyright Copyright 2003-2008 Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
  * @package   root
- * @version   $Id: admin_calend_ignore.php,v 1.8 2009-06-04 15:30:17 grr Exp $
+ * @version   $Id: admin_calend_vacances_feries.php,v 1.1 2009-06-04 15:30:17 grr Exp $
  * @filesource
  *
  * This file is part of GRR.
@@ -29,7 +29,7 @@
  */
 
 include "../include/admin.inc.php";
-$grr_script_name = "admin_calend_ignore.php";
+$grr_script_name = "admin_calend_vacances_feries.php";
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
@@ -38,19 +38,19 @@ check_access(6, $back);
 print_header("", "", "", $type="with_session");
 // Affichage de la colonne de gauche
 include "admin_col_gauche.php";
-echo "<h2>".get_vocab('calendrier_des_jours_hors_reservation')."</h2>\n";
+echo "<h2>".get_vocab('vancances_feries.php')."</h2>\n";
 if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 {
 	// On met de côté toutes les dates
 	$day_old = array();
-	$res_old = grr_sql_query("SELECT day FROM ".TABLE_PREFIX."_calendar");
+	$res_old = grr_sql_query("SELECT day FROM ".TABLE_PREFIX."_calendrier_vacances");
 	if ($res_old)
 	{
 		for ($i = 0; ($row_old = grr_sql_row($res_old, $i)); $i++)
 			$day_old[$i] = $row_old[0];
 	}
-	// On vide la table ".TABLE_PREFIX."_calendar
-	$sql = "truncate table ".TABLE_PREFIX."_calendar";
+	// On vide la table ".TABLE_PREFIX."_calendrier_vacances
+	$sql = "truncate table ".TABLE_PREFIX."_calendrier_vacances";
 	if (grr_sql_command($sql) < 0)
 		fatal_error(0, "<p>" . grr_sql_error());
 	$result = 0;
@@ -68,22 +68,8 @@ if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 			$n = mktime(0, 0, 0, $month, $day, $year);
 			if (isset($_POST[$n]))
 			{
-				 // Le jour a été selectionné dans le calendrier
-				$starttime = mktime($morningstarts, 0, 0, $month, $day  , $year);
-				$endtime   = mktime($eveningends, 0, $resolution, $month, $day, $year);
-				 // Pour toutes les dates bon précédement enregistrées, on efface toutes les résa en conflit
-				if (!in_array($n,$day_old))
-				{
-					$sql = "select id from ".TABLE_PREFIX."_room";
-					$res = grr_sql_query($sql);
-					if ($res)
-					{
-						for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-							$result += grrDelEntryInConflict($row[0], $starttime, $endtime, 0, 0, 1);
-					}
-				}
-				 	// On enregistre la valeur dans ".TABLE_PREFIX."_calendar
-				$sql = "INSERT INTO ".TABLE_PREFIX."_calendar set DAY='".$n."'";
+				// On enregistre la valeur dans ".TABLE_PREFIX."_calendrier_vacances
+				$sql = "INSERT INTO ".TABLE_PREFIX."_calendrier_vacances set DAY='".$n."'";
 				if (grr_sql_command($sql) < 0)
 					fatal_error(0, "<p>" . grr_sql_error());
 			}
@@ -96,28 +82,40 @@ if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 		}
 	}
 }
-echo "\n<p>".get_vocab("les_journees_cochees_sont_ignorees")."</p>";
-echo "\n<table cellpadding=\"3\">\n";
-$basetime = mktime(12, 0, 0, 6, 11 + $weekstarts, 2000);
-for ($i = 0; $i < 7; $i++)
-{
-	$show = $basetime + ($i * 24 * 60 * 60);
-	$lday = utf8_strftime('%A',$show);
-	echo "<tr>\n";
-	echo "<td><span class='small'><a href='admin_calend_ignore.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), true, '$lday' ); return false;\">".get_vocab("check_all_the").$lday."s</a></span></td>\n";
-	echo "<td><span class='small'><a href='admin_calend_ignore.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, '$lday' ); return false;\">".get_vocab("uncheck_all_the").$lday."s</a></span></td>\n";
-	echo "</tr>\n";
-}
-echo "<tr>\n<td><span class='small'><a href='admin_calend_ignore.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span></td>\n";
-echo "<td> </td></tr>\n";
-echo "</table>\n";
-echo "<form action=\"admin_calend_ignore.php\" method=\"post\" id=\"formulaire\">\n";
-echo "<table cellspacing=\"20\">\n";
+echo "\n<p>".get_vocab("vancances_feries_description")."</p>";
+
 $n = Settings::get("begin_bookings");
 $end_bookings = Settings::get("end_bookings");
-$debligne = 1;
+$basetime = mktime(12, 0, 0, 6, 11 + $weekstarts, 2000);
+
 $month = utf8_encode(strftime("%m", Settings::get("begin_bookings")));
+
 $year = strftime("%Y", Settings::get("begin_bookings"));
+$yearFin = strftime("%Y", Settings::get("end_bookings"));
+
+$i = $year;
+
+$cocheFeries = "";
+
+while ($i <= $yearFin)
+{
+	$feries = getHolidays($i);
+
+	foreach ($feries as &$value) {
+		$cocheFeries .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
+	}
+	
+	unset($feries);
+	$i++;
+}
+
+echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"{$cocheFeries} return false;\">".get_vocab("vancances_feries_FR")."</a></span> || ";
+echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span>\n";
+
+echo "<form action=\"admin_calend_vacances_feries.php\" method=\"post\" id=\"formulaire\">\n";
+echo "<table cellspacing=\"20\">\n";
+$debligne = 1;
+
 $inc = 0;
 while ($n <= $end_bookings)
 {
@@ -129,7 +127,7 @@ while ($n <= $end_bookings)
 	}
 	$inc++;
 	echo "<td>\n";
-	echo cal($month, $year, 1);
+	echo cal($month, $year, 2);
 	echo "</td>";
 	if ($inc == 3)
 	{

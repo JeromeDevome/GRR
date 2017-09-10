@@ -112,6 +112,21 @@ function confirmButton(theform,themessage)
  	}
  	return true;
 } // end of the 'setCheckboxes()' function
+ function setCheckboxesGrrName(elts, do_check, day)
+ {
+ 	for (i = 0; i < elts.length; i++)
+ 	{
+ 		type = elts.type;
+ 		if (type="checkbox")
+ 		{
+ 			if (elts[i].name== day)
+ 			{
+ 				elts[i].checked = do_check;
+ 			}
+ 		}
+ 	}
+ 	return true;
+} // end of the 'setCheckboxes()' function
 function _setCheckboxesGrr(the_form, do_check, day)
 {
 	var elts = document.forms[the_form];

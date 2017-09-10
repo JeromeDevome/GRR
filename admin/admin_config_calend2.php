@@ -122,7 +122,7 @@ while ($n <= $end_bookings)
 	}
 	$inc++;
 	echo "<td>\n";
-	echo cal($month, $year);
+	echo cal($month, $year, 1);
 	echo "</td>";
 	if ($inc == 3)
 	{

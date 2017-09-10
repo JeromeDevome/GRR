@@ -481,6 +481,9 @@ $vocab['les administrateurs restreints'] = "only restricted administrators";
 $vocab['les gestionnaires de la ressource'] = "resource managers";
 $vocab['les_journees_cochees_sont_ignorees'] = " The ticked days correspond to days during which it is not possible to reserve.<br />With regard to the reservations with periodicity, these days are ignored during the validation of the reservation.<br /><br /><b>Caution</b> : If reservations were already saved on the ticked days, these will be <b>automatically and irreparably deleted</b>. Furthermore, the persons concerned by the deletions will not be warned by email.";
 $vocab['les_journees_cochees_sont_valides'] = " The ticked days correspond to the days according to which we want to create a calendar of \"cycle days\" depending on the following parameters (modifiable in the first tab of this page)";
+$vocab['vancances_feries.php'] = "Calendrier des vacances et fériés"; // A traduire
+$vocab['vancances_feries_description'] = "Les journées cochées seront mis en évidence sur le planning si l'option \"Afficher les Vacances scolaire et les jours fériés\" est à OUI."; // A traduire
+$vocab['vancances_feries_FR'] = "Cocher les fériés français"; // A traduire
 $vocab['libelle_fonction'] = "Libellé du profil LDAP"; // A traduire
 $vocab['lien aide pointe vers adresse perso'] = " The link \"help\" of the superior banner points at the address opposite";
 $vocab['lien aide pointe vers documentation officielle site GRR'] = "The link \"help\" of the superior banner points at the official documentation on the GRR website";
@@ -967,8 +970,7 @@ $vocab['fouthofmonth'] = "4eme";
 $vocab['fiveofmonth'] = "5eme";
 $vocab['lastofmonth'] = "dernier";
 $vocab['ofmonth'] = "du mois.";
-$vocab['holidays_msg'] = "Afficher les Vacances scolaire et les jour fériés (france)";
-$vocab['holidays_zone_msg'] = "Choix de la zone de vacances scolaire (france)";
+$vocab['holidays_msg'] = "Afficher les vacances scolaire et les jour fériés";
 $vocab['courrier_msg'] = "Afficher la gestion des salles par courrier";
 
 ?>

@@ -50,36 +50,16 @@ function getWeekNumber($date)
 
 function getSchoolHolidays($now, $year)
 {
-	$zone = 'A';
-	if (Settings::get("holidays_zone") != NULL)
-		$zone = Settings::get("holidays_zone");
-	$sh = array(false, "");
-	$vacances = simplexml_load_file('vacances.xml');
-	$libelle = $vacances->libelles->children();
-	$node = $vacances->calendrier->children();
-	foreach ($node as $key => $value)
-	{
-		if ($value['libelle'] == $zone)
-		{
-			foreach ($value->vacances as $key => $value)
-			{
-				$y = date('Y', strtotime($value['debut']));
-				if ($y == $year)
-				{
-					if (strtotime($value['debut']) <= $now && $now < strtotime($value['fin']))
-					{
-						$nom = (int)$value['libelle'];
-						$nom = $libelle->libelle[$nom - 1];
-						$sh = array(true, $nom);
-						break;
-					}
+	$test = grr_sql_query1("SELECT DAY FROM ".TABLE_PREFIX."_calendrier_vacances where DAY = '".$now."'");
+	if ($test != -1)
+		$sh = array(true, "");
+	else
+		$sh = array(false, "");
 
-				}
-			}
-		}
-	}
 	return $sh;
 }
+
+
 function getHolidays($year = null)
 {
 	if ($year === null)
@@ -89,27 +69,30 @@ function getHolidays($year = null)
 	$easterMonth = date('n', $easterDate);
 	$easterYear  = date('Y', $easterDate);
 	$holidays = array(
-	// Dates fixes
-	mktime(0, 0, 0, 1,  1,  $year),  // 1er janvier
-	mktime(0, 0, 0, 5,  1,  $year),  // Fête du travail
-	mktime(0, 0, 0, 5,  8,  $year),  // Victoire des alliés
-	mktime(0, 0, 0, 7,  14, $year),  // Fête nationale
-	mktime(0, 0, 0, 8,  15, $year),  // Assomption
-	mktime(0, 0, 0, 11, 1,  $year),  // Toussaint
-	mktime(0, 0, 0, 11, 11, $year),  // Armistice
-	mktime(0, 0, 0, 12, 25, $year),  // Noel
-	// Dates variables
-	mktime(0, 0, 0, $easterMonth, $easterDay + 1,  $easterYear),
-	mktime(0, 0, 0, $easterMonth, $easterDay + 39, $easterYear),
-	mktime(0, 0, 0, $easterMonth, $easterDay + 50, $easterYear),
+		// Dates fixes
+		mktime(0, 0, 0, 1,  1,  $year),  // 1er janvier
+		mktime(0, 0, 0, 5,  1,  $year),  // Fête du travail
+		mktime(0, 0, 0, 5,  8,  $year),  // Victoire des alliés
+		mktime(0, 0, 0, 7,  14, $year),  // Fête nationale
+		mktime(0, 0, 0, 8,  15, $year),  // Assomption
+		mktime(0, 0, 0, 11, 1,  $year),  // Toussaint
+		mktime(0, 0, 0, 11, 11, $year),  // Armistice
+		mktime(0, 0, 0, 12, 25, $year),  // Noel
+		// Dates variables
+		mktime(0, 0, 0, $easterMonth, $easterDay + 1,  $easterYear),
+		mktime(0, 0, 0, $easterMonth, $easterDay + 39, $easterYear),
+		mktime(0, 0, 0, $easterMonth, $easterDay + 50, $easterYear),
 	);
 	sort($holidays);
+
 	return $holidays;
 }
 
-function cal($month, $year)
+// $type = 1: Fonction Calendrier hors réservation ; 2; Fonction Calendrier vacances / feries
+function cal($month, $year, $type)
 {
 	global $weekstarts;
+
 	if (!isset($weekstarts))
 		$weekstarts = 0;
 	$s = "";
@@ -141,7 +124,10 @@ function cal($month, $year)
 			if ($d > 0 && $d <= $daysInMonth)
 			{
 				$s .= $d;
-				$day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendar WHERE day='$temp'");
+				if($type == 1)
+					$day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendar WHERE day='$temp'");
+				else
+					$day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendrier_vacances WHERE day='$temp'");
 				$s .= '<br><input type="checkbox" name="'.$temp.'" value="'.$nameday.'" ';
 				if (!($day < 0))
 					$s .= 'checked="checked" ';

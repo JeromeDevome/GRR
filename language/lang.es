@@ -474,6 +474,9 @@ $vocab['les administrateurs restreints'] = "Únicamente los administradores limi
 $vocab['les gestionnaires de la ressource'] = "los gestores del recurso";
 $vocab['les_journees_cochees_sont_ignorees'] = "	 Los días punteados corresponden a jornadas durante los cuales no es posible reservar.<br />En cuanto a las reservas con periodicidad, estas jornadas son ignoradas en el momento de la validación de la reserva.<br /><br /><b>Cuidado</b>: si unas reservas ya han sido registradas sobre los días punteados, éstas estarán suprimidas automáticamente y irremediablemente.</b>. Además, las personas concernidas por las supresiones no serán prevenidas por e-mail.";
 $vocab['les_journees_cochees_sont_valides'] = "Los días punteados corresponden a días según los cuales queremos crear un calendario de \" días ciclos \" según los parámetros siguientes (modificables en la primera pestaña de esta página)";
+$vocab['vancances_feries.php'] = "Calendrier des vacances et fériés"; // A traduire
+$vocab['vancances_feries_description'] = "Les journées cochées seront mis en évidence sur le planning si l'option \"Afficher les Vacances scolaire et les jours fériés\" est à OUI."; // A traduire
+$vocab['vancances_feries_FR'] = "Cocher les fériés français"; // A traduire
 $vocab['libelle_fonction'] = "Libellé du profil LDAP"; // A traduire
 $vocab['lien aide pointe vers adresse perso'] = "El enlace \"ayuda\" del banner superior puntea hacia la dirección al lado";
 $vocab['lien aide pointe vers documentation officielle site GRR'] = "El enlace \"ayuda\" del banner superior puntea hacia la documentación oficial en el sitio de GRR";
@@ -949,8 +952,7 @@ $vocab['fouthofmonth'] = "4eme";
 $vocab['fiveofmonth'] = "5eme";
 $vocab['lastofmonth'] = "dernier";
 $vocab['ofmonth'] = "du mois.";
-$vocab['holidays_msg'] = "Afficher les Vacances scolaire et les jour fériés (france)";
-$vocab['holidays_zone_msg'] = "Choix de la zone de vacances scolaire (france)";
+$vocab['holidays_msg'] = "Afficher les vacances scolaire et les jour fériés";
 $vocab['courrier_msg'] = "Afficher la gestion des salles par courrier";
 
 ?>

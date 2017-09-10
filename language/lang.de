@@ -475,6 +475,9 @@ $vocab['les administrateurs restreints'] = "uniquement les administrateurs restr
 $vocab['les gestionnaires de la ressource'] = "les gestionnaires de la ressource"; // A traduire
 $vocab['les_journees_cochees_sont_ignorees'] = "angekreuzte Tage sind Tage, wo Reservierungen unmöglich sind.<br />Was Reservierungen, die auf Häufigkeit gestüzt sind, betrifft, werden diese Tage automatisch während der Bestätigung ignoriert.<br /><br /><b>Achtung</b> : falls es schon Reservierungen für solche angekreuzte Tage vorhanden, werden sie <b>automatisch und endgültig gelöscht</b>. Ausserdem werden die Benutzer per email nicht davon informiert.";
 $vocab['les_journees_cochees_sont_valides'] = "Les journées cochées correspondent à des journées selon lesquelles nous voulons créer un calendrier de \"jours cycles\" selon les paramètres suivants (modifiables dans le premier onglet de cette page)"; // A traduire
+$vocab['vancances_feries.php'] = "Calendrier des vacances et fériés"; // A traduire
+$vocab['vancances_feries_description'] = "Les journées cochées seront mis en évidence sur le planning si l'option \"Afficher les Vacances scolaire et les jours fériés\" est à OUI."; // A traduire
+$vocab['vancances_feries_FR'] = "Cocher les fériés français"; // A traduire
 $vocab['libelle_fonction'] = "Libellé du profil LDAP"; // A traduire
 $vocab['lien aide pointe vers adresse perso'] = "Le lien \"aide\" du bandeau supérieur pointe vers l'adresse ci-contre"; // A traduire
 $vocab['lien aide pointe vers documentation officielle site GRR'] = "Le lien \"aide\" du bandeau supérieur pointe vers la documentation officielle sur le site de GRR"; // A traduire
@@ -948,8 +951,7 @@ $vocab['fouthofmonth'] = "4eme";
 $vocab['fiveofmonth'] = "5eme";
 $vocab['lastofmonth'] = "dernier";
 $vocab['ofmonth'] = "du mois.";
-$vocab['holidays_msg'] = "Afficher les Vacances scolaire et les jour fériés (france)";
-$vocab['holidays_zone_msg'] = "Choix de la zone de vacances scolaire (france)";
+$vocab['holidays_msg'] = "Afficher les vacances scolaire et les jour fériés";
 $vocab['courrier_msg'] = "Afficher la gestion des salles par courrier";
 
 ?>

@@ -72,6 +72,8 @@ echo "<table class=\"table_adm4\">";
 			$liste[] = 'admin_type.php';
 		if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 			$liste[] = 'admin_calend_ignore.php';
+		if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
+			$liste[] = 'vancances_feries.php';
 		if (Settings::get("jours_cycles_actif") == "Oui")
 		{
 			if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
