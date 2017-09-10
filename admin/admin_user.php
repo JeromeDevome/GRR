@@ -256,6 +256,7 @@ if (empty($order_by))
 ?>
 | <a href="admin_user_modify.php?display=<?php echo $display; ?>"><?php echo get_vocab("display_add_user"); ?></a> |
 <a href="admin_import_users_csv.php"><?php echo get_vocab("display_add_user_list_csv"); ?></a> |
+<a href="admin_user_mdp_facile.php"><?php echo get_vocab("admin_user_mdp_facile"); ?></a> |
 <?php
 // On propose de supprimer les utilisateurs ext de GRR qui ne sont plus présents dans la base LCS
 if (Settings::get("sso_statut") == "lcs")
