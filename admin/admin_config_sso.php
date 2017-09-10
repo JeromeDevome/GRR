@@ -46,6 +46,14 @@ if (authGetUserLevel(getUserName(), -1) < 6)
 if (isset($_POST['valid']))
 {
 	VerifyModeDemo();
+	
+	if (!Settings::set("cas_serveur", $_POST['cas_serveur']))
+		echo "Erreur lors de l'enregistrement de cas_serveur !<br />";
+	if (!Settings::set("cas_port", $_POST['cas_port']))
+		echo "Erreur lors de l'enregistrement de cas_port !<br />";
+	if (!Settings::set("cas_racine", $_POST['cas_racine']))
+		echo "Erreur lors de l'enregistrement de cas_racine !<br />";
+	
 	if (!isset($_POST['cacher_lien_deconnecter']))
 		$cacher_lien_deconnecter = "n";
 	else
@@ -154,6 +162,16 @@ echo "<div>\n<input type=\"radio\" name=\"sso_statut\" value=\"no_sso\" ";
 if (Settings::get("sso_statut") == '')
 	echo " checked=\"checked\" ";
 echo "/>".get_vocab("Ne_pas_activer_Service_sso")."<br />\n";
+
+
+$CASserveurSSO = Settings::get("cas_serveur");
+$CASserveurSSOPort = Settings::get("cas_port");
+$CASserveurSSORacine = Settings::get("cas_racine");
+
+echo "<br />".get_vocab("cas_serveur")." : <input type=\"text\" name=\"cas_serveur\" size=\"40\" value =\"$CASserveurSSO\"/>\n";
+echo "<br />".get_vocab("cas_port")." : <input type=\"text\" name=\"cas_port\" size=\"40\" value =\"$CASserveurSSOPort\"/>\n";
+echo "<br />".get_vocab("cas_racine")." : <input type=\"text\" name=\"cas_racine\" size=\"40\" value =\"$CASserveurSSORacine\"/>\n";
+
 if (Settings::get("sso_statut") != '')
 {
 	echo "<h2>".get_vocab("autres parametres sso")."</h2>\n";

@@ -33,10 +33,11 @@
 // Le package phpCAS doit etre stocké dans un sous-répertoire « CAS »
 // dans un répertoire correspondant a l'include_path du php.ini (exemple : /var/lib/php)
 include_once(dirname(__FILE__).'/CAS/CAS.php');
-// cas.sso est le fichier d'informations de connexions au serveur cas
-// Le fichier cas.sso doit etre stocké dans un sous-répertoire « CAS »
-// dans un répertoire correspondant a l'include_path du php.ini (exemple : /var/lib/php)
-include(dirname(__FILE__).'/CAS/cas.sso');
+
+$serveurSSO = Settings::get("cas_serveur");
+$serveurSSOPort = Settings::get("cas_port");
+$serveurSSORacine = Settings::get("cas_racine");
+
 /* declare le script comme un client CAS
  Si le dernier argument est à true, cela donne la possibilité à phpCAS d'ouvrir une session php.
 */
