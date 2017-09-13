@@ -570,7 +570,7 @@ if  (document.forms["main"].type.value=='0')
 	err = 1;
 }
 <?php
-if ($edit_type == "series")
+if (($edit_type == "series") && ($periodiciteConfig == 'y'))
 {
 	?>
 	i1 = parseInt(document.forms["main"].id.value);
@@ -1068,170 +1068,170 @@ echo '<!-- ************* Periodic edition ***************** -->',PHP_EOL;
 $weeklist = array("unused","every week","week 1/2","week 1/3","week 1/4","week 1/5");
 $monthlist = array("firstofmonth","secondofmonth","thirdofmonth","fouthofmonth","fiveofmonth","lastofmonth");
 if($periodiciteConfig == 'y'){
-if ( ($edit_type == "series") || (isset($flag_periodicite)))
-{
-	echo '<tr>',PHP_EOL,
-		'<td id="ouvrir" style="cursor: inherit" align="center" class="fontcolor4">',PHP_EOL,
-			'<span class="fontcolor1 btn btn-primary"><b><a href="javascript:clicMenu(1);check_5()">',get_vocab("click_here_for_series_open"),'</a></b></span>',PHP_EOL,
-		'</td>',PHP_EOL,
-		'</tr>',PHP_EOL,
-		'<tr>',PHP_EOL,
-			'<td style="display:none; cursor: inherit white" id="fermer" align="center" class="fontcolor4">',PHP_EOL,
-				'<span class="btn btn-primary fontcolor1 white"><b><a href="javascript:clicMenu(1);check_5()">',get_vocab("click_here_for_series_close"),'</a></b></span>',PHP_EOL,
+	if ( ($edit_type == "series") || (isset($flag_periodicite)))
+	{
+		echo '<tr>',PHP_EOL,
+			'<td id="ouvrir" style="cursor: inherit" align="center" class="fontcolor4">',PHP_EOL,
+				'<span class="fontcolor1 btn btn-primary"><b><a href="javascript:clicMenu(1);check_5()">',get_vocab("click_here_for_series_open"),'</a></b></span>',PHP_EOL,
 			'</td>',PHP_EOL,
-		'</tr>',PHP_EOL;
-	echo '<tr>',PHP_EOL,
-			'<td>',PHP_EOL,'<table id="menu1" style="display:none;">',PHP_EOL,'<tr>',PHP_EOL,
-	'<td class="F"><b>',get_vocab("rep_type"),'</b></td>',PHP_EOL,'</tr>',PHP_EOL,'<tr>',PHP_EOL,'<td class="CL">',PHP_EOL;
-	echo '<table class="table" >',PHP_EOL;
-	if (Settings::get("jours_cycles_actif") == "Oui")
-		$max = 8;
-	else
-		$max = 7;
-	for ($i = 0; $i < $max ; $i++)
-	{
-		if ($i == 6 && Settings::get("jours_cycles_actif") == "Non")
-			$i++;
-		if ($i != 5)
+			'</tr>',PHP_EOL,
+			'<tr>',PHP_EOL,
+				'<td style="display:none; cursor: inherit white" id="fermer" align="center" class="fontcolor4">',PHP_EOL,
+					'<span class="btn btn-primary fontcolor1 white"><b><a href="javascript:clicMenu(1);check_5()">',get_vocab("click_here_for_series_close"),'</a></b></span>',PHP_EOL,
+				'</td>',PHP_EOL,
+			'</tr>',PHP_EOL;
+		echo '<tr>',PHP_EOL,
+				'<td>',PHP_EOL,'<table id="menu1" style="display:none;">',PHP_EOL,'<tr>',PHP_EOL,
+		'<td class="F"><b>',get_vocab("rep_type"),'</b></td>',PHP_EOL,'</tr>',PHP_EOL,'<tr>',PHP_EOL,'<td class="CL">',PHP_EOL;
+		echo '<table class="table" >',PHP_EOL;
+		if (Settings::get("jours_cycles_actif") == "Oui")
+			$max = 8;
+		else
+			$max = 7;
+		for ($i = 0; $i < $max ; $i++)
 		{
-			echo '<tr>',PHP_EOL,'<td>',PHP_EOL,'<input name="rep_type" type="radio" value="',$i,'"';
-			if ($i == $rep_type)
-				echo ' checked="checked"';
-			if (($i == 3) && ($rep_type == 5))
-				echo ' checked="checked"';
-			echo ' onclick="check_1()" />',PHP_EOL,'</td>',PHP_EOL,'<td>',PHP_EOL;
-			if (($i != 2) && ($i != 3))
-				echo get_vocab("rep_type_$i");
+			if ($i == 6 && Settings::get("jours_cycles_actif") == "Non")
+				$i++;
+			if ($i != 5)
+			{
+				echo '<tr>',PHP_EOL,'<td>',PHP_EOL,'<input name="rep_type" type="radio" value="',$i,'"';
+				if ($i == $rep_type)
+					echo ' checked="checked"';
+				if (($i == 3) && ($rep_type == 5))
+					echo ' checked="checked"';
+				echo ' onclick="check_1()" />',PHP_EOL,'</td>',PHP_EOL,'<td>',PHP_EOL;
+				if (($i != 2) && ($i != 3))
+					echo get_vocab("rep_type_$i");
 
-			echo PHP_EOL;
-			if ($i == '2')
-			{
-				echo '<select class="form-control" name="rep_num_weeks" size="1" onfocus="check_2()" onclick="check_2()">',PHP_EOL;
-				echo '<option value="1" >',get_vocab("every week"),'</option>',PHP_EOL;
-				for ($weekit = 2; $weekit < 6; $weekit++)
+				echo PHP_EOL;
+				if ($i == '2')
 				{
-					echo '<option value="',$weekit,'"';
-					if ($rep_num_weeks == $weekit)
-						echo ' selected="selected"';
-					echo '>',get_vocab($weeklist[$weekit]),'</option>',PHP_EOL;
+					echo '<select class="form-control" name="rep_num_weeks" size="1" onfocus="check_2()" onclick="check_2()">',PHP_EOL;
+					echo '<option value="1" >',get_vocab("every week"),'</option>',PHP_EOL;
+					for ($weekit = 2; $weekit < 6; $weekit++)
+					{
+						echo '<option value="',$weekit,'"';
+						if ($rep_num_weeks == $weekit)
+							echo ' selected="selected"';
+						echo '>',get_vocab($weeklist[$weekit]),'</option>',PHP_EOL;
+					}
+					echo '</select>',PHP_EOL;
 				}
-				echo '</select>',PHP_EOL;
-			}
-			if ($i == '3')
-			{
-				$monthrep3 = "";
-				$monthrep5 = "";
-				if ($rep_type == 3)
-					$monthrep3 = " selected=\"selected\" ";
-				if ($rep_type == 5)
-					$monthrep5 = " selected=\"selected\" ";
-				echo '<select class="form-control" name="rep_month" size="1" onfocus="check_3()" onclick="check_3()">'.PHP_EOL;
-				echo "<option value=\"3\" $monthrep3>".get_vocab("rep_type_3")."</option>\n";
-				echo "<option value=\"5\" $monthrep5>".get_vocab("rep_type_5")."</option>\n";
-				echo "</select>\n";
-			}
-			if ($i == '7')
-			{
-				echo '<select class="form-control" name="rep_month_abs1" size="1" onfocus="check_7()" onclick="check_7()">'.PHP_EOL;
-				for ($weekit = 0; $weekit < 6; $weekit++)
+				if ($i == '3')
 				{
-					echo "<option value=\"".$weekit."\"";
-					echo ">".get_vocab($monthlist[$weekit])."</option>\n";
+					$monthrep3 = "";
+					$monthrep5 = "";
+					if ($rep_type == 3)
+						$monthrep3 = " selected=\"selected\" ";
+					if ($rep_type == 5)
+						$monthrep5 = " selected=\"selected\" ";
+					echo '<select class="form-control" name="rep_month" size="1" onfocus="check_3()" onclick="check_3()">'.PHP_EOL;
+					echo "<option value=\"3\" $monthrep3>".get_vocab("rep_type_3")."</option>\n";
+					echo "<option value=\"5\" $monthrep5>".get_vocab("rep_type_5")."</option>\n";
+					echo "</select>\n";
 				}
-				echo '</select>'.PHP_EOL;
-				echo '<select class="form-control" name="rep_month_abs2" size="1" onfocus="check_8()" onclick="check_8()">'.PHP_EOL;
-				for ($weekit = 1; $weekit < 8; $weekit++)
+				if ($i == '7')
 				{
-					echo "<option value=\"".$weekit."\"";
-					echo ">".day_name($weekit)."</option>\n";
+					echo '<select class="form-control" name="rep_month_abs1" size="1" onfocus="check_7()" onclick="check_7()">'.PHP_EOL;
+					for ($weekit = 0; $weekit < 6; $weekit++)
+					{
+						echo "<option value=\"".$weekit."\"";
+						echo ">".get_vocab($monthlist[$weekit])."</option>\n";
+					}
+					echo '</select>'.PHP_EOL;
+					echo '<select class="form-control" name="rep_month_abs2" size="1" onfocus="check_8()" onclick="check_8()">'.PHP_EOL;
+					for ($weekit = 1; $weekit < 8; $weekit++)
+					{
+						echo "<option value=\"".$weekit."\"";
+						echo ">".day_name($weekit)."</option>\n";
+					}
+					echo "</select>\n";
+					echo get_vocab("ofmonth");
 				}
-				echo "</select>\n";
-				echo get_vocab("ofmonth");
+				echo "</td></tr>\n";
 			}
-			echo "</td></tr>\n";
 		}
-	}
-	echo "</table>\n\n";
-	echo "<!-- ***** Fin de périodidité ***** -->\n";
-	echo "</td></tr>";
-	echo "<tr><td class=\"F\"><b>".get_vocab("rep_end_date")."</b></td></tr>\n";
-	echo "<tr><td class=\"CL\">";
-	jQuery_DatePicker('rep_end');
-	echo "</td></tr></table>\n";
-	echo "<table style=\"display:none\" id=\"menu2\" width=\"100%\">\n";
-	echo "<tr><td class=\"F\"><b>".get_vocab("rep_rep_day")."</b></td></tr>\n";
-	echo "<tr><td class=\"CL\">";
-	for ($i = 0; $i < 7; $i++)
-	{
-		$wday = ($i + $weekstarts) % 7;
-		echo "<input name=\"rep_day[$wday]\" type=\"checkbox\"";
-		if ($rep_day[$wday])
-			echo " checked=\"checked\"";
-		echo " onclick=\"check_1()\" />" . day_name($wday) . "\n";
-	}
-	echo "</td></tr>\n</table>\n";
-	echo "<table style=\"display:none\" id=\"menuP\" width=\"100%\">\n";
-	echo "<tr><td class=\"F\"><b>Jours/Cycle</b></td></tr>\n";
-	echo "<tr><td class=\"CL\">";
-	for ($i = 1; $i < (Settings::get("nombre_jours_Jours/Cycles") + 1); $i++)
-	{
-		$wday = $i;
-		echo "<input type=\"radio\" name=\"rep_jour_\" value=\"$wday\"";
-		if (isset($jours_c))
+		echo "</table>\n\n";
+		echo "<!-- ***** Fin de périodidité ***** -->\n";
+		echo "</td></tr>";
+		echo "<tr><td class=\"F\"><b>".get_vocab("rep_end_date")."</b></td></tr>\n";
+		echo "<tr><td class=\"CL\">";
+		jQuery_DatePicker('rep_end');
+		echo "</td></tr></table>\n";
+		echo "<table style=\"display:none\" id=\"menu2\" width=\"100%\">\n";
+		echo "<tr><td class=\"F\"><b>".get_vocab("rep_rep_day")."</b></td></tr>\n";
+		echo "<tr><td class=\"CL\">";
+		for ($i = 0; $i < 7; $i++)
 		{
-			if ($i == $jours_c)
-				echo ' checked="checked"';
+			$wday = ($i + $weekstarts) % 7;
+			echo "<input name=\"rep_day[$wday]\" type=\"checkbox\"";
+			if ($rep_day[$wday])
+				echo " checked=\"checked\"";
+			echo " onclick=\"check_1()\" />" . day_name($wday) . "\n";
 		}
-		echo ' onclick="check_1()" />',get_vocab("rep_type_6"),' ',$wday,PHP_EOL;
+		echo "</td></tr>\n</table>\n";
+		echo "<table style=\"display:none\" id=\"menuP\" width=\"100%\">\n";
+		echo "<tr><td class=\"F\"><b>Jours/Cycle</b></td></tr>\n";
+		echo "<tr><td class=\"CL\">";
+		for ($i = 1; $i < (Settings::get("nombre_jours_Jours/Cycles") + 1); $i++)
+		{
+			$wday = $i;
+			echo "<input type=\"radio\" name=\"rep_jour_\" value=\"$wday\"";
+			if (isset($jours_c))
+			{
+				if ($i == $jours_c)
+					echo ' checked="checked"';
+			}
+			echo ' onclick="check_1()" />',get_vocab("rep_type_6"),' ',$wday,PHP_EOL;
+		}
+		echo '</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL;
 	}
-	echo '</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL;
-}
-else
-{
-	echo "<tr><td class=\"E\"><b>".get_vocab('periodicite_associe').get_vocab('deux_points')."</b></td></tr>\n";
-	if ($rep_type == 2)
-		$affiche_period = get_vocab($weeklist[$rep_num_weeks]);
 	else
-		$affiche_period = get_vocab('rep_type_'.$rep_type);
-	echo '<tr><td class="E"><b>'.get_vocab('rep_type').'</b> '.$affiche_period.'</td></tr>'."\n";
-	if ($rep_type != 0)
 	{
-		$opt = '';
+		echo "<tr><td class=\"E\"><b>".get_vocab('periodicite_associe').get_vocab('deux_points')."</b></td></tr>\n";
 		if ($rep_type == 2)
+			$affiche_period = get_vocab($weeklist[$rep_num_weeks]);
+		else
+			$affiche_period = get_vocab('rep_type_'.$rep_type);
+		echo '<tr><td class="E"><b>'.get_vocab('rep_type').'</b> '.$affiche_period.'</td></tr>'."\n";
+		if ($rep_type != 0)
 		{
-			$nb = 0;
-			for ($i = 0; $i < 7; $i++)
+			$opt = '';
+			if ($rep_type == 2)
 			{
-				$wday = ($i + $weekstarts) % 7;
-				if ($rep_opt[$wday])
+				$nb = 0;
+				for ($i = 0; $i < 7; $i++)
 				{
-					if ($opt != '')
-						$opt .=', ';
-					$opt .= day_name($wday);
-					$nb++;
+					$wday = ($i + $weekstarts) % 7;
+					if ($rep_opt[$wday])
+					{
+						if ($opt != '')
+							$opt .=', ';
+						$opt .= day_name($wday);
+						$nb++;
+					}
 				}
 			}
-		}
-		if ($rep_type == 6)
-		{
-			$nb = 1;
-			$opt .= get_vocab('jour_cycle').' '.$jours_c;
-		}
-		if ($opt)
-			if ($nb == 1)
-				echo '<tr><td class="E"><b>'.get_vocab('rep_rep_day').'</b> '.$opt.'</td></tr>'."\n";
-			else
-				echo '<tr><td class="E"><b>'.get_vocab('rep_rep_days').'</b> '.$opt.'</td></tr>'."\n";
-			if ($enable_periods=='y') list( $start_period, $start_date) =  period_date_string($start_time);
-			else $start_date = time_date_string($start_time,$dformat);
-			$duration = $end_time - $start_time;
-			if ($enable_periods=='y') toPeriodString($start_period, $duration, $dur_units);
-			else toTimeString($duration, $dur_units, true);
-			echo '<tr><td class="E"><b>'.get_vocab("date").get_vocab("deux_points").'</b> '.$start_date.'</td></tr>'."\n";
-			echo '<tr><td class="E"><b>'.get_vocab("duration").'</b> '.$duration .' '. $dur_units.'</td></tr>'."\n";
-			echo '<tr><td class="E"><b>'.get_vocab('rep_end_date').'</b> '.$rep_end_date.'</td></tr>'."\n";
-		}
-}
+			if ($rep_type == 6)
+			{
+				$nb = 1;
+				$opt .= get_vocab('jour_cycle').' '.$jours_c;
+			}
+			if ($opt)
+				if ($nb == 1)
+					echo '<tr><td class="E"><b>'.get_vocab('rep_rep_day').'</b> '.$opt.'</td></tr>'."\n";
+				else
+					echo '<tr><td class="E"><b>'.get_vocab('rep_rep_days').'</b> '.$opt.'</td></tr>'."\n";
+				if ($enable_periods=='y') list( $start_period, $start_date) =  period_date_string($start_time);
+				else $start_date = time_date_string($start_time,$dformat);
+				$duration = $end_time - $start_time;
+				if ($enable_periods=='y') toPeriodString($start_period, $duration, $dur_units);
+				else toTimeString($duration, $dur_units, true);
+				echo '<tr><td class="E"><b>'.get_vocab("date").get_vocab("deux_points").'</b> '.$start_date.'</td></tr>'."\n";
+				echo '<tr><td class="E"><b>'.get_vocab("duration").'</b> '.$duration .' '. $dur_units.'</td></tr>'."\n";
+				echo '<tr><td class="E"><b>'.get_vocab('rep_end_date').'</b> '.$rep_end_date.'</td></tr>'."\n";
+			}
+	}
 }
 	echo '</table>',PHP_EOL;
 	echo '</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;
