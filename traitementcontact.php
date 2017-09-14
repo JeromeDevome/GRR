@@ -7,7 +7,7 @@ include "include/$dbsys.inc.php";
 include "include/mrbs_sql.inc.php";
 include "phpmailer/class.phpmailer.php";
 
-$grr_script_name = "week_all.php";
+$grr_script_name = "traitementcontact.php";
 // Settings
 require_once("./include/settings.class.php");
 if (!Settings::load())
@@ -76,8 +76,6 @@ require_once 'include/mail.class.php';
 
 Email::Envois($destinataire, $sujet, $mail_corps, $_POST['email'], '', '');
 
-
-$mail_method= Settings::get("grr_mail_method");
 
 header('Location: week_all.php');
 
