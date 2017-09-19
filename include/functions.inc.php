@@ -227,7 +227,6 @@ function get_request_uri()
  */
 function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 {
-
 	if ($_type_cible == "identifiant:non")
 	{
 		if ($_cible == "contact_administrateur")
@@ -605,7 +604,7 @@ function plages_libre_semaine_ressource($id_room, $month_week, $day_week, $year_
  		if ($r)
  		{
 			// La requête est adaptée à un serveur SE3...
-			$result = @ldap_search($ds, "cn={$grp},{$ldap_group_base}",$ldap_group_filter, $members_attr);
+			$result = @ldap_search($ds, $ldap_group_base, "cn={$grp}".(empty($ldap_group_filter) ? '' : ','.$ldap_group_filter), $members_attr);
 			// Peut-être faudrait-il dans le $tab_grp_autorise mettre des chaines 'cn=$grp,ou=Groups'
  			if ($result)
  			{
@@ -614,7 +613,7 @@ function plages_libre_semaine_ressource($id_room, $month_week, $day_week, $year_
  				{
  					for ($loop = 0; $loop < $info[0][$ldap_group_member_attr]["count"]; $loop++)
  					{
- 						if ($info[0][$ldap_group_member_attr][$loop] == $uid)
+                        if(strpos($info[0][$ldap_group_member_attr][$loop], $uid) !== false)
  							$est_membre="oui";
  					}
  				}
@@ -707,25 +706,6 @@ function affiche_date($x)
 	$a = date("Y", $x);
 	$result = $j."/".$m."/".$a;
 	return $result;
-}
-
-//L'heure d'été commence le dernier dimanche de mars * et se termine le dernier dimanche d'octobre
-//Passage à l'heure d'hiver : -1h, le changement s'effectue à 3h
-//Passage à l'heure d'été : +1h, le changement s'effectue à 2h
-//Si type = hiver => La fonction retourne la date du jour de passage à l'heure d'hiver
-//Si type = ete =>  La fonction retourne la date du jour de passage à l'heure d'été
-function heure_ete_hiver($type, $annee, $heure)
-{
-	if ($type == "ete")
-		$debut = mktime($heure, 0, 0, 03, 31, $annee);
-	// 31-03-$annee
-	else
-		$debut = mktime($heure,0, 0, 10, 31, $annee);
-	// 31-10-$annee
-	while (date("D", $debut ) != 'Sun')
-		$debut = mktime($heure, 0, 0, date("m", $debut), date("d", $debut) - 1, date("Y", $debut));
-	//On retire 1 jour par rapport à la date examinée
-	return $debut;
 }
 
 # Remove backslash-escape quoting if PHP is configured to do it with

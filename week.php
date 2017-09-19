@@ -82,13 +82,16 @@ $time = mktime(0, 0, 0, $month, $day, $year);
 $time_old = $time;
 if (($weekday = (date("w", $time) - $weekstarts + 7) % 7) > 0)
 	$time -= $weekday * 86400;
-if (!isset($correct_heure_ete_hiver) or ($correct_heure_ete_hiver == 1))
-{
-	if ((heure_ete_hiver("ete",$year,0) <= $time_old) && (heure_ete_hiver("ete",$year,0) >= $time) && ($time_old != $time) && (date("H", $time) == 23))
-		$decal = 3600;
-	else
-		$decal = 0;
-	$time += $decal;
+//Fix début de semaine
+if(date('H', $time) != date('H', $time_old)) {
+    switch(date('H', $time)) {
+        case '23':
+            $time = strtotime(date("Y-m-d", strtotime("+ 1 day", $time)));
+            break;
+        case '01':
+            $time = strtotime(date("Y-m-d", $time));
+            break;
+    }
 }
 if (Settings::get("verif_reservation_auto") == 0)
 {
@@ -238,7 +241,12 @@ else
 		(int)$week_end+1);
 		$weekday = (date("w", $t) + 7 - $weekstarts) % 7;
 		$prev_weekday = -1;
-		$slot = ($t - $week_midnight) % 86400 / $resolution;
+		//Se baser seulement sur l'heure et le jour actuel pour trouver l'emplacement dans la grille horaire (élimine les problèmes de changement d'heure)
+		$slot = (
+		            (((date('H', $t)*60*60) + (date('i', $t)*60) + date('s', $t)) //heure du jour
+                    - ((date('H', $week_midnight)*60*60) + (date('i', $week_midnight)*60) + date('s', $week_midnight)) //Heure du début de la journée
+                )
+                / $resolution); //Trouve le nombre de cases dans la journée actuelle
 
 		$firstday = date("d", $t);
 		$lastday = date("d", $row[1]);
@@ -392,14 +400,6 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 				echo "<br />".$jour_cycle;
 			echo "</th>\n";
 		}
-		if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
-		{
-			$num_day = strftime("%d", $t);
-			if (heure_ete_hiver("hiver", $year, 0) == mktime(0, 0, 0, $month, $num_day, $year))
-				$t += 3600;
-			if ((date("H",$t) == "13") || (date("H",$t) == "02"))
-				$t -= 3600;
-		}
 		$i += 86400;
 		$k++;
 		$num_week_day++;
@@ -409,8 +409,6 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 	echo "</tr>\n";
 	$t = $am7;
 	$nb_case = 0;
-	$semaine_changement_heure_ete = 'no';
-	$semaine_changement_heure_hiver = 'no';
 
 	for ($slot = $first_slot; $slot <= $last_slot; $slot++)
 	{
@@ -437,68 +435,8 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 			$wyear = date("Y", $wt);
 			$hour = date("H",$wt);
 			$minute  = date("i",$wt);
-			$heureete1 = heure_ete_hiver("ete", $wyear,0);
-			$heurehiver1 = heure_ete_hiver("hiver",$wyear, 0);
-			$heureete2 = heure_ete_hiver("ete", $wyear,2);
-			$heurehiver2 = heure_ete_hiver("hiver", $wyear, 2);
-			if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
-			{
-				$temp =   mktime(0, 0, 0, $wmonth, $wday,$wyear);
-				if ($heureete1 == $temp)
-				{
-					$semaine_changement_heure_ete = 'yes';
-					$temp2 =   mktime($hour, 0, 0, $wmonth, $wday, $wyear);
-					if ($heureete2 == $temp2)
-					{
-						if ($display_day[$num_week_day] == 1)
-							echo tdcell($empty_color)."-</td>\n";
-						$nb_case++;
-						$insere_case = 'y';
-					}
-					else if ($heureete2 < $temp2)
-					{
-						$hour = date("H", $wt - 3600);
-						$decale_slot = 1;
-						$insere_case = 'n';
-					}
-				}
-				else if ($heurehiver1 == $temp)
-				{
-					$semaine_changement_heure_hiver = 'yes';
-					$temp2 =   mktime($hour, 0, 0, $wmonth, $wday, $wyear);
-					if ($heurehiver2 == $temp2)
-					{
-						$nb_case = $nb_case + 0.5;
-						$insere_case = 'n';
-					}
-					else if ($heurehiver2 < $temp2)
-					{
-						$hour = date("H", $wt + 3600);
-						$decale_slot = -1;
-						$insere_case = 'n';
-					}
-				}
-				else
-				{
-					$decale_slot = 0;
-					$insere_case = 'n';
-					if (($semaine_changement_heure_ete == 'yes') && ($heureete1 < $temp))
-					{
-						$decale_slot = 1;
-						$hour = date("H", $wt - 3600);
-					}
-					if (($semaine_changement_heure_hiver == 'yes') && ($heurehiver1 < $temp))
-					{
-						$decale_slot = -1;
-						$hour = date("H", $wt + 3600);
-					}
-				}
-			}
-			else
-			{
-				$decale_slot = 0;
-				$insere_case = 'n';
-			}
+			$decale_slot = 0;
+			$insere_case = 'n';
 			if (($insere_case == 'n') && ($display_day[$num_week_day] == 1))
 			{
 				if (!isset($d[$weekday][$slot - $decale_slot * $nb_case]["color"]))

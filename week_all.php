@@ -94,13 +94,16 @@ $time = mktime(0, 0, 0, $month, $day, $year);
 $time_old = $time;
 if (($weekday = (date("w", $time) - $weekstarts + 7) % 7) > 0)
 	$time -= $weekday * 86400;
-if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
-{
-	if ((heure_ete_hiver("ete", $year,0) <= $time_old) && (heure_ete_hiver("ete",$year,0) >= $time) && ($time_old != $time) && (date("H", $time) == 23))
-		$decal = 3600;
-	else
-		$decal = 0;
-	$time += $decal;
+//Fix début de semaine
+if(date('H', $time) != date('H', $time_old)) {
+    switch(date('H', $time)) {
+        case '23':
+            $time = strtotime(date("Y-m-d", strtotime("+ 1 day", $time)));
+            break;
+        case '01':
+            $time = strtotime(date("Y-m-d", $time));
+            break;
+    }
 }
 $day_week   = date("d", $time);
 $month_week = date("m", $time);
@@ -172,13 +175,6 @@ else
 				$d[$day_num]["option_reser"][] = -1;
 			$d[$day_num]["moderation"][] = $row['11'];
 			$midnight_tonight = $midnight + 86400;
-			if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
-			{
-				if (heure_ete_hiver("hiver",$year_num, 0) == mktime(0, 0, 0, $month_num, $day_num, $year_num))
-					$midnight_tonight += 3600;
-				if (date("H",$midnight_tonight) == "01")
-					$midnight_tonight -= 3600;
-			}
 			if ($enable_periods == 'y')
 			{
 				$start_str = preg_replace("/ /", " ", period_time_string($row['0']));
@@ -325,13 +321,6 @@ else
 		$tt = mktime(0, 0, 0, $temp_month, $num_day, $temp_year);
 		$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE day='$t'");
 		$t += 86400;
-		if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
-		{
-			if (heure_ete_hiver("hiver",$temp_year,0) == mktime(0, 0, 0, $temp_month, $num_day, $temp_year))
-				$t += 3600;
-			if (date("H", $t) == "01")
-				$t -= 3600;
-		}
 		if ($display_day[$num_week_day] == 1)
 		{
 			$class = "";
@@ -409,16 +398,6 @@ else
 				$cmonth = strftime("%m", $t2);
 				$cyear = strftime("%Y", $t2);
 				$t2 += 86400;
-				if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
-				{
-					$temp_day = strftime("%d", $t2);
-					$temp_month = strftime("%m", $t2);
-					$temp_year = strftime("%Y", $t2);
-					if (heure_ete_hiver("hiver", $temp_year,0) == mktime(0, 0, 0, $temp_month, $temp_day, $temp_year))
-						$t2 += 3600;
-					if (date("H", $t2) == "01")
-						$t2 -= 3600;
-				}
 				if ($display_day[$num_week_day] == 1)
 				{
 					$no_td = TRUE;
