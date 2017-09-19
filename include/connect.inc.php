@@ -1,5 +1,5 @@
 <?php
-$dbHost="s";
+$dbHost="";
 # ligne suivante : le nom de votre base sql
 $dbDb="";
 # ligne suivante : le nom de l'utilisateur sql qui a les droits sur la base
