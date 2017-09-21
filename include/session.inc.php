@@ -239,11 +239,11 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 									if (isset($val[Settings::get("ldap_champ_nom")][0]))
 										$l_nom = ucfirst($val[Settings::get("ldap_champ_nom")][0]);
 									else
-										$l_nom = iconv("ISO-8859-1","utf-8","Nom à préciser");
+										$l_nom = "Nom à préciser";
 									if (isset($val[Settings::get("ldap_champ_prenom")][0]))
 										$l_prenom = ucfirst($val[Settings::get("ldap_champ_prenom")][0]);
 									else
-										$l_prenom = iconv("ISO-8859-1","utf-8","Prénom à préciser");
+										$l_prenom = "Prénom à préciser";
 									if (isset($val[Settings::get("ldap_champ_email")][0]))
 										$l_email = $val[Settings::get("ldap_champ_email")][0];
 									else
@@ -484,6 +484,16 @@ if ($auth_ldap == 'yes')
 	etat != 'inactif'";
 	$res_user = grr_sql_query($sql);
 	$num_row = grr_sql_count($res_user);
+
+	//Lors de la connexion d'un utilisateur externe existant, ces variables ne sont pas définies
+	if(!isset($user_dn)) {
+        if(!isset($ldap_base)) {
+            include "config_ldap.inc.php";
+        }
+        $ds = grr_connect_ldap($ldap_adresse,$ldap_port,$ldap_login,$ldap_pwd,$use_tls);
+        $user_dn = grr_ldap_search_user($ds, $ldap_base,Settings::get("ldap_champ_recherche"), $_login, $ldap_filter, "no");
+	}
+
 	if ($num_row == 1)
 	{
 		// un utilisateur ldap ayant le même login existe déjà
@@ -1182,11 +1192,11 @@ function grr_getinfo_ldap($_dn, $_login, $_password)
 			if (isset($val[Settings::get("ldap_champ_nom")][0]))
 				$l_nom = ucfirst($val[Settings::get("ldap_champ_nom")][0]);
 			else
-				$l_nom = iconv("ISO-8859-1","utf-8","Nom à préciser");
+				$l_nom = "Nom à préciser";
 			if (isset($val[Settings::get("ldap_champ_prenom")][0]))
 				$l_prenom = ucfirst($val[Settings::get("ldap_champ_prenom")][0]);
 			else
-				$l_prenom = iconv("ISO-8859-1","utf-8","Prénom à préciser");
+                $l_prenom = "Prénom à préciser";
 			if (isset($val[Settings::get("ldap_champ_email")][0]))
 				$l_email = $val[Settings::get("ldap_champ_email")][0];
 			else
