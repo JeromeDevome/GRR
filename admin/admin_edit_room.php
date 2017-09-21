@@ -62,21 +62,22 @@ if ($max_booking<-1)
 	$max_booking = -1;
 $statut_room = isset($_POST["statut_room"]) ? "0" : "1";
 $show_fic_room = isset($_POST["show_fic_room"]) ? "y" : "n";
-if (isset($_POST["active_ressource_empruntee"]))
-	$active_ressource_empruntee = 'y';
-else
-{
-	$active_ressource_empruntee = 'n';
-	// toutes les reservations sont considerees comme restituee
-	grr_sql_query("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id = '".$room."'");
-}
-if (isset($_POST["active_cle"]))
-	$active_cle = 'y';
-else
-{
-	$active_cle = 'n';
-	// toutes les reservations sont considerees comme restituee
-	grr_sql_query("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id = '".$room."'");
+//Ne pas faire l'update si on a pas soumis le formulaire (consultation)
+if(!empty($_POST)) {
+    if (isset($_POST["active_ressource_empruntee"]))
+        $active_ressource_empruntee = 'y';
+    else {
+        $active_ressource_empruntee = 'n';
+        // toutes les reservations sont considerees comme restituee
+        grr_sql_query("update " . TABLE_PREFIX . "_entry set statut_entry = '-' where room_id = '" . $room . "'");
+    }
+    if (isset($_POST["active_cle"]))
+        $active_cle = 'y';
+    else {
+        $active_cle = 'n';
+        // toutes les reservations sont considerees comme restituee
+        grr_sql_query("update " . TABLE_PREFIX . "_entry set statut_entry = '-' where room_id = '" . $room . "'");
+    }
 }
 $picture_room = isset($_POST["picture_room"]) ? $_POST["picture_room"] : NULL;
 $comment_room = isset($_POST["comment_room"]) ? $_POST["comment_room"] : NULL;
