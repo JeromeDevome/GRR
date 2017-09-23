@@ -776,7 +776,7 @@ if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 
 						if ($version_old < "3.3.0")
 						{
-							$result .= "<b>Mise à jour jusqu'à la version 3.2.0 :</b><br />";
+							$result .= "<b>Mise à jour jusqu'à la version 3.3.0 :</b><br />";
 
 							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('periodicite', 'y')");
 							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('remplissage_description_complete', '0')");

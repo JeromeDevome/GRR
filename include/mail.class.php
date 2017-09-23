@@ -77,7 +77,7 @@ class Email{
 			$mail->isHTML(true);
 
 			$mail->Subject = $sujet;
-			$mail->Body = $message;
+			$mail->Body = nl2br($message);
 			$mail->AltBody = 'Ce message ne peut-être affiché.';
 
 			if(!$mail->send()) {

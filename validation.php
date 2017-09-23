@@ -95,7 +95,16 @@ if ($settings->get("verif_reservation_auto") == 0)
 
 $page = verif_page();
 
+if (isset($_GET["id"]))
+{
+   $id = $_GET["id"];
+   settype($id,"integer");
+}
+else
+   $id = NULL;
 
+if(!isset($fin_session))
+	$fin_session='n';
 
 if (isset($_GET["action_moderate"])){
 	moderate_entry_do($id,$_GET["moderate"], $_GET["description"]);
