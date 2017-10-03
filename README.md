@@ -1,7 +1,7 @@
 GRR
 ===================
 
-**Requière :**
+**Requiert :**
 
 > PHP 5.4+
 > Mysql 5.4+
