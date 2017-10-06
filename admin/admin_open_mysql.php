@@ -105,7 +105,7 @@ else
 	}
 	else
 		echo "sans erreurs.";
-	echo "<br /><a href=\"login.php\">".get_vocab("msg_logout3")."</a></div>";
+		echo "<br /><a href='../login.php'>".get_vocab("msg_logout3")."</a></div>";
 }
 ?>
 </body>
