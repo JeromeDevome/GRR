@@ -38,7 +38,7 @@ check_access(6, $back);
 print_header("", "", "", $type="with_session");
 // Affichage de la colonne de gauche
 include "admin_col_gauche.php";
-echo "<h2>".get_vocab('vancances_feries.php')."</h2>\n";
+echo "<h2>".get_vocab('admin_calend_vacances_feries.php')."</h2>\n";
 if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 {
 	// On met de côté toutes les dates
