@@ -47,6 +47,12 @@ if (isset($_POST['show_holidays'])) {
         die();
     }
 }
+if (isset($_POST['holidays_zone'])) {
+    if (!Settings::set('holidays_zone', $_POST['holidays_zone'])) {
+        echo "Erreur lors de l'enregistrement de holidays_zone !<br />";
+        die();
+    }
+}
 if (isset($_POST['message_home_page'])) {
     if (!Settings::set('message_home_page', $_POST['message_home_page'])) {
         echo "Erreur lors de l'enregistrement de message_home_page !<br />";
@@ -1371,7 +1377,34 @@ echo '</td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
 echo '</table>'.PHP_EOL;
 
+# Choix de la zone de vacance
+echo '<hr />'.PHP_EOL;
+echo '<h3>'.get_vocab('holidays_zone_msg').'</h3>'.PHP_EOL;
+echo '<table>'.PHP_EOL;
+echo '<tr>'.PHP_EOL;
+echo '<td>'.PHP_EOL;
+$vacances = simplexml_load_file('../vacances.xml');
+$libelle = $vacances->academies->children();
+$acad = array();
+foreach ($libelle as $key => $value) {
+    if (!in_array($value['zone'], $acad)) {
+        $acad[] .= $value['zone'];
+    }
+}
+sort($acad);
+echo '<select class="form-control" name="holidays_zone">'.PHP_EOL;
+foreach ($acad as $key => $value) {
+    echo '<option value="'.$value.'"';
+    if (Settings::get('holidays_zone') == $value) {
+        echo ' selected="selected"';
+    }
+    echo '>'.$value.'</option>'.PHP_EOL;
+}
 
+echo '</select>'.PHP_EOL;
+echo '</td>'.PHP_EOL;
+echo '</tr>'.PHP_EOL;
+echo '</table>'.PHP_EOL;
 # Lors de l'édition d'un rapport, valeur par défaut en nombre de jours
 # de l'intervalle de temps entre la date de début du rapport et la date de fin du rapport.
 echo '<hr />'.PHP_EOL;
