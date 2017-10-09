@@ -388,6 +388,8 @@ else
 			else
 				echo tdcell("cell_hours2");
 			echo '<a title="'.htmlspecialchars(get_vocab("see_week_for_this_room")).'" href="week.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$area.'&amp;room='.$row['2'].'">' . htmlspecialchars($row[0]) .'</a><br />'.PHP_EOL;
+			if ($row['1']  && $_GET['pview'] != 1)
+				echo '<span class="small">('.$row['1'].' '.($row['1'] > 1 ? get_vocab("number_max2") : get_vocab("number_max")).')</span>'.PHP_EOL;
 			if ($row['4'] == "0")
 				echo '<span class="texte_ress_tempo_indispo">'.get_vocab("ressource_temporairement_indisponible").'</span><br />'.PHP_EOL;
 			if (verif_display_fiche_ressource(getUserName(), $row['2']) && $_GET['pview'] != 1)
