@@ -164,10 +164,11 @@ else
 		echo '</td>'.PHP_EOL;
 		echo '</tr>'.PHP_EOL;
 			echo "<tr>";
-	echo "<td class=\"left\"> ";
+	/* echo "<td class=\"left\"> ";
 	$month_all2 = 1;
 	echo "<input type=\"button\" class=\"btn btn-default btn-xs\" id=\"voir\" value=\"Afficher le menu à gauche.\" onClick=\"divaffiche($month_all2)\" style=\"display:inline;\" /> ";
-	echo "</td>";
+	echo "</td>";*/
+	// suppression parce que ne semble pas fonctionnel
 		echo '</table>'.PHP_EOL;
 	}
 
