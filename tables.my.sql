@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS `grr_calendrier_vacances`;
+CREATE TABLE `grr_calendrier_vacances` (  `DAY` int(11) NOT NULL DEFAULT '0');
 DROP TABLE IF EXISTS grr_j_mailuser_room;
 CREATE TABLE grr_j_mailuser_room (login varchar(40) NOT NULL default '', id_room int(11) NOT NULL default '0', PRIMARY KEY  (login,id_room) );
 DROP TABLE IF EXISTS grr_j_user_area;
