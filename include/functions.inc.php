@@ -48,6 +48,7 @@ function getWeekNumber($date)
 	return date('W', $date);
 }
 
+/* 
 function getSchoolHolidays($now, $year)
 {
 	$test = grr_sql_query1("SELECT DAY FROM ".TABLE_PREFIX."_calendrier_vacances where DAY = '".$now."'");
@@ -57,8 +58,40 @@ function getSchoolHolidays($now, $year)
 		$sh = array(false, "");
 
 	return $sh;
-}
+} */
+// à revoir avec la mise en place de la table _calendrier_vacances, la fonction ci-dessus échoue
+function getSchoolHolidays($now, $year)
+{
+	$zone = 'A';
+	if (Settings::get("holidays_zone") != NULL)
+		$zone = Settings::get("holidays_zone");
+	$sh = array(false, "");
+	$vacances = simplexml_load_file('vacances.xml');
+	$libelle = $vacances->libelles->children();
+	$node = $vacances->calendrier->children();
+	foreach ($node as $key => $value)
+	{
+		if ($value['libelle'] == $zone)
+		{
+			foreach ($value->vacances as $key => $value)
+			{
+				$y = date('Y', strtotime($value['debut']));
+				if ($y == $year)
+				{
+					if (strtotime($value['debut']) <= $now && $now < strtotime($value['fin']))
+					{
+						$nom = (int)$value['libelle'];
+						$nom = $libelle->libelle[$nom - 1];
+						$sh = array(true, $nom);
+						break;
+					}
 
+				}
+			}
+		}
+	}
+	return $sh;
+}
 
 function getHolidays($year = null)
 {
