@@ -391,7 +391,8 @@ else
 								echo " ...\n";
 								break;
 							}
-							echo '<table class="table-noborder">',PHP_EOL,'<tr>',PHP_EOL;
+//							echo '<table class="table-noborder">',PHP_EOL,'<tr>',PHP_EOL;
+							echo '<table class="table-bordered">',PHP_EOL,'<tr>',PHP_EOL;
 							tdcell($d[$cday]["color"][$i]);
 							echo '<span class="small_planning">',PHP_EOL;
 							if ($acces_fiche_reservation[$d[$cday]["id_room"][$i]])
