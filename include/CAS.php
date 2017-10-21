@@ -40,10 +40,8 @@
 // hack by Vangelis Haniotakis to handle the absence of $_SERVER['REQUEST_URI']
 // in IIS
 //
-if (php_sapi_name() != 'cli') {
-    if (!isset($_SERVER['REQUEST_URI'])) {
-        $_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'];
-    }
+if (!isset($_SERVER['REQUEST_URI']) && isset($_SERVER['SCRIPT_NAME']) && isset($_SERVER['QUERY_STRING'])) {
+    $_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'];
 }
 
 // Add a E_USER_DEPRECATED for php versions <= 5.2
@@ -63,7 +61,7 @@ if (!defined('E_USER_DEPRECATED')) {
 /**
  * phpCAS version. accessible for the user by phpCAS::getVersion().
  */
-define('PHPCAS_VERSION', '1.3.4+');
+define('PHPCAS_VERSION', '1.3.5');
 
 /**
  * @addtogroup public
@@ -221,6 +219,7 @@ define("PHPCAS_LANG_GERMAN", 'CAS_Languages_German');
 define("PHPCAS_LANG_JAPANESE", 'CAS_Languages_Japanese');
 define("PHPCAS_LANG_SPANISH", 'CAS_Languages_Spanish');
 define("PHPCAS_LANG_CATALAN", 'CAS_Languages_Catalan');
+define("PHPCAS_LANG_CHINESE_SIMPLIFIED", 'CAS_Languages_ChineseSimplified');
 
 /** @} */
 
@@ -336,7 +335,7 @@ class phpCAS
      * called, only once, and before all other methods (except phpCAS::getVersion()
      * and phpCAS::setDebug()).
      */
-    public static function client($server_version, $server_hostname,
+/*    public static function client($server_version, $server_hostname,
         $server_port, $server_uri, $changeSessionID = true
     ) {
         phpCAS :: traceBegin();
@@ -358,6 +357,38 @@ class phpCAS
             self::$_PHPCAS_CLIENT = new CAS_Client(
                 $server_version, false, $server_hostname, $server_port, $server_uri,
                 $changeSessionID
+            );
+        } catch (Exception $e) {
+            phpCAS :: error(get_class($e) . ': ' . $e->getMessage());
+        }
+        phpCAS :: traceEnd();
+    }
+    */
+     // client patché selon la méthode GEPI
+public static function client($server_version, $server_hostname,
+        $server_port, $server_uri, $changeSessionID = true,
+        $service_address = null // Utilisé pour forcer l'URL de base
+    ) {
+        phpCAS :: traceBegin();
+        if (is_object(self::$_PHPCAS_CLIENT)) {
+            phpCAS :: error(self::$_PHPCAS_INIT_CALL['method'] . '() has already been called (at ' . self::$_PHPCAS_INIT_CALL['file'] . ':' . self::$_PHPCAS_INIT_CALL['line'] . ')');
+        }
+
+        // store where the initializer is called from
+        $dbg = debug_backtrace();
+        self::$_PHPCAS_INIT_CALL = array (
+            'done' => true,
+            'file' => $dbg[0]['file'],
+            'line' => $dbg[0]['line'],
+            'method' => __CLASS__ . '::' . __FUNCTION__
+        );
+
+        // initialize the object $_PHPCAS_CLIENT
+        try {
+            self::$_PHPCAS_CLIENT = new CAS_Client(
+                $server_version, false, $server_hostname, $server_port, $server_uri,
+                $changeSessionID,
+                $service_address // patch GEPI
             );
         } catch (Exception $e) {
             phpCAS :: error(get_class($e) . ': ' . $e->getMessage());
@@ -995,6 +1026,25 @@ class phpCAS
         }
     }
 
+
+    /**
+     * Set a callback function to be run when receiving CAS attributes
+     *
+     * The callback function will be passed an $success_elements
+     * payload of the response (\DOMElement) as its first parameter.
+     *
+     * @param string $function       Callback function
+     * @param array  $additionalArgs optional array of arguments
+     *
+     * @return void
+     */
+    public static function setCasAttributeParserCallback($function, array $additionalArgs = array())
+    {
+        phpCAS::_validateClientExists();
+
+        self::$_PHPCAS_CLIENT->setCasAttributeParserCallback($function, $additionalArgs);
+    }
+
     /**
      * Set a callback function to be run when a user authenticates.
      *
@@ -1295,7 +1345,11 @@ class phpCAS
 
     /**
      * Set the serviceValidate URL of the CAS server.
-     * Used only in CAS 1.0 validations
+     * Used for all CAS versions of URL validations.
+     * Examples:
+     * CAS 1.0 http://www.exemple.com/validate
+     * CAS 2.0 http://www.exemple.com/validateURL
+     * CAS 3.0 http://www.exemple.com/p3/serviceValidate
      *
      * @param string $url the serviceValidate URL
      *
@@ -1317,7 +1371,11 @@ class phpCAS
 
     /**
      * Set the proxyValidate URL of the CAS server.
-     * Used for all CAS 2.0 validations
+     * Used for all CAS versions of proxy URL validations
+     * Examples:
+     * CAS 1.0 http://www.exemple.com/
+     * CAS 2.0 http://www.exemple.com/proxyValidate
+     * CAS 3.0 http://www.exemple.com/p3/proxyValidate
      *
      * @param string $url the proxyValidate URL
      *
@@ -1800,6 +1858,16 @@ class phpCAS
         if (!is_object(self::$_PHPCAS_CLIENT)) {
             throw new CAS_OutOfSequenceBeforeProxyException();
         }
+    }
+
+    /**
+     * For testing purposes, use this method to set the client to a test double
+     *
+     * @return void
+     */
+    public static function setCasClient(\CAS_Client $client)
+    {
+        self::$_PHPCAS_CLIENT = $client;
     }
 }
 // ########################################################################
