@@ -277,28 +277,32 @@ include 'admin_col_gauche.php';
             echo '</div>'.PHP_EOL;
             echo '</div>'.PHP_EOL;
   echo '</td>';
+  echo '</tr>';
   echo '<tr>';
             echo '<td>';
-            echo '<div id="fixe" style="text-align:center;">'.PHP_EOL;
+            echo '<div id="fixe" style="text-align:center;"></td>'.PHP_EOL;
 echo '<td><input type="submit" id="import" value=" Importer les réservations! " /></td>'.PHP_EOL;
   echo '</tr>';
   
 echo '</form>';
 
-// fin de l'affichage de la colonne de droite
-echo '</td></tr>';
+//echo '</tr>';
      }
+
+echo "<tr><td><a href=\"admin_calend.php\">".get_vocab('returnprev')."</a></td></tr>";
 echo '</table>';
-
-echo "<a href=\"admin_calend.php\">".get_vocab('returnprev')."</a><p>";
-
-include "../include/trailer.inc.php"; 
+// fin de l'affichage de la colonne de droite
+echo "</td></tr></table>\n";
+// fin du code de la page
+echo '</body></html>';                
+                
+//include "../include/trailer.inc.php";  // semble inutile
 
 function entre_reservation($room_id,$jour_semaine,$name,$description,
              $day,$month,$year,$hour,$minute,
              $end_day,$end_month,$end_year,$end_hour,$end_minute,
              $rep_end_day,$rep_end_month,$rep_end_year,$rep_semaine){
-        // echo $room_id.",".$jour_semaine.",".$name.",".$description.",".$hour."h".$minute."->".$end_hour."h".$minute."</br>";
+        echo $room_id.",".$jour_semaine.",".$name.",".$description.",".$hour."h".$minute."->".$end_hour."h".$end_minute."</br>";
         // return true;
         global $max_rep_entrys, $erreur;
         $journee=86400; $semaine=86400*7;
