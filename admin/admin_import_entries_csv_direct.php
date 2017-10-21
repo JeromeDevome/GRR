@@ -142,8 +142,7 @@ include "admin_col_gauche.php";
   } else {
    // show upload form
         ?>
-        <html><head><meta http-equiv="content-type" content="text/html; charset=utf-8">
-        <title>Importation d'un fichier de réservations</title></head><body>
+       
         <h1>Importation d'un fichier de réservations dans GRR</h1>
         <p>
             Utiliser ce script pour importer un fichier de réservation dans GRR<br />
@@ -175,9 +174,10 @@ include "admin_col_gauche.php";
                 </tr>
             </table>
         </form>
-        </body></html>
-        <?php
-  
+<?php
+     echo "<p><a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a></p>";
+     echo "</td></tr></table>"; // fin de la colonne droite
+     echo "</body></html>";  // fin de la page
   }
 function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$minute_fin,$description,$type)
         {
@@ -354,7 +354,5 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
 		return true;
 		// Retour au calendrier
 }
-
-echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a><p>";
 
 include "../include/trailer.inc.php"; ?>
