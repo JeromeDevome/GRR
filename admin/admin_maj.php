@@ -789,6 +789,21 @@ if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 							$result_inter = '';
 						}
 
+						if ($version_old < "3.3.1")
+						{
+							$result .= "<b>Mise à jour jusqu'à la version 3.3.1 :</b><br />";
+
+							$result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_calendrier_vacances (`DAY` int(11) NOT NULL DEFAULT '0');");
+							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('cas_port', '')");
+							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('cas_racine', '')");
+							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('cas_serveur', '')");
+							
+							if ($result_inter == '')
+								$result .= "<span style=\"color:green;\">Ok !</span><br />";
+							else
+								$result .= $result_inter;
+							$result_inter = '';
+						}
 
 						// Vérification du format des champs additionnels
 						// Avant version 1.9.4, les champs add étaient stockés sous la forme <id_champ>champ_encode_en_base_64</id_champ>
