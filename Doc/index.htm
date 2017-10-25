@@ -6,8 +6,8 @@
         <link rel="stylesheet" href="style_doc.css"/>
     </head>
 <body>
-<h1><center>Gestion et Réservation de Ressources<br>Documentation (version 1.9.7)</center></h1>
-<p>Cette documentation mériterait d'être mise à jour... </p>
+<h1><center>Gestion et Réservation de Ressources<br>Documentation (version 3.3.1 RC2)</center></h1>
+<p>Cette documentation devrait être à jour à la version 3.3.1 RC2, aux erreurs près... </p>
 <p>Sommaire</p>
 <ol>
     <li><a href="#part1">Présentation générale de GRR</a></li>
@@ -30,8 +30,8 @@ utilisé comme mini-agenda partagé.</p>
 <p>Cette adaptation est également sous  <a href="https://www.gnu.org/licenses/quick-guide-gplv3.fr.html">licence GPL</a>&nbsp; donc libre et gratuite.</p>
 <p><strong>Les principales fonctionnalités de GRR sont :</strong></p>
 <ul>
-    <li> l'accès à l'outil de gestion partagée via n'importe quel navigateur web,     </li>
-    <li> l’administration de plusieurs types de ressources partagées (salles, voitures, matériels, ...),</li>
+    <li>l'accès à l'outil de gestion partagée via n'importe quel navigateur web,     </li>
+    <li>l’administration de plusieurs types de ressources partagées (salles, voitures, matériels, ...),</li>
     <li>la gestion des réservations de ces ressources (création, modification, suppression),</li>
     <li>la gestion du type d'accès à une ressource ; accès restreint à certains utilisateurs ou non,</li>
     <li>la possibilité d’effectuer des réservations périodiques,</li>
@@ -47,7 +47,7 @@ utilisé comme mini-agenda partagé.</p>
     <li>la possibilité pour un gestionnaire, d'afficher une réservation comme étant « en cours d'utilisation »,</li>
     <li>la possibilité de rendre temporairement indisponible une ressource pour maintenance par exemple,</li>
     <li>la possibilité de configurer une fiche de présentation avec image pour chaque ressource,</li>
-    <li> la visualisation du planning des réservations des ressources sous différentes formes,</li>
+    <li>la visualisation du planning des réservations des ressources sous différentes formes,</li>
     <li>la possibilité de paramétrer le type d'accès à l'application (obligation ou non de se connecter pour accéder au site),</li>
     <li>la possibilité de personnalisation par domaine les paramètres 
 d'affichage du planning des réservations (heures de début et fin de 
@@ -58,10 +58,11 @@ modifier une réservation existante.</li>
     <li>la possibilité de fixer, pour chaque ressource, un temps, 
 en-deçà duquel l'utilisateur ne peut pas réserver ou modifier une 
 réservation existante.</li>
-    <li>La possibilité de réserver ou de libérer très rapidement des 
+    <li>la possibilité de réserver ou de libérer très rapidement des 
 journées entières simultanément sur plusieurs ressources de plusieurs 
 domaines et selon un calendrier.</li>
-    <li>Compatibilité avec UTF-8.</li>
+    <li>la fonctionnalité "gestion des clés"
+    <li>compatibilité avec UTF-8.</li>
 </ul><h2>1.2.Les utilisateurs</h2>
 <p>Les différentes catégories d’utilisateurs sont :</p>
 <h3>a) Les administrateurs</h3>
@@ -70,7 +71,7 @@ l’application : il gère les ressources, la base de données et les autres
  utilisateurs. Il peut tout voir, réserver et modifier ou effacer toutes
  les réservations. Il a accès à l'ensemble des paramètres de 
 configuration de GRR.</p>
-<h3>b) Les administrateurs restreints de sites (version 1.9.6)</h3>
+<h3>b) Les administrateurs restreints de sites (versions 1.9.6+)</h3>
 Lorsque la fonctionnalité "<strong>multi-sites</strong>" est activée, il
  est possible de définir des "sites", qui sont des unités qui regroupent
  des domaines. Il est alors possible de définir des <strong>administrateurs de sites</strong>.<br>
@@ -165,7 +166,7 @@ peut donc pas modifier son mot de passe. Selon le paramétrage dans la
 configuration générale, le visiteur a ou non accès à l'outil "Recherche -
  Rapports - Statistiques". </p>
 <h2 id="prop">1.3.Propriétaires et bénéficiaires</h2>
-Pour chaque réservation effectuée,&nbsp; <strong>GRR </strong>distingue le <strong>propriétaire </strong>de la réservation (celui qui a effectué la réservation) et le <strong>bénéficiaire </strong>de&nbsp; la réservation celui au nom duquel la réservation a été effectuée. <br>
+Pour chaque réservation effectuée,&nbsp; <strong>GRR </strong>distingue le <strong>propriétaire </strong>de la réservation (celui qui a effectué la réservation) et le <strong>bénéficiaire </strong>de&nbsp; la réservation (celui au nom duquel la réservation a été effectuée). <br>
 <br>
 La plupart du temps (fonctionnement par défaut), <strong>le propriétaire et le bénéficiaire sont une même&nbsp; personne</strong>. <br>
 <br>
@@ -185,7 +186,7 @@ L'administrateur général a toujours cette possibilité, mais il peut délégue
 Par défaut, seul l'administrateur général dispose de ce droit. <br>
 <h3>Bénéficiaires : des utilisateurs de GRR ou bien des personnes extérieures</h3>
 <p>
-Les bénéficiaires sont en général des utilisateurs enregistrés dans GRR. Mais il est également possible de réserver au nom de <strong>personnes extérieures</strong>. Dans ce cas, le créateur de la réservation dispose de deux champs supplémentaire dans l'interface de réservation :<br>
+Les bénéficiaires sont en général des utilisateurs enregistrés dans GRR. Mais il est également possible de réserver au nom de <strong>personnes extérieures</strong>. Dans ce cas, le créateur de la réservation dispose de deux champs supplémentaires dans l'interface de réservation :<br>
 </p>
 <ul>
     <li>un champ obligatoire pour préciser les nom et prénom du bénéficiaire,</li>
@@ -206,12 +207,12 @@ desquelles on peut effectuer une réservation.</li>
 </ul>
 <h3> Règles de fonctionnement</h3>
 <ul>
-    <li>Le propriétaire d'un réservation, même s'il n'en est pas bénéficiaire, a le droit de la modifier ou de la supprimer.</li>
-    <li>De même le bénéficiaire d'un réservation, même s'il n'en est pas le propriétaire, a le droit de la modifier ou de la supprimer. </li>
+    <li>Le propriétaire d'une réservation, même s'il n'en est pas bénéficiaire, a le droit de la modifier ou de la supprimer.</li>
+    <li>De même le bénéficiaire d'une réservation, même s'il n'en est pas le propriétaire, a le droit de la modifier ou de la supprimer. </li>
     <li>Lorsque qu'un utilisateur effectue une réservation au nom d'un 
 autre utilisateur ou bien modifie ou supprime une réservation existante 
-faite&nbsp; au nom d'un autre utilisateur, un mail de notification 
-est&nbsp; automatiquement envoyé au bénéficiaire de la réservation (à 
+faite au nom d'un autre utilisateur, un mail de notification 
+est automatiquement envoyé au bénéficiaire de la réservation (à 
 condition que l'envoi de mails automatiques soit activé et que le champ 
 email du bénéficiaire soit correctement renseigné). </li>
 </ul><h2>1.4.Type d'accès</h2>
@@ -253,7 +254,7 @@ réservations.</p>
             <p>Gestionnaires<br>de ressources
             </p>
             </th>
-            <th align="center">Gestionnaires d'utilisateurs</th>
+            <th align="center"><p>Gestionnaires d'utilisateurs</p></th>
             <th align="center">
             <p>Usagers</p>
             </th>
@@ -288,7 +289,7 @@ réservations.</p>
             <td align="center">&nbsp;</td>
         </tr>
         <tr>
-            <td>Création, modification, suppression des utilisateurs</td>
+            <td><p>Création, modification, suppression des utilisateurs</p></td>
             <td align="center">X</td>
             <td align="center">&nbsp;</td>
             <td align="center">&nbsp;</td>
@@ -455,7 +456,7 @@ réservations.</p>
         </tr>
         <tr>
             <td>
-            <p>Utilisation de l'outil "Recherche - Rapports - Statistiques" <br>
+            <p>Utilisation de l'outil <br> "Recherche - Rapports - Statistiques"
             </p>
             </td>
             <td align="center">X</td>
@@ -569,7 +570,7 @@ indique alors : $correct_diff_time_local_serveur=6;</li>
     <li>
     <p>Paramétrage du fuseau horaire (imposer à GRR un fuseau horaire différent de celui du serveur) : <br>
     TZ (Time Zone) est une variable permettant de préciser dans quel 
-fuseau horaire, GRR travaille.L'ajustement de cette variable TZ permet 
+fuseau horaire GRR travaille. L'ajustement de cette variable TZ permet 
 au programme GRR de travailler dans la zone de votre choix. La valeur à 
 donner à TZ diffère d'un système à un autre (Windows, Linux, ...).<br>
     <br>
@@ -614,14 +615,14 @@ possible, il doit être court et descriptif. Normalement, vous n'avez pas
 sites GRR doivent avoir des noms de session différents. Dans ce cas, il 
 vous faudra changer la valeur GRR par une autre valeur.</li>
     <li>
-    <p>$max_rep_entrys :&nbsp; cette variable fixe le nombre maximum de 
+    <p>$max_rep_entrys : cette variable fixe le nombre maximum de 
 réservations autorisés lors d'une réservation avec périodicité (366 par 
 défaut).</p>
     </li>
     <li>$unicode_encoding : positionner la valeur $unicode_encoding à 1 
 pour utiliser l'UTF-8 dans toutes les pages et dans la base. Dans le cas
  contraire, les textes stockés dans la base dépendent des différents 
-encodage selon la langue selectionnée par l'utilisateur. Il est 
+encodages selon la langue sélectionnée par l'utilisateur. Il est 
 fortement conseillé de lire le fichier notes-utf8.txt à la racine de 
 l'archive de GRR.<br>
     </li>
@@ -645,7 +646,7 @@ php. Sinon, positionnez la variable $use_function_html_entity_decode à
 </ul>
 <h3>2.4.2.Avant l'installation : configuration du fichier connect.inc.php</h3>
 <ul>
-    <li>Renommer le fichier "connect.inc.php.ori" en "connect.inc.php",</li>
+    <li><p>Renommer le fichier "connect.inc.php.ori" en "connect.inc.php",</p></li>
     <li>Editer le fichier "connect.inc.php" afin de le compléter les différentes valeurs suivantes :<br>
     </li>
     <li>
@@ -662,6 +663,12 @@ mysql. Si c'est le même que celui qui héberge les fichiers php, mettre
     <li>
     <p>$dbPass : le mot de passe de l'utilisateur mysql ci-dessus.</p>
     </li>
+    <li>
+    <p>$table_prefix : le préfixe utilisé dans le nommage des tables de la base de données.</p>
+    </li>
+    <li>
+    <p>$dbPort : le port mysql.</p>
+    </li>
 </ul>
 <h3>2.4.3.Etape 2 : création de la base Mysql</h2>
 Si vous optez pour une installation manuelle, il est nécessaire d'avoir renseigné le fichier "connect.inc.php".<br>
@@ -671,7 +678,7 @@ Dans l'archive figure le fichier tables.my.sql à exécuter sur le serveur
 <ul>
     <li>Sur le serveur mysql :<br>
     <ol>
-        <li>créez une base mysql (avec phpMyAdmin par exemple) en lui donnant un nom par exemple "grr"</li>
+        <li>créez une base mysql (avec phpMyAdmin par exemple) en lui donnant un nom par exemple "grr" et en choisissant l'encodage cohérent avec le réglage $unicode_encoding (par défaut utf8_general_ci),</li>
         <li>créez un utilisateur de cette base,</li>
         <li>n'oubliez pas de relancer le serveur.</li>
     </ol>
@@ -683,8 +690,8 @@ Dans l'archive figure le fichier tables.my.sql à exécuter sur le serveur
 Une fois le système installé, la première chose à faire est de configurer GRR à l'aide de l'interface web. Pour cela :<br>
 <ul>
     <li>Connectez-vous à GRR, (nom de connexion "administrateur" et mot de passe "azerty"),</li>
-    <li>Par sécurité, changez le mot de passe de administrateur grâce au lien "gérer mon compte" dans le bandeau en haut !</li>
-    <li>allez dans la partie "administration" (lien dans le bandeau en haut)</li>
+    <li>par sécurité, changez le mot de passe de administrateur grâce au lien "gérer mon compte" dans le bandeau en haut !</li>
+    <li>Allez dans la partie "administration" (lien dans le bandeau en haut)</li>
 </ul>
 <br>
 Vous avez alors la possibilité d'accéder à un certain nombre de rubriques réservées aux administrateurs :<br>
@@ -699,19 +706,35 @@ Nous allons passer en revue quelques-unes de ces rubriques :
     <li>Renseignements divers : Nom de l'établissement, adresse du site,
  nom et prénom du gestionnaire du site, adresse email du gestionnaire du
  site et adresse email du support technique.</li>
+    <li>Choix d'un logo : les formats supportés sont png, jpg et gif.</li>
+    <li>Affichage des calendriers : fixe le nombre de calendriers à afficher</li>
+    <li>Message personnalisé : s'affichera en-dessous du bandeau supérieur</li>
     <li>Dates de début et fin des réservations : pas de réservation 
 possible en dehors de ces dates. De plus les réservations déjà 
 effectuées en dehors de ces dates sont effacées de la base.</li>
-    <li>Choix des paramètres d'affichage par défaut :&nbsp; dans cette 
+    <li>Choix des paramètres d'affichage par défaut : dans cette 
 rubrique, on peut choisir l'affichage par défaut de la page d'accueil. 
 Ce sont les paramètres qui s'appliqueront si l'utilisateur n'a pas 
 lui-même choisi des paramètres d'affichage par défaut.</li>
     <li>Choix de l'affichage des "info-bulles" des réservations, dans les vues journées, semaine et mois.</li>
-    <li>Choix de l'affichage du champ "description complète" de la réservation dans les vues semaine et mois.</li>
+    <li>Choix de l'affichage du menu (calendrier, domaines et ressources).</li>
+    <li>Choisir si le formulaire de contact pour les demandes de réservations est disponible aux visiteurs.</li>
+    <li>Choix de l'affichage du champ "description complète" de la réservation dans les vues journées, semaine et mois.</li>
+    <li>Choix de l'affichage de la "brève description" de la réservation dans les vues journées, semaine et mois.</li>
+    <li>Choix de l'affichage des liens email dans les fiches détaillées de réservation.</li>
+    <li>Choix de l'affichage des informations des réservations sous forme de page ou de popup.</li>
+    <li>Remplissage de la rubrique "brève description" dans le formulaire réservation.</li>
+    <li>Remplissage de la rubrique "description complète" dans le formulaire réservation.</li>
     <li>Comportement du navigateur lors de l'ouverture des "pages au format imprimable".</li>
+    <li>Choix de l'affichage de la légende.</li>
+    <li>Autoriser la périodicité dans les réservations.</li>
+    <li>Choix de l'affichage de la gestion des salles par courrier.</li>
+    <li>Choix de l'affichage des vacances scolaires et les jours fériés.</li>
+    <li>Choix de la zone de vacances scolaires (France).</li>
     <li>Paramétrage de l'outil "Recherche - Rapports - Stats." (valeur 
 par défaut de l'intervalle de temps entre la date de début de recherche 
 et la date de fin).</li>
+    <li>Paramétrage de l'outil Formulaire de réservation.</li>
 </ul>
 <h3>3.1.2.Accès et droits</h3>
 <div>
@@ -726,6 +749,7 @@ réserver ou modifier une réservation) .</li>
     </li>
     
     <li>Niveau d'accès à la fiche de description d'une ressource.</li>
+    <li>Niveau d'accès à la fiche de réservation détaillée d'une ressource.</li>
     <li>Niveau d'accès à l'outil de recherche/rapport/stat.</li>
     <li>Suppression/Modification de réservations d'une réservation sur un créneau "entamé".</li>
     <li>Suppression/Modification de réservations d'une réservation par un gestionnaire de ressource.</li>
@@ -742,10 +766,11 @@ maximal de réservations par utilisateur.</li>
     <li>Envoi de mails automatiques : <br>
     L'administrateur peut activer ou désactiver l'option permettant l'envoi d'emails automatiques.<br>
     </li>
-    <li>     Si cette option est activée, dans un certain nombre de cas 
+    <ul>
+        <li>     Si cette option est activée, dans un certain nombre de cas 
 (création d'une réservation, suppression/modification, modération, ...),
- <strong>GRR envoie automatiquement des mails</strong> à certains utilisateurs.<br>
-    <br>
+ <strong>GRR envoie automatiquement des mails</strong> à certains utilisateurs.</li>
+        <li>
     Par ailleurs, dans la page de gestion des mails automatiques, 
 toujours si cette option est activée, l'administrateur peut affecter à 
 chaque ressource un ou plusieurs utilisateurs à prévenir par mail 
@@ -754,8 +779,10 @@ modification ou suppression de la réservation.<br>
     <a href="#mail"><strong>Pour en savoir plus...</strong></a><br>
     Certains hébergeurs désactivent l'envoi automatique de mails depuis 
 leurs serveurs. Dans ce cas, cette fonctionnalité sera inopérante.</li>
+    </ul>
     <li>Affichage (oui ou non) des "pop-up" de confirmation après la création/modification/suppression d'une réservation.</li>
     <li>Affichage (oui ou non) des "pop-up" de confirmation dans les menu d'administration.</li>
+    <li>Méthode d'exécution automatique de tâches.</li>
 </ul>
 <h3>3.1.4.Sécurité / Connexions</h3>
 <ul>
@@ -769,6 +796,7 @@ leurs serveurs. Dans ce cas, cette fonctionnalité sera inopérante.</li>
     En cas de perte de donnée ou de problème sur la base GRR, cette 
 fonction vous permet de la retrouver dans l'état antérieur lors d'une 
 sauvegarde.</li>
+    <li>Exécution automatique de la sauvegarde : le script admin_save_mysql.php réalise une sauvegarde de la base MySQL et peut être programmé dans une tâche "cron" sur le serveur.</li>
     <li>Activation/désactivation des connexions : <br>
     En désactivant les connexions, vous rendez impossible la connexion 
 au site pour les utilisateurs, hormis les administrateurs. De plus, les 
@@ -790,10 +818,6 @@ d'accueil soit vers la page de déconnexion.</li>
 </ul>
 <h3>3.1.5.Activation de modules</h3>
 <ul>
-    <li>Module "ckEditor" : le module "ckEditor" permet une mise en 
-forme "wysiwyg" (comme un traitement de texte). Si le module est activé,
- vous avez accès à cet outil en administration, pour le remplissage de 
-certains champs tels que la fiche de description d'une ressource.</li>
     <li>Activer les fonctionnalités jours cycle : la <a href="#cycle">configuration par «&nbsp;<strong>jours cycle</strong>&nbsp;» </a>offre
  la possibilité de réorganiser le calendrier de GRR pour qu'il 
 corresponde non pas aux jours du calendrier «&nbsp;normal&nbsp;», mais à
@@ -804,6 +828,12 @@ des "sites", qui sont des unités qui regroupent des domaines. Ces sites
 peuvent par exemple correspondre à des localisations géographiques de 
 plusieurs domaines.<br>
     </li>
+    <li>Activer la fonctionnalité "Export XML"</li>
+    <li>Activer la fonctionnalité "Export XML +"</li>
+    <li>Module "ckEditor" : le module "ckEditor" permet une mise en 
+forme "wysiwyg" (comme un traitement de texte). Si le module est activé,
+ vous avez accès à cet outil en administration, pour le remplissage de 
+certains champs tels que la fiche de description d'une ressource.</li>
 </ul>
 <h2>3.2.Types de réservation</h2>
 Dans cette partie, sont précisées les différents types de réservation. 
@@ -957,6 +987,7 @@ plus tard le ...&nbsp;». Si l'utilisateur ne confirme pas sa réservation
  avant la date indiquée, la réservation est automatiquement supprimée et
  un mail automatique est envoyé aux personnes concernées.<br>
  Possibilité, sous certaines conditions, de changer l'affectation d'une ressource à un domaine.<br>
+ Possibilité d'activer la fonctionnalité "gestion des clés".<br>
 <h2>3.6.Champs additionnels</h2>
 Dans cette partie, vous avez la possibilité de définir, domaine par 
 domaine, des champs additionnels de votre choix et qui apparaîtront dans
@@ -1033,7 +1064,7 @@ Le tableau général permet de visualiser d'un seul coup d'oeil l'ensemble
 <strong>Privilèges :</strong><br>
 La colonne «&nbsp;privilèges&nbsp;» affiche pour chaque utilisateur, jusqu'à six lettres <strong>A</strong>, <strong>S</strong>, <strong>G</strong>, <strong>U</strong>, <strong>E</strong> et <strong>R</strong> :<br>
 <ul>
-    <li><strong>S</strong> : l'utilisateur administrateur d'un ou plusieurs sites (version 1.9.6),</li>
+    <li><strong>S</strong> : l'utilisateur administrateur d'un ou plusieurs sites (versions 1.9.6+),</li>
     <li><strong>A</strong> : l'utilisateur administrateur d'un ou plusieurs domaines,</li>
     <li><strong>G</strong> : l'utilisateur est gestionnaire d'une ou plusieurs ressources,</li>
     <li><strong>U</strong> : l'utilisateur est gestionnaire d'utilisateurs,</li>
@@ -1074,7 +1105,19 @@ Lorsqu'un utilisateur est ajouté à la base, il est actif par défaut. Par
  la suite, l'administrateur peut rendre inactif un utilisateur. Un 
 utilisateur inactif reste présent dans la base mais ne peut pas se 
 connecter à GRR. Dès qu'il est à nouveau actif, l'utilisateur peut à 
-nouveau se connecter et retrouve le cas échéant tous ses privilèges.
+nouveau se connecter et retrouve le cas échéant tous ses privilèges.<br>
+<h3>Importer des utilisateurs depuis un fichier au format csv</h3>
+Permet l'importation d'une liste d'utilisateurs à partir d'un fichier csv, séparateur point-virgule, de contenu :<br>
+--> Identifiant : l'identifiant de l'utilisateur (doit être unique dans la base)<br>
+--> Nom<br>
+--> Prénom<br>
+--> Mot de passe<br>
+--> Adresse email<br>
+--> Type d'utilisateur : trois valeurs autorisées : "visiteur", "utilisateur", "administrateur"<br>
+--> Statut : deux valeurs autorisées : "actif" ou "inactif"<br>
+--> Type d'authentification : deux valeurs autorisées : "local" ou "ext"<br>
+<h3>Utilisateurs avec un mot de passe facile</h3>
+Signale les utilisateurs ayant un mot de passe facile. 
 <h2>3.8.Accès aux domaines restreints</h2>
 Vous avez la possibilité de définir des domaines à accès restreint : <em>[Administration] -&gt; [Domaines et ressources] , puis cliquer sur l'icone de modification du domaine.</em><br>
 Par défaut, aucun utilisateur n'a accès à ces domaines (hormis les administrateurs).<br>
@@ -1277,7 +1320,9 @@ même position ordinale de la semaine dans le mois. Utilisez ce type pour
  créer des périodicité du type le premier lundi, le second jeudi ou le 
 quatrième vendredi de chaque mois par exemple. N'utilisez pas ce type 
 pour des réservations après le 28ème jour du mois.</li>
-    <li>Enfin les types "<strong>une semaine sur 2</strong>", "<strong>une semaine sur 3</strong>", ... sont identiques au type type <strong>"chaque semaine" </strong>mais permettent de spécifier un intervalle de semaines, par exemple tous les mardi et jeudi toutes les 3 semaines. <br>
+    <li>Les types "<strong>une semaine sur 2</strong>", "<strong>une semaine sur 3</strong>", ... sont identiques au type type <strong>"chaque semaine" </strong>mais permettent de spécifier un intervalle de semaines, par exemple tous les mardi et jeudi toutes les 3 semaines.
+    </li>
+    <li>Le type "<strong>X Y du mois </strong>" (par exemple le premier lundi de chaque mois) permet de réserver avec la pseudo-périodicité le X-ème jour Y de chaque mois.
     </li>
 </ul>
 <a name="fonctionnement"></a> <strong>Comment fonctionnent les périodicités ?</strong><br>
@@ -1513,7 +1558,9 @@ une table prévue à cet effet. Dans cette même table sont enregistrées le
  motif de la décision ainsi que l'identifiant de l'utilisateur ayant 
 procédé à la modération.</p>
 <p>Une fois que le gestionnaire a validé, le demandeur reçoit par email la décision de modération ainsi qu'un rappel de la demande.</p>
-<h2>5.5.Réservation en blocs</h2>
+<h2>5.4.Réservation en blocs</h2>
+Cette page permet d'accéder à plusieurs pages dédiées à la réservation en masse.
+<h3>5.4.1.Réservation/suppression en bloc</h3>
 cette procédure vous permet de réserver ou de libérer très rapidement 
 des créneaux horaires simultanément sur plusieurs ressources de 
 plusieurs domaines et selon un calendrier.<br>
@@ -1528,7 +1575,31 @@ Cette procédure se déroule en trois étapes :<br>
     <li>Choix des ressources à réserver, nom du réservant, description et type des réservations</li>
     <li>Choix des dates et heures à réserver sur un calendrier</li>
 </ul>
-<h2>5.6.Recherche, rapports et statistiques</h2>
+<h3>5.4.2.Supprimer toutes les réservations après une date donnée</h3>
+cette procédure vous permet de supprimer toutes les réservations après une date donnée, avec le choix des <b>domaines</b> où supprimer les réservations. <br>
+<em>  Cette procédure est irréversible !</em>
+<h3>5.4.3.Supprimer toutes les réservations avant une date donnée</h3>
+cette procédure vous permet de supprimer toutes les réservations avant une date donnée, avec le choix des <b>domaines</b> où supprimer les réservations. <br>
+<em>  Cette procédure est irréversible !</em>
+<h3>5.4.4.Importer un fichier d'occupation de salles au format CSV provenant de UnDeuxTemps</h3>
+cette procédure vous permet d'importer les données d'un emploi du temps réalisé avec le logiciel UnDeuxTemps.<br>
+Pour cela, commencer par faire l'extraction depuis UnDeuxTemps :<br>
+Lancer UnDeuxTemps, module "emploi du temps des salles" et demander une recherche. <br>
+Ne rentrer aucun critère dans la recherche si bien qu'UDT recherche tout; cliquer alors sur le bouton "Excel" et UDT exporte tout le fichier d'occupation hebdomadaire des salles au format CSV.<br>
+Supprimer la première ligne (les en-têtes de colonnes) par exemple avec Notepad++ et enregistrer en CSV. <br>
+Puis télécharger le fichier CSV qui doit être du format suivant: <br>
+<code>jour de la semaine; heure au format: 12h00 (pour un créneau d'une heure) ou 12h00-13h30 (pour un créneau différent); classe ou division; discipline; enseignant; salle; groupe; regroupement; effectif; mode; fréquence; aire </code><br>(ces 6 derniers champs ne sont pas exploités pour le moment mais doivent figurer: c'est le format d'exportation UnDeuxTemps)
+Le temps d'importation est en général limité par le serveur à quelques minutes par fichier. Pour éviter des erreurs de type "timeout" qui conduirait à une importation incomplète, scindez votre fichier en fichiers plus petits (par exemple suivant les jours de la semaine) que vous importerez successivement. <br>
+<em>Remarque</em> : lors d'une réimportation, les créneaux inchangés sont maintenus, les créneaux modifiés sont écrasés, les créneaux libérés ne le sont pas.
+<h3>5.4.5.Importer un fichier d'occupation de salles au format CSV</h3>
+ Télécharger un fichier CSV au format suivant:
+<br>
+<code> date du jour; heure de début; heure de fin; ressource; description; type </code>
+<br>
+Le temps d'importation est en général limité par le serveur à quelques minutes par fichier. Pour éviter des erreurs de type "timeout" qui conduirait à une importation incomplète, scindez votre fichier en fichiers plus petits que vous importerez successivement
+<h3>5.4.6.Importer un emploi du temps depuis le logiciel EDT Index Education</h3>
+<em>en cours d'écriture </em>
+<h2>5.5.Recherche, rapports et statistiques</h2>
 L'outil "Recherche - Rapports - Statistiques" permet d'effectuer des 
 recherches sur les réservations déjà effectuées et d'afficher les 
 résultats sous la forme d'un tableau de statistiques ou bien sous la 
@@ -1555,7 +1626,7 @@ domaine)</li>
 <h3>Fichier CSV<br>
 </h3>
 Les fichiers CSV permettent une exploitation des résultats à l'aide d'un tableur. Le séparateur utilisé est le point-virgule. <br>
-<h2 id="cycle">5.7.La configuration par « jours cycle »</h2>
+<h2 id="cycle">5.6.La configuration par « jours cycle »</h2>
 <p>La configuration par «&nbsp;<strong>jours cycle</strong>&nbsp;» offre
  la possibilité de réorganiser le calendrier de GRR pour qu'il 
 corresponde non pas aux jours du calendrier «&nbsp;normal&nbsp;», mais à
@@ -1594,7 +1665,7 @@ Modification/Visualisation du calendrier "Jours cycle »).</li>
 <p>&nbsp;Du point de vue de l'utilisateur, celui-ci dispose, dans les 
 options de périodicité, d'un type supplémentaire de périodicité selon 
 les&nbsp; "Jours Cycle". </p>
-<h2>5.8.Numéro de version et mise à jour de la base de donnée</h2>
+<h2>5.7.Numéro de version et mise à jour de la base de donnée</h2>
 Cet outil indique le numéro de la version de GRR utilisée et permet de mettre à jour la base de données en cas de besoin.<br>
 La mise à jour de GRR s'effectue en deux étapes :<br>
 - une mise à jour des scripts,<br>
@@ -1781,28 +1852,14 @@ L’université de Yale aux Etats-Unis (<a href="http://www.ja-sig.org/products/
 identifications à différentes applications afin d'éviter les 
 identifications multiples (<strong>SSO</strong>).<br>
 Depuis la version 1.7, GRR est prévu pour fonctionner dans un environnement CAS SSO.<br>
+L'activation de l'authentification CAS se fait implicitement en choisissant le rôle par défaut des utilisateurs authentifiés<br>
 <h3>6.3.1.Les Pré-requis :</h3>
-Version PHP supérieure ou égale à 4.2.2, compilée avec les options suivantes :<br>
---with-curl, --with-openssl, --with-dom, --with-zlib<br>
-Installation de la librairie phpCAS (http://esup-phpcas.sourceforge.net/) :
-<ol>
-    <li>téléchargement du package phpCAS</li>
-    <li>Extraction du package dans un sous-répertoire «&nbsp;CAS&nbsp;» dans 
-le répertoire correspondant à l'include_path du php.ini (exemple : 
-/var/lib/php)</li>
-    <li>Création du fichier cas.sso contenant les informations de connexions 
-au serveur CAS, à mettre dans la même répertoire&nbsp; /var/lib/php</li>
-</ol>
-Exemple de fichier cas.sso :<br>
-&lt;?php<br>
-$serveurSSO="nom.du.serveur.fr";<br>
-$serveurSSOPort=8443;<br>
-$serveurSSORacine=CAS;<br>
-?&gt;<br>
+Depuis la version GRR 3.3.1, les librairies phpCAS sont livrées dans l'archive GRR.<br>
+Il reste cependant à renseigner les paramètres du serveur d'authentification CAS, en complétant les fichiers cas.sso et éventuellement cas.inc.php.<br>
+Le fichier cas.sso est dans le dossier ./include/CAS/ et doit être renseigné avec les paramètres du serveur CAS.
 <br>
-Il est possible de modifier les chemins d'accès au fichier 
-«&nbsp;cas.sso&nbsp;» et à la librairie phpCAS dans le fichier 
-«&nbsp;cas.inc.php&nbsp;».<br>
+Le fichier cas.inc.php est dans le dossier ./include/ et ne nécessite pas de modifications, sauf pour la choix de la langue par défaut.
+<br>
 <h3>6.3.2.Fonctionnement</h3>
 Dans le panneau d'administration de GRR, une page «&nbsp;configuration 
 SSO&nbsp;» permet d'activer la prise en charge de l'environnement CAS. 
@@ -2318,7 +2375,7 @@ Enfin, n'hésitez pas à proposer votre thème à l'équipe des développeurs
 de GRR pour qu'il soit éventuellement intégré à une future version de 
 GRR.
 <h1 id="part8">8.Documentation technique</h1>
-<h2>8.1.Les tables de la base de données (à jour pour la version 1.9.6)</h2>
+<h2>8.1.Les tables de la base de données (à jour pour la version 3.3.1 RC2)</h2>
 <h3>La table grr_room</h3>
 <p>Elle contient la liste des ressources</p>
 <ul>
@@ -2402,6 +2459,9 @@ les droits attribués)</p>
     <p>delais_option_reservation : dans le cas des réservations "sous 
 réserve" nombre maximal de jours dont dispose le réservant pour 
 confirmer une réservation.</p>
+    </li>
+    <li>
+    <p>active_cle : indique si la fonction "clé empruntée" est disponible pour cette ressource</p>
     </li>
 </ul>
 <h3>La table grr_area</h3>
@@ -2591,6 +2651,8 @@ modérée. 1 : réservation en attente de modération. 2 : réservation
 acceptée après modération. 3 : réservation refusée après modération.</p>
     </li>
     <li>jours : numéro du jour cycle dans le cas d'une réservation avec périodicité selon les jours cycle</li>
+    <li>clef : indique si la clé a été restituée</li>
+    <li>courrier : indique si un courrier a été envoyé</li>
 </ul>
 <h3>La table grr_repeat</h3>
 <p>Elle contient la liste des périodicités</p>
@@ -2639,12 +2701,13 @@ laquelle la réservation a été faite dans le cas où beneficiaire est vide</li
     <p>description : description des réservations</p>
     </li>
     <li>
-    <p>rep_num_weeks : indique la valeur de n dans le cas où rep-type = 2 (toutes les n semaines)</p>
+    <p>rep_num_weeks : indique la valeur de n dans le cas où rep_type = 6 (toutes les n semaines)</p>
     </li>
     <li>
     <p>overload_desc : contenu des champs additionnels</p>
     </li>
     <li>jours : numéro du jour cycle dans le cas d'une réservation avec périodicité selon les jours cycle</li>
+    <li>courrier : indique si un courrier a été envoyé</li>
 </ul>
 <h3>La table grr_utilisateurs</h3>
 <p>Elle contient les utilisateurs et tous les renseignements les concernant</p>
@@ -2694,7 +2757,7 @@ laquelle la réservation a été faite dans le cas où beneficiaire est vide</li
 <p>Table des types de réservation, communs à tous les domaines</p>
 <ul>
     <li>
-    <p> Id : identifiant mysql du type de réservation</p>
+    <p> id : identifiant mysql du type de réservation</p>
     </li>
     <li>
     <p>type_name : nom du type de réservation</p>
@@ -2829,6 +2892,13 @@ Table de jointure qui relie les domaines aux sites<br>
     <p>DAY : jour férié</p>
     </li>
 </ul>
+<h3>La table grr_calendrier_vacances</h3>
+<p>Cette table contient les valeurs UNIX des jours des vacances scolaires.</p>
+<ul>
+    <li>
+    <p>DAY : jour de vacances scolaires</p>
+    </li>
+</ul>
 <h3>La table grr_overload</h3>
 <p>Cette table contient les noms et types des champs additionnels pour un domaine donné.</p>
 <ul>
@@ -2851,6 +2921,8 @@ Table de jointure qui relie les domaines aux sites<br>
     <p>obligatoire : le remplissage du champ additionnel est&nbsp; obligatoire ("y") ou non ("n"),</p>
     </li>
     <li>affichage : le champ apparaît ("y") ou non ("n") dans les différents plannings (journée, semaine, mois). </li>
+    <li>confidentiel : </li>
+    <li>overload_mail : </li>
 </ul>
 <h3>La table grr_entry_moderate</h3>
 <p>Table de sauvegarde des informations de la table grr_entry des réservations après modération.</p>
