@@ -2,7 +2,8 @@
 /**
  * admin_user_mdp_facile.php
  * interface de gestion des utilisateurs de l'application GRR
- * Dernière modification : $Date: 2009-09-29 18:02:56 $
+ * Dernière modification : 2017-10-30
+ * @author Yan Naessens
  * @author    JeromeB
  * @copyright Copyright 2003-2008 Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -62,7 +63,9 @@ echo "<td><b><a href='admin_user_mdp_facile.php?order_by=nom,prenom&amp;display=
 echo "<td><b><a href='admin_user_mdp_facile.php?order_by=statut,nom,prenom&amp;display=$display'>".get_vocab("statut")."</a></b></td>";
 echo "<td><b><a href='admin_user_mdp_facile.php?order_by=source,nom,prenom&amp;display=$display'>".get_vocab("authentification")."</a></b></td>";
 echo "</tr>";
-$sql = "SELECT nom, prenom, statut, login, etat, source, password FROM ".TABLE_PREFIX."_utilisateurs ORDER BY $order_by";
+// $sql = "SELECT nom, prenom, statut, login, etat, source, password FROM ".TABLE_PREFIX."_utilisateurs ORDER BY $order_by";
+// les utilisateurs à identification externe ont un mot de passe vide dans la base GRR, il est inutile de les afficher
+$sql = "SELECT nom, prenom, statut, login, etat, source, password FROM ".TABLE_PREFIX."_utilisateurs WHERE source = 'local' ORDER BY $order_by";
 $res = grr_sql_query($sql);
 if ($res)
 {
