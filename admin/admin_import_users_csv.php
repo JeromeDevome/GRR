@@ -40,9 +40,15 @@ if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName()
 }
 # print the page header
 print_header("", "", "", $type="with_session");
-?>
-<p>| <a href="admin_user.php"><?php echo get_vocab("back");?></a> |</p>
-<?php
+
+
+// Affichage de la colonne de gauche
+include "admin_col_gauche.php";
+
+// affichage de la colonne de droite
+
+echo '<p>| <a href="admin_user.php">'.get_vocab("back").'</a> |</p>';
+
 $reg_data = isset($_POST["reg_data"]) ? $_POST["reg_data"] : NULL;
 $is_posted = isset($_POST["is_posted"]) ? $_POST["is_posted"] : NULL;
 $test_login_existant = '';
@@ -352,6 +358,8 @@ if ($reg_data != 'yes')
 				}
 			}
 		}
-		?>
-	</body>
+		
+	 echo "</td></tr></table>"; // fin de la colonne droite
+    ?>
+    </body>
 	</html>
