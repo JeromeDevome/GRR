@@ -92,7 +92,6 @@ function getSchoolHolidays($now, $year)
 	}
 	return $sh;
 }
-
 function getHolidays($year = null)
 {
 	if ($year === null)
@@ -102,22 +101,21 @@ function getHolidays($year = null)
 	$easterMonth = date('n', $easterDate);
 	$easterYear  = date('Y', $easterDate);
 	$holidays = array(
-		// Dates fixes
-		mktime(0, 0, 0, 1,  1,  $year),  // 1er janvier
-		mktime(0, 0, 0, 5,  1,  $year),  // Fête du travail
-		mktime(0, 0, 0, 5,  8,  $year),  // Victoire des alliés
-		mktime(0, 0, 0, 7,  14, $year),  // Fête nationale
-		mktime(0, 0, 0, 8,  15, $year),  // Assomption
-		mktime(0, 0, 0, 11, 1,  $year),  // Toussaint
-		mktime(0, 0, 0, 11, 11, $year),  // Armistice
-		mktime(0, 0, 0, 12, 25, $year),  // Noel
-		// Dates variables
-		mktime(0, 0, 0, $easterMonth, $easterDay + 1,  $easterYear),
-		mktime(0, 0, 0, $easterMonth, $easterDay + 39, $easterYear),
-		mktime(0, 0, 0, $easterMonth, $easterDay + 50, $easterYear),
+	// Dates fixes
+	mktime(0, 0, 0, 1,  1,  $year),  // 1er janvier
+	mktime(0, 0, 0, 5,  1,  $year),  // Fête du travail
+	mktime(0, 0, 0, 5,  8,  $year),  // Victoire des alliés
+	mktime(0, 0, 0, 7,  14, $year),  // Fête nationale
+	mktime(0, 0, 0, 8,  15, $year),  // Assomption
+	mktime(0, 0, 0, 11, 1,  $year),  // Toussaint
+	mktime(0, 0, 0, 11, 11, $year),  // Armistice
+	mktime(0, 0, 0, 12, 25, $year),  // Noel
+	// Dates variables
+	mktime(0, 0, 0, $easterMonth, $easterDay + 1,  $easterYear),
+	mktime(0, 0, 0, $easterMonth, $easterDay + 39, $easterYear),
+	mktime(0, 0, 0, $easterMonth, $easterDay + 50, $easterYear),
 	);
 	sort($holidays);
-
 	return $holidays;
 }
 
@@ -293,7 +291,8 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 				$affichage = "";
 		}
 		else
-			$affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.$_identite.'</a>'.PHP_EOL;
+			//$affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.$_identite.'</a>'.PHP_EOL;
+            $affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.'</a>'.PHP_EOL;
 	}
 	else
 	{
@@ -349,7 +348,7 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 			$affichage .=  'encode_fin_adresse("'.AddSlashes($_identite).'");'.PHP_EOL;
 			
 			$affichage .=  '</script>'.PHP_EOL;
-			$affichage .= $_identite;
+			//$affichage .= $_identite;
 		}
 	}
 	return $affichage;
@@ -1059,7 +1058,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 				echo '<td class="logo" height="100">'.PHP_EOL.'<a href="'.$racine.page_accueil('yes').'day='.$day.'&amp;year='.$year.'&amp;month='.$month.'"><img src="'.$nom_picture.'" alt="logo"/></a>'.PHP_EOL.'</td>'.PHP_EOL;
 			//Accueil
 			echo '<td class="accueil ">',PHP_EOL,'<h2>',PHP_EOL,'<a href="'.$racine.page_accueil('yes'),'day=',$day,'&amp;year=',$year,'&amp;month=',$month,'">',get_vocab("welcome"),' - <b>',Settings::get("company"),'</b></a>',PHP_EOL,'</h2>',PHP_EOL,'</td>',PHP_EOL;
-			//Mail réservartion
+			//Mail réservation
 			echo Settings::get('message_accueil');
 			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
 			$res = grr_sql_query1($sql);
