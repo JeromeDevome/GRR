@@ -42,9 +42,7 @@ if (isset($_GET['ok'])) {
 // Affichage de la colonne de gauche
 include "admin_col_gauche.php";
 
-// Affichage du tableau de choix des sous-configuration
-// include "../include/admin_config_tableau.inc.php";
-
+// affichage de la colonne de droite
  $back = "./admin_calend.php?";
  $joursemaine=array("dim"=>0,"lun"=>1,"mar"=>2,"mer"=>3,"jeu"=>4,"ven"=>5,"sam"=>6);
  $journumero=array(0=>"dim",1=>"lundi",2=>"mardi",3=>"mercredi",4=>"jeudi",5=>"vendredi",6=>"samedi");
