@@ -90,8 +90,8 @@ $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
 //Affiche les informations dans l'header
-print_header($day, $month, $year, $type="with_session");
-//Renseigne les droits de l'utilisateur, si les droits sont insufisants, l'utilisateur est avertit.
+print_header($day, $month, $year, $type_session);
+//Renseigne les droits de l'utilisateur, si les droits sont insufisants, l'utilisateur est averti.
 if (check_begin_end_bookings($day, $month, $year))
 {
 	showNoBookings($day, $month, $year, $back);
@@ -302,7 +302,7 @@ else
 					break;
 				}
 			}
-				//Seulement si l'heure de fin est pares minuit, on continue le jour prochain.
+				//Seulement si l'heure de fin est après minuit, on continue le jour prochain.
 			if ($row[1] <= $midnight_tonight)
 				break;
 			$day_num++;
