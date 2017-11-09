@@ -265,8 +265,8 @@ else
 					// Pour le prmier jour de réservation, Hdebut = Heure debut résa / Hfin = heure fin de journée / duree = (nb bloc d'une journée
 																													//  - nb bloc vides)
 						$d[$weekday][$slot]["horaireDebut"] = $row[0];
-						$d[$weekday][$slot]["horaireFin"] = mktime($eveningends, 0, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0]));
-						$d[$weekday][$slot]["duree"] = (mktime($eveningends, 0, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0])) - $row[0]) / $this_area_resolution;
+						$d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0]));
+						$d[$weekday][$slot]["duree"] = (mktime($eveningends, $eveningends_minutes, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0])) - $row[0]) / $this_area_resolution;
 						
 					}
 					else if (date("d", $t) == $lastday)
@@ -283,8 +283,8 @@ else
 																										  // - h debut journée * nb bloc pr 1h ) 
 
 						$d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$row[1]), date('d',$row[1]), date('Y',$row[1]));
-						$d[$weekday][$slot]["horaireFin"] = mktime($eveningends, 0, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0]));
-						$d[$weekday][$slot]["duree"] = (($eveningends-$morningstarts)*$heigthSlotHoure);
+						$d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0]));
+						$d[$weekday][$slot]["duree"] = (($eveningends+1-$morningstarts)*$heigthSlotHoure);
 					}
 				}
 				else
