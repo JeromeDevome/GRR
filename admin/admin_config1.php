@@ -211,7 +211,7 @@ if (isset($_POST['pview_new_windows'])) {
         die();
     }
 }
-// Affichage ou non de la legende
+/*-----MAJ Loïs THOMAS  -->Affichage ou non de la legende -----*/
 if (isset($_POST['legend'])) {
     if (!Settings::set('legend', $_POST['legend'])) {
         echo "Erreur lors de l'enregistrement de legend !<br />";
@@ -225,7 +225,7 @@ if (isset($_POST['periodicite'])) {
         die();
     }
 }
-// Affichage ou non du formulaire de contact et adresse mail du destinataire
+/*-----MAJ David VOUE 22/01/2014-->Affichage ou non du formulaire de contact et adresse mail du destinataire -----*/
 if (isset($_POST['mail_destinataire'])) {
     if (!Settings::set('mail_destinataire', $_POST['mail_destinataire'])) {
         echo "Erreur lors de l'enregistrement de mail_destinataire !<br />";
@@ -235,7 +235,7 @@ if (isset($_POST['mail_destinataire'])) {
 
 if (isset($_POST['allow_pdf'])) {
     if (!Settings::set('allow_pdf', $_POST['allow_pdf'])) {
-        echo "Erreur lors de l'enregistrement de mail_destinataire !<br />";
+        echo "Erreur lors de l'enregistrement de allow_pdf !<br />";
         die();
     }
 }
@@ -325,13 +325,13 @@ if (isset($_POST['ok'])) {
             $msg .= "L\'image n\'a pas pu être enregistrée : les seules extentions autorisées sont gif, png et jpg.\\n";
             $ok = 'no';
         } else {
-            /* deuxième test passée, l'extension est autorisée */
+            /* deuxième test passé, l'extension est autorisée */
 
             /* je fais le 3ème test avec fileinfo */
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $fileType = finfo_file($finfo, $doc_file['tmp_name']);
 
-            /* 4ème test avec gd pour valider que c'est bien une image malgrès tout - nécessaire ou parano ? */
+            /* 4ème test avec gd pour valider que c'est bien une image malgré tout - nécessaire ou parano ? */
             switch($fileType) {
                 case "image/gif":
                     /* recreate l'image, supprime les data exif */
@@ -359,7 +359,7 @@ if (isset($_POST['ok'])) {
                     break;
             }
             if (!$logoRecreated || $extSafe === false) {
-                /* la fonction imagecreate à échouée, donc l'image est corrompue ou craftée */
+                /* la fonction imagecreate a échoué, donc l'image est corrompue ou craftée */
                 $msg .= "L\'image n\'a pas pu être enregistrée : fichier corrompu.\\n";
                 $ok = 'no';
             } else {
@@ -1351,9 +1351,9 @@ echo ' />'.PHP_EOL;
 echo '</td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
 echo '</table>'.PHP_EOL;
-# Afficher vacance et jour ferie
+# Afficher vacances et jours fériés
 echo '<hr />'.PHP_EOL;
-echo '<h3>'.get_vocab('holidays_msg').'</h3>'.PHP_EOL;
+echo '<h3 id="vacances_feries">'.get_vocab('holidays_msg').'</h3>'.PHP_EOL;
 echo '<table>'.PHP_EOL;
 echo '<tr>'.PHP_EOL;
 echo '<td>'.get_vocab('YES').'</td>'.PHP_EOL;
@@ -1377,34 +1377,36 @@ echo '</td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
 echo '</table>'.PHP_EOL;
 
-# Choix de la zone de vacance
-echo '<hr />'.PHP_EOL;
-echo '<h3>'.get_vocab('holidays_zone_msg').'</h3>'.PHP_EOL;
-echo '<table>'.PHP_EOL;
-echo '<tr>'.PHP_EOL;
-echo '<td>'.PHP_EOL;
-$vacances = simplexml_load_file('../vacances.xml');
-$libelle = $vacances->academies->children();
-$acad = array();
-foreach ($libelle as $key => $value) {
-    if (!in_array($value['zone'], $acad)) {
-        $acad[] .= $value['zone'];
+# Choix de la zone de vacances scolaires (France), uniquement si l'affichage des vacances et fériés est activé
+if (Settings::get('show_holidays') == 'Oui'){
+    echo '<hr />'.PHP_EOL;
+    echo '<h3 id="vacances_scolaires">'.get_vocab('holidays_zone_msg').'</h3>'.PHP_EOL;
+    echo '<table>'.PHP_EOL;
+    echo '<tr>'.PHP_EOL;
+    echo '<td>'.PHP_EOL;
+    $vacances = simplexml_load_file('../vacances.xml');
+    $libelle = $vacances->academies->children();
+    $acad = array();
+    foreach ($libelle as $key => $value) {
+        if (!in_array($value['zone'], $acad)) {
+            $acad[] .= $value['zone'];
+        }
     }
-}
-sort($acad);
-echo '<select class="form-control" name="holidays_zone">'.PHP_EOL;
-foreach ($acad as $key => $value) {
-    echo '<option value="'.$value.'"';
-    if (Settings::get('holidays_zone') == $value) {
-        echo ' selected="selected"';
+    sort($acad);
+    echo '<select class="form-control" name="holidays_zone">'.PHP_EOL;
+    foreach ($acad as $key => $value) {
+        echo '<option value="'.$value.'"';
+        if (Settings::get('holidays_zone') == $value) {
+            echo ' selected="selected"';
+        }
+        echo '>'.$value.'</option>'.PHP_EOL;
     }
-    echo '>'.$value.'</option>'.PHP_EOL;
-}
 
-echo '</select>'.PHP_EOL;
-echo '</td>'.PHP_EOL;
-echo '</tr>'.PHP_EOL;
-echo '</table>'.PHP_EOL;
+    echo '</select>'.PHP_EOL;
+    echo '</td>'.PHP_EOL;
+    echo '</tr>'.PHP_EOL;
+    echo '</table>'.PHP_EOL;
+}
 # Lors de l'édition d'un rapport, valeur par défaut en nombre de jours
 # de l'intervalle de temps entre la date de début du rapport et la date de fin du rapport.
 echo '<hr />'.PHP_EOL;
