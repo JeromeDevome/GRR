@@ -328,7 +328,7 @@ else
 				echo '<td class="cell_month_o">',PHP_EOL,'</td>',PHP_EOL;
 		}
 	}
-	$ferie = getHolidays($year);
+	
 	for ($cday = 1; $cday <= $days_in_month; $cday++)
 	{
 		$class = "";
@@ -341,26 +341,16 @@ else
 			echo '<tr>',PHP_EOL;
 		if ($display_day[$num_week_day] == 1)
 		{
-			if (Settings::get("show_holidays") == "Oui")
-			{
-				$ferie_true = 0;
-				foreach ($ferie as $key => $value)
-				{
-					if ($t == $value)
-					{
-						$ferie_true = 1;
-						break;
-					}
-				}
-				$sh = getSchoolHolidays($t, $year);
-				if ($sh[0] == true)
-				{
-					$class .= 'vacance ';
-					$title = ' '.$sh[1];
-				}
-				if ($ferie_true)
-					$class .= 'ferie ';
-			}
+           	if ($settings->get("show_holidays") == "Oui")
+            {   
+                $now = $t;
+                if (isHoliday($now)){
+                    $class .= 'ferie ';
+                }
+                elseif (isSchoolHoliday($now)){
+                    $class .= 'vacance ';
+                }
+            }
 			echo '<td class="cell_month">',PHP_EOL,'<div class="monthday ',$class,'">',PHP_EOL,'<a title="',htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day")),$title,'" href="day.php?year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;area=',$area,'">',$name_day;
 			if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
 			{
