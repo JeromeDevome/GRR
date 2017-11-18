@@ -233,9 +233,7 @@ else
 		$year_current = date("Y",$row[0]);
 		$debut_jour = mktime($morningstarts,0,0,$month_current,$day_current,$year_current);
 		$t = max(round_t_down($row[0], $resolution, $debut_jour), $week_start);
-		$end_t = min((int)round_t_up((int)$row[1],
-		(int)$resolution, $debut_jour),
-		(int)$week_end+1);
+		$end_t = min((int)round_t_up((int)$row[1],(int)$resolution, $debut_jour),(int)$week_end+1);
 		$weekday = (date("w", $t) + 7 - $weekstarts) % 7;
 		$prev_weekday = -1;
 		$slot = ($t - $week_midnight) % 86400 / $resolution;
@@ -265,8 +263,8 @@ else
 					// Pour le prmier jour de réservation, Hdebut = Heure debut résa / Hfin = heure fin de journée / duree = (nb bloc d'une journée
 																													//  - nb bloc vides)
 						$d[$weekday][$slot]["horaireDebut"] = $row[0];
-						$d[$weekday][$slot]["horaireFin"] = mktime($eveningends, 0, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0]));
-						$d[$weekday][$slot]["duree"] = (mktime($eveningends, 0, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0])) - $row[0]) / $this_area_resolution;
+						$d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0]));
+						$d[$weekday][$slot]["duree"] = (mktime($eveningends, $eveningends_minutes, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0])) - $row[0]) / $this_area_resolution;
 						
 					}
 					else if (date("d", $t) == $lastday)
@@ -283,8 +281,8 @@ else
 																										  // - h debut journée * nb bloc pr 1h ) 
 
 						$d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$row[1]), date('d',$row[1]), date('Y',$row[1]));
-						$d[$weekday][$slot]["horaireFin"] = mktime($eveningends, 0, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0]));
-						$d[$weekday][$slot]["duree"] = (($eveningends-$morningstarts)*$heigthSlotHoure);
+						$d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0]));
+						$d[$weekday][$slot]["duree"] = (($eveningends+1-$morningstarts)*$heigthSlotHoure);
 					}
 				}
 				else
@@ -352,7 +350,6 @@ echo "</th>\n";
 $num_week_day = $weekstarts;
 $k = $day_week;
 $i = $time;
-$ferie = getHolidays($year);
 for ($t = $week_start; $t <= $week_end; $t += 86400)
 {
 	$num_day = strftime("%d", $t);
@@ -364,26 +361,15 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 	{
 		$class = "";
 		$title = "";
-		if (Settings::get("show_holidays") == "Oui")
-		{
-			$ferie_true = 0;
-			foreach ($ferie as $key => $value)
-			{
-				if ($tt == $value)
-				{
-					$ferie_true = 1;
-					break;
-				}
-			}
-			$sh = getSchoolHolidays($tt, $year_actuel);
-			if ($sh[0] == true)
-			{
-				$class .= "vacance ";
-				$title = " ".$sh[1];
-			}
-			if ($ferie_true)
-				$class .= "ferie ";
-		}
+        	if ($settings->get("show_holidays") == "Oui")
+            {   
+                if (isHoliday($tt)){
+                    $class .= 'ferie ';
+                }
+                elseif (isSchoolHoliday($tt)){
+                    $class .= 'vacance ';
+                }
+            }
 		echo "<th style=\"width:14%;\"><a onclick=\"charger()\" class=\"lienPlanning ".$class."\" title=\"".$title.htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"day.php?year=$year_actuel&amp;month=$month_actuel&amp;day=$num_day&amp;area=$area\">". utf8_strftime($dformat, $t)."</a>";
 		if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
 			if (intval($jour_cycle) > 0)
