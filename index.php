@@ -243,10 +243,10 @@ else if (Settings::get('sso_statut') == 'lcs')
 		// A ce stade, l'utilisateur est authentifié par LCS
 		// Etablir à nouveau la connexion à la base
 		if (empty($db_nopersist))
-			$db_c = mysql_pconnect($dbHost, $dbUser, $dbPass);
+			$db_c = mysqli_connect("p:".$dbHost, $dbUser, $dbPass);
 		else
-			$db_c = mysql_connect($dbHost, $dbUser, $dbPass);
-		if (!$db_c || !mysql_select_db ($dbDb))
+			$db_c = mysqli_connect($dbHost, $dbUser, $dbPass);
+		if (!$db_c || !mysqli_select_db ($db_c, $dbDb))
 		{
 			echo "\n<p>\n" . get_vocab('failed_connect_db') . "\n";
 			exit;
@@ -359,7 +359,7 @@ if ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_sta
 		// Get infos from the Identity Provider
 		$user_infos = array();
 		// Nom Prénom
-		list($tab_login['nom'], $tab_login['fullname']) = split(' ', $attributes['cn'][0]);
+		list($tab_login['nom'], $tab_login['fullname']) = preg_split(' ', $attributes['cn'][0]);
 		$tab_login['email'] = $attributes['mail'][0];
 		// Pour l'instant on ne redéfinit pas le login
 		//$tab_login['???'] = $attributes['username'][0];
