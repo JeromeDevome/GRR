@@ -72,7 +72,7 @@ echo "<table class=\"table_adm4\">";
 			$liste[] = 'admin_type.php';
 		if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 			$liste[] = 'admin_calend_ignore.php';
-		if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
+		if ((authGetUserLevel(getUserName(), -1, 'area') >= 6)&&(Settings::get('show_holidays') == 'Oui'))
 			$liste[] = 'admin_calend_vacances_feries.php';
 		if (Settings::get("jours_cycles_actif") == "Oui")
 		{
