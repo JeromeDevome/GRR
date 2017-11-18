@@ -176,7 +176,7 @@ while ($j < count($liste_tables))
 				{
 					for ($k = 0; $k < $num_fields; $k++)
 					{
-						$sFieldnames .= "`".mysql_field_name($resData, $k) ."`";
+						$sFieldnames .= "`".mysqli_fetch_field_direct($resData, $k)->name ."`";
 						//on ajoute à la fin une virgule si nécessaire
 						if ($k<$num_fields-1)
 							$sFieldnames .= ", ";
