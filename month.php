@@ -392,7 +392,7 @@ else
 							echo " ...\n";
 							break;
 						}
-						echo '<table class="table-noborder">',PHP_EOL,'<tr>',PHP_EOL;
+						echo '<table class="table-bordered table-striped">',PHP_EOL,'<tr>',PHP_EOL;
 						tdcell($d[$cday]["color"][$i]);
 						echo '<span class="small_planning">';
 						if ($acces_fiche_reservation)
