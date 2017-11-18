@@ -199,26 +199,15 @@ else
 	$class = "";
 	$title = "";
 	if ($settings->get("show_holidays") == "Oui")
-	{
-		$ferie = getHolidays($year);
-		$tt = mktime(0, 0, 0, $month, $day,$year);
-		foreach ($ferie as $key => $value)
-		{
-			if ($tt == $value)
-			{
-				$ferie_true = 1;
-				break;
-			}
-		}
-		$sh = getSchoolHolidays($tt, $year);
-		if ($sh['0'] == true)
-		{
-			$class .= "vacance ";
-			$title = " ".$sh['1'];
-		}
-		if ($ferie_true)
-			$class .= "ferie ";
-	}
+	{   
+        $now = mktime(0,0,0,$month,$day,$year);
+        if (isHoliday($now)){
+            $class .= 'ferie ';
+        }
+        elseif (isSchoolHoliday($now)){
+            $class .= 'vacance ';
+        }
+   	}
 	echo '<div class="titre_planning '.$class.'">'.PHP_EOL;
 	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 	{

@@ -221,8 +221,7 @@ echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("compan
 		if ($lien != "")
 			echo "<p>[".$lien."]</p>";
 	}
-	echo "<a href=\"javascript:history.back()\">Précedent";
-	echo " - <b>".Settings::get("company")."</b></a>";
+	echo "<a href=\"javascript:history.back()\">".get_vocab("previous")." - <b>".Settings::get("company")."</b></a>";
 	?>
 	<br />
 	<br />

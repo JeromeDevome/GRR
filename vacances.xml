@@ -1,0 +1,792 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<root miseajour="2017/06/30">
+	<academies>
+		<academie libelle="Aix-Marseille" zone="B">
+			<departement numero="04"/>
+			<departement numero="05"/>
+			<departement numero="13"/>
+			<departement numero="84"/>
+		</academie>
+		<academie libelle="Amiens" zone="B">
+			<departement numero="02"/>
+			<departement numero="60"/>
+			<departement numero="80"/>
+		</academie>
+		<academie libelle="Besançon" zone="A">
+			<departement numero="25"/>
+			<departement numero="39"/>
+			<departement numero="70"/>
+			<departement numero="90"/>
+		</academie>
+		<academie libelle="Bordeaux" zone="A">
+			<departement numero="24"/>
+			<departement numero="33"/>
+			<departement numero="40"/>
+			<departement numero="47"/>
+			<departement numero="64"/>
+		</academie>
+		<academie libelle="Caen" zone="B">
+			<departement numero="14"/>
+			<departement numero="50"/>
+			<departement numero="61"/>
+		</academie>
+		<academie libelle="Clermont-Ferrand" zone="A">
+			<departement numero="03"/>
+			<departement numero="15"/>
+			<departement numero="43"/>
+			<departement numero="63"/>
+		</academie>
+		<academie libelle="Corse" zone="Corse">
+			<departement numero="20"/>
+		</academie>
+		<academie libelle="Créteil" zone="C">
+			<departement numero="77"/>
+			<departement numero="93"/>
+			<departement numero="94"/>
+		</academie>
+		<academie libelle="Dijon" zone="A">
+			<departement numero="21"/>
+			<departement numero="58"/>
+			<departement numero="71"/>
+			<departement numero="89"/>
+		</academie>
+		<academie libelle="Grenoble" zone="A">
+			<departement numero="07"/>
+			<departement numero="26"/>
+			<departement numero="38"/>
+			<departement numero="73"/>
+			<departement numero="74"/>
+		</academie>
+		<academie libelle="Guadeloupe" zone="Guadeloupe">
+			<departement numero="971"/>
+		</academie>
+		<academie libelle="Guyane" zone="Guyane">
+			<departement numero="973"/>
+		</academie>
+		<academie libelle="Lille" zone="B">
+			<departement numero="59"/>
+			<departement numero="62"/>
+		</academie>
+		<academie libelle="Limoges" zone="A">
+			<departement numero="19"/>
+			<departement numero="23"/>
+			<departement numero="87"/>
+		</academie>
+		<academie libelle="Lyon" zone="A">
+			<departement numero="01"/>
+			<departement numero="42"/>
+			<departement numero="69"/>
+		</academie>
+		<academie libelle="Martinique" zone="Martinique">
+			<departement numero="972"/>
+		</academie>
+		<academie libelle="Mayotte" zone="Mayotte">
+			<departement numero="976"/>
+		</academie>
+		<academie libelle="Montpellier" zone="C">
+			<departement numero="11"/>
+			<departement numero="30"/>
+			<departement numero="34"/>
+			<departement numero="48"/>
+			<departement numero="66"/>
+		</academie>
+		<academie libelle="Nancy-Metz" zone="B">
+			<departement numero="54"/>
+			<departement numero="55"/>
+			<departement numero="57"/>
+			<departement numero="88"/>
+		</academie>
+		<academie libelle="Nantes" zone="B">
+			<departement numero="44"/>
+			<departement numero="49"/>
+			<departement numero="53"/>
+			<departement numero="72"/>
+			<departement numero="85"/>
+		</academie>
+		<academie libelle="Nice" zone="B">
+			<departement numero="06"/>
+			<departement numero="83"/>
+		</academie>
+		<academie libelle="Nouvelle Calédonie" zone="Calédonie">
+			<departement numero="988"/>
+		</academie>
+		<academie libelle="Orléans-Tours" zone="B">
+			<departement numero="18"/>
+			<departement numero="28"/>
+			<departement numero="36"/>
+			<departement numero="37"/>
+			<departement numero="41"/>
+			<departement numero="45"/>
+		</academie>
+		<academie libelle="Paris" zone="C">
+			<departement numero="75"/>
+		</academie>
+		<academie libelle="Poitiers" zone="A">
+			<departement numero="16"/>
+			<departement numero="17"/>
+			<departement numero="79"/>
+			<departement numero="86"/>
+		</academie>
+		<academie libelle="Polynésie française" zone="Polynésie">
+			<departement numero="987"/>
+		</academie>
+		<academie libelle="Reims" zone="B">
+			<departement numero="08"/>
+			<departement numero="10"/>
+			<departement numero="51"/>
+			<departement numero="52"/>
+		</academie>
+		<academie libelle="Rennes" zone="B">
+			<departement numero="22"/>
+			<departement numero="29"/>
+			<departement numero="35"/>
+			<departement numero="56"/>
+		</academie>
+		<academie libelle="Réunion" zone="Réunion">
+			<departement numero="974"/>
+			<departement numero="978"/>
+		</academie>
+		<academie libelle="Rouen" zone="B">
+			<departement numero="27"/>
+			<departement numero="76"/>
+		</academie>
+		<academie libelle="St Pierre et Miquelon" zone="StPierreMiquelon">
+			<departement numero="975"/>
+		</academie>
+		<academie libelle="Strasbourg" zone="B">
+			<departement numero="67"/>
+			<departement numero="68"/>
+		</academie>
+		<academie libelle="Toulouse" zone="C">
+			<departement numero="09"/>
+			<departement numero="12"/>
+			<departement numero="31"/>
+			<departement numero="32"/>
+			<departement numero="46"/>
+			<departement numero="65"/>
+			<departement numero="81"/>
+		</academie>
+		<academie libelle="Versailles" zone="C">
+			<departement numero="78"/>
+			<departement numero="91"/>
+			<departement numero="92"/>
+			<departement numero="95"/>
+		</academie>
+		<academie libelle="Wallis et Futuna" zone="WallisFutuna">
+			<departement numero="986"/>
+		</academie>
+	</academies>
+	<libelles>
+		<libelle id="1">Vacances de la Toussaint</libelle>
+		<libelle id="2">Vacances de Noël</libelle>
+		<libelle id="3">Vacances d'hiver</libelle>
+		<libelle id="4">Vacances de printemps</libelle>
+		<libelle id="5">Vacances d'été</libelle>
+		<libelle id="6">Carnaval</libelle>
+		<libelle id="7">Mi-carême</libelle>
+		<libelle id="8">Vacances de Pâques</libelle>
+		<libelle id="9">Abolition de l'esclavage</libelle>
+		<libelle id="10">Jour du Recteur</libelle>
+		<libelle id="11">Mi-Mai</libelle>
+		<libelle id="12">Pont de l'Ascension</libelle>
+		<libelle id="13">Vacances de Pentecôte</libelle>
+		<libelle id="14">Congés spécifique</libelle>
+		<libelle id="15">1ère période</libelle>
+		<libelle id="16">2ème période</libelle>
+		<libelle id="17">3ème période</libelle>
+		<libelle id="18">4ème période</libelle>
+		<libelle id="19">Eté austral</libelle>
+		<libelle id="20">Hiver austral</libelle>
+		<libelle id="21">Pont</libelle>
+		<libelle id="22">Mi-trimestre</libelle>
+		<libelle id="23">Fin 1er trimestre</libelle>
+		<libelle id="24">Fin 2ème trimestre</libelle>
+		<libelle id="25">Vacances de Septembre</libelle>
+		<libelle id="26">Vacances de Février</libelle>
+		<libelle id="27">Journée vaquée</libelle>
+		<libelle id="28">Journées vaquées</libelle>		
+		<libelle id="29">Arrivée de l'Evangile</libelle>
+		<libelle id="30">Vendredi Saint</libelle>
+		<libelle id="31">Vacances de Mai</libelle>
+		<libelle id="32">Fête de l'Autonomie</libelle>
+	</libelles>
+	<calendrier>
+		<!-- Les vacances sont ordonnées par leur date de début -->
+		<!-- Attention : les jours de début et de fin ne sont pas inclus aux vacances ! -->
+		<!-- Les vacances commençent en date de début après les cours -->
+		<!-- Les cours reprènent en date de fin au matin -->
+		<zone libelle="A">
+			<!-- mise à jour le 02/01/2013 -->
+			<!-- http://www.education.gouv.fr/cid66320/calendrier-de-l-annee-scolaire-2013-2014.html -->
+			<!-- Année 2013-2014 -->
+			<vacances debut="2013/10/19" fin="2013/11/04" libelle="1"/>
+			<vacances debut="2013/12/21" fin="2014/01/06" libelle="2"/>
+			<vacances debut="2014/03/01" fin="2014/03/17" libelle="3"/>
+			<vacances debut="2014/04/26" fin="2014/05/12" libelle="4"/>
+			<vacances debut="2014/07/05" fin="2014/09/02" libelle="5"/>
+			<!-- mise à jour le 28/01/2014 -->
+			<!-- http://www.education.gouv.fr/pid25058/le-calendrier-scolaire.html -->
+			<!-- Année 2014-2015 -->
+			<vacances debut="2014/10/18" fin="2014/11/03" libelle="1"/>
+			<vacances debut="2014/12/20" fin="2015/01/05" libelle="2"/>
+			<vacances debut="2015/02/07" fin="2015/02/23" libelle="3"/>
+			<vacances debut="2015/04/11" fin="2015/04/27" libelle="4"/>
+			<vacances debut="2015/07/04" fin="2015/09/01" libelle="5"/>
+			<!-- mise à jour le 22/04/2015 suite au nouveau découpage et calendrier-->
+			<!-- http://http://www.education.gouv.fr/cid87910/calendrier-scolaire-pour-les-annees-2015-2016-2016-2017-2017-2018.html -->
+			<!-- Année 2015-2016 -->
+			<vacances debut="2015/10/17" fin="2015/11/02" libelle="1"/>
+			<vacances debut="2015/12/19" fin="2016/01/04" libelle="2"/>
+			<vacances debut="2016/02/13" fin="2016/02/29" libelle="3"/>
+			<vacances debut="2016/04/09" fin="2016/04/25" libelle="4"/>
+			<vacances debut="2016/05/05" fin="2016/05/08" libelle="12"/>
+			<vacances debut="2016/07/05" fin="2016/09/01" libelle="5"/>
+			<!-- Année 2016-2017 -->
+			<vacances debut="2016/10/19" fin="2016/11/03" libelle="1"/>
+			<vacances debut="2016/12/17" fin="2017/01/03" libelle="2"/>
+			<vacances debut="2017/02/18" fin="2017/03/06" libelle="3"/>
+			<vacances debut="2017/04/15" fin="2017/05/02" libelle="4"/>
+			<vacances debut="2017/05/25" fin="2017/05/28" libelle="12"/>
+			<vacances debut="2017/07/08" fin="2017/09/04" libelle="5"/>
+			<!-- Année 2017-2018 -->
+			<vacances debut="2017/10/21" fin="2017/11/06" libelle="1"/>
+			<vacances debut="2017/12/23" fin="2018/01/08" libelle="2"/>
+			<vacances debut="2018/02/10" fin="2018/02/26" libelle="3"/>
+			<vacances debut="2018/04/07" fin="2018/04/23" libelle="4"/>
+			<vacances debut="2018/07/07" fin="2018/09/01" libelle="5"/> 			<!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+		</zone>
+		<zone libelle="B">
+			<!-- mise à jour le 02/01/2013 -->
+			<!-- http://www.education.gouv.fr/cid66320/calendrier-de-l-annee-scolaire-2013-2014.html -->
+			<!-- Année 2013-2014 -->
+			<vacances debut="2013/10/19" fin="2013/11/04" libelle="1"/>
+			<vacances debut="2013/12/21" fin="2014/01/06" libelle="2"/>
+			<vacances debut="2014/02/22" fin="2014/03/10" libelle="3"/>
+			<vacances debut="2014/04/19" fin="2014/05/05" libelle="4"/>
+			<vacances debut="2014/07/05" fin="2014/09/02" libelle="5"/>
+			<!-- mise à jour le 28/01/2014 -->
+			<!-- http://www.education.gouv.fr/pid25058/le-calendrier-scolaire.html -->
+			<!-- Année 2014-2015 -->
+			<vacances debut="2014/10/18" fin="2014/11/03" libelle="1"/>
+			<vacances debut="2014/12/20" fin="2015/01/05" libelle="2"/>
+			<vacances debut="2015/02/21" fin="2015/03/09" libelle="3"/>
+			<vacances debut="2015/04/25" fin="2015/05/11" libelle="4"/>
+			<vacances debut="2015/07/04" fin="2015/09/01" libelle="5"/>
+			<!-- mise à jour le 22/04/2015 suite au nouveau découpage et calendrier-->
+			<!-- http://http://www.education.gouv.fr/cid87910/calendrier-scolaire-pour-les-annees-2015-2016-2016-2017-2017-2018.html -->
+			<!-- Année 2015-2016 -->
+			<vacances debut="2015/10/17" fin="2015/11/02" libelle="1"/>
+			<vacances debut="2015/12/19" fin="2016/01/04" libelle="2"/>
+			<vacances debut="2016/02/06" fin="2016/02/22" libelle="3"/>
+			<vacances debut="2016/04/02" fin="2016/04/18" libelle="4"/>
+			<vacances debut="2016/05/05" fin="2016/05/08" libelle="12"/>
+			<vacances debut="2016/07/05" fin="2016/09/01" libelle="5"/>
+			<!-- Année 2016-2017 -->
+			<vacances debut="2016/10/19" fin="2016/11/03" libelle="1"/>
+			<vacances debut="2016/12/17" fin="2017/01/03" libelle="2"/>
+			<vacances debut="2017/02/11" fin="2017/02/27" libelle="3"/>
+			<vacances debut="2017/04/08" fin="2017/04/24" libelle="4"/>
+			<vacances debut="2017/05/25" fin="2017/05/28" libelle="12"/>
+			<vacances debut="2017/07/08" fin="2017/09/04" libelle="5"/>
+			<!-- Année 2017-2018 -->
+			<vacances debut="2017/10/21" fin="2017/11/06" libelle="1"/>
+			<vacances debut="2017/12/23" fin="2018/01/08" libelle="2"/>
+			<vacances debut="2018/02/24" fin="2018/03/12" libelle="3"/>
+			<vacances debut="2018/04/21" fin="2018/05/07" libelle="4"/>
+			<vacances debut="2018/07/07" fin="2018/09/01" libelle="5"/> 			<!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+		</zone>
+		<zone libelle="C">
+			<!-- mise à jour le 02/01/2013 -->
+			<!-- http://www.education.gouv.fr/cid66320/calendrier-de-l-annee-scolaire-2013-2014.html -->
+			<!-- Année 2013-2014 -->
+			<vacances debut="2013/10/19" fin="2013/11/04" libelle="1"/>
+			<vacances debut="2013/12/21" fin="2014/01/06" libelle="2"/>
+			<vacances debut="2014/02/15" fin="2014/03/03" libelle="3"/>
+			<vacances debut="2014/04/12" fin="2014/04/28" libelle="4"/>
+			<vacances debut="2014/07/05" fin="2014/09/02" libelle="5"/>
+			<!-- mise à jour le 28/01/2014 -->
+			<!-- http://www.education.gouv.fr/pid25058/le-calendrier-scolaire.html -->
+			<!-- Année 2014-2015 -->
+			<vacances debut="2014/10/18" fin="2014/11/03" libelle="1"/>
+			<vacances debut="2014/12/20" fin="2015/01/05" libelle="2"/>
+			<vacances debut="2015/02/14" fin="2015/03/02" libelle="3"/>
+			<vacances debut="2015/04/18" fin="2015/05/04" libelle="4"/>
+			<vacances debut="2015/07/04" fin="2015/09/01" libelle="5"/>
+			<!-- mise à jour le 22/04/2015 suite au nouveau découpage et calendrier-->
+			<!-- http://http://www.education.gouv.fr/cid87910/calendrier-scolaire-pour-les-annees-2015-2016-2016-2017-2017-2018.html -->
+			<!-- Année 2015-2016 -->
+			<vacances debut="2015/10/17" fin="2015/11/02" libelle="1"/>
+			<vacances debut="2015/12/19" fin="2016/01/04" libelle="2"/>
+			<vacances debut="2016/02/20" fin="2016/03/07" libelle="3"/>
+			<vacances debut="2016/04/16" fin="2016/05/02" libelle="4"/>
+			<vacances debut="2016/05/05" fin="2016/05/08" libelle="12"/>
+			<vacances debut="2016/07/05" fin="2016/09/01" libelle="5"/>
+			<!-- Année 2016-2017 -->
+			<vacances debut="2016/10/19" fin="2016/11/03" libelle="1"/>
+			<vacances debut="2016/12/17" fin="2017/01/03" libelle="2"/>
+			<vacances debut="2017/02/04" fin="2017/02/20" libelle="3"/>
+			<vacances debut="2017/04/01" fin="2017/04/18" libelle="4"/>
+			<vacances debut="2017/05/25" fin="2017/05/28" libelle="12"/>
+			<vacances debut="2017/07/08" fin="2017/09/04" libelle="5"/>
+			<!-- Année 2017-2018 -->
+			<vacances debut="2017/10/21" fin="2017/11/06" libelle="1"/>
+			<vacances debut="2017/12/23" fin="2018/01/08" libelle="2"/>
+			<vacances debut="2018/02/17" fin="2018/03/05" libelle="3"/>
+			<vacances debut="2018/04/14" fin="2018/04/30" libelle="4"/>
+			<vacances debut="2018/07/07" fin="2018/09/01" libelle="5"/> 			<!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+		</zone>
+		<zone libelle="Corse">
+			<!-- mise à jour le 07/05/2013 -->		
+			<!-- Année 2013-2014 -->
+			<vacances debut="2013/10/19" fin="2013/11/04" libelle="1"/>
+			<vacances debut="2013/12/21" fin="2014/01/06" libelle="2"/>
+			<vacances debut="2014/02/22" fin="2014/03/10" libelle="3"/>
+			<vacances debut="2014/04/26" fin="2014/05/12" libelle="4"/>
+			<vacances debut="2014/07/09" fin="2014/09/04" libelle="5"/>
+			<!-- mise à jour le 17/04/2014 -->
+			<!-- Année 2014-2015 -->
+			<vacances debut="2014/10/18" fin="2014/11/03" libelle="1"/>
+			<vacances debut="2014/12/20" fin="2015/01/05" libelle="2"/>
+			<vacances debut="2015/02/21" fin="2015/03/09" libelle="3"/>
+			<vacances debut="2015/04/25" fin="2015/05/11" libelle="4"/>
+			<vacances debut="2015/07/08" fin="2015/09/03" libelle="5"/> 
+			<!-- mise à jour le 31/03/2015 -->
+			<!-- Année 2015-2016 -->
+			<vacances debut="2015/10/17" fin="2015/11/02" libelle="1"/>
+			<vacances debut="2015/12/19" fin="2016/01/04" libelle="2"/>
+			<vacances debut="2016/02/20" fin="2016/03/07" libelle="3"/>
+			<vacances debut="2016/04/23" fin="2016/05/09" libelle="4"/>
+			<vacances debut="2016/07/06" fin="2016/09/05" libelle="5"/>
+			<!-- Année 2016-2017 -->
+			<vacances debut="2016/10/19" fin="2016/11/03" libelle="1"/>
+			<vacances debut="2016/12/17" fin="2017/01/03" libelle="2"/>
+			<vacances debut="2017/02/18" fin="2017/03/06" libelle="3"/>
+			<vacances debut="2017/04/15" fin="2017/05/02" libelle="4"/>
+			<vacances debut="2017/07/11" fin="2017/09/05" libelle="5"/>
+			<!-- Année 2017-2018 -->
+			<vacances debut="2017/10/21" fin="2017/11/06" libelle="1"/>
+			<vacances debut="2017/12/23" fin="2018/01/08" libelle="2"/>
+			<vacances debut="2018/02/24" fin="2018/03/12" libelle="3"/>
+			<vacances debut="2018/04/21" fin="2018/05/07" libelle="4"/>
+			<vacances debut="2018/07/07" fin="2018/09/04" libelle="5"/> <!-- la date de la rentrée 2018 n'est pas encore publiée -->
+		</zone>
+		<zone libelle="Guadeloupe">
+			<!-- mise à jour le 03/07/2014 -->
+			<!-- Année 2013-2014 -->
+			<vacances debut="2013/10/19" fin="2013/11/04" libelle="1"/>
+			<vacances debut="2013/12/21" fin="2014/01/06" libelle="2"/>
+			<vacances debut="2014/02/26" fin="2014/03/10" libelle="6"/>
+			<vacances debut="2014/03/26" fin="2014/03/28" libelle="7"/>
+			<vacances debut="2014/04/12" fin="2014/04/28" libelle="8"/>
+			<vacances debut="2014/05/07" fin="2014/05/12" libelle="11"/>
+			<vacances debut="2014/05/26" fin="2014/05/28" libelle="9"/>
+			<vacances debut="2014/07/05" fin="2014/09/02" libelle="5"/>
+			<!-- Année 2014-2015 -->
+			<vacances debut="2014/10/18" fin="2014/11/03" libelle="1"/>
+			<vacances debut="2014/12/20" fin="2015/01/05" libelle="2"/>
+			<vacances debut="2015/02/11" fin="2015/02/23" libelle="6"/>
+			<vacances debut="2015/03/11" fin="2015/03/13" libelle="7"/>
+			<vacances debut="2015/03/28" fin="2015/04/13" libelle="8"/>
+			<vacances debut="2015/05/13" fin="2015/05/18" libelle="11"/>
+			<vacances debut="2015/05/26" fin="2015/05/28" libelle="9"/>
+			<vacances debut="2015/07/04" fin="2015/08/31" libelle="5"/>
+			<!-- Année 2015-2016 -->
+			<vacances debut="2015/10/17" fin="2015/11/03" libelle="1"/>
+			<vacances debut="2015/12/19" fin="2016/01/04" libelle="2"/>
+			<vacances debut="2016/02/03" fin="2016/02/15" libelle="6"/>
+			<vacances debut="2016/03/02" fin="2016/03/04" libelle="7"/>
+			<vacances debut="2016/03/19" fin="2016/04/04" libelle="8"/>
+			<vacances debut="2016/05/03" fin="2016/05/08" libelle="11"/>
+			<vacances debut="2016/05/26" fin="2016/05/28" libelle="9"/>
+			<vacances debut="2016/07/02" fin="2016/09/02" libelle="5"/>
+			<!-- Année 2016-2017 -->
+			<vacances debut="2016/10/22" fin="2016/11/03" libelle="1"/>
+			<vacances debut="2016/12/21" fin="2017/01/05" libelle="2"/>
+			<vacances debut="2017/02/18" fin="2017/03/06" libelle="6"/>
+			<vacances debut="2017/03/22" fin="2017/03/24" libelle="7"/>
+			<vacances debut="2017/04/08" fin="2017/04/24" libelle="8"/>
+			<vacances debut="2017/05/25" fin="2017/05/27" libelle="11"/>
+			<vacances debut="2017/05/26" fin="2017/05/28" libelle="9"/>
+			<vacances debut="2017/07/06" fin="2017/09/04" libelle="5"/>
+			<!-- Année 2017-2018 -->
+			<vacances debut="2017/10/25" fin="2017/11/06" libelle="1"/>
+			<vacances debut="2017/12/23" fin="2018/01/08" libelle="2"/>
+			<vacances debut="2018/02/08" fin="2018/02/22" libelle="6"/>
+			<vacances debut="2018/03/07" fin="2018/03/09" libelle="7"/>
+			<vacances debut="2018/03/24" fin="2018/04/09" libelle="8"/>
+			<vacances debut="2018/05/21" fin="2018/05/24" libelle="11"/>
+			<vacances debut="2018/05/26" fin="2018/05/28" libelle="9"/>
+			<vacances debut="2018/07/06" fin="2018/09/01" libelle="5"/><!-- la date de la rentrée 2018 n'est pas encore publiée -->
+
+
+		</zone>
+		<zone libelle="Martinique">
+			<!-- mise à jour le 02/01/2013 -->
+			<!-- http://www.ac-martinique.fr/index.php?id=186 -->
+			<!-- Année 2013-2014 -->
+			<vacances debut="2013/10/19" fin="2013/11/04" libelle="1"/>
+			<vacances debut="2013/12/21" fin="2014/01/06" libelle="2"/>
+			<vacances debut="2014/02/26" fin="2014/03/10" libelle="6"/>
+			<vacances debut="2014/04/12" fin="2014/04/28" libelle="8"/>
+			<vacances debut="2014/05/21" fin="2014/05/26" libelle="13"/>
+			<vacances debut="2014/07/05" fin="2014/09/01" libelle="5"/>
+			<!-- mise à jour le 17/04/2014 -->
+			<!-- http://www.ac-martinique.fr/index.php?id=186 -->
+			<!-- Année 2014-2015 -->
+			<vacances debut="2014/10/18" fin="2014/11/03" libelle="1"/>
+			<vacances debut="2014/12/20" fin="2015/01/05" libelle="2"/>
+			<vacances debut="2015/02/10" fin="2015/02/23" libelle="6"/>
+			<vacances debut="2015/03/28" fin="2015/04/13" libelle="8"/>
+			<vacances debut="2015/05/21" fin="2015/05/26" libelle="13"/>
+			<vacances debut="2015/07/04" fin="2015/09/01" libelle="5"/>
+			<!-- mise à jour le 03/12/2015 -->
+			<!-- http://www.ac-martinique.fr/index.php?id=186 -->
+			<!-- Année 2015-2016 -->
+			<vacances debut="2015/10/20" fin="2015/11/03" libelle="1"/>
+			<vacances debut="2015/12/19" fin="2016/01/04" libelle="2"/>
+			<vacances debut="2016/02/04" fin="2016/02/15" libelle="6"/>
+			<vacances debut="2016/03/23" fin="2016/04/07" libelle="8"/>
+			<vacances debut="2016/04/30" fin="2016/05/09" libelle="12"/>
+			<vacances debut="2016/05/20" fin="2016/05/24" libelle="13"/>
+			<vacances debut="2016/07/05" fin="2016/09/01" libelle="5"/>
+			<!-- Année 2016-2017 -->
+			<vacances debut="2016/10/19" fin="2016/11/03" libelle="1"/>
+			<vacances debut="2016/12/17" fin="2017/01/03" libelle="2"/>
+			<vacances debut="2017/02/21" fin="2017/03/07" libelle="6"/>
+			<vacances debut="2017/04/08" fin="2017/04/24" libelle="8"/>
+			<vacances debut="2017/05/24" fin="2017/05/29" libelle="12"/>
+			<vacances debut="2017/05/21" fin="2017/05/23" libelle="9"/>
+			<vacances debut="2017/07/08" fin="2017/09/04" libelle="5"/>
+			<!-- Année 2017-2018 -->
+			<vacances debut="2017/10/21" fin="2017/11/06" libelle="1"/>
+			<vacances debut="2017/12/20" fin="2018/01/04" libelle="2"/>
+			<vacances debut="2018/02/07" fin="2018/02/19" libelle="6"/>
+			<vacances debut="2018/03/24" fin="2018/04/09" libelle="8"/>
+			<vacances debut="2018/05/07" fin="2018/05/14" libelle="31"/>
+			<vacances debut="2018/05/21" fin="2018/05/23" libelle="9"/>
+			<vacances debut="2018/07/07" fin="2018/09/01" libelle="5"/> <!-- la date de la rentrée 2018 n'est pas encore publiée -->
+		</zone>
+		<zone libelle="Guyane">
+			<!-- mise à jour le 04/04/2013  -->
+			<!-- Année 2013-2014 -->
+			<vacances debut="2013/10/19" fin="2013/11/04" libelle="1"/>
+			<vacances debut="2013/12/21" fin="2014/01/06" libelle="2"/>
+			<vacances debut="2014/02/22" fin="2014/03/10" libelle="6"/>
+			<vacances debut="2014/04/17" fin="2014/05/05" libelle="8"/>
+			<vacances debut="2014/06/09" fin="2014/06/11" libelle="9"/>
+			<vacances debut="2014/07/05" fin="2014/09/01" libelle="5"/>
+			<!-- mise à jour le 18/04/2014  -->
+			<!-- Année 2014-2015 -->
+			<vacances debut="2014/10/18" fin="2014/11/03" libelle="1"/>
+			<vacances debut="2014/12/20" fin="2015/01/05" libelle="2"/>
+			<vacances debut="2015/02/14" fin="2015/03/02" libelle="6"/>
+			<vacances debut="2015/04/25" fin="2015/05/11" libelle="8"/>
+			<vacances debut="2015/06/09" fin="2015/06/11" libelle="9"/>
+			<vacances debut="2015/07/04" fin="2015/09/02" libelle="5"/> 
+			<!-- mise à jour le 31/03/2015  -->
+			<!-- Année 2015-2016 -->
+			<vacances debut="2015/10/17" fin="2015/11/02" libelle="1"/>
+			<vacances debut="2015/12/19" fin="2016/01/04" libelle="2"/>
+			<vacances debut="2016/02/06" fin="2016/02/22" libelle="6"/>
+			<vacances debut="2016/04/16" fin="2016/05/02" libelle="8"/>
+			<vacances debut="2016/06/09" fin="2016/06/11" libelle="9"/>
+			<vacances debut="2016/07/02" fin="2016/09/01" libelle="5"/>
+			<!-- mise à jour le 03/12/2015  -->
+			<!-- Année 2016-2017 -->
+			<vacances debut="2016/10/22" fin="2016/11/07" libelle="1"/>
+			<vacances debut="2016/12/17" fin="2017/01/03" libelle="2"/>
+			<vacances debut="2017/02/25" fin="2017/03/13" libelle="6"/>
+			<vacances debut="2017/04/29" fin="2017/05/15" libelle="8"/>
+			<vacances debut="2017/05/24" fin="2017/05/29" libelle="12"/>
+			<vacances debut="2017/06/09" fin="2017/06/11" libelle="9"/>
+			<vacances debut="2017/07/06" fin="2017/09/04" libelle="5"/>
+			<!-- Année 2017-2018 -->
+			<vacances debut="2017/10/21" fin="2017/11/06" libelle="1"/>
+			<vacances debut="2017/12/23" fin="2018/01/08" libelle="2"/>
+			<vacances debut="2018/02/10" fin="2018/02/26" libelle="6"/>
+			<vacances debut="2018/03/29" fin="2018/04/16" libelle="8"/>
+			<vacances debut="2018/06/09" fin="2018/06/11" libelle="9"/>
+			<vacances debut="2018/07/07" fin="2018/09/04" libelle="5"/> <!-- la date de la rentrée 2017 n'est pas encore publiée -->
+		</zone>
+		<zone libelle="Réunion">
+			<!-- Année 2013-2014 -->
+			<vacances debut="2013/10/09" fin="2013/10/24" libelle="15"/>
+			<vacances debut="2013/12/18" fin="2014/01/20" libelle="19"/>
+			<vacances debut="2014/03/05" fin="2014/03/20" libelle="16"/>
+			<vacances debut="2014/05/07" fin="2014/05/19" libelle="17"/>
+			<vacances debut="2014/07/05" fin="2014/08/22" libelle="20"/>
+			<!-- mise à jour le 28/01/2014 -->
+			<!-- http://www.ac-reunion.fr/outils/infos-pratiques/calendrier-scolaire.html -->
+			<!-- Année 2014-2015 -->
+			<vacances debut="2014/10/18" fin="2014/11/03" libelle="15"/>
+			<vacances debut="2014/12/19" fin="2015/01/29" libelle="19"/>
+			<vacances debut="2015/03/14" fin="2015/03/26" libelle="17"/>
+			<vacances debut="2015/05/07" fin="2015/05/18" libelle="18"/>
+			<vacances debut="2015/07/08" fin="2015/08/18" libelle="20"/>
+			<!-- Année 2015-2016 -->
+			<vacances debut="2015/10/10" fin="2015/10/26" libelle="15"/>
+			<vacances debut="2015/12/19" fin="2016/01/28" libelle="19"/>
+			<vacances debut="2016/03/09" fin="2016/03/21" libelle="17"/>
+			<vacances debut="2016/05/04" fin="2016/05/17" libelle="18"/>
+			<vacances debut="2016/07/05" fin="2016/08/17" libelle="20"/>
+			<!-- Année 2016-2017 -->
+			<vacances debut="2016/10/08" fin="2016/10/24" libelle="15"/>
+			<vacances debut="2016/12/17" fin="2017/01/30" libelle="19"/>
+			<vacances debut="2017/03/11" fin="2017/03/23" libelle="17"/>
+			<vacances debut="2017/05/06" fin="2017/05/18" libelle="18"/>
+			<vacances debut="2017/07/06" fin="2017/08/18" libelle="20"/>
+			<!-- Année 2017-2018 -->
+			<vacances debut="2017/10/14" fin="2017/10/30" libelle="15"/>
+			<vacances debut="2017/12/23" fin="2018/01/29" libelle="19"/>
+			<vacances debut="2018/03/10" fin="2018/03/26" libelle="17"/>
+			<vacances debut="2018/05/05" fin="2018/05/17" libelle="18"/>
+			<vacances debut="2018/07/07" fin="2018/08/17" libelle="20"/>
+			<!-- Année 2018-2019 -->
+			<vacances debut="2018/10/13" fin="2018/10/29" libelle="15"/>
+			<vacances debut="2018/12/22" fin="2019/01/28" libelle="19"/>
+			<vacances debut="2019/03/09" fin="2019/03/25" libelle="17"/>
+			<vacances debut="2019/05/07" fin="2019/05/20" libelle="18"/>
+			<vacances debut="2019/07/06" fin="2019/08/16" libelle="20"/>
+			<!-- Année 2019-2020 -->
+			<vacances debut="2019/10/12" fin="2019/10/28" libelle="15"/>
+			<vacances debut="2019/12/19" fin="2020/01/27" libelle="19"/>
+			<vacances debut="2020/03/07" fin="2020/03/23" libelle="17"/>
+			<vacances debut="2020/04/30" fin="2020/05/14" libelle="18"/>
+			<vacances debut="2020/07/04" fin="2020/08/14" libelle="20"/>		<!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+		</zone>
+		<zone libelle="Mayotte">
+			<!-- mise à jour le 02/01/2013 -->
+			<!-- http://http://www.ac-mayotte.fr/IMG/pdf/Calendrier_scolaire_2013-2014.pdf -->
+			<!-- Année 2013-2014 -->			
+			<vacances debut="2013/10/12" fin="2013/10/28" libelle="1"/>
+			<vacances debut="2013/12/15" fin="2014/01/13" libelle="2"/>
+			<vacances debut="2014/03/01" fin="2014/03/13" libelle="17"/>
+			<vacances debut="2014/04/30" fin="2014/05/12" libelle="18"/>
+			<vacances debut="2014/07/08" fin="2014/08/26" libelle="20"/>
+			<!-- mise à jour le 28/01/2014 -->
+			<!-- http://www.ac-mayotte.fr/index.php/calendrier -->
+			<!-- Année 2014-2015 -->
+			<vacances debut="2014/10/11" fin="2014/10/27" libelle="1"/>
+			<vacances debut="2014/12/13" fin="2015/01/12" libelle="2"/>
+			<vacances debut="2015/02/28" fin="2015/03/16" libelle="17"/>
+			<vacances debut="2015/04/30" fin="2015/05/11" libelle="18"/>
+			<vacances debut="2015/07/08" fin="2015/08/25" libelle="20"/>
+			<!-- Année 2015-2016 -->
+			<vacances debut="2015/10/10" fin="2015/10/26" libelle="1"/>
+			<vacances debut="2015/12/12" fin="2016/01/11" libelle="2"/>
+			<vacances debut="2016/02/27" fin="2016/03/14" libelle="17"/>
+			<vacances debut="2016/04/30" fin="2016/05/09" libelle="18"/>
+			<vacances debut="2016/07/06" fin="2016/08/24" libelle="20"/>
+			<!-- mise à jour le 03/12/2015  -->
+			<!-- Année 2016-2017 -->
+			<vacances debut="2016/10/09" fin="2016/10/24" libelle="1"/>
+			<vacances debut="2016/12/11" fin="2017/01/09" libelle="2"/>
+			<vacances debut="2017/02/26" fin="2017/03/13" libelle="17"/>
+			<vacances debut="2017/04/26" fin="2017/04/28" libelle="9"/>
+			<vacances debut="2017/04/30" fin="2017/05/08" libelle="18"/>
+			<vacances debut="2017/07/08" fin="2017/08/23" libelle="20"/>
+			<!-- Année 2017-2018 -->
+			<vacances debut="2017/10/08" fin="2017/10/23" libelle="1"/>
+			<vacances debut="2017/12/10" fin="2018/01/08" libelle="2"/>
+			<vacances debut="2018/02/25" fin="2018/03/12" libelle="17"/>
+			<vacances debut="2018/04/26" fin="2018/04/28" libelle="9"/>
+			<vacances debut="2018/05/06" fin="2018/05/14" libelle="18"/>
+			<vacances debut="2018/07/07" fin="2018/08/23" libelle="20"/>
+		</zone>
+		<zone libelle="Calédonie">
+			<!-- Année 2013 -->
+			<vacances debut="2013/04/05" fin="2013/04/22" libelle="22"/>
+			<vacances debut="2013/06/07" fin="2013/06/24" libelle="22"/>
+			<vacances debut="2013/08/09" fin="2013/08/26" libelle="24"/>
+			<vacances debut="2013/10/11" fin="2013/10/28" libelle="22"/>
+			<vacances debut="2013/12/18" fin="2014/02/17" libelle="19"/>
+					<!-- Année 2014 -->
+			<vacances debut="2014/04/04" fin="2014/04/21" libelle="22"/>
+			<vacances debut="2014/06/06" fin="2014/06/23" libelle="22"/>
+			<vacances debut="2014/08/08" fin="2014/08/25" libelle="24"/>
+			<vacances debut="2014/10/10" fin="2014/10/27" libelle="22"/>
+			<vacances debut="2014/12/17" fin="2015/02/16" libelle="19"/>
+					<!-- Année 2015 -->
+			<vacances debut="2015/04/03" fin="2015/04/20" libelle="15"/>
+			<vacances debut="2015/06/05" fin="2015/06/22" libelle="16"/>
+			<vacances debut="2015/08/07" fin="2015/08/24" libelle="17"/>
+			<vacances debut="2015/10/09" fin="2015/10/26" libelle="18"/>
+			<vacances debut="2015/12/16" fin="2016/02/15" libelle="19"/> 
+			<!-- mise à jour le 31/03/2015 --> 
+			<!-- Année 2016 -->
+			<vacances debut="2016/04/01" fin="2016/04/18" libelle="15"/>
+			<vacances debut="2016/06/03" fin="2016/06/20" libelle="16"/>
+			<vacances debut="2016/08/05" fin="2016/08/22" libelle="17"/>
+			<vacances debut="2016/10/07" fin="2016/10/24" libelle="18"/>
+			<vacances debut="2016/12/14" fin="2017/02/13" libelle="19"/>			
+			<!-- mise à jour le 26/05/2016 --> 
+			<!-- Année 2017 -->
+			<vacances debut="2017/03/31" fin="2017/04/17" libelle="15"/>
+			<vacances debut="2017/06/02" fin="2017/06/19" libelle="16"/>
+			<vacances debut="2017/08/04" fin="2017/08/21" libelle="17"/>
+			<vacances debut="2017/10/06" fin="2017/10/23" libelle="18"/>
+			<vacances debut="2017/12/15" fin="2018/02/19" libelle="19"/>
+			<!-- Année 2018 -->
+			<vacances debut="2018/04/06" fin="2018/04/16" libelle="15"/>
+			<vacances debut="2018/06/08" fin="2018/06/25" libelle="16"/>
+			<vacances debut="2018/08/10" fin="2018/08/27" libelle="17"/>
+			<vacances debut="2018/10/12" fin="2018/10/29" libelle="18"/>
+			<vacances debut="2018/12/14" fin="2019/02/18" libelle="19"/>
+			<!-- Année 2019 -->
+			<vacances debut="2019/04/05" fin="2019/04/15" libelle="15"/>
+			<vacances debut="2019/06/07" fin="2019/06/24" libelle="16"/>
+			<vacances debut="2019/08/09" fin="2019/08/26" libelle="17"/>
+			<vacances debut="2019/10/11" fin="2019/10/28" libelle="18"/>
+			<vacances debut="2019/12/13" fin="2020/02/17" libelle="19"/>
+			<!-- Année 2020 -->
+			<vacances debut="2020/04/03" fin="2020/04/14" libelle="15"/>
+			<vacances debut="2020/06/05" fin="2020/06/22" libelle="16"/>
+			<vacances debut="2020/08/07" fin="2020/08/24" libelle="17"/>
+			<vacances debut="2020/10/09" fin="2020/10/26" libelle="18"/>
+			<vacances debut="2020/12/11" fin="2021/02/18" libelle="19"/> <!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+		</zone>
+		<zone libelle="Polynésie">
+			<!-- mise à jour le 04/04/2013 -->
+			<!-- Année 2013-2014 -->
+			<vacances debut="2013/09/14" fin="2013/09/30" libelle="25"/>
+			<vacances debut="2013/11/02" fin="2013/11/12" libelle="1"/>
+			<vacances debut="2013/12/14" fin="2014/01/13" libelle="2"/>
+			<vacances debut="2014/02/15" fin="2014/02/24" libelle="26"/>
+			<vacances debut="2014/03/04" fin="2014/03/06" libelle="29"/>			
+			<vacances debut="2014/03/29" fin="2014/04/14" libelle="8"/>
+			<vacances debut="2014/04/17" fin="2014/04/19" libelle="30"/>
+			<vacances debut="2014/06/27" fin="2014/08/13" libelle="20"/>			
+			<!-- mise à jour le 18/04/2014 -->
+			<!-- Année 2014-2015 -->
+			<vacances debut="2014/09/20" fin="2014/09/29" libelle="25"/>
+			<vacances debut="2014/10/31" fin="2014/11/12" libelle="1"/>
+			<vacances debut="2014/12/13" fin="2015/01/12" libelle="2"/>
+			<vacances debut="2015/02/14" fin="2015/02/23" libelle="26"/>
+			<vacances debut="2015/03/04" fin="2015/03/06" libelle="29"/>			
+			<vacances debut="2015/03/28" fin="2015/04/13" libelle="8"/>
+			<vacances debut="2015/05/13" fin="2015/05/18" libelle="30"/>
+			<vacances debut="2015/06/25" fin="2015/08/12" libelle="20"/>
+			<!-- Année 2015-2016 -->
+			<vacances debut="2015/09/19" fin="2015/09/28" libelle="25"/>
+			<vacances debut="2015/10/31" fin="2015/11/09" libelle="1"/>
+			<vacances debut="2015/12/12" fin="2016/01/11" libelle="2"/>
+			<vacances debut="2016/02/13" fin="2016/02/22" libelle="26"/>
+			<vacances debut="2016/03/04" fin="2016/03/06" libelle="29"/>			
+			<vacances debut="2016/03/24" fin="2016/04/11" libelle="8"/>
+			<vacances debut="2016/05/04" fin="2016/05/09" libelle="30"/>
+			<vacances debut="2016/06/22" fin="2016/08/10" libelle="20"/>
+			<!-- Année 2016-2017 -->
+			<vacances debut="2016/09/17" fin="2016/09/26" libelle="25"/>
+			<vacances debut="2016/10/29" fin="2016/11/07" libelle="1"/>
+			<vacances debut="2016/12/10" fin="2017/01/09" libelle="2"/>
+			<vacances debut="2017/02/11" fin="2017/02/20" libelle="26"/>
+			<vacances debut="2017/03/04" fin="2017/03/06" libelle="29"/>
+			<vacances debut="2017/03/25" fin="2017/04/10" libelle="8"/>
+			<vacances debut="2017/05/24" fin="2017/05/29" libelle="30"/>
+			<vacances debut="2017/06/27" fin="2017/08/16" libelle="20"/>
+			<!-- Année 2017-2018 -->
+			<vacances debut="2017/09/16" fin="2017/09/25" libelle="25"/>
+			<vacances debut="2017/10/28" fin="2017/11/13" libelle="1"/>
+			<vacances debut="2017/12/16" fin="2018/01/15" libelle="2"/>
+			<vacances debut="2018/02/17" fin="2018/02/26" libelle="26"/>
+			<vacances debut="2018/03/04" fin="2018/03/06" libelle="29"/>
+			<vacances debut="2018/03/29" fin="2018/03/31" libelle="30"/>
+			<vacances debut="2018/03/31" fin="2018/04/16" libelle="8"/>
+			<vacances debut="2018/05/19" fin="2018/05/28" libelle="31"/>
+			<vacances debut="2018/06/28" fin="2018/06/30" libelle="32"/>
+			<vacances debut="2018/07/07" fin="2018/08/14" libelle="20"/>
+			<!-- Année 2018-2019 -->
+			<vacances debut="2018/09/15" fin="2018/09/24" libelle="25"/>
+			<vacances debut="2018/10/27" fin="2018/11/12" libelle="1"/>
+			<vacances debut="2018/12/15" fin="2019/01/14" libelle="2"/>
+			<vacances debut="2019/02/16" fin="2019/02/25" libelle="26"/>
+			<vacances debut="2019/03/04" fin="2019/03/06" libelle="29"/>
+			<vacances debut="2019/04/06" fin="2019/04/23" libelle="8"/>
+			<vacances debut="2019/05/25" fin="2019/06/03" libelle="31"/>
+			<vacances debut="2019/06/28" fin="2019/06/30" libelle="32"/>
+			<vacances debut="2019/07/06" fin="2019/08/13" libelle="20"/>
+			<!-- Année 2019-2020 -->
+			<vacances debut="2019/09/14" fin="2019/09/23" libelle="25"/>
+			<vacances debut="2019/10/26" fin="2019/11/11" libelle="1"/>
+			<vacances debut="2019/12/14" fin="2020/01/13" libelle="2"/>
+			<vacances debut="2020/02/15" fin="2020/02/24" libelle="26"/>
+			<vacances debut="2020/03/04" fin="2020/03/06" libelle="29"/>
+			<vacances debut="2020/04/09" fin="2020/04/11" libelle="30"/>
+			<vacances debut="2020/03/28" fin="2020/04/14" libelle="8"/>
+			<vacances debut="2020/05/16" fin="2020/05/25" libelle="31"/>
+			<vacances debut="2020/06/28" fin="2020/06/30" libelle="32"/>
+			<vacances debut="2020/07/04" fin="2020/08/14" libelle="20"/><!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+
+		</zone>
+		<zone libelle="StPierreMiquelon">
+			<!-- mise à jour le 04/04/2013 -->
+			<!-- Année 2013-2014 -->
+			<vacances debut="2013/10/23" fin="2013/11/04" libelle="1"/>
+			<vacances debut="2013/12/20" fin="2014/01/06" libelle="2"/>
+			<vacances debut="2014/02/14" fin="2014/03/03" libelle="3"/>
+			<vacances debut="2014/04/18" fin="2014/05/05" libelle="4"/>		
+			<vacances debut="2014/07/04" fin="2014/09/05" libelle="5"/>
+			<!-- mise à jour le 18/04/2014 -->
+			<!-- Année 2014-2015 -->
+			<vacances debut="2014/10/22" fin="2014/11/03" libelle="1"/>
+			<vacances debut="2014/12/19" fin="2015/01/05" libelle="2"/>
+			<vacances debut="2015/02/13" fin="2015/03/02" libelle="3"/>
+			<vacances debut="2015/04/17" fin="2015/05/04" libelle="4"/>		
+			<vacances debut="2015/07/03" fin="2015/09/04" libelle="5"/>
+			<!-- Année 2015-2016 -->
+			<vacances debut="2015/10/21" fin="2015/11/02" libelle="1"/>
+			<vacances debut="2015/12/18" fin="2016/01/04" libelle="2"/>
+			<vacances debut="2016/02/12" fin="2016/02/29" libelle="3"/>
+			<vacances debut="2016/04/15" fin="2016/05/02" libelle="4"/>		
+			<vacances debut="2016/07/01" fin="2016/09/06" libelle="5"/>
+			<!-- Année 2016-2017 -->
+			<vacances debut="2016/10/21" fin="2016/11/02" libelle="1"/>
+			<vacances debut="2016/12/16" fin="2017/01/03" libelle="2"/>
+			<vacances debut="2017/02/17" fin="2017/03/06" libelle="3"/>
+			<vacances debut="2017/04/21" fin="2017/05/09" libelle="4"/>
+			<vacances debut="2017/07/05" fin="2017/09/05" libelle="5"/>
+			<!-- Année 2017-2018 -->
+			<vacances debut="2017/10/24" fin="2017/11/06" libelle="1"/>
+			<vacances debut="2017/12/22" fin="2018/01/08" libelle="2"/>
+			<vacances debut="2018/02/23" fin="2018/03/12" libelle="26"/>
+			<vacances debut="2018/04/27" fin="2018/05/14" libelle="4"/>
+			<vacances debut="2018/06/29" fin="2018/09/04" libelle="5"/>	<!-- date de fin non connue -->
+		</zone>
+		<zone libelle="WallisFutuna">
+			<!-- Année 2013 -->
+			<vacances debut="2013/03/29" fin="2013/04/08" libelle="22"/>
+			<vacances debut="2013/05/17" fin="2013/06/03" libelle="23"/>
+			<vacances debut="2013/07/12" fin="2013/07/22" libelle="22"/>
+			<vacances debut="2013/08/28" fin="2013/09/16" libelle="24"/>
+			<vacances debut="2013/10/25" fin="2013/11/04" libelle="22"/>
+			<vacances debut="2013/12/13" fin="2014/02/17" libelle="19"/>
+			<!-- Année 2014 -->
+			<vacances debut="2014/04/04" fin="2014/04/21" libelle="22"/>
+			<vacances debut="2014/06/06" fin="2014/06/23" libelle="23"/>
+			<vacances debut="2014/08/08" fin="2014/08/25" libelle="22"/>
+			<vacances debut="2014/10/10" fin="2014/10/27" libelle="24"/>
+			<vacances debut="2014/12/17" fin="2015/02/16" libelle="19"/>
+			<!-- mise à jour le 31/03/2015 -->
+			<!-- Année 2015 -->
+			<!-- https://www.ac-wf.wf/Calendrier-scolaire-2015.html -->
+			<vacances debut="2015/04/03" fin="2015/04/20" libelle="15"/>
+			<vacances debut="2015/06/05" fin="2015/06/22" libelle="16"/>
+			<vacances debut="2015/08/07" fin="2015/08/24" libelle="17"/>
+			<vacances debut="2015/10/09" fin="2015/10/26" libelle="18"/>
+			<vacances debut="2015/12/16" fin="2016/02/15" libelle="19"/>
+			<!-- mise à jour le 03/12/2015  -->
+			<!-- Année 2016 -->
+			<vacances debut="2016/04/01" fin="2016/04/18" libelle="22"/>
+			<vacances debut="2016/06/03" fin="2016/06/20" libelle="23"/>
+			<vacances debut="2016/08/05" fin="2016/08/22" libelle="22"/>
+			<vacances debut="2016/10/07" fin="2016/10/24" libelle="24"/>
+			<vacances debut="2016/12/14" fin="2017/02/13" libelle="19"/>
+			<!-- Année 2017 -->
+			<vacances debut="2017/03/31" fin="2017/04/18" libelle="22"/>
+			<vacances debut="2017/06/02" fin="2017/06/19" libelle="23"/>
+			<vacances debut="2017/08/04" fin="2017/08/21" libelle="22"/>
+			<vacances debut="2017/10/06" fin="2017/10/23" libelle="24"/>
+			<vacances debut="2017/12/15" fin="2018/02/19" libelle="19"/> <!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+		</zone>
+	</calendrier>
+</root>
