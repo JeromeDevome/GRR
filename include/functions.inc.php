@@ -47,20 +47,48 @@ function getWeekNumber($date)
 {
 	return date('W', $date);
 }
-
-function getSchoolHolidays($now, $year)
+// fonction de détermination des jours de vacances scolaires par lecture dans la base
+function isSchoolHoliday($now)
 {
 	$test = grr_sql_query1("SELECT DAY FROM ".TABLE_PREFIX."_calendrier_vacances where DAY = '".$now."'");
-	if ($test != -1)
-		$sh = array(true, "");
-	else
-		$sh = array(false, "");
+	$val = ($test != -1);
+	return $val;
+} 
+/* function getSchoolHolidays($now, $year)
+{
+	$zone = 'A';
+	if (Settings::get("holidays_zone") != NULL)
+		$zone = Settings::get("holidays_zone");
+	$sh = array(false, "");
+	$vacances = simplexml_load_file('vacances.xml');
+	$libelle = $vacances->libelles->children();
+	$node = $vacances->calendrier->children();
+	foreach ($node as $key => $value)
+	{
+		if ($value['libelle'] == $zone)
+		{
+			foreach ($value->vacances as $key => $value)
+			{
+				$y = date('Y', strtotime($value['debut']));
+				if ($y == $year)
+				{
+					if (strtotime($value['debut']) <= $now && $now < strtotime($value['fin']))
+					{
+						$nom = (int)$value['libelle'];
+						$nom = $libelle->libelle[$nom - 1];
+						$sh = array(true, $nom);
+						break;
+					}
 
+				}
+			}
+		}
+	}
 	return $sh;
 }
-
-
-function getHolidays($year = null)
+*/
+// fonction de calcul des jours fériés (France)
+function setHolidays($year = null)
 {
 	if ($year === null)
 		$year = intval(date('Y'));
@@ -69,26 +97,31 @@ function getHolidays($year = null)
 	$easterMonth = date('n', $easterDate);
 	$easterYear  = date('Y', $easterDate);
 	$holidays = array(
-		// Dates fixes
-		mktime(0, 0, 0, 1,  1,  $year),  // 1er janvier
-		mktime(0, 0, 0, 5,  1,  $year),  // Fête du travail
-		mktime(0, 0, 0, 5,  8,  $year),  // Victoire des alliés
-		mktime(0, 0, 0, 7,  14, $year),  // Fête nationale
-		mktime(0, 0, 0, 8,  15, $year),  // Assomption
-		mktime(0, 0, 0, 11, 1,  $year),  // Toussaint
-		mktime(0, 0, 0, 11, 11, $year),  // Armistice
-		mktime(0, 0, 0, 12, 25, $year),  // Noel
-		// Dates variables
-		mktime(0, 0, 0, $easterMonth, $easterDay + 1,  $easterYear),
-		mktime(0, 0, 0, $easterMonth, $easterDay + 39, $easterYear),
-		mktime(0, 0, 0, $easterMonth, $easterDay + 50, $easterYear),
+	// Dates fixes
+	mktime(0, 0, 0, 1,  1,  $year),  // 1er janvier
+	mktime(0, 0, 0, 5,  1,  $year),  // Fête du travail
+	mktime(0, 0, 0, 5,  8,  $year),  // Victoire des alliés
+	mktime(0, 0, 0, 7,  14, $year),  // Fête nationale
+	mktime(0, 0, 0, 8,  15, $year),  // Assomption
+	mktime(0, 0, 0, 11, 1,  $year),  // Toussaint
+	mktime(0, 0, 0, 11, 11, $year),  // Armistice
+	mktime(0, 0, 0, 12, 25, $year),  // Noel
+	// Dates variables
+	mktime(0, 0, 0, $easterMonth, $easterDay + 1,  $easterYear),
+	mktime(0, 0, 0, $easterMonth, $easterDay + 39, $easterYear),
+	mktime(0, 0, 0, $easterMonth, $easterDay + 50, $easterYear),
 	);
 	sort($holidays);
-
 	return $holidays;
 }
+// fonction de détermination si un jour est férié
+function isHoliday($now){
+	$test = grr_sql_query1("SELECT DAY FROM ".TABLE_PREFIX."_calendrier_feries where DAY = '".$now."'");
+	$val = ($test != -1);
+	return $val;
+}
 
-// $type = 1: Fonction Calendrier hors réservation ; 2; Fonction Calendrier vacances / feries
+// $type = 1: Fonction Calendrier hors réservation ; 2; Fonction Calendrier feries ; 3 : calendrier vacances (scolaires par défaut)
 function cal($month, $year, $type)
 {
 	global $weekstarts;
@@ -126,7 +159,9 @@ function cal($month, $year, $type)
 				$s .= $d;
 				if($type == 1)
 					$day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendar WHERE day='$temp'");
-				else
+				elseif ($type == 2)
+                    $day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendrier_feries WHERE day='$temp'");
+                else
 					$day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendrier_vacances WHERE day='$temp'");
 				$s .= '<br><input type="checkbox" name="'.$temp.'" value="'.$nameday.'" ';
 				if (!($day < 0))
@@ -260,7 +295,8 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 				$affichage = "";
 		}
 		else
-			$affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.$_identite.'</a>'.PHP_EOL;
+			//$affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.$_identite.'</a>'.PHP_EOL;
+            $affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.'</a>'.PHP_EOL;
 	}
 	else
 	{
@@ -316,7 +352,7 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 			$affichage .=  'encode_fin_adresse("'.AddSlashes($_identite).'");'.PHP_EOL;
 			
 			$affichage .=  '</script>'.PHP_EOL;
-			$affichage .= $_identite;
+			//$affichage .= $_identite;
 		}
 	}
 	return $affichage;
@@ -1025,8 +1061,8 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			if ((Settings::get("logo") != '') && (@file_exists($nom_picture)))
 				echo '<td class="logo" height="100">'.PHP_EOL.'<a href="'.$racine.page_accueil('yes').'day='.$day.'&amp;year='.$year.'&amp;month='.$month.'"><img src="'.$nom_picture.'" alt="logo"/></a>'.PHP_EOL.'</td>'.PHP_EOL;
 			//Accueil
-			echo '<td class="accueil ">',PHP_EOL,'<h2>',PHP_EOL,'<a href="'.$racine.page_accueil('yes'),'day=',$day,'&amp;year=',$year,'&amp;month=',$month,'">',get_vocab("welcome"),' - <b>',Settings::get("company"),'</b></a>',PHP_EOL,'</h2>',PHP_EOL;
-			//Mail réservartion
+			echo '<td class="accueil ">',PHP_EOL,'<h2>',PHP_EOL,'<a href="'.$racine.page_accueil('yes'),'day=',$day,'&amp;year=',$year,'&amp;month=',$month,'">',get_vocab("welcome"),' - <b>',Settings::get("company"),'</b></a>',PHP_EOL,'</h2>',PHP_EOL,'</td>',PHP_EOL;
+			//Mail réservation
 			echo Settings::get('message_accueil');
 			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
 			$res = grr_sql_query1($sql);
@@ -2885,7 +2921,7 @@ function auth_visiteur($user,$id_room)
 //authGetUserLevel($user,$id,$type)
 //Determine le niveau d'accès de l'utilisateur
 //$user - l'identifiant de l'utilisateur
-//$id -   l'identifiant de showla ressource ou du domaine
+//$id -   l'identifiant de la ressource ou du domaine
 // $type - argument optionnel : 'room' (par défaut) si $id désigne une ressource et 'area' si $id désigne un domaine.
 ////Retourne le niveau d'accès de l'utilisateur
 function authGetUserLevel($user, $id, $type = 'room')

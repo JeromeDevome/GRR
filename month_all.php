@@ -164,10 +164,11 @@ else
 		echo '</td>'.PHP_EOL;
 		echo '</tr>'.PHP_EOL;
 			echo "<tr>";
-	echo "<td class=\"left\"> ";
+	/* echo "<td class=\"left\"> ";
 	$month_all2 = 1;
 	echo "<input type=\"button\" class=\"btn btn-default btn-xs\" id=\"voir\" value=\"Afficher le menu à gauche.\" onClick=\"divaffiche($month_all2)\" style=\"display:inline;\" /> ";
-	echo "</td>";
+	echo "</td>";*/
+	// suppression parce que ne semble pas fonctionnel
 		echo '</table>'.PHP_EOL;
 	}
 
@@ -322,7 +323,6 @@ else
 		}
 	}
 	// Début Première boucle sur les jours du mois
-	$ferie = getHolidays($year);
 	for ($cday = 1; $cday <= $days_in_month; $cday++)
 	{
 		$num_week_day = ($weekcol + $weekstarts) % 7;
@@ -339,25 +339,15 @@ else
 			$ferie_true = 0;
 			$class = "";
 			$title = "";
-			if (Settings::get("show_holidays") == "Oui")
-			{
-				foreach ($ferie as $key => $value)
-				{
-					if ($t == $value)
-					{
-						$ferie_true = 1;
-						break;
-					}
-				}
-				$sh = getSchoolHolidays($t, $year);
-				if ($sh[0] == true)
-				{
-					$class .= "vacance ";
-					$title = " ".$sh[1];
-				}
-				if ($ferie_true)
-					$class .= "ferie ";
-			}
+			if ($settings->get("show_holidays") == "Oui")
+                {   
+                    if (isHoliday($t)){
+                        $class .= 'ferie ';
+                    }
+                    elseif (isSchoolHoliday($t)){
+                        $class .= 'vacance ';
+                    }
+                }
 			echo '<div class="monthday ',$class,'">',PHP_EOL,'<a title="',htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day")),$title,'" href="day.php?year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;area=',$area,'">',$name_day;
 			if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) > -1)
 			{
@@ -390,7 +380,9 @@ else
 								echo " ...\n";
 								break;
 							}
+
 							echo '<table class="table-bordered table-striped">',PHP_EOL,'<tr>',PHP_EOL;
+
 							tdcell($d[$cday]["color"][$i]);
 							echo '<span class="small_planning">',PHP_EOL;
 							if ($acces_fiche_reservation[$d[$cday]["id_room"][$i]])

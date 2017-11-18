@@ -691,7 +691,9 @@ function mrbsGetEntryInfo($id)
 	$res = grr_sql_query($sql);
 	if (!$res)
 		return;
+
 	$ret = array();
+
 	if (grr_sql_count($res) > 0)
 	{
 		$row = grr_sql_row($res, 0);

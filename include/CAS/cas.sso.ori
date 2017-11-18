@@ -1,0 +1,29 @@
+<?php
+
+// Paramétrage du serveur CAS
+// L'URL est construite de la forme suivante :
+// https://$cas_host:$cas_port/$cas_root
+
+$serveurSSO = "mondomaine.com"; // $cas_host l'hôte du serveur CAS
+$serveurSSOPort = 443; // $cas_port Le port
+$serveurSSORacine = ""; // $cas_root La racine
+
+# Si le serveur hébergeant Grr! est situé derrière une passerelle,
+# il se peut que les requêtes vers le serveur CAS doivent passer par le proxy de la passerelle
+# pour être autorisées en sortie et atteindre le serveur CAS
+$cas_proxy_server= ; // IP du proxy
+$cas_proxy_port= ; // port du proxy 
+
+# Si la variable suivante contient une URL, l'utilisateur qui se déconnecte de Grr!
+# sera redirigé vers la page logout de CAS. Ensuite, soit l'utilisateur sera invité
+# à cliquer sur cette URL, soit il sera automatiquement redirigé vers elle. Ce
+# comportement est déterminé par la seconde variable ($cas_logout_redirect).
+
+$cas_logout_url = ''; 	# Laissez vide pour n'afficher que la page logout de Grr!.
+						# Assurez-vous de bien saisir une URL valide !
+
+$cas_logout_redirect = true; 	# true/false : activer ou non la redirection automatique
+								# lors du logout.
+$cas_use_logout = true; // true/false pour se déconnecter ou non de CAS quand on se déconnecte de Grr!.
+
+?>

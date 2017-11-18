@@ -315,7 +315,7 @@ else
 	echo '<th class="jour_sem"> </th>'.PHP_EOL;
 	$t = $time;
 	$num_week_day = $weekstarts;
-	$ferie = getHolidays($year);
+	//$ferie = getHolidays($year);
 	for ($weekcol = 0; $weekcol < 7; $weekcol++)
 	{
 		$num_day = strftime("%d", $t);
@@ -336,26 +336,15 @@ else
 		{
 			$class = "";
 			$title = "";
-			if (Settings::get("show_holidays") == "Oui")
-			{
-				$ferie_true = 0;
-				foreach ($ferie as $key => $value)
-				{
-					if ($tt == $value)
-					{
-						$ferie_true = 1;
-						break;
-					}
-				}
-				$sh = getSchoolHolidays($tt, $temp_year);
-				if ($sh[0] == true)
-				{
-					$class .= "vacance ";
-					$title = " ".$sh[1];
-				}
-				if ($ferie_true)
-					$class .= "ferie ";
-			}
+            if ($settings->get("show_holidays") == "Oui")
+            {   
+                if (isHoliday($tt)){
+                    $class .= 'ferie ';
+                }
+                elseif (isSchoolHoliday($tt)){
+                    $class .= 'vacance ';
+                }
+            }
 			echo '<th class="jour_sem">'.PHP_EOL;
 			echo '<a class="lienPlanning '.$class.'" href="day.php?year='.$temp_year.'&amp;month='.$temp_month.'&amp;day='.$num_day.'&amp;area='.$area.'" title="'.$title.'">'  . day_name(($weekcol + $weekstarts) % 7) . ' '.$num_day.' '.$temp_month2.'</a>'.PHP_EOL;
 			if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)

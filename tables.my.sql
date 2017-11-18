@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS `grr_calendrier_feries`;
+CREATE TABLE `grr_calendrier_feries` (  `DAY` int(11) NOT NULL DEFAULT '0');
+DROP TABLE IF EXISTS `grr_calendrier_vacances`;
+CREATE TABLE `grr_calendrier_vacances` (  `DAY` int(11) NOT NULL DEFAULT '0');
 DROP TABLE IF EXISTS grr_j_mailuser_room;
 CREATE TABLE grr_j_mailuser_room (login varchar(40) NOT NULL default '', id_room int(11) NOT NULL default '0', PRIMARY KEY  (login,id_room) );
 DROP TABLE IF EXISTS grr_j_user_area;
@@ -116,7 +120,7 @@ INSERT INTO grr_setting VALUES ('mail_destinataire', 'test@test.fr');
 INSERT INTO grr_setting VALUES ('mail_etat_destinataire', '0');
 INSERT INTO grr_setting VALUES ('menu_gauche', '1');
 INSERT INTO grr_setting VALUES ('file', '1');
-INSERT INTO grr_setting VALUES ('smtp_secure', '')
-INSERT INTO grr_setting VALUES ('smtp_port', '25')
-INSERT INTO grr_setting VALUES ('periodicite', 'y')
-INSERT INTO grr_setting VALUES ('remplissage_description_complete', '0')
+INSERT INTO grr_setting VALUES ('smtp_secure', '');
+INSERT INTO grr_setting VALUES ('smtp_port', '25');
+INSERT INTO grr_setting VALUES ('periodicite', 'y');
+INSERT INTO grr_setting VALUES ('remplissage_description_complete', '0');
