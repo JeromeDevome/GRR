@@ -108,6 +108,35 @@ for ($i = 0; $i < 7; $i++)
 	echo "<td><span class='small'><a href='admin_calend_ignore.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, '$lday' ); return false;\">".get_vocab("uncheck_all_the").$lday."s</a></span></td>\n";
 	echo "</tr>\n";
 }
+if (Settings::get("show_holidays") == 'Oui'){ // on n'affiche ce choix que si les jours fériés et les vacances sont définis
+    // définir les jours fériés
+    $req = "SELECT * FROM ".TABLE_PREFIX."_calendrier_feries";
+    $ans = grr_sql_query($req);
+    $feries = array();
+    foreach($ans as $val){$feries[] = $val['DAY'];}
+    $cocheferies = "";
+    foreach ($feries as &$value) {
+        $cocheferies .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
+    }
+    unset($feries);
+    // définir les vacances
+    $req = "SELECT * FROM ".TABLE_PREFIX."_calendrier_vacances";
+    $ans = grr_sql_query($req);
+    $vacances = array();
+    foreach($ans as $val){$vacances[] = $val['DAY'];}
+    $cocheVacances = "";
+    foreach ($vacances as &$value) {
+        $cocheVacances .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
+    }
+    unset($vacances);
+    echo "<tr>";
+    echo "<td>";
+    echo "<span class='small'><a href='admin_calend_ignore.php' onclick=\"{$cocheVacances} return false;\">".get_vocab("admin_calend_ignore_vacances")."&nbsp </a></span>";
+    echo "</td><td>";
+    echo "<span class='small'><a href='admin_calend_ignore.php' onclick=\"{$cocheferies} return false;\">".get_vocab("admin_calend_ignore_feries")."</a></span>";
+    echo "</td>";
+    echo "</tr>";
+}
 echo "<tr>\n<td><span class='small'><a href='admin_calend_ignore.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span></td>\n";
 echo "<td> </td></tr>\n";
 echo "</table>\n";
