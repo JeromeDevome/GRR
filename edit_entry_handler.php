@@ -83,10 +83,13 @@ $month = isset($_GET["start_month"]) ? $_GET["start_month"] : NULL;
 $year = isset($_GET["start_year"]) ? $_GET["start_year"] : NULL;
 $duration = isset($_GET["duration"]) ? $_GET["duration"] : NULL;
 $duration = str_replace(",", ".", "$duration ");
-$debut = array();
-$debut = explode(':', $_GET["start_"]);
-$hour = $debut[0];
-$minute = $debut[1];
+
+if (isset($_GET["start_"])){
+	$debut = array();
+	$debut = explode(':', $_GET["start_"]);
+	$hour = $debut[0];
+	$minute = $debut[1];
+}
 if (isset($hour))
 {
 	settype($hour, "integer");

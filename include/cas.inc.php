@@ -34,8 +34,12 @@
 // dans un répertoire correspondant a l'include_path du php.ini (exemple : /var/lib/php)
 include_once(dirname(__FILE__).'/CAS/CAS.php');
 
+
+
+//include(dirname(__FILE__).'/CAS/cas.sso');
+
 $serveurSSO = Settings::get("cas_serveur");
-$serveurSSOPort = Settings::get("cas_port");
+$serveurSSOPort = intval(Settings::get("cas_port"));
 $serveurSSORacine = Settings::get("cas_racine");
 
 /* declare le script comme un client CAS

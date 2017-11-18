@@ -199,12 +199,12 @@ if ((!empty($room)) || (isset($area_id)))
 			}
 			else
 			{
-				if (@file_exists($dest."img_".$room.".jpg"))
-					unlink($dest."img_".$room.".jpg");
-				if (@file_exists($dest."img_".$room.".png"))
-					unlink($dest."img_".$room.".png");
-				if (@file_exists($dest."img_".$room.".gif"))
-					unlink($dest."img_".$room.".gif");
+				if (@file_exists($dest."img_".TABLE_PREFIX."".$room.".jpg"))
+					unlink($dest."img_".TABLE_PREFIX."".$room.".jpg");
+				if (@file_exists($dest."img_".TABLE_PREFIX."".$room.".png"))
+					unlink($dest."img_".TABLE_PREFIX."".$room.".png");
+				if (@file_exists($dest."img_".TABLE_PREFIX."".$room.".gif"))
+					unlink($dest."img_".TABLE_PREFIX."".$room.".gif");
 				$picture_room = "";
 			}
 		}
@@ -330,11 +330,11 @@ if ((!empty($room)) || (isset($area_id)))
 					{
 						$tab = explode(".", $doc_file['name']);
 						$ext = strtolower($tab[1]);
-						if (@file_exists($dest."img_".$room.".".$ext))
-							@unlink($dest."img_".$room.".".$ext);
-						rename($dest.$doc_file['name'],$dest."img_".$room.".".$ext);
-						@chmod($dest."img_".$room.".".$ext, 0666);
-						$picture_room = "img_".$room.".".$ext;
+						if (@file_exists($dest."img_".TABLE_PREFIX."".$room.".".$ext))
+							@unlink($dest."img_".TABLE_PREFIX."".$room.".".$ext);
+						rename($dest.$doc_file['name'],$dest."img_".TABLE_PREFIX."".$room.".".$ext);
+						@chmod($dest."img_".TABLE_PREFIX."".$room.".".$ext, 0666);
+						$picture_room = "img_".TABLE_PREFIX."".$room.".".$ext;
 						$sql_picture = "UPDATE ".TABLE_PREFIX."_room SET picture_room='".protect_data_sql($picture_room)."' WHERE id=".$room;
 						if (grr_sql_command($sql_picture) < 0)
 						{
