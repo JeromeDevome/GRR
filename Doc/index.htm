@@ -6,8 +6,8 @@
         <link rel="stylesheet" href="style_doc.css"/>
     </head>
 <body>
-<h1><center>Gestion et Réservation de Ressources<br>Documentation (version 3.3.1 RC2)</center></h1>
-<p>Cette documentation devrait être à jour à la version 3.3.1 RC2, aux erreurs près... </p>
+<h1><center>Gestion et Réservation de Ressources<br>Documentation (version 3.3.1 RC3)</center></h1>
+<p>Cette documentation devrait être à jour à la version 3.3.1 RC3, aux erreurs et au schéma de la base près... </p>
 <p>Sommaire</p>
 <ol>
     <li><a href="#part1">Présentation générale de GRR</a></li>
@@ -35,7 +35,8 @@ utilisé comme mini-agenda partagé.</p>
     <li>la gestion des réservations de ces ressources (création, modification, suppression),</li>
     <li>la gestion du type d'accès à une ressource ; accès restreint à certains utilisateurs ou non,</li>
     <li>la possibilité d’effectuer des réservations périodiques,</li>
-    <li>la possibilité de configurer un calendrier des jours « fériés », inaccessible aux réservations,</li>
+    <li>la possibilité de configurer un calendrier des jours inaccessibles aux réservations,</li>
+    <li>la possibilité de définir des jours fériés et des jours de vacances, mis en évidence sur les plannings, et de les recopier dans le calendrier hors réservations,</li>
     <li>la possibilité de poser des réservations « sous réserve », à confirmer avant une date fixée,</li>
     <li>la possibilité de poser des réservations « avec modération »,</li>
     <li>la possibilité d'effectuer des réservations au nom d'autres utilisateurs ou de personnes extérieures</li>
@@ -845,6 +846,7 @@ Ensuite, pour chaque domaine, il est possible d'activer ou de désactiver
  un ou plusieurs types de réservation. Il est également possible de 
 spécifier un type par défaut lors d'une nouvelle réservation.
 <h2>3.3.Calendrier hors réservation</h2>
+<h3>3.3.1.Les jours hors réservation</h3>
 Il est possible de spécifier un calendrier de journées hors réservation :
  les journées cochées dans cette interface correspondent à des 
 journées pendant lesquelles il n'est pas possible de réserver.<br>
@@ -854,6 +856,12 @@ réservations ont déjà été enregistrées sur les journées que
 l'administrateur coche, celles-ci sont automatiquement et 
 irrémédiablement supprimées (<strong>les personnes concernées par les 
 suppressions ne sont pas prévenues par email</strong>).
+<h3>3.3.2.Les vacances et les jours fériés</h3>
+Si l'option "Afficher les vacances et les jours fériés" est activée, une option supplémentaire est proposée dans le menu.<br>
+Après avoir choisi de définir soit les jours fériés, soit les vacances scolaires, une page s'ouvre avec un calendrier dans lequel l'administrateur va cocher les jours.<br>
+Une option d'importation des jours fériés français ou des vacances scolaires françaises est mise en oeuvre. Il est possible d'ajuster en cochant des jours supplémentaires ou en décochant des jours excédentaires.<br>
+Les jours de vacances et les jours fériés sont alors mis en évidence sur les plannings jour, semaine ou mois.<br>
+Enfin il est possible de récupérer les jours fériés et les vacances scolaires dans le planning des jours hors réservation.
 <h2>3.4.Gestion des domaines (ajout/modification)</h2>
 <strong>Nom</strong> : le nom du domaine.<br>
 <strong>Ordre d'affichage</strong> : dans les différentes interfaces, les domaines sont affichés selon l'ordre d'affichage.  <br>
@@ -1116,6 +1124,12 @@ Permet l'importation d'une liste d'utilisateurs à partir d'un fichier csv, sép
 --> Type d'utilisateur : trois valeurs autorisées : "visiteur", "utilisateur", "administrateur"<br>
 --> Statut : deux valeurs autorisées : "actif" ou "inactif"<br>
 --> Type d'authentification : deux valeurs autorisées : "local" ou "ext"<br>
+<h3>Importer des utilisateurs depuis elycée</h3>
+L'ENT elycée est une variante de l'ENT Kd'école de l'éditeur Kosmos : il est vraisemblable que ce qui suit soit valable pour toutes les variantes de cet ENT.<br>
+Le fichier à importer est obtenu par export depuis l'annuaire elycée.<br>
+Les champs présents devraient être les suivants :<br>
+<code>rne;uid;classe;profil;prenom;nom;login;mot de passe;cle de jointure;uid pere;uid mere;uid tuteur1;uid tuteur2;prenom enfant;nom enfant;adresse;code postal;ville;pays</code>
+Par défaut, les utilisateurs importés ont le statut de visiteur : il faut ajuster le statut des utilisateurs autorisés à poser des réservations.
 <h3>Utilisateurs avec un mot de passe facile</h3>
 Signale les utilisateurs ayant un mot de passe facile. 
 <h2>3.8.Accès aux domaines restreints</h2>
@@ -2375,7 +2389,7 @@ Enfin, n'hésitez pas à proposer votre thème à l'équipe des développeurs
 de GRR pour qu'il soit éventuellement intégré à une future version de 
 GRR.
 <h1 id="part8">8.Documentation technique</h1>
-<h2>8.1.Les tables de la base de données (à jour pour la version 3.3.1 RC2)</h2>
+<h2>8.1.Les tables de la base de données (à jour pour la version 3.3.1 RC3)</h2>
 <h3>La table grr_room</h3>
 <p>Elle contient la liste des ressources</p>
 <ul>
@@ -2897,6 +2911,13 @@ Table de jointure qui relie les domaines aux sites<br>
 <ul>
     <li>
     <p>DAY : jour de vacances scolaires</p>
+    </li>
+</ul>
+<h3>La table grr_calendrier_feries</h3>
+<p>Cette table contient les valeurs UNIX des jours fériés.</p>
+<ul>
+    <li>
+    <p>DAY : jour férié</p>
     </li>
 </ul>
 <h3>La table grr_overload</h3>
