@@ -797,6 +797,7 @@ if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('cas_port', '')");
 							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('cas_racine', '')");
 							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('cas_serveur', '')");
+                            $result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_calendrier_feries (`DAY` int(11) NOT NULL DEFAULT '0');");
 							
 							if ($result_inter == '')
 								$result .= "<span style=\"color:green;\">Ok !</span><br />";
