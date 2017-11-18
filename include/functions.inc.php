@@ -47,20 +47,14 @@ function getWeekNumber($date)
 {
 	return date('W', $date);
 }
-
-/* 
-function getSchoolHolidays($now, $year)
+// fonction de détermination des jours de vacances scolaires par lecture dans la base
+function isSchoolHoliday($now)
 {
 	$test = grr_sql_query1("SELECT DAY FROM ".TABLE_PREFIX."_calendrier_vacances where DAY = '".$now."'");
-	if ($test != -1)
-		$sh = array(true, "");
-	else
-		$sh = array(false, "");
-
-	return $sh;
-} */
-// à revoir avec la mise en place de la table _calendrier_vacances, la fonction ci-dessus échoue
-function getSchoolHolidays($now, $year)
+	$val = ($test != -1);
+	return $val;
+} 
+/* function getSchoolHolidays($now, $year)
 {
 	$zone = 'A';
 	if (Settings::get("holidays_zone") != NULL)
@@ -92,7 +86,9 @@ function getSchoolHolidays($now, $year)
 	}
 	return $sh;
 }
-function getHolidays($year = null)
+*/
+// fonction de calcul des jours fériés (France)
+function setHolidays($year = null)
 {
 	if ($year === null)
 		$year = intval(date('Y'));
@@ -118,8 +114,14 @@ function getHolidays($year = null)
 	sort($holidays);
 	return $holidays;
 }
+// fonction de détermination si un jour est férié
+function isHoliday($now){
+	$test = grr_sql_query1("SELECT DAY FROM ".TABLE_PREFIX."_calendrier_feries where DAY = '".$now."'");
+	$val = ($test != -1);
+	return $val;
+}
 
-// $type = 1: Fonction Calendrier hors réservation ; 2; Fonction Calendrier vacances / feries
+// $type = 1: Fonction Calendrier hors réservation ; 2; Fonction Calendrier feries ; 3 : calendrier vacances (scolaires par défaut)
 function cal($month, $year, $type)
 {
 	global $weekstarts;
@@ -157,7 +159,9 @@ function cal($month, $year, $type)
 				$s .= $d;
 				if($type == 1)
 					$day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendar WHERE day='$temp'");
-				else
+				elseif ($type == 2)
+                    $day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendrier_feries WHERE day='$temp'");
+                else
 					$day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendrier_vacances WHERE day='$temp'");
 				$s .= '<br><input type="checkbox" name="'.$temp.'" value="'.$nameday.'" ';
 				if (!($day < 0))
@@ -2917,7 +2921,7 @@ function auth_visiteur($user,$id_room)
 //authGetUserLevel($user,$id,$type)
 //Determine le niveau d'accès de l'utilisateur
 //$user - l'identifiant de l'utilisateur
-//$id -   l'identifiant de showla ressource ou du domaine
+//$id -   l'identifiant de la ressource ou du domaine
 // $type - argument optionnel : 'room' (par défaut) si $id désigne une ressource et 'area' si $id désigne un domaine.
 ////Retourne le niveau d'accès de l'utilisateur
 function authGetUserLevel($user, $id, $type = 'room')
