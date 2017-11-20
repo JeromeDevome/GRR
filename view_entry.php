@@ -101,6 +101,7 @@ FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
 WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
 AND ".TABLE_PREFIX."_room.area_id = ".TABLE_PREFIX."_area.id
 AND ".TABLE_PREFIX."_entry.id='".$id."'";
+
 $sql_backup = "SELECT ".TABLE_PREFIX."_entry_moderate.name,
 ".TABLE_PREFIX."_entry_moderate.description,
 ".TABLE_PREFIX."_entry_moderate.beneficiaire,
@@ -457,6 +458,17 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
 		</td>
 	</tr>
 	<?php
+	// Les champs add :
+	$overload_data = mrbsEntryGetOverloadDesc($id);
+	foreach ($overload_data as $fieldname=>$field)
+	{
+		if (($field["affichage"] == 'y') and ($field["valeur"]!=""))
+		{
+			echo "<tr><td>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points")."</td><td>".htmlspecialchars($field["valeur"],ENT_NOQUOTES)."</tr>";
+		}
+	}
+
+	// Gestion des clef :
 	if ($keys == 1)
 	{
 		?>
@@ -556,6 +568,11 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
 	if ((getWritable($beneficiaire, getUserName(), $id)) && verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room(getUserName(), $room_id, $row[10]) && (!$was_del))
 	{
 		?>
+		<tr>
+			<td colspan="2">
+				&nbsp;
+			</td>
+		</tr>
 		<tr>
 			<td colspan="2">
 				<?php
