@@ -613,9 +613,23 @@ if ($auth_imap == 'yes')
 		}
 	}
 }
-		// On teste si la connexion est active ou non
+// On teste si la connexion est active ou non
 if ((Settings::get("disable_login")=='yes') and ($row[4] != "administrateur"))
 	return "2";
+
+// On teste si l'ip est autorisé
+if ((Settings::get("ip_autorise") != '') and ($row[4] != "administrateur")){
+	$resultIP = false;
+	$ips = explode(';', Settings::get("ip_autorise"));
+	foreach ($ips as $ip) {
+		if($ip == $_SERVER["REMOTE_ADDR"]){
+			$resultIP = true;
+		}
+	}
+	if($resultIP == false){
+		return "11";
+	}
+}
 		//
 		// A ce stade, on dispose dans tous les cas d'un tableau $row contenant les informations nécessaires à l'établissment d'une session
 		//

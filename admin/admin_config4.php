@@ -49,6 +49,12 @@ if (isset($_GET['url_disconnect']))
 	if (!Settings::set("url_disconnect", $_GET['url_disconnect']))
 		echo "Erreur lors de l'enregistrement de url_disconnect ! <br />";
 }
+// Restriction iP
+if (isset($_GET['ip_autorise']))
+{
+	if (!Settings::set("ip_autorise", $_GET['ip_autorise']))
+		echo "Erreur lors de l'enregistrement de ip_autorise !<br />";
+}
 // Max session length
 if (isset($_GET['sessionMaxLength']))
 {
@@ -139,7 +145,19 @@ if ($dbsys == "mysql")
 	<br />
 	<input type='radio' name='disable_login' value='no' id='label_2' <?php if (Settings::get("disable_login")=='no') echo "checked=\"checked\""; ?> />
 	<label for='label_2'><?php echo get_vocab("disable_login_off"); ?></label>
-</p>
+	</p>
+<?php
+	//
+	// iP autorisé
+	//*************************
+	//
+	echo "\n<hr /><h3>".get_vocab('title_ip_autorise')."</h3>";
+	echo "\n<p>".get_vocab("explain_ip_autorise")."</p>";
+	?>
+	<br />
+	<input class="form-control" type="text" name="ip_autorise" value="<?php echo(Settings::get("ip_autorise")); ?>" />
+	
+	
 <?php
 echo "\n<hr />";
 	//
@@ -154,7 +172,7 @@ echo "<h3>".get_vocab("title_session_max_length")."</h3>";
 			<?php echo get_vocab("session_max_length"); ?>
 		</td>
 		<td>
-			<input class="form-control" type="text" name="sessionMaxLength" size="16" value="<?php echo(Settings::get("sessionMaxLength")); ?>" />
+			<input class="form-control" type="number" name="sessionMaxLength" size="16" value="<?php echo(Settings::get("sessionMaxLength")); ?>" />
 		</td>
 	</tr>
 </table>
@@ -162,7 +180,7 @@ echo "<h3>".get_vocab("title_session_max_length")."</h3>";
 //Longueur minimale du mot de passe exigé
 echo "<hr /><h3>".get_vocab("pwd")."</h3>";
 echo "\n<p>".get_vocab("pass_leng_explain").get_vocab("deux_points")."
-<input class=\"form-control\" type=\"text\" name=\"pass_leng\" value=\"".htmlentities(Settings::get("pass_leng"))."\" size=\"20\" /></p>";
+<input class=\"form-control\" type=\"number\" name=\"pass_leng\" value=\"".htmlentities(Settings::get("pass_leng"))."\" size=\"20\" /></p>";
 //
 // Url de déconnexion
 //*******************
