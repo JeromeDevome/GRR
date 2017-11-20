@@ -113,6 +113,11 @@ if (isset($_POST['login']) && isset($_POST['password']))
 		$message .= "<br />". get_vocab("connexion_a_grr_non_autorisee");
 		$message .= "<br />". get_vocab("echec_authentification_imap");
 	}
+	else if ($result == "11")
+	{
+		$message = get_vocab("echec_connexion_GRR");
+		$message .= "<br />". get_vocab("connexion_a_grr_ip");
+	}
 	else
 	{
 		if (isset($_POST['url']))
