@@ -854,9 +854,13 @@ if ($type_affichage_reser == 0)
 	echo '<b>'.get_vocab("duration").'</b>'.PHP_EOL;
 	echo '</td></tr>'.PHP_EOL;
 	echo '<tr><td class="CL">'.PHP_EOL;
-	echo '<div class="form-group">'.PHP_EOL;
+	// echo '<div class="form-group">'.PHP_EOL;
+    echo '<div class="col-xs-3">'.PHP_EOL;
 	spinner($duration);
-	echo '<select class="form-control" name="dur_units" size="1">'.PHP_EOL;
+    // echo '<div class="col-xs-3">'.PHP_EOL;
+	echo '<select class="form-control" name="dur_units" >'.PHP_EOL;
+    // echo '<select class="form-control" name="dur_units" size="0.5">'.PHP_EOL;
+    // echo '<select name="dur_units" >'.PHP_EOL;
 	if ($enable_periods == 'y')
 		$units = array("periods", "days");
 	else
@@ -881,6 +885,7 @@ if ($type_affichage_reser == 0)
 		echo '>'.get_vocab($unit).'</option>'.PHP_EOL;
 	}
 	echo '</select>'.PHP_EOL;
+    echo "</div>";
 
 	$fin_jour = $eveningends;
 	$minute = $resolution / 60;
@@ -896,10 +901,10 @@ if ($type_affichage_reser == 0)
 		$heure_finale = $nb_jour. " ". $vocab["days"]. " + ". $heure_finale_restante;
 	}
 	$af_fin_jour = $heure_finale." H ".$minute_restante;
-	echo '<input name="all_day" type="checkbox" value="yes" />'.get_vocab("all_day");
+	echo '&nbsp &nbsp <input name="all_day" type="checkbox" value="yes" />'.get_vocab("all_day");
 	if ($enable_periods != 'y')
 		echo ' ('.$morningstarts.' H - '.$af_fin_jour.')';
-	echo '</div>'.PHP_EOL;
+	// echo '</div>'.PHP_EOL;
 	echo '</td></tr>'.PHP_EOL;
 }
 else
@@ -912,9 +917,10 @@ else
 
 	if ($enable_periods=='y')
 	{
-		echo "<b>".get_vocab("period")."</b>";
-		echo "<td class=\"CL\">\n";
-		echo "<select class=\"form-control\" name=\"end_period\">";
+		echo "<b>".get_vocab("period")."</b>".PHP_EOL;
+		// echo "<td class=\"CL\">\n"; à supprimer : balises mal équilibrées (YN le 20/11/2017)
+		// echo "<select class=\"form-control\" name=\"end_period\">";
+        echo "<select name=\"end_period\">";  // le style semble poser pb car non homogène avec celui du créneau début
 		foreach ($periods_name as $p_num => $p_val)
 		{
 			echo "<option value=\"".$p_num."\"";
