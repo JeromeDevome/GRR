@@ -172,7 +172,9 @@ else
 		echo '</table>'.PHP_EOL;
 	}
 
-	echo '<h4 class="titre">'.ucfirst($this_area_name).' - '.get_vocab("all_areas").'<br>'.ucfirst(utf8_strftime("%B %Y", $month_start)).' </h4>'.PHP_EOL;
+	//echo '<h4 class="titre">'.ucfirst($this_area_name).' - '.get_vocab("all_areas").'<br>'.ucfirst(utf8_strftime("%B %Y", $month_start)).' </h4>'.PHP_EOL;
+    echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.get_vocab("all_areas").'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php">'.ucfirst(utf8_strftime("%Y", $month_start)).'</h4>'.PHP_EOL;
+
 	if ($_GET['pview'] != 1)
 		echo ' <a href="month_all2.php?year='.$year.'&amp;month='.$month.'&amp;area='.$area.'"><img src="img_grr/change_view.png" alt="'.get_vocab("change_view").'" title="'.get_vocab("change_view").'" class="image" /></a>'.PHP_EOL;
 	echo '</div>'.PHP_EOL;
