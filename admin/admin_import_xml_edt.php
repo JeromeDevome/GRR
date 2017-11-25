@@ -219,6 +219,9 @@ echo '<table class="table_adm">';
                         else echo "Réservation effectuée</br>";
                     }
                 }
+                // on va nettoyer le fichier
+                fclose($dest_file);
+                unlink($dest_file);
             }
         }
     echo '</tr>';
