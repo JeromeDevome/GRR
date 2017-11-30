@@ -4077,7 +4077,7 @@ function affichage_resa_planning($_description, $id_resa)
 		{
 			if ($affichage != "")
 				$affichage .= "<br />";
-			$affichage .= htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($field["valeur"],ENT_NOQUOTES);
+			$affichage .= htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($field["valeur"],ENT_NOQUOTES|ENT_SUBSTITUTE);
 		}
 	}
 	return $affichage;
