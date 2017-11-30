@@ -958,7 +958,8 @@ $vocab['fouthofmonth'] = "4eme";
 $vocab['fiveofmonth'] = "5eme";
 $vocab['lastofmonth'] = "dernier";
 $vocab['ofmonth'] = "du mois.";
-$vocab['holidays_msg'] = "Afficher les vacances scolaire et les jour fériés";
+$vocab['holidays_msg'] = "Afficher les vacances scolaires et les jours fériés";
 $vocab['courrier_msg'] = "Afficher la gestion des salles par courrier";
-
+$vocab['OU'] = "OU"; // à traduire
+$vocab['show_all_rooms'] = "Voir toutes les ressources de tous les domaines"; // à traduire
 ?>
