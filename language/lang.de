@@ -959,5 +959,6 @@ $vocab['lastofmonth'] = "dernier";
 $vocab['ofmonth'] = "du mois.";
 $vocab['holidays_msg'] = "Afficher les vacances scolaire et les jour fériés";
 $vocab['courrier_msg'] = "Afficher la gestion des salles par courrier";
-
+$vocab['OU'] = "ODER";
+$vocab['show_all_rooms'] = "Voir toutes les ressources de tous les domaines"; // à traduire
 ?>
