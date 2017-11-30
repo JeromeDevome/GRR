@@ -960,4 +960,6 @@ $vocab['ofmonth'] = "du mois.";
 $vocab['holidays_msg'] = "Afficher les vacances scolaires et les jours fériés";
 $vocab['holidays_zone_msg'] = "Choix de la zone de vacances scolaires (France)";
 $vocab['courrier_msg'] = "Afficher la gestion des salles par courrier";
+$vocab['OU'] = "OU";
+$vocab['show_all_rooms'] = "Voir toutes les ressources de tous les domaines";
 ?>
