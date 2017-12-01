@@ -1869,16 +1869,15 @@ Depuis la version 1.7, GRR est prévu pour fonctionner dans un environnement CAS
 L'activation de l'authentification CAS se fait implicitement en choisissant le rôle par défaut des utilisateurs authentifiés<br>
 <h3>6.3.1.Les Pré-requis :</h3>
 Depuis la version GRR 3.3.1, les librairies phpCAS sont livrées dans l'archive GRR.<br>
-Il reste cependant à renseigner les paramètres du serveur d'authentification CAS, en complétant les fichiers cas.sso et éventuellement cas.inc.php.<br>
-Le fichier cas.sso est dans le dossier ./include/CAS/ et doit être renseigné avec les paramètres du serveur CAS.
-<br>
-Le fichier cas.inc.php est dans le dossier ./include/ et ne nécessite pas de modifications, sauf pour la choix de la langue par défaut.
+Il reste cependant à renseigner les paramètres du serveur d'authentification CAS, en page de configuration SSO.<br>
+Le fichier cas.inc.php est dans le dossier ./include/ et ne nécessite pas de modifications, sauf pour le choix de la langue par défaut.
 <br>
 <h3>6.3.2.Fonctionnement</h3>
 Dans le panneau d'administration de GRR, une page «&nbsp;configuration 
-SSO&nbsp;» permet d'activer la prise en charge de l'environnement CAS. 
+SSO&nbsp;» permet d'activer la prise en charge de l'environnement CAS. <br>
 L'activation consiste à choisir le statut par défaut des utilisateurs 
 authentifié CAS («&nbsp;usager&nbsp;» ou «&nbsp;visiteur&nbsp;»).<br>
+Il faut également renseigner les paramètres du serveur CAS qui va authentifier les utilisateurs et éventuellement les paramètres du proxy, lorsque le serveur hébergeant GRR est installé derrière un proxy.<br>
 <strong>Remarque :</strong><br>
 Depuis la version GRR1.9.7, il est possible de configurer le serveur CAS 
 et GRR de façon à pouvoir récupérer dans GRR des attributs LDAP envoyés 
@@ -1895,9 +1894,8 @@ Remarques :
  possibilité de créer des utilisateurs locaux est intéressante pour 
 permettre l'accès à GRR à des personnes ne disposant pas de compte CAS. 
 Il est fortement recommandé de créer un administrateur local de GRR. En 
-effet, certaines mises à jour de GRR nécessitent un accès particulier pour
- effectuer la mise à jour. </li>
-    <li>Un utilisateur qui désire accéder à GRR en s'authentifiant par CAS doit se rendre à l'adresse du type <em><span class="moz-txt-link-freetext">http://monserveur.fr/grr/ </span></em>S'il
+effet, certaines mises à jour de GRR nécessitent un accès particulier pour s'effectuer. </li>
+    <li>Un utilisateur qui désire accéder à GRR en s'authentifiant par CAS doit se rendre à l'adresse du type <em><span class="moz-txt-link-freetext">http://monserveur.fr/grr/ </span></em> S'il
  n'est pas déjà authentifié, une page lui propose de rentrer son 
 identifiant et son mot de passe. Tout ce qui concerne les utilisateurs 
 authentifiés par CAS est traité de la même façon que les utilisateurs <a href="#ldap">LDAP</a> .
@@ -1992,7 +1990,7 @@ authentifiés par Lemonldap est traité de la même façon que les
 utilisateurs <a href="#ldap">LDAP</a> .
     </li>
 </ul>
-<h3>Que se passe-t-il une fois que l'utilisateur a été authentifié par LemonLadap ?</h3>
+<h3>Que se passe-t-il une fois que l'utilisateur a été authentifié par LemonLdap ?</h3>
 Lorsque GRR est paramétré pour s'intégrer dans un environnement LemonLdap, le processus suivant s'applique :<br>
 Une fois authentifié, GRR regarde si un utilisateur dont le type 
 d'authentification est «&nbsp;ext&nbsp;» ayant cet identifiant est 

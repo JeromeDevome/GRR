@@ -53,6 +53,10 @@ if (isset($_POST['valid']))
 		echo "Erreur lors de l'enregistrement de cas_port !<br />";
 	if (!Settings::set("cas_racine", $_POST['cas_racine']))
 		echo "Erreur lors de l'enregistrement de cas_racine !<br />";
+    if (!Settings::set("cas_proxy_server", $_POST['cas_proxy_server']))
+		echo "Erreur lors de l'enregistrement de cas_proxy_server !<br />";
+    if (!Settings::set("cas_proxy_port", $_POST['cas_proxy_port']))
+		echo "Erreur lors de l'enregistrement de cas_proxy_port !<br />";
 	
 	if (!isset($_POST['cacher_lien_deconnecter']))
 		$cacher_lien_deconnecter = "n";
@@ -171,6 +175,14 @@ $CASserveurSSORacine = Settings::get("cas_racine");
 echo "<br />".get_vocab("cas_serveur")." : <input type=\"text\" name=\"cas_serveur\" size=\"40\" value =\"$CASserveurSSO\"/>\n";
 echo "<br />".get_vocab("cas_port")." : <input type=\"text\" name=\"cas_port\" size=\"40\" value =\"$CASserveurSSOPort\"/>\n";
 echo "<br />".get_vocab("cas_racine")." : <input type=\"text\" name=\"cas_racine\" size=\"40\" value =\"$CASserveurSSORacine\"/>\n";
+
+echo "<br>".get_vocab("cas_proxy_explain");
+
+$CASproxyServer = Settings::get("cas_proxy_server");
+$CASproxyPort = Settings::get("cas_proxy_port");
+
+echo "<br />".get_vocab("cas_proxy_server")." : <input type=\"text\" name=\"cas_proxy_server\" size=\"40\" value =\"$CASproxyServer\"/>\n";
+echo "<br />".get_vocab("cas_proxy_port")." : <input type=\"text\" name=\"cas_proxy_port\" size=\"40\" value =\"$CASproxyPort\"/>\n";
 
 if (Settings::get("sso_statut") != '')
 {
