@@ -80,11 +80,13 @@ if (@file_exists($nom_fic))
 			$j = '0';
 			$test1 = 'yes';
 			$total = count($liste_tables);
+			$tableManquantes = "";
 			while ($j < $total)
 			{
 				$test = mysqli_query($db, "SELECT count(*) FROM ".$table_prefix.$liste_tables[$j]);
 				if (!$test)
 				{
+					$tableManquantes .= " ". $table_prefix.$liste_tables[$j];
 					$correct_install='no';
 					$test1 = 'no';
 				}
@@ -119,7 +121,7 @@ if (@file_exists($nom_fic))
 					begin_html();
 					if ($test1 == 'no')
 					{
-						echo "<p>L'installation n'a pas pu se terminer normalement : des tables sont manquantes.</p>";
+						echo "<p>L'installation n'a pas pu se terminer normalement : des tables sont manquantes.".$tableManquantes."</p>";
 					}
 					if ($test2 == 0)
 					{
