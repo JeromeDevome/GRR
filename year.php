@@ -44,12 +44,12 @@ if (!Settings::load())
 require_once("./include/session.inc.php");
 // Resume session
 include "include/resume_session.php";
+// Paramètres langage
+include "include/language.inc.php";
 // Construction des identifiants de la ressource $room, du domaine $area, du site $id_site
 Definition_ressource_domaine_site();
 // Récupération des données concernant l'affichage du planning du domaine
 get_planning_area_values($area);
-// Paramètres langage
-include "include/language.inc.php";
 // On affiche le lien "format imprimable" en bas de la page
 $affiche_pview = '1';
 if (!isset($_GET['pview']))
@@ -185,9 +185,9 @@ if ($_GET['pview'] != 1)
 	echo "</td><td>\n";
 	echo genDateSelector("to_", "", $to_month, $to_year,"");
 	echo "</td></tr>\n";
-	echo "<tr><td>\n";
+	echo "<tr><td class='CR'><p><br>\n";
 	echo "<input type=\"hidden\" name=\"area\" value=\"$area\" />\n";
-	echo "<input type=\"submit\" name=\"valider\" value=\"".$vocab["goto"]."\" /></td><td> </td></tr>\n";
+	echo "<input type=\"submit\" name=\"valider\" value=\"".$vocab["goto"]."\" /></p></td></tr>\n";
 	echo "</table>\n";
 	echo "</form></td>\n";
 	echo '<td><a title="'.htmlspecialchars(get_vocab('back')).'" href="'.page_accueil('no').'">'.$vocab['back'].'</a></td>';
@@ -371,8 +371,10 @@ while ($month_indice < $month_end)
 		$t2 += 86400;
 		// On inscrit le numéro du mois dans la deuxième ligne
 		if ($display_day[$cweek] == 1)
-		{
-			echo tdcell("cell_hours");
+		{   
+			if (isHoliday($temp)) {echo tdcell("cell_hours_ferie");}
+            else if (isSchoolHoliday($temp)) {echo tdcell("cell_hours_vacance");}
+            else {echo tdcell("cell_hours");}
 			echo "<div><a title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\"   href=\"day.php?year=$year_num&amp;month=$month_num&amp;day=$cday&amp;area=$area\">$name_day</a>";
 			if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle)>-1)
 			{
