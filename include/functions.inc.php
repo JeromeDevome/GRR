@@ -1053,7 +1053,6 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			$year  = date("Y",$date_);
 			echo '<div id="toppanel">'.PHP_EOL;
 			echo '<div id="panel">'.PHP_EOL;
-			echo '<div class="content">'.PHP_EOL;
 			echo '<table id="header">'.PHP_EOL;
 			echo '<tr>'.PHP_EOL;
 			//Logo
@@ -1061,7 +1060,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			if ((Settings::get("logo") != '') && (@file_exists($nom_picture)))
 				echo '<td class="logo" height="100">'.PHP_EOL.'<a href="'.$racine.page_accueil('yes').'day='.$day.'&amp;year='.$year.'&amp;month='.$month.'"><img src="'.$nom_picture.'" alt="logo"/></a>'.PHP_EOL.'</td>'.PHP_EOL;
 			//Accueil
-			echo '<td class="accueil ">',PHP_EOL,'<h2>',PHP_EOL,'<a href="'.$racine.page_accueil('yes'),'day=',$day,'&amp;year=',$year,'&amp;month=',$month,'">',get_vocab("welcome"),' - <b>',Settings::get("company"),'</b></a>',PHP_EOL,'</h2>',PHP_EOL,'</td>',PHP_EOL;
+			echo '<td class="accueil ">',PHP_EOL,'<h2>',PHP_EOL,'<a href="'.$racine.page_accueil('yes'),'day=',$day,'&amp;year=',$year,'&amp;month=',$month,'">',Settings::get("company"),'</a>',PHP_EOL,'</h2>',PHP_EOL,'</td>',PHP_EOL;
 			//Mail réservation
 			echo Settings::get('message_accueil');
 			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
@@ -1085,10 +1084,6 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 					if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 					{
 						echo '<br />'.PHP_EOL;
-						echo "<form action='{$racineAd}admin_save_mysql.php' method='get'><div>".PHP_EOL;
-						echo '<input type="hidden" name="flag_connect" value="yes" />'.PHP_EOL;
-						echo '<input type="submit" class="btn btn-default" value="'.get_vocab("submit_backup").'" /></div>'.PHP_EOL;
-						echo '</form>'.PHP_EOL;
 						how_many_connected();
 					}
 					echo '</td>'.PHP_EOL;
@@ -1130,8 +1125,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			}
 			else
 			{
-				echo '<br /> <b>'.get_vocab("welcome_to").htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']).'</b>'.PHP_EOL;
-				echo '<br /> <a href="'.$racine.'my_account.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'.get_vocab("manage_my_account").'</a>'.PHP_EOL;
+				echo '<br /><a href="'.$racine.'my_account.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'. htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']).' - '.get_vocab("manage_my_account").'</a>'.PHP_EOL;
 				if (verif_access_search(getUserName()))
 					echo '<br/><a href="'.$racine.'report.php">'.get_vocab("report").'</a>'.PHP_EOL;
 				$disconnect_link = false;
@@ -1164,14 +1158,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			echo '</tr>'.PHP_EOL;
 			echo '</table>'.PHP_EOL;
 			echo '</div>'.PHP_EOL;
-			echo '</div>'.PHP_EOL;
-			echo '<div class="tab">'.PHP_EOL;
-		//	echo '<ul class="login">'.PHP_EOL;
-			//echo '<li>'.PHP_EOL;
-			echo '<a id="open" class="open" href="#">Menu <i>(ouvrir/fermer)</i></a>'.PHP_EOL;
-		//	echo '</li>'.PHP_EOL;
-		//	echo '</ul>'.PHP_EOL;
-			echo '</div>'.PHP_EOL;
+			echo '<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></a>'.PHP_EOL;
 			echo '</div>'.PHP_EOL;
 		}
 	}
