@@ -138,7 +138,7 @@ echo " <td>";
 // echo "<h4 class=\"titre\">" . ucfirst(utf8_strftime("%B %Y", $month_start)). " ".ucfirst($this_area_name)." - ".get_vocab("all_areas")."</h4>";
 echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.get_vocab("all_areas").'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php">'.ucfirst(utf8_strftime("%Y", $month_start)).'</h4>'.PHP_EOL;
 if ($_GET['pview'] != 1)
-	echo " <a href=\"month_all.php?year=$year&amp;month=$month&amp;area=$area\"><img src=\"img_grr/change_view.png\" alt=\"".get_vocab("change_view")."\" title=\"".get_vocab("change_view")."\" class=\"image\" /></a>";
+	echo " <a href=\"month_all.php?year=$year&amp;month=$month&amp;area=$area\"><span class='glyphicon glyphicon-refresh'></a>";
 echo " </td>";
 echo " </tr>";
 echo "</table>";

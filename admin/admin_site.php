@@ -176,8 +176,8 @@ function read_sites()
 			{
 				echo '        <tr>
 				<td>
-					<a href="admin_site.php?action=update&amp;id='.$row[0].'"><img class="image" title="'.get_vocab('change').'" alt="'.get_vocab('change').'" src="../img_grr/edit_s.png" /></a>
-					<a href="admin_site.php?action=delete&amp;id='.$row[0].'"><img class="image" title="'.get_vocab('delete').'" alt="'.get_vocab('delete').'" src="../img_grr/delete_s.png" /></a>';
+					<a href="admin_site.php?action=update&amp;id='.$row[0].'"><span class=\'glyphicon glyphicon-edit\'></a>
+					<a href="admin_site.php?action=delete&amp;id='.$row[0].'"><span class=\'glyphicon glyphicon-trash\'></a>';
 					//echo '            <a href="admin_site.php?action=right&amp;id='.$row[0].'"><img class=\"image\" title="'.get_vocab('privileges').'" alt="'.get_vocab('privileges').'" src="../img_grr/rights.png" /></a>';
 					echo '          </td>
 					<td>'.$row[1].'</td>

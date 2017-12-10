@@ -1,5 +1,7 @@
 Version en cours de développement sur GitHUB
 - Optimisation du bandeau menu. Réduction de la hauteur, supression de textes, optimisation de l'espace.
+- Supression d'image non utilisé
+- Passage d'images en css glyphicon
 
 Version 3.3.1 et inférieur
 - Voir sur le site grr.devome.com
