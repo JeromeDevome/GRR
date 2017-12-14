@@ -63,14 +63,9 @@ $nb_year_calendar = 10;
  En résumé, pour activer cette fonctionnalité, décommentez la ligne suivante (en supprimant le premier caractère #,
  et remplacez -7 par +n ou -n où "n" est le nombre d'heures d'avance ou de retard de GRR sur l'heure système du serveur.
 */
+ $timezone = 'America/Toronto';
  putenv("TZ=posix/Etc/GMT+0");
- putenv("TZ=America/Toronto");
-
-# Changement d'heure été<->hiver
-# $correct_heure_ete_hiver = 1 => GRR prend en compte les changements d'heure
-# $correct_heure_ete_hiver = 0 => GRR ne prend en compte les changements d'heure
-# Par défaut ($correct_heure_ete_hiver non définie) GRR prend en compte les changements d'heure.
- $correct_heure_ete_hiver = 1;
+ putenv("TZ={$timezone}");
 
 # Affichage d'un domaine par defaut en fonction de l'adresse IP de la machine cliente (voir documentation)
 # Mettre 0 ou 1 pour désactiver ou activer la fonction dans la page de gestion des domaines

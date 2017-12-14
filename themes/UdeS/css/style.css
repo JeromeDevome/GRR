@@ -1,0 +1,157 @@
+p,body {color:#508050; font-size: 10pt; font-family:arial,sans-serif;
+background-color:white}
+
+input,textarea,submit {color:black; font-size: 10pt; font-family:arial,sans-serif}
+form {margin-bottom : 5pt;margin-top : 5pt    }
+
+.small {font-size:8pt}
+
+a:link {color:grey; font-weight: bold; text-decoration: none}
+a:visited {color:grey; font-weight: bold; text-decoration: none}
+a:hover {color:red; text-decoration:underline}
+
+h1 {color:#508050; font-family:verdana,sans-serif; font-size:16pt}
+h2 {color:#508050; font-family:verdana,sans-serif; font-size:14pt}
+h3 {color:#508050; font-family:verdana,sans-serif; font-size:12pt}
+
+td {font-size:10pt; font-family:arial,sans-serif; border-width:1px; vertical-align:top}
+
+td.CR { vertical-align: middle; text-align: right}
+td.CL { vertical-align: middle; text-align: left}
+td.BR { vertical-align: baseline; text-align: right}
+td.BL { vertical-align: baseline; text-align: left}
+td.TR { vertical-align: top; text-align: right}
+td.TL { vertical-align: top; text-align: left}
+
+/* Mise en forme de l'affichage de la date et de l'heure */
+.clock {
+font-size: 1em;
+}
+
+.fontcolor1{color:#E0F8E0}
+.fontcolor2{color:#B8E4B8}
+.fontcolor3{color:#B8E4B8}
+.fontcolor4{color:#508050}
+
+.bground {background-color:#B8E4B8}
+td.border_banner {background-color:#EAF1E5;}
+td.banner {vertical-align:middle; background-color:#EAF1E5;}
+th {
+color:#508050;
+font-size:10pt;
+font-family:verdana,sans-serif;
+background-color:#FFF6E2;
+border-width:1px;
+border-color:black;
+vertical-align:top
+}
+/* Vues Journée et semaines. Mise en forme :
+   - des premières et dernières colonnes du planning
+	- de la 2ème ligne du planning */
+td.cell_hours {
+  background-color: #F3F8F1;
+  text-align: center;
+  font-size: 1em;
+}
+/* Vues week_all et toutes les vues mensuels :
+   mise en forme des cellules lorsqu'il il a au moins une réservation */
+td.cell_month {
+  background-color:#FFFFFF;
+}
+/* Vues par mois (month, month_all et month_all2) : mise en forme des cellules "hors mois" */
+td.cell_month_o {background-color:#cccccc;}
+/* Mise en forme des plages libres */
+.empty_cell {
+	background-color: #FFFFFF;
+	text-align: center;
+	vertical-align: middle;
+}
+/* Vues month et month_all2 : mise en forme du numéro du mois dans les cellules */
+.monthday {
+	font-size: 1.1em;
+}
+
+.cal_current_day{color:red}
+.week {background-color:#FFB200}
+td.calendar {border:0px; font-size: 8pt}
+td.calendarcol1 {border:0px; font-size: 8pt}
+td.calendarHeader {border:0px; font-size: 10pt}
+
+
+.center {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+.avertissement {
+background-color:#FF8585;
+text-align:center;
+}
+
+td.calendar2 {text-align:center; border:2px; font-size: 8pt}
+td.calendarHeader2 {text-align:center; border:0px; font-size: 10pt; width: 200px;}
+.formo {width: 100%; background-color: #FFF0E0; background-position: center bottom; float: none; color: #000000}
+.fondo {background-color: #FFF0E0; background-position: center bottom; float: none; color: #000000}
+.fondl {background-color: #CCCCCC; background-position: center bottom; float: none; color: #000000}
+
+/* La colonne de gauche de l'administration
+------------------------------------------*/
+#colgauche fieldset{
+    border: 1px solid #000000;
+    margin:10px;
+    padding:10px;
+}
+#colgauche  fieldset legend{
+    color:#000000;
+    margin-bottom:5px;
+}
+#colgauche  fieldset ul{
+    margin: 0;
+    padding-bottom:0;
+    padding-top:0;
+    padding-left:10px;
+}
+#colgauche  fieldset ul li{
+    list-style-type:disc;
+}
+td.colgauche_admin {
+    width: 25%;
+}
+
+div.tooltip{
+	color: Black;
+	margin-bottom: 5pt;
+	background: #B8E4B8;
+	margin: 5px;
+	padding: 5px;
+}
+/* toutes les images */
+.image {
+	border: none;
+	vertical-align: middle;
+}
+/* les titres dans tous les plannings (journée, semaine, mois) */
+.titre_planning {
+	color: black;
+	text-align: center;
+	font-size: 0.9em;
+}
+/* Tous les textes en petits caractères dans les plannings week_all, month et month_all */
+.small_planning {
+   font-size: 0.7em;
+}
+/* le div du lien imprimable */
+.format_imprimable {
+  text-align: center;
+}
+/* Ressources temporairement indisponible */
+.texte_ress_tempo_indispo {
+	color: #BA2828;
+	font-weight: bold;
+}
+/* couleur pour les ressources modérée */
+.texte_ress_moderee {
+	color: #BA2828;
+	font-weight: bold;
+}
