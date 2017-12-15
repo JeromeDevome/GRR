@@ -27,90 +27,11 @@
  * along with GRR; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-include "include/connect.inc.php";
-include "include/config.inc.php";
-include "include/misc.inc.php";
-include "include/functions.inc.php";
-include "include/$dbsys.inc.php";
-include "include/mincals.inc.php";
-include "include/mrbs_sql.inc.php";
 $grr_script_name = "month.php";
-//Settings
-require_once("./include/settings.class.php");
-//Chargement des valeurs de la table settings
-if (!Settings::load())
-	die("Erreur chargement settings");
-//Fonction relative à la session
-require_once("./include/session.inc.php");
-include "include/resume_session.php";
-//Construction des identifiants de la ressource $room, du domaine $area, du site $id_site
-Definition_ressource_domaine_site();
-//Récupération des données concernant l'affichage du planning du domaine
-get_planning_area_values($area);
-//Paramètres langage
-include "include/language.inc.php";
-//On affiche le lien "format imprimable" en bas de la page
-$affiche_pview = '1';
-if (!isset($_GET['pview']))
-	$_GET['pview'] = 0;
-else
-	$_GET['pview'] = 1;
-if ($_GET['pview'] == 1)
-	$class_image = "print_image";
-else
-	$class_image = "image";
-//calcul de l'accès à la ressource en fonction du niveau de l'utilisateur
-$verif_acces_ressource = verif_acces_ressource(getUserName(), $room);
-//Calcul du niveau d'accès aux fiche de réservation détaillées des ressources
-$acces_fiche_reservation = verif_acces_fiche_reservation(getUserName(), $room);
-//calcul du test si l'utilisateur a la possibilité d'effectuer une réservation, compte tenu
-//des limitations éventuelles de la ressources et du nombre de réservations déjà effectuées.
-$UserRoomMaxBooking = UserRoomMaxBooking(getUserName(), $room, 1);
-//calcul du niverau de droit de réservation
-$authGetUserLevel = authGetUserLevel(getUserName(), -1);
-//Determine si un visiteur peut réserver une ressource
-$auth_visiteur = auth_visiteur(getUserName(),$room);
-//Paramètres par défaut
-if (empty($debug_flag))
-	$debug_flag = 0;
-if (empty($month) || empty($year) || !checkdate($month, 1, $year))
-{
-	$month = date("m");
-	$year  = date("Y");
-}
-if (!isset($day))
-	$day = 1;
-//Renseigne la session de l'utilisateur, sans identification ou avec identification.
-if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
-	$type_session = "no_session";
-else
-	$type_session = "with_session";
-//Récupération des informations relatives au serveur.
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-//Affiche les informations dans l'header
-print_header($day, $month, $year, $type_session);
-//Renseigne les droits de l'utilisateur, si les droits sont insufisants, l'utilisateur est averti.
-if (check_begin_end_bookings($day, $month, $year))
-{
-	showNoBookings($day, $month, $year, $back);
-	exit();
-}
-if (((authGetUserLevel(getUserName(), -1) < 1) && (Settings::get("authentification_obli") == 1)) || !$verif_acces_ressource || authUserAccesArea(getUserName(), $area)==0)
-{
-	showAccessDenied($back);
-	exit();
-}
-// On vérifie une fois par jour si le délai de confirmation des réservations est dépassé
-// Si oui, les réservations concernées sont supprimées et un mail automatique est envoyé.
-// On vérifie une fois par jour que les ressources ont été rendue en fin de réservation
-// Si non, une notification email est envoyée
-if (Settings::get("verif_reservation_auto") == 0)
-{
-	verify_confirm_reservation();
-	verify_retard_reservation();
-}
+
+include "include/planning_init.inc.php";
+
+
 //Heure de dénut du mois, cela ne sert à rien de reprndre les valeur morningstarts/eveningends
 $month_start = mktime(0, 0, 0, $month, 1, $year);
 //Dans quel colonne l'affichage commence: 0 veut dire $weekstarts

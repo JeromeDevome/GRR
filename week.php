@@ -27,57 +27,12 @@
  * along with GRR; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-include "include/connect.inc.php";
-include "include/config.inc.php";
-include "include/misc.inc.php";
-include "include/functions.inc.php";
-include "include/$dbsys.inc.php";
-include "include/mincals.inc.php";
-include "include/mrbs_sql.inc.php";
+
 $grr_script_name = "week.php";
-require_once("./include/settings.class.php");
-if (!Settings::load())
-	die("Erreur chargement settings");
-require_once("./include/session.inc.php");
-include "include/resume_session.php";
-Definition_ressource_domaine_site();
-get_planning_area_values($area);
-include "include/language.inc.php";
-$affiche_pview = '1';
-if (!isset($_GET['pview']))
-	$_GET['pview'] = 0;
-else
-	$_GET['pview'] = 1;
-if ($_GET['pview'] == 1)
-	$class_image = "print_image";
-else
-	$class_image = "image";
-if (empty($debug_flag))
-	$debug_flag = 0;
-include "include/setdate.php";
-if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
-	$type_session = "no_session";
-else
-	$type_session = "with_session";
-print_header($day, $month, $year, $type_session);
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-$verif_acces_ressource = verif_acces_ressource(getUserName(), $room);
-$acces_fiche_reservation = verif_acces_fiche_reservation(getUserName(), $room);
-$UserRoomMaxBooking = UserRoomMaxBooking(getUserName(), $room, 1);
-$authGetUserLevel = authGetUserLevel(getUserName(), -1);
-$auth_visiteur = auth_visiteur(getUserName(), $room);
-if (check_begin_end_bookings($day, $month, $year))
-{
-	showNoBookings($day, $month, $year, $back);
-	exit();
-}
-if (((authGetUserLevel(getUserName(),-1) < 1) && (Settings::get("authentification_obli") == 1)) || !$verif_acces_ressource || authUserAccesArea(getUserName(), $area) == 0)
-{
-	showAccessDenied($back);
-	exit();
-}
+
+include "include/planning_init.inc.php";
+
+
 $time = mktime(0, 0, 0, $month, $day, $year);
 $time_old = $time;
 if (($weekday = (date("w", $time) - $weekstarts + 7) % 7) > 0)
@@ -90,11 +45,7 @@ if (!isset($correct_heure_ete_hiver) or ($correct_heure_ete_hiver == 1))
 		$decal = 0;
 	$time += $decal;
 }
-if (Settings::get("verif_reservation_auto") == 0)
-{
-	verify_confirm_reservation();
-	verify_retard_reservation();
-}
+
 $day_week   = date("d", $time);
 $month_week = date("m", $time);
 $year_week  = date("Y", $time);
