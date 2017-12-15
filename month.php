@@ -178,6 +178,7 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 	echo '</tr>'.PHP_EOL;
 	echo '</table>'.PHP_EOL;
 }
+$maxCapacite = "";
 if ($this_room_max  && $_GET['pview'] != 1)
 	$maxCapacite = '('.$this_room_max.' '.($this_room_max > 1 ? get_vocab("number_max2") : get_vocab("number_max")).')'.PHP_EOL;
 
