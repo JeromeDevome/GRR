@@ -113,6 +113,9 @@ $connexionAdminMAJ = 1;
 #L'admin peut restaurer une base depuis l'administration || 0: non ; 1: oui - Defaut 1
 $restaureBBD = 1;
 
+#Mode debug || 0: non ; 1: oui - Defaut 0
+$debug_flag = 0;
+
 ##################################################
 # Cas d'une authentification via config.inc.php  #
 ##################################################
