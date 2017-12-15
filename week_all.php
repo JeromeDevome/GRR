@@ -27,61 +27,12 @@
  * along with GRR; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-include "include/connect.inc.php";
-include "include/config.inc.php";
-include "include/misc.inc.php";
-include "include/functions.inc.php";
-include "include/$dbsys.inc.php";
-include "include/mincals.inc.php";
-include "include/mrbs_sql.inc.php";
+
 $grr_script_name = "week_all.php";
-// Settings
-require_once ("./include/settings.class.php");
-//Chargement des valeurs de la table settingS
-if (!Settings::load())
-	die("Erreur chargement settings");
-// Session related functions
-require_once ("./include/session.inc.php");
-// Resume session
-include "include/resume_session.php";
-include "include/language.inc.php";
-$affiche_pview = '1';
-if (!isset($_GET['pview']))
-	$_GET['pview'] = 0;
-else
-	$_GET['pview'] = 1;
-if ($_GET['pview'] == 1)
-	$class_image = "print_image";
-else
-	$class_image = "image";
-if (empty($debug_flag))
-	$debug_flag = 0;
-include "include/setdate.php";
-if ((Settings::get("authentification_obli") == 0) && (getUserName() == '' ))
-	$type_session = "no_session";
-else
-	$type_session = "with_session";
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-Definition_ressource_domaine_site();
-print_header($day, $month, $year, $type_session);
-if (check_begin_end_bookings($day, $month, $year))
-{
-	showNoBookings($day, $month, $year, $back);
-	exit();
-}
-if (((authGetUserLevel(getUserName(),-1) < 1) && (Settings::get("authentification_obli") == 1)) || (authUserAccesArea(getUserName(), $area) == 0))
-{
-	showAccessDenied($back);
-	exit();
-}
-if (Settings::get("verif_reservation_auto") == 0)
-{
-	verify_confirm_reservation();
-	verify_retard_reservation();
-}
-get_planning_area_values($area);
+
+include "include/planning_init.inc.php";
+
+
 if ($enable_periods == 'y')
 {
 	$resolution = 60;
