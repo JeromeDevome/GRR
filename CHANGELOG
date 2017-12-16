@@ -1,6 +1,5 @@
 Bugs connus sur la version de GitHub :
  - La supression en bloc ne fonctionne pas
- - month_all liens mois suivant et précédent
  - edit_entry.php : si pas de type à choisir => bouton enregistrer inopérant
  
 Tâches en cours

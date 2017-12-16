@@ -20,6 +20,7 @@ $grr_script_name = "month_all.php";
 
 include "include/planning_init.inc.php";
 
+echo "DEBUG23" . $year;
 
 $month_start = mktime(0, 0, 0, $month, 1, $year);
 $weekday_start = (date("w", $month_start) - $weekstarts + 7) % 7;
@@ -75,13 +76,13 @@ else
 		#Show Go to week before and after links
 		echo '<tr>'.PHP_EOL;
 		echo '<td class="left">'.PHP_EOL;
-		echo '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'month_all.php?year='.$yy.'&amp;month='.$ym.'&amp;area='.$area.'\';"><span class="glyphicon glyphicon-backward"></span>'.get_vocab("monthbefore").'</button>'.PHP_EOL;
+		echo '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'month_all.php?year='.$yy.'&amp;month='.$ym.'&amp;day=1&amp;area='.$area.'\';"><span class="glyphicon glyphicon-backward"></span>'.get_vocab("monthbefore").'</button>'.PHP_EOL;
 		echo '</td>'.PHP_EOL;
 		echo '<td>'.PHP_EOL;
 		include "include/trailer.inc.php";
 		echo '</td>'.PHP_EOL;
 		echo '<td class="right">'.PHP_EOL;
-		echo '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'month_all.php?year='.$ty.'&amp;month='.$tm.'&amp;area='.$area.'\';">'.get_vocab('monthafter').'  <span class="glyphicon glyphicon-forward"></span></button>'.PHP_EOL;
+		echo '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'month_all.php?year='.$ty.'&amp;month='.$tm.'&amp;day=1&amp;area='.$area.'\';">'.get_vocab('monthafter').'  <span class="glyphicon glyphicon-forward"></span></button>'.PHP_EOL;
 		echo '</td>'.PHP_EOL;
 		echo '</tr>'.PHP_EOL;
 			echo "<tr>";
