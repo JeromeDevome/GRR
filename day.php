@@ -99,7 +99,7 @@ else
 }
 grr_sql_free($res);
 
-// Dans le cas de l'affichange d'une ressource, dans l'autre cas on garde la requete dans planning_init.ic.php
+// Dans le cas de l'affichange d'une ressource, dans l'autre cas on garde la requete dans planning_init.inc.php
 if(!empty($_GET['room'])){
 	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' and id = '".protect_data_sql($_GET['room'])."' ORDER BY order_display, room_name";
 	$ressources = grr_sql_query($sql);
