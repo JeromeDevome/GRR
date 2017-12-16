@@ -1,6 +1,6 @@
 Bugs connus sur la version de GitHub :
  - La supression en bloc ne fonctionne pas
- - edit_entry.php : si pas de type à choisir => bouton enregistrer inopérant
+ - edit_entry.php : si pas de type à choisir => bouton enregistrer inopérant ( A confirmé que le problème est résolut )
  
 Tâches en cours
  - Aucune
