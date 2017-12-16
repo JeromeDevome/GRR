@@ -1,6 +1,7 @@
 <?php
-/* setdate.php
- * 
+/* 
+ * setdate.php
+ * Definis la date à afficher
  * Dernière modification : $Date: 2017-12-16 14:00$
  * @author    JeromeB & Laurent Delineau
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
@@ -49,4 +50,5 @@ else
 	while (!checkdate($month, $day, $year))
 		$day--;
 }
+
 ?>
