@@ -1,7 +1,46 @@
-Version en cours de développement sur GitHUB
-- Optimisation du bandeau menu. Réduction de la hauteur, supression de textes, optimisation de l'espace.
-- Supression d'image non utilisé
-- Passage d'images en css glyphicon
+Bugs connus sur la version de GitHub :
+ - La supression en bloc ne fonctionne pas
+ - month_all liens mois suivant et précédent
+ - edit_entry.php : si pas de type à choisir => bouton enregistrer inopérant
+ 
+Tâches en cours
+ - Aucune
 
-Version 3.3.1 et inférieur
+
+Version en cours de développement sur GitHUB (3.3.1)
+    [ajout] Visualisation des utilisateurs avec un mot de passe trop simple (A titre indicatif, certains mots de passe simples ne sont pas listés)
+    [ajout] Configuration du calendrier des vacances depuis l'administration
+    [ajout] Nouveau calendrier pour indiquer les fériés depuis l'administration
+    [ajout] Ajout de fichiers redirection pour empêcher la lecture de certains répertoires
+    [ajout] Champs additionnels dans l'affichage d'une réservation
+    [ajout] Page permettant la suppression de toutes les réservations postérieures à une date
+    [ajout] Page permettant la suppression de toutes les réservations antérieures à une date
+    [ajout] Page permettant de réserver en masse à partir d'un fichier csv
+    [ajout] Page permettant de réserver en masse à partir d'un fichier csv issu du logiciel UnDeuxTemps
+    [ajout] bibliothèques phpCAS dans le dossier /include
+    [ajout] Lien vers la page year.php depuis le numéro de l'année dans les pages month*.php
+	[ajout] Variable dans config permettant de désactiver la recherche de mise à jour
+    [correction] Affichage des champs additionnel, même dans le cas de caractère non utf8
+    [correction] Bordure de séparation pour les réservations entre les réservations dans la vue mois d'une ressources
+    [correction] Bordure de séparation pour les réservations entre les réservations dans la vue mois d'un domaine
+    [correction] Correction de la connexion LDAP lorsqu'un utilisateur externe existant se connecte ( merci à pboissonneault )
+    [correction] Affichage de la colonne gauche de l'admin dans la page admin_import_users_csv.php
+	[correction] Vue semaine d'une ressource sur plusieurs jour (horaire et crénaux)
+    [modification] La configuration d'un cas SSO ce fait depuis l'administration
+    [modification] Déplacement images dans le dossier approprié
+    [modification] de la page admin_calend.php pour en faire une page de choix entre:
+        -- l'ancienne page admin_calend.php renommée admin_calend2.php
+        -- une page permettant de supprimer toutes les réservations avant une date donnée
+        -- une page permettant de supprimer toutes les réservations après une date donnée
+        -- une page permettant de réserver en masse à partir d'un fichier csv
+        -- une page permettant de réserver en masse à partir d'un fichier csv issu du logiciel UnDeuxTemps
+    [modification] reprise des patches utilisés dans GEPI pour utilisation derrière un reverse-proxy
+	[modification] Amélioration du bandeau du haut : Supression texte "Accueil", réduction de la hauteur, optimisation du contenu
+	[modification] Passage d'image en CSS (Glyphicon)
+    [Suppression] Fichiers inutiles
+    [mise à jour] fichier des vacances scolaires (source index-education)
+    [mise à jour] documentation
+
+
+Version 3.3.0 et inférieur
 - Voir sur le site grr.devome.com
