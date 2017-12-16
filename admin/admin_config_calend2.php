@@ -16,7 +16,7 @@
  * (at your option) any later version.
  */
 
-$grr_script_name = "admin_calend_jour_cycle.php";
+$grr_script_name = "admin_config_calend2.php";
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
