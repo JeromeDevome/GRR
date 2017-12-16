@@ -72,44 +72,52 @@ LEFT JOIN ".TABLE_PREFIX."_j_type_area j on j.id_type=t.id
 WHERE (j.id_area  IS NULL or j.id_area != '".$areas."') AND (t.disponible<='".$aff_type."')
 ORDER BY t.order_display";
 $res = grr_sql_query($sql);
-if ($res)
-{
-	$row = grr_sql_row($res, 0);
-	// La requête sql précédente laisse passer les cas où un type est non valide
-	// dans le domaine concerné ET au moins dans un autre domaine, d'où le test suivant
-	$test = grr_sql_query1("SELECT id_type FROM ".TABLE_PREFIX."_j_type_area WHERE id_type = '".$row[1]."' AND id_area='".$areas."'");
-}
 
-for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-{
-	$test = grr_sql_query1("SELECT id_type FROM ".TABLE_PREFIX."_j_type_area WHERE id_type = '".$row[2]."' AND id_area='".$areas."'");
-	if ($test == -1)
+
+if (!$res)
+	fatal_error(0, grr_sql_error());
+
+if (grr_sql_count($res) != 0){
+
+	if ($res)
 	{
-		$nb_type ++;
-		$type_nom_unique = $row[0];
-		$type_id_unique = $row[1];
-		$display_type .= '<option value="'.$row[1].'" ';
-		
-		// Modification d'une réservation
-		if ($type != "")
+		$row = grr_sql_row($res, 0);
+		// La requête sql précédente laisse passer les cas où un type est non valide
+		// dans le domaine concerné ET au moins dans un autre domaine, d'où le test suivant
+		$test = grr_sql_query1("SELECT id_type FROM ".TABLE_PREFIX."_j_type_area WHERE id_type = '".$row[1]."' AND id_area='".$areas."'");
+	}
+
+	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+	{
+		$test = grr_sql_query1("SELECT id_type FROM ".TABLE_PREFIX."_j_type_area WHERE id_type = '".$row[2]."' AND id_area='".$areas."'");
+		if ($test == -1)
 		{
-			if ($type == $row[1])
-				$display_type .=  ' selected="selected"';
-		}
-		else
-		{
-			// Nouvelle réservation
-			$id_type_par_defaut = grr_sql_query1("SELECT id_type_par_defaut FROM ".TABLE_PREFIX."_area WHERE id = '".$areas."'");
-			//Récupère le cookie par defaut
-			if ($aff_default && isset($_COOKIE['type_default'])){
-				$cookie = $_COOKIE['type_default'];
-			} else{
-				$cookie = "";
+			$nb_type ++;
+			$type_nom_unique = $row[0];
+			$type_id_unique = $row[1];
+			$display_type .= '<option value="'.$row[1].'" ';
+			
+			// Modification d'une réservation
+			if ($type != "")
+			{
+				if ($type == $row[1])
+					$display_type .=  ' selected="selected"';
 			}
-			if ((!$cookie && ($id_type_par_defaut == $row[2])) || ($cookie && $cookie == $row[0]))
-				$display_type .=  ' selected="selected"';
+			else
+			{
+				// Nouvelle réservation
+				$id_type_par_defaut = grr_sql_query1("SELECT id_type_par_defaut FROM ".TABLE_PREFIX."_area WHERE id = '".$areas."'");
+				//Récupère le cookie par defaut
+				if ($aff_default && isset($_COOKIE['type_default'])){
+					$cookie = $_COOKIE['type_default'];
+				} else{
+					$cookie = "";
+				}
+				if ((!$cookie && ($id_type_par_defaut == $row[2])) || ($cookie && $cookie == $row[0]))
+					$display_type .=  ' selected="selected"';
+			}
+			$display_type .=  ' >'.$row[0].'</option>'.PHP_EOL;
 		}
-		$display_type .=  ' >'.$row[0].'</option>'.PHP_EOL;
 	}
 }
 $display_type .=  '</select>'.PHP_EOL.'</div>'.PHP_EOL;
