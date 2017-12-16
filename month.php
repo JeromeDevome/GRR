@@ -54,12 +54,7 @@ $this_moderate_room = grr_sql_query1("SELECT moderate FROM ".TABLE_PREFIX."_room
 $this_delais_option_reservation = grr_sql_query1("SELECT delais_option_reservation FROM ".TABLE_PREFIX."_room WHERE id=$room");
 $this_area_comment = grr_sql_query1("SELECT comment_room FROM ".TABLE_PREFIX."_room WHERE id=$room");
 $this_area_show_comment = grr_sql_query1("SELECT show_comment FROM ".TABLE_PREFIX."_room WHERE id=$room");
-if ($room <= 0)
-{
-	echo "<h1>".get_vocab("no_rooms_for_area")."</h1>";
-	include "include/trailer.inc.php";
-	exit;
-}
+
 if (($this_room_name_des) && ($this_room_name_des!="-1"))
 	$this_room_name_des = " (".$this_room_name_des.")";
 else
@@ -70,18 +65,8 @@ $ym = date("n", $i);
 $i = mktime(0, 0, 0,$month + 1, 1, $year);
 $ty = date("Y", $i);
 $tm = date("n", $i);
-echo '<div class="row">'.PHP_EOL;
-include("menu_gauche.php");
-include "chargement.php";
-if ($_GET['pview'] != 1){
-		if(Settings::get("menu_gauche") == 0 || Settings::get("menu_gauche") == 2){
-			echo '<div class="col-lg-12 col-md-12 col-xs-12">'.PHP_EOL;
-		} else{
-			echo '<div class="col-lg-9 col-md-12 col-xs-12">'.PHP_EOL;
-		}
-	echo '<div id="planning">'.PHP_EOL;}
-else{
-	echo '<div id="print_planning">'.PHP_EOL;}
+
+
 echo '<div class="titre_planning">'.PHP_EOL;
 echo '<table class="table-header">'.PHP_EOL;
 if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
