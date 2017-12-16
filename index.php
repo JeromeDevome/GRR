@@ -2,15 +2,11 @@
 /**
  * index.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2010-04-07 15:38:14 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @author    Marc-Henri PAMISEUX <marcori@users.sourceforge.net>
- * @copyright Copyright 2003-2008 Laurent Delineau
- * @copyright Copyright 2008 Marc-Henri PAMISEUX
+ * Ce script fait partie de l'application GRR
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    Laurent Delineau & JeromeB
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   admin
- * @version   $Id: index.php,v 1.10 2010-04-07 15:38:14 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -18,15 +14,6 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 if (!@file_exists("/var/www/lcs/includes/headerauth.inc.php"))
 	error_reporting (E_ALL);
