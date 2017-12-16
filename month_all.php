@@ -20,8 +20,6 @@ $grr_script_name = "month_all.php";
 
 include "include/planning_init.inc.php";
 
-echo "DEBUG23" . $year;
-
 $month_start = mktime(0, 0, 0, $month, 1, $year);
 $weekday_start = (date("w", $month_start) - $weekstarts + 7) % 7;
 $days_in_month = date("t", $month_start);
