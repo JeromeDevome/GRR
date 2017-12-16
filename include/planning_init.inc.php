@@ -85,6 +85,13 @@ else
 // Menu du haut
 print_header($day, $month, $year, $type_session);
 
+// Debut de la page
+echo '<div class="row">'.PHP_EOL;
+
+// Affichage du menu
+include("menu_gauche.php");
+include("chargement.php");
+
 // Dans le cas d'une selection invalide
 if ($area <= 0)
 {
@@ -137,6 +144,32 @@ if(isset($_GET['room']))
 		showAccessDenied($back);
 		exit();
 	}
+}
+
+// Selection des ressources
+$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display, room_name";
+$ressources = grr_sql_query($sql);
+
+if (!$ressources)
+	fatal_error(0, grr_sql_error());
+
+// Contrôle si il y a une ressource dans le domaine
+if (grr_sql_count($ressources) == 0)
+{
+	echo "<h1>".get_vocab("no_rooms_for_area")."</h1>";
+	exit;
+}
+
+// Page
+if ($_GET['pview'] != 1){
+		if(Settings::get("menu_gauche") == 0 || Settings::get("menu_gauche") == 2){
+			echo '<div class="col-lg-12 col-md-12 col-xs-12">'.PHP_EOL;
+		} else{
+			echo '<div class="col-lg-9 col-md-12 col-xs-12">'.PHP_EOL;
+		}
+	echo '<div id="planning">'.PHP_EOL;
+}else{
+	echo '<div id="print_planning">'.PHP_EOL;
 }
 
 ?>
