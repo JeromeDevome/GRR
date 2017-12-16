@@ -39,10 +39,7 @@ $month_week = date("m", $time);
 $year_week  = date("Y", $time);
 if ($enable_periods == 'y')
 {
-	$resolution = 60;
-	$morningstarts = 12;
 	$morningstarts_minutes = 0;
-	$eveningends = 12;
 	$eveningends_minutes = count($periods_name)-1;
 }
 $am7 = mktime($morningstarts, 0, 0, $month_week, $day_week, $year_week);
@@ -68,8 +65,6 @@ $minutesFinCrenaux = array();
 for($h=0; $h<3600; $h+=$this_area_resolution) {
 	$minutesFinCrenaux[] = date('i', $h);
 }
-
-
 
 
 
@@ -139,6 +134,8 @@ if (isset($_GET['precedent']))
 		echo '<span id="lienPrecedent">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="charger();javascript:history.back();">Précedent</button>',PHP_EOL,'</span>',PHP_EOL;
 	}
 }
+
+// Planning
 echo '<div class="contenu_planning">';
 $sql = "SELECT start_time, end_time, type, name, id, beneficiaire, statut_entry, description, option_reservation, moderate, beneficiaire_ext
 FROM ".TABLE_PREFIX."_entry
@@ -153,6 +150,7 @@ if (!$res)
 	echo grr_sql_error();
 else
 {
+	// Pour toute réservations
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
 		if ($debug_flag)
@@ -183,35 +181,47 @@ else
 			if ($slot <= $last_slot)
 			{
 				$d[$weekday][$slot]["color"] = $row[2];
-				if (($row[1]) > mktime(24, 0, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0]))) // changed
-				{
 
-					// Cas d'une réservation sur plusieurs jours 
-					
+				// Cas d'une réservation sur plusieurs jours
+				if (($row[1]) > mktime(24, 0, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0])))
+				{
+					// Premier jour de réservation, Hdebut = Heure debut résa / Hfin = heure fin de journée / duree = (nb bloc d'une journée - nb bloc vides)
 					if (date("d", $t) == $firstday){
-					// Pour le prmier jour de réservation, Hdebut = Heure debut résa / Hfin = heure fin de journée / duree = (nb bloc d'une journée
-																													//  - nb bloc vides)
 						$d[$weekday][$slot]["horaireDebut"] = $row[0];
 						$d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0]));
-						$d[$weekday][$slot]["duree"] = (mktime($eveningends, $eveningends_minutes, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0])) - $row[0]) / $this_area_resolution;
-						
-					}
-					else if (date("d", $t) == $lastday)
-					{   
-						// Pour le dernier jour de réservation, Hdebut = Heure debut journée/ Hfin = heure fin résa / duree = (nb bloc d'une journée
-																													
-				
-						$d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$row[1]), date('d',$row[1]), date('Y',$row[1]));
-						$d[$weekday][$slot]["horaireFin"] = $row[1];
-						$d[$weekday][$slot]["duree"] = ($row[1]- mktime($morningstarts, 0, 0, date('m',$row[1]), date('d',$row[1]), date('Y',$row[1]))) / $this_area_resolution;
-
-					} else{
-						// Pour les jours de entre les deux , Hdebut = Heure debut journée/ Hfin = heure fin journée / duree = ( h fin jourrnée
-																										  // - h debut journée * nb bloc pr 1h ) 
-
-						$d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$row[1]), date('d',$row[1]), date('Y',$row[1]));
-						$d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0]));
 						$d[$weekday][$slot]["duree"] = (($eveningends+1-$morningstarts)*$heigthSlotHoure);
+					}
+					// Dernier jour de réservation, Hdebut = Heure debut journée/ Hfin = heure fin résa / duree = (nb bloc d'une journée
+					else if (date("d", $t) == $lastday)
+					{
+						if ($enable_periods == 'y'){
+							$d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$row[1]), date('d',$row[1]), date('Y',$row[1]));
+							$d[$weekday][$slot]["horaireFin"] = $row[1];
+							$d[$weekday][$slot]["duree"] = date("i", $row[1] );
+						} else{
+							$d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$row[1]), date('d',$row[1]), date('Y',$row[1]));
+							$d[$weekday][$slot]["horaireFin"] = $row[1];
+							$d[$weekday][$slot]["duree"] = ($row[1]- mktime($morningstarts, 0, 0, date('m',$row[1]), date('d',$row[1]), date('Y',$row[1]))) / $this_area_resolution;
+						}
+
+					// Les jours entre les deux , Hdebut = Heure debut journée/ Hfin = heure fin journée / duree = ( h fin jourrnée - h debut journée * nb bloc pr 1h ) 
+					} else{
+						if ($enable_periods == 'y'){
+							$d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$row[1]), date('d',$t), date('Y',$row[1]));
+							$d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$row[0]), date('d',$t), date('Y',$row[0]))+3600;
+							$d[$weekday][$slot]["duree"] = (($eveningends+1-$morningstarts)*$heigthSlotHoure);
+						}
+						else
+						{
+							$d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$row[1]), date('d',$row[1]), date('Y',$row[1]));
+							$d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0]));
+							$d[$weekday][$slot]["duree"] = (($eveningends+1-$morningstarts)*$heigthSlotHoure);
+						}
+						
+						/*echo date('j-m-Y H:i:s',$d[$weekday][$slot]["horaireDebut"])." --- ";
+						echo date('j-m-Y H:i:s',$d[$weekday][$slot]["horaireFin"])." --- ";
+						echo $d[$weekday][$slot]["duree"]." --- ";
+						echo "C2C<br>";*/
 					}
 				}
 				else
@@ -220,6 +230,7 @@ else
 					$d[$weekday][$slot]["horaireFin"] = $row[1];
 					$d[$weekday][$slot]["duree"] = ($row[1]- $row[0]) / $this_area_resolution;
 				}
+
 				//Si la plage de fin dépasse le créneau, augmenter la durée
 				if(!in_array(date('i', $d[$weekday][$slot]["horaireFin"]), $minutesFinCrenaux)) {
 					$d[$weekday][$slot]["duree"] += 1;
@@ -327,6 +338,7 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 	$semaine_changement_heure_ete = 'no';
 	$semaine_changement_heure_hiver = 'no';
 
+	// Pour l'ensemble des horaires ou des crénaux
 	for ($slot = $first_slot; $slot <= $last_slot; $slot++)
 	{
 		echo "<tr>";
@@ -334,6 +346,8 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 			tdcell("cell_hours");
 		else
 			tdcell("cell_hours2");
+
+		// 1ere colonne heure ou nom crénau
 		if ($enable_periods=='y')
 		{
 			$time_t = date("i", $t);
@@ -342,9 +356,12 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 		}
 		else
 			echo affiche_heure_creneau($t,$resolution)."</td>\n";
+
 		$wt = $t;
 		$empty_color = "empty_cell";
 		$num_week_day = $weekstarts;
+
+		// X colonnes (1 par jour)
 		for ($weekday = 0; $weekday < 7; $weekday++)
 		{
 			$wday = date("d", $wt);
@@ -356,6 +373,7 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 			$heurehiver1 = heure_ete_hiver("hiver",$wyear, 0);
 			$heureete2 = heure_ete_hiver("ete", $wyear,2);
 			$heurehiver2 = heure_ete_hiver("hiver", $wyear, 2);
+
 			if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
 			{
 				$temp =   mktime(0, 0, 0, $wmonth, $wday,$wyear);
@@ -456,13 +474,15 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 					{
 						if (isset($d[$weekday][$slot - $decale_slot * $nb_case]["id"]))
 						{
-							if ($enable_periods == 'y'){ // Nb de case pour crénau							
-								$nbrow =  ($d[$weekday][$slot - $decale_slot * $nb_case]['horaireFin'] - $d[$weekday][$slot - $decale_slot * $nb_case]['horaireDebut']) / 60;
+							if ($enable_periods == 'y'){ // Nb de case pour crénau
+								$nbrow = $d[$weekday][$slot - $decale_slot * $nb_case]["duree"];
+								//echo print_r( $d[$weekday][$slot - $decale_slot * $nb_case]);
 							} else{
-								$nbrow =  $d[$weekday][$slot - $decale_slot * $nb_case]["duree"];
+								$nbrow = $d[$weekday][$slot - $decale_slot * $nb_case]["duree"];
 							}
 
 							tdcell_rowspan($d[$weekday][$slot - $decale_slot * $nb_case]["color"], $nbrow);
+
 							if ($acces_fiche_reservation)
 							{
 								if (Settings::get("display_level_view_entry") == 0)
@@ -515,7 +535,7 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 			$wt += 86400;
 			$num_week_day++; // Pour le calcul des jours à afficher
 			$num_week_day = $num_week_day % 7; // Pour le calcul des jours à afficher
-		}
+		} // Fin colonne du jour
 		if ($enable_periods == 'y')
 		{
 			$time_t = date("i", $t);
