@@ -42,7 +42,7 @@ else
 	$msg = '';
 print_header("", "", "", $type="with_session");
 include "admin_col_gauche.php";
-$sql = "SELECT id, type_name, order_display, couleur, type_letter FROM ".TABLE_PREFIX."_type_area
+$sql = "SELECT id, type_name, order_display, couleurhexa, type_letter FROM ".TABLE_PREFIX."_type_area
 ORDER BY order_display, type_letter";
 //
 // Enregistrement
@@ -138,7 +138,7 @@ if ($res)
 		echo "<tr>\n";
 		echo "<td>{$col[$i][1]}</td>\n";
 		echo "<td>{$col[$i][3]}</td>\n";
-		echo "<td style=\"background-color:".$tab_couleur[$col[$i][5]]."\"></td>\n";
+		echo "<td style=\"background-color:".$couleur."\"></td>\n";
 		echo "<td>{$col[$i][4]}</td>\n";
 		echo "<td><input type=\"checkbox\" name=\"".$col[$i][2]."\" value=\"y\" ";
 		$test = grr_sql_query1("SELECT count(id_type) FROM ".TABLE_PREFIX."_j_type_area WHERE id_area = '".$id_area."' AND id_type = '".$row[0]."'");

@@ -150,41 +150,6 @@ $sso_super_admin = false;
 # Réalise la connexion à la base d'authentification du LCS et include des fonctions de lcs/includes/functions.inc.php
  define('LCS_PAGE_AUTH_INC_PHP',"/var/www/lcs/includes/headerauth.inc.php");
 
-#############
-# Entry Types
-#############
-# Les lignes ci-dessous correspondent aux couleurs disponibles pour les types de réservation
-# Vous pouvez modifier les couleurs ou même en rajouter à votre convenance.
-$tab_couleur[1] = "#F49AC2"; # mauve pâle
-$tab_couleur[2] = "#99CCCC"; # bleu
-$tab_couleur[3] = "#FF9999"; # rose pâle
-$tab_couleur[4] = "#95a5a6"; # concrete
-$tab_couleur[5] = "#C0E0FF"; # bleu-vert
-$tab_couleur[6] = "#FFCC99"; # pêche
-$tab_couleur[7] = "#e74c3c"; # rouge
-$tab_couleur[8] = "#3498db"; # bleu "aqua"
-$tab_couleur[9] = "#DDFFDD"; # vert clair
-$tab_couleur[10] = "#34495e"; # gris
-$tab_couleur[11] = "#2ecc71"; # vert pâle
-$tab_couleur[12] = "#9b59b6"; # violet
-$tab_couleur[13] = "#f1c40f"; # jaune
-$tab_couleur[14] = "#FF00DE"; # rose
-$tab_couleur[15] = "#009900"; # vert
-$tab_couleur[16] = "#e67e22"; # orange
-$tab_couleur[17] = "#bdc3c7"; # gris clair
-$tab_couleur[18] = "#C000FF"; # Mauve
-$tab_couleur[19] = "#FF0000"; # rouge vif
-$tab_couleur[20] = "#FFFFFF"; # blanc
-$tab_couleur[21] = "#A0A000"; # Olive verte
-$tab_couleur[22] = "#f39c12"; # marron goldenrod
-$tab_couleur[23] = "#1abc9c"; # turquoise
-$tab_couleur[24] = "#884DA7"; # amethyst
-$tab_couleur[25] = "#4169E1"; # bleu royal
-$tab_couleur[26] = "#6A5ACD"; # bleu ardoise
-$tab_couleur[27] = "#AA5050"; # bordeaux
-$tab_couleur[28] = "#FFBB20"; # pêche
-
-
 ###################
 # Database settings
 ###################

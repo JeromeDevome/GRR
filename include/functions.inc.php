@@ -1723,10 +1723,9 @@ function time_date_string_jma($t,$dformat)
 // Renvoie une balise span avec un style backgrounf-color correspondant au type de  la réservation
 function span_bgground($colclass)
 {
-	global $tab_couleur;
 	static $ecolors;
-	$num_couleur = grr_sql_query1("SELECT couleur FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-	echo '<span style="background-color: '.$tab_couleur[$num_couleur].'; background-image: none; background-repeat: repeat; background-attachment: scroll;">'.PHP_EOL;
+	$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
+	echo '<span style="background-color: '.$couleurhexa.'; background-image: none; background-repeat: repeat; background-attachment: scroll;">'.PHP_EOL;
 }
 
 //Output a start table cell tag <td> with color class and fallback color.
@@ -1736,12 +1735,12 @@ function tdcell($colclass, $width = '')
 		$temp = ' style="width:'.$width.'%;" ';
 	else
 		$temp = "";
-	global $tab_couleur;
+
 	static $ecolors;
 	if (($colclass >= "A") && ($colclass <= "Z"))
 	{
-		$num_couleur = grr_sql_query1("SELECT couleur FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-		echo '<td style="background-color:'.$tab_couleur[$num_couleur].';" '.$temp.'>'.PHP_EOL;
+		$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
+		echo '<td style="background-color:'.$couleurhexa.';" '.$temp.'>'.PHP_EOL;
 	}
 	else
 		echo '<td class="'.$colclass.' '.$temp.'">'.PHP_EOL;
@@ -1749,14 +1748,13 @@ function tdcell($colclass, $width = '')
 
 function tdcell_rowspan($colclass, $step)
 {
-	global $tab_couleur;
 	static $ecolors;
 	if ($step < 1)
 		$step = 1;
 	if (($colclass >= "A") && ($colclass <= "Z"))
 	{
-		$num_couleur = grr_sql_query1("SELECT couleur FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-		echo '<td rowspan="'.$step.'" style="background-color:'.$tab_couleur[$num_couleur].';">'.PHP_EOL;
+		$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
+		echo '<td rowspan="'.$step.'" style="background-color:'.$couleurhexa.';">'.PHP_EOL;
 	}
 	else
 		echo '<td rowspan="'.$step.'" td class="'.$colclass.'">'.PHP_EOL;

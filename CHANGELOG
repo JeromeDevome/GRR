@@ -1,10 +1,11 @@
 Bugs connus sur la version de GitHub :
  - La supression en bloc ne fonctionne pas
- - edit_entry.php : si pas de type à choisir => bouton enregistrer inopérant ( A confirmé que le problème est résolut )
  
 Tâches en cours
  - Aucune
 
+Version en cours de développement sur GitHUB (3.3.2)
+	[ajout] Personnalisation des couleurs pour les types de réservation depuis l'administration, soit un passage de 28 couleurs à 16 777 216 couleurs
 
 Version en cours de développement sur GitHUB (3.3.1)
     [ajout] Visualisation des utilisateurs avec un mot de passe trop simple (A titre indicatif, certains mots de passe simples ne sont pas listés)
