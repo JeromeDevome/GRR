@@ -795,6 +795,48 @@ if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 							$result_inter = '';
 						}
 
+						if ($version_old < "3.3.2")
+						{
+							$result .= "<b>Mise à jour jusqu'à la version 3.3.2 :</b><br />";
+
+							$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_type_area ADD `couleurhexa` VARCHAR(10) NOT NULL AFTER `couleur`;");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#F49AC2' WHERE couleur = '1';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#99CCCC' WHERE couleur = '2';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#FF9999' WHERE couleur = '3';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#95a5a6' WHERE couleur = '4';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#C0E0FF' WHERE couleur = '5';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#FFCC99' WHERE couleur = '6';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#e74c3c' WHERE couleur = '7';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#3498db' WHERE couleur = '8';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#DDFFDD' WHERE couleur = '9';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#34495e' WHERE couleur = '10';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#2ecc71' WHERE couleur = '11';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#9b59b6' WHERE couleur = '12';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#f1c40f' WHERE couleur = '13';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#FF00DE' WHERE couleur = '14';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#009900' WHERE couleur = '15';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#e67e22' WHERE couleur = '16';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#bdc3c7' WHERE couleur = '17';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#C000FF' WHERE couleur = '18';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#FF0000' WHERE couleur = '19';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#FFFFFF' WHERE couleur = '20';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#A0A000' WHERE couleur = '21';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#f39c12' WHERE couleur = '22';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#1abc9c' WHERE couleur = '23';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#884DA7' WHERE couleur = '24';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#4169E1' WHERE couleur = '25';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#6A5ACD' WHERE couleur = '26';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#AA5050' WHERE couleur = '27';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#FFBB20' WHERE couleur = '28';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#CFCFCF' WHERE couleur > '28';");
+
+							if ($result_inter == '')
+								$result .= "<span style=\"color:green;\">Ok !</span><br />";
+							else
+								$result .= $result_inter;
+							$result_inter = '';
+						}
+
 						// Vérification du format des champs additionnels
 						// Avant version 1.9.4, les champs add étaient stockés sous la forme <id_champ>champ_encode_en_base_64</id_champ>
 						// A partir de la version 1.9.4, les champs add. sont stockés sous la forme @id_champ@url_encode(champ)@/id_champ@

@@ -54,7 +54,7 @@ echo "<br />\n";
 echo "| <a href=\"admin_type_modify.php?id=0\">".get_vocab("display_add_type")."</a> |\n";
 echo "<br />\n";
 echo "<br />\n";
-$sql = "SELECT id, type_name, order_display, couleur, type_letter, disponible FROM ".TABLE_PREFIX."_type_area
+$sql = "SELECT id, type_name, order_display, couleurhexa, type_letter, disponible FROM ".TABLE_PREFIX."_type_area
 ORDER BY order_display,type_letter";
 $res = grr_sql_query($sql);
 $nb_lignes = grr_sql_count($res);
@@ -95,7 +95,7 @@ if ($res)
 		echo "<tr>\n";
 		echo "<td>{$col[$i][1]}</td>\n";
 		echo "<td><a href='admin_type_modify.php?id_type={$col[$i][2]}'>{$col[$i][3]}</a></td>\n";
-		echo "<td style=\"background-color:".$tab_couleur[$col[$i][5]]."\"></td>\n";
+		echo "<td style=\"background-color:".$couleur."\"></td>\n";
 		echo "<td>{$col[$i][4]}</td>\n";
 		echo "<td>\n";
 		if ($disponible == '2')
