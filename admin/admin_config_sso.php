@@ -7,6 +7,9 @@
  * @author    Laurent Delineau & JeromeB
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
+ * @package   root
+ * @version   $Id: admin_config_sso.php,v 1.12 2010-04-07 15:38:14 grr Exp $
+ * @filesource
  *
  * This file is part of GRR.
  *
@@ -14,6 +17,15 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
+ *
+ * GRR is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with GRR; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 include "../include/admin.inc.php";
@@ -42,6 +54,10 @@ if (isset($_POST['valid']))
 		echo "Erreur lors de l'enregistrement de cas_port !<br />";
 	if (!Settings::set("cas_racine", $_POST['cas_racine']))
 		echo "Erreur lors de l'enregistrement de cas_racine !<br />";
+    if (!Settings::set("cas_proxy_server", $_POST['cas_proxy_server']))
+		echo "Erreur lors de l'enregistrement de cas_proxy_server !<br />";
+    if (!Settings::set("cas_proxy_port", $_POST['cas_proxy_port']))
+		echo "Erreur lors de l'enregistrement de cas_proxy_port !<br />";
 	
 	if (!isset($_POST['cacher_lien_deconnecter']))
 		$cacher_lien_deconnecter = "n";
@@ -160,6 +176,14 @@ $CASserveurSSORacine = Settings::get("cas_racine");
 echo "<br />".get_vocab("cas_serveur")." : <input type=\"text\" name=\"cas_serveur\" size=\"40\" value =\"$CASserveurSSO\"/>\n";
 echo "<br />".get_vocab("cas_port")." : <input type=\"text\" name=\"cas_port\" size=\"40\" value =\"$CASserveurSSOPort\"/>\n";
 echo "<br />".get_vocab("cas_racine")." : <input type=\"text\" name=\"cas_racine\" size=\"40\" value =\"$CASserveurSSORacine\"/>\n";
+
+echo "<br>".get_vocab("cas_proxy_explain");
+
+$CASproxyServer = Settings::get("cas_proxy_server");
+$CASproxyPort = Settings::get("cas_proxy_port");
+
+echo "<br />".get_vocab("cas_proxy_server")." : <input type=\"text\" name=\"cas_proxy_server\" size=\"40\" value =\"$CASproxyServer\"/>\n";
+echo "<br />".get_vocab("cas_proxy_port")." : <input type=\"text\" name=\"cas_proxy_port\" size=\"40\" value =\"$CASproxyPort\"/>\n";
 
 if (Settings::get("sso_statut") != '')
 {
