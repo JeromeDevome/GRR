@@ -69,6 +69,8 @@ table.legende td{width:125px;text-align:center}
 .pied_menuGauche{border-top:3px solid #FE1B00}
 th{color:#eee;font-size:10pt;font-family:verdana,sans-serif;background-color:#FE1B00 !important;vertical-align:top;text-align:center !important;border:none !important}
 td.cell_hours{color:#fff;background-color:gray !important;text-align:center;font-size:13px;height:20px;line-height:20px;border: none !important}
+td.cell_hours_vacance{color:#fff;background-color:rgba(46,204,113,.5) !important;text-align:center;font-size:13px;height:20px;line-height:20px;border: none !important}
+td.cell_hours_ferie{color:#fff;background-color:#c0392b !important;text-align:center;font-size:13px;height:20px;line-height:20px;border: none !important}
 td.cell_hours2{color:#000;background-color:#ccc !important;text-align:center;font-size:13px;height:20px;line-height:20px;border: none !important}
 td.cell_hours a{color:#fff}
 td.cell_month{background-color:#fff;vertical-align:top}
@@ -76,7 +78,7 @@ td.cell_month{background-color:#fff;vertical-align:top}
 .cell_month a:hover{color:#000;font-weight:700}
 td.cell_month_o{background-color:#ccc}
 .empty_cell{background-color:#fff;text-align:center;vertical-align:middle}
-.monthday{font-size:2.1em;text-align:center;height:100px;line-height:100px}
+.monthday{font-size:2.1em;text-align:center}
 .center{width:100%;margin-left:auto;margin-right:auto;text-align:center}
 .avertissement{background-color:#ff8585;text-align:center}
 td.calendar2{text-align:center;border:2px;font-size:8pt}
