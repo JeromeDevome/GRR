@@ -3,13 +3,10 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2010-04-07 17:49:56 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    JeromeB & Laurent Delineau & Yan Naessens
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   root
- * @version   $Id: admin_maj.php,v 1.22 2010-04-07 17:49:56 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -17,16 +14,8 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 include "../include/connect.inc.php";
 include "../include/config.inc.php";
 include "../include/misc.inc.php";
@@ -797,8 +786,51 @@ if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('cas_port', '')");
 							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('cas_racine', '')");
 							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('cas_serveur', '')");
+							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('ip_autorise', '')");
                             $result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_calendrier_feries (`DAY` int(11) NOT NULL DEFAULT '0');");
 							
+							if ($result_inter == '')
+								$result .= "<span style=\"color:green;\">Ok !</span><br />";
+							else
+								$result .= $result_inter;
+							$result_inter = '';
+						}
+
+						if ($version_old < "3.3.2")
+						{
+							$result .= "<b>Mise à jour jusqu'à la version 3.3.2 :</b><br />";
+
+							$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_type_area ADD `couleurhexa` VARCHAR(10) NOT NULL AFTER `couleur`;");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#F49AC2' WHERE couleur = '1';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#99CCCC' WHERE couleur = '2';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#FF9999' WHERE couleur = '3';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#95a5a6' WHERE couleur = '4';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#C0E0FF' WHERE couleur = '5';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#FFCC99' WHERE couleur = '6';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#e74c3c' WHERE couleur = '7';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#3498db' WHERE couleur = '8';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#DDFFDD' WHERE couleur = '9';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#34495e' WHERE couleur = '10';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#2ecc71' WHERE couleur = '11';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#9b59b6' WHERE couleur = '12';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#f1c40f' WHERE couleur = '13';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#FF00DE' WHERE couleur = '14';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#009900' WHERE couleur = '15';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#e67e22' WHERE couleur = '16';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#bdc3c7' WHERE couleur = '17';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#C000FF' WHERE couleur = '18';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#FF0000' WHERE couleur = '19';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#FFFFFF' WHERE couleur = '20';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#A0A000' WHERE couleur = '21';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#f39c12' WHERE couleur = '22';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#1abc9c' WHERE couleur = '23';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#884DA7' WHERE couleur = '24';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#4169E1' WHERE couleur = '25';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#6A5ACD' WHERE couleur = '26';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#AA5050' WHERE couleur = '27';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#FFBB20' WHERE couleur = '28';");
+							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#CFCFCF' WHERE couleur > '28';");
+
 							if ($result_inter == '')
 								$result .= "<span style=\"color:green;\">Ok !</span><br />";
 							else
@@ -902,43 +934,58 @@ if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 					//11/06/2013
 					echo "<p>".get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a></p>\n";
 
-
-					echo "<br><p>".get_vocab("maj_recherche_grr").":</p>";
-					$fichier = $grr_devel_url.'versiongrr.xml';
-					
-					if (!$fp = @fopen($fichier,"r")) {
-						echo "<p>".get_vocab("maj_impossible_rechercher")."</p>\n";
-					} else{
-						$reader = new XMLReader();
-						$reader->open($fichier);
-
-						while ($reader->read()) {
-							if ($reader->nodeType == XMLREADER::ELEMENT){
-								if ($reader->name == "numero"){
-									$reader->read();
-									$derniereVersion = $reader->value;
-								}
-								if ($reader->name == "sousversion"){
-									$reader->read();
-									$derniereSousVersion = $reader->value;
-								}
-								if ($reader->name == "rc"){
-									$reader->read();
-									$derniereRC = $reader->value;
-								}
-							}
-						}
-
-						if($version_grr != $derniereVersion || $sous_version_grr != $derniereSousVersion || $version_grr_RC != $derniereRC){
-							if($derniereRC <> ""){
-								$derniereRC = " RC ".$derniereRC;
-							}
-							echo "<p>".get_vocab("maj_dispo")." ".$derniereVersion."".$derniereSousVersion."".$derniereRC."</p>\n";
+					// Recherche mise à jour sur serveur GRR
+					if($recherche_MAJ == 1)
+					{
+						echo "<br><p>".get_vocab("maj_recherche_grr").":</p>";
+						$fichier = $grr_devel_url.'versiongrr.xml';
+						
+					/*	if (!$fp = @fopen($fichier,"r")) {
+							echo "<p>".get_vocab("maj_impossible_rechercher")."</p>\n";
 						} else{
-							echo "<p>".get_vocab("maj_dispo_aucune")."</p>\n";
-						}
+							$reader = new XMLReader();
+							$reader->open($fichier);
 
-						$reader->close();
+							while ($reader->read()) {
+								if ($reader->nodeType == XMLREADER::ELEMENT){
+									if ($reader->name == "numero"){
+										$reader->read();
+										$derniereVersion = $reader->value;
+									}
+									if ($reader->name == "sousversion"){
+										$reader->read();
+										$derniereSousVersion = $reader->value;
+									}
+									if ($reader->name == "rc"){
+										$reader->read();
+										$derniereRC = $reader->value;
+									}
+								}
+							}
+
+							if($version_grr != $derniereVersion || $sous_version_grr != $derniereSousVersion || $version_grr_RC != $derniereRC){
+								if($derniereRC <> ""){
+									$derniereRC = " RC ".$derniereRC;
+								}
+								echo "<p>".get_vocab("maj_dispo")." ".$derniereVersion."".$derniereSousVersion."".$derniereRC."</p>\n";
+							} else{
+								echo "<p>".get_vocab("maj_dispo_aucune")."</p>\n";
+							}
+
+							$reader->close();
+						} */
+                        // prise en compte d'un proxy
+$opts = array (
+'http' => array(
+'proxy' => ''//'tcp://proxyIP:proxyport',
+)
+);
+$context = stream_context_create($opts);
+$fp = file_get_contents($fichier,false,$context);
+// ou pas...
+// $fp = file_get_contents($fichier);
+// pour tester
+echo "version en ligne : ".$fp;
 					}
 
 					echo "<hr />\n";

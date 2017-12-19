@@ -79,7 +79,7 @@ td.cell_month{background-color:#fff;vertical-align:top}
 .cell_month a:hover{color:#000;font-weight:700}
 td.cell_month_o{background-color:#ccc}
 .empty_cell{background-color:#fff;text-align:center;vertical-align:middle}
-.monthday{font-size:2.1em;text-align:center;height:100px;line-height:100px}
+.monthday{font-size:2.1em;text-align:center}
 .center{width:100%;margin-left:auto;margin-right:auto;text-align:center}
 .avertissement{background-color:#ff8585;text-align:center}
 td.calendar2{text-align:center;border:2px;font-size:8pt}
@@ -132,7 +132,7 @@ a.buttonsReservation{cursor:pointer}
 .closepop{float:right;cursor:pointer}
 
 #toppanel{position:relative;top:0;width:100%;z-index:999;text-align:center;border-bottom:1px solid #FF44F5#FF44F5}
-#panel{width:100%;height:150px;overflow:hidden;position:relative;z-index:3}
+#panel{width:100%;height:120px;overflow:hidden;position:relative;z-index:3}
 #panel a{text-decoration:none}
 .pad-15,.pad-15 tboby{padding-left:15px !important}
 #fixe{position:fixed;right:5%;bottom:5%}

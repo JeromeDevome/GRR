@@ -3,13 +3,10 @@
  * misc.inc.php
  * fichier de variables diverses
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2010-04-07 17:49:56 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    JeromeB & Laurent Delineau
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   root
- * @version   $Id: misc.inc.php,v 1.16 2010-04-07 17:49:56 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -17,16 +14,8 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 
 ################################
 # Development information
@@ -34,12 +23,12 @@
 $grr_devel_email = "support@devome.com";
 $grr_devel_url = "http://grr.devome.com/";
 // Numéro de version actuel
-$version_grr = "3.3.1";
+$version_grr = "3.3.2";
 // Numéro de sous-version actuel (a, b, ...)
 // Utilisez cette variable pour des versions qui corrigent la la version finale sans toucher à la base.
 $sous_version_grr = ""; // a, b, c, ...
 // Numéro de la release candidate (doit être strictement inférieure à 9). Laisser vide s'il s'agit de la version stable.
-$version_grr_RC = "3";
+$version_grr_RC = "1";
 
 # Liste des tables
 $liste_tables = array(

@@ -1,7 +1,7 @@
-DROP TABLE IF EXISTS `grr_calendrier_feries`;
-CREATE TABLE `grr_calendrier_feries` (  `DAY` int(11) NOT NULL DEFAULT '0');
-DROP TABLE IF EXISTS `grr_calendrier_vacances`;
-CREATE TABLE `grr_calendrier_vacances` (  `DAY` int(11) NOT NULL DEFAULT '0');
+DROP TABLE IF EXISTS grr_calendrier_feries;
+CREATE TABLE grr_calendrier_feries (  `DAY` int(11) NOT NULL DEFAULT '0');
+DROP TABLE IF EXISTS grr_calendrier_vacances;
+CREATE TABLE grr_calendrier_vacances (  `DAY` int(11) NOT NULL DEFAULT '0');
 DROP TABLE IF EXISTS grr_j_mailuser_room;
 CREATE TABLE grr_j_mailuser_room (login varchar(40) NOT NULL default '', id_room int(11) NOT NULL default '0', PRIMARY KEY  (login,id_room) );
 DROP TABLE IF EXISTS grr_j_user_area;
@@ -27,7 +27,7 @@ CREATE TABLE grr_setting (  NAME varchar(32) NOT NULL default '',  VALUE text NO
 DROP TABLE IF EXISTS grr_area_periodes;
 CREATE TABLE grr_area_periodes (id_area int(11) NOT NULL default '0', num_periode smallint(6) NOT NULL default '0', nom_periode varchar(100) NOT NULL default '', PRIMARY KEY  (`id_area`,`num_periode`));
 DROP TABLE IF EXISTS grr_type_area;
-CREATE TABLE grr_type_area (id int(11) NOT NULL auto_increment, type_name varchar(30) NOT NULL default '',order_display smallint(6) NOT NULL default '0',couleur smallint(6) NOT NULL default '0',type_letter char(2) NOT NULL default '',disponible VARCHAR(1) NOT NULL DEFAULT '2', PRIMARY KEY  (id));
+CREATE TABLE grr_type_area (id int(11) NOT NULL auto_increment, type_name varchar(30) NOT NULL default '',order_display smallint(6) NOT NULL default '0',couleur smallint(6) NOT NULL default '0',couleurhexa varchar(10) NOT NULL,type_letter char(2) NOT NULL default '',disponible VARCHAR(1) NOT NULL DEFAULT '2', PRIMARY KEY  (id));
 DROP TABLE IF EXISTS grr_j_type_area;
 CREATE TABLE grr_j_type_area (id_type int(11) NOT NULL default '0', id_area int(11) NOT NULL default '0');
 DROP TABLE IF EXISTS grr_calendar;

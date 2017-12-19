@@ -3,13 +3,10 @@
  * week.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "semaine".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2010-03-03 14:41:34 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    Laurent Delineau & JeromeB
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   root
- * @version   $Id: week.php,v 1.18 2010-03-03 14:41:34 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -17,67 +14,13 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-include "include/connect.inc.php";
-include "include/config.inc.php";
-include "include/misc.inc.php";
-include "include/functions.inc.php";
-include "include/$dbsys.inc.php";
-include "include/mincals.inc.php";
-include "include/mrbs_sql.inc.php";
+
 $grr_script_name = "week.php";
-require_once("./include/settings.class.php");
-if (!Settings::load())
-	die("Erreur chargement settings");
-require_once("./include/session.inc.php");
-include "include/resume_session.php";
-Definition_ressource_domaine_site();
-get_planning_area_values($area);
-include "include/language.inc.php";
-$affiche_pview = '1';
-if (!isset($_GET['pview']))
-	$_GET['pview'] = 0;
-else
-	$_GET['pview'] = 1;
-if ($_GET['pview'] == 1)
-	$class_image = "print_image";
-else
-	$class_image = "image";
-if (empty($debug_flag))
-	$debug_flag = 0;
-include "include/setdate.php";
-if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
-	$type_session = "no_session";
-else
-	$type_session = "with_session";
-print_header($day, $month, $year, $type_session);
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-$verif_acces_ressource = verif_acces_ressource(getUserName(), $room);
-$acces_fiche_reservation = verif_acces_fiche_reservation(getUserName(), $room);
-$UserRoomMaxBooking = UserRoomMaxBooking(getUserName(), $room, 1);
-$authGetUserLevel = authGetUserLevel(getUserName(), -1);
-$auth_visiteur = auth_visiteur(getUserName(), $room);
-if (check_begin_end_bookings($day, $month, $year))
-{
-	showNoBookings($day, $month, $year, $back);
-	exit();
-}
-if (((authGetUserLevel(getUserName(),-1) < 1) && (Settings::get("authentification_obli") == 1)) || !$verif_acces_ressource || authUserAccesArea(getUserName(), $area) == 0)
-{
-	showAccessDenied($back);
-	exit();
-}
+
+include "include/planning_init.inc.php";
+
+
 $time = mktime(0, 0, 0, $month, $day, $year);
 $time_old = $time;
 if (($weekday = (date("w", $time) - $weekstarts + 7) % 7) > 0)
@@ -90,20 +33,13 @@ if (!isset($correct_heure_ete_hiver) or ($correct_heure_ete_hiver == 1))
 		$decal = 0;
 	$time += $decal;
 }
-if (Settings::get("verif_reservation_auto") == 0)
-{
-	verify_confirm_reservation();
-	verify_retard_reservation();
-}
+
 $day_week   = date("d", $time);
 $month_week = date("m", $time);
 $year_week  = date("Y", $time);
 if ($enable_periods == 'y')
 {
-	$resolution = 60;
-	$morningstarts = 12;
 	$morningstarts_minutes = 0;
-	$eveningends = 12;
 	$eveningends_minutes = count($periods_name)-1;
 }
 $am7 = mktime($morningstarts, 0, 0, $month_week, $day_week, $year_week);
@@ -130,23 +66,8 @@ for($h=0; $h<3600; $h+=$this_area_resolution) {
 	$minutesFinCrenaux[] = date('i', $h);
 }
 
-if ($room <= 0)
-{
-	echo "<h1>".get_vocab("no_rooms_for_area")."</h1>";
-	exit;
-}
-echo '<div class="row">'.PHP_EOL;
-include("menu_gauche.php");
-if ($_GET['pview'] != 1){
-		if(Settings::get("menu_gauche") == 0 || Settings::get("menu_gauche") == 2){
-			echo '<div class="col-lg-12 col-md-12 col-xs-12">'.PHP_EOL;
-		} else{
-			echo '<div class="col-lg-9 col-md-12 col-xs-12">'.PHP_EOL;
-		}
-	echo '<div id="planning">'.PHP_EOL;
-}else{
-	echo '<div id="print_planning">'.PHP_EOL;}
-include "chargement.php";
+
+
 echo '<div class="titre_planning_week">'.PHP_EOL;
 if (($this_room_name_des) && ($this_room_name_des != "-1"))
 	$this_room_name_des = " (".$this_room_name_des.")";
@@ -213,6 +134,8 @@ if (isset($_GET['precedent']))
 		echo '<span id="lienPrecedent">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="charger();javascript:history.back();">Précedent</button>',PHP_EOL,'</span>',PHP_EOL;
 	}
 }
+
+// Planning
 echo '<div class="contenu_planning">';
 $sql = "SELECT start_time, end_time, type, name, id, beneficiaire, statut_entry, description, option_reservation, moderate, beneficiaire_ext
 FROM ".TABLE_PREFIX."_entry
@@ -227,6 +150,7 @@ if (!$res)
 	echo grr_sql_error();
 else
 {
+	// Pour toute réservations
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
 		if ($debug_flag)
@@ -257,35 +181,47 @@ else
 			if ($slot <= $last_slot)
 			{
 				$d[$weekday][$slot]["color"] = $row[2];
-				if (($row[1]) > mktime(24, 0, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0]))) // changed
-				{
 
-					// Cas d'une réservation sur plusieurs jours 
-					
+				// Cas d'une réservation sur plusieurs jours
+				if (($row[1]) > mktime(24, 0, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0])))
+				{
+					// Premier jour de réservation, Hdebut = Heure debut résa / Hfin = heure fin de journée / duree = (nb bloc d'une journée - nb bloc vides)
 					if (date("d", $t) == $firstday){
-					// Pour le prmier jour de réservation, Hdebut = Heure debut résa / Hfin = heure fin de journée / duree = (nb bloc d'une journée
-																													//  - nb bloc vides)
 						$d[$weekday][$slot]["horaireDebut"] = $row[0];
 						$d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0]));
-						$d[$weekday][$slot]["duree"] = (mktime($eveningends, $eveningends_minutes, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0])) - $row[0]) / $this_area_resolution;
-						
-					}
-					else if (date("d", $t) == $lastday)
-					{   
-						// Pour le dernier jour de réservation, Hdebut = Heure debut journée/ Hfin = heure fin résa / duree = (nb bloc d'une journée
-																													
-				
-						$d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$row[1]), date('d',$row[1]), date('Y',$row[1]));
-						$d[$weekday][$slot]["horaireFin"] = $row[1];
-						$d[$weekday][$slot]["duree"] = ($row[1]- mktime($morningstarts, 0, 0, date('m',$row[1]), date('d',$row[1]), date('Y',$row[1]))) / $this_area_resolution;
-
-					} else{
-						// Pour les jours de entre les deux , Hdebut = Heure debut journée/ Hfin = heure fin journée / duree = ( h fin jourrnée
-																										  // - h debut journée * nb bloc pr 1h ) 
-
-						$d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$row[1]), date('d',$row[1]), date('Y',$row[1]));
-						$d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0]));
 						$d[$weekday][$slot]["duree"] = (($eveningends+1-$morningstarts)*$heigthSlotHoure);
+					}
+					// Dernier jour de réservation, Hdebut = Heure debut journée/ Hfin = heure fin résa / duree = (nb bloc d'une journée
+					else if (date("d", $t) == $lastday)
+					{
+						if ($enable_periods == 'y'){
+							$d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$row[1]), date('d',$row[1]), date('Y',$row[1]));
+							$d[$weekday][$slot]["horaireFin"] = $row[1];
+							$d[$weekday][$slot]["duree"] = date("i", $row[1] );
+						} else{
+							$d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$row[1]), date('d',$row[1]), date('Y',$row[1]));
+							$d[$weekday][$slot]["horaireFin"] = $row[1];
+							$d[$weekday][$slot]["duree"] = ($row[1]- mktime($morningstarts, 0, 0, date('m',$row[1]), date('d',$row[1]), date('Y',$row[1]))) / $this_area_resolution;
+						}
+
+					// Les jours entre les deux , Hdebut = Heure debut journée/ Hfin = heure fin journée / duree = ( h fin jourrnée - h debut journée * nb bloc pr 1h ) 
+					} else{
+						if ($enable_periods == 'y'){
+							$d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$row[1]), date('d',$t), date('Y',$row[1]));
+							$d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$row[0]), date('d',$t), date('Y',$row[0]))+3600;
+							$d[$weekday][$slot]["duree"] = (($eveningends+1-$morningstarts)*$heigthSlotHoure);
+						}
+						else
+						{
+							$d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$row[1]), date('d',$row[1]), date('Y',$row[1]));
+							$d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$row[0]), date('d',$row[0]), date('Y',$row[0]));
+							$d[$weekday][$slot]["duree"] = (($eveningends+1-$morningstarts)*$heigthSlotHoure);
+						}
+						
+						/*echo date('j-m-Y H:i:s',$d[$weekday][$slot]["horaireDebut"])." --- ";
+						echo date('j-m-Y H:i:s',$d[$weekday][$slot]["horaireFin"])." --- ";
+						echo $d[$weekday][$slot]["duree"]." --- ";
+						echo "C2C<br>";*/
 					}
 				}
 				else
@@ -294,6 +230,7 @@ else
 					$d[$weekday][$slot]["horaireFin"] = $row[1];
 					$d[$weekday][$slot]["duree"] = ($row[1]- $row[0]) / $this_area_resolution;
 				}
+
 				//Si la plage de fin dépasse le créneau, augmenter la durée
 				if(!in_array(date('i', $d[$weekday][$slot]["horaireFin"]), $minutesFinCrenaux)) {
 					$d[$weekday][$slot]["duree"] += 1;
@@ -401,6 +338,7 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 	$semaine_changement_heure_ete = 'no';
 	$semaine_changement_heure_hiver = 'no';
 
+	// Pour l'ensemble des horaires ou des crénaux
 	for ($slot = $first_slot; $slot <= $last_slot; $slot++)
 	{
 		echo "<tr>";
@@ -408,6 +346,8 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 			tdcell("cell_hours");
 		else
 			tdcell("cell_hours2");
+
+		// 1ere colonne heure ou nom crénau
 		if ($enable_periods=='y')
 		{
 			$time_t = date("i", $t);
@@ -416,9 +356,12 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 		}
 		else
 			echo affiche_heure_creneau($t,$resolution)."</td>\n";
+
 		$wt = $t;
 		$empty_color = "empty_cell";
 		$num_week_day = $weekstarts;
+
+		// X colonnes (1 par jour)
 		for ($weekday = 0; $weekday < 7; $weekday++)
 		{
 			$wday = date("d", $wt);
@@ -430,6 +373,7 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 			$heurehiver1 = heure_ete_hiver("hiver",$wyear, 0);
 			$heureete2 = heure_ete_hiver("ete", $wyear,2);
 			$heurehiver2 = heure_ete_hiver("hiver", $wyear, 2);
+
 			if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
 			{
 				$temp =   mktime(0, 0, 0, $wmonth, $wday,$wyear);
@@ -530,13 +474,15 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 					{
 						if (isset($d[$weekday][$slot - $decale_slot * $nb_case]["id"]))
 						{
-							if ($enable_periods == 'y'){ // Nb de case pour crénau							
-								$nbrow =  ($d[$weekday][$slot - $decale_slot * $nb_case]['horaireFin'] - $d[$weekday][$slot - $decale_slot * $nb_case]['horaireDebut']) / 60;
+							if ($enable_periods == 'y'){ // Nb de case pour crénau
+								$nbrow = $d[$weekday][$slot - $decale_slot * $nb_case]["duree"];
+								//echo print_r( $d[$weekday][$slot - $decale_slot * $nb_case]);
 							} else{
-								$nbrow =  $d[$weekday][$slot - $decale_slot * $nb_case]["duree"];
+								$nbrow = $d[$weekday][$slot - $decale_slot * $nb_case]["duree"];
 							}
 
 							tdcell_rowspan($d[$weekday][$slot - $decale_slot * $nb_case]["color"], $nbrow);
+
 							if ($acces_fiche_reservation)
 							{
 								if (Settings::get("display_level_view_entry") == 0)
@@ -589,7 +535,7 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 			$wt += 86400;
 			$num_week_day++; // Pour le calcul des jours à afficher
 			$num_week_day = $num_week_day % 7; // Pour le calcul des jours à afficher
-		}
+		} // Fin colonne du jour
 		if ($enable_periods == 'y')
 		{
 			$time_t = date("i", $t);

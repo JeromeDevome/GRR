@@ -1,18 +1,11 @@
 <?php
 /**
  * admin_room.php
- * Interface d'accueil
- * de Gestion des sites de l'application GRR
- * Dernière modification : $Date: 2017-11-29 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @author    Marc-Henri PAMISEUX <marcori@users.sourceforge.net>
- * @author    Yan Naessens
- * @copyright Copyright 2003-2008 Laurent Delineau
- * @copyright Copyright 2008 Marc-Henri PAMISEUX
- * @copyright Copyright 2017 Yan Naessens
+ * Interface d'accueil de Gestion des sites de l'application GRR
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   admin
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -20,16 +13,8 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 include "../include/admin.inc.php";
 $grr_script_name = "admin_room.php";
 $id_area = isset($_POST["id_area"]) ? $_POST["id_area"] : (isset($_GET["id_area"]) ? $_GET["id_area"] : NULL);
@@ -234,7 +219,7 @@ if (Settings::get("module_multisite") == "Oui")
                 {
                     echo "<tr>";
                     if ($row[2] == 'r') // domaine restreint ?
-                        echo "<td><a href='admin_access_area.php?id_area=$row[0]' title='".get_vocab('admin_access_area.php')."'><img src=\"../img_grr/restricted_s.png\" alt=\"".get_vocab('admin_access_area.php')."\" title=\"".get_vocab('admin_access_area.php')."\" class=\"image\" /></a></td>\n";
+                        echo "<td><a href='admin_access_area.php?id_area=$row[0]' title='".get_vocab('admin_access_area.php')."'><span class='glyphicon glyphicon-lock'></a></td>\n";
                     else
                         echo "<td> </td>\n";
                     if (isset($id_area) && ($id_area == $row[0])) // domaine sélectionné ?
@@ -246,15 +231,15 @@ if (Settings::get("module_multisite") == "Oui")
                         echo "<td><a href=\"admin_room.php?id_site=".$id_site."&amp;id_area=$row[0]\">".htmlspecialchars($row[1])."</a> ";
                     }
                     echo "</td>\n";
-                    echo "<td><a href=\"admin_edit_room.php?id_area=$row[0]\"><img src=\"../img_grr/edit_s.png\" alt=\"". get_vocab("edit") ."\" title=\"".get_vocab("edit")."\" class=\"image\" /></a></td>\n";
+                    echo "<td><a href=\"admin_edit_room.php?id_area=$row[0]\"><span class='glyphicon glyphicon-edit'></a></td>\n";
                     if (authGetUserLevel(getUserName(),$row[0],'area') >= 5)
                     {
                         echo "<td><a href=\"admin_edit_room.php?id_area=$row[0]&action=duplique_area\"><img src=\"../img_grr/duplique.png\" alt=\"".get_vocab('duplique_domaine')."\" title=\"".get_vocab('duplique_domaine')."\" class=\"image\" /></a></td>\n";
-                        echo "<td><a href=\"admin_room_del.php?id_site=".$id_site."&amp;type=area&amp;id_area=$row[0]\"><img src=\"../img_grr/delete_s.png\" alt=\"".get_vocab('delete')."\" title=\"".get_vocab('delete')."\" class=\"image\" /></a></td>\n";
+                        echo "<td><a href=\"admin_room_del.php?id_site=".$id_site."&amp;type=area&amp;id_area=$row[0]\"><span class='glyphicon glyphicon-trash'></a></td>\n";
                     }
                     echo "<td><a href=\"admin_type_area.php?id_area=$row[0]\"><img src=\"../img_grr/type.png\" alt=\"".get_vocab('edittype')."\" title=\"".get_vocab('edittype')."\" class=\"image\" /></a></td>\n";
                     echo "<td><a href='javascript:centrerpopup(\"../view_rights_area.php?area_id=$row[0]\",600,480,\"scrollbars=yes,statusbar=no,resizable=yes\")' title=\"".get_vocab("privileges")."\">
-                    <img src=\"../img_grr/rights.png\" alt=\"".get_vocab("privileges")."\" class=\"image\" /></a></td>";
+                    <span class='glyphicon glyphicon-group'></a></td>";
                     echo "</tr>\n";
                 }
                 echo "</table>";
@@ -286,9 +271,9 @@ if (Settings::get("module_multisite") == "Oui")
                             echo "<tr><td ".$color.">" . htmlspecialchars($row[1]) . "<i> - " . htmlspecialchars($row[2]);
                             if ($row[3] > 0)
                                 echo " ($row[3] max.)";
-                            echo "</i></td>\n<td><a href=\"admin_edit_room.php?room=$row[0]\"><img src=\"../img_grr/edit_s.png\" alt=\"".get_vocab('edit')."\" title=\"".get_vocab('edit')."\" class=\"image\" /></a></td>\n";
+                            echo "</i></td>\n<td><a href=\"admin_edit_room.php?room=$row[0]\"><span class='glyphicon glyphicon-edit'></a></td>\n";
                             echo "<td><a href=\"admin_edit_room.php?room=$row[0]&amp;action=duplique_room\"><img src=\"../img_grr/duplique.png\" alt=\"".get_vocab('duplique_ressource')."\" title=\"".get_vocab('duplique_ressource')."\" class=\"image\" /></a></td>";
-                            echo "<td><a href=\"admin_room_del.php?type=room&amp;room=$row[0]&amp;id_area=$id_area\"><img src=\"../img_grr/delete_s.png\" alt=\"".get_vocab('delete')."\" title=\"".get_vocab('delete')."\" class=\"image\" /></a></td>";
+                            echo "<td><a href=\"admin_room_del.php?type=room&amp;room=$row[0]&amp;id_area=$id_area\"><span class='glyphicon glyphicon-trash'></a></td>";
                             echo "<td><a href='javascript:centrerpopup(\"../view_rights_room.php?id_room=$row[0]\",600,480,\"scrollbars=yes,statusbar=no,resizable=yes\")' title=\"".get_vocab("privileges")."\"><img src=\"../img_grr/rights.png\" alt=\"".get_vocab("privileges")."\" class=\"image\" /></a></td>";
                             echo "<td><a href='javascript:centrerpopup(\"../view_room.php?id_room=$row[0]\",600,480,\"scrollbars=yes,statusbar=no,resizable=yes\")' title=\"".get_vocab("fiche_ressource")."\"><img src=\"../img_grr/details_s.png\" alt=\"d&eacute;tails\" class=\"image\" /></a></td>";
                             echo "</tr>\n";
@@ -305,16 +290,16 @@ if (Settings::get("module_multisite") == "Oui")
                 {
                     echo "<tr><td><table class=\"table\"><tr>";
                     if ($row[2] == 'r') // domaine restreint ?
-                        echo "<td><a href='admin_access_area.php?id_area=$row[0]' title='".get_vocab('admin_access_area.php')."'><img src=\"../img_grr/restricted_s.png\" alt=\"".get_vocab('admin_access_area.php')."\" title=\"".get_vocab('admin_access_area.php')."\" class=\"image\" /></a></td>\n";
+                        echo "<td><a href='admin_access_area.php?id_area=$row[0]' title='".get_vocab('admin_access_area.php')."'><span class='glyphicon glyphicon-lock'></a></td>\n";
                     else
                         echo "<td> </td>\n";
                     echo "<td><a href=\"admin_room.php?id_site=".$id_site."&amp;id_area=$row[0]\">".htmlspecialchars($row[1])."</a> ";
                     echo "</td>\n";
-                    echo "<td><a href=\"admin_edit_room.php?id_area=$row[0]\"><img src=\"../img_grr/edit_s.png\" alt=\"". get_vocab("edit") ."\" title=\"".get_vocab("edit")."\" class=\"image\" /></a></td>\n";
+                    echo "<td><a href=\"admin_edit_room.php?id_area=$row[0]\"><span class='glyphicon glyphicon-edit'></a></td>\n";
                     if (authGetUserLevel(getUserName(),$row[0],'area') >= 5)
                     {
                         echo "<td><a href=\"admin_edit_room.php?id_area=$row[0]&action=duplique_area\"><img src=\"../img_grr/duplique.png\" alt=\"".get_vocab('duplique_domaine')."\" title=\"".get_vocab('duplique_domaine')."\" class=\"image\" /></a></td>\n";
-                        echo "<td><a href=\"admin_room_del.php?id_site=".$id_site."&amp;type=area&amp;id_area=$row[0]\"><img src=\"../img_grr/delete_s.png\" alt=\"".get_vocab('delete')."\" title=\"".get_vocab('delete')."\" class=\"image\" /></a></td>\n";
+                        echo "<td><a href=\"admin_room_del.php?id_site=".$id_site."&amp;type=area&amp;id_area=$row[0]\"><span class='glyphicon glyphicon-trash'></a></td>\n";
                     }
                     echo "<td><a href=\"admin_type_area.php?id_area=$row[0]\"><img src=\"../img_grr/type.png\" alt=\"".get_vocab('edittype')."\" title=\"".get_vocab('edittype')."\" class=\"image\" /></a></td>\n";
                     echo "<td><a href='javascript:centrerpopup(\"../view_rights_area.php?area_id=$row[0]\",600,480,\"scrollbars=yes,statusbar=no,resizable=yes\")' title=\"".get_vocab("privileges")."\">
@@ -341,9 +326,9 @@ if (Settings::get("module_multisite") == "Oui")
                             echo "<tr><td ".$color.">" . htmlspecialchars($row[1]) . "<i> - " . htmlspecialchars($row[2]);
                             if ($row[3] > 0)
                                 echo " ($row[3] max.)";
-                            echo "</i></td>\n<td><a href=\"admin_edit_room.php?room=$row[0]\"><img src=\"../img_grr/edit_s.png\" alt=\"".get_vocab('edit')."\" title=\"".get_vocab('edit')."\" class=\"image\" /></a></td>\n";
+                            echo "</i></td>\n<td><a href=\"admin_edit_room.php?room=$row[0]\"><span class='glyphicon glyphicon-edit'></a></td>\n";
                             echo "<td><a href=\"admin_edit_room.php?room=$row[0]&amp;action=duplique_room\"><img src=\"../img_grr/duplique.png\" alt=\"".get_vocab('duplique_ressource')."\" title=\"".get_vocab('duplique_ressource')."\" class=\"image\" /></a></td>";
-                            echo "<td><a href=\"admin_room_del.php?type=room&amp;room=$row[0]&amp;id_area=$id_area\"><img src=\"../img_grr/delete_s.png\" alt=\"".get_vocab('delete')."\" title=\"".get_vocab('delete')."\" class=\"image\" /></a></td>";
+                            echo "<td><a href=\"admin_room_del.php?type=room&amp;room=$row[0]&amp;id_area=$id_area\"><span class='glyphicon glyphicon-trash'></a></td>";
                             echo "<td><a href='javascript:centrerpopup(\"../view_rights_room.php?id_room=$row[0]\",600,480,\"scrollbars=yes,statusbar=no,resizable=yes\")' title=\"".get_vocab("privileges")."\"><img src=\"../img_grr/rights.png\" alt=\"".get_vocab("privileges")."\" class=\"image\" /></a></td>";
                             echo "<td><a href='javascript:centrerpopup(\"../view_room.php?id_room=$row[0]\",600,480,\"scrollbars=yes,statusbar=no,resizable=yes\")' title=\"".get_vocab("fiche_ressource")."\"><img src=\"../img_grr/details_s.png\" alt=\"d&eacute;tails\" class=\"image\" /></a></td>";
                             echo "</tr>\n";

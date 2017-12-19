@@ -3,13 +3,10 @@
  * install_mysql.php
  * Interface d'installation de GRR pour un environnement mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2009-10-09 07:55:48 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    Laurent Delineau & JeromeB
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   root
- * @version   $Id: install_mysql.php,v 1.9 2009-10-09 07:55:48 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -17,15 +14,6 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 require_once("include/config.inc.php");
 require_once("include/misc.inc.php");
@@ -80,11 +68,13 @@ if (@file_exists($nom_fic))
 			$j = '0';
 			$test1 = 'yes';
 			$total = count($liste_tables);
+			$tableManquantes = "";
 			while ($j < $total)
 			{
 				$test = mysqli_query($db, "SELECT count(*) FROM ".$table_prefix.$liste_tables[$j]);
 				if (!$test)
 				{
+					$tableManquantes .= " ". $table_prefix.$liste_tables[$j];
 					$correct_install='no';
 					$test1 = 'no';
 				}
@@ -119,7 +109,7 @@ if (@file_exists($nom_fic))
 					begin_html();
 					if ($test1 == 'no')
 					{
-						echo "<p>L'installation n'a pas pu se terminer normalement : des tables sont manquantes.</p>";
+						echo "<p>L'installation n'a pas pu se terminer normalement : des tables sont manquantes.".$tableManquantes."</p>";
 					}
 					if ($test2 == 0)
 					{
