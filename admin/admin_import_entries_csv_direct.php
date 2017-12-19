@@ -3,12 +3,10 @@
  * admin_import_entries_csv_direct.php
  * Importe un fichier de réservations au format csv comprenant les champs : date du jour, heure de début, heure de fin, ressource, description et type
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-09-06 $
- * @author   Yan Naessens d'après Denis Monasse d'après Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    JeromeB & Yan Naessens & Denis Monasse & Laurent Delineau
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   admin
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -16,19 +14,8 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-/**
- *
- */
+
 include "../include/admin.inc.php";
 $grr_script_name = "admin_import_entries_csv_direct.php";
  

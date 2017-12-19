@@ -3,29 +3,17 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2010-04-07 15:38:14 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    Laurent Delineau & JeromeB
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   root
- * @version   $Id: view_entry.php,v 1.16 2010-04-07 15:38:14 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
- * GRR is free software;you can redistribute it and/or modify
+ * GRR is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation;either version 2 of the License, or
+ * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY;without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR;if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 echo '<div>';
 include_once('include/connect.inc.php');
@@ -101,6 +89,7 @@ FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
 WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
 AND ".TABLE_PREFIX."_room.area_id = ".TABLE_PREFIX."_area.id
 AND ".TABLE_PREFIX."_entry.id='".$id."'";
+
 $sql_backup = "SELECT ".TABLE_PREFIX."_entry_moderate.name,
 ".TABLE_PREFIX."_entry_moderate.description,
 ".TABLE_PREFIX."_entry_moderate.beneficiaire,
@@ -457,6 +446,17 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
 		</td>
 	</tr>
 	<?php
+	// Les champs add :
+	$overload_data = mrbsEntryGetOverloadDesc($id);
+	foreach ($overload_data as $fieldname=>$field)
+	{
+		if (($field["affichage"] == 'y') and ($field["valeur"]!=""))
+		{
+			echo "<tr><td>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points")."</td><td>".htmlspecialchars($field["valeur"],ENT_NOQUOTES)."</tr>";
+		}
+	}
+
+	// Gestion des clef :
 	if ($keys == 1)
 	{
 		?>
@@ -556,6 +556,11 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
 	if ((getWritable($beneficiaire, getUserName(), $id)) && verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room(getUserName(), $room_id, $row[10]) && (!$was_del))
 	{
 		?>
+		<tr>
+			<td colspan="2">
+				&nbsp;
+			</td>
+		</tr>
 		<tr>
 			<td colspan="2">
 				<?php

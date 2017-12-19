@@ -2,13 +2,10 @@
 /**
  * admin_right.php
  * Interface de gestion des droits de gestion des utilisateurs
- * Dernière modification : $Date: 2009-04-14 12:59:17 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    JeromeB & Laurent Delineau
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   admin
- * @version   $Id: admin_right.php,v 1.10 2009-04-14 12:59:17 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -16,16 +13,8 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 include "../include/admin.inc.php";
 $grr_script_name = "admin_right.php";
 $back = '';

@@ -3,13 +3,10 @@
  * edit_entry_champs_add.php
  * Page "Ajax" utilisée pour générer les champs additionnels dans la page de réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2009-09-29 18:02:56 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    Laurent Delineau & JeromeB
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   root
- * @version   $Id: edit_entry_champs_add.php,v 1.6 2009-09-29 18:02:56 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -17,28 +14,6 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
-/**
- * $Log: edit_entry_champs_add.php,v $
- * Revision 1.6  2009-09-29 18:02:56  grr
- * *** empty log message ***
- *
- * Revision 1.5  2008-11-16 22:00:58  grr
- * *** empty log message ***
- *
- * Revision 1.4  2008-11-11 22:01:14  grr
- * *** empty log message ***
- *
- *
  */
 include "include/admin.inc.php";
 /* Ce script a besoin de trois arguments passés par la méthode GET :
@@ -102,11 +77,11 @@ foreach ($overload_fields as $fieldname=>$fieldtype)
 	else
 		$data = "";
 	if ($overload_fields[$fieldname]["type"] == "textarea" )
-		echo "<tr><td><div class=\"col-xs-12\"><textarea class=\"form-control\" cols=\"80\" rows=\"2\" name=\"addon_".$overload_fields[$fieldname]["id"]."\">".htmlspecialchars($data)."</textarea></div></td></tr>\n";
+		echo "<tr><td><div class=\"col-xs-12\"><textarea class=\"form-control\" cols=\"80\" rows=\"2\" name=\"addon_".$overload_fields[$fieldname]["id"]."\">".htmlspecialchars($data,ENT_SUBSTITUTE)."</textarea></div></td></tr>\n";
 	else if ($overload_fields[$fieldname]["type"] == "text" )
-		echo "<tr><td><div class=\"col-xs-12\"><input class=\"form-control\" size=\"80\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data)."\" /></div></td></tr>\n";
+		echo "<tr><td><div class=\"col-xs-12\"><input class=\"form-control\" size=\"80\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" /></div></td></tr>\n";
 	else if ($overload_fields[$fieldname]["type"] == "numeric" )
-		echo "<tr><td><div class=\"col-xs-12\"><input class=\"form-control\" size=\"20\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data)."\" /></div></td></tr>\n";
+		echo "<tr><td><div class=\"col-xs-12\"><input class=\"form-control\" size=\"20\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" /></div></td></tr>\n";
 	else
 	{
 		echo "<tr><td><div class=\"col-xs-12\"><select class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" size=\"1\">\n";

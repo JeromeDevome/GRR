@@ -4,13 +4,10 @@
  * Interface permettant à l'administrateur
  * la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2010-04-07 15:38:14 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    Laurent Delineau & JeromeB
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   root
- * @version   $Id: admin_config4.php,v 1.8 2010-04-07 15:38:14 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -18,16 +15,8 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 if (isset($_GET['motdepasse_backup']))
 {
 	if (!Settings::set("motdepasse_backup", $_GET['motdepasse_backup']))
@@ -48,6 +37,12 @@ if (isset($_GET['url_disconnect']))
 {
 	if (!Settings::set("url_disconnect", $_GET['url_disconnect']))
 		echo "Erreur lors de l'enregistrement de url_disconnect ! <br />";
+}
+// Restriction iP
+if (isset($_GET['ip_autorise']))
+{
+	if (!Settings::set("ip_autorise", $_GET['ip_autorise']))
+		echo "Erreur lors de l'enregistrement de ip_autorise !<br />";
 }
 // Max session length
 if (isset($_GET['sessionMaxLength']))
@@ -98,12 +93,14 @@ if ($dbsys == "mysql")
 		<div style="text-align:center;">
 			<input type="hidden" name="flag_connect" value="yes" />
 			<input class="btn btn-primary" type="submit" value=" <?php echo get_vocab("submit_backup"); ?>" style="font-variant: small-caps;" />
-		</div></form>
+		</div>
+	</form>
 		<?php
 		//
 		// Loading base
 		//********************************
 		//
+	if($restaureBBD == 1){
 		echo "\n<hr /><h3>".get_vocab('Restauration de la base GRR')."</h3>";
 		echo "\n<p>En cas de perte de donnée ou de problème sur la base GRR, cette fonction vous permet de la retrouver dans l'état antérieur lors d'une sauvegarde. Vous devez sélectionner un fichier créé à l'aide de la fonction Lancer une sauvegarde.</p>";
 		echo "\n<p><span class=\"avertissement\"><i>Attention! Restaurer la base vous fera perdre toutes les données qu'elle contient actuellement. De plus, tous les utilisateurs présentement connectés, ainsi que vous-mêmes, serez déconnectés. Alors, il est conseillé de créer d'abord une sauvegarde et de vous assurer que vous êtes le seul connecté.</i></span></p>\n";
@@ -115,8 +112,9 @@ if ($dbsys == "mysql")
 				<input class="btn btn-primary" type="submit" value="<?php echo get_vocab('Restaurer la sauvegarde'); ?>" style="font-variant: small-caps;" />
 			</div>
 		</form>
-		<?php
+<?php
 	}
+}
 	echo "<form action=\"./admin_config.php\" method=\"get\" style=\"width: 100%;\">";
 	# Backup automatique
 	echo "\n<hr /><h3>".get_vocab("execution automatique backup")."</h3>";
@@ -136,7 +134,19 @@ if ($dbsys == "mysql")
 	<br />
 	<input type='radio' name='disable_login' value='no' id='label_2' <?php if (Settings::get("disable_login")=='no') echo "checked=\"checked\""; ?> />
 	<label for='label_2'><?php echo get_vocab("disable_login_off"); ?></label>
-</p>
+	</p>
+<?php
+	//
+	// iP autorisé
+	//*************************
+	//
+	echo "\n<hr /><h3>".get_vocab('title_ip_autorise')."</h3>";
+	echo "\n<p>".get_vocab("explain_ip_autorise")."</p>";
+	?>
+	<br />
+	<input class="form-control" type="text" name="ip_autorise" value="<?php echo(Settings::get("ip_autorise")); ?>" />
+	
+	
 <?php
 echo "\n<hr />";
 	//
@@ -151,7 +161,7 @@ echo "<h3>".get_vocab("title_session_max_length")."</h3>";
 			<?php echo get_vocab("session_max_length"); ?>
 		</td>
 		<td>
-			<input class="form-control" type="text" name="sessionMaxLength" size="16" value="<?php echo(Settings::get("sessionMaxLength")); ?>" />
+			<input class="form-control" type="number" name="sessionMaxLength" size="16" value="<?php echo(Settings::get("sessionMaxLength")); ?>" />
 		</td>
 	</tr>
 </table>
@@ -159,7 +169,7 @@ echo "<h3>".get_vocab("title_session_max_length")."</h3>";
 //Longueur minimale du mot de passe exigé
 echo "<hr /><h3>".get_vocab("pwd")."</h3>";
 echo "\n<p>".get_vocab("pass_leng_explain").get_vocab("deux_points")."
-<input class=\"form-control\" type=\"text\" name=\"pass_leng\" value=\"".htmlentities(Settings::get("pass_leng"))."\" size=\"20\" /></p>";
+<input class=\"form-control\" type=\"number\" name=\"pass_leng\" value=\"".htmlentities(Settings::get("pass_leng"))."\" size=\"20\" /></p>";
 //
 // Url de déconnexion
 //*******************
