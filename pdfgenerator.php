@@ -3,7 +3,7 @@
  * pdfgenerator.php
  * Générer les PDF
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2017-12-17 19:00$
  * @author    Laurent Delineau & JeromeB
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -30,15 +30,15 @@ require_once("./include/session.inc.php");
 include "include/resume_session.php";
 include "include/language.inc.php";
 setlocale(LC_TIME, 'french');
+
 if ("POST" == $_SERVER['REQUEST_METHOD']) 
 {
 	$logo = $_POST['logo'];
 	$etablisement = $_POST['etat'];
-	$civ = $_POST['civ'];
 	$nom = $_POST['nom'];
 	$orga = $_POST['orga'];
-	$prenom = $_POST['prenom'];
 	$adresse = $_POST['adresse'];
+	$adresse2 = $_POST['adresse2'];
 	$ville = $_POST['ville'];
 	$cp = $_POST['cp'];
 	$id = $_POST['id'];
@@ -66,22 +66,22 @@ else
 		$id = $_GET['id'];
 	else
 		header('Location: '.Settings::get("grr_url"));
+
 	$sql = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id='".$id."'";
 	$res = grr_sql_query($sql);
 	if (!$res)
 		fatal_error(0, grr_sql_error());
+
 	$row = grr_sql_row($res, 0);
 	$cle = $row[18];
 	$sql = "SELECT room_name FROM ".TABLE_PREFIX."_room WHERE id='".$row[5]."'";
 	$res = grr_sql_query($sql);
 	$row2 = grr_sql_row($res, 0);
 
-
 	$res2 = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks, start_time, end_time FROM ".TABLE_PREFIX."_repeat WHERE id=$row[4]");
-				
 	if (!$res2)
 		fatal_error(0, grr_sql_error());
-				
+
 	if (grr_sql_count($res2) == 1){	
 		$row6 = grr_sql_row($res2, 0);
 		$rep_type = $row6[0];
@@ -92,7 +92,7 @@ else
 		$end_time = $row6[5];
 		$duration = $row6[5] - $row6[4];
 	}
-	
+
 	if ($row[4]!=0){
 		$period = 1;
 	}else{
@@ -100,9 +100,11 @@ else
 	};
 
 	if ($period == 0){
-		include 'pdf/form_infoPDF_unique.html';
-	}else{
-		include 'pdf/form_infoPDF.html';
+		$rep_end_date = 0;
+		$row6[1] = 0;
 	}
 
+	include 'pdf/form_infoPDF.html';
+
 }
+?>

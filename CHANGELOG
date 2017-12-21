@@ -2,7 +2,11 @@ Bugs connus sur la version de GitHub :
  - La supression en bloc ne fonctionne pas
  
 Tâches en cours
- - Aucune
+ - Généralistion des PDF
+ 
+Tâches prévus :
+ - Bouton de réservation pour les visiteurs (formulaires)
+ - Lors de l'envois mail notifier le changement de ressources si il y a lieu
 
 Version en cours de développement sur GitHUB (3.3.2)
 	[ajout] Personnalisation des couleurs pour les types de réservation depuis l'administration, soit un passage de 28 couleurs à 16 777 216 couleurs
