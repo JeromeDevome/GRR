@@ -931,41 +931,40 @@ $vocab['wrong_pwd2'] = "¡Error en la introducción de la contraseña, por favor
 $vocab['years'] = "año(s)";
 $vocab['YES'] = "SI";
 $vocab['you_have_not_entered'] = "No introdujo los datos ";
-
-//MAJ Hugo FORESTIER - Ajout de vocabs
-//19/05/2013
 $vocab['display_menu'] = "Visualización de la barra de menú de la izquierda "; // A traduire
 $vocab['display_menu_1'] = "Elija si la barra de menú de la izquierda (calendario, artículos y bienes) se debe mostrar de forma predeterminada"; // A traduire
 $vocab['display_menu_2'] = "Barra de menú de la izquierda no muestra"; // A traduire
 $vocab['display_menu_3'] = "Barra de menú aparece Izquierda"; // A traduire
 $vocab['display_menu_4'] = "Le menu s'affiche en haut"; // A traduire
-
+$vocab['display_mail_etat_destinataire'] = "Affichage du formulaire de contact pour réservation";  // A traduire
+$vocab['display_mail_etat_destinataire_1'] = "Choisir si le formulaire de contact pour les demandes de réservations est disponible aux visiteurs."; // A traduire
+$vocab['display_mail_etat_destinataire_2'] = "Le formulaire de contact réservation est désactivé"; // A traduire
+$vocab['display_mail_etat_destinataire_3'] = "Le formulaire de contact réservation est activé pour les personnes non connectées et pour le statut visiteur"; // A traduire
+$vocab['display_mail_etat_destinataire_4'] = "Le formulaire de contact réservation est activé pour le statut visiteur (connectés)"; // A traduire
 $vocab['display_level_view_entry']= "Visualización de reservas en forma de popup" ;
 $vocab['display_level_view_entry_0']= "Popup aparece." ;
 $vocab['display_level_view_entry_1']= "Aparece la página." ;
-
-
-$vocab['Generer_pdf'] = "Générer un PDF";
+$vocab['Generer_pdf'] = "Générer un PDF"; // A traduire
 $vocab['semaine'] = "sem";
 
-$vocab['status_clef'] = "Statut de la clé";
-$vocab['clef'] = "Clé preté";
-$vocab['msg_clef'] = "Cocher si la clé est empruntée";
+$vocab['status_clef'] = "Statut de la clé"; // A traduire
+$vocab['clef'] = "Clé preté"; // A traduire
+$vocab['msg_clef'] = "Cocher si la clé est empruntée"; // A traduire
 
-$vocab['status_courrier'] = "Courrier de validation";
-$vocab['courrier'] = "Courrier";
-$vocab['msg_courrier'] = "Cocher si courrier de validation";
+$vocab['status_courrier'] = "Courrier de validation"; // A traduire
+$vocab['courrier'] = "Courrier"; // A traduire
+$vocab['msg_courrier'] = "Cocher si courrier de validation"; // A traduire
 $vocab['to'] = " ~ ";
-$vocab['rep_type_7'] = "X Y du mois";
-$vocab['firstofmonth'] = "1er";
-$vocab['secondofmonth'] = "2eme";
-$vocab['thirdofmonth'] = "3eme";
-$vocab['fouthofmonth'] = "4eme";
-$vocab['fiveofmonth'] = "5eme";
-$vocab['lastofmonth'] = "dernier";
-$vocab['ofmonth'] = "du mois.";
-$vocab['holidays_msg'] = "Afficher les vacances scolaires et les jours fériés";
-$vocab['courrier_msg'] = "Afficher la gestion des salles par courrier";
+$vocab['rep_type_7'] = "X Y du mois"; // A traduire
+$vocab['firstofmonth'] = "1er"; // A traduire
+$vocab['secondofmonth'] = "2eme"; // A traduire
+$vocab['thirdofmonth'] = "3eme"; // A traduire
+$vocab['fouthofmonth'] = "4eme"; // A traduire
+$vocab['fiveofmonth'] = "5eme"; // A traduire
+$vocab['lastofmonth'] = "dernier"; // A traduire
+$vocab['ofmonth'] = "du mois."; // A traduire
+$vocab['holidays_msg'] = "Afficher les vacances scolaires et les jours fériés"; // A traduire
+$vocab['courrier_msg'] = "Afficher la gestion des salles par courrier"; // A traduire
 $vocab['OU'] = "OU"; // à traduire
 $vocab['show_all_rooms'] = "Voir toutes les ressources de tous les domaines"; // à traduire
 ?>

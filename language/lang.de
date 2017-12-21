@@ -940,6 +940,12 @@ $vocab['display_menu_2'] = "Linken menüleiste nicht angezeigt"; // A traduire
 $vocab['display_menu_3'] = "Linken Menüleiste wird angezeigt";  // A traduire
 $vocab['display_menu_4'] = "Le menu s'affiche en haut"; // A traduire
 
+$vocab['display_mail_etat_destinataire'] = "Affichage du formulaire de contact pour réservation";  // A traduire
+$vocab['display_mail_etat_destinataire_1'] = "Choisir si le formulaire de contact pour les demandes de réservations est disponible aux visiteurs."; // A traduire
+$vocab['display_mail_etat_destinataire_2'] = "Le formulaire de contact réservation est désactivé"; // A traduire
+$vocab['display_mail_etat_destinataire_3'] = "Le formulaire de contact réservation est activé pour les personnes non connectées et pour le statut visiteur"; // A traduire
+$vocab['display_mail_etat_destinataire_4'] = "Le formulaire de contact réservation est activé pour le statut visiteur (connectés)"; // A traduire
+
 $vocab['display_level_view_entry']= "Anzeige der Buchungen in Popup-Form" ;
 $vocab['display_level_view_entry_0']= "Popup displays." ;
 $vocab['display_level_view_entry_1']= "Page displays." ;

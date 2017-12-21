@@ -936,25 +936,19 @@ $vocab['wrong_pwd2'] = "An error occurred when entering password, please do it a
 $vocab['years'] = "years";
 $vocab['YES'] = "YES";
 $vocab['you_have_not_entered'] = "You have not entered ";
-
-//MAJ Hugo FORESTIER - Ajout de vocabs
-//19/05/2013
 $vocab['display_menu'] = "Display of the menu bar "; // A traduire
 $vocab['display_menu_1'] = "Choose if the left menu bar (calendar, items and property)  should be displayed by default"; // A traduire
 $vocab['display_menu_2'] = "Left menu bar doesn't display"; // A traduire
 $vocab['display_menu_3'] = "Left menu bar displays"; // A traduire
 $vocab['display_menu_4'] = "Le menu s'affiche en haut"; // A traduire
-
 $vocab['display_level_view_entry']= "Display of reservations in popup form" ;
 $vocab['display_level_view_entry_0']= "Popup displays." ;
 $vocab['display_level_view_entry_1']= "Page displays." ;
-
-// ANTHONY ARCHAMBEAU Ajout de vocabs
-
 $vocab['display_mail_etat_destinataire'] = "Display the contact form (not stable)";
 $vocab['display_mail_etat_destinataire_1'] = "Select if the contact form will be displayed by default";
 $vocab['display_mail_etat_destinataire_2'] = "The contact form is disabled";
-$vocab['display_mail_etat_destinataire_3'] = "The contact form is enabled";
+$vocab['display_mail_etat_destinataire_3'] = "The contact form is enabled for les personnes non connectées et pour le statut visiteur"; // A traduire
+$vocab['display_mail_etat_destinataire_4'] = "The contact form is enabled for le statut visiteur (connectés)"; // A traduire
 $vocab['display_mail_destinataire'] = "Email address of recipient:";
 $vocab['display_file'] = "Allow sending files";
 $vocab['display_file1'] = "Permit linking files ";
@@ -962,14 +956,11 @@ $vocab['display_file2'] = "The sending files is allowed ";
 $vocab['display_file3'] = "The sending files is not allowed ";
 $vocab['top_of_page'] = "^ Top of page";
 $vocab['nomR'] = "name";
-
 $vocab['Generer_pdf'] = "Generate PDF";
 $vocab['semaine'] = "Wk";
-
 $vocab['status_clef'] = "Statut de la clé";
 $vocab['clef'] = "Clé preté";
 $vocab['msg_clef'] = "Cocher si la clé est empruntée";
-
 $vocab['status_courrier'] = "Courrier de validation";
 $vocab['courrier'] = "Courrier";
 $vocab['msg_courrier'] = "Cocher si courrier de validation";

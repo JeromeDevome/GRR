@@ -1002,6 +1002,16 @@ if (Settings::get('mail_etat_destinataire') == '1') {
 echo ' />'.PHP_EOL;
 echo '</td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
+echo '<tr>'.PHP_EOL;
+echo '<td>'.get_vocab('display_mail_etat_destinataire_4').'</td>'.PHP_EOL;
+echo '<td>'.PHP_EOL;
+echo '<input type="radio" name="mail_etat_destinataire" value="2" ';
+if (Settings::get('mail_etat_destinataire') == '2') {
+    echo 'checked="checked"';
+}
+echo ' />'.PHP_EOL;
+echo '</td>'.PHP_EOL;
+echo '</tr>'.PHP_EOL;
 echo '<tr><td>'.get_vocab('display_mail_destinataire').'</td><td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
 echo '<tr>'.PHP_EOL;
