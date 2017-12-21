@@ -1051,16 +1051,13 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			echo Settings::get('message_accueil');
 			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
 			$res = grr_sql_query1($sql);
-			//Libère le résultat de la mémoire
 			grr_sql_free($res);
-			if ($res == 1)
+
+			if ( ( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )
 			{
-				if ($type_session == "no_session")
-				{
-					echo '<td class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</td>',PHP_EOL;
-				}
+				echo '<td class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</td>',PHP_EOL;
 			}
-			// Administration div Sauvegarde
+			// Administration
 			if ($type_session == "with_session")
 			{
 				if ((authGetUserLevel(getUserName(), -1, 'area') >= 4) || (authGetUserLevel(getUserName(), -1, 'user') == 1))
@@ -2895,6 +2892,7 @@ function auth_visiteur($user,$id_room)
 //$id -   l'identifiant de la ressource ou du domaine
 // $type - argument optionnel : 'room' (par défaut) si $id désigne une ressource et 'area' si $id désigne un domaine.
 ////Retourne le niveau d'accès de l'utilisateur
+// 0 NC / 1 Visiteur / 2 Utilisateur / 6 Admin
 function authGetUserLevel($user, $id, $type = 'room')
 {
 	//user level '0': User not logged in, or User value is NULL (getUserName()='')
