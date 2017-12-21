@@ -1,4 +1,3 @@
-
 <?php
 
 echo '<!DOCTYPE html>
@@ -26,9 +25,10 @@ echo '<!DOCTYPE html>
 			<br>
 			<div class="row">
 				<div class="col-md-4 col-md-offset-8" id = "adresse">
-						'.$civ.' '.$prenom.' '.$nom.'<br>
+						'.$nom.'<br>
 						'.$orga.'<br>
 						'.$adresse.'<br>
+						'.$adresse2.'<br/>
 						'.$cp.' '.$ville.'
 				</div>
 			</div>
@@ -39,7 +39,7 @@ echo '<!DOCTYPE html>
 			<br>
 			
 			<div class="row">
-			<strong> Objet: Réservation de salle</strong>
+			<strong> Objet: Confirmation de réservation</strong>
 			</div>
 
 		
@@ -47,15 +47,14 @@ echo '<!DOCTYPE html>
 
 			<div class="row">
 				<div class="col-md-8 col-md-offset-1">
-					'.$civ.',<br>
+					Bonjour,<br>
 					Suite à votre demande du '.$date.' dernier,
 					nous avons le plaisir de vous informer que la salle '.$salle.' sera mise à votre disposition chaques '.$jourPeriode.' de '.$heure.' à '.$heure2.' à compté du '.$jour.' jusqu\'au '.$finPeriode.'
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-8 col-md-offset-1">
-					Restant à votre disposition pour tous renseignements complémentaires,<br>
-					Nous vous prions de croire, '.$civ.', à l\'assurance des nos sentiments les meilleurs.
+					Restant à votre disposition pour tous renseignements complémentaires.
 				</div>
 			</div>
 			<br>
