@@ -1720,6 +1720,7 @@ function time_date_string_jma($t,$dformat)
 // Renvoie une balise span avec un style backgrounf-color correspondant au type de  la réservation
 function span_bgground($colclass)
 {
+	global $tab_couleur;
 	static $ecolors;
 	$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
 	echo '<span style="background-color: '.$couleurhexa.'; background-image: none; background-repeat: repeat; background-attachment: scroll;">'.PHP_EOL;
@@ -1732,7 +1733,7 @@ function tdcell($colclass, $width = '')
 		$temp = ' style="width:'.$width.'%;" ';
 	else
 		$temp = "";
-
+	global $tab_couleur;
 	static $ecolors;
 	if (($colclass >= "A") && ($colclass <= "Z"))
 	{
@@ -1745,6 +1746,7 @@ function tdcell($colclass, $width = '')
 
 function tdcell_rowspan($colclass, $step)
 {
+	global $tab_couleur;
 	static $ecolors;
 	if ($step < 1)
 		$step = 1;
@@ -1985,7 +1987,9 @@ function make_room_select_html($link, $current_area, $current_room, $year, $mont
 {
 	global $vocab;
 	$out_html = "<b><i>".get_vocab('rooms').get_vocab("deux_points")."</i></b><br /><form id=\"room_001\" action=\"".$_SERVER['PHP_SELF']."\"><div><select class=\"form-control\" name=\"room\" onchange=\"room_go()\">";
-	$out_html .= "<option value=\"".$link."_all.php?year=$year&amp;month=$month&amp;day=$day&amp;area=$current_area\">".get_vocab("all_rooms")."</option>";
+	$out_html .= "<option value=\"".$link;
+    if ($link != "day"){$out_html .= "_all";}
+    $out_html .= ".php?year=$year&amp;month=$month&amp;day=$day&amp;area=$current_area\">".get_vocab("all_rooms")."</option>";
 	$sql = "select id, room_name, description from ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($current_area)."' order by order_display,room_name";
 	$res = grr_sql_query($sql);
 	if ($res)
