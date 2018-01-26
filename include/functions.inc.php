@@ -282,11 +282,12 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 		}
 		else
 			//$affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.$_identite.'</a>'.PHP_EOL;
-            $affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.'</a>'.PHP_EOL;
+            $affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.$_identite.'</a>'.PHP_EOL;
 	}
 	else
-	{
-		?>
+	{   // si j'ai bien compris, il s'agit de calculer une balise mailto, et ce qui suit parait trop compliqué YN 2018-01-26
+
+	/*	?>
 		<script type="text/javascript">
 			function encode_adresse(user,domain,debut)
 			{
@@ -306,7 +307,7 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 				document.write(toWrite);
 			}
 		</script>
-		<?php
+		<?php */
 		$affichage = "";
 		if ($_email == "")
 		{
@@ -315,6 +316,14 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 		}
 		else
 		{
+            if (filter_var($_email,FILTER_VALIDATE_EMAIL))
+            {
+                $affichage = '<a href="mailto:'.$_email.'">'.$_identite.'</a>';
+            }
+            else 
+                if ($option_affichage == "afficher_toujours")
+                    $affichage = $_identite;
+            /* 
 			$tab_email = explode(';', trim($_email));
 			$i = 0;
 			$affichage .= '<script>'.PHP_EOL;
@@ -335,10 +344,9 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 					}
 				}
 			}
-			$affichage .=  'encode_fin_adresse("'.AddSlashes($_identite).'");'.PHP_EOL;
-			
+			$affichage .=  'encode_fin_adresse("'.addslashes($_identite).'");'.PHP_EOL;
 			$affichage .=  '</script>'.PHP_EOL;
-			//$affichage .= $_identite;
+			$affichage .= $_identite; */
 		}
 	}
 	return $affichage;
