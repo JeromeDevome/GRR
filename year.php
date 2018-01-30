@@ -3,7 +3,7 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-18 10:00$
+ * Dernière modification : $Date: 2018-01-17 18:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -34,10 +34,30 @@ require_once("./include/session.inc.php");
 include "include/resume_session.php";
 // Paramètres langage
 include "include/language.inc.php";
-// Construction des identifiants de la ressource $room, du domaine $area, du site $id_site
-Definition_ressource_domaine_site();
-// Récupération des données concernant l'affichage du planning du domaine
-get_planning_area_values($area);
+// Construction des identifiants du domaine $area, du site $site
+global $area, $site;
+// echo "paramètres ".$_GET['site']." ".$_GET['area'];
+if (isset($_GET['area']))
+	{
+        $area = mysqli_real_escape_string($GLOBALS['db_c'], $_GET['area']);
+        settype($area, "integer");
+        $site = mrbsGetAreaSite($area);
+    }
+    else
+    {
+        $area = NULL;
+        if (isset($_GET["site"]))
+        {
+            $site = mysqli_real_escape_string($GLOBALS['db_c'], $_GET["site"]);
+            settype($site, "integer");
+            $area = get_default_area($site);
+        }
+        else
+        {
+            $site = get_default_site();
+            $area = get_default_area($site);
+        }
+    }
 // On affiche le lien "format imprimable" en bas de la page
 $affiche_pview = '1';
 if (!isset($_GET['pview']))
@@ -130,40 +150,19 @@ print_header($day, $from_month, $from_year, $type_session);
 $month_start = mktime(0, 0, 0, $from_month, 1, $from_year);
 //What column the month starts in: 0 means $weekstarts weekday.
 $weekday_start = (date("w", $month_start) - $weekstarts + 7) % 7;
-$days_in_to_month = date("t", $to_month);
-$month_end = mktime(23, 59, 59, $to_month, $days_in_to_month, $to_year);
-if ($enable_periods == 'y')
-{
-	$resolution = 60;
-	$morningstarts = 12;
-	$eveningends = 12;
-	$eveningends_minutes = count($periods_name) - 1;
-}
+$month_end = mktime(23, 59, 59, $to_month, 1, $to_year);
+$days_in_to_month = date("t", $month_end);
+$month_end = mktime(23,59,59,$to_month,$days_in_to_month,$to_year);
+
 // Si format imprimable ($_GET['pview'] = 1), on n'affiche pas cette partie
 if ($_GET['pview'] != 1)
 {
 	echo "<table width=\"100%\" cellspacing=\"15\" border=\"0\"><tr>";
-	if (isset($_SESSION['default_list_type']) || (Settings::get("authentification_obli") == 1))
-		$area_list_format = $_SESSION['default_list_type'];
-	else
-		$area_list_format = Settings::get("area_list_format");
-	//show either a select box or the normal html list
-	if ($area_list_format != "list")
-	{
-		echo "<td>\n";
-		echo make_site_select_html('year.php',$id_site,$from_year,$from_month,$day,getUserName());
-		echo make_area_select_html('year.php',$id_site, $area, $from_year, $from_month, $day, getUserName());
-		echo "</td>\n";
-	}
-	else
-	{
-		echo "<td>\n";
-		echo make_site_list_html('year.php',$id_site,$from_year,$from_month,$day,getUserName());
-		echo "</td><td>";
-		echo make_area_list_html('year.php',$id_site, $area, $from_year, $from_month, $day, getUserName());
-		echo "</td>\n";
-	}
-	echo "\n<td><form method=\"get\" action=\"year.php\">";
+	echo "<td>\n";
+	echo make_site_select_html('year.php',$site,$from_year,$from_month,$day,getUserName());
+	echo make_area_select_all_html('year',$site, $area, $from_year, $from_month, $day, getUserName());
+	echo "</td>\n";
+	echo "<td><form method=\"get\" action=\"year.php\">";
 	echo "<table border=\"0\">\n";
 	echo "<tr><td>".get_vocab("report_start").get_vocab("deux_points")."</td>";
 	echo "<td>";
@@ -173,13 +172,26 @@ if ($_GET['pview'] != 1)
 	echo "</td><td>\n";
 	echo genDateSelector("to_", "", $to_month, $to_year,"");
 	echo "</td></tr>\n";
-	echo "<tr><td class='CR'><p><br>\n";
+	echo "<tr><td class=\"CR\">\n";
+    echo "<br><p>";
+    echo "<input type=\"hidden\" name=\"site\" value=\"$site\" />\n";
 	echo "<input type=\"hidden\" name=\"area\" value=\"$area\" />\n";
 	echo "<input type=\"submit\" name=\"valider\" value=\"".$vocab["goto"]."\" /></p></td></tr>\n";
 	echo "</table>\n";
 	echo "</form></td>\n";
-	echo '<td><a title="'.htmlspecialchars(get_vocab('back')).'" href="'.page_accueil('no').'">'.$vocab['back'].'</a></td>';
+    $ret_page = (isset($back))? $back : page_accueil('no') ;
+	echo '<td><a title="'.htmlspecialchars(get_vocab('back')).'" href="'.$ret_page.'">'.$vocab['back'].'</a></td>';
 	echo "</tr></table>\n";
+}
+// Récupération des données concernant l'affichage du planning du domaine
+get_planning_area_values($area);
+
+if ($enable_periods == 'y')
+{
+	$resolution = 60;
+	$morningstarts = 12;
+	$eveningends = 12;
+	$eveningends_minutes = count($periods_name) - 1;
 }
 $this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=$area");
 echo "<div class=\"titre_planning\">".ucfirst($this_area_name)." - ".get_vocab("all_areas")." </div>\n";
@@ -359,7 +371,7 @@ while ($month_indice < $month_end)
 		$t2 += 86400;
 		// On inscrit le numéro du mois dans la deuxième ligne
 		if ($display_day[$cweek] == 1)
-		{   
+		{
 			if (isHoliday($temp)) {echo tdcell("cell_hours_ferie");}
             else if (isSchoolHoliday($temp)) {echo tdcell("cell_hours_vacance");}
             else {echo tdcell("cell_hours");}
@@ -465,8 +477,10 @@ while ($month_indice < $month_end)
 		// Fin de la boucle sur les mois
 }
 show_colour_key($area);
-	// Affichage d'un message pop-up
+// Affichage d'un message pop-up
 affiche_pop_up(get_vocab("message_records"),"user");
+echo "<div class='ressource'>";
 include "include/trailer.inc.php";
+echo "</div>";
 include "footer.php";
 ?>
