@@ -341,7 +341,6 @@ echo ('
 	{
 		echo '
 		<div><br />
-			<br />
 			<table  border="0" width="100%">
 				<tr>
 					<td onclick="clicMenu(\'1\')" class="fontcolor4" style="cursor: inherit" align="center">
@@ -362,9 +361,9 @@ echo ('
 					</td>
 				</tr>
 			</table>
-			<br /></div>
-			<hr />';
-		}
+		</div>
+		<hr />';
+	}
 		echo "\n".'      <h3>'.get_vocab('default_parameter_values_title').'</h3>';
 		echo "\n".'      <h4>'.get_vocab('explain_area_list_format').'</h4>';
 		echo '
@@ -449,7 +448,7 @@ echo ('
 		echo '<script type="text/javascript">modifier_liste_domaines();</script>'."\n";
 		echo '<script type="text/javascript">modifier_liste_ressources(1);</script>'."\n";
 /**
- * Choix de la feuille de style part défaut
+ * Choix de la feuille de style par défaut
  */
 		echo '<h4>'.get_vocab('explain_css').'</h4>';
 		echo '
@@ -494,7 +493,7 @@ echo ('
 									</td>
 								</tr>
 							</table>
-
+                      <div id="fixe">
 							<div>
 								<input type="hidden" name="valid" value="yes" />
 								<input type="hidden" name="day" value="'.$day.'" />
@@ -521,6 +520,7 @@ echo ('
 							</div>
 						</form>
 						</div>
+                      </div>                        
 					</body>
 					</html>';
 					?>

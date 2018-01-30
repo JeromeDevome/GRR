@@ -569,8 +569,9 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
 				if ($can_delete_or_create == "y")
 				{
 					$message_confirmation = str_replace("'", "\\'", get_vocab("confirmdel").get_vocab("deleteentry"));
-					?>
-					<a class="btn btn-danger" type="button" href="del_entry.php?id=<?php echo $id ?>&amp;series=0&amp;page=<?php echo $page; ?>" onclick="return confirm('<?php echo $message_confirmation ?>');"><?php echo get_vocab("deleteentry") ?></a></td>
+                    $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : '';
+                ?>
+					<a class="btn btn-danger" type="button" href="del_entry.php?id=<?php echo $id ?>&amp;series=0&amp;page=<?php echo $page; ?>&amp;room_back=<?php echo $room_back ?>" onclick="return confirm('<?php echo $message_confirmation ?>');"><?php echo get_vocab("deleteentry") ?></a></td>
 					<?php
 				}
 				echo '</tr>',PHP_EOL;

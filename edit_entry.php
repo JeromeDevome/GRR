@@ -3,8 +3,8 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-01-06 11:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -680,6 +680,7 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
 echo '<div id="error"></div>';
 echo '<table class="table-bordered EditEntryTable"><tr>'.PHP_EOL;
 echo '<td style="width:50%; vertical-align:top; padding-left:15px; padding-top:5px; padding-bottom:5px;">'.PHP_EOL;
+
 echo '<table class="table-header">'.PHP_EOL;
 if (((authGetUserLevel(getUserName(), -1, "room") >= $qui_peut_reserver_pour) || (authGetUserLevel(getUserName(), $area, "area") >= $qui_peut_reserver_pour)) && (($id == 0) || (($id != 0) && (authGetUserLevel(getUserName(), $room) > 2) )))
 {
@@ -1231,13 +1232,17 @@ if($periodiciteConfig == 'y'){
 	echo '</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;
 	?>
 	<div id="fixe">
-		<input type="button" class="btn btn-primary" value="<?php echo get_vocab("cancel")?>" onclick="window.location.href='<?php echo $page.".php?year=".$year."&amp;month=".$month."&amp;day=".$day."&amp;area=".$area."&amp;room=".$room; ?>'" />
+    <?php // définit l'adresse de retour, à passer à edit_entry_handler et à cancel
+        $ret_page = ($back) ?: $page.".php?year=".$year."&amp;month=".$month."&amp;day=".$day."&amp;area=".$area."&amp;room=".$room; 
+    ?>
+		<input type="button" class="btn btn-primary" value="<?php echo get_vocab("cancel")?>" onclick="window.location.href='<?php echo $ret_page?>'" />
 		<input type="button" class="btn btn-primary" value="<?php echo get_vocab("save")?>" onclick="Save_entry();validate_and_submit();" />
 		<input type="hidden" name="rep_id"    value="<?php echo $rep_id?>" />
 		<input type="hidden" name="edit_type" value="<?php echo $edit_type?>" />
 		<input type="hidden" name="page" value="<?php echo $page?>" />
 		<input type="hidden" name="room_back" value="<?php echo $room_id?>" />
-		<?php
+		<input type="hidden" name="page_ret" value="<?php echo $ret_page?>" />
+        <?php
 		if ($flag_qui_peut_reserver_pour == "no")
 		{
 			echo '<input type="hidden" name="beneficiaire" value="'.$beneficiaire.'" />'.PHP_EOL;
