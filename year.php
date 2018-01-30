@@ -345,7 +345,6 @@ while ($month_indice < $month_end)
 	$month_num = date("m", $month_indice);
 	$year_num  = date("Y", $month_indice);
 	$days_in_month = date("t", $month_indice);
-	$weekcol = 0;
 	echo "<div class=\"titre_planning\">" . ucfirst(utf8_strftime("%B %Y", $month_indice)). "</div>\n";
 	echo "<table border=\"2\">\n";
 	$sql = "select room_name, capacity, id, description from ".TABLE_PREFIX."_room where area_id=$area order by order_display,room_name";
@@ -354,10 +353,6 @@ while ($month_indice < $month_end)
 	echo "<tr>";
 	tdcell("cell_hours");
 	echo " </td>\n";
-	//Corrige un bug avec certains fuseaux horaires (par exemple GMT-05:00 celui du Québec) :
-	//plusieurs mois débutent par le dernier jours du mois précédent.
-	//En changeant "gmmktime" par "mktime" le bug est corrigé
-	//$t2=gmmktime(0,0,0,$month_num,1,$year_num);
 	$t2 = mktime(0, 0, 0, $month_num, 1, $year_num);
 	for ($k = 0; $k < $days_in_month; $k++)
 	{
@@ -365,11 +360,10 @@ while ($month_indice < $month_end)
 		$cmonth =date("m", $t2);
 		$cweek = date("w", $t2);
 		$cyear = date("Y", $t2);
-		$name_day = ucfirst(utf8_strftime("%a<br />%d", $t2));
+		$name_day = ucfirst(utf8_strftime("%a<br />%d", $t2)); // On inscrit le numéro du mois dans la deuxième ligne
 		$temp = mktime(0,0,0,$cmonth,$cday,$cyear);
 		$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$temp'");
 		$t2 += 86400;
-		// On inscrit le numéro du mois dans la deuxième ligne
 		if ($display_day[$cweek] == 1)
 		{
 			if (isHoliday($temp)) {echo tdcell("cell_hours_ferie");}
@@ -400,16 +394,12 @@ while ($month_indice < $month_end)
 		if ($verif_acces_ressource)
 		{
    				// on n'affiche pas toutes les ressources
-				// Calcul du niveau d'accès aux fiche de réservation détaillées des ressources
+				// Calcul du niveau d'accès aux fiches de réservation détaillées des ressources
 			$acces_fiche_reservation = verif_acces_fiche_reservation(getUserName(), $row[2]);
 			echo "<tr>";
 			tdcell("cell_hours");
 			echo htmlspecialchars($row[0]) ."</td>\n";
 			$li++;
-				//Corrige un bug avec certains fuseaux horaires (par exemple GMT-05:00 celui du Québec) :
-				//plusieurs mois débutent par le dernier jours du mois précédent.
-				//En changeant "gmmktime" par "mktime" le bug est corrigé
-				//$t2=gmmktime(0,0,0,$month_num,1,$year_num);
 			$t2 = mktime(0, 0, 0, $month_num, 1, $year_num);
 			for ($k = 0; $k < $days_in_month; $k++)
 			{
@@ -426,7 +416,7 @@ while ($month_indice < $month_end)
 						echo "<img src=\"img_grr/stop.png\" alt=\"".get_vocab("reservation_impossible")."\"  title=\"".get_vocab("reservation_impossible")."\" width=\"16\" height=\"16\" class=\"".$class_image."\"  /></div>";
 					}
 						//Anything to display for this day?
-					if (isset($d[$cday][$cmonth][$cyear]["id"][0]))
+					elseif (isset($d[$cday][$cmonth][$cyear]["id"][0]))
 					{
 						$n = count($d[$cday][$cmonth][$cyear]["id"]);
 							//Show the start/stop times, 2 per line, linked to view_entry.
@@ -440,10 +430,10 @@ while ($month_indice < $month_end)
 							}
 							for ($i = 0; $i < $n; $i++)
 							{
-								if ($d[$cday][$cmonth][$cyear]["room"][$i] == $row[0])
+								if ($d[$cday][$cmonth][$cyear]["room"][$i] == $row[0]) // test peu fiable car c'est l'id qui est unique YN le 26/02/2018
 								{
 										//if ($i > 0 && $i % 2 == 0) echo "<br />"; else echo " ";
-									echo "\n<br />\n<table width=\"100%\" border=\"0\" ><tr>\n";
+									echo "\n<table width=\"100%\" border=\"0\" ><tr>\n";
 									tdcell($d[$cday][$cmonth][$cyear]["color"][$i]);
 									if ($d[$cday][$cmonth][$cyear]["res"][$i] != '-')
 										echo " <img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> \n";
@@ -467,14 +457,13 @@ while ($month_indice < $month_end)
 					echo "</td>\n";
 				}
 					// fin condition "on n'affiche pas tous les jours de la semaine"
-					//    if (++$weekcol == 7) $weekcol = 0;
 			}
 			echo "</tr>\n";
 		}
 	}
 	echo "</table>\n";
-	$month_indice = mktime(0, 0, 0, $month_num + 1, 2, $year_num);
-		// Fin de la boucle sur les mois
+	$month_indice = mktime(0, 0, 0, $month_num + 1, 1, $year_num);
+// Fin de la boucle sur les mois
 }
 show_colour_key($area);
 // Affichage d'un message pop-up
