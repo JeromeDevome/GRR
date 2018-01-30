@@ -2,8 +2,8 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
+ * Dernière modification : $Date: 2018-01-30 19:00$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -1059,6 +1059,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			echo Settings::get('message_accueil');
 			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
 			$res = grr_sql_query1($sql);
+			//Libère le résultat de la mémoire
 			grr_sql_free($res);
 
 			if ( ( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )
@@ -1803,6 +1804,35 @@ function show_colour_key($area_id)
 	}
 	echo '</table>'.PHP_EOL;
 }
+//Display the entry-type color keys. This has up to 2 rows, up to 10 columns.
+function show_colour_keys()
+{
+	echo '<table class="legende"><caption class="titre">Légendes des réservations</caption>'.PHP_EOL;
+	$sql = "SELECT DISTINCT id, type_name, type_letter, order_display FROM `".TABLE_PREFIX."_type_area` ";
+	$res = grr_sql_query($sql);
+	if ($res)
+	{
+		$nct = -1;
+		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+		{
+            $type_name   = $row[1];
+            $type_letter = $row[2];
+            if ($nct == -1)
+                echo '<tr>'.PHP_EOL;
+            if (++$nct == 2)
+            {
+                $nct = 0;
+                echo '</tr>'.PHP_EOL, '<tr>'.PHP_EOL;
+            }
+            tdcell($type_letter);
+            echo $type_name, '</td>'.PHP_EOL;
+		}
+		if ($i % 2 == 1)
+			echo '<td></td>',PHP_EOL,'</tr>'.PHP_EOL;
+		
+	}
+	echo '</table>'.PHP_EOL;
+}
 //Round time down to the nearest resolution
 function round_t_down($t, $resolution, $am7)
 {
@@ -1956,6 +1986,73 @@ function make_area_select_html( $link, $current_site, $current_area, $year, $mon
 		{
 			$selected = ($row[0] == $current_area) ? 'selected="selected"' : "";
 			$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
+			if (authUserAccesArea($user,$row[0]) == 1)
+			{
+				$out_html .= '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
+			}
+		}
+	}
+	$out_html .= '</select>'.PHP_EOL;
+	$out_html .= '</div>'.PHP_EOL;
+	$out_html .= '<script type="text/javascript">'.PHP_EOL;
+	$out_html .= 'function area_go()'.PHP_EOL;
+	$out_html .= '{'.PHP_EOL;
+	$out_html .= 'box = document.getElementById("area_001").area;'.PHP_EOL;
+	$out_html .= 'destination = box.options[box.selectedIndex].value;'.PHP_EOL;
+	$out_html .= 'if (destination) location.href = destination;'.PHP_EOL;
+	$out_html .= '}'.PHP_EOL;
+	$out_html .= '</script>'.PHP_EOL;
+	$out_html .= '<noscript>'.PHP_EOL;
+	$out_html .= '<div>'.PHP_EOL;
+	$out_html .= '<input type="submit" value="Change" />'.PHP_EOL;
+	$out_html .= '</div>'.PHP_EOL;
+	$out_html .= '</noscript>'.PHP_EOL;
+	$out_html .= '</form>'.PHP_EOL;
+	return $out_html;
+}
+/**
+ * sélecteur de domaines, y compris tous les domaines d'un site
+ * area selector, including any area in a site
+ *
+ * @param string $link
+ * @param string $current_site
+ * @param string $current_area
+ * @param string $year
+ * @param string $month
+ * @param string $day
+ * @param string $user
+ * @return string
+ */
+function make_area_select_all_html( $link, $current_site, $current_area, $year, $month, $day, $user)
+{
+	global $vocab;
+	if (Settings::get("module_multisite") == "Oui")
+		$use_multi_site = 'y';
+	else
+		$use_multi_site = 'n';
+	if ($use_multi_site == 'y')
+	{
+		// on a activé les sites
+		if ($current_site != -1)
+			$sql = "SELECT a.id, a.area_name,a.access FROM ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_j_site_area j WHERE a.id=j.id_area and j.id_site=$current_site ORDER BY a.order_display, a.area_name";
+		else
+			$sql = "";
+	}
+	else
+		$sql = "SELECT id, area_name,access FROM ".TABLE_PREFIX."_area ORDER BY order_display, area_name";
+	$out_html = '<b><i>'.get_vocab("areas").'</i></b>'.PHP_EOL;
+	$out_html .= '<form id="area_001" action="'.$_SERVER['PHP_SELF'].'">'.PHP_EOL;
+	$out_html .= '<div><select class="form-control" name="area" ';
+	$out_html .= ' onchange="area_go()" ';
+	$out_html .= '>'.PHP_EOL;
+    $out_html .= "<option value=\"".$link."_all.php?year=$year&amp;site=$current_site\">".get_vocab("any_area")."</option>";
+	$res = grr_sql_query($sql);
+	if ($res)
+	{
+		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+		{
+			$selected = ($row[0] == $current_area) ? 'selected="selected"' : "";
+			$link2 = $link.'.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
 			if (authUserAccesArea($user,$row[0]) == 1)
 			{
 				$out_html .= '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
