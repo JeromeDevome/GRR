@@ -99,14 +99,15 @@ else
 }
 grr_sql_free($res);
 
-// Dans le cas de l'affichange d'une ressource, dans l'autre cas on garde la requete dans planning_init.inc.php
+// Dans le cas de l'affichage d'une ressource, dans l'autre cas on garde la requete dans planning_init.inc.php
 if(!empty($_GET['room'])){
 	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' and id = '".protect_data_sql($_GET['room'])."' ORDER BY order_display, room_name";
 	$ressources = grr_sql_query($sql);
 	if (!$ressources)
 		fatal_error(0, grr_sql_error());
 }
-
+// on conserve la ressource d'appel, si elle existe
+$room_back = isset($_GET['room']) ? $_GET['room'] : '';
 
 $ferie_true = 0;
 $class = "";
@@ -330,7 +331,7 @@ for ($t = $am7; $t <= $pm7; $t += $resolution)
 						}
 						else
 						{
-							echo '<a class="lienCellule" title="',htmlspecialchars($today[$room][$t]["who"]),'" href="view_entry.php?id=',$id,'&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=day">',$descr;
+							echo '<a class="lienCellule" title="',htmlspecialchars($today[$room][$t]["who"]),'" href="view_entry.php?id=',$id,'&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=day&amp;room_back=',$room_back,' ">',$descr;
 						}
 					}
 					else

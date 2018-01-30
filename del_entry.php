@@ -80,8 +80,11 @@ if ($info = mrbsGetEntryInfo($id))
 	$result = mrbsDelEntry(getUserName(), $id, $series, 1);
 	if ($result)
 	{
+        $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $info['room_id'];
 		$_SESSION['displ_msg'] = 'yes';
-		Header("Location: ".$page.".php?day=$day&month=$month&year=$year&area=$area&room=".$info["room_id"]);
+        $ress = '';
+        if ($room_back != '')  {$ress = "&room=".$room_back;}
+		Header("Location: ".$page.".php?day=$day&month=$month&year=$year&area=$area".$ress);
 		exit();
 	}
 }

@@ -107,6 +107,8 @@ else
 		}
 	}
 	echo '<div class="contenu_planning">'.PHP_EOL;
+    $verif_acces_ressource = array();
+    $acces_fiche_reservation = array();
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
 		$verif_acces_ressource[$row[10]] = verif_acces_ressource(getUserName(), $row[10]);
