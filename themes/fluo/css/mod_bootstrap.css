@@ -1,7 +1,7 @@
 a{color:#F6FF00;text-decoration:none}
 .text-primary{color:#3EF9EA}
-.bg-primary{color:#fff;background-color:#F6FF00}
-.btn-primary{color:#fff;background-color:#F6FF00;border-color:#3EF9EA}
+.bg-primary{color:#000;background-color:#F6FF00}
+.btn-primary{color:#000;background-color:#F6FF00;border-color:#3EF9EA}
 .btn-primary.disabled,
 .btn-primary[disabled],
 fieldset[disabled] .btn-primary,

@@ -2,8 +2,8 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
+ * Dernière modification : $Date: 2018-02-04 18:00$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -282,11 +282,12 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 		}
 		else
 			//$affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.$_identite.'</a>'.PHP_EOL;
-            $affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.'</a>'.PHP_EOL;
+            $affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.$_identite.'</a>'.PHP_EOL;
 	}
 	else
-	{
-		?>
+	{   // si j'ai bien compris, il s'agit de calculer une balise mailto, et ce qui suit parait trop compliqué YN 2018-01-26
+
+	/*	?>
 		<script type="text/javascript">
 			function encode_adresse(user,domain,debut)
 			{
@@ -306,7 +307,7 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 				document.write(toWrite);
 			}
 		</script>
-		<?php
+		<?php */
 		$affichage = "";
 		if ($_email == "")
 		{
@@ -315,6 +316,14 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 		}
 		else
 		{
+            if (filter_var($_email,FILTER_VALIDATE_EMAIL))
+            {
+                $affichage = '<a href="mailto:'.$_email.'">'.$_identite.'</a>';
+            }
+            else 
+                if ($option_affichage == "afficher_toujours")
+                    $affichage = $_identite;
+            /* 
 			$tab_email = explode(';', trim($_email));
 			$i = 0;
 			$affichage .= '<script>'.PHP_EOL;
@@ -335,10 +344,9 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 					}
 				}
 			}
-			$affichage .=  'encode_fin_adresse("'.AddSlashes($_identite).'");'.PHP_EOL;
-			
+			$affichage .=  'encode_fin_adresse("'.addslashes($_identite).'");'.PHP_EOL;
 			$affichage .=  '</script>'.PHP_EOL;
-			//$affichage .= $_identite;
+			$affichage .= $_identite; */
 		}
 	}
 	return $affichage;
@@ -1051,16 +1059,13 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			echo Settings::get('message_accueil');
 			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
 			$res = grr_sql_query1($sql);
-			//Libère le résultat de la mémoire
 			grr_sql_free($res);
-			if ($res == 1)
+
+			if ( ( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )
 			{
-				if ($type_session == "no_session")
-				{
-					echo '<td class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</td>',PHP_EOL;
-				}
+				echo '<td class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</td>',PHP_EOL;
 			}
-			// Administration div Sauvegarde
+			// Administration
 			if ($type_session == "with_session")
 			{
 				if ((authGetUserLevel(getUserName(), -1, 'area') >= 4) || (authGetUserLevel(getUserName(), -1, 'user') == 1))
@@ -1990,7 +1995,9 @@ function make_room_select_html($link, $current_area, $current_room, $year, $mont
 {
 	global $vocab;
 	$out_html = "<b><i>".get_vocab('rooms').get_vocab("deux_points")."</i></b><br /><form id=\"room_001\" action=\"".$_SERVER['PHP_SELF']."\"><div><select class=\"form-control\" name=\"room\" onchange=\"room_go()\">";
-	$out_html .= "<option value=\"".$link."_all.php?year=$year&amp;month=$month&amp;day=$day&amp;area=$current_area\">".get_vocab("all_rooms")."</option>";
+	$out_html .= "<option value=\"".$link;
+    if ($link != "day"){$out_html .= "_all";}
+    $out_html .= ".php?year=$year&amp;month=$month&amp;day=$day&amp;area=$current_area\">".get_vocab("all_rooms")."</option>";
 	$sql = "select id, room_name, description from ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($current_area)."' order by order_display,room_name";
 	$res = grr_sql_query($sql);
 	if ($res)
@@ -2897,6 +2904,7 @@ function auth_visiteur($user,$id_room)
 //$id -   l'identifiant de la ressource ou du domaine
 // $type - argument optionnel : 'room' (par défaut) si $id désigne une ressource et 'area' si $id désigne un domaine.
 ////Retourne le niveau d'accès de l'utilisateur
+// 0 NC / 1 Visiteur / 2 Utilisateur / 6 Admin
 function authGetUserLevel($user, $id, $type = 'room')
 {
 	//user level '0': User not logged in, or User value is NULL (getUserName()='')
@@ -4042,11 +4050,14 @@ function affichage_resa_planning($_description, $id_resa)
 	$affichage = "";
 	if (Settings::get("display_full_description") == 1)
 		$affichage = htmlspecialchars($_description,ENT_NOQUOTES);
+    // la ressource associée à la réservation :
+    $res = mrbsGetEntryInfo($id_resa);
+    $room = (!$res) ? -1 : $res["room_id"]; 
 	// Les champs add :
 	$overload_data = mrbsEntryGetOverloadDesc($id_resa);
 	foreach ($overload_data as $fieldname=>$field)
 	{
-		if (($field["affichage"] == 'y') and ($field["valeur"]!=""))
+		if (((authGetUserLevel(getUserName(), $room) >= 4) ||($field["affichage"] == 'y')) and ($field["valeur"]!=""))
 		{
 			if ($affichage != "")
 				$affichage .= "<br />";

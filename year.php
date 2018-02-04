@@ -3,7 +3,7 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-18 10:00$
+ * Dernière modification : $Date: 2018-01-26 14:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -115,7 +115,7 @@ if (((authGetUserLevel(getUserName(),-1) < 1) && (Settings::get("authentificatio
 
 // On vérifie une fois par jour si le délai de confirmation des réservations est dépassé
 // Si oui, les réservations concernées sont supprimées et un mail automatique est envoyé.
-// On vérifie une fois par jour que les ressources ont été rendue en fin de réservation
+// On vérifie une fois par jour que les ressources ont été rendues en fin de réservation
 // Si non, une notification email est envoyée
 if (Settings::get("verif_reservation_auto") == 0)
 {
@@ -130,8 +130,10 @@ print_header($day, $from_month, $from_year, $type_session);
 $month_start = mktime(0, 0, 0, $from_month, 1, $from_year);
 //What column the month starts in: 0 means $weekstarts weekday.
 $weekday_start = (date("w", $month_start) - $weekstarts + 7) % 7;
-$days_in_to_month = date("t", $to_month);
-$month_end = mktime(23, 59, 59, $to_month, $days_in_to_month, $to_year);
+$month_end = mktime(23, 59, 59, $to_month, 1, $to_year);
+$days_in_to_month = date("t", $month_end);
+$month_end = mktime(23,59,59,$to_month,$days_in_to_month,$to_year);
+
 if ($enable_periods == 'y')
 {
 	$resolution = 60;
@@ -414,7 +416,7 @@ while ($month_indice < $month_end)
 						echo "<img src=\"img_grr/stop.png\" alt=\"".get_vocab("reservation_impossible")."\"  title=\"".get_vocab("reservation_impossible")."\" width=\"16\" height=\"16\" class=\"".$class_image."\"  /></div>";
 					}
 						//Anything to display for this day?
-					if (isset($d[$cday][$cmonth][$cyear]["id"][0]))
+					elseif (isset($d[$cday][$cmonth][$cyear]["id"][0]))
 					{
 						$n = count($d[$cday][$cmonth][$cyear]["id"]);
 							//Show the start/stop times, 2 per line, linked to view_entry.
