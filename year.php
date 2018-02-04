@@ -416,7 +416,7 @@ while ($month_indice < $month_end)
 						echo "<img src=\"img_grr/stop.png\" alt=\"".get_vocab("reservation_impossible")."\"  title=\"".get_vocab("reservation_impossible")."\" width=\"16\" height=\"16\" class=\"".$class_image."\"  /></div>";
 					}
 						//Anything to display for this day?
-					if (isset($d[$cday][$cmonth][$cyear]["id"][0]))
+					elseif (isset($d[$cday][$cmonth][$cyear]["id"][0]))
 					{
 						$n = count($d[$cday][$cmonth][$cyear]["id"]);
 							//Show the start/stop times, 2 per line, linked to view_entry.
