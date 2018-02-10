@@ -27,7 +27,7 @@ function affichetableau($liste,$titre='')
 		foreach ($liste as $key)
 		{
 			if ($chaine == $key)
-				echo "<li><span class=\"bground\"><b>".get_vocab($key)."</b></span></li>\n";
+				echo "<li><a href='".$key."' style='color:blue;'>".get_vocab($key)."</a></li>\n";
 			else
 				echo "<li><a href='".$key."'>".get_vocab($key)."</a></li>\n";
 			$k++;
