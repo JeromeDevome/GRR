@@ -1,15 +1,18 @@
 Bugs connus sur la version de GitHub :
  - La supression en bloc ne fonctionne pas
  
-Tâches en cours
- - Généralistion des PDF
- 
+
 Tâches prévus :
  - Lors de l'envois mail notifier le changement de ressources si il y a lieu
+ - Outil test des prérequis droits...
+ - Interdire les configs connexions externes via le fichier de config
+ - Loi CNIL
+ - Nouvelle date par défaut pour fins de réservations
 
 Version en cours de développement sur GitHUB (3.3.2)
 	[ajout] Personnalisation des couleurs pour les types de réservation depuis l'administration, soit un passage de 28 couleurs à 16 777 216 couleurs
 	[ajout] Possibilité d'afficher le formulaire de demande de réservation aux non connectés et aux visiteurs ou simplement aux visiteurs 
+	[modification] Génération des PDF, on parle de ressource et non de salle, réorganisation du format PDF (compatible en enveloppe fenêtre)
 	
 -----
 --

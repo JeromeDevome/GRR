@@ -3,7 +3,7 @@
 echo '<!DOCTYPE html>
 	<html lang="fr">
 	<head>
-		<meta charset="utf-8">
+		<meta charset="UTF-8">
 		<title></title>
 		<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="./themes/default/css/pdf.css">
@@ -11,32 +11,26 @@ echo '<!DOCTYPE html>
 	<body>
 	<body>
 		<div class="container">
-			<br>
-			<div class="row" id ="img">
-			
-				<div class="col-md-1">
-					<img src="'.$logo.'" width="212" height="110" alt="logo">
-				</div>
-				<div class="col-md-4 col-md-offset-7">
+			<br/>
+			<div class="row">
+				<div class="col-md-12" id="img">
+					<img src="'.$logo.'" height="110" alt="logo"><br>
 					'.$etablisement.'
 				</div>
 			</div>
-		
-			<br>
 			<div class="row">
-				<div class="col-md-4 col-md-offset-8" id = "adresse">
+				<div class="col-md-4 col-md-offset-8" id="adressedestinataire">
 						'.$nom.'<br>
-						'.$orga.'<br>
 						'.$adresse.'<br>
 						'.$adresse2.'<br/>
 						'.$cp.' '.$ville.'
 				</div>
 			</div>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
 			
 			<div class="row">
 			<strong> Objet: Confirmation de réservation</strong>
