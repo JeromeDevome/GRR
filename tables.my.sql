@@ -86,7 +86,7 @@ INSERT INTO grr_setting VALUES ('allow_user_delete_after_begin', '0');
 INSERT INTO grr_setting VALUES ('allow_gestionnaire_modify_del', '1');
 INSERT INTO grr_setting VALUES ('javascript_info_disabled', '0');
 INSERT INTO grr_setting VALUES ('javascript_info_admin_disabled', '0');
-INSERT INTO grr_setting VALUES ('pass_leng', '6');
+INSERT INTO grr_setting VALUES ('pass_leng', '8');
 INSERT INTO grr_setting VALUES ('jour_debut_Jours/Cycles', '1');
 INSERT INTO grr_setting VALUES ('nombre_jours_Jours/Cycles', '1');
 INSERT INTO grr_setting VALUES ('UserAllRoomsMaxBooking', '-1');
