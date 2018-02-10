@@ -1054,9 +1054,8 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			if ((Settings::get("logo") != '') && (@file_exists($nom_picture)))
 				echo '<td class="logo" height="100">'.PHP_EOL.'<a href="'.$racine.page_accueil('yes').'day='.$day.'&amp;year='.$year.'&amp;month='.$month.'"><img src="'.$nom_picture.'" alt="logo"/></a>'.PHP_EOL.'</td>'.PHP_EOL;
 			//Accueil
-			echo '<td class="accueil ">',PHP_EOL,'<h2>',PHP_EOL,'<a href="'.$racine.page_accueil('yes'),'day=',$day,'&amp;year=',$year,'&amp;month=',$month,'">',Settings::get("company"),'</a>',PHP_EOL,'</h2>',PHP_EOL,'</td>',PHP_EOL;
+			echo '<td class="accueil ">',PHP_EOL,'<h2>',PHP_EOL,'<a href="'.$racine.page_accueil('yes'),'day=',$day,'&amp;year=',$year,'&amp;month=',$month,'">',Settings::get("company"),'</a>',PHP_EOL,'</h2>',PHP_EOL, Settings::get('message_accueil'),'</td>',PHP_EOL;
 			//Mail réservation
-			echo Settings::get('message_accueil');
 			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
 			$res = grr_sql_query1($sql);
 			grr_sql_free($res);
