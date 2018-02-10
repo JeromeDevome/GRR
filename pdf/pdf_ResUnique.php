@@ -12,14 +12,14 @@ echo '<!DOCTYPE html>
 	<body>
 		<div class="container">
 			<br/>
-			<div class="row" id ="img">
-				<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-12" id="img">
 					<img src="'.$logo.'" height="110" alt="logo"><br>
 					'.$etablisement.'
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-4 col-md-offset-8">
+				<div class="col-md-4 col-md-offset-8" id="adressedestinataire">
 						'.$nom.'<br>
 						'.$adresse.'<br>
 						'.$adresse2.'<br/>
