@@ -123,9 +123,21 @@ $sso_super_admin = false;
 
 /*
  $sso_restrictions : false|true
- Mettre la valeur du paramètre $sso_restrictions à "true" permet de cacher dans l'interface de GRR l'affichage de la rubrique "Authentification et ldap"
+ Mettre la valeur du paramètre $sso_restrictions à "true" permet de cacher dans l'interface de GRR l'affichage de la rubrique "Configuration SSO"
 */
  $sso_restrictions = false;
+
+/*
+ $ldap_restrictions : false|true
+ Mettre la valeur du paramètre $ldap_restrictions à "true" permet de cacher dans l'interface de GRR l'affichage de la rubrique "Configuration LDAP"
+*/
+ $ldap_restrictions = false;
+
+/*
+ $imap_restrictions : false|true
+ Mettre la valeur du paramètre $imap_restrictions à "true" permet de cacher dans l'interface de GRR l'affichage de la rubrique "Configuration IMAP"
+*/
+ $imap_restrictions = false;
 
 // Le paramètre $Url_CAS_setFixedServiceURL est le paramètre utilisé dans la méthode phpCAS::setFixedServiceURL(), dans le fichier cas.inc.php
 // Si ce paramètre est non vide, il sera utilisé par le service CAS
