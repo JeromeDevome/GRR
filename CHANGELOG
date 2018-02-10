@@ -16,6 +16,7 @@ Version en cours de développement sur GitHUB (3.3.2)
 	[modification] Génération des PDF, on parle de ressource et non de salle, réorganisation du format PDF (compatible en enveloppe fenêtre)
 	[modification] Date de début et fin des réservations par défaut lors d'une premiere installation
 	[modification] Longueur minimum du mot de passe, passage de 6 à 8 caractères lors d'une premiere installation
+	[mise à jour] CKEditor 4.8.0 
 	
 -----
 --
