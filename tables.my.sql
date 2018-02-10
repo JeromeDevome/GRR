@@ -61,8 +61,8 @@ INSERT INTO grr_setting VALUES ('technical_support_email', 'support.technique@mo
 INSERT INTO grr_setting VALUES ('grr_url', 'http://mon.site.fr/grr/');
 INSERT INTO grr_setting VALUES ('disable_login', 'no');
 INSERT INTO grr_setting VALUES ('ip_autorise', 'no');
-INSERT INTO grr_setting VALUES ('begin_bookings', '1441058400');
-INSERT INTO grr_setting VALUES ('end_bookings', '1535752800');
+INSERT INTO grr_setting VALUES ('begin_bookings', '1514761200');
+INSERT INTO grr_setting VALUES ('end_bookings', '1609369200');
 INSERT INTO grr_setting VALUES ('title_home_page', 'Gestion et Réservation de Ressources');
 INSERT INTO grr_setting VALUES ('message_home_page', 'En raison du caractère personnel du contenu, ce site est soumis à des restrictions utilisateurs. Pour accéder aux outils de réservation, identifiez-vous :');
 INSERT INTO grr_setting VALUES ('version', '3.3.1');
