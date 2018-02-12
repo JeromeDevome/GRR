@@ -4049,11 +4049,14 @@ function affichage_resa_planning($_description, $id_resa)
 	$affichage = "";
 	if (Settings::get("display_full_description") == 1)
 		$affichage = htmlspecialchars($_description,ENT_NOQUOTES);
+    // la ressource associée à la réservation :
+    $res = mrbsGetEntryInfo($id_resa);
+    $room = (!$res) ? -1 : $res["room_id"]; 
 	// Les champs add :
 	$overload_data = mrbsEntryGetOverloadDesc($id_resa);
 	foreach ($overload_data as $fieldname=>$field)
 	{
-		if (($field["affichage"] == 'y') and ($field["valeur"]!=""))
+		if (((authGetUserLevel(getUserName(), $room) >= 4) ||($field["affichage"] == 'y')) and ($field["valeur"]!=""))
 		{
 			if ($affichage != "")
 				$affichage .= "<br />";
