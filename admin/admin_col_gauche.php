@@ -107,6 +107,8 @@ echo "<table class=\"table_adm4\">";
 			if (authGetUserLevel(getUserName(), -1, 'area') >= 4)
 				$liste[] = 'admin_calend.php';
 			if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
+				$liste[] = 'admin_cgu.php';
+			if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 				$liste[] = 'admin_maj.php';
 			if (Settings::get("sso_ac_corr_profil_statut") == 'y') {
 				if (authGetUserLevel(getUserName(), -1, 'area') >= 5)

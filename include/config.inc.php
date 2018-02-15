@@ -184,6 +184,7 @@ $insertComplet = false;
 
 # Global settings array
 $grrSettings = array();
+$grrPages = array();
 
 # Make sure notice errors are not reported
 #error_reporting (E_ALL ^ E_NOTICE);
