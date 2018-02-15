@@ -6,6 +6,7 @@ Tâches prévus :
  - Lors de l'envois mail notifier le changement de ressources si il y a lieu
  - Outil test des prérequis droits...
  - Loi CNIL RGPD
+ - Compatibilité outlook (voir ce qui es possible...)
 
 Version en cours de développement sur GitHUB (3.3.2)
 	[ajout] Personnalisation des couleurs pour les types de réservation depuis l'administration, soit un passage de 28 couleurs à 16 777 216 couleurs
@@ -13,6 +14,8 @@ Version en cours de développement sur GitHUB (3.3.2)
 	[ajout] Interdire les différents configuration d'authentifications externe via le fichier de config
 	[ajout] Menu administration : Couleur bleu sur le lien où l'on ce situe
 	[ajout] Menu administration : Possiblité d'accéder au lien où l'on ce situe
+	[ajout] Moteur de page
+	[ajout] Condition General d'Utilisation personalisable
 	[modification] Génération des PDF, on parle de ressource et non de salle, réorganisation du format PDF (compatible en enveloppe fenêtre)
 	[modification] Date de début et fin des réservations par défaut lors d'une premiere installation
 	[modification] Longueur minimum du mot de passe, passage de 6 à 8 caractères lors d'une premiere installation
