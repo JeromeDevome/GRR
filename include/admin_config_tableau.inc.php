@@ -26,7 +26,7 @@
 echo "<table class=\"table_adm\">\n";
 echo "<tbody>\n";
 echo "<tr>";
-for ($k = 1; $k < 6; $k++)
+for ($k = 1; $k < 7; $k++)
 {
 	echo "<td style=\"width:170px;\">";
 	if ($page_config == $k)
