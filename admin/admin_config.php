@@ -36,7 +36,9 @@ else if ($page_config == 3)
 else if ($page_config == 4)
 	include "./admin_config4.php";
 else if ($page_config == 5)
-	include "./admin_config5.php"; // pour la configuration des jours/cycles
+	include "./admin_config5.php";
+else if ($page_config == 6)
+	include "./admin_config6.php";
 else
 	die();
 ?>

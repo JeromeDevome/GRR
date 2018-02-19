@@ -3,10 +3,14 @@ Bugs connus sur la version de GitHub :
  
 
 Tâches prévus :
- - Lors de l'envois mail notifier le changement de ressources si il y a lieu
  - Outil test des prérequis droits...
  - Loi CNIL RGPD
- - Compatibilité outlook (voir ce qui es possible...)
+ - Compatibilité outlook (module externe)
+ 
+Tâches en cours :
+ - Lors de l'envois mail notifier le changement de ressources si il y a lieu
+ - [ajout] Gestion de modules externe
+ 
 
 Version en cours de développement sur GitHUB (3.3.2)
 	[ajout] Personnalisation des couleurs pour les types de réservation depuis l'administration, soit un passage de 28 couleurs à 16 777 216 couleurs
