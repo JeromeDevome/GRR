@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2018-02-23 18:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -78,7 +78,8 @@ class Email{
 				"Reply-To: {$DE}" . "\r\n" .
 				'X-Mailer: PHP/' . phpversion();
 
-			mail($A, $sujet, utf8_decode(utf8_encode($message)), $headers);
+			//mail($A, $sujet, utf8_decode(utf8_encode($message)), $headers);
+            mail(str_replace(";",",",$A), $sujet, utf8_decode(utf8_encode(str_replace("<br>","",$message))), $headers); //YN selon Rapace sur le forum
 		}
 
 	}
