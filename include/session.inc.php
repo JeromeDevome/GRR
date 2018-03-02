@@ -551,7 +551,7 @@ if ($auth_imap == 'yes')
 	}
 	else
 	{
-		// pas d'utilisateur imap ayant le m?me login dans la base GRR
+		// pas d'utilisateur imap ayant le même login dans la base GRR
 		// Lire les infos sur l'utilisateur depuis imap
 		include "config_imap.inc.php";
 				// Connexion ? l'annuaire
@@ -605,19 +605,39 @@ if ((Settings::get("disable_login")=='yes') and ($row[4] != "administrateur"))
 
 // On teste si l'ip est autorisé
 if ((Settings::get("ip_autorise") != '') and ($row[4] != "administrateur")){
-	$resultIP = false;
+	 /*$resultIP = false;
 	$ips = explode(';', Settings::get("ip_autorise"));
 	foreach ($ips as $ip) {
 		if($ip == $_SERVER["REMOTE_ADDR"]){
 			$resultIP = true;
 		}
+	} */
+    $ipclient = $_SERVER["REMOTE_ADDR"];
+    // echo $ipclient;
+    $ips = explode(';', Settings::get("ip_autorise"));
+    $resultIP = in_array($ipclient,$ips,true);
+	if($resultIP == false){ // cherche si l'adresse est dans une plage CIDR p.ex. 192.168.1.0/24 --> 192.168.1.0 à 192.168.1.255
+        foreach ($ips as $ip){
+            $slash = strpos($ip,'/');
+            if ($slash !== false){
+                list($net,$mask) = split("/",$ip);
+                $lnet=ip2long($net);
+                $lip=ip2long($ipclient);
+                $binnet=str_pad( decbin($lnet),32,"0",STR_PAD_LEFT );
+                $firstpart=substr($binnet,0,$mask);
+                $binip=str_pad( decbin($lip),32,"0",STR_PAD_LEFT );
+                $firstip=substr($binip,0,$mask);
+                $resultIP = (strcmp($firstpart,$firstip)==0);
+            }
+            if ($resultIP) break;
+        }
 	}
-	if($resultIP == false){
+    if ($resultIP == false){
 		return "11";
-	}
+    }
 }
 		//
-		// A ce stade, on dispose dans tous les cas d'un tableau $row contenant les informations nécessaires à l'établissment d'une session
+		// A ce stade, on dispose dans tous les cas d'un tableau $row contenant les informations nécessaires à l'établissement d'une session
 		//
 		// Session starts now
 session_name(SESSION_NAME);
