@@ -985,6 +985,8 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2;
 
+	include "/../include/hook.class.php";
+
 	if (!($desactive_VerifNomPrenomUser))
 		$desactive_VerifNomPrenomUser = 'n';
 	// On vérifie que les noms et prénoms ne sont pas vides
@@ -1026,6 +1028,9 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 				$racine = "./";
 				$racineAd = "./admin/";
 			}
+
+			// HOOK
+			Hook::Appel("hookHeader1");
 
 			// Génération XML
 			$generationXML = 1;
