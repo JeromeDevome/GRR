@@ -56,6 +56,7 @@ $liste_tables = array(
 	"_j_site_area",
 	"_correspondance_statut",
 	"_page",
+	"_modulesext",
 	);
 
 # Liste des feuilles de style
