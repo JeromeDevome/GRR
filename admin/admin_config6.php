@@ -3,7 +3,7 @@
  * admin_config6.php
  * Interface permettant à l'administrateur la configuration des paramètres pour le module Jours Cycles
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-02-18 18:00$
+ * Dernière modification : $Date: 2018-03-03 19:30$
  * @author    JeromeB
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -16,14 +16,42 @@
  * (at your option) any later version.
  */
 
-if (!Settings::load())
-	die("Erreur chargement settings");
+$msg = '';
 
+// Installation, Activation, Désactivation
+if (isset($_GET['activation'])) {
+	
+	$iter = $_GET['activation'];
 
+	$sql = "SELECT `nom`, `actif` FROM ".TABLE_PREFIX."_modulesext WHERE `nom` = '".$iter."';";
+	$res = grr_sql_query($sql);
+
+	if ($res)
+	{
+		$nb = grr_sql_count($res);
+		if($nb > 0){
+			$row = grr_sql_row($res, 0);
+			if($row[1] == 0){
+				grr_sql_command("UPDATE ".TABLE_PREFIX."_modulesext SET actif = '1' WHERE `nom` = '".$iter."'");
+			} else{
+				grr_sql_command("UPDATE ".TABLE_PREFIX."_modulesext SET actif = '0' WHERE `nom` = '".$iter."'");
+			}
+		} else{
+			if(is_file('../modules/'.$iter.'/installation.php') && is_file('../modules/'.$iter.'/infos.php')){
+				include '../modules/'.$iter.'/installation.php';
+				include '../modules/'.$iter.'/infos.php';
+				Module::Installation($iter, $module_versionBDD);
+				
+			} else{
+				$msg .= "Impossible de trouver le fichier d'installation et ou d'infos !\\n";
+			}
+		}
+	}
+
+}
 
 // Import de module
-$msg = '';
-if (isset($_POST['ok'])) {
+if (isset($_POST['ok']) && $upload_Module == 1) {
     // Enregistrement du logo
     //$_FILES['doc_file'] = isset($_FILES['doc_file']) ? $_FILES['doc_file'] : null;
     /* Test premier, juste pour bloquer les double extensions */
@@ -121,14 +149,15 @@ include "../include/admin_config_tableau.inc.php";
 
 
 // Formulaire import module
-
-echo "<h3>".get_vocab("Module_Ext_Import")."</h3>\n";
-echo '<form enctype="multipart/form-data" action="./admin_config.php?page_config=6" id="nom_formulaire" method="post" style="width: 100%;">';
-echo get_vocab("Module_Ext_Import_Description").get_vocab("deux_points");
-echo "<input type=\"hidden\" value=\"5\" name=\"page_config\" /></div>";
-echo "<input type='file' name='doc_file' /><br>\n";
-echo "<input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=Import style=\"font-variant: small-caps;\"/>\n";
-echo "<hr />\n";
+if($upload_Module == 1){
+	echo "<h3>".get_vocab("Module_Ext_Import")."</h3>\n";
+	echo '<form enctype="multipart/form-data" action="./admin_config.php?page_config=6" id="nom_formulaire" method="post" style="width: 100%;">';
+	echo get_vocab("Module_Ext_Import_Description").get_vocab("deux_points");
+	echo "<input type=\"hidden\" value=\"5\" name=\"page_config\" /></div>";
+	echo "<input type='file' name='doc_file' /><br>\n";
+	echo "<input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=Import style=\"font-variant: small-caps;\"/>\n";
+	echo "<hr />\n";
+}
 
 ///////////////////////
 //****
@@ -143,6 +172,7 @@ echo "<hr />\n";
 
 	$path = "../modules/"; // chemin vers le dossier
 	$iter = new DirectoryIterator($path);
+	$lienActivation = "";
 	$files = [];
 	foreach ($iter as $fileinfo) {
 		if($fileinfo->isFile()) {
@@ -160,8 +190,28 @@ echo "<hr />\n";
 					$infosModule[2] = "<font color='red'>Erreur lecture</font>";
 					$infosModule[3] = "<font color='red'>Erreur lecture</font>";
 					$infosModule[4] = "<font color='red'>Erreur lecture</font>";
+					$activation = "<font color='red'>Impossible</font>";
+					$lienActivation = "#";
+				} else{
+					$sql = "SELECT `nom`, `actif` FROM ".TABLE_PREFIX."_modulesext WHERE `nom` = '".$iter."';";
+					$res = grr_sql_query($sql);
+					if ($res)
+					{
+						$lienActivation = "admin_config.php?page_config=6&activation=".$iter;
+						$nb = grr_sql_count($res);
+						if($nb > 0){
+							$row = grr_sql_row($res, 0);
+							
+							if($row[1] == 0)
+								$activation = "Activer";
+							else
+								$activation = "Désactiver";
+						} else{
+							$activation = "Installer";
+						}
+					}
 				}
-				echo "<tr><td>".$infosModule[0]."<br>(".$iter.")</td><td>".$infosModule[1]."</td><td>".$infosModule[2]."</td><td>".$infosModule[3]."</td><td>".$infosModule[4]."</td><td></td></tr>";
+				echo "<tr><td>".$infosModule[0]."<br>(".$iter.")</td><td>".$infosModule[1]."</td><td>".$infosModule[2]."</td><td>".$infosModule[3]."</td><td>".$infosModule[4]."</td><td><a href='".$lienActivation."' />".$activation."</a></td></tr>";
 				unset($infosModule);
 			}
 		}
