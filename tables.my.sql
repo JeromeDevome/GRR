@@ -49,6 +49,8 @@ CREATE TABLE grr_correspondance_statut (id int(11) NOT NULL auto_increment, code
 DROP TABLE IF EXISTS grr_page;
 CREATE TABLE grr_page ( nom varchar(30) NOT NULL, valeur longtext NOT NULL default '', PRIMARY KEY  (`nom`));
 INSERT INTO grr_page VALUES ('CGU', 'Les CGU');
+DROP TABLE IF EXISTS grr_modulesext;
+CREATE TABLE grr_modulesext ( nom varchar(50) NOT NULL, actif tinyint(1) NOT NULL DEFAULT '0', PRIMARY KEY  (`nom`));
 INSERT INTO grr_type_area VALUES (1, 'Cours', 1, 1, 'A', 2);
 INSERT INTO grr_type_area VALUES (2, 'Réunion', 2, 2, 'B', 2);
 INSERT INTO grr_type_area VALUES (3, 'Stage', 3, 3, 'C', 2);
