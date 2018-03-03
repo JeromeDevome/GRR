@@ -17,6 +17,10 @@
  */
 $grr_script_name = "month.php";
 
+if (!isset($_GET['day'])){ // pour l'affichage du mois la variable jour n'est pas obligatoire dans l'url, cependant necessaire pour setdate.php
+	$_GET['day'] = 1;
+}
+
 include "include/planning_init.inc.php";
 
 
@@ -47,6 +51,7 @@ if (($this_room_name_des) && ($this_room_name_des!="-1"))
 	$this_room_name_des = " (".$this_room_name_des.")";
 else
 	$this_room_name_des = "";
+
 $i = mktime(0, 0, 0, $month - 1, 1, $year);
 $yy = date("Y", $i);
 $ym = date("n", $i);

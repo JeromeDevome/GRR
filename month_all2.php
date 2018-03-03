@@ -18,6 +18,10 @@
 
 $grr_script_name = "month_all2.php";
 
+if (!isset($_GET['day'])){ // pour l'affichage du mois la variable jour n'est pas obligatoire dans l'url, cependant necessaire pour setdate.php
+	$_GET['day'] = 1;
+}
+
 include "include/planning_init.inc.php";
 
 
