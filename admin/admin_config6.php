@@ -16,42 +16,161 @@
  * (at your option) any later version.
  */
 
+if (!Settings::load())
+	die("Erreur chargement settings");
 
 
 
-		$ligne = "";
+// Import de module
+$msg = '';
+if (isset($_POST['ok'])) {
+    // Enregistrement du logo
+    //$_FILES['doc_file'] = isset($_FILES['doc_file']) ? $_FILES['doc_file'] : null;
+    /* Test premier, juste pour bloquer les double extensions */
+	if($_FILES['file']['error'] > 0) {
+        exit('Erreur n°'.$_FILES['file']['error']);
+    }
+    if (count(explode('.', $_FILES['doc_file']['name'])) > 2) {
 
-		echo "<table border='1'>";
-		echo "<tr><th>Nom</th><th width='200px'>Description</th><th>Version</th><th>Autheur</th><th>Licence</th><th>Activation</th></tr>";
+        $msg .= "Erreur 1 - Le module n\'a pas pu être importé : la seule extention autorisées est zip.\\n";
+        $ok = 'no';
 
-		$path = "../modules/"; // chemin vers le dossier
-		$iter = new DirectoryIterator($path);
-		$files = [];
-		foreach ($iter as $fileinfo) {
-			if($fileinfo->isFile()) {
+    } elseif (preg_match("`\.([^.]+)$`", $_FILES['doc_file']['name'], $match)) {
+        /* normalement, si on arrive ici l'image n'a qu'une extension */
 
-			} else {
-				if($iter != "." && $iter != ".."){
-					if(is_file('../modules/'.$iter.'/infos.php')){
-						include '../modules/'.$iter.'/infos.php';
-						$infosModule = array($module_nom,$module_description,$module_version,$module_autheur,$module_copyright);
-					}
-					if(!isset($infosModule)){
-						$infosModule = array();
-						$infosModule[0] = "<font color='red'>Erreur lecture</font>";
-						$infosModule[1] = "<font color='red'>Erreur lecture</font>";
-						$infosModule[2] = "<font color='red'>Erreur lecture</font>";
-						$infosModule[3] = "<font color='red'>Erreur lecture</font>";
-						$infosModule[4] = "<font color='red'>Erreur lecture</font>";
-					}
-					echo "<tr><td>".$infosModule[0]."<br>(".$iter.")</td><td>".$infosModule[1]."</td><td>".$infosModule[2]."</td><td>".$infosModule[3]."</td><td>".$infosModule[4]."</td><td></td></tr>";
-					unset($infosModule);
+        $ext = strtolower($match[1]);
+        if ($ext != 'zip') {
+            $msg .= "Erreur 2 - Le module n\'a pas pu être importé : la seule extention autorisées est zip.\\n";
+            $ok = 'no';
+        } else {
+            /* deuxième test passé, l'extension est autorisée */
+
+			if(is_uploaded_file($_FILES['doc_file']['tmp_name'])){
+                /* je test si la destination est writable */
+                $dest = '../temp/';
+                $picturePath = $dest.$_FILES['doc_file']['name'];
+
+                if (is_writable($dest)) {
+                    /* je copie le logo pour valider avec la fonction move_uploaded_file */
+                    $moveUploadReturn = move_uploaded_file($_FILES['doc_file']['tmp_name'], $picturePath);
+                    if (!$moveUploadReturn) {
+                        $msg .= "Erreur 3 - Le module n\'a pas pu être importé : problème de transfert. Le fichier ".$_FILES['doc_file']['name']." n\'a pas pu être transféré sur le répertoire \"temp\". Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
+                        $ok = 'no';
+                    } else {
+						$zip = new ZipArchive;
+						if ($zip->open($picturePath) === TRUE) {
+							$zip->extractTo('../modules/');
+							$zip->close();
+						} else {
+							$msg .= "Erreur 8 - Le module n\'a pas pu être installé\\n";
+							$ok = 'no';
+						}
+						
+                        $unlinkReturn = unlink($picturePath);
+                        if (!$unlinkReturn) {
+                            $msg .= "Erreur 9 - Installation réussie, cependant archive non supprimé.  Cette erreur peut être ignorée.\\n";
+                            $ok = 'no';
+                        }
+                    }
+
+                } else {
+                    $msg .= "Erreur 5 - Le module n\'a pas pu être enregistré : problème d\'écriture sur le répertoire \"temp\". Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
+                    $ok = 'no';
+                }
+			} else{
+			    $msg .= "Erreur 7 - Le module n\'a pas pu être enregistré !\\n";
+				$ok = 'no';	
+			}
+			
+        }
+    } elseif ($_FILES['doc_file']['name'] != '') {
+        $msg .= "Erreur 6 - Le module n\'a pas pu être enregistré : le fichier sélectionné n'est pas valide !\\n";
+        $ok = 'no';
+    }
+}
+
+
+
+// Si pas de problème, message de confirmation
+if (isset($_POST['ok'])) {
+    $_SESSION['displ_msg'] = 'yes';
+    if ($msg == '') {
+        $msg = get_vocab('message_records');
+    }
+    Header('Location: '.'admin_config.php?page_config=6&msg='.$msg);
+    exit();
+}
+if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes')) {
+    $msg = $_GET['msg'];
+} else {
+    $msg = '';
+}
+
+
+// Page
+
+print_header("", "", "", $type="with_session");
+if (isset($_GET['ok']))
+{
+	$msg = get_vocab("message_records");
+	affiche_pop_up($msg, "admin");
+}
+include "admin_col_gauche.php";
+include "../include/admin_config_tableau.inc.php";
+
+
+
+// Formulaire import module
+
+echo "<h3>".get_vocab("Module_Ext_Import")."</h3>\n";
+echo '<form enctype="multipart/form-data" action="./admin_config.php?page_config=6" id="nom_formulaire" method="post" style="width: 100%;">';
+echo get_vocab("Module_Ext_Import_Description").get_vocab("deux_points");
+echo "<input type=\"hidden\" value=\"5\" name=\"page_config\" /></div>";
+echo "<input type='file' name='doc_file' /><br>\n";
+echo "<input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=Import style=\"font-variant: small-caps;\"/>\n";
+echo "<hr />\n";
+
+///////////////////////
+//****
+///*******
+///////////////////
+
+
+	$ligne = "";
+	echo "<h3>".get_vocab("Module_Ext_Gestion")."</h3>\n";
+	echo "<table border='1'>";
+	echo "<tr><th>Nom</th><th width='200px'>Description</th><th>Version</th><th>Autheur</th><th>Licence</th><th>Activation</th></tr>";
+
+	$path = "../modules/"; // chemin vers le dossier
+	$iter = new DirectoryIterator($path);
+	$files = [];
+	foreach ($iter as $fileinfo) {
+		if($fileinfo->isFile()) {
+
+		} else {
+			if($iter != "." && $iter != ".."){
+				if(is_file('../modules/'.$iter.'/infos.php')){
+					include '../modules/'.$iter.'/infos.php';
+					$infosModule = array($module_nom,$module_description,$module_version,$module_autheur,$module_copyright);
 				}
+				if(!isset($infosModule)){
+					$infosModule = array();
+					$infosModule[0] = "<font color='red'>Erreur lecture</font>";
+					$infosModule[1] = "<font color='red'>Erreur lecture</font>";
+					$infosModule[2] = "<font color='red'>Erreur lecture</font>";
+					$infosModule[3] = "<font color='red'>Erreur lecture</font>";
+					$infosModule[4] = "<font color='red'>Erreur lecture</font>";
+				}
+				echo "<tr><td>".$infosModule[0]."<br>(".$iter.")</td><td>".$infosModule[1]."</td><td>".$infosModule[2]."</td><td>".$infosModule[3]."</td><td>".$infosModule[4]."</td><td></td></tr>";
+				unset($infosModule);
 			}
 		}
+	}
 
-		echo "<table>";
+	echo "<table>";
 
+
+//////////////////////
 
 
 ?>
