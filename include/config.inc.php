@@ -106,6 +106,9 @@ $debug_flag = 0;
 #Rechercher des MAJ sur le serveur grr.devome.com || 0: non ; 1: oui - Defaut 1
 $recherche_MAJ = 1;
 
+#Possibilité d'upload de module || 0: non ; 1: oui - Defaut 1
+$upload_Module = 1;
+
 # Nb de jour maximum que l'on garde les logs de connexions, 0 = aucune limite
 $nbMaxJoursLogConnexion = 365;
 
