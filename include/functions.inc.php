@@ -1120,7 +1120,12 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			}
 			else
 			{
-				echo '<br /><a href="'.$racine.'my_account.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'. htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']).' - '.get_vocab("manage_my_account").'</a>'.PHP_EOL;
+				if( strlen(htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom'])) > 40 )
+					$nomAffichage =  htmlspecialchars($_SESSION['nom']);
+				else
+					$nomAffichage =  htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']);
+			
+				echo '<br /><a href="'.$racine.'my_account.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'. $nomAffichage .' - '.get_vocab("manage_my_account").'</a>'.PHP_EOL;
 				if (verif_access_search(getUserName()))
 					echo '<br/><a href="'.$racine.'report.php">'.get_vocab("report").'</a>'.PHP_EOL;
 				$disconnect_link = false;

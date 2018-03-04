@@ -30,11 +30,11 @@ table.table-striped th{background-color:gray !important; border:0px !important;}
 #menu1{border:0;width:100%}
 .image{border:0;vertical-align:middle}
 .logo{width:.1%;height:.1%}
-.logo img{margin-top:20px;margin-left:20px;max-height:135px;}
+.logo img{margin-top:5px;margin-left:5px;max-height:115px}
 .accueil{background-color:#fff;padding-left:1%; width:32%}
-.administration{background-color:#fff;width:20%;text-align:center;margin:0 auto}
+.administration{background-color:#fff;width:15%;text-align:center;margin:0 auto}
 .configuration{background-color:#fff;width:20%;text-align:center;margin:0 auto}
-.contactformulaire{background-color:#fff;width:20%;vertical-align:middle;text-align:center}
+.contactformulaire{background-color:#fff;width:15%;vertical-align:middle;text-align:center}
 #menuGauche{background-color:#B029E5;float:left;height:100%;min-width:200px;width:100%;padding-bottom:10px}
 #menuGaucheMonthAll2{display:none;background-color:#B029E5;float:left;height:100%;min-width:200px;width:300px;padding-bottom:10px}
 .cal_current_day{color:#000;vertical-align:middle;text-align:center;line-height:30px}
@@ -132,7 +132,7 @@ a.buttonsReservation{cursor:pointer}
 .closepop{float:right;cursor:pointer}
 
 #toppanel{position:relative;top:0;width:100%;z-index:999;text-align:center;border-bottom:1px solid #B029E5}
-#panel{width:100%;height:120px;overflow:hidden;position:relative;z-index:3}
+#panel{width:100%;overflow:hidden;position:relative;z-index:3}
 #panel a{text-decoration:none}
 .pad-15,.pad-15 tboby{padding-left:15px !important}
 #fixe{position:fixed;right:5%;bottom:5%}
