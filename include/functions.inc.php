@@ -888,7 +888,7 @@ function begin_page($title, $page = "with_session")
 	$a .= '<title>'.$title.'</title>'.PHP_EOL;
 	$a .= '<link rel="shortcut icon" href="./favicon.ico" />'.PHP_EOL;
 
-	if (@file_exists('admin_accueil.php')){ // Si on est dans l'administration
+	if (@file_exists('admin_accueil.php') || @file_exists('install_mysql.php')){ // Si on est dans l'administration
 
 		$a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/style.css" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/bootstrap.min.css" />'.PHP_EOL;
@@ -985,8 +985,6 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2;
 
-	include "/../include/hook.class.php";
-
 	if (!($desactive_VerifNomPrenomUser))
 		$desactive_VerifNomPrenomUser = 'n';
 	// On vérifie que les noms et prénoms ne sont pas vides
@@ -1028,6 +1026,8 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 				$racine = "./";
 				$racineAd = "./admin/";
 			}
+
+			include $racine."/include/hook.class.php";
 
 			// HOOK
 			Hook::Appel("hookHeader1");

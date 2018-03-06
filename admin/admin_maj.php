@@ -795,9 +795,9 @@ if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 							$result_inter = '';
 						}
 
-						if ($version_old < "3.3.2")
+						if ($version_old < "3.4.0")
 						{
-							$result .= "<b>Mise à jour jusqu'à la version 3.3.2 :</b><br />";
+							$result .= "<b>Mise à jour jusqu'à la version 3.4.0 :</b><br />";
 
 							$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_type_area ADD `couleurhexa` VARCHAR(10) NOT NULL AFTER `couleur`;");
 							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#F49AC2' WHERE couleur = '1';");
