@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-01-06 11:00$
+ * Dernière modification : $Date: 2018-03-04 18:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -60,6 +60,7 @@ if (!isset($day) || !isset($month) || !isset($year))
 	$month = date("m");
 	$year  = date("Y");
 }
+// echo $day," ",$month," ",$year;
 if (isset($id))
 {
 	if ($info = mrbsGetEntryInfo($id))
