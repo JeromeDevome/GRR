@@ -15,10 +15,12 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-require_once("include/config.inc.php");
-require_once("include/misc.inc.php");
-require_once("include/functions.inc.php");
-$nom_fic = "include/connect.inc.php";
+
+require_once("../include/config.inc.php");
+require_once("../include/misc.inc.php");
+require_once("../include/functions.inc.php");
+
+$nom_fic = "../include/connect.inc.php";
 $etape = isset($_GET["etape"]) ? $_GET["etape"] : NULL;
 $adresse_db = isset($_GET["adresse_db"]) ? $_GET["adresse_db"] : NULL;
 $login_db = isset($_GET["login_db"]) ? $_GET["login_db"] : NULL;
@@ -55,7 +57,7 @@ if (@file_exists($nom_fic))
 	} else {
 		$table_prefix_from_user = false;
 	}
-	require_once("include/connect.inc.php");
+	require_once($nom_fic);
 	if ( empty($table_prefix) &&  $table_prefix_from_user !== false) {
 		$table_prefix = $table_prefix_from_user;
 	}
@@ -92,7 +94,7 @@ if (@file_exists($nom_fic))
 					echo "<p>";
 					echo "<p>Vous pouvez maintenant commencer à utiliser le système de réservation de ressources ...</p>";
 					echo "<p>Pour vous connecter la première fois en tant qu'administrateur, utilisez le nom de connection <b>\"administrateur\"</b> et le mot de passe <b>\"azerty\"</b>. N'oubliez pas de changer le mot de passe !</p>";
-					echo "<br /><center><a href = 'login.php'>Se connecter à GRR</a></center>";
+					echo "<br /><center><a href = '../login.php'>Se connecter à GRR</a></center>";
 				}
 				else
 				{
