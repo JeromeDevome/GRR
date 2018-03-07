@@ -123,6 +123,7 @@ $rep_end_day = isset($_GET["rep_end_day"]) ? $_GET["rep_end_day"] : NULL;
 $rep_end_month = isset($_GET["rep_end_month"]) ? $_GET["rep_end_month"] : NULL;
 $rep_end_year = isset($_GET["rep_end_year"]) ? $_GET["rep_end_year"] : NULL;
 $room_back = isset($_GET["room_back"]) ? $_GET["room_back"] : NULL;
+$oldRessource = isset($_GET["oldRessource"]) ? $_GET["oldRessource"] : NULL;
 if (isset($room_back))
 	settype($room_back,"integer");
 $page = verif_page();
@@ -608,7 +609,7 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 					if ($send_mail_moderate)
 						$message_error = send_mail($id_first_resa, 5, $dformat);
 					else
-						$message_error = send_mail($id_first_resa, 2, $dformat);
+						$message_error = send_mail($id_first_resa, 2, $dformat, array(), $oldRessource);
 				}
 				else
 				{
@@ -634,7 +635,7 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 					if ($send_mail_moderate)
 						$message_error = send_mail($new_id,5,$dformat);
 					else
-						$message_error = send_mail($new_id,2,$dformat);
+						$message_error = send_mail($new_id,2,$dformat, array(), $oldRessource);
 				}
 				else
 				{

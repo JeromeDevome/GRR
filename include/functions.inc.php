@@ -2406,7 +2406,7 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
 /**
  * @param integer $action
  */
-function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
+function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $oldRessource = '')
 {
 	global $vocab, $grrSettings, $locale, $weekstarts, $enable_periods, $periods_name;
 
@@ -2416,7 +2416,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 	// $action = 2 -> Modification
 	// $action = 3 -> Suppression
 	// $action = 4 -> Suppression automatique
-	// $action = 5 -> réservation en attente de modération
+	// $action = 5 -> Réservation en attente de modération
 	// $action = 6 -> Résultat d'une décision de modération
 	// $action = 7 -> Notification d'un retard dans la restitution d'une ressource.
 
@@ -2482,6 +2482,21 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 		$start_date = time_date_string($row[10],$dformat);
 	$rep_type = 0;
 
+	// Recherche du nom de l'ancienne ressource si besoin
+	if($oldRessource != '' && $oldRessource != $room_id)
+	{
+		$sql = "SELECT room_name FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($oldRessource)."'";
+		$oldRess = grr_sql_query($sql);
+		if (!$oldRess)
+			fatal_error(0, grr_sql_error());
+		$rowOld = grr_sql_row($oldRess, 0);
+		grr_sql_free($oldRess);
+		$nomAncienneSalle = $rowOld[0];
+	}
+	else
+		$nomAncienneSalle = "";
+	//
+
 	if ($repeat_id != 0)
 	{
 		$res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks FROM ".TABLE_PREFIX."_repeat WHERE id='".protect_data_sql($repeat_id)."'");
@@ -2535,25 +2550,28 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 	$message = $message.traite_grr_url("","y")."\n\n";
 	$sujet = $vocab["subject_mail1"].$room_name." - ".$date_avis;
 
-	if ($action == 1){
+	if ($action == 1){ // Création
 		$sujet = $sujet.$vocab["subject_mail_creation"];
 		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
 		$message .= $vocab["creation_booking"];
 		$message .= $vocab["the_room"].$room_name." (".$area_name.") \n";
 		$repondre = $user_email;
 	}
-	elseif ($action == 2){
+	elseif ($action == 2){ // Modification
 		$sujet = $sujet.$vocab["subject_mail_modify"];
 		if ($moderate == 1)
 			$sujet .= " (".$vocab["en_attente_moderation"].")";
 		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
 		$message = $message.$vocab["modify_booking"];
-		$message = $message.$vocab["the_room"].$room_name." (".$area_name.") ";
+		if ($room_name != $oldRessource)
+			$message = $message.$vocab["the_room"]." ".$oldRessource." => ".$room_name." (".$area_name.") ";
+		else
+			$message = $message.$vocab["the_room"].$room_name." (".$area_name.") ";
 		$message = $message.$vocab["reservee au nom de"];
 		$message = $message.$vocab["the_user"].affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
 		$repondre = $user_email;
 	}
-	elseif ($action == 3){
+	elseif ($action == 3){ // Suppression
 		$sujet = $sujet.$vocab["subject_mail_delete"];
 		if ($moderate == 1)
 			$sujet .= " (".$vocab["en_attente_moderation"].")";
@@ -2564,19 +2582,19 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 		$message = $message.$vocab["the_user"].affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
 		$repondre = $user_email;
 	}
-	elseif ($action == 4){
+	elseif ($action == 4){ // Suppression automatique
 		$sujet = $sujet.$vocab["subject_mail_delete"];
 		$message = $message.$vocab["suppression_automatique"];
 		$message=$message.$vocab["the_room"].$room_name." (".$area_name.") \n";
 		$repondre = $user_email;
 	}
-	elseif ($action == 5){
+	elseif ($action == 5){ // Réservation en attente de modération
 		$sujet = $sujet.$vocab["subject_mail_moderation"];
 		$message = $message.$vocab["reservation_en_attente_de_moderation"];
 		$message=$message.$vocab["the_room"].$room_name." (".$area_name.") \n";
 		$repondre = Settings::get("webmaster_email");
 	}
-	elseif ($action == 6){
+	elseif ($action == 6){ // Résultat d'une décision de modération
 		$sujet = $sujet.$vocab["subject_mail_decision_moderation"];
 
 		$resmoderate = grr_sql_query("SELECT moderate, motivation_moderation FROM ".TABLE_PREFIX."_entry_moderate WHERE id ='".protect_data_sql($id_entry)."'");
@@ -2615,7 +2633,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 
 		$repondre = $user_email;
 	}
-	elseif ($action == 7){
+	elseif ($action == 7){ // Notification d'un retard dans la restitution d'une ressource
 		$sujet .= $vocab["subject_mail_retard"];
 
 		$message .= $vocab["message_mail_retard"].$vocab["deux_points"]." \n";
@@ -2804,7 +2822,10 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 		elseif ($action == 2){
 			$sujet2 = $sujet2.$vocab["subject_mail_modify"];
 			$message2 = $message2.$vocab["modify_booking"];
-			$message2=$message2.$vocab["the_room"].$room_name." (".$area_name.")";
+			if ($room_id != $oldRessource)
+				$message2 = $message2.$vocab["the_room"]." ".$nomAncienneSalle." => ".$room_name." (".$area_name.") ";
+			else
+				$message2 = $message2.$vocab["the_room"].$room_name." (".$area_name.") ";
 			$message2 = $message2.$vocab["created_by_you"];
 		}
 		else{
