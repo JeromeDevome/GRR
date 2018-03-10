@@ -63,7 +63,7 @@ INSERT INTO grr_setting VALUES ('webmaster_email', 'admin@mon.site.fr');
 INSERT INTO grr_setting VALUES ('technical_support_email', 'support.technique@mon.site.fr');
 INSERT INTO grr_setting VALUES ('grr_url', 'http://mon.site.fr/grr/');
 INSERT INTO grr_setting VALUES ('disable_login', 'no');
-INSERT INTO grr_setting VALUES ('ip_autorise', 'no');
+INSERT INTO grr_setting VALUES ('ip_autorise', '');
 INSERT INTO grr_setting VALUES ('begin_bookings', '1514761200');
 INSERT INTO grr_setting VALUES ('end_bookings', '1609369200');
 INSERT INTO grr_setting VALUES ('title_home_page', 'Gestion et Réservation de Ressources');
