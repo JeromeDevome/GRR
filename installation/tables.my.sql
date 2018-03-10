@@ -47,7 +47,7 @@ CREATE TABLE grr_j_useradmin_site (login varchar(40) NOT NULL default '', id_sit
 DROP TABLE IF EXISTS grr_correspondance_statut;
 CREATE TABLE grr_correspondance_statut (id int(11) NOT NULL auto_increment, code_fonction varchar(30) NOT NULL, libelle_fonction varchar(200) NOT NULL, statut_grr varchar(30) NOT NULL,  PRIMARY KEY (id));
 DROP TABLE IF EXISTS grr_page;
-CREATE TABLE grr_page ( nom varchar(30) NOT NULL, valeur longtext NOT NULL default '', PRIMARY KEY  (`nom`));
+CREATE TABLE grr_page ( nom varchar(30) NOT NULL, valeur longtext NOT NULL, PRIMARY KEY  (`nom`));
 INSERT INTO grr_page VALUES ('CGU', 'Les CGU');
 DROP TABLE IF EXISTS grr_modulesext;
 CREATE TABLE grr_modulesext ( nom varchar(50) NOT NULL, actif tinyint(1) NOT NULL DEFAULT '0', version INT(11) NOT NULL, PRIMARY KEY  (`nom`));
