@@ -50,8 +50,14 @@ $nb_year_calendar = 10;
  En résumé, pour activer cette fonctionnalité, décommentez la ligne suivante (en supprimant le premier caractère #,
  et remplacez -7 par +n ou -n où "n" est le nombre d'heures d'avance ou de retard de GRR sur l'heure système du serveur.
 */
- putenv("TZ=posix/Etc/GMT+0");
- putenv("TZ=America/Toronto");
+// putenv("TZ=posix/Etc/GMT+0");
+// putenv("TZ=America/Toronto");
+/* pour compatibilité php >= 5.1.0 et php 7, on n'utilisera pas la fonction ptuenv et la constante TZ, mais la fonction 
+date_default_timezone_set("votre_time_zone"); en remplaçant "votre_time_zone" par votre time zone, dont la liste est disponible ici :
+http://php.net/manual/fr/timezones.php
+*/
+date_default_timezone_set('Europe/Paris');
+
 
 # Changement d'heure été<->hiver
 # $correct_heure_ete_hiver = 1 => GRR prend en compte les changements d'heure
@@ -167,6 +173,41 @@ $sso_super_admin = false;
  define('LCS_PAGE_LDAP_INC_PHP',"/var/www/Annu/includes/ldap.inc.php");
 # Réalise la connexion à la base d'authentification du LCS et include des fonctions de lcs/includes/functions.inc.php
  define('LCS_PAGE_AUTH_INC_PHP',"/var/www/lcs/includes/headerauth.inc.php");
+
+#############
+# Entry Types
+#############
+# Les lignes ci-dessous correspondent aux couleurs disponibles pour les types de réservation
+# Vous pouvez modifier les couleurs ou même en rajouter à votre convenance.
+$tab_couleur[1] = "#F49AC2"; # mauve pâle
+$tab_couleur[2] = "#99CCCC"; # bleu
+$tab_couleur[3] = "#FF9999"; # rose pâle
+$tab_couleur[4] = "#95a5a6"; # concrete
+$tab_couleur[5] = "#C0E0FF"; # bleu-vert
+$tab_couleur[6] = "#FFCC99"; # pêche
+$tab_couleur[7] = "#e74c3c"; # rouge
+$tab_couleur[8] = "#3498db"; # bleu "aqua"
+$tab_couleur[9] = "#DDFFDD"; # vert clair
+$tab_couleur[10] = "#34495e"; # gris
+$tab_couleur[11] = "#2ecc71"; # vert pâle
+$tab_couleur[12] = "#9b59b6"; # violet
+$tab_couleur[13] = "#f1c40f"; # jaune
+$tab_couleur[14] = "#FF00DE"; # rose
+$tab_couleur[15] = "#009900"; # vert
+$tab_couleur[16] = "#e67e22"; # orange
+$tab_couleur[17] = "#bdc3c7"; # gris clair
+$tab_couleur[18] = "#C000FF"; # Mauve
+$tab_couleur[19] = "#FF0000"; # rouge vif
+$tab_couleur[20] = "#FFFFFF"; # blanc
+$tab_couleur[21] = "#A0A000"; # Olive verte
+$tab_couleur[22] = "#f39c12"; # marron goldenrod
+$tab_couleur[23] = "#1abc9c"; # turquoise
+$tab_couleur[24] = "#884DA7"; # amethyst
+$tab_couleur[25] = "#4169E1"; # bleu royal
+$tab_couleur[26] = "#6A5ACD"; # bleu ardoise
+$tab_couleur[27] = "#AA5050"; # bordeaux
+$tab_couleur[28] = "#FFBB20"; # pêche
+
 
 ###################
 # Database settings
