@@ -27,7 +27,7 @@ function affichetableau($liste,$titre='')
 		foreach ($liste as $key)
 		{
 			if ($chaine == $key)
-				echo "<li><span class=\"bground\"><b>".get_vocab($key)."</b></span></li>\n";
+				echo "<li><a href='".$key."' style='color:blue;'>".get_vocab($key)."</a></li>\n";
 			else
 				echo "<li><a href='".$key."'>".get_vocab($key)."</a></li>\n";
 			$k++;
@@ -113,21 +113,17 @@ echo "<table class=\"table_adm4\">";
 					$liste[] = 'admin_corresp_statut.php';
 			}
 			affichetableau($liste,get_vocab("admin_menu_various"));
-		// Possibilité de bloquer l'affichage de la rubrique "Authentification et ldap"
-			if ((!isset($sso_restrictions)) || ($sso_restrictions == false))
-			{
-				$liste = array();
-				if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
-					$liste[] = 'admin_config_ldap.php';
-				if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
-					$liste[] = 'admin_config_sso.php';
-	 		//ajout page admin_config_imap.php
-				if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
-					$liste[] = 'admin_config_imap.php';
-				affichetableau($liste,get_vocab("admin_menu_auth"));
-			}
-		// début affichage de la colonne de gauche
+
+			$liste = array();
+			if ( (authGetUserLevel(getUserName(), -1, 'area') >= 6) && ((!isset($sso_restrictions)) || ($ldap_restrictions == false)) )
+				$liste[] = 'admin_config_ldap.php';
+			if ( (authGetUserLevel(getUserName(), -1, 'area') >= 6) && ((!isset($sso_restrictions)) || ($sso_restrictions == false)) )
+				$liste[] = 'admin_config_sso.php';
+			if ( (authGetUserLevel(getUserName(), -1, 'area') >= 6) && ((!isset($sso_restrictions)) || ($imap_restrictions == false)) )
+				$liste[] = 'admin_config_imap.php';
+			affichetableau($liste,get_vocab("admin_menu_auth"));
+
 			echo "</div>\n";
-			?>
+?>
 		</td>
 		<td>
