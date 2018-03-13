@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 07/05/2010
+# Last modification : 2018-03-13
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -743,6 +743,7 @@ $vocab['see_all_the_rooms_for_the_month'] = "Ver las reservas del mes para todos
 $vocab['see_month_for_this_room'] = "Ver las reservas del mes para este recurso";
 $vocab['see_week_for_this_area'] = "Ver las reservas de la semana para todos los recursos";
 $vocab['see_week_for_this_room'] = "Ver las reservas de la semana para este recurso";
+$vocab['see_day_for_this_room'] = "Voir les réservations de la journée pour cette ressource"; // à traduire
 $vocab['select'] = "(Seleccione)";
 $vocab['select_all'] = "(todas)";
 $vocab['select_area_list_format'] = "Visualización en forma de una lista desplegable";
@@ -976,4 +977,6 @@ $vocab['holidays_msg'] = "Afficher les vacances scolaires et les jours fériés"
 $vocab['courrier_msg'] = "Afficher la gestion des salles par courrier"; // A traduire
 $vocab['OU'] = "OU"; // à traduire
 $vocab['show_all_rooms'] = "Voir toutes les ressources de tous les domaines"; // à traduire
+$vocab['choose_room'] = "Sélectionnez une ressource ou cliquez sur ce "; // à traduire
+$vocab["link"] = "lien"; // à traduire
 ?>

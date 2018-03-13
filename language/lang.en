@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 03/01/2018
+# Last modification : 2018-03-13
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -748,6 +748,7 @@ $vocab['see_all_the_rooms_for_the_month'] = "View month reservations for all res
 $vocab['see_month_for_this_room'] = "View month reservations for this resource";
 $vocab['see_week_for_this_area'] = "View week reservations for all the resources";
 $vocab['see_week_for_this_room'] = "View week reservations for this resource";
+$vocab['see_day_for_this_room'] = "View day reservations for this resource";
 $vocab['select'] = "(Select)";
 $vocab['select_all'] = "(all)";
 $vocab['select_area_list_format'] = "Display as a scrolling list";
@@ -986,4 +987,6 @@ $vocab['holidays_msg'] = "Afficher les vacances scolaires et les jours fériés"
 $vocab['courrier_msg'] = "Afficher la gestion des salles par courrier";
 $vocab['OU'] = "OR";
 $vocab['show_all_rooms'] = "Show all rooms in all areas";
+$vocab['choose_room'] = "Sélectionnez une ressource ou cliquez sur ce "; // à traduire
+$vocab["link"] = "lien"; // à traduire
 ?>

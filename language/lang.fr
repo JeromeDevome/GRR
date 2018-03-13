@@ -1,4 +1,7 @@
 <?php
+# GRR : fichier de langue française
+# Last modification : 2018-03-13
+# Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['a acces au domaine'] = "Cet utilisateur a accès à ce domaine restreint.";
@@ -194,7 +197,7 @@ $vocab['causes_possibles'] = "Causes possibles :";
 $vocab['Cette journee ne correspond pas a un jour cycle'] = "Cette journée ne correspond pas à un jour cycle";
 $vocab['cgu'] = "CGU";
 $vocab['cgu_titre'] = "CGU : Condition Générale d'Utilisation";
-$vocab['cgu_grr'] = "Vous pouvez modifier la page CGU. Vous êtes responsable du contenu.<br>Pour informations légales de GRR :<ul><li>Ni GRR, ni les developpeur sont responsables du contenu</li><li>GRR est un logiciel Open Source sous la licence GPL</li><li>Aucune donnée n'est récupéré de votre GRR par l'éditeur</li><li>Les mots de passe des utilisateurs sont cryptés</li><li>Les informations personnels des utilisateurs sont limités au nom, prénom et adresse email</li></ul>";
+$vocab['cgu_grr'] = "Vous pouvez modifier la page CGU. Vous êtes responsable du contenu.<br>Pour informations légales de GRR :<ul><li>Ni GRR, ni les developpeur sont responsables du contenu</li><li>GRR est un logiciel Open Source sous la licence GPL</li><li>Aucune donnée n'est récupéré de votre GRR par l'éditeur</li><li>Les mots de passe des utilisateurs sont cryptés</li><li>Les informations personnelles des utilisateurs sont limitées au nom, prénom et adresse email, consultables dans la page \"Gérer mon compte\"</li></ul>";
 $vocab['champs_non_remplis'] = "Tous les champs n'ont pas été remplis.";
 $vocab['champ_confidentiel'] = "Champ confidentiel";
 $vocab['champ_obligatoire'] = "Remplissage obligatoire";
@@ -742,6 +745,7 @@ $vocab['see_all_the_rooms_for_the_month'] = "Voir les réservations du mois pour
 $vocab['see_month_for_this_room'] = "Voir les réservations du mois pour cette ressource";
 $vocab['see_week_for_this_area'] = "Voir les réservations de la semaine pour toutes les ressources";
 $vocab['see_week_for_this_room'] = "Voir les réservations de la semaine pour cette ressource";
+$vocab['see_day_for_this_room'] = "Voir les réservations de la journée pour cette ressource";
 $vocab['select'] = "(Sélectionnez)";
 $vocab['select_all'] = "(toutes)";
 $vocab['select_area_list_format'] = "Affichage sous la forme d'une liste déroulante";
@@ -960,7 +964,7 @@ $vocab['display_file3'] = "L'envoie de fichiers n'est pas autorisé ";
 $vocab['Generer_pdf'] = "Générer un PDF";
 $vocab['semaine'] = "Sem";
 $vocab['status_clef'] = "Statut de la clé";
-$vocab['clef'] = "Clé prêté";
+$vocab['clef'] = "Clé prêtée";
 $vocab['msg_clef'] = "Cocher si la clé est empruntée";
 $vocab['status_courrier'] = "Courrier de validation";
 $vocab['courrier'] = "Courrier";
@@ -979,4 +983,6 @@ $vocab['holidays_zone_msg'] = "Choix de la zone de vacances scolaires (France)";
 $vocab['courrier_msg'] = "Afficher la gestion des salles par courrier";
 $vocab['OU'] = "OU";
 $vocab['show_all_rooms'] = "Voir toutes les ressources de tous les domaines";
+$vocab['choose_room'] = "Sélectionnez une ressource ou cliquez sur ce ";
+$vocab["link"] = "lien";
 ?>
