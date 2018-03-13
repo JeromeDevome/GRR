@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 03/01/2018
+# Last modification : 2018-03-13
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -52,12 +52,14 @@ $vocab['admin_calendar_title.php'] = "Outright Reservation/Suppression ";
 $vocab['admin_calend_ignore.php'] = "Calendar except reservation";
 $vocab['admin_calend_jour_cycle.php'] = "Calendar of \"cycles days\"";
 $vocab['admin_clean_accounts_desc'] = "L'action ci-dessous permet de <b>nettoyer</b> toutes les tables de liaison des comptes utilisateurs. Il s'agit d'une opération de maintenance, normalement inutile et  sans conséquence sur le fonctionnement de GRR. <b>Par précaution, faites une sauvegarde de la base de données au  préalable</b>"; // A traduire
+$vocab['admin_cgu.php'] = "CGU"; // A traduire
 $vocab['admin_config.php'] = "General configuration";
 $vocab['admin_config1.php'] = "Contents / Appearance";
 $vocab['admin_config2.php'] = "Access and rights";
 $vocab['admin_config3.php'] = "Interactivity";
 $vocab['admin_config4.php'] = "Security / Connections";
-$vocab['admin_config5.php'] = "Activation of modules";
+$vocab['admin_config5.php'] = "Modules internes"; // A traduire
+$vocab['admin_config6.php'] = "Modules externes"; // A traduire
 $vocab['admin_config_calend1.php'] = "Setup of the calendar";
 $vocab['admin_config_calend2.php'] = "Creation / regeneration of the calendar \"cycle days\"";
 $vocab['admin_config_calend3.php'] = "Modification / display of the calendar \"cycle days\"";
@@ -194,6 +196,9 @@ $vocab['capacity_2'] = "Capacity: ";
 $vocab['CAS_SSO_explain'] = "If you have a <b>CAS</b> environment (Central Authentification Service), you can activate the consideration of this service with <b>GRR</b> below. Consult the GRR instructions to know more.";
 $vocab['causes_possibles'] = "Possibles causes:";
 $vocab['Cette journee ne correspond pas a un jour cycle'] = "This day doesn't correspond to a cycle day";
+$vocab['cgu'] = "CGU"; // A traduire
+$vocab['cgu_titre'] = "CGU : Condition Générale d'Utilisation"; // A traduire
+$vocab['cgu_grr'] = "Vous pouvez modifier la page CGU. Vous êtes responsable du contenu.<br>Pour informations légales de GRR :<ul><li>Ni GRR, ni les developpeur sont responsables du contenu</li><li>GRR est un logiciel Open Source sous la licence GPL</li><li>Aucune donnée n'est récupéré de votre GRR par l'éditeur</li><li>Les mots de passe des utilisateurs sont cryptés</li><li>Les informations personnels des utilisateurs sont limités au nom, prénom et adresse email</li></ul>"; // A traduire
 $vocab['champs_non_remplis'] = "All required fields have not been filled."; 
 $vocab['champ_confidentiel'] = "Confidential area";
 $vocab['champ_obligatoire'] = "Compulsory filling";
@@ -294,7 +299,7 @@ $vocab['del_entry_in_conflict'] = "Delete the reservation(s) above in order to c
 $vocab['del_user_succeed'] = "A user has been deleted from the list.";
 $vocab['description'] = "Description:";
 $vocab['description complete'] = "Full description (visible in the presentation card)";
-$vocab['description complete2'] = " - You can use HTML markers";
+$vocab['description complete2'] = " You can use HTML markers";
 $vocab['deux_points'] = ": ";
 $vocab['disable_login_off'] = "Activate connections";
 $vocab['disable_login_on'] = "Disable connections";
@@ -322,7 +327,7 @@ $vocab['dlrapportcsv'] = "CSV file of the reservations";
 $vocab['dlresumecsv'] = "CSV file of the summary";
 $vocab['domaines_de_type_incompatibles'] = "<b>Comment: </b> Only the reservation of full days is possible because the selected resources belong to different types of areas.";
 $vocab['dont_allow_modify'] = "Don't allow to users (except managers and administrators) to modify or delete their own reservations;";
-$vocab['droits_insuffisants_pour_voir_ressources'] = "You do not have the rights to access the resources in this area."; 
+$vocab['droits_insuffisants_pour_voir_ressources'] = "You don not have the rights to access the resources in this area."; 
 $vocab['duplique_domaine'] = "Duplicate the area"; 
 $vocab['duplique_ressource'] = "Duplicate the resource"; 
 $vocab['duration'] = "Duration:";
@@ -533,6 +538,7 @@ $vocab['match_entry'] = ""; // A traduire
 $vocab['match_login'] = "Creator (login)";
 $vocab['match_room'] = ""; // A traduire
 $vocab['max_booking'] = "Max.number of reservations authorized for each user (-1 if no restriction)";
+$vocab['mentions_legal_connexion'] = "En vous connectant vous acceptez les CGU et la création d'un cookie pour l'identification."; // A traduire
 $vocab['mess2_maj_base_locale'] = "The following users have been deleted of the local base because they weren't present anymore in the LCS base:";
 $vocab['mess3_maj_base_locale'] = "There is no user to delete of the local base";
 $vocab['message perso'] = " Personalized Message";
@@ -559,6 +565,9 @@ $vocab['modification_parametres_personnels'] = "Users authorized to modify their
 $vocab['modification_parametre_email'] = "Users authorized to modify their e-mail address";
 $vocab['modifier site'] = "Modify a website";
 $vocab['modify_booking'] = " has modified the reservation of ";
+$vocab['Module_Ext_Gestion'] = "Gestion des modules externes"; // A traduire
+$vocab['Module_Ext_Import'] = "Import d'un module externe"; // A traduire
+$vocab['Module_Ext_Import_Description'] = "Vous pouvez importer un module, cependant nous ne pouvons pas assurez : la compatibilité avec GRR, les conséquences de l'installation (lenteur, piratage, bug...), soyez vigilant.<br>Selectionner un fichier"; // A traduire
 $vocab['month'] = "Month";
 $vocab['monthafter'] = "View following month";
 $vocab['monthbefore'] = "View previous month";
@@ -568,7 +577,7 @@ $vocab['motif'] = "Reason";
 $vocab['mrbs'] = "GRR (Gestion et Reservation de Ressources - Management and Reservation of Resources) ";
 $vocab['msg_del_bookings'] = "Caution, the changes in reservation start and end dates that you have made are going to trigger definite deleting of reservations already made outside the new authorized dates!<br /><br />Are you sure you want to go on?";
 $vocab['msg_explain_log'] = "Dates displayed in red represent users automatically disconnected after a too long delay of inactivity.<br />Lines displayed in green represent users currently connected.";
-$vocab['msg_login1'] = "<b>GRR</b> is a PHP/MySql application under GPL licence, adapted from <a href='http://mrbs.sourceforge.net'>MRBS</a>.<br />To obtain information about <b>GRR</b>, go to the site: ";
+$vocab['msg_login1'] = "<b>GRR</b> is under GPL licence, adapted from <a href='http://mrbs.sourceforge.net'>MRBS</a>.<br />To obtain information about <b>GRR</b>, go to the site: ";
 $vocab['msg_login3'] = "The site is momentarily inaccessible. We apologize for any inconvenience!";
 $vocab['msg_login_created'] = "You have created a new user. By default,this user is considered active.";
 $vocab['msg_login_created_error'] = "A problem has occurred when creating a new user! Please contact technical support!";
@@ -685,7 +694,7 @@ $vocab['remplissage_description_complete0'] = "Le remplissage de la rubrique \"d
 $vocab['remplissage_description_complete1'] = "Le remplissage de la rubrique \"description complète\" est obligatoire"; // A traduire
 $vocab['remplissage_description_complete_msg'] = "Remplissage de la rubrique \"description complète\" dans le formulaire réservation"; // A traduire
 $vocab['repeat_id'] = "periodicity No. ";
-$vocab['report'] = "Search - Report";
+$vocab['report'] = "Search & Report";
 $vocab['report_and_summary'] = "Reservations and summary";
 $vocab['report_end'] = "Search end date:";
 $vocab['report_only'] = "Reservations details";
@@ -739,6 +748,7 @@ $vocab['see_all_the_rooms_for_the_month'] = "View month reservations for all res
 $vocab['see_month_for_this_room'] = "View month reservations for this resource";
 $vocab['see_week_for_this_area'] = "View week reservations for all the resources";
 $vocab['see_week_for_this_room'] = "View week reservations for this resource";
+$vocab['see_day_for_this_room'] = "View day reservations for this resource";
 $vocab['select'] = "(Select)";
 $vocab['select_all'] = "(all)";
 $vocab['select_area_list_format'] = "Display as a scrolling list";
@@ -977,4 +987,6 @@ $vocab['holidays_msg'] = "Afficher les vacances scolaires et les jours fériés"
 $vocab['courrier_msg'] = "Afficher la gestion des salles par courrier";
 $vocab['OU'] = "OR";
 $vocab['show_all_rooms'] = "Show all rooms in all areas";
+$vocab['choose_room'] = "Sélectionnez une ressource ou cliquez sur ce "; // à traduire
+$vocab["link"] = "lien"; // à traduire
 ?>
