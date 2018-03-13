@@ -125,7 +125,7 @@ function grrDelEntryInConflict($room_id, $starttime, $endtime, $ignore, $repigno
  * $all    - If set, include user modified entrys in the series delete
  *
  * Returns:
- *   0        - An error occured
+ *   0        - An error occurred
  *   non-zero - The entry was deleted
  * @param integer $all
  */
