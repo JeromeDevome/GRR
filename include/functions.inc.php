@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-02-04 18:00$
+ * Dernière modification : $Date: 2018-03-13 10:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1054,9 +1054,8 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			if ((Settings::get("logo") != '') && (@file_exists($nom_picture)))
 				echo '<td class="logo" height="100">'.PHP_EOL.'<a href="'.$racine.page_accueil('yes').'day='.$day.'&amp;year='.$year.'&amp;month='.$month.'"><img src="'.$nom_picture.'" alt="logo"/></a>'.PHP_EOL.'</td>'.PHP_EOL;
 			//Accueil
-			echo '<td class="accueil ">',PHP_EOL,'<h2>',PHP_EOL,'<a href="'.$racine.page_accueil('yes'),'day=',$day,'&amp;year=',$year,'&amp;month=',$month,'">',Settings::get("company"),'</a>',PHP_EOL,'</h2>',PHP_EOL,'</td>',PHP_EOL;
+			echo '<td class="accueil ">',PHP_EOL,'<h2>',PHP_EOL,'<a href="'.$racine.page_accueil('yes'),'day=',$day,'&amp;year=',$year,'&amp;month=',$month,'">',Settings::get("company"),'</a>',PHP_EOL,'</h2>',PHP_EOL, Settings::get('message_accueil'),'</td>',PHP_EOL;
 			//Mail réservation
-			echo Settings::get('message_accueil');
 			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
 			$res = grr_sql_query1($sql);
 			grr_sql_free($res);
@@ -1116,7 +1115,12 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			}
 			else
 			{
-				echo '<br /><a href="'.$racine.'my_account.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'. htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']).' - '.get_vocab("manage_my_account").'</a>'.PHP_EOL;
+				if( strlen(htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom'])) > 40 )
+					$nomAffichage =  htmlspecialchars($_SESSION['nom']);
+				else
+					$nomAffichage =  htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']);
+			
+				echo '<br /><a href="'.$racine.'my_account.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'. $nomAffichage .' - '.get_vocab("manage_my_account").'</a>'.PHP_EOL;
 				if (verif_access_search(getUserName()))
 					echo '<br/><a href="'.$racine.'report.php">'.get_vocab("report").'</a>'.PHP_EOL;
 				$disconnect_link = false;
@@ -1625,12 +1629,30 @@ function get_default_area($id_site = -1)
 /**
  * @return integer
  */
+// on n'utilise pas les réglages de la table settings ? YN le 07/03/2018
 function get_default_site()
 {
 	$res = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_site");
 	return $res;
 }
-
+// fonction get_default_room
+/*  renvoie id_room de la ressource par défaut de l'utilisateur, sinon celle de la table setting, sinon celle de plus petit indice dans la table room 
+*/
+function get_default_room(){
+    $user = getUserName();
+    if ($user != ''){
+        $id_room = grr_sql_query1("SELECT default_room FROM ".TABLE_PREFIX."_utilisateurs WHERE login =".$user);
+        if ($id_room > 0){return $id_room;}
+    }
+    // ici l'utilisateur n'est pas reconnu ou il n'a pas de ressource par défaut : on passe aux informations de la table settings
+    $id_room = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME ='default_room' ");
+    $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_room WHERE id = ".$id_room);
+    if ($test >0){return $id;}
+    else { // il n'y a pas de ressource par défaut dans la table setting, on prend la première ressource
+        $id_room = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_room ");
+        return($id_room);
+    }
+}
 # Get the local day name based on language. Note 2000-01-02 is a Sunday.
 /**
  * @param integer $daynumber
@@ -2397,7 +2419,7 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
 /**
  * @param integer $action
  */
-function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
+function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $oldRessource = '')
 {
 	global $vocab, $grrSettings, $locale, $weekstarts, $enable_periods, $periods_name;
 
@@ -2407,7 +2429,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 	// $action = 2 -> Modification
 	// $action = 3 -> Suppression
 	// $action = 4 -> Suppression automatique
-	// $action = 5 -> réservation en attente de modération
+	// $action = 5 -> Réservation en attente de modération
 	// $action = 6 -> Résultat d'une décision de modération
 	// $action = 7 -> Notification d'un retard dans la restitution d'une ressource.
 
@@ -2473,6 +2495,21 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 		$start_date = time_date_string($row[10],$dformat);
 	$rep_type = 0;
 
+	// Recherche du nom de l'ancienne ressource si besoin
+	if($oldRessource != '' && $oldRessource != $room_id)
+	{
+		$sql = "SELECT room_name FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($oldRessource)."'";
+		$oldRess = grr_sql_query($sql);
+		if (!$oldRess)
+			fatal_error(0, grr_sql_error());
+		$rowOld = grr_sql_row($oldRess, 0);
+		grr_sql_free($oldRess);
+		$nomAncienneSalle = $rowOld[0];
+	}
+	else
+		$nomAncienneSalle = "";
+	//
+
 	if ($repeat_id != 0)
 	{
 		$res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks FROM ".TABLE_PREFIX."_repeat WHERE id='".protect_data_sql($repeat_id)."'");
@@ -2526,25 +2563,28 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 	$message = $message.traite_grr_url("","y")."\n\n";
 	$sujet = $vocab["subject_mail1"].$room_name." - ".$date_avis;
 
-	if ($action == 1){
+	if ($action == 1){ // Création
 		$sujet = $sujet.$vocab["subject_mail_creation"];
 		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
 		$message .= $vocab["creation_booking"];
 		$message .= $vocab["the_room"].$room_name." (".$area_name.") \n";
 		$repondre = $user_email;
 	}
-	elseif ($action == 2){
+	elseif ($action == 2){ // Modification
 		$sujet = $sujet.$vocab["subject_mail_modify"];
 		if ($moderate == 1)
 			$sujet .= " (".$vocab["en_attente_moderation"].")";
 		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
 		$message = $message.$vocab["modify_booking"];
-		$message = $message.$vocab["the_room"].$room_name." (".$area_name.") ";
+		if ($room_name != $oldRessource)
+			$message = $message.$vocab["the_room"]." ".$oldRessource." => ".$room_name." (".$area_name.") ";
+		else
+			$message = $message.$vocab["the_room"].$room_name." (".$area_name.") ";
 		$message = $message.$vocab["reservee au nom de"];
 		$message = $message.$vocab["the_user"].affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
 		$repondre = $user_email;
 	}
-	elseif ($action == 3){
+	elseif ($action == 3){ // Suppression
 		$sujet = $sujet.$vocab["subject_mail_delete"];
 		if ($moderate == 1)
 			$sujet .= " (".$vocab["en_attente_moderation"].")";
@@ -2555,19 +2595,19 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 		$message = $message.$vocab["the_user"].affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
 		$repondre = $user_email;
 	}
-	elseif ($action == 4){
+	elseif ($action == 4){ // Suppression automatique
 		$sujet = $sujet.$vocab["subject_mail_delete"];
 		$message = $message.$vocab["suppression_automatique"];
 		$message=$message.$vocab["the_room"].$room_name." (".$area_name.") \n";
 		$repondre = $user_email;
 	}
-	elseif ($action == 5){
+	elseif ($action == 5){ // Réservation en attente de modération
 		$sujet = $sujet.$vocab["subject_mail_moderation"];
 		$message = $message.$vocab["reservation_en_attente_de_moderation"];
 		$message=$message.$vocab["the_room"].$room_name." (".$area_name.") \n";
 		$repondre = Settings::get("webmaster_email");
 	}
-	elseif ($action == 6){
+	elseif ($action == 6){ // Résultat d'une décision de modération
 		$sujet = $sujet.$vocab["subject_mail_decision_moderation"];
 
 		$resmoderate = grr_sql_query("SELECT moderate, motivation_moderation FROM ".TABLE_PREFIX."_entry_moderate WHERE id ='".protect_data_sql($id_entry)."'");
@@ -2606,7 +2646,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 
 		$repondre = $user_email;
 	}
-	elseif ($action == 7){
+	elseif ($action == 7){ // Notification d'un retard dans la restitution d'une ressource
 		$sujet .= $vocab["subject_mail_retard"];
 
 		$message .= $vocab["message_mail_retard"].$vocab["deux_points"]." \n";
@@ -2795,7 +2835,10 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array())
 		elseif ($action == 2){
 			$sujet2 = $sujet2.$vocab["subject_mail_modify"];
 			$message2 = $message2.$vocab["modify_booking"];
-			$message2=$message2.$vocab["the_room"].$room_name." (".$area_name.")";
+			if ($room_id != $oldRessource)
+				$message2 = $message2.$vocab["the_room"]." ".$nomAncienneSalle." => ".$room_name." (".$area_name.") ";
+			else
+				$message2 = $message2.$vocab["the_room"].$room_name." (".$area_name.") ";
 			$message2 = $message2.$vocab["created_by_you"];
 		}
 		else{
@@ -3570,6 +3613,8 @@ function showAccessDeniedMaxBookings($day, $month, $year, $id_room, $back)
 </html>
 <?php
 }
+/* fonction qui rend TRUE lorsque la date proposée est en dehors de la période réservable
+*/
 function check_begin_end_bookings($day, $month, $year)
 {
 	$date = mktime(0,0,0,$month,$day,$year);
@@ -3583,20 +3628,12 @@ function showNoBookings($day, $month, $year, $back)
 	echo '<h2>'.get_vocab("nobookings").' '.affiche_date($date).'</h2>';
 	echo '<p>'.get_vocab("begin_bookings").'<b>'.affiche_date(Settings::get("begin_bookings")).'</b></p>';
 	echo '<p>'.get_vocab("end_bookings").'<b>'.affiche_date(Settings::get("end_bookings")).'</b></p>';
-	?>
-	<p>
-		<?php
-		if ($back != "")
-		{
-			?>
-			<a href="<?php echo $back; ?>"><?php echo get_vocab("returnprev"); ?></a>
-			<?php
-		}
-		?>
-	</p>
-</body>
-</html>
-<?php
+    echo "<p>";
+        if ($back !=''){
+            echo "<a href=".$back.">".get_vocab('returnprev')."</a>";
+        }
+    echo "</p>";
+    echo "</body>\n</html>";
 }
 function date_time_string($t, $dformat)
 {

@@ -1,9 +1,9 @@
 <?php
 /**
  * planning_init.inc.php
- * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "semaine".
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB
+ * Prépare l'affichage du planning (day, week, week_all, month, month_all)
+ * Dernière modification : $Date: 2018-03-04 10:00$
+ * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -30,7 +30,8 @@ if (!$settings)
 require_once("./include/session.inc.php");
 include "include/resume_session.php";
 include "include/language.inc.php";
-include "include/setdate.php";
+// include "include/setdate.php";
+// setdate.php corrige les paramètres jour, mois et année à des valeurs dans la période réservable, ce qui n'est pas souhaitable dans la plupart des cas YN
 
 //Construction des identifiants de la ressource $room, du domaine $area, du site $id_site
 Definition_ressource_domaine_site();
@@ -49,8 +50,13 @@ if ($_GET['pview'] == 1)
 	$class_image = "print_image";
 else
 	$class_image = "image";
+// initialisation des paramètres de temps
+$date_now = time();
+$day = (isset($_GET['day']))? $_GET['day'] : date("d"); // ou 1 ? YN le 07/03/2018
+$month = (isset($_GET['month']))? $_GET['month'] : date("m");
+$year = (isset($_GET['year']))? $_GET['year'] : date("Y");
 
-if (empty($month) || empty($year) || !checkdate($month, 1, $year))
+/*if (empty($month) || empty($year) || !checkdate($month, 1, $year))
 {
 	$month = date("m");
 	$year  = date("Y");
@@ -58,7 +64,7 @@ if (empty($month) || empty($year) || !checkdate($month, 1, $year))
 
 if (!isset($day))
 	$day = 1;
-
+*/
 // Lien de retour
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
@@ -89,16 +95,15 @@ if ($area <= 0)
 }
 
 
-// Calcul du niverau de droit de réservation
+// Calcul du niveau de droit de réservation
 $authGetUserLevel			= authGetUserLevel(getUserName(), -1);
-
-//Renseigne les droits de l'utilisateur, si les droits sont insufisants, l'utilisateur est averti.
+// vérifie si la date est dans la période réservable
 if (check_begin_end_bookings($day, $month, $year))
 {
 	showNoBookings($day, $month, $year, $back);
 	exit();
 }
-
+//Renseigne les droits de l'utilisateur, si les droits sont insuffisants, l'utilisateur est averti.
 if ((($authGetUserLevel < 1) && (Settings::get("authentification_obli") == 1)) || authUserAccesArea(getUserName(), $area) == 0)
 {
 	showAccessDenied($back);
@@ -156,7 +161,8 @@ if ($_GET['pview'] != 1){
 			echo '<div class="col-lg-9 col-md-12 col-xs-12">'.PHP_EOL;
 		}
 	echo '<div id="planning">'.PHP_EOL;
-}else{
+}
+else{
 	echo '<div id="print_planning">'.PHP_EOL;
 }
 
