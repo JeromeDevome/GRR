@@ -3,7 +3,7 @@
  * admin_config1.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2018-03-13 10:00$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1280,7 +1280,7 @@ echo '<tr>'.PHP_EOL;
 echo '<td>'.get_vocab('YES').'</td>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
 echo "<input type='radio' name='legend' value='0' ";
-if (Settings::get('YES') == '0') {
+if (Settings::get('legend') == '0') {
     echo 'checked="checked"';
 }
 echo ' />'.PHP_EOL;
