@@ -20,7 +20,16 @@ $grr_script_name = "week.php";
 
 include "include/planning_init.inc.php";
 $debug_flag = FALSE;
-
+// en l'absence de paramètres, planning_init définit le site par défaut et le domaine par défaut mais pas la ressource, week.php en a besoin
+// $room = isset($room)? $room : get_default_room() ; cette idée ne fonctionne pas à cause de planning_init.inc.php qui fait les initialisations seulement si $_GET["room"] est défini
+// echo $area,' ',$room;
+//if (!isset($room)) echo "salle non définie";
+if (!isset($room)){
+    echo "<p><br/>";
+        echo get_vocab('choose_room')."<a href='week_all.php'>".get_vocab("link")."</a>";
+    echo "</p>";
+    die();
+}
 $time = mktime(0, 0, 0, $month, $day, $year);
 $time_old = $time;
 if (($weekday = (date("w", $time) - $weekstarts + 7) % 7) > 0)

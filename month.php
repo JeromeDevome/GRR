@@ -17,12 +17,18 @@
  */
 $grr_script_name = "month.php";
 
-if (!isset($_GET['day'])){ // pour l'affichage du mois la variable jour n'est pas obligatoire dans l'url, cependant necessaire pour setdate.php
+/*if (!isset($_GET['day'])){ // pour l'affichage du mois la variable jour n'est pas obligatoire dans l'url, cependant necessaire pour setdate.php
 	$_GET['day'] = 1;
-}
+} */
 
 include "include/planning_init.inc.php";
-
+// en l'absence de paramètres, planning_init définit le site par défaut et le domaine par défaut mais pas la ressource, month.php en a besoin
+if (!isset($room)){
+    echo "<p><br/>";
+        echo get_vocab('choose_room')."<a href='month_all.php'>".get_vocab("link")."</a>";
+    echo "</p>";
+    die();
+}
 //Heure de début du mois, cela ne sert à rien de reprendre les valeurs morningstarts/eveningends
 $month_start = mktime(0, 0, 0, $month, 1, $year);
 //Dans quel colonne l'affichage commence: 0 veut dire $weekstarts
