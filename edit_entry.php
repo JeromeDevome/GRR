@@ -783,6 +783,7 @@ if($active_cle == 'y'){
 	echo '</td></tr>'.PHP_EOL;
 }
 
+if (Settings::get("show_courrier") == 'y'){ // proposition scoubinaire le 12/03/2018
 echo '<tr><td class="E"><br>'.PHP_EOL;
 echo '<b>'.get_vocab("status_courrier").get_vocab("deux_points").'</b>'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;
@@ -792,6 +793,7 @@ if (isset($courrier) && $courrier == 1)
 	echo 'checked';
 echo ' > '.get_vocab("msg_courrier");
 echo '</td></tr>'.PHP_EOL;
+}
 
 echo '<tr><td class="E">'.PHP_EOL;
 echo '<b>'.$F.'</b>'.PHP_EOL;

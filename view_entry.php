@@ -731,8 +731,8 @@ if ($repeat_id != 0)
     if (isset($keys) && isset($courrier))
     {
         echo '<form action="view_entry.php" method="get">',PHP_EOL;
-        echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("reservation_en_cours")."</legend>\n";
-
+        // echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("reservation_en_cours")."</legend>\n";
+        echo "<fieldset>\n";
         if ($active_cle == 'y'){
             echo "<span class=\"larger\">".get_vocab("status_clef").get_vocab("deux_points")."</span>";
             echo "<br /><input type=\"checkbox\" name=\"clef\" value=\"y\" ";
