@@ -50,8 +50,14 @@ $nb_year_calendar = 10;
  En résumé, pour activer cette fonctionnalité, décommentez la ligne suivante (en supprimant le premier caractère #,
  et remplacez -7 par +n ou -n où "n" est le nombre d'heures d'avance ou de retard de GRR sur l'heure système du serveur.
 */
- putenv("TZ=posix/Etc/GMT+0");
- putenv("TZ=America/Toronto");
+// putenv("TZ=posix/Etc/GMT+0");
+// putenv("TZ=America/Toronto");
+/* pour compatibilité php >= 5.1.0 et php 7, on n'utilisera pas la fonction ptuenv et la constante TZ, mais la fonction 
+date_default_timezone_set("votre_time_zone"); en remplaçant "votre_time_zone" par votre time zone, dont la liste est disponible ici :
+http://php.net/manual/fr/timezones.php
+*/
+date_default_timezone_set('Europe/Paris');
+
 
 # Changement d'heure été<->hiver
 # $correct_heure_ete_hiver = 1 => GRR prend en compte les changements d'heure
@@ -106,6 +112,12 @@ $debug_flag = 0;
 #Rechercher des MAJ sur le serveur grr.devome.com || 0: non ; 1: oui - Defaut 1
 $recherche_MAJ = 1;
 
+#Possibilité d'upload de module || 0: non ; 1: oui - Defaut 1
+$upload_Module = 1;
+
+# Nb de jour maximum que l'on garde les logs de connexions, 0 = aucune limite
+$nbMaxJoursLogConnexion = 365;
+
 ##################################################
 # Cas d'une authentification via config.inc.php  #
 ##################################################
@@ -123,9 +135,21 @@ $sso_super_admin = false;
 
 /*
  $sso_restrictions : false|true
- Mettre la valeur du paramètre $sso_restrictions à "true" permet de cacher dans l'interface de GRR l'affichage de la rubrique "Authentification et ldap"
+ Mettre la valeur du paramètre $sso_restrictions à "true" permet de cacher dans l'interface de GRR l'affichage de la rubrique "Configuration SSO"
 */
  $sso_restrictions = false;
+
+/*
+ $ldap_restrictions : false|true
+ Mettre la valeur du paramètre $ldap_restrictions à "true" permet de cacher dans l'interface de GRR l'affichage de la rubrique "Configuration LDAP"
+*/
+ $ldap_restrictions = false;
+
+/*
+ $imap_restrictions : false|true
+ Mettre la valeur du paramètre $imap_restrictions à "true" permet de cacher dans l'interface de GRR l'affichage de la rubrique "Configuration IMAP"
+*/
+ $imap_restrictions = false;
 
 // Le paramètre $Url_CAS_setFixedServiceURL est le paramètre utilisé dans la méthode phpCAS::setFixedServiceURL(), dans le fichier cas.inc.php
 // Si ce paramètre est non vide, il sera utilisé par le service CAS
@@ -207,6 +231,7 @@ $insertComplet = false;
 
 # Global settings array
 $grrSettings = array();
+$grrPages = array();
 
 # Make sure notice errors are not reported
 #error_reporting (E_ALL ^ E_NOTICE);
