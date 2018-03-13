@@ -745,6 +745,16 @@ $sql = "INSERT INTO ".TABLE_PREFIX."_log (LOGIN, START, SESSION_ID, REMOTE_ADDR,
 	)
 ;";
 grr_sql_query($sql);
+
+/* Suppression des logs */
+if($nbMaxJoursLogConnexion > 0){
+	$dateActu = date_create($_SESSION['start']);
+	$dateMax = date_sub($dateActu, date_interval_create_from_date_string($nbMaxJoursLogConnexion.' days'));
+	$dateMax = $dateMax->format('Y-m-d H:i:s');
+	$sql = "DELETE FROM ".TABLE_PREFIX."_log WHERE START < '" . $dateMax . "';";
+	grr_sql_query($sql);
+}
+
 /* Fonctionnalité SE3 (Palissy - Saintes - philippe.duval@ac-poitiers.fr) :
 Utilisation du LDAP pour inscrire automatiquement les utilisateurs dans les groupes administration, accès et gestion
 Ce code est associé à une nouvelle table :
