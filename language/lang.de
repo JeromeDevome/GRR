@@ -2,7 +2,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr
 # GRR : fichier de langue allemande
-# Last modification : 07/05/2010
+# Last modification : 2018-03-13
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -736,12 +736,13 @@ $vocab['search_button'] = "Suche";
 $vocab['search_for'] = "Suchen";
 $vocab['search_results'] = "Suchergebnisse für:";
 $vocab['seconds'] = "Sekunde(n)";
-$vocab['see_all_the_rooms_for_several_months'] = "Voir les réservations sur plusieurs mois pour toutes les ressources du domaine"; // A traduire
+$vocab['see_all_the_rooms_for_several_months'] = "Reservierungen aller Ressourcen dieses Bereichs für mehrere Monate ansehen"; 
 $vocab['see_all_the_rooms_for_the_day'] = "Alle Ressourcen dieses Bereichs für diesen Tag ansehen";
 $vocab['see_all_the_rooms_for_the_month'] = "Reservierungen aller Ressourcen für den Monat ansehen";
 $vocab['see_month_for_this_room'] = "Reservierungen dieser Ressource für den Monat ansehen";
 $vocab['see_week_for_this_area'] = "Reservierungen der Woche für alle Ressourcen ansehen.";
 $vocab['see_week_for_this_room'] = "Reservierungen dieser Ressource für die Woche ansehen";
+$vocab['see_day_for_this_room'] = "Reservierungen dieser Ressource für diesen Tag ansehen";
 $vocab['select'] = "(Wählen Sie)";
 $vocab['select_all'] = "(alle)";
 $vocab['select_area_list_format'] = "Anzeige in Rolllistenform";
@@ -982,4 +983,6 @@ $vocab['holidays_msg'] = "Afficher les vacances scolaire et les jour fériés";
 $vocab['courrier_msg'] = "Afficher la gestion des salles par courrier";
 $vocab['OU'] = "ODER";
 $vocab['show_all_rooms'] = "Voir toutes les ressources de tous les domaines"; // à traduire
+$vocab['choose_room'] = "Sélectionnez une ressource ou cliquez sur ce "; // à traduire
+$vocab["link"] = "lien"; // à traduire
 ?>
