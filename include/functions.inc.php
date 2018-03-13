@@ -2,8 +2,8 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
+ * Dernière modification : $Date: 2018-03-13 10:00$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -1634,12 +1634,30 @@ function get_default_area($id_site = -1)
 /**
  * @return integer
  */
+// on n'utilise pas les réglages de la table settings ? YN le 07/03/2018
 function get_default_site()
 {
 	$res = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_site");
 	return $res;
 }
-
+// fonction get_default_room
+/*  renvoie id_room de la ressource par défaut de l'utilisateur, sinon celle de la table setting, sinon celle de plus petit indice dans la table room 
+*/
+function get_default_room(){
+    $user = getUserName();
+    if ($user != ''){
+        $id_room = grr_sql_query1("SELECT default_room FROM ".TABLE_PREFIX."_utilisateurs WHERE login =".$user);
+        if ($id_room > 0){return $id_room;}
+    }
+    // ici l'utilisateur n'est pas reconnu ou il n'a pas de ressource par défaut : on passe aux informations de la table settings
+    $id_room = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME ='default_room' ");
+    $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_room WHERE id = ".$id_room);
+    if ($test >0){return $id;}
+    else { // il n'y a pas de ressource par défaut dans la table setting, on prend la première ressource
+        $id_room = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_room ");
+        return($id_room);
+    }
+}
 # Get the local day name based on language. Note 2000-01-02 is a Sunday.
 /**
  * @param integer $daynumber
@@ -3600,6 +3618,8 @@ function showAccessDeniedMaxBookings($day, $month, $year, $id_room, $back)
 </html>
 <?php
 }
+/* fonction qui rend TRUE lorsque la date proposée est en dehors de la période réservable
+*/
 function check_begin_end_bookings($day, $month, $year)
 {
 	$date = mktime(0,0,0,$month,$day,$year);
@@ -3613,20 +3633,12 @@ function showNoBookings($day, $month, $year, $back)
 	echo '<h2>'.get_vocab("nobookings").' '.affiche_date($date).'</h2>';
 	echo '<p>'.get_vocab("begin_bookings").'<b>'.affiche_date(Settings::get("begin_bookings")).'</b></p>';
 	echo '<p>'.get_vocab("end_bookings").'<b>'.affiche_date(Settings::get("end_bookings")).'</b></p>';
-	?>
-	<p>
-		<?php
-		if ($back != "")
-		{
-			?>
-			<a href="<?php echo $back; ?>"><?php echo get_vocab("returnprev"); ?></a>
-			<?php
-		}
-		?>
-	</p>
-</body>
-</html>
-<?php
+    echo "<p>";
+        if ($back !=''){
+            echo "<a href=".$back.">".get_vocab('returnprev')."</a>";
+        }
+    echo "</p>";
+    echo "</body>\n</html>";
 }
 function date_time_string($t, $dformat)
 {
