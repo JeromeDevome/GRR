@@ -3,8 +3,8 @@
  * month.php
  * Interface d'accueil avec affichage par mois
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-02-24 17:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -17,10 +17,19 @@
  */
 $grr_script_name = "month.php";
 
+/*if (!isset($_GET['day'])){ // pour l'affichage du mois la variable jour n'est pas obligatoire dans l'url, cependant necessaire pour setdate.php
+	$_GET['day'] = 1;
+} */
+
 include "include/planning_init.inc.php";
-
-
-//Heure de dénut du mois, cela ne sert à rien de reprndre les valeur morningstarts/eveningends
+// en l'absence de paramètres, planning_init définit le site par défaut et le domaine par défaut mais pas la ressource, month.php en a besoin
+if (!isset($room)){
+    echo "<p><br/>";
+        echo get_vocab('choose_room')."<a href='month_all.php'>".get_vocab("link")."</a>";
+    echo "</p>";
+    die();
+}
+//Heure de début du mois, cela ne sert à rien de reprendre les valeurs morningstarts/eveningends
 $month_start = mktime(0, 0, 0, $month, 1, $year);
 //Dans quel colonne l'affichage commence: 0 veut dire $weekstarts
 $weekday_start = (date("w", $month_start) - $weekstarts + 7) % 7;
@@ -47,6 +56,7 @@ if (($this_room_name_des) && ($this_room_name_des!="-1"))
 	$this_room_name_des = " (".$this_room_name_des.")";
 else
 	$this_room_name_des = "";
+
 $i = mktime(0, 0, 0, $month - 1, 1, $year);
 $yy = date("Y", $i);
 $ym = date("n", $i);
@@ -61,13 +71,13 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 {
 	echo '<tr>'.PHP_EOL;
 	echo '<td class="left">'.PHP_EOL;
-	echo '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'month.php?year='.$yy.'&amp;month='.$ym.'&amp;room='.$room.'\';"><span class="glyphicon glyphicon-backward"></span> '.get_vocab("monthbefore").'</button>'.PHP_EOL;
+	echo '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'month.php?year='.$yy.'&amp;month='.$ym.'&amp;day=1&amp;room='.$room.'\';"><span class="glyphicon glyphicon-backward"></span> '.get_vocab("monthbefore").'</button>'.PHP_EOL;
 	echo '</td>'.PHP_EOL;
 	echo '<td>'.PHP_EOL;
 	include "include/trailer.inc.php";
 	echo '</td>'.PHP_EOL;
 	echo '<td class="right">'.PHP_EOL;
-	echo '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'month.php?year='.$ty.'&amp;month='.$tm.'&amp;room='.$room.'\';"> '.get_vocab('monthafter').'  <span class="glyphicon glyphicon-forward"></span></button>'.PHP_EOL;
+	echo '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'month.php?year='.$ty.'&amp;month='.$tm.'&amp;day=1&amp;room='.$room.'\';"> '.get_vocab('monthafter').'  <span class="glyphicon glyphicon-forward"></span></button>'.PHP_EOL;
 	echo '</td>'.PHP_EOL;
 	echo '</tr>'.PHP_EOL;
 	echo '</table>'.PHP_EOL;
@@ -76,8 +86,7 @@ $maxCapacite = "";
 if ($this_room_max  && $_GET['pview'] != 1)
 	$maxCapacite = '('.$this_room_max.' '.($this_room_max > 1 ? get_vocab("number_max2") : get_vocab("number_max")).')'.PHP_EOL;
 
-// echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.$this_room_name.' '.$this_room_name_des.' '.$maxCapacite.'<br>'.ucfirst(utf8_strftime("%B %Y", $month_start)).'</h4>'.PHP_EOL;
-echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.$this_room_name.' '.$this_room_name_des.' '.$maxCapacite.'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php">'.ucfirst(utf8_strftime("%Y", $month_start)).'</h4>'.PHP_EOL;
+echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.$this_room_name.' '.$this_room_name_des.' '.$maxCapacite.'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php">'.ucfirst(utf8_strftime("%Y", $month_start)).'</a></h4>'.PHP_EOL;
 
 if (verif_display_fiche_ressource(getUserName(), $room) && $_GET['pview'] != 1)
 	echo '<a href="javascript:centrerpopup(\'view_room.php?id_room=',$room,'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="',get_vocab("fiche_ressource"),'"><span class="glyphcolor glyphicon glyphicon-search"></span></a>';

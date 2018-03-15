@@ -3,8 +3,8 @@
  * day.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-02-05 11:45$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -19,7 +19,9 @@ $grr_script_name = "day.php";
 
 include "include/planning_init.inc.php";
 
-
+// mois et année sont déjà fixés, si le jour n'est pas passé en paramètre, on le fixe à aujourd'hui
+$day = isset($_GET['day']) ? $_GET['day'] : date("d");
+// echo $day,' ',$month,' ',$year,'<br>';
 $ind = 1;
 $test = 0;
 $i = 0;
@@ -99,16 +101,16 @@ else
 }
 grr_sql_free($res);
 
-// Dans le cas de l'affichange d'une ressource, dans l'autre cas on garde la requete dans planning_init.inc.php
+// Dans le cas de l'affichage d'une ressource, dans l'autre cas on garde la requete dans planning_init.inc.php
 if(!empty($_GET['room'])){
 	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' and id = '".protect_data_sql($_GET['room'])."' ORDER BY order_display, room_name";
 	$ressources = grr_sql_query($sql);
 	if (!$ressources)
 		fatal_error(0, grr_sql_error());
 }
+// on conserve la ressource d'appel, si elle existe
+$room_back = isset($_GET['room']) ? $_GET['room'] : '';
 
-
-$ferie_true = 0;
 $class = "";
 $title = "";
 if ($settings->get("show_holidays") == "Oui")
@@ -189,7 +191,7 @@ for ($i = 0; ($row = grr_sql_row($ressources, $i)); $i++)
 		}
 		echo '<br />';
 		if (verif_display_fiche_ressource(getUserName(), $id_room[$i]) && $_GET['pview'] != 1)
-			echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$id_room[$i].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'\">
+			echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$id_room[$i].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'">
 		<span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
 		if (authGetUserLevel(getUserName(),$id_room[$i]) > 2 && $_GET['pview'] != 1)
 			echo '<a href="./admin/admin_edit_room.php?room='.$id_room[$i].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a><br/>'.PHP_EOL;
@@ -330,7 +332,7 @@ for ($t = $am7; $t <= $pm7; $t += $resolution)
 						}
 						else
 						{
-							echo '<a class="lienCellule" title="',htmlspecialchars($today[$room][$t]["who"]),'" href="view_entry.php?id=',$id,'&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=day">',$descr;
+							echo '<a class="lienCellule" title="',htmlspecialchars($today[$room][$t]["who"]),'" href="view_entry.php?id=',$id,'&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=day&amp;room_back=',$room_back,' ">',$descr;
 						}
 					}
 					else
@@ -347,7 +349,7 @@ for ($t = $am7; $t <= $pm7; $t += $resolution)
 						$clef 		= $row['3'];
 						$courrier	= $row['4'];
 						if ($enable_periods != 'y') {
-							echo '<br/>',date('H:i', $start_time),get_vocab("to"),date('H:i', $end_time),'<br/>';
+							echo '<br/>',date('H:i', max($am7,$start_time)),get_vocab("to"),date('H:i', min($pm7,$end_time)),'<br/>';
 						}
 						if ($type_name != -1)
 							echo  $type_name;

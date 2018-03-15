@@ -3,7 +3,7 @@
  * month_all.php
  * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-01-26 22:00$
+ * Dernière modification : $Date: 2018-02-22 22:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -18,6 +18,10 @@
 
 $grr_script_name = "month_all.php";
 
+/*if (!isset($_GET['day'])){ // pour l'affichage du mois la variable jour n'est pas obligatoire dans l'url, cependant necessaire pour setdate.php
+	$_GET['day'] = 1;
+}
+*/
 include "include/planning_init.inc.php";
 
 $month_start = mktime(0, 0, 0, $month, 1, $year);
