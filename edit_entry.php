@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-01-06 11:00$
+ * Dernière modification : $Date: 2018-03-04 18:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -60,6 +60,7 @@ if (!isset($day) || !isset($month) || !isset($year))
 	$month = date("m");
 	$year  = date("Y");
 }
+// echo $day," ",$month," ",$year;
 if (isset($id))
 {
 	if ($info = mrbsGetEntryInfo($id))
@@ -677,6 +678,7 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
 </script>
 
 <?php
+echo '<input type="hidden" name="oldRessource" value="'.$room_id.'">'.PHP_EOL;
 echo '<div id="error"></div>';
 echo '<table class="table-bordered EditEntryTable"><tr>'.PHP_EOL;
 echo '<td style="width:50%; vertical-align:top; padding-left:15px; padding-top:5px; padding-bottom:5px;">'.PHP_EOL;
@@ -781,6 +783,7 @@ if($active_cle == 'y'){
 	echo '</td></tr>'.PHP_EOL;
 }
 
+if (Settings::get("show_courrier") == 'y'){ // proposition scoubinaire le 12/03/2018
 echo '<tr><td class="E"><br>'.PHP_EOL;
 echo '<b>'.get_vocab("status_courrier").get_vocab("deux_points").'</b>'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;
@@ -790,6 +793,7 @@ if (isset($courrier) && $courrier == 1)
 	echo 'checked';
 echo ' > '.get_vocab("msg_courrier");
 echo '</td></tr>'.PHP_EOL;
+}
 
 echo '<tr><td class="E">'.PHP_EOL;
 echo '<b>'.$F.'</b>'.PHP_EOL;

@@ -3,8 +3,8 @@
  * del_entry.php
  * Interface de suppresssion d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-01-11 14:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -80,8 +80,11 @@ if ($info = mrbsGetEntryInfo($id))
 	$result = mrbsDelEntry(getUserName(), $id, $series, 1);
 	if ($result)
 	{
+        $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $info['room_id'];
 		$_SESSION['displ_msg'] = 'yes';
-		Header("Location: ".$page.".php?day=$day&month=$month&year=$year&area=$area&room=".$info["room_id"]);
+        $ress = '';
+        if ($room_back != '')  {$ress = "&room=".$room_back;}
+		Header("Location: ".$page.".php?day=$day&month=$month&year=$year&area=$area".$ress);
 		exit();
 	}
 }

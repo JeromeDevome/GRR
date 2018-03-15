@@ -3,8 +3,8 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-03-06 18:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,7 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-echo '<div>';
+// echo '<div>'; ??? YN
 include_once('include/connect.inc.php');
 include_once('include/config.inc.php');
 include_once('include/functions.inc.php');
@@ -555,211 +555,211 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
 	}
 	if ((getWritable($beneficiaire, getUserName(), $id)) && verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room(getUserName(), $room_id, $row[10]) && (!$was_del))
 	{
-		?>
-		<tr>
-			<td colspan="2">
-				&nbsp;
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<?php
+		echo "<tr>";
+			echo "<td colspan='2'>";
+				echo "&nbsp;";
+			echo "</td>";
+		echo "</tr>";
+		echo "<tr>";
+			echo "<td colspan='2'>";
 				echo "<input class=\"btn btn-primary\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page'\" value=\"".get_vocab("editentry")."\">";
 				echo "<input class=\"btn btn-info\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;copier'\" value=\"".get_vocab("copyentry")."\">";
 				if ($can_delete_or_create == "y")
 				{
 					$message_confirmation = str_replace("'", "\\'", get_vocab("confirmdel").get_vocab("deleteentry"));
-					?>
-					<a class="btn btn-danger" type="button" href="del_entry.php?id=<?php echo $id ?>&amp;series=0&amp;page=<?php echo $page; ?>" onclick="return confirm('<?php echo $message_confirmation ?>');"><?php echo get_vocab("deleteentry") ?></a></td>
-					<?php
+                    $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
+                echo '<a class="btn btn-danger" type="button" href="del_entry.php?id='.$id.'&amp;series=0&amp;page='.$page.'&amp;room_back='.$room_back.' "  onclick="return confirm(\''.$message_confirmation.'\');">'.get_vocab("deleteentry").'</a>';
 				}
-				echo '</tr>',PHP_EOL;
-			}
-			echo '</table>',PHP_EOL;
-			echo '</fieldset>',PHP_EOL;
-			if ($repeat_id != 0)
-			{
-				$res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks, start_time, end_time FROM ".TABLE_PREFIX."_repeat WHERE id=$repeat_id");
-				if (!$res)
-					fatal_error(0, grr_sql_error());
-				if (grr_sql_count($res) == 1)
-				{
-					$row6 			= grr_sql_row($res, 0);
-					$rep_type     	= $row6[0];
-					$rep_end_date 	= utf8_strftime($dformat,$row6[1]);
-					$rep_opt      	= $row6[2];
-					$rep_num_weeks 	= $row6[3];
-					$start_time 	= $row6[4];
-					$end_time 		= $row6[5];
-					$duration 		= $row6[5] - $row6[4];
-				}
-				grr_sql_free($res);
-				if ($enable_periods == 'y')
-					list( $start_period, $start_date) = period_date_string($start_time);
-				else
-					$start_date = time_date_string($start_time, $dformat);
-				if ($enable_periods == 'y')
-					toPeriodString($start_period, $duration, $dur_units);
-				else
-					toTimeString($duration, $dur_units);
-				$weeklist = array("unused", "every week", "week 1/2", "week 1/3", "week 1/4", "week 1/5");
-				if ($rep_type == 2)
-					$affiche_period = get_vocab($weeklist[$rep_num_weeks]);
-				else
-					$affiche_period = get_vocab('rep_type_'.$rep_type);
-				echo '<fieldset><legend style="font-weight:bold">'.get_vocab('periodicite_associe')."</legend>\n";
-				echo '<table cellpadding="1">';
-				echo '<tr><td><b>'.get_vocab("rep_type").'</b></td><td>'.$affiche_period.'</td></tr>';
-				if ($rep_type != 0)
-				{
-					if ($rep_type == 2)
-					{
-						$opt = "";
-						$nb = 0;
-						for ($i = 0;
-							$i < 7;
-							$i++)
-						{
-							$daynum = ($i + $weekstarts) % 7;
-							if ($rep_opt[$daynum])
-							{
-								if ($opt != '')
-									$opt .=', ';
-								$opt .= day_name($daynum);
-								$nb++;
-							}
-						}
-						if ($opt)
-							if ($nb == 1)
-								echo '<tr>',PHP_EOL,'<td><b>',get_vocab("rep_rep_day"),'</b></td>',PHP_EOL,'<td>',$opt,'</td>',PHP_EOL,'</tr>',PHP_EOL;
-							else
-								echo '<tr>',PHP_EOL,'<td><b>',get_vocab("rep_rep_days"),'</b></td>',PHP_EOL,'<td>',$opt,'</td>',PHP_EOL,'</tr>',PHP_EOL;
-						}
-						if ($rep_type == 6)
-						{
-							if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
-								echo '<tr>',PHP_EOL,'<td><b>',get_vocab("rep_rep_day"),'</b></td>',PHP_EOL,'<td>',get_vocab('jour_cycle'),' ',$jour_cycle,'</td>',PHP_EOL,'</tr>',PHP_EOL;
-						}
+            echo "</td>";
+		echo '</tr>',PHP_EOL;
+	}
+echo '</table>',PHP_EOL;
+echo '</fieldset>',PHP_EOL;
+if ($repeat_id != 0)
+{
+    $res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks, start_time, end_time FROM ".TABLE_PREFIX."_repeat WHERE id=$repeat_id");
+    if (!$res)
+        fatal_error(0, grr_sql_error());
+    if (grr_sql_count($res) == 1)
+    {
+        $row6 			= grr_sql_row($res, 0);
+        $rep_type     	= $row6[0];
+        $rep_end_date 	= utf8_strftime($dformat,$row6[1]);
+        $rep_opt      	= $row6[2];
+        $rep_num_weeks 	= $row6[3];
+        $start_time 	= $row6[4];
+        $end_time 		= $row6[5];
+        $duration 		= $row6[5] - $row6[4];
+    }
+    grr_sql_free($res);
+    if ($enable_periods == 'y')
+        list( $start_period, $start_date) = period_date_string($start_time);
+    else
+        $start_date = time_date_string($start_time, $dformat);
+    if ($enable_periods == 'y')
+        toPeriodString($start_period, $duration, $dur_units);
+    else
+        toTimeString($duration, $dur_units);
+    $weeklist = array("unused", "every week", "week 1/2", "week 1/3", "week 1/4", "week 1/5");
+    if ($rep_type == 2)
+        $affiche_period = get_vocab($weeklist[$rep_num_weeks]);
+    else
+        $affiche_period = get_vocab('rep_type_'.$rep_type);
+    echo '<fieldset><legend style="font-weight:bold">'.get_vocab('periodicite_associe')."</legend>\n";
+    echo '<table cellpadding="1">';
+    echo '<tr><td><b>'.get_vocab("rep_type").'</b></td><td>'.$affiche_period.'</td></tr>';
+    if ($rep_type != 0)
+    {
+        if ($rep_type == 2)
+        {
+            $opt = "";
+            $nb = 0;
+            for ($i = 0;
+                $i < 7;
+                $i++)
+            {
+                $daynum = ($i + $weekstarts) % 7;
+                if ($rep_opt[$daynum])
+                {
+                    if ($opt != '')
+                        $opt .=', ';
+                    $opt .= day_name($daynum);
+                    $nb++;
+                }
+            }
+            if ($opt)
+                if ($nb == 1)
+                    echo '<tr>',PHP_EOL,'<td><b>',get_vocab("rep_rep_day"),'</b></td>',PHP_EOL,'<td>',$opt,'</td>',PHP_EOL,'</tr>',PHP_EOL;
+                else
+                    echo '<tr>',PHP_EOL,'<td><b>',get_vocab("rep_rep_days"),'</b></td>',PHP_EOL,'<td>',$opt,'</td>',PHP_EOL,'</tr>',PHP_EOL;
+            }
+            if ($rep_type == 6)
+            {
+                if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
+                    echo '<tr>',PHP_EOL,'<td><b>',get_vocab("rep_rep_day"),'</b></td>',PHP_EOL,'<td>',get_vocab('jour_cycle'),' ',$jour_cycle,'</td>',PHP_EOL,'</tr>',PHP_EOL;
+            }
 
-						echo '<tr><td><b>'.get_vocab("date").get_vocab("deux_points").'</b></td><td>'.$start_date.'</td></tr>';
-						echo '<tr><td><b>'.get_vocab("duration").'</b></td><td>'.$duration .' '. $dur_units.'</td></tr>';
-						echo '<tr><td><b>'.get_vocab('rep_end_date').'</b></td><td>'.$rep_end_date.'</td></tr>';
-					}
-					if ((getWritable($beneficiaire, getUserName(), $id)) && verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room(getUserName(), $room_id, $row[10]) && (!$was_del))
-					{
-						$message_confirmation = str_replace ( "'"  , "\\'"  , get_vocab("confirmdel").get_vocab("deleteseries"));
-						echo '<tr>',PHP_EOL,'<td colspan="2">',PHP_EOL,'<input class="btn btn-primary" type="button" onclick="location.href=\'edit_entry.php?id=',$id,'&amp;edit_type=series&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=',$page,'\'" value="',get_vocab("editseries"),'"></td>',PHP_EOL,'</tr>',PHP_EOL;
-						echo '<tr>',PHP_EOL,'<td colspan="2">',PHP_EOL,'<a class="btn btn-danger" type="button" href="del_entry.php?id=',$id,'&amp;series=1&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=',$page,'" onclick="return confirm(\'',$message_confirmation,'\');">',get_vocab("deleteseries"),'</a></td>',PHP_EOL,'</tr>',PHP_EOL;
-					}
-					echo '</table>',PHP_EOL,'</fieldset>',PHP_EOL;
-				}
-				if (!isset($area_id))
-					$area_id = 1;
-				if (!isset($room))
-					$room = 1;
-				if ((authGetUserLevel(getUserName(), $area_id, "area") > 1) || (authGetUserLevel(getUserName(), $room) >= 4))
-					echo '<br><input class="btn btn-primary" onclick="myFunction(',$id,')" value="',get_vocab("Generer_pdf"),'" >',PHP_EOL;
-				if ((getUserName() != '') && (authGetUserLevel(getUserName(), $room_id) >= 3) && ($moderate == 1))
-				{
-					echo "<form action=\"view_entry.php\" method=\"get\">\n";
-					echo "<input type=\"hidden\" name=\"action_moderate\" value=\"y\" />\n";
-					echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
-					if (isset($_GET['page']))
-						echo "<input type=\"hidden\" name=\"page\" value=\"".$_GET['page']."\" />\n";
-					echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("moderate_entry")."</legend>\n";
-					echo "<p>";
-					echo "<input type=\"radio\" name=\"moderate\" value=\"1\" checked=\"checked\" />".get_vocab("accepter_resa");
-					echo "<br /><input type=\"radio\" name=\"moderate\" value=\"0\" />".get_vocab("refuser_resa");
-					if ($repeat_id)
-					{
-						echo "<br /><input type=\"radio\" name=\"moderate\" value=\"S1\" />".get_vocab("accepter_resa_serie");
-						echo "<br /><input type=\"radio\" name=\"moderate\" value=\"S0\" />".get_vocab("refuser_resa_serie");
-					}
-					echo "</p><p>";
-					echo "<label for=\"description\">".get_vocab("justifier_decision_moderation").get_vocab("deux_points")."</label>\n";
-					echo "<textarea class=\"form-control\" name=\"description\" id=\"description\" cols=\"40\" rows=\"3\"></textarea>";
-					echo "</p>";
-					echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"commit\" value=\"".get_vocab("save")."\" /></div>\n";
-					echo "</fieldset></form>\n";
-				}
-				if ($active_ressource_empruntee == 'y')
-				{
-					if ((!$was_del) && ($moderate != 1) && (getUserName() != '') && (authGetUserLevel(getUserName(),$room_id) >= 3))
-					{
-						echo "<form action=\"view_entry.php\" method=\"get\">";
-						echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("reservation_en_cours")."</legend>\n";
-						echo "<span class=\"larger\">".get_vocab("signaler_reservation_en_cours")."</span>".get_vocab("deux_points");
-						echo "<br />".get_vocab("explications_signaler_reservation_en_cours");
-						affiche_ressource_empruntee($room_id, "texte");
-						echo "<br /><input type=\"radio\" name=\"statut_id\" value=\"-\" ";
-						if ($statut_id == '-')
-						{
-							if (!affiche_ressource_empruntee($room_id,"autre") == 'yes')
-								echo " checked=\"checked\" ";
-						}
-						echo " />".get_vocab("signaler_reservation_en_cours_option_0");
-						echo "<br /><br /><input type=\"radio\" name=\"statut_id\" value=\"y\" ";
-						if ($statut_id == 'y')
-							echo " checked=\"checked\" ";
-						echo " />".get_vocab("signaler_reservation_en_cours_option_1");
-						echo "<br /><br /><input type=\"radio\" name=\"statut_id\" value=\"e\" ";
-						if ($statut_id == 'e')
-							echo " checked=\"checked\" ";
-						if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
-							echo " disabled ";
-						echo " />".get_vocab("signaler_reservation_en_cours_option_2");
-						if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
-							echo "<br /><i>(".get_vocab("necessite fonction mail automatique").")</i>";
-						if (Settings::get("automatic_mail") == 'yes')
-						{
-							echo "<br /><br /><input type=\"checkbox\" name=\"envoyer_mail\" value=\"y\" ";
-							if ($mail_exist == "")
-								echo " disabled ";
-							echo " />".get_vocab("envoyer maintenant mail retard");
-							echo "<input type=\"hidden\" name=\"mail_exist\" value=\"".$mail_exist."\" />";
-						}
-						if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
-							echo "<br /><i>(".get_vocab("necessite fonction mail automatique").")</i>";
-						echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=\"".get_vocab("save")."\" /></div></fieldset>\n";
-						echo "<div><input type=\"hidden\" name=\"day\" value=\"".$day."\" />";
-						echo "<input type=\"hidden\" name=\"month\" value=\"".$month."\" />";
-						echo "<input type=\"hidden\" name=\"year\" value=\"".$year."\" />";
-						echo "<input type=\"hidden\" name=\"page\" value=\"".$page."\" />";
-						echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />";
-						echo "<input type=\"hidden\" name=\"back\" value=\"".$back."\" /></div>";
-						echo "</form>";
-					}
-				}
-				if (isset($keys) && isset($courrier))
-				{
-					echo '<form action="view_entry.php" method="get">',PHP_EOL;
-					echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("reservation_en_cours")."</legend>\n";
-
-					if ($active_cle == 'y'){
-						echo "<span class=\"larger\">".get_vocab("status_clef").get_vocab("deux_points")."</span>";
-						echo "<br /><input type=\"checkbox\" name=\"clef\" value=\"y\" ";
-						if ($keys == 1)
-							echo " checked ";
-						echo " /> ".get_vocab("msg_clef");
-					}
-					
-					if (Settings::get('show_courrier') == 'y')
-					{
-						echo "<br /><span class=\"larger\">".get_vocab("status_courrier").get_vocab("deux_points")."</span>";
-						echo "<br /><input type=\"checkbox\" name=\"courrier\" value=\"y\" ";
-						if ($courrier == 1)
-							echo " checked ";
-						echo " /> ".get_vocab("msg_courrier");
-					}
-					echo "<br /><br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=\"".get_vocab("save")."\" /></div></fieldset>\n";
-					echo '<div><input type="hidden" name="day" value="',$day,'" />',PHP_EOL;
-					echo '<input type="hidden" name="month" value="',$month,'" />',PHP_EOL;
-					echo '<input type="hidden" name="year" value="',$year,'" />',PHP_EOL;
-					echo '<input type="hidden" name="page" value="',$page,'" />',PHP_EOL;
-					echo '<input type="hidden" name="id" value="',$id,'" />',PHP_EOL;
-					echo '<input type="hidden" name="back" value="',$back,'" /></div>',PHP_EOL;
-					echo '</form>',PHP_EOL;
-				}
-				include_once('include/trailer.inc.php');
-				echo '</div>',PHP_EOL;
-				?>
+            echo '<tr><td><b>'.get_vocab("date").get_vocab("deux_points").'</b></td><td>'.$start_date.'</td></tr>';
+            echo '<tr><td><b>'.get_vocab("duration").'</b></td><td>'.$duration .' '. $dur_units.'</td></tr>';
+            echo '<tr><td><b>'.get_vocab('rep_end_date').'</b></td><td>'.$rep_end_date.'</td></tr>';
+        }
+        if ((getWritable($beneficiaire, getUserName(), $id)) && verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room(getUserName(), $room_id, $row[10]) && (!$was_del))
+        {
+            $message_confirmation = str_replace ( "'"  , "\\'"  , get_vocab("confirmdel").get_vocab("deleteseries"));
+            echo '<tr>',PHP_EOL,'<td colspan="2">',PHP_EOL,'<input class="btn btn-primary" type="button" onclick="location.href=\'edit_entry.php?id=',$id,'&amp;edit_type=series&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=',$page,'\'" value="',get_vocab("editseries"),'"></td>',PHP_EOL,'</tr>',PHP_EOL;
+            echo '<tr>',PHP_EOL,'<td colspan="2">',PHP_EOL,'<a class="btn btn-danger" type="button" href="del_entry.php?id=',$id,'&amp;series=1&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=',$page,'" onclick="return confirm(\'',$message_confirmation,'\');">',get_vocab("deleteseries"),'</a></td>',PHP_EOL,'</tr>',PHP_EOL;
+        }
+        echo '</table>',PHP_EOL,'</fieldset>',PHP_EOL;
+    }
+    if (!isset($area_id))
+        $area_id = 1;
+    if (!isset($room))
+        $room = 1;
+    if ((authGetUserLevel(getUserName(), $area_id, "area") > 1) || (authGetUserLevel(getUserName(), $room) >= 4))
+        echo '<br><input class="btn btn-primary" onclick="myFunction(',$id,')" value="',get_vocab("Generer_pdf"),'" >',PHP_EOL;
+    if ((getUserName() != '') && (authGetUserLevel(getUserName(), $room_id) >= 3) && ($moderate == 1))
+    {
+        echo "<form action=\"view_entry.php\" method=\"get\">\n";
+        echo "<input type=\"hidden\" name=\"action_moderate\" value=\"y\" />\n";
+        echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
+        if (isset($_GET['page']))
+            echo "<input type=\"hidden\" name=\"page\" value=\"".$_GET['page']."\" />\n";
+        echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("moderate_entry")."</legend>\n";
+        echo "<p>";
+        echo "<input type=\"radio\" name=\"moderate\" value=\"1\" checked=\"checked\" />".get_vocab("accepter_resa");
+        echo "<br /><input type=\"radio\" name=\"moderate\" value=\"0\" />".get_vocab("refuser_resa");
+        if ($repeat_id)
+        {
+            echo "<br /><input type=\"radio\" name=\"moderate\" value=\"S1\" />".get_vocab("accepter_resa_serie");
+            echo "<br /><input type=\"radio\" name=\"moderate\" value=\"S0\" />".get_vocab("refuser_resa_serie");
+        }
+        echo "</p><p>";
+        echo "<label for=\"description\">".get_vocab("justifier_decision_moderation").get_vocab("deux_points")."</label>\n";
+        echo "<textarea class=\"form-control\" name=\"description\" id=\"description\" cols=\"40\" rows=\"3\"></textarea>";
+        echo "</p>";
+        echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"commit\" value=\"".get_vocab("save")."\" /></div>\n";
+        echo "</fieldset></form>\n";
+    }
+    if ($active_ressource_empruntee == 'y')
+    {
+        if ((!$was_del) && ($moderate != 1) && (getUserName() != '') && (authGetUserLevel(getUserName(),$room_id) >= 3))
+        {
+            echo "<form action=\"view_entry.php\" method=\"get\">";
+            echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("reservation_en_cours")."</legend>\n";
+            echo "<span class=\"larger\">".get_vocab("signaler_reservation_en_cours")."</span>".get_vocab("deux_points");
+            echo "<br />".get_vocab("explications_signaler_reservation_en_cours");
+            affiche_ressource_empruntee($room_id, "texte");
+            echo "<br /><input type=\"radio\" name=\"statut_id\" value=\"-\" ";
+            if ($statut_id == '-')
+            {
+                if (!affiche_ressource_empruntee($room_id,"autre") == 'yes')
+                    echo " checked=\"checked\" ";
+            }
+            echo " />".get_vocab("signaler_reservation_en_cours_option_0");
+            echo "<br /><br /><input type=\"radio\" name=\"statut_id\" value=\"y\" ";
+            if ($statut_id == 'y')
+                echo " checked=\"checked\" ";
+            echo " />".get_vocab("signaler_reservation_en_cours_option_1");
+            echo "<br /><br /><input type=\"radio\" name=\"statut_id\" value=\"e\" ";
+            if ($statut_id == 'e')
+                echo " checked=\"checked\" ";
+            if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
+                echo " disabled ";
+            echo " />".get_vocab("signaler_reservation_en_cours_option_2");
+            if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
+                echo "<br /><i>(".get_vocab("necessite fonction mail automatique").")</i>";
+            if (Settings::get("automatic_mail") == 'yes')
+            {
+                echo "<br /><br /><input type=\"checkbox\" name=\"envoyer_mail\" value=\"y\" ";
+                if ($mail_exist == "")
+                    echo " disabled ";
+                echo " />".get_vocab("envoyer maintenant mail retard");
+                echo "<input type=\"hidden\" name=\"mail_exist\" value=\"".$mail_exist."\" />";
+            }
+         /*   if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
+                echo "<br /><i>(".get_vocab("necessite fonction mail automatique").")</i>"; en doublon ? YN */ 
+            echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=\"".get_vocab("save")."\" /></div></fieldset>\n";
+            echo "<div><input type=\"hidden\" name=\"day\" value=\"".$day."\" />";
+            echo "<input type=\"hidden\" name=\"month\" value=\"".$month."\" />";
+            echo "<input type=\"hidden\" name=\"year\" value=\"".$year."\" />";
+            echo "<input type=\"hidden\" name=\"page\" value=\"".$page."\" />";
+            echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />";
+            echo "<input type=\"hidden\" name=\"back\" value=\"".$back."\" /></div>";
+            echo "</form>";
+        }
+    }
+    if (isset($keys) && isset($courrier))
+    {
+        echo '<form action="view_entry.php" method="get">',PHP_EOL;
+        // echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("reservation_en_cours")."</legend>\n";
+        echo "<fieldset>\n";
+        if ($active_cle == 'y'){
+            echo "<span class=\"larger\">".get_vocab("status_clef").get_vocab("deux_points")."</span>";
+            echo "<br /><input type=\"checkbox\" name=\"clef\" value=\"y\" ";
+            if ($keys == 1)
+                echo " checked ";
+            echo " /> ".get_vocab("msg_clef");
+        }
+        
+        if (Settings::get('show_courrier') == 'y')
+        {
+            echo "<br /><span class=\"larger\">".get_vocab("status_courrier").get_vocab("deux_points")."</span>";
+            echo "<br /><input type=\"checkbox\" name=\"courrier\" value=\"y\" ";
+            if ($courrier == 1)
+                echo " checked ";
+            echo " /> ".get_vocab("msg_courrier");
+        }
+        //echo "<br /><br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=\"".get_vocab("save")."\" /></div></fieldset>\n";
+        echo "</fieldset>";
+        echo '<div><input type="hidden" name="day" value="',$day,'" />',PHP_EOL;
+        echo '<input type="hidden" name="month" value="',$month,'" />',PHP_EOL;
+        echo '<input type="hidden" name="year" value="',$year,'" />',PHP_EOL;
+        echo '<input type="hidden" name="page" value="',$page,'" />',PHP_EOL;
+        echo '<input type="hidden" name="id" value="',$id,'" />',PHP_EOL;
+        echo '<input type="hidden" name="back" value="',$back,'" /></div>',PHP_EOL;
+        echo '</form>',PHP_EOL;
+    }
+    include_once('include/trailer.inc.php');
+    // echo '</div>',PHP_EOL; ??? YN
+    echo "</body>\n</html>";
+    ?>
