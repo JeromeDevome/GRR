@@ -1,10 +1,22 @@
 Bugs connus sur la version de GitHub :
-- affichage incorrect des réservations longues dans la page week.php
+- des ressources qui devraient être cachées sont visibles dans certaines circonstances (sujet 120 du forum)
  
-Tâches en cours (future 3.3.2)
+Tâches en cours (future 3.4.0)
  - extension de la page year.php pour afficher toutes les réservations d'un site
  - export au format ics (et import ?)
  - check mise à jour automatique au travers d'un proxy
+ 
+ Version stable (3.3.1b)
+    [correction] affichage des réservations longues dans la page week.php
+    [correction] liens dans les plannings
+    [correction] IP par défaut, longueur du mot de passe, début et fin de période réservable
+    [amélioration] position du datepicker
+    [amélioration] compatibilité php7
+    [amélioration] possibilité de supprimer les logs automatiquement
+    [modification] fichiers de langue
+    [modification] génération des pdf
+    [modification] fichiers de style
+    [mise à jour] module CKeditor en version 4.8
  
 Version stable (3.3.1a)
     [correction] bug d'affichage en mode arborescence : l'élément sélectionné n'était pas visible
