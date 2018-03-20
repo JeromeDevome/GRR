@@ -254,6 +254,7 @@ $vocab['connexion_a_grr_non_autorisee'] = "Non siete autorizzati ad accedere a q
 $vocab['connexion_a_grr_ip'] = "IP non autorisé."; // A traduire
 $vocab['contient'] = "contiene";
 $vocab['copie cachee'] = "Mettre les destinataires en copie cachée lorsqu'un message est adressé à plusieurs personnes."; // A traduire
+$vocab['copy_clipboard'] = "Copy in clipboard"; // A traduire
 $vocab['copyentry'] = "Copier cette réservation"; // A traduire
 $vocab['createdby'] = "Creata da :";
 $vocab['created_by'] = "Prenotazione effettuata da ";
