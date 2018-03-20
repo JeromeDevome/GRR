@@ -929,11 +929,11 @@ if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 					echo "<h3>".get_vocab("num_version_title")."</h3>\n";
 					
 					
-					echo "<button id='copy' type='button'>Copy in clipboard</button><br>";
+					echo "<button id='copy' type='button'>".get_vocab("copy_clipboard")."</button><br>";
 					echo "<textarea id='to-copy' rows='10' cols='80'>";
 					
 					
-					echo get_vocab("num_version")."".$display_version_grr."\n";
+					echo get_vocab("num_version")."".$display_version_grr." ".$versionReposite."\n";
 					echo get_vocab("num_versionbdd")."".$display_version_old."\n";
 					echo get_vocab("prefixe")." : ".TABLE_PREFIX."\n";
 					echo "---\n";

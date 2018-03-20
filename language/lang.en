@@ -254,6 +254,7 @@ $vocab['connexion_a_grr_non_autorisee'] = "You're not allowed to have access to 
 $vocab['connexion_a_grr_ip'] = "Unauthorized IP."; 
 $vocab['contient'] = "contains";
 $vocab['copie cachee'] = "Put the addresses in hidden copy when a message is sent to several persons.";
+$vocab['copy_clipboard'] = "Copy in clipboard";
 $vocab['copyentry'] = "Copy this reservation";
 $vocab['createdby'] = "Created by:";
 $vocab['created_by'] = "Reservation made by ";
