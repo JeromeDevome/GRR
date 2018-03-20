@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Permet de vérifier la validitée de l'édition ou de la création d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-03-06 18:00$
+ * Dernière modification : $Date: 2018-03-20 23:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,13 +15,13 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "edit_entry_handler.php";
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
 include "include/mrbs_sql.inc.php";
 include "include/misc.inc.php";
-$grr_script_name = "edit_entry_handler.php";
 // Settings
 require_once("./include/settings.class.php");
 //Chargement des valeurs de la table settingS
@@ -772,7 +772,8 @@ if (strlen($err))
 	if (!isset($hide_title))
 		echo "</UL>";
 	if (authGetUserLevel(getUserName(),$area,'area') >= 4)
-		echo "<center><table border=\"1\" cellpadding=\"10\" cellspacing=\"1\"><tr><td class='avertissement'><h3><a href='".traite_grr_url("","y")."edit_entry_handler.php?".$_SERVER['QUERY_STRING']."&amp;del_entry_in_conflict=yes'>".get_vocab("del_entry_in_conflict")."</a></h4></td></tr></table></center><br />";
+		// echo "<center><table border=\"1\" cellpadding=\"10\" cellspacing=\"1\"><tr><td class='avertissement'><h3><a href='".traite_grr_url("","y")."edit_entry_handler.php?".$_SERVER['QUERY_STRING']."&amp;del_entry_in_conflict=yes'>".get_vocab("del_entry_in_conflict")."</a></h4></td></tr></table></center><br />"; modifié le 15/03/2018 YN
+        echo "<center><table border=\"1\" cellpadding=\"10\" cellspacing=\"1\"><tr><td class='avertissement'><h3><a href='edit_entry_handler.php?".$_SERVER['QUERY_STRING']."&amp;del_entry_in_conflict=yes'>".get_vocab("del_entry_in_conflict")."</a></h4></td></tr></table></center><br />";
 }
 // echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a><p>"; // à modifier aussi ? YN
 echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a><p>";
