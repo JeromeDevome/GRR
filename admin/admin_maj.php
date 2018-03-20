@@ -927,20 +927,29 @@ if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 					echo "<hr />";
 					// Numéro de version
 					echo "<h3>".get_vocab("num_version_title")."</h3>\n";
-					echo "<p>".get_vocab("num_version")." ".$display_version_grr;
-					echo "</p>\n";
-					echo "<p>".get_vocab("prefixe")." : ".TABLE_PREFIX;
-					echo "</p>\n";
-					echo get_vocab('database') . grr_sql_version() . "\n";
-					echo "<br />" . get_vocab('system') . php_uname() . "\n";
-					echo "<br />Version PHP : " . phpversion() . "\n";
+					
+					
+					echo "<button id='copy' type='button'>Copy in clipboard</button><br>";
+					echo "<textarea id='to-copy' rows='10' cols='80'>";
+					
+					
+					echo get_vocab("num_version")."".$display_version_grr."\n";
+					echo get_vocab("num_versionbdd")."".$display_version_old."\n";
+					echo get_vocab("prefixe")." : ".TABLE_PREFIX."\n";
+					echo "---\n";
+					echo get_vocab('system') . php_uname() . "\n";
+					echo "Version PHP : " . phpversion() . "\n";
+					echo get_vocab('database') .$dbsys." ". grr_sql_version() . "\n";
+					echo "---\n";
+					echo "Time : " .time()."\n";
+					echo "Date du serveur (Jour-Mois-Annee) : " .date('d-m-Y').". Heure : ".date("H:i")."\n";
+					echo "Timezone (date_default_timezone_set) : ".date_default_timezone_get()."\n";
 
-					echo "<p>".get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a></p>\n";
-
+					echo "</textarea>";
+					echo "<hr><h3>".get_vocab("maj_recherche_grr")."</h3>";
 					// Recherche mise à jour sur serveur GRR
 					if($recherche_MAJ == 1)
 					{
-						echo "<br><p>".get_vocab("maj_recherche_grr").":</p>";
 						$fichier = $grr_devel_url.'versiongrr.xml';
 						
 						if (!$fp = @fopen($fichier,"r")) {
@@ -977,7 +986,10 @@ if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 
 							$reader->close();
 						}
+					} else{
+						"<p>".get_vocab("maj_impossible_rechercher")."</p>\n";
 					}
+					echo "<p>".get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a></p>\n";
 
 					echo "<hr />\n";
 
@@ -1037,5 +1049,15 @@ if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 					if ($valid == 'no')
 						echo "</td></tr></table>";
 					?>
+<script>
+var toCopy  = document.getElementById( 'to-copy' ),
+    btnCopy = document.getElementById( 'copy' );
+
+btnCopy.addEventListener( 'click', function(){
+	toCopy.select();
+	document.execCommand( 'copy' );
+	return false;
+} );
+</script>
 				</body>
 				</html>
