@@ -105,7 +105,7 @@ a.lienCellule{color:#000;font-weight:400;display:block}
 a:hover.lienCellule{color:#000;font-weight:700;display:block}
 .small_planning{font-size:.9em}
 .texte_ress_tempo_indispo{color:#ba2828;font-weight:700}
-.texte_ress_moderee{color:#ba2828;font-weight:700;margin-left:70px}
+.texte_ress_moderee{color:#ba2828;font-weight:700}
 th.tableau_month2{padding:2px}
 #lienPrecedent a{text-align:left;font-size:20px}
 .tableau_month_all2{font-size:.8em}
