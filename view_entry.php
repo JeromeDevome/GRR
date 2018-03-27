@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-03-06 18:00$
+ * Dernière modification : $Date: 2018-03-27 11:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -57,9 +57,38 @@ else
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+// echo $back;
 if (isset($_GET["action_moderate"])){
+    // ici on a l'id de la réservation, on peut donc construire un lien de retour complet, à la bonne date et avec la ressource précise
+    /* $page = $_GET["page"];
+    $sql = grr_sql_query("SELECT start_time,room_id FROM ".TABLE_PREFIX."_entry WHERE id ='".$id."'");
+    $res = grr_sql_row($sql,0); // en principe on ne devrait avoir qu'une réponse ici
+    print_r($res);
+    exit;*/
+    if (strstr ($back, 'view_entry.php'))
+    {
+        $sql = "SELECT start_time, room_id FROM ".TABLE_PREFIX."_entry WHERE id=". $id;
+        $res = grr_sql_query($sql);
+        if (!$res)
+            fatal_error(0, grr_sql_error());
+        if (grr_sql_count($res) >= 1)
+        {
+            $row1 = grr_sql_row($res, 0);
+            $year = date ('Y', $row1['0']);
+            $month = date ('m', $row1['0']);
+            $day = date ('d', $row1['0']);
+            $page = (isset($_GET['page']))? $_GET['page'] : "day";
+            $back = $page.'.php?year='.$year.'&month='.$month.'&day='.$day;
+            if (($page == "week_all") || ($page == "month_all") || ($page == "day"))
+                $back .= "&area=".mrbsGetRoomArea($row1['1']);
+            if (($page == "week") || ($page == "month"))
+                $back .= "&room=".$row1['1'];
+        }
+        else
+            $back = $page.".php";
+    }
 	moderate_entry_do($id,$_GET["moderate"], $_GET["description"]);
-	header("Location:".$_GET['page'].".php");
+	header("Location: ".$back);
 }
 $sql = "SELECT ".TABLE_PREFIX."_entry.name,
 ".TABLE_PREFIX."_entry.description,
