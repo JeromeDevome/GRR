@@ -3,8 +3,8 @@
  * admin_config1.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2018-03-13 10:00$
- * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas
+ * Dernière modification : $Date: 2018-03-30 16:00$
+ * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -610,7 +610,7 @@ if (Settings::get('use_fckeditor') == 1) {
 			['Source'],
 			['Cut','Copy','Paste','PasteText','PasteFromWord', 'SpellChecker', 'Scayt'],
 			['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-			['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+			['Bold','Italic','Underline','Strike','-','Subscript','Superscript','-','TextColor','BGColor'],
 			['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
 			['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 			['Link','Unlink','Anchor'],
@@ -816,8 +816,7 @@ if (Settings::get('module_multisite') == 'Oui') {
     echo('
 		<table>
 			<tr>
-				<td>'.get_vocab('default_site').get_vocab('deux_points').'</td>
-				<td>
+				<td>'.get_vocab('default_site').get_vocab('deux_points').'</td><td>
 					<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
 						<option value="-1">'.get_vocab('choose_a_site').'</option>'."\n");
     for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); ++$enr) {
@@ -830,14 +829,14 @@ if (Settings::get('module_multisite') == 'Oui') {
     }
     echo('</select>
 </td>
-</tr>');
+</tr></table>');
 } else {
-    echo '<input class="form-control" type="hidden" id="id_site" name="id_site" value="-1" />
-	<table>';
+    echo '<input class="form-control" type="hidden" id="id_site" name="id_site" value="-1" />';
 }
 /*
   * Liste des domaines
  */
+echo "<table>";
 echo '<tr>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
 echo '<div id="div_liste_domaines">'.PHP_EOL;
