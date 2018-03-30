@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-03-13 10:00$
+ * Dernière modification : $Date: 2018-03-30 11:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -560,6 +560,52 @@ function how_many_connected()
 			affiche_pop_up(get_vocab("maj_bdd_not_update").get_vocab("please_go_to_admin_maj.php"),"force");
 	}
 }
+/**
+ * Fonction : resaToModerate($user) 
+ * Description : si c'est un admin ou un gestionnaire de ressource qui est connecté, retourne un message indiquant s'il y a des réservations à modérer
+*/
+function resaToModerate($user)
+{/*
+    $can_see = (authGetUserLevel($user,-1) > 5);// admin général
+    if (!$can_see){
+        if (isset($_GET['id_site'])){$can_see = (authGetUserLevel($user,$_GET['id_site'],'site') > 4);} // admin du site en paramètre
+    }
+    if (!$can_see){
+        if (isset($_GET['area'])){$can_see = (authGetUserLevel($user,$_GET['area'],'area') > 3);} // admin du domaine en paramètre
+    }
+    if (!$can_see){
+        if (isset($_GET['room'])){$can_see = (authGetUserLevel($user,$_GET['room'],'room') > 2);} // gestionnaire de la ressource en paramètre
+    }
+    if ($can_see){
+        $mesg = "accessible";}
+    else $mesg = ''; */
+    $mesg = '';
+    if (authGetUserLevel($user,-1) > 5) // admin général
+    {
+        $sql = "SELECT COUNT(e.moderate) FROM ".TABLE_PREFIX."_entry e WHERE e.moderate = 1";
+        $res = grr_sql_query1($sql);
+        if ($res > 0){$mesg = $res." réservation à modérer";}
+    }
+    elseif (isset($_GET['id_site']) && (authGetUserLevel($user,$_GET['id_site'],'site') > 4)) // admin du site
+    {
+        $sql = "SELECT COUNT(e.moderate) FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = "._GET['id_site']." AND e.moderate = 1)";
+        $res = grr_sql_query1($sql);
+        if ($res > 0){$mesg = $res." réservation à modérer";}
+    }
+    elseif (isset($_GET['area']) && (authGetUserLevel($user,$_GET['area'],'area') > 3)) // admin du domaine
+    {
+        $sql = "SELECT COUNT(e.moderate) FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id WHERE (a.id = ".$_GET['area']." AND e.moderate = 1)";
+        $res = grr_sql_query1($sql);
+        if ($res > 0){$mesg = $res." réservation à modérer";}
+    }
+    elseif (isset($_GET['room']) && (authGetUserLevel($user,$_GET['room'],'room') > 2)) // gestionnaire de la ressource
+    {
+        $sql = "SELECT COUNT(e.moderate) FROM ".TABLE_PREFIX."_entry e WHERE (e.moderate = 1 AND e.room_id = ".$_GET['room'].") ";
+        $res = grr_sql_query1($sql);
+        if ($res > 0){$mesg = $res." réservation à modérer";}
+    }
+    return $mesg;
+}
 /*
 Teste s'il reste ou non des plages libres sur une journée donnée pour un domaine donné.
 Arguments :
@@ -773,9 +819,10 @@ function protect_data_sql($_value)
 		$_value = stripslashes($_value);
 	if (!is_numeric($_value))
 	{
-		if (isset($use_function_mysql_real_escape_string) && ($use_function_mysql_real_escape_string==0))
+		/*if (isset($use_function_mysql_real_escape_string) && ($use_function_mysql_real_escape_string==0))
 			$_value = mysqli_real_escape_string($GLOBALS['db_c'], $_value);
-		else
+		else */
+        // pourquoi un test, puisque l'action est la même ? YN le 30/03/2018
 			$_value = mysqli_real_escape_string($GLOBALS['db_c'], $_value);
 	}
 	return $_value;
@@ -1072,15 +1119,20 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			// Administration
 			if ($type_session == "with_session")
 			{
-				if ((authGetUserLevel(getUserName(), -1, 'area') >= 4) || (authGetUserLevel(getUserName(), -1, 'user') == 1))
+                $user_name = getUserName();
+                $mess_resa = resaToModerate($user_name);
+				if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1) || ($mess_resa != ''))
 				{
 					echo '<td class="administration">'.PHP_EOL;
-					echo "<br><a href='{$racineAd}admin_accueil.php?day={$day}&amp;month={$month}&amp;year={$year}'>".get_vocab('admin')."</a>".PHP_EOL;
+					if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1))
+                        echo "<br><a href='{$racineAd}admin_accueil.php?day={$day}&amp;month={$month}&amp;year={$year}'>".get_vocab('admin')."</a>".PHP_EOL;
 					if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 					{
 						echo '<br />'.PHP_EOL;
 						how_many_connected();
+                        echo "<br />";
 					}
+                    echo "<p class='avertissement'>".$mess_resa."</p>";
 					echo '</td>'.PHP_EOL;
 				}
 			}
@@ -1158,7 +1210,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			echo '</tr>'.PHP_EOL;
 			echo '</table>'.PHP_EOL;
 			echo '</div>'.PHP_EOL;
-			echo '<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></a>'.PHP_EOL;
+			echo '<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>'.PHP_EOL;
 			echo '</div>'.PHP_EOL;
 		}
 	}
@@ -2864,6 +2916,9 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	return $message_erreur;
 } // Fin fonction send_mail
 
+/** function getUserName()
+ * retourne le login de l'utilisateur connecté (et pas son nom), une chaîne vide sinon
+*/
 function getUserName()
 {
 	if (isset($_SESSION['login']))
@@ -2952,7 +3007,7 @@ function auth_visiteur($user,$id_room)
 //$id -   l'identifiant de la ressource ou du domaine
 // $type - argument optionnel : 'room' (par défaut) si $id désigne une ressource et 'area' si $id désigne un domaine.
 ////Retourne le niveau d'accès de l'utilisateur
-// 0 NC / 1 Visiteur / 2 Utilisateur / 6 Admin
+// 0 NC / 1 Visiteur / 2 Utilisateur / 3 gestionnaire de ressource / 4 administrateur de domaine / 5 administrateur de site / 6 Admin général
 function authGetUserLevel($user, $id, $type = 'room')
 {
 	//user level '0': User not logged in, or User value is NULL (getUserName()='')
@@ -3078,7 +3133,7 @@ function authGetUserLevel($user, $id, $type = 'room')
 			}
 			else
 			{
-				//On regarde si l'utilisateur est administrateur du domaine dont l'id est $id
+				//On regarde si l'utilisateur est administrateur du site dont l'id est $id
 				$res3 = grr_sql_query("SELECT u.login
 					FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_site j
 					WHERE (u.login=j.login and j.id_site='".protect_data_sql($id)."' and u.login='".protect_data_sql($user)."')");
