@@ -796,9 +796,9 @@ if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 							$result_inter = '';
 						}
 
-						if ($version_old < "3.3.2")
+						if ($version_old < "3.4.0")
 						{
-							$result .= "<b>Mise à jour jusqu'à la version 3.3.2 :</b><br />";
+							$result .= "<b>Mise à jour jusqu'à la version 3.4.0 :</b><br />";
 
 							$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_type_area ADD `couleurhexa` VARCHAR(10) NOT NULL AFTER `couleur`;");
 							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#F49AC2' WHERE couleur = '1';");
@@ -830,6 +830,11 @@ if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#AA5050' WHERE couleur = '27';");
 							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#FFBB20' WHERE couleur = '28';");
 							$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#CFCFCF' WHERE couleur > '28';");
+							$result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_page (`nom` varchar(30) NOT NULL, `valeur` longtext NOT NULL);");
+							$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_page (`nom`, `valeur`) VALUES ('CGU', 'Les CGU');");
+							$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_page ADD UNIQUE KEY `nom` (`nom`);");
+							$result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_modulesext (`nom` varchar(50) NOT NULL, `actif` tinyint(1) NOT NULL DEFAULT '0', `version` INT(11) NOT NULL);");
+							$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_modulesext ADD UNIQUE KEY `nom` (`nom`);");
 
 							if ($result_inter == '')
 								$result .= "<span style=\"color:green;\">Ok !</span><br />";
@@ -923,24 +928,32 @@ if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 					echo "<hr />";
 					// Numéro de version
 					echo "<h3>".get_vocab("num_version_title")."</h3>\n";
-					echo "<p>".get_vocab("num_version")." ".$display_version_grr;
-					echo "</p>\n";
-					echo "<p>".get_vocab("prefixe")." : ".TABLE_PREFIX;
-					echo "</p>\n";
-					echo get_vocab('database') . grr_sql_version() . "\n";
-					echo "<br />" . get_vocab('system') . php_uname() . "\n";
-					echo "<br />Version PHP : " . phpversion() . "\n";
-					//Hugo - Mise a jour temporaire du lien à afficher
-					//11/06/2013
-					echo "<p>".get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a></p>\n";
+					
+					
+					echo "<button id='copy' type='button'>".get_vocab("copy_clipboard")."</button><br>";
+					echo "<textarea id='to-copy' rows='10' cols='80'>";
+					
+					
+					echo get_vocab("num_version")."".$display_version_grr." ".$versionReposite."\n";
+					echo get_vocab("num_versionbdd")."".$display_version_old."\n";
+					echo get_vocab("prefixe")." : ".TABLE_PREFIX."\n";
+					echo "---\n";
+					echo get_vocab('system') . php_uname() . "\n";
+					echo "Version PHP : " . phpversion() . "\n";
+					echo get_vocab('database') .$dbsys." ". grr_sql_version() . "\n";
+					echo "---\n";
+					echo "Time : " .time()."\n";
+					echo "Date du serveur (Jour-Mois-Annee) : " .date('d-m-Y').". Heure : ".date("H:i")."\n";
+					echo "Timezone (date_default_timezone_set) : ".date_default_timezone_get()."\n";
 
+					echo "</textarea>";
+					echo "<hr><h3>".get_vocab("maj_recherche_grr")."</h3>";
 					// Recherche mise à jour sur serveur GRR
 					if($recherche_MAJ == 1)
 					{
-						echo "<br><p>".get_vocab("maj_recherche_grr").":</p>";
 						$fichier = $grr_devel_url.'versiongrr.xml';
 						
-					/*	if (!$fp = @fopen($fichier,"r")) {
+						if (!$fp = @fopen($fichier,"r")) {
 							echo "<p>".get_vocab("maj_impossible_rechercher")."</p>\n";
 						} else{
 							$reader = new XMLReader();
@@ -985,8 +998,8 @@ $fp = file_get_contents($fichier,false,$context);
 // ou pas...
 // $fp = file_get_contents($fichier);
 // pour tester
-echo "version en ligne : ".$fp;
 					}
+					echo "<p>".get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a></p>\n";
 
 					echo "<hr />\n";
 
@@ -1046,5 +1059,15 @@ echo "version en ligne : ".$fp;
 					if ($valid == 'no')
 						echo "</td></tr></table>";
 					?>
+<script>
+var toCopy  = document.getElementById( 'to-copy' ),
+    btnCopy = document.getElementById( 'copy' );
+
+btnCopy.addEventListener( 'click', function(){
+	toCopy.select();
+	document.execCommand( 'copy' );
+	return false;
+} );
+</script>
 				</body>
 				</html>

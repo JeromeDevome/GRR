@@ -23,12 +23,12 @@
 $grr_devel_email = "support@devome.com";
 $grr_devel_url = "http://grr.devome.com/";
 // Numéro de version actuel
-$version_grr = "3.3.2";
+$version_grr = "3.4.0";
 // Numéro de sous-version actuel (a, b, ...)
 // Utilisez cette variable pour des versions qui corrigent la la version finale sans toucher à la base.
 $sous_version_grr = ""; // a, b, c, ...
 // Numéro de la release candidate (doit être strictement inférieure à 9). Laisser vide s'il s'agit de la version stable.
-$version_grr_RC = "1";
+$version_grr_RC = "2";
 
 # Liste des tables
 $liste_tables = array(
@@ -56,6 +56,8 @@ $liste_tables = array(
 	"_j_useradmin_site",
 	"_j_site_area",
 	"_correspondance_statut",
+	"_page",
+	"_modulesext",
 	);
 
 # Liste des feuilles de style

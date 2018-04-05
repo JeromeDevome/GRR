@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-01-06 11:00$
+ * Dernière modification : $Date: 2018-03-20 23:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -677,6 +677,7 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
 </script>
 
 <?php
+echo '<input type="hidden" name="oldRessource" value="'.$room_id.'">'.PHP_EOL;
 echo '<div id="error"></div>';
 echo '<table class="table-bordered EditEntryTable"><tr>'.PHP_EOL;
 echo '<td style="width:50%; vertical-align:top; padding-left:15px; padding-top:5px; padding-bottom:5px;">'.PHP_EOL;
@@ -781,6 +782,7 @@ if($active_cle == 'y'){
 	echo '</td></tr>'.PHP_EOL;
 }
 
+if (Settings::get("show_courrier") == 'y'){ // proposition scoubinaire le 12/03/2018
 echo '<tr><td class="E"><br>'.PHP_EOL;
 echo '<b>'.get_vocab("status_courrier").get_vocab("deux_points").'</b>'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;
@@ -790,6 +792,7 @@ if (isset($courrier) && $courrier == 1)
 	echo 'checked';
 echo ' > '.get_vocab("msg_courrier");
 echo '</td></tr>'.PHP_EOL;
+}
 
 echo '<tr><td class="E">'.PHP_EOL;
 echo '<b>'.$F.'</b>'.PHP_EOL;
@@ -1233,7 +1236,8 @@ if($periodiciteConfig == 'y'){
 	?>
 	<div id="fixe">
     <?php // définit l'adresse de retour, à passer à edit_entry_handler et à cancel
-        $ret_page = ($back) ?: $page.".php?year=".$year."&amp;month=".$month."&amp;day=".$day."&amp;area=".$area."&amp;room=".$room; 
+        // $ret_page = ($back) ?: $page.".php?year=".$year."&amp;month=".$month."&amp;day=".$day."&amp;area=".$area."&amp;room=".$room; 
+        $ret_page = $page.".php?year=".$year."&amp;month=".$month."&amp;day=".$day."&amp;area=".$area."&amp;room=".$room; // robuste ? YN le 20/03/2018
     ?>
 		<input type="button" class="btn btn-primary" value="<?php echo get_vocab("cancel")?>" onclick="window.location.href='<?php echo $ret_page?>'" />
 		<input type="button" class="btn btn-primary" value="<?php echo get_vocab("save")?>" onclick="Save_entry();validate_and_submit();" />

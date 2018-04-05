@@ -165,7 +165,7 @@ if ((!grr_resumeSession()) && $valid != 'yes')
 		$back = '';
 		if (isset($_SERVER['HTTP_REFERER']))
 			$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-		if ((isset($sso_restrictions)) && ($sso_restrictions == true))
+		if ((isset($ldap_restrictions)) && ($ldap_restrictions == true))
 		{
 			showAccessDenied($back);
 			exit();

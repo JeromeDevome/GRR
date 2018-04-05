@@ -152,7 +152,7 @@ function read_sites()
 			// Affichage de l'entête du tableau
 			echo '      <table border="1" cellpadding="3">
 			<tr>
-				<th>'.get_vocab('action').get_vocab('deux_points').'</th>
+				<th>'.get_vocab('action').'</th>
 				<th>'.get_vocab('site_code').'</th>
 				<th>'.get_vocab('site_name').'</th>
 				<th>'.get_vocab('site_cp').'</th>

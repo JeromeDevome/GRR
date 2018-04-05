@@ -3,8 +3,8 @@
  * day.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-02-05 11:45$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -19,7 +19,9 @@ $grr_script_name = "day.php";
 
 include "include/planning_init.inc.php";
 
-
+// mois et année sont déjà fixés, si le jour n'est pas passé en paramètre, on le fixe à aujourd'hui
+$day = isset($_GET['day']) ? $_GET['day'] : date("d");
+// echo $day,' ',$month,' ',$year,'<br>';
 $ind = 1;
 $test = 0;
 $i = 0;
@@ -109,7 +111,6 @@ if(!empty($_GET['room'])){
 // on conserve la ressource d'appel, si elle existe
 $room_back = isset($_GET['room']) ? $_GET['room'] : '';
 
-$ferie_true = 0;
 $class = "";
 $title = "";
 if ($settings->get("show_holidays") == "Oui")
@@ -348,7 +349,7 @@ for ($t = $am7; $t <= $pm7; $t += $resolution)
 						$clef 		= $row['3'];
 						$courrier	= $row['4'];
 						if ($enable_periods != 'y') {
-							echo '<br/>',date('H:i', $start_time),get_vocab("to"),date('H:i', $end_time),'<br/>';
+							echo '<br/>',date('H:i', max($am7,$start_time)),get_vocab("to"),date('H:i', min($pm7,$end_time)),'<br/>';
 						}
 						if ($type_name != -1)
 							echo  $type_name;
