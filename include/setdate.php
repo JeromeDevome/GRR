@@ -24,6 +24,7 @@ if (!isset($day) || !isset($month) || !isset($year))
 		$date_ = Settings::get("end_bookings");
 	else
 		$date_ = $date_now;
+
 	$day   = date("d",$date_);
 	$month = date("m",$date_);
 	$year  = date("Y",$date_);

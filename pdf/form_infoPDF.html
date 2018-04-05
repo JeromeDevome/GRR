@@ -9,35 +9,30 @@
 	<body>
 	<div id = "FrmPDF">
 		<form method="post" class="contact-us" action="pdfgenerator.php">
-			
-					<select id="civ" name="civ" class="form-control">
-							<option> Mr </option>
-							<option> Mme </option>
-					</select>
 					
 					<div class="input-group">
 						<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-						<input class="form-control" placeholder="Nom du bénéficiaire" name="nom" type="text" >
-					</div>
-					
-					<div class="input-group">
-						<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-						<input class="form-control" placeholder="Prénom du bénéficiaire" name="prenom" type="text" >
+						<input class="form-control" placeholder="Nom et Prénom du bénéficiaire" name="nom" type="text" value=''>
 					</div>
 					
 					<div class="input-group">
 						<span class="input-group-addon"><span class="glyphicon glyphicon-home"></span></span>
-						<input  class="form-control" placeholder="Adresse du bénéficiaire" type="text" name="adresse" >
-					</div>
-				
-					<div class="input-group">
-						<span class="input-group-addon"><span class="glyphicon glyphicon-pencil"></span></span>
-						<input class="form-control" placeholder="Ville du bénéficiaire" name="ville" type="text" >
+						<input  class="form-control" placeholder="Adresse du bénéficiaire" type="text" name="adresse" value =''>
 					</div>
 
 					<div class="input-group">
-					   <span class="input-group-addon"><span class="glyphicon glyphicon-pencil"></span></span>
-					   <input class="form-control" placeholder="Code postal" name="cp" type="text" >
+						<span class="input-group-addon"><span class="glyphicon glyphicon-home"></span></span>
+						<input  class="form-control" placeholder="Adresse du bénéficiaire ligne 2" type="text" name="adresse2" value =''>
+					</div>
+				
+					<div class="input-group">
+						<span class="input-group-addon"><span class="glyphicon glyphicon-home"></span></span>
+						<input class="form-control" placeholder="Ville du bénéficiaire" name="ville" type="text" value =''>
+					</div>
+
+					<div class="input-group">
+					   <span class="input-group-addon"><span class="glyphicon glyphicon-home"></span></span>
+					   <input class="form-control" placeholder="Code postal" name="cp" type="text" value =''>
 					</div>
 
 					<input type="hidden" class="form-control" placeholder="id" name="id" type="text" value="<?php echo $id; ?>" >

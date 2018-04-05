@@ -210,7 +210,7 @@ input.ui-button {
 .ui-buttonset {
 	margin-right: 7px;
 }
-.ui-buttonset .ui-button {
+.ui-buttonset .ui-button {z-index:3 !important;
 	margin-left: 0;
 	margin-right: -.3em;
 }
@@ -226,6 +226,7 @@ button.ui-button::-moz-focus-inner {
 	width: 17em;
 	padding: .2em .2em 0;
 	display: none;
+    z-index:3 !important;
 }
 .ui-datepicker .ui-datepicker-header {
 	position: relative;

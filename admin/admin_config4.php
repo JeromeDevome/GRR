@@ -2,7 +2,6 @@
 /**
  * admin_config4.php
  * Interface permettant à l'administrateur
- * la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2017-12-16 14:00$
  * @author    Laurent Delineau & JeromeB

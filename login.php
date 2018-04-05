@@ -182,6 +182,7 @@ echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("compan
 		?>
 		<fieldset style="padding-top: 8px; padding-bottom: 8px; width: 40%; margin-left: auto; margin-right: auto;">
 			<legend class="fontcolor3" style="font-variant: small-caps;"><?php echo get_vocab("identification"); ?></legend>
+			<?php echo "<p>".get_vocab("mentions_legal_connexion")."</p>"; ?>
 			<table style="width: 100%; border: 0;" cellpadding="5" cellspacing="0">
 				<tr>
 					<td style="text-align: right; width: 40%; font-variant: small-caps;"><?php echo get_vocab("login"); ?></td>
@@ -212,6 +213,7 @@ echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("compan
 		if ($lien != "")
 			echo "<p>[".$lien."]</p>";
 	}
+	echo "<p>[<a href='page.php?page=CGU' target='_blank'>".get_vocab("cgu")."</a>]</p>";
 	echo "<a href=\"javascript:history.back()\">".get_vocab("previous")." - <b>".Settings::get("company")."</b></a>";
 	?>
 	<br />

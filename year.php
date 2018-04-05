@@ -3,7 +3,7 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-01-17 18:00$
+ * Dernière modification : $Date: 2018-03-13 10:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -135,7 +135,7 @@ if (((authGetUserLevel(getUserName(),-1) < 1) && (Settings::get("authentificatio
 
 // On vérifie une fois par jour si le délai de confirmation des réservations est dépassé
 // Si oui, les réservations concernées sont supprimées et un mail automatique est envoyé.
-// On vérifie une fois par jour que les ressources ont été rendue en fin de réservation
+// On vérifie une fois par jour que les ressources ont été rendues en fin de réservation
 // Si non, une notification email est envoyée
 if (Settings::get("verif_reservation_auto") == 0)
 {

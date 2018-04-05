@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2018-02-23 18:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -26,7 +26,7 @@
  *
  * Returns:
  *   nothing   - The area is free
- *   something - An error occured, the return value is human readable
+ *   something - An error occurred, the return value is human readable
  */
 function mrbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore)
 {
@@ -138,7 +138,7 @@ function grrDelEntryInConflict($room_id, $starttime, $endtime, $ignore, $repigno
  * $all    - If set, include user modified entrys in the series delete
  *
  * Returns:
- *   0        - An error occured
+ *   0        - An error occurred
  *   non-zero - The entry was deleted
  * @param integer $all
  */

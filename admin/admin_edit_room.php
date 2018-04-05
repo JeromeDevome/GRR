@@ -652,6 +652,7 @@ if ((!empty($room)) || (isset($area_id)))
 		echo "/></td></tr>\n";
 	//
 		echo "</table>\n";
+		Hook::Appel("hookEditRoom1");
 		echo "<div style=\"text-align:center;\"><br />\n";
 		echo "<input class=\"btn btn-primary\" type=\"submit\" name=\"change_room\"  value=\"".get_vocab("save")."\" />\n";
 		echo "<input class=\"btn btn-primary\" type=\"submit\" name=\"change_done\" value=\"".get_vocab("back")."\" />";
@@ -1183,6 +1184,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 			echo "<tr><td>".get_vocab("max_booking")." -  ".get_vocab("all_rooms_of_area").get_vocab("deux_points");
 			echo "</td><td><input class=\"form-control\" type=\"text\" name=\"max_booking\" value=\"".$row['max_booking']."\" /></td>\n";
 			echo "</tr></table>";
+			Hook::Appel("hookEditArea1");
 			echo "<div style=\"text-align:center;\">\n";
 			echo "<input class=\"btn btn-primary\" type=\"submit\" name=\"change_area\" value=\"".get_vocab("save")."\" />\n";
 			echo "<input class=\"btn btn-primary\" type=\"submit\" name=\"change_done\" value=\"".get_vocab("back")."\" />\n";

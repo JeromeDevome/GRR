@@ -80,7 +80,7 @@ if ($dbsys == "mysql")
 		echo "<ul><li>Soit vous procédez à une mise à jour vers une nouvelle version de GRR. Dans ce cas, vous devez procéder à une mise à jour de la base de données MySql.<br />";
 		echo "<b><a href='./admin/admin_maj.php'>Mettre à jour la base Mysql</a></b><br /></li>";
 		echo "<li>Soit l'installation de GRR n'est peut-être pas terminée. Vous pouvez procéder à une installation/réinstallation de la base.<br />";
-		echo "<a href='install_mysql.php'>Installer la base $dbsys</a></li></ul></div>";
+		echo "<a href='./installation/install_mysql.php'>Installer la base $dbsys</a></li></ul></div>";
 		?>
 	</body>
 	</html>
