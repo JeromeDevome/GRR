@@ -3,8 +3,8 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
+ * Dernière modification : $Date: 2018-04-11 18:00$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -674,7 +674,8 @@ if ($row[6] > 0)
 	$_SESSION['default_area'] = $row[6];
 else
 	$_SESSION['default_area'] = Settings::get("default_area");
-if ($row[7] > 0)
+//if ($row[7] > 0) en lien avec le calcul de la page d'accueil YN le 11/04/2018
+if ($row[7] != 0)
 	$_SESSION['default_room'] = $row[7];
 else
 	$_SESSION['default_room'] = Settings::get("default_room");
