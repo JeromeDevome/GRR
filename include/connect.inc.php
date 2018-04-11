@@ -12,5 +12,5 @@ $dbPass="";
 # ligne suivante : préfixe du nom des tables de données
 $table_prefix="";
 # ligne suivante : Port MySQL laissé par défaut
-$dbPort="";
+$dbPort=3306;
 ?>
