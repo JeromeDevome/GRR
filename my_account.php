@@ -3,8 +3,8 @@
  * my_account.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-04-11 16:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -234,7 +234,8 @@ if ($res)
 			dataType: "html",
 			data: {
 				id_site: $('#id_site').val(),
-				default_area : '<?php echo Settings::get("default_area"); ?>',
+				// default_area : '<?php echo Settings::get("default_area"); ?>',
+                default_area : '<?php echo $default_area; ?>',
 				session_login:'<?php echo getUserName(); ?>',
 				use_site:'<?php echo $use_site; ?>',
 				type:'domaine',
@@ -254,7 +255,8 @@ if ($res)
 			dataType: "html",
 			data: {
 				id_area:$('id_area').serialize(true),
-				default_room : '<?php echo Settings::get("default_room"); ?>',
+				// default_room : '<?php echo Settings::get("default_room"); ?>',
+                default_room : '<?php echo $default_room; ?>',
 				type:'ressource',
 				action:+action,
 				},
@@ -444,7 +446,7 @@ echo ('
 		echo '<div id="div_liste_ressources">';
 		echo '<input type="hidden" id="id_area" name="id_area" value="'.$default_area.'" />';
 		echo '</div></td></tr></table>';
-		/* Au chargement de la page, on itialise les select */
+		/* Au chargement de la page, on initialise les select */
 		echo '<script type="text/javascript">modifier_liste_domaines();</script>'."\n";
 		echo '<script type="text/javascript">modifier_liste_ressources(1);</script>'."\n";
 /**

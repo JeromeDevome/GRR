@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-03-30 11:00$
+ * Dernière modification : $Date: 2018-04-11 16:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -846,10 +846,12 @@ function verif_page()
 function page_accueil($param = 'no')
 {
 	// Definition de $defaultroom
-	if (isset($_SESSION['default_room']) && ($_SESSION['default_room'] > 0))
+	if (isset($_SESSION['default_room']))// && ($_SESSION['default_room'] > -5))
 		$defaultroom = $_SESSION['default_room'];
 	else
 		$defaultroom = Settings::get("default_room");
+    // echo $defaultroom ;
+    // die();
 	// Definition de $defaultsite
 	if (isset($_SESSION['default_site']) && ($_SESSION['default_site'] > 0))
 		$defaultsite = $_SESSION['default_site'];
@@ -892,7 +894,7 @@ function begin_page($title, $page = "with_session")
 			$sheetcss = 'themes/'.$_SESSION['default_style'].'/css';
 
 		else
-			$sheetcss = 'themes/bleu/css';
+			$sheetcss = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
 		if (isset($_GET['default_language']))
 		{
 			$_SESSION['default_language'] = $_GET['default_language'];
