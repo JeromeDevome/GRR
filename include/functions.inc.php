@@ -588,7 +588,7 @@ function resaToModerate($user)
     }
     elseif (isset($_GET['id_site']) && (authGetUserLevel($user,$_GET['id_site'],'site') > 4)) // admin du site
     {
-        $sql = "SELECT COUNT(e.moderate) FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = "._GET['id_site']." AND e.moderate = 1)";
+        $sql = "SELECT COUNT(e.moderate) FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = ".$_GET['id_site']." AND e.moderate = 1)";
         $res = grr_sql_query1($sql);
         if ($res > 0){$mesg = $res." réservation à modérer";}
     }
@@ -4010,7 +4010,7 @@ function find_user_room ($id_room)
 			}
 		}
 	}
-	// Si la table des emails des administrateurs des sites est vide, on avertit les administrateurs générauxd
+	// Si la table des emails des administrateurs des sites est vide, on avertit les administrateurs généraux
 	if (count($emails) == 0)
 	{
 		$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs where statut = 'administrateur'");
@@ -4025,6 +4025,10 @@ function find_user_room ($id_room)
 	}
 	return $emails;
 }
+/** validate_email ($email)
+ * Détermine si l'adresse mail en paramètre est syntaxiquement valable
+ * Rend un booléen
+*/
 function validate_email ($email)
 {
 	$atom   = '[-a-z0-9!#$%&\'*+\\/=?^_`{|}~]';
@@ -4034,8 +4038,10 @@ function validate_email ($email)
 	$regex = '/^' . $atom . '+' . '(\.' . $atom . '+)*' . '@' . '(' . $domain . '{1,63}\.)+' . $domain . '{2,63}$/i';
 	if (preg_match($regex, $email))
 		return true;
-	else
-		return false;
+	else {
+        $regex2 = '/^' . $atom . '+' . '(\.' . $atom . '+)*' . '@' . 'localhost/i';
+        return preg_match($regex2, $email);
+    }
 }
 /** grrDelOverloadFromEntries()
  * Supprime les données du champ $id_field de toutes les réservations
