@@ -11,8 +11,8 @@ $dbUser="root";
 $dbPass="";
 # ligne suivante : préfixe du nom des tables de données
 $table_prefix="grr";
-# ligne suivante : Port MySQL laissé par défaut
-$dbPort="";
+# ligne suivante : Port MySQL laissé par défaut, valeur numérique
+$dbPort=3306;
 # ligne suivante : adaptation EnvOLE
 $apikey="mypassphrase";
 ?>
