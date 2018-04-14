@@ -2,8 +2,9 @@
 /**
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
+ * Ce script fait partie de l'application GRR
+ * Dernière modification : $Date: 2018-04-11 18:00$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -550,7 +551,7 @@ if ($auth_imap == 'yes')
 	}
 	else
 	{
-		// pas d'utilisateur imap ayant le m?me login dans la base GRR
+		// pas d'utilisateur imap ayant le même login dans la base GRR
 		// Lire les infos sur l'utilisateur depuis imap
 		include "config_imap.inc.php";
 				// Connexion ? l'annuaire
@@ -616,7 +617,7 @@ if ((Settings::get("ip_autorise") != '') and ($row[4] != "administrateur")){
 	}
 }
 		//
-		// A ce stade, on dispose dans tous les cas d'un tableau $row contenant les informations nécessaires à l'établissment d'une session
+		// A ce stade, on dispose dans tous les cas d'un tableau $row contenant les informations nécessaires à l'établissement d'une session
 		//
 		// Session starts now
 session_name(SESSION_NAME);
@@ -653,7 +654,7 @@ if ($row[6] > 0)
 	$_SESSION['default_area'] = $row[6];
 else
 	$_SESSION['default_area'] = Settings::get("default_area");
-if ($row[7] > 0)
+if ($row[7] != 0)
 	$_SESSION['default_room'] = $row[7];
 else
 	$_SESSION['default_room'] = Settings::get("default_room");

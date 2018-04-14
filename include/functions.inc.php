@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-03-13 10:00$
+ * Dernière modification : $Date: 2018-04-14 15:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -773,9 +773,10 @@ function protect_data_sql($_value)
 		$_value = stripslashes($_value);
 	if (!is_numeric($_value))
 	{
-		if (isset($use_function_mysql_real_escape_string) && ($use_function_mysql_real_escape_string==0))
+		/*if (isset($use_function_mysql_real_escape_string) && ($use_function_mysql_real_escape_string==0))
 			$_value = mysqli_real_escape_string($GLOBALS['db_c'], $_value);
-		else
+		else */
+        // pourquoi un test, puisque l'action est la même ? YN le 30/03/2018
 			$_value = mysqli_real_escape_string($GLOBALS['db_c'], $_value);
 	}
 	return $_value;
@@ -799,7 +800,7 @@ function verif_page()
 function page_accueil($param = 'no')
 {
 	// Definition de $defaultroom
-	if (isset($_SESSION['default_room']) && ($_SESSION['default_room'] > 0))
+	if (isset($_SESSION['default_room']))
 		$defaultroom = $_SESSION['default_room'];
 	else
 		$defaultroom = Settings::get("default_room");
@@ -845,7 +846,7 @@ function begin_page($title, $page = "with_session")
 			$sheetcss = 'themes/'.$_SESSION['default_style'].'/css';
 
 		else
-			$sheetcss = 'themes/bleu/css';
+			$sheetcss = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
 		if (isset($_GET['default_language']))
 		{
 			$_SESSION['default_language'] = $_GET['default_language'];
@@ -1153,7 +1154,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			echo '</tr>'.PHP_EOL;
 			echo '</table>'.PHP_EOL;
 			echo '</div>'.PHP_EOL;
-			echo '<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></a>'.PHP_EOL;
+			echo '<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>'.PHP_EOL;
 			echo '</div>'.PHP_EOL;
 		}
 	}
@@ -2859,6 +2860,9 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	return $message_erreur;
 } // Fin fonction send_mail
 
+/** function getUserName()
+ * retourne le login de l'utilisateur connecté (et pas son nom), une chaîne vide sinon
+*/
 function getUserName()
 {
 	if (isset($_SESSION['login']))
@@ -2947,7 +2951,7 @@ function auth_visiteur($user,$id_room)
 //$id -   l'identifiant de la ressource ou du domaine
 // $type - argument optionnel : 'room' (par défaut) si $id désigne une ressource et 'area' si $id désigne un domaine.
 ////Retourne le niveau d'accès de l'utilisateur
-// 0 NC / 1 Visiteur / 2 Utilisateur / 6 Admin
+// 0 NC / 1 Visiteur / 2 Utilisateur / 3 gestionnaire de ressource / 4 administrateur de domaine / 5 administrateur de site / 6 Admin général
 function authGetUserLevel($user, $id, $type = 'room')
 {
 	//user level '0': User not logged in, or User value is NULL (getUserName()='')
@@ -3073,7 +3077,7 @@ function authGetUserLevel($user, $id, $type = 'room')
 			}
 			else
 			{
-				//On regarde si l'utilisateur est administrateur du domaine dont l'id est $id
+				//On regarde si l'utilisateur est administrateur du site dont l'id est $id
 				$res3 = grr_sql_query("SELECT u.login
 					FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_site j
 					WHERE (u.login=j.login and j.id_site='".protect_data_sql($id)."' and u.login='".protect_data_sql($user)."')");
@@ -3950,7 +3954,7 @@ function find_user_room ($id_room)
 			}
 		}
 	}
-	// Si la table des emails des administrateurs des sites est vide, on avertit les administrateurs générauxd
+	// Si la table des emails des administrateurs des sites est vide, on avertit les administrateurs généraux
 	if (count($emails) == 0)
 	{
 		$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs where statut = 'administrateur'");
@@ -3965,6 +3969,10 @@ function find_user_room ($id_room)
 	}
 	return $emails;
 }
+/** validate_email ($email)
+ * Détermine si l'adresse mail en paramètre est syntaxiquement valable
+ * Rend un booléen
+*/
 function validate_email ($email)
 {
 	$atom   = '[-a-z0-9!#$%&\'*+\\/=?^_`{|}~]';
@@ -3974,8 +3982,10 @@ function validate_email ($email)
 	$regex = '/^' . $atom . '+' . '(\.' . $atom . '+)*' . '@' . '(' . $domain . '{1,63}\.)+' . $domain . '{2,63}$/i';
 	if (preg_match($regex, $email))
 		return true;
-	else
-		return false;
+	else {
+        $regex2 = '/^' . $atom . '+' . '(\.' . $atom . '+)*' . '@' . 'localhost/i';
+        return preg_match($regex2, $email);
+    }
 }
 /** grrDelOverloadFromEntries()
  * Supprime les données du champ $id_field de toutes les réservations
