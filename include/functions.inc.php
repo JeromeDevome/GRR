@@ -1034,6 +1034,18 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2;
 
+	if (@file_exists('./admin_access_area.php')){
+		$adm = 1;
+		$racine = "../";
+		$racineAd = "./";
+	}else{
+		$adm = 0;
+		$racine = "./";
+		$racineAd = "./admin/";
+	}
+
+	include $racine."/include/hook.class.php";
+
 	if (!($desactive_VerifNomPrenomUser))
 		$desactive_VerifNomPrenomUser = 'n';
 	// On vérifie que les noms et prénoms ne sont pas vides
@@ -1042,6 +1054,8 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 		echo begin_page(Settings::get("company"),"with_session");
 	else
 		echo begin_page(Settings::get("company"),"no_session");
+
+	Hook::Appel("hookHeader2");
 	// Si nous ne sommes pas dans un format imprimable
 	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 	{
@@ -1065,18 +1079,6 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			$search_str = "";
 		if (!(isset($desactive_bandeau_sup) && ($desactive_bandeau_sup == 1) && ($type_session != 'with_session')))
 		{
-
-			if (@file_exists('./admin_access_area.php')){
-				$adm = 1;
-				$racine = "../";
-				$racineAd = "./";
-			}else{
-				$adm = 0;
-				$racine = "./";
-				$racineAd = "./admin/";
-			}
-
-			include $racine."/include/hook.class.php";
 
 			// HOOK
 			Hook::Appel("hookHeader1");
