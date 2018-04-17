@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-03-27 11:00$
+ * Dernière modification : $Date: 2018-04-17 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -56,7 +56,7 @@ else
 	die();
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars_decode($_SERVER['HTTP_REFERER']);
 // echo $back;
 if (isset($_GET["action_moderate"])){
     // ici on a l'id de la réservation, on peut donc construire un lien de retour complet, à la bonne date et avec la ressource précise
@@ -79,7 +79,7 @@ if (isset($_GET["action_moderate"])){
             $day = date ('d', $row1['0']);
             $page = (isset($_GET['page']))? $_GET['page'] : "day";
             $back = $page.'.php?year='.$year.'&month='.$month.'&day='.$day;
-            if (($page == "week_all") || ($page == "month_all") || ($page == "day"))
+            if (($page == "week_all") || ($page == "month_all") || ($page == "month_all2") || ($page == "day"))
                 $back .= "&area=".mrbsGetRoomArea($row1['1']);
             if (($page == "week") || ($page == "month"))
                 $back .= "&room=".$row1['1'];
@@ -88,7 +88,9 @@ if (isset($_GET["action_moderate"])){
             $back = $page.".php";
     }
 	moderate_entry_do($id,$_GET["moderate"], $_GET["description"]);
+//  echo $back;
 	header("Location: ".$back);
+    die();
 }
 $sql = "SELECT ".TABLE_PREFIX."_entry.name,
 ".TABLE_PREFIX."_entry.description,
@@ -299,11 +301,11 @@ if (strstr ($back, 'view_entry.php'))
 		$year = date ('Y', $row1['0']);
 		$month = date ('m', $row1['0']);
 		$day = date ('d', $row1['0']);
-		$back = $page.'.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day;
+		$back = $page.'.php?year='.$year.'&month='.$month.'&day='.$day;
 		if ((isset($_GET["page"])) && (($_GET["page"] == "week") || ($_GET["page"] == "month") || ($_GET["page"] == "week_all") || ($_GET["page"] == "month_all")))
-			$back .= "&amp;area=".mrbsGetRoomArea($row1['1']);
+			$back .= "&area=".mrbsGetRoomArea($row1['1']);
 		if ((isset($_GET["page"])) && (($_GET["page"] == "week") || ($_GET["page"] == "month")))
-			$back .= "&amp;room=".$row1['1'];
+			$back .= "&room=".$row1['1'];
 	}
 	else
 		$back = "";

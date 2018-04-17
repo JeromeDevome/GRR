@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-04-11 16:00$
+ * Dernière modification : $Date: 2018-04-17 12:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -831,7 +831,7 @@ function protect_data_sql($_value)
 // Traite les données envoyées par la methode GET de la variable $_GET["page"]
 function verif_page()
 {
-	$page = array("day", "week", "month", "week_all", "month_all");
+	$page = array("day", "week", "month", "week_all", "month_all", "month_all2");
 	if (isset($_GET["page"]))
 	{
 		if (in_array($_GET["page"], $page))

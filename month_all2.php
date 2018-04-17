@@ -1,9 +1,9 @@
 <?php
 /**
  * month_all2.php
- * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
+ * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-03-21 12:00$
+ * Dernière modification : $Date: 2018-04-17 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -301,13 +301,14 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++)
 								{
 									echo "\n<br /><table class='table-header'><tr>";
 									tdcell($d[$cday]["color"][$i]);
+                                    echo "<span class=\"small_planning\">";
 									if ($d[$cday]["res"][$i] != '-')
 										echo " <img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> \n";
 									if ((isset($d[$cday]["option_reser"][$i])) && ($d[$cday]["option_reser"][$i] != -1))
 										echo " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")." ".time_date_string_jma($d[$cday]["option_reser"][$i],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> \n";
 									if ((isset($d[$cday]["moderation"][$i])) && ($d[$cday]["moderation"][$i] == 1))
 										echo " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" class=\"image\" /> \n";
-									echo "<span class=\"small_planning\">";
+									
 									if ($acces_fiche_reservation)
 									{
 										if (Settings::get("display_level_view_entry") == 0)
@@ -318,7 +319,7 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++)
 										}
 										else
 										{
-											echo "<a title=\"".htmlspecialchars($d[$cday]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday]["id"][$i]."&amp;page=month\">"
+											echo "<a title=\"".htmlspecialchars($d[$cday]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday]["id"][$i]."&amp;page=month_all2\">"
 											.$d[$cday]["who1"][$i]{0}
 											. "</a>";
 										}
