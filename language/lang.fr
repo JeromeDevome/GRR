@@ -454,6 +454,7 @@ $vocab['invalid_search'] = "Recherche non valide.";
 $vocab['ip_adr'] = "Domaine par défaut pour l'adresse IP client suivante";
 $vocab['ip_adress'] = "Adresse IP";
 $vocab['ip_adr_explain'] = "<b>Remarques sur l'adresse IP client : </b><br />1) Les plages d'adresse du type 192.168.0.* sont acceptées. <br />2) Si l'adresse IP de la machine cliente est conforme à cette adresse, ce domaine devient le domaine par défaut.<br />Cela suppose par ailleurs que :<br />- l'administrateur n'a pas défini un domaine par défaut dans la page de configuration générale,<br />- l'utilisateur n'a pas défini un domaine par défaut qui lui est propre dans la page de gestion de son compte.";
+$vocab['imprimante_msg'] = "Affichage de l'imprimante";
 $vocab['is_not_numeric'] = "vous devez spécifier un nombre.";
 $vocab['item_area_list_format'] = "Affichage sous la forme de boutons";
 $vocab['javascript_info_admin_disabled0'] = "Activer les messages JavaScript";
