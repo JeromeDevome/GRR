@@ -2,8 +2,8 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2018-02-23 18:00$
- * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
+ * Dernière modification : $Date: 2018-04-16 15:00$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -797,7 +797,7 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 		}
 		else
 		{
-			// On sélectionne toutes les réservation de la périodicité
+			// On sélectionne toutes les réservations de la périodicité
 			$res = grr_sql_query("SELECT id FROM ".TABLE_PREFIX."_entry WHERE repeat_id='".$repeat_id."'");
 			if (! $res)
 				fatal_error(0, grr_sql_error());
@@ -812,7 +812,7 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 			}
 			// On supprime l'info de périodicité
 			grr_sql_query("DELETE FROM ".TABLE_PREFIX."_repeat WHERE id='".$repeat_id."'");
-			grr_sql_query("UPDATE ".TABLE_PREFIX."_entry SET repead_id = '0' WHERE repead_id='".$repeat_id."'");
+			grr_sql_query("UPDATE ".TABLE_PREFIX."_entry SET repeat_id = '0' WHERE repeat_id='".$repeat_id."'");
 		}
 	}
 }
