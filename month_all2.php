@@ -54,7 +54,7 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 	echo "\n
 	<tr>
 		<td class=\"left\">
-			<input type=\"button\" class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$yy&amp;month=$ym&amp;area=$area';\" value=\"&lt;&lt; ".get_vocab("monthbefore")." \"/>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$yy&amp;month=$ym&amp;area=$area';\" \"/><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("monthbefore")." </button>
 		</td>";
 
 		echo " <td>";
@@ -62,7 +62,7 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 		echo "</td>
 
 		<td class=\"right\">
-			<input type=\"button\" class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$ty&amp;month=$tm&amp;area=$area';\" value=\" ".get_vocab('monthafter')."  &gt;&gt;\"/>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$ty&amp;month=$tm&amp;area=$area';\" \"/>".get_vocab('monthafter')." <span class=\"glyphicon glyphicon-forward\"></button>
 		</td>
 	</tr>";
 

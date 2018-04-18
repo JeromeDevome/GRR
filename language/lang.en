@@ -461,6 +461,7 @@ $vocab['invalid_search'] = "Invalid search.";
 $vocab['ip_adr'] = "Client's IP address"; 
 $vocab['ip_adress'] = "IP address";
 $vocab['ip_adr_explain'] = "<b>Notice : </b><br />If client's address IP is identical at this address, this field becomes the field by default.<br />That supposes in addition that:<br />1) the administrator did not define a field by default in the page of general configuration,<br />2) the user did not define a field by default in its account's management page";
+$vocab['imprimante_msg'] = "Affichage de l'imprimante"; // A traduire
 $vocab['is_not_numeric'] = "A number is required.";
 $vocab['javascript_info_admin_disabled0'] = "Activate the javascript messages";
 $vocab['javascript_info_admin_disabled1'] = "Deactivate the javascript messages";

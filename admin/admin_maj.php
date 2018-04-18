@@ -878,6 +878,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
 		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_page ADD UNIQUE KEY `nom` (`nom`);");
 		$result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_modulesext (`nom` varchar(50) NOT NULL, `actif` tinyint(1) NOT NULL DEFAULT '0', `version` INT(11) NOT NULL);");
 		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_modulesext ADD UNIQUE KEY `nom` (`nom`);");
+		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('imprimante', '0')");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");

@@ -152,6 +152,8 @@ a.buttonsReservation{cursor:pointer}
 #planning{text-align:center}
 #dureemin{width: 30%}
 #heure {width: 25%}
+#voir{display:block}
+#cacher{display:none}
 
 @media only screen and (max-width:800px) { 
 	.accueil {

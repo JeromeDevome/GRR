@@ -454,6 +454,7 @@ $vocab['ip_adr'] = "Dirección IP cliente"; // A traduire
 $vocab['ip_adress'] = "Dirección IP";
 $vocab['item_area_list_format'] = "Muestra en forma de botones";
 $vocab['ip_adr_explain'] = "<b>Observación sobre la dirección IP cliente : </b><br />Si la dirección IP de la máquina cliente es idéntica a esta dirección, este campo se convierte en el campo por defecto.<br />Se supone por otra parte que :<br />1) el administrador no definió un campo por defecto en la página de configuración general,<br />2) el usuario no definió su propio campo por defecto en la página de gestión de su cuenta."; // A traduire
+$vocab['imprimante_msg'] = "Affichage de l'imprimante"; // A traduire
 $vocab['is_not_numeric'] = "vous devez spécifier un nombre."; // A traduire
 $vocab['javascript_info_admin_disabled0'] = "Activar los mensajes javascript";
 $vocab['javascript_info_admin_disabled1'] = "Desactivar los mensajes javascript";
