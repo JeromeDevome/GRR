@@ -1,3 +1,6 @@
+/* ce script fait partie de l'application GRR
+ * dernière mise à jour : 2018-04-18 14:00
+*/
 // Permet de faire une validation afin que l'usager ne puisse pas sélectionner un jour invalide pour le début du premier Jours/Cycle
 function verifierJoursCycles()
 {
@@ -329,13 +332,13 @@ function divaffiche(month_all2)
 	if ( Nbr == 1)
 	{
 		document.getElementById("menuGaucheMonthAll2").style.display = "block";
-		document.getElementById("planningMonthAll2").style.marginLeft = "300px";
+		// document.getElementById("planningMonthAll2").style.marginLeft = "300px";
 		document.getElementById("planningMonthAll2").style.width = "auto";
 	}
 	else
 	{
 		document.getElementById("menuGauche").style.display = "block";
-		document.getElementById("planning").style.marginLeft = "300px";
+		// document.getElementById("planning").style.marginLeft = "300px";
 		document.getElementById("planning").style.width = "auto";
 	}
 	document.getElementById("cacher").style.display = "inline";

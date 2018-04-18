@@ -80,8 +80,6 @@ if (isset($_GET['change_type']))
 		$type_name = "A définir";
 	if ($type_letter == '')
 		$type_letter = "A";
-	//if ($couleur == '')
-	//	$couleur = "1";
 	if ($couleur_hexa == '')
 		$couleur_hexa = "#2ECC71";
 	if ($disponible == '')
