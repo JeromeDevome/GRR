@@ -988,4 +988,6 @@ $vocab['OU'] = "OU";
 $vocab['show_all_rooms'] = "Voir toutes les ressources de tous les domaines";
 $vocab['choose_room'] = "Sélectionnez une ressource ou cliquez sur ce ";
 $vocab["link"] = "lien";
+$vocab["show_left_menu"] = "Afficher le menu à gauche";
+$vocab["hide_left_menu"] = "Cacher le menu à gauche";
 ?>

@@ -3,7 +3,7 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-04-18 14:00$
+ * Dernière modification : $Date: 2018-04-20 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -69,8 +69,11 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 	echo "<tr>";
 	echo "<td class=\"left\"> ";
 	$month_all2 = 1;
+    /*
 	echo "<div id='voir'><input type=\"button\" class=\"btn btn-default btn-xs\" value=\"Afficher le menu à gauche.\" onClick=\"divaffiche($month_all2)\" /></div> ";
-    echo "<div id='cacher'><input type=\"button\" class=\"btn btn-default btn-xs\" value=\"Cacher le menu à gauche.\" onClick=\"divcache($month_all2)\" /></div> ";
+    echo "<div id='cacher'><input type=\"button\" class=\"btn btn-default btn-xs\" value=\"Cacher le menu à gauche.\" onClick=\"divcache($month_all2)\" /></div> "; */
+    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"divaffiche($month_all2)\" title='".get_vocab('show_left_menu')."'><span class=\"glyphicon glyphicon-chevron-right\"></span></button></div> ";
+    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"divcache($month_all2)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
 	echo "</td>";
 }
 echo " <td>";
@@ -301,7 +304,7 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++)
 							{
 								if ($d[$cday]["room"][$i] == $row[0])
 								{
-									echo "\n<br /><table class='table-header'><tr>";
+									echo "<table class='table-bordered'><tr>";
 									tdcell($d[$cday]["color"][$i]);
                                     echo "<span class=\"small_planning\">";
 									if ($d[$cday]["res"][$i] != '-')

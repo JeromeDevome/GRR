@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2018-03-13
+# Last modification : 2018-04-20
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -981,4 +981,6 @@ $vocab['OU'] = "OU"; // à traduire
 $vocab['show_all_rooms'] = "Voir toutes les ressources de tous les domaines"; // à traduire
 $vocab['choose_room'] = "Sélectionnez une ressource ou cliquez sur ce "; // à traduire
 $vocab["link"] = "lien"; // à traduire
+$vocab["show_left_menu"] = "Show left menu";
+$vocab["hide_left_menu"] = "Hide left menu";
 ?>
