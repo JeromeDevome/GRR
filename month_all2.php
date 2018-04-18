@@ -3,7 +3,7 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-04-17 12:00$
+ * Dernière modification : $Date: 2018-04-18 14:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,6 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+// cette page est partiellement internationalisée : à compléter
 
 $grr_script_name = "month_all2.php";
 
@@ -68,7 +69,8 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 	echo "<tr>";
 	echo "<td class=\"left\"> ";
 	$month_all2 = 1;
-	echo "<input type=\"button\" class=\"btn btn-default btn-xs\" id=\"voir\" value=\"Afficher le menu à gauche.\" onClick=\"divaffiche($month_all2)\" style=\"display:inline;\" /> ";
+	echo "<div id='voir'><input type=\"button\" class=\"btn btn-default btn-xs\" value=\"Afficher le menu à gauche.\" onClick=\"divaffiche($month_all2)\" /></div> ";
+    echo "<div id='cacher'><input type=\"button\" class=\"btn btn-default btn-xs\" value=\"Cacher le menu à gauche.\" onClick=\"divcache($month_all2)\" /></div> ";
 	echo "</td>";
 }
 echo " <td>";
