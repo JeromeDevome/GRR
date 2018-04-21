@@ -605,7 +605,6 @@ if ((Settings::get("disable_login")=='yes') and ($row[4] != "administrateur"))
 
 // On teste si l'ip est autorisé
 if ((Settings::get("ip_autorise") != '') and ($row[4] != "administrateur")){
-	echo $_SERVER["REMOTE_ADDR"];
 	$resultIP = compare_ip_adr($_SERVER["REMOTE_ADDR"], Settings::get("ip_autorise"));
     if ($resultIP == false){
 		return "11";
