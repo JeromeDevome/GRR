@@ -1567,53 +1567,39 @@ function fatal_error($need_header, $message, $show_form_data = true)
 }
 
 /**
- * Fonction à revoir fonction ip2long à utiliser surement
- *
+ * Compare une ip à d'autres iP - CIDR
  */
-function compare_ip_adr($ip1, $ip2)
+function compare_ip_adr($ip1, $ips2)
 {
-	if ($ip2 == "")
-		return true;
-	$tab_ip1 = explode(".",$ip1);
-	$tab_ip2 = explode(".",$ip2);
-	$i = 0;
-	$ip1 = "";
-	$ip2 = "";
-	while ($i < 4)
-	{
-		if (strlen($tab_ip1[$i]) == 0)
-			$ip1 .= "000";
-		else if (strlen($tab_ip1[$i]) == 1)
-			$ip1 .= "00".$tab_ip1[$i];
-		else if (strlen($tab_ip1[$i]) == 2)
-			$ip1 .= "0".$tab_ip1[$i];
-		else
-			$ip1 .= $tab_ip1[$i];
-		if (!isset($tab_ip2[$i]))
-			$ip2 .= "***";
-		else if (strlen($tab_ip2[$i]) == 0)
-			$ip2 .= "***";
-		else if (strlen($tab_ip2[$i]) == 1)
-		{
-			if ($tab_ip2[$i] == "*")
-				$ip2 .= "**".$tab_ip2[$i];
-			else
-				$ip2 .= "00".$tab_ip2[$i];
-		}
-		else if (strlen($tab_ip2[$i])==2)
-			$ip2 .= "0".$tab_ip2[$i];
-		else
-			$ip2 .= $tab_ip2[$i];
-		$i++;
+
+	$ipCorrespondante = false;
+    $ip2 = explode(';', $ips2);
+	
+    $resultIP = in_array($ip1,$ip2,true);
+	if($resultIP == false){ // cherche si l'adresse est dans une plage CIDR p.ex. 192.168.1.0/24 --> 192.168.1.0 à 192.168.1.255
+        foreach ($ip2 as $ip){
+            $slash = strpos($ip,'/');
+            if ($slash !== false){
+                list($net,$mask) = preg_split("~/~",$ip);
+                $lnet=ip2long($net);
+                $lip=ip2long($ip1);
+                $binnet=str_pad( decbin($lnet),32,"0",STR_PAD_LEFT );
+                $firstpart=substr($binnet,0,$mask);
+                $binip=str_pad( decbin($lip),32,"0",STR_PAD_LEFT );
+                $firstip=substr($binip,0,$mask);
+                $resultIP = (strcmp($firstpart,$firstip)==0);
+            }
+            if ($resultIP){
+				$ipCorrespondante = true;
+				break;
+			}
+        }
+	} else {
+		$ipCorrespondante = true;
 	}
-	$i = 0;
-	while ($i < 12)
-	{
-		if (($ip1[$i] != $ip2[$i]) && ($ip2[$i] != "*"))
-			return false;
-		$i++;
-	}
-	return true;
+
+	return $ipCorrespondante;
+
 }
 
 //Retourne le domaine par défaut; Utilisé si aucun domaine n'a été défini.
