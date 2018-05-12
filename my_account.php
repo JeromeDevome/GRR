@@ -133,7 +133,7 @@ if ($valid == 'yes')
 		}
 	}
 	if (IsAllowedToModifyProfil() && ($champ_manquant=='y'))
-		$msg .= "\\n".get_vocab('required');
+		$msg .= "\\n".str_replace("\'","'",get_vocab('required'));
 }
 if (($valid == 'yes') || ($valid=='reset'))
 {
@@ -335,7 +335,7 @@ echo ('
 	echo '<tr><td><b>'.get_vocab('statut').get_vocab('deux_points').'</b></td><td>'.$text_user_statut.'</td></tr></table>';
 	if (IsAllowedToModifyProfil())
 	{
-		echo '<p>('.get_vocab('required').')</p>';
+		echo '<p>('.str_replace("\'","'",get_vocab('required')).')</p>';
 		if ((trim($user_nom) == "") || (trim($user_prenom) == ''))
 			echo "\n".'      <h2 class="avertissement">'.get_vocab('nom_prenom_valides').'</h2>';
 	}
