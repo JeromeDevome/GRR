@@ -64,13 +64,14 @@ function getXMLHttpRequest()
 	return xmlhttp;
 }
 
-function request(id,day,month,year,currentPage,callback)
+function request(id,day,month,year,roomBack,currentPage,callback)
 {
 	document.getElementById('popup_name').innerHTML="";
 	var Id = id;
 	var Day = day;
 	var Month = month ;
 	var Year = year ;
+    var RoomBack = roomBack ;
 	var Page = currentPage ;
 	var xhr = getXMLHttpRequest();
 	xhr.onreadystatechange = function()
@@ -78,7 +79,7 @@ function request(id,day,month,year,currentPage,callback)
 		if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
 			callback(xhr.responseText);
 	};
-	xhr.open("GET","view_entry.php?id="+Id+"&day="+Day+"&month="+Month+"&year="+Year+"&page="+Page+"", true);
+	xhr.open("GET","view_entry.php?id="+Id+"&day="+Day+"&month="+Month+"&year="+Year+"&page="+Page+"&room_back="+RoomBack+"", true);
 	xhr.send(null);
 }
 function readData(sData)

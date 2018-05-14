@@ -3,7 +3,7 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-04-20 12:00$
+ * Dernière modification : $Date: 2018-05-14 18:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -47,7 +47,7 @@ $i = mktime(0,0,0,$month+1,1,$year);
 $ty = date("Y",$i);
 $tm = date("n",$i);
 
-echo "<div id=\"planningMonthAll2\">";
+echo "<div id='planningMonthAll2' style='width:133%' >";
 echo "<div class=\"titre_planning\"><table class=\"table-header\">";
 if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 {
@@ -320,7 +320,7 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++)
 										{
 											$currentPage = 'month_all2';
 											$id =   $d[$cday]["id"][$i];
-											echo "<a title=\"".htmlspecialchars($d[$cday]["who1"][$i])."\" data-width=\"675\" onclick=\"request($id,$cday,$month,$year,'$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight\">" .$d[$cday]["who1"][$i]."</a>";
+											echo "<a title=\"".htmlspecialchars($d[$cday]["who1"][$i])."\" data-width=\"675\" onclick=\"request($id,$cday,$month,$year,'all','$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight\">" .$d[$cday]["who1"][$i]."</a>";
 										}
 										else
 										{
@@ -352,5 +352,6 @@ echo " </div>";
 echo " </div>";
 echo " </div>";
 affiche_pop_up(get_vocab("message_records"),"user");
+echo "</div>";
 include "footer.php";
 ?>
