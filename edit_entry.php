@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-03-20 23:00$
+ * Dernière modification : $Date: 2018-05-14 18:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -76,6 +76,7 @@ if (isset($id))
 }
 else
 	Definition_ressource_domaine_site();
+$room_back = (isset($_GET['room_back']))? $_GET['room_back']: $room ;
 if (@file_exists("language/lang_subst_".$area.".".$locale))
 	include "language/lang_subst_".$area.".".$locale;
 get_planning_area_values($area);
@@ -330,212 +331,203 @@ function insertChampsAdd(){
 		{
 			alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_champs_add.php ');
 		}
-		});
-	}
-	function insertTypes(){
-		jQuery.ajax({
-			type: 'GET',
-			url: 'edit_entry_types.php',
-			data: {
-				areas:'<?php echo $area; ?>',
-				type: '<?php echo $etype; ?>',
-				room:'<?php echo $room; ?>',
-			},
-			success: function(returnData){
-				$('#div_types').html(returnData);
-			},
-			error: function(data){
-				alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_types.php ');
-			}
-		});
-	}
-	function insertProfilBeneficiaire(){
-		jQuery.ajax({
-			type: 'GET',
-			url: 'edit_entry_beneficiaire.php',
-			data: {
-				beneficiaire:'ADMINISTRATEUR',
-				identifiant_beneficiaire: '<?php echo $beneficiaire; ?>'
-			},
-			success: function(returnData)
+    });
+}
+function insertTypes(){
+    jQuery.ajax({
+        type: 'GET',
+        url: 'edit_entry_types.php',
+        data: {
+            areas:'<?php echo $area; ?>',
+            type: '<?php echo $etype; ?>',
+            room:'<?php echo $room; ?>',
+        },
+        success: function(returnData){
+            $('#div_types').html(returnData);
+        },
+        error: function(data){
+            alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_types.php ');
+        }
+    });
+}
+function insertProfilBeneficiaire(){
+    jQuery.ajax({
+        type: 'GET',
+        url: 'edit_entry_beneficiaire.php',
+        data: {
+            beneficiaire:'ADMINISTRATEUR',
+            identifiant_beneficiaire: '<?php echo $beneficiaire; ?>'
+        },
+        success: function(returnData)
 
-			{
-				$("#div_profilBeneficiaire").html(returnData);
-			},
-			error: function(data)
+        {
+            $("#div_profilBeneficiaire").html(returnData);
+        },
+        error: function(data)
 
-			{
-				alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_beneficiaire.php ');
-			}
-		});
-	}
-	function check_1 ()
-	{
-		menu = document.getElementById('menu2');
-		if (menu)
-		{
-			if (!document.forms["main"].rep_type[2].checked)
-			{
-				document.forms["main"].elements['rep_day[0]'].checked=false;
-				document.forms["main"].elements['rep_day[1]'].checked=false;
-				document.forms["main"].elements['rep_day[2]'].checked=false;
-				document.forms["main"].elements['rep_day[3]'].checked=false;
-				document.forms["main"].elements['rep_day[4]'].checked=false;
-				document.forms["main"].elements['rep_day[5]'].checked=false;
-				document.forms["main"].elements['rep_day[6]'].checked=false;
-				menu.style.display = "none";
-			}
-			else
-			{
-				menu.style.display = "";
-			}
-		}
-		<?php
-		if (Settings::get("jours_cycles_actif") == "Oui") {
-			?>
-			menu = document.getElementById('menuP');
-			if (menu)
-			{
-				if (!document.forms["main"].rep_type[5].checked)
-				{
-					menu.style.display = "none";
-				}
-				else
-				{
-					menu.style.display = "";
-				}
-			}
-			<?php
-		}
-		?>
-	}
-	function check_2 ()
-	{
-		document.forms["main"].rep_type[2].checked=true;
-		check_1 ();
-	}
-	function check_3 ()
-	{
-		document.forms["main"].rep_type[3].checked=true;
-	}
-	function check_4 ()
-	{
-		menu = document.getElementById('menu4');
-		if (menu)
-		{
-			if (!document.forms["main"].beneficiaire.options[0].selected)
-			{
-				menu.style.display = "none";
-				<?php
-				if (Settings::get("remplissage_description_breve") == '2')
-				{
-					?>
-					document.forms["main"].name.value=document.forms["main"].beneficiaire.options[document.forms["main"].beneficiaire.options.selectedIndex].text;
-					<?php
-				}
-				?>
-			}
-			else
-			{
-				menu.style.display = "";
-				<?php
-				if (Settings::get("remplissage_description_breve") == '2')
-				{
-					?>
-					document.forms["main"].name.value="";
-					<?php
-				}
-				?>
-			}
-		}
-	}
-	function check_5 ()
-	{
-		var menu; var menup; var menu2;
-		menu = document.getElementById('menu1');
-		menup = document.getElementById('menuP');
-		menu2 = document.getElementById('menu2');
-		if ((menu)&&(menu.style.display == "none"))
-		{
-			menup.style.display = "none";
-			menu2.style.display = "none";
-		}
-		else
-			check_1();
-	}
-	function setdefault (name,input)
-	{
-		document.cookie = escape(name) + "=" + escape(input) +
-		( "" ? ";expires=" + ( new Date( ( new Date() ).getTime() + ( 1000 * lifeTime ) ) ).toGMTString() : "" ) +
-		( "" ? ";path=" + path : "") +
-		( "" ? ";domain=" + domain : "") +
-		( "" ? ";secure" : "");
-	}
-	function Load_entry ()
-	{
-		recoverInputs(document.forms["main"],retrieveCookie('Grr_entry'),true);
-		<?php
-		if (!$id <> "")
-		{
-			?>
-			if (!document.forms["main"].rep_type[0].checked)
-				clicMenu('1');
-			<?php
-		}
-		?>
-	}
-	function Save_entry ()
-	{
-		setCookie('Grr_entry',getFormString(document.forms["main"],true));
-	}
-	function validate_and_submit ()
-	{
-		var err;
-		$("#error").html("");
-		if (document.forms["main"].benef_ext_nom)
-		{
-			if ((document.forms["main"].beneficiaire.options[0].selected) &&(document.forms["main"].benef_ext_nom.value == ""))
-			{
-				$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("you_have_not_entered").get_vocab("deux_points").lcfirst(get_vocab("nom beneficiaire")) ?></div>');
-				err = 1;
-			}
-		}
-		<?php if (Settings::get("remplissage_description_breve") == '1' || Settings::get("remplissage_description_breve") == '2')
-		{
-			?>
-			if (document.forms["main"].name.value == "")
-			{
-				$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("you_have_not_entered").get_vocab("deux_points").get_vocab("brief_description") ?></div>');
-				err = 1;
-			}
-			<?php
-		}
-		 if (Settings::get("remplissage_description_complete") == '1')
-		{
-			?>
-			if (document.forms["main"].description.value == "")
-			{
-				$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("you_have_not_entered").get_vocab("deux_points").get_vocab("fulldescription") ?></div>');
-				err = 1;
-			}
-			<?php
-		}
-		foreach ($allareas_id as $idtmp)
-		{
-			$overload_fields = mrbsOverloadGetFieldslist($idtmp);
-			foreach ($overload_fields as $fieldname=>$fieldtype)
-			{
-				if ($overload_fields[$fieldname]["obligatoire"] == 'y')
-				{
-					if ($overload_fields[$fieldname]["type"] != "list")
-					{
-						echo "if ((document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) && (document.forms[\"main\"].addon_".$overload_fields[$fieldname]["id"].".value == \"\")) {\n";
-					}
-					else
-					{
-						echo "if ((document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) && (document.forms[\"main\"].addon_".$overload_fields[$fieldname]["id"].".options[0].selected == true)) {\n";
-					}
-					?>
+        {
+            alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_beneficiaire.php ');
+        }
+    });
+}
+function check_1(){
+    menu = document.getElementById('menu2');
+    if (menu)
+    {
+        if (!document.forms["main"].rep_type[2].checked)
+        {
+            document.forms["main"].elements['rep_day[0]'].checked=false;
+            document.forms["main"].elements['rep_day[1]'].checked=false;
+            document.forms["main"].elements['rep_day[2]'].checked=false;
+            document.forms["main"].elements['rep_day[3]'].checked=false;
+            document.forms["main"].elements['rep_day[4]'].checked=false;
+            document.forms["main"].elements['rep_day[5]'].checked=false;
+            document.forms["main"].elements['rep_day[6]'].checked=false;
+            menu.style.display = "none";
+        }
+        else
+        {
+            menu.style.display = "";
+        }
+    }
+    <?php
+    if (Settings::get("jours_cycles_actif") == "Oui") {
+        ?>
+        menu = document.getElementById('menuP');
+        if (menu)
+        {
+            if (!document.forms["main"].rep_type[5].checked)
+            {
+                menu.style.display = "none";
+            }
+            else
+            {
+                menu.style.display = "";
+            }
+        }
+        <?php
+    }
+    ?>
+}
+function check_2 (){
+    document.forms["main"].rep_type[2].checked=true;
+    check_1 ();
+}
+function check_3 (){
+    document.forms["main"].rep_type[3].checked=true;
+}
+function check_4 (){
+    menu = document.getElementById('menu4');
+    if (menu)
+    {
+        if (!document.forms["main"].beneficiaire.options[0].selected)
+        {
+            menu.style.display = "none";
+            <?php
+            if (Settings::get("remplissage_description_breve") == '2')
+            {
+                ?>
+                document.forms["main"].name.value=document.forms["main"].beneficiaire.options[document.forms["main"].beneficiaire.options.selectedIndex].text;
+                <?php
+            }
+            ?>
+        }
+        else
+        {
+            menu.style.display = "";
+            <?php
+            if (Settings::get("remplissage_description_breve") == '2')
+            {
+                ?>
+                document.forms["main"].name.value="";
+                <?php
+            }
+            ?>
+        }
+    }
+}
+function check_5 (){
+    var menu; var menup; var menu2;
+    menu = document.getElementById('menu1');
+    menup = document.getElementById('menuP');
+    menu2 = document.getElementById('menu2');
+    if ((menu)&&(menu.style.display == "none"))
+    {
+        menup.style.display = "none";
+        menu2.style.display = "none";
+    }
+    else
+        check_1();
+}
+function setdefault (name,input){
+    document.cookie = escape(name) + "=" + escape(input) +
+    ( "" ? ";expires=" + ( new Date( ( new Date() ).getTime() + ( 1000 * lifeTime ) ) ).toGMTString() : "" ) +
+    ( "" ? ";path=" + path : "") +
+    ( "" ? ";domain=" + domain : "") +
+    ( "" ? ";secure" : "");
+}
+function Load_entry (){
+    recoverInputs(document.forms["main"],retrieveCookie('Grr_entry'),true);
+    <?php
+    if (!$id <> "")
+    {
+        ?>
+        if (!document.forms["main"].rep_type[0].checked)
+            clicMenu('1');
+        <?php
+    }
+    ?>
+}
+function Save_entry (){
+    setCookie('Grr_entry',getFormString(document.forms["main"],true));
+}
+function validate_and_submit (){
+    var err;
+    $("#error").html("");
+    if (document.forms["main"].benef_ext_nom)
+    {
+        if ((document.forms["main"].beneficiaire.options[0].selected) &&(document.forms["main"].benef_ext_nom.value == ""))
+        {
+            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("you_have_not_entered").get_vocab("deux_points").lcfirst(get_vocab("nom beneficiaire")) ?></div>');
+            err = 1;
+        }
+    }
+    <?php if (Settings::get("remplissage_description_breve") == '1' || Settings::get("remplissage_description_breve") == '2')
+    {
+        ?>
+        if (document.forms["main"].name.value == "")
+        {
+            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("you_have_not_entered").get_vocab("deux_points").get_vocab("brief_description") ?></div>');
+            err = 1;
+        }
+        <?php
+    }
+     if (Settings::get("remplissage_description_complete") == '1')
+    {
+        ?>
+        if (document.forms["main"].description.value == "")
+        {
+            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("you_have_not_entered").get_vocab("deux_points").get_vocab("fulldescription") ?></div>');
+            err = 1;
+        }
+        <?php
+    }
+    foreach ($allareas_id as $idtmp)
+    {
+        $overload_fields = mrbsOverloadGetFieldslist($idtmp);
+        foreach ($overload_fields as $fieldname=>$fieldtype)
+        {
+            if ($overload_fields[$fieldname]["obligatoire"] == 'y')
+            {
+                if ($overload_fields[$fieldname]["type"] != "list")
+                {
+                    echo "if ((document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) && (document.forms[\"main\"].addon_".$overload_fields[$fieldname]["id"].".value == \"\")) {\n";
+                }
+                else
+                {
+                    echo "if ((document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) && (document.forms[\"main\"].addon_".$overload_fields[$fieldname]["id"].".options[0].selected == true)) {\n";
+                }
+                ?>
 					$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("required"); ?></div>');
 					err = 1;
 				}
@@ -543,45 +535,46 @@ function insertChampsAdd(){
 			}
 			if ($overload_fields[$fieldname]["type"] == "numeric")
 			{
-	?>
-				if (isNaN((document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) && (document.forms['main'].addon_<?php echo $overload_fields[$fieldname]['id']?>.value))) {
+            ?>
+				if (isNaN((document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) && (document.forms['main'].addon_<?php echo $overload_fields[$fieldname]['id']?>.value))) 
+                {
 					$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo addslashes($overload_fields[$fieldname]["name"]).get_vocab("deux_points"). get_vocab("is_not_numeric") ?></div>');
 					err = 1;
 				}
-			<?php
-		}
-	}
-}
+                <?php
+            }
+        }
+    }
 ?>
-if  (document.forms["main"].type.value=='0')
-{
-	$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("choose_a_type"); ?></div>');
-	err = 1;
-}
-<?php
-if (($edit_type == "series") && ($periodiciteConfig == 'y'))
-{
-	?>
-	i1 = parseInt(document.forms["main"].id.value);
-	i2 = parseInt(document.forms["main"].rep_id.value);
-	n = parseInt(document.forms["main"].rep_num_weeks.value);
-	if ((document.forms["main"].elements['rep_day[0]'].checked || document.forms["main"].elements['rep_day[1]'].checked || document.forms["main"].elements['rep_day[2]'].checked || document.forms["main"].elements['rep_day[3]'].checked || document.forms["main"].elements['rep_day[4]'].checked || document.forms["main"].elements['rep_day[5]'].checked || document.forms["main"].elements['rep_day[6]'].checked) && (!document.forms["main"].rep_type[2].checked))
-	{
-		$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("no_compatibility_with_repeat_type"); ?></div>');
-		err = 1;
-	}
-	if ((!document.forms["main"].elements['rep_day[0]'].checked && !document.forms["main"].elements['rep_day[1]'].checked && !document.forms["main"].elements['rep_day[2]'].checked && !document.forms["main"].elements['rep_day[3]'].checked && !document.forms["main"].elements['rep_day[4]'].checked && !document.forms["main"].elements['rep_day[5]'].checked && !document.forms["main"].elements['rep_day[6]'].checked) && (document.forms["main"].rep_type[2].checked))
-	{
-		$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("choose_a_day"); ?></div>');
-		err = 1;
-	}
-	<?php
-}
-?>
-if (err == 1)
-	return false;
-document.forms["main"].submit();
-return true;
+    if  (document.forms["main"].type.value=='0')
+    {
+        $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("choose_a_type"); ?></div>');
+        err = 1;
+    }
+    <?php
+    if (($edit_type == "series") && ($periodiciteConfig == 'y'))
+    {
+        ?>
+        i1 = parseInt(document.forms["main"].id.value);
+        i2 = parseInt(document.forms["main"].rep_id.value);
+        n = parseInt(document.forms["main"].rep_num_weeks.value);
+        if ((document.forms["main"].elements['rep_day[0]'].checked || document.forms["main"].elements['rep_day[1]'].checked || document.forms["main"].elements['rep_day[2]'].checked || document.forms["main"].elements['rep_day[3]'].checked || document.forms["main"].elements['rep_day[4]'].checked || document.forms["main"].elements['rep_day[5]'].checked || document.forms["main"].elements['rep_day[6]'].checked) && (!document.forms["main"].rep_type[2].checked))
+        {
+            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("no_compatibility_with_repeat_type"); ?></div>');
+            err = 1;
+        }
+        if ((!document.forms["main"].elements['rep_day[0]'].checked && !document.forms["main"].elements['rep_day[1]'].checked && !document.forms["main"].elements['rep_day[2]'].checked && !document.forms["main"].elements['rep_day[3]'].checked && !document.forms["main"].elements['rep_day[4]'].checked && !document.forms["main"].elements['rep_day[5]'].checked && !document.forms["main"].elements['rep_day[6]'].checked) && (document.forms["main"].rep_type[2].checked))
+        {
+            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("choose_a_day"); ?></div>');
+            err = 1;
+        }
+        <?php
+    }
+    ?>
+    if (err == 1)
+        return false;
+    document.forms["main"].submit();
+    return true;
 }
 </script>
 <?php
@@ -1238,7 +1231,11 @@ if($periodiciteConfig == 'y'){
 	<div id="fixe">
     <?php // définit l'adresse de retour, à passer à edit_entry_handler et à cancel
         // $ret_page = ($back) ?: $page.".php?year=".$year."&amp;month=".$month."&amp;day=".$day."&amp;area=".$area."&amp;room=".$room; 
-        $ret_page = $page.".php?year=".$year."&amp;month=".$month."&amp;day=".$day."&amp;area=".$area."&amp;room=".$room; // robuste ? YN le 20/03/2018
+        // $ret_page = $page.".php?year=".$year."&amp;month=".$month."&amp;day=".$day."&amp;area=".$area."&amp;room=".$room; // robuste ? YN le 20/03/2018
+        $ret_page = $page.".php?year=".$year."&amp;month=".$month."&amp;day=".$day."&amp;area=".$area;
+        if ((!strpos($page,"all"))&&($room_back != 'all')){
+            $ret_page .= "&amp;room=".$room_back;
+        }
     ?>
 		<input type="button" class="btn btn-primary" value="<?php echo get_vocab("cancel")?>" onclick="window.location.href='<?php echo $ret_page?>'" />
 		<input type="button" class="btn btn-primary" value="<?php echo get_vocab("save")?>" onclick="Save_entry();validate_and_submit();" />

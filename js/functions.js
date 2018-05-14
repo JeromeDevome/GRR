@@ -331,9 +331,11 @@ function divaffiche(month_all2)
 	var Nbr = month_all2;
 	if ( Nbr == 1)
 	{
-		document.getElementById("menuGaucheMonthAll2").style.display = "block";
+		document.getElementById("menuGaucheMonthAll2").style.display = "inline-block";
 		// document.getElementById("planningMonthAll2").style.marginLeft = "300px";
-		document.getElementById("planningMonthAll2").style.width = "auto";
+		// document.getElementById("planning").style.width = "75%";
+        document.getElementById("planning").style.width = "auto";
+        document.getElementById("planningMonthAll2").style.width = "auto";
 	}
 	else
 	{
@@ -351,7 +353,7 @@ function divcache(month_all2)
 	{
 		document.getElementById("menuGaucheMonthAll2").style.display = "none";
 		document.getElementById("planningMonthAll2").style.marginLeft = "0px";
-		document.getElementById("planningMonthAll2").style.width = "auto";
+		document.getElementById("planningMonthAll2").style.width = "133%";
 	}
 	else
 	{

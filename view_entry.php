@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-04-17 12:00$
+ * Dernière modification : $Date: 2018-05-14 18:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -593,12 +593,13 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
 		echo "</tr>";
 		echo "<tr>";
 			echo "<td colspan='2'>";
-				echo "<input class=\"btn btn-primary\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page'\" value=\"".get_vocab("editentry")."\">";
-				echo "<input class=\"btn btn-info\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;copier'\" value=\"".get_vocab("copyentry")."\">";
+                $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
+				echo "<input class=\"btn btn-primary\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("editentry")."\">";
+				echo "<input class=\"btn btn-info\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back&amp;copier'\" value=\"".get_vocab("copyentry")."\">";
 				if ($can_delete_or_create == "y")
 				{
 					$message_confirmation = str_replace("'", "\\'", get_vocab("confirmdel").get_vocab("deleteentry"));
-                    $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
+                   // $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
                 echo '<a class="btn btn-danger" type="button" href="del_entry.php?id='.$id.'&amp;series=0&amp;page='.$page.'&amp;room_back='.$room_back.' "  onclick="return confirm(\''.$message_confirmation.'\');">'.get_vocab("deleteentry").'</a>';
 				}
             echo "</td>";
