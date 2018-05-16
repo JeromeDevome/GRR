@@ -1,8 +1,8 @@
 Bugs connus sur la version de GitHub :
- - La supression en bloc ne fonctionne pas
+ - affichage défectueux du menu en position haute dans la page month_all2 
  
 
-Tâches prévus :
+Tâches prévues :
  - Outil test des prérequis droits...
  
 

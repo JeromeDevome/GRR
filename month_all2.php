@@ -3,7 +3,7 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-05-14 18:30$
+ * Dernière modification : $Date: 2018-05-16 15:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -231,7 +231,7 @@ if ($debug_flag)
 }
 $weekcol = 0;
 echo '<table class="table-bordered">'.PHP_EOL;
-$sql = "SELECT room_name, capacity, id, description FROM ".TABLE_PREFIX."_room WHERE area_id=$area ORDER BY order_display,room_name";
+$sql = "SELECT room_name, capacity, id, description, statut_room FROM ".TABLE_PREFIX."_room WHERE area_id=$area ORDER BY order_display,room_name";
 $res = grr_sql_query($sql);
 echo "<tr><th></th>\n";
 //$t2 = mktime(0, 0, 0, $month, 1, $year);
@@ -290,7 +290,7 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++)
 				}
 				else
 				{
-					if (isset($d[$cday]["id"][0]))
+					if (isset($d[$cday]["id"][0])) // il y a une réservation au moins à afficher
 					{
 						$n = count($d[$cday]["id"]);
 						for ($i = 0; $i < $n; $i++)
@@ -335,6 +335,15 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++)
 								}
 							}
 						}
+					}
+                    // la ressource est-elle accessible en réservation ? on affiche le lien vers edit_entry
+                    $date_booking = $t2 +86400 ; // le jour courant à minuit
+                    if ((($authGetUserLevel > 1) || (auth_visiteur(getUserName(), $row['2']) == 1)) && (UserRoomMaxBooking(getUserName(), $row['2'], 1) != 0) && verif_booking_date(getUserName(), -1, $row['2'], $date_booking, $date_now, $enable_periods) && verif_delais_max_resa_room(getUserName(), $row['2'], $date_booking) && verif_delais_min_resa_room(getUserName(), $row['2'], $date_booking) && plages_libre_semaine_ressource($row['2'], $month, $cday, $year) && (($row['4'] == "1") || (($row['4'] == "0") && (authGetUserLevel(getUserName(),$row['2']) > 2) )) && $_GET['pview'] != 1)
+					{
+						if ($enable_periods == 'y')
+							echo '<a href="edit_entry.php?room=',$row["2"],'&amp;period=&amp;year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;page=month_all2" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;
+						else
+							echo '<a href="edit_entry.php?room=',$row["2"],'&amp;minute=0&amp;year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;page=month_all2" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;;
 					}
 				}
 				echo "</td>\n";
