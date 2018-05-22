@@ -27,7 +27,7 @@ $version_grr = "3.4.0";
 // Utilisez cette variable pour des versions qui corrigent la la version finale sans toucher à la base.
 $sous_version_grr = ""; // a, b, c, ...
 // Numéro de la release candidate (doit être strictement inférieure à 9). Laisser vide s'il s'agit de la version stable.
-$version_grr_RC = "2";
+$version_grr_RC = "3";
 
 # Liste des tables
 $liste_tables = array(
