@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-03-30 11:00$
+ * Dernière modification : $Date: 2018-05-17 12:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -588,7 +588,7 @@ function resaToModerate($user)
     }
     elseif (isset($_GET['id_site']) && (authGetUserLevel($user,$_GET['id_site'],'site') > 4)) // admin du site
     {
-        $sql = "SELECT COUNT(e.moderate) FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = "._GET['id_site']." AND e.moderate = 1)";
+        $sql = "SELECT COUNT(e.moderate) FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = ".$_GET['id_site']." AND e.moderate = 1)";
         $res = grr_sql_query1($sql);
         if ($res > 0){$mesg = $res." réservation à modérer";}
     }
@@ -831,7 +831,7 @@ function protect_data_sql($_value)
 // Traite les données envoyées par la methode GET de la variable $_GET["page"]
 function verif_page()
 {
-	$page = array("day", "week", "month", "week_all", "month_all");
+	$page = array("day", "week", "month", "week_all", "month_all", "month_all2");
 	if (isset($_GET["page"]))
 	{
 		if (in_array($_GET["page"], $page))
@@ -846,7 +846,7 @@ function verif_page()
 function page_accueil($param = 'no')
 {
 	// Definition de $defaultroom
-	if (isset($_SESSION['default_room']) && ($_SESSION['default_room'] > 0))
+	if (isset($_SESSION['default_room']))// && ($_SESSION['default_room'] > -5))
 		$defaultroom = $_SESSION['default_room'];
 	else
 		$defaultroom = Settings::get("default_room");
@@ -892,7 +892,7 @@ function begin_page($title, $page = "with_session")
 			$sheetcss = 'themes/'.$_SESSION['default_style'].'/css';
 
 		else
-			$sheetcss = 'themes/bleu/css';
+			$sheetcss = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
 		if (isset($_GET['default_language']))
 		{
 			$_SESSION['default_language'] = $_GET['default_language'];
@@ -1032,6 +1032,18 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2;
 
+	if (@file_exists('./admin_access_area.php')){
+		$adm = 1;
+		$racine = "../";
+		$racineAd = "./";
+	}else{
+		$adm = 0;
+		$racine = "./";
+		$racineAd = "./admin/";
+	}
+
+	include $racine."/include/hook.class.php";
+
 	if (!($desactive_VerifNomPrenomUser))
 		$desactive_VerifNomPrenomUser = 'n';
 	// On vérifie que les noms et prénoms ne sont pas vides
@@ -1040,6 +1052,8 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 		echo begin_page(Settings::get("company"),"with_session");
 	else
 		echo begin_page(Settings::get("company"),"no_session");
+
+	Hook::Appel("hookHeader2");
 	// Si nous ne sommes pas dans un format imprimable
 	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 	{
@@ -1063,18 +1077,6 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			$search_str = "";
 		if (!(isset($desactive_bandeau_sup) && ($desactive_bandeau_sup == 1) && ($type_session != 'with_session')))
 		{
-
-			if (@file_exists('./admin_access_area.php')){
-				$adm = 1;
-				$racine = "../";
-				$racineAd = "./";
-			}else{
-				$adm = 0;
-				$racine = "./";
-				$racineAd = "./admin/";
-			}
-
-			include $racine."/include/hook.class.php";
 
 			// HOOK
 			Hook::Appel("hookHeader1");
@@ -1563,53 +1565,39 @@ function fatal_error($need_header, $message, $show_form_data = true)
 }
 
 /**
- * Fonction à revoir fonction ip2long à utiliser surement
- *
+ * Compare une ip à d'autres iP - CIDR
  */
-function compare_ip_adr($ip1, $ip2)
+function compare_ip_adr($ip1, $ips2)
 {
-	if ($ip2 == "")
-		return true;
-	$tab_ip1 = explode(".",$ip1);
-	$tab_ip2 = explode(".",$ip2);
-	$i = 0;
-	$ip1 = "";
-	$ip2 = "";
-	while ($i < 4)
-	{
-		if (strlen($tab_ip1[$i]) == 0)
-			$ip1 .= "000";
-		else if (strlen($tab_ip1[$i]) == 1)
-			$ip1 .= "00".$tab_ip1[$i];
-		else if (strlen($tab_ip1[$i]) == 2)
-			$ip1 .= "0".$tab_ip1[$i];
-		else
-			$ip1 .= $tab_ip1[$i];
-		if (!isset($tab_ip2[$i]))
-			$ip2 .= "***";
-		else if (strlen($tab_ip2[$i]) == 0)
-			$ip2 .= "***";
-		else if (strlen($tab_ip2[$i]) == 1)
-		{
-			if ($tab_ip2[$i] == "*")
-				$ip2 .= "**".$tab_ip2[$i];
-			else
-				$ip2 .= "00".$tab_ip2[$i];
-		}
-		else if (strlen($tab_ip2[$i])==2)
-			$ip2 .= "0".$tab_ip2[$i];
-		else
-			$ip2 .= $tab_ip2[$i];
-		$i++;
+
+	$ipCorrespondante = false;
+    $ip2 = explode(';', $ips2);
+	
+    $resultIP = in_array($ip1,$ip2,true);
+	if($resultIP == false){ // cherche si l'adresse est dans une plage CIDR p.ex. 192.168.1.0/24 --> 192.168.1.0 à 192.168.1.255
+        foreach ($ip2 as $ip){
+            $slash = strpos($ip,'/');
+            if ($slash !== false){
+                list($net,$mask) = preg_split("~/~",$ip);
+                $lnet=ip2long($net);
+                $lip=ip2long($ip1);
+                $binnet=str_pad( decbin($lnet),32,"0",STR_PAD_LEFT );
+                $firstpart=substr($binnet,0,$mask);
+                $binip=str_pad( decbin($lip),32,"0",STR_PAD_LEFT );
+                $firstip=substr($binip,0,$mask);
+                $resultIP = (strcmp($firstpart,$firstip)==0);
+            }
+            if ($resultIP){
+				$ipCorrespondante = true;
+				break;
+			}
+        }
+	} else {
+		$ipCorrespondante = true;
 	}
-	$i = 0;
-	while ($i < 12)
-	{
-		if (($ip1[$i] != $ip2[$i]) && ($ip2[$i] != "*"))
-			return false;
-		$i++;
-	}
-	return true;
+
+	return $ipCorrespondante;
+
 }
 
 //Retourne le domaine par défaut; Utilisé si aucun domaine n'a été défini.
@@ -2336,7 +2324,7 @@ function make_area_list_html($link, $current_site, $current_area, $year, $month,
 				{
 					echo "<a id=\"liste_select\" onclick=\"charger();\" href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\">&gt; ".htmlspecialchars($row[1])."</a></b><br />\n";
 				} else {
-					echo "<a id=\"liste\" onclick=\"charger();\" href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\">".htmlspecialchars($row[1])."</a><br />\n";
+					echo "<a id=\"liste\" onclick=\"charger();\" href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\"> ".htmlspecialchars($row[1])."</a><br />\n";
 				}
 			}
 		}
@@ -2519,7 +2507,7 @@ function make_area_item_html( $link, $current_site, $current_area, $year, $month
 	$out_html .= '</form>'.PHP_EOL.'</div>'.PHP_EOL.'</div>'.PHP_EOL;
 	return $out_html;
 }
-//end make_area_select_html
+//end make_area_item_html
 /**
  * Affichage des rooms sous la forme d'une liste de boutons
  *
@@ -2551,7 +2539,7 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
 				if (!isset($_GET['room']))
 				{
 					if (isset($all_ressource) && $all_ressource == 0)
-						$out_html .= '<input id="item_select" class="btn btn-primary btn-lg btn-block item_select" name="all_room" value="Toutes les ressources" onclick="location.href=\''.$link_all_room.'\' ;charger();"/>'.PHP_EOL;
+						$out_html .= /*'<div class="panel-body">'.PHP_EOL.*/'<input id="item_select" class="btn btn-primary btn-lg btn-block item_select" name="all_room" value="Toutes les ressources" onclick="location.href=\''.$link_all_room.'\' ;charger();"/>'.PHP_EOL;
 					$out_html .= '<input class="btn btn-default btn-lg btn-block item" type="button" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\' ;charger();"/>'.PHP_EOL;
 					$all_ressource = 1;
 				}
@@ -4109,7 +4097,7 @@ function find_user_room ($id_room)
 			}
 		}
 	}
-	// Si la table des emails des administrateurs des sites est vide, on avertit les administrateurs générauxd
+	// Si la table des emails des administrateurs des sites est vide, on avertit les administrateurs généraux
 	if (count($emails) == 0)
 	{
 		$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs where statut = 'administrateur'");
@@ -4124,6 +4112,10 @@ function find_user_room ($id_room)
 	}
 	return $emails;
 }
+/** validate_email ($email)
+ * Détermine si l'adresse mail en paramètre est syntaxiquement valable
+ * Rend un booléen
+*/
 function validate_email ($email)
 {
 	$atom   = '[-a-z0-9!#$%&\'*+\\/=?^_`{|}~]';
@@ -4133,8 +4125,10 @@ function validate_email ($email)
 	$regex = '/^' . $atom . '+' . '(\.' . $atom . '+)*' . '@' . '(' . $domain . '{1,63}\.)+' . $domain . '{2,63}$/i';
 	if (preg_match($regex, $email))
 		return true;
-	else
-		return false;
+	else {
+        $regex2 = '/^' . $atom . '+' . '(\.' . $atom . '+)*' . '@' . 'localhost/i';
+        return preg_match($regex2, $email);
+    }
 }
 /** grrDelOverloadFromEntries()
  * Supprime les données du champ $id_field de toutes les réservations

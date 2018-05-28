@@ -568,7 +568,7 @@ if (($summarize != 4) && ($summarize != 5))
 						if (( !isset($_GET['pview']) || ($_GET['pview'] != 1)) && (($summarize != 4) && ($summarize != 5)))
 						{
 							echo '<p style="text-align:center;">
-							<a href="' . traite_grr_url("","y")."report.php" . '?' . htmlspecialchars($_SERVER['QUERY_STRING']) . '&amp;pview=1" ';
+							<a href="./report.php '. '?' . htmlspecialchars($_SERVER['QUERY_STRING']) . '&amp;pview=1" ';
 							if (Settings::get("pview_new_windows") == 1)
 								echo ' target="_blank"';
 							echo '><span class="glyphicon glyphicon-print"></span></a>
@@ -598,7 +598,7 @@ if (($summarize != 4) && ($summarize != 5))
 //  10  [9]   Room (HTML) -> r.room_name
 //  11  [10]  Room description -> r.description
 //  12  [11]  id de l'area -> a.id
-//  13  [12]  les champs additionnele -> e.overload_desc
+//  13  [12]  les champs additionnels -> e.overload_desc
 	// Tableau des ressources invisibles pour l'utilisateur
 					$sql = "SELECT distinct e.id, e.start_time, e.end_time, e.name, e.description, "
 					. "e.type, e.beneficiaire, "

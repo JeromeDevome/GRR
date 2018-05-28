@@ -3,8 +3,8 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
+ * Dernière modification : $Date: 2018-04-11 18:00$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -605,33 +605,7 @@ if ((Settings::get("disable_login")=='yes') and ($row[4] != "administrateur"))
 
 // On teste si l'ip est autorisé
 if ((Settings::get("ip_autorise") != '') and ($row[4] != "administrateur")){
-	 /*$resultIP = false;
-	$ips = explode(';', Settings::get("ip_autorise"));
-	foreach ($ips as $ip) {
-		if($ip == $_SERVER["REMOTE_ADDR"]){
-			$resultIP = true;
-		}
-	} */
-    $ipclient = $_SERVER["REMOTE_ADDR"];
-    // echo $ipclient;
-    $ips = explode(';', Settings::get("ip_autorise"));
-    $resultIP = in_array($ipclient,$ips,true);
-	if($resultIP == false){ // cherche si l'adresse est dans une plage CIDR p.ex. 192.168.1.0/24 --> 192.168.1.0 à 192.168.1.255
-        foreach ($ips as $ip){
-            $slash = strpos($ip,'/');
-            if ($slash !== false){
-                list($net,$mask) = split("/",$ip);
-                $lnet=ip2long($net);
-                $lip=ip2long($ipclient);
-                $binnet=str_pad( decbin($lnet),32,"0",STR_PAD_LEFT );
-                $firstpart=substr($binnet,0,$mask);
-                $binip=str_pad( decbin($lip),32,"0",STR_PAD_LEFT );
-                $firstip=substr($binip,0,$mask);
-                $resultIP = (strcmp($firstpart,$firstip)==0);
-            }
-            if ($resultIP) break;
-        }
-	}
+	$resultIP = compare_ip_adr($_SERVER["REMOTE_ADDR"], Settings::get("ip_autorise"));
     if ($resultIP == false){
 		return "11";
     }
@@ -674,7 +648,8 @@ if ($row[6] > 0)
 	$_SESSION['default_area'] = $row[6];
 else
 	$_SESSION['default_area'] = Settings::get("default_area");
-if ($row[7] > 0)
+//if ($row[7] > 0) en lien avec le calcul de la page d'accueil YN le 11/04/2018
+if ($row[7] != 0)
 	$_SESSION['default_room'] = $row[7];
 else
 	$_SESSION['default_room'] = Settings::get("default_room");
