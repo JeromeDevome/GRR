@@ -3,7 +3,7 @@
  * menu_gauche.php
  * Menu calendrier & domaines & ressource & légende
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2018-05-17 12:00$
  * @author    Laurent Delineau & JeromeB
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -38,7 +38,7 @@ if ($_GET['pview'] != 1)
         $pageTout = "day.php";
     }
     else $pageTout = $pageSimple."_all.php";
-    // echo $pageSimple ;
+    // $pageSimple .= '.php';
 	
     // Calendrier
 	minicals($year, $month, $day, $area, $room, $pageActuel);
@@ -74,7 +74,7 @@ if ($_GET['pview'] != 1)
 	{
 		echo make_site_list_html($pageTout,$id_site,$year,$month,$day,getUserName());
 		echo make_area_list_html($pageTout,$id_site, $area, $year, $month, $day, getUserName());
-		echo make_room_list_html($pageSimple.".php", $area, $room, $year, $month, $day);
+		echo make_room_list_html($pageSimple, $area, $room, $year, $month, $day);
 	}
 
 	echo "\n</div>\n".PHP_EOL;

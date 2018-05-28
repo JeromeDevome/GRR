@@ -2336,7 +2336,7 @@ function make_area_list_html($link, $current_site, $current_area, $year, $month,
 				{
 					echo "<a id=\"liste_select\" onclick=\"charger();\" href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\">&gt; ".htmlspecialchars($row[1])."</a></b><br />\n";
 				} else {
-					echo "<a id=\"liste\" onclick=\"charger();\" href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\">&gt; ".htmlspecialchars($row[1])."</a><br />\n";
+					echo "<a id=\"liste\" onclick=\"charger();\" href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\">".htmlspecialchars($row[1])."</a><br />\n";
 				}
 			}
 		}
@@ -2370,7 +2370,7 @@ function make_room_list_html($link,$current_area, $current_room, $year, $month, 
 				if ($row[0] == $current_room)
 					echo "<span id=\"liste_select\">&gt; ".htmlspecialchars($row[1])."</span><br />\n";
 				else
-					echo "<a id=\"liste\" onclick=\"charger();\" href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;&amp;room=$row[0]\">".htmlspecialchars($row[1]). "</a><br />\n";
+					echo "<a id=\"liste\" onclick=\"charger();\" href=\"".$link.".php?year=$year&amp;month=$month&amp;day=$day&amp;&amp;room=$row[0]\">".htmlspecialchars($row[1]). "</a><br />\n";
 			}
 		}
 	}
@@ -2521,7 +2521,7 @@ function make_area_item_html( $link, $current_site, $current_area, $year, $month
 }
 //end make_area_select_html
 /**
- * Affichage des rooms sous la forme d'un input
+ * Affichage des rooms sous la forme d'une liste de boutons
  *
  * @param string $link
  * @param string $current_area
@@ -2539,23 +2539,26 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
 	$res = grr_sql_query($sql);
 	if ($res)
 	{
+        $all_ressource = 0; // permet l'affichage de toutes les ressources
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
 			if (verif_acces_ressource(getUserName(),$row[0]))
 			{
 				$link2 = $link.'.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$row[0];
-				$link_all_room = 'week_all.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$current_area;
+                $link_a = $link;
+                if (($link != 'day')&&(!strpos($link,'all'))) {$link_a .= '_all';}
+				$link_all_room = $link_a.'.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$current_area;
 				if (!isset($_GET['room']))
 				{
 					if (isset($all_ressource) && $all_ressource == 0)
-						$out_html .= '<div class="panel-body">'.PHP_EOL.'<input id="item_select" class="btn btn-primary btn-lg btn-block" name="all_room" value="Toutes les ressources" onclick="location.href=\''.$link_all_room.'\' ;charger();"/>'.PHP_EOL;
+						$out_html .= '<input id="item_select" class="btn btn-primary btn-lg btn-block item_select" name="all_room" value="Toutes les ressources" onclick="location.href=\''.$link_all_room.'\' ;charger();"/>'.PHP_EOL;
 					$out_html .= '<input class="btn btn-default btn-lg btn-block item" type="button" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\' ;charger();"/>'.PHP_EOL;
 					$all_ressource = 1;
 				}
 				else //changed (Ajout de type = " button pr gerer saut de ligne " 
 				{
 					if (isset($all_ressource) && $all_ressource == 0)
-						$out_html .= '<input class="btn btn-primary btn-lg btn-block item" type="button" name="all_room" value="Toutes les ressources" onclick="location.href=\''.$link_all_room.'\' ;charger();"/>'.PHP_EOL;
+						$out_html .= '<input class="btn btn-default btn-lg btn-block item" type="button" name="all_room" value="Toutes les ressources" onclick="location.href=\''.$link_all_room.'\' ;charger();"/>'.PHP_EOL;
 					$all_ressource = 1;
 					if ($current_room == $row[0])
 						$out_html .= '<input class="btn btn-primary btn-lg btn-block item_select" type="button" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\';charger();"/>'.PHP_EOL;
@@ -2568,7 +2571,7 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
 	$out_html .= '</form>'.PHP_EOL.'</div>'.PHP_EOL.'</div>'.PHP_EOL;
 	return $out_html;
 }
-# end make_room_item_html
+// end make_room_item_html
 /**
  * @param integer $action
  */
