@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2018-02-23 18:00$
+ * Dernière modification : $Date: 2018-04-16 18:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -825,7 +825,7 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 			}
 			// On supprime l'info de périodicité
 			grr_sql_query("DELETE FROM ".TABLE_PREFIX."_repeat WHERE id='".$repeat_id."'");
-			grr_sql_query("UPDATE ".TABLE_PREFIX."_entry SET repead_id = '0' WHERE repead_id='".$repeat_id."'");
+			grr_sql_query("UPDATE ".TABLE_PREFIX."_entry SET repeat_id = '0' WHERE repeat_id='".$repeat_id."'");
 		}
 	}
 }

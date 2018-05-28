@@ -986,7 +986,7 @@ if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 							}
 
 							$reader->close();
-						} */
+						} 
                         // prise en compte d'un proxy
 $opts = array (
 'http' => array(
