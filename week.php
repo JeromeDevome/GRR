@@ -3,7 +3,7 @@
  * week.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "semaine".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-02-16 22:00$
+ * Dernière modification : $Date: 2018-05-14 18:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -21,9 +21,6 @@ $grr_script_name = "week.php";
 include "include/planning_init.inc.php";
 $debug_flag = FALSE;
 // en l'absence de paramètres, planning_init définit le site par défaut et le domaine par défaut mais pas la ressource, week.php en a besoin
-// $room = isset($room)? $room : get_default_room() ; cette idée ne fonctionne pas à cause de planning_init.inc.php qui fait les initialisations seulement si $_GET["room"] est défini
-// echo $area,' ',$room;
-//if (!isset($room)) echo "salle non définie";
 if (!isset($room)){
     echo "<p><br/>";
         echo get_vocab('choose_room')."<a href='week_all.php'>".get_vocab("link")."</a>";
@@ -563,7 +560,7 @@ $semaine_changement_heure_hiver = 'no';
 								{
 									$currentPage = 'week';
 									$id =  $d[$weekday][$slot - $decale_slot * $nb_case]["id"];
-									echo "<a title=\"".htmlspecialchars($d[$weekday][$slot - $decale_slot * $nb_case]["who"])."\"  data-width=\"675\" onclick=\"request($id,$wday,$wmonth,$wyear,'$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight\">" ;
+									echo "<a title=\"".htmlspecialchars($d[$weekday][$slot - $decale_slot * $nb_case]["who"])."\"  data-width=\"675\" onclick=\"request($id,$wday,$wmonth,$wyear,$room,'$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight\">" ;
 								}
 								else
 									echo "<a class=\"lienCellule\" title=\"".htmlspecialchars($d[$weekday][$slot-$decale_slot*$nb_case]["who"])."\"  href=\"view_entry.php?id=" . $d[$weekday][$slot - $decale_slot * $nb_case]["id"]."&amp;day=$wday&amp;month=$wmonth&amp;year=$wyear&amp;page=week\">";

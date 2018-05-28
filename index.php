@@ -2,8 +2,8 @@
 /**
  * index.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-04-11 11:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -33,7 +33,7 @@ if ($dbsys == "mysql")
 	if (file_exists("include/connect.inc.php"))
 	{
 		require_once("include/connect.inc.php");
-		$db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbPort");
+		$db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbDb", "$dbPort");
 		if ($db)
 		{
 			if (mysqli_select_db($db, "$dbDb"))
@@ -229,9 +229,9 @@ else if (Settings::get('sso_statut') == 'lcs')
 		// A ce stade, l'utilisateur est authentifié par LCS
 		// Etablir à nouveau la connexion à la base
 		if (empty($db_nopersist))
-			$db_c = mysqli_connect("p:".$dbHost, $dbUser, $dbPass);
+			$db_c = mysqli_connect("p:".$dbHost, $dbUser, $dbPass, $dbDb);
 		else
-			$db_c = mysqli_connect($dbHost, $dbUser, $dbPass);
+			$db_c = mysqli_connect($dbHost, $dbUser, $dbPass, $dbDb);
 		if (!$db_c || !mysqli_select_db ($db_c, $dbDb))
 		{
 			echo "\n<p>\n" . get_vocab('failed_connect_db') . "\n";

@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2018-03-13
+# Last modification : 2018-04-20
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -454,6 +454,7 @@ $vocab['ip_adr'] = "Indirizzo IP cliente"; // A traduire
 $vocab['ip_adress'] = "Indirizzo IP";
 $vocab['item_area_list_format'] = "Visualizzazione sotto forma di pulsanti";
 $vocab['ip_adr_explain'] = "<b>Osservazione sull'indirizzo IP cliente: </b><br />Se l'indirizzo IP della macchina cliente è identico a quest'indirizzo, questo settore diventa il settore per difetto.<br />Ciò suppone d'altra parte che:<br />1) l'amministratore non ha definito un settore per difetto nella pagina di configurazione generale,<br />2) l'utente non ha definito un settore per difetto che gli è proprio nella pagina di gestione del suo conto."; // A traduire
+$vocab['imprimante_msg'] = "Affichage de l'imprimante"; // A traduire
 $vocab['is_not_numeric'] = "vous devez spécifier un nombre."; // A traduire
 $vocab['javascript_info_admin_disabled0'] = "Activer les messages javascript"; // A traduire
 $vocab['javascript_info_admin_disabled1'] = "Désactiver les messages javascript"; // A traduire
@@ -978,4 +979,6 @@ $vocab['OU'] = "OR"; // à traduire
 $vocab['show_all_rooms'] = "Voir toutes les ressources de tous les domaines"; // à traduire
 $vocab['choose_room'] = "Sélectionnez une ressource ou cliquez sur ce "; // à traduire
 $vocab["link"] = "lien"; // à traduire
+$vocab["show_left_menu"] = "Show left menu";
+$vocab["hide_left_menu"] = "Hide left menu";
 ?>

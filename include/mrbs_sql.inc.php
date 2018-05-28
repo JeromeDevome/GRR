@@ -810,7 +810,7 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 		}
 		else
 		{
-			// On sélectionne toutes les réservation de la périodicité
+			// On sélectionne toutes les réservations de la périodicité
 			$res = grr_sql_query("SELECT id FROM ".TABLE_PREFIX."_entry WHERE repeat_id='".$repeat_id."'");
 			if (! $res)
 				fatal_error(0, grr_sql_error());

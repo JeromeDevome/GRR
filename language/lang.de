@@ -2,7 +2,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr
 # GRR : fichier de langue allemande
-# Last modification : 2018-03-13
+# Last modification : 2018-04-20
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -455,6 +455,7 @@ $vocab['ip_adr'] = "IP-Adresse des Kunden"; // A traduire
 $vocab['ip_adress'] = "IP-Adresse";
 $vocab['item_area_list_format'] = "Anzeige in Form von Schaltflächen";
 $vocab['ip_adr_explain'] = "<b>Bemerkung zur IP-Adresse des Kunden: </b><br />Wenn die IP-Adresse des Kundenrechners mit dieser Adresse identisch ist, wird diese Domäne zur Basisdomäne.<br />Folgendes wird übrigens dabei vorausgesetzt:<br />1) der Administrator hat keine Basisdomäne auf der allgemeinen Konfigurationsseite definiert,<br />2) der Benutzer hat keine ihm eigene Basisdomäne auf der Verwaltungsseite seines Kontos definiert."; // A traduire
+$vocab['imprimante_msg'] = "Affichage de l'imprimante"; // A traduire
 $vocab['is_not_numeric'] = "vous devez spécifier un nombre."; // A traduire
 $vocab['javascript_info_admin_disabled0'] = "Javascript Meldungen aktivieren";
 $vocab['javascript_info_admin_disabled1'] = "Javascript Meldungen deaktivieren";
@@ -986,4 +987,6 @@ $vocab['OU'] = "ODER";
 $vocab['show_all_rooms'] = "Voir toutes les ressources de tous les domaines"; // à traduire
 $vocab['choose_room'] = "Sélectionnez une ressource ou cliquez sur ce "; // à traduire
 $vocab["link"] = "lien"; // à traduire
+$vocab["show_left_menu"] = "Show left menu";
+$vocab["hide_left_menu"] = "Hide left menu";
 ?>

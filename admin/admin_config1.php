@@ -204,6 +204,13 @@ if (isset($_POST['legend'])) {
         die();
     }
 }
+// Affichage imprimante
+if (isset($_POST['imprimante'])) {
+    if (!Settings::set('imprimante', $_POST['imprimante'])) {
+        echo "Erreur lors de l'enregistrement de imprimante !<br />";
+        die();
+    }
+}
 // Option peridodicite
 if (isset($_POST['periodicite'])) {
     if (!Settings::set('periodicite', $_POST['periodicite'])) {
@@ -1290,6 +1297,31 @@ echo '<td>'.get_vocab('NO').'</td>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
 echo "<input type='radio' name='legend' value='1' ";
 if (Settings::get('legend') == '1') {
+    echo 'checked="checked"';
+}
+echo ' />'.PHP_EOL;
+echo '</td>'.PHP_EOL;
+echo '</tr>'.PHP_EOL;
+echo '</table>'.PHP_EOL;
+# Afficher l'imprimante
+echo '<hr />'.PHP_EOL;
+echo '<h3>'.get_vocab('imprimante_msg').'</h3>'.PHP_EOL;
+echo '<table>'.PHP_EOL;
+echo '<tr>'.PHP_EOL;
+echo '<td>'.get_vocab('YES').'</td>'.PHP_EOL;
+echo '<td>'.PHP_EOL;
+echo "<input type='radio' name='imprimante' value='0' ";
+if (Settings::get('imprimante') == '0') {
+    echo 'checked="checked"';
+}
+echo ' />'.PHP_EOL;
+echo '</td>'.PHP_EOL;
+echo '</tr>'.PHP_EOL;
+echo '<tr>'.PHP_EOL;
+echo '<td>'.get_vocab('NO').'</td>'.PHP_EOL;
+echo '<td>'.PHP_EOL;
+echo "<input type='radio' name='imprimante' value='1' ";
+if (Settings::get('imprimante') == '1') {
     echo 'checked="checked"';
 }
 echo ' />'.PHP_EOL;

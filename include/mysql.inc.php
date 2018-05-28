@@ -2,9 +2,8 @@
 /**
  * mysql.inc.php
  * Bibliothèque de fonctions pour le support mysql
- * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Laurent Delineau
+ * Dernière modification : $Date: 2018-04-11 10:00$
+ * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -17,9 +16,9 @@
  */
 
 if (empty($db_nopersist))
-	$GLOBALS['db_c'] = @mysqli_connect('p:'.$dbHost, $dbUser, $dbPass, $dbPort);
+	$GLOBALS['db_c'] = @mysqli_connect('p:'.$dbHost, $dbUser, $dbPass, $dbDb, $dbPort);
 else
-	$GLOBALS['db_c'] = mysqli_connect($dbHost, $dbUser, $dbPass, $dbPort);
+	$GLOBALS['db_c'] = mysqli_connect($dbHost, $dbUser, $dbPass, $dbDb, $dbPort);
 if (!$GLOBALS['db_c'] || !mysqli_select_db ($GLOBALS['db_c'], $dbDb))
 {
 	echo "\n<p>Database connection failure</p>\n";

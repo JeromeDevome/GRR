@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Permet de vérifier la validitée de l'édition ou de la création d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-03-20 23:00$
+ * Dernière modification : $Date: 2018-04-17 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -659,7 +659,7 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 	$_SESSION['displ_msg'] = 'yes';
 	if ($message_error != "")
 		$_SESSION['session_message_error'] = $message_error;
-    Header("Location:".$ret_page);
+    Header("Location: ".$ret_page);
 	// Header("Location: ".$page.".php?year=$year&month=$month&day=$day&area=$area&room=$room_back");
 	exit;
 }

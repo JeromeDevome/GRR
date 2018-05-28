@@ -1,9 +1,9 @@
 <?php
 /**
  * month_all2.php
- * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
+ * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-03-21 12:00$
+ * Dernière modification : $Date: 2018-05-16 15:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,6 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+// cette page est partiellement internationalisée : à compléter
 
 $grr_script_name = "month_all2.php";
 
@@ -46,14 +47,14 @@ $i = mktime(0,0,0,$month+1,1,$year);
 $ty = date("Y",$i);
 $tm = date("n",$i);
 
-echo "<div id=\"planningMonthAll2\">";
+echo "<div id='planningMonthAll2' style='width:133%' >";
 echo "<div class=\"titre_planning\"><table class=\"table-header\">";
 if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 {
 	echo "\n
 	<tr>
 		<td class=\"left\">
-			<input type=\"button\" class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$yy&amp;month=$ym&amp;area=$area';\" value=\"&lt;&lt; ".get_vocab("monthbefore")." \"/>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$yy&amp;month=$ym&amp;area=$area';\" \"/><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("monthbefore")." </button>
 		</td>";
 
 		echo " <td>";
@@ -61,14 +62,18 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 		echo "</td>
 
 		<td class=\"right\">
-			<input type=\"button\" class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$ty&amp;month=$tm&amp;area=$area';\" value=\" ".get_vocab('monthafter')."  &gt;&gt;\"/>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$ty&amp;month=$tm&amp;area=$area';\" \"/>".get_vocab('monthafter')." <span class=\"glyphicon glyphicon-forward\"></button>
 		</td>
 	</tr>";
 
 	echo "<tr>";
 	echo "<td class=\"left\"> ";
 	$month_all2 = 1;
-	echo "<input type=\"button\" class=\"btn btn-default btn-xs\" id=\"voir\" value=\"Afficher le menu à gauche.\" onClick=\"divaffiche($month_all2)\" style=\"display:inline;\" /> ";
+    /*
+	echo "<div id='voir'><input type=\"button\" class=\"btn btn-default btn-xs\" value=\"Afficher le menu à gauche.\" onClick=\"divaffiche($month_all2)\" /></div> ";
+    echo "<div id='cacher'><input type=\"button\" class=\"btn btn-default btn-xs\" value=\"Cacher le menu à gauche.\" onClick=\"divcache($month_all2)\" /></div> "; */
+    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"divaffiche($month_all2)\" title='".get_vocab('show_left_menu')."'><span class=\"glyphicon glyphicon-chevron-right\"></span></button></div> ";
+    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"divcache($month_all2)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
 	echo "</td>";
 }
 echo " <td>";
@@ -226,7 +231,7 @@ if ($debug_flag)
 }
 $weekcol = 0;
 echo '<table class="table-bordered">'.PHP_EOL;
-$sql = "SELECT room_name, capacity, id, description FROM ".TABLE_PREFIX."_room WHERE area_id=$area ORDER BY order_display,room_name";
+$sql = "SELECT room_name, capacity, id, description, statut_room FROM ".TABLE_PREFIX."_room WHERE area_id=$area ORDER BY order_display,room_name";
 $res = grr_sql_query($sql);
 echo "<tr><th></th>\n";
 //$t2 = mktime(0, 0, 0, $month, 1, $year);
@@ -285,7 +290,7 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++)
 				}
 				else
 				{
-					if (isset($d[$cday]["id"][0]))
+					if (isset($d[$cday]["id"][0])) // il y a une réservation au moins à afficher
 					{
 						$n = count($d[$cday]["id"]);
 						for ($i = 0; $i < $n; $i++)
@@ -299,26 +304,27 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++)
 							{
 								if ($d[$cday]["room"][$i] == $row[0])
 								{
-									echo "\n<br /><table class='table-header'><tr>";
+									echo "<table class='table-bordered'><tr>";
 									tdcell($d[$cday]["color"][$i]);
+                                    echo "<span class=\"small_planning\">";
 									if ($d[$cday]["res"][$i] != '-')
 										echo " <img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> \n";
 									if ((isset($d[$cday]["option_reser"][$i])) && ($d[$cday]["option_reser"][$i] != -1))
 										echo " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")." ".time_date_string_jma($d[$cday]["option_reser"][$i],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> \n";
 									if ((isset($d[$cday]["moderation"][$i])) && ($d[$cday]["moderation"][$i] == 1))
 										echo " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" class=\"image\" /> \n";
-									echo "<span class=\"small_planning\">";
+									
 									if ($acces_fiche_reservation)
 									{
 										if (Settings::get("display_level_view_entry") == 0)
 										{
 											$currentPage = 'month_all2';
 											$id =   $d[$cday]["id"][$i];
-											echo "<a title=\"".htmlspecialchars($d[$cday]["who1"][$i])."\" data-width=\"675\" onclick=\"request($id,$cday,$month,$year,'$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight\">" .$d[$cday]["who1"][$i]."</a>";
+											echo "<a title=\"".htmlspecialchars($d[$cday]["who1"][$i])."\" data-width=\"675\" onclick=\"request($id,$cday,$month,$year,'all','$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight\">" .$d[$cday]["who1"][$i]."</a>";
 										}
 										else
 										{
-											echo "<a title=\"".htmlspecialchars($d[$cday]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday]["id"][$i]."&amp;page=month\">"
+											echo "<a title=\"".htmlspecialchars($d[$cday]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday]["id"][$i]."&amp;page=month_all2\">"
 											.$d[$cday]["who1"][$i]{0}
 											. "</a>";
 										}
@@ -329,6 +335,15 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++)
 								}
 							}
 						}
+					}
+                    // la ressource est-elle accessible en réservation ? on affiche le lien vers edit_entry
+                    $date_booking = $t2 +86400 ; // le jour courant à minuit
+                    if ((($authGetUserLevel > 1) || (auth_visiteur(getUserName(), $row['2']) == 1)) && (UserRoomMaxBooking(getUserName(), $row['2'], 1) != 0) && verif_booking_date(getUserName(), -1, $row['2'], $date_booking, $date_now, $enable_periods) && verif_delais_max_resa_room(getUserName(), $row['2'], $date_booking) && verif_delais_min_resa_room(getUserName(), $row['2'], $date_booking) && plages_libre_semaine_ressource($row['2'], $month, $cday, $year) && (($row['4'] == "1") || (($row['4'] == "0") && (authGetUserLevel(getUserName(),$row['2']) > 2) )) && $_GET['pview'] != 1)
+					{
+						if ($enable_periods == 'y')
+							echo '<a href="edit_entry.php?room=',$row["2"],'&amp;period=&amp;year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;page=month_all2" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;
+						else
+							echo '<a href="edit_entry.php?room=',$row["2"],'&amp;minute=0&amp;year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;page=month_all2" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;;
 					}
 				}
 				echo "</td>\n";
@@ -346,5 +361,6 @@ echo " </div>";
 echo " </div>";
 echo " </div>";
 affiche_pop_up(get_vocab("message_records"),"user");
+echo "</div>";
 include "footer.php";
 ?>

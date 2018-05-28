@@ -4,7 +4,7 @@
  * Menu calendrier & domaines & ressource & légende
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2018-05-17 12:00$
- * @author    Laurent Delineau & JeromeB
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
