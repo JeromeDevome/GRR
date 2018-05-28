@@ -993,4 +993,5 @@ $vocab['choose_room'] = "Sélectionnez une ressource ou cliquez sur ce "; // à 
 $vocab["link"] = "lien"; // à traduire
 $vocab["show_left_menu"] = "Show left menu";
 $vocab["hide_left_menu"] = "Hide left menu";
+$vocab["swapentry"] = "Swap entry";
 ?>

@@ -990,4 +990,5 @@ $vocab['choose_room'] = "Sélectionnez une ressource ou cliquez sur ce ";
 $vocab["link"] = "lien";
 $vocab["show_left_menu"] = "Afficher le menu à gauche";
 $vocab["hide_left_menu"] = "Cacher le menu à gauche";
+$vocab["swapentry"] = "Echanger deux réservations";
 ?>
