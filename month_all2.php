@@ -3,7 +3,7 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-05-16 15:30$
+ * Dernière modification : $Date: 2018-06-03 15:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -248,22 +248,57 @@ for ($k = 1; $k <= $days_in_month; $k++)
 
 	if ($display_day[$cweek] == 1)
 	{
-		echo "<th class=\"tableau_month_all2\">$name_day";
-		if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) > -1)
-		{
-			if (intval($jour_cycle) > 0)
-				echo "<br /></><i> ".ucfirst(substr(get_vocab("rep_type_6"), 0, 1)).$jour_cycle."</i>";
-			else
-			{
-				if (strlen($jour_cycle) > 5)
-					$jour_cycle = substr($jour_cycle, 0, 3)."..";
-				echo "<br /></><i>".$jour_cycle."</i>";
-			}
-		}
-		echo "</th>\n";
+        if (isHoliday($temp)) {echo tdcell("cell_hours_ferie");}
+        else if (isSchoolHoliday($temp)) {echo tdcell("cell_hours_vacance");}
+        else {echo tdcell("cell_hours");}
+        echo $name_day;
+        if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) > -1)
+        {
+            if (intval($jour_cycle) > 0)
+                echo "<br /></><i> ".ucfirst(substr(get_vocab("rep_type_6"), 0, 1)).$jour_cycle."</i>";
+            else
+            {
+                if (strlen($jour_cycle) > 5)
+                    $jour_cycle = substr($jour_cycle, 0, 3)."..";
+                echo "<br /></><i>".$jour_cycle."</i>";
+            }
+        }
+        echo "</td>";
 	}
 }
 echo "</tr>";
+// répète la suite des jours pour une meilleure visibilité dans les domaines avec beaucoup de ressources
+echo "<tfoot><tr><th></th>\n";
+//$t2 = mktime(0, 0, 0, $month, 1, $year);
+for ($k = 1; $k <= $days_in_month; $k++)
+{
+    $t2 = mktime(0, 0, 0, $month, $k, $year);
+	$cday = date("j", $t2);
+	$cweek = date("w", $t2);
+	$name_day = ucfirst(utf8_strftime("%a %d", $t2));
+	$temp = mktime(0, 0, 0, $month,$cday,$year);
+	$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$temp'");
+    if ($display_day[$cweek] == 1)
+	{
+        if (isHoliday($temp)) {echo tdcell("cell_hours_ferie");}
+        else if (isSchoolHoliday($temp)) {echo tdcell("cell_hours_vacance");}
+        else {echo tdcell("cell_hours");}
+        echo $name_day;
+        if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) > -1)
+        {
+            if (intval($jour_cycle) > 0)
+                echo "<br /></><i> ".ucfirst(substr(get_vocab("rep_type_6"), 0, 1)).$jour_cycle."</i>";
+            else
+            {
+                if (strlen($jour_cycle) > 5)
+                    $jour_cycle = substr($jour_cycle, 0, 3)."..";
+                echo "<br /></><i>".$jour_cycle."</i>";
+            }
+        }
+        echo "</td>";
+	}
+}
+echo "</tr></tfoot>";
 $li = 0;
 for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++)
 {
