@@ -3,8 +3,8 @@
  * install_mysql.php
  * Interface d'installation de GRR pour un environnement mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-06-20 12:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -31,7 +31,7 @@ $table_prefix = isset($_GET["table_prefix"]) ? $_GET["table_prefix"] : NULL;
 
 // Pour cette page uniquement, on désactive l'UTF8 et on impose l'ISO-8859-1
 $unicode_encoding = 1;
-$charset_html = "utf-8";
+$charset_html = "ISO-8859-1";
 function begin_html()
 {
 	echo '<div style="margin-left:15%;margin-right:15%;"><table><tr><td>';
@@ -61,7 +61,7 @@ if (@file_exists($nom_fic))
 	if ( empty($table_prefix) &&  $table_prefix_from_user !== false) {
 		$table_prefix = $table_prefix_from_user;
 	}
-	$db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbPort");
+	$db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbDb", "$dbPort");
 	if ($db)
 	{
 		if (mysqli_select_db($db, "$dbDb"))
@@ -187,7 +187,7 @@ if ($etape == 4)
 				$conn .= "# ligne suivante : préfixe du nom des tables de données\n";
 				$conn .= "\$table_prefix=\"$table_prefix\";\n";
 				$conn .= "# ligne suivante : Port MySQL laissé par défaut\n";
-				$conn .= "\$dbPort=\"\";\n";
+				$conn .= "\$dbPort=\"3306\";\n";
 				$conn .= "?".">";
 				@fputs($f, $conn);
 				if (!@fclose($f))
