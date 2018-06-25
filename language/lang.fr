@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2018-03-27
+# Last modification : 2018-06-20
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -990,4 +990,9 @@ $vocab['choose_room'] = "Sélectionnez une ressource ou cliquez sur ce ";
 $vocab["link"] = "lien";
 $vocab["show_left_menu"] = "Afficher le menu à gauche";
 $vocab["hide_left_menu"] = "Cacher le menu à gauche";
+$vocab["swapentry"] = "Echanger deux réservations";
+$vocab["show_color_key"] = "Légende des réservations";
+$vocab['click_here_to_see_connexions'] = "Cliquez ici pour voir votre historique de connexion";
+$vocab['click_here_to_hide_connexions'] = "Cliquez ici pour masquer l'historique de connexion";
+$vocab["see_connexions_explain"] = "Une connexion en cours est affichée en vert, une connexion fermée par temps dépassé est affichée en rouge";
 ?>
