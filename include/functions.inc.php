@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-05-17 12:00$
+ * Dernière modification : $Date: 2018-06-25 12:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1839,10 +1839,10 @@ function tdcell_rowspan($colclass, $step)
 //Display the entry-type color key. This has up to 2 rows, up to 10 columns.
 function show_colour_key($area_id)
 {
-	echo '<table class="legende"><caption class="titre">Légendes des réservations</caption>'.PHP_EOL;
+	echo '<table class="legende"><caption class="titre">Légende des réservations</caption>'.PHP_EOL;
 	$sql = "SELECT DISTINCT t.id, t.type_name, t.type_letter, t.order_display FROM `".TABLE_PREFIX."_type_area` t
 	LEFT JOIN `".TABLE_PREFIX."_j_type_area` j on j.id_type=t.id
-	WHERE (j.id_area  IS NULL or j.id_area != '".$area_id."')";
+	WHERE (j.id_area  IS NULL or j.id_area != '".$area_id."')ORDER BY t.order_display";
 	$res = grr_sql_query($sql);
 	if ($res)
 	{
