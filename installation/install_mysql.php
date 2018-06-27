@@ -3,7 +3,7 @@
  * install_mysql.php
  * Interface d'installation de GRR pour un environnement mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-06-20 12:00$
+ * Dernière modification : $Date: 2018-06-27 16:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -129,7 +129,7 @@ if ($etape == 4)
 	echo begin_page("Installation de GRR");
 	begin_html();
 	echo "<br /><h2>Quatrième étape : Création des tables de la base</h2>";
-	$db = mysqli_connect("$adresse_db", "$login_db", "$pass_db");
+	$db = mysqli_connect("$adresse_db", "$login_db", "$pass_db", "", "$port_db");
 	if ($choix_db == "new_grr")
 	{
 		$sel_db = $table_new;
@@ -225,7 +225,7 @@ else if ($etape == 3)
     echo "<input type='hidden' name='port_db' value=\"$port_db\" />\n";
 	echo "<input type='hidden' name='login_db' value=\"$login_db\" />\n";
 	echo "<input type='hidden' name='pass_db' value=\"$pass_db\" />\n";
-	$db = mysqli_connect("$adresse_db","$login_db","$pass_db");
+	$db = mysqli_connect("$adresse_db","$login_db","$pass_db","","$port_db");
 	$result = mysqli_query($db, "SHOW DATABASES");
 	echo "<fieldset><label><b>Choisissez votre base :</b><br /></label>\n";
 	if ($result && (($n = mysqli_num_rows($result)) > 0))
@@ -289,13 +289,13 @@ else if ($etape == 2)
 	begin_html();
 	echo "<br /><h2>Deuxième étape : Essai de connexion au serveur $dbsys</h2>\n";
 	//echo "<!--";
-	$db = mysqli_connect($adresse_db,$login_db,$pass_db);
+	$db = mysqli_connect($adresse_db,$login_db,$pass_db,"",$port_db);
 	$db_connect = mysqli_errno($db);
 	if (($db_connect != "0") && (!$db))
 	{
 		if ($adresse_db == "localhost")
 			$adresse_db = "";
-		$db = mysqli_connect($adresse_db,$login_db,$pass_db);
+		$db = mysqli_connect($adresse_db,$login_db,$pass_db,"",$port_db);
 		$db_connect = mysqli_errno($db);
 	}
 	if (($db_connect=="0") && $db)
