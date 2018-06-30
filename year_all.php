@@ -3,7 +3,7 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-02-26 15:00 $
+ * Dernière modification : $Date: 2018-06-30 12:00 $
  * @author    Yan Naessens, Laurent Delineau 
  * @copyright Copyright 2003-2018 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -493,7 +493,7 @@ else
                                         {
                                             if ($d[$cday][$cmonth][$cyear]["room"][$i] == $room_name) // test peu fiable car c'est l'id qui est unique YN le 26/02/2018
                                             {
-                                                echo "\n<table width=\"100%\" border=\"0\" ><tr>\n";
+                                                echo "\n<table class='table-bordered' ><tr>\n";
                                                 tdcell($d[$cday][$cmonth][$cyear]["color"][$i]);
                                                 if ($d[$cday][$cmonth][$cyear]["res"][$i] != '-')
                                                     echo " <img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> \n";
@@ -505,7 +505,7 @@ else
                                                     echo " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" class=\"image\" /> \n";
                                                 
                                                 if ($acces_fiche_reservation)
-                                                    echo "<a title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday][$cmonth][$cyear]["id"][$i]."&amp;page=month\">"
+                                                    echo "<a title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday][$cmonth][$cyear]["id"][$i]."&amp;page=month\" class='lienCellule'>"
                                                 .$d[$cday][$cmonth][$cyear]["who1"][$i]{0}
                                                 . "</a>";
                                                 else
