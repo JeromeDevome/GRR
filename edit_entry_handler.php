@@ -1,9 +1,9 @@
 <?php
 /**
  * edit_entry_handler.php
- * Permet de vérifier la validitée de l'édition ou de la création d'une réservation
+ * Permet de vérifier la validité de l'édition ou de la création d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-04-17 12:00$
+ * Dernière modification : $Date: 2018-06-30 11:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,6 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+// YN le 30-06-18 : il me semble que des vérifications sont déjà faites par validate_and_submit() dans edit_entry.php et sont reprises ici 
 $grr_script_name = "edit_entry_handler.php";
 include "include/connect.inc.php";
 include "include/config.inc.php";
@@ -124,8 +125,9 @@ $rep_end_month = isset($_GET["rep_end_month"]) ? $_GET["rep_end_month"] : NULL;
 $rep_end_year = isset($_GET["rep_end_year"]) ? $_GET["rep_end_year"] : NULL;
 $room_back = isset($_GET["room_back"]) ? $_GET["room_back"] : NULL;
 $oldRessource = isset($_GET["oldRessource"]) ? $_GET["oldRessource"] : NULL;
-if (isset($room_back))
+if (isset($room_back) && ($room_back != 'all'))
 	settype($room_back,"integer");
+else $room_back = 'all'; // YN le 30-06-18
 $page = verif_page();
 if ($page == '')
 	$page = "day";
@@ -659,8 +661,12 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 	$_SESSION['displ_msg'] = 'yes';
 	if ($message_error != "")
 		$_SESSION['session_message_error'] = $message_error;
-    Header("Location: ".$ret_page);
-	// Header("Location: ".$page.".php?year=$year&month=$month&day=$day&area=$area&room=$room_back");
+    // Header("Location: ".$ret_page);
+    if ($room_back != 'all')
+    {
+        Header("Location: ".$page.".php?year=$year&month=$month&day=$day&area=$area&room=$room_back");
+    }
+    else Header("Location: ".$page.".php?year=$year&month=$month&day=$day&area=$area");
 	exit;
 }
 
