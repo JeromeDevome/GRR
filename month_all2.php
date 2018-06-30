@@ -3,7 +3,7 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-06-12 10:00$
+ * Dernière modification : $Date: 2018-06-30 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -239,22 +239,22 @@ else
 					$d[$day_num]["data"][] = $start_str . get_vocab("to")."24:00";
 					break;
 					case "> > ":
-					$d[$day_num]["data"][] = $start_str . get_vocab("to")."&gt;";
+					$d[$day_num]["data"][] = $start_str . get_vocab("to")."==>";
 					break;
 					case "= = ":
 					$d[$day_num]["data"][] = $all_day;
 					break;
 					case "= > ":
-					$d[$day_num]["data"][] = $all_day . "&gt;";
+					$d[$day_num]["data"][] = $all_day . "==>";
 					break;
 					case "< < ":
-					$d[$day_num]["data"][] = "&lt;".get_vocab("to") . $end_str;
+					$d[$day_num]["data"][] = "<==".get_vocab("to") . $end_str;
 					break;
 					case "< = ":
-					$d[$day_num]["data"][] = "&lt;" . $all_day;
+					$d[$day_num]["data"][] = "<==" . $all_day;
 					break;
 					case "< > ":
-					$d[$day_num]["data"][] = "&lt;" . $all_day . "&gt;";
+					$d[$day_num]["data"][] = "<==" . $all_day . "==>";
 					break;
 				}
 			}
@@ -270,22 +270,22 @@ else
 					$d[$day_num]["data"][] = date(hour_min_format(), $row[0]) . get_vocab("to")."24:00";
 					break;
 					case "> > ":
-					$d[$day_num]["data"][] = date(hour_min_format(), $row[0]) . get_vocab("to")."&gt;";
+					$d[$day_num]["data"][] = date(hour_min_format(), $row[0]) . get_vocab("to")."==>";
 					break;
 					case "= = ":
 					$d[$day_num]["data"][] = $all_day;
 					break;
 					case "= > ":
-					$d[$day_num]["data"][] = $all_day . "&gt;";
+					$d[$day_num]["data"][] = $all_day . "==>";
 					break;
 					case "< < ":
-					$d[$day_num]["data"][] = "&lt;".get_vocab("to") . date(hour_min_format(), $row[1]);
+					$d[$day_num]["data"][] = "<==".get_vocab("to") . date(hour_min_format(), $row[1]);
 					break;
 					case "< = ":
-					$d[$day_num]["data"][] = "&lt;" . $all_day;
+					$d[$day_num]["data"][] = "<==" . $all_day;
 					break;
 					case "< > ":
-					$d[$day_num]["data"][] = "&lt;" . $all_day . "&gt;";
+					$d[$day_num]["data"][] = "<==" . $all_day . "==>";
 					break;
 				}
 			}
@@ -475,7 +475,7 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++) // traitement d'une ressou
 										{
 											$currentPage = 'month_all2';
 											$id =   $d[$cday]["id"][$i];
-											echo "<a title=\"".htmlspecialchars($d[$cday]["who1"][$i])."\" data-width=\"675\" onclick=\"request($id,$cday,$month,$year,'all','$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight\">" .$d[$cday]["who1"][$i]."</a>";
+											echo "<a title=\"".htmlspecialchars($d[$cday]["data"][$i])."\" data-width=\"675\" onclick=\"request($id,$cday,$month,$year,'all','$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight\">" .$d[$cday]["who1"][$i]."</a>";
 										}
 										else
 										{
