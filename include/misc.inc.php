@@ -2,7 +2,7 @@
 /**
  * misc.inc.php
  * fichier de variables diverses
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2018-07-01 19:15$
  * @author    JeromeB & Laurent Delineau
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -28,6 +28,8 @@ $version_grr = "3.4.0";
 $sous_version_grr = ""; // a, b, c, ...
 // Numéro de la release candidate (doit être strictement inférieure à 9). Laisser vide s'il s'agit de la version stable.
 $version_grr_RC = "";
+// Version repository (GitHub)
+$versionReposite = "GitHub";
 
 # Liste des tables
 $liste_tables = array(

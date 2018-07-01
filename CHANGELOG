@@ -3,12 +3,22 @@ Bugs connus sur la version de GitHub :
  
 
 Tâches prévues :
- - Outil test des prérequis droits...
+ 
  - Echange de deux réservations
  - Page year_all affichant les réservations sur plusieurs mois et plusieurs domaines
- 
 
-Version en cours de développement sur GitHUB (3.4.0)
+-----
+--
+-----
+
+Version en cours de développement sur GitHUB (3.4.1) // Numero de version a definir
+
+
+-----
+--
+-----
+
+Version 3.4.0
 	[ajout] Personnalisation des couleurs pour les types de réservation depuis l'administration, soit un passage de 28 couleurs à 16 777 216 couleurs
 	[ajout] Possibilité d'afficher le formulaire de demande de réservation aux non connectés et aux visiteurs ou simplement aux visiteurs 
 	[ajout] Interdire les différents configuration d'authentifications externe via le fichier de config

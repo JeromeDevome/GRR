@@ -78,9 +78,6 @@ date_default_timezone_set('Europe/Paris');
 # Dans ce cas, il vous faudra changer la valeur GRR ci-dessous par une autre valeur.
  define('SESSION_NAME', "GRR");
 
-# Version repository (GitHub)
- $versionReposite = "GitHub";
-
 # Nombre maximum (+1) de réservations autorisés lors d'une réservation avec périodicité
  $max_rep_entrys = 365 + 1;
 
