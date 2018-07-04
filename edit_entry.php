@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-05-14 18:30$
+ * Dernière modification : $Date: 2018-07-04 16:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -76,7 +76,7 @@ if (isset($id))
 }
 else
 	Definition_ressource_domaine_site();
-$room_back = (isset($_GET['room_back']))? $_GET['room_back']: $room ;
+$room_back = (isset($_GET['room_back']))? $_GET['room_back']: ((isset($_GET['room']))? $_GET['room'] :'all') ;
 if (@file_exists("language/lang_subst_".$area.".".$locale))
 	include "language/lang_subst_".$area.".".$locale;
 get_planning_area_values($area);
@@ -1242,7 +1242,7 @@ if($periodiciteConfig == 'y'){
 		<input type="hidden" name="rep_id"    value="<?php echo $rep_id?>" />
 		<input type="hidden" name="edit_type" value="<?php echo $edit_type?>" />
 		<input type="hidden" name="page" value="<?php echo $page?>" />
-		<input type="hidden" name="room_back" value="<?php echo $room_id?>" />
+		<input type="hidden" name="room_back" value="<?php echo $room_back?>" />
 		<input type="hidden" name="page_ret" value="<?php echo $ret_page?>" />
         <?php
 		if ($flag_qui_peut_reserver_pour == "no")
