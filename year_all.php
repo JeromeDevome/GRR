@@ -3,7 +3,7 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-06-30 12:00 $
+ * Dernière modification : $Date: 2018-07-07 13:00 $
  * @author    Yan Naessens, Laurent Delineau 
  * @copyright Copyright 2003-2018 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -24,6 +24,7 @@
  * along with GRR; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+$grr_script_name = "year_all.php";
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
@@ -31,7 +32,7 @@ include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
 include "include/mincals.inc.php";
 include "include/mrbs_sql.inc.php";
-$grr_script_name = "year_all.php";
+
 // Settings
 require_once("./include/settings.class.php");
 //Chargement des valeurs de la table settingS
@@ -129,9 +130,9 @@ if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
 	$type_session = "no_session";
 else
 	$type_session = "with_session";
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+$back = 'year.php';
+/*if (isset($_SERVER['HTTP_REFERER']))
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);*/
 if (check_begin_end_bookings($day, $from_month, $from_year))
 {
 	showNoBookings($day, $from_month, $from_year, $back);
@@ -164,25 +165,30 @@ $month_end = mktime(23,59,59,$to_month,$days_in_to_month,$to_year);
 // Si format imprimable ($_GET['pview'] = 1), on n'affiche pas cette partie
 if ($_GET['pview'] != 1)
 {
-	echo "<table width=\"100%\" cellspacing=\"15\" border=\"0\"><tr>";
-	echo "<td><form method=\"get\" action=\"year_all.php\">";
-	echo "<table border=\"0\">\n";
-	echo "<tr><td>".get_vocab("report_start").get_vocab("deux_points")."</td>";
-	echo "<td>";
-	echo genDateSelector("from_", "", $from_month, $from_year,"");
-	echo "</td></tr>";
-	echo "<tr><td>".get_vocab("report_end").get_vocab("deux_points");
-	echo "</td><td>\n";
-	echo genDateSelector("to_", "", $to_month, $to_year,"");
-	echo "</td><td class=\"CR\">\n";
-    echo "<p>&nbsp;&nbsp;";
-    echo "<input type=\"hidden\" name=\"site\" value=\"$site\" />\n";
-	echo "<input type=\"submit\" name=\"valider\" value=\"".$vocab["goto"]."\" /></p></td></tr>\n";
-	echo "</table>\n";
-	echo "</form></td>\n";
-    $ret_page = (isset($back))? $back : page_accueil('no') ;
-	echo '<td><a title="'.htmlspecialchars(get_vocab('back')).'" href="'.$ret_page.'">'.$vocab['back'].'</a></td>';
-	echo "</tr></table>\n";
+    echo "<div class='row'>";
+        echo "\n<div class=\"col-lg-3 col-md-4 col-xs-12\">\n".PHP_EOL; // lien de retour
+            echo '&nbsp; <a title="'.htmlspecialchars(get_vocab('back')).'" href="'.$back.'">'.htmlspecialchars(get_vocab('back')).'</a>';
+        echo "</div>";
+        echo "<form method=\"get\" action=\"year_all.php\">";
+            echo "\n<div class=\"col-lg-3 col-md-4 col-xs-12\">\n".PHP_EOL; // choix des dates 
+            echo "<table border=\"0\">\n";
+            echo "<tr><td>".get_vocab("report_start").get_vocab("deux_points")."&nbsp</td>";
+            echo "<td>";
+            echo genDateSelector("from_", "", $from_month, $from_year,"");
+            echo "</td></tr>";
+            echo "<tr><td>".get_vocab("report_end").get_vocab("deux_points")."&nbsp</td><td>\n";
+            echo genDateSelector("to_", "", $to_month, $to_year,"");
+            echo "</td></tr>\n";
+            echo "</table>\n";
+            echo "</div>";
+            //echo "<tr><td class=\"CR\">\n";
+            echo "<br><p>";
+            echo "<input type=\"hidden\" name=\"site\" value=\"$site\" />\n";
+            echo "<input type=\"hidden\" name=\"area\" value=\"$area\" />\n";
+            echo "<input type=\"submit\" name=\"valider\" value=\"".$vocab["goto"]."\" /></p>";//</td></tr>\n";
+
+        echo "</form>";
+    echo "</div>";
 }
 // construit la liste des ressources
 if ($site == -1) 
@@ -267,7 +273,8 @@ else
             $this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=$area");
             echo "<div class=\"titre_planning\">".ucfirst($this_area_name)." </div>\n";
             // affichage des jours du mois courant
-            echo "<table border=\"2\">\n";
+            // echo "<table border=\"2\">\n";
+            echo "<table class='table-bordered'>\n";
             // Début affichage de la première ligne
             echo "<tr>";
             tdcell("cell_hours");
@@ -393,22 +400,22 @@ else
                                         $d[$day_num][$month_num][$year_num]["data"][] = $start_str . "~24:00"." - ".$row[3].$temp;
                                         break;
                                         case "> > ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = $start_str . "~====>"." - ".$row[3].$temp;
+                                        $d[$day_num][$month_num][$year_num]["data"][] = $start_str . "~==>"." - ".$row[3].$temp;
                                         break;
                                         case "= = ":
                                         $d[$day_num][$month_num][$year_num]["data"][] = $all_day2.$temp;
                                         break;
                                         case "= > ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = $all_day2 . "====>"." - ".$row[3].$temp;
+                                        $d[$day_num][$month_num][$year_num]["data"][] = $all_day2 . "==>"." - ".$row[3].$temp;
                                         break;
                                         case "< < ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = "<====~" . $end_str." - ".$row[3].$temp;
+                                        $d[$day_num][$month_num][$year_num]["data"][] = "<==~" . $end_str." - ".$row[3].$temp;
                                         break;
                                         case "< = ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = "<====" . $all_day2." - ".$row[3].$temp;
+                                        $d[$day_num][$month_num][$year_num]["data"][] = "<==" . $all_day2." - ".$row[3].$temp;
                                         break;
                                         case "< > ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = "<====" . $all_day2 . "====>"." - ".$row[3].$temp;
+                                        $d[$day_num][$month_num][$year_num]["data"][] = "<==" . $all_day2 . "==>"." - ".$row[3].$temp;
                                         break;
                                     }
                                 }
@@ -424,22 +431,22 @@ else
                                         $d[$day_num][$month_num][$year_num]["data"][] = date(hour_min_format(), $row[0]) . "~24:00"." - ".$row[3].$temp;
                                         break;
                                         case "> > ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = date(hour_min_format(), $row[0]) . "~====>"." - ".$row[3].$temp;
+                                        $d[$day_num][$month_num][$year_num]["data"][] = date(hour_min_format(), $row[0]) . "~==>"." - ".$row[3].$temp;
                                         break;
                                         case "= = ":
                                         $d[$day_num][$month_num][$year_num]["data"][] = $all_day2.$temp;
                                         break;
                                         case "= > ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = $all_day2 . "====>"." - ".$row[3].$temp;
+                                        $d[$day_num][$month_num][$year_num]["data"][] = $all_day2 . "==>"." - ".$row[3].$temp;
                                         break;
                                         case "< < ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = "<====~" . date(hour_min_format(), $row[1])." - ".$row[3].$temp;
+                                        $d[$day_num][$month_num][$year_num]["data"][] = "<==~" . date(hour_min_format(), $row[1])." - ".$row[3].$temp;
                                         break;
                                         case "< = ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = "<====" . $all_day2." - ".$row[3].$temp;
+                                        $d[$day_num][$month_num][$year_num]["data"][] = "<==" . $all_day2." - ".$row[3].$temp;
                                         break;
                                         case "< > ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = "<====" . $all_day2 . "====>"." - ".$row[3].$temp;
+                                        $d[$day_num][$month_num][$year_num]["data"][] = "<==" . $all_day2 . "==>"." - ".$row[3].$temp;
                                         break;
                                     }
                                 }
@@ -459,8 +466,9 @@ else
                         echo "</div>"; */
                         $acces_fiche_reservation = verif_acces_fiche_reservation(getUserName(), $room_id);
                         echo "<tr>";
-                        tdcell("cell_hours");
-                        echo htmlspecialchars($room_name) ."</td>\n";
+                        //tdcell("cell_hours");
+                        echo "<th>";
+                        echo htmlspecialchars($room_name) ."</th>\n";
                         $t2 = mktime(0, 0, 0, $month_num, 1, $year_num);
                         for ($k = 0; $k < $days_in_month; $k++)
                         {
@@ -528,11 +536,11 @@ else
         $month_indice = mktime(0, 0, 0, $month_num + 1, 1, $year_num);
     } // fin de boucle sur les mois
 }
-show_colour_keys();
+echo "<div class='titre_planning'>";
+show_colour_key($area);
 // Affichage d'un message pop-up
 affiche_pop_up(get_vocab("message_records"),"user");
-echo "<div class='ressource'>";
 include "include/trailer.inc.php";
 echo "</div>";
-include "footer.php";
+echo "</body></html>";
 ?>
