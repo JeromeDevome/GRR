@@ -1,4 +1,5 @@
 body{font-size:14px;font-family:arial,verdana,sans-serif;background-color:#FF44F5;width:100%;margin:0 auto}
+header{width:100%;z-index:999;text-align:center;border-bottom:1px solid #FF44F5}
 a:after{content:"" !important}
 .ferie{background-color:#c0392b !important}
 .vacance{background-color:rgba(46,204,113,.5) !important}
@@ -29,12 +30,12 @@ table.table-striped th{background-color:gray !important; border:0px !important;}
 #header{border:0;position:relative;width:100%}
 #menu1{border:0;width:100%}
 .image{border:0;vertical-align:middle}
-.logo{width:.1%;height:.1%}
+.logo{min-width:.1%;max-width:18%;min-height:.1%;max-height:115px;display:inline-block;float:left}
 .logo img{margin-top:5px;margin-left:5px;max-height:115px}
-.accueil{background-color:#fff;padding-left:1%; width:32%}
-.administration{background-color:#fff;width:15%;text-align:center;margin:0 auto}
-.configuration{background-color:#fff;width:20%;text-align:center;margin:0 auto}
-.contactformulaire{background-color:#fff;width:15%;vertical-align:middle;text-align:center}
+.accueil{background-color:#fff;padding-left:1%; width:30%;display:inline-block}
+.administration{background-color:#fff;width:15%;text-align:center;margin:0 auto;display:inline-block}
+.configuration{background-color:#fff;width:22%;text-align:center;margin:0 auto;display:inline-block;float:right}
+.contactformulaire{background-color:#fff;width:15%;vertical-align:middle;text-align:center;display:inline-block}
 #menuGauche{background-color:#FF44F5;float:left;height:100%;min-width:200px;width:100%;padding-bottom:10px}
 #menuGaucheMonthAll2{display:none;background-color:#52FC3F;float:left;height:100%;min-width:200px;width:300px;padding-bottom:10px}
 .cal_current_day{color:#000;vertical-align:middle;text-align:center;line-height:30px}
@@ -49,7 +50,7 @@ table.calendar{text-align:center;width:99%;padding:1px;margin:auto;background-co
 a.calendar{display:block;color:#FFF;height:100%;width:100%;vertical-align:middle;text-align:center}
 .calendarcol1{padding:0;font-weight:700;background-color:#fff;text-align:center;height:30px;width:40px;line-height:30px}
 .lienSemaine a{height:100%;width:100%;display:block;vertical-align:middle;text-align:center;color:#000}
-.titre{color:#fff;text-align:center}
+.titre{color:#fff;text-align:center;margin-top:1px;}
 .cellcalendar{background:#3EF9EA;vertical-align:middle;text-align:center;height:30px;width:40px;line-height:30px}
 .cellcalendar a:hover{background-color:#fff}
 a.lienPlanning:link,a.lienPlanning:visited{color:#fff;display:block}
@@ -70,15 +71,15 @@ table.legende td{width:125px;text-align:center}
 .pied_menuGauche{border-top:3px solid #52FC3F}
 th{color:#eee;font-size:10pt;font-family:verdana,sans-serif;background-color:#52FC3F !important;vertical-align:top;text-align:center !important;border:none !important}
 td.cell_hours{color:#fff;background-color:gray !important;text-align:center;font-size:13px;height:20px;line-height:20px;border: none !important}
-td.cell_hours_vacance{color:#fff;background-color:rgba(46,204,113,.5) !important;text-align:center;font-size:13px;height:20px;line-height:20px;border: none !important}
-td.cell_hours_ferie{color:#fff;background-color:#c0392b !important;text-align:center;font-size:13px;height:20px;line-height:20px;border: none !important}
+td.cell_hours_vacance{color:#000;background-color:rgba(46,204,113,.5) !important;text-align:center;font-size:13px;height:20px;line-height:20px;border: none !important}
+td.cell_hours_ferie{color:#000;background-color:#c0392b !important;text-align:center;font-size:13px;height:20px;line-height:20px;border: none !important}
 td.cell_hours2{color:#000;background-color:#ccc !important;text-align:center;font-size:13px;height:20px;line-height:20px;border: none !important}
 td.cell_hours a{color:#fff}
 td.cell_month{background-color:#fff;vertical-align:top}
 .cell_month a{color:#000;font-weight:400;text-align:center}
 .cell_month a:hover{color:#000;font-weight:700}
 td.cell_month_o{background-color:#ccc}
-.empty_cell{background-color:#fff;text-align:center;vertical-align:middle}
+.empty_cell{background-color:#fff;text-align:center;height:100%;vertical-align:middle}
 .monthday{font-size:2.1em;text-align:center}
 .center{width:100%;margin-left:auto;margin-right:auto;text-align:center}
 .avertissement{background-color:#ff8585;text-align:center}
@@ -132,7 +133,7 @@ a.buttonsReservation{cursor:pointer}
 .closepop{float:right;cursor:pointer}
 
 #toppanel{position:relative;top:0;width:100%;z-index:999;text-align:center;border-bottom:1px solid #3EF9EA}
-#panel{width:100%;overflow:hidden;position:relative;z-index:3}
+#panel{width:100%;max-height:115px;overflow:hidden;position:relative;z-index:3}
 #panel a{text-decoration:none}
 .pad-15,.pad-15 tboby{padding-left:15px !important}
 #fixe{position:fixed;right:5%;bottom:5%}
@@ -154,6 +155,11 @@ a.buttonsReservation{cursor:pointer}
 #heure {width: 25%}
 #voir{display:block}
 #cacher{display:none}
+/* nouveaux blocs de mise en page */
+#menuGauche2{background-color:#31A3DD;float:left;height:100%;min-width:230px;max-width:25%;padding-bottom:10px;display:inline-block}
+#planning2{text-align:center;min-width:600px;display:inline-block;width:100%;}
+.ligne23{min-height:23px;}
+.table-bordered caption{background:#31A3DD;padding: 0 0 0 0;}
 
 @media only screen and (max-width:800px) { 
 	.accueil {
