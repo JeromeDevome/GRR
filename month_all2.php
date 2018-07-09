@@ -3,7 +3,7 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-06-30 12:00$
+ * Dernière modification : $Date: 2018-07-09 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -358,7 +358,9 @@ if ($_GET['pview'] == 1 && $_GET['precedent'] == 1)
 // le corps de la table 
 $sql = "SELECT room_name, capacity, id, description, statut_room FROM ".TABLE_PREFIX."_room WHERE area_id=$area ORDER BY order_display,room_name";
 $res = grr_sql_query($sql);
-echo "<thead><tr><th></th>\n";
+echo "<thead><tr>";
+echo tdcell("cell_hours");
+echo "</td>";
 for ($k = 1; $k <= $days_in_month; $k++)
 {
     $t2 = mktime(0, 0, 0, $month, $k, $year);
@@ -388,7 +390,9 @@ for ($k = 1; $k <= $days_in_month; $k++)
 	}
 }
 echo "</tr></thead>";
-echo "<tfoot><tr><th></th>\n";
+echo "<tfoot><tr>";
+echo tdcell("cell_hours");
+echo "</td>";
 for ($k = 1; $k <= $days_in_month; $k++)
 {
     $t2 = mktime(0, 0, 0, $month, $k, $year);
