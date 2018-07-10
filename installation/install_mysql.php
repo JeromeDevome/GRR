@@ -190,7 +190,7 @@ if ($etape == 4)
 				$conn .= "# ligne suivante : Port MySQL laissé par défaut\n";
 				$conn .= "\$dbPort=\"$port_db\";\n";
                 $conn .= "# ligne suivante : adaptation EnvOLE\n";
-                $conn .= "$apikey=\"mypassphrase\"\n";
+                $conn .= "\$apikey=\"mypassphrase\"\n";
 				$conn .= "?".">";
 				@fputs($f, $conn);
 				if (!@fclose($f))
