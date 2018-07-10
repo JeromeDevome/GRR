@@ -3,7 +3,7 @@
  * install_mysql.php
  * Interface d'installation de GRR pour un environnement mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-06-27 16:00$
+ * Dernière modification : $Date: 2018-07-10 17:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -189,6 +189,8 @@ if ($etape == 4)
 				$conn .= "\$table_prefix=\"$table_prefix\";\n";
 				$conn .= "# ligne suivante : Port MySQL laissé par défaut\n";
 				$conn .= "\$dbPort=\"$port_db\";\n";
+                $conn .= "# ligne suivante : adaptation EnvOLE\n";
+                $conn .= "\$apikey=\"mypassphrase\"\n";
 				$conn .= "?".">";
 				@fputs($f, $conn);
 				if (!@fclose($f))
