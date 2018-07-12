@@ -1,7 +1,7 @@
 <?php
 /**
  * admin_admin_site.php
- * Interface de gestion des
+ * Interface de gestion des administrateurs de sites de l'application GRR
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2017-12-16 14:00$
  * @author    Laurent Delineau & JeromeB

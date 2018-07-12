@@ -3,7 +3,7 @@
  * swap_entry.php
  * Interface d'échange d'une réservation avec une autre, à choisir
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-05-20 9:30$
+ * Dernière modification : $Date: 2018-05-28 10:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -53,21 +53,20 @@ print_header('', '', '', 'with_session');
 
 if (isset($_GET['id_alt'])){ // cas où tout est décidé
     if (isset($_GET['choix'])){
-        print_r($_GET);
-        echo "prêt à l'échange";
-        echo $_GET["ret_page"];
+        //print_r($_GET);
+        //echo "prêt à l'échange";
+        //echo $_GET["ret_page"];
         // ici échanger
-        // $sql = " UPDATE `grr_entry` SET `description` = \'test en modification\' WHERE `grr_entry`.`id` = 750";
         $sql1 = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id=".$id;
         $res1 = grr_sql_query($sql1);
         if ($res1){
             $data1 = grr_sql_row($res1,0);
-            print_r($data1);
+            //print_r($data1);
             $sql2 = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id=".$_GET['id_alt'];
             $res2 = grr_sql_query($sql2);
             if ($res2){
                 $data2 = grr_sql_row($res2,0);
-                print_r($data2);
+                //print_r($data2);
                 $sql3 = " UPDATE ".TABLE_PREFIX."_entry SET ";
             /*    $sql3 .= "entry_type = '".$data1[3]."', ";
                 $sql3 .= "repeat_id = '".$data1[4]."', "; */
@@ -108,12 +107,12 @@ if (isset($_GET['id_alt'])){ // cas où tout est décidé
                     $sql4 .= "WHERE id = ".$data1[0]; 
                     $res4 = grr_sql_query($sql4);
                     if ($res4){
-                        echo "échange réalisé";
-                       /* echo '<script type="text/javascript">';
+                        // echo "échange réalisé";
+                        echo '<script type="text/javascript">';
                         echo 'alert("Echange effectué correctement");';
                         echo 'document.location.href="'.$_GET['ret_page'].'"';
                         echo '</script>';
-                        die(); */
+                        die();
                     }
                 }
             }
@@ -237,7 +236,7 @@ else { // on connaît $id de la réservation à échanger, on va en chercher une
         // echo $dformat."<hr />";
         // echo grr_sql_count($reps);
         echo "Dans le tableau ci-dessous, cochez la ligne correspondant à la réservation que vous voulez échanger avec la réservation courante<br/>";
-        echo "puis Validez, ou Annulez pour revenir à la page précédente.<br/>";
+        echo "puis Validez, ou Annulez pour revenir au planning.<br/>";
         // echo $ret_page;
         echo '<form method="GET" action="swap_entry.php" >';
         echo "<p style='text-align:center;'>";

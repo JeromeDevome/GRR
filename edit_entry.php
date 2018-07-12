@@ -60,7 +60,6 @@ if (!isset($day) || !isset($month) || !isset($year))
 	$month = date("m");
 	$year  = date("Y");
 }
-// echo $day," ",$month," ",$year;
 if (isset($id))
 {
 	if ($info = mrbsGetEntryInfo($id))

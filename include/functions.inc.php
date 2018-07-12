@@ -850,8 +850,6 @@ function page_accueil($param = 'no')
 		$defaultroom = $_SESSION['default_room'];
 	else
 		$defaultroom = Settings::get("default_room");
-    // echo $defaultroom ;
-    // die();
 	// Definition de $defaultsite
 	if (isset($_SESSION['default_site']) && ($_SESSION['default_site'] > 0))
 		$defaultsite = $_SESSION['default_site'];
@@ -1839,7 +1837,7 @@ function tdcell_rowspan($colclass, $step)
 //Display the entry-type color key. This has up to 2 rows, up to 10 columns.
 function show_colour_key($area_id)
 {
-	echo '<table class="legende"><caption class="titre">Légende des réservations</caption>'.PHP_EOL;
+	echo '<table class="legende"><caption class="titre">'.get_vocab("show_color_key").'</caption>'.PHP_EOL;
 	$sql = "SELECT DISTINCT t.id, t.type_name, t.type_letter, t.order_display FROM `".TABLE_PREFIX."_type_area` t
 	LEFT JOIN `".TABLE_PREFIX."_j_type_area` j on j.id_type=t.id
 	WHERE (j.id_area  IS NULL or j.id_area != '".$area_id."')ORDER BY t.order_display";
@@ -1865,6 +1863,35 @@ function show_colour_key($area_id)
 				tdcell($type_letter);
 				echo $type_name, '</td>'.PHP_EOL;
 			}
+		}
+		if ($i % 2 == 1)
+			echo '<td></td>',PHP_EOL,'</tr>'.PHP_EOL;
+		
+	}
+	echo '</table>'.PHP_EOL;
+}
+//Display the entry-type color keys. This has up to 2 rows, up to 10 columns.
+function show_colour_keys()
+{
+	echo '<table class="legende"><caption class="titre">'.get_vocab("show_color_key").'</caption>'.PHP_EOL;
+	$sql = "SELECT DISTINCT id, type_name, type_letter, order_display FROM `".TABLE_PREFIX."_type_area` ";
+	$res = grr_sql_query($sql);
+	if ($res)
+	{
+		$nct = -1;
+		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+		{
+            $type_name   = $row[1];
+            $type_letter = $row[2];
+            if ($nct == -1)
+                echo '<tr>'.PHP_EOL;
+            if (++$nct == 2)
+            {
+                $nct = 0;
+                echo '</tr>'.PHP_EOL, '<tr>'.PHP_EOL;
+            }
+            tdcell($type_letter);
+            echo $type_name, '</td>'.PHP_EOL;
 		}
 		if ($i % 2 == 1)
 			echo '<td></td>',PHP_EOL,'</tr>'.PHP_EOL;
@@ -2025,6 +2052,73 @@ function make_area_select_html( $link, $current_site, $current_area, $year, $mon
 		{
 			$selected = ($row[0] == $current_area) ? 'selected="selected"' : "";
 			$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
+			if (authUserAccesArea($user,$row[0]) == 1)
+			{
+				$out_html .= '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
+			}
+		}
+	}
+	$out_html .= '</select>'.PHP_EOL;
+	$out_html .= '</div>'.PHP_EOL;
+	$out_html .= '<script type="text/javascript">'.PHP_EOL;
+	$out_html .= 'function area_go()'.PHP_EOL;
+	$out_html .= '{'.PHP_EOL;
+	$out_html .= 'box = document.getElementById("area_001").area;'.PHP_EOL;
+	$out_html .= 'destination = box.options[box.selectedIndex].value;'.PHP_EOL;
+	$out_html .= 'if (destination) location.href = destination;'.PHP_EOL;
+	$out_html .= '}'.PHP_EOL;
+	$out_html .= '</script>'.PHP_EOL;
+	$out_html .= '<noscript>'.PHP_EOL;
+	$out_html .= '<div>'.PHP_EOL;
+	$out_html .= '<input type="submit" value="Change" />'.PHP_EOL;
+	$out_html .= '</div>'.PHP_EOL;
+	$out_html .= '</noscript>'.PHP_EOL;
+	$out_html .= '</form>'.PHP_EOL;
+	return $out_html;
+}
+/**
+ * sélecteur de domaines, y compris tous les domaines d'un site
+ * area selector, including any area in a site
+ *
+ * @param string $link
+ * @param string $current_site
+ * @param string $current_area
+ * @param string $year
+ * @param string $month
+ * @param string $day
+ * @param string $user
+ * @return string
+ */
+function make_area_select_all_html( $link, $current_site, $current_area, $year, $month, $day, $user)
+{
+	global $vocab;
+	if (Settings::get("module_multisite") == "Oui")
+		$use_multi_site = 'y';
+	else
+		$use_multi_site = 'n';
+	if ($use_multi_site == 'y')
+	{
+		// on a activé les sites
+		if ($current_site != -1)
+			$sql = "SELECT a.id, a.area_name,a.access FROM ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_j_site_area j WHERE a.id=j.id_area and j.id_site=$current_site ORDER BY a.order_display, a.area_name";
+		else
+			$sql = "";
+	}
+	else
+		$sql = "SELECT id, area_name,access FROM ".TABLE_PREFIX."_area ORDER BY order_display, area_name";
+	$out_html = '<b><i>'.get_vocab("areas").'</i></b>'.PHP_EOL;
+	$out_html .= '<form id="area_001" action="'.$_SERVER['PHP_SELF'].'">'.PHP_EOL;
+	$out_html .= '<div><select class="form-control" name="area" ';
+	$out_html .= ' onchange="area_go()" ';
+	$out_html .= '>'.PHP_EOL;
+    $out_html .= "<option value=\"".$link."_all.php?year=$year&amp;site=$current_site\">".get_vocab("any_area")."</option>";
+	$res = grr_sql_query($sql);
+	if ($res)
+	{
+		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+		{
+			$selected = ($row[0] == $current_area) ? 'selected="selected"' : "";
+			$link2 = $link.'.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
 			if (authUserAccesArea($user,$row[0]) == 1)
 			{
 				$out_html .= '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
@@ -2415,7 +2509,7 @@ function make_area_item_html( $link, $current_site, $current_area, $year, $month
 }
 //end make_area_item_html
 /**
- * Affichage des rooms sous la forme d'un input
+ * Affichage des rooms sous la forme d'une liste de boutons
  *
  * @param string $link
  * @param string $current_area
@@ -4865,6 +4959,320 @@ if (!function_exists('htmlspecialchars_decode'))
 		return strtr($text, array_flip(get_html_translation_table(HTML_SPECIALCHARS)));
 	}
 }
+// suggestions pour reformuler les pages plannings
+function pageHead2($title, $page = "with_session") 
+{
+	if ($page == "with_session")
+	{
+		if (isset($_SESSION['default_style']))
+			$sheetcss = 'themes/'.$_SESSION['default_style'].'/css';
+
+		else
+			$sheetcss = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
+		if (isset($_GET['default_language']))
+		{
+			$_SESSION['default_language'] = $_GET['default_language'];
+			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
+				header("Location: ".$_SESSION['chemin_retour']);
+			else
+				header("Location: ".traite_grr_url());
+			die();
+		}
+	}
+	else
+	{
+		if (Settings::get("default_css"))
+			$sheetcss = 'themes/'.Settings::get("default_css").'/css';
+		else
+			$sheetcss = 'themes/default/css';
+		if (isset($_GET['default_language']))
+		{
+			$_SESSION['default_language'] = $_GET['default_language'];
+			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
+				header("Location: ".$_SESSION['chemin_retour']);
+			else
+				header("Location: ".traite_grr_url());
+			die();
+		}
+	}
+	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin;
+	header('Content-Type: text/html; charset=utf-8');
+	if (!isset($_COOKIE['open']))
+	{
+		setcookie("open", "true", time()+3600);
+	}
+	/* $a = '<!DOCTYPE html>'.PHP_EOL;
+	$a .= '<html lang="fr">'.PHP_EOL; */
+	$a  = '<head>'.PHP_EOL;
+	$a .= '<meta charset="utf-8">'.PHP_EOL;
+	$a .= '<meta http-equiv="X-UA-Compatible" content="IE=edge">'.PHP_EOL;
+	$a .= '<meta name="viewport" content="width=device-width, initial-scale=1">'.PHP_EOL;
+	$a .= '<meta name="Robots" content="noindex" />'.PHP_EOL;
+	$a .= '<title>'.$title.'</title>'.PHP_EOL;
+	$a .= '<link rel="shortcut icon" href="./favicon.ico" />'.PHP_EOL;
+
+	if (@file_exists('admin_accueil.php') || @file_exists('install_mysql.php')){ // Si on est dans l'administration
+
+		$a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/style.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/bootstrap.min.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/mod_bootstrap.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="../include/admin_grr.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/select2.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/select2-bootstrap.css" />'.PHP_EOL;
+		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
+			$a .= '<link rel="stylesheet" type="text/css" href="../themes/print/css/style.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/jquery-ui.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/bootstrap-multiselect.css">'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/jquery-ui.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/jquery.validate.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/bootstrap-multiselect.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/html2canvas.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/menu.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/jspdf.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/pdf.js" ></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/popup.js" charset="utf-8"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/functions.js" ></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/select2.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/select2_locale_fr.js"></script>'.PHP_EOL;
+		if (isset($use_tooltip_js))
+			echo '<script type="text/javascript" src="../include/tooltip.js"></script>'.PHP_EOL;
+		if (!isset($_SESSION['selection']))
+			$a .= '<script type="text/javascript" src="../js/selection.js" ></script>'.PHP_EOL;
+		if (@file_exists('js/'.$clock_file))
+			$a .= '<script type="text/javascript" src="../js/'.$clock_file.'"></script>'.PHP_EOL;
+		if (substr(phpversion(), 0, 1) == 3)
+			$a .= get_vocab('not_php3');
+	
+	} else{
+	
+		$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/bootstrap.min.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/mod_bootstrap.css" />'.PHP_EOL;
+	    if (isset($use_admin))
+			$a .= '<link rel="stylesheet" type="text/css" href="include/admin_grr.css" />'.PHP_EOL;
+		if (isset($use_select2))
+		{
+			$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/select2.css" />'.PHP_EOL;
+			$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/select2-bootstrap.css" />'.PHP_EOL;
+			$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/bootstrap-multiselect.css">'.PHP_EOL;
+			$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
+		}
+		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
+			$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/jquery-ui.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/html2canvas.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/jspdf.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/pdf.js" ></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/popup.js" charset="utf-8"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/functions.js" ></script>'.PHP_EOL;
+		if (isset($use_select2))
+		{
+			$a .= '<script type="text/javascript" src="js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
+			$a .= '<script type="text/javascript" src="js/bootstrap-multiselect.js"></script>'.PHP_EOL;
+			$a .= '<script type="text/javascript" src="js/select2.js"></script>'.PHP_EOL;
+			$a .= '<script type="text/javascript" src="js/select2_locale_fr.js"></script>'.PHP_EOL;
+		}
+		if (isset($use_tooltip_js))
+			echo '<script type="text/javascript" src="./include/tooltip.js"></script>'.PHP_EOL;
+		if (!isset($_SESSION['selection']))
+			$a .= '<script type="text/javascript" src="js/selection.js" ></script>'.PHP_EOL;
+		if (@file_exists('js/'.$clock_file))
+			$a .= '<script type="text/javascript" src="js/'.$clock_file.'"></script>'.PHP_EOL;
+		if (substr(phpversion(), 0, 1) == 3)
+			$a .= get_vocab('not_php3');
+	}
+
+	$a .= '</head>'.PHP_EOL;
+	// $a .= '<body>'.PHP_EOL;
+	return $a;
+}
+
+/*
+** Fonction qui affiche le header
+*/
+function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_session')
+{
+	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name, $racine, $racineAd;
+	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2;
+
+	Hook::Appel("hookHeader2");
+	// Si nous ne sommes pas dans un format imprimable
+	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
+	{
+		// If we dont know the right date then make it up
+		if (!isset($day) || !isset($month) || !isset($year) || ($day == '') || ($month == '') || ($year == ''))
+		{
+			$date_now = time();
+			if ($date_now < Settings::get("begin_bookings"))
+				$date_ = Settings::get("begin_bookings");
+			else if ($date_now > Settings::get("end_bookings"))
+				$date_ = Settings::get("end_bookings");
+			else
+				$date_ = $date_now;
+			$day   = date("d",$date_);
+			$month = date("m",$date_);
+			$year  = date("Y",$date_);
+		}
+		if (!(isset($search_str)))
+			$search_str = get_vocab("search_for");
+		if (empty($search_str))
+			$search_str = "";
+		if (!(isset($desactive_bandeau_sup) && ($desactive_bandeau_sup == 1) && ($type_session != 'with_session')))
+		{
+
+			// HOOK
+			Hook::Appel("hookHeader1");
+
+			// Génération XML
+			$generationXML = 1;
+			if ((Settings::get("export_xml_actif") == "Oui") && ($adm == 0)){
+				include "{$racine}/include/generationxml.php";
+			}
+			if ((Settings::get("export_xml_plus_actif") == "Oui") && ($adm == 0)){
+				include "{$racine}/include/generationxmlplus.php";
+			}
+
+			// On fabrique une date valide pour la réservation si ce n'est pas le cas
+			$date_ = mktime(0, 0, 0, $month, $day, $year);
+			if ($date_ < Settings::get("begin_bookings"))
+				$date_ = Settings::get("begin_bookings");
+			else if ($date_ > Settings::get("end_bookings"))
+				$date_ = Settings::get("end_bookings");
+			$day   = date("d",$date_);
+			$month = date("m",$date_);
+			$year  = date("Y",$date_);
+			// echo '<div id="toppanel">'.PHP_EOL;
+			echo '<div id="panel">'.PHP_EOL;
+			// echo '<table id="header">'.PHP_EOL;
+			// echo '<tr>'.PHP_EOL;
+			//Logo
+			$nom_picture = $racine."images/".Settings::get("logo");
+			if ((Settings::get("logo") != '') && (@file_exists($nom_picture)))
+				echo '<div class="logo" height="100">'.PHP_EOL.'<a href="'.$racine.page_accueil('yes').'day='.$day.'&amp;year='.$year.'&amp;month='.$month.'"><img src="'.$nom_picture.'" alt="logo"/></a>'.PHP_EOL.'</div>'.PHP_EOL;
+			//Accueil
+			echo '<div class="accueil ">',PHP_EOL,'<h2>',PHP_EOL,'<a href="'.$racine.page_accueil('yes'),'day=',$day,'&amp;year=',$year,'&amp;month=',$month,'">',Settings::get("company"),'</a>',PHP_EOL,'</h2>',PHP_EOL, Settings::get('message_accueil'),'</div>',PHP_EOL;
+			//Mail réservation
+			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
+			$res = grr_sql_query1($sql);
+			grr_sql_free($res);
+
+			if ( ( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )
+			{
+				echo '<div class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</div>',PHP_EOL;
+			}
+			// Administration
+			if ($type_session == "with_session")
+			{
+                $user_name = getUserName();
+                $mess_resa = resaToModerate($user_name);
+				if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1) || ($mess_resa != ''))
+				{
+					echo '<div class="administration">'.PHP_EOL;
+					if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1))
+                        echo "<br><a href='{$racineAd}admin_accueil.php?day={$day}&amp;month={$month}&amp;year={$year}'>".get_vocab('admin')."</a>".PHP_EOL;
+					if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
+					{
+						echo '<br />'.PHP_EOL;
+						how_many_connected();
+                        echo "<br />";
+					}
+                    echo "<p class='avertissement'>".$mess_resa."</p>";
+					echo '</div>'.PHP_EOL;
+				}
+			}
+			if ($type_session != "with_session")
+				echo '<script>selection()</script>'.PHP_EOL;
+			echo '<div class="configuration" >'.PHP_EOL;
+			if (@file_exists('js/'.$clock_file))
+			{
+				echo '<div class="clock">'.PHP_EOL;
+				echo '<div id="Date">'.PHP_EOL;
+				echo '&nbsp;<span id="hours"></span>'.PHP_EOL;
+				echo 'h'.PHP_EOL;
+				echo '<span id="min"></span>'.PHP_EOL;
+				echo '</div></div>'.PHP_EOL;
+			}
+			$_SESSION['chemin_retour'] = '';
+			if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
+			{
+				$parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
+				$_SESSION['chemin_retour'] = traite_grr_url($grr_script_name)."?". $_SERVER['QUERY_STRING'];
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>'.PHP_EOL;
+			}
+			if ($type_session == 'no_session')
+			{
+				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
+				{
+					echo '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>'.PHP_EOL;
+					echo '<br /> <small><i><a href="login.php">'.get_vocab("connect_local").'</a></i></small>'.PHP_EOL;
+				}
+				else {
+					echo '<br /> <a href="login.php">'.get_vocab("connect").'</a>'.PHP_EOL;
+				}
+			}
+			else
+			{
+				if( strlen(htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom'])) > 40 )
+					$nomAffichage =  htmlspecialchars($_SESSION['nom']);
+				else
+					$nomAffichage =  htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']);
+			
+				echo '<br /><a href="'.$racine.'my_account.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'. $nomAffichage .' - '.get_vocab("manage_my_account").'</a>'.PHP_EOL;
+				if (verif_access_search(getUserName()))
+					echo '<br/><a href="'.$racine.'report.php">'.get_vocab("report").'</a>'.PHP_EOL;
+				$disconnect_link = false;
+				if (!((Settings::get("cacher_lien_deconnecter") == 'y') && (isset($_SESSION['est_authentifie_sso']))))
+				{
+					$disconnect_link = true;
+					if (Settings::get("authentification_obli") == 1)
+						echo '<br /> <a href="'.$racine.'logout.php?auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+					else
+						echo '<br /> <a href="'.$racine.'logout.php?auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+				}
+				if ((Settings::get("Url_portail_sso") != '') && (isset($_SESSION['est_authentifie_sso'])))
+				{
+					if ($disconnect_link)
+						echo ' - '.PHP_EOL;
+					else
+						echo '<br />'.PHP_EOL;
+					echo '<a href="'.Settings::get("Url_portail_sso").'">'.get_vocab("Portail_accueil").'</a>'.PHP_EOL;
+				}
+				if ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_statut') == 'lasso_utilisateur'))
+				{
+					echo '<br />';
+					if ($_SESSION['lasso_nameid'] == NULL)
+						echo '<a href="lasso/federate.php">'.get_vocab('lasso_federate_this_account').'</a>'.PHP_EOL;
+					else
+						echo '<a href="lasso/defederate.php">'.get_vocab('lasso_defederate_this_account').'</a>'.PHP_EOL;
+				}
+			}
+			echo '</div>'.PHP_EOL;
+			// echo '</tr>'.PHP_EOL;
+			// echo '</table>'.PHP_EOL;
+			echo '</div>'.PHP_EOL;
+			echo '<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>'.PHP_EOL;
+			// echo '</div>'.PHP_EOL;
+		}
+	}
+}
+
 // Les lignes suivantes permettent la compatibilité de GRR avec la variables register_global à off
 unset($day);
 if (isset($_GET["day"]))

@@ -1,6 +1,19 @@
-/* ce script fait partie de l'application GRR
- * dernière mise à jour : 2018-04-18 14:00
-*/
+/*
+ * ./js/functions.js
+ * fichier Bibliothèque de fonctions Javascript de GRR
+ * Dernière modification : $Date: 2018-06-12 10:00$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @link      http://www.gnu.org/licenses/licenses.html
+ *
+ * This file is part of GRR.
+ *
+ * GRR is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+ 
 // Permet de faire une validation afin que l'usager ne puisse pas sélectionner un jour invalide pour le début du premier Jours/Cycle
 function verifierJoursCycles()
 {
@@ -384,3 +397,43 @@ function charger(){
 	test.style.display = 'Block';
 }
 
+function cacherMenuGauche(){
+    document.getElementById("menuGauche2").style.display = "none";
+    document.getElementById("planning2").style.width = "100%";
+    document.getElementById("cacher").style.display = "none";
+	document.getElementById("voir").style.display = "inline";
+}
+
+function afficherMenuGauche(){
+    document.getElementById("menuGauche2").style.display = "inline-block";
+    document.getElementById("planning2").style.width = "75%";
+    document.getElementById("cacher").style.display = "inline";
+	document.getElementById("voir").style.display = "none";
+}
+
+function afficheMenuGauche(mode){
+    if (mode == 0) /* menu caché */
+    {
+        document.getElementById("menuGauche2").style.display = "none";
+        document.getElementById("planning2").style.width = "100%";
+        document.getElementById("cacher").style.display = "none";
+        document.getElementById("voir").style.display = "inline";
+    }
+    else if (mode == 1) /* menu affiché */
+    {
+        document.getElementById("menuGauche2").style.display = "inline-block";
+        document.getElementById("planning2").style.width = "75%";
+        document.getElementById("cacher").style.display = "inline";
+        document.getElementById("voir").style.display = "none";
+    }
+    else if (mode == 2) /* menu en haut */
+    {
+        document.getElementById("menuGauche2").style.display = "inline-block";
+        document.getElementById("menuGauche2").style.maxWidth = "100%";
+        document.getElementById("menuGauche2").style.minWidth = "100%";
+        document.getElementById("planning2").style.display = "inline-block";
+        document.getElementById("planning2").style.width = "100%";
+        document.getElementById("cacher").style.display = "inline";
+        document.getElementById("voir").style.display = "none";
+    }
+}

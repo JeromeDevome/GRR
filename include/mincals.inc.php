@@ -3,7 +3,7 @@
  * mincals.inc.php
  * Fonctions permettant d'afficher le mini calendrier
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-03-13 10:00$
+ * Dernière modification : $Date: 2018-06-12 10:00$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -220,7 +220,7 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 			$first = (strftime("%w",$date) + 7 - $weekstarts) % 7;
 			$monthName = ucfirst(utf8_strftime("%B", $date));
 			if(Settings::get("menu_gauche") == 2){
-				$s .= "\n<div class=\"col-lg-3 col-md-12 col-xs-12\">\n".PHP_EOL;
+				$s .= "\n<div class=\"col-lg-3 col-md-4 col-xs-12\">\n".PHP_EOL;
 			} else{
 				$s .= "\n<div class=\"col-lg-12 col-md-12 col-xs-12\">\n".PHP_EOL;
 			}
