@@ -498,12 +498,13 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++) // traitement d'une ressou
                     }
                     // la ressource est-elle accessible en réservation ? on affiche le lien vers edit_entry
                     $date_booking = $t2 +86400 ; // le jour courant à minuit
+                    $hour =  date("H",$date_now); // l'heure courante, par défaut
                     if ((($authGetUserLevel > 1) || (auth_visiteur(getUserName(), $row['2']) == 1)) && (UserRoomMaxBooking(getUserName(), $row['2'], 1) != 0) && verif_booking_date(getUserName(), -1, $row['2'], $date_booking, $date_now, $enable_periods) && verif_delais_max_resa_room(getUserName(), $row['2'], $date_booking) && verif_delais_min_resa_room(getUserName(), $row['2'], $date_booking) && plages_libre_semaine_ressource($row['2'], $month, $cday, $year) && (($row['4'] == "1") || (($row['4'] == "0") && (authGetUserLevel(getUserName(),$row['2']) > 2) )) && $_GET['pview'] != 1)
 					{
 						if ($enable_periods == 'y')
 							echo '<a href="edit_entry.php?room=',$row["2"],'&amp;period=&amp;year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;page=month_all2" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;
 						else
-							echo '<a href="edit_entry.php?room=',$row["2"],'&amp;minute=0&amp;year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;page=month_all2" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;;
+							echo '<a href="edit_entry.php?room=',$row["2"],'&amp;hour=',$hour,'&amp;minute=0&amp;year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;page=month_all2" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;;
 					}
 				}
 				echo "</td>\n";

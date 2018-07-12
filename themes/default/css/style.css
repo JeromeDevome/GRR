@@ -206,3 +206,4 @@ a.buttonsReservation{cursor:pointer}
 	FLOAT:LEFT;
 	}
 }
+table.ui-datepicker-calendar: {z-index: 10;}

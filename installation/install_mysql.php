@@ -3,8 +3,8 @@
  * install_mysql.php
  * Interface d'installation de GRR pour un environnement mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-07-10 17:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -23,6 +23,7 @@ require_once("../include/functions.inc.php");
 $nom_fic = "../include/connect.inc.php";
 $etape = isset($_GET["etape"]) ? $_GET["etape"] : NULL;
 $adresse_db = isset($_GET["adresse_db"]) ? $_GET["adresse_db"] : NULL;
+$port_db = isset($_GET["port_db"]) ? $_GET["port_db"] : NULL;
 $login_db = isset($_GET["login_db"]) ? $_GET["login_db"] : NULL;
 $pass_db = isset($_GET["pass_db"]) ? $_GET["pass_db"] : NULL;
 $choix_db = isset($_GET["choix_db"]) ? $_GET["choix_db"] : NULL;
@@ -31,7 +32,7 @@ $table_prefix = isset($_GET["table_prefix"]) ? $_GET["table_prefix"] : NULL;
 
 // Pour cette page uniquement, on désactive l'UTF8 et on impose l'ISO-8859-1
 $unicode_encoding = 1;
-$charset_html = "utf-8";
+$charset_html = "ISO-8859-1";
 function begin_html()
 {
 	echo '<div style="margin-left:15%;margin-right:15%;"><table><tr><td>';
@@ -61,7 +62,7 @@ if (@file_exists($nom_fic))
 	if ( empty($table_prefix) &&  $table_prefix_from_user !== false) {
 		$table_prefix = $table_prefix_from_user;
 	}
-	$db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbPort");
+	$db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbDb", "$dbPort");
 	if ($db)
 	{
 		if (mysqli_select_db($db, "$dbDb"))
@@ -128,7 +129,7 @@ if ($etape == 4)
 	echo begin_page("Installation de GRR");
 	begin_html();
 	echo "<br /><h2>Quatrième étape : Création des tables de la base</h2>";
-	$db = mysqli_connect("$adresse_db", "$login_db", "$pass_db");
+	$db = mysqli_connect("$adresse_db", "$login_db", "$pass_db", "", "$port_db");
 	if ($choix_db == "new_grr")
 	{
 		$sel_db = $table_new;
@@ -187,7 +188,9 @@ if ($etape == 4)
 				$conn .= "# ligne suivante : préfixe du nom des tables de données\n";
 				$conn .= "\$table_prefix=\"$table_prefix\";\n";
 				$conn .= "# ligne suivante : Port MySQL laissé par défaut\n";
-				$conn .= "\$dbPort=\"\";\n";
+				$conn .= "\$dbPort=\"$port_db\";\n";
+                $conn .= "# ligne suivante : adaptation EnvOLE\n";
+                $conn .= "\$apikey=\"mypassphrase\"\n";
 				$conn .= "?".">";
 				@fputs($f, $conn);
 				if (!@fclose($f))
@@ -221,9 +224,10 @@ else if ($etape == 3)
 	echo "<form action='install_mysql.php' method='get'><div>\n";
 	echo "<input type='hidden' name='etape' value='4' />\n";
 	echo "<input type='hidden' name='adresse_db'  value=\"$adresse_db\" size='40' />\n";
+    echo "<input type='hidden' name='port_db' value=\"$port_db\" />\n";
 	echo "<input type='hidden' name='login_db' value=\"$login_db\" />\n";
 	echo "<input type='hidden' name='pass_db' value=\"$pass_db\" />\n";
-	$db = mysqli_connect("$adresse_db","$login_db","$pass_db");
+	$db = mysqli_connect("$adresse_db","$login_db","$pass_db","","$port_db");
 	$result = mysqli_query($db, "SHOW DATABASES");
 	echo "<fieldset><label><b>Choisissez votre base :</b><br /></label>\n";
 	if ($result && (($n = mysqli_num_rows($result)) > 0))
@@ -287,13 +291,13 @@ else if ($etape == 2)
 	begin_html();
 	echo "<br /><h2>Deuxième étape : Essai de connexion au serveur $dbsys</h2>\n";
 	//echo "<!--";
-	$db = mysqli_connect($adresse_db,$login_db,$pass_db);
+	$db = mysqli_connect($adresse_db,$login_db,$pass_db,"",$port_db);
 	$db_connect = mysqli_errno($db);
 	if (($db_connect != "0") && (!$db))
 	{
 		if ($adresse_db == "localhost")
 			$adresse_db = "";
-		$db = mysqli_connect($adresse_db,$login_db,$pass_db);
+		$db = mysqli_connect($adresse_db,$login_db,$pass_db,"",$port_db);
 		$db_connect = mysqli_errno($db);
 	}
 	if (($db_connect=="0") && $db)
@@ -302,6 +306,7 @@ else if ($etape == 2)
 		echo "<form action='install_mysql.php' method='get'>\n";
 		echo "<div><input type='hidden' name='etape' value='3' />\n";
 		echo "<input type='hidden' name='adresse_db'  value=\"$adresse_db\" size='40' />\n";
+        echo "<input type='hidden' name='port_db' value=\"$port_db\" />\n";
 		echo "<input type='hidden' name='login_db' value=\"$login_db\" />\n";
 		echo "<input type='hidden' name='pass_db' value=\"$pass_db\" />\n";
 		echo "<div style=\"text-align:right;\"><input type='submit' class='fondl' name='Valider' value='Suivant &gt;&gt;' /></div>\n";
@@ -323,11 +328,15 @@ else if ($etape == 1)
 	$adresse_db = 'localhost';
 	$login_db = '';
 	$pass_db = '';
+    $port_db = 3306;
 	echo "<form action='install_mysql.php' method='get'>\n";
 	echo "<div><input type='hidden' name='etape' value='2' />\n";
-	echo "<fieldset><label><b>Adresse de la base de donnée</b><br /></label>\n";
+	echo "<fieldset><label><b>Adresse de la base de données</b><br /></label>\n";
 	echo "(Souvent cette adresse correspond à celle de votre site, parfois elle correspond à la mention &laquo;localhost&raquo;, parfois elle est laissée totalement vide.)<br />\n";
 	echo "<input type='text' name='adresse_db' class='formo' value=\"$adresse_db\" size='40' /></fieldset>\n";
+    echo "<fieldset><label><b>Port du serveur de la base de données</b><br /></label>\n";
+	echo "(Si vous ne le connaissez pas, laissez la valeur par défaut.)<br />\n";
+	echo "<input type='text' name='port_db' class='formo' value=\"$port_db\" size='40' /></fieldset>\n";
 	echo "<fieldset><label><b>Le login de connexion</b><br /></label>\n";
 	echo "<input type='text' name='login_db' class='formo' value=\"$login_db\" size='40' /></fieldset>\n";
 	echo "<fieldset><label><b>Le mot de passe de connexion</b><br /></label>\n";
