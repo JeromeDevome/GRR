@@ -368,8 +368,6 @@ echo ('
 	}
     if (isset($_GET['see_conn']) && ($_GET['see_conn']==1))
     {
-        // echo "paramètre passé";
-        // echo $_GET["see_conn"];
         // on commence par récupérer les données de connexion
         $sql = "SELECT START, SESSION_ID, REMOTE_ADDR, USER_AGENT, REFERER, AUTOCLOSE, END FROM ".TABLE_PREFIX."_log WHERE LOGIN = '".getUserName()."' ORDER by START desc";
         $res = grr_sql_query($sql);
