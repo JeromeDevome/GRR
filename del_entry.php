@@ -1,7 +1,7 @@
 <?php
 /**
  * del_entry.php
- * Interface de suppresssion d'une réservation
+ * Interface de suppression d'une réservation
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2018-05-14 18:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
