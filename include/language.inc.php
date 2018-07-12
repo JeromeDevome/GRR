@@ -2,6 +2,7 @@
 /**
  * language.inc.php
  * Configuration de la langue
+ * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2017-12-16 14:00$
  * @author    JeromeB & Laurent Delineau
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB

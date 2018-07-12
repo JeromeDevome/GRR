@@ -2,6 +2,7 @@
 /**
  * admin_delete_entry_before.php
  * Interface permettant à l'administrateur de supprimer des réservations avant une date donnée
+ * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2017-12-16 14:00$
  * @author    JeromeB & Yan Naessens & Denis Monasse
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB

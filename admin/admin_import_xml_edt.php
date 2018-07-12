@@ -2,8 +2,9 @@
 /**
  * admin_import_xml_edt.php
  * Importe un fichier de réservations au format xml issu du logiciel EDT Index Education
+ * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Yan Naessen & Laurent Delineau
+ * @author    JeromeB & Yan Naessens & Laurent Delineau
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *

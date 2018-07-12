@@ -2,6 +2,7 @@
 /**
  * admin_type.php
  * Interface de gestion des types de réservations
+ * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2017-12-16 14:00$
  * @author    JeromeB & Laurent Delineau
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB

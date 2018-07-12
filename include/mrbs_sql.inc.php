@@ -2,8 +2,8 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2018-04-16 15:00$
- * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
+ * Dernière modification : $Date: 2018-04-16 18:00$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -14,7 +14,20 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-
+/** mrbsCheckFree()
+ *
+ * Check to see if the time period specified is free
+ *
+ * $room_id   - Which room are we checking
+ * $starttime - The start of period
+ * $endtime   - The end of the period
+ * $ignore    - An entry ID to ignore, 0 to ignore no entries
+ * $repignore - A repeat ID to ignore everything in the series, 0 to ignore no series
+ *
+ * Returns:
+ *   nothing   - The area is free
+ *   something - An error occurred, the return value is human readable
+ */
 function mrbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore)
 {
 	global $vocab;

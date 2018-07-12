@@ -2,6 +2,7 @@
 /**
  * admin_calend2.php
  * interface permettant la la réservation en bloc de journées entières
+ * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2017-12-16 14:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
