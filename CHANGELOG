@@ -1,6 +1,6 @@
 Bugs connus sur la version de GitHub :
  - affichage défectueux du menu en position haute dans la page month_all2 
- 
+ - des problèmes se produisent lorsqu'on veut faire une modification/copie de réservation  avec un changement de domaine
 
 Tâches prévues :
  
@@ -21,13 +21,13 @@ Version en cours de développement sur GitHUB (3.4.1) // Numero de version a def
 Version 3.4.0
 	[ajout] Personnalisation des couleurs pour les types de réservation depuis l'administration, soit un passage de 28 couleurs à 16 777 216 couleurs
 	[ajout] Possibilité d'afficher le formulaire de demande de réservation aux non connectés et aux visiteurs ou simplement aux visiteurs 
-	[ajout] Interdire les différents configuration d'authentifications externe via le fichier de config
-	[ajout] Menu administration : Couleur bleu sur le lien où l'on ce situe
-	[ajout] Menu administration : Possiblité d'accéder au lien où l'on ce situe
+	[ajout] Interdire les différentes configurations d'authentification externe via le fichier de config
+	[ajout] Menu administration : Couleur bleu sur le lien où l'on se situe
+	[ajout] Menu administration : Possiblité d'accéder au lien où l'on se situe
 	[ajout] Moteur de page
-	[ajout] Condition General d'Utilisation personalisable
-	[ajout] Lors de l'envois mail notifier le changement de ressources si il y a lieu
-	[ajout] Gestion de modules externe
+	[ajout] Conditions Générales d'Utilisation personalisables
+	[ajout] Lors de l'envoi mail, notifier le changement de ressources s'il y a lieu
+	[ajout] Gestion de modules externes
     [ajout] message dans l'entête s'il existe une réservation à modérer
     [amélioration] filtrage par plage IP au format CIDR
     [amélioration] retour à la page d'appel après modération
@@ -47,9 +47,9 @@ Version 3.4.0
     [correctif] gestion du menu gauche escamotable
 	[mise à jour] CKEditor 4.8.0 
 	[modification] Génération des PDF, on parle de ressource et non de salle, réorganisation du format PDF (compatible en enveloppe fenêtre)
-	[modification] Date de début et fin des réservations par défaut lors d'une premiere installation
-	[modification] Longueur minimum du mot de passe, passage de 6 à 8 caractères lors d'une premiere installation
-	[modification] Conformité avec la loi du CNIL RGPD
+	[modification] Date de début et fin des réservations par défaut lors d'une première installation
+	[modification] Longueur minimum du mot de passe, passage de 6 à 8 caractères lors d'une première installation
+	[modification] Conformité avec le RGPD
     [modification] boutons mois précédent/suivant
 
 	

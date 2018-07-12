@@ -945,7 +945,7 @@ echo '</table>'.PHP_EOL;
 #Choix  de l'affichage du bouton "afficher le menu de gauche ou non"
 #SQL : menu_gauche==1  //le bouton s'affiche par default
 # menu_gauche==0 //le bouton ne s'affiche pas par default
-# menu_gauche==2 //le menu s'affiche en ahut
+# menu_gauche==2 //le menu s'affiche en haut
 #Test pour savoir la valeur présente dans la base de données : echo Settings::get("menu_gauche");
 echo '<hr />'.PHP_EOL;
 echo '<h3>'.get_vocab('display_menu').'</h3>'.PHP_EOL;
