@@ -2,8 +2,8 @@
 /**
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
- * Dernière modification : $Date: 2018-04-11 11:30$
- * @author    JeromeB & Laurent Delineau
+ * Dernière modification : $Date: 2018-07-13 17:00$
+ * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,13 +15,13 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-
+$grr_script_name = "admin_maj.php";
 include "../include/connect.inc.php";
 include "../include/config.inc.php";
 include "../include/misc.inc.php";
 include "../include/functions.inc.php";
 include "../include/$dbsys.inc.php";
-$grr_script_name = "admin_maj.php";
+
 // Settings
 require_once("../include/settings.class.php");
 //Chargement des valeurs de la table settingS
@@ -37,7 +37,7 @@ function formatresult($echo,$dbt,$fin) {
 	global $majscript;
 
 	if($majscript) echo $echo."\n";
-	else echo $dbt.$echo.$fin."</br>";
+	else return $dbt.$echo.$fin."</br>";
 }
 
 function traite_requete($requete = "")
@@ -55,7 +55,7 @@ function traite_requete($requete = "")
 			$retour = "";
 			break;
 			case "1061":
-			// La cléf existe déjà : pas de problème
+			// La clé existe déjà : pas de problème
 			$retour = "";
 			break;
 			case "1062":
@@ -63,7 +63,7 @@ function traite_requete($requete = "")
 			$retour = "<span style=\"color:#FF0000;\">Erreur (<b>non critique</b>) sur la requête : <i>".$requete."</i> (".mysqli_errno($GLOBALS['db_c'])." : ".mysqli_error($GLOBALS['db_c']).")</span><br />\n";
 			break;
 			case "1068":
-			// Des cléfs existent déjà : pas de problème
+			// Des clés existent déjà : pas de problème
 			$retour = "";
 			break;
 			case "1091":
