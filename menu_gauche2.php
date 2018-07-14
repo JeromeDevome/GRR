@@ -24,18 +24,19 @@ if ($_GET['pview'] != 1)
 	if ( $file== 'month_all2.php' or Settings::get("menu_gauche") == 0){
 		echo "<script>";
         // echo "cacherMenuGauche()";
-        echo "afficheMenuGauche(0)";
+        // echo "afficheMenuGauche(0)";
+        echo 'document.getElementById("menuGauche2").style.display = "none"';
         echo "</script>";
     }
     elseif (Settings::get("menu_gauche") == 2){
         echo "<script>";
-        // echo 'document.getElementById("menuGauche2").style.max-width = "100%"';
-        echo "afficheMenuGauche(2)";
+        echo 'document.getElementById("menuGauche2").style.width = "100%"';
+        // echo "afficheMenuGauche(2)";
         echo "</script>";
     }
     else {
         echo "<script>";
-        echo "afficheMenuGauche(1)";
+        echo 'document.getElementById("menuGauche2").style.display = "inline-block"';
         echo "</script>";
     }
     /*    
