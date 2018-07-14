@@ -2138,6 +2138,11 @@ mise à jour". Effectuez la mise à jour de la base de donnée puis lisez
 le résultat de la mise à jour.
     </li>
 </ol>
+<p> <b>En cas de problème :</b> il arrive que des tables soient manquantes alors que la version de la base est identique à la version des scripts. Dans ce cas, la mise à jour automatique échoue. Il faut en passer par une mise à jour forcée.<br/>
+Ouvrir une session administrateur à partir de la page login.php, puis dans le menu d'administration, choisir l'item "Numéro de version et mise à jour", compléter l'URL sous la forme https://monGRR/admin/admin_maj.php?force_maj= où monGRR doit être remplacé par l'adresse de la racine de votre site.<br/>
+Le script de mise à jour va alors tenter de mettre à jour les bases de données de GRR comme s'il s'agissait d'une version 1.3, ce qui va déclencher des erreurs SQL en principe non critiques.<br/>
+Vérifier que tout s'est bien passé en se connectant à la racine du site https://monGRR/
+</p>
 <h4>5) Paramétrage de GRR</h4>
 <h5>a) Le fichier « config.inc.php »</h5>
 <p>Dans le menu « administration », la page « configuration générale » permet de configurer un grand nombre de paramètres.</p>
@@ -3284,4 +3289,4 @@ argument "true" de :
 
 
 </body>
-</html>>
+</html>

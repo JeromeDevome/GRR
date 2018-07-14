@@ -2,7 +2,7 @@
 /**
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
- * Dernière modification : $Date: 2018-07-13 17:00$
+ * Dernière modification : $Date: 2018-07-14 16:00$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
@@ -495,7 +495,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
 		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_repeat CHANGE type type CHAR(2);");
 		$result_inter .= traite_requete("ALTER TABLE  ".TABLE_PREFIX."_room ADD  moderate TINYINT( 1 ) NULL DEFAULT  '0';");
 		$result_inter .= traite_requete("ALTER TABLE  ".TABLE_PREFIX."_entry ADD  moderate TINYINT( 1 ) NULL DEFAULT  '0';");
-		$result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_entry_moderate (id int(11) NOT NULL auto_increment, login_moderateur varchar(40) NOT NULL default '',motivation_moderation text NOT NULL,start_time int(11) NOT NULL default '0',end_time int(11) NOT NULL default '0',entry_type int(11) NOT NULL default '0', repeat_id int(11) NOT NULL default '0',room_id int(11) NOT NULL default '1',timestamp timestamp(14) NOT NULL,create_by varchar(25) NOT NULL default '',name varchar(80) NOT NULL default '',type char(2) default NULL,description text,statut_entry char(1) NOT NULL default '-',option_reservation int(11) NOT NULL default '0',overload_desc text,moderate tinyint(1) default '0', PRIMARY KEY  (id), KEY idxStartTime (start_time), KEY idxEndTime (end_time) );");
+		$result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_entry_moderate (id int(11) NOT NULL auto_increment, login_moderateur varchar(40) NOT NULL default '',motivation_moderation text NOT NULL,start_time int(11) NOT NULL default '0',end_time int(11) NOT NULL default '0',entry_type int(11) NOT NULL default '0', repeat_id int(11) NOT NULL default '0',room_id int(11) NOT NULL default '1',timestamp timestamp(6) NOT NULL,create_by varchar(25) NOT NULL default '',name varchar(80) NOT NULL default '',type char(2) default NULL,description text,statut_entry char(1) NOT NULL default '-',option_reservation int(11) NOT NULL default '0',overload_desc text,moderate tinyint(1) default '0', PRIMARY KEY  (id), KEY idxStartTime (start_time), KEY idxEndTime (end_time) );");
 		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_area ADD id_type_par_defaut INT(11) DEFAULT '-1' NOT NULL;");
 		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_overload ADD obligatoire CHAR( 1 ) DEFAULT 'n' NOT NULL;");
 		$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='allow_users_modify_profil'");
