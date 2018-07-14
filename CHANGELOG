@@ -3,17 +3,17 @@ Bugs connus sur la version de GitHub :
  - des problèmes se produisent lorsqu'on veut faire une modification/copie de réservation  avec un changement de domaine
 
 Tâches prévues :
+ - interface de personnalisation des couleurs
  
- - Echange de deux réservations
- - Page year_all affichant les réservations sur plusieurs mois et plusieurs domaines
-
 -----
 --
 -----
 
-Version en cours de développement sur GitHUB (3.4.1) // Numero de version a definir
-
-
+Version en cours de développement sur GitHUB (3.4.1) // Numéro de version à confirmer
+    [ajout] Echange de deux réservations
+    [ajout] Page year_all affichant les réservations sur plusieurs mois et plusieurs domaines (à utiliser avec prudence s'il y a beaucoup de réservations ou de ressources)
+    [amelioration] reprise du code des pages plannings pour gérer les menus escamotables (fait toutes pages)
+    
 -----
 --
 -----

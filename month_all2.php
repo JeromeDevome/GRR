@@ -328,28 +328,31 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 	echo "\n
 	<div class='ligne23'>
 		<div class=\"left\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$yy&amp;month=$ym&amp;area=$area';\" \"/><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("monthbefore")." </button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$yy&amp;month=$ym&amp;area=$area';\" \"><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("monthbefore")." </button>
 		</div>";
 		include "./include/trailer.inc.php";
 		echo "<div class=\"right\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$ty&amp;month=$tm&amp;area=$area';\" \"/>".get_vocab('monthafter')." <span class=\"glyphicon glyphicon-forward\"></button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$ty&amp;month=$tm&amp;area=$area';\" \">".get_vocab('monthafter')." <span class=\"glyphicon glyphicon-forward\"></button>
 		</div>
 	</div>";
 }
 // montrer ou cacher le menu gauche
 echo "<div>";
+if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
+{
 	echo "<div class=\"left\"> ";
     $mode = Settings::get("menu_gauche");
     if ($mode == 0) $mode = 1; // il faut bien que le menu puisse s'afficher, par défaut ce sera à gauche sauf choix autre par setting
     echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuGauche($mode)\" title='".get_vocab('show_left_menu')."'><span class=\"glyphicon glyphicon-chevron-right\"></span></button></div> ";
     echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuGauche(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
 	echo "</div>";
+}    
     echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.get_vocab("all_areas").'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php" title="'.get_vocab('see_all_the_rooms_for_several_months').'">'.ucfirst(utf8_strftime("%Y", $month_start)).'</a></h4>'.PHP_EOL;
     if ($_GET['pview'] != 1)
         echo " <a href=\"month_all.php?year=$year&amp;month=$month&amp;area=$area\"><span class='glyphicon glyphicon-refresh'></a>";
 echo "</div>";
 echo "</caption>";
-if ($_GET['pview'] == 1 && $_GET['precedent'] == 1)
+if ($_GET['pview'] == 1 && (isset($_GET['precedent']) && $_GET['precedent'] == 1))
 {
 	echo "<span id=\"lienPrecedent\">
 	<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript:history.back();\">Précedent</button>
@@ -517,9 +520,11 @@ echo "</tbody>";
 echo "</table>";
 echo  "<div id=\"popup_name\" class=\"popup_block\" ></div>";
 if ($_GET['pview'] != 1)
+{
 	echo "<div id=\"toTop\"> ^ Haut de la page";
-bouton_retour_haut ();
-echo " </div>";
+    bouton_retour_haut ();
+    echo " </div>";
+}
 echo " </div>";
 affiche_pop_up(get_vocab("message_records"),"user");
 echo "</div>";

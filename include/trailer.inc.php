@@ -2,8 +2,8 @@
 /**
  * trailer.inc.php
  * script de bas de page html
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Laurent Delineau
+ * Dernière modification : $Date: 2018-07-14 17:00$
+ * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -37,7 +37,7 @@ if ((!isset($_GET['pview']) || ($_GET['pview'] != 1)) && (isset($affiche_pview) 
 			$s .= htmlspecialchars($_SERVER['QUERY_STRING']) . "&amp;";
 		$s .= "pview=1&amp;precedent=1'\"";
 	}
-	$s.= "><span class=\"glyphicon glyphicon-print\"></span> </button>";
+	$s.= "><span class=\"glyphicon glyphicon-print\"></span></button>";
 	echo $s;
 }
 // Affichage du message d'erreur en cas d'échec de l'envoi de mails automatiques

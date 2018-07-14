@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-06-25 12:00$
+ * Dernière modification : $Date: 2018-07-16 16:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1816,7 +1816,7 @@ function tdcell($colclass, $width = '')
 		echo '<td style="background-color:'.$couleurhexa.';" '.$temp.'>'.PHP_EOL;
 	}
 	else
-		echo '<td class="'.$colclass.' '.$temp.'">'.PHP_EOL;
+		echo '<td class="'.$colclass.'" '.$temp.'>'.PHP_EOL;
 }
 
 function tdcell_rowspan($colclass, $step)
@@ -2427,7 +2427,6 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 	if ($nb_sites_a_afficher > 1)
 	{
 		// s'il y a au moins deux sites à afficher, on met une liste déroulante, sinon, on affiche rien.
-		$out_html .= '</form>'.PHP_EOL;
 		$out_html .= '</div>'.PHP_EOL;
 		$out_html .= '<script type="text/javascript">'.PHP_EOL;
 		$out_html .= 'function site_go()'.PHP_EOL;
