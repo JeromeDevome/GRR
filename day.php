@@ -289,7 +289,11 @@ if ($enable_periods == 'y')
 else
 	echo get_vocab("time");
 echo  '</td>'.PHP_EOL;
-$room_column_width = (int)(90 / grr_sql_count($ressources));
+
+if(grr_sql_count($ressources) != 0)
+	$room_column_width = (int)(90 / grr_sql_count($ressources));
+else
+	$room_column_width = 90;
 $nbcol = 0;
 $rooms = array();
 $a = 0;
