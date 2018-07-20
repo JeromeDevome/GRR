@@ -2,8 +2,8 @@
 /**
  * misc.inc.php
  * fichier de variables diverses
- * Dernière modification : $Date: 2018-07-01 19:15$
- * @author    JeromeB & Laurent Delineau
+ * Dernière modification : $Date: 2018-07-20 14:00$
+ * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -64,6 +64,7 @@ $liste_tables = array(
 # Liste des feuilles de style
 $liste_themes = array(
 	"default",
+    "grand_bleu",
 	"vert",
 	"violet",
 	"orange",
@@ -75,6 +76,7 @@ $liste_themes = array(
 
 # Liste des noms des styles
 $liste_name_themes = array(
+    "Defaut",
 	"Grand bleu",
 	"Verdoyant",
 	"Violeta",
