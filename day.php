@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-16 16:30$
+ * Dernière modification : $Date: 2018-07-20 18:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -172,7 +172,7 @@ $room_back = isset($_GET['room']) ? $_GET['room'] : 'all';
 if($room_back != 'all'){
 	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' and id = '".protect_data_sql($room_back)."' ORDER BY order_display, room_name";
 }
-else $sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display, room_name";
+else $sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' ORDER BY order_display, room_name";
 $ressources = grr_sql_query($sql);
 if (!$ressources)
 	fatal_error(0, grr_sql_error());
@@ -279,8 +279,6 @@ if (isset($_GET['precedent']))
 echo "</div>";
 echo '</div>'.PHP_EOL;
 echo "</caption>";
-//echo '<div class="contenu_planning">'.PHP_EOL;
-//echo '<table class="table-bordered table-striped">'.PHP_EOL;
 echo "<thead>";
 echo '<tr>';
 tdcell("cell_hours","8"); 
@@ -558,8 +556,6 @@ affiche_pop_up(get_vocab('message_records'), 'user');
 </script>
 <?php
 unset($row);
-//echo '</div>'.PHP_EOL;
-//echo '</div>'.PHP_EOL; 
 echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
 echo "</div>"; // fin  de row
 echo "</body></html>";
