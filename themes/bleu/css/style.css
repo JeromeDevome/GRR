@@ -1,4 +1,4 @@
-body{font-size:14px;font-family:arial,verdana,sans-serif;background-color:#17346C;width:100%;margin:0 auto}
+body{font-size:14px;font-family:arial,verdana,sans-serif;width:100%;margin:0 auto}
 header{width:100%;z-index:999;text-align:center;border-bottom:1px solid #17346C}
 a:after{content:"" !important}
 .ferie{background-color:#c0392b !important}
@@ -12,7 +12,7 @@ form{margin-bottom:5pt;margin-top:5pt}
 .small{font-size:.8em}
 .larger{font-size:1.4em}
 a:link,a:visited{color:#000;font-weight:700;text-decoration:none}
-a:hover{color:#FFF}
+a:hover{color:#AAA}
 h1{color:#000;font-family:verdana,sans-serif;font-size:16pt}
 h2{color:#000;font-family:verdana,sans-serif;font-size:14pt}
 h3{color:#000;font-family:verdana,sans-serif;font-size:12pt}
@@ -23,7 +23,7 @@ td.BR{vertical-align:baseline;text-align:right}
 td.BL{vertical-align:baseline;text-align:left}
 td.TR{vertical-align:top;text-align:right}
 td.TL{vertical-align:top;text-align:left}
-table.table-striped th{background-color:gray !important; border:0px !important;}
+table.table-striped th{background-color:gray; border:0px !important;}
 .fontcolor1{color:#fff}
 .fontcolor2,.fontcolor3{color:#9CF}
 .fontcolor4{color:#FFF}
@@ -54,7 +54,7 @@ a.calendar{display:block;color:#FFF;height:100%;width:100%;vertical-align:middle
 .cellcalendar{background:#17346C;vertical-align:middle;text-align:center;height:30px;width:40px;line-height:30px}
 .cellcalendar a:hover{background-color:#fff}
 a.lienPlanning:link,a.lienPlanning:visited{color:#fff;display:block}
-a.lienPlanning:hover{display:block ;color:#17346C;}
+a.lienPlanning:hover{display:block ;color:#AAA;}
 span a{color:#FFF}
 .left{float:left}
 .right{float:right}
@@ -78,6 +78,7 @@ td.cell_hours a{color:#fff}
 td.cell_month{background-color:#fff;vertical-align:top}
 .cell_month a{color:#000;font-weight:400;text-align:center}
 .cell_month a:hover{color:#000;font-weight:700}
+.cell_hours_ferie a{color:white}
 td.cell_month_o{background-color:#ccc}
 .empty_cell{background-color:#fff;text-align:center;min-height:20px;height:100%;vertical-align:middle}
 .monthday{font-size:2.1em;text-align:center} 
@@ -103,7 +104,7 @@ div.tooltip{color:#000;background:#ffb200;margin:5px;padding:5px}
 .contenu_planning{position:relative;background-color:#17346C;height:100%;max-width:100%}
 .contenu_planning a{display:block}
 a.lienCellule{color:#000;font-weight:400;display:block}
-a:hover.lienCellule{color:#000;font-weight:700;display:block}
+a:hover.lienCellule{color:#AAA;font-weight:700;display:block}
 .small_planning{font-size:.9em}
 .texte_ress_tempo_indispo{color:#ba2828;font-weight:700}
 .texte_ress_moderee{color:#ba2828;font-weight:700}
@@ -158,10 +159,10 @@ a.buttonsReservation{cursor:pointer}
 #voir{display:block}
 #cacher{display:none}
 /* nouveaux blocs de mise en page */
-#menuGauche2{background-color:#31A3DD;float:left;height:100%;min-width:230px;max-width:25%;padding-bottom:10px;display:inline-block}
+#menuGauche2{background-color:#17346C;float:left;height:100%;min-width:230px;max-width:25%;padding-bottom:10px;display:inline-block}
 #planning2{text-align:center;min-width:600px;display:inline-block;width:100%;}
 .ligne23{min-height:23px;}
-.table-bordered caption{background:#31A3DD;padding: 0 0 0 0;}
+.table-bordered caption{background:#17346C;padding: 0 0 0 0;}
 
 @media only screen and (max-width:800px) { 
 	.accueil {
