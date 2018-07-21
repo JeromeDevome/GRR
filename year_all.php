@@ -3,7 +3,7 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-07 13:00 $
+ * Dernière modification : $Date: 2018-07-21 10:30 $
  * @author    Yan Naessens, Laurent Delineau 
  * @copyright Copyright 2003-2018 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -153,7 +153,28 @@ if (Settings::get("verif_reservation_auto") == 0)
 	verify_retard_reservation();
 }
 //print the page header
-print_header($day, $from_month, $from_year, $type_session);
+// print_header($day, $from_month, $from_year, $type_session);
+
+// définition de variables globales
+global $racine, $racineAd, $desactive_VerifNomPrenomUser;
+// autres initialisations
+if (@file_exists('./admin_access_area.php')){
+    $adm = 1;
+    $racine = "../";
+    $racineAd = "./";
+}else{
+    $adm = 0;
+    $racine = "./";
+    $racineAd = "./admin/";
+}
+// pour le traitement des modules
+include $racine."/include/hook.class.php";
+
+if (!($desactive_VerifNomPrenomUser))
+    $desactive_VerifNomPrenomUser = 'n';
+// On vérifie que les noms et prénoms ne sont pas vides
+VerifNomPrenomUser($type_session);
+
 //Month view start time. This ignores morningstarts/eveningends because it
 //doesn't make sense to not show all entries for the day, and it messes
 //things up when entries cross midnight.
@@ -161,6 +182,21 @@ $month_start = mktime(0, 0, 0, $from_month, 1, $from_year);
 $month_end = mktime(23, 59, 59, $to_month, 1, $to_year);
 $days_in_to_month = date("t", $month_end);
 $month_end = mktime(23,59,59,$to_month,$days_in_to_month,$to_year);
+
+// début du code html
+echo '<!DOCTYPE html>'.PHP_EOL;
+echo '<html lang="fr">'.PHP_EOL;
+// section <head>
+if ($type_session == "with_session")
+    echo pageHead2(Settings::get("company"),"with_session");
+else
+    echo pageHead2(Settings::get("company"),"no_session");
+// section <body>
+echo "<body>";
+// Menu du haut = section <header>
+echo "<header>";
+pageHeader2('', '', '', $type_session);
+echo "</header>";
 
 // Si format imprimable ($_GET['pview'] = 1), on n'affiche pas cette partie
 if ($_GET['pview'] != 1)
