@@ -3,7 +3,7 @@
  * week.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "semaine".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-20 18:30$
+ * Dernière modification : $Date: 2018-07-26 14:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -169,7 +169,7 @@ echo "<header>";
 pageHeader2($day, $month, $year, $type_session);
 echo "</header>";
 // Debut de la page
-echo '<div class="row">'.PHP_EOL;
+echo "<section>".PHP_EOL;
 // Calcul du niveau de droit de réservation
 $authGetUserLevel = authGetUserLevel(getUserName(), -1);
 // Determine si un visiteur peut réserver une ressource
@@ -388,7 +388,7 @@ if ($_GET['pview'] != 1){
 else{
 	echo '<div id="print_planning">'.PHP_EOL;
 }
-echo '<table class="table-bordered table-striped">',PHP_EOL;
+echo '<table class="semaine table-bordered table-striped">',PHP_EOL;
 // le titre de la table
 echo "<caption>";
 echo "<div class=ligne23>";
@@ -464,7 +464,7 @@ if (isset($_GET['precedent']))
 }
 echo '</div>'.PHP_EOL;
 echo "</caption>";
-//echo '<div class="contenu_planning">';
+
 if ($debug_flag)
 {
 	echo "<p>DEBUG:<p><pre>\n";
@@ -482,14 +482,14 @@ if ($debug_flag)
 	else echo "d is not an array!\n";
 	echo "</pre><p>\n";
 } 
-// echo "<table class=\"table-bordered table-striped\">";
+
 echo "<thead>";
-echo "<tr><th style=\"width:8%;\">";
+echo "<tr><td class=\"cell_hours\" style=\"width:8%;\">";
 if ($enable_periods == 'y')
 	echo get_vocab("period");
 else
 	echo get_vocab("time");
-echo "</th>";
+echo "</td>";
 $num_week_day = $weekstarts;
 $k = $day_week;
 $i = $time;
@@ -502,21 +502,20 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 	$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$i'");
 	if ($display_day[$num_week_day] == 1)
 	{
-		$class = "";
+		$class = "cell_hours";
 		$title = "";
         if ($settings->get("show_holidays") == "Oui")
         {   
             if (isHoliday($tt)){
-                $class .= 'ferie ';
+                $class = 'ferie ';
             }
             elseif (isSchoolHoliday($tt)){
-                $class .= 'vacance ';
+                $class = 'vacance ';
             }
         }
 		/*echo "<th style=\"width:13%;\"><a onclick=\"charger()\" class=\"lienPlanning ".$class."\" title=\"".$title.htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"day.php?year=$year_actuel&amp;month=$month_actuel&amp;day=$num_day&amp;area=$area\">". utf8_strftime($dformat, $t)."</a>";*/
-        echo "<th ";
-        if ($class != "") echo "class = \"".$class."\"";
-        echo "style=\"width:13%;\"><a onclick=\"charger()\" title=\"".$title.htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"day.php?year=$year_actuel&amp;month=$month_actuel&amp;day=$num_day&amp;area=$area\">". utf8_strftime($dformat, $t)."</a>";
+        echo "<th class = \"".$class."\" style=\"width:13%;\">";
+        echo "<a onclick=\"charger()\" title=\"".$title.htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"day.php?year=$year_actuel&amp;month=$month_actuel&amp;day=$num_day&amp;area=$area\">". utf8_strftime($dformat, $t)."</a>";
 		if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
 			if (intval($jour_cycle) > 0)
 				echo "<br />".get_vocab("rep_type_6")." ".$jour_cycle;
@@ -782,6 +781,7 @@ $semaine_changement_heure_hiver = 'no';
 	echo '</div>'.PHP_EOL; // fin de planning
 	// echo '</div>'.PHP_EOL;
 	echo '<div id="popup_name" class="popup_block" ></div>',PHP_EOL;
-echo "</div>"; // fin  de row
+
+echo "</section>";
 echo "</body></html>";
 ?>

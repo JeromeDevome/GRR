@@ -3,7 +3,7 @@
  * month_all.php
  * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-16 15:30$
+ * Dernière modification : $Date: 2018-07-26 15:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -99,7 +99,7 @@ echo "<header>";
 pageHeader2($day, $month, $year, $type_session);
 echo "</header>";
 // Debut de la page
-echo '<div class="row">'.PHP_EOL;
+echo '<section>'.PHP_EOL;
 
 // Affichage du menu
 include("menu_gauche2.php");
@@ -322,7 +322,7 @@ if ($_GET['pview'] != 1){
 else{
 	echo '<div id="print_planning">'.PHP_EOL;
 }
-echo '<table class="table-bordered table-striped">',PHP_EOL;
+echo '<table class="mois table-bordered table-striped">',PHP_EOL;
 // le titre de la table
 echo "<caption>";
 // liens mois avant-après et imprimante si page non imprimable
@@ -387,7 +387,7 @@ echo "</caption>";
 		$num_week_day = ($weekcol + $weekstarts) % 7;
 		// on n'affiche pas tous les jours de la semaine
 		if ($display_day[$num_week_day] == 1)
-			echo '<th style="width:14%;">',day_name($num_week_day),'</th>',PHP_EOL;
+			echo '<th class="jour_sem">',day_name($num_week_day),'</th>',PHP_EOL;
 	}
 	echo '</thead>',PHP_EOL;
 	// Fin affichage première ligne (intitulé des jours)
@@ -417,7 +417,7 @@ echo "</caption>";
 		if ($display_day[$num_week_day] == 1)
 		{
 			// début condition "on n'affiche pas tous les jours de la semaine"
-			echo '<td class="cell_month">',PHP_EOL;
+			echo '<td >',PHP_EOL;
 			// On affiche les jours du mois dans le coin supérieur gauche de chaque cellule
 			$ferie_true = 0;
 			$class = "";
@@ -464,7 +464,7 @@ echo "</caption>";
 								break;
 							}
 
-							echo '<table class="table-bordered table-striped">',PHP_EOL,'<tr>',PHP_EOL;
+							echo '<table class="table-header table-bordered table-striped">',PHP_EOL,'<tr>',PHP_EOL;
 
 							tdcell($d[$cday]["color"][$i]);
 							echo '<span class="small_planning">',PHP_EOL;
@@ -542,6 +542,6 @@ if ($_GET['pview'] != 1)
 	//Fermeture DIV Planning2
     echo " </div>";
 affiche_pop_up(get_vocab("message_records"),"user");
-echo "</div>";
+echo "</section>";
 echo "</body></html>";
 ?>

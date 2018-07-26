@@ -3,7 +3,7 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-09 12:00$
+ * Dernière modification : $Date: 2018-07-26 15:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -100,7 +100,7 @@ echo "<header>";
 pageHeader2($day, $month, $year, $type_session);
 echo "</header>";
 // Debut de la page
-echo '<div class="row">'.PHP_EOL;
+echo '<section>'.PHP_EOL;
 
 // Affichage du menu
 include("menu_gauche2.php");
@@ -319,7 +319,7 @@ if ($_GET['pview'] != 1){
 else{
 	echo '<div id="print_planning">'.PHP_EOL;
 }
-echo "<table class='table-bordered'>";
+echo "<table class='mois table-bordered table-striped'>";
 // le titre de la table
 echo "<caption>";
 // liens mois avant-après et imprimante si page non imprimable
@@ -362,8 +362,8 @@ if ($_GET['pview'] == 1 && (isset($_GET['precedent']) && $_GET['precedent'] == 1
 $sql = "SELECT room_name, capacity, id, description, statut_room FROM ".TABLE_PREFIX."_room WHERE area_id=$area ORDER BY order_display,room_name";
 $res = grr_sql_query($sql);
 echo "<thead><tr>";
-echo tdcell("cell_hours");
-echo "</td>";
+echo "<th class='cell_hours'>".get_vocab('rooms');
+echo "</th>";
 for ($k = 1; $k <= $days_in_month; $k++)
 {
     $t2 = mktime(0, 0, 0, $month, $k, $year);
@@ -374,8 +374,8 @@ for ($k = 1; $k <= $days_in_month; $k++)
 	$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$temp'");
     if ($display_day[$cweek] == 1)
 	{
-        if (isHoliday($temp)) {echo tdcell("cell_hours_ferie");}
-        else if (isSchoolHoliday($temp)) {echo tdcell("cell_hours_vacance");}
+        if (isHoliday($temp)) {echo tdcell("ferie cell_hours");}
+        else if (isSchoolHoliday($temp)) {echo tdcell("cell_hours vacance");}
         else {echo tdcell("cell_hours");}
         echo $name_day;
         if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) > -1)
@@ -406,8 +406,8 @@ for ($k = 1; $k <= $days_in_month; $k++)
 	$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$temp'");
     if ($display_day[$cweek] == 1)
 	{
-        if (isHoliday($temp)) {echo tdcell("cell_hours_ferie");}
-        else if (isSchoolHoliday($temp)) {echo tdcell("cell_hours_vacance");}
+        if (isHoliday($temp)) {echo tdcell("ferie cell_hours");}
+        else if (isSchoolHoliday($temp)) {echo tdcell("cell_hours vacance");}
         else {echo tdcell("cell_hours");}
         echo $name_day;
         if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) > -1)
@@ -434,7 +434,7 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++) // traitement d'une ressou
 	if ($verif_acces_ressource)
 	{
 		$acces_fiche_reservation = verif_acces_fiche_reservation(getUserName(), $row[2]);
-		echo "<tr><th class=\"tableau_month_all2\">" . htmlspecialchars($row[0]) ."</th>\n";
+		echo "<tr><th >" . htmlspecialchars($row[0]) ."</th>\n";
 		$li++;
 		for ($k = 1; $k <= $days_in_month; $k++)
 		{
@@ -443,7 +443,7 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++) // traitement d'une ressou
 			$cweek = date("w", $t2);
 			if ($display_day[$cweek] == 1)
 			{
-				echo "<td class=\"cell_month\"> ";
+				echo "<td > ";
 				if (est_hors_reservation(mktime(0, 0, 0, $month, $cday, $year), $area))
 				{
 					echo "<div class=\"empty_cell\">";
@@ -453,7 +453,7 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++) // traitement d'une ressou
 				{
 					if (isset($d[$cday]["id"][0])) // il y a une réservation au moins à afficher
 					{
-                        echo "<table class='table-bordered'>";
+                        echo "<table class='table-header table-bordered'>";
 						$n = count($d[$cday]["id"]);
 						for ($i = 0; $i < $n; $i++)
 						{
@@ -482,17 +482,17 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++) // traitement d'une ressou
 										{
 											$currentPage = 'month_all2';
 											$id =   $d[$cday]["id"][$i];
-											echo "<a title=\"".htmlspecialchars($d[$cday]["data"][$i])."\" data-width=\"675\" onclick=\"request($id,$cday,$month,$year,'all','$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight\">" .$d[$cday]["who1"][$i]."</a>";
+											echo "<a title=\"".htmlspecialchars($d[$cday]["data"][$i])."\" data-width=\"675\" onclick=\"request($id,$cday,$month,$year,'all','$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight\">" .substr($d[$cday]["who1"][$i],0,4)."</a>";
 										}
 										else
 										{
-											echo "<a title=\"".htmlspecialchars($d[$cday]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday]["id"][$i]."&amp;page=month_all2\">"
-											.$d[$cday]["who1"][$i]{0}
+											echo "<a class=\"lienCellule\" title=\"".htmlspecialchars($d[$cday]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday]["id"][$i]."&amp;page=month_all2\">"
+											.substr($d[$cday]["who1"][$i],0,4)
 											. "</a>";
 										}
 									}
 									else
-										echo $d[$cday]["who1"][$i]{0};
+										echo substr($d[$cday]["who1"][$i],0,4);
                                     echo "</span></td></tr>";
 								}
 							}
@@ -527,6 +527,6 @@ if ($_GET['pview'] != 1)
 }
 echo " </div>";
 affiche_pop_up(get_vocab("message_records"),"user");
-echo "</div>";
+echo "</section>";
 include "footer.php";
 ?>

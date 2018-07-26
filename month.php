@@ -3,7 +3,7 @@
  * month.php
  * Interface d'accueil avec affichage par mois
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-16 15:00$
+ * Dernière modification : $Date: 2018-07-26 15:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -98,7 +98,7 @@ echo "<header>";
 pageHeader2($day, $month, $year, $type_session);
 echo "</header>";
 // Debut de la page
-echo '<div class="row">'.PHP_EOL;
+echo '<section>'.PHP_EOL;
 
 // Affichage du menu
 include("menu_gauche2.php");
@@ -168,7 +168,7 @@ if ($_GET['pview'] != 1){
 else{
 	echo '<div id="print_planning">'.PHP_EOL;
 }
-echo '<table class="table-bordered table-striped">',PHP_EOL;
+echo '<table class="mois table-bordered table-striped">',PHP_EOL;
 // le titre de la table
 echo "<caption>";
 // liens mois avant-après et imprimante si page non imprimable
@@ -291,22 +291,22 @@ else
 					$d[$day_num]["data"][] = $start_str . get_vocab("to"). "24:00";
 					break;
 					case "> > ":
-					$d[$day_num]["data"][] = $start_str . get_vocab("to") ."&gt;";
+					$d[$day_num]["data"][] = $start_str . get_vocab("to") ."==>";
 					break;
 					case "= = ":
 					$d[$day_num]["data"][] = $all_day;
 					break;
 					case "= > ":
-					$d[$day_num]["data"][] = $all_day . "&gt;";
+					$d[$day_num]["data"][] = $all_day . "==>";
 					break;
 					case "< < ":
-					$d[$day_num]["data"][] = "&lt;".get_vocab("to") . $end_str;
+					$d[$day_num]["data"][] = "<==".get_vocab("to") . $end_str;
 					break;
 					case "< = ":
-					$d[$day_num]["data"][] = "&lt;" . $all_day;
+					$d[$day_num]["data"][] = "<==" . $all_day;
 					break;
 					case "< > ":
-					$d[$day_num]["data"][] = "&lt;" . $all_day . "&gt;";
+					$d[$day_num]["data"][] = "<" . $all_day . ">";
 					break;
 				}
 			}
@@ -322,22 +322,22 @@ else
 					$d[$day_num]["data"][] = date(hour_min_format(), $row[0]) . get_vocab("to")."24:00";
 					break;
 					case "> > ":
-					$d[$day_num]["data"][] = date(hour_min_format(), $row[0]) . get_vocab("to")."&gt;";
+					$d[$day_num]["data"][] = date(hour_min_format(), $row[0]) . get_vocab("to")."==>";
 					break;
 					case "= = ":
 					$d[$day_num]["data"][] = $all_day;
 					break;
 					case "= > ":
-					$d[$day_num]["data"][] = $all_day . "&gt;";
+					$d[$day_num]["data"][] = $all_day . "==>";
 					break;
 					case "< < ":
-					$d[$day_num]["data"][] = "&lt;".get_vocab("to") . date(hour_min_format(), $row[1]);
+					$d[$day_num]["data"][] = "<==".get_vocab("to") . date(hour_min_format(), $row[1]);
 					break;
 					case "< = ":
-					$d[$day_num]["data"][] = "&lt;" . $all_day;
+					$d[$day_num]["data"][] = "<==" . $all_day;
 					break;
 					case "< > ":
-					$d[$day_num]["data"][] = "&lt;" . $all_day . "&gt;";
+					$d[$day_num]["data"][] = "<" . $all_day . ">";
 					break;
 				}
 			}
@@ -354,7 +354,7 @@ for ($weekcol = 0; $weekcol < 7; $weekcol++)
 {
     $num_week_day = ($weekcol + $weekstarts) % 7;
     if ($display_day[$num_week_day] == 1)
-        echo '<th style="width:14%;">',day_name(($weekcol + $weekstarts) % 7),'</th>',PHP_EOL;
+        echo '<th class="jour_sem">',day_name(($weekcol + $weekstarts) % 7),'</th>',PHP_EOL;
 }
 echo '</tr></thead><tbody>',PHP_EOL;
 $weekcol = 0;
@@ -393,7 +393,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                 $class .= 'vacance ';
             }
         }
-        echo '<td class="cell_month">',PHP_EOL,'<div class="monthday ',$class,'">',PHP_EOL,'<a title="',htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day")),$title,'" href="day.php?year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;area=',$area,'">',$name_day;
+        echo '<td >',PHP_EOL,'<div class="monthday ',$class,'">',PHP_EOL,'<a title="',htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day")),$title,'" href="day.php?year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;area=',$area,'">',$name_day;
         if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
         {
             if (intval($jour_cycle) > 0)
@@ -420,7 +420,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                         echo " ...\n";
                         break;
                     }
-                    echo '<table class="table-bordered table-striped">',PHP_EOL,'<tr>',PHP_EOL;
+                    echo '<table class="table-header table-bordered table-striped">',PHP_EOL,'<tr>',PHP_EOL;
                     tdcell($d[$cday]["color"][$i]);
                     echo '<span class="small_planning">';
                     if ($acces_fiche_reservation)
@@ -449,8 +449,8 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                     echo '</span>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;
                 }
             }
-            else
-                echo '<div class="empty_cell"> </div>';
+           /* else
+                echo '<div class="empty_cell"> </div>'; */
             $date_now = time();
             $hour = date("H",$date_now);
             $date_booking = mktime(24, 0, 0, $month, $cday, $year);
@@ -513,6 +513,6 @@ echo '
 affiche_pop_up(get_vocab("message_records"),"user");
 //echo '</div>'.PHP_EOL; 
 echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
-echo "</div>"; // fin  de row
+echo "</section>";
 echo "</body></html>";
 ?>

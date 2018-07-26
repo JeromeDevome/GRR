@@ -3,7 +3,7 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-07 11:00$
+ * Dernière modification : $Date: 2018-07-26 15:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -263,22 +263,22 @@ else
 					$d[$day_num][$month_num][$year_num]["data"][] = $start_str . "~24:00"." - ".$row[3].$temp;
 					break;
 					case "> > ":
-					$d[$day_num][$month_num][$year_num]["data"][] = $start_str . "~====>"." - ".$row[3].$temp;
+					$d[$day_num][$month_num][$year_num]["data"][] = $start_str . "~==>"." - ".$row[3].$temp;
 					break;
 					case "= = ":
 					$d[$day_num][$month_num][$year_num]["data"][] = $all_day2.$temp;
 					break;
 					case "= > ":
-					$d[$day_num][$month_num][$year_num]["data"][] = $all_day2 . "====>"." - ".$row[3].$temp;
+					$d[$day_num][$month_num][$year_num]["data"][] = $all_day2 . "==>"." - ".$row[3].$temp;
 					break;
 					case "< < ":
-					$d[$day_num][$month_num][$year_num]["data"][] = "<====~" . $end_str." - ".$row[3].$temp;
+					$d[$day_num][$month_num][$year_num]["data"][] = "<==~" . $end_str." - ".$row[3].$temp;
 					break;
 					case "< = ":
-					$d[$day_num][$month_num][$year_num]["data"][] = "<====" . $all_day2." - ".$row[3].$temp;
+					$d[$day_num][$month_num][$year_num]["data"][] = "<==" . $all_day2." - ".$row[3].$temp;
 					break;
 					case "< > ":
-					$d[$day_num][$month_num][$year_num]["data"][] = "<====" . $all_day2 . "====>"." - ".$row[3].$temp;
+					$d[$day_num][$month_num][$year_num]["data"][] = "<==" . $all_day2 . "==>"." - ".$row[3].$temp;
 					break;
 				}
 			}
@@ -294,22 +294,22 @@ else
 					$d[$day_num][$month_num][$year_num]["data"][] = date(hour_min_format(), $row[0]) . "~24:00"." - ".$row[3].$temp;
 					break;
 					case "> > ":
-					$d[$day_num][$month_num][$year_num]["data"][] = date(hour_min_format(), $row[0]) . "~====>"." - ".$row[3].$temp;
+					$d[$day_num][$month_num][$year_num]["data"][] = date(hour_min_format(), $row[0]) . "~==>"." - ".$row[3].$temp;
 					break;
 					case "= = ":
 					$d[$day_num][$month_num][$year_num]["data"][] = $all_day2.$temp;
 					break;
 					case "= > ":
-					$d[$day_num][$month_num][$year_num]["data"][] = $all_day2 . "====>"." - ".$row[3].$temp;
+					$d[$day_num][$month_num][$year_num]["data"][] = $all_day2 . "==>"." - ".$row[3].$temp;
 					break;
 					case "< < ":
-					$d[$day_num][$month_num][$year_num]["data"][] = "<====~" . date(hour_min_format(), $row[1])." - ".$row[3].$temp;
+					$d[$day_num][$month_num][$year_num]["data"][] = "<==~" . date(hour_min_format(), $row[1])." - ".$row[3].$temp;
 					break;
 					case "< = ":
-					$d[$day_num][$month_num][$year_num]["data"][] = "<====" . $all_day2." - ".$row[3].$temp;
+					$d[$day_num][$month_num][$year_num]["data"][] = "<==" . $all_day2." - ".$row[3].$temp;
 					break;
 					case "< > ":
-					$d[$day_num][$month_num][$year_num]["data"][] = "<====" . $all_day2 . "====>"." - ".$row[3].$temp;
+					$d[$day_num][$month_num][$year_num]["data"][] = "<==" . $all_day2 . "==>"." - ".$row[3].$temp;
 					break;
 				}
 			}
@@ -340,6 +340,7 @@ echo "<header>";
 pageHeader2('', '', '', $type_session);
 echo "</header>";
 // Debut de la page
+echo "<section>";
 $this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=$area");
 // Si format imprimable ($_GET['pview'] = 1), on n'affiche pas cette partie 
 if ($_GET['pview'] != 1)
@@ -349,7 +350,7 @@ if ($_GET['pview'] != 1)
             	echo make_site_select_html('year.php',$site,$from_year,$from_month,$day,getUserName());
                 echo make_area_select_all_html('year',$site, $area, $from_year, $from_month, $day, getUserName());
         echo "</div>";
-        echo "\n<div class=\"col-lg-3 col-md-4 col-xs-12\">\n".PHP_EOL; // choix des dates 
+        echo "\n<div class=\"col-lg-4 col-md-6 col-xs-12\">\n".PHP_EOL; // choix des dates 
             echo "<form method=\"get\" action=\"year.php\">";
             echo "<table border=\"0\">\n";
             echo "<tr><td>".get_vocab("report_start").get_vocab("deux_points")."&nbsp</td>";
@@ -369,7 +370,7 @@ if ($_GET['pview'] != 1)
         echo "</div>";
     echo "</div>";
 }
-echo "<div class=\"titre_planning\">".ucfirst($this_area_name)." - ".get_vocab("all_areas")." </div>\n";
+echo "<div class=\"titre_planning\"><h4>".ucfirst($this_area_name)." - ".get_vocab("all_areas")."</h4></div>\n";
 // Boucle sur les mois
 $month_indice =  $month_start;
 while ($month_indice < $month_end)
@@ -377,18 +378,16 @@ while ($month_indice < $month_end)
 	$month_num = date("m", $month_indice);
 	$year_num  = date("Y", $month_indice);
 	$days_in_month = date("t", $month_indice);
-    echo "<table class='table-bordered'>";
+    echo "<table class='mois table-bordered'>";
     echo "<caption>";
-	//echo "<div class=\"titre_planning\">" . ucfirst(utf8_strftime("%B %Y", $month_indice)). "</div>\n";
-    echo "<h4 class='titre'><a href='month_all2.php?month=".$month_num."&year=".$year_num."&area=".$area."'>".ucfirst(utf8_strftime("%B", $month_indice))."</a>".utf8_strftime(" %Y", $month_indice)."</h4>";
+    echo "<h4><a href='month_all2.php?month=".$month_num."&year=".$year_num."&area=".$area."'>".ucfirst(utf8_strftime("%B", $month_indice))."</a>".utf8_strftime(" %Y", $month_indice)."</h4>";
     echo "</caption>";
-	// echo "<table border=\"2\">\n";
 	$sql = "select room_name, capacity, id, description from ".TABLE_PREFIX."_room where area_id=$area order by order_display,room_name";
 	$res = grr_sql_query($sql);
 	// Début affichage de la première ligne
-	echo "<tr>";
+	echo "<thead><tr>";
 	tdcell("cell_hours");
-	echo " </td>\n";
+	echo get_vocab('rooms')."</td>\n";
 	$t2 = mktime(0, 0, 0, $month_num, 1, $year_num);
 	for ($k = 0; $k < $days_in_month; $k++)
 	{
@@ -403,8 +402,8 @@ while ($month_indice < $month_end)
         $t2 = mktime(0,0,0,$month_num,$cday+1,$year_num);
 		if ($display_day[$cweek] == 1)
 		{
-			if (isHoliday($temp)) {echo tdcell("cell_hours_ferie");}
-            else if (isSchoolHoliday($temp)) {echo tdcell("cell_hours_vacance");}
+			if (isHoliday($temp)) {echo tdcell("cell_hours ferie");}
+            else if (isSchoolHoliday($temp)) {echo tdcell("cell_hours vacance");}
             else {echo tdcell("cell_hours");}
 			echo "<div><a title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\"   href=\"day.php?year=$year_num&amp;month=$month_num&amp;day=$cday&amp;area=$area\">$name_day</a>";
 			if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle)>-1)
@@ -421,7 +420,7 @@ while ($month_indice < $month_end)
 			echo "</div></td>\n";
 		}
 	}
-	echo "</tr>";
+	echo "</tr></thead>";
 		// Fin affichage de la première ligne
 	$li = 0;
 	for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++)
@@ -447,7 +446,7 @@ while ($month_indice < $month_end)
 				if ($display_day[$cweek] == 1)
 				{
 	   					// Début condition "on n'affiche pas tous les jours de la semaine"
-					echo "<td valign=\"top\" class=\"cell_month\"> \n";
+					echo "<td> \n";
 					if (est_hors_reservation(mktime(0,0,0,$month_num,$cday,$year_num),$area))
 					{
 						echo "<div class=\"empty_cell\">";
@@ -471,7 +470,7 @@ while ($month_indice < $month_end)
 								if ($d[$cday][$cmonth][$cyear]["room"][$i] == $row[0]) // test peu fiable car c'est l'id qui est unique YN le 26/02/2018
 								{
 										//if ($i > 0 && $i % 2 == 0) echo "<br />"; else echo " ";
-									echo "\n<table class='table-bordered' ><tr>\n";
+									echo "\n<table class='table-header table-bordered' ><tr>\n";
 									tdcell($d[$cday][$cmonth][$cyear]["color"][$i]);
 									if ($d[$cday][$cmonth][$cyear]["res"][$i] != '-')
 										echo " <img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> \n";
@@ -482,11 +481,22 @@ while ($month_indice < $month_end)
 									if ((isset($d[$cday][$cmonth][$cyear]["moderation"][$i])) && ($d[$cday][$cmonth][$cyear]["moderation"][$i] == 1))
 										echo " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" class=\"image\" /> \n";
 									if ($acces_fiche_reservation)
-										echo "<a title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday][$cmonth][$cyear]["id"][$i]."&amp;page=month\" class='lienCellule'>"
-									.$d[$cday][$cmonth][$cyear]["who1"][$i]{0}
-									. "</a>";
+									{
+										if (Settings::get("display_level_view_entry") == 0)
+										{
+											$currentPage = 'year';
+											$id =   $d[$cday][$cmonth][$cyear]["id"][$i];
+											echo "<a title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" data-width=\"675\" onclick=\"request($id,$cday,$cmonth,$cyear,'all','$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight\">" .substr($d[$cday][$cmonth][$cyear]["who1"][$i],0,4)."</a>";
+										}
+										else
+										{
+											echo "<a class=\"lienCellule\" title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday][$cmonth][$cyear]["id"][$i]."&amp;page=year\">"
+											.substr($d[$cday]["who1"][$i],0,4)
+											. "</a>";
+										}
+									}
 									else
-										echo $d[$cday][$cmonth][$cyear]["who1"][$i]{0};
+										echo substr($d[$cday][$cmonth][$cyear]["who1"][$i],0,4);
 									echo "\n</td></tr></table>\n";
 								}
 							}
@@ -510,5 +520,14 @@ show_colour_key($area);
 affiche_pop_up(get_vocab("message_records"),"user");
 include "include/trailer.inc.php";
 echo "</div>";
+echo  "<div id=\"popup_name\" class=\"popup_block\" ></div>";
+if ($_GET['pview'] != 1)
+{
+	echo "<div id=\"toTop\"> ^ Haut de la page";
+    bouton_retour_haut ();
+    echo " </div>";
+}
+echo " </div>";
+echo "</section>";
 echo "</body></html>";
 ?>

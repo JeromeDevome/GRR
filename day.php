@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-20 18:30$
+ * Dernière modification : $Date: 2018-07-26 14:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -192,7 +192,7 @@ echo "<header>";
 pageHeader2($day, $month, $year, $type_session);
 echo "</header>";
 // Debut de la page
-echo '<div class="row">'.PHP_EOL;
+echo '<section>'.PHP_EOL;
 // Affichage du menu
 include("menu_gauche2.php");
 include("chargement.php");
@@ -203,7 +203,7 @@ if ($_GET['pview'] != 1){
 else{
 	echo '<div id="print_planning">'.PHP_EOL;
 }
-echo "<table class='table-bordered'>";
+echo "<table class='jour table-striped table-bordered'>";
 echo "<caption>";
 $class = "";
 $title = "";
@@ -217,7 +217,7 @@ if ($settings->get("show_holidays") == "Oui")
 		$class .= 'vacance ';
 	}
 }
-echo '<div class="titre_planning '.$class.'">'.PHP_EOL;
+echo '<div class="'.$class.'">'.PHP_EOL;
 if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 {
     echo "<div class='ligne23'>";
@@ -262,7 +262,7 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
         ';
     }
 }
-echo '<h4 class="titre">' . ucfirst($this_area_name).' - '.get_vocab("all_areas");
+echo '<h4>' . ucfirst($this_area_name).' - '.get_vocab("all_areas");
 if ($settings->get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
 {
 	if (intval($jour_cycle) > 0)
@@ -557,6 +557,6 @@ affiche_pop_up(get_vocab('message_records'), 'user');
 <?php
 unset($row);
 echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
-echo "</div>"; // fin  de row
+echo "</section>";
 echo "</body></html>";
 ?>
