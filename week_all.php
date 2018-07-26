@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-20 18:30$
+ * Dernière modification : $Date: 2018-07-26 14:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -18,7 +18,6 @@
 
 $grr_script_name = "week_all.php";
 
-//include "include/planning_init.inc.php";
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
@@ -100,7 +99,7 @@ echo "<header>";
 pageHeader2($day, $month, $year, $type_session);
 echo "</header>";
 // Debut de la page
-echo '<div class="row">'.PHP_EOL;
+echo '<section>'.PHP_EOL;
 
 // Affichage du menu
 include("menu_gauche2.php");
@@ -344,7 +343,7 @@ if ($_GET['pview'] != 1){
 else{
 	echo '<div id="print_planning">'.PHP_EOL;
 }
-echo '<table class="table-bordered table-striped">',PHP_EOL;
+echo '<table class="semaine table-bordered table-striped">',PHP_EOL;
 // le titre de la table
 echo "<caption>";
 // liens semaine avant-après et imprimante si page non imprimable
@@ -393,7 +392,7 @@ echo "</div>";
 echo "</caption>";
 echo '<thead>'.PHP_EOL;
 echo '<tr>'.PHP_EOL;
-echo '<th class="jour_sem"> </th>'.PHP_EOL;
+echo '<th class="jour_sem">'.get_vocab('rooms').'</th>'.PHP_EOL;
 $t = $time;
 $num_week_day = $weekstarts;
 //$ferie = getHolidays($year);
@@ -429,7 +428,8 @@ for ($weekcol = 0; $weekcol < 7; $weekcol++)
 		echo '<th class="jour_sem ';
         if ($class != '') echo $class;
         echo '">'.PHP_EOL;
-		echo '<a class="lienPlanning " href="day.php?year='.$temp_year.'&amp;month='.$temp_month.'&amp;day='.$num_day.'&amp;area='.$area.'" title="'.$title.'">'  . day_name(($weekcol + $weekstarts) % 7) . ' '.$num_day.' '.$temp_month2.'</a>'.PHP_EOL;
+		//echo '<a class="lienPlanning " href="day.php?year='.$temp_year.'&amp;month='.$temp_month.'&amp;day='.$num_day.'&amp;area='.$area.'" title="'.$title.'">'  . day_name(($weekcol + $weekstarts) % 7) . ' '.$num_day.' '.$temp_month2.'</a>'.PHP_EOL;
+        echo '<a href="day.php?year='.$temp_year.'&amp;month='.$temp_month.'&amp;day='.$num_day.'&amp;area='.$area.'" title="'.$title.'">'  . day_name(($weekcol + $weekstarts) % 7) . ' '.$num_day.' '.$temp_month2.'</a>'.PHP_EOL;
 		if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
 		{
 			if (intval($jour_cycle) > 0)
@@ -506,7 +506,8 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 						{
 							if ($no_td)
 							{
-								echo '<td class="cell_month">'.PHP_EOL;
+								//echo '<td class="cell_month">'.PHP_EOL;
+                                echo '<td >'.PHP_EOL;
 								$no_td = FALSE;
 							}
 							if ($acces_fiche_reservation)
@@ -594,7 +595,7 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 				$hour = date("H", $date_now);
 				$date_booking = mktime(24, 0, 0, $cmonth, $cday, $cyear);
 				if (est_hors_reservation(mktime(0, 0, 0, $cmonth, $cday, $cyear), $area))
-					echo '<img src="img_grr/stop.png" alt="',get_vocab("reservation_impossible"),'" title="',get_vocab("reservation_impossible"),'" width="16" height="16" class\"',$class_image,'" />',PHP_EOL;
+					echo '<img src="img_grr/stop.png" alt="',get_vocab("reservation_impossible"),'" title="',get_vocab("reservation_impossible"),'" width="16" height="16" class="',$class_image,'" />',PHP_EOL;
 				else
 				{
 					if ((($authGetUserLevel > 1) || ($auth_visiteur == 1)) && ($UserRoomMaxBooking != 0) && verif_booking_date(getUserName(), -1, $row['2'], $date_booking, $date_now, $enable_periods) && verif_delais_max_resa_room(getUserName(), $row['2'], $date_booking) && verif_delais_min_resa_room(getUserName(), $row['2'], $date_booking) && plages_libre_semaine_ressource($row['2'], $cmonth, $cday, $cyear) && (($row['4'] == "1") || (($row['4'] == "0") && (authGetUserLevel(getUserName(),$row['2']) > 2) )) && $_GET['pview'] != 1)
@@ -637,7 +638,7 @@ if ($_GET['pview'] != 1)
 	echo '</div>',PHP_EOL;
 }
 echo '</div>'.PHP_EOL; // planning2
-echo '</div>'.PHP_EOL; // row
+echo '</section>'.PHP_EOL; // row
 
 unset($row);
 
