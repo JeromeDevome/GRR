@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-04 16:30$
+ * Dernière modification : $Date: 2018-07-27 16:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -840,10 +840,10 @@ if ($type_affichage_reser == 0)
 	echo '</td></tr>'.PHP_EOL;
 	echo '<tr><td class="CL">'.PHP_EOL;
 	// echo '<div class="form-group">'.PHP_EOL;
-    echo '<div class="col-xs-3">'.PHP_EOL;
+    echo '<div>'.PHP_EOL;
 	spinner($duration);
     // echo '<div class="col-xs-3">'.PHP_EOL;
-	echo '<select class="form-control" name="dur_units" >'.PHP_EOL;
+	echo '<select class="form-control" name="dur_units">'.PHP_EOL;
     // echo '<select class="form-control" name="dur_units" size="0.5">'.PHP_EOL;
     // echo '<select name="dur_units" >'.PHP_EOL;
 	if ($enable_periods == 'y')
@@ -886,10 +886,11 @@ if ($type_affichage_reser == 0)
 		$heure_finale = $nb_jour. " ". $vocab["days"]. " + ". $heure_finale_restante;
 	}
 	$af_fin_jour = $heure_finale." H ".$minute_restante;
-	echo '&nbsp &nbsp <input name="all_day" type="checkbox" value="yes" />'.get_vocab("all_day");
+	echo '<b>
+          <input name="all_day" type="checkbox" value="yes" />'.get_vocab("all_day");
 	if ($enable_periods != 'y')
 		echo ' ('.$morningstarts.' H - '.$af_fin_jour.')';
-	// echo '</div>'.PHP_EOL;
+        echo '</b>'.PHP_EOL;
 	echo '</td></tr>'.PHP_EOL;
 }
 else
@@ -933,7 +934,6 @@ else
 			$checked = ($end_hour >= 12) ? "checked=\"checked\"" : "";
 			echo "<input name=\"ampm\" type=\"radio\" value=\"pm\" $checked />".date("a",mktime(13,0,0,1,1,1970));
 		}
-
 	}
 	echo '</div>'.PHP_EOL;
 	echo '</td></tr>'.PHP_EOL;
