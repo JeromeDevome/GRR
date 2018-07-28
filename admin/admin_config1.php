@@ -478,7 +478,7 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
 } else {
     $msg = '';
 }
-// Utilisation de la bibliothèqye prototype dans ce script
+// Utilisation de la bibliothèque prototype dans ce script
 //$use_prototype = 'y';
 # print the page header
 print_header('', '', '', $type = 'with_session');
