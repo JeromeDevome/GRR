@@ -3,7 +3,7 @@
  * month.php
  * Interface d'accueil avec affichage par mois
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-26 15:00$
+ * Dernière modification : $Date: 2018-07-30 17:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -117,8 +117,14 @@ if ($area <= 0)
 } */
 /*
 include "include/planning_init.inc.php"; */
-// en l'absence du paramètre $room, indispensable pour month.php, on renvoie à month_all.php
+// // en l'absence du paramètre $room, indispensable pour month.php, on renvoie à month_all.php
 if (!isset($room)){
+    $msg = get_vocab('choose_a_room');
+    $lien = "month_all.php?area=".$area."&month=".$month."&year=".$year;
+    echo "<script type='text/javascript'>
+        alert('$msg');
+        document.location.href='$lien';
+    </script>";
     echo "<p><br/>";
         echo get_vocab('choose_room')."<a href='month_all.php'>".get_vocab("link")."</a>";
     echo "</p>";

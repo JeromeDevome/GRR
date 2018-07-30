@@ -3,7 +3,7 @@
  * week.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "semaine".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-26 14:45$
+ * Dernière modification : $Date: 2018-07-30 17:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -87,6 +87,12 @@ VerifNomPrenomUser($type_session);
 $debug_flag = FALSE;
 // le paramètre $room est obligatoire
 if (!isset($room)){
+    $msg = get_vocab('choose_a_room');
+    $lien = "week_all.php?area=".$area."&day=".$day."&month=".$month."&year=".$year;
+    echo "<script type='text/javascript'>
+        alert('$msg');
+        document.location.href='$lien';
+    </script>";
     echo "<p><br/>";
         echo get_vocab('choose_room')."<a href='week_all.php'>".get_vocab("link")."</a>";
     echo "</p>";
