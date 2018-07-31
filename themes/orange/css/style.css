@@ -106,10 +106,7 @@ a.buttonsReservation{cursor:pointer}
 .col a{color:#000 !important}
 .col span a{color:#000 !important}
 #formContact{margin-left : 18%; margin-top : 1%; width: 60%;  border :20px; }
-#duree{width: 55% ; margin-top:4%;}
 #planning{text-align:center}
-#dureemin{width: 30%}
-
 
 /* anciens styles non utilisés 
 header{width:100%;z-index:999;text-align:center;border-bottom:1px solid #E8501F}
@@ -139,7 +136,9 @@ html #fade,html .popup_block{position:absolute}
 #formContacthorraires{margin-top:2%; margin-left:14% ; width: 70%}
 #formContactheure{margin-left:20% ; width: 70% ; margin-top:4%;}
 .glyphalign{margin-left:70px}
-#heure {width: 25%} */
+#heure {width: 25%}
+#dureemin{width: 30%}
+ */
 /* modifications bootstrap */
 a{color:#E8501F;text-decoration:none}
 .text-primary{color:#E8501F}
@@ -169,7 +168,7 @@ fieldset[disabled] .btn-primary.active{background-color:#E8501F;border-color:#E8
 .panel-primary>.panel-footer+.panel-collapse>.panel-body{border-bottom-color:#E8501F}
 caption{text-align: center}
 
-table.ui-datepicker-calendar: {z-index: 10;}
+table.ui-datepicker-calendar:{z-index: 10;}
 
 /* nouveau style */
 body{font-size:14px;font-family:arial,verdana,sans-serif;width:100%;margin:0 auto}
@@ -237,6 +236,7 @@ a:hover{color:#999;}
 .popup_block{display:none;background:#fff;padding-left:20px!important;border:10px solid #ddd;float:left;font-size:1.2em;position:fixed;top:10%;left:50%;z-index:99999;-webkit-box-shadow:0 0 20px #000;-moz-box-shadow:0 0 20px #000;box-shadow:0 0 20px #000}
 html #fade,html .popup_block{position:absolute}
 #toTop{width:100px;border:1px solid #ccc;background:#f7f7f7;color:black;text-align:center;padding:5px;position:fixed;bottom:10px;right:10px;cursor:pointer;font-family:verdana;font-size:14px}
+#duree{text-align:center;min-width:50px;width:15%;}
 
 /* personnalisation sur le modèle standard */
 .table-bordered caption{background:#E8501F;padding: 0 0 0 0;}
@@ -254,6 +254,7 @@ td.calendarHeader2{text-align:center;border:0;font-size:10pt;width:200px;backgro
 .contenu_planning{position:relative;background-color:#E8501F;height:100%;max-width:100%}
 th{color:#eee;font-size:10pt;font-family:verdana,sans-serif;background-color:#E8501F;vertical-align:top;text-align:center;}
 table.legende caption{color:black;}
+
 
 @media only screen and (max-width:800px) { 
 	.accueil {
