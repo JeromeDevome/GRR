@@ -106,10 +106,7 @@ a.buttonsReservation{cursor:pointer}
 .col a{color:#000 !important}
 .col span a{color:#000 !important}
 #formContact{margin-left : 18%; margin-top : 1%; width: 60%;  border :20px; }
-#duree{width: 55% ; margin-top:4%;}
 #planning{text-align:center}
-#dureemin{width: 30%}
-
 
 /* anciens styles non utilisés 
 header{width:100%;z-index:999;text-align:center;border-bottom:1px solid #B029E5}
@@ -237,6 +234,7 @@ a:hover{color:#999;}
 .popup_block{display:none;background:#fff;padding-left:20px!important;border:10px solid #ddd;float:left;font-size:1.2em;position:fixed;top:10%;left:50%;z-index:99999;-webkit-box-shadow:0 0 20px #000;-moz-box-shadow:0 0 20px #000;box-shadow:0 0 20px #000}
 html #fade,html .popup_block{position:absolute}
 #toTop{width:100px;border:1px solid #ccc;background:#f7f7f7;color:black;text-align:center;padding:5px;position:fixed;bottom:10px;right:10px;cursor:pointer;font-family:verdana;font-size:14px}
+#duree{text-align:center;min-width:50px;width:15%;}
 
 /* personnalisation sur le modèle standard */
 .table-bordered caption{background:#B029E5;padding: 0 0 0 0;}
