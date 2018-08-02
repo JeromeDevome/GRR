@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-26 14:30$
+ * Dernière modification : $Date: 2018-08-01 10:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -54,7 +54,7 @@ else
 // paramètres temporels
 $day = isset($_GET['day']) ? $_GET['day'] : date("d");
 $month = isset($_GET['month']) ? $_GET['month'] : date("m");
-$year = isset($_GET['year']) ? $_GET['year'] : date("y");
+$year = isset($_GET['year']) ? $_GET['year'] : date("Y");
 
 // définition de variables globales
 global $racine, $racineAd, $desactive_VerifNomPrenomUser;
