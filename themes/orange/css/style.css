@@ -1,7 +1,7 @@
 /* ancien style */
 a:after{content:"" !important}
 p{font-size:10pt;font-family:arial,sans-serif;background-color:#fff}
-input,submit,textarea{color:#000;font-size:11pt;font-family:arial,sans-serif}
+input,select,submit,textarea{color:#000;font-family:verdana,arial,sans-serif}
 form{margin-bottom:5pt;margin-top:5pt}
 .formModifie{margin-bottom:0;margin-top:0;display:inline}
 .styleBoutton{color:#000}
@@ -15,7 +15,6 @@ h2{color:#000;font-family:verdana,sans-serif;font-size:14pt}
 h3{color:#000;font-family:verdana,sans-serif;font-size:12pt}
 td{font-size:10pt;font-family:arial,sans-serif;border-width:1px;vertical-align:top}
 td.CR{vertical-align:middle;text-align:right}
-td.CL{vertical-align:middle;text-align:left}
 td.BR{vertical-align:baseline;text-align:right}
 td.BL{vertical-align:baseline;text-align:left}
 td.TR{vertical-align:top;text-align:right}
