@@ -1,7 +1,7 @@
 /* ancien style */
 a:after{content:"" !important}
 p{font-size:10pt;font-family:arial,sans-serif;}
-input,submit,textarea{color:#000;font-size:11pt;font-family:arial,sans-serif}
+input,select,submit,textarea{color:#000;font-family:verdana,arial,sans-serif}
 form{margin-bottom:5pt;margin-top:5pt}
 .EditEntryTable{background-color:#ddd}
 .small{font-size:.8em}
@@ -155,10 +155,12 @@ table.legende td{width:125px;text-align:center}
 #chargement{left:35%;top:322px;position:absolute;display:none;z-index:10}
 #chargement p{padding:0;background-color:gray}
 #chargement img{border:2px solid #000}
+.row2{width:100%;padding: 0 0 0 0;}
 #planning2{text-align:center;min-width:600px;display:inline-block;width:100%;}
 .titre_planning{position:relative;height:100%;width:100%;display:block;text-align:center;font-size:1.2em}
 .titre_planning table{border:0}
 .ligne23{min-height:23px;text-align:center;}
+.pleine{width:100% !important;}
 .left{float:left}
 .right{float:right}
 .jour, .mois, .semaine{width:100%;text-align:center;vertical-align:top;}

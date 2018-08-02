@@ -4648,6 +4648,72 @@ $(\'.clockpicker\').clockpicker({
 });
 </script>';
 }
+function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaultsec)
+{
+	if (isset ($_GET['id']))
+	{
+		if (isset($start_hour) && isset($start_min))
+		{
+			$hour = $start_hour;
+			$minute = $start_min;
+		}
+		else
+		{
+			$hour = date("h");
+			$minute = date("m");
+		}
+	}
+	else
+	{
+		if (isset ($_GET['hour']))
+			$hour = $_GET['hour'];
+		else
+			$hour = date("h");
+		if (isset ($_GET['minute']))
+			$minute = $_GET['minute'];
+		else
+			$minute = date("m");
+			
+		if ($typeTime == 'end_')
+        {
+            $dureepardefautmin = $dureepardefaultsec/60;
+            if ($dureepardefautmin == 60){
+                $ajout = 1;
+                $hour = $_GET['hour'] + $ajout;
+                $minute ="00";
+            }
+            if ($dureepardefautmin < 60){
+                $hour = $_GET['hour'];
+                $minute =$dureepardefautmin;
+            }
+            if ($dureepardefautmin > 60)
+            {
+                $dureepardefautheure = $dureepardefautmin/60;
+                if (($dureepardefautheure % 60)!=0)
+                {
+                    $hour = $_GET['hour']+ $dureepardefautheure;
+                    if ($_GET['minute'] == 30){$minute =30;}
+                    else{$minute = "00";}
+                }
+            }
+        }
+	}
+	if ($minute == 0)
+		$minute = '00';
+	// MAJ
+	echo '<div class="input-group">
+	<input id="'.$typeTime.'" name="' .$typeTime. '" type="text" class="time" >
+	</div>';
+    echo '<script type="text/javascript">
+        $(\'#'.$typeTime.'\').timepicker({
+            \'step\': '.($dureepardefaultsec/60).',
+            \'scrollDefault\': \''.$hour.':'.$minute.'\',
+            \'timeFormat\': "H:i",
+            \'forceRoundTime\': true,
+        });
+        </script>';
+}
+
 function spinner ($duration)
 {
 	echo "<input class=\"form-control\" name=\"duration\" value=\"" .$duration. "\" id=\"spinner\" />";
@@ -4972,8 +5038,12 @@ function pageHead2($title, $page = "with_session")
 		if (isset($_SESSION['default_style']))
 			$sheetcss = 'themes/'.$_SESSION['default_style'].'/css';
 
+		else {
+            if (Settings::get("default_css"))
+			$sheetcss = 'themes/'.Settings::get("default_css").'/css'; // thème global par défaut
 		else
-			$sheetcss = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
+			$sheetcss = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini
+        }
 		if (isset($_GET['default_language']))
 		{
 			$_SESSION['default_language'] = $_GET['default_language'];
@@ -5029,7 +5099,8 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-multiselect.css">'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
         // $a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/mod_bootstrap.css" />'.PHP_EOL;
-        $a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/style.css" />'.PHP_EOL;
+        $a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
+        $a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
 		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 			$a .= '<link rel="stylesheet" type="text/css" href="../themes/print/css/style.css" />'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
@@ -5055,7 +5126,6 @@ function pageHead2($title, $page = "with_session")
 			$a .= '<script type="text/javascript" src="../js/'.$clock_file.'"></script>'.PHP_EOL;
 		if (substr(phpversion(), 0, 1) == 3)
 			$a .= get_vocab('not_php3');
-	
 	} 
     else
     {	//$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL;
@@ -5063,15 +5133,17 @@ function pageHead2($title, $page = "with_session")
 		// $a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/mod_bootstrap.css" />'.PHP_EOL;
 	    if (isset($use_select2))
 		{
-			$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/select2.css" />'.PHP_EOL;
-			$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/select2-bootstrap.css" />'.PHP_EOL;
-			$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/bootstrap-multiselect.css">'.PHP_EOL;
-			$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
+			$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2.css" />'.PHP_EOL;
+			$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2-bootstrap.css" />'.PHP_EOL;
+			$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-multiselect.css">'.PHP_EOL;
+			$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
 		}
-		$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/jquery-ui.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
+        // $a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/jquery.timepicker.min.css" >'.PHP_EOL;
         // $a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/mod_bootstrap.css" />'.PHP_EOL;
-        $a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL;
+        $a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
+        $a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
 		if (isset($use_admin))
 			$a .= '<link rel="stylesheet" type="text/css" href="include/admin_grr.css" />'.PHP_EOL;
 		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
@@ -5080,7 +5152,8 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
+        // $a .= '<script type="text/javascript" src="js/jquery.timepicker.min.js"></script>'.PHP_EOL;
+        $a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/html2canvas.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jspdf.min.js"></script>'.PHP_EOL;

@@ -15,13 +15,14 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "del_entry.php";
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
 include_once('include/misc.inc.php');
 include "include/mrbs_sql.inc.php";
-$grr_script_name = "del_entry.php";
+
 require_once("./include/settings.class.php");
 if (!Settings::load())
 	die("Erreur chargement settings");
