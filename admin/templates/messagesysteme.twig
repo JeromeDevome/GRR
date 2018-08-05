@@ -1,0 +1,6 @@
+{% macro messageAlerte(titre, message) %}
+	<div class="alert alert-warning  alert-dismissible">
+		<h4><i class="icon fa fa-warning"></i> {{ titre }}</h4>
+		{{ message }}
+	</div>
+{% endmacro %}

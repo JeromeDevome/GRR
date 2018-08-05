@@ -1,0 +1,27 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			<div class="alert alert-warning  alert-dismissible">
+				<h4><i class="icon fa fa-warning"></i> {{ trad.admin_confirm_change_date_bookings }}</h4>
+				{{ trad.msg_del_bookings }} ( {{ trad.dPlageSelectionner }} )
+				<br>
+				<a href="?p=admin_config" class="btn btn-outline pull-left">{{trad.cancel}}</a>
+				<form action="?p=admin_change_date_bookings" method='get'>
+					<input type="hidden" name="p" value="admin_change_date_bookings" />
+					<input type="hidden" name="valid" value="yes" />
+					<input type="hidden" name="begin_bookings" value="{{ trad.dBegin_bookings }}" />
+					<input type="hidden" name="end_bookings" value="{{ trad.dEnd_bookings }}" />
+					<button type="submit" class="btn btn-outline pull-right" data-dismiss="modal">{{ trad.save }}</button>
+				<br>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

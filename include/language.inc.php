@@ -385,7 +385,7 @@ function get_vocab($tag)
 	global $vocab, $charset_html, $unicode_encoding;
 	if (!isset($vocab[$tag]))
 	{
-		return "<b><span style=\"color:#FF0000;\"><i>(".$tag.")</i></span></b>";
+		return "(".$tag.")";
 	} else {
 		if ($unicode_encoding)
 		{
@@ -405,6 +405,37 @@ function get_vocab($tag)
 		}
 	}
 }
+
+function get_vocab_admin($tag)
+{
+	global $vocab, $charset_html, $unicode_encoding, $trad;
+	if (!isset($vocab[$tag]))
+	{
+		$trad[$tag] = "(".$tag.")";
+	} else {
+		if ($unicode_encoding)
+		{
+			if(Settings::get("trad_".$tag) != ""){
+				//return Settings::get("trad_".$tag);
+				$trad[$tag] = Settings::get("trad_".$tag);
+			}else{
+				//return iconv($charset_html,"utf-8",$vocab[$tag]);
+				$trad[$tag] = iconv($charset_html,"utf-8",$vocab[$tag]);
+			}
+		}
+		else
+		{
+			if(Settings::get("trad_".$tag) != ""){
+				//return Settings::get("trad_".$tag);
+				$trad[$tag] = Settings::get("trad_".$tag);
+			}else{
+				//return $vocab[$tag];
+				$trad[$tag] = $vocab[$tag];
+			}
+		}
+	}
+}
+
 if (isset($_SESSION['type_month_all']))
 	$type_month_all = $_SESSION['type_month_all'];
 else

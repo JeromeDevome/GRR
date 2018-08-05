@@ -1,0 +1,28 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			<div class="alert {{ trad.dEtat }}  alert-dismissible">
+				<h4><i class="icon {{ trad.dFa }}"></i> Restauration à partir du ficher : {{ trad.dNomFichier }}</h4>
+				{{ trad.dDetailBackup | raw  }}
+				<br>
+				{% if trad.msg_logout3 %}
+					<a href="../login.php" class="btn btn-outline pull-left">{{trad.msg_logout3}}</a>
+				{% else %}
+					<a href="?p=admin_config4" class="btn btn-outline pull-left">{{trad.cancel}}</a>
+				{% endif %}
+				{% if trad.confirmer %}
+					<a href="?p=admin_open_mysql&file_name={{ trad.dFileName }}" class="btn btn-outline pull-right">{{ trad.confirmer }}</a>
+				{% endif %}
+				<br>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

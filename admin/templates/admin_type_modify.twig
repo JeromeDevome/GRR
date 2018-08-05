@@ -1,0 +1,93 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+	<link rel="stylesheet" href="../bootstrap/AdminLTE/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+		<div class="callout callout-info">{{trad.admin_type_explications}}</div>
+
+         <div class="box box-success">
+            <div class="box-header">
+              <h3 class="box-title">{{ trad.admin_type_titre }}</h3>
+            </div>
+			<form class="form-horizontal" method="GET">
+				<input type="hidden" name ="p" value="admin_type_modify">
+				<input type="hidden" name ="id_type" value="{{ type.id }}">
+				<div class="box-body">
+					{{ form.input('type_name', trad.type_name, type.type_name, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+
+					<!-- A mettre menu deroulant -->
+					<div class="form-group">
+						<label class="col-sm-4" for="type_letter">{{ trad.type_num }}</label>
+						<div class="col-sm-8">
+							<select name="type_letter" class="form-control" size="1">
+								<option value="">{{ trad.choose }}</option>
+								{% for lettre in lettres %}
+									<option value="{{ lettre.lettre }}" {% if type.type_letter == lettre.lettre %} selected {% endif %}>{{ lettre.lettre }}</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+
+					{{ form.input('order_display', trad.order_display, type.order_display, {type: 'number', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+
+					<div class="form-group">
+						<label class="col-sm-4" for="disponible">{{ trad.disponible_pour }}</label>
+						<div class="col-sm-8">
+							<select name="disponible" class="form-control" size="1">
+								<option value="2" {% if type.disponible == 2 %} selected {% endif %}>{{ trad.all }}</option>
+								<option value="3" {% if type.disponible == 3 %} selected {% endif %}>{{ trad.gestionnaires_et_administrateurs }}</option>
+								<option value="5" {% if type.disponible == 5 %} selected {% endif %}>{{ trad.only_administrators }}</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-4" for="type_color_actuel">{{ trad.type_color_actuel }}</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" style="background-color:{{ type.couleurhexa }};" id="type_color_actuel" name="type_color_actuel" disabled>
+						</div>
+					</div>
+
+					{{ form.colorpicker2('couleurhexa', trad.type_color_hexa, type.couleurhexa, {classLabel: 'col-sm-4', classInput: 'col-sm-7'}) }}
+				</div>
+
+				<!-- /.box-body -->
+				<div class="box-footer">
+					<input type="submit" name="change_done" value="{{ trad.back }}" class="btn btn-default btn-md" />
+					<input type="submit" name="change_type" value="{{ trad.save }}" class="btn btn-success btn-md pull-right" />
+					<input type="submit" name="change_room_and_back" value="{{ trad.save_and_back }}" class="btn btn-success btn-md pull-right" />
+				</div>
+			</form>
+          </div>
+          <!-- /.box -->
+		</div>
+	</div>
+
+
+{% endblock %}
+
+{% block javascript %}
+	<script src="../bootstrap/AdminLTE/bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+	<script>
+		$(function () {
+			$('.my-colorpicker2').colorpicker()
+		})
+
+		$( ".target" ).change(function() {
+			var laCouleur = $('input[name=couleur]:checked').val();
+			document.getElementsByName('couleurhexa')[0].value = laCouleur;
+			document.getElementsByName('visucouleurhexa')[0].style.backgroundColor=laCouleur;
+		});
+		function visuCouleurHexaPerso(laCouleur) {
+			var laCouleur = document.getElementsByName('couleurhexa')[0].value;
+			document.getElementsByName('visucouleurhexa')[0].style.backgroundColor=laCouleur;
+		}
+	</script>
+{% endblock %}
