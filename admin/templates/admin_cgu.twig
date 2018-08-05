@@ -1,0 +1,62 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+        <div class="col-xs-12">
+			<div class="nav-tabs-custom">
+
+            <div class="tab-content">
+              <!-- Font Awesome Icons -->
+              <div class="tab-pane active" id="fa-icons">
+				<form action="?p=admin_cgu" id="nom_formulaire" method="post">
+					<section id="message">
+						<h4 class="page-header">{{ trad.cgu_titre }}</h4>
+						<p>{{ trad.cgu_grr }}</p>
+						<textarea id="editor1" name="CGU" rows="60" cols="80">{{ pages.CGU }}</textarea>
+					</section>
+
+					<div style="text-align:center;">
+						<input class="btn btn-primary" type="submit" name="ok" value="{{ trad.save }}" />
+					</div>
+				</form>
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+
+{% endblock %}
+
+{% block javascript %}
+	<script src="../bootstrap/AdminLTE/bower_components/ckeditor/ckeditor.js"></script>
+	<script>
+		$(function () {
+			// Replace the <textarea id="editor1"> with a CKEditor
+			//CKEDITOR.replace('editor1');
+			//<![CDATA[
+			CKEDITOR.replace( 'editor1',
+			{
+				toolbar :
+				[
+				['Source'],
+				['Cut','Copy','Paste','PasteText','PasteFromWord', 'SpellChecker', 'Scayt'],
+				['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+				['Bold','Italic','Underline','Strike','-','Subscript','Superscript','-','TextColor','BGColor'],
+				['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+				['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+				['Link','Unlink','Anchor'],
+				['Image','Table','HorizontalRule','SpecialChar','PageBreak'],
+				]
+			});
+			//]]>
+		}); 
+	</script>
+{% endblock %}

@@ -1,0 +1,296 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+        <div class="col-xs-12">
+			<div class="nav-tabs-custom">
+				<ul class="nav nav-tabs">
+					<li><a href="?p=admin_config">{{ trad.admin_config1 }}</a></li>
+					<li class="active"><a href="?p=admin_config6">{{ trad.admin_config6 }}</a></li>
+					<li><a href="?p=admin_config2">{{ trad.admin_config2 }}</a></li>
+					<li><a href="?p=admin_config3">{{ trad.admin_config3 }}</a></li>
+					<li><a href="?p=admin_config4">{{ trad.admin_config4 }}</a></li>
+					<li><a href="?p=admin_config5">{{ trad.admin_config5 }}</a></li>
+				</ul>
+            <div class="tab-content">
+              <!-- Font Awesome Icons -->
+              <div class="tab-pane active" id="fa-icons">
+				<form action="?p=admin_config6" id="nom_formulaire" method="post">
+					<input type="hidden" name="p" value="admin_config6" />
+					<section id="paramdefaut">
+						<h4 class="page-header">{{ trad.default_parameter_values_title }}</h4>
+						<p>{{ trad.explain_default_parameter }}</p>
+						<h5><b>{{ trad.explain_area_list_format }} :</b></h5>
+						<input type="radio" name="area_list_format" value="list" id="label_1a" {% if settings.area_list_format == 'list' %} checked {% endif %} /> <label for="label_1a">{{ trad.liste_area_list_format }}</label><br>
+						<input type="radio" name="area_list_format" value="select" id="label_1b" {% if settings.area_list_format == 'select' %} checked {% endif %} /> <label for="label_1b">{{ trad.select_area_list_format }}</label><br>
+						<input type="radio" name="area_list_format" value="item" id="label_1c" {% if settings.area_list_format == 'item' %} checked {% endif %} /> <label for="label_1c">{{ trad.item_area_list_format }}</label><br>
+
+						<hr>
+
+						<h5><b>{{ trad.explain_default_area_and_room }} :</b></h5>
+
+						{% if settings.module_multisite == 'Oui' %}
+							<div class="form-group col-sm-12">
+								<label class="col-sm-6" for="default_css">{{ trad.default_site }}</label>
+								<div class="col-sm-6">
+									<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
+										<option value="-1">{{ trad.choose_a_site }}</option>
+										{{ trad.dOptionSite | raw }}
+									</select>
+								</div>
+							</div>
+						{% else %}
+							<input class="form-control" type="hidden" id="id_site" name="id_site" value="-1" />
+						{% endif %}
+						<div id="div_liste_domaines"></div>
+						<div id="div_liste_ressources"></div>
+						<!--<input class="form-control" type="hidden" id="id_area" name="id_area" value="{{ settings.default_area }}" />-->
+
+						<hr>
+						<div class="form-group col-sm-12">
+							<label class="col-sm-6" for="default_css">{{ trad.explain_css }}</label>
+							<div class="col-sm-6">
+								<select class="form-control" name="default_css">
+									{{ trad.dOptionTheme | raw }}
+								</select>
+							</div>
+						</div>
+						<div class="form-group col-sm-12">
+							<label class="col-sm-6" for="default_css">{{ trad.choose_language }}</label>
+							<div class="col-sm-6">
+								<select class="form-control" name="default_css">
+									{{ trad.dOptionLangue | raw }}
+								</select>
+							</div>
+						</div>
+					</section>
+
+					<hr>
+
+					<section id="infobulle">
+						<h4 class="page-header">{{ trad.display_info_bulle_msg }}</h4>
+						<input type="radio" name="display_info_bulle" value="0" id="label_2a" {% if settings.display_info_bulle == '0' %} checked {% endif %} /> <label for="label_2a">{{ trad.info_bulle0 }}</label><br>
+						<input type="radio" name="display_info_bulle" value="1" id="label_2b" {% if settings.display_info_bulle == '1' %} checked {% endif %} /> <label for="label_2b">{{ trad.info_bulle1 }}</label><br>
+						<input type="radio" name="display_info_bulle" value="2" id="label_2c" {% if settings.display_info_bulle == '2' %} checked {% endif %} /> <label for="label_2c">{{ trad.info_bulle2 }}</label><br>
+					</section>
+
+					<hr>
+
+					<section id="menugauche">
+						<h4 class="page-header">{{ trad.display_menu }}</h4>
+						<p>{{ trad.display_menu_1 }}</p>
+						<input type="radio" name="menu_gauche" value="0" id="label_3a" {% if settings.menu_gauche == '0' %} checked {% endif %} /> <label for="label_3a">{{ trad.display_menu_2 }}</label><br>
+						<input type="radio" name="menu_gauche" value="1" id="label_3b" {% if settings.menu_gauche == '1' %} checked {% endif %} /> <label for="label_3b">{{ trad.display_menu_3 }}</label><br>
+						<input type="radio" name="menu_gauche" value="2" id="label_3c" {% if settings.menu_gauche == '2' %} checked {% endif %} /> <label for="label_3c">{{ trad.display_menu_4 }}</label><br>
+					</section>
+
+					<hr>
+
+					<section id="formulairecontact">
+						<h4 class="page-header">{{ trad.display_mail_etat_destinataire }}</h4>
+						<p>{{ trad.display_mail_etat_destinataire_1 }}</p>
+						<input type="radio" name="mail_etat_destinataire" value="0" id="label_0a" {% if settings.mail_etat_destinataire == '0' %} checked {% endif %} /> <label for="label_0a">{{ trad.display_mail_etat_destinataire_2 }}</label><br>
+						<input type="radio" name="mail_etat_destinataire" value="1" id="label_0b" {% if settings.mail_etat_destinataire == '1' %} checked {% endif %} /> <label for="label_0b">{{ trad.display_mail_etat_destinataire_3 }}</label><br>
+						<input type="radio" name="mail_etat_destinataire" value="2" id="label_0c" {% if settings.mail_etat_destinataire == '2' %} checked {% endif %} /> <label for="label_0c">{{ trad.display_mail_etat_destinataire_4 }}</label><br>
+						{{ form.input('mail_destinataire', trad.display_mail_destinataire, settings.mail_destinataire, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+						<br>
+					</section>
+
+					<hr>
+
+					<section id="descriptionbreve">
+						<h4 class="page-header">{{ trad.display_short_description_msg }}</h4>
+						<input type="radio" name="display_short_description" value="0" id="label_4a" {% if settings.display_short_description == '0' %} checked {% endif %} /> <label for="label_4a">{{ trad.display_short_description0 }}</label><br>
+						<input type="radio" name="display_short_description" value="1" id="label_4b" {% if settings.display_short_description == '1' %} checked {% endif %} /> <label for="label_4b">{{ trad.display_short_description1 }}</label><br>
+					</section>
+
+					<hr>
+
+					<section id="descriptioncomple">
+						<h4 class="page-header">{{ trad.display_full_description_msg }}</h4>
+						<input type="radio" name="display_full_description" value="0" id="label_5a" {% if settings.display_full_description == '0' %} checked {% endif %} /> <label for="label_5a">{{ trad.display_full_description0 }}</label><br>
+						<input type="radio" name="display_full_description" value="1" id="label_5b" {% if settings.display_full_description == '1' %} checked {% endif %} /> <label for="label_5b">{{ trad.display_full_description1 }}</label><br>
+					</section>
+
+					<hr>
+
+					<section id="liensemail">
+						<h4 class="page-header">{{ trad.display_level_email_msg1 }}</h4>
+						<p>{{ trad.display_level_email_msg2 }}</p>
+						<input type="radio" name="display_level_email" value="0" id="label_6a" {% if settings.display_level_email == '0' %} checked {% endif %} /> <label for="label_6a">{{ trad.visu_fiche_description0 }}</label><br>
+						<input type="radio" name="display_level_email" value="1" id="label_6b" {% if settings.display_level_email == '1' %} checked {% endif %} /> <label for="label_6b">{{ trad.visu_fiche_description1 }}</label><br>
+						<input type="radio" name="display_level_email" value="2" id="label_6c" {% if settings.display_level_email == '2' %} checked {% endif %} /> <label for="label_6c">{{ trad.visu_fiche_description2 }}</label><br>
+						<input type="radio" name="display_level_email" value="3" id="label_6d" {% if settings.display_level_email == '3' %} checked {% endif %} /> <label for="label_6d">{{ trad.visu_fiche_description3 }}</label><br>
+						<input type="radio" name="display_level_email" value="4" id="label_6e" {% if settings.display_level_email == '4' %} checked {% endif %} /> <label for="label_6e">{{ trad.visu_fiche_description4 }}</label><br>
+						{% if settings.module_multisite == 'Oui' %}
+							<input type="radio" name="display_level_email" value="5" id="label_6f" {% if settings.display_level_email == '5' %} checked {% endif %} /> <label for="label_6f">{{ trad.visu_fiche_description5 }}</label><br>
+						{% endif %}
+						<input type="radio" name="display_level_email" value="6" id="label_6g" {% if settings.display_level_email == '6' %} checked {% endif %} /> <label for="label_6g">{{ trad.visu_fiche_description6 }}</label><br>
+					</section>
+
+					<hr>
+
+					<section id="popup">
+						<h4 class="page-header">{{ trad.display_level_view_entry }}</h4>
+						<input type="radio" name="display_level_view_entry" value="0" id="label_7a" {% if settings.display_level_view_entry == '0' %} checked {% endif %} /> <label for="label_7a">{{ trad.display_level_view_entry_0 }}</label><br>
+						<input type="radio" name="display_level_view_entry" value="1" id="label_7b" {% if settings.display_level_view_entry == '1' %} checked {% endif %} /> <label for="label_7b">{{ trad.display_level_view_entry_1 }}</label><br>
+					</section>
+
+					<hr>
+
+					<section id="remplissagedescriptionbreve">
+						<h4 class="page-header">{{ trad.remplissage_description_breve_msg }}</h4>
+						<input type="radio" name="remplissage_description_breve" value="0" id="label_8a" {% if settings.remplissage_description_breve == '0' %} checked {% endif %} /> <label for="label_8a">{{ trad.remplissage_description_breve0 }}</label><br>
+						<input type="radio" name="remplissage_description_breve" value="1" id="label_8b" {% if settings.remplissage_description_breve == '1' %} checked {% endif %} /> <label for="label_8b">{{ trad.remplissage_description_breve1 }}</label><br>
+						<input type="radio" name="remplissage_description_breve" value="2" id="label_8c" {% if settings.remplissage_description_breve == '2' %} checked {% endif %} /> <label for="label_8c">{{ trad.remplissage_description_breve2 }}</label><br>
+					</section>
+
+					<hr>
+
+					<section id="remplissagedescripcomplete">
+						<h4 class="page-header">{{ trad.remplissage_description_complete_msg }}</h4>
+						<input type="radio" name="remplissage_description_complete" value="0" id="label_9a" {% if settings.remplissage_description_complete == '0' %} checked {% endif %} /> <label for="label_9a">{{ trad.remplissage_description_complete0 }}</label><br>
+						<input type="radio" name="remplissage_description_complete" value="1" id="label_9b" {% if settings.remplissage_description_complete == '1' %} checked {% endif %} /> <label for="label_9b">{{ trad.remplissage_description_complete1 }}</label><br>
+					</section>
+
+					<hr>
+
+					<section id="ouvertureimpression">
+						<h4 class="page-header">{{ trad.pview_new_windows_msg }}</h4>
+						<input type="radio" name="pview_new_windows" value="0" id="label_10a" {% if settings.pview_new_windows == '0' %} checked {% endif %} /> <label for="label_10a">{{ trad.pview_new_windows0 }}</label><br>
+						<input type="radio" name="pview_new_windows" value="1" id="label_10b" {% if settings.pview_new_windows == '1' %} checked {% endif %} /> <label for="label_10b">{{ trad.pview_new_windows1 }}</label><br>
+					</section>
+
+					<hr>
+
+					<section id="legende">
+						<h4 class="page-header">{{ trad.legend_msg }}</h4>
+						<input type="radio" name="legend" value="0" id="label_1a" {% if settings.legend == '0' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
+						<input type="radio" name="legend" value="1" id="label_1b" {% if settings.legend == '1' %} checked {% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
+					</section>
+
+					<hr>
+
+					<section id="imprimante">
+						<h4 class="page-header">{{ trad.imprimante_msg }}</h4>
+						<input type="radio" name="imprimante" value="0" id="label_1a" {% if settings.imprimante == '0' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
+						<input type="radio" name="imprimante" value="1" id="label_1b" {% if settings.imprimante == '1' %} checked {% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
+					</section>
+
+					<hr>
+
+					<section id="periodicite">
+						<h4 class="page-header">{{ trad.periodicite_msg }}</h4>
+						<input type="radio" name="periodicite" value="y" id="label_1a" {% if settings.periodicite == 'y' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
+						<input type="radio" name="periodicite" value="n" id="label_1b" {% if settings.periodicite == 'n' %} checked {% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
+					</section>
+
+					<hr>
+
+					<section id="courrier">
+						<h4 class="page-header">{{ trad.courrier_msg }}</h4>
+						<input type="radio" name="show_courrier" value="y" id="label_1a" {% if settings.show_courrier == 'y' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
+						<input type="radio" name="show_courrier" value="n" id="label_1b" {% if settings.show_courrier == 'n' %} checked {% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
+					</section>
+
+					<hr>
+
+					<section id="affichervacances">
+						<h4 class="page-header">{{ trad.holidays_msg }}</h4>
+						<input type="radio" name="show_holidays" value="Oui" id="label_1a" {% if settings.show_holidays == 'Oui' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
+						<input type="radio" name="show_holidays" value="Non" id="label_1b" {% if settings.show_holidays == 'Non' %} checked {% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
+
+						{% if settings.show_holidays == 'Oui' %}
+							<div class="form-group col-sm-12">
+								<label class="col-sm-6" for="default_css">{{ trad.holidays_zone_msg }}</label>
+								<div class="col-sm-6">
+									<select class="form-control" name="holidays_zone">
+										{{ trad.dOptionVavances | raw }}
+									</select>
+								</div>
+							</div>
+						{% endif %}
+					</section>
+
+					<hr>
+
+					<section id="default_report_days_msg">
+						<h4 class="page-header">{{ trad.default_report_days_msg }}</h4>
+						{{ form.input('default_report_days', trad.default_report_days_explain, settings.default_report_days, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+						<br>
+					</section>
+
+					<hr>
+
+					<section id="formulaire_reservation">
+						<h4 class="page-header">{{ trad.formulaire_reservation }}</h4>
+						{{ form.input('longueur_liste_ressources_max', trad.longueur_liste_ressources, settings.longueur_liste_ressources_max, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+						<br>
+					</section>
+
+					<div style="text-align:center;">
+						<input class="btn btn-primary" type="submit" name="ok" value="{{ trad.save }}" />
+					</div>
+				</form>
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+
+{% endblock %}
+
+{% block javascript %}
+	<script type="text/javascript">
+		function modifier_liste_domaines(){
+			$.ajax({
+				url: "../my_account_modif_listes.php",
+				type: "get",
+				dataType: "html",
+				data: {
+					id_site: $('#id_site').val(),
+					default_area : '{{ settings.default_area }}',
+					session_login:'{{ trad.dNomUtilisateur }}',
+					use_site:'{{ trad.dUse_site }}',
+					type:'domaine',
+				},
+				success: function(returnData){
+					$("#div_liste_domaines").html(returnData);
+				},
+				error: function(e){
+					alert(e);
+				}
+			});
+		}
+		function modifier_liste_ressources(action){
+			$.ajax({
+				url: "../my_account_modif_listes.php",
+				type: "get",
+				dataType: "html",
+				data: {
+					id_area:$('id_area').serialize(true),
+					default_room : '{{ settings.default_room }}',
+					type:'ressource',
+					action:+action,
+				},
+				success: function(returnData){
+					$("#div_liste_ressources").html(returnData);
+				},
+				error: function(e){
+					alert(e);
+				}
+			});
+		}
+		modifier_liste_domaines();
+		modifier_liste_ressources(1);
+	</script>
+
+{% endblock %}

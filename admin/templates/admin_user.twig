@@ -1,0 +1,131 @@
+{% extends 'layout.twig' %}
+
+{% block css %}
+	<link rel="stylesheet" href="../bootstrap/AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+{% endblock %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-9">
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{trad.admin_user}}</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+				  <table id="tableuser" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+							  <th><a href="?p=admin_user&order_by=login&display={{ trad.dDisplay }}">{{trad.login_name}}</a></th>
+							  <th><a href="?p=admin_user&order_by=nom,prenom&display={{ trad.dDisplay }}">{{trad.names}}</a></th>
+							  <th>{{trad.privileges}}</th>
+							  <th><a href="?p=admin_user&order_by=statut,nom,prenom={{ trad.dDisplay }}">{{trad.authentification}}</a></th>
+							  <th><a href="?p=admin_user&order_by=source,nom,prenom&display={{ trad.dDisplay }}">{{trad.statut}}</a></th>
+							  <th>{{trad.action}}</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for utilisateur in utilisateurs %}
+								<tr>
+									<td>{{utilisateur.1}}</td>
+									<td>{{utilisateur.2}}</td>
+									<td>{{utilisateur.3 |raw}}</td>
+									<td>{{utilisateur.4 |raw}}</td>
+									<td>
+										{% if type.disponible == 2 %}
+											{{trad.all}}
+										{% elseif type.disponible == 3 %}
+											{{trad.gestionnaires_et_administrateurs}}
+										{% elseif type.disponible == 5 %}
+											{{trad.only_administrators}}
+										{% endif %}
+									</td>
+									<td>
+										{% if trad.dAuthorisationModif == 1 %}
+											<a href="?p=admin_user_modify&user_login={{utilisateur.1}}&display={{ trad.dDisplay }}" class="btn btn-info btn-md"><i class="icon fa fa-edit"></i></a> 
+										{% endif %}
+										{% if trad.dAuthorisationSup == 1 %}
+											<a href="?p=admin_user&user_del={{utilisateur.1}}&action_del=yes&display={{ trad.dDisplay }}" onclick="return confirmlink(this, {{utilisateur.1}}, {{trad.confirm_del}})" class="btn btn-warning btn-md"><i class="icon fa fa-trash"></i></a>
+										{% endif %}
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+						<thead>
+							<tr>
+							  <th>{{trad.login_name}}</th>
+							  <th>{{trad.names}}</th>
+							  <th>{{trad.privileges}}</th>
+							  <th>{{trad.authentification}}</th>
+							  <th>{{trad.statut}}</th>
+							  <th>{{trad.action}}</th>
+							</tr>
+						</thead>
+				  </table>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="col-md-3">
+
+			<div class="box">
+				<!-- /.box-header -->
+				<div class="box-body no-padding">
+					<h4>{{ trad.display_add_user }} :</h4>
+					<a href="?p=admin_user_modify&display={{ trad.dDisplay }}" class="btn btn-primary btn-block">{{ trad.display_add_user }}</a>
+					<a href="?p=admin_import_users_csv" class="btn btn-primary btn-block">{{ trad.via_fichier }}</a>
+					<a href="?p=admin_import_users_elycee" class="btn btn-primary btn-block">Depuis elycée</a>
+					{% if settings.sso_statut == 'lcs' %}
+						<h4>Opérations LCS :</h4>
+						<a href="?p=admin_user&action=nettoyage" onclick="return confirmlink(this, '{{ trad.mess_maj_base_locale }}', '{{ trad.maj_base_locale }}')" class="btn btn-primary btn-block">{{ trad.maj_base_locale }}</a>
+						<a href="?p=admin_user&action=synchro" onclick="return confirmlink(this, '{{ trad.mess_synchro_base_locale }}', '{{ trad.synchro_base_locale }}')" class="btn btn-primary btn-block">{{ trad.synchro_base_locale }}</a>
+					{% endif %}
+					<h4>{{ trad.admin_menu_various }} :</h4>
+					<a href="?p=admin_user_mdp_facile" class="btn btn-primary btn-block">{{ trad.admin_user_mdp_facile }}</a>
+				</div>
+			</div>
+		</div>
+	</div>	
+
+        <div class="modal modal-warning fade" id="modal-warning">
+		<form action="?p=admin_type">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{trad.confirm_del}}</h4>
+              </div>
+              <div class="modal-body">
+				<span id="modal-texte"></span><span id="modal-idsup" class="hidden"></span> 
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">{{trad.cancel}}</button>
+				<button type="submit" id="liensup" class="btn btn-outline">{{trad.delete}}</button>
+              </div>
+            </div>
+          </div>
+		  </form>
+        </div>
+{% endblock %}
+
+{% block javascript %}
+	<script src="../bootstrap/AdminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+	<script src="../bootstrap/AdminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+	<script>
+	  $(function () {
+		$('#tableuser').DataTable()({
+		  'paging'      : true,
+		  'lengthChange': false,
+		  'searching'   : true,
+		  'ordering'    : true,
+		  'info'        : true,
+		  'autoWidth'   : false
+		})
+	  })
+	</script>
+{% endblock %}

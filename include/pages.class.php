@@ -50,6 +50,22 @@ class Pages {
 			return self::$grrPages[$_name];
 	}
 
+
+	static function getAll()
+	{
+		$AllPages = array();
+		$sql_query="SELECT `nom`, `valeur` FROM ".TABLE_PREFIX."_page ";
+		$res=grr_sql_query($sql_query);
+		$i = 0;
+		while($row = grr_sql_row($res, $i)){
+			$AllPages[$row[0]] = $row[1];
+			$i++;
+		}
+		
+		return $AllPages;
+	}
+
+
 	static function set($_name, $_value)
 	{
 		if (isset(self::$grrPages[$_name]))

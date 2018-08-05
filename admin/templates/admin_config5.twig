@@ -1,0 +1,174 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+	<link rel="stylesheet" href="../bootstrap/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+        <div class="col-xs-12">
+			<div class="nav-tabs-custom">
+				<ul class="nav nav-tabs">
+				  <li><a href="?p=admin_config">{{ trad.admin_config1 }}</a></li>
+				  <li><a href="?p=admin_config6">{{ trad.admin_config6 }}</a></li>
+				  <li><a href="?p=admin_config2">{{ trad.admin_config2 }}</a></li>
+				   <li><a href="?p=admin_config3">{{ trad.admin_config3 }}</a></li>
+				    <li><a href="?p=admin_config4">{{ trad.admin_config4 }}</a></li>
+					<li class="active"><a href="?p=admin_config5">{{ trad.admin_config5 }}</a></li>
+				</ul>
+            <div class="tab-content">
+              <!-- Font Awesome Icons -->
+              <div class="tab-pane active" id="fa-icons">
+
+				<!-- Modules Interne -->
+				<div class="box box-primary">
+					<div class="box-header">
+						<h3 class="box-title">{{trad.Module_Int_Gestion}}</h3></a>
+					</div>
+					<div class="box-body no-padding">
+					  <table class="table table-striped">
+						<tr>
+						  <th>{{trad.name}}</th>
+						  <th>{{trad.sum_by_descrip}}</th>
+						  <th>{{trad.action}}</th>
+						</tr>
+						<tr>
+						  <td>{{trad.Activer_module_jours_cycles}}</td>
+						  <td></td>
+						  <td><a href="?p=admin_config5&jours_cycles=a">{{ trad.dActiveJourCycle }}</a></td>
+						</tr>
+						<tr>
+						  <td>{{trad.Activer_module_multisite}}</td>
+						  <td></td>
+						  <td><a href="?p=admin_config5&module_multisite=a">{{ trad.dActiveMultiSite }}</a></td>
+						</tr>
+					  </table>
+					</div>
+				</div>
+
+				<!-- Modules Externe -->
+				<div class="box box-success">
+					<div class="box-header">
+						<h3 class="box-title">{{trad.Module_Ext_Gestion}}</h3>
+					</div>
+					<div class="box-body no-padding">
+					  <table class="table table-striped">
+						<tr>
+						  <th>{{trad.name}}</th>
+						  <th>{{trad.sum_by_descrip}}</th>
+						  <th>{{trad.version}}</th>
+						  <th>Auteur</th>
+						  <th>Licence</th>
+						  <th>{{trad.action}}</th>
+						</tr>
+						{% for module in modulesext %}
+							<tr>
+								<td>{{ module.nom }}</td>
+								<td>{{ module.description }}</td>
+								<td>{{ module.version }}</td>
+								<td>{{ module.auteur }}</td>
+								<td>{{ module.copyright }}</td>
+								<td>
+									{% if module.activation != "" %}
+										<a href="?p=admin_config5&activation={{ module.lienActivation }}">{{ module.activation }}</a>
+									{% endif %}
+								</td>
+							</tr>
+						{% endfor %}
+					  </table>
+					</div>
+				</div>
+
+				<!-- Modules Externe Import -->
+				{% if trad.dUpload_Module == 1 %}
+					<div class="box box-success">
+						<div class="box-header">
+							<h3 class="box-title">{{trad.Module_Ext_Import}}</h3>
+						</div>
+						<div class="box-body no-padding">
+							<form enctype="multipart/form-data" action="?p=admin_config5" id="nom_formulaire" method="post">
+								{{ trad.Module_Ext_Import_Description }}
+								<input type="hidden" name="p" value="admin_config5" />
+								<input type="file" name="doc_file" />
+								<input class="btn btn-primary" type="submit" name="ok" value="Import" />
+							</form>
+						</div>
+					</div>
+				{% endif %}
+
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+
+{% endblock %}
+
+{% block javascript %}
+	<script src="../bootstrap/AdminLTE/bower_components/moment/min/moment.min.js"></script>
+	<script src="../bootstrap/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+	<script src="../bootstrap/AdminLTE/bower_components/ckeditor/ckeditor.js"></script>
+	<script>
+		$(function () {
+			$('#reservation').daterangepicker({
+			 "locale": {
+					"format": "DD/MM/YYYY",
+					"separator": " - ",
+					"applyLabel": "Valider",
+					"cancelLabel": "Annuler",
+					"fromLabel": "De",
+					"toLabel": "à",
+					"customRangeLabel": "Custom",
+					"daysOfWeek": [
+						"Dim",
+						"Lun",
+						"Mar",
+						"Mer",
+						"Jeu",
+						"Ven",
+						"Sam"
+					],
+					"monthNames": [
+						"Janvier",
+						"Février",
+						"Mars",
+						"Avril",
+						"Mai",
+						"Juin",
+						"Juillet",
+						"Août",
+						"Septembre",
+						"Octobre",
+						"Novembre",
+						"Décembre"
+					],
+					"firstDay": 1
+				}
+			}); 
+
+			// Replace the <textarea id="editor1"> with a CKEditor
+			//CKEDITOR.replace('editor1');
+					//<![CDATA[
+		CKEDITOR.replace( 'editor1',
+		{
+			toolbar :
+			[
+			['Source'],
+			['Cut','Copy','Paste','PasteText','PasteFromWord', 'SpellChecker', 'Scayt'],
+			['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+			['Bold','Italic','Underline','Strike','-','Subscript','Superscript','-','TextColor','BGColor'],
+			['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+			['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+			['Link','Unlink','Anchor'],
+			['Image','Table','HorizontalRule','SpecialChar','PageBreak'],
+			]
+		});
+		//]]>
+		}); 
+	</script>
+{% endblock %}

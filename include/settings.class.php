@@ -50,6 +50,20 @@ class Settings {
 			return self::$grrSettings[$_name];
 	}
 
+	static function getAll()
+	{
+		$AllSettings = array();
+		$sql_query="SELECT name,value FROM ".TABLE_PREFIX."_setting ";
+		$res=grr_sql_query($sql_query);
+		$i = 0;
+		while($row = grr_sql_row($res, $i)){
+			$AllSettings[$row[0]] = $row[1];
+			$i++;
+		}
+		
+		return $AllSettings;
+	}
+
 	static function set($_name, $_value)
 	{
 		if (isset(self::$grrSettings[$_name]))

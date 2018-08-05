@@ -1,0 +1,12 @@
+{
+    "name": "devome/twig",
+    "authors": [
+        {
+            "name": "JeromeDevome",
+            "email": "support@devome.com"
+        }
+    ],
+    "require": {
+        "twig/twig": "^2.0"
+    }
+}

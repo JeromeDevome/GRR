@@ -1,0 +1,147 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+        <div class="col-xs-12">
+			<div class="nav-tabs-custom">
+				<ul class="nav nav-tabs">
+					<li><a href="?p=admin_config">{{ trad.admin_config1 }}</a></li>
+					<li><a href="?p=admin_config6">{{ trad.admin_config6 }}</a></li>
+					<li class="active"><a href="?p=admin_config2">{{ trad.admin_config2 }}</a></li>
+					<li><a href="?p=admin_config3">{{ trad.admin_config3 }}</a></li>
+					<li><a href="?p=admin_config4">{{ trad.admin_config4 }}</a></li>
+					<li><a href="?p=admin_config5">{{ trad.admin_config5 }}</a></li>
+				</ul>
+            <div class="tab-content">
+
+              <div class="tab-pane active" id="fa-icons">
+				<form action="?p=admin_config2" id="nom_formulaire" method="get">
+					<input type="hidden" name="p" value="admin_config2" />
+
+					<section id="accesgrr">
+						<h4 class="page-header">{{ trad.authentification_obli_msg }}</h4>
+						<input type="radio" name="authentification_obli" value="0" id="label_1a" {% if settings.authentification_obli == '0' %} checked {% endif %} /> <label for="label_1a">{{ trad.authentification_obli0 }}</label><br>
+						<input type="radio" name="authentification_obli" value="1" id="label_1b" {% if settings.authentification_obli == '1' %} checked {% endif %} /> <label for="label_1b">{{ trad.authentification_obli1 }}</label><br>
+					</section>
+
+					<hr>
+
+					<section id="accesfichedescription">
+						<h4 class="page-header">{{ trad.visu_fiche_description_msg }}</h4>
+						<input type="radio" name="visu_fiche_description" value="0" id="label_2a" {% if settings.visu_fiche_description == '0' %} checked {% endif %} /> <label for="label_2a">{{ trad.visu_fiche_description0 }}</label><br>
+						<input type="radio" name="visu_fiche_description" value="1" id="label_2b" {% if settings.visu_fiche_description == '1' %} checked {% endif %} /> <label for="label_2b">{{ trad.visu_fiche_description1 }}</label><br>
+						<input type="radio" name="visu_fiche_description" value="2" id="label_2c" {% if settings.visu_fiche_description == '2' %} checked {% endif %} /> <label for="label_2c">{{ trad.visu_fiche_description2 }}</label><br>
+						<input type="radio" name="visu_fiche_description" value="3" id="label_2d" {% if settings.visu_fiche_description == '3' %} checked {% endif %} /> <label for="label_2d">{{ trad.visu_fiche_description3 }}</label><br>
+						<input type="radio" name="visu_fiche_description" value="4" id="label_2e" {% if settings.visu_fiche_description == '4' %} checked {% endif %} /> <label for="label_2e">{{ trad.visu_fiche_description4 }}</label><br>
+						{% if settings.module_multisite == 'Oui' %}
+							<input type="radio" name="visu_fiche_description" value="5" id="label_2f" {% if settings.visu_fiche_description == '5' %} checked {% endif %} /> <label for="label_2f">{{ trad.visu_fiche_description5 }}</label><br>
+						{% endif %}
+						<input type="radio" name="visu_fiche_description" value="6" id="label_2g" {% if settings.visu_fiche_description == '6' %} checked {% endif %} /> <label for="label_2g">{{ trad.visu_fiche_description6 }}</label><br>
+					</section>
+
+					<hr>
+
+					<section id="accesfichedetaillereservation">
+						<h4 class="page-header">{{ trad.acces_fiche_reservation_msg }}</h4>
+						<input type="radio" name="acces_fiche_reservation" value="0" id="label_3a" {% if settings.acces_fiche_reservation == '0' %} checked {% endif %} /> <label for="label_3a">{{ trad.visu_fiche_description0 }}</label><br>
+						<input type="radio" name="acces_fiche_reservation" value="1" id="label_3b" {% if settings.acces_fiche_reservation == '1' %} checked {% endif %} /> <label for="label_3b">{{ trad.visu_fiche_description1 }}</label><br>
+						<input type="radio" name="acces_fiche_reservation" value="2" id="label_3c" {% if settings.acces_fiche_reservation == '2' %} checked {% endif %} /> <label for="label_3c">{{ trad.visu_fiche_description2 }}</label><br>
+						<input type="radio" name="acces_fiche_reservation" value="3" id="label_3d" {% if settings.acces_fiche_reservation == '3' %} checked {% endif %} /> <label for="label_3d">{{ trad.visu_fiche_description3 }}</label><br>
+						<input type="radio" name="acces_fiche_reservation" value="4" id="label_3e" {% if settings.acces_fiche_reservation == '4' %} checked {% endif %} /> <label for="label_3e">{{ trad.visu_fiche_description4 }}</label><br>
+						{% if settings.module_multisite == 'Oui' %}
+							<input type="radio" name="acces_fiche_reservation" value="5" id="label_3f" {% if settings.acces_fiche_reservation == '5' %} checked {% endif %} /> <label for="label_3f">{{ trad.visu_fiche_description5 }}</label><br>
+						{% endif %}
+						<input type="radio" name="acces_fiche_reservation" value="6" id="label_3g" {% if settings.acces_fiche_reservation == '6' %} checked {% endif %} /> <label for="label_3g">{{ trad.visu_fiche_description6 }}</label><br>
+					</section>
+
+					<hr>
+
+					<section id="accesstat">
+						<h4 class="page-header">{{ trad.authentification_obli_msg }}</h4>
+						<input type="radio" name="allow_search_level" value="0" id="label_4a" {% if settings.allow_search_level == '0' %} checked {% endif %} /> <label for="label_4a">{{ trad.allow_search_level0 }}</label><br>
+						<input type="radio" name="allow_search_level" value="1" id="label_4b" {% if settings.allow_search_level == '1' %} checked {% endif %} /> <label for="label_4b">{{ trad.allow_search_level1 }}</label><br>
+						<input type="radio" name="allow_search_level" value="2" id="label_4c" {% if settings.allow_search_level == '2' %} checked {% endif %} /> <label for="label_4c">{{ trad.allow_search_level2 }}</label><br>
+						<input type="radio" name="allow_search_level" value="6" id="label_4d" {% if settings.allow_search_level == '6' %} checked {% endif %} /> <label for="label_4d">{{ trad.allow_search_level5 }}</label><br>
+					</section>
+
+					<hr>
+
+					<section id="accessmodifreservation">
+						<h4 class="page-header">{{ trad.allow_user_delete_after_beginning_msg }}</h4>
+						<input type="radio" name="allow_user_delete_after_begin" value="0" id="label_5a" {% if settings.allow_user_delete_after_begin == '0' %} checked {% endif %} /> <label for="label_5a">{{ trad.allow_user_delete_after_beginning0 }}</label><br>
+						<input type="radio" name="allow_user_delete_after_begin" value="1" id="label_5b" {% if settings.allow_user_delete_after_begin == '1' %} checked {% endif %} /> <label for="label_5b">{{ trad.allow_user_delete_after_beginning1 }}</label><br>
+						<input type="radio" name="allow_user_delete_after_begin" value="2" id="label_5c" {% if settings.allow_user_delete_after_begin == '2' %} checked {% endif %} /> <label for="label_5c">{{ trad.allow_user_delete_after_beginning2 }}</label><br>
+						<br>
+						<input type="radio" name="allow_gestionnaire_modify_del" value="0" id="label_6a" {% if settings.allow_gestionnaire_modify_del == '0' %} checked {% endif %} /> <label for="label_6a">{{ trad.allow_gestionnaire_modify_del0 }}</label><br>
+						<input type="radio" name="allow_gestionnaire_modify_del" value="1" id="label_6b" {% if settings.allow_gestionnaire_modify_del == '1' %} checked {% endif %} /> <label for="label_6b">{{ trad.allow_gestionnaire_modify_del1 }}</label><br>
+					</section>
+
+					<hr>
+
+					<section id="profilutilisateur">
+						<h4 class="page-header">Modification du profil utilisateur</h4>
+
+						<div class="form-group col-sm-12">
+							<label class="col-sm-6" for="default_css">{{ trad.modification_parametres_personnels }}</label>
+							<div class="col-sm-6">
+								<select class="form-control" name="allow_users_modify_profil">
+									<option value="1" {% if settings.allow_users_modify_profil == '1' %} selected {% endif %}>{{ trad.all }}</option>
+									<option value="2" {% if settings.allow_users_modify_profil == '2' %} selected {% endif %}>{{ trad.all_but_visitors }}</option>
+									<option value="5" {% if settings.allow_users_modify_profil == '5' %} selected {% endif %}>{{ trad.only_administrators }}</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group col-sm-12">
+							<label class="col-sm-6" for="default_css">{{ trad.modification_parametre_email }}</label>
+							<div class="col-sm-6">
+								<select class="form-control" name="allow_users_modify_email">
+									<option value="1" {% if settings.allow_users_modify_email == '1' %} selected {% endif %}>{{ trad.all }}</option>
+									<option value="2" {% if settings.allow_users_modify_email == '2' %} selected {% endif %}>{{ trad.all_but_visitors }}</option>
+									<option value="5" {% if settings.allow_users_modify_email == '5' %} selected {% endif %}>{{ trad.only_administrators }}</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group col-sm-12">
+							<label class="col-sm-6" for="default_css">{{ trad.modification_mdp }}</label>
+							<div class="col-sm-6">
+								<select class="form-control" name="allow_users_modify_mdp">
+									<option value="1" {% if settings.allow_users_modify_mdp == '1' %} selected {% endif %}>{{ trad.all }}</option>
+									<option value="2" {% if settings.allow_users_modify_mdp == '2' %} selected {% endif %}>{{ trad.all_but_visitors }}</option>
+									<option value="5" {% if settings.allow_users_modify_mdp == '5' %} selected {% endif %}>{{ trad.only_administrators }}</option>
+								</select>
+							</div>
+						</div>
+
+					</section>
+
+					<hr>
+
+					<section id="quotas">
+						<h4 class="page-header">Quotas</h4>
+						{{ form.input('UserAllRoomsMaxBooking', trad.max_booking, settings.UserAllRoomsMaxBooking, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+					</section>
+
+					<div style="text-align:center;">
+						<input class="btn btn-primary" type="submit" name="ok" value="{{ trad.save }}" />
+					</div>
+				</form>
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
