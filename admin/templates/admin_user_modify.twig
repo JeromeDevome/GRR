@@ -54,11 +54,11 @@
 						<label class="col-sm-4" for="reg_statut">{{ trad.statut }}</label>
 						<div class="col-sm-8">
 							<select name="reg_statut" id="select_auth_mode" class="form-control" size="1">
-								<option value="locale" {% if utilisateur.statut == 'visiteur' %} selected {% endif %}>{{ trad.statut_visitor }}</option>
-								<option value="locale" {% if utilisateur.statut == 'utilisateur' %} selected {% endif %}>{{ trad.statut_user }}</option>
+								<option value="visiteur" {% if utilisateur.statut == 'visiteur' %} selected {% endif %}>{{ trad.statut_visitor }}</option>
+								<option value="utilisateur" {% if utilisateur.statut == 'utilisateur' %} selected {% endif %}>{{ trad.statut_user }}</option>
 								{% if trad.dEstAdministrateur ==  1 %}
-									<option value="locale" {% if utilisateur.statut == 'gestionnaire_utilisateur' %} selected {% endif %}>{{ trad.statut_user_administrator }}</option>
-									<option value="locale" {% if utilisateur.statut == 'administrateur' %} selected {% endif %}>{{ trad.statut_administrator }}</option>
+									<option value="gestionnaire_utilisateur" {% if utilisateur.statut == 'gestionnaire_utilisateur' %} selected {% endif %}>{{ trad.statut_user_administrator }}</option>
+									<option value="administrateur" {% if utilisateur.statut == 'administrateur' %} selected {% endif %}>{{ trad.statut_administrator }}</option>
 								{% endif %}
 							</select>
 						</div>
