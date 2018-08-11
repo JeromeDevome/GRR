@@ -18,8 +18,6 @@
 
 $grr_script_name = "admin_type_modify.php";
 
-//get_vocab_admin("admin_type_modify_create");
-//get_vocab_admin("admin_type_modify_modify");
 get_vocab_admin("admin_type_explications");
 get_vocab_admin("type_name");
 get_vocab_admin("type_num");
@@ -45,7 +43,6 @@ $id_type = isset($_GET["id_type"]) ? $_GET["id_type"] : 0;
 $type_name = isset($_GET["type_name"]) ? $_GET["type_name"] : NULL;
 $order_display = isset($_GET["order_display"]) ? $_GET["order_display"] : NULL;
 $type_letter = isset($_GET["type_letter"]) ? $_GET["type_letter"] : NULL;
-//$couleur = isset($_GET["couleur"]) ? $_GET["couleur"] : NULL;
 $couleur_hexa = isset($_GET["couleurhexa"]) ? $_GET["couleurhexa"] : NULL;
 $disponible = isset($_GET["disponible"]) ? $_GET["disponible"] : NULL;
 $msg = "";
@@ -136,9 +133,8 @@ if ((isset($_GET['change_done'])) && (!isset($ok)))
 	exit();
 }
 
-
-
 affiche_pop_up($msg,"admin");
+
 if ((isset($id_type)) && ($id_type > 0))
 {
 	$res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_type_area WHERE id=$id_type");
@@ -152,8 +148,8 @@ if ((isset($id_type)) && ($id_type > 0))
 else
 {
 	$typeResa["id"] = '0';
-	$typeResa["order_display"]  = 0;
-	$typeResa["disponible"]  = 2;
+	$typeResa["order_display"] = 0;
+	$typeResa["disponible"] = 2;
 	$trad['admin_type_titre'] = get_vocab('admin_type_modify_create');
 }
 	
