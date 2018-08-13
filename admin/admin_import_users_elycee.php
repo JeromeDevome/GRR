@@ -2,8 +2,9 @@
 /**
  * admin_import_users_elycee.php
  * script d'importation d'utilisateurs à partir d'un fichier CSV issu de l'ENT elycée Rhône-Alpes, une variante de Kd'Ecole
+ * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Yan Naessen & Laurent Delineau
+ * @author    JeromeB & Yan Naessens & Laurent Delineau
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *

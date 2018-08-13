@@ -2,7 +2,8 @@
 /**
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
- * Dernière modification : $Date: 2018-07-14 16:00$
+ * Ce script fait partie de l'application GRR
+ * Dernière modification : $Date: 2018-04-11 11:30$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
