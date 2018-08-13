@@ -497,7 +497,8 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 			if ($display_day[$num_week_day] == 1)
 			{
 				$no_td = TRUE;
-				if ((isset($d[$cday]["id"][0])) && !(est_hors_reservation(mktime(0, 0, 0, $cmonth, $cday, $cyear), $area)))
+				$estHorsReservation = est_hors_reservation(mktime(0, 0, 0, $cmonth, $cday, $cyear), $area);
+				if ((isset($d[$cday]["id"][0])) && !$estHorsReservation)
 				{
 					$n = count($d[$cday]["id"]);
 					for ($i = 0; $i < $n; $i++)
@@ -594,7 +595,7 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 					echo '<div class="empty_cell">'.PHP_EOL;
 				$hour = date("H", $date_now);
 				$date_booking = mktime(24, 0, 0, $cmonth, $cday, $cyear);
-				if (est_hors_reservation(mktime(0, 0, 0, $cmonth, $cday, $cyear), $area))
+				if ($estHorsReservation)
 					echo '<img src="img_grr/stop.png" alt="',get_vocab("reservation_impossible"),'" title="',get_vocab("reservation_impossible"),'" width="16" height="16" class="',$class_image,'" />',PHP_EOL;
 				else
 				{
