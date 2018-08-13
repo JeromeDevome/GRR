@@ -3,7 +3,7 @@
  * month_all.php
  * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-05-14 18:30$
+ * Dernière modification : $Date: 2018-07-26 15:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -18,12 +18,141 @@
 
 $grr_script_name = "month_all.php";
 
-/*if (!isset($_GET['day'])){ // pour l'affichage du mois la variable jour n'est pas obligatoire dans l'url, cependant necessaire pour setdate.php
-	$_GET['day'] = 1;
-}
-*/
-include "include/planning_init.inc.php";
+include "include/connect.inc.php";
+include "include/config.inc.php";
+include "include/misc.inc.php";
+include "include/functions.inc.php";
+include "include/$dbsys.inc.php";
+include "include/mincals.inc.php";
+include "include/mrbs_sql.inc.php";
+require_once("./include/settings.class.php");
+$settings = new Settings();
+if (!$settings)
+	die("Erreur chargement settings");
+require_once("./include/session.inc.php");
+include "include/resume_session.php";
+include "include/language.inc.php";
 
+//Construction des identifiants de la ressource $room, du domaine $area, du site $id_site
+Definition_ressource_domaine_site();
+
+//Récupération des données concernant l'affichage du planning du domaine
+get_planning_area_values($area);
+
+// Initilisation des variables
+$affiche_pview = '1';
+if (!isset($_GET['pview']))
+	$_GET['pview'] = 0;
+else
+	$_GET['pview'] = 1;
+
+if ($_GET['pview'] == 1)
+	$class_image = "print_image";
+else
+	$class_image = "image";
+// initialisation des paramètres de temps
+$date_now = time();
+$day = (isset($_GET['day']))? $_GET['day'] : date("d"); // ou 1 ? YN le 07/03/2018
+$month = (isset($_GET['month']))? $_GET['month'] : date("m");
+$year = (isset($_GET['year']))? $_GET['year'] : date("Y");
+// définition de variables globales
+global $racine, $racineAd, $desactive_VerifNomPrenomUser;
+
+// Lien de retour
+$back = (isset($_SERVER['HTTP_REFERER']))? $_SERVER['HTTP_REFERER'] : page_accueil() ;
+
+// Type de session
+if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
+	$type_session = "no_session";
+else
+	$type_session = "with_session";
+// autres initialisations
+if (@file_exists('./admin_access_area.php')){
+    $adm = 1;
+    $racine = "../";
+    $racineAd = "./";
+}else{
+    $adm = 0;
+    $racine = "./";
+    $racineAd = "./admin/";
+}
+// pour le traitement des modules
+include $racine."/include/hook.class.php";
+
+if (!($desactive_VerifNomPrenomUser))
+    $desactive_VerifNomPrenomUser = 'n';
+// On vérifie que les noms et prénoms ne sont pas vides
+VerifNomPrenomUser($type_session);
+
+// code html
+echo '<!DOCTYPE html>'.PHP_EOL;
+echo '<html lang="fr">'.PHP_EOL;
+// section <head>
+if ($type_session == "with_session")
+    echo pageHead2(Settings::get("company"),"with_session");
+else
+    echo pageHead2(Settings::get("company"),"no_session");
+// section <body>
+echo "<body>";
+// Menu du haut = section <header>
+echo "<header>";
+pageHeader2($day, $month, $year, $type_session);
+echo "</header>";
+// Debut de la page
+echo '<section>'.PHP_EOL;
+
+// Affichage du menu
+include("menu_gauche2.php");
+include("chargement.php");
+
+// Dans le cas d'une selection invalide
+if ($area <= 0)
+{
+	echo '<h1>'.get_vocab("noareas").'</h1>';
+	echo '<a href="./admin/admin_accueil.php">'.get_vocab("admin").'</a>'.PHP_EOL.'</body>'.PHP_EOL.'</html>';
+	exit();
+}
+
+// Calcul du niveau de droit de réservation
+$authGetUserLevel = authGetUserLevel(getUserName(), -1);
+// vérifie si la date est dans la période réservable
+if (check_begin_end_bookings($day, $month, $year))
+{
+	showNoBookings($day, $month, $year, $back);
+	exit();
+}
+//Renseigne les droits de l'utilisateur, si les droits sont insuffisants, l'utilisateur est averti.
+if ((($authGetUserLevel < 1) && (Settings::get("authentification_obli") == 1)) || authUserAccesArea(getUserName(), $area) == 0)
+{
+	showAccessDenied($back);
+	exit();
+}
+
+// On vérifie une fois par jour si le délai de confirmation des réservations est dépassé
+	// Si oui, les réservations concernées sont supprimées et un mail automatique est envoyé.
+	// On vérifie une fois par jour que les ressources ont été rendue en fin de réservation
+	// Si non, une notification email est envoyée
+if (Settings::get("verif_reservation_auto") == 0)
+{
+	verify_confirm_reservation();
+	verify_retard_reservation();
+}
+
+// Selection des ressources
+$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display, room_name";
+$ressources = grr_sql_query($sql);
+
+if (!$ressources)
+	fatal_error(0, grr_sql_error());
+
+// Contrôle si il y a une ressource dans le domaine
+if (grr_sql_count($ressources) == 0)
+{
+	echo "<h1>".get_vocab("no_rooms_for_area")."</h1>";
+	die();
+}
+
+// calcul du contenu du planning
 $month_start = mktime(0, 0, 0, $month, 1, $year);
 $weekday_start = (date("w", $month_start) - $weekstarts + 7) % 7;
 $days_in_month = date("t", $month_start);
@@ -69,48 +198,8 @@ $res = grr_sql_query($sql);
 if (!$res)
 	echo grr_sql_error();
 else
-{
-
-	echo '<div class="titre_planning">'.PHP_EOL.'<table class="table-header">'.PHP_EOL;
-	//Test si le format est imprimable
-	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
-	{
-		#Show Go to week before and after links
-		echo '<tr>'.PHP_EOL;
-		echo '<td class="left">'.PHP_EOL;
-		echo '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'month_all.php?year='.$yy.'&amp;month='.$ym.'&amp;day=1&amp;area='.$area.'\';"><span class="glyphicon glyphicon-backward"></span>&nbsp'.get_vocab("monthbefore").'</button>'.PHP_EOL;
-		echo '</td>'.PHP_EOL;
-		echo '<td>'.PHP_EOL;
-		include "include/trailer.inc.php";
-		echo '</td>'.PHP_EOL;
-		echo '<td class="right">'.PHP_EOL;
-		echo '<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'month_all.php?year='.$ty.'&amp;month='.$tm.'&amp;day=1&amp;area='.$area.'\';">'.get_vocab('monthafter').'  <span class="glyphicon glyphicon-forward"></span></button>'.PHP_EOL;
-		echo '</td>'.PHP_EOL;
-		echo '</tr>'.PHP_EOL;
-			echo "<tr>";
-	/* echo "<td class=\"left\"> ";
-	$month_all2 = 1;
-	echo "<input type=\"button\" class=\"btn btn-default btn-xs\" id=\"voir\" value=\"Afficher le menu à gauche.\" onClick=\"divaffiche($month_all2)\" style=\"display:inline;\" /> ";
-	echo "</td>";*/
-	// suppression parce que ne semble pas fonctionnel
-		echo '</table>'.PHP_EOL;
-	}
-
-    echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.get_vocab("all_areas").'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php" title="'.get_vocab('see_all_the_rooms_for_several_months').'">'.ucfirst(utf8_strftime("%Y", $month_start)).'</a></h4>'.PHP_EOL;
-
-	if ($_GET['pview'] != 1)
-		echo ' <a href="month_all2.php?year='.$year.'&amp;month='.$month.'&amp;area='.$area.'"><span class="glyphicon glyphicon-refresh"></a>'.PHP_EOL;
-	echo '</div>'.PHP_EOL;
-	if (isset($_GET['precedent']))
-	{
-		if ($_GET['pview'] == 1 && $_GET['precedent'] == 1)
-		{
-			echo '<span id="lienPrecedent">'.PHP_EOL;
-			echo '<button class="btn btn-default btn-xs" onclick="charger();javascript:history.back();">Précedent</button>'.PHP_EOL;
-			echo '</span>'.PHP_EOL;
-		}
-	}
-	echo '<div class="contenu_planning">'.PHP_EOL;
+{ // les infos sont recueillies, on passe au planning
+	// echo '<div class="contenu_planning">'.PHP_EOL;
     $verif_acces_ressource = array();
     $acces_fiche_reservation = array();
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
@@ -223,22 +312,89 @@ else
 			}
 		}
 	}
-	// Début du tableau affichant le planning
-	echo '<table class="table-bordered table-striped">',PHP_EOL;
+// Début du tableau affichant le planning
+if ($_GET['pview'] != 1){
+    echo "<div id='planning2'>";
+    /* echo '<script type="text/javascript">
+        document.getElementById("planning2").style.width = "75%"; 
+    </script>';*/
+}
+else{
+	echo '<div id="print_planning">'.PHP_EOL;
+}
+echo '<table class="mois table-bordered table-striped">',PHP_EOL;
+// le titre de la table
+echo "<caption>";
+// liens mois avant-après et imprimante si page non imprimable
+if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
+{
+	echo "\n
+	<div class='ligne23'>
+		<div class=\"left\">
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all.php?year=$yy&amp;month=$ym&amp;area=$area';\" \"><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("monthbefore")." </button>
+		</div>";
+		include "./include/trailer.inc.php";
+		echo "<div class=\"right\">
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all.php?year=$ty&amp;month=$tm&amp;area=$area';\" \">".get_vocab('monthafter')." <span class=\"glyphicon glyphicon-forward\"></span></button>
+		</div>
+	</div>";
+}
+// montrer ou cacher le menu gauche
+echo "<div>";
+if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
+{
+	echo "<div class=\"left\"> ";
+    $mode = Settings::get("menu_gauche");
+    $alt = $mode;
+    if ($mode == 0) $alt = 1; // il faut bien que le menu puisse s'afficher, par défaut ce sera à gauche sauf choix autre par setting
+    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuGauche($alt)\" title='".get_vocab('show_left_menu')."'><span class=\"glyphicon glyphicon-chevron-right\"></span></button></div> ";
+    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuGauche(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
+	echo "</div>";
+    if ($mode == 1){
+        echo '<script type="text/javascript">
+                document.getElementById("cacher").style.display = "inline";
+                document.getElementById("voir").style.display = "none";
+                document.getElementById("planning2").style.width = "75%"; 
+            </script>
+        ';
+    }
+    if ($mode == 2){
+        echo '<script type="text/javascript">
+                document.getElementById("cacher").style.display = "inline";
+                document.getElementById("voir").style.display = "none";
+            </script>
+        ';
+    }
+}    
+    echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.get_vocab("all_areas").'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php" title="'.get_vocab('see_all_the_rooms_for_several_months').'">'.ucfirst(utf8_strftime("%Y", $month_start)).'</a></h4>'.PHP_EOL;
+    if ($_GET['pview'] != 1)
+        echo " <a href=\"month_all2.php?year=$year&amp;month=$month&amp;area=$area\"><span class='glyphicon glyphicon-refresh'></span></a>";
+echo "</div>";
+echo "</caption>";
+	if (isset($_GET['precedent']))
+	{
+		if ($_GET['pview'] == 1 && $_GET['precedent'] == 1)
+		{
+			echo '<span id="lienPrecedent">'.PHP_EOL;
+			echo '<button class="btn btn-default btn-xs" onclick="charger();javascript:history.back();">Précedent</button>'.PHP_EOL;
+			echo '</span>'.PHP_EOL;
+		}
+	}
 	// Début affichage première ligne (intitulé des jours)
-	echo '<tr>',PHP_EOL;
+	echo '<thead>',PHP_EOL;
 	for ($weekcol = 0; $weekcol < 7; $weekcol++)
 	{
 		$num_week_day = ($weekcol + $weekstarts) % 7;
 		// on n'affiche pas tous les jours de la semaine
 		if ($display_day[$num_week_day] == 1)
-			echo '<th style="width:14%;">',day_name($num_week_day),'</th>',PHP_EOL;
+			echo '<th class="jour_sem">',day_name($num_week_day),'</th>',PHP_EOL;
 	}
-	echo '</tr>',PHP_EOL;
+	echo '</thead>',PHP_EOL;
 	// Fin affichage première ligne (intitulé des jours)
 	// Début affichage des lignes affichant les réservations
 	// On grise les cellules appartenant au mois précédent
-	$weekcol = 0;
+	echo "<tbody>";
+    $weekcol = 0;
 	if ($weekcol != $weekday_start)
 	{
 		echo '<tr>',PHP_EOL;
@@ -261,7 +417,7 @@ else
 		if ($display_day[$num_week_day] == 1)
 		{
 			// début condition "on n'affiche pas tous les jours de la semaine"
-			echo '<td class="cell_month">',PHP_EOL;
+			echo '<td >',PHP_EOL;
 			// On affiche les jours du mois dans le coin supérieur gauche de chaque cellule
 			$ferie_true = 0;
 			$class = "";
@@ -308,7 +464,7 @@ else
 								break;
 							}
 
-							echo '<table class="table-bordered table-striped">',PHP_EOL,'<tr>',PHP_EOL;
+							echo '<table class="table-header table-bordered table-striped">',PHP_EOL,'<tr>',PHP_EOL;
 
 							tdcell($d[$cday]["color"][$i]);
 							echo '<span class="small_planning">',PHP_EOL;
@@ -349,7 +505,9 @@ else
 							echo "</span></td></tr></table>\n";
 				*/
 				}
-			}
+                else 
+                    echo "<div class='empty_cell'> </div>";
+            }
 			echo '</td>',PHP_EOL;
 		}
 			// fin condition "on n'affiche pas tous les jours de la semaine"
@@ -370,24 +528,20 @@ else
 			if ($display_day[$num_week_day] == 1)
 				echo '<td class="cell_month_o" ></td>',PHP_EOL;
 		}
+        echo "</tr>";
 	}
+    echo "</tbody>";
 	echo '</table>',PHP_EOL;
-	//Fermeture du div contenu_Planning
-	echo '</div>',PHP_EOL;
-	if ($_GET['pview'] != 1)
-	{
-		echo '<div id="toTop">',PHP_EOL,'<b>',get_vocab("top_of_page"),'</b>',PHP_EOL;
-		bouton_retour_haut ();
-		echo '</div>',PHP_EOL;
-	}
-	//Fermeture DIV Panning
-	//echo "</div>".PHP_EOL;
-	//if (Settings::get("menu_gauche") == 0){
-	echo '</div>'.PHP_EOL;
-	//}
-	// Affichage d'un message pop-up
-	echo '</div>'.PHP_EOL;
-	affiche_pop_up(get_vocab("message_records"),"user");
-	echo  "<div id=\"popup_name\" class=\"popup_block\" ></div>";
-	include "footer.php";
-	?>
+echo  "<div id=\"popup_name\" class=\"popup_block\" ></div>";
+if ($_GET['pview'] != 1)
+{
+	echo "<div id=\"toTop\"> ^ Haut de la page";
+    bouton_retour_haut ();
+    echo " </div>";
+}
+	//Fermeture DIV Planning2
+    echo " </div>";
+affiche_pop_up(get_vocab("message_records"),"user");
+echo "</section>";
+echo "</body></html>";
+?>
