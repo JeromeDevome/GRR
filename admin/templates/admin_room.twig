@@ -1,0 +1,230 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{trad.admin_room}}</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body no-padding">
+
+					{% if trad.dNbSite > 1 %}
+						<div class="form-group">
+							<label class="col-sm-3" for="site">{{ trad.sites }}</label>
+							<div class="col-sm-9">
+								<form id="liste_site" action="admin.php?p=admin_room">
+									<select name="id_site" class="form-control" onchange="site_go()">
+										<option value="-1">{{ trad.choose_a_site }}</option>
+										{% for site in sites %}
+											<option value="{{ site.idsite }}" {% if site.idsite == trad.dIdSite %} selected {% endif %}>{{ site.nomsite }}</option>
+										{% endfor %}
+									</select>
+								</form>
+							</div>
+						</div>
+					{% else %}
+						<div class="form-group">
+							<label class="col-sm-12" for="site">{{ trad.site }} : {{ trad.dNomSite }}</label>
+						</div>
+					{% endif %}
+
+					{% if settings.module_multisite != 'Oui' or (settings.module_multisite == 'Oui' and trad.dIdSite > 0) %}
+						<table class="table table-bordered">
+							<tr>
+								<th class="col-sm-6">{{ trad.areas }}</th>
+								<th class="col-sm-6">{{ trad.rooms }} {{ trad.dRessourceDe }}</th>
+							</tr>
+							<tr>
+								<td>{{ trad.dAjoutDomaine |raw }}</td>
+								<td>{{ trad.dAjoutRessource |raw }}</td>
+							</tr>
+							<!-- CAS 1 -->
+							{% if trad.dCasAfficher == 1 %}
+								<tr>
+									<td>
+										<table class="table">
+											{% for domaine in domaines %}
+												<tr>
+													<td>{% if domaine.acces == 'r' %}<a href="?p=admin_access_area&id_area={{ domaine.id }}" title="{{ trad.admin_access_area }}"><span class="fa fa-lock"></a>{% endif %}</td>
+													<td><a href="?p=admin_room&id_site={{ trad.dIdSite }}&id_area={{ domaine.id }}">{{ domaine.nom }}</a></td>
+													<td><a href="?p=admin_edit_room&id_site={{ trad.dIdSite }}&id_area={{ domaine.id }}"><span class="fa fa-pencil"></a></td>
+													{% if domaine.droitsuser >= 5 %}
+														<td><a href="?p=admin_edit_room&id_area={{ domaine.id }}&action=duplique_area"><span class="fa fa-copy"></a></td>
+														<td><a href="?p=admin_room_del&id_site={{ trad.dIdSite }}&type=area&id_area={{ domaine.id }}"><span class="fa fa-trash"></a></td>
+													{% endif %}
+													<td><a href="?p=admin_type_area&id_area={{ domaine.id }}"><span class="fa fa-tags"></a></td>
+													<td><a href="javascript:centrerpopup('../view_rights_area.php?area_id={{ domaine.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fa fa-group"></a></td>
+												</tr>
+											{% endfor %}
+										</table>
+									</td>	
+									<td>
+										{% if trad.dIdDomaine %}
+											<table class="table">
+												{% for ressource in ressources %}
+													<tr>
+														<td width="10">{% if ressource.statut == 0 %}<span class="fa fa-ban" style="color:red;">{% endif %}</td>
+														<td>{{ ressource.nom }} <i>{{ ressource.description }} {% if ressource.capacite > 0 %}({{ ressource.capacite }} max.){% endif %}</i></td>
+														<td><a href="admin_edit_room.php?room={{ ressource.id }}"><span class="fa fa-pencil"></a></td>
+														<td><a href="admin_edit_room.php?room={{ ressource.id }}&action=duplique_room"><span class="fa fa-copy"></a></td>
+														<td><a href="admin_room_del.php?type=room&room={{ ressource.id }}&id_area=$id_area\"><span class="fa fa-trash"></a></td>
+														<td><a href="javascript:centrerpopup('../view_rights_room.php?id_room={{ ressource.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fa fa-group"></a></td>
+														<td><a href="javascript:centrerpopup('../view_room.php?id_room={{ ressource.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.fiche_ressource }}"><span class="fa fa-newspaper-o"></a></td>
+													</tr>
+												{% endfor %}
+											</table>
+											{{ trad.dNo_rooms_for_area }}
+										{% else %}
+											<p>{{ trad.noarea }}</p>
+											<p>{{ trad.OU }}</p>
+											<p><a href="?p=admin_room&id_site={{ trad.dIdSite }}&id_area=-1">{{ trad.show_all_rooms }}</a></p>
+										{% endif %}
+									</td>
+								</tr>
+							{% endif %}
+							<!-- FIN CAS 1 -->
+
+							<!-- CAS 2 -->
+							{% if trad.dCasAfficher == 2 %}
+								{% for domaine in domaines %}
+									<tr>
+										<td>
+											<table class="table">
+												<tr>
+													<td>{% if domaine.acces == 'r' %}<a href="?p=admin_access_area&id_area={{ domaine.id }}" title="{{ trad.admin_access_area }}"><span class="fa fa-lock"></a>{% endif %}</td>
+													<td><a href="?p=admin_room&id_site={{ trad.dIdSite }}&id_area={{ domaine.id }}">{{ domaine.nom }}</a></td>
+													<td><a href="?p=admin_edit_room&id_site={{ trad.dIdSite }}&id_area={{ domaine.id }}"><span class="fa fa-pencil"></a></td>
+													{% if domaine.droitsuser >= 5 %}
+														<td><a href="?p=admin_edit_room&id_area={{ domaine.id }}&action=duplique_area"><span class="fa fa-copy"></a></td>
+														<td><a href="?p=admin_room_del&id_site={{ trad.dIdSite }}&type=area&id_area={{ domaine.id }}"><span class="fa fa-trash"></a></td>
+													{% endif %}
+													<td><a href="?p=admin_type_area&id_area={{ domaine.id }}"><span class="fa fa-tags"></a></td>
+													<td><a href="javascript:centrerpopup('../view_rights_area.php?area_id={{ domaine.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fa fa-group"></a></td>
+												</tr>
+											</table>
+										</td>
+										<td>
+											<table class="table">
+												{% for ressource in ressources %}
+													<tr>
+														<td width="10">{% if ressource.statut == 0 %}<span class="fa fa-ban" style="color:red;">{% endif %}</td>
+														<td>{{ ressource.nom }} <i>{{ ressource.description }} {% if ressource.capacite > 0 %}({{ ressource.capacite }} max.){% endif %}</i></td>
+														<td><a href="admin_edit_room.php?room={{ ressource.id }}"><span class="fa fa-pencil"></a></td>
+														<td><a href="admin_edit_room.php?room={{ ressource.id }}&action=duplique_room"><span class="fa fa-copy"></a></td>
+														<td><a href="admin_room_del.php?type=room&room={{ ressource.id }}&id_area=$id_area\"><span class="fa fa-trash"></a></td>
+														<td><a href="javascript:centrerpopup('../view_rights_room.php?id_room={{ ressource.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fa fa-group"></a></td>
+														<td><a href="javascript:centrerpopup('../view_room.php?id_room={{ ressource.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.fiche_ressource }}"><span class="fa fa-newspaper-o"></a></td>
+													</tr>
+												{% endfor %}
+											</table>
+											{{ trad.dNo_rooms_for_area }}
+										</td>
+									</tr>
+								{% endfor %}
+							{% endif %}
+							<!-- FIN CAS 2 -->
+						</table>
+					{% endif %}
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+				  
+					<tr>
+					  <th style="width: 10px">{{trad.type_num}}</th>
+					  <th>{{trad.type_name}}</th>
+					  <th style="width: 20px">{{trad.type_color}}</th>
+					  <th>{{trad.type_order}}</th>
+					  <th>{{trad.disponible_pour}}</th>
+					  <th>{{trad.action}}</th>
+					</tr>
+					{% for type in types %}
+						<tr>
+							<td>{{type.type_letter}}</td>
+							<td>{{type.type_name}}</td>
+							<td style="background-color:{{type.couleurhexa}}"></td>
+							<td>{{type.order_display}}</td>
+							<td>
+							{% if type.disponible == 2 %}
+								{{trad.all}}
+							{% elseif type.disponible == 3 %}
+								{{trad.gestionnaires_et_administrateurs}}
+							{% elseif type.disponible == 5 %}
+								{{trad.only_administrators}}
+							{% endif %}
+							</td>
+							<td>
+								<a href="?p=admin_type_modify&id_type={{type.id}}" class="btn btn-info btn-md"><i class="icon fa fa-edit"></i></a> 
+								<button type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#modal-warning" data-texte="{{trad.confirm_del}} : {{type.type_letter}}" data-idsup="{{type.id}}"><i class="icon fa fa-trash"></i></button>
+							</td>
+						</tr>
+					{% endfor %}
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+        <div class="modal modal-warning fade" id="modal-warning">
+		<form action="?p=admin_type">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{trad.confirm_del}}</h4>
+              </div>
+              <div class="modal-body">
+				<span id="modal-texte"></span><span id="modal-idsup" class="hidden"></span> 
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">{{trad.cancel}}</button>
+				<button type="submit" id="liensup" class="btn btn-outline">{{trad.delete}}</button>
+              </div>
+            </div>
+          </div>
+		  </form>
+        </div>
+{% endblock %}
+
+{% block javascript %}
+	<script type="text/javascript">
+	<!--
+		function site_go()
+		{
+			box = document.getElementById("liste_site").id_site;
+			destination = "?p=admin_room"+"&id_site="+box.options[box.selectedIndex].value;
+			location.href = destination;
+		}
+	// -->
+		function centrerpopup(page,largeur,hauteur,options)
+		{
+		// les options :
+		//    * left=100 : Position de la fenêtre par rapport au bord gauche de l'écran.
+		//    * top=50 : Position de la fenêtre par rapport au haut de l'écran.
+		//    * resizable=x : Indique si la fenêtre est redimensionnable.
+		//    * scrollbars=x : Indique si les barres de navigations sont visibles.
+		//    * menubar=x : Indique si la barre des menus est visible.
+		//    * toolbar=x : Indique si la barre d'outils est visible.
+		//    * directories=x : Indique si la barre d'outils personnelle est visible.
+		//    * location=x : Indique si la barre d'adresse est visible.
+		//    * status=x : Indique si la barre des status est visible.
+		//
+		// x = yes ou 1 si l'affirmation est vrai ; no ou 0 si elle est fausse.
+		var top = (screen.height - hauteur) / 2;
+		var left = (screen.width - largeur) / 2;
+		window.open(page,"","top="+top+",left="+left+",width="+largeur+",height="+hauteur+",directories=no,toolbar=no,menubar=no,location=no,"+options);
+		}
+	</script>
+{% endblock %}
