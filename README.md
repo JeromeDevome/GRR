@@ -1,4 +1,4 @@
-GRR
+GRR version stable 3.4.0
 ===================
 
 **Requiert :**
@@ -9,6 +9,8 @@ MySQL: > 5.4 && < 5.6
 http://grr.devome.com/
 
 GRR est un outil de gestion et de réservation de ressources. **GRR** est une adaptation d'une application **MRBS**.
+
+GRR version stable 3.4.0 : des correctifs peuvent être régulièrement apportés suites aux signalements sur les sites github ou grr.devome.com
 
 ----------
 
