@@ -160,7 +160,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 				$access='r';
 			else
 				$access='a';
-			if ((isset($id_area)) && !((isset($action) && ($action == "duplique_area"))))
+			if ((isset($id_area)) && $id_area > 0 && !((isset($action) && ($action == "duplique_area"))))
 			{
 				// s'il y a changement de type de creneaux, on efface les reservations du domaines
 				$old_enable_periods = grr_sql_query1("select enable_periods from ".TABLE_PREFIX."_area WHERE id='".$id_area."'");
