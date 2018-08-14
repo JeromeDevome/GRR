@@ -131,7 +131,7 @@ if ((isset($id_area)) && ($id_area != -1))
 
 		// Seul l'administrateur a le droit d'ajouter des domaines
 		if ((authGetUserLevel(getUserName(),-1,'area') >= 5) && $id_area != -1)
-			$trad['dAjoutDomaine'] = "<a href=\"?p=admin_edit_room&id_site=".$id_site."&amp;add_area='yes'\">".get_vocab('addarea')."</a>";
+			$trad['dAjoutDomaine'] = "<a href=\"?p=admin_edit_domaine&id_site=".$id_site."&amp;add_area=yes\">".get_vocab('addarea')."</a>";
 
 		if ((isset($id_area))&&($id_area != -1))
 			$trad['dAjoutRessource'] = "<a href=\"?p=admin_edit_room&id_site=".$id_site."&amp;area_id=$id_area\">".get_vocab('addroom')."</a>";
