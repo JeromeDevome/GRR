@@ -300,7 +300,6 @@ if ((!empty($id_area)) || (isset($add_area)))
 
 	affiche_pop_up($msg,"admin");
 
-	echo "<div class=\"page_sans_col_gauche\">";
 	if (isset($id_area))
 	{
 		$res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_area WHERE id=$id_area");
@@ -423,9 +422,6 @@ if ((!empty($id_area)) || (isset($add_area)))
 		// jours de la semaine: 0 pour dimanche, 1 pour lundi, etc.
 		for ($i = 0; $i < 7; $i++)
 			$JoursSemaine[] = array('num' => $i, 'nom' => day_name($i));
-
-
-		//echo "<p style=\"text-align:left;\"><b>ATTENTION :</b> Les deux types de configuration des creneaux sont incompatibles entre eux : un changement du type de creneaux entraene donc, apres validation, un <b>effacement de toutes les reservations  de ce domaine</b></p>.";
 
 		//Les creneaux de reservation sont bases sur des intitules pre-definis.
 		$sql_periode = grr_sql_query("SELECT num_periode, nom_periode FROM ".TABLE_PREFIX."_area_periodes where id_area='".$id_area."' order by num_periode");
