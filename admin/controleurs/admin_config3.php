@@ -105,7 +105,7 @@ if (isset($_GET['grr_mail_from']))
 if (isset($_GET['grr_mail_fromname']))
 {
 	if (!Settings::set("grr_mail_fromname", $_GET['grr_mail_fromname']))
-	{rer mon compte
+	{
 		echo "Erreur lors de l'enregistrement de grr_mail_fromname !<br />";
 		die();
 	}
