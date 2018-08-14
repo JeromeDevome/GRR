@@ -2,7 +2,6 @@
 /**
  * index.php
  * Ce script fait partie de l'application GRR
- * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2018-07-14 15:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB

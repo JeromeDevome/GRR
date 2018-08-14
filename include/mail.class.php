@@ -1,7 +1,8 @@
 <?php
 /**
- * include/functions.inc.php
- * fichier Bibliothèque de fonctions de GRR
+ * include/mail.class.php
+ * fichier de définition d'une classe de traitement des e-mails
+ * fait partie de l'application GRR
  * Dernière modification : $Date: 2018-02-23 18:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
