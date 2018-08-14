@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-04 16:30$
+ * Dernière modification : $Date: 2018-08-02 16:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -60,7 +60,6 @@ if (!isset($day) || !isset($month) || !isset($year))
 	$month = date("m");
 	$year  = date("Y");
 }
-// echo $day," ",$month," ",$year;
 if (isset($id))
 {
 	if ($info = mrbsGetEntryInfo($id))
@@ -94,10 +93,10 @@ if ($longueur_liste_ressources_max == '')
 	$longueur_liste_ressources_max = 20;
 if (check_begin_end_bookings($day, $month, $year))
 {
-	if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
+	/* if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
 		$type_session = "no_session";
 	else
-		$type_session = "with_session";
+		$type_session = "with_session"; me semble inutile ici (on est en dehors de la période réservable)*/
 	showNoBookings($day, $month, $year, $back);
 	exit();
 }
@@ -121,7 +120,7 @@ if (UserRoomMaxBooking(getUserName(), $room, $compt) == 0)
 	exit();
 }
 $etype = 0;
-if (isset($id))
+if (isset($id)) // édition d'une réservation existante
 {
 	$sql = "SELECT name, beneficiaire, description, start_time, end_time, type, room_id, entry_type, repeat_id, option_reservation, jours, create_by, beneficiaire_ext, statut_entry, clef, courrier FROM ".TABLE_PREFIX."_entry WHERE id=$id";
 	$res = grr_sql_query($sql);
@@ -226,7 +225,7 @@ if (isset($id))
 		$rep_jour      = 0;
 	}
 }
-else
+else // nouvelle réservation
 {
 	if ($enable_periods == 'y')
 		$duration    = 60;
@@ -310,8 +309,25 @@ if ($res)
 	}
 }
 $use_select2 = 'y';
-print_header($day, $month, $year, $type="with_session");
-
+$adm = 0;
+$racine = "./";
+$racineAd = "./admin/";
+// pour le traitement des modules
+include "/include/hook.class.php";
+// début du code html ici, sinon le javascript provoque une erreur "header already sent by"
+//print_header($day, $month, $year, $type="with_session");
+echo '<!DOCTYPE html>'.PHP_EOL;
+echo '<html lang="fr">'.PHP_EOL;
+// section <head>
+echo pageHead2(Settings::get("company"),$type_session="with_session");
+// section <body>
+echo "<body>";
+// Menu du haut = section <header>
+echo "<header>";
+pageHeader2($day, $month, $year, $type_session);
+echo "</header>";
+// Debut de la page
+echo '<section>'.PHP_EOL;
 ?>
 <script type="text/javascript" >
 function insertChampsAdd(){
@@ -673,8 +689,10 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
 <?php
 echo '<input type="hidden" name="oldRessource" value="'.$room_id.'">'.PHP_EOL;
 echo '<div id="error"></div>';
-echo '<table class="table-bordered EditEntryTable"><tr>'.PHP_EOL;
-echo '<td style="width:50%; vertical-align:top; padding-left:15px; padding-top:5px; padding-bottom:5px;">'.PHP_EOL;
+//echo '<table class="table-bordered EditEntryTable"><tr>'.PHP_EOL;
+echo '<div class="row2 EditEntryTable">';
+echo '<div class="col-sm-6 col-xs-12">';
+//echo '<td style="width:50%; vertical-align:top; padding-left:15px; padding-top:5px; padding-bottom:5px;">'.PHP_EOL;
 
 echo '<table class="table-header">'.PHP_EOL;
 if (((authGetUserLevel(getUserName(), -1, "room") >= $qui_peut_reserver_pour) || (authGetUserLevel(getUserName(), $area, "area") >= $qui_peut_reserver_pour)) && (($id == 0) || (($id != 0) && (authGetUserLevel(getUserName(), $room) > 2) )))
@@ -751,13 +769,13 @@ echo '<tr><td class="E">'.PHP_EOL;
 echo '<b>'.$B.'</b>'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;
 echo '<tr><td class="CL">'.PHP_EOL;
-echo '<input id="name" class="form-control" name="name" size="80" value="'.$C.'" />'.PHP_EOL;
+echo '<input id="name" class="pleine form-control" name="name" size="60" value="'.$C.'" />'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;
 echo '<tr><td class="E">'.PHP_EOL;
 echo '<b>'.$D.'</b>'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;
 echo '<tr><td class="TL">'.PHP_EOL;
-echo '<textarea name="description" class="form-control" rows="4" cols="82">'.$E.'</textarea>'.PHP_EOL;
+echo '<textarea name="description" class="pleine form-control" rows="4" columns="60" >'.$E.'</textarea>'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;
 echo '<tr><td>'.PHP_EOL;
 echo '<div id="div_champs_add">'.PHP_EOL;
@@ -834,17 +852,18 @@ else
 }
 echo '</div>'.PHP_EOL;
 echo "</td></tr>".PHP_EOL;
-if ($type_affichage_reser == 0)
+if ($type_affichage_reser == 0) // sélection de la durée
 {
 	echo '<tr><td class="E">'.PHP_EOL;
 	echo '<b>'.get_vocab("duration").'</b>'.PHP_EOL;
 	echo '</td></tr>'.PHP_EOL;
 	echo '<tr><td class="CL">'.PHP_EOL;
 	// echo '<div class="form-group">'.PHP_EOL;
-    echo '<div class="col-xs-3">'.PHP_EOL;
-	spinner($duration);
+    echo '<div>'.PHP_EOL;
+	// spinner($duration);
+    echo '<input class="form-control" id="duree" name="duration" type="number" value="'.$duration.'" min="1">'; 
     // echo '<div class="col-xs-3">'.PHP_EOL;
-	echo '<select class="form-control" name="dur_units" >'.PHP_EOL;
+	echo '<select class="form-control" name="dur_units">'.PHP_EOL;
     // echo '<select class="form-control" name="dur_units" size="0.5">'.PHP_EOL;
     // echo '<select name="dur_units" >'.PHP_EOL;
 	if ($enable_periods == 'y')
@@ -887,13 +906,14 @@ if ($type_affichage_reser == 0)
 		$heure_finale = $nb_jour. " ". $vocab["days"]. " + ". $heure_finale_restante;
 	}
 	$af_fin_jour = $heure_finale." H ".$minute_restante;
-	echo '&nbsp &nbsp <input name="all_day" type="checkbox" value="yes" />'.get_vocab("all_day");
+	echo '<b>
+          <input name="all_day" type="checkbox" value="yes" />'.get_vocab("all_day");
 	if ($enable_periods != 'y')
 		echo ' ('.$morningstarts.' H - '.$af_fin_jour.')';
-	// echo '</div>'.PHP_EOL;
+        echo '</b>'.PHP_EOL;
 	echo '</td></tr>'.PHP_EOL;
 }
-else
+else // sélection de l'heure ou du créneau de fin
 {
 	echo '<tr><td class="E"><b>'.get_vocab("fin_reservation").get_vocab("deux_points").'</b></td></tr>'.PHP_EOL;
 	echo '<tr><td class="CL" >'.PHP_EOL;
@@ -921,11 +941,11 @@ else
 		echo "<b>".get_vocab("time")." : </b>";
 		if (isset ($_GET['id']))
 		{
-			jQuery_TimePicker ('end_', $end_hour, $end_min,$duree_par_defaut_reservation_area);
+			jQuery_TimePicker('end_', $end_hour, $end_min,$duree_par_defaut_reservation_area);
 		}
 		else
 		{
-			jQuery_TimePicker ('end_', '', '',$duree_par_defaut_reservation_area);
+			jQuery_TimePicker('end_', '', '',$duree_par_defaut_reservation_area);
 		}
 		if (!$twentyfourhour_format)
 		{
@@ -934,7 +954,6 @@ else
 			$checked = ($end_hour >= 12) ? "checked=\"checked\"" : "";
 			echo "<input name=\"ampm\" type=\"radio\" value=\"pm\" $checked />".date("a",mktime(13,0,0,1,1,1970));
 		}
-
 	}
 	echo '</div>'.PHP_EOL;
 	echo '</td></tr>'.PHP_EOL;
@@ -1035,7 +1054,7 @@ if ($res)
 		echo '<option ',$selected,' value="',$row[0],'">',$row[1],'</option>',PHP_EOL;
 	}
 }
-echo '</select>',PHP_EOL,'</div>',PHP_EOL,'</td>',PHP_EOL,'<td>',get_vocab("ctrl_click"),'</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;
+echo '</select>',PHP_EOL,'</td>',PHP_EOL,'<td>','&nbsp &nbsp',get_vocab("ctrl_click"),'</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;
 echo '</td>',PHP_EOL,'</tr>',PHP_EOL;
 echo '<tr>',PHP_EOL,'<td>',PHP_EOL,'<div id="div_types">',PHP_EOL;
 echo '</div>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL;
@@ -1051,8 +1070,10 @@ if ($affiche_mess_asterisque)
 	get_vocab("required");
 echo '</td></tr>',PHP_EOL;
 echo '</table>',PHP_EOL;
-echo '</td>',PHP_EOL;
-echo '<td style="vertical-align:top;">',PHP_EOL;
+echo "</div>"; // fin du bloc de "gauche"
+// echo '</td>',PHP_EOL;
+// echo '<td style="vertical-align:top;">',PHP_EOL;
+echo "<div class='col-sm-6 col-xs-12'>";
 echo '<table class="table-header">',PHP_EOL;
 $sql = "SELECT id FROM ".TABLE_PREFIX."_area;";
 $res = grr_sql_query($sql);
@@ -1226,17 +1247,18 @@ if($periodiciteConfig == 'y'){
 	}
 }
 	echo '</table>',PHP_EOL;
-	echo '</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;
-	?>
-	<div id="fixe">
-    <?php // définit l'adresse de retour, à passer à edit_entry_handler et à cancel
+    echo "</div> </div>"; // fin colonne de "droite" et du bloc de réservation
+//	echo '</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;
+
+	echo '<div id="fixe">';
+        // définit l'adresse de retour, à passer à edit_entry_handler et à cancel
         // $ret_page = ($back) ?: $page.".php?year=".$year."&amp;month=".$month."&amp;day=".$day."&amp;area=".$area."&amp;room=".$room; 
         // $ret_page = $page.".php?year=".$year."&amp;month=".$month."&amp;day=".$day."&amp;area=".$area."&amp;room=".$room; // robuste ? YN le 20/03/2018
         $ret_page = $page.".php?year=".$year."&amp;month=".$month."&amp;day=".$day."&amp;area=".$area;
         if ((!strpos($page,"all"))&&($room_back != 'all')){
             $ret_page .= "&amp;room=".$room_back;
         }
-    ?>
+?>
 		<input type="button" class="btn btn-primary" value="<?php echo get_vocab("cancel")?>" onclick="window.location.href='<?php echo $ret_page?>'" />
 		<input type="button" class="btn btn-primary" value="<?php echo get_vocab("save")?>" onclick="Save_entry();validate_and_submit();" />
 		<input type="hidden" name="rep_id"    value="<?php echo $rep_id?>" />
@@ -1288,7 +1310,6 @@ if($periodiciteConfig == 'y'){
 			echo "timeoutID = window.setTimeout(\"Load_entry();check_5();\",500);\n";
 		?>
 	</script>
-	<?php
-	include "include/trailer.inc.php";
-	include "footer.php";
-	?>
+</section>
+</body>
+</html>
