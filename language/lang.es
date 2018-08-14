@@ -332,8 +332,8 @@ $vocab['droits_insuffisants_pour_voir_ressources'] = "Vous n'avez pas les droits
 $vocab['duplique_domaine'] = "Dupliquer le domaine"; // A traduire
 $vocab['duplique_ressource'] = "Dupliquer la ressource"; // A traduire
 $vocab['duration'] = "Duración :";
-$vocab['duree_max_resa_area'] = "Duración máxima en minutos (una jornada = 1440 minutos) para una reserva (-1 si no hay restricción) <br /><i>Esta limitación no afecta a los gestores del recurso así como a los administradores del campo.</i>";
-$vocab['duree_max_resa_area2'] = "Duración máxima en días para una reserva (-1 si no hay restricción) <br /><i>Esta limitación no afecta a los gestores del recurso así como a los administradores del campo.</i>";
+$vocab['duree_max_resa_area'] = "Duración máxima en minutos (una jornada = 1440 minutos) para una reserva (-1 si no hay restricción). Esta limitación no afecta a los gestores del recurso así como a los administradores del campo.";
+$vocab['duree_max_resa_area2'] = "Duración máxima en días para una reserva (-1 si no hay restricción). Esta limitación no afecta a los gestores del recurso así como a los administradores del campo.</i>";
 $vocab['duree_par_defaut_reservation_area'] = "Duración por defecto de una reserva, en segundos (debe de ser un multiple del valor precedente)";
 $vocab['E-mail pour la reponse'] = "E-mail pour la réponse"; // A traduire
 $vocab['echec_authentification_imap'] = "Echec de l'authentification IMAP"; // A traduire
