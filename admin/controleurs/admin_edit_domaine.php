@@ -24,7 +24,6 @@ $action = isset($_POST["action"]) ? $_POST["action"] : (isset($_GET["action"]) ?
 $add_area = isset($_POST["add_area"]) ? $_POST["add_area"] : (isset($_GET["add_area"]) ? $_GET["add_area"] : NULL);
 $area_id = isset($_POST["area_id"]) ? $_POST["area_id"] : (isset($_GET["area_id"]) ? $_GET["area_id"] : NULL);
 $retour_page = isset($_POST["retour_page"]) ? $_POST["retour_page"] : (isset($_GET["retour_page"]) ? $_GET["retour_page"] : NULL);
-$room = isset($_POST["room"]) ? $_POST["room"] : (isset($_GET["room"]) ? $_GET["room"] : NULL);
 $id_area = isset($_POST["id_area"]) ? $_POST["id_area"] : (isset($_GET["id_area"]) ? $_GET["id_area"] : NULL);
 $change_area = isset($_POST["change_area"]) ? $_POST["change_area"] : NULL;
 $area_name = isset($_POST["area_name"]) ? $_POST["area_name"] : NULL;
@@ -44,7 +43,6 @@ if(!isset($_POST["area_order"]) || empty($_POST["area_order"])){
 	$area_order = $_POST["area_order"];
 }
 
-$change_room = isset($_POST["change_room"]) ? $_POST["change_room"] : NULL;
 $number_periodes = isset($_POST["number_periodes"]) ? $_POST["number_periodes"] : NULL;
 $type_affichage_reser = isset($_POST["type_affichage_reser"]) ? $_POST["type_affichage_reser"] : NULL;
 
@@ -69,34 +67,24 @@ if (!isset($retour_page))
 // modification d'une resource : admin ou gestionnaire
 if (authGetUserLevel(getUserName(),-1) < 6)
 {
-	if (isset($room))
+
+	if (isset($id_area))
 	{
-		// Il s'agit d'une modif de ressource
-		if (((authGetUserLevel(getUserName(),$room) < 3)) || (!verif_acces_ressource(getUserName(), $room)))
+		// On verifie que le domaine $area existe
+		$test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_area WHERE id='".$id_area."'");
+		if ($test == -1)
+		{
+			showAccessDenied($back);
+			exit();
+		}
+		// Il s'agit de la modif d'un domaine
+		if ((authGetUserLevel(getUserName(), $id_area, 'area') < 4))
 		{
 			showAccessDenied($back);
 			exit();
 		}
 	}
-	else
-	{
-		if (isset($id_area))
-		{
-			// On verifie que le domaine $area existe
-			$test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_area WHERE id='".$id_area."'");
-			if ($test == -1)
-			{
-				showAccessDenied($back);
-				exit();
-			}
-			// Il s'agit de la modif d'un domaine
-			if ((authGetUserLevel(getUserName(), $id_area, 'area') < 4))
-			{
-				showAccessDenied($back);
-				exit();
-			}
-		}
-	}
+
 }
 $msg ='';
 
