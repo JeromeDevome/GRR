@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2018-06-20
+# Last modification : 2018-08-15
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -394,7 +394,7 @@ Pour activer cette fonctionnalité, vous devez définir ci-dessous un mot de pas
 $vocab['execution_automatique_backup_mdp'] = "Mot de passe utilisé pour l'exécution du script « admin_save_mysql.php »";
 $vocab['explain_area_list_format'] = "Type d'affichage des listes des domaines et des ressources";
 $vocab['explain_automatic_mail'] = "Dans un certain nombres de cas (création d'une réservation, suppression/modification, modération, ...), GRR peut envoyer automatiquement des mails à certains utilisateurs. Consultez l'aide pour en savoir plus à ce sujet.";
-$vocab['explain_automatic_mail1'] = "Lorsqu'un utilisateur <b>réserve une ressource</b>, <b>modifie</b> ou bien <b>supprime</b> une réservation <b>pour lui-même</b> (dont il est bénéficiaire), cochez la case ci-contre pour qu'un email de confirmation soit systématiquement envoyé.";
+$vocab['explain_automatic_mail1'] = "Lorsqu'un utilisateur réserve une ressource, modifie ou bien supprime une réservation pour lui-même (dont il est bénéficiaire), cochez la case ci-contre pour qu'un email de confirmation soit systématiquement envoyé.";
 $vocab['explain_automatic_mail2'] = "Par ailleurs, lorsqu'un utilisateur <b>réserve une ressource</b>, <b>modifie</b> ou bien <b>supprime</b> une réservation, certains utilisateurs peuvent être prévenus par e-mail. Pour chaque ressource, vous pouvez désigner un ou plusieurs utilisateurs à prévenir :";
 $vocab['explain_automatic_mail3'] = "Lorsqu'un utilisateur <b>réserve une ressource</b>, <b>modifie</b> ou bien <b>supprime</b> une réservation au nom d'un autre utilisateur, ce dernier (si le champ email a été renseigné) en est averti automatiquement par un message e-mail.";
 $vocab['explain_backup'] = "Création d'un fichier de sauvegarde complet de la base GRR. En cas de problème sur la base GRR, utilisez la fonction \"Restaurer_la_sauvegarde\".";
