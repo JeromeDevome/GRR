@@ -389,7 +389,7 @@ Pour activer cette fonctionnalité, vous devez définir ci-dessous un mot de pas
 $vocab['execution_automatique_backup_mdp'] = "Mot de passe utilisé pour l'exécution du script « admin_save_mysql.php »"; // A traduire
 $vocab['explain_area_list_format'] = "Tipo de visualización de las listas de los campos y recursos ";
 $vocab['explain_automatic_mail'] = "En ciertos casos (creación de una reserva, supresión, modificación, moderation,...), GRR puede enviar mails automáticamente a ciertos usuarios. Consulte la ayuda para saber más.";
-$vocab['explain_automatic_mail1'] = "Cuando un usuario <b>reserva un recurso</b>, <b>modifica</b> o <b>suprime</b> una reserva <b>para él mismo</b> (de la cual es beneficiario), marca la casilla al lado para que un mail de confirmación sea sistemáticamente enviado.";
+$vocab['explain_automatic_mail1'] = "Cuando un usuario reserva un recurso, modifica o suprime una reserva para él mismo (de la cual es beneficiario), marca la casilla al lado para que un mail de confirmación sea sistemáticamente enviado.";
 $vocab['explain_automatic_mail2'] = "Por otra parte, cuando un usuario <b>reserva un recurso</b>, <b>modifica</b> o <b>suprime</b> una reservación, algunos usuarios pueden ser avisados por e-mail. Para cada recurso, usted puede nombrar a uno o más usuarios por avisar :";
 $vocab['explain_automatic_mail3'] = "Cuando un usuario <b>reserva un recurso</b>, <b>modifica </b> o <b>suprime</b> una reserva en nombre de otro usuario, este último (si el campo email ha sido rellenado) está advertido por un correo electrónico.";
 $vocab['explain_backup'] = "Creación de un fichero de protección completo de la base GRR. En caso de problema sobre la base GRR, utilizar una herramienta como PHPMYADMIN para restaurar la base.";

@@ -391,7 +391,7 @@ Pour activer cette fonctionnalité, vous devez définir ci-dessous un mot de pas
 $vocab['execution_automatique_backup_mdp'] = "Password used to run the script « admin_save_mysql.php »";
 $vocab['explain_area_list_format'] = "Type of display for lists of areas and resources";
 $vocab['explain_automatic_mail'] = "In some instances (creation of a reservation, suppression/modification, moderation), GRR can send automatically e-mails to some users. Consult the help to know more about it.";
-$vocab['explain_automatic_mail1'] = "When a user <b>reserves a resource, </b>, <b>modifies </b> or <b>deletes </b> a reservation <b>for himself </b> (which he is beneficiary), tick the box opposite in order to send systematically an email of confirmation.";
+$vocab['explain_automatic_mail1'] = "When a user reserves a resource, modifies or deletes a reservation for himself (which he is beneficiary), tick the box opposite in order to send systematically an email of confirmation.";
 $vocab['explain_automatic_mail2'] = "Besides, when a user <b>reserves a resource</b>, <b>modifies</b> or <b>deletes</b> a reservation, some users may be informed by e-mail. For each resource, you can select one or several users who will be informed of the change:";
 $vocab['explain_automatic_mail3'] = " When a user <b>reserves a resource</b>, <b>modifies </b> or <b>deletes </b> a reservation in the name of another user, the latter (if the field e-mail was filled in) is automatically warned by e-mail.";
 $vocab['explain_backup'] = "Creation of a complete backup file of GRR database.In case of a problem on GRR database, use a tool such as PHPMYADMIN to restore database.";
