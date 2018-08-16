@@ -103,9 +103,7 @@ if (authGetUserLevel(getUserName(),-1) < 6)
 	}
 }
 $msg ='';
-// Gestion des ressources
-if (!empty($room))
-{
+
 	// Enregistrement d'une ressource
 	if (isset($change_room))
 	{
@@ -333,7 +331,7 @@ if (!empty($room))
 		$row["order_display"]  = 0;
 		$row["type_affichage_reser"]  = 0;
 		$row["max_booking"] = -1;
-		$row['statut_room'] = '';
+		$row['statut_room'] = '1';
 		$row['moderate'] = '';
 		$row['show_fic_room'] = '';
 		$row['active_ressource_empruntee'] = 'n';
@@ -443,6 +441,5 @@ if (!empty($room))
 
 		//Hook::Appel("hookEditRoom1");
 
-}
 	echo $twig->render('admin_edit_ressource.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'ressource' => $row, 'domaines' => $domaines));
 ?>
