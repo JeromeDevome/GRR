@@ -2,7 +2,7 @@
 /**
  * index.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-14 15:30$
+ * Dernière modification : $Date: 2018-08-16 15:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -74,7 +74,10 @@ if ($dbsys == "mysql")
 	}
 	if ($correct_install == 'no')
 	{
-		echo begin_page("GRR (Gestion et Réservation de Ressources) ");
+		// echo begin_page("GRR (Gestion et Réservation de Ressources) ");
+        echo '<!DOCTYPE html>'.PHP_EOL.'<html lang="fr">';
+        echo pageHead2("GRR (Gestion et Réservation de Ressources) ");
+        echo "<body>";
 		echo "<h1 class=\"center\">Gestion et Réservation de Ressources</h1>\n";
 		echo "<div style=\"text-align:center;\"><span style=\"color:red;font-weight:bold\">".$msg."</span>\n";
 		echo "<ul><li>Soit vous procédez à une mise à jour vers une nouvelle version de GRR. Dans ce cas, vous devez procéder à une mise à jour de la base de données MySql.<br />";
@@ -458,7 +461,10 @@ else if ((Settings::get('sso_statut') == 'http_visiteur') || (Settings::get('sso
 		header('WWW-Authenticate: Basic realm="' . $my_message . '"');
 		header('HTTP/1.0 401 Unauthorized');
 		// en cas d'annulation
-		echo begin_page(get_vocab("mrbs"),"no_session");
+		// echo begin_page(get_vocab("mrbs"),"no_session");
+        echo '<!DOCTYPE html>'.PHP_EOL.'<html lang="fr">';
+        echo pageHead2("GRR (Gestion et Réservation de Ressources) ");
+        echo "<body>";
 		echo "<h3>".get_vocab("wrong_pwd")."</h3>";
 		echo "<h3>".get_vocab("connexion_a_grr_non_autorisee")."</h3>";
 		echo "</body></html>";
