@@ -172,7 +172,7 @@ if ((isset($id_area)) && ($id_area != -1))
 				// RESSOURCES
                 if (isset($id_area)) // cas où UN domaine est choisi, on affiche toutes les ressources de ce domaine
 				{
-                    $sql = "SELECT id, room_name, description, capacity, max_booking, statut_room from ".TABLE_PREFIX."_room where area_id=$id_area ";
+                    $sql = "SELECT id, room_name, description, capacity, max_booking, statut_room, area_id from ".TABLE_PREFIX."_room where area_id=$id_area ";
                     // on ne cherche pas parmi les ressources invisibles pour l'utilisateur
                     $tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
                     foreach ($tab_rooms_noaccess as $key){
@@ -185,7 +185,7 @@ if ((isset($id_area)) && ($id_area != -1))
                     if (grr_sql_count($res) != 0){
                        // echo "<table class=\"table\">";
                         for ($i = 0; ($row = grr_sql_row($res, $i)); $i++){
-							$ressources[] = array('id' => $row[0], 'nom' => $row[1], 'description' => $row[2], 'capacite' => $row[3], 'maxbooking' => $row[4], 'statut' => $row[5]);
+							$ressources[] = array('id' => $row[0], 'nom' => $row[1], 'description' => $row[2], 'capacite' => $row[3], 'maxbooking' => $row[4], 'statut' => $row[5], 'iddomaine' => $row[6]);
                         }
                     }  
                     else 
@@ -202,7 +202,7 @@ if ((isset($id_area)) && ($id_area != -1))
 					$domaines[] = array('id' => $row[0], 'nom' => $row[1], 'acces' => $row[2], 'droitsuser' => authGetUserLevel(getUserName(),$row[0],'area'));
 
                     // RESSOURCES
-                    $sql = "SELECT id, room_name, description, capacity, max_booking, statut_room from ".TABLE_PREFIX."_room where area_id=$row[0] ";
+                    $sql = "SELECT id, room_name, description, capacity, max_booking, statut_room, area_id from ".TABLE_PREFIX."_room where area_id=$row[0] ";
                     // on ne cherche pas parmi les ressources invisibles pour l'utilisateur
                     $tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
                     foreach ($tab_rooms_noaccess as $key){
@@ -214,7 +214,7 @@ if ((isset($id_area)) && ($id_area != -1))
                         fatal_error(0, grr_sql_error());
                     if (grr_sql_count($res) != 0){
                         for ($i = 0; ($row = grr_sql_row($res, $i)); $i++){
-							$ressources[] = array('id' => $row[0], 'nom' => $row[1], 'description' => $row[2], 'capacite' => $row[3], 'maxbooking' => $row[4], 'statut' => $row[5]);
+							$ressources[] = array('id' => $row[0], 'nom' => $row[1], 'description' => $row[2], 'capacite' => $row[3], 'maxbooking' => $row[4], 'statut' => $row[5], 'iddomaine' => $row[6]);
                         }
                     }  
 					else 

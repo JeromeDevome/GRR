@@ -110,7 +110,7 @@ echo "<div style=\"text-align:center; margin-top:30px\"><b>";
 if (@file_exists($nom_picture) && $nom_picture)
 	echo get_vocab("Image de la ressource").": </b><br /><img src=\"".$nom_picture."\" alt=\"logo\" />";
 else
-	echo get_vocab("Pas image disponible")."</b>";
+	echo get_vocab("Pas_image_disponible")."</b>";
 echo "</div>";
 
 include "include/trailer.inc.php";
