@@ -1,0 +1,23 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+        <div class="col-xs-12">
+
+			<div class="alert alert-warning">
+				<h4><i class="icon fa fa-warning"></i> {{ trad.dTitreConfirmation }}</h4>
+				{{ trad.dMessageConfirmation |raw }}
+				<div class="alert-footer">
+					{{ trad.dAction1Confirmation |raw }}
+					{{ trad.dAction2Confirmation |raw }}
+					&nbsp;
+				</div>
+			</div>
+
+      </div>	
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

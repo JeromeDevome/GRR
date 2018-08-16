@@ -58,7 +58,7 @@ function afficheLienNiveau2($nomSection,$image,$liste,$iN2)
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 		afficheLienNiveau1('admin_config', 'fa fa-cogs', 1);
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
-		afficheLienNiveau1('admin_type', 'fa fa-paint-brush', 1);
+		afficheLienNiveau1('admin_type', 'fa fa-tags', 1);
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 		afficheLienNiveau1('admin_calend_ignore', 'fa fa-calendar-times-o', 1);
 	if ((authGetUserLevel(getUserName(), -1, 'area') >= 6) && (Settings::get('show_holidays') == 'Oui'))

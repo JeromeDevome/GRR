@@ -201,8 +201,8 @@ else if ($action == "change")
 		$html .= "<td>".get_vocab("fieldname").get_vocab("deux_points")."</td>\n";
 		$html .= "<td>".get_vocab("fieldtype").get_vocab("deux_points")."</td>\n";
 		$html .= "<td><span class='small'>".get_vocab("champ_obligatoire")."</span></td>\n";
-		$html .= "<td><span class='small'>".get_vocab("affiche_dans_les vues")."</span></td>\n";
-		$html .= "<td><span class='small'>".get_vocab("affiche_dans_les mails")."</span></td>\n";
+		$html .= "<td><span class='small'>".get_vocab("affiche_dans_les_vues")."</span></td>\n";
+		$html .= "<td><span class='small'>".get_vocab("affiche_dans_les_mails")."</span></td>\n";
 		$html .= "<td><span class='small'>".get_vocab("champ_confidentiel")."</span></td>\n";
 		$html .= "<td></td></tr>\n";
 		$html .= "\n<tr><td>";
@@ -248,7 +248,7 @@ else if ($action == "change")
 				$ferme_table = true;
 				$ouvre_table = true;
 			}
-			$html .= "<tr><th>".get_vocab("match_area")."</th><th>".get_vocab("fieldname")."</th><th>".get_vocab("fieldtype")."</th><th>".get_vocab("champ_obligatoire")."</th><th>".get_vocab("affiche_dans_les vues")."</th><th>".get_vocab("affiche_dans_les mails")."</th><th>".get_vocab("champ_confidentiel")."</th><th colspan='2'>Actions</th></tr>";
+			$html .= "<tr><th>".get_vocab("match_area")."</th><th>".get_vocab("fieldname")."</th><th>".get_vocab("fieldtype")."</th><th>".get_vocab("champ_obligatoire")."</th><th>".get_vocab("affiche_dans_les_vues")."</th><th>".get_vocab("affiche_dans_les_mails")."</th><th>".get_vocab("champ_confidentiel")."</th><th colspan='2'>Actions</th></tr>";
 		}
 		$breakkey = $key;
 		if (grr_sql_count($res) != 0)
@@ -289,11 +289,11 @@ else if ($action == "change")
 				if ($row[3] =="y")
 					$html .= " checked=\"checked\" ";
 				$html .= "/></td>\n";
-				$html .= "<td><input type=\"checkbox\" id=\"affichage_".$ind_div."\" name=\"affichage\" title=\"".get_vocab("affiche_dans_les vues")."\" value=\"y\" ";
+				$html .= "<td><input type=\"checkbox\" id=\"affichage_".$ind_div."\" name=\"affichage\" title=\"".get_vocab("affiche_dans_les_vues")."\" value=\"y\" ";
 				if ($row[5] =="y")
 					$html .= " checked=\"checked\" ";
 				$html .= "/></td>\n";
-				$html .= "<td><input type=\"checkbox\" id=\"overload_mail_".$ind_div."\" name=\"overload_mail\" title=\"".get_vocab("affiche_dans_les mails")."\" value=\"y\" ";
+				$html .= "<td><input type=\"checkbox\" id=\"overload_mail_".$ind_div."\" name=\"overload_mail\" title=\"".get_vocab("affiche_dans_les_mails")."\" value=\"y\" ";
 				if ($row[6] =="y")
 					$html .= " checked=\"checked\" ";
 				$html .= "/></td>\n";
@@ -319,10 +319,10 @@ else if ($action == "change")
 		if ($ferme_table)
 			echo "</table>";
 		echo "<div class='tooltip' id='tooltip_affichage' style=\"display:none;\">\n";
-		echo get_vocab("affiche_dans_les vues");
+		echo get_vocab("affiche_dans_les_vues");
 		echo "</div>\n";
 		echo "<div class='tooltip' id='tooltip_overload_mail' style=\"display:none;\">\n";
-		echo get_vocab("affiche_dans_les mails");
+		echo get_vocab("affiche_dans_les_mails");
 		echo "</div>\n";
 		echo "<div class='tooltip' id='tooltip_obligatoire' style=\"display:none;\">\n";
 		echo get_vocab("champ_obligatoire");

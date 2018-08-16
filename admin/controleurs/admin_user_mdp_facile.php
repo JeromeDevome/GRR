@@ -15,13 +15,10 @@
  * (at your option) any later version.
  */
 
-include "../include/admin.inc.php";
+
 $grr_script_name = "admin_user_mdp_facile.php";
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-$display = isset($_GET["display"]) ? $_GET["display"] : NULL;
-$order_by = isset($_GET["order_by"]) ? $_GET["order_by"] : NULL;
+
+
 $msg = '';
 if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1,'user') != 1))
 {
@@ -29,12 +26,14 @@ if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName()
 	exit();
 }
 
-print_header("", "", "", $type="with_session");
-include "admin_col_gauche.php";
+get_vocab_admin('admin_user_mdp_facile');
+get_vocab_admin('admin_user_mdp_facile_description');
 
+get_vocab_admin('login_name');
+get_vocab_admin('names');
+get_vocab_admin('statut');
+get_vocab_admin('authentification');
 
-echo "<h2>".get_vocab('admin_user_mdp_facile')."</h2>";
-echo "<p>".get_vocab('admin_user_mdp_facile_description')."</p>";
 if (empty($display))
 {
 	$display = 'actifs';
@@ -44,14 +43,7 @@ if (empty($order_by))
 	$order_by = 'nom,prenom';
 }
 
-// Affichage du tableau
-echo "<table class=\"table table-striped table-bordered\">";
-echo "<tr><td><b><a href='admin_user_mdp_facile.php?order_by=login&amp;display=$display'>".get_vocab("login_name")."</a></b></td>";
-echo "<td><b><a href='admin_user_mdp_facile.php?order_by=nom,prenom&amp;display=$display'>".get_vocab("names")."</a></b></td>";
-echo "<td><b><a href='admin_user_mdp_facile.php?order_by=statut,nom,prenom&amp;display=$display'>".get_vocab("statut")."</a></b></td>";
-echo "<td><b><a href='admin_user_mdp_facile.php?order_by=source,nom,prenom&amp;display=$display'>".get_vocab("authentification")."</a></b></td>";
-echo "</tr>";
-// $sql = "SELECT nom, prenom, statut, login, etat, source, password FROM ".TABLE_PREFIX."_utilisateurs ORDER BY $order_by";
+
 // les utilisateurs à identification externe ont un mot de passe vide dans la base GRR, il est inutile de les afficher
 $sql = "SELECT nom, prenom, statut, login, etat, source, password FROM ".TABLE_PREFIX."_utilisateurs WHERE source = 'local' ORDER BY $order_by";
 $res = grr_sql_query($sql);
@@ -86,58 +78,30 @@ if ($res)
 			// Affichage du statut
 				if ($user_statut == "administrateur")
 				{
-					$color[$i] = 'style_admin';
 					$col[$i][4] = get_vocab("statut_administrator");
 				}
 				if ($user_statut == "visiteur")
 				{
-					$color[$i] = 'style_visiteur';
 					$col[$i][4] = get_vocab("statut_visitor");
 				}
 				if ($user_statut == "utilisateur")
 				{
-					$color[$i] = 'style_utilisateur';
 					$col[$i][4] = get_vocab("statut_user");
 				}
 				if ($user_statut == "gestionnaire_utilisateur")
 				{
-					$color[$i] = 'style_gestionnaire_utilisateur';
 					$col[$i][4] = get_vocab("statut_user_administrator");
 				}
 				if ($user_etat[$i] == 'actif')
-					$fond = 'fond1';
+					$col[$i][6] = 'Actif';
 				else
-					$fond = 'fond2';
-				// Affichage de la source
-				if (($user_source == 'local') || ($user_source == ''))
-				{
-					$col[$i][5] = "Locale";
-				}
-				else
-				{
-					$col[$i][5] = "Ext.";
-				}
-				echo "\n<tr><td class=\"".$fond."\">{$col[$i][1]}</td>\n";
-			// un gestionnaire d'utilisateurs ne peut pas modifier un administrateur général ou un gestionnaire d'utilisateurs
-				if ((authGetUserLevel(getUserName(), -1, 'user') ==  1) && (($user_statut == "gestionnaire_utilisateur") || ($user_statut == "administrateur")))
-					echo "<td class=\"".$fond."\">{$col[$i][2]}</td>\n";
-				else
-					echo "<td class=\"".$fond."\"><a href=\"admin_user_modify.php?user_login=".urlencode($user_login)."&amp;display=$display\">{$col[$i][2]}</a></td>\n";
-				echo "<td class=\"".$fond."\"><span class=\"".$color[$i]."\">{$col[$i][4]}</span></td>\n";
-				echo "<td class=\"".$fond."\">{$col[$i][5]}</td>\n";
-
-			// Fin de la ligne courante
-				echo "</tr>";
+					$col[$i][6] = 'Inactif';
 			}
 
 		}
 	}
 }
-echo "</table>";
-// fin de l'affichage de la colonne de droite
-echo "</td></tr></table>";
+
 // Affichage d'un pop-up
 affiche_pop_up($msg,"admin");
 ?>
-</body>
-</html>

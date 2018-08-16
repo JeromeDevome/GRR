@@ -1,0 +1,91 @@
+{% extends 'layout.twig' %}
+
+{% block css %}
+	<link rel="stylesheet" href="../bootstrap/AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+{% endblock %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{trad.admin_user_mdp_facile}}</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+					<p>{{ trad.admin_user_mdp_facile_description }}</p>
+				  <table id="tableuser" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+							  <th>{{trad.login_name}}</th>
+							  <th>{{trad.names}}</th>
+							  <th>{{trad.statut}}</th>
+							  <th>Etat</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for utilisateur in utilisateurs %}
+								<tr>
+									<td>{{utilisateur.1}}</td>
+									<td>{{utilisateur.2}}</td>
+									<td>{{utilisateur.4 |raw}}</td>
+									<td>{{utilisateur.6}}</td>																
+								</tr>
+							{% endfor %}
+						</tbody>
+						<thead>
+							<tr>
+							  <th>{{trad.login_name}}</th>
+							  <th>{{trad.names}}</th>
+							  <th>{{trad.statut}}</th>
+							  <th>Etat</th>
+							</tr>
+						</thead>
+				  </table>
+				</div>
+			</div>
+		</div>
+
+	</div>	
+
+        <div class="modal modal-warning fade" id="modal-warning">
+		<form action="?p=admin_type">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{trad.confirm_del}}</h4>
+              </div>
+              <div class="modal-body">
+				<span id="modal-texte"></span><span id="modal-idsup" class="hidden"></span> 
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">{{trad.cancel}}</button>
+				<button type="submit" id="liensup" class="btn btn-outline">{{trad.delete}}</button>
+              </div>
+            </div>
+          </div>
+		  </form>
+        </div>
+{% endblock %}
+
+{% block javascript %}
+	<script src="../bootstrap/AdminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+	<script src="../bootstrap/AdminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+	<script>
+	  $(function () {
+		$('#tableuser').DataTable()({
+		  'paging'      : true,
+		  'lengthChange': false,
+		  'searching'   : true,
+		  'ordering'    : true,
+		  'info'        : true,
+		  'autoWidth'   : false
+		})
+	  })
+	</script>
+{% endblock %}

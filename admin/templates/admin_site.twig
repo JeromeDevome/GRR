@@ -1,0 +1,112 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			{% if trad.dMesgSysteme %}
+				{{ msgSyst.messageAlerte('', trad.dMesgSysteme) }}
+			{% endif %}
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{ trad.admin_site }}</h3> <a class="btn pull-right bg-green"href="?p=admin_site&action=create&id=0">{{ trad.display_add_site }}</a>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body no-padding">
+					<p>{{ trad.admin_site_explications }}</p>
+
+					<table class="table table-striped">
+						<tr>
+						  
+						  <th>{{ trad.site_code }}</th>
+						  <th>{{ trad.site_name }}</th>
+						  <th>{{ trad.site_cp }}</th>
+						  <th>{{ trad.site_ville }}</th>
+						  <th>{{ trad.action }}</th>
+						</tr>
+						{% for site in sites %}
+							<tr>
+								<td>{{ site.code }}</td>
+								<td>{{ site.nomsite }}</td>
+								<td>{{ site.cp }}</td>
+								<td>{{ site.ville }}</td>
+								<td>
+									<a href="?p=admin_site&action=update&id={{site.idsite}}" class="btn btn-info btn-md"><i class="icon fa fa-edit"></i></a> 
+									<button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#modal-warning" data-texte="{{trad.confirm_del}}" data-idsup="{{ site.idsite }}"><i class="icon fa fa-trash"></i></button>
+								</td>
+							</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal modal-warning fade" id="modal-warning">
+		<form action="?p=admin_site">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">{{trad.confirm_del}}</h4>
+			  </div>
+			  <div class="modal-body">
+				<span id="modal-texte"></span><span id="modal-idsup" class="hidden"></span> 
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">{{trad.cancel}}</button>
+				<button type="submit" id="liensup" class="btn btn-outline">{{trad.delete}}</button>
+			  </div>
+			</div>
+		 </div>
+		</form>
+	</div>
+
+{% endblock %}
+
+{% block javascript %}
+	<script>
+		// data-* attributes to scan when populating modal values
+		var ATTRIBUTES = ['texte', 'idsup'];
+
+		$('[data-toggle="modal"]').on('click', function (e) {
+		  // convert target (e.g. the button) to jquery object
+		  var $target = $(e.target);
+		  // modal targeted by the button
+		  var modalSelector = $target.data('target');
+
+		  // iterate over each possible data-* attribute
+		  ATTRIBUTES.forEach(function (attributeName) {
+			// retrieve the dom element corresponding to current attribute
+			var $modalAttribute = $(modalSelector + ' #modal-' + attributeName);
+			var dataValue = $target.data(attributeName);
+			// if the attribute value is empty, $target.data() will return undefined.
+			// In JS boolean expressions return operands and are not coerced into
+			// booleans. That way is dataValue is undefined, the left part of the following
+			// Boolean expression evaluate to false and the empty string will be returned
+			$modalAttribute.text(dataValue || '');
+		  });
+		});
+
+  $(function(){
+    $('form').submit(function(e) {
+      e.preventDefault()
+      var $form = $(this)
+	  var v=document.getElementById('modal-idsup').innerHTML
+      $.post($form.attr('action'), $form.serialize())
+      .done(function(data) {
+        $('#html').html(data);
+        $('#modal-warning').modal('hide');
+		document.location.href='?p=admin_site&action=delete&id='+v+'&confirm=yes';
+      })
+      .fail(function() {
+        alert('Une erreur est survenue : GRRJS')
+      })
+    })
+  })
+	</script>
+{% endblock %}
