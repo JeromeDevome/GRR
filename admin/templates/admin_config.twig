@@ -30,7 +30,7 @@
 						{{ form.input('company', trad.company, settings.company, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
 						{{ form.input('grr_url', trad.grr_url, settings.grr_url, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
 						<div class="form-group col-sm-12">
-							<label class="col-sm-11" for="nb_calendar">{{ trad.grr_url_explain }}</label>
+							<label class="col-sm-11" for="use_grr_url">{{ trad.grr_url_explain }}</label>
 							<div class="col-sm-1">
 								<input type="checkbox" name="use_grr_url" value="y" {% if settings.use_grr_url == y %} checked {% endif %}>
 							</div>
@@ -80,7 +80,7 @@
 							</div>
 						</div>
 						<div class="form-group col-sm-12">
-							<label class="col-sm-4" for="nb_calendar">{{ trad.title_begin_end_bookings }}</label>
+							<label class="col-sm-4" for="plageresa">{{ trad.title_begin_end_bookings }}</label>
 							<div class="input-group col-sm-8">
 								<div class="input-group-addon">
 									<i class="fa fa-clock-o"></i>

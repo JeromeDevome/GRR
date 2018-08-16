@@ -72,7 +72,7 @@
 														<td>{{ ressource.nom }} <i>{{ ressource.description }} {% if ressource.capacite > 0 %}({{ ressource.capacite }} max.){% endif %}</i></td>
 														<td><a href="?p=admin_edit_room&room={{ ressource.id }}"><span class="fa fa-pencil"></a></td>
 														<td><a href="?p=admin_edit_room&room={{ ressource.id }}&action=duplique_room"><span class="fa fa-copy"></a></td>
-														<td><a href="?p=admin_room_del&type=room&room={{ ressource.id }}&id_area=$id_area\"><span class="fa fa-trash"></a></td>
+														<td><a href="?p=admin_room_del&type=room&room={{ ressource.id }}&id_area={{ domaine.id }}"><span class="fa fa-trash"></a></td>
 														<td><a href="javascript:centrerpopup('../view_rights_room.php?id_room={{ ressource.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fa fa-group"></a></td>
 														<td><a href="javascript:centrerpopup('../view_room.php?id_room={{ ressource.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.fiche_ressource }}"><span class="fa fa-newspaper-o"></a></td>
 													</tr>
@@ -110,19 +110,25 @@
 										</td>
 										<td>
 											<table class="table">
+												{% set ressourceExiste = 0 %}
 												{% for ressource in ressources %}
-													<tr>
-														<td width="10">{% if ressource.statut == 0 %}<span class="fa fa-ban" style="color:red;">{% endif %}</td>
-														<td>{{ ressource.nom }} <i>{{ ressource.description }} {% if ressource.capacite > 0 %}({{ ressource.capacite }} max.){% endif %}</i></td>
-														<td><a href="?p=admin_edit_room&room={{ ressource.id }}"><span class="fa fa-pencil"></a></td>
-														<td><a href="?p=admin_edit_room&room={{ ressource.id }}&action=duplique_room"><span class="fa fa-copy"></a></td>
-														<td><a href="?p=admin_room_del&type=room&room={{ ressource.id }}&id_area=$id_area\"><span class="fa fa-trash"></a></td>
-														<td><a href="javascript:centrerpopup('../view_rights_room.php?id_room={{ ressource.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fa fa-group"></a></td>
-														<td><a href="javascript:centrerpopup('../view_room.php?id_room={{ ressource.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.fiche_ressource }}"><span class="fa fa-newspaper-o"></a></td>
-													</tr>
+													{% if ressource.iddomaine == domaine.id %}
+														{% set ressourceExiste = 1 %}
+														<tr>
+															<td width="10">{% if ressource.statut == 0 %}<span class="fa fa-ban" style="color:red;">{% endif %}</td>
+															<td>{{ ressource.nom }} <i>{{ ressource.description }} {% if ressource.capacite > 0 %}({{ ressource.capacite }} max.){% endif %}</i></td>
+															<td><a href="?p=admin_edit_room&room={{ ressource.id }}"><span class="fa fa-pencil"></a></td>
+															<td><a href="?p=admin_edit_room&room={{ ressource.id }}&action=duplique_room"><span class="fa fa-copy"></a></td>
+															<td><a href="?p=admin_room_del&type=room&room={{ ressource.id }}&id_area={{ domaine.id }}"><span class="fa fa-trash"></a></td>
+															<td><a href="javascript:centrerpopup('../view_rights_room.php?id_room={{ ressource.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fa fa-group"></a></td>
+															<td><a href="javascript:centrerpopup('../view_room.php?id_room={{ ressource.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.fiche_ressource }}"><span class="fa fa-newspaper-o"></a></td>
+														</tr>
+													{% endif %}
 												{% endfor %}
 											</table>
-											{{ trad.dNo_rooms_for_area }}
+											{% if ressourceExiste == 0 %}
+												{{ trad.dNo_rooms_for_area }}
+											{% endif %}
 										</td>
 									</tr>
 								{% endfor %}
