@@ -19,6 +19,27 @@
 
 $grr_script_name = "admin_infos.php";
 
+function testDroits($dossier){
+
+	$ok1 = false;
+
+	if ($f = @fopen($dossier.".test", "w"))
+	{
+		@fputs($f, '<'.'?php $ok1 = true; ?'.'>');
+		@fclose($f);
+		include($dossier.".test");
+	}
+	if (!$ok1)
+		$statut = 0;
+	else
+	{
+		$statut = 1;
+		unlink($dossier.".test");
+	}
+
+	return $statut;
+}
+
 
 $valid = isset($_POST["valid"]) ? $_POST["valid"] : 'no';
 $version_old = isset($_POST["version_old"]) ? $_POST["version_old"] : '';
@@ -85,7 +106,14 @@ $trad['dDate'] = date('d-m-Y');
 $trad['dHeure'] = date("H:i");
 $trad['dTimezone'] = date_default_timezone_get();
 
+$trad['dDossierImgEcriture'] = testDroits("../images/");
+$trad['dDossierExportEcriture'] = testDroits("../export/");
+$trad['dDossierTempEcriture'] = testDroits("../export/");
+$trad['dDossierModulesEcriture'] = testDroits("../modules/");
 
+if(file_exists('../installation/'))
+	$trad['dDossierInstallation'] = 1;
+	
 
 
 // Recherche mise à jour sur serveur GRR
