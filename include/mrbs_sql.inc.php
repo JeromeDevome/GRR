@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2018-04-16 15:00$
+ * Dernière modification : $Date: 2018-08-16 12:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -59,7 +59,7 @@ function mrbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore)
 		. " ( " . utf8_strftime('%A %d %B %Y %T', $row[2]) . ") "
 		. "(<a href=\"day.php?$param_ymd\">".get_vocab("viewday")."</a>"
 			. " | <a href=\"week.php?room=$room_id&amp;$param_ymd\">".get_vocab("viewweek")."</a>"
-			. " | <a href=\"month.php?room=$room_id&amp;$param_ym\">".get_vocab("viewmonth")."</a>)\n";
+			. " | <a href=\"month.php?room=$room_id&amp;$param_ym\">".get_vocab("viewmonth")."</a>)</li>\n";
 }
 return $err;
 }

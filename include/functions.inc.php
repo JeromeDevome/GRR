@@ -967,7 +967,7 @@ function begin_page($title, $page = "with_session")
 		$a .= '<script type="text/javascript" src="../js/select2.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/select2_locale_fr.js"></script>'.PHP_EOL;
 		if (isset($use_tooltip_js))
-			echo '<script type="text/javascript" src="../include/tooltip.js"></script>'.PHP_EOL;
+			echo '<script type="text/javascript" src="../js/tooltip.js"></script>'.PHP_EOL;
 		if (!isset($_SESSION['selection']))
 			$a .= '<script type="text/javascript" src="../js/selection.js" ></script>'.PHP_EOL;
 		if (@file_exists('js/'.$clock_file))
@@ -1015,7 +1015,7 @@ function begin_page($title, $page = "with_session")
 			$a .= '<script type="text/javascript" src="js/select2_locale_fr.js"></script>'.PHP_EOL;
 		}
 		if (isset($use_tooltip_js))
-			echo '<script type="text/javascript" src="./include/tooltip.js"></script>'.PHP_EOL;
+			echo '<script type="text/javascript" src="./js/tooltip.js"></script>'.PHP_EOL;
 		if (!isset($_SESSION['selection']))
 			$a .= '<script type="text/javascript" src="js/selection.js" ></script>'.PHP_EOL;
 		if (@file_exists('js/'.$clock_file))
@@ -5119,7 +5119,7 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<script type="text/javascript" src="../js/select2.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/select2_locale_fr.js"></script>'.PHP_EOL;
 		if (isset($use_tooltip_js))
-			echo '<script type="text/javascript" src="../include/tooltip.js"></script>'.PHP_EOL;
+			echo '<script type="text/javascript" src="../js/tooltip.js"></script>'.PHP_EOL;
 		if (!isset($_SESSION['selection']))
 			$a .= '<script type="text/javascript" src="../js/selection.js" ></script>'.PHP_EOL;
 		if (@file_exists('js/'.$clock_file))
@@ -5168,7 +5168,7 @@ function pageHead2($title, $page = "with_session")
 			$a .= '<script type="text/javascript" src="js/select2_locale_fr.js"></script>'.PHP_EOL;
 		}
 		if (isset($use_tooltip_js))
-			echo '<script type="text/javascript" src="./include/tooltip.js"></script>'.PHP_EOL;
+			echo '<script type="text/javascript" src="./js/tooltip.js"></script>'.PHP_EOL;
 		if (!isset($_SESSION['selection']))
 			$a .= '<script type="text/javascript" src="js/selection.js" ></script>'.PHP_EOL;
 		if (@file_exists('js/'.$clock_file))
@@ -5354,8 +5354,48 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 		}
 	}
 }
-
-// Les lignes suivantes permettent la compatibilité de GRR avec la variables register_global à off
+/*
+** Fonction qui affiche le début d'une page avec entête et balise <section>
+*/
+function start_page_w_header($day = '', $month = '', $year = '', $type_session = 'with_session')
+{
+    // pour le traitement des modules
+    if (@file_exists('./admin_access_area.php')){
+        $adm = 1;
+        $racine = "../";
+        $racineAd = "./";
+    }
+    else{
+        $adm = 0;
+        $racine = "./";
+        $racineAd = "./admin/";
+    }
+    include $racine."/include/hook.class.php";
+    // code HTML
+    echo '<!DOCTYPE html>'.PHP_EOL;
+    echo '<html lang="fr">'.PHP_EOL;
+    // section <head>
+    if ($type_session == "with_session")
+        echo pageHead2(Settings::get("company"),"with_session");
+    else
+        echo pageHead2(Settings::get("company"),"no_session");
+    // section <body>
+    echo "<body>";
+    // Menu du haut = section <header>
+    echo "<header>";
+    pageHeader2($day, $month, $year, $type_session);
+    echo "</header>";
+    // Debut de la page
+    echo '<section>'.PHP_EOL;
+    // doit être fermé par la fonction suivante
+}    
+/* Fonction qui ferme les balises restées ouvertes dans la précédente */
+function end_page()
+{
+    echo '</section></body></html>';
+}
+    
+// Les lignes suivantes permettent la compatibilité de GRR avec la variable register_global à off
 unset($day);
 if (isset($_GET["day"]))
 {
