@@ -15,7 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-include "../include/admin.inc.php";
+
 $grr_script_name = "admin_user_modify.php";
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
@@ -286,13 +286,16 @@ if ($valid == "yes")
 // On appelle les informations de l'utilisateur pour les afficher :
 if (isset($user_login) && ($user_login != ''))
 {
-	$sql = "SELECT nom, prenom, statut, etat, email, source FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$user_login'";
-	$res = grr_sql_query($sql);
-	if ($res)
+	$res = grr_sql_query("SELECT nom, prenom, statut, etat, email, source FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$user_login'");
+	if (!$res)
+		fatal_error(0, get_vocab('message_records_error'));
+	$utilisateur = grr_sql_row_keyed($res, 0);
+	grr_sql_free($res);
+/*	if ($res)
 	{
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
-			$user_nom = htmlspecialchars($row[0]);
+			$user_nom = $row[0])
 			$user_prenom = htmlspecialchars($row[1]);
 			$user_statut = $row[2];
 			$user_etat = $row[3];
@@ -303,7 +306,7 @@ if (isset($user_login) && ($user_login != ''))
 			else
 				$flag_is_local = "n";
 		}
-	}
+	}*/
 }
 if ($user_source=="local")
 	$statut_div = "visible";
@@ -314,153 +317,60 @@ if ((authGetUserLevel(getUserName(), -1) < 1) && (Settings::get("authentificatio
 	showAccessDenied($back);
 	exit();
 }
-// Utilisation de la bibliothèqye prototype dans ce script
-$use_prototype = 'y';
-# print the page header
-print_header("", "", "", $type="with_session");
-include "admin_col_gauche.php";
-?>
-<script type='text/javascript'>
-	function display_password_fields(id){
-		if ($('#'+id).val()=='locale')
-		{
-			$('#password_fields').show();
-		}
-		else
-		{
-			$('#password_fields').hide();
-		}
-	}
-</script>
-<?php
+
+
 // Affichage d'un pop-up
 affiche_pop_up($msg,"admin");
+
 if (isset($user_login) && ($user_login != ''))
-{
-	echo "<h2>".get_vocab('admin_user_modify_modify.php')."</h2>";
-}
+	$trad['admin_user_modify_modify'] = get_vocab('admin_user_modify_modify');
 else
-{
-	echo "<h2>".get_vocab('admin_user_modify_create.php')."</h2>";
-}
-?>
-<p class="bold">
-	| <a href="admin_user.php?display=<?php echo $display; ?>"><?php echo get_vocab("back"); ?></a> |
-	<?php
-	if (isset($user_login) && ($user_login != ''))
-	{
-		echo "<a href=\"admin_user_modify.php?display=$display\">".get_vocab("display_add_user")."</a> | ";
-	}
-	?>
-	<br /><?php echo get_vocab("required"); ?>
-</p>
-<form action="admin_user_modify.php?display=<?php echo $display; ?>" method='get'><div>
-	<?php
-	if ((Settings::get("sso_statut") != "") || (Settings::get("ldap_statut") != '') || (Settings::get("imap_statut") != ''))
-	{
-		echo get_vocab("authentification").get_vocab("deux_points");
-		echo "<select id=\"select_auth_mode\" name='type_authentification' onchange=\"display_password_fields(this.id);\">\n";
-		echo "<option value='locale'";
-		if ($user_source == 'local')
-			echo "selected=\"selected\" ";
-		echo ">".get_vocab("authentification_base_locale")."</option>\n";
-		echo "<option value='externe'";
-		if ($user_source == 'ext')
-			echo "selected=\"selected\" ";
-		echo ">".get_vocab("authentification_base_externe")."</option>\n";
-		echo "</select><br /><br />\n";
-	}
-	echo get_vocab("login")." *".get_vocab("deux_points");
-	if (isset($user_login) && ($user_login!=''))
-	{
-		echo $user_login;
-		echo "<input type=\"hidden\" name=\"reg_login\" value=\"$user_login\" />\n";
-	}
-	else
-	{
-		echo "<input type=\"text\" name=\"new_login\" size=\"40\" value=\"".htmlentities($user_login)."\" />\n";
-	}
-	echo "<table border=\"0\" cellpadding=\"5\"><tr>\n";
-	echo "<td>".get_vocab("last_name")." *".get_vocab("deux_points")."</td>\n<td><input type=\"text\" name=\"reg_nom\" size=\"40\" value=\"";
-	if ($user_nom)
-		echo htmlspecialchars($user_nom);
-	echo "\" /></td>\n";
-	echo "<td>".get_vocab("first_name")." *".get_vocab("deux_points")."</td>\n<td><input type=\"text\" name=\"reg_prenom\" size=\"20\" value=\"";
-	if ($user_nom)
-		echo htmlspecialchars($user_prenom);
-	echo "\" /></td>\n";
-	echo "<td></td><td></td>";
-	echo "</tr>\n";
-	echo "<tr><td>".get_vocab("mail_user").get_vocab("deux_points")."</td><td><input type=\"text\" name=\"reg_email\" size=\"30\" value=\"";
-	if ($user_mail)
-		echo htmlspecialchars($user_mail);
-	echo "\" /></td>\n";
-	echo "<td>".get_vocab("statut").get_vocab("deux_points")."</td>\n";
-	echo "<td><select name=\"reg_statut\" size=\"1\">\n";
-	echo "<option value=\"visiteur\" ";
-	if ($user_statut == "visiteur")
-	{
-		echo "selected=\"selected\"";
-	}
-	echo ">".get_vocab("statut_visitor")."</option>\n";
-	echo "<option value=\"utilisateur\" ";
-	if ($user_statut == "utilisateur")
-	{
-		echo "selected=\"selected\"";
-	}
-	echo ">".get_vocab("statut_user")."</option>\n";
-// un gestionnaire d'utilisateurs ne peut pas créer un administrateur général ou un gestionnaire d'utilisateurs
-	if (authGetUserLevel(getUserName(),-1) >= 6)
-	{
-		echo "<option value=\"gestionnaire_utilisateur\" ";
-		if ($user_statut == "gestionnaire_utilisateur")
-		{
-			echo "selected=\"selected\"";
-		}
-		echo ">".get_vocab("statut_user_administrator")."</option>\n";
-		echo "<option value=\"administrateur\" ";
-		if ($user_statut == "administrateur")
-		{
-			echo "selected=\"selected\"";
-		}
-		echo ">".get_vocab("statut_administrator")."</option>\n";
-	}
-	echo "</select></td>\n";
-	if (strtolower(getUserName()) != strtolower($user_login))
-	{
-		echo "<td>".get_vocab("activ_no_activ").get_vocab("deux_points")."</td>";
-		echo "<td><select name=\"reg_etat\" size=\"1\">\n";
-		echo "<option value=\"actif\" ";
-		if ($user_etat == "actif")
-			echo "selected=\"selected\"";
-		echo ">".get_vocab("activ_user")."</option>\n";
-		echo "<option value=\"inactif\" ";
-		if ($user_etat == "inactif")
-			echo "selected=\"selected\"";
-		echo ">".get_vocab("no_activ_user")."</option>\n";
-		echo "</select></td>";
-	}
-	else
-	{
-		echo "<td></td><td><input type=\"hidden\" name=\"reg_etat\" value=\"$user_etat\" /></td>\n";
-	}
-	echo "</tr>\n";
-	echo "</table>";
-	echo "<div id='password_fields' style='visibility: ".$statut_div.";'>";
-	if ((isset($user_login)) && ($user_login!='') && ($flag_is_local=="y"))
-		echo "<b>".get_vocab("champ_vide_mot_de_passe_inchange")."</b>";
-	echo "<br />".get_vocab("pwd_toot_short")." *".get_vocab("deux_points")."<input type=\"password\" name=\"reg_password\" size=\"20\" />\n";
-	echo "<br />".get_vocab("confirm_pwd")." *".get_vocab("deux_points")."<input type=\"password\" name=\"reg_password2\" size=\"20\" />\n";
-	echo "</div>";
-	echo "<br />";
-	echo "<input type=\"hidden\" name=\"valid\" value=\"yes\" />\n";
-	if (isset($user_login))
-		echo "<input type=\"hidden\" name=\"user_login\" value=\"".$user_login."\" />\n";
-	echo "<br /><div style=\"text-align:center;\"><input type=\"submit\" value=\"".get_vocab("save")."\" /></div>\n";
-	echo "</div></form>\n";
+	$trad['admin_user_modify_modify'] = get_vocab('admin_user_modify_create');
+
+if ((Settings::get("sso_statut") != "") || (Settings::get("ldap_statut") != '') || (Settings::get("imap_statut") != ''))
+	$trad['dConnexionExterne'] = 1;
+
+if (authGetUserLevel(getUserName(),-1) >= 6)
+	$trad['dEstAdministrateur'] = 1;
+
+if (strtolower(getUserName()) != strtolower($user_login))
+	$trad['dEstPasLuiMeme'] = 1;
+
+$trad['dDisplay'] = $display;
+
+get_vocab_admin("required");
+get_vocab_admin("authentification");
+get_vocab_admin("authentification_base_locale");
+get_vocab_admin("authentification_base_externe");
+get_vocab_admin("login");
+get_vocab_admin("last_name");
+get_vocab_admin("first_name");
+get_vocab_admin("mail_user");
+get_vocab_admin("statut");
+get_vocab_admin("statut_visitor");
+get_vocab_admin("statut_user");
+get_vocab_admin("statut_user_administrator");
+get_vocab_admin("statut_administrator");
+
+get_vocab_admin("activ_no_activ");
+get_vocab_admin("activ_user");
+get_vocab_admin("no_activ_user");
+
+get_vocab_admin("champ_vide_mot_de_passe_inchange");
+get_vocab_admin("pwd_toot_short");
+get_vocab_admin("confirm_pwd");
+
+get_vocab_admin("back");
+get_vocab_admin("save");
+
+get_vocab_admin("liste_privileges");
+
+$utilisateur['reg_login'] = $user_login;
+
+/* Test des privilèges*/
+	
 	if ((isset($user_login)) && ($user_login != ''))
 	{
-		echo "<h2>".get_vocab('liste_privileges').$user_prenom." ".$user_nom." :</h2>";
 		$a_privileges = 'n';
 		if (Settings::get("module_multisite") == "Oui")
 		{
@@ -474,11 +384,7 @@ else
 					if ($test_admin_site >= 1)
 					{
 						$a_privileges = 'y';
-						echo "<h3>".get_vocab("site").get_vocab("deux_points").$row_site[1];
-						echo "</h3>";
-						echo "<ul>";
-						echo "<li><b>".get_vocab("administrateur du site")."</b></li>";
-						echo "</ul>";
+						$trad['dAdministrateurSite'] = "<li>".get_vocab("site")." ".$row_site[1].get_vocab("deux_points")." ".get_vocab("administrateur du site")."</li>";
 					}
 				}
 			}
@@ -541,38 +447,42 @@ else
 				if (($is_admin == 'y') || ($is_restreint == 'y') || ($is_gestionnaire != '') || ($is_mail != ''))
 				{
 					$a_privileges = 'y';
-					echo "<h3>".get_vocab("match_area").get_vocab("deux_points").$row_area[1];
+					$dAdministrateurDomaine = "<li>".get_vocab("match_area")." ".$row_area[1];
 					if ($row_area[2] == 'r')
-						echo " (".$vocab["restricted"].")";
-					echo "</h3>";
-					echo "<ul>";
+						$dAdministrateurDomaine .= " (".$vocab["restricted"].")";
+
+					$dAdministrateurDomaine .= get_vocab("deux_points");
+					$dAdministrateurDomaine .= "<ul>";
+					
 					if ($is_admin == 'y')
-						echo "<li><b>".get_vocab("administrateur du domaine")."</b></li>";
+						$dAdministrateurDomaine .= "<li>".get_vocab("administrateur du domaine")."</li>";
 					if ($is_restreint == 'y')
-						echo "<li><b>".get_vocab("a acces au domaine")."</b></li>";
+						$dAdministrateurDomaine .= "<li>".get_vocab("a acces au domaine")."</li>";
 					if ($is_gestionnaire != '')
 					{
-						echo "<li><b>".get_vocab("gestionnaire des resources suivantes")."</b><br />";
-						echo $is_gestionnaire;
-						echo "</li>";
+						$dAdministrateurDomaine .= "<li>".get_vocab("gestionnaire des resources suivantes")."<br />";
+						$dAdministrateurDomaine .= $is_gestionnaire;
+						$dAdministrateurDomaine .= "</li>";
 					}
 					if ($is_mail != '')
 					{
-						echo "<li><b>".get_vocab("est prevenu par mail")."</b><br />";
-						echo $is_mail;
-						echo "</li>";
+						$dAdministrateurDomaine .= "<li>".get_vocab("est prevenu par mail")."<br />";
+						$dAdministrateurDomaine .= $is_mail;
+						$dAdministrateurDomaine .= "</li>";
 					}
-					echo "</ul>";
+					$dAdministrateurDomaine .= "</ul>";
+					
+					$trad['dAdministrateurDomaine'] = $dAdministrateurDomaine;
 				}
 			}
 		}
 		if ($a_privileges == 'n')
 		{
-			if ($user_statut == 'administrateur')
-				echo  "<div>".get_vocab("administrateur general").".</div>";
+			if ($utilisateur['statut'] == 'administrateur')
+				$trad['dAdministrateurOuRien'] = "<li>".get_vocab("administrateur general")."</li>";
 			else
-				echo "<div>".get_vocab("pas de privileges").".</div>";
+				$trad['dAdministrateurOuRien'] = "<li>".get_vocab("pas de privileges")."</li>";
 		}
 	}
-	echo "</body></html>";
-	?>
+
+?>

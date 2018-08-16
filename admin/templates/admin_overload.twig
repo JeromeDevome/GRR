@@ -1,0 +1,170 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			{% if listeManquant %}
+				{{ msgSyst.messageAlerte(trad.type_resa_manquant_titre, trad.type_resa_manquant_msg ~ listeManquant) }}
+			{% endif %}
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{ trad.admin_overload }}</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body no-padding">
+					<p>{{ trad.explication_champs_additionnels }}</p>
+
+					
+					<table class="table table-striped">
+						<tr>
+							<th>{{trad.match_area}}</th>
+							<th>{{trad.fieldname}}</th>
+							<th>{{trad.fieldtype}}</th>
+							<th>{{trad.champ_obligatoire}}</th>
+							<th>{{trad.affiche_dans_les_vues}}</th>
+							<th>{{trad.affiche_dans_les_mails}}</th>
+							<th>{{trad.champ_confidentiel}}</th>
+							<th colspan="2">{{trad.action}}</th>
+						</tr>
+
+						<form method="post" action="admin.php?p=admin_overload" >
+							<input type="hidden" name="p" value="admin_overload" />
+							<input type="hidden" name="action" value="add" />
+							<tr>
+								<td>
+									<select name="id_area" size="1">
+										{% for domaine in domaines %}
+											<option value="{{ domaine.id }}">{{ domaine.nom }}</option>
+										{% endfor %}
+									</select>
+								</td>
+								<td><input type="text" name="fieldname" size="20" /></td>
+								<td>
+									<select name="fieldtype" size="1">
+										<option value="text">{{ trad.type_text }}</option>
+										<option value="numeric">{{ trad.type_numeric }}</option>
+										<option value="textarea">{{ trad.type_area }}</option>
+										<option value="list">{{ trad.type_list }}</option>
+									</select>
+								</td>
+								<td><input type="checkbox" id="obligatoire" name="obligatoire" value="y" /></td>
+								<td><input type="checkbox" id="affichage" name="affichage" value="y" /></td>
+								<td><input type="checkbox" id="overload_mail" name="overload_mail" value="y" /></td>
+								<td><input type="checkbox" id="confidentiel" name="confidentiel" value="y" /></td>
+								<td colspan="2"><input type="submit" name="submit" value="{{ trad.add }}" class="btn bg-green" /></td>
+							</tr>
+						</form>
+
+						{% for champAdd in champsAdd %}
+							
+							<tr>
+								<form method="post" action="?p=admin_overload">
+									<input type="hidden" name="p" value="admin_overload" />
+									<input type="hidden" name="id_overload" value="{{champAdd.id}}" />
+									<input type="hidden" name="action" value="change" />
+									<td>{{champAdd.domaine}}</td>
+									<td><input type="text" name="fieldname" value="{{ champAdd.nom }}"></td>
+									<td>
+										<select name="fieldtype" size="1">
+											<option value="text" {% if champAdd.type == 'text' %} selected {% endif %}>{{ trad.type_text }}</option>
+											<option value="numeric" {% if champAdd.type == 'numeric' %} selected {% endif %}>{{ trad.type_numeric }}</option>
+											<option value="textarea" {% if champAdd.type == 'textarea' %} selected {% endif %}>{{ trad.type_area }}</option>
+											<option value="list" {% if champAdd.type == 'list' %} selected {% endif %}>{{ trad.type_list }}</option>
+										</select>
+										{% if champAdd.type == 'list' %}
+											<br>{{ trad.Liste_des_champs |raw }}<br>
+											<input type="text" name="fieldlist" value="{{ champAdd.liste }}" size="50" />
+										{% endif %}
+									</td>
+									<td><input type="checkbox" id="obligatoire" name="obligatoire" value="y"  {% if champAdd.obligatoire == 'y' %} checked {% endif %}></td>
+									<td><input type="checkbox" id="affichage" name="affichage" value="y"  {% if champAdd.affichagevue == 'y' %} checked {% endif %}></td>
+									<td><input type="checkbox" id="overload_mail" name="overload_mail" value="y"  {% if champAdd.affichagemail == 'y' %} checked {% endif %}></td>
+									<td><input type="checkbox" id="confidentiel" name="confidentiel" value="y"  {% if champAdd.confidentiel == 'y' %} checked {% endif %}></td>
+									<td><button type="submit" class="btn btn-info btn-md"><i class="icon fa fa-check"></i></button></td>
+								</form>	
+								<form method="post" id="supChampAdd{{champAdd.id}}" action="?p=admin_overload">
+									<input type="hidden" name="p" value="admin_overload" />
+									<input type="hidden" name="id_overload" value="{{champAdd.id}}" />
+									<input type="hidden" name="action" value="delete" />
+									<td><button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#modal-danger" data-texte="{{trad.confirm_del}}" data-idsup="{{ champAdd.id }}"><i class="icon fa fa-trash"></i></button></td>
+									
+								</form>	
+							</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- popup modal -->
+	<div class="modal modal-danger fade" id="modal-danger">
+		<form id="supChampAdd" action="?p=admin_overload">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">{{trad.confirm_del}}</h4>
+			  </div>
+			  <div class="modal-body">
+				<span id="modal-texte"></span><span id="modal-idsup" class="hidden"></span> 
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">{{trad.cancel}}</button>
+				<button type="submit" id="liensup" class="btn btn-outline">{{trad.delete}}</button>
+			  </div>
+			</div>
+		 </div>
+		</form>
+	</div>
+
+{% endblock %}
+
+{% block javascript %}
+	<script>
+		// data-* attributes to scan when populating modal values
+		var ATTRIBUTES = ['texte', 'idsup'];
+
+		$('[data-toggle="modal"]').on('click', function (e) {
+		  // convert target (e.g. the button) to jquery object
+		  var $target = $(e.target);
+		  // modal targeted by the button
+		  var modalSelector = $target.data('target');
+
+		  // iterate over each possible data-* attribute
+		  ATTRIBUTES.forEach(function (attributeName) {
+			// retrieve the dom element corresponding to current attribute
+			var $modalAttribute = $(modalSelector + ' #modal-' + attributeName);
+			var dataValue = $target.data(attributeName);
+			// if the attribute value is empty, $target.data() will return undefined.
+			// In JS boolean expressions return operands and are not coerced into
+			// booleans. That way is dataValue is undefined, the left part of the following
+			// Boolean expression evaluate to false and the empty string will be returned
+			$modalAttribute.text(dataValue || '');
+		  });
+		});
+
+		$(function(){
+			$('#supChampAdd').submit(function(e) {
+			  e.preventDefault()
+			  var $form = $(this)
+			  var v=document.getElementById('modal-idsup').innerHTML
+			  $.post($form.attr('action'), $form.serialize())
+			  .done(function(data) {
+				$('#html').html(data);
+				$('#modal-danger').modal('hide');
+				//document.location.href='?p=admin_overload&action=delete&id_overload='+v+';
+				document.getElementById("supChampAdd"+v).submit(); 
+			  })
+			  .fail(function() {
+				alert('Une erreur est survenue : GRRJS')
+			  })
+			})
+		})
+	</script>
+{% endblock %}

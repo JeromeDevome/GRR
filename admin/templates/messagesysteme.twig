@@ -4,3 +4,10 @@
 		{{ message }}
 	</div>
 {% endmacro %}
+
+{% macro messageInfo(titre, message) %}
+	<div class="alert alert-info  alert-dismissible">
+		<h4><i class="icon fa fa-info"></i> {{ titre }}</h4>
+		{{ message }}
+	</div>
+{% endmacro %}

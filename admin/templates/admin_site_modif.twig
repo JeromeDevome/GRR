@@ -1,0 +1,49 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			{% if trad.dMesgSysteme %}
+				{{ msgSyst.messageAlerte('', trad.dMesgSysteme) }}
+			{% endif %}
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{ trad.addsite }}</h3>
+				</div>
+				<!-- /.box-header -->
+				<form action="?p=admin_site&action={{ trad.dAction }}" method="post">
+					<div class="box-body no-padding">
+						<p>{{ trad.required }}</p>
+						
+						<input type="hidden" name="valid" value="yes" />
+						<input type="hidden" name="id" value="{{ trad.dIdSite }}" />
+						
+						{{ form.input('sitecode', trad.site_code, site.code, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
+						{{ form.input('sitename', trad.site_name, site.nom, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
+						{{ form.input('adresse_ligne1', trad.site_adresse_ligne1, site.adresse_ligne1, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+						{{ form.input('adresse_ligne2', trad.site_adresse_ligne2, site.adresse_ligne2, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+						{{ form.input('adresse_ligne3', trad.site_adresse_ligne3, site.adresse_ligne3, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+						{{ form.input('cp', trad.site_cp, site.cp, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+						{{ form.input('ville', trad.site_ville, site.ville, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+						{{ form.input('pays', trad.site_pays, site.pays, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+						{{ form.input('tel', trad.site_tel, site.tel, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+						{{ form.input('fax', trad.site_fax, site.fax, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+					</div>
+
+					<div class="box-footer">
+						<input type="submit" name="back" value="{{ trad.back }}" class="btn btn-default btn-md" />
+						<input type="submit" name="save" value="{{ trad.save }}" class="btn btn-success btn-md pull-right" />
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

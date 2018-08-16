@@ -623,14 +623,14 @@ if ((!empty($room)) || (isset($area_id)))
 				echo " checked=\"checked\"";
 			echo " /></td></tr>\n";
 	// Quels utilisateurs ont le droit de reserver cette ressource au nom d'un autre utilisateur ?
-			echo "<tr><td>".get_vocab("qui peut reserver pour autre utilisateur")."</td><td><select class=\"form-control\" name=\"qui_peut_reserver_pour\" size=\"1\">\n<option value=\"5\" ";
+			echo "<tr><td>".get_vocab("qui_peut_reserver_pour_autre_utilisateur")."</td><td><select class=\"form-control\" name=\"qui_peut_reserver_pour\" size=\"1\">\n<option value=\"5\" ";
 			if ($row["qui_peut_reserver_pour"]==6)
 				echo " selected=\"selected\" ";
 			echo ">".get_vocab("personne")."</option>\n
 			<option value=\"4\" ";
 			if ($row["qui_peut_reserver_pour"]==4)
 				echo " selected=\"selected\" ";
-			echo ">".get_vocab("les administrateurs restreints")."</option>\n
+			echo ">".get_vocab("les_administrateurs_restreints")."</option>\n
 			<option value=\"3\" ";
 			if ($row["qui_peut_reserver_pour"]==3)
 				echo " selected=\"selected\" ";
@@ -660,7 +660,7 @@ if ((!empty($room)) || (isset($area_id)))
 		if (@file_exists($nom_picture) && $nom_picture)
 			echo "<br /><br /><b>".get_vocab("Image de la ressource").get_vocab("deux_points")."</b><br /><img src=\"".$nom_picture."\" alt=\"logo\" />";
 		else
-			echo "<br /><br /><b>".get_vocab("Pas image disponible")."</b>";
+			echo "<br /><br /><b>".get_vocab("Pas_image_disponible")."</b>";
 		?>
 	</div>
 </form>
