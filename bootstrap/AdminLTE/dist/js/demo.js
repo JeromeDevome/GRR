@@ -197,7 +197,7 @@ $(function () {
         + '<input type="checkbox"data-layout="fixed"class="pull-right"/> '
         + 'Fixed layout'
         + '</label>'
-        + '<p>Activate the fixed layout. You can\'t use fixed and boxed layouts together</p>'
+        + '<p>Activate the fixed layout.</p>'
         + '</div>'
         // Boxed layout
         + '<div class="form-group">'
@@ -213,7 +213,7 @@ $(function () {
         + '<input type="checkbox"data-layout="sidebar-collapse"class="pull-right"/> '
         + 'Toggle Sidebar'
         + '</label>'
-        + '<p>Toggle the left sidebar\'s state (open or collapse)</p>'
+        + '<p>Open or collapse</p>'
         + '</div>'
         // Sidebar mini expand on hover toggle
         + '<div class="form-group">'
@@ -237,7 +237,7 @@ $(function () {
         + '<input type="checkbox"data-sidebarskin="toggle"class="pull-right"/> '
         + 'Toggle Right Sidebar Skin'
         + '</label>'
-        + '<p>Toggle between dark and light skins for the right sidebar</p>'
+        + '<p></p>'
         + '</div>'
     )
     var $skinsList = $('<ul />', {'class': 'list-unstyled clearfix'})
