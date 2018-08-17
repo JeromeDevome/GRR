@@ -573,7 +573,7 @@ $vocab['morningstarts_area'] = "Der Tag beginnt um:";
 $vocab['motif'] = "Grund";
 $vocab['mrbs'] = "GRR (Gestion et Réservation de Ressources - Ressourcesverwaltung und Reservierung)";
 $vocab['msg_del_bookings'] = "Achtung, die Änderungen der von Ihnen vorgenommenen Anfangs- und Enddaten der Reservierungen ziehen die endgültige Streichung der bereits vorgenommenen Reservierungen nach sich, die sich au&#x00DF;erhalb der neuen zulässigen Daten befinden! Wollen Sie wirklich fortfahren?";
-$vocab['msg_explain_log'] = "Die in rot erscheinenden Daten markieren die nach einer zu langen Zeit der Inaktivität ausgeloggten Benutzer.<br />Die grün erscheinenden Zeilen markieren die zur Zeit verbundenen Benutzer.";
+$vocab['msg_explain_log'] = "Die in rot erscheinenden Daten markieren die nach einer zu langen Zeit der Inaktivität ausgeloggten Benutzer. Die grün erscheinenden Zeilen markieren die zur Zeit verbundenen Benutzer.";
 $vocab['msg_login1'] = "<b>GRR</b> ist unter GPL Lizenz, die aus <a href='http://mrbs.sourceforge.net'>MRBS</a> adaptiert wurde.<br />Für alle Nachfragen bezüglich <b>GRR</b>, gehen Sie bitte auf die Webseite: ";
 $vocab['msg_login3'] = "Die Webseite ist im Moment nicht erreichbar. Bitte entschuldigen Sie die Störung!";
 $vocab['msg_login_created'] = "Sie haben gerade einen neuen Benutzer erstellt. Bis auf weiteres gilt dieser Benutzer als aktiv.";
