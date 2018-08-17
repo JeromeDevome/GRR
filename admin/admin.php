@@ -40,6 +40,8 @@ print_header_admin("", "", "", $type="with_session");
 get_vocab_admin('grr_version');
 get_vocab_admin('retour_planning');
 get_vocab_admin("manage_my_account");
+get_vocab_admin("display_add_user");
+get_vocab_admin('admin_view_connexions');
 
 $trad['dNomAffichage'] = $nomAffichage;
 $trad['dLienRetour'] = $lienRetour;
