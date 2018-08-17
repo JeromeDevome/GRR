@@ -1,0 +1,159 @@
+{% extends 'layout.twig' %}
+
+{% block css %}
+	<link rel="stylesheet" href="../bootstrap/AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+	<link rel="stylesheet" href="../bootstrap/AdminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+{% endblock %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			<div class="box box-info">
+				<div class="box-header">
+					<h3 class="box-title">{{trad.users_connected}}</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+				  <table id="tableuser" class="table display table-bordered table-striped">
+						<thead>
+							<tr>
+							  <th>{{trad.login_name}}</th>
+							  <th>{{trad.names}}</th>
+							  <th>{{trad.sen_a_mail}}</th>
+							  <th>{{trad.action}}</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for utilisateurCo in utilisateursconnecte %}
+								<tr>
+									<td>{{ utilisateurCo.login }}</td>
+									<td>{{ utilisateurCo.nomprenom }}</td>
+									<td><a href="mailto:{{ utilisateurCo.email }}" class="btn btn-info btn-md"><i class="icon fa fa-envelope-o"></i></a></td>
+									<td>
+										{% if utilisateurCo.deconnexion == 1 %}
+											<a href="?p=admin_change_pwd&user_login={{ utilisateurCo.login }} ">{{ trad.deconnect_changing_pwd }}</a>
+										{% endif %}
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+						<thead>
+							<tr>
+							  <th>{{trad.login_name}}</th>
+							  <th>{{trad.names}}</th>
+							  <th>{{trad.sen_a_mail}}</th>
+							  <th>{{trad.action}}</th>
+							</tr>
+						</thead>
+				  </table>
+				</div>
+			</div>
+
+
+			<div class="box box-success">
+				<div class="box-header">
+					<h3 class="box-title">{{trad.dTitreDateLog}}</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+					<p>{{ trad.msg_explain_log }}
+				  <table id="tablelog" class="table display table-bordered table-striped">
+						<thead>
+							<tr>
+							  <th>{{trad.login_name}}</th>
+							  <th>{{trad.names}}</th>
+							  <th>{{trad.begining_of_session}}</th>
+							  <th>{{trad.end_of_session}}</th>
+							  <th>{{trad.ip_adress}}</th>
+							  <th>{{trad.navigator}}</th>
+							  <th>{{trad.referer}}</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for log in logsconnexion %}
+								<tr {% if log.clos == 0 %}class="success"{% endif %}>
+									<td>{{ log.login }}</td>
+									<td>{{ log.nomprenom }}</td>
+									<td>{{ log.debut }}</td>
+									<td>{{ log.fin }}</td>
+									<td>{{ log.ip }}</td>
+									<td>{{ log.navigateur }}</td>
+									<td>{{ log.provenance }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+						<thead>
+							<tr>
+							  <th>{{trad.login_name}}</th>
+							  <th>{{trad.names}}</th>
+							  <th>{{trad.begining_of_session}}</th>
+							  <th>{{trad.end_of_session}}</th>
+							  <th>{{trad.ip_adress}}</th>
+							  <th>{{trad.navigator}}</th>
+							  <th>{{trad.referer}}</th>
+							</tr>
+						</thead>
+				  </table>
+				</div>
+			</div>
+
+
+			<div class="box box-danger">
+				<div class="box-header">
+					<h3 class="box-title">{{trad.cleaning_log}}</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+					<p>{{ trad.logs_number }} <b>{{ trad.dNombreLog }}</b>
+					<p>{{ trad.older_date_log }} <b>{{ trad.dDatePlusAncienne }}</b>
+					<br>
+					<p><b>{{ trad.erase_log }}</b>
+
+					<form action="?p=admin_view_connexions" method="post">
+
+						<div class="form-group">
+							<label>{{ trad.delete_up_to }} :</label>
+
+							<div class="input-group date">
+								<div class="input-group-addon">
+									<i class="fa fa-calendar"></i>
+								</div>
+								<input class="form-control pull-right" id="datepicker" name="cleanlog" type="text">
+							</div>
+						</div>
+              
+						<div style="text-align:center;">
+							<input class="btn btn-danger" type="submit" value="{{ trad.del }}" />
+						</div>
+					</form>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+	<script src="../bootstrap/AdminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+	<script src="../bootstrap/AdminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+	<script src="../bootstrap/AdminLTE/bower_components/moment/min/moment.min.js"></script>
+	<script src="../bootstrap/AdminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('table.display').DataTable();
+		} );
+
+		$(function () {
+			$('#datepicker').datepicker({
+			  autoclose: true
+			})
+			    $( "#format" ).on( "change", function() {
+      $( "#datepicker" ).datepicker( "option", "dateFormat", $( this ).val() );
+    });
+		})
+	</script>
+{% endblock %}
