@@ -3,8 +3,8 @@
  * edit_entry_beneficiaire.php
  * Page "Ajax" utilisée dans edit_entry.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-08-14 12:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -45,7 +45,7 @@ if ($res)
 	$nb_result = grr_sql_count($res);
 	if ($nb_result > 1)
 	{
-		echo "<span class=\"avertissement\">Plusieurs utilisateur ont le même identifiants que l'utilisateur ci-dessus. Signalez ce problème à l'administrateur.</span>";
+		echo "<span class=\"avertissement\">.get_vocab('utilisateur_doublon').</span>";
 	}
 	else if ($nb_result == 1)
 	{
