@@ -3,8 +3,8 @@
  * report.php
  * interface afficheant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-08-18 16:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,13 +15,15 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "report.php";
+
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
 include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
 include "include/mrbs_sql.inc.php";
-$grr_script_name = "view_rights_room.php";
+
 //Paramètres de connection
 require_once("./include/settings.class.php");
 //Chargement des valeurs de la table settings
@@ -228,7 +230,7 @@ function accumulate_periods(&$row, &$count, &$hours, $report_start, $report_end,
 function cell($count, $hours, $csv = "n", $decompte = "heure")
 {
 	if ($csv == "n")
-		echo "<td class=\"BR\" align=\"right\">($count) ". sprintf("%.2f", $hours) . "</td>\n";
+		echo "<td class=\"BR\">($count) ". sprintf("%.2f", $hours) . "</td>\n";
 	else if (($csv == "y") && ($decompte == "heure"))
 		echo sprintf("%.2f", $hours) . ";";
 	else if (($csv == "y") && ($decompte == "resa"))
@@ -272,21 +274,21 @@ function do_summary(&$count, &$hours, &$room_hash, &$breve_description_hash, $en
 			echo "<hr /><h1>".get_vocab("summary_header_per")."</h1><table class=\"table table-bordered table-striped\">\n";
 		else
 			echo "<hr /><h1>".get_vocab("summary_header")."</h1><table class=\"table table-bordered table-striped\">\n";
-		echo "<tr><td class=\"BL\" align=\"left\"><b>".$premiere_cellule." \ ".get_vocab("room")."</b></td>\n";
+		echo "<tr><td class=\"BL\"><b>".$premiere_cellule." \ ".get_vocab("room")."</b></td>\n";
 	}
 	$col_count_total = array();
 	$col_hours_total = array();
 	for ($c = 0; $c < $n_rooms; $c++)
 	{
 		if ($csv == "n")
-			echo "<td class=\"BL\" align=\"left\"><b>$rooms[$c]</b></td>\n";
+			echo "<td class=\"BL\"><b>$rooms[$c]</b></td>\n";
 		else
 			echo "$rooms[$c];";
 		$col_count_total[$c] = 0;
 		$col_hours_total[$c] = 0.0;
 	}
 	if ($csv == "n")
-		echo "<td class=\"BR\" align=\"right\"><br /><b>".get_vocab("total")."</b></td></tr>\n";
+		echo "<td class=\"BR\"><br /><b>".get_vocab("total")."</b></td></tr>\n";
 	else
 		echo html_entity_decode($vocab['total']).";\r\n";
 	$grand_count_total = 0;
@@ -297,7 +299,7 @@ function do_summary(&$count, &$hours, &$room_hash, &$breve_description_hash, $en
 		$row_hours_total = 0.0;
 		$breve_description = $breve_descriptions[$r];
 		if ($csv == "n")
-			echo "<tr><td class=\"BR\" align=\"right\"><b>$breve_description</b></td>\n";
+			echo "<tr><td class=\"BR\"><b>$breve_description</b></td>\n";
 		else
 			echo "$breve_description;";
 		for ($c = 0; $c < $n_rooms; $c++)
@@ -330,7 +332,7 @@ function do_summary(&$count, &$hours, &$room_hash, &$breve_description_hash, $en
 		$grand_hours_total += $row_hours_total;
 	}
 	if ($csv == "n")
-		echo "<tr><td class=\"BR\" align=\"right\"><b>".get_vocab("total")."</b></td>\n";
+		echo "<tr><td class=\"BR\"><b>".get_vocab("total")."</b></td>\n";
 	else
 		echo html_entity_decode($vocab['total']).";";
 	for ($c = 0; $c < $n_rooms; $c++)
@@ -349,7 +351,7 @@ if (!isset($day) || !isset($month) || !isset($year))
 if (($summarize != 4) && ($summarize != 5))
 {
 	//Affiche les informations dans l'header
-	print_header($day, $month, $year, $type="with_session");
+	start_page_w_header($day, $month, $year, $type="with_session");
 }
 if (isset($champ[0]))
 {
@@ -391,14 +393,14 @@ if (empty($summarize))
 if (($summarize != 4) && ($summarize != 5))
 {
 	?>
-	<div class="page_sans_col_gauche"><h1><?php echo get_vocab("search report stats");?></h1>
+	<div class="center"><h1><?php echo get_vocab("search report stats");?></h1>
 		<form method="get" action="report.php">
 			<?php
 			// Si format imprimable ($_GET['pview'] = 1), on n'affiche pas cette partie
 			if ($_GET['pview'] != 1)
 			{
-				?>
-				<table border="0">
+			?>
+				<table>
 					<tr><td class="CR"><?php echo get_vocab("report_start").get_vocab("deux_points");?></td>
 						<td class="CL">
 							<div class="col-xs-12">
@@ -418,16 +420,16 @@ if (($summarize != 4) && ($summarize != 5))
 							<?php
 							if (!isset($_GET["condition_et_ou"]) || ($_GET["condition_et_ou"] != "OR"))
 								$_GET["condition_et_ou"] = "AND";
-							echo "<tr><td align=\"right\"><input type=\"radio\" name=\"condition_et_ou\" value=\"AND\" ";
+							echo "<tr><td class=\"CR\"><input type=\"radio\" name=\"condition_et_ou\" value=\"AND\" ";
 							if ($_GET["condition_et_ou"] == "AND")
 								echo "checked=\"checked\"";
 							echo " /></td>\n";
-							echo "<td>".get_vocab("valide toutes les conditions suivantes")."</td></tr>";
-							echo "<tr><td align=\"right\"><input type=\"radio\" name=\"condition_et_ou\" value=\"OR\" ";
+							echo "<td class='CL'>".get_vocab("valide toutes les conditions suivantes")."</td></tr>";
+							echo "<tr><td class=\"CR\"><input type=\"radio\" name=\"condition_et_ou\" value=\"OR\" ";
 							if ($_GET["condition_et_ou"] != "AND")
 								echo "checked=\"checked\"";
 							echo " /></td>\n";
-							echo "<td>".get_vocab("Valide au moins une des conditions suivantes")."</td></tr>\n";
+							echo "<td class='CL'>".get_vocab("Valide au moins une des conditions suivantes")."</td></tr>\n";
 							if (isset($texte))
 								$nb_ligne = max((count($texte) +2),5);
 							else
@@ -542,16 +544,16 @@ if (($summarize != 4) && ($summarize != 5))
 											echo "</select>";
 											?>
 										</td></tr>
-										<tr><td colspan="2" align="center">
+										<tr><td colspan="2" class="center">
 											<input type="hidden" name="is_posted" value="y" />
 											<input class="btn btn-primary" type="submit" value="<?php echo get_vocab('submit') ?>" />
 										</td></tr>
-									</table>
-									<?php
-								}
-								?>
-							</form>
-						</div>
+				</table>
+            <?php
+            }
+            ?>
+        </form>
+    </div>
 						<?php
 // Fin de if (($summarize != 4) and ($summarize != 5)) {
 					}
@@ -561,7 +563,7 @@ if (($summarize != 4) && ($summarize != 5))
 					{
 						if (($summarize != 4) && ($summarize != 5))
 						{
-							echo "<div class=\"page_sans_col_gauche\">\n";
+							echo "<div>\n";
 							echo "<hr />\n";
 						}
 	// Affichage d'un lien pour format imprimable
@@ -682,7 +684,7 @@ if (!$res)
 $nmatch = grr_sql_count($res);
 if (($nmatch == 0) && (($summarize != 4) && ($summarize != 5)))
 {
-	echo "<p><b>" . get_vocab("nothing_found") . "</b>\n";
+	echo "<p><b>" . get_vocab("nothing_found") . "</b></p>\n";
 	grr_sql_free($res);
 }
 else
@@ -837,7 +839,7 @@ else
 			}
 			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 			{
-				//Affichage de "crée par" et de la date de la dernière mise à jour
+				//Affichage de "créé par" et de la date de la dernière mise à jour
 				echo ($row[6]) . ";";
 				//Area
 				echo (removeMailUnicode($row[8])) . ";";
@@ -937,6 +939,7 @@ else
 if (($summarize != 4) && ($summarize != 5))
 {
 	echo "</div>";
-	include "include/trailer.inc.php";
+	//include "include/trailer.inc.php";
+    end_page();
 }
 ?>

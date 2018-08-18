@@ -3,7 +3,7 @@
  * swap_entry.php
  * Interface d'échange d'une réservation avec une autre, à choisir
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-05-28 10:30$
+ * Dernière modification : $Date: 2018-08-18 17:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -33,6 +33,10 @@ if (!grr_resumeSession())
 	header("Location: ./logout.php?auto=1&url=$url");
 	die();
 };
+if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
+	$type_session = "no_session";
+else
+	$type_session = "with_session";
 include "include/language.inc.php";
 $series = isset($_GET["series"]) ? $_GET["series"] : NULL;
 if (isset($series))
@@ -48,8 +52,34 @@ else {
 	die();    
 }
 // début de code html, commun à tous les cas
-begin_page("Echange de réservations", "with_session");
-print_header('', '', '', 'with_session');
+// pour le traitement des modules
+if (@file_exists('./admin_access_area.php')){
+    $adm = 1;
+    $racine = "../";
+    $racineAd = "./";
+}
+else{
+    $adm = 0;
+    $racine = "./";
+    $racineAd = "./admin/";
+}
+include $racine."/include/hook.class.php";
+// code HTML
+echo '<!DOCTYPE html>'.PHP_EOL;
+echo '<html lang="fr">'.PHP_EOL;
+// section <head>
+if ($type_session == "with_session")
+    echo pageHead2(get_vocab('swap_entry'),"with_session");
+else
+    echo pageHead2(get_vocab('swap_entry'),"no_session");
+// section <body>
+echo "<body>";
+// Menu du haut = section <header>
+echo "<header>";
+pageHeader2('', '', '', $type_session);
+echo "</header>";
+// Debut de la page
+echo '<section>'.PHP_EOL;
 
 if (isset($_GET['id_alt'])){ // cas où tout est décidé
     if (isset($_GET['choix'])){
@@ -164,10 +194,6 @@ if (isset($_GET['id_alt'])){ // cas où tout est décidé
                 echo "<td>".libelle($info_alt['type'])."</td>";
             echo "</tr>";
         echo "</table>";
-        echo "</p>";
-        // $link = "./swap_entry.php?id=".$id."&id_alt=".$_GET['id_alt']."&choix&ret_page=".$_GET['ret_page']; // ret_page ne passe pas à la suite => passer les détails ?
-        // echo "<p style='text-align:center;'>";
-        // echo "<input class='btn btn-primary' value='Valider' onclick='window.location.href=\"".$link."\"'/>";
         echo '<form method="GET" action="swap_entry.php" >';
         echo "<p style='text-align:center;'>";
         echo "<input type='hidden' name='ret_page' value='".$_GET['ret_page']."' />";
@@ -178,7 +204,7 @@ if (isset($_GET['id_alt'])){ // cas où tout est décidé
         echo "<input type='button' class='btn btn-danger' value='".get_vocab("cancel")."' onclick='window.location.href=\" ".$_GET['ret_page']."\"'/>";
         echo "</p>";
         echo "</form>";
-        // echo "</p>";
+        end_page();
     }
 }
 else { // on connaît $id de la réservation à échanger, on va en chercher une autre pour l'échange
@@ -289,11 +315,10 @@ else { // on connaît $id de la réservation à échanger, on va en chercher une
                     }
                 }
             echo "</tbody>";
-            echo "</form>";
-        echo "</table>";           
+            echo "</table>";
+        echo "</form>";
         // bas de page
-        echo "</body>";
-        echo "</html>";
+        end_page();
     }
     else 
         showAccessDenied(page_accueil()); // l'utilisateur ne peut accéder à cette réservation... on le renvoie vers la page d'accueil
