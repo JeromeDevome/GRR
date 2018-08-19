@@ -933,10 +933,10 @@ function begin_page($title, $page = "with_session")
 	$a .= '<meta name="viewport" content="width=device-width, initial-scale=1">'.PHP_EOL;
 	$a .= '<meta name="Robots" content="noindex" />'.PHP_EOL;
 	$a .= '<title>'.$title.'</title>'.PHP_EOL;
-	$a .= '<link rel="shortcut icon" href="./favicon.ico" />'.PHP_EOL;
 
 	if (@file_exists('admin_accueil.php') || @file_exists('install_mysql.php')){ // Si on est dans l'administration
 
+        $a .= '<link rel="shortcut icon" href="../favicon.ico" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.min.css" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../include/admin_grr.css" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/select2.css" />'.PHP_EOL;
@@ -975,6 +975,7 @@ function begin_page($title, $page = "with_session")
    	} 
     else
     {	
+        $a .= '<link rel="shortcut icon" href="./favicon.ico" />'.PHP_EOL;
         $a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />'.PHP_EOL;
 	    if (isset($use_select2))
 		{
@@ -5078,10 +5079,10 @@ function pageHead2($title, $page = "with_session")
 	$a .= '<meta name="viewport" content="width=device-width, initial-scale=1">'.PHP_EOL;
 	$a .= '<meta name="Robots" content="noindex" />'.PHP_EOL;
 	$a .= '<title>'.$title.'</title>'.PHP_EOL;
-	$a .= '<link rel="shortcut icon" href="./favicon.ico" />'.PHP_EOL;
 
 	if (@file_exists('admin_accueil.php') || @file_exists('install_mysql.php')){ // Si on est dans l'administration ou en initialisation
 
+        $a .= '<link rel="shortcut icon" href="../favicon.ico" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.min.css" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../include/admin_grr.css" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/select2.css" />'.PHP_EOL;
@@ -5119,6 +5120,7 @@ function pageHead2($title, $page = "with_session")
 			$a .= get_vocab('not_php3');
 	} 
     else {
+        $a .= '<link rel="shortcut icon" href="./favicon.ico" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />'.PHP_EOL;
 	    if (isset($use_select2))
 		{
@@ -5372,9 +5374,40 @@ function start_page_w_header($day = '', $month = '', $year = '', $type_session =
     echo "</header>";
     // Debut de la page
     echo '<section>'.PHP_EOL;
-    // doit être fermé par la fonction suivante
-}    
-/* Fonction qui ferme les balises restées ouvertes dans la précédente */
+    // doit être fermé par la fonction end_page
+}   
+/*
+** Fonction qui affiche le début d'une page sans entête et avec une balise <section>
+*/
+function start_page_wo_header($titre, $type_session = 'with_session')
+{
+    // pour le traitement des modules
+    if (@file_exists('./admin_access_area.php')){
+        $adm = 1;
+        $racine = "../";
+        $racineAd = "./";
+    }
+    else{
+        $adm = 0;
+        $racine = "./";
+        $racineAd = "./admin/";
+    }
+    include $racine."/include/hook.class.php";
+    // code HTML
+    echo '<!DOCTYPE html>'.PHP_EOL;
+    echo '<html lang="fr">'.PHP_EOL;
+    // section <head>
+    if ($type_session == "with_session")
+        echo pageHead2(Settings::get("company"),"with_session");
+    else
+        echo pageHead2(Settings::get("company"),"no_session");
+    // section <body>
+    echo "<body>";
+    // Debut de la page
+    echo '<section>'.PHP_EOL;
+    // doit être fermé par la fonction end_page
+} 
+/* Fonction qui ferme les balises restées ouvertes dans les précédentes */
 function end_page()
 {
     echo '</section></body></html>';

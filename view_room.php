@@ -3,8 +3,8 @@
  * view_room.php
  * Fiche ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-08-18 22:30$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,13 +15,15 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "view_room.php";
+
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
 include_once('include/misc.inc.php');
 include "include/mrbs_sql.inc.php";
-$grr_script_name = "view_room.php";
+
 // Settings
 require_once("./include/settings.class.php");
 //Chargement des valeurs de la table settingS
@@ -53,13 +55,13 @@ if (((authGetUserLevel(getUserName(),-1) < 1) && (Settings::get("authentificatio
 	exit();
 }
 
-echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("company"));
+echo start_page_wo_header(get_vocab("mrbs").get_vocab("deux_points").Settings::get("company"),$type_session);
 $res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_room WHERE id=$id_room");
 if (!$res)
 	fatal_error(0, get_vocab('error_room') . $id_room . get_vocab('not_found'));
 $row = grr_sql_row_keyed($res, 0);
 grr_sql_free($res);
-echo "<h3 style=\"text-align:center;\">";
+echo "<h3 class=\"center\">";
 echo get_vocab("room").get_vocab("deux_points")." ".htmlspecialchars($row["room_name"]);
 $id_area = mrbsGetRoomArea($id_room);
 $area_name = grr_sql_query1("select area_name from ".TABLE_PREFIX."_area where id='".$id_area."'");
@@ -70,8 +72,8 @@ if ($area_access == 'r')
 echo ")";
 echo "</h3>";
 
-if ($row['statut_room'] == "0"){ //
-	echo "<h2 style=\"text-align:center;\"><span class=\"avertissement\">".get_vocab("ressource_temporairement_indisponible")."</span></h2>";
+if ($row['statut_room'] == "0"){ // ressource indisponible
+	echo "<h2 class=\"center\"><span class=\"avertissement\">".get_vocab("ressource_temporairement_indisponible")."</span></h2>";
 }
 
 // Description
@@ -106,12 +108,12 @@ if ($row["delais_min_resa_room"] != "0")
 	echo "<p>".get_vocab("delais_min_resa_room_2")." <b>".$row["delais_min_resa_room"]."</b></p>";
 $nom_picture = '';
 if ($row['picture_room'] != '') $nom_picture = "./images/".$row['picture_room'];
-echo "<div style=\"text-align:center; margin-top:30px\"><b>";
+echo "<div class='center'><b>";
 if (@file_exists($nom_picture) && $nom_picture)
 	echo get_vocab("Image de la ressource").": </b><br /><img src=\"".$nom_picture."\" alt=\"logo\" />";
 else
 	echo get_vocab("Pas image disponible")."</b>";
 echo "</div>";
-
-include "include/trailer.inc.php";
+end_page();
+//include "include/trailer.inc.php";
 ?>

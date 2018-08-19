@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-05-28 10:30$
+ * Dernière modification : $Date: 2018-08-18 18:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,7 +15,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-$grr_script_name = 'view_entry.php'; // echo '<div>'; ??? YN
+$grr_script_name = 'view_entry.php'; 
+// echo '<div>'; ??? YN
 include_once('include/connect.inc.php');
 include_once('include/config.inc.php');
 include_once('include/functions.inc.php');
@@ -311,7 +312,8 @@ if (strstr ($back, 'view_entry.php'))
 }
 if (Settings::get("display_level_view_entry") == '1')
 {
-	print_header($day, $month, $year, $type_session);
+    $racineAd = "./admin/";
+	start_page_w_header($day, $month, $year, $type_session);
 	if ($back != "")
 		echo '<div><a href="',$back,'">',get_vocab("returnprev"),'</a></div>',PHP_EOL;
 }
@@ -486,7 +488,7 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
 		}
 	}
 
-	// Gestion des clef :
+	// Gestion des clefs :
 	if ($keys == 1)
 	{
 		?>
@@ -593,9 +595,9 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
 		echo "<tr>";
 			echo "<td colspan='2'>";
                 $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
-				echo "<input class=\"btn btn-primary\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("editentry")."\">";
-				echo "<input class=\"btn btn-info\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back&amp;copier'\" value=\"".get_vocab("copyentry")."\">";
-                echo "<input class=\"btn btn-warning\" type=\"button\" onclick=\"location.href='swap_entry.php?id=$id&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("swapentry")."\">";
+				echo "<input class=\"btn btn-primary\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("editentry")."\"/>";
+				echo "<input class=\"btn btn-info\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back&amp;copier'\" value=\"".get_vocab("copyentry")."\"/>";
+                echo "<input class=\"btn btn-warning\" type=\"button\" onclick=\"location.href='swap_entry.php?id=$id&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("swapentry")."\"/>";
 				if ($can_delete_or_create == "y")
 				{
 					$message_confirmation = str_replace("'", "\\'", get_vocab("confirmdel").get_vocab("deleteentry"));
@@ -688,7 +690,7 @@ if ($repeat_id != 0)
     if (!isset($room))
         $room = 1;
     if ((authGetUserLevel(getUserName(), $area_id, "area") > 1) || (authGetUserLevel(getUserName(), $room) >= 4))
-        echo '<br><input class="btn btn-primary" onclick="myFunction(',$id,')" value="',get_vocab("Generer_pdf"),'" >',PHP_EOL;
+        echo '<br><input class="btn btn-primary" onclick="myFunction(',$id,')" value="',get_vocab("Generer_pdf"),'" />',PHP_EOL;
     if ((getUserName() != '') && (authGetUserLevel(getUserName(), $room_id) >= 3) && ($moderate == 1))
     {
         echo "<form action=\"view_entry.php\" method=\"get\">\n";
@@ -791,7 +793,8 @@ if ($repeat_id != 0)
         echo '<input type="hidden" name="back" value="',$back,'" /></div>',PHP_EOL;
         echo '</form>',PHP_EOL;
     }
-    include_once('include/trailer.inc.php');
+    //include_once('include/trailer.inc.php');
     // echo '</div>',PHP_EOL; ??? YN
-    echo "</body>\n</html>";
-    ?>
+    // echo "</body>\n</html>";
+    end_page();
+?>

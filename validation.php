@@ -3,7 +3,7 @@
  * validation.php
  * Interface de validation d'une réservation modérée
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-03-26 16:00$
+ * Dernière modification : $Date: 2018-08-18 17:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,6 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "validation.php";
 
 include "include/connect.inc.php";
 include "include/config.inc.php";
@@ -23,7 +24,7 @@ include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
 include "include/mincals.inc.php";
 include "include/mrbs_sql.inc.php";
-$grr_script_name = "validation.php";
+
 require_once("./include/settings.class.php");
 $settings = new Settings();
 if (!$settings)
@@ -53,12 +54,13 @@ else
 get_planning_area_values($area);
 if ($area <= 0)
 {
-	print_header($day, $month, $year, $type_session);
+	start_page_w_header($day, $month, $year, $type_session);
 	echo '<h1>'.get_vocab("noareas").'</h1>';
-	echo '<a href="./admin/admin_accueil.php">'.get_vocab("admin").'</a>'.PHP_EOL.'</body>'.PHP_EOL.'</html>';
+	echo '<a href="./admin/admin_accueil.php">'.get_vocab("admin").'</a>'.PHP_EOL;
+    end_page();
 	exit();
 }
-print_header($day, $month, $year, $type_session);
+start_page_w_header($day, $month, $year, $type_session);
 if ((authGetUserLevel(getUserName(), -1) < 1) && ($settings->get("authentification_obli") == 1))
 {
 	showAccessDenied($back);
@@ -79,7 +81,6 @@ if ($settings->get("verif_reservation_auto") == 0)
 	verify_confirm_reservation();
 	verify_retard_reservation();
 }
-
 
 $page = verif_page();
 
@@ -318,7 +319,6 @@ if (strstr ($back, 'validation.php'))
 }
 if (Settings::get("display_level_view_entry") == '1')
 {
-	// print_header($day, $month, $year, $type_session); semble nuisible YN le 25/03/2018
 	if ($back != "")
 		echo '<div><a href="',$back,'">',get_vocab("returnprev"),'</a></div>',PHP_EOL;
 }
@@ -776,6 +776,7 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
             echo '<input type="hidden" name="back" value="',$back,'" /></div>',PHP_EOL;
             echo '</form>',PHP_EOL;
         }
-        include_once('include/trailer.inc.php');
-        echo '</div>',PHP_EOL;
-        ?>
+        //include_once('include/trailer.inc.php');
+        //echo '</div>',PHP_EOL;
+end_page();
+?>

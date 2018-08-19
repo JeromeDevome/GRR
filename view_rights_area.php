@@ -3,8 +3,8 @@
  * view_rights_area.php
  * Liste des privilèges d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-08-18 19:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,13 +15,15 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "view_rights_area.php";
+
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
 include_once('include/misc.inc.php');
 include "include/mrbs_sql.inc.php";
-$grr_script_name = "view_rights_area.php";
+
 // Settings
 require_once("./include/settings.class.php");
 //Chargement des valeurs de la table settingS
@@ -45,7 +47,7 @@ if (authGetUserLevel(getUserName(),$area_id,"area") < 4)
 	showAccessDenied($back);
 	exit();
 }
-echo begin_page(Settings::get("company").get_vocab("deux_points").get_vocab("mrbs"));
+echo start_page_wo_header(Settings::get("company").get_vocab("deux_points").get_vocab("mrbs"));
 $res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_area WHERE id='".$area_id."'");
 if (!$res)
 	fatal_error(0, get_vocab('error_room') . $id_room . get_vocab('not_found'));
@@ -60,7 +62,7 @@ echo "</h3>";
 // On affiche pour les administrateurs les utilisateurs ayant des privilèges sur cette ressource
 echo "\n<h2>".get_vocab('utilisateurs ayant privileges sur domaine')."</h2>";
 $a_privileges = 'n';
-	// on teste si des utilateurs administre le domaine
+	// on teste si des utilateurs administrent le domaine
 $req_admin = "SELECT u.login, u.nom, u.prenom, u.etat FROM ".TABLE_PREFIX."_utilisateurs u left join ".TABLE_PREFIX."_j_useradmin_area j on u.login=j.login WHERE j.id_area = '".$area_id."' ORDER BY u.nom, u.prenom";
 $res_admin = grr_sql_query($req_admin);
 $is_admin = '';
@@ -105,5 +107,6 @@ if ($area_access == 'r')
 }
 if ($a_privileges == 'n')
 	echo "<p>".get_vocab("aucun autilisateur").".</p>";
-include "include/trailer.inc.php";
+//include "include/trailer.inc.php";
+end_page();
 ?>
