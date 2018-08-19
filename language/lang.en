@@ -292,6 +292,7 @@ $vocab['delais_min_resa_room_2'] = "<b>Time in minutes </b> below which the user
 $vocab['delarea'] = "You have to delete all the resources of this area before being able to delete it";
 $vocab['delete'] = "Delete";
 $vocab['deleteentry'] = "Delete a reservation";
+$vocab['swap_entry'] = "Swap two reservations";
 $vocab['deletefollowing'] = "You are going to delete the following reservations";
 $vocab['deleteseries'] = "Delete a periodicity";
 $vocab['delete_booking'] = " has deleted the reservation of ";

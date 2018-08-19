@@ -292,6 +292,7 @@ $vocab['delais_min_resa_room_2'] = "<b>Temps en minutes</b> en-deçà duquel l'u
 $vocab['delarea'] = "Sie müssen alle Ressourcen dieses Bereichs löschen, bevor Sie den Bereich löschen können";
 $vocab['delete'] = "Löschen";
 $vocab['deleteentry'] = "Eine Reservierung löschen";
+$vocab['swap_entry'] = "Swap two entries"; // À traduire
 $vocab['deletefollowing'] = "Sie werden folgende Reservierungen löschen";
 $vocab['deleteseries'] = "Eine Periode löschen";
 $vocab['delete_booking'] = " hat folgende Reservierung gelöscht. ";

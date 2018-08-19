@@ -290,6 +290,7 @@ $vocab['delais_min_resa_room_2'] = "<b>Tiempo en minutos</b> por debajo del cual
 $vocab['delarea'] = "Debe suprimir todos los recursos de este campo antes de poder suprimirlo";
 $vocab['delete'] = "Suprimir";
 $vocab['deleteentry'] = "Suprimir una reserva";
+$vocab['swap_entry'] = "Swap two entries"; // À traduire
 $vocab['deletefollowing'] = "Usted va a suprimir las reservas siguientes";
 $vocab['deleteseries'] = "Suprimir una periodicidad";
 $vocab['delete_booking'] = " suprimió la reserva de ";
