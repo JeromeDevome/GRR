@@ -14,6 +14,12 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+ 
+### A LIRE ###
+# Il est préférable de pas modifier ce fichier, car celui-ci sera écrasé lors des mises à jours
+# Nous conseillons de creer un fichier dans ce dossier en l'appelant "configperso.inc.php"
+# Dans ce dernier ajouter les variables souhaité avec les valeurs souhaité, vos valeurs écraserons ce de ce fichier
+##############
 
 /*
 Problème de sessions qui expirent prématurément :
@@ -200,4 +206,10 @@ $grrPages = array();
 
 # Make sure notice errors are not reported
 #error_reporting (E_ALL ^ E_NOTICE);
+
+if(file_exists('../include/configperso.inc.php'))
+	include('../include/configperso.inc.php');
+if(file_exists('./include/configperso.inc.php'))
+	include('./include/configperso.inc.php');
+
 ?>
