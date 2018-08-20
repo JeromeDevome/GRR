@@ -1,9 +1,9 @@
 <?php
 /**
- * admin_maj.php
+ * installation/fonctions/maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-04-11 11:30$
+ * Dernière modification : $Date: 2018-08-20 19:00$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
@@ -16,23 +16,6 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-
-include "../include/connect.inc.php";
-include "../include/config.inc.php";
-include "../include/misc.inc.php";
-include "../include/functions.inc.php";
-include "../include/$dbsys.inc.php";
-$grr_script_name = "admin_maj.php";
-// Settings
-require_once("../include/settings.class.php");
-//Chargement des valeurs de la table settingS
-if (!Settings::load())
-	die("Erreur chargement settings");
-// Session related functions
-require_once("../include/session.inc.php");
-// Paramètres langage
-include "../include/language.inc.php";
-
 
 function formatresult($echo,$dbt,$fin) {
 	global $majscript;
@@ -78,175 +61,13 @@ function traite_requete($requete = "")
 	}
 	return $retour;
 }
-// Fin de fonction traite_requete
 
-
-$valid = isset($_POST["valid"]) ? $_POST["valid"] : 'no';
-$version_old = isset($_POST["version_old"]) ? $_POST["version_old"] : '';
-
-$majscript=false;
-if (defined('STDIN')&&isset($argv[1])&&$argv[1]==$apikey) {
-	$majscript=true;
-	$recherche_MAJ = 0;
-
-	// Numéro de version effective
-	$version_old = Settings::get("version");
-	if ($version_old == "")
-		$version_old= "1.3";	
+function execute_maj($version_old, $version_grr)
+{
 	
-	echo "MISE A JOUR GRR $version_old >> $version_grr\n";
+	$result = '';
+	$result_inter = '';
 
-	// On valide dans une execution script
-	$valid = 'yes';
-}
-
-if (isset($_GET["force_maj"]))
-	$version_old = $_GET["force_maj"];
-
-if (isset($_POST['submit']))
-{
-	if (isset($_POST['login']) && isset($_POST['password']))
-	{
-		// Test pour tenir compte du changement de nom de la table ".TABLE_PREFIX."_utilisateurs lors du passage à la version 1.8
-		$num_version = grr_sql_query1("select NAME from ".TABLE_PREFIX."_setting WHERE NAME='version'");
-		if ($num_version != -1)
-			$sql = "select upper(login) login, password, prenom, nom, statut from ".TABLE_PREFIX."_utilisateurs where login = '" . $_POST['login'] . "' and password = md5('" . $_POST['password'] . "') and etat != 'inactif' and statut='administrateur' ";
-		else
-			$sql = "select upper(login) login, password, prenom, nom, statut from utilisateurs where login = '" . $_POST['login'] . "' and password = md5('" . $_POST['password'] . "') and etat != 'inactif' and statut='administrateur' ";
-		$res_user = grr_sql_query($sql);
-		$num_row = grr_sql_count($res_user);
-		if ($num_row == 1)
-			$valid = 'yes';
-		else
-			$message = get_vocab("wrong_pwd");
-	}
-}
-
-if (Settings::get('sso_statut') == 'lcs')
-{
-	include LCS_PAGE_AUTH_INC_PHP;
-	include LCS_PAGE_LDAP_INC_PHP;
-	list ($idpers,$login) = isauth();
-	if ($idpers)
-	{
-		list($user, $groups) = people_get_variables($login, true);
-		$lcs_tab_login["nom"] = $user["nom"];
-		$lcs_tab_login["email"] = $user["email"];
-		$long = strlen($user["fullname"]) - strlen($user["nom"]);
-		$lcs_tab_login["fullname"] = substr($user["fullname"], 0, $long) ;
-		foreach ($groups as $value)
-			$lcs_groups[] = $value["cn"];
-		// A ce stade, l'utilisateur est authentifié par LCS
-		// Etablir à nouveau la connexion à la base
-		if (empty($db_nopersist))
-			$db_c = mysqli_connect("p:".$dbHost, $dbUser, $dbPass);
-		else
-			$db_c = mysqli_connect($dbHost, $dbUser, $dbPass);
-		if (!$db_c || !mysqli_select_db ($db_c, $dbDb))
-		{
-			echo "\n<p>\n" . get_vocab('failed_connect_db') . "\n";
-			exit;
-		}
-		if (!(is_eleve($login)))
-			$user_ext_authentifie = 'lcs_eleve';
-		else
-			$user_ext_authentifie = 'lcs_non_eleve';
-		$password = '';
-		$result = grr_opensession($login,$password,$user_ext_authentifie,$lcs_tab_login,$lcs_groups) ;
-	}
-}
-
-if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
-{
-	?>
-	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
-	<HTML>
-		<HEAD>
-			<META HTTP-EQUIV="Content-Type" content="text/html; charset=<?php
-			if ($unicode_encoding)
-				echo "utf-8";
-			else
-				echo $charset_html;
-			?>">
-			<link REL="stylesheet" href="themes/default/css/style.css" type="text/css">
-			<TITLE>GRR</TITLE>
-			<LINK REL="SHORTCUT ICON" href="./favicon.ico">
-				<script type="text/javascript" src="../js/functions.js" ></script>
-			</HEAD>
-			<BODY>
-				<form action="admin_maj.php" method='post' style="width: 100%; margin-top: 24px; margin-bottom: 48px;">
-					<div class="center">
-						<h2><?php echo get_vocab("maj_bdd"); ?></h2>
-
-						<?php
-						if (isset($message))
-							echo("<p><span style=\"color:red;\">" . encode_message_utf8($message) . "</span></p>");
-						?>
-						<fieldset style="padding-top: 8px; padding-bottom: 8px; width: 40%; margin-left: auto; margin-right: auto;">
-							<legend style="font-variant: small-caps;"><?php echo get_vocab("identification"); ?></legend>
-							<table style="width: 100%; border: 0;" cellpadding="5" cellspacing="0">
-								<tr>
-									<td style="text-align: right; width: 40%; font-variant: small-caps;"><label for="login"><?php echo get_vocab("login"); ?></label></td>
-									<td style="text-align: center; width: 60%;"><input type="text" id="login" name="login" size="16" /></td>
-								</tr>
-								<tr>
-									<td style="text-align: right; width: 40%; font-variant: small-caps;"><label for="password"><?php echo get_vocab("pwd"); ?></label></td>
-									<td style="text-align: center; width: 60%;"><input type="password" id="password" name="password" size="16" /></td>
-								</tr>
-							</table>
-							<input type="submit" name="submit" value="<?php echo get_vocab("submit"); ?>" style="font-variant: small-caps;" />
-						</fieldset>
-					</div>
-				</form>
-			</body>
-			</html>
-			<?php
-			die();
-}
-
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-
-if ((authGetUserLevel(getUserName(),-1) < 6) && ($valid != 'yes') && $connexionAdminMAJ == 1)
-{
-	showAccessDenied($back);
-	exit();
-}
-		
-if ($valid == 'no')
-{
-	# print the page header
-	print_header("", "", "", $type="with_session");
-	// Affichage de la colonne de gauche
-	include "admin_col_gauche.php";
-
-}
-elseif(!$majscript)
-{
-	echo '<!doctype html>';
-	echo '<html>';
-	echo '<head>';
-	echo '<meta http-equiv="content-type" content="text/html; charset=';
-	if ($unicode_encoding)
-		echo "utf-8";
-	else
-		echo $charset_html;
-
-	echo '<link rel="stylesheet" href="../themes/default/css/style.css" type="text/css">';
-	echo '<link rel="shortcut icon" href="favicon.ico">';
-	echo '<title>GRR</title>';
-	echo '</head>';
-	echo '<body>';
-}
-
-if(!$majscript)
-	echo '<script type="text/javascript" src="../js/functions.js" ></script>';
-
-$result = '';
-$result_inter = '';
-if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
-{
 	// On commence la mise à jour
 	if ($version_old < "1.4.9")
 	{
@@ -888,6 +709,19 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
 		$result_inter = '';
 	}
 
+	if (version_compare($version_old, "4.0.0", '<')) 
+	{
+		$result .= formatresult("Mise à jour jusqu'à la version 4.0.0 :","<b>","</b>");
+
+		$result_inter .= traite_requete("DELETE FROM ".TABLE_PREFIX."_setting WHERE NAME='versionRC'");
+
+		if ($result_inter == '')
+			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+		else
+			$result .= $result_inter;
+		$result_inter = '';
+	}
+
 	// Vérification du format des champs additionnels
 	// Avant version 1.9.4, les champs add étaient stockés sous la forme <id_champ>champ_encode_en_base_64</id_champ>
 	// A partir de la version 1.9.4, les champs add. sont stockés sous la forme @id_champ@url_encode(champ)@/id_champ@
@@ -944,135 +778,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
 	else
 		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET VALUE='".$version_grr."' WHERE NAME='version';");
 
-	//Re-Chargement des valeurs de la table settingS
-	if (!Settings::load())
-		die("Erreur chargement settings");
-	
-	if(!$majscript) affiche_pop_up(get_vocab("maj_good"),"force");
-}
-// FIN DES MISES A JOUR 
+	$result .= $result_inter;
 
-
-// Numéro de version effective
-$version_old = Settings::get("version");
-if ($version_old == "")
-	$version_old = "1.3";
-
-// Numéro de RC
-$version_old_RC = Settings::get("versionRC");
-
-// Calcul du numéro de version actuel de la base qui sert aux test de comparaison et de la chaine à afficher
-if ($version_old_RC == "")
-{
-	$version_old_RC = 9;
-	$display_version_old = $version_old;
-}
-else
-	$display_version_old = $version_old."_RC".$version_old_RC;
-		
-$version_old .= ".".$version_old_RC;
-
-if(!$majscript) {
-	echo "<h2>".get_vocab('admin_maj.php')."</h2>";
-	echo "<hr />";
-
-	// Numéro de version
-	echo "<h3>".get_vocab("num_version_title")."</h3>\n";
-
-	echo "<button id='copy' type='button'>".get_vocab("copy_clipboard")."</button><br>";
-	echo "<textarea id='to-copy' rows='10' cols='80'>";
-
-	echo get_vocab("num_version")."".$version_grr." ".$versionReposite."\n";
-	echo get_vocab("num_versionbdd")."".$display_version_old."\n";
-	echo get_vocab("prefixe")." : ".TABLE_PREFIX."\n";
-	echo "---\n";
-	echo get_vocab('system') . php_uname() . "\n";
-	echo "Version PHP : " . phpversion() . "\n";
-	echo get_vocab('database') .$dbsys." ". grr_sql_version() . "\n";
-	echo "---\n";
-	echo "Time : " .time()."\n";
-	echo "Date du serveur (Jour-Mois-Annee) : " .date('d-m-Y').". Heure : ".date("H:i")."\n";
-	echo "Timezone (date_default_timezone_set) : ".date_default_timezone_get()."\n";
-
-	echo "</textarea>";
-	echo "<hr><h3>".get_vocab("maj_recherche_grr")."</h3>";
-}
-
-if(!$majscript) {
-	echo "<p>".get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a></p>\n";
-	echo "<hr />\n";
-
-	// Mise à jour de la base de donnée
-	echo "<h3>".get_vocab("maj_bdd")."</h3>";
-
-	// Vérification du numéro de version
-	if (verif_version())
-	{
-		echo "<form action=\"admin_maj.php\" method=\"post\">";
-		echo "<p><span style=\"color:red;\"><b>".get_vocab("maj_bdd_not_update");
-		echo " ".get_vocab("maj_version_bdd").$display_version_old;
-		echo "</b></span><br />";
-		echo get_vocab("maj_do_update")."<b>".$display_version_grr."</b></p>";
-		echo "<input type=\"submit\" value=\"".get_vocab("maj_submit_update")."\" />";
-		echo "<input type=\"hidden\" name=\"maj\" value=\"yes\" />";
-		echo "<input type=\"hidden\" name=\"version_old\" value=\"$version_old\" />";
-		echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" />";
-		echo "</form>";
-	}
-	else
-	{
-		echo "<p>".get_vocab("maj_no_update_to_do")."</p>";
-		echo "<p style=\"text-align:center;\"><a href=\"./\">".get_vocab("welcome")."</a></p>";
-	}
-	echo "<hr />";
-}
-
-if (isset($result) && ($result != ''))
-{
-	echo "<div class=\"page_sans_col_gauche\">";
-	echo "<h2>".encode_message_utf8("Résultat de la mise à jour")."</h2>";
-	echo encode_message_utf8($result);
-	echo $result_inter;
-	echo "</div>";
-}
-
-// Test de cohérence des types de réservation
-if ($version_grr > "1.9.1")
-{
-	$res = grr_sql_query("SELECT DISTINCT type FROM ".TABLE_PREFIX."_entry ORDER BY type");
-	if ($res)
-	{
-		$liste = "";
-		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-		{
-			$test = grr_sql_query1("SELECT type_letter FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$row[0]."'");
-			if ($test == -1) $liste .= $row[0]." ";
-		}
-		if ($liste != "")
-		{
-			echo encode_message_utf8("<table border=\"1\" cellpadding=\"5\"><tr><td><p><span style=\"color:red;\"><b>ATTENTION : votre table des types de réservation n'est pas à jour :</b></span></p>");
-			echo encode_message_utf8("<p>Depuis la version 1.9.2, les types de réservation ne sont plus définis dans le fichier config.inc.php
-				mais directement en ligne. Un ou plusieurs types sont actuellement utilisés dans les réservations
-				mais ne figurent pas dans la tables des types. Cela risque d'engendrer des messages d'erreur. <b>Il s'agit du ou des types suivants : ".$liste."</b>");
-			echo encode_message_utf8("<br /><br />Vous devez donc définir dans <a href= './admin_type.php'>l'interface de gestion des types</a>, le ou les types manquants, en vous aidant éventuellement des informations figurant dans votre ancien fichier config.inc.php.</p></td></tr></table>");
-		}
-	}
-}
-
-// fin de l'affichage de la colonne de droite
-if ($valid == 'no')
-	echo "</td></tr></table>";
-
-if(!$majscript) {
-	echo "<script>";
-	echo "var toCopy  = document.getElementById( 'to-copy' ),";
-	echo "btnCopy = document.getElementById( 'copy' );";
-	echo "btnCopy.addEventListener( 'click', function(){";
-	echo "toCopy.select();";
-	echo "document.execCommand( 'copy' );";
-	echo "return false;";
-	echo "} );";
-	echo "</script>";
-	echo "</body>";
-	echo "</html>";
+	return $result;
 }

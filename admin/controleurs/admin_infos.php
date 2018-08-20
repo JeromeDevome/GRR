@@ -56,34 +56,17 @@ $result = '';
 
 // Numéro de version effective
 $version_old = Settings::get("version");
-if ($version_old == "")
-	$version_old = "1.3";
-
-// Numéro de RC
-$version_old_RC = Settings::get("versionRC");
-
-// Calcul du numéro de version actuel de la base qui sert aux test de comparaison et de la chaine à afficher
-if ($version_old_RC == "")
-{
-	$version_old_RC = 9;
-	$display_version_old = $version_old;
-}
-else
-	$display_version_old = $version_old."_RC".$version_old_RC;
-
-$version_old .= ".".$version_old_RC;
-
 
 /* GRR */
 get_vocab_admin("num_version");
 $trad['dNum_version'] = $version_grr;
 get_vocab_admin("num_versionbdd");
-$trad['dNum_versionbdd'] = $display_version_old;
+$trad['dNum_versionbdd'] = $version_old;
 get_vocab_admin("prefixe");
 $trad['dPrefixe'] = TABLE_PREFIX;
 get_vocab_admin("maj_bdd");
 if (verif_version())
-	$trad['dMaj_bdd'] = "<a href=\"?p=admin_maj\"><span class=\"label label-danger\">".get_vocab("maj_bdd_not_update")." Cliquez ici pour la mettre à jour.</span></a>";
+	$trad['dMaj_bdd'] = "<a href=\"../installation/maj.php\" target=\"blank\"><span class=\"label label-danger\">".get_vocab("maj_bdd_not_update")." Cliquez ici pour la mettre à jour.</span></a>";
 else
 	$trad['dMaj_bdd'] = "<span class=\"label label-success\">Aucune</span>";
 get_vocab_admin("maj_recherche_grr");
