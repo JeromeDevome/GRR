@@ -32,7 +32,7 @@ require_once("./include/session.inc.php");
 // Vérification du numéro de version et renvoi automatique vers la page de mise à jour
 if (verif_version())
 {
-	header("Location: ./admin/admin_maj.php");
+	header("Location: ../installation/maj.php");
 	exit();
 }
 // User wants to be authentified
