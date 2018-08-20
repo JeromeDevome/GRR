@@ -943,11 +943,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
 		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('version', '".$version_grr."');");
 	else
 		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET VALUE='".$version_grr."' WHERE NAME='version';");
-	
-	// Mise à jour du numéro de RC
-	$req = grr_sql_command("DELETE FROM ".TABLE_PREFIX."_setting WHERE NAME='versionRC'");
-	$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('versionRC', '".$version_grr_RC."');");
-	
+
 	//Re-Chargement des valeurs de la table settingS
 	if (!Settings::load())
 		die("Erreur chargement settings");
@@ -976,12 +972,6 @@ else
 		
 $version_old .= ".".$version_old_RC;
 
-// Calcul de la chaine à afficher
-if ($version_grr_RC == "")
-	$display_version_grr = $version_grr.$sous_version_grr;
-else
-	$display_version_grr = $version_grr." RC".$version_grr_RC;
-
 if(!$majscript) {
 	echo "<h2>".get_vocab('admin_maj.php')."</h2>";
 	echo "<hr />";
@@ -992,7 +982,7 @@ if(!$majscript) {
 	echo "<button id='copy' type='button'>".get_vocab("copy_clipboard")."</button><br>";
 	echo "<textarea id='to-copy' rows='10' cols='80'>";
 
-	echo get_vocab("num_version")."".$display_version_grr." ".$versionReposite."\n";
+	echo get_vocab("num_version")."".$version_grr." ".$versionReposite."\n";
 	echo get_vocab("num_versionbdd")."".$display_version_old."\n";
 	echo get_vocab("prefixe")." : ".TABLE_PREFIX."\n";
 	echo "---\n";
@@ -1008,48 +998,6 @@ if(!$majscript) {
 	echo "<hr><h3>".get_vocab("maj_recherche_grr")."</h3>";
 }
 
-// Recherche mise à jour sur serveur GRR
-if($recherche_MAJ == 1)
-{
-	$fichier = $grr_devel_url.'versiongrr.xml';
-	
-	if (!$fp = @fopen($fichier,"r")) {
-		echo "<p>".get_vocab("maj_impossible_rechercher")."</p>\n";
-	} else{
-		$reader = new XMLReader();
-		$reader->open($fichier);
-
-		while ($reader->read()) {
-			if ($reader->nodeType == XMLREADER::ELEMENT){
-				if ($reader->name == "numero"){
-					$reader->read();
-					$derniereVersion = $reader->value;
-				}
-				if ($reader->name == "sousversion"){
-					$reader->read();
-					$derniereSousVersion = $reader->value;
-				}
-				if ($reader->name == "rc"){
-					$reader->read();
-					$derniereRC = $reader->value;
-				}
-			}
-		}
-
-		if($version_grr != $derniereVersion || $sous_version_grr != $derniereSousVersion || $version_grr_RC != $derniereRC){
-			if($derniereRC <> ""){
-				$derniereRC = " RC ".$derniereRC;
-			}
-			echo "<p>".get_vocab("maj_dispo")." ".$derniereVersion."".$derniereSousVersion."".$derniereRC."</p>\n";
-		} else{
-			echo "<p>".get_vocab("maj_dispo_aucune")."</p>\n";
-		}
-
-		$reader->close();
-	}
-} elseif(!$majscript) {
-	"<p>".get_vocab("maj_impossible_rechercher")."</p>\n";
-}
 if(!$majscript) {
 	echo "<p>".get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a></p>\n";
 	echo "<hr />\n";

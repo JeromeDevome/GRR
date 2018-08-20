@@ -73,16 +73,10 @@ else
 
 $version_old .= ".".$version_old_RC;
 
-// Calcul de la chaine à afficher
-if ($version_grr_RC == "")
-	$display_version_grr = $version_grr.$sous_version_grr;
-else
-	$display_version_grr = $version_grr." RC".$version_grr_RC;
-
 
 /* GRR */
 get_vocab_admin("num_version");
-$trad['dNum_version'] = $display_version_grr;
+$trad['dNum_version'] = $version_grr;
 get_vocab_admin("num_versionbdd");
 $trad['dNum_versionbdd'] = $display_version_old;
 get_vocab_admin("prefixe");
@@ -97,15 +91,42 @@ get_vocab_admin("maj_recherche_grr");
 /* Serveur */
 get_vocab_admin("system");
 $trad['dSystem'] = php_uname();
+
+// PHP
 $trad['dVersionPHP'] = phpversion();
+
+if (version_compare(phpversion(), $php_mini, '<')) {
+   $trad['dCouleurVersionPHP'] = "bg-red";
+} elseif (version_compare(phpversion(), $php_max_valide, '<=')) {
+   $trad['dCouleurVersionPHP'] = "bg-green";
+} elseif ($php_maxi == "" && version_compare(phpversion(), $php_max_valide, '>')) {
+   $trad['dCouleurVersionPHP'] = "bg-orange";
+} elseif ($php_maxi != "" && version_compare(phpversion(), $php_maxi, '<=')) {
+   $trad['dCouleurVersionPHP'] = "bg-orange";
+} elseif ($php_maxi != "" && version_compare(phpversion(), $php_maxi, '>')) {
+   $trad['dCouleurVersionPHP'] = "bg-red";
+}
+
+
+// BDD
 get_vocab_admin("database");
 $trad['dDatabase'] = $dbsys;
 $trad['dVersionBDD'] = grr_sql_version();
-$trad['dTime'] = time();
-$trad['dDate'] = date('d-m-Y');
-$trad['dHeure'] = date("H:i");
-$trad['dTimezone'] = date_default_timezone_get();
 
+if (version_compare(grr_sql_version(), $mysql_mini, '<')) {
+   $trad['dCouleurVersionMySQL'] = "bg-red";
+} elseif (version_compare(grr_sql_version(), $mysql_max_valide, '<=')) {
+   $trad['dCouleurVersionMySQL'] = "bg-green";
+} elseif ($mysql_maxi == "" && version_compare(grr_sql_version(), $mysql_max_valide, '>')) {
+   $trad['dCouleurVersionMySQL'] = "bg-orange";
+} elseif ($mysql_maxi != "" && version_compare(grr_sql_version(), $mysql_maxi, '<=')) {
+   $trad['dCouleurVersionMySQL'] = "bg-orange";
+} elseif ($mysql_maxi != "" && version_compare(grr_sql_version(), $mysql_maxi, '>')) {
+   $trad['dCouleurVersionMySQL'] = "bg-red";
+}
+
+
+// Dossier
 $trad['dDossierImgEcriture'] = testDroits("../images/");
 $trad['dDossierExportEcriture'] = testDroits("../export/");
 $trad['dDossierTempEcriture'] = testDroits("../export/");
@@ -113,47 +134,37 @@ $trad['dDossierModulesEcriture'] = testDroits("../modules/");
 
 if(file_exists('../installation/'))
 	$trad['dDossierInstallation'] = 1;
-	
+
+
+// Temps
+$trad['dTime'] = time();
+$trad['dDate'] = date('d-m-Y');
+$trad['dHeure'] = date("H:i");
+$trad['dTimezone'] = date_default_timezone_get();
+
 
 
 // Recherche mise à jour sur serveur GRR
 if($recherche_MAJ == 1)
 {
-	$fichier = $grr_devel_url.'versiongrr.xml';
-	
-	if (!$fp = @fopen($fichier,"r")) {
+	$fichier = fopen($grr_devel_url.'versiongrr.txt',"rb");
+
+	if ($fichier === FALSE) {
 		$trad['dMaj_SiteGRR'] = "<span class=\"label label-info\">".get_vocab("maj_impossible_rechercher")."</span>". get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a>";
 	} else{
-		$reader = new XMLReader();
-		$reader->open($fichier);
+		
+		$derniereVersion = '';
 
-		while ($reader->read()) {
-			if ($reader->nodeType == XMLREADER::ELEMENT){
-				if ($reader->name == "numero"){
-					$reader->read();
-					$derniereVersion = $reader->value;
-				}
-				if ($reader->name == "sousversion"){
-					$reader->read();
-					$derniereSousVersion = $reader->value;
-				}
-				if ($reader->name == "rc"){
-					$reader->read();
-					$derniereRC = $reader->value;
-				}
-			}
+		while (!feof($fichier)) {
+			$derniereVersion .= fread($fichier, 8192);
 		}
+		fclose($fichier);
 
-		if($version_grr != $derniereVersion || $sous_version_grr != $derniereSousVersion || $version_grr_RC != $derniereRC){
-			if($derniereRC <> ""){
-				$derniereRC = " RC ".$derniereRC;
-			}
+		if (version_compare($version_grr, $derniereVersion, '<')) {
 			$trad['dMaj_SiteGRR'] = "<span class=\"label label-warning\">".get_vocab("maj_dispo")."</span>";
 		} else{
 			$trad['dMaj_SiteGRR'] = "<span class=\"label label-success\">".get_vocab("maj_dispo_aucune")."</span>";
 		}
-
-		$reader->close();
 	}
 } elseif(!$majscript) {
 	$trad['dMaj_SiteGRR'] = "<span class=\"label label-info\">".get_vocab("maj_impossible_rechercher")."</span>". get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a>";

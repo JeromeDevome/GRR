@@ -741,16 +741,11 @@ function  grr_backup($id_entry, $login_moderateur, $motivation_moderation)
 
 function verif_version()
 {
-	global $version_grr, $version_grr_RC;
+	global $version_grr;
 	$_version_grr = $version_grr;
-	$_version_grr_RC = $version_grr_RC;
 	$version_old = Settings::get("version");
-	$versionRC_old = Settings::get("versionRC");
-	if ($versionRC_old == "")
-		$versionRC_old = 9;
-	if ($_version_grr_RC == "")
-		$_version_grr_RC = 9;
-	if (($version_old == '') || ($_version_grr > $version_old) || (($_version_grr == $version_old) && ($_version_grr_RC > $versionRC_old)))
+
+	if ($version_old == '' || $_version_grr > $version_old)
 		return true;
 	else
 		return false;
@@ -758,7 +753,6 @@ function verif_version()
 
 function affiche_version()
 {
-	global $version_grr, $version_grr_RC, $sous_version_grr;
 	return "GRR ".Settings::get("version");
 }
 
