@@ -1,10 +1,10 @@
 <?php
 /**
  * admin_config3.php
- * Interface permettant à l'administrateur la configuration de certains paramètres généraux
+ * Interface permettant à l'administrateur la configuration de certains paramètres généraux (interactivité)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-08-22 10:30$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -16,7 +16,18 @@
  * (at your option) any later version.
  */
 // page à internationaliser
+$grr_script_name = "admin_config3.php";
 
+include "../include/admin.inc.php";
+
+$back = '';
+if (isset($_SERVER['HTTP_REFERER']))
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+$_SESSION['chemin_retour'] = "admin_accueil.php";
+$day   = date("d");
+$month = date("m");
+$year  = date("Y");
+check_access(6, $back);
 $msg = "";
 // Automatic mail
 if (isset($_GET['automatic_mail']))
@@ -86,7 +97,6 @@ if (isset($_GET['grr_mail_Password']))
 		die();
 	}
 }
-
 if (isset($_GET['grr_mail_from']))
 {
 	if (!Settings::set("grr_mail_from", $_GET['grr_mail_from']))
@@ -138,7 +148,6 @@ if (isset($_GET['ok']))
 		die();
 	}
 }
-
 if (isset($_GET['verif_reservation_auto']))
 {
 	if (!Settings::set("verif_reservation_auto", $_GET['verif_reservation_auto']))
@@ -152,7 +161,6 @@ if (isset($_GET['verif_reservation_auto']))
 		$_GET['chemin_complet_grr'] = "";
 	}
 }
-
 if (isset($_GET['motdepasse_verif_auto_grr']))
 {
 	if (($_GET['verif_reservation_auto'] == 1) && ($_GET['motdepasse_verif_auto_grr'] == ""))
@@ -174,17 +182,17 @@ if (isset($_GET['chemin_complet_grr']))
 if (!Settings::load())
 	die("Erreur chargement settings");
 # print the page header
-print_header("", "", "", $type="with_session");
+start_page_w_header("", "", "", $type="with_session");
 if (isset($_GET['ok']))
 {
 	$msg = get_vocab("message_records");
 	affiche_pop_up($msg,"admin");
 }
 // Affichage de la colonne de gauche
-include "admin_col_gauche.php";
-// Affichage du tableau de choix des sous-configuration
-include "../include/admin_config_tableau.inc.php";
-echo "<form action=\"./admin_config.php\"  method=\"get\" style=\"width: 100%;\">\n";
+include "admin_col_gauche2.php";
+echo '<div class="col-md-9 col-sm-8 col-xs-12">';
+echo "<h2>".get_vocab('admin_config3.php')."</h2>";
+echo "<form action=\"./admin_config3.php\"  method=\"get\" >\n";
 //
 // Automatic mail
 //********************************
@@ -269,7 +277,7 @@ echo get_vocab('copie cachee');
 # Désactive les messages javascript (pop-up) après la création/modificatio/suppression d'une réservation
 # 1 = Oui, 0 = Non
 echo "\n</p><hr /><h3>".get_vocab("javascript_info_disabled_msg")."</h3>";
-echo "\n<table cellspacing=\"5\">";
+echo "\n<table>";
 echo "\n<tr><td>".get_vocab("javascript_info_disabled0")."</td><td>";
 echo "\n<input type='radio' name='javascript_info_disabled' value='0' ";
 if (Settings::get("javascript_info_disabled") == '0')
@@ -287,7 +295,7 @@ echo "\n</table>";
 # Désactive les messages javascript d'information (pop-up) dans les menus d'administration
 # 1 = Oui, 0 = Non
 echo "\n<hr /><h3>".get_vocab("javascript_info_admin_disabled_msg")."</h3>";
-echo "\n<table cellspacing=\"5\">";
+echo "\n<table>";
 echo "\n<tr><td>".get_vocab("javascript_info_admin_disabled0")."</td><td>";
 echo "\n<input type='radio' name='javascript_info_admin_disabled' value='0' ";
 if (Settings::get("javascript_info_admin_disabled") == '0')
@@ -305,7 +313,7 @@ echo "\n</table>";
 # tâche automatique de suppression
 echo "\n<hr /><h3>".get_vocab("suppression_automatique_des_reservations")."</h3>";
 echo "\n<p>".get_vocab('Explications suppression_automatique_des_reservations')."</p>";
-echo "\n<table cellspacing=\"5\">";
+echo "\n<table>";
 echo "\n<tr><td>".get_vocab("verif_reservation_auto0")."</td><td>";
 echo "\n<input type='radio' name='verif_reservation_auto' value='0' ";
 if (Settings::get("verif_reservation_auto") == '0')
@@ -328,6 +336,7 @@ echo "\n</table>";
 echo "\n<p><input type=\"hidden\" name=\"page_config\" value=\"3\" />";
 echo "\n<br /></p><div id=\"fixe\" style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=\"".get_vocab("save")."\" style=\"font-variant: small-caps;\"/></div>";
 echo "\n</form>";
-// fin de l'affichage de la colonne de droite
-echo "\n</td></tr></table>";
+// fin de l'affichage de la colonne de droite et de la page
+echo "</div>";
+end_page();
 ?>

@@ -3,8 +3,8 @@
  * admin_save_mysql.php
  * Script de sauvegarde de la base de donnée mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-08-23 11:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -38,12 +38,12 @@ if (isset($_GET['mdp']))
 	if ((($_GET['mdp'] != Settings::get("motdepasse_backup")) || (Settings::get("motdepasse_backup")== '' )))
 	{
 		if (!isset($argv[1]))
-			echo begin_page("backup", $page = "no_session")."<p>";
+			echo start_page_wo_header("backup", $page = "no_session")."<p>";
 		echo "Le mot de passe fourni est invalide.";
 		if (!isset($argv[1]))
 		{
 			echo "</p>";
-			include "../include/trailer.inc.php";
+			end_page();
 		}
 		die();
 	}

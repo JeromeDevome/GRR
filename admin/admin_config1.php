@@ -3,7 +3,7 @@
  * admin_config1.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2018-03-30 16:00$
+ * Dernière modification : $Date: 2018-08-21 12:00$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,6 +15,20 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+// cette page reste à internationaliser
+$grr_script_name = "admin_config1.php";
+
+include "../include/admin.inc.php";
+
+$back = '';
+if (isset($_SERVER['HTTP_REFERER']))
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+$_SESSION['chemin_retour'] = "admin_accueil.php";
+$day   = date("d");
+$month = date("m");
+$year  = date("Y");
+check_access(6, $back);
+// vérifications 
 if (isset($_POST['title_home_page'])) {
     if (!Settings::set('title_home_page', $_POST['title_home_page'])) {
         echo "Erreur lors de l'enregistrement de title_home_page !<br />";
@@ -470,7 +484,7 @@ if (isset($_POST['ok'])) {
     if ($msg == '') {
         $msg = get_vocab('message_records');
     }
-    Header('Location: '.'admin_config.php?msg='.$msg);
+    Header('Location: '.'admin_config1.php?msg='.$msg);
     exit();
 }
 if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes')) {
@@ -478,17 +492,15 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
 } else {
     $msg = '';
 }
-// Utilisation de la bibliothèque prototype dans ce script
-//$use_prototype = 'y';
+// début du code html
 # print the page header
-print_header('', '', '', $type = 'with_session');
+start_page_w_header('', '', '', $type = 'with_session');
 affiche_pop_up($msg, 'admin');
 // Affichage de la colonne de gauche
-include 'admin_col_gauche.php';
-// Affichage du tableau de choix des sous-configuration
-include '../include/admin_config_tableau.inc.php';
-//echo "<h2>".get_vocab('admin_config1.php')."</h2>";
+include 'admin_col_gauche2.php';
 //echo "<p>".get_vocab('mess_avertissement_config')."</p>";
+echo '<div class="col-md-9 col-sm-8 col-xs-12">';
+echo "<h2>".get_vocab('admin_config1.php')."</h2>";
 // Adapter les fichiers de langue
 echo '<h3>'.get_vocab('adapter fichiers langue').'</h3>'.PHP_EOL;
 echo get_vocab('adapter fichiers langue explain').PHP_EOL;
@@ -496,7 +508,7 @@ echo get_vocab('adapter fichiers langue explain').PHP_EOL;
 // Config générale
 //****************
 //
-echo '<form enctype="multipart/form-data" action="./admin_config.php" id="nom_formulaire" method="post" style="width: 100%;">'.PHP_EOL;
+echo '<form enctype="multipart/form-data" action="./admin_config1.php" id="nom_formulaire" method="post" >'.PHP_EOL;
 echo '<h3>'.get_vocab('miscellaneous').'</h3>'.PHP_EOL;
 ?>
 <table class="table_adm">
@@ -583,9 +595,9 @@ if ((Settings::get('logo') != '') && (@file_exists($nom_picture))) {
     echo '</tr>'.PHP_EOL;
 }
 echo '</table>'.PHP_EOL;
-echo '<h3>'.get_vocab('affichage_calendriers').'</h3>'.PHP_EOL;
+echo '<h3>'.get_vocab('affichage_calendriers').'</h3>'.PHP_EOL; // nombre de calendriers mensuels (maximum : 5)
 echo '<p>'.get_vocab('affichage_calendriers_msg').get_vocab('deux_points').PHP_EOL;
-echo '<select class="form-control" name="nb_calendar" >'.PHP_EOL;
+echo '<select name="nb_calendar" >'.PHP_EOL;
 for ($k = 0; $k < 6; ++$k) {
     echo '<option value="'.$k.'" ';
     if (Settings::get('nb_calendar') == $k) {
@@ -737,21 +749,22 @@ echo '<p>'.get_vocab('explain_default_parameter').'</p>'.PHP_EOL;
 // Choix du type d'affichage
 //
 echo '<h4>'.get_vocab('explain_area_list_format').'</h4>'.PHP_EOL;
-echo '<table><tr><td>'.get_vocab('liste_area_list_format').'</td><td>'.PHP_EOL;
-echo "<input type='radio' name='area_list_format' value='list' ";
+echo '<table><tr><td>'.get_vocab('liste_area_list_format').'</td><td>&nbsp; '.PHP_EOL;
+echo '<input type="radio" name="area_list_format" value="list" ';
 if (Settings::get('area_list_format') == 'list') {
     echo 'checked="checked"';
 }
 echo ' />'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;
-echo '<tr><td>'.get_vocab('select_area_list_format').'</td><td>'.PHP_EOL;
-echo "<input type='radio' name='area_list_format' value='select' ";
+echo '<tr><td>'.get_vocab('select_area_list_format').'</td><td>&nbsp; '.PHP_EOL;
+echo '<input type="radio" name="area_list_format" value="select" ';
 if (Settings::get('area_list_format') == 'select') {
     echo 'checked="checked"';
 }
 echo ' />'.PHP_EOL;
-echo '<tr><td>'.get_vocab('item_area_list_format').'</td><td>'.PHP_EOL;
-echo "<input type='radio' name='area_list_format' value='item' ";
+echo '</td></tr>'.PHP_EOL;
+echo '<tr><td>'.get_vocab('item_area_list_format').'</td><td>&nbsp; '.PHP_EOL;
+echo '<input type="radio" name="area_list_format" value="item" ';
 if (Settings::get('area_list_format') == 'item') {
     echo 'checked="checked"';
 }
@@ -1018,7 +1031,7 @@ if (Settings::get('mail_etat_destinataire') == '2') {
 echo ' />'.PHP_EOL;
 echo '</td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
-echo '<tr><td>'.get_vocab('display_mail_destinataire').'</td><td>'.PHP_EOL;
+echo '<tr><td>'.get_vocab('display_mail_destinataire').'</td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
 echo '<tr>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
@@ -1439,13 +1452,13 @@ if (Settings::get('show_holidays') == 'Oui'){
 echo '<hr />'.PHP_EOL;
 echo '<h3>'.get_vocab('default_report_days_msg')."</h3>\n";
 echo '<p>'.get_vocab('default_report_days_explain').get_vocab('deux_points').PHP_EOL;
-echo '<input class="form-control" type="text" name="default_report_days" value="'.Settings::get('default_report_days').'" size="5" />'.PHP_EOL;
+echo '<input type="number" name="default_report_days" value="'.Settings::get('default_report_days').'" size="5" min="1" />'.PHP_EOL;
 # Formulaire de réservation
 echo '</p>'.PHP_EOL;
 echo '<hr />'.PHP_EOL;
 echo '<h3>'.get_vocab('formulaire_reservation').'</h3>'.PHP_EOL;
 echo '<p>'.get_vocab('longueur_liste_ressources').get_vocab('deux_points').PHP_EOL;
-echo '<input class="form-control" type="text" name="longueur_liste_ressources_max" value="'.Settings::get('longueur_liste_ressources_max').'" size="5" />'.PHP_EOL;
+echo '<input type="number" name="longueur_liste_ressources_max" value="'.Settings::get('longueur_liste_ressources_max').'" size="5" min="2" />'.PHP_EOL;
 /*
 # nb_year_calendar permet de fixer la plage de choix de l'année dans le choix des dates de début et fin des réservations
 # La plage s'étend de année_en_cours - $nb_year_calendar à année_en_cours + $nb_year_calendar
@@ -1502,7 +1515,5 @@ echo '</form>';
 <script type="text/javascript">
 	document.getElementById('title_home_page').focus();
 </script>
-<?php
-// fin de l'affichage de la colonne de droite
-echo '</td></tr></table>';
-?>
+<!-- fin de l'affichage de la colonne de droite et fermeture de la page -->
+</div></section></body></html>

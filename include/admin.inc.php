@@ -22,12 +22,12 @@ if (@file_exists('../include/connect.inc.php')){
 	$racine = "./";
 }
 
-	include $racine."include/connect.inc.php";
-	include $racine."include/config.inc.php";
-	include $racine."include/mrbs_sql.inc.php";
-	include $racine."include/misc.inc.php";
-	include $racine."include/functions.inc.php";
-	include $racine."include/$dbsys.inc.php";
+include $racine."include/connect.inc.php";
+include $racine."include/config.inc.php";
+include $racine."include/mrbs_sql.inc.php";
+include $racine."include/misc.inc.php";
+include $racine."include/functions.inc.php";
+include $racine."include/$dbsys.inc.php";
 
 // Settings
 require_once($racine."include/settings.class.php");

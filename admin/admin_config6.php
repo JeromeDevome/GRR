@@ -1,10 +1,10 @@
 <?php
 /**
  * admin_config6.php
- * Interface permettant à l'administrateur la configuration des paramètres pour le module Jours Cycles
+ * Interface permettant à l'administrateur la configuration des paramètres pour les modules externes
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-03-03 19:30$
- * @author    JeromeB
+ * Dernière modification : $Date: 2018-08-23 10:30$
+ * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,12 +15,22 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+// cette page reste à internationaliser
+$grr_script_name = "admin_config6.php";
+
+include "../include/admin.inc.php";
+
+$back = '';
+if (isset($_SERVER['HTTP_REFERER']))
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+$_SESSION['chemin_retour'] = "admin_accueil.php";
+check_access(6, $back);
 
 $msg = '';
 
 // Installation, Activation, Désactivation
-if (isset($_GET['activation'])) {
-	
+if (isset($_GET['activation'])) 
+{
 	$iter = $_GET['activation'];
 
 	$sql = "SELECT `nom`, `actif` FROM ".TABLE_PREFIX."_modulesext WHERE `nom` = '".$iter."';";
@@ -36,7 +46,8 @@ if (isset($_GET['activation'])) {
 			} else{
 				grr_sql_command("UPDATE ".TABLE_PREFIX."_modulesext SET actif = '0' WHERE `nom` = '".$iter."'");
 			}
-		} else{
+		} 
+        else{
 			if(is_file('../modules/'.$iter.'/installation.php') && is_file('../modules/'.$iter.'/infos.php')){
 				include '../modules/'.$iter.'/installation.php';
 				include '../modules/'.$iter.'/infos.php';
@@ -47,11 +58,11 @@ if (isset($_GET['activation'])) {
 			}
 		}
 	}
-
 }
 
 // Import de module
-if (isset($_POST['ok']) && $upload_Module == 1) {
+if (isset($_POST['ok']) && $upload_Module == 1) 
+{
     // Enregistrement du logo
     //$_FILES['doc_file'] = isset($_FILES['doc_file']) ? $_FILES['doc_file'] : null;
     /* Test premier, juste pour bloquer les double extensions */
@@ -60,7 +71,7 @@ if (isset($_POST['ok']) && $upload_Module == 1) {
     }
     if (count(explode('.', $_FILES['doc_file']['name'])) > 2) {
 
-        $msg .= "Erreur 1 - Le module n\'a pas pu être importé : la seule extention autorisées est zip.\\n";
+        $msg .= "Erreur 1 - Le module n\'a pas pu être importé : la seule extension autorisée est zip.\\n";
         $ok = 'no';
 
     } elseif (preg_match("`\.([^.]+)$`", $_FILES['doc_file']['name'], $match)) {
@@ -68,7 +79,7 @@ if (isset($_POST['ok']) && $upload_Module == 1) {
 
         $ext = strtolower($match[1]);
         if ($ext != 'zip') {
-            $msg .= "Erreur 2 - Le module n\'a pas pu être importé : la seule extention autorisées est zip.\\n";
+            $msg .= "Erreur 2 - Le module n\'a pas pu être importé : la seule extension autorisée est zip.\\n";
             $ok = 'no';
         } else {
             /* deuxième test passé, l'extension est autorisée */
@@ -96,7 +107,7 @@ if (isset($_POST['ok']) && $upload_Module == 1) {
 						
                         $unlinkReturn = unlink($picturePath);
                         if (!$unlinkReturn) {
-                            $msg .= "Erreur 9 - Installation réussie, cependant archive non supprimé.  Cette erreur peut être ignorée.\\n";
+                            $msg .= "Erreur 9 - Installation réussie, cependant archive non supprimée.  Cette erreur peut être ignorée.\\n";
                             $ok = 'no';
                         }
                     }
@@ -125,7 +136,7 @@ if (isset($_POST['ok'])) {
     if ($msg == '') {
         $msg = get_vocab('message_records');
     }
-    Header('Location: '.'admin_config.php?page_config=6&msg='.$msg);
+    Header('Location: '.'admin_config6.php?msg='.$msg);
     exit();
 }
 if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes')) {
@@ -137,23 +148,21 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
 
 // Page
 
-print_header("", "", "", $type="with_session");
+start_page_w_header("", "", "", $type="with_session");
 if (isset($_GET['ok']))
 {
 	$msg = get_vocab("message_records");
 	affiche_pop_up($msg, "admin");
 }
-include "admin_col_gauche.php";
-include "../include/admin_config_tableau.inc.php";
-
-
+include "admin_col_gauche2.php";
+//include "../include/admin_config_tableau.inc.php";
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 
 // Formulaire import module
 if($upload_Module == 1){
 	echo "<h3>".get_vocab("Module_Ext_Import")."</h3>\n";
-	echo '<form enctype="multipart/form-data" action="./admin_config.php?page_config=6" id="nom_formulaire" method="post" style="width: 100%;">';
+	echo '<form enctype="multipart/form-data" action="./admin_config6.php" id="nom_formulaire" method="post" >';
 	echo get_vocab("Module_Ext_Import_Description").get_vocab("deux_points");
-	echo "<input type=\"hidden\" value=\"5\" name=\"page_config\" /></div>";
 	echo "<input type='file' name='doc_file' /><br>\n";
 	echo "<input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=Import style=\"font-variant: small-caps;\"/>\n";
 	echo "<hr />\n";
@@ -167,8 +176,8 @@ if($upload_Module == 1){
 
 	$ligne = "";
 	echo "<h3>".get_vocab("Module_Ext_Gestion")."</h3>\n";
-	echo "<table border='1'>";
-	echo "<tr><th>Nom</th><th width='200px'>Description</th><th>Version</th><th>Autheur</th><th>Licence</th><th>Activation</th></tr>";
+	echo "<table class='table-bordered'>";
+	echo "<tr><th>Nom</th><th>Description</th><th>Version</th><th>Auteur</th><th>Licence</th><th>Activation</th></tr>";
 
 	$path = "../modules/"; // chemin vers le dossier
 	$iter = new DirectoryIterator($path);
@@ -197,7 +206,7 @@ if($upload_Module == 1){
 					$res = grr_sql_query($sql);
 					if ($res)
 					{
-						$lienActivation = "admin_config.php?page_config=6&activation=".$iter;
+						$lienActivation = "admin_config6.php?activation=".$iter;
 						$nb = grr_sql_count($res);
 						if($nb > 0){
 							$row = grr_sql_row($res, 0);
@@ -211,16 +220,13 @@ if($upload_Module == 1){
 						}
 					}
 				}
-				echo "<tr><td>".$infosModule[0]."<br>(".$iter.")</td><td>".$infosModule[1]."</td><td>".$infosModule[2]."</td><td>".$infosModule[3]."</td><td>".$infosModule[4]."</td><td><a href='".$lienActivation."' />".$activation."</a></td></tr>";
+				echo "<tr><td>".$infosModule[0]."<br>(".$iter.")</td><td>".$infosModule[1]."</td><td>".$infosModule[2]."</td><td>".$infosModule[3]."</td><td>".$infosModule[4]."</td><td><a href='".$lienActivation."'>".$activation."</a></td></tr>";
 				unset($infosModule);
 			}
 		}
 	}
-
-	echo "<table>";
-
-
-//////////////////////
-
-
+    echo "</table>";
+    echo "</form>";
+// fin de la colonne de droite et de la page
+echo "</div></section></body></html>";
 ?>

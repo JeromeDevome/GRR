@@ -392,7 +392,7 @@ Pour activer cette fonctionnalité, vous devez définir ci-dessous un mot de pas
 <br /><b>Il est fortement conseillé de choisir un mot de passe complexe avec lettres, chiffres et caractères spéciaux !</b>";
 $vocab['execution automatique backup mdp'] = "Mot de passe utilisé pour l'exécution du script « admin_save_mysql.php »";
 $vocab['explain_area_list_format'] = "Type d'affichage des listes des domaines et des ressources";
-$vocab['explain_automatic_mail'] = "Dans un certain nombres de cas (création d'une réservation, suppression/modification, modération, ...), <b>GRR peut envoyer automatiquement des mails</b> à certains utilisateurs. Consultez l'aide pour en savoir plus à ce sujet.<br /><b>Souhaitez-vous utiliser cette option ?</b>";
+$vocab['explain_automatic_mail'] = "Dans un certain nombre de cas (création d'une réservation, suppression/modification, modération, ...), <b>GRR peut envoyer automatiquement des mails</b> à certains utilisateurs. Consultez l'aide pour en savoir plus à ce sujet.<br /><b>Souhaitez-vous utiliser cette option ?</b>";
 $vocab['explain_automatic_mail1'] = "Lorsqu'un utilisateur <b>réserve une ressource</b>, <b>modifie</b> ou bien <b>supprime</b> une réservation <b>pour lui-même</b> (dont il est bénéficiaire), cochez la case ci-contre pour qu'un email de confirmation soit systématiquement envoyé.";
 $vocab['explain_automatic_mail2'] = "Par ailleurs, lorsqu'un utilisateur <b>réserve une ressource</b>, <b>modifie</b> ou bien <b>supprime</b> une réservation, certains utilisateurs peuvent être prévenus par e-mail. Pour chaque ressource, vous pouvez désigner un ou plusieurs utilisateurs à prévenir :";
 $vocab['explain_automatic_mail3'] = "Lorsqu'un utilisateur <b>réserve une ressource</b>, <b>modifie</b> ou bien <b>supprime</b> une réservation au nom d'un autre utilisateur, ce dernier (si le champ email a été renseigné) en est averti automatiquement par un message e-mail.";
@@ -569,7 +569,7 @@ $vocab['modifier site'] = "Modifier un site";
 $vocab['modify_booking'] = " a modifié la réservation de ";
 $vocab['Module_Ext_Gestion'] = "Gestion des modules externes";
 $vocab['Module_Ext_Import'] = "Import d'un module externe";
-$vocab['Module_Ext_Import_Description'] = "Vous pouvez importer un module, cependant nous ne pouvons pas assurez : la compatibilité avec GRR, les conséquences de l'installation (lenteur, piratage, bug...), soyez vigilant.<br>Selectionner un fichier";
+$vocab['Module_Ext_Import_Description'] = "Vous pouvez importer un module, cependant nous ne pouvons pas assurer : la compatibilité avec GRR, les conséquences de l'installation (lenteur, piratage, bug...), soyez vigilant.<br>Sélectionnez un fichier";
 $vocab['month'] = "Mois";
 $vocab['monthafter'] = "Voir le mois suivant";
 $vocab['monthbefore'] = "Voir le mois précédent";

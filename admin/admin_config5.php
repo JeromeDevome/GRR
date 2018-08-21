@@ -3,8 +3,8 @@
  * admin_config5.php
  * Interface permettant à l'administrateur la configuration des paramètres pour le module Jours Cycles
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-08-23 14:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,7 +15,20 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+// cette page reste à internationaliser
+$grr_script_name = "admin_config5.php";
 
+include "../include/admin.inc.php";
+
+$back = '';
+if (isset($_SERVER['HTTP_REFERER']))
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+$_SESSION['chemin_retour'] = "admin_accueil.php";
+$day   = date("d");
+$month = date("m");
+$year  = date("Y");
+check_access(6, $back);
+// vérifications
 if (!Settings::load())
 	die("Erreur chargement settings");
 // Met à jour dans la BD le champ qui détermine si les fonctionnalités Jours/Cycles sont activées ou désactivées
@@ -84,19 +97,19 @@ if (isset($_GET['use_fckeditor']))
 		die();
 	}
 }
-print_header("", "", "", $type="with_session");
+start_page_w_header("", "", "", $type="with_session");
 if (isset($_GET['ok']))
 {
 	$msg = get_vocab("message_records");
 	affiche_pop_up($msg, "admin");
 }
-include "admin_col_gauche.php";
-include "../include/admin_config_tableau.inc.php";
+include "admin_col_gauche2.php";
 
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 // Jour de Cycle
-echo "<form action=\"./admin_config.php\"  method=\"get\" style=\"width: 100%;\" onsubmit=\"return verifierJoursCycles(false);\">\n";
+echo "<form action=\"./admin_config5.php\"  method=\"get\"  onsubmit=\"return verifierJoursCycles(false);\">\n";
 echo "<h3>".get_vocab("Activer_module_jours_cycles")."</h3>\n";
-echo "<table border='0'>\n<tr>\n<td>\n";
+echo "<table>\n<tr>\n<td>\n";
 echo get_vocab("Activer_module_jours_cycles").get_vocab("deux_points");
 echo "<select name='jours_cycles'>\n";
 if (Settings::get("jours_cycles_actif") == "Oui")
@@ -113,7 +126,7 @@ echo "</select>\n</td>\n</tr>\n</table><hr />\n";
 
 // Multisite
 echo "<h3>".get_vocab("Activer_module_multisite")."</h3>\n";
-echo "<table border='0'>\n<tr>\n<td>\n";
+echo "<table>\n<tr>\n<td>\n";
 echo get_vocab("Activer_module_multisite").get_vocab("deux_points");
 echo "<select name='module_multisite'>\n";
 if (Settings::get("module_multisite") == "Oui")
@@ -127,10 +140,10 @@ else
 	echo "<option value=\"Non\" selected=\"selected\">".get_vocab('NO')."</option>\n";
 }
 echo "</select>\n</td>\n</tr>\n</table>\n";
-
+echo "<hr />";
 // Export XML
 echo "<h3>".get_vocab("Activer_export_xml")."</h3>\n";
-echo "<table border='0'>\n<tr>\n<td>\n";
+echo "<table>\n<tr>\n<td>\n";
 echo get_vocab("Activer_export_xml").get_vocab("deux_points");
 echo "<select name='export_xml'>\n";
 if (Settings::get("export_xml_actif") == "Oui")
@@ -147,7 +160,7 @@ echo "</select> (./export/export".TABLE_PREFIX.".xml)\n</td>\n</tr>\n</table>\n"
 
 // Export XML PLUS
 echo "<h3>".get_vocab("Activer_export_plus_xml")."</h3>\n";
-echo "<table border='0'>\n<tr>\n<td>\n";
+echo "<table>\n<tr>\n<td>\n";
 echo get_vocab("Activer_export_plus_xml").get_vocab("deux_points");
 echo "<select name='export_xml_plus'>\n";
 if (Settings::get("export_xml_plus_actif") == "Oui")
@@ -181,9 +194,9 @@ echo "\n</td></tr>";
 echo "\n</table>";
 
 
-echo "\n<div id=\"fixe\" style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=\"".get_vocab("save")."\" style=\"font-variant: small-caps;\"/>\n";
+echo "\n<div id=\"fixe\" ><input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=\"".get_vocab("save")."\" style=\"font-variant: small-caps;\"/>\n";
 echo "<input type=\"hidden\" value=\"5\" name=\"page_config\" /></div>\n";
 echo "</form>";
-// fin de l'affichage de la colonne de droite
-echo "</td></tr></table>";
+// fin de l'affichage de la colonne de droite et de la page
+echo "</div></section></body></html>";
 ?>

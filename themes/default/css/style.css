@@ -131,7 +131,7 @@ a:hover{color:#999;}
 a:link,a:visited{font-weight:700;text-decoration:none}
 a.lienCellule{color:#000;font-weight:400;display:block}
 a:hover.lienCellule{color:#999;font-weight:700;display:block}
-#panel{width:100%;max-height:115px;overflow:hidden;position:relative;z-index:3}
+#panel{width:100%;overflow:hidden;position:relative;z-index:3}
 #panel a{text-decoration:none}
 .accueil{background-color: transparent;padding-left:1%; width:30%;display:inline-block}
 .administration{background-color: transparent;width:15%;text-align:center;margin:0 auto;display:inline-block}

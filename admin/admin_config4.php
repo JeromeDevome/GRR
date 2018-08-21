@@ -1,10 +1,10 @@
 <?php
 /**
  * admin_config4.php
- * Interface permettant à l'administrateur
+ * Interface permettant à l'administrateur la configuration de certains paramètres généraux (sécurité, connexions)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-08-22 11:15$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,7 +15,22 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+// page à internationaliser 
+$grr_script_name = "admin_config4.php";
 
+include "../include/admin.inc.php";
+
+$back = '';
+if (isset($_SERVER['HTTP_REFERER']))
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+$_SESSION['chemin_retour'] = "admin_accueil.php";
+$day   = date("d");
+$month = date("m");
+$year  = date("Y");
+check_access(6, $back);
+//vérifications
+if (!Settings::load())
+	die("Erreur chargement settings");
 if (isset($_GET['motdepasse_backup']))
 {
 	if (!Settings::set("motdepasse_backup", $_GET['motdepasse_backup']))
@@ -61,20 +76,18 @@ if (isset($_GET['pass_leng']))
 	if (!Settings::set("pass_leng", $_GET['pass_leng']))
 		echo "Erreur lors de l'enregistrement de pass_leng !<br />";
 }
-if (!Settings::load())
-	die("Erreur chargement settings");
+// début du code html
 # print the page header
-print_header("", "", "", $type="with_session");
+start_page_w_header("", "", "", $type="with_session");
 if (isset($_GET['ok']))
 {
 	$msg = get_vocab("message_records");
 	affiche_pop_up($msg,"admin");
 }
 // Affichage de la colonne de gauche
-include "admin_col_gauche.php";
-// Affichage du tableau de choix des sous-configuration
-include "../include/admin_config_tableau.inc.php";
-//echo "<h2>".get_vocab('admin_config4.php')."</h2>";
+include "admin_col_gauche2.php";
+echo '<div class="col-md-9 col-sm-8 col-xs-12">';
+echo "<h2>".get_vocab('admin_config4.php')."</h2>";
 //
 // dans le cas de mysql, on propose une sauvegarde et l'ouverture de la base
 //
@@ -89,7 +102,7 @@ if ($dbsys == "mysql")
 	echo "<p><i>".get_vocab("warning_message_backup")."</i></p>\n";
 	?>
 	<form action="admin_save_mysql.php" method="get" style="width:100%;">
-		<div style="text-align:center;">
+		<div class="center">
 			<input type="hidden" name="flag_connect" value="yes" />
 			<input class="btn btn-primary" type="submit" value=" <?php echo get_vocab("submit_backup"); ?>" style="font-variant: small-caps;" />
 		</div>
@@ -105,7 +118,7 @@ if ($dbsys == "mysql")
 		echo "\n<p><span class=\"avertissement\"><i>Attention! Restaurer la base vous fera perdre toutes les données qu'elle contient actuellement. De plus, tous les utilisateurs présentement connectés, ainsi que vous-mêmes, serez déconnectés. Alors, il est conseillé de créer d'abord une sauvegarde et de vous assurer que vous êtes le seul connecté.</i></span></p>\n";
 		?>
 		<form method="post" enctype="multipart/form-data" action="admin_open_mysql.php">
-			<div style="text-align:center;">
+			<div class="center">
 				<input type="file" name="sql_file" size="30" />
 				<br /><br />
 				<input class="btn btn-primary" type="submit" value="<?php echo get_vocab('Restaurer la sauvegarde'); ?>" style="font-variant: small-caps;" />
@@ -114,7 +127,7 @@ if ($dbsys == "mysql")
 <?php
 	}
 }
-	echo "<form action=\"./admin_config.php\" method=\"get\" style=\"width: 100%;\">";
+	echo "<form action=\"./admin_config4.php\" method=\"get\">";
 	# Backup automatique
 	echo "\n<hr /><h3>".get_vocab("execution automatique backup")."</h3>";
 	echo "<p>".get_vocab("execution automatique backup explications")."</p>";
@@ -126,41 +139,39 @@ if ($dbsys == "mysql")
 	//
 	echo "\n<hr /><h3>".get_vocab('title_disable_login')."</h3>";
 	echo "\n<p>".get_vocab("explain_disable_login");
-	?>
-	<br />
-	<input type='radio' name='disable_login' value='yes' id='label_1' <?php if (Settings::get("disable_login")=='yes') echo "checked=\"checked\""; ?> />
-	<label for='label_1'><?php echo get_vocab("disable_login_on"); ?></label>
-	<br />
-	<input type='radio' name='disable_login' value='no' id='label_2' <?php if (Settings::get("disable_login")=='no') echo "checked=\"checked\""; ?> />
-	<label for='label_2'><?php echo get_vocab("disable_login_off"); ?></label>
-	</p>
-<?php
+    echo "<br />";
+	echo "<input type='radio' name='disable_login' value='yes' id='label_1' ";
+    if (Settings::get("disable_login")=='yes') echo "checked=\"checked\""; 
+    echo "/>";
+	echo "<label for='label_1'>".get_vocab("disable_login_on")."</label>";
+	echo "<br />";
+	echo "<input type='radio' name='disable_login' value='no' id='label_2' ";
+    if (Settings::get("disable_login")=='no') echo "checked=\"checked\"";
+    echo " />";
+	echo "<label for='label_2'>".get_vocab("disable_login_off")."</label>";
+	echo "</p>";
 	//
 	// iP autorisé
 	//*************************
 	//
 	echo "\n<hr /><h3>".get_vocab('title_ip_autorise')."</h3>";
 	echo "\n<p>".get_vocab("explain_ip_autorise")."</p>";
-	?>
-	<br />
-	<input class="form-control" type="text" name="ip_autorise" value="<?php echo(Settings::get("ip_autorise")); ?>" />
-	
-	
-<?php
-echo "\n<hr />";
+	echo "<br />";
+	echo '<input class="form-control" type="text" name="ip_autorise" value="'.(Settings::get("ip_autorise")).'" />';
+    echo "\n<hr />";
 	//
 	// Durée d'une session
 	//********************
 	//
 echo "<h3>".get_vocab("title_session_max_length")."</h3>";
 ?>
-<table border='0'>
+<table>
 	<tr>
 		<td>
 			<?php echo get_vocab("session_max_length"); ?>
 		</td>
 		<td>
-			<input class="form-control" type="number" name="sessionMaxLength" size="16" value="<?php echo(Settings::get("sessionMaxLength")); ?>" />
+			<input type="number" name="sessionMaxLength" size="5" value="<?php echo(Settings::get("sessionMaxLength")); ?>" />
 		</td>
 	</tr>
 </table>
@@ -168,7 +179,7 @@ echo "<h3>".get_vocab("title_session_max_length")."</h3>";
 //Longueur minimale du mot de passe exigé
 echo "<hr /><h3>".get_vocab("pwd")."</h3>";
 echo "\n<p>".get_vocab("pass_leng_explain").get_vocab("deux_points")."
-<input class=\"form-control\" type=\"number\" name=\"pass_leng\" value=\"".htmlentities(Settings::get("pass_leng"))."\" size=\"20\" /></p>";
+<input type=\"number\" name=\"pass_leng\" value=\"".htmlentities(Settings::get("pass_leng"))."\" size=\"5\" /></p>";
 //
 // Url de déconnexion
 //*******************
@@ -179,10 +190,9 @@ echo "<p><i>".get_vocab("Url_de_deconnexion_explain2")."</i>";
 echo "<br />".get_vocab("Url_de_deconnexion").get_vocab("deux_points")."\n";
 $value_url = Settings::get("url_disconnect");
 echo "<input class=\"form-control\" type=\"text\" name=\"url_disconnect\" size=\"40\" value =\"$value_url\"/>\n<br /><br /></p>";
-echo "\n<hr />";
-echo "\n<p><input type=\"hidden\" name=\"page_config\" value=\"4\" />";
-echo "\n<br /></p><div id=\"fixe\" style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=\"".get_vocab("save")."\" style=\"font-variant: small-caps;\"/></div>";
+// echo "\n<hr />";
+echo "<div id=\"fixe\" ><input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=\"".get_vocab("save")."\" style=\"font-variant: small-caps;\"/></div>";
 echo "\n</form>";
-// fin de l'affichage de la colonne de droite
-echo "\n</td></tr></table>";
+// fin de l'affichage de la colonne de droite et de la page
+echo "\n</div></section></body></html>";
 ?>

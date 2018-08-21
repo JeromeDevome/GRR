@@ -58,11 +58,7 @@
  	background-color: #888888;
  	color: white;
  }
-  .table_adm {
- 	border:0;
- 	border-spacing : 4;
- 	border-collapse : collapse;
- }
+ 
  .table_adm {
  	border:0;
  	border-spacing : 0;
