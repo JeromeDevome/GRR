@@ -120,6 +120,32 @@ $liste_name_language = array(
 	"Spanish"
 	);
 
+# Liste des noms des variables de config
+$config_variables = array(
+	"nb_year_calendar",
+	"correct_heure_ete_hiver",
+	"max_rep_entrys",
+	"unicode_encoding",
+	"use_function_mysql_real_escape_string",
+	"use_function_html_entity_decode",
+	"connexionAdminMAJ",
+	"restaureBBD",
+	"debug_flag",
+	"recherche_MAJ",
+	"upload_Module",
+	"nbMaxJoursLogConnexion",
+	"motDePasseConfig",
+	"sso_super_admin",
+	"sso_restrictions",
+	"ldap_restrictions",
+	"imap_restrictions",
+	"Url_CAS_setFixedServiceURL",
+	"dbsys",
+	"structure",
+	"donnees",
+	"insertComplet"
+	);
+
 # Compatibilité avec les version inférieures à 1.9.6
 if ((!isset($table_prefix)) or ($table_prefix==''))
 	$table_prefix="grr";
