@@ -10,6 +10,8 @@
 				<ul class="nav nav-tabs">
 					<li class="active"><a href="#grr" data-toggle="tab">Infos GRR</a></li>
 					<li><a href="#serveur" data-toggle="tab">Serveur</a></li>
+					<li><a href="#infosphp" data-toggle="tab">Infos PHP</a></li>
+					<li><a href="#fichierconfig" data-toggle="tab">Fichier configuration</a></li>
 					<li class="pull-right"><button type="button" id="copy" class="btn btn-info pull-right btn-block btn-sm">Copier infos pour aide</button></li>
 				</ul>
 				<div class="tab-content">
@@ -55,6 +57,20 @@ Timezone : {{ trad.dTimezone }}</textarea></li>
 							<li class="list-group-item"><p class="col-sm-6">Date du serveur (Jour-Mois-Annee)</p><b>{{ trad.dDate }}</b></li>
 							<li class="list-group-item"><p class="col-sm-6">Heure du serveur</p><b>{{ trad.dHeure }}</b></li>
 							<li class="list-group-item"><p class="col-sm-6">Timezone (date_default_timezone_set)</p><b>{{ trad.dTimezone }}</b></li>
+						</ul>
+					</div>
+
+					<!-- Infos PHP -->
+					<div class="tab-pane" id="infosphp">
+						
+							{{ infosPHP |raw }}
+
+					</div>
+
+					<!-- Fichier Config -->
+					<div class="tab-pane" id="fichierconfig">
+						<ul class="list-group list-group-unbordered">
+							{{ trad.dInfosConfigVar |raw }}
 						</ul>
 					</div>
 				</div>

@@ -91,6 +91,12 @@ if (version_compare(phpversion(), $php_mini, '<')) {
 }
 
 
+ob_start();
+phpinfo();
+$phpinfo = ob_get_clean();
+ob_end_clean();
+$phpinfo = preg_replace( '%^.*<body>(.*)</body>.*$%ms','$1',$phpinfo);
+
 // BDD
 get_vocab_admin("database");
 $trad['dDatabase'] = $dbsys;
@@ -152,4 +158,14 @@ if($recherche_MAJ == 1)
 	$trad['dMaj_SiteGRR'] = "<span class=\"label label-info\">".get_vocab("maj_impossible_rechercher")."</span>". get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a>";
 }
 
+// Fichier configuration
+$trad['dInfosConfigVar'] = '';
+$trad['dInfosConfigDef'] = '';
+
+foreach ($config_variables as $config){
+	$trad['dInfosConfigVar'] .= "<li class=\"list-group-item\"><p class=\"col-sm-6\">".$config."</p><b>".$$config."&nbsp;</b></li>"; // $$ Normal
+}
+unset($config);
+
+	echo $twig->render('admin_infos.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'infosPHP' => $phpinfo));
 ?>
