@@ -1,0 +1,63 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			{% if trad.dMesgSysteme %}
+				{{ msgSyst.messageAlerte(trad.dMesgTitreSysteme, trad.dMesgSysteme) }}
+			{% endif %}
+
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{ trad.titre_ldap }}</h3>
+				</div>
+				<!-- /.box-header -->
+				
+				<div class="box-body no-padding">
+					<form action="?p=admin_config_ldap" method="post">
+
+						<input type="hidden" name="p" value="admin_config_ldap" />
+						<input type="hidden" name="etape" value="2" />
+						<input type="hidden" name="valid" value="{{ trad.dValid }}" />
+						<input type="hidden" name="ldap_filter" value="{{ trad.dFilterLDAP }}" />
+						<input type="hidden" name="ldap_base" value="{{ trad.dBaseLDAP }}" />
+
+						<h3>Informations de connexion à l'annuaire LDAP</h3>
+
+						{{ form.input('adresse', 'Adresse de l\'annuaire. Laissez «localhost» si l\'annuaire est installé sur la même machine que GRR. Sinon, indiquez l\'adresse du serveur.', trad.dAdresseLDAP, {classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', require:1}) }}
+						{{ form.input('port', 'Numéro de port de LDAP. Dans le doute, laissez la valeur par défaut : 389 (3268 pour serveur de catalogues global AD)', trad.dPortLDAP, {classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number', require:1}) }}
+
+						<p>Si le serveur LDAP n'accepte pas d'accès anonyme, veuillez préciser un identifiant (par exemple « cn=jean, o=lycée, c=fr »). Laissez les champs suivants vides pour un accès anonyme.</p>
+
+						{{ form.input('login_ldap', trad.login, trad.dLoginLDAP, {classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label'}) }}
+						{{ form.input('pwd_ldap', trad.pwd, trad.dPwdLDAP, {classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'password'}) }}
+						<p>Remarque : des problèmes liés à un mot de passe contenant un ou plusieurs caractères accentués ont déjà été constatés.</p>
+
+						<div class="form-group col-sm-12">
+							<p>Utiliser TLS :</p>
+							<input type="radio" name="use_tls" value="y" id="label_1a" {% if trad.dUseTLS == 'y' %}checked{% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
+							<input type="radio" name="use_tls" value="n" id="label_1b" {% if trad.dUseTLS == 'n' %}checked{% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
+						</div>
+
+						<p><b>Remarque : pour le moment, aucune modification n'a été apportée au fichier de configuration "config_ldap.inc.php".</b>
+						<br />Les informations ne seront enregistrées qu'à la fin de la procédure de configuration.</p>
+
+						<div style="text-align:center;">
+							<input type="submit" name="Valider1" value="{{ trad.next }}" class="btn btn-info btn-md" />
+						</div>
+
+					</form>
+				</div>
+			</div>
+
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
