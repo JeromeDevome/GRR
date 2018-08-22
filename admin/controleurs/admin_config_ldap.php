@@ -15,22 +15,14 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-/*
-include "../include/connect.inc.php";
-include "../include/config.inc.php";
-include "../include/misc.inc.php";
-include "../include/functions.inc.php";
-include "../include/$dbsys.inc.php";*/
+
 $grr_script_name = "admin_config_ldap.php";
-// Settings
-/*require_once("../include/settings.class.php");
-// Session related functions
-require_once("../include/session.inc.php");
-// Paramètres langage
-include "../include/language.inc.php";
-//Chargement des valeurs de la table settingS
-if (!Settings::load())
-	die("Erreur chargement settings");*/
+
+if (authGetUserLevel(getUserName(), -1) < 6)
+{
+	showAccessDenied($back);
+	exit();
+}
 
 $valid		= isset($_POST["valid"]) ? $_POST["valid"] : 'no';
 $etape		= isset($_POST["etape"]) ? $_POST["etape"] : '0';
@@ -74,6 +66,7 @@ get_vocab_admin('back');
 
 get_vocab_admin('save');
 
+
 if (isset($_POST['reg_ldap_statut']))
 {
 	if ($_POST['ldap_statut'] == "no_ldap")
@@ -89,6 +82,8 @@ if (isset($_POST['reg_ldap_statut']))
 	}
 	if (isset($_POST['Valider1']))
 	{
+		VerifyModeDemo();
+
 		if (!isset($_POST['ConvertLdapUtf8toIso']))
 			$ConvertLdapUtf8toIso = "n";
 		else
