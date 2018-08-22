@@ -340,9 +340,9 @@ if ($res)
 
 			// un gestionnaire d'utilisateurs ne peut pas modifier un administrateur général ou un gestionnaire d'utilisateurs
 			if ((authGetUserLevel(getUserName(), -1, 'user') ==  1) && (($user_statut == "gestionnaire_utilisateur") || ($user_statut == "administrateur")))
-				$trad['dAuthorisationModif'] = 0;
+				$col[$i][8] = 0;
 			else
-				$trad['dAuthorisationModif'] = 1;
+				$col[$i][8] = 1;
 
 			// Affichage du lien 'supprimer'
 			// un gestionnaire d'utilisateurs ne peut pas supprimer un administrateur général ou un gestionnaire d'utilisateurs
