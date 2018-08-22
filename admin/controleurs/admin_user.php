@@ -221,8 +221,9 @@ $trad['dDisplay'] = $display;
 get_vocab_admin('admin_user');
 get_vocab_admin("display_add_user");
 get_vocab_admin("via_fichier");
-get_vocab_admin("admin_user_mdp_facile");
 get_vocab_admin("admin_menu_various");
+get_vocab_admin("admin_user_mdp_facile");
+get_vocab_admin("admin_purge_accounts");
 
 get_vocab_admin("maj_base_locale");
 get_vocab_admin("mess_maj_base_locale");
@@ -238,6 +239,12 @@ get_vocab_admin("statut");
 get_vocab_admin("authentification");
 get_vocab_admin("action");
 
+get_vocab_admin("confirm_del");
+get_vocab_admin("cancel");
+get_vocab_admin("delete");
+
+if (authGetUserLevel(getUserName(),-1) >= 6)
+	$trad['dEstAdministrateur'] = 1;
 
 $display == 'tous';
 
@@ -255,14 +262,15 @@ if ($res)
 		$user_login = $row[3];
 		$user_etat[$i] = $row[4];
 		$user_source = $row[5];
-		if (($user_etat[$i] == 'actif') && (($display == 'tous') || ($display == 'actifs')))
-			$affiche = 'yes';
-		else if (($user_etat[$i] != 'actif') && (($display == 'tous') || ($display == 'inactifs')))
-			$affiche = 'yes';
-		else
-			$affiche = 'no';
-		if ($affiche == 'yes')
-		{
+		//if (($user_etat[$i] == 'actif') && (($display == 'tous') || ($display == 'actifs')))
+		//	$affiche = 'yes';
+		//else if (($user_etat[$i] != 'actif') && (($display == 'tous') || ($display == 'inactifs')))
+		//	$affiche = 'yes';
+		//else
+		//	$affiche = 'no';
+		//if ($affiche == 'yes')
+		//{
+			$col[$i][6] = $user_etat[$i];
 			// Affichage des login, noms et prénoms
 			$col[$i][1] = $user_login;
 			$col[$i][2] = "$user_nom $user_prenom";
@@ -312,16 +320,16 @@ if ($res)
 
 			// Affichage du statut
 			if ($user_statut == "administrateur")
-				$col[$i][4] = "<span class=\"text-red\">".get_vocab("statut_administrator")."</a>";
+				$col[$i][4] = "<span class=\"text-red\">".get_vocab("statut_administrator")."</span>";
 
 			if ($user_statut == "visiteur")
-				$col[$i][4] = "<span class=\"text-green\">".get_vocab("statut_visitor")."</a>";
+				$col[$i][4] = "<span class=\"text-green\">".get_vocab("statut_visitor")."</span>";
 
 			if ($user_statut == "utilisateur")
-				$col[$i][4] = "<span class=\"text-light-blue\">".get_vocab("statut_user")."</a>";
+				$col[$i][4] = "<span class=\"text-light-blue\">".get_vocab("statut_user")."</span>";
 
 			if ($user_statut == "gestionnaire_utilisateur")
-				$col[$i][4] = "<span class=\"text-yellow\">".get_vocab("statut_user_administrator")."</a>";
+				$col[$i][4] = "<span class=\"text-yellow\">".get_vocab("statut_user_administrator")."</span>";
 
 			// Affichage de la source
 			if (($user_source == 'local') || ($user_source == ''))
@@ -340,11 +348,11 @@ if ($res)
 			// un gestionnaire d'utilisateurs ne peut pas supprimer un administrateur général ou un gestionnaire d'utilisateurs
 			// Un administrateur ne peut pas se supprimer lui-même
 			if (((authGetUserLevel(getUserName(), -1, 'user') ==  1) && (($user_statut == "gestionnaire_utilisateur") || ($user_statut == "administrateur"))) || (strtolower(getUserName()) == strtolower($user_login)))
-				$trad['dAuthorisationSup'] = 0;
+				$col[$i][7] = 0;
 			else
-				$trad['dAuthorisationSup'] = 1;
+				$col[$i][7] = 1;
 				//echo "<a href='admin_user.php?user_del=".urlencode($col[$i][1])."&amp;action_del=yes&amp;display=$display' onclick='return confirmlink(this, \"$user_login\", \"$themessage\")'>".get_vocab("delete")."</a>";
-		}
+		//}
 	}
 }
 
