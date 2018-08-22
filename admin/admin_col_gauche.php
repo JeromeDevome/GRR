@@ -62,7 +62,6 @@ function afficheLienNiveau2($nomSection,$image,$liste,$iN2)
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 		afficheLienNiveau1('admin_calend_ignore', 'fa fa-calendar-times-o', 1);
 	if ((authGetUserLevel(getUserName(), -1, 'area') >= 6) && (Settings::get('show_holidays') == 'Oui'))
-		$liste[] = 'admin_calend_vacances_feries';
 		afficheLienNiveau1('admin_calend_vacances_feries', 'fa fa-calendar-minus-o', 1);
 	if ((authGetUserLevel(getUserName(), -1, 'area') >= 6) && (Settings::get("jours_cycles_actif") == "Oui"))
 		afficheLienNiveau1('admin_calend_jour_cycle', 'fa fa-repeat', 1);
@@ -87,8 +86,6 @@ function afficheLienNiveau2($nomSection,$image,$liste,$iN2)
 		$liste[] = 'admin_access_area';
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 4)
 		$liste[] = 'admin_right';
-	if ( ((Settings::get("ldap_statut") != "") || (Settings::get("sso_statut") != "") || (Settings::get("imap_statut") != "")) && (authGetUserLevel(getUserName(), -1, 'area') >= 6))
-		$liste[] = 'admin_purge_accounts';
 
 	afficheLienNiveau2("admin_menu_user", "fa fa-users",$liste,$iN2++);
 
