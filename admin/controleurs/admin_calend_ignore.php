@@ -25,7 +25,10 @@ get_vocab_admin('calendrier_des_jours_hors_reservation');
 get_vocab_admin('les_journees_cochees_sont_ignorees');
 get_vocab_admin('check_all_the');
 get_vocab_admin('uncheck_all_the');
+get_vocab_admin('admin_calend_ignore_vacances');
+get_vocab_admin('admin_calend_ignore_feries');
 get_vocab_admin('uncheck_all_');
+
 get_vocab_admin('save');
 
 if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
@@ -108,9 +111,9 @@ if (Settings::get("show_holidays") == 'Oui'){ // on n'affiche ce choix que si le
     $ans = grr_sql_query($req);
     $feries = array();
     foreach($ans as $val){$feries[] = $val['DAY'];}
-    $cocheferies = "";
+    $trad['dCocheferies'] = "";
     foreach ($feries as &$value) {
-        $cocheferies .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
+        $trad['dCocheferies'] .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
     }
     unset($feries);
     // définir les vacances
@@ -118,18 +121,11 @@ if (Settings::get("show_holidays") == 'Oui'){ // on n'affiche ce choix que si le
     $ans = grr_sql_query($req);
     $vacances = array();
     foreach($ans as $val){$vacances[] = $val['DAY'];}
-    $cocheVacances = "";
+    $trad['dCocheVacances'] = "";
     foreach ($vacances as &$value) {
-        $cocheVacances .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
+        $trad['dCocheVacances'] .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
     }
     unset($vacances);
-    echo "<tr>";
-    echo "<td>";
-    echo "<span class='small'><a href='admin_calend_ignore.php' onclick=\"{$cocheVacances} return false;\">".get_vocab("admin_calend_ignore_vacances")."&nbsp </a></span>";
-    echo "</td><td>";
-    echo "<span class='small'><a href='admin_calend_ignore.php' onclick=\"{$cocheferies} return false;\">".get_vocab("admin_calend_ignore_feries")."</a></span>";
-    echo "</td>";
-    echo "</tr>";
 }
 
 $n = Settings::get("begin_bookings");

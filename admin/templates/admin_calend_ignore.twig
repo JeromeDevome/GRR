@@ -29,7 +29,13 @@
 								<td><span class="small"><a href="?p=admin_calend_ignore" onclick="setCheckboxesGrr(document.getElementById('formulaire'), false, '{{ jour }}' ); return false;">{{ trad.uncheck_all_the }} {{ jour }}s</a></span></td>
 							</tr>
 						{% endfor %}
-						<!-- A faire jour ferie  et vacances -->
+
+						{% if settings.show_holidays == 'Oui'  %}
+							<tr>
+								<td><span class="small"><a href="?p=admin_calend_ignore" onclick="{{ trad.dCocheVacances }} return false;">{{ trad.admin_calend_ignore_vacances }}</a></span></td>
+								<td><span class="small"><a href="?p=admin_calend_ignore" onclick="{{ trad.dCocheferies }} return false;">{{ trad.admin_calend_ignore_feries }}</a></span></td>
+							</tr>
+						{% endif %}
 						<tr>
 							<td colspan="2"><span class="small"><a href="?p=admin_calend_ignore" onclick="setCheckboxesGrr(document.getElementById('formulaire'), false, 'all'); return false;">{{ trad.uncheck_all_ }}</a></span></td>
 					</table>
@@ -61,6 +67,22 @@
 			if (type="checkbox")
 			{
 				if ((elts[i].value== day) || (day=='all'))
+				{
+					elts[i].checked = do_check;
+				}
+			}
+		}
+		return true;
+	}
+
+	function setCheckboxesGrrName(elts, do_check, day)
+	{
+		for (i = 0; i < elts.length; i++)
+		{
+			type = elts.type;
+			if (type="checkbox")
+			{
+				if (elts[i].name== day)
 				{
 					elts[i].checked = do_check;
 				}
