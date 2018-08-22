@@ -133,6 +133,8 @@ if (isset($_POST['reg_ldap_statut']))
 		exit();
 	}
 
+	$AllSettings = Settings::getAll();
+
 	if ($etape == 3)
 	{
 
