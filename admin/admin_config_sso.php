@@ -175,7 +175,7 @@ echo "<br />".get_vocab("cas_proxy_port")." : <input type=\"text\" name=\"cas_pr
 
 if (Settings::get("sso_statut") != '')
 {
-	echo "<h2>".get_vocab("autres parametres sso")."</h2>\n";
+	echo "<h2>".get_vocab("autres_parametres_sso")."</h2>\n";
 	echo "<input type=\"checkbox\" name=\"cacher_lien_deconnecter\" value=\"y\" ";
 	if (Settings::get("cacher_lien_deconnecter") == "y")
 		echo " checked=\"checked\"";
@@ -321,7 +321,7 @@ if (Settings::get("sso_statut") == 'http_utilisateur')
 	echo " checked=\"checked\" ";
 echo "/>".get_vocab("statut_user")."<br /></div>\n";
 //ajout des champs de recherche perso :
-echo "<div><br />".get_vocab("explain_champs recherche")."<br />\n";
+echo "<div><br />".get_vocab("explain_champs_recherche")."<br />\n";
 echo get_vocab("name").get_vocab("deux_points")."<input type=\"text\" name=\"http_champ_nom\"";
 if (Settings::get("http_champ_nom"))
 	echo "value=\"".Settings::get("http_champ_nom")."\"";
