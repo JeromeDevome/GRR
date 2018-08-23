@@ -164,15 +164,15 @@ if ($id_area != -1)
 			$utilisateursExep[] = array('login' => $row2[0], 'nom' => $row2[1], 'prenom' => $row2[2]);
 		}
 
-		// Pour mysql >= 4.1
-		$sql = "SELECT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (etat!='inactif' and (statut='utilisateur' or statut='visiteur' or statut='gestionnaire_utilisateur')) AND login NOT IN (SELECT login FROM ".TABLE_PREFIX."_j_user_area WHERE id_area = '$id_area') order by nom, prenom";
-		// Pour mysql < 4.1
-		//$sql = "SELECT DISTINCT u.login, u.nom, u.prenom FROM ".TABLE_PREFIX."_utilisateurs u left join ".TABLE_PREFIX."_j_user_area on ".TABLE_PREFIX."_j_user_area.login=u.login WHERE ((etat!='inactif' and (statut='utilisateur' or statut='visiteur' or statut='gestionnaire_utilisateur')) AND (".TABLE_PREFIX."_j_user_area.login is null or (".TABLE_PREFIX."_j_user_area.login=u.login and ".TABLE_PREFIX."_j_user_area.id_area!=".$id_area.")))  order by u.nom, u.prenom";
-		$res = grr_sql_query($sql);
-		$trad['dNbUserAjoutable'] = grr_sql_count($res);
-		if ($res)
-			for ($i = 0; ($row3 = grr_sql_row($res, $i)); $i++)
-				$utilisateursAjoutable[] = array('login' => $row3[0], 'nom' => $row3[1], 'prenom' => $row3[2]);
+	// Pour mysql >= 4.1
+	$sql = "SELECT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (etat!='inactif' and (statut='utilisateur' or statut='visiteur' or statut='gestionnaire_utilisateur')) AND login NOT IN (SELECT login FROM ".TABLE_PREFIX."_j_user_area WHERE id_area = '$id_area') order by nom, prenom";
+	// Pour mysql < 4.1
+	//$sql = "SELECT DISTINCT u.login, u.nom, u.prenom FROM ".TABLE_PREFIX."_utilisateurs u left join ".TABLE_PREFIX."_j_user_area on ".TABLE_PREFIX."_j_user_area.login=u.login WHERE ((etat!='inactif' and (statut='utilisateur' or statut='visiteur' or statut='gestionnaire_utilisateur')) AND (".TABLE_PREFIX."_j_user_area.login is null or (".TABLE_PREFIX."_j_user_area.login=u.login and ".TABLE_PREFIX."_j_user_area.id_area!=".$id_area.")))  order by u.nom, u.prenom";
+	$res = grr_sql_query($sql);
+	$trad['dNbUserAjoutable'] = grr_sql_count($res);
+	if ($res)
+		for ($i = 0; ($row3 = grr_sql_row($res, $i)); $i++)
+			$utilisateursAjoutable[] = array('login' => $row3[0], 'nom' => $row3[1], 'prenom' => $row3[2]);
 
 }
 
