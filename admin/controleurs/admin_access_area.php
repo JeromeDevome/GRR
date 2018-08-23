@@ -130,6 +130,7 @@ affiche_pop_up($msg,"admin");
 $this_area_name = "";
 $utilisateursExep = array ();
 $utilisateursAjoutable = array ();
+$domaines = array ();
 
 # Show all areas
 $existe_domaine = 'no';
