@@ -173,10 +173,10 @@ $is_admin = 'yes';
 		<div><select size="1" name="reg_admin_login">
 			<option value=''><?php echo get_vocab("nobody"); ?></option>
 			<?php
-			$sql = "SELECT u.login, u.nom, u.prenom FROM ".TABLE_PREFIX."_utilisateurs u
-			left join ".TABLE_PREFIX."_j_useradmin_area on ".TABLE_PREFIX."_j_useradmin_area.login=u.login
-			WHERE ((etat!='inactif' and (statut='utilisateur' or statut='administrateur' or statut='gestionnaire_utilisateur'))
-				AND (".TABLE_PREFIX."_j_useradmin_area.login is null or (".TABLE_PREFIX."_j_useradmin_area.login=u.login and ".TABLE_PREFIX."_j_useradmin_area.id_area!=".$id_area.")))  order by u.nom, u.prenom";
+$sql = "SELECT u.login, u.nom, u.prenom FROM ".TABLE_PREFIX."_utilisateurs u
+left join ".TABLE_PREFIX."_j_useradmin_area on ".TABLE_PREFIX."_j_useradmin_area.login=u.login
+WHERE ((etat!='inactif' and (statut='utilisateur' or statut='administrateur' or statut='gestionnaire_utilisateur'))
+	AND (".TABLE_PREFIX."_j_useradmin_area.login is null or (".TABLE_PREFIX."_j_useradmin_area.login=u.login and ".TABLE_PREFIX."_j_useradmin_area.id_area!=".$id_area.")))  order by u.nom, u.prenom";
 $res = grr_sql_query($sql);
 if ($res)
 {

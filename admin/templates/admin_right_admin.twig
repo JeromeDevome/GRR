@@ -1,0 +1,156 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			{% if trad.dMessage %}
+				{{ msgSyst.messageInfo(trad.admin_email_manager, trad.dMessage) }}
+			{% endif %}
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{ trad.admin_right_admin }}</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body no-padding">
+					<p>{{ trad.admin_right_admin_explain }}</p>
+
+					<hr>
+
+					<form id="area" action="?p=admin_right_admin" method="post">
+
+						<div class="form-group">
+							<label class="col-sm-3" for="area">{{ trad.areas }}</label>
+							<div class="col-sm-9">
+								<select name="area" class="form-control" onchange="area_go()">
+									<option value="-1">{{ trad.select }}</option>
+									{% for domaine in domaines %}
+										<option value="{{ domaine.id }}" {% if domaine.id == trad.dIdDomaine %} selected {% endif %}>{{ domaine.nom }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+
+					</form>
+
+					<hr>
+
+					{% if trad.dIdDomaine > 0 %}
+
+						<form action="?p=admin_right_admin" method="post">
+							<input type="hidden" name="p" value="admin_right_admin" />
+							<input type="hidden" name="id_area" value="{{ trad.dIdDomaine }}" />
+
+							<div class="form-group">
+								<label class="col-sm-3" for="reg_admin_login">{{ trad.add_user_to_list }}</label>
+								<div class="col-sm-9">
+									<select name="reg_admin_login" class="form-control">
+										<option value="">{{ trad.select }}</option>
+										{% for user in utilisateursajoutable %}
+											<option value="{{ user.login }}">{{ user.nom }} {{ user.prenom }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+
+							<div style="text-align:center;">
+								<input class="btn btn-primary" type="submit" value="{{ trad.add }}" />
+							</div>
+						</form>
+
+						{% if trad.dNbUserAjoutable > 0 %}
+
+							<form action="?p=admin_right_admin" method="post">
+								<input type="hidden" name="id_area" value="{{ trad.dIdDomaine }}" />
+								<div class="form-group">
+									<label class="col-sm-3" for="reg_admin_login">{{ trad.add_multiple_user_to_list }}</label>
+									<div class="col-sm-9">
+										<select name="agent" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.agent,this.form.elements['reg_multi_admin_login[]'])">
+											{% for user in utilisateursajoutable %}
+												<option value="{{ user.login }}">{{ user.nom }} {{ user.prenom }}</option>
+											{% endfor %}
+										</select>
+										<button type="button" class="btn btn-danger" onclick="Deplacer(this.form.elements['reg_multi_admin_login[]'],this.form.agent)"/><i class="fa fa-arrow-circle-left"></i></button>
+										<button type="button" class="btn btn-success" onclick="Deplacer(this.form.agent,this.form.elements['reg_multi_admin_login[]'])"/><i class="fa fa-arrow-circle-right"></i></button>
+										<select name="reg_multi_admin_login[]" id="reg_multi_admin_login" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.elements['reg_multi_admin_login[]'],this.form.agent)">
+										</select>
+									</div>
+								</div>
+
+								<div style="text-align:center;">
+									<input class="btn btn-primary" type="submit" value="{{ trad.add }}" onclick="selectionner_liste(this.form.reg_multi_admin_login);" />
+								</div>
+							</form>
+
+						{% endif %}
+
+						<h3>{{ trad.user_admin_area_list }}</h3>
+
+						<table class="table table-striped">
+							<tr>
+								<th>{{ trad.login }}</th>
+								<th>{{ trad.last_name }}</th>
+								<th>{{ trad.first_name }}</th>
+								<th>{{ trad.action }}</th>
+							</tr>
+							{% for useradmin in utilisateursadmin %}
+								<tr>
+									<td>{{ useradmin.login }}</td>
+									<td>{{ useradmin.nom }}</td>
+									<td>{{ useradmin.prenom }}</td>
+									<td><a href="?p=admin_right_admin&action=del_admin&login_admin={{ useradmin.login }}&id_area={{ trad.dIdDomaine }}"><i class="fa fa-trash-o"></i></a></td>
+								</tr>
+							{% endfor %}
+						</table>
+
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+	<script>
+
+		function area_go()
+		{
+			box = document.getElementById("area").area;
+			destination = box.options[box.selectedIndex].value;
+			if (destination) location.href = "?p=admin_right_admin&id_area="+destination;
+		}
+
+		function Deplacer(liste1, liste2)
+		{
+			while (liste1.options.selectedIndex >= 0)
+			{
+				opt = new Option(liste1.options[liste1.options.selectedIndex].text,liste1.options[liste1.options.selectedIndex].value);
+				liste2.options[liste2.options.length] = opt;
+				liste1.options[liste1.options.selectedIndex] = null;
+			}
+		}
+		
+		function vider_liste(IdListe)
+		{
+			var l = IdListe.options.length;
+			for (var i = 0; i < l; i++)
+			{
+				IdListe.options[i] = null;
+			}
+		}
+
+		function selectionner_liste(IdListe)
+		{
+			var l = IdListe.options.length;
+			for(var i = 0; i < l; i++)
+			{
+				IdListe.options[i].selected = true;
+			}
+		}
+
+		vider_liste(document.getElementById('reg_multi_admin_login'));
+	</script>
+{% endblock %}
