@@ -15,22 +15,17 @@
  * (at your option) any later version.
  */
 
-include "../include/admin.inc.php";
 $grr_script_name = "admin_right.php";
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+
 $id_area = isset($_POST["id_area"]) ? $_POST["id_area"] : (isset($_GET["id_area"]) ? $_GET["id_area"] : NULL);
 $room = isset($_POST["room"]) ? $_POST["room"] : (isset($_GET["room"]) ? $_GET["room"] : NULL);
 if (isset($room))
 	settype($room,"integer");
 if (!isset($id_area))
 	settype($id_area,"integer");
+
 check_access(4, $back);
-//print the page header
-print_header("", "", "", $type="with_session");
-// Affichage de la colonne de gauche
-include "admin_col_gauche.php";
+
 // tableau des ressources auxquelles l'utilisateur n'a pas accès
 $tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
 $reg_admin_login = isset($_POST["reg_admin_login"]) ? $_POST["reg_admin_login"] : NULL;
@@ -270,56 +265,50 @@ if ((empty($id_area)) && (isset($row[0])))
 }
 if (empty($room))
 	$room = -1;
-echo "<h2>".get_vocab('admin_right.php')."</h2>\n";
-echo "<p><i>".get_vocab("admin_right_explain")."</i></p>\n";
+
+get_vocab_admin('admin_right');
+get_vocab_admin('admin_right_explain');
+
+get_vocab_admin('areas');
+get_vocab_admin('select');
+get_vocab_admin('rooms');
+get_vocab_admin('select_all');
+get_vocab_admin('user_list');
+get_vocab_admin('add_user_to_list');
+get_vocab_admin('add_multiple_user_to_list');
+get_vocab_admin('add');
+
+$trad['dIdDomaine'] = $id_area;
+$trad['dIdRessource'] = $room;
+
+
 // Affichage d'un pop-up
 affiche_pop_up($msg,"admin");
-//Table with areas, rooms.
-echo "<table><tr>\n";
+
 $this_area_name = "";
 $this_room_name = "";
+$utilisateursAdmin = array ();
+$utilisateursAjoutable = array ();
+$ressources = array ();
+
 //Show all areas
-echo "<td ><p><b>".get_vocab("areas")."</b></p>\n";
-$out_html = "<form id=\"area\" action=\"admin_right.php\" method=\"post\">\n<div><SELECT name=\"area\" onchange=\"area_go()\">\n";
-$out_html .= "<option value=\"admin_right.php?id_area=-1\">".get_vocab('select')."</option>\n";
 $sql = "SELECT id, area_name FROM ".TABLE_PREFIX."_area order by order_display";
 $res = grr_sql_query($sql);
 if ($res)
 {
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-		$selected = ($row[0] == $id_area) ? "selected=\"selected\"" : "";
-		$link = "admin_right.php?id_area=$row[0]";
 		// On affiche uniquement les domaines administrés par l'utilisateur
 		if (authGetUserLevel(getUserName(),$row[0],'area') >= 4)
-			$out_html .= "<option $selected value=\"$link\">" . htmlspecialchars($row[1])."</option>\n";
+			$domaines[] = array('id' => $row[0], 'nom' => $row[1]);
 	}
 }
-$out_html .= "</select></div>\n
-<script type=\"text/javascript\" >
-	<!--
-	function area_go()
-	{
-		box = document.getElementById(\"area\").area;
-		destination = box.options[box.selectedIndex].value;
-		if (destination) location.href = destination;
-	}
-	// -->
-</script>
-<noscript>
-	<div><input type=\"submit\" value=\"Change\" /></div>
-</noscript>
-</form>";
-echo $out_html;
+
 $this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=$id_area");
 $this_room_name = grr_sql_query1("SELECT room_name FROM ".TABLE_PREFIX."_room WHERE id=$room");
 $this_room_name_des = grr_sql_query1("SELECT description FROM ".TABLE_PREFIX."_room WHERE id=$room");
-echo "</td>\n";
+
 //Show all rooms in the current area
-echo "<td><p><b>".get_vocab('rooms')."</b></p>";
-//should we show a drop-down for the room list, or not?
-$out_html = "<form id=\"room\" action=\"admin_right.php\" method=\"post\">\n<div><SELECT name=\"room\" onchange=\"room_go()\">\n";
-$out_html .= "<option value=\"admin_right.php?id_area=$id_area&amp;room=-1\">".get_vocab('select_all')."</option>\n";
 $sql = "SELECT id, room_name, description FROM ".TABLE_PREFIX."_room WHERE area_id=$id_area ";
 foreach ($tab_rooms_noaccess as $key)
 	$sql .= " and id != $key ";
@@ -333,72 +322,35 @@ if ($res)
 			$temp = " (".htmlspecialchars($row[2]).")";
 		else
 			$temp = "";
-		$selected = ($row[0] == $room) ? "selected=\"selected\"" : "";
-		$link = "admin_right.php?id_area=$id_area&amp;room=$row[0]";
-		$out_html .= "<option $selected value=\"$link\">" . htmlspecialchars($row[1].$temp)."</option>\n";
+		$ressources[] = array('id' => $row[0], 'nom' => $row[1], 'description' => $row[2]);
 	}
 }
-$out_html .= "</select></div>\n
-<script type=\"text/javascript\" >
-	<!--
-	function room_go()
-	{
-		box = document.getElementById(\"room\").room;
-		destination = box.options[box.selectedIndex].value;
-		if (destination) location.href = destination;
-	}
-		// -->
-</script>
-<noscript>
-	<div><input type=\"submit\" value=\"Change\" /></div>
-</noscript>
-</form>";
-echo $out_html;
-echo "</td>\n";
-echo "</tr></table>\n";
-//Don't continue if this area has no rooms:
-if ($id_area <= 0)
-{
-	echo "<h1>".get_vocab("no_area")."</h1>";
-	// fin de l'affichage de la colonne de droite
-	echo "</td></tr></table></body></html>";
-	exit;
-}
+
 //Show area and room:
 if ($this_room_name_des != '-1')
 	$this_room_name_des = " (".$this_room_name_des.")";
 else
 	$this_room_name_des = '';
-echo "<table border=\"1\" cellpadding=\"5\"><tr><td>";
-if ($room != -1)
+
+if ($room != -1) // Sur une ressource
 {
-	$sql = "SELECT u.login, u.nom, u.prenom FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_user_room j WHERE (j.id_room='$room' and u.login=j.login)  order by u.nom, u.prenom";
+	$sql = "SELECT u.login, u.nom, u.prenom FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_user_room j WHERE (j.id_room='$room' and u.login=j.login) order by u.nom, u.prenom";
 	$res = grr_sql_query($sql);
 	$nombre = grr_sql_count($res);
-	if ($nombre != 0)
-		echo "<h3>".get_vocab("user_list")."</h3>";
 	if ($res)
 	{
-		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-		{
-			$login_admin = $row[0];
-			$nom_admin = htmlspecialchars($row[1]);
-			$prenom_admin = htmlspecialchars($row[2]);
-			echo "<b>";
-			echo "$nom_admin $prenom_admin</b> | <a href='admin_right.php?action=del_admin&amp;login_admin=".urlencode($login_admin)."&amp;room=$room&amp;id_area=$id_area'>".get_vocab("delete")."</a><br />";
-		}
+		for ($i = 0; ($row2 = grr_sql_row($res, $i)); $i++)
+			$utilisateursAdmin[] = array('login' => $row2[0], 'nom' => $row2[1], 'prenom' => $row2[2]);
 	}
-	if ($nombre == 0)
-		echo "<h3><span class=\"avertissement\">".get_vocab("no_admin")."</span></h3>";
 }
-else
+else // Sur toute les ressources du domaine
 {
 	$exist_admin='no';
 	$sql = "SELECT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (statut='utilisateur' or statut='gestionnaire_utilisateur')";
 	$res = grr_sql_query($sql);
 	if ($res)
 	{
-		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+		for ($i = 0; ($row2 = grr_sql_row($res, $i)); $i++)
 		{
 			$is_admin = 'yes';
 			$sql2 = "SELECT id, room_name, description FROM ".TABLE_PREFIX."_room WHERE area_id=$id_area ";
@@ -406,14 +358,15 @@ else
 				$sql2 .= " and id != $key ";
 			$sql2 .= " order by order_display,room_name";
 			$res2 = grr_sql_query($sql2);
+
 			if ($res2)
 			{
 				$test = grr_sql_count($res2);
 				if ($test != 0)
 				{
-					for ($j = 0; ($row2 = grr_sql_row($res2, $j)); $j++)
+					for ($j = 0; ($row4 = grr_sql_row($res2, $j)); $j++)
 					{
-						$sql3 = "SELECT login FROM ".TABLE_PREFIX."_j_user_room WHERE (id_room='".$row2[0]."' and login='".$row[0]."')";
+						$sql3 = "SELECT login FROM ".TABLE_PREFIX."_j_user_room WHERE (id_room='".$row4[0]."' and login='".$row2[0]."')";
 						$res3 = grr_sql_query($sql3);
 						$nombre = grr_sql_count($res3);
 						if ($nombre == 0)
@@ -425,82 +378,33 @@ else
 			}
 			if ($is_admin == 'yes')
 			{
-				if ($exist_admin == 'no')
-				{
-					echo "<h3>".get_vocab("user_list")."</h3>";
-					$exist_admin = 'yes';
-				}
-				echo "<b>";
-				echo htmlspecialchars($row[1])." ".htmlspecialchars($row[2])."</b> | <a href='admin_right.php?action=del_admin_all&amp;login_admin=".urlencode($row[0])."&amp;id_area=$id_area'>".get_vocab("delete")."</a><br />";
+				$utilisateursAdmin[] = array('login' => $row2[0], 'nom' => $row2[1], 'prenom' => $row2[2]);
 			}
 		}
 	}
-	if ($exist_admin=='no')
-		echo "<h3><span class=\"avertissement\">".get_vocab("no_admin_all")."</span></h3>";
+
 }
-?>
-<h3><?php echo get_vocab("add_user_to_list");?></h3>
-<form  action="admin_right.php" method='post'>
-	<div><SELECT size="1" name="reg_admin_login">
-		<option value=''><?php echo get_vocab("nobody"); ?></option>
-		<?php
-		$sql = "SELECT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE  (etat!='inactif' and (statut='utilisateur' or statut='gestionnaire_utilisateur')) order by nom, prenom";
-		$res = grr_sql_query($sql);
-		if ($res)
+
+	$sql = "SELECT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE  (etat!='inactif' and (statut='utilisateur' or statut='gestionnaire_utilisateur')) order by nom, prenom";
+	$res = grr_sql_query($sql);
+	$trad['dNbUserAjoutable'] = grr_sql_count($res);
+	if ($res)
+	{
+		for ($i = 0; ($row3 = grr_sql_row($res, $i)); $i++)
 		{
-			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+			if (authUserAccesArea($row3[0],$id_area) == 1)
 			{
-				if (authUserAccesArea($row[0],$id_area) == 1)
-					echo "<option value=\"$row[0]\">".htmlspecialchars($row[1])." ".htmlspecialchars($row[2])." </option>";
+				$ExisteDeja = false;
+				foreach($utilisateursAdmin as $index => $user) {
+					if($user['login'] == $row3[0])
+						$ExisteDeja = true;
+				}
+
+				if($ExisteDeja == false)
+					$utilisateursAjoutable[] = array('login' => $row3[0], 'nom' => $row3[1], 'prenom' => $row3[2]);
 			}
 		}
-		?>
-	</select>
-	<input type="hidden" name="id_area" value="<?php echo $id_area;?>" />
-	<input type="hidden" name="room" value="<?php echo $room;?>" />
-	<input type="submit" value="Enregistrer" />
-</div></form>
-</td></tr>
-<!-- selection pour ajout de masse !-->
-<?php
-$sql = "SELECT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE  (etat!='inactif' and (statut='utilisateur' or statut='gestionnaire_utilisateur')) order by nom, prenom";
-$res = grr_sql_query($sql);
-$nb_users = grr_sql_count($res);
-if ($nb_users > 0)
-{
-	?>
-	<tr><td>
-		<h3><?php echo get_vocab("add_multiple_user_to_list").get_vocab("deux_points");?></h3>
-		<form action="admin_right.php" method='post'>
-			<div><select name="agent" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.agent,this.form.elements['reg_multi_admin_login[]'])">
-				<?php
-				if ($res)
-				{
-					for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-					{
-						if (authUserAccesArea($row[0],$id_area) == 1)
-							echo "<option value=\"$row[0]\">".htmlspecialchars($row[1])." ".htmlspecialchars($row[2])." </option>";
-					}
-				}
-				?>
-			</select>
-			<input type="button" value="&lt;&lt;" onclick="Deplacer(this.form.elements['reg_multi_admin_login[]'],this.form.agent)"/>
-			<input type="button" value="&gt;&gt;" onclick="Deplacer(this.form.agent,this.form.elements['reg_multi_admin_login[]'])"/>
-			<select name="reg_multi_admin_login[]" id="reg_multi_admin_login" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.elements['reg_multi_admin_login[]'],this.form.agent)">
-				<option> </option>
-			</select>
-			<input type="hidden" name="id_area" value="<?php echo $id_area;?>" />
-			<input type="hidden" name="room" value="<?php echo $room;?>" />
-			<input type="submit" value="Enregistrer"  onclick="selectionner_liste(this.form.reg_multi_admin_login);"/></div>
-			<script type="text/javascript">
-				vider_liste(document.getElementById('reg_multi_admin_login'));
-			</script> </form>
-			<?php
-			echo "</td></tr>";
-		}
-		echo "</table>";
-// fin de l'affichage de la colonne de droite
-		echo "</td></tr></table>";
-		?>
-	</body>
-	</html>
+	}
+
+	echo $twig->render('admin_right.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'domaines' => $domaines, 'ressources' => $ressources, 'utilisateursadmin' => $utilisateursAdmin, 'utilisateursajoutable' => $utilisateursAjoutable));
+?>
