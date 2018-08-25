@@ -3,8 +3,8 @@
  * admin_type_modify.php
  * interface de création/modification des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-08-25 12:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,16 +15,14 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "admin_type_modify.php";
 
 include "../include/admin.inc.php";
-$grr_script_name = "admin_type_modify.php";
+
 $ok = NULL;
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-$day   = date("d");
-$month = date("m");
-$year  = date("Y");
 check_access(6, $back);
 // Initialisation
 $id_type = isset($_GET["id_type"]) ? $_GET["id_type"] : 0;
@@ -149,10 +147,11 @@ if ((isset($_GET['change_done'])) && (!isset($ok)))
 	Header("Location: "."admin_type.php?msg=".$msg);
 	exit();
 }
+// code HTML
 # print the page header
-print_header("", "", "", $type="with_session");
-include "admin_col_gauche.php";
-echo "<div class=\"page_sans_col_gauche\">";
+start_page_w_header("", "", "", $type="with_session");
+include "admin_col_gauche2.php";
+echo "<div class=\"col-md-9 col-sm-8 col-xs-12\">";
 affiche_pop_up($msg,"admin");
 if ((isset($id_type)) && ($id_type > 0))
 {
@@ -176,12 +175,9 @@ else
 	echo "<h2>".get_vocab('admin_type_modify_create.php')."</h2>";
 }
 echo get_vocab('admin_type_explications')."<br /><br />";
-?>
-<form action="admin_type_modify.php" method='get'>
-	<?php
-	echo "<div><input type=\"hidden\" name=\"id_type\" value=\"".$id_type."\" /></div>\n";
-
-	echo "<table border=\"1\">\n";
+echo '<form action="admin_type_modify.php" method="get">';
+echo "<div><input type=\"hidden\" name=\"id_type\" value=\"".$id_type."\" /></div>\n";
+echo "<table class='table-bordered'>\n";
 	echo "<tr>";
 	echo "<td>".get_vocab("type_name").get_vocab("deux_points")."</td>\n";
 	echo "<td><input type=\"text\" name=\"type_name\" value=\"".htmlspecialchars($row["type_name"])."\" size=\"20\" /></td>\n";
@@ -199,7 +195,6 @@ echo get_vocab('admin_type_explications')."<br /><br />";
 		echo ">".$letter."</option>\n";
 		$letter++;
 	}
-
 	echo "</select>";
 	echo "</td>\n";
 	echo "</tr><tr>\n";
@@ -235,7 +230,7 @@ echo get_vocab('admin_type_explications')."<br /><br />";
 	echo "</tr>";
 	echo "</table>\n";
 	echo "<p>".get_vocab("type_color_predefinie").get_vocab("deux_points")."</p>";
-	echo "<table border=\"2\"><tr>\n";
+	echo "<table class='table-bordered'><tr>\n";
 	$nct = 0;
 	foreach ($tab_couleur as $key=>$value)
 	{
@@ -244,19 +239,18 @@ echo get_vocab('admin_type_explications')."<br /><br />";
 			$nct = 1;
 			echo "</tr><tr>";
 		}
-		echo "<td  style=\"background-color:".$tab_couleur[$key].";\"><input type=\"radio\" name=\"couleur\" value=\"".$tab_couleur[$key]."\" class=\"target\" />______________</td>";
+		echo "<td  style=\"background-color:".$tab_couleur[$key].";\"><input type=\"radio\" name=\"couleur\" value=\"".$tab_couleur[$key]."\" class=\"target\" /></td>";
 	}
 	echo "</tr></table>\n";
-	echo "<table><tr><td>\n";
-	echo "<input type=\"submit\" name=\"change_type\"  value=\"".get_vocab("save")."\" />\n";
-	echo "</td><td>\n";
+    echo "<br />";
+	echo "<div class='center'>\n";
+	echo "<input type=\"submit\" name=\"change_type\"  value=\"".get_vocab("save")."\" />";
 	echo "<input type=\"submit\" name=\"change_done\" value=\"".get_vocab("back")."\" />";
-	echo "</td><td>\n";
 	echo "<input type=\"submit\" name=\"change_room_and_back\" value=\"".get_vocab("save_and_back")."\" />";
-	echo "</td></tr></table>";
-	?>
-</form>
-</div>
+	echo "</div>";
+echo '</form>';
+echo '</div>';
+?>
 <script>
 $( ".target" ).change(function() {
 	var laCouleur = $('input[name=couleur]:checked').val();
@@ -268,5 +262,6 @@ function visuCouleurHexaPerso(laCouleur) {
 	document.getElementsByName('visucouleurhexa')[0].style.backgroundColor=laCouleur;
 }
 </script>
+</section>
 </body>
 </html>

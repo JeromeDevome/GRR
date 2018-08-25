@@ -2,8 +2,9 @@
 /**
  * admin_site.php
  * Interface d'accueil de Gestion des sites de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
+ * Ce script fait partie de l'application GRR
+ * Dernière modification : $Date: 2018-08-23 14:00$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -14,6 +15,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+ // cette page reste à internationaliser
+$grr_script_name = "admin_site.php";
 /**
  * Compte le nombre de sites définis
  *
@@ -33,7 +36,7 @@ function count_sites()
 		{
 			echo '      <p>Une erreur est survenue pendant le comptage des sites.</p>';
 			// fin de l'affichage de la colonne de droite
-			echo "</td></tr></table>\n</body>\n</html>\n";
+			end_page();
 			die();
 		}
 	}
@@ -41,7 +44,7 @@ function count_sites()
 	{
 		echo '      <p>Une erreur est survenue pendant la préparation de la requète de comptage des sites.</p>';
 		// fin de l'affichage de la colonne de droite
-		echo "</td></tr></table>\n</body>\n</html>\n";
+		end_page();
 		die();
 	}
 }
@@ -150,7 +153,7 @@ function read_sites()
 		if ($res)
 		{
 			// Affichage de l'entête du tableau
-			echo '      <table border="1" cellpadding="3">
+			echo '      <table class="table-bordered">
 			<tr>
 				<th>'.get_vocab('action').'</th>
 				<th>'.get_vocab('site_code').'</th>
@@ -162,8 +165,8 @@ function read_sites()
 			{
 				echo '        <tr>
 				<td>
-					<a href="admin_site.php?action=update&amp;id='.$row[0].'"><span class=\'glyphicon glyphicon-edit\'></a>
-					<a href="admin_site.php?action=delete&amp;id='.$row[0].'"><span class=\'glyphicon glyphicon-trash\'></a>';
+					<a href="admin_site.php?action=update&amp;id='.$row[0].'"><span class=\'glyphicon glyphicon-edit\'></span></a>
+					<a href="admin_site.php?action=delete&amp;id='.$row[0].'"><span class=\'glyphicon glyphicon-trash\'></span></a>';
 					//echo '            <a href="admin_site.php?action=right&amp;id='.$row[0].'"><img class=\"image\" title="'.get_vocab('privileges').'" alt="'.get_vocab('privileges').'" src="../img_grr/rights.png" /></a>';
 					echo '          </td>
 					<td>'.$row[1].'</td>
@@ -176,13 +179,10 @@ function read_sites()
 		}
 		else
 		{
-			echo '      <p>Une erreur est survenue pendant la préparation de la requète de lecture des sites.</p>';
-			// fin de l'affichage de la colonne de droite
-			echo "</td></tr></table>\n</body>\n</html>\n";
-			die();
+			echo '      <p>Une erreur est survenue pendant la préparation de la requête de lecture des sites.</p>';
 		}
-		// fin de l'affichage de la colonne de droite
-		echo "</td></tr></table>\n</body>\n</html>\n";
+		// fin de l'affichage de la colonne de droite et de la page
+		echo "</div></section></body></html>";
 		die();
 	}
 }
@@ -238,147 +238,148 @@ function update_site($id)
 			echo get_vocab("required");
 			// Sinon, il faut valider le formulaire
 		}
-		else
-		{
-			if (!isset($id))
-				$id = isset($_POST['id']) ? $_POST['id'] :  NULL;
-			if (!isset($sitecode))
-				$sitecode = isset($_POST['sitecode']) ? $_POST['sitecode'] : NULL;
-			if (!isset($sitename))
-				$sitename = isset($_POST['sitename']) ? $_POST['sitename'] :  NULL;
-			if (!isset($adresse_ligne1))
-				$adresse_ligne1 = isset($_POST['adresse_ligne1']) ? $_POST['adresse_ligne1'] :  NULL;
-			if (!isset($adresse_ligne2))
-				$adresse_ligne2 = isset($_POST['adresse_ligne2']) ? $_POST['adresse_ligne2'] :  NULL;
-			if (!isset($adresse_ligne3))
-				$adresse_ligne3 = isset($_POST['adresse_ligne3']) ? $_POST['adresse_ligne3'] :  NULL;
-			if (!isset($cp))
-				$cp = isset($_POST['cp']) ? $_POST['cp'] :  NULL;
-			if (!isset($ville))
-				$ville = isset($_POST['ville']) ? $_POST['ville'] :  NULL;
-			if (!isset($pays))
-				$pays = isset($_POST['pays']) ? $_POST['pays'] :  NULL;
-			if (!isset($tel))
-				$tel = isset($_POST['tel']) ? $_POST['tel'] :  NULL;
-			if (!isset($fax))
-				$fax = isset($_POST['fax']) ? $_POST['fax'] :  NULL;
-		 	// On vérifie que le code et le nom du site ont été renseignés
-			if ($sitecode == '' || $sitecode == NULL || $sitename == '' || $sitename==NULL)
-			{
-				$_POST['save'] = 'no';
-				$_GET['save'] = 'no';
-				echo '<span class="avertissement">'.get_vocab('required').'</span>';
-			}
-			// Sauvegarde du record
-			if ((isset($_POST['save']) && ($_POST['save']!='no')) || ((isset($_GET['save'])) && ($_GET['save']!='no')))
-			{
-				$sql = "UPDATE ".TABLE_PREFIX."_site
-				SET sitecode='".strtoupper(protect_data_sql($sitecode))."',
-				sitename='".protect_data_sql($sitename)."',
-				adresse_ligne1='".protect_data_sql($adresse_ligne1)."',
-				adresse_ligne2='".protect_data_sql($adresse_ligne2)."',
-				adresse_ligne3='".protect_data_sql($adresse_ligne3)."',
-				cp='".protect_data_sql($cp)."',
-				ville='".strtoupper(protect_data_sql($ville))."',
-				pays='".strtoupper(protect_data_sql($pays))."',
-				tel='".protect_data_sql($tel)."',
-				fax='".protect_data_sql($fax)."'
-				WHERE id='".$id."'";
-				if (grr_sql_command($sql) < 0)
-					fatal_error(0,'<p>'.grr_sql_error().'</p>');
-				mysqli_insert_id($GLOBALS['db_c']);
-			}
-			// On affiche le tableau des sites
-			read_sites();
-		}
-	}
-	function delete_site($id)
-	{
-		if (!(isset($_GET['confirm'])))
-		{
-			echo '<h2>'.get_vocab('supprimer site').'</h2>';
-			echo '<h2 style="text-align:center;">' .  get_vocab('sure') . '</h2>';
-			echo '<h2 style="text-align:center;"><a href="admin_site.php?action=delete&amp;id='.$id.'&amp;confirm=yes">' . get_vocab('YES') . '!</a>     <a href="admin_site.php?action=delete&amp;id='.$id.'&amp;confirm=no">' . get_vocab('NO') . '!</a></h2>';
-		}
-		else
-		{
-			if ($_GET['confirm'] == 'yes')
-			{
-				grr_sql_command("delete from ".TABLE_PREFIX."_site where id='".$_GET['id']."'");
-				grr_sql_command("delete from ".TABLE_PREFIX."_j_site_area where id_site='".$_GET['id']."'");
-				grr_sql_command("delete from ".TABLE_PREFIX."_j_useradmin_site where id_site='".$_GET['id']."'");
-				grr_sql_command("update ".TABLE_PREFIX."_utilisateurs set default_site = '-1' where default_site='".$_GET['id']."'");
-				$test = grr_sql_query1("select VALUE from ".TABLE_PREFIX."_setting where NAME='default_site'");
-				if ($test == $_GET['id'])
-					grr_sql_command("delete from ".TABLE_PREFIX."_setting where NAME='default_site'");
-				// On affiche le tableau des sites
-				read_sites();
-			}
-			else
-			{
-				// On affiche le tableau des sites
-				read_sites();
-			}
-		}
-	}
-	function check_right($id)
-	{
-		echo 'Vous voulez vérifier les droits pour l\'identifiant '.$id;
-	}
-	// Debut de l'affichage de la page
-	include_once('../include/admin.inc.php');
-	$grr_script_name = 'admin_site.php';
-	if (authGetUserLevel(getUserName(), -1, 'site') < 4)
-	{
-		$back = '';
-		if (isset($_SERVER['HTTP_REFERER']))
-			$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-		showAccessDenied($back);
-		exit();
-	}
-	$back = "";
-	if (isset($_SERVER['HTTP_REFERER']))
-		$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-	// print the page header
-	print_header("", "", "", $type="with_session");
-	// Affichage de la colonne de gauche
-	include_once('admin_col_gauche.php');
-	if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes') )
-	{
-		$msg = $_GET['msg'];
-		affiche_pop_up($msg,'admin');
-	}
-	else
-		$msg = '';
-	// Lecture des paramètres passés à la page
-	$id_site = isset($_POST['id']) ? $_POST['id'] : (isset($_GET['id']) ? $_GET['id'] : NULL);
-	$action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GET['action'] : NULL);
-	if ($action == NULL)
-		$action = 'read';
-	// SWITCH sur l'action (CRUD)
-	switch($action)
-	{
-		case 'create':
-		create_site($id_site);
-		break;
-		case 'read':
-		read_sites();
-		break;
-		case 'update':
-		update_site($id_site);
-		break;
-		case 'delete':
-		delete_site($id_site);
-		break;
-		case 'right':
-		check_right($id_site);
-		break;
-		default:
-		read_sites();
-		break;
-	}
-	// fin de l'affichage de la colonne de droite
-	echo "</td></tr></table>\n";
-	?>
-</body>
-</html>
+    else
+    {
+        if (!isset($id))
+            $id = isset($_POST['id']) ? $_POST['id'] :  NULL;
+        if (!isset($sitecode))
+            $sitecode = isset($_POST['sitecode']) ? $_POST['sitecode'] : NULL;
+        if (!isset($sitename))
+            $sitename = isset($_POST['sitename']) ? $_POST['sitename'] :  NULL;
+        if (!isset($adresse_ligne1))
+            $adresse_ligne1 = isset($_POST['adresse_ligne1']) ? $_POST['adresse_ligne1'] :  NULL;
+        if (!isset($adresse_ligne2))
+            $adresse_ligne2 = isset($_POST['adresse_ligne2']) ? $_POST['adresse_ligne2'] :  NULL;
+        if (!isset($adresse_ligne3))
+            $adresse_ligne3 = isset($_POST['adresse_ligne3']) ? $_POST['adresse_ligne3'] :  NULL;
+        if (!isset($cp))
+            $cp = isset($_POST['cp']) ? $_POST['cp'] :  NULL;
+        if (!isset($ville))
+            $ville = isset($_POST['ville']) ? $_POST['ville'] :  NULL;
+        if (!isset($pays))
+            $pays = isset($_POST['pays']) ? $_POST['pays'] :  NULL;
+        if (!isset($tel))
+            $tel = isset($_POST['tel']) ? $_POST['tel'] :  NULL;
+        if (!isset($fax))
+            $fax = isset($_POST['fax']) ? $_POST['fax'] :  NULL;
+        // On vérifie que le code et le nom du site ont été renseignés
+        if ($sitecode == '' || $sitecode == NULL || $sitename == '' || $sitename==NULL)
+        {
+            $_POST['save'] = 'no';
+            $_GET['save'] = 'no';
+            echo '<span class="avertissement">'.get_vocab('required').'</span>';
+        }
+        // Sauvegarde du record
+        if ((isset($_POST['save']) && ($_POST['save']!='no')) || ((isset($_GET['save'])) && ($_GET['save']!='no')))
+        {
+            $sql = "UPDATE ".TABLE_PREFIX."_site
+            SET sitecode='".strtoupper(protect_data_sql($sitecode))."',
+            sitename='".protect_data_sql($sitename)."',
+            adresse_ligne1='".protect_data_sql($adresse_ligne1)."',
+            adresse_ligne2='".protect_data_sql($adresse_ligne2)."',
+            adresse_ligne3='".protect_data_sql($adresse_ligne3)."',
+            cp='".protect_data_sql($cp)."',
+            ville='".strtoupper(protect_data_sql($ville))."',
+            pays='".strtoupper(protect_data_sql($pays))."',
+            tel='".protect_data_sql($tel)."',
+            fax='".protect_data_sql($fax)."'
+            WHERE id='".$id."'";
+            if (grr_sql_command($sql) < 0)
+                fatal_error(0,'<p>'.grr_sql_error().'</p>');
+            mysqli_insert_id($GLOBALS['db_c']);
+        }
+        // On affiche le tableau des sites
+        read_sites();
+    }
+}
+function delete_site($id)
+{
+    if (!(isset($_GET['confirm'])))
+    {
+        echo '<h2>'.get_vocab('supprimer site').'</h2>';
+        echo '<h2 style="text-align:center;">' .  get_vocab('sure') . '</h2>';
+        echo '<h2 style="text-align:center;"><a href="admin_site.php?action=delete&amp;id='.$id.'&amp;confirm=yes">' . get_vocab('YES') . '!</a>     <a href="admin_site.php?action=delete&amp;id='.$id.'&amp;confirm=no">' . get_vocab('NO') . '!</a></h2>';
+    }
+    else
+    {
+        if ($_GET['confirm'] == 'yes')
+        {
+            grr_sql_command("delete from ".TABLE_PREFIX."_site where id='".$_GET['id']."'");
+            grr_sql_command("delete from ".TABLE_PREFIX."_j_site_area where id_site='".$_GET['id']."'");
+            grr_sql_command("delete from ".TABLE_PREFIX."_j_useradmin_site where id_site='".$_GET['id']."'");
+            grr_sql_command("update ".TABLE_PREFIX."_utilisateurs set default_site = '-1' where default_site='".$_GET['id']."'");
+            $test = grr_sql_query1("select VALUE from ".TABLE_PREFIX."_setting where NAME='default_site'");
+            if ($test == $_GET['id'])
+                grr_sql_command("delete from ".TABLE_PREFIX."_setting where NAME='default_site'");
+            // On affiche le tableau des sites
+            read_sites();
+        }
+        else
+        {
+            // On affiche le tableau des sites
+            read_sites();
+        }
+    }
+}
+function check_right($id)
+{
+    echo 'Vous voulez vérifier les droits pour l\'identifiant '.$id;
+}
+
+include_once('../include/admin.inc.php');
+$grr_script_name = 'admin_site.php';
+if (authGetUserLevel(getUserName(), -1, 'site') < 4)
+{
+    $back = '';
+    if (isset($_SERVER['HTTP_REFERER']))
+        $back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+    showAccessDenied($back);
+    exit();
+}
+$back = "";
+if (isset($_SERVER['HTTP_REFERER']))
+    $back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+// print the page header
+start_page_w_header("", "", "", $type="with_session");
+// Affichage de la colonne de gauche
+include_once('admin_col_gauche2.php');
+// colonne de droite
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
+if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes') )
+{
+    $msg = $_GET['msg'];
+    affiche_pop_up($msg,'admin');
+}
+else
+    $msg = '';
+// Lecture des paramètres passés à la page
+$id_site = isset($_POST['id']) ? $_POST['id'] : (isset($_GET['id']) ? $_GET['id'] : NULL);
+$action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GET['action'] : NULL);
+if ($action == NULL)
+    $action = 'read';
+// SWITCH sur l'action (CRUD)
+switch($action)
+{
+    case 'create':
+    create_site($id_site);
+    break;
+    case 'read':
+    read_sites();
+    break;
+    case 'update':
+    update_site($id_site);
+    break;
+    case 'delete':
+    delete_site($id_site);
+    break;
+    case 'right':
+    check_right($id_site);
+    break;
+    default:
+    read_sites();
+    break;
+}
+// fin de l'affichage de la colonne de droite
+echo "</div>\n";
+end_page();
+?>

@@ -3,8 +3,8 @@
  * admin_type.php
  * Interface de gestion des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Laurent Delineau
+ * Dernière modification : $Date: 2018-08-25 11:30$
+ * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,8 +15,10 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-include "../include/admin.inc.php";
 $grr_script_name = "admin_type.php";
+
+include "../include/admin.inc.php";
+
 $back = "";
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
@@ -25,8 +27,7 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
 	$msg = $_GET['msg'];
 else
 	$msg = '';
-print_header("", "", "", $type="with_session");
-include "admin_col_gauche.php";
+
 if ((isset($_GET['action_del'])) && ($_GET['js_confirmed'] == 1) && ($_GET['action_del'] = 'yes'))
 {
 	// faire le test si il existe une réservation en cours avec ce type de réservation
@@ -47,6 +48,10 @@ if ((isset($_GET['action_del'])) && ($_GET['js_confirmed'] == 1) && ($_GET['acti
 			fatal_error(1, "<p>" . grr_sql_error());
 	}
 }
+// code HTML
+start_page_w_header("", "", "", $type="with_session");
+include "admin_col_gauche2.php";
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 affiche_pop_up($msg,"admin");
 echo "<h2>".get_vocab('admin_type.php')."</h2>";
 echo get_vocab('admin_type_explications');
@@ -61,13 +66,12 @@ $res = grr_sql_query($sql);
 $nb_lignes = grr_sql_count($res);
 if ($nb_lignes == 0)
 {
-	// fin de l'affichage de la colonne de droite
-	echo "</td></tr></table>";
-	echo "</body></html>";
+	// fin de l'affichage de la colonne de droite et de la page
+	echo "</div></section></body></html>";
 	die();
 }
 // Affichage du tableau
-echo "<table border=\"1\" cellpadding=\"3\"><tr>\n";
+echo "<table class='table table-bordered'><tr>\n";
 // echo "<tr><td><b>".get_vocab("type_num")."</a></b></td>\n";
 echo "<td><b>".get_vocab("type_num")."</b></td>\n";
 echo "<td><b>".get_vocab("type_name")."</b></td>\n";
@@ -107,7 +111,7 @@ if ($res)
 			echo get_vocab("only_administrators");
 		echo "</td>\n";
 		$themessage = get_vocab("confirm_del");
-		echo "<td><a href='admin_type.php?&amp;type_del={$col[$i][2]}&amp;action_del=yes' onclick='return confirmlink(this, \"{$col[$i][1]}\", \"$themessage\")'>".get_vocab("delete")."</a></td>";
+		echo "<td><a href='admin_type.php?&amp;type_del={$col[$i][2]}&amp;action_del=yes' onclick='return confirmlink(this, \"{$col[$i][1]}\", \"$themessage\")'><span class='glyphicon glyphicon-trash'></span></a></td>";
 	// Fin de la ligne courante
 		echo "</tr>";
 	}
@@ -132,8 +136,6 @@ if ($res)
 		echo "<br /><br />Vous devez donc définir ci-dessus, le ou les types manquants.</p></td></tr></table>";
 	}
 }
-// fin de l'affichage de la colonne de droite
-echo "</td></tr></table>";
+// fin de l'affichage de la colonne de droite et de la page
+echo "</div></section></body></html>";
 ?>
-</body>
-</html>

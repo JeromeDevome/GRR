@@ -3,8 +3,8 @@
  * admin_type_area.php
  * interface de gestion des types de réservations pour un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-08-24 18:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,9 +15,10 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "admin_type_area.php";
 
 include "../include/admin.inc.php";
-$grr_script_name = "admin_type_area.php";
+
 // Initialisation
 $id_area = isset($_GET["id_area"]) ? $_GET["id_area"] : NULL;
 $back = '';
@@ -40,8 +41,9 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
 	$msg = $_GET['msg'];
 else
 	$msg = '';
-print_header("", "", "", $type="with_session");
-include "admin_col_gauche.php";
+// code HTML
+//start_page_w_header("", "", "", $type="with_session");
+//include "admin_col_gauche2.php";
 $sql = "SELECT id, type_name, order_display, couleurhexa, type_letter FROM ".TABLE_PREFIX."_type_area
 ORDER BY order_display, type_letter";
 //
@@ -91,27 +93,30 @@ if (isset($_GET['valider']))
 	// On enregistre le nouveau type par défaut :
 	$reg_type_par_defaut = grr_sql_query("UPDATE ".TABLE_PREFIX."_area SET id_type_par_defaut='".$_GET['id_type_par_defaut']."' WHERE id='".$id_area."'");
 }
+
+// code HTML
+start_page_w_header("", "", "", $type="with_session");
+include "admin_col_gauche2.php";
 affiche_pop_up($msg,"admin");
 $area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id='".$id_area."'");
-echo "<div class=\"page_sans_col_gauche\">";
+echo "<div class=\"col-md-9 col-sm-8 col-xs-12\">";
 echo "<h2>".get_vocab('admin_type.php')."</h2>";
-echo "<h2>".get_vocab("match_area").get_vocab('deux_points')." ".$area_name."</h2>";
+echo "<h3>".get_vocab("match_area").get_vocab('deux_points')." ".$area_name."</h3>";
 $res = grr_sql_query($sql);
 $nb_lignes = grr_sql_count($res);
 if ($nb_lignes == 0)
 {
-	echo "</body></html>";
+	echo "</div></section></body></html>";
 	die();
 }
 echo "<form action=\"admin_type_area.php\" id=\"type\" method=\"get\">\n";
-echo "<table>";
+echo "<p>";
 if (authGetUserLevel(getUserName(),-1) >= 6)
-	echo "<tr><td><a href=\"admin_type_modify.php?id=0\">".get_vocab("display_add_type")."</a></td></tr>";
-echo "<tr><td>".get_vocab("explications_active_type")."</td></tr>";
-echo "<tr><td>\n";
+	echo "<a href=\"admin_type_modify.php?id=0\">".get_vocab("display_add_type")."</a>";
+echo "</p><p>".get_vocab("explications_active_type")."</p>";
+
 // Affichage du tableau
-echo "<table border=\"1\" cellpadding=\"3\"><tr>\n";
-// echo "<tr><td><b>".get_vocab("type_num")."</a></b></td>\n";
+echo "<table class='table table-bordered'><tr>\n";
 echo "<td><b>".get_vocab("type_num")."</b></td>\n";
 echo "<td><b>".get_vocab("type_name")."</b></td>\n";
 echo "<td><b>".get_vocab("type_color")."</b></td>\n";
@@ -166,13 +171,11 @@ if ($res)
 	echo "</tr>";
 }
 echo "</table>";
-echo "</td></tr></table>";
-echo "<div style=\"text-align:center;\"><input type=\"hidden\" name=\"id_area\" value=\"".$id_area."\" />";
+echo "<div class='center'><input type=\"hidden\" name=\"id_area\" value=\"".$id_area."\" />";
 echo "<input type=\"submit\" name=\"valider\" value=\"".get_vocab("save")."\" />\n";
 echo "   <input type=\"submit\" name=\"change_done\" value=\"".get_vocab("back")."\" />";
 echo "</div>";
 echo "</form>\n";
 echo "</div>";
+end_page();
 ?>
-</body>
-</html>

@@ -3,8 +3,8 @@
  * admin_room_del
  * Interface de confirmation de suppression d'un domaine ou d'une ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-08-24 18:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,9 +15,10 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "admin_room_del.php";
 
 include "../include/admin.inc.php";
-$grr_script_name = "admin_room_del.php";
+
 $type = isset($_GET["type"]) ? $_GET["type"] : NULL;
 $confirm = isset($_GET["confirm"]) ? $_GET["confirm"] : NULL;
 $room = isset($_GET["room"]) ? $_GET["room"] : NULL;
@@ -54,8 +55,8 @@ if ($type == "room")
 	else
 	{
 		//print the page header
-		print_header("", "", "", $type="with_session");
-		echo "<div class=\"page_sans_col_gauche\">";
+		start_page_w_header("", "", "", $type="with_session");
+		echo "<div class='container'>";
 		//We tell them how bad what theyre about to do is
 		//Find out how many appointments would be deleted
 		$sql = "SELECT name, start_time, end_time FROM ".TABLE_PREFIX."_entry WHERE room_id=$room";
@@ -64,7 +65,7 @@ if ($type == "room")
 			echo grr_sql_error();
 		else if (grr_sql_count($res) > 0)
 		{
-			echo get_vocab("deletefollowing") . ":<ul>";
+			echo "<p class='avertissement larger'>".get_vocab("deletefollowing")." :</p><ul>";
 			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 			{
 				echo "<li>$row[0] (";
@@ -73,8 +74,8 @@ if ($type == "room")
 			}
 			echo "</ul>";
 		}
-		echo "<h1 style=\"text-align:center;\">" . get_vocab("sure") . "</h1>";
-		echo "<h1 style=\"text-align:center;\"><a href=\"admin_room_del.php?type=room&amp;room=$room&amp;confirm=Y&amp;id_area=$id_area\">" . get_vocab("YES") . "!</a>     <a href=\"admin_room.php?id_area=$id_area\">" . get_vocab("NO") . "!</a></h1>";
+		echo "<h1 class='center'>" . get_vocab("sure") . "</h1>";
+		echo "<h1 class='center'><a href=\"admin_room_del.php?type=room&amp;room=$room&amp;confirm=Y&amp;id_area=$id_area\">" . get_vocab("YES") . "!</a>     <a href=\"admin_room.php?id_area=$id_area\">" . get_vocab("NO") . "!</a></h1>";
 		echo "</div>";
 	}
 }
@@ -123,18 +124,17 @@ if ($type == "area")
 		}
 		//Redirect back to the admin page
 		header("Location: admin_room.php?id_site=$id_site");
+        die();
 	}
 	else
 	{
 		//There are rooms left in the area
 		//print the page header
-		print_header("", "", "", $type="with_session");
-		//print_banner("", "", "", "", $type = "with_session", $page = "admin");
-		echo "<div class=\"page_sans_col_gauche\">";
-		echo "<p>".get_vocab('delarea');
-		echo "<br /><a href=\"admin_room.php?id_area=$id_area&amp;id_site=$id_site\">" . get_vocab('back') . "</a></p></div>";
+		start_page_w_header("", "", "", $type="with_session");
+		echo "<div class=\"container\">";
+		echo "<p class='avertissement larger'>".get_vocab('delarea')."</p>";
+		echo "<p><a href=\"admin_room.php?id_area=$id_area&amp;id_site=$id_site\">" . get_vocab('back') . "</a></p></div>";
 	}
 }
+end_page();
 ?>
-</body>
-</html>
