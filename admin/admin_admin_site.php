@@ -3,8 +3,8 @@
  * admin_admin_site.php
  * Interface de gestion des administrateurs de sites de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-08-29 11:30$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,9 +15,10 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "admin_admin_site.php";
 
 include "../include/admin.inc.php";
-$grr_script_name = "admin_admin_site.php";
+
 $id_site = isset($_POST["id_site"]) ? $_POST["id_site"] : (isset($_GET["id_site"]) ? $_GET["id_site"] : NULL);
 if (empty($id_site))
 	$id_site = get_default_site();
@@ -32,10 +33,7 @@ if (Settings::get("module_multisite") != "Oui")
 	showAccessDenied($back);
 	exit();
 }
-# print the page header
-print_header("", "", "", $type="with_session");
-// Affichage de la colonne de gauche
-include "admin_col_gauche.php";
+
 $reg_admin_login = isset($_GET["reg_admin_login"]) ? $_GET["reg_admin_login"] : NULL;
 $action = isset($_GET["action"]) ? $_GET["action"] : NULL;
 $msg = '';
@@ -66,16 +64,22 @@ if ($action)
 			$msg = get_vocab("del_user_succeed");
 	}
 }
-
+# print the page header
+start_page_w_header("", "", "", $type="with_session");
+// Affichage de la colonne de gauche
+include "admin_col_gauche2.php";
+// colonne de droite
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 echo "<h2>".get_vocab('admin_admin_site.php')."</h2>";
 echo "<p><i>".get_vocab("admin_admin_site_explain")."</i></p>";
 // Affichage d'un pop-up
 affiche_pop_up($msg,"admin");
-echo "<table><tr>";
-$this_site_name = "";
 # liste des sites
-echo "<td ><p><b>".get_vocab("sites").get_vocab("deux_points")."</b></p>\n";
-$out_html = "<form id=\"site\" action=\"admin_admin_site.php\" method=\"post\">\n<div><select name=\"id_site\" onchange=\"site_go()\">\n";
+$this_site_name = "";
+echo "<p>";
+$out_html = "<form id=\"site\" action=\"admin_admin_site.php\" method=\"post\">\n<div>";
+$out_html .= "<label>".get_vocab('sites').get_vocab('deux_points')."&nbsp; </label>";
+$out_html .= "<select name=\"id_site\" onchange=\"site_go()\">\n";
 $out_html .= "<option value=\"admin_admin_site.php?id_site=-1\">".get_vocab('select')."</option>";
 $sql = "select id, sitename from ".TABLE_PREFIX."_site order by sitename";
 $res = grr_sql_query($sql);
@@ -104,74 +108,62 @@ if ($res)
 </form>";
 echo $out_html;
 $this_site_name = grr_sql_query1("select sitename from ".TABLE_PREFIX."_site where id=$id_site");
-echo "</td>\n";
-echo "</tr></table>\n";
+echo "</p>";
 # Ne pas continuer si aucun site n'est défini
 if ($id_site <= 0)
 {
 	echo "<h1>".get_vocab("no_site")."</h1>";
 	// fin de l'affichage de la colonne de droite
-	echo "</td></tr></table></body></html>";
+	echo "</div></section></body></html>";
 	exit;
 }
 
-echo "<table border=\"1\" cellpadding=\"5\"><tr><td>";
+echo "<table class='table-bordered'><tr><td>";
 $is_admin = 'yes';
 echo "<h3>".get_vocab("administration_site").get_vocab("deux_points")."</h3>";
 echo "<b>".$this_site_name."</b>";
-
-?>
-</td>
-<td>
-	<?php
-	$exist_admin = 'no';
-	$sql = "select login, nom, prenom from ".TABLE_PREFIX."_utilisateurs where (statut='utilisateur' or statut='gestionnaire_utilisateur')";
-	$res = grr_sql_query($sql);
-	if ($res)
-		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-		{
-			$is_admin = 'yes';
-			$sql3 = "SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site WHERE (id_site='".$id_site."' and login='".$row[0]."')";
-			$res3 = grr_sql_query($sql3);
-			$nombre = grr_sql_count($res3);
-			if ($nombre == 0)
-				$is_admin = 'no';
-			if ($is_admin == 'yes')
-			{
-				if ($exist_admin == 'no')
-				{
-					echo "<h3>".get_vocab("user_admin_site_list").get_vocab("deux_points")."</h3>";
-					$exist_admin='yes';
-				}
-				echo "<b>";
-				echo "$row[1] $row[2]</b> | <a href='admin_admin_site.php?action=del_admin&amp;login_admin=".urlencode($row[0])."&amp;id_site=$id_site'>".get_vocab("delete")."</a><br />";
-			}
-		}
-		if ($exist_admin=='no')
-			echo "<h3><span class=\"avertissement\">".get_vocab("no_admin_this_site")."</span></h3>";
-		?>
-		<h3>
-			<?php echo get_vocab("add_user_to_list"); ?>
-		</h3>
-		<form action="admin_admin_site.php" method='get'>
-			<div><select size="1" name="reg_admin_login">
-				<option value=''><?php echo get_vocab("nobody"); ?></option>
-				<?php
-				$sql = "SELECT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE  (etat!='inactif' and (statut='utilisateur' or statut='gestionnaire_utilisateur')) order by nom, prenom";
-				$res = grr_sql_query($sql);
-				if ($res)
-					for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-						echo "<option value='$row[0]'>$row[1]  $row[2] </option>";
-					?>
-				</select>
-				<input type="hidden" name="id_site" value="<?php echo $id_site; ?>" />
-				<input type="submit" value="Enregistrer" />
-			</div></form>
-		</td></tr></table>
-
-		<?php
+echo "</td><td>";
+$exist_admin = 'no';
+$sql = "select login, nom, prenom from ".TABLE_PREFIX."_utilisateurs where (statut='utilisateur' or statut='gestionnaire_utilisateur')";
+$res = grr_sql_query($sql);
+if ($res)
+    for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+    {
+        $is_admin = 'yes';
+        $sql3 = "SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site WHERE (id_site='".$id_site."' and login='".$row[0]."')";
+        $res3 = grr_sql_query($sql3);
+        $nombre = grr_sql_count($res3);
+        if ($nombre == 0)
+            $is_admin = 'no';
+        if ($is_admin == 'yes')
+        {
+            if ($exist_admin == 'no')
+            {
+                echo "<h3>".get_vocab("user_admin_site_list").get_vocab("deux_points")."</h3>";
+                $exist_admin='yes';
+            }
+            echo "<b>";
+            echo "$row[1] $row[2]</b> | <a href='admin_admin_site.php?action=del_admin&amp;login_admin=".urlencode($row[0])."&amp;id_site=$id_site'>".get_vocab("delete")."</a><br />";
+        }
+    }
+if ($exist_admin=='no')
+    echo "<h3><span class=\"avertissement\">".get_vocab("no_admin_this_site")."</span></h3>";
+echo '<h3>'.get_vocab("add_user_to_list").'</h3>';
+echo '<form action="admin_admin_site.php" method="get">';
+    echo '<select size="1" name="reg_admin_login">';
+    echo '    <option value="">'.get_vocab("nobody").'</option>';
+    $sql = "SELECT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE  (etat!='inactif' and (statut='utilisateur' or statut='gestionnaire_utilisateur')) order by nom, prenom";
+    $res = grr_sql_query($sql);
+    if ($res)
+        for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+            echo "<option value='$row[0]'>$row[1]  $row[2] </option>";
+    echo '</select>';
+    echo '<input type="hidden" name="id_site" value="'.$id_site.'"/>';
+    echo '<input type="submit" value="Enregistrer" />';
+    echo '</form>';
+echo '</td></tr></table>';
 // fin de l'affichage de la colonne de droite
-		echo "</td></tr></table>";
-		?>
-	</body>
-	</html>
+echo "</div>";
+// et de la page
+end_page();
+?>

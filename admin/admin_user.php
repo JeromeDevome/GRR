@@ -3,8 +3,8 @@
  * admin_user.php
  * interface de gestion des utilisateurs de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-08-27 16:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,9 +15,10 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "admin_user.php";
 
 include "../include/admin.inc.php";
-$grr_script_name = "admin_user.php";
+
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
@@ -33,8 +34,8 @@ if ((isset($_GET['action_del'])) && ($_GET['js_confirmed'] == 1))
 {
 	VerifyModeDemo();
 }
-print_header("", "", "", $type="with_session");
-include "admin_col_gauche.php";
+/* print_header("", "", "", $type="with_session");
+include "admin_col_gauche.php"; */
 // Enregistrement de allow_users_modify_profil
 // Un gestionnaire d'utilisateurs ne peut pas Autoriser ou non la modification par un utilisateur de ses informations personnelles
 if ((isset($_GET['action'])) && ($_GET['action'] == "modif_profil") && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
@@ -232,8 +233,12 @@ if ((isset($_GET['action_del'])) and ($_GET['js_confirmed'] == 1))
 		}
 	}
 }
+// code html
+start_page_w_header("", "", "", $type="with_session");
+include "admin_col_gauche2.php";
 if (isset($mess) and ($mess != ""))
 	echo "<p>".$mess."</p>";
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 echo "<h2>".get_vocab('admin_user.php')."</h2>";
 if (empty($display))
 {
@@ -243,12 +248,17 @@ if (empty($order_by))
 {
 	$order_by = 'nom,prenom';
 }
-?>
-| <a href="admin_user_modify.php?display=<?php echo $display; ?>"><?php echo get_vocab("display_add_user"); ?></a> |
-<a href="admin_import_users_csv.php"><?php echo get_vocab("display_add_user_list_csv"); ?></a> |
- <a href="admin_import_users_elycee.php">Importer des utilisateurs depuis elycée</a> |
- <a href="admin_user_mdp_facile.php"><?php echo get_vocab("admin_user_mdp_facile"); ?></a> |
-<?php
+//menu de choix des traitements d'utilisateurs
+echo "<table class='table-noborder center'>\n";
+echo "<tbody>\n";
+echo "<tr>";
+echo '
+  <td><div class="onglet"><a href="admin_user_modify.php?display='.$display.'">'.get_vocab("display_add_user").'</a></div></td>
+  <td><div class="onglet"><a href="admin_import_users_csv.php">'.get_vocab("display_add_user_list_csv").'</a></div></td>
+  <td><div class="onglet"><a href="admin_import_users_elycee.php">Importer des utilisateurs depuis elycée</a></div></td>
+  <td><div class="onglet"><a href="admin_user_mdp_facile.php">'.get_vocab("admin_user_mdp_facile").'</a></div></td>';
+echo "</tr></tbody></table>".PHP_EOL;
+echo "<h4>".get_vocab('admin_user1')."</h4>";
 // On propose de supprimer les utilisateurs ext de GRR qui ne sont plus présents dans la base LCS
 if (Settings::get("sso_statut") == "lcs")
 {
@@ -260,7 +270,7 @@ if (Settings::get("sso_statut") == "lcs")
 if (authGetUserLevel(getUserName(),-1,'user') !=  1)
 {
 	echo "<form action=\"admin_user.php\" method=\"get\">\n";
-	echo "<table border=\"1\">\n";
+	echo "<table class='table-bordered'>\n";
 	echo "<tr>\n";
 	echo "<td>".get_vocab("modification_parametres_personnels").get_vocab("deux_points")."<select name=\"allow_users_modify_profil\" size=\"1\">\n";
 	echo "<option value = '1' ";
@@ -276,17 +286,16 @@ if (authGetUserLevel(getUserName(),-1,'user') !=  1)
 		echo " selected=\"selected\"";
 	echo ">".get_vocab("only_administrators")."</option>\n";
 	echo "</select>";
-	echo "</td>\n<td><div><input type=\"submit\" value=\"".get_vocab("OK")."\" /></div></td></tr></table>\n";
-	echo "<div><input type=\"hidden\" name=\"action\" value=\"modif_profil\" />\n
-	<input type=\"hidden\" name=\"display\" value=\"$display\" /></div>
-</form>\n";
+	echo "<input type=\"submit\" value=\"".get_vocab("OK")."\" /></td></tr></table>\n";
+	echo "<input type=\"hidden\" name=\"action\" value=\"modif_profil\" />\n
+	<input type=\"hidden\" name=\"display\" value=\"$display\" /></form>\n";
 }
 // Autoriser ou non la modification par un utilisateur de son email
 // Par ailleurs un gestionnaire d'utilisateurs ne peut pas Autoriser ou non la modification par un utilisateur de ses informations personnelles
 if (authGetUserLevel(getUserName(), -1, 'user') != 1)
 {
 	echo "<form action=\"admin_user.php\" method=\"get\">\n";
-	echo "<table border=\"1\">\n";
+	echo "<table class='table-bordered'>\n";
 	echo "<tr>\n";
 	echo "<td>".get_vocab("modification_parametre_email").get_vocab("deux_points")."<select name=\"allow_users_modify_email\" size=\"1\">\n";
 	echo "<option value = '1' ";
@@ -302,17 +311,16 @@ if (authGetUserLevel(getUserName(), -1, 'user') != 1)
 		echo " selected=\"selected\"";
 	echo ">".get_vocab("only_administrators")."</option>\n";
 	echo "</select>";
-	echo "</td>\n<td><div><input type=\"submit\" value=\"".get_vocab("OK")."\" /></div></td></tr></table>\n";
-	echo "<div><input type=\"hidden\" name=\"action\" value=\"modif_email\" />\n
-	<input type=\"hidden\" name=\"display\" value=\"$display\" /></div>
-</form>\n";
+	echo "<input type=\"submit\" value=\"".get_vocab("OK")."\" /></td></tr></table>\n";
+	echo "<input type=\"hidden\" name=\"action\" value=\"modif_email\" />\n
+	<input type=\"hidden\" name=\"display\" value=\"$display\" /></form>\n";
 }
 // Autoriser ou non la modification par un utilisateur de son mot de passe,
 // Par ailleurs un gestionnaire d'utilisateurs ne peut pas Autoriser ou non la modification par un utilisateur de son mot de passe
 if (authGetUserLevel(getUserName(), -1, 'user') != 1)
 {
 	echo "<form action=\"admin_user.php\" method=\"get\">\n";
-	echo "<table border=\"1\">\n";
+	echo "<table class='table-bordered'>\n";
 	echo "<tr>\n";
 	echo "<td>".get_vocab("modification_mdp").get_vocab("deux_points")."<select name=\"allow_users_modify_mdp\" size=\"1\">\n";
 	echo "<option value = '1' ";
@@ -328,38 +336,44 @@ if (authGetUserLevel(getUserName(), -1, 'user') != 1)
 		echo " selected=\"selected\"";
 	echo ">".get_vocab("only_administrators")."</option>\n";
 	echo "</select>";
-	echo "</td>\n<td><div><input type=\"submit\" value=\"".get_vocab("OK")."\" /></div></td></tr></table>\n";
-	echo "<div><input type=\"hidden\" name=\"action\" value=\"modif_mdp\" />\n
-	<input type=\"hidden\" name=\"display\" value=\"$display\" />
-</div></form>\n";
+	echo "<input type=\"submit\" value=\"".get_vocab("OK")."\" /></td></tr></table>\n";
+	echo "<input type=\"hidden\" name=\"action\" value=\"modif_mdp\" />\n
+	<input type=\"hidden\" name=\"display\" value=\"$display\" /></form>\n";
 }
+echo "<hr />";
+// quels utilisateurs afficher ?
 echo "<form action=\"admin_user.php\" method=\"get\">\n";
-echo "<table border=\"1\">\n";
-echo "<tr>\n";
+echo "<table class='table-noborder'>\n";
+echo "<tr>\n<td><input type=\"submit\" value=\"".get_vocab('goto').get_vocab('deux_points')."\" /></td>";
 echo "<td>".get_vocab("display_all_user.php")."<input type=\"radio\" name=\"display\" value=\"tous\"";
 if ($display == 'tous')
 	echo " checked=\"checked\"";
 echo " /></td>";
-?>
-<td>
-	<?php echo get_vocab("display_user_on.php"); ?><input type="radio" name="display" value='actifs' <?php if ($display == 'actifs') {echo " checked=\"checked\"";} ?> /></td>
-	<td>
-		<?php echo get_vocab("display_user_off.php"); ?><input type="radio" name="display" value='inactifs' <?php if ($display == 'inactifs') {echo " checked=\"checked\"";} ?> /></td>
-		<td><input type="submit" value="<?php echo get_vocab("OK");?>" /></td>
-	</tr>
-</table>
-<div><input type="hidden" name="order_by" value="<?php echo $order_by;?>" /></div>
-</form>
-<?php
+echo "<td>";
+	echo get_vocab("display_user_on.php");
+    echo '<input type="radio" name="display" value="actifs" ';
+    if ($display == 'actifs') {echo " checked=\"checked\"";}
+    echo './></td>';
+	echo '<td>';
+	echo get_vocab("display_user_off.php");
+    echo '<input type="radio" name="display" value="inactifs" ';
+    if ($display == 'inactifs') {echo " checked=\"checked\"";}
+    echo ' /></td>';
+    echo '</tr>
+    </table>
+    <div><input type="hidden" name="order_by" value="'.$order_by.'" /></div>
+    </form>';
 // Affichage du tableau
 echo "<table class=\"table table-striped table-bordered\">";
-echo "<tr><td><b><a href='admin_user.php?order_by=login&amp;display=$display'>".get_vocab("login_name")."</a></b></td>";
-echo "<td><b><a href='admin_user.php?order_by=nom,prenom&amp;display=$display'>".get_vocab("names")."</a></b></td>";
-echo "<td><b>".get_vocab("privileges")."</b></td>";
-echo "<td><b><a href='admin_user.php?order_by=statut,nom,prenom&amp;display=$display'>".get_vocab("statut")."</a></b></td>";
-echo "<td><b><a href='admin_user.php?order_by=source,nom,prenom&amp;display=$display'>".get_vocab("authentification")."</a></b></td>";
-echo "<td><b>".get_vocab("delete")."</b></td>";
+echo "<thead>";
+echo "<tr><th><b><a href='admin_user.php?order_by=login&amp;display=$display'>".get_vocab("login_name")."</a></b></th>";
+echo "<th><b><a href='admin_user.php?order_by=nom,prenom&amp;display=$display'>".get_vocab("names")."</a></b></th>";
+echo "<th><b>".get_vocab("privileges")."</b></th>";
+echo "<th><b><a href='admin_user.php?order_by=statut,nom,prenom&amp;display=$display'>".get_vocab("statut")."</a></b></th>";
+echo "<th><b><a href='admin_user.php?order_by=source,nom,prenom&amp;display=$display'>".get_vocab("authentification")."</a></b></th>";
+echo "<th><b>".get_vocab("delete")."</b></th>";
 echo "</tr>";
+echo "</thead>\n<tbody>";
 $sql = "SELECT nom, prenom, statut, login, etat, source FROM ".TABLE_PREFIX."_utilisateurs ORDER BY $order_by";
 $res = grr_sql_query($sql);
 if ($res)
@@ -491,11 +505,10 @@ if ($res)
 		}
 	}
 }
-echo "</table>";
+echo "</tbody></table>";
 // fin de l'affichage de la colonne de droite
-echo "</td></tr></table>";
+echo "</div>";
 // Affichage d'un pop-up
 affiche_pop_up($msg,"admin");
+end_page();
 ?>
-</body>
-</html>

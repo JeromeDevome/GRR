@@ -2,7 +2,7 @@
 /**
  * admin_user_mdp_facile.php
  * interface de gestion des utilisateurs de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2018-08-29 10:30$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -14,9 +14,10 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "admin_user_mdp_facile.php";
 
 include "../include/admin.inc.php";
-$grr_script_name = "admin_user_mdp_facile.php";
+
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
@@ -28,12 +29,14 @@ if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName()
 	showAccessDenied($back);
 	exit();
 }
-
-print_header("", "", "", $type="with_session");
-include "admin_col_gauche.php";
-
-
+// code HTML
+start_page_w_header("", "", "", $type="with_session");
+// colonne de gauche
+include "admin_col_gauche2.php";
+// colonne de droite
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 echo "<h2>".get_vocab('admin_user_mdp_facile')."</h2>";
+echo '<a href="admin_user.php" type="button" class="btn btn-primary">'.get_vocab("back").'</a>';
 echo "<p>".get_vocab('admin_user_mdp_facile_description')."</p>";
 if (empty($display))
 {
@@ -43,7 +46,6 @@ if (empty($order_by))
 {
 	$order_by = 'nom,prenom';
 }
-
 // Affichage du tableau
 echo "<table class=\"table table-striped table-bordered\">";
 echo "<tr><td><b><a href='admin_user_mdp_facile.php?order_by=login&amp;display=$display'>".get_vocab("login_name")."</a></b></td>";
@@ -51,7 +53,6 @@ echo "<td><b><a href='admin_user_mdp_facile.php?order_by=nom,prenom&amp;display=
 echo "<td><b><a href='admin_user_mdp_facile.php?order_by=statut,nom,prenom&amp;display=$display'>".get_vocab("statut")."</a></b></td>";
 echo "<td><b><a href='admin_user_mdp_facile.php?order_by=source,nom,prenom&amp;display=$display'>".get_vocab("authentification")."</a></b></td>";
 echo "</tr>";
-// $sql = "SELECT nom, prenom, statut, login, etat, source, password FROM ".TABLE_PREFIX."_utilisateurs ORDER BY $order_by";
 // les utilisateurs à identification externe ont un mot de passe vide dans la base GRR, il est inutile de les afficher
 $sql = "SELECT nom, prenom, statut, login, etat, source, password FROM ".TABLE_PREFIX."_utilisateurs WHERE source = 'local' ORDER BY $order_by";
 $res = grr_sql_query($sql);
@@ -59,13 +60,11 @@ if ($res)
 {
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-
 		// Les mdp facile
 		// Valeurs 1- Mot de passe = login en majuscule || 2- Mot de passe = login en minuscule || 3- azerty  || 4- Vide || 6- 123456  || 7- 1234567 || 8- 12345678 || 9- 000000 || 10- 00000000 
 		$mdpFacile = array(md5(strtoupper($row[3])), md5(strtolower($row[3])), "ab4f63f9ac65152575886860dde480a1", "", "e10adc3949ba59abbe56e057f20f883e", "fcea920f7412b5da7be0cf42b8c93759", "25d55ad283aa400af464c76d713c07ad", "670b14728ad9902aecba32e22fa4f6bd", "dd4b21e9ef71e1291183a46b913ae6f2");
 
 		if(in_array($row[6], $mdpFacile)){
-
 			$user_nom = htmlspecialchars($row[0]);
 			$user_prenom = htmlspecialchars($row[1]);
 			$user_statut = $row[2];
@@ -129,15 +128,14 @@ if ($res)
 			// Fin de la ligne courante
 				echo "</tr>";
 			}
-
 		}
 	}
 }
 echo "</table>";
 // fin de l'affichage de la colonne de droite
-echo "</td></tr></table>";
+echo "</div>";
 // Affichage d'un pop-up
 affiche_pop_up($msg,"admin");
+// fin de la page
+end_page();
 ?>
-</body>
-</html>

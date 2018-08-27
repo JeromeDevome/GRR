@@ -3,8 +3,8 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-08-29 10:20$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,8 +15,10 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-include "../include/admin.inc.php";
 $grr_script_name = "admin_user_modify.php";
+
+include "../include/admin.inc.php";
+
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
@@ -35,7 +37,7 @@ if (isset($_GET["user_login"]) && (authGetUserLevel(getUserName(),-1,'user') == 
 		exit();
 	}
 }
-#If we dont know the right date then make it up
+
 unset($user_login);
 $user_login = isset($_GET["user_login"]) ? $_GET["user_login"] : NULL;
 $valid = isset($_GET["valid"]) ? $_GET["valid"] : NULL;
@@ -131,7 +133,7 @@ if ($valid == "yes")
 					default_area = '-1',
 					default_room = '-1',
 					default_style = '',
-					default_list_type = 'item',
+					default_list_type = 'select',
 					default_language = 'fr',";
 					if ($reg_type_authentification=="locale")
 						$sql .= "source='local'";
@@ -314,11 +316,12 @@ if ((authGetUserLevel(getUserName(), -1) < 1) && (Settings::get("authentificatio
 	showAccessDenied($back);
 	exit();
 }
-// Utilisation de la bibliothèqye prototype dans ce script
+// Utilisation de la bibliothèque prototype dans ce script
 $use_prototype = 'y';
 # print the page header
-print_header("", "", "", $type="with_session");
-include "admin_col_gauche.php";
+start_page_w_header("", "", "", $type="with_session");
+// colonne gauche
+include "admin_col_gauche2.php";
 ?>
 <script type='text/javascript'>
 	function display_password_fields(id){
@@ -335,6 +338,8 @@ include "admin_col_gauche.php";
 <?php
 // Affichage d'un pop-up
 affiche_pop_up($msg,"admin");
+// colonne de droite
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 if (isset($user_login) && ($user_login != ''))
 {
 	echo "<h2>".get_vocab('admin_user_modify_modify.php')."</h2>";
@@ -343,30 +348,27 @@ else
 {
 	echo "<h2>".get_vocab('admin_user_modify_create.php')."</h2>";
 }
-?>
-<p class="bold">
-	| <a href="admin_user.php?display=<?php echo $display; ?>"><?php echo get_vocab("back"); ?></a> |
-	<?php
+echo '<p>';
+echo '<a href="admin_user.php?display='.$display.'" type="button" class="btn btn-primary">'.get_vocab("back").'</a>';
 	if (isset($user_login) && ($user_login != ''))
 	{
-		echo "<a href=\"admin_user_modify.php?display=$display\">".get_vocab("display_add_user")."</a> | ";
+		echo "<a href=\"admin_user_modify.php?display=$display\" type='button' class='btn btn-warning'>".get_vocab("display_add_user")."</a>";
 	}
-	?>
-	<br /><?php echo get_vocab("required"); ?>
-</p>
-<form action="admin_user_modify.php?display=<?php echo $display; ?>" method='get'><div>
-	<?php
+echo '<br /><br />';
+echo '<div class="avertissement"><b>'.get_vocab("required").'</b></div>';
+echo '</p>';
+echo '<form action="admin_user_modify.php?display='.$display.'" method="get"><div>';
 	if ((Settings::get("sso_statut") != "") || (Settings::get("ldap_statut") != '') || (Settings::get("imap_statut") != ''))
 	{
 		echo get_vocab("authentification").get_vocab("deux_points");
 		echo "<select id=\"select_auth_mode\" name='type_authentification' onchange=\"display_password_fields(this.id);\">\n";
 		echo "<option value='locale'";
 		if ($user_source == 'local')
-			echo "selected=\"selected\" ";
+			echo " selected=\"selected\" ";
 		echo ">".get_vocab("authentification_base_locale")."</option>\n";
 		echo "<option value='externe'";
 		if ($user_source == 'ext')
-			echo "selected=\"selected\" ";
+			echo " selected=\"selected\" ";
 		echo ">".get_vocab("authentification_base_externe")."</option>\n";
 		echo "</select><br /><br />\n";
 	}
@@ -380,7 +382,7 @@ else
 	{
 		echo "<input type=\"text\" name=\"new_login\" size=\"40\" value=\"".htmlentities($user_login)."\" />\n";
 	}
-	echo "<table border=\"0\" cellpadding=\"5\"><tr>\n";
+	echo "<table class='table-noborder'><tr>\n";
 	echo "<td>".get_vocab("last_name")." *".get_vocab("deux_points")."</td>\n<td><input type=\"text\" name=\"reg_nom\" size=\"40\" value=\"";
 	if ($user_nom)
 		echo htmlspecialchars($user_nom);
@@ -456,7 +458,7 @@ else
 	echo "<input type=\"hidden\" name=\"valid\" value=\"yes\" />\n";
 	if (isset($user_login))
 		echo "<input type=\"hidden\" name=\"user_login\" value=\"".$user_login."\" />\n";
-	echo "<br /><div style=\"text-align:center;\"><input type=\"submit\" value=\"".get_vocab("save")."\" /></div>\n";
+	echo "<br /><div class=\"center\"><input type=\"submit\" value=\"".get_vocab("save")."\" /></div>\n";
 	echo "</div></form>\n";
 	if ((isset($user_login)) && ($user_login != ''))
 	{
@@ -574,5 +576,5 @@ else
 				echo "<div>".get_vocab("pas de privileges").".</div>";
 		}
 	}
-	echo "</body></html>";
-	?>
+echo "</div></section></body></html>";
+?>
