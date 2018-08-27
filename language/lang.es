@@ -186,6 +186,7 @@ $vocab['booking_in_past_explain'] = "La fecha de inicio de la nueva reserva pas�
 $vocab['booking_in_past_explain_with_periodicity'] = "Una o màs reservaciones plantean un problema ya que se sitúan anteriormente.<br />Quiere elegir fechas de fin de reservación posteriores a la fecha actual :";
 $vocab['brief_description'] = "la descripción breve.";
 $vocab['cacher_page_login'] = "Vous avez activé la prise en charge d'un SSO. Vous pouvez spécifier ci-dessous une adresse internet (http://...) afin d'empêcher l'accès à la page de login en dirigeant l'utilisateur non authentifié vers cette adresse :"; // A traduire
+$vocab['calendriers'] = "Calendars"; // à traduire
 $vocab['calendrier_des_jours_hors_reservation'] = "Calendario de las jornadas fuera de reserva ";
 $vocab['calendrier_jours/cycles'] = "Calendario \"días ciclos\"";
 $vocab['cancel'] = "Anular";

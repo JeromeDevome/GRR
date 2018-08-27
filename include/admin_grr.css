@@ -1,7 +1,7 @@
 /* ------------------------------------ *
  * admin_grr.css
  * Feuille CSS pour l'administration
- * Dernière modification : $Date: 2018-04-14 15:15$
+ * Dernière modification : $Date: 2018-08-27 12:45$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -17,7 +17,6 @@
  */
  div.onglet {
  	font-family: Arial, Sans, sans-serif;
- 	font-size: 11px;
  	font-weight: bold;
  	border: 1px solid #888888;
  	margin-right: 3px;
@@ -30,7 +29,6 @@
 
  div.onglet_on {
  	font-family: Arial, Sans, sans-serif;
- 	font-size: 11px;
  	font-weight: bold;
  	border: 1px solid #111111;
  	margin-right: 3px;
@@ -45,12 +43,10 @@
  div.onglet_on a:hover {
  	color: white;
  	text-decoration:underline;
-
  }
 
  div.onglet_off {
  	font-family: Arial, Sans, sans-serif;
- 	font-size: 11px;
  	font-weight: bold;
  	border: 1px solid #888888;
  	margin-right: 3px;

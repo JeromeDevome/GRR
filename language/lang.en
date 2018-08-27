@@ -188,6 +188,7 @@ $vocab['booking_in_past_explain'] = "The start date of the new reservation is al
 $vocab['booking_in_past_explain_with_periodicity'] = "One or more reservations pose problem because they are located in the past.<br />Please choose end of reservation dates which are posterior at the current date:";
 $vocab['brief_description'] = "the short description.";
 $vocab['cacher_page_login'] = "Vous avez activé la prise en charge d'un SSO. Vous pouvez spécifier ci-dessous une adresse internet (http://...) afin d'empêcher l'accès à la page de login en dirigeant l'utilisateur non authentifié vers cette adresse :"; // A traduire
+$vocab['calendriers'] = "Calendars";
 $vocab['calendrier_des_jours_hors_reservation'] = "Calendar of the days without reservation ";
 $vocab['calendrier_jours/cycles'] = "Calendar \"cycle days\"";
 $vocab['cancel'] = "Cancel";

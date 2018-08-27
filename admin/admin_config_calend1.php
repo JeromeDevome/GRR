@@ -3,7 +3,7 @@
  * admin_config_calend1.php
  * Interface permettant à l'administrateur la configuration des paramètres pour le module Jours Cycles
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2018-08-27 11:15$
  * @author    Laurent Delineau & JeromeB
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,16 +15,11 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "admin_calend_jour_cycle.php";
 
 if (!Settings::load())
 	die("Erreur chargement settings");
-# print the page header
-print_header("", "", "", $type="with_session");
-// Affichage de la colonne de gauche
-include "admin_col_gauche.php";
-// Affichage du tableau de choix des sous-configuration
-$grr_script_name = "admin_calend_jour_cycle.php";
-include "../include/admin_calend_jour_cycle.inc.php";
+
 // Met à jour dans la BD le nombre de jours par cycle
 if (isset($_GET['nombreJours']))
 {
@@ -37,25 +32,28 @@ if (isset($_GET['jourDebut']))
 	if (!Settings::set("jour_debut_Jours/Cycles", $_GET['jourDebut']))
 		echo "Erreur lors de l'enregistrement de jour_debut_Jours/Cycles ! <br />";
 }
-//
 // Configurations du nombre de jours par Jours/Cycles et du premier jour du premier Jours/Cycles
-//******************************
 //
+# print the page header
+start_page_w_header("", "", "", $type="with_session");
+// Affichage de la colonne de gauche
+include "admin_col_gauche2.php";
+// colonne de droite
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
+// Affichage du menu de choix des sous-configurations
+include "../include/admin_calend_jour_cycle.inc.php";
 echo "<h3>".get_vocab("titre_config_Jours/Cycles")."</h3>\n";
 echo "<form action=\"./admin_calend_jour_cycle.php\"  method=\"get\" style=\"width: 100%;\" onsubmit=\"return verifierJoursCycles(false);\">\n";
 echo "<p>".get_vocab("explication_Jours_Cycles1");
 echo "<br />".get_vocab("explication_Jours_Cycles2");
-?>
-<br /><br />
-</p>
-<table border="1" cellpadding="5" cellspacing="1">
-	<tr>
-		<td>
-			<?php echo get_vocab("nombre_jours_Jours/Cycles").get_vocab("deux_points"); ?>
-		</td>
-		<td>
-			<!-- Pour sélectionner le nombre de jours par Cycle  -->
-			<?php
+echo '<br /><br /></p>';
+echo '<table>';
+echo	'<tr>
+		<td>';
+		echo get_vocab("nombre_jours_Jours/Cycles").get_vocab("deux_points");
+echo 	'</td>
+		<td>';
+//			<!-- Pour sélectionner le nombre de jours par Cycle  -->
 			echo "<select name='nombreJours' id='nombreJours'>\n";
 			for($i = 1; $i < 21; $i++)
 			{
@@ -65,18 +63,14 @@ echo "<br />".get_vocab("explication_Jours_Cycles2");
 					echo "<option>".$i."</option>\n";
 			}
 			echo "</select>\n";
-			?>
-		</td>
-	</tr>
-	<!-- Pour sélectionner le jour_cycle qui débutera le premier Jours/Cycles  -->
-	<tr>
-		<td>
-			<?php
+		echo "</td>
+	</tr>";
+	// Pour sélectionner le jour_cycle qui débutera le premier Jours/Cycles
+	echo "<tr>
+		<td>";
 			echo get_vocab("debut_Jours/Cycles").get_vocab("deux_points")."<br /><i>".get_vocab("explication_debut_Jours_Cycles")."</i>"; 
-			?>
-		</td>
-		<td>
-			<?php
+		echo "</td>
+		<td class='CC'>";
 			echo "<select name='jourDebut' id='jourDebut'>";
 			for($i = 1; $i < 21; $i++)
 			{
@@ -85,16 +79,13 @@ echo "<br />".get_vocab("explication_Jours_Cycles2");
 				else
 					echo "<option>".$i."</option>\n";
 			}
-			?>
-		</select>
+	echo "</select>
 	</td>
 </tr>
-</table>
-<?php
+</table>";
 echo "<div id=\"fixe\" style=\"text-align:center;\"><input type=\"submit\" value=\"".get_vocab("save")."\" style=\"font-variant: small-caps;\"/></div>\n";
 echo "<div><input type=\"hidden\" value=\"1\" name=\"page_calend\" /></div>\n";
 echo "</form>";
-// fin de l'affichage de la colonne de droite
-echo "</td></tr></table></body>
-</html>";
+// fin de l'affichage de la colonne de droite et de la page
+echo "</div></section></body></html>";
 ?>

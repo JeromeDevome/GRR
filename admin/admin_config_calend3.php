@@ -1,10 +1,10 @@
 <?php
 /**
  * admin_config_calend3.php
- * Interface permettant la la réservation en bloc de journées entières
+ * interface permettant la configuration des jours-cycles (étape 3)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-08-27 12:50$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,8 +15,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-
 $grr_script_name = "admin_config_calend3.php";
+
 $back = '';
 function cal3($month, $year)
 {
@@ -27,7 +27,7 @@ function cal3($month, $year)
     $date = mktime(12, 0, 0, $month, 1, $year);
     $first = (strftime("%w",$date) + 7 - $weekstarts) % 7;
     $monthName = utf8_strftime("%B",$date);
-    $s .= "<table class=\"calendar2\" border=\"1\" cellspacing=\"2\">\n";
+    $s .= "<table class=\"calendar2 table-bordered\" >\n";
     $s .= "<tr>\n";
     $s .= "<td class=\"calendarHeader2\" colspan=\"8\">$monthName&nbsp;$year</td>\n";
     $s .= "</tr>\n";
@@ -98,18 +98,23 @@ function cal3($month, $year)
 }
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-	check_access(6, $back);
-	print_header("", "", "", $type = "with_session");
-	// Affichage de la colonne de gauche
-	if (!isset($_GET['pview']))
-		include "admin_col_gauche.php";
-	// Affichage du tableau de choix des sous-configurations des jours/cycles (créer et voir le calendrier des jours/cycles)
-	if (!isset($_GET['pview']))
-		include "../include/admin_calend_jour_cycle.inc.php";
-	echo "<h3>".get_vocab('calendrier_jours/cycles');
-	echo "</h3>\n";
-	if (!isset($_GET['pview']))
-	{
+check_access(6, $back);
+// code HTML
+start_page_w_header("", "", "", $type = "with_session");
+// Affichage de la colonne de gauche
+if (!isset($_GET['pview']))
+    include "admin_col_gauche2.php";
+// affichage de la colonne de droite
+// Affichage du menu de choix des sous-configurations des jours/cycles (créer et voir le calendrier des jours/cycles)
+if (!isset($_GET['pview']))
+{
+    echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
+    include "../include/admin_calend_jour_cycle.inc.php";
+}
+else echo"<div class='col-xs-12'>";
+echo "<h3>".get_vocab('calendrier_jours/cycles')."</h3>\n";
+if (!isset($_GET['pview']))
+{
 		echo get_vocab("explication_Jours_Cycles3");
 		echo "<br />".get_vocab("explication_Jours_Cycles4")."<br />\n";
 	}
@@ -149,7 +154,7 @@ if (isset($_SERVER['HTTP_REFERER']))
 		echo "<input type=\"text\" name=\"titre\" onfocus=\"check(2)\"";
 		if (!intval($jour_cycle) > 0)
 			echo " value=\"".$jour_cycle."\"";
-		echo "/><br /><br /><div style=\"text-align:center;\"><input type=\"submit\" value=\"Enregistrer\" /></div>\n";
+		echo "/><br /><br /><div class=\"center\"><input type=\"submit\" value=\"Enregistrer\" /></div>\n";
 		echo "</div></form>\n";
 		echo "</fieldset>\n";
 	}
@@ -172,7 +177,7 @@ if (isset($_SERVER['HTTP_REFERER']))
 		}
 	}
 	$basetime = mktime(12, 0, 0, 6, 11 + $weekstarts, 2000);
-	echo "<table cellspacing=\"20\" border=\"0\">\n";
+	echo "<table class='table-noborder'>\n";
 	$n = Settings::get("begin_bookings");
 	$end_bookings = Settings::get("end_bookings");
 	$debligne = 1;
@@ -217,17 +222,16 @@ if (isset($_SERVER['HTTP_REFERER']))
 	echo "</table>";
 	if (!isset($_GET['pview']))
 	{
-		echo "\n<div class=\"format_imprimable\"><a href=\"admin_calend_jour_cycle.php?page_calend=3&amp;pview=1\">Format Imprimable</a></div>\n";
-		echo "</td>\n</tr>";
-		echo "</table>";
+		echo "\n<div class=\"center\"><a href=\"admin_calend_jour_cycle.php?page_calend=3&amp;pview=1\" title=\"Format Imprimable\"><span class='glyphicon glyphicon-print'></span></a></div>\n";
 	}
-	// fin de l'affichage de la colonne de droite
-	?>
+echo "</div>";	// fin de l'affichage de la colonne de droite    
+?>
 	<script type="text/javascript" >
 		function check (select)
 		{
 			document.getElementById('main').selection[select].checked=true;
 		}
 	</script>
+</section>
 </body>
 </html>

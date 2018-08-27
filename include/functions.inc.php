@@ -137,7 +137,7 @@ function cal($month, $year, $type)
 			$temp = mktime(0, 0, 0, $month, $d, $year);
 			if ($i == 0)
 				$s .= '<td class="calendar2" style="vertical-align:bottom;"><b>S'.getWeekNumber($temp).'</b></td>'.PHP_EOL;
-			$s .= '<td class="calendar2" align="center" valign="top">'.PHP_EOL;
+			$s .= '<td class="calendar2" valign="top">'.PHP_EOL;
 			if ($is_ligne1 == 'y')
 				$s .=  '<b>'.ucfirst(substr($nameday,0,1)).'</b><br />';
 			if ($d > 0 && $d <= $daysInMonth)

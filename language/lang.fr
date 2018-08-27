@@ -187,6 +187,7 @@ $vocab['booking_in_past_explain'] = "La date de début de la nouvelle réservati
 $vocab['booking_in_past_explain_with_periodicity'] = "Une ou plusieurs réservations posent problème car elles se situent dans le passé.<br />Veuillez choisir des dates de fin de réservation postérieures à la date actuelle :";
 $vocab['brief_description'] = "la description brève.";
 $vocab['cacher_page_login'] = "Vous avez activé la prise en charge d'un SSO. Vous pouvez spécifier ci-dessous une adresse internet (http://...) afin d'empêcher l'accès à la page de login en dirigeant l'utilisateur non authentifié vers l'adresse spécifiée ci-dessous. <br /><b>Remarque</b> : il sera toujours possible d'accéder à la page de login par une adresse du type http://.../grr/login.php?local :";
+$vocab['calendriers'] = "Calendriers";
 $vocab['calendrier_des_jours_hors_reservation'] = "Calendrier des journées hors réservation";
 $vocab['calendrier_jours/cycles'] = "Calendrier \"jours cycles\"";
 $vocab['cancel'] = "Annuler";

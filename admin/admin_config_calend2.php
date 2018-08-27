@@ -1,10 +1,10 @@
 <?php
 /**
  * admin_config_calend2.php
- * interface permettant la la réservation en bloc de journées entières
+ * interface permettant la configuration des jours-cycles (étape 2)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2017-12-16 12:50$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,19 +15,12 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-
 $grr_script_name = "admin_config_calend2.php";
+
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
 check_access(6, $back);
-# print the page header
-print_header("", "", "", $type="with_session");
-// Affichage de la colonne de gauche
-include "admin_col_gauche.php";
-// Affichage du tableau de choix des sous-configuration pour les Jours/Cycles (Créer et voir calendrier Jours/Cycle)
-include "../include/admin_calend_jour_cycle.inc.php";
-echo "<h3>".get_vocab('calendrier_jours/cycles')."</h3>";
 if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 {
 	// On vide la table
@@ -75,11 +68,20 @@ if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 		}
 	}
 }
+// code HTML
+# print the page header
+start_page_w_header("", "", "", $type="with_session");
+// Affichage de la colonne de gauche
+include "admin_col_gauche2.php";
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
+// Affichage du menu de choix des sous-configurations pour les Jours/Cycles (Créer et voir calendrier Jours/Cycle)
+include "../include/admin_calend_jour_cycle.inc.php";
+echo "<h3>".get_vocab('calendrier_jours/cycles')."</h3>";
 echo "<p>".get_vocab("les_journees_cochees_sont_valides").get_vocab("deux_points");
 echo "<br />* ".get_vocab("nombre_jours_Jours/Cycles").get_vocab("deux_points").Settings::get("nombre_jours_Jours/Cycles");
 echo "<br />* ".get_vocab("debut_Jours/Cycles").get_vocab("deux_points").Settings::get("jour_debut_Jours/Cycles");
 echo "<br /><br />".get_vocab("explication_Jours_Cycles2")."</p>";
-echo "<table cellpadding=\"3\">\n";
+echo "<table class='table-noborder'>\n";
 $basetime = mktime(12, 0, 0, 6, 11 + $weekstarts, 2000);
 for ($i = 0; $i < 7; $i++)
 {
@@ -94,7 +96,7 @@ echo "<tr>\n<td><span class='small'><a href='admin_calend_jour_cycle.php' onclic
 echo "<td></td></tr>\n";
 echo "</table>\n";
 echo "<form action=\"admin_calend_jour_cycle.php?page_calend=2\" method=\"post\" id=\"formulaire\">\n";
-echo "<table cellspacing=\"20\">\n";
+echo "<table>\n";
 $n = Settings::get("begin_bookings");
 $end_bookings = Settings::get("end_bookings");
 $debligne = 1;
@@ -137,11 +139,11 @@ if ($inc < 3)
 	echo "</tr>";
 }
 echo "</table>";
-echo "<div id=\"fixe\" style=\"text-align:center;\"><input type=\"submit\" onclick=\"return confirmlink(this, '".AddSlashes(get_vocab("avertissement_effacement"))."', '".get_vocab("admin_config_calend1.php")."')\" name=\"ok\" value=\"".get_vocab("save")."\" /></div>\n";
-echo "<div><input type=\"hidden\" name=\"record\" value=\"yes\" /></div>\n";
+echo "<div id=\"fixe\"><input type=\"submit\" onclick=\"return confirmlink(this, '".AddSlashes(get_vocab("avertissement_effacement"))."', '".get_vocab("admin_config_calend1.php")."')\" name=\"ok\" value=\"".get_vocab("save")."\" />\n";
+echo "<input type=\"hidden\" name=\"record\" value=\"yes\" /></div>\n";
 echo "</form>";
 // fin de l'affichage de la colonne de droite
-echo "</td></tr></table>";
+echo "</div>";
+// et de la page
+end_page();
 ?>
-</body>
-</html>

@@ -3,8 +3,8 @@
  * admin_calend_ignore.php
  * Interface permettant la la réservation en bloc de journées entières
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-08-25  18:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,18 +15,14 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "admin_calend_ignore.php";
 
 include "../include/admin.inc.php";
-$grr_script_name = "admin_calend_ignore.php";
+
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
 check_access(6, $back);
-# print the page header
-print_header("", "", "", $type="with_session");
-// Affichage de la colonne de gauche
-include "admin_col_gauche.php";
-echo "<h2>".get_vocab('calendrier_des_jours_hors_reservation')."</h2>\n";
 if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 {
 	// On met de côté toutes les dates
@@ -84,8 +80,15 @@ if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 		}
 	}
 }
+// code HTML
+# print the page header
+start_page_w_header("", "", "", $type="with_session");
+// Affichage de la colonne de gauche
+include "admin_col_gauche2.php";
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
+echo "<h2>".get_vocab('calendrier_des_jours_hors_reservation')."</h2>\n";
 echo "\n<p>".get_vocab("les_journees_cochees_sont_ignorees")."</p>";
-echo "\n<table cellpadding=\"3\">\n";
+echo "\n<table class='table-noborder'>\n";
 $basetime = mktime(12, 0, 0, 6, 11 + $weekstarts, 2000);
 for ($i = 0; $i < 7; $i++)
 {
@@ -120,16 +123,16 @@ if (Settings::get("show_holidays") == 'Oui'){ // on n'affiche ce choix que si le
     echo "<tr>";
     echo "<td>";
     echo "<span class='small'><a href='admin_calend_ignore.php' onclick=\"{$cocheVacances} return false;\">".get_vocab("admin_calend_ignore_vacances")."&nbsp </a></span>";
-    echo "</td><td>";
+    echo "</td><td></td></tr><tr><td>";
     echo "<span class='small'><a href='admin_calend_ignore.php' onclick=\"{$cocheferies} return false;\">".get_vocab("admin_calend_ignore_feries")."</a></span>";
     echo "</td>";
     echo "</tr>";
 }
-echo "<tr>\n<td><span class='small'><a href='admin_calend_ignore.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span></td>\n";
-echo "<td> </td></tr>\n";
+echo "<tr>\n<td></td><td><span class='small'><a href='admin_calend_ignore.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span></td>\n";
+echo "</tr>\n";
 echo "</table>\n";
 echo "<form action=\"admin_calend_ignore.php\" method=\"post\" id=\"formulaire\">\n";
-echo "<table cellspacing=\"20\">\n";
+echo "<table>\n";
 $n = Settings::get("begin_bookings");
 $end_bookings = Settings::get("end_bookings");
 $debligne = 1;
@@ -173,12 +176,12 @@ if ($inc < 3)
 	echo "</tr>";
 }
 echo "</table>";
-echo "<div id=\"fixe\" style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"".get_vocab('save')."\" value=\"".get_vocab("save")."\" />\n";
-echo "<input class=\"btn btn-primary\" type=\"hidden\" name=\"record\" value=\"yes\" />\n";
+echo "<div id=\"fixe\"><input class=\"btn btn-primary\" type=\"submit\" name=\"".get_vocab('save')."\" value=\"".get_vocab("save")."\" />\n";
+echo "<input type=\"hidden\" name=\"record\" value=\"yes\" />\n";
 echo "</div>";
 echo "</form>";
-// fin de l'affichage de la colonne de droite
-echo "</td></tr></table>\n";
+// fin de l'affichage de la colonne de droite 
+echo "</div>";
+// et de la page
+end_page();
 ?>
-</body>
-</html>

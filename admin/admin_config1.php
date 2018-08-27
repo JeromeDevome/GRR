@@ -455,7 +455,7 @@ if (isset($_POST['begin_day']) && isset($_POST['begin_month']) && isset($_POST['
         while (!checkdate($_POST['end_month'], $_POST['end_day'], $_POST['end_year'])) {
             $_POST['end_day']--;
         }
-        $end_bookings = mktime(0, 0, 0, $_POST['end_month'], $_POST['end_day'], $_POST['end_year']);
+        $end_bookings = mktime(23, 59, 59, $_POST['end_month'], $_POST['end_day'], $_POST['end_year']);
         if ($end_bookings < $begin_bookings) {
             $end_bookings = $begin_bookings;
         }

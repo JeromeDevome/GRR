@@ -3,7 +3,7 @@
  * admin_calend_vacances_feries.php
  * Interface permettant la définiton des jours fériés ou de vacances
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-18 22:00$
+ * Dernière modification : $Date: 2018-08-25 18:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,18 +15,20 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "admin_calend_vacances_feries.php";
 
 include "../include/admin.inc.php";
-$grr_script_name = "admin_calend_vacances_feries.php";
+
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
 check_access(6, $back);
 # print the page header
-print_header("", "", "", $type="with_session");
+start_page_w_header("", "", "", $type="with_session");
 // Affichage de la colonne de gauche
-include "admin_col_gauche.php";
+include "admin_col_gauche2.php";
 // affichage de la colonne de droite
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 echo "<h2>".get_vocab('admin_calend_vacances_feries.php')."</h2>\n";
 echo "\n<p>".get_vocab("vacances_feries_description")."</p>";
 // premier test : l'affichage des vacances et fériés est-il activé ?
@@ -39,15 +41,15 @@ else if (!isset($_POST['define_holidays'])){
     # bascule entre vacances et jours fériés
     echo '<form action="admin_calend_vacances_feries.php" method="POST" name="bascule">';
     echo '<div>'.PHP_EOL;
-    echo '<p>'.'<input type="submit" value="Définir">'.'&nbsp';
-    echo "<input type='radio' name='define_holidays' value='F'";
+    echo '<p>'.'<input type="submit" value="Définir">'.'&nbsp;';
+    echo "<input type='radio' name='define_holidays' value='F' ";
     if ((!isset($_POST['define_holidays']))||($_POST['define_holidays']=='Oui')){
         echo 'checked="checked"';
     }
     echo " />".PHP_EOL;
-    echo " les jours fériés".'&nbsp'.PHP_EOL;
+    echo " les jours fériés".'&nbsp;'.PHP_EOL;
     echo "<input type='radio' name='define_holidays' value='V' />".PHP_EOL;
-    echo " les vacances"."&nbsp".PHP_EOL;
+    echo " les vacances"."&nbsp;".PHP_EOL;
     echo "</p></div>";
     echo '</form>';
     }
@@ -307,7 +309,7 @@ else if (!isset($_POST['define_holidays'])){
             }
         else echo "ne devrait pas arriver";
  // fin de l'affichage de la colonne de droite
-echo "</td></tr></table>\n";
+echo "</div>\n";
+// et de la page
+end_page();
 ?>
-</body>
-</html>

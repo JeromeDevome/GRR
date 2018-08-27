@@ -189,6 +189,7 @@ $vocab['booking_in_past_explain'] = "La data d'inizio della nuova prenotazione �
 $vocab['booking_in_past_explain_with_periodicity'] = "Una o più prenotazioni pongono problemi poiché si situano in passato.<br />Volete scegliere date di fine di prenotazione posteriori alla data attuale: ";
 $vocab['brief_description'] = "la descrizione breve.";
 $vocab['cacher_page_login'] = "Vous avez activé la prise en charge d'un SSO. Vous pouvez spécifier ci-dessous une adresse internet (http://...) afin d'empêcher l'accès à la page de login en dirigeant l'utilisateur non authentifié vers cette adresse :"; // A traduire
+$vocab['calendriers'] = "Calendars"; // à traduire
 $vocab['calendrier_des_jours_hors_reservation'] = "Calendario delle giornate fuori prenotazione";
 $vocab['calendrier_jours/cycles'] = "Calendrier \"jours cycles\""; // A traduire
 $vocab['cancel'] = "Annullare";
