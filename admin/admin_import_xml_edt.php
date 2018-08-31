@@ -3,7 +3,7 @@
  * admin_import_xml_edt.php
  * Importe un fichier de réservations au format xml issu du logiciel EDT Index Education
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2018-08-31 15:30$
  * @author    JeromeB & Yan Naessens & Laurent Delineau
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,9 +15,9 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "admin_import_xml_edt.php";
 
 include "../include/admin.inc.php";
-$grr_script_name = "admin_import_xml_edt.php";
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
@@ -32,193 +32,157 @@ if (!Settings::load()) {
  $journumero=array(0=>"dim",1=>"lundi",2=>"mardi",3=>"mercredi",4=>"jeudi",5=>"vendredi",6=>"samedi");
  
 # print the page header
-print_header('', '', '', $type = 'with_session');
+start_page_w_header('', '', '', $type = 'with_session');
 // Affichage de la colonne de gauche
-include 'admin_col_gauche.php';
-//
+include 'admin_col_gauche2.php';
 // Affichage de la colonne de droite 
-//
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
+echo '<h2>Import XML EDT</h2>';
+if(!isset($_POST['step'])) { //rien n'est défini, ouvre le dialogue pour charger le fichier
+    echo "<p><b>Charger un nouveau fichier</b></p>\n";
+    echo "<form enctype='multipart/form-data' action='".$_SERVER['PHP_SELF']."' method='post'>\n";
+    echo "<p>Veuillez fournir le fichier EXP_COURS.xml &nbsp;:</p>\n";
+    echo "<input type=\"file\" size=\"65\" name=\"edt_xml_file\" /><br />\n";
+    echo "<input type='hidden' name='step' value='1' />\n";
+    echo "<input type='hidden' name='is_posted' value='yes' />\n";
+    echo "<p><input type='submit' value='Valider' /></p>\n";
+    echo "</form>\n";
+}
+elseif ($_POST['step']==1){ // on commence par vérifier que le fichier est bien chargé
+    $xml_file = isset($_FILES["edt_xml_file"]) ? $_FILES["edt_xml_file"] : NULL;
 
-echo '<table class="table_adm">';
-    echo '<tr>';
-        echo '<center><h3>Import XML EDT</h3></center><br>';
-        if(!isset($_POST['step'])) { //rien n'est défini, ouvre le dialogue pour charger le fichier
-            echo "<p class='bold'>Charger un nouveau fichier</p>\n";
-			echo "<form enctype='multipart/form-data' action='".$_SERVER['PHP_SELF']."' method='post'>\n";
-			echo "<p>Veuillez fournir le fichier EXP_COURS.xml &nbsp;:</p>\n";
-			echo "<input type=\"file\" size=\"65\" name=\"edt_xml_file\" /><br />\n";
-			echo "<input type='hidden' name='step' value='1' />\n";
-			echo "<input type='hidden' name='is_posted' value='yes' />\n";
-			echo "<p><input type='submit' value='Valider' /></p>\n";
-			echo "</form>\n";
-        }
-        elseif ($_POST['step']==1){ // on commence par vérifier que le fichier est bien chargé
-            $xml_file = isset($_FILES["edt_xml_file"]) ? $_FILES["edt_xml_file"] : NULL;
+    if(is_uploaded_file($xml_file['tmp_name'])) {
+        echo "<p> Chargement réussi ! </p>";
 
-			if(is_uploaded_file($xml_file['tmp_name'])) {
-                echo "<p> Chargement réussi ! </p>";
-
-                	$source_file=$xml_file['tmp_name'];
-					$dest_file="../images/edt.xml";
-					$res_copy=copy("$source_file" , "$dest_file"); 
-                    if(!$res_copy){
-						echo "<p style='color:red;'>La copie du fichier a échoué.<br />Vérifiez que le dossier /images est accessible en écriture.</p>\n";
+            $source_file=$xml_file['tmp_name'];
+            $dest_file="../images/edt.xml";
+            $res_copy=copy("$source_file" , "$dest_file"); 
+            if(!$res_copy){
+                echo "<p class='avertissement'>La copie du fichier a échoué.</p><br /><p>Vérifiez que le dossier /images est accessible en écriture.</p>\n";
 //						require("../lib/footer.inc.php");
-	//					die();
-					}
-					else{
-						echo "<p>La copie du fichier vers le dossier temporaire a réussi.</p>\n";
-                        echo '<br>';
-                        echo "<form enctype='multipart/form-data' action='".$_SERVER['PHP_SELF']."' method='post'>\n";
-                        echo "<input type='hidden' name='step' value='2' />\n";
-                        echo "<input type='hidden' name='is_posted' value='yes' />\n";
-                        echo "<p><input type='submit' value='Continuer' /></p>\n";
-                        echo "</form>\n";
-					}
+//					die();
             }
-            else { 
-                echo "<p style='color:red;'>Le chargement du fichier a échoué.</p>\n";
-                //require("../include/trailer.inc.php");
-				//die();
-			}
+            else{
+                echo "<p>La copie du fichier vers le dossier temporaire a réussi.</p>\n";
+                echo '<br />';
+                echo "<form enctype='multipart/form-data' action='".$_SERVER['PHP_SELF']."' method='post'>\n";
+                echo "<input type='hidden' name='step' value='2' />\n";
+                echo "<input type='hidden' name='is_posted' value='yes' />\n";
+                echo "<p><input type='submit' value='Continuer' /></p>\n";
+                echo "</form>\n";
+            }
+    }
+    else { 
+        echo "<p class='avertissement'>Le chargement du fichier a échoué.</p>\n";
+        //require("../include/trailer.inc.php");
+        //die();
+    }
+}
+elseif ($_POST['step']==2) { // premier test sur le fichier xml récupéré
+    echo "étape ";
+    echo $_POST['step']; //$step;
+    $dest_file="../images/edt.xml";
+    $fp = fopen($dest_file, 'r');
+    $edt_xml=simplexml_load_file($dest_file);
+    if(!$edt_xml) {
+        echo "<p class='avertissement'>ECHEC du chargement du fichier avec simpleXML.</p>\n";
+    }
+    else { // le fichier a pu être chargé, on va l'analyser
+        echo "<p> Début de l'analyse du fichier </p>";
+        $nom_racine=$edt_xml->getName();
+        if(mb_strtoupper($nom_racine)!='TABLE') {
+            echo "<p class='avertissement'>ERREUR: Le fichier XML fourni n'a pas l'air d'être un fichier XML EDT.<br />Sa racine devrait être 'TABLE'.</p>\n";
         }
-        elseif ($_POST['step']==2) { // premier test sur le fichier xml récupéré
-            echo "étape ";
-            echo $_POST['step']; //$step;
-            $dest_file="../images/edt.xml";
-            $fp = fopen($dest_file, 'r');
-            $edt_xml=simplexml_load_file($dest_file);
-			if(!$edt_xml) {
-				echo "<p style='color:red;'>ECHEC du chargement du fichier avec simpleXML.</p>\n";
-			}
-            else { // le fichier a pu être chargé, on va l'analyser
-                echo "<p> Début de l'analyse du fichier </p>";
-                $nom_racine=$edt_xml->getName();
-				if(mb_strtoupper($nom_racine)!='TABLE') {
-					echo "<p style='color:red;'>ERREUR: Le fichier XML fourni n'a pas l'air d'être un fichier XML EDT.<br />Sa racine devrait être 'TABLE'.</p>\n";
-				}
-                else { // premier test réussi, choisir les dates de début et fin des réservations
-                    echo "<p>Choisir les dates de début et fin :</p>";
-                    echo '<form enctype="multipart/form-data" action="./admin_import_xml_edt.php" id="nom_formulaire" method="post" style="width: 100%;">'.PHP_EOL;
-                    echo "<input type='hidden' name='step' value='3' />".PHP_EOL;
-                    echo '<tr>';
-                    echo "<td> Jour de début d'importation </td>";
-                    echo '<td>';
-                    $typeDate = 'beg_';
-                    $day   = date("d");
-                    $month = date("m");
-                    $year  = date("Y"); //par défaut on propose la date du jour
-                    echo '<div class="col-xs-12">'.PHP_EOL;
-                    echo '<div class="form-inline">'.PHP_EOL;
-                    genDateSelector('beg_', $day, $month, $year, 'more_years');
-                    echo '<input type="hidden" disabled="disabled" id="mydate_'.$typeDate.'">'.PHP_EOL;
-                    echo '</div>'.PHP_EOL;
-                    echo '</div>'.PHP_EOL;
-                    echo '</td>';
-                    echo '</tr>';
-                    echo '<tr>';
-                    echo "<td>Jour de fin d'importation</td>";
-                    echo '<td>';
-                    $typeDate = 'end_';
-                    $day   = date("d");
-                    $month = date("m");
-                    $year  = date("Y"); //par défaut on propose la date du jour
-                    echo '<div class="col-xs-12">'.PHP_EOL;
-                    echo '<div class="form-inline">'.PHP_EOL;
-                    genDateSelector('end_', $day, $month, $year, 'more_years');
-                    echo '<input type="hidden" disabled="disabled" id="mydate_'.$typeDate.'">'.PHP_EOL;
-                    echo '</div>'.PHP_EOL;
-                    echo '</div>'.PHP_EOL;
-                    echo '</td>';
-                    echo '</tr>';
-                    echo '<tr>';
-                    echo '<td>';
-                    echo '<div id="fixe" style="text-align:center;"></td>'.PHP_EOL;
-                    echo '<td><input type="submit" id="import" value=" Importer les réservations! " /></td>'.PHP_EOL;
-                    echo '</tr>';
-                    echo '</form>';
-                }
-                    
-                    }
-                }
-        else { // premier test sur le fichier xml récupéré
-            echo "étape ".$_POST['step'].' : réservation <br>';
-            $dest_file="../images/edt.xml";
-            $fp = fopen($dest_file, 'r');
-            $edt_xml=simplexml_load_file($dest_file);
-			if(!$edt_xml) {
-				echo "<p style='color:red;'>ECHEC du chargement du fichier avec simpleXML.</p>\n";
-			}
-            else { // le fichier a été chargé, on va entrer les réservations
-                $i=0;
-                foreach ($edt_xml->children() as $cours) { // les entités de premier niveau s'appellent 'cours'
-                        //echo $cours;
-                        //echo("<p><b>Structure</b><br />");
-                    foreach($cours->attributes() as $key => $value) {
-                        echo(" Cours $key -&gt;".$value."<br />");
-                        $i++;
-                        $tab_cours[$i]=array();
-                        $tab_cours[$i]['attribut'][$key]=$value;
-                        $tab_cours[$i]['enfant']=array();
+        else { // premier test réussi, choisir les dates de début et fin des réservations
+            echo "<p>Choisir les dates de début et fin :</p>";
+            echo '<form enctype="multipart/form-data" action="./admin_import_xml_edt.php" id="nom_formulaire" method="post" style="width: 100%;">'.PHP_EOL;
+            echo "<input type='hidden' name='step' value='3' />".PHP_EOL;
+            echo '<p><br /><label for="mydate_beg_">Jour de début d\'importation : &nbsp;</label>';
+            $day   = date("d");
+            $month = date("m");
+            $year  = date("Y"); //par défaut on propose la date du jour
+            genDateSelector('beg_', $day, $month, $year, 'more_years');
+            echo '<input type="hidden" disabled="disabled" id="mydate_beg_">'.PHP_EOL;
+            echo '</p>';
+            echo "<p><label for='mydate_end_'>Jour de fin d'importation : &nbsp;</label>";
+            $day   = date("d");
+            $month = date("m");
+            $year  = date("Y"); //par défaut on propose la date du jour
+            genDateSelector('end_', $day, $month, $year, 'more_years');
+            echo '<input type="hidden" disabled="disabled" id="mydate_end_">'.PHP_EOL;
+            echo '</p>';
+            echo '<div class="center">'.PHP_EOL;
+            echo '<input type="submit" id="import" value=" Importer les réservations! " />'.PHP_EOL;
+            echo '</div>';
+            echo '</form>';
+        }
+            
+    }
+}
+else { // les tests sont passés, on réserve
+    echo "étape ".$_POST['step'].' : réservation <br />';
+    $dest_file="../images/edt.xml";
+    $fp = fopen($dest_file, 'r');
+    $edt_xml=simplexml_load_file($dest_file);
+    if(!$edt_xml) {
+        echo "<p class='avertissement'>ECHEC du chargement du fichier avec simpleXML.</p>\n";
+    }
+    else { // le fichier a été chargé, on va entrer les réservations
+        $i=0;
+        foreach ($edt_xml->children() as $cours) { // les entités de premier niveau s'appellent 'cours'
+                //echo $cours;
+                //echo("<p><b>Structure</b><br />");
+            foreach($cours->attributes() as $key => $value) {
+                echo(" Cours $key -&gt;".$value."<br />");
+                $i++;
+                $tab_cours[$i]=array();
+                $tab_cours[$i]['attribut'][$key]=$value;
+                $tab_cours[$i]['enfant']=array();
 
-                        foreach($cours->children() as $key => $value) {
-                            $tab_cours[$i]["enfant"][mb_strtolower($key)]=trim($value);
-                        }
-                                //print_r($tab_cours[$i]);
-                        $salle = $tab_cours[$i]['enfant']['salle']; // traiter le cas d'une salle vide ?
-                        $room_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_room WHERE room_name='".$salle."'");
-                        $jour_semaine = $joursemaine[substr(strtolower($tab_cours[$i]['enfant']['jour']),0,3)]; 
-                        $name = $tab_cours[$i]['enfant']['classe'].' - '.$tab_cours[$i]['enfant']['mat_libelle']; // nettoyer le code classe pour les groupes complexes 
-                        $description = $tab_cours[$i]['enfant']['prof_nom'].' '.$tab_cours[$i]['enfant']['prof_prenom'];
-                     /*   $day = strftime("%d", Settings::get('begin_bookings')); // provisoirement
-                        $month = strftime("%m", Settings::get('begin_bookings'));
-                        $year = strftime("%Y", Settings::get('begin_bookings')); */
-                        $h_deb = $tab_cours[$i]['enfant']['h.debut'];
-                        $pos_h = strpos($h_deb,'h');
-                        $hour = intval(substr($h_deb,0,$pos_h));
-                        $minute = intval(substr($h_deb,$pos_h+1,5));
-                     /*   $end_day = strftime("%d", Settings::get('begin_bookings')); // provisoirement
-                        $end_month = strftime("%m", Settings::get('begin_bookings'));
-                        $end_year = strftime("%Y", Settings::get('begin_bookings')); */
-                        $duree = $tab_cours[$i]['enfant']['duree'];
-                        $pos_h = strpos($duree,'h');
-                        $end_hour = $hour + intval(substr($duree,0,$pos_h));
-                        $end_minute = $minute + intval(substr($duree,$pos_h+1,5));
-                      /*  $rep_end_day = strftime("%d", Settings::get('end_bookings')); // provisoirement
-                        $rep_end_month = strftime("%m", Settings::get('end_bookings'));
-                        $rep_end_year = strftime("%Y", Settings::get('end_bookings')); */
-                        if ($tab_cours[$i]['enfant']['frequence'] == 'H'){ $rep_semaine = 0;}
-                        elseif ($tab_cours[$i]['enfant']['frequence'] == 'Q1') {$rep_semaine = 1;}
-                        else {$rep_semaine = 2;}
-                         
-                        // echo $room_id.', '.$jour_semaine.', '.$name.', '.$description.', '.$day.', '.$month.', '.$year.', '.$hour.', '.$minute.', '.$end_day.', '.$end_month.', '.$end_year.', '.$end_hour.', '.$end_minute.', '.$rep_end_day.', '.$rep_end_month.', '.$rep_end_year.', '.$rep_semaine;
-                        echo '<br>';
-                                
-                        if(!entre_reservation($room_id,$jour_semaine,$name,$description,$_POST['beg_day'],$_POST['beg_month'],$_POST['beg_year'],$hour,$minute,$_POST['beg_day'],$_POST['beg_month'],$_POST['beg_year'],$end_hour,$end_minute,$_POST['end_day'],$_POST['end_month'],$_POST['end_year'],$rep_semaine)){ 
-                            echo "Erreur dans la réservation numéro ".$i.": ".$erreur.'<br>' ;
-                               // on affiche les réservations non faites en un format de type CSV pour faciliter un copier-coller
-                               //echo $journumero[$row[0]]."; ".$row[1]."; ".$row[2]."h".$row[3]." -> ".$row[4]."h".$row[5]."; ".$row[6]."; ".$row[7];
-                               // for($k=0;$k<8;$k++) {echo "\"".$row[$k]."\",";}
-                               //echo "; ".$row[8]."\n<br/>";
-                               //$nb_erreurs++;
-                           }
-                        else echo "Réservation effectuée</br>";
-                    }
+                foreach($cours->children() as $key => $value) {
+                    $tab_cours[$i]["enfant"][mb_strtolower($key)]=trim($value);
                 }
-                // on va nettoyer le fichier
-                fclose($dest_file);
-                unlink($dest_file);
+                        //print_r($tab_cours[$i]);
+                $salle = $tab_cours[$i]['enfant']['salle']; // traiter le cas d'une salle vide ?
+                $room_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_room WHERE room_name='".$salle."'");
+                $jour_semaine = $joursemaine[substr(strtolower($tab_cours[$i]['enfant']['jour']),0,3)]; 
+                $name = $tab_cours[$i]['enfant']['classe'].' - '.$tab_cours[$i]['enfant']['mat_libelle']; // nettoyer le code classe pour les groupes complexes 
+                $description = $tab_cours[$i]['enfant']['prof_nom'].' '.$tab_cours[$i]['enfant']['prof_prenom'];
+                $h_deb = $tab_cours[$i]['enfant']['h.debut'];
+                $pos_h = strpos($h_deb,'h');
+                $hour = intval(substr($h_deb,0,$pos_h));
+                $minute = intval(substr($h_deb,$pos_h+1,5));
+                $duree = $tab_cours[$i]['enfant']['duree'];
+                $pos_h = strpos($duree,'h');
+                $end_hour = $hour + intval(substr($duree,0,$pos_h));
+                $end_minute = $minute + intval(substr($duree,$pos_h+1,5));
+                if ($tab_cours[$i]['enfant']['frequence'] == 'H'){ $rep_semaine = 0;}
+                elseif ($tab_cours[$i]['enfant']['frequence'] == 'Q1') {$rep_semaine = 1;}
+                else {$rep_semaine = 2;}
+                 
+                // echo $room_id.', '.$jour_semaine.', '.$name.', '.$description.', '.$day.', '.$month.', '.$year.', '.$hour.', '.$minute.', '.$end_day.', '.$end_month.', '.$end_year.', '.$end_hour.', '.$end_minute.', '.$rep_end_day.', '.$rep_end_month.', '.$rep_end_year.', '.$rep_semaine;
+                echo '<br />';
+                        
+                if(!entre_reservation($room_id,$jour_semaine,$name,$description,$_POST['beg_day'],$_POST['beg_month'],$_POST['beg_year'],$hour,$minute,$_POST['beg_day'],$_POST['beg_month'],$_POST['beg_year'],$end_hour,$end_minute,$_POST['end_day'],$_POST['end_month'],$_POST['end_year'],$rep_semaine)){ 
+                    echo "Erreur dans la réservation numéro ".$i.": ".$erreur.'<br />' ;
+                       // on affiche les réservations non faites en un format de type CSV pour faciliter un copier-coller
+                       //echo $journumero[$row[0]]."; ".$row[1]."; ".$row[2]."h".$row[3]." -> ".$row[4]."h".$row[5]."; ".$row[6]."; ".$row[7];
+                       // for($k=0;$k<8;$k++) {echo "\"".$row[$k]."\",";}
+                       //echo "; ".$row[8]."\n<br/>";
+                       //$nb_erreurs++;
+                   }
+                else echo "Réservation effectuée</br>";
             }
         }
-    echo '</tr>';
-echo '</table>';
-
-echo "<a href=\"admin_calend.php\">".get_vocab('returnprev')."</a>";
+        // on va nettoyer le fichier
+        fclose($dest_file);
+        unlink($dest_file);
+    }
+}
 
 // fin du code de la colonne de droite
 // fermeture des balises ouvertes dans admin_col_gauche.php
-echo '</td></tr></table></body></html>';
-//include "../include/trailer.inc.php"; 
+echo '</div></section></body></html>'; 
 
 function entre_reservation($room_id,$jour_semaine,$name,$description,
              $day,$month,$year,$hour,$minute,
@@ -539,5 +503,4 @@ function entre_reservation($room_id,$jour_semaine,$name,$description,
 		return true;
 		// Retour au calendrier
 }
-
 ?>

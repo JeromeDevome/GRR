@@ -27,7 +27,7 @@ td{font-size:10pt;font-family:arial,sans-serif;border-width:1px;vertical-align:t
 .table-bordered{width:100%}
 tbody.table-bordered{overflow-y: hidden;}
 a.lienPlanning:hover{display:block;color:#AAA;}
-span a{color:#FFF}
+span a{color:black;}
 
 .ressource{text-align:center}
 .item:hover{cursor:pointer}
@@ -40,6 +40,7 @@ td.cell_hours2{color:#000;background-color:#ccc !important;text-align:center;fon
 td.cell_hours a{color:#fff}
 .monthday{font-size:2.1em;text-align:center}
 .center{width:100%;margin-left:auto;margin-right:auto;text-align:center}
+.bold{font_weight:bold;}
 
 td.calendar2{text-align:center;border:2px;font-size:8pt}
 td.calendarHeader2{text-align:center;border:0;font-size:10pt;width:200px;font-weight:bold;font-size:18px;}

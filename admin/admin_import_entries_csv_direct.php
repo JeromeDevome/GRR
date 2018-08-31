@@ -3,7 +3,7 @@
  * admin_import_entries_csv_direct.php
  * Importe un fichier de réservations au format csv comprenant les champs : date du jour, heure de début, heure de fin, ressource, description et type
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2018-08-31 15:00$
  * @author    JeromeB & Yan Naessens & Denis Monasse & Laurent Delineau
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,87 +15,89 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "admin_import_entries_csv_direct.php";
 
 include "../include/admin.inc.php";
-$grr_script_name = "admin_import_entries_csv_direct.php";
- 
- # print the page header
-print_header("","","","",$type="with_session", $page="admin");
+
+# print the page header
+start_page_w_header("","","","",$type="with_session", $page="admin");
 if (isset($_GET['ok'])) {
     $msg = get_vocab("message_records");
 	affiche_pop_up($msg,"admin");
 }
-
 // Affichage de la colonne de gauche
-include "admin_col_gauche.php";
-
+include "admin_col_gauche2.php";
 // affichage de la colonne de droite
- $back = "./admin_calend.php?";
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
+echo "<h2>Importation d'un fichier de réservations dans GRR</h2><hr />";
+
+ $back = "./admin_accueil.php?";
  $joursemaine=array("dim"=>0,"lun"=>1,"mar"=>2,"mer"=>3,"jeu"=>4,"ven"=>5,"sam"=>6);
  $journumero=array(0=>"dim",1=>"lundi",2=>"mardi",3=>"mercredi",4=>"jeudi",5=>"vendredi",6=>"samedi");
 
 // $long_max : doit être plus grand que la plus grande ligne trouvée dans le fichier CSV
 	$long_max = 8000;
     
- if(isset($_POST['import'])) {
-        // on commence par charger le fichier CSV dans une table provisoire grr_csv pour profiter des tris MySQL
-        echo "<h2>Première étape de l'importation en cours, ne fermez pas la page</h2>";
-        $temps_debut=time();
-        $erreur=""; $nb_reservations=0;
-        $fp = fopen($_FILES['csv']['tmp_name'], 'r');
-        // crée la table csv2 si elle n'existe pas, la nettoie si elle existe
-        $sql  = "CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."_csv2` (";
-		$sql .= "`id` int(11) NOT NULL AUTO_INCREMENT,";
-		$sql .= "`date` DATE NOT NULL,";
-		$sql .= "`heure_deb` tinyint(4) NOT NULL,";
-		$sql .= "`minute_deb` tinyint(4) NOT NULL,";
-		$sql .= "`heure_fin` tinyint(4) NOT NULL,";
-		$sql .= "`minute_fin` tinyint(4) NOT NULL,";
-		$sql .= "`ressource` tinytext NOT NULL,";
-		$sql .= "`description` tinytext NOT NULL,";
-		$sql .= "`type` tinytext ,";
-		$sql .= "PRIMARY KEY (`id`),";
-		$sql .= "KEY `id` (`id`)";
-		$sql .= ") ENGINE=MyISAM DEFAULT CHARSET=latin1";
-		if(!grr_sql_query($sql)){
-            echo "Erreur dans la création de la table CSV";
-            die();
-        }
-        if(!grr_sql_query("TRUNCATE TABLE `".TABLE_PREFIX."_csv2` ")){
-            echo "Erreur dans le nettoyage de la table CSV";
-            die();
-        }
-        while($reservation = fgetcsv($fp, $long_max, ";")) {
-             // le jour de la réservation 
-             $date=$reservation[0];
-             // on décompose les heures de début et de fin
-             $debut=strtolower($reservation[1]);
-             if($pos_h=strpos($debut,'h')) { 
-                  	$heure_deb=intval(substr($debut,0,$pos_h));
-                  	$minute_deb=intval(substr($debut,$pos_h+1,10));
-                  } else {
-                    $heure_deb=intval($debut);
-                    $minute_deb=0;
-                  }
-             $fin=strtolower($reservation[2]);
-             if($pos_h=strpos($fin,'h')) { 
-                  	$heure_fin=intval(substr($fin,0,$pos_h));
-                  	$minute_fin=intval(substr($fin,$pos_h+1,10));
-                  } else {
-                    $heure_deb=intval($fin);
-                    $minute_deb=0;
-                  }
-             $ressource=strtoupper($reservation[3]);
-             $description=$reservation[4];
-             $type=$reservation[5];
-             // et on insère dans la base de données
-             $sql_query="INSERT INTO ".TABLE_PREFIX."_csv2 (`id`, `date`, `heure_deb`, `minute_deb`, `heure_fin`, `minute_fin`, `ressource`, `description`, `type`)";
-             $sql_query.=" VALUES ('DEFAULT' , '".$date."' , '".$heure_deb."' , '".$minute_deb."' , '".$heure_fin."' , '".$minute_fin."' , '".$ressource."' , '".$description."' , '".$type."');";
-              echo $sql_query."</br>";
-             if(!grr_sql_query($sql_query)) echo "erreur dans la ligne ".$nb_reservations."(".$sql_query.")</br>";
-             $nb_reservations++;
-         }
-         $nb_erreurs=0;
+ if(isset($_POST['import'])) 
+ {
+    // on commence par charger le fichier CSV dans une table provisoire grr_csv pour profiter des tris MySQL
+    echo "<h2>Première étape de l'importation en cours, ne fermez pas la page</h2>";
+    $temps_debut=time();
+    $erreur=""; $nb_reservations=0;
+    $fp = fopen($_FILES['csv']['tmp_name'], 'r');
+    // crée la table csv2 si elle n'existe pas, la nettoie si elle existe
+    $sql  = "CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."_csv2` (";
+    $sql .= "`id` int(11) NOT NULL AUTO_INCREMENT,";
+    $sql .= "`date` DATE NOT NULL,";
+    $sql .= "`heure_deb` tinyint(4) NOT NULL,";
+    $sql .= "`minute_deb` tinyint(4) NOT NULL,";
+    $sql .= "`heure_fin` tinyint(4) NOT NULL,";
+    $sql .= "`minute_fin` tinyint(4) NOT NULL,";
+    $sql .= "`ressource` tinytext NOT NULL,";
+    $sql .= "`description` tinytext NOT NULL,";
+    $sql .= "`type` tinytext ,";
+    $sql .= "PRIMARY KEY (`id`),";
+    $sql .= "KEY `id` (`id`)";
+    $sql .= ") ENGINE=MyISAM DEFAULT CHARSET=latin1";
+    if(!grr_sql_query($sql)){
+        echo "Erreur dans la création de la table CSV";
+        die();
+    }
+    if(!grr_sql_query("TRUNCATE TABLE `".TABLE_PREFIX."_csv2` ")){
+        echo "Erreur dans le nettoyage de la table CSV";
+        die();
+    }
+    while($reservation = fgetcsv($fp, $long_max, ";")) {
+         // le jour de la réservation 
+         $date=$reservation[0];
+         // on décompose les heures de début et de fin
+         $debut=strtolower($reservation[1]);
+         if($pos_h=strpos($debut,'h')) { 
+                $heure_deb=intval(substr($debut,0,$pos_h));
+                $minute_deb=intval(substr($debut,$pos_h+1,10));
+              } else {
+                $heure_deb=intval($debut);
+                $minute_deb=0;
+              }
+         $fin=strtolower($reservation[2]);
+         if($pos_h=strpos($fin,'h')) { 
+                $heure_fin=intval(substr($fin,0,$pos_h));
+                $minute_fin=intval(substr($fin,$pos_h+1,10));
+              } else {
+                $heure_deb=intval($fin);
+                $minute_deb=0;
+              }
+         $ressource=strtoupper($reservation[3]);
+         $description=$reservation[4];
+         $type=$reservation[5];
+         // et on insère dans la base de données
+         $sql_query="INSERT INTO ".TABLE_PREFIX."_csv2 (`id`, `date`, `heure_deb`, `minute_deb`, `heure_fin`, `minute_fin`, `ressource`, `description`, `type`)";
+         $sql_query.=" VALUES ('DEFAULT' , '".$date."' , '".$heure_deb."' , '".$minute_deb."' , '".$heure_fin."' , '".$minute_fin."' , '".$ressource."' , '".$description."' , '".$type."');";
+          echo $sql_query."</br>";
+         if(!grr_sql_query($sql_query)) echo "erreur dans la ligne ".$nb_reservations."(".$sql_query.")</br>";
+         $nb_reservations++;
+     }
+     $nb_erreurs=0;
     echo "<h2>Deuxième étape de l'importation en cours, ne fermez pas la page</h2>";
          // on récupère les données : date, heure de début, minute de début, heure de fin, minute de fin, ressource, description, type
 		 $sql_query="SELECT date,heure_deb,minute_deb,heure_fin,minute_fin,ressource,description,type FROM ".TABLE_PREFIX."_csv2 ";
@@ -104,7 +106,7 @@ include "admin_col_gauche.php";
 		 if ($res) { 
          // on a des données à traiter
 			  $i = 0; $erreur=""; $n=0;
-			  while($row = grr_sql_row($res, $i)){
+			while($row = grr_sql_row($res, $i)){
 				$date=$row[0]; 
 				$heure_deb=$row[1]; $minute_deb=$row[2];
 				$heure_fin=$row[3]; $minute_fin=$row[4];
@@ -113,57 +115,48 @@ include "admin_col_gauche.php";
 				$room_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_room WHERE room_name='".$ressource."'");
 				echo $i." ";
 				if(!ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$minute_fin,$description,$type))
-						  { echo "Erreur dans la réservation ($erreur): "; //  numéro ".$n.": ".$erreur.":";
-						   // on affiche les réservations non faites en un format de type CSV pour faciliter un copier-coller
-						   echo $row[0].", ".$row[1]."h".$row[2]." -> ".$row[3]."h".$row[4].", ".$row[5].", ".$row[6].", ".$row[7]."</br>";
-						   // for($k=0;$k<8;$k++) {echo "\"".$row[$k]."\",";}
-						   $nb_erreurs++;
-						   }
+                  { echo "Erreur dans la réservation ($erreur): "; //  numéro ".$n.": ".$erreur.":";
+                   // on affiche les réservations non faites en un format de type CSV pour faciliter un copier-coller
+                   echo $row[0].", ".$row[1]."h".$row[2]." -> ".$row[3]."h".$row[4].", ".$row[5].", ".$row[6].", ".$row[7]."</br>";
+                   // for($k=0;$k<8;$k++) {echo "\"".$row[$k]."\",";}
+                   $nb_erreurs++;
+                   }
 					//	   else echo "Réservation effectuée</br>";
 			}      
 			echo "<h2>Importation de ".($i-$nb_erreurs)."/$nb_reservations réservations terminée au bout de ".(time()-$temps_debut)." secondes</h2>";
 			echo "Vérifiez que l'importation est bien complète (aux erreurs près), sinon restaurez la base de données, scindez le fichier CSV et recommencez.<br/>";
 		 }
-  } else {
-   // show upload form
-        ?>
-       
-        <h1>Importation d'un fichier de réservations dans GRR</h1>
-        <p>
+} 
+else 
+{   // show upload form
+    echo '<p>
             Utiliser ce script pour importer un fichier de réservation dans GRR<br />
-            Il est conseillé de procéder à la sauvegarde de la base de données avant l'importation<br/>
-              <form action="admin_save_mysql.php" method="get"><div>
-                   <input type="hidden" name="flag_connect" value="yes" />
-                   <input type="submit" value="Lancer une sauvegarde" />
-              </div></form>
-            <hr />
-            Télécharger un fichier CSV au format suivant:<br />
-            <code>
-                date du jour; heure de début; heure de fin; ressource; description; type
-            </code><br />
-            Le temps d'importation est en général limité par le serveur à quelques minutes par fichier. 
-            Pour éviter des erreurs de type "timeout" qui conduirait à une importation incomplète, 
+            Il est conseillé de procéder à la sauvegarde de la base de données avant l\'importation</p>';
+    echo '<form action="admin_save_mysql.php" method="get">';
+    echo '<input type="hidden" name="flag_connect" value="yes" />';
+    echo '<input type="submit" value="Lancer une sauvegarde" />';
+    echo '</form>';
+    echo '<hr />';
+    echo '<p>Télécharger un fichier CSV au format suivant:</p>';
+    echo '<code>date du jour; heure de début; heure de fin; ressource; description; type</code>';
+    echo '<p>Le temps d\'importation est en général limité par le serveur à quelques minutes par fichier. 
+            Pour éviter une erreur de type "timeout" qui conduirait à une importation incomplète, 
             scindez votre fichier en fichiers plus petits que vous importerez successivement
-        </p>
-        <hr />
-        <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data"> 
-            <input type="hidden" name="import" value="1" />
-            <table cellpadding="4px">
-                <tr>
-                    <td>Fichier CSV</td>
-                    <td><input type="file" name="csv" /></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" name="submit" value=" Importer le fichier de réservation! " /></td>
-                </tr>
-            </table>
-        </form>
-<?php
-     echo "<p><a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a></p>";
-     echo "</td></tr></table>"; // fin de la colonne droite
-     echo "</body></html>";  // fin de la page
-  }
+        </p>';
+    echo '<hr />';
+    
+    echo '<form enctype="multipart/form-data" action="./admin_import_entries_csv_direct.php" id="nom_formulaire" method="post" style="width: 100%;">'.PHP_EOL;
+    echo '<label for="import">Fichier CSV</label>';
+    echo '<input type="file" name="csv" />';
+    echo '<input type="hidden" name="import" id="import" value="1" />'.PHP_EOL;
+    echo '<div class="center">'.PHP_EOL;
+    echo '<input type="submit" id="import" value=" Importer le fichier de réservation! " />'.PHP_EOL;
+    echo '</div>';
+    echo '</form>';
+}
+echo "</div>"; // fin de la colonne droite
+end_page();  // fin de la page
+// fonction php  
 function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$minute_fin,$description,$type)
         {
         //echo $room_id.",".$date.",".$heure_deb."h".$minute_deb."->".$heure_fin."h".$minute_fin.",".$description.",".$type."</br>";
@@ -339,5 +332,4 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
 		return true;
 		// Retour au calendrier
 }
-
-include "../include/trailer.inc.php"; ?>
+?>

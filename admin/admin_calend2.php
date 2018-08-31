@@ -3,8 +3,8 @@
  * admin_calend2.php
  * interface permettant la la réservation en bloc de journées entières
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
+ * Dernière modification : $Date: 2018-08-31 12:00$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,9 +15,9 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "admin_calend2.php";
 
 include "../include/admin.inc.php";
-$grr_script_name = "admin_calend2.php";
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
@@ -43,10 +43,11 @@ settype($end_minute,"integer");
 $period = isset($_POST["period"]) ? $_POST["period"] : NULL;
 $end_period = isset($_POST["end_period"]) ? $_POST["end_period"] : NULL;
 $all_day = isset($_POST["all_day"]) ? $_POST["all_day"] : NULL;
-print_header("", "", "", $type="with_session");
+/* print_header("", "", "", $type="with_session");
 // Affichage de la colonne de gauche
 include "admin_col_gauche.php";
 echo "<h2>".get_vocab('admin_calendar_title.php')."</h2>\n";
+*/
 $result = 0;
 if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 {
@@ -141,6 +142,14 @@ if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 		}
 	}
 }
+// code HTML
+start_page_w_header("", "", "", $type="with_session");
+// Affichage de la colonne de gauche
+include "admin_col_gauche2.php";
+// colonne de droite
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
+echo "<h2>".get_vocab('admin_calendar_title.php')."</h2>\n";
+
 if ($etape == 4)
 {
 	if ($result == '')
@@ -171,9 +180,8 @@ if ($etape == 3)
 	if (!isset($rooms))
 	{
 		echo "<h3>".get_vocab("noarea")."</h3>\n";
-			// fin de l'affichage de la colonne de droite
-		echo "</td></tr></table>\n";
-		echo "</body></html>\n";
+			// fin de l'affichage de la colonne de droite et de la page
+		echo "</div></section></body></html>\n";
 		die();
 	}
 
@@ -247,7 +255,7 @@ if ($etape == 3)
 		$texte_debut_fin_reservation = get_vocab("domaines_de_type_incompatibles");
 		echo "<input type=\"hidden\" name=\"all_day\" value=\"y\" />";
 	}
-	echo "<table cellpadding=\"3\" width=\"100%\" border=\"0\">\n";
+	echo "<table class='table-noborder'>\n";
 	$basetime = mktime(12, 0, 0, 6, 11 + $weekstarts, 2000);
 	for ($i = 0; $i < 7; $i++)
 	{
@@ -263,7 +271,7 @@ if ($etape == 3)
 	echo "<tr>\n<td><span class='small'><a href='admin_calend2.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span></td>\n";
 	echo "<td> </td></tr>\n";
 	echo "</table>\n";
-	echo "<table cellspacing=\"20\">\n";
+	echo "<table>\n";
 	$n = Settings::get("begin_bookings");
 	$end_bookings = Settings::get("end_bookings");
 	$debligne = 1;
@@ -377,14 +385,13 @@ else if ($etape == 2)
 	if (!isset($areas))
 	{
 		echo "<h3>".get_vocab("noarea")."</h3>\n";
-		// fin de l'affichage de la colonne de droite
-		echo "</td></tr></table>\n";
-		echo "</body></html>\n";
+		// fin de l'affichage de la colonne de droite et de la page
+		echo "</div></section></body></html>\n";
 		die();
 	}
 	// Choix des ressources
 	echo "<form action=\"admin_calend2.php\" method=\"post\" id=\"main\" onsubmit=\"return validate_and_submit();\">\n";
-	echo "<table border=\"0\">\n";
+	echo "<table class='table-noborder'>\n";
 	if ($type_resa == "resa")
 	{
 		echo "<tr><td class=\"CR\"><b>".ucfirst(trim(get_vocab("reservation au nom de"))).get_vocab("deux_points")."</b></td>\n\n";
@@ -507,7 +514,7 @@ else if (!$etape)
 		echo "</div></form>\n";
 	}
 // fin de l'affichage de la colonne de droite
-	echo "</td></tr></table>";
-	?>
-</body>
-</html>
+echo "</div>";
+// et de la page
+end_page();
+?>
