@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-04-11 11:30$
+ * Dernière modification : $Date: 2018-08-31 18:30$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
@@ -17,6 +17,7 @@
  * (at your option) any later version.
  */
 $grr_script_name = "admin_maj.php";
+
 include "../include/connect.inc.php";
 include "../include/config.inc.php";
 include "../include/misc.inc.php";
@@ -158,50 +159,41 @@ if (Settings::get('sso_statut') == 'lcs')
 
 if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 {
-	?>
-	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
-	<HTML>
-		<HEAD>
-			<META HTTP-EQUIV="Content-Type" content="text/html; charset=<?php
-			if ($unicode_encoding)
-				echo "utf-8";
-			else
-				echo $charset_html;
-			?>">
-			<link REL="stylesheet" href="themes/default/css/style.css" type="text/css">
-			<TITLE>GRR</TITLE>
-			<LINK REL="SHORTCUT ICON" href="./favicon.ico">
-				<script type="text/javascript" src="../js/functions.js" ></script>
-			</HEAD>
-			<BODY>
-				<form action="admin_maj.php" method='post' style="width: 100%; margin-top: 24px; margin-bottom: 48px;">
-					<div class="center">
-						<h2><?php echo get_vocab("maj_bdd"); ?></h2>
-
-						<?php
-						if (isset($message))
-							echo("<p><span style=\"color:red;\">" . encode_message_utf8($message) . "</span></p>");
-						?>
-						<fieldset style="padding-top: 8px; padding-bottom: 8px; width: 40%; margin-left: auto; margin-right: auto;">
-							<legend style="font-variant: small-caps;"><?php echo get_vocab("identification"); ?></legend>
-							<table style="width: 100%; border: 0;" cellpadding="5" cellspacing="0">
-								<tr>
-									<td style="text-align: right; width: 40%; font-variant: small-caps;"><label for="login"><?php echo get_vocab("login"); ?></label></td>
-									<td style="text-align: center; width: 60%;"><input type="text" id="login" name="login" size="16" /></td>
-								</tr>
-								<tr>
-									<td style="text-align: right; width: 40%; font-variant: small-caps;"><label for="password"><?php echo get_vocab("pwd"); ?></label></td>
-									<td style="text-align: center; width: 60%;"><input type="password" id="password" name="password" size="16" /></td>
-								</tr>
-							</table>
-							<input type="submit" name="submit" value="<?php echo get_vocab("submit"); ?>" style="font-variant: small-caps;" />
-						</fieldset>
-					</div>
-				</form>
-			</body>
-			</html>
-			<?php
-			die();
+	echo '<!DOCTYPE html>
+            <html lang="fr-FR">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                    <link REL="stylesheet" href="themes/default/css/style.css" type="text/css">
+                    <TITLE>GRR</TITLE>
+                    <LINK REL="SHORTCUT ICON" href="./favicon.ico">
+                        <script type="text/javascript" src="../js/functions.js" ></script>
+                </head>
+			<body>';
+	echo '<form action="admin_maj.php" method="post" >';
+	echo '<div class="center">';
+	echo '<h2>'.get_vocab("maj_bdd").'</h2>';
+	if (isset($message))
+		echo("<p><span class='avertissement'>".encode_message_utf8($message)."</span></p>");
+    echo '<fieldset>';
+    echo '<legend style="font-variant: small-caps;">'.get_vocab("identification").'</legend>';
+    echo '<table class="table_noborder">';
+    echo '<tr>';
+    echo '<td style="text-align: right; width: 40%; font-variant: small-caps;"><label for="login">'.get_vocab("login").'</label></td>';
+    echo '<td style="text-align: center; width: 60%;"><input type="text" id="login" name="login" size="16" /></td>';
+    echo '</tr>';
+    echo '<tr>';
+    echo '<td style="text-align: right; width: 40%; font-variant: small-caps;"><label for="password">'.get_vocab("pwd").'</label></td>';
+    echo '<td style="text-align: center; width: 60%;"><input type="password" id="password" name="password" size="16" /></td>';
+    echo '</tr>';
+    echo '</table>';
+	echo '<input type="submit" name="submit" value="'.get_vocab("submit").'" style="font-variant: small-caps;" />';
+	echo '</fieldset>';
+	echo '</div>';
+	echo '</form>';
+	echo '</body></html>';
+	die();
 }
 
 $back = '';
@@ -217,22 +209,16 @@ if ((authGetUserLevel(getUserName(),-1) < 6) && ($valid != 'yes') && $connexionA
 if ($valid == 'no')
 {
 	# print the page header
-	print_header("", "", "", $type="with_session");
+	start_page_w_header("", "", "", $type="with_session");
 	// Affichage de la colonne de gauche
-	include "admin_col_gauche.php";
-
+	include "admin_col_gauche2.php";
 }
 elseif(!$majscript)
 {
 	echo '<!doctype html>';
 	echo '<html>';
 	echo '<head>';
-	echo '<meta http-equiv="content-type" content="text/html; charset=';
-	if ($unicode_encoding)
-		echo "utf-8";
-	else
-		echo $charset_html;
-
+	echo '<meta http-equiv="content-type" content="text/html; charset="utf-8">';
 	echo '<link rel="stylesheet" href="../themes/default/css/style.css" type="text/css">';
 	echo '<link rel="shortcut icon" href="favicon.ico">';
 	echo '<title>GRR</title>';
@@ -893,7 +879,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
 	// A partir de la version 1.9.4, les champs add. sont stockés sous la forme @id_champ@url_encode(champ)@/id_champ@
 	if (($version_old < "1.9.4") && (Settings::get("maj194_champs_additionnels") != 1) && isset($_POST['maj']))
 	{
-	// On constuite un tableau des id des ".TABLE_PREFIX."_overload:
+	// On construit un tableau des id des ".TABLE_PREFIX."_overload:
 		$sql_overload = grr_sql_query("SELECT id FROM ".TABLE_PREFIX."_overload");
 		for ($i = 0; ($row = grr_sql_row($sql_overload, $i)); $i++)
 			$tab_id_overload[] = $row[0];
@@ -983,6 +969,7 @@ else
 	$display_version_grr = $version_grr." RC".$version_grr_RC;
 
 if(!$majscript) {
+    echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 	echo "<h2>".get_vocab('admin_maj.php')."</h2>";
 	echo "<hr />";
 
@@ -1047,7 +1034,8 @@ if($recherche_MAJ == 1)
 
 		$reader->close();
 	}
-} elseif(!$majscript) {
+} 
+elseif(!$majscript) {
 	"<p>".get_vocab("maj_impossible_rechercher")."</p>\n";
 }
 if(!$majscript) {
@@ -1074,7 +1062,7 @@ if(!$majscript) {
 	else
 	{
 		echo "<p>".get_vocab("maj_no_update_to_do")."</p>";
-		echo "<p style=\"text-align:center;\"><a href=\"./\">".get_vocab("welcome")."</a></p>";
+		echo "<p style=\"text-align:center;\"><a href=\"./admin_accueil.php\">".get_vocab("welcome")."</a></p>";
 	}
 	echo "<hr />";
 }
@@ -1102,7 +1090,7 @@ if ($version_grr > "1.9.1")
 		}
 		if ($liste != "")
 		{
-			echo encode_message_utf8("<table border=\"1\" cellpadding=\"5\"><tr><td><p><span style=\"color:red;\"><b>ATTENTION : votre table des types de réservation n'est pas à jour :</b></span></p>");
+			echo encode_message_utf8("<table class='table-bordered'><tr><td><p><span class='avertissement'><b>ATTENTION : votre table des types de réservation n'est pas à jour :</b></span></p>");
 			echo encode_message_utf8("<p>Depuis la version 1.9.2, les types de réservation ne sont plus définis dans le fichier config.inc.php
 				mais directement en ligne. Un ou plusieurs types sont actuellement utilisés dans les réservations
 				mais ne figurent pas dans la tables des types. Cela risque d'engendrer des messages d'erreur. <b>Il s'agit du ou des types suivants : ".$liste."</b>");
@@ -1113,7 +1101,7 @@ if ($version_grr > "1.9.1")
 
 // fin de l'affichage de la colonne de droite
 if ($valid == 'no')
-	echo "</td></tr></table>";
+	echo "</div>";
 
 if(!$majscript) {
 	echo "<script>";
@@ -1125,6 +1113,5 @@ if(!$majscript) {
 	echo "return false;";
 	echo "} );";
 	echo "</script>";
-	echo "</body>";
-	echo "</html>";
+    end_page();
 }

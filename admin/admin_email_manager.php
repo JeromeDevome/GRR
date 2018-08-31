@@ -3,8 +3,8 @@
  * admin_email_manager.php
  * Interface de gestion des mails automatiques
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-08-31 16:40$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,9 +15,10 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "admin_email_manager.php";
 
 include "../include/admin.inc.php";
-$grr_script_name = "admin_email_manager.php";
+
 $id_area = isset($_GET["id_area"]) ? $_GET["id_area"] : NULL;
 $room = isset($_GET["room"]) ? $_GET["room"] : NULL;
 if (isset($room))
@@ -99,32 +100,35 @@ if ($action)
 			$msg = get_vocab("del_user_succeed");
 	}
 }
-# print the page header
-print_header("", "", "", $type="with_session");
-// Affichage de la colonne de gauche
-include "admin_col_gauche.php";
-affiche_pop_up($msg,"admin");
 if (empty($room))
 	$room = -1;
+// code HTML
+# print the page header
+start_page_w_header("", "", "", $type="with_session");
+// Affichage de la colonne de gauche
+include "admin_col_gauche2.php";
+// colonne de droite
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
+affiche_pop_up($msg,"admin");
 echo "<h2>".get_vocab('admin_email_manager.php')."</h2>\n";
 if (Settings::get("automatic_mail") != 'yes')
 	echo "<h3 class=\"avertissement\">".get_vocab("attention_mail_automatique_désactive")."</h3>";
-echo get_vocab("explain_automatic_mail3")."<br /><br /><hr />\n";
+echo get_vocab("explain_automatic_mail3")."<br /><hr />\n";
 echo "<form action=\"admin_email_manager.php\" method=\"post\">\n";
-echo "<div><input type=\"checkbox\" name=\"send_always_mail_to_creator\" value=\"y\" ";
+echo "<input type=\"checkbox\" name=\"send_always_mail_to_creator\" value=\"y\" ";
 if (Settings::get('send_always_mail_to_creator')=='1')
 	echo ' checked="checked" ';
 echo ' />'."\n";
 echo get_vocab("explain_automatic_mail1");
-echo "\n".'<br /><br /><div style="text-align:center;"><input type="submit" name="mail1" value="'.get_vocab('save').'" /></div></div></form><hr />';
+echo "\n".'<br /><div class="center"><input type="submit" name="mail1" value="'.get_vocab('save').'" /></div></form><hr />';
 echo get_vocab("explain_automatic_mail2")."<br />";
 echo $msg;
 # Table with areas, rooms.
-echo "\n<table><tr>\n";
+echo "\n<table class=><tr>\n";
 $this_area_name = "";
 $this_room_name = "";
 # Show all areas
-echo "<td ><p><b>".get_vocab("areas")."</b></p>\n";
+echo "<th><p><b>".get_vocab("areas")."</b></p>\n";
 $out_html = "<form  id=\"area\" action=\"admin_email_manager.php\" method=\"post\">\n<div><select name=\"area\" onchange=\"area_go()\">\n";
 $out_html .= "<option value=\"admin_email_manager.php?id_area=-1\">".get_vocab('select')."</option>\n";
 $sql = "select id, area_name from ".TABLE_PREFIX."_area order by area_name";
@@ -159,9 +163,9 @@ echo $out_html;
 $this_area_name = grr_sql_query1("select area_name from ".TABLE_PREFIX."_area where id=$id_area");
 $this_room_name = grr_sql_query1("select room_name from ".TABLE_PREFIX."_room where id=$room");
 $this_room_name_des = grr_sql_query1("select description from ".TABLE_PREFIX."_room where id=$room");
-echo "</td>\n";
+echo "</th>\n";
 # Show all rooms in the current area
-echo "<td><p><b>".get_vocab("rooms")."</b></p>";
+echo "<th><p><b>".get_vocab("rooms")."</b></p>";
 # should we show a drop-down for the room list, or not?
 $out_html = "<form id=\"room\" action=\"admin_email_manager.php\" method=\"post\">\n<div><select name=\"room\" onchange=\"room_go()\">\n";
 $out_html .= "<option value=\"admin_email_manager.php?id_area=$id_area&amp;room=-1\">".get_vocab('select')."</option>\n";
@@ -197,20 +201,19 @@ $out_html .= "</select></div>\n
 	}
 		// -->
 </script>
-
 <noscript>
 	<div><input type=\"submit\" value=\"Change\" /></div>
 </noscript>
 </form>";
 echo $out_html;
-echo "</td>\n";
+echo "</th>\n";
 echo "</tr></table>\n";
-# Don't continue if this area has no rooms:
+# Don't continue if no area is selected :
 if ($id_area <= 0)
 {
-	echo "<h1>".get_vocab("no_area")."</h1>";
+	echo "<h3 class='avertissement'>".get_vocab("no_area")."</h3>";
 	// fin de l'affichage de la colonne de droite
-	echo "</td></tr></table></body></html>";
+	echo "</div></section></body></html>";
 	exit;
 }
 # Show area and room:
@@ -220,14 +223,14 @@ else
 	$this_room_name_des='';
 if ($room == '-1')
 {
-	echo "<h1>".get_vocab("no_room")."</h1>";
+	echo "<h3 class='avertissement'>".get_vocab("no_room")."</h3>";
 	// fin de l'affichage de la colonne de droite
-	echo "</td></tr></table></body></html>";
+	echo "</div></section></body></html>";
 	exit;
 }
 else
 {
-	echo "<table border=\"1\" cellpadding=\"5\"><tr><td>";
+	echo "<table class='table-bordered'><tr><td>";
 	$sql = "SELECT u.login, u.nom, u.prenom FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_mailuser_room j WHERE (j.id_room='$room' and u.login=j.login)  order by u.nom, u.prenom";
 	$res = grr_sql_query($sql);
 	$nombre = grr_sql_count($res);
@@ -247,35 +250,28 @@ else
 	if ($nombre == 0)
 		echo "<h3><span class=\"avertissement\">".get_vocab("no_mail_user_list")."</span></h3>";
 }
-?>
-<h3><?php echo get_vocab("add_user_to_list"); ?></h3>
-<form action="admin_email_manager.php" method='get'>
-	<div><select size="1" name="reg_admin_login">
-		<option value=''><?php echo get_vocab("nobody"); ?></option>
-		<?php
-		$sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE  (etat!='inactif' and email!='' and statut!='visiteur' ) order by nom, prenom";
-		$res = grr_sql_query($sql);
-		if ($res)
-		{
-			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-			{
-				if (authUserAccesArea($row[0], $id_area) == 1)
-					echo "<option value=\"$row[0]\">".htmlspecialchars($row[1])." ".htmlspecialchars($row[2])." </option>";
-			}
-		}
-		?>
-	</select>
-	<input type="hidden" name="add_admin" value="yes" />
-	<input type="hidden" name="id_area" value="<?php echo $id_area;?>" />
-	<input type="hidden" name="room" value="<?php echo $room;?>" />
-	<input class="btn btn-primary" type="submit" value="Enregistrer" /></div>
-</form>
-</td>
-</tr>
-</table>
-<?php
+echo '<h3>'.get_vocab("add_user_to_list").'</h3>';
+echo '<form action="admin_email_manager.php" method="get">';
+echo '<select size="1" name="reg_admin_login">';
+echo '<option value="">'.get_vocab("nobody").'</option>';
+$sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE  (etat!='inactif' and email!='' and statut!='visiteur' ) order by nom, prenom";
+$res = grr_sql_query($sql);
+if ($res)
+{
+    for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+    {
+        if (authUserAccesArea($row[0], $id_area) == 1)
+            echo "<option value=\"$row[0]\">".htmlspecialchars($row[1])." ".htmlspecialchars($row[2])." </option>";
+    }
+}
+echo '</select>';
+echo '<input type="hidden" name="add_admin" value="yes" />';
+echo '<input type="hidden" name="id_area" value="'.$id_area.'" />';
+echo '<input type="hidden" name="room" value="'.$room.'" />';
+echo '<input type="submit" value="Enregistrer" />';
+echo '</form>';
+echo '</td></tr></table>';
 // fin de l'affichage de la colonne de droite
-echo "</td></tr></table>";
+echo "</div>";
+end_page();
 ?>
-</body>
-</html>
