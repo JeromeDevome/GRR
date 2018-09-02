@@ -3,8 +3,8 @@
  * admin_config_imap.php
  * Interface permettant l'activation de la configuration de l'authentification pop/imap  
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB & Gilles Martin
+ * Dernière modification : $Date: 2018-09-02 19:00$
+ * @author    Laurent Delineau & JeromeB & Gilles Martin & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,8 +15,11 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-include "../include/admin.inc.php";
+// cette page reste à internationaliser
 $grr_script_name = "admin_config_imap.php";
+ 
+include "../include/admin.inc.php";
+
 require_once("../include/settings.class.php");
 $valid = isset($_POST["valid"]) ? $_POST["valid"] : 'no';
 $etape = isset($_POST["etape"]) ? $_POST["etape"] : '0';
@@ -58,13 +61,13 @@ if ((authGetUserLevel(getUserName(),-1) < 5) && ($valid != 'yes'))
 	showAccessDenied($back);
 	exit();
 }
-print_header("", "", "", $type="with_session");
+// début de la page HTML
+start_page_w_header("", "", "", $type="with_session");
 // Affichage de la colonne de gauche
-include "admin_col_gauche.php";
+include "admin_col_gauche2.php";
+// colonne de droite
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 echo encode_message_utf8("<h2>Configuration de l'authentification IMAP/POP"."</h2>");
-?>
-<script type="text/javascript" src="../js/functions.js"></script>
-<?php
 if ($etape == 1)
 {
 	if (isset($_POST["Valider1"]))
@@ -125,11 +128,11 @@ if ($etape == 1)
 			echo encode_message_utf8("<p><b><span style=\"color:red;\">".$erreur."</span></b></p>");
 		if ($erreur == '')
 		{
-			echo "<form action=\"admin_config_imap.php\" method=\"post\"><div>";
+			echo "<form action=\"admin_config_imap.php\" method=\"post\">";
 			echo "<input type=\"hidden\" name=\"etape\" value=\"0\" />";
 			echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" />";
-			echo "<div style=\"text-align:center;\"><input type=\"submit\" name=\"Valider\" value=\"Terminer\" /></div>";
-			echo "</div></form>";
+			echo "<div class='center'><input type=\"submit\" name=\"Valider\" value=\"Terminer\" /></div>";
+			echo "</form>";
 		}
 	}
 	else if (@file_exists("../include/config_imap.inc.php"))
@@ -201,7 +204,7 @@ if ($etape == 1)
 	echo "</div></form>";
 	echo "<h3>Remarques</h3>\n";
 	echo "<ul><li><b>SSL</b> : utilise Secure Socket Layer pour crypter la session</li>\n";
-	echo "<li><b>TLS</b> : force l'utilisation de start-TLS pour crypter la session et rejète les connexions aux serveurs qui ne le supporte pas.</li>\n";
+	echo "<li><b>TLS</b> : force l'utilisation de start-TLS pour crypter la session et rejette les connexions aux serveurs qui ne le supportent pas.</li>\n";
 	echo "<li><b>validate-cert</b> : valide les certificats depuis le serveur TLS/SSL (c'est le comportement par défaut)</li>\n";
 	echo "<li><b>novalidate-cert</b> : ne pas valider les certificats depuis le serveur TLS/SSL, nécessaire si le serveur utilise des certificats auto-signés</li></ul>\n";
 
@@ -210,7 +213,7 @@ else if ($etape ==0)
 {
 	if (!(function_exists("imap_open")))
 	{
-		echo encode_message_utf8("<p class=\"avertissement\"><b>Attention </b> : les fonctions liées à l'authentification <b>IMAP/POP</b> ne sont pas activées sur votre serveur PHP.<br />La configuration IMAP/POP est donc actuellement impossible.</p></td></tr></table></body></html>");
+		echo encode_message_utf8("<p class=\"avertissement\"><b>Attention </b> : les fonctions liées à l'authentification <b>IMAP/POP</b> ne sont pas activées sur votre serveur PHP.<br />La configuration IMAP/POP est donc actuellement impossible.</p></div></section></body></html>");
 		die();
 	}
 	if (Settings::get("imap_statut") != '')
@@ -308,7 +311,7 @@ else if ($etape ==0)
 }
 // fin de l'affichage de la colonne de droite
 if ($valid == 'no')
-	echo "</td></tr></table>";
+	echo "</div>";
+// et de la page
+end_page();
 ?>
-</body>
-</html>

@@ -3,7 +3,7 @@
  * admin_config_sso.php
  * Interface permettant l'activation de la prise en compte d'un environnement SSO
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-18 22:00$
+ * Dernière modification : $Date: 2018-09-02 18:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,9 +15,9 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "admin_config_sso.php";
 
 include "../include/admin.inc.php";
-$grr_script_name = "admin_config_sso.php";
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
@@ -146,16 +146,17 @@ if ((authGetUserLevel(getUserName(), -1) < 6) && ($valid != 'yes'))
 	exit();
 }
 # print the page header
-print_header("", "", "", $type="with_session");
+start_page_w_header("", "", "", $type="with_session");
 // Affichage de la colonne de gauche
-include "admin_col_gauche.php";
-echo "<form action=\"admin_config_sso.php\" method=\"post\">\n";
+include "admin_col_gauche2.php";
+// colonne de droite
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 echo "<h2>".get_vocab("admin_config_sso.php")."</h2>\n";
+echo "<form action=\"admin_config_sso.php\" method=\"post\">\n";
 echo "<div>\n<input type=\"radio\" name=\"sso_statut\" value=\"no_sso\" ";
 if (Settings::get("sso_statut") == '')
 	echo " checked=\"checked\" ";
 echo "/>".get_vocab("Ne_pas_activer_Service_sso")."<br />\n";
-
 
 $CASserveurSSO = Settings::get("cas_serveur");
 $CASserveurSSOPort = Settings::get("cas_port");
@@ -351,10 +352,10 @@ if (Settings::get("http_sso_statut_domain") == 'utilisateur')
 	echo " checked=\"checked\" ";
 echo "/>".get_vocab("statut_user")."<br /></div>\n";
 echo "<hr />\n";
-echo "<div style=\"text-align:centrer;\"><input type=\"submit\" name=\"Valider\"value=\"".get_vocab("save")."\" />\n</div>\n";
+echo "<div class='center'><input type=\"submit\" name=\"Valider\" value=\"".get_vocab("save")."\" />\n</div>\n";
 echo "</form>\n";
 // fin de l'affichage de la colonne de droite
-echo "</td></tr></table>\n";
+echo "</div>\n";
+// et de la page
+end_page();
 ?>
-</body>
-</html>

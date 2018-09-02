@@ -2,8 +2,9 @@
 /**
  * admin_corresp_statut.php
  * interface de gestion de la correspondance entre profil LDAP et statut GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB & Christian Daviau
+ * Ce script fait partie de l'application GRR
+ * Dernière modification : $Date: 2018-09-02 18:00$
+ * @author    Laurent Delineau & JeromeB & Christian Daviau & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -14,9 +15,10 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "admin_corresp_statut.php";
 
 include "../include/admin.inc.php";
-$grr_script_name = "admin_config_sso.php";
+
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
@@ -76,16 +78,13 @@ if ((isset($_GET['action_del'])) && ($_GET['js_confirmed'] == 1) && ($_GET['acti
 	else
 		$msg = get_vocab("message_records");
 }
-$back = "";
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+
 //print the page header
-print_header("", "", "", $type="with_session");
+start_page_w_header("", "", "", $type="with_session");
 // Affichage de la colonne de gauche
-include "admin_col_gauche.php";
-?>
-<script src="../js/functions.js" type="text/javascript"></script>
-<?php
+include "admin_col_gauche2.php";
+// colonne de droite
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 echo "<h2>".get_vocab('admin_corresp_statut.php')."</h2>";
 echo get_vocab('admin_corresp_statut_desc');
 echo "<br />\n";
@@ -103,7 +102,7 @@ else
 {
 	// S'il y a des lignes à afficher
 	// Affichage du tableau
-	echo "<div><table border=\"1\" cellpadding=\"3\" style=\"text-align:center;vertical-align:middle;\"><tr>\n";
+	echo "<table border=\"1\" cellpadding=\"3\" style=\"text-align:center;vertical-align:middle;\"><tr>\n";
 	echo "<td><b>".get_vocab("code_fonction")."</b></td>\n";
 	echo "<td><b>".get_vocab("libelle_fonction")."</b></td>\n";
 	echo "<td><b>".get_vocab("statut_grr")."</b></td>\n";
@@ -132,9 +131,9 @@ else
 			echo "</tr>";
 		}
 	}
-	echo "</table></div>";
+	echo "</table>";
 }
-echo "<br /><hr /><br /><div style=\"text-align:center;\"><b>".get_vocab("ajout_correspondance_profil_statut")."</b>\n";
+echo "<br /><hr /><br /><div class='center'><b>".get_vocab("ajout_correspondance_profil_statut")."</b>\n";
 echo "<br /><form action=\"admin_corresp_statut.php?action_add=yes\" method=\"post\"><div>\n";
 echo get_vocab("code_fonction").get_vocab("deux_points")."<input name=\"codefonc\" type=\"text\" size=\"6\" /><br />";
 echo get_vocab("libelle_fonction").get_vocab("deux_points")."<input name=\"libfonc\" type=\"text\" size=\"25\" /><br />";
@@ -147,9 +146,8 @@ echo "<option value=\"administrateur\">".get_vocab("statut_administrator")."</op
 echo "</select><br /><br />\n";
 echo "<input type=\"submit\" value=\"".get_vocab("OK")."\" /></div></form></div>\n";
 // fin de l'affichage de la colonne de droite
-echo "</td></tr></table>\n";
+echo "</div>";
 // Affichage d'un pop-up
 affiche_pop_up($msg,"admin");
+end_page();
 ?>
-</body>
-</html>

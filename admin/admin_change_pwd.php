@@ -3,8 +3,8 @@
  * admin_change_pwd.php
  * Interface de changement du mot de passe pour les administrateurs
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-09-02 16:30$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,9 +15,10 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "admin_change_pwd.php";
 
 include "../include/admin.inc.php";
-$grr_script_name = "admin_change_pwd.php";
+
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
     $back = htmlspecialchars($_SERVER['HTTP_REFERER']);
@@ -70,18 +71,16 @@ if (($user_source != 'local') && ($user_source != ''))
     exit();
 }
 # print the page header
-print_header("", "", "", $type="with_session");
+start_page_w_header("", "", "", $type="with_session");
 affiche_pop_up($msg,"admin");
+echo "<div class='container'>";
+echo "<h2>".get_vocab("pwd_change")."</h2>\n";
 
-?>
+echo '<a href="admin_user_modify.php?user_login='.$user_login.'" type="button" class="btn btn-primary">'.get_vocab("back").'</a>';
 
-<p>| <a href="admin_user_modify.php?user_login=<?php echo $user_login; ?>"><?php echo get_vocab("back");?></a> |</p>
-
-<?php
-echo "<h3>".get_vocab("pwd_change")."</h3>\n";
 if ($user_login != getUserName())
 {
-    echo "<form action=\"admin_change_pwd.php\" method='post'>\n<div>";
+    echo "<form action=\"admin_change_pwd.php\" method='post'>";
     echo get_vocab("login")." : $user_login";
     echo "\n<br />".get_vocab("last_name").get_vocab("deux_points").$user_nom."   ".get_vocab("first_name").get_vocab("deux_points").$user_prenom;
     echo "\n<br />".get_vocab("pwd_msg_warning");
@@ -89,10 +88,10 @@ if ($user_login != getUserName())
     echo "\n<br />".get_vocab("new_pwd2").get_vocab("deux_points")."<input type=\"password\" name=\"reg_password2\" value=\"\" size=\"20\" />";
     echo "\n<input type=\"hidden\" name=\"valid\" value=\"yes\" />";
     echo "\n<input type=\"hidden\" name=\"user_login\" value=\"$user_login\" />";
-    echo "\n<br /><input type=\"submit\" value=\"".get_vocab("save")."\" /></div></form>";
+    echo "\n<br /><input type=\"submit\" value=\"".get_vocab("save")."\" /></form>";
 }
 else
-    echo "<\ndiv><br />".get_vocab("pwd_msg_warning2")."</div>";
+    echo "<div><br />".get_vocab("pwd_msg_warning2")."</div>";
+echo "</div>";
+end_page();
 ?>
-</body>
-</html>
