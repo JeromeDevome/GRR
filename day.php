@@ -243,7 +243,7 @@ else
 	}
 	echo '<div class="contenu_planning">'.PHP_EOL;
 	echo '<table class="table-bordered table-striped">'.PHP_EOL;
-	echo '<tr>'.PHP_EOL.'<th style="width:5%;">'.PHP_EOL;
+	echo '<thead><tr>'.PHP_EOL.'<th style="width:5%;">'.PHP_EOL;
 	if ($enable_periods == 'y')
 		echo get_vocab("period");
 	else
@@ -314,9 +314,7 @@ else
 		include "include/trailer.inc.php";
 		die();
 	}
-	echo '<tr>'.PHP_EOL;
-	echo '<th style="width:5%;">'.PHP_EOL;
-	echo '</tr>'.PHP_EOL;
+    echo '</tr></thead>'.PHP_EOL;
 	$tab_ligne = 3;
 	$iii = 0;
 	for ($t = $am7; $t <= $pm7; $t += $resolution)

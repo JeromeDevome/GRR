@@ -351,7 +351,7 @@ if ($debug_flag)
 	echo "</pre><p>\n";
 }
 echo "<table class=\"table-bordered table-striped\">";
-echo "<tr>\n<th style=\"width:5%;\">";
+echo "<thead><tr>\n<th style=\"width:5%;\">";
 if ($enable_periods == 'y')
 	echo get_vocab("period");
 else
@@ -406,7 +406,7 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
 		$num_week_day = $num_week_day % 7;
 	}
 
-	echo "</tr>\n";
+	echo "</tr></thead>\n";
 	$t = $am7;
 	$nb_case = 0;
 

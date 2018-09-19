@@ -92,7 +92,9 @@ class Email{
 				"Reply-To: {$DE}" . "\r\n" .
 				'X-Mailer: PHP/' . phpversion();
 
-			mail($A, $sujet, utf8_decode(utf8_encode($message)), $headers);
+			//boip2402
+			//mail($A, $sujet, utf8_decode(utf8_encode($message)), $headers);
+            mail(str_replace(';', ',', $A), $sujet, $message, $headers);
 		}
 
 	}

@@ -889,6 +889,8 @@ function begin_page($title, $page = "with_session")
 			$a .= '<script type="text/javascript" src="../js/'.$clock_file.'"></script>'.PHP_EOL;
 		if (substr(phpversion(), 0, 1) == 3)
 			$a .= get_vocab('not_php3');
+        $a .= '<script type="text/javascript" src="../js/jquery.floatThead.min.js"></script>'.PHP_EOL;
+        $a .= '<script type="text/javascript" src="../js/udes.js"></script>'.PHP_EOL;
 	
 	} else{
 	
@@ -934,6 +936,8 @@ function begin_page($title, $page = "with_session")
 			$a .= '<script type="text/javascript" src="js/'.$clock_file.'"></script>'.PHP_EOL;
 		if (substr(phpversion(), 0, 1) == 3)
 			$a .= get_vocab('not_php3');
+        $a .= '<script type="text/javascript" src="../js/jquery.floatThead.min.js"></script>'.PHP_EOL;
+        $a .= '<script type="text/javascript" src="../js/udes.js"></script>'.PHP_EOL;
 	}
 
 	$a .= '</head>'.PHP_EOL;
