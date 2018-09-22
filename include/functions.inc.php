@@ -5346,6 +5346,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 */
 function start_page_w_header($day = '', $month = '', $year = '', $type_session = 'with_session')
 {
+    global $racine,$racineAd;
     // pour le traitement des modules
     if (@file_exists('./admin_access_area.php')){
         $adm = 1;
