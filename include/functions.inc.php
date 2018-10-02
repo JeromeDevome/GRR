@@ -667,7 +667,9 @@ function plages_libre_semaine_ressource($id_room, $month_week, $day_week, $year_
  		if ($r)
  		{
 			// La requête est adaptée à un serveur SE3...
-			$result = @ldap_search($ds, "cn={$grp},{$ldap_group_base}",$ldap_group_filter, $members_attr);
+			//$result = @ldap_search($ds, "cn={$grp},{$ldap_group_base}",$ldap_group_filter, $members_attr);
+            $result = @ldap_search($ds, "{$ldap_group_base}","(& (cn={$grp}) $ldap_group_filter )", $members_attr);
+            // sur la proposition de marylenepaillassa (Forum #255)
 			// Peut-être faudrait-il dans le $tab_grp_autorise mettre des chaines 'cn=$grp,ou=Groups'
  			if ($result)
  			{
@@ -1543,7 +1545,7 @@ function fatal_error($need_header, $message, $show_form_data = true)
 {
 	global $vocab;
 	if ($need_header)
-		print_header(0, 0, 0, 0);
+		start_page_w_header(0, 0, 0, 0);
 	error_log("GRR: ".$message);
 	if ($show_form_data)
 	{
@@ -1561,7 +1563,7 @@ function fatal_error($need_header, $message, $show_form_data = true)
 		error_log("GRR SESSION: ".print_r($_SESSION, true));
 	}
 	echo '<p>',$message,'</p>'.PHP_EOL;
-	include "trailer.inc.php";
+	end_page();
 	exit;
 }
 
@@ -4007,6 +4009,20 @@ function verify_retard_reservation()
 		}
 	}
 }
+/*
+* @param integer $delai : nombre de jours de rétention des logs de connexion
+* nettoieLogConnexion efface les entrées de la table _log antérieures au jour courant moins le délai
+*/
+function nettoieLogConnexion($delai){
+    // est-ce un administrateur ?
+    if (authGetUserLevel(getUserName(), -1) >= 6){
+        $dateMax = new DateTime('NOW');
+        $dateMax->sub(new DateInterval('P'.$delai.'D'));
+        $dateMax = $dateMax->format('Y-m-d H:i:s');
+        $sql = "DELETE FROM ".TABLE_PREFIX."_log WHERE START < '" . $dateMax . "';";
+        grr_sql_query($sql);
+    }
+}
 /**
  * @param integer $time
  */
@@ -4166,7 +4182,7 @@ function grrDelOverloadFromEntries($id_field)
 				grr_sql_command("UPDATE ".TABLE_PREFIX."_entry SET overload_desc = '".$new_chaine."' WHERE id = '".$row2[0]."'");
 			}
 		}
-		// On cherche toutes les resas de cette resources
+		// On cherche toutes les resas de cette ressource
 		$call_resa = grr_sql_query("SELECT id, overload_desc FROM ".TABLE_PREFIX."_repeat WHERE room_id ='".$row[0]."'");
 		if (!$call_resa)
 			fatal_error(0, get_vocab('invalid_entry_id'));
@@ -5103,7 +5119,9 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<script type="text/javascript" src="../js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/bootstrap-multiselect.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/html2canvas.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/menu.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/menu.js"></script>'.PHP_EOL;        
+        $a .= '<script type="text/javascript" src="../js/jquery.floatThead.min.js"></script>'.PHP_EOL;
+        $a .= '<script type="text/javascript" src="../js/planning2Thead.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jspdf.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/pdf.js" ></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/popup.js" charset="utf-8"></script>'.PHP_EOL;
@@ -5143,7 +5161,9 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
         $a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/html2canvas.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;     
+        $a .= '<script type="text/javascript" src="js/jquery.floatThead.min.js"></script>'.PHP_EOL;
+        $a .= '<script type="text/javascript" src="js/planning2Thead.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jspdf.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/pdf.js" ></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/popup.js" charset="utf-8"></script>'.PHP_EOL;
