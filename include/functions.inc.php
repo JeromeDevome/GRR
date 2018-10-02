@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-06-25 12:00$
+ * Dernière modification : $Date: 2018-10-02 15:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -3577,7 +3577,7 @@ function MajMysqlModeDemo() {
 }
 /* showAccessDenied()
  *
- * Displays an appropate message when access has been denied
+ * Displays an appropriate message when access has been denied
  *
  * Returns: Nothing
  */
@@ -3911,6 +3911,20 @@ function verify_retard_reservation()
 			die();
 		}
 	}
+}
+/*
+* @param integer $delai : nombre de jours de rétention des logs de connexion
+* nettoieLogConnexion efface les entrées de la table _log antérieures au jour courant moins le délai
+*/
+function nettoieLogConnexion($delai){
+    // est-ce un administrateur ?
+    if (authGetUserLevel(getUserName(), -1) >= 6){
+        $dateMax = new DateTime('NOW');
+        $dateMax->sub(new DateInterval('P'.$delai.'D'));
+        $dateMax = $dateMax->format('Y-m-d H:i:s');
+        $sql = "DELETE FROM ".TABLE_PREFIX."_log WHERE START < '" . $dateMax . "';";
+        grr_sql_query($sql);
+    }
 }
 /**
  * @param integer $time

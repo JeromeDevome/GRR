@@ -3,7 +3,7 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-04-11 18:00$
+ * Dernière modification : $Date: 2018-10-02 15:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -742,7 +742,7 @@ $sql = "INSERT INTO ".TABLE_PREFIX."_log (LOGIN, START, SESSION_ID, REMOTE_ADDR,
 ;";
 grr_sql_query($sql);
 
-/* Suppression des logs */
+/* Suppression des logs
 if($nbMaxJoursLogConnexion > 0){
 	$dateActu = date_create($_SESSION['start']);
 	$dateMax = date_sub($dateActu, date_interval_create_from_date_string($nbMaxJoursLogConnexion.' days'));
@@ -750,7 +750,7 @@ if($nbMaxJoursLogConnexion > 0){
 	$sql = "DELETE FROM ".TABLE_PREFIX."_log WHERE START < '" . $dateMax . "';";
 	grr_sql_query($sql);
 }
-
+*/
 /* Fonctionnalité SE3 (Palissy - Saintes - philippe.duval@ac-poitiers.fr) :
 Utilisation du LDAP pour inscrire automatiquement les utilisateurs dans les groupes administration, accès et gestion
 Ce code est associé à une nouvelle table :

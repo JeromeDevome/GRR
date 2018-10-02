@@ -3,8 +3,8 @@
  * login.php
  * interface de connexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-10-02 15:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -104,8 +104,10 @@ if (isset($_POST['login']) && isset($_POST['password']))
 		$message = get_vocab("echec_connexion_GRR");
 		$message .= "<br />". get_vocab("connexion_a_grr_ip");
 	}
-	else
+	else // la session est ouverte
 	{
+        // si c'est un administrateur qui se connecte, on efface les données anciennes du journal
+        nettoieLogConnexion($nbMaxJoursLogConnexion);
 		if (isset($_POST['url']))
 		{
 			$url=rawurldecode($_POST['url']);
