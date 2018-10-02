@@ -3,7 +3,7 @@
  * week.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "semaine".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-30 17:45$
+ * Dernière modification : $Date: 2018-10-02 19:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -394,7 +394,7 @@ if ($_GET['pview'] != 1){
 else{
 	echo '<div id="print_planning">'.PHP_EOL;
 }
-echo '<table class="semaine table-bordered table-striped">',PHP_EOL;
+echo '<table class="semaine floatthead table-bordered table-striped">',PHP_EOL;
 // le titre de la table
 echo "<caption>";
 echo "<div class=ligne23>";

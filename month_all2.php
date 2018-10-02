@@ -3,7 +3,7 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-26 15:00$
+ * Dernière modification : $Date: 2018-10-02 19:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -319,7 +319,7 @@ if ($_GET['pview'] != 1){
 else{
 	echo '<div id="print_planning">'.PHP_EOL;
 }
-echo "<table class='mois table-bordered table-striped'>";
+echo "<table class='mois floatthead table-bordered table-striped'>";
 // le titre de la table
 echo "<caption>";
 // liens mois avant-après et imprimante si page non imprimable

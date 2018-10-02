@@ -418,6 +418,7 @@ function afficheMenuGauche(mode){
         document.getElementById("planning2").style.width = "100%";
         document.getElementById("cacher").style.display = "none";
         document.getElementById("voir").style.display = "inline";
+        $('.floatthead').floatThead('reflow');
     }
     else if (mode == 1) /* menu affiché */
     {
@@ -425,6 +426,7 @@ function afficheMenuGauche(mode){
         document.getElementById("planning2").style.width = "75%";
         document.getElementById("cacher").style.display = "inline";
         document.getElementById("voir").style.display = "none";
+        $('.floatthead').floatThead('reflow');
     }
     else if (mode == 2) /* menu en haut */
     {
