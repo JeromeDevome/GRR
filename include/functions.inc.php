@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-10-02 15:00$
+ * Dernière modification : $Date: 2018-10-02 15:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -667,7 +667,9 @@ function plages_libre_semaine_ressource($id_room, $month_week, $day_week, $year_
  		if ($r)
  		{
 			// La requête est adaptée à un serveur SE3...
-			$result = @ldap_search($ds, "cn={$grp},{$ldap_group_base}",$ldap_group_filter, $members_attr);
+			//$result = @ldap_search($ds, "cn={$grp},{$ldap_group_base}",$ldap_group_filter, $members_attr);
+            $result = @ldap_search($ds, "{$ldap_group_base}","(& (cn={$grp}) $ldap_group_filter )", $members_attr);
+            // sur la proposition de marylenepaillassa (Forum #255)
 			// Peut-être faudrait-il dans le $tab_grp_autorise mettre des chaines 'cn=$grp,ou=Groups'
  			if ($result)
  			{
