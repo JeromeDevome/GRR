@@ -3,7 +3,7 @@
  * validation.php
  * Interface de validation d'une réservation modérée
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-03-26 16:00$
+ * Dernière modification : $Date: 2018-10-03 17:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,6 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "validation.php";
 
 include "include/connect.inc.php";
 include "include/config.inc.php";
@@ -23,7 +24,7 @@ include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
 include "include/mincals.inc.php";
 include "include/mrbs_sql.inc.php";
-$grr_script_name = "validation.php";
+
 require_once("./include/settings.class.php");
 $settings = new Settings();
 if (!$settings)
@@ -79,7 +80,6 @@ if ($settings->get("verif_reservation_auto") == 0)
 	verify_confirm_reservation();
 	verify_retard_reservation();
 }
-
 
 $page = verif_page();
 
@@ -168,6 +168,13 @@ else
 	$was_del = FALSE;
 	$row = grr_sql_row($res, 0);
 }
+if ($was_del){
+    echo '<h1>'.get_vocab("accessdenied").'</h1>';
+	echo '<p class="avertissement larger">'.get_vocab("invalid_entry_id").'</p>';
+	echo '<p><a href="'.page_accueil().'">'.get_vocab("back").'</a></p>';
+    echo '</body></html>';
+    die();
+} 
 grr_sql_free($res);
 $breve_description 	= $row[0];
 $description  		= bbcode(htmlspecialchars($row[1]),'');
