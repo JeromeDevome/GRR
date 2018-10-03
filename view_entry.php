@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-18 18:30$
+ * Dernière modification : $Date: 2018-10-03 18:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -317,296 +317,186 @@ if (Settings::get("display_level_view_entry") == '1')
 	if ($back != "")
 		echo '<div><a href="',$back,'">',get_vocab("returnprev"),'</a></div>',PHP_EOL;
 }
-echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('entry').get_vocab('deux_points').affichage_lien_resa_planning($breve_description, $id).'</legend>'."\n"; ?>
-<table border="0">
-	<tr>
-		<td>
-			<b>
-				<?php
-				echo get_vocab("description");
-				?>
-			</b>
-		</td>
-		<td>
-			<?php
-			echo nl2br($description);
-			?>
-		</td>
-	</tr>
-	<?php
-	if (!$was_del)
-	{
-		$overload_data = mrbsEntryGetOverloadDesc($id);
-		foreach ($overload_data as $fieldname=>$fielddata)
-		{
-			if ($fielddata["confidentiel"] == 'n')
-				$affiche_champ = 'y';
-			else
-			{
-				if (($fin_session != 'n') || (getUserName()==''))
-					$affiche_champ = 'n';
-				else
-				{
-					if ((authGetUserLevel(getUserName(), $room_id) >= 4) || ($beneficiaire == getUserName()))
-						$affiche_champ = 'y';
-					else
-						$affiche_champ = 'n';
-					if ($affiche_champ == 'y')
-					{
-						echo "<tr><td><b>".bbcode(htmlspecialchars($fieldname).get_vocab("deux_points"), '')."</b></td>\n";
-						echo "<td>".bbcode(htmlspecialchars($fielddata["valeur"]), '')."</td></tr>\n";
-					}
-				}
-			}
-		}
-	}
-	?>
-	<tr>
-		<td>
-			<b>
-				<?php
-				echo get_vocab("room"),get_vocab("deux_points");
-				?>
-			</b>
-		</td>
-		<td>
-			<?php
-			echo nl2br($area_name . " - " . $room_name);
-			?>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<b>
-				<?php
-				echo get_vocab("start_date"),get_vocab("deux_points");
-				?>
-			</b>
-		</td>
-		<td>
-			<?php
-			echo $start_date;
-			?>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<b>
-				<?php
-				echo get_vocab("duration");
-				?>
-			</b>
-		</td>
-		<td>
-			<?php
-			echo $duration ,' ',$dur_units;
-			?>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<b>
-				<?php
-				echo get_vocab("end_date");
-				?>
-			</b>
-		</td>
-		<td>
-			<?php
-			echo $end_date;
-			?>
-		</td>
-	</tr>
-	<?php
-	echo '<tr>',PHP_EOL,'<td><b>',get_vocab("type"),get_vocab("deux_points"),'</b></td>',PHP_EOL;
-	$type_name = grr_sql_query1("SELECT type_name from ".TABLE_PREFIX."_type_area where type_letter='".$type."'");
-	if ($type_name == -1)
-		$type_name = "?$type?";
-	echo '<td>',$type_name,'</td>',PHP_EOL,'</tr>',PHP_EOL;
-	if ($beneficiaire != $create_by)
-	{
-		?>
-		<tr>
-			<td>
-				<b>
-					<?php
-					echo get_vocab("reservation au nom de"),get_vocab("deux_points");
-					?>
-				</b>
-			</td>
-			<td>
-				<?php
-				echo affiche_nom_prenom_email($beneficiaire, $beneficiaire_ext, $option_affiche_nom_prenom_email);
-				?>
-			</td>
-		</tr>
-		<?php
-	}
-	?>
-	<tr>
-		<td>
-			<b>
-				<?php
-				echo get_vocab("created_by"),get_vocab("deux_points")
-				?>
-			</b>
-		</td>
-		<td>
-			<?php
-			echo affiche_nom_prenom_email($create_by, "", $option_affiche_nom_prenom_email);
+echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('entry').get_vocab('deux_points').affichage_lien_resa_planning($breve_description, $id).'</legend>'."\n";
+//echo '<table class="table-noborder">';
+echo '<table>';
+echo '	<tr>';
+echo '		<td><b>'.get_vocab("description").'</b></td>';
+echo '		<td>'.nl2br($description).'</td>';
+echo '	</tr>';
+if (!$was_del)
+{
+    $overload_data = mrbsEntryGetOverloadDesc($id);
+    foreach ($overload_data as $fieldname=>$fielddata)
+    {
+        if ($fielddata["confidentiel"] == 'n')
+            $affiche_champ = 'y';
+        else
+        {
+            if (($fin_session != 'n') || (getUserName()==''))
+                $affiche_champ = 'n';
+            else
+            {
+                if ((authGetUserLevel(getUserName(), $room_id) >= 4) || ($beneficiaire == getUserName()))
+                    $affiche_champ = 'y';
+                else
+                    $affiche_champ = 'n';
+                if ($affiche_champ == 'y')
+                {
+                    echo "<tr><td><b>".bbcode(htmlspecialchars($fieldname).get_vocab("deux_points"), '')."</b></td>\n";
+                    echo "<td>".bbcode(htmlspecialchars($fielddata["valeur"]), '')."</td></tr>\n";
+                }
+            }
+        }
+    }
+}
+echo '	<tr>';
+echo '		<td><b>'.get_vocab("room"),get_vocab("deux_points").'</b></td>';
+echo '		<td>'.nl2br($area_name . " - " . $room_name).'</td>';
+echo '	</tr>';
+echo '	<tr>';
+echo '		<td><b>'.get_vocab("start_date"),get_vocab("deux_points").'</b></td>';
+echo '		<td>'.$start_date.'</td>';
+echo '	</tr>';
+echo '	<tr>';
+echo '		<td><b>'.get_vocab("duration").'</b></td>';
+echo '		<td>'.$duration .' '.$dur_units.'</td>';
+echo '	</tr>';
+echo '	<tr>';
+echo '		<td><b>'.get_vocab("end_date").'</b></td>';
+echo '		<td>'.$end_date.'</td>';
+echo '	</tr>';
+echo '<tr>',PHP_EOL,'<td><b>',get_vocab("type"),get_vocab("deux_points"),'</b></td>',PHP_EOL;
+$type_name = grr_sql_query1("SELECT type_name from ".TABLE_PREFIX."_type_area where type_letter='".$type."'");
+if ($type_name == -1)
+    $type_name = "?$type?";
+echo '<td>',$type_name,'</td>',PHP_EOL,'</tr>',PHP_EOL;
+if ($beneficiaire != $create_by)
+{
+    echo '<tr>';
+    echo '    <td><b>'.get_vocab("reservation au nom de").get_vocab("deux_points").'</b></td>';
+    echo '    <td>'.affiche_nom_prenom_email($beneficiaire, $beneficiaire_ext, $option_affiche_nom_prenom_email).'</td>';
+    echo '</tr>';
+}
+echo '	<tr>';
+echo '		<td><b>'.get_vocab("created_by").get_vocab("deux_points").'</b></td>';
+echo '		<td>'.affiche_nom_prenom_email($create_by, "", $option_affiche_nom_prenom_email);
 			if ($active_ressource_empruntee == 'y')
 			{
 				$id_resa = grr_sql_query1("SELECT id from ".TABLE_PREFIX."_entry where room_id = '".$room_id."' and statut_entry='y'");
 				if ($id_resa ==$id)
 				echo '<span class="avertissement">(',get_vocab("reservation_en_cours"),') <img src="img_grr/buzy_big.png" align=middle alt="',get_vocab("ressource actuellement empruntee"),'" title="',get_vocab("ressource actuellement empruntee"),'" border="0" width="30" height="30" class="print_image" /></span>',PHP_EOL;
 			}
-			?>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<b>
-				<?php
-				echo get_vocab("lastupdate"),get_vocab("deux_points");
-				?>
-			</b>
-		</td>
-		<td>
-			<?php
-			echo $updated;
-			?>
-		</td>
-	</tr>
-	<?php
-	// Les champs add :
-	$overload_data = mrbsEntryGetOverloadDesc($id);
-	foreach ($overload_data as $fieldname=>$field)
-	{
-		if (($field["affichage"] == 'y') and ($field["valeur"]!=""))
-		{
-			echo "<tr><td>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points")."</td><td>".htmlspecialchars($field["valeur"],ENT_NOQUOTES)."</tr>";
-		}
-	}
-
-	// Gestion des clefs :
-	if ($keys == 1)
-	{
-		?>
-		<tr>
-			<td>
-				<b>
-					<?php
-					echo get_vocab("clef"),get_vocab("deux_points");
-					?>
-				</b>
-			</td>
-			<td>
-				<?php
-				echo '<img src="img_grr/key.png" alt="clef">';
-				?>
-			</td>
-		</tr>
-		<?php
-	}
-	if ($courrier == 1)
-	{
-		?>
-		<tr>
-			<td>
-				<b>
-					<?php
-					echo get_vocab("courrier"),get_vocab("deux_points");
-					?>
-				</b>
-			</td>
-			<td>
-				<?php
-				echo '<img src="img_grr/courrier.png" alt="courrier">';
-				?>
-			</td>
-		</tr>
-		<?php
-	}
-	if (($delais_option_reservation > 0) && ($option_reservation != -1))
-	{
-		echo '<tr>',PHP_EOL,'<td colspan="2">',PHP_EOL,'<div class="alert alert-danger" role="alert"><b>',get_vocab("reservation_a_confirmer_au_plus_tard_le"),PHP_EOL;
-		echo time_date_string_jma($option_reservation, $dformat),'</b></div>',PHP_EOL;
-		echo '</td>',PHP_EOL,'</tr>',PHP_EOL;
-	}
-	if ($moderate == 1)
-	{
-		echo '<tr>',PHP_EOL,'<td><b>',get_vocab("moderation"),get_vocab("deux_points"),'</b></td>',PHP_EOL;
-		tdcell("avertissement");
-		echo '<strong>',get_vocab("en_attente_moderation"),'</strong></td>',PHP_EOL,'</tr>',PHP_EOL;
-	}
-	else if ($moderate == 2)
-	{
-		$sql = "SELECT motivation_moderation, login_moderateur FROM ".TABLE_PREFIX."_entry_moderate WHERE id=".$id;
-		$res = grr_sql_query($sql);
-		if (!$res)
-			fatal_error(0, grr_sql_error());
-		$row2 = grr_sql_row($res, 0);
-		$description = $row2[0];
-		$sql ="SELECT nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$row2[1]."'";
-		$res = grr_sql_query($sql);
-		if (!$res)
-			fatal_error(0, grr_sql_error());
-		$row3 = grr_sql_row($res, 0);
-		$nom_modo = $row3[1]. ' '. $row3[0];
-		if (authGetUserLevel(getUserName(), -1) > 1)
-		{
-			echo '<tr>',PHP_EOL,'<td><b>'.get_vocab("moderation").get_vocab("deux_points").'</b></td><td><strong>'.get_vocab("moderation_acceptee_par").' '.$nom_modo.'</strong>';
-			if ($description != "")
-				echo ' : <br />('.$description.')';
-			echo '</td>',PHP_EOL,'</tr>',PHP_EOL;
-		}
-	}
-	elseif ($moderate == 3)
-	{
-		$sql = "SELECT motivation_moderation, login_moderateur from ".TABLE_PREFIX."_entry_moderate where id=".$id;
-		$res = grr_sql_query($sql);
-		if (!$res)
-			fatal_error(0, grr_sql_error());
-		$row4 = grr_sql_row($res, 0);
-		$description = $row4[0];
-		$sql ="SELECT nom, prenom from ".TABLE_PREFIX."_utilisateurs where login = '".$row4[1]."'";
-		$res = grr_sql_query($sql);
-		if (!$res)
-			fatal_error(0, grr_sql_error());
-		$row5 = grr_sql_row($res, 0);
-		$nom_modo = $row5[1]. ' '. $row5[0];
-		if (authGetUserLevel(getUserName(), -1) > 1)
-		{
-			echo '<tr><td><b>'.get_vocab("moderation").get_vocab("deux_points").'</b></td>';
-			tdcell("avertissement");
-			echo '<strong>'.get_vocab("moderation_refusee").'</strong> par '.$nom_modo;
-			if ($description != "")
-				echo ' : <br />('.$description.')';
-			echo '</td>',PHP_EOL,'</tr>',PHP_EOL;;
-		}
-	}
-	if ((getWritable($beneficiaire, getUserName(), $id)) && verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room(getUserName(), $room_id, $row[10]) && (!$was_del))
-	{
-		echo "<tr>";
-			echo "<td colspan='2'>";
-				echo "&nbsp;";
-			echo "</td>";
-		echo "</tr>";
-		echo "<tr>";
-			echo "<td colspan='2'>";
-                $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
-				echo "<input class=\"btn btn-primary\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("editentry")."\"/>";
-				echo "<input class=\"btn btn-info\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back&amp;copier'\" value=\"".get_vocab("copyentry")."\"/>";
-                echo "<input class=\"btn btn-warning\" type=\"button\" onclick=\"location.href='swap_entry.php?id=$id&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("swapentry")."\"/>";
-				if ($can_delete_or_create == "y")
-				{
-					$message_confirmation = str_replace("'", "\\'", get_vocab("confirmdel").get_vocab("deleteentry"));
-                   // $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
-                echo '<a class="btn btn-danger" type="button" href="del_entry.php?id='.$id.'&amp;series=0&amp;page='.$page.'&amp;room_back='.$room_back.' "  onclick="return confirm(\''.$message_confirmation.'\');">'.get_vocab("deleteentry").'</a>';
-				}
-            echo "</td>";
-		echo '</tr>',PHP_EOL;
-	}
+echo '		</td>';
+echo '	</tr>';
+echo '	<tr>';
+echo '		<td><b>'.get_vocab("lastupdate"),get_vocab("deux_points").'</b></td>';
+echo '		<td>'.$updated.'</td>';
+echo '	</tr>';
+// Les champs add :
+$overload_data = mrbsEntryGetOverloadDesc($id);
+foreach ($overload_data as $fieldname=>$field)
+{
+    if (($field["affichage"] == 'y') and ($field["valeur"]!=""))
+    {
+        echo "<tr><td>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points")."</td><td>".htmlspecialchars($field["valeur"],ENT_NOQUOTES)."</tr>";
+    }
+}
+// Gestion des clefs :
+if ($keys == 1)
+{
+    echo '<tr>';
+    echo '    <td><b>'.get_vocab("clef").get_vocab("deux_points").'</b></td>';
+    echo '    <td><img src="img_grr/key.png" alt="clef"></td>';
+    echo '</tr>';
+}
+if ($courrier == 1)
+{
+    echo'<tr>';
+    echo '    <td><b>'.get_vocab("courrier").get_vocab("deux_points").'</b></td>';
+    echo '    <td><img src="img_grr/courrier.png" alt="courrier"></td>';
+    echo '</tr>';
+}
+if (($delais_option_reservation > 0) && ($option_reservation != -1))
+{
+    echo '<tr>',PHP_EOL,'<td colspan="2">',PHP_EOL,'<div class="alert alert-danger" role="alert"><b>',get_vocab("reservation_a_confirmer_au_plus_tard_le"),PHP_EOL;
+    echo time_date_string_jma($option_reservation, $dformat),'</b></div>',PHP_EOL;
+    echo '</td>',PHP_EOL,'</tr>',PHP_EOL;
+}
+if ($moderate == 1)
+{
+    echo '<tr>',PHP_EOL,'<td><b>',get_vocab("moderation"),get_vocab("deux_points"),'</b></td>',PHP_EOL;
+    tdcell("avertissement");
+    echo '<strong>',get_vocab("en_attente_moderation"),'</strong></td>',PHP_EOL,'</tr>',PHP_EOL;
+}
+else if ($moderate == 2)
+{
+$sql = "SELECT motivation_moderation, login_moderateur FROM ".TABLE_PREFIX."_entry_moderate WHERE id=".$id;
+$res = grr_sql_query($sql);
+if (!$res)
+fatal_error(0, grr_sql_error());
+$row2 = grr_sql_row($res, 0);
+$description = $row2[0];
+$sql ="SELECT nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$row2[1]."'";
+$res = grr_sql_query($sql);
+if (!$res)
+fatal_error(0, grr_sql_error());
+$row3 = grr_sql_row($res, 0);
+$nom_modo = $row3[1]. ' '. $row3[0];
+if (authGetUserLevel(getUserName(), -1) > 1)
+{
+    echo '<tr>',PHP_EOL,'<td><b>'.get_vocab("moderation").get_vocab("deux_points").'</b></td><td><strong>'.get_vocab("moderation_acceptee_par").' '.$nom_modo.'</strong>';
+    if ($description != "")
+        echo ' : <br />('.$description.')';
+    echo '</td>',PHP_EOL,'</tr>',PHP_EOL;
+}
+}
+elseif ($moderate == 3)
+{
+$sql = "SELECT motivation_moderation, login_moderateur from ".TABLE_PREFIX."_entry_moderate where id=".$id;
+$res = grr_sql_query($sql);
+if (!$res)
+    fatal_error(0, grr_sql_error());
+$row4 = grr_sql_row($res, 0);
+$description = $row4[0];
+$sql ="SELECT nom, prenom from ".TABLE_PREFIX."_utilisateurs where login = '".$row4[1]."'";
+$res = grr_sql_query($sql);
+if (!$res)
+    fatal_error(0, grr_sql_error());
+$row5 = grr_sql_row($res, 0);
+$nom_modo = $row5[1]. ' '. $row5[0];
+if (authGetUserLevel(getUserName(), -1) > 1)
+{
+    echo '<tr><td><b>'.get_vocab("moderation").get_vocab("deux_points").'</b></td>';
+    tdcell("avertissement");
+    echo '<strong>'.get_vocab("moderation_refusee").'</strong> par '.$nom_modo;
+    if ($description != "")
+        echo ' : <br />('.$description.')';
+    echo '</td>',PHP_EOL,'</tr>',PHP_EOL;;
+}
+}
+if ((getWritable($beneficiaire, getUserName(), $id)) && verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room(getUserName(), $room_id, $row[10]) && (!$was_del))
+{
+    echo "<tr>";
+        echo "<td colspan='2'>";
+            echo "&nbsp;";
+        echo "</td>";
+    echo "</tr>";
+    echo "<tr>";
+        echo "<td colspan='2'>";
+            $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
+            echo "<input class=\"btn btn-primary\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("editentry")."\"/>";
+            echo "<input class=\"btn btn-info\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back&amp;copier'\" value=\"".get_vocab("copyentry")."\"/>";
+            echo "<input class=\"btn btn-warning\" type=\"button\" onclick=\"location.href='swap_entry.php?id=$id&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("swapentry")."\"/>";
+            if ($can_delete_or_create == "y")
+            {
+                $message_confirmation = str_replace("'", "\\'", get_vocab("confirmdel").get_vocab("deleteentry"));
+               // $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
+            echo '<a class="btn btn-danger" type="button" href="del_entry.php?id='.$id.'&amp;series=0&amp;page='.$page.'&amp;room_back='.$room_back.' "  onclick="return confirm(\''.$message_confirmation.'\');">'.get_vocab("deleteentry").'</a>';
+            }
+        echo "</td>";
+    echo '</tr>',PHP_EOL;
+}
 echo '</table>',PHP_EOL;
 echo '</fieldset>',PHP_EOL;
 if ($repeat_id != 0)
@@ -685,116 +575,116 @@ if ($repeat_id != 0)
         }
         echo '</table>',PHP_EOL,'</fieldset>',PHP_EOL;
     }
-    if (!isset($area_id))
-        $area_id = 1;
-    if (!isset($room))
-        $room = 1;
-    if ((authGetUserLevel(getUserName(), $area_id, "area") > 1) || (authGetUserLevel(getUserName(), $room) >= 4))
-        echo '<br><input class="btn btn-primary" onclick="myFunction(',$id,')" value="',get_vocab("Generer_pdf"),'" />',PHP_EOL;
-    if ((getUserName() != '') && (authGetUserLevel(getUserName(), $room_id) >= 3) && ($moderate == 1))
+if (!isset($area_id))
+    $area_id = 1;
+if (!isset($room))
+    $room = 1;
+if ((authGetUserLevel(getUserName(), $area_id, "area") > 1) || (authGetUserLevel(getUserName(), $room) >= 4))
+    echo '<br><input class="btn btn-primary" onclick="myFunction(',$id,')" value="',get_vocab("Generer_pdf"),'" />',PHP_EOL;
+if ((getUserName() != '') && (authGetUserLevel(getUserName(), $room_id) >= 3) && ($moderate == 1))
+{
+    echo "<form action=\"view_entry.php\" method=\"get\">\n";
+    echo "<input type=\"hidden\" name=\"action_moderate\" value=\"y\" />\n";
+    echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
+    if (isset($_GET['page']))
+        echo "<input type=\"hidden\" name=\"page\" value=\"".$_GET['page']."\" />\n";
+    echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("moderate_entry")."</legend>\n";
+    echo "<p>";
+    echo "<input type=\"radio\" name=\"moderate\" value=\"1\" checked=\"checked\" />".get_vocab("accepter_resa");
+    echo "<br /><input type=\"radio\" name=\"moderate\" value=\"0\" />".get_vocab("refuser_resa");
+    if ($repeat_id)
     {
-        echo "<form action=\"view_entry.php\" method=\"get\">\n";
-        echo "<input type=\"hidden\" name=\"action_moderate\" value=\"y\" />\n";
-        echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
-        if (isset($_GET['page']))
-            echo "<input type=\"hidden\" name=\"page\" value=\"".$_GET['page']."\" />\n";
-        echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("moderate_entry")."</legend>\n";
-        echo "<p>";
-        echo "<input type=\"radio\" name=\"moderate\" value=\"1\" checked=\"checked\" />".get_vocab("accepter_resa");
-        echo "<br /><input type=\"radio\" name=\"moderate\" value=\"0\" />".get_vocab("refuser_resa");
-        if ($repeat_id)
-        {
-            echo "<br /><input type=\"radio\" name=\"moderate\" value=\"S1\" />".get_vocab("accepter_resa_serie");
-            echo "<br /><input type=\"radio\" name=\"moderate\" value=\"S0\" />".get_vocab("refuser_resa_serie");
-        }
-        echo "</p><p>";
-        echo "<label for=\"description\">".get_vocab("justifier_decision_moderation").get_vocab("deux_points")."</label>\n";
-        echo "<textarea class=\"form-control\" name=\"description\" id=\"description\" cols=\"40\" rows=\"3\"></textarea>";
-        echo "</p>";
-        echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"commit\" value=\"".get_vocab("save")."\" /></div>\n";
-        echo "</fieldset></form>\n";
+        echo "<br /><input type=\"radio\" name=\"moderate\" value=\"S1\" />".get_vocab("accepter_resa_serie");
+        echo "<br /><input type=\"radio\" name=\"moderate\" value=\"S0\" />".get_vocab("refuser_resa_serie");
     }
-    if ($active_ressource_empruntee == 'y')
+    echo "</p><p>";
+    echo "<label for=\"description\">".get_vocab("justifier_decision_moderation").get_vocab("deux_points")."</label>\n";
+    echo "<textarea class=\"form-control\" name=\"description\" id=\"description\" cols=\"40\" rows=\"3\"></textarea>";
+    echo "</p>";
+    echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"commit\" value=\"".get_vocab("save")."\" /></div>\n";
+    echo "</fieldset></form>\n";
+}
+if ($active_ressource_empruntee == 'y')
+{
+    if ((!$was_del) && ($moderate != 1) && (getUserName() != '') && (authGetUserLevel(getUserName(),$room_id) >= 3))
     {
-        if ((!$was_del) && ($moderate != 1) && (getUserName() != '') && (authGetUserLevel(getUserName(),$room_id) >= 3))
+        echo "<form action=\"view_entry.php\" method=\"get\">";
+        echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("reservation_en_cours")."</legend>\n";
+        echo "<span class=\"larger\">".get_vocab("signaler_reservation_en_cours")."</span>".get_vocab("deux_points");
+        echo "<br />".get_vocab("explications_signaler_reservation_en_cours");
+        affiche_ressource_empruntee($room_id, "texte");
+        echo "<br /><input type=\"radio\" name=\"statut_id\" value=\"-\" ";
+        if ($statut_id == '-')
         {
-            echo "<form action=\"view_entry.php\" method=\"get\">";
-            echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("reservation_en_cours")."</legend>\n";
-            echo "<span class=\"larger\">".get_vocab("signaler_reservation_en_cours")."</span>".get_vocab("deux_points");
-            echo "<br />".get_vocab("explications_signaler_reservation_en_cours");
-            affiche_ressource_empruntee($room_id, "texte");
-            echo "<br /><input type=\"radio\" name=\"statut_id\" value=\"-\" ";
-            if ($statut_id == '-')
-            {
-                if (!affiche_ressource_empruntee($room_id,"autre") == 'yes')
-                    echo " checked=\"checked\" ";
-            }
-            echo " />".get_vocab("signaler_reservation_en_cours_option_0");
-            echo "<br /><br /><input type=\"radio\" name=\"statut_id\" value=\"y\" ";
-            if ($statut_id == 'y')
+            if (!affiche_ressource_empruntee($room_id,"autre") == 'yes')
                 echo " checked=\"checked\" ";
-            echo " />".get_vocab("signaler_reservation_en_cours_option_1");
-            echo "<br /><br /><input type=\"radio\" name=\"statut_id\" value=\"e\" ";
-            if ($statut_id == 'e')
-                echo " checked=\"checked\" ";
-            if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
+        }
+        echo " />".get_vocab("signaler_reservation_en_cours_option_0");
+        echo "<br /><br /><input type=\"radio\" name=\"statut_id\" value=\"y\" ";
+        if ($statut_id == 'y')
+            echo " checked=\"checked\" ";
+        echo " />".get_vocab("signaler_reservation_en_cours_option_1");
+        echo "<br /><br /><input type=\"radio\" name=\"statut_id\" value=\"e\" ";
+        if ($statut_id == 'e')
+            echo " checked=\"checked\" ";
+        if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
+            echo " disabled ";
+        echo " />".get_vocab("signaler_reservation_en_cours_option_2");
+        if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
+            echo "<br /><i>(".get_vocab("necessite fonction mail automatique").")</i>";
+        if (Settings::get("automatic_mail") == 'yes')
+        {
+            echo "<br /><br /><input type=\"checkbox\" name=\"envoyer_mail\" value=\"y\" ";
+            if ($mail_exist == "")
                 echo " disabled ";
-            echo " />".get_vocab("signaler_reservation_en_cours_option_2");
-            if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
-                echo "<br /><i>(".get_vocab("necessite fonction mail automatique").")</i>";
-            if (Settings::get("automatic_mail") == 'yes')
-            {
-                echo "<br /><br /><input type=\"checkbox\" name=\"envoyer_mail\" value=\"y\" ";
-                if ($mail_exist == "")
-                    echo " disabled ";
-                echo " />".get_vocab("envoyer maintenant mail retard");
-                echo "<input type=\"hidden\" name=\"mail_exist\" value=\"".$mail_exist."\" />";
-            }
-         /*   if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
-                echo "<br /><i>(".get_vocab("necessite fonction mail automatique").")</i>"; en doublon ? YN */ 
-            echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=\"".get_vocab("save")."\" /></div></fieldset>\n";
-            echo "<div><input type=\"hidden\" name=\"day\" value=\"".$day."\" />";
-            echo "<input type=\"hidden\" name=\"month\" value=\"".$month."\" />";
-            echo "<input type=\"hidden\" name=\"year\" value=\"".$year."\" />";
-            echo "<input type=\"hidden\" name=\"page\" value=\"".$page."\" />";
-            echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />";
-            echo "<input type=\"hidden\" name=\"back\" value=\"".$back."\" /></div>";
-            echo "</form>";
+            echo " />".get_vocab("envoyer maintenant mail retard");
+            echo "<input type=\"hidden\" name=\"mail_exist\" value=\"".$mail_exist."\" />";
         }
+     /*   if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
+            echo "<br /><i>(".get_vocab("necessite fonction mail automatique").")</i>"; en doublon ? YN */ 
+        echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=\"".get_vocab("save")."\" /></div></fieldset>\n";
+        echo "<div><input type=\"hidden\" name=\"day\" value=\"".$day."\" />";
+        echo "<input type=\"hidden\" name=\"month\" value=\"".$month."\" />";
+        echo "<input type=\"hidden\" name=\"year\" value=\"".$year."\" />";
+        echo "<input type=\"hidden\" name=\"page\" value=\"".$page."\" />";
+        echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />";
+        echo "<input type=\"hidden\" name=\"back\" value=\"".$back."\" /></div>";
+        echo "</form>";
     }
-    if (isset($keys) && isset($courrier))
+}
+if (isset($keys) && isset($courrier))
+{
+    echo '<form action="view_entry.php" method="get">',PHP_EOL;
+    // echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("reservation_en_cours")."</legend>\n";
+    echo "<fieldset>\n";
+    if ($active_cle == 'y'){
+        echo "<span class=\"larger\">".get_vocab("status_clef").get_vocab("deux_points")."</span>";
+        echo "<br /><input type=\"checkbox\" name=\"clef\" value=\"y\" ";
+        if ($keys == 1)
+            echo " checked ";
+        echo " /> ".get_vocab("msg_clef");
+    }
+    
+    if (Settings::get('show_courrier') == 'y')
     {
-        echo '<form action="view_entry.php" method="get">',PHP_EOL;
-        // echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("reservation_en_cours")."</legend>\n";
-        echo "<fieldset>\n";
-        if ($active_cle == 'y'){
-            echo "<span class=\"larger\">".get_vocab("status_clef").get_vocab("deux_points")."</span>";
-            echo "<br /><input type=\"checkbox\" name=\"clef\" value=\"y\" ";
-            if ($keys == 1)
-                echo " checked ";
-            echo " /> ".get_vocab("msg_clef");
-        }
-        
-        if (Settings::get('show_courrier') == 'y')
-        {
-            echo "<br /><span class=\"larger\">".get_vocab("status_courrier").get_vocab("deux_points")."</span>";
-            echo "<br /><input type=\"checkbox\" name=\"courrier\" value=\"y\" ";
-            if ($courrier == 1)
-                echo " checked ";
-            echo " /> ".get_vocab("msg_courrier");
-        }
-        //echo "<br /><br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=\"".get_vocab("save")."\" /></div></fieldset>\n";
-        echo "</fieldset>";
-        echo '<div><input type="hidden" name="day" value="',$day,'" />',PHP_EOL;
-        echo '<input type="hidden" name="month" value="',$month,'" />',PHP_EOL;
-        echo '<input type="hidden" name="year" value="',$year,'" />',PHP_EOL;
-        echo '<input type="hidden" name="page" value="',$page,'" />',PHP_EOL;
-        echo '<input type="hidden" name="id" value="',$id,'" />',PHP_EOL;
-        echo '<input type="hidden" name="back" value="',$back,'" /></div>',PHP_EOL;
-        echo '</form>',PHP_EOL;
+        echo "<br /><span class=\"larger\">".get_vocab("status_courrier").get_vocab("deux_points")."</span>";
+        echo "<br /><input type=\"checkbox\" name=\"courrier\" value=\"y\" ";
+        if ($courrier == 1)
+            echo " checked ";
+        echo " /> ".get_vocab("msg_courrier");
     }
-    //include_once('include/trailer.inc.php');
-    // echo '</div>',PHP_EOL; ??? YN
-    // echo "</body>\n</html>";
-    end_page();
+    //echo "<br /><br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=\"".get_vocab("save")."\" /></div></fieldset>\n";
+    echo "</fieldset>";
+    echo '<div><input type="hidden" name="day" value="',$day,'" />',PHP_EOL;
+    echo '<input type="hidden" name="month" value="',$month,'" />',PHP_EOL;
+    echo '<input type="hidden" name="year" value="',$year,'" />',PHP_EOL;
+    echo '<input type="hidden" name="page" value="',$page,'" />',PHP_EOL;
+    echo '<input type="hidden" name="id" value="',$id,'" />',PHP_EOL;
+    echo '<input type="hidden" name="back" value="',$back,'" /></div>',PHP_EOL;
+    echo '</form>',PHP_EOL;
+}
+//include_once('include/trailer.inc.php');
+// echo '</div>',PHP_EOL; ??? YN
+// echo "</body>\n</html>";
+end_page();
 ?>

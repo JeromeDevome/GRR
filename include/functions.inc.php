@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-07-22 15:00$
+ * Dernière modification : $Date: 2018-10-03 18:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -3674,34 +3674,21 @@ function MajMysqlModeDemo() {
 }
 /* showAccessDenied()
  *
- * Displays an appropate message when access has been denied
+ * Displays an appropriate message when access has been denied
  *
  * Returns: Nothing
  */
 function showAccessDenied($back)
 {
 	global $vocab;
-	/*
-	if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
-		$type_session = "no_session";
-	else
-		$type_session = "with_session";
-	*/
-		?>
-		<h1><?php echo get_vocab("accessdenied")?></h1>
-		<p>
-			<?php echo get_vocab("norights")?>
-		</p>
-		<p>
-			<a href="<?php echo $back; ?>"><?php echo get_vocab("returnprev"); ?></a>
-		</p>
-	</body>
-	</html>
-	<?php
+	echo '<h1>'.get_vocab("accessdenied").'</h1>';
+	echo '<p>'.get_vocab("norights").'</p>';
+	echo '<p><a href="'.$back.'">'.get_vocab("returnprev").'</a></p>';
+	end_page();
 }
 /* showNoReservation()
  *
- * Displays an appropate message when access has been denied
+ * Displays an appropriate message when reservation does not exist
  *
  * Returns: Nothing
  */
@@ -3712,22 +3699,15 @@ function showNoReservation($day, $month, $year, $back)
 		$type_session = "no_session";
 	else
 		$type_session = "with_session";
-	print_header($day, $month, $year, $type_session);
-	?>
-	<h1><?php echo get_vocab("accessdenied")?></h1>
-	<p>
-		<?php echo get_vocab("noreservation")?>
-	</p>
-	<p>
-		<a href="<?php echo $back; ?>"><?php echo get_vocab("returnprev"); ?></a>
-	</p>
-</body>
-</html>
-<?php
+	start_page_w_header($day, $month, $year, $type_session);
+	echo '<h1>'.get_vocab("accessdenied").'</h1>';
+	echo '<p>'.get_vocab("noreservation").'</p>';
+	echo '<p><a href="'.$back.'">'.get_vocab("returnprev").'</a></p>';
+    end_page();
 }
 /* showAccessDeniedMaxBookings()
  *
- * Displays an appropate message when access has been denied
+ * Displays an appropriate message when access has been denied because of overbooking
  *
  * Returns: Nothing
  */

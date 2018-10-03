@@ -3,7 +3,7 @@
  * validation.php
  * Interface de validation d'une réservation modérée
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-18 17:30$
+ * Dernière modification : $Date: 2018-10-03 17:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -52,15 +52,15 @@ if (($settings->get("authentification_obli") == 0) && (getUserName() == ''))
 else
 	$type_session = "with_session";
 get_planning_area_values($area);
+// envoie le début de page... 
+start_page_w_header($day, $month, $year, $type_session);
 if ($area <= 0)
 {
-	start_page_w_header($day, $month, $year, $type_session);
 	echo '<h1>'.get_vocab("noareas").'</h1>';
 	echo '<a href="./admin/admin_accueil.php">'.get_vocab("admin").'</a>'.PHP_EOL;
     end_page();
 	exit();
 }
-start_page_w_header($day, $month, $year, $type_session);
 if ((authGetUserLevel(getUserName(), -1) < 1) && ($settings->get("authentification_obli") == 1))
 {
 	showAccessDenied($back);
@@ -169,6 +169,13 @@ else
 	$was_del = FALSE;
 	$row = grr_sql_row($res, 0);
 }
+if ($was_del){
+    echo '<h1>'.get_vocab("accessdenied").'</h1>';
+	echo '<p class="avertissement larger">'.get_vocab("invalid_entry_id").'</p>';
+	echo '<p><a href="'.page_accueil().'">'.get_vocab("back").'</a></p>';
+    end_page();
+    die();
+} 
 grr_sql_free($res);
 $breve_description 	= $row[0];
 $description  		= bbcode(htmlspecialchars($row[1]),'');
