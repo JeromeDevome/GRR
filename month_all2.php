@@ -3,7 +3,7 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-02 19:00$
+ * Dernière modification : $Date: 2018-10-05 17:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -328,11 +328,11 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 	echo "\n
 	<div class='ligne23'>
 		<div class=\"left\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$yy&amp;month=$ym&amp;area=$area';\" \"><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("monthbefore")." </button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$yy&amp;month=$ym&amp;area=$area';\" ><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("monthbefore")." </button>
 		</div>";
 		include "./include/trailer.inc.php";
 		echo "<div class=\"right\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$ty&amp;month=$tm&amp;area=$area';\" \">".get_vocab('monthafter')." <span class=\"glyphicon glyphicon-forward\"></button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$ty&amp;month=$tm&amp;area=$area';\" >".get_vocab('monthafter')." <span class=\"glyphicon glyphicon-forward\"></span></button>
 		</div>
 	</div>";
 }
@@ -349,7 +349,7 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 }    
     echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.get_vocab("all_areas").'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php" title="'.get_vocab('see_all_the_rooms_for_several_months').'">'.ucfirst(utf8_strftime("%Y", $month_start)).'</a></h4>'.PHP_EOL;
     if ($_GET['pview'] != 1)
-        echo " <a href=\"month_all.php?year=$year&amp;month=$month&amp;area=$area\"><span class='glyphicon glyphicon-refresh'></a>";
+        echo " <a href=\"month_all.php?year=$year&amp;month=$month&amp;area=$area\"><span class='glyphicon glyphicon-refresh'></span></a>";
 echo "</div>";
 echo "</caption>";
 if ($_GET['pview'] == 1 && (isset($_GET['precedent']) && $_GET['precedent'] == 1))
@@ -518,6 +518,7 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++) // traitement d'une ressou
 }// fin  du traitement de la ressource
 echo "</tbody>";
 echo "</table>";
+echo " </div>"; // fermeture du div planning2
 echo  "<div id=\"popup_name\" class=\"popup_block\" ></div>";
 if ($_GET['pview'] != 1)
 {
@@ -525,8 +526,6 @@ if ($_GET['pview'] != 1)
     bouton_retour_haut ();
     echo " </div>";
 }
-echo " </div>";
 affiche_pop_up(get_vocab("message_records"),"user");
-echo "</section>";
-include "footer.php";
+end_page();
 ?>

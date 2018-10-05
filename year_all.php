@@ -3,7 +3,7 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-26 14:30 $
+ * Dernière modification : $Date: 2018-10-05 13:30 $
  * @author    Yan Naessens, Laurent Delineau 
  * @copyright Copyright 2003-2018 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -552,9 +552,23 @@ else
                                                     echo " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" class=\"image\" /> \n";
                                                 
                                                 if ($acces_fiche_reservation)
-                                                    echo "<a title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday][$cmonth][$cyear]["id"][$i]."&amp;page=month\" class='lienCellule'>"
+                                                     /*echo "<a title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday][$cmonth][$cyear]["id"][$i]."&amp;page=month\" class='lienCellule'>"
                                                 .substr($d[$cday][$cmonth][$cyear]["who1"][$i],0,4)
-                                                . "</a>";
+                                                . "</a>"; */
+                                                {
+                                                    if (Settings::get("display_level_view_entry") == 0)
+                                                    {
+                                                        $currentPage = 'year_all';
+                                                        $id =   $d[$cday][$cmonth][$cyear]["id"][$i];
+                                                        echo "<a title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" data-width=\"675\" onclick=\"request($id,$cday,$cmonth,$cyear,'all','$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight\">" .substr($d[$cday][$cmonth][$cyear]["who1"][$i],0,4)."</a>";
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "<a class=\"lienCellule\" title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday][$cmonth][$cyear]["id"][$i]."&amp;page=year_all\">"
+                                                        .substr($d[$cday]["who1"][$i],0,4)
+                                                        . "</a>";
+                                                    }
+                                                }    
                                                 else
                                                     echo substr($d[$cday][$cmonth][$cyear]["who1"][$i],0,4);
                                                 echo "\n</td></tr></table>\n";
