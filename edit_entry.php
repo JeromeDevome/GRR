@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-02 16:30$
+ * Dernière modification : $Date: 2018-10-07 15:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,10 +15,11 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "edit_entry.php"; 
+
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 include "include/admin.inc.php";
-$grr_script_name = "edit_entry.php";
 if (isset($_GET["id"]))
 {
 	$id = $_GET["id"];
@@ -313,7 +314,7 @@ $adm = 0;
 $racine = "./";
 $racineAd = "./admin/";
 // pour le traitement des modules
-include "/include/hook.class.php";
+include "./include/hook.class.php";
 // début du code html ici, sinon le javascript provoque une erreur "header already sent by"
 //print_header($day, $month, $year, $type="with_session");
 echo '<!DOCTYPE html>'.PHP_EOL;

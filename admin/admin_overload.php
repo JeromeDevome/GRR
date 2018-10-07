@@ -3,7 +3,7 @@
  * admin_overload.php
  * Interface de création/modification des champs additionnels.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-25 16:00$
+ * Dernière modification : $Date: 2018-10-07 18:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -190,122 +190,123 @@ else if ($action == "change")
             if (grr_sql_command($sql) < 0)
                 fatal_error(0, "$sql \n\n" . grr_sql_error());
         }
+}
+// calcul de la page à afficher    
+$html = get_vocab("explication_champs_additionnels")."\n";
+$html .= "<form method=\"post\" action=\"admin_overload.php\" >\n<table class='table-bordered'>";
+$html .= "<thead><tr><th>".get_vocab("match_area").get_vocab("deux_points")."</th>\n";
+$html .= "<th>".get_vocab("fieldname").get_vocab("deux_points")."</th>\n";
+$html .= "<th>".get_vocab("fieldtype").get_vocab("deux_points")."</th>\n";
+$html .= "<th>".get_vocab("champ_obligatoire")."</th>\n";
+$html .= "<th>".get_vocab("affiche_dans_les vues")."</th>\n";
+$html .= "<th>".get_vocab("affiche_dans_les mails")."</th>\n";
+$html .= "<th>".get_vocab("champ_confidentiel")."</th>\n";
+$html .= "<th></th></tr></thead>\n";
+$html .= "\n<tbody><tr><td>";
+$html .= "<select name=\"id_area\" size=\"1\">";
+foreach ($userdomain as $key=>$value)
+    $html .= "<option value=\"$key\">".$userdomain[$key]."</option>\n";
+$html .= "</select></td>\n";
+$html .= "<td><div><input type=\"text\" name=\"fieldname\" size=\"20\" /></div></td>\n";
+$html .= "<td><div><select name=\"fieldtype\" size=\"1\">\n
+<option value=\"text\">".get_vocab("type_text")."</option>\n
+<option value=\"numeric\">".get_vocab("type_numeric")."</option>\n
+<option value=\"textarea\">".get_vocab("type_area")."</option>\n
+<option value=\"list\">".get_vocab("type_list")."</option>\n
+</select></div></td>\n";
+$html .= "<td class='CC'><div> ";
+$html .= "<input type=\"checkbox\" id=\"obligatoire\" name=\"obligatoire\" title=\"".get_vocab("champ_obligatoire")."\" value=\"y\" />\n";
+$html .= "<input type=\"hidden\" name=\"action\" value=\"add\" /></div></td>\n";
+$html .= "<td class='CC'><div> ";
+$html .= "<input type=\"checkbox\" id=\"affichage\" name=\"affichage\" title=\"\" value=\"n\" />\n";
+$html .= "</div></td>\n";
+$html .= "<td class='CC'><div> ";
+$html .= "<input type=\"checkbox\" id=\"overload_mail\" name=\"overload_mail\" title=\"\" value=\"n\" />\n";
+$html .= "<input type=\"hidden\" name=\"action\" value=\"add\" /></div></td>\n";
+$html .= "<td class='CC'><div> ";
+$html .= "<input type=\"checkbox\" id=\"confidentiel\" name=\"confidentiel\" title=\"".get_vocab("champ_confidentiel")."\" value=\"y\" />\n";
+$html .= "<input type=\"hidden\" name=\"action\" value=\"add\" /></div></td>\n";
+$html .= "<td><div><button name=\"submit\" title=\"".get_vocab('add')."\"><span class='glyphicon glyphicon-plus'></span></button></div></td>\n";
+$html .= "</tr></tbody></table></form>\n"; // fin de la table "ajouter"
+$breakkey = "";
+$ouvre_table = false;
+$ferme_table = false;
+$ind_div = 0;
+foreach ($userdomain as $key=>$value)
+{
+    $res = grr_sql_query("SELECT id, fieldname, fieldtype, obligatoire, fieldlist, affichage, overload_mail, confidentiel FROM ".TABLE_PREFIX."_overload WHERE id_area=$key ORDER BY fieldname;");
+    if (!$res)
+        fatal_error(0, grr_sql_error());
+    if (($key != $breakkey) && (grr_sql_count($res) != 0))
+    {
+        if (!$ouvre_table)
+        {
+            $html .= "<table class='table-bordered'>";
+            $ferme_table = true;
+            $ouvre_table = true;
+        }
+        $html .= "<thead><tr><th>".get_vocab("match_area")."</th><th>".get_vocab("fieldname")."</th><th>".get_vocab("fieldtype")."</th><th>".get_vocab("champ_obligatoire")."</th><th>".get_vocab("affiche_dans_les vues")."</th><th>".get_vocab("affiche_dans_les mails")."</th><th>".get_vocab("champ_confidentiel")."</th><th>Actions</th></tr></thead>";
     }
-    
-        $html = get_vocab("explication_champs_additionnels")."\n";
-		$html .= "<form method=\"post\" action=\"admin_overload.php\" >\n<table class='table-bordered'>";
-		$html .= "<thead><tr><th>".get_vocab("match_area").get_vocab("deux_points")."</th>\n";
-		$html .= "<th>".get_vocab("fieldname").get_vocab("deux_points")."</th>\n";
-		$html .= "<th>".get_vocab("fieldtype").get_vocab("deux_points")."</th>\n";
-		$html .= "<th>".get_vocab("champ_obligatoire")."</th>\n";
-		$html .= "<th>".get_vocab("affiche_dans_les vues")."</th>\n";
-		$html .= "<th>".get_vocab("affiche_dans_les mails")."</th>\n";
-		$html .= "<th>".get_vocab("champ_confidentiel")."</th>\n";
-		$html .= "<th></th></tr></thead>\n";
-		$html .= "\n<tbody><tr><td>";
-		$html .= "<select name=\"id_area\" size=\"1\">";
-		foreach ($userdomain as $key=>$value)
-			$html .= "<option value=\"$key\">".$userdomain[$key]."</option>\n";
-		$html .= "</select></td>\n";
-		$html .= "<td><div><input type=\"text\" name=\"fieldname\" size=\"20\" /></div></td>\n";
-		$html .= "<td><div><select name=\"fieldtype\" size=\"1\">\n
-		<option value=\"text\">".get_vocab("type_text")."</option>\n
-		<option value=\"numeric\">".get_vocab("type_numeric")."</option>\n
-		<option value=\"textarea\">".get_vocab("type_area")."</option>\n
-		<option value=\"list\">".get_vocab("type_list")."</option>\n
-	</select></div></td>\n";
-	$html .= "<td class='CC'><div> ";
-	$html .= "<input type=\"checkbox\" id=\"obligatoire\" name=\"obligatoire\" title=\"".get_vocab("champ_obligatoire")."\" value=\"y\" />\n";
-	$html .= "<input type=\"hidden\" name=\"action\" value=\"add\" /></div></td>\n";
-	$html .= "<td class='CC'><div> ";
-	$html .= "<input type=\"checkbox\" id=\"affichage\" name=\"affichage\" title=\"\" value=\"n\" />\n";
-	$html .= "</div></td>\n";
-	$html .= "<td class='CC'><div> ";
-	$html .= "<input type=\"checkbox\" id=\"overload_mail\" name=\"overload_mail\" title=\"\" value=\"n\" />\n";
-	$html .= "<input type=\"hidden\" name=\"action\" value=\"add\" /></div></td>\n";
-	$html .= "<td class='CC'><div> ";
-	$html .= "<input type=\"checkbox\" id=\"confidentiel\" name=\"confidentiel\" title=\"".get_vocab("champ_confidentiel")."\" value=\"y\" />\n";
-	$html .= "<input type=\"hidden\" name=\"action\" value=\"add\" /></div></td>\n";
-	$html .= "<td><div><button name=\"submit\" title=\"".get_vocab('add')."\"><span class='glyphicon glyphicon-plus'></span></div></td>\n";
-	$html .= "</tr></tbody></table></form>\n"; // fin de la table "ajouter"
-	$breakkey = "";
-	$ouvre_table = false;
-	$ferme_table = false;
-	$ind_div = 0;
-	foreach ($userdomain as $key=>$value)
-	{
-		$res = grr_sql_query("SELECT id, fieldname, fieldtype, obligatoire, fieldlist, affichage, overload_mail, confidentiel FROM ".TABLE_PREFIX."_overload WHERE id_area=$key ORDER BY fieldname;");
-		if (!$res)
-			fatal_error(0, grr_sql_error());
-		if (($key != $breakkey) && (grr_sql_count($res) != 0))
-		{
-			if (!$ouvre_table)
-			{
-				$html .= "<table class='table-bordered'>";
-				$ferme_table = true;
-				$ouvre_table = true;
-			}
-			$html .= "<thead><tr><th>".get_vocab("match_area")."</th><th>".get_vocab("fieldname")."</th><th>".get_vocab("fieldtype")."</th><th>".get_vocab("champ_obligatoire")."</th><th>".get_vocab("affiche_dans_les vues")."</th><th>".get_vocab("affiche_dans_les mails")."</th><th>".get_vocab("champ_confidentiel")."</th><th>Actions</th></tr></thead>";
-		}
-		$breakkey = $key;
-		if (grr_sql_count($res) != 0)
-			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-			{
-				$html .= "<tr>\n";
-				$html .= "<td class='CC'>$userdomain[$key]</td>\n";
-				$html .= "<td class='center CC'>".htmlspecialchars($row[1])."</td>\n";
-				$html .= "<td class='CL'><select name=\"fieldtype\">\n";
-				$html .= "<option value=\"textarea\" ";
-				if ($row[2] =="textarea")
-					$html .= " selected=\"selected\"";
-				$html .= " >".get_vocab("type_area")."</option>\n";
-				$html .= "<option value=\"text\" ";
-				if ($row[2] =="text")
-					$html .= " selected=\"selected\"";
-				$html .= " >".get_vocab("type_text")."</option>\n";
-				$html .= "<option value=\"list\" ";
-				if ($row[2] =="list")
-					$html .= " selected=\"selected\"";
-				$html .= " >".get_vocab("type_list")."</option>\n";
-				$html .= "<option value=\"numeric\" ";
-				if ($row[2] =="numeric")
-					$html .= " selected=\"selected\"";
-				$html .= " >".get_vocab("type_numeric")."</option>\n";
-				$html .= "</select>";
-                if ($row[2] == "list") {
-					$html .= "<div><br />".get_vocab("Liste des champs").get_vocab("deux_points")."<br />";
-					$html .= "<input type=\"text\" name=\"fieldlist\" value=\"".htmlspecialchars($row[4])."\" size=\"35\" /></div>";
-				}
-                $html .= "</td>\n";
-				$ind_div++;
-				$html .= "<td class='CC'><input type=\"checkbox\" id=\"obligatoire_".$ind_div."\" name=\"obligatoire\" title=\"".get_vocab("champ_obligatoire")."\" value=\"y\" ";
-				if ($row[3] =="y")
-					$html .= " checked=\"checked\" ";
-				$html .= "/></td>\n";
-				$html .= "<td class='CC'><input type=\"checkbox\" id=\"affichage_".$ind_div."\" name=\"affichage\" title=\"".get_vocab("affiche_dans_les vues")."\" value=\"y\" ";
-				if ($row[5] =="y")
-					$html .= " checked=\"checked\" ";
-				$html .= "/></td>\n";
-				$html .= "<td class='CC'><input type=\"checkbox\" id=\"overload_mail_".$ind_div."\" name=\"overload_mail\" title=\"".get_vocab("affiche_dans_les mails")."\" value=\"y\" ";
-				if ($row[6] =="y")
-					$html .= " checked=\"checked\" ";
-				$html .= "/></td>\n";
-				$html .= "<td class='CC'><input type=\"checkbox\" id=\"confidentiel_".$ind_div."\" name=\"confidentiel\" title=\"".get_vocab("champ_confidentiel")."\" value=\"y\" ";
-				if ($row[7] =="y")
-					$html .= " checked=\"checked\" ";
-				$html .= "/></td>\n";
-                $html .= "<td class='CC'><form method=\"post\" action=\"admin_overload.php\">\n";
-				$html .= "<div><input type=\"hidden\" name=\"id_overload\" value=\"$row[0]\" />\n";
-				$html .= "<input type=\"hidden\" name=\"action\" value=\"change\" />\n";
-                $html .= "<button title=\"".get_vocab('change')."\"><span class='glyphicon glyphicon-edit'></span></button>";
-                $html .= "</div></form>\n";
-				$html .= "<form method=\"post\" action=\"admin_overload.php\">\n";
-                $html .= "<div><button title=\"".get_vocab('del')."\" onclick=\"return confirmlink(this, '".addslashes(get_vocab("avertissement_suppression_champ_additionnel"))."', '".get_vocab("confirm_del")."')\"><span class='glyphicon glyphicon-trash'></span></button>\n";
-				$html .= "<input type=\"hidden\" name=\"id_overload\" value=\"$row[0]\" />\n";
-				$html .= "<input type=\"hidden\" name=\"action\" value=\"delete\" />\n";
-				$html .= "</div></form></td></tr>\n";
-			}
-		}
+    $breakkey = $key;
+    if (grr_sql_count($res) != 0)
+        for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+        {
+            $html .= "<tr><form method=\"post\" action=\"admin_overload.php\">\n";
+            $html .= "<td class='CC'>$userdomain[$key]</td>\n";
+            $html .= "<td class='center CC'>".htmlspecialchars($row[1])."</td>\n";
+            $html .= "<input type=\"hidden\" name=\"fieldname\" value=\"$row[1]\" />\n";
+            $html .= "<td class='CL'><select name=\"fieldtype\">\n";
+            $html .= "<option value=\"textarea\" ";
+            if ($row[2] =="textarea")
+                $html .= " selected=\"selected\"";
+            $html .= " >".get_vocab("type_area")."</option>\n";
+            $html .= "<option value=\"text\" ";
+            if ($row[2] =="text")
+                $html .= " selected=\"selected\"";
+            $html .= " >".get_vocab("type_text")."</option>\n";
+            $html .= "<option value=\"list\" ";
+            if ($row[2] =="list")
+                $html .= " selected=\"selected\"";
+            $html .= " >".get_vocab("type_list")."</option>\n";
+            $html .= "<option value=\"numeric\" ";
+            if ($row[2] =="numeric")
+                $html .= " selected=\"selected\"";
+            $html .= " >".get_vocab("type_numeric")."</option>\n";
+            $html .= "</select>";
+            if ($row[2] == "list") {
+                $html .= "<div><br />".get_vocab("Liste des champs").get_vocab("deux_points")."<br />";
+                $html .= "<input type=\"text\" name=\"fieldlist\" value=\"".htmlspecialchars($row[4])."\" size=\"35\" /></div>";
+            }
+            $html .= "</td>\n";
+            $ind_div++;
+            $html .= "<td class='CC'><input type=\"checkbox\" id=\"obligatoire_".$ind_div."\" name=\"obligatoire\" title=\"".get_vocab("champ_obligatoire")."\" value=\"y\" ";
+            if ($row[3] =="y")
+                $html .= " checked=\"checked\" ";
+            $html .= "/></td>\n";
+            $html .= "<td class='CC'><input type=\"checkbox\" id=\"affichage_".$ind_div."\" name=\"affichage\" title=\"".get_vocab("affiche_dans_les vues")."\" value=\"y\" ";
+            if ($row[5] =="y")
+                $html .= " checked=\"checked\" ";
+            $html .= "/></td>\n";
+            $html .= "<td class='CC'><input type=\"checkbox\" id=\"overload_mail_".$ind_div."\" name=\"overload_mail\" title=\"".get_vocab("affiche_dans_les mails")."\" value=\"y\" ";
+            if ($row[6] =="y")
+                $html .= " checked=\"checked\" ";
+            $html .= "/></td>\n";
+            $html .= "<td class='CC'><input type=\"checkbox\" id=\"confidentiel_".$ind_div."\" name=\"confidentiel\" title=\"".get_vocab("champ_confidentiel")."\" value=\"y\" ";
+            if ($row[7] =="y")
+                $html .= " checked=\"checked\" ";
+            $html .= "/></td>\n";
+            $html .= "<td class='CC'>\n";
+            $html .= "<div><input type=\"hidden\" name=\"id_overload\" value=\"$row[0]\" />\n";
+            $html .= "<input type=\"hidden\" name=\"action\" value=\"change\" />\n";
+            $html .= "<button title=\"".get_vocab('change')."\"><span class='glyphicon glyphicon-edit'></span></button>";
+            $html .= "</div></form>\n";
+            $html .= "<form method=\"post\" action=\"admin_overload.php\">\n";
+            $html .= "<div><button title=\"".get_vocab('del')."\" onclick=\"return confirmlink(this, '".addslashes(get_vocab("avertissement_suppression_champ_additionnel"))."', '".get_vocab("confirm_del")."')\"><span class='glyphicon glyphicon-trash'></span></button>\n";
+            $html .= "<input type=\"hidden\" name=\"id_overload\" value=\"$row[0]\" />\n";
+            $html .= "<input type=\"hidden\" name=\"action\" value=\"delete\" />\n";
+            $html .= "</div></form></td></tr>\n";
+        }
+    }
 // code HTML
 start_page_w_header("", "", "", $type = "with_session");
 include "admin_col_gauche2.php";

@@ -324,6 +324,7 @@ echo '	<tr>';
 echo '		<td><b>'.get_vocab("description").'</b></td>';
 echo '		<td>'.nl2br($description).'</td>';
 echo '	</tr>';
+// la portion de code qui suit ne semble rien produire, et les champs additionnels sont repris plus bas YN le 05/10/18
 if (!$was_del)
 {
     $overload_data = mrbsEntryGetOverloadDesc($id);
