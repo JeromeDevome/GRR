@@ -437,5 +437,6 @@ function afficheMenuGauche(mode){
         document.getElementById("planning2").style.width = "100%";
         document.getElementById("cacher").style.display = "inline";
         document.getElementById("voir").style.display = "none";
+        $('.floatthead').floatThead('reflow');
     }
 }

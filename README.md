@@ -1,5 +1,5 @@
 GRR
-branche devel3 : des modifications à la branche 3.4.0, qui ont vocation à passer en stable et à rester compatibles avec php5 pour les serveurs non encore mis à jour en php7
+pré-version 3.4.1, a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7
 ===================
 
 **Requiert :**

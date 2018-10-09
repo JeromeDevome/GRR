@@ -2,7 +2,7 @@
 /**
  * misc.inc.php
  * fichier de variables diverses
- * Dernière modification : $Date: 2018-07-20 14:00$
+ * Dernière modification : $Date: 2018-10-09 14:45$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -22,14 +22,14 @@
 $grr_devel_email = "support@devome.com";
 $grr_devel_url = "http://grr.devome.com/";
 // Numéro de version actuel
-$version_grr = "3.4.0";
+$version_grr = "3.4.1";
 // Numéro de sous-version actuel (a, b, ...)
 // Utilisez cette variable pour des versions qui corrigent la la version finale sans toucher à la base.
 $sous_version_grr = ""; // a, b, c, ...
 // Numéro de la release candidate (doit être strictement inférieure à 9). Laisser vide s'il s'agit de la version stable.
-$version_grr_RC = "";
+$version_grr_RC = "1";
 // Version repository (GitHub)
-$versionReposite = "GitHub";
+$versionReposite = "";
 
 # Liste des tables
 $liste_tables = array(

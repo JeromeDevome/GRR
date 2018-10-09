@@ -1008,4 +1008,6 @@ $vocab["show_color_key"] = "Légende des réservations";
 $vocab['click_here_to_see_connexions'] = "Cliquez ici pour voir votre historique de connexion";
 $vocab['click_here_to_hide_connexions'] = "Cliquez ici pour masquer l'historique de connexion";
 $vocab["see_connexions_explain"] = "Une connexion en cours est affichée en vert, une connexion fermée par temps dépassé est affichée en rouge";
+$vocab["type_apercu"] = "Aperçu";
+$vocab["type_color_text"] = "Couleur du texte";
 ?>

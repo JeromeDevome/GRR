@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-31 18:30$
+ * Dernière modification : $Date: 2018-10-09 15:30$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
@@ -873,7 +873,18 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
 			$result .= $result_inter;
 		$result_inter = '';
 	}
+    if ($version_old < "3.4.1")
+    {
+        $result .= formatresult("Mise à jour jusqu'à la version 3.4.1 :","<b>","</b>");
 
+		$result_inter .= traite_requete('ALTER TABLE `grr_type_area`  ADD `couleur_texte` VARCHAR(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT \'#000000\'  AFTER `disponible`');
+        
+   		if ($result_inter == '')
+			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+		else
+			$result .= $result_inter;
+		$result_inter = '';
+    }
 	// Vérification du format des champs additionnels
 	// Avant version 1.9.4, les champs add étaient stockés sous la forme <id_champ>champ_encode_en_base_64</id_champ>
 	// A partir de la version 1.9.4, les champs add. sont stockés sous la forme @id_champ@url_encode(champ)@/id_champ@

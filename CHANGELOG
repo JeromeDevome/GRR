@@ -4,16 +4,16 @@ Bugs connus sur la version de GitHub :
 
 Tâches prévues :
  - interface de personnalisation des couleurs
- 
 -----
 --
 -----
 
-Version en cours de développement sur GitHUB (3.4.1) // Numéro de version à confirmer
+Version en cours de développement sur GitHUB (3.4.1 RC1)
     [ajout] Echange de deux réservations
     [ajout] Page year_all affichant les réservations sur plusieurs mois et plusieurs domaines (à utiliser avec prudence s'il y a beaucoup de réservations ou de ressources)
-    [amelioration] reprise du code des pages plannings pour gérer les menus escamotables (fait toutes pages)
-    
+    [ajout] Contenu des champs additionnels dans les exports csv
+    [ajout] Gestion des couleurs du texte des types de réservation (meilleure lisibilité dans les plannings)
+    [amelioration] Reprise du code des pages plannings pour gérer les menus escamotables (haut et gauche) 
 -----
 --
 -----
@@ -25,7 +25,7 @@ Version 3.4.0
 	[ajout] Menu administration : Couleur bleu sur le lien où l'on se situe
 	[ajout] Menu administration : Possiblité d'accéder au lien où l'on se situe
 	[ajout] Moteur de page
-	[ajout] Conditions Générales d'Utilisation personalisables
+	[ajout] Conditions Générales d'Utilisation personnalisables
 	[ajout] Lors de l'envoi mail, notifier le changement de ressources s'il y a lieu
 	[ajout] Gestion de modules externes
     [ajout] message dans l'entête s'il existe une réservation à modérer
