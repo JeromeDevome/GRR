@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-10-03 18:00$
+ * Dernière modification : $Date: 2018-10-08 16:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1795,7 +1795,7 @@ function time_date_string_jma($t,$dformat)
 		return utf8_strftime($dformat, $t);
 }
 
-// Renvoie une balise span avec un style backgrounf-color correspondant au type de  la réservation
+// Renvoie une balise span avec un style background-color correspondant au type de  la réservation
 function span_bgground($colclass)
 {
 	global $tab_couleur;
@@ -1815,8 +1815,10 @@ function tdcell($colclass, $width = '')
 	static $ecolors;
 	if (($colclass >= "A") && ($colclass <= "Z"))
 	{
-		$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-		echo '<td style="background-color:'.$couleurhexa.';" '.$temp.'>'.PHP_EOL;
+		/*$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
+        $couleur_texte = grr_sql_query1("SELECT couleur_texte FROM".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
+		echo '<td style="background-color:'.$couleurhexa.'; color:'.$couleur_texte.';" '.$temp.'>'.PHP_EOL;*/
+        echo '<td class="type'.$colclass.'"'.$temp.'>';
 	}
 	else
 		echo '<td class="'.$colclass.'" '.$temp.'>'.PHP_EOL;
@@ -1830,11 +1832,12 @@ function tdcell_rowspan($colclass, $step)
 		$step = 1;
 	if (($colclass >= "A") && ($colclass <= "Z"))
 	{
-		$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-		echo '<td rowspan="'.$step.'" style="background-color:'.$couleurhexa.';">'.PHP_EOL;
+		/*$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
+		echo '<td rowspan="'.$step.'" style="background-color:'.$couleurhexa.';">'.PHP_EOL;*/
+        echo '<td class="type'.$colclass.'" rowspan="'.$step.'">';
 	}
 	else
-		echo '<td rowspan="'.$step.'" td class="'.$colclass.'">'.PHP_EOL;
+		echo '<td rowspan="'.$step.'" class="'.$colclass.'">'.PHP_EOL;
 }
 
 //Display the entry-type color key. This has up to 2 rows, up to 10 columns.
@@ -5089,6 +5092,7 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
         $a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
         $a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
+        $a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/types.css" />'.PHP_EOL; // les couleurs des types de réservation
 		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 			$a .= '<link rel="stylesheet" type="text/css" href="../themes/print/css/style.css" />'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
@@ -5131,6 +5135,7 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
         $a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
         $a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
+        $a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/types.css" />'.PHP_EOL; // les couleurs des types de réservation        
 		if (isset($use_admin))
 			$a .= '<link rel="stylesheet" type="text/css" href="include/admin_grr.css" />'.PHP_EOL;
 		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))

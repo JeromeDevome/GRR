@@ -3,7 +3,7 @@
  * admin_type_modify.php
  * interface de création/modification des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-25 12:00$
+ * Dernière modification : $Date: 2018-10-09 14:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -32,6 +32,7 @@ $type_letter = isset($_GET["type_letter"]) ? $_GET["type_letter"] : NULL;
 //$couleur = isset($_GET["couleur"]) ? $_GET["couleur"] : NULL;
 $couleur_hexa = isset($_GET["couleurhexa"]) ? $_GET["couleurhexa"] : NULL;
 $disponible = isset($_GET["disponible"]) ? $_GET["disponible"] : NULL;
+$couleur_texte = isset($_GET["couleur_texte"]) ? $_GET["couleur_texte"] : "#000000";
 $msg = '';
 
 // Couleurs par défaut
@@ -82,7 +83,9 @@ if (isset($_GET['change_type']))
 		$couleur_hexa = "#2ECC71";
 	if ($disponible == '')
 		$disponible = "2";
-	if ($id_type > 0)
+    if ($couleur_texte == '')
+        $couleur_texte = "#000000";
+	if ($id_type > 0) // type existant : mise à jour
 	{
 		// Test sur $type_letter
 		$test = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$type_letter."' AND id!='".$id_type."'");
@@ -100,7 +103,8 @@ if (isset($_GET['change_type']))
 			$sql = $sql . 'type_letter="'.$type_letter.'",';
 			$sql = $sql . 'couleur=\'1\',';
 			$sql = $sql . 'couleurhexa="'.$couleur_hexa.'",';
-			$sql = $sql . 'disponible="'.$disponible.'"';
+			$sql = $sql . 'disponible="'.$disponible.'",';
+            $sql .= 'couleur_texte="'.$couleur_texte.'"';
 			$sql = $sql . " WHERE id=$id_type";
 			if (grr_sql_command($sql) < 0)
 			{
@@ -111,7 +115,7 @@ if (isset($_GET['change_type']))
 				$msg = get_vocab("message_records");
 		}
 	}
-	else
+	else // nouveau type
 	{
 		// Test sur $type_letter
 		$test = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$type_letter."'");
@@ -128,7 +132,8 @@ if (isset($_GET['change_type']))
 				$sql= $sql ."0,";
 			$sql = $sql . 'type_letter="'.$type_letter.'",';
 			$sql = $sql . 'couleur=\'1\',';
-			$sql = $sql . 'couleurhexa="'.$couleur_hexa.'"';
+			$sql = $sql . 'couleurhexa="'.$couleur_hexa.'",';
+            $sql .= 'couleur_texte="'.$couleur_texte.'"';
 			if (grr_sql_command($sql) < 0)
 			{
 				fatal_error(1, "<p>" . grr_sql_error());
@@ -139,6 +144,31 @@ if (isset($_GET['change_type']))
 		}
 
 	}
+}
+// enregistrement des couleurs dans la feuille de style
+if ((isset($_GET['change_done'])) && (!isset($ok)))
+{
+    try {
+        $fich=fopen("../themes/default/css/types.css","w+"); // première écriture
+        fwrite($fich,"/* fichier de style reprenant les paramètres des types de réservation */");
+        fclose($fich);
+        $sql = "SELECT type_letter,couleurhexa,couleur_texte FROM ".TABLE_PREFIX."_type_area WHERE 1";
+        $res = grr_sql_query($sql);
+        $fich=fopen("../themes/default/css/types.css","a+");
+        for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+		{
+            fwrite($fich," 
+td.type".$row[0]."{background:".$row[1].";color:".$row[2].";}
+td.type".$row[0]." a.poplight{color:".$row[2].";}
+");
+        }
+        fclose($fich);
+    }
+    catch (Exception $e) {
+        echo 'Exception reçue : ',  $e->getMessage(), "\n";
+        $ok = 'no';
+        die();
+    }
 }
 // Si pas de problème, retour à la page d'accueil après enregistrement
 if ((isset($_GET['change_done'])) && (!isset($ok)))
@@ -172,6 +202,7 @@ else
 	$row["disponible"]  = 2;
 	$row["couleur"]  = '';
 	$row["couleurhexa"] = '';
+    $row["couleur_texte"] = "#000000";
 	echo "<h2>".get_vocab('admin_type_modify_create.php')."</h2>";
 }
 echo get_vocab('admin_type_explications')."<br /><br />";
@@ -187,7 +218,7 @@ echo "<table class='table-bordered'>\n";
 	echo "<select name=\"type_letter\" size=\"1\">\n";
 	echo "<option value=''>".get_vocab("choose")."</option>\n";
 	$letter = "A";
-	for ($i = 1; $i <= 702; $i++)
+	for ($i = 1; $i <= 26; $i++) // limitation liée à la fonction tdcell()
 	{
 		echo "<option value='".$letter."' ";
 		if ($row['type_letter'] == $letter)
@@ -217,7 +248,21 @@ echo "<table class='table-bordered'>\n";
 	echo ">".get_vocab("only_administrators")."</option>\n";
 	echo "</select>";
 	echo "</td></tr>";
-	if ($row["couleurhexa"]  != '')
+    echo "<tr><td>";
+    echo get_vocab("type_apercu");
+    echo "</td>";
+    echo "<td style='background-color:".$row["couleurhexa"]."; color:".$row["couleur_texte"]."' class='CC' id='test'>";
+    echo "<b>test</b>";
+    echo '</td></tr>';
+    echo "<tr>\n";
+	echo "<td>".get_vocab("type_color_text").get_vocab("deux_points")."</td>\n";
+    echo "<td><input type=\"text\" name=\"couleur_texte\" value=\"".$row["couleur_texte"]."\" maxlength=\"7\" size=\"10\" onKeyUp='visuCouleurHexaPerso()' /></td>\n";
+	echo "</tr>";
+	echo "<tr>\n";
+	echo "<td>".get_vocab("type_color_hexa").get_vocab("deux_points")."</td>\n";
+	echo "<td><input type=\"text\" name=\"couleurhexa\" value=\"".$row["couleurhexa"]."\" maxlength=\"7\" size=\"10\" onKeyUp='visuCouleurHexaPerso()' /></td>\n";
+	echo "</tr>";
+	/*if ($row["couleurhexa"]  != '')
 	{
 		echo "<tr>\n";
 		echo "<td>".get_vocab("type_color_actuel").get_vocab("deux_points")."</td>\n";
@@ -225,9 +270,10 @@ echo "<table class='table-bordered'>\n";
 		echo "</tr>";
 	}
 	echo "<tr>\n";
-	echo "<td>".get_vocab("type_color_hexa").get_vocab("deux_points")."</td>\n";
-	echo "<td><input type=\"text\" name=\"couleurhexa\" value=\"".$row["couleurhexa"]."\" maxlength=\"7\" size=\"10\" onKeyUp='visuCouleurHexaPerso()' /><input type=\"text\" style=\"background-color:".$row["couleurhexa"].";\" name=\"visucouleurhexa\" value=\"\" size=\"10\" disabled/></td>\n";
-	echo "</tr>";
+	echo "<td>".get_vocab("type_color_text").get_vocab("deux_points")."</td>\n";
+	//echo "<td><input type=\"text\" name=\"couleur_texte\" value=\"".$row["couleur_texte"]."\" maxlength=\"7\" size=\"10\" onKeyUp='visuCouleurHexaPerso()' /><input type=\"text\" style=\"background-color:".$row["couleurhexa"]." color:".$row["couleur_texte"].";\" name=\"visucouleurtexte\" value=\"test\" size=\"10\" disabled/></td>\n";
+    echo "<td><input type=\"text\" name=\"couleur_texte\" value=\"".$row["couleur_texte"]."\" maxlength=\"7\" size=\"10\" onKeyUp='visuCouleurHexaPerso()' /><span style=\"background-color:".$row["couleurhexa"]."; color:".$row["couleur_texte"].";\" id=\"visucouleurtexte\">"."&nbsp;&nbsp;&nbsp;&nbsp; test &nbsp;&nbsp;&nbsp;&nbsp;"."</span></td>\n";
+	echo "</tr>"; */
 	echo "</table>\n";
 	echo "<p>".get_vocab("type_color_predefinie").get_vocab("deux_points")."</p>";
 	echo "<table class='table-bordered'><tr>\n";
@@ -254,12 +300,16 @@ echo '</div>';
 <script>
 $( ".target" ).change(function() {
 	var laCouleur = $('input[name=couleur]:checked').val();
+    var textColor = document.getElementsByName('couleur_texte')[0].value;
 	document.getElementsByName('couleurhexa')[0].value = laCouleur;
-	document.getElementsByName('visucouleurhexa')[0].style.backgroundColor=laCouleur;
+	document.getElementById('test').style.backgroundColor=laCouleur;
+	document.getElementById('test').style.color=textColor;
 });
 function visuCouleurHexaPerso(laCouleur) {
 	var laCouleur = document.getElementsByName('couleurhexa')[0].value;
-	document.getElementsByName('visucouleurhexa')[0].style.backgroundColor=laCouleur;
+    var textColor = document.getElementsByName('couleur_texte')[0].value;
+    document.getElementById('test').style.backgroundColor=laCouleur;
+	document.getElementById('test').style.color=textColor;
 }
 </script>
 </section>

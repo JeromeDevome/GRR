@@ -3,7 +3,7 @@
  * admin_type_area.php
  * interface de gestion des types de réservations pour un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-24 18:00$
+ * Dernière modification : $Date: 2018-10-08 14:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -44,7 +44,7 @@ else
 // code HTML
 //start_page_w_header("", "", "", $type="with_session");
 //include "admin_col_gauche2.php";
-$sql = "SELECT id, type_name, order_display, couleurhexa, type_letter FROM ".TABLE_PREFIX."_type_area
+$sql = "SELECT id, type_name, order_display, couleurhexa, type_letter, couleur_texte FROM ".TABLE_PREFIX."_type_area
 ORDER BY order_display, type_letter";
 //
 // Enregistrement
@@ -119,7 +119,7 @@ echo "</p><p>".get_vocab("explications_active_type")."</p>";
 echo "<table class='table table-bordered'><tr>\n";
 echo "<td><b>".get_vocab("type_num")."</b></td>\n";
 echo "<td><b>".get_vocab("type_name")."</b></td>\n";
-echo "<td><b>".get_vocab("type_color")."</b></td>\n";
+echo "<td><b>".get_vocab("type_apercu")."</b></td>\n";
 echo "<td><b>".get_vocab("type_order")."</b></td>\n";
 echo "<td><b>".get_vocab("type_valide_domaine")."</b></td>";
 echo "<td><b>".get_vocab("type_par_defaut")."</b></td>";
@@ -133,6 +133,7 @@ if ($res)
 		$order_display     = $row[2];
 		$couleur = $row[3];
 		$type_letter = $row[4];
+        $couleur_texte = $row[5];
 		// Affichage des numéros et descriptions
 		$col[$i][1] = $type_letter;
 		$col[$i][2] = $id_type;
@@ -143,7 +144,7 @@ if ($res)
 		echo "<tr>\n";
 		echo "<td>{$col[$i][1]}</td>\n";
 		echo "<td>{$col[$i][3]}</td>\n";
-		echo "<td style=\"background-color:".$couleur."\"></td>\n";
+		echo "<td style=\"background-color:".$couleur."; color:".$couleur_texte."\">".$type_name."</td>\n";
 		echo "<td>{$col[$i][4]}</td>\n";
 		echo "<td><input type=\"checkbox\" name=\"".$col[$i][2]."\" value=\"y\" ";
 		$test = grr_sql_query1("SELECT count(id_type) FROM ".TABLE_PREFIX."_j_type_area WHERE id_area = '".$id_area."' AND id_type = '".$row[0]."'");
