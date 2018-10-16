@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-02 19:00$
+ * Dernière modification : $Date: 2018-10-14 18:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -68,15 +68,9 @@ if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
 else
 	$type_session = "with_session";
 // autres initialisations
-if (@file_exists('./admin_access_area.php')){
-    $adm = 1;
-    $racine = "../";
-    $racineAd = "./";
-}else{
-    $adm = 0;
-    $racine = "./";
-    $racineAd = "./admin/";
-}
+$adm = 0;
+$racine = "./";
+$racineAd = "./admin/";
 // pour le traitement des modules
 include $racine."/include/hook.class.php";
 
@@ -128,9 +122,9 @@ else
 	{
 		$start_t = max(round_t_down($row['1'], $resolution, $am7), $am7);
 		$end_t = min(round_t_up($row['2'], $resolution, $am7) - $resolution, $pm7);
-		$cellules[$row['4']] = ($end_t - $start_t) / $resolution + 1;
+		$cellules[$row['4']] = ($end_t - $start_t) / $resolution + 1; // à vérifier YN le 14/10/18
 		$compteur[$row['4']] = 0;
-		for ($t = $start_t; $t <= $end_t; $t += $resolution)
+		for ($t = $start_t; $t <= $end_t; $t += $resolution) // à vérifier YN le 14/10/18
 		{
 			$today[$row['0']][$t]["id"]				= $row['4'];
 			$today[$row['0']][$t]["color"]			= $row['5'];
@@ -362,7 +356,7 @@ echo "</thead>"; // fin de l'affichage des ressources
 echo "<tbody>";
 $tab_ligne = 3;
 $iii = 0;
-for ($t = $am7; $t <= $pm7; $t += $resolution)
+for ($t = $am7; $t < $pm7; $t += $resolution)
 {
 	echo '<tr>'.PHP_EOL;
 	if ($iii % 2 == 1)
@@ -488,7 +482,9 @@ for ($t = $am7; $t <= $pm7; $t += $resolution)
 						$clef 		= $row['3'];
 						$courrier	= $row['4'];
 						if ($enable_periods != 'y') {
-							echo '<br/>',date('H:i', max($am7,$start_time)),get_vocab("to"),date('H:i', min($pm7,$end_time)),'<br/>';
+                            $heure_fin = date('H:i',min($pm7,$end_time));
+                            if ($heure_fin == '00:00') {$heure_fin = '24:00';}
+							echo '<br/>',date('H:i', max($am7,$start_time)),get_vocab("to"),$heure_fin,'<br/>';
 						}
 						if ($type_name != -1)
 							echo  $type_name;

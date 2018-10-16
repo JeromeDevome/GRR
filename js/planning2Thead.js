@@ -1,3 +1,3 @@
 $(document).ready(function(){
-    $('.floatthead').floatThead();
+    $('.floatthead').floatThead({scrollContainer:true});
 });

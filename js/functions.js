@@ -440,3 +440,20 @@ function afficheMenuGauche(mode){
         $('.floatthead').floatThead('reflow');
     }
 }
+/*
+function menuHaut(){
+        var e=$("div#panel").is(":hidden");
+        if(e)
+        {
+            /*$("div#panel").show("slow");
+            document.getElementById("panel").style.display = "inline-block";
+            $('.floatthead').floatThead('reflow');
+        }
+        else 
+        {
+            /* $("div#panel").hide("slow"); 
+            document.getElementById("panel").style.display = "none";
+            $('.floatthead').floatThead('reflow');
+        }
+        setCookie("open",e,365)
+}*/

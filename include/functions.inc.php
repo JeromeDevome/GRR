@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-10-08 16:30$
+ * Dernière modification : $Date: 2018-10-16 10:50$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1717,7 +1717,10 @@ function affiche_heure_creneau($t,$resolution)
 		$hour_min_format = "H:i";
 	else
 		$hour_min_format = "h:ia";
-	return date($hour_min_format,$t) ." - ".date($hour_min_format, $t + $resolution);
+    $heure_debut = date($hour_min_format,$t);
+    $heure_fin = date($hour_min_format, $t + $resolution);
+    if ($heure_fin == "00:00") $heure_fin = "24:00";
+	return  $heure_debut." - ".$heure_fin;
 }
 
 function hour_min_format()
@@ -3845,8 +3848,7 @@ function get_planning_area_values($id_area)
 		else
 			$display_day[$i] = 0;
 	}
-	// Créneaux basés sur les intitulés
-	if ($row_[7] == 'y')
+	if ($row_[7] == 'y')	// Créneaux basés sur les intitulés
 	{
 		$resolution = 60;
 		$morningstarts = 12;
@@ -3854,7 +3856,7 @@ function get_planning_area_values($id_area)
 		$sql_periode = grr_sql_query("SELECT nom_periode FROM ".TABLE_PREFIX."_area_periodes where id_area='".$id_area."'");
 		$eveningends_minutes = grr_sql_count($sql_periode) - 1;
 		$i = 0;
-		while ($i < grr_sql_count($sql_periode))
+		while ($i <= $eveningends_minutes)
 		{
 			$periods_name[$i] = grr_sql_query1("SELECT nom_periode FROM ".TABLE_PREFIX."_area_periodes where id_area='".$id_area."' and num_periode= '".$i."'");
 			$i++;
@@ -3862,9 +3864,8 @@ function get_planning_area_values($id_area)
 		$enable_periods = "y";
 		$weekstarts = $row_[5];
 		$twentyfourhour_format = $row_[6];
-		// Créneaux basés sur le temps
 	}
-	else
+	else		// Créneaux basés sur le temps
 	{
 		if ($row_[0] != 'y')
 		{
@@ -4595,33 +4596,29 @@ function jQuery_TimePicker($typeTime, $start_hour, $start_min,$dureepardefaultse
 		else
 			$minute = date("m");
 			
-			
 		if ($typeTime == 'end_'){
 		$dureepardefautmin = $dureepardefaultsec/60;
-		
 		if ($dureepardefautmin == 60){
 			$ajout = 1;
 			$hour = $_GET['hour'] + $ajout;
 			$minute ="00";
 		}
-		
 		if ($dureepardefautmin < 60){
 			$hour = $_GET['hour'];
 			$minute =$dureepardefautmin;
 		}
-		
 		if ($dureepardefautmin > 60){
-		
-		$dureepardefautheure = $dureepardefautmin/60;
-		
-		if (($dureepardefautheure % 60)!=0){
-			$hour = $_GET['hour']+ $dureepardefautheure;
+            $dureepardefautheure = $dureepardefautmin/60;
+        //	if (($dureepardefautheure % 60)!=0){
+	//		$hour = $_GET['hour']+ $dureepardefautheure;
+            $hour = ($_GET['hour']+ $dureepardefautheure)%24; // Modulo 24
+            $hour = str_pad($hour, 2, 0, STR_PAD_LEFT); // Affichage heure sur 2 digits 
 			if ($_GET['minute'] == 30){
 				$minute =30;
 			}else{
 				 $minute = "00";
 				};
-			}
+	//		}
 		}
 	};
 
@@ -5146,8 +5143,8 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
         $a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/html2canvas.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;     
         $a .= '<script type="text/javascript" src="js/jquery.floatThead.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;     
         $a .= '<script type="text/javascript" src="js/planning2Thead.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jspdf.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/pdf.js" ></script>'.PHP_EOL;
@@ -5342,6 +5339,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			// echo '</table>'.PHP_EOL;
 			echo '</div>'.PHP_EOL;
 			echo '<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>'.PHP_EOL;
+            // echo '<a href="#" onClick="menuHaut()"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>'.PHP_EOL;
 			// echo '</div>'.PHP_EOL;
 		}
 	}
