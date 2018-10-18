@@ -3,8 +3,8 @@
  * edit_entry_types.php
  * Page "Ajax" utilisée pour générer les types
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-10-18 10:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -60,10 +60,9 @@ $aff_type = max(authGetUserLevel(getUserName(),-1,"room"),authGetUserLevel(getUs
 $nb_type = 0;
 $type_nom_unique = "??";
 $type_id_unique = "??";
-$display_type = '<table width="100%"><tr><td class="E"><b>'.get_vocab("type").get_vocab("deux_points").'</b></td></tr>'.PHP_EOL;
+$display_type = '<table><tr><td class="E"><b>'.get_vocab("type").get_vocab("deux_points").'</b></td></tr>'.PHP_EOL;
 $affiche_mess_asterisque = true;
 $display_type .= '<tr><td class="CL">'.PHP_EOL;
-$display_type .= '<div class="col-xs-3">'.PHP_EOL;
 $display_type .= '<select id="type" class="form-control" name="type" size="1" onclick="setdefault(\'type_default\',\'\')">'.PHP_EOL;
 $display_type .= '<option value="0">'.get_vocab("choose").PHP_EOL;
 $sql = "SELECT DISTINCT t.type_name, t.type_letter, t.id, t.order_display FROM ".TABLE_PREFIX."_type_area t
@@ -117,9 +116,9 @@ if (grr_sql_count($res) != 0)
 		}
 	}
 }
-$display_type .=  '</select>'.PHP_EOL.'</div>'.PHP_EOL;
+$display_type .=  '</select>'.PHP_EOL;
 if ($aff_default)
-	$display_type .= ' <input type="button" class="btn btn-primary" value="'.get_vocab("definir par defaut").'" onclick="setdefault(\'type_default\',document.getElementById(\'main\').type.options[document.getElementById(\'main\').type.options.selectedIndex].text)" />'.PHP_EOL;
+	$display_type .= '<input type="button" class="btn btn-primary" value="'.get_vocab("definir par defaut").'" onclick="setdefault(\'type_default\',document.getElementById(\'main\').type.options[document.getElementById(\'main\').type.options.selectedIndex].text)" />'.PHP_EOL;
 $display_type .= '</td></tr></table>'.PHP_EOL;
 if ($nb_type > 1)
 	echo $display_type;
