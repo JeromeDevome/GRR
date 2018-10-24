@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2018-10-22 10:00$
+ * Dernière modification : $Date: 2018-10-24 10:40$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -591,8 +591,10 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
 			break;
 			//Monthly repeat on same week number and day of week
 			case 5:
-			$day += same_day_next_month($time);
-			break;
+			//$day += same_day_next_month($time);
+            $num_jour = date("N",$time); // numéro du jour dans la semaine
+            $num_week = (int)((date("j",$time) - 1) / 7); // décalage voulu
+            return mrbsGetRepeatEntryList($time, $enddate, 7, $rep_opt, $max_ittr, $rep_num_weeks, $rep_jour_c, $area, $num_week, $num_jour);
 			//Si la périodicité est par Jours/Cycle
 			case 6:
 			$sql = "SELECT * FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY >= '".$time2."' AND DAY <= '".$enddate."' AND Jours = '".$rep_jour_c."'";
