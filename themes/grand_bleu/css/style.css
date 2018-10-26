@@ -1,7 +1,7 @@
 /* personnalisations au style par défaut */
 
 /* modifications bootstrap */
-a{color:#31A3DD;text-decoration:none}
+a{color:#333;text-decoration:none}
 .text-primary{color:#31A3DD}
 .bg-primary{color:#fff;background-color:#31A3DD}
 .btn-primary{color:#fff;background-color:#31A3DD;border-color:#31A3DD}
