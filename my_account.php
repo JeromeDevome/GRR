@@ -3,7 +3,7 @@
  * my_account.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-06-20 18:00$
+ * Dernière modification : $Date: 2018-26-10 14:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,6 +15,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = 'my_account.php';
+
 include_once('include/connect.inc.php');
 include_once('include/config.inc.php');
 include_once('include/misc.inc.php');
@@ -22,7 +24,7 @@ include_once('include/functions.inc.php');
 require_once('include/'.$dbsys.'.inc.php');
 require_once('include/session.inc.php');
 include_once('include/settings.class.php');
-$grr_script_name = 'my_account.php';
+
 if (!Settings::load())
 	die('Erreur chargement settings');
 $desactive_VerifNomPrenomUser='y';
@@ -31,7 +33,7 @@ if (!grr_resumeSession())
 	header('Location: logout.php?auto=1&url=$url');
 	die();
 };
-Definition_ressource_domaine_site();
+// Definition_ressource_domaine_site();
 $day = isset($_POST['day']) ? $_POST['day'] : (isset($_GET['day']) ? $_GET['day'] : date('d'));
 $month = isset($_POST['month']) ? $_POST['month'] : (isset($_GET['month']) ? $_GET['month'] : date('m'));
 $year = isset($_POST['year']) ? $_POST['year'] : (isset($_GET['year']) ? $_GET['year'] : date('Y'));
@@ -182,7 +184,8 @@ if (($valid == 'yes') || ($valid=='reset'))
 	}
 }
 $use_prototype = 'y';
-print_header($day, $month, $year, $type="with_session");
+// début du code HTML
+start_page_w_header($day, $month, $year, $type="with_session");
 echo "\n    <!-- Repere ".$grr_script_name." -->\n";
 if (Settings::get("module_multisite") == "Oui")
 	$use_site = 'y';
@@ -343,12 +346,10 @@ echo ('
 	{
 		echo '
 		<div>
-			<table  border="0" width="100%">
+			<table  class="table table-noborder">
 				<tr>
-					<td onclick="clicMenu(\'1\')" class="fontcolor4" style="cursor: inherit" align="center">
-						<span class="bground">
+					<td onclick="clicMenu(\'1\')" class="fontcolor4 center">
 							<b><a href="#"><font color=black>'.get_vocab('click_here_to_modify_pwd').'</font></a></b>
-						</span>
 					</td>
 				</tr>
 				<tr style="display:none" id="menu1">
@@ -376,11 +377,9 @@ echo ('
         }
         else {
             echo '
-                <div class="ressource">
-                    <span class="bground">
+                <div class="center">
                     <b><a href="my_account.php?see_conn=0">
                     <font color=black>'.get_vocab('click_here_to_hide_connexions').'</font></a></b>
-                    </span>
                 </div>';
             // affichage des résultats
             echo '<p>'.get_vocab("see_connexions_explain").'</p>';
@@ -441,11 +440,9 @@ echo ('
     else 
     {
         echo '
-        <div class="ressource">
-            <span class="bground">
+        <div class="center">
             <b><a href="my_account.php?see_conn=1">
             <font color=black>'.get_vocab('click_here_to_see_connexions').'</font></a></b>
-            </span>
         </div>
         <hr />';
     }
@@ -578,34 +575,35 @@ echo ('
 									</td>
 								</tr>
 							</table>
-                      <div id="fixe">
-							<div>
-								<input type="hidden" name="valid" value="yes" />
-								<input type="hidden" name="day" value="'.$day.'" />
-								<input type="hidden" name="month" value="'.$month.'" />
-								<input type="hidden" name="year" value="'.$year.'" />
-								<br />
-								<input class="btn btn-primary" type="submit" value="'.get_vocab('save').'" />
-							</div>
-						</form>
-						<!-- Formulaire de Reset des données -->
-						<form id="reset" action="my_account.php" method="post">
-							<div>
-								<input type="hidden" name="valid" value="reset" />
-								<input type="hidden" name="day" value="'.$day.'" />
-								<input type="hidden" name="month" value="'.$month.'" />
-								<input type="hidden" name="year" value="'.$year.'" />
-								<input type="hidden" name="id_site" value="-1" />
-								<input type="hidden" name="id_area" value="-1" />
-								<input type="hidden" name="id_room" value="-1" />
-								<input type="hidden" name="default_css" value="" />
-								<input type="hidden" name="area_item_format" value="item" />
-								<input type="hidden" name="default_language" value="" />
-								<input class="btn btn-primary" type="submit" value="'.get_vocab('reset').'" />
-							</div>
-						</form>
-						</div>
-                      </div>                        
-					</body>
-					</html>';
+      <div id="fixe">
+            <div>
+                <input type="hidden" name="valid" value="yes" />
+                <input type="hidden" name="day" value="'.$day.'" />
+                <input type="hidden" name="month" value="'.$month.'" />
+                <input type="hidden" name="year" value="'.$year.'" />
+                <br />
+                <input class="btn btn-primary" type="submit" value="'.get_vocab('save').'" />
+            </div>
+        </form>
+        <!-- Formulaire de Reset des données -->
+        <form id="reset" action="my_account.php" method="post">
+            <div>
+                <input type="hidden" name="valid" value="reset" />
+                <input type="hidden" name="day" value="'.$day.'" />
+                <input type="hidden" name="month" value="'.$month.'" />
+                <input type="hidden" name="year" value="'.$year.'" />
+                <input type="hidden" name="id_site" value="-1" />
+                <input type="hidden" name="id_area" value="-1" />
+                <input type="hidden" name="id_room" value="-1" />
+                <input type="hidden" name="default_css" value="" />
+                <input type="hidden" name="area_item_format" value="item" />
+                <input type="hidden" name="default_language" value="" />
+                <input class="btn btn-primary" type="submit" value="'.get_vocab('reset').'" />
+            </div>
+        </form>
+        </div>
+      </div>                        
+    </section>
+</body>
+</html>';
 ?>
