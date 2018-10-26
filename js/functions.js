@@ -1,7 +1,7 @@
 /*
  * ./js/functions.js
  * fichier Bibliothèque de fonctions Javascript de GRR
- * Dernière modification : $Date: 2018-06-12 10:00$
+ * Dernière modification : $Date: 2018-10-26 15:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -383,6 +383,7 @@ function afficherMoisSemaine(a)
 	document.getElementById('afficherBoutonSelection'+Nb).style.display = "none";
 	document.getElementById('cacherBoutonSelection'+Nb).style.display = "inline";
 	document.getElementById('boutonSelection'+Nb).style.display = "inline";
+    $('.floatthead').floatThead('reflow');
 }
 function cacherMoisSemaine(a)
 {
@@ -390,6 +391,7 @@ function cacherMoisSemaine(a)
 	document.getElementById('cacherBoutonSelection'+Nb).style.display = "none";
 	document.getElementById('afficherBoutonSelection'+Nb).style.display = "inline";
 	document.getElementById('boutonSelection'+Nb).style.display = "none";
+    $('.floatthead').floatThead('reflow');
 }
 
 function charger(){
