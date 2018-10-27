@@ -3,7 +3,7 @@
  * edit_entry_types.php
  * Page "Ajax" utilisée pour générer les types
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-18 10:00$
+ * Dernière modification : $Date: 2018-10-27 14:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -123,5 +123,5 @@ $display_type .= '</td></tr></table>'.PHP_EOL;
 if ($nb_type > 1)
 	echo $display_type;
 else
-	echo '<table width="100%"><tr><td class="E"><b>'.get_vocab("type").get_vocab("deux_points").htmlentities($type_nom_unique).'</b>'.PHP_EOL.'<input name="type" type="hidden" value="'.$type_id_unique.'" /></td></tr></table>'.PHP_EOL;
+	echo '<table class="pleine"><tr><td class="E"><b>'.get_vocab("type").get_vocab("deux_points").htmlentities($type_nom_unique).'</b>'.PHP_EOL.'<input name="type" type="hidden" value="'.$type_id_unique.'" /></td></tr></table>'.PHP_EOL;
 ?>

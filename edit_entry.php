@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-07 15:45$
+ * Dernière modification : $Date: 2018-10-27 18:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -331,14 +331,14 @@ echo "</header>";
 echo '<section>'.PHP_EOL;
 ?>
 <script type="text/javascript" >
-function insertChampsAdd(){
+function insertChampsAdd(areas_,id_,room_){
 	jQuery.ajax({
 		type: 'GET',
 		url: 'edit_entry_champs_add.php',
 		data: {
-			areas:'<?php echo $area; ?>',
-			id: '<?php echo $id; ?>',
-			room: '<?php echo $room; ?>',
+			areas: areas_,
+			id: id_,
+			room: room_,
 		},
 		success: function(returnData)
 		{
@@ -350,14 +350,14 @@ function insertChampsAdd(){
 		}
     });
 }
-function insertTypes(){
+function insertTypes(areas_,room_){
     jQuery.ajax({
         type: 'GET',
         url: 'edit_entry_types.php',
         data: {
-            areas:'<?php echo $area; ?>',
+            areas: areas_,
             type: '<?php echo $etype; ?>',
-            room:'<?php echo $room; ?>',
+            room: room_,
         },
         success: function(returnData){
             $('#div_types').html(returnData);
@@ -684,6 +684,8 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
 			}
 			?>
 		}
+        insertChampsAdd(area,0,0);
+        insertTypes(area,0);
 	}
 </script>
 
@@ -691,7 +693,7 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
 echo '<input type="hidden" name="oldRessource" value="'.$room_id.'">'.PHP_EOL;
 echo '<div id="error"></div>';
 //echo '<table class="table-bordered EditEntryTable"><tr>'.PHP_EOL;
-echo '<div class="row2 EditEntryTable">';
+echo '<div class="row2">';
 echo '<div class="col-sm-6 col-xs-12">';
 //echo '<td style="width:50%; vertical-align:top; padding-left:15px; padding-top:5px; padding-bottom:5px;">'.PHP_EOL;
 
@@ -706,7 +708,7 @@ if (((authGetUserLevel(getUserName(), -1, "room") >= $qui_peut_reserver_pour) ||
 	echo '</tr>'.PHP_EOL;
 	echo '<tr>'.PHP_EOL;
 	echo '<td class="CL">'.PHP_EOL;
-	echo '<div class="col-xs-6">'.PHP_EOL;
+	//echo '<div class="col-xs-5">'.PHP_EOL;
 	echo '<select size="1" class="form-control" name="beneficiaire" id="beneficiaire" onchange="setdefault(\'beneficiaire_default\',\'\');check_4();insertProfilBeneficiaire();">'.PHP_EOL;
 	echo '<option value="" >'.get_vocab("personne exterieure").'</option>'.PHP_EOL;
 	$sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (etat!='inactif' and statut!='visiteur' ) OR (login='".$beneficiaire."') ORDER BY nom, prenom";
@@ -733,7 +735,7 @@ if (((authGetUserLevel(getUserName(), -1, "room") >= $qui_peut_reserver_pour) ||
 		echo '<option value="-1" selected="selected" >'.get_vocab("utilisateur_inconnu").$beneficiaire.')</option>'.PHP_EOL;
 }
 echo '</select>'.PHP_EOL;
-echo '</div>'.PHP_EOL;
+//echo '</div>'.PHP_EOL;
 echo '<input type="button" class="btn btn-primary" value="'.get_vocab("definir par defaut").'" onclick="setdefault(\'beneficiaire_default\',document.getElementById(\'main\').beneficiaire.options[document.getElementById(\'main\').beneficiaire.options.selectedIndex].value)" />'.PHP_EOL;
 echo '<div id="div_profilBeneficiaire">'.PHP_EOL;
 echo '</div>'.PHP_EOL;
@@ -1009,8 +1011,8 @@ echo "><td class=\"E\"><b>".get_vocab("match_area").get_vocab("deux_points")."</
 echo "<tr ";
 if ($nb_areas == 1)
 	echo "style=\"display:none\" ";
-echo "><td class=\"CL\" style=\"vertical-align:top;\" >\n";
-echo "<div class=\"col-xs-3\"><select class=\"form-control\" id=\"areas\" name=\"areas\" onchange=\"changeRooms(this.form);insertChampsAdd();insertTypes()\" >";
+echo "><td class=\"CL\" >\n";
+echo "<div class=\"col-xs-3\"><select class=\"form-control\" id=\"areas\" name=\"areas\" onchange=\"changeRooms(this.form);\" >";
 if ($enable_periods == 'y')
 	$sql = "SELECT id, area_name FROM ".TABLE_PREFIX."_area WHERE id='".$area."' ORDER BY area_name";
 else
@@ -1062,8 +1064,8 @@ echo '</div>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL;
 echo '<tr>',PHP_EOL,'<td class="E">',PHP_EOL;
 ?>
 <script type="text/javascript" >
-	insertChampsAdd();
-	insertTypes();
+	insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>);
+	insertTypes(<?php echo $area?>,<?php echo $room?>);
 	insertProfilBeneficiaire();
 </script>
 <?php
@@ -1084,7 +1086,7 @@ $monthlist = array("firstofmonth","secondofmonth","thirdofmonth","fouthofmonth",
 if($periodiciteConfig == 'y'){
 	if ( ($edit_type == "series") || (isset($flag_periodicite)))
 	{
-		echo '<tr>',PHP_EOL,
+		/* echo '<tr>',PHP_EOL,
 			'<td id="ouvrir" style="cursor: inherit" align="center" class="fontcolor4">',PHP_EOL,
 				'<span class="fontcolor1 btn btn-primary"><b><a href="javascript:clicMenu(1);check_5()">',get_vocab("click_here_for_series_open"),'</a></b></span>',PHP_EOL,
 			'</td>',PHP_EOL,
@@ -1092,6 +1094,16 @@ if($periodiciteConfig == 'y'){
 			'<tr>',PHP_EOL,
 				'<td style="display:none; cursor: inherit white" id="fermer" align="center" class="fontcolor4">',PHP_EOL,
 					'<span class="btn btn-primary fontcolor1 white"><b><a href="javascript:clicMenu(1);check_5()">',get_vocab("click_here_for_series_close"),'</a></b></span>',PHP_EOL,
+				'</td>',PHP_EOL,
+			'</tr>',PHP_EOL; */
+        echo '<tr>',PHP_EOL,
+			'<td id="ouvrir" class="CC">',PHP_EOL,
+                '<input type="button" class="btn btn-primary" value="',get_vocab("click_here_for_series_open"),'" onclick="clicMenu(1);check_5();" />',PHP_EOL,
+			'</td>',PHP_EOL,
+			'</tr>',PHP_EOL,
+			'<tr>',PHP_EOL,
+				'<td style="display:none" id="fermer" class="CC">',PHP_EOL,
+					'<input type="button" class="btn btn-primary" value="',get_vocab("click_here_for_series_close"),'" onclick="clicMenu(1);check_5();" />',PHP_EOL,
 				'</td>',PHP_EOL,
 			'</tr>',PHP_EOL;
 		echo '<tr>',PHP_EOL,
@@ -1287,8 +1299,8 @@ if($periodiciteConfig == 'y'){
 	</form>
 	<script type="text/javascript">
 		insertProfilBeneficiaire();
-		insertChampsAdd();
-		insertTypes()
+		insertChampsAdd(<?php echo $area; ?>,<?php echo $id; ?>,<?php echo $room; ?>);
+		insertTypes(<?php echo $area; ?>,<?php echo $room; ?>)
 	</script>
 	<script type="text/javascript">
 		$('#areas').on('change', function(){
