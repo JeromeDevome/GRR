@@ -3,7 +3,7 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-09-20 19:00$
+ * Dernière modification : $Date: 2018-10-28 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -271,12 +271,14 @@ function do_summary(&$count, &$hours, &$room_hash, &$breve_description_hash, $en
 	// At PHP4 we could use array_keys().
 	reset($room_hash);
 	$rooms = array();
-	while (list($room_key) = each($room_hash))
+	// while (list($room_key) = each($room_hash)) deprecated in php 7.2.0
+    foreach($room_hash as $room_key)    
 		$rooms[] = $room_key;
 	ksort($rooms);
 	reset($breve_description_hash);
 	$breve_descriptions = array();
-	while (list($breve_description_key) = each($breve_description_hash))
+	// while (list($breve_description_key) = each($breve_description_hash))
+    foreach($breve_description_hash as $breve_description_key)
 		$breve_descriptions[] = $breve_description_key;
 	ksort($breve_descriptions);
 	$n_rooms = sizeof($rooms);

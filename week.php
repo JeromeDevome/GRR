@@ -3,7 +3,7 @@
  * week.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "semaine".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-14 19:00$
+ * Dernière modification : $Date: 2018-10-28 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -468,11 +468,14 @@ if ($debug_flag)
 	echo "<p>DEBUG:<p><pre>\n";
 	if (gettype($d) == "array")
 	{
-		while (list($w_k, $w_v) = each($d))
+		// while (list($w_k, $w_v) = each($d)) deprecated in php 7.2.0
+        foreach($d as $w_k=>$w_v)
 		{
-			while (list($t_k, $t_v) = each($w_v))
+			// while (list($t_k, $t_v) = each($w_v))
+            foreach($w_v as $t_k=>$t_v)
 			{
-				while (list($k_k, $k_v) = each($t_v))
+				// while (list($k_k, $k_v) = each($t_v))
+                foreach($t_v as $k_k=>$k_v)
 					echo "$d[$w_k][$t_k][$k_k] =", $k_v ,"<br/>";
 			}
 		}

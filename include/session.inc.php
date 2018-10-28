@@ -3,7 +3,7 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-02 18:00$
+ * Dernière modification : $Date: 2018-10-28 12:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -930,7 +930,8 @@ function grr_verif_ldap($_login, $_password)
 		$login_search = preg_replace("/[^\-@._[:space:]a-zA-Z0-9]/", "", $_login);
 				// Tenter une recherche pour essayer de retrouver le DN
 		reset($atts);
-		while (list(, $att) = each($atts))
+		// while (list(, $att) = each($atts)) deprecated in php 7.2.0
+        foreach($atts as $att)
 		{
 			$dn = grr_ldap_search_user($ds, $ldap_base, $att, $login_search, $ldap_filter);
 			if (($dn=="error_1") or ($dn=="error_2") or ($dn=="error_3"))
@@ -949,7 +950,8 @@ function grr_verif_ldap($_login, $_password)
 		reset($atts);
 		if (!isset($ldap_filter) or ($ldap_filter=""))
 		{
-			while (list(, $att) = each($atts))
+			// while (list(, $att) = each($atts)) deprecated in php 7.2.0
+            foreach($atts as $att)
 			{
 				$dn = $att."=".$login_search.",".$ldap_base;
 				if (@ldap_bind($ds, $dn, $_password))

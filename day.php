@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-14 18:00$
+ * Dernière modification : $Date: 2018-10-28 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -374,7 +374,8 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 	{
 		echo affiche_heure_creneau($t,$resolution).'</td>'.PHP_EOL;
 	}
-	while (list($key, $room) = each($rooms))
+	//while (list($key, $room) = each($rooms)) deprecated in php 7.2.0
+    foreach($rooms as $key=>$room)
 	{
 		if (verif_acces_ressource(getUserName(), $room))
 		{

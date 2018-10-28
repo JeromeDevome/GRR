@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-27 18:15$
+ * Dernière modification : $Date: 2018-10-28 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -885,7 +885,8 @@ if ($type_affichage_reser == 0) // sélection de la durée
 		else
 			$units = array("minutes", "hours", "days", "weeks");
 	}
-	while (list(,$unit) = each($units))
+	// while (list(,$unit) = each($units)) deprecated in php 7.2.0
+    foreach($units as $unit)
 	{
 		echo '<option value="'.$unit.'"';
 		if ($dur_units ==  get_vocab($unit))
