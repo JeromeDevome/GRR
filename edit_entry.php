@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-04 16:30$
+ * Dernière modification : $Date: 2018-10-28 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,10 +15,11 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "edit_entry.php"; 
+
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 include "include/admin.inc.php";
-$grr_script_name = "edit_entry.php";
 if (isset($_GET["id"]))
 {
 	$id = $_GET["id"];
@@ -60,7 +61,6 @@ if (!isset($day) || !isset($month) || !isset($year))
 	$month = date("m");
 	$year  = date("Y");
 }
-// echo $day," ",$month," ",$year;
 if (isset($id))
 {
 	if ($info = mrbsGetEntryInfo($id))
@@ -94,10 +94,10 @@ if ($longueur_liste_ressources_max == '')
 	$longueur_liste_ressources_max = 20;
 if (check_begin_end_bookings($day, $month, $year))
 {
-	if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
+	/* if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
 		$type_session = "no_session";
 	else
-		$type_session = "with_session";
+		$type_session = "with_session"; me semble inutile ici (on est en dehors de la période réservable)*/
 	showNoBookings($day, $month, $year, $back);
 	exit();
 }
@@ -121,7 +121,7 @@ if (UserRoomMaxBooking(getUserName(), $room, $compt) == 0)
 	exit();
 }
 $etype = 0;
-if (isset($id))
+if (isset($id)) // édition d'une réservation existante
 {
 	$sql = "SELECT name, beneficiaire, description, start_time, end_time, type, room_id, entry_type, repeat_id, option_reservation, jours, create_by, beneficiaire_ext, statut_entry, clef, courrier FROM ".TABLE_PREFIX."_entry WHERE id=$id";
 	$res = grr_sql_query($sql);
@@ -226,7 +226,7 @@ if (isset($id))
 		$rep_jour      = 0;
 	}
 }
-else
+else // nouvelle réservation
 {
 	if ($enable_periods == 'y')
 		$duration    = 60;
@@ -314,14 +314,14 @@ print_header($day, $month, $year, $type="with_session");
 
 ?>
 <script type="text/javascript" >
-function insertChampsAdd(){
+function insertChampsAdd(areas_,id_,room_){
 	jQuery.ajax({
 		type: 'GET',
 		url: 'edit_entry_champs_add.php',
 		data: {
-			areas:'<?php echo $area; ?>',
-			id: '<?php echo $id; ?>',
-			room: '<?php echo $room; ?>',
+			areas: areas_,
+			id: id_,
+			room: room_,
 		},
 		success: function(returnData)
 		{
@@ -333,14 +333,14 @@ function insertChampsAdd(){
 		}
     });
 }
-function insertTypes(){
+function insertTypes(areas_,room_){
     jQuery.ajax({
         type: 'GET',
         url: 'edit_entry_types.php',
         data: {
-            areas:'<?php echo $area; ?>',
+            areas: areas_,
             type: '<?php echo $etype; ?>',
-            room:'<?php echo $room; ?>',
+            room: room_,
         },
         success: function(returnData){
             $('#div_types').html(returnData);
@@ -667,6 +667,8 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
 			}
 			?>
 		}
+        insertChampsAdd(area,0,0);
+        insertTypes(area,0);
 	}
 </script>
 
@@ -834,7 +836,7 @@ else
 }
 echo '</div>'.PHP_EOL;
 echo "</td></tr>".PHP_EOL;
-if ($type_affichage_reser == 0)
+if ($type_affichage_reser == 0) // sélection de la durée
 {
 	echo '<tr><td class="E">'.PHP_EOL;
 	echo '<b>'.get_vocab("duration").'</b>'.PHP_EOL;
@@ -893,7 +895,7 @@ if ($type_affichage_reser == 0)
 	// echo '</div>'.PHP_EOL;
 	echo '</td></tr>'.PHP_EOL;
 }
-else
+else // sélection de l'heure ou du créneau de fin
 {
 	echo '<tr><td class="E"><b>'.get_vocab("fin_reservation").get_vocab("deux_points").'</b></td></tr>'.PHP_EOL;
 	echo '<tr><td class="CL" >'.PHP_EOL;
@@ -921,11 +923,11 @@ else
 		echo "<b>".get_vocab("time")." : </b>";
 		if (isset ($_GET['id']))
 		{
-			jQuery_TimePicker ('end_', $end_hour, $end_min,$duree_par_defaut_reservation_area);
+			jQuery_TimePicker('end_', $end_hour, $end_min,$duree_par_defaut_reservation_area);
 		}
 		else
 		{
-			jQuery_TimePicker ('end_', '', '',$duree_par_defaut_reservation_area);
+			jQuery_TimePicker('end_', '', '',$duree_par_defaut_reservation_area);
 		}
 		if (!$twentyfourhour_format)
 		{
@@ -934,7 +936,6 @@ else
 			$checked = ($end_hour >= 12) ? "checked=\"checked\"" : "";
 			echo "<input name=\"ampm\" type=\"radio\" value=\"pm\" $checked />".date("a",mktime(13,0,0,1,1,1970));
 		}
-
 	}
 	echo '</div>'.PHP_EOL;
 	echo '</td></tr>'.PHP_EOL;
@@ -990,7 +991,7 @@ echo "<tr ";
 if ($nb_areas == 1)
 	echo "style=\"display:none\" ";
 echo "><td class=\"CL\" style=\"vertical-align:top;\" >\n";
-echo "<div class=\"col-xs-3\"><select class=\"form-control\" id=\"areas\" name=\"areas\" onchange=\"changeRooms(this.form);insertChampsAdd();insertTypes()\" >";
+echo "<div class=\"col-xs-3\"><select class=\"form-control\" id=\"areas\" name=\"areas\" onchange=\"changeRooms(this.form);\" >";
 if ($enable_periods == 'y')
 	$sql = "SELECT id, area_name FROM ".TABLE_PREFIX."_area WHERE id='".$area."' ORDER BY area_name";
 else
@@ -1042,8 +1043,8 @@ echo '</div>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL;
 echo '<tr>',PHP_EOL,'<td class="E">',PHP_EOL;
 ?>
 <script type="text/javascript" >
-	insertChampsAdd();
-	insertTypes();
+	insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>);
+	insertTypes(<?php echo $area?>,<?php echo $room?>);
 	insertProfilBeneficiaire();
 </script>
 <?php
@@ -1264,8 +1265,8 @@ if($periodiciteConfig == 'y'){
 	</form>
 	<script type="text/javascript">
 		insertProfilBeneficiaire();
-		insertChampsAdd();
-		insertTypes()
+		insertChampsAdd(<?php echo $area; ?>,<?php echo $id; ?>,<?php echo $room; ?>);
+		insertTypes(<?php echo $area; ?>,<?php echo $room; ?>)
 	</script>
 	<script type="text/javascript">
 		$('#areas').on('change', function(){

@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2018-04-16 15:00$
+ * Dernière modification : $Date: 2018-10-24 10:40$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -14,7 +14,20 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-
+/** mrbsCheckFree()
+ *
+ * Check to see if the time period specified is free
+ *
+ * $room_id   - Which room are we checking
+ * $starttime - The start of period
+ * $endtime   - The end of the period
+ * $ignore    - An entry ID to ignore, 0 to ignore no entries
+ * $repignore - A repeat ID to ignore everything in the series, 0 to ignore no series
+ *
+ * Returns:
+ *   nothing   - The area is free
+ *   something - An error occurred, the return value is human readable
+ */
 function mrbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore)
 {
 	global $vocab;
@@ -46,7 +59,7 @@ function mrbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore)
 		. " ( " . utf8_strftime('%A %d %B %Y %T', $row[2]) . ") "
 		. "(<a href=\"day.php?$param_ymd\">".get_vocab("viewday")."</a>"
 			. " | <a href=\"week.php?room=$room_id&amp;$param_ymd\">".get_vocab("viewweek")."</a>"
-			. " | <a href=\"month.php?room=$room_id&amp;$param_ym\">".get_vocab("viewmonth")."</a>)\n";
+			. " | <a href=\"month.php?room=$room_id&amp;$param_ym\">".get_vocab("viewmonth")."</a>)</li>\n";
 }
 return $err;
 }
@@ -294,7 +307,7 @@ function mrbsEntryGetOverloadDesc($id_entry)
 			$traitement2 = true;
 			while (($traitement1 !== false) || ($traitement2 !== false))
 			{
-				// le premier traitement cherche la prochaine occurence de $begin_string et retourne la portion de chaine après cette occurence
+				// le premier traitement cherche la prochaine occurrence de $begin_string et retourne la portion de chaine après cette occurrence
 				if ($traitement1 != false)
 				{
 					$chaine1 = strstr ($chaine, $begin_string);
@@ -330,7 +343,7 @@ function mrbsEntryGetOverloadDesc($id_entry)
 						else
 							break;
 					}
-					//a ce niveau, $ind_old est la dernière occurence de $end_string trouvée dans $chaine
+					//a ce niveau, $ind_old est la dernière occurrence de $end_string trouvée dans $chaine
 					if ($ind != 0 )
 					{
 						$chaine = substr($chaine,0,$ind_old);
@@ -489,15 +502,29 @@ function same_day_next_month($time)
 	else
 		return 28;
 }
-
+/** get_day_of_month
+ *  renvoie le time stamp du ($rep_month_abs1)-ème jour de nom ($rep_month_abs2)
+ *  dans le mois suivant le jour de timestamp $time
+ *  renvoie un tableau [$valide,$temps] 
+ *  où $valide est un booléen indiquant si $temps est un timestamp accepté
+ */
 function get_day_of_month($time, $rep_month_abs1, $rep_month_abs2)
 {
-	$days = array('monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-	$rep = array('first', 'second', 'third', 'fourth', 'five', 'last');
-	$time = strtotime('+1 month', $time);
-	$str = $rep[$rep_month_abs1].' '.$days[$rep_month_abs2 - 1].' of '.date("F", $time).' '.date("Y", $time);
-	return strtotime($str);
-
+	$days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+	$rep = array('first', 'second', 'third', 'fourth', 'fifth', 'last');
+    $time = mktime(0,0,0,date("m",$time)+1,1,date("Y",$time)); // avance d'un mois
+    if (in_array($rep_month_abs1,[0,1,2,3,5])){
+        $str = $rep[$rep_month_abs1].' '.$days[$rep_month_abs2 - 1].' of '.date("F", $time).' '.date("Y", $time);
+        return [TRUE,strtotime($str)];
+    }
+    if ($rep_month_abs1 == 4){
+        $str = $rep[4].' '.$days[$rep_month_abs2 - 1].' of '.date("F", $time).' '.date("Y", $time);
+        $cinq = strtotime($str,$time);
+        $str = 'last '.$days[$rep_month_abs2 - 1].' of '.date("F", $time).' '.date("Y", $time);
+        $last = strtotime($str,$time);
+        if ($cinq == $last) return [TRUE,$cinq];
+        else return [FALSE,$last];
+    }
 }
 /** mrbsGetRepeatEntryList
  *
@@ -508,7 +535,9 @@ function get_day_of_month($time, $rep_month_abs1, $rep_month_abs2)
  * $rep_type - What type of repeat is it
  * $rep_opt  - The repeat entrys
  * $max_ittr - After going through this many entrys assume an error has occured
- * *$rep_jour_c - Le jour cycle d'une réservation, si aucun 0
+ * $rep_jour_c - Le jour cycle d'une réservation, si aucun 0
+ * $area     - Le domaine de réservation (pour contrôler la date de fin)
+ * $rep_month_abs1, $rep_month_abs2 - X, Y dans le mode "X Y du mois"
  *
  * Returns:
  *   empty     - The entry does not repeat
@@ -525,13 +554,14 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
 	$entrys = array();
 	$entrys_return = array();
 	$k = 0;
+    $valide = TRUE;
 	for($i = 0; $i < $max_ittr; $i++)
 	{
 		$time = mktime($hour, $min, $sec, $month, $day, $year);
 		if ($time > $enddate)
 			break;
 		$time2 = mktime(0, 0, 0, $month, $day, $year);
-		if (!(est_hors_reservation($time2,$area)))
+		if ($valide && !(est_hors_reservation($time2,$area)))
 		{
 			$entrys_return[$k] = $time;
 			$k++;
@@ -561,8 +591,10 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
 			break;
 			//Monthly repeat on same week number and day of week
 			case 5:
-			$day += same_day_next_month($time);
-			break;
+			//$day += same_day_next_month($time);
+            $num_jour = date("N",$time); // numéro du jour dans la semaine
+            $num_week = (int)((date("j",$time) - 1) / 7); // décalage voulu
+            return mrbsGetRepeatEntryList($time, $enddate, 7, $rep_opt, $max_ittr, $rep_num_weeks, $rep_jour_c, $area, $num_week, $num_jour);
 			//Si la périodicité est par Jours/Cycle
 			case 6:
 			$sql = "SELECT * FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY >= '".$time2."' AND DAY <= '".$enddate."' AND Jours = '".$rep_jour_c."'";
@@ -578,10 +610,16 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
 				$kk++;
 			}
 			return $tableFinale;
+            // X Y du mois
 			case 7:
-			$your_date = get_day_of_month($time, $rep_month_abs1, $rep_month_abs2);
+		/*	$your_date = get_day_of_month($time, $rep_month_abs1, $rep_month_abs2);
 			$datediff = $your_date - $time;
-			$day += floor($datediff / (60 * 60 * 24)) + 1;
+			$day += floor($datediff / (60 * 60 * 24)) + 1; */
+            $ans = get_day_of_month($time, $rep_month_abs1, $rep_month_abs2);
+            $valide = $ans[0];
+            $day = date("d",$ans[1]);
+            $month = date("m",$ans[1]);
+            $year = date("Y",$ans[1]);
 			break;
 			//Unknown repeat option
 			default:
@@ -606,6 +644,7 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
  * $type        - Type (Internal/External)
  * $description - Description
  * $rep_jour_c - Le jour cycle d'une réservation, si aucun 0
+ * $rep_month_abs1, $rep_month_abs2 - X, Y dans le mode "X Y du mois"
  *
  * Returns:
  *   0        - An error occured while inserting the entry

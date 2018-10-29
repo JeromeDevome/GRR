@@ -3,8 +3,8 @@
  * edit_entry_types.php
  * Page "Ajax" utilisée pour générer les types
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-10-27 14:30$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -21,7 +21,7 @@ if (!empty($_GET["type"]))
 	$type = $_GET["type"];
 else
 	$type = "";
-
+// paramètres $areas et $rooms requis
 if (isset($_GET['areas']))
 {
 	$areas = $_GET['areas'];
@@ -37,7 +37,6 @@ if (isset($_GET['room']))
 }
 else
 	die();
-
 
 if ((authGetUserLevel(getUserName(),-1) < 2) && (auth_visiteur(getUserName(),$room) == 0))
 {
@@ -61,10 +60,10 @@ $aff_type = max(authGetUserLevel(getUserName(),-1,"room"),authGetUserLevel(getUs
 $nb_type = 0;
 $type_nom_unique = "??";
 $type_id_unique = "??";
-$display_type = '<table width="100%"><tr><td class="E"><b>'.get_vocab("type").get_vocab("deux_points").'</b></td></tr>'.PHP_EOL;
+$display_type = '<table><tr><td class="E"><b>'.get_vocab("type").get_vocab("deux_points").'</b></td></tr>'.PHP_EOL;
 $affiche_mess_asterisque = true;
 $display_type .= '<tr><td class="CL">'.PHP_EOL;
-$display_type .= '<div class="col-xs-3">'.PHP_EOL;
+// $display_type .= '<div class="col-xs-6">'.PHP_EOL;
 $display_type .= '<select id="type" class="form-control" name="type" size="1" onclick="setdefault(\'type_default\',\'\')">'.PHP_EOL;
 $display_type .= '<option value="0">'.get_vocab("choose").PHP_EOL;
 $sql = "SELECT DISTINCT t.type_name, t.type_letter, t.id, t.order_display FROM ".TABLE_PREFIX."_type_area t
@@ -73,12 +72,11 @@ WHERE (j.id_area  IS NULL or j.id_area != '".$areas."') AND (t.disponible<='".$a
 ORDER BY t.order_display";
 $res = grr_sql_query($sql);
 
-
 if (!$res)
 	fatal_error(0, grr_sql_error());
 
-if (grr_sql_count($res) != 0){
-
+if (grr_sql_count($res) != 0)
+{
 	if ($res)
 	{
 		$row = grr_sql_row($res, 0);
@@ -86,7 +84,6 @@ if (grr_sql_count($res) != 0){
 		// dans le domaine concerné ET au moins dans un autre domaine, d'où le test suivant
 		$test = grr_sql_query1("SELECT id_type FROM ".TABLE_PREFIX."_j_type_area WHERE id_type = '".$row[1]."' AND id_area='".$areas."'");
 	}
-
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
 		$test = grr_sql_query1("SELECT id_type FROM ".TABLE_PREFIX."_j_type_area WHERE id_type = '".$row[2]."' AND id_area='".$areas."'");
@@ -120,9 +117,9 @@ if (grr_sql_count($res) != 0){
 		}
 	}
 }
-$display_type .=  '</select>'.PHP_EOL.'</div>'.PHP_EOL;
+$display_type .=  '</select>'.PHP_EOL.PHP_EOL;
 if ($aff_default)
-	$display_type .= ' <input type="button" class="btn btn-primary" value="'.get_vocab("definir par defaut").'" onclick="setdefault(\'type_default\',document.getElementById(\'main\').type.options[document.getElementById(\'main\').type.options.selectedIndex].text)" />'.PHP_EOL;
+	$display_type .= '<input type="button" class="btn btn-primary" value="'.get_vocab("definir par defaut").'" onclick="setdefault(\'type_default\',document.getElementById(\'main\').type.options[document.getElementById(\'main\').type.options.selectedIndex].text)" />'.PHP_EOL;
 $display_type .= '</td></tr></table>'.PHP_EOL;
 if ($nb_type > 1)
 	echo $display_type;

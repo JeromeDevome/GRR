@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-10-02 15:15$
+ * Dernière modification : $Date: 2018-10-16 10:50$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -852,8 +852,6 @@ function page_accueil($param = 'no')
 		$defaultroom = $_SESSION['default_room'];
 	else
 		$defaultroom = Settings::get("default_room");
-    // echo $defaultroom ;
-    // die();
 	// Definition de $defaultsite
 	if (isset($_SESSION['default_site']) && ($_SESSION['default_site'] > 0))
 		$defaultsite = $_SESSION['default_site'];
@@ -1718,7 +1716,10 @@ function affiche_heure_creneau($t,$resolution)
 		$hour_min_format = "H:i";
 	else
 		$hour_min_format = "h:ia";
-	return date($hour_min_format,$t) ." - ".date($hour_min_format, $t + $resolution);
+    $heure_debut = date($hour_min_format,$t);
+    $heure_fin = date($hour_min_format, $t + $resolution);
+    if ($heure_fin == "00:00") $heure_fin = "24:00";
+	return  $heure_debut." - ".$heure_fin;
 }
 
 function hour_min_format()
@@ -1796,7 +1797,7 @@ function time_date_string_jma($t,$dformat)
 		return utf8_strftime($dformat, $t);
 }
 
-// Renvoie une balise span avec un style backgrounf-color correspondant au type de  la réservation
+// Renvoie une balise span avec un style background-color correspondant au type de  la réservation
 function span_bgground($colclass)
 {
 	global $tab_couleur;
@@ -1820,7 +1821,7 @@ function tdcell($colclass, $width = '')
 		echo '<td style="background-color:'.$couleurhexa.';" '.$temp.'>'.PHP_EOL;
 	}
 	else
-		echo '<td class="'.$colclass.' '.$temp.'">'.PHP_EOL;
+		echo '<td class="'.$colclass.'" '.$temp.'>'.PHP_EOL;
 }
 
 function tdcell_rowspan($colclass, $step)
@@ -1835,7 +1836,7 @@ function tdcell_rowspan($colclass, $step)
 		echo '<td rowspan="'.$step.'" style="background-color:'.$couleurhexa.';">'.PHP_EOL;
 	}
 	else
-		echo '<td rowspan="'.$step.'" td class="'.$colclass.'">'.PHP_EOL;
+		echo '<td rowspan="'.$step.'" class="'.$colclass.'">'.PHP_EOL;
 }
 
 //Display the entry-type color key. This has up to 2 rows, up to 10 columns.
@@ -2417,7 +2418,7 @@ function make_area_item_html( $link, $current_site, $current_area, $year, $month
 }
 //end make_area_item_html
 /**
- * Affichage des rooms sous la forme d'un input
+ * Affichage des rooms sous la forme d'une liste de boutons
  *
  * @param string $link
  * @param string $current_area
@@ -3606,7 +3607,7 @@ function showAccessDenied($back)
 }
 /* showNoReservation()
  *
- * Displays an appropate message when access has been denied
+ * Displays an appropriate message when reservation does not exist
  *
  * Returns: Nothing
  */
@@ -3632,7 +3633,7 @@ function showNoReservation($day, $month, $year, $back)
 }
 /* showAccessDeniedMaxBookings()
  *
- * Displays an appropate message when access has been denied
+ * Displays an appropriate message when access has been denied because of overbooking
  *
  * Returns: Nothing
  */
@@ -3767,8 +3768,7 @@ function get_planning_area_values($id_area)
 		else
 			$display_day[$i] = 0;
 	}
-	// Créneaux basés sur les intitulés
-	if ($row_[7] == 'y')
+	if ($row_[7] == 'y')	// Créneaux basés sur les intitulés
 	{
 		$resolution = 60;
 		$morningstarts = 12;
@@ -3776,7 +3776,7 @@ function get_planning_area_values($id_area)
 		$sql_periode = grr_sql_query("SELECT nom_periode FROM ".TABLE_PREFIX."_area_periodes where id_area='".$id_area."'");
 		$eveningends_minutes = grr_sql_count($sql_periode) - 1;
 		$i = 0;
-		while ($i < grr_sql_count($sql_periode))
+		while ($i <= $eveningends_minutes)
 		{
 			$periods_name[$i] = grr_sql_query1("SELECT nom_periode FROM ".TABLE_PREFIX."_area_periodes where id_area='".$id_area."' and num_periode= '".$i."'");
 			$i++;
@@ -3784,9 +3784,8 @@ function get_planning_area_values($id_area)
 		$enable_periods = "y";
 		$weekstarts = $row_[5];
 		$twentyfourhour_format = $row_[6];
-		// Créneaux basés sur le temps
 	}
-	else
+	else		// Créneaux basés sur le temps
 	{
 		if ($row_[0] != 'y')
 		{
@@ -4087,7 +4086,7 @@ function grrDelOverloadFromEntries($id_field)
 				grr_sql_command("UPDATE ".TABLE_PREFIX."_entry SET overload_desc = '".$new_chaine."' WHERE id = '".$row2[0]."'");
 			}
 		}
-		// On cherche toutes les resas de cette resources
+		// On cherche toutes les resas de cette ressource
 		$call_resa = grr_sql_query("SELECT id, overload_desc FROM ".TABLE_PREFIX."_repeat WHERE room_id ='".$row[0]."'");
 		if (!$call_resa)
 			fatal_error(0, get_vocab('invalid_entry_id'));
@@ -4517,33 +4516,29 @@ function jQuery_TimePicker($typeTime, $start_hour, $start_min,$dureepardefaultse
 		else
 			$minute = date("m");
 			
-			
 		if ($typeTime == 'end_'){
 		$dureepardefautmin = $dureepardefaultsec/60;
-		
 		if ($dureepardefautmin == 60){
 			$ajout = 1;
 			$hour = $_GET['hour'] + $ajout;
 			$minute ="00";
 		}
-		
 		if ($dureepardefautmin < 60){
 			$hour = $_GET['hour'];
 			$minute =$dureepardefautmin;
 		}
-		
 		if ($dureepardefautmin > 60){
-		
-		$dureepardefautheure = $dureepardefautmin/60;
-		
-		if (($dureepardefautheure % 60)!=0){
-			$hour = $_GET['hour']+ $dureepardefautheure;
+            $dureepardefautheure = $dureepardefautmin/60;
+        //	if (($dureepardefautheure % 60)!=0){
+	//		$hour = $_GET['hour']+ $dureepardefautheure;
+            $hour = ($_GET['hour']+ $dureepardefautheure)%24; // Modulo 24
+            $hour = str_pad($hour, 2, 0, STR_PAD_LEFT); // Affichage heure sur 2 digits 
 			if ($_GET['minute'] == 30){
 				$minute =30;
 			}else{
 				 $minute = "00";
 				};
-			}
+	//		}
 		}
 	};
 
