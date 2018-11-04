@@ -1,0 +1,142 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			{% if trad.dCompatibiliteServeur %}
+				<div class="callout callout-danger">{{ trad.dCompatibiliteServeur }}</div>
+			{% else %}
+
+				<div class="box">
+					<div class="box-header">
+						<h3 class="box-title">Remarques</h3>
+					</div>
+					<!-- /.box-header -->
+
+					<div class="box-body no-padding">
+						<div class="col-md-4">
+							* IMAP, port par défaut : 143<br />* IMAP sécurisé, port par défaut 993<br />* POP3, port par défaut 110<br />* POP3 sécurisé, port par défaut<br/>
+						</div>
+
+						<div class="col-md-8">
+							<ul>
+								<li><b>SSL</b> : utilise Secure Socket Layer pour crypter la session</li>
+								<li><b>TLS</b> : force l'utilisation de start-TLS pour crypter la session et rejète les connexions aux serveurs qui ne le supporte pas.</li>
+								<li><b>validate-cert</b> : valide les certificats depuis le serveur TLS/SSL (c'est le comportement par défaut)</li>
+								<li><b>novalidate-cert</b> : ne pas valider les certificats depuis le serveur TLS/SSL, nécessaire si le serveur utilise des certificats auto-signés</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<div class="box">
+					<div class="box-header">
+						<h3 class="box-title">Configuration de l'authentification IMAP/POP</h3>
+					</div>
+					<!-- /.box-header -->
+					
+					<div class="box-body no-padding">
+
+						<form action="?p=admin_config_imap" method="post">
+
+							<input type="hidden" name="p" value="admin_config_imap" />
+
+							<h3>Statut par défaut des utilisateurs importés:</h3>
+							
+							<div class="form-group col-sm-12">
+								<input type="radio" name="imap_statut" value="visiteur" id="label_1a" {% if settings.imap_statut == 'visiteur' %}checked{% endif %} /> <label for="label_1a">{{ trad.statut_visitor }}</label><br>
+								<input type="radio" name="imap_statut" value="utilisateur" id="label_1b" {% if settings.imap_statut == 'utilisateur' %}checked{% endif %} /> <label for="label_1b">{{ trad.statut_user }}</label><br>
+								<input type="radio" name="imap_statut" value="no_imap" id="label_1c" {% if settings.imap_statut == 'no_imap' %}checked{% endif %} /> <label for="label_1c">Désactiver l'authentification IMAP/POP</label><br>
+							</div>
+
+							<br><hr><br>
+
+							<h3>Configuration de l'authentification IMAP/POP :</h3>
+
+							{{ form.input('imap_domaine', 'Nom domaine IMAP/POP', settings.imap_domaine, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+							{{ form.input('imap_adresse', 'Adresse Serveur IMAP/POP', settings.imap_adresse, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+							{{ form.input('imap_port', 'Numero de port', settings.imap_port, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+
+							<div class="form-group col-sm-12">
+								<label class="col-sm-6" for="imap_type">IMAP ou POP</label>
+								<div class="col-sm-6">
+									<select class="form-control" name="imap_type">
+										<option value="/imap" {% if settings.imap_type == '/imap' %} selected {% endif %}>IMAP</option>
+										<option value="/pop3" {% if settings.imap_type == '/pop3' %} selected {% endif %}>POP</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group col-sm-12">
+								<label class="col-sm-6" for="imap_ssl">SSL</label>
+								<div class="col-sm-6">
+									<select class="form-control" name="imap_ssl">
+										<option value="" {% if settings.imap_ssl == '' %} selected {% endif %}>Ne pas utiliser SSL</option>
+										<option value="/ssl" {% if settings.imap_ssl == '/ssl' %} selected {% endif %}>Utiliser SSL</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group col-sm-12">
+								<label class="col-sm-6" for="imap_cert">Certificat</label>
+								<div class="col-sm-6">
+									<select class="form-control" name="imap_cert">
+										<option value="" {% if settings.imap_cert == '' %} selected {% endif %}>(non précisé)</option>
+										<option value="/novalidate-cert" {% if settings.imap_cert == '/novalidate-cert' %} selected {% endif %}>NO-VALIDATE-CERT</option>
+										<option value="/validate-cert" {% if settings.imap_cert == '/validate-cert' %} selected {% endif %}>VALIDATE-CERT</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group col-sm-12">
+								<label class="col-sm-6" for="imap_tls">TLS</label>
+								<div class="col-sm-6">
+									<select class="form-control" name="imap_tls">
+										<option value="" {% if settings.imap_tls == '' %} selected {% endif %}>(non précisé)</option>
+										<option value="/tls" {% if settings.imap_tls == '/tls' %} selected {% endif %}>TLS</option>
+										<option value="/notls" {% if settings.imap_tls == '/notls' %} selected {% endif %}>NO-TLS</option>
+									</select>
+								</div>
+							</div>
+
+							<div style="text-align:center;">
+								<input type="submit" name="Valider" value="{{ trad.save }}" class="btn btn-warning btn-md" />
+							</div>
+
+						</form>
+
+					</div>
+
+				</div>
+
+				{% if settings.imap_statut != '' and settings.imap_adresse != '' and settings.imap_port != '' %}
+					<div class="box box-info">
+						<div class="box-header">
+							<h3 class="box-title">Test de connexion</h3>
+						</div>
+						<!-- /.box-header -->
+						
+						<div class="box-body no-padding">
+							<form action="?p=admin_config_imap" method="post">
+								<input type="hidden" name="p" value="admin_config_imap" />
+								{{ form.input('imap_login', 'Identifiant', '', {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+								{{ form.input('imap_password', 'Mot de passe','', {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'password'}) }}
+						
+								<div style="text-align:center;">
+									<input type="submit" name="Valider2" value="Test" class="btn btn-info btn-md" />
+								</div>
+							</form>
+						</div>
+					</div>
+				{% endif %}
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

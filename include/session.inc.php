@@ -378,7 +378,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 else
                     return "4";
             }
-            elseif ((Settings::get("imap_statut") != '') and (@function_exists("imap_open")) and (@file_exists("include/config_imap.inc.php")))
+            elseif (Settings::get("imap_statut") != '' and (@function_exists("imap_open")) and Settings::get("imap_adresse") != '' and Settings::get("imap_port") != '')
             {
                 //  $login_search = ereg_replace("[^-@._[:space:][:alnum:]]", "", $_login);
                 $login_search = preg_replace("/[^\-@._[:space:]a-zA-Z0-9]/", "", $_login);
@@ -552,10 +552,12 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
         {
             // pas d'utilisateur imap ayant le même login dans la base GRR
             // Lire les infos sur l'utilisateur depuis imap
-            include "config_imap.inc.php";
+           // include "config_imap.inc.php";
                     // Connexion ? l'annuaire
-            $conn_imap = grr_connect_imap($imap_adresse,$imap_port,$_login,$_password,$imap_type,$imap_ssl,$imap_cert,$imap_tls);
-            if ($conn_imap)
+            //$conn_imap = grr_connect_imap($imap_adresse,$imap_port,$_login,$_password,$imap_type,$imap_ssl,$imap_cert,$imap_tls);
+			$conn_imap = grr_connect_imap(Settings::get("imap_adresse"),Settings::get("imap_port"),$_login,$_password,Settings::get("imap_type"),Settings::get("imap_ssl"),Settings::get("imap_cert"),Settings::get("imap_tls"),"diag");
+
+			if ($conn_imap)
             {
                 // Test with login and password of the user
                 $l_nom = "";
@@ -1079,8 +1081,8 @@ function grr_verif_imap($_login, $_password)
 {
 	if ($_password == '')
 		return false;
-	include "config_imap.inc.php";
-	$imap_connection = grr_connect_imap($imap_adresse,$imap_port,$_login,$_password,$imap_type,$imap_ssl,$imap_cert,$imap_tls);
+	//include "config_imap.inc.php";
+	$imap_connection = grr_connect_imap(Settings::get("imap_adresse"),Settings::get("imap_port"),$_login,$_password,Settings::get("imap_type"),Settings::get("imap_ssl"),Settings::get("imap_cert"),Settings::get("imap_tls"),"diag");
 	if ($imap_connection)
 		return $imap_connection;
 	else
