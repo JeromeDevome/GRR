@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Permet de vérifier la validité de l'édition ou de la création d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-16 12:30$
+ * Dernière modification : $Date: 2018-11-05 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -659,14 +659,22 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 	grr_sql_mutex_unlock("".TABLE_PREFIX."_entry");
 	$area = mrbsGetRoomArea($room_id);
 	$_SESSION['displ_msg'] = 'yes';
-	if ($message_error != "")
-		$_SESSION['session_message_error'] = $message_error;
-    // Header("Location: ".$ret_page);
-    if (($room_back != 'all')&&(strpos($page, 'all') === false))
+	if ($message_error != "") // si erreur, retour à la page d'appel
     {
-        Header("Location: ".$page.".php?year=$year&month=$month&day=$day&area=$area&room=$room_back");
+        $_SESSION['session_message_error'] = $message_error;
+            if (($room_back != 'all')&&(strpos($page, 'all') === false)){
+                Header("Location: ".$page.".php?year=$year&month=$month&day=$day&area=$area&room=$room_back");
+            }
+            else Header("Location: ".$page.".php?year=$year&month=$month&day=$day&area=$area");
     }
-    else Header("Location: ".$page.".php?year=$year&month=$month&day=$day&area=$area");
+	else // sinon, retour sur la page de la réservation validée
+    {
+        if (($room_back != 'all')&&(strpos($page, 'all') === false))
+        {
+            Header("Location: ".$page.".php?year=$year&month=$month&day=$day&area=$area&room=$room_id");
+        }
+        else Header("Location: ".$page.".php?year=$year&month=$month&day=$day&area=$area");        
+    }        
 	exit;
 }
 
