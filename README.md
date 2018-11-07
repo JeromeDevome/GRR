@@ -3,7 +3,7 @@ GRR version stable 3.4.0
 
 **Requiert :**
 
-PHP : > 5.4 && < 7.2
+PHP : >= 5.6 && <= 7.2
 MySQL: > 5.4 && < 5.6
 
 http://grr.devome.com/
