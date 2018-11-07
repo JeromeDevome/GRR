@@ -4,7 +4,7 @@ pré-version 3.4.1, a vocation à rester compatible avec php5 pour les serveurs 
 
 **Requiert :**
 
-PHP : > 5.4 && < 7.2
+PHP : >= 5.6 && <= 7.2
 MySQL: > 5.4 && < 5.6
 
 http://grr.devome.com/
