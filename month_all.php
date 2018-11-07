@@ -3,7 +3,7 @@
  * month_all.php
  * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-05 17:30$
+ * Dernière modification : $Date: 2018-11-06 09:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -368,7 +368,7 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 }    
     echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.get_vocab("all_areas").'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php" title="'.get_vocab('see_all_the_rooms_for_several_months').'">'.ucfirst(utf8_strftime("%Y", $month_start)).'</a></h4>'.PHP_EOL;
     if ($_GET['pview'] != 1)
-        echo " <a href=\"month_all2.php?year=$year&amp;month=$month&amp;area=$area\"><span class='glyphicon glyphicon-refresh'></span></a>";
+        echo " <a href=\"month_all2.php?year=$year&amp;month=$month&amp;area=$area\" title=\" ".get_vocab('default_room_month_all_bis')."\"><span class='glyphicon glyphicon-refresh'></span></a>";
 echo "</div>";
 echo "</caption>";
 	if (isset($_GET['precedent']))
@@ -464,7 +464,7 @@ echo "</caption>";
 								break;
 							}
 
-							echo '<table class="table-header table-bordered table-striped">',PHP_EOL,'<tr>',PHP_EOL;
+							echo '<table class="pleine table-bordered table-striped">',PHP_EOL,'<tr>',PHP_EOL;
 
 							tdcell($d[$cday]["color"][$i]);
 							echo '<span class="small_planning">',PHP_EOL;

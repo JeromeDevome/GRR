@@ -3,7 +3,7 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-05 17:30$
+ * Dernière modification : $Date: 2018-11-06 09:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -349,7 +349,7 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 }    
     echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.get_vocab("all_areas").'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php" title="'.get_vocab('see_all_the_rooms_for_several_months').'">'.ucfirst(utf8_strftime("%Y", $month_start)).'</a></h4>'.PHP_EOL;
     if ($_GET['pview'] != 1)
-        echo " <a href=\"month_all.php?year=$year&amp;month=$month&amp;area=$area\"><span class='glyphicon glyphicon-refresh'></span></a>";
+        echo " <a href=\"month_all.php?year=$year&amp;month=$month&amp;area=$area\" title=\" ".get_vocab('default_room_month_all')." \"><span class='glyphicon glyphicon-refresh'></span></a>";
 echo "</div>";
 echo "</caption>";
 if ($_GET['pview'] == 1 && (isset($_GET['precedent']) && $_GET['precedent'] == 1))
@@ -453,7 +453,7 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++) // traitement d'une ressou
 				{
 					if (isset($d[$cday]["id"][0])) // il y a une réservation au moins à afficher
 					{
-                        echo "<table class='table-header table-bordered'>";
+                        echo "<table class='pleine table-bordered'>";
 						$n = count($d[$cday]["id"]);
 						for ($i = 0; $i < $n; $i++)
 						{
