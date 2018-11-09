@@ -247,13 +247,16 @@ function do_summary(&$count, &$hours, &$room_hash, &$breve_description_hash, $en
 	// At PHP4 we could use array_keys().
 	reset($room_hash);
 	$rooms = array();
-	while (list($room_key) = each($room_hash))
-		$rooms[] = $room_key;
+	foreach ($room_hash as $room_key){
+        $rooms[] = $room_key;
+    }
 	ksort($rooms);
 	reset($breve_description_hash);
 	$breve_descriptions = array();
-	while (list($breve_description_key) = each($breve_description_hash))
-		$breve_descriptions[] = $breve_description_key;
+	foreach ($breve_description_hash as $breve_description_key)
+    {
+        $breve_descriptions[] = $breve_description_key;
+    }
 	ksort($breve_descriptions);
 	$n_rooms = sizeof($rooms);
 	$n_names = sizeof($breve_descriptions);
