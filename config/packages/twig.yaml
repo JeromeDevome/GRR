@@ -1,4 +1,6 @@
 twig:
-    default_path: '%kernel.project_dir%/templates'
+    default_path: '%kernel.project_dir%/admin/templates'
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    paths:
+        '%kernel.project_dir%/admin/templates': foo_bar
