@@ -14,8 +14,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-if (!@file_exists("/var/www/lcs/includes/headerauth.inc.php"))
-	error_reporting (E_ALL);
+
 require_once("include/config.inc.php");
 if (file_exists("include/connect.inc.php"))
 	include "include/connect.inc.php";
@@ -210,87 +209,8 @@ else if ((Settings::get('sso_statut') == 'lemon_visiteur') || (Settings::get('ss
 	}
 	if (grr_resumeSession())
 		header("Location: ".htmlspecialchars_decode(page_accueil())."");
-// Cas d'une authentification LCS
 }
-else if (Settings::get('sso_statut') == 'lcs')
-{
-	include LCS_PAGE_AUTH_INC_PHP;
-	include LCS_PAGE_LDAP_INC_PHP;
-	list($idpers,$login) = isauth();
-	if ($idpers)
-	{
-		list($user, $groups)=people_get_variables($login, true);
-		$lcs_tab_login["nom"] = $user["nom"];
-		$lcs_tab_login["email"] = $user["email"];
-		$long = strlen($user["fullname"]) - strlen($user["nom"]);
-		$lcs_tab_login["fullname"] = substr($user["fullname"], 0, $long) ;
-		foreach ($groups as $value)
-			$lcs_groups[] = $value["cn"];
-		// A ce stade, l'utilisateur est authentifié par LCS
-		// Etablir à nouveau la connexion à la base
-		if (empty($db_nopersist))
-			$db_c = mysqli_connect("p:".$dbHost, $dbUser, $dbPass, $dbDb);
-		else
-			$db_c = mysqli_connect($dbHost, $dbUser, $dbPass, $dbDb);
-		if (!$db_c || !mysqli_select_db ($db_c, $dbDb))
-		{
-			echo "\n<p>\n" . get_vocab('failed_connect_db') . "\n";
-			exit;
-		}
-		if (is_eleve($login))
-			$user_ext_authentifie = 'lcs_eleve';
-		else
-			$user_ext_authentifie = 'lcs_non_eleve';
-		$password = '';
-		$result = grr_opensession($login,$password,$user_ext_authentifie,$lcs_tab_login,$lcs_groups) ;
-		// On écrit les données de session et ferme la session
-		session_write_close();
-		$message = '';
-		if ($result == "2")
-		{
-			$message = get_vocab("echec_connexion_GRR");
-			$message .= " ".get_vocab("wrong_pwd");
-		}
-		else if ($result == "3")
-		{
-			$message = get_vocab("echec_connexion_GRR");
-			$message .= "<br />". get_vocab("importation_impossible");
-		}
-		else if ($result == "4")
-		{
-			$message = get_vocab("echec_connexion_GRR");
-			$message .= " ".get_vocab("causes_possibles");
-			$message .= "<br />- ".get_vocab("wrong_pwd");
-			$message .= "<br />- ". get_vocab("echec_authentification_ldap");
-		}
-		else if ($result == "5")
-		{
-			$message = get_vocab("echec_connexion_GRR");
-			$message .= "<br />". get_vocab("connexion_a_grr_non_autorisee");
-		}
-		if ($message != '')
-		{
-			fatal_error(1, $message);
-			die();
-		}
-		if (grr_resumeSession())
-			header("Location: ".htmlspecialchars_decode(page_accueil())."");
-	}
-	else
-	{
-		// L'utilisateur n'a pas été identifié'
-		if (Settings::get("authentification_obli") == 1)
-		{
-			// authentification obligatoire, l'utilisateur est renvoyé vers une page de connexion
-			require_once("include/session.inc.php");
-			grr_closeSession($_GET['auto']);
-			header("Location:".LCS_PAGE_AUTHENTIF);
-		}
-		else
-			header("Location: ".htmlspecialchars_decode(page_accueil())."");
-		// authentification non obligatoire, l'utilisateur est simple visiteur
-	}
-}
+
 // Cas d'une authentification Lasso
 if ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_statut') == 'lasso_utilisateur'))
 {

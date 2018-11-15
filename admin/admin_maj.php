@@ -122,40 +122,6 @@ if (isset($_POST['submit']))
 	}
 }
 
-if (Settings::get('sso_statut') == 'lcs')
-{
-	include LCS_PAGE_AUTH_INC_PHP;
-	include LCS_PAGE_LDAP_INC_PHP;
-	list ($idpers,$login) = isauth();
-	if ($idpers)
-	{
-		list($user, $groups) = people_get_variables($login, true);
-		$lcs_tab_login["nom"] = $user["nom"];
-		$lcs_tab_login["email"] = $user["email"];
-		$long = strlen($user["fullname"]) - strlen($user["nom"]);
-		$lcs_tab_login["fullname"] = substr($user["fullname"], 0, $long) ;
-		foreach ($groups as $value)
-			$lcs_groups[] = $value["cn"];
-		// A ce stade, l'utilisateur est authentifié par LCS
-		// Etablir à nouveau la connexion à la base
-		if (empty($db_nopersist))
-			$db_c = mysqli_connect("p:".$dbHost, $dbUser, $dbPass);
-		else
-			$db_c = mysqli_connect($dbHost, $dbUser, $dbPass);
-		if (!$db_c || !mysqli_select_db ($db_c, $dbDb))
-		{
-			echo "\n<p>\n" . get_vocab('failed_connect_db') . "\n";
-			exit;
-		}
-		if (!(is_eleve($login)))
-			$user_ext_authentifie = 'lcs_eleve';
-		else
-			$user_ext_authentifie = 'lcs_non_eleve';
-		$password = '';
-		$result = grr_opensession($login,$password,$user_ext_authentifie,$lcs_tab_login,$lcs_groups) ;
-	}
-}
-
 if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 {
 	?>

@@ -164,11 +164,6 @@ echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("compan
 			echo "<p><span style=\"font-size:1.4em\"><a href=\"./index.php\">".get_vocab("authentification_lemon")."</a></span></p>";
 			echo "<p><b>".get_vocab("authentification_locale")."</b></p>";
 		}
-		if (Settings::get('sso_statut') == 'lcs')
-		{
-			echo "<p><span style=\"font-size:1.4em\"><a href=\"".LCS_PAGE_AUTHENTIF."\">".get_vocab("authentification_lcs")."</a></span></p>";
-			echo "<p><b>".get_vocab("authentification_locale")."</b></p>";
-		}
 		if ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_statut') == 'lasso_utilisateur'))
 		{
 			echo "<p><span style=\"font-size:1.4em\"><a href=\"./index.php\">".get_vocab("authentification_lasso")."</a></span></p>";
