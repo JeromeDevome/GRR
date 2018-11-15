@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-28 12:00$
+ * Dernière modification : $Date: 2018-11-15 17:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -487,7 +487,7 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
                             if ($heure_fin == '00:00') {$heure_fin = '24:00';}
 							echo '<br/>',date('H:i', max($am7,$start_time)),get_vocab("to"),$heure_fin,'<br/>';
 						}
-						if ($type_name != -1)
+						if (($type_name != -1)&&(Settings::get("type") == '1'))
 							echo  $type_name;
 						echo '<br>'.PHP_EOL;
 						if ($clef == 1)

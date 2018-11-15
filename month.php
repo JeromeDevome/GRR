@@ -3,7 +3,7 @@
  * month.php
  * Interface d'accueil avec affichage par mois
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-11-10 16:40$
+ * Dernière modification : $Date: 2018-11-15 12:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -447,7 +447,8 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                         echo '<img src="img_grr/flag_moderation.png" alt="',get_vocab("en_attente_moderation"),'" title="',get_vocab("en_attente_moderation"),'" class="image" />',PHP_EOL;
                     echo $d[$cday]["who1"][$i],'<br/>';
                     $Son_GenreRepeat = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area ,".TABLE_PREFIX."_entry  WHERE  ".TABLE_PREFIX."_entry.id= ".$d[$cday]["id"][$i]." AND ".TABLE_PREFIX."_entry.type= ".TABLE_PREFIX."_type_area.type_letter");
-                    echo $Son_GenreRepeat,'<br/>';
+                    if (Settings::get("type") == '1')               
+                        echo $Son_GenreRepeat,'<br/>';
                     if ($d[$cday]["description"][$i] != "")
                         echo '<br /><i>(',$d[$cday]["description"][$i],')</i>';
                     if ($acces_fiche_reservation)

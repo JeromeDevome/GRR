@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-26 14:30$
+ * Dernière modification : $Date: 2018-11-15 13:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -520,7 +520,7 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 								}
 								else
 									echo '<a class="lienCellule" style = "border-bottom:1px solid #FFF" title="'.htmlspecialchars($d[$cday]["who"][$i]).'" href="view_entry.php?id='.$d[$cday]["id"][$i].'&amp;page=week_all&amp;day='.$cday.'&amp;month='.$cmonth.'&amp;year='.$cyear.'&amp;" >'.PHP_EOL;
-								echo '<table class="table-header">'.PHP_EOL;
+								echo '<table class="pleine">'.PHP_EOL;
 								echo '<tr>'.PHP_EOL;
 								tdcell($d[$cday]["color"][$i]);
 								if ($d[$cday]["res"][$i] !='-')
@@ -531,9 +531,12 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 									echo '<img src="img_grr/flag_moderation.png" alt="',get_vocab("en_attente_moderation"),'" title="',get_vocab("en_attente_moderation"),'" class="image" />',PHP_EOL;
 								$Son_GenreRepeat = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area,".TABLE_PREFIX."_entry  WHERE  ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter  AND ".TABLE_PREFIX."_entry.id = '".$d[$cday]["id"][$i]."';");
 								if ($Son_GenreRepeat == -1)
-									echo '<span class="small_planning">',$d[$cday]["data"][$i];
-								else
-									echo '<span class="small_planning">',$d[$cday]["data"][$i],'<br>',$Son_GenreRepeat,'<br>';
+                                    echo '<span class="small_planning">',$d[$cday]["data"][$i];
+                                else
+                                    if (Settings::get("type") == '1') {
+                                        echo '<span class="small_planning">'. $d[$cday]["data"][$i].'<br>'. $Son_GenreRepeat.'<br>'.PHP_EOL; }
+                                    else {
+                                        echo '<span class="small_planning">'. $d[$cday]["data"][$i].'<br>'. PHP_EOL; }
 								echo $d[$cday]["who1"][$i]. '<br/>'.PHP_EOL;
 								if ($d[$cday]["description"][$i] != "")
 									echo '<i>'.$d[$cday]["description"][$i].'</i>'.PHP_EOL;
@@ -554,7 +557,7 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 							}
 							else
 							{
-								echo PHP_EOL.'<table class="table-bordered"><tr>';
+								echo PHP_EOL.'<table class="table table-bordered"><tr>';
 								tdcell($d[$cday]["color"][$i]);
 								if ($d[$cday]["res"][$i] != '-')
 									echo '<img src="img_grr/buzy.png" alt="',get_vocab("ressource actuellement empruntee"),'" title="',get_vocab("ressource actuellement empruntee"),'" width="20" height="20" class="image" />',PHP_EOL;
@@ -569,7 +572,9 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 								}
 								else
 								{
-									echo '<span class="small_planning">'. $d[$cday]["data"][$i].'<br>'. $Son_GenreRepeat.'<br>'.PHP_EOL;
+                                    if (Settings::get("type") == '1') 
+                                        { echo '<span class="small_planning">'. $d[$cday]["data"][$i].'<br>'. $Son_GenreRepeat.'<br>'.PHP_EOL; }
+                                    else { echo '<span class="small_planning">'. $d[$cday]["data"][$i].'<br>'. PHP_EOL; }
 								}
 								echo $d[$cday]["who1"][$i].'<br>'.PHP_EOL;
 								if ($d[$cday]["description"][$i] != "")

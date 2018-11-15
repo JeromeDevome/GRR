@@ -3,7 +3,7 @@
  * week.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "semaine".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-28 12:00$
+ * Dernière modification : $Date: 2018-11-15 12:40$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -711,7 +711,8 @@ $semaine_changement_heure_hiver = 'no';
                                         {$heure_fin = '24:00';}
 									echo "<br />" .date('H:i',$d[$weekday][$slot - $decale_slot * $nb_case]["horaireDebut"]).get_vocab("to"). $heure_fin."";
 								}
-								echo " <br/>". $Son_GenreRepeat ." <br/><br/>" ;
+								if (Settings::get("type") == '1') 
+                                    echo " <br/>". $Son_GenreRepeat ." <br/><br/>" ;
 							}
 							if ($d[$weekday][$slot - $decale_slot * $nb_case]["description"]!= "")
 								echo "<i>".$d[$weekday][$slot - $decale_slot * $nb_case]["description"]."</i><br>";

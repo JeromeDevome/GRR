@@ -3,7 +3,7 @@
  * admin_config1.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2018-11-15 12:00$
+ * Dernière modification : $Date: 2018-11-15 12:20$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -229,6 +229,13 @@ if (isset($_POST['imprimante'])) {
 if (isset($_POST['pdf'])) {
     if (!Settings::set('pdf', $_POST['pdf'])) {
         echo "Erreur lors de l'enregistrement de affichage pdf !<br />";
+        die();
+    }
+}
+// Affichage type 
+if (isset($_POST['type'])) {
+    if (!Settings::set('type', $_POST['type'])) {
+        echo "Erreur lors de l'enregistrement de affichage type !<br />";
         die();
     }
 }
@@ -1094,6 +1101,31 @@ echo '<td>'.get_vocab('display_short_description1').'</td>'.PHP_EOL;
 echo '<td>';
 echo "<input type='radio' name='display_short_description' value='1' ";
 if (Settings::get('display_short_description') == '1') {
+    echo 'checked="checked"';
+}
+echo ' />'.PHP_EOL;
+echo '</td>'.PHP_EOL;
+echo '</tr>'.PHP_EOL;
+echo '</table>'.PHP_EOL;
+# Affichage type 
+echo '<hr />'.PHP_EOL;
+echo '<h3>'.get_vocab('affichage_type').'</h3>'.PHP_EOL;
+echo '<table>'.PHP_EOL;
+echo '<tr>'.PHP_EOL;
+echo '<td>'.get_vocab('YES').'</td>'.PHP_EOL;
+echo '<td>'.PHP_EOL;
+echo "<input type='radio' name='type' value='1' ";
+if (Settings::get('type') == '1') {
+    echo 'checked="checked"';
+}
+echo ' />'.PHP_EOL;
+echo '</td>'.PHP_EOL;
+echo '</tr>'.PHP_EOL;
+echo '<tr>'.PHP_EOL;
+echo '<td>'.get_vocab('NO').'</td>'.PHP_EOL;
+echo '<td>'.PHP_EOL;
+echo "<input type='radio' name='type' value='0' ";
+if (Settings::get('type') == '0') {
     echo 'checked="checked"';
 }
 echo ' />'.PHP_EOL;
