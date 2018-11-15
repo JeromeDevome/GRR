@@ -2,15 +2,11 @@
 /**
  * my_account.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
- * Dernière modification : $Date: 2009-06-04 15:30:17 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @author    Marc-Henri PAMISEUX <marcori@users.sourceforge.net>
- * @copyright Copyright 2003-2008 Laurent Delineau
- * @copyright Copyright 2008 Marc-Henri PAMISEUX
+ * Ce script fait partie de l'application GRR
+ * Dernière modification : $Date: 2018-06-20 18:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   root
- * @version   $Id: my_account.php,v 1.11 2009-06-04 15:30:17 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -18,15 +14,6 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 include_once('include/connect.inc.php');
 include_once('include/config.inc.php');
@@ -146,7 +133,7 @@ if ($valid == 'yes')
 		}
 	}
 	if (IsAllowedToModifyProfil() && ($champ_manquant=='y'))
-		$msg .= "\\n".get_vocab('required');
+		$msg .= "\\n".str_replace("\'","'",get_vocab('required'));
 }
 if (($valid == 'yes') || ($valid=='reset'))
 {
@@ -247,7 +234,8 @@ if ($res)
 			dataType: "html",
 			data: {
 				id_site: $('#id_site').val(),
-				default_area : '<?php echo Settings::get("default_area"); ?>',
+				// default_area : '<?php echo Settings::get("default_area"); ?>',
+                default_area : '<?php echo $default_area; ?>',
 				session_login:'<?php echo getUserName(); ?>',
 				use_site:'<?php echo $use_site; ?>',
 				type:'domaine',
@@ -267,7 +255,8 @@ if ($res)
 			dataType: "html",
 			data: {
 				id_area:$('id_area').serialize(true),
-				default_room : '<?php echo Settings::get("default_room"); ?>',
+				// default_room : '<?php echo Settings::get("default_room"); ?>',
+                default_room : '<?php echo $default_room; ?>',
 				type:'ressource',
 				action:+action,
 				},
@@ -346,15 +335,14 @@ echo ('
 	echo '<tr><td><b>'.get_vocab('statut').get_vocab('deux_points').'</b></td><td>'.$text_user_statut.'</td></tr></table>';
 	if (IsAllowedToModifyProfil())
 	{
-		echo '<p>('.get_vocab('required').')</p>';
+		echo '<p>('.str_replace("\'","'",get_vocab('required')).')</p>';
 		if ((trim($user_nom) == "") || (trim($user_prenom) == ''))
 			echo "\n".'      <h2 class="avertissement">'.get_vocab('nom_prenom_valides').'</h2>';
 	}
 	if (IsAllowedToModifyMdp())
 	{
 		echo '
-		<div><br />
-			<br />
+		<div>
 			<table  border="0" width="100%">
 				<tr>
 					<td onclick="clicMenu(\'1\')" class="fontcolor4" style="cursor: inherit" align="center">
@@ -375,11 +363,94 @@ echo ('
 					</td>
 				</tr>
 			</table>
-			<br /></div>
-			<hr />';
-		}
-		echo "\n".'      <h3>'.get_vocab('default_parameter_values_title').'</h3>';
-		echo "\n".'      <h4>'.get_vocab('explain_area_list_format').'</h4>';
+		</div>
+		<hr />';
+	}
+    if (isset($_GET['see_conn']) && ($_GET['see_conn']==1))
+    {
+        // on commence par récupérer les données de connexion
+        $sql = "SELECT START, SESSION_ID, REMOTE_ADDR, USER_AGENT, REFERER, AUTOCLOSE, END FROM ".TABLE_PREFIX."_log WHERE LOGIN = '".getUserName()."' ORDER by START desc";
+        $res = grr_sql_query($sql);
+        if (!$res){
+            grr_sql_error();
+        }
+        else {
+            echo '
+                <div class="ressource">
+                    <span class="bground">
+                    <b><a href="my_account.php?see_conn=0">
+                    <font color=black>'.get_vocab('click_here_to_hide_connexions').'</font></a></b>
+                    </span>
+                </div>';
+            // affichage des résultats
+            echo '<p>'.get_vocab("see_connexions_explain").'</p>';
+            echo '<table class="table-bordered">
+                    <thead>
+                    	<th class="col">
+                            '.get_vocab("begining_of_session").'
+                        </th>
+                        <th class="col">
+                            '.get_vocab("end_of_session").'
+                        </th>   
+                        <th class="col">
+                            '.get_vocab("ip_adress").'
+                        </th>
+                        <th class="col">
+                            '.get_vocab("navigator").'
+                        </th>
+                        <th class="col">
+                            '.get_vocab("referer").'
+                        </th>
+                    </thead>
+                    ';
+            echo "<tbody>";
+            $now = time();
+            for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+			{
+				$annee = substr($row[6],0,4);
+				$mois =  substr($row[6],5,2);
+				$jour =  substr($row[6],8,2);
+				$heures = substr($row[6],11,2);
+				$minutes = substr($row[6],14,2);
+				$secondes = substr($row[6],17,2);
+				$end_time = mktime($heures, $minutes, $secondes, $mois, $jour, $annee);
+				$temp1 = '';
+				$temp2 = '';
+				if ($end_time > $now)
+				{
+					$temp1 = "<span style=\"color:green;\">";
+					$temp2 = "</span>";
+				}
+                else if ($row[5])
+                {
+                    $temp1 = "<span style=\"color:red\">";
+                    $temp2 = "</span>";
+                }
+				echo "<tr>\n";
+				echo "<td class=\"col\">".$temp1.$row[0].$temp2."</td>";
+				echo "<td class=\"col\">".$temp1.$row[6].$temp2."</td>\n";
+				echo "<td class=\"col\">".$temp1.$row[2].$temp2."</td>\n";
+				echo "<td class=\"col\">".$temp1.$row[3].$temp2."</td>\n";
+				echo "<td class=\"col\">".$temp1.$row[4].$temp2."</td>\n";
+				echo "</tr>\n";
+			}
+            echo "</tbody></table>";
+        }
+        echo "<hr />";
+    }
+    else 
+    {
+        echo '
+        <div class="ressource">
+            <span class="bground">
+            <b><a href="my_account.php?see_conn=1">
+            <font color=black>'.get_vocab('click_here_to_see_connexions').'</font></a></b>
+            </span>
+        </div>
+        <hr />';
+    }
+		echo "\n".'<h3>'.get_vocab('default_parameter_values_title').'</h3>';
+		echo "\n".'<h4>'.get_vocab('explain_area_list_format').'</h4>';
 		echo '
 		<table>
 			<tr>
@@ -458,11 +529,11 @@ echo ('
 		echo '<div id="div_liste_ressources">';
 		echo '<input type="hidden" id="id_area" name="id_area" value="'.$default_area.'" />';
 		echo '</div></td></tr></table>';
-		/* Au chargement de la page, on itialise les select */
+		/* Au chargement de la page, on initialise les select */
 		echo '<script type="text/javascript">modifier_liste_domaines();</script>'."\n";
 		echo '<script type="text/javascript">modifier_liste_ressources(1);</script>'."\n";
 /**
- * Choix de la feuille de style part défaut
+ * Choix de la feuille de style par défaut
  */
 		echo '<h4>'.get_vocab('explain_css').'</h4>';
 		echo '
@@ -507,7 +578,7 @@ echo ('
 									</td>
 								</tr>
 							</table>
-
+                      <div id="fixe">
 							<div>
 								<input type="hidden" name="valid" value="yes" />
 								<input type="hidden" name="day" value="'.$day.'" />
@@ -534,6 +605,7 @@ echo ('
 							</div>
 						</form>
 						</div>
+                      </div>                        
 					</body>
 					</html>';
-					?>
+?>

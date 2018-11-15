@@ -3,15 +3,10 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2010-04-07 15:38:14 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @author    Marc-Henri PAMISEUX <marcori@users.sourceforge.net>
- * @copyright Copyright 2003-2008 Laurent Delineau
- * @copyright Copyright 2008 Marc-Henri PAMISEUX
+ * Dernière modification : $Date: 2018-07-10 15:00$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   admin
- * @version   $Id: session.inc.php,v 1.15 2010-04-07 15:38:14 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -19,15 +14,6 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 require_once("settings.class.php");
@@ -664,7 +650,8 @@ if ($row[6] > 0)
 	$_SESSION['default_area'] = $row[6];
 else
 	$_SESSION['default_area'] = Settings::get("default_area");
-if ($row[7] > 0)
+//if ($row[7] > 0) en lien avec le calcul de la page d'accueil YN le 11/04/2018
+if ($row[7] != 0)
 	$_SESSION['default_room'] = $row[7];
 else
 	$_SESSION['default_room'] = Settings::get("default_room");
@@ -756,6 +743,16 @@ $sql = "INSERT INTO ".TABLE_PREFIX."_log (LOGIN, START, SESSION_ID, REMOTE_ADDR,
 	)
 ;";
 grr_sql_query($sql);
+
+/* Suppression des logs
+if($nbMaxJoursLogConnexion > 0){
+	$dateActu = date_create($_SESSION['start']);
+	$dateMax = date_sub($dateActu, date_interval_create_from_date_string($nbMaxJoursLogConnexion.' days'));
+	$dateMax = $dateMax->format('Y-m-d H:i:s');
+	$sql = "DELETE FROM ".TABLE_PREFIX."_log WHERE START < '" . $dateMax . "';";
+	grr_sql_query($sql);
+}
+*/
 /* Fonctionnalité SE3 (Palissy - Saintes - philippe.duval@ac-poitiers.fr) :
 Utilisation du LDAP pour inscrire automatiquement les utilisateurs dans les groupes administration, accès et gestion
 Ce code est associé à une nouvelle table :

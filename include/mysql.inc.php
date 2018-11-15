@@ -2,14 +2,10 @@
 /**
  * mysql.inc.php
  * Bibliothèque de fonctions pour le support mysql
- * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2009-09-29 18:02:57 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
+ * Dernière modification : $Date: 2018-04-11 10:00$
+ * @author    JeromeB & Laurent Delineau & Yan Naessens
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   root
- * @version   $Id: mysql.inc.php,v 1.4 2009-09-29 18:02:57 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -17,20 +13,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 if (empty($db_nopersist))
-	$GLOBALS['db_c'] = @mysqli_connect('p:'.$dbHost, $dbUser, $dbPass, $dbPort);
+	$GLOBALS['db_c'] = @mysqli_connect('p:'.$dbHost, $dbUser, $dbPass, $dbDb, $dbPort);
 else
-	$GLOBALS['db_c'] = mysqli_connect($dbHost, $dbUser, $dbPass, $dbPort);
+	$GLOBALS['db_c'] = mysqli_connect($dbHost, $dbUser, $dbPass, $dbDb, $dbPort);
 if (!$GLOBALS['db_c'] || !mysqli_select_db ($GLOBALS['db_c'], $dbDb))
 {
 	echo "\n<p>Database connection failure</p>\n";
@@ -87,7 +75,6 @@ function grr_sql_query($sql)
 	return $r;
 }
 //retourne la version de mysql
-
 function grr_sql_version()
 {
 	$r = mysqli_get_server_info($GLOBALS['db_c']);

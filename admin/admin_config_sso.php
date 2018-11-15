@@ -3,13 +3,10 @@
  * admin_config_sso.php
  * Interface permettant l'activation de la prise en compte d'un environnement SSO
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2010-04-07 15:38:14 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
+ * Dernière modification : $Date: 2017-12-18 22:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   root
- * @version   $Id: admin_config_sso.php,v 1.12 2010-04-07 15:38:14 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -17,16 +14,8 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 include "../include/admin.inc.php";
 $grr_script_name = "admin_config_sso.php";
 
@@ -46,6 +35,18 @@ if (authGetUserLevel(getUserName(), -1) < 6)
 if (isset($_POST['valid']))
 {
 	VerifyModeDemo();
+	
+	if (!Settings::set("cas_serveur", $_POST['cas_serveur']))
+		echo "Erreur lors de l'enregistrement de cas_serveur !<br />";
+	if (!Settings::set("cas_port", $_POST['cas_port']))
+		echo "Erreur lors de l'enregistrement de cas_port !<br />";
+	if (!Settings::set("cas_racine", $_POST['cas_racine']))
+		echo "Erreur lors de l'enregistrement de cas_racine !<br />";
+    if (!Settings::set("cas_proxy_server", $_POST['cas_proxy_server']))
+		echo "Erreur lors de l'enregistrement de cas_proxy_server !<br />";
+    if (!Settings::set("cas_proxy_port", $_POST['cas_proxy_port']))
+		echo "Erreur lors de l'enregistrement de cas_proxy_port !<br />";
+	
 	if (!isset($_POST['cacher_lien_deconnecter']))
 		$cacher_lien_deconnecter = "n";
 	else
@@ -154,9 +155,27 @@ echo "<div>\n<input type=\"radio\" name=\"sso_statut\" value=\"no_sso\" ";
 if (Settings::get("sso_statut") == '')
 	echo " checked=\"checked\" ";
 echo "/>".get_vocab("Ne_pas_activer_Service_sso")."<br />\n";
+
+
+$CASserveurSSO = Settings::get("cas_serveur");
+$CASserveurSSOPort = Settings::get("cas_port");
+$CASserveurSSORacine = Settings::get("cas_racine");
+
+echo "<br />".get_vocab("cas_serveur")." : <input type=\"text\" name=\"cas_serveur\" size=\"40\" value =\"$CASserveurSSO\"/>\n";
+echo "<br />".get_vocab("cas_port")." : <input type=\"text\" name=\"cas_port\" size=\"40\" value =\"$CASserveurSSOPort\"/>\n";
+echo "<br />".get_vocab("cas_racine")." : <input type=\"text\" name=\"cas_racine\" size=\"40\" value =\"$CASserveurSSORacine\"/>\n";
+
+echo "<br>".get_vocab("cas_proxy_explain");
+
+$CASproxyServer = Settings::get("cas_proxy_server");
+$CASproxyPort = Settings::get("cas_proxy_port");
+
+echo "<br />".get_vocab("cas_proxy_server")." : <input type=\"text\" name=\"cas_proxy_server\" size=\"40\" value =\"$CASproxyServer\"/>\n";
+echo "<br />".get_vocab("cas_proxy_port")." : <input type=\"text\" name=\"cas_proxy_port\" size=\"40\" value =\"$CASproxyPort\"/>\n";
+
 if (Settings::get("sso_statut") != '')
 {
-	echo "<h2>".get_vocab("autres parametres sso")."</h2>\n";
+	echo "<h2>".get_vocab("autres_parametres_sso")."</h2>\n";
 	echo "<input type=\"checkbox\" name=\"cacher_lien_deconnecter\" value=\"y\" ";
 	if (Settings::get("cacher_lien_deconnecter") == "y")
 		echo " checked=\"checked\"";
@@ -302,7 +321,7 @@ if (Settings::get("sso_statut") == 'http_utilisateur')
 	echo " checked=\"checked\" ";
 echo "/>".get_vocab("statut_user")."<br /></div>\n";
 //ajout des champs de recherche perso :
-echo "<div><br />".get_vocab("explain_champs recherche")."<br />\n";
+echo "<div><br />".get_vocab("explain_champs_recherche")."<br />\n";
 echo get_vocab("name").get_vocab("deux_points")."<input type=\"text\" name=\"http_champ_nom\"";
 if (Settings::get("http_champ_nom"))
 	echo "value=\"".Settings::get("http_champ_nom")."\"";

@@ -1,4 +1,20 @@
-// Permet de faire une validation afin que l'usager ne puisse pas sélectionner un jour invalide pour le début du premier Jours/Cycle
+/*
+ * ./js/functions.js
+ * fichier BibliothÃ¨que de fonctions Javascript de GRR
+ * DerniÃ¨re modification : $Date: 2018-06-12 10:00$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @link      http://www.gnu.org/licenses/licenses.html
+ *
+ * This file is part of GRR.
+ *
+ * GRR is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+ 
+// Permet de faire une validation afin que l'usager ne puisse pas sÃ©lectionner un jour invalide pour le dÃ©but du premier Jours/Cycle
 function verifierJoursCycles()
 {
 	valeurA = document.getElementById('jourDebut').value;
@@ -45,9 +61,9 @@ function clicMenu(num)
 function centrerpopup(page,largeur,hauteur,options)
 {
 // les options :
-//    * left=100 : Position de la fenêtre par rapport au bord gauche de l'écran.
-//    * top=50 : Position de la fenêtre par rapport au haut de l'écran.
-//    * resizable=x : Indique si la fenêtre est redimensionnable.
+//    * left=100 : Position de la fenÃªtre par rapport au bord gauche de l'Ã©cran.
+//    * top=50 : Position de la fenÃªtre par rapport au haut de l'Ã©cran.
+//    * resizable=x : Indique si la fenÃªtre est redimensionnable.
 //    * scrollbars=x : Indique si les barres de navigations sont visibles.
 //    * menubar=x : Indique si la barre des menus est visible.
 //    * toolbar=x : Indique si la barre d'outils est visible.
@@ -90,11 +106,11 @@ function confirmButton(theform,themessage)
 }
 // end of the 'confirmButton()' function
 /**
- * Checks/unchecks les boites à cocher
+ * Checks/unchecks les boÃ®tes Ã  cocher
  *
  * the_form   string   the form name
  * do_check   boolean  whether to check or to uncheck the element
- * day la valaur de de la boite à cocher ou à décocher
+ * day la valaur de la boÃ®te Ã  cocher ou Ã  dÃ©cocher
  * return  boolean  always true
  */
  function setCheckboxesGrr(elts, do_check, day)
@@ -105,6 +121,21 @@ function confirmButton(theform,themessage)
  		if (type="checkbox")
  		{
  			if ((elts[i].value== day) || (day=='all'))
+ 			{
+ 				elts[i].checked = do_check;
+ 			}
+ 		}
+ 	}
+ 	return true;
+} // end of the 'setCheckboxes()' function
+ function setCheckboxesGrrName(elts, do_check, day)
+ {
+ 	for (i = 0; i < elts.length; i++)
+ 	{
+ 		type = elts.type;
+ 		if (type="checkbox")
+ 		{
+ 			if (elts[i].name== day)
  			{
  				elts[i].checked = do_check;
  			}
@@ -129,13 +160,13 @@ function _setCheckboxesGrr(the_form, do_check, day)
 	return true;
 }
 // end of the 'setCheckboxes()' function
-// Les quatre fonctions qui suivent servent à enregistrer un cookie
-// Elles sont utilisé par edit_enty.php pour conserver les informations de la saisie pour
-// pouvoir les récupérer lors d'une erreur.
+// Les quatre fonctions qui suivent servent Ã  enregistrer un cookie
+// Elles sont utilisÃ©es par edit_enty.php pour conserver les informations de la saisie pour
+// pouvoir les rÃ©cupÃ©rer lors d'une erreur.
 //Hugo
 // Voir http://www.howtocreate.co.uk/jslibs/script-saveformvalues
 var FS_INCLUDE_NAMES = 0, FS_EXCLUDE_NAMES = 1, FS_INCLUDE_IDS = 2, FS_EXCLUDE_IDS = 3, FS_INCLUDE_CLASSES = 4, FS_EXCLUDE_CLASSES = 5;
-//Hugo - fonction qui récupère les informations des champs input pour les stocker dans un cookie (Voir http://www.howtocreate.co.uk/jslibs/script-saveformvalues)
+//Hugo - fonction qui rÃ©cupÃ¨re les informations des champs input pour les stocker dans un cookie (Voir http://www.howtocreate.co.uk/jslibs/script-saveformvalues)
 function getFormString( formRef, oAndPass, oTypes, oNames )
 {
 	if (oNames)
@@ -183,7 +214,7 @@ function getFormString( formRef, oAndPass, oTypes, oNames )
 	}
 	return oStr;
 }
-//Hugo - Fonction qui récupère les informations stockées de le cookie pour les remttres dans les inputs (Voir http://www.howtocreate.co.uk/jslibs/script-saveformvalues)
+//Hugo - Fonction qui rÃ©cupÃ¨re les informations stockÃ©es dans le cookie pour les remettre dans les inputs (Voir http://www.howtocreate.co.uk/jslibs/script-saveformvalues)
 function recoverInputs( formRef, oStr, oAndPass, oTypes, oNames )
 {
 	if (oStr)
@@ -281,7 +312,7 @@ function setCookie(cookieName, cookieValue, lifeTime, path, domain, isSecure)
 	}
 	return false;
 }
-/* fonction qui est utilisée pour basculer un élément d'une liste1 vers une liste2 et inversement (utilisé lors de la création d'une demande) */
+/* fonction qui est utilisÃ©e pour basculer un Ã©lÃ©ment d'une liste1 vers une liste2 et inversement (utilisÃ© lors de la crÃ©ation d'une demande) */
 function Deplacer(liste1, liste2)
 {
 	while (liste1.options.selectedIndex >= 0)
@@ -307,20 +338,22 @@ function selectionner_liste(IdListe)
 		IdListe.options[i].selected = true;
 	}
 }
-/*-----MAJ Loïs THOMAS  --> Fonctions qui permettent de cacher et afficher le menu à gauche -----*/
+/*-----MAJ LoÃ¯s THOMAS  --> Fonctions qui permettent de cacher et afficher le menu Ã  gauche -----*/
 function divaffiche(month_all2)
 {
 	var Nbr = month_all2;
 	if ( Nbr == 1)
 	{
-		document.getElementById("menuGaucheMonthAll2").style.display = "block";
-		document.getElementById("planningMonthAll2").style.marginLeft = "300px";
-		document.getElementById("planningMonthAll2").style.width = "auto";
+		document.getElementById("menuGaucheMonthAll2").style.display = "inline-block";
+		// document.getElementById("planningMonthAll2").style.marginLeft = "300px";
+		// document.getElementById("planning").style.width = "75%";
+        document.getElementById("planning").style.width = "auto";
+        document.getElementById("planningMonthAll2").style.width = "auto";
 	}
 	else
 	{
 		document.getElementById("menuGauche").style.display = "block";
-		document.getElementById("planning").style.marginLeft = "300px";
+		// document.getElementById("planning").style.marginLeft = "300px";
 		document.getElementById("planning").style.width = "auto";
 	}
 	document.getElementById("cacher").style.display = "inline";
@@ -333,7 +366,7 @@ function divcache(month_all2)
 	{
 		document.getElementById("menuGaucheMonthAll2").style.display = "none";
 		document.getElementById("planningMonthAll2").style.marginLeft = "0px";
-		document.getElementById("planningMonthAll2").style.width = "auto";
+		document.getElementById("planningMonthAll2").style.width = "133%";
 	}
 	else
 	{
@@ -364,3 +397,43 @@ function charger(){
 	test.style.display = 'Block';
 }
 
+function cacherMenuGauche(){
+    document.getElementById("menuGauche2").style.display = "none";
+    document.getElementById("planning2").style.width = "100%";
+    document.getElementById("cacher").style.display = "none";
+	document.getElementById("voir").style.display = "inline";
+}
+
+function afficherMenuGauche(){
+    document.getElementById("menuGauche2").style.display = "inline-block";
+    document.getElementById("planning2").style.width = "75%";
+    document.getElementById("cacher").style.display = "inline";
+	document.getElementById("voir").style.display = "none";
+}
+
+function afficheMenuGauche(mode){
+    if (mode == 0) /* menu cachÃ© */
+    {
+        document.getElementById("menuGauche2").style.display = "none";
+        document.getElementById("planning2").style.width = "100%";
+        document.getElementById("cacher").style.display = "none";
+        document.getElementById("voir").style.display = "inline";
+    }
+    else if (mode == 1) /* menu affichÃ© */
+    {
+        document.getElementById("menuGauche2").style.display = "inline-block";
+        document.getElementById("planning2").style.width = "75%";
+        document.getElementById("cacher").style.display = "inline";
+        document.getElementById("voir").style.display = "none";
+    }
+    else if (mode == 2) /* menu en haut */
+    {
+        document.getElementById("menuGauche2").style.display = "inline-block";
+        document.getElementById("menuGauche2").style.maxWidth = "100%";
+        document.getElementById("menuGauche2").style.minWidth = "100%";
+        document.getElementById("planning2").style.display = "inline-block";
+        document.getElementById("planning2").style.width = "100%";
+        document.getElementById("cacher").style.display = "inline";
+        document.getElementById("voir").style.display = "none";
+    }
+}

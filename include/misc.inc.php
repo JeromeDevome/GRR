@@ -2,14 +2,10 @@
 /**
  * misc.inc.php
  * fichier de variables diverses
- * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2010-04-07 17:49:56 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
+ * Dernière modification : $Date: 2018-07-20 14:00$
+ * @author    JeromeB & Laurent Delineau & Yan Naessens
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   root
- * @version   $Id: misc.inc.php,v 1.16 2010-04-07 17:49:56 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -17,36 +13,47 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 
 ################################
 # Development information
 #################################
 $grr_devel_email = "support@devome.com";
 $grr_devel_url = "http://grr.devome.com/";
+
 // Numéro de version actuel
-$version_grr = "3.3.0";
-// Numéro de sous-version actuel (a, b, ...)
-// Utilisez cette variable pour des versions qui corrigent la la version finale sans toucher à la base.
-$sous_version_grr = ""; // a, b, c, ...
-// Numéro de la release candidate (doit être strictement inférieure à 9). Laisser vide s'il s'agit de la version stable.
-$version_grr_RC = "";
+# Format X.X.XRCX | exemples : 4.0.0a (alpha) ou 4.0.0b (beta) 3.4.0RC1 (Realesa Candidate) ou 3.4.0 (version OK)
+$version_grr = "3.4.0";
+// Version repository (GitHub)
+$versionReposite = "GitHub";
+
+################################
+# Configuration Requise
+#################################
+// Version PHP minimum
+$php_mini = "7.0.0";
+// Version PHP maximum testé et validé par : JeromeB
+$php_max_valide = "7.2.9";
+// Version PHP maximum qui est sensé fonctionné, si compatible avec toutes les versions à ce jour laisser vide
+$php_maxi = "";
+
+// Version MySQL minimum
+$mysql_mini = "5.4.0";
+// Version MySQL maximum testé et validé par : JeromeB
+$mysql_max_valide = "5.7.19";
+// Version MySQL maximum qui est sensé fonctionné
+$mysql_maxi = "";
+
 
 # Liste des tables
 $liste_tables = array(
 	"_area",
 	"_area_periodes",
 	"_calendar",
+    "_calendrier_feries",
 	"_calendrier_jours_cycle",
+	"_calendrier_vacances",
 	"_entry",
 	"_entry_moderate",
 	"_type_area",
@@ -65,11 +72,14 @@ $liste_tables = array(
 	"_j_useradmin_site",
 	"_j_site_area",
 	"_correspondance_statut",
+	"_page",
+	"_modulesext",
 	);
 
 # Liste des feuilles de style
 $liste_themes = array(
 	"default",
+    "grand_bleu",
 	"vert",
 	"violet",
 	"orange",
@@ -81,6 +91,7 @@ $liste_themes = array(
 
 # Liste des noms des styles
 $liste_name_themes = array(
+    "Defaut",
 	"Grand bleu",
 	"Verdoyant",
 	"Violeta",
@@ -107,6 +118,32 @@ $liste_name_language = array(
 	"English",
 	"Italiano",
 	"Spanish"
+	);
+
+# Liste des noms des variables de config
+$config_variables = array(
+	"nb_year_calendar",
+	"correct_heure_ete_hiver",
+	"max_rep_entrys",
+	"unicode_encoding",
+	"use_function_mysql_real_escape_string",
+	"use_function_html_entity_decode",
+	"connexionAdminMAJ",
+	"restaureBBD",
+	"debug_flag",
+	"recherche_MAJ",
+	"upload_Module",
+	"nbMaxJoursLogConnexion",
+	"motDePasseConfig",
+	"sso_super_admin",
+	"sso_restrictions",
+	"ldap_restrictions",
+	"imap_restrictions",
+	"Url_CAS_setFixedServiceURL",
+	"dbsys",
+	"structure",
+	"donnees",
+	"insertComplet"
 	);
 
 # Compatibilité avec les version inférieures à 1.9.6

@@ -1,7 +1,7 @@
 <?php
 
 
-	if ($_POST['md5e'] != "") {
+	if (isset($_POST['md5e']) && $_POST['md5e'] != "") {
 		$mdpC = $_POST['md5e'];
 		$mdpE = md5($_POST['md5e']);
 	} else {

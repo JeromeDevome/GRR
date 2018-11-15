@@ -1,0 +1,110 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+        <div class="col-xs-12">
+			<div class="nav-tabs-custom">
+				<ul class="nav nav-tabs">
+					<li><a href="?p=admin_config">{{ trad.admin_config1 }}</a></li>
+					<li><a href="?p=admin_config6">{{ trad.admin_config6 }}</a></li>
+					<li><a href="?p=admin_config2">{{ trad.admin_config2 }}</a></li>
+					<li class="active"><a href="?p=admin_config3">{{ trad.admin_config3 }}</a></li>
+					<li><a href="?p=admin_config4">{{ trad.admin_config4 }}</a></li>
+					<li><a href="?p=admin_config5">{{ trad.admin_config5 }}</a></li>
+				</ul>
+				<div class="tab-content">
+
+				  <div class="tab-pane active" id="fa-icons">
+					<form action="?p=admin_config3" id="nom_formulaire" method="get">
+						<input type="hidden" name="p" value="admin_config3" />
+
+						<section id="mailauto">
+							<h4 class="page-header">{{ trad.title_automatic_mail }}</h4>
+							<p><i>{{ trad.warning_message_mail }}</i></p>
+							<p>{{ trad.explain_automatic_mail }}</p>
+							<input type="radio" name="automatic_mail" value="yes" id="label_1a" {% if settings.automatic_mail == 'yes' %} checked {% endif %} /> <label for="label_1a">{{ trad.admin_email_manager }}</label> - <a href="?p=admin_email_manager">{{ trad.admin_email_manager }}</a><br>
+							<input type="radio" name="automatic_mail" value="no" id="label_1b" {% if settings.automatic_mail == 'no' %} checked {% endif %} /> <label for="label_1b">{{ trad.mail_admin_off }}</label><br>
+						</section>
+
+						<hr>
+
+						<section id="liensemail">
+							<h4 class="page-header">{{ trad.configuration_liens_adresses }}</h4>
+							<input type="radio" name="envoyer_email_avec_formulaire" value="yes" id="label_2a" {% if settings.envoyer_email_avec_formulaire == 'yes' %} checked {% endif %} /> <label for="label_2a">{{ trad.envoyer_email_avec_formulaire_oui }}</label><br>
+							<input type="radio" name="envoyer_email_avec_formulaire" value="no" id="label_2b" {% if settings.envoyer_email_avec_formulaire == 'no' %} checked {% endif %} /> <label for="label_2b">{{ trad.envoyer_email_avec_formulaire_non }}</label><br>
+						</section>
+
+						<hr>
+
+						<section id="configsmtp">
+							<h4 class="page-header">{{ trad.Parametres_configuration_envoi_automatique_mails }}</h4>
+							<p>{{ trad.Explications_des_Parametres_configuration_envoi_automatique_mails |raw }}</p>
+							<input type="radio" name="grr_mail_method" value="mail" id="label_3a" {% if settings.grr_mail_method == 'mail' %} checked {% endif %} /> <label for="label_3a">{{ trad.methode_mail }}</label><br>
+							<input type="radio" name="grr_mail_method" value="smtp" id="label_3b" {% if settings.grr_mail_method == 'smtp' %} checked {% endif %} /> <label for="label_3b">{{ trad.methode_smtp }}</label><br>
+							<br>
+							<p>Uniquement pour la methode SMTP :</p><br>
+							{{ form.input('grr_mail_smtp', trad.Explications_methode_smtp_1, settings.grr_mail_smtp, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
+							{{ form.input('grr_mail_Username', trad.utilisateur_smtp, settings.grr_mail_Username, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
+							{{ form.input('grr_mail_Password', trad.pwd, settings.grr_mail_Password, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'password'}) }}<br>
+							{{ form.input('grr_mail_from', trad.Email_expediteur_messages_automatiques, settings.grr_mail_from, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
+							{{ form.input('grr_mail_fromname', trad.Nom_expediteur_messages_automatiques, settings.grr_mail_fromname, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
+							{{ form.input('smtp_secure', trad.smtp_secure, settings.smtp_secure, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
+							{{ form.input('smtp_port', trad.smtp_port, settings.smtp_port, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}<br>
+							{{ form.input('mail_test', trad.mail_test, '', {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
+							
+							<label><input type="checkbox" name="grr_mail_Bcc" value="y"  {% if settings.grr_mail_Bcc == 'y' %} checked {% endif %} /> {{ trad.copie_cachee }}</label>
+							
+						</section>
+
+						<hr>	
+						
+						<section id="popupreservation">
+							<h4 class="page-header">{{ trad.javascript_info_disabled_msg }}</h4>
+							<input type="radio" name="javascript_info_disabled" value="0" id="label_4a" {% if settings.javascript_info_disabled == '0' %} checked {% endif %} /> <label for="label_4a">{{ trad.javascript_info_disabled0 }}</label><br>
+							<input type="radio" name="javascript_info_disabled" value="1" id="label_4b" {% if settings.javascript_info_disabled == '1' %} checked {% endif %} /> <label for="label_4b">{{ trad.javascript_info_disabled1 }}</label><br>
+						</section>
+
+						<hr>	
+						
+						<section id="popupadmin">
+							<h4 class="page-header">{{ trad.javascript_info_admin_disabled_msg }}</h4>
+							<input type="radio" name="javascript_info_admin_disabled" value="0" id="label_5a" {% if settings.javascript_info_admin_disabled == '0' %} checked {% endif %} /> <label for="label_5a">{{ trad.javascript_info_disabled0 }}</label><br>
+							<input type="radio" name="javascript_info_admin_disabled" value="1" id="label_5b" {% if settings.javascript_info_admin_disabled == '1' %} checked {% endif %} /> <label for="label_5b">{{ trad.javascript_info_disabled1 }}</label><br>
+						</section>
+
+						<hr>	
+						
+						<section id="popupadmin">
+							<h4 class="page-header">{{ trad.suppression_automatique_des_reservations }}</h4>
+							<p>{{ trad.Explications_suppression_automatique_des_reservations |raw}}</p>
+							<input type="radio" name="verif_reservation_auto" value="0" id="label_6a" {% if settings.verif_reservation_auto == '0' %} checked {% endif %} /> <label for="label_6a">{{ trad.verif_reservation_auto0 }}</label><br>
+							<input type="radio" name="verif_reservation_auto" value="1" id="label_6b" {% if settings.verif_reservation_auto == '1' %} checked {% endif %} /> <label for="label_6b">{{ trad.verif_reservation_auto1 }}</label><br>
+							<br>
+							{{ form.input('motdepasse_verif_auto_grr', trad.verif_reservation_auto2, settings.motdepasse_verif_auto_grr, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'password'}) }}
+							{{ form.input('chemin_complet_grr', trad.verif_reservation_auto3, settings.chemin_complet_grr, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label'}) }}
+						</section>
+
+
+						<div style="text-align:center;">
+							<input class="btn btn-primary" type="submit" name="ok" value="{{ trad.save }}" />
+						</div>
+					</form>
+				</div>
+				</div>
+				<!-- /.tab-content -->
+			</div>
+          <!-- /.nav-tabs-custom -->
+			</div>
+        <!-- /.col -->
+		</div>
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

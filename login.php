@@ -3,15 +3,10 @@
  * login.php
  * interface de connexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2009-12-16 14:52:31 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @author    Marc-Henri PAMISEUX <marcori@users.sourceforge.net>
- * @copyright Copyright 2003-2008 Laurent Delineau
- * @copyright Copyright 2008 Marc-Henri PAMISEUX
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    Laurent Delineau & JeromeB
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   admin
- * @version   $Id: login.php,v 1.10 2009-12-16 14:52:31 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -19,15 +14,6 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 include "include/connect.inc.php";
 include "include/config.inc.php";
@@ -46,7 +32,7 @@ require_once("./include/session.inc.php");
 // Vérification du numéro de version et renvoi automatique vers la page de mise à jour
 if (verif_version())
 {
-	header("Location: ./admin/admin_maj.php");
+	header("Location: ../installation/maj.php");
 	exit();
 }
 // User wants to be authentified
@@ -112,6 +98,11 @@ if (isset($_POST['login']) && isset($_POST['password']))
 		$message = get_vocab("echec_connexion_GRR");
 		$message .= "<br />". get_vocab("connexion_a_grr_non_autorisee");
 		$message .= "<br />". get_vocab("echec_authentification_imap");
+	}
+	else if ($result == "11")
+	{
+		$message = get_vocab("echec_connexion_GRR");
+		$message .= "<br />". get_vocab("connexion_a_grr_ip");
 	}
 	else
 	{
@@ -191,6 +182,7 @@ echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("compan
 		?>
 		<fieldset style="padding-top: 8px; padding-bottom: 8px; width: 40%; margin-left: auto; margin-right: auto;">
 			<legend class="fontcolor3" style="font-variant: small-caps;"><?php echo get_vocab("identification"); ?></legend>
+			<?php echo "<p>".get_vocab("mentions_legal_connexion")."</p>"; ?>
 			<table style="width: 100%; border: 0;" cellpadding="5" cellspacing="0">
 				<tr>
 					<td style="text-align: right; width: 40%; font-variant: small-caps;"><?php echo get_vocab("login"); ?></td>
@@ -221,8 +213,8 @@ echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("compan
 		if ($lien != "")
 			echo "<p>[".$lien."]</p>";
 	}
-	echo "<a href=\"javascript:history.back()\">Précedent";
-	echo " - <b>".Settings::get("company")."</b></a>";
+	echo "<p>[<a href='page.php?page=CGU' target='_blank'>".get_vocab("cgu")."</a>]</p>";
+	echo "<a href=\"javascript:history.back()\">".get_vocab("previous")." - <b>".Settings::get("company")."</b></a>";
 	?>
 	<br />
 	<br />

@@ -1,0 +1,93 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			<div class="nav-tabs-custom">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#grr" data-toggle="tab">Infos GRR</a></li>
+					<li><a href="#serveur" data-toggle="tab">Serveur</a></li>
+					<li><a href="#infosphp" data-toggle="tab">Infos PHP</a></li>
+					<li><a href="#fichierconfig" data-toggle="tab">Fichier configuration</a></li>
+					<li class="pull-right"><button type="button" id="copy" class="btn btn-info pull-right btn-block btn-sm">Copier infos pour aide</button></li>
+				</ul>
+				<div class="tab-content">
+					<!-- GRR -->
+					<div class="tab-pane active" id="grr">
+						<ul class="list-group list-group-unbordered">
+							<li class="list-group-item"><p class="col-sm-6">{{ trad.num_version }}</p><b>{{ trad.dNum_version }}</b></li>
+							<li class="list-group-item"><p class="col-sm-6">{{ trad.num_versionbdd }}</p><b>{{ trad.dNum_versionbdd }}</b></li>
+							<li class="list-group-item"><p class="col-sm-6">{{ trad.prefixe }}</p><b>{{ trad.dPrefixe }}</b></li>
+							<li class="list-group-item"><p class="col-sm-6">{{ trad.maj_bdd }}</p><b>{{ trad.dMaj_bdd |raw }} </b></li>
+							<li class="list-group-item"><p class="col-sm-6">{{ trad.maj_recherche_grr }}</p><b>{{ trad.dMaj_SiteGRR |raw }}&nbsp;</b></li>
+							<li class="list-group-item"><p class="col-sm-6"><b>Infos support </b><i>(A fournir pour toute demande d'aide)</i> :</p><textarea id="to-copy" rows="8" cols="40">
+{{ trad.num_version }} : {{ trad.dNum_version }}
+{{ trad.num_versionbdd }} : {{ trad.dNum_versionbdd }}
+{{ trad.system }} : {{ trad.dSystem }}
+Version PHP : {{ trad.dVersionPHP }}
+{{ trad.database }} : {{ trad.dDatabase }} => {{ trad.dVersionBDD }}
+Time : {{ trad.dTime }}
+Timezone : {{ trad.dTimezone }}</textarea></li>
+						</ul>
+						<!-- Infos pour support -->
+
+						<!-- Fin infos pour support -->
+					</div>
+
+					<!-- Serveur -->
+					<div class="tab-pane" id="serveur">
+						<ul class="list-group list-group-unbordered">
+							<li class="list-group-item"><p class="col-sm-6">{{ trad.system }}</p><b>{{ trad.dSystem }}</b></li>
+							<li class="list-group-item"><p class="col-sm-6">Version PHP</p><b><small class="label pull-left {{ trad.dCouleurVersionPHP }}">{{ trad.dVersionPHP }}</small>&nbsp;</b></li>
+							<li class="list-group-item"><p class="col-sm-6">{{ trad.database }}</p><b>{{ trad.dDatabase }}</b></li>
+							<li class="list-group-item"><p class="col-sm-6">Version BDD</p><b><small class="label pull-left {{ trad.dCouleurVersionMySQL }}">{{ trad.dVersionBDD }}</small>&nbsp;</b></li>
+
+							<li class="list-group-item"><b class="col-sm-12">Dossiers : </b><br></li>
+							<li class="list-group-item"><p class="col-sm-6">Existance dossier "installation"</p><b><small class="label pull-left {% if trad.dDossierInstallation == 1 %}bg-orange{% else %}bg-green{% endif %}">{% if trad.dDossierInstallation == 1 %}Existant - Nous recommandons de le supprimer{% else %}Innexistant{% endif %}</small>&nbsp;</b></li>
+							<li class="list-group-item"><p class="col-sm-6">Droits dossier "images"</p><b><small class="label pull-left {% if trad.dDossierImgEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></li>
+							<li class="list-group-item"><p class="col-sm-6">Droits dossier "export"</p><b><small class="label pull-left {% if trad.dDossierExportEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></li>
+							<li class="list-group-item"><p class="col-sm-6">Droits dossier "temp"</p><b><small class="label pull-left {% if trad.dDossierTempEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></li>
+							<li class="list-group-item"><p class="col-sm-6">Droits dossier "modules"</p><b><small class="label pull-left {% if trad.dDossierModulesEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></li>
+
+							<li class="list-group-item"><b class="col-sm-12">Temps : </b><br></li>
+							<li class="list-group-item"><p class="col-sm-6">Time</p><b>{{ trad.dTime }}</b></li>
+							<li class="list-group-item"><p class="col-sm-6">Date du serveur (Jour-Mois-Annee)</p><b>{{ trad.dDate }}</b></li>
+							<li class="list-group-item"><p class="col-sm-6">Heure du serveur</p><b>{{ trad.dHeure }}</b></li>
+							<li class="list-group-item"><p class="col-sm-6">Timezone (date_default_timezone_set)</p><b>{{ trad.dTimezone }}</b></li>
+						</ul>
+					</div>
+
+					<!-- Infos PHP -->
+					<div class="tab-pane" id="infosphp">
+						
+							{{ infosPHP |raw }}
+
+					</div>
+
+					<!-- Fichier Config -->
+					<div class="tab-pane" id="fichierconfig">
+						<ul class="list-group list-group-unbordered">
+							{{ trad.dInfosConfigVar |raw }}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+{% endblock %}
+
+{% block javascript %}
+	<script>
+		var toCopy  = document.getElementById( 'to-copy' ),
+		btnCopy = document.getElementById( 'copy' );
+		btnCopy.addEventListener( 'click', function(){
+		toCopy.select();
+		document.execCommand( 'copy' );
+		return false;
+		} );
+	</script>
+{% endblock %}

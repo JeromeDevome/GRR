@@ -1,4 +1,20 @@
 <?php
+/**
+ * menu_gauche.php
+ * Menu calendrier & domaines & ressource & légende
+ * Ce script fait partie de l'application GRR
+ * Dernière modification : $Date: 2018-05-17 12:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @link      http://www.gnu.org/licenses/licenses.html
+ *
+ * This file is part of GRR.
+ *
+ * GRR is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
 
 if ($_GET['pview'] != 1)
 {
@@ -14,8 +30,17 @@ if ($_GET['pview'] != 1)
 	echo '<div id="menuGauche">';
 
 	$pageActuel = str_replace(".php","",basename($_SERVER['PHP_SELF']));
-
-	// Calendrier
+    // détermine le contexte d'appel : jour, semaine ou mois
+    $pageSimple = str_replace(".php","",$file);
+    $pageSimple = str_replace("_all","",$pageSimple);
+    $pageSimple = str_replace("2","",$pageSimple);
+    if ($pageSimple == "day") {
+        $pageTout = "day.php";
+    }
+    else $pageTout = $pageSimple."_all.php";
+    // $pageSimple .= '.php';
+	
+    // Calendrier
 	minicals($year, $month, $day, $area, $room, $pageActuel);
 	
 	// Liste sites, domaines, ressources
@@ -34,25 +59,22 @@ if ($_GET['pview'] != 1)
 	{
 		if ($area_list_format == "select")
 		{
-			echo make_site_select_html('week_all.php', $id_site, $year, $month, $day, getUserName());
-			echo make_area_select_html('week_all.php', $id_site, $area, $year, $month, $day, getUserName());
-			echo make_room_select_html('week', $area, $room, $year, $month, $day);
+			echo make_site_select_html($pageTout, $id_site, $year, $month, $day, getUserName());
+			echo make_area_select_html($pageTout, $id_site, $area, $year, $month, $day, getUserName());
+			echo make_room_select_html($pageSimple, $area, $room, $year, $month, $day);
 		}
 		else
 		{
-			echo make_site_item_html('week_all.php', $id_site, $year, $month, $day, getUserName());
-			echo make_area_item_html('week_all.php',$id_site, $area, $year, $month, $day, getUserName());
-			echo make_room_item_html('week', $area, $room, $year, $month, $day);
+			echo make_site_item_html($pageTout, $id_site, $year, $month, $day, getUserName());
+			echo make_area_item_html($pageTout,$id_site, $area, $year, $month, $day, getUserName());
+			echo make_room_item_html($pageSimple, $area, $room, $year, $month, $day);
 		}
 	}
 	else
 	{
-
-		echo make_site_list_html('week_all.php',$id_site,$year,$month,$day,getUserName());
-		echo make_area_list_html('week_all.php',$id_site, $area, $year, $month, $day, getUserName());
-		echo make_room_list_html('week.php', $area, $room, $year, $month, $day);
-		
-
+		echo make_site_list_html($pageTout,$id_site,$year,$month,$day,getUserName());
+		echo make_area_list_html($pageTout,$id_site, $area, $year, $month, $day, getUserName());
+		echo make_room_list_html($pageSimple, $area, $room, $year, $month, $day);
 	}
 
 	echo "\n</div>\n".PHP_EOL;

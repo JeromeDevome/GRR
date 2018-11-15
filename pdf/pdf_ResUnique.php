@@ -1,4 +1,3 @@
-
 <?php
 
 echo '<!DOCTYPE html>
@@ -13,21 +12,17 @@ echo '<!DOCTYPE html>
 	<body>
 		<div class="container">
 			<br/>
-			<div class="row" id ="img">
-				<div class="col-md-1">
-					<img src="./'.$logo.'" width="212" height="110" alt="logo">
-				</div>
-				<div class="col-md-4 col-md-offset-7">
+			<div class="row">
+				<div class="col-md-12" id="img">
+					<img src="'.$logo.'" height="110" alt="logo"><br>
 					'.$etablisement.'
 				</div>
 			</div>
-		
-			<br/>
 			<div class="row">
-				<div class="col-md-4 col-md-offset-8" id = "adresse">
-						'.$civ.' '.$prenom.' '.$nom.'<br/>
-						'.$orga.'<br/>
-						'.$adresse.'<br/>
+				<div class="col-md-4 col-md-offset-8" id="adressedestinataire">
+						'.$nom.'<br>
+						'.$adresse.'<br>
+						'.$adresse2.'<br/>
 						'.$cp.' '.$ville.'
 				</div>
 			</div>
@@ -38,7 +33,7 @@ echo '<!DOCTYPE html>
 			<br/>
 			
 			<div class="row">
-			<strong> Objet: Confirmation de réservation de salle</strong>
+			<strong> Objet: Confirmation de réservation</strong>
 			</div>
 
 		
@@ -46,9 +41,9 @@ echo '<!DOCTYPE html>
 
 			<div class="row">
 				<div class="col-md-8 col-md-offset-1">
-					'.$civ.',<br>
+					Bonjour,<br>
 					Suite à votre demande du '.$date.' dernier,
-					nous avons le plaisir de vous informer que la salle <b>'.$salle.'</b> sera mise à votre disposition,
+					nous avons le plaisir de vous informer que la ressource <b>'.$salle.'</b> sera mise à votre disposition,
 				</div>
 			</div>
 			<div class="row">
@@ -63,8 +58,7 @@ echo '<!DOCTYPE html>
 			</div>
 			<div class="row">
 				<div class="col-md-8 col-md-offset-1">
-					Restant à votre disposition pour tous renseignements complémentaires,<br>
-					Nous vous prions de croire, '.$civ.', à l\'assurance des nos sentiments les meilleurs.
+					Restant à votre disposition pour tous renseignements complémentaires.
 				</div>
 			</div>
 			<br>

@@ -1,0 +1,101 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+        <div class="col-xs-12">
+			<div class="nav-tabs-custom">
+				<ul class="nav nav-tabs">
+					<li><a href="?p=admin_config">{{ trad.admin_config1 }}</a></li>
+					<li><a href="?p=admin_config6">{{ trad.admin_config6 }}</a></li>
+					<li><a href="?p=admin_config2">{{ trad.admin_config2 }}</a></li>
+					<li><a href="?p=admin_config3">{{ trad.admin_config3 }}</a></li>
+					<li class="active"><a href="?p=admin_config4">{{ trad.admin_config4 }}</a></li>
+					<li><a href="?p=admin_config5">{{ trad.admin_config5 }}</a></li>
+				</ul>
+            <div class="tab-content">
+				<div class="tab-pane active" id="fa-icons">
+					{% if trad.dDbSys == "mysql" %}
+						<section id="sauvegarde">
+							<form action="admin_save_mysql.php" method="get">
+								<input type="hidden" name="flag_connect" value="yes" />
+								<h4 class="page-header">{{ trad.title_backup }}</h4>
+								<p>{{ trad.explain_backup }}</p>
+								<p><i>{{ trad.warning_message_backup }}</i></p>
+								<input class="btn btn-primary" type="submit" value="{{ trad.submit_backup }}" />
+							</form>
+						</section>
+						{% if trad.dRestaureBBD == 1 %}
+							<hr>
+							<section id="restauration">
+								<form method="post" enctype="multipart/form-data" action="?p=admin_open_mysql">
+									<input type="hidden" name="p" value="admin_open_mysql" />
+									<h4 class="page-header">{{ trad.Restauration_de_la_base_GRR }}</h4>
+									<p>En cas de perte de donnée ou de problème sur la base GRR, cette fonction vous permet de la retrouver dans l'état antérieur lors d'une sauvegarde. Vous devez sélectionner un fichier créé à l'aide de la fonction Lancer une sauvegarde.</p>
+									<p><i>Attention! Restaurer la base vous fera perdre toutes les données qu'elle contient actuellement. De plus, tous les utilisateurs présentement connectés, ainsi que vous-mêmes, serez déconnectés. Alors, il est conseillé de créer d'abord une sauvegarde et de vous assurer que vous êtes le seul connecté.</i></p>
+									<br><input type="file" name="sql_file" size="30" /><br>
+									<input class="btn btn-primary" type="submit" value="{{ trad.Restaurer_la_sauvegarde }}" />
+								</form>
+							</section>
+						{% endif %}
+					{% endif %}
+					<form action="?p=admin_config4" method="get">
+						<input type="hidden" name="p" value="admin_config4" />
+						<hr>
+						<section id="sauvegardeautomatique">
+							<h4 class="page-header">{{ trad.execution_automatique_backup }}</h4>
+							<p>{{ trad.execution_automatique_backup_explications |raw }}</p>
+							{{ form.input('motdepasse_backup', trad.execution_automatique_backup_mdp, settings.motdepasse_backup, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'password'}) }}
+						</section>
+						<hr>
+						<section id="desactiveconnexion">
+							<h4 class="page-header">{{ trad.title_disable_login }}</h4>
+							<p>{{ trad.explain_disable_login }}</p>
+							<input type="radio" name="disable_login" value="yes" id="label_1" {% if settings.disable_login == 'yes' %} checked {% endif %} /> <label for="label_1">{{ trad.disable_login_on }}</label><br>
+							<input type="radio" name="disable_login" value="no" id="label_2" {% if settings.disable_login == 'no' %} checked {% endif %} /> <label for="label_2">{{ trad.disable_login_off }}</label>
+						</section>
+						<hr>
+						<section id="ipautorise">
+							<h4 class="page-header">{{ trad.title_ip_autorise }}</h4>
+							<p>{{ trad.explain_ip_autorise }}</p>
+							{{ form.input('ip_autorise', '', settings.ip_autorise, {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+						</section>
+						<hr>
+						<section id="dureesession">
+							<h4 class="page-header">{{ trad.title_session_max_length }}</h4>
+							<p>{{ trad.explain_session_max_length }}</p>
+							{{ form.input('sessionMaxLength', trad.session_max_length, settings.sessionMaxLength, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+						</section>
+						<hr>
+						<section id="motdepasse">
+							<h4 class="page-header">{{ trad.pwd }}</h4>
+							{{ form.input('pass_leng', trad.pass_leng_explain, settings.pass_leng, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+						</section>
+						<hr>
+						<section id="urldeconnexion">
+							<h4 class="page-header">{{ trad.Url_de_deconnexion }}</h4>
+							<p>{{ trad.Url_de_deconnexion_explain }}</p>
+							<p><i>{{ trad.Url_de_deconnexion_explain2 }}</i></p>
+							{{ form.input('ip_autorise', '', settings.ip_autorise, {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+						</section>
+						<br>
+						<div style="text-align:center;"><input class="btn btn-primary" type="submit" name="ok" value="{{ trad.save }}" /></div>
+					</form>
+				</div>
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

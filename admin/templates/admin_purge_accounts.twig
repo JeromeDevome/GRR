@@ -1,0 +1,74 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			{% if trad.dNettoyageLiaison  %}
+				{{ msgSyst.messageInfo('Résultat', trad.dNettoyageLiaison) }}
+			{% endif %}
+
+			{{ msgSyst.messageAlerte('Attention', trad.admin_backup_recommande) }}
+			
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{ trad.admin_purge_accounts }}</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body no-padding">
+					<p>{{ trad.admin_clean_accounts_desc |raw }}</p>
+
+					<form id="purge_liaison" action="?p=admin_purge_accounts" method="post">
+						<input type="hidden" name="p" value="admin_purge_accounts" />
+						<input type="hidden" name="do_purge_table_liaison" value="1" />
+						<center><input type="button" value="{{ trad.admin_purge_tables_liaison }}" class="btn btn-primary btn-md" onclick="return confirmButton('purge_liaison', '{{ trad.admin_purge_tables_confirm }}')" /></center>
+					</form>
+
+					<br><hr>
+
+					<p>{{ trad.admin_purge_accounts_desc |raw }}</p>
+					
+					<form id="purge_sauf_privileges" action="?p=admin_purge_accounts" method="post">
+						<input type="hidden" name="p" value="admin_purge_accounts" />
+						<input type="hidden" name="do_purge_sauf_privileges" value="1" />
+						<center><input type="button" value="{{ trad.admin_purge_accounts_sauf_privileges }}" class="btn btn-warning btn-md" onclick="return confirmButton('purge_sauf_privileges', '{{ trad.admin_purge_accounts_confirm4 }}')" /></center>
+					</form>
+					<br>
+					<form id="purge" action="?p=admin_purge_accounts" method="post">
+						<input type="hidden" name="p" value="admin_purge_accounts" />
+						<input type="hidden" name="do_purge" value="1" />
+						<center><input type="button" value="{{ trad.admin_purge_accounts }}" class="btn btn-danger btn-md" onclick="return confirmButton('purge', '{{ trad.admin_purge_accounts_confirm }}')" /></center>
+					</form>
+					<br>
+					<form id="purge_avec_resa" action="?p=admin_purge_accounts" method="post">
+						<input type="hidden" name="p" value="admin_purge_accounts" />
+						<input type="hidden" name="do_purge_avec_resa" value="1" />
+						<center><input type="button" value="{{ trad.admin_purge_accounts_with_bookings }}" class="btn btn-danger btn-md" onclick="return confirmButton('purge_avec_resa', '{{ trad.admin_purge_accounts_confirm2 }}')" /></center>
+					</form>
+					<br>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+	function confirmButton(theform,themessage)
+	{
+		var is_confirmed = window.confirm(themessage);
+		if (is_confirmed)
+		{
+			document.forms[theform].submit();
+		}
+		return is_confirmed;
+	}
+</script>
+{% endblock %}

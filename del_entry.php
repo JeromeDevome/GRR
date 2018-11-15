@@ -1,15 +1,12 @@
 <?php
 /**
  * del_entry.php
- * Interface de suppresssion d'une réservation
+ * Interface de suppression d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2009-06-04 15:30:17 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
+ * Dernière modification : $Date: 2018-05-14 18:30$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   root
- * @version   $Id: del_entry.php,v 1.7 2009-06-04 15:30:17 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -17,23 +14,15 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+$grr_script_name = "del_entry.php";
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
 include_once('include/misc.inc.php');
 include "include/mrbs_sql.inc.php";
-$grr_script_name = "del_entry.php";
+
 require_once("./include/settings.class.php");
 if (!Settings::load())
 	die("Erreur chargement settings");
@@ -92,8 +81,11 @@ if ($info = mrbsGetEntryInfo($id))
 	$result = mrbsDelEntry(getUserName(), $id, $series, 1);
 	if ($result)
 	{
+        $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $info['room_id'];
 		$_SESSION['displ_msg'] = 'yes';
-		Header("Location: ".$page.".php?day=$day&month=$month&year=$year&area=$area&room=".$info["room_id"]);
+        $ress = '';
+        if ($room_back != 'all')  {$ress = "&room=".$room_back;}
+		Header("Location: ".$page.".php?day=$day&month=$month&year=$year&area=$area".$ress);
 		exit();
 	}
 }

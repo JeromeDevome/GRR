@@ -1,65 +1,96 @@
-[correction] view_room lien cassé depuis l'admin http://board.devome.com/viewtopic.php?f=42&t=385&p=3387&sid=221f96dfb1ccef84dd25e077bc568557#p3387
-[correction] mktine() vers time()
-[correction] Fonction mysql_ vers mysqli
-[correction] Remise ne place des jours et heures des reservation lors de l'edition
-[correction] Correction de minical sauvegarde du choix de la salle et du type d'affichage
-[correction] Balise php courte dans view_entry.php
-[correction] undefined index dans mincals.php
-[correction] undefined index dans edit_entry.php
-[correction] undefined index dans view_entry.php
-[correction] undefined index dans menu_gauche.php
-[correction] undefined index dans day.php
-[correction] undefined index dans week.php
-[correction] undefined index dans week_all.php
-[correction] undefined index dans month.php
-[correction] undefined index dans month_all.php
-[correction] undefined index dans month_all2.php
-[correction] undefined variable dans functions.inc.php
-[correction] Encodage des caracteres UTF-8 des pages
-[correction] Encodage des caracteres UTF-8 des pages en popup
-[correction] Encodage des caracteres UTF-8 des fichier genere
-[correction] affichage des pages de moderation avec l'option popup
-[correction] CSS print
-[correction] Traductions
-[correction] session/traduction sur certaines pages
-[correction] affichage du menu sur certaine page de l'admin
-[correction] Balise php courte dans contactFormulaire.php
-[correction] Affichage reservation sur 2 jours
-[correction] boutton aujourd'hui de mincals
-[ajout] gestion des droit dans contactFormulaire.php
-[ajout] bootstrap twitter pour l'apparence
-[ajout] fonction cle donne/rendu
-[ajout] fonction courrier recu
-[ajout] choix de reservation periodique chaque Xeme Yjour du mois
-[ajout] Jour férié
-[ajout] Vacance scolaire francaise
-[ajout] Settings pour les jours feries et vacances
-[ajout] Champs de recherche dans le select des beneficiare de edit_entry.php
-[maj] lib Jquery 2.1.1
-[maj] script popup.js compatibilité jquery
-[maj] fontion bouton_retour_haut() compatibilité jquery
-[maj] lib jquery.validate.js
-[maj] lib ckeditor 4.4.5
-[maj] lib Jquery-ui 1.11.1
-[maj] lib datepicker
-[maj] lib timepicker 1.5.0
-[maj] lib phpmailer 5.2.9+
-[maj] lib jspdf master-43eb081
-[maj] Traductions
-[change] Correction diverse du code HTML generer W3c validation
-[change] Ordre de chargemet des fichier css et js
-[change] Création et deplacemet des fichier js dans le dossier js
-[change] Netoyage du code / Mise en forme
-[change] Apparance utilisation de bootstrap et de glyphicon
-[change] Simplification de la fonction grr_sql_version par l'utilisation de mysqli_get_server_info
-[change] Horloge mise a jour pour fonctionner sur chrome
-[change] Affichage du menu gauche dans toutes les pages de l'administration
-[change] Passage de la verification des droit via une fonction
-[change] timepicker to clockpicker
-[change] Generation de pdf avancé
-[change] optimisation du mincals
-[change] suppression des variable inutile dans showaccessdenied
-[change] Gestion des settings via une class settings
-[suppression] Fichiers inutile
-[suppression] fonction html_entity_decode_all_version
-[suppression] des fragments de code pour l'upload des fichiers
+Bugs connus sur la version de GitHub :
+ - affichage défectueux du menu en position haute dans la page month_all2 
+ - des problèmes se produisent lorsqu'on veut faire une modification/copie de réservation  avec un changement de domaine
+
+Tâches prévues :
+ - interface de personnalisation des couleurs
+ 
+-----
+--
+-----
+
+Version en cours de développement sur GitHUB (3.4.1) // Numéro de version à confirmer
+    [ajout] Echange de deux réservations
+    [ajout] Page year_all affichant les réservations sur plusieurs mois et plusieurs domaines (à utiliser avec prudence s'il y a beaucoup de réservations ou de ressources)
+    [amelioration] reprise du code des pages plannings pour gérer les menus escamotables (fait toutes pages)
+    
+-----
+--
+-----
+
+Version 3.4.0
+	[ajout] Personnalisation des couleurs pour les types de réservation depuis l'administration, soit un passage de 28 couleurs à 16 777 216 couleurs
+	[ajout] Possibilité d'afficher le formulaire de demande de réservation aux non connectés et aux visiteurs ou simplement aux visiteurs 
+	[ajout] Interdire les différentes configurations d'authentification externe via le fichier de config
+	[ajout] Menu administration : Couleur bleu sur le lien où l'on se situe
+	[ajout] Menu administration : Possiblité d'accéder au lien où l'on se situe
+	[ajout] Moteur de page
+	[ajout] Conditions Générales d'Utilisation personalisables
+	[ajout] Lors de l'envoi mail, notifier le changement de ressources s'il y a lieu
+	[ajout] Gestion de modules externes
+    [ajout] message dans l'entête s'il existe une réservation à modérer
+    [amélioration] filtrage par plage IP au format CIDR
+    [amélioration] retour à la page d'appel après modération
+    [amélioration] présentation des réservations modérées
+    [amélioration] possibilité d'utiliser les couleurs du texte et du fond
+    [amélioration] intégration au portail EnvOLE
+    [amélioration] filtrage des adresses mail
+    [amélioration] affichage et liens pour créer une réservation en page month_all2
+    [amélioration] affichage des menus, changement de paramétrage de make_room_list_html
+    [amélioration] affichage des réservations successives dans une journée en page week_all
+    [correctif] paramètre manquant dans mysqli_connect
+    [correctif] divers correctifs syntaxiques
+    [correctif] donner une valeur numérique à $dbPort
+    [correctif] prise en compte des préférences de l'utilisateur dans le calcul de la page d'accueil
+    [correctif] la couleur jaune est illisible sur fond blanc
+    [correctif] affichage ou non de l'imprimante
+    [correctif] gestion du menu gauche escamotable
+	[mise à jour] CKEditor 4.8.0 
+	[modification] Génération des PDF, on parle de ressource et non de salle, réorganisation du format PDF (compatible en enveloppe fenêtre)
+	[modification] Date de début et fin des réservations par défaut lors d'une première installation
+	[modification] Longueur minimum du mot de passe, passage de 6 à 8 caractères lors d'une première installation
+	[modification] Conformité avec le RGPD
+    [modification] boutons mois précédent/suivant
+
+	
+-----
+--
+-----
+
+Version 3.3.1
+    [ajout] Visualisation des utilisateurs avec un mot de passe trop simple (A titre indicatif, certains mots de passe simples ne sont pas listés)
+    [ajout] Configuration du calendrier des vacances depuis l'administration
+    [ajout] Nouveau calendrier pour indiquer les fériés depuis l'administration
+    [ajout] Ajout de fichiers redirection pour empêcher la lecture de certains répertoires
+    [ajout] Champs additionnels dans l'affichage d'une réservation
+    [ajout] Page permettant la suppression de toutes les réservations postérieures à une date
+    [ajout] Page permettant la suppression de toutes les réservations antérieures à une date
+    [ajout] Page permettant de réserver en masse à partir d'un fichier csv
+    [ajout] Page permettant de réserver en masse à partir d'un fichier csv issu du logiciel UnDeuxTemps
+    [ajout] bibliothèques phpCAS dans le dossier /include
+    [ajout] Lien vers la page year.php depuis le numéro de l'année dans les pages month*.php
+	[ajout] Variable dans config permettant de désactiver la recherche de mise à jour
+    [correction] Affichage des champs additionnel, même dans le cas de caractère non utf8
+    [correction] Bordure de séparation pour les réservations entre les réservations dans la vue mois d'une ressources
+    [correction] Bordure de séparation pour les réservations entre les réservations dans la vue mois d'un domaine
+    [correction] Correction de la connexion LDAP lorsqu'un utilisateur externe existant se connecte ( merci à pboissonneault )
+    [correction] Affichage de la colonne gauche de l'admin dans la page admin_import_users_csv.php
+	[correction] Vue semaine d'une ressource sur plusieurs jour (horaire et crénaux)
+    [modification] La configuration d'un cas SSO ce fait depuis l'administration
+    [modification] Déplacement images dans le dossier approprié
+    [modification] de la page admin_calend.php pour en faire une page de choix entre:
+        -- l'ancienne page admin_calend.php renommée admin_calend2.php
+        -- une page permettant de supprimer toutes les réservations avant une date donnée
+        -- une page permettant de supprimer toutes les réservations après une date donnée
+        -- une page permettant de réserver en masse à partir d'un fichier csv
+        -- une page permettant de réserver en masse à partir d'un fichier csv issu du logiciel UnDeuxTemps
+    [modification] reprise des patches utilisés dans GEPI pour utilisation derrière un reverse-proxy
+	[modification] Amélioration du bandeau du haut : Supression texte "Accueil", réduction de la hauteur, optimisation du contenu
+	[modification] Passage d'image en CSS (Glyphicon)
+    [Suppression] Fichiers inutiles
+    [mise à jour] fichier des vacances scolaires (source index-education)
+    [mise à jour] documentation
+
+
+Version 3.3.0 et inférieur
+- Voir sur le site grr.devome.com

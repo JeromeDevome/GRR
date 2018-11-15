@@ -1,0 +1,79 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			{% if trad.dMesgSysteme %}
+				{{ msgSyst.messageAlerte(trad.dMesgTitreSysteme, trad.dMesgSysteme) }}
+			{% endif %}
+
+			{% if trad.dConnexionReussi == 1 %}
+
+				<div class="box">
+					<div class="box-header">
+						<h3 class="box-title">{{ trad.titre_ldap }}</h3>
+					</div>
+					<!-- /.box-header -->
+					
+					<div class="box-body no-padding">
+
+						<form action="?p=admin_config_ldap" method="post">
+
+							<input type="hidden" name="p" value="admin_config_ldap" />
+							<input type="hidden" name="etape" value="3" />
+							<input type="hidden" name="adresse" value="{{ trad.dAdresseLDAP }}" />
+							<input type="hidden" name="port" value="{{ trad.dPortLDAP }}" />
+							<input type="hidden" name="login_ldap" value="{{ trad.dLoginLDAP }}" />
+							<input type="hidden" name="pwd_ldap" value="{{ trad.dPwdLDAP }}" />
+							<input type="hidden" name="valid" value="{{ trad.dValid }}" />
+							<input type="hidden" name="use_tls" value="{{ trad.dUseTLS }}" />
+
+							{{ trad.dSelect_chemin_ldap |raw }}
+							
+
+							{{ form.input('ldap_filter', 'Filtre LDAP supplémentaire (facultatif)', trad.dFilterLDAP, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+
+							<br />
+							<hr>
+							<b>Remarque : pour le moment, aucune modification n'a été apportée au fichier de configuration "config_ldap.inc.php".</b>
+							<br />Pour enregistrer les informations, cliquez sur le bouton "Enregistrer les informations".<br />
+
+							<div style="text-align:center;">
+								<input type="submit" name="Valider" value="Enregistrer les informations" class="btn btn-success btn-md" />
+							</div>
+
+						</form>
+
+					</div>
+				</div>
+			{% else %}
+				<form action="?p=admin_config_ldap" method="post">
+
+					<input type="hidden" name="p" value="admin_config_ldap" />
+					<input type="hidden" name="etape" value="1" />
+					<input type="hidden" name="ldap_adresse" value="{{ trad.dAdresseLDAP }}" />
+					<input type="hidden" name="ldap_port" value="{{ trad.dPortLDAP }}" />
+					<input type="hidden" name="ldap_login" value="{{ trad.dLoginLDAP }}" />
+					<input type="hidden" name="use_tls" value="{{ trad.dUseTLS }}" />
+
+					<div class="alert alert-danger">
+						<h4><i class="icon fa fa-warning"></i> La connexion au serveur LDAP a échoué </h4>
+						Revenez à la page précédente et vérifiez les informations fournies.
+						<div class="alert-footer">
+							<input type="submit" name="valider" value="{{ trad.back }}" class="btn btn-danger btn-md" />
+							&nbsp;
+						</div>
+					</div>
+				</form>
+
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

@@ -1,17 +1,11 @@
 <?php
 /**
  * admin_edit_room.php
- * Interface de creation/modification
- * des sites, domaines et des ressources de l'application GRR
- * Derniere modification : $Date: 2010-04-07 15:38:14 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @author    Marc-Henri PAMISEUX <marcori@users.sourceforge.net>
- * @copyright Copyright 2003-2008 Laurent Delineau
- * @copyright Copyright 2008 Marc-Henri PAMISEUX
+ * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   admin
- * @version   $Id: admin_edit_room.php,v 1.16 2010-04-07 15:38:14 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -19,16 +13,8 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 include "../include/admin.inc.php";
 $grr_script_name = "admin_edit_room.php";
 $ok = NULL;
@@ -62,22 +48,21 @@ if ($max_booking<-1)
 	$max_booking = -1;
 $statut_room = isset($_POST["statut_room"]) ? "0" : "1";
 $show_fic_room = isset($_POST["show_fic_room"]) ? "y" : "n";
-//Ne pas faire l'update si on a pas soumis le formulaire (consultation)
-if(!empty($_POST)) {
-    if (isset($_POST["active_ressource_empruntee"]))
-        $active_ressource_empruntee = 'y';
-    else {
-        $active_ressource_empruntee = 'n';
-        // toutes les reservations sont considerees comme restituee
-        grr_sql_query("update " . TABLE_PREFIX . "_entry set statut_entry = '-' where room_id = '" . $room . "'");
-    }
-    if (isset($_POST["active_cle"]))
-        $active_cle = 'y';
-    else {
-        $active_cle = 'n';
-        // toutes les reservations sont considerees comme restituee
-        grr_sql_query("update " . TABLE_PREFIX . "_entry set statut_entry = '-' where room_id = '" . $room . "'");
-    }
+if (isset($_POST["active_ressource_empruntee"]))
+	$active_ressource_empruntee = 'y';
+else
+{
+	$active_ressource_empruntee = 'n';
+	// toutes les reservations sont considerees comme restituee
+	grr_sql_query("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id = '".$room."'");
+}
+if (isset($_POST["active_cle"]))
+	$active_cle = 'y';
+else
+{
+	$active_cle = 'n';
+	// toutes les reservations sont considerees comme restituee
+	grr_sql_query("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id = '".$room."'");
 }
 $picture_room = isset($_POST["picture_room"]) ? $_POST["picture_room"] : NULL;
 $comment_room = isset($_POST["comment_room"]) ? $_POST["comment_room"] : NULL;
@@ -200,12 +185,12 @@ if ((!empty($room)) || (isset($area_id)))
 			}
 			else
 			{
-				if (@file_exists($dest."img_".$room.".jpg"))
-					unlink($dest."img_".$room.".jpg");
-				if (@file_exists($dest."img_".$room.".png"))
-					unlink($dest."img_".$room.".png");
-				if (@file_exists($dest."img_".$room.".gif"))
-					unlink($dest."img_".$room.".gif");
+				if (@file_exists($dest."img_".TABLE_PREFIX."".$room.".jpg"))
+					unlink($dest."img_".TABLE_PREFIX."".$room.".jpg");
+				if (@file_exists($dest."img_".TABLE_PREFIX."".$room.".png"))
+					unlink($dest."img_".TABLE_PREFIX."".$room.".png");
+				if (@file_exists($dest."img_".TABLE_PREFIX."".$room.".gif"))
+					unlink($dest."img_".TABLE_PREFIX."".$room.".gif");
 				$picture_room = "";
 			}
 		}
@@ -331,11 +316,11 @@ if ((!empty($room)) || (isset($area_id)))
 					{
 						$tab = explode(".", $doc_file['name']);
 						$ext = strtolower($tab[1]);
-						if (@file_exists($dest."img_".$room.".".$ext))
-							@unlink($dest."img_".$room.".".$ext);
-						rename($dest.$doc_file['name'],$dest."img_".$room.".".$ext);
-						@chmod($dest."img_".$room.".".$ext, 0666);
-						$picture_room = "img_".$room.".".$ext;
+						if (@file_exists($dest."img_".TABLE_PREFIX."".$room.".".$ext))
+							@unlink($dest."img_".TABLE_PREFIX."".$room.".".$ext);
+						rename($dest.$doc_file['name'],$dest."img_".TABLE_PREFIX."".$room.".".$ext);
+						@chmod($dest."img_".TABLE_PREFIX."".$room.".".$ext, 0666);
+						$picture_room = "img_".TABLE_PREFIX."".$room.".".$ext;
 						$sql_picture = "UPDATE ".TABLE_PREFIX."_room SET picture_room='".protect_data_sql($picture_room)."' WHERE id=".$room;
 						if (grr_sql_command($sql_picture) < 0)
 						{
@@ -638,14 +623,14 @@ if ((!empty($room)) || (isset($area_id)))
 				echo " checked=\"checked\"";
 			echo " /></td></tr>\n";
 	// Quels utilisateurs ont le droit de reserver cette ressource au nom d'un autre utilisateur ?
-			echo "<tr><td>".get_vocab("qui peut reserver pour autre utilisateur")."</td><td><select class=\"form-control\" name=\"qui_peut_reserver_pour\" size=\"1\">\n<option value=\"5\" ";
+			echo "<tr><td>".get_vocab("qui_peut_reserver_pour_autre_utilisateur")."</td><td><select class=\"form-control\" name=\"qui_peut_reserver_pour\" size=\"1\">\n<option value=\"5\" ";
 			if ($row["qui_peut_reserver_pour"]==6)
 				echo " selected=\"selected\" ";
 			echo ">".get_vocab("personne")."</option>\n
 			<option value=\"4\" ";
 			if ($row["qui_peut_reserver_pour"]==4)
 				echo " selected=\"selected\" ";
-			echo ">".get_vocab("les administrateurs restreints")."</option>\n
+			echo ">".get_vocab("les_administrateurs_restreints")."</option>\n
 			<option value=\"3\" ";
 			if ($row["qui_peut_reserver_pour"]==3)
 				echo " selected=\"selected\" ";
@@ -667,6 +652,7 @@ if ((!empty($room)) || (isset($area_id)))
 		echo "/></td></tr>\n";
 	//
 		echo "</table>\n";
+		Hook::Appel("hookEditRoom1");
 		echo "<div style=\"text-align:center;\"><br />\n";
 		echo "<input class=\"btn btn-primary\" type=\"submit\" name=\"change_room\"  value=\"".get_vocab("save")."\" />\n";
 		echo "<input class=\"btn btn-primary\" type=\"submit\" name=\"change_done\" value=\"".get_vocab("back")."\" />";
@@ -674,7 +660,7 @@ if ((!empty($room)) || (isset($area_id)))
 		if (@file_exists($nom_picture) && $nom_picture)
 			echo "<br /><br /><b>".get_vocab("Image de la ressource").get_vocab("deux_points")."</b><br /><img src=\"".$nom_picture."\" alt=\"logo\" />";
 		else
-			echo "<br /><br /><b>".get_vocab("Pas image disponible")."</b>";
+			echo "<br /><br /><b>".get_vocab("Pas_image_disponible")."</b>";
 		?>
 	</div>
 </form>
@@ -1198,6 +1184,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 			echo "<tr><td>".get_vocab("max_booking")." -  ".get_vocab("all_rooms_of_area").get_vocab("deux_points");
 			echo "</td><td><input class=\"form-control\" type=\"text\" name=\"max_booking\" value=\"".$row['max_booking']."\" /></td>\n";
 			echo "</tr></table>";
+			Hook::Appel("hookEditArea1");
 			echo "<div style=\"text-align:center;\">\n";
 			echo "<input class=\"btn btn-primary\" type=\"submit\" name=\"change_area\" value=\"".get_vocab("save")."\" />\n";
 			echo "<input class=\"btn btn-primary\" type=\"submit\" name=\"change_done\" value=\"".get_vocab("back")."\" />\n";

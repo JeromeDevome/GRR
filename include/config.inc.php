@@ -2,14 +2,10 @@
 /**
  * config.inc.php
  * Fichier de configuration de GRR
- * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2009-12-02 20:11:08 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    JeromeB & Laurent Delineau
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   root
- * @version   $Id: config.inc.php,v 1.7 2009-12-02 20:11:08 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -17,16 +13,13 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+ 
+### A LIRE ###
+# Il est préférable de pas modifier ce fichier, car celui-ci sera écrasé lors des mises à jours
+# Nous conseillons de creer un fichier dans ce dossier en l'appelant "configperso.inc.php"
+# Dans ce dernier ajouter les variables souhaité avec les valeurs souhaité, vos valeurs écraserons ce de ce fichier
+##############
 
 /*
 Problème de sessions qui expirent prématurément :
@@ -64,8 +57,7 @@ $nb_year_calendar = 10;
  et remplacez -7 par +n ou -n où "n" est le nombre d'heures d'avance ou de retard de GRR sur l'heure système du serveur.
 */
  $timezone = 'America/Toronto';
- putenv("TZ=posix/Etc/GMT+0");
- putenv("TZ={$timezone}");
+date_default_timezone_set($timezone);
 
 # Affichage d'un domaine par defaut en fonction de l'adresse IP de la machine cliente (voir documentation)
 # Mettre 0 ou 1 pour désactiver ou activer la fonction dans la page de gestion des domaines
@@ -102,8 +94,23 @@ $nb_year_calendar = 10;
 # Sinon, positionnez la variable suivante a "0"; (valeur par defaut = 1)
  $use_function_html_entity_decode = 1;
 
-#Requiert Connexion pour mettre à jour la BDD 0: non ; 1: oui - Defaut 1
+#Requiert Connexion pour mettre à jour la BDD || 0: non ; 1: oui - Defaut 1
 $connexionAdminMAJ = 1;
+
+#L'admin peut restaurer une base depuis l'administration || 0: non ; 1: oui - Defaut 1
+$restaureBBD = 1;
+
+#Mode debug || 0: non ; 1: oui - Defaut 0
+$debug_flag = 0;
+
+#Rechercher des MAJ sur le serveur grr.devome.com || 0: non ; 1: oui - Defaut 1
+$recherche_MAJ = 1;
+
+#Possibilité d'upload de module || 0: non ; 1: oui - Defaut 1
+$upload_Module = 1;
+
+# Nb de jour maximum que l'on garde les logs de connexions, 0 = aucune limite
+$nbMaxJoursLogConnexion = 365;
 
 ##################################################
 # Cas d'une authentification via config.inc.php  #
@@ -122,9 +129,21 @@ $sso_super_admin = false;
 
 /*
  $sso_restrictions : false|true
- Mettre la valeur du paramètre $sso_restrictions à "true" permet de cacher dans l'interface de GRR l'affichage de la rubrique "Authentification et ldap"
+ Mettre la valeur du paramètre $sso_restrictions à "true" permet de cacher dans l'interface de GRR l'affichage de la rubrique "Configuration SSO"
 */
  $sso_restrictions = false;
+
+/*
+ $ldap_restrictions : false|true
+ Mettre la valeur du paramètre $ldap_restrictions à "true" permet de cacher dans l'interface de GRR l'affichage de la rubrique "Configuration LDAP"
+*/
+ $ldap_restrictions = false;
+
+/*
+ $imap_restrictions : false|true
+ Mettre la valeur du paramètre $imap_restrictions à "true" permet de cacher dans l'interface de GRR l'affichage de la rubrique "Configuration IMAP"
+*/
+ $imap_restrictions = false;
 
 // Le paramètre $Url_CAS_setFixedServiceURL est le paramètre utilisé dans la méthode phpCAS::setFixedServiceURL(), dans le fichier cas.inc.php
 // Si ce paramètre est non vide, il sera utilisé par le service CAS
@@ -206,7 +225,14 @@ $insertComplet = false;
 
 # Global settings array
 $grrSettings = array();
+$grrPages = array();
 
 # Make sure notice errors are not reported
 #error_reporting (E_ALL ^ E_NOTICE);
+
+if(file_exists('../include/configperso.inc.php'))
+	include('../include/configperso.inc.php');
+if(file_exists('./include/configperso.inc.php'))
+	include('./include/configperso.inc.php');
+
 ?>

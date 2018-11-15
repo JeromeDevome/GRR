@@ -1,0 +1,3287 @@
+<!DOCTYPE html>
+<!-- 
+ * Ce fichier fait partie de l'application GRR
+ * Dernière modification : $Date: 2017-12-05 $
+ * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
+ * @copyright Copyright 2008-2008 Laurent Delineau
+ * @author    Yan Naessens
+ * @copyright Copyright 2017 Yan Naessens
+ * @link      http://www.gnu.org/licenses/licenses.html
+ * @filesource
+ *
+ * This file is part of GRR.
+ *
+ * GRR is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GRR is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with GRR; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+-->
+<html>
+    <head>
+        <title>Documentation GRR</title>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="style_doc.css"/>
+    </head>
+<body>
+<h1><center>Gestion et Réservation de Ressources<br>Documentation (version 3.3.1 RC3)</center></h1>
+<p>Cette documentation devrait être à jour à la version 3.3.1 RC3, aux erreurs et au schéma de la base près... </p>
+<p>Sommaire</p>
+<ol>
+    <li><a href="#part1">Présentation générale de GRR</a></li>
+    <li><a href="#part2">Installation de GRR</a></li>
+    <li><a href="#part3">Configuration de GRR en ligne</a></li>
+    <li><a href="#part4">Utilisation de GRR</a></li>
+    <li><a href="#part5">Outils divers</a></li>
+    <li><a href="#part6">Authentification et LDAP</a></li>
+    <li><a href="#part7">Personnaliser GRR</a></li>
+    <li><a href="#part8">Documentation technique</a></li>
+    <li><a href="#part9">Annexes</a></li>
+</ol>
+<h1 id="part1">1.Présentation générale de GRR</h1>
+<h2>1.1.Qu'est-ce que GRR ?</h2>
+<strong>GRR </strong>est un système de Gestion et de Réservations de Ressources.<br>
+<p><strong>GRR </strong>est particulièrement adapté à la gestion et la 
+réservation de salles et de matériels, mais il peut également être 
+utilisé comme mini-agenda partagé.</p>
+<p>Il s'agit d'une adaptation d'une application <strong>PHP/SQL</strong> sous licence GPL : MRBS (<a href="http://mrbs.sourceforge.net/">http://mrbs.sourceforge.net</a>).</p>
+<p>Cette adaptation est également sous  <a href="https://www.gnu.org/licenses/quick-guide-gplv3.fr.html">licence GPL</a>&nbsp; donc libre et gratuite.</p>
+<p><strong>Les principales fonctionnalités de GRR sont :</strong></p>
+<ul>
+    <li>l'accès à l'outil de gestion partagée via n'importe quel navigateur web,     </li>
+    <li>l’administration de plusieurs types de ressources partagées (salles, voitures, matériels, ...),</li>
+    <li>la gestion des réservations de ces ressources (création, modification, suppression),</li>
+    <li>la gestion du type d'accès à une ressource ; accès restreint à certains utilisateurs ou non,</li>
+    <li>la possibilité d’effectuer des réservations périodiques,</li>
+    <li>la possibilité de configurer un calendrier des jours inaccessibles aux réservations,</li>
+    <li>la possibilité de définir des jours fériés et des jours de vacances, mis en évidence sur les plannings, et de les recopier dans le calendrier hors réservations,</li>
+    <li>la possibilité de poser des réservations « sous réserve », à confirmer avant une date fixée,</li>
+    <li>la possibilité de poser des réservations « avec modération »,</li>
+    <li>la possibilité d'effectuer des réservations au nom d'autres utilisateurs ou de personnes extérieures</li>
+    <li>la possibilité de définir, domaine par domaine, des champs additionnels,</li>
+    <li>la possibilité de définir des&nbsp; "jours cycle" (voir documentation),</li>
+    <li>la gestion fine d'envoi de mails automatiques,</li>
+    <li>la délégation à des utilisateurs, de l'administration de certains domaines,</li>
+    <li>la délégation à des utilisateurs, de la gestion des réservations pour certaines ressources,</li>
+    <li>la possibilité pour un gestionnaire, d'afficher une réservation comme étant « en cours d'utilisation »,</li>
+    <li>la possibilité de rendre temporairement indisponible une ressource pour maintenance par exemple,</li>
+    <li>la possibilité de configurer une fiche de présentation avec image pour chaque ressource,</li>
+    <li>la visualisation du planning des réservations des ressources sous différentes formes,</li>
+    <li>la possibilité de paramétrer le type d'accès à l'application (obligation ou non de se connecter pour accéder au site),</li>
+    <li>la possibilité de personnalisation par domaine les paramètres 
+d'affichage du planning des réservations (heures de début et fin de 
+journée, plus petit bloc réservable, ... ou bien créneaux pré-définis).</li>
+    <li>la possibilité de fixer, pour chaque ressource, un nombre 
+maximal de jours au-delà duquel l'utilisateur ne peut pas réserver ou 
+modifier une réservation existante.</li>
+    <li>la possibilité de fixer, pour chaque ressource, un temps, 
+en-deçà duquel l'utilisateur ne peut pas réserver ou modifier une 
+réservation existante.</li>
+    <li>la possibilité de réserver ou de libérer très rapidement des 
+journées entières simultanément sur plusieurs ressources de plusieurs 
+domaines et selon un calendrier.</li>
+    <li>la fonctionnalité "gestion des clés"
+    <li>compatibilité avec UTF-8.</li>
+</ul><h2>1.2.Les utilisateurs</h2>
+<p>Les différentes catégories d’utilisateurs sont :</p>
+<h3>a) Les administrateurs</h3>
+<p>L'administrateur a accès à l’ensemble des fonctionnalités de 
+l’application : il gère les ressources, la base de données et les autres
+ utilisateurs. Il peut tout voir, réserver et modifier ou effacer toutes
+ les réservations. Il a accès à l'ensemble des paramètres de 
+configuration de GRR.</p>
+<h3>b) Les administrateurs restreints de sites (versions 1.9.6+)</h3>
+Lorsque la fonctionnalité "<strong>multi-sites</strong>" est activée, il
+ est possible de définir des "sites", qui sont des unités qui regroupent
+ des domaines. Il est alors possible de définir des <strong>administrateurs de sites</strong>.<br>
+En plus de ses droits normaux, l'administrateur d'un site a la 
+possibilité de gérer entièrement un site : création, suppression, 
+modification d'un domaine ou d'une ressource, ajout et suppression de 
+gestionnaires des réservations, d'administrateur de domaines, gestion 
+des mails automatiques.
+<h3>c) Les administrateurs restreints de domaines</h3>
+<p>L'administrateur de domaines est à la base un « usager » (voir plus 
+bas) à qui l'administrateur a donné des droits supplémentaires pour 
+administrer tel ou tel domaine.</p>
+<p>Concernant les domaines dont ils ont la charge, les administrateurs 
+restreints peuvent, pour le(s) domaine(s) qu'ils administrent :</p>
+<ul>
+    <li>
+    <p>créer, modifier ou supprimer des ressources,</p>
+    </li>
+    <li>
+    <p>dans le cas d'un domaine à accès restreint, ajouter ou supprimer des utilisateurs autorisés à avoir accès au domaine,</p>
+    </li>
+    <li>
+    <p>gérer la liste des utilisateurs à avertir automatiquement par mail lors des réservations d'une ressources donnée,</p>
+    </li>
+    <li>
+    <p>gérer la liste des gestionnaires pour chaque ressource du domaine (voir plus bas),</p>
+    </li>
+    <li>
+    <p>activer ou désactiver un ou plusieurs types de réservation pour le domaine.</p>
+    </li>
+</ul>
+<h3>d) Les gestionnaires</h3>
+<p>Le gestionnaire est à la base un « usager » (voir plus bas) à qui 
+l'administrateur a donné des droits supplémentaires pour gérer telle ou 
+telle ressource.</p>
+<p>Concernant les ressources dont ils ont la charge, les gestionnaires peuvent :</p>
+<ul>
+    <li>
+    <p>supprimer ou modifier n'importe quelle réservation,</p>
+    </li>
+    <li>
+    <p>être prévenus par mail de la réservation d'une ressource ou de la
+ modification/suppression de la réservation (voir rubrique plus bas),</p>
+    </li>
+    <li>
+    <p>signaler qu'une réservation est en cours d'utilisation (sur les 
+plannings, un symbole spécifique apparaît alors dans la case de la 
+réservation),</p>
+    </li>
+    <li>
+    <p>rendre temporairement indisponible à la réservation une ressource (pour maintenance par exemple).</p>
+    </li>
+</ul>
+<h3>e) Les usagers</h3>
+<p>l'usager :</p>
+<ul>
+    <li>peut voir les réservations dans les domaines publics, réserver et modifier ou effacer ses propres réservations,</li>
+    <li>peut être prévenu par mail de la réservation d'une ressource ou 
+de la modification/suppression de la réservation (voir rubrique plus 
+bas),</li>
+    <li>a accès à la consultation de la disponibilité ou indisponibilité des ressources des domaines publics,</li>
+    <li>a accès au détail des réservations,</li>
+    <li>a accès à l'outil "Recherche - Rapports - Statistiques" (selon le paramétrage dans la configuration générale) ,</li>
+    <li>a accès à la gestion de son compte pour modifier ses paramètres personnels (mot de passe, email, affichage par défaut, ...)</li>
+</ul>
+<p><br>
+Pour les domaines à accès restreint, seuls les usagers spécifiés par 
+l'administrateur y ont accès. Les usagers autorisés y ont alors les mêmes
+ possibilités que dans les domaines publics.</p>
+Par défaut, un usager (ni même un gestionnaire ou un administrateur 
+restreint de domaines) ne peut effectuer une réservation dans le passé, 
+ni modifier ou supprimer une réservation passée. Seul l'administrateur a
+ cette possibilité. Il est néanmoins possible de permettre pour une 
+ressource donnée, réservation dans le passé ainsi que les 
+modifications/suppressions de réservations passées.
+<h3> f) Les usagers "gestionnaires d'utilisateurs"</h3>
+<p>Le gestionnaire d'utilisateurs, en plus des possibilités d'un usager normal peut :</p>
+<ul>
+    <li>ajouter des utilisateurs ayant pour statut "usager" ou "visiteur",</li>
+    <li>modifier un utilisateur ayant pour statut "usager" ou "visiteur", (nom, prénom, mot de passe, email, statut, etat),<br>
+    </li>
+    <li>supprimer un utilisateur ayant pour statut "usager" ou "visiteur",</li>
+    <li> importer dans GRR un fichier d'utilisateurs (format CSV) <br>
+    </li>
+</ul>
+<h3>g) Les visiteurs</h3>
+<p>Un « visiteur » peut voir les réservations dans les domaines publics 
+(et dans les domaines à accès restreints selon la configuration) ainsi 
+que le détail des réservations mais ne peut ni réserver, ni effacer, ni 
+modifier une réservation. Le visiteur n'a pas accès à son compte et ne 
+peut donc pas modifier son mot de passe. Selon le paramétrage dans la 
+configuration générale, le visiteur a ou non accès à l'outil "Recherche -
+ Rapports - Statistiques". </p>
+<h2 id="prop">1.3.Propriétaires et bénéficiaires</h2>
+Pour chaque réservation effectuée,&nbsp; <strong>GRR </strong>distingue le <strong>propriétaire </strong>de la réservation (celui qui a effectué la réservation) et le <strong>bénéficiaire </strong>de&nbsp; la réservation (celui au nom duquel la réservation a été effectuée). <br>
+<br>
+La plupart du temps (fonctionnement par défaut), <strong>le propriétaire et le bénéficiaire sont une même&nbsp; personne</strong>. <br>
+<br>
+Mais il est possible d'autoriser, ressource par ressource, des 
+utilisateurs à réserver (ils sont alors propriétaires de la réservation)
+ au nom d'autres utilisateurs (qui deviennent alors bénéficiaires de la 
+réservation).<br>
+
+<h3>Délégation</h3>
+L'administrateur général a toujours cette possibilité, mais il peut déléguer ce droit : <br>
+<ul>
+    <li>uniquement aux administrateurs restreints du domaine, </li>
+    <li>ou bien aux gestionnaires de la ressource (et aux administrateurs restreints du domaine), </li>
+    <li>ou encore à tous les utilisateurs de la ressource.<br>
+    </li>
+</ul>
+Par défaut, seul l'administrateur général dispose de ce droit. <br>
+<h3>Bénéficiaires : des utilisateurs de GRR ou bien des personnes extérieures</h3>
+<p>
+Les bénéficiaires sont en général des utilisateurs enregistrés dans GRR. Mais il est également possible de réserver au nom de <strong>personnes extérieures</strong>. Dans ce cas, le créateur de la réservation dispose de deux champs supplémentaires dans l'interface de réservation :<br>
+</p>
+<ul>
+    <li>un champ obligatoire pour préciser les nom et prénom du bénéficiaire,</li>
+    <li>un champ facultatif pour préciser l'adresse email du bénéficiare.</li>
+</ul>
+<strong>Remarques<br>
+</strong>
+<ul>
+    <li>Dans le cas où une réservation est effectuée au nom d'une 
+personne extérieure, celle-ci ne dispose pas de la possibilité de 
+modifier la réservation.</li>
+    <li>Les personnes extérieures sont des personnes <strong>ne disposant pas de compte dans GRR</strong>.
+ Par conséquent, un utilisateur qui s'authentifie par LDAP n'est pas une
+ personne extérieure. Mais, si un utilisateur "LDAP" ne s'est jamais 
+connecté à GRR, il n'a pas encore de compte dans GRR et par conséquent, 
+il n'apparaît pas dans la liste déroulante des personnes au nom 
+desquelles on peut effectuer une réservation.</li>
+</ul>
+<h3> Règles de fonctionnement</h3>
+<ul>
+    <li>Le propriétaire d'une réservation, même s'il n'en est pas bénéficiaire, a le droit de la modifier ou de la supprimer.</li>
+    <li>De même le bénéficiaire d'une réservation, même s'il n'en est pas le propriétaire, a le droit de la modifier ou de la supprimer. </li>
+    <li>Lorsque qu'un utilisateur effectue une réservation au nom d'un 
+autre utilisateur ou bien modifie ou supprime une réservation existante 
+faite au nom d'un autre utilisateur, un mail de notification 
+est automatiquement envoyé au bénéficiaire de la réservation (à 
+condition que l'envoi de mails automatiques soit activé et que le champ 
+email du bénéficiaire soit correctement renseigné). </li>
+</ul><h2>1.4.Type d'accès</h2>
+<p>L'administrateur a le choix entre deux types d'accès à l'application GRR, selon le paramétrage dans la configuration générale :</p>
+<ul>
+    <li>
+    <p>Accès libre en consultation : il n'est alors pas nécessaire de se
+ connecter pour consulter le planning des réservations. L'internaute a 
+les mêmes possibilités qu'un « visiteur » connecté (hormis l'outil 
+"Recherche - Rapports - Statistiques"). Dans ce type de configuration 
+GRR est accessible librement et vos ressources et les réservations sont 
+alors visibles de tous.</p>
+    </li>
+    <li>
+    <p>Accès avec authentification : il est obligatoire de se connecter 
+pour accéder au site, même pour une simple consultation des 
+réservations.</p>
+    </li>
+</ul>
+<h2 id="fcts">1.5.Liste des fonctionnalités et droits associés</h2>
+<table summary="" cellspacing="1" cellpadding="3" align="left" border="1" width="100%">
+    <tbody>
+        <tr>
+            <th>
+            <p>Fonctionnalités</p>
+            </th>
+            <th align="center">
+            <p>Administrateurs</p>
+            </th>
+            <th align="center">
+            <p>Administrateur restreint de sites</p>
+            <p><font size="1">(module "multi-sites" activé)</font></p>
+            </th>
+            <th align="center">
+            <p>Administrateur restreint de domaines<br>
+            </p>
+            </th>
+            <th align="center">
+            <p>Gestionnaires<br>de ressources
+            </p>
+            </th>
+            <th align="center"><p>Gestionnaires d'utilisateurs</p></th>
+            <th align="center">
+            <p>Usagers</p>
+            </th>
+            <th align="center">
+            <p>Visiteurs</p>
+            </th>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>
+            <p>Paramétrage général, suivi des connexions, calendrier des jours fériés ...</p>
+            </td>
+            <td align="center">X</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+            <p>Actions sur la base de données (restauration, sauvegarde, mise à jour)</p>
+            </td>
+            <td align="center">X</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+            <td><p>Création, modification, suppression des utilisateurs</p></td>
+            <td align="center">X</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">X</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+            <p>Création, modification, suppression des types de réservation..</p>
+            </td>
+            <td align="center">X</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+            <p>Création, modification, suppression des domaines, des utilisateurs.</p>
+            </td>
+            <td align="center">X</td>
+            <td align="center">X (6)</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+            <p>Activation/désactivation d'un type de ressource</p>
+            </td>
+            <td align="center">X</td>            
+            <td align="center">X (6)</td>
+            <td align="center">X (4)</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+            <p>Création, modification, suppression des ressources.</p>
+            </td>
+            <td align="center">X</td>
+            <td align="center">X (6)</td>
+            <td align="center">X (4)</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+            <p>Gestion des droits (mail automatique, accès aux domaines restreints, désignation des gestionnaires).</p>
+            </td>
+            <td align="center">X</td>
+            <td align="center">X (6)</td>
+            <td align="center">X (4)</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+            <p>Création, modification, suppression des champs additionnels</p>
+            </td>
+            <td align="center">X</td>
+            <td align="center">X (6)</td>
+            <td align="center">X (4)</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+            <p>Configuration des ressources<br>Modération des réservations d'une ressource</p>
+            </td>
+            <td align="center">X</td>
+            <td align="center">X (6)</td>
+            <td align="center">X (4)</td>
+            <td align="center">X (1)</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+            <p>Signaler qu'une réservation est en cours d'utilisation</p>
+            </td>
+            <td align="center">X</td>
+            <td align="center">X (6)</td>
+            <td align="center">X (4)</td>
+            <td align="center">X (1)</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+            <p>Rendre temporairement indisponible une ressource</p>
+            </td>
+            <td align="center">X</td>
+            <td align="center">X (6)</td>
+            <td align="center">X (4)</td>
+            <td align="center">X (1)</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+            <p>Création des réservations</p>
+            </td>
+            <td align="center">X</td>
+            <td align="center">X</td>
+            <td align="center">X</td>
+            <td align="center">X</td>
+            <td align="center">X</td>
+            <td align="center">X</td>
+            <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+            <p>Modification, suppression des réservations</p>
+            </td>
+            <td align="center">X</td>
+            <td align="center">X</td>
+            <td align="center">X (4)</td>
+            <td align="center">X (2)</td>
+            <td align="center">X (3)</td>
+            <td align="center">X (3)</td>
+            <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+            <p>Gérer son compte</p>
+            </td>
+            <td align="center">X</td>
+            <td align="center">X</td>
+            <td align="center">X</td>
+            <td align="center">X</td>
+            <td align="center">X</td>
+            <td align="center">X</td>
+            <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+            <p>Visualisation des réservations</p>
+            </td>
+            <td align="center">X</td>
+            <td align="center">X</td>
+            <td align="center">X</td>
+            <td align="center">X</td>
+            <td align="center">X</td>
+            <td align="center">X</td>
+            <td align="center">X</td>
+        </tr>
+        <tr>
+            <td>
+            <p>Utilisation de l'outil <br> "Recherche - Rapports - Statistiques"
+            </p>
+            </td>
+            <td align="center">X</td>
+            <td align="center">X</td>
+            <td align="center">X (5)</td>
+            <td align="center">X (5)</td>
+            <td align="center">X (5)</td>
+            <td align="center">X (5)</td>
+            <td align="center">X (5)</td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<p>(1) uniquement les ressources gérées par lui-même.</p>
+<p>(2) uniquement ses propres réservations ou bien les réservations sur des ressources gérées par lui-même.</p>
+<p>(3) uniquement ses propres réservations et sur des ressources disponibles.</p>
+<p>(4) uniquement pour les domaines dont il a la charge.</p>
+<p>(5) selon le paramétrage dans la configuration générale.</p>
+<p>(6) uniquement pour les sites dont il a la charge. </p>
+<h2>1.6.Licence (conditions d'utilisation)</h2>
+Le code de <strong>GRR</strong> est couvert par la <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>.<br>
+<br>
+<strong>GRR </strong>inclut des programmes et librairies protégés par 
+leurs licences respectives. En voici la liste ci-dessous. Ils 
+appartiennent tous à la famille des logiciels libres et leurs licences 
+respectives sont compatibles avec la GNU General Public License.<br>
+<br>
+<ul>
+    <li><strong>bootstrap </strong> licence MIT, site <a href="https://getbootstrap.com/">https://getbootstrap.com/</a></li>
+    <li><strong>phpCAS </strong>version 1.3.5, site <a href="https://wiki.jasig.org/display/casc/phpcas">https://wiki.jasig.org/display/casc/phpcas</a></li>
+    <li><strong>ckeditor </strong>version 4.8.0, GNU General Public License, site <a href="https://ckeditor.com/ckeditor-4/">https://ckeditor.com/ckeditor-4/</a></li>
+    <li><strong>Lasso</strong> GNU General Public License, site <a href="http://lasso.entrouvert.org/">http://lasso.entrouvert.org/</a></li>
+    <li><strong>phpmailer </strong>version 5.2.22 GNU Library or Lesser General Public License (LGPL) - Le site&nbsp; :  <a href="http://sourceforge.net/projects/phpmailer">http://sourceforge.net/projects/phpmailer</a> </li>
+    <li><strong>tooltip-0.2.js</strong> .BSD licence,&nbsp; compatible avec la GPL. - Le site : <a href="http://blog.innerewut.de/tooltip">http://blog.innerewut.de/tooltip</a> </li>
+    <li><strong>prototype </strong>version 1.6.0.3 (September 29, 2008). Licence MIT (compatible avec la GPL) - Le site : <a href="http://www.prototypejs.org/">http://www.prototypejs.org</a> </li>
+</ul>
+<h1 id="part2">2.Installation de GRR</h1>
+<h2>2.1.Pré-requis</h2>
+<h3>Du côté serveur</h3>
+<ul>
+    <li>
+    <p>Pour fonctionner, GRR a besoin d'un serveur web/php et d'un serveur mysql.</p>
+    </li>
+    <li>
+    <p>La version de PHP doit être supérieure ou égale à la version 5.4 (gestion des variables de type $_SESSION, ...)</p>
+    </li>
+    <li>
+    <p>Pour installer GRR, vous devez disposer d'un espace FTP sur le 
+serveur web, pour y transférer les fichiers et d'une base de données 
+MySQL version minimale 5.4 (adresse du serveur MySQL, login, mot de passe)</p>
+    </li>
+    <li>
+    <p>Il est préférable que le serveur web autorise l'utilisation des fichiers .htaccess (protection du fichier connect.inc.php)</p>
+    </li>
+</ul>
+<h3>Du côté client (navigateur)</h3>
+<ul>
+    <li>
+    <p>GRR devrait fonctionner avec tout type de navigateurs récents (Firefox, Internet Explorer, Safari, Chrome ...).</p>
+    </li>
+    <li>
+    <p>L'<strong>activation de javascript</strong> dans le navigateur est <strong>nécessaire au bon fonctionnement</strong> de GRR.</p>
+    </li>
+    <li>
+    <p>Enfin le navigateur doit autoriser les cookies afin que lors de 
+la connexion à GRR, un identifiant de session puisse être stocké dans le
+ cookie. Le cookie est détruit dès que l'utilisateur se déconnecte.</p>
+    </li>
+</ul>
+<h2>2.2.Etape 1 : transfert des fichiers</h2>
+<p>La première étape de l'installation consiste à transférer tous les 
+fichiers de l'archive que vous avez téléchargée vers le serveur web/php.</p>
+<p>Pour cela, munissez-vous des codes des paramètres de connexion au 
+serveur et utilisez un logiciel de transfert de fichiers tel que « 
+FileZilla ».</p>
+<p>On pourra par exemple créer un répertoire "grr" dans le répertoire web du serveur ("htdocs" dans le cas d'Apache).</p>
+<p>Une fois les fichiers transférés, vous devez modifier le cas échéant 
+les droits d'accès à certainsfichiers et répertoires. Les droits 
+d'écriture doivent être attribués
+</p>
+<ul>
+    <li>&nbsp; au répertoire "/images" (chargement d'images pour les fiches de présentation des ressources) </li>
+    <li>&nbsp; au répertoire "/include"(dans le cas d'une installation automatisée ou d'une configuration LDAP) </li>
+</ul>
+<h2>2.3.Installation automatique</h2>
+<p>Connectez-vous à votre serveur web/php, par exemple à l'adresse http://monsite/grr/ <br>
+Muni des identifiants de connexion à la base de données, répondez aux questions des pages de configuration de GRR.
+</p>
+<h2>2.4.Installation manuelle</h2>
+<h3>2.4.1.Avant l'installation : configuration du fichier config.inc.php</h3>
+<p>Le fichier "config.inc.php" contient un certain nombre de paramètres 
+qui normalement, n'ont pas besoin d'être modifiés. Le cas échéant, il 
+faut le configurer avant d'«uploader» tous les fichiers vers le serveur 
+web.</p>
+<ul>
+    <li>
+    <p>$nb_year_calendar : permet de fixer la plage de choix de l'année 
+dans le choix des dates de début et fin des réservations dans la page de
+ configuration générale. La plage s'étend de « l'année en cours - 
+$nb_year_calendar » à « l'année en cours + $nb_year_calendar ». Par 
+exemple, si on fixe $nb_year_calendar = 5 et que l'on est en 2005, la 
+plage de choix de l'année s'étendra de 2000 à 2010.</p>
+    </li>
+    <li>$correct_diff_time_local_serveur : avance en nombre d'heure du 
+serveur sur les postes clients. Ce paramètre permet de corriger une 
+différence d'heure entre le serveur et les postes clients.<br>
+    Exemple : GRR est installé sur un serveur configuré sur le fuseau 
+GMT+1 alors qu'il est utilisé dans un pays dont le fuseau horaire est 
+GMT-5. Le serveur a donc six heures d'avance sur les postes clients. On 
+indique alors : $correct_diff_time_local_serveur=6;</li>
+    <li>
+    <p>Paramétrage du fuseau horaire (imposer à GRR un fuseau horaire différent de celui du serveur) : <br>
+    TZ (Time Zone) est une variable permettant de préciser dans quel 
+fuseau horaire GRR travaille. L'ajustement de cette variable TZ permet 
+au programme GRR de travailler dans la zone de votre choix. La valeur à 
+donner à TZ diffère d'un système à un autre (Windows, Linux, ...).<br>
+    <br>
+    Par exemple, sur un système Linux, si on désire retarder de 7 heures
+ l'heure système de GRR, on aura : putenv("TZ=posix/Etc/GMT-7").<br>
+    <br>
+    Remarque : putenv() est la fonction php qui permet de fixer la valeur
+ d'une variable d'environnement. Cette valeur n'existe que durant la vie
+ du script courant, et l'environnement initial sera restauré lorsque le 
+script sera terminé.<br>
+    <br>
+    En résumé, pour activer cette fonctionnalité, décommentez dans 
+config.inc.php la ligne putenv("TZ=posix/Etc/GMT-7"); et remplacez -7 
+par +n ou -n où "n" est le nombre d'heures d'avance ou de retard de GRR 
+sur l'heure système du serveur.</p>
+    </li>
+    <li>
+    <p>OPTION_IP_ADR : lorsque cette variable est égale à 1, une option 
+supplémentaire est offerte pour la gestion de l'affichage des domaines 
+par défaut :<br>
+    - Pour chaque domaine, on spécifie une adresse IP différente dans la page de configuration des domaines.<br>
+    - Si l'adresse IP de la machine cliente est identique à cette 
+adresse, ce domaine devient le domaine par défaut. Attention, cette 
+procédure ne fonctionne que si l'administrateur n'a pas défini un 
+domaine par défaut dans la page de configuration générale. De même pour 
+un utilisateur connecté, si celui-ci a défini un domaine par défaut qui 
+lui est propre dans la page de gestion de son compte, la procédure ne 
+fonctionnera pas.</p>
+    </li>
+    <li>
+    <p>$correct_heure_ete_hiver : paramètre permettant de prendre en compte on non le changement d'heure été/hiver.<br>
+    Si ce paramètre prend la valeur « 1 », ou bien si ce paramètre n'est
+ pas défini, GRR prend en compte les changements d'heure. Dans le cas 
+contraire, GRR ne prend pas en compte les changements d'heure.</p>
+    </li>
+    <li>Nom de la session PHP: <strong>define('SESSION_NAME', "GRR")</strong>.
+ Le nom de session fait référence à l'identifiant de session dans les 
+cookies. Il ne doit contenir que des caractères alpha-numériques; si 
+possible, il doit être court et descriptif. Normalement, vous n'avez pas
+ à modifier ce paramètre. Mais si un navigateur est amené à se connecter
+ au cours de la même session, à deux sites GRR différents, ces deux 
+sites GRR doivent avoir des noms de session différents. Dans ce cas, il 
+vous faudra changer la valeur GRR par une autre valeur.</li>
+    <li>
+    <p>$max_rep_entrys : cette variable fixe le nombre maximum de 
+réservations autorisés lors d'une réservation avec périodicité (366 par 
+défaut).</p>
+    </li>
+    <li>$unicode_encoding : positionner la valeur $unicode_encoding à 1 
+pour utiliser l'UTF-8 dans toutes les pages et dans la base. Dans le cas
+ contraire, les textes stockés dans la base dépendent des différents 
+encodages selon la langue sélectionnée par l'utilisateur. Il est 
+fortement conseillé de lire le fichier notes-utf8.txt à la racine de 
+l'archive de GRR.<br>
+    </li>
+    <li>$use_function_mysql_real_escape_string : après installation de 
+GRR, si vous avez le message "Fatal error: Call to undefined function: 
+mysql_real_escape_string() ...", votre version de PHP est inférieure à 
+4.3.0.<br>
+    En effet, la fonction mysql_real_escape_string() est disponible à 
+partir de la version 4.3.0 de php. Vous devriez mettre à jour votre 
+version de php. Sinon, positionnez la variable 
+$use_function_mysql_real_escape_string à "0"<br>
+    </li>
+    <li>.$use_function_html_entity_decode : après installation de GRR, 
+si vous avez le message "Fatal error: Call to undefined function: 
+html_entity_decode() ...",&nbsp; votre version de PHP est inferieure a 
+4.3.0.<br>
+    En effet, la fonction html_entity_decode() est disponible a partir 
+de la version 4.3.0 de php. Vous devriez mettre a jour votre version de 
+php. Sinon, positionnez la variable $use_function_html_entity_decode à 
+"0".</li>
+</ul>
+<h3>2.4.2.Avant l'installation : configuration du fichier connect.inc.php</h3>
+<ul>
+    <li><p>Renommer le fichier "connect.inc.php.ori" en "connect.inc.php",</p></li>
+    <li>Editer le fichier "connect.inc.php" afin de le compléter les différentes valeurs suivantes :<br>
+    </li>
+    <li>
+    <p>$dbHost : le nom du serveur qui héberge votre base de donnée 
+mysql. Si c'est le même que celui qui héberge les fichiers php, mettre 
+"localhost".</p>
+    </li>
+    <li>
+    <p>$dbDb : le nom de votre base mysql.</p>
+    </li>
+    <li>
+    <p>$dbUser : le nom de l'utilisateur mysql qui a les droits sur la base.</p>
+    </li>
+    <li>
+    <p>$dbPass : le mot de passe de l'utilisateur mysql ci-dessus.</p>
+    </li>
+    <li>
+    <p>$table_prefix : le préfixe utilisé dans le nommage des tables de la base de données.</p>
+    </li>
+    <li>
+    <p>$dbPort : le port mysql.</p>
+    </li>
+</ul>
+<h3>2.4.3.Etape 2 : création de la base Mysql</h2>
+Si vous optez pour une installation manuelle, il est nécessaire d'avoir renseigné le fichier "connect.inc.php".<br>
+Dans l'archive figure le fichier tables.my.sql à exécuter sur le serveur
+ mysql et qui contient l'ensemble des tables mysql ainsi que les données
+ minimales pour que ça fonctionne.<br>
+<ul>
+    <li>Sur le serveur mysql :<br>
+    <ol>
+        <li>créez une base mysql (avec phpMyAdmin par exemple) en lui donnant un nom par exemple "grr" et en choisissant l'encodage cohérent avec le réglage $unicode_encoding (par défaut utf8_general_ci),</li>
+        <li>créez un utilisateur de cette base,</li>
+        <li>n'oubliez pas de relancer le serveur.</li>
+    </ol>
+    </li>
+    <li>Connectez-vous à cette base.</li>
+    <li>Exécutez le fichier "tables.my.sql" dans cette base (toujours avec phpMyAdmin par exemple)</li>
+</ul>
+<h1 id="part3">3.Configuration de GRR en ligne</h1>
+Une fois le système installé, la première chose à faire est de configurer GRR à l'aide de l'interface web. Pour cela :<br>
+<ul>
+    <li>Connectez-vous à GRR, (nom de connexion "administrateur" et mot de passe "azerty"),</li>
+    <li>par sécurité, changez le mot de passe de administrateur grâce au lien "gérer mon compte" dans le bandeau en haut !</li>
+    <li>Allez dans la partie "administration" (lien dans le bandeau en haut)</li>
+</ul>
+<br>
+Vous avez alors la possibilité d'accéder à un certain nombre de rubriques réservées aux administrateurs :<br>
+<br>
+Nous allons passer en revue quelques-unes de ces rubriques :
+<h2>3.1.Configuration générale</h2>
+<p>La configuration générale de GRR s'organise en cinq parties : 
+"Contenu / Apparence", "Accès et droits", "Interactivité", "Sécurité / Connexions" et "Activation de modules"
+</p>
+<h3>3.1.1.Contenu / Apparence</h3>
+<ul>
+    <li>Renseignements divers : Nom de l'établissement, adresse du site,
+ nom et prénom du gestionnaire du site, adresse email du gestionnaire du
+ site et adresse email du support technique.</li>
+    <li>Choix d'un logo : les formats supportés sont png, jpg et gif.</li>
+    <li>Affichage des calendriers : fixe le nombre de calendriers à afficher</li>
+    <li>Message personnalisé : s'affichera en-dessous du bandeau supérieur</li>
+    <li>Dates de début et fin des réservations : pas de réservation 
+possible en dehors de ces dates. De plus les réservations déjà 
+effectuées en dehors de ces dates sont effacées de la base.</li>
+    <li>Choix des paramètres d'affichage par défaut : dans cette 
+rubrique, on peut choisir l'affichage par défaut de la page d'accueil. 
+Ce sont les paramètres qui s'appliqueront si l'utilisateur n'a pas 
+lui-même choisi des paramètres d'affichage par défaut.</li>
+    <li>Choix de l'affichage des "info-bulles" des réservations, dans les vues journées, semaine et mois.</li>
+    <li>Choix de l'affichage du menu (calendrier, domaines et ressources).</li>
+    <li>Choisir si le formulaire de contact pour les demandes de réservations est disponible aux visiteurs.</li>
+    <li>Choix de l'affichage du champ "description complète" de la réservation dans les vues journées, semaine et mois.</li>
+    <li>Choix de l'affichage de la "brève description" de la réservation dans les vues journées, semaine et mois.</li>
+    <li>Choix de l'affichage des liens email dans les fiches détaillées de réservation.</li>
+    <li>Choix de l'affichage des informations des réservations sous forme de page ou de popup.</li>
+    <li>Remplissage de la rubrique "brève description" dans le formulaire réservation.</li>
+    <li>Remplissage de la rubrique "description complète" dans le formulaire réservation.</li>
+    <li>Comportement du navigateur lors de l'ouverture des "pages au format imprimable".</li>
+    <li>Choix de l'affichage de la légende.</li>
+    <li>Autoriser la périodicité dans les réservations.</li>
+    <li>Choix de l'affichage de la gestion des salles par courrier.</li>
+    <li>Choix de l'affichage des vacances scolaires et les jours fériés.</li>
+    <li>Choix de la zone de vacances scolaires (France).</li>
+    <li>Paramétrage de l'outil "Recherche & Stats." (valeur 
+par défaut de l'intervalle de temps entre la date de début de recherche 
+et la date de fin).</li>
+    <li>Paramétrage de l'outil Formulaire de réservation.</li>
+</ul>
+<h3>3.1.2.Accès et droits</h3>
+<div>
+<ul>
+    <li>Type d'accès à GRR. Deux modes possibles :<br>
+    <ul>
+        <li>Il n'est pas nécessaire de se connecter pour voir les 
+réservations (mais la connection est obligatoire si l'utilisateur veut 
+réserver ou modifier une réservation) .</li>
+        <li>Il est obligatoire de se connecter pour accéder au site </li>
+    </ul>
+    </li>
+    
+    <li>Niveau d'accès à la fiche de description d'une ressource.</li>
+    <li>Niveau d'accès à la fiche de réservation détaillée d'une ressource.</li>
+    <li>Niveau d'accès à l'outil de recherche/rapport/stat.</li>
+    <li>Suppression/Modification de réservations d'une réservation sur un créneau "entamé".</li>
+    <li>Suppression/Modification de réservations d'une réservation par un gestionnaire de ressource.</li>
+    <li>Nombre maximal de réservations par utilisateur (-1 si pas de 
+restriction). Cette restriction s'applique à toutes les ressources 
+confondues. En revanche, si l'utilisateur est gestionnaire de la 
+ressource concernée, la restriction ne s'applique pas. Vous avez 
+également la possibilité de fixer, ressource par ressource, un nombre 
+maximal de réservations par utilisateur.</li>
+</ul>
+</div>
+<h3 id="suppauto">3.1.3.Interactivité</h3>
+<ul>
+    <li>Envoi de mails automatiques : <br>
+    L'administrateur peut activer ou désactiver l'option permettant l'envoi d'emails automatiques.<br>
+    </li>
+    <ul>
+        <li>     Si cette option est activée, dans un certain nombre de cas 
+(création d'une réservation, suppression/modification, modération, ...),
+ <strong>GRR envoie automatiquement des mails</strong> à certains utilisateurs.</li>
+        <li>
+    Par ailleurs, dans la page de gestion des mails automatiques, 
+toujours si cette option est activée, l'administrateur peut affecter à 
+chaque ressource un ou plusieurs utilisateurs à prévenir par mail 
+automatique lorsqu'une réservation est effectuée ou lorsque qu'il y a 
+modification ou suppression de la réservation.<br>
+    <a href="#mail"><strong>Pour en savoir plus...</strong></a><br>
+    Certains hébergeurs désactivent l'envoi automatique de mails depuis 
+leurs serveurs. Dans ce cas, cette fonctionnalité sera inopérante.</li>
+    </ul>
+    <li>Affichage (oui ou non) des "pop-up" de confirmation après la création/modification/suppression d'une réservation.</li>
+    <li>Affichage (oui ou non) des "pop-up" de confirmation dans les menu d'administration.</li>
+    <li>Méthode d'exécution automatique de tâches.</li>
+</ul>
+<h3>3.1.4.Sécurité / Connexions</h3>
+<ul>
+    <li>Sauvegarde de la base GRR : création d'un fichier de sauvegarde complet de la base mysql. <br>
+    Une sauvegarde automatique peut être déclenchée par l'exécution du script « admin_save_mysql.php », <br>
+    * par exemple en programmant son exécution à l'aide d'une tâche « cron » sur un serveur Linux.  avec une commande du type :<br>
+    <strong>php -f /chemin_complet_du_site_grr/admin_save_mysql.php mot_de_passe</strong><br>
+    * ou bien en exécutant dans un navigateur  l'URL du type : http://mon-site.fr/grr/admin_save_mysql.php?mdp=mot_de_passe.<br>
+    </li>
+    <li>Restauration de la base GRR<br>
+    En cas de perte de donnée ou de problème sur la base GRR, cette 
+fonction vous permet de la retrouver dans l'état antérieur lors d'une 
+sauvegarde.</li>
+    <li>Exécution automatique de la sauvegarde : le script admin_save_mysql.php réalise une sauvegarde de la base MySQL et peut être programmé dans une tâche "cron" sur le serveur.</li>
+    <li>Activation/désactivation des connexions : <br>
+    En désactivant les connexions, vous rendez impossible la connexion 
+au site pour les utilisateurs, hormis les administrateurs. De plus, les 
+utilisateurs actuellement connectés sont automatiquement déconnectés. 
+Néanmoins, si la connexion n'est pas obligatoire pour l'accès au site en
+ visualisation, cet accès reste possible.<br>
+    </li>
+    <li> Durée d'une session : l'administrateur fixe la durée maximum 
+d'inactivité. Cette durée indique le temps maximum d'inactivité au bout 
+duquel un utilisateur est automatiquement déconnecté. Si la durée choisie est supérieure à la durée maximale d'exécution d'un script php, c'est cette dernière qui s'impose.</li>
+    <li>Mot de passe : définition de la longueur minimale du mot de passe.<br>
+    </li>
+    <li>Url de Déconnexion : Lorsqu'un utilisateur se déconnecte, après 
+fermeture de la session, le navigateur est redirigé vers la page dont 
+l'URL est spécifiée dans ce champ.<br>
+    Si le champ est vide, selon le paramétrage du type d'accès dans la 
+configuration générale, l'utilisateur est dirigé soit vers la page 
+d'accueil soit vers la page de déconnexion.</li>
+</ul>
+<h3>3.1.5.Activation de modules</h3>
+<ul>
+    <li>Activer les fonctionnalités jours cycle : la <a href="#cycle">configuration par «&nbsp;<strong>jours cycle</strong>&nbsp;» </a>offre
+ la possibilité de réorganiser le calendrier de GRR pour qu'il 
+corresponde non pas aux jours du calendrier «&nbsp;normal&nbsp;», mais à
+ des «&nbsp;jours cycle&nbsp;».</li>
+    <li>Activer la fonctionnalité "multisite" (version 1.9.6) : lorsque 
+la fonctionnalité "multi-sites" est activée, il est possible de définir 
+des "sites", qui sont des unités qui regroupent des domaines. Ces sites 
+peuvent par exemple correspondre à des localisations géographiques de 
+plusieurs domaines.<br>
+    </li>
+    <li>Activer la fonctionnalité "Export XML"</li>
+    <li>Activer la fonctionnalité "Export XML +"</li>
+    <li>Module "ckEditor" : le module "ckEditor" permet une mise en 
+forme "wysiwyg" (comme un traitement de texte). Si le module est activé,
+ vous avez accès à cet outil en administration, pour le remplissage de 
+certains champs tels que la fiche de description d'une ressource.</li>
+</ul>
+<h2>3.2.Types de réservation</h2>
+Dans cette partie, sont précisées les différents types de réservation. 
+Il est possible de spécifier jusqu'à 100 types (de A à Z, puis AA, 
+jusqu'à AZ, etc...). Chaque type a une couleur et un nom ainsi qu'un 
+ordre d'affichage dans les différents plannings.<br>
+Lorsqu'un type est créé, celui-ci est actif pour tous les domaines.<br> 
+Ensuite, pour chaque domaine, il est possible d'activer ou de désactiver
+ un ou plusieurs types de réservation. Il est également possible de 
+spécifier un type par défaut lors d'une nouvelle réservation.
+<h2>3.3.Calendrier hors réservation</h2>
+<h3>3.3.1.Les jours hors réservation</h3>
+Il est possible de spécifier un calendrier de journées hors réservation :
+ les journées cochées dans cette interface correspondent à des 
+journées pendant lesquelles il n'est pas possible de réserver.<br>
+En ce qui concerne les réservations avec périodicité, ces journées sont ignorées lors de la validation de la réservation.<br>
+Remarque : lors de la configuration de ce calendrier, si des 
+réservations ont déjà été enregistrées sur les journées que 
+l'administrateur coche, celles-ci sont automatiquement et 
+irrémédiablement supprimées (<strong>les personnes concernées par les 
+suppressions ne sont pas prévenues par email</strong>).
+<h3>3.3.2.Les vacances et les jours fériés</h3>
+Si l'option "Afficher les vacances et les jours fériés" est activée, une option supplémentaire est proposée dans le menu.<br>
+Après avoir choisi de définir soit les jours fériés, soit les vacances scolaires, une page s'ouvre avec un calendrier dans lequel l'administrateur va cocher les jours.<br>
+Une option d'importation des jours fériés français ou des vacances scolaires françaises est mise en oeuvre. Il est possible d'ajuster en cochant des jours supplémentaires ou en décochant des jours excédentaires.<br>
+Les jours de vacances et les jours fériés sont alors mis en évidence sur les plannings jour, semaine ou mois.<br>
+Enfin il est possible de récupérer les jours fériés et les vacances scolaires dans le planning des jours hors réservation.
+<h2>3.4.Gestion des domaines (ajout/modification)</h2>
+<strong>Nom</strong> : le nom du domaine.<br>
+<strong>Ordre d'affichage</strong> : dans les différentes interfaces, les domaines sont affichés selon l'ordre d'affichage.  <br>
+<strong>Accès restreint</strong> :
+<ul>
+    <li>Si vous cochez cette case, seules les usagers spécifiés par 
+l'administrateur (dans une autre rubrique) auront accès à ce domaine 
+avec les mêmes possibilités que dans les domaines publics. </li>
+    <li>Si la case n'est pas cochée, le domaine sera accessible à tous les utilisateurs.</li>
+</ul>
+<strong>Configuration de l'affichage des plannings des ressources de ce domaine :</strong><br>
+<strong>Début de la semaine</strong> : sur les plannings hebdomadaires, les semaines commencent par cette journée.<br>
+<strong>Jours à afficher sur les différents plannings</strong> : seuls les jours cochés apparaissent sur les différents plannings.<br>
+Les créneaux de réservation peuvent être soient basés sur le temps, soient basés sur des intitulés pré-définis.<br>
+<a name="conf_planning"></a>
+<h3>Cas où les créneaux de réservation sont basés sur le temps.</h3>
+<ul>
+    <li>Heure de début de journée : choisir une valeur entière entre 0 et 23</li>
+    <li>Heure de fin de journée : choisir une valeur entière entre 0 et 23, supérieure à l'heure de début de journée.</li>
+    <li>Nombre de minutes à ajouter à l'heure de fin de journée pour avoir la fin réelle d'une journée : <strong>voir exemples ci-dessous</strong></li>
+    <li>Plus petit bloc réservable, en secondes (1800 secondes = 1/2 heure) : <strong>voir exemples ci-dessous</strong></li>
+    <li>Durée par défaut d'une réservation</li>
+</ul>
+<h4>Exemple 1 </h4>
+Pour mettre en place des réservations entre <strong>8 h</strong> et <strong>19 h</strong>, avec un pas de <strong>15 minutes</strong> (900 secondes), la configuration doit être la suivante :<br>
+<ul>
+    <li>Heure de début de journée : <strong>8</strong></li>
+    <li> Heure de fin de journée : <strong>18</strong></li>
+    <li>Nombre de minutes à ajouter à l'heure de fin de journée pour avoir la fin réelle d'une journée : <strong>45</strong></li>
+    <li> Plus petit bloc réservable, en secondes (1800 secondes = 1/2 heure) : <strong>900</strong></li>
+</ul>
+<h4>Exemple 2</h4>
+Pour mettre en place deux créneaux de réservations [8 h - 14 h] et [14 h
+ - 20 h], soit des bloc de réservation de 6 h (21600 secondes), la 
+configuration doit être la suivante :<br>
+<ul>
+    <li>Heure de début de journée : <strong>8</strong></li>
+    <li> Heure de fin de journée : <strong>14</strong></li>
+    <li>Nombre de minutes à ajouter à l'heure de fin de journée pour avoir la fin réelle d'une journée : <strong>0</strong></li>
+    <li> Plus petit bloc réservable, en secondes (1800 secondes = 1/2 heure) : <strong>21600</strong></li>
+</ul>
+<h3>Cas où les créneaux de réservation sont basés sur des intitulés pré-définis</h3>
+Il ne s'agit pas du mode normal de fonctionnement de GRR. N'utilisez ce 
+mode uniquement dans le cas où le mode précédent ne correspond pas à 
+votre cas de figure, c'est-à-dire lorsque vos créneaux de réservation 
+sont de taille inégales et ne peuvent pas se subdiviser en blocs de 
+tailles égales ou bien lorsque les créneaux ne couvrent pas uniformément
+ la plage de début à la fin.<br>
+<strong> Exemple :</strong><br>
+Créneau 1 : 8h10 - 9h00<br>
+Créneau 2 : 9h00 - 9h50<br>
+Créneau 3 : 10h05 - 10h55<br>
+Créneau 4 : 10h55 - 11h45<br>
+Créneau 5 : 11h45 - 12h35<br>
+Créneau 7 : 12h35 - 13h00<br>
+Créneau 8 : 13h00 - 13h50<br>
+Créneau 9 : 13h50 - 14h40<br>
+Créneau 10 : 14h40 - 15h30<br>
+Créneau 11 : 15h45 - 16h35<br>
+Créneau 12 : 16h35 - 17h25<br>
+Créneau 13 : 17h25 - 18h30<br>
+Créneau 14 : 18h30 - 19h30<br>
+<br>
+<h3> <strong>Durée maximale d'une réservation</strong> pour une ressource donnée</h3>
+<a name="duree_max_reser"></a>Il est possible de définir une durée 
+maximale pour une réservation donnée. Dans ce cas, une réservation ne 
+pourra pas excéder une durée limite, suivant les propriétés suivantes :<br>
+<ul>
+    <li>Durée définie en nombre de minutes dans le cas où les créneaux sont basés sur le temps,</li>
+    <li>Durée exprimée en nombre de jours dans le cas où les créneaux sont basés sur des intitulés pré-définis.&nbsp;</li>
+</ul>
+<p>Cette limitation ne touche pas les administrateurs et gestionnaires des ressources du domaine.</p>
+<p><strong>Remarque</strong> : actuellement, les journées hors réservation sont prises en compte dans le calcul de la longueur d’une réservation.<br>
+</p>
+<p>Exemple : supposons que la limite soit fixée à trois jours et que le 
+week-end soit hors réservation. Une réservation débutant le vendredi 
+matin et se terminant le lundi soir ne sera pas acceptée car GRR 
+considère à tort que la réservation dure 4 jours. Il s'agit là d'un bug.<br>
+</p>
+<h2>3.5.Gestion des ressources - Généralités</h2>
+Pour chaque ressource :<br>
+on peut définir un nombre maximum de réservations par utilisateur, pour 
+une ressource donnée. Par défaut (valeur -1) il n'y a pas de 
+restriction. Attention : ces restrictions ne s'appliquent pas aux 
+administrateurs généraux ainsi qu'aux administrateurs restreints du 
+domaine ou aux gestionnaires chargés d'administrer la ressource. Vous 
+pouvez également définir, dans la configuration générale de GRR, un 
+nombre maximal de réservation qui s'applique toutes ressources 
+confondues.
+<br>
+Possibilité de définir un nombre maximal de jours au-delà duquel 
+l'utilisateur ne peut pas réserver ou modifier une réservation. Exemple :
+ une valeur égale à 30 signifie qu'un utilisateur ne peut réserver une 
+ressource que 30 jours à l'avance au maximum. Cette limitation ne touche
+ pas les gestionnaires de la ressources ainsi que les administrateurs du
+ domaine.<br>
+Possibilité de définir un temps en minutes en-deçà duquel l'utilisateur 
+ne peut pas réserver ou modifier une réservation (0 si pas de 
+restriction). <br>
+Exemple : une valeur égale à 60 signifie qu'un utilisateur ne peut pas 
+réserver une ressource ou modifier une réservation moins de 60 minutes 
+avant le début de la réservation. <br>
+Cette limitation ne touche pas les gestionnaires de la ressources ainsi que les administrateurs du domaine.<br>
+Possibilité (case à cocher) de permettre ou non les réservation dans le 
+passé ainsi que les modifications et suppressions de réservations 
+passées.<br>
+Si la case n'est pas cochée, un usager (ni même un gestionnaire ou un 
+administrateur restreint de domaines) ne peut effectuer une réservation 
+dans le passé, ni modifier ou supprimer une réservation passée. Seul 
+l'administrateur général a cette possibilité.<br>
+L'administrateur et le(s) gestionnaire(s) désigné(s) ont la possibilité 
+de déclarer la ressource «&nbsp;temporairement indisponible&nbsp;». Ceci
+ est alors clairement signalé sur les plannings de réservation 
+(«&nbsp;jour&nbsp;» et «&nbsp;semaine&nbsp;») et a pour effet de rendre 
+impossible toute nouvelle réservation et toute modification de 
+réservations existantes (sauf pour l'administrateur et les gestionnaires
+ de la ressource).<br>
+L'administrateur et le(s) gestionnaire(s) désigné(s) peuvent choisir de 
+rendre visible ou non la fiche de présentation d'une ressource. Pour 
+cette fiche, ils disposent d'un champ permettant une description 
+complète de la ressource. Ce champ dispose d'une barre d'outils de mise 
+en forme utilisant l'application ckEditor. Il est possible de 
+désactiver cette fonctionnalité dans la page de configuration générale 
+de GRR. Le répertoire "ckeditor" et tout ce qu'il contient n'est alors 
+pas nécessaire au bon fonctionnement de GRR).<br>
+On peut également choisir une image pour la ressource qui sera alors visible dans la fiche de présentation.<br>
+Dans la page de modification des paramètres d'une ressource, l'administrateur a la possibilité d'activer la fonction «&nbsp;<a href="#reserve">Poser des réservations sous réserve</a>&nbsp;».
+ Dans ce cas, la personne effectuant une réservation a la possibilité de
+ remplir un champ supplémentaire : «&nbsp;Réservation à confirmer au 
+plus tard le ...&nbsp;». Si l'utilisateur ne confirme pas sa réservation
+ avant la date indiquée, la réservation est automatiquement supprimée et
+ un mail automatique est envoyé aux personnes concernées.<br>
+ Possibilité, sous certaines conditions, de changer l'affectation d'une ressource à un domaine.<br>
+ Possibilité d'activer la fonctionnalité "gestion des clés".<br>
+<h2>3.6.Champs additionnels</h2>
+Dans cette partie, vous avez la possibilité de définir, domaine par 
+domaine, des champs additionnels de votre choix et qui apparaîtront dans
+ les formulaires de saisie des réservations comme autant de champs 
+supplémentaires.<br>
+Il est possible de définir trois types de champs : «&nbsp;text&nbsp;» 
+(une seule ligne), «&nbsp;textarea&nbsp;» (champ multi-lignes), ou bien «
+ liste ».<br>
+Il est également possible de :<br>
+<ul>
+    <li>définir si le remplissage d'un champ additionnel est&nbsp; <strong>obligatoire</strong> ou non,</li>
+    <li>définir si le champ apparaît ou non dans les différents plannings (journée, semaine, mois),</li>
+    <li>définir si le champ apparaît ou non dans les mails automatiques,</li>
+    <li>définir si le champ est <strong>confidentiel </strong>(visible 
+uniquement dans la fiche de réservation et seulement par le bénéficiaire
+ de la réservation et par les administrateurs du domaine).<br>
+    </li>
+</ul>
+<h3>Cas particulier des listes</h3>
+Dans le cas d'une liste, l'administrateur doit spécifier dans un champ 
+spécifique la liste des choix possibles sous la forme d'une seule chaîne
+ de caractères comportant les différents choix séparés par le caractère 
+|.<br>
+Exemple : <strong>choix1|choix2|choix3</strong> permet de définir une liste de trois items (choix1, choix2 et choix3).<br>
+Attention, une fois GRR en production, l'administrateur ne devrait pas 
+être amené à changer la formulation d'un item de la liste car toutes les
+ réservations déjà enregistrées avec cet items perdraient alors cette 
+informations. Même chose si l'administrateur supprime un item de la 
+liste.
+<h2 id="users">3.7.Gestion des utilisateurs</h2>
+La page <em>[Administration]-&gt;[Utilisateurs]</em> permet de gérer les utilisateurs de GRR. <br>
+<strong> Utilisateurs autorisés à modifier leur nom, prénom et email<br>
+</strong>L'administrateur choisit quels utilisateurs ont le droit de 
+modifier leurs informations personnelles (nom, prénom, email). Il y a 
+trois niveaux possibles :<br>
+<ul>
+    <li>Tous</li>
+    <li>Tous (sauf visiteurs)</li>
+    <li>Seulement les administrateurs&nbsp; </li>
+</ul>
+Remarques : <br>
+<ul>
+    <li>Dans le cas où GRR est intégré dans un <a href="#lcs">environnement LCS</a>,
+ ce paramètre n'a aucun effet sur les utilisateurs authentifié par LCS 
+qui dans tous les cas, ne peuvent pas modifier leurs informations 
+personnelles.</li>
+    <li>Dans le cas où GRR est intégré dans un SSO (autre que LCS), ou que <a href="#ldap">GRR est interfacé avec un annuaire LDAP</a>,
+ il arrive que des utilisateurs soient importés dans la base de GRR avec
+ des données manquantes ou erronées, notamment les noms et prénoms. Si 
+les utilisateurs sont autorisés à modifier leurs informations 
+personnelles et qu'à l'ouverture d'une session, GRR constate que le 
+champ nom ou le champ prénom est vide, alors GRR redirigera 
+automatiquement l'utilisateur vers la page "<em>gérer mon compte</em>" afin qu'il renseigne les champs vides.</li>
+</ul>
+<strong>Utilisateurs autorisés à modifier leur mot de passe&nbsp; </strong><br>
+L'administrateur choisit quels utilisateurs ont le droits de modifier leur mot de passe. Il y a trois niveaux possibles :<br>
+<ul>
+    <li>Tous</li>
+    <li>Tous (sauf visiteurs)</li>
+    <li>Seulement les administrateurs&nbsp; </li>
+</ul>
+Remarques : <br>
+<ul>
+    <li>Dans le cas où GRR est intégré dans un SSO, ou que <a href="#ldap">GRR est interfacé avec un annuaire LDAP</a>,
+ ce paramètre est sans effet sur les utilisateurs "externes", 
+c'est-à-dire non locaux, car dans ce cas, le mot de passe n'est pas 
+stocké dans GRR et ne peut pas être modifié dans GRR.<br>
+    </li>
+</ul>
+<h3 id="tabusers">Tableau général</h3><br>
+Le tableau général permet de visualiser d'un seul coup d'oeil l'ensemble
+ des utilisateurs, de leur statut et des éventuels privilèges. <br>
+<br>
+<strong>Privilèges :</strong><br>
+La colonne «&nbsp;privilèges&nbsp;» affiche pour chaque utilisateur, jusqu'à six lettres <strong>A</strong>, <strong>S</strong>, <strong>G</strong>, <strong>U</strong>, <strong>E</strong> et <strong>R</strong> :<br>
+<ul>
+    <li><strong>S</strong> : l'utilisateur administrateur d'un ou plusieurs sites (versions 1.9.6+),</li>
+    <li><strong>A</strong> : l'utilisateur administrateur d'un ou plusieurs domaines,</li>
+    <li><strong>G</strong> : l'utilisateur est gestionnaire d'une ou plusieurs ressources,</li>
+    <li><strong>U</strong> : l'utilisateur est gestionnaire d'utilisateurs,</li>
+    <li><strong>E</strong> : l'utilisateur est automatiquement prévenu par mail pour une ou plusieurs ressources,</li>
+    <li><strong>R</strong> : l'utilisateur dispose d'un accès à un ou plusieurs domaines à accès restreint.</li>
+</ul>
+<br>
+La présence de telle ou telle lettre signale que l'utilisateur dispose 
+de certains privilèges. En cliquant sur le lien à gauche des nom et 
+prénom de l'utilisateur, on a alors tous les détails liés à ces 
+privilèges.<br>
+<br>
+<strong>Statut :<br>
+</strong>Quatre statuts possibles (<a href="#fcts">cliquez ici</a> pour en savoir plus) :<br>
+<ul>
+    <li>visiteur</li>
+    <li>usager </li>
+    <li>administrateur</li>
+    <li>gestionnaire d'utilisateurs</li>
+</ul>
+Il est possible de modifier le statut d'un utilisateur en cliquant sur le lien à gauche des nom et prénom de l'utilisateur.<br>
+<br>
+<strong>Authentification :</strong><br>
+La colonne « authentification » affiche le type d'utilisateur : <em>local</em> ou <em>ext</em>. Voir aussi <a href="#ldap">Authentification et ldap</a>.<br>
+<strong>Suppression :</strong><br>
+La suppression d'un utilisateur est définitive et irréversible. 
+L'utilisateur est alors effacé de la base mais pas les réservations 
+effectuées par celui-ci. <br>
+<strong>Mot de passe :</strong><br>
+Les mots de passe sont stockés cryptés (MD5) donc pas de possibilité de 
+les voir en clair, une fois qu'il sont définis. En cas de perte d'un mot
+ de passe d'un utilisateur l'administrateur peut évidemment écraser 
+l'ancien par un nouveau : en cliquant sur le lien des nom et prénom de 
+l'utilisateur, il est possible de modifier le mot de passe d'un 
+utilisateur.<br>
+<strong>Utilisateurs actifs/inactifs</strong><br>
+Lorsqu'un utilisateur est ajouté à la base, il est actif par défaut. Par
+ la suite, l'administrateur peut rendre inactif un utilisateur. Un 
+utilisateur inactif reste présent dans la base mais ne peut pas se 
+connecter à GRR. Dès qu'il est à nouveau actif, l'utilisateur peut à 
+nouveau se connecter et retrouve le cas échéant tous ses privilèges.<br>
+<h3>Importer des utilisateurs depuis un fichier au format csv</h3>
+Permet l'importation d'une liste d'utilisateurs à partir d'un fichier csv, séparateur point-virgule, de contenu :<br>
+--> Identifiant : l'identifiant de l'utilisateur (doit être unique dans la base)<br>
+--> Nom<br>
+--> Prénom<br>
+--> Mot de passe<br>
+--> Adresse email<br>
+--> Type d'utilisateur : trois valeurs autorisées : "visiteur", "utilisateur", "administrateur"<br>
+--> Statut : deux valeurs autorisées : "actif" ou "inactif"<br>
+--> Type d'authentification : deux valeurs autorisées : "local" ou "ext"<br>
+<h3>Importer des utilisateurs depuis elycée</h3>
+L'ENT elycée est une variante de l'ENT Kd'école de l'éditeur Kosmos : il est vraisemblable que ce qui suit soit valable pour toutes les variantes de cet ENT.<br>
+Le fichier à importer est obtenu par export depuis l'annuaire elycée.<br>
+Les champs présents devraient être les suivants :<br>
+<code>rne;uid;classe;profil;prenom;nom;login;mot de passe;cle de jointure;uid pere;uid mere;uid tuteur1;uid tuteur2;prenom enfant;nom enfant;adresse;code postal;ville;pays</code>
+Par défaut, les utilisateurs importés ont le statut de visiteur : il faut ajuster le statut des utilisateurs autorisés à poser des réservations.
+<h3>Utilisateurs avec un mot de passe facile</h3>
+Signale les utilisateurs ayant un mot de passe facile. 
+<h2>3.8.Accès aux domaines restreints</h2>
+Vous avez la possibilité de définir des domaines à accès restreint : <em>[Administration] -&gt; [Domaines et ressources] , puis cliquer sur l'icone de modification du domaine.</em><br>
+Par défaut, aucun utilisateur n'a accès à ces domaines (hormis les administrateurs).<br>
+L'administrateur du domaine doit explicitement désigner les personnes autorisées à accéder aux ressources de ces domaines (<em>[Administration] -&gt; [Accès aux domaines restreints])</em>.<br>
+Remarque : les domaines à accès restreints peuvent notamment servir à 
+rendre visible une ressource uniquement pour certains utilisateurs.
+<h2>3.9.Gestion des ressources</h2>
+Parmi les différentes catégories d'utilisateurs, il y a le <strong>gestionnaire de ressource</strong>.
+ Par défaut, un simple utilisateur peut modifier ou effacer uniquement 
+ses propres réservations. En revanche, s'il devient gestionnaire d'une 
+ressource, il peut alors modifier ou effacer n'importe quelle 
+réservation de cette ressource. Il a de plus de nombreux droits 
+supplémentaires lui permettant de gérer cette ressource.<br>
+Voir aussi : <br>
+<ul>
+    <li><a href="#users">Les utilisateurs</a></li>
+    <li><a href="#fcts">Liste des fonctionnalités et droits associés</a></li>
+</ul>
+<h2>3.10.Nombre max. de réservations par utilisateur</h2>
+<strong>Astuce : Comment rendre visible une ressource pour tous les 
+utilisateurs, mais «&nbsp;réservable&nbsp;» par un nombre restreint de 
+personnes ?</strong>
+<ul>
+    <li>Créer la ressource, et affecter, pour cette ressource, la valeur
+ 0 au champ «&nbsp;Nombre max de réservations par utilisateur&nbsp;». De
+ cette façon, plus personne ne peut réserver.</li>
+    <li>Ensuite, affecter aux utilisateurs de son choix, le droit de 
+gérer la ressource. Comme les gestionnaires de ressources ne sont pas 
+touchés par la limite de réservation, il pourront réserver cette 
+ressource. Cependant, en tant que gestionnaire de cette ressource, 
+chacun aura évidemment le droit d'éditer, supprimer ou créer n'importe 
+quelle réservation.</li>
+</ul>
+<h2>3.11.Méthode d'exécution automatique de tâches</h2>
+L'activation de certaines fonctionnalités de GRR nécessite la possibilité de mettre en place l'exécution automatiques de tâches.<br>
+C'est le cas par exemple lors de la suppression automatique de certaines réservations dans le cas des « <a href="#reserve">réservations sous réserve</a> », ou encore lors de l'envoi d'une notification de retard en cas de non restitution d'une ressource.<br>
+Pour effectuer ces tâches automatiques, rendez-vous dans <em>Administration </em>-&gt; <em>Configuration générale</em> -&gt; <em>Interactivité</em>.<br>
+<br>
+Il y a deux configurations possibles, chacune ayant ses inconvénients et ses avantages.<br>
+<h3>La tâche&nbsp; automatique est déclenchée une fois par jour lors de la connexion du premier utilisateur</h3>
+La tâche automatique est réalisée une fois par jour, lorsqu'un 
+utilisateur se connecte : chaque jour, lors de la première connexion, la
+ procédure de vérification des tâches à effectuer est lancée. C'est donc
+ la connexion du premier utilisateur qui déclenche l'exécution du 
+script.<br>
+<ul>
+    <li>Avantage : simplicité de mise en oeuvre.</li>
+    <li>Inconvénient : vérification aléatoire (pas de vérification à 
+heure fixe, voire pas de vérification certains jours si personne ne se 
+connecte).</li>
+</ul>
+<h3>La tâche automatique est déclenchée par l'exécution du script « verif_auto_grr.php »<br>
+</h3>
+<ul>
+    <li>Avantage : vérification systématique à heure fixe et envoi des mails à heure fixe, chaque jour.</li>
+    <li>Inconvénient : difficulté de mise en oeuvre.</li>
+</ul>
+<strong>ATTENTION</strong> : dans ce cas, il faut avoir la possibilité 
+de programmer l'exécution automatique et périodique du script 
+verif_auto_grr.php. Sur un serveur Linux, par exemple, le script 
+verif_auto_grr.php peut être programmé en tâche «&nbsp;cron&nbsp;»  avec
+ une commande du type :<br>
+<strong>php -f /chemin_complet_du_site_grr/verif_auto_grr.php mot_de_passe</strong><br>
+La périodicité conseillée est de 1 jour, en début de journée avant les premières connexions.<br>
+<br>
+Si GRR est installé sur un serveur mutualisé, l'accès aux tâches 
+«&nbsp;cron&nbsp;» est exclue. La solution consiste alors à faire appel à
+ un serveur conçu pour rendre ce genre de service. Il en existe 
+plusieurs sur Internet. Parmi les service gratuits, citons :<br>
+htttp://webcron.org<br>
+http://cronjob4you.at<br>
+http://cronjob.de<br>
+Certains hébergeurs offrent également ce service à leurs clients.<br>
+Le principe est le suivant :<br>
+1) Inscription en ligne sur le site afin d'obtenir un compte avec login et mot de passe.<br>
+2) A l'aide du compte, créer des tâches en fournissant l'adresse du 
+script à exécuter (dans notre cas, quelque chose du genre 
+http://mon-site.fr/grr/verif_auto_grr.php?mdp=mot-de_passe), la 
+périodicité et l'heure d'exécution du script.<br>
+<strong><br>
+Remarque </strong>: l'exécution du script verif_auto_grr.php requiert un mot de passe.<br>
+Le mot de passe&nbsp; est défini dans la même page de configuration que le paramètre précédent.
+<h2>3.12.Administration des sites</h2>
+Lorsque le module "<strong>multi-sites</strong>" est activé (version 1.9.6), il est possible de définir des&nbsp; <strong>administrateurs restreints de sites</strong>&nbsp; habilités à administrer tel ou tel site.<br>
+Les sites sont des unités qui regroupent des domaines. Concrètement, il 
+peuvent correspondre à des localisations géographiques de domaines.<br>
+<br>
+Les administrateurs restreints de sites disposent, pour le ou les sites 
+dont il a la charge, des mêmes droits que l'administrateur général : 
+création, suppression, modification de domaines, de ressources dans les 
+domaines, ajout et suppression de gestionnaires des réservations, 
+gestion des mails automatiques, etc...
+<h2>3.13.Administration des domaines</h2>
+Parmi les différentes catégories d'utilisateurs, il y a les <strong>administrateurs restreints de domaines</strong>.
+ L'administrateur général de GRR peut désigner des personnes habilitées à
+ administrer tel ou tel domaine. Ces administrateurs restreints 
+disposent, pour le ou les domaines dont il a la charge, des mêmes droits 
+que l'administrateur général : création, suppression, modification d'une
+ ressource, ajout et suppression de gestionnaires des réservations, 
+gestion des mails automatiques, etc...<br>
+Voir aussi : <br>
+<ul>
+    <li><a href="#users">Les utilisateurs</a></li>
+    <li><a href="#fcts">Liste des fonctionnalités et droits associés</a></li>
+</ul>
+<h1 id="part4">4.Utilisation de GRR</h1>
+<h2>4.1.Accéder à GRR</h2>
+L'accès au logiciel se fait à partir d'un simple navigateur Internet 
+(Firefox, Internet Explorer, Safari, Chrome, ...). Selon la 
+configuration du serveur, l'accès sera possible uniquement en Intranet 
+ou bien&nbsp; de l'Internet, à partir de n'importe quel poste connecté à
+ Internet, en tapant l'adresse qui convient du type 
+"http://votre.domaine.fr/grr/" dans la barre d'adresse du 
+navigateur.
+<h2>4.2.Consulter les plannings de réservation</h2>
+Selon la configuration choisie par l'administrateur de GRR, la 
+consultation des plannings est possible avec ou sans un identifiant et 
+un mot de passe.<br>
+L'utilisateur a le choix entre plusieurs interfaces de visualisation.<br>
+<br>
+L’utilisateur peut <br>
+<ul>
+    <li>sélectionner le jour de la réservation dans un calendrier ou à l'aide d'un sélecteur de dates,</li>
+    <li>choisir le domaine et la ressource du domaine à afficher,</li>
+    <li>choisir le mode d'affichage des réservations (affichage «&nbsp;jour&nbsp;», «&nbsp;semaine&nbsp;», «&nbsp;mois&nbsp;»).</li>
+</ul>
+En cliquant sur une réservation dans le planning, l'utilisateur peut visualiser les détails de la réservation.
+<h2>4.3.Réserver une ressource</h2>
+Pour effectuer une réservation, il est nécessaire d'être connecté, quelle que soit la configuration de GRR.<br>
+Pour réserver une ressource sur une plage horaire donnée, l'utilisateur 
+choisit le planning (vue "jour", "semaine" ou "mois") et la ressource à 
+réserver. Puis il clique, dans le planning, sur le symbole "<strong>+</strong>" de
+ la case qui correspond au début de la réservation. Une fiche de 
+réservation apparaît alors, que l'utilisateur doit compléter avant de 
+valider.
+<br>
+<strong><a name="modifier_reservant"></a>Remarque :</strong><br>
+De façon générale, les réservations sont effectuées au nom de la 
+personne connectée. Par défaut, hormis les administrateurs, personne de 
+peut réserver au nom d'une autre personne. Mais il est possible de 
+spécifier pour une ressource donnée, quels types d'utilisateurs ont le 
+droit de faire des réservations au nom d'autres utilisateurs 
+("Administration" -&gt; "Domaines et ressources" -&gt; choix du domaine,
+ puis propriétés de la ressource).<br>
+Voir aussi la rubrique "<a href="#prop">Propriétaires et bénéficiaires</a>"
+<h2>4.4.Modifier ou supprimer une réservation</h2>
+Comme pour la réservation, il est nécessaire de s'identifier pour modifier ou supprimer une réservation.<br>
+Les personnes habilitées à supprimer ou modifier une réservation sont :<br>
+<ul>
+    <li>le propriétaire de la réservation lui-même, à condition que la réservation ne soit pas passée,</li>
+    <li>le gestionnaire de la ressource,</li>
+    <li>l'administrateur général de GRR ou l'administrateur restreint du domaine concerné.</li>
+</ul>
+L'utilisateur clique sur la réservation à modifier ou supprimer puis, 
+dans la nouvelle page qui s'ouvre, il clique sur le lien correspondant à
+ l'action qu'il désire (suppression ou modification).<br>
+ <p><strong>Remarque</strong>:<br>
+ Il est possible de dupliquer une réservation, en principe on ajustera les paramètres du créneau pour qu'il n'y ait pas de conflit.
+ </p>
+ 
+ <h2 id="reserve">4.5.Poser des réservations sous réserve</h2>
+Dans la page de modification des paramètres d'une ressource, l'administrateur a la possibilité d'activer la fonction «&nbsp;<strong>Poser des réservations sous réserve</strong>&nbsp;». <br>
+<ul>
+    <li>Lorsque la valeur est à zéro, la fonction n'est pas active. Une valeur différente de 0 permet d'activer cette fonctionnalité.</li>
+    <li>Si cette valeur est positive, elle désigne alors le nombre 
+maximal de jours dont dispose le réservant pour confirmer une 
+réservation à compter de la date à laquelle la réservation a été 
+effectuée.<br>
+    Quand cette fonction est activée, la personne effectuant une 
+réservation  a la possibilité, dans le formulaire de réservation, de 
+remplir un  champ supplémentaire : «&nbsp;<strong>Réservation à confirmer au plus tard le ...&nbsp;</strong>».<br>
+    </li>
+    <li> Si la valeur est négative (uniquement à partir de la version 
+GRR1.9.8) : appelons alors N cette valeur. Le réservant doit confirmer sa 
+réservation au moins (-N) jours avant la date de réservation.<br>
+    </li>
+</ul>
+Si l'utilisateur ne confirme pas sa réservation avant la date limite, la réservation est <strong>automatiquement supprimée</strong> et un mail automatique est envoyé aux personnes concernées.<br>
+Il est possible de configurer, dans les paramètres de configuration générale, la <strong><a href="#suppauto">méthode de suppression automatique</a></strong> utilisée.<br>
+<h2>4.6.Les périodicités (réservations qui se répètent)</h2>
+<strong>Comment créer une réservation qui se répète ?</strong><br>
+Après avoir cliqué sur l'heure désirée, l'écran de réservation 
+s'affiche. En cliquant sur le lien en bas de la page, vous ouvrez les 
+options de périodicité.<br>
+Choisissez le type de Périodicité approprié. La ressource sera réservée à
+ la même heure, jusqu'à la date de fin de Périodicité, et seulement pour
+ les jours spécifiés par le type de Périodicité.<br>
+<ul>
+    <li>Le type "<strong>chaque jour</strong>" crée une réservation chaque jour.</li>
+    <li>Le type "<strong>chaque semaine</strong>" répète la réservation pour les jours de la semaine que vous avez coché sur la ligne Jour.<br>
+    Par exemple, pour une périodicité hebdomadaire programmée pour 
+chaque lundi, jeudi et vendredi, cochez ces jours sur la ligne Jour. Si 
+vous ne cochez pas de jours, la périodicité aura lieu chaque semaine le 
+même jour que celui initialement choisi.</li>
+    <li>Le type <strong>"chaque mois à la même date"</strong> crée une périodicité le même jour chaque mois, par exemple le 15 de chaque mois.</li>
+    <li>Le type <strong>"chaque année, même date</strong>" crée une périodicité le même jour du même mois, chaque année, par exemple chaque 15 mars.</li>
+    <li>Le type <strong>"chaque mois, même jour semaine</strong>" crée 
+une périodicité un jour par mois, le même jour de la semaine et avec la 
+même position ordinale de la semaine dans le mois. Utilisez ce type pour
+ créer des périodicité du type le premier lundi, le second jeudi ou le 
+quatrième vendredi de chaque mois par exemple. N'utilisez pas ce type 
+pour des réservations après le 28ème jour du mois.</li>
+    <li>Les types "<strong>une semaine sur 2</strong>", "<strong>une semaine sur 3</strong>", ... sont identiques au type type <strong>"chaque semaine" </strong>mais permettent de spécifier un intervalle de semaines, par exemple tous les mardi et jeudi toutes les 3 semaines.
+    </li>
+    <li>Le type "<strong>X Y du mois </strong>" (par exemple le premier lundi de chaque mois) permet de réserver avec la pseudo-périodicité le X-ème jour Y de chaque mois.
+    </li>
+</ul>
+<a name="fonctionnement"></a> <strong>Comment fonctionnent les périodicités ?</strong><br>
+<strong><br>
+Prenons un exemple :<br>
+</strong> J'effectue une réservation "<em>A1</em>" avec périodicité. Supposons que cette périodicité entraîne la création de <em>n</em> créneaux de réservation. Que se passe-t-il au niveau de l'application ?<br>
+<ol>
+    <li>GRR génère les réservations "<em>A1</em>", "<em>A2</em>", .... "<em>An</em>" (correspondant à autant d'entrées dans une table de la base de données nommée <em>grr_entry</em>),</li>
+    <li>GRR génère une entrée supplémentaire dans une table spéciale <em>grr_repeat</em> qui mémorise les informations liées à la périodicité,</li>
+    <li>enfin, pour chaque réservation de la table <em>grr_entry</em>, un champ mémorise sous forme d'un identifiant, la périodicité à laquelle la réservation est rattachée.</li>
+</ol>
+<strong>Que se passe-t-il si je modifie une des réservations A1, A2, ... ?<br>
+</strong> L'entrée correspondante dans la table <em>grr_entry</em> est 
+modifiée avec les nouvelles informations. C'est tout ! Cela signifie 
+qu'il n'y a plus concordance entre cette réservation et les informations
+ de périodicité. De même, je peux supprimer la réservation "<em>A2</em>". Il restera alors dans la table <em>grr_entry</em>, les réservations "<em>A1</em>", "<em>A3</em>", .... "<em>An</em>".<br>
+<strong>Que se passe-t-il alors si je modifie la périodicité ?</strong><br>
+<ol>
+    <li>Toutes les réservations dans la table <em>grr_entry</em> sont mises à jour avec les nouvelles informations,</li>
+    <li>la périodicité dans la table <em>grr_repeat</em> est également mise à jour.</li>
+</ol>
+Il y a donc à nouveau concordance entre les informations individuelles de la table <em>grr_entry</em> et les informations de périodicité. Ainsi, si une réservation, par exemple "<em>A2</em>", avait auparavant été supprimée, elle est alors réinsérée dans la table.<br>
+<br>
+<strong>Que se passe-t-il alors si je supprime la périodicité ?</strong><br>
+<ol>
+    <li>GRR supprime l'information de périodicité dans la table <em>grr_repeat</em>,</li>
+    <li>pour chaque réservation de la table <em>grr_entry</em>, le champ qui mémorisait la périodicité à laquelle la réservation était rattachée, est vidé.</li>
+</ol>
+Les réservations "<em>A1</em>", "<em>A2</em>", .... "<em>An</em>" sont devenues complètement indépendantes les unes des autres.
+<h2>4.7.Signaler qu'une ressource est empruntée</h2>
+Dans la page de renseignement d'une réservation d'une ressource, une possibilité supplémentaire est offerte aux <strong>gestionnaires</strong>
+ de cette ressource : en cochant une case, il peuvent signaler qu'une 
+ressource est empruntée. une petite image (panneau représentant une main
+ sur un fond rouge) apparaît alors dans les plannings de visualisation 
+(«&nbsp;jour&nbsp;» et «&nbsp;semaine&nbsp;») dans la case 
+correspondante à la réservation.<br>
+Concrètement, le gestionnaire de la ressource a le choix entre trois possibilités :<br>
+<ol>
+    <li>La ressource a été restituée. <em><strong>(Sélectionner également cette option si vous n'utilisez pas cette fonctionnalité)</strong></em> ;</li>
+    <li>Signaler que la <strong>ressource est empruntée</strong>.</li>
+    <li>Signaler que la <strong>ressource est empruntée et envoyer un mail</strong> <strong>notifiant le retard&nbsp;</strong> (nécessite que la fonction d'envoi automatique de mail soit activée).</li>
+</ol>
+<font size="-1">En cochant la 2ème ou la 3ème option, le gestionnaire signale que la ressource est empruntée et <strong>n'est donc pas restituée</strong>. Lorsque la ressource a bien été restituée, le gestionnaire ne doit pas oublier de sélectionner l'option n° 1 ci-dessous.</font><br>
+Il est également possible, en cochant une case, d'envoyer immédiatement un mail de notification de retard.<br>
+Remarque : pour une ressource donnée, une seule réservation peut être signalée "empruntée".<br>
+Dans le cas où l'option n° 3 a été sélectionnée, un email notifiant le retard est envoyé <strong>quotidiennement </strong>à l'utilisateur ayant réservé la ressource et ceci <strong>dès le lendemain</strong> de la fin de réservation.<br>
+Un email est également envoyé aux gestionnaires de la ressource, 
+ou&nbsp; à défaut, aux administrateurs de la ressource (ou en dernier 
+recours aux administrateurs généraux).<br>
+Pour mettre fin à l'envoi des email, un gestionnaire de la ressource ou 
+un administrateur doit changer le statut de la réservation en 
+sélectionnant l'option n°1 ( "La ressource a été restituée") dans la 
+page de visualisation de la ressource.
+<h2>4.8.Mise en forme du texte</h2>
+Par sécurité, depuis la version 1.9.5, les balises HTML ne sont plus 
+autorisées dans les champs "brève description", "description complète" 
+et dans les champs additionnels.<br>
+En revanche, depuis la version 196, il est possible d'utiliser le BBcode pour mettre en forme le texte dans ces champs.<br>
+Le BBcode est une simplification du langage HTML dans lequel les balises sont délimitées par les crochets [ et ].<br>
+Voici la liste des balises BBcode autorisées dans GRR :<br>
+<table summary="" cellspacing="1" cellpadding="1" align="" border="1" width="500">
+    <tbody>
+        <tr>
+            <td><strong>Fonction</strong></td>
+            <td><strong>Syntaxe</strong></td>
+        </tr>
+        <tr>
+            <td>Texte en gras</td>
+            <td>[b]Texte[/b]</td>
+        </tr>
+        <tr>
+            <td>Texte en italique</td>
+            <td>[i]Texte[/i]</td>
+        </tr>
+        <tr>
+            <td>Texte souligné</td>
+            <td>[u]Texte[/u]</td>
+        </tr>
+        <tr>
+            <td>Texte barré</td>
+            <td>[s]Texte[/s]</td>
+        </tr>
+        <tr>
+            <td>Texte colorié (en rouge)</td>
+            <td>[color=red]Texte[/color]</td>
+        </tr>
+        <tr>
+            <td>Lien hypertexte (sauf dans le champ "brève description")<br>
+            </td>
+            <td>[url]URL du lien[/url]<br>
+            [url=URL du lien]Titre du lien[/url]</td>
+        </tr>
+        <tr>
+            <td>Image (sauf dans le champ "brève description")             </td>
+            <td>[img]URL de l'image[/img] <br>
+            </td>
+        </tr>
+        <tr>
+            <td>Adresse email <br>
+            </td>
+            <td>[email]adresse email[/email]<br>
+            [email=adresse email] Nom prenom[/email]</td>
+        </tr>
+        <tr>
+            <td>Taille des caractères</td>
+            <td>[size=taille] Texte [/size] <br>
+            </td>
+        </tr>
+        <tr>
+            <td>Barre horizontale</td>
+            <td>[/] ou [hr]</td>
+        </tr>
+        <tr>
+            <td>Alignement centré</td>
+            <td>[center] Texte [/center]</td>
+        </tr>
+        <tr>
+            <td>Alignement à droite</td>
+            <td>[right] Texte [/right]</td>
+        </tr>
+        <tr>
+            <td>Alignement justifié</td>
+            <td>[justify] Texte [/justify]</td>
+        </tr>
+    </tbody>
+</table>
+<h1 id="part5">5.Outils divers</h1>
+<h2 id="mail">5.1.Mails automatiques</h2>
+Dans le panneau "interactivité" de la configuration générale, 
+l'administrateur peut activer ou désactiver l'option permettant l'envoi 
+d'emails automatiques. En effet, dans un certain nombre de cas (création
+ d'une réservation, suppression/modification, modération, ...), <strong>GRR peut envoyer automatiquement des mails</strong> à certains utilisateurs.<br>
+<h3>Cas général</h3>
+Un email est envoyé au <strong>bénéficiaire </strong>de la réservation lorsque :<br>
+<ul>
+    <li> un autre utilisateur (ayant les droits requis) crée, modifie ou supprime une réservation au nom du bénéficiaire.</li>
+    <li> GRR supprime automatiquement une réservation du bénéficiaire (cas des réservation "sous réserve")<br>
+    </li>
+</ul>
+<h3>Cas des réservations de ressources avec modération</h3>
+<ul>
+    <li>Lorsqu'un utilisateur effectue une demande de réservation d'un <strong>ressource modérée</strong> :</li>
+</ul>
+<blockquote>
+<ol>
+    <li>un mail est envoyé à l'utilisateur pour l'avertir que sa demande est en attente de modération,</li>
+    <li>un mail est également envoyé aux gestionnaires responsables de 
+la ressource, ou à&nbsp; défaut aux administrateurs de la ressource (ou 
+en dernier recours aux administrateurs généraux) afin d'avertir qu'une 
+demande est en attente de modération.</li>
+</ol>
+</blockquote>
+<ul>
+    <li>Lorsqu'un utilisateur (ayant les droits requis) modère une 
+réservation, un mail est envoyé au bénéficiaire de la réservation pour 
+lui notifier la décision.<br>
+    </li>
+</ul>
+<h3>Notification d'un retard dans la restitution d'une ressource.</h3>
+<ul>
+    <li> Si une ressource n’a pas été rendue dans les délais, le 
+gestionnaire peut signaler la ressource comme étant "non restituée", ce 
+qui a pour effet l'envoi automatique d'un mail dès le lendemain afin de 
+notifier le retard au bénéficiaire de la réservation.</li>
+    <li> Un email est également envoyé aux gestionnaires de la 
+ressource, ou à défaut, aux administrateurs de la ressource (ou en 
+dernier recours aux administrateurs généraux)</li>
+</ul>
+<h3>Et des utilisateurs systématiquement avertis</h3>
+Par ailleurs, certains utilisateurs désignés par l'administrateur 
+peuvent également être prévenus par email pour chaque opération 
+ci-dessus. Pour chaque ressource l'administrateur peut désigner un ou 
+plusieurs utilisateurs à prévenir. La configuration des utilisateurs à 
+prévenir par mail s'effectue dans : <em>[Administration] -&gt; [Mails automatiques]</em>.
+<h2>5.2.Suivi des connexions</h2>
+L'outil de suivi des connexions permet de :
+<ul>
+    <li>connaître les utilisateurs actuellement connectés,<br>
+    (Cela peut correspondre à des connexions closes, pour laquelle 
+l'utilisateur ne s'est pas déconnecté correctement et qui ne sont pas 
+encore marquées comme closes).</li>
+    <li>connaître, grâce à un journal des connexions, les connexions 
+passées et en cours (nom de login, heures et dates de début et fin de 
+session, adresse IP, navigateur et provenance),</li>
+    <li>nettoyer régulièrement le journal.</li>
+</ul>
+
+Concernant le journal des connexions :<br>
+- Les dates apparaissant en rouge marquent les utilisateurs déconnectés automatiquement après un trop long délai d'inactivité.<br>
+- Les lignes apparaissant en vert marquent les utilisateurs actuellement
+ connectés (cela peut correspondre à une connexion actuellement close 
+mais pour laquelle l'utilisateur ne s'est pas déconnecté correctement).<br>
+- Les lignes en noir signalent une session close normalement.<br>
+Remarque : il est possible à tout moment de&nbsp; désactiver les connexions (<em>[Administration] -&gt; [Configuration générale]</em>).
+ En désactivant les connexions, vous rendez impossible la connexion au 
+site pour les utilisateurs, hormis les administrateurs. De plus, les 
+utilisateurs actuellement connectés sont automatiquement déconnectés. 
+Néanmoins, si la connexion n'est pas obligatoire pour l'accès au site en
+ visualisation, cet accès reste possible.
+ <h2>5.3.Modération des réservations</h2>
+<p>L'administrateur d'un domaine ou le gestionnaire d'une ressource peut
+ décider de modérer les réservations d'une ressource dont il a la 
+charge. L'activation de cette fonctionnalité se fait en cochant une case
+ dans la page de configuration de la ressource. Ce qui suit explique le 
+fonctionnement de la modération lorsque cette option est activée :</p>
+<ol>
+    <li> Un utilisateur fait une <strong>demande de réservation</strong> en remplissant normalement les différents champs du formulaire de réservation.</li>
+    <li> Une fois la demande enregistrée, le ou les gestionnaires 
+responsables de la ressource, ou à défaut, le ou les administrateurs de 
+la ressource (ou en dernier recours les administrateurs généraux) 
+reçoivent un <strong>mail automatique</strong> leur indiquant qu'il y a une réservation à modérer. </li>
+</ol>
+Le demandeur reçoit également un mail lui rappelant sa demande et le fait que celle-ci est en <strong>attente de modération</strong>. <br>
+<strong>Remarques </strong>: 
+<ul>
+    <li><strong>Aucune autre demande</strong> n'est possible pour la même ressource sur le même créneau tant que la modération n'a pas été faite.</li>
+    <li>La modération ne concerne que les utilisateurs qui ne sont pas administrateurs du domaine ou gestionnaires de la ressource.</li>
+</ul>
+<p>Dans le mail envoyé aux gestionnaires de la ressource, un lien pointe
+ vers la page de validation de GRR leur permettant de valider 
+rapidement. Sur cette page, le gestionnaire choisit d'<strong>accepter la réservation</strong> ou bien de la <strong>refuser</strong>. Le <strong>refus entraîne la suppression</strong> de la réservation. </p>
+<p>Dans le cas de plusieurs réservations liées par une périodicité, le 
+gestionnaire peut accepter ou refuser en bloc l'ensemble des 
+réservations qui n'ont pas encore été modérées individuellement.</p>
+<p><strong>Remarque </strong>: lorsque le gestionnaire refuse en bloc un
+ ensemble de réservations, cela entraîne automatiquement la suppression 
+des informations de périodicité pour les réservations qui auraient 
+éventuellement déjà été validées individuellement.</p>
+<p>L'interface de modération contient une zone de saisie texte facultative dans laquelle le gestionnaire peut motiver sa décision.</p>
+<p>Lorsque le gestionnaire valide le formulaire de modération, une 
+sauvegarde des informations liées à la réservation est effectuée dans 
+une table prévue à cet effet. Dans cette même table sont enregistrées le
+ motif de la décision ainsi que l'identifiant de l'utilisateur ayant 
+procédé à la modération.</p>
+<p>Une fois que le gestionnaire a validé, le demandeur reçoit par email la décision de modération ainsi qu'un rappel de la demande.</p>
+<h2>5.4.Réservation en blocs</h2>
+Cette page permet d'accéder à plusieurs pages dédiées à la réservation en masse.
+<h3>5.4.1.Réservation/suppression en bloc</h3>
+cette procédure vous permet de réserver ou de libérer très rapidement 
+des créneaux horaires simultanément sur plusieurs ressources de 
+plusieurs domaines et selon un calendrier.<br>
+Exemple : Vous pouvez ainsi bloquer à l'année certains jours tels que les week-end, les vacances, les jours fériés ...<br>
+Attention : s'il y a conflit avec des réservations existantes, celles-ci
+ seront automatiquement et irrémédiablement supprimées au profit de la 
+nouvelle réservation. De plus, les personnes concernées par les 
+suppressions ne seront pas prévenues par email.<br>
+Cette procédure se déroule en trois étapes :<br>
+<ul>
+    <li>Choix du (des) domaine(s) et du type d'action</li>
+    <li>Choix des ressources à réserver, nom du réservant, description et type des réservations</li>
+    <li>Choix des dates et heures à réserver sur un calendrier</li>
+</ul>
+<h3>5.4.2.Supprimer toutes les réservations après une date donnée</h3>
+cette procédure vous permet de supprimer toutes les réservations après une date donnée, avec le choix des <b>domaines</b> où supprimer les réservations. <br>
+<em>  Cette procédure est irréversible !</em>
+<h3>5.4.3.Supprimer toutes les réservations avant une date donnée</h3>
+cette procédure vous permet de supprimer toutes les réservations avant une date donnée, avec le choix des <b>domaines</b> où supprimer les réservations. <br>
+<em>  Cette procédure est irréversible !</em>
+<h3>5.4.4.Importer un fichier d'occupation de salles au format CSV provenant de UnDeuxTemps</h3>
+cette procédure vous permet d'importer les données d'un emploi du temps réalisé avec le logiciel UnDeuxTemps.<br>
+Pour cela, commencer par faire l'extraction depuis UnDeuxTemps :<br>
+Lancer UnDeuxTemps, module "emploi du temps des salles" et demander une recherche. <br>
+Ne rentrer aucun critère dans la recherche si bien qu'UDT recherche tout; cliquer alors sur le bouton "Excel" et UDT exporte tout le fichier d'occupation hebdomadaire des salles au format CSV.<br>
+Supprimer la première ligne (les en-têtes de colonnes) par exemple avec Notepad++ et enregistrer en CSV. <br>
+Puis télécharger le fichier CSV qui doit être du format suivant: <br>
+<code>jour de la semaine; heure au format: 12h00 (pour un créneau d'une heure) ou 12h00-13h30 (pour un créneau différent); classe ou division; discipline; enseignant; salle; groupe; regroupement; effectif; mode; fréquence; aire </code><br>(ces 6 derniers champs ne sont pas exploités pour le moment mais doivent figurer: c'est le format d'exportation UnDeuxTemps)
+Le temps d'importation est en général limité par le serveur à quelques minutes par fichier. Pour éviter des erreurs de type "timeout" qui conduirait à une importation incomplète, scindez votre fichier en fichiers plus petits (par exemple suivant les jours de la semaine) que vous importerez successivement. <br>
+<em>Remarque</em> : lors d'une réimportation, les créneaux inchangés sont maintenus, les créneaux modifiés sont écrasés, les créneaux libérés ne le sont pas.
+<h3>5.4.5.Importer un fichier d'occupation de salles au format CSV</h3>
+ Télécharger un fichier CSV au format suivant:
+<br>
+<code> date du jour; heure de début; heure de fin; ressource; description; type </code>
+<br>
+Le temps d'importation est en général limité par le serveur à quelques minutes par fichier. Pour éviter des erreurs de type "timeout" qui conduirait à une importation incomplète, scindez votre fichier en fichiers plus petits que vous importerez successivement
+<h3>5.4.6.Importer un emploi du temps depuis le logiciel EDT Index Education</h3>
+<em>en cours d'écriture </em>
+<h2>5.5.Recherche, rapports et statistiques</h2>
+L'outil "Recherche - Rapports - Statistiques" permet d'effectuer des 
+recherches sur les réservations déjà effectuées et d'afficher les 
+résultats sous la forme d'un tableau de statistiques ou bien sous la 
+forme d'un rapport donnant le détail des réservations.<br>
+<h3>Le résumé statistique</h3>
+Le résumé statistique est un tableau à double entrée : une ressource 
+par&nbsp; colonne et un item par ligne correspondant selon la valeur du 
+champ "résumé par".<br>
+Par exemple, dans le cas d'un <strong>résumé statistique par bénéficiaire</strong>, chaque cellule affiche pour chaque utilisateur (un utilisateur par ligne) et pour une ressource <br>
+donnée (colonne) : <br>
+<ul>
+    <li>entre parenthèse le nombre de réservations effectuées par cet utilisateur,</li>
+    <li>suivi du nombre d'heures de réservations correspondant, ou bien 
+du nombre de créneaux correspondants (selon la configuration du 
+domaine).</li>
+</ul>
+Autre exemple, dans le cas d'un <strong>résumé par "type"</strong> : chaque cellule affiche pour chaque type (un type par ligne) et pour une ressource donnée (colonne) : <br>
+<ul>
+    <li> entre parenthèse, le nombre de réservations correspondant au type figurant dans l'en-tête de ligne, </li>
+    <li> suivi du nombre d'heures de réservations correspondant, ou bien
+ du nombre de créneaux correspondants (selon la configuration du 
+domaine)</li>
+</ul>
+<h3>Fichier CSV<br>
+</h3>
+Les fichiers CSV permettent une exploitation des résultats à l'aide d'un tableur. Le séparateur utilisé est le point-virgule. <br>
+<h2 id="cycle">5.6.La configuration par « jours cycle »</h2>
+<p>La configuration par «&nbsp;<strong>jours cycle</strong>&nbsp;» offre
+ la possibilité de réorganiser le calendrier de GRR pour qu'il 
+corresponde non pas aux jours du calendrier «&nbsp;normal&nbsp;», mais à
+ des «&nbsp;jours cycle&nbsp;».</p>
+<p>Ainsi, un établissement peut par exemple fonctionner sur des cycles 
+de 9 jours, appelés «&nbsp;jours cycle&nbsp;». Soient par exemple 
+«&nbsp;J1&nbsp;», «&nbsp;J2&nbsp;», ... «&nbsp;J9&nbsp;», chacun de ces 
+«&nbsp;jours cycle&nbsp;».</p>
+<p>Dans GRR, une interface permet de faire correspondre, à chaque jour 
+du calendrier «&nbsp;normal&nbsp;», un des «&nbsp;jours cycle&nbsp;» ou 
+éventuellement aucun (jours fériés...).</p>
+<p>Par exemple, au lundi 12 février peut correspondre «&nbsp;J1&nbsp;», 
+au mardi 13 févier,  «&nbsp;J2&nbsp;», au mercredi 14 février, aucun 
+jour cycle, au lundi 20 février on peut faire correspondre 
+«&nbsp;J3&nbsp;», etc...</p>
+<p>Une fois ce calendrier des «&nbsp;jours-cycle&nbsp;» créé, Il est 
+alors possible d'effectuer des réservations avec périodicité selon ses 
+jours cycle.</p>
+<p>Dans certains établissements scolaires du Québec, cette organisation des horaires est habituelle.</p>
+<p>La marche à suivre est la suivante<br>
+</p>
+<ul>
+    <li>Activer la fonctionnalité des  «&nbsp;<strong>jours cycles</strong> » (« Administration », puis « Configuration générale », puis&nbsp; « Activation de modules ».</li>
+    <li>Paramétrage du calendrier (« Administration », puis « Calendrier
+ des jours cycles », puis&nbsp; « Paramétrage du calendrier ») afin de 
+définir&nbsp; les paramètres qui seront utilisés lors de la création à 
+la volée du calendrier des "jours cycle".</li>
+    <li>Création du calendrier (« Administration », puis « Calendrier 
+des jours cycles », puis&nbsp; « Création/Régénération du calendrier 
+"jours cycle" »).</li>
+    <li>Une fois le calendrier généré, vous pouvez modifier manuellement
+ l'affectation des jours cycle pour chaque date du calendrier (« 
+Administration », puis « Calendrier des jours cycles », puis&nbsp; « 
+Modification/Visualisation du calendrier "Jours cycle »).</li>
+</ul>
+<p>&nbsp;Du point de vue de l'utilisateur, celui-ci dispose, dans les 
+options de périodicité, d'un type supplémentaire de périodicité selon 
+les&nbsp; "Jours Cycle". </p>
+<h2>5.7.Numéro de version et mise à jour de la base de donnée</h2>
+Cet outil indique le numéro de la version de GRR utilisée et permet de mettre à jour la base de données en cas de besoin.<br>
+La mise à jour de GRR s'effectue en deux étapes :<br>
+- une mise à jour des scripts,<br>
+- suivi d'une mise à jour de la base de données<br>
+Une fois la mise à jour des scripts effectuées, connectez-vous en 
+administrateur et rendez-vous sur la page de mise à jour de la base de 
+données ([Administration] -&gt; [Numéro de version et mise à jour]). 
+La&nbsp; page vous propose alors de mettre à jour la base Mysql.<br>
+<strong> Remarques :</strong>
+<ul>
+    <li>Il peut être nécessaire dans certains cas de forcer une mise à 
+jour vers une version actuelle ou antérieure (cas où la mise à jour 
+normale ne s'est pas bien passée). Supposons que l'adresse de votre site
+ soit : http://www.monsite/grr/ et que vous vouliez forcer une mise à 
+jour vers la version 1.9.4, bien qu'étant déjà à jour de cette version. 
+Il suffit alors de taper dans la barre d'adresse : <strong>http://www.monsite/grr/admin_maj.php?force_maj=1.9.4</strong></li>
+    <li>Il peut être nécessaire dans certains cas d'accéder directement à
+ l'interface de mise à jour de la base sans passer par l'interface 
+normale de connexion. Supposons que l'adresse de votre site soit : 
+http://www.monsite/grr/. Il suffit alors de taper dans la barre 
+d'adresse : <strong>http://www.monsite/grr/admin_maj.php</strong>.Vous 
+êtes ensuite invité à vous connecter en administrateur. Vous accédez 
+alors directement à la page de mise à jour de la base de données.</li>
+</ul>
+<h1 id="part6">6.Authentification et ldap</h1>
+GRR s'intègre souvent dans un environnement comportant d'autres 
+applications demandant également une identification. Un des soucis 
+des&nbsp; administrateurs est alors de mettre en place une structure 
+évitant à l'utilisateur de s'identifier auprès de chaque application. La
+ solution de ce genre de problème réside dans l'installation d'un 
+système d'authentification unique qui "chapeaute" les applications 
+telles que GRR, autrement dit un <strong>SSO </strong>(Single 
+Sign-On).&nbsp; SSO désigne des systèmes d'authentification unique 
+permettant de simplifier pour l'utilisateur la gestion de ses mots de 
+passe. <br>
+Il existe actuellement plusieurs solutions. Parmi celles-ci, on peut retenir : <br>
+<ul>
+    <li> CAS (<a href="http://www.ja-sig.org/products/cas/index.html">http://www.ja-sig.org/products/cas/index.html</a>)</li>
+    <li> LemonLDAP (<a href="http://wiki.lemonldap.objectweb.org/xwiki/bin/view/Main/WebHome">http://wiki.lemonldap.objectweb.org/xwiki/bin/view/Main/WebHome</a>)</li>
+    <li>LASSO (<a href="http://lasso.entrouvert.org/">http://lasso.entrouvert.org/</a>)</li>
+</ul>
+<br>
+Certaines plateformes ont également développé leur propre SSO. C'est le cas du serveur de communication LCS (<a href="http://wwdeb.crdp.ac-caen.fr/LcsDoc/index.php/Accueil">http://wwdeb.crdp.ac-caen.fr/LcsDoc/index.php/Accueil</a>)
+<br>
+La difficulté consiste alors à adopter une solution SSO compatible avec les applications que l'on veut mettre en place.
+<br>
+Actuellement, <strong>GRR </strong>est compatible avec plusieurs SSO (LemonLDAP, CAS, LASSO, LCS).
+<h2 id="ldap">6.1.Configuration LDAP</h2>
+Depuis la version GRR 1.7, il est possible de se connecter à GRR en 
+s'authentifiant auprès d'un&nbsp; annuaire LDAP. LDAP (Lightweight 
+Directory Access Protocol) est un protocole permettant d’interroger un 
+annuaire contenant des informations d’utilisateurs (nom, login, email, 
+...). <br>
+Dans le panneau d'administration de GRR, une page «&nbsp;configuration 
+LDAP&nbsp;» permet d'activer et de configurer l'authentification LDAP. A
+ l'ouverture de cette page, GRR détecte si PHP a été compilé avec le 
+support LDAP. Dans le cas contraire, un message en avertit 
+l'administrateur qui ne peut aller plus loin dans le paramétrage LDAP.<br>
+L'activation LDAP consiste à choisir le statut par défaut des 
+utilisateurs venant de l'annuaire («&nbsp;usager&nbsp;» ou 
+«&nbsp;visiteur&nbsp;»).
+<br>
+Une fois LDAP activé, il faut configurer le fichier 
+«&nbsp;config_ldap.inc.php&nbsp;», ce qui est relativement simple en 
+utilisant la procédure automatique accessible à partir de cette page 
+(attention à donner les droits d'écriture sur le fichier 
+«&nbsp;config_ldap.inc.php&nbsp;»).<br>
+Attention : si vous configurez manuellement le fichier 
+«&nbsp;config_ldap.inc.php&nbsp;» (sans passer par la configuration en 
+ligne), vous devez tout de même activer LDAP en choisissant le statut 
+par défaut des utilisateurs importés.<br>
+Une fois la configuration correctement effectuée, deux types d'utilisateurs peuvent cohabiter :<br>
+<ul>
+    <li> les utilisateurs gérés directement par GRR dans la base locale de GRR et </li>
+    <li> les utilisateurs importés de l'annuaire LDAP.</li>
+</ul>
+Dans <a href="#tabusers">le tableau de gestion des utilisateurs</a> un champ indique le type d'authentification («&nbsp;local&nbsp;» ou «&nbsp;ext&nbsp;») de l'utilisateur.<br>
+Quand le type d'authentification d'un utilisateur est «&nbsp;ext&nbsp;»,
+ il ne peut changer son mot de passe dans GRR (celui-ci en effet n'est 
+pas stocké dans GRR mais dans l'annuaire LDAP).<br>
+L'administrateur peut modifier tous les paramètres d'un utilisateur 
+«&nbsp;ext&nbsp;» tout comme pour un utilisateur «&nbsp;local&nbsp;», à 
+l'exception du mot de passe qui est laissé vide dans la base locale.<br>
+L'administrateur a la possibilité de changer un utilisateur 
+«&nbsp;ext&nbsp;» en un utilisateur «&nbsp;local&nbsp;». La procédure 
+est irréversible. Il y a alors perte de synchronisation entre GRR et 
+LDAP pour cet utilisateur.<br>
+GRR n'inscrit aucune donnée dans l'annuaire. Ainsi GRR n’a besoin que d’un accès en lecture seule à l’annuaire LDAP.<br>
+Concrètement, quand un utilisateur tente de se connecter à GRR en tapant
+ un identifiant et un mot de passe, GRR suit la procédure suivante :
+<ul>
+    <li> GRR regarde si un utilisateur ayant cet identifiant et ce mot de passe est présent dans la base des utilisateurs de GRR.<br>
+    Si oui : l'utilisateur est connecté à GRR.</li>
+    <li>Dans le cas contraire : si ldap n'est pas activé ou pas 
+configuré, la procédure s'arrête et il y a échec de la connexion. Si 
+ldap est activé et configuré, GRR tente une authentification de 
+l'utilisateur dans l'annuaire.<br>
+    <ul>
+        <li>Si cette authentification échoue,la procédure s'arrête et il y a échec de la connexion.</li>
+        <li>Si l'authentification réussit :<br>
+        <ol>
+            <li>si c'est la première connexion à GRR, GRR crée 
+l'utilisateur «&nbsp;ldap&nbsp;» dans la table 
+«&nbsp;utilisateurs&nbsp;» en tentant d'importer le nom et l'adresse 
+email. Le champ «&nbsp;mot de passe&nbsp;» est laissé vide. Le statut 
+«&nbsp;usager&nbsp;» ou «&nbsp;visiteur&nbsp;» est celui défini par 
+défaut dans la configuration LDAP. L'administrateur pourra par la suite 
+modifier ces paramètres au cas par cas. La procédure s'arrête : 
+l'utilisateur est alors connecté à GRR. (remarque : si un utilisateur 
+«&nbsp;local&nbsp;» existant porte déjà le même identifiant, 
+l'importation ne pourra avoir lieu : il y a échec de la connexion).</li>
+            <li>Si ce n'est pas la première connexion, GRR récupère dans
+ sa base les informations concernant l'utilisateur (paramètres par 
+défaut, langue, ...). L'utilisateur peut se connecter à GRR.</li>
+        </ol>
+        </li>
+    </ul>
+    </li>
+</ul>
+Une fois un utilisateur «&nbsp;ldap&nbsp;» connecté, il est traité par 
+la voie classique, c’est-à-dire simplement avec le cookie de session. 
+Ainsi on ne se connecte à LDAP que lors de la procédure de connexion à 
+GRR. De même, les paramètres pris en compte dans la navigation dans GRR 
+(affichage par défaut, nom, prénom, email, ...) sont ceux de GRR.
+<h2>6.2.Authentification IMAP/POP</h2>
+Il est possible de se connecter à GRR en s'authentifiant à l'aide d'un compte IMAP ou POP3. <br>
+L'activation de l'authentification IMAP/POP consiste à choisir le statut
+ par défaut des utilisateurs venant de l'annuaire («&nbsp;usager&nbsp;» 
+ou «&nbsp;visiteur&nbsp;»).<br>
+Une fois authentification activée, il faut configurer le fichier « 
+config_imap.inc.php », soit manuellement, soit en utilisant la procédure
+ automatique accessible à partir de la même page.<br>
+Une fois la configuration correctement effectuée, deux types d'utilisateurs peuvent cohabiter :
+<ul>
+    <li> les utilisateurs gérés directement par GRR dans la base locale de GRR et </li>
+    <li> les utilisateurs créés lors la première connexion IMAP ou POP.</li>
+</ul>
+Dans <a href="#tabusers">le tableau de gestion des utilisateurs</a> un champ indique le type d'authentification («&nbsp;local&nbsp;» ou «&nbsp;ext&nbsp;») de l'utilisateur.<br>
+Quand le type d'authentification d'un utilisateur est «&nbsp;ext&nbsp;»,
+ il ne peut changer son mot de passe dans GRR puisqu'il s'agit du mot de
+ passe IMAP ou POP.<br>
+L'administrateur peut modifier tous les paramètres d'un utilisateur 
+«&nbsp;ext&nbsp;» tout comme pour un utilisateur «&nbsp;local&nbsp;», à 
+l'exception du mot de passe qui est laissé vide dans la base locale.<br>
+L'administrateur a la possibilité de changer un utilisateur 
+«&nbsp;ext&nbsp;» en un utilisateur «&nbsp;local&nbsp;». La procédure 
+est irréversible. Il y a alors perte de synchronisation entre GRR et 
+IMAP/POP pour cet utilisateur.<br>
+Concrètement, quand un utilisateur tente de se connecter à GRR en tapant
+ un identifiant et un mot de passe, GRR suit la procédure suivante :
+<ul>
+    <li> GRR regarde si un utilisateur ayant cet identifiant et ce mot de passe est présent dans la base des utilisateurs de GRR.<br>
+    Si oui : l'utilisateur est connecté à GRR.</li>
+    <li>Dans le cas contraire GRR tente une authentification de l'utilisateur dans auprès du serveur IMAP ou POP.
+    <ul>
+        <li>Si cette authentification échoue,la procédure s'arrête et il y a échec de la connexion.</li>
+    </ul>
+    <ul>
+        <li>Si l'authentification réussit :
+        <ol>
+            <li>si c'est la première connexion à GRR, GRR crée 
+l'utilisateur dans la table «&nbsp;utilisateurs&nbsp;». Le champ 
+«&nbsp;mot de passe&nbsp;» est laissé vide. Le statut 
+«&nbsp;usager&nbsp;» ou «&nbsp;visiteur&nbsp;» est celui défini par 
+défaut dans la configuration LDAP. L'administrateur pourra par la suite 
+modifier ces paramètres au cas par cas. La procédure s'arrête : 
+l'utilisateur est alors connecté à GRR. (remarque : si un utilisateur 
+«&nbsp;local&nbsp;» existant porte déjà le même identifiant, 
+l'importation ne pourra avoir lieu : il y a échec de la connexion).</li>
+            <li>Si ce n'est pas la première connexion, GRR récupère dans
+ sa base les informations concernant l'utilisateur (paramètres par 
+défaut, langue, ...). L'utilisateur peut se connecter à GRR.</li>
+        </ol>
+        </li>
+    </ul>
+    </li>
+</ul>
+<strong>Remarque</strong> : l'authentification IMAP/POP ne permet pas de
+ récupérer les données (nom, prénom, ...) de l'utilisateur : celui-ci 
+est donc invité lors de la première connexion à compléter son profil.
+<h2>6.3.Intégration de GRR dans CAS SSO</h2>
+L’université de Yale aux Etats-Unis (<a href="http://www.ja-sig.org/products/cas/index.html">http://www.ja-sig.org/products/cas/index.html</a>) a développé le logiciel open source <strong>CAS</strong>
+ (Central Authentification Service) pour centraliser toutes les 
+identifications à différentes applications afin d'éviter les 
+identifications multiples (<strong>SSO</strong>).<br>
+Depuis la version 1.7, GRR est prévu pour fonctionner dans un environnement CAS SSO.<br>
+L'activation de l'authentification CAS se fait implicitement en choisissant le rôle par défaut des utilisateurs authentifiés<br>
+<h3>6.3.1.Les Pré-requis :</h3>
+Depuis la version GRR 3.3.1, les librairies phpCAS sont livrées dans l'archive GRR.<br>
+Il reste cependant à renseigner les paramètres du serveur d'authentification CAS, en page de configuration SSO.<br>
+Le fichier cas.inc.php est dans le dossier ./include/ et ne nécessite pas de modifications, sauf pour le choix de la langue par défaut.
+<br>
+<h3>6.3.2.Fonctionnement</h3>
+Dans le panneau d'administration de GRR, une page «&nbsp;configuration 
+SSO&nbsp;» permet d'activer la prise en charge de l'environnement CAS. <br>
+L'activation consiste à choisir le statut par défaut des utilisateurs 
+authentifié CAS («&nbsp;usager&nbsp;» ou «&nbsp;visiteur&nbsp;»).<br>
+Il faut également renseigner les paramètres du serveur CAS qui va authentifier les utilisateurs et éventuellement les paramètres du proxy, lorsque le serveur hébergeant GRR est installé derrière un proxy.<br>
+<strong>Remarque :</strong><br>
+Depuis la version GRR1.9.7, il est possible de configurer le serveur CAS 
+et GRR de façon à pouvoir récupérer dans GRR des attributs LDAP envoyés 
+par le serveur CAS. Il est alors possible d'<strong>associer à un attribut LDAP le statut de l'utilisateur dans GRR</strong>. Dans ce cas, <strong>le statut par défaut précédent n'est utilisé que lorsque la procédure d'association échoue</strong>. Reportez-vous à l'<a href="#part9">annexe 1 de cette documentation pour plus de détails</a>.<br>
+Tout comme pour LDAP, deux types d'utilisateurs peuvent cohabiter :
+<ul>
+    <li>les utilisateurs authentifiés et gérés directement par GRR dans la base locale de GRR et </li>
+    <li>les utilisateurs authentifiés par CAS.</li>
+</ul>
+Dans <a href="#tabusers">le tableau de gestion des utilisateurs</a> un champ indique le type d'authentification («&nbsp;local&nbsp;» ou «&nbsp;ext&nbsp;») de l'utilisateur.<br>
+Remarques :
+<ul>
+    <li>Pour se connecter, les utilisateurs locaux, gérés directement par GRR doivent se rendre à l'adresse du type <span class="moz-txt-link-freetext"><em>http://monserveur.fr/grr/login.php</em> (ne pas oublier <em>login.php</em> à la fin). </span>La
+ possibilité de créer des utilisateurs locaux est intéressante pour 
+permettre l'accès à GRR à des personnes ne disposant pas de compte CAS. 
+Il est fortement recommandé de créer un administrateur local de GRR. En 
+effet, certaines mises à jour de GRR nécessitent un accès particulier pour s'effectuer. </li>
+    <li>Un utilisateur qui désire accéder à GRR en s'authentifiant par CAS doit se rendre à l'adresse du type <em><span class="moz-txt-link-freetext">http://monserveur.fr/grr/ </span></em> S'il
+ n'est pas déjà authentifié, une page lui propose de rentrer son 
+identifiant et son mot de passe. Tout ce qui concerne les utilisateurs 
+authentifiés par CAS est traité de la même façon que les utilisateurs <a href="#ldap">LDAP</a> .
+    </li>
+    <li>Lorsque l'admin a empêché l'accès à la page de login (en dirigeant l'utilisateur vers une adresse spécifiée) il est possible d'accéder à la page de login par une adresse du type http://monserveur.fr/grr/login.php?local .
+    </li>
+    <li>Lorsqu'un utilisateur n'est pas authentifié, il est possible de le rediriger vers la page d'accueil de GRR plutôt que vers le portail d'authentification CAS.
+    </li>
+</ul>
+<h3>6.3.3.Que se passe-t-il une fois que l'utilisateur a été authentifié par CAS ?</h3>
+Lorsque GRR est paramétré pour s'intégrer dans un environnement CAS, le processus suivant s'applique :
+<ul>
+    <li> Pour se connecter l'utilisateur utilise l'url du type <strong>http://mon.site.fr/grr/</strong>.
+ Le navigateur est alors automatiquement dérouté vers la page 
+d'authentification CAS. Les utilisateurs «&nbsp;locaux&nbsp;» 
+(entièrement gérés par GRR), doivent utiliser l'url du type <strong>http://mon.site.fr/grr/login.php</strong>
+ pour se connecter directement à la base de GRR sans passer par 
+l'authentification CAS. C'est notamment le cas de l'administrateur.</li>
+    <li>Une fois authentifié, GRR regarde si un utilisateur dont le type
+ d'authentification est «&nbsp;ext&nbsp;» ayant cet identifiant est 
+présent dans la base des utilisateurs de GRR.   
+        <ul>
+            <li>Si oui : GRR récupère dans sa base les informations 
+concernant l'utilisateur (paramètres par défaut, langue, ...). 
+L'utilisateur peut se connecter à GRR.</li>
+            <li>Dans le cas contraire, c'est la première connexion à GRR : 
+GRR crée l'utilisateur dans la table «&nbsp;utilisateurs&nbsp;». Le 
+champ «&nbsp;mot de passe&nbsp;» est laissé vide.<br>
+        Dans le cas où un annuaire LDAP est configuré, GRR tente de 
+récupérer dans l'annuaire les valeurs des « nom&nbsp;»,&nbsp; 
+«&nbsp;prénom&nbsp;» et «&nbsp;email&nbsp;» (fonctionnalité présente à 
+partir de la version GRR 1.9.6 uniquement).<br>
+        Le champ «&nbsp;type d'authentification&nbsp;» prend la valeur 
+«&nbsp;ext&nbsp;». Le champ «&nbsp;statut&nbsp;» prend la valeur&nbsp; 
+«&nbsp;usager&nbsp;» ou «&nbsp;visiteur&nbsp;» selon la valeur définie 
+par défaut dans la configuration CAS. L'administrateur pourra par la 
+suite modifier ce paramètre au cas par cas. l'utilisateur est alors 
+connecté à GRR. (remarque : si un utilisateur «&nbsp;local&nbsp;» 
+existant porte déjà le même identifiant, l'importation ne pourra avoir 
+lieu : il y a échec de la connexion). <br>
+            </li>
+        </ul>
+    </li>
+</ul>
+Une fois l'utilisateur connecté, rien ne diffère pour celui-ci par 
+rapport à un environnement non CAS à la différence près qu'il ne peut 
+pas modifier son mot de passe (celui-ci étant géré par le serveur CAS).<br>
+Lorsqu'un utilisateur se déconnecte, la session GRR est détruite et le 
+navigateur est redirigé vers une page dont l'URL est spécifié dans la 
+page de configuration générale.
+<h2>6.4.Intégration de GRR dans LemonLdap SSO</h2>
+<strong><font color="#ff0000">ATTENTION :<br>
+</font></strong><font color="#ff0000">GRR supporte LemonLDAP mais <strong>pas LemonLDAP::NG</strong>
+ qui est une réécriture complète de LemonLDAP. En attendant qu'un 
+contributeur propose les modifications nécessaires pour adapter GRR à
+ LemonLDAP::NG, vous pouvez simplement configurer GRR avec 
+l'authentification HTTP. En effet, LemonLDAP::NG simule une 
+authentification Apache, ce qui permettra à GRR de fonctionner dans un 
+environnement LemonLDAP::NG.</font><strong><font color="#ff0000"><br>
+</font><br>
+<br>
+Lemonldap</strong> (<a href="http://lemonldap.sourceforge.net/">http://lemonldap.sourceforge.net/</a>)
+ est un système SSO sous GPL utilisé par des grands ministères (MINEFI, 
+Défense, Justice, ...). Depuis la version 1.9.1, GRR est prévu pour 
+fonctionner dans un environnement LemonLdap.<br>
+<h3>Fonctionnement</h3>
+Dans le panneau d'administration de GRR, une page «&nbsp;configuration 
+SSO&nbsp;» permet d'activer la prise en charge de l'environnement 
+Lemonldap. L'activation consiste à choisir le statut par défaut des 
+utilisateurs authentifié («&nbsp;usager&nbsp;» ou 
+«&nbsp;visiteur&nbsp;»).<br>
+<br>
+Tout comme pour LDAP et CASS SSO, deux types d'utilisateurs peuvent cohabiter :<br>
+<ul>
+    <li>les utilisateurs authentifiés et gérés directement par GRR dans la base locale de GRR et </li>
+    <li>les utilisateurs authentifiés par CAS.</li>
+</ul>
+Dans <a href="#tabusers">le tableau de gestion des utilisateurs</a> un champ indique le type d'authentification («&nbsp;local&nbsp;» ou «&nbsp;ext&nbsp;») de l'utilisateur.<br>
+Remarques : 
+<ul>
+    <li>Pour se connecter, les utilisateurs locaux, gérés directement par GRR doivent se rendre à l'adresse du type <span class="moz-txt-link-freetext"><em>http://monserveur.fr/grr/login.php</em> (ne pas oublier <em>login.php</em> à la fin). </span>La
+ possibilité de créer des utilisateurs locaux est intéressante pour 
+permettre l'accès à GRR à des personnes ne disposant pas de compte 
+LemonLdap. Il est fortement recommandé de créer un administrateur local 
+de GRR. En effet, certaines mises à jour de GRR nécessite un accès 
+particulier pour effectuer la mise à jour.
+    </li>
+    <li>Un utilisateur qui désire accéder à GRR en s'authentifiant par LemonLdap doit se rendre à l'adresse du type <em><span class="moz-txt-link-freetext">http://monserveur.fr/grr/ </span></em>S'il
+ n'est pas déjà authentifié, une page lui propose de rentrer son 
+identifiant et son mot de passe. Tout ce qui concerne les utilisateurs 
+authentifiés par Lemonldap est traité de la même façon que les 
+utilisateurs <a href="#ldap">LDAP</a> .
+    </li>
+</ul>
+<h3>Que se passe-t-il une fois que l'utilisateur a été authentifié par LemonLdap ?</h3>
+Lorsque GRR est paramétré pour s'intégrer dans un environnement LemonLdap, le processus suivant s'applique :<br>
+Une fois authentifié, GRR regarde si un utilisateur dont le type 
+d'authentification est «&nbsp;ext&nbsp;» ayant cet identifiant est 
+présent dans la base des utilisateurs de GRR. <br>
+<ul>
+    <li>Si oui : GRR récupère dans sa base les informations concernant 
+l'utilisateur (paramètres par défaut, langue, ...). L'utilisateur peut 
+se connecter à GRR.</li>
+    <li> Dans le cas contraire, c'est la première connexion à GRR : GRR 
+crée l'utilisateur dans la table «&nbsp;utilisateurs&nbsp;». Les champ 
+«&nbsp;mot de passe&nbsp;», «&nbsp;prénom&nbsp;», «&nbsp;email&nbsp;» 
+sont laissés vides. Le champ «&nbsp;type d'authentification&nbsp;» prend
+ la valeur «&nbsp;ext&nbsp;». Le champ «&nbsp;statut&nbsp;» prend la 
+valeur&nbsp; «&nbsp;usager&nbsp;» ou «&nbsp;visiteur&nbsp;» selon la 
+valeur définie par défaut dans la configuration Lemonldap. <br>
+L'administrateur pourra par la suite modifier ce paramètre au cas par 
+cas. l'utilisateur est alors connecté à GRR. (remarque : si un 
+utilisateur «&nbsp;local&nbsp;» existant porte déjà le même identifiant,
+ l'importation ne pourra avoir lieu : il y a échec de la connexion). </li>
+</ul>
+Une fois l'utilisateur connecté, rien ne diffère pour celui-ci par 
+rapport à un environnement normal à la différence près qu'il ne peut pas
+ modifier son mot de passe (celui-ci étant géré par le serveur 
+Lemonldap).<br>
+Lorsqu'un utilisateur se déconnecte, la session GRR est détruite et le 
+navigateur est redirigé vers une page dont l'URL est spécifié dans la 
+page de configuration générale.
+<h2 id="lcs">6.5.Intégration de GRR dans un serveur LCS</h2>
+<p>LCS (<a href="http://wwdeb.crdp.ac-caen.fr/LcsDoc/index.php/Accueil">http://wwdeb.crdp.ac-caen.fr/LcsDoc/index.php/Accueil</a>) est
+ un serveur de communication développé par l'équipe Académique TICE de 
+Caen et déployé dans l'ensemble des lycées et collèges de l'académie, 
+ainsi que dans de nombreux autres établissements de France.<br>
+</p>
+<p>Depuis la version 1.9.3, GRR est prévu pour s'intégrer sur un serveur LCS.</p>
+<h3>Intégration de GRR dans un serveur LCS</h3>
+<p>La mise en place de GRR sur un serveur LCS peut se faire de deux façons : automatique ou manuelle.</p>
+<h4>1) Mise en place automatique à l'aide du plugin (recommandé)</h4>
+<p>Connecté en admin sur le serveur LCS, il vous suffit d'installer le 
+plugin LCS (voir documentation LCS). Il se peut que le plugin LCS ne 
+soit pas basé sur la dernière version de GRR. Dans ce cas, voir plus bas
+ ce qui concerne la mise à jour de GRR.</p>
+<p>Dans le panneau d'administration de GRR, une page « configuration SSO
+ » permet de modifier le statut par défaut dans GRR (« usager » ou « 
+visiteur ») des élèves et des « non-élèves » (professeurs et 
+administratifs).</p>
+<h4>2) Mise en place manuelle (expert)</h4>
+<p>Cette procédure nécessite une assez bonne connaissance du système LCS
+ et se décompose en plusieurs étapes que nous ne développerons pas 
+entièrement dans ce document :</p>
+<h5>a) Installation dans le répertoire « /usr/share/lcs/ ».</h5>
+<p>Les modules applicatifs de LCS sont en général installés dans le répertoire « /usr/share/lcs/ » :<br>
+</p>
+<ul>
+    <li>création d'un répertoire « grr » dans « /usr/share/lcs/ »,</li>
+    <li>transfert des fichiers de GRR dans ce répertoire,</li>
+    <li>création d'une base de données Mysql ayant par exemple pour nom «
+ grr » et d'un utilisateur mysql ayant par exemple pour nom « grr » et 
+ayant les droits SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX et 
+ALTER sur la base précédemment créée,</li>
+    <li>lancement de la procédure d'installation (voir documentation GRR).</li>
+    <li>Remarque : pour que GRR soit accessible, il est nécessaire de 
+modifier le fichier « /etc/lcs/apache.conf » en ajoutant une ligne 
+(alias) du type : « alias /grr/ /usr/share/lcs/grr/ », puis de 
+redémarrer le serveur apache. GRR sera alors accessible à l'adresse du 
+type « http://mon-site-lcs.fr/grr/ ».</li>
+</ul>
+<h5>b) Installation dans le répertoire « public_html » d'un utilisateur « grr ».</h5>
+<p>Une autre façon d'installer GRR consiste à créer un utilisateur du 
+groupe « Profs » ayant le nom « grr ». Le chemin d'accès à l'application
+ est alors du type : « http://mon-site-lcs.fr/~grr/ » :</p>
+<ul>
+    <li>     ouverture d'une session sous le nom « grr »,</li>
+    <li>suppression du fichier « index.html » de « public_html »,</li>
+    <li>transfert des fichiers de GRR dans « public_html »,</li>
+    <li>lancement de la procédure d'installation (voir documentation GRR).</li>
+</ul>
+<h5>c) Activation de la prise en charge de l'environnement LCS</h5>
+<p>Dans le panneau d'administration de GRR, une page « configuration SSO
+ » permet d'activer la prise en charge de l'environnement LCS. 
+L'activation consiste à choisir le statut par défaut des élèves et des «
+ non-élèves » (professeurs et administratifs) authentifiés (« usager », «
+ visiteur » ou « ne pas importer »).</p>
+<h5>d) Mettre en place un lien vers GRR</h5>
+<p>Contrairement à l'installation automatique (plugin), l'installation 
+manuelle de GRR sur un serveur LCS ne fournit pas automatiquement 
+l'icône « grr » dans la partie « Applications » de LCS. Nous ne 
+détaillerons pas ici les différentes façons de personnaliser le serveur 
+LCS afin de mettre à la disposition des utilisateurs dans l'espace LCS, 
+un lien vers GRR.</p>
+<h4>3) Mise à jour automatique de GRR</h4>
+<p>Connecté en admin sur le serveur LCS, il vous suffit de procéder à 
+une mise à jour par le plugin LCS (voir documentation LCS) si elle 
+existe !</p>
+<h4>4) Mise à jour manuelle de GRR</h4>
+<p>Il se peut qu'une nouvelle version de GRR soit disponible sur le site
+ de GRR et que le plugin de mise à jour ne soit pas disponible. Dans ce 
+cas, vous pouvez mettre à jour GRR manuellement :</p>
+<ol>
+    <li>Tout d'abord, il est fortement conseillé de créer un 
+administrateur local dans GRR (c'est même indispensable si vous mettez à
+ jour GRR à partir du premier plugin basé sur la version 1.8 de GRR)
+    </li>
+    <li>Par sécurité, faites une sauvegarde de votre base de donnée.
+    </li>
+    <li>Téléchargez la dernière version complète de GRR, décompactez-la dans le dossier « /usr/share/lcs/Plugins/Grr ».
+    </li>
+    <li>Editez le fichier config.inc.php contenu dans le dossier 
+"/include" et servez-vous de votre ancien fichier config.inc.php pour y 
+remettre les bons paramètres, propres à votre configuration. Enregistrez
+ le fichier config.inc.php.
+    </li>
+    <li>Rendez-vous dans en admin. Une page vous signale alors un 
+problème. Cliquez sur "Mettre à jour la base Mysql", puis connectez-vous
+ en administrateur local dans la nouvelle page.
+    </li>
+    <li>Vous êtes alors redirigé dans la rubrique "Numéro de version et 
+mise à jour". Effectuez la mise à jour de la base de donnée puis lisez 
+le résultat de la mise à jour.
+    </li>
+</ol>
+<h4>5) Paramétrage de GRR</h4>
+<h5>a) Le fichier « config.inc.php »</h5>
+<p>Dans le menu « administration », la page « configuration générale » permet de configurer un grand nombre de paramètres.</p>
+<p>Attention : en plus de ceux-ci, d'autres paramètres de configuration 
+de GRR, moins courants, sont à votre disposition dans le fichier « 
+config.inc.php » (consulter la documentation de GRR). La modification de
+ paramètres présents dans ce fichier est évidemment plus délicate car 
+elle suppose l'accès à ce fichier qui est normalement présent dans le 
+répertoire du type « /usr/share/lcs/Plugins/Grr/include » (dans le cas 
+d'une installation par le plugin).</p>
+<p>Ce fichier « config.inc.php » contient des paramètres très importants
+ et il convient de l'examiner en détail. Toutes les indications 
+nécessaires à la configuration de ce fichier sont disponibles dans la 
+documentation complète ainsi que dans le fichier lui-même.</p>
+<p>Parmi ces paramètres, deux sont particulièrement importants dans le cas d'une intégration de GRR dans LCS :</p>
+<h5>b) Type d'accès à GRR</h5>
+<p>L'administrateur a le choix entre deux types d'accès à l'application GRR :</p>
+<ul>
+    <li>Accès libre en consultation : il n'est alors pas nécessaire de se
+ connecter pour consulter le planning des réservations. L'internaute a 
+les mêmes possibilités qu'un « visiteur » connecté (hormis l'outil de 
+recherche). Dans ce type de configuration, GRR est accessible librement 
+et vos ressources et les réservations sont alors visibles de tous.
+    </li>
+    <li>Accès avec authentification : il est obligatoire de se connecter 
+pour accéder au site, même pour une simple consultation des 
+réservations.
+    </li>
+</ul>
+<h5>c) La variable use_function_mysql_real_escape_string</h5>
+<p>Au moment où cette documentation est écrite, la version de PHP des 
+serveurs LCS est inférieure à 4.3.0. Or, GRR utilise la fonction « 
+mysql_real_escape_string() » qui n'est disponible qu'à partir de la 
+version 4.3.0 de PHP. Pour que GRR fonctionne dans un environnement LCS,
+ il est donc nécessaire de positionner la variable 
+$use_function_mysql_real_escape_string à "0" (zéro).</p>
+<p>Attention : la valeur par défaut dans le cas d'une installation manuelle est $use_function_mysql_real_escape_string = 1.</p>
+<h3>Fonctionnement</h3>
+<h4>1) Généralités</h4>
+<p>Lorsque GRR est intégré à un serveur LCS, deux types d'utilisateurs peuvent cohabiter :</p>
+<ul>
+    <li>les utilisateurs locaux gérés directement par GRR dans la base locale de GRR et
+    </li>
+    <li>les utilisateurs authentifiés par LCS.
+    </li>
+</ul>
+<p>Dans la table « grr_utilisateurs » un champ (« source ») indique le 
+type d'authentification de l'utilisateur : « local » ou « ext » 
+(c'est-à-dire ici « LCS »).</p>
+<ul>
+    <li>Quand le type d'authentification d'un utilisateur est « ext », il
+ ne peut changer son mot de passe dans GRR (celui-ci en effet n'est pas 
+stocké dans GRR mais dans l'annuaire LDAP de LCS).
+    </li>
+    <li>L'administrateur a la possibilité de changer un utilisateur « ext
+ » en un utilisateur « local ». La procédure est irréversible. Il y a 
+alors perte de synchronisation entre GRR et le LDAP de LCS pour cet 
+utilisateur.
+    </li>
+    <li>GRR n'inscrit aucune donnée dans l'annuaire LDAP de LCS.
+    </li>
+</ul>
+<h4>2) Cas d'un utilisateur authentifié sur LCS</h4>
+<p>Concrètement, quand un utilisateur authentifié sur LCS accède à GRR :</p>
+<ul>
+    <li>s'il s'agit du premier accès à GRR, GRR crée l'utilisateur avec 
+le champ source « ext » dans la table « utilisateurs » en important le 
+nom, le prénom et l'adresse email. Le champ « mot de passe » est laissé 
+vide. Le statut « usager » ou « visiteur » est celui défini par défaut 
+dans la configuration SSO de LCS. L'administrateur peut par la suite 
+modifier ces paramètres au cas par cas. l'utilisateur est alors connecté
+ à GRR. (remarque : si un utilisateur « local » ayant le même 
+identifiant est présent dans la base de GRR, il y a échec de la 
+connexion à GRR.
+    </li>
+    <li>Si ce n'est pas la première connexion, GRR met à jour dans sa 
+base les informations concernant les nom, prénom et email de 
+l'utilisateur.
+    </li>
+    <li>Dans la page de configuration, un champ supplémentaire permet de 
+préciser une liste de groupe LCS dont les membres sont autorisés à 
+accéder à GRR. Si le champ est laissé vide, il n'y a pas de 
+restrictions. Dans le cas contraire, seuls les utilisateurs appartenant à
+ au moins l'un des groupes listés sont autorisés à accéder à GRR. Il 
+faut écrire les groupes en les séparant par un point-vigule, par exemple
+ : « Profs;Administratifs ».
+    </li>
+</ul>
+<p>A tout moment, chaque utilisateur a accès à la gestion de son compte 
+pour modifier ses paramètres personnels, propres à GRR (paramètres par 
+défaut, langue, ...), stockés dans la base locale de GRR.</p>
+<p>Lorsqu'un utilisateur se déconnecte de LCS, la session GRR est 
+automatiquement détruite et l'accès à GRR (en tant qu'utilisateur 
+connecté) est impossible.</p>
+<p>Cette procédure de déconnexion automatique est une fonctionnalité des
+ plugins de LCS. Néanmoins, même si GRR est intégré manuellement à LCS, 
+une procédure interne à GRR assure également la déconnexion de GRR 
+lorsqu'un utilisateur se déconnecte de LCS.</p>
+<h4>3) Cas d'un utilisateur local</h4>
+<p>Un utilisateur local, non présent dans l'annuaire LDAP de LCS peut se
+ connecter à GRR à l'adresse du type : « 
+http://monserveur.fr/Plugins/grr/login.php » (dans le cas d'une 
+installation avec plugin).</p>
+<p>La possibilité de créer des utilisateurs locaux est intéressante pour
+ permettre l'accès à GRR à des personnes ne disposant pas de compte LCS.</p>
+<p>Il est fortement recommandé de créer un administrateur local de GRR. 
+En effet, certaines mises à jour de GRR nécessitent un accès particulier 
+pour effectuer la mise à jour.</p>
+<h3>Gestion des utilisateurs</h3>
+<p>Dans la partie administration, la page « utilisateurs » permet d'accéder à la gestion des utilisateurs.</p>
+<p>La plupart des fonctionnalités disponibles sur cette page ne sont pas
+ propres au cas d'une installation dans un environnement LCS. En 
+revanche, les deux procédures suivantes concernant uniquement le cas de 
+GRR dans un environnement LCS :</p>
+<h4>1) Nettoyage de la base locale</h4>
+<p>Lorsqu'un utilisateur est définitivement supprimé de la base LCS, 
+celui-ci peut rester présent dans la base locale de GRR. Au fil des 
+mois, la base locale peut ainsi contenir un certain nombre 
+d'informations obsolètes.</p>
+<p>La procédure « Nettoyage de la base locale » recherche et supprime de
+ la base locale de GRR, les utilisateurs LCS qui ne sont plus présents 
+dans la base LCS : ces utilisateurs sont effacés de la table locale « 
+grr_utilisateurs » ainsi que des tables de liaison le cas échéant.</p>
+<h4>2) Mise à jour de la base locale</h4>
+<p>Lorsqu'un utilisateur est ajouté à la base LCS, celui-ci peut 
+immédiatement se connecter à GRR, comme cela a déjà été dit plus haut. A
+ sa première connexion à GRR, l'utilisateur est ajouté à la base locale 
+de GRR et apparaît alors dans la liste des utilisateurs.</p>
+<p>De même lorsque des informations concernant le nom, le prénom ou 
+l'adresse email d'un utilisateur sont modifiés dans la base LCS, les 
+modifications sont automatiquement répercutées dans la base locale de 
+GRR à la prochaine connexion de l'utilisateur à GRR.</p>
+<p>L'administrateur peut néanmoins forcer une mise à jour des utilisateurs de la base locale de GRR.</p>
+<p>Cette procédure effectue les deux opérations suivantes :</p>
+<p>Insertion dans la base locale de GRR des utilisateurs LCS qui ne sont pas présents localement.</p>
+<p>Mise à jour de la base locale de GRR à partir des informations de la base LCS, pour les utilisateurs déjà présents.</p>
+<h4>3) Quelques remarques</h4>
+<ul>
+    <li>Activation/Désactivation d'un utilisateur local :
+    </li>
+</ul>
+<p>Le fait de rendre inactif un utilisateur a pour effet de rendre son 
+accès à GRR impossible, qu'il s'agisse d'un utilisateur authentifié LCS 
+ou bien d'un utilisateur local.</p>
+<ul>
+    <li>
+    <p>Changement de statut :</p>
+    </li>
+</ul>
+<p>Dans le panneau d'administration de GRR, la « configuration SSO » 
+permet de spécifier le statut par défaut dans GRR (« usager » ou « 
+visiteur ») des élèves et des « non-élèves » (professeurs et 
+administratifs). Il s'agit du statut qui est attribué à chaque 
+utilisateur lors de sa création dans la base locale.</p>
+<p>Il est ensuite possible à tout moment de modifier le statut d'un 
+utilisateur particulier : « usager », « visiteur » ou « administrateur »
+ (voir la documentation complète de GRR pour plus de détails).</p>
+<h2>6.6.Authentification HTTP</h2>
+Dans le panneau d'administration de GRR, une page « configuration SSO » 
+permet d'activer l'authentification HTTP. L'activation consiste à 
+choisir le statut par défaut des utilisateurs authentifié (« usager » ou
+ « visiteur »).<br>
+Deux types d'utilisateurs peuvent cohabiter :
+<ul>
+    <li>les utilisateurs locaux, gérés directement par GRR dans la base locale de GRR et</li>
+    <li>les utilisateurs authentifiés par HTTP.</li>
+</ul>
+Dans le <a href="#tabusers">tableau de gestion des utilisateurs</a> un champ indique le type d'authentification (« local » ou « ext ») de l'utilisateur.
+<br>
+Remarques : 
+<ul>
+    <li>Pour se connecter, les utilisateurs locaux, gérés directement par GRR doivent se rendre à l'adresse du type <span class="moz-txt-link-freetext"><em>http://monserveur.fr/grr/login.php</em> (ne pas oublier <em>login.php</em> à la fin). </span>La
+ possibilité de créer des utilisateurs locaux est intéressante pour 
+permettre l'accès à GRR à des personnes ne disposant pas de compte 
+apache. Il est fortement recommandé de créer un administrateur local de 
+GRR. En effet, certaines mises à jour de GRR nécessitent un accès 
+particulier pour effectuer la mise à jour. 
+    </li>
+    <li>Un utilisateur qui désire accéder à GRR en s'authentifiant par HTTP doit se rendre à l'adresse du type <em><span class="moz-txt-link-freetext">http://monserveur.fr/grr/ </span></em>. S'il n'est pas déjà authentifié, une page lui propose de rentrer son identifiant et son mot de passe.</li>
+</ul>
+<h3>Que se passe-t-il lorsqu'un utilisateur a été authentifié par HTTP ?</h3>
+Une fois authentifié par HTTP, GRR regarde si un utilisateur dont le 
+type d'authentification est « ext » ayant cet identifiant est présent 
+dans la base des utilisateurs de GRR.
+<ul>
+    <li>Si oui : GRR récupère dans sa base les informations concernant 
+l'utilisateur (paramètres par défaut, langue, ...). L'utilisateur peut 
+se connecter à GRR.</li>
+    <li>Dans le cas contraire, c'est la première connexion à GRR : GRR 
+crée l'utilisateur dans la table « utilisateurs ». Les champ « mot de 
+passe », « prénom », « email » sont laissés vides. Le champ « type 
+d'authentification » prend la valeur « ext ». Le champ « statut » prend 
+la valeur&nbsp; « usager » ou « visiteur » selon la valeur définie par 
+défaut dans la configuration HTTP. L'administrateur pourra par la suite 
+modifier ce paramètre au cas par cas. l'utilisateur est alors connecté à
+ GRR. (remarque : si un utilisateur « local » existant porte déjà le 
+même identifiant, l'importation ne pourra avoir lieu : il y a échec de 
+la connexion).
+    </li>
+</ul>
+Une fois l'utilisateur connecté, rien ne diffère pour celui-ci par 
+rapport à un environnement normal à la différence près qu'il ne peut pas
+ modifier son mot de passe (celui-ci n'étant pas stocké dans la base de 
+GRR).<br>
+<h3>Déconnexion</h3>
+Lorsqu'un&nbsp; utilisateur&nbsp; est authentifié par HTTP, <strong>il le reste tout au long de la session</strong>. <br>
+<strong>Conséquence</strong> : même si l'utilisateur se déconnecte de 
+GRR (destruction de la session sur le serveur et  du cookie de session 
+sur le navigateur), dès qu'il accède à l'URL  du type <span class="moz-txt-link-freetext">http://monserveur.fr/grr/</span>, il est à nouveau <strong>automatiquement  reconnecté</strong> <strong>à GRR</strong> puisqu'il&nbsp; est authentifié par HTTP.<br>
+<br>
+<h3>Kerberos</h3>
+Les premiers tests effectués montrent que l'authentification HTTP fonctionne également au travers d'un environnement SSO&nbsp; <strong>Kerberos</strong> (via le module auth_kerb).
+<h2>6.7.Intégration de GRR dans le SSO LASSO (semble obsolète)</h2>
+<a href="http://lasso.entrouvert.org/">LASSO</a> (Liberty Alliance Single Sign On) est une implantation libre des spécifications <a href="http://www.entrouvert.com/fr/identite-numerique/liberty-alliance">Liberty Alliance</a> développées par la Société Entr'Ouvert ( <a href="http://www.entrouvert.org/">http://www.entrouvert.org</a>).
+ Il s'agit d'une bibliothèque écrite en langage C qui permet de mettre 
+en oeuvre les spécifications Liberty Alliance, disponible sous licence 
+GNU General Public Licence.<br>
+GRR est prévu pour fonctionner dans un environnement SSO LASSO.<br>
+<h3>Les Pré-requis :</h3>
+<ol>
+    <li>Pour la configuration du serveur, reportez vous à la documentation disponible sur : <a href="http://lasso.entrouvert.org/">http://lasso.entrouvert.org/</a>.</li>
+    <li>Vous devez également installer <strong>spkitlasso</strong>, une interface haut niveau pour <strong>Lasso </strong>disponible ici :&nbsp; <a class="moz-txt-link-freetext" href="http://perso.entrouvert.org/%7Ebdauvergne/bzr/spkitlasso/">http://perso.entrouvert.org/~bdauvergne/bzr/spkitlasso/</a> </li>
+    <li>Optionnel: si vous avez installé <strong>spkitlasso</strong> dans un emplacement personnalisé (en dehors de l'<code>include_path</code> PHP), vous devez également spécifier, dans <code>/include/config.inc.php</code>, le chemin d'accès au répertoire d'installation.</li>
+    <li>Allez sur <a href="http://votre-serveur/grr/lasso/configure.php">http://votre-serveur/grr/lasso/configure.php</a> pour configurer votre nouveau fournisseur de service Lasso (SP, pour <em>Service Provider</em>).</li>
+    <li>Puis enregistrez ce SP dans le fournisseur d'identité de votre environnement Lasso (IdP, pour <em>Identity Provider</em>), par exemple Authentic.</li>
+</ol>
+<h3>Fonctionnement</h3>
+Dans le panneau d'administration de GRR, une page «&nbsp;configuration 
+SSO&nbsp;» permet d'activer la prise en charge de l'environnement LASSO.
+ L'activation consiste à choisir le statut par défaut des utilisateurs 
+authentifié LASSO («&nbsp;usager&nbsp;» ou «&nbsp;visiteur&nbsp;»).<br>
+Tout comme pour les autres SSO, deux types d'utilisateurs peuvent cohabiter :
+<ul>
+    <li>les utilisateurs authentifiés et gérés directement par GRR dans la base locale de GRR et </li>
+    <li>les utilisateurs authentifiés par LASSO.</li>
+</ul>
+Néanmoins, LASSO présente la particularité&nbsp; de "fédération 
+d'identité", avec  "anonymisation" des comptes, et la possibilité de 
+lier un compte local  existant au SSO. <br>
+Il est ainsi possible, pour un compte local existant (avec mot de passe local) de se "fédérer" au SSO LASSO.
+<h1 id="part7">7.Personnaliser GRR</h1>
+<h2>7.1.Adapter les fichiers de langue</h2>
+<strong>GRR </strong>utilise des fichiers de langue pour l'affichage. Ces fichiers de langue sont situés dans le répertoire <strong>/language</strong> de votre installation de GRR.<br>
+Afin de préserver la compatibilité avec les futures versions de GRR, 
+vous avez la possibilité de substituer vos propres textes aux messages 
+ou libellés officiels, sans pour autant modifier les fichiers fournis 
+avec GRR.<br>
+<strong>Exemple pour avoir une version française personnalisée</strong>
+<ul>
+    <li>Créer, avec un simple éditeur de texte, dans le répertoire /language, un fichier <strong>lang_subst.fr</strong>.</li>
+    <li>Ouvrez le fichier <strong>lang.fr </strong>avec un éditeur de 
+texte et repérer la ligne correspondant au libellé que vous voulez 
+modifier : supposons que vous préfériez le libellé "<em>En réparation</em>", plutôt que "<em>Temporairement indisponible</em>".&nbsp; Il s'agit donc, dans lang.fr, de la ligne :
+    <pre>$vocab["ressource_temporairement_indisponible"] = "Temporairement indisponible";</pre>
+    </li>
+    <li>Dans le fichier lang_subst.fr que vous venez de créer, tapez les lignes suivantes :<br>
+    <pre>&lt;?php<br>$vocab["ressource_temporairement_indisponible"] = "En réparation";<br>?&gt;</pre>
+    </li>
+    <li>Enregistrez et fermer votre fichier et le tour est joué !</li>
+</ul>
+<strong>Remarque :</strong><br>
+Entre les balises <strong>&lt;?php</strong> et <strong>?&gt;</strong>, vous pouvez placer autant de lignes que vous voulez, chacune correspondant à un texte à substituer.<br>
+<strong> Fichiers de personnalisation de langue par domaine</strong><br>
+Il est possible de personnaliser les fichiers de langue par domaine. 
+Pour cela, il suffit de repérer l'identifiant du domaine (il s'agit d'un
+ nombre facilement repérable dans les adresses URL). Appelons  <em>numero</em>, cet identifiant. il suffit alors de créer un fichier nommé <em>lang_subst_numero.fr</em> de la même façon que le fichier  lang_subst.fr ci-dessus.<br>
+<strong>Remarque :</strong><br>
+Un fichier  <em>lang_subst.fr</em>. peut coexister avec des fichiers <em>lang_subst_numero.fr</em> : ces derniers sont alors prioritaires par rapport au fichier <em> lang_subst.fr</em>.<br>
+<h2>7.2.Feuilles de style et CSS</h2>
+Vous pouvez créer votre propre feuille de style.<br>
+Pour cela, créez un nouveau répertoire dans le dossier "<strong>themes</strong>" de votre installation de GRR et prenez pour modèle un des différents répertoires de ce dossier "themes".<br>
+Supposons que vous ayez nommé votre répertoire "automne", il vous reste à ajouter ce nom dans la liste des thèmes du fichier <strong>misc.inc.php</strong> situé dans le répertoire <strong>include </strong>en prenant pour modèle la façon dont les autres thèmes sont écrits.<br>
+Enfin, n'hésitez pas à proposer votre thème à l'équipe des développeurs 
+de GRR pour qu'il soit éventuellement intégré à une future version de 
+GRR.
+<h1 id="part8">8.Documentation technique</h1>
+<h2>8.1.Les tables de la base de données (à jour pour la version 3.3.1 RC3)</h2>
+<h3>La table grr_room</h3>
+<p>Elle contient la liste des ressources</p>
+<ul>
+    <li>
+    <p>id : numéro identifiant de la ressource (clé de la table)</p>
+    </li>
+    <li>
+    <p>area_id : identifiant du domaine (area) auquel elle est rattachée</p>
+    </li>
+    <li>
+    <p>room_name : nom de la ressource</p>
+    </li>
+    <li>
+    <p>description : description courte des fonctionnalités de la ressource</p>
+    </li>
+    <li>
+    <p>capacity : capacité (nombre de place dans le cas d'une salle, 0 sinon)</p>
+    </li>
+    <li>
+    <p>max_booking : nombre maximum de réservations possibles par utilisateur (-1 si illimité)</p>
+    </li>
+    <li>
+    <p>statut_room : '1' si la ressource est disponible, '0' sinon</p>
+    </li>
+    <li>
+    <p>show_fic_room : 'y' si la fiche de présentation est rendue visible, 'n' sinon</p>
+    </li>
+    <li>
+    <p>picture_room : nom de l'image de la ressource stockée dans le répertoire /images</p>
+    </li>
+    <li>
+    <p>comment_room : description complète des fonctionnalités de la ressource</p>
+    </li>
+    <li>show_comment : 'y' : la description complète de la ressource est visible sur les plannings semaines et mois, 'n' sinon</li>
+    <li>
+    <p>delais_max_resa_room : nombre maximal de jours au-delà duquel 
+l'utilisateur ne peut pas réserver ou modifier une réservation (-1 si 
+pas de restriction).</p>
+    </li>
+    <li>
+    <p>delais_min_resa_room : temps en minutes en-deçà duquel 
+l'utilisateur ne peut pas réserver ou modifier une réservation (0 si pas
+ de restriction).</p>
+    </li>
+    <li>
+    <p>order_display : ordre d'affichage :</p>
+    </li>
+    <li>
+    <p>allow_action_in_past : permettre les réservations dans le passé ainsi que les modifications/suppressions de réservations passées.</p>
+    </li>
+    <li>
+    <p>type_affichage_reser : en mode édition d'une réservation, valeur 0
+ : l'utilisateur spécifie une durée de réservation; valeur 1 : 
+l'utilisateur spécifie une date et une heure de fin de réservation.</p>
+    </li>
+    <li>
+    <p>moderate : indique si les réservations de la ressource sont 
+modérées ou non. 0 : la ressource n'est pas modérée, 1 : la ressource est
+ modérée.</p>
+    </li>
+    <li>
+    <p>qui_peut_reserver_pour : indique le type d'utilisateur autorisé a
+ effectuer des réservations au nom d'autres personnes que lui-même.</p>
+    </li>
+    <li>
+    <p>dont_allow_modify : deux valeurs possibles 'y' ou 'n' ( permettre
+ ou non aux utilisateurs, hormis les gestionnaires et les 
+administrateurs, de modifier ou de supprimer leurs propres 
+réservations).</p>
+    </li>
+    <li>
+    <p>active_ressource_empruntee : deux valeurs possibles 'y' ou 'n' 
+(activer ou non la fonctionnalité "ressource empruntée/restituée")</p>
+    </li>
+    <li>
+    <p>who_can_see : entier indiquant le "niveau" de l'utilisateur 
+autorisé à&nbsp; voir cette ressource (et éventuellement réserver selon 
+les droits attribués)</p>
+    </li>
+    <li>
+    <p>delais_option_reservation : dans le cas des réservations "sous 
+réserve" nombre maximal de jours dont dispose le réservant pour 
+confirmer une réservation.</p>
+    </li>
+    <li>
+    <p>active_cle : indique si la fonction "clé empruntée" est disponible pour cette ressource</p>
+    </li>
+</ul>
+<h3>La table grr_area</h3>
+<p>Elle contient la liste des domaines c'est à dire les groupes de ressources.</p>
+<ul>
+    <li>
+    <p>id : numéro identifiant du domaine (clé de la table)</p>
+    </li>
+    <li>
+    <p>area_name : nom du domaine</p>
+    </li>
+    <li>
+    <p>access : 'r' si le domaine est un domaine à accès resteint,</p>
+    </li>
+    <li>
+    <p>order_display : numéro d'ordre d'affichage du domaine dans la liste des domaines</p>
+    </li>
+    <li>
+    <p>ip_adr : activation (1)ou désactivation (0) de la fonction de 
+gestion de l'affichage d'un domaine par défaut en fonction de l'adresse 
+IP de la machine cliente.</p>
+    </li>
+    <li>
+    <p>morningstarts_area : heure de début de réservation</p>
+    </li>
+    <li>
+    <p>eveningends_area : heure de fin de réservation</p>
+    </li>
+    <li>
+    <p>resolution_area : quel bloc peut être réservé, en secondes</p>
+    </li>
+    <li>
+    <p>eveningends_minutes_area : minutes à ajouter à l'heure $eveningends pour avoir la fin réelle d'une journée</p>
+    </li>
+    <li>
+    <p>weekstarts_area : début de la semaine: 0 pour dimanche, 1 pour lundi, etc.</p>
+    </li>
+    <li>
+    <p>twentyfourhour_format_area : format d'affichage du temps : valeur
+ 0 pour un affichage « 12 heures » et valeur 1 pour un affichage« 24 
+heures ».</p>
+    </li>
+    <li>
+    <p>calendar_default_values : 1 : prend en compte les valeurs par 
+défaut de config.inc.php concernant les paramètres d'affichage des 
+planning (compatibilité avec versions &lt; 1.9)</p>
+    </li>
+    <li>
+    <p>enable_periods : type des créneaux de réservation : <br>
+    « n » : les créneaux de réservation sont basés sur le temps. <br>
+    « y » : les créneaux de réservation sont basés sur des intitulés 
+pré-définis (les champs morningstarts_area, eveningends_area, 
+resolution_area, eveningends_minutes_area et twentyfourhour ne sont 
+alors pas pris en compte.</p>
+    </li>
+    <li>
+    <p>display_days : chaîne de 7 caractères « y » ou « n » indiquant 
+les jours à afficher, à partir du dimanche. Par exemple la chaîne 
+nyyyyyn signifie qu'on affiche pas les samedis et les dimanches.</p>
+    </li>
+    <li>
+    <p>id_type_par_defaut : identifiant du type sélectionné par défaut lors d'une nouvelle réservation.</p>
+    </li>
+    <li>
+    <p>duree_par_defaut_reservation_area :&nbsp; Durée par défaut d'une réservation, en secondes</p>
+    </li>
+    <li>duree_max_resa_area : durée maximale en minutes pour une réservation (-1 si pas de restriction)</li>
+    <li>
+    <p>max_booking :  nombre maximum de réservations possibles par 
+utilisateur (-1 si illimité)   pour toutes les ressources du domaine.</p>
+    </li>
+</ul>
+<h3>La table grr_site</h3>
+Table des sites<br>
+<ul>
+    <li>
+    <p>id : identifiant</p>
+    </li>
+    <li>
+    <p>sitecode : code du site</p>
+    </li>
+    <li>
+    <p>sitename : nom du site</p>
+    </li>
+    <li>
+    <p>adresse_ligne1 : ligne 1 adresse</p>
+    </li>
+    <li>
+    <p>adresse_ligne2 : ligne 2 adresse</p>
+    </li>
+    <li>
+    <div>
+    <p>adresse_ligne3 : ligne 3 adresse</p>
+    </div>
+    </li>
+    <li>
+    <p>cp : code postal</p>
+    </li>
+    <li>
+    <p>ville : ville</p>
+    </li>
+    <li>
+    <p>pays : pays</p>
+    </li>
+    <li>
+    <p>tel : téléphone</p>
+    </li>
+    <li>
+    <p>fax : fax</p>
+    </li>
+</ul>
+<h3>La table grr_area_periodes</h3>
+<p>Table utilisée uniquement dans le cas où enable_periods = 'y'. Stocke
+ les numéros et intitulés des créneaux pour chaque domaine :</p>
+<ul>
+    <li>
+    <p>id_area : identifiant du domaine</p>
+    </li>
+    <li>
+    <p>num_periode : numéro du créneau</p>
+    </li>
+    <li>
+    <p>nom_periode : intitulé du créneau</p>
+    </li>
+</ul>
+<h3>La table grr_entry</h3>
+<p>Elle contient la liste des réservations</p>
+<ul>
+    <li>
+    <p>id : numéro identifiant de la réservation (clé de la table)</p>
+    </li>
+    <li>
+    <p>start_time : date et heure du début de la séance (en temps 
+Unix, c'est à dire le nombre de secondes depuis le 1er Janvier 1970)</p>
+    </li>
+    <li>
+    <p>end_time : date et heure de la fin de la séance (temps Unix)</p>
+    </li>
+    <li>
+    <p>entry_type : '0' si aucune périodicité associée. '1' ou '2' si 
+une périodicité est associée ('2' si la réservation a été modifiée 
+indépendamment de la périodicité)</p>
+    </li>
+    <li>
+    <p>repeat_id : dans le cas d'une réservation périodique, identifiant de l'entrée dans la table grr_repeat (0 sinon)</p>
+    </li>
+    <li>
+    <p>room_id : l'identifiant de la ressource réservée</p>
+    </li>
+    <li>
+    <p>timestamp : date et heure de la dernière modification de la réservation</p>
+    </li>
+    <li>
+    <p>create_by : identifiant de la personne qui a enregistré la réservation</p>
+    </li>
+    <li>
+    <p>beneficiaire : identifiant de la personne au nom de laquelle la réservation a été faite.</p>
+    </li>
+    <li>
+    <p>beneficiaire_ext : nom et email de la personne au nom de laquelle
+ la réservation a été faite dans le cas où beneficiaire est vide</p>
+    </li>
+    <li>
+    <p>name : nom de la réservation</p>
+    </li>
+    <li>
+    <p>type : type de la réservation</p>
+    </li>
+    <li>
+    <p>description : description de la réservation</p>
+    </li>
+    <li>
+    <p>statut_entry : statut de la réservation. 'y' : la réservation est
+ en cours d'utilisation. 'e' : la réservation est en cours d'utilisation
+ et un mail est envoyé en cas de retard dans la restitution. Sinon '-'</p>
+    </li>
+    <li>option_reservation : cas des réservations "sous réserve". Si -1 :
+ la réservation a été confirmée. Sinon, option_reservation représente le
+ timestamp de la date limite de confirmation de réservation.<br>
+    </li>
+    <li>
+    <p>overload_desc : contenu des champs additionnels</p>
+    </li>
+    <li>
+    <p>moderate : indique l'état de la modération. 0 : réservation non 
+modérée. 1 : réservation en attente de modération. 2 : réservation 
+acceptée après modération. 3 : réservation refusée après modération.</p>
+    </li>
+    <li>jours : numéro du jour cycle dans le cas d'une réservation avec périodicité selon les jours cycle</li>
+    <li>clef : indique si la clé a été restituée</li>
+    <li>courrier : indique si un courrier a été envoyé</li>
+</ul>
+<h3>La table grr_repeat</h3>
+<p>Elle contient la liste des périodicités</p>
+<ul>
+    <li>
+    <p>id : clé de la table</p>
+    </li>
+    <li>
+    <p>start_time : début de la périodicité</p>
+    </li>
+    <li>
+    <p>end_time : fin de la périodicité</p>
+    </li>
+    <li>
+    <p>rep_type : fréquence (0 = jamais, 1 = chaque jour, 2 = chaque 
+semaine, 3 = chaque mois, la même date, 4=chaque année, même date, 5 = 
+chaque mois, même jour de la semaine, 6=toutes les n semaines</p>
+    </li>
+    <li>
+    <p>end_date : fin de la répétition</p>
+    </li>
+    <li>
+    <p>rep_opt : suite de 7 caractères 0 ou 1 indiquant les jours de périodicité dans le cas ou rep_type vaut 2 ou 6. 0 sinon.</p>
+    </li>
+    <li>
+    <p>room_id : identifiant de la ressource réservée</p>
+    </li>
+    <li>
+    <p>timestamp : date et heure de la dernière modification</p>
+    </li>
+    <li>
+    <p>create_by : identifiant de la personne qui a enregistré cette périodicité</p>
+    </li>
+    <li>
+    <p>beneficiaire : identifiant de la personne au nom de laquelle la réservation a été faite.</p>
+    </li>
+    <li>beneficiaire_ext : nom et email de la personne au nom de 
+laquelle la réservation a été faite dans le cas où beneficiaire est vide</li>
+    <li>
+    <p>name : le nom de la périodicité</p>
+    </li>
+    <li>
+    <p>type : type des réservations</p>
+    </li>
+    <li>
+    <p>description : description des réservations</p>
+    </li>
+    <li>
+    <p>rep_num_weeks : indique la valeur de n dans le cas où rep_type = 6 (toutes les n semaines)</p>
+    </li>
+    <li>
+    <p>overload_desc : contenu des champs additionnels</p>
+    </li>
+    <li>jours : numéro du jour cycle dans le cas d'une réservation avec périodicité selon les jours cycle</li>
+    <li>courrier : indique si un courrier a été envoyé</li>
+</ul>
+<h3>La table grr_utilisateurs</h3>
+<p>Elle contient les utilisateurs et tous les renseignements les concernant</p>
+<ul>
+    <li>
+    <p>login : identifiant (clé de la table)</p>
+    </li>
+    <li>
+    <p>nom : nom de l'utilisateur</p>
+    </li>
+    <li>
+    <p>prenom : prénom de l'utilisateur</p>
+    </li>
+    <li>
+    <p>password : mot de passe crypté de l'utilisateur</p>
+    </li>
+    <li>
+    <p>email : adresse email de l'utilisateur</p>
+    </li>
+    <li>
+    <p>statut : prend les valeurs « administrateur », « utilisateur », « visiteur » ou « gestionnaire_utilisateur ».</p>
+    </li>
+    <li>
+    <p>etat : prend les valeurs « actif » ou « inactif »</p>
+    </li>
+    <li>
+    <p>default_site: site affiché par défaut</p>
+    </li>
+    <li>default_area : domaine affiché par défaut</li>
+    <li>
+    <p>default_room : ressource affichée par défaut</p>
+    </li>
+    <li>
+    <p>default_style : style/thème par défaut</p>
+    </li>
+    <li>
+    <p>default_list_type : type par défaut d'affichage des listes des domaines et des ressources</p>
+    </li>
+    <li>
+    <p>default_language : langue par défaut</p>
+    </li>
+    <li>
+    <p>source : type d'authentification de l'utilisateur (« ext » ou « local »)</p>
+    </li>
+</ul>
+<h3>La table grr_type_area</h3>
+<p>Table des types de réservation, communs à tous les domaines</p>
+<ul>
+    <li>
+    <p> id : identifiant mysql du type de réservation</p>
+    </li>
+    <li>
+    <p>type_name : nom du type de réservation</p>
+    </li>
+    <li>
+    <p>order_display : ordre d'affichage du type de réservation dans les différentes interfaces</p>
+    </li>
+    <li>
+    <p>couleur : code couleur du type d'affichage (en référence aux couleurs définies dans le fichier « config.inc.php »)</p>
+    </li>
+    <li>
+    <p>type_letter : identifiant du type en lien avec le champ « type » des tables grr_entry et grr_repeat</p>
+    </li>
+    <li>disponible : prend les valeurs 2 (le type est disponible pour 
+tout), 3 (le type est disponible pour les gestionnaires et 
+administrateurs seulement) ou 5 (le type est disponible uniquement pour 
+les administrateurs). </li>
+</ul>
+<h3>La table grr_j_type_area</h3>
+<p>Table de jointure des types des réservation désactivés dans les domaines</p>
+<ul>
+    <li>
+    <p>id_type identifiant du type de réservation</p>
+    </li>
+    <li>
+    <p>id_area identifiant du domaine</p>
+    </li>
+</ul>
+<h3>La table grr_j_mailuser_room</h3>
+<p>Table de jointure des utilisateurs à avertir par mails automatiques</p>
+<ul>
+    <li>
+    <p>login : identifiant de l'utilisateur à avertir par mail automatique</p>
+    </li>
+    <li>
+    <p>id_room : identifiant de la ressource pour laquelle l'utilisateur doit être averti.</p>
+    </li>
+</ul>
+<h3>La table grr_j_user_area</h3>
+<p>Table de jointure des utilisateurs ayant accès aux domaines restreints</p>
+<ul>
+    <li>
+    <p>login : identifiant de l'utilisateur</p>
+    </li>
+    <li>
+    <p>id_area : identifiant du domaine restreint auquel l'utilisateur a accès.</p>
+    </li>
+</ul>
+<h3>La table grr_j_user_room</h3>
+<p>Table de jointure des utilisateurs gestionnaires de ressources.</p>
+<ul>
+    <li>
+    <p>login : identifiant de l'utilisateur</p>
+    </li>
+    <li>
+    <p>id_room : identifiant de la ressource dont l'utilisateur est gestionnaire.</p>
+    </li>
+</ul>
+<h3>La table grr_j_useradmin_area</h3>
+<p>Table de jointure des utilisateurs administrateurs de domaines.</p>
+<ul>
+    <li>
+    <p>login : identifiant de l'utilisateur</p>
+    </li>
+    <li>
+    <p>id_area : identifiant du domaine dont l'utilisateur est administrateur.</p>
+    </li>
+</ul>
+<h3>La table grr_j_useradmin_site</h3>
+Table de jointure des utilisateurs administrateurs de sites.
+<ul>
+    <li>
+    <p>login : identifiant de l'utilisateur</p>
+    </li>
+    <li>
+    <p>id_site : identifiant du site dont l'utilisateur est administrateur.</p>
+    </li>
+</ul>
+<h3> La table grr_j_site_area</h3>
+Table de jointure qui relie les domaines aux sites<br>
+<ul>
+    <li>
+    <p>id_site : identifiant du site</p>
+    </li>
+    <li>
+    <p>id_area : identifiant du domaine<br>
+    </p>
+    </li>
+</ul>
+<h3>La table grr_log</h3>
+<p>Table du journal des connexions</p>
+<ul>
+    <li>
+    <p>LOGIN : login de l'utilisateur</p>
+    </li>
+    <li>
+    <p>START : date et heure de début de la session</p>
+    </li>
+    <li>
+    <p>SESSION_ID : numéro de la session</p>
+    </li>
+    <li>
+    <p>REMOTE_ADDR : adresse IP de l'utilisateur</p>
+    </li>
+    <li>
+    <p>USER_AGENT : navigateur de l'utilisateur</p>
+    </li>
+    <li>
+    <p>REFERER : provenance du lien sur GRR</p>
+    </li>
+    <li>
+    <p>AUTOCLOSE : 0 si l'utilisateur a normalement terminé sa session, 1 sinon</p>
+    </li>
+    <li>
+    <p>END : date et heure de fin de la session</p>
+    </li>
+</ul>
+<h3>La table grr_setting</h3>
+<p>Cette table contient un certain nombre de paramètres.</p>
+<ul>
+    <li>
+    <p>NAME : nom du paramètre</p>
+    </li>
+    <li>
+    <p>VALUE :valeur du paramètre</p>
+    </li>
+</ul>
+<h3>La table grr_calendar</h3>
+<p>Cette table contient les valeurs UNIX des jours hors réservation (jours « fériés »).</p>
+<ul>
+    <li>
+    <p>DAY : jour férié</p>
+    </li>
+</ul>
+<h3>La table grr_calendrier_vacances</h3>
+<p>Cette table contient les valeurs UNIX des jours des vacances scolaires.</p>
+<ul>
+    <li>
+    <p>DAY : jour de vacances scolaires</p>
+    </li>
+</ul>
+<h3>La table grr_calendrier_feries</h3>
+<p>Cette table contient les valeurs UNIX des jours fériés.</p>
+<ul>
+    <li>
+    <p>DAY : jour férié</p>
+    </li>
+</ul>
+<h3>La table grr_overload</h3>
+<p>Cette table contient les noms et types des champs additionnels pour un domaine donné.</p>
+<ul>
+    <li>
+    <p>id : identifiant du champ additionnel,</p>
+    </li>
+    <li>
+    <p>id_area : identifiant du domaine auquel ce champ additionnel s'applique,</p>
+    </li>
+    <li>
+    <p>fieldname : nom du champ additionnel,</p>
+    </li>
+    <li>
+    <p>fieldtype : type du champ additionnel.</p>
+    </li>
+    <li>
+    <p>fieldlist : liste des choix possibles séparés par le caractère "|" dans le cas ou fieldtype est égal à "list". </p>
+    </li>
+    <li>
+    <p>obligatoire : le remplissage du champ additionnel est&nbsp; obligatoire ("y") ou non ("n"),</p>
+    </li>
+    <li>affichage : le champ apparaît ("y") ou non ("n") dans les différents plannings (journée, semaine, mois). </li>
+    <li>confidentiel : </li>
+    <li>overload_mail : </li>
+</ul>
+<h3>La table grr_entry_moderate</h3>
+<p>Table de sauvegarde des informations de la table grr_entry des réservations après modération.</p>
+<ul>
+    <li>
+    <p>motivation_moderation : description : motif de la décision,</p>
+    </li>
+    <li>
+    <p>login_moderateur : identifiant de l'utilisateur ayant procédé à la modération,</p>
+    </li>
+    <li>
+    <p>id, start_time, end_time, entry_type, repeat_id, room_id, 
+timestamp, create_by, beneficiaire, beneficiaire_ext, name, type, 
+description, statut_entry, overload_desc, moderate, : voir la table 
+grr_entry pour la signification de chacun de ces champs.</p>
+    </li>
+</ul>
+<h3>La table grr_calendrier_jours_cycle</h3>
+<p>Table des "jours cycle"</p>
+<ul>
+    <li>
+    <p>DAY : valeurs UNIX du "jour cycle"</p>
+    </li>
+    <li>
+    <p>Jours : numéro du "jour cycle"</p>
+    </li>
+</ul>
+<h3>La table grr_correspondance_statut</h3>
+<p>Table de correspondance entre le statut dans GRR et la fonction LDAP (cas d'un SSO CAS)</p>
+<ul>
+    <li>
+    <p>id : identifiant</p>
+    </li>
+    <li>
+    <p>code_fonction : identifiant du profil de l'utilisateur dans LDAP</p>
+    </li>
+    <li>
+    <p>libelle_fonction : intitulé du profil de l'utilisateur dans LDAP</p>
+    </li>
+    <li>statut_grr : statut dans GRR</li>
+</ul>
+<h2>8.2.Le schéma de la base données (à jour pour la version 3.3.1 RC2)</h2>
+Le schéma ci-dessous permet d'appréhender globalement le schéma de la base de données de GRR. <br>
+<strong>Remarque</strong> : ce schéma ne prétend à aucune rigueur et a 
+juste vocation à donner une idée d'ensemble des tables et des 
+interactions entres elles.<br>
+<img src="bdd_grr.png" alt="schema">
+<h1 id="part9">9.Annexe 1 : Configurer CAS pour la récupération d'attributs LDAP</h1>
+<h2>9.1.Introduction</h2>
+<p>Quand le SSO CAS est activé dans GRR, il y a deux moyens de récupérer les attributs LDAP d'un utilisateur (email, nom, prénom)</p>
+<ul>
+    <li>
+    <p>soit en utilisant la <strong>possibilité qu'un serveur SSO CAS offre 	de pouvoir envoyer à une application des attributs ldap</strong>;</p>
+    </li>
+    <li>
+    <p>soit en configurant l'annuaire LDAP dans GRR de façon que 	GRR 
+interroge lui-même l'annuaire LDAP pour essayer de récupérer 	les 
+attributs.</p>
+    </li>
+</ul>
+<p>La première méthode est plus difficile à mettre en oeuvre mais 
+permet, selon la structure de l'annuaire, de récupérer, en plus des 
+email, nom et prénom, la langue préférée de l'utilisateur ainsi que le 
+profil qui peut alors être associé au statut dans GRR (simple visiteur, 
+utilisateur, administrateur).</p>
+<p>C'est cette première méthode que nous allons décrire maintenant.</p>
+<h2>9.2.Configuration du serveur CAS pour la diffusion des attributs LDAP</h2>
+<h3>Rappel</h3>
+<p>GRR supporte l’authentification SSO avec CAS mais celui-ci est livré 
+de base sans la librairie phpCAS qui permet de mettre en place ce 
+mécanisme.</p>
+<p>La première étape consiste donc à télécharger la librairie phpCAS à l'adresse suivante :</p>
+<p><a href="http://www.ja-sig.org/wiki/display/CASC/phpCAS">http://www.ja-sig.org/wiki/display/CASC/phpCAS</a></p>
+<p>Il faut ensuite décompresser le contenu de l’archive dans un 
+répertoire nommé « CAS » à l’intérieur du répertoire de l’application 
+web GRR.</p>
+<p>Par défaut, CAS n'envoie à GRR que le nom de l'utilisateur lors de la validation du ticket.</p>
+<p>Afin de mettre en place la récupération dans GRR d'attributs des 
+utilisateurs depuis l’annuaire LDAP, il est nécessaire de modifier le 
+fichier \WEB-INF\deployerConfigContext.xml du serveur CAS.  </p>
+<h3 class="western">Modification du bean attributeRepository  </h3>
+<p>Dans le fichier deployerConfigContext.xml, repérer le bean 
+«&nbsp;attributeRepository&nbsp;». Ce bean indique à CAS tous les 
+attributs qui devront  être  envoyés à GRR.</p>
+<p>La modification consiste à ajouter les attributs que l’on souhaite récupérer.</p>
+<p>Ci-dessous, par exemple on configure une récupération dans LDAP des 
+attributs : sn, givenName, ENTPersonFonction, preferredLanguage et mail :</p>
+<pre>&lt;bean id="attributeRepository" class="org.jasig.services.persondir.support.ldap.LdapPersonAttributeDao"&gt;<br>&nbsp;...<br>&nbsp;&lt;property name="ldapAttributesToPortalAttributes"&gt;<br>&nbsp;&lt;map&gt;<br>&nbsp;&lt;entry key="sn" value="user_nom_ldap"/&gt;<br>&nbsp;&lt;entry key="givenName" value="user_prenom_ldap" /&gt;<br>&nbsp;&lt;entry key="ENTPersonFonction" value="user_code_fonction_ldap" /&gt;<br>&nbsp;&lt;entry key="ENTPersonFonction" value="user_libelle_fonction_ldap" /&gt;<br>&nbsp;&lt;entry key="preferredLanguage" value="user_language_ldap" /&gt;<br>&nbsp;&lt;entry key="mail" value="user_mail_ldap" /&gt;<br>&nbsp;...<br>&nbsp;&lt;/map&gt;<br>&nbsp;&lt;/property&gt;<br>&lt;/bean&gt;</pre>
+<h3 class="western"> Modification du bean serviceRegistryDao  </h3>
+<p>Dans le fichier deployerConfigContext.xml, repérer le bean 
+«serviceRegistryDao» et modifiez le pour qu'il ressemble à l'exemple 
+ci-dessous (en l'adaptant à votre situation).</p>
+<pre>&lt;bean id="serviceRegistryDao" class="org.jasig.cas.services.InMemoryServiceRegistryDaoImpl"&gt;<br> &nbsp;&lt;property name="registeredServices"&gt;<br>&nbsp;   &lt;list&gt;<br>&nbsp;     &lt;bean class="org.jasig.cas.services.RegisteredServiceImpl"<br>        &nbsp;p:id="1"<br>        &nbsp;p:description="Acces GRR"<br>        &nbsp;p:serviceId="*://*.nom_du_site.fr/GRR/**"<br>        &nbsp;p:name="GRR"<br>        &nbsp;p:theme="default"<br>        &nbsp;p:allowedToProxy="true"<br>        &nbsp;p:enabled="true"<br>        &nbsp;p:ssoEnabled="true"<br>        &nbsp;p:anonymousAccess="false"&gt;<br>    &nbsp;   &lt;property name="allowedAttributes" value="uid,sn,givenName,mail,ENTPersonFonctions,prefererredLanguage" /&gt;<br>&nbsp;     &lt;/bean&gt;<br>    &lt;/list&gt;<br>  &lt;/property&gt;<br>&lt;/bean&gt;</pre>
+<p> <br>
+Remarques : l’élément qui permet  à CAS de  faire  la différence  entre 
+GRR et  les autres applications est  le serviceId, qui est un champ 
+permettant d’expliquer à CAS  quelle  est  la  forme  de  l’url  d’accès
+  à  l’application  GRR ;  </p>
+<p>L’élément  allowedAttribute  permet  d’énumérer  tous  les  attributs
+  qui  devront  être renvoyés par CAS pour cette application.  </p><h2>9.2.Configuration de GRR</h2>
+<style type="text/css">
+	<!--
+		@page { margin: 2cm }
+		P { margin-bottom: 0.21cm }
+		H3 { margin-bottom: 0.21cm }
+		H4 { margin-bottom: 0.21cm }
+		H4.western { font-family: "Arial", sans-serif; font-size: 11pt; font-style: italic }
+		H4.cjk { font-family: "MS Mincho"; font-size: 11pt; font-style: italic }
+		H4.ctl { font-size: 11pt; font-style: italic }
+	-->
+	</style>
+<p>Le serveur CAS envoie donc à GRR Les valeurs suivantes :  </p>
+<p>user_nom_ldap, user_prenom_ldap, user_code_fonction_ldap, user_libelle_fonction_ldap, user_language_ldap et user_mail_ldap.</p>
+<p>L'étape suivante consiste à configurer le fichier «&nbsp;<strong>include/config_CAS.inc.php</strong>&nbsp;».</p>
+<p><strong>Remarque :</strong></p>
+<p>Le fichier «&nbsp;include/config_CAS.inc.php&nbsp;» n'existe pas dans le paquetage de GRR. En revanche, un fichier «&nbsp;<strong>config_CAS.inc.php.ori</strong>&nbsp;»
+ est présent dans le répertoire «&nbsp;include&nbsp;». Commencez par 
+renommer ce fichier en config_CAS.inc.php. De cette façon, lors d'une 
+mise à jour de GRR, vous ne risquez pas d'écraser ce fichier 
+«&nbsp;config_CAS.inc.php&nbsp;» car il n'est pas présent dans 
+l'archive.</p>
+<p>Idéalement, GRR peut récupérer les 5 valeurs suivantes :</p>
+<ul>
+    <li>
+    <p>le nom de l'utilisateur</p>
+    </li>
+    <li>
+    <p>le prénom de l'utilisateur</p>
+    </li>
+    <li>
+    <p>la langue de l'utilisateur</p>
+    </li>
+    <li>
+    <p>le statut de l'utilisateur</p>
+    </li>
+    <li>
+    <p>le mail de l'utilisateur</p>
+    </li>
+</ul>
+<p>La correspondance entre ces champs et les valeurs envoyées par le 
+serveur CAS (user_nom_ldap, user_prenom_ldap, user_code_fonction_ldap, 
+user_libelle_fonction_ldap, user_language_ldap et user_mail_ldap) se 
+fait de la manière suivante :</p>
+<p>Par défaut, le fichier «&nbsp;include/config_CAS.inc.php&nbsp;» comporte les lignes suivantes :</p>
+<pre>$user_nom=recuperer_nom(phpCAS::getAttribute('user_nom_ldap'));<br>$user_prenom=recuperer_prenom(phpCAS::getAttribute('user_prenom_ldap'));<br>$user_language=recuperer_language(phpCAS::getAttribute('user_language_ldap'));<br>$user_code_fonction=recuperer_code_fonction(phpCAS::getAttribute('user_code_fonction_ldap'));<br>$user_libelle_fonction=recuperer_libelle_fonction(phpCAS::getAttribute('user_libelle_fonction_ldap'));<br>$user_mail=recuperer_mail(phpCAS::getAttribute('user_mail_ldap'));</pre>
+<p>Explications :</p>
+<ul>
+    <li>
+    <p>$user_nom : nom de l'utilisateur</p>
+    </li>
+    <li>
+    <p>$user_prenom : prénom de l'utilisateur</p>
+    </li>
+    <li>
+    <p>$user_language : langue de l'utilisateur</p>
+    </li>
+    <li>
+    <p>$user_code_fonction : identifiant du profil de l'utilisateur 	dans l'annuaire LDAP</p>
+    </li>
+    <li>
+    <p>$user_libelle_fonction : libellé du profil de l'utilisateur 	dans l'annuaire LDAP</p>
+    </li>
+    <li>
+    <p>$user_mail : mail de l'utilisateur</p>
+    </li>
+</ul>
+<p>Explication de la première ligne :</p>
+<pre>$user_nom=recuperer_nom(phpCAS::getAttribute('user_nom_ldap'));</pre>
+<ul>
+    <li>
+    <p>phpCAS::getAttribute('user_nom_ldap') est la variable envoyé 	par CAS.</p>
+    </li>
+    <li>
+    <p>La fonction «&nbsp;recuperer_nom()&nbsp;» permet 	éventuellement 
+de traiter cette variable pour récupérer la valeur 	utilisée dans GRR. 
+En effet certains attributs peuvent nécessiter 	un traitement avant de 
+pouvoir être utilisés dans GRR (voir 	ci-dessous).</p>
+    </li>
+    <li>
+    <p>Le résultat est alors stocké dans $user_nom.</p>
+    </li>
+</ul>
+<h3 class="western">Traitement des attributs LDAP</h3>
+<p>Pour chacun des attributs LDAP envoyé par CAS à l'application GRR il 
+est possible de personnaliser dans le fichier 
+«&nbsp;include/config_CAS.inc.php&nbsp;», des fonctions de traitement de
+ ces attributs.</p>
+<p>Par exemple, dans le cas d'un ENT basé sur l'annuaire fédérateur de 
+l'Education Nationale, les informations concernant le profil sont lues 
+dans l’annuaire LDAP, dans l’attribut «&nbsp;ENTPersonFonctions&nbsp;». 
+Or ce champ multivalué est constitué de 5 valeurs. L'identifiant du 
+profil et son libellé sont respectivement les 2ème et 3ème champs.</p>
+<p>Dans le fichier «&nbsp;include/config_CAS.inc.php&nbsp;» figurent des
+ exemples de code permettant de traiter ces champs multivalués.</p>
+<h3 class="western">Gestion de la correspondance profil / statut</h3>
+<p>Le profil de l'utilisateur (identifiant et libellé) est disponible 
+grâce aux variables $user_code_fonction et $user_libelle_fonction.</p>
+<p>Mais les profils de l'annuaire LDAP ne correspondent pas à priori aux différents statuts possibles dans GRR.  </p>
+<p>Une interface dans GRR permet donc à l'administrateur de faire 
+correspondre le profil d’un utilisateur (appelé fonction dans l’annuaire
+ LDAP), et le statut qu'il se verra attribué au sein de GRR à sa 
+première connexion à GRR.</p>
+<p>Cette interface n'est pas visible par défaut. L'activation de cette 
+interface se fait dans le menu générale de configuration SSO.</p>
+<p>Une fois cette fonctionnalité activée, l'administrateur peut compléter le tableau de correspondance.</p>
+<p>Ainsi, à la première connexion d'un utilisateur externe authentifié 
+par CAS, son statut dans GRR est déduit du tableau de correspondance.</p>
+<p><strong>Remarque</strong> : si le profil de l’utilisateur ne possède 
+pas d’entrée dans la table de correspondance une nouvelle entrée est 
+alors automatiquement créée pour ce profil et le statut par défaut 
+(défini dans la page de gestion du SSO) lui est associé.</p>
+<p>L’administrateur peut par la suite changer le statut associé à ce profil.</p><h2>9.3.Autres paramètres de configuration de GRR dans un environnement CAS</h2>
+<meta content="text/html; charset=windows-1252" http-equiv="CONTENT-TYPE">
+<title></title>
+<meta content="OpenOffice.org 3.1  (Win32)" name="GENERATOR"><style type="text/css">
+	<!--
+		@page { margin: 2cm }
+		P { margin-bottom: 0.21cm }
+		H2 { margin-bottom: 0.21cm }
+		H2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: italic }
+		H2.cjk { font-family: "MS Mincho"; font-size: 14pt; font-style: italic }
+		H2.ctl { font-size: 14pt; font-style: italic }
+	-->
+	</style>
+<h2 class="western">Dans le menu «&nbsp;Configuration générale&nbsp;» (onglet «&nbsp;Sécurité / Connexions&nbsp;»)  </h2>
+<ul>
+    <li>Il est possible de préciser une <strong>url de déconnexion</strong>
+ : lorsqu'un utilisateur se déconnecte, après fermeture de la session, 
+le navigateur est redirigé vers la page dont l'URL est spécifiée.</li>
+</ul>
+<h2 class="western">Dans le menu «&nbsp;Configuration SSO&nbsp;»</h2>
+<ul>
+    <li>Paramètre permettant d'<strong>afficher ou non le lien "Se déconnecter"</strong> dans le bandeau supérieur pour les personnes authentifiées à GRR par SSO.</li>
+    <li>Paramètre permettant d'<strong>empêcher l'accès à la page de login</strong> : permet de forcer tous les visiteurs à s'authentifier via le SSO.</li>
+    <li>Paramètre permettant d'<strong>interdire aux utilisateurs externes de modifier leur nom, prénom et email</strong> dans GRR.</li>
+    <li>Possibilité de spécifier une <strong>adresse internet</strong> afin de faire apparaître, dans le bandeau supérieur, un lien "<strong>Portail d'accueil</strong>" pointant vers cette adresse.</li>
+</ul>
+<h2 class="western">Dans le fichier «&nbsp;include/config.inc.php&nbsp;»</h2>
+<p>1) Paramètre «&nbsp;<strong>$sso_super_admin</strong>&nbsp;» (prend la valeur false ou true) :</p>
+<p>Mettre la valeur du paramètre $sso_super_admin à «&nbsp;true&nbsp;» 
+pour rendre possible l'accès à la page login.php même si 
+l'administrateur a coché dans l'interface en ligne le choix 
+«&nbsp;Empêcher l'accès à la page de login&nbsp;».</p>
+<p>2) Paramètre «&nbsp;<strong>$sso_restrictions</strong>&nbsp;» (prend la valeur false ou true)</p>
+<p>Mettre la valeur du paramètre «&nbsp;$sso_restrictions&nbsp;» à 
+«&nbsp;true&nbsp;» permet de cacher dans l'interface de GRR l'affichage 
+de la rubrique «&nbsp;Authentification et ldap&nbsp;»</p><h2>9.4.CAS et GRR : gestion du Single Sign-Out</h2>
+<meta content="text/html; charset=windows-1252" http-equiv="CONTENT-TYPE">
+<title></title>
+<meta content="OpenOffice.org 3.1  (Win32)" name="GENERATOR"><style type="text/css">
+	<!--
+		@page { margin: 2cm }
+		P { margin-bottom: 0.21cm }
+		H1 { margin-bottom: 0.21cm }
+		H1.western { font-family: "Arial", sans-serif; font-size: 16pt }
+		H1.cjk { font-family: "MS Mincho"; font-size: 16pt }
+		H1.ctl { font-family: "Tahoma"; font-size: 16pt }
+	-->
+	</style>
+<p>Ce paragraphe est mis à disposition dans la documentation à titre 
+uniquement d'information et sa lecture n'est pas utile pour la 
+configuration de l'environnement CAS dans GRR.<br>
+</p>
+<p>Le <strong>Single Sign-Out</strong> est implémenté dans <strong>phpCAS</strong> à partir de la version 1.0.0 : http://www.ja-sig.org/wiki/display/CASC/phpCAS+ChangeLog.  </p>
+<p>Le Single Sign-Out est implémenté dans <strong>CAS </strong>à partir de la version 3.0</p>
+<p>Le Single Sign-Out est la possibilité d'utiliser le serveur CAS pour <strong>déconnecter automatiquement l'utilisateur sur toutes les applications à la fois</strong>.</p>
+<p>Sans single sign-out, l'utilisateur est déconnecté de CAS, mais 
+toutes les sessions ouvertes sur les applications en SSO restent 
+ouvertes (ce qui pose un problème essentiel de sécurité...). En effet, 
+après réception d'un ticket valide, les applications clients ne 
+revérifient pas systématiquement que la session est toujours active sur 
+le serveur d'authentification (cela génèrerait un flux inutile de 
+requêtes).</p>
+<p>Ce n'est que dans les versions les plus récentes de phpCAS que le 
+single-sign out est pris en charge. Une application PHP utilise des 
+connexions stateless (la connexion n'est pas maintenue au-delà de la 
+requête initiale et de sa réponse), et il n'est donc pas possible de 
+transmettre aux applications l'ordre de terminer une session lors d'un 
+logout de CAS.</p>
+<p>La manière dont phpCAS a réglé le problème est d'utiliser le nom de 
+la session pour conserver le numéro de ticket CAS, et donc savoir quelle
+ session interrompre. Concrètement, cela se passe de la manière suivante
+ :</p>
+<ul>
+    <li>connexion de l'utilisateur sur CAS</li>
+    <li>authentification</li>
+    <li>création d'un ticket CAS</li>
+    <li>accès à l'application cliente (GRR)</li>
+    <li>création par l'application d'un cookie de sesssion dont le nom contient le numéro de ticket</li>
+    <li>utilisation de l'application</li>
+    <li>retour au portail</li>
+    <li>déconnexion (fin de la validité du ticket au niveau du serveur cas)</li>
+    <li>le serveur CAS renvoie à toutes les applications enregistrées une requête de logout, qui contient le numéro de ticket</li>
+    <li>l'application cliente intercepte cette requête de logout grâce à
+ la méthode phpCAS::handleLogoutRequests(false); (l'argument 'false' est
+ là pour ne pas effectuer de vérification du client duquel provient la 
+requête de logout)</li>
+    <li>l'interception de logout termine la session de l'utilisateur</li>
+    <li>lorsque l'utilisateur essaie de se connecter à nouveau sur 
+l'application cliente avec son cookie de session, l'application détecte 
+bien que le cookie ne correspond plus à une session valide</li>
+</ul>
+<p>Remarque : pour avoir une session qui contient le numéro de ticket, 
+il est indispensable que ce soit phpCAS qui s'occupe d'initier la 
+session php, et non GRR lui-même. C'est à cela que sert le dernier 
+argument "true" de :
+</p><p>phpCAS::client(CAS_VERSION_2_0,$serveurSSO,$serveurSSOPort,$serveurSSORacine,true);</p>
+<p>Ainsi, phpCAS gére lui-même la création du cookie de session.</p>
+<p>Voir aussi :</p>
+<p><a href="http://wiki.esco-portail.org/index.php/Documents:Single_Sign_Out#Traitement_de_la_requ.C3.AAte_via_handleLogoutRequest.28.29_de_phpCAS">http://wiki.esco-portail.org/index.php/Documents:Single_Sign_Out#Traitement_de_la_requ.C3.AAte_via_handleLogoutRequest.28.29_de_phpCAS</a></p>
+<p></p>
+
+
+
+</body>
+</html>>

@@ -3,13 +3,10 @@
  * admin_import_user_csv.php
  * script d'importation d'utilisateurs à partir d'un fichier CSV
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2009-09-29 18:02:56 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    Laurent Delineau & JeromeB
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   root
- * @version   $Id: admin_import_users_csv.php,v 1.8 2009-09-29 18:02:56 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -17,16 +14,8 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 include "../include/admin.inc.php";
 $grr_script_name = "admin_import_users_csv.php";
 
@@ -40,9 +29,15 @@ if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName()
 }
 # print the page header
 print_header("", "", "", $type="with_session");
-?>
-<p>| <a href="admin_user.php"><?php echo get_vocab("back");?></a> |</p>
-<?php
+
+
+// Affichage de la colonne de gauche
+include "admin_col_gauche.php";
+
+// affichage de la colonne de droite
+
+echo '<p>| <a href="admin_user.php">'.get_vocab("back").'</a> |</p>';
+
 $reg_data = isset($_POST["reg_data"]) ? $_POST["reg_data"] : NULL;
 $is_posted = isset($_POST["is_posted"]) ? $_POST["is_posted"] : NULL;
 $test_login_existant = '';
@@ -352,6 +347,8 @@ if ($reg_data != 'yes')
 				}
 			}
 		}
-		?>
-	</body>
+		
+	 echo "</td></tr></table>"; // fin de la colonne droite
+    ?>
+    </body>
 	</html>

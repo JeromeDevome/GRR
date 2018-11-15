@@ -3,13 +3,10 @@
  * contact.php
  * Formulaire d'envoi de mail
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2009-09-29 18:02:56 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
+ * Dernière modification : $Date: 2018-07-30 18:30$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   root
- * @version   $Id: contact.php,v 1.4 2009-09-29 18:02:56 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -17,23 +14,14 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+$grr_script_name = 'contact.php';
 include_once('include/connect.inc.php');
 include_once('include/config.inc.php');
 include_once('include/functions.inc.php');
 include_once('include/'.$dbsys.'.inc.php');
 include_once('include/misc.inc.php');
 include_once('include/mrbs_sql.inc.php');
-$grr_script_name = 'contact.php';
 // Settings
 require_once('include/settings.class.php');
 //Chargement des valeurs de la table settingS
@@ -57,7 +45,7 @@ $type_session = "no_session";
 
 header('Content-Type: text/html; charset=utf-8');
 echo begin_page(Settings::get("company"));
-echo "<div class=\"page_sans_col_gauche\">";
+echo "<div class=\"container\">";
 $cible = isset($_POST["cible"]) ? $_POST["cible"] : (isset($_GET["cible"]) ? $_GET["cible"] : '');
 $cible = htmlentities($cible);
 $type_cible = isset($_POST["type_cible"]) ? $_POST["type_cible"] : (isset($_GET["type_cible"]) ? $_GET["type_cible"] : '');
@@ -126,11 +114,11 @@ switch ($action)
 
 	break;
 	default:
-	echo "<table cellpadding='5'>";
+	echo "<table>";
 	if (($fin_session == 'n') && (getUserName() != ''))
-		echo "<tr><td>".get_vocab("Message poste par").get_vocab("deux_points")."</td><td><b>".affiche_nom_prenom_email(getUserName(), "", $type = "nomail")."</b></td></tr>\n";
-	echo "<tr><td>".get_vocab("webmaster_name").get_vocab("deux_points")."</td><td><b>".Settings::get("webmaster_name")."</b></td></tr>\n";
-	echo "<tr><td>".get_vocab("company").get_vocab("deux_points")."</td><td><b>".Settings::get("company")."</b></td></tr>\n";
+		echo "<tr><td>".get_vocab("Message poste par").get_vocab("deux_points")."</td><td><b> ".affiche_nom_prenom_email(getUserName(), "", $type = "nomail")."</b></td></tr>\n";
+	echo "<tr><td>".get_vocab("webmaster_name").get_vocab("deux_points")."</td><td><b> ".Settings::get("webmaster_name")."</b></td></tr>\n";
+	echo "<tr><td>".get_vocab("company").get_vocab("deux_points")."</td><td><b> ".Settings::get("company")."</b></td></tr>\n";
 	echo "<tr><td colspan=\"2\">".get_vocab("Redigez votre message ci-dessous").get_vocab("deux_points")."</td></tr>\n";
 	echo "</table>\n";
 	echo "<form action=\"contact.php\" method=\"post\" id=\"doc\">\n";
@@ -141,8 +129,8 @@ switch ($action)
 	if ($type_cible != '')
 		echo "<input type=\"hidden\" name=\"type_cible\" value=\"".$type_cible."\" />\n";
 	echo get_vocab("Objet du message").get_vocab("deux_points");
-	echo "<br /><input type=\"text\" name=\"objet_message\" id=\"objet_message\" size=\"40\" maxlength=\"256\" value='' placeholder=\"Objet\"/>\n";
-	echo "<textarea name=\"message\" cols=\"50\" rows=\"5\" placeholder=\"Votre message\">".$corps_message."</textarea><br />";
+	echo "<br /><input type=\"text\" name=\"objet_message\" id=\"objet_message\" size=\"40\" maxlength=\"256\" value='' placeholder=\"Objet\" required/>\n";
+	echo "<br /><textarea name=\"message\" cols=\"50\" rows=\"5\" placeholder=\"Votre message\">".$corps_message."</textarea><br />";
 	echo get_vocab("E-mail pour la reponse").get_vocab("deux_points");
 	echo "<input type=\"text\" name=\"email_reponse\" id=\"email_reponse\" size=\"40\" maxlength=\"256\" ";
 	if ($email_reponse != '')
@@ -166,7 +154,7 @@ switch ($action)
 			objet=document.getElementById('objet_message').value;
 			if (objet=='') {
 				alert('Vous n\\'avez pas saisi d\\'objet au message. Ce champ est obligatoire.');
-				exit();
+				return;
 			}
 		}
 		if (document.getElementById('email_reponse')) {
@@ -198,5 +186,5 @@ switch ($action)
 break;
 }
 echo "</div>";
-include_once('include/trailer.inc.php');
+echo "</body></html>";
 ?>

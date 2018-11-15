@@ -1,0 +1,117 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			{% if trad.dNettoyageLiaison  %}
+				{{ msgSyst.messageInfo('Résultat', trad.dNettoyageLiaison) }}
+			{% endif %}
+
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{ trad.admin_calend_vacances_feries }}</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body no-padding">
+					<p>{{ trad.vacances_feries_description }}</p>
+
+					{% if settings.show_holidays != 'Oui' %}
+						<p>Il faut activer l'affichage des vacances et jours fériés pour continuer...</p>
+						<p><a href="?p=admin_config6" >Cliquer ici pour activer l'affichage des vacances et jours fériés</a>
+					{% elseif trad.dTypeDefinition == 'F' %}
+
+						<a href="?p=admin_calend_vacances_feries" class="btn btn-xs btn-primary" onclick="{{ trad.dCocheFeries }} return false;">{{ trad.vacances_feries_FR }}</a> 
+						<a href="?p=admin_calend_vacances_feries" class="btn btn-xs btn-primary" onclick="setCheckboxesGrr(document.getElementById('formulaireF'), false, 'all'); return false;">{{ trad.uncheck_all_ }}</a> 
+						<a href="?p=admin_calend_vacances_feries" class="btn btn-xs btn-default" >{{ trad.returnprev }}</a>
+
+						<form action="?p=admin_calend_vacances_feries" method="post" id="formulaireF">
+							<table>
+								{{ trad.dCalendrier |raw }}
+							</table>
+
+							<div style="text-align:center;">
+								<input class="btn btn-primary" type="submit" name="{{ trad.save }}" value="{{ trad.save }}" />
+								<input class="btn btn-primary" type="hidden" name="recordFeries" value="yes" />
+								<input class="btn btn-primary" type="hidden" name="define_holidays" value="F" />
+							</div>
+						</form>
+
+					{% elseif trad.dTypeDefinition == 'V' %}
+
+						<a href="?p=admin_calend_vacances_feries" class="btn btn-xs btn-primary" onclick="{{ trad.dCocheVacances }} return false;">{{ trad.vacances_FR }} {{ settings.holidays_zone }}</a> 
+						<a href="?p=admin_calend_vacances_feries" class="btn btn-xs btn-primary" onclick="setCheckboxesGrr(document.getElementById('formulaireV'), false, 'all'); return false;">{{ trad.uncheck_all_ }}</a> 
+						<a href="?p=admin_calend_vacances_feries" class="btn btn-xs btn-default" >{{ trad.returnprev }}</a>
+
+						<form action="?p=admin_calend_vacances_feries" method="post" id="formulaireV">
+							<table>
+								{{ trad.dCalendrier |raw }}
+							</table>
+
+							<div style="text-align:center;">
+								<input class="btn btn-primary" type="submit" name="{{ trad.save }}" value="{{ trad.save }}" />
+								<input class="btn btn-primary" type="hidden" name="recordVacances" value="yes" />
+								<input class="btn btn-primary" type="hidden" name="define_holidays" value="V" />
+							</div>
+						</form>
+
+					{% else %}
+
+						<form action="?p=admin_calend_vacances_feries" method="POST" name="bascule">
+
+							<input type="radio" name="define_holidays" value="F" checked /> les jours fériés 
+							<input type="radio" name="define_holidays" value="V" /> les vacances 
+							<input type="submit" value="Définir" class="btn btn-primary">
+
+						</form>
+
+					{% endif %}
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+	function setCheckboxesGrrName(elts, do_check, day)
+	{
+		for (i = 0; i < elts.length; i++)
+		{
+			type = elts.type;
+			if (type="checkbox")
+			{
+				if (elts[i].name== day)
+				{
+					elts[i].checked = do_check;
+				}
+			}
+		}
+		return true;
+	}
+
+	function setCheckboxesGrr(elts, do_check, day)
+	{
+		for (i = 0; i < elts.length; i++)
+		{
+			type = elts.type;
+			if (type="checkbox")
+			{
+				if ((elts[i].value== day) || (day=='all'))
+				{
+					elts[i].checked = do_check;
+				}
+			}
+		}
+		return true;
+	}
+</script>
+{% endblock %}

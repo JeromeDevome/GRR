@@ -3,13 +3,10 @@
  * admin_calend_ignore.php
  * Interface permettant la la réservation en bloc de journées entières
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2009-06-04 15:30:17 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    Laurent Delineau & JeromeB
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   root
- * @version   $Id: admin_calend_ignore.php,v 1.8 2009-06-04 15:30:17 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -17,15 +14,6 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 include "../include/admin.inc.php";
@@ -108,6 +96,35 @@ for ($i = 0; $i < 7; $i++)
 	echo "<td><span class='small'><a href='admin_calend_ignore.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, '$lday' ); return false;\">".get_vocab("uncheck_all_the").$lday."s</a></span></td>\n";
 	echo "</tr>\n";
 }
+if (Settings::get("show_holidays") == 'Oui'){ // on n'affiche ce choix que si les jours fériés et les vacances sont définis
+    // définir les jours fériés
+    $req = "SELECT * FROM ".TABLE_PREFIX."_calendrier_feries";
+    $ans = grr_sql_query($req);
+    $feries = array();
+    foreach($ans as $val){$feries[] = $val['DAY'];}
+    $cocheferies = "";
+    foreach ($feries as &$value) {
+        $cocheferies .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
+    }
+    unset($feries);
+    // définir les vacances
+    $req = "SELECT * FROM ".TABLE_PREFIX."_calendrier_vacances";
+    $ans = grr_sql_query($req);
+    $vacances = array();
+    foreach($ans as $val){$vacances[] = $val['DAY'];}
+    $cocheVacances = "";
+    foreach ($vacances as &$value) {
+        $cocheVacances .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
+    }
+    unset($vacances);
+    echo "<tr>";
+    echo "<td>";
+    echo "<span class='small'><a href='admin_calend_ignore.php' onclick=\"{$cocheVacances} return false;\">".get_vocab("admin_calend_ignore_vacances")."&nbsp </a></span>";
+    echo "</td><td>";
+    echo "<span class='small'><a href='admin_calend_ignore.php' onclick=\"{$cocheferies} return false;\">".get_vocab("admin_calend_ignore_feries")."</a></span>";
+    echo "</td>";
+    echo "</tr>";
+}
 echo "<tr>\n<td><span class='small'><a href='admin_calend_ignore.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span></td>\n";
 echo "<td> </td></tr>\n";
 echo "</table>\n";
@@ -129,7 +146,7 @@ while ($n <= $end_bookings)
 	}
 	$inc++;
 	echo "<td>\n";
-	echo cal($month, $year);
+	echo cal($month, $year, 1);
 	echo "</td>";
 	if ($inc == 3)
 	{

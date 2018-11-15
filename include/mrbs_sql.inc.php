@@ -2,35 +2,17 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- *
- * Dernière modification : $Date: 2010-01-06 10:21:20 $
- *
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @author    Marc-Henri PAMISEUX <marcori@users.sourceforge.net>
- * @copyright Copyright 2003-2005 Laurent Delineau
- * @copyright Copyright 2008 Marc-Henri PAMISEUX
+ * Dernière modification : $Date: 2018-04-16 18:00$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   include
- * @version   $Id: mrbs_sql.inc.php,v 1.16 2010-01-06 10:21:20 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
- * D'après http://mrbs.sourceforge.net/
  *
  * GRR is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
  */
 /** mrbsCheckFree()
  *
@@ -44,7 +26,7 @@
  *
  * Returns:
  *   nothing   - The area is free
- *   something - An error occured, the return value is human readable
+ *   something - An error occurred, the return value is human readable
  */
 function mrbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore)
 {
@@ -156,7 +138,7 @@ function grrDelEntryInConflict($room_id, $starttime, $endtime, $ignore, $repigno
  * $all    - If set, include user modified entrys in the series delete
  *
  * Returns:
- *   0        - An error occured
+ *   0        - An error occurred
  *   non-zero - The entry was deleted
  * @param integer $all
  */
@@ -553,8 +535,8 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
 	$day   = date("d", $time);
 	$month = date("m", $time);
 	$year  = date("Y", $time);
-	$entrys = "";
-	$entrys_return = "";
+	$entrys = array();
+	$entrys_return = array();
 	$k = 0;
 	for($i = 0; $i < $max_ittr; $i++)
 	{
@@ -691,7 +673,9 @@ function mrbsGetEntryInfo($id)
 	$res = grr_sql_query($sql);
 	if (!$res)
 		return;
-	$ret = '';
+
+	$ret = array();
+
 	if (grr_sql_count($res) > 0)
 	{
 		$row = grr_sql_row($res, 0);
@@ -826,7 +810,7 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 		}
 		else
 		{
-			// On sélectionne toutes les réservation de la périodicité
+			// On sélectionne toutes les réservations de la périodicité
 			$res = grr_sql_query("SELECT id FROM ".TABLE_PREFIX."_entry WHERE repeat_id='".$repeat_id."'");
 			if (! $res)
 				fatal_error(0, grr_sql_error());
@@ -841,7 +825,7 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 			}
 			// On supprime l'info de périodicité
 			grr_sql_query("DELETE FROM ".TABLE_PREFIX."_repeat WHERE id='".$repeat_id."'");
-			grr_sql_query("UPDATE ".TABLE_PREFIX."_entry SET repead_id = '0' WHERE repead_id='".$repeat_id."'");
+			grr_sql_query("UPDATE ".TABLE_PREFIX."_entry SET repeat_id = '0' WHERE repeat_id='".$repeat_id."'");
 		}
 	}
 }

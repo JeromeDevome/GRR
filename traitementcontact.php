@@ -1,5 +1,20 @@
 <?php
-/*-----MAJ Loïs THOMAS  --> Page de traitement du formulaire contact.php -----*/
+/*
+ * traitementcontact.php
+ * envois l'email suite au formulaire
+ * Ce script fait partie de l'application GRR
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    Laurent Delineau & JeromeB
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @link      http://www.gnu.org/licenses/licenses.html
+ *
+ * This file is part of GRR.
+ *
+ * GRR is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
@@ -7,7 +22,7 @@ include "include/$dbsys.inc.php";
 include "include/mrbs_sql.inc.php";
 include "phpmailer/class.phpmailer.php";
 
-$grr_script_name = "week_all.php";
+$grr_script_name = "traitementcontact.php";
 // Settings
 require_once("./include/settings.class.php");
 if (!Settings::load())
@@ -76,8 +91,6 @@ require_once 'include/mail.class.php';
 
 Email::Envois($destinataire, $sujet, $mail_corps, $_POST['email'], '', '');
 
-
-$mail_method= Settings::get("grr_mail_method");
 
 header('Location: week_all.php');
 

@@ -3,31 +3,17 @@
  * admin_config1.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- *
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
- * @author    Bouteillier Nicolas <nicolas@kaizendo.fr>
- * @copyright Copyright 2015-2016 Bouteillier Nicolas
- *
+ * Dernière modification : $Date: 2018-03-30 16:00$
+ * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- *
- * @filesource
  *
  * This file is part of GRR.
  *
  * GRR is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
+ * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 if (isset($_POST['title_home_page'])) {
     if (!Settings::set('title_home_page', $_POST['title_home_page'])) {
@@ -211,10 +197,17 @@ if (isset($_POST['pview_new_windows'])) {
         die();
     }
 }
-// Affichage ou non de la legende
+/*-----MAJ Loïs THOMAS  -->Affichage ou non de la legende -----*/
 if (isset($_POST['legend'])) {
     if (!Settings::set('legend', $_POST['legend'])) {
         echo "Erreur lors de l'enregistrement de legend !<br />";
+        die();
+    }
+}
+// Affichage imprimante
+if (isset($_POST['imprimante'])) {
+    if (!Settings::set('imprimante', $_POST['imprimante'])) {
+        echo "Erreur lors de l'enregistrement de imprimante !<br />";
         die();
     }
 }
@@ -225,7 +218,7 @@ if (isset($_POST['periodicite'])) {
         die();
     }
 }
-// Affichage ou non du formulaire de contact et adresse mail du destinataire
+/*-----MAJ David VOUE 22/01/2014-->Affichage ou non du formulaire de contact et adresse mail du destinataire -----*/
 if (isset($_POST['mail_destinataire'])) {
     if (!Settings::set('mail_destinataire', $_POST['mail_destinataire'])) {
         echo "Erreur lors de l'enregistrement de mail_destinataire !<br />";
@@ -235,7 +228,7 @@ if (isset($_POST['mail_destinataire'])) {
 
 if (isset($_POST['allow_pdf'])) {
     if (!Settings::set('allow_pdf', $_POST['allow_pdf'])) {
-        echo "Erreur lors de l'enregistrement de mail_destinataire !<br />";
+        echo "Erreur lors de l'enregistrement de allow_pdf !<br />";
         die();
     }
 }
@@ -325,13 +318,13 @@ if (isset($_POST['ok'])) {
             $msg .= "L\'image n\'a pas pu être enregistrée : les seules extentions autorisées sont gif, png et jpg.\\n";
             $ok = 'no';
         } else {
-            /* deuxième test passée, l'extension est autorisée */
+            /* deuxième test passé, l'extension est autorisée */
 
             /* je fais le 3ème test avec fileinfo */
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $fileType = finfo_file($finfo, $doc_file['tmp_name']);
 
-            /* 4ème test avec gd pour valider que c'est bien une image malgrès tout - nécessaire ou parano ? */
+            /* 4ème test avec gd pour valider que c'est bien une image malgré tout - nécessaire ou parano ? */
             switch($fileType) {
                 case "image/gif":
                     /* recreate l'image, supprime les data exif */
@@ -359,7 +352,7 @@ if (isset($_POST['ok'])) {
                     break;
             }
             if (!$logoRecreated || $extSafe === false) {
-                /* la fonction imagecreate à échouée, donc l'image est corrompue ou craftée */
+                /* la fonction imagecreate a échoué, donc l'image est corrompue ou craftée */
                 $msg .= "L\'image n\'a pas pu être enregistrée : fichier corrompu.\\n";
                 $ok = 'no';
             } else {
@@ -485,7 +478,7 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
 } else {
     $msg = '';
 }
-// Utilisation de la bibliothèqye prototype dans ce script
+// Utilisation de la bibliothèque prototype dans ce script
 //$use_prototype = 'y';
 # print the page header
 print_header('', '', '', $type = 'with_session');
@@ -624,7 +617,7 @@ if (Settings::get('use_fckeditor') == 1) {
 			['Source'],
 			['Cut','Copy','Paste','PasteText','PasteFromWord', 'SpellChecker', 'Scayt'],
 			['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-			['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+			['Bold','Italic','Underline','Strike','-','Subscript','Superscript','-','TextColor','BGColor'],
 			['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
 			['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 			['Link','Unlink','Anchor'],
@@ -665,7 +658,7 @@ echo '<hr /><h3>'.get_vocab('title_begin_end_bookings')."</h3>\n";
             echo '$.datepicker.setDefaults( $.datepicker.regional[\'fr\'] );'.PHP_EOL;
             echo '$(\'#mydate_'.$typeDate.'\').datepicker({'.PHP_EOL;
             echo 'beforeShow: readSelected, onSelect: updateSelected,'.PHP_EOL;
-            echo 'showOn: \'both\', buttonImageOnly: true, buttonImage: \'../images/calendar.png\',buttonText: "Choisir la date"});'.PHP_EOL;
+            echo 'showOn: \'both\', buttonImageOnly: true, buttonImage: \'../img_grr/calendar.png\',buttonText: "Choisir la date"});'.PHP_EOL;
             echo 'function readSelected()'.PHP_EOL;
             echo '{'.PHP_EOL;
             echo '$(\'#mydate_'.$typeDate.'\').val($(\'#'.$typeDate.'_day\').val() + \'/\' +'.PHP_EOL;
@@ -710,7 +703,7 @@ echo '<hr /><h3>'.get_vocab('title_begin_end_bookings')."</h3>\n";
     echo '$.datepicker.setDefaults( $.datepicker.regional[\'fr\'] );'.PHP_EOL;
     echo '$(\'#mydate_'.$typeDate.'\').datepicker({'.PHP_EOL;
     echo 'beforeShow: readSelected, onSelect: updateSelected,'.PHP_EOL;
-    echo 'showOn: \'both\', buttonImageOnly: true, buttonImage: \'../images/calendar.png\',buttonText: "Choisir la date"});'.PHP_EOL;
+    echo 'showOn: \'both\', buttonImageOnly: true, buttonImage: \'../img_grr/calendar.png\',buttonText: "Choisir la date"});'.PHP_EOL;
     echo 'function readSelected()'.PHP_EOL;
     echo '{'.PHP_EOL;
     echo '$(\'#mydate_'.$typeDate.'\').val($(\'#'.$typeDate.'_day\').val() + \'/\' +'.PHP_EOL;
@@ -830,8 +823,7 @@ if (Settings::get('module_multisite') == 'Oui') {
     echo('
 		<table>
 			<tr>
-				<td>'.get_vocab('default_site').get_vocab('deux_points').'</td>
-				<td>
+				<td>'.get_vocab('default_site').get_vocab('deux_points').'</td><td>
 					<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
 						<option value="-1">'.get_vocab('choose_a_site').'</option>'."\n");
     for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); ++$enr) {
@@ -844,14 +836,14 @@ if (Settings::get('module_multisite') == 'Oui') {
     }
     echo('</select>
 </td>
-</tr>');
+</tr></table>');
 } else {
-    echo '<input class="form-control" type="hidden" id="id_site" name="id_site" value="-1" />
-	<table>';
+    echo '<input class="form-control" type="hidden" id="id_site" name="id_site" value="-1" />';
 }
 /*
   * Liste des domaines
  */
+echo "<table>";
 echo '<tr>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
 echo '<div id="div_liste_domaines">'.PHP_EOL;
@@ -953,7 +945,7 @@ echo '</table>'.PHP_EOL;
 #Choix  de l'affichage du bouton "afficher le menu de gauche ou non"
 #SQL : menu_gauche==1  //le bouton s'affiche par default
 # menu_gauche==0 //le bouton ne s'affiche pas par default
-# menu_gauche==2 //le menu s'affiche en ahut
+# menu_gauche==2 //le menu s'affiche en haut
 #Test pour savoir la valeur présente dans la base de données : echo Settings::get("menu_gauche");
 echo '<hr />'.PHP_EOL;
 echo '<h3>'.get_vocab('display_menu').'</h3>'.PHP_EOL;
@@ -1011,6 +1003,16 @@ echo '<td>'.get_vocab('display_mail_etat_destinataire_3').'</td>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
 echo '<input type="radio" name="mail_etat_destinataire" value="1" ';
 if (Settings::get('mail_etat_destinataire') == '1') {
+    echo 'checked="checked"';
+}
+echo ' />'.PHP_EOL;
+echo '</td>'.PHP_EOL;
+echo '</tr>'.PHP_EOL;
+echo '<tr>'.PHP_EOL;
+echo '<td>'.get_vocab('display_mail_etat_destinataire_4').'</td>'.PHP_EOL;
+echo '<td>'.PHP_EOL;
+echo '<input type="radio" name="mail_etat_destinataire" value="2" ';
+if (Settings::get('mail_etat_destinataire') == '2') {
     echo 'checked="checked"';
 }
 echo ' />'.PHP_EOL;
@@ -1284,7 +1286,7 @@ echo '<tr>'.PHP_EOL;
 echo '<td>'.get_vocab('YES').'</td>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
 echo "<input type='radio' name='legend' value='0' ";
-if (Settings::get('YES') == '0') {
+if (Settings::get('legend') == '0') {
     echo 'checked="checked"';
 }
 echo ' />'.PHP_EOL;
@@ -1295,6 +1297,31 @@ echo '<td>'.get_vocab('NO').'</td>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
 echo "<input type='radio' name='legend' value='1' ";
 if (Settings::get('legend') == '1') {
+    echo 'checked="checked"';
+}
+echo ' />'.PHP_EOL;
+echo '</td>'.PHP_EOL;
+echo '</tr>'.PHP_EOL;
+echo '</table>'.PHP_EOL;
+# Afficher l'imprimante
+echo '<hr />'.PHP_EOL;
+echo '<h3>'.get_vocab('imprimante_msg').'</h3>'.PHP_EOL;
+echo '<table>'.PHP_EOL;
+echo '<tr>'.PHP_EOL;
+echo '<td>'.get_vocab('YES').'</td>'.PHP_EOL;
+echo '<td>'.PHP_EOL;
+echo "<input type='radio' name='imprimante' value='0' ";
+if (Settings::get('imprimante') == '0') {
+    echo 'checked="checked"';
+}
+echo ' />'.PHP_EOL;
+echo '</td>'.PHP_EOL;
+echo '</tr>'.PHP_EOL;
+echo '<tr>'.PHP_EOL;
+echo '<td>'.get_vocab('NO').'</td>'.PHP_EOL;
+echo '<td>'.PHP_EOL;
+echo "<input type='radio' name='imprimante' value='1' ";
+if (Settings::get('imprimante') == '1') {
     echo 'checked="checked"';
 }
 echo ' />'.PHP_EOL;
@@ -1351,9 +1378,9 @@ echo ' />'.PHP_EOL;
 echo '</td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
 echo '</table>'.PHP_EOL;
-# Afficher vacance et jour ferie
+# Afficher vacances et jours fériés
 echo '<hr />'.PHP_EOL;
-echo '<h3>'.get_vocab('holidays_msg').'</h3>'.PHP_EOL;
+echo '<h3 id="vacances_feries">'.get_vocab('holidays_msg').'</h3>'.PHP_EOL;
 echo '<table>'.PHP_EOL;
 echo '<tr>'.PHP_EOL;
 echo '<td>'.get_vocab('YES').'</td>'.PHP_EOL;
@@ -1377,34 +1404,36 @@ echo '</td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
 echo '</table>'.PHP_EOL;
 
-# Choix de la zone de vacance
-echo '<hr />'.PHP_EOL;
-echo '<h3>'.get_vocab('holidays_zone_msg').'</h3>'.PHP_EOL;
-echo '<table>'.PHP_EOL;
-echo '<tr>'.PHP_EOL;
-echo '<td>'.PHP_EOL;
-$vacances = simplexml_load_file('../vacances.xml');
-$libelle = $vacances->academies->children();
-$acad = array();
-foreach ($libelle as $key => $value) {
-    if (!in_array($value['zone'], $acad)) {
-        $acad[] .= $value['zone'];
+# Choix de la zone de vacances scolaires (France), uniquement si l'affichage des vacances et fériés est activé
+if (Settings::get('show_holidays') == 'Oui'){
+    echo '<hr />'.PHP_EOL;
+    echo '<h3 id="vacances_scolaires">'.get_vocab('holidays_zone_msg').'</h3>'.PHP_EOL;
+    echo '<table>'.PHP_EOL;
+    echo '<tr>'.PHP_EOL;
+    echo '<td>'.PHP_EOL;
+    $vacances = simplexml_load_file('../vacances.xml');
+    $libelle = $vacances->academies->children();
+    $acad = array();
+    foreach ($libelle as $key => $value) {
+        if (!in_array($value['zone'], $acad)) {
+            $acad[] .= $value['zone'];
+        }
     }
-}
-sort($acad);
-echo '<select class="form-control" name="holidays_zone">'.PHP_EOL;
-foreach ($acad as $key => $value) {
-    echo '<option value="'.$value.'"';
-    if (Settings::get('holidays_zone') == $value) {
-        echo ' selected="selected"';
+    sort($acad);
+    echo '<select class="form-control" name="holidays_zone">'.PHP_EOL;
+    foreach ($acad as $key => $value) {
+        echo '<option value="'.$value.'"';
+        if (Settings::get('holidays_zone') == $value) {
+            echo ' selected="selected"';
+        }
+        echo '>'.$value.'</option>'.PHP_EOL;
     }
-    echo '>'.$value.'</option>'.PHP_EOL;
-}
 
-echo '</select>'.PHP_EOL;
-echo '</td>'.PHP_EOL;
-echo '</tr>'.PHP_EOL;
-echo '</table>'.PHP_EOL;
+    echo '</select>'.PHP_EOL;
+    echo '</td>'.PHP_EOL;
+    echo '</tr>'.PHP_EOL;
+    echo '</table>'.PHP_EOL;
+}
 # Lors de l'édition d'un rapport, valeur par défaut en nombre de jours
 # de l'intervalle de temps entre la date de début du rapport et la date de fin du rapport.
 echo '<hr />'.PHP_EOL;

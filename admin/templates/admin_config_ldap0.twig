@@ -1,0 +1,141 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			{% if trad.dMesgSystemeDanger %}
+				{{ msgSyst.messageDanger(trad.dMesgTitreSystemeDanger, trad.dMesgSystemeDanger) }}
+			{% endif %}
+
+			{% if trad.dMesgTitreOkConnexion %}
+				{{ msgSyst.messageSuccess(trad.dMesgTitreOkConnexion, trad.dMesgSystemeOkConnexion) }}
+			{% endif %}
+
+			{% if trad.dMesgTitreOkChemin %}
+				{{ msgSyst.messageSuccess(trad.dMesgTitreOkChemin, trad.dMesgSystemeOkChemin) }}
+			{% endif %}
+
+			{% if trad.dMesgTitreConfigActuel %}
+				{{ msgSyst.messageInfo(trad.dMesgTitreConfigActuel, trad.dMesgConfActuel) }}
+			{% endif %}
+
+			{% if trad.dConfigImpossible == 0 %}
+
+				<div class="box">
+					<div class="box-header">
+						<h3 class="box-title">{{ trad.titre_ldap }}</h3>
+					</div>
+					<!-- /.box-header -->
+					
+						<div class="box-body no-padding">
+							<form action="?p=admin_config_ldap" method="post">
+							
+								<p>Si vous avez accès à un annuaire LDAP, vous pouvez configurer GRR afin que cet annuaire soit utilisé pour importer automatiquement des utilisateurs.</p>
+
+								<input type="hidden" name="p" value="admin_config_ldap" />
+								<input type="hidden" name="etape" value="0" />
+								<input type="hidden" name="valid" value="{{ trad.dValid }}" />
+								<input type="hidden" name="reg_ldap_statut" value="yes" />
+
+								{% if settings.ldap_statut != '' %}
+									<h3>L'authentification LDAP est activée.</h3>
+									<h3>{{ trad.Statut_par_defaut_utilisateurs_importes }}</h3>
+									
+									<div class="form-group col-sm-12">
+										<p>Choisissez le statut qui sera attribué aux personnes présentes dans l'annuaire LDAP lorsqu'elles se connectent pour la première fois. Vous pourrez par la suite modifier cette valeur pour chaque utilisateur.</p>
+										<input type="radio" name="ldap_statut" value="visiteur" id="label_1a" {% if settings.ldap_statut == 'visiteur' %}checked{% endif %} /> <label for="label_1a">{{ trad.statut_visitor }}</label><br>
+										<input type="radio" name="ldap_statut" value="utilisateur" id="label_1b" {% if settings.ldap_statut == 'utilisateur' %}checked{% endif %} /> <label for="label_1b">{{ trad.statut_user }}</label><br>
+										<input type="radio" name="ldap_statut" value="no_ldap" id="label_1c" {% if settings.ldap_statut == '' %}checked{% endif %} /> <label for="label_1c">Désactiver l'authentification LDAP</label><br>
+									</div>
+
+									<div class="form-group col-sm-12">
+										<label class="col-sm-8" for="ConvertLdapUtf8toIso">Les données (noms, prénom...) sont stockées en UTF-8 dans l'annuaire (configuration par défaut)</label>
+										<div class="col-sm-4">
+											<input type="checkbox" name="ConvertLdapUtf8toIso" value="y" {% if settings.ConvertLdapUtf8toIso == 'y' %} checked {% endif %}>
+										</div>
+									</div>
+								
+									<div class="form-group col-sm-12">
+										<label class="col-sm-8" for="ActiveModeDiagnostic">Activer le mode "diagnostic" en cas d'erreur de connexion, les messages renvoyés par GRR sont plus explicites. De cette façon, il peut être plus facile de déterminer la cause du problème.</label>
+										<div class="col-sm-4">
+											<input type="checkbox" name="ActiveModeDiagnostic" value="y" {% if settings.ActiveModeDiagnostic == 'y' %} checked {% endif %}>
+										</div>
+									</div>
+
+									{{ form.input('ldap_champ_recherche', 'Attribut utilisé pour la recherche dans l\'annuaire', settings.ldap_champ_recherche, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
+
+									<p>La valeur à indiquer ci-dessus varie selon le type d'annuaire utilisé et selon sa configuration
+										<br /><span class="small">Exemples de champs généralement utilisés pour les annuaires ldap : "uid", "cn", "sn".
+										<br />Exemples de champs généralement utilisés pour les Active Directory : "samaccountname", "userprincipalname".
+										<br />Même si cela n'est pas conseillé, vous pouvez indiquer plusieurs attributs séparés par le caractère | (exemple : uid|sn|cn).</span>
+									</p>
+
+									<p><b>Liaisons GRR/LDAP :</b></p>
+
+									{{ form.input('ldap_champ_nom', trad.last_name, settings.ldap_champ_nom, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+									{{ form.input('ldap_champ_prenom', trad.first_name, settings.ldap_champ_prenom, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+									{{ form.input('ldap_champ_email', trad.mail_user, settings.ldap_champ_email, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+
+									<p><b>Cas particulier des serveur SE3</b> : <span class="small">dans le champs ci-dessous, vous pouvez préciser la liste des groupes SE3 autorisés à accéder à GRR.
+										Si le champ est laissé vide, il n'y a pas de restrictions.
+										Dans le cas contraire, seuls les utilisateurs appartenant à au moins l'un des groupes listés seront autorisés à accéder à GRR.
+										Ecrivez les groupes en les séparant par un point-vigule, par exemple : "Profs;Administratifs".
+										Seuls les groupes de type "posixGroup" sont supportés (les groupes de type "groupOfNames" ne sont pas supportés).</span></p>
+
+									{{ form.input('se3_liste_groupes_autorises', '', settings.se3_liste_groupes_autorises, {classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+
+									<div style="text-align:center;">
+										<input type="submit" name="Valider1" value="{{ trad.save }}" class="btn btn-success btn-md" />
+									</div>
+
+									<hr>
+								</form>
+								<form action="?p=admin_config_ldap" method="post">
+									<input type="hidden" name="p" value="admin_config_ldap" />
+									<input type="hidden" name="etape" value="1" />
+									<input type="hidden" name="valid" value="{{ trad.dValid }}" />
+
+									{% if trad.dFichierCongLDAP == 1 %}
+									
+									
+									
+									{% else %}
+										<h3>L'accès à l'annuaire LDAP n'est pas configuré</h3>
+										<b>L'authentification LDAP est donc pour le moment impossible.</b>
+									{% endif %}
+
+									<div style="text-align:center;">
+										<input type="submit" name="Valider1" value="Configurer LDAP" class="btn btn-warning btn-md" />
+									</div>
+								</form>
+							{% else %}
+								<form action="?p=admin_config_ldap" method="post">
+									<h3>L'authentification LDAP n'est pas activée</h3>
+									<p>L'authentification LDAP est donc pour le moment impossible. Activez l'authentification LDAP en choisissant le statut qui sera attribué aux personnes présentes dans l'annuaire LDAP lorsqu'elles se connectent pour la première fois. Vous pourrez par la suite modifier cette valeur pour chaque utilisateur.</p>
+
+
+									<input type="radio" name="ldap_statut" value="visiteur" id="label_1a" /> <label for="label_1a">{{ trad.statut_visitor }}</label><br>
+									<input type="radio" name="ldap_statut" value="utilisateur" id="label_1b" /> <label for="label_1b">{{ trad.statut_user }}</label><br>
+									<input type="radio" name="ldap_statut" value="no_ldap" id="label_1c" checked /> <label for="label_1c">Ne pas activer</label><br>
+
+									<div style="text-align:center;">
+										<input type="submit" name="Valider2" value="{{ trad.save }}" class="btn btn-success btn-md" />
+									</div>
+								</form>
+							{% endif %}
+							
+						</div>
+					</form>
+				</div>
+
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

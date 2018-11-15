@@ -2,13 +2,11 @@
 /**
  * admin_user.php
  * interface de gestion des utilisateurs de l'application GRR
- * Dernière modification : $Date: 2009-09-29 18:02:56 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2003-2008 Laurent Delineau
+ * Ce script fait partie de l'application GRR
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    Laurent Delineau & JeromeB
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   admin
- * @version   $Id: admin_user.php,v 1.11 2009-09-29 18:02:56 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -16,16 +14,8 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 include "../include/admin.inc.php";
 $grr_script_name = "admin_user.php";
 $back = '';
@@ -256,7 +246,8 @@ if (empty($order_by))
 ?>
 | <a href="admin_user_modify.php?display=<?php echo $display; ?>"><?php echo get_vocab("display_add_user"); ?></a> |
 <a href="admin_import_users_csv.php"><?php echo get_vocab("display_add_user_list_csv"); ?></a> |
-<a href="admin_user_mdp_facile.php"><?php echo get_vocab("admin_user_mdp_facile"); ?></a> |
+ <a href="admin_import_users_elycee.php">Importer des utilisateurs depuis elycée</a> |
+ <a href="admin_user_mdp_facile.php"><?php echo get_vocab("admin_user_mdp_facile"); ?></a> |
 <?php
 // On propose de supprimer les utilisateurs ext de GRR qui ne sont plus présents dans la base LCS
 if (Settings::get("sso_statut") == "lcs")

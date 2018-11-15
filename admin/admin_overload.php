@@ -2,16 +2,10 @@
 /**
  * admin_overload.php
  * Interface de création/modification des champs additionnels.
- * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2009-09-29 18:02:56 $
- * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @author    Marc-Henri PAMISEUX <marcori@users.sourceforge.net>
- * @copyright Copyright 2003-2008 Laurent Delineau
- * @copyright Copyright 2008 Marc-Henri PAMISEUX
+ * Dernière modification : $Date: 2018-08-04 19:00$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
+ * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
- * @package   admin
- * @version   $Id: admin_overload.php,v 1.7 2009-09-29 18:02:56 grr Exp $
- * @filesource
  *
  * This file is part of GRR.
  *
@@ -19,18 +13,10 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
- * GRR is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GRR; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-include "../include/admin.inc.php";
+
 $grr_script_name = "admin_overload.php";
+include "../include/admin.inc.php";
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
@@ -109,7 +95,7 @@ if ($action == "add")
 			fatal_error(0, "$sql \n\n" . grr_sql_error());
 	}
 }
-if ($action == "delete")
+else if ($action == "delete")
 {
 	$arearight = false ;
 	if (isset($_POST["id_overload"]))
@@ -137,87 +123,88 @@ if ($action == "delete")
 				fatal_error(0, "$sql \n\n" . grr_sql_error());
 		}
 	}
-	if ($action == "change")
-	{
-		$arearight = false ;
-		if (isset($_POST["id_overload"]))
-			$id_overload = $_POST["id_overload"];
-		else
-			$id_overload = "";
-		settype($id_overload,"integer");
-		if (isset($_POST["fieldname"]))
-			$fieldname = $_POST["fieldname"];
-		else
-			$fieldname = "";
-		if (isset($_POST["fieldtype"]))
-			$fieldtype = $_POST["fieldtype"];
-		else
-			$fieldtype = "";
-		if (isset($_POST["fieldlist"]))
-			$fieldlist = $_POST["fieldlist"];
-		else
-			$fieldlist = "";
-		if ($fieldtype != "list")
-			$fieldlist = "";
-		if (isset($_POST["obligatoire"]))
-			$obligatoire = "y";
-		else
-			$obligatoire = "n";
-		if (isset($_POST["affichage"]))
-			$affichage = "y";
-		else
-			$affichage = "n";
-		if (isset($_POST["overload_mail"]))
-			$overload_mail = "y";
-		else
-			$overload_mail = "n";
-		if (isset($_POST["confidentiel"]))
-			$confidentiel = "y";
-		else
-			$confidentiel = "n";
-		if ($confidentiel == "y")
-		{
-			$affichage = "n";
-			$overload_mail = "n";
-		}
-		$sql = "SELECT id_area FROM ".TABLE_PREFIX."_overload WHERE id=$id_overload;";
-		$resquery = grr_sql_query($sql);
-		if (!$resquery)
-			fatal_error(0, grr_sql_error());
-		if (grr_sql_count($resquery) > 0)
-			for ($i = 0; ($row = grr_sql_row($resquery, $i)); $i++)
-			{
-				foreach ($userdomain as $key=>$value)
-				{
-					if ($key == $row[0] )
-						$arearight = true;
-				}
-			}
-			if ($arearight == true)
-			{
-				$sql = "UPDATE ".TABLE_PREFIX."_overload SET
-				fieldname='".protect_data_sql($fieldname)."',
-				fieldtype='".protect_data_sql($fieldtype)."',
-				obligatoire='".$obligatoire."',
-				confidentiel='".$confidentiel."',
-				affichage='".$affichage."',
-				overload_mail='".$overload_mail."',
-				fieldlist='".protect_data_sql($fieldlist)."'
-				WHERE id=$id_overload;";
-				if (grr_sql_command($sql) < 0)
-					fatal_error(0, "$sql \n\n" . grr_sql_error());
-			}
-		}
-		$html = get_vocab("explication_champs_additionnels")."\n";
+else if ($action == "change")
+{
+    $arearight = false ;
+    if (isset($_POST["id_overload"]))
+        $id_overload = $_POST["id_overload"];
+    else
+        $id_overload = "";
+    settype($id_overload,"integer");
+    if (isset($_POST["fieldname"]))
+        $fieldname = $_POST["fieldname"];
+    else
+        $fieldname = "";
+    if (isset($_POST["fieldtype"]))
+        $fieldtype = $_POST["fieldtype"];
+    else
+        $fieldtype = "";
+    if (isset($_POST["fieldlist"]))
+        $fieldlist = $_POST["fieldlist"];
+    else
+        $fieldlist = "";
+    if ($fieldtype != "list")
+        $fieldlist = "";
+    if (isset($_POST["obligatoire"]))
+        $obligatoire = "y";
+    else
+        $obligatoire = "n";
+    if (isset($_POST["affichage"]))
+        $affichage = "y";
+    else
+        $affichage = "n";
+    if (isset($_POST["overload_mail"]))
+        $overload_mail = "y";
+    else
+        $overload_mail = "n";
+    if (isset($_POST["confidentiel"]))
+        $confidentiel = "y";
+    else
+        $confidentiel = "n";
+    if ($confidentiel == "y")
+    {
+        $affichage = "n";
+        $overload_mail = "n";
+    }
+    $sql = "SELECT id_area FROM ".TABLE_PREFIX."_overload WHERE id=$id_overload;";
+    $resquery = grr_sql_query($sql);
+    if (!$resquery)
+        fatal_error(0, grr_sql_error());
+    if (grr_sql_count($resquery) > 0)
+        for ($i = 0; ($row = grr_sql_row($resquery, $i)); $i++)
+        {
+            foreach ($userdomain as $key=>$value)
+            {
+                if ($key == $row[0] )
+                    $arearight = true;
+            }
+        }
+        if ($arearight == true)
+        {
+            $sql = "UPDATE ".TABLE_PREFIX."_overload SET
+            fieldname='".protect_data_sql($fieldname)."',
+            fieldtype='".protect_data_sql($fieldtype)."',
+            obligatoire='".$obligatoire."',
+            confidentiel='".$confidentiel."',
+            affichage='".$affichage."',
+            overload_mail='".$overload_mail."',
+            fieldlist='".protect_data_sql($fieldlist)."'
+            WHERE id=$id_overload;";
+            if (grr_sql_command($sql) < 0)
+                fatal_error(0, "$sql \n\n" . grr_sql_error());
+        }
+    }
+    
+        $html = get_vocab("explication_champs_additionnels")."\n";
 		$html .= "<form method=\"post\" action=\"admin_overload.php\" >\n<table border=\"1\">";
 		$html .= "<tr><td>".get_vocab("match_area").get_vocab("deux_points")."</td>\n";
 		$html .= "<td>".get_vocab("fieldname").get_vocab("deux_points")."</td>\n";
 		$html .= "<td>".get_vocab("fieldtype").get_vocab("deux_points")."</td>\n";
 		$html .= "<td><span class='small'>".get_vocab("champ_obligatoire")."</span></td>\n";
-		$html .= "<td><span class='small'>".get_vocab("affiche_dans_les vues")."</span></td>\n";
-		$html .= "<td><span class='small'>".get_vocab("affiche_dans_les mails")."</span></td>\n";
+		$html .= "<td><span class='small'>".get_vocab("affiche_dans_les_vues")."</span></td>\n";
+		$html .= "<td><span class='small'>".get_vocab("affiche_dans_les_mails")."</span></td>\n";
 		$html .= "<td><span class='small'>".get_vocab("champ_confidentiel")."</span></td>\n";
-		$html .= "<td> </td></tr>\n";
+		$html .= "<td></td></tr>\n";
 		$html .= "\n<tr><td>";
 		$html .= "<select name=\"id_area\" size=\"1\">";
 		foreach ($userdomain as $key=>$value)
@@ -243,7 +230,7 @@ if ($action == "delete")
 	$html .= "<input type=\"checkbox\" id=\"confidentiel\" name=\"confidentiel\" title=\"".get_vocab("champ_confidentiel")."\" value=\"y\" />\n";
 	$html .= "<input type=\"hidden\" name=\"action\" value=\"add\" /></div></td>\n";
 	$html .= "<td><div><input type=\"submit\" name=\"submit\" value=\"".get_vocab('add')."\" /></div></td>\n";
-	$html .= "</tr></table></form>\n";
+	$html .= "</tr></table></form>\n"; // fin de la table "ajouter"
 	$breakkey = "";
 	$ouvre_table = false;
 	$ferme_table = false;
@@ -261,7 +248,7 @@ if ($action == "delete")
 				$ferme_table = true;
 				$ouvre_table = true;
 			}
-			$html .= "<tr><th>".get_vocab("match_area")."</th><th>".get_vocab("fieldname")."</th><th>".get_vocab("fieldtype")."</th><th>".get_vocab("champ_obligatoire")."</th><th>".get_vocab("affiche_dans_les vues")."</th><th>".get_vocab("affiche_dans_les mails")."</th><th>".get_vocab("champ_confidentiel")."</th><th colspan='2'>Actions</th></tr>";
+			$html .= "<tr><th>".get_vocab("match_area")."</th><th>".get_vocab("fieldname")."</th><th>".get_vocab("fieldtype")."</th><th>".get_vocab("champ_obligatoire")."</th><th>".get_vocab("affiche_dans_les_vues")."</th><th>".get_vocab("affiche_dans_les_mails")."</th><th>".get_vocab("champ_confidentiel")."</th><th colspan='2'>Actions</th></tr>";
 		}
 		$breakkey = $key;
 		if (grr_sql_count($res) != 0)
@@ -270,7 +257,8 @@ if ($action == "delete")
 				$html .= "<tr>\n";
 				$html .= "<td style=\"vertical-align:middle;\">$userdomain[$key]</td>\n";
 				$html .= "<form method=\"post\" action=\"admin_overload.php\">\n";
-				$html .= "<div><input type=\"hidden\" name=\"id_overload\" value=\"$row[0]\" />\n";
+				//$html .= "<div><input type=\"hidden\" name=\"id_overload\" value=\"$row[0]\" />\n";
+                $html .= "<input type=\"hidden\" name=\"id_overload\" value=\"$row[0]\" />\n";
 				$html .= "<input type=\"hidden\" name=\"action\" value=\"change\" />\n";
 				$html .= "<td><input type=\"text\" name=\"fieldname\" value=\"".htmlspecialchars($row[1])."\" /></td>\n";
 				$html .= "<td><select name=\"fieldtype\">\n";
@@ -290,30 +278,36 @@ if ($action == "delete")
 				if ($row[2] =="numeric")
 					$html .= " selected=\"selected\"";
 				$html .= " >".get_vocab("type_numeric")."</option>\n";
-				$html .= "</select></td>\n";
+				$html .= "</select>";
+                if ($row[2] == "list") {
+					$html .= "<div><br />".get_vocab("Liste des champs").get_vocab("deux_points")."<br />";
+					$html .= "<input type=\"text\" name=\"fieldlist\" value=\"".htmlspecialchars($row[4])."\" size=\"50\" /></div>";
+				}
+                $html .= "</td>\n";
 				$ind_div++;
 				$html .= "<td><input type=\"checkbox\" id=\"obligatoire_".$ind_div."\" name=\"obligatoire\" title=\"".get_vocab("champ_obligatoire")."\" value=\"y\" ";
 				if ($row[3] =="y")
 					$html .= " checked=\"checked\" ";
 				$html .= "/></td>\n";
-				$html .= "<td><input type=\"checkbox\" id=\"affichage_".$ind_div."\" name=\"affichage\" title=\"".get_vocab("affiche_dans_les vues")."\" value=\"y\" ";
+				$html .= "<td><input type=\"checkbox\" id=\"affichage_".$ind_div."\" name=\"affichage\" title=\"".get_vocab("affiche_dans_les_vues")."\" value=\"y\" ";
 				if ($row[5] =="y")
 					$html .= " checked=\"checked\" ";
 				$html .= "/></td>\n";
-				$html .= "<td><input type=\"checkbox\" id=\"overload_mail_".$ind_div."\" name=\"overload_mail\" title=\"".get_vocab("affiche_dans_les mails")."\" value=\"y\" ";
+				$html .= "<td><input type=\"checkbox\" id=\"overload_mail_".$ind_div."\" name=\"overload_mail\" title=\"".get_vocab("affiche_dans_les_mails")."\" value=\"y\" ";
 				if ($row[6] =="y")
 					$html .= " checked=\"checked\" ";
 				$html .= "/></td>\n";
-				$html .= "<td><input type=\"checkbox\" id=\"confidentiel_".$ind_div."\" name=\"confidentiel\" title=\"".get_vocab("champ_obligatoire")."\" value=\"y\" ";
+				$html .= "<td><input type=\"checkbox\" id=\"confidentiel_".$ind_div."\" name=\"confidentiel\" title=\"".get_vocab("champ_confidentiel")."\" value=\"y\" ";
 				if ($row[7] =="y")
 					$html .= " checked=\"checked\" ";
 				$html .= "/></td>\n";
 				$html .= "<td><input type=\"submit\" value=\"".get_vocab('change')."\" /></td>";
-				if ($row[2] == "list") {
-					$html .= "<br />".get_vocab("Liste des champs").get_vocab("deux_points")."<br />";
-					$html .= "<input type=\"text\" name=\"fieldlist\" value=\"".htmlspecialchars($row[4])."\" size=\"50\" />";
-				}
-				$html .= "</div></form></td>\n";
+				/*if ($row[2] == "list") {
+					$html .= "<div><br />".get_vocab("Liste des champs").get_vocab("deux_points")."<br />";
+					$html .= "<input type=\"text\" name=\"fieldlist\" value=\"".htmlspecialchars($row[4])."\" size=\"50\" /></div>";
+				} */
+				//$html .= "</form></td>\n";
+                $html .= "</form>\n";
 				$html .= "<td><form method=\"post\" action=\"admin_overload.php\">\n";
 				$html .= "<div><input type=\"submit\" value=\"".get_vocab('del')."\" onclick=\"return confirmlink(this, '".addslashes(get_vocab("avertissement_suppression_champ_additionnel"))."', '".get_vocab("confirm_del")."')\" />\n";
 				$html .= "<input type=\"hidden\" name=\"id_overload\" value=\"$row[0]\" />\n";
@@ -325,10 +319,10 @@ if ($action == "delete")
 		if ($ferme_table)
 			echo "</table>";
 		echo "<div class='tooltip' id='tooltip_affichage' style=\"display:none;\">\n";
-		echo get_vocab("affiche_dans_les vues");
+		echo get_vocab("affiche_dans_les_vues");
 		echo "</div>\n";
 		echo "<div class='tooltip' id='tooltip_overload_mail' style=\"display:none;\">\n";
-		echo get_vocab("affiche_dans_les mails");
+		echo get_vocab("affiche_dans_les_mails");
 		echo "</div>\n";
 		echo "<div class='tooltip' id='tooltip_obligatoire' style=\"display:none;\">\n";
 		echo get_vocab("champ_obligatoire");
