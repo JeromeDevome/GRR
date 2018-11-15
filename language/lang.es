@@ -1002,4 +1002,6 @@ $vocab['click_here_to_hide_connexions'] = "Cliquez ici pour masquer l'historique
 $vocab["see_connexions_explain"] = "Une connexion en cours est affichée en vert, une connexion fermée par temps dépassé est affichée en rouge"; // à traduire
 $vocab["type_apercu"] = "Preview";
 $vocab["type_color_text"] = "Text color";
+$vocab['affichage_pdf'] = "Show the ".$vocab['Generer_pdf']." link";
+$vocab['affichage_type'] = "Show the type of the reservation in week and month plannings.";
 ?>

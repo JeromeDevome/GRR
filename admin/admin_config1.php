@@ -3,7 +3,7 @@
  * admin_config1.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2018-08-21 12:00$
+ * Dernière modification : $Date: 2018-11-15 12:00$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -222,6 +222,13 @@ if (isset($_POST['legend'])) {
 if (isset($_POST['imprimante'])) {
     if (!Settings::set('imprimante', $_POST['imprimante'])) {
         echo "Erreur lors de l'enregistrement de imprimante !<br />";
+        die();
+    }
+}
+// Affichage pdf 
+if (isset($_POST['pdf'])) {
+    if (!Settings::set('pdf', $_POST['pdf'])) {
+        echo "Erreur lors de l'enregistrement de affichage pdf !<br />";
         die();
     }
 }
@@ -1335,6 +1342,32 @@ echo '<td>'.get_vocab('NO').'</td>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
 echo "<input type='radio' name='imprimante' value='1' ";
 if (Settings::get('imprimante') == '1') {
+    echo 'checked="checked"';
+}
+echo ' />'.PHP_EOL;
+echo '</td>'.PHP_EOL;
+echo '</tr>'.PHP_EOL;
+echo '</table>'.PHP_EOL;
+
+# Affichage pdf 
+echo '<hr />'.PHP_EOL;
+echo '<h3>'.get_vocab('affichage_pdf').'</h3>'.PHP_EOL;
+echo '<table>'.PHP_EOL;
+echo '<tr>'.PHP_EOL;
+echo '<td>'.get_vocab('YES').'</td>'.PHP_EOL;
+echo '<td>'.PHP_EOL;
+echo "<input type='radio' name='pdf' value='1' ";
+if (Settings::get('pdf') == '1') {
+    echo 'checked="checked"';
+}
+echo ' />'.PHP_EOL;
+echo '</td>'.PHP_EOL;
+echo '</tr>'.PHP_EOL;
+echo '<tr>'.PHP_EOL;
+echo '<td>'.get_vocab('NO').'</td>'.PHP_EOL;
+echo '<td>'.PHP_EOL;
+echo "<input type='radio' name='pdf' value='0' ";
+if (Settings::get('pdf') == '0') {
     echo 'checked="checked"';
 }
 echo ' />'.PHP_EOL;

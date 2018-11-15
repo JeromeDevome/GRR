@@ -1011,5 +1011,7 @@ $vocab["see_connexions_explain"] = "Une connexion en cours est affichée en vert
 $vocab["type_apercu"] = "Aperçu";
 $vocab["type_color_text"] = "Couleur du texte";
 $vocab['admin_couleurs.php'] = "Gestion des couleurs";
-$vocab['admin_couleurs_explications'] = "Dans cette page, vous pouvez définir un certain nombre de couleurs qui modifieront le style par défaut. D'autres modifications au style peuvent être apportées par l'édition du fichier de style /themes/perso/css/style.css"
+$vocab['admin_couleurs_explications'] = "Dans cette page, vous pouvez définir un certain nombre de couleurs qui modifieront le style par défaut. D'autres modifications au style peuvent être apportées par l'édition du fichier de style /themes/perso/css/style.css";
+$vocab['affichage_pdf'] = "Affichage de l'icône Générer pdf.";
+$vocab['affichage_type'] = "Affichage du type de réservation dans les cellules des vues semaine et mois.";
 ?>
