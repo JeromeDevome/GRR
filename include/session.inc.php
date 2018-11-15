@@ -66,29 +66,6 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 			$_statut = "visiteur";
 		else if ($sso == "lasso_utilisateur")
 			$_statut = "utilisateur";
-		else if ($sso == "lcs")
-		{
-			if ($_user_ext_authentifie == "lcs_eleve")
-				$_statut = Settings::get("lcs_statut_eleve");
-			if ($_user_ext_authentifie == "lcs_non_eleve")
-				$_statut = Settings::get("lcs_statut_prof");
-			$temoin_grp_ok = "non";
-			if (trim(Settings::get("lcs_liste_groupes_autorises")) == "")
-				$temoin_grp_ok = "oui";
-			else
-			{
-				$tab_grp_autorise = explode(";",Settings::get("lcs_liste_groupes_autorises"));
-				$tot =  count($tab_grp_autorise);
-				for ($i = 0; $i < $tot; $i++)
-				{
-					if (in_array($tab_grp_autorise[$i], $tab_groups))
-						$temoin_grp_ok = "oui";
-				}
-			}
-			// Si l'utilisateur n'appartient pas aux groupes LCS autorisés
-			if ($temoin_grp_ok != 'oui')
-				return "5";
-		}
 		$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site
 		from ".TABLE_PREFIX."_utilisateurs
 		where login = '" . protect_data_sql($_login) . "' and ";
@@ -100,20 +77,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 		if ($num_row == 1)
 		{
 			// L'utilisateur est présent dans la base locale
-			if ($sso == "lcs")
-			{
-				// Mise à jour des données
-				$nom_user = $tab_login["nom"];
-				$email_user = $tab_login["email"];
-				$prenom_user = $tab_login["fullname"];
-				// On met à jour
-				$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET
-				nom='".protect_data_sql($nom_user)."',
-				prenom='".protect_data_sql($prenom_user)."',
-				email='".protect_data_sql($email_user)."'
-				where login='".protect_data_sql($_login)."'";
-			}
-			else if ($_user_ext_authentifie == "cas")
+			if ($_user_ext_authentifie == "cas")
 			{
 				if ((Settings::get("ldap_statut") != '') && (@function_exists("ldap_connect")) && (@file_exists("include/config_ldap.inc.php"))) {
 					$auth_ldap = 'yes';
@@ -171,20 +135,8 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
             else
             {
             //Aucun utilisateur dans la base locale ne porte le même login. On peut continuer la procédure d'importation
-            //1er cas : LCS.
-                if ($sso == "lcs")
-                {
-                    if ($_statut == 'aucun')
-                        return "5";
-                    else
-                    {
-                        $nom_user = $tab_login["nom"];
-                        $email_user = $tab_login["email"];
-                        $prenom_user = $tab_login["fullname"];
-                    }
-                //2ème cas : SSO lasso.
-                }
-                else if ($sso == "lasso_visiteur" or $sso == "lasso_utilisateur")
+                //1er cas : SSO lasso.
+                if ($sso == "lasso_visiteur" or $sso == "lasso_utilisateur")
                 {
                     if (!empty($tab_login))
                     {
@@ -829,8 +781,7 @@ function grr_resumeSession()
 		// Resuming session
 	session_name(SESSION_NAME);
 	@session_start();
-	if ((Settings::get('sso_statut') == 'lcs') and (!isset($_SESSION['est_authentifie_sso'])) and ($_SESSION['source_login'] == "ext"))
-		return (false);
+
 		// La session est-elle expirée
 	if (isset($_SESSION['login']))
 	{
@@ -854,24 +805,7 @@ function grr_resumeSession()
 		return (false);
 	else if (grr_sql_query1($sql2))
 	{
-		// Le temps d'inactivité est supérieur à la limite fixée.
-				// cas d'une authentification LCS
-		if (Settings::get('sso_statut') == 'lcs')
-		{
-		// l'utilisateur est authentifié par LCS, on renouvelle la session
-			if ($is_authentified_lcs == 'yes')
-			{
-				$sql = "UPDATE ".TABLE_PREFIX."_log set END = now() + interval " . $_SESSION['maxLength'] . " minute where SESSION_ID = '" . session_id() . "' and START = '" . $_SESSION['start'] . "'";
-				$res = grr_sql_query($sql);
-				if (!$res)
-					fatal_error(0, 'erreur mysql' . grr_sql_error());
-				return (true);
-			}
-			else
-				return (false);
-		}
-		else
-			return (false);
+		return (false);
 	}
 	else
 	{

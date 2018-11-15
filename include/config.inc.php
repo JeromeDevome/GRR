@@ -170,16 +170,6 @@ $sso_super_admin = false;
 // (la valeur par défaut le cherche dans le 'include_path' de PHP)
  define('SPKITLASSO',"spkitlasso");
 
-##############################################################
-# Paramètres propres à une authentification sur un serveur LCS
-##############################################################
-# Page d'authentification LCS
- define('LCS_PAGE_AUTHENTIF',"../../lcs/auth.php");
-# Page de la librairie ldap
- define('LCS_PAGE_LDAP_INC_PHP',"/var/www/Annu/includes/ldap.inc.php");
-# Réalise la connexion à la base d'authentification du LCS et include des fonctions de lcs/includes/functions.inc.php
- define('LCS_PAGE_AUTH_INC_PHP',"/var/www/lcs/includes/headerauth.inc.php");
-
 ###################
 # Database settings
 ###################

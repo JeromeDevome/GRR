@@ -98,46 +98,6 @@
 
 								<br><hr>
 
-								<h2>{{ trad.config_lcs_title }}</h2>
-
-								<input type="hidden" name="valid" value="1" />
-								<p>{{ trad.lcs_SSO_explain }}</p>
-
-								<h3>{{ trad.Statut_par_defaut_utilisateurs_importes }}</h3>
-								<p>{{ trad.choix_statut_lcs_SSO }}</p>
-
-								<div class="form-group col-sm-12">
-									<input type="radio" name="sso_statut" value="lcs" id="label_1f" {% if settings.sso_statut == 'lcs' %}checked{% endif %} /> <label for="label_1f">{{ trad.active_lcs }}</label><br>
-								</div>
-
-								<div class="form-group col-sm-12">
-									<label class="col-sm-4" for="lcs_statut_eleve">{{ trad.statut_eleve }}</label>
-									<div class="col-sm-8">
-										<select class="form-control" name="lcs_statut_eleve">
-											<option value="aucun" {% if settings.lcs_statut_eleve == 'aucun' %} selected {% endif %}>(ne pas importer)</option>
-											<option value="utilisateur" {% if settings.lcs_statut_eleve == 'utilisateur' %} selected {% endif %}>{{ trad.statut_user }}</option>
-											<option value="visiteur" {% if settings.lcs_statut_eleve == 'visiteur' %} selected {% endif %}>{{ trad.statut_visitor }}</option>
-										</select>
-									</div>
-								</div>
-
-								<div class="form-group col-sm-12">
-									<label class="col-sm-4" for="lcs_statut_eleve">{{ trad.statut_non_eleve }}</label>
-									<div class="col-sm-8">
-										<select class="form-control" name="lcs_statut_prof">
-											<option value="aucun" {% if settings.lcs_statut_prof == 'aucun' %} selected {% endif %}>(ne pas importer)</option>
-											<option value="utilisateur" {% if settings.lcs_statut_prof == 'utilisateur' %} selected {% endif %}>{{ trad.statut_user }}</option>
-											<option value="visiteur" {% if settings.lcs_statut_prof == 'visiteur' %} selected {% endif %}>{{ trad.statut_visitor }}</option>
-										</select>
-									</div>
-								</div>
-								<p>{{ trad.lcs_SSO_explain_2 }}</p>
-								<br>
-								<p>{{ trad.lcs_SSO_explain_3 }}</p>
-								{{ form.input('lcs_liste_groupes_autorises', '', settings.lcs_liste_groupes_autorises, {classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-
-								<br><hr>
-
 								<h2>{{ trad.config_lasso_title }}</h2>
 
 								<input type="hidden" name="valid" value="1" />
