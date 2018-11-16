@@ -1,0 +1,60 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+	<div class="row">
+        <div class="col-xs-12">
+
+			{% if trad.dMessageSup != '' %}
+				{{ msgSyst.messageInfo('', trad.dMessageSup) }}
+			{% endif %}
+
+            <div class="box">
+				<div class="box-header">
+					<h3 class="box-title">Supprimer des réservations commençant après une date donnée</h3>
+				</div>
+				
+				<div class="box-body no-padding">
+					<form action="?p=admin_delete_entry_after" method="post" id="main">
+
+						<input type="hidden" name="delete" value="1" />
+						<input type="hidden" id="mydate_beg_" value="1" />
+
+						<p>Utiliser ce script pour supprimer des réservations dans des domaines donnés après une date donnée ( Opération irréversible ! ):</p>
+						<p>Toutes les réservations commençant après la date donnée à 00 heures dans les domaines cochés seront supprimées.</p>
+						<br>
+						<p class="text-red">Il est conseillé de procéder à la sauvegarde de la base de données avant la suppression !</p>
+
+						<p>Sélectionnez les domaines concernés par la suppression :</p>
+
+						{% for domaine in domaines %}
+							<div class="col-sm-12"><input type="checkbox" name="area{{ domaine.i }}" value="{{ domaine.id }}"  /> {{ domaine.nom }}</div>
+						{% endfor %}
+
+						<div class="form-group col-sm-12">
+							<label class="col-sm-4" for="access">Jour de début de la suppression</label>
+							<div class="col-sm-8">{{ trad.dDate |raw }}</div>
+						</div>				
+
+						<div style="text-align:center;">
+							<a href="?p=admin_calend" class="btn" >{{ trad.back }}</a>	
+							<input class="btn btn-danger" type="submit" id="delete" name="change_area_and_back" value="Supprimer les réservations !" />
+						</div>
+					</form>
+				</div>
+			</div>
+
+		<!-- /.col -->
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
