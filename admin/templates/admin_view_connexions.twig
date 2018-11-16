@@ -34,7 +34,7 @@
 									<td><a href="mailto:{{ utilisateurCo.email }}" class="btn btn-info btn-md"><i class="icon fa fa-envelope-o"></i></a></td>
 									<td>
 										{% if utilisateurCo.deconnexion == 1 %}
-											<a href="?p=admin_change_pwd&user_login={{ utilisateurCo.login }} ">{{ trad.deconnect_changing_pwd }}</a>
+											<a href="?p=admin_user_modify&user_login={{ utilisateurCo.login }} ">{{ trad.deconnect_changing_pwd }}</a>
 										{% endif %}
 									</td>
 								</tr>
