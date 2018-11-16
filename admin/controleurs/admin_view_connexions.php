@@ -38,13 +38,13 @@ get_vocab_admin('deconnect_changing_pwd');
 $utilisateurConnecte = array();
 
 // Utilisateurs connecté
-$sql = "SELECT u.login, concat(u.prenom, ' ', u.nom) utilisa, u.email FROM ".TABLE_PREFIX."_log l, ".TABLE_PREFIX."_utilisateurs u WHERE (l.LOGIN = u.login and l.END > now())";
+$sql = "SELECT u.login, concat(u.prenom, ' ', u.nom) utilisa, u.email, u.source FROM ".TABLE_PREFIX."_log l, ".TABLE_PREFIX."_utilisateurs u WHERE (l.LOGIN = u.login and l.END > now())";
 $res = grr_sql_query($sql);
 if ($res)
 {
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-		if ((Settings::get("sso_statut") != "") ||  (Settings::get("ldap_statut") != '') ||  (Settings::get("imap_statut") != ''))
+		if ( $row[3] != 'local' )
 			$deconnexionPossible = 0;
 		else
 			$deconnexionPossible = 1;
