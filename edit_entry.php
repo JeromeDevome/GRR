@@ -313,7 +313,7 @@ $adm = 0;
 $racine = "./";
 $racineAd = "./admin/";
 // pour le traitement des modules
-include "/include/hook.class.php";
+include "./include/hook.class.php";
 // début du code html ici, sinon le javascript provoque une erreur "header already sent by"
 //print_header($day, $month, $year, $type="with_session");
 echo '<!DOCTYPE html>'.PHP_EOL;
