@@ -71,11 +71,6 @@
 					<a href="?p=admin_user_modify&display={{ trad.dDisplay }}" class="btn btn-primary btn-block">{{ trad.display_add_user }}</a>
 					<a href="?p=admin_import_users_csv" class="btn btn-primary btn-block">{{ trad.via_fichier }}</a>
 					<a href="?p=admin_import_users_elycee" class="btn btn-primary btn-block">Depuis elycée</a>
-					{% if settings.sso_statut == 'lcs' %}
-						<h4>Opérations LCS :</h4>
-						<a href="?p=admin_user&action=nettoyage" onclick="return confirmlink(this, '{{ trad.mess_maj_base_locale }}', '{{ trad.maj_base_locale }}')" class="btn btn-primary btn-block">{{ trad.maj_base_locale }}</a>
-						<a href="?p=admin_user&action=synchro" onclick="return confirmlink(this, '{{ trad.mess_synchro_base_locale }}', '{{ trad.synchro_base_locale }}')" class="btn btn-primary btn-block">{{ trad.synchro_base_locale }}</a>
-					{% endif %}
 					<h4>{{ trad.admin_menu_various }} :</h4>
 					<a href="?p=admin_user_mdp_facile" class="btn btn-primary btn-block">{{ trad.admin_user_mdp_facile }}</a>
 					{% if (settings.ldap_statut != '' or settings.sso_statut != '' or settings.imap_statut != '') and trad.dEstAdministrateur ==  1 %}

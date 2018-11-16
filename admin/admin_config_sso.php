@@ -69,15 +69,6 @@ if (isset($_POST['valid']))
 			echo "Erreur lors de l'enregistrement de sso_statut !<br />";
 		$grrSettings['sso_statut'] = $_POST['sso_statut'];
 	}
-	if (!Settings::set("lcs_statut_prof", $_POST['lcs_statut_prof']))
-		echo "Erreur lors de l'enregistrement de lcs_statut_prof !<br />";
-	$grrSettings['lcs_statut_prof'] = $_POST['lcs_statut_prof'];
-	if (!Settings::set("lcs_statut_eleve", $_POST['lcs_statut_eleve']))
-		echo "Erreur lors de l'enregistrement de lcs_statut_eleve !<br />";
-	$grrSettings['lcs_statut_eleve'] = $_POST['lcs_statut_eleve'];
-	if (!Settings::set("lcs_liste_groupes_autorises", $_POST['lcs_liste_groupes_autorises']))
-		echo "Erreur lors de l'enregistrement de lcs_liste_groupes_autorises !<br />";
-	$grrSettings['lcs_liste_groupes_autorises'] = $_POST['lcs_liste_groupes_autorises'];
 	if (!Settings::set("http_champ_email", $_POST['http_champ_email']))
 		echo "Erreur lors de l'enregistrement de http_champ_email !<br />";
 	$grrSettings['http_champ_email'] = $_POST['http_champ_email'];

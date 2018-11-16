@@ -65,15 +65,6 @@ if (isset($_POST['valid']))
 			echo "Erreur lors de l'enregistrement de sso_statut !<br />";
 		$grrSettings['sso_statut'] = $_POST['sso_statut'];
 	}
-	if (!Settings::set("lcs_statut_prof", $_POST['lcs_statut_prof']))
-		echo "Erreur lors de l'enregistrement de lcs_statut_prof !<br />";
-	$grrSettings['lcs_statut_prof'] = $_POST['lcs_statut_prof'];
-	if (!Settings::set("lcs_statut_eleve", $_POST['lcs_statut_eleve']))
-		echo "Erreur lors de l'enregistrement de lcs_statut_eleve !<br />";
-	$grrSettings['lcs_statut_eleve'] = $_POST['lcs_statut_eleve'];
-	if (!Settings::set("lcs_liste_groupes_autorises", $_POST['lcs_liste_groupes_autorises']))
-		echo "Erreur lors de l'enregistrement de lcs_liste_groupes_autorises !<br />";
-	$grrSettings['lcs_liste_groupes_autorises'] = $_POST['lcs_liste_groupes_autorises'];
 	if (!Settings::set("http_champ_email", $_POST['http_champ_email']))
 		echo "Erreur lors de l'enregistrement de http_champ_email !<br />";
 	$grrSettings['http_champ_email'] = $_POST['http_champ_email'];
@@ -174,15 +165,6 @@ get_vocab_admin("config_lemon_title");
 get_vocab_admin("lemon_SSO_explain");
 get_vocab_admin("Statut_par_defaut_utilisateurs_importes");
 get_vocab_admin("choix_statut_lemon_SSO");
-
-get_vocab_admin("config_lcs_title");
-get_vocab_admin("lcs_SSO_explain");
-get_vocab_admin("choix_statut_lcs_SSO");
-get_vocab_admin("active_lcs");
-get_vocab_admin("statut_eleve");
-get_vocab_admin("statut_non_eleve");
-get_vocab_admin("lcs_SSO_explain_2");
-get_vocab_admin("lcs_SSO_explain_3");
 
 get_vocab_admin("config_lasso_title");
 get_vocab_admin("lasso_SSO_explain");
