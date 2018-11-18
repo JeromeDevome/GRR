@@ -63,7 +63,7 @@ $trad['dResultat'] = "";
 
 if ($reg_data != 'yes')
 {
-// $long_max : doit être plus grand que la plus grande ligne trouvée dans le fichier CSV
+	// $long_max : doit être plus grand que la plus grande ligne trouvée dans le fichier CSV
 	$long_max = 8000;
 
 	if ($is_posted == '1')
@@ -78,7 +78,7 @@ if ($reg_data != 'yes')
 		{
 			$fp = @fopen($csv_file['tmp_name'], "r");
 			if (!$fp)
-				$trad['dFp'] = get_vocab("admin_import_users_csv4")."</form>";
+				$trad['dFp'] = get_vocab("admin_import_users_csv4");
 			else
 			{
 				$row = 0;
@@ -133,6 +133,7 @@ if ($reg_data != 'yes')
 									$valid = 0;
 								}
 								break;
+
 								case 1:
 								//Nom
 								$test_nom_prenom_existant = 'no';
@@ -154,6 +155,7 @@ if ($reg_data != 'yes')
 								else
 									$uNom = "???";
 								break;
+
 								case 2:
 								//Prenom
 								if (preg_match ("`^.{1,30}$`", $data[$c]))
@@ -169,6 +171,7 @@ if ($reg_data != 'yes')
 									$valid = 0;
 								}
 								break;
+
 								case 3:
 								// Mot de passe
 								if ((preg_match ("`^.{".$pass_leng.",30}$`", $data[$c])) || ($data[$c] == ''))
@@ -183,6 +186,7 @@ if ($reg_data != 'yes')
 									$valid = 0;
 								}
 								break;
+
 								case 4:
 								// Adresse E-mail
 								if ((preg_match ("`^.{1,100}$`", $data[$c])) || ($data[$c] ==''))
@@ -199,6 +203,7 @@ if ($reg_data != 'yes')
 									$valid = 0;
 								}
 								break;
+
 								case 5:
 								// Type d'utilisateur : quatre valeurs autorisées : visiteur, utilisateur, administrateur, gestionnaire_utilisateur
 								// Si c'est un gestionnaire d'utilisateurs qui importe, seuls les types visiteur et utilisateur sont autorisés
@@ -217,6 +222,7 @@ if ($reg_data != 'yes')
 									$valid = 0;
 								}
 								break;
+
 								case 6:
 								// statut: deux valeurs autorisées : actif ou inactif
 								if (preg_match ("`(actif|inactif)`", $data[$c]))
@@ -228,6 +234,7 @@ if ($reg_data != 'yes')
 									$valid = 0;
 								}
 								break;
+
 								case 7:
 								// Type d'authentification : deux valeurs autorisées : local ou ext
 								if (preg_match ("`(local|ext)`", $data[$c])) {
@@ -266,7 +273,6 @@ if ($reg_data != 'yes')
 
 			}
 		}
-
 	}
 }
 else
