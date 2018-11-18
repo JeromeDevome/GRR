@@ -408,7 +408,7 @@ $vocab['Explications_methode_smtp_2'] = "If you choose the \"smtp\" method, and 
 $vocab['Explications_suppression_automatique_des_reservations'] = "The activation of some GRR funcionalities requires the possibility of setting up the automatic  execution of tasks.<br />For example the automatic deletion of some reservations in the case of the \"reservations to be confirmed\", or still the sending of a delay notification in case of non-restitution of a resource.
 <br />To make these automatic tasks of suppression, two configurations are possible, each one getting its own disadvantages and advantages. Consult the help to have more details.
 ";
-$vocab['explications_active_type'] = "<b>Comment: </b> when a type is not ticked, it's no more available to users, but what is already made still appear on plannings with this type, although desactivated.";
+$vocab['explications_active_type'] = "Comment: when a type is not ticked, it's no more available to users, but what is already made still appear on plannings with this type, although desactivated.";
 $vocab['explications_signaler_reservation_en_cours'] = "It is possible to indicate that a resource is borrowed (if the resource is an equipment). By ticking the 2nd or the 3rd option, the administrator indicates that the resource is borrowed and <b> so not restored</b>. When the ressource has been restored, the manager has to remember to select the option n° 1 below.";
 $vocab['explication_champs_additionnels'] = "On this page, you have the possibility of defining, area by area, additional fields of your choice and which will appear in the input forms of the reservations as so many more optional fields.";
 $vocab['explication_debut_Jours_Cycles'] = "During the creation of the calendar \"cycle days\", number of the first day of the first valid date.";
@@ -855,7 +855,7 @@ $vocab['type_name'] = "Name of type";
 $vocab['type_num'] = "Username";
 $vocab['type_numeric'] = "One row line (numeric)";
 $vocab['type_order'] = "Display order";
-$vocab['type_par_defaut'] = "Selected type by default<br />during a new reservation";
+$vocab['type_par_defaut'] = "Selected type by default during a new reservation";
 $vocab['type_text'] = "One row ligne (text)";
 $vocab['type_valide_domaine'] = "Valid type for the area";
 $vocab['un email envoye'] = "An e-mail notifying the delay sent to the address";

@@ -1,0 +1,70 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+			<div class="callout callout-info">{{trad.explications_active_type}}</div>
+
+			{% if listeManquant %}
+				{{ msgSyst.messageAlerte(trad.type_resa_manquant_titre, trad.type_resa_manquant_msg ~ listeManquant) }}
+			{% endif %}
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{trad.admin_type}} : {{trad.dNomDomaine}}</h3>
+					{% if trad.dDroitsAdmin >= 6 %}
+						<a class="btn pull-right bg-green"href="?p=admin_type_modify&id=0">{{trad.display_add_type}}</a>
+					{% endif %}
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body no-padding">
+				
+					<form action="?p=admin_type_area" id="type" method="get">
+						<input type="hidden" name="p" value="admin_type_area" />
+						<input type="hidden" name="id_area" value="{{trad.dIdArea}}" />
+
+						<table class="table table-striped">
+							<tr>
+							  <th style="width: 10px">{{trad.type_num}}</th>
+							  <th>{{trad.type_name}}</th>
+							  <th style="width: 20px">{{trad.type_color}}</th>
+							  <th>{{trad.type_order}}</th>
+							  <th>{{trad.type_valide_domaine}}</th>
+							  <th>{{trad.type_par_defaut}}</th>
+							</tr>
+							{% for type in types %}
+								<tr>
+									<td>{{type.type_letter}}</td>
+									<td>{{type.type_name}}</td>
+									<td style="background-color:{{type.couleurhexa}}"></td>
+									<td>{{type.order_display}}</td>
+									<td><input type="checkbox" name="{{ type.id }}" value="y" {% if type.dispodomaine < 1 %}checked{% endif %} /></td>
+									<td><input type="radio" name="id_type_par_defaut" value="{{ type.id }}" {% if trad.dDefautType == type.id %}checked{% endif %} /></td>
+								</tr>
+							{% endfor %}
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td><input type="radio" name="id_type_par_defaut" value="-1"{% if trad.dDefautType <= 0 %}checked{% endif %} /> {{ trad.nobody }}</td>
+							</tr>
+						</table>
+
+						<div style="text-align:center;">
+							<input class="btn" type="submit" name="change_done" value="{{ trad.back }}" />
+							<input class="btn btn-primary" type="submit" name="valider" value="{{ trad.save }}" />
+						</div>
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
