@@ -159,70 +159,7 @@
 		</div>
 	</div>
 
-	<!-- popup modal -->
-	<div class="modal modal-danger fade" id="modal-danger">
-		<form id="supChampAdd" action="?p=admin_overload">
-		  <div class="modal-dialog">
-			<div class="modal-content">
-			  <div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				  <span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">{{trad.confirm_del}}</h4>
-			  </div>
-			  <div class="modal-body">
-				<span id="modal-texte"></span><span id="modal-idsup" class="hidden"></span> 
-			  </div>
-			  <div class="modal-footer">
-				<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">{{trad.cancel}}</button>
-				<button type="submit" id="liensup" class="btn btn-outline">{{trad.delete}}</button>
-			  </div>
-			</div>
-		 </div>
-		</form>
-	</div>
-
 {% endblock %}
 
 {% block javascript %}
-	<script>
-		// data-* attributes to scan when populating modal values
-		var ATTRIBUTES = ['texte', 'idsup'];
-
-		$('[data-toggle="modal"]').on('click', function (e) {
-		  // convert target (e.g. the button) to jquery object
-		  var $target = $(e.target);
-		  // modal targeted by the button
-		  var modalSelector = $target.data('target');
-
-		  // iterate over each possible data-* attribute
-		  ATTRIBUTES.forEach(function (attributeName) {
-			// retrieve the dom element corresponding to current attribute
-			var $modalAttribute = $(modalSelector + ' #modal-' + attributeName);
-			var dataValue = $target.data(attributeName);
-			// if the attribute value is empty, $target.data() will return undefined.
-			// In JS boolean expressions return operands and are not coerced into
-			// booleans. That way is dataValue is undefined, the left part of the following
-			// Boolean expression evaluate to false and the empty string will be returned
-			$modalAttribute.text(dataValue || '');
-		  });
-		});
-
-		$(function(){
-			$('#supChampAdd').submit(function(e) {
-			  e.preventDefault()
-			  var $form = $(this)
-			  var v=document.getElementById('modal-idsup').innerHTML
-			  $.post($form.attr('action'), $form.serialize())
-			  .done(function(data) {
-				$('#html').html(data);
-				$('#modal-danger').modal('hide');
-				//document.location.href='?p=admin_overload&action=delete&id_overload='+v+';
-				document.getElementById("supChampAdd"+v).submit(); 
-			  })
-			  .fail(function() {
-				alert('Une erreur est survenue : GRRJS')
-			  })
-			})
-		})
-	</script>
 {% endblock %}
