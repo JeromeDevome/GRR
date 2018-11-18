@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-10-16 10:50$
+ * Dernière modification : $Date: 2018-11-18 15:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -180,7 +180,7 @@ function check_access($level, $back)
 }
 
 /**
- * Fonction qui compare 2 valeur
+ * Fonction qui compare 2 valeurs
  * @param string $a
  * @param integer $b
  * @return string
@@ -5115,6 +5115,7 @@ function pageHead2($title, $page = "with_session")
 			$a .= '<script type="text/javascript" src="../js/selection.js" ></script>'.PHP_EOL;
 		if (@file_exists('js/'.$clock_file))
 			$a .= '<script type="text/javascript" src="../js/'.$clock_file.'"></script>'.PHP_EOL;
+        $a .= '<script type="text/javascript" src="../js/jscolor.js"></script>';
 		if (substr(phpversion(), 0, 1) == 3)
 			$a .= get_vocab('not_php3');
 	} 
