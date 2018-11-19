@@ -1,6 +1,7 @@
 Bugs connus sur la version de GitHub :
  - affichage défectueux du menu en position haute dans la page month_all2 
  - des problèmes se produisent lorsqu'on veut faire une modification/copie de réservation  avec un changement de domaine
+ - l'entrée du code hexadécimal des couleurs des types n'est pas répercutée sur la zone test
 
 Tâches prévues :
  - interface de personnalisation des couleurs
@@ -14,6 +15,7 @@ Version en cours de développement sur GitHUB (3.4.1 RC1)
     [ajout] Contenu des champs additionnels dans les exports csv
     [ajout] Gestion des couleurs du texte des types de réservation (meilleure lisibilité dans les plannings)
     [amelioration] Reprise du code des pages plannings pour gérer les menus escamotables (haut et gauche) 
+    [modification] Utilisation de jscolor pour définir les couleurs des types
 -----
 --
 -----

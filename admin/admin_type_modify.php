@@ -3,7 +3,7 @@
  * admin_type_modify.php
  * interface de création/modification des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-11-18 15:15$
+ * Dernière modification : $Date: 2018-11-19 15:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -25,7 +25,6 @@ if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
 check_access(6, $back);
 // Initialisation
-// echo "<script src=\"jscolor.js\"></script>";
 $id_type = isset($_GET["id_type"]) ? $_GET["id_type"] : 0;
 $type_name = isset($_GET["type_name"]) ? $_GET["type_name"] : NULL;
 $order_display = isset($_GET["order_display"]) ? $_GET["order_display"] : NULL;
@@ -179,7 +178,6 @@ if ((isset($_GET['change_done'])) && (!isset($ok)))
 	exit();
 }
 // code HTML
-# print the page header
 start_page_w_header("", "", "", $type="with_session");
 include "admin_col_gauche2.php";
 echo "<div class=\"col-md-9 col-sm-8 col-xs-12\">";
@@ -257,6 +255,14 @@ echo "<table class='table-bordered'>\n";
     echo '</td></tr>';
     echo "<tr>\n";
 	echo "<td>".get_vocab("type_color_text").get_vocab("deux_points")."</td>\n";
+    echo "<td><input name=\"couleur_texte\" id=\"fgcolor\" value='".$row['couleur_texte']."'>";
+	echo "</tr>";
+	echo "<tr>\n";
+	echo "<td>".get_vocab("type_color_hexa").get_vocab("deux_points")."</td>\n";
+    echo "<td><input name=\"couleurhexa\" id=\"bgcolor\" value='".$row['couleurhexa']."'>";
+	echo "</tr>";
+    /*    echo "<tr>\n";
+	echo "<td>".get_vocab("type_color_text").get_vocab("deux_points")."</td>\n";
     echo "<td><input name=\"couleur_texte\" type=\"hidden\" id=\"fgcolor\" value='".$row['couleur_texte']."'>";
     echo "<button id=\"fgcolor-button\" class=\"jscolor {valueElement: '".$row['couleur_texte']."'}\">Choisir la couleur</button></td>";
 	echo "</tr>";
@@ -264,7 +270,7 @@ echo "<table class='table-bordered'>\n";
 	echo "<td>".get_vocab("type_color_hexa").get_vocab("deux_points")."</td>\n";
     echo "<td><input name=\"couleurhexa\" type=\"hidden\" id=\"bgcolor\" value='".$row['couleurhexa']."'>";
     echo "<button id=\"bgcolor-button\" class=\"jscolor {valueElement: 'bgcolor'}\">Choisir la couleur</button></td>";
-	echo "</tr>";
+	echo "</tr>"; */
 	echo "</table>\n";
 	echo "<p>".get_vocab("type_color_predefinie").get_vocab("deux_points")."</p>";
 	echo "<table class='table table-bordered'><tr>\n";
@@ -295,7 +301,7 @@ $( ".target" ).change(function() {
 	document.getElementsByName('couleurhexa')[0].value = laCouleur;
 	document.getElementById('test').style.backgroundColor=laCouleur;
 	document.getElementById('test').style.color=textColor;
-    document.getElementById('bgcolor-button').style.backgroundColor=laCouleur;
+    document.getElementById('bgcolor').style.backgroundColor=laCouleur;
 });
 
 var options = {
@@ -310,11 +316,11 @@ var options = {
 
 var pickers = {};
 
-pickers.bgcolor = new jscolor('bgcolor-button', options);
+pickers.bgcolor = new jscolor('bgcolor', options);
 pickers.bgcolor.onFineChange = "update('bgcolor')";
 pickers.bgcolor.fromString('<?php echo $row["couleurhexa"]; ?>');
 
-pickers.fgcolor = new jscolor('fgcolor-button', options);
+pickers.fgcolor = new jscolor('fgcolor', options);
 pickers.fgcolor.onFineChange = "update('fgcolor')";
 pickers.fgcolor.fromString('<?php echo $row["couleur_texte"]; ?>');
 
