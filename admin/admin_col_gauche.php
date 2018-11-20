@@ -64,7 +64,7 @@ function afficheLienNiveau2($nomSection,$image,$liste,$iN2)
 	if ((authGetUserLevel(getUserName(), -1, 'area') >= 6) && (Settings::get('show_holidays') == 'Oui'))
 		afficheLienNiveau1('admin_calend_vacances_feries', 'fa fa-calendar-minus-o', 1);
 	if ((authGetUserLevel(getUserName(), -1, 'area') >= 6) && (Settings::get("jours_cycles_actif") == "Oui"))
-		afficheLienNiveau1('admin_calend_jour_cycle', 'fa fa-repeat', 1);
+		afficheLienNiveau1('admin_calend_jour_cycle1', 'fa fa-repeat', 1);
 
 
 	if ((authGetUserLevel(getUserName(), -1, 'area') >= 6) && (Settings::get("module_multisite") == "Oui"))

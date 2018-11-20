@@ -4257,7 +4257,7 @@ function traite_grr_url($grr_script_name = "", $force_use_grr_url = "n")
 //Crée le calendrier Jours/Cycles
 function cree_calendrier_date_valide($n, $i)
 {
-	if ($i <= Settings::get("nombre_jours_Jours/Cycles"))
+	if ($i <= Settings::get("nombre_jours_Jours_Cycles"))
 	{
 		$sql = "INSERT INTO ".TABLE_PREFIX."_calendrier_jours_cycle SET DAY='".$n."', Jours = $i";
 		if (grr_sql_command($sql) < 0)

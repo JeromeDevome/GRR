@@ -1186,7 +1186,7 @@ if($periodiciteConfig == 'y'){
 		echo "<table style=\"display:none\" id=\"menuP\" width=\"100%\">\n";
 		echo "<tr><td class=\"F\"><b>Jours/Cycle</b></td></tr>\n";
 		echo "<tr><td class=\"CL\">";
-		for ($i = 1; $i < (Settings::get("nombre_jours_Jours/Cycles") + 1); $i++)
+		for ($i = 1; $i < (Settings::get("nombre_jours_Jours_Cycles") + 1); $i++)
 		{
 			$wday = $i;
 			echo "<input type=\"radio\" name=\"rep_jour_\" value=\"$wday\"";

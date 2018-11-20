@@ -16,17 +16,20 @@
  * (at your option) any later version.
  */
 
-$grr_script_name = "admin_config_calend3.php";
-$back = '';
+$grr_script_name = "admin_calend_jour_cycle3.php";
+
 function cal3($month, $year)
 {
     global $weekstarts;
-    if (!isset($weekstarts)) $weekstarts = 0;
+
+    if (!isset($weekstarts))
+		$weekstarts = 0;
     $s = "";
     $daysInMonth = getDaysInMonth($month, $year);
     $date = mktime(12, 0, 0, $month, 1, $year);
     $first = (strftime("%w",$date) + 7 - $weekstarts) % 7;
     $monthName = utf8_strftime("%B",$date);
+	
     $s .= "<table class=\"calendar2\" border=\"1\" cellspacing=\"2\">\n";
     $s .= "<tr>\n";
     $s .= "<td class=\"calendarHeader2\" colspan=\"8\">$monthName&nbsp;$year</td>\n";
@@ -69,14 +72,14 @@ function cal3($month, $year)
                 $s .= "<br />";
                 if (isset($_GET["pview"])) {
                     if (($day < 0))
-                        $s .= "<img src=\"../img_grr/stop.png\" class=\"image\" width=\"16\" height=\"16\" alt=\"no\"/>";
+                        $s .= "<span class=\"fa fa-close\"></span>";
                     else
                         $s .= "<span class=\"jour-cycle\">".$jour."</span>";
                 } else {
                     if (($day < 0))
-                        $s .= "<a href=\"admin_calend_jour_cycle.php?page_calend=3&amp;date=".$temp."\"><img src=\"../img_grr/stop.png\" class=\"image\" alt=\"(aucun)\"  width=\"16\" height=\"16\" /></a>";
+                        $s .= "<a href=\"?p=admin_calend_jour_cycle3&amp;date=".$temp."\"><span class=\"fa fa-close red\"></span></a>";
                     else
-                        $s .= "<a class=\"jour-cycle\" href=\"admin_calend_jour_cycle.php?page_calend=3&amp;date=".$temp."\" title=\"".$alt."\" >".$jour."</a>";
+                        $s .= "<a class=\"jour-cycle\" href=\"?p=admin_calend_jour_cycle3&amp;date=".$temp."\" title=\"".$alt."\" >".$jour."</a>";
                 }
 
             } else {
@@ -96,63 +99,38 @@ function cal3($month, $year)
     $s .= "</table>\n";
     return $s;
 }
+
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
 	check_access(6, $back);
-	print_header("", "", "", $type = "with_session");
-	// Affichage de la colonne de gauche
-	if (!isset($_GET['pview']))
-		include "admin_col_gauche.php";
-	// Affichage du tableau de choix des sous-configurations des jours/cycles (créer et voir le calendrier des jours/cycles)
-	if (!isset($_GET['pview']))
-		include "../include/admin_calend_jour_cycle.inc.php";
-	echo "<h3>".get_vocab('calendrier_jours/cycles');
-	echo "</h3>\n";
-	if (!isset($_GET['pview']))
-	{
-		echo get_vocab("explication_Jours_Cycles3");
-		echo "<br />".get_vocab("explication_Jours_Cycles4")."<br />\n";
-	}
+
+get_vocab_admin("titre_config_Jours_Cycles");
+
+get_vocab_admin("admin_config_calend1");
+get_vocab_admin("admin_config_calend2");
+get_vocab_admin("admin_config_calend3");
+
+get_vocab_admin("explication_Jours_Cycles3");
+get_vocab_admin("explication_Jours_Cycles4");
+
+get_vocab_admin("Journee_du");
+get_vocab_admin("Cette_journee_ne_correspond_pas_a_un_jour_cycle");
+get_vocab_admin("nouveau_jour_cycle");
+get_vocab_admin("Nommer_journee_par_le_titre_suivant");
+
+get_vocab_admin("save");
+
 // Modification d'un jour cycle
 // intval($jour)=-1 : pas de jour cycle
 // intval($jour)=0 : Titre
 // intval($jour)>0 : Jour cycle
-	if (!isset($_GET['pview']) && isset($_GET['date']))
+
+	if (isset($_GET['date']))
 	{
-		$jour_cycle = grr_sql_query1("select Jours from ".TABLE_PREFIX."_calendrier_jours_cycle  WHERE DAY = ".$_GET['date']."");
-		echo "<fieldset style=\"padding-top: 8px; padding-bottom: 8px; width: 80%; margin-left: auto; margin-right: auto;\">\n";
-		echo "<legend>".get_vocab('Journee du')." ".affiche_date($_GET['date'])."</legend>\n";
-		echo "<form id=\"main\" method=\"get\" action=\"admin_calend_jour_cycle.php\">\n";
-		echo "<div><input type='radio' name='selection' value='0'";
-		if (intval($jour_cycle) == -1)
-			echo " checked=\"checked\"";
-		echo " />".get_vocab('Cette journee ne correspond pas a un jour cycle')."<br />\n";
-		echo "<input type='radio' name='selection' value='1'";
-		if (intval($jour_cycle) > 0)
-			echo " checked=\"checked\"";
-		echo " />\n".get_vocab("nouveau_jour_cycle");
-		echo "<select name=\"newDay\" size=\"1\" onclick=\"check(1)\">";
-		for ($i = 1; $i < (Settings::get("nombre_jours_Jours/Cycles") + 1); $i++)
-		{
-			echo "<option value=\"".$i."\" ";
-			if ($jour_cycle == $i)
-				echo " selected=\"selected\"";
-			echo " >j".$i."</option>";
-		}
-		echo "</select>\n";
-		echo "<input name=\"newdate\" type=\"hidden\" value=\"".$_GET['date']."\" />";
-		echo "<input type=\"hidden\" value=\"3\" name=\"page_calend\" /><br />";
-		echo "<input type='radio' name='selection' value='2'";
-		if (intval($jour_cycle) == 0)
-			echo " checked=\"checked\"";
-		echo " />".get_vocab('Nommer_journee_par_le_titre_suivant').get_vocab('deux_points');
-		echo "<input type=\"text\" name=\"titre\" onfocus=\"check(2)\"";
-		if (!intval($jour_cycle) > 0)
-			echo " value=\"".$jour_cycle."\"";
-		echo "/><br /><br /><div style=\"text-align:center;\"><input type=\"submit\" value=\"Enregistrer\" /></div>\n";
-		echo "</div></form>\n";
-		echo "</fieldset>\n";
+		$trad['dDate'] = $_GET['date'];
+		$trad['dDateJour'] = affiche_date($_GET['date']);
+		$trad['dJourCycle'] = grr_sql_query1("select Jours from ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY = ".$_GET['date']."");
 	}
+
 	// Enregistrement du nouveau jour cycle
 	if (isset($_GET['selection']))
 	{
@@ -171,29 +149,30 @@ if (isset($_SERVER['HTTP_REFERER']))
 			grr_sql_query("insert into ".TABLE_PREFIX."_calendrier_jours_cycle set Jours ='".protect_data_sql($_GET['titre'])."', DAY = ".$_GET['newdate']."");
 		}
 	}
-	$basetime = mktime(12, 0, 0, 6, 11 + $weekstarts, 2000);
-	echo "<table cellspacing=\"20\" border=\"0\">\n";
+
 	$n = Settings::get("begin_bookings");
 	$end_bookings = Settings::get("end_bookings");
 	$debligne = 1;
 	$month = strftime("%m", Settings::get("begin_bookings"));
 	$year = strftime("%Y", Settings::get("begin_bookings"));
 	$inc = 0;
+	$trad['dCalendrier'] = "";
+
 	while ($n <= $end_bookings)
 	{
 		if ($debligne == 1)
 		{
-			echo "<tr>\n";
+			$trad['dCalendrier'] .= "<tr>\n";
 			$inc = 0;
 			$debligne = 0;
 		}
 		$inc++;
-		echo "<td>\n";
-		echo cal3($month, $year);
-		echo "</td>";
+		$trad['dCalendrier'] .= "<td>\n";
+		$trad['dCalendrier'] .= cal3($month, $year);
+		$trad['dCalendrier'] .= "</td>";
 		if ($inc == 3)
 		{
-			echo "</tr>";
+			$trad['dCalendrier'] .= "</tr>";
 			$debligne = 1;
 		}
 		$month++;
@@ -209,25 +188,11 @@ if (isset($_SERVER['HTTP_REFERER']))
 		$k = $inc;
 		while ($k < 3)
 		{
-			echo "<td> </td>\n";
+			$trad['dCalendrier'] .= "<td> </td>\n";
 			$k++;
-		} // while
-		echo "</tr>";
-	}
-	echo "</table>";
-	if (!isset($_GET['pview']))
-	{
-		echo "\n<div class=\"format_imprimable\"><a href=\"admin_calend_jour_cycle.php?page_calend=3&amp;pview=1\">Format Imprimable</a></div>\n";
-		echo "</td>\n</tr>";
-		echo "</table>";
-	}
-	// fin de l'affichage de la colonne de droite
-	?>
-	<script type="text/javascript" >
-		function check (select)
-		{
-			document.getElementById('main').selection[select].checked=true;
 		}
-	</script>
-</body>
-</html>
+		$trad['dCalendrier'] .= "</tr>";
+	}
+	
+echo $twig->render('admin_calend_jour_cycle3.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings));
+?>
