@@ -1,0 +1,102 @@
+{% extends 'layout.twig' %}
+
+{% block css %}
+{% endblock %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+
+		<div class="col-md-12">
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{ trad.titre_config_Jours_Cycles }}</h3>
+				</div>
+				<!-- /.box-header -->
+
+				<div class="box-body no-padding">
+					<div class="col-md-4"><a href="?p=admin_calend_jour_cycle1" class="btn btn-success btn-block">{{ trad.admin_config_calend1 }}</a></div>
+					<div class="col-md-4"><a href="?p=admin_calend_jour_cycle2" class="btn btn-primary btn-block">{{ trad.admin_config_calend2 }}</a></div>
+					<div class="col-md-4"><a href="?p=admin_calend_jour_cycle3" class="btn btn-primary btn-block">{{ trad.admin_config_calend3 }}</a></div>
+				</div>
+
+				<hr>
+
+				<p>{{ trad.explication_Jours_Cycles1 }}</p>
+				<p>{{ trad.explication_Jours_Cycles2 }}</p>
+
+				<form action="?p=admin_calend_jour_cycle1" method="get" onsubmit="return verifierJoursCycles(false);">
+
+					<input type="hidden" name="p" value="admin_calend_jour_cycle1" />
+					<input type="hidden" name="page_calend" value="1" />
+
+					<div class="form-group col-sm-12">
+						<label class="col-sm-4" for="id_site">{{ trad.nombre_jours_Jours_Cycles }}</label>
+						<div class="col-sm-8">
+							<select class="form-control" name="nombreJours" id="nombreJours">
+								<option value="1" {% if settings.nombre_jours_Jours_Cycles == 1 %} selected {% endif %}>1</option>
+								<option value="2" {% if settings.nombre_jours_Jours_Cycles == 2 %} selected {% endif %}>2</option>
+								<option value="3" {% if settings.nombre_jours_Jours_Cycles == 3 %} selected {% endif %}>3</option>
+								<option value="4" {% if settings.nombre_jours_Jours_Cycles == 4 %} selected {% endif %}>4</option>
+								<option value="5" {% if settings.nombre_jours_Jours_Cycles == 5 %} selected {% endif %}>5</option>
+								<option value="6" {% if settings.nombre_jours_Jours_Cycles == 6 %} selected {% endif %}>6</option>
+								<option value="7" {% if settings.nombre_jours_Jours_Cycles == 7 %} selected {% endif %}>7</option>
+								<option value="8" {% if settings.nombre_jours_Jours_Cycles == 8 %} selected {% endif %}>8</option>
+								<option value="9" {% if settings.nombre_jours_Jours_Cycles == 9 %} selected {% endif %}>9</option>
+								<option value="10" {% if settings.nombre_jours_Jours_Cycles == 10 %} selected {% endif %}>10</option>
+								<option value="11" {% if settings.nombre_jours_Jours_Cycles == 11 %} selected {% endif %}>11</option>
+								<option value="12" {% if settings.nombre_jours_Jours_Cycles == 12 %} selected {% endif %}>12</option>
+								<option value="13" {% if settings.nombre_jours_Jours_Cycles == 13 %} selected {% endif %}>13</option>
+								<option value="14" {% if settings.nombre_jours_Jours_Cycles == 14 %} selected {% endif %}>14</option>
+								<option value="15" {% if settings.nombre_jours_Jours_Cycles == 15 %} selected {% endif %}>15</option>
+								<option value="16" {% if settings.nombre_jours_Jours_Cycles == 16 %} selected {% endif %}>16</option>
+								<option value="17" {% if settings.nombre_jours_Jours_Cycles == 17 %} selected {% endif %}>17</option>
+								<option value="18" {% if settings.nombre_jours_Jours_Cycles == 18 %} selected {% endif %}>18</option>
+								<option value="19" {% if settings.nombre_jours_Jours_Cycles == 19 %} selected {% endif %}>19</option>
+								<option value="20" {% if settings.nombre_jours_Jours_Cycles == 20 %} selected {% endif %}>20</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group col-sm-12">
+						<label class="col-sm-4" for="id_site">{{ trad.debut_Jours_Cycles }}</label>
+						<div class="col-sm-8">
+							<select class="form-control" name="jourDebut" id="jourDebut">
+								<option value="1" {% if settings.jour_debut_Jours_Cycles == 1 %} selected {% endif %}>1</option>
+								<option value="2" {% if settings.jour_debut_Jours_Cycles == 2 %} selected {% endif %}>2</option>
+								<option value="3" {% if settings.jour_debut_Jours_Cycles == 3 %} selected {% endif %}>3</option>
+								<option value="4" {% if settings.jour_debut_Jours_Cycles == 4 %} selected {% endif %}>4</option>
+								<option value="5" {% if settings.jour_debut_Jours_Cycles == 5 %} selected {% endif %}>5</option>
+								<option value="6" {% if settings.jour_debut_Jours_Cycles == 6 %} selected {% endif %}>6</option>
+								<option value="7" {% if settings.jour_debut_Jours_Cycles == 7 %} selected {% endif %}>7</option>
+								<option value="8" {% if settings.jour_debut_Jours_Cycles == 8 %} selected {% endif %}>8</option>
+								<option value="9" {% if settings.jour_debut_Jours_Cycles == 9 %} selected {% endif %}>9</option>
+								<option value="10" {% if settings.jour_debut_Jours_Cycles == 10 %} selected {% endif %}>10</option>
+								<option value="11" {% if settings.jour_debut_Jours_Cycles == 11 %} selected {% endif %}>11</option>
+								<option value="12" {% if settings.jour_debut_Jours_Cycles == 12 %} selected {% endif %}>12</option>
+								<option value="13" {% if settings.jour_debut_Jours_Cycles == 13 %} selected {% endif %}>13</option>
+								<option value="14" {% if settings.jour_debut_Jours_Cycles == 14 %} selected {% endif %}>14</option>
+								<option value="15" {% if settings.jour_debut_Jours_Cycles == 15 %} selected {% endif %}>15</option>
+								<option value="16" {% if settings.jour_debut_Jours_Cycles == 16 %} selected {% endif %}>16</option>
+								<option value="17" {% if settings.jour_debut_Jours_Cycles == 17 %} selected {% endif %}>17</option>
+								<option value="18" {% if settings.jour_debut_Jours_Cycles == 18 %} selected {% endif %}>18</option>
+								<option value="19" {% if settings.jour_debut_Jours_Cycles == 19 %} selected {% endif %}>19</option>
+								<option value="20" {% if settings.jour_debut_Jours_Cycles == 20 %} selected {% endif %}>20</option>
+							</select>
+						</div>
+					</div>
+
+					<div style="text-align:center;">
+						<input class="btn btn-primary" type="submit" name="valider" value="{{ trad.save }}" />
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>	
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
