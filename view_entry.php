@@ -428,7 +428,7 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
 			<td>
 				<b>
 					<?php
-					echo get_vocab("reservation au nom de"),get_vocab("deux_points");
+					echo get_vocab("reservation_au_nom_de"),get_vocab("deux_points");
 					?>
 				</b>
 			</td>
