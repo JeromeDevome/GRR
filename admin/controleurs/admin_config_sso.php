@@ -31,7 +31,7 @@ if (authGetUserLevel(getUserName(), -1) < 6)
 if (isset($_POST['valid']))
 {
 	VerifyModeDemo();
-	
+
 	if (!Settings::set("cas_serveur", $_POST['cas_serveur']))
 		echo "Erreur lors de l'enregistrement de cas_serveur !<br />";
 	if (!Settings::set("cas_port", $_POST['cas_port']))
@@ -109,7 +109,7 @@ if (isset($_POST['valid']))
 			$sso_active_correspondance_profil_statut = "n";
 		else
 			$sso_active_correspondance_profil_statut = "y";
-	}	
+	}
 	if (!Settings::set("sso_ac_corr_profil_statut", $sso_active_correspondance_profil_statut))
 		echo "Erreur lors de l'enregistrement de sso_active_correspondance_profil_statut !<br />";
 	if (($_POST['sso_statut'] != "cas_visiteur") && ($_POST['sso_statut'] != "cas_utilisateur"))
