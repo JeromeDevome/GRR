@@ -86,6 +86,8 @@ function afficheLienNiveau2($nomSection,$image,$liste,$iN2)
 		$liste[] = 'admin_access_area';
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 4)
 		$liste[] = 'admin_right';
+	if ( (Settings::get("sso_ac_corr_profil_statut") == 'y') && (authGetUserLevel(getUserName(), -1, 'area') >= 5) )
+		$liste[] = 'admin_corresp_statut';
 
 	afficheLienNiveau2("admin_menu_user", "fa fa-users",$liste,$iN2++);
 
@@ -102,8 +104,6 @@ function afficheLienNiveau2($nomSection,$image,$liste,$iN2)
 		$liste[] = 'admin_cgu';
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 		$liste[] = 'admin_infos';
-	if ( (Settings::get("sso_ac_corr_profil_statut") == 'y') && (authGetUserLevel(getUserName(), -1, 'area') >= 5) )
-		$liste[] = 'admin_corresp_statut';
 
 	afficheLienNiveau2("admin_menu_various", "fa fa-database",$liste,$iN2++);
 
