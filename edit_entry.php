@@ -700,7 +700,7 @@ if (((authGetUserLevel(getUserName(), -1, "room") >= $qui_peut_reserver_pour) ||
 	$flag_qui_peut_reserver_pour = "yes";
 	echo '<tr>'.PHP_EOL;
 	echo '<td class="E">'.PHP_EOL;
-	echo '<b>'.ucfirst(trim(get_vocab("reservation au nom de"))).get_vocab("deux_points").'</b>'.PHP_EOL;
+	echo '<b>'.ucfirst(trim(get_vocab("reservation_au_nom_de"))).get_vocab("deux_points").'</b>'.PHP_EOL;
 	echo '</td>'.PHP_EOL;
 	echo '</tr>'.PHP_EOL;
 	echo '<tr>'.PHP_EOL;
