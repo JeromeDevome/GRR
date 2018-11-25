@@ -945,6 +945,7 @@ $vocab['display_menu_4'] = "The menu displays at the top";
 $vocab['display_level_view_entry']= "Display of reservations in popup form" ;
 $vocab['display_level_view_entry_0']= "Popup displays." ;
 $vocab['display_level_view_entry_1']= "Page displays." ;
+$vocab['display_planning_resa'] = "Affichage dans les vues journées, semaine et mois";  // A traduire
 $vocab['display_mail_etat_destinataire'] = "Display the contact form (not stable)";
 $vocab['display_mail_etat_destinataire_1'] = "Select if the contact form will be displayed by default";
 $vocab['display_mail_etat_destinataire_2'] = "The contact form is disabled";

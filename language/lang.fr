@@ -317,9 +317,10 @@ $vocab['display_info_bulle_msg'] = "Affichage des \"info-bulles\" des réservati
 $vocab['display_level_email_msg1'] = "Affichage des liens email dans les fiches détaillées de réservation";
 $vocab['display_level_email_msg2'] = "Dans les fiches détaillées de réservation, des \"liens email\" permettent de contacter par email les auteurs de la réservation.<br />
 Indiquez ci-dessous qui bénéficie de cette fonctionnalité.";
-$vocab['display_level_view_entry']= "Affichage des informations des réservations sous forme de page ou de popup" ;
-$vocab['display_level_view_entry_0']= "Affichage sous forme de  popup." ;
-$vocab['display_level_view_entry_1']= "Affichage sous forme de page." ;
+$vocab['display_level_view_entry']= "Affichage des informations des réservations sous forme de page ou de popup";
+$vocab['display_level_view_entry_0']= "Affichage sous forme de  popup.";
+$vocab['display_level_view_entry_1']= "Affichage sous forme de page.";
+$vocab['display_planning_resa'] = "Affichage dans les vues journées, semaine et mois";
 $vocab['display_short_description0'] = "la brève description ne s'affiche pas";
 $vocab['display_short_description1'] = "la brève description s'affiche";
 $vocab['display_short_description_msg'] = "Affichage de la brève description de la réservation dans les vues journées, semaine et mois.";
