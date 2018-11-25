@@ -286,7 +286,7 @@ get_vocab_admin('display_mail_etat_destinataire_3');
 get_vocab_admin('display_mail_etat_destinataire_4');
 get_vocab_admin('display_mail_destinataire');
 
-// Affichage dans les vues journées, semaine et mois
+// Affichage des réservations dans les vues journées, semaine et mois
 get_vocab_admin('display_planning_resa');
 get_vocab_admin('sum_by_creator');
 get_vocab_admin('namebooker');
