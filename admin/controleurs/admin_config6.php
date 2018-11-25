@@ -286,6 +286,14 @@ get_vocab_admin('display_mail_etat_destinataire_3');
 get_vocab_admin('display_mail_etat_destinataire_4');
 get_vocab_admin('display_mail_destinataire');
 
+// Affichage dans les vues journées, semaine et mois
+get_vocab_admin('display_planning_resa');
+get_vocab_admin('sum_by_creator');
+get_vocab_admin('namebooker');
+get_vocab_admin('match_descr');
+get_vocab_admin('type');
+
+/*
 get_vocab_admin('display_short_description_msg');
 get_vocab_admin('display_short_description0');
 get_vocab_admin('display_short_description1');
@@ -293,7 +301,7 @@ get_vocab_admin('display_short_description1');
 get_vocab_admin('display_full_description_msg');
 get_vocab_admin('display_full_description0');
 get_vocab_admin('display_full_description1');
-
+*/
 get_vocab_admin('display_level_email_msg1');
 get_vocab_admin('display_level_email_msg2');
 get_vocab_admin('visu_fiche_description0');

@@ -945,6 +945,7 @@ $vocab['display_mail_etat_destinataire_4'] = "Le formulaire de contact réservat
 $vocab['display_level_view_entry']= "Visualizzazione delle riserve in forma popup" ;
 $vocab['display_level_view_entry_0']= "Popup displays." ;
 $vocab['display_level_view_entry_1']= "Page displays." ;
+$vocab['display_planning_resa'] = "Affichage dans les vues journées, semaine et mois";  // A traduire
 $vocab['Generer_pdf'] = "Générer un PDF"; // A traduire
 $vocab['semaine'] = "set";
 
