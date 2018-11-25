@@ -1,0 +1,87 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			{% if trad.dFichierEnvoye != 1 %}
+			
+				<div class="box">
+					<div class="box-header">
+						<h3 class="box-title">Importation d'un fichier de réservations dans GRR issu de UnDeuxTemps</h3>
+						<a href="?p=admin_calend" class="btn btn-xs btn-info pull-right">{{ trad.back }}</a>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body no-padding">
+
+						<p class="text-red">Il est conseillé de procéder à la sauvegarde de la base de données avant l'importation.</p>
+
+						<p>Télécharger un fichier CSV au format suivant:</p>
+						<code>
+							jour de la semaine; heure au format: 12h00 (pour un créneau d'une heure) ou 12h00-13h30 (pour un créneau
+							différent); classe ou division; discipline; enseignant; 
+							salle; groupe; regroupement; effectif; mode; fréquence; aire (ces 6 derniers champs ne sont pas exploités
+							pour le moment mais doivent figurer: c'est le format d'exportation UnDeuxTEMPS)
+						</code>
+						
+						<p>Le temps d'importation est en général limité par le serveur à quelques minutes par fichier.<br>
+						Pour éviter des erreurs de type "timeout" qui conduirait à une importation incomplète, 
+						scindez votre fichier en fichiers plus petits que vous importerez successivement</p>
+
+						<hr>
+
+						<form enctype="multipart/form-data" action="?p=admin_import_entries_csv_udt" method="post" >
+							<input type="hidden" name="import" value="1" />
+							<input type="hidden" id="mydatebeg_">
+							<input type="hidden" id="mydateend_">
+
+							<div class="form-group col-sm-12">
+								<label class="col-sm-6" for="csv">{{ trad.admin_import_users_csv0 }}</label>
+								<div class="col-sm-6">
+									<input type="file" name="csv" />
+								</div>
+							</div>
+
+							<div class="form-group col-sm-12">
+								<label class="col-sm-6" for="debut">Jour de début d'importation</label>
+								<div class="col-sm-6">
+									{{ trad.dDateDebut |raw }}
+								</div>
+							</div>
+
+							<div class="form-group col-sm-12">
+								<label class="col-sm-6" for="fin">Jour de fin d'importation</label>
+								<div class="col-sm-6">
+									{{ trad.dDateFin  |raw }}
+								</div>
+							</div>
+
+							<div style="text-align:center;">
+								<input class="btn btn-primary" type="submit" name="submit" value="{{ trad.submit }}" />
+							</div>
+
+						</form>
+
+					</div>
+				</div>
+
+			{% elseif trad.dFichierEnvoye == 1 %}
+
+				<h3>Première étape de l'importation en cours, ne fermez pas la page</h3>
+
+				{{ trad.dResultatEtape1 |raw }}
+
+				<h3>Deuxième étape de l'importation en cours, ne fermez pas la page</h3>
+
+				{{ trad.dResultatEtape2 |raw }}
+
+			{% endif %}
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
