@@ -882,7 +882,7 @@ if ($type_affichage_reser == 0) // sélection de la durée
 		else
 			$units = array("minutes", "hours", "days", "weeks");
 	}
-	while (list(,$unit) = each($units))
+	foreach ($units as $unit)
 	{
 		echo '<option value="'.$unit.'"';
 		if ($dur_units ==  get_vocab($unit))
