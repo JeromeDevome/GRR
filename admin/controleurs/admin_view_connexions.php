@@ -19,10 +19,20 @@
 $grr_script_name = "admin_view_connexions.php";
 
 check_access(6, $back);
+
+// Action : Suppression des logs
 if (isset($_POST['cleanlog']))
 {
 	$dateMax = date( 'Y-m-d', strtotime( $_POST['cleanlog'] ) );
 	$sql = "DELETE FROM ".TABLE_PREFIX."_log WHERE START < '".$dateMax."' and END < now()";
+	$res = grr_sql_query($sql);
+}
+
+// Action : Déconnecter un utilisateur
+if (isset($_GET['user_login']))
+{
+	$datefin = date("Y-m-d H:i:s");
+	$sql = "UPDATE ".TABLE_PREFIX."_log SET END = '".$datefin."' WHERE LOGIN = '".$_GET['user_login']."'";
 	$res = grr_sql_query($sql);
 }
 
@@ -33,11 +43,11 @@ get_vocab_admin('login_name');
 get_vocab_admin('names');
 get_vocab_admin('sen_a_mail');
 get_vocab_admin('action');
-get_vocab_admin('deconnect_changing_pwd');
+get_vocab_admin('disconnect2');
 
 $utilisateurConnecte = array();
 
-// Utilisateurs connecté
+// Afficher : Utilisateurs connecté
 $sql = "SELECT u.login, concat(u.prenom, ' ', u.nom) utilisa, u.email, u.source FROM ".TABLE_PREFIX."_log l, ".TABLE_PREFIX."_utilisateurs u WHERE (l.LOGIN = u.login and l.END > now())";
 $res = grr_sql_query($sql);
 if ($res)
@@ -53,7 +63,7 @@ if ($res)
 	}
 }
 
-// Logs
+// Afficher : Logs
 get_vocab_admin('msg_explain_log');
 get_vocab_admin('login_name');
 get_vocab_admin('names');
@@ -75,12 +85,12 @@ if ($res)
 			$clos = 0;
 		else
 			$clos = 1;
-		
+
 		$logsConnexion[] = array('login' => $row[0], 'nomprenom' => $row[1], 'debut' => $row[2], 'fin' => $row[8], 'ip' => $row[4], 'navigateur' => $row[5], 'provenance' => $row[6], 'clos' => $clos );
 	}
 }
 
-// Sup logs
+// Afficher : Sup logs
 get_vocab_admin("cleaning_log");
 get_vocab_admin("logs_number");
 get_vocab_admin("older_date_log");
@@ -100,5 +110,5 @@ $trad['dDatePlusAncienne'] =  $jour."/".$mois."/".$annee;
 
 $trad['dTitreDateLog'] = get_vocab("log").$trad['dDatePlusAncienne'];
 
-	echo $twig->render('admin_view_connexions.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateursconnecte' => $utilisateurConnecte, 'logsconnexion' => $logsConnexion ));
+echo $twig->render('admin_view_connexions.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateursconnecte' => $utilisateurConnecte, 'logsconnexion' => $logsConnexion ));
 ?>

@@ -302,6 +302,7 @@ $vocab['deux_points'] = " : ";
 $vocab['disable_login_off'] = "Attivare i collegamenti";
 $vocab['disable_login_on'] = "Disattivare i collegamenti";
 $vocab['disconnect'] = "Staccarsi";
+$vocab['disconnect2'] = "Staccarsi";
 $vocab['display_add_site'] = "Ajouter un site"; // A traduire
 $vocab['display_add_type'] = "Aggiungere un tipo di prenotazione";
 $vocab['display_add_user'] = "Aggiungere un utente";
@@ -945,7 +946,7 @@ $vocab['display_mail_etat_destinataire_4'] = "Le formulaire de contact réservat
 $vocab['display_level_view_entry']= "Visualizzazione delle riserve in forma popup" ;
 $vocab['display_level_view_entry_0']= "Popup displays." ;
 $vocab['display_level_view_entry_1']= "Page displays." ;
-$vocab['display_planning_resa'] = "Affichage dans les vues journées, semaine et mois";  // A traduire
+$vocab['display_planning_resa'] = "Affichage des réservations dans les vues journées, semaine et mois";  // A traduire
 $vocab['Generer_pdf'] = "Générer un PDF"; // A traduire
 $vocab['semaine'] = "set";
 
