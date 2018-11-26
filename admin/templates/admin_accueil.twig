@@ -3,6 +3,42 @@
 {% import 'messagesysteme.twig' as msgSyst %}
 
 {% block content %}
+
+
+	<div class="row">
+
+		<!-- Nombre d'utilisateur connecté -->
+		<div class="col-md-3 col-sm-6 col-xs-12">
+			<div class="info-box">
+				<span class="info-box-icon bg-green"><i class="fas fa-users"></i></span>
+
+				<div class="info-box-content">
+					<span class="info-box-text">{{ trad.users_connected }}</span>
+					<span class="info-box-number"><a href="?p=admin_view_connexions">{{ trad.dNombreConnecte }} / {{ trad.dNombreUtilisateur }}</a></span>
+				</div>
+				<!-- /.info-box-content -->
+			</div>
+			<!-- /.info-box -->
+		</div>
+
+		<!-- Nombre d'utilisateur avec un mot de passe facile -->
+		<div class="col-md-3 col-sm-6 col-xs-12">
+			<div class="info-box">
+				<span class="info-box-icon bg-orange"><i class="fas fa-user-shield "></i></span>
+
+				<div class="info-box-content">
+					<span class="info-box-text">{{ trad.admin_user_mdp_facile }}</span>
+					<span class="info-box-number"><a href="?p=admin_user_mdp_facile">{{ trad.dNombreMDPFacile }}</a></span>
+				</div>
+				<!-- /.info-box-content -->
+			</div>
+			<!-- /.info-box -->
+		</div>
+
+
+	</div>
+
+
 	<table>
 		<tr>
 			<td>
