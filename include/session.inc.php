@@ -865,7 +865,7 @@ function grr_verif_ldap($_login, $_password)
 		$login_search = preg_replace("/[^\-@._[:space:]a-zA-Z0-9]/", "", $_login);
 				// Tenter une recherche pour essayer de retrouver le DN
 		reset($atts);
-		while (list(, $att) = each($atts))
+		foreach ($atts as $att)
 		{
 			$dn = grr_ldap_search_user($ds, $ldap_base, $att, $login_search, $ldap_filter);
 			if (($dn=="error_1") or ($dn=="error_2") or ($dn=="error_3"))
@@ -884,7 +884,7 @@ function grr_verif_ldap($_login, $_password)
 		reset($atts);
 		if (!isset($ldap_filter) or ($ldap_filter=""))
 		{
-			while (list(, $att) = each($atts))
+			foreach ($atts as $att)
 			{
 				$dn = $att."=".$login_search.",".$ldap_base;
 				if (@ldap_bind($ds, $dn, $_password))
