@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2018-06-26
+# Last modification : 2018-11-26
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1014,4 +1014,30 @@ $vocab["type_apercu"] = "Preview";
 $vocab["type_color_text"] = "Text color";
 $vocab['affichage_pdf'] = "Show the ".$vocab['Generer_pdf']." link";
 $vocab['affichage_type'] = "Show the type of the reservation in week and month plannings.";
+$vocab['admin_couleurs.php'] = "Gestion des couleurs";
+$vocab['admin_couleurs_explications'] = "Dans cette page, vous pouvez définir un certain nombre de couleurs qui modifieront le style perso.<br /> D'autres modifications au style peuvent être apportées par l'édition du fichier de style /themes/perso/css/style.css <br />Le fichier /themes/perso/css/perso.css doit être accessible en écriture par le navigateur.<br />Les couleurs initiales reproduisent le modèle par défaut.";
+$vocab['page_header'] = "Page top menu";
+$vocab['text'] = "Text";
+$vocab['bgcolor'] = "Back ground";
+$vocab['bordcolor'] = "Border";
+$vocab['page_header_hover'] = "Page top menu (hover)";
+$vocab['hover_text'] = "Text (hover)";
+$vocab['menuG'] = "Left menu (planning)";
+$vocab['cal_titre'] = "Calendar title";
+$vocab['cal_jours'] = "Day (in calendar)";
+$vocab['cal_sem'] = "Week (in calendar)";
+$vocab['cal_semhovercolor'] = "Week (hover)";
+$vocab['cal_week'] = "Selected week (in calendar)";
+$vocab['cal_cell'] = "Calendar cell";
+$vocab['cal_cellhover'] = "Calendar cell (hover)";
+$vocab['cal_current_day_'] = "Current day (in calendar)";
+$vocab['pl2_titre'] = "Planning title";
+$vocab['pl2_entete'] = "Planning header";
+$vocab['pl2_cell'] = "Planning cell";
+$vocab['icons_color'] = "Icons color";
+$vocab['btn_primary_'] = "Button primary";
+$vocab['active_btn_primary_'] = "Button primary (active)";
+$vocab['focus_btn_primary_'] = "Button primary (hover)";
+$vocab['ssmenuadm_actif'] = "Submenu active item";
+$vocab['default'] = "Default values";
 ?>

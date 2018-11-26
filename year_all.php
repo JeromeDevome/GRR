@@ -3,7 +3,7 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-05 13:30 $
+ * Dernière modification : $Date: 2018-11-10 19:30 $
  * @author    Yan Naessens, Laurent Delineau 
  * @copyright Copyright 2003-2018 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -208,11 +208,11 @@ if ($_GET['pview'] != 1)
         echo "<form method=\"get\" action=\"year_all.php\">";
             echo "\n<div class=\"col-lg-4 col-md-6 col-xs-12\">\n".PHP_EOL; // choix des dates 
             echo "<table>\n";
-            echo "<tr><td>".get_vocab("report_start").get_vocab("deux_points")."&nbsp</td>";
+            echo "<tr><td>".get_vocab("report_start").get_vocab("deux_points")."&nbsp;</td>";
             echo "<td>";
             echo genDateSelector("from_", "", $from_month, $from_year,"");
             echo "</td></tr>";
-            echo "<tr><td>".get_vocab("report_end").get_vocab("deux_points")."&nbsp</td><td>\n";
+            echo "<tr><td>".get_vocab("report_end").get_vocab("deux_points")."&nbsp;</td><td>\n";
             echo genDateSelector("to_", "", $to_month, $to_year,"");
             echo "</td></tr>\n";
             echo "</table>\n";
@@ -540,7 +540,7 @@ else
                                         {
                                             if ($d[$cday][$cmonth][$cyear]["room"][$i] == $room_name) // test peu fiable car c'est l'id qui est unique YN le 26/02/2018
                                             {
-                                                echo "\n<table class='table-header table-bordered' ><tr>\n";
+                                                echo "\n<table class='pleine table-bordered' ><tr>\n";
                                                 tdcell($d[$cday][$cmonth][$cyear]["color"][$i]);
                                                 if ($d[$cday][$cmonth][$cyear]["res"][$i] != '-')
                                                     echo " <img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> \n";
@@ -589,12 +589,16 @@ else
         $month_indice = mktime(0, 0, 0, $month_num + 1, 1, $year_num);
     } // fin de boucle sur les mois
 }
-echo "<div class='titre_planning'>";
+echo "<div class='pleine center'>";
+echo "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12'>";
 show_colour_key($area);
-// Affichage d'un message pop-up
-affiche_pop_up(get_vocab("message_records"),"user");
+echo "</div>";
+echo "<div class='col-xs-12'>";
 include "include/trailer.inc.php";
 echo "</div>";
+echo "</div>";
+// Affichage d'un message pop-up
+affiche_pop_up(get_vocab("message_records"),"user");
 echo  "<div id=\"popup_name\" class=\"popup_block\" ></div>";
 if ($_GET['pview'] != 1)
 {
@@ -602,7 +606,7 @@ if ($_GET['pview'] != 1)
     bouton_retour_haut ();
     echo " </div>";
 }
-echo " </div>";
+
 echo "</section>";
 echo "</body></html>";
 ?>

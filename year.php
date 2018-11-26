@@ -3,7 +3,7 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-26 15:00$
+ * Dernière modification : $Date: 2018-11-18 18:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -378,7 +378,7 @@ while ($month_indice < $month_end)
 	$month_num = date("m", $month_indice);
 	$year_num  = date("Y", $month_indice);
 	$days_in_month = date("t", $month_indice);
-    echo "<table class='mois table-bordered'>";
+    echo "<table class='mois table-bordered table-striped'>";
     echo "<caption>";
     echo "<h4><a href='month_all2.php?month=".$month_num."&year=".$year_num."&area=".$area."'>".ucfirst(utf8_strftime("%B", $month_indice))."</a>".utf8_strftime(" %Y", $month_indice)."</h4>";
     echo "</caption>";
@@ -470,7 +470,7 @@ while ($month_indice < $month_end)
 								if ($d[$cday][$cmonth][$cyear]["room"][$i] == $row[0]) // test peu fiable car c'est l'id qui est unique YN le 26/02/2018
 								{
 										//if ($i > 0 && $i % 2 == 0) echo "<br />"; else echo " ";
-									echo "\n<table class='table-header table-bordered' ><tr>\n";
+									echo "\n<table class='pleine table-bordered' ><tr>\n";
 									tdcell($d[$cday][$cmonth][$cyear]["color"][$i]);
 									if ($d[$cday][$cmonth][$cyear]["res"][$i] != '-')
 										echo " <img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> \n";
@@ -513,13 +513,16 @@ while ($month_indice < $month_end)
 	$month_indice = mktime(0, 0, 0, $month_num + 1, 1, $year_num);
 // Fin de la boucle sur les mois
 }
-echo "<div class='titre_planning'>";
+echo "<div class='pleine center'>";
+echo "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12'>";
 show_colour_key($area);
-// echo "</div>";
-// Affichage d'un message pop-up
-affiche_pop_up(get_vocab("message_records"),"user");
+echo "</div>";
+echo "<div class='col-xs-12'>";
 include "include/trailer.inc.php";
 echo "</div>";
+echo "</div>";
+// Affichage d'un message pop-up
+affiche_pop_up(get_vocab("message_records"),"user");
 echo  "<div id=\"popup_name\" class=\"popup_block\" ></div>";
 if ($_GET['pview'] != 1)
 {
@@ -527,7 +530,6 @@ if ($_GET['pview'] != 1)
     bouton_retour_haut ();
     echo " </div>";
 }
-echo " </div>";
 echo "</section>";
 echo "</body></html>";
 ?>

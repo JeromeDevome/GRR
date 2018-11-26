@@ -3,7 +3,7 @@
  * admin_edit_room.php
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-24 21:00$
+ * Dernière modification : $Date: 2018-11-23 15:30$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -182,7 +182,7 @@ if ((!empty($room)) || (isset($area_id)))
 			}
 			if (!$ok1)
 			{
-				$msg .= "L\'image n\'a pas pu etre supprimee : probleme d\'ecriture sur le repertoire. Veuillez signaler ce probleme e l\'administrateur du serveur.\\n";
+				$msg .= "L\'image n\'a pas pu etre supprimee : probleme d\'écriture sur le repertoire. Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
 				$ok = 'no';
 			}
 			else
@@ -340,7 +340,7 @@ if ((!empty($room)) || (isset($area_id)))
 		}
 		$msg .= get_vocab("message_records");
 	}
-	// Si pas de probleme, retour e la page d'accueil apres enregistrement
+	// Si pas de probleme, retour à la page d'accueil apres enregistrement
 	if ((isset($change_done)) && (!isset($ok)))
 	{
 		if ($msg != '')
@@ -586,7 +586,7 @@ if ((!empty($room)) || (isset($area_id)))
 
 	// Capacite
 			echo "<tr><td>".get_vocab("capacity").": </td><td><input class=\"form-control\" type=\"text\" name=\"capacity\" size=\"1\" value=\"".$row["capacity"]."\" /></td></tr>\n";
-	// seul les administrateurs de la ressource peuvent modifier le nombre max de reservation par utilisateur
+	// seuls les administrateurs de la ressource peuvent modifier le nombre max de reservation par utilisateur
 			if ((authGetUserLevel(getUserName(),$area_id,"area") >= 4) || (authGetUserLevel(getUserName(),$room) >= 4))
 			{
 				echo "<tr><td>".get_vocab("max_booking")." ";
@@ -602,7 +602,7 @@ if ((!empty($room)) || (isset($area_id)))
 			echo "</td><td><input class=\"form-control\" type=\"text\" name=\"delais_min_resa_room\" size=\"5\" value=\"".$row["delais_min_resa_room"]."\" /></td></tr>\n";
 // L'utilisateur peut poser poser une option de reservation
 			echo "<tr><td>".get_vocab("msg_option_de_reservation")."</td><td><input class=\"form-control\" type=\"text\" name=\"delais_option_reservation\" size=\"5\" value=\"".$row["delais_option_reservation"]."\" /></td></tr>\n";
-// Les demandes de reservations sont moderes
+// Les demandes de reservations sont moderées
 			echo "<tr><td>".get_vocab("msg_moderation_reservation").get_vocab("deux_points");
 			echo "</td>" ."<td><input type='checkbox' name='moderate' ";
 			if ($row['moderate'])

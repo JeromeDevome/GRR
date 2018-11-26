@@ -697,7 +697,7 @@ echo '<div class="row2">';
 echo '<div class="col-sm-6 col-xs-12">';
 //echo '<td style="width:50%; vertical-align:top; padding-left:15px; padding-top:5px; padding-bottom:5px;">'.PHP_EOL;
 
-echo '<table class="table-header">'.PHP_EOL;
+echo '<table>'.PHP_EOL;
 if (((authGetUserLevel(getUserName(), -1, "room") >= $qui_peut_reserver_pour) || (authGetUserLevel(getUserName(), $area, "area") >= $qui_peut_reserver_pour)) && (($id == 0) || (($id != 0) && (authGetUserLevel(getUserName(), $room) > 2) )))
 {
 	$flag_qui_peut_reserver_pour = "yes";

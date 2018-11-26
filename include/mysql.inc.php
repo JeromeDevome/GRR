@@ -75,7 +75,6 @@ function grr_sql_query($sql)
 	return $r;
 }
 //retourne la version de mysql
-
 function grr_sql_version()
 {
 	$r = mysqli_get_server_info($GLOBALS['db_c']);

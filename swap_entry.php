@@ -156,7 +156,7 @@ if (isset($_GET['id_alt'])){ // cas où tout est décidé
         $info_alt = mrbsGetEntryInfo($_GET['id_alt']);
         echo "<p><strong> Etes-vous sûr de vouloir échanger la réservation </strong></p>";
         //print_r($info);
-        echo "<table class='table-bordered'>";
+        echo "<table class='table table-bordered'>";
             echo "<tr>";
                 echo "<th>Description</th>";
                 echo "<th>Début</th>";
@@ -176,7 +176,7 @@ if (isset($_GET['id_alt'])){ // cas où tout est décidé
         echo "</table>";
         echo "<p><strong> avec la réservation </strong></p>";
         // print_r($info_alt);
-        echo "<table class='table-bordered'>";
+        echo "<table class='table table-bordered'>";
             echo "<tr>";
                 echo "<th>Description</th>";
                 echo "<th>Début</th>";
@@ -272,7 +272,7 @@ else { // on connaît $id de la réservation à échanger, on va en chercher une
         echo "<input type='button' class='btn btn-danger' value='".get_vocab("cancel")."' onclick='window.location.href=\" ".$ret_page."\"'/>";
         echo "</p>"; 
         // tableau donnant la réservation à échanger et celles avec lesquelles échanger
-        echo "<table class='table-bordered'>";
+        echo "<table class='table table-bordered'>";
             echo "<thead>";
                 echo "<tr>";
                     echo "<th>Choisir</th>"; // colonne pour les choix

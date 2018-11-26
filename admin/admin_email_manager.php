@@ -124,7 +124,7 @@ echo "\n".'<br /><div class="center"><input type="submit" name="mail1" value="'.
 echo get_vocab("explain_automatic_mail2")."<br />";
 echo $msg;
 # Table with areas, rooms.
-echo "\n<table class=><tr>\n";
+echo "\n<table><tr>\n";
 $this_area_name = "";
 $this_room_name = "";
 # Show all areas

@@ -2,20 +2,24 @@ Bugs connus sur la version de GitHub :
  - affichage défectueux du menu en position haute dans la page month_all2 
  - des problèmes se produisent lorsqu'on veut faire une modification/copie de réservation  avec un changement de domaine
  - l'entrée du code hexadécimal des couleurs des types n'est pas répercutée sur la zone test
+ - les entrées textuelles dans les champs jscolor ne sont pas validées
 
 Tâches prévues :
- - interface de personnalisation des couleurs
+ - gestion des accès au niveau de la ressource (et pas seulement au niveau des domaines)
+ - authentification liée à Joomla!
 -----
 --
 -----
 
-Version en cours de développement sur GitHUB (3.4.1 RC1)
+Version en cours de développement sur GitHUB (3.4.1 RC2)
     [ajout] Echange de deux réservations
     [ajout] Page year_all affichant les réservations sur plusieurs mois et plusieurs domaines (à utiliser avec prudence s'il y a beaucoup de réservations ou de ressources)
     [ajout] Contenu des champs additionnels dans les exports csv
     [ajout] Gestion des couleurs du texte des types de réservation (meilleure lisibilité dans les plannings)
+    [ajout] Page d'interface de personnalisation des couleurs
     [amelioration] Reprise du code des pages plannings pour gérer les menus escamotables (haut et gauche) 
     [modification] Utilisation de jscolor pour définir les couleurs des types
+    [correction] de bugs mineurs dans la RC1
 -----
 --
 -----

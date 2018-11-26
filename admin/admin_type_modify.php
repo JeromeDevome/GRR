@@ -277,7 +277,7 @@ echo "<table class='table-bordered'>\n";
 	$nct = 0;
 	foreach ($tab_couleur as $key=>$value)
 	{
-		if (++$nct > 4)
+		if (++$nct > 7)
 		{
 			$nct = 1;
 			echo "</tr><tr>";
@@ -333,12 +333,12 @@ function update (id) {
     document.getElementById('test').style.borderColor =
         pickers.fgcolor.toHEXString();
 }
-
+/*
 function setString (id, str) {
     pickers[id].fromString(str);
     update(id);
 }
-
+*/
 update('bgcolor');
 update('fgcolor');
 </script>

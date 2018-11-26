@@ -716,7 +716,7 @@ if (isset($_GET["is_posted"]))
             }
             if (($summarize == 1) || ($summarize == 3)) // tableau des détails des réservations
             {
-                echo "<table class='table-bordered'>\n";
+                echo "<table class='table table-bordered'>\n";
                     //    echo "<tr><td colspan=\"6\" align=\"center\">".get_vocab("trier_par").get_vocab("deux_points")."</td></tr>";
                 echo "<tr>\n";
                     // Colonne domaine
