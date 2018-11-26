@@ -3,7 +3,7 @@
  * admin_col_gauche2.php
  * colonne de gauche des écrans d'administration des sites, des domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-31 15:00$
+ * Dernière modification : $Date: 2018-11-26 12:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -23,7 +23,9 @@ function sousMenu($liste,$titre='')
     if (count($liste)>0)
     {
         echo '<div class="dropdown">';
-        echo '<button class="btn btn-block btn-primary dropdown-toggle" type="button" data-toggle="dropdown">'.$titre.'&nbsp; <span class="caret"></span></button>';
+        echo '<button class="btn btn-block btn-primary dropdown-toggle';
+        if (in_array($chaine,$liste)) echo ' actif';
+        echo '" type="button" data-toggle="dropdown">'.$titre.'&nbsp; <span class="caret"></span></button>';
         echo '<ul class="dropdown-menu">';
         foreach ($liste as $key)
         {
@@ -49,7 +51,7 @@ $titres = [get_vocab("admin_menu_general"),(Settings::get("module_multisite") ==
 // calcul des éléments à afficher
 $liste[1] = array(); // configuration
 if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
-			$liste[1] = ['admin_config1.php','admin_config2.php','admin_config3.php','admin_config4.php','admin_config5.php','admin_config6.php'];
+			$liste[1] = ['admin_config1.php','admin_couleurs.php','admin_config2.php','admin_config3.php','admin_config4.php','admin_config5.php','admin_config6.php'];
 $liste[2] = array(); // sites, domaines et ressources
 if (Settings::get("module_multisite") == "Oui")
 		{

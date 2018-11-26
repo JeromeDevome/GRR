@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2018-10-24
+# Last modification : 2018-11-26
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -868,8 +868,8 @@ $vocab['type_affichage_reservation'] = "Pour une nouvelle réservation ou modifi
 $vocab['type_area'] = "Plusieurs lignes (texte)";
 $vocab['type_color'] = "Couleur";
 $vocab['type_color_actuel'] = "Couleur actuelle";
-$vocab['type_color_hexa'] = "Choix de la couleur en hexadécimal";
-$vocab['type_color_predefinie'] = "Choix parmi les couleurs prédéfinies";
+$vocab['type_color_hexa'] = "Couleur hexadécimale du fond";
+$vocab['type_color_predefinie'] = "Choix de la couleur du fond parmi les couleurs prédéfinies";
 $vocab['type_de_creneaux'] = "Configuration du type de créneaux";
 $vocab['type_list'] = "Liste";
 $vocab['type_name'] = "Nom du type";
@@ -1009,9 +1009,33 @@ $vocab['click_here_to_see_connexions'] = "Cliquez ici pour voir votre historique
 $vocab['click_here_to_hide_connexions'] = "Cliquez ici pour masquer l'historique de connexion";
 $vocab["see_connexions_explain"] = "Une connexion en cours est affichée en vert, une connexion fermée par temps dépassé est affichée en rouge";
 $vocab["type_apercu"] = "Aperçu";
-$vocab["type_color_text"] = "Couleur du texte";
+$vocab["type_color_text"] = "Couleur hexadécimale du texte";
 $vocab['admin_couleurs.php'] = "Gestion des couleurs";
-$vocab['admin_couleurs_explications'] = "Dans cette page, vous pouvez définir un certain nombre de couleurs qui modifieront le style par défaut. D'autres modifications au style peuvent être apportées par l'édition du fichier de style /themes/perso/css/style.css";
+$vocab['admin_couleurs_explications'] = "Dans cette page, vous pouvez définir un certain nombre de couleurs qui modifieront le style perso.<br /> D'autres modifications au style peuvent être apportées par l'édition du fichier de style /themes/perso/css/style.css <br />Le fichier /themes/perso/css/perso.css doit être accessible en écriture par le navigateur.<br />Les couleurs initiales reproduisent le modèle par défaut.";
 $vocab['affichage_pdf'] = "Affichage du bouton Générer pdf.";
 $vocab['affichage_type'] = "Affichage du type de réservation dans les vues journées, semaine et mois.";
+$vocab['page_header'] = "Haut de page";
+$vocab['text'] = "Texte";
+$vocab['bgcolor'] = "Fond";
+$vocab['bordcolor'] = "Bordure";
+$vocab['page_header_hover'] = "Haut de page (survol)";
+$vocab['hover_text'] = "Survol";
+$vocab['menuG'] = "Menu gauche (page planning)";
+$vocab['cal_titre'] = "Titre calendrier";
+$vocab['cal_jours'] = "Jours (calendrier)";
+$vocab['cal_sem'] = "Semaines (calendrier)";
+$vocab['cal_semhovercolor'] = "Semaine (survol)";
+$vocab['cal_week'] = "Semaine sélectionnée (calendrier)";
+$vocab['cal_cell'] = "Cellule (calendrier)";
+$vocab['cal_cellhover'] = "Cellule (survol)";
+$vocab['cal_current_day_'] = "Jour courant (calendrier)";
+$vocab['pl2_titre'] = "Titre planning";
+$vocab['pl2_entete'] = "Entête planning";
+$vocab['pl2_cell'] = "Cellule planning";
+$vocab['icons_color'] = "Couleur des icônes";
+$vocab['btn_primary_'] = "Boutons primaires";
+$vocab['active_btn_primary_'] = "Boutons primaires actifs";
+$vocab['focus_btn_primary_'] = "Boutons primaires (survol)";
+$vocab['ssmenuadm_actif'] = "Item de sous-menu actif";
+$vocab['default'] = "Valeurs par défaut";
 ?>

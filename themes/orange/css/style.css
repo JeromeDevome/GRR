@@ -1,6 +1,72 @@
 /* personnalisations */
+:root{
+    --header-bgcolor: #FFF;
+    --header-text: #000;
+    --header-hover: #CCC;
+    --menuG-bgcolor: #E8501F;
+    --menuG-color: #333;
+    --cal-titrecolor: #FFF;
+    --cal-titrebgcolor: #E8501F;
+    --cal-joursbgcolor: #FFF;
+    --cal-jourscolor: #333;
+    --cal-sembgcolor: #FFF;
+    --cal-semcolor: #000;
+    --cal-semhovercolor: #CCC;
+    --cal-weekbgcolor: gray;
+    --cal-weekcolor: #FFF;
+    --cal-cellbgcolor: #E8501F;
+    --cal-cellcolor: #FFF;
+    --cal-cellhoverbgcolor: #FFF;
+    --cal-cellhovercolor: #000;
+    --cal-current-day-bg: transparent;
+    --cal-current-day-col: #000;
+    --pl2-titrebgcolor: #E8501F;
+    --pl2-titrecolor: white;
+    --pl2-entetebgcolor: gray;
+    --pl2-entetecolor: white;
+    --pl2-cellbgcolor: transparent;
+    --pl2-cellcolor: #000;
+    --icons-color: #333;
+    --btn-primary-color: #FFF;
+    --btn-primary-bgcolor: #E8501F;
+    --btn-primary-bordcolor: #F25A29; 
+    --active-btn-primary-color: #FFF;
+    --active-btn-primary-bgcolor: #3071A9;
+    --active-btn-primary-bordcolor: #285E8E; 
+    --focus-btn-primary-bgcolor: #3071A9;
+    --focus-btn-primary-bordcolor: #285E8E;
+    --focus-btn-primary-color: #FFF;
+    --menuadm-item-actif: #F00;
+    --ssmenuadm-actif-bg: #00A; 
+    --ssmenuadm-actif-color: #FFA;
+}
 
-/* modifications bootstrap */
+header, header a,#Date{background-color: var(--header-bgcolor);color: var(--header-text);}
+header a:hover{color: var(header-hover);}
+#menuGauche2, #menuGauche2 caption{background-color: var(--menuG-bgcolor); color: var(--menuG-color);}
+#calendriers .calendar caption{background-color: var(--cal-titrebgcolor);color: var(--cal-titrecolor);} 
+.calendar th{background-color: var(--cal-joursbgcolor);color: var(--cal-jourscolor);}
+.calendar td, .calendar td>a{background-color: var(--cal-cellbgcolor);color: var(--cal-cellcolor);}
+.calendar td>a:hover{background-color: var(--cal-cellhoverbgcolor);color: var(--cal-cellhovercolor);}
+td.calendarcol1, td.calendarcol1>a {background-color: var(--cal-sembgcolor);color: var(--cal-semcolor);}
+td.calendarcol1>a:hover{color: var(--cal-semhovercolor);}
+.week td, .week td a, tr.week>td.calendarcol1, tr.week>td.calendarcol1>a{background-color: var(--cal-weekbgcolor);color: var(--cal-weekcolor);}
+.cal_current_day{background-color: var(--cal-current-day-bg); color: var(--cal-current-day-col);} 
+#planning2 caption, #planning2 caption a .glyphicon{background-color: var(--pl2-titrebgcolor); color: var(--pl2-titrecolor);}
+#planning2 thead, .jour th, a.lienPlanning, #planning2 thead .glyphicon {background-color: var(--pl2-entetebgcolor); color: var(--pl2-entetecolor);}
+#planning2 tbody{background-color: var(--pl2-cellbgcolor); color: var(--pl2-cellcolor);}
+.monthday a {background-color: transparent; color: var(--pl2-cellcolor);}
+.glyphicon {color: var(--icons-color);}
+.btn-primary{color: var(--btn-primary-color);background-color: var(--btn-primary-bgcolor);border-color: var(--btn-primary-bordcolor)}
+.btn-primary:hover,.btn-primary:focus{background-color: var(--focus-btn-primary-bgcolor);border-color: var(--focus-btn-primary-bordcolor);color: var(--focus-btn-primary-color);}
+.btn-primary:active{background-color: var(--active-btn-primary-bgcolor);border-color: var(--active-btn-primary-bordcolor);color: var(--active-btn-primary-color);}
+.dropdown-menu > li > a.active{color:var(--menuadm-item-actif);}
+.dropdown .actif{background-color: var(--ssmenuadm-actif-bg); color: var(--ssmenuadm-actif-color);}
+
+/* anciennes définitions 
+personnalisations 
+
+/* modifications bootstrap 
 a{color:#888;text-decoration:none}
 .text-primary{color:#E8501F}
 .bg-primary{color:#fff;background-color:#E8501F}
@@ -29,7 +95,7 @@ fieldset[disabled] .btn-primary.active{background-color:#E8501F;border-color:#E8
 .panel-primary>.panel-footer+.panel-collapse>.panel-body{border-bottom-color:#E8501F}
 caption{text-align: center}
 
-/* personnalisation sur le modèle standard */
+/* personnalisation sur le modèle standard 
 .table-bordered caption{background:#E8501F;padding: 0 0 0 0;}
 .glyphicon-plus{color:#E8501F}
 #menuGauche{background-color:#E8501F;float:left;height:100%;min-width:200px;width:100%;padding-bottom:10px}
@@ -68,3 +134,4 @@ table.legende caption{color:black;}
 	FLOAT:LEFT;
 	}
 }
+*/

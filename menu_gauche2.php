@@ -59,9 +59,10 @@ if ($_GET['pview'] != 1)
     else $pageTout = $pageSimple."_all.php";
     // $pageSimple .= '.php';
 	
-    // Calendrier
+    // Calendrier(s)
+    echo "<div id='calendriers'>";
 	minicals($year, $month, $day, $area, $room, $pageActuel);
-	
+	echo "</div>";
 	// Liste sites, domaines, ressources
 	if (isset($_SESSION['default_list_type']) || (Settings::get("authentification_obli") == 1))
 		$area_list_format = $_SESSION['default_list_type'];

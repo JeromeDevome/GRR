@@ -62,8 +62,8 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 		{
 			global $vocab;
             if (isset($this->room))
-                return "<a onclick=\"charger();\" class=\"calendar\" title=\"".htmlspecialchars(get_vocab("see_day_for_this_room"))."\" href=\"day.php?year=$year&amp;month=$month&amp;day=$day&amp;room=".$this->room."\"";
-            return "<a onclick=\"charger();\" class=\"calendar\" title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"day.php?year=$year&amp;month=$month&amp;day=$day&amp;area=".$this->area."\"";
+                return "<a onclick=\"charger();\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_day_for_this_room"))."\" href=\"day.php?year=$year&amp;month=$month&amp;day=$day&amp;room=".$this->room."\"";
+            return "<a onclick=\"charger();\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"day.php?year=$year&amp;month=$month&amp;day=$day&amp;area=".$this->area."\"";
         }
 /* inutile de faire un test pour finalement faire la même chose YN le 07/03/2018
 			if ($this->dmy == 'day')
@@ -112,7 +112,7 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 					if (($this->dmy == 'day') && ($d == $this->day) && ($this->h))
 						$s .= "<td class=\"week\">";
 					else
-						$s .= "<td class=\"cellcalendar\">";
+						$s .= "<td>";
 					if ($d > 0 && $d <= $daysInMonth)
 					{
 						$link = $this->getDateLink($d, $this->month, $this->year);
@@ -149,10 +149,10 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 				$bg_lign = '';
 				if (($week_today == $week) && ($this->h) && (($this->dmy == 'week_all') || ($this->dmy == 'week')))
 					$bg_lign = " class=\"week\"";
-				$s .= "<tr ".$bg_lign."><td class=\"calendarcol1 lienSemaine\">";
-				$t = "<a onclick=\"charger();\" title=\"".htmlspecialchars(get_vocab("see_week_for_this_area"))."\" href=\"week_all.php?year=$this->year&amp;month=$this->month&amp;day=$temp&amp;area=$this->area\">".sprintf("%02d",$week)."</a>";
+				$s .= "<tr ".$bg_lign."><td class=\"calendarcol1\">";
+				$t = "<a onclick=\"charger();\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_week_for_this_area"))."\" href=\"week_all.php?year=$this->year&amp;month=$this->month&amp;day=$temp&amp;area=$this->area\">".sprintf("%02d",$week)."</a>";
 				if (($this->dmy != 'day') && ($this->dmy != 'week_all') && ($this->dmy != 'month_all') && ($this->dmy != 'month_all2'))
-					$t = "<a onclick=\"charger();\" title=\"".htmlspecialchars(get_vocab("see_week_for_this_room"))."\" href=\"week.php?year=$this->year&amp;month=$this->month&amp;day=$temp&amp;area=$this->area&amp;room=$this->room\">".sprintf("%02d",$week)."</a>";
+					$t = "<a onclick=\"charger();\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_week_for_this_room"))."\" href=\"week.php?year=$this->year&amp;month=$this->month&amp;day=$temp&amp;area=$this->area&amp;room=$this->room\">".sprintf("%02d",$week)."</a>";
 				$s .= $t;
 				$temp = $temp + 7;
 				while ((!checkdate($this->month, $temp, $this->year)) && ($temp > 0))
@@ -195,7 +195,8 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 				$show = $basetime + ($i * 24 * 60 * 60);
 				$fl = ucfirst(utf8_strftime('%a',$show));
 				if ($display_day[$j] == 1)
-					$s .= "<td class=\"calendarcol1\">$fl</td>\n";
+					//$s .= "<td class=\"calendarcol1\">$fl</td>\n";
+                    $s .= "<th>$fl</th>\n";
 				else
 					$s .= "";
 			}
@@ -242,9 +243,9 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 			$action = $this->GetAction();
 			$s .= "<br/><button type=\"button\" title=\"".htmlspecialchars(get_vocab("gototoday"))."\" class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='".$action."';\">".get_vocab("gototoday")."</button>";
 			$s .= "</caption>";
-			$s .= "<tr><td class=\"calendarcol1\">".get_vocab("semaine")."</td>\n";
+			$s .= "<thead><tr><td class=\"calendarcol1\">".get_vocab("semaine")."</td>\n";
 			$s .= $this->getFirstDays();
-			$s .= "</tr>\n";
+			$s .= "</tr></thead>\n";
 			$d = 1 - $first;
 			$temp = 1;
 			$s .= $this->DayOfMonth($d, $daysInMonth, $week_today, $week, $temp);
