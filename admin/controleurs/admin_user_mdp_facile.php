@@ -20,6 +20,8 @@ $grr_script_name = "admin_user_mdp_facile.php";
 
 
 $msg = '';
+$col = array();
+
 if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1,'user') != 1))
 {
 	showAccessDenied($back);
@@ -53,8 +55,9 @@ if ($res)
 	{
 
 		// Les mdp facile
-		// Valeurs 1- Mot de passe = login en majuscule || 2- Mot de passe = login en minuscule || 3- azerty  || 4- Vide || 6- 123456  || 7- 1234567 || 8- 12345678 || 9- 000000 || 10- 00000000 
-		$mdpFacile = array(md5(strtoupper($row[3])), md5(strtolower($row[3])), "ab4f63f9ac65152575886860dde480a1", "", "e10adc3949ba59abbe56e057f20f883e", "fcea920f7412b5da7be0cf42b8c93759", "25d55ad283aa400af464c76d713c07ad", "670b14728ad9902aecba32e22fa4f6bd", "dd4b21e9ef71e1291183a46b913ae6f2");
+		// Tableau définit dans config.inc.php : $mdpFacile . On y ajoute les varibales en liason avec l'utilisateur
+		$mdpFacile[] = md5(strtoupper($row[3])); // Mot de passe = login en majuscule
+		$mdpFacile[] = md5(strtolower($row[3])); // Mot de passe = login en minuscule
 
 		if(in_array($row[6], $mdpFacile)){
 
@@ -104,4 +107,6 @@ if ($res)
 
 // Affichage d'un pop-up
 affiche_pop_up($msg,"admin");
+
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateurs' => $col));
 ?>
