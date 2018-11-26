@@ -124,6 +124,11 @@ $upload_Module = 1;
 # Nb de jour maximum que l'on garde les logs de connexions, 0 = aucune limite
 $nbMaxJoursLogConnexion = 365;
 
+# Mot de passe simple
+	# Valeurs  3- azerty  || 4- Vide || 6- 123456  || 7- 1234567 || 8- 12345678 || 9- 000000 || 10- 00000000 
+	$mdpFacile = array("ab4f63f9ac65152575886860dde480a1", "", "e10adc3949ba59abbe56e057f20f883e", "fcea920f7412b5da7be0cf42b8c93759", "25d55ad283aa400af464c76d713c07ad", "670b14728ad9902aecba32e22fa4f6bd", "dd4b21e9ef71e1291183a46b913ae6f2");
+
+
 ##################################################
 # Cas d'une authentification via config.inc.php  #
 ##################################################
