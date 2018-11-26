@@ -35,6 +35,11 @@ if (verif_version())
 	header("Location: ../installation/maj.php");
 	exit();
 }
+// Si Token Installation n'est pas initialisé on le fait ici car s'est la 1ere page affiché 
+if(Settings::get("tokeninstallation") == ""){
+	Settings::set("tokeninstallation",  generationToken());
+}
+
 // User wants to be authentified
 if (isset($_POST['login']) && isset($_POST['password']))
 {

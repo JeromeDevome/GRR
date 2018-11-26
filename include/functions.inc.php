@@ -5106,6 +5106,12 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 	}
 }
 
+// Génération d'un Token aléatoire
+function generationToken()
+{
+	return $token = base_convert(hash('sha256', time() . mt_rand()), 16, 36);
+}
+
 // Les lignes suivantes permettent la compatibilité de GRR avec la variables register_global à off
 unset($day);
 if (isset($_GET["day"]))
