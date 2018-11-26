@@ -54,17 +54,17 @@ function afficheLienNiveau2($nomSection,$image,$liste,$iN2)
 	$iN2 = 0;
 	$liste = array();
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 4)
-		afficheLienNiveau1('admin_accueil', 'fa fa-dashboard', 1);
+		afficheLienNiveau1('admin_accueil', 'fa fa-tachometer-alt', 1);
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 		afficheLienNiveau1('admin_config', 'fa fa-cogs', 1);
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 		afficheLienNiveau1('admin_type', 'fa fa-tags', 1);
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
-		afficheLienNiveau1('admin_calend_ignore', 'fa fa-calendar-times-o', 1);
+		afficheLienNiveau1('admin_calend_ignore', 'fa fa-calendar-times', 1);
 	if ((authGetUserLevel(getUserName(), -1, 'area') >= 6) && (Settings::get('show_holidays') == 'Oui'))
-		afficheLienNiveau1('admin_calend_vacances_feries', 'fa fa-calendar-minus-o', 1);
+		afficheLienNiveau1('admin_calend_vacances_feries', 'fa fa-calendar-minus', 1);
 	if ((authGetUserLevel(getUserName(), -1, 'area') >= 6) && (Settings::get("jours_cycles_actif") == "Oui"))
-		afficheLienNiveau1('admin_calend_jour_cycle1', 'fa fa-repeat', 1);
+		afficheLienNiveau1('admin_calend_jour_cycle1', 'fa fa-redo ', 1);
 
 
 	if ((authGetUserLevel(getUserName(), -1, 'area') >= 6) && (Settings::get("module_multisite") == "Oui"))
@@ -117,5 +117,5 @@ function afficheLienNiveau2($nomSection,$image,$liste,$iN2)
 	if ( (authGetUserLevel(getUserName(), -1, 'area') >= 6) && ((!isset($sso_restrictions)) || ($imap_restrictions == false)) )
 		$liste[] = 'admin_config_imap';
 
-	afficheLienNiveau2("admin_menu_connexion_externe", "fa fa-sign-out",$liste,$iN2++);
+	afficheLienNiveau2("admin_menu_connexion_externe", "fa fa-sign-out-alt",$liste,$iN2++);
 ?>
