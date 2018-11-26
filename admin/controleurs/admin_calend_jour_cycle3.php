@@ -72,12 +72,12 @@ function cal3($month, $year)
                 $s .= "<br />";
                 if (isset($_GET["pview"])) {
                     if (($day < 0))
-                        $s .= "<span class=\"fa fa-close\"></span>";
+                        $s .= "<span class=\"fa fa-times\"></span>";
                     else
                         $s .= "<span class=\"jour-cycle\">".$jour."</span>";
                 } else {
                     if (($day < 0))
-                        $s .= "<a href=\"?p=admin_calend_jour_cycle3&amp;date=".$temp."\"><span class=\"fa fa-close red\"></span></a>";
+                        $s .= "<a href=\"?p=admin_calend_jour_cycle3&amp;date=".$temp."\"><span class=\"fa fa-times red\"></span></a>";
                     else
                         $s .= "<a class=\"jour-cycle\" href=\"?p=admin_calend_jour_cycle3&amp;date=".$temp."\" title=\"".$alt."\" >".$jour."</a>";
                 }

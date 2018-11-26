@@ -52,13 +52,13 @@
 												<tr>
 													<td>{% if domaine.acces == 'r' %}<a href="?p=admin_access_area&id_area={{ domaine.id }}" title="{{ trad.admin_access_area }}"><span class="fa fa-lock"></a>{% endif %}</td>
 													<td><a href="?p=admin_room&id_site={{ trad.dIdSite }}&id_area={{ domaine.id }}">{{ domaine.nom }}</a></td>
-													<td><a href="?p=admin_edit_domaine&id_site={{ trad.dIdSite }}&id_area={{ domaine.id }}"><span class="fa fa-pencil"></a></td>
+													<td><a href="?p=admin_edit_domaine&id_site={{ trad.dIdSite }}&id_area={{ domaine.id }}"><span class="fa fa-edit"></a></td>
 													{% if domaine.droitsuser >= 5 %}
 														<td><a href="?p=admin_edit_domaine&id_area={{ domaine.id }}&action=duplique_area"><span class="fa fa-copy"></a></td>
 														<td><a href="?p=admin_room_del&id_site={{ trad.dIdSite }}&type=area&id_area={{ domaine.id }}"><span class="fa fa-trash"></a></td>
 													{% endif %}
 													<td><a href="?p=admin_type_area&id_area={{ domaine.id }}"><span class="fa fa-tags"></a></td>
-													<td><a href="javascript:centrerpopup('../view_rights_area.php?area_id={{ domaine.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fa fa-group"></a></td>
+													<td><a href="javascript:centrerpopup('../view_rights_area.php?area_id={{ domaine.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fas fa-user-shield"></a></td>
 												</tr>
 											{% endfor %}
 										</table>
@@ -70,10 +70,10 @@
 													<tr>
 														<td width="10">{% if ressource.statut == 0 %}<span class="fa fa-ban" style="color:red;">{% endif %}</td>
 														<td>{{ ressource.nom }} <i>{{ ressource.description }} {% if ressource.capacite > 0 %}({{ ressource.capacite }} max.){% endif %}</i></td>
-														<td><a href="?p=admin_edit_room&room={{ ressource.id }}"><span class="fa fa-pencil"></a></td>
+														<td><a href="?p=admin_edit_room&room={{ ressource.id }}"><span class="fa fa-edit"></a></td>
 														<td><a href="?p=admin_edit_room&room={{ ressource.id }}&action=duplique_room"><span class="fa fa-copy"></a></td>
 														<td><a href="?p=admin_room_del&type=room&room={{ ressource.id }}&id_area={{ domaine.id }}"><span class="fa fa-trash"></a></td>
-														<td><a href="javascript:centrerpopup('../view_rights_room.php?id_room={{ ressource.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fa fa-group"></a></td>
+														<td><a href="javascript:centrerpopup('../view_rights_room.php?id_room={{ ressource.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fas fa-user-shield"></a></td>
 														<td><a href="javascript:centrerpopup('../view_room.php?id_room={{ ressource.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.fiche_ressource }}"><span class="fa fa-newspaper-o"></a></td>
 													</tr>
 												{% endfor %}
@@ -98,13 +98,13 @@
 												<tr>
 													<td>{% if domaine.acces == 'r' %}<a href="?p=admin_access_area&id_area={{ domaine.id }}" title="{{ trad.admin_access_area }}"><span class="fa fa-lock"></a>{% endif %}</td>
 													<td><a href="?p=admin_room&id_site={{ trad.dIdSite }}&id_area={{ domaine.id }}">{{ domaine.nom }}</a></td>
-													<td><a href="?p=admin_edit_domaine&id_site={{ trad.dIdSite }}&id_area={{ domaine.id }}"><span class="fa fa-pencil"></a></td>
+													<td><a href="?p=admin_edit_domaine&id_site={{ trad.dIdSite }}&id_area={{ domaine.id }}"><span class="fa fa-edit"></a></td>
 													{% if domaine.droitsuser >= 5 %}
 														<td><a href="?p=admin_edit_domaine&id_area={{ domaine.id }}&action=duplique_area"><span class="fa fa-copy"></a></td>
 														<td><a href="?p=admin_room_del&id_site={{ trad.dIdSite }}&type=area&id_area={{ domaine.id }}"><span class="fa fa-trash"></a></td>
 													{% endif %}
 													<td><a href="?p=admin_type_area&id_area={{ domaine.id }}"><span class="fa fa-tags"></a></td>
-													<td><a href="javascript:centrerpopup('../view_rights_area.php?area_id={{ domaine.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fa fa-group"></a></td>
+													<td><a href="javascript:centrerpopup('../view_rights_area.php?area_id={{ domaine.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fas fa-user-shield"></a></td>
 												</tr>
 											</table>
 										</td>
@@ -117,10 +117,10 @@
 														<tr>
 															<td width="10">{% if ressource.statut == 0 %}<span class="fa fa-ban" style="color:red;">{% endif %}</td>
 															<td>{{ ressource.nom }} <i>{{ ressource.description }} {% if ressource.capacite > 0 %}({{ ressource.capacite }} max.){% endif %}</i></td>
-															<td><a href="?p=admin_edit_room&room={{ ressource.id }}"><span class="fa fa-pencil"></a></td>
+															<td><a href="?p=admin_edit_room&room={{ ressource.id }}"><span class="fa fa-edit"></a></td>
 															<td><a href="?p=admin_edit_room&room={{ ressource.id }}&action=duplique_room"><span class="fa fa-copy"></a></td>
 															<td><a href="?p=admin_room_del&type=room&room={{ ressource.id }}&id_area={{ domaine.id }}"><span class="fa fa-trash"></a></td>
-															<td><a href="javascript:centrerpopup('../view_rights_room.php?id_room={{ ressource.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fa fa-group"></a></td>
+															<td><a href="javascript:centrerpopup('../view_rights_room.php?id_room={{ ressource.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fas fa-user-shield"></a></td>
 															<td><a href="javascript:centrerpopup('../view_room.php?id_room={{ ressource.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.fiche_ressource }}"><span class="fa fa-newspaper-o"></a></td>
 														</tr>
 													{% endif %}
