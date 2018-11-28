@@ -19,7 +19,19 @@
 $grr_script_name = "admin_accueil.php";
 
 get_vocab_admin("admin_accueil");
+
 $trad['TitrePage'] = $trad['admin_accueil'];
 $trad['SousTitrePage'] = 'Administration';
+
+// Widget connection
+get_vocab_admin("users_connected");
+$trad['dNombreConnecte'] = AdminFonctions::NombreDeConnecter();
+$trad['dNombreUtilisateur'] = AdminFonctions::NombreUtilisateurs();
+
+// Widget mot de passe facile
+get_vocab_admin("admin_user_mdp_facile");
+$trad['dNombreMDPFacile'] = AdminFonctions::NombreUtilisateursMDPfacile();
+
+
 
 ?>

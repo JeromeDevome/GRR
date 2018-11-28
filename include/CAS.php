@@ -308,7 +308,7 @@ class phpCAS
      *
      * @hideinitializer
      */
-    private static $_PHPCAS_VERBOSE = true;
+    private static $_PHPCAS_VERBOSE = false;
 
 
     // ########################################################################
@@ -364,10 +364,10 @@ class phpCAS
         phpCAS :: traceEnd();
     }
     */
-     // client patché selon la méthode GEPI
+     // client patchÃ© selon la mÃ©thode GEPI
 public static function client($server_version, $server_hostname,
         $server_port, $server_uri, $changeSessionID = true,
-        $service_address = null // Utilisé pour forcer l'URL de base
+        $service_address = null // UtilisÃ© pour forcer l'URL de base
     ) {
         phpCAS :: traceBegin();
         if (is_object(self::$_PHPCAS_CLIENT)) {

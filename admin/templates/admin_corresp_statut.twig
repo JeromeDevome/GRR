@@ -1,0 +1,177 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{ trad.admin_corresp_statut }}</h3>
+				</div>
+				<!-- /.box-header -->
+
+				<div class="box-body no-padding">
+
+					<p>{{ trad.admin_corresp_statut_desc }}</p>
+
+					<h2>{{ trad.ajout_correspondance_profil_statut }}</h2>
+
+					<form action="?p=admin_corresp_statut&action_add=yes" method="post">
+
+						<input type="hidden" name="p" value="admin_corresp_statut" />
+
+						{{ form.input('codefonc', trad.code_fonction, '', {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+						{{ form.input('libfonc', trad.libelle_fonction, '', {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+
+						<div class="form-group col-sm-12">
+							<label class="col-sm-6" for="statutgrr">{{ trad.statut_grr }}</label>
+							<div class="col-sm-6">
+								<select name="statutgrr" class="form-control" required>
+									<option value="visiteur">{{ trad.statut_visitor }}</option>
+									<option value="utilisateur">{{ trad.statut_user }}</option>
+									<option value="gestionnaire_utilisateur">{{ trad.statut_user_administrator }}</option>
+									<option value="administrateur">{{ trad.statut_administrator }}</option>
+								</select>
+							</div>
+						</div>
+
+						<br><hr><br>
+
+						<div style="text-align:center;">
+							<input type="submit" name="Valider" value="{{ trad.OK }}" class="btn btn-success btn-md" />
+						</div>
+					</form>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+
+			<div class="box">
+					<div class="box-header">
+						<h3 class="box-title">{{ trad.admin_corresp_statut }}</h3>
+					</div>
+					<!-- /.box-header -->
+					
+					<div class="box-body no-padding">
+
+						{% if trad.aucune_correspondance is defined %}
+							<p>{{ trad.aucune_correspondance }}</p>
+
+						{% else %}
+
+						  <table class="table table-striped">
+							<tr>
+							  <th>{{ trad.code_fonction }}</th>
+							  <th>{{ trad.libelle_fonction }}</th>
+							  <th>{{ trad.statut_grr }}</th>
+							  <th>{{ trad.statut_grr_modif }}</th>
+							  <th></th>
+							</tr>
+							{% for identifiant in identifiantsldap %}
+								<tr>
+									<td>{{identifiant.codefonc}}</td>
+									<td>{{identifiant.libfonc}}</td>
+									<td>{{identifiant.statutgrr}}</td>
+									<td>
+										<form action="?p=admin_corresp_statut&action_mod=yes" method="post">
+											<input type="hidden" name="idfonc" value="{{identifiant.id}}" />
+											<input type="hidden" name="idselect" value="{{identifiant.i}}" />
+											<select name="statut{{identifiant.i}}">
+												<option value="visiteur">{{ trad.statut_visitor }}</option>
+												<option value="utilisateur">{{ trad.statut_user }}</option>
+												<option value="gestionnaire_utilisateur">{{ trad.statut_user_administrator }}</option>
+												<option value="administrateur">{{ trad.statut_administrator }}</option>
+											</select>
+											<input type="submit" class="btn btn-info btn-xs" value="{{ trad.edit }}" />
+										</form>
+									</td>
+									<td>
+										<button type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#modal-warning" data-texte="{{trad.confirm_del}} : {{type.type_letter}}" data-idsup="{{identifiant.id}}"><i class="icon fa fa-trash"></i></button>
+									</td>
+								</tr>
+							{% endfor %}
+						  </table>
+
+						{% endif %}
+					</div>
+
+			</div>
+
+		</div>
+	</div>
+
+
+	<div class="modal modal-warning fade" id="modal-warning">
+		<form id="supcorresp" action="?p=admin_corresp_statut">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{trad.confirm_del}}</h4>
+              </div>
+              <div class="modal-body">
+				<span id="modal-texte"></span><span id="modal-idsup" class="hidden"></span> 
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">{{trad.cancel}}</button>
+				<button type="submit" id="liensup" class="btn btn-outline">{{trad.delete}}</button>
+              </div>
+            </div>
+          </div>
+		</form>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+	<script src="../js/functions.js" type="text/javascript"></script>
+
+	<script>
+		// data-* attributes to scan when populating modal values
+		var ATTRIBUTES = ['texte', 'idsup'];
+
+		$('[data-toggle="modal"]').on('click', function (e) {
+		  // convert target (e.g. the button) to jquery object
+		  var $target = $(e.target);
+		  // modal targeted by the button
+		  var modalSelector = $target.data('target');
+
+		  // iterate over each possible data-* attribute
+		  ATTRIBUTES.forEach(function (attributeName) {
+			// retrieve the dom element corresponding to current attribute
+			var $modalAttribute = $(modalSelector + ' #modal-' + attributeName);
+			var dataValue = $target.data(attributeName);
+			// if the attribute value is empty, $target.data() will return undefined.
+			// In JS boolean expressions return operands and are not coerced into
+			// booleans. That way is dataValue is undefined, the left part of the following
+			// Boolean expression evaluate to false and the empty string will be returned
+			$modalAttribute.text(dataValue || '');
+		  });
+		});
+
+	  $(function(){
+		$('#supcorresp').submit(function(e) {
+		  e.preventDefault()
+		  var $form = $(this)
+		  var v=document.getElementById('modal-idsup').innerHTML
+		  $.post($form.attr('action'), $form.serialize())
+		  .done(function(data) {
+			$('#html').html(data);
+			$('#modal-warning').modal('hide');
+			document.location.href='?p=admin_corresp_statut&id='+v+'&action_del=yes&js_confirmed=1';
+		  })
+		  .fail(function() {
+			alert('Une erreur est survenue : GRRJS')
+		  })
+		})
+	  })
+	</script>
+{% endblock %}

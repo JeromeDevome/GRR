@@ -72,7 +72,7 @@ var_dump($_POST);
 <body>
 	<div class="container">
 		<form role="form" method="POST" action="">
-			<?= $form->select('', 'beneficiaire', ucfirst(trim(get_vocab("reservation au nom de"))).get_vocab("deux_points"), $rows);?>
+			<?= $form->select('', 'beneficiaire', ucfirst(trim(get_vocab("reservation_au_nom_de"))).get_vocab("deux_points"), $rows);?>
 			<?= $form->text('name', get_vocab("namebooker"));?>
 			<?= $form->textarea('description', get_vocab("fulldescription"));?>
 			<?= $form->checkbox('keys', 'y', get_vocab("status_clef").get_vocab("deux_points"), get_vocab("msg_courrier"));?>

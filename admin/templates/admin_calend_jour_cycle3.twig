@@ -1,0 +1,85 @@
+{% extends 'layout.twig' %}
+
+{% block css %}
+{% endblock %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+
+		<div class="col-md-12">
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{ trad.titre_config_Jours_Cycles }}</h3>
+				</div>
+				<!-- /.box-header -->
+
+				<div class="box-body no-padding">
+					<div class="col-md-4"><a href="?p=admin_calend_jour_cycle1" class="btn btn-primary btn-block">{{ trad.admin_config_calend1 }}</a></div>
+					<div class="col-md-4"><a href="?p=admin_calend_jour_cycle2" class="btn btn-primary btn-block">{{ trad.admin_config_calend2 }}</a></div>
+					<div class="col-md-4"><a href="?p=admin_calend_jour_cycle3" class="btn btn-success btn-block">{{ trad.admin_config_calend3 }}</a></div>
+				</div>
+
+				<hr>
+
+				<p>{{ trad.explication_Jours_Cycles3 }}</p>
+				<p>{{ trad.explication_Jours_Cycles4 }}</p>
+
+				<form action="?p=admin_calend_jour_cycle3" method="get" onsubmit="return verifierJoursCycles(false);">
+
+					<input type="hidden" name="p" value="admin_calend_jour_cycle3" />
+					<input type="hidden" name="page_calend" value="3" />
+
+					<table cellspacing="20">
+						{{ trad.dCalendrier |raw }}
+					</table>
+
+				</form>
+
+				<hr>
+
+				{% if trad.dDate %}
+					<fieldset style="padding-top: 8px; padding-bottom: 8px; width: 80%; margin-left: auto; margin-right: auto;">
+						<legend>{{ trad.Journee_du }} {{ trad.dDateJour }}</legend>
+
+						<form id="main" method="get" action="?p=admin_calend_jour_cycle3">
+							<input type="hidden" name="p" value="admin_calend_jour_cycle3" />
+							<input type="hidden" name="page_calend" value="3" />
+							<input type="hidden" name="newdate" value="{{ trad.dDate }}" />
+
+							<input type="radio" name="selection" value="0" {% if trad.dJourCycle == -1 %}checked{% endif %} /> {{ trad.Cette_journee_ne_correspond_pas_a_un_jour_cycle }}<br>
+							<input type="radio" name="selection" value="1" {% if trad.dJourCycle > 0 %}checked{% endif %} /> {{ trad.nouveau_jour_cycle }} 
+								<select name="newDay" size="1" onclick="check(1)">
+									{% for i in 0..settings.nombre_jours_Jours_Cycles %}
+										<option value="{{ i }}" {% if trad.dJourCycle == i %}selected{% endif %}>{{ i }}</option>
+									{% endfor %}
+								</select>
+
+								<br>
+							<input type="radio" name="selection" value="2" {% if trad.dJourCycle == 0 %}checked{% endif %} /> {{ trad.Nommer_journee_par_le_titre_suivant }}
+								<input type="text" name="titre" onfocus="check(2)" value="{% if trad.dJourCycle == 0 %}{{ trad.dJourCycle }}{% endif %}">
+								<br>
+
+							<div style="text-align:center;">
+								<input class="btn btn-primary" type="submit" name="valider" value="{{ trad.save }}" />
+							</div>
+						</form>
+
+					</fieldset>
+				{% endif %}
+			</div>
+		</div>
+	</div>	
+
+{% endblock %}
+
+{% block javascript %}
+	<script type="text/javascript" >
+		function check (select)
+		{
+			document.getElementById('main').selection[select].checked=true;
+		}
+	</script>
+{% endblock %}

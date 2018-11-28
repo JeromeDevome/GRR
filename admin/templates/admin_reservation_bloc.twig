@@ -1,0 +1,309 @@
+{% extends 'layout.twig' %}
+
+{% block css %}
+{% endblock %}
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block content %}
+	<div class="row">
+
+		<div class="col-md-12">
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{ trad.admin_calendar_title }}</h3>
+					<p class="label pull-right bg-blue">{{ trad.etape_n }} {{ trad.dEtape }}/4</p>
+				</div>
+				<!-- /.box-header -->
+
+				<div class="box-body no-padding">
+
+					{% if trad.dEtape == 1 %}
+
+						<p>{{ trad.admin_calendar_explain_1 |raw }}</p>
+
+						<form action="?p=admin_reservation_bloc" method="post">
+							<input type="hidden" name="p" value="admin_reservation_bloc" />
+							<input type="hidden" name="etape" value="2" />
+
+							<table border="1">
+								<tr>
+									<td>
+										<h4>{{ trad.choix_domaines }}</h4>
+										<select name="areas[]" multiple="multiple" class="form-control" required>
+											{% for domaine in domaines %}
+												<option value="{{ domaine.id }}">{{ domaine.nom }}</option>
+											{% endfor %}
+										</select>
+										<p>{{ trad.ctrl_click }}</p>
+									</td>
+									<td>
+										<h4>{{ trad.choix_action }}</h4>
+										<input type="radio" name="type_resa" value="resa" checked /> {{ trad.reservation_en_bloc }}<br>
+										<input type="radio" name="type_resa" value="suppression" /> {{ trad.suppression_en_bloc }}<br>
+									</td>
+								</tr>
+							</table>
+
+							<br><br>
+
+							<div style="text-align:center;">
+								<input class="btn btn-primary" type="submit" name="valider" value="{{ trad.next }}" />
+							</div>
+						</form>
+
+					{% elseif trad.dEtape == 2 %}
+
+						{% if trad.dTypeResa == 'resa' %}
+							<h2>{{ trad.reservation_en_bloc }}</h2>
+						{% else %}
+							<h2>{{ trad.suppression_en_bloc }}</h2>
+						{% endif %}
+
+						<form action="?p=admin_reservation_bloc" method="post" id="main" onsubmit="return validate_and_submit();">
+							<input type="hidden" name="p" value="admin_reservation_bloc" />
+							<input type="hidden" name="etape" value="3" />
+							<input type="hidden" name="type_resa" value="{{ trad.dTypeResa }}" />
+
+							{% if trad.dTypeResa == 'resa' %}
+								<div class="form-group col-sm-12">
+									<label class="col-sm-4" for="beneficiaire">{{ trad.reservation_au_nom_de }}</label>
+									<div class="col-sm-8">
+									<select name="beneficiaire" class="form-control" required>
+										{% for beneficiaire in beneficiaires %}
+											<option value="{{ beneficiaire.id }}" {% if beneficiaire.select == 1 %}selected{% endif %}>{{ beneficiaire.nom }} {{ beneficiaire.prenom }}</option>
+										{% endfor %}
+									</select>
+								</div>
+
+								<br><br>
+
+								{{ form.input('name', trad.namebooker, '', {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
+								{{ form.textarea('description', trad.fulldescription, '', {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+
+							{% endif %}
+
+							<div class="form-group col-sm-12">
+								<label class="col-sm-4" for="rooms">{{ trad.rooms }}</label>
+								<div class="col-sm-8">
+								<select name="rooms[]" class="form-control" multiple required>
+									{% for ressource in ressources %}
+										<option value="{{ ressource.id }}">{{ ressource.nom }}</option>
+									{% endfor %}
+								</select>
+								<p>{{ trad.ctrl_click }}</p>
+							</div>
+
+							{% if trad.dTypeResa == 'resa' %}
+								<div class="form-group col-sm-12">
+									<label class="col-sm-4" for="type_">{{ trad.type }}</label>
+									<div class="col-sm-8">
+									<select name="type_" class="form-control" required>
+										{% for type in types %}
+											<option value="0">{{ trad.choose }}</option>
+											<option value="{{ type.id }}" {% if type.select == 1 %}selected{% endif %}>{{ type.nom }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							{% endif %}
+
+							<br><br>
+
+							<div style="text-align:center;">
+								<input class="btn btn-primary" type="submit" name="valider" value="{{ trad.next }}" />
+							</div>
+						</form>
+
+					{% elseif trad.dEtape == 3 %}
+
+						{% if trad.dTypeResa == 'resa' %}
+							<h2>{{ trad.reservation_en_bloc }}</h2>
+						{% else %}
+							<h2>{{ trad.suppression_en_bloc }}</h2>
+						{% endif %}
+
+						<form action="?p=admin_reservation_bloc" method="post" id="formulaire">
+
+							<div class="row">
+								<div class="col-md-8">
+									<table cellpadding="3" width="100%" border="0">
+										{% for jour in jourssemaines  %}
+											<tr>
+												<td><span class="small"><a href="?p=admin_reservation_bloc" onclick="setCheckboxesGrr(document.getElementById('formulaire'), true, '{{ jour }}'); return false;">{{ trad.check_all_the }} {{ jour }}s</a></span></td>
+												<td><span class="small"><a href="?p=admin_reservation_bloc" onclick="setCheckboxesGrr(document.getElementById('formulaire'), false, '{{ jour }}' ); return false;">{{ trad.uncheck_all_the }} {{ jour }}s</a></span></td>
+											</tr>
+										{% endfor %}
+										<tr>
+											<td><span class="small"><a href="?p=admin_calend_jour_cycle2" onclick="setCheckboxesGrr(document.getElementById('formulaire'), false, 'all'); return false;">{{ trad.uncheck_all_ }}</a></span></td>
+										</tr>
+									</table>
+								</div>
+
+								<!-- Partie selection horaire -->
+								<div class="col-md-4">
+									<p><b>{{ trad.date }} {{ trad.deux_points }}</b></p>
+
+									{% if trad.dPeriode == 'y' %}
+
+										<p>{{ trad.period }}</p>
+										<select name="period">
+											{% for periode in periodes %}
+												<option value="{{ periode.num }}">{{ periode.val }}</option>
+											{% endfor %}
+										</select>
+
+										<p><b>{{ trad.fin_reservation }} {{ trad.deux_points }}</b></p>
+										<p>{{ trad.period }}</p>
+										<select name="end_period">
+											{% for periode in periodes %}
+												<option value="{{ periode.num }}">{{ periode.val }}</option>
+											{% endfor %}
+										</select>
+										
+
+									{% elseif trad.dPeriode == 'n' %}
+
+										<p>
+											{{ trad.time }}
+											<input name="hour" size="2" value="{{ trad.dDebutJournee }}" maxlength="2" /> h
+											<input name="minute" size="2" value="0" maxlength="2" />
+										</p>
+
+										<p><b>{{ trad.fin_reservation }} {{ trad.deux_points }}</b></p>
+										<p>
+											{{ trad.time }}
+											<input name="end_hour" size="2" maxlength="2" required /> h 
+											<input name="end_minute" size="2" value="0" maxlength="2" />
+										</p>
+
+									{% else %}
+
+										<input type="hidden" name="all_day" value="y" />
+										<p>{{ trad.domaines_de_type_incompatibles }}</p>
+
+									{% endif %}
+
+								</div>
+							</div>
+
+							<input type="hidden" name="p" value="admin_reservation_bloc" />
+							<input type="hidden" name="etape" value="4" />
+							<input type="hidden" name="type_resa" value="{{ trad.dTypeResa }}" />
+							<input type="hidden" name="record" value="yes" />
+							<input type="hidden" name="name" value="{{ trad.dName }}" />
+							<input type="hidden" name="description" value="{{ trad.dDescription }}" />
+							<input type="hidden" name="beneficiaire" value="{{ trad.dBeneficiaire }}" />
+							<input type="hidden" name="type_" value="{{ trad.dType }}" />
+							{% for ressource in ressources %}
+								<input type="hidden" name="id_room_{{ ressource.id }}" value="yes" />
+							{% endfor %}
+
+							<table cellspacing="20">
+								{{ trad.dCalendrier |raw }}
+							</table>
+
+
+							<div style="text-align:center;">
+								<input class="btn btn-primary" type="submit" name="valider" value="{{ trad.save }}" />
+							</div>
+
+						</form>
+
+					{% elseif trad.dEtape == 4 %}
+
+						{% if trad.dTypeResa == 'resa' %}
+							<h3>{{ trad.reservation_en_bloc }}</h3>
+							<h2>{{ trad.reservation_en_bloc_result }}</h2>
+							{% if trad.dResult != 0 %}
+								<p>{{ trad.reservation_en_bloc_result2 }} {{ trad.dResult }}</p>
+							{% endif %}
+						{% else %}
+							<h3>{{ trad.suppression_en_bloc }}</h3>
+							<h2>{{ trad.suppression_en_bloc_result }} {{ trad.dResult }}</h2>
+						{% endif %}
+
+					{% endif %}
+
+				</div>
+			</div>
+		</div>
+	</div>	
+
+{% endblock %}
+
+{% block javascript %}
+	{% if trad.dEtape == 2 %}
+		{% if trad.dTypeResa == 'resa' %}
+			<script  type="text/javascript">
+			function validate_and_submit ()
+			{
+				if (document.getElementById("main").name.value == "")
+				{
+					alert ( "{{ trad.you_have_not_entered }} \n {{ trad.brief_description }}");
+					return false;
+				}
+				else if (document.getElementById("main").elements[3].value == '')
+				{
+					alert("{{ trad.choose_a_room }}");
+					return false;
+				}
+				else if (document.getElementById("main").type_.value == '0')
+				{
+					alert("{{ trad.choose_a_type }}");
+					return false;
+				}
+				else
+					return true;
+			}
+			</script>
+		{% else %}
+			<script  type="text/javascript">
+				function validate_and_submit ()
+				{
+					if (document.getElementById("main").elements[0].value == '')
+					{
+						alert("{{ trad.choose_a_room }}"); ?>");
+						return false;
+					}
+					else
+						return true;
+				}
+			</script>
+		{% endif %}
+	{% elseif trad.dEtape == 3 %}
+		<script  type="text/javascript">
+			function setCheckboxesGrr(elts, do_check, day)
+			{
+				for (i = 0; i < elts.length; i++)
+				{
+					type = elts.type;
+					if (type="checkbox")
+					{
+						if ((elts[i].value== day) || (day=='all'))
+						{
+							elts[i].checked = do_check;
+						}
+					}
+				}
+				return true;
+			}
+
+			function setCheckboxesGrrName(elts, do_check, day)
+			{
+				for (i = 0; i < elts.length; i++)
+				{
+					type = elts.type;
+					if (type="checkbox")
+					{
+						if (elts[i].name== day)
+						{
+							elts[i].checked = do_check;
+						}
+					}
+				}
+				return true;
+			}
+		</script>
+	{% endif %}
+{% endblock %}

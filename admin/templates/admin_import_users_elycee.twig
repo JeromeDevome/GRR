@@ -1,0 +1,162 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			{% if trad.dFichierEnvoye != 1 %}
+
+				{% if trad.dResultat != '' %}
+					<div class="box box-info">
+						<div class="box-header">
+							<h3 class="box-title">{{ trad.admin_import_users_fichier }}</h3>
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body no-padding">
+							{{ trad.dResultat |raw }}
+						</div>
+					</div>
+				{% endif %}
+			
+				<div class="box">
+					<div class="box-header">
+						<h3 class="box-title">{{ trad.admin_import_users_fichier }}</h3>
+						<a href="?p=admin_user" class="btn btn-xs btn-info pull-right">{{ trad.back }}</a>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body no-padding">
+
+						<form enctype="multipart/form-data" action="?p=admin_import_users_elycee" method="post" >
+							<input type="hidden" name="is_posted" value="1" />
+
+							<div class="form-group col-sm-12">
+								<label class="col-sm-6" for="csvfile">{{ trad.admin_import_users_csv0 }}</label>
+								<div class="col-sm-6">
+									<input type="file" name="csvfile" />
+								</div>
+							</div>
+
+							<div class="form-group col-sm-12">
+								<label class="col-sm-6" for="en_tete">{{ trad.admin_import_users_csv1 }}</label>
+								<div class="col-sm-6">
+									<input type="checkbox" name="en_tete" value="yes" checked="checked" />
+								</div>
+							</div>
+
+							<div style="text-align:center;">
+								<input class="btn btn-primary" type="submit" name="ok" value="{{ trad.submit }}" />
+							</div>
+
+						</form>
+
+					</div>
+				</div>
+
+				<div class="box box-info">
+					<div class="box-header">
+						<h3 class="box-title">{{ trad.num_version_title }}</h3>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body no-padding">
+						<p>Le fichier à importer est obtenu par export depuis l'annuaire elycée, les champs présents devraient être les suivants :</p>
+						<code>rne;uid;classe;profil;prenom;nom;login;mot de passe;cle de jointure;uid pere;uid mere;uid tuteur1;uid tuteur2;prenom enfant;nom enfant;adresse;code postal;ville;pays</code>
+					</div>
+				</div>
+			{% elseif trad.dFichierEnvoye == 1 %}
+
+				{% if trad.dTmpName != '' %}
+				
+					{% if trad.dFp %}
+						{{ trad.admin_import_users_csv4 }} <!-- Impossible d'ouvrir le fichier -->
+					{% else %}
+						<div class="callout callout-info">{{trad.dInfosImport}}</div>
+
+						{% if trad.dLoginExistant == 'oui' %}
+							<div class="callout callout-warning">{{trad.admin_import_users_csv7}}</div>
+						{% endif %}
+						
+						{% if trad.dValideImport == 0 %}
+							<div class="callout callout-danger">{{trad.admin_import_users_csv9}}</div>
+						{% elseif trad.dRow < 1 %}
+							<div class="callout callout-danger">{{trad.admin_import_users_csv10}}</div>
+						{% else %}
+							<form enctype="multipart/form-data" action="?p=admin_import_users_elycee" method="post">
+						{% endif %}
+
+							<table class="table table-striped">
+								<tr>
+									<th>{{ trad.login }}</th>
+									<th>{{ trad.name }}</th>
+									<th>{{ trad.first_name }}</th>
+									<th>{{ trad.pwd }}</th>
+									<th>{{ trad.email }}</th>
+									<th>{{ trad.type }}</th>
+									<th>{{ trad.statut }}</th>
+									<th>{{ trad.authentification }}</th>
+								</tr>
+								{% for user in utilisateursaimporter %}
+									<tr>
+										<td {% if user.login == "???" %} class="danger" {% endif %} {% if user.existant == 1 %} class="bg-yellow" {% endif %}>
+											{{ user.login }}
+											{% if user.existant == 1 %}
+												<input type="hidden" name="reg_stat[{{ user.num }}]" value="existant" />
+											{% else %}
+												<input type="hidden" name="reg_stat[{{ user.num }}]" value="nouveau" />
+											{% endif %}
+											<input type="hidden" name="reg_login[{{ user.num }}]" value="{{ user.login }}" />
+										</td>
+										<td {% if user.name == "???" %} class="danger" {% endif %}>
+											{{ user.name }}
+											<input type="hidden" name="reg_nom[{{ user.num }}]" value="{{ user.name }}" />
+										</td>
+										<td {% if user.first_name == "???" %} class="danger" {% endif %}>
+											{{ user.first_name }}
+											<input type="hidden" name="reg_prenom[{{ user.num }}]" value="{{ user.first_name }}" />
+										</td>
+										<td {% if user.pwd == "???" %} class="danger" {% endif %}>
+											{{ user.pwd }}
+											<input type="hidden" name="reg_mdp[{{ user.num }}]" value="{{ user.pwd }}" />
+										</td>
+										<td {% if user.email == "???" %} class="danger" {% endif %}>
+											{{ user.email }}
+											<input type="hidden" name="reg_email[{{ user.num }}]" value="{{ user.email }}" />
+										</td>
+										<td {% if user.type == "???" %} class="danger" {% endif %}>
+											{{ user.type }}
+											<input type="hidden" name="reg_type_user[{{ user.num }}]" value="{{ user.type }}" />
+										</td>
+										<td {% if user.statut == "???" %} class="danger" {% endif %}>
+											{{ user.statut }}
+											<input type="hidden" name="reg_statut[{{ user.num }}]" value="{{ user.statut }}" />
+										</td>
+										<td {% if user.authentification == "???" %} class="danger" {% endif %}>
+											{{ user.authentification }}
+											<input type="hidden" name="reg_type_auth[{{ user.num }}]" value="{{ user.authentification }}" />
+										</td>
+									</tr>
+								{% endfor %}
+							</table>
+
+						{% if trad.dValideImport == 1 and trad.dRow > 0 %}
+								<div>
+									<input type="hidden" name="nb_row" value="{{ trad.dRow }}" />
+									<input type="hidden" name="reg_data" value="yes" />
+									<center><input type="submit" class="btn btn-info btn-md" value="{{ trad.submit }}" /></center>
+								</div>
+							</form>
+						{% endif %}
+					{% endif %}
+				{% else %}
+					{{ trad.admin_import_users_csv11 }}  <!-- Aucun fichier -->
+				{% endif %}
+
+			{% endif %}
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

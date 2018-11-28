@@ -20,6 +20,7 @@ class Email{
 
 	public static function Envois ($A, $sujet, $message, $DE, $cc1='', $cc2='') {
 
+		//boip2402
 		if(!defined('IS_PROD') || !IS_PROD) {
 			$A = Settings::get('technical_support_email');
 		}

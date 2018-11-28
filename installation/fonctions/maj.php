@@ -394,12 +394,12 @@ function execute_maj($version_old, $version_grr)
 		$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='allow_users_modify_email'");
 		if ($req == -1)
 			$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('allow_users_modify_email', '2');");
-		$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='jour_debut_Jours/Cycles'");
+		$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='jour_debut_Jours_Cycles'");
 		if ($req == -1)
-			$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('jour_debut_Jours/Cycles', '1');");
-		$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='nombre_jours_Jours/Cycles'");
+			$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('jour_debut_Jours_Cycles', '1');");
+		$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='nombre_jours_Jours_Cycles'");
 		if ($req == -1)
-			$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('nombre_jours_Jours/Cycles', '1');");
+			$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('nombre_jours_Jours_Cycles', '1');");
 		$req = grr_sql_query1("SELECT NAME FROM ".TABLE_PREFIX."_setting WHERE NAME='UserAllRoomsMaxBooking'");
 		if ($req == -1)
 			$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('UserAllRoomsMaxBooking', '-1');");

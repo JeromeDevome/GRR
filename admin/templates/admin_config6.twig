@@ -104,6 +104,43 @@
 
 					<hr>
 
+					<section id="display_planning_resa">
+						<h4 class="page-header">{{ trad.display_planning_resa }}</h4>
+
+						<table class="table table-condensed">
+							<tbody>
+								<tr>
+									<th style="width: 200px"></th>
+									<th style="width: 50px">Afficher</th>
+									<th>Ne pas afficher</th>
+								</tr>
+								<tr>
+									<td>{{ trad.sum_by_creator }}</td>
+									<td>Prochainement</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td>{{ trad.namebooker }}</td>
+									<td><input type="radio" name="display_short_description" value="0" id="label_4a" {% if settings.display_short_description == '0' %} checked {% endif %} /></td>
+									<td><input type="radio" name="display_short_description" value="1" id="label_4b" {% if settings.display_short_description == '1' %} checked {% endif %} /></td>
+								</tr>
+								<tr>
+									<td>{{ trad.match_descr }}</td>
+									<td><input type="radio" name="display_full_description" value="0" id="label_5a" {% if settings.display_full_description == '0' %} checked {% endif %} /></td>
+									<td><input type="radio" name="display_full_description" value="1" id="label_5b" {% if settings.display_full_description == '1' %} checked {% endif %} /></td>
+								</tr>
+								<tr>
+									<td>{{ trad.type }}</td>
+									<td>Prochainement</td>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+
+					</section>
+
+					<hr>
+<!--
 					<section id="descriptionbreve">
 						<h4 class="page-header">{{ trad.display_short_description_msg }}</h4>
 						<input type="radio" name="display_short_description" value="0" id="label_4a" {% if settings.display_short_description == '0' %} checked {% endif %} /> <label for="label_4a">{{ trad.display_short_description0 }}</label><br>
@@ -117,7 +154,7 @@
 						<input type="radio" name="display_full_description" value="0" id="label_5a" {% if settings.display_full_description == '0' %} checked {% endif %} /> <label for="label_5a">{{ trad.display_full_description0 }}</label><br>
 						<input type="radio" name="display_full_description" value="1" id="label_5b" {% if settings.display_full_description == '1' %} checked {% endif %} /> <label for="label_5b">{{ trad.display_full_description1 }}</label><br>
 					</section>
-
+-->
 					<hr>
 
 					<section id="liensemail">
@@ -169,6 +206,31 @@
 
 					<hr>
 
+					<section id="ouvertureimpression">
+						<h4 class="page-header">Affichage plannings divers</h4>
+
+						<table class="table table-condensed">
+							<tbody>
+								<tr>
+									<th style="width: 200px"></th>
+									<th style="width: 50px">Afficher</th>
+									<th>Ne pas afficher</th>
+								</tr>
+								<tr>
+									<td>{{ trad.legend_msg }}</td>
+									<td><input type="radio" name="legend" value="0" id="label_11a" {% if settings.legend == '0' %} checked {% endif %} /></td>
+									<td><input type="radio" name="legend" value="1" id="label_11b" {% if settings.legend == '1' %} checked {% endif %} /></td>
+								</tr>
+								<tr>
+									<td>{{ trad.imprimante_msg }}</td>
+									<td><input type="radio" name="imprimante" value="0" id="label_12a" {% if settings.imprimante == '0' %} checked {% endif %} /></td>
+									<td><input type="radio" name="imprimante" value="1" id="label_12b" {% if settings.imprimante == '1' %} checked {% endif %} /></td>
+								</tr>
+							</tbody>
+						</table>
+
+					</section>
+<!--					
 					<section id="legende">
 						<h4 class="page-header">{{ trad.legend_msg }}</h4>
 						<input type="radio" name="legend" value="0" id="label_1a" {% if settings.legend == '0' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
@@ -182,7 +244,7 @@
 						<input type="radio" name="imprimante" value="0" id="label_1a" {% if settings.imprimante == '0' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
 						<input type="radio" name="imprimante" value="1" id="label_1b" {% if settings.imprimante == '1' %} checked {% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
 					</section>
-
+-->
 					<hr>
 
 					<section id="periodicite">

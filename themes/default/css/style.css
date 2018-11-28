@@ -200,6 +200,15 @@ html #fade,html .popup_block{position:absolute}
 #toTop{width:100px;border:1px solid #ccc;background:#f7f7f7;color:black;text-align:center;padding:5px;position:fixed;bottom:10px;right:10px;cursor:pointer;font-family:verdana;font-size:14px}
 #duree{text-align:center;min-width:50px;width:15%;}
 
+table.scrolled > thead > tr > td:first-child,
+table.scrolled > thead > tr > th:first-child,
+table.scrolled > tbody > tr > td:first-child,
+table.scrolled > tbody > tr > th:first-child,
+table.scrolled > tr > td:first-child,
+table.scrolled > tr > th:first-child {
+	position: absolute;
+}
+
 @media only screen and (max-width:800px) { 
 	.accueil {
 		display:none;

@@ -421,15 +421,14 @@ function mrbsCreateSingleEntry($starttime, $endtime, $entry_type, $repeat_id, $r
 	foreach ($overload_fields_list as $field=>$fieldtype)
 	{
 		$id_field = $overload_fields_list[$field]["id"];
-		if (array_key_exists($id_field,$overload_data))
-		{
-			//$begin_string = "<".$id_field.">";
-			//$end_string = "</".$id_field.">";
-			$begin_string = "@".$id_field."@";
-			$end_string = "@/".$id_field."@";
-			//$overload_data_string .= $begin_string.base64_encode($overload_data[$id_field]).$end_string;
-			$overload_data_string .= $begin_string.urlencode($overload_data[$id_field]).$end_string;
-		}
+
+		if($overload_data != '')
+			if (array_key_exists($id_field,$overload_data))
+			{
+				$begin_string = "@".$id_field."@";
+				$end_string = "@/".$id_field."@";
+				$overload_data_string .= $begin_string.urlencode($overload_data[$id_field]).$end_string;
+			}
 	}
 	//Hugo - Commande sql insérant la nouvelle réservation dans la base de données
 	$sql = "INSERT INTO ".TABLE_PREFIX."_entry (start_time, end_time, entry_type, repeat_id, room_id, create_by, beneficiaire, beneficiaire_ext, name, type, description, statut_entry, option_reservation,overload_desc, moderate, jours, clef, courrier) VALUES ($starttime, $endtime, '".protect_data_sql($entry_type)."', $repeat_id, $room_id, '".protect_data_sql($creator)."', '".protect_data_sql($beneficiaire)."', '".protect_data_sql($beneficiaire_ext)."', '".protect_data_sql($name)."', '".protect_data_sql($type)."', '".protect_data_sql($description)."', '".protect_data_sql($statut_entry)."', '".$option_reservation."','".protect_data_sql($overload_data_string)."', ".$moderate.",".$rep_jour_c.", $keys, $courrier)";

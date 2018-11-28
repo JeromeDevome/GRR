@@ -112,6 +112,11 @@ $upload_Module = 1;
 # Nb de jour maximum que l'on garde les logs de connexions, 0 = aucune limite
 $nbMaxJoursLogConnexion = 365;
 
+# Mot de passe simple
+	# Valeurs  3- azerty  || 4- Vide || 6- 123456  || 7- 1234567 || 8- 12345678 || 9- 000000 || 10- 00000000 
+	$mdpFacile = array("ab4f63f9ac65152575886860dde480a1", "", "e10adc3949ba59abbe56e057f20f883e", "fcea920f7412b5da7be0cf42b8c93759", "25d55ad283aa400af464c76d713c07ad", "670b14728ad9902aecba32e22fa4f6bd", "dd4b21e9ef71e1291183a46b913ae6f2");
+
+
 ##################################################
 # Cas d'une authentification via config.inc.php  #
 ##################################################
@@ -157,41 +162,6 @@ $sso_super_admin = false;
 // Indiquez ci-dessous le répertoire d'installation du package spkitlasso
 // (la valeur par défaut le cherche dans le 'include_path' de PHP)
  define('SPKITLASSO',"spkitlasso");
-
-#############
-# Entry Types
-#############
-# Les lignes ci-dessous correspondent aux couleurs disponibles pour les types de réservation
-# Vous pouvez modifier les couleurs ou même en rajouter à votre convenance.
-$tab_couleur[1] = "#F49AC2"; # mauve pâle
-$tab_couleur[2] = "#99CCCC"; # bleu
-$tab_couleur[3] = "#FF9999"; # rose pâle
-$tab_couleur[4] = "#95a5a6"; # concrete
-$tab_couleur[5] = "#C0E0FF"; # bleu-vert
-$tab_couleur[6] = "#FFCC99"; # pêche
-$tab_couleur[7] = "#e74c3c"; # rouge
-$tab_couleur[8] = "#3498db"; # bleu "aqua"
-$tab_couleur[9] = "#DDFFDD"; # vert clair
-$tab_couleur[10] = "#34495e"; # gris
-$tab_couleur[11] = "#2ecc71"; # vert pâle
-$tab_couleur[12] = "#9b59b6"; # violet
-$tab_couleur[13] = "#f1c40f"; # jaune
-$tab_couleur[14] = "#FF00DE"; # rose
-$tab_couleur[15] = "#2ecc71"; # vert
-$tab_couleur[16] = "#e67e22"; # orange
-$tab_couleur[17] = "#bdc3c7"; # gris clair
-$tab_couleur[18] = "#C000FF"; # Mauve
-$tab_couleur[19] = "#FF0000"; # rouge vif
-$tab_couleur[20] = "#FFFFFF"; # blanc
-$tab_couleur[21] = "#A0A000"; # Olive verte
-$tab_couleur[22] = "#f39c12"; # marron goldenrod
-$tab_couleur[23] = "#1abc9c"; # turquoise
-$tab_couleur[24] = "#9b59b6"; # amethyst
-$tab_couleur[25] = "#4169E1"; # bleu royal
-$tab_couleur[26] = "#6A5ACD"; # bleu ardoise
-$tab_couleur[27] = "#AA5050"; # bordeaux
-$tab_couleur[28] = "#FFBB20"; # pêche
-
 
 ###################
 # Database settings

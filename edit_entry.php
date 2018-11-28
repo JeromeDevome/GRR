@@ -700,7 +700,7 @@ if (((authGetUserLevel(getUserName(), -1, "room") >= $qui_peut_reserver_pour) ||
 	$flag_qui_peut_reserver_pour = "yes";
 	echo '<tr>'.PHP_EOL;
 	echo '<td class="E">'.PHP_EOL;
-	echo '<b>'.ucfirst(trim(get_vocab("reservation au nom de"))).get_vocab("deux_points").'</b>'.PHP_EOL;
+	echo '<b>'.ucfirst(trim(get_vocab("reservation_au_nom_de"))).get_vocab("deux_points").'</b>'.PHP_EOL;
 	echo '</td>'.PHP_EOL;
 	echo '</tr>'.PHP_EOL;
 	echo '<tr>'.PHP_EOL;
@@ -882,7 +882,7 @@ if ($type_affichage_reser == 0) // sélection de la durée
 		else
 			$units = array("minutes", "hours", "days", "weeks");
 	}
-	while (list(,$unit) = each($units))
+	foreach ($units as $unit)
 	{
 		echo '<option value="'.$unit.'"';
 		if ($dur_units ==  get_vocab($unit))
@@ -1186,7 +1186,7 @@ if($periodiciteConfig == 'y'){
 		echo "<table style=\"display:none\" id=\"menuP\" width=\"100%\">\n";
 		echo "<tr><td class=\"F\"><b>Jours/Cycle</b></td></tr>\n";
 		echo "<tr><td class=\"CL\">";
-		for ($i = 1; $i < (Settings::get("nombre_jours_Jours/Cycles") + 1); $i++)
+		for ($i = 1; $i < (Settings::get("nombre_jours_Jours_Cycles") + 1); $i++)
 		{
 			$wday = $i;
 			echo "<input type=\"radio\" name=\"rep_jour_\" value=\"$wday\"";

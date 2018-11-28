@@ -26,6 +26,7 @@ if(isset($_GET['p'])){
 
 // GRR
 include "../include/admin.inc.php";
+include "./modeles/AdminFonctions.php";
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
@@ -48,6 +49,9 @@ $trad['dLienRetour'] = $lienRetour;
 $trad['dLienCompte'] = $lienCompte;
 $trad['dNomUtilisateur'] = getUserName();
 $AllSettings = Settings::getAll();
+
+//boip2402 - populé dans admin_room.php
+$sites = array();		//admin_room.twig
 
 // Template Twig
 $loader = new Twig_Loader_Filesystem(__DIR__ . '/templates');
@@ -75,7 +79,7 @@ if($page === 'admin_accueil'){
 	echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'type' => $typeResa, 'lettres' => $lettres));
 } elseif($page === 'admin_room'){
 	echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'sites' => $sites, 'domaines' => $domaines, 'ressources' => $ressources));
-} elseif($page === 'admin_user' || $page === 'admin_user_mdp_facile'){
+} elseif($page === 'admin_user'){
 	echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateurs' => $col));
 } elseif($page === 'admin_user_modify'){
 	echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateur' => $utilisateur));
