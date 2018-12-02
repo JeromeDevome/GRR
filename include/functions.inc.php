@@ -39,40 +39,7 @@ function isSchoolHoliday($now)
 	$test = grr_sql_query1("SELECT DAY FROM ".TABLE_PREFIX."_calendrier_vacances where DAY = '".$now."'");
 	$val = ($test != -1);
 	return $val;
-} 
-/* function getSchoolHolidays($now, $year)
-{
-	$zone = 'A';
-	if (Settings::get("holidays_zone") != NULL)
-		$zone = Settings::get("holidays_zone");
-	$sh = array(false, "");
-	$vacances = simplexml_load_file('vacances.xml');
-	$libelle = $vacances->libelles->children();
-	$node = $vacances->calendrier->children();
-	foreach ($node as $key => $value)
-	{
-		if ($value['libelle'] == $zone)
-		{
-			foreach ($value->vacances as $key => $value)
-			{
-				$y = date('Y', strtotime($value['debut']));
-				if ($y == $year)
-				{
-					if (strtotime($value['debut']) <= $now && $now < strtotime($value['fin']))
-					{
-						$nom = (int)$value['libelle'];
-						$nom = $libelle->libelle[$nom - 1];
-						$sh = array(true, $nom);
-						break;
-					}
-
-				}
-			}
-		}
-	}
-	return $sh;
 }
-*/
 // fonction de calcul des jours fériés (France)
 function setHolidays($year = null)
 {
@@ -281,33 +248,10 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 				$affichage = "";
 		}
 		else
-			//$affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.$_identite.'</a>'.PHP_EOL;
             $affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.$_identite.'</a>'.PHP_EOL;
 	}
 	else
-	{   // si j'ai bien compris, il s'agit de calculer une balise mailto, et ce qui suit parait trop compliqué YN 2018-01-26
-
-	/*	?>
-		<script type="text/javascript">
-			function encode_adresse(user,domain,debut)
-			{
-				var address = user+'@'+domain;
-				var toWrite = '';
-				if (debut > 0)
-					toWrite += '<'+'a href="mailto:';
-				else
-					toWrite +=';';
-				toWrite +=address
-				document.write(toWrite);
-			}
-			function encode_fin_adresse(label)
-			{
-				var toWrite = '';
-				toWrite +='">'+label+'</'+'a>';
-				document.write(toWrite);
-			}
-		</script>
-		<?php */
+	{   // Il s'agit de calculer une balise mailto
 		$affichage = "";
 		if ($_email == "")
 		{
@@ -323,30 +267,6 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
             else 
                 if ($option_affichage == "afficher_toujours")
                     $affichage = $_identite;
-            /* 
-			$tab_email = explode(';', trim($_email));
-			$i = 0;
-			$affichage .= '<script>'.PHP_EOL;
-			foreach ($tab_email as $item_email)
-			{
-				$item_email_explode = explode('@',$item_email);
-				$person = $item_email_explode[0];
-				if (isset($item_email_explode[1]))
-				{
-					$i++;
-					$domain = $item_email_explode[1];
-					if ($i == 1)
-					{
-						$affichage .=  'encode_adresse("'.$person.'", "'.$domain.'", 1);'.PHP_EOL;
-					}
-					else{
-						$affichage .=  'encode_adresse("'.$person.'", "'.$domain.'", 0);'.PHP_EOL;
-					}
-				}
-			}
-			$affichage .=  'encode_fin_adresse("'.addslashes($_identite).'");'.PHP_EOL;
-			$affichage .=  '</script>'.PHP_EOL;
-			$affichage .= $_identite; */
 		}
 	}
 	return $affichage;
@@ -565,20 +485,7 @@ function how_many_connected()
  * Description : si c'est un admin ou un gestionnaire de ressource qui est connecté, retourne un message indiquant s'il y a des réservations à modérer
 */
 function resaToModerate($user)
-{/*
-    $can_see = (authGetUserLevel($user,-1) > 5);// admin général
-    if (!$can_see){
-        if (isset($_GET['id_site'])){$can_see = (authGetUserLevel($user,$_GET['id_site'],'site') > 4);} // admin du site en paramètre
-    }
-    if (!$can_see){
-        if (isset($_GET['area'])){$can_see = (authGetUserLevel($user,$_GET['area'],'area') > 3);} // admin du domaine en paramètre
-    }
-    if (!$can_see){
-        if (isset($_GET['room'])){$can_see = (authGetUserLevel($user,$_GET['room'],'room') > 2);} // gestionnaire de la ressource en paramètre
-    }
-    if ($can_see){
-        $mesg = "accessible";}
-    else $mesg = ''; */
+{
     $mesg = '';
     if (authGetUserLevel($user,-1) > 5) // admin général
     {
@@ -4782,8 +4689,7 @@ function pageHead2($title, $page = "with_session")
 	{
 		setcookie("open", "true", time()+3600);
 	}
-	/* $a = '<!DOCTYPE html>'.PHP_EOL;
-	$a .= '<html lang="fr">'.PHP_EOL; */
+
 	$a  = '<head>'.PHP_EOL;
 	$a .= '<meta charset="utf-8">'.PHP_EOL;
 	$a .= '<meta http-equiv="X-UA-Compatible" content="IE=edge">'.PHP_EOL;
@@ -4791,10 +4697,7 @@ function pageHead2($title, $page = "with_session")
 	$a .= '<meta name="Robots" content="noindex" />'.PHP_EOL;
 	$a .= '<title>'.$title.'</title>'.PHP_EOL;
 	$a .= '<link rel="shortcut icon" href="./favicon.ico" />'.PHP_EOL;
-
-	//$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL;
 	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />'.PHP_EOL;
-	// $a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/mod_bootstrap.css" />'.PHP_EOL;
 	if (isset($use_select2))
 	{
 		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2.css" />'.PHP_EOL;
@@ -4804,8 +4707,6 @@ function pageHead2($title, $page = "with_session")
 	}
 	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.css" />'.PHP_EOL;
 	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
-	// $a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/jquery.timepicker.min.css" >'.PHP_EOL;
-	// $a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/mod_bootstrap.css" />'.PHP_EOL;
 	$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
 	$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
 	if (isset($use_admin))
@@ -4816,7 +4717,6 @@ function pageHead2($title, $page = "with_session")
 	$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
-	// $a .= '<script type="text/javascript" src="js/jquery.timepicker.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/html2canvas.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;
@@ -4841,7 +4741,7 @@ function pageHead2($title, $page = "with_session")
 		$a .= get_vocab('not_php3');
 
 	$a .= '</head>'.PHP_EOL;
-	// $a .= '<body>'.PHP_EOL;
+
 	return $a;
 }
 
@@ -4899,10 +4799,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			$day   = date("d",$date_);
 			$month = date("m",$date_);
 			$year  = date("Y",$date_);
-			// echo '<div id="toppanel">'.PHP_EOL;
 			echo '<div id="panel">'.PHP_EOL;
-			// echo '<table id="header">'.PHP_EOL;
-			// echo '<tr>'.PHP_EOL;
 			//Logo
 			$nom_picture = $racine."images/".Settings::get("logo");
 			if ((Settings::get("logo") != '') && (@file_exists($nom_picture)))
@@ -5009,11 +4906,8 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 				}
 			}
 			echo '</div>'.PHP_EOL;
-			// echo '</tr>'.PHP_EOL;
-			// echo '</table>'.PHP_EOL;
 			echo '</div>'.PHP_EOL;
 			echo '<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>'.PHP_EOL;
-			// echo '</div>'.PHP_EOL;
 		}
 	}
 }
