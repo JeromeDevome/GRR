@@ -929,11 +929,9 @@ function begin_page($title, $page = "with_session")
 	$a .= '<title>'.$title.'</title>'.PHP_EOL;
 	$a .= '<link rel="shortcut icon" href="./favicon.ico" />'.PHP_EOL;
 
-	//$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL;
 	$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/bootstrap.min.css" />'.PHP_EOL;
 	$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/mod_bootstrap.css" />'.PHP_EOL;
-	/*if (isset($use_admin))
-		$a .= '<link rel="stylesheet" type="text/css" href="include/admin_grr.css" />'.PHP_EOL;*/
+
 	if (isset($use_select2))
 	{
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/select2.css" />'.PHP_EOL;
@@ -963,11 +961,11 @@ function begin_page($title, $page = "with_session")
 	{
 		$a .= '<script type="text/javascript" src="js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/bootstrap-multiselect.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/select2.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/select2.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/select2_locale_fr.js"></script>'.PHP_EOL;
 	}
 	if (isset($use_tooltip_js))
-		echo '<script type="text/javascript" src="./include/tooltip.js"></script>'.PHP_EOL;
+		echo '<script type="text/javascript" src="js/tooltip.min.js"></script>'.PHP_EOL;
 	if (!isset($_SESSION['selection']))
 		$a .= '<script type="text/javascript" src="js/selection.js" ></script>'.PHP_EOL;
 	if (@file_exists('js/'.$clock_file))
