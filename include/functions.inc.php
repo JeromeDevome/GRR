@@ -4929,7 +4929,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 				{
 					echo '<div class="administration">'.PHP_EOL;
 					if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1))
-                        echo "<br><a href='{$racineAd}admin_accueil.php?day={$day}&amp;month={$month}&amp;year={$year}'>".get_vocab('admin')."</a>".PHP_EOL;
+                        echo "<br><a href='./admin/admin.php?p=admin_accueil&day={$day}&amp;month={$month}&amp;year={$year}'>".get_vocab('admin')."</a>".PHP_EOL;
 					if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 					{
 						echo '<br />'.PHP_EOL;
