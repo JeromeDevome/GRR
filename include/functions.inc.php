@@ -4187,6 +4187,86 @@ function affichage_champ_add_mails($id_resa)
 	return $affichage;
 }
 /*
+Construit les informations à afficher sur les plannings
+$vue = 1 pour une ressource / 2 vue multiple ressource
+*/
+function affichage_resa_planning_complet($vue, $resa, $heures)
+{
+	global $dformat;
+
+	$affichage = "";
+
+	// Heures ou crénaux + symboles <== ==>
+	$affichage .= $heures;
+
+	// Ressource seulement dans les vues global
+	if($vue == 2)
+		$affichage .= "<br>".$resa[15];
+
+	// Bénéficiaire
+	if (Settings::get("display_beneficicaire") == 1)
+		$affichage .= "<br>".affiche_nom_prenom_email($resa[4], $resa[12], "nomail");
+
+	// Type
+	if (Settings::get("display_type") == 1)
+	{
+		$typeResa = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area,".TABLE_PREFIX."_entry  WHERE  ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter  AND ".TABLE_PREFIX."_entry.id = '".$resa[2]."';");
+		if ($typeResa != -1)
+			$affichage .= "<br>".$typeResa;
+	}
+
+	// Brève description ou le numéro de la réservation
+	if ((Settings::get("display_short_description") == 1) && ($resa[3] != ""))
+		$affichage .= "<br>".htmlspecialchars($resa[3],ENT_NOQUOTES);
+	else
+		$affichage .= "<br>".get_vocab("entryid").$resa[2];
+
+	// Description Complète
+	if (Settings::get("display_full_description") == 1)
+		$affichage .= "<br>".htmlspecialchars($resa[8],ENT_NOQUOTES);
+
+	// Champs Additionnel
+    // la ressource associée à la réservation :
+	$res = mrbsGetEntryInfo($resa[2]);
+	$room = (!$res) ? -1 : $res["room_id"]; 
+	// Les champs add :
+	$overload_data = mrbsEntryGetOverloadDesc($resa[2]);
+	foreach ($overload_data as $fieldname=>$field)
+	{
+		if (( (authGetUserLevel(getUserName(), $room) >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "")
+			$affichage .= "<br><i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($field["valeur"],ENT_NOQUOTES|ENT_SUBSTITUTE)."</i>";
+	}
+
+	$affichage .= "<br>";
+
+	// Emprunte
+	if($resa[7] != "-")
+		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"'.get_vocab(\"ressource actuellement empruntee\").'\" title=\"'.get_vocab(\"ressource actuellement empruntee\").'\" width=\"20\" height=\"20\" class=\"image\" /> ";
+
+	// Option réservation
+	if($resa[10] > 0)
+		$affichage .=  " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le").time_date_string_jma($resa[9],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> ";
+
+	// Modération
+	if($resa[11] == 1)
+		$affichage .= " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
+
+	// Clef
+	if($resa[13] == 1)
+		$affichage .= " <img src=\"img_grr/skey.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Clef\"> ";
+	
+	// Courrier
+	if (Settings::get('show_courrier') == 'y')
+	{
+		if($resa[14] == 1)
+			$affichage .= " <img src=\"img_grr/scourrier.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Courrier\"> ";
+		else
+			$affichage .= " <img src=\"img_grr/hourglass.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Buzy\"> ";
+	}
+
+	return $affichage;
+}
+/*
 Affiche un message pop-up
 $type_affichage = "user" -> Affichage des "pop-up" de confirmation après la création/modification/suppression d'une réservation
 Dans ce cas, l'affichage n'a lieu que si $_SESSION['displ_msg']='yes'
