@@ -111,13 +111,13 @@
 							<tbody>
 								<tr>
 									<th style="width: 200px"></th>
-									<th style="width: 50px">Afficher</th>
-									<th>Ne pas afficher</th>
+									<th style="width: 150px">Ne pas afficher</th>
+									<th>Afficher</th>
 								</tr>
 								<tr>
 									<td>{{ trad.sum_by_creator }}</td>
-									<td>Prochainement</td>
-									<td></td>
+									<td><input type="radio" name="display_beneficicaire" value="0" id="label_4a" {% if settings.display_beneficicaire == '0' %} checked {% endif %} /></td>
+									<td><input type="radio" name="display_beneficicaire" value="1" id="label_4b" {% if settings.display_beneficicaire == '1' %} checked {% endif %} /></td>
 								</tr>
 								<tr>
 									<td>{{ trad.namebooker }}</td>
@@ -131,8 +131,8 @@
 								</tr>
 								<tr>
 									<td>{{ trad.type }}</td>
-									<td>Prochainement</td>
-									<td></td>
+									<td><input type="radio" name="display_type" value="0" id="label_4a" {% if settings.display_type == '0' %} checked {% endif %} /></td>
+									<td><input type="radio" name="display_type" value="1" id="label_4b" {% if settings.display_type == '1' %} checked {% endif %} /></td>
 								</tr>
 							</tbody>
 						</table>
