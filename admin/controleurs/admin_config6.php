@@ -112,6 +112,20 @@ if (isset($_POST['menu_gauche'])) {
         die();
     }
 }
+// display_type
+if (isset($_POST['display_type'])) {
+    if (!Settings::set('display_type', $_POST['display_type'])) {
+        echo "Erreur lors de l'enregistrement de display_type !<br />";
+        die();
+    }
+}
+// display_beneficicaire
+if (isset($_POST['display_beneficicaire'])) {
+    if (!Settings::set('display_beneficicaire', $_POST['display_beneficicaire'])) {
+        echo "Erreur lors de l'enregistrement de display_beneficicaire !<br />";
+        die();
+    }
+}
 // display_full_description
 if (isset($_POST['display_full_description'])) {
     if (!Settings::set('display_full_description', $_POST['display_full_description'])) {
