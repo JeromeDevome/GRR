@@ -121,7 +121,7 @@ if (isset($_POST['maj']) || $majscript)
 
 
 // Test de cohérence des types de réservation
-if ($version_grr > "1.9.1")
+if (version_compare($version_grr, '1.9.1', '<'))
 {
 	$res = grr_sql_query("SELECT DISTINCT type FROM ".TABLE_PREFIX."_entry ORDER BY type");
 	if ($res)
