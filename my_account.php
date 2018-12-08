@@ -210,10 +210,10 @@ if ($res)
 			$default_room = $row[6];
 		else
 			$default_room = Settings::get('default_room');
-		if ($row[7] != '')
-			$default_css = $row[7];
-		else
-			$default_css = Settings::get('default_css');
+		//if ($row[7] != '')
+		$default_css = $row[7];
+		//else
+		//	$default_css = Settings::get('default_css');
 		if ($row[8] != '')
 			$default_list_type = $row[8];
 		else
@@ -541,11 +541,13 @@ echo ('
 						<tr>
 							<td>'.get_vocab('choose_css').'</td>
 							<td>
-								<select class="form-control" name="default_css">'."\n";
+								<select class="form-control" name="default_css">
+									<option value="">Choix Admin</option>\n';
+									
 									$i = 0;
 									while ($i < count($liste_themes))
 									{
-										echo '              <option value="'.$liste_themes[$i].'"';
+										echo '<option value="'.$liste_themes[$i].'"';
 										if ($default_css == $liste_themes[$i])
 											echo ' selected="selected"';
 										echo ' >'.encode_message_utf8($liste_name_themes[$i]).'</option>'."\n";
