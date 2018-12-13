@@ -3,8 +3,8 @@
  * login.php
  * interface de connexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2018-12-13 17:40$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -32,7 +32,7 @@ require_once("./include/session.inc.php");
 // Vérification du numéro de version et renvoi automatique vers la page de mise à jour
 if (verif_version())
 {
-	header("Location: ../installation/maj.php");
+	header("Location: ./installation/maj.php");
 	exit();
 }
 // Si Token Installation n'est pas initialisé on le fait ici car s'est la 1ere page affiché 
