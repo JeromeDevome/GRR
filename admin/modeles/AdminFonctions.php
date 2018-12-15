@@ -66,6 +66,29 @@ class AdminFonctions
 	}
 
 
+	public static function DernieresConnexion($nbAretouner) // Liste des dernières connexions
+	{
+
+		// les X utilisateurs sui ce sont connectés en derniers
+		$sql = "SELECT u.login, l.START, l.END FROM ".TABLE_PREFIX."_log l, ".TABLE_PREFIX."_utilisateurs u WHERE l.LOGIN = u.login ORDER by START desc LIMIT ".$nbAretouner;
+		$res = grr_sql_query($sql);
+		if ($res)
+		{
+			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+			{
+				if (strtotime($row[2]) > time())
+					$clos = 0;
+				else
+					$clos = 1;
+
+				$logsConnexion[] = array('login' => $row[0], 'debut' => $row[2], 'clos' => $clos );
+			}
+		}
+
+		return $logsConnexion;
+	}
+
+
 }
 
 ?>
