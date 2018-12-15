@@ -38,6 +38,41 @@
 
 	</div>
 
+<div class="row">
+
+		<!-- Nombre d'utilisateur connecté -->
+		<div class="col-md-3 col-sm-6 col-xs-12">
+			<div class="box box-success">
+				<div class="box-header">
+					<h3 class="box-title">Les dernières connexions</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body no-padding">
+					<table class="table table-condensed">
+						<tbody>
+							<tr>
+								<th style="width: 10px">#</th>
+								<th>{{ trad.login_name }}</th>
+								<th>{{ trad.begining_of_session }}</th>
+							</tr>
+							{% for log in trad.dDernieresConnexions %}
+								<tr {% if log.clos == 0 %}class="success"{% endif %}>
+									{% if log.clos == 0 %}
+										<td><span class="badge bg-green">O</span></td>
+									{% else %}
+										<td><span class="badge bg-red">O</span></td>
+									{% endif %}
+									<td>{{ log.login }}</td>
+									<td>{{ log.debut }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<!-- /.box-body -->
+			</div>
+		</div>
+	</div>
 
 	<table>
 		<tr>
