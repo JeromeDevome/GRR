@@ -223,6 +223,7 @@ function mrbsOverloadGetFieldslist($id_area, $room_id = 0)
 	{
 		if ($id_area == "")
 		{
+			$fieldslist[$field_row[0]." (".$field_row[4].")"]["name"] = $field_row[0];																 
 			$fieldslist[$field_row[0]." (".$field_row[4].")"]["type"] = $field_row[1];
 			$fieldslist[$field_row[0]." (".$field_row[4].")"]["id"] = $field_row[2];
 			if (trim($field_row[3]) != "")

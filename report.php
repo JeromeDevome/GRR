@@ -90,7 +90,7 @@ $test_grr_j_user_area = grr_sql_count(grr_sql_query("SELECT * FROM ".TABLE_PREFI
 	// Report on one entry. See below for columns in $row[].
 function reporton(&$row, $dformat)
 {
-	global $vocab, $enable_periods;
+	global $vocab, $enable_periods, $tablOverload;
 	echo "<tr>";
 		//Affiche "area"
 	$area_nom = htmlspecialchars($row[8]);
@@ -108,7 +108,23 @@ function reporton(&$row, $dformat)
 	$breve_description = "<a href=\"view_entry.php?id=$row[0]\">". $breve_description . "</a>";
 	echo "<td>".$breve_description."</td>\n";
 		// From date-time and duration:
-	echo "<td>";
+	//echo "<td>";
+	
+				//Affichage de l'heure et de la durée de réservation
+				if ($enable_periods == 'y')
+					list($start_date, $start_time ,$duration, $dur_units) =  describe_period_span($row[1], $row[2]);
+				else
+					list($start_date, $start_time ,$duration, $dur_units) = describe_span($row[1], $row[2], $dformat);
+
+				// Date début réservation
+				echo "<td>".$start_date . "</td>";
+				// Heure début réservation
+				echo "<td>".$start_time . "</td>";
+				// Durée réservation
+				echo "<td>".$duration ." ". $dur_units ."</td>";
+	
+	
+	/*
 	if ($enable_periods == 'y')
 	{
 		echo describe_period_span($row[1], $row[2]);
@@ -121,7 +137,7 @@ function reporton(&$row, $dformat)
 			echo "<br />".   date("H\:i",$row[1])." ==> ".date("H\:i",$row[2])."</td>\n";
 		else
 			echo "<br />".   date("d\/m\/Y\ \-\ H\:i",$row[1])." ==> ".date("d\/m\/Y\ \-\ H\:i",$row[2])."</td>\n";
-	}
+	}*/
 		//Description
 	if ($row[4] != "")
 		$description = nl2br(htmlspecialchars($row[4]));
@@ -141,6 +157,34 @@ function reporton(&$row, $dformat)
 	echo "<td>".htmlspecialchars($row_user[0]) ." ". htmlspecialchars($row_user[1])."</td>";
 		//Affichage de la date de la dernière mise à jour
 	echo "<td>". date_time_string($row[7],$dformat) . "</td>\n";
+		// X Colonnes champs additionnels
+	$overload_data = mrbsEntryGetOverloadDesc($row[0]);
+	$i = 1;
+
+	$nbValeur = count($tablOverload);
+	$AddReservation = array();
+
+	foreach ($overload_data as $fieldname=>$fielddata) // Pour chaque champ additionnel de la réservation
+	{
+
+		if ($fielddata["confidentiel"] == 'n'){
+			$keyTab = array_search($fieldname, $tablOverload);
+			$AddReservation[$keyTab] = $fielddata["valeur"];
+		}
+		
+	}
+	$j=1;
+
+	while($j <= $nbValeur){
+		if(isset($AddReservation[$j]))
+			echo "<td>".$AddReservation[$j]."</td>";
+		else
+			echo "<td>-</td>";
+		$j++;
+	}
+
+	unset($tablOverload);
+
 	echo "</tr>\n";
 }
 // $breve_description est soit une "description brève" soit un "bénéficiaire", selon la valeur de $_GET["sumby"]
@@ -568,7 +612,7 @@ if (($summarize != 4) && ($summarize != 5))
 						if (( !isset($_GET['pview']) || ($_GET['pview'] != 1)) && (($summarize != 4) && ($summarize != 5)))
 						{
 							echo '<p style="text-align:center;">
-							<a href="./report.php '. '?' . htmlspecialchars($_SERVER['QUERY_STRING']) . '&amp;pview=1" ';
+							<a href="./report.php'. '?' . htmlspecialchars($_SERVER['QUERY_STRING']) . '&amp;pview=1" ';
 							if (Settings::get("pview_new_windows") == 1)
 								echo ' target="_blank"';
 							echo '><span class="glyphicon glyphicon-print"></span></a>
@@ -657,6 +701,7 @@ if (($summarize != 4) && ($summarize != 5))
 									$sql .= ")";
 }
 $sql .= " AND  t.type_letter = e.type ";
+//echo $sql;
 if ( $sortby == "a" )
 		//Trié par: Area, room, debut, date/heure.
 	$sql .= " ORDER BY 9,r.order_display,10,t.type_name,2";
@@ -754,6 +799,10 @@ else
 		else
 			echo "<b>&gt;&gt; ".get_vocab("start_date")." &lt;&lt;</b>";
 		echo "</td>";
+			// Colonne "heure debut"
+		echo "<td>".get_vocab("time")."</td>";
+			// Colonne "durée"
+		echo "<td>".get_vocab("duration")."</td>";
 			// Colonne "nom"
 		echo "<td>".get_vocab("match_descr")."</td>";
 			// Colonne Type
@@ -782,6 +831,21 @@ else
 		echo "</td>";
 			// Colonne "dernière modification"
 		echo "<td>".get_vocab("lastupdate")."</td>";
+			// X Colonnes champs additionnels
+		$overload_fields_c = mrbsOverloadGetFieldslist("");
+		// Boucle sur tous les champs additionnels de l'area
+		$i = 1;
+		$tablOverload = array();
+		foreach ($overload_fields_c as $fieldname=>$fieldtype)
+		{
+			if ($overload_fields_c[$fieldname]["confidentiel"] != 'y')
+			{
+				echo "<td>".$fieldname."</td>";
+				$tablOverload[$i] = $overload_fields_c[$fieldname]["name"];
+				$i++;
+			}
+		}
+		echo'<br><br>';
 		echo "</tr>";
 	}
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
@@ -833,7 +897,23 @@ else
 			else
 			{
 				// Ligne d'en-tête
-				echo html_entity_decode($vocab["reservee au nom de"]).";".html_entity_decode($vocab["areas"]).";".html_entity_decode($vocab["room"]).html_entity_decode(preg_replace("/ /", " ",$vocab["deux_points"])).";".html_entity_decode($vocab["description"]).";".html_entity_decode($vocab["time"])." - ".html_entity_decode($vocab["duration"]).";".html_entity_decode($vocab["namebooker"]).html_entity_decode(preg_replace("/ /", " ",$vocab["deux_points"])).";".html_entity_decode($vocab["match_descr"]).";".html_entity_decode($vocab["type"]).";".html_entity_decode($vocab["lastupdate"]).";\n";
+				echo html_entity_decode($vocab["reservee au nom de"]).";".html_entity_decode($vocab["areas"]).";".html_entity_decode($vocab["room"]).";".html_entity_decode($vocab["description"]).";".html_entity_decode($vocab["date"]).";".html_entity_decode($vocab["time"]).";".html_entity_decode($vocab["duration"]).";".html_entity_decode($vocab["namebooker"]).";".html_entity_decode($vocab["match_descr"]).";".html_entity_decode($vocab["type"]).";".html_entity_decode($vocab["lastupdate"]).";";
+				$overload_fields_c = mrbsOverloadGetFieldslist("");
+				// Boucle sur tous les champs additionnels de l'area
+				$i = 1;
+				$tablOverload = array();
+				foreach ($overload_fields_c as $fieldname=>$fieldtype)
+				{
+					if ($overload_fields_c[$fieldname]["confidentiel"] != 'y')
+					{
+						echo $fieldname.";";
+						$tablOverload[$i] = $overload_fields_c[$fieldname]["name"];
+						$i++;
+					}
+				}
+				echo "\n";
+				$nbValeur = count($tablOverload);
+			
 			}
 			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 			{
@@ -849,9 +929,17 @@ else
 				get_planning_area_values($row[11]);
 				//Affichage de l'heure et de la durée de réservation
 				if ($enable_periods == 'y')
-					echo describe_period_span($row[1], $row[2]) . ";";
+					list($start_date, $start_time ,$duration, $dur_units) =  describe_period_span($row[1], $row[2]);
 				else
-					echo describe_span($row[1], $row[2], $dformat) . ";";
+					list($start_date, $start_time ,$duration, $dur_units) = describe_span($row[1], $row[2], $dformat);
+
+				// Date début réservation
+				echo $start_date . ";";
+				// Heure début réservation
+				echo $start_time . ";";
+				// Durée réservation
+				echo $duration ." ". $dur_units .";";
+				
 				//Destination
 				echo (removeMailUnicode(affichage_lien_resa_planning($row[3], $row[0]))) . ";";
 				//Description de la réservation
@@ -863,6 +951,26 @@ else
 				echo $leType .";";
 				//Date derniere modif
 				echo date_time_string($row[7], $dformat) . ";";
+				// X Colonnes champs additionnels
+				$overload_data = mrbsEntryGetOverloadDesc($row[0]);
+				$AddReservation = array();
+
+				foreach ($overload_data as $fieldname=>$fielddata) // Pour chaque champ additionnel de la réservation
+				{
+					if ($fielddata["confidentiel"] == 'n'){
+						$keyTab = array_search($fieldname, $tablOverload);
+						$AddReservation[$keyTab] = $fielddata["valeur"];
+					}
+				}
+				$j=1;
+				while($j <= $nbValeur){
+					if(isset($AddReservation[$j]))
+						echo $AddReservation[$j].";";
+					else
+						echo "-;";
+					$j++;
+				}
+
 				echo "\r\n";
 			}
 		}

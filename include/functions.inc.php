@@ -1667,6 +1667,23 @@ function period_date_string($t, $mod_time = 0)
 	return array($p_num, $periods_name[$p_num] . utf8_strftime(", ".$dformat, $t));
 }
 
+
+function period_date_string_rapport($t, $mod_time = 0)
+{
+	global $periods_name, $dformat;
+	$time = getdate($t);
+	$p_num = $time["minutes"] + $mod_time;
+	if ( $p_num < 0 )
+	{
+		// fin de réservation : cas $time["minutes"] = 0. il faut afficher le dernier créneau de la journée précédente
+		$t = $t - 60 * 60 * 24;
+		$p_num = count($periods_name) - $p_num;
+	}
+	if ( $p_num >= count($periods_name) - 1 )
+		$p_num = count($periods_name) - 1;
+	return array($periods_name[$p_num],utf8_strftime($dformat, $t));
+}
+
 /*
 Fonction utilisée dans le cas où les créneaux de réservation sont basés sur des intitulés pré-définis :
 Formatage des périodes de début ou de fin de réservation.
@@ -3715,6 +3732,7 @@ function describe_period_span($starts, $ends)
 {
 	global $enable_periods, $periods_name, $vocab, $duration;
 	list($start_period, $start_date) =  period_date_string($starts);
+	list($periodedebut, $datedebut) =  period_date_string_rapport($starts);
 	list( , $end_date) =  period_date_string($ends, -1);
 	$duration = $ends - $starts;
 	toPeriodString($start_period, $duration, $dur_units);
@@ -3722,13 +3740,13 @@ function describe_period_span($starts, $ends)
 	{
 		list( , $start_date) =  period_date_string($starts);
 		list( , $end_date) =  period_date_string($ends, -1);
-		$temp = $start_date . " ==> " . $end_date;
+		//$temp = $start_date . " ==> " . $end_date;
 	}
-	else
-	{
-		$temp = $start_date . " - " . $duration . " " . $dur_units;
-	}
-	return $temp;
+	//else
+	//{
+	//	$temp = $start_date . " - " . $duration . " " . $dur_units;
+	//}
+	return array($datedebut, $periodedebut, $duration, $dur_units);
 }
 #Convertit l'heure de début et de fin en période.
 function describe_span($starts, $ends, $dformat)
@@ -3744,10 +3762,11 @@ function describe_span($starts, $ends, $dformat)
 	}
 	$start_time = strftime($timeformat, $starts);
 	$duration = $ends - $starts;
-	if ($start_time == "00:00:00" && $duration == 60 * 60 * 24)
-		return $start_date . " - " . get_vocab("all_day");
+	//if ($start_time == "00:00:00" && $duration == 60 * 60 * 24)
+	//	return $start_date . " - " . get_vocab("all_day");
 	toTimeString($duration, $dur_units);
-	return $start_date . " " . $start_time . " - " . $duration . " " . $dur_units;
+	//return $start_date . " " . $start_time . " - " . $duration . " " . $dur_units;
+	return array($start_date, $start_time ,$duration, $dur_units);
 }
 function get_planning_area_values($id_area)
 {
