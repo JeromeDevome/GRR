@@ -717,8 +717,8 @@ function execute_maj($version_old, $version_grr)
 		$result_inter .= traite_requete("DELETE FROM ".TABLE_PREFIX."_setting WHERE NAME='versionRC'");
 		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('display_beneficicaire', '0')");
 		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('display_type', '1')");
-		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = nombre_jours_Jours_Cycles WHERE NAME = 'nombre_jours_Jours/Cycles';");
-		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = jour_debut_Jours_Cycles WHERE NAME = 'jour_debut_Jours/Cycles';");
+		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET `NAME` = nombre_jours_Jours_Cycles WHERE `NAME` = 'nombre_jours_Jours/Cycles';");
+		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET `NAME` = jour_debut_Jours_Cycles WHERE `NAME` = 'jour_debut_Jours/Cycles';");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
