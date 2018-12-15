@@ -31,7 +31,7 @@
 								<tr>
 									<td>{{ utilisateurCo.login }}</td>
 									<td>{{ utilisateurCo.nomprenom }}</td>
-									<td><a href="mailto:{{ utilisateurCo.email }}" class="btn btn-info btn-md"><i class="icon fa fa-envelope-o"></i></a></td>
+									<td><a href="mailto:{{ utilisateurCo.email }}" class="btn btn-info btn-md"><i class="icon fa fa-envelope"></i></a></td>
 									<td>
 										{% if utilisateurCo.deconnexion == 1 %}
 											<a href="?p=admin_view_connexions&user_login={{ utilisateurCo.login }} ">{{ trad.disconnect2 }}</a>
