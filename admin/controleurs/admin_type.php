@@ -78,7 +78,7 @@ if ($res)
 }
 
 
-$sql = "SELECT id, type_name, order_display, couleurhexa, type_letter, disponible FROM ".TABLE_PREFIX."_type_area ORDER BY order_display,type_letter";
+$sql = "SELECT id, type_name, order_display, couleurhexa, couleurtexte, type_letter, disponible FROM ".TABLE_PREFIX."_type_area ORDER BY order_display,type_letter";
 $typesResa = grr_sql_query($sql);
 
 ?>

@@ -38,7 +38,7 @@
 								<tr>
 									<td>{{type.type_letter}}</td>
 									<td>{{type.type_name}}</td>
-									<td style="background-color:{{type.couleurhexa}}"></td>
+									<td style="background-color:{{type.couleurhexa}};color:{{type.couleurtexte}};">Texte</td>
 									<td>{{type.order_display}}</td>
 									<td><input type="checkbox" name="{{ type.id }}" value="y" {% if type.dispodomaine < 1 %}checked{% endif %} /></td>
 									<td><input type="radio" name="id_type_par_defaut" value="{{ type.id }}" {% if trad.dDefautType == type.id %}checked{% endif %} /></td>

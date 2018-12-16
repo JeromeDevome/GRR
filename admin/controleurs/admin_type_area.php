@@ -53,7 +53,7 @@ if (isset($_GET['change_done']))
 if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes') )
 	$msg = $_GET['msg'];
 
-$sql = "SELECT id, type_name, order_display, couleurhexa, type_letter FROM ".TABLE_PREFIX."_type_area
+$sql = "SELECT id, type_name, order_display, couleurhexa, type_letter, couleurtexte FROM ".TABLE_PREFIX."_type_area
 ORDER BY order_display, type_letter";
 
 //
@@ -114,7 +114,7 @@ if ($res && $nb_lignes > 0)
 	{
 		$dispoDomaine = grr_sql_query1("SELECT count(id_type) FROM ".TABLE_PREFIX."_j_type_area WHERE id_area = '".$id_area."' AND id_type = '".$row[0]."'");
 
-		$types[] = array('id' => $row[0], 'type_letter' => $row[4], 'type_name' => $row[1], 'couleurhexa' => $row[3], 'order_display' => $row[2], 'dispodomaine' => $dispoDomaine);
+		$types[] = array('id' => $row[0], 'type_letter' => $row[4], 'type_name' => $row[1], 'couleurhexa' => $row[3], 'couleurtexte' => $row[5], 'order_display' => $row[2], 'dispodomaine' => $dispoDomaine);
 	}
 
 	$trad['dDefautType'] = grr_sql_query1("SELECT id_type_par_defaut FROM ".TABLE_PREFIX."_area WHERE id = '".$id_area."'");

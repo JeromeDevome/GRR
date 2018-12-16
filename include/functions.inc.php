@@ -1733,8 +1733,9 @@ function span_bgground($colclass)
 {
 	global $tab_couleur;
 	static $ecolors;
-	$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-	echo '<span style="background-color: '.$couleurhexa.'; background-image: none; background-repeat: repeat; background-attachment: scroll;">'.PHP_EOL;
+	$res = grr_sql_query("SELECT couleurhexa, couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
+	$row = grr_sql_row($res, 0);
+	echo '<span style="background-color: '.$row[0].'; background-image: none; background-repeat: repeat; background-attachment: scroll;color: '.$row[1].';">'.PHP_EOL;
 }
 
 //Output a start table cell tag <td> with color class and fallback color.
@@ -1748,8 +1749,9 @@ function tdcell($colclass, $width = '')
 	static $ecolors;
 	if (($colclass >= "A") && ($colclass <= "Z"))
 	{
-		$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-		echo '<td style="background-color:'.$couleurhexa.';" '.$temp.'>'.PHP_EOL;
+		$res = grr_sql_query("SELECT couleurhexa, couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
+		$row = grr_sql_row($res, 0);
+		echo '<td style="background-color:'.$row[0].';color: '.$row[1].';" '.$temp.'>'.PHP_EOL;
 	}
 	else
 		echo '<td class="'.$colclass.'" '.$temp.'>'.PHP_EOL;
@@ -1763,8 +1765,9 @@ function tdcell_rowspan($colclass, $step)
 		$step = 1;
 	if (($colclass >= "A") && ($colclass <= "Z"))
 	{
-		$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-		echo '<td rowspan="'.$step.'" style="background-color:'.$couleurhexa.';">'.PHP_EOL;
+		$res = grr_sql_query("SELECT couleurhexa, couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
+		$row = grr_sql_row($res, 0);
+		echo '<td rowspan="'.$step.'" style="background-color:'.$row[0].';color: '.$row[1].';">'.PHP_EOL;
 	}
 	else
 		echo '<td rowspan="'.$step.'" td class="'.$colclass.'">'.PHP_EOL;

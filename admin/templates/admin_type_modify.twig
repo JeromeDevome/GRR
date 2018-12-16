@@ -51,11 +51,12 @@
 					<div class="form-group">
 						<label class="col-sm-4" for="type_color_actuel">{{ trad.type_color_actuel }}</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control" style="background-color:{{ type.couleurhexa }};" id="type_color_actuel" name="type_color_actuel" disabled>
+							<input type="text" class="form-control" style="background-color:{{ type.couleurhexa }};color:{{type.couleurtexte}};" id="type_color_actuel" name="type_color_actuel" value="Texte" disabled>
 						</div>
 					</div>
 
 					{{ form.colorpicker2('couleurhexa', trad.type_color_hexa, type.couleurhexa, {classLabel: 'col-sm-4', classInput: 'col-sm-7'}) }}
+					{{ form.colorpicker2('couleurtexte', trad.type_color_hexa, type.couleurtexte, {classLabel: 'col-sm-4', classInput: 'col-sm-7'}) }}
 				</div>
 
 				<!-- /.box-body -->
