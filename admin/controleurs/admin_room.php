@@ -75,6 +75,7 @@ get_vocab_admin("OU");
 get_vocab_admin('show_all_rooms');
 get_vocab_admin('fiche_ressource');
 
+$sites = array();
 
 if (Settings::get("module_multisite") == "Oui")
 {
@@ -129,97 +130,99 @@ $ressources = array();
 if ((isset($id_area)) && ($id_area != -1)) 
 	$trad['dRessourceDe'] =  get_vocab('in') . " " .htmlspecialchars($area_name);
 
-		// Seul l'administrateur a le droit d'ajouter des domaines
-		if ((authGetUserLevel(getUserName(),-1,'area') >= 5) && $id_area != -1)
-			$trad['dAjoutDomaine'] = "<a href=\"?p=admin_edit_domaine&id_site=".$id_site."&amp;add_area=yes\">".get_vocab('addarea')."</a>";
+// Seul l'administrateur a le droit d'ajouter des domaines
+if ((authGetUserLevel(getUserName(),-1,'area') >= 5) && $id_area != -1)
+	$trad['dAjoutDomaine'] = "<a href=\"?p=admin_edit_domaine&id_site=".$id_site."&amp;add_area=yes\">".get_vocab('addarea')."</a>";
 
-		if ((isset($id_area))&&($id_area != -1))
-			$trad['dAjoutRessource'] = "<a href=\"?p=admin_edit_room&id_site=".$id_site."&amp;area_id=$id_area\">".get_vocab('addroom')."</a>";
+if ((isset($id_area))&&($id_area != -1))
+	$trad['dAjoutRessource'] = "<a href=\"?p=admin_edit_room&id_site=".$id_site."&amp;area_id=$id_area\">".get_vocab('addroom')."</a>";
 
-		// A partir de ce niveau, on sait qu'il existe un site
-		if ((Settings::get("module_multisite") == "Oui") && ($id_site > 0))
-			$sql="SELECT ".TABLE_PREFIX."_area.id,".TABLE_PREFIX."_area.area_name,".TABLE_PREFIX."_area.access
-				FROM ".TABLE_PREFIX."_j_site_area,".TABLE_PREFIX."_area
-				WHERE ".TABLE_PREFIX."_j_site_area.id_site='".$id_site."'
-				AND ".TABLE_PREFIX."_area.id=".TABLE_PREFIX."_j_site_area.id_area
-				ORDER BY order_display";
-		else
-			$sql="select id, area_name, access from ".TABLE_PREFIX."_area order by order_display";
+// A partir de ce niveau, on sait qu'il existe un site
+if ((Settings::get("module_multisite") == "Oui") && ($id_site > 0))
+	$sql="SELECT ".TABLE_PREFIX."_area.id,".TABLE_PREFIX."_area.area_name,".TABLE_PREFIX."_area.access
+		FROM ".TABLE_PREFIX."_j_site_area,".TABLE_PREFIX."_area
+		WHERE ".TABLE_PREFIX."_j_site_area.id_site='".$id_site."'
+		AND ".TABLE_PREFIX."_area.id=".TABLE_PREFIX."_j_site_area.id_area
+		ORDER BY order_display";
+else
+	$sql="select id, area_name, access from ".TABLE_PREFIX."_area order by order_display";
 
-		$res = grr_sql_query($sql);
+$res = grr_sql_query($sql);
 
-		if (!$res)
-			fatal_error(0, grr_sql_error());
+if (!$res)
+	fatal_error(0, grr_sql_error());
 
-		if (grr_sql_count($res) != 0)
+if (grr_sql_count($res) != 0)
+{
+	// on détermine les domaines accessibles à l'utilisateur -> rangés dans $tareas
+	$tareas = array();
+	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++){
+		if ((authGetUserLevel(getUserName(),$row[0],'area') >= 4))
+			$tareas[] = $row ;
+	}
+
+	// CAS 1 : cas où le domaine n'est pas choisi ou UN domaine est sélectionné
+	if (!isset($id_area) || $id_area != -1){
+		$trad['dCasAfficher'] = 1;
+
+		foreach($tareas as $row)
 		{
-            // on détermine les domaines accessibles à l'utilisateur -> rangés dans $tareas
-            $tareas = array();
-            for ($i = 0; ($row = grr_sql_row($res, $i)); $i++){
-                if ((authGetUserLevel(getUserName(),$row[0],'area') >= 4))
-                    $tareas[] = $row ;
-            }
+			$domaines[] = array('id' => $row[0], 'nom' => $row[1], 'acces' => $row[2], 'droitsuser' => authGetUserLevel(getUserName(),$row[0],'area'));
+		}
 
-            // CAS 1 : cas où le domaine n'est pas choisi ou UN domaine est sélectionné
-            if (!isset($id_area) || $id_area != -1){
-				$trad['dCasAfficher'] = 1;
+		// RESSOURCES
+		if (isset($id_area)) // cas où UN domaine est choisi, on affiche toutes les ressources de ce domaine
+		{
+			$sql = "SELECT id, room_name, description, capacity, max_booking, statut_room, area_id from ".TABLE_PREFIX."_room where area_id=$id_area ";
+			// on ne cherche pas parmi les ressources invisibles pour l'utilisateur
+			$tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
+			foreach ($tab_rooms_noaccess as $key){
+				$sql .= " and id != $key ";
+			}
+			$sql .= "order by order_display, room_name";
+			$res = grr_sql_query($sql);
+			if (!$res)
+				fatal_error(0, grr_sql_error());
+			if (grr_sql_count($res) != 0){
+			   // echo "<table class=\"table\">";
+				for ($i = 0; ($row = grr_sql_row($res, $i)); $i++){
+					$ressources[] = array('id' => $row[0], 'nom' => $row[1], 'description' => $row[2], 'capacite' => $row[3], 'maxbooking' => $row[4], 'statut' => $row[5], 'iddomaine' => $row[6]);
+				}
+			}  
+			else 
+				$trad['dNo_rooms_for_area'] = get_vocab("no_rooms_for_area");
+		}
+	}
+	// CAS 2 : cas où il faut afficher toutes les ressources de tous les domaines
+	elseif ($id_area == -1)
+	{
+		$trad['dCasAfficher'] = 2;
 
-                foreach($tareas as $row)
-                {
-					$domaines[] = array('id' => $row[0], 'nom' => $row[1], 'acces' => $row[2], 'droitsuser' => authGetUserLevel(getUserName(),$row[0],'area'));
-                }
+		foreach($tareas as $row)
+		{
+			$domaines[] = array('id' => $row[0], 'nom' => $row[1], 'acces' => $row[2], 'droitsuser' => authGetUserLevel(getUserName(),$row[0],'area'));
 
-				// RESSOURCES
-                if (isset($id_area)) // cas où UN domaine est choisi, on affiche toutes les ressources de ce domaine
-				{
-                    $sql = "SELECT id, room_name, description, capacity, max_booking, statut_room, area_id from ".TABLE_PREFIX."_room where area_id=$id_area ";
-                    // on ne cherche pas parmi les ressources invisibles pour l'utilisateur
-                    $tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
-                    foreach ($tab_rooms_noaccess as $key){
-                        $sql .= " and id != $key ";
-                    }
-                    $sql .= "order by order_display, room_name";
-                    $res = grr_sql_query($sql);
-                    if (!$res)
-                        fatal_error(0, grr_sql_error());
-                    if (grr_sql_count($res) != 0){
-                       // echo "<table class=\"table\">";
-                        for ($i = 0; ($row = grr_sql_row($res, $i)); $i++){
-							$ressources[] = array('id' => $row[0], 'nom' => $row[1], 'description' => $row[2], 'capacite' => $row[3], 'maxbooking' => $row[4], 'statut' => $row[5], 'iddomaine' => $row[6]);
-                        }
-                    }  
-                    else 
-						$trad['dNo_rooms_for_area'] = get_vocab("no_rooms_for_area");
-                }
-            }
-            // CAS 2 : cas où il faut afficher toutes les ressources de tous les domaines
-            elseif ($id_area == -1)
-			{
-				$trad['dCasAfficher'] = 2;
+			// RESSOURCES
+			$sql = "SELECT id, room_name, description, capacity, max_booking, statut_room, area_id from ".TABLE_PREFIX."_room where area_id=$row[0] ";
+			// on ne cherche pas parmi les ressources invisibles pour l'utilisateur
+			$tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
+			foreach ($tab_rooms_noaccess as $key){
+				$sql .= " and id != $key ";
+			}
+			$sql .= "order by order_display, room_name";
+			$res = grr_sql_query($sql);
+			if (!$res)
+				fatal_error(0, grr_sql_error());
+			if (grr_sql_count($res) != 0){
+				for ($i = 0; ($row = grr_sql_row($res, $i)); $i++){
+					$ressources[] = array('id' => $row[0], 'nom' => $row[1], 'description' => $row[2], 'capacite' => $row[3], 'maxbooking' => $row[4], 'statut' => $row[5], 'iddomaine' => $row[6]);
+				}
+			}  
+			else 
+				$trad['dNo_rooms_for_area'] = get_vocab("no_rooms_for_area");
+		}
+	} // Fin CAS 2
+}
 
-                foreach($tareas as $row)
-                {
-					$domaines[] = array('id' => $row[0], 'nom' => $row[1], 'acces' => $row[2], 'droitsuser' => authGetUserLevel(getUserName(),$row[0],'area'));
-
-                    // RESSOURCES
-                    $sql = "SELECT id, room_name, description, capacity, max_booking, statut_room, area_id from ".TABLE_PREFIX."_room where area_id=$row[0] ";
-                    // on ne cherche pas parmi les ressources invisibles pour l'utilisateur
-                    $tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
-                    foreach ($tab_rooms_noaccess as $key){
-                        $sql .= " and id != $key ";
-                    }
-                    $sql .= "order by order_display, room_name";
-                    $res = grr_sql_query($sql);
-                    if (!$res)
-                        fatal_error(0, grr_sql_error());
-                    if (grr_sql_count($res) != 0){
-                        for ($i = 0; ($row = grr_sql_row($res, $i)); $i++){
-							$ressources[] = array('id' => $row[0], 'nom' => $row[1], 'description' => $row[2], 'capacite' => $row[3], 'maxbooking' => $row[4], 'statut' => $row[5], 'iddomaine' => $row[6]);
-                        }
-                    }  
-					else 
-						$trad['dNo_rooms_for_area'] = get_vocab("no_rooms_for_area");
-                }
-            } // Fin CAS 2
-        }
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'sites' => $sites, 'domaines' => $domaines, 'ressources' => $ressources));
 ?>
