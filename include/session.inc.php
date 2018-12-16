@@ -283,7 +283,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 return "2";
             }
         // on récupère les données de l'utilisateur
-            $sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site
+            $sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
             from ".TABLE_PREFIX."_utilisateurs
             where login = '" . protect_data_sql($_login) . "' and
             source = 'ext' and
@@ -303,7 +303,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     else
     {
         $passwd_md5 = md5($_password);
-        $sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site
+        $sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
         from ".TABLE_PREFIX."_utilisateurs
         where login = '" . protect_data_sql($_login) . "' and
         password = '".$passwd_md5."'";
@@ -580,7 +580,10 @@ if (($num_row > 0) and isset($_SESSION['start']))
 	$res = grr_sql_query($sql);
 	if (!$res)
 		fatal_error(0, 'erreur mysql' . grr_sql_error());
-	return "1";
+	if($row[14] == 1)
+		return "12";
+	else
+		return "1";
 }
 else
 {
@@ -623,11 +626,9 @@ if ($row[13] > 0)
 else
 	$_SESSION['default_site'] = Settings::get("default_site");
 $_SESSION['source_login'] = $row[11];
-if ($est_authentifie_sso)
-{
-				// Variable de session qui permet de savoir qu'un utilisateur est authentifié à un SSO
+if ($est_authentifie_sso) /// Variable de session qui permet de savoir qu'un utilisateur est authentifié à un SSO
 	$_SESSION['est_authentifie_sso'] = "y";
-}
+$_SESSION['changepwd'] = $row[14];
 		// It's a new connection, insert into log
 if (isset($_SERVER["HTTP_REFERER"]))
 	$httpreferer = substr($_SERVER["HTTP_REFERER"],0,254);
@@ -703,6 +704,11 @@ if($nbMaxJoursLogConnexion > 0){
 	$sql = "DELETE FROM ".TABLE_PREFIX."_log WHERE START < '" . $dateMax . "';";
 	grr_sql_query($sql);
 }
+
+// L'utilisateur doit changer sont mot de passe
+if($row[14] == 1)
+	return "12";
+
 
 /* Fonctionnalité SE3 (Palissy - Saintes - philippe.duval@ac-poitiers.fr) :
 Utilisation du LDAP pour inscrire automatiquement les utilisateurs dans les groupes administration, accès et gestion

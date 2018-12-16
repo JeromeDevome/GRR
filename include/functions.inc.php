@@ -892,6 +892,10 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 {
 	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2;
+	
+	if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
+		header("Location: ./changepwd.php");
+	}
 
 	if (@file_exists('./admin_access_area.php')){
 		$adm = 1;
@@ -943,13 +947,13 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			Hook::Appel("hookHeader1");
 
 			// Génération XML
-			$generationXML = 1;
+			/*$generationXML = 1;
 			if ((Settings::get("export_xml_actif") == "Oui") && ($adm == 0)){
 				include "{$racine}/include/generationxml.php";
 			}
 			if ((Settings::get("export_xml_plus_actif") == "Oui") && ($adm == 0)){
 				include "{$racine}/include/generationxmlplus.php";
-			}
+			}*/
 
 			// On fabrique une date valide pour la réservation si ce n'est pas le cas
 			$date_ = mktime(0, 0, 0, $month, $day, $year);
@@ -4747,6 +4751,10 @@ function pageHead2($title, $page = "with_session")
 {
 	if ($page == "with_session")
 	{
+		if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
+			header("Location: ./changepwd.php");
+		}
+
 		if (isset($_SESSION['default_style']))
 			$sheetcss = 'themes/'.$_SESSION['default_style'].'/css';
 
