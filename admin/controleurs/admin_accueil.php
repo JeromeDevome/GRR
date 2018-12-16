@@ -23,6 +23,8 @@ get_vocab_admin("admin_accueil");
 $trad['TitrePage'] = $trad['admin_accueil'];
 $trad['SousTitrePage'] = 'Administration';
 
+$trad['dLevel'] =  authGetUserLevel(getUserName(), -1, 'area');
+
 // Widget connexion
 get_vocab_admin("users_connected");
 $trad['dNombreConnecte'] = AdminFonctions::NombreDeConnecter();
@@ -36,7 +38,6 @@ $trad['dNombreMDPFacile'] = AdminFonctions::NombreUtilisateursMDPfacile();
 get_vocab_admin("login_name");
 get_vocab_admin("begining_of_session");
 $trad['dDernieresConnexions'] = AdminFonctions::DernieresConnexion(5);
-
 
 
 ?>

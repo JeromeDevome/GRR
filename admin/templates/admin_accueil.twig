@@ -35,6 +35,16 @@
 			<!-- /.info-box -->
 		</div>
 
+		<div class="col-md-3 col-sm-6 col-xs-12">
+		</div>
+		
+		<div class="col-md-3 col-sm-6 col-xs-12">
+			{% if trad.dLevel >=6 %}
+				<a  href="admin_save_mysql.php?flag_connect=yes" class="btn btn-app">
+					<i class="fa fa-save"></i> Backup
+				</a>
+			{% endif %}
+		</div>
 
 	</div>
 
