@@ -23,6 +23,24 @@ get_vocab_admin("admin_config4");
 get_vocab_admin("admin_config5");
 get_vocab_admin("admin_config6");
 
+$msg = '';
+
+if (isset($_GET['sync'])) {
+    if ($_GET['sync'] == 1) {
+		$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET default_style=''"; // Vide = choix admin
+		if (grr_sql_command($sql) < 0)
+			fatal_error(0, grr_sql_error());
+		else
+			$msg .= "Synchronisation terminée !<br />";
+    } elseif ($_GET['sync'] == 2) {
+		$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET default_language='".Settings::get('default_language')."'";
+		if (grr_sql_command($sql) < 0)
+			fatal_error(0, grr_sql_error());
+		else
+			$msg .= "Synchronisation terminée !<br />";
+	}
+}
+
 
 if (isset($_POST['show_courrier'])) {
     if (!Settings::set('show_courrier', $_POST['show_courrier'])) {
@@ -242,7 +260,6 @@ if (isset($_POST['longueur_liste_ressources_max'])) {
     }
 }
 //echo $_POST['default_area']."<br />";
-$msg = '';
 
 if (!Settings::load()) {
     die('Erreur chargement settings');
