@@ -109,6 +109,10 @@ if (isset($_POST['login']) && isset($_POST['password']))
 		$message = get_vocab("echec_connexion_GRR");
 		$message .= "<br />". get_vocab("connexion_a_grr_ip");
 	}
+	else if ($result == "12")
+	{
+		header("Location: ./changepwd.php");
+	}
 	else
 	{
 		if (isset($_POST['url']))
