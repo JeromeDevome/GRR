@@ -44,6 +44,7 @@ $type_name = isset($_GET["type_name"]) ? $_GET["type_name"] : NULL;
 $order_display = isset($_GET["order_display"]) ? $_GET["order_display"] : NULL;
 $type_letter = isset($_GET["type_letter"]) ? $_GET["type_letter"] : NULL;
 $couleur_hexa = isset($_GET["couleurhexa"]) ? $_GET["couleurhexa"] : NULL;
+$couleur_txt = isset($_GET["couleurtexte"]) ? $_GET["couleurtexte"] : NULL;
 $disponible = isset($_GET["disponible"]) ? $_GET["disponible"] : NULL;
 $msg = "";
 
@@ -62,6 +63,8 @@ if (isset($_GET['change_type']))
 		$type_letter = "A";
 	if ($couleur_hexa == '')
 		$couleur_hexa = "#2ECC71";
+	if ($couleur_txt == '')
+		$couleur_txt = "#000000";
 	if ($disponible == '')
 		$disponible = "2";
 	if ($id_type > 0) // Modif
@@ -84,6 +87,7 @@ if (isset($_GET['change_type']))
 			$sql = $sql . 'type_letter="'.$type_letter.'",';
 			$sql = $sql . 'couleur=\'1\',';
 			$sql = $sql . 'couleurhexa="'.$couleur_hexa.'",';
+			$sql = $sql . 'couleurtexte="'.$couleur_txt.'",';
 			$sql = $sql . 'disponible="'.$disponible.'"';
 			$sql = $sql . " WHERE id=$id_type";
 			if (grr_sql_command($sql) < 0)
@@ -113,7 +117,8 @@ if (isset($_GET['change_type']))
 				$sql= $sql ."0,";
 			$sql = $sql . 'type_letter="'.$type_letter.'",';
 			$sql = $sql . 'couleur=\'1\',';
-			$sql = $sql . 'couleurhexa="'.$couleur_hexa.'"';
+			$sql = $sql . 'couleurhexa="'.$couleur_hexa.'",';
+			$sql = $sql . 'couleurtexte="'.$couleur_txt.'"';
 			if (grr_sql_command($sql) < 0)
 			{
 				fatal_error(1, "<p>" . grr_sql_error());
