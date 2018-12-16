@@ -44,6 +44,7 @@ get_vocab_admin("email");
 get_vocab_admin("type");
 get_vocab_admin("statut");
 get_vocab_admin("authentification");
+get_vocab_admin("pwd_change");
 get_vocab_admin("admin_import_users_csv7");
 get_vocab_admin("admin_import_users_csv9");
 get_vocab_admin("admin_import_users_csv10");
@@ -97,7 +98,7 @@ if ($reg_data != 'yes')
 					else
 						$num = 0;
 
-					if ($num == 8)
+					if ($num == 9)
 					{
 						$row++;
 						// Nouvelle ligne
@@ -260,9 +261,17 @@ if ($reg_data != 'yes')
 									$valid = 0;
 								}
 								break;
+
+								case 8:
+								// Doit changer mot de passe à la connexion: deux valeurs autorisées : 1 (oui) ou 0 (non)changerpwd
+								if ($data[$c] == "1")
+									$uChangerpwd = "1";
+								else
+									$uChangerpwd = "0";
+								break;
 							}
 						}
-						$utilisateursaimporter[] = array('num' => $row, 'existant' => $uExistant, 'login' => $uLogin, 'name' => $uNom, 'first_name' => $uPrenom, 'pwd' => $uMDP, 'email' => $uMail, 'type' => $uType, 'statut' => $uStatut, 'authentification' => $uAuth);
+						$utilisateursaimporter[] = array('num' => $row, 'existant' => $uExistant, 'login' => $uLogin, 'name' => $uNom, 'first_name' => $uPrenom, 'pwd' => $uMDP, 'email' => $uMail, 'type' => $uType, 'statut' => $uStatut, 'authentification' => $uAuth, 'changerpwd' => $uChangerpwd);
 					}
 				}
 				fclose($fp);
@@ -290,6 +299,7 @@ else
 	$reg_type_user = isset($_POST["reg_type_user"]) ? $_POST["reg_type_user"] : NULL;
 	$reg_statut = isset($_POST["reg_statut"]) ? $_POST["reg_statut"] : NULL;
 	$reg_type_auth = isset($_POST["reg_type_auth"]) ? $_POST["reg_type_auth"] : NULL;
+	$reg_changer_pwd = isset($_POST["reg_changer_pwd"]) ? $_POST["reg_changer_pwd"] : 0;
 	$nb_row++;
 	for ($row = 1; $row < $nb_row; $row++)
 	{
@@ -299,11 +309,12 @@ else
 		$reg_nom[$row] = protect_data_sql(corriger_caracteres($reg_nom[$row]));
 		$reg_prenom[$row] = protect_data_sql(corriger_caracteres($reg_prenom[$row]));
 		$reg_email[$row] = protect_data_sql(corriger_caracteres($reg_email[$row]));
+		$reg_changer_pwd[$row] = protect_data_sql(corriger_caracteres($reg_changer_pwd[$row]));
 		$test_login = grr_sql_count(grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$reg_login[$row]'"));
 		if ($test_login == 0)
-			$regdata = grr_sql_query("INSERT INTO ".TABLE_PREFIX."_utilisateurs SET nom='".$reg_nom[$row]."',prenom='".$reg_prenom[$row]."',login='".$reg_login[$row]."',email='".$reg_email[$row]."',password='".protect_data_sql($reg_mdp[$row])."',statut='".$reg_type_user[$row]."',etat='".$reg_statut[$row]."',source='".$reg_type_auth[$row]."'");
+			$regdata = grr_sql_query("INSERT INTO ".TABLE_PREFIX."_utilisateurs SET nom='".$reg_nom[$row]."',prenom='".$reg_prenom[$row]."',login='".$reg_login[$row]."',email='".$reg_email[$row]."',password='".protect_data_sql($reg_mdp[$row])."',statut='".$reg_type_user[$row]."',etat='".$reg_statut[$row]."',source='".$reg_type_auth[$row]."',changepwd='".$reg_changer_pwd[$row]."'");
 		else
-			$regdata = grr_sql_query("UPDATE ".TABLE_PREFIX."_utilisateurs SET nom='".$reg_nom[$row]."',prenom='".$reg_prenom[$row]."',email='".$reg_email[$row]."',password='".protect_data_sql($reg_mdp[$row])."',statut='".$reg_type_user[$row]."',etat='".$reg_statut[$row]."',source='".$reg_type_auth[$row]."' WHERE login='".$reg_login[$row]."'");
+			$regdata = grr_sql_query("UPDATE ".TABLE_PREFIX."_utilisateurs SET nom='".$reg_nom[$row]."',prenom='".$reg_prenom[$row]."',email='".$reg_email[$row]."',password='".protect_data_sql($reg_mdp[$row])."',statut='".$reg_type_user[$row]."',etat='".$reg_statut[$row]."',source='".$reg_type_auth[$row]."',changepwd='".$reg_changer_pwd[$row]."' WHERE login='".$reg_login[$row]."'");
 		if (!$regdata)
 			$trad['dResultat'] .= "<p><font color=\"red\">".$reg_login[$row].get_vocab("deux_points").get_vocab("message_records_error")."</font></p>";
 		else
