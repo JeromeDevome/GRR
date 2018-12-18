@@ -39,5 +39,8 @@ get_vocab_admin("login_name");
 get_vocab_admin("begining_of_session");
 $trad['dDernieresConnexions'] = AdminFonctions::DernieresConnexion(5);
 
+// Widget réservations à modérer
+list($trad['dNombreModeration'], $trad['dListeModeration'])  = AdminFonctions::ReservationsAModerer(5);
+
 
 ?>

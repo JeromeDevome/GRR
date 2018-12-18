@@ -82,6 +82,29 @@
 				<!-- /.box-body -->
 			</div>
 		</div>
+
+		<!-- Réservations à modérer -->
+		<div class="col-md-3 col-sm-6 col-xs-12">
+			<div class="box box-info">
+				<div class="box-header">
+					<h3 class="box-title">{{ trad.dNombreModeration }} réservation(s) à modérer</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body no-padding">
+					<table class="table table-condensed">
+						<tbody>
+							{% for resaMode in trad.dListeModeration %}
+								<tr>
+									<td>{{ resaMode.ressource }}</td>
+									<td>{{ resaMode.debut }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<!-- /.box-body -->
+			</div>
+		</div>
 	</div>
 
 	<table>
