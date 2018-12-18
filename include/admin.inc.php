@@ -16,26 +16,21 @@
  * (at your option) any later version.
  */
 
-if (@file_exists('../include/connect.inc.php')){
-	$racine = "../";
-}else{
-	$racine = "./";
-}
 
-	include $racine."include/connect.inc.php";
-	include $racine."include/config.inc.php";
-	include $racine."include/mrbs_sql.inc.php";
-	include $racine."include/misc.inc.php";
-	include $racine."include/functions.inc.php";
-	include $racine."include/$dbsys.inc.php";
+include "../include/connect.inc.php";
+include "../include/config.inc.php";
+include "../include/mrbs_sql.inc.php";
+include "../include/misc.inc.php";
+include "../include/functions.inc.php";
+include "../include/$dbsys.inc.php";
 
 // Settings
-require_once($racine."include/settings.class.php");
+require_once("../include/settings.class.php");
 //Chargement des valeurs de la table settingS
 if (!Settings::load())
 	die("Erreur chargement settings");
 // Session related functions
-require_once($racine."include/session.inc.php");
+require_once("../include/session.inc.php");
 // Resume session
 if (!grr_resumeSession()) {
 	header("Location: {$racine}logout.php?auto=1&url=$url");
@@ -43,5 +38,5 @@ if (!grr_resumeSession()) {
 };
 // Paramètres langage
 $use_admin = 'y';
-include $racine."include/language.inc.php";
+include "../include/language.inc.php";
 ?>
