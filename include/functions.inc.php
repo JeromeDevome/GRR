@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-12-09 10:30$
+ * Dernière modification : $Date: 2018-12-18 23:10$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -888,39 +888,21 @@ function page_accueil($param = 'no')
 }
 function begin_page($title, $page = "with_session")
 {
-	if ($page == "with_session")
-	{
-		if (isset($_SESSION['default_style']))
+	if (($page == "with_session")&&(isset($_SESSION['default_style'])))
 			$sheetcss = 'themes/'.$_SESSION['default_style'].'/css';
-
-		else
-			$sheetcss = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
-		if (isset($_GET['default_language']))
-		{
-			$_SESSION['default_language'] = $_GET['default_language'];
-			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
-				header("Location: ".$_SESSION['chemin_retour']);
-			else
-				header("Location: ".traite_grr_url());
-			die();
-		}
-	}
-	else
-	{
-		if (Settings::get("default_css"))
-			$sheetcss = 'themes/'.Settings::get("default_css").'/css';
-		else
-			$sheetcss = 'themes/default/css';
-		if (isset($_GET['default_language']))
-		{
-			$_SESSION['default_language'] = $_GET['default_language'];
-			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
-				header("Location: ".$_SESSION['chemin_retour']);
-			else
-				header("Location: ".traite_grr_url());
-			die();
-		}
-	}
+	elseif (Settings::get("default_css"))
+        $sheetcss = 'themes/'.Settings::get("default_css").'/css';
+    else
+        $sheetcss = 'themes/default/css';
+    if (isset($_GET['default_language']))
+    {
+        $_SESSION['default_language'] = $_GET['default_language'];
+        if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
+            header("Location: ".$_SESSION['chemin_retour']);
+        else
+            header("Location: ".traite_grr_url());
+        die();
+    }
 	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin;
 	header('Content-Type: text/html; charset=utf-8');
 	if (!isset($_COOKIE['open']))
