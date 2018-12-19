@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2018-10-24 10:40$
+ * Dernière modification : $Date: 2018-12-19 10:40$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -223,6 +223,7 @@ function mrbsOverloadGetFieldslist($id_area, $room_id = 0)
 	{
 		if ($id_area == "")
 		{
+            $fieldslist[$field_row[0]." (".$field_row[4].")"]["name"] = $field_row[0];		
 			$fieldslist[$field_row[0]." (".$field_row[4].")"]["type"] = $field_row[1];
 			$fieldslist[$field_row[0]." (".$field_row[4].")"]["id"] = $field_row[2];
 			if (trim($field_row[3]) != "")

@@ -3,7 +3,7 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-28 12:00$
+ * Dernière modification : $Date: 2018-12-19 21:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -45,7 +45,7 @@ else
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-//Renseigne les droits de l'utilisateur, si les droits sont insufisants, l'utilisateur est averti.
+//Renseigne les droits de l'utilisateur, si les droits sont insuffisants, l'utilisateur est averti.
 if (!verif_access_search(getUserName()))
 {
 	showAccessDenied($back);
@@ -92,7 +92,7 @@ $test_grr_j_user_area = grr_sql_count(grr_sql_query("SELECT * FROM ".TABLE_PREFI
 	// Report on one entry. See below for columns in $row[].
 function reporton(&$row, $dformat)
 {
-	global $vocab, $enable_periods;
+	global $vocab, $enable_periods, $tablOverload;
 	echo "<tr>";
 		//Affiche "area"
 	$area_nom = htmlspecialchars($row[8]);
@@ -111,7 +111,7 @@ function reporton(&$row, $dformat)
 	echo "<td>".$breve_description."</td>\n";
 		// From date-time and duration:
 	echo "<td>";
-	if ($enable_periods == 'y')
+    if ($enable_periods == 'y')
 	{
 		echo describe_period_span($row[1], $row[2]);
 		echo "</td>\n";;
@@ -143,28 +143,36 @@ function reporton(&$row, $dformat)
 	echo "<td>".htmlspecialchars($row_user[0]) ." ". htmlspecialchars($row_user[1])."</td>";
 		//Affichage de la date de la dernière mise à jour
 	echo "<td>". date_time_string($row[7],$dformat) . "</td>\n";
-        // Affichage des champs additionnels
-    $id_entry = $row[0];
-    $champs_add = mrbsEntryGetOverloadDesc($id_entry);
-    echo "<td>";
-    foreach ($champs_add as $field)
-    { // $field est de la forme : Array ( [valeur] => 10 [id] => 2 [affichage] => n [overload_mail] => n [obligatoire] => n [confidentiel] => n ) 
-    // le nom du champ :
-        $res_name = grr_sql_query("SELECT fieldname FROM ".TABLE_PREFIX."_overload WHERE id = '".$field['id']."'");
-        $field_name ="";
-        if ($res_name){
-            $row_name = grr_sql_row($res_name,0);
-            $field_name = $row_name[0];
-        }
-    // faut-il afficher ? Si c'est un administrateur : pas de restriction, sinon on n'affiche que les champs qui sont affichables dans les plannings
-        $affichage ="";
-        if ((authGetUserLevel(getUserName(),-1) > 5) || ($field['affichage'] == 'y')) {
-            $affichage = $field_name." = ".$field['valeur']."<br />";
-        }
-        echo $affichage;
-    }
-    echo "</td>";
-    // fin de ligne
+		// X Colonnes champs additionnels
+	$overload_data = mrbsEntryGetOverloadDesc($row[0]);
+	$i = 1;
+
+	$nbValeur = count($tablOverload);
+	$AddReservation = array();
+
+	foreach ($overload_data as $fieldname=>$fielddata) // Pour chaque champ additionnel de la réservation
+	{
+
+		// if ($fielddata["confidentiel"] == 'n') filtrage trop strict
+        if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
+        {
+			$keyTab = array_search($fieldname, $tablOverload);
+			$AddReservation[$keyTab] = $fielddata["valeur"];
+		}
+		
+	}
+	$j=1;
+
+	while($j <= $nbValeur){
+		if(isset($AddReservation[$j]))
+			echo "<td>".$AddReservation[$j]."</td>";
+		else
+			echo "<td>-</td>";
+		$j++;
+	}
+
+	unset($tablOverload);
+
 	echo "</tr>\n";
 }
 // $breve_description est soit une "description brève" soit un "bénéficiaire", selon la valeur de $_GET["sumby"]
@@ -269,17 +277,17 @@ function do_summary(&$count, &$hours, &$room_hash, &$breve_description_hash, $en
 	// Make a sorted array of area/rooms, and of names, to use for column
 	// and row indexes. Use the rooms and names hashes built by accumulate().
 	// At PHP4 we could use array_keys().
-	reset($room_hash);
+	/*reset($room_hash);
 	$rooms = array();
-	// while (list($room_key) = each($room_hash)) deprecated in php 7.2.0
-    foreach($room_hash as $room_key)    
-		$rooms[] = $room_key;
+	while (list($room_key) = each($room_hash)) //deprecated in php 7.2.0
+		$rooms[] = $room_key;*/
+    $rooms = array_keys($room_hash);    
 	ksort($rooms);
-	reset($breve_description_hash);
+	/*reset($breve_description_hash);
 	$breve_descriptions = array();
-	// while (list($breve_description_key) = each($breve_description_hash))
-    foreach($breve_description_hash as $breve_description_key)
-		$breve_descriptions[] = $breve_description_key;
+	while (list($breve_description_key) = each($breve_description_hash))
+		$breve_descriptions[] = $breve_description_key;*/
+    $breve_descriptions = array_keys($breve_description_hash);
 	ksort($breve_descriptions);
 	$n_rooms = sizeof($rooms);
 	$n_names = sizeof($breve_descriptions);
@@ -490,7 +498,8 @@ if (($summarize != 4) && ($summarize != 5))
 			// Boucle sur tous les champs additionnels de l'area
 			foreach ($overload_fields as $fieldname=>$fieldtype)
             {
-                if ($overload_fields[$fieldname]["confidentiel"] != 'y')
+                // if ($overload_fields[$fieldname]["confidentiel"] != 'y') filtrage trop strict
+                if ((authGetUserLevel(getUserName(),-1) > 5) || ($overload_fields[$fieldname]['affichage'] == 'y'))
                 {
                     echo "<option value='addon_".$overload_fields[$fieldname]["id"]."' ";
                     if (isset($champ[$k]) && ($champ[$k] == "addon_".$overload_fields[$fieldname]["id"]))
@@ -556,7 +565,8 @@ if (($summarize != 4) && ($summarize != 5))
         // Boucle sur tous les champs additionnels de l'area
         foreach ($overload_fields as $fieldname=>$fieldtype)
         {
-            if ($overload_fields[$fieldname]["confidentiel"] != 'y')
+            // if ($overload_fields[$fieldname]["confidentiel"] != 'y') filtrage trop strict
+            if ((authGetUserLevel(getUserName(),-1) > 5) || ($overload_fields[$fieldname]['affichage'] == 'y'))
             {
                 echo "<option value='".$overload_fields[$fieldname]["id"]."' ";
                 if ($_GET["sumby"] == $overload_fields[$fieldname]["id"])
@@ -665,7 +675,8 @@ if (isset($_GET["is_posted"]))
                     $overload_fields = mrbsOverloadGetFieldslist("");
                     foreach ($overload_fields as $fieldname=>$fieldtype)
                     {
-                        if ($overload_fields[$fieldname]["confidentiel"] != 'y')
+                        // if ($overload_fields[$fieldname]["confidentiel"] != 'y') filtrage trop strict
+                        if ((authGetUserLevel(getUserName(),-1) > 5) || ($overload_fields[$fieldname]['affichage'] == 'y'))
                         {
                             if ($champ[$k] == "addon_".$overload_fields[$fieldname]["id"])
                                 $sql .=  grr_sql_syntax_caseless_contains_overload("e.overload_desc", $texte[$k], $overload_fields[$fieldname]["id"], $type_recherche[$k]);
@@ -696,7 +707,7 @@ if (isset($_GET["is_posted"]))
         else if ( $sortby == "b" )
                 //Trié par: réservant, Area, room, debut, date/heure.
             $sql .= " ORDER BY e.name,9,r.order_display,10,2";
-            // echo $sql." <br /><br />";
+            // echo $sql." <br /><br />"; // en test
         $res = grr_sql_query($sql);
         if (!$res)
             fatal_error(0, grr_sql_error());
@@ -803,9 +814,26 @@ if (isset($_GET["is_posted"]))
                 echo "</td>";
                     // Colonne "dernière modification"
                 echo "<td>".get_vocab("lastupdate")."</td>";
-                    // Colonne "champs additionnels"
+            /*        // Colonne "champs additionnels"
                     // peut-être tester s'il y a quelque chose à afficher ? YN le 20/09/18
-                echo "<td>".get_vocab('admin_overload.php')."</td>";
+                echo "<td>".get_vocab('admin_overload.php')."</td>"; */
+                    // retro portage     
+                    // X Colonnes champs additionnels
+                $overload_fields_c = mrbsOverloadGetFieldslist("");
+                // Boucle sur tous les champs additionnels de l'area
+                $i = 1;
+                $tablOverload = array();
+                foreach ($overload_fields_c as $fieldname=>$fieldtype)
+                {
+                    //if ($overload_fields_c[$fieldname]["confidentiel"] != 'y') // filtrage trop strict
+                    if ((authGetUserLevel(getUserName(),-1) > 5) || ($overload_fields_c[$fieldname]['affichage'] == 'y'))
+                    {
+                        echo "<td>".$fieldname."</td>";
+                        $tablOverload[$i] = $overload_fields_c[$fieldname]["name"];
+                        $i++;
+                    }
+                }
+//                echo'<br><br>';
                 echo "</tr>";                    
             }
             for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
@@ -855,10 +883,33 @@ if (isset($_GET["is_posted"]))
                     grr_sql_free($res);
                 }
                 else
-                {
+                {   /*
                     // Ligne d'en-tête
                     echo html_entity_decode($vocab["reservee au nom de"]).";".html_entity_decode($vocab["areas"]).";".html_entity_decode($vocab["room"]).html_entity_decode(preg_replace("/ /", " ",$vocab["deux_points"])).";".html_entity_decode($vocab["description"]).";".html_entity_decode($vocab["time"])." - ".html_entity_decode($vocab["duration"]).";".html_entity_decode($vocab["namebooker"]).html_entity_decode(preg_replace("/ /", " ",$vocab["deux_points"])).";".html_entity_decode($vocab["match_descr"]).";".html_entity_decode($vocab["type"]).";".html_entity_decode($vocab["lastupdate"]).";".html_entity_decode($vocab["admin_overload.php"]).";\n";
-                }
+                    */
+                    // retro portage
+                    
+                    // Ligne d'en-tête
+                    echo html_entity_decode($vocab["reservee au nom de"]).";".html_entity_decode($vocab["areas"]).";".html_entity_decode($vocab["room"]).";".html_entity_decode($vocab["description"]).";".html_entity_decode($vocab["date"]).";".html_entity_decode($vocab["time"]).";".html_entity_decode($vocab["duration"]).";".html_entity_decode($vocab["namebooker"]).";".html_entity_decode($vocab["match_descr"]).";".html_entity_decode($vocab["type"]).";".html_entity_decode($vocab["lastupdate"]).";";
+                    $overload_fields_c = mrbsOverloadGetFieldslist("");
+                    // Boucle sur tous les champs additionnels de l'area
+                    $i = 1;
+                    $tablOverload = array();
+                    foreach ($overload_fields_c as $fieldname=>$fieldtype)
+                    {
+                        // if ($overload_fields_c[$fieldname]["confidentiel"] != 'y') // filtrage trop strict
+                        if ((authGetUserLevel(getUserName(),-1) > 5) || ($overload_fields_c[$fieldname]['affichage'] == 'y'))
+                        {
+                            echo $fieldname.";";
+                            $tablOverload[$i] = $overload_fields_c[$fieldname]["name"];
+                            $i++;
+                        }
+                    }
+                    echo "\n";
+                    $nbValeur = count($tablOverload);
+                
+                }  
+                
                 for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
                 {
                     //Affichage de "créé par" et de la date de la dernière mise à jour
@@ -887,6 +938,7 @@ if (isset($_GET["is_posted"]))
                     echo $leType .";";
                     //Date derniere modif
                     echo date_time_string($row[7], $dformat) . ";";
+                    /*
                     // Champs additionnels
                     $id_entry = $row[0];
                     $champs_add = mrbsEntryGetOverloadDesc($id_entry);
@@ -907,7 +959,28 @@ if (isset($_GET["is_posted"]))
                     }
                     $affichage = rtrim($affichage," | ");
                     echo $affichage.";";
-                    echo "\r\n";
+                    echo "\r\n"; */
+                    // retro portage
+                    // X Colonnes champs additionnels
+                    $overload_data = mrbsEntryGetOverloadDesc($row[0]);
+                    $AddReservation = array();
+                    foreach ($overload_data as $fieldname=>$fielddata) // Pour chaque champ additionnel de la réservation
+                    {
+                        // if ($fielddata["confidentiel"] == 'n')  filtrage trop strict
+                        if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
+                        {
+                            $keyTab = array_search($fieldname, $tablOverload);
+                            $AddReservation[$keyTab] = $fielddata["valeur"];
+                        }
+                    }
+                    $j=1;
+                    while($j <= $nbValeur){
+                        if(isset($AddReservation[$j]))
+                            echo $AddReservation[$j].";";
+                        else
+                            echo "-;";
+                        $j++;
+                    }
                 }
             }
             if ($summarize == 5)
