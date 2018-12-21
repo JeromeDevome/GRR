@@ -3,7 +3,7 @@
  * contactFormulaire.php
  * Formulaire d'envoi de mail
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-31 15:15$
+ * Dernière modification : $Date: 2018-12-21 19:00$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -16,23 +16,24 @@
  * (at your option) any later version.
  */
 $grr_script_name = "contactFormulaire.php";
-include "include/connect.inc.php";
-include "include/config.inc.php";
-include "include/misc.inc.php";
-include "include/functions.inc.php";
-include "include/$dbsys.inc.php";
-include "include/mincals.inc.php";
-include "include/mrbs_sql.inc.php";
+
+include "./include/connect.inc.php";
+include "./include/config.inc.php";
+include "./include/misc.inc.php";
+include "./include/functions.inc.php";
+include "./include/$dbsys.inc.php";
+include "./include/mincals.inc.php";
+include "./include/mrbs_sql.inc.php";
 
 require_once("./include/settings.class.php");
 if (!Settings::load())
 	die("Erreur chargement settings");
 require_once("./include/session.inc.php");
-include "include/resume_session.php";
-include "include/language.inc.php";
+include "./include/resume_session.php";
+include "./include/language.inc.php";
 
 // pour le traitement des modules
-include "/include/hook.class.php";
+include "./include/hook.class.php";
 ?>
 <script>
     function remplirdureemin(res)
