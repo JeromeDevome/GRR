@@ -652,7 +652,7 @@ function verif_version()
 	$_version_grr = $version_grr;
 	$version_old = Settings::get("version");
 
-	if ($version_old == '' || $_version_grr > $version_old)
+	if ($version_old == '' || version_compare($_version_grr, $version_old, '<'))
 		return true;
 	else
 		return false;

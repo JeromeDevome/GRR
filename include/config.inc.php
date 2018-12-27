@@ -118,6 +118,9 @@ $debug_flag = 0;
 #Rechercher des MAJ sur le serveur grr.devome.com || 0: non ; 1: oui - Defaut 1
 $recherche_MAJ = 1;
 
+#Activer la possibilité d'utiliser l'option forcer MAJ || 0: non ; 1: oui - Defaut 1
+$forcer_MAJ = 1;
+
 #Possibilité d'upload de module || 0: non ; 1: oui - Defaut 1
 $upload_Module = 1;
 
