@@ -3,9 +3,9 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-11-15 12:00$
+ * Dernière modification : $Date: 2019-01-05 15:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -16,7 +16,7 @@
  * (at your option) any later version.
  */
 $grr_script_name = 'view_entry.php'; 
-// echo '<div>'; ??? YN
+
 include_once('include/connect.inc.php');
 include_once('include/config.inc.php');
 include_once('include/functions.inc.php');
@@ -325,7 +325,7 @@ echo '		<td><b>'.get_vocab("description").'</b></td>';
 echo '		<td>'.nl2br($description).'</td>';
 echo '	</tr>';
 // la portion de code qui suit ne semble rien produire, et les champs additionnels sont repris plus bas YN le 05/10/18
-if (!$was_del)
+/* if (!$was_del)
 {
     $overload_data = mrbsEntryGetOverloadDesc($id);
     foreach ($overload_data as $fieldname=>$fielddata)
@@ -350,7 +350,7 @@ if (!$was_del)
             }
         }
     }
-}
+}*/
 echo '	<tr>';
 echo '		<td><b>'.get_vocab("room"),get_vocab("deux_points").'</b></td>';
 echo '		<td>'.nl2br($area_name . " - " . $room_name).'</td>';
@@ -396,11 +396,13 @@ echo '		<td>'.$updated.'</td>';
 echo '	</tr>';
 // Les champs add :
 $overload_data = mrbsEntryGetOverloadDesc($id);
+// print_r($overload_data);
 foreach ($overload_data as $fieldname=>$field)
 {
-    if (($field["affichage"] == 'y') and ($field["valeur"]!=""))
+    if ((($field["affichage"] == 'y') and ($field["valeur"]!=""))||(authGetUserLevel(getUserName(), $room_id) >= 4) || ($beneficiaire == getUserName()))
     {
-        echo "<tr><td>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points")."</td><td>".htmlspecialchars($field["valeur"],ENT_NOQUOTES)."</tr>";
+        echo "<tr><td><b>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points")."</b></td>";
+        echo "<td>".htmlspecialchars($field["valeur"],ENT_NOQUOTES)."</td></tr>";
     }
 }
 // Gestion des clefs :
