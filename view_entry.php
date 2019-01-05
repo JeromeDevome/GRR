@@ -3,9 +3,9 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-05-14 18:30$
+ * Dernière modification : $Date: 2019-01-05 15:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -15,14 +15,14 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-// echo '<div>'; ??? YN
+$grr_script_name = 'view_entry.php';
+
 include_once('include/connect.inc.php');
 include_once('include/config.inc.php');
 include_once('include/functions.inc.php');
 include_once('include/'.$dbsys.'.inc.php');
 include_once('include/misc.inc.php');
 include_once('include/mrbs_sql.inc.php');
-$grr_script_name = 'view_entry.php';
 require_once('include/settings.class.php');
 if (!Settings::load())
 	die("Erreur chargement settings");
@@ -332,7 +332,7 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
 			?>
 		</td>
 	</tr>
-	<?php
+	<?php /* repris plus bas
 	if (!$was_del)
 	{
 		$overload_data = mrbsEntryGetOverloadDesc($id);
@@ -358,7 +358,7 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
 				}
 			}
 		}
-	}
+	} */
 	?>
 	<tr>
 		<td>
@@ -477,17 +477,18 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
 		</td>
 	</tr>
 	<?php
-	// Les champs add :
-	$overload_data = mrbsEntryGetOverloadDesc($id);
-	foreach ($overload_data as $fieldname=>$field)
-	{
-		if (($field["affichage"] == 'y') and ($field["valeur"]!=""))
-		{
-			echo "<tr><td>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points")."</td><td>".htmlspecialchars($field["valeur"],ENT_NOQUOTES)."</tr>";
-		}
-	}
-
-	// Gestion des clef :
+        // Les champs add :
+    $overload_data = mrbsEntryGetOverloadDesc($id);
+    // print_r($overload_data);
+    foreach ($overload_data as $fieldname=>$field)
+    {
+        if ((($field["affichage"] == 'y') and ($field["valeur"]!=""))||(authGetUserLevel(getUserName(), $room_id) >= 4) || ($beneficiaire == getUserName()))
+        {
+            echo "<tr><td><b>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points")."</b></td>";
+            echo "<td>".htmlspecialchars($field["valeur"],ENT_NOQUOTES)."</td></tr>";
+        }
+    }
+	// Gestion des clefs :
 	if ($keys == 1)
 	{
 		?>
