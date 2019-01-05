@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2018-06-26
+# Last modification : 2019-01-06
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1030,4 +1030,6 @@ $vocab['active_btn_primary_'] = "Button primary (active)";
 $vocab['focus_btn_primary_'] = "Button primary (hover)";
 $vocab['ssmenuadm_actif'] = "Submenu active item";
 $vocab['default'] = "Default values";
+$vocab['resaToModerate'] = " reservation to moderate";
+$vocab['resasToModerate'] = " reservations to moderate";
 ?>

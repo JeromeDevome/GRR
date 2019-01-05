@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-12-09 10:15$
+ * Dernière modification : $Date: 2019-01-05 22:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -562,49 +562,41 @@ function how_many_connected()
 }
 /**
  * Fonction : resaToModerate($user) 
- * Description : si c'est un admin ou un gestionnaire de ressource qui est connecté, retourne un message indiquant s'il y a des réservations à modérer
+ * Description : si c'est un admin ou un gestionnaire de ressource qui est connecté, retourne un tableau contenant, pour chaque réservation à modérer, [id,room_id,start_time]
 */
 function resaToModerate($user)
-{/*
-    $can_see = (authGetUserLevel($user,-1) > 5);// admin général
-    if (!$can_see){
-        if (isset($_GET['id_site'])){$can_see = (authGetUserLevel($user,$_GET['id_site'],'site') > 4);} // admin du site en paramètre
-    }
-    if (!$can_see){
-        if (isset($_GET['area'])){$can_see = (authGetUserLevel($user,$_GET['area'],'area') > 3);} // admin du domaine en paramètre
-    }
-    if (!$can_see){
-        if (isset($_GET['room'])){$can_see = (authGetUserLevel($user,$_GET['room'],'room') > 2);} // gestionnaire de la ressource en paramètre
-    }
-    if ($can_see){
-        $mesg = "accessible";}
-    else $mesg = ''; */
-    $mesg = '';
+{   
+    $resas = array();
+    $res = false;
     if (authGetUserLevel($user,-1) > 5) // admin général
     {
-        $sql = "SELECT COUNT(e.moderate) FROM ".TABLE_PREFIX."_entry e WHERE e.moderate = 1";
-        $res = grr_sql_query1($sql);
-        if ($res > 0){$mesg = $res." réservation à modérer";}
+        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE e.moderate = 1";
+        $res = grr_sql_query($sql);
     }
     elseif (isset($_GET['id_site']) && (authGetUserLevel($user,$_GET['id_site'],'site') > 4)) // admin du site
     {
-        $sql = "SELECT COUNT(e.moderate) FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = ".$_GET['id_site']." AND e.moderate = 1)";
-        $res = grr_sql_query1($sql);
-        if ($res > 0){$mesg = $res." réservation à modérer";}
+        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = ".$_GET['id_site']." AND e.moderate = 1)";
+        $res = grr_sql_query($sql);
     }
     elseif (isset($_GET['area']) && (authGetUserLevel($user,$_GET['area'],'area') > 3)) // admin du domaine
     {
-        $sql = "SELECT COUNT(e.moderate) FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id WHERE (a.id = ".$_GET['area']." AND e.moderate = 1)";
-        $res = grr_sql_query1($sql);
-        if ($res > 0){$mesg = $res." réservation à modérer";}
+        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id WHERE (a.id = ".$_GET['area']." AND e.moderate = 1)";
+        $res = grr_sql_query($sql);
     }
     elseif (isset($_GET['room']) && (authGetUserLevel($user,$_GET['room'],'room') > 2)) // gestionnaire de la ressource
     {
-        $sql = "SELECT COUNT(e.moderate) FROM ".TABLE_PREFIX."_entry e WHERE (e.moderate = 1 AND e.room_id = ".$_GET['room'].") ";
-        $res = grr_sql_query1($sql);
-        if ($res > 0){$mesg = $res." réservation à modérer";}
+        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e WHERE (e.moderate = 1 AND e.room_id = ".$_GET['room'].") ";
+        $res = grr_sql_query($sql);
     }
-    return $mesg;
+    if ($res)
+    {
+        $i = 0; 
+        while (($a = grr_sql_row($res, $i++))) 
+        {
+            $resas[$i] = array('id' => $a[0],'room' => $a[1],'start_time' => $a[2]);
+        }
+    }
+    return $resas;
 }
 /*
 Teste s'il reste ou non des plages libres sur une journée donnée pour un domaine donné.
@@ -1138,6 +1130,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
                         echo "<br />";
 					}
                     echo "<p class='avertissement'>".$mess_resa."</p>";
+                    
 					echo '</td>'.PHP_EOL;
 				}
 			}
@@ -5246,8 +5239,12 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			if ($type_session == "with_session")
 			{
                 $user_name = getUserName();
-                $mess_resa = resaToModerate($user_name);
-				if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1) || ($mess_resa != ''))
+                $resaAModerer = resaToModerate($user_name);
+                $nbResaAModerer = count($resaAModerer);
+                $mess_resa = '';
+                if ($nbResaAModerer > 1){$mess_resa = $nbResaAModerer.get_vocab('resasToModerate');}
+                if ($nbResaAModerer == 1){$mess_resa = $nbResaAModerer.get_vocab('resaToModerate');}
+				if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1))// || ($mess_resa != '')) trop large ? YN le 06/01/19
 				{
 					echo '<div class="administration">'.PHP_EOL;
 					if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1))
@@ -5258,7 +5255,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 						how_many_connected();
                         echo "<br />";
 					}
-                    echo "<p class='avertissement'>".$mess_resa."</p>";
+                    echo "<p class='avertissement'><a href='".$racine."admin/admin_accueil.php' class='avertissement' >".$mess_resa."</a></p>";
 					echo '</div>'.PHP_EOL;
 				}
 			}

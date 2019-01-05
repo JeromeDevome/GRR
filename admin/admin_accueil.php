@@ -19,32 +19,52 @@ $grr_script_name = "admin_accueil.php";
  
 include "../include/admin.inc.php";
 $back = '';
+$user = getUserName();
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-if ((authGetUserLevel(getUserName(), -1, 'area') < 4) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+if ((authGetUserLevel($user, -1, 'area') < 4) && (authGetUserLevel($user, -1, 'user') !=  1))
 {
 	showAccessDenied($back);
 	exit();
 }
+// existe-t-il des réservations à modérer sur le site ?
+$listeModeration = resaToModerate($user);
+$nbAModerer = count($listeModeration);    
+// code html
 start_page_w_header("", "", "", $type="with_session"); // affiche le header et la balise <section>
-echo "<div class='row2'>";
+
 include "admin_col_gauche2.php";
+// "colonne de droite"
+// titre et réservations à modérer
+echo'    <div class="col-md-3 col-sm-4 col-xs-12">';
+echo'        <div class="center">';
+echo'            <br /><br />';
+echo'            <p style="font-size:20pt">';
+echo get_vocab("admin");
+echo'            </p>';
+echo'            <p style="font-size:40pt">';
+echo'                <i>GRR !</i>';
+echo'            </p>';
+if ($nbAModerer > 0)
+{ 
+    echo '<table class="table table-condensed">';
+    echo '<caption>'.$nbAModerer.' réservation';
+    if ($nbAModerer > 1){echo "s";}
+    echo ' à modérer</caption>';
+    echo '<tbody>';
+    foreach($listeModeration as $no => $resa)
+    {
+        echo "<tr><td>".$resa['room']."</td>";
+        echo "<td>".time_date_string($resa['start_time'], $dformat)."</td>";
+        echo "<td><a href='".$racine."view_entry.php?id=".$resa['id']."'><span class='glyphicon glyphicon-new-window'></span></a></td></tr>";
+    }
+    echo "</tbody>";
+	echo '</table>';
+}
+echo'        </div>    </div>';
+// totem
+echo'    <div class="col-md-3 col-sm-4 col-xs-12">';
+echo'        <img src="../img_grr/totem_grr.png" alt="GRR !" class="image" />';
+echo'    </div>';
+end_page();
 ?>
-    <div class="col-md-3 col-sm-4 col-xs-12">
-        <img src="../img_grr/totem_grr.png" alt="GRR !" class="image" />
-    </div>
-    <div class="col-md-3 col-sm-4 col-xs-12">
-        <div class="center">
-            <br /><br />
-            <p style="font-size:20pt">
-                <?php echo get_vocab("admin"); ?>
-            </p>
-            <p style="font-size:40pt">
-                <i>GRR !</i>
-            </p>
-        </div>
-    </div>
-</div>
-</section>
-</body>
-</html>
