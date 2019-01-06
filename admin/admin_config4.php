@@ -3,7 +3,7 @@
  * admin_config4.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (sécurité, connexions)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-22 11:15$
+ * Dernière modification : $Date: 2019-01-06 16:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -100,18 +100,16 @@ if ($dbsys == "mysql")
 	echo "<h3>".get_vocab('title_backup')."</h3>\n";
 	echo "<p>".get_vocab("explain_backup")."</p>\n";
 	echo "<p><i>".get_vocab("warning_message_backup")."</i></p>\n";
-	?>
-	<form action="admin_save_mysql.php" method="get" style="width:100%;">
-		<div class="center">
+	echo '<form action="admin_save_mysql.php" method="get" >';
+	echo '	<div class="center">
 			<input type="hidden" name="flag_connect" value="yes" />
-			<input class="btn btn-primary" type="submit" value=" <?php echo get_vocab("submit_backup"); ?>" style="font-variant: small-caps;" />
-		</div>
-	</form>
-		<?php
-		//
-		// Loading base
-		//********************************
-		//
+			<input class="btn btn-primary" type="submit" value="'.get_vocab("submit_backup").'" style="font-variant: small-caps;" />
+		</div>';
+	echo '</form>';
+    //
+    // Loading base
+    //********************************
+    //
 	if($restaureBBD == 1){
 		echo "\n<hr /><h3>".get_vocab('Restauration de la base GRR')."</h3>";
 		echo "\n<p>En cas de perte de donnée ou de problème sur la base GRR, cette fonction vous permet de la retrouver dans l'état antérieur lors d'une sauvegarde. Vous devez sélectionner un fichier créé à l'aide de la fonction Lancer une sauvegarde.</p>";

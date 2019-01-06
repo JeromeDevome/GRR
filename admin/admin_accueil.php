@@ -3,7 +3,7 @@
  * admin_accueil
  * Interface d'accueil de l'administration des domaines et des ressources
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-19 15:15$
+ * Dernière modification : $Date: 2019-01-06 16:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -35,7 +35,7 @@ start_page_w_header("", "", "", $type="with_session"); // affiche le header et l
 
 include "admin_col_gauche2.php";
 // "colonne de droite"
-// titre et réservations à modérer
+// titre 
 echo'    <div class="col-md-3 col-sm-4 col-xs-12">';
 echo'        <div class="center">';
 echo'            <br /><br />';
@@ -45,12 +45,16 @@ echo'            </p>';
 echo'            <p style="font-size:40pt">';
 echo'                <i>GRR !</i>';
 echo'            </p>';
+// bouton sauvegarde
+echo '<a href="admin_save_mysql.php?flag_connect=yes" class="btn btn-default">'.get_vocab("submit_backup").'</a>';
+// réservations à modérer
 if ($nbAModerer > 0)
 { 
     echo '<table class="table table-condensed">';
-    echo '<caption>'.$nbAModerer.' réservation';
-    if ($nbAModerer > 1){echo "s";}
-    echo ' à modérer</caption>';
+    echo '<caption>'.$nbAModerer;
+    if ($nbAModerer == 1){echo get_vocab('resaToModerate');}
+    else {echo get_vocab('resasToModerate');}
+    echo '</caption>';
     echo '<tbody>';
     foreach($listeModeration as $no => $resa)
     {
