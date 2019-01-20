@@ -3,9 +3,9 @@
  * admin.inc.php
  *
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Laurent Delineau
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2019-01-20 10:20$
+ * @author    JeromeB & Laurent Delineau & Yan Naessens
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -17,20 +17,20 @@
  */
 
 
-include "../include/connect.inc.php";
-include "../include/config.inc.php";
-include "../include/mrbs_sql.inc.php";
-include "../include/misc.inc.php";
-include "../include/functions.inc.php";
-include "../include/$dbsys.inc.php";
+include "connect.inc.php";
+include "config.inc.php";
+include "mrbs_sql.inc.php";
+include "misc.inc.php";
+include "functions.inc.php";
+include "$dbsys.inc.php";
 
 // Settings
-require_once("../include/settings.class.php");
+require_once("settings.class.php");
 //Chargement des valeurs de la table settingS
 if (!Settings::load())
 	die("Erreur chargement settings");
 // Session related functions
-require_once("../include/session.inc.php");
+require_once("session.inc.php");
 // Resume session
 if (!grr_resumeSession()) {
 	header("Location: ../logout.php?auto=1&url=$url");
@@ -38,5 +38,5 @@ if (!grr_resumeSession()) {
 };
 // Paramètres langage
 $use_admin = 'y';
-include "../include/language.inc.php";
+include "language.inc.php";
 ?>

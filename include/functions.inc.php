@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-07-22 15:00$
+ * Dernière modification : $Date: 2019-01-20 10:20$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -473,9 +473,9 @@ function how_many_connected()
 		}
 
 		if ($nb_connect == 1)
-			echo "<a href='{$racineAd}admin_view_connexions.php'>".$nb_connect.get_vocab("one_connected")."</a>".PHP_EOL;
+			echo "<a href='{$racineAd}admin.php?p=admin_view_connexions'>".$nb_connect.get_vocab("one_connected")."</a>".PHP_EOL;
 		else
-			echo "<a href='{$racineAd}admin_view_connexions.php'>".$nb_connect.get_vocab("several_connected")."</a>".PHP_EOL;
+			echo "<a href='{$racineAd}admin.php?p=admin_view_connexions'>".$nb_connect.get_vocab("several_connected")."</a>".PHP_EOL;
 		if (verif_version())
 			affiche_pop_up(get_vocab("maj_bdd_not_update").get_vocab("please_go_to_admin_maj.php"),"force");
 	}
