@@ -3,7 +3,7 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-12-19 21:00$
+ * Dernière modification : $Date: 2019-01-26 14:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -196,8 +196,8 @@ function accumulate(&$row, &$count, &$hours, $report_start, $report_end, &$room_
 	if ($csv == "n")
 	{
 		//Description "Créer par":
-		// [3]   Descrition brêve,(HTML) -> e.name
-		// [4]   Descrition,(HTML) -> e.description
+		// [3]   Description brêve,(HTML) -> e.name
+		// [4]   Description,(HTML) -> e.description
 		// [5]   Type -> e.type
 		// [6]   réservé par (nom ou IP), (HTML) -> e.beneficiaire
 		// [12]  les champs additionnele -> e.overload_desc
@@ -219,7 +219,7 @@ function accumulate(&$row, &$count, &$hours, $report_start, $report_end, &$room_
 	$room_hash[$room] = 1;
 	$breve_description_hash[$breve_description] = 1;
 }
-// Identique à la fonction accumulate mais adapté aux cas ou $enable_periode = 'y'
+// Identique à la fonction accumulate mais adapté au cas où $enable_periode = 'y'
 function accumulate_periods(&$row, &$count, &$hours, $report_start, $report_end, &$room_hash, &$breve_description_hash, $csv = "n")
 {
 	global $vocab, $periods_name;
@@ -890,7 +890,7 @@ if (isset($_GET["is_posted"]))
                     // retro portage
                     
                     // Ligne d'en-tête
-                    echo html_entity_decode($vocab["reservee au nom de"]).";".html_entity_decode($vocab["areas"]).";".html_entity_decode($vocab["room"]).";".html_entity_decode($vocab["description"]).";".html_entity_decode($vocab["date"]).";".html_entity_decode($vocab["time"]).";".html_entity_decode($vocab["duration"]).";".html_entity_decode($vocab["namebooker"]).";".html_entity_decode($vocab["match_descr"]).";".html_entity_decode($vocab["type"]).";".html_entity_decode($vocab["lastupdate"]).";";
+                    echo html_entity_decode($vocab["reservee au nom de"]).";".html_entity_decode($vocab["areas"]).";".html_entity_decode($vocab["room"]).";".html_entity_decode($vocab["description"]).";".html_entity_decode($vocab["time"])." - ".html_entity_decode($vocab["duration"]).";".html_entity_decode($vocab["match_descr"]).";".html_entity_decode($vocab['fulldescription']).";".html_entity_decode($vocab["type"]).";".html_entity_decode($vocab["lastupdate"]).";";
                     $overload_fields_c = mrbsOverloadGetFieldslist("");
                     // Boucle sur tous les champs additionnels de l'area
                     $i = 1;
@@ -912,7 +912,7 @@ if (isset($_GET["is_posted"]))
                 
                 for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
                 {
-                    //Affichage de "créé par" et de la date de la dernière mise à jour
+                    //Affichage de "créé par"
                     echo ($row[6]) . ";";
                     //Area
                     echo (removeMailUnicode($row[8])) . ";";
@@ -927,7 +927,7 @@ if (isset($_GET["is_posted"]))
                         echo describe_period_span($row[1], $row[2]) . ";";
                     else
                         echo describe_span($row[1], $row[2], $dformat) . ";";
-                    //Destination
+                    //Brève description
                     echo (removeMailUnicode(affichage_lien_resa_planning($row[3], $row[0]))) . ";";
                     //Description de la réservation
                     $texte = str_replace(CHR(10)," ", removeMailUnicode($row[4]));
@@ -981,6 +981,7 @@ if (isset($_GET["is_posted"]))
                             echo "-;";
                         $j++;
                     }
+                    echo "\r\n";
                 }
             }
             if ($summarize == 5)
