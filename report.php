@@ -3,9 +3,9 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-12-20 23:00$
+ * Dernière modification : $Date: 2019-01-26 18:40$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -976,6 +976,7 @@ if (isset($_GET["is_posted"]))
                             echo "-;";
                         $j++;
                     }
+                    echo "\r\n";
                 }
             }
             if ($summarize == 5)
