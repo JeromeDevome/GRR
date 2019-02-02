@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-01-05 22:15$
+ * Dernière modification : $Date: 2019-02-02 23:25$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -2362,8 +2362,8 @@ function make_room_list_html($link,$current_area, $current_room, $year, $month, 
 		}
 	}
 }
-/**
- * Affichage des domaines sous la forme d'un input
+/*
+ * Affichage des sites sous la forme d'une liste de boutons
  *
  * @param string $link
  * @param string $current_site
@@ -2376,7 +2376,7 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 {
 	global $vocab;
 	$nb_sites_a_afficher = 0;
-	$out_html = '<ul class="list-group"><li class="list-group-item">'.get_vocab('sites').get_vocab('deux_points').'</li></ul><form class="ressource" id="site_001" action="'.$_SERVER['PHP_SELF'].'"><div>';
+//	$out_html = '<ul class="list-group"><li class="list-group-item">'.get_vocab('sites').get_vocab('deux_points').'</li></ul><form class="ressource" id="site_001" action="'.$_SERVER['PHP_SELF'].'"><div>';
 	$sql = "SELECT id, sitename
 	FROM ".TABLE_PREFIX."_site
 	left join ".TABLE_PREFIX."_j_site_area on ".TABLE_PREFIX."_site.id = ".TABLE_PREFIX."_j_site_area.id_site
@@ -2386,7 +2386,8 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 	";
 	$res = grr_sql_query($sql);
 	if ($res)
-	{
+	{     
+        $out_html = '<br />'.PHP_EOL.'<div class="panel panel-default">'.PHP_EOL.'<div class="panel-heading">'.get_vocab('sites').get_vocab('deux_points').'</div>'.PHP_EOL.'<div class="panel-body">'.PHP_EOL.'<form class="ressource" id="site_001" action="'.$_SERVER['PHP_SELF'].'">';
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
 			$sql = "SELECT id_area FROM ".TABLE_PREFIX."_j_site_area WHERE ".TABLE_PREFIX."_j_site_area.id_site='".$row[0]."'";
@@ -2408,26 +2409,25 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 			{
 				$nb_sites_a_afficher++;
 				$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$default_area;
-				$out_html .="\n";
+				//$out_html .="\n";
 			}
 			else
 				$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day;
 			if ($current_site != null)
 			{
 				if ($current_site == $row[0])
-					$out_html .= "<input id=\"item_select\" type=\"button\" class=\"btn btn-primary btn-xs\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])."\" onclick=\"location.href='$link2';charger();\" /><br />".PHP_EOL;
+					$out_html .= "<input id=\"item_select\" type=\"button\" class=\"btn btn-primary btn-lg btn-block item_select\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])."\" onclick=\"location.href='$link2';charger();\" />".PHP_EOL;
 				else
-					$out_html .= "<input type=\"button\" class=\"btn btn-default btn-xs item\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])." \" onclick=\"location.href='$link2';charger();\" /><br />".PHP_EOL;
+					$out_html .= "<input type=\"button\" class=\"btn btn-default btn-lg btn-block item\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])." \" onclick=\"location.href='$link2';charger();\" />".PHP_EOL;
 			}
 			else
-				$out_html .= "<input type=\"button\" class=\"btn btn-default btn-xs item\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])." \" onclick=\"location.href='$link2';charger();\" /><br />".PHP_EOL;
+				$out_html .= "<input type=\"button\" class=\"btn btn-default btn-lg btn-block item\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])." \" onclick=\"location.href='$link2';charger();\" /><br />".PHP_EOL;
 		}
 	}
-	if ($nb_sites_a_afficher > 1)
+	if ($nb_sites_a_afficher > 1)// s'il y a au moins deux sites à afficher, on affiche une liste de boutons, sinon rien.
 	{
-		// s'il y a au moins deux sites à afficher, on met une liste déroulante, sinon, on affiche rien.
 		$out_html .= '</form>'.PHP_EOL;
-		$out_html .= '</div>'.PHP_EOL;
+		$out_html .= '</div></div>'.PHP_EOL;
 		$out_html .= '<script type="text/javascript">'.PHP_EOL;
 		$out_html .= 'function site_go()'.PHP_EOL;
 		$out_html .= '{'.PHP_EOL;
@@ -2441,9 +2441,10 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 		$out_html .= '<input type="submit" value="change" />'.PHP_EOL;
 		$out_html .= '</div>'.PHP_EOL;
 		$out_html .= '</noscript>'.PHP_EOL;
-		$out_html .= '</form>'.PHP_EOL;
+		//$out_html .= '</form>'.PHP_EOL;
 		return $out_html;
 	}
+    else return "";
 }
 /**
  * Affichage des area sous la forme d'un input
