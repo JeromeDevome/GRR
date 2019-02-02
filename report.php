@@ -3,9 +3,9 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-01-26 14:00$
+ * Dernière modification : $Date: 2019-02-02 15:40$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -615,13 +615,13 @@ if (isset($_GET["is_posted"]))
 	//Les heures de début et de fin sont aussi utilisés pour mettre l'heure dans le rapport.
     $report_start = mktime(0, 0, 0, $From_month, $From_day, $From_year);
     $report_end = mktime(0, 0, 0, $To_month, $To_day+1, $To_year);
-    //   La requête SQL va contenir les colonnes suivantes:
+    //   La table issue de la requête SQL va contenir les colonnes suivantes:
     // Col Index  Description:
     //   1  [0]   Entry ID, Non affiché -> e.id
     //   2  [1]   Date de début (Unix) -> e.start_time
     //   3  [2]   Date de fin (Unix) -> e.end_time
-    //   4  [3]   Descrition brêve,(HTML) -> e.name
-    //   5  [4]   Descrition,(HTML) -> e.description
+    //   4  [3]   Description brêve,(HTML) -> e.name
+    //   5  [4]   Description,(HTML) -> e.description
     //   6  [5]   Type -> e.type
     //   7  [6]   réservé par (nom ou IP), (HTML) -> e.beneficiaire
     //   8  [7]   Timestamp (création), (Unix) -> e.timestamp
@@ -691,22 +691,28 @@ if (isset($_GET["is_posted"]))
         $sql .= " AND  t.type_letter = e.type ";
         if ( $sortby == "a" )
                 //Trié par: Area, room, debut, date/heure.
-            $sql .= " ORDER BY 9,r.order_display,10,t.type_name,2";
+            //$sql .= " ORDER BY 9,r.order_display,10,t.type_name,2";
+            $sql .= " ORDER BY a.area_name,r.order_display,r.room_name,t.type_name,e.start_time";
         else if ( $sortby == "r" )
                 //Trié par: room, area, debut, date/heure.
-            $sql .= " ORDER BY r.order_display,10,9,t.type_name,2";
+            //$sql .= " ORDER BY r.order_display,10,9,t.type_name,2";
+            $sql .= " ORDER BY r.order_display,r.room_name,a.area_name,t.type_name,e.start_time";
         else if ( $sortby == "d" )
                 // Order by Start date/time, Area, Room
-            $sql .= " ORDER BY 2,9,r.order_display,10,t.type_name";
+            //$sql .= " ORDER BY 2,9,r.order_display,10,t.type_name";
+            $sql .= " ORDER BY e.start_time,a.area_name,r.order_display,r.room_name,t.type_name";
         else if ( $sortby == "t" )
                 //Trié par: type, Area, room, debut, date/heure.
-            $sql .= " ORDER BY t.type_name,9,r.order_display,10,2";
+            //$sql .= " ORDER BY t.type_name,9,r.order_display,10,2";
+            $sql .= " ORDER BY t.type_name,a.area_name,r.order_display,r.room_name,e.start_time";
         else if ( $sortby == "c" )
                 //Trié par: réservant, Area, room, debut, date/heure.
-            $sql .= " ORDER BY e.beneficiaire,9,r.order_display,10,2";
+            //$sql .= " ORDER BY e.beneficiaire,9,r.order_display,10,2";
+            $sql .= " ORDER BY e.beneficiaire,a.area_name,r.order_display,r.room_name,e.start_time";
         else if ( $sortby == "b" )
-                //Trié par: réservant, Area, room, debut, date/heure.
-            $sql .= " ORDER BY e.name,9,r.order_display,10,2";
+                //Trié par: breve_description, Area, room, debut, date/heure.
+            //$sql .= " ORDER BY e.name,9,r.order_display,10,2";
+            $sql .= " ORDER BY e.name,e.id,a.area_name,r.order_display,r.room_name,e.start_time"; // e.id trie les réservations sans description brève
             // echo $sql." <br /><br />"; // en test
         $res = grr_sql_query($sql);
         if (!$res)
