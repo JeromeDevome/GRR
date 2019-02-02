@@ -3,7 +3,7 @@
  * edit_entry_champs_add.php
  * Page "Ajax" utilisée pour générer les champs additionnels dans la page de réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2018-10-27 17:30$
  * @author    Laurent Delineau & JeromeB
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -70,16 +70,16 @@ foreach ($overload_fields as $fieldname=>$fieldtype)
 		$flag_obli = " *" ;
 	else
 		$flag_obli = "";
-	echo "<table width=\"100%\" id=\"id_".$areas."_".$overload_fields[$fieldname]["id"]."\">";
+	echo "<table class='pleine' id=\"id_".$areas."_".$overload_fields[$fieldname]["id"]."\">";
 	echo "<tr><td class=E><b>".removeMailUnicode($fieldname).$flag_obli."</b></td></tr>\n";
 	if (isset($overload_data[$fieldname]["valeur"]))
 		$data = $overload_data[$fieldname]["valeur"];
 	else
 		$data = "";
 	if ($overload_fields[$fieldname]["type"] == "textarea" )
-		echo "<tr><td><div class=\"col-xs-12\"><textarea class=\"form-control\" cols=\"80\" rows=\"2\" name=\"addon_".$overload_fields[$fieldname]["id"]."\">".htmlspecialchars($data,ENT_SUBSTITUTE)."</textarea></div></td></tr>\n";
+		echo "<tr><td><div class=\"col-xs-12\"><textarea class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\">".htmlspecialchars($data,ENT_SUBSTITUTE)."</textarea></div></td></tr>\n";
 	else if ($overload_fields[$fieldname]["type"] == "text" )
-		echo "<tr><td><div class=\"col-xs-12\"><input class=\"form-control\" size=\"80\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" /></div></td></tr>\n";
+		echo "<tr><td><div class=\"col-xs-12\"><input class=\"form-control\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" /></div></td></tr>\n";
 	else if ($overload_fields[$fieldname]["type"] == "numeric" )
 		echo "<tr><td><div class=\"col-xs-12\"><input class=\"form-control\" size=\"20\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" /></div></td></tr>\n";
 	else
@@ -98,4 +98,5 @@ foreach ($overload_fields as $fieldname=>$fieldtype)
 	}
 	echo "</table>\n";
 }
+
 ?>
