@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-12-18 23:10$
+ * Dernière modification : $Date: 2019-02-02 12:10$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -890,7 +890,7 @@ function begin_page($title, $page = "with_session")
 {
 	if (($page == "with_session")&&(isset($_SESSION['default_style'])))
 			$sheetcss = 'themes/'.$_SESSION['default_style'].'/css';
-	elseif (Settings::get("default_css"))
+	elseif ((class_exists('Settings'))&&(Settings::get("default_css") != NULL))
         $sheetcss = 'themes/'.Settings::get("default_css").'/css';
     else
         $sheetcss = 'themes/default/css';
