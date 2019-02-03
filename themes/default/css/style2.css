@@ -17,8 +17,8 @@ a.calendar{display:block;height:100%;width:100%;vertical-align:middle;text-align
 .cellcalendar{vertical-align:middle;text-align:center;height:30px;width:40px;line-height:30px}
 .cellcalendar a:hover{background-color:#fff;color:#999;}
 .week td a{background-color:#AAA;vertical-align:middle;text-align:center;height:100%;width:100%}
-table.legende{margin-left:25px;width:250px}
-table.legende td{width:125px;text-align:center}
+table.legende{width:100%;}
+table.legende td{width:50%;text-align:center;}
 .progress{margin-bottom:0px;}
 #planning2{text-align:center;min-width:600px;display:inline-block;width:100%;}
 .ligne23{min-height:23px;text-align:center;}
