@@ -1776,13 +1776,13 @@ function tdcell_rowspan($colclass, $step)
 //Display the entry-type color key. This has up to 2 rows, up to 10 columns.
 function show_colour_key($area_id)
 {
-	echo '<table class="legende"><caption>'.get_vocab("show_color_key").'</caption>'.PHP_EOL;
 	$sql = "SELECT DISTINCT t.id, t.type_name, t.type_letter, t.order_display FROM `".TABLE_PREFIX."_type_area` t
 	LEFT JOIN `".TABLE_PREFIX."_j_type_area` j on j.id_type=t.id
 	WHERE (j.id_area  IS NULL or j.id_area != '".$area_id."')ORDER BY t.order_display";
 	$res = grr_sql_query($sql);
 	if ($res)
 	{
+        echo '<table class="legende"><caption>'.get_vocab("show_color_key").'</caption>'.PHP_EOL;
 		$nct = -1;
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
@@ -1805,9 +1805,8 @@ function show_colour_key($area_id)
 		}
 		if ($i % 2 == 1)
 			echo '<td></td>',PHP_EOL,'</tr>'.PHP_EOL;
-		
+		echo '</table>'.PHP_EOL;
 	}
-	echo '</table>'.PHP_EOL;
 }
 //Display the entry-type color keys. This has up to 2 rows, up to 10 columns.
 function show_colour_keys()

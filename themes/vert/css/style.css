@@ -59,8 +59,6 @@ span a{color:#FFF }
 b,strong{color:#000;text-align:center}
 #liste_select{color:#CAA;font-weight:700}
 #liste{color:#CCF}
-table.legende{margin-left:25px;width:250px}
-table.legende td{width:125px;text-align:center}
 td.cell_hours{color:#fff;background-color:gray !important;text-align:center;font-size:13px;height:20px;line-height:20px;border: none !important}
 td.cell_hours2{color:#000;background-color:#ccc !important;text-align:center;font-size:13px;height:20px;line-height:20px;border: none !important}
 td.cell_hours a{color:#fff}
@@ -193,9 +191,8 @@ a.calendar{display:block;height:100%;width:100%;vertical-align:middle;text-align
 .cellcalendar{vertical-align:middle;text-align:center;height:30px;width:40px;line-height:30px}
 .cellcalendar a:hover{background-color:#fff;color:#999;}
 .week td a{background-color:#AAA;vertical-align:middle;text-align:center;height:100%;width:100%}
-table.legende{margin-left:25px;width:250px}
-table.legende td{width:125px;text-align:center}
-.progress{margin-bottom:0px;}
+table.legende{width:100%;}
+table.legende td{width:50%;text-align:center}.progress{margin-bottom:0px;}
 #chargement{left:35%;top:322px;position:absolute;display:none;z-index:10}
 #chargement p{padding:0;background-color:gray}
 #chargement img{border:2px solid #000}
