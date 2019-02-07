@@ -17,7 +17,15 @@ Version en cours de développement sur GitHUB (3.4.1) // Numero de version a def
 -----
 --
 -----
-
+Sous-version 3.4.0c :
+    [correction] de bugs d'affichage divers
+    [correction] de bugs syntaxiques divers
+    [correction] du code éliminant les entrées anciennes dans le journal de connexion
+    [correction] du code calculant la page de retour depuis la page de réservation
+    [correction] du code affichant le code couleur des types de réservation
+    [modification] du calcul du style à appliquer
+    [modification] de l'affichage des champs additionnels
+    [modification] de la prise en charge des attributs LDAP
 Version 3.4.0
 	[ajout] Personnalisation des couleurs pour les types de réservation depuis l'administration, soit un passage de 28 couleurs à 16 777 216 couleurs
 	[ajout] Possibilité d'afficher le formulaire de demande de réservation aux non connectés et aux visiteurs ou simplement aux visiteurs 
