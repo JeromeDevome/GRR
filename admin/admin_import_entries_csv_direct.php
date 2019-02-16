@@ -3,7 +3,7 @@
  * admin_import_entries_csv_direct.php
  * Importe un fichier de réservations au format csv comprenant les champs : date du jour, heure de début, heure de fin, ressource, description et type
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-02-16 14:00$
+ * Dernière modification : $Date: 2019-02-16 16:20$
  * @author    JeromeB & Yan Naessens & Denis Monasse & Laurent Delineau
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -233,7 +233,7 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
 		if (!grr_sql_mutex_lock("".TABLE_PREFIX."_entry"))
 			fatal_error(1, get_vocab('failed_to_acquire'));
 		
-		$date_now = mktime();
+		$date_now = time();
 		$error_booking_in_past = false;
 		$error_booking_room_out = false; //note si la ressource est disponible
 		$error_duree_max_resa_area = 'no';
@@ -246,7 +246,7 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
 		$err = '';
         
 		// on vérifie que le créneau est bien libre
-        $occupied=mrbsCheckFree($room_id, $starttime, $endtime, 0, 0);
+        $occupied=mrbsCheckFree($room_id, $starttime, $endtime, 0, 0,"../");
         // echo date('c',$starttime)." ".date('c',$endtime)."</br>";
         // echo $libre ;
         //echo "créneau libre ";
