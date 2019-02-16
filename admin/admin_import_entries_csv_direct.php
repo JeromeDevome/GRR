@@ -3,9 +3,9 @@
  * admin_import_entries_csv_direct.php
  * Importe un fichier de réservations au format csv comprenant les champs : date du jour, heure de début, heure de fin, ressource, description et type
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-31 15:00$
+ * Dernière modification : $Date: 2019-02-16 14:00$
  * @author    JeromeB & Yan Naessens & Denis Monasse & Laurent Delineau
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -139,6 +139,8 @@ else
     echo '<hr />';
     echo '<p>Télécharger un fichier CSV au format suivant:</p>';
     echo '<code>date du jour; heure de début; heure de fin; ressource; description; type</code>';
+    echo '<p>par exemple</p>';
+    echo '<code>2001-01-01;12h00;14h00;Salle 1;Test;A</code>';
     echo '<p>Le temps d\'importation est en général limité par le serveur à quelques minutes par fichier. 
             Pour éviter une erreur de type "timeout" qui conduirait à une importation incomplète, 
             scindez votre fichier en fichiers plus petits que vous importerez successivement
@@ -283,7 +285,7 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
 			   // l'utilisateur est gestionnaire ou admin de la ressource donc on ne modère pas !
 			   $entry_moderate = 0;
 			   $send_mail_moderate = 0;	
-               $entry_type = 1;
+               $entry_type = 0; // réservation isolée
                $repeat_id = 0; 
                $name = $description;
                $overload_data = '';
