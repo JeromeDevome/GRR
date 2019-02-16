@@ -2,9 +2,9 @@
 /**
  * admin_import_entries_csv_direct.php
  * Importe un fichier de réservations au format csv comprenant les champs : date du jour, heure de début, heure de fin, ressource, description et type
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Yan Naessen & Denis Monasse & Laurent Delineau
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2019-02-16 12:00$
+ * @author    JeromeB & Yan Naessens & Denis Monasse & Laurent Delineau
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -14,9 +14,9 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "admin_import_entries_csv_direct.php";
 
 include "../include/admin.inc.php";
-$grr_script_name = "admin_import_entries_csv_direct.php";
  
  # print the page header
 print_header("","","","",$type="with_session", $page="admin");
@@ -37,7 +37,7 @@ include "admin_col_gauche.php";
 	$long_max = 8000;
     
  if(isset($_POST['import'])) {
-        // on commence par charger le fichier CSV dans une table provisoire grr_csv pour profiter des tris MySQL
+        // on commence par charger le fichier CSV dans une table provisoire grr_csv2 pour profiter des tris MySQL
         echo "<h2>Première étape de l'importation en cours, ne fermez pas la page</h2>";
         $temps_debut=time();
         $erreur=""; $nb_reservations=0;
@@ -289,7 +289,7 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
 			   // l'utilisateur est gestionnaire ou admin de la ressource donc on ne modère pas !
 			   $entry_moderate = 0;
 			   $send_mail_moderate = 0;	
-               $entry_type = 1;
+               $entry_type = 0; // réservation isolée
                $repeat_id = 0; 
                $name = $description;
                $overload_data = '';
