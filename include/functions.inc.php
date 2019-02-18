@@ -948,6 +948,7 @@ function begin_page($title, $page = "with_session")
 		$a .= '<script type="text/javascript" src="../js/functions.js" ></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/select2.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/select2_locale_fr.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/jquery-ui-i18n.min.js"></script>'.PHP_EOL;
 		if (isset($use_tooltip_js))
 			echo '<script type="text/javascript" src="../include/tooltip.js"></script>'.PHP_EOL;
 		if (!isset($_SESSION['selection']))
@@ -977,6 +978,7 @@ function begin_page($title, $page = "with_session")
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/jquery-ui-i18n.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;

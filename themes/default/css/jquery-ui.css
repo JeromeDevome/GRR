@@ -217,6 +217,17 @@ input.ui-button {
 
 /* workarounds */
 /* reset extra padding in Firefox, see h5bp.com/l */
+#datepicker-container{
+  text-align:center;
+}
+#datepicker-center{
+  display:inline-block;
+  margin:0 auto;
+  padding: 10px;
+}
+div.ui-datepicker{
+ font-size:110%;
+}
 input.ui-button::-moz-focus-inner,
 button.ui-button::-moz-focus-inner {
 	border: 0;
