@@ -11,6 +11,8 @@
 		   return(false);
 		}
 		
+		var actualDate = getQueryVariable("day") + '-' + getQueryVariable("month") + '-' + getQueryVariable("year");
+		
 		$(document).ready(function() {  
   
             var userLang = navigator.language || navigator.userLanguage;  
@@ -40,7 +42,8 @@
                 } 
             );  
   
-            $("#calendar").datepicker(options);  
+            $("#calendar").datepicker(options);
+            $( "#calendar" ).datepicker( "setDate", actualDate );  
             
             $(function() {	
 				$( "#datepicker" ).datepicker({
