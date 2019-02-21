@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2018-10-24
+# Last modification : 2010-02-21
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -720,7 +720,7 @@ $vocab['rep_type_3'] = "Chaque mois, la même date";
 $vocab['rep_type_4'] = "Chaque année, même date";
 $vocab['rep_type_5'] = "Chaque mois, même jour de la même semaine";
 $vocab['rep_type_6'] = "Jours Cycle";
-$vocab['required'] = "Les champs marqués d'un * sont obligatoires.";
+$vocab['required'] = "Les champs marqués d\'un * sont obligatoires.";
 $vocab['reservation au nom de'] = "Réservation au nom de ";
 $vocab['Reservation confirmee'] = "Réservation confirmée";
 $vocab['reservations_moderees'] = "Réservations modérées";
