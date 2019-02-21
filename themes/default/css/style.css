@@ -115,3 +115,15 @@ th.jour_sem{width:10%;background-color:gray;color:white;}
 	FLOAT:LEFT;
 	}
 }
+
+#datepicker-container{
+  text-align:center;
+}
+#datepicker-center{
+  display:inline-block;
+  margin:0 auto;
+  padding: 10px;
+}
+div.ui-datepicker{
+ font-size:110%;
+}
