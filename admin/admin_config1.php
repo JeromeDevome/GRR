@@ -441,14 +441,6 @@ if (isset($_POST['ok'])) {
         $ok = 'no';
     }
 }
-// nombre de calendriers
-if (isset($_POST['nb_calendar'])) {
-    settype($_POST['nb_calendar'], 'integer');
-    if (!Settings::set('nb_calendar', $_POST['nb_calendar'])) {
-        echo "Erreur lors de l'enregistrement de nb_calendar !<br />";
-        die();
-    }
-}
 $demande_confirmation = 'no';
 if (isset($_POST['begin_day']) && isset($_POST['begin_month']) && isset($_POST['begin_year'])) {
     while (!checkdate($_POST['begin_month'], $_POST['begin_day'], $_POST['begin_year'])) {
@@ -609,18 +601,6 @@ if ((Settings::get('logo') != '') && (@file_exists($nom_picture))) {
     echo '</tr>'.PHP_EOL;
 }
 echo '</table>'.PHP_EOL;
-echo '<h3>'.get_vocab('affichage_calendriers').'</h3>'.PHP_EOL; // nombre de calendriers mensuels (maximum : 5)
-echo '<p>'.get_vocab('affichage_calendriers_msg').get_vocab('deux_points').PHP_EOL;
-echo '<select name="nb_calendar" >'.PHP_EOL;
-for ($k = 0; $k < 6; ++$k) {
-    echo '<option value="'.$k.'" ';
-    if (Settings::get('nb_calendar') == $k) {
-        echo ' selected="selected" ';
-    }
-    echo '>'.$k.'</option>'.PHP_EOL;
-}
-echo '</select>'.PHP_EOL;
-echo '</p>'.PHP_EOL;
 if (Settings::get('use_fckeditor') == 1) {
     echo '<script type="text/javascript" src="../js/ckeditor/ckeditor.js"></script>'.PHP_EOL;
 }
