@@ -81,7 +81,7 @@ INSERT INTO grr_setting VALUES ('display_info_bulle', '1');
 INSERT INTO grr_setting VALUES ('display_full_description', '1');
 INSERT INTO grr_setting VALUES ('pview_new_windows', '1');
 INSERT INTO grr_setting VALUES ('default_report_days', '30');
-INSERT INTO grr_setting VALUES ('authentification_obli', '0');
+INSERT INTO grr_setting VALUES ('authentification_obli', '1');
 INSERT INTO grr_setting VALUES ('use_fckeditor', '1');
 INSERT INTO grr_setting VALUES ('visu_fiche_description', '0');
 INSERT INTO grr_setting VALUES ('allow_search_level', '1');
