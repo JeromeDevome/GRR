@@ -34,6 +34,9 @@ $trad['dNombreUtilisateur'] = AdminFonctions::NombreUtilisateurs();
 get_vocab_admin("admin_user_mdp_facile");
 $trad['dNombreMDPFacile'] = AdminFonctions::NombreUtilisateursMDPfacile();
 
+// WARNING
+list($trad['dTypeWarning'], $trad['dMessageWarning'], $trad['dTexteLienWarning'], $trad['dLienWarning'])  = AdminFonctions::Warning();
+
 // Widget dernières connexions
 get_vocab_admin("login_name");
 get_vocab_admin("begining_of_session");

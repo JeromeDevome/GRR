@@ -66,6 +66,32 @@ class AdminFonctions
 	}
 
 
+	public static function Warning() // Alerte
+	{
+
+		$type = "";
+		$MessageWarning = "";
+		$NomLien = "";
+		$lien = "";
+
+		if ( time() < Settings::get("begin_bookings") || time() > Settings::get("end_bookings"))
+		{
+			$type = "danger";
+			$MessageWarning = "Les dates d'ouverture des réservations sont actuellements fermées !";
+			$NomLien = "Configurer les dates";
+			$lien = "?p=admin_config";
+		} elseif( (time() + 2592000) < Settings::get("begin_bookings") || (time() + 2592000) > Settings::get("end_bookings"))
+		{
+			$type = "warning";
+			$MessageWarning = "Les dates d'ouverture des réservations seront prochainement fermées.";
+			$NomLien = "Configurer les dates";
+			$lien = "?p=admin_config";
+		}
+
+		return array($type, $MessageWarning, $NomLien, $lien);
+	}
+
+
 	public static function DernieresConnexion($nbAretouner) // Liste des dernières connexions
 	{
 
