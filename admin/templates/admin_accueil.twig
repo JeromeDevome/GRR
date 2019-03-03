@@ -36,6 +36,53 @@
 		</div>
 
 		<div class="col-md-3 col-sm-6 col-xs-12">
+
+			{% if trad.dTypeWarning == "" %}
+				<div class="info-box bg-aqua">
+					<span class="info-box-icon"><i class="fas fa-info"></i></span>
+
+					<div class="info-box-content">
+						<p>Aucune anomalie</p>
+					</div>
+					<!-- /.info-box-content -->
+				</div>
+				<!-- /.info-box -->
+			{% elseif trad.dTypeWarning == "danger" %}
+				<div class="info-box bg-red">
+					<span class="info-box-icon"><i class="fas fa-exclamation-triangle"></i></span>
+
+					<div class="info-box-content">
+						<p>{{ trad.dMessageWarning }}</p>
+
+						<div class="progress">
+							<div class="progress-bar" style="width: 100%"></div>
+						</div>
+						<span class="progress-description">
+							<a href="{{ trad.dLienWarning }}">{{ trad.dTexteLienWarning }}</a>
+						</span>
+					</div>
+					<!-- /.info-box-content -->
+				</div>
+				<!-- /.info-box -->
+			{% else %}
+				<div class="info-box bg-orange">
+					<span class="info-box-icon"><i class="fas fa-exclamation-triangle"></i></span>
+
+					<div class="info-box-content">
+						<p>{{ trad.dMessageWarning }}</p>
+
+						<div class="progress">
+							<div class="progress-bar" style="width: 100%"></div>
+						</div>
+						<span class="progress-description">
+							<a href="{{ trad.dLienWarning }}">{{ trad.dTexteLienWarning }}</a>
+						</span>
+					</div>
+					<!-- /.info-box-content -->
+				</div>
+				<!-- /.info-box -->
+			{% endif %}
+
 		</div>
 		
 		<div class="col-md-3 col-sm-6 col-xs-12">
