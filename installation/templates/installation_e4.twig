@@ -1,0 +1,39 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block content %}
+
+
+	{% if d.connexionEchoue %}
+		{{ msgSyst.messageDanger('Connexion au serveur SQL :', 'La connexion au serveur SQL a échoué.') }}
+	{% endif %}
+
+	<div class="row">
+
+		<div class="col-md-12 col-sm-12 col-xs-12">
+
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 class="box-title">Etape 4 - Création des tables</h3>
+				</div>
+			
+				<form action='install_mysql.php' method='get' role="form">
+					<input type='hidden' name='etape' value='5' />
+
+					<div class="box-body">
+						<p>La structure de votre base de données est installée.</p>
+
+					</div>
+					<div style="text-align:right;">
+						<input class="btn btn-primary" type="submit" name="Valider" value="Suivant" />
+					</div>
+				</form>
+			</div>
+
+		</div>
+
+	</div>
+
+{% endblock %}

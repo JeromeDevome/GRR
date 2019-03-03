@@ -1,0 +1,37 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block content %}
+
+
+	{% if d.connexionEchoue %}
+		{{ msgSyst.messageDanger('Connexion au serveur SQL :', 'La connexion au serveur SQL a échoué.') }}
+	{% endif %}
+
+	<div class="row">
+
+		<div class="col-md-12 col-sm-12 col-xs-12">
+
+			<div class="box box-info">
+				<div class="box-header with-border">
+					<h3 class="box-title">Avant de commander</h3>
+				</div>
+
+				<div class="box-body">
+					<p>Avant de commencer verrifier la compatibilié de votre version apache et sql avec GRR.</p>
+					<p>Vous devez avoir en votre possession les codes de connexion au serveur {{ d.dbsys }}.</p>
+					<p>Vous devez prendre connaissance de la licence GRR et en installat ce logiciel vous l'accepter.</p>
+					<p>Ni DEVOME ou les developpeurs sont responsables de vos données.</p>
+				</div>
+				<div style="text-align:center;">
+					<a href="?etape=1" class="btn btn-success">Installer GRR</a>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+{% endblock %}

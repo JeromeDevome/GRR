@@ -1,0 +1,81 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block content %}
+
+
+	{% if d.connexionReussi %}
+		{{ msgSyst.messageSuccess('Connexion au serveur SQL :', 'La connexion au serveur SQL a réussi.') }}
+	{% endif %}
+
+	{% if d.erreurSelectBase %}
+		{{ msgSyst.messageDanger('Selection de la base :', 'Impossible de sélectionner ou de créer la base de données.') }}
+	{% endif %}
+
+	{% if d.erreurCreationBase %}
+		{{ msgSyst.messageDanger('Selection de la base :', 'L\'opération a échoué. Sélectionnez une autre base ou créez-en une nouvelle. Vérifiez les informations fournies par votre hébergeur.') }}
+	{% endif %}
+
+	<div class="row">
+
+		<div class="col-md-12 col-sm-12 col-xs-12">
+
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 class="box-title">Etape 2 - Choix de votre base</h3>
+				</div>
+			
+				<form action='install_mysql.php' method='get' role="form">
+					<input type='hidden' name='etape' value='3' />
+					<input type='hidden' name='adresse_db' value='{{ d.adresse_db }}' />
+					<input type='hidden' name='port_db' value='{{ d.port_db }}' />
+					<input type='hidden' name='login_db' value='{{ d.login_db }}' />
+					<input type='hidden' name='pass_db' value='{{ d.pass_db }}' />
+
+					<div class="box-body">
+						<h3>Choisissez votre base :</h3>
+						<p><b>Le serveur {{ d.dbsys }} contient plusieurs bases de données. Sélectionnez celle dans laquelle vous voulez implanter GRR :</b></p>
+						<p>Vous devez avoir en votre possession les codes de connexion au serveur {{ d.dbsys }}. Si ce n'est pas le cas, contactez votre hébergeur ou bien l'administrateur technique du serveur sur lequel vous voulez implanter GRR.</p>
+
+						{% if d.lectureBase == 1 %}
+
+							<ul>
+								{{ d.bases |raw }}
+							</ul>
+
+						{% else %}
+							<p><b>Le programme d'installation n'a pas pu lire les noms des bases de données installées.</b>Soit aucune base n'est disponible, soit la fonction permettant de lister les bases a été désactivée pour des raisons de sécurité.</p>
+							<p>Dans la seconde alternative, il est probable qu'une base portant votre nom de login soit utilisable :</p>
+							<ul>
+								<li><input name="choix_db" value="{{ d.login_db }}" type="radio" id="stand" /> <label for='stand'>{{ d.login_db }}</label></li>
+							</ul>
+
+						{% endif %}
+
+							<ul>
+								<li><input name="choix_db" value="new_grr" type="radio" id='nou' checked /> <label for='nou'>Créer une nouvelle base de données :</label><input type='text' name='table_new' class='fondo' value="grr" size='20' /></li>
+							</ul>
+
+						<h3>Préfixe des tables :</h3>
+						<p>Vous pouvez modifier le préfixe du nom des tables de données (ceci est indispensable lorsque l'on souhaite installer plusieurs sites GRR dans la même base de données). Ce préfixe s'écrit en <b>lettres minuscules, non accentuées, et sans espace</b>.
+						{{ form.input('table_prefix', 'Préfixe des tables :', 'grr', {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+
+						<h3 class="text-red"><b>Attention</b> lors de la prochaine étape :</h3>
+						<ul>
+							<li>Le fichier "{{ d.nom_fic }}" sera actualisé avec les données que vous avez fourni,</li>
+							<li>Les tables GRR seront créées dans la base sélectionnée. Si celle-ci contient déjà des tables GRR, ces tables, ainsi que les données qu'elles contiennent, seront supprimées et remplacées par une nouvelle structure.</li>
+						</ul>
+					</div>
+					<div style="text-align:right;">
+						<input class="btn btn-primary" type="submit" name="Valider" value="Suivant" />
+					</div>
+				</form>
+			</div>
+
+		</div>
+
+	</div>
+
+{% endblock %}
