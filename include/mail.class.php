@@ -32,9 +32,18 @@ class Email{
 			$mail->CharSet = 'UTF-8';
 
 			$mail->SMTPDebug = 0;
-
+			
+			if (Settings::get('options_smtp') == '1') {
+				$mail->SMTPOptions = array(
+					'ssl' => array(
+						'verify_peer' => false,
+						'verify_peer_name' => false,
+						'allow_self_signed' => true
+					)
+				);
+			}
+			
 			$mail->isSMTP();
-			//$mail->SMTPOptions = array( 'ssl' => array( 'verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true ) );
 			$mail->Host = $smtp1;
 			$mail->Username = $username;
 			$mail->Password = $password;

@@ -129,6 +129,15 @@ if (isset($_GET['smtp_port']))
 		die();
 	}
 }
+// Options SMTP
+if (isset($_GET['options_smtp']))
+{
+	if (!Settings::set("options_smtp", $_GET['options_smtp']))
+	{
+		echo "Erreur lors de l'enregistrement des options smtp !<br />";
+		die();
+	}
+}
 // Si Email test renseigné on y envois un mail
 if (isset($_GET['mail_test']) && !empty($_GET['mail_test']))
 {
@@ -274,6 +283,23 @@ if (Settings::get('grr_mail_Bcc') == "y")
 	echo " checked=\"checked\" ";
 echo "/>";
 echo get_vocab('copie cachee');
+// Utilisation option SMTP
+echo "\n<hr /><h3>Utilisation des options SMTP</h3>";
+echo "\n<p>Ces options peuvent être utiles pour les personnes ayant des problèmes avec l'envoi des mails en utilisant le service SMTP (Vérifications du correspondant et certificat)<br>Les options sont les suivantes : verify_peer, verify_peer_name, allow_self_signed</p>";
+echo "\n<table cellspacing=\"5\">";
+echo "\n<tr><td>Activé</td><td>";
+echo "\n<input type='radio' name='options_smtp' value='1' ";
+if (Settings::get("options_smtp") == '1')
+	echo "checked=\"checked\"";
+echo " />";
+echo "\n</td></tr>";
+echo "\n<tr><td>Désactivé</td><td>";
+echo "\n<input type='radio' name='options_smtp' value='0' ";
+if (Settings::get("options_smtp") == '0')
+	echo "checked=\"checked\"";
+echo " />";
+echo "\n</td></tr>";
+echo "\n</table>";
 # Désactive les messages javascript (pop-up) après la création/modificatio/suppression d'une réservation
 # 1 = Oui, 0 = Non
 echo "\n</p><hr /><h3>".get_vocab("javascript_info_disabled_msg")."</h3>";

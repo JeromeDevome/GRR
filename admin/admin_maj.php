@@ -878,6 +878,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
         $result .= formatresult("Mise à jour jusqu'à la version 3.4.1 :","<b>","</b>");
 
 		$result_inter .= traite_requete('ALTER TABLE `grr_type_area`  ADD `couleur_texte` VARCHAR(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT \'#000000\'  AFTER `disponible`');
+        $result_inter .= traite_requete("INSERT INTO `grr_setting` (`NAME`, `VALUE`) VALUES ('options_smtp','0')");
         
    		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");

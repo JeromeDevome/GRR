@@ -131,3 +131,4 @@ INSERT INTO grr_setting VALUES ('cas_port', '');
 INSERT INTO grr_setting VALUES ('cas_racine', '');
 INSERT INTO grr_setting VALUES ('cas_serveur', '');
 INSERT INTO grr_setting VALUES ('remplissage_description_complete', '0');
+INSERT INTO grr_setting VALUES ('options_smtp', '0');
