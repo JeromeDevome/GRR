@@ -51,10 +51,10 @@ CREATE TABLE grr_page ( nom varchar(30) NOT NULL, valeur longtext NOT NULL, PRIM
 INSERT INTO grr_page VALUES ('CGU', 'Les CGU');
 DROP TABLE IF EXISTS grr_modulesext;
 CREATE TABLE grr_modulesext ( nom varchar(50) NOT NULL, actif tinyint(1) NOT NULL DEFAULT '0', version INT(11) NOT NULL, PRIMARY KEY  (`nom`));
-INSERT INTO grr_type_area VALUES (1, 'Cours', 1, 1, '#1abc9c', 'A', 2);
-INSERT INTO grr_type_area VALUES (2, 'Réunion', 2, 2, '#C03000', 'B', 2);
-INSERT INTO grr_type_area VALUES (3, 'Autre', 3, 3, '#4BB5C1', 'C', 2);
-INSERT INTO grr_utilisateurs VALUES ('ADMINISTRATEUR', 'Administrateur', 'grr', 'VariableInstal05', 'VariableInstal06', 'administrateur', 'actif', 0, 0, 0, 'default', 'item', 'fr','local');
+INSERT INTO grr_type_area VALUES (1, 'Cours', 1, 1, '#1abc9c', '#000000', 'A', 2);
+INSERT INTO grr_type_area VALUES (2, 'Réunion', 2, 2, '#C03000', '#000000', 'B', 2);
+INSERT INTO grr_type_area VALUES (3, 'Autre', 3, 3, '#4BB5C1', '#000000', 'C', 2);
+INSERT INTO grr_utilisateurs VALUES ('ADMINISTRATEUR', 'Administrateur', 'grr', 'VariableInstal05', 0, 'VariableInstal06', 'administrateur', 'actif', 0, 0, 0, 'default', 'item', 'fr','local');
 INSERT INTO grr_area (`id`, `area_name`, `access`, `order_display`, `ip_adr`, `morningstarts_area`, `eveningends_area`, `duree_max_resa_area`, `resolution_area`, `eveningends_minutes_area`, `weekstarts_area`, `twentyfourhour_format_area`, `calendar_default_values`, `enable_periods`, `display_days`, `id_type_par_defaut`, `duree_par_defaut_reservation_area`, `max_booking`) VALUES (1, 'Domaine 1', 'a', 0, '', 8, 19, -1, 1800, 0, 1, 1, 'n', 'n', 'yyyyyyy', -1, 1800, -1);
 INSERT INTO grr_room (`id`, `area_id`, `room_name`, `description`, `capacity`, `max_booking`, `statut_room`, `show_fic_room`, `picture_room`, `comment_room`, `show_comment`, `delais_max_resa_room`, `delais_min_resa_room`, `allow_action_in_past`, `dont_allow_modify`, `order_display`, `delais_option_reservation`, `type_affichage_reser`, `moderate`, `qui_peut_reserver_pour`, `active_ressource_empruntee`, `active_cle`, `who_can_see`) VALUES (NULL, '1', 'Ressource 1', '', '0', '-1', '1', 'n', '', '', 'n', '-1', '0', 'n', 'n', '0', '0', '0', '0', '5', 'y', 'y', '0');
 INSERT INTO grr_setting VALUES ('sessionMaxLength', '30');
