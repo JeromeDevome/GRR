@@ -7,7 +7,7 @@
 
 
 	{% if d.SelectBase %}
-		{{ msgSyst.messageSuccess('Selection de la base :', 'Création et/ou selection de la base valide.') }}
+		{{ msgSyst.messageSuccess('Selection de la base :', 'Création et/ou sélection de la base valide.') }}
 	{% endif %}
 
 	{% if d.erreurMDP %}
@@ -34,7 +34,7 @@
 
 					<div class="box-body">
 						<h3>GRR :</h3>
-						<p>Vous pourrez modifier les informations dans la configuration général après avoir termininé l'installation.</p>
+						<p>Vous pourrez modifier les informations dans la configuration générale après avoir terminé l'installation.</p>
 
 						{{ form.input('company', 'Nom du GRR', '', {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
 						{{ form.input('grr_url', 'URL du GRR', d.adresseServeur, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
@@ -45,7 +45,7 @@
 						<h3>Votre compte :</h3>
 						<p>Identifiant du compte Administrateur :</p>
 						{{ form.input('identifiant', 'Identifiant :', 'ADMINISTRATEUR', {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', disabled: 1}) }}
-						{{ form.input('mdp1', 'Mote passe :', '', {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type: 'password', require: 1}) }}
+						{{ form.input('mdp1', 'Mot de passe :', '', {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type: 'password', require: 1}) }}
 						{{ form.input('mdp2', 'Confirmer le mot de passe :', '', {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type: 'password', require: 1}) }}
 						{{ form.input('email', 'E-mail :', '', {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type: 'email'}) }}
 
