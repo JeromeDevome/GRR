@@ -127,3 +127,6 @@ th.jour_sem{width:10%;background-color:gray;color:white;}
 div.ui-datepicker{
  font-size:110%;
 }
+.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {
+    margin-left: 30%;
+}
