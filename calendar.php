@@ -24,8 +24,6 @@
 					showWeek: true,
 					changeMonth: true,
 					changeYear: true,
-					showOn: "button",
-					showButtonPanel: true,
 					onSelect: function(dateText, inst) { 
 						var date = $(this).datepicker('getDate'),
 							day  = date.getDate(),  
@@ -33,24 +31,17 @@
 							year =  date.getFullYear();
 						var area = getQueryVariable("area");
 						var room = getQueryVariable("room");
-						var dir = location.href.replace(/[^/]*$/, '');					
+						var hostname = window.location.host;
+						var protocol = window.location.protocol;
 						if(room){
-							self.location.replace(dir +"day.php?room="+ room +"&day="+ day +"&year="+ year +"&month="+ month);
+							self.location.replace(protocol +"//"+ hostname +"/day.php?room="+ room +"&day="+ day +"&year="+ year +"&month="+ month);
 						} else {
-							self.location.replace(dir +"day.php?area="+ area +"&day="+ day +"&year="+ year +"&month="+ month);
+							self.location.replace(protocol +"//"+ hostname +"/day.php?area="+ area +"&day="+ day +"&year="+ year +"&month="+ month);
 						}
 					}  
                 } 
-            );
-            
-            var _gotoToday = jQuery.datepicker._gotoToday;
-			jQuery.datepicker._gotoToday = function(a){
-				var target = jQuery(a);
-				var inst = this._getInst(target[0]);
-				_gotoToday.call(this, a);
-				jQuery.datepicker._selectDate(a, jQuery.datepicker._formatDate(inst,inst.selectedDay, inst.selectedMonth, inst.selectedYear));
-			};
-			  
+            );  
+  
             $("#calendar").datepicker(options);
             $( "#calendar" ).datepicker( "setDate", actualDate );  
             
@@ -72,14 +63,15 @@
 				   $parentFirst = $first.parent();
 				   var area = getQueryVariable("area");
 				   var room = getQueryVariable("room");
-				   var dir = location.href.replace(/[^/]*$/, '');
+				   var hostname = window.location.host;
+				   var protocol = window.location.protocol;
 				   var day  = $first.text(),  
 					   month = $parentFirst.data("month")+1,              
 					   year =  $parentFirst.data("year");
 				   if(room){
-						self.location.replace(dir +"week.php?room="+ room +"&day="+ day +"&year="+ year +"&month="+ month);
+						self.location.replace(protocol +"//"+ hostname +"/week.php?room="+ room +"&day="+ day +"&year="+ year +"&month="+ month);
 				   } else {
-						self.location.replace(dir +"week_all.php?area="+ area +"&day="+ day +"&year="+ year +"&month="+ month);}
+						self.location.replace(protocol +"//"+ hostname +"/week_all.php?area="+ area +"&day="+ day +"&year="+ year +"&month="+ month);}
 					});
 				});
         });

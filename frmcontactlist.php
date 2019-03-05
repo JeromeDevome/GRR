@@ -3,7 +3,7 @@
  * frmcontactlist.php
  * calcule la liste des ressources visibles dans un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-31 16:00$
+ * Dernière modification : $Date: 2018-03-26 10:00$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,14 +15,12 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-
 include "include/connect.inc.php";
 include "include/mysql.inc.php";
 include "include/misc.inc.php";
 include "include/functions.inc.php";
-
 $id = $_GET['id'];
-// echo "<optgroup label=\"Salles\">"; je supprime optgroup car les ressources ne sont pas toujours des salles ! YN
+
 $res = grr_sql_query("SELECT room_name,id FROM ".TABLE_PREFIX."_room WHERE area_id = '".$id."' ORDER BY room_name");
 $nbresult = mysqli_num_rows($res);
 $user_name = getUserName();

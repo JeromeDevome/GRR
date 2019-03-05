@@ -3,8 +3,8 @@
  * traitementcontact.php
  * envois l'email suite au formulaire
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-16 10:30$
- * @author    Laurent Delineau & JeromeB & Yan Naessens
+ * Dernière modification : $Date: 2017-12-16 14:00$
+ * @author    Laurent Delineau & JeromeB
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -15,16 +15,14 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-$grr_script_name = "traitementcontact.php";
-
 include "include/connect.inc.php";
 include "include/config.inc.php";
-include "include/functions.inc.php";
 include "include/misc.inc.php";
 include "include/$dbsys.inc.php";
 include "include/mrbs_sql.inc.php";
 include "phpmailer/class.phpmailer.php";
 
+$grr_script_name = "traitementcontact.php";
 // Settings
 require_once("./include/settings.class.php");
 if (!Settings::load())
@@ -44,19 +42,17 @@ if (empty($_POST['email']))
 if (empty($_POST['subject']))
 	$message .= "Le sujet de votre demande<br/>";
 if (empty($_POST['area']))
-	$message .= "Le domaine n'est pas rempli<br/>";
+	$message .= "Le domaine n\'est pas rempli<br/>";
 if (empty($_POST['room']))
 	$message .= "Aucune salle de choisie<br/>";
-if (empty($_POST['jours']))
-	$message .= "Aucune jours choisi <br/>";
-if (empty($_POST['mois']))
-	$message .= "Aucune mois choisi <br/>";
-if (empty($_POST['année']))
-	$message .= "Aucune année choisie <br/>";
-if (empty($_POST['duree']))
-	$message .= "Aucune durée choisie <br/>";
+if (empty($_POST['date']))
+	$message .= "Aucune date n\'est selectionnée<br/>";
+if (empty($_POST['time']))
+	$message .= "Vous n'avez pas renseigner d'heure de début de réservation";
 foreach ($_POST as $index => $valeur)
 	$index = stripslashes(trim($valeur));
+
+
 
 $mail_entete  = "MIME-Version: 1.0\r\n";
 $mail_entete .= "From: {$_POST['nom']} "
@@ -65,6 +61,7 @@ $mail_entete .= 'Reply-To: '.$_POST['email']."\r\n";
 $mail_entete .= 'Content-Type: text/plain; charset="iso-8859-1"';
 $mail_entete .= "\r\nContent-Transfer-Encoding: 8bit\r\n";
 $mail_entete .= 'X-Mailer:PHP/' . phpversion()."\r\n";
+
 
 $mail_corps  = "<html><head></head><body> Message de :" .$_POST['prenom']." " .$_POST['nom'] . "<br/>";
 $mail_corps  .= "Email : ".$_POST['email']. "<br/>";
@@ -75,11 +72,16 @@ $id = $_POST['area'] ;
 $sql_areaName = "SELECT area_name FROM ".TABLE_PREFIX."_area where id = \"$id\" ";
 $res_areaName = grr_sql_query1($sql_areaName);
 $mail_corps  .= "Domaines : ".$res_areaName. "<br/> ";
-$mail_corps  .= "Salle : ".$_POST['room']. "<br/><br/>";
-$mail_corps  .= "Date  :".$_POST['start_day']."/".$_POST['start_month']."/".$_POST['start_year']. " <br/>";
-$mail_corps  .= "Heure réservation  : ".$_POST['heure']. "h  ".$_POST['minutes']. "min<br/>";
-$mail_corps  .= "Durée de la réservation : ".$_POST['duree']. " \n";
-$mail_corps  .= " h ".$_POST['dureemin']. " \n</body></html>";
+$mail_corps  .= "Salle :<b> ".$_POST['room']. "</b><br/><br/>";
+
+$mail_corps  .= "Date de début de réservation  :".$_POST['date']. " <br/>";
+$mail_corps  .= "Heure réservation de début : ".$_POST['time']. " <br/>";
+
+if(isset($_POST['duree']) && $_POST['duree']!=''){
+$mail_corps  .= "Pour une durée de : ".$_POST['duree']. " " .$_POST['selection'] . " <br/>";
+} else {
+$mail_corps  .= "Date de fin de réservation  :".$_POST['datefin']. " <br/>";
+$mail_corps  .= "Heure réservation de fin : ".$_POST['timefin']. " <br/>";}
 
 $sujet ="Réservation d'une salle";
 $destinataire = Settings::get("mail_destinataire");
@@ -87,9 +89,8 @@ $destinataire = Settings::get("mail_destinataire");
 require_once 'phpmailer/PHPMailerAutoload.php';
 require_once 'include/mail.class.php';
 
-Email::Envois($destinataire, $sujet, $mail_corps, $_POST['email'], '', '');
+Email::Envois($destinataire, $sujet, $mail_corps, $_POST['email']);
 
-// retour vers la page d'accueil
-$link = page_accueil();
-header('Location: '.$link);
+header('Location: week_all.php');
+
 ?>
