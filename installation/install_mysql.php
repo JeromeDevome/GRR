@@ -3,9 +3,9 @@
  * install_mysql.php
  * Interface d'installation de GRR pour un environnement mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-10 17:00$
+ * Dernière modification : $Date: 2019-03-05 17:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -358,7 +358,7 @@ else if (!$etape)
 			echo "<p>Vous pouvez renommer manuellement le fichier \"".$nom_fic.".ori\" en \"".$nom_fic."\", et lui donner les droits suffisants.</p>";
 			echo "<p>Une fois le fichier \"".$nom_fic.".ori\" renommé en \"".$nom_fic."\", vous pouvez également renseigner manuellement le fichier \"".$nom_fic."\".</p>";
 		}
-		echo "<p>Vous pouvez par exemple utilisez votre client FTP afin de régler ce problème ou bien contactez l'administrateur technique. Une fois cette manipulation effectuée, vous pourrez continuer.</p>";
+		echo "<p>Vous pouvez par exemple utiliser votre client FTP afin de régler ce problème ou bien contacter l'administrateur technique. Une fois cette manipulation effectuée, vous pourrez continuer.</p>";
 		echo "<p><form action='install_mysql.php' method='get'>";
 		echo "<input type='hidden' name='etape' value='' />";
 		echo "<input type='submit' class='fondl' name='Continuer' />";
