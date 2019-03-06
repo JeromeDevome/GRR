@@ -26,6 +26,23 @@
 					changeYear: true,
 					showOn: "button",
 					showButtonPanel: true,
+					minDate: new Date(<?php echo $byear; ?>,<?php echo $bmonth; ?>,<?php echo $bday; ?>),
+					maxDate: new Date(<?php echo $eyear; ?>,<?php echo $emonth; ?>,<?php echo $eday; ?>),
+					onChangeMonthYear: function(year,month,instance) {
+						var mois = month;
+						var annee = year;
+							$(document).on("click",".ui-datepicker-next, .ui-datepicker-prev", function(){
+							var area = getQueryVariable("area");
+							var room = getQueryVariable("room");
+							var dir = location.href.replace(/[^/]*$/, '');
+							var date = $("#calendar").datepicker("getDate");
+								day  = date.getDate();
+							if(room){
+								self.location.replace(dir +"month.php?room="+ room +"&day="+ day +"&year="+ annee +"&month="+ mois);
+							} else {
+								self.location.replace(dir +"month_all.php?area="+ area +"&day="+ day +"&year="+ annee +"&month="+ mois);}
+							});
+					},
 					onSelect: function(dateText, inst) { 
 						var date = $(this).datepicker('getDate'),
 							day  = date.getDate(),  
