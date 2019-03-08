@@ -3,6 +3,7 @@ body{font-size:14px;font-family:arial,verdana,sans-serif;width:100%;margin:0 aut
 a{text-decoration:none;}
 a:link,a:visited{font-weight:700;text-decoration:none;}
 a.poplight{display:block;font-weight:400;font-size:14px;height:100%;width:100%;vertical-align:middle;text-align:center;cursor:pointer;font-weight:700;text-decoration:none}
+a.lienCellule{display:block;font-weight:400;font-size:14px;height:100%;width:100%;vertical-align:middle;text-align:center;cursor:pointer;font-weight:700;text-decoration:none}
 caption{text-align: center}
 .small{font-size:.8em}
 .larger{font-size:1.4em}
@@ -67,7 +68,7 @@ table.legende td{width:50%;text-align:center}
 #planning2{text-align:center;min-width:600px;display:inline-block;width:100%;}
 #print_planning{position:relative;height:100%;width:auto}
 #lienPrecedent a{text-align:left;font-size:20px}
-a.lienCellule{color:#000;font-weight:400;display:block}
+/*a.lienCellule{color:#000;font-weight:400;display:block}*/
 a:hover.lienCellule{color:#999;font-weight:700;display:block}
 a.lienPlanning:hover{display:block;color:#AAA;}
 td.cell_hours{color:#fff;background-color:gray;text-align:center;font-size:13px;height:20px;line-height:20px;}

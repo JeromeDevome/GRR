@@ -474,7 +474,7 @@ echo "</caption>";
 								{
 									$currentPage = 'month_all';
 									$id =   $d[$cday]["id"][$i];
-									echo '<a title="',htmlspecialchars($d[$cday]["who"][$i]),'" data-width="675" onclick="request(',$id,',',$cday,',',$month,',',$year.',\'all\',\''.$currentPage,'\',readData);" data-rel="popup_name" class="poplight">',PHP_EOL;
+									echo '<a title="',htmlspecialchars($d[$cday]["who"][$i]),'" data-width="675" onclick="request(',$id,',',$cday,',',$month,',',$year.',\'all\',\''.$currentPage,'\',readData);" data-rel="popup_name" class="poplight lienCellule">',PHP_EOL;
 								}
 								else
 								{

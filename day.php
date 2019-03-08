@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-02-22 09:30$
+ * Dernière modification : $Date: 2019-03-08 16:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -462,7 +462,7 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 						if ($settings->get("display_level_view_entry") == 0)
 						{
 							$currentPage = 'day';
-							echo '<a title="'.htmlspecialchars($today[$room][$t]["who"]).'" data-width="675" onclick="request('.$id.','.$day.','.$month.','.$year.',\''.$room_back.'\',\''.$currentPage.'\',readData);" data-rel="popup_name" class="poplight">'.$descr.PHP_EOL;
+							echo '<a title="'.htmlspecialchars($today[$room][$t]["who"]).'" data-width="675" onclick="request('.$id.','.$day.','.$month.','.$year.',\''.$room_back.'\',\''.$currentPage.'\',readData);" data-rel="popup_name" class="poplight lienCellule">'.$descr.PHP_EOL;
 						}
 						else
 						{

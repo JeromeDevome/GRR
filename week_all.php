@@ -3,9 +3,9 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-11-15 13:50$
+ * Dernière modification : $Date: 2019-03-09 16:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -130,7 +130,7 @@ if ((($authGetUserLevel < 1) && (Settings::get("authentification_obli") == 1)) |
 
 // On vérifie une fois par jour si le délai de confirmation des réservations est dépassé
 	// Si oui, les réservations concernées sont supprimées et un mail automatique est envoyé.
-	// On vérifie une fois par jour que les ressources ont été rendue en fin de réservation
+	// On vérifie une fois par jour que les ressources ont été rendues en fin de réservation
 	// Si non, une notification email est envoyée
 if (Settings::get("verif_reservation_auto") == 0)
 {
@@ -198,7 +198,7 @@ $ty = date("Y", $i);
 $tm = date("m", $i);
 $td = date("d", $i);
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.id,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.id,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, courrier
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
 where
 ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id and
@@ -207,6 +207,23 @@ where
 start_time <= $date_end AND
 end_time > $date_start
 ORDER by start_time, end_time, ".TABLE_PREFIX."_entry.id";
+/* contenu de la réponse si succès :
+    $row[0] : start_time
+    $row[1] : end_time
+    $row[2] : entry id
+    $row[3] : name
+    $row[4] : beneficiaire
+    $row[5] : room id
+    $row[6] : type
+    $row[7] : statut_entry
+    $row[8] : entry description
+    $row[9] : entry option_reservation
+    $row[10]: room delais_option_reservation
+    $row[11]: entry moderate
+    $row[12]: beneficiaire_ext
+    $row[13]: clef
+    $row[14]: courrier
+*/
 $res2 = grr_sql_query($sql);
 if (!$res2)
 	echo grr_sql_error();
@@ -236,7 +253,21 @@ else
 			$d[$day_num]["id_room"][]=$row['5'] ;
 			$d[$day_num]["color"][]=$row['6'];
 			$d[$day_num]["res"][] = $row['7'];
-			$d[$day_num]["description"][] = affichage_resa_planning($row['8'], $row['2']);;
+			$descro = affichage_resa_planning($row['8'], $row['2']);
+            $clef = $row[13];
+            $courrier = $row[14];
+			if ($clef == 1 || $courrier == 1)
+                $descro .= '<br />'.PHP_EOL;
+			if ($clef == 1)
+				$descro .= '<img src="img_grr/skey.png" alt="clef">'.PHP_EOL;
+            if (Settings::get('show_courrier') == 'y')
+            {
+                if ($courrier == 1)
+                    $descro .= '<img src="img_grr/scourrier.png" alt="courrier">'.PHP_EOL;
+                else
+                    $descro .= '<br /><img src="img_grr/hourglass.png" alt="buzy">'.PHP_EOL;
+            }
+            $d[$day_num]["description"][] = $descro;
 			if ($row['10'] > 0)
 				$d[$day_num]["option_reser"][] = $row['9'];
 			else
@@ -506,7 +537,6 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 						{
 							if ($no_td)
 							{
-								//echo '<td class="cell_month">'.PHP_EOL;
                                 echo '<td >'.PHP_EOL;
 								$no_td = FALSE;
 							}
@@ -516,7 +546,7 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 								{
 									$currentPage = 'week_all';
 									$id = $d[$cday]["id"][$i];
-									echo '<a title="'.htmlspecialchars($d[$cday]["who"][$i]).'" data-width="675" onclick="request('.$id.','.$cday.','.$cmonth.','.$cyear.',\'all\',\''.$currentPage.'\',readData);" data-rel="popup_name" class="poplight" style = "border-bottom:1px solid #FFF">'.PHP_EOL;
+									echo '<a title="'.htmlspecialchars($d[$cday]["who"][$i]).'" data-width="675" onclick="request('.$id.','.$cday.','.$cmonth.','.$cyear.',\'all\',\''.$currentPage.'\',readData);" data-rel="popup_name" class="poplight lienCellule" style = "border-bottom:1px solid #FFF">'.PHP_EOL;
 								}
 								else
 									echo '<a class="lienCellule" style = "border-bottom:1px solid #FFF" title="'.htmlspecialchars($d[$cday]["who"][$i]).'" href="view_entry.php?id='.$d[$cday]["id"][$i].'&amp;page=week_all&amp;day='.$cday.'&amp;month='.$cmonth.'&amp;year='.$cyear.'&amp;" >'.PHP_EOL;
@@ -540,19 +570,6 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 								echo $d[$cday]["who1"][$i]. '<br/>'.PHP_EOL;
 								if ($d[$cday]["description"][$i] != "")
 									echo '<i>'.$d[$cday]["description"][$i].'</i>'.PHP_EOL;
-								$clef = grr_sql_query1("SELECT clef FROM ".TABLE_PREFIX."_entry WHERE ".TABLE_PREFIX."_entry.id = '".$d[$cday]["id"][$i]."'");
-								$courrier = grr_sql_query1("SELECT courrier FROM ".TABLE_PREFIX."_entry WHERE ".TABLE_PREFIX."_entry.id = '".$d[$cday]["id"][$i]."'");
-								if ($clef == 1 || $courrier == 1)
-									echo '<br />'.PHP_EOL;
-								if ($clef == 1)
-									echo '<img src="img_grr/skey.png" alt="clef">'.PHP_EOL;
-								if (Settings::get('show_courrier') == 'y')
-								{
-									if ($courrier == 1)
-										echo '<img src="img_grr/scourrier.png" alt="courrier">'.PHP_EOL;
-									else
-										echo '<br /><img src="img_grr/hourglass.png" alt="buzy">'.PHP_EOL;
-								}
 								echo '</span>'.PHP_EOL;
 							}
 							else

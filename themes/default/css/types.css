@@ -1,10 +1,9 @@
-/* fichier de style reprenant les paramètres des types de réservation */
-td.typeA{background:#1abc9c;color:#000000;}
-td.typeA a.poplight{color:#000000;}
-             
-td.typeB{background:#C03000;color:#FFFFFF;}
-td.typeB a.poplight{color:#FFFFFF;}
-             
-td.typeC{background:#4BB5C1;color:#000000;}
-td.typeC a.poplight{color:#000000;}
-             
+/* fichier de style reprenant les paramètres des types de réservation */ 
+td.typeA{background:#AAAAAA;color:#FF1532;}
+td.typeA a.lienCellule{color:#FF1532;}
+ 
+td.typeB{background:#FF4000;color:#242424;}
+td.typeB a.lienCellule{color:#242424;}
+ 
+td.typeC{background:#FF9999;color:#000000;}
+td.typeC a.lienCellule{color:#000000;}
