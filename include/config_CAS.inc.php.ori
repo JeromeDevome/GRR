@@ -2,9 +2,9 @@
 /*
  * config_CAS.inc.php.ori
  * Ce fichier permet de configurer la récupération dans GRR d'attributs LDAP des utilisateurs envoyés par le serveur CAS Lire attentivement la documentation avant de modifier ce fichier
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Laurent Delineau
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2019-03-18 18:00$
+ * @author    JeromeB & Laurent Delineau & Yan Naessens
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -55,7 +55,7 @@ function getAttribute($key)
  $user_code_fonction = recuperer_code_fonction(phpCAS::getAttribute('user_code_fonction_ldap'));
  $user_libelle_fonction = recuperer_libelle_fonction(phpCAS::getAttribute('user_libelle_fonction_ldap'));
  $user_mail = recuperer_mail(phpCAS::getAttribute('user_mail_ldap'));
- $user_default_style = "argent";
+// $user_default_style = "default";
 
 /*
  Fonction permettant de récupérer le nom dans le champ LDAP $user_nom
