@@ -3,9 +3,9 @@
  * validation.php
  * Interface de validation d'une réservation modérée
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-11-15 11:45$
+ * Dernière modification : $Date: 2019-03-19 19:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -61,7 +61,8 @@ if ($area <= 0)
     end_page();
 	exit();
 }
-if ((authGetUserLevel(getUserName(), -1) < 1) && ($settings->get("authentification_obli") == 1))
+// if ((authGetUserLevel(getUserName(), -1) < 1) && ($settings->get("authentification_obli") == 1))
+if (authGetUserLevel(getUserName(), -1) < 1)    // pour accéder à cette page, il faut être connecté, non ? YN le 19/03/19
 {
 	showAccessDenied($back);
 	exit();
@@ -268,7 +269,8 @@ if (!isset($day) || !isset($month) || !isset($year))
 
 if (@file_exists("language/lang_subst_".$area.".".$locale))
 	include "language/lang_subst_".$area.".".$locale;
-if ((authGetUserLevel(getUserName(), -1) < 1) and (Settings::get("authentification_obli") == 1))
+// if ((authGetUserLevel(getUserName(), -1) < 1) and (Settings::get("authentification_obli") == 1))
+if (authGetUserLevel(getUserName(), -1) < 1)    // il faut être connecté pour accéder à cette page
 {
 	showAccessDenied($back);
 	exit();
@@ -329,204 +331,99 @@ if (Settings::get("display_level_view_entry") == '1')
 	if ($back != "")
 		echo '<div><a href="',$back,'">',get_vocab("returnprev"),'</a></div>',PHP_EOL;
 }
-echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('entry').get_vocab('deux_points').affichage_lien_resa_planning($breve_description, $id).'</legend>'."\n"; ?>
-<table border="0">
-	<tr>
-		<td>
-			<b>
-				<?php
-				echo get_vocab("description");
-				?>
-			</b>
-		</td>
-		<td>
-			<?php
-			echo nl2br($description);
-			?>
-		</td>
-	</tr>
-	<?php
-	if (!$was_del)
-	{
-		$overload_data = mrbsEntryGetOverloadDesc($id);
-		foreach ($overload_data as $fieldname=>$fielddata)
-		{
-			if ($fielddata["confidentiel"] == 'n')
-				$affiche_champ = 'y';
-			else
-			{
-				if (($fin_session != 'n') || (getUserName()==''))
-					$affiche_champ = 'n';
-				else
-				{
-					if ((authGetUserLevel(getUserName(), $room_id) >= 4) || ($beneficiaire == getUserName()))
-						$affiche_champ = 'y';
-					else
-						$affiche_champ = 'n';
-					if ($affiche_champ == 'y')
-					{
-						echo "<tr><td><b>".bbcode(htmlspecialchars($fieldname).get_vocab("deux_points"), '')."</b></td>\n";
-						echo "<td>".bbcode(htmlspecialchars($fielddata["valeur"]), '')."</td></tr>\n";
-					}
-				}
-			}
-		}
-	}
-	?>
-	<tr>
-		<td>
-			<b>
-				<?php
-				echo get_vocab("room"),get_vocab("deux_points");
-				?>
-			</b>
-		</td>
-		<td>
-			<?php
-			echo nl2br($area_name . " - " . $room_name);
-			?>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<b>
-				<?php
-				echo get_vocab("start_date"),get_vocab("deux_points");
-				?>
-			</b>
-		</td>
-		<td>
-			<?php
-			echo $start_date;
-			?>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<b>
-				<?php
-				echo get_vocab("duration");
-				?>
-			</b>
-		</td>
-		<td>
-			<?php
-			echo $duration ,' ',$dur_units;
-			?>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<b>
-				<?php
-				echo get_vocab("end_date");
-				?>
-			</b>
-		</td>
-		<td>
-			<?php
-			echo $end_date;
-			?>
-		</td>
-	</tr>
-	<?php
-	echo '<tr>',PHP_EOL,'<td><b>',get_vocab("type"),get_vocab("deux_points"),'</b></td>',PHP_EOL;
+echo "<div class='container'>";
+echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('entry').get_vocab('deux_points').affichage_lien_resa_planning($breve_description, $id).'</legend>'."\n";
+echo '<table class="table table-noborder">';
+echo '	<tr>';
+echo '		<td>';
+echo '<b>'.get_vocab("description").'</b>';
+echo '		</td>';
+echo '		<td>';
+echo nl2br($description);
+echo '		</td>';
+echo '	</tr>';
+if (!$was_del)
+{
+    $overload_data = mrbsEntryGetOverloadDesc($id);
+    foreach ($overload_data as $fieldname=>$fielddata)
+    {
+        if ($fielddata["confidentiel"] == 'n')
+            $affiche_champ = TRUE;
+        else
+        {
+            if (($fin_session != 'n') || (getUserName()==''))
+                $affiche_champ = FALSE;
+            else
+            {
+                if ((authGetUserLevel(getUserName(), $room_id) >= 4) || ($beneficiaire == getUserName()))
+                    $affiche_champ = TRUE;
+                else
+                    $affiche_champ = FALSE;
+            }
+        }
+        if ($affiche_champ)
+        {
+            echo "<tr><td><b>".bbcode(htmlspecialchars($fieldname).get_vocab("deux_points"), '')."</b></td>\n";
+            echo "<td>".bbcode(htmlspecialchars($fielddata["valeur"]), '')."</td></tr>\n";
+        }
+    }
+}
+echo '	<tr>';
+echo '		<td><b>'.get_vocab("room"),get_vocab("deux_points").'</b></td>';
+echo '		<td>'.nl2br($area_name . " - " . $room_name).'</td>';
+echo '  </tr>';
+echo '	<tr>';
+echo '		<td><b>'.get_vocab("start_date"),get_vocab("deux_points").'</b></td>';
+echo '		<td>'.$start_date.'</td>';
+echo '	</tr>';
+echo '	<tr>';
+echo '		<td><b>'.get_vocab("duration").'</b></td>';
+echo '		<td>'.$duration." ".$dur_units.'</td>';
+echo '	</tr>';
+echo '	<tr>';
+echo '		<td><b>'.get_vocab("end_date").'</b></td>';
+echo '		<td>'.$end_date.'</td>';
+echo '	</tr>';
+echo '<tr>',PHP_EOL,'<td><b>',get_vocab("type"),get_vocab("deux_points"),'</b></td>',PHP_EOL;
 	$type_name = grr_sql_query1("SELECT type_name from ".TABLE_PREFIX."_type_area where type_letter='".$type."'");
 	if ($type_name == -1)
 		$type_name = "?$type?";
 	echo '<td>',$type_name,'</td>',PHP_EOL,'</tr>',PHP_EOL;
 	if ($beneficiaire != $create_by)
 	{
-		?>
-		<tr>
-			<td>
-				<b>
-					<?php
-					echo get_vocab("reservation au nom de"),get_vocab("deux_points");
-					?>
-				</b>
-			</td>
-			<td>
-				<?php
-				echo affiche_nom_prenom_email($beneficiaire, $beneficiaire_ext, $option_affiche_nom_prenom_email);
-				?>
-			</td>
-		</tr>
-		<?php
+        echo '<tr>';
+		echo '	<td><b>'.get_vocab("reservation au nom de"),get_vocab("deux_points").'</b></td>';
+		echo '	<td>'.affiche_nom_prenom_email($beneficiaire, $beneficiaire_ext, $option_affiche_nom_prenom_email).'</td>';
+		echo '</tr>';
 	}
-	?>
-	<tr>
-		<td>
-			<b>
-				<?php
-				echo get_vocab("created_by"),get_vocab("deux_points")
-				?>
-			</b>
-		</td>
-		<td>
-			<?php
-			echo affiche_nom_prenom_email($create_by, "", $option_affiche_nom_prenom_email);
+echo '	<tr>';
+echo '		<td><b>'.get_vocab("created_by"),get_vocab("deux_points").'</b></td>';
+echo '		<td>'.affiche_nom_prenom_email($create_by, "", $option_affiche_nom_prenom_email);
 			if ($active_ressource_empruntee == 'y')
 			{
 				$id_resa = grr_sql_query1("SELECT id from ".TABLE_PREFIX."_entry where room_id = '".$room_id."' and statut_entry='y'");
 				if ($id_resa ==$id)
 				echo '<span class="avertissement">(',get_vocab("reservation_en_cours"),') <img src="img_grr/buzy_big.png" align=middle alt="',get_vocab("ressource actuellement empruntee"),'" title="',get_vocab("ressource actuellement empruntee"),'" border="0" width="30" height="30" class="print_image" /></span>',PHP_EOL;
 			}
-			?>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<b>
-				<?php
-				echo get_vocab("lastupdate"),get_vocab("deux_points");
-				?>
-			</b>
-		</td>
-		<td>
-			<?php
-			echo $updated;
-			?>
-		</td>
-	</tr>
-	<?php
+echo '		</td>';
+echo '	</tr>';
+echo '	<tr>';
+echo '		<td><b>'.get_vocab("lastupdate"),get_vocab("deux_points").'</b></td>';
+echo '		<td>'.$updated.'</td>';
+echo '	</tr>';
 	if ($keys == 1)
 	{
-		?>
-		<tr>
-			<td>
-				<b>
-					<?php
-					echo get_vocab("clef"),get_vocab("deux_points");
-					?>
-				</b>
-			</td>
-			<td>
-				<?php
-				echo '<img src="img_grr/key.png" alt="clef">';
-				?>
-			</td>
-		</tr>
-		<?php
+		echo '<tr>';
+		echo '	<td><b>'.get_vocab("clef"),get_vocab("deux_points").'</b></td>';
+		echo '	<td><img src="img_grr/key.png" alt="clef"></td>';
+		echo '</tr>';
 	}
 	if ($courrier == 1)
 	{
-		?>
-		<tr>
-			<td>
-				<b>
-					<?php
-					echo get_vocab("courrier"),get_vocab("deux_points");
-					?>
-				</b>
-			</td>
-			<td>
-				<?php
-				echo '<img src="img_grr/courrier.png" alt="courrier">';
-				?>
-			</td>
-		</tr>
-		<?php
+		echo '<tr>';
+		echo '	<td><b>'.get_vocab("courrier"),get_vocab("deux_points").'</b></td>';
+		echo '	<td><img src="img_grr/courrier.png" alt="courrier"></td>';
+		echo '</tr>';
 	}
 	if (($delais_option_reservation > 0) && ($option_reservation != -1))
 	{
@@ -633,7 +530,7 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
         else
             $affiche_period = get_vocab('rep_type_'.$rep_type);
         echo '<fieldset><legend style="font-weight:bold">'.get_vocab('periodicite_associe')."</legend>\n";
-        echo '<table cellpadding="1">';
+        echo '<table class="table">';
         echo '<tr><td><b>'.get_vocab("rep_type").'</b></td><td>'.$affiche_period.'</td></tr>';
         if ($rep_type != 0)
         {
@@ -785,7 +682,6 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
             echo '<input type="hidden" name="back" value="',$back,'" /></div>',PHP_EOL;
             echo '</form>',PHP_EOL;
         }
-        //include_once('include/trailer.inc.php');
-        //echo '</div>',PHP_EOL;
+echo "</div>";        
 end_page();
 ?>
