@@ -3,9 +3,9 @@
  * validation.php
  * Interface de validation d'une réservation modérée
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-03 17:30$
+ * Dernière modification : $Date: 2019-03-19 18:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -60,7 +60,8 @@ if ($area <= 0)
 	exit();
 }
 print_header($day, $month, $year, $type_session);
-if ((authGetUserLevel(getUserName(), -1) < 1) && ($settings->get("authentification_obli") == 1))
+// if ((authGetUserLevel(getUserName(), -1) < 1) && ($settings->get("authentification_obli") == 1))
+if (authGetUserLevel(getUserName(), -1) < 1)    // pour accéder à cette page, il faut être connecté, non ? YN le 19/03/19
 {
 	showAccessDenied($back);
 	exit();
@@ -267,7 +268,8 @@ if (!isset($day) || !isset($month) || !isset($year))
 
 if (@file_exists("language/lang_subst_".$area.".".$locale))
 	include "language/lang_subst_".$area.".".$locale;
-if ((authGetUserLevel(getUserName(), -1) < 1) and (Settings::get("authentification_obli") == 1))
+// if ((authGetUserLevel(getUserName(), -1) < 1) && ($settings->get("authentification_obli") == 1))
+if (authGetUserLevel(getUserName(), -1) < 1)    // pour accéder à cette page, il faut être connecté, non ? YN le 19/03/19
 {
 	showAccessDenied($back);
 	exit();
@@ -363,13 +365,13 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
 						$affiche_champ = 'y';
 					else
 						$affiche_champ = 'n';
-					if ($affiche_champ == 'y')
-					{
-						echo "<tr><td><b>".bbcode(htmlspecialchars($fieldname).get_vocab("deux_points"), '')."</b></td>\n";
-						echo "<td>".bbcode(htmlspecialchars($fielddata["valeur"]), '')."</td></tr>\n";
-					}
 				}
 			}
+            if ($affiche_champ == 'y')
+            {
+                echo "<tr><td><b>".bbcode(htmlspecialchars($fieldname).get_vocab("deux_points"), '')."</b></td>\n";
+                echo "<td>".bbcode(htmlspecialchars($fielddata["valeur"]), '')."</td></tr>\n";
+            }
 		}
 	}
 	?>
