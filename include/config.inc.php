@@ -2,8 +2,8 @@
 /**
  * config.inc.php
  * Fichier de configuration de GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Laurent Delineau
+ * Dernière modification : $Date: 2019-03-22 15:00$
+ * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -52,7 +52,7 @@ $nb_year_calendar = 10;
 */
 // putenv("TZ=posix/Etc/GMT+0");
 // putenv("TZ=America/Toronto");
-/* pour compatibilité php >= 5.1.0 et php 7, on n'utilisera pas la fonction ptuenv et la constante TZ, mais la fonction 
+/* pour compatibilité php >= 5.1.0 et php 7, on n'utilisera pas la fonction putenv et la constante TZ, mais la fonction 
 date_default_timezone_set("votre_time_zone"); en remplaçant "votre_time_zone" par votre time zone, dont la liste est disponible ici :
 http://php.net/manual/fr/timezones.php
 */
@@ -76,7 +76,7 @@ date_default_timezone_set('Europe/Paris');
 # Mais si un navigateur est amené à se connecter au cours de la même session, à deux sites GRR différents,
 # ces deux sites GRR doivent avoir des noms de session différents.
 # Dans ce cas, il vous faudra changer la valeur GRR ci-dessous par une autre valeur.
- define('SESSION_NAME', "GRR");
+ define('SESSION_NAME', "GRRdev3");
 
 # Nombre maximum (+1) de réservations autorisés lors d'une réservation avec périodicité
  $max_rep_entrys = 365 + 1;
@@ -117,6 +117,9 @@ $upload_Module = 1;
 
 # Nb de jour maximum que l'on garde les logs de connexions, 0 = aucune limite
 $nbMaxJoursLogConnexion = 365;
+
+# paramètre provisoire pour choisir le type de calendrier à utiliser dans le menu gauche des pages plannings minicals (GRR classique): 0 ou JQuery : 1
+$useJQueryCalendar = 0;
 
 ##################################################
 # Cas d'une authentification via config.inc.php  #

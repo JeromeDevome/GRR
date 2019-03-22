@@ -1,11 +1,11 @@
 <?php
 /**
- * menu_gauche.php
+ * menu_gauche2.php
  * Menu calendrier & domaines & ressource & légende
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-06-11 12:00$
+ * Dernière modification : $Date: 2019-03-22 15:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -67,15 +67,26 @@ if ($_GET['pview'] != 1)
 	$eday = strftime('%d', Settings::get('end_bookings'));
     $emonth = strftime('%m', Settings::get('end_bookings'));
 	$eyear = strftime('%Y', Settings::get('end_bookings'));
-    // Calendrier en JQuery/Ajax avec gestion des langues via le navigateur
-	echo '<div id="datepicker-container">';
-	echo '<div id="datepicker-center">';
-	echo '<div id="calendar"></div>';
-	echo '</div>';
-	echo '</div>';
-	
-	//Appel du fichier contenant la fonction JS
-	include('calendar.php');
+    
+    // choix du calendrier à afficher
+    if ($useJQueryCalendar)
+    {
+        // Calendrier en JQuery/Ajax avec gestion des langues via le navigateur
+        echo '<div id="datepicker-container">';
+        echo '<div id="datepicker-center">';
+        echo '<div id="calendar"></div>';
+        echo '</div>';
+        echo '</div>';
+
+        //Appel du fichier contenant la fonction JS
+        include('calendar.php');        
+    }
+    else
+    {
+        echo "<div id='calendriers'>";
+		minicals($year, $month, $day, $area, $room, $pageActuel);
+		echo "</div>";
+    }
 	
 	// Liste sites, domaines, ressources
 	if (isset($_SESSION['default_list_type']) || (Settings::get("authentification_obli") == 1))
