@@ -17,6 +17,9 @@ Version en cours de développement sur GitHUB (3.4.1) // Numero de version a def
 -----
 --
 -----
+Sous-version 3.4.0d :
+    [correction] de bugs d'affichage divers
+    [correction] de bugs syntaxiques divers    
 Sous-version 3.4.0c :
     [correction] de bugs d'affichage divers
     [correction] de bugs syntaxiques divers
