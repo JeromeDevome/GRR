@@ -218,8 +218,8 @@ td.cell_month_o{background-color:#ccc}
 .cell_hours{background-color:gray;color:white;}
 .cell_hours a{color:white;}
 .cell_hours2{background-color:white;color:black;}
-.vacance, .vacance a, th.vacance{background-color:rgb(46,204,113) !important;color:black !important}
-.ferie, .ferie a{background-color:#c0392b !important;color:white !important;}
+.vacance, .vacance a, th.vacance, td.vacance{background-color:rgb(46,204,113) !important;color:black !important}
+.ferie, .ferie a, th.ferie, td.ferie{background-color:#c0392b !important;color:white !important;}
 .jour_sem a:hover, .cell_hours a:hover, .ferie a:hover, .vacance a:hover{color:#999;}
 .empty_cell{text-align:center;min-height:20px;height:100%;vertical-align:middle}
 .table-header{width:100%}
