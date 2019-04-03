@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-02-02 23:25$
+ * Dernière modification : $Date: 2019-04-03 16:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1668,15 +1668,25 @@ function get_default_area($id_site = -1)
 			return -1;
 	}
 }
-# Retourne le site par défaut;
-/**
- * @return integer
- */
-// on n'utilise pas les réglages de la table settings ? YN le 07/03/2018
+/* fonction get_default_site
+    renvoie id_site du site par défaut de l'utilisateur, sinon celui de la table setting, sinon celui de plus petit id dans la table site
+*/
+
 function get_default_site()
 {
-	$res = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_site");
-	return $res;
+    $user = getUserName();
+    if ($user != ''){
+        $id_site = grr_sql_query1("SELECT default_site FROM ".TABLE_PREFIX."_utilisateurs WHERE login =".$user);
+        if ($id_site > 0){return $id_site;}
+    }
+    // ici l'utilisateur n'est pas reconnu ou il n'a pas de site par défaut : on passe aux informations de la table settings
+    $id_site = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME ='default_site' ");
+    $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_site WHERE id = ".$id_site);
+    if ($test >0){return $id;}
+    else { // il n'y a pas de site par défaut dans la table setting, on prend le premier site
+        $id_site = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_site ");
+        return($id_site);
+    }
 }
 // fonction get_default_room
 /*  renvoie id_room de la ressource par défaut de l'utilisateur, sinon celle de la table setting, sinon celle de plus petit indice dans la table room 
@@ -1847,7 +1857,8 @@ function show_colour_key($area_id)
     AND NOT EXISTS (SELECT y.id_type FROM `".TABLE_PREFIX."_j_type_area` y WHERE y.id_type = j.id_type and id_area='".$area_id."')
     ORDER BY t.order_display";
     $res = grr_sql_query($sql);
-    echo '<table class="legende"><caption>'.get_vocab("show_color_key").'</caption>'.PHP_EOL;
+    echo '<table class="legende">';
+    echo '<caption>'.get_vocab("show_color_key").'</caption>'.PHP_EOL;
     if ($res)
     {
         $nct = -1;
@@ -1874,7 +1885,8 @@ function show_colour_key($area_id)
 //Display the entry-type color keys. This has up to 2 rows, up to 10 columns.
 function show_colour_keys()
 {
-	echo '<table class="legende"><caption>'.get_vocab("show_color_key").'</caption>'.PHP_EOL;
+	echo '<table class="legende">';
+    echo '<caption>'.get_vocab("show_color_key").'</caption>'.PHP_EOL;
 	$sql = "SELECT DISTINCT id, type_name, type_letter, order_display FROM `".TABLE_PREFIX."_type_area` ";
 	$res = grr_sql_query($sql);
 	if ($res)
