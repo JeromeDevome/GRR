@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-04-03 16:15$
+ * Dernière modification : $Date: 2019-04-05 19:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -837,47 +837,47 @@ function verif_page()
 		return "day";
 }
 
-function page_accueil($param = 'no')
-{
-	// Definition de $defaultroom
-	if (isset($_SESSION['default_room']))// && ($_SESSION['default_room'] > -5))
-		$defaultroom = $_SESSION['default_room'];
-	else
-		$defaultroom = Settings::get("default_room");
-	// Definition de $defaultsite
-	if (isset($_SESSION['default_site']) && ($_SESSION['default_site'] > 0))
-		$defaultsite = $_SESSION['default_site'];
-	else if (Settings::get("default_site") > 0)
-		$defaultsite = Settings::get("default_site");
-	else
-		$defaultsite = get_default_site();
-	// Definition de $defaultarea
-	if (isset($_SESSION['default_area']) && ($_SESSION['default_area'] > 0))
-		$defaultarea = $_SESSION['default_area'];
-	else if (Settings::get("default_area") > 0)
-		$defaultarea = Settings::get("default_area");
-	else
-		$defaultarea = get_default_area($defaultsite);
-	// Calcul de $page_accueil
-	if ($defaultarea == - 1)
-		$page_accueil = 'day.php?noarea=';
-	// le paramètre noarea ne sert à rien, il est juste là pour éviter un cas particulier à traiter avec &amp;id_site= et $param
-	else if ($defaultroom == - 1)
-		$page_accueil = 'day.php?area='.$defaultarea;
-	else if ($defaultroom == - 2)
-		$page_accueil = 'week_all.php?area='.$defaultarea;
-	else if ($defaultroom == - 3)
-		$page_accueil = 'month_all.php?area='.$defaultarea;
-	else if ($defaultroom == -4)
-		$page_accueil = 'month_all2.php?area='.$defaultarea;
-	else
-		$page_accueil = 'week.php?area='.$defaultarea.'&amp;room='.$defaultroom;
-	if ((Settings::get("module_multisite") == "Oui") && ($defaultsite > 0))
-		$page_accueil .= '&amp;id_site='.$defaultsite;
-	if ($param == 'yes')
-		$page_accueil .= '&amp;';
-	return $page_accueil ;
+function page_accueil($param='no') {
+   // Definition de $defaultroom
+   if ((isset($_SESSION['default_room']))&& ($_SESSION['default_room'] > -5)) {
+      $defaultroom = $_SESSION['default_room'];
+   } else {
+      $defaultroom = Settings::get("default_room");
+   }
+   // Definition de $defaultsite
+   if (isset($_SESSION['default_site']) and ($_SESSION['default_site'] >0)) {
+      $defaultsite = $_SESSION['default_site'];
+   } else if (Settings::get("default_site") > 0) {
+      $defaultsite = Settings::get("default_site");
+   } else
+      $defaultsite = get_default_site();
+   // Definition de $defaultarea
+   if (isset($_SESSION['default_area']) and ($_SESSION['default_area'] >0)) {
+      $defaultarea = $_SESSION['default_area'];
+   } else if (Settings::get("default_area") > 0) {
+      $defaultarea = Settings::get("default_area");
+   } else
+      $defaultarea = get_default_area($defaultsite);
+   // Calcul de $page_accueil
+   if ($defaultarea == -1) {
+      $page_accueil="day.php?noarea="; // le paramètre noarea ne sert à rien, il est juste là pour éviter un cas particulier à traiter avec &amp;id_site= et $param
+   } else if ($defaultroom == -1) {
+      $page_accueil="day.php?area=$defaultarea";
+   } else if ($defaultroom == -2) {
+      $page_accueil="week_all.php?area=$defaultarea";
+   } else if ($defaultroom == -3) {
+      $page_accueil="month_all.php?area=$defaultarea";
+   } else if ($defaultroom == -4) {
+      $page_accueil="month_all2.php?area=$defaultarea";
+   } else {
+      $page_accueil="week.php?area=$defaultarea&amp;room=$defaultroom";
+   }
+   if ((Settings::get("module_multisite") == "Oui") and ($defaultsite>0))
+       $page_accueil .= "&amp;id_site=".$defaultsite;
+   if ($param=='yes') $page_accueil .= "&amp;";
+   return $page_accueil ;
 }
+
 function begin_page($title, $page = "with_session")
 {
 	if ($page == "with_session")

@@ -3,9 +3,9 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-29 10:20$
+ * Dernière modification : $Date: 2019-04-05 19:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -129,9 +129,9 @@ if ($valid == "yes")
 					statut='".protect_data_sql($reg_statut)."',
 					email='".protect_data_sql($reg_email)."',
 					etat='".protect_data_sql($reg_etat)."',
-					default_site = '-1',
-					default_area = '-1',
-					default_room = '-1',
+					default_site = '0',
+					default_area = '0',
+					default_room = '0',
 					default_style = '',
 					default_list_type = 'select',
 					default_language = 'fr',";
@@ -150,10 +150,10 @@ if ($valid == "yes")
 					$user_login = $new_login;
 				}
 			}
+		}
 //
 //action s'il s'agit d'une modification
 //
-		}
 		else if ((isset($user_login)) && ($user_login != ''))
 		{
 			// un gestionnaire d'utilisateurs ne peut pas modifier un administrateur général ou un gestionnaire d'utilisateurs
