@@ -11,7 +11,7 @@ Tâches prévues :
 --
 -----
 
-Version en cours de développement sur GitHUB (3.4.1 RC2)
+Version en cours de développement sur GitHUB (3.4.1 RC3)
     [ajout] Echange de deux réservations
     [ajout] Page year_all affichant les réservations sur plusieurs mois et plusieurs domaines (à utiliser avec prudence s'il y a beaucoup de réservations ou de ressources)
     [ajout] Contenu des champs additionnels dans les exports csv
@@ -19,7 +19,10 @@ Version en cours de développement sur GitHUB (3.4.1 RC2)
     [ajout] Page d'interface de personnalisation des couleurs
     [amelioration] Reprise du code des pages plannings pour gérer les menus escamotables (haut et gauche) 
     [modification] Utilisation de jscolor pour définir les couleurs des types
-    [correction] de bugs mineurs dans la RC1
+    [modification] Page d'accueil de la section administration
+    [modification] Gestion de l'affichage des champs additionnels
+    [correction] de bugs mineurs dans la RC2
+    [correction] meilleure prise en compte des réglages par défaut
 -----
 --
 -----
