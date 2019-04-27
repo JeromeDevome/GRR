@@ -3,9 +3,9 @@
  * my_account.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-26-10 14:45$
+ * Dernière modification : $Date: 2019-04-24 11:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -555,26 +555,26 @@ echo ('
 /**
  * Choix de la langue
  */
-						echo '      <h4>'.get_vocab('choose_language').'</h4>';
-						echo '
-						<table>
-							<tr>
-								<td>'.get_vocab('choose_css').'</td>
-								<td>
-									<select class="form-control" name="default_language">'."\n";
-										$i = 0;
-										while ($i < count($liste_language))
-										{
-											echo '              <option value="'.$liste_language[$i].'"';
-											if ($default_language == $liste_language[$i])
-												echo ' selected="selected"';
-											echo ' >'.encode_message_utf8($liste_name_language[$i]).'</option>'."\n";
-											$i++;
-										}
-										echo '            </select>
-									</td>
-								</tr>
-							</table>
+        echo '      <h4>'.get_vocab('choose_language').'</h4>';
+        echo '
+        <table>
+            <tr>
+                <td>'.get_vocab('choose_css').'</td>
+                <td>
+                    <select class="form-control" name="default_language">'."\n";
+                        $i = 0;
+                        while ($i < count($liste_language))
+                        {
+                            echo '              <option value="'.$liste_language[$i].'"';
+                            if ($default_language == $liste_language[$i])
+                                echo ' selected="selected"';
+                            echo ' >'.encode_message_utf8($liste_name_language[$i]).'</option>'."\n";
+                            $i++;
+                        }
+                        echo '            </select>
+                    </td>
+                </tr>
+            </table>
       <div id="fixe">
             <div>
                 <input type="hidden" name="valid" value="yes" />
@@ -596,7 +596,7 @@ echo ('
                 <input type="hidden" name="id_area" value="-1" />
                 <input type="hidden" name="id_room" value="-1" />
                 <input type="hidden" name="default_css" value="" />
-                <input type="hidden" name="area_item_format" value="item" />
+                <input type="hidden" name="area_item_format" value="" />
                 <input type="hidden" name="default_language" value="" />
                 <input class="btn btn-primary" type="submit" value="'.get_vocab('reset').'" />
             </div>

@@ -3,7 +3,7 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-04-05 19:00$
+ * Dernière modification : $Date: 2019-04-24 10:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -133,7 +133,7 @@ if ($valid == "yes")
 					default_area = '0',
 					default_room = '0',
 					default_style = '',
-					default_list_type = 'select',
+					default_list_type = '',
 					default_language = 'fr',";
 					if ($reg_type_authentification=="locale")
 						$sql .= "source='local'";
