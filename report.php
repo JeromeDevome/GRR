@@ -3,7 +3,7 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-04-24 09:30$
+ * Dernière modification : $Date: 2019-05-03 14:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -768,7 +768,7 @@ if (isset($_GET["is_posted"]))
                 else
                     echo "<b>&gt;&gt; ".get_vocab("room")." &lt;&lt;</b>";
                 echo "</td>";
-                    // Colonne "nom"
+                    // Colonne brève description
                 echo "<td>";
                 if ($sortby != "b")
                 {
@@ -792,7 +792,7 @@ if (isset($_GET["is_posted"]))
                 else
                     echo "<b>&gt;&gt; ".get_vocab("start_date")." &lt;&lt;</b>";
                 echo "</td>";
-                    // Colonne "nom"
+                    // Colonne Description complète 
                 echo "<td>".get_vocab("match_descr")."</td>";
                     // Colonne Type
                 echo "<td>";
@@ -896,7 +896,7 @@ if (isset($_GET["is_posted"]))
                     // retro portage
                     
                     // Ligne d'en-tête
-                    echo html_entity_decode($vocab["reservee au nom de"]).";".html_entity_decode($vocab["areas"]).";".html_entity_decode($vocab["room"]).";".html_entity_decode($vocab["description"]).";".html_entity_decode($vocab["time"])." - ".html_entity_decode($vocab["duration"]).";".html_entity_decode($vocab["match_descr"]).";".html_entity_decode($vocab['fulldescription']).";".html_entity_decode($vocab["type"]).";".html_entity_decode($vocab["lastupdate"]).";";
+                    echo html_entity_decode($vocab["reservee au nom de"]).";".html_entity_decode($vocab["areas"]).";".html_entity_decode($vocab["room"]).";".html_entity_decode($vocab["description"]).";".html_entity_decode($vocab["time"])." - ".html_entity_decode($vocab["duration"]).";".html_entity_decode($vocab["namebooker"]).";".html_entity_decode($vocab['fulldescription']).";".html_entity_decode($vocab["type"]).";".html_entity_decode($vocab["lastupdate"]).";";
                     $overload_fields_c = mrbsOverloadGetFieldslist("");
                     // Boucle sur tous les champs additionnels de l'area
                     $i = 1;
