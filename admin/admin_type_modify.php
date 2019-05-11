@@ -3,7 +3,7 @@
  * admin_type_modify.php
  * interface de création/modification des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-05-11 18:00$
+ * Dernière modification : $Date: 2019-05-11 18:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -146,7 +146,7 @@ if (isset($_GET['change_type']))
 	}
 }
 // enregistrement des couleurs dans la feuille de style
-if ((isset($_GET['change_done'])) && (!isset($ok)))
+if ((isset($_GET['change_type'])) && (!isset($ok)))
 {
     try {
         $fich=fopen("../themes/default/css/types.css","w+"); // première écriture
