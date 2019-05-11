@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-05-11 14:00$
+ * Dernière modification : $Date: 2019-05-11 18:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1911,6 +1911,20 @@ function show_colour_keys()
 		
 	}
 	echo '</table>'.PHP_EOL;
+}
+// transforme une chaine de caractères en couleur hexadécimale valide
+function valid_color($entry)
+{
+	$out = preg_replace('/[^a-fA-F0-9]/','',$entry);
+	if (strlen($out)<4)
+	{
+		$out = '#'.substr($out.'000',0,3);
+	}
+	else //if (strlen($out)<7)
+	{
+		$out = '#'.substr($out.'000',0,6);
+	}
+	return($out);
 }
 //Round time down to the nearest resolution
 function round_t_down($t, $resolution, $am7)

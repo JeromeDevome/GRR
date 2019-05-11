@@ -3,7 +3,7 @@
  * admin_type_modify.php
  * interface de création/modification des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-03-08 16:30$
+ * Dernière modification : $Date: 2019-05-11 18:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -30,9 +30,9 @@ $type_name = isset($_GET["type_name"]) ? $_GET["type_name"] : NULL;
 $order_display = isset($_GET["order_display"]) ? $_GET["order_display"] : NULL;
 $type_letter = isset($_GET["type_letter"]) ? $_GET["type_letter"] : NULL;
 //$couleur = isset($_GET["couleur"]) ? $_GET["couleur"] : NULL;
-$couleur_hexa = isset($_GET["couleurhexa"]) ? $_GET["couleurhexa"] : NULL;
+$couleur_hexa = isset($_GET["couleurhexa"]) ? valid_color($_GET["couleurhexa"]) : NULL;
 $disponible = isset($_GET["disponible"]) ? $_GET["disponible"] : NULL;
-$couleur_texte = isset($_GET["couleur_texte"]) ? $_GET["couleur_texte"] : "#000000";
+$couleur_texte = isset($_GET["couleur_texte"]) ? valid_color($_GET["couleur_texte"]) : "#000000";
 $msg = '';
 
 // Couleurs par défaut
