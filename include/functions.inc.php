@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-04-05 19:00$
+ * Dernière modification : $Date: 2019-05-11 14:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -2927,7 +2927,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	}
 	if ($action == 5)
 	{
-		$mail_admin = find_user_room ($room_id);
+		$mail_admin = find_active_user_room ($room_id);
 		$destinataire = "";
 		if (count($mail_admin) > 0){
 
@@ -4107,6 +4107,74 @@ function find_user_room ($id_room)
 	if (count($emails) == 0)
 	{
 		$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs where statut = 'administrateur'");
+		if ($sql_admin)
+		{
+			for ($i = 0; ($row = grr_sql_row($sql_admin, $i)); $i++)
+			{
+				if (validate_email($row[0]))
+					$emails[] = $row[0];
+			}
+		}
+	}
+	return $emails;
+}
+// trouve les utilisateurs actifs gestionnaires de ressource
+function find_active_user_room ($id_room)
+{
+	$emails = array ();
+	$sql = "select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_user_room
+	where ".TABLE_PREFIX."_utilisateurs.etat = 'actif' AND 
+	".TABLE_PREFIX."_utilisateurs.login = ".TABLE_PREFIX."_j_user_room.login and 
+	id_room='".$id_room."'";
+	$res = grr_sql_query($sql);
+	if ($res)
+	{
+		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+		{
+			if (validate_email($row[0]))
+				$emails[] = $row[0];
+		}
+	}
+	// Si la table des emails des gestionnaires de la ressource est vide, on avertit les administrateurs du domaine
+	if (count($emails) == 0)
+	{
+		$id_area = mrbsGetAreaIdFromRoomId($id_room);
+		$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_useradmin_area
+			where ".TABLE_PREFIX."_utilisateurs.etat = 'actif' AND
+			".TABLE_PREFIX."_utilisateurs.login = ".TABLE_PREFIX."_j_useradmin_area.login and ".TABLE_PREFIX."_j_useradmin_area.id_area='".$id_area."'");
+		if ($sql_admin)
+		{
+			for ($i = 0; ($row = grr_sql_row($sql_admin, $i)); $i++)
+			{
+				if (validate_email($row[0]))
+					$emails[] = $row[0];
+			}
+		}
+	}
+	// Si la table des emails des administrateurs du domaines est vide, on avertit les administrateurs des sites
+	if (Settings::get("module_multisite") == "Oui")
+	{
+		if (count($emails) == 0)
+		{
+			$id_area = mrbsGetAreaIdFromRoomId($id_room);
+			$id_site = mrbsGetAreaSite($id_area);
+			$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_useradmin_site
+				where ".TABLE_PREFIX."_utilisateurs.etat = 'actif' AND
+				".TABLE_PREFIX."_utilisateurs.login = ".TABLE_PREFIX."_j_useradmin_site.login and ".TABLE_PREFIX."_j_useradmin_site.id_site='".$id_site."'");
+			if ($sql_admin)
+			{
+				for ($i = 0; ($row = grr_sql_row($sql_admin, $i)); $i++)
+				{
+					if (validate_email($row[0]))
+						$emails[] = $row[0];
+				}
+			}
+		}
+	}
+	// Si la table des emails des administrateurs des sites est vide, on avertit les administrateurs généraux
+	if (count($emails) == 0)
+	{
+		$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs where etat = 'actif' AND statut = 'administrateur'");
 		if ($sql_admin)
 		{
 			for ($i = 0; ($row = grr_sql_row($sql_admin, $i)); $i++)
