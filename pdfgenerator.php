@@ -3,9 +3,9 @@
  * pdfgenerator.php
  * Générer les PDF
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-17 19:00$
- * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2019-05-25 17:50$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -62,12 +62,14 @@ if ("POST" == $_SERVER['REQUEST_METHOD'])
 }
 else
 {
-	if (isset($_GET['id']))
-		$id = $_GET['id'];
+	if (isset($_GET['id'])){
+		$id = htmlspecialchars($_GET['id']);
+		settype($id,"integer");
+	}
 	else
 		header('Location: '.Settings::get("grr_url"));
 
-	$sql = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id='".int($id)."'";
+	$sql = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id='".$id."'";
 	$res = grr_sql_query($sql);
 	if (!$res)
 		fatal_error(0, grr_sql_error());
