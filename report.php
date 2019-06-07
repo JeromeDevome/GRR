@@ -3,7 +3,7 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-05-03 14:15$
+ * Dernière modification : $Date: 2019-06-07 15:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -612,7 +612,7 @@ if (isset($_GET["is_posted"]))
         $texte[$k] = unslashes($texte[$k]);
         $k++;
     }
-	//Les heures de début et de fin sont aussi utilisés pour mettre l'heure dans le rapport.
+	//Les heures de début et de fin sont aussi utilisées pour mettre l'heure dans le rapport.
     $report_start = mktime(0, 0, 0, $From_month, $From_day, $From_year);
     $report_end = mktime(0, 0, 0, $To_month, $To_day+1, $To_year);
     //   La table issue de la requête SQL va contenir les colonnes suivantes:
@@ -896,7 +896,7 @@ if (isset($_GET["is_posted"]))
                     // retro portage
                     
                     // Ligne d'en-tête
-                    echo html_entity_decode($vocab["reservee au nom de"]).";".html_entity_decode($vocab["areas"]).";".html_entity_decode($vocab["room"]).";".html_entity_decode($vocab["description"]).";".html_entity_decode($vocab["time"])." - ".html_entity_decode($vocab["duration"]).";".html_entity_decode($vocab["namebooker"]).";".html_entity_decode($vocab['fulldescription']).";".html_entity_decode($vocab["type"]).";".html_entity_decode($vocab["lastupdate"]).";";
+                    echo html_entity_decode($vocab["reservee au nom de"]).";".html_entity_decode($vocab["areas"]).";".html_entity_decode($vocab["room"]).";".html_entity_decode($vocab["description"]).";".html_entity_decode($vocab["time"]).";".html_entity_decode($vocab["duration"]).";".html_entity_decode($vocab["namebooker"]).";".html_entity_decode($vocab['fulldescription']).";".html_entity_decode($vocab["type"]).";".html_entity_decode($vocab["lastupdate"]).";";
                     $overload_fields_c = mrbsOverloadGetFieldslist("");
                     // Boucle sur tous les champs additionnels de l'area
                     $i = 1;
@@ -929,10 +929,18 @@ if (isset($_GET["is_posted"]))
                     // Récupération des données concernant l'affichage du planning du domaine
                     get_planning_area_values($row[11]);
                     //Affichage de l'heure et de la durée de réservation
-                    if ($enable_periods == 'y')
+                   /* if ($enable_periods == 'y')
                         echo describe_period_span($row[1], $row[2]) . ";";
                     else
-                        echo describe_span($row[1], $row[2], $dformat) . ";";
+                        echo describe_span($row[1], $row[2], $dformat) . ";";*/
+					if ($enable_periods == 'y')
+						list($start_date, $start_time ,$duration, $dur_units) =  describe_period_span2($row[1], $row[2]);
+					else
+						list($start_date, $start_time ,$duration, $dur_units) = describe_span2($row[1], $row[2], $dformat);
+					// Date et heure début réservation
+					echo $start_date." ".$start_time . ";";
+					// Durée réservation
+					echo $duration ." ". $dur_units .";";
                     //Brève description
                     echo (removeMailUnicode(affichage_lien_resa_planning($row[3], $row[0]))) . ";";
                     //Description de la réservation

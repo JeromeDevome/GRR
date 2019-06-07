@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-05-11 18:00$
+ * Dernière modification : $Date: 2019-06-07 15:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -822,10 +822,10 @@ function protect_data_sql($_value)
 	return $_value;
 }
 
-// Traite les données envoyées par la methode GET de la variable $_GET["page"]
+// Traite les données envoyées par la methode GET de la variable $_GET["page"], renvoie "day" si la page n'est pas définie
 function verif_page()
 {
-	$page = array("day", "week", "month", "week_all", "month_all", "month_all2");
+	$page = array("day", "week", "month", "week_all", "month_all", "month_all2", "year", "year_all");
 	if (isset($_GET["page"]))
 	{
 		if (in_array($_GET["page"], $page))
@@ -3052,7 +3052,7 @@ function getWritable($beneficiaire, $user, $id)
 	if (authGetUserLevel($user,$id_room) > $temp)
 		return 1;
 	//if ($beneficiaire == "") $beneficiaire = $user;
-	// Dans le cas d'un bénéficiaire extérieure, $beneficiaire est vide. On fait comme si $user était le bénéficiaire
+	// Dans le cas d'un bénéficiaire extérieur, $beneficiaire est vide. On fait comme si $user était le bénéficiaire
 	$dont_allow_modify = grr_sql_query1("select dont_allow_modify from ".TABLE_PREFIX."_room WHERE id = '".$id_room."'");
 	$owner = strtolower(grr_sql_query1("SELECT create_by FROM ".TABLE_PREFIX."_entry WHERE id='".protect_data_sql($id)."'"));
 	$beneficiaire = strtolower($beneficiaire);
@@ -3801,6 +3801,44 @@ function date_time_string($t, $dformat)
 		$timeformat = "%I:%M$ampm";
 	}
 	return utf8_strftime($dformat.$timeformat, $t);
+}
+# Convertit un créneau de début et de fin en un tableau donnant la date de début et la durée
+function describe_period_span2($starts, $ends)
+{
+	global $enable_periods, $periods_name, $vocab, $duration;
+	list($start_period, $start_date) =  period_date_string($starts);
+	list($periodedebut, $datedebut) =  period_date_string_rapport($starts);
+	list( , $end_date) =  period_date_string($ends, -1);
+	$duration = $ends - $starts;
+	toPeriodString($start_period, $duration, $dur_units);
+	if ($duration > 1)
+	{
+		list( , $start_date) =  period_date_string($starts);
+		list( , $end_date) =  period_date_string($ends, -1);
+		//$temp = $start_date . " ==> " . $end_date;
+	}
+	//else
+	//{
+	//	$temp = $start_date . " - " . $duration . " " . $dur_units;
+	//}
+	return array($datedebut, $periodedebut, $duration, $dur_units);
+}
+#Convertit l'heure de début et de fin un tableau donnant la date de début et la durée.
+function describe_span2($starts, $ends, $dformat)
+{
+	global $vocab, $twentyfourhour_format;
+	$start_date = utf8_strftime($dformat, $starts);
+	if ($twentyfourhour_format)
+		$timeformat = "%T";
+	else
+	{
+		$ampm = date("a",$starts);
+		$timeformat = "%I:%M$ampm";
+	}
+	$start_time = strftime($timeformat, $starts);
+	$duration = $ends - $starts;
+	toTimeString($duration, $dur_units);
+	return array($start_date, $start_time ,$duration, $dur_units);
 }
 # Convert a start period and end period to a plain language description.
 # This is similar but different from the way it is done in view_entry.
