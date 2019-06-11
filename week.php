@@ -3,7 +3,7 @@
  * week.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "semaine".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-03-08 16:30$
+ * Dernière modification : $Date: 2019-06-11 12:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -727,21 +727,18 @@ $semaine_changement_heure_hiver = 'no';
 								else
 									echo '<img src="img_grr/hourglass.png" alt="buzy">'.PHP_EOL;
 							}
+							if ((isset($d[$weekday][$slot - $decale_slot * $nb_case]["statut"])) && ($d[$weekday][$slot - $decale_slot * $nb_case]["statut"] != '-'))
+							echo '<img src="img_grr/buzy.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("ressource actuellement empruntee").'" width="20" height="20" class="image" /></td>'.PHP_EOL;
+							if (($this_delais_option_reservation > 0) && (isset($d[$weekday][$slot - $decale_slot * $nb_case]["option_reser"])) && ($d[$weekday][$slot - $decale_slot * $nb_case]["option_reser"] != -1))
+								echo '<img src="img_grr/small_flag.png" alt="'.get_vocab("reservation_a_confirmer_au_plus_tard_le").'" title="'.get_vocab("reservation_a_confirmer_au_plus_tard_le").' '.time_date_string_jma($d[$weekday][$slot - $decale_slot * $nb_case]["option_reser"], $dformat).'" width="20" height="20" class="image" /></td>'.PHP_EOL;
+							if ((isset($d[$weekday][$slot - $decale_slot * $nb_case]["moderation"])) && ($d[$weekday][$slot - $decale_slot * $nb_case]["moderation"] == '1'))
+								echo '<img src="img_grr/flag_moderation.png" alt="'.get_vocab("en_attente_moderation").'" title="'.get_vocab("en_attente_moderation").'" class="image" />'.PHP_EOL;
 							if ($acces_fiche_reservation)
 								echo"</a>";
-                            echo "</td>";
+                            echo "</td>".PHP_EOL;
 						}
-						
-						if ((isset($d[$weekday][$slot - $decale_slot * $nb_case]["statut"])) && ($d[$weekday][$slot - $decale_slot * $nb_case]["statut"] != '-'))
-							echo '<img src="img_grr/buzy.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("ressource actuellement empruntee").'" width="20" height="20" class="image" /></td>'.PHP_EOL;
-						if (($this_delais_option_reservation > 0) && (isset($d[$weekday][$slot - $decale_slot * $nb_case]["option_reser"])) && ($d[$weekday][$slot - $decale_slot * $nb_case]["option_reser"] != -1))
-							echo '<img src="img_grr/small_flag.png" alt="'.get_vocab("reservation_a_confirmer_au_plus_tard_le").'" title="'.get_vocab("reservation_a_confirmer_au_plus_tard_le").' '.time_date_string_jma($d[$weekday][$slot - $decale_slot * $nb_case]["option_reser"], $dformat).'" width="20" height="20" class="image" /></td>'.PHP_EOL;
-						if ((isset($d[$weekday][$slot - $decale_slot * $nb_case]["moderation"])) && ($d[$weekday][$slot - $decale_slot * $nb_case]["moderation"] == '1'))
-							echo '<img src="img_grr/flag_moderation.png" alt="'.get_vocab("en_attente_moderation").'" title="'.get_vocab("en_attente_moderation").'" class="image" /></td>'.PHP_EOL;
 					}
-                    // echo "</td>";
                 }
-                // echo "</td>";
             }
 			$wt += 86400;
 			$num_week_day++; // Pour le calcul des jours à afficher
@@ -753,7 +750,7 @@ $semaine_changement_heure_hiver = 'no';
 			$time_t_stripped = preg_replace( "/^0/", "", $time_t);
 		}
 		$t += $resolution;
-        echo "</tr>";
+        echo "</tr>".PHP_EOL;
 	}
 	echo '</tbody></table>',PHP_EOL;
 	if ($_GET['pview'] != 1){
