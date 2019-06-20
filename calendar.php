@@ -15,12 +15,18 @@
 		
 		$(document).ready(function() {  
   
-             var lang = "<?php echo $langue;?>";
+   var lang = "<?php echo $langue;?>";
 		if (lang == "fr"){
             var userLang = "fr";
-		} else {
+		} else if (lang == "en"){
 			var userLang = "en";
-		}    
+		} else if (lang == "de";{
+			var userLang = "de";
+		} else if (lang == "it";{
+			var userLang = "it";
+		} else if (lang == "es";{
+			var userLang = "es";
+		} else { var userLang = "fr";}
   
             var options = $.extend({},   
                 $.datepicker.regional[userLang], {  
