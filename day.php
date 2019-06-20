@@ -172,6 +172,7 @@ if (!$ressources)
 	fatal_error(0, grr_sql_error());
 
 // code HTML
+$langue=$_SESSION['default_language'];
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;
 // section <head>
