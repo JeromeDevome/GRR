@@ -15,7 +15,12 @@
 		
 		$(document).ready(function() {  
   
-            var userLang = navigator.language || navigator.userLanguage;  
+             var lang = "<?php echo $langue;?>";
+		if (lang == "fr"){
+            var userLang = "fr";
+		} else {
+			var userLang = "en";
+		}    
   
             var options = $.extend({},   
                 $.datepicker.regional[userLang], {  
