@@ -170,7 +170,8 @@ else $sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_
 $ressources = grr_sql_query($sql);
 if (!$ressources)
 	fatal_error(0, grr_sql_error());
-
+// langue utilisée
+$langue=$_SESSION['default_language'];
 // code HTML
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;

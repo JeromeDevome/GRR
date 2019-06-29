@@ -15,8 +15,20 @@
 		
 		$(document).ready(function() {  
   
-            var userLang = navigator.language || navigator.userLanguage;  
-  
+            // var userLang = navigator.language || navigator.userLanguage;  
+			var lang = "<?php echo $langue; ?>";
+			if (lang == "fr"){
+				var userLang = "fr";
+			} else if (lang == "en"){
+				var userLang = "en";
+			} else if (lang == "de"){
+				var userLang = "de";
+			} else if (lang == "it"){
+				var userLang = "it";
+			} else if (lang == "es"){
+				var userLang = "es";
+			} else { var userLang = "fr";} // modification proposée par Steven Boriboun sur Github
+		
             var options = $.extend({},   
                 $.datepicker.regional[userLang], {  
                     dateFormat: 'dd-mm-yy',
