@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-06-08 15:45$
+ * Dernière modification : $Date: 2019-07-01 15:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1239,7 +1239,7 @@ function sso_IsAllowedModify()
 {
 	if (Settings::get("sso_IsNotAllowedModify")=="y")
 	{
-		$source = grr_sql_query1("SELECT source FROM grr_utilisateurs WHERE login = '".getUserName()."'");
+		$source = grr_sql_query1("SELECT source FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".getUserName()."'");
 		if ($source == "ext")
 			return false;
 		else
@@ -1877,7 +1877,8 @@ function show_colour_key($area_id)
             echo $type_name, '</td>'.PHP_EOL;
         }
         if ($i % 2 == 1)
-        echo '<td></td>',PHP_EOL,'</tr>'.PHP_EOL;
+			echo '<td></td>',PHP_EOL;
+		echo '</tr>'.PHP_EOL;
     }
     echo '</table>'.PHP_EOL;
 }
@@ -1907,8 +1908,8 @@ function show_colour_keys()
             echo $type_name, '</td>'.PHP_EOL;
 		}
 		if ($i % 2 == 1)
-			echo '<td></td>',PHP_EOL,'</tr>'.PHP_EOL;
-		
+			echo '<td></td>',PHP_EOL;
+		echo '</tr>'.PHP_EOL;
 	}
 	echo '</table>'.PHP_EOL;
 }

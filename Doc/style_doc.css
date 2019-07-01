@@ -1,4 +1,3 @@
-<style type="text/css"><!--
 .grr_cadre {
   width : 100%;
   background-color: #FFFFFF;
@@ -28,6 +27,8 @@ h3.grr {
 }
 
 table.grr {
+	border: 1px solid;
+	border-collapse: collapse;
 }
 
 table.grr tr.row_first {
@@ -42,10 +43,18 @@ table.grr tr.row_even {
   background-color: #F0F0F0;
 }
 
-table.grr td {
+table.grr td, th {
+	border: 1px solid;
+	border-collapse: collapse;
   padding: 1px;
-  text-align: left;
-  vertical-align: center;
+  text-align: center;
+  vertical-align: middle;
 }
 
---></style>
+@page { margin: 2cm }
+P { margin-bottom: 0.21cm }
+H3 { margin-bottom: 0.21cm }
+H4 { margin-bottom: 0.21cm }
+H4.western { font-family: "Arial", sans-serif; font-size: 11pt; font-style: italic }
+H4.cjk { font-family: "MS Mincho"; font-size: 11pt; font-style: italic }
+H4.ctl { font-size: 11pt; font-style: italic }

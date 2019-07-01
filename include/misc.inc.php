@@ -27,7 +27,7 @@ $version_grr = "3.4.1";
 // Utilisez cette variable pour des versions qui corrigent la la version finale sans toucher à la base.
 $sous_version_grr = ""; // a, b, c, ...
 // Numéro de la release candidate (doit être strictement inférieure à 9). Laisser vide s'il s'agit de la version stable.
-$version_grr_RC = "3";
+$version_grr_RC = "";
 // Version repository (GitHub)
 $versionReposite = "";
 
@@ -101,7 +101,7 @@ $liste_language = array(
 # Liste des noms des langues
 $liste_name_language = array(
 	"Français",
-	"Deutch",
+	"Deutsch",
 	"English",
 	"Italiano",
 	"Spanish"
@@ -142,7 +142,7 @@ $eveningends_minutes = 0;
 # Début de la semaine: 0 pour dimanche, 1 pou lundi, etc.
 $weekstarts = 1;
 
-# Format d'affichage du temps : valeur 0 pour un affichage « 12 heures » et valeur 1 pour un affichage  « 24 heure ».
+# Format d'affichage du temps : valeur 0 pour un affichage « 12 heures » et valeur 1 pour un affichage  « 24 heures ».
 $twentyfourhour_format = 1;
 
 # Ci-dessous des fonctions non officielles (non documentées) de GRR

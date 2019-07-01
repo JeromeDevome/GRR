@@ -51,6 +51,8 @@ CREATE TABLE grr_page ( nom varchar(30) NOT NULL, valeur longtext NOT NULL, PRIM
 INSERT INTO grr_page VALUES ('CGU', 'Les CGU');
 DROP TABLE IF EXISTS grr_modulesext;
 CREATE TABLE grr_modulesext ( nom varchar(50) NOT NULL, actif tinyint(1) NOT NULL DEFAULT '0', version INT(11) NOT NULL, PRIMARY KEY  (`nom`));
+INSERT INTO grr_area VALUES (NULL, 'Domaine 1', 'a', 0, '', 8, 19, -1, 1800, 0, 1, 1, 'n', 'n', 'yyyyyyy', -1, 1800, -1);
+INSERT INTO grr_room VALUES (NULL, '1', 'Ressource 1', '', '0', '-1', '1', 'n', '', '', 'n', '-1', '0', 'n', 'n', '0', '0', '0', '0', '5', 'y', 'y', '0');
 INSERT INTO grr_type_area VALUES (1, 'Cours', 1, 1, '#1abc9c', 'A', 2, '#000');
 INSERT INTO grr_type_area VALUES (2, 'Réunion', 2, 2, '#C03000', 'B', 2, '#FFF');
 INSERT INTO grr_type_area VALUES (3, 'Autre', 3, 3, '#4BB5C1', 'C', 2, '#000');
@@ -69,7 +71,7 @@ INSERT INTO grr_setting VALUES ('end_bookings', '1609369200');
 INSERT INTO grr_setting VALUES ('title_home_page', 'Gestion et Réservation de Ressources');
 INSERT INTO grr_setting VALUES ('message_home_page', 'En raison du caractère personnel du contenu, ce site est soumis à des restrictions utilisateurs. Pour accéder aux outils de réservation, identifiez-vous :');
 INSERT INTO grr_setting VALUES ('version', '3.4.1');
-INSERT INTO grr_setting VALUES ('versionRC', '2');
+INSERT INTO grr_setting VALUES ('versionRC', '');
 INSERT INTO grr_setting VALUES ('default_language', 'fr');
 INSERT INTO grr_setting VALUES ('url_disconnect', '');
 INSERT INTO grr_setting VALUES ('allow_users_modify_profil', '2');

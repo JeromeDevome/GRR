@@ -2,7 +2,6 @@ Bugs connus sur la version de GitHub :
  - affichage défectueux du menu en position haute dans la page month_all2 
  - des problèmes se produisent lorsqu'on veut faire une modification/copie de réservation  avec un changement de domaine
  - l'entrée du code hexadécimal des couleurs des types n'est pas répercutée sur la zone test
- - les entrées textuelles dans les champs jscolor ne sont pas validées
 
 Tâches prévues :
  - gestion des accès au niveau de la ressource (et pas seulement au niveau des domaines)
@@ -11,7 +10,7 @@ Tâches prévues :
 --
 -----
 
-Version en cours de développement sur GitHUB (3.4.1 RC3)
+Version 3.4.1
     [ajout] Echange de deux réservations
     [ajout] Page year_all affichant les réservations sur plusieurs mois et plusieurs domaines (à utiliser avec prudence s'il y a beaucoup de réservations ou de ressources)
     [ajout] Contenu des champs additionnels dans les exports csv
@@ -21,7 +20,6 @@ Version en cours de développement sur GitHUB (3.4.1 RC3)
     [modification] Utilisation de jscolor pour définir les couleurs des types
     [modification] Page d'accueil de la section administration
     [modification] Gestion de l'affichage des champs additionnels
-    [correction] de bugs mineurs dans la RC2
     [correction] meilleure prise en compte des réglages par défaut
 -----
 --

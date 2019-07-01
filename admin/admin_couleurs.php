@@ -3,9 +3,9 @@
  * admin_couleurs.php
  * Interface permettant à l'administrateur la personnalisation de certaines couleurs
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2018-11-26 12:00$
+ * Dernière modification : $Date: 2019-07-01 12:00$
  * @author    Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -156,7 +156,7 @@ if ((isset($_POST['record'])) && (!isset($ok)))
         fwrite($fich,":root{");
         foreach($champs_couleur as $code_js => $code_css)
 		{
-            $couleur = $_POST[$code_js];
+            $couleur = valid_color($_POST[$code_js]);
             fwrite($fich," 
     ".$code_css.": ".$couleur.";");
         }
