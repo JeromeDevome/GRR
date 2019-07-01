@@ -1,5 +1,6 @@
 GRR
-version 3.4.1, a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7
+branche devel3 = branche de développement pour GRR 3, qui a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7
+Pour une installation en production, veuillez installer la version 3.4.1
 ===================
 
 **Requiert :**
