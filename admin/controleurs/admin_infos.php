@@ -163,6 +163,11 @@ $trad['dInfosConfigVar'] = '';
 $trad['dInfosConfigDef'] = '';
 
 foreach ($config_variables as $config){
+	if(is_bool($$config) && $$config == true){
+		$$config = "true";
+	} elseif(is_bool($$config) && $$config == false){
+		$$config = "false";
+	}
 	$trad['dInfosConfigVar'] .= "<li class=\"list-group-item\"><p class=\"col-sm-6\">".$config."</p><b>".$$config."&nbsp;</b></li>"; // $$ Normal
 }
 unset($config);
