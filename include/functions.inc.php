@@ -4834,6 +4834,7 @@ function pageHead2($title, $page = "with_session")
 	$a .= '<script type="text/javascript" src="js/pdf.js" ></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/popup.js" charset="utf-8"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/functions.js" ></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/drag.js" ></script>'.PHP_EOL;
 	if (isset($use_select2))
 	{
 		$a .= '<script type="text/javascript" src="js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
