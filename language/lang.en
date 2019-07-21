@@ -676,6 +676,7 @@ $vocab['qui_peut_voir_ressource'] = "Who can see this resource (and possibly res
 $vocab['rappel_de_la_demande'] = "Reminder of the request";
 $vocab['records'] = "Saving";
 $vocab['Redigez votre message ci-dessous'] = "Compose your message below"; 
+$vocab['redirection_https'] = "Rediriger les utilisateurs en https"; // A traduire
 $vocab['referer'] = "Origin";
 $vocab['refuser_resa'] = "Refuse and delete the reservation";
 $vocab['refuser_resa_serie'] = " Refuse and delete the reservation and all the reservations bound by periodicity which are not moderated yet.";

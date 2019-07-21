@@ -671,6 +671,7 @@ $vocab['qui_peut_voir_ressource'] = "¿Quién puede ver este recurso (y acaso re
 $vocab['rappel_de_la_demande'] = "Recordatorio de la petición";
 $vocab['records'] = "Registros ";
 $vocab['Redigez votre message ci-dessous'] = "Rédigez votre message ci-dessous"; // A traduire
+$vocab['redirection_https'] = "Rediriger les utilisateurs en https"; // A traduire
 $vocab['referer'] = "Procedencia";
 $vocab['refuser_resa'] = "Rechazar y suprimir la reserva";
 $vocab['refuser_resa_serie'] = "Rechazar y suprimir la reserva y todas las reservas liadas por periodicidad que no se moderaron";

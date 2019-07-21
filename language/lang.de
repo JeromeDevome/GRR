@@ -672,6 +672,7 @@ $vocab['qui_peut_voir_ressource'] = "Qui peut voir cette ressource (et éventuel
 $vocab['rappel_de_la_demande'] = "Antrags Wiederholung";
 $vocab['records'] = "Speicherungen ";
 $vocab['Redigez votre message ci-dessous'] = "Rédigez votre message ci-dessous"; // A traduire
+$vocab['redirection_https'] = "Rediriger les utilisateurs en https"; // A traduire
 $vocab['referer'] = "Herkunft";
 $vocab['refuser_resa'] = "Reservierung verweigern und löschen";
 $vocab['refuser_resa_serie'] = "Reservierung und alle anderen Reservierungen, die durch Häufigkeit damit verbunden sind, und die immer noch nicht moderiert wurden, verweigern.";

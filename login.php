@@ -29,12 +29,22 @@ if (!Settings::load())
 include "include/language.inc.php";
 // Session related functions
 require_once("./include/session.inc.php");
+
+if(Settings::get("redirection_https") == "yes"){
+	if(!isset($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on")
+	{
+		header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"], true, 301);
+		exit;
+	}
+}
+
 // Vérification du numéro de version et renvoi automatique vers la page de mise à jour
 if (verif_version())
 {
 	header("Location: ./installation/maj.php");
 	exit();
 }
+
 // Si Token Installation n'est pas initialisé on le fait ici car s'est la 1ere page affiché 
 if(Settings::get("tokeninstallation") == ""){
 	Settings::set("tokeninstallation",  generationToken());
