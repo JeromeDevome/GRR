@@ -64,7 +64,7 @@ include('controleurs/'.$page.'.php');
 
 if($page === 'admin_accueil'){
 	echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings));
-} elseif($page === 'admin_config' || $page === 'admin_config2' || $page === 'admin_config3' || $page === 'admin_config4' || $page === 'admin_config6'){
+} elseif($page === 'admin_config' || $page === 'admin_config2' || $page === 'admin_config4' || $page === 'admin_config6'){
 	echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings));
 } elseif($page === 'admin_config5'){ // Modules
 	echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'modulesext' => $modulesext));

@@ -45,7 +45,7 @@
 						<section id="configsmtp">
 							<h4 class="page-header">{{ trad.Parametres_configuration_envoi_automatique_mails }}</h4>
 							<p>{{ trad.Explications_des_Parametres_configuration_envoi_automatique_mails |raw }}</p>
-							<input type="radio" name="grr_mail_method" value="mail" id="label_3a" {% if settings.grr_mail_method == 'mail' %} checked {% endif %} /> <label for="label_3a">{{ trad.methode_mail }}</label><br>
+							<input type="radio" name="grr_mail_method" value="mail" id="label_3a" {% if trad.dFctMailRestriction == true %} disabled {% elseif settings.grr_mail_method == 'mail' %} checked{% endif %} /> <label for="label_3a">{{ trad.methode_mail }}{% if trad.dFctMailRestriction == true %} - <font color='red'>{{trad.methode_mail_desactive}}</font> {% endif %}</label><br>
 							<input type="radio" name="grr_mail_method" value="smtp" id="label_3b" {% if settings.grr_mail_method == 'smtp' %} checked {% endif %} /> <label for="label_3b">{{ trad.methode_smtp }}</label><br>
 							<br>
 							<p>Uniquement pour la methode SMTP :</p><br>

@@ -165,6 +165,12 @@ $sso_super_admin = false;
 */
  $imap_restrictions = false;
 
+/*
+ $fonction_mail_restrictions : false|true
+ Mettre la valeur du paramètre $fonction_mail_restrictions à "true" rend impossible la selection de la fonction "mail" du serveur pour l'envois de mail
+*/
+ $fonction_mail_restrictions = false;
+
 // Le paramètre $Url_CAS_setFixedServiceURL est le paramètre utilisé dans la méthode phpCAS::setFixedServiceURL(), dans le fichier cas.inc.php
 // Si ce paramètre est non vide, il sera utilisé par le service CAS
 // Set the fixed URL that will be set as the CAS service parameter. When this method is not called, a phpCAS script uses its own URL.
