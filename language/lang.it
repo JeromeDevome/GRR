@@ -539,6 +539,7 @@ $vocab['message_records'] = "Le modifiche sono state registrate !";
 $vocab['message_records_error'] = "Errore in occasione della registrazione dei dati";
 $vocab['mess_avertissement_config'] = "Osservazione: ne più dei parametri sotto altri parametri di configurazione di GRR sono a vostra disposizione nello schedario \" config.inc.php\" (Consultare la documentazione di GRR).";
 $vocab['methode_mail'] = "Utiliser la méthode \"mail\" (serveur mail local)"; // A traduire
+$vocab['methode_mail_desactive'] = "La méthode \"mail\" est désactivé sur le serveur, veuillez utiliser la méthode SMTP"; // A traduire
 $vocab['methode_smtp'] = "Utiliser la méthode \"smtp\" (serveur mail distant)"; // A traduire
 $vocab['minutes'] = "minuto(i)";
 $vocab['miscellaneous'] = "Informazioni diverse";

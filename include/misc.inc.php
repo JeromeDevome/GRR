@@ -139,6 +139,7 @@ $config_variables = array(
 	"sso_restrictions",
 	"ldap_restrictions",
 	"imap_restrictions",
+	"fonction_mail_restrictions",
 	"Url_CAS_setFixedServiceURL",
 	"dbsys",
 	"structure",

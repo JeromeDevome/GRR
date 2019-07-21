@@ -544,6 +544,7 @@ $vocab['message_records'] = "The modifications have been saved!";
 $vocab['message_records_error'] = "An error has occurred when saving data";
 $vocab['mess_avertissement_config'] = " Comment: besides the parameters below, others parameters of configuration of GRR are at your disposal in the file \"config.inc.php\" (Consult the GRR documentation).";
 $vocab['methode_mail'] = "Use the \"mail\" method (local mail server)";
+$vocab['methode_mail_desactive'] = "The method \"mail\" is desactivated in the server, please use SMTP method";
 $vocab['methode_smtp'] = "Use the \"smtp\" method (remote mail server)";
 $vocab['minutes'] = "minute (s)";
 $vocab['miscellaneous'] = "Miscellanious information";
