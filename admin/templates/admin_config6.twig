@@ -199,19 +199,33 @@
 						<table class="table table-condensed">
 							<tbody>
 								<tr>
-									<th style="width: 200px"></th>
+									<th style="width: 300px"></th>
 									<th style="width: 50px">Afficher</th>
 									<th>Ne pas afficher</th>
+									<th></th>
 								</tr>
 								<tr>
 									<td>{{ trad.legend_msg }}</td>
 									<td><input type="radio" name="legend" value="0" id="label_11a" {% if settings.legend == '0' %} checked {% endif %} /></td>
 									<td><input type="radio" name="legend" value="1" id="label_11b" {% if settings.legend == '1' %} checked {% endif %} /></td>
+									<td></td>
 								</tr>
 								<tr>
 									<td>{{ trad.imprimante_msg }}</td>
 									<td><input type="radio" name="imprimante" value="0" id="label_12a" {% if settings.imprimante == '0' %} checked {% endif %} /></td>
 									<td><input type="radio" name="imprimante" value="1" id="label_12b" {% if settings.imprimante == '1' %} checked {% endif %} /></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td>{{ trad.holidays_msg }}</td>
+									<td><input type="radio" name="show_holidays" value="Oui" id="label_13a" {% if settings.show_holidays == 'Oui' %} checked {% endif %} /></td>
+									<td><input type="radio" name="show_holidays" value="Non" id="label_13b" {% if settings.show_holidays == 'Non' %} checked {% endif %} /></td>
+									<td>
+										<select class="form-control" name="holidays_zone">
+											<option>{{ trad.holidays_zone_msg }}</option>
+											{{ trad.dOptionVavances | raw }}
+										</select>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -232,25 +246,6 @@
 						<h4 class="page-header">{{ trad.courrier_msg }}</h4>
 						<input type="radio" name="show_courrier" value="y" id="label_1a" {% if settings.show_courrier == 'y' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
 						<input type="radio" name="show_courrier" value="n" id="label_1b" {% if settings.show_courrier == 'n' %} checked {% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
-					</section>
-
-					<hr>
-
-					<section id="affichervacances">
-						<h4 class="page-header">{{ trad.holidays_msg }}</h4>
-						<input type="radio" name="show_holidays" value="Oui" id="label_1a" {% if settings.show_holidays == 'Oui' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
-						<input type="radio" name="show_holidays" value="Non" id="label_1b" {% if settings.show_holidays == 'Non' %} checked {% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
-
-						{% if settings.show_holidays == 'Oui' %}
-							<div class="form-group col-sm-12">
-								<label class="col-sm-6" for="default_css">{{ trad.holidays_zone_msg }}</label>
-								<div class="col-sm-6">
-									<select class="form-control" name="holidays_zone">
-										{{ trad.dOptionVavances | raw }}
-									</select>
-								</div>
-							</div>
-						{% endif %}
 					</section>
 
 					<hr>
