@@ -683,6 +683,7 @@ $vocab['qui_peut_voir_ressource'] = "Qui peut voir cette ressource (et éventuel
 $vocab['rappel_de_la_demande'] = "Rappel de la demande";
 $vocab['records'] = "Enregistrements ";
 $vocab['Redigez votre message ci-dessous'] = "Rédigez votre message ci-dessous";
+$vocab['redirection_https'] = "Rediriger les utilisateurs en https";
 $vocab['referer'] = "Provenance";
 $vocab['refuser_resa'] = "Refuser et supprimer la réservation";
 $vocab['refuser_resa_serie'] = "Refuser et supprimer la réservation et toutes les réservations liées par périodicité qui n'ont pas encore été modérées.";

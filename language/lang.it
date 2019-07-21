@@ -671,6 +671,7 @@ $vocab['qui_peut_voir_ressource'] = "Qui peut voir cette ressource (et éventuel
 $vocab['rappel_de_la_demande'] = "Richiamo della domanda";
 $vocab['records'] = "Registrazioni ";
 $vocab['Redigez votre message ci-dessous'] = "Rédigez votre message ci-dessous"; // A traduire
+$vocab['redirection_https'] = "Rediriger les utilisateurs en https"; // A traduire
 $vocab['referer'] = "Origine";
 $vocab['refuser_resa'] = "Rifiutare e sopprimere la prenotazione";
 $vocab['refuser_resa_serie'] = "Rifiutare e sopprimere la prenotazione e tutte le prenotazioni legate da periodicità che non sono state moderate ancora.";

@@ -44,6 +44,11 @@ if (isset($_GET['url_disconnect']))
 	if (!Settings::set("url_disconnect", $_GET['url_disconnect']))
 		echo "Erreur lors de l'enregistrement de url_disconnect ! <br />";
 }
+if (isset($_GET['redirection_https']))
+{
+	if (!Settings::set("redirection_https", $_GET['redirection_https']))
+		echo "Erreur lors de l'enregistrement de redirection_https ! <br />";
+}
 // Restriction iP
 if (isset($_GET['ip_autorise']))
 {
@@ -101,6 +106,10 @@ get_vocab_admin("title_disable_login");
 get_vocab_admin("explain_disable_login");
 get_vocab_admin("disable_login_on");
 get_vocab_admin("disable_login_off");
+
+get_vocab_admin("redirection_https");
+get_vocab_admin("YES");
+get_vocab_admin("NO");
 
 get_vocab_admin("title_ip_autorise");
 get_vocab_admin("explain_ip_autorise");
