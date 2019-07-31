@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-07-01 15:30$
+ * Dernière modification : $Date: 2019-07-31 10:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5301,7 +5301,7 @@ function pageHead2($title, $page = "with_session")
 /*
 ** Fonction qui affiche le header
 */
-function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_session')
+function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_session', $adm=0)
 {
 	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name, $racine, $racineAd;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2;
@@ -5505,7 +5505,7 @@ function start_page_w_header($day = '', $month = '', $year = '', $type_session =
     echo "<body>";
     // Menu du haut = section <header>
     echo "<header>";
-    pageHeader2($day, $month, $year, $type_session);
+    pageHeader2($day, $month, $year, $type_session, $adm);
     echo "</header>";
     // Debut de la page
     echo '<section>'.PHP_EOL;
