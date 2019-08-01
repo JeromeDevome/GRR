@@ -3,7 +3,7 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-01-30 18:30$
+ * Dernière modification : $Date: 2019-08-01 16:50$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -829,7 +829,7 @@ return "1";
 function grr_resumeSession()
 {
 		// Resuming session
-	session_name(SESSION_NAME);
+	@session_name(SESSION_NAME); // palliatif aux changements introduits dans php 7.2
 	@session_start();
 	if ((Settings::get('sso_statut') == 'lcs') and (!isset($_SESSION['est_authentifie_sso'])) and ($_SESSION['source_login'] == "ext"))
 		return (false);
