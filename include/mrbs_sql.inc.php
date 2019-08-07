@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2019-02-16 16:20$
+ * Dernière modification : $Date: 2019-08-07 10:40$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -656,6 +656,11 @@ function mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate
 {
 	global $max_rep_entrys, $id_first_resa;
 	$area = mrbsGetRoomArea($room_id);
+	if ($rep_type == '7')
+	{
+		$rep_num_weeks = $rep_month_abs1;
+		$rep_opt = $rep_month_abs2;
+	}
 	$reps = mrbsGetRepeatEntryList($starttime, $rep_enddate, $rep_type, $rep_opt, $max_rep_entrys, $rep_num_weeks, $rep_jour_c, $area, $rep_month_abs1, $rep_month_abs2);
 	if (count($reps) > $max_rep_entrys)
 		return 0;
@@ -677,7 +682,7 @@ function mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate
 				// s'il s'agit d'une modification d'une ressource déjà modérée et acceptée : on met à jour les infos dans la table ".TABLE_PREFIX."_entry_moderate
 			if ($moderate == 2)
 				moderate_entry_do($id_new_resa,1,"","no");
-				// On récupère l'id de la première réservation de la série et qui sera utilisé pour l'enoi d'un mail
+				// On récupère l'id de la première réservation de la série et qui sera utilisé pour l'envoi d'un mail
 			if ($i == 0)
 				$id_first_resa = $id_new_resa;
 		}
