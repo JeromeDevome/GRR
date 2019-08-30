@@ -67,7 +67,7 @@ else
 	else
 		header('Location: '.Settings::get("grr_url"));
 
-	$sql = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id='".int($id)."'";
+	$sql = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id='".intval($id)."'";
 	$res = grr_sql_query($sql);
 	if (!$res)
 		fatal_error(0, grr_sql_error());
