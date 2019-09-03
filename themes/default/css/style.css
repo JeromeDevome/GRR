@@ -64,6 +64,18 @@ a.cellcalendar{display:block;height:100%;width:100%;vertical-align:middle;text-a
 table.legende{padding:5px;width:100%;}
 table.legende td{width:50%;text-align:center}
 .week td a{vertical-align:middle;text-align:center;height:100%;width:100%}
+.panel-body { padding:0px; }
+.panel-body table tr td { padding-left: 15px }
+.panel-body .table {margin-bottom: 0px; }
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -1px;
+}
 /* planning2 */
 #planning2{text-align:center;min-width:600px;display:inline-block;width:100%;}
 #print_planning{position:relative;height:100%;width:auto}
