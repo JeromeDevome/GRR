@@ -3,7 +3,7 @@
  * install_mysql.php
  * Interface d'installation de GRR pour un environnement mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-03-05 17:00$
+ * Dernière modification : $Date: 2019-09-09 12:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -131,8 +131,8 @@ if ($etape == 4)
 
 		$company = isset($_GET["company"]) ? $_GET["company"] : 'Nom du GRR';
 		$grr_url = isset($_GET["grr_url"]) ? $_GET["grr_url"] : 'https://mygrr.net/';
-		$webmaster_email = isset($_GET["webmaster_email"]) ? $_GET["mdp1"] : 'testgrr@test.fr';
-		$support_email = isset($_GET["technical_support_email"]) ? $_GET["mdp1"] : 'testgrr@test.fr';
+		$webmaster_email = isset($_GET["webmaster_email"]) ? $_GET["webmaster_email"] : 'webmaster_grr@test.fr';
+		$support_email = isset($_GET["technical_support_email"]) ? $_GET["technical_support_email"] : 'support_grr@test.fr';
 		$mdp = isset($_GET["mdp1"]) ? md5($_GET["mdp1"]) : 'azerty';
 		$email = isset($_GET["email"]) ? $_GET["email"] : 'testgrr@test.fr';
 
