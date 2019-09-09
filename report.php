@@ -3,9 +3,9 @@
  * report.php
  * interface afficheant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2019-09-09 12:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -568,7 +568,7 @@ if (($summarize != 4) && ($summarize != 5))
 						if (( !isset($_GET['pview']) || ($_GET['pview'] != 1)) && (($summarize != 4) && ($summarize != 5)))
 						{
 							echo '<p style="text-align:center;">
-							<a href="./report.php '. '?' . htmlspecialchars($_SERVER['QUERY_STRING']) . '&amp;pview=1" ';
+							<a href="./report.php'. '?' . htmlspecialchars($_SERVER['QUERY_STRING']) . '&amp;pview=1" ';
 							if (Settings::get("pview_new_windows") == 1)
 								echo ' target="_blank"';
 							echo '><span class="glyphicon glyphicon-print"></span></a>
