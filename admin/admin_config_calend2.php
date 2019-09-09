@@ -3,9 +3,9 @@
  * admin_config_calend2.php
  * interface permettant la configuration des jours-cycles (étape 2)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 12:50$
+ * Dernière modification : $Date: 2019-09-09 18:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -53,7 +53,9 @@ if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 				if ($res)
 				{
 					for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-						$result += grrDelEntryInConflict($row[0], $starttime, $endtime, 0, 0, 1);
+						//$result += grrDelEntryInConflict($row[0], $starttime, $endtime, 0, 0, 1);
+						// ce $result n'est pas utilisé ?
+						grrDelEntryInConflict($row[0], $starttime, $endtime, 0, 0, 1);
 				}
 				// On enregistre la valeur
 				$m = cree_calendrier_date_valide($n,$m);
