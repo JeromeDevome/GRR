@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-07-31 10:00$
+ * Dernière modification : $Date: 2019-10-09 13:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1682,7 +1682,7 @@ function get_default_site()
     // ici l'utilisateur n'est pas reconnu ou il n'a pas de site par défaut : on passe aux informations de la table settings
     $id_site = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME ='default_site' ");
     $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_site WHERE id = ".$id_site);
-    if ($test >0){return $id;}
+    if ($test >0){return $id_site;}
     else { // il n'y a pas de site par défaut dans la table setting, on prend le premier site
         $id_site = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_site ");
         return($id_site);
