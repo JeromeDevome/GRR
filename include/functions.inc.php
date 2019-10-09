@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-05-12 10:00$
+ * Dernière modification : $Date: 2019-10-09 12:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5099,6 +5099,78 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			echo '<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>'.PHP_EOL;
 		}
 	}
+}
+/*
+** Fonction qui affiche le début d'une page avec entête et balise <section>
+*/
+function start_page_w_header($day = '', $month = '', $year = '', $type_session = 'with_session')
+{
+    global $racine,$racineAd;
+    // pour le traitement des modules
+    if (@file_exists('./admin_access_area.php')){
+        $adm = 1;
+        $racine = "../";
+        $racineAd = "./";
+    }
+    else{
+        $adm = 0;
+        $racine = "./";
+        $racineAd = "./admin/";
+    }
+    include $racine."/include/hook.class.php";
+    // code HTML
+    echo '<!DOCTYPE html>'.PHP_EOL;
+    echo '<html lang="fr">'.PHP_EOL;
+    // section <head>
+    if ($type_session == "with_session")
+        echo pageHead2(Settings::get("company"),"with_session");
+    else
+        echo pageHead2(Settings::get("company"),"no_session");
+    // section <body>
+    echo "<body>";
+    // Menu du haut = section <header>
+    echo "<header>";
+    pageHeader2($day, $month, $year, $type_session, $adm);
+    echo "</header>";
+    // Debut de la page
+    echo '<section>'.PHP_EOL;
+    // doit être fermé par la fonction end_page
+}   
+/*
+** Fonction qui affiche le début d'une page sans entête et avec une balise <section>
+*/
+function start_page_wo_header($titre, $type_session = 'with_session')
+{
+    // pour le traitement des modules
+    if (@file_exists('./admin_access_area.php')){
+        $adm = 1;
+        $racine = "../";
+        $racineAd = "./";
+    }
+    else{
+        $adm = 0;
+        $racine = "./";
+        $racineAd = "./admin/";
+    }
+    include $racine."/include/hook.class.php";
+    // code HTML
+    echo '<!DOCTYPE html>'.PHP_EOL;
+    echo '<html lang="fr">'.PHP_EOL;
+    // section <head>
+    if ($type_session == "with_session")
+        echo pageHead2(Settings::get("company"),"with_session");
+    else
+        echo pageHead2(Settings::get("company"),"no_session");
+    // section <body>
+    echo "<body>";
+    // Debut de la page
+    echo '<section>'.PHP_EOL;
+    // doit être fermé par la fonction end_page
+} 
+/* Fonction qui ferme les balises restées ouvertes dans les précédentes */
+function end_page()
+{
+    echo '</section></body></html>';
 }
 
 // Génération d'un Token aléatoire
