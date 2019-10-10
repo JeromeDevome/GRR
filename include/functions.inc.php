@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-10-09 12:30$
+ * Dernière modification : $Date: 2019-10-10 10:20$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4826,6 +4826,21 @@ if (!function_exists('htmlspecialchars_decode'))
 	{
 		return strtr($text, array_flip(get_html_translation_table(HTML_SPECIALCHARS)));
 	}
+}
+
+/*
+* @param integer $delai : nombre de jours de rétention des logs de connexion
+* nettoieLogConnexion efface les entrées de la table _log antérieures au jour courant moins le délai
+*/
+function nettoieLogConnexion($delai){
+    // est-ce un administrateur ?
+    if (authGetUserLevel(getUserName(), -1) >= 6){
+        $dateMax = new DateTime('NOW');
+        $dateMax->sub(new DateInterval('P'.$delai.'D'));
+        $dateMax = $dateMax->format('Y-m-d H:i:s');
+        $sql = "DELETE FROM ".TABLE_PREFIX."_log WHERE START < '" . $dateMax . "';";
+        grr_sql_query($sql);
+    }
 }
 // suggestions pour reformuler les pages plannings
 function pageHead2($title, $page = "with_session") 

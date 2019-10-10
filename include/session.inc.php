@@ -3,9 +3,9 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-10 15:00$
+ * Dernière modification : $Date: 2019-10-10 10:10$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -696,16 +696,16 @@ $sql = "INSERT INTO ".TABLE_PREFIX."_log (LOGIN, START, SESSION_ID, REMOTE_ADDR,
 ;";
 grr_sql_query($sql);
 
-/* Suppression des logs */
+/* Suppression des logs. Bloc supprimé en lien avec la modification de login.php
 if($nbMaxJoursLogConnexion > 0){
 	$dateActu = date_create($_SESSION['start']);
 	$dateMax = date_sub($dateActu, date_interval_create_from_date_string($nbMaxJoursLogConnexion.' days'));
 	$dateMax = $dateMax->format('Y-m-d H:i:s');
 	$sql = "DELETE FROM ".TABLE_PREFIX."_log WHERE START < '" . $dateMax . "';";
 	grr_sql_query($sql);
-}
+} */
 
-// L'utilisateur doit changer sont mot de passe
+// L'utilisateur doit changer son mot de passe
 if($row[14] == 1)
 	return "12";
 

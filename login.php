@@ -3,9 +3,9 @@
  * login.php
  * interface de connexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-12-13 17:40$
+ * Dernière modification : $Date: 2019-10-10 10:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -123,8 +123,10 @@ if (isset($_POST['login']) && isset($_POST['password']))
 	{
 		header("Location: ./changepwd.php");
 	}
-	else
+	else // la session est ouverte
 	{
+        // si c'est un administrateur qui se connecte, on efface les données anciennes du journal
+        nettoieLogConnexion($nbMaxJoursLogConnexion);
 		if (isset($_POST['url']))
 		{
 			$url=rawurldecode($_POST['url']);
