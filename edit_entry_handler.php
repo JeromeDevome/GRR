@@ -3,9 +3,9 @@
  * edit_entry_handler.php
  * Permet de vérifier la validité de l'édition ou de la création d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-11-05 12:00$
+ * Dernière modification : $Date: 2019-10-10 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -278,8 +278,9 @@ if ($type_affichage_reser == 0)
 			if (isset($ampm) && ($ampm == "pm"))
 				$hour += 12;
 		}
-		$starttime = mktime($hour, $minute, 0, $month, $day, $year);
-		$endtime   = mktime($hour, $minute, 0, $month, $day, $year) + ($units * $duration);
+		$starttime = mktime($hour, $minute, 0, $month, $day, $year); ?>
+		<script> alert("java exécuté"); confirm(<?php echo $starttime," ",$units," ",$duration;?>) </script>
+<?php 		$endtime   = mktime($hour, $minute, 0, $month, $day, $year) + intval($units) * intval($duration);
 		if ($endtime <= $starttime)
 			$erreur = 'y';
 		$diff = $endtime - $starttime;
