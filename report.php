@@ -646,11 +646,13 @@ if (isset($_GET["is_posted"]))
     //  11  [10]  Room description -> r.description
     //  12  [11]  id de l'area -> a.id
     //  13  [12]  les champs additionnels -> e.overload_desc
+    //  14  [13]  rang d'affichage de la ressource -> r.order_display
+    //  15  [14]  type de réservation -> t.type_name
     // Tableau des ressources invisibles pour l'utilisateur
     $sql = "SELECT distinct e.id, e.start_time, e.end_time, e.name, e.description, "
     . "e.type, e.beneficiaire, "
     .  grr_sql_syntax_timestamp_to_unix("e.timestamp")
-    . ", a.area_name, r.room_name, r.description, a.id, e.overload_desc"
+    . ", a.area_name, r.room_name, r.description, a.id, e.overload_desc, r.order_display, t.type_name"
     . " FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_room r, ".TABLE_PREFIX."_type_area t";
 	// Si l'utilisateur n'est pas administrateur, seuls les domaines auxquels il a accès sont pris en compte
     if (authGetUserLevel(getUserName(),-1) < 6)
