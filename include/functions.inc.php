@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-10-09 13:30$
+ * Dernière modification : $Date: 2019-10-17 10:45$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5337,10 +5337,10 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			// Génération XML
 			$generationXML = 1;
 			if ((Settings::get("export_xml_actif") == "Oui") && ($adm == 0)){
-				include "{$racine}/include/generationxml.php";
+				include $racine."include/generationxml.php";
 			}
 			if ((Settings::get("export_xml_plus_actif") == "Oui") && ($adm == 0)){
-				include "{$racine}/include/generationxmlplus.php";
+				include $racine."include/generationxmlplus.php";
 			}
 
 			// On fabrique une date valide pour la réservation si ce n'est pas le cas

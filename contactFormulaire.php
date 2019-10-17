@@ -3,9 +3,9 @@
  * contactFormulaire.php
  * Formulaire d'envoi de mail
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-31 15:15$
+ * Dernière modification : $Date: 2019-10-17 10:45$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -32,7 +32,7 @@ include "include/resume_session.php";
 include "include/language.inc.php";
 
 // pour le traitement des modules
-include "/include/hook.class.php";
+include "./include/hook.class.php";
 ?>
 <script>
     function remplirdureemin(res)
@@ -78,6 +78,7 @@ echo "</header>";
 // Debut de la page
 echo '<section>'.PHP_EOL;
 bouton_retour_haut();
+echo "<div class='container'>";
 ?>	
 	<form id="frmContact" method="post" action="traitementcontact.php">
 	<div id="formContact">
@@ -241,6 +242,7 @@ bouton_retour_haut();
         </div>
     </div>
     </form>
+	</div> 
 </section>
 </body>
 </html>
