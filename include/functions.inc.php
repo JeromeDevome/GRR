@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-09-25 14:00$
+ * Dernière modification : $Date: 2019-10-17 11:10$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1682,7 +1682,7 @@ function get_default_site()
     // ici l'utilisateur n'est pas reconnu ou il n'a pas de site par défaut : on passe aux informations de la table settings
     $id_site = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME ='default_site' ");
     $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_site WHERE id = ".$id_site);
-    if ($test >0){return $id;}
+    if ($test >0){return $id_site;}
     else { // il n'y a pas de site par défaut dans la table setting, on prend le premier site
         $id_site = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_site ");
         return($id_site);
@@ -1780,7 +1780,8 @@ function period_time_string($t, $mod_time = 0)
 		$p_num = count($periods_name) - 1;
 	return $periods_name[$p_num];
 }
-
+/* donne, pour un format français, un résultat de la forme lundi 30 sept. - 19:17
+*/
 function time_date_string($t, $dformat)
 {
 	global $twentyfourhour_format;
@@ -3796,6 +3797,8 @@ function showNoBookings($day, $month, $year, $back)
     echo "</p>";
     echo "</body>\n</html>";
 }
+/* donne, pour un format français, un résultat de la forme lundi 30 sept.19:17:32
+*/
 function date_time_string($t, $dformat)
 {
 	global $twentyfourhour_format;
@@ -5342,10 +5345,10 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			// Génération XML
 			$generationXML = 1;
 			if ((Settings::get("export_xml_actif") == "Oui") && ($adm == 0)){
-				include "{$racine}/include/generationxml.php";
+				include $racine."include/generationxml.php";
 			}
 			if ((Settings::get("export_xml_plus_actif") == "Oui") && ($adm == 0)){
-				include "{$racine}/include/generationxmlplus.php";
+				include $racine."include/generationxmlplus.php";
 			}
 
 			// On fabrique une date valide pour la réservation si ce n'est pas le cas

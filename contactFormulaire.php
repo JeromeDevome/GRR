@@ -3,9 +3,9 @@
  * contactFormulaire.php
  * Formulaire d'envoi de mail
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-31 15:15$
+ * Dernière modification : $Date: 2019-10-17 12:45$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -28,42 +28,12 @@ require_once("./include/settings.class.php");
 if (!Settings::load())
 	die("Erreur chargement settings");
 require_once("./include/session.inc.php");
-include "include/resume_session.php";
-include "include/language.inc.php";
+include "./include/resume_session.php";
+include "./include/language.inc.php";
 
 // pour le traitement des modules
-include "/include/hook.class.php";
-?>
-<script>
-    function remplirdureemin(res)
-        { 
-            frmContact.dureemin.options.length = 0;
-            frmContact.debdureemin.options.length = 0;
-            resmin = res/60;
-            nbiteration = 60/resmin;
-            var y= document.getElementById("debdureemin");
-            var x = document.getElementById("dureemin");
-            valeur = 0;
-            for (i=0;i<nbiteration;i++){
-                frmContact.dureemin.options[i] = document.createElement("option");
-                frmContact.debdureemin.options[i] = document.createElement("option");
-                if(i==0){
-                    valeur = 00;
-                }else{
-                    valeur = valeur + resmin;
-                }
-                frmContact.dureemin.options[i].text = valeur +" min";
-                frmContact.dureemin.options[i].value = valeur;
-                x.add(frmContact.dureemin.options[i]);
-                frmContact.debdureemin.options[i].text = valeur +" min";
-                frmContact.debdureemin.options[i].value = valeur;
-                y.add(frmContact.debdureemin.options[i]);
-            }
-            frmContact.dureemin.options.selectedIndex = 0;
-        }
-</script>
-	
-<?php
+include "./include/hook.class.php";
+
 // code HTML
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;
@@ -80,7 +50,7 @@ echo '<section>'.PHP_EOL;
 bouton_retour_haut();
 ?>	
 	<form id="frmContact" method="post" action="traitementcontact.php">
-	<div id="formContact">
+	<div id="formContact" class="container">
 		<div class="row">
 			<fieldset>
 				<legend><b>Vos coordonnées</b></legend>
@@ -117,6 +87,7 @@ bouton_retour_haut();
 		<div class="row">
             <fieldset>
 				<legend><b>Réservation</b></legend>
+				<div class="col-md-6 col-sm-12">
 				<label for="subject">Sujet :</label>
 				<textarea class="form-control" id="subject" name="sujet" cols="30" rows="4"></textarea><br/>
 				<label>Domaines : </label>
@@ -137,6 +108,34 @@ bouton_retour_haut();
                         }                        
                     ?>
 				</select>
+<script>
+    function remplirdureemin(res)
+        { 
+            frmContact.dureemin.options.length = 0;
+            frmContact.debdureemin.options.length = 0;
+            resmin = res/60;
+            nbiteration = 60/resmin;
+            var y= document.getElementById("debdureemin");
+            var x = document.getElementById("dureemin");
+            valeur = 0;
+            for (i=0;i<nbiteration;i++){
+                frmContact.dureemin.options[i] = document.createElement("option");
+                frmContact.debdureemin.options[i] = document.createElement("option");
+                if(i==0){
+                    valeur = 00;
+                }else{
+                    valeur = valeur + resmin;
+                }
+                frmContact.dureemin.options[i].text = valeur +" min";
+                frmContact.dureemin.options[i].value = valeur;
+                x.add(frmContact.dureemin.options[i]);
+                frmContact.debdureemin.options[i].text = valeur +" min";
+                frmContact.debdureemin.options[i].value = valeur;
+                y.add(frmContact.debdureemin.options[i]);
+            }
+            frmContact.dureemin.options.selectedIndex = 0;
+        }
+</script>
 <script>
     $(document).ready(function()
     {
@@ -177,10 +176,8 @@ bouton_retour_haut();
                 <select id="room" name="room" class="form-control" required>
                         <option>SELECTIONNER UNE RESSOURCE </option>
                 </select>
-			</fieldset>			
-		</div>
-        <div class="row">	
-            <div class="col-lg-6 col-md-6 col-xs-12">
+				</div>
+				<div class="col-md-6 col-sm-12">	
                 <div class="form-group">
                     <div class="input-group">				
                         <legend><b> Date :</b></legend>
@@ -237,6 +234,7 @@ bouton_retour_haut();
         email: "votre message",
     });
 </script>
+			</fieldset>
 	        </div>
         </div>
     </div>
