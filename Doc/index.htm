@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- 
  * Ce fichier fait partie de l'application GRR
- * Dernière modification : $Date: 2019-07-02 $
+ * Dernière modification : $Date: 2019-10-22 $
  * @author  Laurent Delineau <laurent.delineau@ac-poitiers.fr>
  * @copyright Copyright 2008-2008 Laurent Delineau
  * @author  Yan Naessens
@@ -1041,8 +1041,8 @@ La colonne «&nbsp;privilèges&nbsp;» affiche pour chaque utilisateur, jusqu'à
 </ul>
 <br />
 La présence de telle ou telle lettre signale que l'utilisateur dispose 
-de certains privilèges. En cliquant sur le lien à gauche des nom et 
-prénom de l'utilisateur, on a alors tous les détails liés à ces 
+de certains privilèges. En cliquant sur le lien formé par les nom et 
+prénom de l'utilisateur, on a accès à la fiche de l'utilisateur avec tous les détails de ces 
 privilèges.<br />
 <br />
 <strong>Statut :<br />
@@ -1053,7 +1053,7 @@ privilèges.<br />
   <li>administrateur</li>
   <li>gestionnaire d'utilisateurs</li>
 </ul>
-Il est possible de modifier le statut d'un utilisateur en cliquant sur le lien à gauche des nom et prénom de l'utilisateur.<br />
+Il est possible de modifier le statut d'un utilisateur en cliquant sur le lien formé par les nom et prénom de l'utilisateur.<br />
 <br />
 <strong>Authentification :</strong><br />
 La colonne « authentification » affiche le type d'utilisateur : <em>local</em> ou <em>ext</em>. Voir aussi <a href="#ldap">Authentification et ldap</a>.<br />
@@ -1568,6 +1568,8 @@ Le temps d'importation est en général limité par le serveur à quelques minut
  Télécharger un fichier CSV au format suivant:
 <br />
 <code> date du jour; heure de début; heure de fin; ressource; description; type </code>
+<br />
+Si le fichier comporte des caractères accentués, il convient que le fichier CSV soit encodé en UTF-8 sans BOM.
 <br />
 Le temps d'importation est en général limité par le serveur à quelques minutes par fichier. Pour éviter des erreurs de type "timeout" qui conduiraient à une importation incomplète, scindez votre fichier en fichiers plus petits que vous importerez successivement
 <h3>5.4.6.Importer un emploi du temps depuis le logiciel EDT Index Education</h3>

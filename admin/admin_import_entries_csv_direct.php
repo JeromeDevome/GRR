@@ -112,7 +112,7 @@ echo "<h2>Importation d'un fichier de réservations dans GRR</h2><hr />";
 				$heure_fin=$row[3]; $minute_fin=$row[4];
 				$ressource=$row[5]; $description=$row[6]; $type=$row[7];
 				$i++; $fin_fusion=false;
-				$room_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_room WHERE room_name='".$ressource."'");
+				$room_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_room WHERE room_name LIKE'".$ressource."'");
 				echo $i." ";
 				if(!ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$minute_fin,$description,$type))
                   { echo "Erreur dans la réservation ($erreur): "; //  numéro ".$n.": ".$erreur.":";

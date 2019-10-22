@@ -3,9 +3,9 @@
  * include/mail.class.php
  * fichier de définition d'une classe de traitement des e-mails
  * fait partie de l'application GRR
- * Dernière modification : $Date: 2018-02-23 18:00$
- * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2019-07-31 17:20$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -27,6 +27,12 @@ class Email{
 			$password	= Settings::get('grr_mail_Password');
 			$smtpsecure	= Settings::get('smtp_secure');
 			$port		= Settings::get('smtp_port');
+
+			//encodage du sujet pour affichage des accents 1/3, YN sur proposition de podz sur le forum
+			//$sujet = utf8_decode($sujet);
+			mb_internal_encoding('UTF-8');
+			$sujet = mb_encode_mimeheader($sujet,"utf-8", "B", "\n");
+			//$sujet->CharSet = 'utf-8';
 
 			$mail = new PHPMailer;
 			$mail->CharSet = 'UTF-8';
@@ -67,20 +73,29 @@ class Email{
 			$mail->Body = nl2br($message);
 			$mail->AltBody = 'Ce message ne peut-être affiché.';
 
-			if(!$mail->send()) {
+			if(!$mail->send()) 
+			{
 				echo 'Message could not be sent.';
 				echo 'Mailer Error: ' . $mail->ErrorInfo;
-			} else {
+			} 
+			else {
 				//echo 'Message has been sent';
 			}
 
-		} else{
+		} 
+		else
+		{		
 			$headers = "From: {$DE}" . "\r\n" .
-				"Reply-To: {$DE}" . "\r\n" .
-				'X-Mailer: PHP/' . phpversion();
+			"Reply-To: {$DE}" . "\r\n" .
+			//encodage du sujet pour affichage des accents 2/3
+			'Content-Type: text/plain; charset="utf-8"'." " .
+			'MIME-Version:1.0'.
+			'Content-Transfer-Encoding:8bit'.
+			'X-Mailer: PHP/' . phpversion();
 
 			//mail($A, $sujet, utf8_decode(utf8_encode($message)), $headers);
-            mail(str_replace(";",",",$A), $sujet, utf8_decode(utf8_encode(str_replace("<br>","",$message))), $headers); //YN selon Rapace sur le forum
+            //encodage du sujet pour affichage des accents 3/3
+			mail(str_replace(";",",",$A), '=?utf-8?B?'.base64_encode($sujet).'?=', utf8_decode(utf8_encode(str_replace("<br>","",$message))), $headers); //YN selon Rapace sur le forum
 		}
 
 	}
