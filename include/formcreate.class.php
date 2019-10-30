@@ -63,34 +63,34 @@ class Form {
 			</span>
 		</div>
 	</div>'.PHP_EOL;
-}
-
-
-public function submit($label)
-{
-	return '<button type="submit" class="btn btn-primary">'.$label.'</button>'.PHP_EOL;
-}
-
-public function select($type, $name, $label, $options)
-{
-	$option = "";
-	foreach ($options as $k => $v)
-	{
-		$select = '';
-		if (isset($this->_data[$name]))
-		{
-			if ($k == $this->_data[$name])
-				$select = ' selected';
-		}
-		$option .= '<option value="'.$k.'" '.$select.'>'.$v.'</option>'.PHP_EOL;
 	}
-	$input = '<select id="'.$name.'" class="form-control" '.$type.'>'.PHP_EOL.$option.'</select>'.PHP_EOL;
-	return '<div class="form-group">'.PHP_EOL.'<label for="'.$name.'">'.$label.'</label>'.PHP_EOL.$input.'</div>'.PHP_EOL;
-}
 
-public function checkbox($name, $value, $label, $msg)
-{
-	return '<div class="checkbox">'.PHP_EOL.'<h4>'.$label.'</h4><label for="'.$name.'">'.PHP_EOL.'<input type="checkbox" id="'.$name.'" value="'.$value.'">'.PHP_EOL.$msg.'</label><br>'.PHP_EOL;
-}
+
+	public function submit($label)
+	{
+		return '<button type="submit" class="btn btn-primary">'.$label.'</button>'.PHP_EOL;
+	}
+
+	public function select($type, $name, $label, $options)
+	{
+		$option = "";
+		foreach ($options as $k => $v)
+		{
+			$select = '';
+			if (isset($this->_data[$name]))
+			{
+				if ($k == $this->_data[$name])
+					$select = ' selected';
+			}
+			$option .= '<option value="'.$k.'" '.$select.'>'.$v.'</option>'.PHP_EOL;
+		}
+		$input = '<select id="'.$name.'" class="form-control" '.$type.'>'.PHP_EOL.$option.'</select>'.PHP_EOL;
+		return '<div class="form-group">'.PHP_EOL.'<label for="'.$name.'">'.$label.'</label>'.PHP_EOL.$input.'</div>'.PHP_EOL;
+	}
+
+	public function checkbox($name, $value, $label, $msg)
+	{
+		return '<div class="checkbox">'.PHP_EOL.'<h4>'.$label.'</h4><label for="'.$name.'">'.PHP_EOL.'<input type="checkbox" id="'.$name.'" value="'.$value.'">'.PHP_EOL.$msg.'</label><br>'.PHP_EOL;
+	}
 }
 ?>

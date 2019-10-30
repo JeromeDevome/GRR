@@ -21,6 +21,8 @@ Version 3.4.1
     [modification] Page d'accueil de la section administration
     [modification] Gestion de l'affichage des champs additionnels
     [correction] meilleure prise en compte des réglages par défaut
+Sous-version 3.4.1a (version de maintenance)
+	[correction] divers bugs, compatibilité php7, erreurs de syntaxe ou orthographiques
 -----
 --
 -----

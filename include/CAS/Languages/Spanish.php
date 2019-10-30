@@ -22,7 +22,7 @@
  * @file     CAS/Language/Spanish.php
  * @category Authentication
  * @package  PhpCAS
- * @author   IvÃ¡n-BenjamÃ­n GarcÃ­a TorÃ  <ivaniclixx@gmail.com>
+ * @author   Iván-Benjamín García Torà <ivaniclixx@gmail.com>
  * @license  http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  * @link     https://wiki.jasig.org/display/CASC/phpCAS
  */
@@ -33,7 +33,7 @@
  * @class    CAS_Languages_Spanish
  * @category Authentication
  * @package  PhpCAS
- * @author   IvÃ¡n-BenjamÃ­n GarcÃ­a TorÃ  <ivaniclixx@gmail.com>
+ * @author   Iván-Benjamín García Torà <ivaniclixx@gmail.com>
  * @license  http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  * @link     https://wiki.jasig.org/display/CASC/phpCAS
  *
@@ -61,7 +61,7 @@ class CAS_Languages_Spanish implements CAS_Languages_LanguageInterface
      */
     public function getAuthenticationWanted()
     {
-        return 'Â¡AutentificaciÃ³n CAS necesaria!';
+        return '¡Autentificación CAS necesaria!';
     }
 
     /**
@@ -71,7 +71,7 @@ class CAS_Languages_Spanish implements CAS_Languages_LanguageInterface
      */
     public function getLogout()
     {
-        return 'Â¡Salida CAS necesaria!';
+        return '¡Salida CAS necesaria!';
     }
 
     /**
@@ -81,7 +81,7 @@ class CAS_Languages_Spanish implements CAS_Languages_LanguageInterface
      */
     public function getShouldHaveBeenRedirected()
     {
-        return 'Ya deberÃ­a haber sido redireccionado al servidor CAS. Haga click <a href="%s">aquÃ­</a> para continuar.';
+        return 'Ya debería haber sido redireccionado al servidor CAS. Haga click <a href="%s">aquí</a> para continuar.';
     }
 
     /**
@@ -91,7 +91,7 @@ class CAS_Languages_Spanish implements CAS_Languages_LanguageInterface
      */
     public function getAuthenticationFailed()
     {
-        return 'Â¡AutentificaciÃ³n CAS fallida!';
+        return '¡Autentificación CAS fallida!';
     }
 
     /**
@@ -101,7 +101,7 @@ class CAS_Languages_Spanish implements CAS_Languages_LanguageInterface
      */
     public function getYouWereNotAuthenticated()
     {
-        return '<p>No estÃ¡s autentificado.</p><p>Puedes volver a intentarlo haciendo click <a href="%s">aquÃ­</a>.</p><p>Si el problema persiste deberÃ­a contactar con el <a href="mailto:%s">administrador de este sitio</a>.</p>';
+        return '<p>No estás autentificado.</p><p>Puedes volver a intentarlo haciendo click <a href="%s">aquí</a>.</p><p>Si el problema persiste debería contactar con el <a href="mailto:%s">administrador de este sitio</a>.</p>';
     }
 
     /**
@@ -111,7 +111,7 @@ class CAS_Languages_Spanish implements CAS_Languages_LanguageInterface
      */
     public function getServiceUnavailable()
     {
-        return 'El servicio `<b>%s</b>\' no estÃ¡ disponible (<b>%s</b>).';
+        return 'El servicio `<b>%s</b>\' no está disponible (<b>%s</b>).';
     }
 }
 ?>

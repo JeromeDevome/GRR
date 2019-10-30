@@ -2,7 +2,7 @@
 /**
  * misc.inc.php
  * fichier de variables diverses
- * Dernière modification : $Date: 2019-04-27 11:15$
+ * Dernière modification : $Date: 2019-11-14 17:15$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -25,7 +25,7 @@ $grr_devel_url = "http://grr.devome.com/";
 $version_grr = "3.4.1";
 // Numéro de sous-version actuel (a, b, ...)
 // Utilisez cette variable pour des versions qui corrigent la la version finale sans toucher à la base.
-$sous_version_grr = ""; // a, b, c, ...
+$sous_version_grr = "a"; // a, b, c, ...
 // Numéro de la release candidate (doit être strictement inférieure à 9). Laisser vide s'il s'agit de la version stable.
 $version_grr_RC = "";
 // Version repository (GitHub)
@@ -139,7 +139,7 @@ $eveningends   = 19;
 # eveningends_minutes=45; et resolution=900.
 $eveningends_minutes = 0;
 
-# Début de la semaine: 0 pour dimanche, 1 pou lundi, etc.
+# Début de la semaine: 0 pour dimanche, 1 pour lundi, etc.
 $weekstarts = 1;
 
 # Format d'affichage du temps : valeur 0 pour un affichage « 12 heures » et valeur 1 pour un affichage  « 24 heures ».

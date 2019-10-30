@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-03-31 18:00$
+ * Dernière modification : $Date: 2019-08-07 10:40$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -54,6 +54,8 @@ if (isset($_GET["minute"]))
 else
 	$minute = NULL;
 $rep_num_weeks = '';
+$rep_month_abs1 = 0;
+$rep_month_abs2 = 1;
 global $twentyfourhour_format;
 if (!isset($day) || !isset($month) || !isset($year))
 {
@@ -171,8 +173,13 @@ if (isset($id)) // édition d'une réservation existante
 		$row = grr_sql_row($res, 0);
 		grr_sql_free($res);
 		$rep_type = $row[0];
-		if ($rep_type == 2)
+		if ($rep_type == 2) // périodidicté chaque semaine
 			$rep_num_weeks = $row[4];
+		if ($rep_type == 7) // périodidicté X Y du mois
+		{
+			$rep_month_abs1 = $row[4];
+			$rep_month_abs2 = $row[3];
+		}
 		if ($edit_type == "series")
 		{
 			$start_day   = (int)strftime('%d', $row[1]);
@@ -1137,6 +1144,7 @@ if($periodiciteConfig == 'y'){
 					for ($weekit = 0; $weekit < 6; $weekit++)
 					{
 						echo "<option value=\"".$weekit."\"";
+						if ($weekit == $rep_month_abs1) echo " selected='selected' ";
 						echo ">".get_vocab($monthlist[$weekit])."</option>\n";
 					}
 					echo '</select>'.PHP_EOL;
@@ -1144,6 +1152,7 @@ if($periodiciteConfig == 'y'){
 					for ($weekit = 1; $weekit < 8; $weekit++)
 					{
 						echo "<option value=\"".$weekit."\"";
+						if ($weekit == $rep_month_abs2) echo " selected='selected' ";
 						echo ">".day_name($weekit)."</option>\n";
 					}
 					echo "</select>\n";

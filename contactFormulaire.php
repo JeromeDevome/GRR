@@ -3,7 +3,7 @@
  * contactFormulaire.php
  * Formulaire d'envoi de mail
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-10-17 10:45$
+ * Dernière modification : $Date: 2019-10-31 12:05$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -89,7 +89,7 @@ echo "<div class='container'>";
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-							<input class="form-control" type="text" id="nom"  size="8" name="nom" placeholder="Votre nom" required/>
+							<input class="form-control" type="text" id="nom"  size="8" name="nom" placeholder="Votre nom" required />
 						</div>
 					</div>
 					<div class="form-group">
@@ -205,7 +205,7 @@ echo "<div class='container'>";
                 <div class="form-group">
                     <div class="input-group">
                     <label for="duree" >Durée en heure :</label>
-                    <input type="number" id="duree" size="2" name="duree" value="1" min="0" required/>
+                    <input type="number" id="duree" size="2" name="duree" value="1" min="0" required />
                     <label for="dureemin"> et </label>
                         <select id="dureemin" name="dureemin">
                             <option> </option>

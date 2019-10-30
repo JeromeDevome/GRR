@@ -129,7 +129,7 @@ if (isset($_GET['smtp_port']))
 		die();
 	}
 }
-// Si Email test renseigné on y envois un mail
+// Si Email test renseigné on y envoie un mail
 if (isset($_GET['mail_test']) && !empty($_GET['mail_test']))
 {
 	require_once '../include/mail.class.php';

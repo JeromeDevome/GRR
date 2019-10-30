@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-10-17 10:45$
+ * Dernière modification : $Date: 2019-10-17 11:10$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1780,7 +1780,8 @@ function period_time_string($t, $mod_time = 0)
 		$p_num = count($periods_name) - 1;
 	return $periods_name[$p_num];
 }
-
+/* donne, pour un format français, un résultat de la forme lundi 30 sept. - 19:17
+*/
 function time_date_string($t, $dformat)
 {
 	global $twentyfourhour_format;
@@ -1794,6 +1795,11 @@ function time_date_string($t, $dformat)
 
 function time_date_string_jma($t,$dformat)
 {
+	return utf8_strftime($dformat, $t);
+}
+/*
+ancien code. Je ne vois pas l'intérêt du test YN le 25/09/19
+{
 	global $twentyfourhour_format;
 	//his bit's necessary, because it seems %p in strftime format
 	//strings doesn't work
@@ -1801,7 +1807,7 @@ function time_date_string_jma($t,$dformat)
 		return utf8_strftime($dformat, $t);
 	else
 		return utf8_strftime($dformat, $t);
-}
+}*/
 
 // Renvoie une balise span avec un style background-color correspondant au type de  la réservation
 function span_bgground($colclass)
@@ -2690,7 +2696,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 			fatal_error(0, grr_sql_error());
 		$test = grr_sql_count($res);
 		if ($test != 1)
-			fatal_error(0, "Deux reservation on le meme ID.");
+			fatal_error(0, "Deux reservations ont le même ID.");
 		else
 		{
 			$row2 = grr_sql_row($res, 0);
@@ -2724,7 +2730,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	else
 		$beneficiaire_actif = "inactif";
 
-	// Utilisateur ayant agit sur la réservation
+	// Utilisateur ayant agi sur la réservation
 	$user_login = getUserName();
 	$user_email = grr_sql_query1("SELECT email FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$user_login'");
 	//
@@ -3791,6 +3797,8 @@ function showNoBookings($day, $month, $year, $back)
     echo "</p>";
     echo "</body>\n</html>";
 }
+/* donne, pour un format français, un résultat de la forme lundi 30 sept.19:17:32
+*/
 function date_time_string($t, $dformat)
 {
 	global $twentyfourhour_format;
