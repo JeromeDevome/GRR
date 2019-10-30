@@ -73,7 +73,7 @@ function CAS_autoload($class)
     die ((string) $e);
 }
 
-// set up __autoload, corrigé YN le 09-10-2019
+// set up __autoload
 if (!(spl_autoload_functions())
     || !in_array('CAS_autoload', spl_autoload_functions())
 ) {
