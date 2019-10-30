@@ -829,7 +829,7 @@ return "1";
 function grr_resumeSession()
 {
 		// Resuming session
-	session_name(SESSION_NAME);
+	@session_name(SESSION_NAME); // palliatif aux changements introduits dans php 7.2
 	@session_start();
 	if ((Settings::get('sso_statut') == 'lcs') and (!isset($_SESSION['est_authentifie_sso'])) and ($_SESSION['source_login'] == "ext"))
 		return (false);

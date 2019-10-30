@@ -1,7 +1,7 @@
 Bugs connus sur la version de GitHub :
  - affichage défectueux du menu en position haute dans la page month_all2 
  - des problèmes se produisent lorsqu'on veut faire une modification/copie de réservation  avec un changement de domaine
- - l'entrée du code hexadécimal des couleurs des types n'est pas répercutée sur la zone test
+ - l'entrée des couleurs des types doit se faire dans l'ordre texte PUIS fond si on veut prendre une couleur prédéfinie
 
 Tâches prévues :
  - gestion des accès au niveau de la ressource (et pas seulement au niveau des domaines)

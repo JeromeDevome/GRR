@@ -180,7 +180,7 @@ bouton_retour_haut();
 				<div class="col-md-6 col-sm-12">	
                 <div class="form-group">
                     <div class="input-group">				
-                        <legend><b> Date :</b></legend>
+                        <label><b> Date :</b></label>
 						<?php
 						jQuery_DatePicker('start');
 						?>

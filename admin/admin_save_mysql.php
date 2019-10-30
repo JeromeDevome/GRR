@@ -3,9 +3,9 @@
  * admin_save_mysql.php
  * Script de sauvegarde de la base de donnée mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-23 11:00$
+ * Dernière modification : $Date: 2019-10-22 17:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -26,12 +26,12 @@ if ((!isset($_GET['mdp'])) && isset($argv[1]))
 	$_GET['mdp'] = $argv[1];
 if (isset($_GET['mdp']))
 {
-	include "../include/connect.inc.php";
-	include "../include/config.inc.php";
-	include "../include/misc.inc.php";
-	include "../include/functions.inc.php";
-	include "../include/$dbsys.inc.php";
-	include("../include/settings.class.php");
+	include(dirname(__FILE__).'/../include/connect.inc.php');
+	include(dirname(__FILE__)."/../include/config.inc.php");
+	include(dirname(__FILE__)."/../include/misc.inc.php");
+	include(dirname(__FILE__)."/../include/functions.inc.php");
+	include(dirname(__FILE__)."/../include/mysql.inc.php"); // remplace $dbsys par mysql, puisque c'est le seul système de BDD compatible avec GRR !
+	include(dirname(__FILE__)."/../include/settings.class.php");
 	if (!Settings::load())
 		die("Erreur chargement settings");
 
@@ -50,7 +50,7 @@ if (isset($_GET['mdp']))
 }
 else
 {
-	include "../include/admin.inc.php";
+	include(dirname(__FILE__)."/../include/admin.inc.php");
 	$back = '';
 	if (isset($_SERVER['HTTP_REFERER']))
 		$back = htmlspecialchars($_SERVER['HTTP_REFERER']);

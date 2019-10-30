@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-07-01 15:30$
+ * Dernière modification : $Date: 2019-07-02 18:30$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
@@ -879,7 +879,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
     {
         $result .= formatresult("Mise à jour jusqu'à la version 3.4.1 :","<b>","</b>");
 
-		$result_inter .= traite_requete('ALTER TABLE `grr_type_area`  ADD `couleur_texte` VARCHAR(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT \'#000000\'  AFTER `disponible`');
+		$result_inter .= traite_requete('ALTER TABLE '.TABLE_PREFIX.'_type_area  ADD `couleur_texte` VARCHAR(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT \'#000000\'  AFTER `disponible`');
         
    		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");

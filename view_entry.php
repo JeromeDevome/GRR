@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-06-08 15:45$
+ * Dernière modification : $Date: 2019-10-15 13:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -304,11 +304,11 @@ if (strstr ($back, 'view_entry.php'))
 		$year = date ('Y', $row1['0']);
 		$month = date ('m', $row1['0']);
 		$day = date ('d', $row1['0']);
-		$back = $page.'.php?year='.$year.'&month='.$month.'&day='.$day;
+		$back = $page.'.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day;
 		if ((isset($_GET["page"])) && (($_GET["page"] == "day") || ($_GET["page"] == "week_all") || ($_GET["page"] == "month_all") || ($_GET["page"] == "year_all") || ($_GET["page"] == "year")))
-			$back .= "&area=".mrbsGetRoomArea($row1['1']);
+			$back .= "&amp;area=".mrbsGetRoomArea($row1['1']);
 		if ((isset($_GET["page"])) && (($_GET["page"] == "week") || ($_GET["page"] == "month")))
-			$back .= "&room=".$row1['1'];
+			$back .= "&amp;room=".$row1['1'];
 	}
 	else
 		$back = "";
@@ -318,6 +318,7 @@ if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')) // ha
 {
     $racineAd = "./admin/";
 	start_page_w_header($day, $month, $year, $type_session);
+	echo '<div class="container">';
 	if ($back != "")
 		echo '<div><a href="',$back,'">',get_vocab("returnprev"),'</a></div>',PHP_EOL;
 }
@@ -618,7 +619,7 @@ if ((getUserName() != '') && (authGetUserLevel(getUserName(), $room_id) >= 3) &&
     echo "<textarea class=\"form-control\" name=\"description\" id=\"description\" cols=\"40\" rows=\"3\"></textarea>";
     echo "</p>";
     //echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"commit\" value=\"".get_vocab("save")."\" /></div>\n";
-    echo "</fieldset></form>\n";
+    echo "</fieldset>\n";
 }
 if ($active_ressource_empruntee == 'y')
 {
@@ -709,7 +710,9 @@ echo '<input type="hidden" name="back" value="',$back,'" /></div>',PHP_EOL;
 echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"commit\" value=\"".get_vocab("save")."\" /></div>\n";
 echo '</form>',PHP_EOL;
 //include_once('include/trailer.inc.php');
-// echo '</div>',PHP_EOL; ??? YN
-// echo "</body>\n</html>";
+if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')) // si mode page, on ferme le container
+{
+	echo '</div>',PHP_EOL;
+}
 end_page();
 ?>

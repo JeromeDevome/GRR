@@ -76,7 +76,7 @@ date_default_timezone_set('Europe/Paris');
 # Mais si un navigateur est amené à se connecter au cours de la même session, à deux sites GRR différents,
 # ces deux sites GRR doivent avoir des noms de session différents.
 # Dans ce cas, il vous faudra changer la valeur GRR ci-dessous par une autre valeur.
- define('SESSION_NAME', "GRRdev3");
+ define('SESSION_NAME', "GRR341");
 
 # Nombre maximum (+1) de réservations autorisés lors d'une réservation avec périodicité
  $max_rep_entrys = 365 + 1;
@@ -119,7 +119,7 @@ $upload_Module = 1;
 $nbMaxJoursLogConnexion = 365;
 
 # paramètre provisoire pour choisir le type de calendrier à utiliser dans le menu gauche des pages plannings minicals (GRR classique): 0 ou JQuery : 1
-$useJQueryCalendar = 0;
+$useJQueryCalendar = 1;
 
 ##################################################
 # Cas d'une authentification via config.inc.php  #

@@ -3,9 +3,9 @@
  * admin_right_admin.php
  * Interface de gestion des droits d'administration des utilisateurs
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-29 12:10$
+ * Dernière modification : $Date: 2019-10-17 15:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -134,10 +134,10 @@ if ($id_area <= 0)
 	exit;
 }
 //Show area:
-echo "<table class='table-noborder'><tr>";
+echo "<table class='table table-noborder'><tr>";
 $is_admin = 'yes';
 echo '<td>';
-$exist_admin='no';
+/*$exist_admin='no';
 $sql = "SELECT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (statut='utilisateur' OR statut='gestionnaire_utilisateur' OR statut='administrateur')";
 $res = grr_sql_query($sql);
 if ($res) for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
@@ -159,6 +159,21 @@ if ($res) for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
         echo htmlspecialchars($row[1])." ".htmlspecialchars($row[2])."</b> | <a href='admin_right_admin.php?action=del_admin&amp;login_admin=".urlencode($row[0])."&amp;id_area=$id_area'>".get_vocab("delete")."</a><br />";
     }
 }
+*/
+// modification proposée par darxmurf sur le forum le 16/10/2019
+$exist_admin = 'no';
+        $sql = "SELECT ua.login, u.nom, u.prenom FROM ".TABLE_PREFIX."_j_useradmin_area ua LEFT JOIN ".TABLE_PREFIX."_utilisateurs u ON (u.login=ua.login) WHERE ua.id_area='$id_area'";
+        $res = grr_sql_query($sql);
+        while ($row = mysqli_fetch_row($res)) {
+          $is_admin='yes';
+          if ($exist_admin == 'no'){
+            echo "<h3>".get_vocab("user_admin_area_list")."</h3>";
+            $exist_admin = 'yes';
+          }
+          echo "<b>";
+          echo htmlspecialchars($row[1])." ".htmlspecialchars($row[2])."</b> | <a href='admin_right_admin.php?action=del_admin&amp;login_admin=".urlencode($row[0])."&amp;id_area=$id_area'>".get_vocab("delete")."</a><br />";
+        }
+// fin modification darxmurf
 if ($exist_admin == 'no')
 {
     echo "<h3><span class=\"avertissement\">".get_vocab("no_admin_this_area")."</span></h3>";
