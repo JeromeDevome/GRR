@@ -1,6 +1,11 @@
 GRR
 ===================
 
+Modification pour l'Université de Sherbrooke : 
+- Retrait de tout ce qui est en lien avec les changements d'heures et ajustement de week et week_all pour le début de la journée. Les changements d'heures fonctionnent partout dans le monde.
+- Entête flottante et colonne flottante
+- phpCAS 1.3.8 pour fonctionner sous PHP7.3 
+
 **Requiert :**
 
 PHP : > 7.0 && <= 7.2
