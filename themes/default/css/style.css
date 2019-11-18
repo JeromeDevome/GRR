@@ -27,7 +27,7 @@ td{font-size:10pt;font-family:arial,sans-serif;border-width:1px;vertical-align:t
 .table-bordered{width:100%}
 tbody.table-bordered{overflow-y: hidden;}
 a.lienPlanning:hover{display:block;color:#AAA;}
-span a{color:#000}
+span a{color:#FFF}
 
 .ressource{text-align:center}
 .item:hover{cursor:pointer}
@@ -157,8 +157,8 @@ a.calendar{display:block;height:100%;width:100%;vertical-align:middle;text-align
 .cellcalendar{vertical-align:middle;text-align:center;height:30px;width:40px;line-height:30px}
 .cellcalendar a:hover{background-color:#fff;color:#999;}
 .week td a{background-color:#AAA;vertical-align:middle;text-align:center;height:100%;width:100%}
-table.legende{margin-left:25px;width:250px}
-table.legende td{width:125px;text-align:center}
+table.legende{width:100%;}
+table.legende td{width:50%;text-align:center}
 .progress{margin-bottom:0px;}
 #chargement{left:35%;top:322px;position:absolute;display:none;z-index:10}
 #chargement p{padding:0;background-color:gray}
@@ -183,8 +183,8 @@ td.cell_month_o{background-color:#ccc}
 .cell_hours{background-color:gray;color:white;}
 .cell_hours a{color:white;}
 .cell_hours2{background-color:white;color:black;}
-.vacance, .vacance a{background-color:rgb(46,204,113);color:black}
-.ferie, .ferie a{background-color:#c0392b;color:white;}
+.vacance, .vacance a, th.vacance, td.vacance{background-color:rgb(46,204,113) !important;color:black !important}
+.ferie, .ferie a, th.ferie, td.ferie{background-color:#c0392b !important;color:white !important;}
 .jour_sem a:hover, .cell_hours a:hover, .ferie a:hover, .vacance a:hover{color:#999;}
 .empty_cell{text-align:center;min-height:20px;height:100%;vertical-align:middle}
 .table-header{width:100%}

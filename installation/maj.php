@@ -35,10 +35,35 @@ if (!Settings::load())
 include "../include/language.inc.php";
 include "./fonctions/maj.php";
 
+$valid		= isset($_POST["valid"]) ? $_POST["valid"] : 'no';
+$majscript	= false;
+$force		= false;
 
-$valid			= isset($_POST["valid"]) ? $_POST["valid"] : 'no';
-$version_old	= isset($_POST["version_old"]) ? $_POST["version_old"] : '';
-$majscript		= false;
+// Définitions depuis qu'elle version on met  à jours
+if (isset($_POST["version_old"]))
+{
+	$version_old = $_POST["version_old"];
+}
+elseif (isset($_GET["forcemaj"]) && $forcer_MAJ == 1)
+{
+	$version_old	= $_GET["forcemaj"];
+	$force			= true;
+}
+else
+{
+	$version_old = Settings::get("version");
+	//$version_old_RC = Settings::get("versionRC");
+
+	// Calcul du numéro de version actuel de la base qui sert aux test de comparaison et de la chaine à afficher
+	//if ($version_old_RC == "")
+	//	$version_old_RC = 9;
+
+	//$version_old .= ".".$version_old_RC;
+}
+
+if ($version_old == "")
+	$version_old = "1.3";
+//
 
 if(!$majscript)
 {
@@ -59,37 +84,17 @@ if(!$majscript)
 }
 
 
-// Numéro de version effective
-$version_old = Settings::get("version");
-if ($version_old == "")
-	$version_old = "1.3";
-
-// Numéro de RC
-$version_old_RC = Settings::get("versionRC");
-
-// Calcul du numéro de version actuel de la base qui sert aux test de comparaison et de la chaine à afficher
-if ($version_old_RC == "")
-{
-	$version_old_RC = 9;
-	$display_version_old = $version_old;
-}
-else
-	$display_version_old = $version_old."_RC".$version_old_RC;
-
-$version_old .= ".".$version_old_RC;
-
-
 if(!$majscript) {
 
 	// Mise à jour de la base de donnée
 	echo "<h3>".get_vocab("maj_bdd")."</h3>";
 
 	// Vérification du numéro de version
-	if (verif_version())
+	if (verif_version() || $force == true)
 	{
 		echo "<form action=\"maj.php\" method=\"post\">";
 		echo "<p><span style=\"color:red;\"><b>".get_vocab("maj_bdd_not_update");
-		echo " ".get_vocab("maj_version_bdd").$display_version_old;
+		echo " ".get_vocab("maj_version_bdd").$version_old;
 		echo "</b></span><br />";
 		echo get_vocab("maj_do_update")."<b>".$version_grr."</b></p>";
 		echo "<input type=\"submit\" value=\"".get_vocab("maj_submit_update")."\" />";
@@ -121,7 +126,7 @@ if (isset($_POST['maj']) || $majscript)
 
 
 // Test de cohérence des types de réservation
-if ($version_grr > "1.9.1")
+if (version_compare($version_grr, '1.9.1', '<'))
 {
 	$res = grr_sql_query("SELECT DISTINCT type FROM ".TABLE_PREFIX."_entry ORDER BY type");
 	if ($res)

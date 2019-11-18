@@ -205,6 +205,7 @@ get_vocab_admin("envoyer_email_avec_formulaire_non");
 get_vocab_admin("Parametres_configuration_envoi_automatique_mails");
 get_vocab_admin("Explications_des_Parametres_configuration_envoi_automatique_mails");
 get_vocab_admin("methode_mail");
+get_vocab_admin("methode_mail_desactive");
 get_vocab_admin("methode_smtp");
 get_vocab_admin("Explications_methode_smtp_1");
 get_vocab_admin("utilisateur_smtp");
@@ -230,5 +231,9 @@ get_vocab_admin("verif_reservation_auto2");
 get_vocab_admin("verif_reservation_auto3");
 
 get_vocab_admin("save");
+
+$trad['dFctMailRestriction'] = $fonction_mail_restrictions;
+
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings));
 
 ?>

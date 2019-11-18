@@ -20,11 +20,6 @@ class Email{
 
 	public static function Envois ($A, $sujet, $message, $DE, $cc1='', $cc2='') {
 
-		//boip2402
-		if(!defined('IS_PROD') || !IS_PROD) {
-			$A = Settings::get('technical_support_email');
-		}
-
 		if (Settings::get('grr_mail_method') == 'smtp') {
 
 			$smtp1		= Settings::get('grr_mail_smtp');
@@ -84,7 +79,6 @@ class Email{
 				"Reply-To: {$DE}" . "\r\n" .
 				'X-Mailer: PHP/' . phpversion();
 
-			//boip2402
 			//mail($A, $sujet, utf8_decode(utf8_encode($message)), $headers);
             mail(str_replace(";",",",$A), $sujet, utf8_decode(utf8_encode(str_replace("<br>","",$message))), $headers); //YN selon Rapace sur le forum
 		}

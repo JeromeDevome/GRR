@@ -2,9 +2,9 @@
 /**
  * admin_edit_room.php
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2019-10-09 18:40$
+ * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -119,7 +119,7 @@ $msg ='';
 			}
 			if (!$ok1)
 			{
-				$msg .= "L\'image n\'a pas pu etre supprimee : probleme d\'ecriture sur le repertoire. Veuillez signaler ce probleme e l\'administrateur du serveur.\\n";
+				$msg .= "L\'image n\'a pas pu être supprimee : probleme d\'écriture sur le repertoire. Veuillez signaler ce probleme e l\'administrateur du serveur.\\n";
 				$ok = 'no';
 			}
 			else
@@ -223,7 +223,7 @@ $msg ='';
 			$ext = strtolower($match[1]);
 			if ($ext != 'jpg' && $ext != 'png'&& $ext != 'gif')
 			{
-				$msg .= "L\'image n\'a pas pu etre enregistree : les seules extentions autorisees sont gif, png et jpg.\\n";
+				$msg .= "L\'image n\'a pas pu être enregistrée : les seules extensions autorisees sont gif, png et jpg.\\n";
 				$ok = 'no';
 			}
 			else
@@ -238,7 +238,7 @@ $msg ='';
 				}
 				if (!$ok1)
 				{
-					$msg .= "L\'image n\'a pas pu etre enregistree : probleme d\'ecriture sur le repertoire IMAGES. Veuillez signaler ce probleme e l\'administrateur du serveur.\\n";
+					$msg .= "L\'image n\'a pas pu être enregistrée : probleme d\'écriture sur le repertoire IMAGES. Veuillez signaler ce probleme à l\'administrateur du serveur.\\n";
 					$ok = 'no';
 				}
 				else
@@ -248,7 +248,7 @@ $msg ='';
 						$ok1 = @move_uploaded_file($doc_file['tmp_name'], $dest.$doc_file['name']);
 					if (!$ok1)
 					{
-						$msg .= "L\'image n\'a pas pu etre enregistree : probleme de transfert. Le fichier n\'a pas pu etre transfere sur le repertoire IMAGES. Veuillez signaler ce probleme e l\'administrateur du serveur.\\n";
+						$msg .= "L\'image n\'a pas pu être enregistrée : problème de transfert. Le fichier n\'a pas pu être transféré sur le répertoire IMAGES. Veuillez signaler ce probleme à l\'administrateur du serveur.\\n";
 						$ok = 'no';
 					}
 					else
@@ -272,12 +272,12 @@ $msg ='';
 		}
 		else if ($doc_file['name'] != '')
 		{
-			$msg .= "L\'image n\'a pas pu etre enregistree : le fichier image selectionne n'est pas valide !\\n";
+			$msg .= "L\'image n\'a pas pu être enregistrée : le fichier image sélectionné n'est pas valide !\\n";
 			$ok = 'no';
 		}
 		$msg .= get_vocab("message_records");
 	}
-	// Si pas de probleme, retour e la page d'accueil apres enregistrement
+	// Si pas de probleme, retour à la page d'accueil après enregistrement
 	if ((isset($change_done)) && (!isset($ok)))
 	{
 		if ($msg != '')
@@ -398,7 +398,7 @@ $msg ='';
 		get_vocab_admin("save");
 		get_vocab_admin("save_and_back");
 
-		$trad['dTitrePage'] = get_vocab("match_area").get_vocab('deux_points')." ".$area_name." <span class=\"fa fa-arrow-right\"> ".$typeAction;
+		$trad['dTitrePage'] = get_vocab("match_area").get_vocab('deux_points')." ".$area_name." <span class=\"fa fa-arrow-right\"></span> ".$typeAction;
 		$trad['dDroitsDomaine'] = authGetUserLevel(getUserName(),$area_id,"area");
 		$trad['dDroitsRessource'] = authGetUserLevel(getUserName(),$room);
 		$trad['dIdDomaine'] = $area_id;

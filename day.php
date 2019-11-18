@@ -3,9 +3,9 @@
  * day.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-01 10:30$
+ * Dernière modification : $Date: 2019-02-22 19:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -68,15 +68,9 @@ if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
 else
 	$type_session = "with_session";
 // autres initialisations
-if (@file_exists('./admin_access_area.php')){
-    $adm = 1;
-    $racine = "../";
-    $racineAd = "./";
-}else{
-    $adm = 0;
-    $racine = "./";
-    $racineAd = "./admin/";
-}
+$adm = 0;
+$racine = "./";
+$racineAd = "./admin/";
 // pour le traitement des modules
 include $racine."/include/hook.class.php";
 
@@ -128,9 +122,9 @@ else
 	{
 		$start_t = max(round_t_down($row['1'], $resolution, $am7), $am7);
 		$end_t = min(round_t_up($row['2'], $resolution, $am7) - $resolution, $pm7);
-		$cellules[$row['4']] = ($end_t - $start_t) / $resolution + 1;
+		$cellules[$row['4']] = ($end_t - $start_t) / $resolution + 1; // à vérifier YN le 14/10/18
 		$compteur[$row['4']] = 0;
-		for ($t = $start_t; $t <= $end_t; $t += $resolution)
+		for ($t = $start_t; $t <= $end_t; $t += $resolution) // à vérifier YN le 14/10/18
 		{
 			$today[$row['0']][$t]["id"]				= $row['4'];
 			$today[$row['0']][$t]["color"]			= $row['5'];
@@ -145,7 +139,7 @@ else
 		{
 			$today[$row['0']][$am7]["data"] = affichage_lien_resa_planning($row['3'], $row['4']);
 			if ($settings->get("display_info_bulle") == 1)
-				$today[$row['0']][$am7]["who"] = get_vocab("reservation_au_nom_de").affiche_nom_prenom_email($row['6'], $row['11'], "nomail");
+				$today[$row['0']][$am7]["who"] = get_vocab("reservation au nom de").affiche_nom_prenom_email($row['6'], $row['11'], "nomail");
 			else if ($settings->get("display_info_bulle") == 2)
 				$today[$row['0']][$am7]["who"] = $row['8'];
 			else
@@ -155,7 +149,7 @@ else
 		{
 			$today[$row['0']][$start_t]["data"] = affichage_lien_resa_planning($row['3'], $row['4']);
 			if ($settings->get("display_info_bulle") == 1)
-				$today[$row['0']][$start_t]["who"] = get_vocab("reservation_au_nom_de").affiche_nom_prenom_email($row['6'], $row['11']);
+				$today[$row['0']][$start_t]["who"] = get_vocab("reservation au nom de").affiche_nom_prenom_email($row['6'], $row['11']);
 			else if ($settings->get("display_info_bulle") == 2)
 				$today[$row['0']][$start_t]["who"] = $row['8'];
 			else
@@ -203,7 +197,7 @@ if ($_GET['pview'] != 1){
 else{
 	echo '<div id="print_planning">'.PHP_EOL;
 }
-echo "<table class='jour table-striped table-bordered floatthead'>";
+echo "<table class='jour floatthead table-striped table-bordered'>";
 echo "<caption>";
 $class = "";
 $title = "";
@@ -332,13 +326,12 @@ for ($i = 0; ($row = grr_sql_row($ressources, $i)); $i++)
 			echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$id_room[$i].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'">
 		<span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
 		if (authGetUserLevel(getUserName(),$id_room[$i]) > 2 && $_GET['pview'] != 1)
-			echo '<a href="./admin/admin_edit_room.php?room='.$id_room[$i].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a><br/>'.PHP_EOL;
+			echo '<a href="./admin/admin.php?p=admin_edit_room&room='.$id_room[$i].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a><br/>'.PHP_EOL;
 		affiche_ressource_empruntee($id_room[$i]);
 		echo '<span id="boutonSelection'.$a.'" style="display:none;">'.PHP_EOL;
-		echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab("see_week_for_this_room")).'" onclick="charger();javascript: location.href=\'week.php?year='.$year.'&amp;month='.$month.'&amp;cher='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('week').'"/>'.PHP_EOL;
+		echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab("see_week_for_this_room")).'" onclick="charger();javascript: location.href=\'week.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('week').'"/>'.PHP_EOL;
 		echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab("see_month_for_this_room")).'" onclick="charger();javascript: location.href=\'month.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('month').'"/>'.PHP_EOL;
 		echo '</span>'.PHP_EOL;
-		//echo '</th>'.PHP_EOL;
 		if (htmlspecialchars($row['3']).$temp != '')
 		{
 			if (htmlspecialchars($row['3']) != '')
@@ -362,7 +355,7 @@ echo "</thead>"; // fin de l'affichage des ressources
 echo "<tbody>";
 $tab_ligne = 3;
 $iii = 0;
-for ($t = $am7; $t <= $pm7; $t += $resolution)
+for ($t = $am7; $t < $pm7; $t += $resolution)
 {
 	echo '<tr>'.PHP_EOL;
 	if ($iii % 2 == 1)
@@ -488,9 +481,11 @@ for ($t = $am7; $t <= $pm7; $t += $resolution)
 						$clef 		= $row['3'];
 						$courrier	= $row['4'];
 						if ($enable_periods != 'y') {
-							echo '<br/>',date('H:i', max($am7,$start_time)),get_vocab("to"),date('H:i', min($pm7,$end_time)),'<br/>';
+                            $heure_fin = date('H:i',min($pm7,$end_time));
+                            if ($heure_fin == '00:00') {$heure_fin = '24:00';}
+							echo '<br/>',date('H:i', max($am7,$start_time)),get_vocab("to"),$heure_fin,'<br/>';
 						}
-						if ($type_name != -1)
+						if (($type_name != -1)&&(Settings::get("type") == '1'))
 							echo  $type_name;
 						echo '<br>'.PHP_EOL;
 						if ($clef == 1)

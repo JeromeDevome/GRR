@@ -55,6 +55,7 @@ if ($valid == "yes")
 	$new_login = isset($_GET["new_login"]) ? $_GET["new_login"] : NULL;
 	$reg_password = isset($_GET["reg_password"]) ? unslashes($_GET["reg_password"]) : NULL;
 	$reg_password2 = isset($_GET["reg_password2"]) ? unslashes($_GET["reg_password2"]) : NULL;
+	$reg_changepwd = isset($_GET["reg_changepwd"]) ? $_GET["reg_changepwd"] : 0;
 	$reg_statut = isset($_GET["reg_statut"]) ? $_GET["reg_statut"] : NULL;
 	$reg_email = isset($_GET["reg_email"]) ? $_GET["reg_email"] : NULL;
 	$reg_etat = isset($_GET["reg_etat"]) ? $_GET["reg_etat"] : NULL;
@@ -122,6 +123,7 @@ if ($valid == "yes")
 					prenom='".protect_data_sql($reg_prenom)."',
 					login='".protect_data_sql($new_login)."',
 					password='".protect_data_sql($reg_password_c)."',
+					changepwd='".protect_data_sql($reg_changepwd)."',
 					statut='".protect_data_sql($reg_statut)."',
 					email='".protect_data_sql($reg_email)."',
 					etat='".protect_data_sql($reg_etat)."',
@@ -195,6 +197,7 @@ if ($valid == "yes")
 				$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET nom='".protect_data_sql($reg_nom)."',
 				prenom='".protect_data_sql($reg_prenom)."',
 				statut='".protect_data_sql($reg_statut)."',
+				changepwd='".protect_data_sql($reg_changepwd)."',
 				email='".protect_data_sql($reg_email)."',";
 				if ($reg_type_authentification=="locale")
 				{
@@ -284,7 +287,7 @@ if ($valid == "yes")
 // On appelle les informations de l'utilisateur pour les afficher :
 if (isset($user_login) && ($user_login != ''))
 {
-	$res = grr_sql_query("SELECT nom, prenom, statut, etat, email, source FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$user_login'");
+	$res = grr_sql_query("SELECT nom, prenom, statut, etat, email, source, changepwd FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$user_login'");
 	if (!$res)
 		fatal_error(0, get_vocab('message_records_error'));
 	$utilisateur = grr_sql_row_keyed($res, 0);
@@ -357,6 +360,7 @@ get_vocab_admin("no_activ_user");
 get_vocab_admin("champ_vide_mot_de_passe_inchange");
 get_vocab_admin("pwd_toot_short");
 get_vocab_admin("confirm_pwd");
+get_vocab_admin("user_change_pwd_connexion");
 
 get_vocab_admin("back");
 get_vocab_admin("save");
@@ -483,4 +487,5 @@ $utilisateur['reg_login'] = $user_login;
 		}
 	}
 
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateur' => $utilisateur));
 ?>

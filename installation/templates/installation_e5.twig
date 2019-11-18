@@ -1,0 +1,58 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block content %}
+
+
+	{% if d.connexionEchoue %}
+		{{ msgSyst.messageDanger('Connexion au serveur SQL :', 'La connexion au serveur SQL a échoué.') }}
+	{% endif %}
+
+	<div class="row">
+
+		<div class="col-md-12 col-sm-12 col-xs-12">
+
+			{% if d.erreurE5 %}
+				<div class="box box-danger">
+					<div class="box-header with-border">
+						<h3 class="box-title">Etape 5 - Erreur</h3>
+					</div>
+
+
+					<div class="box-body">
+						{% if d.erreurE5 == 1 %}
+							<p>L'installation n'a pas pu se terminer normalement : des tables sont manquantes. {{ d.tableManquantes }}</p>
+						{% elseif d.erreurE5 == 2 %}
+							<p>L'installation n'a pas pu se terminer normalement : la table {{ d.table_prefix }}_setting est vide ou bien n'existe pas.</p>
+						{% elseif d.erreurE5 == 3 %}
+							<p>Espace interdit - GRR est déjà installé.</p>
+						{% endif %}
+					</div>
+					<div style="text-align:right;">
+						<a href="../index.php" class="btn btn-danger">Retour</a>
+					</div>
+
+				</div>
+			{% else %}
+				<div class="box box-success">
+					<div class="box-header with-border">
+						<h3 class="box-title">Etape 5 - Terminé</h3>
+					</div>
+
+					<div class="box-body">
+						<p>Vous pouvez maintenant commencer à utiliser le système de Gestion et Réservation de Ressources.</p>
+						<p>Pour vous connecter la première fois en tant qu'administrateur, utilisez l'identifiant "<b>ADMINISTRATEUR</b>" et le mot de passe choisi.</p>
+					</div>
+					<div style="text-align:center;">
+						<a href="../login.php" class="btn btn-success">Se connecter à GRR</a>
+					</div>
+				</div>
+			{% endif %}
+
+		</div>
+
+	</div>
+
+{% endblock %}

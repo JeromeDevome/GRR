@@ -220,7 +220,7 @@ get_vocab_admin('cancel');
 		$domaines[] = array('id' => $key, 'nom' => $userdomain[$key]);
 
 	$ind_div = 0;
-    $champsAdd = array();
+	$champsAdd = array();
 
 	foreach ($userdomain as $key=>$value)
 	{

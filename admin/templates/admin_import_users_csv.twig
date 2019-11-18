@@ -98,6 +98,7 @@
 									<th>{{ trad.type }}</th>
 									<th>{{ trad.statut }}</th>
 									<th>{{ trad.authentification }}</th>
+									<th>{{ trad.pwd_change }}</th>
 								</tr>
 								{% for user in utilisateursaimporter %}
 									<tr>
@@ -137,6 +138,10 @@
 										<td {% if user.authentification == "???" %} class="danger" {% endif %}>
 											{{ user.authentification }}
 											<input type="hidden" name="reg_type_auth[{{ user.num }}]" value="{{ user.authentification }}" />
+										</td>
+										<td {% if user.changerpwd == "???" %} class="danger" {% endif %}>
+											{{ user.changerpwd }}
+											<input type="hidden" name="reg_changer_pwd[{{ user.num }}]" value="{{ user.changerpwd }}" />
 										</td>
 									</tr>
 								{% endfor %}

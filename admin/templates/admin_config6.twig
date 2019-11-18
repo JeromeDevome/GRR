@@ -55,19 +55,22 @@
 						<hr>
 						<div class="form-group col-sm-12">
 							<label class="col-sm-6" for="default_css">{{ trad.explain_css }}</label>
-							<div class="col-sm-6">
+							<div class="col-sm-5">
 								<select class="form-control" name="default_css">
 									{{ trad.dOptionTheme | raw }}
 								</select>
 							</div>
+							<div class="col-sm-1"><button type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#modal-warning" data-texte="Confirmer la synchronisation du thème avec tout les utilisateurs ?" data-idsup="1"><i class="icon fa fa-sync"></i></button>
 						</div>
+						<hr>
 						<div class="form-group col-sm-12">
-							<label class="col-sm-6" for="default_css">{{ trad.choose_language }}</label>
-							<div class="col-sm-6">
-								<select class="form-control" name="default_css">
+							<label class="col-sm-6" for="default_language">{{ trad.choose_language }}</label>
+							<div class="col-sm-5">
+								<select class="form-control" name="default_language">
 									{{ trad.dOptionLangue | raw }}
 								</select>
 							</div>
+							<div class="col-sm-1"><button type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#modal-warning" data-texte="Confirmer la synchronisation de la langue avec tout les utilisateurs ?" data-idsup="2"><i class="icon fa fa-sync"></i></button>
 						</div>
 					</section>
 
@@ -111,13 +114,13 @@
 							<tbody>
 								<tr>
 									<th style="width: 200px"></th>
-									<th style="width: 50px">Afficher</th>
-									<th>Ne pas afficher</th>
+									<th style="width: 150px">Ne pas afficher</th>
+									<th>Afficher</th>
 								</tr>
 								<tr>
 									<td>{{ trad.sum_by_creator }}</td>
-									<td>Prochainement</td>
-									<td></td>
+									<td><input type="radio" name="display_beneficicaire" value="0" id="label_4a" {% if settings.display_beneficicaire == '0' %} checked {% endif %} /></td>
+									<td><input type="radio" name="display_beneficicaire" value="1" id="label_4b" {% if settings.display_beneficicaire == '1' %} checked {% endif %} /></td>
 								</tr>
 								<tr>
 									<td>{{ trad.namebooker }}</td>
@@ -131,30 +134,14 @@
 								</tr>
 								<tr>
 									<td>{{ trad.type }}</td>
-									<td>Prochainement</td>
-									<td></td>
+									<td><input type="radio" name="display_type" value="0" id="label_4a" {% if settings.display_type == '0' %} checked {% endif %} /></td>
+									<td><input type="radio" name="display_type" value="1" id="label_4b" {% if settings.display_type == '1' %} checked {% endif %} /></td>
 								</tr>
 							</tbody>
 						</table>
 
 					</section>
 
-					<hr>
-<!--
-					<section id="descriptionbreve">
-						<h4 class="page-header">{{ trad.display_short_description_msg }}</h4>
-						<input type="radio" name="display_short_description" value="0" id="label_4a" {% if settings.display_short_description == '0' %} checked {% endif %} /> <label for="label_4a">{{ trad.display_short_description0 }}</label><br>
-						<input type="radio" name="display_short_description" value="1" id="label_4b" {% if settings.display_short_description == '1' %} checked {% endif %} /> <label for="label_4b">{{ trad.display_short_description1 }}</label><br>
-					</section>
-
-					<hr>
-
-					<section id="descriptioncomple">
-						<h4 class="page-header">{{ trad.display_full_description_msg }}</h4>
-						<input type="radio" name="display_full_description" value="0" id="label_5a" {% if settings.display_full_description == '0' %} checked {% endif %} /> <label for="label_5a">{{ trad.display_full_description0 }}</label><br>
-						<input type="radio" name="display_full_description" value="1" id="label_5b" {% if settings.display_full_description == '1' %} checked {% endif %} /> <label for="label_5b">{{ trad.display_full_description1 }}</label><br>
-					</section>
--->
 					<hr>
 
 					<section id="liensemail">
@@ -212,39 +199,39 @@
 						<table class="table table-condensed">
 							<tbody>
 								<tr>
-									<th style="width: 200px"></th>
+									<th style="width: 300px"></th>
 									<th style="width: 50px">Afficher</th>
 									<th>Ne pas afficher</th>
+									<th></th>
 								</tr>
 								<tr>
 									<td>{{ trad.legend_msg }}</td>
 									<td><input type="radio" name="legend" value="0" id="label_11a" {% if settings.legend == '0' %} checked {% endif %} /></td>
 									<td><input type="radio" name="legend" value="1" id="label_11b" {% if settings.legend == '1' %} checked {% endif %} /></td>
+									<td></td>
 								</tr>
 								<tr>
 									<td>{{ trad.imprimante_msg }}</td>
 									<td><input type="radio" name="imprimante" value="0" id="label_12a" {% if settings.imprimante == '0' %} checked {% endif %} /></td>
 									<td><input type="radio" name="imprimante" value="1" id="label_12b" {% if settings.imprimante == '1' %} checked {% endif %} /></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td>{{ trad.holidays_msg }}</td>
+									<td><input type="radio" name="show_holidays" value="Oui" id="label_13a" {% if settings.show_holidays == 'Oui' %} checked {% endif %} /></td>
+									<td><input type="radio" name="show_holidays" value="Non" id="label_13b" {% if settings.show_holidays == 'Non' %} checked {% endif %} /></td>
+									<td>
+										<select class="form-control" name="holidays_zone">
+											<option>{{ trad.holidays_zone_msg }}</option>
+											{{ trad.dOptionVavances | raw }}
+										</select>
+									</td>
 								</tr>
 							</tbody>
 						</table>
 
 					</section>
-<!--					
-					<section id="legende">
-						<h4 class="page-header">{{ trad.legend_msg }}</h4>
-						<input type="radio" name="legend" value="0" id="label_1a" {% if settings.legend == '0' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
-						<input type="radio" name="legend" value="1" id="label_1b" {% if settings.legend == '1' %} checked {% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
-					</section>
 
-					<hr>
-
-					<section id="imprimante">
-						<h4 class="page-header">{{ trad.imprimante_msg }}</h4>
-						<input type="radio" name="imprimante" value="0" id="label_1a" {% if settings.imprimante == '0' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
-						<input type="radio" name="imprimante" value="1" id="label_1b" {% if settings.imprimante == '1' %} checked {% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
-					</section>
--->
 					<hr>
 
 					<section id="periodicite">
@@ -259,25 +246,6 @@
 						<h4 class="page-header">{{ trad.courrier_msg }}</h4>
 						<input type="radio" name="show_courrier" value="y" id="label_1a" {% if settings.show_courrier == 'y' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
 						<input type="radio" name="show_courrier" value="n" id="label_1b" {% if settings.show_courrier == 'n' %} checked {% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
-					</section>
-
-					<hr>
-
-					<section id="affichervacances">
-						<h4 class="page-header">{{ trad.holidays_msg }}</h4>
-						<input type="radio" name="show_holidays" value="Oui" id="label_1a" {% if settings.show_holidays == 'Oui' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
-						<input type="radio" name="show_holidays" value="Non" id="label_1b" {% if settings.show_holidays == 'Non' %} checked {% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
-
-						{% if settings.show_holidays == 'Oui' %}
-							<div class="form-group col-sm-12">
-								<label class="col-sm-6" for="default_css">{{ trad.holidays_zone_msg }}</label>
-								<div class="col-sm-6">
-									<select class="form-control" name="holidays_zone">
-										{{ trad.dOptionVavances | raw }}
-									</select>
-								</div>
-							</div>
-						{% endif %}
 					</section>
 
 					<hr>
@@ -307,6 +275,27 @@
         </div>
         <!-- /.col -->
       </div>
+
+    <div class="modal modal-warning fade" id="modal-warning">
+		<form action="?p=admin_config6">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Synchronisation</h4>
+              </div>
+              <div class="modal-body">
+				<span id="modal-texte"></span><span id="modal-idsup" class="hidden"></span> 
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">{{trad.NO}}</button>
+				<button type="submit" id="liensup" class="btn btn-outline">{{trad.YES}}</button>
+              </div>
+            </div>
+          </div>
+		</form>
+    </div>
 
 {% endblock %}
 
@@ -353,6 +342,47 @@
 		}
 		modifier_liste_domaines();
 		modifier_liste_ressources(1);
+
+		// MODAL
+		// data-* attributes to scan when populating modal values
+		var ATTRIBUTES = ['texte', 'idsup'];
+
+		$('[data-toggle="modal"]').on('click', function (e) {
+		  // convert target (e.g. the button) to jquery object
+		  var $target = $(e.target);
+		  // modal targeted by the button
+		  var modalSelector = $target.data('target');
+
+		  // iterate over each possible data-* attribute
+		  ATTRIBUTES.forEach(function (attributeName) {
+			// retrieve the dom element corresponding to current attribute
+			var $modalAttribute = $(modalSelector + ' #modal-' + attributeName);
+			var dataValue = $target.data(attributeName);
+			// if the attribute value is empty, $target.data() will return undefined.
+			// In JS boolean expressions return operands and are not coerced into
+			// booleans. That way is dataValue is undefined, the left part of the following
+			// Boolean expression evaluate to false and the empty string will be returned
+			$modalAttribute.text(dataValue || '');
+		  });
+		});
+
+	  $(function(){
+		$('form').submit(function(e) {
+		  e.preventDefault()
+		  var $form = $(this)
+		  var v=document.getElementById('modal-idsup').innerHTML
+		  $.post($form.attr('action'), $form.serialize())
+		  .done(function(data) {
+			$('#html').html(data);
+			$('#modal-warning').modal('hide');
+			document.location.href='?p=admin_config6&sync='+v;
+		  })
+		  .fail(function() {
+			alert('Une erreur est survenue : GRRJS')
+		  })
+		})
+	  })
+
 	</script>
 
 {% endblock %}

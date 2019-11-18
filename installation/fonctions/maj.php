@@ -69,7 +69,7 @@ function execute_maj($version_old, $version_grr)
 	$result_inter = '';
 
 	// On commence la mise à jour
-	if ($version_old < "1.4.9")
+	if (version_compare($version_old, "1.4.0", '<'))
 	{
 		$result .= "<b>Mise à jour jusqu'à la version 1.4 :</b><br />";
 		$result_inter .= traite_requete("ALTER TABLE mrbs_area ADD order_display TINYINT NOT NULL;");
@@ -111,7 +111,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 
-	if ($version_old < "1.5.9")
+	if (version_compare($version_old, "1.5.0", '<'))
 	{
 		$result .= "<b>Mise à jour jusqu'à la version 1.5 :</b><br />";
 		// GRR1.5
@@ -132,7 +132,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 
-	if ($version_old < "1.6.9")
+	if (version_compare($version_old, "1.6.0", '<'))
 	{
 		$result .= "<b>Mise à jour jusqu'à la version 1.6 :</b><br />";
 		// GRR1.6
@@ -151,7 +151,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 
-	if ($version_old < "1.7.9")
+	if (version_compare($version_old, "1.7.0", '<'))
 	{
 		$result .= "<b>Mise à jour jusqu'à la version 1.7 :</b><br />";
 		// GRR1.7
@@ -174,7 +174,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 
-	if ($version_old < "1.8.0.9")
+	if (version_compare($version_old, "1.8.0", '<'))
 	{
 		$result .= "<b>Mise à jour jusqu'à la version 1.8 :</b><br />";
 		// GRR1.8
@@ -206,7 +206,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 
-	if ($version_old < "1.9.0.9")
+	if (version_compare($version_old, "1.9.0", '<'))
 	{
 		$result .= "<b>Mise à jour jusqu'à la version 1.9 :</b><br />";
 		// GRR1.9
@@ -229,7 +229,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 
-	if ($version_old < "1.9.1.9")
+	if (version_compare($version_old, "1.9.1", '<'))
 	{
 		$result .= "<b>Mise à jour jusqu'à la version 1.9.1 :</b><br />";
 		// GRR1.9.1
@@ -241,7 +241,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 
-	if ($version_old < "1.9.2.9")
+	if (version_compare($version_old, "1.9.2", '<'))
 	{
 		$result .= "<b>Mise à jour jusqu'à la version 1.9.2 :</b><br />";
 		// GRR1.9.2
@@ -261,7 +261,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 
-	if ($version_old < "1.9.3.9")
+	if (version_compare($version_old, "1.9.3", '<'))
 	{
 		$result .= "<b>Mise à jour jusqu'à la version 1.9.3 :</b><br />";
 		// GRR1.9.3
@@ -308,7 +308,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 
-	if ($version_old < "1.9.4.9")
+	if (version_compare($version_old, "1.9.4", '<'))
 	{
 		$result .= "<b>Mise à jour jusqu'à la version 1.9.4 :</b><br />";
 		// GRR1.9.4
@@ -377,7 +377,8 @@ function execute_maj($version_old, $version_grr)
 
 	}
 
-	if ($version_old < "1.9.5.1") {
+	if (version_compare($version_old, "1.9.5", '<'))
+	{
 		$result .= "<b>Mise à jour jusqu'à la version 1.9.5 RC1 :</b><br />";
 		// GRR1.9.5
 		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_area ADD duree_max_resa_area INT DEFAULT '-1' NOT NULL ;");
@@ -478,7 +479,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 
-	if ($version_old < "1.9.5.9")
+	if (version_compare($version_old, "1.9.5", '<'))
 	{
 		$result .= "<b>Mise à jour jusqu'à la version 1.9.5 :</b><br />";
 		// GRR1.9.5
@@ -500,7 +501,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 
-	if ($version_old < "1.9.6.9")
+	if (version_compare($version_old, "1.9.6", '<'))
 	{
 		$result .= "<b>Mise à jour jusqu'à la version 1.9.6 :</b><br />";
 		// GRR1.9.6
@@ -536,7 +537,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 
-	if ($version_old < "1.9.7.9")
+	if (version_compare($version_old, "1.9.7", '<'))
 	{
 		$result .= "<b>Mise à jour jusqu'à la version 1.9.7 :</b><br />";
 		// GRR1.9.7
@@ -556,7 +557,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 
-	if ($version_old < "2.0.0")
+	if (version_compare($version_old, "2.0.0", '<'))
 	{
 		$result .= "<b>Mise à jour jusqu'à la version 2.0.0 :</b><br />";
 		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_entry ADD `clef` INT(2) NOT NULL DEFAULT '0' AFTER `jours`;");
@@ -570,7 +571,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 
-	if ($version_old < "3.0.0")
+	if (version_compare($version_old, "3.0.0", '<'))
 	{
 		$result .= "<b>Mise à jour jusqu'à la version 3.0.0 :</b><br />";
 	
@@ -599,7 +600,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 
-	if ($version_old < "3.1.0")
+	if (version_compare($version_old, "3.1.0", '<'))
 	{
 		$result .= "<b>Mise à jour jusqu'à la version 3.1.0 :</b><br />";
 	
@@ -612,7 +613,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 	
-	if ($version_old < "3.2.0")
+	if (version_compare($version_old, "3.2.0", '<'))
 	{
 		$result .= formatresult("Mise à jour jusqu'à la version 3.2.0 :","<b>","</b>");
 
@@ -628,7 +629,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 
-	if ($version_old < "3.3.0")
+	if (version_compare($version_old, "3.3.0", '<'))
 	{
 		$result .= formatresult("Mise à jour jusqu'à la version 3.3.0 :","<b>","</b>");
 
@@ -643,7 +644,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 
-	if ($version_old < "3.3.1")
+	if (version_compare($version_old, "3.3.1", '<'))
 	{
 		$result .= formatresult("Mise à jour jusqu'à la version 3.3.1 :","<b>","</b>");
 
@@ -661,7 +662,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter = '';
 	}
 
-	if ($version_old < "3.4.0")
+	if (version_compare($version_old, "3.4.0", '<'))
 	{
 		$result .= formatresult("Mise à jour jusqu'à la version 3.4.0 :","<b>","</b>");
 
@@ -714,6 +715,12 @@ function execute_maj($version_old, $version_grr)
 		$result .= formatresult("Mise à jour jusqu'à la version 4.0.0 :","<b>","</b>");
 
 		$result_inter .= traite_requete("DELETE FROM ".TABLE_PREFIX."_setting WHERE NAME='versionRC'");
+		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('display_beneficicaire', '0')");
+		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('display_type', '1')");
+		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET `NAME` = nombre_jours_Jours_Cycles WHERE `NAME` = 'nombre_jours_Jours/Cycles';");
+		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET `NAME` = jour_debut_Jours_Cycles WHERE `NAME` = 'jour_debut_Jours/Cycles';");
+		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs ADD `changepwd` TINYINT(1) NOT NULL DEFAULT '0' AFTER `password`;");
+		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_type_area ADD `couleurtexte` VARCHAR(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '#000000' AFTER `couleurhexa`;");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");

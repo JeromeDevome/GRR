@@ -8,6 +8,26 @@ Tâches prévues :
 -----
 --
 -----
+Version en cours de développement sur GitHUB (4.0.0)
+
+[Ajout] Contrôle version PHP
+[Ajout] Contrôle version MySQL
+[Ajout] Administration : Lien vers la documentation
+[Ajout] Possibilité de créer son fichier config qui ne sera pas écrasé par les mises à jours
+[Ajout] Infos PHP dans les informations du serveur
+[Ajout] Visualisation des variables du fichier config.inc.php dans les informations du serveur
+[Ajout] Champs additionnel dans les exports
+[Ajout] Changement de mot passe à la prochaine connexion
+[Ajout] Possibilité lors de l'importation des utilisateurs par csv de demander de changer de mot de passe
+[Ajout] Personnalisations de la couleur du texte par type de réservation
+[Ajout] Synchronisation de la langue avec tout les utilisateurs
+[Ajout] Synchronisation du thème avec tout les utilisateurs
+[Correction] Déconnexion utilisateur lorsque une connexion externe est activée
+[Modification] Administration : passage sous twig
+[Modification] Administration : Theme AdminLTE
+[Modification] Compatibilité PHP 7.2
+[Modification] Déconnexion de l'utilisateur de puis l'administration sans le changement de mot de passe
+[Modification] Séparation de la date, heure début de réservation et la durée dans les exports
 
 Version en cours de développement sur GitHUB (3.4.1) // Numéro de version à confirmer
     [ajout] Echange de deux réservations

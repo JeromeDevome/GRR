@@ -2,9 +2,9 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2018-04-16 18:00$
- * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2019-02-16 16:40$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -23,12 +23,13 @@
  * $endtime   - The end of the period
  * $ignore    - An entry ID to ignore, 0 to ignore no entries
  * $repignore - A repeat ID to ignore everything in the series, 0 to ignore no series
+ * $link      - prefix to link the pages called in "something"
  *
  * Returns:
  *   nothing   - The area is free
  *   something - An error occurred, the return value is human readable
  */
-function mrbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore)
+function mrbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore, $link="")
 {
 	global $vocab;
 	//SELECT any meetings which overlap ($starttime,$endtime) for this room:
@@ -55,11 +56,11 @@ function mrbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore)
 		$starts = getdate($row[2]);
 		$param_ym = "area=$area&amp;year=$starts[year]&amp;month=$starts[mon]";
 		$param_ymd = $param_ym . "&amp;day=$starts[mday]";
-		$err .= "<li><a href=\"view_entry.php?id=$row[0]\">$row[1]</a>"
+		$err .= "<li><a href=\"".$link."view_entry.php?id=$row[0]\">$row[1]</a>"
 		. " ( " . utf8_strftime('%A %d %B %Y %T', $row[2]) . ") "
-		. "(<a href=\"day.php?$param_ymd\">".get_vocab("viewday")."</a>"
-			. " | <a href=\"week.php?room=$room_id&amp;$param_ymd\">".get_vocab("viewweek")."</a>"
-			. " | <a href=\"month.php?room=$room_id&amp;$param_ym\">".get_vocab("viewmonth")."</a>)\n";
+		. "(<a href=\"".$link."day.php?$param_ymd\">".get_vocab("viewday")."</a>"
+			. " | <a href=\"".$link."week.php?room=$room_id&amp;$param_ymd\">".get_vocab("viewweek")."</a>"
+			. " | <a href=\"".$link."month.php?room=$room_id&amp;$param_ym\">".get_vocab("viewmonth")."</a>)</li>\n";
 }
 return $err;
 }
@@ -223,6 +224,7 @@ function mrbsOverloadGetFieldslist($id_area, $room_id = 0)
 	{
 		if ($id_area == "")
 		{
+			$fieldslist[$field_row[0]." (".$field_row[4].")"]["name"] = $field_row[0];																 
 			$fieldslist[$field_row[0]." (".$field_row[4].")"]["type"] = $field_row[1];
 			$fieldslist[$field_row[0]." (".$field_row[4].")"]["id"] = $field_row[2];
 			if (trim($field_row[3]) != "")

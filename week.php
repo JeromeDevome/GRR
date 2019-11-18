@@ -3,9 +3,9 @@
  * week.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "semaine".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-30 17:45$
+ * Dernière modification : $Date: 2019-01-20 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -67,17 +67,11 @@ if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
 else
 	$type_session = "with_session";
 // autres initialisations
-if (@file_exists('./admin_access_area.php')){
-    $adm = 1;
-    $racine = "../";
-    $racineAd = "./";
-}else{
-    $adm = 0;
-    $racine = "./";
-    $racineAd = "./admin/";
-}
+$adm = 0;
+$racine = "./";
+$racineAd = "./admin/";
 // pour le traitement des modules
-include $racine."/include/hook.class.php";
+include "./include/hook.class.php";
 
 if (!($desactive_VerifNomPrenomUser))
     $desactive_VerifNomPrenomUser = 'n';
@@ -141,8 +135,6 @@ $minutesFinCrenaux = array();
 for($h=0; $h<3600; $h+=$this_area_resolution) {
 	$minutesFinCrenaux[] = date('i', $h);
 }
-// le titre du planning
-// echo '<div class="titre_planning_week"> '.PHP_EOL;
 if (($this_room_name_des) && ($this_room_name_des != "-1"))
 	$this_room_name_des = " (".$this_room_name_des.")";
 else
@@ -195,7 +187,7 @@ include("chargement.php");
 $sql = "SELECT start_time, end_time, type, name, id, beneficiaire, statut_entry, description, option_reservation, moderate, beneficiaire_ext
 FROM ".TABLE_PREFIX."_entry
 WHERE room_id=$room
-AND start_time < ".($week_end + $this_area_resolution)." AND end_time > $week_start ORDER BY start_time";
+AND start_time < ".$week_end." AND end_time > $week_start ORDER BY start_time";
 if ($enable_periods == 'y')
 {
     $first_slot = 0;
@@ -204,7 +196,7 @@ if ($enable_periods == 'y')
 else
 {
     $first_slot = $morningstarts * 3600 / $resolution; 
-    $last_slot = ($eveningends * 3600 + $eveningends_minutes * 60) / $resolution; 
+    $last_slot = ($eveningends * 3600 + $eveningends_minutes * 60) / $resolution -1; 
 }
 if ($debug_flag)
 	echo "<br />DEBUG: query=$sql <br />first_slot=$first_slot - last_slot=$last_slot\n";
@@ -256,15 +248,15 @@ else
                         if (date("d", $t) == $firstday) // Premier jour de réservation, Hdebut = Heure debut résa / Hfin = heure fin de journée / duree = (nb bloc d'une journée - nb bloc vides)
                         {   
                             $d[$weekday][$slot]["horaireDebut"] = $t;
-                            $d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes+$this_area_resolution/60, 0, date('m',$t), date('d',$t), date('Y',$t));
-                            $d[$weekday][$slot]["duree"] = (mktime($eveningends, $eveningends_minutes+$this_area_resolution/60, 0, date('m',$t), date('d',$t), date('Y',$t))-$t)/$this_area_resolution;
+                            $d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t));
+                            $d[$weekday][$slot]["duree"] = (mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t))-$t)/$this_area_resolution;
                         }
                         // Les jours entre les deux , Hdebut = Heure debut journée/ Hfin = heure fin journée / duree = ( h fin journée - h debut journée) * nb bloc pr 1h ) 
                         else
                         {
                             $d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$t), date('d',$t), date('Y',$t));
-                            $d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes+$this_area_resolution/60, 0, date('m',$t), date('d',$t), date('Y',$t));
-                            $d[$weekday][$slot]["duree"] = (($eveningends+1-$morningstarts)*$heigthSlotHoure);
+                            $d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t));
+                            $d[$weekday][$slot]["duree"] = (($eveningends+$eveningends_minutes/60-$morningstarts)*$heigthSlotHoure);
                         }
                     }
                     else // fin de réservation ne dépassant pas la fin de la journée ou dernière journée
@@ -397,7 +389,7 @@ if ($_GET['pview'] != 1){
 else{
 	echo '<div id="print_planning">'.PHP_EOL;
 }
-echo '<table class="semaine table-bordered table-striped floatthead">',PHP_EOL;
+echo '<table class="semaine floatthead table-bordered table-striped">',PHP_EOL;
 // le titre de la table
 echo "<caption>";
 echo "<div class=ligne23>";
@@ -444,7 +436,7 @@ if (verif_display_fiche_ressource(getUserName(), $room) && $_GET['pview'] != 1)
 }
 if (authGetUserLevel(getUserName(),$room) > 2 && $_GET['pview'] != 1)
 {
-	echo "<a href='./admin/admin_edit_room.php?room=$room'><span class=\"glyphcolor glyphalign glyphicon glyphicon-cog\"></span></a>";
+	echo "<a href='./admin/admin.php?p=admin_edit_room&room=$room'><span class=\"glyphcolor glyphalign glyphicon glyphicon-cog\"></span></a>";
 }
 affiche_ressource_empruntee($room);
 if ($this_statut_room == "0" && $_GET['pview'] != 1)
@@ -479,11 +471,14 @@ if ($debug_flag)
 	echo "<p>DEBUG:<p><pre>\n";
 	if (gettype($d) == "array")
 	{
-		while (list($w_k, $w_v) = each($d))
+		// while (list($w_k, $w_v) = each($d)) deprecated in php 7.2.0
+        foreach($d as $w_k=>$w_v)
 		{
-			while (list($t_k, $t_v) = each($w_v))
+			// while (list($t_k, $t_v) = each($w_v))
+            foreach($w_v as $t_k=>$t_v)
 			{
-				while (list($k_k, $k_v) = each($t_v))
+				// while (list($k_k, $k_v) = each($t_v))
+                foreach($t_v as $k_k=>$k_v)
 					echo "$d[$w_k][$t_k][$k_k] =", $k_v ,"<br/>";
 			}
 		}
@@ -502,7 +497,8 @@ echo "</td>";
 $num_week_day = $weekstarts;
 $k = $day_week;
 $i = $time;
-for ($t = $week_start; $t <= $week_end; $t += 86400)
+
+for ($t = $week_start; $t < $week_end; $t += 86400)
 {
 	$num_day = strftime("%d", $t);
 	$month_actuel = strftime("%m", $t);
@@ -646,7 +642,8 @@ $nb_case = 0;
                                         {$heure_fin = '24:00';}
 									echo "<br />" .date('H:i',$d[$weekday][$slot - $decale_slot * $nb_case]["horaireDebut"]).get_vocab("to"). $heure_fin."";
 								}
-								echo " <br/>". $Son_GenreRepeat ." <br/><br/>" ;
+								if (Settings::get("type") == '1') 
+                                    echo " <br/>". $Son_GenreRepeat ." <br/><br/>" ;
 							}
 							if ($d[$weekday][$slot - $decale_slot * $nb_case]["description"]!= "")
 								echo "<i>".$d[$weekday][$slot - $decale_slot * $nb_case]["description"]."</i><br>";

@@ -1,0 +1,64 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block content %}
+
+
+	{% if d.SelectBase %}
+		{{ msgSyst.messageSuccess('Selection de la base :', 'Création et/ou sélection de la base valide.') }}
+	{% endif %}
+
+	{% if d.erreurMDP %}
+		{{ msgSyst.messageDanger('Mot de passe :', 'Doit comporter au moins 8 caractères, le mot de passe de confirmation doit correspondre au premier.') }}
+	{% endif %}
+
+	<div class="row">
+
+		<div class="col-md-12 col-sm-12 col-xs-12">
+
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 class="box-title">Etape 3 - Votre GRR</h3>
+				</div>
+			
+				<form action='install_mysql.php' method='get' role="form">
+					<input type='hidden' name='etape' value='4' />
+					<input type='hidden' name='adresse_db' value='{{ d.adresse_db }}' />
+					<input type='hidden' name='port_db' value='{{ d.port_db }}' />
+					<input type='hidden' name='login_db' value='{{ d.login_db }}' />
+					<input type='hidden' name='pass_db' value='{{ d.pass_db }}' />
+					<input type='hidden' name='choix_db' value='{{ d.choix_db }}' />
+					<input type='hidden' name='table_prefix' value='{{ d.table_prefix }}' />
+
+					<div class="box-body">
+						<h3>GRR :</h3>
+						<p>Vous pourrez modifier les informations dans la configuration générale après avoir terminé l'installation.</p>
+
+						{{ form.input('company', 'Nom du GRR', '', {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+						{{ form.input('grr_url', 'URL du GRR', d.adresseServeur, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+						{{ form.input('webmaster_email', 'E-mail webmater', '', {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+						{{ form.input('technical_support_email', 'E-mail support', '', {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+
+
+						<h3>Votre compte :</h3>
+						<p>Identifiant du compte Administrateur :</p>
+						{{ form.input('identifiant', 'Identifiant :', 'ADMINISTRATEUR', {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', disabled: 1}) }}
+						{{ form.input('mdp1', 'Mot de passe :', '', {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type: 'password', require: 1}) }}
+						{{ form.input('mdp2', 'Confirmer le mot de passe :', '', {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type: 'password', require: 1}) }}
+						{{ form.input('email', 'E-mail :', '', {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type: 'email'}) }}
+
+
+					</div>
+					<div style="text-align:right;">
+						<input class="btn btn-primary" type="submit" name="Valider" value="Suivant" />
+					</div>
+				</form>
+			</div>
+
+		</div>
+
+	</div>
+
+{% endblock %}

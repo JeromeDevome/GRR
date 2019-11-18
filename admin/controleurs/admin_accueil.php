@@ -23,7 +23,9 @@ get_vocab_admin("admin_accueil");
 $trad['TitrePage'] = $trad['admin_accueil'];
 $trad['SousTitrePage'] = 'Administration';
 
-// Widget connection
+$trad['dLevel'] =  authGetUserLevel(getUserName(), -1, 'area');
+
+// Widget connexion
 get_vocab_admin("users_connected");
 $trad['dNombreConnecte'] = AdminFonctions::NombreDeConnecter();
 $trad['dNombreUtilisateur'] = AdminFonctions::NombreUtilisateurs();
@@ -32,6 +34,16 @@ $trad['dNombreUtilisateur'] = AdminFonctions::NombreUtilisateurs();
 get_vocab_admin("admin_user_mdp_facile");
 $trad['dNombreMDPFacile'] = AdminFonctions::NombreUtilisateursMDPfacile();
 
+// WARNING
+list($trad['dTypeWarning'], $trad['dMessageWarning'], $trad['dTexteLienWarning'], $trad['dLienWarning'])  = AdminFonctions::Warning();
+
+// Widget dernières connexions
+get_vocab_admin("login_name");
+get_vocab_admin("begining_of_session");
+$trad['dDernieresConnexions'] = AdminFonctions::DernieresConnexion(5);
+
+// Widget réservations à modérer
+list($trad['dNombreModeration'], $trad['dListeModeration'])  = AdminFonctions::ReservationsAModerer(5);
 
 
 ?>

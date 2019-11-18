@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2018-07-22 15:00$
+ * Dernière modification : $Date: 2019-10-10 10:20$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -39,40 +39,7 @@ function isSchoolHoliday($now)
 	$test = grr_sql_query1("SELECT DAY FROM ".TABLE_PREFIX."_calendrier_vacances where DAY = '".$now."'");
 	$val = ($test != -1);
 	return $val;
-} 
-/* function getSchoolHolidays($now, $year)
-{
-	$zone = 'A';
-	if (Settings::get("holidays_zone") != NULL)
-		$zone = Settings::get("holidays_zone");
-	$sh = array(false, "");
-	$vacances = simplexml_load_file('vacances.xml');
-	$libelle = $vacances->libelles->children();
-	$node = $vacances->calendrier->children();
-	foreach ($node as $key => $value)
-	{
-		if ($value['libelle'] == $zone)
-		{
-			foreach ($value->vacances as $key => $value)
-			{
-				$y = date('Y', strtotime($value['debut']));
-				if ($y == $year)
-				{
-					if (strtotime($value['debut']) <= $now && $now < strtotime($value['fin']))
-					{
-						$nom = (int)$value['libelle'];
-						$nom = $libelle->libelle[$nom - 1];
-						$sh = array(true, $nom);
-						break;
-					}
-
-				}
-			}
-		}
-	}
-	return $sh;
 }
-*/
 // fonction de calcul des jours fériés (France)
 function setHolidays($year = null)
 {
@@ -281,33 +248,10 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 				$affichage = "";
 		}
 		else
-			//$affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.$_identite.'</a>'.PHP_EOL;
             $affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.$_identite.'</a>'.PHP_EOL;
 	}
 	else
-	{   // si j'ai bien compris, il s'agit de calculer une balise mailto, et ce qui suit parait trop compliqué YN 2018-01-26
-
-	/*	?>
-		<script type="text/javascript">
-			function encode_adresse(user,domain,debut)
-			{
-				var address = user+'@'+domain;
-				var toWrite = '';
-				if (debut > 0)
-					toWrite += '<'+'a href="mailto:';
-				else
-					toWrite +=';';
-				toWrite +=address
-				document.write(toWrite);
-			}
-			function encode_fin_adresse(label)
-			{
-				var toWrite = '';
-				toWrite +='">'+label+'</'+'a>';
-				document.write(toWrite);
-			}
-		</script>
-		<?php */
+	{   // Il s'agit de calculer une balise mailto
 		$affichage = "";
 		if ($_email == "")
 		{
@@ -323,30 +267,6 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
             else 
                 if ($option_affichage == "afficher_toujours")
                     $affichage = $_identite;
-            /* 
-			$tab_email = explode(';', trim($_email));
-			$i = 0;
-			$affichage .= '<script>'.PHP_EOL;
-			foreach ($tab_email as $item_email)
-			{
-				$item_email_explode = explode('@',$item_email);
-				$person = $item_email_explode[0];
-				if (isset($item_email_explode[1]))
-				{
-					$i++;
-					$domain = $item_email_explode[1];
-					if ($i == 1)
-					{
-						$affichage .=  'encode_adresse("'.$person.'", "'.$domain.'", 1);'.PHP_EOL;
-					}
-					else{
-						$affichage .=  'encode_adresse("'.$person.'", "'.$domain.'", 0);'.PHP_EOL;
-					}
-				}
-			}
-			$affichage .=  'encode_fin_adresse("'.addslashes($_identite).'");'.PHP_EOL;
-			$affichage .=  '</script>'.PHP_EOL;
-			$affichage .= $_identite; */
 		}
 	}
 	return $affichage;
@@ -553,9 +473,9 @@ function how_many_connected()
 		}
 
 		if ($nb_connect == 1)
-			echo "<a href='{$racineAd}admin_view_connexions.php'>".$nb_connect.get_vocab("one_connected")."</a>".PHP_EOL;
+			echo "<a href='{$racineAd}admin.php?p=admin_view_connexions'>".$nb_connect.get_vocab("one_connected")."</a>".PHP_EOL;
 		else
-			echo "<a href='{$racineAd}admin_view_connexions.php'>".$nb_connect.get_vocab("several_connected")."</a>".PHP_EOL;
+			echo "<a href='{$racineAd}admin.php?p=admin_view_connexions'>".$nb_connect.get_vocab("several_connected")."</a>".PHP_EOL;
 		if (verif_version())
 			affiche_pop_up(get_vocab("maj_bdd_not_update").get_vocab("please_go_to_admin_maj.php"),"force");
 	}
@@ -565,20 +485,7 @@ function how_many_connected()
  * Description : si c'est un admin ou un gestionnaire de ressource qui est connecté, retourne un message indiquant s'il y a des réservations à modérer
 */
 function resaToModerate($user)
-{/*
-    $can_see = (authGetUserLevel($user,-1) > 5);// admin général
-    if (!$can_see){
-        if (isset($_GET['id_site'])){$can_see = (authGetUserLevel($user,$_GET['id_site'],'site') > 4);} // admin du site en paramètre
-    }
-    if (!$can_see){
-        if (isset($_GET['area'])){$can_see = (authGetUserLevel($user,$_GET['area'],'area') > 3);} // admin du domaine en paramètre
-    }
-    if (!$can_see){
-        if (isset($_GET['room'])){$can_see = (authGetUserLevel($user,$_GET['room'],'room') > 2);} // gestionnaire de la ressource en paramètre
-    }
-    if ($can_see){
-        $mesg = "accessible";}
-    else $mesg = ''; */
+{
     $mesg = '';
     if (authGetUserLevel($user,-1) > 5) // admin général
     {
@@ -745,7 +652,7 @@ function verif_version()
 	$_version_grr = $version_grr;
 	$version_old = Settings::get("version");
 
-	if ($version_old == '' || $_version_grr > $version_old)
+	if ($version_old == '' || version_compare($_version_grr, $version_old, '<'))
 		return true;
 	else
 		return false;
@@ -910,98 +817,51 @@ function begin_page($title, $page = "with_session")
 	$a .= '<title>'.$title.'</title>'.PHP_EOL;
 	$a .= '<link rel="shortcut icon" href="./favicon.ico" />'.PHP_EOL;
 
-	if (@file_exists('admin_accueil.php') || @file_exists('install_mysql.php')){ // Si on est dans l'administration
+	$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/bootstrap.min.css" />'.PHP_EOL;
+	$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/mod_bootstrap.css" />'.PHP_EOL;
 
-		//$a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/style.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/bootstrap.min.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/mod_bootstrap.css" />'.PHP_EOL;
-		// $a .= '<link rel="stylesheet" type="text/css" href="../include/admin_grr.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/select2.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/select2-bootstrap.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/jquery-ui.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/bootstrap-multiselect.css">'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
-        $a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/style.css" />'.PHP_EOL;
-        $a .= '<link rel="stylesheet" type="text/css" href="../include/admin_grr.css" />'.PHP_EOL;
-		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
-			$a .= '<link rel="stylesheet" type="text/css" href="../themes/print/css/style.css" />'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/jquery-ui.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/jquery.validate.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/bootstrap-multiselect.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/html2canvas.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/menu.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/jspdf.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/pdf.js" ></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/popup.js" charset="utf-8"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/functions.js" ></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/select2.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/select2_locale_fr.js"></script>'.PHP_EOL;
-		if (isset($use_tooltip_js))
-			echo '<script type="text/javascript" src="../include/tooltip.js"></script>'.PHP_EOL;
-		if (!isset($_SESSION['selection']))
-			$a .= '<script type="text/javascript" src="../js/selection.js" ></script>'.PHP_EOL;
-		if (@file_exists('js/'.$clock_file))
-			$a .= '<script type="text/javascript" src="../js/'.$clock_file.'"></script>'.PHP_EOL;
-		if (substr(phpversion(), 0, 1) == 3)
-			$a .= get_vocab('not_php3');
-        $a .= '<script type="text/javascript" src="../js/jquery.floatThead.min.js"></script>'.PHP_EOL;
-        $a .= '<script type="text/javascript" src="../js/udes.js"></script>'.PHP_EOL;
-	} 
-    else
-    {
-        //$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/bootstrap.min.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/mod_bootstrap.css" />'.PHP_EOL;
-	    /*if (isset($use_admin))
-			$a .= '<link rel="stylesheet" type="text/css" href="include/admin_grr.css" />'.PHP_EOL;*/
-		if (isset($use_select2))
-		{
-			$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/select2.css" />'.PHP_EOL;
-			$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/select2-bootstrap.css" />'.PHP_EOL;
-			$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/bootstrap-multiselect.css">'.PHP_EOL;
-			$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
-		}
-		$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/jquery-ui.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
-        $a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL;
-		if (isset($use_admin))
-			$a .= '<link rel="stylesheet" type="text/css" href="include/admin_grr.css" />'.PHP_EOL;
-		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
-			$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/html2canvas.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/jspdf.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/pdf.js" ></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/popup.js" charset="utf-8"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/functions.js" ></script>'.PHP_EOL;
-		if (isset($use_select2))
-		{
-			$a .= '<script type="text/javascript" src="js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
-			$a .= '<script type="text/javascript" src="js/bootstrap-multiselect.js"></script>'.PHP_EOL;
-			$a .= '<script type="text/javascript" src="js/select2.js"></script>'.PHP_EOL;
-			$a .= '<script type="text/javascript" src="js/select2_locale_fr.js"></script>'.PHP_EOL;
-		}
-		if (isset($use_tooltip_js))
-			echo '<script type="text/javascript" src="./include/tooltip.js"></script>'.PHP_EOL;
-		if (!isset($_SESSION['selection']))
-			$a .= '<script type="text/javascript" src="js/selection.js" ></script>'.PHP_EOL;
-		if (@file_exists('js/'.$clock_file))
-			$a .= '<script type="text/javascript" src="js/'.$clock_file.'"></script>'.PHP_EOL;
-		if (substr(phpversion(), 0, 1) == 3)
-			$a .= get_vocab('not_php3');
-        $a .= '<script type="text/javascript" src="js/jquery.floatThead.min.js"></script>'.PHP_EOL;
-        $a .= '<script type="text/javascript" src="js/udes.js"></script>'.PHP_EOL;
+	if (isset($use_select2))
+	{
+		$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/select2.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/select2-bootstrap.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/bootstrap-multiselect.css">'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
 	}
+	$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/jquery-ui.css" />'.PHP_EOL;
+	$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
+	$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL;
+	if (isset($use_admin))
+		$a .= '<link rel="stylesheet" type="text/css" href="include/admin_grr.css" />'.PHP_EOL;
+	if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
+		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/html2canvas.js"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/jspdf.min.js"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/pdf.js" ></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/popup.js" charset="utf-8"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/functions.js" ></script>'.PHP_EOL;
+	if (isset($use_select2))
+	{
+		$a .= '<script type="text/javascript" src="js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/bootstrap-multiselect.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/select2.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/select2_locale_fr.js"></script>'.PHP_EOL;
+	}
+	if (isset($use_tooltip_js))
+		echo '<script type="text/javascript" src="js/tooltip.min.js"></script>'.PHP_EOL;
+	if (!isset($_SESSION['selection']))
+		$a .= '<script type="text/javascript" src="js/selection.js" ></script>'.PHP_EOL;
+	if (@file_exists('js/'.$clock_file))
+		$a .= '<script type="text/javascript" src="js/'.$clock_file.'"></script>'.PHP_EOL;
+	if (substr(phpversion(), 0, 1) == 3)
+		$a .= get_vocab('not_php3');
+    $a .= '<script type="text/javascript" src="js/jquery.floatThead.min.js"></script>'.PHP_EOL;
+    $a .= '<script type="text/javascript" src="js/udes.js"></script>'.PHP_EOL;
 
 	$a .= '</head>'.PHP_EOL;
 	$a .= '<body>'.PHP_EOL;
@@ -1015,6 +875,10 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 {
 	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2;
+	
+	if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
+		header("Location: ./changepwd.php");
+	}
 
 	if (@file_exists('./admin_access_area.php')){
 		$adm = 1;
@@ -1066,13 +930,13 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			Hook::Appel("hookHeader1");
 
 			// Génération XML
-			$generationXML = 1;
+			/*$generationXML = 1;
 			if ((Settings::get("export_xml_actif") == "Oui") && ($adm == 0)){
 				include "{$racine}/include/generationxml.php";
 			}
 			if ((Settings::get("export_xml_plus_actif") == "Oui") && ($adm == 0)){
 				include "{$racine}/include/generationxmlplus.php";
-			}
+			}*/
 
 			// On fabrique une date valide pour la réservation si ce n'est pas le cas
 			$date_ = mktime(0, 0, 0, $month, $day, $year);
@@ -1708,15 +1572,25 @@ function get_default_area($id_site = -1)
 			return -1;
 	}
 }
-# Retourne le site par défaut;
-/**
- * @return integer
- */
-// on n'utilise pas les réglages de la table settings ? YN le 07/03/2018
+/* fonction get_default_site
+    renvoie id_site du site par défaut de l'utilisateur, sinon celui de la table setting, sinon celui de plus petit id dans la table site
+*/
+
 function get_default_site()
 {
-	$res = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_site");
-	return $res;
+    $user = getUserName();
+    if ($user != ''){
+        $id_site = grr_sql_query1("SELECT default_site FROM ".TABLE_PREFIX."_utilisateurs WHERE login =".$user);
+        if ($id_site > 0){return $id_site;}
+    }
+    // ici l'utilisateur n'est pas reconnu ou il n'a pas de site par défaut : on passe aux informations de la table settings
+    $id_site = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME ='default_site' ");
+    $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_site WHERE id = ".$id_site);
+    if ($test >0){return $id;}
+    else { // il n'y a pas de site par défaut dans la table setting, on prend le premier site
+        $id_site = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_site ");
+        return($id_site);
+    }
 }
 // fonction get_default_room
 /*  renvoie id_room de la ressource par défaut de l'utilisateur, sinon celle de la table setting, sinon celle de plus petit indice dans la table room 
@@ -1790,6 +1664,23 @@ function period_date_string($t, $mod_time = 0)
 	return array($p_num, $periods_name[$p_num] . utf8_strftime(", ".$dformat, $t));
 }
 
+
+function period_date_string_rapport($t, $mod_time = 0)
+{
+	global $periods_name, $dformat;
+	$time = getdate($t);
+	$p_num = $time["minutes"] + $mod_time;
+	if ( $p_num < 0 )
+	{
+		// fin de réservation : cas $time["minutes"] = 0. il faut afficher le dernier créneau de la journée précédente
+		$t = $t - 60 * 60 * 24;
+		$p_num = count($periods_name) - $p_num;
+	}
+	if ( $p_num >= count($periods_name) - 1 )
+		$p_num = count($periods_name) - 1;
+	return array($periods_name[$p_num],utf8_strftime($dformat, $t));
+}
+
 /*
 Fonction utilisée dans le cas où les créneaux de réservation sont basés sur des intitulés pré-définis :
 Formatage des périodes de début ou de fin de réservation.
@@ -1835,8 +1726,9 @@ function span_bgground($colclass)
 {
 	global $tab_couleur;
 	static $ecolors;
-	$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-	echo '<span style="background-color: '.$couleurhexa.'; background-image: none; background-repeat: repeat; background-attachment: scroll;">'.PHP_EOL;
+	$res = grr_sql_query("SELECT couleurhexa, couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
+	$row = grr_sql_row($res, 0);
+	echo '<span style="background-color: '.$row[0].'; background-image: none; background-repeat: repeat; background-attachment: scroll;color: '.$row[1].';">'.PHP_EOL;
 }
 
 //Output a start table cell tag <td> with color class and fallback color.
@@ -1850,8 +1742,9 @@ function tdcell($colclass, $width = '')
 	static $ecolors;
 	if (($colclass >= "A") && ($colclass <= "Z"))
 	{
-		$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-		echo '<td style="background-color:'.$couleurhexa.';" '.$temp.'>'.PHP_EOL;
+		$res = grr_sql_query("SELECT couleurhexa, couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
+		$row = grr_sql_row($res, 0);
+		echo '<td style="background-color:'.$row[0].';color: '.$row[1].';" '.$temp.'>'.PHP_EOL;
 	}
 	else
 		echo '<td class="'.$colclass.'" '.$temp.'>'.PHP_EOL;
@@ -1865,8 +1758,9 @@ function tdcell_rowspan($colclass, $step)
 		$step = 1;
 	if (($colclass >= "A") && ($colclass <= "Z"))
 	{
-		$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-		echo '<td rowspan="'.$step.'" style="background-color:'.$couleurhexa.';">'.PHP_EOL;
+		$res = grr_sql_query("SELECT couleurhexa, couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
+		$row = grr_sql_row($res, 0);
+		echo '<td rowspan="'.$step.'" style="background-color:'.$row[0].';color: '.$row[1].';">'.PHP_EOL;
 	}
 	else
 		echo '<td rowspan="'.$step.'" td class="'.$colclass.'">'.PHP_EOL;
@@ -1875,13 +1769,13 @@ function tdcell_rowspan($colclass, $step)
 //Display the entry-type color key. This has up to 2 rows, up to 10 columns.
 function show_colour_key($area_id)
 {
-	echo '<table class="legende"><caption>'.get_vocab("show_color_key").'</caption>'.PHP_EOL;
 	$sql = "SELECT DISTINCT t.id, t.type_name, t.type_letter, t.order_display FROM `".TABLE_PREFIX."_type_area` t
 	LEFT JOIN `".TABLE_PREFIX."_j_type_area` j on j.id_type=t.id
 	WHERE (j.id_area  IS NULL or j.id_area != '".$area_id."')ORDER BY t.order_display";
 	$res = grr_sql_query($sql);
 	if ($res)
 	{
+        echo '<table class="legende"><caption>'.get_vocab("show_color_key").'</caption>'.PHP_EOL;
 		$nct = -1;
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
@@ -1904,9 +1798,8 @@ function show_colour_key($area_id)
 		}
 		if ($i % 2 == 1)
 			echo '<td></td>',PHP_EOL,'</tr>'.PHP_EOL;
-		
+		echo '</table>'.PHP_EOL;
 	}
-	echo '</table>'.PHP_EOL;
 }
 //Display the entry-type color keys. This has up to 2 rows, up to 10 columns.
 function show_colour_keys()
@@ -2402,7 +2295,7 @@ function make_room_list_html($link,$current_area, $current_room, $year, $month, 
 	}
 }
 /**
- * Affichage des domaines sous la forme d'un input
+ * Affichage des sites sous la forme d'une liste de boutons
  *
  * @param string $link
  * @param string $current_site
@@ -2415,7 +2308,7 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 {
 	global $vocab;
 	$nb_sites_a_afficher = 0;
-	$out_html = '<ul class="list-group"><li class="list-group-item">'.get_vocab('sites').get_vocab('deux_points').'</li></ul><form class="ressource" id="site_001" action="'.$_SERVER['PHP_SELF'].'"><div>';
+//	$out_html = '<ul class="list-group"><li class="list-group-item">'.get_vocab('sites').get_vocab('deux_points').'</li></ul><form class="ressource" id="site_001" action="'.$_SERVER['PHP_SELF'].'"><div>';
 	$sql = "SELECT id, sitename
 	FROM ".TABLE_PREFIX."_site
 	left join ".TABLE_PREFIX."_j_site_area on ".TABLE_PREFIX."_site.id = ".TABLE_PREFIX."_j_site_area.id_site
@@ -2425,7 +2318,8 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 	";
 	$res = grr_sql_query($sql);
 	if ($res)
-	{
+	{     
+        $out_html = '<br />'.PHP_EOL.'<div class="panel panel-default">'.PHP_EOL.'<div class="panel-heading">'.get_vocab('sites').get_vocab('deux_points').'</div>'.PHP_EOL.'<div class="panel-body">'.PHP_EOL.'<form class="ressource" id="site_001" action="'.$_SERVER['PHP_SELF'].'">';
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
 			$sql = "SELECT id_area FROM ".TABLE_PREFIX."_j_site_area WHERE ".TABLE_PREFIX."_j_site_area.id_site='".$row[0]."'";
@@ -2447,26 +2341,25 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 			{
 				$nb_sites_a_afficher++;
 				$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$default_area;
-				$out_html .="\n";
+				//$out_html .="\n";
 			}
 			else
 				$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day;
 			if ($current_site != null)
 			{
 				if ($current_site == $row[0])
-					$out_html .= "<input id=\"item_select\" type=\"button\" class=\"btn btn-primary btn-xs\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])."\" onclick=\"location.href='$link2';charger();\" /><br />".PHP_EOL;
+					$out_html .= "<input id=\"item_select\" type=\"button\" class=\"btn btn-primary btn-lg btn-block item_select\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])."\" onclick=\"location.href='$link2';charger();\" />".PHP_EOL;
 				else
-					$out_html .= "<input type=\"button\" class=\"btn btn-default btn-xs item\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])." \" onclick=\"location.href='$link2';charger();\" /><br />".PHP_EOL;
+					$out_html .= "<input type=\"button\" class=\"btn btn-default btn-lg btn-block item\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])." \" onclick=\"location.href='$link2';charger();\" />".PHP_EOL;
 			}
 			else
-				$out_html .= "<input type=\"button\" class=\"btn btn-default btn-xs item\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])." \" onclick=\"location.href='$link2';charger();\" /><br />".PHP_EOL;
+				$out_html .= "<input type=\"button\" class=\"btn btn-default btn-lg btn-block item\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])." \" onclick=\"location.href='$link2';charger();\" /><br />".PHP_EOL;
 		}
 	}
-	if ($nb_sites_a_afficher > 1)
+	if ($nb_sites_a_afficher > 1)// s'il y a au moins deux sites à afficher, on met une liste déroulante, sinon, on n'affiche rien.
 	{
-		// s'il y a au moins deux sites à afficher, on met une liste déroulante, sinon, on affiche rien.
 		$out_html .= '</form>'.PHP_EOL;
-		$out_html .= '</div>'.PHP_EOL;
+		$out_html .= '</div></div>'.PHP_EOL;
 		$out_html .= '<script type="text/javascript">'.PHP_EOL;
 		$out_html .= 'function site_go()'.PHP_EOL;
 		$out_html .= '{'.PHP_EOL;
@@ -2480,12 +2373,13 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 		$out_html .= '<input type="submit" value="change" />'.PHP_EOL;
 		$out_html .= '</div>'.PHP_EOL;
 		$out_html .= '</noscript>'.PHP_EOL;
-		$out_html .= '</form>'.PHP_EOL;
+		//$out_html .= '</form>'.PHP_EOL;
 		return $out_html;
 	}
+    else return "";
 }
 /**
- * Affichage des area sous la forme d'un input
+ * Affichage des area sous la forme d'une liste de boutons
  *
  * @param string $link
  * @param string $current_site
@@ -2951,7 +2845,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	}
 	if ($action == 5)
 	{
-		$mail_admin = find_user_room ($room_id);
+		$mail_admin = find_active_user_room ($room_id);
 		$destinataire = "";
 		if (count($mail_admin) > 0){
 
@@ -3838,6 +3732,7 @@ function describe_period_span($starts, $ends)
 {
 	global $enable_periods, $periods_name, $vocab, $duration;
 	list($start_period, $start_date) =  period_date_string($starts);
+	list($periodedebut, $datedebut) =  period_date_string_rapport($starts);
 	list( , $end_date) =  period_date_string($ends, -1);
 	$duration = $ends - $starts;
 	toPeriodString($start_period, $duration, $dur_units);
@@ -3845,13 +3740,13 @@ function describe_period_span($starts, $ends)
 	{
 		list( , $start_date) =  period_date_string($starts);
 		list( , $end_date) =  period_date_string($ends, -1);
-		$temp = $start_date . " ==> " . $end_date;
+		//$temp = $start_date . " ==> " . $end_date;
 	}
-	else
-	{
-		$temp = $start_date . " - " . $duration . " " . $dur_units;
-	}
-	return $temp;
+	//else
+	//{
+	//	$temp = $start_date . " - " . $duration . " " . $dur_units;
+	//}
+	return array($datedebut, $periodedebut, $duration, $dur_units);
 }
 #Convertit l'heure de début et de fin en période.
 function describe_span($starts, $ends, $dformat)
@@ -3867,10 +3762,11 @@ function describe_span($starts, $ends, $dformat)
 	}
 	$start_time = strftime($timeformat, $starts);
 	$duration = $ends - $starts;
-	if ($start_time == "00:00:00" && $duration == 60 * 60 * 24)
-		return $start_date . " - " . get_vocab("all_day");
+	//if ($start_time == "00:00:00" && $duration == 60 * 60 * 24)
+	//	return $start_date . " - " . get_vocab("all_day");
 	toTimeString($duration, $dur_units);
-	return $start_date . " " . $start_time . " - " . $duration . " " . $dur_units;
+	//return $start_date . " " . $start_time . " - " . $duration . " " . $dur_units;
+	return array($start_date, $start_time ,$duration, $dur_units);
 }
 function get_planning_area_values($id_area)
 {
@@ -4150,6 +4046,74 @@ function find_user_room ($id_room)
 	}
 	return $emails;
 }
+// trouve les utilisateurs actifs gestionnaires de ressource
+function find_active_user_room ($id_room)
+{
+	$emails = array ();
+	$sql = "select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_user_room
+	where ".TABLE_PREFIX."_utilisateurs.etat = 'actif' AND 
+	".TABLE_PREFIX."_utilisateurs.login = ".TABLE_PREFIX."_j_user_room.login and 
+	id_room='".$id_room."'";
+	$res = grr_sql_query($sql);
+	if ($res)
+	{
+		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+		{
+			if (validate_email($row[0]))
+				$emails[] = $row[0];
+		}
+	}
+	// Si la table des emails des gestionnaires de la ressource est vide, on avertit les administrateurs du domaine
+	if (count($emails) == 0)
+	{
+		$id_area = mrbsGetAreaIdFromRoomId($id_room);
+		$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_useradmin_area
+			where ".TABLE_PREFIX."_utilisateurs.etat = 'actif' AND
+			".TABLE_PREFIX."_utilisateurs.login = ".TABLE_PREFIX."_j_useradmin_area.login and ".TABLE_PREFIX."_j_useradmin_area.id_area='".$id_area."'");
+		if ($sql_admin)
+		{
+			for ($i = 0; ($row = grr_sql_row($sql_admin, $i)); $i++)
+			{
+				if (validate_email($row[0]))
+					$emails[] = $row[0];
+			}
+		}
+	}
+	// Si la table des emails des administrateurs du domaines est vide, on avertit les administrateurs des sites
+	if (Settings::get("module_multisite") == "Oui")
+	{
+		if (count($emails) == 0)
+		{
+			$id_area = mrbsGetAreaIdFromRoomId($id_room);
+			$id_site = mrbsGetAreaSite($id_area);
+			$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_useradmin_site
+				where ".TABLE_PREFIX."_utilisateurs.etat = 'actif' AND
+				".TABLE_PREFIX."_utilisateurs.login = ".TABLE_PREFIX."_j_useradmin_site.login and ".TABLE_PREFIX."_j_useradmin_site.id_site='".$id_site."'");
+			if ($sql_admin)
+			{
+				for ($i = 0; ($row = grr_sql_row($sql_admin, $i)); $i++)
+				{
+					if (validate_email($row[0]))
+						$emails[] = $row[0];
+				}
+			}
+		}
+	}
+	// Si la table des emails des administrateurs des sites est vide, on avertit les administrateurs généraux
+	if (count($emails) == 0)
+	{
+		$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs where etat = 'actif' AND statut = 'administrateur'");
+		if ($sql_admin)
+		{
+			for ($i = 0; ($row = grr_sql_row($sql_admin, $i)); $i++)
+			{
+				if (validate_email($row[0]))
+					$emails[] = $row[0];
+			}
+		}
+	}
+	return $emails;
+}
 /** validate_email ($email)
  * Détermine si l'adresse mail en paramètre est syntaxiquement valable
  * Rend un booléen
@@ -4307,6 +4271,86 @@ function affichage_champ_add_mails($id_resa)
 		if (($field["overload_mail"] == 'y') && ($field["valeur"] != ""))
 			$affichage .= bbcode(htmlspecialchars($fieldname).get_vocab("deux_points").htmlspecialchars($field["valeur"]),'nobbcode')."\n";;
 	}
+	return $affichage;
+}
+/*
+Construit les informations à afficher sur les plannings
+$vue = 1 pour une ressource / 2 vue multiple ressource
+*/
+function affichage_resa_planning_complet($vue, $resa, $heures)
+{
+	global $dformat;
+
+	$affichage = "";
+
+	// Heures ou crénaux + symboles <== ==>
+	$affichage .= $heures;
+
+	// Ressource seulement dans les vues global
+	if($vue == 2)
+		$affichage .= "<br>".$resa[15];
+
+	// Bénéficiaire
+	if (Settings::get("display_beneficicaire") == 1)
+		$affichage .= "<br>".affiche_nom_prenom_email($resa[4], $resa[12], "nomail");
+
+	// Type
+	if (Settings::get("display_type") == 1)
+	{
+		$typeResa = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area,".TABLE_PREFIX."_entry  WHERE  ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter  AND ".TABLE_PREFIX."_entry.id = '".$resa[2]."';");
+		if ($typeResa != -1)
+			$affichage .= "<br>".$typeResa;
+	}
+
+	// Brève description ou le numéro de la réservation
+	if ((Settings::get("display_short_description") == 1) && ($resa[3] != ""))
+		$affichage .= "<br>".htmlspecialchars($resa[3],ENT_NOQUOTES);
+	else
+		$affichage .= "<br>".get_vocab("entryid").$resa[2];
+
+	// Description Complète
+	if (Settings::get("display_full_description") == 1)
+		$affichage .= "<br>".htmlspecialchars($resa[8],ENT_NOQUOTES);
+
+	// Champs Additionnel
+    // la ressource associée à la réservation :
+	$res = mrbsGetEntryInfo($resa[2]);
+	$room = (!$res) ? -1 : $res["room_id"]; 
+	// Les champs add :
+	$overload_data = mrbsEntryGetOverloadDesc($resa[2]);
+	foreach ($overload_data as $fieldname=>$field)
+	{
+		if (( (authGetUserLevel(getUserName(), $room) >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "")
+			$affichage .= "<br><i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($field["valeur"],ENT_NOQUOTES|ENT_SUBSTITUTE)."</i>";
+	}
+
+	$affichage .= "<br>";
+
+	// Emprunte
+	if($resa[7] != "-")
+		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"'.get_vocab(\"ressource actuellement empruntee\").'\" title=\"'.get_vocab(\"ressource actuellement empruntee\").'\" width=\"20\" height=\"20\" class=\"image\" /> ";
+
+	// Option réservation
+	if($resa[10] > 0)
+		$affichage .=  " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le").time_date_string_jma($resa[9],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> ";
+
+	// Modération
+	if($resa[11] == 1)
+		$affichage .= " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
+
+	// Clef
+	if($resa[13] == 1)
+		$affichage .= " <img src=\"img_grr/skey.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Clef\"> ";
+	
+	// Courrier
+	if (Settings::get('show_courrier') == 'y')
+	{
+		if($resa[14] == 1)
+			$affichage .= " <img src=\"img_grr/scourrier.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Courrier\"> ";
+		else
+			$affichage .= " <img src=\"img_grr/hourglass.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Buzy\"> ";
+	}
+
 	return $affichage;
 }
 /*
@@ -4766,11 +4810,30 @@ if (!function_exists('htmlspecialchars_decode'))
 		return strtr($text, array_flip(get_html_translation_table(HTML_SPECIALCHARS)));
 	}
 }
+
+/*
+* @param integer $delai : nombre de jours de rétention des logs de connexion
+* nettoieLogConnexion efface les entrées de la table _log antérieures au jour courant moins le délai
+*/
+function nettoieLogConnexion($delai){
+    // est-ce un administrateur ?
+    if (authGetUserLevel(getUserName(), -1) >= 6){
+        $dateMax = new DateTime('NOW');
+        $dateMax->sub(new DateInterval('P'.$delai.'D'));
+        $dateMax = $dateMax->format('Y-m-d H:i:s');
+        $sql = "DELETE FROM ".TABLE_PREFIX."_log WHERE START < '" . $dateMax . "';";
+        grr_sql_query($sql);
+    }
+}
 // suggestions pour reformuler les pages plannings
 function pageHead2($title, $page = "with_session") 
 {
 	if ($page == "with_session")
 	{
+		if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
+			header("Location: ./changepwd.php");
+		}
+
 		if (isset($_SESSION['default_style']))
 			$sheetcss = 'themes/'.$_SESSION['default_style'].'/css';
 
@@ -4812,8 +4875,7 @@ function pageHead2($title, $page = "with_session")
 	{
 		setcookie("open", "true", time()+3600);
 	}
-	/* $a = '<!DOCTYPE html>'.PHP_EOL;
-	$a .= '<html lang="fr">'.PHP_EOL; */
+
 	$a  = '<head>'.PHP_EOL;
 	$a .= '<meta charset="utf-8">'.PHP_EOL;
 	$a .= '<meta http-equiv="X-UA-Compatible" content="IE=edge">'.PHP_EOL;
@@ -4821,105 +4883,54 @@ function pageHead2($title, $page = "with_session")
 	$a .= '<meta name="Robots" content="noindex" />'.PHP_EOL;
 	$a .= '<title>'.$title.'</title>'.PHP_EOL;
 	$a .= '<link rel="shortcut icon" href="./favicon.ico" />'.PHP_EOL;
-
-	if (@file_exists('admin_accueil.php') || @file_exists('install_mysql.php')){ // Si on est dans l'administration ou en initialisation
-
-		//$a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/style.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.min.css" />'.PHP_EOL;
-		//$a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/mod_bootstrap.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../include/admin_grr.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/select2.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/select2-bootstrap.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/jquery-ui.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-multiselect.css">'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
-        // $a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/mod_bootstrap.css" />'.PHP_EOL;
-        $a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
-        $a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
-		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
-			$a .= '<link rel="stylesheet" type="text/css" href="../themes/print/css/style.css" />'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/jquery-ui.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/jquery.validate.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/bootstrap-multiselect.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/html2canvas.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/menu.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/jspdf.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/pdf.js" ></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/popup.js" charset="utf-8"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/functions.js" ></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/select2.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/select2_locale_fr.js"></script>'.PHP_EOL;
-		if (isset($use_tooltip_js))
-			echo '<script type="text/javascript" src="../include/tooltip.js"></script>'.PHP_EOL;
-		if (!isset($_SESSION['selection']))
-			$a .= '<script type="text/javascript" src="../js/selection.js" ></script>'.PHP_EOL;
-		if (@file_exists('js/'.$clock_file))
-			$a .= '<script type="text/javascript" src="../js/'.$clock_file.'"></script>'.PHP_EOL;
-		if (substr(phpversion(), 0, 1) == 3)
-			$a .= get_vocab('not_php3');
-        $a .= '<script type="text/javascript" src="../js/jquery.floatThead.min.js"></script>'.PHP_EOL;
-        $a .= '<script type="text/javascript" src="../js/udes.js"></script>'.PHP_EOL;
-	} 
-    else
-    {
-        //$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />'.PHP_EOL;
-		// $a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/mod_bootstrap.css" />'.PHP_EOL;
-	    if (isset($use_select2))
-		{
-			$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2.css" />'.PHP_EOL;
-			$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2-bootstrap.css" />'.PHP_EOL;
-			$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-multiselect.css">'.PHP_EOL;
-			$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
-		}
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
-        // $a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/jquery.timepicker.min.css" >'.PHP_EOL;
-        // $a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/mod_bootstrap.css" />'.PHP_EOL;
-        $a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
-        $a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
-		if (isset($use_admin))
-			$a .= '<link rel="stylesheet" type="text/css" href="include/admin_grr.css" />'.PHP_EOL;
-		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
-			$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
-        // $a .= '<script type="text/javascript" src="js/jquery.timepicker.min.js"></script>'.PHP_EOL;
-        $a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/html2canvas.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/jspdf.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/pdf.js" ></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/popup.js" charset="utf-8"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/functions.js" ></script>'.PHP_EOL;
-		if (isset($use_select2))
-		{
-			$a .= '<script type="text/javascript" src="js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
-			$a .= '<script type="text/javascript" src="js/bootstrap-multiselect.js"></script>'.PHP_EOL;
-			$a .= '<script type="text/javascript" src="js/select2.js"></script>'.PHP_EOL;
-			$a .= '<script type="text/javascript" src="js/select2_locale_fr.js"></script>'.PHP_EOL;
-		}
-		if (isset($use_tooltip_js))
-			echo '<script type="text/javascript" src="./include/tooltip.js"></script>'.PHP_EOL;
-		if (!isset($_SESSION['selection']))
-			$a .= '<script type="text/javascript" src="js/selection.js" ></script>'.PHP_EOL;
-		if (@file_exists('js/'.$clock_file))
-			$a .= '<script type="text/javascript" src="js/'.$clock_file.'"></script>'.PHP_EOL;
-		if (substr(phpversion(), 0, 1) == 3)
-			$a .= get_vocab('not_php3');
-        $a .= '<script type="text/javascript" src="js/jquery.floatThead.min.js"></script>'.PHP_EOL;
-        $a .= '<script type="text/javascript" src="js/udes.js"></script>'.PHP_EOL;
+	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />'.PHP_EOL;
+	if (isset($use_select2))
+	{
+		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2-bootstrap.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-multiselect.css">'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
 	}
+	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.css" />'.PHP_EOL;
+	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
+	$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
+	$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
+	if (isset($use_admin))
+		$a .= '<link rel="stylesheet" type="text/css" href="include/admin_grr.css" />'.PHP_EOL;
+	if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
+		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/html2canvas.js"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/jspdf.min.js"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/pdf.js" ></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/popup.js" charset="utf-8"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/functions.js" ></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/drag.js" ></script>'.PHP_EOL;
+	if (isset($use_select2))
+	{
+		$a .= '<script type="text/javascript" src="js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/bootstrap-multiselect.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/select2.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/select2_locale_fr.js"></script>'.PHP_EOL;
+	}
+	if (isset($use_tooltip_js))
+		echo '<script type="text/javascript" src="./include/tooltip.js"></script>'.PHP_EOL;
+	if (!isset($_SESSION['selection']))
+		$a .= '<script type="text/javascript" src="js/selection.js" ></script>'.PHP_EOL;
+	if (@file_exists('js/'.$clock_file))
+		$a .= '<script type="text/javascript" src="js/'.$clock_file.'"></script>'.PHP_EOL;
+	if (substr(phpversion(), 0, 1) == 3)
+		$a .= get_vocab('not_php3');
+    $a .= '<script type="text/javascript" src="js/jquery.floatThead.min.js"></script>'.PHP_EOL;
+    $a .= '<script type="text/javascript" src="js/udes.js"></script>'.PHP_EOL;
 
 	$a .= '</head>'.PHP_EOL;
-	// $a .= '<body>'.PHP_EOL;
+
 	return $a;
 }
 
@@ -4977,10 +4988,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			$day   = date("d",$date_);
 			$month = date("m",$date_);
 			$year  = date("Y",$date_);
-			// echo '<div id="toppanel">'.PHP_EOL;
 			echo '<div id="panel">'.PHP_EOL;
-			// echo '<table id="header">'.PHP_EOL;
-			// echo '<tr>'.PHP_EOL;
 			//Logo
 			$nom_picture = $racine."images/".Settings::get("logo");
 			if ((Settings::get("logo") != '') && (@file_exists($nom_picture)))
@@ -5005,7 +5013,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 				{
 					echo '<div class="administration">'.PHP_EOL;
 					if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1))
-                        echo "<br><a href='{$racineAd}admin.php?p=admin_accueil&day={$day}&amp;month={$month}&amp;year={$year}'>".get_vocab('admin')."</a>".PHP_EOL;
+                        echo "<br><a href='./admin/admin.php?p=admin_accueil&day={$day}&amp;month={$month}&amp;year={$year}'>".get_vocab('admin')."</a>".PHP_EOL;
 					if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 					{
 						echo '<br />'.PHP_EOL;
@@ -5087,13 +5095,82 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 				}
 			}
 			echo '</div>'.PHP_EOL;
-			// echo '</tr>'.PHP_EOL;
-			// echo '</table>'.PHP_EOL;
 			echo '</div>'.PHP_EOL;
 			echo '<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>'.PHP_EOL;
-			// echo '</div>'.PHP_EOL;
 		}
 	}
+}
+/*
+** Fonction qui affiche le début d'une page avec entête et balise <section>
+*/
+function start_page_w_header($day = '', $month = '', $year = '', $type_session = 'with_session')
+{
+    global $racine,$racineAd;
+    // pour le traitement des modules
+    if (@file_exists('./admin_access_area.php')){
+        $adm = 1;
+        $racine = "../";
+        $racineAd = "./";
+    }
+    else{
+        $adm = 0;
+        $racine = "./";
+        $racineAd = "./admin/";
+    }
+    include $racine."/include/hook.class.php";
+    // code HTML
+    echo '<!DOCTYPE html>'.PHP_EOL;
+    echo '<html lang="fr">'.PHP_EOL;
+    // section <head>
+    if ($type_session == "with_session")
+        echo pageHead2(Settings::get("company"),"with_session");
+    else
+        echo pageHead2(Settings::get("company"),"no_session");
+    // section <body>
+    echo "<body>";
+    // Menu du haut = section <header>
+    echo "<header>";
+    pageHeader2($day, $month, $year, $type_session, $adm);
+    echo "</header>";
+    // Debut de la page
+    echo '<section>'.PHP_EOL;
+    // doit être fermé par la fonction end_page
+}   
+/*
+** Fonction qui affiche le début d'une page sans entête et avec une balise <section>
+*/
+function start_page_wo_header($titre, $type_session = 'with_session')
+{
+    // pour le traitement des modules
+    if (@file_exists('./admin_access_area.php')){
+        $adm = 1;
+        $racine = "../";
+        $racineAd = "./";
+    }
+    else{
+        $adm = 0;
+        $racine = "./";
+        $racineAd = "./admin/";
+    }
+    include $racine."/include/hook.class.php";
+    // code HTML
+    echo '<!DOCTYPE html>'.PHP_EOL;
+    echo '<html lang="fr">'.PHP_EOL;
+    // section <head>
+    if ($type_session == "with_session")
+        echo pageHead2(Settings::get("company"),"with_session");
+    else
+        echo pageHead2(Settings::get("company"),"no_session");
+    // section <body>
+    echo "<body>";
+    // Debut de la page
+    echo '<section>'.PHP_EOL;
+    // doit être fermé par la fonction end_page
+} 
+/* Fonction qui ferme les balises restées ouvertes dans les précédentes */
+function end_page()
+{
+    echo '</section></body></html>';
 }
 
 // Génération d'un Token aléatoire

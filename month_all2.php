@@ -3,9 +3,9 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-26 15:00$
+ * Dernière modification : $Date: 2019-04-03 14:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -381,12 +381,12 @@ for ($k = 1; $k <= $days_in_month; $k++)
         if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) > -1)
         {
             if (intval($jour_cycle) > 0)
-                echo "<br /><i> ".ucfirst(substr(get_vocab("rep_type_6"), 0, 1)).$jour_cycle."</i>";
+                echo "<br /></><i> ".ucfirst(substr(get_vocab("rep_type_6"), 0, 1)).$jour_cycle."</i>";
             else
             {
                 if (strlen($jour_cycle) > 5)
                     $jour_cycle = substr($jour_cycle, 0, 3)."..";
-                echo "<br /><i>".$jour_cycle."</i>";
+                echo "<br /></><i>".$jour_cycle."</i>";
             }
         }
         echo "</td>";
@@ -413,12 +413,12 @@ for ($k = 1; $k <= $days_in_month; $k++)
         if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) > -1)
         {
             if (intval($jour_cycle) > 0)
-                echo "<br /><i> ".ucfirst(substr(get_vocab("rep_type_6"), 0, 1)).$jour_cycle."</i>";
+                echo "<br /></><i> ".ucfirst(substr(get_vocab("rep_type_6"), 0, 1)).$jour_cycle."</i>";
             else
             {
                 if (strlen($jour_cycle) > 5)
                     $jour_cycle = substr($jour_cycle, 0, 3)."..";
-                echo "<br /><i>".$jour_cycle."</i>";
+                echo "<br /></><i>".$jour_cycle."</i>";
             }
         }
         echo "</td>";
@@ -518,6 +518,7 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++) // traitement d'une ressou
 }// fin  du traitement de la ressource
 echo "</tbody>";
 echo "</table>";
+echo " </div>"; //fin du planning
 echo  "<div id=\"popup_name\" class=\"popup_block\" ></div>";
 if ($_GET['pview'] != 1)
 {
@@ -525,7 +526,7 @@ if ($_GET['pview'] != 1)
     bouton_retour_haut ();
     echo " </div>";
 }
-echo " </div>";
+
 affiche_pop_up(get_vocab("message_records"),"user");
 echo "</section>";
 include "footer.php";

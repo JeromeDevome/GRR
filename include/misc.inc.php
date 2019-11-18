@@ -24,7 +24,7 @@ $grr_devel_url = "http://grr.devome.com/";
 
 // Numéro de version actuel
 # Format X.X.XRCX | exemples : 4.0.0a (alpha) ou 4.0.0b (beta) 3.4.0RC1 (Realesa Candidate) ou 3.4.0 (version OK)
-$version_grr = "3.4.0";
+$version_grr = "4.0.0a";
 // Version repository (GitHub)
 $versionReposite = "GitHub";
 
@@ -139,6 +139,7 @@ $config_variables = array(
 	"sso_restrictions",
 	"ldap_restrictions",
 	"imap_restrictions",
+	"fonction_mail_restrictions",
 	"Url_CAS_setFixedServiceURL",
 	"dbsys",
 	"structure",

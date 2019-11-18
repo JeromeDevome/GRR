@@ -3,9 +3,9 @@
  * admin_import_entries_csv_direct.php
  * Importe un fichier de réservations au format csv comprenant les champs : date du jour, heure de début, heure de fin, ressource, description et type
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2019-02-16 16:40$
  * @author    JeromeB & Yan Naessens & Denis Monasse & Laurent Delineau
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -41,7 +41,7 @@ $long_max = 8000;
 if(isset($_POST['import'])) {
 	$trad['dFichierEnvoye'] = 1;
 
-	// on commence par charger le fichier CSV dans une table provisoire grr_csv pour profiter des tris MySQL
+	// on commence par charger le fichier CSV dans une table provisoire grr_csv2 pour profiter des tris MySQL
 	// ETAPE 1
 	$temps_debut=time();
 	$erreur=""; $nb_reservations=0;
@@ -133,7 +133,7 @@ if(isset($_POST['import'])) {
 				$trad['dResultatEtape2'] .= "<p class=\"text-green\">".$i.": ".$resultatTxt."</p>";
 		}      
 		$trad['dResultatEtape2'] .= "<h2>Importation de ".($i-$nb_erreurs)."/$nb_reservations réservations terminée au bout de ".(time()-$temps_debut)." secondes</h2>";
-		$trad['dResultatEtape2'] .= "<p>Vérifiez que l'importation est bien complète (aux erreurs près), sinon vous pouvez restaurez la base de données, scindez le fichier CSV et recommencez.</p>";
+		$trad['dResultatEtape2'] .= "<p>Vérifiez que l'importation est bien complète (aux erreurs près), sinon vous pouvez restaurer la base de données, scinder le fichier CSV et recommencer.</p>";
 	}
 }
 
@@ -220,7 +220,7 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
 	$err = '';
 
 	// on vérifie que le créneau est bien libre
-	$occupied=mrbsCheckFree($room_id, $starttime, $endtime, 0, 0);
+	$occupied=mrbsCheckFree($room_id, $starttime, $endtime, 0, 0,"../");
 	// echo date('c',$starttime)." ".date('c',$endtime)."</br>";
 	// echo $libre ;
 	//echo "créneau libre ";
@@ -256,7 +256,7 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
 		// l'utilisateur est gestionnaire ou admin de la ressource donc on ne modère pas !
 		$entry_moderate = 0;
 		$send_mail_moderate = 0;	
-		$entry_type = 1;
+		$entry_type = 0; // réservation isolée
 		$repeat_id = 0; 
 		$name = $description;
 		$overload_data = '';

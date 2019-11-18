@@ -3,9 +3,9 @@
  * login.php
  * interface de connexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2019-10-10 10:20$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -29,12 +29,22 @@ if (!Settings::load())
 include "include/language.inc.php";
 // Session related functions
 require_once("./include/session.inc.php");
+
+if(Settings::get("redirection_https") == "yes"){
+	if(!isset($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on")
+	{
+		header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"], true, 301);
+		exit;
+	}
+}
+
 // Vérification du numéro de version et renvoi automatique vers la page de mise à jour
 if (verif_version())
 {
-	header("Location: ../installation/maj.php");
+	header("Location: ./installation/maj.php");
 	exit();
 }
+
 // Si Token Installation n'est pas initialisé on le fait ici car s'est la 1ere page affiché 
 if(Settings::get("tokeninstallation") == ""){
 	Settings::set("tokeninstallation",  generationToken());
@@ -109,8 +119,14 @@ if (isset($_POST['login']) && isset($_POST['password']))
 		$message = get_vocab("echec_connexion_GRR");
 		$message .= "<br />". get_vocab("connexion_a_grr_ip");
 	}
-	else
+	else if ($result == "12")
 	{
+		header("Location: ./changepwd.php");
+	}
+	else // la session est ouverte
+	{
+        // si c'est un administrateur qui se connecte, on efface les données anciennes du journal
+        nettoieLogConnexion($nbMaxJoursLogConnexion);
 		if (isset($_POST['url']))
 		{
 			$url=rawurldecode($_POST['url']);
