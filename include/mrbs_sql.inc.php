@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2019-08-07 10:40$
+ * Dernière modification : $Date: 2019-11-19 16:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -117,7 +117,8 @@ function grrDelEntryInConflict($room_id, $starttime, $endtime, $ignore, $repigno
 	if (grr_sql_count($res) == 0)
 	{
 		grr_sql_free($res);
-		return "";
+		if ($flag == 1){return 0;}
+		else {return "";}
 	}
 	//Efface les résas concernées
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)

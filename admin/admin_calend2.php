@@ -1,11 +1,11 @@
 <?php
 /**
  * admin_calend2.php
- * interface permettant la la réservation en bloc de journées entières
+ * interface permettant la réservation en bloc d'un créneau sur plusieurs Jours ou ressources
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-31 12:00$
+ * Dernière modification : $Date: 2019-11-19 16:20$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -43,11 +43,7 @@ settype($end_minute,"integer");
 $period = isset($_POST["period"]) ? $_POST["period"] : NULL;
 $end_period = isset($_POST["end_period"]) ? $_POST["end_period"] : NULL;
 $all_day = isset($_POST["all_day"]) ? $_POST["all_day"] : NULL;
-/* print_header("", "", "", $type="with_session");
-// Affichage de la colonne de gauche
-include "admin_col_gauche.php";
-echo "<h2>".get_vocab('admin_calendar_title.php')."</h2>\n";
-*/
+// enregistrement/suppression des réservations
 $result = 0;
 if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 {
@@ -150,7 +146,7 @@ include "admin_col_gauche2.php";
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 echo "<h2>".get_vocab('admin_calendar_title.php')."</h2>\n";
 
-if ($etape == 4)
+if ($etape == 4) // affichage du résultat
 {
 	if ($result == '')
 		$result = 0;
@@ -168,7 +164,7 @@ if ($etape == 4)
 	}
 }
 
-if ($etape == 3)
+if ($etape == 3) //sélection des jours
 {
 	// Etape N° 3
 	echo "<h3 style=\"text-align:center;\">".get_vocab("etape_n")."3/3</h3>\n";
@@ -391,7 +387,7 @@ else if ($etape == 2)
 	}
 	// Choix des ressources
 	echo "<form action=\"admin_calend2.php\" method=\"post\" id=\"main\" onsubmit=\"return validate_and_submit();\">\n";
-	echo "<table class='table-noborder'>\n";
+	echo "<table class='table table-noborder'>\n";
 	if ($type_resa == "resa")
 	{
 		echo "<tr><td class=\"CR\"><b>".ucfirst(trim(get_vocab("reservation au nom de"))).get_vocab("deux_points")."</b></td>\n\n";
