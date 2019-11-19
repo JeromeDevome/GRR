@@ -3,7 +3,7 @@
  * admin_calend2.php
  * interface permettant la réservation en bloc d'un créneau sur plusieurs Jours ou ressources
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-11-19 16:20$
+ * Dernière modification : $Date: 2019-11-19 16:45$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -437,7 +437,7 @@ else if ($etape == 2)
 		echo "<tr><td class=\"CR\"><b>".get_vocab("type").get_vocab("deux_points")."</b></td>\n";
 		echo "<td class=\"CL\"><select name=\"type_\" class=\"form-control\">\n";
 		echo "<option value='0'>".get_vocab("choose")."</option>\n";
-		$sql = "SELECT DISTINCT t.type_name, t.type_letter FROM ".TABLE_PREFIX."_type_area t
+		$sql = "SELECT DISTINCT t.type_name, t.type_letter, t.order_display FROM ".TABLE_PREFIX."_type_area t
 		LEFT JOIN ".TABLE_PREFIX."_j_type_area j on j.id_type=t.id
 		WHERE (j.id_area  IS NULL or (";
 			$ind = 0;
@@ -448,7 +448,7 @@ else if ($etape == 2)
 				$sql .= "j.id_area != '".$area_id."'";
 				$ind = 1;
 			}
-			$sql .= ")) ORDER BY order_display";
+			$sql .= ")) ORDER BY t.order_display";
 $res = grr_sql_query($sql);
 if ($res)
 {
