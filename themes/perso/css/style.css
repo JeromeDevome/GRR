@@ -1,7 +1,7 @@
 @import "perso.css";
 
 header, header a,#Date{background-color: var(--header-bgcolor);color: var(--header-text);}
-header a:hover{color: var(header-hover);}
+header a:hover{color: var(--header-hover);}
 #menuGauche2, #menuGauche2 caption{background-color: var(--menuG-bgcolor); color: var(--menuG-color);}
 #calendriers .calendar caption{background-color: var(--cal-titrebgcolor);color: var(--cal-titrecolor);} 
 .calendar th{background-color: var(--cal-joursbgcolor);color: var(--cal-jourscolor);}
