@@ -270,6 +270,7 @@ $vocab['creation_booking_for_you'] = "reservó para usted";
 $vocab['creneaux_de_reservation_pre_definis'] = "Los horarios de reserva están basados en títulos predefinidos.";
 $vocab['creneaux_de_reservation_temps'] = "Los horarios de reserva están basados en el tiempo.";
 $vocab['ctrl_click'] = "CTRL + clic en el ratón para seleccionar más de un recurso";
+$vocab['ctrl_click_area'] = "CTRL + clic souris pour sélectionner plus d'un domaine"; // à traduire
 $vocab['dans les champs suivants :'] = "En los campos siguientes : ";
 $vocab['database'] = "Base de datos : ";
 $vocab['date'] = "Principio de la reserva";

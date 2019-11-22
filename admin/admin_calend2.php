@@ -3,7 +3,7 @@
  * admin_calend2.php
  * interface permettant la réservation en bloc d'un créneau sur plusieurs Jours ou ressources
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-11-19 16:45$
+ * Dernière modification : $Date: 2019-11-22 14:40$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -245,6 +245,7 @@ if ($etape == 3) //sélection des jours
 			<input name=\"end_hour\" size=\"2\" value=\"".$morningstarts."\" MAXLENGTH=2 />
 			<input name=\"end_minute\" size=\"2\" value=\"0\" MAXLENGTH=2 />";
 		}
+		$texte_debut_fin_reservation .= '<br /><br /><b><input name="all_day" type="checkbox" value="yes" />'.get_vocab("all_day").'</b>';
 	}
 	else
 	{
@@ -494,7 +495,7 @@ else if (!$etape)
 			echo "<option value=\"".$row[0]."\">".$row[1]."</option>\n";
 		}
 	}
-		echo "</select><br />".get_vocab("ctrl_click");
+		echo "</select><br />".get_vocab("ctrl_click_area");
 		echo "</td><td>";
 		echo "<p><b>".get_vocab("choix_action")."</b></p>";
 		echo "<table><tr>";

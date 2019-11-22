@@ -272,6 +272,7 @@ $vocab['creation_booking_for_you'] = "has reserved for you";
 $vocab['creneaux_de_reservation_pre_definis'] = "The reservations time slots are based on pre-defined titles.";
 $vocab['creneaux_de_reservation_temps'] = "The reservations time slots are based on the time.";
 $vocab['ctrl_click'] = "CTRL + mouse click to select more than one resource";
+$vocab['ctrl_click_area'] = "CTRL + mouse click to select more than one area";
 $vocab['dans les champs suivants :'] = "In the following fields: ";
 $vocab['database'] = "Database: ";
 $vocab['date'] = "Beginning of the reservation";
