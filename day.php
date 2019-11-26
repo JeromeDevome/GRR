@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-02-22 19:30$
+ * Dernière modification : $Date: 2019-11-22 18:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -170,7 +170,8 @@ else $sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_
 $ressources = grr_sql_query($sql);
 if (!$ressources)
 	fatal_error(0, grr_sql_error());
-
+// langue utilisée
+$langue= isset($_SESSION['default_language'])? $_SESSION['default_language']: Settings::get('default_language');
 // code HTML
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;
@@ -355,6 +356,8 @@ echo "</thead>"; // fin de l'affichage des ressources
 echo "<tbody>";
 $tab_ligne = 3;
 $iii = 0;
+// correctif pour domaine sur créeaux prédéfinis
+if ($enable_periods == 'y'){$pm7++;}
 for ($t = $am7; $t < $pm7; $t += $resolution)
 {
 	echo '<tr>'.PHP_EOL;
@@ -373,7 +376,8 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 	{
 		echo affiche_heure_creneau($t,$resolution).'</td>'.PHP_EOL;
 	}
-	foreach ($rooms as $key => $room)
+	//while (list($key, $room) = each($rooms)) deprecated in php 7.2.0
+    foreach($rooms as $key=>$room)
 	{
 		if (verif_acces_ressource(getUserName(), $room))
 		{

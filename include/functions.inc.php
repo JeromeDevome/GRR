@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-10-10 10:20$
+ * Dernière modification : $Date: 2019-11-26 14:40$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -535,7 +535,7 @@ function plages_libre_semaine_ressource($id_room, $month_week, $day_week, $year_
 	global $morningstarts, $eveningends, $eveningends_minutes, $resolution, $enable_periods;
 	$date_end = mktime($eveningends, $eveningends_minutes, 0, $month_week, $day_week, $year_week);
 	$date_start = mktime($morningstarts, 0, 0, $month_week, $day_week, $year_week);
-	$t = $date_start - 1;
+	$t = $date_start ;
 	$plage_libre = 0;
 	while ($t < $date_end)
 	{
