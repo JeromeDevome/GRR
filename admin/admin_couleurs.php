@@ -3,7 +3,7 @@
  * admin_couleurs.php
  * Interface permettant à l'administrateur la personnalisation de certaines couleurs
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2019-07-01 12:00$
+ * Dernière modification : $Date: 2019-11-26 16:00$
  * @author    Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -105,44 +105,44 @@ $default_color_tab=array('header_bgcolor' => '#FFF'
 
 $msg = '';
 // couleurs pour le formulaire ; si on arrive ici sans avoir enregistré, on récupère les valeurs par défaut, définies dans le tableau $default_color_tab
-$header_text = (isset($_POST['header_text']))? $_POST['header_text'] : $default_color_tab["header_text"];
-$header_bgcolor = (isset($_POST['header_bgcolor']))? $_POST['header_bgcolor'] : $default_color_tab["header_bgcolor"];
-$header_hover = (isset($_POST['header_hover']))? $_POST["header_hover"] : $default_color_tab["header_hover"];
-$menuG_color = (isset($_POST['menuG_color']))? $_POST['menuG_color'] : $default_color_tab["menuG_color"];
-$menuG_bgcolor = (isset($_POST['menuG_bgcolor']))? $_POST['menuG_bgcolor'] : $default_color_tab["menuG_bgcolor"];
-$cal_titrecolor = (isset($_POST['cal_titrecolor']))? $_POST['cal_titrecolor'] : $default_color_tab["cal_titrecolor"];
-$cal_titrebgcolor = (isset($_POST['cal_titrebgcolor']))? $_POST['cal_titrebgcolor'] : $default_color_tab["cal_titrebgcolor"];
-$cal_jourscolor = (isset($_POST['cal_jourscolor']))? $_POST['cal_jourscolor'] : $default_color_tab["cal_jourscolor"];
-$cal_joursbgcolor = (isset($_POST['cal_joursbgcolor']))? $_POST['cal_joursbgcolor'] : $default_color_tab["cal_joursbgcolor"];
-$cal_semcolor = (isset($_POST['cal_semcolor']))? $_POST['cal_semcolor'] : $default_color_tab["cal_semcolor"];
-$cal_sembgcolor = (isset($_POST['cal_sembgcolor']))? $_POST['cal_sembgcolor'] : $default_color_tab["cal_sembgcolor"];
-$cal_semhovercolor = (isset($_POST['cal_semhovercolor']))? $_POST["cal_semhovercolor"] : $default_color_tab["cal_semhovercolor"];
-$cal_weekcolor = (isset($_POST['cal_weekcolor']))? $_POST['cal_weekcolor'] : $default_color_tab["cal_weekcolor"];
-$cal_weekbgcolor = (isset($_POST['cal_weekbgcolor']))? $_POST['cal_weekbgcolor'] : $default_color_tab["cal_weekbgcolor"];
-$cal_cellcolor = (isset($_POST['cal_cellcolor']))? $_POST['cal_cellcolor'] : $default_color_tab["cal_cellcolor"];
-$cal_cellbgcolor = (isset($_POST['cal_cellbgcolor']))? $_POST['cal_cellbgcolor'] : $default_color_tab["cal_cellbgcolor"];
-$cal_cellhovercolor = (isset($_POST['cal_cellhovercolor']))? $_POST['cal_cellhovercolor'] : $default_color_tab["cal_cellhovercolor"];
-$cal_cellhoverbgcolor = (isset($_POST['cal_cellhoverbgcolor']))? $_POST['cal_cellhoverbgcolor'] : $default_color_tab['cal_cellhoverbgcolor'];
-$cal_current_day_color = (isset($_POST['cal_current_day_color']))? $_POST['cal_current_day_color'] : $default_color_tab["cal_current_day_color"];
-$cal_current_day_bgcolor = (isset($_POST['cal_current_day_bgcolor']))? $_POST['cal_current_day_bgcolor'] : $default_color_tab["cal_current_day_bgcolor"];
-$pl2_titrecolor = (isset($_POST['pl2_titrecolor']))? $_POST['pl2_titrecolor'] : $default_color_tab["pl2_titrecolor"];
-$pl2_titrebgcolor = (isset($_POST['pl2_titrebgcolor']))? $_POST['pl2_titrebgcolor'] : $default_color_tab['pl2_titrebgcolor'];
-$pl2_entetecolor = (isset($_POST['pl2_entetecolor']))? $_POST['pl2_entetecolor'] : $default_color_tab["pl2_entetecolor"];
-$pl2_entetebgcolor = (isset($_POST['pl2_entetebgcolor']))? $_POST['pl2_entetebgcolor'] : $default_color_tab["pl2_entetebgcolor"];
-$pl2_cellcolor = (isset($_POST['pl2_cellcolor']))? $_POST['pl2_cellcolor'] : $default_color_tab["pl2_cellcolor"];
-$pl2_cellbgcolor = (isset($_POST['pl2_cellbgcolor']))? $_POST['pl2_cellbgcolor'] : $default_color_tab["pl2_cellbgcolor"];
-$icons_color = (isset($_POST['icons_color']))? $_POST["icons_color"] : $default_color_tab["icons_color"];
-$btn_primary_color = (isset($_POST['btn_primary_color']))? $_POST['btn_primary_color'] : $default_color_tab["btn_primary_color"];
-$btn_primary_bgcolor = (isset($_POST['btn_primary_bgcolor']))? $_POST['btn_primary_bgcolor'] : $default_color_tab["btn_primary_bgcolor"];
-$btn_primary_bordcolor = (isset($_POST['btn_primary_bordcolor']))? $_POST['btn_primary_bordcolor'] : $default_color_tab["btn_primary_bordcolor"];
-$active_btn_primary_color = (isset($_POST['active_btn_primary_color']))? $_POST['active_btn_primary_color'] : $default_color_tab["active_btn_primary_color"];
-$active_btn_primary_bgcolor = (isset($_POST['active_btn_primary_bgcolor']))? $_POST['active_btn_primary_bgcolor'] : $default_color_tab["active_btn_primary_bgcolor"];
-$active_btn_primary_bordcolor = (isset($_POST['active_btn_primary_bordcolor']))? $_POST['active_btn_primary_bordcolor'] : $default_color_tab["active_btn_primary_bordcolor"];
-$focus_btn_primary_color = (isset($_POST['focus_btn_primary_color']))? $_POST['focus_btn_primary_color'] : $default_color_tab["focus_btn_primary_color"];
-$focus_btn_primary_bgcolor = (isset($_POST['focus_btn_primary_bgcolor']))? $_POST['focus_btn_primary_bgcolor'] : $default_color_tab["focus_btn_primary_bgcolor"];
-$focus_btn_primary_bordcolor = (isset($_POST['focus_btn_primary_bordcolor']))? $_POST['focus_btn_primary_bordcolor'] : $default_color_tab["focus_btn_primary_bordcolor"];
-$ssmenuadm_actif_color = (isset($_POST['ssmenuadm_actif_color']))? $_POST['ssmenuadm_actif_color'] : $default_color_tab["ssmenuadm_actif_color"];
-$ssmenuadm_actif_bgcolor = (isset($_POST['ssmenuadm_actif_bgcolor']))? $_POST['ssmenuadm_actif_bgcolor'] : $default_color_tab["ssmenuadm_actif_bgcolor"];
+$header_text = (isset($_POST['header_text']))? valid_color($_POST['header_text']) : $default_color_tab["header_text"];
+$header_bgcolor = (isset($_POST['header_bgcolor']))? valid_color($_POST['header_bgcolor']) : $default_color_tab["header_bgcolor"];
+$header_hover = (isset($_POST['header_hover']))? valid_color($_POST["header_hover"]) : $default_color_tab["header_hover"];
+$menuG_color = (isset($_POST['menuG_color']))? valid_color($_POST['menuG_color']) : $default_color_tab["menuG_color"];
+$menuG_bgcolor = (isset($_POST['menuG_bgcolor']))? valid_color($_POST['menuG_bgcolor']) : $default_color_tab["menuG_bgcolor"];
+$cal_titrecolor = (isset($_POST['cal_titrecolor']))? valid_color($_POST['cal_titrecolor']) : $default_color_tab["cal_titrecolor"];
+$cal_titrebgcolor = (isset($_POST['cal_titrebgcolor']))? valid_color($_POST['cal_titrebgcolor']) : $default_color_tab["cal_titrebgcolor"];
+$cal_jourscolor = (isset($_POST['cal_jourscolor']))? valid_color($_POST['cal_jourscolor']) : $default_color_tab["cal_jourscolor"];
+$cal_joursbgcolor = (isset($_POST['cal_joursbgcolor']))? valid_color($_POST['cal_joursbgcolor']) : $default_color_tab["cal_joursbgcolor"];
+$cal_semcolor = (isset($_POST['cal_semcolor']))? valid_color($_POST['cal_semcolor']) : $default_color_tab["cal_semcolor"];
+$cal_sembgcolor = (isset($_POST['cal_sembgcolor']))? valid_color($_POST['cal_sembgcolor']) : $default_color_tab["cal_sembgcolor"];
+$cal_semhovercolor = (isset($_POST['cal_semhovercolor']))? valid_color($_POST["cal_semhovercolor"]) : $default_color_tab["cal_semhovercolor"];
+$cal_weekcolor = (isset($_POST['cal_weekcolor']))? valid_color($_POST['cal_weekcolor']) : $default_color_tab["cal_weekcolor"];
+$cal_weekbgcolor = (isset($_POST['cal_weekbgcolor']))? valid_color($_POST['cal_weekbgcolor']) : $default_color_tab["cal_weekbgcolor"];
+$cal_cellcolor = (isset($_POST['cal_cellcolor']))? valid_color($_POST['cal_cellcolor']) : $default_color_tab["cal_cellcolor"];
+$cal_cellbgcolor = (isset($_POST['cal_cellbgcolor']))? valid_color($_POST['cal_cellbgcolor']) : $default_color_tab["cal_cellbgcolor"];
+$cal_cellhovercolor = (isset($_POST['cal_cellhovercolor']))? valid_color($_POST['cal_cellhovercolor']) : $default_color_tab["cal_cellhovercolor"];
+$cal_cellhoverbgcolor = (isset($_POST['cal_cellhoverbgcolor']))? valid_color($_POST['cal_cellhoverbgcolor']) : $default_color_tab['cal_cellhoverbgcolor'];
+$cal_current_day_color = (isset($_POST['cal_current_day_color']))? valid_color($_POST['cal_current_day_color']) : $default_color_tab["cal_current_day_color"];
+$cal_current_day_bgcolor = (isset($_POST['cal_current_day_bgcolor']))? valid_color($_POST['cal_current_day_bgcolor']) : $default_color_tab["cal_current_day_bgcolor"];
+$pl2_titrecolor = (isset($_POST['pl2_titrecolor']))? valid_color($_POST['pl2_titrecolor']) : $default_color_tab["pl2_titrecolor"];
+$pl2_titrebgcolor = (isset($_POST['pl2_titrebgcolor']))? valid_color($_POST['pl2_titrebgcolor']) : $default_color_tab['pl2_titrebgcolor'];
+$pl2_entetecolor = (isset($_POST['pl2_entetecolor']))? valid_color($_POST['pl2_entetecolor']) : $default_color_tab["pl2_entetecolor"];
+$pl2_entetebgcolor = (isset($_POST['pl2_entetebgcolor']))? valid_color($_POST['pl2_entetebgcolor']) : $default_color_tab["pl2_entetebgcolor"];
+$pl2_cellcolor = (isset($_POST['pl2_cellcolor']))? valid_color($_POST['pl2_cellcolor']) : $default_color_tab["pl2_cellcolor"];
+$pl2_cellbgcolor = (isset($_POST['pl2_cellbgcolor']))? valid_color($_POST['pl2_cellbgcolor']) : $default_color_tab["pl2_cellbgcolor"];
+$icons_color = (isset($_POST['icons_color']))? valid_color($_POST["icons_color"]) : $default_color_tab["icons_color"];
+$btn_primary_color = (isset($_POST['btn_primary_color']))? valid_color($_POST['btn_primary_color']) : $default_color_tab["btn_primary_color"];
+$btn_primary_bgcolor = (isset($_POST['btn_primary_bgcolor']))? valid_color($_POST['btn_primary_bgcolor']) : $default_color_tab["btn_primary_bgcolor"];
+$btn_primary_bordcolor = (isset($_POST['btn_primary_bordcolor']))? valid_color($_POST['btn_primary_bordcolor']) : $default_color_tab["btn_primary_bordcolor"];
+$active_btn_primary_color = (isset($_POST['active_btn_primary_color']))? valid_color($_POST['active_btn_primary_color']) : $default_color_tab["active_btn_primary_color"];
+$active_btn_primary_bgcolor = (isset($_POST['active_btn_primary_bgcolor']))? valid_color($_POST['active_btn_primary_bgcolor']) : $default_color_tab["active_btn_primary_bgcolor"];
+$active_btn_primary_bordcolor = (isset($_POST['active_btn_primary_bordcolor']))? valid_color($_POST['active_btn_primary_bordcolor']) : $default_color_tab["active_btn_primary_bordcolor"];
+$focus_btn_primary_color = (isset($_POST['focus_btn_primary_color']))? valid_color($_POST['focus_btn_primary_color']) : $default_color_tab["focus_btn_primary_color"];
+$focus_btn_primary_bgcolor = (isset($_POST['focus_btn_primary_bgcolor']))? valid_color($_POST['focus_btn_primary_bgcolor']) : $default_color_tab["focus_btn_primary_bgcolor"];
+$focus_btn_primary_bordcolor = (isset($_POST['focus_btn_primary_bordcolor']))? valid_color($_POST['focus_btn_primary_bordcolor']) : $default_color_tab["focus_btn_primary_bordcolor"];
+$ssmenuadm_actif_color = (isset($_POST['ssmenuadm_actif_color']))? valid_color($_POST['ssmenuadm_actif_color']) : $default_color_tab["ssmenuadm_actif_color"];
+$ssmenuadm_actif_bgcolor = (isset($_POST['ssmenuadm_actif_bgcolor']))? valid_color($_POST['ssmenuadm_actif_bgcolor']) : $default_color_tab["ssmenuadm_actif_bgcolor"];
 
 /* Enregistrement des données si enregistrement */
 // enregistrement des couleurs dans la feuille de style
