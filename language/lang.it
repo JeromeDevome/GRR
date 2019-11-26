@@ -272,6 +272,7 @@ $vocab['creation_booking_for_you'] = " a réservé pour vous "; // A traduire
 $vocab['creneaux_de_reservation_pre_definis'] = "Gli interstizi di prenotazione sono basati su di li intitolati prato-definiti.";
 $vocab['creneaux_de_reservation_temps'] = "Gli interstizi di prenotazione sono basati sul tempo.";
 $vocab['ctrl_click'] = "CTRL + clic mouse per scegliere più di una risorsa";
+$vocab['ctrl_click_area'] = "CTRL + clic souris pour sélectionner plus d'un domaine"; // à traduire
 $vocab['dans les champs suivants :'] = "Nei campi seguenti : ";
 $vocab['database'] = "Database: ";
 $vocab['date'] = "Début de la réservation";

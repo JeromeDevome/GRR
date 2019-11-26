@@ -271,6 +271,7 @@ $vocab['creation_booking_for_you'] = " a réservé pour vous ";
 $vocab['creneaux_de_reservation_pre_definis'] = "Les créneaux de réservation sont basés sur des intitulés pré-définis.";
 $vocab['creneaux_de_reservation_temps'] = "Les créneaux de réservation sont basés sur le temps.";
 $vocab['ctrl_click'] = "CTRL + clic souris pour sélectionner plus d'une ressource";
+$vocab['ctrl_click_area'] = "CTRL + clic souris pour sélectionner plus d'un domaine";
 $vocab['dans les champs suivants :'] = "Dans les champs suivants : ";
 $vocab['database'] = "Base de donnée : ";
 $vocab['date'] = "Début de la réservation";

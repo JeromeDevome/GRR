@@ -272,6 +272,7 @@ $vocab['creation_booking_for_you'] = " a réservé pour vous "; // A traduire
 $vocab['creneaux_de_reservation_pre_definis'] = "Reservierungsabstände sind auf bestimmte Standardstitel gestüzt.";
 $vocab['creneaux_de_reservation_temps'] = "Reservierungabstände sind auf Zeit gestützt.";
 $vocab['ctrl_click'] = "CTRL + Mausklick, um mehr als eine Ressource zu wählen";
+$vocab['ctrl_click_area'] = "CTRL + mouse click to select more than one area"; // à traduire
 $vocab['dans les champs suivants :'] = "In den folgenden Feldern: ";
 $vocab['database'] = "Datenbasis: ";
 $vocab['date'] = "Beginn der Reservierung";
