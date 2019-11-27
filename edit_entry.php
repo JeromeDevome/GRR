@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-08-07 10:40$
+ * Dernière modification : $Date: 2019-11-27 15:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -877,7 +877,7 @@ if ($type_affichage_reser == 0) // sélection de la durée
 	echo '</select>'.PHP_EOL;
     echo "</div>";
 
-	$fin_jour = $eveningends;
+	/*$fin_jour = $eveningends;
 	$minute = $resolution / 60;
 	$minute_restante = $minute % 60;
 	$heure_ajout = ($minute - $minute_restante)/60;
@@ -890,7 +890,10 @@ if ($type_affichage_reser == 0) // sélection de la durée
 		$nb_jour = ($heure_finale - $heure_finale_restante) / 24;
 		$heure_finale = $nb_jour. " ". $vocab["days"]. " + ". $heure_finale_restante;
 	}
-	$af_fin_jour = $heure_finale." H ".$minute_restante;
+	$af_fin_jour = $heure_finale." H ".$minute_restante;*/
+	// l'heure de fin du jour est définie par eveningends et eveningends_minutes
+	// on suppose les données vérifiées : eveningends:eveningends_minutes <= 24:00
+	$af_fin_jour = $eveningends." H ".substr("0".$eveningends_minutes,-2,2);
 	echo '<b>
           <input name="all_day" type="checkbox" value="yes" />'.get_vocab("all_day");
 	if ($enable_periods != 'y')

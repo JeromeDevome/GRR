@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-11-26 11:30$
+ * Dernière modification : $Date: 2019-11-27 15:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -605,7 +605,7 @@ $id_room : identifiant de la ressource
 $month_week : mois
 $day_week : jour
 $year_week : année
-Renvoie vraie s'il reste des plages non réservées sur la journée
+Renvoie vrai s'il reste des plages non réservées sur la journée
 Renvoie faux dans le cas contraire
 */
 /**
@@ -620,17 +620,21 @@ function plages_libre_semaine_ressource($id_room, $month_week, $day_week, $year_
 	global $morningstarts, $eveningends, $eveningends_minutes, $resolution, $enable_periods;
 	$date_end = mktime($eveningends, $eveningends_minutes, 0, $month_week, $day_week, $year_week);
 	$date_start = mktime($morningstarts, 0, 0, $month_week, $day_week, $year_week);
-	$t = $date_start ;
-	$plage_libre = 0;
+	$t = $date_start ; 
+	if ($enable_periods == "y") 
+		$date_end += $resolution;
+	$plage_libre = false;
 	while ($t < $date_end)
 	{
-		$t += $resolution;
-		$test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_entry WHERE room_id='".$id_room."' AND start_time <= ".$t." AND end_time >= ".$t." ");
+		$t_end = $t + $resolution;
+		$query = "SELECT id FROM ".TABLE_PREFIX."_entry WHERE room_id='".$id_room."' AND start_time <= ".$t." AND end_time >= ".$t_end." ";
+		$test = grr_sql_query1($query);
 		if ($test == -1)
 		{
 			$plage_libre = true;
 			break;
 		}
+		$t += $resolution;
 	}
 	return $plage_libre ;
 }
