@@ -3,7 +3,7 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-09-09 12:00$
+ * Dernière modification : $Date: 2019-11-28 16:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -109,37 +109,18 @@ function reporton(&$row, $dformat)
 	$breve_description = affichage_lien_resa_planning($row[3],$row[0]);
 	$breve_description = "<a href=\"view_entry.php?id=$row[0]\">". $breve_description . "</a>";
 	echo "<td>".$breve_description."</td>\n";
-		// From date-time and duration:
-	//echo "<td>";
-	
-				//Affichage de l'heure et de la durée de réservation
-				if ($enable_periods == 'y')
-					list($start_date, $start_time ,$duration, $dur_units) =  describe_period_span($row[1], $row[2]);
-				else
-					list($start_date, $start_time ,$duration, $dur_units) = describe_span($row[1], $row[2], $dformat);
-
-				// Date début réservation
-				echo "<td>".$start_date . "</td>";
-				// Heure début réservation
-				echo "<td>".$start_time . "</td>";
-				// Durée réservation
-				echo "<td>".$duration ." ". $dur_units ."</td>";
-	
-	
-	/*
+		//Affichage de l'heure et de la durée de réservation
 	if ($enable_periods == 'y')
-	{
-		echo describe_period_span($row[1], $row[2]);
-		echo "</td>\n";;
-	}
+		list($start_date, $start_time ,$duration, $dur_units) =  describe_period_span($row[1], $row[2]);
 	else
-	{
-		echo describe_span($row[1], $row[2], $dformat);
-		if (date("d\/m\/Y",$row[1]) == date("d\/m\/Y",$row[2]))
-			echo "<br />".   date("H\:i",$row[1])." ==> ".date("H\:i",$row[2])."</td>\n";
-		else
-			echo "<br />".   date("d\/m\/Y\ \-\ H\:i",$row[1])." ==> ".date("d\/m\/Y\ \-\ H\:i",$row[2])."</td>\n";
-	}*/
+		list($start_date, $start_time ,$duration, $dur_units) = describe_span($row[1], $row[2], $dformat);
+
+	// Date début réservation
+	echo "<td>".$start_date . "</td>";
+	// Heure début réservation
+	echo "<td>".$start_time . "</td>";
+	// Durée réservation
+	echo "<td>".$duration ." ". $dur_units ."</td>";
 		//Description
 	if ($row[4] != "")
 		$description = nl2br(htmlspecialchars($row[4]));
@@ -151,12 +132,21 @@ function reporton(&$row, $dformat)
 	if ($et == -1)
 		$et = "?".$row[5]."?";
 	echo "<td>".$et."</td>\n";
-		//Affichage de "créée par"
+		// Bénéficiaire
 	$sql_beneficiaire = "SELECT prenom, nom FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$row[6]."'";
 	$res_beneficiaire = grr_sql_query($sql_beneficiaire);
+	$aff_beneficiaire = " ";
 	if ($res_beneficiaire)
+	{
 		$row_user = grr_sql_row($res_beneficiaire, 0);
-	echo "<td>".htmlspecialchars($row_user[0]) ." ". htmlspecialchars($row_user[1])."</td>";
+		$aff_beneficiaire = htmlspecialchars($row_user[0]) ." ". htmlspecialchars($row_user[1]);
+	}
+	if ($aff_beneficiaire == " ")
+	{
+		$benef_ext = explode('|',$row[15]);
+		$aff_beneficiaire = htmlspecialchars($benef_ext[0]);
+	}
+	echo "<td>".$aff_beneficiaire."</td>";
 		//Affichage de la date de la dernière mise à jour
 	echo "<td>". date_time_string($row[7],$dformat) . "</td>\n";
 		// X Colonnes champs additionnels
@@ -648,11 +638,13 @@ if (isset($_GET["is_posted"]))
     //  13  [12]  les champs additionnels -> e.overload_desc
     //  14  [13]  rang d'affichage de la ressource -> r.order_display
     //  15  [14]  type de réservation -> t.type_name
+	//  16  [15]  bénéficiaire extérieur -> e.beneficiaire_ext
     // Tableau des ressources invisibles pour l'utilisateur
     $sql = "SELECT distinct e.id, e.start_time, e.end_time, e.name, e.description, "
     . "e.type, e.beneficiaire, "
     .  grr_sql_syntax_timestamp_to_unix("e.timestamp")
     . ", a.area_name, r.room_name, r.description, a.id, e.overload_desc, r.order_display, t.type_name"
+	. ", e.beneficiaire_ext"
     . " FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_room r, ".TABLE_PREFIX."_type_area t";
 	// Si l'utilisateur n'est pas administrateur, seuls les domaines auxquels il a accès sont pris en compte
     if (authGetUserLevel(getUserName(),-1) < 6)
@@ -925,8 +917,18 @@ if (isset($_GET["is_posted"]))
                 
                 for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
                 {
-                    //Affichage de "créé par" et de la date de la dernière mise à jour
-                    echo ($row[6]) . ";";
+                    // Bénéficiaire (evt extérieur)
+					$aff_beneficiaire = " ";
+					if ($row[6] != "")
+					{
+						$aff_beneficiaire = htmlspecialchars($row[6]);
+					}
+					else 
+					{
+						$benef_ext = explode('|',$row[15]);
+						$aff_beneficiaire = htmlspecialchars($benef_ext[0]);
+					}
+                    echo ($aff_beneficiaire) . ";";
                     //Area
                     echo (removeMailUnicode($row[8])) . ";";
                     //Ressource

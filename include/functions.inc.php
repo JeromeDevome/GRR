@@ -3741,7 +3741,7 @@ function date_time_string($t, $dformat)
 		$ampm = date("a",$t);
 		$timeformat = "%I:%M$ampm";
 	}
-	return utf8_strftime($dformat.$timeformat, $t);
+	return utf8_strftime($dformat." ".$timeformat, $t);
 }
 # Convert a start period and end period to a plain language description.
 # This is similar but different from the way it is done in view_entry.
