@@ -3,7 +3,7 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-09-09 12:00$
+ * Dernière modification : $Date: 2019-11-28 16:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -87,9 +87,9 @@ if (!isset($_GET["sumby"]))
 else
 	settype($_GET["sumby"],"integer");
 $sortby = isset($_GET["sortby"])? $_GET["sortby"] : "d";
-	// Si la table j_user_area est vide, il faut modifier la requête
+// Si la table j_user_area est vide, il faut modifier la requête
 $test_grr_j_user_area = grr_sql_count(grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_j_user_area"));
-	// Report on one entry. See below for columns in $row[].
+// Report on one entry. See below for columns in $row[].
 function reporton(&$row, $dformat)
 {
 	global $vocab, $enable_periods, $tablOverload;
@@ -107,7 +107,7 @@ function reporton(&$row, $dformat)
 	echo "<td>".$room."</td>";
 		// Breve description (title), avec un lien
 	$breve_description = affichage_lien_resa_planning($row[3],$row[0]);
-	$breve_description = "<a href=\"view_entry.php?id=$row[0]\">". $breve_description . "</a>";
+	$breve_description = "<a href=\"view_entry.php?id=$row[0]&amp;mode=page\">". $breve_description . "</a>";
 	echo "<td>".$breve_description."</td>\n";
 		// From date-time and duration:
 	echo "<td>";
@@ -135,12 +135,21 @@ function reporton(&$row, $dformat)
 	if ($et == -1)
 		$et = "?".$row[5]."?";
 	echo "<td>".$et."</td>\n";
-		//Affichage de "créée par"
+		//Bénéficiaire
 	$sql_beneficiaire = "SELECT prenom, nom FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$row[6]."'";
 	$res_beneficiaire = grr_sql_query($sql_beneficiaire);
+	$aff_beneficiaire = " ";
 	if ($res_beneficiaire)
+	{
 		$row_user = grr_sql_row($res_beneficiaire, 0);
-	echo "<td>".htmlspecialchars($row_user[0]) ." ". htmlspecialchars($row_user[1])."</td>";
+		$aff_beneficiaire = htmlspecialchars($row_user[0]) ." ". htmlspecialchars($row_user[1]);
+	}
+	if ($aff_beneficiaire == " ")
+	{
+		$benef_ext = explode('|',$row[15]);
+		$aff_beneficiaire = htmlspecialchars($benef_ext[0]);
+	}
+	echo "<td>".$aff_beneficiaire."</td>";
 		//Affichage de la date de la dernière mise à jour
 	echo "<td>". date_time_string($row[7],$dformat) . "</td>\n";
 		// X Colonnes champs additionnels
@@ -256,7 +265,7 @@ function accumulate_periods(&$row, &$count, &$hours, $report_start, $report_end,
 	$room_hash[$room] = 1;
 	$breve_description_hash[$breve_description] = 1;
 }
-	//Table contenant un compteur (int) et une heure (float):
+//Table contenant un compteur (int) et une heure (float):
 function cell($count, $hours, $csv = "n", $decompte = "heure")
 {
 	if ($csv == "n")
@@ -628,13 +637,16 @@ if (isset($_GET["is_posted"]))
     //   9  [8]   Area (HTML) -> a.area_name
     //  10  [9]   Room (HTML) -> r.room_name
     //  11  [10]  Room description -> r.description
-    //  12  [11]  id de l'area -> a.id
-    //  13  [12]  les champs additionnels -> e.overload_desc
-    // Tableau des ressources invisibles pour l'utilisateur
+    //  12  [11]  Room order display -> r.order_display
+	//  13  [12]  Nom du type -> t.type_name
+	//  14  [13]  id de l'area -> a.id
+    //  15  [14]  les champs additionnels -> e.overload_desc
+	//  16  [15]  bénéficiaire extérieur -> e.beneficiaire_ext
     $sql = "SELECT distinct e.id, e.start_time, e.end_time, e.name, e.description, "
     . "e.type, e.beneficiaire, "
     .  grr_sql_syntax_timestamp_to_unix("e.timestamp")
     . ", a.area_name, r.room_name, r.description, r.order_display, t.type_name, a.id, e.overload_desc" // suggestion lenma pour compatibilité MySQL 5.7+
+	. ", e.beneficiaire_ext"
     . " FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_room r, ".TABLE_PREFIX."_type_area t";
 	// Si l'utilisateur n'est pas administrateur, seuls les domaines auxquels il a accès sont pris en compte
     if (authGetUserLevel(getUserName(),-1) < 6)
@@ -642,6 +654,7 @@ if (isset($_GET["is_posted"]))
             $sql .= ", ".TABLE_PREFIX."_j_user_area j ";
         $sql .= " WHERE e.room_id = r.id AND r.area_id = a.id";
 	// on ne cherche pas parmi les ressources invisibles pour l'utilisateur
+    // Tableau des ressources invisibles pour l'utilisateur
     $tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
     foreach ($tab_rooms_noaccess as $key)
     {
@@ -708,7 +721,7 @@ if (isset($_GET["is_posted"]))
         else if ( $sortby == "c" )
                 //Trié par: réservant, Area, room, debut, date/heure.
             //$sql .= " ORDER BY e.beneficiaire,9,r.order_display,10,2";
-            $sql .= " ORDER BY e.beneficiaire,a.area_name,r.order_display,r.room_name,e.start_time";
+            $sql .= " ORDER BY e.beneficiaire,e.beneficiaire_ext,a.area_name,r.order_display,r.room_name,e.start_time";
         else if ( $sortby == "b" )
                 //Trié par: breve_description, Area, room, debut, date/heure.
             //$sql .= " ORDER BY e.name,9,r.order_display,10,2";
@@ -845,7 +858,7 @@ if (isset($_GET["is_posted"]))
             for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
             {
                     // Récupération des données concernant l'affichage du planning du domaine
-                get_planning_area_values($row[11]);
+                get_planning_area_values($row[13]);
                 if (($summarize == 1) || ($summarize == 3))
                     reporton($row, $dformat);
                 if (($summarize == 2) || ($summarize == 3))
@@ -918,8 +931,18 @@ if (isset($_GET["is_posted"]))
                 
                 for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
                 {
-                    //Affichage de "créé par"
-                    echo ($row[6]) . ";";
+                    // Bénéficiaire (evt extérieur)
+					$aff_beneficiaire = " ";
+					if ($row[6] != "")
+					{
+						$aff_beneficiaire = htmlspecialchars($row[6]);
+					}
+					else 
+					{
+						$benef_ext = explode('|',$row[15]);
+						$aff_beneficiaire = htmlspecialchars($benef_ext[0]);
+					}
+                    echo ($aff_beneficiaire) . ";";
                     //Area
                     echo (removeMailUnicode($row[8])) . ";";
                     //Ressource
@@ -927,7 +950,7 @@ if (isset($_GET["is_posted"]))
                     //Description de la ressource
                     echo (removeMailUnicode($row[10])) . ";";
                     // Récupération des données concernant l'affichage du planning du domaine
-                    get_planning_area_values($row[11]);
+                    get_planning_area_values($row[13]);
                     //Affichage de l'heure et de la durée de réservation
                    /* if ($enable_periods == 'y')
                         echo describe_period_span($row[1], $row[2]) . ";";
@@ -1032,7 +1055,7 @@ if (isset($_GET["is_posted"]))
                 for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
                 {
                     // Récupération des données concernant l'affichage du planning du domaine
-                    get_planning_area_values($row[11]);
+                    get_planning_area_values($row[13]);
                     if ($enable_periods == 'y')
                     {
                         // pour le décompte des créneaux

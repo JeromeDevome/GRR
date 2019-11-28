@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-11-27 15:00$
+ * Dernière modification : $Date: 2019-11-28 16:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1766,7 +1766,22 @@ function period_date_string($t, $mod_time = 0)
 		$p_num = count($periods_name) - 1;
 	return array($p_num, $periods_name[$p_num] . utf8_strftime(", ".$dformat, $t));
 }
-
+// la même, avec un résultat différent, pour les rapports csv
+function period_date_string_rapport($t, $mod_time = 0)
+{
+	global $periods_name, $dformat;
+	$time = getdate($t);
+	$p_num = $time["minutes"] + $mod_time;
+	if ( $p_num < 0 )
+	{
+		// fin de réservation : cas $time["minutes"] = 0. il faut afficher le dernier créneau de la journée précédente
+		$t = $t - 60 * 60 * 24;
+		$p_num = count($periods_name) - $p_num;
+	}
+	if ( $p_num >= count($periods_name) - 1 )
+		$p_num = count($periods_name) - 1;
+	return array($periods_name[$p_num],utf8_strftime($dformat, $t));
+}
 /*
 Fonction utilisée dans le cas où les créneaux de réservation sont basés sur des intitulés pré-définis :
 Formatage des périodes de début ou de fin de réservation.
@@ -3813,7 +3828,7 @@ function date_time_string($t, $dformat)
 		$ampm = date("a",$t);
 		$timeformat = "%I:%M$ampm";
 	}
-	return utf8_strftime($dformat.$timeformat, $t);
+	return utf8_strftime($dformat." ".$timeformat, $t);
 }
 # Convertit un créneau de début et de fin en un tableau donnant la date de début et la durée
 function describe_period_span2($starts, $ends)
