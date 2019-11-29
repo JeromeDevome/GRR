@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-06-29 12:00$
+ * Dernière modification : $Date: 2019-11-29 11:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -383,11 +383,11 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 	echo "\n
 	<div class='ligne23'>
 		<div class=\"left\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='week_all.php?year=$yy&amp;month=$ym&amp;day=$yd&amp;area=$area';\" \"><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("weekbefore")." </button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='week_all.php?year=$yy&amp;month=$ym&amp;day=$yd&amp;area=$area';\"><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("weekbefore")." </button>
 		</div>";
 		include "./include/trailer.inc.php";
 		echo "<div class=\"right\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='week_all.php?year=$ty&amp;month=$tm&amp;day=$td&amp;area=$area';\" \">".get_vocab('weekafter')." <span class=\"glyphicon glyphicon-forward\"></button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='week_all.php?year=$ty&amp;month=$tm&amp;day=$td&amp;area=$area';\">".get_vocab('weekafter')." <span class=\"glyphicon glyphicon-forward\"></button>
 		</div>
 	</div>";
 }
@@ -612,8 +612,8 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 					else
 						echo '<td class="avertissement">'.PHP_EOL;
 				}
-				else
-					echo '<div class="empty_cell">'.PHP_EOL;
+				//else
+				//	echo '<div class="empty_cell">'.PHP_EOL;
 				$hour = date("H", $date_now);
 				$date_booking = mktime(24, 0, 0, $cmonth, $cday, $cyear);
 				if (est_hors_reservation(mktime(0, 0, 0, $cmonth, $cday, $cyear), $area))
@@ -630,8 +630,8 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 					else
 						echo ' '.PHP_EOL;
 				}
-				if (!$no_td)
-					echo '</div>'.PHP_EOL;
+				//if (!$no_td)
+				//	echo '</div>'.PHP_EOL;
 				echo '</td>'.PHP_EOL;
 			}
 			$num_week_day++;
