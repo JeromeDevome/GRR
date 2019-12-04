@@ -17,6 +17,7 @@
 
 $grr_script_name = "admin_edit_domaine.php";
 
+$sites = array ();
 $ok = NULL;
 if (Settings::get("module_multisite") == "Oui")
 	$id_site = isset($_POST["id_site"]) ? $_POST["id_site"] : (isset($_GET["id_site"]) ? $_GET["id_site"] : -1);
