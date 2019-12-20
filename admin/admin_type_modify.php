@@ -3,7 +3,7 @@
  * admin_type_modify.php
  * interface de création/modification des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-05-11 18:45$
+ * Dernière modification : $Date: 2019-12-27 12:05$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -158,8 +158,8 @@ if ((isset($_GET['change_type'])) && (!isset($ok)))
         for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
             fwrite($fich," 
-td.type".$row[0]."{background:".$row[1].";color:".$row[2].";}
-td.type".$row[0]." a.lienCellule{color:".$row[2].";}
+td.type".$row[0]."{background:".$row[1]." !important;color:".$row[2]." !important;}
+td.type".$row[0]." a.lienCellule{color:".$row[2]." !important;}
 ");
         }
         fclose($fich);
