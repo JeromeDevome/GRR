@@ -3,7 +3,7 @@
  * admin_type_modify.php
  * interface de création/modification des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-10-01 16:45$
+ * Dernière modification : $Date: 2019-12-27 12:05$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -66,7 +66,7 @@ $tab_couleur[27] = "#AA5050"; # bordeaux
 $tab_couleur[28] = "#FFBB20"; # pêche
 
 
-if (isset($_GET["change_type_and_back"]))
+if (isset($_GET["change_room_and_back"]))
 {
 	$_GET['change_type'] = "yes";
 	$_GET['change_done'] = "yes";
@@ -158,8 +158,8 @@ if ((isset($_GET['change_type'])) && (!isset($ok)))
         for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
             fwrite($fich," 
-td.type".$row[0]."{background:".$row[1].";color:".$row[2].";}
-td.type".$row[0]." a.lienCellule{color:".$row[2].";}
+td.type".$row[0]."{background:".$row[1]." !important;color:".$row[2]." !important;}
+td.type".$row[0]." a.lienCellule{color:".$row[2]." !important;}
 ");
         }
         fclose($fich);
@@ -289,7 +289,7 @@ echo "<table class='table-bordered'>\n";
 	echo "<div class='center'>\n";
 	echo "<input type=\"submit\" name=\"change_type\"  value=\"".get_vocab("save")."\" />";
 	echo "<input type=\"submit\" name=\"change_done\" value=\"".get_vocab("back")."\" />";
-	echo "<input type=\"submit\" name=\"change_type_and_back\" value=\"".get_vocab("save_and_back")."\" />";
+	echo "<input type=\"submit\" name=\"change_room_and_back\" value=\"".get_vocab("save_and_back")."\" />";
 	echo "</div>";
 echo '</form>';
 echo '</div>';
