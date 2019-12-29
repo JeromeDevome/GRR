@@ -3,9 +3,9 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-03-08 16:30 $
- * @author    Yan Naessens, Laurent Delineau 
- * @copyright Copyright 2003-2019 Yan Naessens, Laurent Delineau
+ * Dernière modification : $Date: 2019-12-29 14:20 $
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -371,7 +371,13 @@ else
                     //row[10]= type de la réservation
                     //row[11]= Modération
                     //row[12]= Bénéficiaire extérieur
-                    $sql = 'SELECT start_time, end_time, '.TABLE_PREFIX.'_entry.id, name, beneficiaire, room_name, statut_entry, '.TABLE_PREFIX.'_entry.description, option_reservation, '.TABLE_PREFIX.'_room.delais_option_reservation, type,'.TABLE_PREFIX.'_entry.moderate, beneficiaire_ext FROM '.TABLE_PREFIX.'_entry INNER JOIN '.TABLE_PREFIX.'_room ON '.TABLE_PREFIX.'_entry.room_id='.TABLE_PREFIX.'_room.id WHERE (start_time <= '.$end_month.' AND end_time > '.$begin_month.' AND '.TABLE_PREFIX.'_entry.room_id='.$room_id.') ORDER by start_time, end_time';
+					//row[13]= type_name
+					$sql = 'SELECT start_time, end_time, '.TABLE_PREFIX.'_entry.id, name, beneficiaire, room_name, statut_entry, '.TABLE_PREFIX.'_entry.description, option_reservation, '.TABLE_PREFIX.'_room.delais_option_reservation, type,'.TABLE_PREFIX.'_entry.moderate, beneficiaire_ext, '.TABLE_PREFIX.'_type_area.type_name 
+					FROM ('.TABLE_PREFIX.'_entry inner join '.TABLE_PREFIX.'_room ON '.TABLE_PREFIX.'_entry.room_id='.TABLE_PREFIX.'_room.id )
+					inner join '.TABLE_PREFIX.'_type_area on '.TABLE_PREFIX.'_entry.type='.TABLE_PREFIX.'_type_area.type_letter
+					WHERE (start_time <= '.$end_month.' AND end_time > '.$begin_month.' AND '.TABLE_PREFIX.'_entry.room_id='.$room_id.') 
+					ORDER by start_time, end_time';
+
                     //Build an array of information about each day in the month.
                     //The information is stored as:
                     // $d[monthday]["id"][] = ID of each entry, for linking.
@@ -384,120 +390,123 @@ else
                     { // les données sont bien recueillies
                         for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
                         {
-                            //Fill in data for each day during the month that this meeting ($row) covers. 
-                            $t = max((int)$row[0], $begin_month);
-                            $end_t = min((int)$row[1], $end_month);
-                            $day_num = date("j", $t);
-                            $month_num = date("m", $t);
-                            $year_num  = date("Y", $t);
-                            if ($enable_periods == 'y')
-                                $midnight = mktime(12,0,0,$month_num,$day_num,$year_num);
-                            else
-                                $midnight = mktime(0, 0, 0, $month_num, $day_num, $year_num);
-                            while ($t < $end_t)
-                            {
-                                $d[$day_num][$month_num][$year_num]["id"][] = $row[2];
-                                // Info-bulle
-                                $temp = "";
-                                if (Settings::get("display_info_bulle") == 1)
-                                    $temp = get_vocab("reservee au nom de").affiche_nom_prenom_email($row[4],$row[12],"nomail");
-                                else if (Settings::get("display_info_bulle") == 2)
-                                    $temp = $row[7];
-                                if ($temp != "")
-                                    $temp = " - ".$temp;
-                                $d[$day_num][$month_num][$year_num]["who1"][] = affichage_lien_resa_planning($row[3],$row[2]);
-                                $d[$day_num][$month_num][$year_num]["room"][]=$row[5] ;
-                                $d[$day_num][$month_num][$year_num]["res"][] = $row[6];
-                                $d[$day_num][$month_num][$year_num]["color"][] = $row[10];
-                                if ($row[9] > 0)
-                                    $d[$day_num][$month_num][$year_num]["option_reser"][] = $row[8];
-                                else
-                                    $d[$day_num][$month_num][$year_num]["option_reser"][] = -1;
-                                $d[$day_num][$month_num][$year_num]["moderation"][] = $row[11];
-                                $midnight_tonight = $midnight + 86400; // potentiellement problématique avec les jours de changement d'heure YN 
-                                //Describe the start and end time, accounting for "all day"
-                                //and for entries starting before/ending after today.
-                                //There are 9 cases, for start time < = or > midnight this morning,
-                                //and end time < = or > midnight tonight.
-                                //Use ~ (not -) to separate the start and stop times, because MSIE
-                                //will incorrectly line break after a -.
-                                $all_day2 = preg_replace("/ /", " ", $all_day);
-                                if ($enable_periods == 'y')
-                                {
-                                    $start_str = preg_replace("/ /", " ", period_time_string($row[0]));
-                                    $end_str   = preg_replace("/ /", " ", period_time_string($row[1], -1));
-                                    switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
-                                    {
-                                        case "> < ":
-                                        case "= < ":
-                                        if ($start_str == $end_str)
-                                            $d[$day_num][$month_num][$year_num]["data"][] = $start_str." - ".$row[3].$temp;
-                                        else
-                                            $d[$day_num][$month_num][$year_num]["data"][] = $start_str . "~" . $end_str." - ".$row[3].$temp;
-                                        break;
-                                        case "> = ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = $start_str . "~24:00"." - ".$row[3].$temp;
-                                        break;
-                                        case "> > ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = $start_str . "~==>"." - ".$row[3].$temp;
-                                        break;
-                                        case "= = ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = $all_day2.$temp;
-                                        break;
-                                        case "= > ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = $all_day2 . "==>"." - ".$row[3].$temp;
-                                        break;
-                                        case "< < ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = "<==~" . $end_str." - ".$row[3].$temp;
-                                        break;
-                                        case "< = ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = "<==" . $all_day2." - ".$row[3].$temp;
-                                        break;
-                                        case "< > ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = "<==" . $all_day2 . "==>"." - ".$row[3].$temp;
-                                        break;
-                                    }
-                                }
-                                else
-                                {
-                                    switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
-                                    {
-                                        case "> < ":
-                                        case "= < ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = date(hour_min_format(), $row[0]) . "~" . date(hour_min_format(), $row[1])." - ".$row[3].$temp;
-                                        break;
-                                        case "> = ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = date(hour_min_format(), $row[0]) . "~24:00"." - ".$row[3].$temp;
-                                        break;
-                                        case "> > ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = date(hour_min_format(), $row[0]) . "~==>"." - ".$row[3].$temp;
-                                        break;
-                                        case "= = ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = $all_day2.$temp;
-                                        break;
-                                        case "= > ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = $all_day2 . "==>"." - ".$row[3].$temp;
-                                        break;
-                                        case "< < ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = "<==~" . date(hour_min_format(), $row[1])." - ".$row[3].$temp;
-                                        break;
-                                        case "< = ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = "<==" . $all_day2." - ".$row[3].$temp;
-                                        break;
-                                        case "< > ":
-                                        $d[$day_num][$month_num][$year_num]["data"][] = "<==" . $all_day2 . "==>"." - ".$row[3].$temp;
-                                        break;
-                                    }
-                                }
-                                //Only if end time > midnight does the loop continue for the next day.
-                                if ($end_t <= $midnight_tonight)
-                                    break;
-                                $t = $midnight = $midnight_tonight;
-                                $day_num = date("j", $t);
-                                $month_num = date("m", $t);
-                                $year_num  = date("Y", $t);
-                                // ici fin du traitement des données
-                            }
+							if ($row['13'] <> (Settings::get('exclude_type_in_views_all')))
+							{
+								//Fill in data for each day during the month that this meeting ($row) covers. 
+								$t = max((int)$row[0], $begin_month);
+								$end_t = min((int)$row[1], $end_month);
+								$day_num = date("j", $t);
+								$month_num = date("m", $t);
+								$year_num  = date("Y", $t);
+								if ($enable_periods == 'y')
+									$midnight = mktime(12,0,0,$month_num,$day_num,$year_num);
+								else
+									$midnight = mktime(0, 0, 0, $month_num, $day_num, $year_num);
+								while ($t < $end_t)
+								{
+									$d[$day_num][$month_num][$year_num]["id"][] = $row[2];
+									// Info-bulle
+									$temp = "";
+									if (Settings::get("display_info_bulle") == 1)
+										$temp = get_vocab("reservee au nom de").affiche_nom_prenom_email($row[4],$row[12],"nomail");
+									else if (Settings::get("display_info_bulle") == 2)
+										$temp = $row[7];
+									if ($temp != "")
+										$temp = " - ".$temp;
+									$d[$day_num][$month_num][$year_num]["who1"][] = affichage_lien_resa_planning($row[3],$row[2]);
+									$d[$day_num][$month_num][$year_num]["room"][]=$row[5] ;
+									$d[$day_num][$month_num][$year_num]["res"][] = $row[6];
+									$d[$day_num][$month_num][$year_num]["color"][] = $row[10];
+									if ($row[9] > 0)
+										$d[$day_num][$month_num][$year_num]["option_reser"][] = $row[8];
+									else
+										$d[$day_num][$month_num][$year_num]["option_reser"][] = -1;
+									$d[$day_num][$month_num][$year_num]["moderation"][] = $row[11];
+									$midnight_tonight = $midnight + 86400; // potentiellement problématique avec les jours de changement d'heure YN 
+									//Describe the start and end time, accounting for "all day"
+									//and for entries starting before/ending after today.
+									//There are 9 cases, for start time < = or > midnight this morning,
+									//and end time < = or > midnight tonight.
+									//Use ~ (not -) to separate the start and stop times, because MSIE
+									//will incorrectly line break after a -.
+									$all_day2 = preg_replace("/ /", " ", $all_day);
+									if ($enable_periods == 'y')
+									{
+										$start_str = preg_replace("/ /", " ", period_time_string($row[0]));
+										$end_str   = preg_replace("/ /", " ", period_time_string($row[1], -1));
+										switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
+										{
+											case "> < ":
+											case "= < ":
+											if ($start_str == $end_str)
+												$d[$day_num][$month_num][$year_num]["data"][] = $start_str." - ".$row[3].$temp;
+											else
+												$d[$day_num][$month_num][$year_num]["data"][] = $start_str . "~" . $end_str." - ".$row[3].$temp;
+											break;
+											case "> = ":
+											$d[$day_num][$month_num][$year_num]["data"][] = $start_str . "~24:00"." - ".$row[3].$temp;
+											break;
+											case "> > ":
+											$d[$day_num][$month_num][$year_num]["data"][] = $start_str . "~==>"." - ".$row[3].$temp;
+											break;
+											case "= = ":
+											$d[$day_num][$month_num][$year_num]["data"][] = $all_day2.$temp;
+											break;
+											case "= > ":
+											$d[$day_num][$month_num][$year_num]["data"][] = $all_day2 . "==>"." - ".$row[3].$temp;
+											break;
+											case "< < ":
+											$d[$day_num][$month_num][$year_num]["data"][] = "<==~" . $end_str." - ".$row[3].$temp;
+											break;
+											case "< = ":
+											$d[$day_num][$month_num][$year_num]["data"][] = "<==" . $all_day2." - ".$row[3].$temp;
+											break;
+											case "< > ":
+											$d[$day_num][$month_num][$year_num]["data"][] = "<==" . $all_day2 . "==>"." - ".$row[3].$temp;
+											break;
+										}
+									}
+									else
+									{
+										switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
+										{
+											case "> < ":
+											case "= < ":
+											$d[$day_num][$month_num][$year_num]["data"][] = date(hour_min_format(), $row[0]) . "~" . date(hour_min_format(), $row[1])." - ".$row[3].$temp;
+											break;
+											case "> = ":
+											$d[$day_num][$month_num][$year_num]["data"][] = date(hour_min_format(), $row[0]) . "~24:00"." - ".$row[3].$temp;
+											break;
+											case "> > ":
+											$d[$day_num][$month_num][$year_num]["data"][] = date(hour_min_format(), $row[0]) . "~==>"." - ".$row[3].$temp;
+											break;
+											case "= = ":
+											$d[$day_num][$month_num][$year_num]["data"][] = $all_day2.$temp;
+											break;
+											case "= > ":
+											$d[$day_num][$month_num][$year_num]["data"][] = $all_day2 . "==>"." - ".$row[3].$temp;
+											break;
+											case "< < ":
+											$d[$day_num][$month_num][$year_num]["data"][] = "<==~" . date(hour_min_format(), $row[1])." - ".$row[3].$temp;
+											break;
+											case "< = ":
+											$d[$day_num][$month_num][$year_num]["data"][] = "<==" . $all_day2." - ".$row[3].$temp;
+											break;
+											case "< > ":
+											$d[$day_num][$month_num][$year_num]["data"][] = "<==" . $all_day2 . "==>"." - ".$row[3].$temp;
+											break;
+										}
+									}
+									//Only if end time > midnight does the loop continue for the next day.
+									if ($end_t <= $midnight_tonight)
+										break;
+									$t = $midnight = $midnight_tonight;
+									$day_num = date("j", $t);
+									$month_num = date("m", $t);
+									$year_num  = date("Y", $t);
+									// ici fin du traitement des données
+								}
+							}
                         }
                         // afficher les données
                         /* echo "<div>"."afficher les données";

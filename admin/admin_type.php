@@ -48,13 +48,42 @@ if ((isset($_GET['action_del'])) && ($_GET['js_confirmed'] == 1) && ($_GET['acti
 			fatal_error(1, "<p>" . grr_sql_error());
 	}
 }
+// -------------------------------------------- ModifExclure Début-1
+if (!Settings::load())
+	die("Erreur chargement settings");
+if (isset($_GET['exclude_type_in_views_all']))
+{
+	if (!Settings::set("exclude_type_in_views_all", $_GET['exclude_type_in_views_all']))
+		echo "Erreur lors de l'enregistrement de exclude_type_in_views_all !<br />";
+}
+if (isset($_GET['ok']))                       
+ { $msg = get_vocab("message_records"); }     
+// ------------------------------------------- ModifExclure Fin-1
+
 // code HTML
 start_page_w_header("", "", "", $type="with_session");
 include "admin_col_gauche2.php";
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 affiche_pop_up($msg,"admin");
 echo "<h2>".get_vocab('admin_type.php')."</h2>";
+
+// ------------------------------------------ ModifExclure Début-2
+echo '<form action="./admin_type.php" method="get">'.PHP_EOL;
+echo '<tr><td>'.get_vocab('exclude_type_in_views_all').'</td>'.PHP_EOL; 
+echo '<table>'.PHP_EOL;
+echo '<td>'.PHP_EOL;
+echo '<input class="form-control" type="text" id="exclude_type_in_views_all" name="exclude_type_in_views_all" value="'.Settings::get('exclude_type_in_views_all').'" size="30">'.PHP_EOL;
+echo '</td>'.PHP_EOL;
+echo '<td>'.PHP_EOL;
+echo '<input class="btn btn-primary" type="submit" name="ok" value="'.get_vocab('save').'" style="font-variant: small-caps;"/>'.PHP_EOL;
+echo '</td>'.PHP_EOL;
+echo '</tr>'.PHP_EOL;
+echo '</table>'.PHP_EOL;
+echo "<br />\n";
+// ------------------------------------------ ModifExclure Fin-2
+
 echo get_vocab('admin_type_explications');
+
 echo "<br />\n";
 echo "<br />\n";
 echo "| <a href=\"admin_type_modify.php?id=0\">".get_vocab("display_add_type")."</a> |\n";
