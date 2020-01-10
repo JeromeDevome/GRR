@@ -3,9 +3,9 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-03-08 16:30 $
+ * Dernière modification : $Date: 2020-01-10 18:50 $
  * @author    Yan Naessens, Laurent Delineau 
- * @copyright Copyright 2003-2019 Yan Naessens, Laurent Delineau
+ * @copyright Copyright 2003-2020 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -565,7 +565,7 @@ else
                                                     else
                                                     {
                                                         echo "<a class=\"lienCellule\" title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday][$cmonth][$cyear]["id"][$i]."&amp;page=year_all\">"
-                                                        .substr($d[$cday]["who1"][$i],0,4)
+                                                        .substr($d[$cday][$cmonth][$cyear]["who1"][$i],0,4)
                                                         . "</a>";
                                                     }
                                                 }    
