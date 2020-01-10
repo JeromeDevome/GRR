@@ -3,9 +3,9 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-26 14:30$
+ * Dernière modification : $Date: 2019-11-29 11:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -130,7 +130,7 @@ if ((($authGetUserLevel < 1) && (Settings::get("authentification_obli") == 1)) |
 
 // On vérifie une fois par jour si le délai de confirmation des réservations est dépassé
 	// Si oui, les réservations concernées sont supprimées et un mail automatique est envoyé.
-	// On vérifie une fois par jour que les ressources ont été rendue en fin de réservation
+	// On vérifie une fois par jour que les ressources ont été rendues en fin de réservation
 	// Si non, une notification email est envoyée
 if (Settings::get("verif_reservation_auto") == 0)
 {
@@ -198,7 +198,7 @@ $ty = date("Y", $i);
 $tm = date("m", $i);
 $td = date("d", $i);
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.id, type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, courrier
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.id,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
 where
 ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id and
@@ -207,7 +207,23 @@ where
 start_time <= $date_end AND
 end_time > $date_start
 ORDER by start_time, end_time, ".TABLE_PREFIX."_entry.id";
-
+/* contenu de la réponse si succès :
+    $row[0] : start_time
+    $row[1] : end_time
+    $row[2] : entry id
+    $row[3] : name
+    $row[4] : beneficiaire
+    $row[5] : room id
+    $row[6] : type
+    $row[7] : statut_entry
+    $row[8] : entry description
+    $row[9] : entry option_reservation
+    $row[10]: room delais_option_reservation
+    $row[11]: entry moderate
+    $row[12]: beneficiaire_ext
+    $row[13]: clef
+    $row[14]: courrier
+*/
 $res2 = grr_sql_query($sql);
 if (!$res2)
 	echo grr_sql_error();
@@ -226,10 +242,37 @@ else
 			$midnight = mktime(0, 0, 0, $month_num, $day_num, $year_num);
 		while ($t <= $end_t)
 		{
-			
 			$d[$day_num]["id"][] = $row['2'];
+			if (Settings::get("display_info_bulle") == 1)
+				$d[$day_num]["who"][] = get_vocab("reservee au nom de").affiche_nom_prenom_email($row['4'], $row['12'], "nomail");
+			else if (Settings::get("display_info_bulle") == 2)
+				$d[$day_num]["who"][] = $row['8'];
+			else
+				$d[$day_num]["who"][] = "";
+			$d[$day_num]["who1"][] = affichage_lien_resa_planning($row['3'], $row['2']);
 			$d[$day_num]["id_room"][]=$row['5'] ;
 			$d[$day_num]["color"][]=$row['6'];
+			$d[$day_num]["res"][] = $row['7'];
+			$descro = affichage_resa_planning($row['8'], $row['2']);
+            $clef = $row[13];
+            $courrier = $row[14];
+			if ($clef == 1 || $courrier == 1)
+                $descro .= '<br />'.PHP_EOL;
+			if ($clef == 1)
+				$descro .= '<img src="img_grr/skey.png" alt="clef">'.PHP_EOL;
+            if (Settings::get('show_courrier') == 'y')
+            {
+                if ($courrier == 1)
+                    $descro .= '<img src="img_grr/scourrier.png" alt="courrier">'.PHP_EOL;
+                else
+                    $descro .= '<br /><img src="img_grr/hourglass.png" alt="buzy">'.PHP_EOL;
+            }
+            $d[$day_num]["description"][] = $descro;
+			if ($row['10'] > 0)
+				$d[$day_num]["option_reser"][] = $row['9'];
+			else
+				$d[$day_num]["option_reser"][] = -1;
+			$d[$day_num]["moderation"][] = $row['11'];
 			$midnight_tonight = $midnight + 86400;
 			if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
 			{
@@ -247,30 +290,30 @@ else
 					case "> < ":
 					case "= < ":
 					if ($start_str == $end_str)
-						$horaires = $start_str;
+						$d[$day_num]["data"][] = $start_str;
 					else
-						$horaires = $start_str . get_vocab("to") . $end_str;
+						$d[$day_num]["data"][] = $start_str . get_vocab("to") . $end_str;
 					break;
 					case "> = ":
-					$horaires = $start_str . get_vocab("to")."24:00";
+					$d[$day_num]["data"][] = $start_str . get_vocab("to")."24:00";
 					break;
 					case "> > ":
-					$horaires = $start_str . get_vocab("to")."==>";
+					$d[$day_num]["data"][] = $start_str . get_vocab("to")."==>";
 					break;
 					case "= = ":
-					$horaires = $all_day;
+					$d[$day_num]["data"][] = $all_day;
 					break;
 					case "= > ":
-					$horaires = $all_day . "==>";
+					$d[$day_num]["data"][] = $all_day . "==>";
 					break;
 					case "< < ":
-					$horaires = "<==".get_vocab("to") . $end_str;
+					$d[$day_num]["data"][] = "<==".get_vocab("to") . $end_str;
 					break;
 					case "< = ":
-					$horaires = "<==" . $all_day;
+					$d[$day_num]["data"][] = "<==" . $all_day;
 					break;
 					case "< > ":
-					$horaires = "<==" . $all_day . "==>";
+					$d[$day_num]["data"][] = "<==" . $all_day . "==>";
 					break;
 				}
 			}
@@ -280,33 +323,31 @@ else
 				{
 					case "> < ":
 					case "= < ":
-					$horaires = date(hour_min_format(), $row[0]) . get_vocab("to") . date(hour_min_format(), $row[1]);
+					$d[$day_num]["data"][] = date(hour_min_format(), $row[0]) . get_vocab("to") . date(hour_min_format(), $row[1]);
 					break;
 					case "> = ":
-					$horaires = date(hour_min_format(), $row[0]) . get_vocab("to")."24:00";
+					$d[$day_num]["data"][] = date(hour_min_format(), $row[0]) . get_vocab("to")."24:00";
 					break;
 					case "> > ":
-					$horaires = date(hour_min_format(), $row[0]) . get_vocab("to")."==>";
+					$d[$day_num]["data"][] = date(hour_min_format(), $row[0]) . get_vocab("to")."==>";
 					break;
 					case "= = ":
-					$horaires = $all_day;
+					$d[$day_num]["data"][] = $all_day;
 					break;
 					case "= > ":
-					$horaires = $all_day . "==>";
+					$d[$day_num]["data"][] = $all_day . "==>";
 					break;
 					case "< < ":
-					$horaires = "<==".get_vocab("to") . date(hour_min_format(), $row[1]);
+					$d[$day_num]["data"][] = "<==".get_vocab("to") . date(hour_min_format(), $row[1]);
 					break;
 					case "< = ":
-					$horaires = "<==" . $all_day;
+					$d[$day_num]["data"][] = "<==" . $all_day;
 					break;
 					case "< > ":
-					$horaires = "<==" . $all_day . "==>";
+					$d[$day_num]["data"][] = "<==" . $all_day . "==>";
 					break;
 				}
 			}
-			$d[$day_num]["resa"][] = affichage_resa_planning_complet(1, $row, $horaires);
-
 			if ($row[1] <= $midnight_tonight)
 				break;
 			$t = $midnight = $midnight_tonight;
@@ -342,11 +383,11 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 	echo "\n
 	<div class='ligne23'>
 		<div class=\"left\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='week_all.php?year=$yy&amp;month=$ym&amp;day=$yd&amp;area=$area';\" \"><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("weekbefore")." </button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='week_all.php?year=$yy&amp;month=$ym&amp;day=$yd&amp;area=$area';\"><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("weekbefore")." </button>
 		</div>";
 		include "./include/trailer.inc.php";
 		echo "<div class=\"right\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='week_all.php?year=$ty&amp;month=$tm&amp;day=$td&amp;area=$area';\" \">".get_vocab('weekafter')." <span class=\"glyphicon glyphicon-forward\"></button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='week_all.php?year=$ty&amp;month=$tm&amp;day=$td&amp;area=$area';\">".get_vocab('weekafter')." <span class=\"glyphicon glyphicon-forward\"></button>
 		</div>
 	</div>";
 }
@@ -487,8 +528,7 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 			if ($display_day[$num_week_day] == 1)
 			{
 				$no_td = TRUE;
-				$estHorsReservation = est_hors_reservation(mktime(0, 0, 0, $cmonth, $cday, $cyear), $area);
-				if ((isset($d[$cday]["id"][0])) && !$estHorsReservation)
+				if ((isset($d[$cday]["id"][0])) && !(est_hors_reservation(mktime(0, 0, 0, $cmonth, $cday, $cyear), $area)))
 				{
 					$n = count($d[$cday]["id"]);
 					for ($i = 0; $i < $n; $i++)
@@ -497,27 +537,71 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 						{
 							if ($no_td)
 							{
-                                echo '<td>'.PHP_EOL;
+                                echo '<td >'.PHP_EOL;
 								$no_td = FALSE;
 							}
 							if ($acces_fiche_reservation)
 							{
 								if (Settings::get("display_level_view_entry") == 0)
-									echo '<a title="Voir la réservation" data-width="675" onclick="request('.$d[$cday]["id"][$i].','.$cday.','.$cmonth.','.$cyear.',\'all\',\'week_all\',readData);" data-rel="popup_name" class="poplight" style = "border-bottom:1px solid #FFF">'.PHP_EOL;
+								{
+									$currentPage = 'week_all';
+									$id = $d[$cday]["id"][$i];
+									echo '<a title="'.htmlspecialchars($d[$cday]["who"][$i]).'" data-width="675" onclick="request('.$id.','.$cday.','.$cmonth.','.$cyear.',\'all\',\''.$currentPage.'\',readData);" data-rel="popup_name" class="poplight lienCellule" style = "border-bottom:1px solid #FFF">'.PHP_EOL;
+								}
 								else
-									echo '<a class="lienCellule" style = "border-bottom:1px solid #FFF" title="Voir la réservation" href="view_entry.php?id='.$d[$cday]["id"][$i].'&amp;page=week_all&amp;day='.$cday.'&amp;month='.$cmonth.'&amp;year='.$cyear.'&amp;" >'.PHP_EOL;
+									echo '<a class="lienCellule" style = "border-bottom:1px solid #FFF" title="'.htmlspecialchars($d[$cday]["who"][$i]).'" href="view_entry.php?id='.$d[$cday]["id"][$i].'&amp;page=week_all&amp;day='.$cday.'&amp;month='.$cmonth.'&amp;year='.$cyear.'&amp;" >'.PHP_EOL;
+								echo '<table class="pleine">'.PHP_EOL;
+								echo '<tr>'.PHP_EOL;
+								tdcell($d[$cday]["color"][$i]);
+								if ($d[$cday]["res"][$i] !='-')
+									echo '<img src="img_grr/buzy.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("ressource actuellement empruntee").'" width="20" height="20" class="image" />'.PHP_EOL;
+								if ((isset($d[$cday]["option_reser"][$i])) && ($d[$cday]["option_reser"][$i] != -1))
+									echo '<img src="img_grr/small_flag.png" alt="',get_vocab("reservation_a_confirmer_au_plus_tard_le"),'" title="',get_vocab("reservation_a_confirmer_au_plus_tard_le"),' ',time_date_string_jma($d[$cday]["option_reser"][$i],$dformat),'" width="20" height="20" class="image" />',PHP_EOL;
+								if ((isset($d[$cday]["moderation"][$i])) && ($d[$cday]["moderation"][$i] == 1))
+									echo '<img src="img_grr/flag_moderation.png" alt="',get_vocab("en_attente_moderation"),'" title="',get_vocab("en_attente_moderation"),'" class="image" />',PHP_EOL;
+								$Son_GenreRepeat = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area,".TABLE_PREFIX."_entry  WHERE  ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter  AND ".TABLE_PREFIX."_entry.id = '".$d[$cday]["id"][$i]."';");
+								if ($Son_GenreRepeat == -1)
+                                    echo '<span class="small_planning">',$d[$cday]["data"][$i];
+                                else
+                                    if (Settings::get("type") == '1') {
+                                        echo '<span class="small_planning">'. $d[$cday]["data"][$i].'<br>'. $Son_GenreRepeat.'<br>'.PHP_EOL; }
+                                    else {
+                                        echo '<span class="small_planning">'. $d[$cday]["data"][$i].'<br>'. PHP_EOL; }
+								echo $d[$cday]["who1"][$i]. '<br/>'.PHP_EOL;
+								if ($d[$cday]["description"][$i] != "")
+									echo '<i>'.$d[$cday]["description"][$i].'</i>'.PHP_EOL;
+								echo '</span>'.PHP_EOL;
 							}
-
-								echo '<table class="table-header">'.PHP_EOL;
-									echo '<tr>'.PHP_EOL;
-										tdcell($d[$cday]["color"][$i]);
-											echo $d[$cday]["resa"][$i];
-										echo '</td>'.PHP_EOL;
-									echo '</tr>'.PHP_EOL;
-								echo '</table>'.PHP_EOL;
-
-							if ($acces_fiche_reservation)
-								echo '</a>'.PHP_EOL;
+							else
+							{
+								echo PHP_EOL.'<table class="table table-bordered"><tr>';
+								tdcell($d[$cday]["color"][$i]);
+								if ($d[$cday]["res"][$i] != '-')
+									echo '<img src="img_grr/buzy.png" alt="',get_vocab("ressource actuellement empruntee"),'" title="',get_vocab("ressource actuellement empruntee"),'" width="20" height="20" class="image" />',PHP_EOL;
+								if ((isset($d[$cday]["option_reser"][$i])) && ($d[$cday]["option_reser"][$i] != -1))
+									echo '<img src="img_grr/small_flag.png" alt="',get_vocab("reservation_a_confirmer_au_plus_tard_le"),'" title="',get_vocab("reservation_a_confirmer_au_plus_tard_le"),' ',time_date_string_jma($d[$cday]["option_reser"][$i],$dformat),'" width="20" height="20" class="image" />',PHP_EOL;
+								if ((isset($d[$cday]["moderation"][$i])) && ($d[$cday]["moderation"][$i] == 1))
+									echo '<img src="img_grr/flag_moderation.png" alt="',get_vocab("en_attente_moderation"),'" title="',get_vocab("en_attente_moderation"),'" class="image" />',PHP_EOL;
+								$Son_GenreRepeat = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area,".TABLE_PREFIX."_entry  WHERE  ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter  AND ".TABLE_PREFIX."_entry.id = '".$d[$cday]["id"][$i]."';");
+								if ($Son_GenreRepeat == -1 )
+								{
+									echo '<span class="small_planning">',PHP_EOL,'<b>',$d[$cday]["data"][$i],'</b><br>';
+								}
+								else
+								{
+                                    if (Settings::get("type") == '1') 
+                                        { echo '<span class="small_planning">'. $d[$cday]["data"][$i].'<br>'. $Son_GenreRepeat.'<br>'.PHP_EOL; }
+                                    else { echo '<span class="small_planning">'. $d[$cday]["data"][$i].'<br>'. PHP_EOL; }
+								}
+								echo $d[$cday]["who1"][$i].'<br>'.PHP_EOL;
+								if ($d[$cday]["description"][$i] != "")
+									echo '<i>'.$d[$cday]["description"][$i].'</i>'.PHP_EOL;
+								echo '</span>'.PHP_EOL;
+							}
+							echo '</td>'.PHP_EOL;
+							echo '</tr>'.PHP_EOL;
+							echo '</table>'.PHP_EOL;
+							echo '</a>'.PHP_EOL;
 						}
 					}
 				}
@@ -528,11 +612,11 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 					else
 						echo '<td class="avertissement">'.PHP_EOL;
 				}
-				else
-					echo '<div class="empty_cell">'.PHP_EOL;
+				//else
+				//	echo '<div class="empty_cell">'.PHP_EOL;
 				$hour = date("H", $date_now);
 				$date_booking = mktime(24, 0, 0, $cmonth, $cday, $cyear);
-				if ($estHorsReservation)
+				if (est_hors_reservation(mktime(0, 0, 0, $cmonth, $cday, $cyear), $area))
 					echo '<img src="img_grr/stop.png" alt="',get_vocab("reservation_impossible"),'" title="',get_vocab("reservation_impossible"),'" width="16" height="16" class="',$class_image,'" />',PHP_EOL;
 				else
 				{
@@ -546,8 +630,8 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 					else
 						echo ' '.PHP_EOL;
 				}
-				if (!$no_td)
-					echo '</div>'.PHP_EOL;
+				//if (!$no_td)
+				//	echo '</div>'.PHP_EOL;
 				echo '</td>'.PHP_EOL;
 			}
 			$num_week_day++;
