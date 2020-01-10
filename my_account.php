@@ -3,9 +3,9 @@
  * my_account.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-08-02 10:40$
+ * Dernière modification : $Date: 2020-01-10 14:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -44,6 +44,10 @@ if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
 $user_login = isset($_POST['user_login']) ? $_POST['user_login'] : ($user_login = isset($_GET['user_login']) ? $_GET['user_login'] : NULL);
 $valid = isset($_POST['valid']) ? $_POST['valid'] : NULL;
+// valeurs par défaut pour le reset
+$reset_site = Settings::get('default_site');
+$reset_area = Settings::get('default_area');
+$reset_room = Settings::get('default_room');
 $msg = '';
 if ($valid == 'yes')
 {
@@ -191,6 +195,7 @@ if (Settings::get("module_multisite") == "Oui")
 	$use_site = 'y';
 else
 	$use_site = 'n';
+// données utilisateur
 $sql = "SELECT nom,prenom,statut,email,default_site,default_area,default_room,default_style,default_list_type,default_language,source FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".getUserName()."'";
 $res = grr_sql_query($sql);
 if ($res)
@@ -257,7 +262,7 @@ if ($res)
 			type: "get",
 			dataType: "html",
 			data: {
-				id_area:$('id_area').serialize(true),
+				id_area:$('#id_area').val(),
 				// default_room : '<?php echo Settings::get("default_room"); ?>',
                 default_room : '<?php echo $default_room; ?>',
 				type:'ressource',
@@ -446,117 +451,117 @@ echo ('
         </div>
         <hr />';
     }
-		echo "\n".'<h3>'.get_vocab('default_parameter_values_title').'</h3>';
-		echo "\n".'<h4>'.get_vocab('explain_area_list_format').'</h4>';
-		echo '
-		<table>
-			<tr>
-				<td>'.get_vocab('liste_area_list_format').'</td>
-				<td>
-					<input type="radio" name="area_item_format" value="list" ';
-					if ($default_list_type == 'list')
-						echo 'checked="checked"';
-					echo ' />';
-					echo '
-				</td>
-			</tr>
-			<tr>
-				<td>'.get_vocab('select_area_list_format').'</td>
-				<td>
-					<input type="radio" name="area_item_format" value="select" ';
-					if ($default_list_type == 'select')
-						echo 'checked="checked" ';
-					echo ' />';
-					echo '
-				</td>
-			</tr>
-			<tr>
-				<td>'.get_vocab('item_area_list_format').'</td>
-				<td>
-					<input type="radio" name="area_item_format" value="item" ';
-					if ($default_list_type == 'item')
-						echo 'checked="checked" ';
-					echo ' />';
-					echo '
-				</td>
-			</tr>
-		</table>';
+	echo "\n".'<h3>'.get_vocab('default_parameter_values_title').'</h3>';
+	echo "\n".'<h4>'.get_vocab('explain_area_list_format').'</h4>';
+	echo '
+	<table>
+		<tr>
+			<td>'.get_vocab('liste_area_list_format').'</td>
+			<td>
+				<input type="radio" name="area_item_format" value="list" ';
+				if ($default_list_type == 'list')
+					echo 'checked="checked"';
+				echo ' />';
+				echo '
+			</td>
+		</tr>
+		<tr>
+			<td>'.get_vocab('select_area_list_format').'</td>
+			<td>
+				<input type="radio" name="area_item_format" value="select" ';
+				if ($default_list_type == 'select')
+					echo 'checked="checked" ';
+				echo ' />';
+				echo '
+			</td>
+		</tr>
+		<tr>
+			<td>'.get_vocab('item_area_list_format').'</td>
+			<td>
+				<input type="radio" name="area_item_format" value="item" ';
+				if ($default_list_type == 'item')
+					echo 'checked="checked" ';
+				echo ' />';
+				echo '
+			</td>
+		</tr>
+	</table>';
 /**
  * Liste des sites
  */
-		if (Settings::get("module_multisite") == "Oui")
-		{
-			echo '<h4>'.get_vocab('explain_default_area_and_room_and_site').'</h4>';
+	if (Settings::get("module_multisite") == "Oui")
+	{
+		echo '<h4>'.get_vocab('explain_default_area_and_room_and_site').'</h4>';
 
-			$sql = "SELECT id,sitecode,sitename
-			FROM ".TABLE_PREFIX."_site
-			ORDER BY id ASC";
-			$resultat = grr_sql_query($sql);
-			echo '
-			<table>
-				<tr>
-					<td>'.get_vocab('default_site').get_vocab('deux_points').'</td>
-					<td>
-						<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
-							<option value="-1">'.get_vocab('choose_a_site').'</option>'."\n";
-							for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); $enr++)
-							{
-								echo '<option value="'.$row[0].'"';
-								if ($default_site == $row[0])
-									echo ' selected="selected" ';
-								echo '>'.htmlspecialchars($row[2]);
-								echo '</option>'."\n";
-							}
-							echo '</select>
-						</td>
-					</tr>';
-		}
-		else
-		{
-			echo '<h4>'.get_vocab('explain_default_area_and_room').'</h4>';
-			echo '<input type="hidden" id="id_site" name="id_site" value="-1" />
-			<table>';
-		}
-		/* Liste des domaines */
-		echo '<tr><td colspan="2">';
-		echo '<div id="div_liste_domaines">';
-		echo '</div></td></tr>';
-		/* Liste des ressources */
-		echo '<tr><td colspan="2">';
-		echo '<div id="div_liste_ressources">';
-		echo '<input type="hidden" id="id_area" name="id_area" value="'.$default_area.'" />';
-		echo '</div></td></tr></table>';
-		/* Au chargement de la page, on initialise les select */
-		echo '<script type="text/javascript">modifier_liste_domaines();</script>'."\n";
-		echo '<script type="text/javascript">modifier_liste_ressources(1);</script>'."\n";
+		$sql = "SELECT id,sitecode,sitename
+		FROM ".TABLE_PREFIX."_site
+		ORDER BY id ASC";
+		$resultat = grr_sql_query($sql);
+		echo '
+		<table>
+			<tr>
+				<td>'.get_vocab('default_site').get_vocab('deux_points').'</td>
+				<td>
+					<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
+						<option value="-1">'.get_vocab('choose_a_site').'</option>'."\n";
+						for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); $enr++)
+						{
+							echo '<option value="'.$row[0].'"';
+							if ($default_site == $row[0])
+								echo ' selected="selected" ';
+							echo '>'.htmlspecialchars($row[2]);
+							echo '</option>'."\n";
+						}
+						echo '</select>
+					</td>
+				</tr>';
+	}
+	else
+	{
+		echo '<h4>'.get_vocab('explain_default_area_and_room').'</h4>';
+		echo '<input type="hidden" id="id_site" name="id_site" value="-1" />
+		<table>';
+	}
+	/* Liste des domaines */
+	echo '<tr><td colspan="2">';
+	echo '<div id="div_liste_domaines">';
+	echo '</div></td></tr>';
+	/* Liste des ressources */
+	echo '<tr><td colspan="2">';
+	echo '<div id="div_liste_ressources">';
+	echo '<input type="hidden" id="id_area" name="id_area" value="'.$default_area.'" />';
+	echo '</div></td></tr></table>';
+	/* Au chargement de la page, on initialise les select */
+	echo '<script type="text/javascript">modifier_liste_domaines();</script>'."\n";
+	echo '<script type="text/javascript">modifier_liste_ressources(1);</script>'."\n";
 /**
  * Choix de la feuille de style par défaut
  */
-		echo '<h4>'.get_vocab('explain_css').'</h4>';
-		echo '
-					<table>
-						<tr>
-							<td>'.get_vocab('choose_css').'</td>
-							<td>
-								<select class="form-control" name="default_css">'."\n";
-									$i = 0;
-									while ($i < count($liste_themes))
-									{
-										echo '              <option value="'.$liste_themes[$i].'"';
-										if ($default_css == $liste_themes[$i])
-											echo ' selected="selected"';
-										echo ' >'.encode_message_utf8($liste_name_themes[$i]).'</option>'."\n";
-										$i++;
-									}
-									echo '</select>
-								</td>
-							</tr>
-						</table>'."\n";
+	echo '<h4>'.get_vocab('explain_css').'</h4>';
+	echo '
+		<table>
+			<tr>
+				<td>'.get_vocab('choose_css').'</td>
+				<td>
+					<select class="form-control" name="default_css">'."\n";
+						$i = 0;
+						while ($i < count($liste_themes))
+						{
+							echo '              <option value="'.$liste_themes[$i].'"';
+							if ($default_css == $liste_themes[$i])
+								echo ' selected="selected"';
+							echo ' >'.encode_message_utf8($liste_name_themes[$i]).'</option>'."\n";
+							$i++;
+						}
+						echo '</select>
+					</td>
+				</tr>
+			</table>'."\n";
 /**
  * Choix de la langue
  */
-        echo '      <h4>'.get_vocab('choose_language').'</h4>';
-        echo '
+	echo '      <h4>'.get_vocab('choose_language').'</h4>';
+	echo '
         <table>
             <tr>
                 <td>'.get_vocab('choose_css').'</td>
@@ -592,9 +597,9 @@ echo ('
                 <input type="hidden" name="day" value="'.$day.'" />
                 <input type="hidden" name="month" value="'.$month.'" />
                 <input type="hidden" name="year" value="'.$year.'" />
-                <input type="hidden" name="id_site" value="-1" />
-                <input type="hidden" name="id_area" value="-1" />
-                <input type="hidden" name="id_room" value="-1" />
+                <input type="hidden" name="id_site" value="'.$reset_site.'" />
+                <input type="hidden" name="id_area" value="'.$reset_area.'" />
+                <input type="hidden" name="id_room" value="'.$reset_room.'" />
                 <input type="hidden" name="default_css" value="" />
                 <input type="hidden" name="area_item_format" value="" />
                 <input type="hidden" name="default_language" value="" />
