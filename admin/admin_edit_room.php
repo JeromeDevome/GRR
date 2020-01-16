@@ -3,9 +3,9 @@
  * admin_edit_room.php
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-11-23 15:30$
+ * Dernière modification : $Date: 2020-01-16 18:20$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -593,9 +593,13 @@ if ((!empty($room)) || (isset($area_id)))
 				echo "</td><td><input class=\"form-control\" type=\"text\" name=\"max_booking\" size=\"1\" value=\"".$row["max_booking"]."\" /></td></tr>";
 
 			}
-			else if ($row["max_booking"] != "-1")
-				echo "<tr><td>".get_vocab("msg_max_booking").get_vocab("deux_points")."</td><td><input type=\"hidden\" name=\"max_booking\" value=\"".$row["max_booking"]."\" /><b>".htmlspecialchars($row["max_booking"])."</b></td></tr>";
-// L'utilisateur ne peut pas reserver au-dele d'un certain temps
+			else 
+			{
+				if ($row["max_booking"] != "-1")
+					echo "<tr><td>".get_vocab("msg_max_booking").get_vocab("deux_points")."</td><td><b>".htmlspecialchars($row["max_booking"])."</b></td></tr>";
+				echo "<input type=\"hidden\" name=\"max_booking\" value=\"".$row["max_booking"]."\" />";
+			}
+// L'utilisateur ne peut pas reserver au-delà d'un certain temps
 			echo "<tr><td>".get_vocab("delais_max_resa_room").": </td><td><input class=\"form-control\" type=\"text\" name=\"delais_max_resa_room\" size=\"1\" value=\"".$row["delais_max_resa_room"]."\" /></td></tr>\n";
 // L'utilisateur ne peut pas reserver en-dessous d'un certain temps
 			echo "<tr><td>".get_vocab("delais_min_resa_room").": ";
