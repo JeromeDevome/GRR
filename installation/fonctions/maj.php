@@ -721,6 +721,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET `NAME` = jour_debut_Jours_Cycles WHERE `NAME` = 'jour_debut_Jours/Cycles';");
 		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs ADD `changepwd` TINYINT(1) NOT NULL DEFAULT '0' AFTER `password`;");
 		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_type_area ADD `couleurtexte` VARCHAR(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '#000000' AFTER `couleurhexa`;");
+		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_overload ADD `mail_spec` TEXT NOT NULL AFTER `overload_mail`;");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");

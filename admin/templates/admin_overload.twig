@@ -28,6 +28,7 @@
 							<th>{{trad.affiche_dans_les_vues}}</th>
 							<th>{{trad.affiche_dans_les_mails}}</th>
 							<th>{{trad.champ_confidentiel}}</th>
+							<th><span class="small">{{trad.envoy_mail_specifique}}*(1)(2)</span></th>
 							<th colspan="2">{{trad.action}}</th>
 						</tr>
 
@@ -55,6 +56,7 @@
 								<td><input type="checkbox" id="affichage" name="affichage" value="y" /></td>
 								<td><input type="checkbox" id="overload_mail" name="overload_mail" value="y" /></td>
 								<td><input type="checkbox" id="confidentiel" name="confidentiel" value="y" /></td>
+								<td><div><input type="text" name="mail_spec" size="20" /></div></td>
 								<td colspan="2"><input type="submit" name="submit" value="{{ trad.add }}" class="btn bg-green" /></td>
 							</tr>
 						</form>
@@ -84,6 +86,7 @@
 									<td><input type="checkbox" id="affichage" name="affichage" value="y"  {% if champAdd.affichagevue == 'y' %} checked {% endif %}></td>
 									<td><input type="checkbox" id="overload_mail" name="overload_mail" value="y"  {% if champAdd.affichagemail == 'y' %} checked {% endif %}></td>
 									<td><input type="checkbox" id="confidentiel" name="confidentiel" value="y"  {% if champAdd.confidentiel == 'y' %} checked {% endif %}></td>
+									<td><div><input type="text" name="mail_spec" size="20" value="{{ champAdd.mail_spec }}" /></div></td>
 									<td><button type="submit" class="btn btn-info btn-md"><i class="icon fa fa-check"></i></button></td>
 								</form>	
 								<form method="post" id="supChampAdd{{champAdd.id}}" action="?p=admin_overload">
@@ -96,6 +99,8 @@
 							</tr>
 						{% endfor %}
 					</table>
+					<p>(1) {{ trad.cas_fonctionnalite_mail_actif }}</p>
+					<p>(2) {{ trad.envois_mail_spec_exp }}</p>
 				</div>
 			</div>
 		</div>
