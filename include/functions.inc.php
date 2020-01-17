@@ -123,10 +123,10 @@ function cal($month, $year, $type)
 			}
 			else
 				$s .= " ";
-			$s .= '</td>'.PHP_EOL;;
+			$s .= '</td>'.PHP_EOL;
 			$d++;
 		}
-		$s .= '</tr>'.PHP_EOL;;
+		$s .= '</tr>'.PHP_EOL;
 		$is_ligne1 = 'n';
 	}
 	$s .= '</table>'.PHP_EOL;
@@ -2811,7 +2811,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	$reservation .= "-----\n";
 
 	$message = $message.$reservation;
-	$message = $message.$vocab["msg_no_email"].Settings::get("webmaster_email");;
+	$message = $message.$vocab["msg_no_email"].Settings::get("webmaster_email");
 	$message = html_entity_decode($message);
 	$sql = "SELECT u.email FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_mailuser_room j WHERE (j.id_room='".protect_data_sql($room_id)."' AND u.login=j.login and u.etat='actif') ORDER BY u.nom, u.prenom";
 	$res = grr_sql_query($sql);
@@ -4290,7 +4290,7 @@ function affichage_champ_add_mails($id_resa)
 	foreach ($overload_data as $fieldname=>$field)
 	{
 		if (($field["overload_mail"] == 'y') && ($field["valeur"] != ""))
-			$affichage .= bbcode(htmlspecialchars($fieldname).get_vocab("deux_points").htmlspecialchars($field["valeur"]),'nobbcode')."\n";;
+			$affichage .= bbcode(htmlspecialchars($fieldname).get_vocab("deux_points").htmlspecialchars($field["valeur"]),'nobbcode')."\n";
 	}
 	return $affichage;
 }
