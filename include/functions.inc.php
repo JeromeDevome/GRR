@@ -2762,6 +2762,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	//
 	// Infos sur la réservation
 	//		
+	$destinataire_spec = '';
 	$reservation = '';
 	$reservation .= $vocab["start_of_the_booking"]." ".$start_date."\n";
 	$reservation .= $vocab["duration"]." ".$duration." ".$dur_units."\n";
