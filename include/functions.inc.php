@@ -2773,6 +2773,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$reservation .= $vocab["description"]." ".$description."\n";
 	// Champ additionnel
 	$reservation .= affichage_champ_add_mails($id_entry);
+	$destinataire_spec .= envois_spec_champ_add_mails($id_entry);
 	// Type de réservation
 	$temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$row[5]."'");
 	if ($temp == -1)
@@ -2828,6 +2829,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		foreach ($tab_destinataire as $value){
 			$destinataire = $destinataire .";". $value;
 		}
+		$destinataire = $destinataire .";". $destinataire_spec;
 
 		Email::Envois($destinataire, $sujet, $message, $repondre, '', '');
 	}
@@ -2852,7 +2854,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$message7 .= $room_name." (".$area_name.")";
 		$message7 .= "\n".$reservation;
 		$message7 = html_entity_decode($message7);
-		$destinataire7 = $beneficiaire_email;
+		$destinataire7 = $beneficiaire_email.";". $destinataire_spec;
 		$repondre7 = Settings::get("webmaster_email");
 
 		Email::Envois($destinataire7, $sujet7, $message7, $repondre7, '', '');
@@ -2946,7 +2948,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		}
 		$message2 = $message2."\n".$reservation;
 		$message2 = html_entity_decode($message2);
-		$destinataire2 = $beneficiaire_email;
+		$destinataire2 = $beneficiaire_email.";".$destinataire_spec;
 		$repondre2 = $user_email;
 
 		Email::Envois($destinataire2, $sujet2, $message2, $repondre2, '', '');
@@ -4373,6 +4375,21 @@ function affichage_resa_planning_complet($vue, $resa, $heures)
 	}
 
 	return $affichage;
+}
+/*
+Destinaire specifique champ additionnel
+*/
+function envois_spec_champ_add_mails($id_resa)
+{
+	$destinataire = "";
+	// Les champs add :
+	$overload_data = mrbsEntryGetOverloadDesc($id_resa);
+	foreach ($overload_data as $fieldname=>$field)
+	{
+		if (($field["mail_spec"] != '') && ($field["valeur"] != "") && ($field["valeur"] != 0))
+			$destinataire .= htmlspecialchars($field["mail_spec"]).";";
+	}
+	return $destinataire;
 }
 /*
 Affiche un message pop-up

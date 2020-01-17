@@ -74,6 +74,11 @@ if ($action == "add")
 	else
 		$confidentiel = "n";
 
+    if (isset($_POST["mail_spec"]))
+        $mail_spec = $_POST["mail_spec"];
+    else
+        $mail_spec = "";
+
 	foreach ($userdomain as $key=>$value)
 	{
 		if ($key == $id_area)
@@ -81,7 +86,7 @@ if ($action == "add")
 	}
 	if ($arearight == true)
 	{
-		$sql = "INSERT INTO ".TABLE_PREFIX."_overload (id_area, fieldname, fieldtype, obligatoire, confidentiel, fieldlist, affichage, overload_mail) VALUES ($id_area, '".protect_data_sql($fieldname)."', '".protect_data_sql($fieldtype)."', '".$obligatoire."', '".$confidentiel."', '".protect_data_sql($fieldlist)."', '".$affichage."', '".$overload_mail."');";
+		$sql = "INSERT INTO ".TABLE_PREFIX."_overload (id_area, fieldname, fieldtype, obligatoire, confidentiel, fieldlist, affichage, overload_mail, mail_spec) VALUES ($id_area, '".protect_data_sql($fieldname)."', '".protect_data_sql($fieldtype)."', '".$obligatoire."', '".$confidentiel."', '".protect_data_sql($fieldlist)."', '".$affichage."', '".$overload_mail."', '".$mail_spec."');";
 		if (grr_sql_command($sql) < 0)
 			fatal_error(0, "$sql \n\n" . grr_sql_error());
 	}
@@ -161,7 +166,10 @@ if ($action == "change")
 	}
 	else
 		$confidentiel = "n";
-
+    if (isset($_POST["mail_spec"]))
+        $mail_spec = $_POST["mail_spec"];
+    else
+        $mail_spec = "";
 	$sql = "SELECT id_area FROM ".TABLE_PREFIX."_overload WHERE id=$id_overload;";
 	$resquery = grr_sql_query($sql);
 	if (!$resquery)
@@ -184,7 +192,8 @@ if ($action == "change")
 			confidentiel='".$confidentiel."',
 			affichage='".$affichage."',
 			overload_mail='".$overload_mail."',
-			fieldlist='".protect_data_sql($fieldlist)."'
+			fieldlist='".protect_data_sql($fieldlist)."',
+			mail_spec='".protect_data_sql($mail_spec)."'
 			WHERE id=$id_overload;";
 			if (grr_sql_command($sql) < 0)
 				fatal_error(0, "$sql \n\n" . grr_sql_error());
@@ -202,6 +211,7 @@ get_vocab_admin("champ_obligatoire");
 get_vocab_admin("affiche_dans_les_vues");
 get_vocab_admin("affiche_dans_les_mails");
 get_vocab_admin("champ_confidentiel");
+get_vocab_admin("envoy_mail_specifique");
 get_vocab_admin("action");
 
 get_vocab_admin("type_text");
@@ -215,6 +225,9 @@ get_vocab_admin('confirm_del');
 get_vocab_admin('delete');
 get_vocab_admin('cancel');
 
+get_vocab_admin("envois_mail_spec_exp");
+get_vocab_admin("cas_fonctionnalite_mail_actif");
+
 
 	foreach ($userdomain as $key=>$value)
 		$domaines[] = array('id' => $key, 'nom' => $userdomain[$key]);
@@ -224,14 +237,14 @@ get_vocab_admin('cancel');
 
 	foreach ($userdomain as $key=>$value)
 	{
-		$res = grr_sql_query("SELECT id, fieldname, fieldtype, obligatoire, fieldlist, affichage, overload_mail, confidentiel FROM ".TABLE_PREFIX."_overload WHERE id_area=$key ORDER BY fieldname;");
+		$res = grr_sql_query("SELECT id, fieldname, fieldtype, obligatoire, fieldlist, affichage, overload_mail, confidentiel, mail_spec FROM ".TABLE_PREFIX."_overload WHERE id_area=$key ORDER BY fieldname;");
 		if (!$res)
 			fatal_error(0, grr_sql_error());
 
 		if (grr_sql_count($res) != 0)
 			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 			{	
-				$champsAdd[] = array('id' => $row[0], 'nom' => $row[1], 'domaine' => $userdomain[$key], 'type' => $row[2], 'obligatoire' => $row[3], 'affichagevue' => $row[5], 'affichagemail' => $row[6], 'confidentiel' => $row[7], 'liste' => $row[4]);
+				$champsAdd[] = array('id' => $row[0], 'nom' => $row[1], 'domaine' => $userdomain[$key], 'type' => $row[2], 'obligatoire' => $row[3], 'affichagevue' => $row[5], 'affichagemail' => $row[6], 'confidentiel' => $row[7], 'liste' => $row[4], 'mail_spec' => $row[8]);
 			}
 		}
 
