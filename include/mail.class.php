@@ -3,9 +3,9 @@
  * include/mail.class.php
  * fichier de définition d'une classe de traitement des e-mails
  * fait partie de l'application GRR
- * Dernière modification : $Date: 2019-07-31 17:20$
+ * Dernière modification : $Date: 2020-01-24 10:20$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -95,7 +95,10 @@ class Email{
 
 			//mail($A, $sujet, utf8_decode(utf8_encode($message)), $headers);
             //encodage du sujet pour affichage des accents 3/3
-			mail(str_replace(";",",",$A), '=?utf-8?B?'.base64_encode($sujet).'?=', utf8_decode(utf8_encode(str_replace("<br>","",$message))), $headers); //YN selon Rapace sur le forum
+			$lesDestinataires = explode(";", $A);
+			for($i=0;$i<count($lesDestinataires);$i++){
+				mail(str_replace(";",",",$lesDestinataires[$i]), $sujet, utf8_decode(str_replace("<br>","",$message)), $headers);
+			} //YN selon Rapace et Boblegal sur le forum
 		}
 
 	}
