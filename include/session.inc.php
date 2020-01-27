@@ -1194,9 +1194,9 @@ function grr_getinfo_ldap($_dn, $_login, $_password)
         $val = $info[$i];
         if (is_array($val))
         {
-            $l_nom =    (isset($val[Settings::get("ldap_champ_nom")][0]))   ? ucfirst($val[Settings::get("ldap_champ_nom")][0]) : "Nom à préciser";
-            $l_prenom = (isset($val[Settings::get("ldap_champ_prenom")][0]))? ucfirst($val[strtolower(Settings::get("ldap_champ_prenom"))][0]) : "Prénom à préciser";
-            $l_email =  (isset($val[Settings::get("ldap_champ_email")][0])) ? $val[Settings::get("ldap_champ_email")][0] : '';
+            $l_nom =    (isset($val[strtolower(Settings::get("ldap_champ_nom"))][0]))   ? ucfirst($val[strtolower(Settings::get("ldap_champ_nom"))][0]) : "Nom à préciser";
+            $l_prenom = (isset($val[strtolower(Settings::get("ldap_champ_prenom"))][0]))? ucfirst($val[strtolower(Settings::get("ldap_champ_prenom"))][0]) : "Prénom à préciser";
+            $l_email =  (isset($val[strtolower(Settings::get("ldap_champ_email"))][0])) ? $val[strtolower(Settings::get("ldap_champ_email"))][0] : '';
         }
     }
     // Convertir depuis UTF-8 (jeu de caracteres par defaut)
