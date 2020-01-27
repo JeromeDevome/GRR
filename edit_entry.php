@@ -753,7 +753,7 @@ echo '<tr><td class="E">'.PHP_EOL;
 echo '<b>'.$B.'</b>'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;
 echo '<tr><td class="CL">'.PHP_EOL;
-echo '<input id="name" class="pleine form-control" name="name" size="60" value="'.$C.'" />'.PHP_EOL;
+echo '<input id="name" class="pleine form-control" name="name" maxlength="80" size="60" value="'.$C.'" />'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;
 echo '<tr><td class="E">'.PHP_EOL;
 echo '<b>'.$D.'</b>'.PHP_EOL;
