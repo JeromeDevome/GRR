@@ -396,7 +396,7 @@ else if ($etape == 1)
     echo "<h2>".encode_message_utf8("Informations de connexion à l'annuaire LDAP.")."</h2>\n";
     echo "<form action=\"admin_config_ldap.php\" method=\"post\">\n";
     if ((!(isset($ldap_adresse))) || ($ldap_adresse == ""))
-        $ldap_adresse = 'localhost';
+        $ldap_adresse = 'ldap://localhost';
     if ((!(isset($ldap_port))) || ($ldap_port == ""))
         $ldap_port = 389;
     if (!(isset($ldap_login)))
@@ -405,9 +405,9 @@ else if ($etape == 1)
         $ldap_pwd = "";
     echo "<div>\n<input type=\"hidden\" name=\"etape\" value=\"2\" />\n";
     echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" /></div>\n";
-    echo encode_message_utf8("<h3>Adresse de l'annuaire</h3><div>Laissez «localhost» si l'annuaire est installé sur la même machine que GRR. Sinon, indiquez l'adresse du serveur.<br />");
+    echo encode_message_utf8("<h3>URI de l'annuaire</h3><div>Laissez «ldap://localhost» si l'annuaire est installé sur la même machine que GRR. Sinon, indiquez l'adresse du serveur.<br />Utilisez le protocole ldaps:// si c'est votre cas.<br/>");
     echo "<input type=\"text\" name=\"adresse\" value=\"".$ldap_adresse."\" size=\"20\" />";
-    echo encode_message_utf8("<h3>Numéro de port de l'annuaire</h3>Dans le doute, laissez la valeur par défaut : 389<br />(3268 pour serveur de catalogues global AD)<br />");
+    echo encode_message_utf8("<h3>Numéro de port de l'annuaire</h3>Dans le doute, laissez la valeur par défaut : 389<br />(3268 pour serveur de catalogues global AD, 636 pour pour ldaps (LDAP over SSH)<br />");
     echo "<input type='text' name='port' value=\"$ldap_port\" size=\"20\" /></div>";
     echo encode_message_utf8("<h3>Type d'accès</h3><div>Si le serveur LDAP n'accepte pas d'accès anonyme, veuillez préciser un identifiant (par exemple « cn=jean, o=lycée, c=fr »). Dans le doute, laissez les champs suivants vides pour un accès anonyme.<br /><b>Identifiant :</b><br />");
     echo "<input type=\"text\" name=\"login_ldap\" value=\"".$ldap_login."\" size=\"40\" /><br />";
