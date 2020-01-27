@@ -3,9 +3,9 @@
  * admin_config_ldap.php
  * Interface permettant la configuration de l'accès à un annuaire LDAP
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-09-02 21:30$
+ * Dernière modification : $Date: 2020-01-19 11:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -214,7 +214,7 @@ if ($etape == 3)
         else
             echo "<p>".encode_message_utf8("<b>Problème</b> : Le chemin et le filtre additionnel que vous avez choisi semblent valides  mais la recherche sur ce chemin ne renvoie aucun résultat.</p><br />");
     }
-    // Le cas "error_3" n'est pas analusé car on accepte les  cas où il y a plusieurs entrées dans l'annuaire à l'issus de la recherche
+    // Le cas "error_3" n'est pas analysé car on accepte les  cas où il y a plusieurs entrées dans l'annuaire à l'issue de la recherche
     $erreur = '';
     $nom_fic = "../include/config_ldap.inc.php";
     if (@file_exists($nom_fic))
@@ -440,6 +440,7 @@ else if ($etape == 0)
 {
     if (!(function_exists("ldap_connect")))
     {
+		echo "<div class='col-sm-9 col-xs-12'>";
         echo encode_message_utf8("<h2>".$titre_ldap."</h2>\n");
         echo encode_message_utf8("<p class=\"avertissement\"><b>Attention </b> : les fonctions liées à l'authentification <b>LDAP</b> ne sont pas activées sur votre serveur PHP.
             <br />La configuration LDAP est donc actuellement impossible.</p></div></section></body></html>");

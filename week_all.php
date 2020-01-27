@@ -3,9 +3,9 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-11-29 11:00$
+ * Dernière modification : $Date: 2020-01-11 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -387,7 +387,7 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 		</div>";
 		include "./include/trailer.inc.php";
 		echo "<div class=\"right\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='week_all.php?year=$ty&amp;month=$tm&amp;day=$td&amp;area=$area';\">".get_vocab('weekafter')." <span class=\"glyphicon glyphicon-forward\"></button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='week_all.php?year=$ty&amp;month=$tm&amp;day=$td&amp;area=$area';\">".get_vocab('weekafter')." <span class=\"glyphicon glyphicon-forward\"></span></button>
 		</div>
 	</div>";
 }
