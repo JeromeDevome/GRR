@@ -50,10 +50,16 @@ include/cas.inc.php
 include/config.inc.php
 export/export.xml
 export/exportplus.xml
-<<<<<<< HEAD
 include/connect.inc.php
-=======
-images/9ced9a5214edece4192123246c333e26.png
-images/logo.jpg
+images/
 .idea
->>>>>>> 0b07bc4c959e8fa5549eb917a4460928df4d9308
+/edit_entry_handler.ori.php
+/test_date.php
+*.ori.php
+/year-dev.php
+/year-dev_all.php
+/year2.php
+
+
+/nbproject/private/
+
