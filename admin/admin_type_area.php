@@ -44,7 +44,7 @@ else
 // code HTML
 //start_page_w_header("", "", "", $type="with_session");
 //include "admin_col_gauche2.php";
-$sql = "SELECT id, type_name, order_display, couleurhexa, type_letter, couleur_texte FROM ".TABLE_PREFIX."_type_area
+$sql = "SELECT id, type_name, order_display, couleurhexa, type_letter, couleurtexte FROM ".TABLE_PREFIX."_type_area
 ORDER BY order_display, type_letter";
 //
 // Enregistrement
@@ -133,7 +133,7 @@ if ($res)
 		$order_display     = $row[2];
 		$couleur = $row[3];
 		$type_letter = $row[4];
-        $couleur_texte = $row[5];
+        $couleurtexte = $row[5];
 		// Affichage des numéros et descriptions
 		$col[$i][1] = $type_letter;
 		$col[$i][2] = $id_type;
@@ -144,7 +144,7 @@ if ($res)
 		echo "<tr>\n";
 		echo "<td>{$col[$i][1]}</td>\n";
 		echo "<td>{$col[$i][3]}</td>\n";
-		echo "<td style=\"background-color:".$couleur."; color:".$couleur_texte."\">".$type_name."</td>\n";
+		echo "<td style=\"background-color:".$couleur."; color:".$couleurtexte."\">".$type_name."</td>\n";
 		echo "<td>{$col[$i][4]}</td>\n";
 		echo "<td><input type=\"checkbox\" name=\"".$col[$i][2]."\" value=\"y\" ";
 		$test = grr_sql_query1("SELECT count(id_type) FROM ".TABLE_PREFIX."_j_type_area WHERE id_area = '".$id_area."' AND id_type = '".$row[0]."'");

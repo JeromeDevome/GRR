@@ -1849,8 +1849,8 @@ function tdcell($colclass, $width = '')
 	if (($colclass >= "A") && ($colclass <= "Z"))
 	{
 		/*$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-        $couleur_texte = grr_sql_query1("SELECT couleur_texte FROM".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-		echo '<td style="background-color:'.$couleurhexa.'; color:'.$couleur_texte.';" '.$temp.'>'.PHP_EOL;*/
+        $couleurtexte = grr_sql_query1("SELECT couleurtexte FROM".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
+		echo '<td style="background-color:'.$couleurhexa.'; color:'.$couleurtexte.';" '.$temp.'>'.PHP_EOL;*/
         echo '<td class="type'.$colclass.'"'.$temp.'>';
 	}
 	else
