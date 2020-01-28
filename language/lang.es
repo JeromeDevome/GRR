@@ -391,6 +391,7 @@ $vocab['etape_n'] = "Etapa n° ";
 $vocab['eveningends_area'] = "Hora de fin de día (superior a la hora de comienzo de día)";
 $vocab['eveningends_minutes_area'] = "Número de minutos a añadir a la hora de fin de día para tener el fin real de un día.";
 $vocab['every week'] = "cada semana";
+$vocab['exclude_type_in_views_all'] = "Here You can define a type that will not be displayed in views per domain (week_all, month_all, month_all2, year et year_all).";
 $vocab['execution automatique backup'] = "Exécution automatique de la sauvegarde"; // A traduire
 $vocab['execution automatique backup explications'] = "Une sauvegarde automatique peut être déclenchée par l'exécution du script « admin_save_mysql.php », par exemple en programmant son exécution à l'aide d'une tâche « cron ».
 <br />

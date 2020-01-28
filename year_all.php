@@ -371,8 +371,12 @@ else
                     //row[10]= type de la réservation
                     //row[11]= Modération
                     //row[12]= Bénéficiaire extérieur
-                    $sql = 'SELECT start_time, end_time, '.TABLE_PREFIX.'_entry.id, name, beneficiaire, room_name, statut_entry, '.TABLE_PREFIX.'_entry.description, option_reservation, '.TABLE_PREFIX.'_room.delais_option_reservation, type,'.TABLE_PREFIX.'_entry.moderate, beneficiaire_ext FROM '.TABLE_PREFIX.'_entry INNER JOIN '.TABLE_PREFIX.'_room ON '.TABLE_PREFIX.'_entry.room_id='.TABLE_PREFIX.'_room.id WHERE (start_time <= '.$end_month.' AND end_time > '.$begin_month.' AND '.TABLE_PREFIX.'_entry.room_id='.$room_id.') ORDER by start_time, end_time';
-                    //Build an array of information about each day in the month.
+					//row[13]= Type_name
+                    $sql = 'SELECT start_time, end_time, '.TABLE_PREFIX.'_entry.id, name, beneficiaire, room_name, statut_entry, '.TABLE_PREFIX.'_entry.description, option_reservation, '.TABLE_PREFIX.'_room.delais_option_reservation, type,'.TABLE_PREFIX.'_entry.moderate, beneficiaire_ext, '.TABLE_PREFIX.'_type_area.type_name 
+					FROM ('.TABLE_PREFIX.'_entry INNER JOIN '.TABLE_PREFIX.'_room ON '.TABLE_PREFIX.'_entry.room_id='.TABLE_PREFIX.'_room.id) INNER JOIN '.TABLE_PREFIX.'_type_area on '.TABLE_PREFIX.'_entry.type='.TABLE_PREFIX.'_type_area.type_letter
+					WHERE (start_time <= '.$end_month.' AND end_time > '.$begin_month.' AND '.TABLE_PREFIX.'_entry.room_id='.$room_id.') 
+					ORDER by start_time, end_time';
+					//Build an array of information about each day in the month.
                     //The information is stored as:
                     // $d[monthday]["id"][] = ID of each entry, for linking.
                     // $d[monthday]["data"][] = "start-stop" times of each entry.
@@ -384,6 +388,8 @@ else
                     { // les données sont bien recueillies
                         for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
                         {
+							if ($row[13] <> (Settings::get('exclude_type_in_views_all')))          // Nom du type à exclure  
+							{          
                             //Fill in data for each day during the month that this meeting ($row) covers. 
                             $t = max((int)$row[0], $begin_month);
                             $end_t = min((int)$row[1], $end_month);
@@ -498,7 +504,8 @@ else
                                 $year_num  = date("Y", $t);
                                 // ici fin du traitement des données
                             }
-                        }
+                        }           // MOdifExclure Ajouté
+						}
                         // afficher les données
                         /* echo "<div>"."afficher les données";
                         print_r($d);

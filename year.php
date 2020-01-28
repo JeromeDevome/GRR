@@ -3,7 +3,7 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-01-10 18:45$
+ * Dernière modification : $Date: 2020-01-25 12:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -183,6 +183,12 @@ if ($enable_periods == 'y')
 }
 //Used below: localized "all day" text but with non-breaking spaces:
 $all_day = preg_replace("/ /", " ", get_vocab("all_day"));
+// un type à exclure ?
+$type_exclu = Settings::get('exclude_type_in_views_all'); // nom du type exclu
+$sql = "SELECT type_letter FROM ".TABLE_PREFIX."_type_area WHERE ".TABLE_PREFIX."_type_area.type_name = '".$type_exclu."' ";
+$res = grr_sql_query($sql);
+$row = grr_sql_row($res,'0');
+$typeExclu = (isset($row[0]))? $row[0]:NULL; // lettre identifiant le type exclu  
 //Get all meetings for this month in the room that we care about
 //row[0] = Start time
 //row[1] = End time
@@ -192,9 +198,16 @@ $all_day = preg_replace("/ /", " ", get_vocab("all_day"));
 //row[5] = Nom de la ressource
 //row[6] = statut
 //row[7] = Description complète
-$sql = "SELECT start_time, end_time,".TABLE_PREFIX."_entry.id, name, beneficiaire, room_name, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, type, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext
-FROM ".TABLE_PREFIX."_entry inner join ".TABLE_PREFIX."_room on ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id
-WHERE (start_time <= $month_end AND end_time > $month_start and area_id='".$area."')
+//row[8] = option reservation
+//row[9] = delai option reservation
+//row[10]= type  -> lettre du type de l'entrée
+//row[11]= état de la modération
+//row[12]= bénéficiaire extérieur
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire,
+ room_name, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation,
+ ".TABLE_PREFIX."_room.delais_option_reservation, type, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext
+FROM ".TABLE_PREFIX."_entry inner join ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id
+WHERE (start_time <= $month_end AND end_time > $month_start and area_id='".$area."' AND type <> '".$typeExclu."')
 ORDER by start_time, end_time, ".TABLE_PREFIX."_room.room_name";
 //Build an array of information about each day in the month.
 //The information is stored as:

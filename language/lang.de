@@ -392,6 +392,7 @@ $vocab['etape_n'] = "Phase Nr ";
 $vocab['eveningends_area'] = "Der Tag endet um:";
 $vocab['eveningends_minutes_area'] = "Anzahl der Minuten um das tatsächliche Ende des Tages zu erhalten.";
 $vocab['every week'] = "wöchentlich";
+$vocab['exclude_type_in_views_all'] = "Here You can define a type that will not be displayed in views per domain (week_all, month_all, month_all2, year et year_all).";
 $vocab['execution automatique backup'] = "Exécution automatique de la sauvegarde"; // A traduire
 $vocab['execution automatique backup explications'] = "Une sauvegarde automatique peut être déclenchée par l'exécution du script « admin_save_mysql.php », par exemple en programmant son exécution à l'aide d'une tâche « cron ».
 <br />
