@@ -7,49 +7,49 @@ Pour cela la variable $unicode_encoding doit avoir pour valeur 1 dans le
 fichier "config.inc.php."
 
 Si c'est le cas, GRR affiche toutes les pages en utilisant l'encodage UTF-8
-et stocke toutes les données dans la base au format UTF-8.
-Selon la langue choisie, GRR traduit les chaînes de caractères stockées dans
-les fichiers lang.XX en UTF-8 pour les afficher correctement à l'écran.
+et stocke toutes les donnÃ©es dans la base au format UTF-8.
+Selon la langue choisie, GRR traduit les chaÃ®nes de caractÃ¨res stockÃ©es dans
+les fichiers lang.XX en UTF-8 pour les afficher correctement Ã  l'Ã©cran.
 
 ATTENTION :
-Pour que cela fonctionne, php doit avoir été compilé avec le support 'iconv'
+Pour que cela fonctionne, php doit avoir Ã©tÃ© compilÃ© avec le support 'iconv'
 (directive '--with-iconv').
 
 
-Mode opératoire :
+Mode opÃ©ratoire :
 -----------------
-- Dans le fichier config.inc.php, mettre la valeur de $unicode_encoding à 1.
+- Dans le fichier config.inc.php, mettre la valeur de $unicode_encoding Ã  1.
 
-- Pour un bon fonctionnement, il est nécessaire que la base Mysql soit au format UTF-8
-Depuis la version 4.1 de MySQL, il est possible d'utiliser l'encodage UTF-8 pour stocker des données Unicode.
+- Pour un bon fonctionnement, il est nÃ©cessaire que la base Mysql soit au format UTF-8
+Depuis la version 4.1 de MySQL, il est possible d'utiliser l'encodage UTF-8 pour stocker des donnÃ©es Unicode.
 
-S'il s'agit d'une nouvelle installation de GRR, veillez à ce que le jeu de caractères
+S'il s'agit d'une nouvelle installation de GRR, veillez Ã  ce que le jeu de caractÃ¨res
 des colonnes des tables de la base GRR soient en UTF-8.
-Si ce n'est pas le cas, il faudra convertir les colonnes dans le jeu de caractères UTF-8.
+Si ce n'est pas le cas, il faudra convertir les colonnes dans le jeu de caractÃ¨res UTF-8.
 On peut alors utiliser un outil tel que PhpMyadmin.
 
-S'il s'agit d'une installation existante de GRR, cela signifie que des données
-figurent déjà dans la base, en latin 1 (ISO-8859-1).
-Il faut donc convertir ces données au format UTF-8. dans le cas contraire,
-des points d'interrogation s'afficheront dans le navigateur à la place de
-certains caractères (caractères accentués notamment).
-Selon les environnements, il existe différentes solutions pour convertir les données.
+S'il s'agit d'une installation existante de GRR, cela signifie que des donnÃ©es
+figurent dÃ©jÃ  dans la base, en latin 1 (ISO-8859-1).
+Il faut donc convertir ces donnÃ©es au format UTF-8. dans le cas contraire,
+des points d'interrogation s'afficheront dans le navigateur Ã  la place de
+certains caractÃ¨res (caractÃ¨res accentuÃ©s notamment).
+Selon les environnements, il existe diffÃ©rentes solutions pour convertir les donnÃ©es.
 
-De façon générale, cette conversion se fait en trois étapes :
--Création d'une sauvegarde de la base,
+De faÃ§on gÃ©nÃ©rale, cette conversion se fait en trois Ã©tapes :
+-CrÃ©ation d'une sauvegarde de la base,
 -Conversion de la sauvegarde,
 -Restauration de la sauvegarde.
 
-La création et la restauration ne posent pas de problème en utilisant un outil tel que PhpMyadmin.
+La crÃ©ation et la restauration ne posent pas de problÃ¨me en utilisant un outil tel que PhpMyadmin.
 
 Exemple de conversion de la base en UTF-8 sous Linux en utilisant iconv :
 -------------------------------------------------------------------------
-La simple commande suivante permet de créer à partir de votre fichier
+La simple commande suivante permet de crÃ©er Ã  partir de votre fichier
 de sauvegarde "ma_base_grr.dump", un nouveau fichier de sauvegarde
 "ma_base_grr_UTF8.dump" au format UTF-8 :
 $ iconv -f ISO8859-1 -t UTF-8 ma_base_grr.dump > ma_base_grr_UTF8.dump
 
 Exemple de conversion de la base en UTF-8 sous windows XP en utilisant notepad :
 --------------------------------------------------------------------------------
-Ouvrir à l'aide de notepad le fichier de sauvegarde "ma_base_grr.dump"
+Ouvrir Ã  l'aide de notepad le fichier de sauvegarde "ma_base_grr.dump"
 Faire un enregistrer sous : choisir le format UTF-8 et enregistrer.

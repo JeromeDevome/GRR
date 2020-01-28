@@ -3,9 +3,9 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-04-24 10:00$
+ * Dernière modification : $Date: 2020-01-28 11:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -380,20 +380,20 @@ echo '<form action="admin_user_modify.php?display='.$display.'" method="get"><di
 	}
 	else
 	{
-		echo "<input type=\"text\" name=\"new_login\" size=\"40\" value=\"".htmlentities($user_login)."\" />\n";
+		echo "<input type=\"text\" name=\"new_login\" maxlength=\"40\" size=\"40\" value=\"".htmlentities($user_login)."\" />\n";
 	}
 	echo "<table class='table-noborder'><tr>\n";
-	echo "<td>".get_vocab("last_name")." *".get_vocab("deux_points")."</td>\n<td><input type=\"text\" name=\"reg_nom\" size=\"40\" value=\"";
+	echo "<td>".get_vocab("last_name")." *".get_vocab("deux_points")."</td>\n<td><input type=\"text\" maxlength=\"30\" name=\"reg_nom\" size=\"40\" value=\"";
 	if ($user_nom)
 		echo htmlspecialchars($user_nom);
 	echo "\" /></td>\n";
-	echo "<td>".get_vocab("first_name")." *".get_vocab("deux_points")."</td>\n<td><input type=\"text\" name=\"reg_prenom\" size=\"20\" value=\"";
+	echo "<td>".get_vocab("first_name")." *".get_vocab("deux_points")."</td>\n<td><input type=\"text\" maxlength=\"30\" name=\"reg_prenom\" size=\"20\" value=\"";
 	if ($user_nom)
 		echo htmlspecialchars($user_prenom);
 	echo "\" /></td>\n";
 	echo "<td></td><td></td>";
 	echo "</tr>\n";
-	echo "<tr><td>".get_vocab("mail_user").get_vocab("deux_points")."</td><td><input type=\"text\" name=\"reg_email\" size=\"30\" value=\"";
+	echo "<tr><td>".get_vocab("mail_user").get_vocab("deux_points")."</td><td><input type=\"text\" maxlength=\"100\" name=\"reg_email\" size=\"30\" value=\"";
 	if ($user_mail)
 		echo htmlspecialchars($user_mail);
 	echo "\" /></td>\n";
@@ -451,8 +451,8 @@ echo '<form action="admin_user_modify.php?display='.$display.'" method="get"><di
 	echo "<div id='password_fields' style='visibility: ".$statut_div.";'>";
 	if ((isset($user_login)) && ($user_login!='') && ($flag_is_local=="y"))
 		echo "<b>".get_vocab("champ_vide_mot_de_passe_inchange")."</b>";
-	echo "<br />".get_vocab("pwd_toot_short")." *".get_vocab("deux_points")."<input type=\"password\" name=\"reg_password\" size=\"20\" />\n";
-	echo "<br />".get_vocab("confirm_pwd")." *".get_vocab("deux_points")."<input type=\"password\" name=\"reg_password2\" size=\"20\" />\n";
+	echo "<br />".get_vocab("pwd_toot_short")." *".get_vocab("deux_points")."<input type=\"password\" name=\"reg_password\" maxlength=\"32\" size=\"20\" />\n";
+	echo "<br />".get_vocab("confirm_pwd")." *".get_vocab("deux_points")."<input type=\"password\" name=\"reg_password2\" maxlength=\"32\" size=\"20\" />\n";
 	echo "</div>";
 	echo "<br />";
 	echo "<input type=\"hidden\" name=\"valid\" value=\"yes\" />\n";
