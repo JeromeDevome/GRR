@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-11-28 16:00$
+ * Dernière modification : $Date: 2020-01-28 12:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -3636,14 +3636,14 @@ function verif_date_option_reservation($option_reservation, $starttime)
 	}
 }
 // Vérifie que $_create_by peut réserver la ressource $_room_id pour $_beneficiaire
-function verif_qui_peut_reserver_pour($_room_id, $user, $_beneficiaire)
+function verif_qui_peut_reserver_pour($_room_id, $_create_by, $_beneficiaire)
 {
 	if ($_beneficiaire == "")
 		return true;
-	if (strtolower($user) == strtolower($_beneficiaire))
+	if (strtolower($_create_by) == strtolower($_beneficiaire))
 		return true;
 	$qui_peut_reserver_pour  = grr_sql_query1("SELECT qui_peut_reserver_pour FROM ".TABLE_PREFIX."_room WHERE id='".$_room_id."'");
-	if (authGetUserLevel($user, $_room_id) >= $qui_peut_reserver_pour)
+	if (authGetUserLevel($_create_by, $_room_id) >= $qui_peut_reserver_pour)
 		return true;
 	return false;
 }

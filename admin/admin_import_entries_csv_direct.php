@@ -3,9 +3,9 @@
  * admin_import_entries_csv_direct.php
  * Importe un fichier de réservations au format csv comprenant les champs : date du jour, heure de début, heure de fin, ressource, description et type
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-02-16 16:20$
+ * Dernière modification : $Date: 2020-01-28 11:50$
  * @author    JeromeB & Yan Naessens & Denis Monasse & Laurent Delineau
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -99,13 +99,13 @@ echo "<h2>Importation d'un fichier de réservations dans GRR</h2><hr />";
      }
      $nb_erreurs=0;
     echo "<h2>Deuxième étape de l'importation en cours, ne fermez pas la page</h2>";
-         // on récupère les données : date, heure de début, minute de début, heure de fin, minute de fin, ressource, description, type
-		 $sql_query="SELECT date,heure_deb,minute_deb,heure_fin,minute_fin,ressource,description,type FROM ".TABLE_PREFIX."_csv2 ";
-		 // $sql_query .= "ORDER BY jour,salle,heure_deb,minute_deb,classe,matiere"; a priori pas besoin de trier
-		 $res=grr_sql_query($sql_query);
-		 if ($res) { 
-         // on a des données à traiter
-			  $i = 0; $erreur=""; $n=0;
+		// on récupère les données : date, heure de début, minute de début, heure de fin, minute de fin, ressource, description, type
+		$sql_query="SELECT date,heure_deb,minute_deb,heure_fin,minute_fin,ressource,description,type FROM ".TABLE_PREFIX."_csv2 ";
+		// $sql_query .= "ORDER BY jour,salle,heure_deb,minute_deb,classe,matiere"; a priori pas besoin de trier
+		$res=grr_sql_query($sql_query);
+		if ($res) { 
+		 // on a des données à traiter
+			$i = 0; $erreur=""; $n=0;
 			while($row = grr_sql_row($res, $i)){
 				$date=$row[0]; 
 				$heure_deb=$row[1]; $minute_deb=$row[2];
@@ -115,17 +115,17 @@ echo "<h2>Importation d'un fichier de réservations dans GRR</h2><hr />";
 				$room_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_room WHERE room_name LIKE'".$ressource."'");
 				echo $i." ";
 				if(!ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$minute_fin,$description,$type))
-                  { echo "Erreur dans la réservation ($erreur): "; //  numéro ".$n.": ".$erreur.":";
-                   // on affiche les réservations non faites en un format de type CSV pour faciliter un copier-coller
-                   echo $row[0].", ".$row[1]."h".$row[2]." -> ".$row[3]."h".$row[4].", ".$row[5].", ".$row[6].", ".$row[7]."</br>";
-                   // for($k=0;$k<8;$k++) {echo "\"".$row[$k]."\",";}
-                   $nb_erreurs++;
-                   }
+				  { echo "Erreur dans la réservation ($erreur): "; //  numéro ".$n.": ".$erreur.":";
+				   // on affiche les réservations non faites en un format de type CSV pour faciliter un copier-coller
+				   echo $row[0].", ".$row[1]."h".$row[2]." -> ".$row[3]."h".$row[4].", ".$row[5].", ".$row[6].", ".$row[7]."</br>";
+				   // for($k=0;$k<8;$k++) {echo "\"".$row[$k]."\",";}
+				   $nb_erreurs++;
+				   }
 					//	   else echo "Réservation effectuée</br>";
 			}      
 			echo "<h2>Importation de ".($i-$nb_erreurs)."/$nb_reservations réservations terminée au bout de ".(time()-$temps_debut)." secondes</h2>";
 			echo "Vérifiez que l'importation est bien complète (aux erreurs près), sinon restaurez la base de données, scindez le fichier CSV et recommencez.<br/>";
-		 }
+		}
 } 
 else 
 {   // show upload form
