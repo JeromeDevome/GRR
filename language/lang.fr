@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2019-02-21
+# Last modification : 2019-12-29
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -394,6 +394,7 @@ $vocab['etape_n'] = "Etape n° ";
 $vocab['eveningends_area'] = "Heure de fin de journée (supérieure à l'heure de début de journée)";
 $vocab['eveningends_minutes_area'] = "Nombre de minutes à ajouter à l'heure de fin de journée pour avoir la fin réelle d'une journée.";
 $vocab['every week'] = "chaque semaine";
+$vocab['exclude_type_in_views_all'] = "Vous pouvez choisir ici un type de réservation existant qui sera exclu des vues par domaine (week_all, month_all, month_all2, year et year_all).";
 $vocab['execution automatique backup'] = "Exécution automatique de la sauvegarde";
 $vocab['execution automatique backup explications'] = "Une sauvegarde automatique peut être déclenchée par l'exécution du script « admin_save_mysql.php », par exemple en programmant son exécution à l'aide d'une tâche « cron ».
 <br />

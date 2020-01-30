@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!-- 
  * Ce fichier fait partie de l'application GRR
- * Dernière modification : $Date: 2019-10-22 $
+ * Dernière modification : $Date: 2020-01-24 $
  * @author  Laurent Delineau <laurent.delineau@ac-poitiers.fr>
  * @copyright Copyright 2008-2008 Laurent Delineau
  * @author  Yan Naessens
- * @copyright Copyright 2019 Yan Naessens
+ * @copyright Copyright 2020 Yan Naessens
  * @link   http://www.gnu.org/licenses/licenses.html
  * @filesource
  *
@@ -803,7 +803,14 @@ ordre d'affichage dans les différents plannings.<br />
 Lorsqu'un type est créé, celui-ci est actif pour tous les domaines.<br /> 
 Ensuite, pour chaque domaine, il est possible d'activer ou de désactiver
  un ou plusieurs types de réservation. Il est également possible de 
-spécifier un type par défaut lors d'une nouvelle réservation.
+spécifier un type par défaut lors d'une nouvelle réservation.<br />
+Il est également possible de définir un type, dans "Types de réservation", qui sera exclu des plannings week_all, month_all, month_all2, year et year_all.
+Utilité : ceci permet de créer des créneaux non réservables (par ex. avec un type = "Indisponible") qui n'apparaissent que dans les plannings par Ressources (jour, semaine, mois).<br />
+Méthode :
+<ol>
+<li>1. définir un type</li>
+<li>2. affecter ce type à la fonction "cacher sur les plannings week_all, month et month_all"</li>
+</ol>
 <h2>3.3.Calendrier hors réservation</h2>
 <h3>3.3.1.Les jours hors réservation</h3>
 Il est possible de spécifier un calendrier de journées hors réservation :

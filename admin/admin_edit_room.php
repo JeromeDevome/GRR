@@ -3,8 +3,8 @@
  * admin_edit_room.php
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-01-16 18:20$
- * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens
+ * Dernière modification : $Date: 2020-01-28 11:10$
+ * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -422,7 +422,7 @@ if ((!empty($room)) || (isset($area_id)))
 	echo "<tr><td>".get_vocab("name").get_vocab("deux_points")."</td><td>\n";
     // seul l'administrateur peut modifier le nom de la ressource
     if ((authGetUserLevel(getUserName(),$area_id,"area") >= 4) || (authGetUserLevel(getUserName(),$room) >= 4))
-        echo "<input type=\"text\" name=\"room_name\" size=\"40\" value=\"".htmlspecialchars($row["room_name"])."\" />\n";
+        echo "<input type=\"text\" name=\"room_name\" maxlength=\"60\" size=\"40\" value=\"".htmlspecialchars($row["room_name"])."\" />\n";
     else
     {
         echo "<input type=\"hidden\" name=\"room_name\" value=\"".htmlspecialchars($row["room_name"])."\" />\n";
@@ -430,7 +430,7 @@ if ((!empty($room)) || (isset($area_id)))
     }
     echo "</td></tr>\n";
     // Description
-    echo "<tr><td>".get_vocab("description")."</td><td><input type=\"text\" name=\"description\"  size=\"40\" value=\"".htmlspecialchars($row["description"])."\" /></td></tr>\n";
+    echo "<tr><td>".get_vocab("description")."</td><td><input type=\"text\" name=\"description\"  maxlength=\"60\" size=\"40\" value=\"".htmlspecialchars($row["description"])."\" /></td></tr>\n";
     // Domaine
     $enable_periods = grr_sql_query1("select enable_periods from ".TABLE_PREFIX."_area where id='".$area_id."'");
     if (((authGetUserLevel(getUserName(),$area_id,"area") >=4 ) || (authGetUserLevel(getUserName(),$room) >= 4)) && ($enable_periods == 'n'))
@@ -970,7 +970,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 		echo "<table class='table table-bordered'><tr>";
 		// Nom du domaine
 		echo "<td>".get_vocab("name").get_vocab("deux_points")."</td>\n";
-		echo "<td style=\"width:30%;\"><input type=\"text\" name=\"area_name\" size=\"40\" value=\"".htmlspecialchars($row["area_name"])."\" /></td>\n";
+		echo "<td style=\"width:30%;\"><input type=\"text\" name=\"area_name\" maxlength=\"30\" size=\"40\" value=\"".htmlspecialchars($row["area_name"])."\" /></td>\n";
 		echo "</tr><tr>\n";
 		// Ordre d'affichage du domaine
 		echo "<td>".get_vocab("order_display").get_vocab("deux_points")."</td>\n";
