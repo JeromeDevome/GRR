@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2019-11-27 15:00$
+ * Dernière modification : $Date: 2020-01-29 19:10$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -39,40 +39,7 @@ function isSchoolHoliday($now)
 	$test = grr_sql_query1("SELECT DAY FROM ".TABLE_PREFIX."_calendrier_vacances where DAY = '".$now."'");
 	$val = ($test != -1);
 	return $val;
-} 
-/* function getSchoolHolidays($now, $year)
-{
-	$zone = 'A';
-	if (Settings::get("holidays_zone") != NULL)
-		$zone = Settings::get("holidays_zone");
-	$sh = array(false, "");
-	$vacances = simplexml_load_file('vacances.xml');
-	$libelle = $vacances->libelles->children();
-	$node = $vacances->calendrier->children();
-	foreach ($node as $key => $value)
-	{
-		if ($value['libelle'] == $zone)
-		{
-			foreach ($value->vacances as $key => $value)
-			{
-				$y = date('Y', strtotime($value['debut']));
-				if ($y == $year)
-				{
-					if (strtotime($value['debut']) <= $now && $now < strtotime($value['fin']))
-					{
-						$nom = (int)$value['libelle'];
-						$nom = $libelle->libelle[$nom - 1];
-						$sh = array(true, $nom);
-						break;
-					}
-
-				}
-			}
-		}
-	}
-	return $sh;
 }
-*/
 // fonction de calcul des jours fériés (France)
 function setHolidays($year = null)
 {
@@ -137,7 +104,7 @@ function cal($month, $year, $type)
 			$temp = mktime(0, 0, 0, $month, $d, $year);
 			if ($i == 0)
 				$s .= '<td class="calendar2" style="vertical-align:bottom;"><b>S'.getWeekNumber($temp).'</b></td>'.PHP_EOL;
-			$s .= '<td class="calendar2" valign="top">'.PHP_EOL;
+			$s .= '<td class="calendar2" align="center" valign="top">'.PHP_EOL;
 			if ($is_ligne1 == 'y')
 				$s .=  '<b>'.ucfirst(substr($nameday,0,1)).'</b><br />';
 			if ($d > 0 && $d <= $daysInMonth)
@@ -156,10 +123,10 @@ function cal($month, $year, $type)
 			}
 			else
 				$s .= " ";
-			$s .= '</td>'.PHP_EOL;;
+			$s .= '</td>'.PHP_EOL;
 			$d++;
 		}
-		$s .= '</tr>'.PHP_EOL;;
+		$s .= '</tr>'.PHP_EOL;
 		$is_ligne1 = 'n';
 	}
 	$s .= '</table>'.PHP_EOL;
@@ -281,33 +248,10 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 				$affichage = "";
 		}
 		else
-			//$affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.$_identite.'</a>'.PHP_EOL;
             $affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.$_identite.'</a>'.PHP_EOL;
 	}
 	else
-	{   // si j'ai bien compris, il s'agit de calculer une balise mailto, et ce qui suit parait trop compliqué YN 2018-01-26
-
-	/*	?>
-		<script type="text/javascript">
-			function encode_adresse(user,domain,debut)
-			{
-				var address = user+'@'+domain;
-				var toWrite = '';
-				if (debut > 0)
-					toWrite += '<'+'a href="mailto:';
-				else
-					toWrite +=';';
-				toWrite +=address
-				document.write(toWrite);
-			}
-			function encode_fin_adresse(label)
-			{
-				var toWrite = '';
-				toWrite +='">'+label+'</'+'a>';
-				document.write(toWrite);
-			}
-		</script>
-		<?php */
+	{   // Il s'agit de calculer une balise mailto
 		$affichage = "";
 		if ($_email == "")
 		{
@@ -323,30 +267,6 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
             else 
                 if ($option_affichage == "afficher_toujours")
                     $affichage = $_identite;
-            /* 
-			$tab_email = explode(';', trim($_email));
-			$i = 0;
-			$affichage .= '<script>'.PHP_EOL;
-			foreach ($tab_email as $item_email)
-			{
-				$item_email_explode = explode('@',$item_email);
-				$person = $item_email_explode[0];
-				if (isset($item_email_explode[1]))
-				{
-					$i++;
-					$domain = $item_email_explode[1];
-					if ($i == 1)
-					{
-						$affichage .=  'encode_adresse("'.$person.'", "'.$domain.'", 1);'.PHP_EOL;
-					}
-					else{
-						$affichage .=  'encode_adresse("'.$person.'", "'.$domain.'", 0);'.PHP_EOL;
-					}
-				}
-			}
-			$affichage .=  'encode_fin_adresse("'.addslashes($_identite).'");'.PHP_EOL;
-			$affichage .=  '</script>'.PHP_EOL;
-			$affichage .= $_identite; */
 		}
 	}
 	return $affichage;
@@ -841,45 +761,46 @@ function verif_page()
 		return "day";
 }
 
-function page_accueil($param='no') {
-   // Definition de $defaultroom
-   if ((isset($_SESSION['default_room']))&& ($_SESSION['default_room'] > -5)) {
-      $defaultroom = $_SESSION['default_room'];
-   } else {
-      $defaultroom = Settings::get("default_room");
-   }
-   // Definition de $defaultsite
-   if (isset($_SESSION['default_site']) and ($_SESSION['default_site'] >0)) {
-      $defaultsite = $_SESSION['default_site'];
-   } else if (Settings::get("default_site") > 0) {
-      $defaultsite = Settings::get("default_site");
-   } else
-      $defaultsite = get_default_site();
-   // Definition de $defaultarea
-   if (isset($_SESSION['default_area']) and ($_SESSION['default_area'] >0)) {
-      $defaultarea = $_SESSION['default_area'];
-   } else if (Settings::get("default_area") > 0) {
-      $defaultarea = Settings::get("default_area");
-   } else
-      $defaultarea = get_default_area($defaultsite);
-   // Calcul de $page_accueil
-   if ($defaultarea == -1) {
-      $page_accueil="day.php?noarea="; // le paramètre noarea ne sert à rien, il est juste là pour éviter un cas particulier à traiter avec &amp;id_site= et $param
-   } else if ($defaultroom == -1) {
-      $page_accueil="day.php?area=$defaultarea";
-   } else if ($defaultroom == -2) {
-      $page_accueil="week_all.php?area=$defaultarea";
-   } else if ($defaultroom == -3) {
-      $page_accueil="month_all.php?area=$defaultarea";
-   } else if ($defaultroom == -4) {
-      $page_accueil="month_all2.php?area=$defaultarea";
-   } else {
-      $page_accueil="week.php?area=$defaultarea&amp;room=$defaultroom";
-   }
-   if ((Settings::get("module_multisite") == "Oui") and ($defaultsite>0))
-       $page_accueil .= "&amp;id_site=".$defaultsite;
-   if ($param=='yes') $page_accueil .= "&amp;";
-   return $page_accueil ;
+function page_accueil($param = 'no')
+{
+	// Definition de $defaultroom
+	if (isset($_SESSION['default_room']))// && ($_SESSION['default_room'] > -5))
+		$defaultroom = $_SESSION['default_room'];
+	else
+		$defaultroom = Settings::get("default_room");
+	// Definition de $defaultsite
+	if (isset($_SESSION['default_site']) && ($_SESSION['default_site'] > 0))
+		$defaultsite = $_SESSION['default_site'];
+	else if (Settings::get("default_site") > 0)
+		$defaultsite = Settings::get("default_site");
+	else
+		$defaultsite = get_default_site();
+	// Definition de $defaultarea
+	if (isset($_SESSION['default_area']) && ($_SESSION['default_area'] > 0))
+		$defaultarea = $_SESSION['default_area'];
+	else if (Settings::get("default_area") > 0)
+		$defaultarea = Settings::get("default_area");
+	else
+		$defaultarea = get_default_area($defaultsite);
+	// Calcul de $page_accueil
+	if ($defaultarea == - 1)
+		$page_accueil = 'day.php?noarea=';
+	// le paramètre noarea ne sert à rien, il est juste là pour éviter un cas particulier à traiter avec &amp;id_site= et $param
+	else if ($defaultroom == - 1)
+		$page_accueil = 'day.php?area='.$defaultarea;
+	else if ($defaultroom == - 2)
+		$page_accueil = 'week_all.php?area='.$defaultarea;
+	else if ($defaultroom == - 3)
+		$page_accueil = 'month_all.php?area='.$defaultarea;
+	else if ($defaultroom == -4)
+		$page_accueil = 'month_all2.php?area='.$defaultarea;
+	else
+		$page_accueil = 'week.php?area='.$defaultarea.'&amp;room='.$defaultroom;
+	if ((Settings::get("module_multisite") == "Oui") && ($defaultsite > 0))
+		$page_accueil .= '&id_site='.$defaultsite;
+	if ($param == 'yes')
+		$page_accueil .= '&';
+	return $page_accueil ;
 }
 
 function begin_page($title, $page = "with_session")
@@ -1032,6 +953,10 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 {
 	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2;
+	
+	if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
+		header("Location: ./changepwd.php");
+	}
 
 	if (@file_exists('./admin_access_area.php')){
 		$adm = 1;
@@ -1136,7 +1061,6 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
                         echo "<br />";
 					}
                     echo "<p class='avertissement'>".$mess_resa."</p>";
-                    
 					echo '</td>'.PHP_EOL;
 				}
 			}
@@ -1216,6 +1140,60 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			echo '</div>'.PHP_EOL;
 			echo '<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>'.PHP_EOL;
 			echo '</div>'.PHP_EOL;
+		}
+	}
+}
+
+function print_header_admin($day = '', $month = '', $year = '', $type_session = 'with_session')
+{
+	global $vocab, $search_str, $grrSettings, $desactive_VerifNomPrenomUser, $grr_script_name;
+	global $use_admin, $id_site, $use_select2, $lienRetour, $lienCompte, $nomAffichage;
+
+	// Si nous ne sommes pas dans un format imprimable
+	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
+	{
+		// If we dont know the right date then make it up
+		if (!isset($day) || !isset($month) || !isset($year) || ($day == '') || ($month == '') || ($year == ''))
+		{
+			$date_now = time();
+			if ($date_now < Settings::get("begin_bookings"))
+				$date_ = Settings::get("begin_bookings");
+			else if ($date_now > Settings::get("end_bookings"))
+				$date_ = Settings::get("end_bookings");
+			else
+				$date_ = $date_now;
+			$day   = date("d",$date_);
+			$month = date("m",$date_);
+			$year  = date("Y",$date_);
+		}
+		if (!(isset($search_str)))
+			$search_str = get_vocab("search_for");
+		if (empty($search_str))
+			$search_str = "";
+		if (!(isset($desactive_bandeau_sup) && ($desactive_bandeau_sup == 1) && ($type_session != 'with_session')))
+		{
+
+			$nomAffichage =  htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']);
+
+			// On fabrique une date valide pour la réservation si ce n'est pas le cas
+			$date_ = mktime(0, 0, 0, $month, $day, $year);
+			if ($date_ < Settings::get("begin_bookings"))
+				$date_ = Settings::get("begin_bookings");
+			else if ($date_ > Settings::get("end_bookings"))
+				$date_ = Settings::get("end_bookings");
+			$day   = date("d",$date_);
+			$month = date("m",$date_);
+			$year  = date("Y",$date_);
+
+			// Liens
+			$lienRetour = '../'.page_accueil('yes').'day='.$day.'&year='.$year.'&month='.$month;
+			$lienCompte = '../my_account.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month;
+
+			//Mail réservation
+			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
+			$res = grr_sql_query1($sql);
+			grr_sql_free($res);
+
 		}
 	}
 }
@@ -1767,6 +1745,23 @@ function period_date_string($t, $mod_time = 0)
 	return array($p_num, $periods_name[$p_num] . utf8_strftime(", ".$dformat, $t));
 }
 
+
+function period_date_string_rapport($t, $mod_time = 0)
+{
+	global $periods_name, $dformat;
+	$time = getdate($t);
+	$p_num = $time["minutes"] + $mod_time;
+	if ( $p_num < 0 )
+	{
+		// fin de réservation : cas $time["minutes"] = 0. il faut afficher le dernier créneau de la journée précédente
+		$t = $t - 60 * 60 * 24;
+		$p_num = count($periods_name) - $p_num;
+	}
+	if ( $p_num >= count($periods_name) - 1 )
+		$p_num = count($periods_name) - 1;
+	return array($periods_name[$p_num],utf8_strftime($dformat, $t));
+}
+
 /*
 Fonction utilisée dans le cas où les créneaux de réservation sont basés sur des intitulés pré-définis :
 Formatage des périodes de début ou de fin de réservation.
@@ -1818,8 +1813,9 @@ function span_bgground($colclass)
 {
 	global $tab_couleur;
 	static $ecolors;
-	$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-	echo '<span style="background-color: '.$couleurhexa.'; background-image: none; background-repeat: repeat; background-attachment: scroll;">'.PHP_EOL;
+	$res = grr_sql_query("SELECT couleurhexa, couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
+	$row = grr_sql_row($res, 0);
+	echo '<span style="background-color: '.$row[0].'; background-image: none; background-repeat: repeat; background-attachment: scroll;color: '.$row[1].';">'.PHP_EOL;
 }
 
 //Output a start table cell tag <td> with color class and fallback color.
@@ -2401,7 +2397,7 @@ function make_room_list_html($link,$current_area, $current_room, $year, $month, 
 		}
 	}
 }
-/*
+/**
  * Affichage des sites sous la forme d'une liste de boutons
  *
  * @param string $link
@@ -2486,7 +2482,7 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
     else return "";
 }
 /**
- * Affichage des area sous la forme d'un input
+ * Affichage des area sous la forme d'une liste de boutons
  *
  * @param string $link
  * @param string $current_site
@@ -2848,6 +2844,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	//
 	// Infos sur la réservation
 	//		
+	$destinataire_spec = '';
 	$reservation = '';
 	$reservation .= $vocab["start_of_the_booking"]." ".$start_date."\n";
 	$reservation .= $vocab["duration"]." ".$duration." ".$dur_units."\n";
@@ -2859,6 +2856,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$reservation .= $vocab["description"]." ".$description."\n";
 	// Champ additionnel
 	$reservation .= affichage_champ_add_mails($id_entry);
+	$destinataire_spec .= envois_spec_champ_add_mails($id_entry);
 	// Type de réservation
 	$temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$row[5]."'");
 	if ($temp == -1)
@@ -2897,7 +2895,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	$reservation .= "-----\n";
 
 	$message = $message.$reservation;
-	$message = $message.$vocab["msg_no_email"].Settings::get("webmaster_email");;
+	$message = $message.$vocab["msg_no_email"].Settings::get("webmaster_email");
 	$message = html_entity_decode($message);
 	$sql = "SELECT u.email FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_mailuser_room j WHERE (j.id_room='".protect_data_sql($room_id)."' AND u.login=j.login and u.etat='actif') ORDER BY u.nom, u.prenom";
 	$res = grr_sql_query($sql);
@@ -2914,6 +2912,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		foreach ($tab_destinataire as $value){
 			$destinataire = $destinataire .";". $value;
 		}
+		$destinataire = $destinataire .";". $destinataire_spec;
 
 		Email::Envois($destinataire, $sujet, $message, $repondre, '', '');
 	}
@@ -2938,7 +2937,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$message7 .= $room_name." (".$area_name.")";
 		$message7 .= "\n".$reservation;
 		$message7 = html_entity_decode($message7);
-		$destinataire7 = $beneficiaire_email;
+		$destinataire7 = $beneficiaire_email.";". $destinataire_spec;
 		$repondre7 = Settings::get("webmaster_email");
 
 		Email::Envois($destinataire7, $sujet7, $message7, $repondre7, '', '');
@@ -3032,7 +3031,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		}
 		$message2 = $message2."\n".$reservation;
 		$message2 = html_entity_decode($message2);
-		$destinataire2 = $beneficiaire_email;
+		$destinataire2 = $beneficiaire_email.";".$destinataire_spec;
 		$repondre2 = $user_email;
 
 		Email::Envois($destinataire2, $sujet2, $message2, $repondre2, '', '');
@@ -3672,7 +3671,7 @@ function VerifyModeDemo() {
 		?>
 		<h1>Op&eacute;ration non autoris&eacute;e</h1>
 		<p>Vous êtes dans une <b>version de démonstration de GRR</b>.
-			<br />Certaines fonctions ont été volontairement bridées. C'est le cas pour l'opération que vous avez tenté d'effectuer.</p>
+			<br />Certaines fonctions ont été volontairement bridées. C\'est le cas pour l'opération que vous avez tenté d'effectuer.</p>
 		</body></html>
 		<?php
 		die();
@@ -3813,7 +3812,7 @@ function date_time_string($t, $dformat)
 		$ampm = date("a",$t);
 		$timeformat = "%I:%M$ampm";
 	}
-	return utf8_strftime($dformat.$timeformat, $t);
+	return utf8_strftime($dformat." ".$timeformat, $t);
 }
 # Convertit un créneau de début et de fin en un tableau donnant la date de début et la durée
 function describe_period_span2($starts, $ends)
@@ -4343,7 +4342,7 @@ function traite_grr_url($grr_script_name = "", $force_use_grr_url = "n")
 //Crée le calendrier Jours/Cycles
 function cree_calendrier_date_valide($n, $i)
 {
-	if ($i <= Settings::get("nombre_jours_Jours/Cycles"))
+	if ($i <= Settings::get("nombre_jours_Jours_Cycles"))
 	{
 		$sql = "INSERT INTO ".TABLE_PREFIX."_calendrier_jours_cycle SET DAY='".$n."', Jours = $i";
 		if (grr_sql_command($sql) < 0)
@@ -4406,9 +4405,104 @@ function affichage_champ_add_mails($id_resa)
 	foreach ($overload_data as $fieldname=>$field)
 	{
 		if (($field["overload_mail"] == 'y') && ($field["valeur"] != ""))
-			$affichage .= bbcode(htmlspecialchars($fieldname).get_vocab("deux_points").htmlspecialchars($field["valeur"]),'nobbcode')."\n";;
+			$affichage .= bbcode(htmlspecialchars($fieldname).get_vocab("deux_points").htmlspecialchars($field["valeur"]),'nobbcode')."\n";
 	}
 	return $affichage;
+}
+/*
+Construit les informations à afficher sur les plannings
+$vue = 1 pour une ressource / 2 vue multiple ressource
+*/
+function affichage_resa_planning_complet($vue, $resa, $heures)
+{
+	global $dformat;
+
+	$affichage = "";
+
+	// Heures ou crénaux + symboles <== ==>
+	$affichage .= $heures;
+
+	// Ressource seulement dans les vues global
+	if($vue == 2)
+		$affichage .= "<br>".$resa[15];
+
+	// Bénéficiaire
+	if (Settings::get("display_beneficicaire") == 1)
+		$affichage .= "<br>".affiche_nom_prenom_email($resa[4], $resa[12], "nomail");
+
+	// Type
+	if (Settings::get("display_type") == 1)
+	{
+		$typeResa = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area,".TABLE_PREFIX."_entry  WHERE  ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter  AND ".TABLE_PREFIX."_entry.id = '".$resa[2]."';");
+		if ($typeResa != -1)
+			$affichage .= "<br>".$typeResa;
+	}
+
+	// Brève description ou le numéro de la réservation
+	if ((Settings::get("display_short_description") == 1) && ($resa[3] != ""))
+		$affichage .= "<br>".htmlspecialchars($resa[3],ENT_NOQUOTES);
+	else
+		$affichage .= "<br>".get_vocab("entryid").$resa[2];
+
+	// Description Complète
+	if (Settings::get("display_full_description") == 1)
+		$affichage .= "<br>".htmlspecialchars($resa[8],ENT_NOQUOTES);
+
+	// Champs Additionnel
+    // la ressource associée à la réservation :
+	$res = mrbsGetEntryInfo($resa[2]);
+	$room = (!$res) ? -1 : $res["room_id"]; 
+	// Les champs add :
+	$overload_data = mrbsEntryGetOverloadDesc($resa[2]);
+	foreach ($overload_data as $fieldname=>$field)
+	{
+		if (( (authGetUserLevel(getUserName(), $room) >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "")
+			$affichage .= "<br><i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($field["valeur"],ENT_NOQUOTES|ENT_SUBSTITUTE)."</i>";
+	}
+
+	$affichage .= "<br>";
+
+	// Emprunte
+	if($resa[7] != "-")
+		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"'.get_vocab(\"ressource actuellement empruntee\").'\" title=\"'.get_vocab(\"ressource actuellement empruntee\").'\" width=\"20\" height=\"20\" class=\"image\" /> ";
+
+	// Option réservation
+	if($resa[10] > 0)
+		$affichage .=  " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le").time_date_string_jma($resa[9],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> ";
+
+	// Modération
+	if($resa[11] == 1)
+		$affichage .= " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
+
+	// Clef
+	if($resa[13] == 1)
+		$affichage .= " <img src=\"img_grr/skey.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Clef\"> ";
+	
+	// Courrier
+	if (Settings::get('show_courrier') == 'y')
+	{
+		if($resa[14] == 1)
+			$affichage .= " <img src=\"img_grr/scourrier.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Courrier\"> ";
+		else
+			$affichage .= " <img src=\"img_grr/hourglass.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Buzy\"> ";
+	}
+
+	return $affichage;
+}
+/*
+Destinaire specifique champ additionnel
+*/
+function envois_spec_champ_add_mails($id_resa)
+{
+	$destinataire = "";
+	// Les champs add :
+	$overload_data = mrbsEntryGetOverloadDesc($id_resa);
+	foreach ($overload_data as $fieldname=>$field)
+	{
+		if (($field["mail_spec"] != '') && ($field["valeur"] != "") && ($field["valeur"] != 0))
+			$destinataire .= htmlspecialchars($field["mail_spec"]).";";
+	}
+	return $destinataire;
 }
 /*
 Affiche un message pop-up
@@ -5165,6 +5259,10 @@ function pageHead2($title, $page = "with_session")
 {
 	if ($page == "with_session")
 	{
+		if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
+			header("Location: ./changepwd.php");
+		}
+
 		if (isset($_SESSION['default_style']))
 			$sheetcss = 'themes/'.$_SESSION['default_style'].'/css';
 
@@ -5364,10 +5462,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			$day   = date("d",$date_);
 			$month = date("m",$date_);
 			$year  = date("Y",$date_);
-			// echo '<div id="toppanel">'.PHP_EOL;
 			echo '<div id="panel">'.PHP_EOL;
-			// echo '<table id="header">'.PHP_EOL;
-			// echo '<tr>'.PHP_EOL;
 			//Logo
 			$nom_picture = $racine."images/".Settings::get("logo");
 			if ((Settings::get("logo") != '') && (@file_exists($nom_picture)))
@@ -5478,12 +5573,8 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 				}
 			}
 			echo '</div>'.PHP_EOL;
-			// echo '</tr>'.PHP_EOL;
-			// echo '</table>'.PHP_EOL;
 			echo '</div>'.PHP_EOL;
 			echo '<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>'.PHP_EOL;
-            // echo '<a href="#" onClick="menuHaut()"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>'.PHP_EOL;
-			// echo '</div>'.PHP_EOL;
 		}
 	}
 }
@@ -5559,8 +5650,14 @@ function end_page()
 {
     echo '</section></body></html>';
 }
-    
-// Les lignes suivantes permettent la compatibilité de GRR avec la variable register_global à off
+
+// Génération d'un Token aléatoire
+function generationToken()
+{
+	return $token = base_convert(hash('sha256', time() . mt_rand()), 16, 36);
+}
+
+// Les lignes suivantes permettent la compatibilité de GRR avec la variables register_global à off
 unset($day);
 if (isset($_GET["day"]))
 {

@@ -3,9 +3,9 @@
  * admin_config1.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2018-11-15 12:20$
+ * Dernière modification : $Date: 2020-02-07 11:05$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -28,7 +28,7 @@ $day   = date("d");
 $month = date("m");
 $year  = date("Y");
 check_access(6, $back);
-// vérifications 
+// vérification et enregistrement des paramètres
 if (isset($_POST['title_home_page'])) {
     if (!Settings::set('title_home_page', $_POST['title_home_page'])) {
         echo "Erreur lors de l'enregistrement de title_home_page !<br />";
@@ -142,6 +142,7 @@ if (isset($_POST['id_area'])) {
         die();
     }
 }
+// ressource par défaut
 if (isset($_POST['id_room'])) {
     if (!Settings::set('default_room', $_POST['id_room'])) {
         echo "Erreur lors de l'enregistrement de default_room !<br />";
@@ -173,6 +174,20 @@ if (isset($_POST['display_info_bulle'])) {
 if (isset($_POST['menu_gauche'])) {
     if (!Settings::set('menu_gauche', $_POST['menu_gauche'])) {
         echo "Erreur lors de l'enregistrement de menu_gauche !<br />";
+        die();
+    }
+}
+// display_type
+if (isset($_POST['display_type'])) {
+    if (!Settings::set('display_type', $_POST['display_type'])) {
+        echo "Erreur lors de l'enregistrement de display_type !<br />";
+        die();
+    }
+}
+// display_beneficicaire
+if (isset($_POST['display_beneficicaire'])) {
+    if (!Settings::set('display_beneficicaire', $_POST['display_beneficicaire'])) {
+        echo "Erreur lors de l'enregistrement de display_beneficicaire !<br />";
         die();
     }
 }
@@ -508,8 +523,8 @@ include 'admin_col_gauche2.php';
 echo '<div class="col-md-9 col-sm-8 col-xs-12">';
 echo "<h2>".get_vocab('admin_config1.php')."</h2>";
 // Adapter les fichiers de langue
-echo '<h3>'.get_vocab('adapter fichiers langue').'</h3>'.PHP_EOL;
-echo get_vocab('adapter fichiers langue explain').PHP_EOL;
+echo '<h3>'.get_vocab('adapter_fichiers_langue').'</h3>'.PHP_EOL;
+echo get_vocab('adapter_fichiers_langue_explain').PHP_EOL;
 //
 // Config générale
 //****************
@@ -604,8 +619,8 @@ echo '</table>'.PHP_EOL;
 if (Settings::get('use_fckeditor') == 1) {
     echo '<script type="text/javascript" src="../js/ckeditor/ckeditor.js"></script>'.PHP_EOL;
 }
-echo '<h3>'.get_vocab('message perso').'</h3>'.PHP_EOL;
-echo '<p>'.get_vocab('message perso explain').PHP_EOL;
+echo '<h3>'.get_vocab('message_perso').'</h3>'.PHP_EOL;
+echo '<p>'.get_vocab('message_perso_explain').PHP_EOL;
 if (Settings::get('use_fckeditor') != 1) {
     echo ' '.get_vocab('description complete2');
 }
@@ -919,7 +934,7 @@ echo '<hr />'.PHP_EOL;
 echo '<h3>'.get_vocab('display_info_bulle_msg').'</h3>'.PHP_EOL;
 echo '<table>'.PHP_EOL;
 echo '<tr>'.PHP_EOL;
-echo '<td>'.get_vocab('info-bulle0').'</td>'.PHP_EOL;
+echo '<td>'.get_vocab('info_bulle0').'</td>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
 echo '<input type="radio" name="display_info_bulle" value="0" ';
 if (Settings::get('display_info_bulle') == '0') {
@@ -929,7 +944,7 @@ echo ' />'.PHP_EOL;
 echo '</td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
 echo '<tr>'.PHP_EOL;
-echo '<td>'.get_vocab('info-bulle1').'</td>'.PHP_EOL;
+echo '<td>'.get_vocab('info_bulle1').'</td>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
 echo '<input type="radio" name="display_info_bulle" value="1" ';
 if (Settings::get('display_info_bulle') == '1') {
@@ -939,7 +954,7 @@ echo ' />'.PHP_EOL;
 echo '</td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
 echo '<tr>'.PHP_EOL;
-echo '<td>'.get_vocab('info-bulle2').'</td>'.PHP_EOL;
+echo '<td>'.get_vocab('info_bulle2').'</td>'.PHP_EOL;
 echo '<td>'.PHP_EOL;
 echo '<input type="radio" name="display_info_bulle" value="2" ';
 if (Settings::get('display_info_bulle') == '2') {
@@ -1033,85 +1048,56 @@ echo '<input class="form-control" type="text" id="mail_destinataire" name="mail_
 echo '</td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
 echo '</table>'.PHP_EOL;
-# Afficher la description complète de la réservation dans les vues semaine et mois.
-# display_full_description=1 : la description complète s'affiche.
-# display_full_description=0 : la description complète ne s'affiche pas.
-echo '<hr />'.PHP_EOL;
-echo '<h3>'.get_vocab('display_full_description_msg').'</h3>'.PHP_EOL;
-echo '<table>'.PHP_EOL;
-echo '<tr>'.PHP_EOL;
-echo '<td>'.get_vocab('display_full_description0').'</td>'.PHP_EOL;
-echo '<td>'.PHP_EOL;
-echo "<input type='radio' name='display_full_description' value='0' ";
-if (Settings::get('display_full_description') == '0') {
-    echo 'checked="checked"';
-}
-echo ' />'.PHP_EOL;
-echo '</td>'.PHP_EOL;
-echo '</tr>'.PHP_EOL;
-echo '<tr>'.PHP_EOL;
-echo '<td>'.get_vocab('display_full_description1').'</td>'.PHP_EOL;
-echo '<td>'.PHP_EOL;
-echo "<input type='radio' name='display_full_description' value='1' ";
-if (Settings::get('display_full_description') == '1') {
-    echo 'checked="checked"';
-}
-echo ' />'.PHP_EOL;
-echo '</td>'.PHP_EOL;
-echo '</tr>'.PHP_EOL;
-echo '</table>'.PHP_EOL;
-# Afficher la description courte de la réservation dans les vues semaine et mois.
-# display_short_description=1 : la description  s'affiche.
-# display_short_description=0 : la description  ne s'affiche pas.
-echo '<hr />'.PHP_EOL;
-echo '<h3>'.get_vocab('display_short_description_msg').'</h3>'.PHP_EOL;
-echo '<table>'.PHP_EOL;
-echo '<tr>'.PHP_EOL;
-echo '<td>'.get_vocab('display_short_description0').'</td>'.PHP_EOL;
-echo '<td>'.PHP_EOL;
-echo "<input type='radio' name='display_short_description' value='0' ";
-if (Settings::get('display_short_description') == '0') {
-    echo 'checked="checked"';
-}
-echo ' />'.PHP_EOL;
-echo '</td>'.PHP_EOL;
-echo '</tr>'.PHP_EOL;
-echo '<tr>'.PHP_EOL;
-echo '<td>'.get_vocab('display_short_description1').'</td>'.PHP_EOL;
-echo '<td>';
-echo "<input type='radio' name='display_short_description' value='1' ";
-if (Settings::get('display_short_description') == '1') {
-    echo 'checked="checked"';
-}
-echo ' />'.PHP_EOL;
-echo '</td>'.PHP_EOL;
-echo '</tr>'.PHP_EOL;
-echo '</table>'.PHP_EOL;
-# Affichage type 
-echo '<hr />'.PHP_EOL;
-echo '<h3>'.get_vocab('affichage_type').'</h3>'.PHP_EOL;
-echo '<table>'.PHP_EOL;
-echo '<tr>'.PHP_EOL;
-echo '<td>'.get_vocab('YES').'</td>'.PHP_EOL;
-echo '<td>'.PHP_EOL;
-echo "<input type='radio' name='type' value='1' ";
-if (Settings::get('type') == '1') {
-    echo 'checked="checked"';
-}
-echo ' />'.PHP_EOL;
-echo '</td>'.PHP_EOL;
-echo '</tr>'.PHP_EOL;
-echo '<tr>'.PHP_EOL;
-echo '<td>'.get_vocab('NO').'</td>'.PHP_EOL;
-echo '<td>'.PHP_EOL;
-echo "<input type='radio' name='type' value='0' ";
-if (Settings::get('type') == '0') {
-    echo 'checked="checked"';
-}
-echo ' />'.PHP_EOL;
-echo '</td>'.PHP_EOL;
-echo '</tr>'.PHP_EOL;
-echo '</table>'.PHP_EOL;
+// modification du formulaire de choix, reste à internationaliser
+echo '<section id="display_planning_resa">';
+echo '<h3>'.get_vocab('display_planning_resa').'</h3>';
+echo '	<table class="table table-condensed">';
+echo '		<thead><tr>';
+echo '				<th style="width: 200px"></th>';
+echo '				<th style="width: 150px">Ne pas afficher</th>';
+echo '				<th>Afficher</th>';
+echo '		</tr></thead>';
+echo '		<tbody>';
+echo '			<tr>';
+echo '				<td>'.get_vocab('sum_by_creator').'</td>';
+echo '				<td><input type="radio" name="display_beneficicaire" value="0"';
+if (Settings::get('display_beneficicaire') == '0') echo 'checked="checked"';
+echo '				 /></td>';
+echo '				<td><input type="radio" name="display_beneficicaire" value="1"';
+if (Settings::get('display_beneficicaire') == '1') echo 'checked="checked"';
+echo '				 /></td>';
+echo '			</tr>';
+echo '			<tr>';
+echo '				<td>'.get_vocab('namebooker').'</td>';
+echo '				<td><input type="radio" name="display_short_description" value="0"';
+if (Settings::get('display_short_description') == '0') echo 'checked="checked"';
+echo '				/></td>';
+echo '				<td><input type="radio" name="display_short_description" value="1"';
+if (Settings::get('display_short_description') == '1') echo 'checked="checked"';
+echo ' 				/></td>';
+echo '			</tr>';
+echo '			<tr>';
+echo '				<td>'.get_vocab('match_descr').'</td>';
+echo '				<td><input type="radio" name="display_full_description" value="0"';
+if (Settings::get('display_full_description') == '0') echo 'checked="checked"';
+echo '				/></td>';
+echo '				<td><input type="radio" name="display_full_description" value="1"';
+if (Settings::get('display_full_description') == '1') echo 'checked="checked"';
+echo '				/></td>';
+echo '			</tr>';
+echo '			<tr>';
+echo '				<td>'.get_vocab('type').'</td>';
+echo '				<td><input type="radio" name="display_type" value="0"';
+if (Settings::get('display_type') == '0') echo'checked="checked"';
+echo ' 				/></td>';
+echo '				<td><input type="radio" name="display_type" value="1"';
+if (Settings::get('display_type') == '1') echo 'checked="checked"';
+echo '				/></td>';
+echo '			</tr>';
+echo '		</tbody>';
+echo '	</table>';
+echo '</section>';
+
 ###########################################################
 # Affichage des  adresses email dans la fiche de réservation
 ###########################################################
