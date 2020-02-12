@@ -5332,7 +5332,8 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 {
 	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name, $racine, $racineAd;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2;
-
+        $parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
+        
 	Hook::Appel("hookHeader2");
 	// Si nous ne sommes pas dans un format imprimable
 	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
@@ -5418,7 +5419,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 						how_many_connected();
                         echo "<br />";
 					}
-                    echo "<p class='avertissement'><a href='".$racine."admin/admin_accueil.php' class='avertissement' >".$mess_resa."</a></p>";
+                    echo "<p class='avertissement'><a href='".$racine."admin/admin_accueil.php?".$parametres_url."' class='avertissement' >".$mess_resa."</a></p>";
 					echo '</div>'.PHP_EOL;
 				}
 			}
@@ -5437,7 +5438,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			$_SESSION['chemin_retour'] = '';
 			if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
 			{
-				$parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
+				//$parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
 				$_SESSION['chemin_retour'] = traite_grr_url($grr_script_name)."?". $_SERVER['QUERY_STRING'];
 				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>'.PHP_EOL;
 				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
