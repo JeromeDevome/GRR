@@ -183,7 +183,7 @@ echo '<h3>'.get_vocab("add_user_to_list").'</h3>';
 echo '<form action="admin_right_admin.php" method="post">';
 echo '<select size="1" name="reg_admin_login">';
 	echo '<option value="">'.get_vocab("nobody").'</option>';
-    $sql = "SELECT u.login, u.nom, u.prenom FROM ".TABLE_PREFIX."_utilisateurs u
+    $sql = "SELECT distinct u.login, u.nom, u.prenom FROM ".TABLE_PREFIX."_utilisateurs u
     left join ".TABLE_PREFIX."_j_useradmin_area on ".TABLE_PREFIX."_j_useradmin_area.login=u.login
     WHERE ((etat!='inactif' and (statut='utilisateur' or statut='administrateur' or statut='gestionnaire_utilisateur'))
         AND (".TABLE_PREFIX."_j_useradmin_area.login is null or (".TABLE_PREFIX."_j_useradmin_area.login=u.login and ".TABLE_PREFIX."_j_useradmin_area.id_area!=".$id_area.")))  order by u.nom, u.prenom";
