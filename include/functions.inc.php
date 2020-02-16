@@ -1125,8 +1125,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 function print_header_twig($day = '', $month = '', $year = '', $type_session = 'with_session')
 {
 	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
-	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2;
-	global $nbConnecte, $lienAdmin, $mess_resa, $paramUrl, $pageAccueil, $nomAffichage, $url_langue, $lienDeconnection;
+	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $d;
 	
 	if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
 		header("Location: ./changepwd.php");
@@ -1141,11 +1140,6 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 		$racine = "./";
 		$racineAd = "./compte/";
 	}
-
-	$nbConnecte = "";
-	$lienAdmin = "";
-	$pageAccueil = "";
-	$lienDeconnection = "";
 
 	include $racine."/include/hook.class.php";
 
@@ -1199,14 +1193,15 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 
 			//Parmetre url fixe compte / admin
 			$paramUrl = 'day='.$day.'&amp;year='.$year.'&amp;month='.$month;
+			$d['paramUrl'] = $paramUrl;
 
 			//Accueil
-			$pageAccueil = $racine.page_accueil('yes').$paramUrl;
+			$d['pageAccueil'] = $racine.page_accueil('yes').$paramUrl;
 
 			//Logo
 			$nom_picture = $racine."images/".Settings::get("logo");
 			if ((Settings::get("logo") != '') && (@file_exists($nom_picture)))
-				echo '<td class="logo" height="100">'.PHP_EOL.'<a href="'.$pageAccueil.'"><img src="'.$nom_picture.'" alt="logo"/></a>'.PHP_EOL.'</td>'.PHP_EOL;
+				$d['logo'] = $nom_picture;
 			
 			//Mail réservation
 			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
@@ -1222,15 +1217,13 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			{
 				
                 $user_name = getUserName();
-                $mess_resa = resaToModerate($user_name);
+                $d['mess_resa'] = resaToModerate($user_name);
 				if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1) || ($mess_resa != ''))
 				{
 					if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1))
-                       $lienAdmin = '../admin/admin.php?p=admin_accueil&'.$paramUrl;
+                       $d['lienAdmin'] = '../admin/admin.php?p=admin_accueil&'.$paramUrl;
 					if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
-					{
-						$nbConnecte = nb_connecte();
-					}
+						$d['nbConnecte'] = nb_connecte();
 				}
 			}
 			if ($type_session != "with_session")
@@ -1250,7 +1243,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			{
 				$parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
 				$_SESSION['chemin_retour'] = traite_grr_url($grr_script_name)."?". $_SERVER['QUERY_STRING'];
-				$url_langue = traite_grr_url($grr_script_name);			}
+				$d['urlLangue'] = traite_grr_url($grr_script_name);			}
 			if ($type_session == 'no_session')
 			{
 				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
@@ -1265,9 +1258,9 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			else
 			{
 				if( strlen(htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom'])) > 40 )
-					$nomAffichage =  htmlspecialchars($_SESSION['nom']);
+					$d['nomUtilisateur'] =  htmlspecialchars($_SESSION['nom']);
 				else
-					$nomAffichage =  htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']);
+					$d['nomUtilisateur'] =  htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']);
 
 				// Déconnection
 				$disconnect_link = false;
@@ -1275,20 +1268,20 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 				{
 					$disconnect_link = true;
 					if (Settings::get("authentification_obli") == 1)
-						$lienDeconnection = '<br /> <a href="'.$racine.'logout.php?auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+						$d['lienDeconnection'] = '<br /> <a href="'.$racine.'logout.php?auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
 					else
-						$lienDeconnection = '<br /> <a href="'.$racine.'logout.php?auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+						$d['lienDeconnection'] = '<br /> <a href="'.$racine.'logout.php?auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
 				}
 				if ((Settings::get("Url_portail_sso") != '') && (isset($_SESSION['est_authentifie_sso'])))
 				{
-					$lienDeconnection = '<br><a href="'.Settings::get("Url_portail_sso").'">'.get_vocab("Portail_accueil").'</a>'.PHP_EOL;
+					$d['lienDeconnection'] = '<br><a href="'.Settings::get("Url_portail_sso").'">'.get_vocab("Portail_accueil").'</a>'.PHP_EOL;
 				}
 				if ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_statut') == 'lasso_utilisateur'))
 				{
 					if ($_SESSION['lasso_nameid'] == NULL)
-						$lienDeconnection = '<br><a href="lasso/federate.php">'.get_vocab('lasso_federate_this_account').'</a>'.PHP_EOL;
+						$d['lienDeconnection'] = '<br><a href="lasso/federate.php">'.get_vocab('lasso_federate_this_account').'</a>'.PHP_EOL;
 					else
-						$lienDeconnection = '<br><a href="lasso/defederate.php">'.get_vocab('lasso_defederate_this_account').'</a>'.PHP_EOL;
+						$d['lienDeconnection'] = '<br><a href="lasso/defederate.php">'.get_vocab('lasso_defederate_this_account').'</a>'.PHP_EOL;
 				}
 			}
 			echo '</td>'.PHP_EOL;
