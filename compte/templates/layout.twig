@@ -53,10 +53,16 @@
 			<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>
 		</header>
 		<section>
-			<!--<div id='menuGauche2'><script>document.getElementById("menuGauche2").style.display = "inline-block"</script>-->
-
+			<div id="menu-compte" class="col-lg-2 col-md-2 col-xs-12">
+				
+					<br><br><a href="compte.php?p=moncompte" class="btn btn-primary col-lg-12">Mon compte</a>
+					<br><br><a href="#" class="btn btn-primary col-lg-12" disabled>Mes connexions</a>
+					<br><br><a href="#" class="btn btn-primary col-lg-12" disabled>Mes réservations</a>
+				
 			</div>
-			{% block content %}{% endblock %}
+			<div id="menu-compte" class="col-lg-10 col-md-10 col-xs-12">
+				{% block content %}{% endblock %}
+			</div>
 
 			<div id="popup_name" class="popup_block"></div>
 		</section>
