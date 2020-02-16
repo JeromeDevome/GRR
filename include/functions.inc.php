@@ -919,6 +919,52 @@ function begin_page($title, $page = "with_session")
 	return $a;
 }
 
+function begin_page_twig($title, $page = "with_session")
+{
+	global $d;
+
+	if ($page == "with_session")
+	{
+		if (isset($_SESSION['default_style']))
+			$d['sheetcss'] = 'themes/'.$_SESSION['default_style'].'/css';
+
+		else
+			$d['sheetcss'] = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
+		if (isset($_GET['default_language']))
+		{
+			$_SESSION['default_language'] = $_GET['default_language'];
+			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
+				header("Location: ".$_SESSION['chemin_retour']);
+			else
+				header("Location: ".traite_grr_url());
+			die();
+		}
+	}
+	else
+	{
+		if (Settings::get("default_css"))
+			$d['sheetcss'] = 'themes/'.Settings::get("default_css").'/css';
+		else
+			$d['sheetcss'] = 'themes/default/css';
+		if (isset($_GET['default_language']))
+		{
+			$_SESSION['default_language'] = $_GET['default_language'];
+			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
+				header("Location: ".$_SESSION['chemin_retour']);
+			else
+				header("Location: ".traite_grr_url());
+			die();
+		}
+	}
+	//global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin;
+	//header('Content-Type: text/html; charset=utf-8');
+	if (!isset($_COOKIE['open']))
+	{
+		setcookie("open", "true", time()+3600);
+	}
+
+}
+
 /*
 ** Fonction qui affiche le header
 */
@@ -1148,9 +1194,9 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 	// On vérifie que les noms et prénoms ne sont pas vides
 	VerifNomPrenomUser($type_session);
 	if ($type_session == "with_session")
-		echo begin_page(Settings::get("company"),"with_session");
+		echo begin_page_twig(Settings::get("company"),"with_session");
 	else
-		echo begin_page(Settings::get("company"),"no_session");
+		echo begin_page_twig(Settings::get("company"),"no_session");
 
 	Hook::Appel("hookHeader2");
 	// Si nous ne sommes pas dans un format imprimable
