@@ -1340,7 +1340,7 @@ function print_header_admin($day = '', $month = '', $year = '', $type_session = 
 
 			// Liens
 			$lienRetour = '../'.page_accueil('yes').'day='.$day.'&year='.$year.'&month='.$month;
-			$lienCompte = '../compte/compte.php.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month;
+			$lienCompte = '../compte/compte.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month;
 
 			//Mail réservation
 			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
