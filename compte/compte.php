@@ -3,9 +3,9 @@
  * admin.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2018-07-21 21:00$
+ * Dernière modification : $Date: 2020-02-16 15:30$
  * @author    JeromeB
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -43,38 +43,17 @@ $day = isset($_POST['day']) ? $_POST['day'] : (isset($_GET['day']) ? $_GET['day'
 $month = isset($_POST['month']) ? $_POST['month'] : (isset($_GET['month']) ? $_GET['month'] : date('m'));
 $year = isset($_POST['year']) ? $_POST['year'] : (isset($_GET['year']) ? $_GET['year'] : date('Y'));
 
-$trad['dDay'] = $day;
-$trad['dMonth'] = $month;
-$trad['dYear'] = $year;
+$d['dDay'] = $day;
+$d['dMonth'] = $month;
+$d['dYear'] = $year;
 
-$trad['dNbConnecte'] = $nbConnecte;
-$trad['dLienAdmin'] = $lienAdmin;
-$trad['dMessResa'] = $mess_resa;
-$trad['dParamUrl'] = $paramUrl;
-$trad['dLienAccueil'] = $pageAccueil;
-$trad['dNomUtilisateur'] = $nomAffichage;
-$trad['dUrlLangue'] = $url_langue;
-$trad['dLienDeconnection'] = $lienDeconnection;
-$trad['dAccesStats'] = verif_access_search(getUserName());
+$d['accesStats'] = verif_access_search(getUserName());
 
 get_vocab_admin('admin');
 get_vocab_admin('manage_my_account');
 get_vocab_admin('report');
-
-/***/
-get_vocab_admin('grr_version');
 get_vocab_admin('retour_planning');
-get_vocab_admin("manage_my_account");
-get_vocab_admin("display_add_user");
 get_vocab_admin('admin_view_connexions');
-
-
-
-
-
-//$trad['dNomAffichage'] = $nomAffichage;
-//$trad['dLienRetour'] = $lienRetour;
-//$trad['dLienCompte'] = $lienCompte;
 
 $AllSettings = Settings::getAll();
 
