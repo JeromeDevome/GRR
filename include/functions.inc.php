@@ -1226,18 +1226,15 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 						$d['nbConnecte'] = nb_connecte();
 				}
 			}
+
+			// ???
 			if ($type_session != "with_session")
 				echo '<script>selection()</script>'.PHP_EOL;
-			echo '<td class="configuration" >'.PHP_EOL;
-			if (@file_exists('js/'.$clock_file))
-			{
-				echo '<div class="clock">'.PHP_EOL;
-				echo '<div id="Date">'.PHP_EOL;
-				echo '&nbsp;<span id="hours"></span>'.PHP_EOL;
-				echo 'h'.PHP_EOL;
-				echo '<span id="min"></span>'.PHP_EOL;
-				echo '</div></div>'.PHP_EOL;
-			}
+
+			// Heure selon la langue
+			if (@file_exists('../js/'.$clock_file))
+				$d['jsHeure'] = $clock_file;
+
 			$_SESSION['chemin_retour'] = '';
 			if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
 			{
@@ -1284,7 +1281,6 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 						$d['lienDeconnection'] = '<br><a href="lasso/defederate.php">'.get_vocab('lasso_defederate_this_account').'</a>'.PHP_EOL;
 				}
 			}
-			echo '</td>'.PHP_EOL;
 
 		}
 	}
