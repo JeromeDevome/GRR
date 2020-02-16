@@ -1245,11 +1245,11 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			{
 				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
 				{
-					echo '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>'.PHP_EOL;
-					echo '<br /> <small><i><a href="login.php">'.get_vocab("connect_local").'</a></i></small>'.PHP_EOL;
+					$d['lienConnexion'] =  '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>';
+					$d['lienConnexion'] .=  '<br /> <small><i><a href="login.php">'.get_vocab("connect_local").'</a></i></small>';
 				}
 				else {
-					echo '<br /> <a href="login.php">'.get_vocab("connect").'</a>'.PHP_EOL;
+					$d['lienConnexion'] = '<br /> <a href="login.php">'.get_vocab("connect").'</a>';
 				}
 			}
 			else
@@ -1265,20 +1265,20 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 				{
 					$disconnect_link = true;
 					if (Settings::get("authentification_obli") == 1)
-						$d['lienDeconnection'] = '<br /> <a href="'.$racine.'logout.php?auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+						$d['lienDeconnexion'] = '<br /> <a href="'.$racine.'logout.php?auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
 					else
-						$d['lienDeconnection'] = '<br /> <a href="'.$racine.'logout.php?auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+						$d['lienDeconnexion'] = '<br /> <a href="'.$racine.'logout.php?auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
 				}
 				if ((Settings::get("Url_portail_sso") != '') && (isset($_SESSION['est_authentifie_sso'])))
 				{
-					$d['lienDeconnection'] = '<br><a href="'.Settings::get("Url_portail_sso").'">'.get_vocab("Portail_accueil").'</a>'.PHP_EOL;
+					$d['lienDeconnexion'] = '<br><a href="'.Settings::get("Url_portail_sso").'">'.get_vocab("Portail_accueil").'</a>'.PHP_EOL;
 				}
 				if ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_statut') == 'lasso_utilisateur'))
 				{
 					if ($_SESSION['lasso_nameid'] == NULL)
-						$d['lienDeconnection'] = '<br><a href="lasso/federate.php">'.get_vocab('lasso_federate_this_account').'</a>'.PHP_EOL;
+						$d['lienDeconnexion'] = '<br><a href="lasso/federate.php">'.get_vocab('lasso_federate_this_account').'</a>'.PHP_EOL;
 					else
-						$d['lienDeconnection'] = '<br><a href="lasso/defederate.php">'.get_vocab('lasso_defederate_this_account').'</a>'.PHP_EOL;
+						$d['lienDeconnexion'] = '<br><a href="lasso/defederate.php">'.get_vocab('lasso_defederate_this_account').'</a>'.PHP_EOL;
 				}
 			}
 
