@@ -1,0 +1,304 @@
+[33mdc070d54[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge branch 'master' of https://github.com/JeromeDevome/GRR
+[33m0b42cdd0[m Revert "FIX reset"
+[33m2df1ed1c[m Revert "FIX reset"
+[33m9d0debfa[m FIX reset
+[33m2c6697e2[m Gestion de compte : menu (preview)
+[33mc90ce453[m Twig compte : beging page
+[33mb61e3cdc[m Twig : lien de connexion
+[33mc1c1c91c[m Date heure sous twig
+[33m8f3a54e0[m Optimisation twig + logo
+[33md9e0a385[m FIX lien gérer compte depuis admin
+[33m33b545ab[m FIX enregistrement
+[33mda9ba543[m Passage compte sous twig etape 1
+[33m1cace4ec[m Update lang.fr
+[33m0c300fd9[m Update admin_grr.css
+[33m0537091c[m précision sur les modules PHP requis
+[33me64f7167[m Update functions.inc.php
+[33ma22244ec[m Destinataire specifique
+[33m1908f266[m Update functions.inc.php
+[33m79f1b982[m correctif : suppression du + et de l'espace si la journée est pleine
+[33m8dd5adc3[m amélioration : inclusion du nom du bénéficiaire extérieur dans les rapports
+[33m55b7b0b4[m correction : affichage des plannings day, week_all et month
+[33m2fb4d69a[m Merge pull request #85 from sparkodutos/patch-2
+[33m016c15af[m Update report.php
+[33m363efec7[m correction d'erreurs php
+[33me5b2c440[m correctif : nettoyage des journaux de connexion
+[33m69f1b124[m correctifs syntaxiques et orthographiques
+[33me5841d93[m correctif : fonction manquante pour edit_entry_handler, entre autres
+[33maee47023[m correctif : paramètres mal définis
+[33ma9642b67[m correction syntaxique : espace en trop
+[33mfb8751af[m Merge pull request #78 from sparkodutos/patch-1
+[33m5fcde466[m Update pdfgenerator.php
+[33m6f8213b3[m Redirzction page login vers https
+[33m71ddeb78[m Optimisation affichage
+[33m37fe1e9e[m FIX déclaration variable
+[33m9b942a35[m Correction affichage des résultats booléens
+[33m012ed2a5[m Ajout d'une variable rendant impossible d'utiliser la fonction mail du serveur
+[33mdc27d77e[m Merge branch 'master' of https://github.com/JeromeDevome/GRR
+[33m504bdd8e[m Drag and drop en cours de dev
+[33m113da0a7[m correctif : envoi de mails aux utilisateurs actifs seulement
+[33ma8bd7e4c[m Merge pull request #69 from pix/master
+[33mca7754e4[m Update pdfgenerator.php
+[33m8999a6ee[m modification du code de la fonction get_default_site
+[33m53dc42bb[m correctifs : affichage des jours fériés/vacance et des pop-ups d'information
+[33mc9947745[m update : vacances scolaires France 2019-2020
+[33mecc06522[m correctifs mineurs
+[33m48840563[m update
+[33m06c31851[m Ouverture des réservations par défaut au 01/01/2019
+[33m3e294725[m Tableau de bord :  Widget Warning
+[33m26d4694d[m Twig champs
+[33m75a5ec3d[m Installation 4.0
+[33m009a1559[m Valeur défaut : Il est obligatoire de se connecter pour accéder au site
+[33mb021d36d[m correctif : vieux lapsus
+[33me17da827[m correctifs : liens et paramètres
+[33m1ca26dd8[m corrections de style pour l'affichage des légendes de types et des jours fériés/vacances
+[33m4e89e441[m amélioration : affichage des sites en liste de boutons
+[33m17261056[m correction de code pour la page edit_entry
+[33mb55faa2a[m correction de lien
+[33mb55c01db[m correctif : fin de ligne dans export csv
+[33m36fa9bd1[m Correction de liens
+[33m62a4fd12[m Forcer MAJ + correctifs versions
+[33m56f34553[m coorection lien
+[33m0d95a375[m init variable
+[33mf77c7f0c[m correction de liens
+[33m230579ab[m modification : mise en page, compatibilité php7 et paramètres de visibilité des réservations
+[33m5f27a5b5[m Optimisation
+[33m4a76e45c[m Widget ressource à modérer
+[33m668e6d82[m Correction FA
+[33mfe8d3b9d[m Bouton sauvegarde BDD depuis tableau de bord
+[33ma7166566[m Synchro options utilisatauers / admin
+[33mcc1e5bad[m Modif textes
+[33mb587a74b[m Update CHANGELOG
+[33mc0765e7d[m Type de réservation : Choix de la couleur du texte
+[33m5ee63e83[m Import user csv =>Ajout modifier mot de passe à la première connexion
+[33m0e3dfdf4[m update
+[33m712b2a1b[m Option : Obligation de changer le mot de passe
+[33me440f7a7[m Fix : warning + mise en page
+[33mb9755029[m Ajout widget : Dernières connexions
+[33mbf8d2e11[m Fix update
+[33m75c2fc1a[m Merge branch 'master' of https://github.com/JeromeDevome/GRR
+[33m9675a248[m Correction fa
+[33ma54a0869[m correctif : lien trop haut dans l'arbo
+[33mdfc6bf4c[m Titre
+[33m4e34ddee[m Recherches et stat
+[33m1935e90e[m Posssibilé du choix thème selon admin
+[33m41807868[m affichage
+[33mdffa8ea7[m Versioning
+[33mc655a2a8[m Passage de l'affiche de réservation sous une fonction
+[33mf39a0f8d[m Ajout options vue résa/planning
+[33ma2c426b1[m Nettoyage
+[33mc156906c[m Version php compatible
+[33mda7d97c2[m Sup présent dans bootstrap/Admin LTE
+[33m5ec91fa2[m JS Optimaisations
+[33ma5af59fd[m Modif lien accès admin
+[33m3557d04c[m Sup de la partie inutile
+[33md8291b57[m Correction choix langue/style
+[33m210bbf65[m Création d'un token d'installation
+[33m3d97acf2[m remplacement each, compatibilité php 7.2
+[33m5c9a5906[m Ajout widget tableau de bord admin
+[33m051ca163[m Font Awesome 5.5
+[33mfea1adfc[m Mot de passe facile configurable
+[33me7b18ccf[m Suppression ancienne image
+[33mfc14303c[m [Modification] Déconnexion de l'utilisateur de puis l'administration sans le changement de mot de passe
+[33me61248a8[m Correction each
+[33mde74b6f0[m Affichage apparences
+[33m324af1b5[m Passage sous twig
+[33m25e15d1a[m Petites corrections
+[33m9f42fa5f[m Delete admin_import_entries_csv_direct.php
+[33m82ecbb6a[m Paddage sous twig
+[33mecfe3833[m Passage sous twig correspondance profil SSO
+[33m89a2c3cd[m FIX  valeur champ
+[33m83c8a9f2[m SSO Mise en page
+[33m7d109cd4[m Réservation en bloc ; passage sous twig
+[33mc5f45331[m Jours cycles => Passage sous twig
+[33mc6b2daed[m Passage sous twig
+[33m32a34d24[m Optimisation
+[33mab25763f[m Passage sous twig  + corrections
+[33mfece2177[m Mise en page
+[33mf634508a[m Utilisation de la page modification utilisateur
+[33m06af6514[m Sécurité lecture répertoire
+[33m3f56981e[m lien
+[33madf32fa1[m sup fichier remplacé par twig
+[33m7b79df25[m Passage sous twig
+[33mbbb4b4ff[m suppression lcs
+[33m1be566f3[m Passage sous twig
+[33mb5527974[m Configuration IMAP
+[33m453255e4[m Import utilisateurs sous twig
+[33m20f6850c[m Droits des sites : Passage sous twig
+[33m36af9558[m mise en forme
+[33me5abe739[m Acces domaine restreint
+[33m9d8674ba[m Accès au domaine Restreint : Passage sous twig
+[33m044bf5aa[m[33m ([m[1;33mtag: 4.0a[m[33m)[m Droits des ressources : Passage sous twig
+[33m0208c64d[m Administrateurs de domaine
+[33ma60ce4c0[m Droits modif
+[33m9cd423ee[m Utilisateur
+[33m9a1c2e0f[m Vacaces & Jours fériés : Passage sous twig
+[33m6268c870[m Calendriers hors réservation : Passage sous twig
+[33md80a8929[m Purge des comptes EXT : Passage sous twig
+[33m85bbe9eb[m LDAP rafraichissement des données
+[33m9c880dbf[m SSO : Passage sous twig
+[33m550ed088[m LDAP - Securité
+[33m218a7737[m LDAP : Passage sous twig
+[33m24ea7b90[m Ajouts Infos Serveurs
+[33ma4fbdc0c[m git
+[33m4a279a56[m git
+[33md7a101cb[m Config perso
+[33mcf1cd533[m MaJ
+[33m14461236[m Infos GRR et Serveur
+[33m1c2aefb2[m Theme admin
+[33m33c8a71c[m Passage sous twig logs de connexion
+[33m3c2c7931[m Merge branch 'master' of https://github.com/JeromeDevome/GRR
+[33m612b977a[m Ajout contrôle des droits des dossiers
+[33me0ad6347[m Merge remote-tracking branch 'origin/master'
+[33m8bad3acb[m commit avant rebase
+[33mde272849[m Correctifs
+[33m3187c665[m Passage sous twig : Modification de ressource + Suprression Domaine et Ressources
+[33ma07d829d[m Optimisation
+[33m8626c7c0[m Passage sur Twig : Mail automatique
+[33me81b9f48[m affichage
+[33m9fbb5d3f[m erreur de saisie
+[33me7d4b98f[m Correctif au passage sous twig
+[33mb0cf7bbe[m Passage sous twig : Edition des domaines
+[33mc8cae8aa[m Corrections de liens
+[33mfa5b97a8[m Gestion domaines et ressources
+[33mcaba0e4a[m Passage sous twig des champs additionnels
+[33m09d1f98b[m Passgage sous twig de l'affichages des dommaines et des ressources
+[33m44b56948[m Changement lien template admin
+[33mf4111f9d[m Optimisation
+[33m4a804dce[m Passage sous twig Administration  => Sites
+[33m05677c03[m Correctif au passage sur twig
+[33m3cf791ed[m Padsage de modif utilisateur et MDP facil sous twig
+[33m3e4c7cd6[m Ajout option require
+[33mcdc985c1[m vendor
+[33m3b05c886[m header admin
+[33mfb15e6e6[m Sup
+[33m331b02cb[m Administration sous twig
+[33m7eb365ae[m AdminLTE
+[33m0dd60d0d[m modification : méthode de calcul du style, la partie commune est dans /bootstrap, /js et /themes/default/css/style.css ; les personnalisations sont dans /themes/mon_theme/css
+[33m3b8b63f7[m correctifs : reprise du code, syntaxe et apparence
+[33mf9d8c5ee[m correctif : format de date incorrect
+[33md5b207e7[m correctifs : syntaxe et apparence
+[33m1d970272[m correctif dans le cas où $room n'est pas défini
+[33m5a6a5244[m correctifs mineurs
+[33m45815b5f[m correction des styles
+[33m7d826ca9[m reprise du code html, simplification
+[33m738dc590[m mise à jour de bootstrap en version 3.3.7
+[33md50b0e4a[m correction : rétablissement de l'aspect antérieur des pages
+[33m23e669a5[m modification : calcul des pages et application des styles ajout : nouveau thème grand bleu et simplification du thème default
+[33mbd127c99[m Division par 0
+[33m95e79f30[m amelioration : gestion des menus escamotables
+[33md31ee5d4[m Merge remote-tracking branch 'github/ynaessens/master'
+[33md030f879[m ajout : possibilité d'échanger deux réservations
+[33m99c403d4[m correctifs divers
+[33m8ad69999[m Merge remote-tracking branch 'upstream/master'
+[33m8faf7093[m amélioration de l'apparence
+[33m488ff53a[m Merge remote-tracking branch 'origin/master'
+[33mf2ec6dcb[m correctif : accents et MAJ du fichier connect.inc.php par install_mysql.php
+[33mf46fdbcd[m correctif : accents et MAJ du fichier connect.inc.php par install_mysql.php
+[33m1ddf1e83[m correction de code et amélioration de l'apparence
+[33m99e49f1b[m correctif : paramètres de retour après modification, copie d'une réservation
+[33m7b696aab[m Merge pull request #52 from remyd1/master
+[33m31b25520[m closing issue https://github.com/JeromeDevome/GRR/issues/29
+[33mdc0e5c92[m Deplacement $versionReposite
+[33mc5b08d2e[m 3.4.0
+[33meb9cf59c[m amelioration : présentation et liens dans les cellules
+[33mbf2d790d[m correctif : après copie, retour au planning affichant la résa copiée
+[33mc4cbe952[m correctif : lien incomplet vers une réservation
+[33m132e07c5[m Update install_mysql.php
+[33m8aa64346[m amelioration : possibilité pour un utilisateur de voir son historique de connexion
+[33m9746ce3e[m correction : affichage des codes couleurs des réservations suivant l'ordre choisi
+[33mb2f77cad[m amelioration : paramétrage interactif du port de la base de données
+[33m3b9bda64[m amelioration : possibilité pour un utilisateur de voir son historique de connexion
+[33mda39d139[m correction : erreurs de connexion et accents en fresh install
+[33mf7e7b093[m mise à jour (merci à Index Education pour la mise à disposiiton de ce fichier)
+[33me52a070f[m modification : calcul de la page month_all2, gestion du menu escamotable
+[33m66c65e59[m amélioration : mise en évidence des jours fériés et de vacances, répétition des jours en bas de tableau
+[33m44271a4a[m amélioration : possibilité d'échanger deux réservations directement
+[33m77d05555[m Merge remote-tracking branch 'upstream/master'
+[33m4b2af17e[m RC3
+[33m4193cab5[m RC3
+[33m0262b0e2[m mise à jour en vue de la publication 3.4.0 stable
+[33m7ac9b103[m amélioration de l'affichage des réservations successives dans une journée
+[33m0f402e89[m amélioration de l'affichage des menus, changement de paramétrage de make_room_list_html
+[33m91034332[m amélioration de l'affichage et liens pour créer une réservation
+[33m50fc61ee[m correctif : calcul de la page de retour
+[33m88cef45d[m correctif : suppression de \ indésirable
+[33m1eb5d4c3[m correctif : codage accents
+[33mdff321b7[m correction
+[33m16ee57f1[m fonction compare_ip_adr
+[33m70a171c0[m amélioration de l'affichage
+[33m6eb60577[m Delete installation.php
+[33m5c6911af[m Delete infos.php
+[33m6e8c724f[m Delete controleur.php
+[33m0540c773[m Delete functions0212.inc.php
+[33m9ecee2a4[m Delete functions.inc.ori.php
+[33m3cbb48ca[m Delete config0212.inc.php
+[33maebc210d[m Delete config.inc.ori.php
+[33m4e572140[m Delete cas.inc.dev.php
+[33m80db17b4[m Delete 04ac5d6653f7b32f7ce8977d3c0d42d9.png
+[33ma0361b6e[m Delete edt.xml
+[33m04c03d6e[m Delete exportgrr.xml
+[33m146f7c9f[m Delete admin_config1.php.ori
+[33mf6495a55[m Delete admin_calend_vacances_feries_test.php
+[33m2f2aa2f4[m Delete admin_calend.php.ori
+[33ma541bcf7[m Delete year-dev.php
+[33m0f7815f8[m Delete week0214.php
+[33m983df9af[m Delete week0213.php
+[33m337069bd[m Delete week0207.php
+[33m9e273d6d[m Delete week.ori.php
+[33mdfb86906[m Delete edit_entry_handler.ori.php
+[33m4f3bc35f[m Merge remote-tracking branch 'origin/master'
+[33mbe9fb4b4[m correctif : gestion du menu gauche escamotable
+[33mf716e35c[m hook
+[33mfb48df5d[m Affichage ou non de l'imprimante
+[33m46d5c48e[m modification bouttons mois précédent/suivant
+[33m74b4ae3c[m hook
+[33me86e3f3b[m correctifs : retour après modération et month_all2
+[33md0b6189d[m correctif : la couleur jaune est illisible sur fond blanc
+[33mfe52d8ed[m correctif : page courante
+[33m35acf87c[m correctif : prise en compte des préférences de l'utilisateur dans le calcul de la page d'accueil
+[33ma426d52c[m correctif : donner une valeur numérique à $dbPort
+[33m91244e04[m correctifs syntaxiques et amélioration du filtrage des adresses mail
+[33m6ffb281d[m correctif : paramètre manquant dans mysqli_connect
+[33me9ce5bd1[m amélioration : intégration au portail EnvOLE, proposition d'Arnaud Fornerot
+[33m2575cf39[m Merge remote-tracking branch 'upstream/master'
+[33mb53c3e86[m corrections
+[33m58390743[m amélioration : code et possibilité d'utiliser les couleurs du texte et du fond
+[33mc0bb86d8[m ajout : message dans l'entête s'il existe une réservation à modérer
+[33m78860d3c[m amélioration : présentation des réservations modérées
+[33m08a8ec29[m amélioration : retour à la page d'appel après modération
+[33m34a7f08d[m Merge remote-tracking branch 'origin/master'
+[33m95d8516e[m amélioration : filtrage par plage IP au format CIDR
+[33mfb00ff9a[m RC2
+[33m6323c041[m Merge branch 'master' of https://github.com/JeromeDevome/GRR
+[33m5dbff5d8[m correctifs : syntaxe et évite le double envoi du header
+[33m7a21413e[m correctif : cache les ressources qui devraient l'être
+[33m41f07286[m Correction texte
+[33m24faa1b5[m correctif : cache les ressources qui devraient l'être
+[33m975cf035[m message au survol de l'année dans l'entête du planning
+[33m962e4438[m correctif : page de retour en mode page si modification
+[33m320f6146[m Infos serveur
+[33md75a9616[m Infos Serveur
+[33m76102130[m 3.4.0 RC1
+[33mbb86d6d6[m amélioration : position du datepicker en avant-plan
+[33mbf199cbf[m mise à jour cumulative
+[33m77a3799f[m correction de code
+[33m9a8b80e6[m correctifs mineurs et ajout d'une fonction get_default_room
+[33mb7b65659[m amélioration compatibilité php7
+[33m07f90658[m correction de code : bouton radio activé
+[33m14cb0eff[m Correction de code
+[33md0c8575a[m correctif : présentation, élimination de données inutiles
+[33mc9b60eed[m correctif : définition de paramètres par défaut
+[33mdfacc0e1[m FIX
+[33m9c51be12[m Encodage + couleur
+[33m7c2d600f[m Modif outils
+[33m6e704f37[m IP, correction valeur defaut
+[33m447c397f[m Lang module ext
+[33mbd99904e[m lang module ext
+[33m596b36b9[m Compatibilité Mysql 5.7
+[33mbc608355[m Notifier le changement de ressources
+[33ma388caa6[m Merge branch 'master' of https://github.com/JeromeDevome/GRR
+[33meeb08d5e[m Nouveau dossier installation + Changement numéro de version
+[33m31c25dc6[m Correction de code
+[33m3705b714[m Affichage bandeau
+[33m7d
