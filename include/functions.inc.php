@@ -919,6 +919,52 @@ function begin_page($title, $page = "with_session")
 	return $a;
 }
 
+function begin_page_twig($title, $page = "with_session")
+{
+	global $d;
+
+	if ($page == "with_session")
+	{
+		if (isset($_SESSION['default_style']))
+			$d['sheetcss'] = 'themes/'.$_SESSION['default_style'].'/css';
+
+		else
+			$d['sheetcss'] = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
+		if (isset($_GET['default_language']))
+		{
+			$_SESSION['default_language'] = $_GET['default_language'];
+			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
+				header("Location: ".$_SESSION['chemin_retour']);
+			else
+				header("Location: ".traite_grr_url());
+			die();
+		}
+	}
+	else
+	{
+		if (Settings::get("default_css"))
+			$d['sheetcss'] = 'themes/'.Settings::get("default_css").'/css';
+		else
+			$d['sheetcss'] = 'themes/default/css';
+		if (isset($_GET['default_language']))
+		{
+			$_SESSION['default_language'] = $_GET['default_language'];
+			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
+				header("Location: ".$_SESSION['chemin_retour']);
+			else
+				header("Location: ".traite_grr_url());
+			die();
+		}
+	}
+	//global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin;
+	//header('Content-Type: text/html; charset=utf-8');
+	if (!isset($_COOKIE['open']))
+	{
+		setcookie("open", "true", time()+3600);
+	}
+
+}
+
 /*
 ** Fonction qui affiche le header
 */
@@ -1148,9 +1194,9 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 	// On vérifie que les noms et prénoms ne sont pas vides
 	VerifNomPrenomUser($type_session);
 	if ($type_session == "with_session")
-		echo begin_page(Settings::get("company"),"with_session");
+		echo begin_page_twig(Settings::get("company"),"with_session");
 	else
-		echo begin_page(Settings::get("company"),"no_session");
+		echo begin_page_twig(Settings::get("company"),"no_session");
 
 	Hook::Appel("hookHeader2");
 	// Si nous ne sommes pas dans un format imprimable
@@ -1226,18 +1272,15 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 						$d['nbConnecte'] = nb_connecte();
 				}
 			}
+
+			// ???
 			if ($type_session != "with_session")
 				echo '<script>selection()</script>'.PHP_EOL;
-			echo '<td class="configuration" >'.PHP_EOL;
-			if (@file_exists('js/'.$clock_file))
-			{
-				echo '<div class="clock">'.PHP_EOL;
-				echo '<div id="Date">'.PHP_EOL;
-				echo '&nbsp;<span id="hours"></span>'.PHP_EOL;
-				echo 'h'.PHP_EOL;
-				echo '<span id="min"></span>'.PHP_EOL;
-				echo '</div></div>'.PHP_EOL;
-			}
+
+			// Heure selon la langue
+			if (@file_exists('../js/'.$clock_file))
+				$d['jsHeure'] = $clock_file;
+
 			$_SESSION['chemin_retour'] = '';
 			if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
 			{
@@ -1248,11 +1291,11 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			{
 				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
 				{
-					echo '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>'.PHP_EOL;
-					echo '<br /> <small><i><a href="login.php">'.get_vocab("connect_local").'</a></i></small>'.PHP_EOL;
+					$d['lienConnexion'] =  '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>';
+					$d['lienConnexion'] .=  '<br /> <small><i><a href="login.php">'.get_vocab("connect_local").'</a></i></small>';
 				}
 				else {
-					echo '<br /> <a href="login.php">'.get_vocab("connect").'</a>'.PHP_EOL;
+					$d['lienConnexion'] = '<br /> <a href="login.php">'.get_vocab("connect").'</a>';
 				}
 			}
 			else
@@ -1268,23 +1311,22 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 				{
 					$disconnect_link = true;
 					if (Settings::get("authentification_obli") == 1)
-						$d['lienDeconnection'] = '<br /> <a href="'.$racine.'logout.php?auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+						$d['lienDeconnexion'] = '<br /> <a href="'.$racine.'logout.php?auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
 					else
-						$d['lienDeconnection'] = '<br /> <a href="'.$racine.'logout.php?auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+						$d['lienDeconnexion'] = '<br /> <a href="'.$racine.'logout.php?auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
 				}
 				if ((Settings::get("Url_portail_sso") != '') && (isset($_SESSION['est_authentifie_sso'])))
 				{
-					$d['lienDeconnection'] = '<br><a href="'.Settings::get("Url_portail_sso").'">'.get_vocab("Portail_accueil").'</a>'.PHP_EOL;
+					$d['lienDeconnexion'] = '<br><a href="'.Settings::get("Url_portail_sso").'">'.get_vocab("Portail_accueil").'</a>'.PHP_EOL;
 				}
 				if ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_statut') == 'lasso_utilisateur'))
 				{
 					if ($_SESSION['lasso_nameid'] == NULL)
-						$d['lienDeconnection'] = '<br><a href="lasso/federate.php">'.get_vocab('lasso_federate_this_account').'</a>'.PHP_EOL;
+						$d['lienDeconnexion'] = '<br><a href="lasso/federate.php">'.get_vocab('lasso_federate_this_account').'</a>'.PHP_EOL;
 					else
-						$d['lienDeconnection'] = '<br><a href="lasso/defederate.php">'.get_vocab('lasso_defederate_this_account').'</a>'.PHP_EOL;
+						$d['lienDeconnexion'] = '<br><a href="lasso/defederate.php">'.get_vocab('lasso_defederate_this_account').'</a>'.PHP_EOL;
 				}
 			}
-			echo '</td>'.PHP_EOL;
 
 		}
 	}
