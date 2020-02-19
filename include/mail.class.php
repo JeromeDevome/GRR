@@ -19,7 +19,9 @@
 class Email{
 
 	public static function Envois ($A, $sujet, $message, $DE, $cc1='', $cc2='') {
-
+		
+		mb_internal_encoding('utf-8');
+		
 		if (Settings::get('grr_mail_method') == 'smtp') {
 
 			$smtp1		= Settings::get('grr_mail_smtp');
@@ -29,10 +31,7 @@ class Email{
 			$port		= Settings::get('smtp_port');
 
 			//encodage du sujet pour affichage des accents 1/3, YN sur proposition de podz sur le forum
-			//$sujet = utf8_decode($sujet);
-			mb_internal_encoding('UTF-8');
-			$sujet = mb_encode_mimeheader($sujet,"utf-8", "B", "\n");
-			//$sujet->CharSet = 'utf-8';
+			$sujet = mb_encode_mimeheader($sujet);
 
 			$mail = new PHPMailer;
 			$mail->CharSet = 'UTF-8';
@@ -85,19 +84,19 @@ class Email{
 		} 
 		else
 		{		
+			$sujet = mb_encode_mimeheader($sujet);
 			$headers = "From: {$DE}" . "\r\n" .
 			"Reply-To: {$DE}" . "\r\n" .
 			//encodage du sujet pour affichage des accents 2/3
-			'Content-Type: text/plain; charset="utf-8"'." " .
-			'MIME-Version:1.0'.
-			'Content-Transfer-Encoding:8bit'.
-			'X-Mailer: PHP/' . phpversion();
+			'MIME-Version: 1.0'."\r\n".
+			'Content-Type: text/plain; charset=utf-8'."\r\n" .
+			'Content-Transfer-Encoding:8bit'."\r\n".
+			'X-Mailer: PHP/' . phpversion()."\r\n";
 
-			//mail($A, $sujet, utf8_decode(utf8_encode($message)), $headers);
             //encodage du sujet pour affichage des accents 3/3
 			$lesDestinataires = explode(";", $A);
 			for($i=0;$i<count($lesDestinataires);$i++){
-				mail(str_replace(";",",",$lesDestinataires[$i]), $sujet, utf8_decode(str_replace("<br>","",$message)), $headers);
+				mail(str_replace(";", ",", $lesDestinataires[$i]), $sujet, str_replace("<br>", "", $message), $headers);
 			} //YN selon Rapace et Boblegal sur le forum
 		}
 
