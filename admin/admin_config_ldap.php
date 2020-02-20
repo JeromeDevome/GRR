@@ -38,8 +38,8 @@ $etape = isset($_POST["etape"]) ? $_POST["etape"] : '0';
 $adresse = isset($_POST["adresse"]) ? $_POST["adresse"] : NULL;
 $port = isset($_POST["port"]) ? $_POST["port"] : NULL;
 $login_ldap = isset($_POST["login_ldap"]) ? $_POST["login_ldap"] : NULL;
-$pwd_ldap = isset($_POST["pwd_ldap"]) ? $_POST["pwd_ldap"] : NULL;
-$pwd_ldap = unslashes($pwd_ldap);
+$pwd_ldap = isset($_POST["pwd_ldap"]) ? unslashes($_POST["pwd_ldap"]) : NULL;
+
 if (isset($_POST["use_tls"]))
 {
 	if ($_POST["use_tls"] == 'y')
@@ -239,19 +239,23 @@ if ($etape == 3)
     {
         // On a ouvert un fichier config_ldap.inc.php
         $conn = "<"."?php\n";
-        $conn .= "# Les quatre lignes suivantes sont à modifier selon votre configuration\n";
-        $conn .= "# ligne suivante : l'adresse de l'annuaire LDAP.\n";
-        $conn .= "# Si c'est le même que celui qui heberge les scripts, mettre \"localhost\"\n";
-        $conn .= "\$ldap_adresse='".$adresse."';\n";
-        $conn .= "# ligne suivante : le port utilisé\n";
-        $conn .= "\$ldap_port='".$port."';\n";
-        $conn .= "# ligne suivante : l'identifiant et le mot de passe dans le cas d'un accès non anonyme\n";
+        $conn .= "# Les quatre éléments suivants sont à modifier selon votre configuration\n"
+                ."\n";
+        $conn .= "# 1. l'adresse (URI) de l'annuaire LDAP.\n";
+        $conn .= "# Si c'est le même que celui qui heberge les scripts, mettre \"ldap://localhost\"\n";
+        $conn .= "\$ldap_adresse='".$adresse."';\n"
+                ."\n";
+        $conn .= "# 2. le port utilisé\n";
+        $conn .= "\$ldap_port='".$port."';\n"
+                ."\n";
+        $conn .= "# 3. l'identifiant et le mot de passe dans le cas d'un accès non anonyme\n";
         $conn .= "\$ldap_login='".$login_ldap."';\n";
         $conn .= "# Remarque : des problèmes liés à un mot de passe contenant un ou plusieurs caractères accentués ont déjà été constatés.\n";
-        $conn .= "\$ldap_pwd='".addslashes($pwd_ldap)."';\n";
-        $conn .= "# ligne suivante : le chemin d'accès dans l'annuaire\n";
+        $conn .= "\$ldap_pwd='".addslashes($pwd_ldap)."';\n"
+                ."\n";
+        $conn .= "# 4. le chemin d'accès dans l'annuaire\n";
         $conn .= "\$ldap_base='".$base_ldap."';\n";
-        $conn .= "# ligne suivante : filtre LDAP supplémentaire (facultatif)\n";
+        $conn .= "# filtre LDAP supplémentaire (facultatif)\n";
         $conn .= "\$ldap_filter='".$ldap_filter."';\n";
         $conn .= "# ligne suivante : utiliser TLS\n";
         if ($use_tls)

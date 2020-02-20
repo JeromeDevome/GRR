@@ -54,5 +54,5 @@ images/
 .idea
 *.ori.php
 
-/nbproject/private/
+/nbproject/
 
