@@ -1,0 +1,155 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+         <div class="box box-success">
+            <div class="box-header">
+              <h3 class="box-title">{{ trad.admin_user_modify_modify }}</h3>
+            </div>
+			<form class="form-horizontal" method="GET">
+				<input type="hidden" name ="p" value="admin_user_modify" />
+				<input type="hidden" name ="display" value="{{ trad.dDisplay }}" />
+				<input type="hidden" name="valid" value="yes" />
+
+				<div class="box-body">
+					<p>{{ trad.required }}</p>
+
+					{% if trad.dConnexionExterne == 1 %}
+						<div class="form-group">
+							<label class="col-sm-4" for="type_authentification">{{ trad.authentification }}</label>
+							<div class="col-sm-8">
+								<select name="type_authentification" id="select_auth_mode" onchange="display_password_fields(this.id);" class="form-control">
+									<option value="locale" {% if utilisateur.disponible == 'local' %} selected {% endif %}>{{ trad.authentification_base_locale }}</option>
+									<option value="externe" {% if utilisateur.disponible == 'ext' %} selected {% endif %}>{{ trad.authentification_base_externe }}</option>
+								</select>
+							</div>
+						</div>
+					{% endif %}
+
+					{% if utilisateur.reg_login !=  '' %}
+						<div class="form-group">
+							<label class="col-sm-4" for="login">{{ trad.login }}</label>
+							<div class="col-sm-8">
+								{{ utilisateur.reg_login }}
+							</div>
+						</div>
+						<input type="hidden" name="user_login" value="{{ utilisateur.reg_login }}" />
+					{% else %}
+						{{ form.input('new_login', trad.login, utilisateur.reg_login, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
+					{% endif %}
+
+					{{ form.input('reg_nom', trad.last_name, utilisateur.nom, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
+					{{ form.input('reg_prenom', trad.first_name, utilisateur.prenom, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
+					{{ form.input('reg_email', trad.mail_user, utilisateur.email, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'email'}) }}
+
+					<div class="form-group">
+						<label class="col-sm-4" for="reg_statut">{{ trad.statut }}</label>
+						<div class="col-sm-8">
+							<select name="reg_statut" id="select_auth_mode" class="form-control" size="1">
+								<option value="visiteur" {% if utilisateur.statut == 'visiteur' %} selected {% endif %}>{{ trad.statut_visitor }}</option>
+								<option value="utilisateur" {% if utilisateur.statut == 'utilisateur' %} selected {% endif %}>{{ trad.statut_user }}</option>
+								{% if trad.dEstAdministrateur ==  1 %}
+									<option value="gestionnaire_utilisateur" {% if utilisateur.statut == 'gestionnaire_utilisateur' %} selected {% endif %}>{{ trad.statut_user_administrator }}</option>
+									<option value="administrateur" {% if utilisateur.statut == 'administrateur' %} selected {% endif %}>{{ trad.statut_administrator }}</option>
+								{% endif %}
+							</select>
+						</div>
+					</div>
+
+					{% if trad.dEstPasLuiMeme == 1 %}
+						<div class="form-group">
+							<label class="col-sm-4" for="reg_etat">{{ trad.activ_no_activ }}</label>
+							<div class="col-sm-8">
+								<select name="reg_etat" id="reg_etat" class="form-control">
+									<option value="actif" {% if utilisateur.etat == 'actif' %} selected {% endif %}>{{ trad.activ_user }}</option>
+									<option value="inactif" {% if utilisateur.etat == 'inactif' %} selected {% endif %}>{{ trad.no_activ_user }}</option>
+								</select>
+							</div>
+						</div>
+					{% else %}
+						<input type="hidden" name="reg_etat" value="{{ utilisateur.etat }}" />
+					{% endif %}
+
+					{% if utilisateur.source == 'local' or utilisateur.reg_login ==  '' %}
+						{% if utilisateur.reg_login !=  '' %}
+							<div class="form-group">
+								<label class="col-sm-12" for="reg_statut">{{ trad.champ_vide_mot_de_passe_inchange }}</label>
+							</div>
+						{% endif %}
+
+						{{ form.input('reg_password', trad.pwd_toot_short, '', {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'password'}) }}
+						{{ form.input('reg_password2', trad.confirm_pwd, '', {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'password'}) }}
+
+						<div class="form-group col-sm-12">
+							<label class="col-sm-4" for="cacher_lien_deconnecter">{{ trad.user_change_pwd_connexion }}</label>
+							<div class="col-sm-8">
+								<input type="checkbox" name="reg_changepwd" value="1" {% if utilisateur.changepwd == '1' %} checked {% endif %}>
+							</div>
+						</div>
+					{% endif %}
+
+				</div>
+
+				<!-- /.box-body -->
+				<div class="box-footer">
+					<a href="?p=admin_user" class="btn btn-default btn-md">{{ trad.back }}</a>
+					<input type="submit" name="save" value="{{ trad.save }}" class="btn btn-success btn-md pull-right" />
+				</div>
+			</form>
+          </div>
+          <!-- /.box -->
+
+		  <!-- Liste des privilèges de l'utilisateur  -->
+		 {% if utilisateur.reg_login !=  '' %}
+			<div class="box box-primary">
+				<div class="box-header">
+				  <h3 class="box-title">{{ trad.liste_privileges }}</h3>
+				</div>
+
+				<div class="box-body">
+					<ul>
+						{{ trad.dAdministrateurSite |raw }}
+						{{ trad.dAdministrateurDomaine |raw }}
+						{{ trad.dAdministrateurOuRien |raw }}
+					</ul>
+
+
+
+				</div>
+				<!-- /.box-body -->
+
+				<div class="box-footer">
+					<a href="?p=admin_user" class="btn btn-default btn-md">{{ trad.back }}</a>
+				</div>
+			</div>
+			<!-- /.box -->
+		{% endif %}
+
+		</div>
+	</div>
+
+
+{% endblock %}
+
+{% block javascript %}
+	<script type='text/javascript'>
+		function display_password_fields(id){
+			if ($('#'+id).val()=='locale')
+			{
+				$('#password_fields').show();
+			}
+			else
+			{
+				$('#password_fields').hide();
+			}
+		}
+	</script>
+{% endblock %}

@@ -480,6 +480,36 @@ function how_many_connected()
 			affiche_pop_up(get_vocab("maj_bdd_not_update").get_vocab("please_go_to_admin_maj.php"),"force");
 	}
 }
+
+/**
+ * FUNCTION: nb_connecte()
+ * DESCRIPTION: Si c'est un admin qui est connecté, affiche le nombre de personnes actuellement connectées.
+ */
+function nb_connecte()
+{
+	$lien = "";
+
+	if (authGetUserLevel(getUserName(), -1) >= 6)
+	{
+		$sql = "SELECT login FROM ".TABLE_PREFIX."_log WHERE end > now()";
+		$res = grr_sql_query($sql);
+		$nb_connect = grr_sql_count($res);
+		grr_sql_free($res);
+
+		if (@file_exists('./admin_access_area.php')){
+			$racineAd = "./";
+		}else{
+			$racineAd = "./admin/";
+		}
+
+		if ($nb_connect == 1)
+			$lien = "<a href='{$racineAd}admin.php?p=admin_view_connexions'>".$nb_connect.get_vocab("one_connected")."</a>";
+		else
+			$lien = "<a href='{$racineAd}admin.php?p=admin_view_connexions'>".$nb_connect.get_vocab("several_connected")."</a>";
+	}
+
+	return $lien;
+}
 /**
  * Fonction : resaToModerate($user) 
  * Description : si c'est un admin ou un gestionnaire de ressource qui est connecté, retourne un message indiquant s'il y a des réservations à modérer
@@ -889,6 +919,52 @@ function begin_page($title, $page = "with_session")
 	return $a;
 }
 
+function begin_page_twig($title, $page = "with_session")
+{
+	global $d;
+
+	if ($page == "with_session")
+	{
+		if (isset($_SESSION['default_style']))
+			$d['sheetcss'] = 'themes/'.$_SESSION['default_style'].'/css';
+
+		else
+			$d['sheetcss'] = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
+		if (isset($_GET['default_language']))
+		{
+			$_SESSION['default_language'] = $_GET['default_language'];
+			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
+				header("Location: ".$_SESSION['chemin_retour']);
+			else
+				header("Location: ".traite_grr_url());
+			die();
+		}
+	}
+	else
+	{
+		if (Settings::get("default_css"))
+			$d['sheetcss'] = 'themes/'.Settings::get("default_css").'/css';
+		else
+			$d['sheetcss'] = 'themes/default/css';
+		if (isset($_GET['default_language']))
+		{
+			$_SESSION['default_language'] = $_GET['default_language'];
+			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
+				header("Location: ".$_SESSION['chemin_retour']);
+			else
+				header("Location: ".traite_grr_url());
+			die();
+		}
+	}
+	//global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin;
+	//header('Content-Type: text/html; charset=utf-8');
+	if (!isset($_COOKIE['open']))
+	{
+		setcookie("open", "true", time()+3600);
+	}
+
+}
+
 /*
 ** Fonction qui affiche le header
 */
@@ -905,6 +981,11 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 		$adm = 1;
 		$racine = "../";
 		$racineAd = "./";
+	}
+	elseif (@file_exists('./compte.php')){
+        $adm = 1;
+        $racine = "../";
+        $racineAd = "./";
 	}else{
 		$adm = 0;
 		$racine = "./";
@@ -1048,7 +1129,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 				else
 					$nomAffichage =  htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']);
 			
-				echo '<br /><a href="'.$racine.'my_account.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'. $nomAffichage .' - '.get_vocab("manage_my_account").'</a>'.PHP_EOL;
+				echo '<br /><a href="'.$racine.'/compte/compte.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'. $nomAffichage .' - '.get_vocab("manage_my_account").'</a>'.PHP_EOL;
 				if (verif_access_search(getUserName()))
 					echo '<br/><a href="'.$racine.'report.php">'.get_vocab("report").'</a>'.PHP_EOL;
 				$disconnect_link = false;
@@ -1083,6 +1164,170 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			echo '</div>'.PHP_EOL;
 			echo '<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>'.PHP_EOL;
 			echo '</div>'.PHP_EOL;
+		}
+	}
+}
+
+function print_header_twig($day = '', $month = '', $year = '', $type_session = 'with_session')
+{
+	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
+	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $d;
+	
+	if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
+		header("Location: ./changepwd.php");
+	}
+
+	if (@file_exists('./compte.php')){
+        $adm = 1;
+        $racine = "../";
+        $racineAd = "./";
+	}else{
+		$adm = 0;
+		$racine = "./";
+		$racineAd = "./compte/";
+	}
+
+	include $racine."/include/hook.class.php";
+
+	if (!($desactive_VerifNomPrenomUser))
+		$desactive_VerifNomPrenomUser = 'n';
+	// On vérifie que les noms et prénoms ne sont pas vides
+	VerifNomPrenomUser($type_session);
+	if ($type_session == "with_session")
+		echo begin_page_twig(Settings::get("company"),"with_session");
+	else
+		echo begin_page_twig(Settings::get("company"),"no_session");
+
+	Hook::Appel("hookHeader2");
+	// Si nous ne sommes pas dans un format imprimable
+	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
+	{
+		// If we dont know the right date then make it up
+		if (!isset($day) || !isset($month) || !isset($year) || ($day == '') || ($month == '') || ($year == ''))
+		{
+			$date_now = time();
+			if ($date_now < Settings::get("begin_bookings"))
+				$date_ = Settings::get("begin_bookings");
+			else if ($date_now > Settings::get("end_bookings"))
+				$date_ = Settings::get("end_bookings");
+			else
+				$date_ = $date_now;
+			$day   = date("d",$date_);
+			$month = date("m",$date_);
+			$year  = date("Y",$date_);
+		}
+		if (!(isset($search_str)))
+			$search_str = get_vocab("search_for");
+		if (empty($search_str))
+			$search_str = "";
+		if (!(isset($desactive_bandeau_sup) && ($desactive_bandeau_sup == 1) && ($type_session != 'with_session')))
+		{
+
+			// HOOK
+			Hook::Appel("hookHeader1");
+
+			// On fabrique une date valide pour la réservation si ce n'est pas le cas
+			$date_ = mktime(0, 0, 0, $month, $day, $year);
+			if ($date_ < Settings::get("begin_bookings"))
+				$date_ = Settings::get("begin_bookings");
+			else if ($date_ > Settings::get("end_bookings"))
+				$date_ = Settings::get("end_bookings");
+			$day   = date("d",$date_);
+			$month = date("m",$date_);
+			$year  = date("Y",$date_);
+
+
+			//Parmetre url fixe compte / admin
+			$paramUrl = 'day='.$day.'&amp;year='.$year.'&amp;month='.$month;
+			$d['paramUrl'] = $paramUrl;
+
+			//Accueil
+			$d['pageAccueil'] = $racine.page_accueil('yes').$paramUrl;
+
+			//Logo
+			$nom_picture = $racine."images/".Settings::get("logo");
+			if ((Settings::get("logo") != '') && (@file_exists($nom_picture)))
+				$d['logo'] = $nom_picture;
+			
+			//Mail réservation
+			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
+			$res = grr_sql_query1($sql);
+			grr_sql_free($res);
+
+			if ( ( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )
+			{
+				echo '<td class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</td>',PHP_EOL;
+			}
+			// Administration
+			if ($type_session == "with_session")
+			{
+				
+                $user_name = getUserName();
+                $d['mess_resa'] = resaToModerate($user_name);
+				if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1) || ($mess_resa != ''))
+				{
+					if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1))
+                       $d['lienAdmin'] = '../admin/admin.php?p=admin_accueil&'.$paramUrl;
+					if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
+						$d['nbConnecte'] = nb_connecte();
+				}
+			}
+
+			// ???
+			if ($type_session != "with_session")
+				echo '<script>selection()</script>'.PHP_EOL;
+
+			// Heure selon la langue
+			if (@file_exists('../js/'.$clock_file))
+				$d['jsHeure'] = $clock_file;
+
+			$_SESSION['chemin_retour'] = '';
+			if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
+			{
+				$parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
+				$_SESSION['chemin_retour'] = traite_grr_url($grr_script_name)."?". $_SERVER['QUERY_STRING'];
+				$d['urlLangue'] = traite_grr_url($grr_script_name);			}
+			if ($type_session == 'no_session')
+			{
+				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
+				{
+					$d['lienConnexion'] =  '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>';
+					$d['lienConnexion'] .=  '<br /> <small><i><a href="login.php">'.get_vocab("connect_local").'</a></i></small>';
+				}
+				else {
+					$d['lienConnexion'] = '<br /> <a href="login.php">'.get_vocab("connect").'</a>';
+				}
+			}
+			else
+			{
+				if( strlen(htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom'])) > 40 )
+					$d['nomUtilisateur'] =  htmlspecialchars($_SESSION['nom']);
+				else
+					$d['nomUtilisateur'] =  htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']);
+
+				// Déconnection
+				$disconnect_link = false;
+				if (!((Settings::get("cacher_lien_deconnecter") == 'y') && (isset($_SESSION['est_authentifie_sso']))))
+				{
+					$disconnect_link = true;
+					if (Settings::get("authentification_obli") == 1)
+						$d['lienDeconnexion'] = '<br /> <a href="'.$racine.'logout.php?auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+					else
+						$d['lienDeconnexion'] = '<br /> <a href="'.$racine.'logout.php?auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+				}
+				if ((Settings::get("Url_portail_sso") != '') && (isset($_SESSION['est_authentifie_sso'])))
+				{
+					$d['lienDeconnexion'] = '<br><a href="'.Settings::get("Url_portail_sso").'">'.get_vocab("Portail_accueil").'</a>'.PHP_EOL;
+				}
+				if ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_statut') == 'lasso_utilisateur'))
+				{
+					if ($_SESSION['lasso_nameid'] == NULL)
+						$d['lienDeconnexion'] = '<br><a href="lasso/federate.php">'.get_vocab('lasso_federate_this_account').'</a>'.PHP_EOL;
+					else
+						$d['lienDeconnexion'] = '<br><a href="lasso/defederate.php">'.get_vocab('lasso_defederate_this_account').'</a>'.PHP_EOL;
+				}
+			}
+
 		}
 	}
 }
@@ -1130,7 +1375,7 @@ function print_header_admin($day = '', $month = '', $year = '', $type_session = 
 
 			// Liens
 			$lienRetour = '../'.page_accueil('yes').'day='.$day.'&year='.$year.'&month='.$month;
-			$lienCompte = '../my_account.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month;
+			$lienCompte = '../compte/compte.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month;
 
 			//Mail réservation
 			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
@@ -5102,7 +5347,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 				else
 					$nomAffichage =  htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']);
 			
-				echo '<br /><a href="'.$racine.'my_account.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'. $nomAffichage .' - '.get_vocab("manage_my_account").'</a>'.PHP_EOL;
+				echo '<br /><a href="'.$racine.'compte/compte.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'. $nomAffichage .' - '.get_vocab("manage_my_account").'</a>'.PHP_EOL;
 				if (verif_access_search(getUserName()))
 					echo '<br/><a href="'.$racine.'report.php">'.get_vocab("report").'</a>'.PHP_EOL;
 				$disconnect_link = false;
@@ -5149,6 +5394,11 @@ function start_page_w_header($day = '', $month = '', $year = '', $type_session =
         $racine = "../";
         $racineAd = "./";
     }
+	elseif (@file_exists('./compte.php')){
+        $adm = 1;
+        $racine = "../";
+        $racineAd = "./";
+    }
     else{
         $adm = 0;
         $racine = "./";
@@ -5180,6 +5430,11 @@ function start_page_wo_header($titre, $type_session = 'with_session')
 {
     // pour le traitement des modules
     if (@file_exists('./admin_access_area.php')){
+        $adm = 1;
+        $racine = "../";
+        $racineAd = "./";
+    }
+	elseif (@file_exists('./compte.php')){
         $adm = 1;
         $racine = "../";
         $racineAd = "./";

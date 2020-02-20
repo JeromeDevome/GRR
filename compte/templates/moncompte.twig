@@ -1,0 +1,228 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+	<form id="param_account" action="compte.php?moncompte" method="post">
+
+		<table>
+			{% if d.AvertissementNomPrenom %}
+				<h2 class="avertissement">{{ trad.nom_prenom_valides }}</h2>
+			{% endif %}
+			<tr><td><b>{{ trad.login }}</b></td><td>{{ d.identifiant }}</td></tr>
+			{% if modificationNom == true %}
+				<tr><td><b>{{ trad.last_name }}</b></td><td>{{ d.user_nom }}</td></tr>
+				<tr><td><b>{{ trad.first_name }}</b></td><td>{{ d.user_prenom }}</td></tr>
+			{% else %}
+				<tr><td><b>{{ trad.last_name }}*</b></td><td><input class="form-control" type="text" name="reg_nom" value="{{ d.user_nom }}" size="30"></td></tr>
+				<tr><td><b>{{ trad.first_name }}*</b></td><td><input class="form-control" type="text" name="reg_prenom" value="{{ d.user_prenom }}" size="30"></td></tr>
+			{% endif %}
+			{% if modificationMail == true %}
+				<tr><td><b>{{ trad.mail_user }}</b></td><td>{{ d.user_email }}</td></tr>
+			{% else %}
+				<tr><td><b>{{ trad.mail_user }}</b></td><td><input class="form-control" type="text" name="reg_email" value="{{ d.user_email }}" size="30"></td></tr>
+			{% endif %}
+			<tr><td><b>{{ trad.statut }}</b></td><td>{{ d.text_user_statut }}</td></tr>
+		</table>
+		{% if modificationNom == false %}
+			<p>{{ trad.required }}</p>
+		{% endif %}
+
+		<hr>
+
+		{% if modificationMDP == false %}
+			<div>
+				<table  border="0" width="100%">
+					<tr>
+						<td onclick="clicMenu('1')" class="fontcolor4" style="cursor: inherit" align="center">
+							<span class="bground">
+								<b><a href="#"><font color=black>{{ trad.click_here_to_modify_pwd |raw }}</font></a></b>
+							</span>
+						</td>
+					</tr>
+					<tr style="display:none" id="menu1">
+						<td>
+							<br />
+							<p>{{ trad.pwd_msg_warning }}</p>
+							{{ trad.old_pwd }}
+							<input type="password" name="reg_password_a" size="20" />
+							<br />{{ trad.new_pwd1 }}
+							<input type="password" name="reg_password1" size="20" />
+							<br />{{ trad.new_pwd1 }}
+							<input type="password" name="reg_password2" size="20" />
+						</td>
+					</tr>
+				</table>
+			</div>
+		{% endif %}
+
+		<hr>
+
+		<h3>{{ trad.default_parameter_values_title }}</h3>
+
+		<h4>{{ trad.explain_area_list_format }}</h4>
+		
+		<table>
+			<tr>
+				<td>{{ trad.liste_area_list_format }}</td>
+				<td><input type="radio" name="area_item_format" value="list" {%if d.default_list_type == 'list' %}checked{% endif %} /></td>
+			</tr>
+			<tr>
+				<td>{{ trad.select_area_list_format }}</td>
+				<td><input type="radio" name="area_item_format" value="select" {%if d.default_list_type == 'select' %}checked{% endif %} /></td>
+			</tr>
+			<tr>
+				<td>{{ trad.item_area_list_format }}</td>
+				<td><input type="radio" name="area_item_format" value="item" {%if d.default_list_type == 'item' %}checked{% endif %} /></td>
+			</tr>
+		</table>
+
+		{% if settings.module_multisite == 'Oui' %}
+
+		<h4>{{ trad.explain_default_area_and_room_and_site }}</h4>
+
+		<table>
+			<tr>
+				<td>{{ trad.default_site }}</td>
+				<td>
+					<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
+						<option value="-1">{{ trad.choose_a_site }}</option>
+						{% for site in sites %}
+							<option value="{{ site.idsite }}" {% if site.idsite == d.default_site %} selected {% endif %}>{{ site.nomsite }}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+	
+		{% else %}
+			<h4>{{ trad.explain_default_area_and_room }}</h4>
+			<input type="hidden" id="id_site" name="id_site" value="-1" />
+
+			<table>
+		{% endif %}
+
+			<tr>
+				<td colspan="2"><div id="div_liste_domaines"></div></td>
+			</tr>
+			<tr>
+				<td colspan="2"><div id="div_liste_ressources"><input type="hidden" id="id_area" name="id_area" value="{{ d.default_area }}" /></div></td>
+			</tr>
+
+		</table>
+
+		<h4>{{ trad.explain_css }}</h4>
+		<table>
+			<tr>
+				<td>{{ trad.choose_css }}</td>
+				<td>
+					<select class="form-control" name="default_css">
+						<option value="">Choix Admin</option>
+						{% for theme in themes %}
+							<option value="{{ theme.idtheme }}" {% if theme.idtheme == d.default_css %} selected {% endif %}>{{ theme.nomtheme }}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+		</table>
+
+		<h4>{{ trad.choose_language }}</h4>
+		<table>
+			<tr>
+				<td>{{ trad.choose_css }}</td>
+				<td>
+					<select class="form-control" name="default_language">
+						<option value="">Choix Admin</option>
+						{% for langue in langues %}
+							<option value="{{ langue.idlangue }}" {% if langue.idlangue == d.default_language %} selected {% endif %}>{{ langue.nomlangue }}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+		</table>
+
+		<div id="fixe">
+			<div>
+				<input type="hidden" name="valid" value="yes" />
+				<input type="hidden" name="day" value="{{ d.dDay }}" />
+				<input type="hidden" name="month" value="{{ d.dMonth }}" />
+				<input type="hidden" name="year" value="{{ d.dYear }}" />
+				<input class="btn btn-primary" type="submit" value="{{ trad.save }}" />
+			</div>
+		
+	</form>
+	<form id="reset" action="my_account.php" method="post">
+
+			<div>
+				<input type="hidden" name="valid" value="reset" />
+				<input type="hidden" name="day" value="{{ d.dDay }}" />
+				<input type="hidden" name="month" value="{{ d.dMonth }}" />
+				<input type="hidden" name="year" value="{{ d.dYear }}" />
+				<input type="hidden" name="id_site" value="-1" />
+				<input type="hidden" name="id_area" value="-1" />
+				<input type="hidden" name="id_room" value="-1" />
+				<input type="hidden" name="default_css" value="" />
+				<input type="hidden" name="area_item_format" value="item" />
+				<input type="hidden" name="default_language" value="" />
+				<input class="btn btn-primary" type="submit" value="{{ trad.reset }}" />
+			</div>
+		</div>	
+	</form>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+	<script type="text/javascript">
+		function modifier_liste_domaines(){
+			$.ajax({
+				url: "my_account_modif_listes.php",
+				type: "get",
+				dataType: "html",
+				data: {
+					id_site: $('#id_site').val(),
+					// default_area : '<?php echo Settings::get("default_area"); ?>',
+					default_area : '<?php echo $default_area; ?>',
+					session_login:'<?php echo getUserName(); ?>',
+					use_site:'<?php echo $use_site; ?>',
+					type:'domaine',
+				},
+				success: function(returnData){
+					$("#div_liste_domaines").html(returnData);
+				},
+				error: function(e){
+					alert(e);
+				}
+			});
+		}
+
+		function modifier_liste_ressources(action){
+			$.ajax({
+				url: "my_account_modif_listes.php",
+				type: "get",
+				dataType: "html",
+				data: {
+					id_area:$('id_area').serialize(true),
+					// default_room : '<?php echo Settings::get("default_room"); ?>',
+					default_room : '<?php echo $default_room; ?>',
+					type:'ressource',
+					action:+action,
+					},
+				success: function(returnData){
+					$("#div_liste_ressources").html(returnData);
+				},
+				error: function(e){
+					alert(e);
+				}
+			});
+		}
+
+		modifier_liste_domaines();
+		modifier_liste_ressources(1);
+	</script>
+{% endblock %}

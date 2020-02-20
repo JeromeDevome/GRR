@@ -26,7 +26,7 @@
 //$action : 1-> on actualise la liste des ressources
 //					2-> on vide la liste des ressouces
 
-include "include/admin.inc.php";
+include "../include/admin.inc.php";
 if ((authGetUserLevel(getUserName(), -1) < 1))
 {
 	showAccessDenied("");
