@@ -3,7 +3,7 @@
  * moncompte.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-02-13 20:40$
+ * Dernière modification : $Date: 2020-02-20 19:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -296,6 +296,7 @@ $d['default_language'] = $default_language;
 	ORDER BY id ASC";
 	$resultat = grr_sql_query($sql);
 
+	$sites = array();
 	for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); $enr++) {
 		$sites[] = array('idsite' => $row[0], 'nomsite' => $row[2]);
 	}
