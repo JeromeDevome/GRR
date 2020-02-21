@@ -99,8 +99,6 @@ class Email{
 				mail(str_replace(";", ",", $lesDestinataires[$i]), $sujet, str_replace("<br>", "", $message), $headers);
 			} //YN selon Rapace et Boblegal sur le forum
 		}
-
 	}
-
 }
 ?>
