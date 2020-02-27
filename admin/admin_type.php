@@ -3,9 +3,9 @@
  * admin_type.php
  * Interface de gestion des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-08 12:30$
+ * Dernière modification : $Date: 2020-02-27 14:30$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -89,7 +89,7 @@ echo "<br />\n";
 echo "| <a href=\"admin_type_modify.php?id=0\">".get_vocab("display_add_type")."</a> |\n";
 echo "<br />\n";
 echo "<br />\n";
-$sql = "SELECT id, type_name, order_display, couleurhexa, type_letter, disponible, couleur_texte FROM ".TABLE_PREFIX."_type_area
+$sql = "SELECT id, type_name, order_display, couleurhexa, type_letter, disponible, couleurtexte FROM ".TABLE_PREFIX."_type_area
 ORDER BY order_display,type_letter";
 $res = grr_sql_query($sql);
 $nb_lignes = grr_sql_count($res);
@@ -118,7 +118,7 @@ if ($res)
 		$couleur            = $row[3];
 		$type_letter        = $row[4];
 		$disponible         = $row[5];
-        $couleur_texte      = $row[6];
+        $couleurtexte      = $row[6];
 	// Affichage des numéros et descriptions
 		$col[$i][1] = $type_letter;
 		$col[$i][2] = $id_type;
@@ -126,11 +126,11 @@ if ($res)
 	// Affichage de l'ordre
 		$col[$i][4] = $order_display;
 		$col[$i][5] = $couleur;
-        $col[$i][6] = $couleur_texte;
+        $col[$i][6] = $couleurtexte;
 		echo "<tr>\n";
 		echo "<td>{$col[$i][1]}</td>\n";
 		echo "<td><a href='admin_type_modify.php?id_type={$col[$i][2]}'>{$col[$i][3]}</a></td>\n";
-		echo "<td style=\"background-color:".$couleur."; color:".$couleur_texte."\">".$type_name."</td>\n";
+		echo "<td style=\"background-color:".$couleur."; color:".$couleurtexte."\">".$type_name."</td>\n";
 		echo "<td>{$col[$i][4]}</td>\n";
 		echo "<td>\n";
 		if ($disponible == '2')

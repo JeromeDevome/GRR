@@ -3,9 +3,9 @@
  * admin_type_modify.php
  * interface de création/modification des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-12-27 12:05$
+ * Dernière modification : $Date: 2020-02-27 14:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -32,7 +32,7 @@ $type_letter = isset($_GET["type_letter"]) ? $_GET["type_letter"] : NULL;
 //$couleur = isset($_GET["couleur"]) ? $_GET["couleur"] : NULL;
 $couleur_hexa = isset($_GET["couleurhexa"]) ? valid_color($_GET["couleurhexa"]) : NULL;
 $disponible = isset($_GET["disponible"]) ? $_GET["disponible"] : NULL;
-$couleur_texte = isset($_GET["couleur_texte"]) ? valid_color($_GET["couleur_texte"]) : "#000000";
+$couleurtexte = isset($_GET["couleurtexte"]) ? valid_color($_GET["couleurtexte"]) : "#000000";
 $msg = '';
 
 // Couleurs par défaut
@@ -83,8 +83,8 @@ if (isset($_GET['change_type']))
 		$couleur_hexa = "#2ECC71";
 	if ($disponible == '')
 		$disponible = "2";
-    if ($couleur_texte == '')
-        $couleur_texte = "#000000";
+    if ($couleurtexte == '')
+        $couleurtexte = "#000000";
 	if ($id_type > 0) // type existant : mise à jour
 	{
 		// Test sur $type_letter
@@ -100,12 +100,12 @@ if (isset($_GET['change_type']))
 				$sql= $sql .intval($order_display).",";
 			else
 				$sql= $sql ."0,";
-			$sql = $sql . 'type_letter="'.$type_letter.'",';
-			$sql = $sql . 'couleur=\'1\',';
-			$sql = $sql . 'couleurhexa="'.$couleur_hexa.'",';
-			$sql = $sql . 'disponible="'.$disponible.'",';
-            $sql .= 'couleur_texte="'.$couleur_texte.'"';
-			$sql = $sql . " WHERE id=$id_type";
+			$sql .= 'type_letter="'.$type_letter.'",';
+			$sql .= 'couleur=\'1\',';
+			$sql .= 'couleurhexa="'.$couleur_hexa.'",';
+			$sql .= 'disponible="'.$disponible.'",';
+            $sql .= 'couleurtexte="'.$couleurtexte.'"';
+			$sql .= " WHERE id=$id_type";
 			if (grr_sql_command($sql) < 0)
 			{
 				fatal_error(0, get_vocab('update_type_failed') . grr_sql_error());
@@ -127,13 +127,13 @@ if (isset($_GET['change_type']))
 			type_name='".protect_data_sql($type_name)."',
 			order_display =";
 			if (is_numeric($order_display))
-				$sql= $sql .intval($order_display).",";
+				$sql .= intval($order_display).",";
 			else
-				$sql= $sql ."0,";
-			$sql = $sql . 'type_letter="'.$type_letter.'",';
-			$sql = $sql . 'couleur=\'1\',';
-			$sql = $sql . 'couleurhexa="'.$couleur_hexa.'",';
-            $sql .= 'couleur_texte="'.$couleur_texte.'"';
+				$sql .= "0,";
+			$sql .= 'type_letter="'.$type_letter.'",';
+			$sql .= 'couleur=\'1\',';
+			$sql .= 'couleurhexa="'.$couleur_hexa.'",';
+            $sql .= 'couleurtexte="'.$couleurtexte.'"';
 			if (grr_sql_command($sql) < 0)
 			{
 				fatal_error(1, "<p>" . grr_sql_error());
@@ -152,7 +152,7 @@ if ((isset($_GET['change_type'])) && (!isset($ok)))
         $fich=fopen("../themes/default/css/types.css","w+"); // première écriture
         fwrite($fich,"/* fichier de style reprenant les paramètres des types de réservation */");
         fclose($fich);
-        $sql = "SELECT type_letter,couleurhexa,couleur_texte FROM ".TABLE_PREFIX."_type_area WHERE 1";
+        $sql = "SELECT type_letter,couleurhexa,couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE 1";
         $res = grr_sql_query($sql);
         $fich=fopen("../themes/default/css/types.css","a+");
         for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
@@ -201,7 +201,7 @@ else
 	$row["disponible"]  = 2;
 	$row["couleur"]  = '';
 	$row["couleurhexa"] = '';
-    $row["couleur_texte"] = "#000000";
+    $row["couleurtexte"] = "#000000";
 	echo "<h2>".get_vocab('admin_type_modify_create.php')."</h2>";
 }
 echo get_vocab('admin_type_explications')."<br /><br />";
@@ -250,12 +250,12 @@ echo "<table class='table-bordered'>\n";
     echo "<tr><td>";
     echo get_vocab("type_apercu");
     echo "</td>";
-    echo "<td style='background-color:".$row["couleurhexa"]."; color:".$row["couleur_texte"]."' class='CC' id='test'>";
+    echo "<td style='background-color:".$row["couleurhexa"]."; color:".$row["couleurtexte"]."' class='CC' id='test'>";
     echo "<b>test</b>";
     echo '</td></tr>';
     echo "<tr>\n";
 	echo "<td>".get_vocab("type_color_text").get_vocab("deux_points")."</td>\n";
-    echo "<td><input name=\"couleur_texte\" id=\"fgcolor\" value='".$row['couleur_texte']."'>";
+    echo "<td><input name=\"couleurtexte\" id=\"fgcolor\" value='".$row['couleurtexte']."'>";
 	echo "</tr>";
 	echo "<tr>\n";
 	echo "<td>".get_vocab("type_color_hexa").get_vocab("deux_points")."</td>\n";
@@ -263,8 +263,8 @@ echo "<table class='table-bordered'>\n";
 	echo "</tr>";
     /*    echo "<tr>\n";
 	echo "<td>".get_vocab("type_color_text").get_vocab("deux_points")."</td>\n";
-    echo "<td><input name=\"couleur_texte\" type=\"hidden\" id=\"fgcolor\" value='".$row['couleur_texte']."'>";
-    echo "<button id=\"fgcolor-button\" class=\"jscolor {valueElement: '".$row['couleur_texte']."'}\">Choisir la couleur</button></td>";
+    echo "<td><input name=\"couleurtexte\" type=\"hidden\" id=\"fgcolor\" value='".$row['couleurtexte']."'>";
+    echo "<button id=\"fgcolor-button\" class=\"jscolor {valueElement: '".$row['couleurtexte']."'}\">Choisir la couleur</button></td>";
 	echo "</tr>";
 	echo "<tr>\n";
 	echo "<td>".get_vocab("type_color_hexa").get_vocab("deux_points")."</td>\n";
@@ -297,7 +297,7 @@ echo '</div>';
 <script>
 $( ".target" ).change(function() {
 	var laCouleur = $('input[name=couleur]:checked').val();
-    var textColor = document.getElementsByName('couleur_texte')[0].value;
+    var textColor = document.getElementsByName('couleurtexte')[0].value;
 	document.getElementsByName('couleurhexa')[0].value = laCouleur;
 	document.getElementById('test').style.backgroundColor=laCouleur;
 	document.getElementById('test').style.color=textColor;
@@ -322,13 +322,13 @@ pickers.bgcolor.fromString('<?php echo $row["couleurhexa"]; ?>');
 
 pickers.fgcolor = new jscolor('fgcolor', options);
 pickers.fgcolor.onFineChange = "update('fgcolor')";
-pickers.fgcolor.fromString('<?php echo $row["couleur_texte"]; ?>');
+pickers.fgcolor.fromString('<?php echo $row["couleurtexte"]; ?>');
 
 function update (id) {
     document.getElementsByName('couleurhexa')[0].value = 
     document.getElementById('test').style.backgroundColor =
         pickers.bgcolor.toHEXString();
-    document.getElementsByName('couleur_texte')[0].value = 
+    document.getElementsByName('couleurtexte')[0].value = 
     document.getElementById('test').style.color =
     document.getElementById('test').style.borderColor =
         pickers.fgcolor.toHEXString();

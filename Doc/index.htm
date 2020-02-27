@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!-- 
  * Ce fichier fait partie de l'application GRR
- * Dernière modification : $Date: 2019-10-22 $
+ * Dernière modification : $Date: 2020-02-27 $
  * @author  Laurent Delineau <laurent.delineau@ac-poitiers.fr>
  * @copyright Copyright 2008-2008 Laurent Delineau
  * @author  Yan Naessens
- * @copyright Copyright 2019 Yan Naessens
+ * @copyright Copyright 2020 Yan Naessens
  * @link   http://www.gnu.org/licenses/licenses.html
  * @filesource
  *
@@ -33,8 +33,8 @@
     <link rel="stylesheet" type="text/css" href="style_doc.css"/>
   </head>
 <body>
-<h1><center>Gestion et Réservation de Ressources<br />Documentation (version 3.4.1)</center></h1>
-<p>Cette documentation devrait être à jour à la version 3.4.1, aux erreurs et au schéma de la base près... </p>
+<h1><center>Gestion et Réservation de Ressources<br />Documentation (version 3.4.2 RC1)</center></h1>
+<p>Cette documentation devrait être à jour à la version 3.4.2 RC1, aux erreurs et au schéma de la base près... </p>
 <p>Sommaire</p>
 <ol>
   <li><a href="#part1">Présentation générale de GRR</a></li>
@@ -2541,10 +2541,10 @@ chaque mois, même jour de la semaine, 6=toutes les n semaines</li>
   <li>order_display : ordre d'affichage du type de réservation dans les différentes interfaces</li>
   <li>couleur : code couleur du type d'affichage (en référence aux couleurs définies dans le fichier « config.inc.php »)</li>
   <li>couleurhexa : code hexadécimal de la couleur du fond des cellules des plannings</li>
+  <li>couleurtexte: code hexadécimal de la couleur du texte des cellules des plannings (par défaut noir)</li>
   <li>type_letter : identifiant du type en lien avec le champ « type » des tables grr_entry et grr_repeat</li>
   <li>disponible : prend les valeurs 2 (le type est disponible pour tout, valeur par défaut), 3 (le type est disponible pour les gestionnaires et 
 administrateurs seulement) ou 5 (le type est disponible uniquement pour les administrateurs). </li>
-  <li>couleur_texte: code hexadécimal de la couleur du texte des cellules des plannings (par défaut noir)</li>
 </ul>
 <h3>La table grr_j_type_area</h3>
 <p>Table de jointure des types des réservation désactivés dans les domaines</p>

@@ -3,10 +3,10 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-07-02 18:30$
+ * Dernière modification : $Date: 2020-02-27 12:30$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -887,6 +887,21 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
 			$result .= $result_inter;
 		$result_inter = '';
     }
+	if ($version_old < "3.4.2")
+	{
+		$result .= formatresult("Mise à jour jusqu'à la version 3.4.2 RC1 :","<b>","</b>");
+		
+		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET `NAME` = nombre_jours_Jours_Cycles WHERE `NAME` = 'nombre_jours_Jours/Cycles';");
+		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET `NAME` = jour_debut_Jours_Cycles WHERE `NAME` = 'jour_debut_Jours/Cycles';");
+		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs ADD `changepwd` TINYINT(1) NOT NULL DEFAULT '0' AFTER `password`;");
+		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_type_area CHANGE `couleur_texte` `couleurtexte` VARCHAR(10) NOT NULL DEFAULT '#000000' AFTER `couleurhexa`;");
+		
+   		if ($result_inter == '')
+			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+		else
+			$result .= $result_inter;
+		$result_inter = '';
+	}
 	// Vérification du format des champs additionnels
 	// Avant version 1.9.4, les champs add étaient stockés sous la forme <id_champ>champ_encode_en_base_64</id_champ>
 	// A partir de la version 1.9.4, les champs add. sont stockés sous la forme @id_champ@url_encode(champ)@/id_champ@
