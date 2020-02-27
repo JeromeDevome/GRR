@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-01-29 19:10$
+ * Dernière modification : $Date: 2020-02-27 11:10$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -3814,8 +3814,8 @@ function date_time_string($t, $dformat)
 	}
 	return utf8_strftime($dformat." ".$timeformat, $t);
 }
-# Convertit un créneau de début et de fin en un tableau donnant la date de début et la durée
-function describe_period_span2($starts, $ends)
+# Convertit un créneau de début et de fin en un tableau donnant date, créneau de début et durée
+function describe_period_span($starts, $ends)
 {
 	global $enable_periods, $periods_name, $vocab, $duration;
 	list($start_period, $start_date) =  period_date_string($starts);
@@ -3827,16 +3827,11 @@ function describe_period_span2($starts, $ends)
 	{
 		list( , $start_date) =  period_date_string($starts);
 		list( , $end_date) =  period_date_string($ends, -1);
-		//$temp = $start_date . " ==> " . $end_date;
 	}
-	//else
-	//{
-	//	$temp = $start_date . " - " . $duration . " " . $dur_units;
-	//}
 	return array($datedebut, $periodedebut, $duration, $dur_units);
 }
-#Convertit l'heure de début et de fin un tableau donnant la date de début et la durée.
-function describe_span2($starts, $ends, $dformat)
+#Convertit l'heure de début et de fin en un tableau donnant date, heure de début et durée.
+function describe_span($starts, $ends, $dformat)
 {
 	global $vocab, $twentyfourhour_format;
 	$start_date = utf8_strftime($dformat, $starts);
@@ -3852,46 +3847,7 @@ function describe_span2($starts, $ends, $dformat)
 	toTimeString($duration, $dur_units);
 	return array($start_date, $start_time ,$duration, $dur_units);
 }
-# Convert a start period and end period to a plain language description.
-# This is similar but different from the way it is done in view_entry.
-function describe_period_span($starts, $ends)
-{
-	global $enable_periods, $periods_name, $vocab, $duration;
-	list($start_period, $start_date) =  period_date_string($starts);
-	list( , $end_date) =  period_date_string($ends, -1);
-	$duration = $ends - $starts;
-	toPeriodString($start_period, $duration, $dur_units);
-	if ($duration > 1)
-	{
-		list( , $start_date) =  period_date_string($starts);
-		list( , $end_date) =  period_date_string($ends, -1);
-		$temp = $start_date . " ==> " . $end_date;
-	}
-	else
-	{
-		$temp = $start_date . " - " . $duration . " " . $dur_units;
-	}
-	return $temp;
-}
-#Convertit l'heure de début et de fin en période.
-function describe_span($starts, $ends, $dformat)
-{
-	global $vocab, $twentyfourhour_format;
-	$start_date = utf8_strftime($dformat, $starts);
-	if ($twentyfourhour_format)
-		$timeformat = "%T";
-	else
-	{
-		$ampm = date("a",$starts);
-		$timeformat = "%I:%M$ampm";
-	}
-	$start_time = strftime($timeformat, $starts);
-	$duration = $ends - $starts;
-	if ($start_time == "00:00:00" && $duration == 60 * 60 * 24)
-		return $start_date . " - " . get_vocab("all_day");
-	toTimeString($duration, $dur_units);
-	return $start_date . " " . $start_time . " - " . $duration . " " . $dur_units;
-}
+
 function get_planning_area_values($id_area)
 {
 	global $resolution, $morningstarts, $eveningends, $eveningends_minutes, $weekstarts, $twentyfourhour_format, $enable_periods, $periods_name, $display_day, $nb_display_day;

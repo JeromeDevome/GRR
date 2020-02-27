@@ -3,9 +3,9 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-09-09 12:00$
+ * Dernière modification : $Date: 2020-02-27 11:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -109,21 +109,18 @@ function reporton(&$row, $dformat)
 	$breve_description = affichage_lien_resa_planning($row[3],$row[0]);
 	$breve_description = "<a href=\"view_entry.php?id=$row[0]\">". $breve_description . "</a>";
 	echo "<td>".$breve_description."</td>\n";
-		// From date-time and duration:
-	echo "<td>";
-    if ($enable_periods == 'y')
-	{
-		echo describe_period_span($row[1], $row[2]);
-		echo "</td>\n";;
-	}
+		//Affichage de l'heure et de la durée de réservation
+	if ($enable_periods == 'y')
+		list($start_date, $start_time ,$duration, $dur_units) =  describe_period_span($row[1], $row[2]);
 	else
-	{
-		echo describe_span($row[1], $row[2], $dformat);
-		if (date("d\/m\/Y",$row[1]) == date("d\/m\/Y",$row[2]))
-			echo "<br />".   date("H\:i",$row[1])." ==> ".date("H\:i",$row[2])."</td>\n";
-		else
-			echo "<br />".   date("d\/m\/Y\ \-\ H\:i",$row[1])." ==> ".date("d\/m\/Y\ \-\ H\:i",$row[2])."</td>\n";
-	}
+		list($start_date, $start_time ,$duration, $dur_units) = describe_span($row[1], $row[2], $dformat);
+
+	// Date début réservation
+	echo "<td>".$start_date . "</td>";
+	// Heure début réservation
+	echo "<td>".$start_time . "</td>";
+	// Durée réservation
+	echo "<td>".$duration ." ". $dur_units ."</td>";
 		//Description
 	if ($row[4] != "")
 		$description = nl2br(htmlspecialchars($row[4]));
@@ -135,12 +132,21 @@ function reporton(&$row, $dformat)
 	if ($et == -1)
 		$et = "?".$row[5]."?";
 	echo "<td>".$et."</td>\n";
-		//Affichage de "créée par"
+		// Bénéficiaire
 	$sql_beneficiaire = "SELECT prenom, nom FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$row[6]."'";
 	$res_beneficiaire = grr_sql_query($sql_beneficiaire);
+	$aff_beneficiaire = " ";
 	if ($res_beneficiaire)
+	{
 		$row_user = grr_sql_row($res_beneficiaire, 0);
-	echo "<td>".htmlspecialchars($row_user[0]) ." ". htmlspecialchars($row_user[1])."</td>";
+		$aff_beneficiaire = htmlspecialchars($row_user[0]) ." ". htmlspecialchars($row_user[1]);
+	}
+	if ($aff_beneficiaire == " ")
+	{
+		$benef_ext = explode('|',$row[15]);
+		$aff_beneficiaire = htmlspecialchars($benef_ext[0]);
+	}
+	echo "<td>".$aff_beneficiaire."</td>";
 		//Affichage de la date de la dernière mise à jour
 	echo "<td>". date_time_string($row[7],$dformat) . "</td>\n";
 		// X Colonnes champs additionnels
@@ -195,7 +201,7 @@ function accumulate(&$row, &$count, &$hours, $report_start, $report_end, &$room_
 		$temp = "(Autres)";
 	if ($csv == "n")
 	{
-		//Description "Créer par":
+		//Description "Créé par":
 		// [3]   Description brêve,(HTML) -> e.name
 		// [4]   Description,(HTML) -> e.description
 		// [5]   Type -> e.type
@@ -492,7 +498,7 @@ if (($summarize != 4) && ($summarize != 5))
 			echo "<option value='login' ";
 			if (isset($champ[$k]) && ($champ[$k] == "login"))
 				echo " selected=\"selected\" ";
-			echo ">".get_vocab("match_login")."</option>\n";
+			echo ">".get_vocab("sum_by_creator")."</option>\n";
 			// On récupère les infos sur le champ add
 			$overload_fields = mrbsOverloadGetFieldslist("");
 			// Boucle sur tous les champs additionnels de l'area
@@ -630,11 +636,15 @@ if (isset($_GET["is_posted"]))
     //  11  [10]  Room description -> r.description
     //  12  [11]  id de l'area -> a.id
     //  13  [12]  les champs additionnels -> e.overload_desc
+    //  14  [13]  rang d'affichage de la ressource -> r.order_display
+    //  15  [14]  type de réservation -> t.type_name
+	//  16  [15]  bénéficiaire extérieur -> e.beneficiaire_ext
     // Tableau des ressources invisibles pour l'utilisateur
     $sql = "SELECT distinct e.id, e.start_time, e.end_time, e.name, e.description, "
     . "e.type, e.beneficiaire, "
     .  grr_sql_syntax_timestamp_to_unix("e.timestamp")
-    . ", a.area_name, r.room_name, r.description, r.order_display, t.type_name, a.id, e.overload_desc" // suggestion lenma pour compatibilité MySQL 5.7+
+    . ", a.area_name, r.room_name, r.description, a.id, e.overload_desc, r.order_display, t.type_name"
+	. ", e.beneficiaire_ext"
     . " FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_room r, ".TABLE_PREFIX."_type_area t";
 	// Si l'utilisateur n'est pas administrateur, seuls les domaines auxquels il a accès sont pris en compte
     if (authGetUserLevel(getUserName(),-1) < 6)
@@ -733,7 +743,7 @@ if (isset($_GET["is_posted"]))
             }
             if (($summarize == 1) || ($summarize == 3)) // tableau des détails des réservations
             {
-                echo "<table class='table table-bordered'>\n";
+                echo "<table class='table table-bordered table-condensed'>\n";
                     //    echo "<tr><td colspan=\"6\" align=\"center\">".get_vocab("trier_par").get_vocab("deux_points")."</td></tr>";
                 echo "<tr>\n";
                     // Colonne domaine
@@ -792,7 +802,11 @@ if (isset($_GET["is_posted"]))
                 else
                     echo "<b>&gt;&gt; ".get_vocab("start_date")." &lt;&lt;</b>";
                 echo "</td>";
-                    // Colonne Description complète 
+        			// Colonne "heure debut"
+				echo "<td>".get_vocab("time")."</td>";
+					// Colonne "durée"
+				echo "<td>".get_vocab("duration")."</td>";
+					// Colonne "description complète"
                 echo "<td>".get_vocab("match_descr")."</td>";
                     // Colonne Type
                 echo "<td>";
@@ -813,10 +827,10 @@ if (isset($_GET["is_posted"]))
                     echo "<a href='report.php?From_day=$From_day&amp;From_month=$From_month&amp;From_year=$From_year&amp;To_day=$To_day&amp;To_month=$To_month&amp;To_year=$To_year$param&amp;summarize=$summarize&amp;sumby=".$_GET["sumby"]."&amp;sortby=c&amp;is_posted=y";
                     if ($_GET['pview'] != 0)
                         echo "&amp;pview=1";
-                    echo "'>".get_vocab("match_login")."</a>";
+                    echo "'>".get_vocab("sum_by_creator")."</a>";
                 }
                 else
-                    echo "<b>&gt;&gt; ".get_vocab("match_login")." &lt;&lt;</b>";
+                    echo "<b>&gt;&gt; ".get_vocab("sum_by_creator")." &lt;&lt;</b>";
                 echo "</td>";
                     // Colonne "dernière modification"
                 echo "<td>".get_vocab("lastupdate")."</td>";
@@ -840,7 +854,7 @@ if (isset($_GET["is_posted"]))
                     }
                 }
 //                echo'<br><br>';
-                echo "</tr>";                    
+                echo "</tr>";
             }
             for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
             {
@@ -889,14 +903,9 @@ if (isset($_GET["is_posted"]))
                     grr_sql_free($res);
                 }
                 else
-                {   /*
+                {   // retro portage
                     // Ligne d'en-tête
-                    echo html_entity_decode($vocab["reservee au nom de"]).";".html_entity_decode($vocab["areas"]).";".html_entity_decode($vocab["room"]).html_entity_decode(preg_replace("/ /", " ",$vocab["deux_points"])).";".html_entity_decode($vocab["description"]).";".html_entity_decode($vocab["time"])." - ".html_entity_decode($vocab["duration"]).";".html_entity_decode($vocab["namebooker"]).html_entity_decode(preg_replace("/ /", " ",$vocab["deux_points"])).";".html_entity_decode($vocab["match_descr"]).";".html_entity_decode($vocab["type"]).";".html_entity_decode($vocab["lastupdate"]).";".html_entity_decode($vocab["admin_overload.php"]).";\n";
-                    */
-                    // retro portage
-                    
-                    // Ligne d'en-tête
-                    echo html_entity_decode($vocab["reservee au nom de"]).";".html_entity_decode($vocab["areas"]).";".html_entity_decode($vocab["room"]).";".html_entity_decode($vocab["description"]).";".html_entity_decode($vocab["time"]).";".html_entity_decode($vocab["duration"]).";".html_entity_decode($vocab["namebooker"]).";".html_entity_decode($vocab['fulldescription']).";".html_entity_decode($vocab["type"]).";".html_entity_decode($vocab["lastupdate"]).";";
+                    echo html_entity_decode($vocab["reservee au nom de"]).";".html_entity_decode($vocab["areas"]).";".html_entity_decode($vocab["room"]).";".html_entity_decode($vocab["description"]).";".html_entity_decode($vocab["date"]).";".html_entity_decode($vocab["time"]).";".html_entity_decode($vocab["duration"]).";".html_entity_decode($vocab["namebooker"]).";".html_entity_decode($vocab["match_descr"]).";".html_entity_decode($vocab["type"]).";".html_entity_decode($vocab["lastupdate"]).";";
                     $overload_fields_c = mrbsOverloadGetFieldslist("");
                     // Boucle sur tous les champs additionnels de l'area
                     $i = 1;
@@ -914,12 +923,22 @@ if (isset($_GET["is_posted"]))
                     echo "\n";
                     $nbValeur = count($tablOverload);
                 
-                }  
+                }
                 
                 for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
                 {
-                    //Affichage de "créé par"
-                    echo ($row[6]) . ";";
+                    // Bénéficiaire (evt extérieur)
+					$aff_beneficiaire = " ";
+					if ($row[6] != "")
+					{
+						$aff_beneficiaire = htmlspecialchars($row[6]);
+					}
+					else 
+					{
+						$benef_ext = explode('|',$row[15]);
+						$aff_beneficiaire = htmlspecialchars($benef_ext[0]);
+					}
+                    echo ($aff_beneficiaire) . ";";
                     //Area
                     echo (removeMailUnicode($row[8])) . ";";
                     //Ressource
@@ -929,16 +948,15 @@ if (isset($_GET["is_posted"]))
                     // Récupération des données concernant l'affichage du planning du domaine
                     get_planning_area_values($row[11]);
                     //Affichage de l'heure et de la durée de réservation
-                   /* if ($enable_periods == 'y')
-                        echo describe_period_span($row[1], $row[2]) . ";";
-                    else
-                        echo describe_span($row[1], $row[2], $dformat) . ";";*/
-					if ($enable_periods == 'y')
-						list($start_date, $start_time ,$duration, $dur_units) =  describe_period_span2($row[1], $row[2]);
+                    if ($enable_periods == 'y')
+						list($start_date, $start_time ,$duration, $dur_units) =  describe_period_span($row[1], $row[2]);
 					else
-						list($start_date, $start_time ,$duration, $dur_units) = describe_span2($row[1], $row[2], $dformat);
-					// Date et heure début réservation
-					echo $start_date." ".$start_time . ";";
+						list($start_date, $start_time ,$duration, $dur_units) = describe_span($row[1], $row[2], $dformat);
+
+					// Date début réservation
+					echo $start_date . ";";
+					// Heure début réservation
+					echo $start_time . ";";
 					// Durée réservation
 					echo $duration ." ". $dur_units .";";
                     //Brève description
@@ -952,29 +970,6 @@ if (isset($_GET["is_posted"]))
                     echo $leType .";";
                     //Date derniere modif
                     echo date_time_string($row[7], $dformat) . ";";
-                    /*
-                    // Champs additionnels
-                    $id_entry = $row[0];
-                    $champs_add = mrbsEntryGetOverloadDesc($id_entry);
-                    $affichage ="";
-                    foreach ($champs_add as $field)
-                    { // $field est de la forme : Array ( [valeur] => 10 [id] => 2 [affichage] => n [overload_mail] => n [obligatoire] => n [confidentiel] => n ) 
-                    // le nom du champ :
-                        $res_name = grr_sql_query("SELECT fieldname FROM ".TABLE_PREFIX."_overload WHERE id = '".$field['id']."'");
-                        $field_name ="";
-                        if ($res_name){
-                            $row_name = grr_sql_row($res_name,0);
-                            $field_name = $row_name[0];
-                        }
-                    // faut-il afficher ? Si c'est un administrateur : pas de restriction, sinon on n'affiche que les champs qui sont affichables dans les plannings
-                        if ((authGetUserLevel(getUserName(),-1) > 5) || ($field['affichage'] == 'y')) {
-                            $affichage .= $field_name." = ".$field['valeur']." | ";
-                        }
-                    }
-                    $affichage = rtrim($affichage," | ");
-                    echo $affichage.";";
-                    echo "\r\n"; */
-                    // retro portage
                     // X Colonnes champs additionnels
                     $overload_data = mrbsEntryGetOverloadDesc($row[0]);
                     $AddReservation = array();
