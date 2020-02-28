@@ -3,7 +3,7 @@
  * login.php
  * interface de connexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-02-07 11:30$
+ * Dernière modification : $Date: 2020-02-27 15:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -103,6 +103,10 @@ if (isset($_POST['login']) && isset($_POST['password']))
 	{
 		$message = get_vocab("echec_connexion_GRR");
 		$message .= "<br />". get_vocab("connexion_a_grr_ip");
+	}
+	else if ($result == "12") // il faut changer de mot de passe
+	{
+		header("Location: ./changepwd.php");
 	}
 	else // la session est ouverte
 	{

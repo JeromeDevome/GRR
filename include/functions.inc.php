@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-02-27 11:10$
+ * Dernière modification : $Date: 2020-02-27 15:10$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5217,7 +5217,7 @@ function pageHead2($title, $page = "with_session")
 	{
 		if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
 			header("Location: ./changepwd.php");
-		}
+		} // est-ce bien placé ? YN le 27/02/2020
 
 		if (isset($_SESSION['default_style']))
 			$sheetcss = 'themes/'.$_SESSION['default_style'].'/css';
