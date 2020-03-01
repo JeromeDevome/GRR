@@ -340,6 +340,7 @@ $vocab['dlresumecsv'] = "Fichero CSV del resumen";
 $vocab['domaines_de_type_incompatibles'] = "<b>Observación : </b> sólo la reserva de jornadas enteras es posible porque los recursos seleccionados pertenecen a campos de tipos diferentes.";
 $vocab['dont_allow_modify'] = "No permitir a los usuarios (excepto los gestores y los administradores) de modificar o de suprimir sus propias reservas.";
 $vocab['droits_insuffisants_pour_voir_ressources'] = "Vous n'avez pas les droits suffisants pour accéder aux ressource de ce domaine."; // A traduire
+$vocab['duplicate_field'] = "A field with the same name already exists in the area";// À traduire
 $vocab['duplique_domaine'] = "Dupliquer le domaine"; // A traduire
 $vocab['duplique_ressource'] = "Dupliquer la ressource"; // A traduire
 $vocab['duration'] = "Duración :";

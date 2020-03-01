@@ -341,6 +341,7 @@ $vocab['dlresumecsv'] = "CSV - Datei der Zusammenfassung herunterladen";
 $vocab['domaines_de_type_incompatibles'] = "<b>Bemerkung</b> : Nur die Reservierung von ganzen Tagen ist möglich, da die ausgewählten Ressourcen zu Domänen von verschiedener Art gehören.";
 $vocab['dont_allow_modify'] = "den Benutzern (ausser Verwalter und Administrators) ihren eigenen Reservierungen ändern oder löschen verboten";
 $vocab['droits_insuffisants_pour_voir_ressources'] = "Vous n'avez pas les droits suffisants pour accéder aux ressource de ce domaine."; // A traduire
+$vocab['duplicate_field'] = "A field with the same name already exists in the area";// À traduire
 $vocab['duplique_domaine'] = "Dupliquer le domaine"; // A traduire
 $vocab['duplique_ressource'] = "Dupliquer la ressource"; // A traduire
 $vocab['duration'] = "Dauer:";

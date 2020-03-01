@@ -2,9 +2,9 @@
 /**
  * mysql.inc.php
  * Bibliothèque de fonctions pour le support mysql
- * Dernière modification : $Date: 2018-04-11 10:00$
+ * Dernière modification : $Date: 2020-03-01 17:10$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -45,11 +45,18 @@ function grr_sql_free($r)
 // Execute a non-SELECT SQL command (insert/update/delete).
 // Returns the number of tuples affected if OK (a number >= 0).
 // Returns -1 on error; use grr_sql_error to get the error message.
-function grr_sql_command ($sql)
+/*function grr_sql_command ($sql)
 {
 	mysqli_query($GLOBALS['db_c'], $sql) or die(mysqli_error($GLOBALS['db_c'])." Q=".$sql);
 		return mysqli_affected_rows($GLOBALS['db_c']);
+}*/
+// retour à l'ancienne définition, voir les effets de bord !
+function grr_sql_command ($sql)
+{
+    if (mysqli_query($GLOBALS['db_c'],$sql)) return mysqli_affected_rows($GLOBALS['db_c']);
+    return -1;
 }
+
 // Execute an SQL query which should return a single non-negative number value.
 // This is a lightweight alternative to grr_sql_query, good for use with count(*)
 // and similar queries. It returns -1 on error or if the query did not return
