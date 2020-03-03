@@ -209,7 +209,6 @@ where
 start_time <= $date_end AND
 end_time > $date_start
 ORDER by start_time, end_time, ".TABLE_PREFIX."_entry.id";
-
 /* contenu de la réponse si succès :
     $row[0] : start_time
     $row[1] : end_time
@@ -235,8 +234,8 @@ else
 {
 	for ($i = 0; ($row = grr_sql_row($res2, $i)); $i++)
 	{
-		if ($row['15'] <> (Settings::get('exclude_type_in_views_all')))
-		{  
+		if ($row[15] <> (Settings::get('exclude_type_in_views_all')))          // Nom du type à exclure  
+		{                                                                       
 			$t = max((int)$row['0'], $date_start);
 			$end_t = min((int)$row['1'], $date_end);
 			$day_num = date("j", $t);
@@ -249,8 +248,36 @@ else
 			while ($t <= $end_t)
 			{
 				$d[$day_num]["id"][] = $row['2'];
+				if (Settings::get("display_info_bulle") == 1)
+					$d[$day_num]["who"][] = get_vocab("reservee au nom de").affiche_nom_prenom_email($row['4'], $row['12'], "nomail");
+				else if (Settings::get("display_info_bulle") == 2)
+					$d[$day_num]["who"][] = $row['8'];
+				else
+					$d[$day_num]["who"][] = "";
+				$d[$day_num]["who1"][] = affichage_lien_resa_planning($row['3'], $row['2']);
 				$d[$day_num]["id_room"][]=$row['5'] ;
 				$d[$day_num]["color"][]=$row['6'];
+				$d[$day_num]["res"][] = $row['7'];
+				$descro = affichage_resa_planning($row['8'], $row['2']);
+				$clef = $row[13];
+				$courrier = $row[14];
+				if ($clef == 1 || $courrier == 1)
+					$descro .= '<br />'.PHP_EOL;
+				if ($clef == 1)
+					$descro .= '<img src="img_grr/skey.png" alt="clef">'.PHP_EOL;
+				if (Settings::get('show_courrier') == 'y')
+				{
+					if ($courrier == 1)
+						$descro .= '<img src="img_grr/scourrier.png" alt="courrier">'.PHP_EOL;
+					else
+						$descro .= '<br /><img src="img_grr/hourglass.png" alt="buzy">'.PHP_EOL;
+				}
+				$d[$day_num]["description"][] = $descro;
+				if ($row['10'] > 0)
+					$d[$day_num]["option_reser"][] = $row['9'];
+				else
+					$d[$day_num]["option_reser"][] = -1;
+				$d[$day_num]["moderation"][] = $row['11'];
 				$midnight_tonight = $midnight + 86400;
 				if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
 				{
@@ -332,7 +359,7 @@ else
 					break;
 				$t = $midnight = $midnight_tonight;
 				$day_num = date("j", $t);
-			}
+			}   // ModifExclure Ajouté
 		}
 	}
 }
@@ -364,11 +391,11 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 	echo "\n
 	<div class='ligne23'>
 		<div class=\"left\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='week_all.php?year=$yy&amp;month=$ym&amp;day=$yd&amp;area=$area';\" \"><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("weekbefore")." </button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='week_all.php?year=$yy&amp;month=$ym&amp;day=$yd&amp;area=$area';\"><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("weekbefore")." </button>
 		</div>";
 		include "./include/trailer.inc.php";
 		echo "<div class=\"right\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='week_all.php?year=$ty&amp;month=$tm&amp;day=$td&amp;area=$area';\" \">".get_vocab('weekafter')." <span class=\"glyphicon glyphicon-forward\"></button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='week_all.php?year=$ty&amp;month=$tm&amp;day=$td&amp;area=$area';\">".get_vocab('weekafter')." <span class=\"glyphicon glyphicon-forward\"></span></button>
 		</div>
 	</div>";
 }

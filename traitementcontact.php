@@ -3,7 +3,7 @@
  * traitementcontact.php
  * envoie l'email suite au formulaire
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-01-17 14:30$
+ * Dernière modification : $Date: 2020-01-19 12:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -23,6 +23,7 @@ include "include/functions.inc.php";
 include "include/misc.inc.php";
 include "include/$dbsys.inc.php";
 include "include/mrbs_sql.inc.php";
+include "include/language.inc.php";
 include "phpmailer/class.phpmailer.php";
 
 // Settings
@@ -56,9 +57,28 @@ if (empty($_POST['année']))
 	$message .= "Aucune année choisie <br/>";
 if (empty($_POST['duree']))
 	$message .= "Aucune durée choisie <br/>";
-// ici ajouter
+
 // recherche si le créneau est libre
-// préréserve le créneau sous forme d'une réservation à modérer
+$room_id = protect_data_sql($_POST['room']);
+$starttime = mktime($_POST['heure'],$_POST['minutes'],0,$_POST['start_month'],$_POST['start_day'],$_POST['start_year']);
+$endtime = $starttime + $_POST['duree']*3600 + $_POST['dureemin']*60;
+$plage_libre = mrbsCheckFree($room_id,$starttime,$endtime,0,0);
+if ($plage_libre != "") // la plage n'est pas libre
+{
+	// echo "la plage est au moins partiellement occupée";
+	echo "<script type=\"text/javascript\">";
+	echo "<!--\n";
+	echo " alert(\"la plage est au moins partiellement occupée\")";
+	echo "//-->";
+	echo "</script>";
+	die();// à modifier pour renvoyer sur une page
+}
+else 
+{	// la plage est libre, on préréserve le créneau sous forme d'une réservation à modérer
+	$id_resa = grr_sql_insert_id(); // récupère l'id de la résa juste créée -> mail au modérateur
+	echo "plage libre";
+	die();
+}
 // traitement des erreurs
 $message = "ok?";
 //if ($message != "")
@@ -95,8 +115,12 @@ $mail_corps  .= "Salle : ".$_POST['room']. "<br/><br/>";
 $mail_corps  .= "Date  :".$_POST['start_day']."/".$_POST['start_month']."/".$_POST['start_year']. " <br/>";
 $mail_corps  .= "Heure réservation  : ".$_POST['heure']. "h  ".$_POST['minutes']. "min<br/>";
 $mail_corps  .= "Durée de la réservation : ".$_POST['duree'];
-$mail_corps  .= " h ".$_POST['dureemin']. " \n</body></html>";
+$mail_corps  .= " h ".$_POST['dureemin']. " min \n";
 // ici insérer un lien de validation, cf functions.inc.php, ligne 2964
+if (isset($id_resa)){
+	$mail_corps .="";
+}
+$mail_corps .= "</body></html>";
 $sujet ="Réservation d'une salle";
 $destinataire = Settings::get("mail_destinataire");
 

@@ -3,9 +3,9 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-11-27 15:00$
- * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2020-01-28 11:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -720,7 +720,7 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
         roomsObj = eval( "formObj.elements['rooms[]']" );
         room = roomsObj[roomsObj.selectedIndex].value;
         insertBeneficiaires(area,room,<?php echo json_encode(getUserName())?>);
-        insertChampsAdd(area,0,room);
+        insertChampsAdd(area,<?php echo $id;?>,room);
         insertTypes(area,room);
         //insertProfilBeneficiaire();
 	}
@@ -731,7 +731,7 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
         roomsObj = eval("formObj.elements['rooms[]']");
         room = roomsObj[roomsObj.selectedIndex].value;
         insertBeneficiaires(area,room,<?php echo json_encode(getUserName())?>);
-        insertChampsAdd(area,0,room);
+        insertChampsAdd(area,<?php echo $id;?>,room);
         insertTypes(area,room);
         
     }
@@ -753,7 +753,7 @@ echo '<tr><td class="E">'.PHP_EOL;
 echo '<b>'.$B.'</b>'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;
 echo '<tr><td class="CL">'.PHP_EOL;
-echo '<input id="name" class="pleine form-control" name="name" size="60" value="'.$C.'" />'.PHP_EOL;
+echo '<input id="name" class="pleine form-control" name="name" maxlength="80" size="60" value="'.$C.'" />'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;
 echo '<tr><td class="E">'.PHP_EOL;
 echo '<b>'.$D.'</b>'.PHP_EOL;

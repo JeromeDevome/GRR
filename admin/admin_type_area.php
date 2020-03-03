@@ -3,7 +3,7 @@
  * admin_type_area.php
  * interface de gestion des types de réservations pour un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-02-27 14:30$
+ * Dernière modification : $Date: 2020-02-29 16:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -41,9 +41,7 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
 	$msg = $_GET['msg'];
 else
 	$msg = '';
-// code HTML
-//start_page_w_header("", "", "", $type="with_session");
-//include "admin_col_gauche2.php";
+
 $sql = "SELECT id, type_name, order_display, couleurhexa, type_letter, couleurtexte FROM ".TABLE_PREFIX."_type_area
 ORDER BY order_display, type_letter";
 //

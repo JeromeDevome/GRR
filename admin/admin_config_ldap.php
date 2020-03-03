@@ -3,9 +3,9 @@
  * admin_config_ldap.php
  * Interface permettant la configuration de l'accès à un annuaire LDAP
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-09-02 21:30$
- * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2020-01-28 11:10$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -38,8 +38,8 @@ $etape = isset($_POST["etape"]) ? $_POST["etape"] : '0';
 $adresse = isset($_POST["adresse"]) ? $_POST["adresse"] : NULL;
 $port = isset($_POST["port"]) ? $_POST["port"] : NULL;
 $login_ldap = isset($_POST["login_ldap"]) ? $_POST["login_ldap"] : NULL;
-$pwd_ldap = isset($_POST["pwd_ldap"]) ? $_POST["pwd_ldap"] : NULL;
-$pwd_ldap = unslashes($pwd_ldap);
+$pwd_ldap = isset($_POST["pwd_ldap"]) ? unslashes($_POST["pwd_ldap"]) : NULL;
+
 if (isset($_POST["use_tls"]))
 {
 	if ($_POST["use_tls"] == 'y')
@@ -214,7 +214,7 @@ if ($etape == 3)
         else
             echo "<p>".encode_message_utf8("<b>Problème</b> : Le chemin et le filtre additionnel que vous avez choisi semblent valides  mais la recherche sur ce chemin ne renvoie aucun résultat.</p><br />");
     }
-    // Le cas "error_3" n'est pas analusé car on accepte les  cas où il y a plusieurs entrées dans l'annuaire à l'issus de la recherche
+    // Le cas "error_3" n'est pas analysé car on accepte les  cas où il y a plusieurs entrées dans l'annuaire à l'issue de la recherche
     $erreur = '';
     $nom_fic = "../include/config_ldap.inc.php";
     if (@file_exists($nom_fic))
@@ -239,19 +239,23 @@ if ($etape == 3)
     {
         // On a ouvert un fichier config_ldap.inc.php
         $conn = "<"."?php\n";
-        $conn .= "# Les quatre lignes suivantes sont à modifier selon votre configuration\n";
-        $conn .= "# ligne suivante : l'adresse de l'annuaire LDAP.\n";
-        $conn .= "# Si c'est le même que celui qui heberge les scripts, mettre \"localhost\"\n";
-        $conn .= "\$ldap_adresse='".$adresse."';\n";
-        $conn .= "# ligne suivante : le port utilisé\n";
-        $conn .= "\$ldap_port='".$port."';\n";
-        $conn .= "# ligne suivante : l'identifiant et le mot de passe dans le cas d'un accès non anonyme\n";
+        $conn .= "# Les quatre éléments suivants sont à modifier selon votre configuration\n"
+                ."\n";
+        $conn .= "# 1. l'adresse (URI) de l'annuaire LDAP.\n";
+        $conn .= "# Si c'est le même que celui qui heberge les scripts, mettre \"ldap://localhost\"\n";
+        $conn .= "\$ldap_adresse='".$adresse."';\n"
+                ."\n";
+        $conn .= "# 2. le port utilisé\n";
+        $conn .= "\$ldap_port='".$port."';\n"
+                ."\n";
+        $conn .= "# 3. l'identifiant et le mot de passe dans le cas d'un accès non anonyme\n";
         $conn .= "\$ldap_login='".$login_ldap."';\n";
         $conn .= "# Remarque : des problèmes liés à un mot de passe contenant un ou plusieurs caractères accentués ont déjà été constatés.\n";
-        $conn .= "\$ldap_pwd='".addslashes($pwd_ldap)."';\n";
-        $conn .= "# ligne suivante : le chemin d'accès dans l'annuaire\n";
+        $conn .= "\$ldap_pwd='".addslashes($pwd_ldap)."';\n"
+                ."\n";
+        $conn .= "# 4. le chemin d'accès dans l'annuaire\n";
         $conn .= "\$ldap_base='".$base_ldap."';\n";
-        $conn .= "# ligne suivante : filtre LDAP supplémentaire (facultatif)\n";
+        $conn .= "# filtre LDAP supplémentaire (facultatif)\n";
         $conn .= "\$ldap_filter='".$ldap_filter."';\n";
         $conn .= "# ligne suivante : utiliser TLS\n";
         if ($use_tls)
@@ -396,7 +400,7 @@ else if ($etape == 1)
     echo "<h2>".encode_message_utf8("Informations de connexion à l'annuaire LDAP.")."</h2>\n";
     echo "<form action=\"admin_config_ldap.php\" method=\"post\">\n";
     if ((!(isset($ldap_adresse))) || ($ldap_adresse == ""))
-        $ldap_adresse = 'localhost';
+        $ldap_adresse = 'ldap://localhost';
     if ((!(isset($ldap_port))) || ($ldap_port == ""))
         $ldap_port = 389;
     if (!(isset($ldap_login)))
@@ -405,9 +409,9 @@ else if ($etape == 1)
         $ldap_pwd = "";
     echo "<div>\n<input type=\"hidden\" name=\"etape\" value=\"2\" />\n";
     echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" /></div>\n";
-    echo encode_message_utf8("<h3>Adresse de l'annuaire</h3><div>Laissez «localhost» si l'annuaire est installé sur la même machine que GRR. Sinon, indiquez l'adresse du serveur.<br />");
+    echo encode_message_utf8("<h3>URI de l'annuaire</h3><div>Laissez «ldap://localhost» si l'annuaire est installé sur la même machine que GRR. Sinon, indiquez l'adresse du serveur.<br />Utilisez le protocole ldaps:// si c'est votre cas.<br/>");
     echo "<input type=\"text\" name=\"adresse\" value=\"".$ldap_adresse."\" size=\"20\" />";
-    echo encode_message_utf8("<h3>Numéro de port de l'annuaire</h3>Dans le doute, laissez la valeur par défaut : 389<br />(3268 pour serveur de catalogues global AD)<br />");
+    echo encode_message_utf8("<h3>Numéro de port de l'annuaire</h3>Dans le doute, laissez la valeur par défaut : 389<br />(3268 pour serveur de catalogues global AD, 636 pour pour ldaps (LDAP over SSH)<br />");
     echo "<input type='text' name='port' value=\"$ldap_port\" size=\"20\" /></div>";
     echo encode_message_utf8("<h3>Type d'accès</h3><div>Si le serveur LDAP n'accepte pas d'accès anonyme, veuillez préciser un identifiant (par exemple « cn=jean, o=lycée, c=fr »). Dans le doute, laissez les champs suivants vides pour un accès anonyme.<br /><b>Identifiant :</b><br />");
     echo "<input type=\"text\" name=\"login_ldap\" value=\"".$ldap_login."\" size=\"40\" /><br />";
@@ -440,6 +444,7 @@ else if ($etape == 0)
 {
     if (!(function_exists("ldap_connect")))
     {
+		echo "<div class='col-sm-9 col-xs-12'>";
         echo encode_message_utf8("<h2>".$titre_ldap."</h2>\n");
         echo encode_message_utf8("<p class=\"avertissement\"><b>Attention </b> : les fonctions liées à l'authentification <b>LDAP</b> ne sont pas activées sur votre serveur PHP.
             <br />La configuration LDAP est donc actuellement impossible.</p></div></section></body></html>");

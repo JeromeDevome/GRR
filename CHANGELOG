@@ -21,6 +21,15 @@ Version 3.4.1
     [modification] Page d'accueil de la section administration
     [modification] Gestion de l'affichage des champs additionnels
     [correction] meilleure prise en compte des réglages par défaut
+Sous-version 3.4.1a (version de maintenance)
+	[correction] divers bugs, compatibilité php7, erreurs de syntaxe ou orthographiques
+Sous-version 3.4.1b 
+	[ajout] possibilité de définir un type et affecter ce type à la fonction "cacher sur les plannings week_all, month et month_all"
+	[amélioration] configuration LDAP acceptant le protocole LDAPS
+	[amélioration] gestion des champs additionnels dans edit_entry
+	[correction] divers bugs, erreurs de syntaxe ou orthographiques
+	[modification] limitation de la taille des données conformément à la base
+	[modification] calcul et aspect de la page de contact externe
 -----
 --
 -----

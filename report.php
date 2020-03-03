@@ -87,9 +87,9 @@ if (!isset($_GET["sumby"]))
 else
 	settype($_GET["sumby"],"integer");
 $sortby = isset($_GET["sortby"])? $_GET["sortby"] : "d";
-	// Si la table j_user_area est vide, il faut modifier la requête
+// Si la table j_user_area est vide, il faut modifier la requête
 $test_grr_j_user_area = grr_sql_count(grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_j_user_area"));
-	// Report on one entry. See below for columns in $row[].
+// Report on one entry. See below for columns in $row[].
 function reporton(&$row, $dformat)
 {
 	global $vocab, $enable_periods, $tablOverload;
@@ -107,7 +107,7 @@ function reporton(&$row, $dformat)
 	echo "<td>".$room."</td>";
 		// Breve description (title), avec un lien
 	$breve_description = affichage_lien_resa_planning($row[3],$row[0]);
-	$breve_description = "<a href=\"view_entry.php?id=$row[0]\">". $breve_description . "</a>";
+	$breve_description = "<a href=\"view_entry.php?id=$row[0]&amp;mode=page\">". $breve_description . "</a>";
 	echo "<td>".$breve_description."</td>\n";
 		//Affichage de l'heure et de la durée de réservation
 	if ($enable_periods == 'y')
@@ -132,7 +132,7 @@ function reporton(&$row, $dformat)
 	if ($et == -1)
 		$et = "?".$row[5]."?";
 	echo "<td>".$et."</td>\n";
-		// Bénéficiaire
+		//Bénéficiaire
 	$sql_beneficiaire = "SELECT prenom, nom FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$row[6]."'";
 	$res_beneficiaire = grr_sql_query($sql_beneficiaire);
 	$aff_beneficiaire = " ";
@@ -262,7 +262,7 @@ function accumulate_periods(&$row, &$count, &$hours, $report_start, $report_end,
 	$room_hash[$room] = 1;
 	$breve_description_hash[$breve_description] = 1;
 }
-	//Table contenant un compteur (int) et une heure (float):
+//Table contenant un compteur (int) et une heure (float):
 function cell($count, $hours, $csv = "n", $decompte = "heure")
 {
 	if ($csv == "n")
@@ -639,7 +639,6 @@ if (isset($_GET["is_posted"]))
     //  14  [13]  rang d'affichage de la ressource -> r.order_display
     //  15  [14]  type de réservation -> t.type_name
 	//  16  [15]  bénéficiaire extérieur -> e.beneficiaire_ext
-    // Tableau des ressources invisibles pour l'utilisateur
     $sql = "SELECT distinct e.id, e.start_time, e.end_time, e.name, e.description, "
     . "e.type, e.beneficiaire, "
     .  grr_sql_syntax_timestamp_to_unix("e.timestamp")
@@ -652,6 +651,7 @@ if (isset($_GET["is_posted"]))
             $sql .= ", ".TABLE_PREFIX."_j_user_area j ";
         $sql .= " WHERE e.room_id = r.id AND r.area_id = a.id";
 	// on ne cherche pas parmi les ressources invisibles pour l'utilisateur
+    // Tableau des ressources invisibles pour l'utilisateur
     $tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
     foreach ($tab_rooms_noaccess as $key)
     {
@@ -718,7 +718,7 @@ if (isset($_GET["is_posted"]))
         else if ( $sortby == "c" )
                 //Trié par: réservant, Area, room, debut, date/heure.
             //$sql .= " ORDER BY e.beneficiaire,9,r.order_display,10,2";
-            $sql .= " ORDER BY e.beneficiaire,a.area_name,r.order_display,r.room_name,e.start_time";
+            $sql .= " ORDER BY e.beneficiaire,e.beneficiaire_ext,a.area_name,r.order_display,r.room_name,e.start_time";
         else if ( $sortby == "b" )
                 //Trié par: breve_description, Area, room, debut, date/heure.
             //$sql .= " ORDER BY e.name,9,r.order_display,10,2";

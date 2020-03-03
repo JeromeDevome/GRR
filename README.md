@@ -1,4 +1,5 @@
-GRR devel3 
+GRR
+version 3.4.2 RC1, a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7
 ===================
 
 = branche de développement pour GRR 3, qui a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7.
@@ -7,7 +8,7 @@ Pour une installation en production, veuillez installer la version 3.4.1
 
 **Requiert :**
 
-PHP : >= 5.6 && <= 7.2
+PHP : >= 5.6 && <= 7.2, compatibilité vraisemblable avec PHP 7.3 ; nécessite au moins les modules php-gd, php-mysqli, php-mysqlnd, php-xml (*)
 MySQL: > 5.4 && <= 5.6, compatibilité vraisemblable avec MySQL 5.7
 
 http://grr.devome.com/
@@ -39,3 +40,5 @@ Remarques concernant la sécurité
 La sécurisation de **GRR** est dépendante de celle du serveur. Nous vous recommandons d'utiliser un serveur Apache ou Nginx sous Linux, en utilisant le protocole **https** (transferts de données cryptées), et en veillant à toujours utiliser les dernières versions des logiciels impliqués (notamment **Apache/Nginx** et **PHP**).
 
 L'EQUIPE DE DEVELOPPEMENT DE GRR NE SAURAIT EN AUCUN CAS ETRE TENUE POUR RESPONSABLE EN CAS D'INTRUSION EXTERIEURE LIEE A UNE FAIBLESSE DE GRR OU DE SON SUPPORT SERVEUR.
+
+(*) en cas de dysfonctionnement, il est possible que d'autres modules de PHP soient manquants. Merci d'en tenir l'équipe de développement informée.

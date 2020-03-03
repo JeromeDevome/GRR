@@ -3,7 +3,7 @@
  * admin_type_modify.php
  * interface de création/modification des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-02-27 14:30$
+ * Dernière modification : $Date: 2020-02-29 16:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -258,7 +258,7 @@ echo "<table class='table-bordered'>\n";
     echo "<td><input name=\"couleurtexte\" id=\"fgcolor\" value='".$row['couleurtexte']."'>";
 	echo "</tr>";
 	echo "<tr>\n";
-	echo "<td>".get_vocab("type_color_hexa").get_vocab("deux_points")."</td>\n";
+	echo "<td>".get_vocab("type_color_fond").get_vocab("deux_points")."</td>\n";
     echo "<td><input name=\"couleurhexa\" id=\"bgcolor\" value='".$row['couleurhexa']."'>";
 	echo "</tr>";
     /*    echo "<tr>\n";

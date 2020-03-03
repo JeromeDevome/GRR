@@ -3,9 +3,9 @@
  * my_account_modif_listes.php
  * Page "Ajax" utilisée pour générer les listes de domaines et de ressources, en liaison avec my_account.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2020-01-10 14:20$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -24,7 +24,7 @@
 //$type : 'ressource'-> on actualise la liste des ressources
 //				'domaine'-> on actualise la liste des domaines
 //$action : 1-> on actualise la liste des ressources
-//					2-> on vide la liste des ressouces
+//					2-> on vide la liste des ressources
 
 include "include/admin.inc.php";
 if ((authGetUserLevel(getUserName(), -1) < 1))
@@ -64,11 +64,12 @@ if ($_GET['type'] == "domaine")
 	if ($use_site == 'y'){
  		// on a activé les sites
 		if ($id_site != -1){
-			$sql = "SELECT a.id, a.area_name,a.access
+			$sql = "SELECT a.id, a.area_name,a.access,a.order_display
 		FROM ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_j_site_area j
 		WHERE a.id=j.id_area and j.id_site=$id_site
 		ORDER BY a.order_display, a.area_name";
-		} else{
+		} 
+		else{
 			$sql = "";
 		}
 	}
@@ -98,7 +99,7 @@ if ($_GET['type'] == "domaine")
 		}
 	}
 	$display_liste .= '            </select>';
-	$id_area = 5;
+	// $id_area = 5; ?? YN le 10/01/2020
 	$display_liste .=  '</td>
 </tr></table>'."\n";
 }

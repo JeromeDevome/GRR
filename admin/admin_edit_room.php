@@ -3,9 +3,9 @@
  * admin_edit_room.php
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-11-23 15:30$
- * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2020-01-28 11:10$
+ * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -422,7 +422,7 @@ if ((!empty($room)) || (isset($area_id)))
 	echo "<tr><td>".get_vocab("name").get_vocab("deux_points")."</td><td>\n";
     // seul l'administrateur peut modifier le nom de la ressource
     if ((authGetUserLevel(getUserName(),$area_id,"area") >= 4) || (authGetUserLevel(getUserName(),$room) >= 4))
-        echo "<input type=\"text\" name=\"room_name\" size=\"40\" value=\"".htmlspecialchars($row["room_name"])."\" />\n";
+        echo "<input type=\"text\" name=\"room_name\" maxlength=\"60\" size=\"40\" value=\"".htmlspecialchars($row["room_name"])."\" />\n";
     else
     {
         echo "<input type=\"hidden\" name=\"room_name\" value=\"".htmlspecialchars($row["room_name"])."\" />\n";
@@ -430,7 +430,7 @@ if ((!empty($room)) || (isset($area_id)))
     }
     echo "</td></tr>\n";
     // Description
-    echo "<tr><td>".get_vocab("description")."</td><td><input type=\"text\" name=\"description\"  size=\"40\" value=\"".htmlspecialchars($row["description"])."\" /></td></tr>\n";
+    echo "<tr><td>".get_vocab("description")."</td><td><input type=\"text\" name=\"description\"  maxlength=\"60\" size=\"40\" value=\"".htmlspecialchars($row["description"])."\" /></td></tr>\n";
     // Domaine
     $enable_periods = grr_sql_query1("select enable_periods from ".TABLE_PREFIX."_area where id='".$area_id."'");
     if (((authGetUserLevel(getUserName(),$area_id,"area") >=4 ) || (authGetUserLevel(getUserName(),$room) >= 4)) && ($enable_periods == 'n'))
@@ -593,9 +593,13 @@ if ((!empty($room)) || (isset($area_id)))
 				echo "</td><td><input class=\"form-control\" type=\"text\" name=\"max_booking\" size=\"1\" value=\"".$row["max_booking"]."\" /></td></tr>";
 
 			}
-			else if ($row["max_booking"] != "-1")
-				echo "<tr><td>".get_vocab("msg_max_booking").get_vocab("deux_points")."</td><td><input type=\"hidden\" name=\"max_booking\" value=\"".$row["max_booking"]."\" /><b>".htmlspecialchars($row["max_booking"])."</b></td></tr>";
-// L'utilisateur ne peut pas reserver au-dele d'un certain temps
+			else 
+			{
+				if ($row["max_booking"] != "-1")
+					echo "<tr><td>".get_vocab("msg_max_booking").get_vocab("deux_points")."</td><td><b>".htmlspecialchars($row["max_booking"])."</b></td></tr>";
+				echo "<input type=\"hidden\" name=\"max_booking\" value=\"".$row["max_booking"]."\" />";
+			}
+// L'utilisateur ne peut pas reserver au-delà d'un certain temps
 			echo "<tr><td>".get_vocab("delais_max_resa_room").": </td><td><input class=\"form-control\" type=\"text\" name=\"delais_max_resa_room\" size=\"1\" value=\"".$row["delais_max_resa_room"]."\" /></td></tr>\n";
 // L'utilisateur ne peut pas reserver en-dessous d'un certain temps
 			echo "<tr><td>".get_vocab("delais_min_resa_room").": ";
@@ -966,7 +970,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 		echo "<table class='table table-bordered'><tr>";
 		// Nom du domaine
 		echo "<td>".get_vocab("name").get_vocab("deux_points")."</td>\n";
-		echo "<td style=\"width:30%;\"><input type=\"text\" name=\"area_name\" size=\"40\" value=\"".htmlspecialchars($row["area_name"])."\" /></td>\n";
+		echo "<td style=\"width:30%;\"><input type=\"text\" name=\"area_name\" maxlength=\"30\" size=\"40\" value=\"".htmlspecialchars($row["area_name"])."\" /></td>\n";
 		echo "</tr><tr>\n";
 		// Ordre d'affichage du domaine
 		echo "<td>".get_vocab("order_display").get_vocab("deux_points")."</td>\n";
