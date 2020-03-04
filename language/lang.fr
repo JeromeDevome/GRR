@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2019-12-29
+# Last modification : 2020-03-04
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -71,7 +71,7 @@ $vocab['admin_corresp_statut_desc'] = "Cette page permet à l'administrateur de 
 $vocab['admin_email_manager.php'] = "Mails automatiques";
 $vocab['admin_import_users_csv0'] = "Fichier CSV à importer : ";
 $vocab['admin_import_users_csv1'] = "Le fichier à importer comporte une première ligne d'en-tête, à ignorer";
-$vocab['admin_import_users_csv10'] = "L'importation a échoué !";
+$vocab['admin_import_users_csv10'] = "L'importation a échoué ! Veuillez vérifier le format du fichier csv.";
 $vocab['admin_import_users_csv11'] = "Aucun fichier n'a été sélectionné !";
 $vocab['admin_import_users_csv12'] = "L'utilisateur a été créé !";
 $vocab['admin_import_users_csv2'] = "<br />Le fichier d'importation doit être au format csv (séparateur : point-virgule)<br />Le fichier doit contenir les différents champs suivants :<br />--> <b>Identifiant</b> : l'identifiant de l'utilisateur<br />--> <b>Nom</b><br />--> <b>Prénom</b><br />--> <b>Mot de passe</b><br />--> <b>Adresse email</b><br />--> <b>Type d'utilisateur : trois valeurs autorisées : \"visiteur\", \"utilisateur\", \"administrateur\"</b><br />--> <b>Statut : deux valeurs autorisées : \"actif\" ou \"inactif\"</b><br />--> <b>Type d'authentification : deux valeurs autorisées : \"local\" ou \"ext\"</b><br />";
@@ -725,7 +725,7 @@ $vocab['rep_type_3'] = "Chaque mois, la même date";
 $vocab['rep_type_4'] = "Chaque année, même date";
 $vocab['rep_type_5'] = "Chaque mois, même jour de la même semaine";
 $vocab['rep_type_6'] = "Jours Cycle";
-$vocab['required'] = "Les champs marqués d\'un * sont obligatoires.";
+$vocab['required'] = "Les champs marqués d'un * sont obligatoires.";
 $vocab['reservation au nom de'] = "Réservation au nom de ";
 $vocab['Reservation confirmee'] = "Réservation confirmée";
 $vocab['reservations_moderees'] = "Réservations modérées";

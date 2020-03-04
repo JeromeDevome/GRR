@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-01-28 11:00$
+ * Dernière modification : $Date: 2020-03-03 23:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -82,7 +82,7 @@ $room_back = (isset($_GET['room_back']))? $_GET['room_back']: ((isset($_GET['roo
 if (@file_exists("language/lang_subst_".$area.".".$locale))
 	include "language/lang_subst_".$area.".".$locale;
 get_planning_area_values($area);
-$affiche_mess_asterisque = false;
+// $affiche_mess_asterisque = false;
 $type_affichage_reser = grr_sql_query1("SELECT type_affichage_reser FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $delais_option_reservation  = grr_sql_query1("SELECT delais_option_reservation FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $qui_peut_reserver_pour  = grr_sql_query1("SELECT qui_peut_reserver_pour FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
@@ -574,7 +574,7 @@ function validate_and_submit (){
                     echo "if ((document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) && (document.forms[\"main\"].addon_".$overload_fields[$fieldname]["id"].".options[0].selected == true)) {\n";
                 }
                 ?>
-					$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("required"); ?></div>');
+					$("#error").append("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><?php echo get_vocab('required'); ?></div>");
 					err = 1;
 				}
 				<?php
@@ -639,10 +639,10 @@ else
 	}
 }
 $B = get_vocab("namebooker");
-if (Settings::get("remplissage_description_breve") == '1')
+if (Settings::get("remplissage_description_breve") != '0')
 {
 	$B .= " *";
-	$affiche_mess_asterisque=true;
+	//$affiche_mess_asterisque=true;
 }
 $B .= get_vocab("deux_points");
 $C = htmlspecialchars($breve_description);
@@ -650,7 +650,7 @@ $D = get_vocab("fulldescription");
 if (Settings::get("remplissage_description_complete") == '1')
 {
 	$D .= " *";
-	$affiche_mess_asterisque=true;
+	//$affiche_mess_asterisque=true;
 }
 $D .= get_vocab("deux_points");
 $E = htmlspecialchars ( $description );
@@ -1055,8 +1055,8 @@ echo '</div>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL;
 </script>
 <?php
 echo '<tr>',PHP_EOL,'<td class="E">',PHP_EOL;
-if ($affiche_mess_asterisque)
-	get_vocab("required");
+// if ($affiche_mess_asterisque)
+	echo get_vocab("required");
 echo '</td></tr>',PHP_EOL;
 echo '</table>',PHP_EOL;
 echo "</div>"; 

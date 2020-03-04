@@ -3,9 +3,9 @@
  * edit_entry_beneficiaire.php
  * Page "Ajax" utilisée dans edit_entry.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-03-31 18:00$
+ * Dernière modification : $Date: 2020-03-03 23:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -44,7 +44,7 @@ if ($flag_qui_peut_reserver_pour ) // on crée les sélecteurs à afficher
 {
 	echo '<tr>'.PHP_EOL;
 	echo '<td class="E">'.PHP_EOL;
-	echo '<b>'.ucfirst(trim(get_vocab("reservation au nom de"))).get_vocab("deux_points").'</b>'.PHP_EOL;
+	echo '<b>'.ucfirst(trim(get_vocab("reservation_au_nom_de"))).get_vocab("deux_points").'</b>'.PHP_EOL;
 	echo '</td>'.PHP_EOL;
 	echo '</tr>'.PHP_EOL;
 	echo '<tr>'.PHP_EOL;
