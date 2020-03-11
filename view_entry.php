@@ -380,7 +380,7 @@ echo '<td>',$type_name,'</td>',PHP_EOL,'</tr>',PHP_EOL;
 if ($beneficiaire != $create_by)
 {
     echo '<tr>';
-    echo '    <td><b>'.get_vocab("reservation au nom de").get_vocab("deux_points").'</b></td>';
+    echo '    <td><b>'.get_vocab("reservation_au_nom_de").get_vocab("deux_points").'</b></td>';
     echo '    <td>'.affiche_nom_prenom_email($beneficiaire, $beneficiaire_ext, $option_affiche_nom_prenom_email).'</td>';
     echo '</tr>';
 }
