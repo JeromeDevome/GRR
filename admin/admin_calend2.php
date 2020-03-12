@@ -391,7 +391,7 @@ else if ($etape == 2)
 	echo "<table class='table table-noborder'>\n";
 	if ($type_resa == "resa")
 	{
-		echo "<tr><td class=\"CR\"><b>".ucfirst(trim(get_vocab("reservation au nom de"))).get_vocab("deux_points")."</b></td>\n\n";
+		echo "<tr><td class=\"CR\"><b>".ucfirst(trim(get_vocab("reservation_au_nom_de"))).get_vocab("deux_points")."</b></td>\n\n";
 		echo "<td class=\"CL\"><select size=\"1\" name=\"beneficiaire\" class=\"form-control\">\n";
 		$sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE  (etat!='inactif' and statut!='visiteur' ) order by nom, prenom";
 		$res = grr_sql_query($sql);

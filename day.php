@@ -139,7 +139,7 @@ else
 		{
 			$today[$row['0']][$am7]["data"] = affichage_lien_resa_planning($row['3'], $row['4']);
 			if ($settings->get("display_info_bulle") == 1)
-				$today[$row['0']][$am7]["who"] = get_vocab("reservation au nom de").affiche_nom_prenom_email($row['6'], $row['11'], "nomail");
+				$today[$row['0']][$am7]["who"] = get_vocab("reservation_au_nom_de").affiche_nom_prenom_email($row['6'], $row['11'], "nomail");
 			else if ($settings->get("display_info_bulle") == 2)
 				$today[$row['0']][$am7]["who"] = $row['8'];
 			else
@@ -149,7 +149,7 @@ else
 		{
 			$today[$row['0']][$start_t]["data"] = affichage_lien_resa_planning($row['3'], $row['4']);
 			if ($settings->get("display_info_bulle") == 1)
-				$today[$row['0']][$start_t]["who"] = get_vocab("reservation au nom de").affiche_nom_prenom_email($row['6'], $row['11']);
+				$today[$row['0']][$start_t]["who"] = get_vocab("reservation_au_nom_de").affiche_nom_prenom_email($row['6'], $row['11']);
 			else if ($settings->get("display_info_bulle") == 2)
 				$today[$row['0']][$start_t]["who"] = $row['8'];
 			else
