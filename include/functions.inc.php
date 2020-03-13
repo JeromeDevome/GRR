@@ -2940,7 +2940,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 				$destinataire .= ";". $value;
 			}
 
-			Email::Envois($destinataire, $sujet, $message, $repondre, '', '');
+		//	Email::Envois($destinataire, $sujet, $message, $repondre, '', '');  semble incomplet YN le 21/02/2020
 		}
 
 		$sujet7 = $vocab["subject_mail1"].$room_name." - ".$date_avis;

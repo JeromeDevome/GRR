@@ -3,7 +3,7 @@
  * frmcontactrange.php
  * calcule le code html de la partie intervalle du formulaire de contact
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-01-17 14:30$
+ * Dernière modification : $Date: 2020-03-13 11:00$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -22,8 +22,10 @@ include "include/misc.inc.php";
 include "include/functions.inc.php";
 
 $id = $_GET['id'];
+if ($id != protect_data_sql($id))
+    die('Donnée incorrecte');
 $query = "SELECT access,morningstarts_area,eveningends_area,eveningends_minutes_area,enable_periods,resolution_area FROM ".TABLE_PREFIX."_area
-    WHERE id = '".$id."' ";
+    WHERE id = '".protect_data_sql($id)."' ";
 // echo $query."<br />";
 $res = grr_sql_query($query);
 $val= grr_sql_row($res,0);

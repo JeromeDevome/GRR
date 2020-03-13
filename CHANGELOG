@@ -30,6 +30,9 @@ Sous-version 3.4.1b
 	[correction] divers bugs, erreurs de syntaxe ou orthographiques
 	[modification] limitation de la taille des données conformément à la base
 	[modification] calcul et aspect de la page de contact externe
+Sous-version 3.4.1c
+    [correction] failles de sécurité dans formulaire de contact et gestion des ressources
+    [correction] divers bugs, erreurs de syntaxe ou orthographiques
 -----
 --
 -----
