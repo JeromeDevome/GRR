@@ -1987,7 +1987,7 @@ function time_date_string_jma($t,$dformat)
 		return utf8_strftime($dformat, $t);
 }
 
-// Renvoie une balise span avec un style backgrounf-color correspondant au type de  la réservation
+// Renvoie une balise span avec un style background-color correspondant au type de  la réservation
 function span_bgground($colclass)
 {
 	global $tab_couleur;

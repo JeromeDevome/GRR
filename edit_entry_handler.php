@@ -633,7 +633,7 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 			$new_id = grr_sql_insert_id();
 			if (Settings::get("automatic_mail") == 'yes')
 			{
-				if (isset($id) && ($id != 0))
+				if (isset($id) && ($id != 0)) // ici, c'est $id ou $new_id qui convient ? YN le 18/01/2020
 				{
 					if ($send_mail_moderate)
 						$message_error = send_mail($new_id,5,$dformat);

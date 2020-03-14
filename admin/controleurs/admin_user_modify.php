@@ -309,10 +309,6 @@ if (isset($user_login) && ($user_login != ''))
 		}
 	}*/
 }
-if ($user_source=="local")
-	$statut_div = "visible";
-else
-	$statut_div = "hidden";
 if ((authGetUserLevel(getUserName(), -1) < 1) && (Settings::get("authentification_obli") == 1))
 {
 	showAccessDenied($back);

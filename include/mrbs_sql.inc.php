@@ -194,10 +194,11 @@ function mrbsGetAreaIdFromRoomId($room_id)
 /** mrbsOverloadGetFieldslist()
  *
  * Return an array with all fields name
- * $id_area - Id of the id_area
+ * $id_area : Id of the area
+ * $room_id : Id of the room
  *
  */
-function mrbsOverloadGetFieldslist($id_area, $room_id = 0)
+function mrbsOverloadGetFieldslist($id_area="", $room_id = 0)
 {
 	if ($room_id > 0 )
 	{

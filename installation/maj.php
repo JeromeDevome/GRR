@@ -39,7 +39,7 @@ $valid		= isset($_POST["valid"]) ? $_POST["valid"] : 'no';
 $majscript	= false;
 $force		= false;
 
-// Définitions depuis qu'elle version on met  à jours
+// Définition depuis quelle version on met à jour
 if (isset($_POST["version_old"]))
 {
 	$version_old = $_POST["version_old"];
@@ -111,7 +111,7 @@ if(!$majscript) {
 }
 
 
-// On effectu la MaJ
+// On effectue la MaJ
 if (isset($_POST['maj']) || $majscript)
 {
 	$result = execute_maj($version_old, $version_grr);
