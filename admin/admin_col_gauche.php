@@ -98,6 +98,8 @@ function afficheLienNiveau2($nomSection,$image,$liste,$iN2)
 		$liste[] = 'admin_email_manager';
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 		$liste[] = 'admin_view_connexions';
+	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
+		$liste[] = 'admin_view_emails';
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 4)
 		$liste[] = 'admin_calend';
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)

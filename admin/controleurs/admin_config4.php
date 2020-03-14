@@ -107,7 +107,9 @@ get_vocab_admin("explain_disable_login");
 get_vocab_admin("disable_login_on");
 get_vocab_admin("disable_login_off");
 
+get_vocab_admin("admin_menu_various");
 get_vocab_admin("redirection_https");
+get_vocab_admin("Activer_log_email");
 get_vocab_admin("YES");
 get_vocab_admin("NO");
 

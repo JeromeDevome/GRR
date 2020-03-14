@@ -83,6 +83,18 @@ class Email{
             mail(str_replace(";",",",$A), $sujet, utf8_decode(utf8_encode(str_replace("<br>","",$message))), $headers); //YN selon Rapace sur le forum
 		}
 
+		//Log mail
+		$sql = "INSERT INTO ".TABLE_PREFIX."_log_mail ( date, de, a, sujet, message) values (
+			'" . time() . "',
+			'" . protect_data_sql($DE) . "',
+			'" . protect_data_sql($A) . "',
+			'" . protect_data_sql($sujet) . "',
+			'" . protect_data_sql($message) . "'
+			)
+		;";
+		echo $sql;
+		grr_sql_query($sql);
+
 	}
 
 }

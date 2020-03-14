@@ -5109,6 +5109,20 @@ function nettoieLogConnexion($delai){
         grr_sql_query($sql);
     }
 }
+/*
+* @param integer $delai : nombre de jours de rétention des logs de connexion
+* nettoieLogConnexion efface les entrées de la table _log antérieures au jour courant moins le délai
+*/
+function nettoieLogEmail($delai){
+    // est-ce un administrateur ?
+    if (authGetUserLevel(getUserName(), -1) >= 6){
+        $dateMax = new DateTime('NOW');
+        $dateMax->sub(new DateInterval('P'.$delai.'D'));
+        $dateMax = $dateMax->format('Y-m-d H:i:s');
+        $sql = "DELETE FROM ".TABLE_PREFIX."_log_mail WHERE date < '" . strtotime($dateMax) . "';";
+        grr_sql_query($sql);
+    }
+}
 // suggestions pour reformuler les pages plannings
 function pageHead2($title, $page = "with_session") 
 {
