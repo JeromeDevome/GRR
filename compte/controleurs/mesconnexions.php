@@ -31,10 +31,9 @@ if (!grr_resumeSession())
 	header('Location: logout.php?auto=1&url=$url');
 	die();
 };
-Definition_ressource_domaine_site();
 
 include_once('../include/language.inc.php');
-//include "include/resume_session.php";
+
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
@@ -83,20 +82,6 @@ get_vocab_admin('end_of_session');
 get_vocab_admin('ip_adress');
 get_vocab_admin('navigator');
 get_vocab_admin('referer');
-
-/*
-
-	// Liste des sites
-	$sql = "SELECT id,sitecode,sitename
-	FROM ".TABLE_PREFIX."_site
-	ORDER BY id ASC";
-	$resultat = grr_sql_query($sql);
-
-	$sites = array();
-	for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); $enr++) {
-		$sites[] = array('idsite' => $row[0], 'nomsite' => $row[2]);
-	}
-*/
 
 
 	echo $twig->render('mesconnexions.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'connexions' => $connexions));
