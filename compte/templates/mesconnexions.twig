@@ -1,0 +1,44 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+	<p>{{ trad.see_connexions_explain }}</p>
+
+	<table class="table-bordered">
+		<thead>
+			<th class="col">{{ trad.begining_of_session }}</th>
+			<th class="col">{{ trad.end_of_session }}</th>
+			<th class="col">{{ trad.ip_adress }}</th>
+			<th class="col">{{ trad.navigator }}</th>
+			<th class="col">{{ trad.referer }}</th>
+		</thead>
+		<tbody>
+		{% for connexion in connexions %}
+			<tr>
+				<td class="col"><span style="color:{{connexion.couleur}};">{{ connexion.debut }}</span></td>
+				<td class="col"><span style="color:{{connexion.couleur}};">{{ connexion.fin }}</span></td>
+				<td class="col"><span style="color:{{connexion.couleur}};">{{ connexion.ip }}</span></td>
+				<td class="col"><span style="color:{{connexion.couleur}};">{{ connexion.navigateur }}</span></td>
+				<td class="col"><span style="color:{{connexion.couleur}};">{{ connexion.provenance }}</span></td>
+			</tr>
+		{% endfor %}
+		</tbody>
+		<tbody>
+		</tbody>
+	</table>
+
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
