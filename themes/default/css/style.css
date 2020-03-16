@@ -122,7 +122,7 @@ fieldset[disabled] .btn-primary.active{background-color:gray;border-color:silver
 .panel-primary>.panel-footer+.panel-collapse>.panel-body{border-bottom-color:gray}
 caption{text-align: center}
 
-table.ui-datepicker-calendar: {z-index: 10;}
+table.ui-datepicker-calendar{z-index: 10;}
 
 /* nouveau style */
 body{font-size:14px;font-family:arial,verdana,sans-serif;width:100%;margin:0 auto}
