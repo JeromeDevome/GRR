@@ -3,9 +3,9 @@
  * install_mysql.php
  * Interface d'installation de GRR pour un environnement mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-10 17:00$
+ * Dernière modification : $Date: 2020-03-18 16:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -21,14 +21,37 @@ require_once("../include/misc.inc.php");
 require_once("../include/functions.inc.php");
 
 $nom_fic = "../include/connect.inc.php";
-$etape = isset($_GET["etape"]) ? $_GET["etape"] : NULL;
-$adresse_db = isset($_GET["adresse_db"]) ? $_GET["adresse_db"] : NULL;
-$port_db = isset($_GET["port_db"]) ? $_GET["port_db"] : NULL;
-$login_db = isset($_GET["login_db"]) ? $_GET["login_db"] : NULL;
-$pass_db = isset($_GET["pass_db"]) ? $_GET["pass_db"] : NULL;
-$choix_db = isset($_GET["choix_db"]) ? $_GET["choix_db"] : NULL;
-$table_new = isset($_GET["table_new"]) ? $_GET["table_new"] : NULL;
-$table_prefix = isset($_GET["table_prefix"]) ? $_GET["table_prefix"] : NULL;
+$etape = isset($_POST['etape'])? $_POST['etape'] : (isset($_GET["etape"]) ? $_GET["etape"] : NULL);
+$adresse_db = isset($_POST["adresse_db"]) ? $_POST["adresse_db"] : "localhost";
+$port_db = isset($_POST["port_db"]) ? $_POST["port_db"] : 3306;
+$login_db = isset($_POST["login_db"]) ? $_POST["login_db"] : NULL;
+$pass_db = isset($_POST["pass_db"]) ? $_POST["pass_db"] : NULL;
+$choix_db = isset($_POST["choix_db"]) ? $_POST["choix_db"] : NULL;
+$table_new = isset($_POST["table_new"]) ? $_POST["table_new"] : NULL;
+$table_prefix = isset($_POST["table_prefix"]) ? $_POST["table_prefix"] : NULL;
+$company = isset($_POST['company'])? $_POST['company'] : "Nom de l'établissement";
+$grr_url = isset($_POST['grr_url'])? $_POST['grr_url'] : NULL;
+$webmaster_email = isset($_POST['webmaster_email'])? $_POST['webmaster_email'] : "webmaster@grr.test";
+$technical_support_email = isset($_POST['technical_support_email'])? $_POST['technical_support_email'] : "techsupport@grr.test";
+$mdp1 = isset($_POST['mdp1'])? $_POST['mdp1'] : NULL;
+$mdp2 = isset($_POST['mdp2'])? $_POST['mdp2'] : NULL;
+$email = isset($_POST['email'])? $_POST['email'] : "administrateur@grr.test";
+// nettoyage des données entrées dans le formulaire
+$etape = clean_input($etape);
+$adresse_db = clean_input($adresse_db);
+$port_db = clean_input($port_db);
+$login_db = clean_input($login_db);
+$pass_db = clean_input($pass_db);
+$choix_db = clean_input($choix_db);
+$table_new = clean_input($table_new);
+$table_prefix = clean_input($table_prefix);
+$company = clean_input($company);
+$grr_url = clean_input($grr_url);
+$webmaster_email = clean_input($webmaster_email);
+$technical_support_email = clean_input($technical_support_email);
+$mdp1 = clean_input($mdp1);
+$mdp2 = clean_input($mdp2);
+$email = clean_input($email);
 
 // Pour cette page uniquement, on désactive l'UTF8 et on impose l'ISO-8859-1
 $unicode_encoding = 1;
@@ -42,6 +65,7 @@ function end_html()
 	echo '</td></tr></table></div></body></html>';
 }
 /**
+ * @param $res : MySQL query result
  * @param integer $row
  */
 function mysqli_result($res, $row, $field = 0)
@@ -50,6 +74,7 @@ function mysqli_result($res, $row, $field = 0)
 	$datarow = $res->fetch_array();
 	return $datarow[$field];
 }
+
 if (@file_exists($nom_fic))
 {
 	/* fix prefix missing */
@@ -89,13 +114,84 @@ if (@file_exists($nom_fic))
 			{
 				echo begin_page("Installation de GRR");
 				begin_html();
-				if ($etape == 5)
-				{
-					echo "<br /><h2>Dernière étape : C'est terminé !</h2>";
-					echo "<p>";
-					echo "<p>Vous pouvez maintenant commencer à utiliser le système de réservation de ressources ...</p>";
-					echo "<p>Pour vous connecter la première fois en tant qu'administrateur, utilisez le nom de connection <b>\"administrateur\"</b> et le mot de passe <b>\"azerty\"</b>. N'oubliez pas de changer le mot de passe !</p>";
-					echo "<br /><center><a href = '../login.php'>Se connecter à GRR</a></center>";
+                if ($etape == 6)// vérifier que les personnalisations ont bien été prises en compte et lancer GRR
+                {
+                    if ((strlen($mdp1)>7)&&($mdp1 == $mdp2)){ // les mots de passe sont acceptables, on met à jour la table setting
+                        $test = TRUE;
+                        $req = "UPDATE ".$table_prefix."_setting SET value ='".$company."' WHERE ".$table_prefix."_setting.name = 'company' ";
+                        $test .= mysqli_query($db, $req);
+                        $req = "UPDATE ".$table_prefix."_setting SET value ='".$grr_url."' WHERE ".$table_prefix."_setting.name = 'grr_url' ";
+                        $test .= mysqli_query($db, $req);
+                        $req = "UPDATE ".$table_prefix."_setting SET value ='".$webmaster_email."' WHERE ".$table_prefix."_setting.name = 'webmaster_email' ";
+                        $test .= mysqli_query($db, $req);
+                        $req = "UPDATE ".$table_prefix."_setting SET value ='".$technical_support_email."' WHERE ".$table_prefix."_setting.name = 'technical_support_email' ";
+                        $test .= mysqli_query($db, $req);
+                        $mdp = md5($mdp1);
+                        $req = "UPDATE ".$table_prefix."_utilisateurs SET password = '".$mdp."' WHERE ".$table_prefix."_utilisateurs.login = 'ADMINISTRATEUR' ";
+                        $test .= mysqli_query($db, $req); 
+                        $req = "UPDATE ".$table_prefix."_utilisateurs SET email = '".$email."' WHERE ".$table_prefix."_utilisateurs.login = 'ADMINISTRATEUR' ";
+                        $test .= mysqli_query($db, $req);
+                        if ($test)
+                        {
+                            echo "<br /><h2>Dernière étape : C'est terminé !</h2>";
+                            echo "<p>Vous pouvez maintenant commencer à utiliser le système de réservation de ressources ...</p>";
+                            echo "<p>Pour vous connecter la première fois en tant qu'administrateur, utilisez le nom de connection <b>\"ADMINISTRATEUR\"</b> et le mot de passe renseigné à l'étape précédente</p>";
+                                        echo "<br /><center><a href = '../login.php'>Se connecter à GRR</a></center>";
+                        }
+                        else
+                        {
+                            echo "<p>Les personnalisations ont échoué. Vérifiez le serveur de bases de données ou revenez à l'étape précédente, ou recommencez l'installation.</p>";
+                        }
+                    }
+                    else // mots de passe non acceptables
+                    {
+                        echo "Les mots de passe sont trop courts ou différents, veuillez retourner à l'étape précédente";
+                        echo '<form action="install_mysql.php" method="POST" role="form">';
+                        echo "<input type='hidden' name='etape' value='5' />";
+                        echo "<input type='hidden' name='adresse_db' value='$adresse_db' />";
+                        echo "<input type='hidden' name='port_db' value='$port_db' />";
+                        echo "<input type='hidden' name='login_db' value='$login_db' />";
+                        echo "<input type='hidden' name='pass_db' value='$pass_db' />";
+                        echo "<input type='hidden' name='choix_db' value='$choix_db' />";
+                        echo "<input type='hidden' name='table_prefix' value='$table_prefix' />";
+                        echo "<input type=\"hidden\" name=\"company\" value=\"$company\" />";
+                        echo "<input type='hidden' name='grr_url' value='$grr_url'/>";
+                        echo "<input type='hidden' name='webmaster_email' value='$webmaster_email' />";
+                        echo "<input type='hidden' name='technical_support_email' value='$technical_support_email' />";
+                        echo "<input type='hidden' name='email' value='$email' />";
+                        echo "<div style=\"text-align:right;\">";
+                        echo '<input type="submit" name="Retour5" value="<< Précédent" />';
+                        echo "</div>";
+                        echo "</form>";
+                    }
+                }
+				else if ($etape == 5)
+				{// personnalisation de GRR, passer à l'étape 6
+                    echo '<h2>Cinquième étape : Personnalisation de votre GRR</h2>';
+                    echo '<form action="install_mysql.php" method="POST" role="form">';
+                    echo "<input type='hidden' name='etape' value='6' />";
+                    echo "<input type='hidden' name='adresse_db' value='$adresse_db' />";
+                    echo "<input type='hidden' name='port_db' value='$port_db' />";
+                    echo "<input type='hidden' name='login_db' value='$login_db' />";
+                    echo "<input type='hidden' name='pass_db' value='$pass_db' />";
+                    echo "<input type='hidden' name='choix_db' value='$choix_db' />";
+                    echo "<input type='hidden' name='table_prefix' value='$table_prefix' />";
+                    echo "<div>";
+                    echo "<p>Vous pourrez modifier les informations dans la configuration générale après avoir terminé l'installation.</p>";
+                    echo "<p><label for='company'>Nom de l'établissement : </label><input type=\"text\" name=\"company\" value=\"$company\" /></p>";
+                    echo "<p><label for='grr_url'>URL de GRR : </label><input type='text' name='grr_url' value='$grr_url'/></p>";
+                    echo "<p><label for='webmaster_email'>Adresse mail du webmestre : </label><input type='email' name='webmaster_email' value='$webmaster_email' /></p>";
+                    echo "<p><label for='technical_support_email'>Adresse mail du support technique : </label><input type='email' name='technical_support_email' value='$technical_support_email' /></p>";
+                    echo "<h3>Le compte administrateur : </h3>";
+                    echo "<p>Identifiant du compte Administrateur : ADMINISTRATEUR</p>";
+                    echo "<p><label for='mdp1'>Mot de passe : </label><input type='password' name='mdp1' required /></p>";
+                    echo "<p><label for='mdp2'>Confirmer le mot de passe : </label><input type='password' name='mdp2' required /></p>";
+                    echo "<p><label for='email'>Adresse mail de l'administrateur : </label><input type='email' name='email' value='$email' /></p>";
+                    echo "</div>";
+                    echo "<div style=\"text-align:right;\">";
+                    echo '<input type="submit" name="Valider" value="Suivant >> " />';
+                    echo "</div>";
+                    echo "</form>";
 				}
 				else
 				{
@@ -199,7 +295,7 @@ if ($etape == 4)
 			if ($ok == 'yes')
 			{
 				echo "<b>La structure de votre base de données est installée.</b><br />Vous pouvez passer à l'étape suivante.";
-				echo "<form action='install_mysql.php' method='get'>";
+				echo "<form action='install_mysql.php' method='POST'>";
 				echo "<input type='hidden' name='etape' value='5' />";
 				echo "<div style=\"text-align:right;\"><input type='submit' class='fondl' name='Valider' value='Suivant &gt;&gt;' /><div>";
 				echo "</form>";
@@ -221,7 +317,7 @@ else if ($etape == 3)
 	echo begin_page("Installation de GRR");
 	begin_html();
 	echo "<br /><h2>Troisième étape : Choix de votre base</h2>\n";
-	echo "<form action='install_mysql.php' method='get'><div>\n";
+	echo "<form action='install_mysql.php' method='POST'><div>\n";
 	echo "<input type='hidden' name='etape' value='4' />\n";
 	echo "<input type='hidden' name='adresse_db'  value=\"$adresse_db\" size='40' />\n";
     echo "<input type='hidden' name='port_db' value=\"$port_db\" />\n";
@@ -303,7 +399,7 @@ else if ($etape == 2)
 	if (($db_connect=="0") && $db)
 	{
 		echo "<b>La connexion a réussi.</b><p> Vous pouvez passer à l'étape suivante.</p>\n";
-		echo "<form action='install_mysql.php' method='get'>\n";
+		echo "<form action='install_mysql.php' method='POST'>\n";
 		echo "<div><input type='hidden' name='etape' value='3' />\n";
 		echo "<input type='hidden' name='adresse_db'  value=\"$adresse_db\" size='40' />\n";
         echo "<input type='hidden' name='port_db' value=\"$port_db\" />\n";
@@ -325,11 +421,11 @@ else if ($etape == 1)
 	begin_html();
 	echo "<br /><h2>Première étape : la connexion $dbsys</h2>";
 	echo "<p>Vous devez avoir en votre possession les codes de connexion au serveur $dbsys. Si ce n'est pas le cas, contactez votre hébergeur ou bien l'administrateur technique du serveur sur lequel vous voulez implanter GRR.</p>";
-	$adresse_db = 'localhost';
+	/* $adresse_db = 'localhost';
 	$login_db = '';
 	$pass_db = '';
-    $port_db = 3306;
-	echo "<form action='install_mysql.php' method='get'>\n";
+    $port_db = 3306;*/
+	echo "<form action='install_mysql.php' method='POST'>\n";
 	echo "<div><input type='hidden' name='etape' value='2' />\n";
 	echo "<fieldset><label><b>Adresse de la base de données</b><br /></label>\n";
 	echo "(Souvent cette adresse correspond à celle de votre site, parfois elle correspond à la mention &laquo;localhost&raquo;, parfois elle est laissée totalement vide.)<br />\n";
@@ -379,7 +475,7 @@ else if (!$etape)
 			echo "<p>Une fois le fichier \"".$nom_fic.".ori\" renommé en \"".$nom_fic."\", vous pouvez également renseigner manuellement le fichier \"".$nom_fic."\".</p>";
 		}
 		echo "<p>Vous pouvez par exemple utilisez votre client FTP afin de régler ce problème ou bien contactez l'administrateur technique. Une fois cette manipulation effectuée, vous pourrez continuer.</p>";
-		echo "<p><form action='install_mysql.php' method='get'>";
+		echo "<p><form action='install_mysql.php' method='POST'>";
 		echo "<input type='hidden' name='etape' value='' />";
 		echo "<input type='submit' class='fondl' name='Continuer' />";
 		echo "</form>";

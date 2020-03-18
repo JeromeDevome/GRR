@@ -56,7 +56,7 @@ INSERT INTO grr_room VALUES (NULL, '1', 'Ressource 1', '', '0', '-1', '1', 'n', 
 INSERT INTO grr_type_area VALUES (1, 'Cours', 1, 1, '#1abc9c', 'A', 2, '#000');
 INSERT INTO grr_type_area VALUES (2, 'Réunion', 2, 2, '#C03000', 'B', 2, '#FFF');
 INSERT INTO grr_type_area VALUES (3, 'Autre', 3, 3, '#4BB5C1', 'C', 2, '#000');
-INSERT INTO grr_utilisateurs VALUES ('ADMINISTRATEUR', 'Administrateur', 'grr', 'ab4f63f9ac65152575886860dde480a1', 'admin@labas.fr', 'administrateur', 'actif', 0, 0, 0, 'default', 'item', 'fr','local');
+INSERT INTO grr_utilisateurs VALUES ('ADMINISTRATEUR', 'Administrateur', 'grr', 'ab4f63f9ac65152575886860dde480a1', 0, 'admin@labas.fr', 'administrateur', 'actif', 0, 0, 0, 'default', 'item', 'fr','local');
 INSERT INTO grr_setting VALUES ('sessionMaxLength', '30');
 INSERT INTO grr_setting VALUES ('automatic_mail', 'yes');
 INSERT INTO grr_setting VALUES ('company', 'Nom de l\'établissement');

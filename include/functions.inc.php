@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-02-27 15:10$
+ * Dernière modification : $Date: 2020-03-18 15:50$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5606,6 +5606,16 @@ function end_page()
 function generationToken()
 {
 	return $token = base_convert(hash('sha256', time() . mt_rand()), 16, 36);
+}
+
+/* fonction clean_input
+* pour réduire le risque XSS
+*/
+function clean_input($data){
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
 }
 
 // Les lignes suivantes permettent la compatibilité de GRR avec la variables register_global à off
