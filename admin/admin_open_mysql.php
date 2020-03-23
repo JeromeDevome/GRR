@@ -3,9 +3,9 @@
  * admin_open_mysql.php
  * script de restauration d'une sauvegarde
  * ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-23 11:00$
+ * Dernière modification : $Date: 2020-03-21 11:30$
  * @author    JeromeB & Laurent Delineau & Sylvain Payeur & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -26,7 +26,7 @@ if($restaureBBD == 1){
 	$year  = date("Y");
 	check_access(6, $back);
 	$sql_file = isset($_FILES["sql_file"]) ? $_FILES["sql_file"] : NULL;
-	$file_name = isset($_GET["file_name"]) ? $_GET["file_name"] : NULL;
+	$file_name = isset($_GET["file_name"]) ? clean_input($_GET["file_name"]) : NULL;
 	VerifyModeDemo();
 	if (!$file_name)
 		start_page_w_header("", "", "", $type="with_session");
@@ -52,7 +52,7 @@ if($restaureBBD == 1){
 		}
 		else
 		{
-			echo "<table class='table-bordered'><tr><td>";
+			echo "<table class='table table-bordered'><tr><td>";
 			echo "Version : ".substr($line,34,strpos(substr($line,34),"*"))."<br />";
 			for ($i = 1; $i < 6; $i++)
 			{

@@ -3,9 +3,9 @@
  * edit_entry_handler.php
  * Permet de vérifier la validité de l'édition ou de la création d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-11-27 15:00$
+ * Dernière modification : $Date: 2020-03-22 14:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -93,6 +93,7 @@ if (isset($minute))
 }
 $statut_entry = isset($_GET["statut_entry"]) ? $_GET["statut_entry"] : "-";
 $rep_jour_c = isset($_GET["rep_jour_"]) ? $_GET["rep_jour_"] : 0;
+$rep_jour_c = intval(clean_input($rep_jour_c));
 $type = isset($_GET["type"]) ? $_GET["type"] : NULL;
 $rep_type = isset($_GET["rep_type"]) ? $_GET["rep_type"] : NULL;
 if (isset($rep_type))
@@ -124,7 +125,7 @@ $rep_end_day = isset($_GET["rep_end_day"]) ? $_GET["rep_end_day"] : NULL;
 $rep_end_month = isset($_GET["rep_end_month"]) ? $_GET["rep_end_month"] : NULL;
 $rep_end_year = isset($_GET["rep_end_year"]) ? $_GET["rep_end_year"] : NULL;
 $room_back = isset($_GET["room_back"]) ? $_GET["room_back"] : NULL;
-$oldRessource = isset($_GET["oldRessource"]) ? $_GET["oldRessource"] : NULL;
+$oldRessource = isset($_GET["oldRessource"]) ? clean_input($_GET["oldRessource"]) : NULL;
 if (isset($room_back) && ($room_back != 'all'))
 	settype($room_back,"integer");
 else $room_back = 'all'; // YN le 30-06-18
@@ -173,7 +174,7 @@ $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars($_SERVER['HTTP_REFER
 // page de retour
 $ret_page = (isset($_GET['page_ret']))? $_GET['page_ret'] : $back;
 
-$area = mrbsGetRoomArea($_GET['rooms'][0]);
+$area = mrbsGetRoomArea(clean_input($_GET['rooms'][0]));
 $overload_data = array();
 $overload_fields_list = mrbsOverloadGetFieldslist($area);
 foreach ($overload_fields_list as $overfield=>$fieldtype)
@@ -295,17 +296,17 @@ else
 		$hour = 12;
 		$_GET["end_hour"] = 12;
 		if (isset($_GET["period"]))
-			$minute = $_GET["period"];
+			$minute = clean_input($_GET["period"]);
 		else
 			$erreur = 'y';
 		if (isset($_GET["end_period"]))
-			$_GET["end_minute"] = $_GET["end_period"] + 1;
+			$_GET["end_minute"] = clean_input($_GET["end_period"]) + 1;
 		else
 			$erreur = 'y';
 	}
 	else {
 		$fin = array();
-		$fin = explode(':', $_GET["end_"]);
+		$fin = explode(':', clean_input($_GET["end_"]));
 		$_GET["end_hour"] = $fin[0];
 		$_GET["end_minute"] = $fin[1];
 	}
@@ -425,7 +426,11 @@ $error_date_option_reservation = 'no';
 $error_chevaussement = 'no';
 $error_qui_peut_reserver_pour = 'no';
 $error_heure_debut_fin = 'no';
-foreach ( $_GET['rooms'] as $room_id )
+$rooms = array();
+foreach ($_GET['rooms'] as $room_id){
+    $rooms[] = clean_input($room_id);
+}
+foreach ( $rooms as $room_id )
 {
 	if ($rep_type != 0 && !empty($reps))
 	{
@@ -492,7 +497,7 @@ foreach ( $_GET['rooms'] as $room_id )
 $err = "";
 if (($error_booking_in_past == 'no') && ($error_chevaussement == 'no') && ($error_duree_max_resa_area == 'no') && ($error_delais_max_resa_room == 'no') && ($error_delais_min_resa_room == 'no')  && ($error_date_option_reservation == 'no') && ($error_qui_peut_reserver_pour == 'no') && ($error_heure_debut_fin == 'no'))
 {
-	foreach ($_GET['rooms'] as $room_id)
+	foreach ($rooms as $room_id)
 	{
 		if ($rep_type != 0 && !empty($reps))
 		{
@@ -528,7 +533,7 @@ if (($error_booking_in_past == 'no') && ($error_chevaussement == 'no') && ($erro
 if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_area == 'no') && ($error_delais_max_resa_room == 'no') && ($error_delais_min_resa_room == 'no') && ($error_booking_room_out == 'no') && ($error_date_option_reservation == 'no') && ($error_chevaussement == 'no') && ($error_qui_peut_reserver_pour == 'no') && ($error_heure_debut_fin == 'no'))
 {
 	$compt_room = 0;
-	foreach ($_GET['rooms'] as $room_id)
+	foreach ($rooms as $room_id)
 	{
 		$area = mrbsGetRoomArea($room_id);
 		if (isset($id) && ($id != 0))
@@ -569,7 +574,7 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 				$compt_room += 1;
 		}
 	}
-	foreach ($_GET['rooms'] as $room_id)
+	foreach ($rooms as $room_id)
 	{
 		$moderate = grr_sql_query1("SELECT moderate FROM ".TABLE_PREFIX."_room WHERE id = '".$room_id."'");
 		if ($moderate == 1)

@@ -3,9 +3,9 @@
  * admin_accueil
  * Interface d'accueil de l'administration des domaines et des ressources
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-10-15 13:45$
+ * Dernière modification : $Date: 2020-03-23 11:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -21,7 +21,7 @@ include "../include/admin.inc.php";
 $back = '';
 $user = getUserName();
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 if ((authGetUserLevel($user, -1, 'area') < 4) && (authGetUserLevel($user, -1, 'user') !=  1))
 {
 	showAccessDenied($back);

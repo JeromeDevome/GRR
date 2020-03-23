@@ -4349,7 +4349,7 @@ function traite_grr_url($grr_script_name = "", $force_use_grr_url = "n")
 		return Settings::get("grr_url").$ad_signe.$grr_script_name;
 	}
 	else
-		return $_SERVER['PHP_SELF'];
+		return clean_input($_SERVER['PHP_SELF']);
 }
 // Pour les Jours/Cycles
 //Crée le calendrier Jours/Cycles
@@ -5572,7 +5572,15 @@ function end_page()
 {
     echo '</section></body></html>';
 }
-    
+/* fonction clean_input
+* pour réduire le risque XSS
+*/
+function clean_input($data){
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
 // Les lignes suivantes permettent la compatibilité de GRR avec la variable register_global à off
 unset($day);
 if (isset($_GET["day"]))

@@ -3,9 +3,9 @@
  * install_mysql.php
  * Interface d'installation de GRR pour un environnement mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-10 17:00$
+ * Dernière modification : $Date: 2020-03-19 11:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -29,7 +29,15 @@ $pass_db = isset($_GET["pass_db"]) ? $_GET["pass_db"] : NULL;
 $choix_db = isset($_GET["choix_db"]) ? $_GET["choix_db"] : NULL;
 $table_new = isset($_GET["table_new"]) ? $_GET["table_new"] : NULL;
 $table_prefix = isset($_GET["table_prefix"]) ? $_GET["table_prefix"] : NULL;
-
+// nettoyage des données entrées dans le formulaire
+$etape = clean_input($etape);
+$adresse_db = clean_input($adresse_db);
+$port_db = clean_input($port_db);
+$login_db = clean_input($login_db);
+$pass_db = clean_input($pass_db);
+$choix_db = clean_input($choix_db);
+$table_new = clean_input($table_new);
+$table_prefix = clean_input($table_prefix);
 // Pour cette page uniquement, on désactive l'UTF8 et on impose l'ISO-8859-1
 $unicode_encoding = 1;
 $charset_html = "ISO-8859-1";
@@ -48,7 +56,7 @@ function mysqli_result($res, $row, $field = 0)
 {
 	$res->data_seek($row);
 	$datarow = $res->fetch_array();
-	return $datarow[$field];
+	return clean_input($datarow[$field]);
 }
 if (@file_exists($nom_fic))
 {

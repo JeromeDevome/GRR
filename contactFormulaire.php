@@ -106,7 +106,7 @@ bouton_retour_haut();
                                 $area_name = $row_areaName[1];
 								echo '<option value="'.$id.'"> '.$area_name.'</option>'.PHP_EOL;
                             }
-                        }                        
+                        }
                     ?>
 				</select>
 

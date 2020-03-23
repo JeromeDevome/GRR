@@ -3,9 +3,9 @@
  * admin_site.php
  * Interface d'accueil de Gestion des sites de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-23 14:00$
+ * Dernière modification : $Date: 2020-03-23 12:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -153,7 +153,7 @@ function read_sites()
 		if ($res)
 		{
 			// Affichage de l'entête du tableau
-			echo '      <table class="table-bordered">
+			echo '      <table class="table table-bordered table-condensed">
 			<tr>
 				<th>'.get_vocab('action').'</th>
 				<th>'.get_vocab('site_code').'</th>
@@ -327,18 +327,14 @@ function check_right($id)
 }
 
 include_once('../include/admin.inc.php');
-$grr_script_name = 'admin_site.php';
-if (authGetUserLevel(getUserName(), -1, 'site') < 4)
-{
-    $back = '';
-    if (isset($_SERVER['HTTP_REFERER']))
-        $back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+
+$back = "";
+if (isset($_SERVER['HTTP_REFERER']))
+    $back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
+if (authGetUserLevel(getUserName(), -1, 'site') < 4){
     showAccessDenied($back);
     exit();
 }
-$back = "";
-if (isset($_SERVER['HTTP_REFERER']))
-    $back = htmlspecialchars($_SERVER['HTTP_REFERER']);
 // print the page header
 start_page_w_header("", "", "", $type="with_session");
 // Affichage de la colonne de gauche

@@ -3,7 +3,7 @@
  * admin_import_xml_edt.php
  * Importe un fichier de réservations au format xml issu du logiciel EDT Index Education
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-31 15:30$
+ * Dernière modification : $Date: 2020-03-21 11:20$
  * @author    JeromeB & Yan Naessens & Laurent Delineau
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -48,10 +48,10 @@ if(!isset($_POST['step'])) { //rien n'est défini, ouvre le dialogue pour charge
     echo "<p><input type='submit' value='Valider' /></p>\n";
     echo "</form>\n";
 }
-elseif ($_POST['step']==1){ // on commence par vérifier que le fichier est bien chargé
+elseif ($_POST['step']==1){ // on commence par vérifier que le fichier est bien chargé et de type adéquat
     $xml_file = isset($_FILES["edt_xml_file"]) ? $_FILES["edt_xml_file"] : NULL;
-
-    if(is_uploaded_file($xml_file['tmp_name'])) {
+    $split = explode('.', $xml_file['name']);
+    if(is_uploaded_file($xml_file['tmp_name'])&&(count($split) == 2)&&(strtolower(end($split)) =='xml')) {
         echo "<p> Chargement réussi ! </p>";
 
             $source_file=$xml_file['tmp_name'];

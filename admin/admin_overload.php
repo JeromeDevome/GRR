@@ -3,9 +3,9 @@
  * admin_overload.php
  * Interface de création/modification des champs additionnels.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-07 18:00$
+ * Dernière modification : $Date: 2020-03-23 12:10$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -21,7 +21,7 @@ include "../include/admin.inc.php";
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 check_access(4, $back);
 $use_prototype = 'y';
 $use_tooltip_js = 'y';

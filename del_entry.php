@@ -3,9 +3,9 @@
  * del_entry.php
  * Interface de suppression d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-05-14 18:30$
+ * Dernière modification : $Date: 2020-03-22 14:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -39,7 +39,7 @@ if (isset($series))
 $page = verif_page();
 if (isset($_GET["id"]))
 {
-	$id = $_GET["id"];
+	$id = clean_input($_GET["id"]);
 	settype($id,"integer");
 }
 else

@@ -3,7 +3,7 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-01-28 11:20$
+ * Dernière modification : $Date: 2020-03-22 15:20$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -197,7 +197,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 				}
 				else if ((Settings::get("ldap_statut") != '') && (@function_exists("ldap_connect")) && (@file_exists("include/config_ldap.inc.php")) && ($_user_ext_authentifie == 'cas'))
 				{
-				// On initialise au cas où on ne réussisse pas à récupérer les infos dans l'annuaire.
+				// On initialise au cas où on ne réussit pas à récupérer les infos dans l'annuaire.
 					$l_nom = $_login;
 					$l_email = '';
 					$l_prenom = '';
@@ -378,8 +378,7 @@ else
 			else
 				return "4";
 		}
-		elseif ((Settings::get("imap_statut") != '') and (@function_exists("imap_open")) and (@file_exists("include/config_imap.inc.php")))
-		{
+		elseif ((Settings::get("imap_statut") != '') and (@function_exists("imap_open")) and (@file_exists("include/config_imap.inc.php"))){
 			//  $login_search = ereg_replace("[^-@._[:space:][:alnum:]]", "", $_login);
 			$login_search = preg_replace("/[^\-@._[:space:]a-zA-Z0-9]/", "", $_login);
 			if ($login_search != $_login)
@@ -392,13 +391,15 @@ else
 			}
 			else
 				return "10";
-		} elseif($_login == "DEVOME99" && $motDePasseConfig != "" && $motDePasseConfig == md5($_password)){
+		} 
+        elseif ($_login == "DEVOME99" && $motDePasseConfig != "" && $motDePasseConfig == md5($_password)) {
 				$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site
 				from ".TABLE_PREFIX."_utilisateurs
 				where statut = 'administrateur'";
 				$res_user = grr_sql_query($sql);;
 				$row = grr_sql_row($res_user, 0);
-		} else
+		} 
+        else
 			return "2";
 	}
 	else

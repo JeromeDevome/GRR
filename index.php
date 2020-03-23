@@ -2,9 +2,9 @@
 /**
  * index.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-16 15:30$
+ * Dernière modification : $Date: 2020-03-22 15:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -164,11 +164,11 @@ if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statu
 else if ((Settings::get('sso_statut') == 'lemon_visiteur') || (Settings::get('sso_statut') == 'lemon_utilisateur'))
 {
 	if (isset($_GET['login']))
-		$login = $_GET['login'];
+		$login = clean_input($_GET['login']);
 	else
 		$login = "";
 	if (isset($_COOKIE['user']))
-		$cookie_user = $_COOKIE['user'];
+		$cookie_user = clean_input($_COOKIE['user']);
 	else
 		$cookie_user = "";
 	if (empty($cookie_user) || $cookie_user != $login)
@@ -412,12 +412,12 @@ else if ((Settings::get('sso_statut') == 'http_visiteur') || (Settings::get('sso
 	// Cas le plus courant :
 	if (isset($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_USER']))
 	{
-		$login = $_SERVER['PHP_AUTH_USER'];
+		$login = clean_input($_SERVER['PHP_AUTH_USER']);
 		// Pour les versions plus anciennes de PHP < 4.1.0 (en fait inutile ici car GRR exige PHP > 4.3.1
 	}
 	else if (isset($HTTP_SERVER_VARS['PHP_AUTH_USER']) && !empty($HTTP_SERVER_VARS['PHP_AUTH_USER']))
 	{
-		$login = $HTTP_SERVER_VARS['PHP_AUTH_USER'];
+		$login = clean_input($HTTP_SERVER_VARS['PHP_AUTH_USER']);
 		// L'utilisateur est authentifié mais $_SERVER['PHP_AUTH_USER'] est vide, on tente de récupérer le login dans $_SERVER['REMOTE_USER']
 	}
 	else if (isset($_SERVER['REMOTE_USER']) && !empty($_SERVER['REMOTE_USER']))
@@ -444,7 +444,7 @@ else if ((Settings::get('sso_statut') == 'http_visiteur') || (Settings::get('sso
 		else
 		{
 			// Cas normal
-			$login = $_SERVER['REMOTE_USER'];
+			$login = clean_input($_SERVER['REMOTE_USER']);
 		}
 		// Cas de PHP4 en mode CGI sur IIS
 	}

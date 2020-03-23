@@ -3,9 +3,9 @@
  * admin_right.php
  * Interface de gestion des droits de gestion des utilisateurs
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-29 15:30$
+ * Dernière modification : $Date: 2020-03-23 12:10$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -21,7 +21,7 @@ include "../include/admin.inc.php";
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 $id_area = isset($_POST["id_area"]) ? $_POST["id_area"] : (isset($_GET["id_area"]) ? $_GET["id_area"] : NULL);
 $room = isset($_POST["room"]) ? $_POST["room"] : (isset($_GET["room"]) ? $_GET["room"] : NULL);
 if (isset($room))

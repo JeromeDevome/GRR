@@ -3,9 +3,9 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-10-15 13:45$
+ * Dernière modification : $Date: 2020-03-22 14:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -49,7 +49,7 @@ unset($reg_statut_id);
 $reg_statut_id = isset($_GET["statut_id"]) ? htmlspecialchars($_GET["statut_id"]) : "";
 if (isset($_GET["id"]))
 {
-	$id = htmlspecialchars($_GET["id"]);
+	$id = clean_input($_GET["id"]);
 	settype($id, "integer");
 }
 else

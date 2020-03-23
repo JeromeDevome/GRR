@@ -3,9 +3,9 @@
  * view_rights_area.php
  * Liste des privilèges d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-18 19:00$
+ * Dernière modification : $Date: 2020-03-20 11:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -54,7 +54,7 @@ if (!$res)
 $row = grr_sql_row_keyed($res, 0);
 grr_sql_free($res);
 echo '<h3 style="text-align:center;">';
-echo get_vocab("match_area").get_vocab("deux_points")." ".htmlspecialchars($row["area_name"]);
+echo get_vocab("match_area").get_vocab("deux_points")." ".clean_input($row["area_name"]);
 $area_access = $row["access"];
 if ($area_access == 'r')
 	echo " (<span class=\"avertissement\">".get_vocab("access")."</span>)";

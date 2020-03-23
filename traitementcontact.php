@@ -3,7 +3,7 @@
  * traitementcontact.php
  * envoie l'email suite au formulaire
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-01-19 12:10$
+ * Dernière modification : $Date: 2020-03-22 14:40$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -89,8 +89,9 @@ $message = "ok?";
 	//die();
 //}
 
-foreach ($_POST as $index => $valeur)
-	$index = stripslashes(trim($valeur));
+foreach ($_POST as $index => &$valeur)
+	$valeur = clean_input($valeur);
+unset($value);
 // $mail_entete n'est plus utilisé, phpmailer s'en charge
 /* $mail_entete  = "MIME-Version: 1.0\r\n";
 $mail_entete .= "From: {$_POST['nom']} "

@@ -3,7 +3,7 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-01-28 11:15$
+ * Dernière modification : $Date: 2020-03-23 11:35$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -37,11 +37,14 @@ if (isset($_GET["user_login"]) && (authGetUserLevel(getUserName(),-1,'user') == 
 		exit();
 	}
 }
-
+$msg = '';
 unset($user_login);
 $user_login = isset($_GET["user_login"]) ? $_GET["user_login"] : NULL;
+$test_login = preg_replace("/([A-Za-z0-9_@. -])/","",$user_login);
+if ($test_login != ""){
+    $user_login = "";
+    $msg = 'login incorrect';} // le login passé en paramètre est non valide, on le vide et on modifie le message
 $valid = isset($_GET["valid"]) ? $_GET["valid"] : NULL;
-$msg = '';
 $user_nom = '';
 $user_prenom = '';
 $user_mail = '';
@@ -458,7 +461,7 @@ echo '<form action="admin_user_modify.php?display='.$display.'" method="get"><di
 	echo "<input type=\"hidden\" name=\"valid\" value=\"yes\" />\n";
 	if (isset($user_login))
 		echo "<input type=\"hidden\" name=\"user_login\" value=\"".$user_login."\" />\n";
-	echo "<br /><div class=\"center\"><input type=\"submit\" value=\"".get_vocab("save")."\" /></div>\n";
+	echo "<br /><div class=\"center\"><input class='btn btn-danger' type=\"submit\" value=\"".get_vocab("save")."\" /></div>\n";
 	echo "</div></form>\n";
 	if ((isset($user_login)) && ($user_login != ''))
 	{

@@ -3,9 +3,9 @@
  * admin_corresp_statut.php
  * interface de gestion de la correspondance entre profil LDAP et statut GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-09-02 18:00$
+ * Dernière modification : $Date: 2020-03-23 12:00$
  * @author    Laurent Delineau & JeromeB & Christian Daviau & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -21,7 +21,7 @@ include "../include/admin.inc.php";
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 if (Settings::get("sso_ac_corr_profil_statut") != 'y')
 {
 	showAccessDenied($back);

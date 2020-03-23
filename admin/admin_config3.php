@@ -3,9 +3,9 @@
  * admin_config3.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (interactivité)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-22 10:30$
+ * Dernière modification : $Date: 2020-03-22 14:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -134,7 +134,7 @@ if (isset($_GET['mail_test']) && !empty($_GET['mail_test']))
 {
 	require_once '../include/mail.class.php';
 	require_once '../phpmailer/PHPMailerAutoload.php';
-	Email::Envois($_GET['mail_test'], 'GRR, votre système de réservations', "Ceci est un test depuis l'administration de votre GRR.<br>Le mail est arrivé à destination.", Settings::get('grr_mail_from'), '', '');
+	Email::Envois(clean_input($_GET['mail_test']), 'GRR, votre système de réservations', "Ceci est un test depuis l'administration de votre GRR.<br>Le mail est arrivé à destination.", Settings::get('grr_mail_from'), '', '');
 }
 if (isset($_GET['ok']))
 {
