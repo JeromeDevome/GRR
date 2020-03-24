@@ -3,7 +3,7 @@
  * my_account.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-01-10 14:20$
+ * Dernière modification : $Date: 2020-03-24 10:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -95,9 +95,9 @@ if ($valid == 'yes')
 			$user_prenom = $row[3];
 		}
 	}
-	$reg_email = isset($_POST['reg_email']) ? $_POST['reg_email'] : $user_email;
-	$reg_nom = isset($_POST['reg_nom']) ? $_POST['reg_nom'] : $user_nom;
-	$reg_prenom = isset($_POST['reg_prenom']) ? $_POST['reg_prenom'] : $user_prenom;
+	$reg_email = isset($_POST['reg_email']) ? clean_input($_POST['reg_email']) : $user_email;
+	$reg_nom = isset($_POST['reg_nom']) ? clean_input($_POST['reg_nom']) : $user_nom;
+	$reg_prenom = isset($_POST['reg_prenom']) ? clean_input($_POST['reg_prenom']) : $user_prenom;
 	$champ_manquant = 'n';
 	if (trim($reg_nom) == '')
 		$champ_manquant = 'y';
@@ -143,12 +143,12 @@ if ($valid == 'yes')
 }
 if (($valid == 'yes') || ($valid=='reset'))
 {
-	$default_site = isset($_POST['id_site']) ? $_POST['id_site'] : NULL;
-	$default_area = isset($_POST['id_area']) ? $_POST['id_area'] : NULL;
-	$default_room = isset($_POST['id_room']) ? $_POST['id_room'] : NULL;
-	$default_style = isset($_POST['default_css']) ? $_POST['default_css'] : NULL;
-	$default_list_type = isset($_POST['area_item_format']) ? $_POST['area_item_format'] : NULL;
-	$default_language = isset($_POST['default_language']) ? $_POST['default_language'] : NULL;
+	$default_site = isset($_POST['id_site']) ? intval($_POST['id_site']) : NULL;
+	$default_area = isset($_POST['id_area']) ? intval($_POST['id_area']) : NULL;
+	$default_room = isset($_POST['id_room']) ? intval($_POST['id_room']) : NULL;
+	$default_style = isset($_POST['default_css']) ? clean_input($_POST['default_css']) : NULL;
+	$default_list_type = isset($_POST['area_item_format']) ? clean_input($_POST['area_item_format']) : NULL;
+	$default_language = isset($_POST['default_language']) ? clean_input($_POST['default_language']) : NULL;
 	$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs
 	SET default_site = '".protect_data_sql($default_site)."',
 	default_area = '".protect_data_sql($default_area)."',
@@ -576,7 +576,7 @@ echo ('
                             echo ' >'.encode_message_utf8($liste_name_language[$i]).'</option>'."\n";
                             $i++;
                         }
-                        echo '            </select>
+                        echo '</select>
                     </td>
                 </tr>
             </table>
@@ -607,7 +607,7 @@ echo ('
             </div>
         </form>
         </div>
-      </div>                        
+      </div>
     </section>
 </body>
 </html>';

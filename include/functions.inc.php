@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-02-20 16:30$
+ * Dernière modification : $Date: 2020-02-24 10:40$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -893,7 +893,7 @@ function begin_page($title, $page = "with_session")
 			$sheetcss = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
 		if (isset($_GET['default_language']))
 		{
-			$_SESSION['default_language'] = $_GET['default_language'];
+			$_SESSION['default_language'] = clean_input($_GET['default_language']);
 			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 				header("Location: ".$_SESSION['chemin_retour']);
 			else
@@ -909,7 +909,7 @@ function begin_page($title, $page = "with_session")
 			$sheetcss = 'themes/default/css';
 		if (isset($_GET['default_language']))
 		{
-			$_SESSION['default_language'] = $_GET['default_language'];
+			$_SESSION['default_language'] = clean_input($_GET['default_language']);
 			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 				header("Location: ".$_SESSION['chemin_retour']);
 			else
@@ -5188,7 +5188,7 @@ function pageHead2($title, $page = "with_session")
         }
 		if (isset($_GET['default_language']))
 		{
-			$_SESSION['default_language'] = $_GET['default_language'];
+			$_SESSION['default_language'] = clean_input($_GET['default_language']);
 			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 				header("Location: ".$_SESSION['chemin_retour']);
 			else
@@ -5204,7 +5204,7 @@ function pageHead2($title, $page = "with_session")
 			$sheetcss = 'themes/default/css';
 		if (isset($_GET['default_language']))
 		{
-			$_SESSION['default_language'] = $_GET['default_language'];
+			$_SESSION['default_language'] = clean_input($_GET['default_language']);
 			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 				header("Location: ".$_SESSION['chemin_retour']);
 			else

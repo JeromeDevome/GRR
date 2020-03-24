@@ -3,7 +3,7 @@
  * del_entry.php
  * Interface de suppression d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-22 14:10$
+ * Dernière modification : $Date: 2020-03-24 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -42,8 +42,10 @@ if (isset($_GET["id"]))
 	$id = clean_input($_GET["id"]);
 	settype($id,"integer");
 }
-else
+else{
+	header("Location: ./login.php");
 	die();
+}
 if ($info = mrbsGetEntryInfo($id))
 {
 	$day   = strftime("%d", $info["start_time"]);

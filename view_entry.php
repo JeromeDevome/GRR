@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-22 14:45$
+ * Dernière modification : $Date: 2020-03-24 10:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -241,7 +241,7 @@ if (($fin_session == 'n') && (getUserName()!='') && (authGetUserLevel(getUserNam
 			if ($_SESSION['session_message_error'] == "")
 			{
 				$_SESSION['displ_msg'] = "yes";
-				$_SESSION["msg_a_afficher"] = get_vocab("un email envoye")." ".$_GET["mail_exist"];
+				$_SESSION["msg_a_afficher"] = get_vocab("un email envoye")." ".clean_input($_GET["mail_exist"]);
 			}
 		}
 		header("Location: ".$_GET['back']."");
