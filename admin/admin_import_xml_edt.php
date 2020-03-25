@@ -3,9 +3,9 @@
  * admin_import_xml_edt.php
  * Importe un fichier de réservations au format xml issu du logiciel EDT Index Education
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-21 11:20$
+ * Dernière modification : $Date: 2020-03-25 11:30$
  * @author    JeromeB & Yan Naessens & Laurent Delineau
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -162,8 +162,12 @@ else { // les tests sont passés, on réserve
                  
                 // echo $room_id.', '.$jour_semaine.', '.$name.', '.$description.', '.$day.', '.$month.', '.$year.', '.$hour.', '.$minute.', '.$end_day.', '.$end_month.', '.$end_year.', '.$end_hour.', '.$end_minute.', '.$rep_end_day.', '.$rep_end_month.', '.$rep_end_year.', '.$rep_semaine;
                 echo '<br />';
-                        
-                if(!entre_reservation($room_id,$jour_semaine,$name,$description,$_POST['beg_day'],$_POST['beg_month'],$_POST['beg_year'],$hour,$minute,$_POST['beg_day'],$_POST['beg_month'],$_POST['beg_year'],$end_hour,$end_minute,$_POST['end_day'],$_POST['end_month'],$_POST['end_year'],$rep_semaine)){ 
+                $keys = ['beg_day','beg_month','beg_year','end_day','end_month','end_year'];
+                $data = array();
+                foreach ($keys as $key){
+                    $data[$key] = clean_input($_POST[$key]);
+                }
+                if(!entre_reservation($room_id,$jour_semaine,$name,$description,$data['beg_day'],$data['beg_month'],$data['beg_year'],$hour,$minute,$data['beg_day'],$data['beg_month'],$data['beg_year'],$end_hour,$end_minute,$data['end_day'],$data['end_month'],$data['end_year'],$rep_semaine)){ 
                     echo "Erreur dans la réservation numéro ".$i.": ".$erreur.'<br />' ;
                        // on affiche les réservations non faites en un format de type CSV pour faciliter un copier-coller
                        //echo $journumero[$row[0]]."; ".$row[1]."; ".$row[2]."h".$row[3]." -> ".$row[4]."h".$row[5]."; ".$row[6]."; ".$row[7];

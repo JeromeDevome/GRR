@@ -83,7 +83,7 @@ if ($info = mrbsGetEntryInfo($id))
 	$result = mrbsDelEntry(getUserName(), $id, $series, 1);
 	if ($result)
 	{
-        $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $info['room_id'];
+        $room_back = isset($_GET['room_back']) ? clean_input($_GET['room_back']) : $info['room_id'];
 		$_SESSION['displ_msg'] = 'yes';
         $ress = '';
         if ($room_back != 'all')  {$ress = "&room=".$room_back;}

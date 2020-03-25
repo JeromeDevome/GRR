@@ -2,7 +2,7 @@
 /**
  * moderate_entry_do.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-22 14:00$
+ * Dernière modification : $Date: 2020-03-25 10:00$
  * @author    Laurent Delineau & JeromeB
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -43,17 +43,18 @@ if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
 else
 	$type_session = "with_session";
 // On vérifie que l'utilisateur a bien le droit d'être ici
-$room_id = grr_sql_query1("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id='".$_POST['id']."'");
+$id_room = isset($_POST['id'])? intval($_POST['id']) : -1;
+$room_id = grr_sql_query1("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id='".$id_room."'");
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 if (authGetUserLevel(getUserName(), $room_id) < 3)
 {
 	showAccessDenied($back);
 	exit();
 }
 // j'ai besoin de $repeat_id '
-$sql = "SELECT repeat_id FROM ".TABLE_PREFIX."_entry WHERE id =".$_POST['id'];
+$sql = "SELECT repeat_id FROM ".TABLE_PREFIX."_entry WHERE id =".$id_room;
 $res = grr_sql_query($sql);
 if (! $res)
 	fatal_error(0, grr_sql_error());
@@ -75,13 +76,13 @@ if ($series == 0)
 {
 	//moderation de la ressource
 	if ($_POST['moderate'] == 1)
-		$sql = "UPDATE ".TABLE_PREFIX."_entry SET moderate = 2 WHERE id = ".$_POST['id'];
+		$sql = "UPDATE ".TABLE_PREFIX."_entry SET moderate = 2 WHERE id = ".$id_room;
 	else
-		$sql = "UPDATE ".TABLE_PREFIX."_entry SET moderate = 3 WHERE id = ".$_POST['id'];
+		$sql = "UPDATE ".TABLE_PREFIX."_entry SET moderate = 3 WHERE id = ".$id_room;
 	$res = grr_sql_query($sql);
 	if (!$res)
 		fatal_error(0, grr_sql_error());
-	if (!(grr_backup($_POST['id'],getUserName(),$_POST['description'])))
+	if (!(grr_backup($id_room,getUserName(),clean_input($_POST['description']))))
 		fatal_error(0, grr_sql_error());
 	$tab_id_moderes = array();
 }
@@ -113,7 +114,7 @@ else
 			$res = grr_sql_query($sql);
 			if (!$res)
 				fatal_error(0, grr_sql_error());
-			if (!(grr_backup($entry_tom,getUserName(),$_POST['description'])))
+			if (!(grr_backup($entry_tom,getUserName(),clean_input($_POST['description']))))
 				fatal_error(0, grr_sql_error());
 			// Backup : on enregistre les infos dans ".TABLE_PREFIX."_entry_moderate
 			// On constitue un tableau des réservations modérées
@@ -122,14 +123,14 @@ else
 	}
 }
 // Avant d'effacer la réservation, on procède à la notification par mail
-send_mail(clean_input($_POST['id']),6,$dformat,$tab_id_moderes);
+send_mail(clean_input($id_room),6,$dformat,$tab_id_moderes);
 //moderation de la ressource
 if ($_POST['moderate'] != 1)
 {
 	// on efface l'entrée de la base
 	if ($series == 0)
 	{
-		$sql = "DELETE FROM ".TABLE_PREFIX."_entry WHERE id = ".$_POST['id'];
+		$sql = "DELETE FROM ".TABLE_PREFIX."_entry WHERE id = ".$id_room;
 		$res = grr_sql_query($sql);
 		if (!$res)
 			fatal_error(0, grr_sql_error());
@@ -154,7 +155,8 @@ if ($_POST['moderate'] != 1)
 		$dupdate_repeat = grr_sql_query("UPDATE ".TABLE_PREFIX."_entry set repeat_id = '0' WHERE repeat_id='".$repeat_id."'");
 	}
 }
-$back = 'view_entry.php?id='.$_POST['id'].'&page='.$_POST['page'];
+$back_page = clean_input($_POST['page']);
+$back = 'view_entry.php?id='.$id_room.'&page='.$back_page;
 // recuperation
 header ('Location: '.$back);
 exit();

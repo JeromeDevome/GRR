@@ -3,7 +3,7 @@
  * contact.php
  * Formulaire d'envoi de mail
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-22 14:00$
+ * Dernière modification : $Date: 2020-03-25 09:40$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -47,22 +47,23 @@ header('Content-Type: text/html; charset=utf-8');
 echo begin_page(Settings::get("company"));
 echo "<div class=\"container\">";
 $cible = isset($_POST["cible"]) ? $_POST["cible"] : (isset($_GET["cible"]) ? $_GET["cible"] : '');
-$cible = htmlentities($cible);
+$cible = htmlentities($cible, ENT_QUOTES);
 $type_cible = isset($_POST["type_cible"]) ? $_POST["type_cible"] : (isset($_GET["type_cible"]) ? $_GET["type_cible"] : '');
 if ($type_cible != 'identifiant:non')
 	$type_cible = '';
 $action = isset($_POST["action"]) ? $_POST["action"] : '';
 $corps_message = isset($_POST["message"]) ? $_POST["message"] : '';
 $email_reponse = isset($_POST["email_reponse"]) ? clean_input($_POST["email_reponse"]) : '';
-$error_subject = 'n';
+if (!filter_var($email_reponse, FILTER_VALIDATE_EMAIL))
+    $email_reponse = '';
+$error_subject = FALSE;
 if (isset($_POST["objet_message"]))
 {
 	$objet_message = trim($_POST["objet_message"]);
-	if ($objet_message == '')
-		$error_subject = 'y';
+	$error_subject = ($objet_message == '');
 }
 $casier = isset($_POST["casier"]) ? $_POST["casier"] : '';
-if ($error_subject == 'y')
+if ($error_subject)
 	$action='';
 echo "<h1>".get_vocab("Envoi d_un courriel")."</h1>";
 switch ($action)

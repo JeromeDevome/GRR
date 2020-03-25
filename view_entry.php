@@ -80,7 +80,7 @@ if (isset($_GET["action_moderate"])){
             $year = date ('Y', $row1['0']);
             $month = date ('m', $row1['0']);
             $day = date ('d', $row1['0']);
-            $page = (isset($_GET['page']))? $_GET['page'] : "day";
+            $page = (isset($_GET['page']))? clean_input($_GET['page']) : "day";
             $back = $page.'.php?year='.$year.'&month='.$month.'&day='.$day;
             if (($page == "week_all") || ($page == "month_all") || ($page == "month_all2") || ($page == "day"))
                 $back .= "&area=".mrbsGetRoomArea($row1['1']);
@@ -244,7 +244,8 @@ if (($fin_session == 'n') && (getUserName()!='') && (authGetUserLevel(getUserNam
 				$_SESSION["msg_a_afficher"] = get_vocab("un email envoye")." ".clean_input($_GET["mail_exist"]);
 			}
 		}
-		header("Location: ".$_GET['back']."");
+        $back = clean_input($_GET['back']);
+		header("Location: ".$back."");
 		die();
 	}
 }
@@ -597,7 +598,7 @@ if (Settings::get("pdf") == '1'){
 echo "<form action=\"view_entry.php\" method=\"get\">\n";
 echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
 if (isset($_GET['page']))
-	echo "<input type=\"hidden\" name=\"page\" value=\"".$_GET['page']."\" />\n";
+	echo "<input type=\"hidden\" name=\"page\" value=\"".clean_input($_GET['page'])."\" />\n";
 if ((getUserName() != '') && (authGetUserLevel(getUserName(), $room_id) >= 3) && ($moderate == 1))
 {
     //echo "<form action=\"view_entry.php\" method=\"get\">\n";

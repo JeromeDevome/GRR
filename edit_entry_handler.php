@@ -67,10 +67,10 @@ if ($courrier == 'y')
 	$courrier = 1;
 else
 	$courrier = 0;
-$day = isset($_GET["start_day"]) ? $_GET["start_day"] : NULL;
-$month = isset($_GET["start_month"]) ? $_GET["start_month"] : NULL;
-$year = isset($_GET["start_year"]) ? $_GET["start_year"] : NULL;
-$duration = isset($_GET["duration"]) ? $_GET["duration"] : NULL;
+$day = isset($_GET["start_day"]) ? clean_input($_GET["start_day"]) : NULL;
+$month = isset($_GET["start_month"]) ? clean_input($_GET["start_month"]) : NULL;
+$year = isset($_GET["start_year"]) ? clean_input($_GET["start_year"]) : NULL;
+$duration = isset($_GET["duration"]) ? clean_input($_GET["duration"]) : NULL;
 $duration = str_replace(",", ".", "$duration ");
 
 if (isset($_GET["start_"])){
@@ -121,9 +121,9 @@ $benef_ext_email = isset($_GET["benef_ext_email"]) ? $_GET["benef_ext_email"] : 
 $beneficiaire_ext = concat_nom_email($benef_ext_nom, $benef_ext_email);
 $rep_id = isset($_GET["rep_id"]) ? $_GET["rep_id"] : NULL;
 $rep_day = isset($_GET["rep_day"]) ? $_GET["rep_day"] : NULL;
-$rep_end_day = isset($_GET["rep_end_day"]) ? $_GET["rep_end_day"] : NULL;
-$rep_end_month = isset($_GET["rep_end_month"]) ? $_GET["rep_end_month"] : NULL;
-$rep_end_year = isset($_GET["rep_end_year"]) ? $_GET["rep_end_year"] : NULL;
+$rep_end_day = isset($_GET["rep_end_day"]) ? clean_input($_GET["rep_end_day"]) : NULL;
+$rep_end_month = isset($_GET["rep_end_month"]) ? clean_input($_GET["rep_end_month"]) : NULL;
+$rep_end_year = isset($_GET["rep_end_year"]) ? clean_input($_GET["rep_end_year"]) : NULL;
 $room_back = isset($_GET["room_back"]) ? $_GET["room_back"] : NULL;
 $oldRessource = isset($_GET["oldRessource"]) ? clean_input($_GET["oldRessource"]) : NULL;
 if (isset($room_back) && ($room_back != 'all'))
@@ -228,11 +228,11 @@ if (check_begin_end_bookings($day, $month, $year))
 }
 if ($type_affichage_reser == 0)
 {
-	$period = isset($_GET["period"]) ? $_GET["period"] : NULL;
+	$period = isset($_GET["period"]) ? clean_input($_GET["period"]) : NULL;
 	if (isset($period))
 		settype($period,"integer");
-	$dur_units = isset($_GET["dur_units"]) ? $_GET["dur_units"] : NULL;
-	$all_day = isset($_GET["all_day"]) ? $_GET["all_day"] : NULL;
+	$dur_units = isset($_GET["dur_units"]) ? clean_input($_GET["dur_units"]) : NULL;
+	$all_day = isset($_GET["all_day"]) ? clean_input($_GET["all_day"]) : NULL;
 	if ($enable_periods == 'y')
 	{
 		$resolution = 60;
