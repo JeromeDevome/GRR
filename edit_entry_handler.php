@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Permet de vérifier la validité de l'édition ou de la création d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-22 14:20$
+ * Dernière modification : $Date: 2020-03-27 11:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -114,10 +114,10 @@ if (isset($rep_month_abs1))
 	settype($rep_month_abs1,"integer");
 if (isset($rep_month_abs2))
 	settype($rep_month_abs2,"integer");
-$create_by = isset($_GET["create_by"]) ? $_GET["create_by"] : NULL;
-$beneficiaire = isset($_GET["beneficiaire"]) ? $_GET["beneficiaire"] : "";
-$benef_ext_nom = isset($_GET["benef_ext_nom"]) ? $_GET["benef_ext_nom"] : "";
-$benef_ext_email = isset($_GET["benef_ext_email"]) ? $_GET["benef_ext_email"] : "";
+$create_by = isset($_GET["create_by"]) ? clean_input($_GET["create_by"]) : NULL;
+$beneficiaire = isset($_GET["beneficiaire"]) ? clean_input($_GET["beneficiaire"]) : "";
+$benef_ext_nom = isset($_GET["benef_ext_nom"]) ? clean_input($_GET["benef_ext_nom"]) : "";
+$benef_ext_email = isset($_GET["benef_ext_email"]) ? clean_input($_GET["benef_ext_email"]) : "";
 $beneficiaire_ext = concat_nom_email($benef_ext_nom, $benef_ext_email);
 $rep_id = isset($_GET["rep_id"]) ? $_GET["rep_id"] : NULL;
 $rep_day = isset($_GET["rep_day"]) ? $_GET["rep_day"] : NULL;
@@ -161,7 +161,7 @@ if (($beneficiaire) == "")
 }
 else
 	$beneficiaire_ext = "";
-if (!isset($_GET['rooms'][0]))
+if ((!isset($_GET['rooms'][0])||(intval($_GET['rooms'][0])==0))
 {
 	start_page_w_header();
 	echo "<h2>".get_vocab("choose_a_room")."</h2>";
@@ -174,7 +174,7 @@ $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars($_SERVER['HTTP_REFER
 // page de retour
 $ret_page = (isset($_GET['page_ret']))? $_GET['page_ret'] : $back;
 
-$area = mrbsGetRoomArea(clean_input($_GET['rooms'][0]));
+$area = mrbsGetRoomArea(intval($_GET['rooms'][0]));
 $overload_data = array();
 $overload_fields_list = mrbsOverloadGetFieldslist($area);
 foreach ($overload_fields_list as $overfield=>$fieldtype)
@@ -428,7 +428,7 @@ $error_qui_peut_reserver_pour = 'no';
 $error_heure_debut_fin = 'no';
 $rooms = array();
 foreach ($_GET['rooms'] as $room_id){
-    $rooms[] = clean_input($room_id);
+    $rooms[] = intval(clean_input($room_id));
 }
 foreach ( $rooms as $room_id )
 {

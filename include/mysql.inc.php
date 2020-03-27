@@ -2,9 +2,9 @@
 /**
  * mysql.inc.php
  * Bibliothèque de fonctions pour le support mysql
- * Dernière modification : $Date: 2018-04-11 10:00$
+ * Dernière modification : $Date: 2020-03-27 10:40$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -24,7 +24,7 @@ if (!$GLOBALS['db_c'] || !mysqli_select_db ($GLOBALS['db_c'], $dbDb))
 	echo "\n<p>Database connection failure</p>\n";
 	exit;
 }
-mysqli_query($GLOBALS['db_c'], "SET NAMES UTF8");
+@mysqli_query($GLOBALS['db_c'], "SET NAMES UTF8");
 /**
  * @param integer $row
  */
@@ -44,11 +44,11 @@ function grr_sql_free($r)
 }
 // Execute a non-SELECT SQL command (insert/update/delete).
 // Returns the number of tuples affected if OK (a number >= 0).
-// Returns -1 on error; use grr_sql_error to get the error message.
+// Returns -1 on error; use grr_sql_error to get the error message. ?? YN le 27/03/2020
 function grr_sql_command ($sql)
 {
 	mysqli_query($GLOBALS['db_c'], $sql) or die(mysqli_error($GLOBALS['db_c'])." Q=".$sql);
-		return mysqli_affected_rows($GLOBALS['db_c']);
+	return mysqli_affected_rows($GLOBALS['db_c']);
 }
 // Execute an SQL query which should return a single non-negative number value.
 // This is a lightweight alternative to grr_sql_query, good for use with count(*)

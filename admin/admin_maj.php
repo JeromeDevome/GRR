@@ -3,10 +3,10 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-07-02 18:30$
+ * Dernière modification : $Date: 2020-03-27 09:50$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -62,7 +62,7 @@ function traite_requete($requete = "")
 			break;
 			case "1062":
 			// Présence d'un doublon : création de la cléf impossible
-			$retour = "<span style=\"color:#FF0000;\">Erreur (<b>non critique</b>) sur la requête : <i>".$requete."</i> (".mysqli_errno($GLOBALS['db_c'])." : ".mysqli_error($GLOBALS['db_c']).")</span><br />\n";
+			$retour = "<span style=\"color:#FF0000;\">Erreur (<b>non critique</b>) sur la requête : <i>".$requete."</i> (".$erreur_no." : ".mysqli_error($GLOBALS['db_c']).")</span><br />\n";
 			break;
 			case "1068":
 			// Des clés existent déjà : pas de problème
@@ -73,7 +73,7 @@ function traite_requete($requete = "")
 			$retour = "";
 			break;
 			default:
-			$retour = "<span style=\"color:#FF0000;\">Erreur sur la requête : <i>".$requete."</i> (".mysqli_errno($GLOBALS['db_c'])." : ".mysqli_error($GLOBALS['db_c']).")</span><br />\n";
+			$retour = "<span style=\"color:#FF0000;\">Erreur sur la requête : <i>".$requete."</i> (".$erreur_no." : ".mysqli_error($GLOBALS['db_c']).")</span><br />\n";
 			break;
 		}
 	}

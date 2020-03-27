@@ -3,7 +3,7 @@
  * admin_overload.php
  * Interface de création/modification des champs additionnels.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-23 12:10$
+ * Dernière modification : $Date: 2020-03-27 18:40$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -95,10 +95,7 @@ if ($action == "add")
 else if ($action == "delete")
 {
 	$arearight = false ;
-	if (isset($_POST["id_overload"]))
-		$id_overload = $_POST["id_overload"];
-	else
-		$id_overload = "";
+	$id_overload = (isset($_POST["id_overload"]))? intval($_POST["id_overload"]) : NULL;
 	$sql = "SELECT id_area FROM ".TABLE_PREFIX."_overload WHERE id=$id_overload;";
 	$resquery = grr_sql_query($sql);
 	if (!$resquery)
@@ -123,11 +120,7 @@ else if ($action == "delete")
 else if ($action == "change")
 {
     $arearight = false ;
-    if (isset($_POST["id_overload"]))
-        $id_overload = $_POST["id_overload"];
-    else
-        $id_overload = "";
-    settype($id_overload,"integer");
+    $id_overload = (isset($_POST["id_overload"]))? intval($_POST["id_overload"]) : NULL;
     if (isset($_POST["fieldname"]))
         $fieldname = $_POST["fieldname"];
     else

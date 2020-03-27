@@ -2,9 +2,9 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2019-11-19 16:15$
+ * Dernière modification : $Date: 2020-03-27 10:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -600,18 +600,20 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
             return mrbsGetRepeatEntryList($time, $enddate, 7, $rep_opt, $max_ittr, $rep_num_weeks, $rep_jour_c, $area, $num_week, $num_jour);
 			//Si la périodicité est par Jours/Cycle
 			case 6:
+			$tableFinale = array();
 			$sql = "SELECT * FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY >= '".$time2."' AND DAY <= '".$enddate."' AND Jours = '".$rep_jour_c."'";
 			$result = mysqli_query($GLOBALS['db_c'], $sql);
-			$kk = 0;
-			$tableFinale = array();
-			while ($table = mysqli_fetch_array($result))
-			{
-				$day   = date("d", $table['DAY']);
-				$month = date("m", $table['DAY']);
-				$year  = date("Y", $table['DAY']);
-				$tableFinale[$kk] = mktime($hour, $min, $sec, $month, $day, $year);
-				$kk++;
-			}
+            if ($result){
+                $kk = 0;
+                while ($table = mysqli_fetch_array($result))
+                {
+                    $day   = date("d", $table['DAY']);
+                    $month = date("m", $table['DAY']);
+                    $year  = date("Y", $table['DAY']);
+                    $tableFinale[$kk] = mktime($hour, $min, $sec, $month, $day, $year);
+                    $kk++;
+                }
+            }
 			return $tableFinale;
             // X Y du mois
 			case 7:

@@ -3,7 +3,7 @@
  * admin_config1.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2020-03-25 10:50$
+ * Dernière modification : $Date: 2020-03-27 18:50$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -443,9 +443,9 @@ if (isset($_POST['ok'])) {
 }
 $demande_confirmation = 'no';
 if (isset($_POST['begin_day']) && isset($_POST['begin_month']) && isset($_POST['begin_year'])) {
-    $begin_day = clean_input($_POST['begin_day'];
-    $begin_month = clean_input($_POST['begin_month'];
-    $begin_year = clean_input($_POST['begin_year'];
+    $begin_day = clean_input($_POST['begin_day']);
+    $begin_month = clean_input($_POST['begin_month']);
+    $begin_year = clean_input($_POST['begin_year']);
     while (!checkdate($begin_month, $begin_day, $begin_year)) {
         $begin_day--;
     }
@@ -461,9 +461,9 @@ if (isset($_POST['begin_day']) && isset($_POST['begin_month']) && isset($_POST['
     }
 
     if (isset($_POST['end_day']) && isset($_POST['end_month']) && isset($_POST['end_year'])) {
-        $end_day = clean_input($_POST['end_day'];
-        $end_month = clean_input($_POST['end_month'];
-        $end_year = clean_input($_POST['end_year'];
+        $end_day = clean_input($_POST['end_day']);
+        $end_month = clean_input($_POST['end_month']);
+        $end_year = clean_input($_POST['end_year']);
         while (!checkdate($end_month, $end_day, $end_year)) {
             $end_day--;
         }

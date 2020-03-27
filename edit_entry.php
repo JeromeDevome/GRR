@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-03 23:15$
+ * Dernière modification : $Date: 2020-03-27 11:35$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -20,21 +20,11 @@ $grr_script_name = "edit_entry.php";
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 include "include/admin.inc.php";
-if (isset($_GET["id"]))
-{
-	$id = $_GET["id"];
-	settype($id,"integer");
-}
-else
-	$id = NULL;
-$period = isset($_GET["period"]) ? $_GET["period"] : NULL;
-if (isset($period))
-	settype($period,"integer");
+$id = (isset($_GET["id"]))? intval($_GET["id"]): NULL;
+$period = isset($_GET["period"]) ? intval($_GET["period"]) : NULL;
 if (isset($period))
 	$end_period = $period;
-$edit_type = isset($_GET["edit_type"]) ? $_GET["edit_type"] : NULL;
-if (!isset($edit_type))
-	$edit_type = "";
+$edit_type = isset($_GET["edit_type"]) ? $_GET["edit_type"] : "";
 $page = verif_page();
 if (isset($_GET["hour"]))
 {

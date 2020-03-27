@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-02-24 10:40$
+ * Dernière modification : $Date: 2020-02-27 10:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -921,7 +921,7 @@ function begin_page($title, $page = "with_session")
 	header('Content-Type: text/html; charset=utf-8');
 	if (!isset($_COOKIE['open']))
 	{
-		setcookie("open", "true", time()+3600);
+		setcookie("open", "true", time()+3600, "", "", false, true);
 	}
 	$a = '<!DOCTYPE html>'.PHP_EOL;
 	$a .= '<html lang="fr">'.PHP_EOL;
@@ -3709,7 +3709,7 @@ function MajMysqlModeDemo() {
 				$query = fgets($fd, 5000);
 				$query = trim($query);
 				if ($query != '')
-					mysqli_query($GLOBALS['db_c'], $query);
+					@mysqli_query($GLOBALS['db_c'], $query);
 			}
 			fclose($fd);
 			if (!Settings::set("date_verify_demo", $date_now))
@@ -4349,7 +4349,7 @@ function traite_grr_url($grr_script_name = "", $force_use_grr_url = "n")
 		return Settings::get("grr_url").$ad_signe.$grr_script_name;
 	}
 	else
-		return clean_input($_SERVER['PHP_SELF']);
+		return filter_var($_SERVER['PHP_SELF'], FILTER_SANITIZE_URL);
 }
 // Pour les Jours/Cycles
 //Crée le calendrier Jours/Cycles
@@ -5216,7 +5216,7 @@ function pageHead2($title, $page = "with_session")
 	header('Content-Type: text/html; charset=utf-8');
 	if (!isset($_COOKIE['open']))
 	{
-		setcookie("open", "true", time()+3600);
+		setcookie("open", "true", time()+3600, "", "", false, true);
 	}
     // code de la partie <head> 
 	$a  = '<head>'.PHP_EOL;

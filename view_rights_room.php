@@ -39,9 +39,7 @@ if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
 	$type_session = "no_session";
 else
 	$type_session = "with_session";
-$id_room = isset($_GET["id_room"]) ? $_GET["id_room"] : NULL;
-if (isset($id_room))
-	settype($id_room,"integer");
+$id_room = isset($_GET["id_room"]) ? intval($_GET["id_room"]) : NULL;
 if ((authGetUserLevel(getUserName(),$id_room) < 4) || (!verif_acces_ressource(getUserName(), $id_room)))
 {
 	showAccessDenied('');

@@ -3,7 +3,7 @@
  * install_mysql.php
  * Interface d'installation de GRR pour un environnement mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-19 11:20$
+ * Dernière modification : $Date: 2020-03-27 10:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -138,90 +138,95 @@ if ($etape == 4)
 	begin_html();
 	echo "<br /><h2>Quatrième étape : Création des tables de la base</h2>";
 	$db = mysqli_connect("$adresse_db", "$login_db", "$pass_db", "", "$port_db");
-	if ($choix_db == "new_grr")
-	{
-		$sel_db = $table_new;
-		$result = mysqli_query($db, "CREATE DATABASE $sel_db;");
-	}
-	else
-	{
-		$sel_db = $choix_db;
-	}
-	if (mysqli_select_db($db, "$sel_db"))
-	{
-		$fd = fopen("tables.my.sql", "r");
-		$result_ok = 'yes';
-		while (!feof($fd))
-		{
-			$query = fgets($fd, 5000);
-			$query = trim($query);
-			$query = preg_replace("/DROP TABLE IF EXISTS grr/","DROP TABLE IF EXISTS ".$table_prefix,$query);
-			$query = preg_replace("/CREATE TABLE grr/","CREATE TABLE ".$table_prefix,$query);
-			$query = preg_replace("/INSERT INTO grr/","INSERT INTO ".$table_prefix,$query);
+    if (!$db){ 
+        echo "Erreur de connexion à la base de données\n Reprenez à l'étape précédente";
+    }
+    else {
+        if ($choix_db == "new_grr")
+        {
+            $sel_db = $table_new;
+            $result = mysqli_query($db, "CREATE DATABASE $sel_db;");
+        }
+        else
+        {
+            $sel_db = $choix_db;
+        }
+        if (mysqli_select_db($db, "$sel_db"))
+        {
+            $fd = fopen("tables.my.sql", "r");
+            $result_ok = 'yes';
+            while (!feof($fd))
+            {
+                $query = fgets($fd, 5000);
+                $query = trim($query);
+                $query = preg_replace("/DROP TABLE IF EXISTS grr/","DROP TABLE IF EXISTS ".$table_prefix,$query);
+                $query = preg_replace("/CREATE TABLE grr/","CREATE TABLE ".$table_prefix,$query);
+                $query = preg_replace("/INSERT INTO grr/","INSERT INTO ".$table_prefix,$query);
 
-			if ($query != '')
-			{
-				$reg = mysqli_query($db, $query);
-				if (!$reg)
-				{
-					echo "<br /><font color=\"red\">ERROR</font> : '$query'";
-					$result_ok = 'no';
-				}
-			}
-		}
-		fclose($fd);
-		if ($result_ok == 'yes')
-		{
-			$ok = 'yes';
-			if (@file_exists($nom_fic))
-				unlink($nom_fic);
-			$f = @fopen($nom_fic, "wb");
-			if (!$f)
-			{
-				$ok = 'no';
-			}
-			else
-			{
-				$conn = "<"."?php\n";
-				$conn .= "# Les quatre lignes suivantes sont à modifier selon votre configuration\n";
-				$conn .= "# ligne suivante : le nom du serveur qui herberge votre base sql.\n";
-				$conn .= "# Si c'est le même que celui qui heberge les scripts, mettre \"localhost\"\n";
-				$conn .= "\$dbHost=\"$adresse_db\";\n";
-				$conn .= "# ligne suivante : le nom de votre base sql\n";
-				$conn .= "\$dbDb=\"$sel_db\";\n";
-				$conn .= "# ligne suivante : le nom de l'utilisateur sql qui a les droits sur la base\n";
-				$conn .= "\$dbUser=\"$login_db\";\n";
-				$conn .= "# ligne suivante : le mot de passe de l'utilisateur sql ci-dessus\n";
-				$conn .= "\$dbPass=\"$pass_db\";\n";
-				$conn .= "# ligne suivante : préfixe du nom des tables de données\n";
-				$conn .= "\$table_prefix=\"$table_prefix\";\n";
-				$conn .= "# ligne suivante : Port MySQL laissé par défaut\n";
-				$conn .= "\$dbPort=\"$port_db\";\n";
-                $conn .= "# ligne suivante : adaptation EnvOLE\n";
-                $conn .= "\$apikey=\"mypassphrase\"\n";
-				$conn .= "?".">";
-				@fputs($f, $conn);
-				if (!@fclose($f))
-					$ok = 'no';
-			}
-			if ($ok == 'yes')
-			{
-				echo "<b>La structure de votre base de données est installée.</b><br />Vous pouvez passer à l'étape suivante.";
-				echo "<form action='install_mysql.php' method='get'>";
-				echo "<input type='hidden' name='etape' value='5' />";
-				echo "<div style=\"text-align:right;\"><input type='submit' class='fondl' name='Valider' value='Suivant &gt;&gt;' /><div>";
-				echo "</form>";
-			}
-		}
-		if (($result_ok != 'yes') || ($ok != 'yes'))
-		{
-			echo "<p><b>L'opération a échoué.</b> Retournez à la page précédente, sélectionnez une autre base ou créez-en une nouvelle. Vérifiez les informations fournies par votre hébergeur.</p>";
-		}
-	}
-	else
-	{
-		echo "<p><b>Impossible de sélectionner la base. GRR n'a peut-être pas pu créer la base.</b></p>";
-	}
+                if ($query != '')
+                {
+                    $reg = mysqli_query($db, $query);
+                    if (!$reg)
+                    {
+                        echo "<br /><font color=\"red\">ERROR</font> : '$query'";
+                        $result_ok = 'no';
+                    }
+                }
+            }
+            fclose($fd);
+            if ($result_ok == 'yes')
+            {
+                $ok = 'yes';
+                if (@file_exists($nom_fic))
+                    unlink($nom_fic);
+                $f = @fopen($nom_fic, "wb");
+                if (!$f)
+                {
+                    $ok = 'no';
+                }
+                else
+                {
+                    $conn = "<"."?php\n";
+                    $conn .= "# Les quatre lignes suivantes sont à modifier selon votre configuration\n";
+                    $conn .= "# ligne suivante : le nom du serveur qui herberge votre base sql.\n";
+                    $conn .= "# Si c'est le même que celui qui heberge les scripts, mettre \"localhost\"\n";
+                    $conn .= "\$dbHost=\"$adresse_db\";\n";
+                    $conn .= "# ligne suivante : le nom de votre base sql\n";
+                    $conn .= "\$dbDb=\"$sel_db\";\n";
+                    $conn .= "# ligne suivante : le nom de l'utilisateur sql qui a les droits sur la base\n";
+                    $conn .= "\$dbUser=\"$login_db\";\n";
+                    $conn .= "# ligne suivante : le mot de passe de l'utilisateur sql ci-dessus\n";
+                    $conn .= "\$dbPass=\"$pass_db\";\n";
+                    $conn .= "# ligne suivante : préfixe du nom des tables de données\n";
+                    $conn .= "\$table_prefix=\"$table_prefix\";\n";
+                    $conn .= "# ligne suivante : Port MySQL laissé par défaut\n";
+                    $conn .= "\$dbPort=\"$port_db\";\n";
+                    $conn .= "# ligne suivante : adaptation EnvOLE\n";
+                    $conn .= "\$apikey=\"mypassphrase\"\n";
+                    $conn .= "?".">";
+                    @fputs($f, $conn);
+                    if (!@fclose($f))
+                        $ok = 'no';
+                }
+                if ($ok == 'yes')
+                {
+                    echo "<b>La structure de votre base de données est installée.</b><br />Vous pouvez passer à l'étape suivante.";
+                    echo "<form action='install_mysql.php' method='get'>";
+                    echo "<input type='hidden' name='etape' value='5' />";
+                    echo "<div style=\"text-align:right;\"><input type='submit' class='fondl' name='Valider' value='Suivant &gt;&gt;' /><div>";
+                    echo "</form>";
+                }
+            }
+            if (($result_ok != 'yes') || ($ok != 'yes'))
+            {
+                echo "<p><b>L'opération a échoué.</b> Retournez à la page précédente, sélectionnez une autre base ou créez-en une nouvelle. Vérifiez les informations fournies par votre hébergeur.</p>";
+            }
+        }
+        else
+        {
+            echo "<p><b>Impossible de sélectionner la base. GRR n'a peut-être pas pu créer la base.</b></p>";
+        }
+    }
 	end_html();
 }
 else if ($etape == 3)

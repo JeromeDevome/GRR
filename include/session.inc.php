@@ -3,7 +3,7 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-22 15:20$
+ * Dernière modification : $Date: 2020-03-26 12:20$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -126,6 +126,8 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 					//  On détecte si Nom, Prénom ou Email ont changé,
 					// Si c'est le cas, on met à jour les champs
 					$req = grr_sql_query("SELECT nom, prenom, email from ".TABLE_PREFIX."_utilisateurs where login ='".protect_data_sql($_login)."'");
+                    if (!$req)
+                        fatal_error(0, "erreur de lecture dans la base de données".grr_sql_error());
 					$res = mysqli_fetch_array($req);
 					$nom_en_base = $res[0];
 					$prenom_en_base = $res[1];
@@ -909,7 +911,7 @@ function grr_closeSession(&$_auto)
 	$_SESSION = array();
 		// Détruit le cookie sur le navigateur
 	$CookieInfo = session_get_cookie_params();
-	@setcookie(session_name(), '', time()-3600, $CookieInfo['path']);
+	@setcookie(session_name(), '', 1, $CookieInfo['path']);
 		// On détruit la session
 	session_destroy();
 }

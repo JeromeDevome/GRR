@@ -3,7 +3,7 @@
  * admin_type_modify.php
  * interface de création/modification des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-20 11:05$
+ * Dernière modification : $Date: 2020-03-26 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -194,6 +194,7 @@ if ((isset($id_type)) && ($id_type > 0))
 }
 else
 {
+    $row = array();
     $row["id"] = '0';
     $row["type_name"] = '';
     $row["type_letter"] = '';

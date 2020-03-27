@@ -3,7 +3,7 @@
  * admin_save_mysql.php
  * Script de sauvegarde de la base de donnée mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-23 12:15$
+ * Dernière modification : $Date: 2020-03-27 10:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -141,9 +141,13 @@ while ($j < count($liste_tables))
 		// requete de creation de la table
 		$query = "SHOW CREATE TABLE $temp";
 		$resCreate = mysqli_query($GLOBALS['db_c'], $query);
-		$row = mysqli_fetch_array($resCreate);
-		$schema = $row[1].";";
-		$fd.="$schema\n";
+        if (!$resCreate)
+            $fd.="Problème à la création de $temp !\n";
+		else {
+            $row = mysqli_fetch_array($resCreate);
+            $schema = $row[1].";";
+            $fd.="$schema\n";
+        }
 	}
 	//On ne sauvegarde pas les données de la table ".TABLE_PREFIX."_log
 	if ($donnees && $temp!="".TABLE_PREFIX."_log")

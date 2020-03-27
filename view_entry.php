@@ -244,7 +244,7 @@ if (($fin_session == 'n') && (getUserName()!='') && (authGetUserLevel(getUserNam
 				$_SESSION["msg_a_afficher"] = get_vocab("un email envoye")." ".clean_input($_GET["mail_exist"]);
 			}
 		}
-        $back = clean_input($_GET['back']);
+        $back = filter_var($_GET['back'], FILTER_SANITIZE_URL);
 		header("Location: ".$back."");
 		die();
 	}
