@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-27 11:35$
+ * Dernière modification : $Date: 2020-03-28 09:35$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -16,9 +16,9 @@
  * (at your option) any later version.
  */
 $grr_script_name = "edit_entry.php"; 
-
+/* à décommenter si besoin de débogage
 ini_set('display_errors', 'On');
-error_reporting(E_ALL);
+error_reporting(E_ALL); */
 include "include/admin.inc.php";
 $id = (isset($_GET["id"]))? intval($_GET["id"]): NULL;
 $period = isset($_GET["period"]) ? intval($_GET["period"]) : NULL;
@@ -514,7 +514,7 @@ function Load_entry (){
     ?>
 }
 function Save_entry (){
-    setCookie('Grr_entry',getFormString(document.forms["main"],true));
+    setCookie('Grr_entry',getFormString(document.forms["main"],true),10000,"","",1,1);
 }
 function validate_and_submit (){
     var err;
@@ -737,7 +737,7 @@ echo '<div class="col-sm-6 col-xs-12">';
 
 echo '<table>'.PHP_EOL;
 // bloc choix du bénéficiaire
-echo '<div id="div_beneficiaire"></div>';
+echo '<tr><td><div id="div_beneficiaire"></div></td></tr>';
 
 echo '<tr><td class="E">'.PHP_EOL;
 echo '<b>'.$B.'</b>'.PHP_EOL;

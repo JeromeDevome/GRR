@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-02-27 10:30$
+ * Dernière modification : $Date: 2020-02-28 10:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -504,7 +504,7 @@ function bbCode($t,$type)
 		if (preg_match($regLienSimple, $t))
 			$t = preg_replace($regLienSimple, "<a href=\"\\1\">\\1</a>", $t);
 		else
-			$t = preg_replace($regLienEtendu, "<a href=\"\\1\" target=\"_blank\">\\2</a>", $t);
+			$t = preg_replace($regLienEtendu, "<a href=\"\\1\" target=\"_blank\" rel=\"noopener noreferer\" >\\2</a>", $t);
 	}
 	$regMailSimple = "`\[email\] ?([^\[]*) ?\[/email\]\`";
 	$regMailEtendu = "`\[email ?=([^\[]*) ?] ?([^]]*) ?\[/email\]`";

@@ -2,7 +2,7 @@
 /**
  * index.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-22 15:00$
+ * Dernière modification : $Date: 2020-03-28 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -14,8 +14,10 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "index.php";
+/* à décommenter si besoin de débogage 
 if (!@file_exists("/var/www/lcs/includes/headerauth.inc.php"))
-	error_reporting (E_ALL);
+	error_reporting (E_ALL);*/
 require_once("include/config.inc.php");
 if (file_exists("include/connect.inc.php"))
 	include "include/connect.inc.php";

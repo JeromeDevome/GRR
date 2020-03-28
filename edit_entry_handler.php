@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Permet de vérifier la validité de l'édition ou de la création d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-27 11:30$
+ * Dernière modification : $Date: 2020-03-28 11:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -161,7 +161,7 @@ if (($beneficiaire) == "")
 }
 else
 	$beneficiaire_ext = "";
-if ((!isset($_GET['rooms'][0])||(intval($_GET['rooms'][0])==0))
+if ((!isset($_GET['rooms'][0])||(intval($_GET['rooms'][0])==0)))
 {
 	start_page_w_header();
 	echo "<h2>".get_vocab("choose_a_room")."</h2>";
@@ -280,7 +280,7 @@ if ($type_affichage_reser == 0)
 				$hour += 12;
 		}
 		$starttime = mktime($hour, $minute, 0, $month, $day, $year);
-		$endtime   = mktime($hour, $minute, 0, $month, $day, $year) + intval($units) * intval($duration);
+		$endtime   = mktime($hour, $minute, 0, $month, $day, $year) + intval($units) * floatval($duration);
 		if ($endtime <= $starttime)
 			$erreur = 'y';
 		$diff = $endtime - $starttime;

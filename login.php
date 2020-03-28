@@ -3,7 +3,7 @@
  * login.php
  * interface de connexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-02 18:00$
+ * Dernière modification : $Date: 2020-03-28 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -204,7 +204,7 @@ if (Settings::get("webmaster_email") != "")
     if ($lien != "")
         echo "<p>[".$lien."]</p>";
 }
-echo "<p>[<a href='page.php?page=CGU' target='_blank'>".get_vocab("cgu")."</a>]</p>";
+echo "<p>[<a href='page.php?page=CGU' target='_blank' rel='noopener noreferer'>".get_vocab("cgu")."</a>]</p>";
 echo "<a href=\"javascript:history.back()\">".get_vocab("previous")." - <b>".Settings::get("company")."</b></a>";
 echo "<br /><br />";
 echo "<br /><p class=\"small\"><a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a> - ".get_vocab("grr_version").affiche_version();
