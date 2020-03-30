@@ -3,9 +3,9 @@
  * admin_purge_accounts.php
  * interface de purge des comptes et réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-29 16:00$
+ * Dernière modification : $Date: 2020-03-23 12:10$
  * @author    JeromeB & Laurent Delineau & Christian Daviau & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -21,7 +21,7 @@ include "../include/admin.inc.php";
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 $display = isset($_GET["display"]) ? $_GET["display"] : NULL;
 $order_by = isset($_GET["order_by"]) ? $_GET["order_by"] : NULL;
 $msg = '';

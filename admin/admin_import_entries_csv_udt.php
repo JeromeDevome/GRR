@@ -3,9 +3,9 @@
  * admin_import_entries_csv_udt.php
  * Importe un fichier de réservations au format csv 
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-31 15:00$
+ * Dernière modification : $Date: 2020-03-25 11:20$
  * @author    JeromeB & Yan Naessens & Denis Monasse & Laurent Delineau
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -21,7 +21,7 @@ include "../include/admin.inc.php";
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 $_SESSION['chemin_retour'] = "admin_config.php";
 
 if (!Settings::load()) {
@@ -41,6 +41,10 @@ echo "<h2>Importation d'un fichier CSV issu de UnDeuxTemps dans GRR</h2><hr />";
 // $long_max : doit être plus grand que la plus grande ligne trouvée dans le fichier CSV
 $long_max = 8000;
  if(isset($_POST['import'])) {
+     $data = array();
+    foreach ($_POST as $key => $value){
+        $data[$key] = clean_input($_POST[$key]);
+    }
      echo '<br />';
      echo 'les paramètres sont définis';
     // on commence par charger le fichier CSV dans une table provisoire grr_csv pour profiter des tris MySQL
@@ -164,7 +168,7 @@ $long_max = 8000;
             }
             $room_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_room WHERE room_name='".$salle."'");
             // echo $i." ";
-            if(!entre_reservation($room_id,$jour,$lesclasses." - ".$matiere,$professeur,$_POST['beg_day'],$_POST['beg_month'],$_POST['beg_year'],$heure_deb,$minute_deb,$_POST['beg_day'],$_POST['beg_month'],$_POST['beg_year'],$heure_fin,$minute_fin,$_POST['end_day'],$_POST['end_month'],$_POST['end_year'],0))
+            if(!entre_reservation($room_id,$jour,$lesclasses." - ".$matiere,$professeur,$data['beg_day'],$data['beg_month'],$data['beg_year'],$heure_deb,$minute_deb,$data['beg_day'],$data['beg_month'],$data['beg_year'],$heure_fin,$minute_fin,$data['end_day'],$data['end_month'],$data['end_year'],0))
                   { echo "Erreur dans la réservation ($erreur): "; //  numéro ".$n.": ".$erreur.":";
                    // on affiche les réservations non faites en un format de type CSV pour faciliter un copier-coller
                    echo $journumero[$row[0]]."; ".$row[1]."; ".$row[2]."h".$row[3]." -> ".$row[4]."h".$row[5]."; ".$row[6]."; ".$row[7];
@@ -546,5 +550,4 @@ function entre_reservation($room_id,$jour_semaine,$name,$description,
 		return true;
 		// Retour au calendrier
 }
-
 ?>

@@ -3,9 +3,9 @@
  * pdfgenerator.php
  * Générer les PDF
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-05-25 17:50$
+ * Dernière modification : $Date: 2020-03-29 11:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -15,6 +15,9 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+
+$grr_script_name = "pdfgenerator.php";
+
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
@@ -22,7 +25,6 @@ include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
 include "include/mincals.inc.php";
 include "include/mrbs_sql.inc.php";
-$grr_script_name = "pdfgenerator.php";
 require_once("./include/settings.class.php");
 if (!Settings::load())
 	die("Erreur chargement settings");
@@ -53,11 +55,10 @@ if ("POST" == $_SERVER['REQUEST_METHOD'])
 	$jourPeriode = $_POST['jourPeriode'];
 	$cle = $_POST['cle'];
 	
-	if ($period == 0){
-		include 'pdf/pdf_ResUnique.php';
-	}else{
-		include 'pdf/pdf_ResPeriode_Sem.php';
-	}
+	if ($period == 0)
+        {include 'pdf/pdf_ResUnique.php';}
+    else
+        {include 'pdf/pdf_ResPeriode_Sem.php';}
 	include 'pdf/printPDF.php';
 }
 else

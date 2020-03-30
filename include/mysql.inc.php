@@ -2,7 +2,7 @@
 /**
  * mysql.inc.php
  * Bibliothèque de fonctions pour le support mysql
- * Dernière modification : $Date: 2020-03-01 17:10$
+ * Dernière modification : $Date: 2020-03-27 10:40$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -24,7 +24,7 @@ if (!$GLOBALS['db_c'] || !mysqli_select_db ($GLOBALS['db_c'], $dbDb))
 	echo "\n<p>Database connection failure</p>\n";
 	exit;
 }
-mysqli_query($GLOBALS['db_c'], "SET NAMES UTF8");
+@mysqli_query($GLOBALS['db_c'], "SET NAMES UTF8");
 /**
  * @param integer $row
  */

@@ -2,9 +2,9 @@
 /**
  * misc.inc.php
  * fichier de variables diverses
- * Dernière modification : $Date: 2020-03-01 13:45$
+ * Dernière modification : $Date: 2020-03-30 11:25$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -139,7 +139,7 @@ $eveningends   = 19;
 # eveningends_minutes=45; et resolution=900.
 $eveningends_minutes = 0;
 
-# Début de la semaine: 0 pour dimanche, 1 pou lundi, etc.
+# Début de la semaine: 0 pour dimanche, 1 pour lundi, etc.
 $weekstarts = 1;
 
 # Format d'affichage du temps : valeur 0 pour un affichage « 12 heures » et valeur 1 pour un affichage  « 24 heures ».

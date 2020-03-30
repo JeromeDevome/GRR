@@ -3,7 +3,7 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-02-28 16:00$
+ * Dernière modification : $Date: 2020-03-23 11:35$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -21,25 +21,29 @@ include "../include/admin.inc.php";
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-    $back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
 if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
 {
-    showAccessDenied($back);
-    exit();
+	showAccessDenied($back);
+	exit();
 }
 // un gestionnaire d'utilisateurs ne peut pas modifier un administrateur général ou un gestionnaire d'utilisateurs
 if (isset($_GET["user_login"]) && (authGetUserLevel(getUserName(),-1,'user') ==  1))
 {
-    $test_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".$_GET["user_login"]."'");
-    if (($test_statut == "administrateur") or ($test_statut == "gestionnaire_utilisateur"))
-    {
-        showAccessDenied($back);
-        exit();
-    }
+	$test_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".$_GET["user_login"]."'");
+	if (($test_statut == "administrateur") or ($test_statut == "gestionnaire_utilisateur"))
+	{
+		showAccessDenied($back);
+		exit();
+	}
 }
-
+$msg = '';
 unset($user_login);
 $user_login = isset($_GET["user_login"]) ? $_GET["user_login"] : NULL;
+$test_login = preg_replace("/([A-Za-z0-9_@. -])/","",$user_login);
+if ($test_login != ""){
+    $user_login = "";
+    $msg = 'login incorrect';} // le login passé en paramètre est non valide, on le vide et on modifie le message
 $valid = isset($_GET["valid"]) ? $_GET["valid"] : NULL;
 $msg = '';
 $utilisateur = array();

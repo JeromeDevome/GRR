@@ -3,9 +3,9 @@
  * view_rights_room.php
  * Liste des privilèges d'une ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-18 22:00$
+ * Dernière modification : $Date: 2020-03-20 14:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -39,9 +39,7 @@ if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
 	$type_session = "no_session";
 else
 	$type_session = "with_session";
-$id_room = isset($_GET["id_room"]) ? $_GET["id_room"] : NULL;
-if (isset($id_room))
-	settype($id_room,"integer");
+$id_room = isset($_GET["id_room"]) ? intval($_GET["id_room"]) : NULL;
 if ((authGetUserLevel(getUserName(),$id_room) < 4) || (!verif_acces_ressource(getUserName(), $id_room)))
 {
 	showAccessDenied('');
@@ -54,7 +52,7 @@ if (!$res)
 $row = grr_sql_row_keyed($res, 0);
 grr_sql_free($res);
 echo '<h3 class="center">';
-echo get_vocab("room").get_vocab("deux_points")." ".htmlspecialchars($row["room_name"]);
+echo get_vocab("room").get_vocab("deux_points")." ".clean_input($row["room_name"]);
 $id_area = mrbsGetRoomArea($id_room);
 $area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id='".$id_area."'");
 $area_access = grr_sql_query1("SELECT access FROM ".TABLE_PREFIX."_area WHERE id='".$id_area."'");

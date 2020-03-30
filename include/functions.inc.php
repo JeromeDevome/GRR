@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-03-18 15:50$
+ * Dernière modification : $Date: 2020-03-30 12:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -104,7 +104,7 @@ function cal($month, $year, $type)
 			$temp = mktime(0, 0, 0, $month, $d, $year);
 			if ($i == 0)
 				$s .= '<td class="calendar2" style="vertical-align:bottom;"><b>S'.getWeekNumber($temp).'</b></td>'.PHP_EOL;
-			$s .= '<td class="calendar2" align="center" valign="top">'.PHP_EOL;
+			$s .= '<td class="calendar2" valign="top">'.PHP_EOL;
 			if ($is_ligne1 == 'y')
 				$s .=  '<b>'.ucfirst(substr($nameday,0,1)).'</b><br />';
 			if ($d > 0 && $d <= $daysInMonth)
@@ -248,6 +248,7 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 				$affichage = "";
 		}
 		else
+			//$affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.$_identite.'</a>'.PHP_EOL;
             $affichage = '<a href="javascript:centrerpopup(\'contact.php?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.$_identite.'</a>'.PHP_EOL;
 	}
 	else
@@ -424,7 +425,7 @@ function bbCode($t,$type)
 		if (preg_match($regLienSimple, $t))
 			$t = preg_replace($regLienSimple, "<a href=\"\\1\">\\1</a>", $t);
 		else
-			$t = preg_replace($regLienEtendu, "<a href=\"\\1\" target=\"_blank\">\\2</a>", $t);
+			$t = preg_replace($regLienEtendu, "<a href=\"\\1\" target=\"_blank\" rel=\"noopener noreferer\" >\\2</a>", $t);
 	}
 	$regMailSimple = "`\[email\] ?([^\[]*) ?\[/email\]\`";
 	$regMailEtendu = "`\[email ?=([^\[]*) ?] ?([^]]*) ?\[/email\]`";
@@ -797,9 +798,9 @@ function page_accueil($param = 'no')
 	else
 		$page_accueil = 'week.php?area='.$defaultarea.'&amp;room='.$defaultroom;
 	if ((Settings::get("module_multisite") == "Oui") && ($defaultsite > 0))
-		$page_accueil .= '&id_site='.$defaultsite;
+		$page_accueil .= '&amp;id_site='.$defaultsite;
 	if ($param == 'yes')
-		$page_accueil .= '&';
+		$page_accueil .= '&amp;';
 	return $page_accueil ;
 }
 
@@ -814,7 +815,7 @@ function begin_page($title, $page = "with_session")
 			$sheetcss = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
 		if (isset($_GET['default_language']))
 		{
-			$_SESSION['default_language'] = $_GET['default_language'];
+			$_SESSION['default_language'] = clean_input($_GET['default_language']);
 			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 				header("Location: ".$_SESSION['chemin_retour']);
 			else
@@ -830,7 +831,7 @@ function begin_page($title, $page = "with_session")
 			$sheetcss = 'themes/default/css';
 		if (isset($_GET['default_language']))
 		{
-			$_SESSION['default_language'] = $_GET['default_language'];
+			$_SESSION['default_language'] = clean_input($_GET['default_language']);
 			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 				header("Location: ".$_SESSION['chemin_retour']);
 			else
@@ -842,7 +843,7 @@ function begin_page($title, $page = "with_session")
 	header('Content-Type: text/html; charset=utf-8');
 	if (!isset($_COOKIE['open']))
 	{
-		setcookie("open", "true", time()+3600);
+		setcookie("open", "true", time()+3600, "", "", false, true);
 	}
 	$a = '<!DOCTYPE html>'.PHP_EOL;
 	$a .= '<html lang="fr">'.PHP_EOL;
@@ -3690,7 +3691,7 @@ function MajMysqlModeDemo() {
 				$query = fgets($fd, 5000);
 				$query = trim($query);
 				if ($query != '')
-					mysqli_query($GLOBALS['db_c'], $query);
+					@mysqli_query($GLOBALS['db_c'], $query);
 			}
 			fclose($fd);
 			if (!Settings::set("date_verify_demo", $date_now))
@@ -3841,7 +3842,46 @@ function describe_span($starts, $ends, $dformat)
 	toTimeString($duration, $dur_units);
 	return array($start_date, $start_time ,$duration, $dur_units);
 }
-
+# Convert a start period and end period to a plain language description.
+# This is similar but different from the way it is done in view_entry.
+/*function describe_period_span($starts, $ends)
+{
+	global $enable_periods, $periods_name, $vocab, $duration;
+	list($start_period, $start_date) =  period_date_string($starts);
+	list( , $end_date) =  period_date_string($ends, -1);
+	$duration = $ends - $starts;
+	toPeriodString($start_period, $duration, $dur_units);
+	if ($duration > 1)
+	{
+		list( , $start_date) =  period_date_string($starts);
+		list( , $end_date) =  period_date_string($ends, -1);
+		$temp = $start_date . " ==> " . $end_date;
+	}
+	else
+	{
+		$temp = $start_date . " - " . $duration . " " . $dur_units;
+	}
+	return $temp;
+}
+#Convertit l'heure de début et de fin en période.
+function describe_span($starts, $ends, $dformat)
+{
+	global $vocab, $twentyfourhour_format;
+	$start_date = utf8_strftime($dformat, $starts);
+	if ($twentyfourhour_format)
+		$timeformat = "%T";
+	else
+	{
+		$ampm = date("a",$starts);
+		$timeformat = "%I:%M$ampm";
+	}
+	$start_time = strftime($timeformat, $starts);
+	$duration = $ends - $starts;
+	if ($start_time == "00:00:00" && $duration == 60 * 60 * 24)
+		return $start_date . " - " . get_vocab("all_day");
+	toTimeString($duration, $dur_units);
+	return $start_date . " " . $start_time . " - " . $duration . " " . $dur_units;
+}*/
 function get_planning_area_values($id_area)
 {
 	global $resolution, $morningstarts, $eveningends, $eveningends_minutes, $weekstarts, $twentyfourhour_format, $enable_periods, $periods_name, $display_day, $nb_display_day;
@@ -4286,7 +4326,7 @@ function traite_grr_url($grr_script_name = "", $force_use_grr_url = "n")
 		return Settings::get("grr_url").$ad_signe.$grr_script_name;
 	}
 	else
-		return $_SERVER['PHP_SELF'];
+		return filter_var($_SERVER['PHP_SELF'], FILTER_SANITIZE_URL);
 }
 // Pour les Jours/Cycles
 //Crée le calendrier Jours/Cycles
@@ -5224,7 +5264,7 @@ function pageHead2($title, $page = "with_session")
         }
 		if (isset($_GET['default_language']))
 		{
-			$_SESSION['default_language'] = $_GET['default_language'];
+			$_SESSION['default_language'] = clean_input($_GET['default_language']);
 			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 				header("Location: ".$_SESSION['chemin_retour']);
 			else
@@ -5240,7 +5280,7 @@ function pageHead2($title, $page = "with_session")
 			$sheetcss = 'themes/default/css';
 		if (isset($_GET['default_language']))
 		{
-			$_SESSION['default_language'] = $_GET['default_language'];
+			$_SESSION['default_language'] = clean_input($_GET['default_language']);
 			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 				header("Location: ".$_SESSION['chemin_retour']);
 			else
@@ -5252,7 +5292,7 @@ function pageHead2($title, $page = "with_session")
 	header('Content-Type: text/html; charset=utf-8');
 	if (!isset($_COOKIE['open']))
 	{
-		setcookie("open", "true", time()+3600);
+		setcookie("open", "true", time()+3600, "", "", false, true);
 	}
     // code de la partie <head> 
 	$a  = '<head>'.PHP_EOL;
@@ -5617,8 +5657,7 @@ function clean_input($data){
     $data = htmlspecialchars($data);
     return $data;
 }
-
-// Les lignes suivantes permettent la compatibilité de GRR avec la variables register_global à off
+// Les lignes suivantes permettent la compatibilité de GRR avec la variable register_global à off
 unset($day);
 if (isset($_GET["day"]))
 {

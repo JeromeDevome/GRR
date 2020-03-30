@@ -1,11 +1,11 @@
 <?php
 /**
  * admin_config1.php
- * Interface permettant à l'administrateur la configuration de certains paramètres généraux
+ * Interface permettant à l'administrateur de renseigner la page des conditions générales d'utilisation
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2018-08-31 17:30$
+ * Dernière modification : $Date: 2020-03-23 11:50$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -22,7 +22,7 @@ require_once("../include/pages.class.php");
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 $_SESSION['chemin_retour'] = "admin_cgu.php";
 check_access(6, $back);
 
@@ -49,7 +49,7 @@ if (isset($_POST['ok'])) {
     exit();
 }
 if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes')) {
-    $msg = $_GET['msg'];
+    $msg = clean_input($_GET['msg']);
 } 
 else {
     $msg = '';

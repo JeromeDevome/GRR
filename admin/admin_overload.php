@@ -3,7 +3,7 @@
  * admin_overload.php
  * Interface de création/modification des champs additionnels.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-01 18:30$
+ * Dernière modification : $Date: 2020-03-27 18:40$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -21,7 +21,7 @@ include "../include/admin.inc.php";
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-    $back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 check_access(4, $back);
 $use_prototype = 'y';
 $use_tooltip_js = 'y';
@@ -107,40 +107,33 @@ if ($action == "add")
 }
 else if ($action == "delete")
 {
-    $arearight = false ;
-    if (isset($_POST["id_overload"]))
-        $id_overload = $_POST["id_overload"];
-    else
-        $id_overload = "";
-    $sql = "SELECT id_area FROM ".TABLE_PREFIX."_overload WHERE id=$id_overload;";
-    $resquery = grr_sql_query($sql);
-    if (!$resquery)
-        fatal_error(0, grr_sql_error());
-    if (grr_sql_count($resquery) > 0)
-        for ($i = 0; ($row = grr_sql_row($resquery, $i)); $i++)
-        {
-            foreach ($userdomain as $key=>$value)
-            {
-                if ($key == $row[0])
-                    $arearight = true;
-            }
-        }
-        if ($arearight == true)
-        {
-            grrDelOverloadFromEntries($id_overload);
-            $sql = "DELETE FROM ".TABLE_PREFIX."_overload WHERE id=$id_overload;";
-            if (grr_sql_command($sql) < 0)
-                fatal_error(0, "$sql \n\n" . grr_sql_error());
-        }
-    }
+	$arearight = false ;
+	$id_overload = (isset($_POST["id_overload"]))? intval($_POST["id_overload"]) : NULL;
+	$sql = "SELECT id_area FROM ".TABLE_PREFIX."_overload WHERE id=$id_overload;";
+	$resquery = grr_sql_query($sql);
+	if (!$resquery)
+		fatal_error(0, grr_sql_error());
+	if (grr_sql_count($resquery) > 0)
+		for ($i = 0; ($row = grr_sql_row($resquery, $i)); $i++)
+		{
+			foreach ($userdomain as $key=>$value)
+			{
+				if ($key == $row[0])
+					$arearight = true;
+			}
+		}
+		if ($arearight == true)
+		{
+			grrDelOverloadFromEntries($id_overload);
+			$sql = "DELETE FROM ".TABLE_PREFIX."_overload WHERE id=$id_overload;";
+			if (grr_sql_command($sql) < 0)
+				fatal_error(0, "$sql \n\n" . grr_sql_error());
+		}
+	}
 else if ($action == "change")
 {
     $arearight = false ;
-    if (isset($_POST["id_overload"]))
-        $id_overload = $_POST["id_overload"];
-    else
-        $id_overload = "";
-    settype($id_overload,"integer");
+    $id_overload = (isset($_POST["id_overload"]))? intval($_POST["id_overload"]) : NULL;
     if (isset($_POST["fieldname"]))
         $fieldname = $_POST["fieldname"];
     else

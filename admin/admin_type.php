@@ -3,8 +3,8 @@
  * admin_type.php
  * Interface de gestion des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-02-27 14:30$
- * @author    JeromeB & Laurent Delineau & Yan Naessens
+ * Dernière modification : $Date: 2020-03-30 10:50$
+ * @author    JeromeB & Laurent Delineau & Yan Naessens & J.-P. Gay
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *

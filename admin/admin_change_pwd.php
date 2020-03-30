@@ -3,9 +3,9 @@
  * admin_change_pwd.php
  * Interface de changement du mot de passe pour les administrateurs
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-09-02 16:30$
+ * Dernière modification : $Date: 2020-03-23 11:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -21,13 +21,15 @@ include "../include/admin.inc.php";
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-    $back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+    $back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 check_access(6, $back);
 // Restriction dans le cas d'une démo
 VerifyModeDemo();
 unset($user_login);
 $user_login = isset($_POST["user_login"]) ? $_POST["user_login"] : ($user_login = isset($_GET["user_login"]) ? $_GET["user_login"] : NULL);
+$user_login = clean_input($user_login);
 $valid = isset($_POST["valid"]) ? $_POST["valid"] : NULL;
+$valid = clean_input($valid);
 $msg = '';
 if ($valid == "yes")
 {

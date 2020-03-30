@@ -3,9 +3,9 @@
  * admin_calend_jour_cycle.php
  * Interface permettant à l'administrateur la configuration des jours cycles
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2020-03-23 12:00$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -21,7 +21,7 @@ include "../include/admin.inc.php";
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 $_SESSION['chemin_retour'] = "admin_calend_jour_cycle.php";
 check_access(6, $back);
 $page_calend = isset($_GET["page_calend"]) ? $_GET["page_calend"] : '3';

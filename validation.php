@@ -3,9 +3,9 @@
  * validation.php
  * Interface de validation d'une réservation modérée
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-06-08 11:00$
+ * Dernière modification : $Date: 2020-03-23 14:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -40,7 +40,7 @@ include "include/language.inc.php";
 // vérifie que la réservation existe et que le script est en appel initial
 if (isset($_GET['id'])) // appel initial
 {
-	$id_resa = htmlspecialchars($_GET['id']);
+	$id_resa = clean_input($_GET['id']);
 	settype($id_resa,"integer");
 	$room_id = grr_sql_query1("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id='".$id_resa."'");
 	if ($room_id == -1)// erreur ou pas de résultat
@@ -216,7 +216,7 @@ if (isset($_GET['id'])) // appel initial
 		if ($beneficiaire != $create_by)
 		{
 			echo '<tr>';
-			echo '	<td><b>'.get_vocab("reservation au nom de"),get_vocab("deux_points").'</b></td>';
+			echo '	<td><b>'.get_vocab("reservation_au_nom_de"),get_vocab("deux_points").'</b></td>';
 			echo '	<td>'.affiche_nom_prenom_email($beneficiaire, $beneficiaire_ext, $option_affiche_nom_prenom_email).'</td>';
 			echo '</tr>';
 		}

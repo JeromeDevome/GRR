@@ -3,9 +3,9 @@
  * admin_calend2.php
  * interface permettant la réservation en bloc d'un créneau sur plusieurs Jours ou ressources
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-11-22 14:40$
+ * Dernière modification : $Date: 2020-03-23 11:50$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -21,17 +21,22 @@ include "../include/admin.inc.php";
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 check_access(4, $back);
 // Initialisation
 $etape = isset($_POST["etape"]) ? $_POST["etape"] : NULL;
 $areas = isset($_POST["areas"]) ? $_POST["areas"] : NULL;
 $rooms = isset($_POST["rooms"]) ? $_POST["rooms"] : NULL;
 $name = isset($_POST["name"]) ? $_POST["name"] : NULL;
+$name = clean_input($name);
 $beneficiaire = isset($_POST["beneficiaire"]) ? $_POST["beneficiaire"] : NULL;
+$beneficiaire = clean_input($beneficiaire);
 $description = isset($_POST["description"]) ? $_POST["description"] : NULL;
+$description = clean_input($description);
 $type_ = isset($_POST["type_"]) ? $_POST["type_"] : NULL;
+$type_ = clean_input($type_);
 $type_resa = isset($_POST["type_resa"]) ? $_POST["type_resa"] : NULL;
+$type_resa = clean_input($type_resa);
 $hour = isset($_POST["hour"]) ? $_POST["hour"] : NULL;
 settype($hour,"integer");
 $end_hour = isset($_POST["end_hour"]) ? $_POST["end_hour"] : NULL;
@@ -186,6 +191,7 @@ if ($etape == 3) //sélection des jours
 	$test_enable_periods_n = 0;
 	foreach ( $rooms as $room_id )
 	{
+        $room_id = intval($room_id);
 		$temp = "id_room_".$room_id;
 		echo "<div><input type=\"hidden\" name=\"".$temp."\" value=\"yes\" /></div>\n";
 		$area_id = grr_sql_query1("SELECT area_id FROM ".TABLE_PREFIX."_room WHERE id = '".$room_id."'");
@@ -391,7 +397,7 @@ else if ($etape == 2)
 	echo "<table class='table table-noborder'>\n";
 	if ($type_resa == "resa")
 	{
-		echo "<tr><td class=\"CR\"><b>".ucfirst(trim(get_vocab("reservation au nom de"))).get_vocab("deux_points")."</b></td>\n\n";
+		echo "<tr><td class=\"CR\"><b>".ucfirst(trim(get_vocab("reservation_au_nom_de"))).get_vocab("deux_points")."</b></td>\n\n";
 		echo "<td class=\"CL\"><select size=\"1\" name=\"beneficiaire\" class=\"form-control\">\n";
 		$sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE  (etat!='inactif' and statut!='visiteur' ) order by nom, prenom";
 		$res = grr_sql_query($sql);

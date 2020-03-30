@@ -3,7 +3,7 @@
  * admin_config1.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2020-02-07 11:05$
+ * Dernière modification : $Date: 2020-03-27 18:50$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -28,7 +28,7 @@ $day   = date("d");
 $month = date("m");
 $year  = date("Y");
 check_access(6, $back);
-// vérification et enregistrement des paramètres
+// vérifications 
 if (isset($_POST['title_home_page'])) {
     if (!Settings::set('title_home_page', $_POST['title_home_page'])) {
         echo "Erreur lors de l'enregistrement de title_home_page !<br />";
@@ -458,10 +458,13 @@ if (isset($_POST['ok'])) {
 }
 $demande_confirmation = 'no';
 if (isset($_POST['begin_day']) && isset($_POST['begin_month']) && isset($_POST['begin_year'])) {
-    while (!checkdate($_POST['begin_month'], $_POST['begin_day'], $_POST['begin_year'])) {
-        $_POST['begin_day']--;
+    $begin_day = clean_input($_POST['begin_day']);
+    $begin_month = clean_input($_POST['begin_month']);
+    $begin_year = clean_input($_POST['begin_year']);
+    while (!checkdate($begin_month, $begin_day, $begin_year)) {
+        $begin_day--;
     }
-    $begin_bookings = mktime(0, 0, 0, $_POST['begin_month'], $_POST['begin_day'], $_POST['begin_year']);
+    $begin_bookings = mktime(0, 0, 0, $begin_month, $begin_day, $begin_year);
     $test_del1 = mysqli_num_rows(mysqli_query($GLOBALS['db_c'], 'SELECT * FROM '.TABLE_PREFIX."_entry WHERE (end_time < '$begin_bookings' )"));
     $test_del2 = mysqli_num_rows(mysqli_query($GLOBALS['db_c'], 'SELECT * FROM '.TABLE_PREFIX."_repeat WHERE (end_date < '$begin_bookings')"));
     if (($test_del1 != 0) || ($test_del2 != 0)) {
@@ -473,10 +476,13 @@ if (isset($_POST['begin_day']) && isset($_POST['begin_month']) && isset($_POST['
     }
 
     if (isset($_POST['end_day']) && isset($_POST['end_month']) && isset($_POST['end_year'])) {
-        while (!checkdate($_POST['end_month'], $_POST['end_day'], $_POST['end_year'])) {
-            $_POST['end_day']--;
+        $end_day = clean_input($_POST['end_day']);
+        $end_month = clean_input($_POST['end_month']);
+        $end_year = clean_input($_POST['end_year']);
+        while (!checkdate($end_month, $end_day, $end_year)) {
+            $end_day--;
         }
-        $end_bookings = mktime(23, 59, 59, $_POST['end_month'], $_POST['end_day'], $_POST['end_year']);
+        $end_bookings = mktime(23, 59, 59, $end_month, $end_day, $end_year);
         if ($end_bookings < $begin_bookings) {
             $end_bookings = $begin_bookings;
         }
@@ -658,14 +664,12 @@ echo '</p>'.PHP_EOL;
 //******************************
 //
 echo '<hr /><h3>'.get_vocab('title_begin_end_bookings')."</h3>\n";
-?>
-<table class="table_adm">
-	<tr>
-		<td>
-			<?php echo get_vocab('begin_bookings'); ?>
-		</td>
-		<td>
-			<?php
+echo '<table class="table_adm">';
+echo '	<tr>';
+echo '		<td>';
+			echo get_vocab('begin_bookings');
+echo '		</td>';
+echo '  	<td>';
             $typeDate = 'begin_';
             $bday = strftime('%d', Settings::get('begin_bookings'));
             $bmonth = strftime('%m', Settings::get('begin_bookings'));

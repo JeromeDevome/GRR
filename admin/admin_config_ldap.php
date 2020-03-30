@@ -3,7 +3,7 @@
  * admin_config_ldap.php
  * Interface permettant la configuration de l'accès à un annuaire LDAP
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-01-28 11:10$
+ * Dernière modification : $Date: 2020-03-23 11:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -35,10 +35,10 @@ if (!Settings::load())
 	die("Erreur chargement settings");
 $valid = isset($_POST["valid"]) ? $_POST["valid"] : 'no';
 $etape = isset($_POST["etape"]) ? $_POST["etape"] : '0';
-$adresse = isset($_POST["adresse"]) ? $_POST["adresse"] : NULL;
-$port = isset($_POST["port"]) ? $_POST["port"] : NULL;
-$login_ldap = isset($_POST["login_ldap"]) ? $_POST["login_ldap"] : NULL;
-$pwd_ldap = isset($_POST["pwd_ldap"]) ? unslashes($_POST["pwd_ldap"]) : NULL;
+$adresse = isset($_POST["adresse"]) ? clean_input($_POST["adresse"]) : NULL;
+$port = isset($_POST["port"]) ? clean_input($_POST["port"]) : NULL;
+$login_ldap = isset($_POST["login_ldap"]) ? clean_input($_POST["login_ldap"]) : NULL;
+$pwd_ldap = isset($_POST["pwd_ldap"]) ? clean_input($_POST["pwd_ldap"]) : NULL;
 
 if (isset($_POST["use_tls"]))
 {
@@ -48,14 +48,14 @@ if (isset($_POST["use_tls"]))
 }
 else
 	$use_tls = FALSE;
-$base_ldap = isset($_POST["base_ldap"]) ? $_POST["base_ldap"] : NULL;
-$base_ldap_autre = isset($_POST["base_ldap_autre"]) ? $_POST["base_ldap_autre"] : NULL;
-$ldap_filter = isset($_POST["ldap_filter"]) ? $_POST["ldap_filter"] : NULL;
+$base_ldap = isset($_POST["base_ldap"]) ? clean_input($_POST["base_ldap"]) : NULL;
+$base_ldap_autre = isset($_POST["base_ldap_autre"]) ? clean_input($_POST["base_ldap_autre"]) : NULL;
+$ldap_filter = isset($_POST["ldap_filter"]) ? clean_input($_POST["ldap_filter"]) : NULL;
 
-$ldap_group_member_attr = isset($_POST["ldap_group_member_attr"]) ? $_POST["ldap_group_member_attr"] : NULL;
-$ldap_group_base = isset($_POST["ldap_group_base"]) ? $_POST["ldap_group_base"] : NULL;
-$ldap_group_filter = isset($_POST["ldap_group_filter"]) ? $_POST["ldap_group_filter"] : NULL;
-$ldap_group_user_field = isset($_POST["ldap_group_user_field"]) ? $_POST["ldap_group_user_field"] : NULL;
+$ldap_group_member_attr = isset($_POST["ldap_group_member_attr"]) ? clean_input($_POST["ldap_group_member_attr"]) : NULL;
+$ldap_group_base = isset($_POST["ldap_group_base"]) ? clean_input($_POST["ldap_group_base"]) : NULL;
+$ldap_group_filter = isset($_POST["ldap_group_filter"]) ? clean_input($_POST["ldap_group_filter"]) : NULL;
+$ldap_group_user_field = isset($_POST["ldap_group_user_field"]) ? clean_input($_POST["ldap_group_user_field"]) : NULL;
 
 $titre_ldap = "Configuration de l'authentification LDAP";
 if (isset($_POST['reg_ldap_statut']))
@@ -163,7 +163,7 @@ if ((!grr_resumeSession()) && $valid != 'yes')
 };
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-    $back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+    $back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 if ((isset($ldap_restrictions)) && ($ldap_restrictions == true))
 {
     showAccessDenied($back);

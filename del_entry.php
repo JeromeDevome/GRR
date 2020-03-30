@@ -3,9 +3,9 @@
  * del_entry.php
  * Interface de suppression d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-05-14 18:30$
+ * Dernière modification : $Date: 2020-03-24 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -39,11 +39,13 @@ if (isset($series))
 $page = verif_page();
 if (isset($_GET["id"]))
 {
-	$id = $_GET["id"];
+	$id = clean_input($_GET["id"]);
 	settype($id,"integer");
 }
-else
+else{
+	header("Location: ./login.php");
 	die();
+}
 if ($info = mrbsGetEntryInfo($id))
 {
 	$day   = strftime("%d", $info["start_time"]);
@@ -81,7 +83,7 @@ if ($info = mrbsGetEntryInfo($id))
 	$result = mrbsDelEntry(getUserName(), $id, $series, 1);
 	if ($result)
 	{
-        $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $info['room_id'];
+        $room_back = isset($_GET['room_back']) ? clean_input($_GET['room_back']) : $info['room_id'];
 		$_SESSION['displ_msg'] = 'yes';
         $ress = '';
         if ($room_back != 'all')  {$ress = "&room=".$room_back;}

@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-02-07 13:20$
+ * Dernière modification : $Date: 2020-01-25 11:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -198,14 +198,13 @@ $ty = date("Y", $i);
 $tm = date("m", $i);
 $td = date("d", $i);
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.id,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier,".TABLE_PREFIX."_type_area.type_name 
-FROM ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area,
-".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_type_area 
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.id,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name
+FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
 where
-".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter AND
 ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id and
 ".TABLE_PREFIX."_area.id = ".TABLE_PREFIX."_room.area_id and
 ".TABLE_PREFIX."_area.id = '".$area."' and
+".TABLE_PREFIX."_type_area.type_letter = ".TABLE_PREFIX."_entry.type AND
 start_time <= $date_end AND
 end_time > $date_start
 ORDER by start_time, end_time, ".TABLE_PREFIX."_entry.id";
@@ -225,7 +224,7 @@ ORDER by start_time, end_time, ".TABLE_PREFIX."_entry.id";
     $row[12]: beneficiaire_ext
     $row[13]: clef
     $row[14]: courrier
-	$row[15]: type_name
+	$row[15]: Type_name
 */
 $res2 = grr_sql_query($sql);
 if (!$res2)

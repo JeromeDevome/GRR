@@ -3,9 +3,9 @@
  * admin_config_imap.php
  * Interface permettant l'activation de la configuration de l'authentification pop/imap  
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-09-02 19:00$
+ * Dernière modification : $Date: 2020-03-23 11:50$
  * @author    Laurent Delineau & JeromeB & Gilles Martin & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -22,17 +22,22 @@ include "../include/admin.inc.php";
 
 require_once("../include/settings.class.php");
 $valid = isset($_POST["valid"]) ? $_POST["valid"] : 'no';
+$valid = clean_input($valid);
 $etape = isset($_POST["etape"]) ? $_POST["etape"] : '0';
-$imap_domaine=isset($_POST["imap_domaine"]) ? $_POST["imap_domaine"] : "";
-$imap_adresse = isset($_POST["imap_adresse"]) ? $_POST["imap_adresse"] : "";
-$imap_port = isset($_POST["imap_port"]) ? $_POST["imap_port"] : "";
-$imap_type = isset($_POST["server_type"]) ? $_POST["server_type"]:"";
-$imap_ssl  = isset($_POST["server_ssl"]) ? $_POST["server_ssl"]:"";
-$imap_cert = isset($_POST["server_cert"]) ? $_POST["server_cert"]:"";
-$imap_tls  = isset($_POST["server_tls"]) ? $_POST["server_tls"]:"";
-$imap_string  = isset($_POST["imap_string"]) ? $_POST["imap_string"]:"";
-$imap_login=isset($_POST["imap_login"]) ? $_POST["imap_login"]:"";
-$imap_password=isset($_POST["imap_password"]) ? $_POST["imap_password"]:"";
+$imap=array();
+$imap['domaine']=isset($_POST["imap_domaine"]) ? $_POST["imap_domaine"] : "";
+$imap['adresse'] = isset($_POST["imap_adresse"]) ? $_POST["imap_adresse"] : "";
+$imap['port'] = isset($_POST["imap_port"]) ? $_POST["imap_port"] : "";
+$imap['type'] = isset($_POST["server_type"]) ? $_POST["server_type"]:"";
+$imap['ssl']  = isset($_POST["server_ssl"]) ? $_POST["server_ssl"]:"";
+$imap['cert'] = isset($_POST["server_cert"]) ? $_POST["server_cert"]:"";
+$imap['tls']  = isset($_POST["server_tls"]) ? $_POST["server_tls"]:"";
+$imap['string']  = isset($_POST["imap_string"]) ? $_POST["imap_string"]:""; //utile ? YN le 19/03/2020
+$imap['login']=isset($_POST["imap_login"]) ? $_POST["imap_login"]:""; //utile ? YN le 19/03/2020
+$imap['password']=isset($_POST["imap_password"]) ? $_POST["imap_password"]:""; //utile ? YN le 19/03/2020
+foreach ($imap as $key => $value){
+    $imap[$key] = clean_input($value);
+}
 
 if (isset($_POST['imap_statut']))
 {
@@ -50,7 +55,7 @@ if (isset($_POST['imap_statut']))
 }
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 if ((isset($imap_restrictions)) && ($imap_restrictions == true))
 {
 	showAccessDenied($back);
@@ -72,13 +77,13 @@ if ($etape == 1)
 {
 	if (isset($_POST["Valider1"]))
 	{
-		$imap_domaine = $_POST["imap_domaine"];
-		$imap_adresse = $_POST["imap_adresse"];
-		$imap_port = $_POST["imap_port"];
-		$imap_type = $_POST["server_type"];
-		$imap_ssl = $_POST["server_ssl"];
-		$imap_cert = $_POST["server_cert"];
-		$imap_tls = $_POST["server_tls"];
+		$imap['domaine'] = $_POST["imap_domaine"];
+		$imap['adresse'] = $_POST["imap_adresse"];
+		$imap['port'] = $_POST["imap_port"];
+		$imap['type'] = $_POST["server_type"];
+		$imap['ssl'] = $_POST["server_ssl"];
+		$imap['cert'] = $_POST["server_cert"];
+		$imap['tls'] = $_POST["server_tls"];
 		$erreur = '';
 		$nom_fic = "include/config_imap.inc.php";
 		if (@file_exists($nom_fic))
@@ -259,7 +264,7 @@ else if ($etape ==0)
 			echo encode_message_utf8("<li>Nom de domaine IMAP/POP <b>: ".$imap_domaine."</b></li>");
 			echo encode_message_utf8("<li>Adresse Serveur IMAP/POP <b>: ".$imap_adresse."</b></li>");
 			echo encode_message_utf8("<li>Port utilise : <b>".$imap_port."</b></li>");
-			if (($imap_type == "/imap") || ($imap_adresse != "" && $imap_port != "" && $imap_type == ""))
+			if (($imap_type == "/imap") || ($imap_adresse != "" && $imap['port'] != "" && $imap['type'] == ""))
 				$use_type = "IMAP";
 			else if ($imap_type == "/pop3")
 				$use_type = "POP3";
@@ -280,9 +285,9 @@ else if ($etape ==0)
 				$use_cert = "(non précisé)";
 			echo encode_message_utf8("<li>Utiliser Certificat : <b>".$use_cert."</b></li>");
 
-			if ($imap_tls == "/tls" && $imap_adresse != "" && $imap_port != "")
+			if ($imap_tls == "/tls" && $imap['adresse'] != "" && $imap['port'] != "")
 				$use_tls = "oui";
-			else if ($imap_tls == "/notls" && $imap_adresse != "" && $imap_port != "")
+			else if ($imap_tls == "/notls" && $imap['adresse'] != "" && $imap['port'] != "")
 				$use_tls = "non";
 			else
 				$use_tls = "(non précisé)";

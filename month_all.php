@@ -174,7 +174,7 @@ $i = mktime(0,0,0,$month + 1, 1, $year);
 $ty = date("Y",$i);
 $tm = date("n",$i);
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
-//Get all meetings for this month in the room that we care about
+//Get all meetings for this month in the area that we care about
 //row[0] = Start time
 //row[1] = End time
 //row[2] = Entry ID

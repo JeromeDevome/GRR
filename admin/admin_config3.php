@@ -3,9 +3,9 @@
  * admin_config3.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (interactivité)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-22 10:30$
+ * Dernière modification : $Date: 2020-03-24 12:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -22,7 +22,7 @@ include "../include/admin.inc.php";
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 $_SESSION['chemin_retour'] = "admin_accueil.php";
 $day   = date("d");
 $month = date("m");
@@ -132,9 +132,14 @@ if (isset($_GET['smtp_port']))
 // Si Email test renseigné on y envoie un mail
 if (isset($_GET['mail_test']) && !empty($_GET['mail_test']))
 {
+    $mail_test = filter_var(clean_input($_GET['mail_test']),FILTER_VALIDATE_EMAIL);
+    if (!$mail_test){
+        echo "L'adresse mail de test n'est pas valide";
+        die();
+    }
 	require_once '../include/mail.class.php';
 	require_once '../phpmailer/PHPMailerAutoload.php';
-	Email::Envois($_GET['mail_test'], 'GRR, votre système de réservations', "Ceci est un test depuis l'administration de votre GRR.<br>Le mail est arrivé à destination.", Settings::get('grr_mail_from'), '', '');
+	Email::Envois($mail_test, 'GRR, votre système de réservations', "Ceci est un test depuis l'administration de votre GRR.<br>Le mail est arrivé à destination.", Settings::get('grr_mail_from'), '', '');
 }
 if (isset($_GET['ok']))
 {
@@ -266,7 +271,7 @@ echo "\n<br />".get_vocab('smtp_port').get_vocab('deux_points');
 echo "\n<input type = \"text\" name=\"smtp_port\" value =\"".Settings::get('smtp_port')."\" size=\"30\" />";
 // Mail Test
 echo "\n<br />".get_vocab('mail_test').get_vocab('deux_points');
-echo "\n<input type = \"text\" name=\"mail_test\" value =\"\" size=\"30\" />";
+echo "\n<input type = \"email\" name=\"mail_test\" value =\"\" size=\"30\" />";
 // Copie CCi
 echo "\n<br /><br />";
 echo "\n<input type=\"checkbox\" name=\"grr_mail_Bcc\" value=\"y\" ";
