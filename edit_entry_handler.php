@@ -3,9 +3,9 @@
  * edit_entry_handler.php
  * Permet de vérifier la validité de l'édition ou de la création d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-10-10 12:00$
+ * Dernière modification : $Date: 2020-03-28 11:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -67,10 +67,10 @@ if ($courrier == 'y')
 	$courrier = 1;
 else
 	$courrier = 0;
-$day = isset($_GET["start_day"]) ? $_GET["start_day"] : NULL;
-$month = isset($_GET["start_month"]) ? $_GET["start_month"] : NULL;
-$year = isset($_GET["start_year"]) ? $_GET["start_year"] : NULL;
-$duration = isset($_GET["duration"]) ? $_GET["duration"] : NULL;
+$day = isset($_GET["start_day"]) ? clean_input($_GET["start_day"]) : NULL;
+$month = isset($_GET["start_month"]) ? clean_input($_GET["start_month"]) : NULL;
+$year = isset($_GET["start_year"]) ? clean_input($_GET["start_year"]) : NULL;
+$duration = isset($_GET["duration"]) ? clean_input($_GET["duration"]) : NULL;
 $duration = str_replace(",", ".", "$duration ");
 
 if (isset($_GET["start_"])){
@@ -93,6 +93,7 @@ if (isset($minute))
 }
 $statut_entry = isset($_GET["statut_entry"]) ? $_GET["statut_entry"] : "-";
 $rep_jour_c = isset($_GET["rep_jour_"]) ? $_GET["rep_jour_"] : 0;
+$rep_jour_c = intval(clean_input($rep_jour_c));
 $type = isset($_GET["type"]) ? $_GET["type"] : NULL;
 $rep_type = isset($_GET["rep_type"]) ? $_GET["rep_type"] : NULL;
 if (isset($rep_type))
@@ -113,18 +114,18 @@ if (isset($rep_month_abs1))
 	settype($rep_month_abs1,"integer");
 if (isset($rep_month_abs2))
 	settype($rep_month_abs2,"integer");
-$create_by = isset($_GET["create_by"]) ? $_GET["create_by"] : NULL;
-$beneficiaire = isset($_GET["beneficiaire"]) ? $_GET["beneficiaire"] : "";
-$benef_ext_nom = isset($_GET["benef_ext_nom"]) ? $_GET["benef_ext_nom"] : "";
-$benef_ext_email = isset($_GET["benef_ext_email"]) ? $_GET["benef_ext_email"] : "";
+$create_by = isset($_GET["create_by"]) ? clean_input($_GET["create_by"]) : NULL;
+$beneficiaire = isset($_GET["beneficiaire"]) ? clean_input($_GET["beneficiaire"]) : "";
+$benef_ext_nom = isset($_GET["benef_ext_nom"]) ? clean_input($_GET["benef_ext_nom"]) : "";
+$benef_ext_email = isset($_GET["benef_ext_email"]) ? clean_input($_GET["benef_ext_email"]) : "";
 $beneficiaire_ext = concat_nom_email($benef_ext_nom, $benef_ext_email);
 $rep_id = isset($_GET["rep_id"]) ? $_GET["rep_id"] : NULL;
 $rep_day = isset($_GET["rep_day"]) ? $_GET["rep_day"] : NULL;
-$rep_end_day = isset($_GET["rep_end_day"]) ? $_GET["rep_end_day"] : NULL;
-$rep_end_month = isset($_GET["rep_end_month"]) ? $_GET["rep_end_month"] : NULL;
-$rep_end_year = isset($_GET["rep_end_year"]) ? $_GET["rep_end_year"] : NULL;
+$rep_end_day = isset($_GET["rep_end_day"]) ? clean_input($_GET["rep_end_day"]) : NULL;
+$rep_end_month = isset($_GET["rep_end_month"]) ? clean_input($_GET["rep_end_month"]) : NULL;
+$rep_end_year = isset($_GET["rep_end_year"]) ? clean_input($_GET["rep_end_year"]) : NULL;
 $room_back = isset($_GET["room_back"]) ? $_GET["room_back"] : NULL;
-$oldRessource = isset($_GET["oldRessource"]) ? $_GET["oldRessource"] : NULL;
+$oldRessource = isset($_GET["oldRessource"]) ? clean_input($_GET["oldRessource"]) : NULL;
 if (isset($room_back) && ($room_back != 'all'))
 	settype($room_back,"integer");
 else $room_back = 'all'; // YN le 30-06-18
@@ -160,7 +161,7 @@ if (($beneficiaire) == "")
 }
 else
 	$beneficiaire_ext = "";
-if (!isset($_GET['rooms'][0]))
+if ((!isset($_GET['rooms'][0])||(intval($_GET['rooms'][0])==0)))
 {
 	start_page_w_header();
 	echo "<h2>".get_vocab("choose_a_room")."</h2>";
@@ -173,7 +174,7 @@ $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars($_SERVER['HTTP_REFER
 // page de retour
 $ret_page = (isset($_GET['page_ret']))? $_GET['page_ret'] : $back;
 
-$area = mrbsGetRoomArea($_GET['rooms'][0]);
+$area = mrbsGetRoomArea(intval($_GET['rooms'][0]));
 $overload_data = array();
 $overload_fields_list = mrbsOverloadGetFieldslist($area);
 foreach ($overload_fields_list as $overfield=>$fieldtype)
@@ -227,11 +228,11 @@ if (check_begin_end_bookings($day, $month, $year))
 }
 if ($type_affichage_reser == 0)
 {
-	$period = isset($_GET["period"]) ? $_GET["period"] : NULL;
+	$period = isset($_GET["period"]) ? clean_input($_GET["period"]) : NULL;
 	if (isset($period))
 		settype($period,"integer");
-	$dur_units = isset($_GET["dur_units"]) ? $_GET["dur_units"] : NULL;
-	$all_day = isset($_GET["all_day"]) ? $_GET["all_day"] : NULL;
+	$dur_units = isset($_GET["dur_units"]) ? clean_input($_GET["dur_units"]) : NULL;
+	$all_day = isset($_GET["all_day"]) ? clean_input($_GET["all_day"]) : NULL;
 	if ($enable_periods == 'y')
 	{
 		$resolution = 60;
@@ -268,7 +269,7 @@ if ($type_affichage_reser == 0)
 		else
 		{
 			$starttime = mktime($morningstarts, 0, 0, $month, $day  , $year);
-			$endtime   = mktime($eveningends, 0, $resolution, $month, $day, $year);
+			$endtime   = mktime($eveningends, $eveningends_minutes, 0, $month, $day, $year);
 		}
 	}
 	else
@@ -278,9 +279,8 @@ if ($type_affichage_reser == 0)
 			if (isset($ampm) && ($ampm == "pm"))
 				$hour += 12;
 		}
-		$starttime = mktime($hour, $minute, 0, $month, $day, $year); ?>
-		<script> alert("java exécuté"); confirm(<?php echo $starttime," ",$units," ",$duration;?>) </script>
-<?php 		$endtime   = mktime($hour, $minute, 0, $month, $day, $year) + intval($units) * intval($duration);
+		$starttime = mktime($hour, $minute, 0, $month, $day, $year);
+		$endtime   = mktime($hour, $minute, 0, $month, $day, $year) + intval($units) * floatval($duration);
 		if ($endtime <= $starttime)
 			$erreur = 'y';
 		$diff = $endtime - $starttime;
@@ -296,17 +296,17 @@ else
 		$hour = 12;
 		$_GET["end_hour"] = 12;
 		if (isset($_GET["period"]))
-			$minute = $_GET["period"];
+			$minute = clean_input($_GET["period"]);
 		else
 			$erreur = 'y';
 		if (isset($_GET["end_period"]))
-			$_GET["end_minute"] = $_GET["end_period"] + 1;
+			$_GET["end_minute"] = clean_input($_GET["end_period"]) + 1;
 		else
 			$erreur = 'y';
 	}
 	else {
 		$fin = array();
-		$fin = explode(':', $_GET["end_"]);
+		$fin = explode(':', clean_input($_GET["end_"]));
 		$_GET["end_hour"] = $fin[0];
 		$_GET["end_minute"] = $fin[1];
 	}
@@ -426,7 +426,11 @@ $error_date_option_reservation = 'no';
 $error_chevaussement = 'no';
 $error_qui_peut_reserver_pour = 'no';
 $error_heure_debut_fin = 'no';
-foreach ( $_GET['rooms'] as $room_id )
+$rooms = array();
+foreach ($_GET['rooms'] as $room_id){
+    $rooms[] = intval(clean_input($room_id));
+}
+foreach ( $rooms as $room_id )
 {
 	if ($rep_type != 0 && !empty($reps))
 	{
@@ -493,7 +497,7 @@ foreach ( $_GET['rooms'] as $room_id )
 $err = "";
 if (($error_booking_in_past == 'no') && ($error_chevaussement == 'no') && ($error_duree_max_resa_area == 'no') && ($error_delais_max_resa_room == 'no') && ($error_delais_min_resa_room == 'no')  && ($error_date_option_reservation == 'no') && ($error_qui_peut_reserver_pour == 'no') && ($error_heure_debut_fin == 'no'))
 {
-	foreach ($_GET['rooms'] as $room_id)
+	foreach ($rooms as $room_id)
 	{
 		if ($rep_type != 0 && !empty($reps))
 		{
@@ -529,7 +533,7 @@ if (($error_booking_in_past == 'no') && ($error_chevaussement == 'no') && ($erro
 if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_area == 'no') && ($error_delais_max_resa_room == 'no') && ($error_delais_min_resa_room == 'no') && ($error_booking_room_out == 'no') && ($error_date_option_reservation == 'no') && ($error_chevaussement == 'no') && ($error_qui_peut_reserver_pour == 'no') && ($error_heure_debut_fin == 'no'))
 {
 	$compt_room = 0;
-	foreach ($_GET['rooms'] as $room_id)
+	foreach ($rooms as $room_id)
 	{
 		$area = mrbsGetRoomArea($room_id);
 		if (isset($id) && ($id != 0))
@@ -570,7 +574,7 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 				$compt_room += 1;
 		}
 	}
-	foreach ($_GET['rooms'] as $room_id)
+	foreach ($rooms as $room_id)
 	{
 		$moderate = grr_sql_query1("SELECT moderate FROM ".TABLE_PREFIX."_room WHERE id = '".$room_id."'");
 		if ($moderate == 1)
