@@ -3,7 +3,7 @@
  * admin_edit_room.php
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-23 12:00$
+ * Dernière modification : $Date: 2020-03-31 15:10$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -27,15 +27,14 @@ if (Settings::get("module_multisite") == "Oui"){
 $action = isset($_POST["action"]) ? $_POST["action"] : (isset($_GET["action"]) ? $_GET["action"] : NULL);
 $add_area = isset($_POST["add_area"]) ? $_POST["add_area"] : (isset($_GET["add_area"]) ? $_GET["add_area"] : NULL);
 $area_id = isset($_POST["area_id"]) ? $_POST["area_id"] : (isset($_GET["area_id"]) ? $_GET["area_id"] : NULL);
-$area_id = intval(clean_input($area_id));
+if (isset($area_id)) $area_id = intval(clean_input($area_id));
 $retour_page = isset($_POST["retour_page"]) ? $_POST["retour_page"] : (isset($_GET["retour_page"]) ? $_GET["retour_page"] : NULL);
 $room = isset($_POST["room"]) ? $_POST["room"] : (isset($_GET["room"]) ? $_GET["room"] : NULL);
-$room = intval($room);
+if (isset($room)) $room = intval($room);
 $id_area = isset($_POST["id_area"]) ? $_POST["id_area"] : (isset($_GET["id_area"]) ? $_GET["id_area"] : NULL);
-$id_area = clean_input($id_area);
+if (isset($id_area)) $id_area = intval(clean_input($id_area));
 $change_area = isset($_POST["change_area"]) ? $_POST["change_area"] : NULL;
-$area_name = isset($_POST["area_name"]) ? $_POST["area_name"] : NULL;
-$area_name = clean_input($area_name);
+$area_name = isset($_POST["area_name"]) ? clean_input($_POST["area_name"]) : NULL;
 $access = isset($_POST["access"]) ? $_POST["access"] : NULL;
 $ip_adr = isset($_POST["ip_adr"]) ? clean_input($_POST["ip_adr"]) : NULL;
 $room_name = isset($_POST["room_name"]) ? clean_input($_POST["room_name"]) : NULL;
@@ -50,8 +49,7 @@ $allow_action_in_past  = isset($_POST["allow_action_in_past"]) ? clean_input($_P
 $dont_allow_modify  = isset($_POST["dont_allow_modify"]) ? clean_input($_POST["dont_allow_modify"]) : NULL;
 $qui_peut_reserver_pour  = isset($_POST["qui_peut_reserver_pour"]) ? clean_input($_POST["qui_peut_reserver_pour"]) : NULL;
 $who_can_see  = isset($_POST["who_can_see"]) ? clean_input($_POST["who_can_see"]) : NULL;
-$max_booking = isset($_POST["max_booking"]) ? clean_input($_POST["max_booking"]) : NULL;
-$max_booking = intval($max_booking);
+$max_booking = isset($_POST["max_booking"]) ? intval(clean_input($_POST["max_booking"])) : NULL;
 if ($max_booking<-1)
 	$max_booking = -1;
 $statut_room = isset($_POST["statut_room"]) ? "0" : "1";
@@ -114,13 +112,13 @@ if (!isset($retour_page))
 {
 	$retour_page = $back;
 	// on nettoie la chaine :
-	$long_chaine_a_supprimer = strlen(strstr($retour_page, "&amp;msg=")); // longueur de la chaine e partir de la premiere occurence de &amp;msg=
+	$long_chaine_a_supprimer = strlen(strstr($retour_page, "&amp;msg=")); // longueur de la chaine à partir de la premiere occurrence de &amp;msg=
 	if ($long_chaine_a_supprimer == 0)
 		$long_chaine_a_supprimer = strlen(strstr($retour_page, "?msg="));
 	$long = strlen($retour_page) - $long_chaine_a_supprimer;
 	$retour_page = substr($retour_page, 0, $long);
 }
-// modification d'une resource : admin ou gestionnaire
+// modification d'une ressource : admin ou gestionnaire
 if (authGetUserLevel(getUserName(),-1) < 6)
 {
 	if (isset($room))
@@ -384,7 +382,7 @@ if ((!empty($room)) || (isset($area_id)))
         }
         else if ($doc_file['name'] != '')
         {
-            $msg .= "L\'image n\'a pas pu etre enregistree : le fichier image selectionne n'est pas valide !\\n";
+            $msg .= "L\'image n\'a pas pu être enregistrée : le fichier image sélectionné n'est pas valide !\\n";
             $ok = 'no';
         }
         $msg .= get_vocab("message_records");
@@ -579,14 +577,15 @@ if ((!empty($room)) || (isset($area_id)))
         echo "<b>$nom_picture</b></td><td><input type=\"checkbox\" name=\"sup_img\" /></td></tr>";}
     else
         echo "<b>".get_vocab("nobody")."</b></td><td><input type=\"checkbox\" disabled=\"disabled\" name=\"sup_img\" /></td></tr>";
+    // affichage description complète
     echo "<tr><td>".get_vocab("Afficher_description_complete_dans_titre_plannings")."</td>\n<td><input type=\"checkbox\" name=\"show_comment\" ";
     if ($row['show_comment'] == "y")
         echo " checked ";
     echo "/></td></tr>\n";
-    // Description complete
-    echo "<tr><td colspan=\"2\">".get_vocab("description complete");
+    // Description complète
+    echo "<tr><td colspan=\"2\">".get_vocab("description_complete");
     if (Settings::get("use_fckeditor") != 1)
-        echo " ".get_vocab("description complete2");
+        echo " ".get_vocab("description_complete2");
     echo get_vocab("deux_points")."<br />";
     if (Settings::get("use_fckeditor") == 1)
     {
@@ -672,7 +671,7 @@ if ((!empty($room)) || (isset($area_id)))
 				echo " checked=\"checked\"";
 			echo " /></td></tr>\n";
 	// Quels utilisateurs ont le droit de reserver cette ressource au nom d'un autre utilisateur ?
-			echo "<tr><td>".get_vocab("qui peut reserver pour autre utilisateur")."</td><td><select class=\"form-control\" name=\"qui_peut_reserver_pour\" size=\"1\">\n<option value=\"5\" ";
+			echo "<tr><td>".get_vocab("qui_peut_reserver_pour_autre_utilisateur")."</td><td><select class=\"form-control\" name=\"qui_peut_reserver_pour\" size=\"1\">\n<option value=\"5\" ";
 			if ($row["qui_peut_reserver_pour"]==6)
 				echo " selected=\"selected\" ";
 			echo ">".get_vocab("personne")."</option>\n
@@ -709,7 +708,7 @@ if ((!empty($room)) || (isset($area_id)))
 		if (@file_exists($nom_picture) && $nom_picture)
 			echo "<br /><br /><b>".get_vocab("Image de la ressource").get_vocab("deux_points")."</b><br /><img src=\"".$nom_picture."\" alt=\"logo\" />";
 		else
-			echo "<br /><br /><b>".get_vocab("Pas image disponible")."</b>";
+			echo "<br /><br /><b>".get_vocab("Pas_image_disponible")."</b>";
 	echo "</div>";
     echo "</form>";
     echo "</div>";
@@ -719,7 +718,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 {
 	if (isset($change_area))
 	{
-	// Affectation e un site : si aucun site n'a ete affecte
+	// Affectation à un site : si aucun site n'a ete affecte
 		if ((Settings::get("module_multisite") == "Oui") && ($id_site == -1))
 		{
 	  		// On affiche un message d'avertissement
@@ -1194,7 +1193,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 			}
 			echo "</select></td>\n";
 			echo "</tr>";
-			// Minutes e ajouter e l'heure $eveningends pour avoir la fin reelle d'une journee.
+			// Minutes à ajouter à l'heure $eveningends pour avoir la fin réelle d'une journée.
 			echo "<tr>\n";
 			echo "<td>".get_vocab("eveningends_minutes_area").get_vocab("deux_points")."</td>\n";
 			echo "<td><input class=\"form-control\" type=\"text\" name=\"eveningends_minutes_area\" size=\"5\" value=\"".clean_input($row["eveningends_minutes_area"])."\" /></td>\n";
@@ -1209,7 +1208,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 			echo "<td>".get_vocab("duree_par_defaut_reservation_area").get_vocab("deux_points")."</td>\n";
 			echo "<td><input class=\"form-control\" type=\"text\" name=\"duree_par_defaut_reservation_area\" size=\"5\" value=\"".clean_input($row["duree_par_defaut_reservation_area"])."\" /></td>\n";
 			echo "</tr>";
-			// Format d'affichage du temps : valeur 0 pour un affichage ee12 heuresee et valeur 1 pour un affichage  ee24 heureee.
+			// Format d'affichage du temps : valeur 0 pour un affichage sur 12 heures et valeur 1 pour un affichage sur 24 heures.
 			echo "<tr>\n";
 			echo "<td>".get_vocab("twentyfourhour_format_area").get_vocab("deux_points")."</td>\n";
 			echo "<td>\n";
