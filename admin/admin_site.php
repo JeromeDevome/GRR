@@ -3,7 +3,7 @@
  * admin_site.php
  * Interface d'accueil de Gestion des sites de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-23 12:15$
+ * Dernière modification : $Date: 2020-04-02 12:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -130,9 +130,19 @@ function create_site($id_site)
 			pays='".strtoupper(protect_data_sql($pays))."',
 			tel='".protect_data_sql($tel)."',
 			fax='".protect_data_sql($fax)."'";
-			if (grr_sql_command($sql) < 0)
-				fatal_error(0,'<p>'.grr_sql_error().'</p>');
-			mysqli_insert_id($GLOBALS['db_c']);
+            if (grr_sql_command($sql) < 0){ // on traite les doublons dans sitecode, sitename
+                $err_sql = grr_sql_error();
+                if (!strstr($err_sql,"Duplicate entry")){
+                    fatal_error(0,'<p>'.grr_sql_error().'</p>');
+                }
+                else {
+                    $_POST['save'] = 'no';
+                    $_GET['save'] = 'no';
+                    echo '<div class="avertissement">'.get_vocab('duplicate_sitecode_name').'</div>';
+                }
+            }
+            else 
+                mysqli_insert_id($GLOBALS['db_c']);
 		}
 		// On affiche le tableau des sites
 		read_sites();
@@ -236,9 +246,8 @@ function update_site($id)
 				<input type="submit" name="back" value="'.get_vocab('back').'" /></div>
 			</form>';
 			echo get_vocab("required");
-			// Sinon, il faut valider le formulaire
 		}
-    else
+    else // Sinon, il faut valider le formulaire
     {
         if (!isset($id))
             $id = isset($_POST['id']) ? $_POST['id'] :  NULL;
@@ -267,7 +276,7 @@ function update_site($id)
         {
             $_POST['save'] = 'no';
             $_GET['save'] = 'no';
-            echo '<span class="avertissement">'.get_vocab('required').'</span>';
+            echo '<div class="avertissement">'.get_vocab('required').'</div>';
         }
         // Sauvegarde du record
         if ((isset($_POST['save']) && ($_POST['save']!='no')) || ((isset($_GET['save'])) && ($_GET['save']!='no')))
@@ -284,9 +293,19 @@ function update_site($id)
             tel='".protect_data_sql($tel)."',
             fax='".protect_data_sql($fax)."'
             WHERE id='".$id."'";
-            if (grr_sql_command($sql) < 0)
-                fatal_error(0,'<p>'.grr_sql_error().'</p>');
-            mysqli_insert_id($GLOBALS['db_c']);
+            if (grr_sql_command($sql) < 0){ // on traite les doublons dans sitecode, sitename
+                $err_sql = grr_sql_error();
+                if (!strstr($err_sql,"Duplicate entry")){
+                    fatal_error(0,'<p>'.grr_sql_error().'</p>');
+                }
+                else {
+                    $_POST['save'] = 'no';
+                    $_GET['save'] = 'no';
+                    echo '<div class="avertissement">'.get_vocab('duplicate_sitecode_name').'</div>';
+                }
+            }
+            else 
+                mysqli_insert_id($GLOBALS['db_c']);
         }
         // On affiche le tableau des sites
         read_sites();

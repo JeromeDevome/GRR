@@ -39,7 +39,21 @@ CREATE TABLE grr_overload (id int(11) NOT NULL auto_increment, id_area INT NOT N
 DROP TABLE IF EXISTS grr_entry_moderate;
 CREATE TABLE grr_entry_moderate (id int(11) NOT NULL auto_increment, login_moderateur varchar(40) NOT NULL default '',motivation_moderation text NOT NULL,start_time int(11) NOT NULL default '0',end_time int(11) NOT NULL default '0',entry_type int(11) NOT NULL default '0', repeat_id int(11) NOT NULL default '0',room_id int(11) NOT NULL default '1',timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, create_by varchar(100) NOT NULL default '', beneficiaire_ext varchar(200) NOT NULL default '', beneficiaire varchar(100) NOT NULL default '', name varchar(80) NOT NULL default '',type char(2) default NULL,description text,statut_entry char(1) NOT NULL default '-',option_reservation int(11) NOT NULL default '0',overload_desc text,moderate tinyint(1) default '0', PRIMARY KEY  (id), KEY idxStartTime (start_time), KEY idxEndTime (end_time));
 DROP TABLE IF EXISTS grr_site;
-CREATE TABLE grr_site (id int(11) NOT NULL auto_increment, sitecode varchar(10) default NULL, sitename varchar(50) NOT NULL default '', adresse_ligne1 varchar(38) default NULL, adresse_ligne2 varchar(38) default NULL, adresse_ligne3 varchar(38) default NULL, cp varchar(5) default NULL, ville varchar(50) default NULL, pays varchar(50) default NULL, tel varchar(25) default NULL, fax varchar(25) default NULL, PRIMARY KEY (`id`));
+CREATE TABLE grr_site (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  sitecode varchar(10) DEFAULT NULL,
+  sitename varchar(50) NOT NULL DEFAULT '',
+  adresse_ligne1 varchar(38) DEFAULT NULL,
+  adresse_ligne2 varchar(38) DEFAULT NULL,
+  adresse_ligne3 varchar(38) DEFAULT NULL,
+  cp varchar(5) DEFAULT NULL,
+  ville varchar(50) DEFAULT NULL,
+  pays varchar(50) DEFAULT NULL,
+  tel varchar(25) DEFAULT NULL,
+  fax varchar(25) DEFAULT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY name (sitename),
+  UNIQUE KEY code (sitecode));
 DROP TABLE IF EXISTS grr_j_site_area;
 CREATE TABLE grr_j_site_area ( id_site int(11) NOT NULL default '0', id_area int(11) NOT NULL default '0', PRIMARY KEY  (`id_site`,`id_area`));
 DROP TABLE IF EXISTS grr_j_useradmin_site;

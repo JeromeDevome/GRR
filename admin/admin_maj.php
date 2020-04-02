@@ -907,6 +907,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
         $result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_type_area CHANGE `couleur_texte` `couleurtexte` VARCHAR(10) NOT NULL DEFAULT '#000000' AFTER `couleurhexa`;");
         $result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_overload ADD `mail_spec` TEXT NOT NULL AFTER `overload_mail`;");
         $result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_overload DROP PRIMARY KEY, ADD PRIMARY KEY (`id_area`,`fieldname`), ADD UNIQUE KEY `id` (`id`);");
+        $result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."site ADD UNIQUE KEY `name` (`sitename`), ADD UNIQUE KEY `code` (`sitecode`);");
 
         if ($result_inter == '')
             $result .= formatresult("Ok !","<span style='color:green;'>","</span>");
