@@ -39,21 +39,7 @@ CREATE TABLE grr_overload (id int(11) NOT NULL auto_increment, id_area INT NOT N
 DROP TABLE IF EXISTS grr_entry_moderate;
 CREATE TABLE grr_entry_moderate (id int(11) NOT NULL auto_increment, login_moderateur varchar(40) NOT NULL default '',motivation_moderation text NOT NULL,start_time int(11) NOT NULL default '0',end_time int(11) NOT NULL default '0',entry_type int(11) NOT NULL default '0', repeat_id int(11) NOT NULL default '0',room_id int(11) NOT NULL default '1',timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, create_by varchar(100) NOT NULL default '', beneficiaire_ext varchar(200) NOT NULL default '', beneficiaire varchar(100) NOT NULL default '', name varchar(80) NOT NULL default '',type char(2) default NULL,description text,statut_entry char(1) NOT NULL default '-',option_reservation int(11) NOT NULL default '0',overload_desc text,moderate tinyint(1) default '0', PRIMARY KEY  (id), KEY idxStartTime (start_time), KEY idxEndTime (end_time));
 DROP TABLE IF EXISTS grr_site;
-CREATE TABLE grr_site (
-  id int(11) NOT NULL AUTO_INCREMENT,
-  sitecode varchar(10) DEFAULT NULL,
-  sitename varchar(50) NOT NULL DEFAULT '',
-  adresse_ligne1 varchar(38) DEFAULT NULL,
-  adresse_ligne2 varchar(38) DEFAULT NULL,
-  adresse_ligne3 varchar(38) DEFAULT NULL,
-  cp varchar(5) DEFAULT NULL,
-  ville varchar(50) DEFAULT NULL,
-  pays varchar(50) DEFAULT NULL,
-  tel varchar(25) DEFAULT NULL,
-  fax varchar(25) DEFAULT NULL,
-  PRIMARY KEY (id),
-  UNIQUE KEY name (sitename),
-  UNIQUE KEY code (sitecode));
+CREATE TABLE grr_site ( id int(11) NOT NULL AUTO_INCREMENT, sitecode varchar(10) DEFAULT NULL, sitename varchar(50) NOT NULL DEFAULT '', adresse_ligne1 varchar(38) DEFAULT NULL, adresse_ligne2 varchar(38) DEFAULT NULL, adresse_ligne3 varchar(38) DEFAULT NULL, cp varchar(5) DEFAULT NULL, ville varchar(50) DEFAULT NULL, pays varchar(50) DEFAULT NULL, tel varchar(25) DEFAULT NULL, fax varchar(25) DEFAULT NULL, PRIMARY KEY (id), UNIQUE KEY name (sitename), UNIQUE KEY code (sitecode));
 DROP TABLE IF EXISTS grr_j_site_area;
 CREATE TABLE grr_j_site_area ( id_site int(11) NOT NULL default '0', id_area int(11) NOT NULL default '0', PRIMARY KEY  (`id_site`,`id_area`));
 DROP TABLE IF EXISTS grr_j_useradmin_site;
@@ -68,12 +54,12 @@ CREATE TABLE grr_modulesext ( nom varchar(50) NOT NULL, actif tinyint(1) NOT NUL
 INSERT INTO grr_area VALUES (NULL, 'Domaine 1', 'a', 0, '', 8, 19, -1, 1800, 0, 1, 1, 'n', 'n', 'yyyyyyy', -1, 1800, -1);
 INSERT INTO grr_room VALUES (NULL, '1', 'Ressource 1', '', '0', '-1', '1', 'n', '', '', 'n', '-1', '0', 'n', 'n', '0', '0', '0', '0', '5', 'y', 'y', '0');
 INSERT INTO grr_type_area VALUES (1, 'Cours', 1, 1, '#1abc9c', 'A', 2, '#000');
-INSERT INTO grr_type_area VALUES (2, 'Rï¿½union', 2, 2, '#C03000', 'B', 2, '#FFF');
+INSERT INTO grr_type_area VALUES (2, 'Réunion', 2, 2, '#C03000', 'B', 2, '#FFF');
 INSERT INTO grr_type_area VALUES (3, 'Autre', 3, 3, '#4BB5C1', 'C', 2, '#000');
 INSERT INTO grr_utilisateurs VALUES ('ADMINISTRATEUR', 'Administrateur', 'grr', 'ab4f63f9ac65152575886860dde480a1', 0, 'admin@labas.fr', 'administrateur', 'actif', 0, 0, 0, 'default', 'item', 'fr','local');
 INSERT INTO grr_setting VALUES ('sessionMaxLength', '30');
 INSERT INTO grr_setting VALUES ('automatic_mail', 'yes');
-INSERT INTO grr_setting VALUES ('company', 'Nom de l\'ï¿½tablissement');
+INSERT INTO grr_setting VALUES ('company', 'Nom de l\'établissement');
 INSERT INTO grr_setting VALUES ('webmaster_name', 'Webmestre de GRR');
 INSERT INTO grr_setting VALUES ('webmaster_email', 'admin@mon.site.fr');
 INSERT INTO grr_setting VALUES ('technical_support_email', 'support.technique@mon.site.fr');
@@ -82,8 +68,8 @@ INSERT INTO grr_setting VALUES ('disable_login', 'no');
 INSERT INTO grr_setting VALUES ('ip_autorise', '');
 INSERT INTO grr_setting VALUES ('begin_bookings', '1514761200');
 INSERT INTO grr_setting VALUES ('end_bookings', '1609369200');
-INSERT INTO grr_setting VALUES ('title_home_page', 'Gestion et Rï¿½servation de Ressources');
-INSERT INTO grr_setting VALUES ('message_home_page', 'En raison du caractï¿½re personnel du contenu, ce site est soumis ï¿½ des restrictions utilisateurs. Pour accï¿½der aux outils de rï¿½servation, identifiez-vous :');
+INSERT INTO grr_setting VALUES ('title_home_page', 'Gestion et Réservation de Ressources');
+INSERT INTO grr_setting VALUES ('message_home_page', 'En raison du caractère personnel du contenu, ce site est soumis à des restrictions utilisateurs. Pour accéder aux outils de réservation, identifiez-vous :');
 INSERT INTO grr_setting VALUES ('version', '3.4.2');
 INSERT INTO grr_setting VALUES ('versionRC', '1');
 INSERT INTO grr_setting VALUES ('default_language', 'fr');
