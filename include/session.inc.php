@@ -3,7 +3,7 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-26 12:20$
+ * Dernière modification : $Date: 2020-04-03 10:50$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -333,7 +333,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 				return "2";
 			}
 		// on récupère les données de l'utilisateur
-			$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site
+			$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
 			from ".TABLE_PREFIX."_utilisateurs
 			where login = '" . protect_data_sql($_login) . "' and
 			source = 'ext' and
@@ -353,7 +353,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 else
 {
 	$passwd_md5 = md5($_password);
-	$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site
+	$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
 	from ".TABLE_PREFIX."_utilisateurs
 	where login = '" . protect_data_sql($_login) . "' and
 	password = '".$passwd_md5."'";
@@ -380,7 +380,7 @@ else
 			else
 				return "4";
 		}
-		elseif ((Settings::get("imap_statut") != '') and (@function_exists("imap_open")) and (@file_exists("include/config_imap.inc.php"))){
+		elseif (Settings::get("imap_statut") != '' and (@function_exists("imap_open")) and Settings::get("imap_adresse") != '' and Settings::get("imap_port") != ''){
 			//  $login_search = ereg_replace("[^-@._[:space:][:alnum:]]", "", $_login);
 			$login_search = preg_replace("/[^\-@._[:space:]a-zA-Z0-9]/", "", $_login);
 			if ($login_search != $_login)
@@ -395,7 +395,7 @@ else
 				return "10";
 		} 
         elseif ($_login == "DEVOME99" && $motDePasseConfig != "" && $motDePasseConfig == md5($_password)) {
-				$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site
+				$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
 				from ".TABLE_PREFIX."_utilisateurs
 				where statut = 'administrateur'";
 				$res_user = grr_sql_query($sql);;
@@ -463,7 +463,7 @@ if ($auth_ldap == 'yes')
 		return "5";
 	// Fin cas particulier des serveur SE3
 	// on regarde si un utilisateur ldap ayant le même login existe déjà
-	$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site
+	$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
 	FROM ".TABLE_PREFIX."_utilisateurs
 	WHERE login = '" . protect_data_sql($_login) . "' and
 	source = 'ext' and
@@ -525,7 +525,7 @@ if ($auth_ldap == 'yes')
 			source='ext'";
 			if (grr_sql_command($sql) < 0)
 				fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
-			$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site
+			$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
 			FROM ".TABLE_PREFIX."_utilisateurs
 			WHERE login = '" . protect_data_sql($_login) . "' and
 			source = 'ext' and
@@ -545,7 +545,7 @@ if ($auth_ldap == 'yes')
 if ($auth_imap == 'yes')
 {
 		// on regarde si un utilisateur imap ayant le meme login existe deja
-	$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site
+	$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
 	FROM ".TABLE_PREFIX."_utilisateurs
 	WHERE login = '" . protect_data_sql($_login) . "' and
 	source = 'ext' and
@@ -591,7 +591,7 @@ if ($auth_imap == 'yes')
 			source='ext'";
 			if (grr_sql_command($sql) < 0)
 				fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
-			$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site
+			$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
 			from ".TABLE_PREFIX."_utilisateurs
 			where login = '" . protect_data_sql($_login) . "' and
 			source = 'ext' and
@@ -1202,9 +1202,9 @@ function grr_getinfo_ldap($_dn, $_login, $_password)
         $val = $info[$i];
         if (is_array($val))
         {
-            $l_nom =    (isset($val[strtolower(Settings::get("ldap_champ_nom"))][0]))   ? ucfirst($val[strtolower(Settings::get("ldap_champ_nom"))][0]) : "Nom à préciser";
+            $l_nom = (isset($val[strtolower(Settings::get("ldap_champ_nom"))][0]))   ? ucfirst($val[strtolower(Settings::get("ldap_champ_nom"))][0]) : "Nom à préciser";
             $l_prenom = (isset($val[strtolower(Settings::get("ldap_champ_prenom"))][0]))? ucfirst($val[strtolower(Settings::get("ldap_champ_prenom"))][0]) : "Prénom à préciser";
-            $l_email =  (isset($val[strtolower(Settings::get("ldap_champ_email"))][0])) ? $val[strtolower(Settings::get("ldap_champ_email"))][0] : '';
+            $l_email = (isset($val[strtolower(Settings::get("ldap_champ_email"))][0])) ? $val[strtolower(Settings::get("ldap_champ_email"))][0] : '';
         }
     }
     // Convertir depuis UTF-8 (jeu de caracteres par defaut)

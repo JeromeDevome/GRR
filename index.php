@@ -18,21 +18,21 @@ $grr_script_name = "index.php";
 /* à décommenter si besoin de débogage 
 if (!@file_exists("/var/www/lcs/includes/headerauth.inc.php"))
 	error_reporting (E_ALL);*/
-require_once("include/config.inc.php");
-if (file_exists("include/connect.inc.php"))
-	include "include/connect.inc.php";
-require_once("include/misc.inc.php");
-require_once("include/functions.inc.php");
-require_once("include/settings.class.php");
+require_once("./include/config.inc.php");
+if (file_exists("./include/connect.inc.php"))
+	include "./include/connect.inc.php";
+require_once("./include/misc.inc.php");
+require_once("./include/functions.inc.php");
+require_once("./include/settings.class.php");
 // Paramètres langage
-include "include/language.inc.php";
+include "./include/language.inc.php";
 // Dans le cas d'une base mysql, on teste la bonne installation de la base et on propose une installation automatisée.
 if ($dbsys == "mysql")
 {
 	$flag = '';
 	$correct_install = '';
 	$msg = '';
-	if (file_exists("include/connect.inc.php"))
+	if (file_exists("./include/connect.inc.php"))
 	{
 		require_once("include/connect.inc.php");
 		$db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbDb", "$dbPort");
@@ -78,7 +78,7 @@ if ($dbsys == "mysql")
 	{
 		// echo begin_page("GRR (Gestion et Réservation de Ressources) ");
         echo '<!DOCTYPE html>'.PHP_EOL.'<html lang="fr">';
-        echo pageHead2("GRR (Gestion et Réservation de Ressources) ");
+        echo pageHead2("GRR (Gestion et Réservation de Ressources) ","no_session");
         echo "<body>";
 		echo "<h1 class=\"center\">Gestion et Réservation de Ressources</h1>\n";
 		echo "<div style=\"text-align:center;\"><span style=\"color:red;font-weight:bold\">".$msg."</span>\n";
@@ -91,7 +91,7 @@ if ($dbsys == "mysql")
         die();
     }
 }
-require_once("include/$dbsys.inc.php");
+require_once("./include/$dbsys.inc.php");
 require_once("./include/session.inc.php");
 //Settings
 require_once("./include/settings.class.php");
