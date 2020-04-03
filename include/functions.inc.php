@@ -860,7 +860,7 @@ function begin_page($title, $page = "with_session")
 	header('Content-Type: text/html; charset=utf-8');
 	if (!isset($_COOKIE['open']))
 	{
-		setcookie("open", "true", time()+3600, "", "", false, true);
+		setcookie("open", "true", time()+3600, "", "", false, false);
 	}
 	$a = '<!DOCTYPE html>'.PHP_EOL;
 	$a .= '<html lang="fr">'.PHP_EOL;
@@ -5458,7 +5458,7 @@ function pageHead2($title, $page = "with_session")
 	header('Content-Type: text/html; charset=utf-8');
 	if (!isset($_COOKIE['open']))
 	{
-		setcookie("open", "true", time()+3600, "", "", false, true);
+		setcookie("open", "true", time()+3600, "", "", false, false);
 	}
     // code de la partie <head> 
 	$a  = '<head>'.PHP_EOL;
