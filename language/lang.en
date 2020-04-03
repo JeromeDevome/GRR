@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2020-03-21
+# Last modification : 2020-04-04
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -344,6 +344,7 @@ $vocab['droits_insuffisants_pour_voir_ressources'] = "You don not have the right
 $vocab['duplicate_field'] = "A field with the same name already exists in the area";
 $vocab['duplique_domaine'] = "Duplicate the area"; 
 $vocab['duplique_ressource'] = "Duplicate the resource"; 
+$vocab['duplicate_sitecode_name'] = "Code and site name must be unique";
 $vocab['duration'] = "Duration:";
 $vocab['duree_max_resa_area'] = "Maximal duration in minutes (a day = 1440 minutes) for a reservation (-1 if there is no restriction).<br /><i>This limitation doesn't concern the resource managers and administrators of the area.</i>";
 $vocab['duree_max_resa_area2'] = "Maximal duration in days for a reservation (-1 if there is no restriction).<br /><i>This limitation doesn't concern the resource managers and administrators of the area.</i>

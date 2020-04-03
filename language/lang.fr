@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2020-03-21
+# Last modification : 2020-04-04
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -349,6 +349,7 @@ $vocab['droits_insuffisants_pour_voir_ressources'] = "Vous n'avez pas les droits
 $vocab['duplicate_field'] = "Un champ additionnel avec le même nom existe déjà dans le domaine";
 $vocab['duplique_domaine'] = "Dupliquer le domaine";
 $vocab['duplique_ressource'] = "Dupliquer la ressource";
+$vocab['duplicate_sitecode_name'] = "Code et nom du site doivent être uniques";
 $vocab['duration'] = "Durée :";
 $vocab['duree_max_resa_area'] = "Durée maximale en minutes (une journée = 1440 minutes) pour une réservation (-1 si pas de restriction)<br /><i>Cette limitation ne touche pas les administrateurs et gestionnaires des ressources du domaine</i>";
 $vocab['duree_max_resa_area2'] = "Durée maximale en jours pour une réservation (-1 si pas de restriction)<br /><i>Cette limitation ne touche pas les administrateurs et gestionnaires des ressources du domaine</i>";

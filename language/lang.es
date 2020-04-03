@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2020-03-21
+# Last modification : 2020-04-04
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -343,6 +343,7 @@ $vocab['droits_insuffisants_pour_voir_ressources'] = "Vous n'avez pas les droits
 $vocab['duplicate_field'] = "A field with the same name already exists in the area";// À traduire
 $vocab['duplique_domaine'] = "Dupliquer le domaine"; // A traduire
 $vocab['duplique_ressource'] = "Dupliquer la ressource"; // A traduire
+$vocab['duplicate_sitecode_name'] = "Code and site name must be unique"; // À traduire
 $vocab['duration'] = "Duración :";
 $vocab['duree_max_resa_area'] = "Duración máxima en minutos (una jornada = 1440 minutos) para una reserva (-1 si no hay restricción) <br /><i>Esta limitación no afecta a los gestores del recurso así como a los administradores del campo.</i>";
 $vocab['duree_max_resa_area2'] = "Duración máxima en días para una reserva (-1 si no hay restricción) <br /><i>Esta limitación no afecta a los gestores del recurso así como a los administradores del campo.</i>";

@@ -114,7 +114,7 @@ function create_site($id_site)
 		{
 			$_POST['save'] = 'no';
 			$_GET['save'] = 'no';
-			echo '<span class="avertissement">'.get_vocab('required').'</span>';
+			echo '<div class="avertissement">'.get_vocab('required').'</div>';
 		}
 		// Sauvegarde du record
 		if ((isset($_POST['save']) && ($_POST['save'] != 'no')) || ((isset($_GET['save'])) && ($_GET['save'] != 'no')))
@@ -369,6 +369,8 @@ else
     $msg = '';
 // Lecture des paramètres passés à la page
 $id_site = isset($_POST['id']) ? $_POST['id'] : (isset($_GET['id']) ? $_GET['id'] : NULL);
+if (isset($id_site))
+    $id_site = intval($id_site);
 $action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GET['action'] : NULL);
 if ($action == NULL)
     $action = 'read';
