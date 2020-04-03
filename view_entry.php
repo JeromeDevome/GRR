@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-24 10:45$
+ * Dernière modification : $Date: 2020-04-03 11:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -59,7 +59,7 @@ else
 }	
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars_decode($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 // echo $back;
 if (isset($_GET["action_moderate"])){
     // ici on a l'id de la réservation, on peut donc construire un lien de retour complet, à la bonne date et avec la ressource précise
@@ -594,7 +594,8 @@ if (Settings::get("pdf") == '1'){
     if ((authGetUserLevel(getUserName(), $area_id, "area") > 1) || (authGetUserLevel(getUserName(), $room) >= 4))
        echo '<br><input class="btn btn-primary" onclick="myFunction(',$id,')" value="',get_vocab("Generer_pdf"),'" />',PHP_EOL;
 }
-// début du formulaire
+// début du formulaire, n'a lieu d'être affiché que pour un utilisateur autorisé
+if ($fin_session == 'n'){
 echo "<form action=\"view_entry.php\" method=\"get\">\n";
 echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
 if (isset($_GET['page']))
@@ -710,6 +711,7 @@ echo '<input type="hidden" name="id" value="',$id,'" />',PHP_EOL;
 echo '<input type="hidden" name="back" value="',$back,'" /></div>',PHP_EOL;
 echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"commit\" value=\"".get_vocab("save")."\" /></div>\n";
 echo '</form>',PHP_EOL;
+} // fin du formulaire
 //include_once('include/trailer.inc.php');
 if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')) // si mode page, on ferme le container
 {
