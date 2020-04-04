@@ -3,7 +3,7 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-01-10 18:50 $
+ * Dernière modification : $Date: 2020-04-04 10:05 $
  * @author    Yan Naessens, Laurent Delineau 
  * @copyright Copyright 2003-2020 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -609,11 +609,21 @@ affiche_pop_up(get_vocab("message_records"),"user");
 echo  "<div id=\"popup_name\" class=\"popup_block\" ></div>";
 if ($_GET['pview'] != 1)
 {
-	echo "<div id=\"toTop\"> ^ Haut de la page";
-    bouton_retour_haut ();
-    echo " </div>";
+	echo '<div id="toTop">'.PHP_EOL;
+	echo '<b>'.get_vocab('top_of_page').'</b>'.PHP_EOL;
+	bouton_retour_haut ();
+	echo '</div>'.PHP_EOL;
 }
-
 echo "</section>";
 echo "</body></html>";
 ?>
+<script type="text/javascript">
+	$(document).ready(function(){
+        if ( $(window).scrollTop() == 0 )
+            $("#toTop").hide(1);
+	});
+	jQuery(document).ready(function($){
+		$("#popup_name").draggable({containment: "#container"});
+		$("#popup_name").resizable();
+	});
+</script>

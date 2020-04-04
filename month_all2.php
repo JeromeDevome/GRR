@@ -3,9 +3,9 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-12-29 14:00$
+ * Dernière modification : $Date: 2020-04-04 10:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -525,10 +525,20 @@ echo " </div>"; // fermeture du div planning2
 echo  "<div id=\"popup_name\" class=\"popup_block\" ></div>";
 if ($_GET['pview'] != 1)
 {
-	echo "<div id=\"toTop\"> ^ Haut de la page";
+	echo "<div id=\"toTop\"><b>".get_vocab('top_of_page').'</b>'.PHP_EOL;
     bouton_retour_haut ();
     echo " </div>";
 }
 affiche_pop_up(get_vocab("message_records"),"user");
 end_page();
 ?>
+<script type="text/javascript">
+	$(document).ready(function(){
+        if ( $(window).scrollTop() == 0 )
+            $("#toTop").hide(1);
+	});
+	jQuery(document).ready(function($){
+		$("#popup_name").draggable({containment: "#container"});
+		$("#popup_name").resizable();
+	});
+</script>

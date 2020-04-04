@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-01-25 11:30$
+ * Dernière modification : $Date: 2020-04-04 10:07$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -642,17 +642,6 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 			$num_week_day++;
 			$num_week_day = $num_week_day % 7;
 		}
-	
-		echo '<script type="text/javascript">			
-				jQuery(document).ready(function($){
-					$("#popup_name").draggable({containment: "#container"});
-					$("#popup_name").resizable(
-					{
-						animate: true
-					}
-					);
-				});
-			</script>';	
 		echo '</tr>'.PHP_EOL;
 	}
 }
@@ -666,10 +655,25 @@ if ($_GET['pview'] != 1)
 }
 echo '</div>'.PHP_EOL; // planning2
 echo '</section>'.PHP_EOL; // row
-
 unset($row);
-
 echo '<div id="popup_name" class="popup_block col-xs-12" ></div>'.PHP_EOL;
-
 echo "</body></html>";
 ?>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('table.table-bordered td').each(function(){
+			var $row = $(this);
+			var height = $row.height();
+			var h2 = $row.find('a').height();
+			$row.find('a').css('min-height', height);
+			$row.find('a').css('padding-top', height/2 - h2/2);
+
+		});
+        if ( $(window).scrollTop() == 0 )
+            $("#toTop").hide(1);
+	});
+	jQuery(document).ready(function($){
+		$("#popup_name").draggable({containment: "#container"});
+		$("#popup_name").resizable({animate: true});
+	});
+</script>
