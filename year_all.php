@@ -1,11 +1,11 @@
 <?php
 /**
  * year_all.php
- * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un site
+ * Interface d'accueil avec affichage par mois sur plusieurs mois des réservations de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-04-03 14:40 $
+ * Dernière modification : $Date: 2020-04-04 10:50 $
  * @author    Yan Naessens, Laurent Delineau 
- * @copyright Copyright 2003-2019 Yan Naessens, Laurent Delineau
+ * @copyright Copyright 2003-2020 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -371,8 +371,12 @@ else
                     //row[10]= type de la réservation
                     //row[11]= Modération
                     //row[12]= Bénéficiaire extérieur
-                    $sql = 'SELECT start_time, end_time, '.TABLE_PREFIX.'_entry.id, name, beneficiaire, room_name, statut_entry, '.TABLE_PREFIX.'_entry.description, option_reservation, '.TABLE_PREFIX.'_room.delais_option_reservation, type,'.TABLE_PREFIX.'_entry.moderate, beneficiaire_ext FROM '.TABLE_PREFIX.'_entry INNER JOIN '.TABLE_PREFIX.'_room ON '.TABLE_PREFIX.'_entry.room_id='.TABLE_PREFIX.'_room.id WHERE (start_time <= '.$end_month.' AND end_time > '.$begin_month.' AND '.TABLE_PREFIX.'_entry.room_id='.$room_id.') ORDER by start_time, end_time';
-                    //Build an array of information about each day in the month.
+					//row[13]= Type_name
+                    $sql = 'SELECT start_time, end_time, '.TABLE_PREFIX.'_entry.id, name, beneficiaire, room_name, statut_entry, '.TABLE_PREFIX.'_entry.description, option_reservation, '.TABLE_PREFIX.'_room.delais_option_reservation, type,'.TABLE_PREFIX.'_entry.moderate, beneficiaire_ext, '.TABLE_PREFIX.'_type_area.type_name 
+					FROM ('.TABLE_PREFIX.'_entry INNER JOIN '.TABLE_PREFIX.'_room ON '.TABLE_PREFIX.'_entry.room_id='.TABLE_PREFIX.'_room.id) INNER JOIN '.TABLE_PREFIX.'_type_area on '.TABLE_PREFIX.'_entry.type='.TABLE_PREFIX.'_type_area.type_letter
+					WHERE (start_time <= '.$end_month.' AND end_time > '.$begin_month.' AND '.TABLE_PREFIX.'_entry.room_id='.$room_id.') 
+					ORDER by start_time, end_time';
+					//Build an array of information about each day in the month.
                     //The information is stored as:
                     // $d[monthday]["id"][] = ID of each entry, for linking.
                     // $d[monthday]["data"][] = "start-stop" times of each entry.
@@ -384,6 +388,8 @@ else
                     { // les données sont bien recueillies
                         for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
                         {
+							if ($row[13] <> (Settings::get('exclude_type_in_views_all')))          // Nom du type à exclure  
+							{          
                             //Fill in data for each day during the month that this meeting ($row) covers. 
                             $t = max((int)$row[0], $begin_month);
                             $end_t = min((int)$row[1], $end_month);
@@ -498,7 +504,8 @@ else
                                 $year_num  = date("Y", $t);
                                 // ici fin du traitement des données
                             }
-                        }
+                        }           // MOdifExclure Ajouté
+						}
                         // afficher les données
                         /* echo "<div>"."afficher les données";
                         print_r($d);
@@ -565,7 +572,7 @@ else
                                                     else
                                                     {
                                                         echo "<a class=\"lienCellule\" title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday][$cmonth][$cyear]["id"][$i]."&amp;page=year_all\">"
-                                                        .substr($d[$cday]["who1"][$i],0,4)
+                                                        .substr($d[$cday][$cmonth][$cyear]["who1"][$i],0,4)
                                                         . "</a>";
                                                     }
                                                 }    
@@ -602,11 +609,21 @@ affiche_pop_up(get_vocab("message_records"),"user");
 echo  "<div id=\"popup_name\" class=\"popup_block\" ></div>";
 if ($_GET['pview'] != 1)
 {
-	echo "<div id=\"toTop\"> ^ Haut de la page";
-    bouton_retour_haut ();
-    echo " </div>";
+	echo '<div id="toTop">'.PHP_EOL;
+	echo '<b>'.get_vocab('top_of_page').'</b>'.PHP_EOL;
+	bouton_retour_haut ();
+	echo '</div>'.PHP_EOL;
 }
-
 echo "</section>";
 echo "</body></html>";
 ?>
+<script type="text/javascript">
+	$(document).ready(function(){
+        if ( $(window).scrollTop() == 0 )
+            $("#toTop").hide(1);
+	});
+	jQuery(document).ready(function($){
+		$("#popup_name").draggable({containment: "#container"});
+		$("#popup_name").resizable();
+	});
+</script>

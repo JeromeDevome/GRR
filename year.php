@@ -3,9 +3,9 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-26 15:00$
+ * Dernière modification : $Date: 2020-04-04 10:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -183,6 +183,12 @@ if ($enable_periods == 'y')
 }
 //Used below: localized "all day" text but with non-breaking spaces:
 $all_day = preg_replace("/ /", " ", get_vocab("all_day"));
+// un type à exclure ?
+$type_exclu = Settings::get('exclude_type_in_views_all'); // nom du type exclu
+$sql = "SELECT type_letter FROM ".TABLE_PREFIX."_type_area WHERE ".TABLE_PREFIX."_type_area.type_name = '".$type_exclu."' ";
+$res = grr_sql_query($sql);
+$row = grr_sql_row($res,'0');
+$typeExclu = (isset($row[0]))? $row[0]:NULL; // lettre identifiant le type exclu  
 //Get all meetings for this month in the room that we care about
 //row[0] = Start time
 //row[1] = End time
@@ -192,9 +198,16 @@ $all_day = preg_replace("/ /", " ", get_vocab("all_day"));
 //row[5] = Nom de la ressource
 //row[6] = statut
 //row[7] = Description complète
-$sql = "SELECT start_time, end_time,".TABLE_PREFIX."_entry.id, name, beneficiaire, room_name, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, type, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext
-FROM ".TABLE_PREFIX."_entry inner join ".TABLE_PREFIX."_room on ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id
-WHERE (start_time <= $month_end AND end_time > $month_start and area_id='".$area."')
+//row[8] = option reservation
+//row[9] = delai option reservation
+//row[10]= type  -> lettre du type de l'entrée
+//row[11]= état de la modération
+//row[12]= bénéficiaire extérieur
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire,
+ room_name, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation,
+ ".TABLE_PREFIX."_room.delais_option_reservation, type, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext
+FROM ".TABLE_PREFIX."_entry inner join ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id
+WHERE (start_time <= $month_end AND end_time > $month_start and area_id='".$area."' AND type <> '".$typeExclu."')
 ORDER by start_time, end_time, ".TABLE_PREFIX."_room.room_name";
 //Build an array of information about each day in the month.
 //The information is stored as:
@@ -378,7 +391,7 @@ while ($month_indice < $month_end)
 	$month_num = date("m", $month_indice);
 	$year_num  = date("Y", $month_indice);
 	$days_in_month = date("t", $month_indice);
-    echo "<table class='mois table-bordered'>";
+    echo "<table class='mois table-bordered table-striped'>";
     echo "<caption>";
     echo "<h4><a href='month_all2.php?month=".$month_num."&year=".$year_num."&area=".$area."'>".ucfirst(utf8_strftime("%B", $month_indice))."</a>".utf8_strftime(" %Y", $month_indice)."</h4>";
     echo "</caption>";
@@ -470,7 +483,7 @@ while ($month_indice < $month_end)
 								if ($d[$cday][$cmonth][$cyear]["room"][$i] == $row[0]) // test peu fiable car c'est l'id qui est unique YN le 26/02/2018
 								{
 										//if ($i > 0 && $i % 2 == 0) echo "<br />"; else echo " ";
-									echo "\n<table class='table-header table-bordered' ><tr>\n";
+									echo "\n<table class='pleine table-bordered' ><tr>\n";
 									tdcell($d[$cday][$cmonth][$cyear]["color"][$i]);
 									if ($d[$cday][$cmonth][$cyear]["res"][$i] != '-')
 										echo " <img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> \n";
@@ -486,12 +499,12 @@ while ($month_indice < $month_end)
 										{
 											$currentPage = 'year';
 											$id =   $d[$cday][$cmonth][$cyear]["id"][$i];
-											echo "<a title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" data-width=\"675\" onclick=\"request($id,$cday,$cmonth,$cyear,'all','$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight\">" .substr($d[$cday][$cmonth][$cyear]["who1"][$i],0,4)."</a>";
+											echo "<a title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" data-width=\"675\" onclick=\"request($id,$cday,$cmonth,$cyear,'all','$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight lienCellule\">" .substr($d[$cday][$cmonth][$cyear]["who1"][$i],0,4)."</a>";
 										}
 										else
 										{
 											echo "<a class=\"lienCellule\" title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday][$cmonth][$cyear]["id"][$i]."&amp;page=year\">"
-											.substr($d[$cday]["who1"][$i],0,4)
+											.substr($d[$cday][$cmonth][$cyear]["who1"][$i],0,4)
 											. "</a>";
 										}
 									}
@@ -513,21 +526,34 @@ while ($month_indice < $month_end)
 	$month_indice = mktime(0, 0, 0, $month_num + 1, 1, $year_num);
 // Fin de la boucle sur les mois
 }
-echo "<div class='titre_planning'>";
+echo "<div class='pleine center'>";
+echo "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12'>";
 show_colour_key($area);
-// echo "</div>";
-// Affichage d'un message pop-up
-affiche_pop_up(get_vocab("message_records"),"user");
+echo "</div>";
+echo "<div class='col-xs-12'>";
 include "include/trailer.inc.php";
 echo "</div>";
+echo "</div>";
+// Affichage d'un message pop-up
+affiche_pop_up(get_vocab("message_records"),"user");
 echo  "<div id=\"popup_name\" class=\"popup_block\" ></div>";
 if ($_GET['pview'] != 1)
 {
-	echo "<div id=\"toTop\"> ^ Haut de la page";
-    bouton_retour_haut ();
-    echo " </div>";
+	echo '<div id="toTop">'.PHP_EOL;
+	echo '<b>'.get_vocab('top_of_page').'</b>'.PHP_EOL;
+	bouton_retour_haut ();
+	echo '</div>'.PHP_EOL;
 }
-echo " </div>";
 echo "</section>";
 echo "</body></html>";
 ?>
+<script type="text/javascript">
+	$(document).ready(function(){
+        if ( $(window).scrollTop() == 0 )
+            $("#toTop").hide(1);
+	});
+	jQuery(document).ready(function($){
+		$("#popup_name").draggable({containment: "#container"});
+		$("#popup_name").resizable();
+	});
+</script>

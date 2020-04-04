@@ -3,9 +3,9 @@
  * day.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-11-22 18:10$
+ * Dernière modification : $Date: 2020-04-04 10:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -139,7 +139,7 @@ else
 		{
 			$today[$row['0']][$am7]["data"] = affichage_lien_resa_planning($row['3'], $row['4']);
 			if ($settings->get("display_info_bulle") == 1)
-				$today[$row['0']][$am7]["who"] = get_vocab("reservation au nom de").affiche_nom_prenom_email($row['6'], $row['11'], "nomail");
+				$today[$row['0']][$am7]["who"] = get_vocab("reservation_au_nom_de").affiche_nom_prenom_email($row['6'], $row['11'], "nomail");
 			else if ($settings->get("display_info_bulle") == 2)
 				$today[$row['0']][$am7]["who"] = $row['8'];
 			else
@@ -149,7 +149,7 @@ else
 		{
 			$today[$row['0']][$start_t]["data"] = affichage_lien_resa_planning($row['3'], $row['4']);
 			if ($settings->get("display_info_bulle") == 1)
-				$today[$row['0']][$start_t]["who"] = get_vocab("reservation au nom de").affiche_nom_prenom_email($row['6'], $row['11']);
+				$today[$row['0']][$start_t]["who"] = get_vocab("reservation_au_nom_de").affiche_nom_prenom_email($row['6'], $row['11']);
 			else if ($settings->get("display_info_bulle") == 2)
 				$today[$row['0']][$start_t]["who"] = $row['8'];
 			else
@@ -532,9 +532,11 @@ if ($_GET['pview'] != 1)
 	echo '</div>'.PHP_EOL;
 }
 echo '</div>'.PHP_EOL; // fin planning2
-//echo '</div>'.PHP_EOL;
 affiche_pop_up(get_vocab('message_records'), 'user');
-
+unset($row);
+echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
+echo "</section>";
+echo "</body></html>";
 ?>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -546,6 +548,8 @@ affiche_pop_up(get_vocab('message_records'), 'user');
 			$row.find('a').css('padding-top', height/2 - h2/2);
 
 		});
+        if ( $(window).scrollTop() == 0 )
+            $("#toTop").hide(1);
 	});
 	jQuery(document).ready(function($){
 		$("#popup_name").draggable({containment: "#container"});
@@ -553,9 +557,3 @@ affiche_pop_up(get_vocab('message_records'), 'user');
 	});
 
 </script>
-<?php
-unset($row);
-echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
-echo "</section>";
-echo "</body></html>";
-?>

@@ -3,9 +3,9 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-04-03 14:30$
+ * Dernière modification : $Date: 2020-04-04 10:40$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -176,8 +176,8 @@ $ty = date("Y",$i);
 $tm = date("n",$i);
 
 $all_day = preg_replace("/ /", " ", get_vocab("all_day"));
-$sql = "SELECT start_time, end_time,".TABLE_PREFIX."_entry.id, name, beneficiaire, room_name, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, type, ".TABLE_PREFIX."_entry.moderate
-FROM ".TABLE_PREFIX."_entry inner join ".TABLE_PREFIX."_room on ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id
+$sql = "SELECT start_time, end_time,".TABLE_PREFIX."_entry.id, name, beneficiaire, room_name, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, type, ".TABLE_PREFIX."_entry.moderate , ".TABLE_PREFIX."_type_area.type_name 
+FROM (".TABLE_PREFIX."_entry inner join ".TABLE_PREFIX."_room on ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) inner join ".TABLE_PREFIX."_type_area on  ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
 WHERE (start_time <= $month_end AND end_time > $month_start and area_id='".$area."')
 ORDER by start_time, end_time, ".TABLE_PREFIX."_room.room_name";
 $res = grr_sql_query($sql);
@@ -187,112 +187,115 @@ else
 {
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-		$sql_beneficiaire = "SELECT prenom, nom FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$row[4]'";
-		$res_beneficiaire = grr_sql_query($sql_beneficiaire);
-		if ($res_beneficiaire)
-			$row_user = grr_sql_row($res_beneficiaire, 0);
-		if ($debug_flag)
-			echo "<br />DEBUG: result $i, id $row[2], starts $row[0], ends $row[1]\n";
-		$t = max((int)$row[0], $month_start);
-		$end_t = min((int)$row[1], $month_end);
-		$day_num = date("j", $t);
-		if ($enable_periods == 'y')
-			$midnight = mktime(12,0,0,$month,$day_num,$year);
-		else
-			$midnight = mktime(0, 0, 0, $month, $day_num, $year);
-		while ($t < $end_t)
-		{
+		if ($row['12'] <> (Settings::get('exclude_type_in_views_all')))   // Nom du type
+		{ 
+			$sql_beneficiaire = "SELECT prenom, nom FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$row[4]'";
+			$res_beneficiaire = grr_sql_query($sql_beneficiaire);
+			if ($res_beneficiaire)
+				$row_user = grr_sql_row($res_beneficiaire, 0);
 			if ($debug_flag)
-				echo "<br />DEBUG: Entry $row[2] day $day_num\n";
-			$d[$day_num]["id"][] = $row[2];
-			$temp = "";
-			if (Settings::get("display_info_bulle") == 1)
-				$temp = get_vocab("reservee au nom de").$row_user[0]." ".$row_user[1];
-			else if (Settings::get("display_info_bulle") == 2)
-				$temp = $row[7];
-			if ($temp != "")
-				$temp = " - ".$temp;
-			$d[$day_num]["who1"][] = affichage_lien_resa_planning($row[3],$row[2]);
-			$d[$day_num]["room"][] = $row[5] ;
-			$d[$day_num]["res"][] = $row[6];
-			$d[$day_num]["color"][] = $row[10];
-			if ($row[9] > 0)
-				$d[$day_num]["option_reser"][] = $row[8];
-			else
-				$d[$day_num]["option_reser"][] = -1;
-			$d[$day_num]["moderation"][] = $row[11];
-			$midnight_tonight = $midnight + 86400;
+				echo "<br />DEBUG: result $i, id $row[2], starts $row[0], ends $row[1]\n";
+			$t = max((int)$row[0], $month_start);
+			$end_t = min((int)$row[1], $month_end);
+			$day_num = date("j", $t);
 			if ($enable_periods == 'y')
-			{
-				$start_str = preg_replace("/ /", " ", period_time_string($row[0]));
-				$end_str   = preg_replace("/ /", " ", period_time_string($row[1], -1));
-				switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
-				{
-					case "> < ":
-					case "= < ":
-					if ($start_str == $end_str)
-						$d[$day_num]["data"][] = $start_str;
-					else
-						$d[$day_num]["data"][] = $start_str . get_vocab("to") . $end_str;
-					break;
-					case "> = ":
-					$d[$day_num]["data"][] = $start_str . get_vocab("to")."24:00";
-					break;
-					case "> > ":
-					$d[$day_num]["data"][] = $start_str . get_vocab("to")."==>";
-					break;
-					case "= = ":
-					$d[$day_num]["data"][] = $all_day;
-					break;
-					case "= > ":
-					$d[$day_num]["data"][] = $all_day . "==>";
-					break;
-					case "< < ":
-					$d[$day_num]["data"][] = "<==".get_vocab("to") . $end_str;
-					break;
-					case "< = ":
-					$d[$day_num]["data"][] = "<==" . $all_day;
-					break;
-					case "< > ":
-					$d[$day_num]["data"][] = "<==" . $all_day . "==>";
-					break;
-				}
-			}
+				$midnight = mktime(12,0,0,$month,$day_num,$year);
 			else
+				$midnight = mktime(0, 0, 0, $month, $day_num, $year);
+			while ($t < $end_t)
 			{
-				switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
+				if ($debug_flag)
+					echo "<br />DEBUG: Entry $row[2] day $day_num\n";
+				$d[$day_num]["id"][] = $row[2];
+				$temp = "";
+				if (Settings::get("display_info_bulle") == 1)
+					$temp = get_vocab("reservee au nom de").$row_user[0]." ".$row_user[1];
+				else if (Settings::get("display_info_bulle") == 2)
+					$temp = $row[7];
+				if ($temp != "")
+					$temp = " - ".$temp;
+				$d[$day_num]["who1"][] = affichage_lien_resa_planning($row[3],$row[2]);
+				$d[$day_num]["room"][] = $row[5] ;
+				$d[$day_num]["res"][] = $row[6];
+				$d[$day_num]["color"][] = $row[10];
+				if ($row[9] > 0)
+					$d[$day_num]["option_reser"][] = $row[8];
+				else
+					$d[$day_num]["option_reser"][] = -1;
+				$d[$day_num]["moderation"][] = $row[11];
+				$midnight_tonight = $midnight + 86400;
+				if ($enable_periods == 'y')
 				{
-					case "> < ":
-					case "= < ":
-					$d[$day_num]["data"][] = date(hour_min_format(), $row[0]) . get_vocab("to") . date(hour_min_format(), $row[1]);
-					break;
-					case "> = ":
-					$d[$day_num]["data"][] = date(hour_min_format(), $row[0]) . get_vocab("to")."24:00";
-					break;
-					case "> > ":
-					$d[$day_num]["data"][] = date(hour_min_format(), $row[0]) . get_vocab("to")."==>";
-					break;
-					case "= = ":
-					$d[$day_num]["data"][] = $all_day;
-					break;
-					case "= > ":
-					$d[$day_num]["data"][] = $all_day . "==>";
-					break;
-					case "< < ":
-					$d[$day_num]["data"][] = "<==".get_vocab("to") . date(hour_min_format(), $row[1]);
-					break;
-					case "< = ":
-					$d[$day_num]["data"][] = "<==" . $all_day;
-					break;
-					case "< > ":
-					$d[$day_num]["data"][] = "<==" . $all_day . "==>";
-					break;
+					$start_str = preg_replace("/ /", " ", period_time_string($row[0]));
+					$end_str   = preg_replace("/ /", " ", period_time_string($row[1], -1));
+					switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
+					{
+						case "> < ":
+						case "= < ":
+						if ($start_str == $end_str)
+							$d[$day_num]["data"][] = $start_str;
+						else
+							$d[$day_num]["data"][] = $start_str . get_vocab("to") . $end_str;
+						break;
+						case "> = ":
+						$d[$day_num]["data"][] = $start_str . get_vocab("to")."24:00";
+						break;
+						case "> > ":
+						$d[$day_num]["data"][] = $start_str . get_vocab("to")."==>";
+						break;
+						case "= = ":
+						$d[$day_num]["data"][] = $all_day;
+						break;
+						case "= > ":
+						$d[$day_num]["data"][] = $all_day . "==>";
+						break;
+						case "< < ":
+						$d[$day_num]["data"][] = "<==".get_vocab("to") . $end_str;
+						break;
+						case "< = ":
+						$d[$day_num]["data"][] = "<==" . $all_day;
+						break;
+						case "< > ":
+						$d[$day_num]["data"][] = "<==" . $all_day . "==>";
+						break;
+					}
 				}
-			}
-			if ($row[1] <= $midnight_tonight)
-				break;
-			$day_num++;
-			$t = $midnight = $midnight_tonight;
+				else
+				{
+					switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
+					{
+						case "> < ":
+						case "= < ":
+						$d[$day_num]["data"][] = date(hour_min_format(), $row[0]) . get_vocab("to") . date(hour_min_format(), $row[1]);
+						break;
+						case "> = ":
+						$d[$day_num]["data"][] = date(hour_min_format(), $row[0]) . get_vocab("to")."24:00";
+						break;
+						case "> > ":
+						$d[$day_num]["data"][] = date(hour_min_format(), $row[0]) . get_vocab("to")."==>";
+						break;
+						case "= = ":
+						$d[$day_num]["data"][] = $all_day;
+						break;
+						case "= > ":
+						$d[$day_num]["data"][] = $all_day . "==>";
+						break;
+						case "< < ":
+						$d[$day_num]["data"][] = "<==".get_vocab("to") . date(hour_min_format(), $row[1]);
+						break;
+						case "< = ":
+						$d[$day_num]["data"][] = "<==" . $all_day;
+						break;
+						case "< > ":
+						$d[$day_num]["data"][] = "<==" . $all_day . "==>";
+						break;
+					}
+				}
+				if ($row[1] <= $midnight_tonight)
+					break;
+				$day_num++;
+				$t = $midnight = $midnight_tonight;
+		}
 		}
 	}
 }
@@ -319,7 +322,7 @@ if ($_GET['pview'] != 1){
 else{
 	echo '<div id="print_planning">'.PHP_EOL;
 }
-echo "<table class='mois table-bordered table-striped'>";
+echo "<table class='mois floatthead table-bordered table-striped'>";
 // le titre de la table
 echo "<caption>";
 // liens mois avant-après et imprimante si page non imprimable
@@ -328,11 +331,11 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 	echo "\n
 	<div class='ligne23'>
 		<div class=\"left\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$yy&amp;month=$ym&amp;area=$area';\" \"><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("monthbefore")." </button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$yy&amp;month=$ym&amp;area=$area';\" ><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("monthbefore")." </button>
 		</div>";
 		include "./include/trailer.inc.php";
 		echo "<div class=\"right\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$ty&amp;month=$tm&amp;area=$area';\" \">".get_vocab('monthafter')." <span class=\"glyphicon glyphicon-forward\"></button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month_all2.php?year=$ty&amp;month=$tm&amp;area=$area';\" >".get_vocab('monthafter')." <span class=\"glyphicon glyphicon-forward\"></span></button>
 		</div>
 	</div>";
 }
@@ -347,9 +350,9 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
     echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuGauche(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
 	echo "</div>";
 }    
-    echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.get_vocab("all_areas").'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php" title="'.get_vocab('see_all_the_rooms_for_several_months').'">'.ucfirst(utf8_strftime("%Y", $month_start)).'</a></h4>'.PHP_EOL;
+    echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.get_vocab("all_areas").'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php?area='.$area.'" title="'.get_vocab('see_all_the_rooms_for_several_months').'">'.ucfirst(utf8_strftime("%Y", $month_start)).'</a></h4>'.PHP_EOL;
     if ($_GET['pview'] != 1)
-        echo " <a href=\"month_all.php?year=$year&amp;month=$month&amp;area=$area\"><span class='glyphicon glyphicon-refresh'></a>";
+        echo " <a href=\"month_all.php?year=$year&amp;month=$month&amp;area=$area\" title=\" ".get_vocab('default_room_month_all')." \"><span class='glyphicon glyphicon-refresh'></span></a>";
 echo "</div>";
 echo "</caption>";
 if ($_GET['pview'] == 1 && (isset($_GET['precedent']) && $_GET['precedent'] == 1))
@@ -453,7 +456,7 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++) // traitement d'une ressou
 				{
 					if (isset($d[$cday]["id"][0])) // il y a une réservation au moins à afficher
 					{
-                        echo "<table class='table-header table-bordered'>";
+                        echo "<table class='pleine table-bordered'>";
 						$n = count($d[$cday]["id"]);
 						for ($i = 0; $i < $n; $i++)
 						{
@@ -482,7 +485,7 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++) // traitement d'une ressou
 										{
 											$currentPage = 'month_all2';
 											$id =   $d[$cday]["id"][$i];
-											echo "<a title=\"".htmlspecialchars($d[$cday]["data"][$i])."\" data-width=\"675\" onclick=\"request($id,$cday,$month,$year,'all','$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight\">" .substr($d[$cday]["who1"][$i],0,4)."</a>";
+											echo "<a title=\"".htmlspecialchars($d[$cday]["data"][$i])."\" data-width=\"675\" onclick=\"request($id,$cday,$month,$year,'all','$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight lienCellule\">" .substr($d[$cday]["who1"][$i],0,4)."</a>";
 										}
 										else
 										{
@@ -518,16 +521,24 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++) // traitement d'une ressou
 }// fin  du traitement de la ressource
 echo "</tbody>";
 echo "</table>";
-echo " </div>"; //fin du planning
+echo " </div>"; // fermeture du div planning2
 echo  "<div id=\"popup_name\" class=\"popup_block\" ></div>";
 if ($_GET['pview'] != 1)
 {
-	echo "<div id=\"toTop\"> ^ Haut de la page";
+	echo "<div id=\"toTop\"><b>".get_vocab('top_of_page').'</b>'.PHP_EOL;
     bouton_retour_haut ();
     echo " </div>";
 }
-
 affiche_pop_up(get_vocab("message_records"),"user");
-echo "</section>";
-include "footer.php";
+end_page();
 ?>
+<script type="text/javascript">
+	$(document).ready(function(){
+        if ( $(window).scrollTop() == 0 )
+            $("#toTop").hide(1);
+	});
+	jQuery(document).ready(function($){
+		$("#popup_name").draggable({containment: "#container"});
+		$("#popup_name").resizable();
+	});
+</script>

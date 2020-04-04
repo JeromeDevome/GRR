@@ -3,9 +3,9 @@
  * month.php
  * Interface d'accueil avec affichage par mois
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-01-26 19:00$
+ * Dernière modification : $Date: 2020-04-04 10:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -183,11 +183,11 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 	echo "\n
 	<div class='ligne23'>
 		<div class=\"left\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month.php?year=$yy&amp;month=$ym&amp;room=$room';\" \"><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("monthbefore")." </button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month.php?year=$yy&amp;month=$ym&amp;room=$room';\" ><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("monthbefore")." </button>
 		</div>";
 		include "./include/trailer.inc.php";
 		echo "<div class=\"right\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month.php?year=$ty&amp;month=$tm&amp;room=$room';\" \">".get_vocab('monthafter')." <span class=\"glyphicon glyphicon-forward\"></span></button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month.php?year=$ty&amp;month=$tm&amp;room=$room';\">".get_vocab('monthafter')." <span class=\"glyphicon glyphicon-forward\"></span></button>
 		</div>
 	</div>";
 }
@@ -221,7 +221,7 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
     $maxCapacite = "";
 if ($this_room_max  && $_GET['pview'] != 1)
 	$maxCapacite = '('.$this_room_max.' '.($this_room_max > 1 ? get_vocab("number_max2") : get_vocab("number_max")).')'.PHP_EOL;
-echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.$this_room_name.' '.$this_room_name_des.' '.$maxCapacite.'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php" title="'.get_vocab('see_all_the_rooms_for_several_months').'">'.ucfirst(utf8_strftime("%Y", $month_start)).'</a></h4>'.PHP_EOL;
+echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.$this_room_name.' '.$this_room_name_des.' '.$maxCapacite.'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php?area='.$area.'" title="'.get_vocab('see_all_the_rooms_for_several_months').'">'.ucfirst(utf8_strftime("%Y", $month_start)).'</a></h4>'.PHP_EOL;
 if (verif_display_fiche_ressource(getUserName(), $room) && $_GET['pview'] != 1)
 	echo '<a href="javascript:centrerpopup(\'view_room.php?id_room=',$room,'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="',get_vocab("fiche_ressource"),'"><span class="glyphcolor glyphicon glyphicon-search"></span></a>';
 if ($authGetUserLevel > 2 && $_GET['pview'] != 1)
@@ -426,7 +426,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                         echo " ...\n";
                         break;
                     }
-                    echo '<table class="table-header table-bordered table-striped">',PHP_EOL,'<tr>',PHP_EOL;
+                    echo '<table class="pleine table-bordered table-striped">',PHP_EOL,'<tr>',PHP_EOL;
                     tdcell($d[$cday]["color"][$i]);
                     echo '<span class="small_planning">';
                     if ($acces_fiche_reservation)
@@ -435,7 +435,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                         {
                             $currentPage = 'month';
                             $id = $d[$cday]["id"][$i];
-                            echo '<a title="',htmlspecialchars($d[$cday]["who"][$i]),'" data-width="675" onclick="request(',$id,',',$cday,',',$month,',',$year.','.$room.',\''.$currentPage,'\',readData);" data-rel="popup_name" class="poplight">';
+                            echo '<a title="',htmlspecialchars($d[$cday]["who"][$i]),'" data-width="675" onclick="request(',$id,',',$cday,',',$month,',',$year.','.$room.',\''.$currentPage,'\',readData);" data-rel="popup_name" class="poplight lienCellule">';
                         }
                         else
                         {
@@ -447,7 +447,8 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                         echo '<img src="img_grr/flag_moderation.png" alt="',get_vocab("en_attente_moderation"),'" title="',get_vocab("en_attente_moderation"),'" class="image" />',PHP_EOL;
                     echo $d[$cday]["who1"][$i],'<br/>';
                     $Son_GenreRepeat = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area ,".TABLE_PREFIX."_entry  WHERE  ".TABLE_PREFIX."_entry.id= ".$d[$cday]["id"][$i]." AND ".TABLE_PREFIX."_entry.type= ".TABLE_PREFIX."_type_area.type_letter");
-                    echo $Son_GenreRepeat,'<br/>';
+                    if (Settings::get("type") == '1')               
+                        echo $Son_GenreRepeat,'<br/>';
                     if ($d[$cday]["description"][$i] != "")
                         echo '<br /><i>(',$d[$cday]["description"][$i],')</i>';
                     if ($acces_fiche_reservation)
@@ -504,21 +505,19 @@ if ($_GET['pview'] != 1)
     bouton_retour_haut ();
     echo '</div>',PHP_EOL;
 }
-
 echo "</div>"; // fin de planning2
-// </div>
-echo '
-<script type="text/javascript">
-	jQuery(document).ready(function($){
-		$("#popup_name").draggable({containment: "#container"});
-		$("#popup_name").resizable();
-	});
-		
-</script>';
-
 affiche_pop_up(get_vocab("message_records"),"user");
-//echo '</div>'.PHP_EOL; 
 echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
 echo "</section>";
 echo "</body></html>";
 ?>
+<script type="text/javascript">
+	$(document).ready(function(){
+        if ( $(window).scrollTop() == 0 )
+            $("#toTop").hide(1);
+	});
+	jQuery(document).ready(function($){
+		$("#popup_name").draggable({containment: "#container"});
+		$("#popup_name").resizable();
+	});
+</script>
