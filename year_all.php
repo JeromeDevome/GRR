@@ -3,7 +3,7 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-04 10:05 $
+ * Dernière modification : $Date: 2020-04-04 12:15 $
  * @author    Yan Naessens, Laurent Delineau 
  * @copyright Copyright 2003-2020 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -229,7 +229,7 @@ if ($_GET['pview'] != 1)
 // construit la liste des ressources
 if ($site == -1) 
 {   // cas 1 : le multisite n'est pas activé $site devrait être à -1
-    $sql  = "SELECT DISTINCT r.id,r.room_name,a.id FROM ".TABLE_PREFIX."_room r ,".TABLE_PREFIX."_area a ORDER BY a.order_display,r.order_display";
+    $sql  = "SELECT DISTINCT r.id,r.room_name,a.id FROM ".TABLE_PREFIX."_room r JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id ORDER BY a.order_display,r.order_display";
 }
 else
 {
