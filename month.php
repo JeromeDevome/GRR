@@ -3,9 +3,9 @@
  * month.php
  * Interface d'accueil avec affichage par mois
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-11-29 11:20$
+ * Dernière modification : $Date: 2020-04-04 09:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -505,21 +505,19 @@ if ($_GET['pview'] != 1)
     bouton_retour_haut ();
     echo '</div>',PHP_EOL;
 }
-
 echo "</div>"; // fin de planning2
-// </div>
-echo '
-<script type="text/javascript">
-	jQuery(document).ready(function($){
-		$("#popup_name").draggable({containment: "#container"});
-		$("#popup_name").resizable();
-	});
-		
-</script>';
-
 affiche_pop_up(get_vocab("message_records"),"user");
-//echo '</div>'.PHP_EOL; 
 echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
 echo "</section>";
 echo "</body></html>";
 ?>
+<script type="text/javascript">
+	$(document).ready(function(){
+        if ( $(window).scrollTop() == 0 )
+            $("#toTop").hide(1);
+	});
+	jQuery(document).ready(function($){
+		$("#popup_name").draggable({containment: "#container"});
+		$("#popup_name").resizable();
+	});
+</script>

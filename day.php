@@ -3,9 +3,9 @@
  * day.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-11-22 18:10$
+ * Dernière modification : $Date: 2020-04-04 09:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -535,7 +535,10 @@ if ($_GET['pview'] != 1)
 echo '</div>'.PHP_EOL; // fin planning2
 //echo '</div>'.PHP_EOL;
 affiche_pop_up(get_vocab('message_records'), 'user');
-
+unset($row);
+echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
+echo "</section>";
+echo "</body></html>";
 ?>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -547,6 +550,8 @@ affiche_pop_up(get_vocab('message_records'), 'user');
 			$row.find('a').css('padding-top', height/2 - h2/2);
 
 		});
+        if ( $(window).scrollTop() == 0 )
+            $("#toTop").hide(1);
 	});
 	jQuery(document).ready(function($){
 		$("#popup_name").draggable({containment: "#container"});
@@ -554,9 +559,3 @@ affiche_pop_up(get_vocab('message_records'), 'user');
 	});
 
 </script>
-<?php
-unset($row);
-echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
-echo "</section>";
-echo "</body></html>";
-?>
