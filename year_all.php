@@ -229,7 +229,7 @@ if ($_GET['pview'] != 1)
 // construit la liste des ressources
 if ($site == -1) 
 {   // cas 1 : le multisite n'est pas activé $site devrait être à -1
-    $sql  = "SELECT DISTINCT r.id,r.room_name,a.id FROM ".TABLE_PREFIX."_room r ,".TABLE_PREFIX."_area a ORDER BY a.order_display,r.order_display";
+    $sql  = "SELECT DISTINCT r.id,r.room_name,a.id FROM ".TABLE_PREFIX."_room r JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id ORDER BY a.order_display,r.order_display";
 }
 else
 {
