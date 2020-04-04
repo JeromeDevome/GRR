@@ -3,7 +3,7 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservations de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-04 10:50 $
+ * Dernière modification : $Date: 2020-04-04 12:10 $
  * @author    Yan Naessens, Laurent Delineau 
  * @copyright Copyright 2003-2020 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -47,28 +47,28 @@ include "include/language.inc.php";
 // Construction des identifiants du domaine $area, du site $site
 // est-il utile de calculer $area ?
 global $area, $site;
-// echo "paramètres ".$_GET['site']." ".$_GET['area'];
 if (isset($_GET['area']))
-	{
-        $area = mysqli_real_escape_string($GLOBALS['db_c'], $_GET['area']);
-        settype($area, "integer");
-        $site = mrbsGetAreaSite($area);
+{
+    $area = mysqli_real_escape_string($GLOBALS['db_c'], $_GET['area']);
+    settype($area, "integer");
+    $site = mrbsGetAreaSite($area);
+}
+else
+{
+    $area = NULL;
+    if (isset($_GET["site"]))
+    {
+        $site = mysqli_real_escape_string($GLOBALS['db_c'], $_GET["site"]);
+        settype($site, "integer");
+        $area = get_default_area($site);
     }
     else
     {
-        $area = NULL;
-        if (isset($_GET["site"]))
-        {
-            $site = mysqli_real_escape_string($GLOBALS['db_c'], $_GET["site"]);
-            settype($site, "integer");
-            $area = get_default_area($site);
-        }
-        else
-        {
-            $site = get_default_site();
-            $area = get_default_area($site);
-        }
+        $site = get_default_site();
+        $area = get_default_area($site);
     }
+}
+// echo "paramètres ".$site." ".$area;
 // On affiche le lien "format imprimable" en bas de la page
 $affiche_pview = '1';
 if (!isset($_GET['pview']))
@@ -229,7 +229,7 @@ if ($_GET['pview'] != 1)
 // construit la liste des ressources
 if ($site == -1) 
 {   // cas 1 : le multisite n'est pas activé $site devrait être à -1
-    $sql  = "SELECT DISTINCT r.id,r.room_name,a.id FROM ".TABLE_PREFIX."_room r ,".TABLE_PREFIX."_area a ORDER BY a.order_display,r.order_display";
+    $sql  = "SELECT DISTINCT r.id,r.room_name,a.id FROM ".TABLE_PREFIX."_room r JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id ORDER BY a.order_display,r.order_display";
 }
 else
 {
@@ -507,9 +507,9 @@ else
                         }           // MOdifExclure Ajouté
 						}
                         // afficher les données
-                        /* echo "<div>"."afficher les données";
+                        /*echo "<div>"."afficher les données";
                         print_r($d);
-                        echo "</div>"; */
+                        echo "</div>";*/
                         $acces_fiche_reservation = verif_acces_fiche_reservation(getUserName(), $room_id);
                         echo "<tr>";
                         //tdcell("cell_hours");

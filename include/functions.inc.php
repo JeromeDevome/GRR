@@ -2329,7 +2329,10 @@ function make_area_select_all_html( $link, $current_site, $current_area, $year, 
 	$out_html .= '<div><select class="form-control" name="area" ';
 	$out_html .= ' onchange="area_go()" ';
 	$out_html .= '>'.PHP_EOL;
-    $out_html .= "<option value=\"".$link."_all.php?year=$year&amp;site=$current_site\">".get_vocab("any_area")."</option>";
+    $out_html .= "<option value=\"".$link."_all.php?year=$year";
+    if ($current_site != -1) 
+        $out_html .= "&amp;site=$current_site";
+    $out_html .= " \">".get_vocab("any_area")."</option>";
 	$res = grr_sql_query($sql);
 	if ($res)
 	{
