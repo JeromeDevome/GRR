@@ -43,7 +43,7 @@ echo '<!DOCTYPE html>
 				<div class="col-md-8 col-md-offset-1">
 					Bonjour,<br>
 					Suite à votre demande du '.$date.' dernier,
-					nous avons le plaisir de vous informer que la salle '.$salle.' sera mise à votre disposition chaques '.$jourPeriode.' de '.$heure.' à '.$heure2.' à compté du '.$jour.' jusqu\'au '.$finPeriode.'
+					nous avons le plaisir de vous informer que la salle '.$salle.' sera mise à votre disposition chaque '.$jourPeriode.' de '.$heure.' à '.$heure2.' à compter du '.$jour.' jusqu\'au '.$finPeriode.'
 				</div>
 			</div>
 			<div class="row">

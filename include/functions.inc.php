@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-03-30 12:00$
+ * Dernière modification : $Date: 2020-04-05 12:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -879,7 +879,7 @@ function begin_page($title, $page = "with_session")
 		$a .= '<script type="text/javascript" src="../js/html2canvas.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/menu.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jspdf.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/pdf.js" ></script>'.PHP_EOL;
+		// $a .= '<script type="text/javascript" src="../js/pdf.js" ></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/popup.js" charset="utf-8"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/functions.js" ></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/select2.js"></script>'.PHP_EOL;
@@ -922,7 +922,7 @@ function begin_page($title, $page = "with_session")
 		$a .= '<script type="text/javascript" src="js/html2canvas.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jspdf.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/pdf.js" ></script>'.PHP_EOL;
+		// $a .= '<script type="text/javascript" src="js/pdf.js" ></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/popup.js" charset="utf-8"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/functions.js" ></script>'.PHP_EOL;
 		if (isset($use_select2))
@@ -5333,7 +5333,7 @@ function pageHead2($title, $page = "with_session")
         $a .= '<script type="text/javascript" src="../js/jquery.floatThead.min.js"></script>'.PHP_EOL;
         $a .= '<script type="text/javascript" src="../js/planning2Thead.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jspdf.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/pdf.js" ></script>'.PHP_EOL;
+		// $a .= '<script type="text/javascript" src="../js/pdf.js" ></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/popup.js" charset="utf-8"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/functions.js" ></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/select2.js"></script>'.PHP_EOL;
@@ -5377,7 +5377,7 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;     
         $a .= '<script type="text/javascript" src="js/planning2Thead.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jspdf.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/pdf.js" ></script>'.PHP_EOL;
+		// $a .= '<script type="text/javascript" src="js/pdf.js" ></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/popup.js" charset="utf-8"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/functions.js" ></script>'.PHP_EOL;
 		if (isset($use_select2))

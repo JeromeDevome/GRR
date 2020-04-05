@@ -161,7 +161,7 @@ function _setCheckboxesGrr(the_form, do_check, day)
 }
 // end of the 'setCheckboxes()' function
 // Les quatre fonctions qui suivent servent à enregistrer un cookie
-// Elles sont utilisées par edit_enty.php pour conserver les informations de la saisie pour
+// Elles sont utilisées par edit_entry.php pour conserver les informations de la saisie pour
 // pouvoir les récupérer lors d'une erreur.
 //Hugo
 // Voir http://www.howtocreate.co.uk/jslibs/script-saveformvalues
@@ -459,3 +459,9 @@ function menuHaut(){
         }
         setCookie("open",e,365)
 }*/
+/*
+ *Fonction permettant l'ouverture d'un PopUP de la page view entry.php
+ */
+function popUpPdf(id) {
+    var myWindow = window.open("pdfgenerator.php?id="+id+"", "_blank", "width=960");
+}
