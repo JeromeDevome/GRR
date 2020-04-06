@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-04-05 12:00$
+ * Dernière modification : $Date: 2020-04-06 17:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5297,6 +5297,18 @@ function pageHead2($title, $page = "with_session")
 	{
 		setcookie("open", "true", time()+3600, "", "", false, false);
 	}
+    // récupération des couleurs des types
+    $types = '';
+    $sql = "SELECT type_letter,couleurhexa,couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE 1";
+    $res = grr_sql_query($sql);
+    if ($res->num_rows > 0) {
+        $types = "<style>".PHP_EOL;
+        while($row = $res->fetch_assoc()) {
+            $types .= "td.type".$row["type_letter"]."{background:".$row["couleurhexa"]." !important;color:".$row["couleurtexte"]." !important;}".PHP_EOL;
+            $types .= "td.type".$row["type_letter"]." a.lienCellule{color:".$row["couleurtexte"]." !important;}".PHP_EOL;
+        }
+        $types .= "</style>".PHP_EOL;
+    }
     // code de la partie <head> 
 	$a  = '<head>'.PHP_EOL;
 	$a .= '<meta charset="utf-8">'.PHP_EOL;
@@ -5318,7 +5330,8 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
         $a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
         $a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
-        $a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/types.css" />'.PHP_EOL; // les couleurs des types de réservation
+        //$a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/types.css" />'.PHP_EOL; // les couleurs des types de réservation
+        $a .= $types;
 		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 			$a .= '<link rel="stylesheet" type="text/css" href="../themes/print/css/style.css" />'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
@@ -5362,7 +5375,8 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
         $a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
         $a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
-        $a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/types.css" />'.PHP_EOL; // les couleurs des types de réservation        
+        //$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/types.css" />'.PHP_EOL; // les couleurs des types de réservation        
+        $a .= $types;
 		if (isset($use_admin))
 			$a .= '<link rel="stylesheet" type="text/css" href="include/admin_grr.css" />'.PHP_EOL;
 		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
