@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Permet de vérifier la validité de l'édition ou de la création d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-28 11:30$
+ * Dernière modification : $Date: 2020-04-06 11:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -181,7 +181,7 @@ foreach ($overload_fields_list as $overfield=>$fieldtype)
 {
 	$id_field = $overload_fields_list[$overfield]["id"];
 	$fieldname = "addon_".$id_field;
-	if (($overload_fields_list[$overfield]["obligatoire"] == 'y') && ((!isset($_GET[$fieldname])) || (trim($_GET[$fieldname]) == "")))
+	/*if (($overload_fields_list[$overfield]["obligatoire"] == 'y') && ((!isset($_GET[$fieldname])) || (trim($_GET[$fieldname]) == "")))
 	{
 		start_page_w_header();
 		echo "<h2>".get_vocab("required")."</h2>";
@@ -189,13 +189,13 @@ foreach ($overload_fields_list as $overfield=>$fieldtype)
         echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
 		end_page();
 		die();
-	}
+	}*/
 	if (($overload_fields_list[$overfield]["type"] == "numeric") && (isset($_GET[$fieldname])) && ($_GET[$fieldname] != '') && (!preg_match("`^[0-9]*\.{0,1}[0-9]*$`",$_GET[$fieldname])))
 	{
 		start_page_w_header();
 		echo "<h2>".$overload_fields_list[$overfield]["name"].get_vocab("deux_points").get_vocab("is_not_numeric")."</h2>";
-		// echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-        echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
+		echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
+        //echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
 		end_page();
 		die();
 	}
@@ -223,7 +223,7 @@ if (check_begin_end_bookings($day, $month, $year))
 	else
 		$type_session = "with_session"; */
     // cela ma semble inutile ici YN le 04/03/2018
-	showNoBookings($day, $month, $year, $back); //."&amp;Err=yes");
+	showNoBookings($day, $month, $year, $back."&amp;Err=yes");
 	exit();
 }
 if ($type_affichage_reser == 0)
@@ -359,13 +359,13 @@ else
 	}
 }
 if ($endtime <= $starttime)
-	$erreur = 'y';
-if ($erreur == 'y')
+//	$erreur = 'y';
+//if ($erreur == 'y')
 {
 	start_page_w_header();
 	echo "<h2>".get_vocab('error_end_date')."</h2>";
-	//echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-    echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
+	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
+    //echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
 	end_page();
 	die();
 }
@@ -391,8 +391,8 @@ if (resa_est_hors_reservation($starttime_midnight , $endtime_midnight))
 {
 	start_page_w_header();
 	echo "<h2>".get_vocab('error_begin_end_date')."</h2>";
-	// echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-    echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
+	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
+    //echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
 	end_page();
 	die();
 }
@@ -694,8 +694,8 @@ if ($error_booking_in_past == 'yes')
 		echo "<p>" . get_vocab("booking_in_past_explain_with_periodicity") . $str_date."</p>";
 	else
 		echo "<p>" . get_vocab("booking_in_past_explain") . $str_date."</p>";
-	// echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-    echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
+	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
+    //echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
 	end_page();
 	die();
 }
@@ -707,8 +707,8 @@ if ($error_duree_max_resa_area == 'yes')
 	$temps_format = $duree_max_resa_area*60;
 	toTimeString($temps_format, $dur_units, true);
 	echo "<h2>" . get_vocab("error_duree_max_resa_area").$temps_format ." " .$dur_units."</h2>";
-	// echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-    echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
+	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
+    //echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
 	end_page();
 	die();
 }
@@ -717,8 +717,8 @@ if ($error_delais_max_resa_room == 'yes')
 {
 	start_page_w_header();
 	echo "<h2>" . get_vocab("error_delais_max_resa_room") ."</h2>";
-	// echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-    echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
+	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
+    //echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
 	end_page();
 	die();
 }
@@ -726,8 +726,8 @@ if ($error_chevaussement == 'yes')
 {
 	start_page_w_header();
 	echo "<h2>" . get_vocab("error_chevaussement") ."</h2>";
-	// echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-    echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
+	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
+    //echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
 	end_page();
 	die();
 }
@@ -735,8 +735,8 @@ if ($error_delais_min_resa_room == 'yes')
 {
 	start_page_w_header();
 	echo "<h2>" . get_vocab("error_delais_min_resa_room") ."</h2>";
-	// echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-    echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
+	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
+    //echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
 	end_page();
 	die();
 }
@@ -744,8 +744,8 @@ if ($error_date_option_reservation == 'yes')
 {
 	start_page_w_header();
 	echo "<h2>" . get_vocab("error_date_confirm_reservation") ."</h2>";
-	// echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-    echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
+	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
+    //echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
 	end_page();
 	die();
 }
@@ -754,8 +754,8 @@ if ($error_booking_room_out == 'yes')
 	start_page_w_header();
 	echo "<h2>" . get_vocab("norights") . "</h2>";
 	echo "<p><b>" . get_vocab("tentative_reservation_ressource_indisponible") . "</b></p>";
-	// echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-    echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
+	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
+    //echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
 	end_page();
 	die();
 }
@@ -763,8 +763,8 @@ if ($error_qui_peut_reserver_pour == 'yes')
 {
 	start_page_w_header();
 	echo "<h2>" . get_vocab("error_qui_peut_reserver_pour") ."</h2>";
-	// echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-    echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
+	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
+    //echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
 	end_page();
 	die();
 }
@@ -773,8 +773,8 @@ if ($error_heure_debut_fin == 'yes')
 	start_page_w_header();
 	echo "<h2>" . get_vocab("error_heure_debut_fin") ."</h2>";
 	// echo $start_day; // cette variable n'est pas définie ? YN
-	// echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-    echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
+	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
+    //echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
 	end_page();
 	die();
 }
@@ -795,7 +795,7 @@ if (strlen($err))
         // echo "<center><table border=\"1\" cellpadding=\"10\" cellspacing=\"1\"><tr><td class='avertissement'><h3><a href='edit_entry_handler.php?".$_SERVER['QUERY_STRING']."&amp;del_entry_in_conflict=yes'>".get_vocab("del_entry_in_conflict")."</a></h3></td></tr></table></center><br />";
         echo '<center><a class="btn btn-danger" type="button" href="edit_entry_handler.php?'.$_SERVER['QUERY_STRING'].'&amp;del_entry_in_conflict=yes">'.get_vocab("del_entry_in_conflict").'</a></center><br />';
 }
-// echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a><p>"; // à modifier aussi ? YN
-echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
+echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a><p>"; // à modifier aussi ? YN
+// echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";
 end_page(); 
 ?>

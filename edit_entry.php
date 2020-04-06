@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-28 09:35$
+ * Dernière modification : $Date: 2020-04-06 11:25$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -514,7 +514,7 @@ function Load_entry (){
     ?>
 }
 function Save_entry (){
-    setCookie('Grr_entry',getFormString(document.forms["main"],true),10000,"","",1,1);
+    setCookie('Grr_entry',getFormString(document.forms["main"],true),10000,"","",0,0);
 }
 function validate_and_submit (){
     var err;
