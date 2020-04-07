@@ -3,9 +3,9 @@
  * admin_user.php
  * interface de gestion des utilisateurs de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-27 16:00$
+ * Dernière modification : $Date: 2020-04-07 10:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -34,8 +34,6 @@ if ((isset($_GET['action_del'])) && ($_GET['js_confirmed'] == 1))
 {
 	VerifyModeDemo();
 }
-/* print_header("", "", "", $type="with_session");
-include "admin_col_gauche.php"; */
 // Enregistrement de allow_users_modify_profil
 // Un gestionnaire d'utilisateurs ne peut pas Autoriser ou non la modification par un utilisateur de ses informations personnelles
 if ((isset($_GET['action'])) && ($_GET['action'] == "modif_profil") && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
@@ -156,7 +154,7 @@ if ((isset($_GET['action'])) && ($_GET['action'] == "synchro") && (Settings::get
 		$test = grr_sql_query1("SELECT count(login) FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$user_login."'");
 		if ($test == 0)
 		{
-			// On insert le nouvel utilisteur
+			// On insère le nouvel utilisteur
 			$sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET
 			nom='".protect_data_sql($user_nom)."',
 			prenom='".protect_data_sql($user_prenom)."',
@@ -233,6 +231,13 @@ if ((isset($_GET['action_del'])) and ($_GET['js_confirmed'] == 1))
 		}
 	}
 }
+$tip = "A : administrateur 
+E : destinataire de mails automatiques 
+G : gestionnaire de ressource 
+R : accède à un domaine restreint 
+S : administrateur de site 
+U : gestionnaire d'utilisateurs";
+// voir avec le retour chariot &#13; et le code html
 // code html
 start_page_w_header("", "", "", $type="with_session");
 include "admin_col_gauche2.php";
@@ -368,7 +373,7 @@ echo "<table class=\"table table-striped table-bordered\">";
 echo "<thead>";
 echo "<tr><th><b><a href='admin_user.php?order_by=login&amp;display=$display'>".get_vocab("login_name")."</a></b></th>";
 echo "<th><b><a href='admin_user.php?order_by=nom,prenom&amp;display=$display'>".get_vocab("names")."</a></b></th>";
-echo "<th><b>".get_vocab("privileges")."</b></th>";
+echo '<th><b><span data-html="true" title="'.$tip.'">'.get_vocab('privileges').'</span></b></th>';
 echo "<th><b><a href='admin_user.php?order_by=statut,nom,prenom&amp;display=$display'>".get_vocab("statut")."</a></b></th>";
 echo "<th><b><a href='admin_user.php?order_by=source,nom,prenom&amp;display=$display'>".get_vocab("authentification")."</a></b></th>";
 echo "<th><b>".get_vocab("delete")."</b></th>";
