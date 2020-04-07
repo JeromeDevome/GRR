@@ -3,7 +3,7 @@
  * validation.php
  * Interface de validation d'une réservation modérée
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-23 14:00$
+ * Dernière modification : $Date: 2020-04-07 14:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -399,7 +399,7 @@ if (isset($_GET['id'])) // appel initial
             $room = 1;
         if (Settings::get("pdf") == '1'){
             if ((authGetUserLevel($user, $area_id, "area") > 1) || (authGetUserLevel($user, $room) >= 4))
-                echo '<br><input class="btn btn-primary" onclick="myFunction(',$id_resa,')" value="',get_vocab("Generer_pdf"),'" />',PHP_EOL;
+                echo '<br><input class="btn btn-primary" onclick="popUpPdf(',$id_resa,')" value="',get_vocab("Generer_pdf"),'" />',PHP_EOL;
         }
 		// formulaire
 		echo "<form action=\"validation.php\" method=\"post\">";

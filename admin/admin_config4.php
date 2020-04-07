@@ -111,7 +111,7 @@ if ($dbsys == "mysql")
     //********************************
     //
 	if($restaureBBD == 1){
-		echo "\n<hr /><h3>".get_vocab('Restauration de la base GRR')."</h3>";
+		echo "\n<hr /><h3>".get_vocab('Restauration_de_la_base_GRR')."</h3>";
 		echo "\n<p>En cas de perte de donnée ou de problème sur la base GRR, cette fonction vous permet de la retrouver dans l'état antérieur lors d'une sauvegarde. Vous devez sélectionner un fichier créé à l'aide de la fonction Lancer une sauvegarde.</p>";
 		echo "\n<p><span class=\"avertissement\"><i>Attention! Restaurer la base vous fera perdre toutes les données qu'elle contient actuellement. De plus, tous les utilisateurs présentement connectés, ainsi que vous-mêmes, serez déconnectés. Alors, il est conseillé de créer d'abord une sauvegarde et de vous assurer que vous êtes le seul connecté.</i></span></p>\n";
 		?>
@@ -119,7 +119,7 @@ if ($dbsys == "mysql")
 			<div class="center">
 				<input type="file" name="sql_file" size="30" />
 				<br /><br />
-				<input class="btn btn-primary" type="submit" value="<?php echo get_vocab('Restaurer la sauvegarde'); ?>" style="font-variant: small-caps;" />
+				<input class="btn btn-primary" type="submit" value="<?php echo get_vocab('Restaurer_la_sauvegarde'); ?>" style="font-variant: small-caps;" />
 			</div>
 		</form>
 <?php
@@ -129,7 +129,7 @@ if ($dbsys == "mysql")
 	# Backup automatique
 	echo "\n<hr /><h3>".get_vocab("execution automatique backup")."</h3>";
 	echo "<p>".get_vocab("execution automatique backup explications")."</p>";
-	echo "\n<p>".get_vocab("execution automatique backup mdp").get_vocab("deux_points");
+	echo "\n<p>".get_vocab("execution_automatique_backup_mdp").get_vocab("deux_points");
 	echo "\n<input class=\"form-control\" type=\"password\" name=\"motdepasse_backup\" value=\"".Settings::get("motdepasse_backup")."\" size=\"20\" /></p>";
 	//
 	// Suspendre les connexions
