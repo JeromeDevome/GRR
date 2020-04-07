@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-04-06 17:30$
+ * Dernière modification : $Date: 2020-04-07 11:40$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -506,7 +506,7 @@ function resaToModerate($user)
     }
     elseif (isset($_GET['room']) && (authGetUserLevel($user,$_GET['room'],'room') > 2)) // gestionnaire de la ressource
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e WHERE (e.moderate = 1 AND e.room_id = ".$_GET['room'].") ";
+        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE (e.moderate = 1 AND e.room_id = ".$_GET['room'].") ";
         $res = grr_sql_query($sql);
     }
     if ($res)
@@ -885,8 +885,8 @@ function begin_page($title, $page = "with_session")
 		$a .= '<script type="text/javascript" src="../js/select2.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/select2_locale_fr.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jquery-ui-i18n.min.js"></script>'.PHP_EOL;
-		if (isset($use_tooltip_js))
-			echo '<script type="text/javascript" src="../js/tooltip.js"></script>'.PHP_EOL;
+		//if (isset($use_tooltip_js))
+			//echo '<script type="text/javascript" src="../js/tooltip.js"></script>'.PHP_EOL;
 		if (!isset($_SESSION['selection']))
 			$a .= '<script type="text/javascript" src="../js/selection.js" ></script>'.PHP_EOL;
 		if (@file_exists('js/'.$clock_file))
@@ -932,8 +932,8 @@ function begin_page($title, $page = "with_session")
 			$a .= '<script type="text/javascript" src="js/select2.js"></script>'.PHP_EOL;
 			$a .= '<script type="text/javascript" src="js/select2_locale_fr.js"></script>'.PHP_EOL;
 		}
-		if (isset($use_tooltip_js))
-			echo '<script type="text/javascript" src="./js/tooltip.js"></script>'.PHP_EOL;
+		//if (isset($use_tooltip_js))
+			//echo '<script type="text/javascript" src="./js/tooltip.js"></script>'.PHP_EOL;
 		if (!isset($_SESSION['selection']))
 			$a .= '<script type="text/javascript" src="js/selection.js" ></script>'.PHP_EOL;
 		if (@file_exists('js/'.$clock_file))
@@ -5351,8 +5351,8 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<script type="text/javascript" src="../js/functions.js" ></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/select2.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/select2_locale_fr.js"></script>'.PHP_EOL;
-		if (isset($use_tooltip_js))
-			echo '<script type="text/javascript" src="../js/tooltip.js"></script>'.PHP_EOL;
+		//if (isset($use_tooltip_js))
+			//echo '<script type="text/javascript" src="../js/tooltip.js"></script>'.PHP_EOL;
 		if (!isset($_SESSION['selection']))
 			$a .= '<script type="text/javascript" src="../js/selection.js" ></script>'.PHP_EOL;
 		if (@file_exists('js/'.$clock_file))
@@ -5401,8 +5401,8 @@ function pageHead2($title, $page = "with_session")
 			$a .= '<script type="text/javascript" src="js/select2.js"></script>'.PHP_EOL;
 			$a .= '<script type="text/javascript" src="js/select2_locale_fr.js"></script>'.PHP_EOL;
 		}
-		if (isset($use_tooltip_js))
-			echo '<script type="text/javascript" src="./js/tooltip.js"></script>'.PHP_EOL;
+		//if (isset($use_tooltip_js))
+			//echo '<script type="text/javascript" src="./js/tooltip.js"></script>'.PHP_EOL;
 		if (!isset($_SESSION['selection']))
 			$a .= '<script type="text/javascript" src="js/selection.js" ></script>'.PHP_EOL;
 		if (@file_exists('js/'.$clock_file))
@@ -5495,7 +5495,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
                 $mess_resa = '';
                 if ($nbResaAModerer > 1){$mess_resa = $nbResaAModerer.get_vocab('resasToModerate');}
                 if ($nbResaAModerer == 1){$mess_resa = $nbResaAModerer.get_vocab('resaToModerate');}
-				if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1))// || ($mess_resa != '')) trop large ? YN le 06/01/19
+				if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1) || ($mess_resa != '')) // trop large ? YN le 06/01/19
 				{
 					echo '<div class="administration">'.PHP_EOL;
 					if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1))
