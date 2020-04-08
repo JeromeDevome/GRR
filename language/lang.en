@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2020-04-04
+# Last modification : 2020-04-08
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -455,6 +455,8 @@ $vocab['gestionnaire des resources suivantes'] = "Manager of the following resou
 $vocab['gestionnaires_et_administrateurs'] = "Managers and administrators";
 $vocab['goto'] = " Display";
 $vocab['gototoday'] = "Today";
+$vocab['grr_mail_sender'] = "Always send emails from the SMTP account";
+$vocab['grr_mail_sender_explain'] = "Some mail servers refuse to send mail from unknown senders. In this cas check the box so that emails are sent from the account mentioned above.";
 $vocab['grr_url'] = "Site address";
 $vocab['grr_url_explain'] = "Use the address above for some links, especially the \"printable version\" links. If you do not tick the box, or if the field above is empty, GRR will try himself to determine the site address.";
 $vocab['grr_version'] = "Version ";

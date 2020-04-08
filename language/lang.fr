@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2020-04-04
+# Last modification : 2020-04-08
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -455,6 +455,8 @@ $vocab['gestionnaire des resources suivantes'] = "Gestionnaire des ressource(s) 
 $vocab['gestionnaires_et_administrateurs'] = "Les gestionnaires et administrateurs";
 $vocab['goto'] = " Afficher";
 $vocab['gototoday'] = "Aujourd'hui";
+$vocab['grr_mail_sender'] = "Toulours envoyer les mails depuis le compte SMTP";
+$vocab['grr_mail_sender_explain'] = "Certains serveurs de mail refusent de relayer les messages dont l'expéditeur est inconnu. Dans ce cas il faut cocher la case ci-dessous afin que le mail soit envoyé depuis le compte SMTP renseigné ci-dessus.";
 $vocab['grr_url'] = "Adresse (URL) exacte de GRR";
 $vocab['grr_url_explain'] = "Utiliser l'adresse ci-dessus pour certains liens, notamment les liens \"format imprimable\". Si vous ne cochez pas la case, ou bien si le champ ci-dessus est vide, GRR tentera lui-même de déterminer l'adresse du site.";
 $vocab['grr_version'] = "Version ";

@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-04-08 10:45$
+ * Dernière modification : $Date: 2020-04-08 14:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -2737,6 +2737,10 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	//
 	// Elaboration du message destiné aux utilisateurs désignés par l'admin dans la partie "Mails automatiques"
 	//
+    // Nom d'expéditeur (si != adresse de réponse, cas des serveurs SMTP refusant le relai)
+    $expediteur = '';
+    if (Settings::get('grr_mail_sender'))
+            {$expediteur = Settings::get('grr_mail_from');}
 	//Nom de l'établissement et mention "mail automatique"
 	$message = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
 	// Url de GRR
@@ -2912,8 +2916,8 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 			$destinataire .= ";". $value;
 		}
 		$destinataire = $destinataire .";". $destinataire_spec;
-
-		Email::Envois($destinataire, $sujet, $message, $repondre, '', '');
+        if ($expediteur ==''){$expediteur = $repondre;}
+		Email::Envois($destinataire, $sujet, $message, $expediteur, '', '', $repondre);
 	}
 
 	if ($action == 7){
@@ -2938,15 +2942,15 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$message7 = html_entity_decode($message7);
 		$destinataire7 = $beneficiaire_email.";". $destinataire_spec;
 		$repondre7 = Settings::get("webmaster_email");
-
-		Email::Envois($destinataire7, $sujet7, $message7, $repondre7, '', '');
+        if ($expediteur ==''){$expediteur = $repondre7;}
+		Email::Envois($destinataire7, $sujet7, $message7, $expediteur, '', '', $repondre7);
 	}
 	if ($action == 4)
 	{
 		$destinataire4 = $beneficiaire_email;
 		$repondre4 = Settings::get("webmaster_email");
-		
-		Email::Envois($destinataire4, $sujet, $message, $repondre4, '', '');
+		if ($expediteur ==''){$expediteur = $repondre;}
+		Email::Envois($destinataire4, $sujet, $message, $expediteur, '', '', $repondre4);
 	}
 	if ($action == 5)
 	{
@@ -2969,8 +2973,8 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
             $message5 .= "\n".affichage_champ_add_mails($id_entry)."\n";
 			$message5 = html_entity_decode($message5);
 			$repondre5 = Settings::get("webmaster_email");
-
-			Email::Envois($destinataire, $sujet5, $message5, $repondre5, '', '');
+            if ($expediteur ==''){$expediteur = $repondre5;}
+            Email::Envois($destinataire, $sujet5, $message5, $expediteur, '', '', $repondre5);
 		}
 
 	}
@@ -2987,8 +2991,8 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$message5 = html_entity_decode($message5);
 		$destinataire5 = $beneficiaire_email;
 		$repondre5 = Settings::get("webmaster_email");
-
-		Email::Envois($destinataire5, $sujet5, $message5, $repondre5, '', '');
+        if ($expediteur ==''){$expediteur = $repondre5;}
+		Email::Envois($destinataire5, $sujet5, $message5, $expediteur, '', '', $repondre5);
 	}
 	if (($action == 6) && ($beneficiaire_email != '') && ($beneficiaire_actif=='actif'))
 	{
@@ -2997,8 +3001,8 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$message6 = $message;
 		$destinataire6 = $beneficiaire_email;
 		$repondre6 = $user_email;
-
-		Email::Envois($destinataire6, $sujet6, $message6, $repondre6, '', '');
+        if ($expediteur ==''){$expediteur = $repondre6;}
+		Email::Envois($destinataire6, $sujet6, $message6, $expediteur, '', '', $repondre6);
 	}
 
 	// Cas d'une création, modification ou suppression d'un message par un utilisateur différent du bénéficiaire :
@@ -3033,8 +3037,8 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$message2 = html_entity_decode($message2);
 		$destinataire2 = $beneficiaire_email.";".$destinataire_spec;
 		$repondre2 = $user_email;
-
-		Email::Envois($destinataire2, $sujet2, $message2, $repondre2, '', '');
+        if ($expediteur ==''){$expediteur = $repondre2;}
+		Email::Envois($destinataire2, $sujet2, $message2, $expediteur, '', '', $repondre2);
 	}
 
 	return $message_erreur;

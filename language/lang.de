@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr
 # GRR : fichier de langue allemande
-# Last modification : 2020-04-04
+# Last modification : 2020-04-08
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -448,6 +448,8 @@ $vocab['gestionnaire des resources suivantes'] = "Verwalter der folgenden Ressou
 $vocab['gestionnaires_et_administrateurs'] = "Les gestionnaires et administrateurs"; // A traduire
 $vocab['goto'] = " Zeigen";
 $vocab['gototoday'] = "Heute";
+$vocab['grr_mail_sender'] = "Always send emails from the SMTP account";
+$vocab['grr_mail_sender_explain'] = "Some mail servers refuse to send mail from unknown senders. In this cas check the box so that emails are sent from the account mentioned above.";
 $vocab['grr_url'] = "Adresse der Webseite";
 $vocab['grr_url_explain'] = "Utiliser l'adresse ci-dessus pour certains liens, notamment les liens \"format imprimable\". Si vous ne cochez pas la case, ou bien si le champ ci-dessus est vide, GRR tentera lui-même de déterminer l'adresse du site."; // A traduire
 $vocab['grr_version'] = "Version ";

@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2020-04-04
+# Last modification : 2020-04-08
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -448,6 +448,8 @@ $vocab['gestionnaire des resources suivantes'] = "Gestor de lo(s) recurso(s) sig
 $vocab['gestionnaires_et_administrateurs'] = "Les gestionnaires et administrateurs"; // A traduire
 $vocab['goto'] = " Mostrar";
 $vocab['gototoday'] = "Hoy";
+$vocab['grr_mail_sender'] = "Always send emails from the SMTP account";
+$vocab['grr_mail_sender_explain'] = "Some mail servers refuse to send mail from unknown senders. In this cas check the box so that emails are sent from the account mentioned above.";
 $vocab['grr_url'] = "Dirección del sitio";
 $vocab['grr_url_explain'] = "Usar la dirección más arriba para algunos enlaces, sobre todos los enlaces \"formato imprimible\". Si usted no marca la casilla, o bien si el campo más arriba está vacío, GRR mismo intentará de determinar la dirección del sitio.";
 $vocab['grr_version'] = "Versión ";

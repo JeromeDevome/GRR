@@ -3,7 +3,7 @@
  * admin_config3.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (interactivité)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-01 11:50$
+ * Dernière modification : $Date: 2020-04-08 14:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -152,6 +152,12 @@ if (isset($_POST['ok']))
 		echo "Erreur lors de l'enregistrement de grr_mail_Bcc !<br />";
 		die();
 	}
+    $grr_mail_sender = (isset($_POST['grr_mail_sender']))? 1 : 0;
+    if (!Settings::set("grr_mail_sender", $grr_mail_sender))
+	{
+		echo "Erreur lors de l'enregistrement de grr_mail_sender !<br />";
+		die();
+	}
 }
 if ((isset($_POST['verif_reservation_auto']))&&(($_POST['verif_reservation_auto']==0)||($_POST['verif_reservation_auto']==1)))
 {
@@ -281,6 +287,13 @@ echo "\n<input type = \"text\" name=\"smtp_port\" value =\"".Settings::get('smtp
 // Mail Test
 echo "\n<br />".get_vocab('mail_test').get_vocab('deux_points');
 echo "\n<input type = \"email\" name=\"mail_test\" value =\"\" size=\"30\" />";
+// Expéditeur imposé (cas où le relai smtp ne fonctionne pas)
+echo "\n<br /><em>".get_vocab('grr_mail_sender_explain')."</em>";
+echo "\n<br /><input type=\"checkbox\" name=\"grr_mail_sender\" value='1' ";
+if (Settings::get('grr_mail_sender') == 1)
+    echo " checked=\"checked\" ";
+echo "/>";
+echo get_vocab('grr_mail_sender');
 // Copie CCi
 echo "\n<br /><br />";
 echo "\n<input type=\"checkbox\" name=\"grr_mail_Bcc\" value=\"y\" ";
