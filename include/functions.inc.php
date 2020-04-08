@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-04-07 11:40$
+ * Dernière modification : $Date: 2020-04-08 10:45$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -2853,7 +2853,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$reservation .= $vocab["entryid"].$room_id."\n";
 	if ($description !='')
 		$reservation .= $vocab["description"]." ".$description."\n";
-	// Champ additionnel
+	// Champs additionnels
 	$reservation .= affichage_champ_add_mails($id_entry);
 	$destinataire_spec .= envois_spec_champ_add_mails($id_entry);
 	// Type de réservation
@@ -2966,6 +2966,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 			$message5 .= "\n".traite_grr_url("","y")."validation.php?id=".$id_entry;
 			$message5 .= "\n\n".$vocab['created_by'].affiche_nom_prenom_email($user_login,"","formail");
 			$message5 .= "\n".$vocab['room'].$vocab['deux_points'].$room_name." (".$area_name.") \n";
+            $message5 .= "\n".affichage_champ_add_mails($id_entry)."\n";
 			$message5 = html_entity_decode($message5);
 			$repondre5 = Settings::get("webmaster_email");
 
@@ -4388,7 +4389,7 @@ function affichage_resa_planning($_description, $id_resa)
 	return $affichage;
 }
 /*
-Construit les informations à afficher sur les plannings
+Construit les informations à ajouter dans les mails automatiques
 */
 function affichage_champ_add_mails($id_resa)
 {
