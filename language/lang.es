@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2020-04-08
+# Last modification : 2020-04-09
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -915,8 +915,10 @@ $vocab['utilisateurs acces restreint'] = "Los usuarios siguientes están autoriz
 $vocab['utilisateurs acces restreint domaine'] = "Los usuarios siguientes están autorizados a acceder a este campo:";
 $vocab['utilisateurs administrateurs'] = "Los usuarios siguientes son administradores del campo conteniendo este recurso:";
 $vocab['utilisateurs administrateurs domaine'] = "Los usuarios siguientes son administradores del campo:";
+$vocab['utilisateurs_administrateurs_site'] = "Los usuarios siguientes son administradores del sitio:";
 $vocab['utilisateurs ayant privileges'] = "Lista de usuarios teniendo privilegios sobre este recurso (excepto los administradores generales)";
 $vocab['utilisateurs ayant privileges sur domaine'] = "Lista de usuarios teniendo privilegios sobre este campo (excepto los administradores generales)";
+$vocab['utilisateurs_ayant_privileges_sur_site'] = "Lista de usuarios teniendo privilegios sobre este sitio (excepto los administradores generales)";
 $vocab['utilisateurs gestionnaires ressource'] = "Los usuarios siguientes son gestores de este recurso:";
 $vocab['utilisateurs mail automatique'] = "Se advierte a los usuarios siguientes por email:";
 $vocab['utilisateur_inconnu'] = "Utilisateur inconnu (identifiant : "; // A traduire

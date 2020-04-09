@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr
 # GRR : fichier de langue allemande
-# Last modification : 2020-04-08
+# Last modification : 2020-04-09
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -913,8 +913,10 @@ $vocab['utilisateurs acces restreint'] = "Die folgenden Benutzer sind zugangsber
 $vocab['utilisateurs acces restreint domaine'] = "Die folgenden Benutzer sind zugangsberechtigt auf diesem Bereich:";
 $vocab['utilisateurs administrateurs'] = "Die folgenden Benutzer sind Administratoren der Bereiche, die diese Ressource enthält:";
 $vocab['utilisateurs administrateurs domaine'] = "Die folgenden Benutzer sind Verwalter dieses Bereichs:";
+$vocab['utilisateurs_administrateurs_site'] = "Les utilisateurs suivants sont administrateurs du site :";// à traduire
 $vocab['utilisateurs ayant privileges'] = "Liste der Benutzer, die Rechte auf diese Ressource haben (ausser den allgemeinen Administratoren):";
 $vocab['utilisateurs ayant privileges sur domaine'] = "Liste der Benutzer, die auf diesen Bereich Rechte haben (ausser den allgemeinen Administrators):";
+$vocab['utilisateurs_ayant_privileges_sur_site'] = "Liste des utilisateurs ayant des privilèges sur ce site (hormis les administrateurs généraux):";// à traduire
 $vocab['utilisateurs gestionnaires ressource'] = "Die folgenden Benutzer sind Verwalter dieser Ressource:";
 $vocab['utilisateurs mail automatique'] = "Die folgenden Benutzer werden per mail benachrichtigt:";
 $vocab['utilisateur_inconnu'] = "Utilisateur inconnu (identifiant : "; // A traduire

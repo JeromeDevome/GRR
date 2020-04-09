@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2020-04-08
+# Last modification : 2020-04-09
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -926,8 +926,10 @@ $vocab['utilisateurs acces restreint'] = "Les utilisateurs suivants sont autoris
 $vocab['utilisateurs acces restreint domaine'] = "Les utilisateurs suivants sont autorisés à accéder à ce domaine :";
 $vocab['utilisateurs administrateurs'] = "Les utilisateurs suivants sont administrateurs du domaine contenant cette ressource :";
 $vocab['utilisateurs administrateurs domaine'] = "Les utilisateurs suivants sont administrateurs du domaine :";
-$vocab['utilisateurs ayant privileges'] = "Liste des utilisateurs ayant des privilèges sur cette ressource (hormis les administrateurs généraux) :";
-$vocab['utilisateurs ayant privileges sur domaine'] = "Liste des utilisateurs ayant des privilèges sur ce domaine (hormis les administrateurs généraux) :";
+$vocab['utilisateurs_administrateurs_site'] = "Les utilisateurs suivants sont administrateurs du site :";
+$vocab['utilisateurs ayant privileges'] = "Liste des utilisateurs ayant des privilèges sur cette ressource (hormis les administrateurs généraux):";
+$vocab['utilisateurs ayant privileges sur domaine'] = "Liste des utilisateurs ayant des privilèges sur ce domaine (hormis les administrateurs généraux):";
+$vocab['utilisateurs_ayant_privileges_sur_site'] = "Liste des utilisateurs ayant des privilèges sur ce site (hormis les administrateurs généraux):";
 $vocab['utilisateurs gestionnaires ressource'] = "Les utilisateurs suivants sont gestionnaires de cette ressource :";
 $vocab['utilisateurs mail automatique'] = "Les utilisateurs suivants sont avertis par email :";
 $vocab['utilisateur_inconnu'] = "Utilisateur inconnu (identifiant : ";
@@ -952,8 +954,8 @@ $vocab['visu_fiche_description0'] = "N'importe qui allant sur le site même s'il
 $vocab['visu_fiche_description1'] = "Il faut obligatoirement être connecté, même en simple visiteur.";
 $vocab['visu_fiche_description2'] = "Il faut obligatoirement être connecté et avoir le statut \"utilisateur\" ";
 $vocab['visu_fiche_description3'] = "Il faut obligatoirement être connecté et être au moins gestionnaire d'une ressource";
-$vocab['visu_fiche_description4'] = "Il faut obligatoirement se connecter et être au moins administrateur du domaine";
-$vocab['visu_fiche_description5'] = "Il faut obligatoirement être connecté et être administrateur de site";
+$vocab['visu_fiche_description4'] = "Il faut obligatoirement être connecté et être au moins administrateur du domaine";
+$vocab['visu_fiche_description5'] = "Il faut obligatoirement être connecté et être au moins administrateur de site";
 $vocab['visu_fiche_description6'] = "Il faut obligatoirement être connecté et être administrateur général";
 $vocab['visu_fiche_description_msg'] = "Qui a accès à la fiche de description d'une ressource ?";
 $vocab['voir_details'] = "Voir les détails";

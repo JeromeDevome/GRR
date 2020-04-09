@@ -3,7 +3,7 @@
  * admin_site.php
  * Interface d'accueil de Gestion des sites de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-02 12:15$
+ * Dernière modification : $Date: 2020-04-09 16:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -175,10 +175,10 @@ function read_sites()
 			{
 				echo '        <tr>
 				<td>
-					<a href="admin_site.php?action=update&amp;id='.$row[0].'"><span class=\'glyphicon glyphicon-edit\'></span></a>
-					<a href="admin_site.php?action=delete&amp;id='.$row[0].'"><span class=\'glyphicon glyphicon-trash\'></span></a>';
-					//echo '            <a href="admin_site.php?action=right&amp;id='.$row[0].'"><img class=\"image\" title="'.get_vocab('privileges').'" alt="'.get_vocab('privileges').'" src="../img_grr/rights.png" /></a>';
-					echo '          </td>
+					<a href="admin_site.php?action=update&amp;id='.$row[0].'" title='.get_vocab('edit').' ><span class=\'glyphicon glyphicon-edit\'></span></a>
+					<a href="admin_site.php?action=delete&amp;id='.$row[0].'" title='.get_vocab('delete').' ><span class=\'glyphicon glyphicon-trash\'></span></a>
+					<a href="javascript:centrerpopup(\'../view_rights_site.php?site_id='.$row[0].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')"><img class="image" title="'.get_vocab('privileges').'" alt="'.get_vocab('privileges').'" src="../img_grr/rights.png" /></a>';
+                    echo '         </td>
 					<td>'.$row[1].'</td>
 					<td>'.$row[2].'</td>
 					<td>'.$row[3].'</td>

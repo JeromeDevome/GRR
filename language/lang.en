@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2020-04-08
+# Last modification : 2020-04-09
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -920,8 +920,10 @@ $vocab['utilisateurs acces restreint'] = "The following users are authorized to 
 $vocab['utilisateurs acces restreint domaine'] = "The following users are authorized to have access to this area:";
 $vocab['utilisateurs administrateurs'] = "The following users are the administrators of the area containing this resource:";
 $vocab['utilisateurs administrateurs domaine'] = "The following users are the administrators of the area:";
+$vocab['utilisateurs_administrateurs_site'] = "The following users are the administrators of the site:";
 $vocab['utilisateurs ayant privileges'] = "List of the users having privileges on this resource (except the general administrators):";
 $vocab['utilisateurs ayant privileges sur domaine'] = "List of the users having privileges on this area (except the general administrators):";
+$vocab['utilisateurs_ayant_privileges_sur_site'] = "List of the users having privileges on this site (except the general administrators):";
 $vocab['utilisateurs gestionnaires ressource'] = "The following users are the managers of this resource:";
 $vocab['utilisateurs mail automatique'] = "The following users are warned the by e-mail:";
 $vocab['utilisateur_inconnu'] = "Unknown user (identifier : ";

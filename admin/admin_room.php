@@ -3,7 +3,7 @@
  * admin_room.php
  * Interface d'accueil de Gestion des domaines et ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-23 12:10$
+ * Dernière modification : $Date: 2020-04-09 11:40$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -240,7 +240,7 @@ echo '</tr>';
                     }
                     echo "<td><a href=\"admin_type_area.php?id_area=$row[0]\"><img src=\"../img_grr/type.png\" alt=\"".get_vocab('edittype')."\" title=\"".get_vocab('edittype')."\" class=\"image\" /></a></td>\n";
                     echo "<td><a href='javascript:centrerpopup(\"../view_rights_area.php?area_id=$row[0]\",600,480,\"scrollbars=yes,statusbar=no,resizable=yes\")' title=\"".get_vocab("privileges")."\">
-                    <span class='glyphicon glyphicon-group'></span></a></td>";
+                    <img src=\"../img_grr/rights.png\" alt=\"".get_vocab("privileges")."\" class=\"image\" /></a></td>";
                     echo "</tr>\n";
                 }
                 echo "</table>";

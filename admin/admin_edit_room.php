@@ -3,7 +3,7 @@
  * admin_edit_room.php
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-31 15:10$
+ * Dernière modification : $Date: 2020-04-09 16:10$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -48,7 +48,7 @@ $delais_option_reservation  = isset($_POST["delais_option_reservation"]) ? intva
 $allow_action_in_past  = isset($_POST["allow_action_in_past"]) ? clean_input($_POST["allow_action_in_past"]) : NULL;
 $dont_allow_modify  = isset($_POST["dont_allow_modify"]) ? clean_input($_POST["dont_allow_modify"]) : NULL;
 $qui_peut_reserver_pour  = isset($_POST["qui_peut_reserver_pour"]) ? clean_input($_POST["qui_peut_reserver_pour"]) : NULL;
-$who_can_see  = isset($_POST["who_can_see"]) ? clean_input($_POST["who_can_see"]) : NULL;
+$who_can_see  = isset($_POST["who_can_see"]) ? intval(clean_input($_POST["who_can_see"])) : NULL;
 $max_booking = isset($_POST["max_booking"]) ? intval(clean_input($_POST["max_booking"])) : NULL;
 if ($max_booking<-1)
 	$max_booking = -1;
@@ -529,6 +529,13 @@ if ((!empty($room)) || (isset($area_id)))
     echo "<tr><td>".get_vocab("order_display").get_vocab("deux_points")."</td>\n";
     echo "<td><input class=\"form-control\" type=\"text\" name=\"area_order\" size=\"1\" value=\"".clean_input($row["order_display"])."\" /></td>\n";
     echo "</tr>\n";
+    // Accès restreint
+    /*echo "<td>".get_vocab("access").get_vocab("deux_points")."</td>\n";
+    echo "<td><input type=\"checkbox\" name=\"access\"";
+    if ($row["access"] == 'r')
+        echo "checked=\"checked\"";
+    echo " /></td>\n";
+    echo "</tr>";*/
     // Qui peut voir cette ressource
     echo "<tr><td colspan=\"2\">".get_vocab("qui_peut_voir_ressource")."<br />\n";
     echo "<select class=\"form-control\" name=\"who_can_see\" size=\"1\">\n
@@ -548,7 +555,7 @@ if ((!empty($room)) || (isset($area_id)))
     if ($row["who_can_see"] == 4)
         echo " selected=\"selected\" ";
     echo ">".get_vocab("visu_fiche_description4")."</option>\n";
-    if (Settings::get("module_multisite") != "Oui")
+    if (Settings::get("module_multisite") == "Oui")
     {
         echo "<option value=\"5\" ";
         if ($row["who_can_see"] == 5)
@@ -678,15 +685,15 @@ if ((!empty($room)) || (isset($area_id)))
 			<option value=\"4\" ";
 			if ($row["qui_peut_reserver_pour"]==4)
 				echo " selected=\"selected\" ";
-			echo ">".get_vocab("les administrateurs restreints")."</option>\n
+			echo ">".get_vocab("les_administrateurs_restreints")."</option>\n
 			<option value=\"3\" ";
 			if ($row["qui_peut_reserver_pour"]==3)
 				echo " selected=\"selected\" ";
-			echo ">".get_vocab("les gestionnaires de la ressource")."</option>\n
+			echo ">".get_vocab("les_gestionnaires_de_la_ressource")."</option>\n
 			<option value=\"2\" ";
 			if ($row["qui_peut_reserver_pour"]==2)
 				echo " selected=\"selected\" ";
-			echo ">".get_vocab("tous les utilisateurs")."</option>\n
+			echo ">".get_vocab("tous_les_utilisateurs")."</option>\n
 		</select></td></tr>\n";
 // Activer la fonctionalite "ressource empruntee/restituee"
 		echo "<tr><td>".get_vocab("activer_fonctionalite_ressource_empruntee_restituee")."</td><td><input type=\"checkbox\" name=\"active_ressource_empruntee\" ";

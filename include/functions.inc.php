@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-04-08 14:15$
+ * Dernière modification : $Date: 2020-04-09 16:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -2761,7 +2761,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
 		$message .= $vocab["modify_booking"];
 		if ($room_name != $oldRessource)
-			$message .= $vocab["the_room"]." ".$oldRessource." => ".$room_name." (".$area_name.") ";
+			$message .= $vocab["the_room"]." ".$oldRessource." => ".$room_name." (".$area_name.") \n";
 		else
 			$message .= $vocab["the_room"].$room_name." (".$area_name.") ";
 		$message .= $vocab["reservee au nom de"];
@@ -2806,7 +2806,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 
 		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
 		$message .= $vocab["traite_moderation"];
-		$message .= $vocab["the_room"].$room_name." (".$area_name.") ";
+		$message .= $vocab["the_room"].$room_name." (".$area_name.") \n";
 		$message .= $vocab["reservee au nom de"];
 		$message .= $vocab["the_user"].affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
 		if ($moderate_decision == 2)

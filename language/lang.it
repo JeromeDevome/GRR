@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2020-04-08
+# Last modification : 2020-04-09
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -912,8 +912,10 @@ $vocab['utilisateurs acces restreint'] = "Questi utenti sono autorizzati ad acce
 $vocab['utilisateurs acces restreint domaine'] = "Questi utenti sono autorizzati ad accedere a questo campo :";
 $vocab['utilisateurs administrateurs'] = "Questi utenti fanno gli amministratori del campo che contiene questa risorsa :";
 $vocab['utilisateurs administrateurs domaine'] = "Questi utenti fanno gli amministratori del campo :";
-$vocab['utilisateurs ayant privileges'] = "Elenco degli utenti che hanno dei privilegi su questa risorsa (eccetto gli amministratori generali) :";
-$vocab['utilisateurs ayant privileges sur domaine'] = "Elenco degli utenti che hanno dei privilegi su questo campo (eccetto gli amministratori generali) :";
+$vocab['utilisateurs_administrateurs_site'] = "Questi utenti fanno gli amministratori del sito :";
+$vocab['utilisateurs ayant privileges'] = "Elenco degli utenti che hanno dei privilegi su questa risorsa (eccetto gli amministratori generali):";
+$vocab['utilisateurs ayant privileges sur domaine'] = "Elenco degli utenti che hanno dei privilegi su questo campo (eccetto gli amministratori generali):";
+$vocab['utilisateurs_ayant_privileges_sur_site'] = "Elenco degli utenti che hanno dei privilegi su questo sito (eccetto gli amministratori generali):";
 $vocab['utilisateurs gestionnaires ressource'] = "Questi utenti sono gestionali di questa risorsa :";
 $vocab['utilisateurs mail automatique'] = "Questi utenti sono avvertiti da smalto :";
 $vocab['utilisateur_inconnu'] = "Utilisateur inconnu (identifiant : "; // A traduire
