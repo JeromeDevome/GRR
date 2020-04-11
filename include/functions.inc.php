@@ -4497,7 +4497,7 @@ function envois_spec_champ_add_mails($id_resa)
 	$overload_data = mrbsEntryGetOverloadDesc($id_resa);
 	foreach ($overload_data as $fieldname=>$field)
 	{
-		if (($field["mail_spec"] != '') && ($field["valeur"] != "") && ($field["valeur"] != 0))
+		if (isset($field["mail_spec"]) && ($field["mail_spec"] != '') && ($field["valeur"] != "") && ($field["valeur"] != 0))
 			$destinataire .= htmlspecialchars($field["mail_spec"]).";";
 	}
 	return $destinataire;

@@ -3,9 +3,9 @@
  * admin_config_calend2.php
  * interface permettant la configuration des jours-cycles (étape 2)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-09-09 18:50$
+ * Dernière modification : $Date: 2020-04-10 15:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -27,14 +27,14 @@ if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 	$sql = "truncate table ".TABLE_PREFIX."_calendrier_jours_cycle";
 	if (grr_sql_command($sql) < 0)
 		fatal_error(1, "<p>" . grr_sql_error());
-	$result = 0;
+	//$result = 0; // ce $result n'est pas utilisé ?
 	$end_bookings = Settings::get("end_bookings");
 	$n = Settings::get("begin_bookings");
 	$month = strftime("%m", Settings::get("begin_bookings"));
 	$year = strftime("%Y", Settings::get("begin_bookings"));
 	$day = 1;
 	// Pour aller chercher le Jour cycle qui débutera le premier cycle de jours
-	$m = Settings::get("jour_debut_Jours/Cycles");
+	$m = Settings::get("jour_debut_Jours_Cycles");
 	while ($n <= $end_bookings)
 	{
 		$daysInMonth = getDaysInMonth($month, $year);
@@ -54,7 +54,6 @@ if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 				{
 					for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 						//$result += grrDelEntryInConflict($row[0], $starttime, $endtime, 0, 0, 1);
-						// ce $result n'est pas utilisé ?
 						grrDelEntryInConflict($row[0], $starttime, $endtime, 0, 0, 1);
 				}
 				// On enregistre la valeur
@@ -76,12 +75,12 @@ start_page_w_header("", "", "", $type="with_session");
 // Affichage de la colonne de gauche
 include "admin_col_gauche2.php";
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-// Affichage du menu de choix des sous-configurations pour les Jours/Cycles (Créer et voir calendrier Jours/Cycle)
+// Affichage du menu de choix des sous-configurations pour les Jours_Cycles (Créer et voir calendrier Jours/Cycle)
 include "../include/admin_calend_jour_cycle.inc.php";
 echo "<h3>".get_vocab('calendrier_jours/cycles')."</h3>";
 echo "<p>".get_vocab("les_journees_cochees_sont_valides").get_vocab("deux_points");
-echo "<br />* ".get_vocab("nombre_jours_Jours/Cycles").get_vocab("deux_points").Settings::get("nombre_jours_Jours/Cycles");
-echo "<br />* ".get_vocab("debut_Jours/Cycles").get_vocab("deux_points").Settings::get("jour_debut_Jours/Cycles");
+echo "<br />* ".get_vocab("nombre_jours_Jours_Cycles").get_vocab("deux_points").Settings::get("nombre_jours_Jours_Cycles");
+echo "<br />* ".get_vocab("debut_Jours_Cycles").get_vocab("deux_points").Settings::get("jour_debut_Jours_Cycles");
 echo "<br /><br />".get_vocab("explication_Jours_Cycles2")."</p>";
 echo "<table class='table-noborder'>\n";
 $basetime = mktime(12, 0, 0, 6, 11 + $weekstarts, 2000);
