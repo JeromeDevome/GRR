@@ -77,7 +77,7 @@ if (isset($_GET["start_"])){
 	$debut = array();
 	$debut = explode(':', $_GET["start_"]);
 	$hour = $debut[0];
-	$minute = $debut[1];
+	$minute = isset($debut[1])? $debut[1]:'00';
 }
 if (isset($hour))
 {

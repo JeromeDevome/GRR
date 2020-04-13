@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-04-09 16:15$
+ * Dernière modification : $Date: 2020-04-15 12:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -2763,7 +2763,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		if ($room_name != $oldRessource)
 			$message .= $vocab["the_room"]." ".$oldRessource." => ".$room_name." (".$area_name.") \n";
 		else
-			$message .= $vocab["the_room"].$room_name." (".$area_name.") ";
+			$message .= $vocab["the_room"].$room_name." (".$area_name.") \n";
 		$message .= $vocab["reservee au nom de"];
 		$message .= $vocab["the_user"].affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
 		$repondre = $user_email;
@@ -3022,15 +3022,15 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 			$sujet2 .= $vocab["subject_mail_modify"];
 			$message2 .= $vocab["modify_booking"];
 			if ($room_id != $oldRessource)
-				$message2 .= $vocab["the_room"]." ".$nomAncienneSalle." => ".$room_name." (".$area_name.") ";
+				$message2 .= $vocab["the_room"]." ".$nomAncienneSalle." => ".$room_name." (".$area_name.") \n";
 			else
-				$message2 .= $vocab["the_room"].$room_name." (".$area_name.") ";
+				$message2 .= $vocab["the_room"].$room_name." (".$area_name.") \n";
 			$message2 .= $vocab["created_by_you"];
 		}
 		else{
 			$sujet2 .= $vocab["subject_mail_delete"];
 			$message2 .= $vocab["delete_booking"];
-			$message2 .= $vocab["the_room"].$room_name." (".$area_name.")";
+			$message2 .= $vocab["the_room"].$room_name." (".$area_name.") \n";
 			$message2 .= $vocab["created_by_you"];
 		}
 		$message2 .= "\n".$reservation;
@@ -4723,67 +4723,52 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
 				$day = $date['day'];
 				$month = $date['month'];
 				$year = $date['year'];
-			} else{
-				if (isset ($_GET['day']))
-					$day = $_GET['day'];
-				else
-					$day = date("d");
-				if (isset ($_GET['month']))
-					$month = $_GET['month'];
-				else
-					$month = date("m");
-				if (isset ($_GET['year']))
-					$year = $_GET['year'];
-				else
-					$year = date("Y");
 			}
-		} else{
+            else{
+				$day = (isset ($_GET['day'])) ? clean_input($_GET['day']) : date("d");
+				$month = (isset ($_GET['month']))? clean_input($_GET['month']) : date("m");
+				$year = (isset ($_GET['year']))? clean_input($_GET['year']) : date("Y");
+			}
+		}
+        else{
 			global $start_day, $start_month, $start_year, $end_day, $end_month, $end_year;
 
-			if (isset ($_GET['day'])){
-				$day = $_GET['day'];
-			} else{
-				$day = date("d");
-			}
-
+			$day = (isset ($_GET['day'])) ? clean_input($_GET['day']) : date("d");
 			if (isset($start_day) && $typeDate=='start'){
 				$day = $start_day;
-			} elseif (isset($end_day) && $typeDate=='end'){
+			} 
+            elseif (isset($end_day) && $typeDate=='end'){
 				$day = $end_day;
 			}
-
-			if (isset ($_GET['month'])){
-				$month = $_GET['month'];
-			} else{
-				$month = date("m");
-			}
-
+            $month = (isset ($_GET['month']))? clean_input($_GET['month']) : date("m");
 			if (isset($start_month) && $typeDate=='start'){
 				$month = $start_month;
-			} elseif (isset($end_month) && $typeDate=='end'){
+			} 
+            elseif (isset($end_month) && $typeDate=='end'){
 				$month = $end_month;
 			}
-
-			if(isset ($_GET['year'])){
-				$year = $_GET['year'];
-			} else{
-				$year = date("Y");
-			}
-
+            $year = (isset ($_GET['year']))? clean_input($_GET['year']) : date("Y");
 			if (isset($start_year) && $typeDate=='start'){
 				$year = $start_year;
-			} elseif (isset($end_year) && $typeDate=='end'){
+			} 
+            elseif (isset($end_year) && $typeDate=='end'){
 				$year = $end_year;
 			}
- 	}
- 	genDateSelector("".$typeDate."_", "$day", "$month", "$year","");
+        }
+ 	$mindate = strftime("%d/%m/%Y",Settings::get('begin_bookings'));
+    $maxdate = strftime("%d/%m/%Y",Settings::get('end_bookings'));
+    genDateSelector("".$typeDate."_", "$day", "$month", "$year","");
  	echo '<input type="hidden" disabled="disabled" id="mydate_' .$typeDate. '">'.PHP_EOL;
- 	echo '<script>'.PHP_EOL;
- 	echo '	$(function() {'.PHP_EOL;
- 		echo '$.datepicker.setDefaults( $.datepicker.regional[\'fr\'] );'.PHP_EOL;
+ 	echo '<script type="text/javascript">'.PHP_EOL;
+ 	//echo '	$(function() {'.PHP_EOL;
+ 		echo '$.datepicker.setDefaults( $.datepicker.regional["fr"] );'.PHP_EOL;
  		echo '	$(\'#mydate_' .$typeDate. '\').datepicker({'.PHP_EOL;
  			echo '		beforeShow: readSelected, onSelect: updateSelected,'.PHP_EOL;
- 			echo '		showOn: \'both\', buttonImageOnly: true, buttonImage: \'img_grr/calendar.png\',buttonText: "Choisir la date"});'.PHP_EOL;
+ 			echo '		showOn: \'both\', buttonImageOnly: true, buttonImage: \'img_grr/calendar.png\',buttonText: "Choisir la date",'.PHP_EOL;
+            echo '      dayNamesMin: [ "Di","Lu","Ma","Me","Je","Ve","Sa" ],'.PHP_EOL;
+            echo '      minDate:\''.$mindate.'\','.PHP_EOL;
+            echo '      maxDate:\''.$maxdate.'\','.PHP_EOL;
+            echo '});'.PHP_EOL;
 echo '		function readSelected()'.PHP_EOL;
 echo '		{'.PHP_EOL;
 echo '			$(\'#mydate_' .$typeDate. '\').val($(\'#' .$typeDate. '_day\').val() + \'/\' +'.PHP_EOL;
@@ -4796,7 +4781,7 @@ echo '			$(\'#' .$typeDate. '_day\').val(date.substring(0, 2));'.PHP_EOL;
 echo '			$(\'#' .$typeDate. '_month\').val(date.substring(3, 5));'.PHP_EOL;
 echo '			$(\'#' .$typeDate. '_year\').val(date.substring(6, 10));'.PHP_EOL;
 echo '		}'.PHP_EOL;
-echo '	});'.PHP_EOL;
+//echo '	});'.PHP_EOL;
 echo '</script>'.PHP_EOL;
 }
 
@@ -4817,41 +4802,30 @@ function jQuery_TimePicker($typeTime, $start_hour, $start_min,$dureepardefaultse
 	}
 	else
 	{
-		if (isset ($_GET['hour']))
-			$hour = $_GET['hour'];
-		else
-			$hour = date("h");
-		if (isset ($_GET['minute']))
-			$minute = $_GET['minute'];
-		else
-			$minute = date("m");
+		$hour = (isset ($_GET['hour']))? clean_input($_GET['hour']) : date("h");
+		$minute = (isset ($_GET['minute']))? clean_input($_GET['minute']) : date("m");
 			
 		if ($typeTime == 'end_'){
-		$dureepardefautmin = $dureepardefaultsec/60;
-		if ($dureepardefautmin == 60){
-			$ajout = 1;
-			$hour = $_GET['hour'] + $ajout;
-			$minute ="00";
-		}
-		if ($dureepardefautmin < 60){
-			$hour = $_GET['hour'];
-			$minute =$dureepardefautmin;
-		}
-		if ($dureepardefautmin > 60){
-            $dureepardefautheure = $dureepardefautmin/60;
-        //	if (($dureepardefautheure % 60)!=0){
-	//		$hour = $_GET['hour']+ $dureepardefautheure;
-            $hour = ($_GET['hour']+ $dureepardefautheure)%24; // Modulo 24
-            $hour = str_pad($hour, 2, 0, STR_PAD_LEFT); // Affichage heure sur 2 digits 
-			if ($_GET['minute'] == 30){
-				$minute =30;
-			}else{
-				 $minute = "00";
-				};
-	//		}
-		}
-	};
-
+            $dureepardefautmin = $dureepardefaultsec/60;
+            if ($dureepardefautmin == 60){
+                $ajout = 1;
+                $hour = $_GET['hour'] + $ajout;
+                $minute ="00";
+            }
+            elseif ($dureepardefautmin < 60){
+                $hour = $_GET['hour'];
+                $minute =$dureepardefautmin;
+            }
+            elseif ($dureepardefautmin > 60){
+                $dureepardefautheure = $dureepardefautmin/60;
+            //	if (($dureepardefautheure % 60)!=0){
+        //		$hour = $_GET['hour']+ $dureepardefautheure;
+                $hour = ($_GET['hour']+ $dureepardefautheure)%24; // Modulo 24
+                $hour = str_pad($hour, 2, 0, STR_PAD_LEFT); // Affichage heure sur 2 digits 
+                $minute = ($_GET['minute'] == 30)? 30 : "00";
+        //		}
+            }
+        }
 	}
 	if ($minute == 0)
 		$minute = '00';
@@ -4870,7 +4844,7 @@ $(\'.clockpicker\').clockpicker({
 });
 </script>';
 }
-function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaultsec)
+function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaultsec,$twentyfourhour_format=0)
 {
 	if (isset ($_GET['id']))
 	{
@@ -4887,52 +4861,51 @@ function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaults
 	}
 	else
 	{
-		if (isset ($_GET['hour']))
-			$hour = $_GET['hour'];
-		else
-			$hour = date("h");
-		if (isset ($_GET['minute']))
-			$minute = $_GET['minute'];
-		else
-			$minute = date("m");
+		$hour = (isset ($_GET['hour']))? clean_input($_GET['hour']) : date("h");
+		$minute = (isset ($_GET['minute']))? clean_input($_GET['minute']) : date("m");
 			
 		if ($typeTime == 'end_')
         {
             $dureepardefautmin = $dureepardefaultsec/60;
             if ($dureepardefautmin == 60){
                 $ajout = 1;
-                $hour = $_GET['hour'] + $ajout;
+                $hour += $ajout;
                 $minute ="00";
             }
             if ($dureepardefautmin < 60){
-                $hour = $_GET['hour'];
-                $minute =$dureepardefautmin;
+                $minute += $dureepardefautmin;
+                if ($minute >= 60){
+                    $hour++;
+                    $minute = $minute%60;
+                }
+                $minute = str_pad($minute, 2, 0, STR_PAD_LEFT);
             }
             if ($dureepardefautmin > 60)
             {
                 $dureepardefautheure = $dureepardefautmin/60;
-                if (($dureepardefautheure % 60)!=0)
-                {
-                    $hour = $_GET['hour']+ $dureepardefautheure;
-                    if ($_GET['minute'] == 30){$minute =30;}
-                    else{$minute = "00";}
-                }
+                $hour = ($hour + $dureepardefautheure)%24;
+                $hour = str_pad($hour, 2, 0, STR_PAD_LEFT);
+                $minute = $dureepardefautmin % 60;
+                $minute = str_pad($minute, 2, 0, STR_PAD_LEFT);
             }
         }
 	}
-	if ($minute == 0)
-		$minute = '00';
-	// MAJ
-	echo '<div class="input-group">
-	<input id="'.$typeTime.'" name="' .$typeTime. '" type="text" class="time" >
+    $timeFormat = ($twentyfourhour_format)? "H:i" : "h:i a";
+	echo '<label for="'.$typeTime.'">'.get_vocab('time').get_vocab('deux_points').'</label>
+    <div class="input-group timepicker">
+	<input id="'.$typeTime.'" name="' .$typeTime. '" type="text" class="form-control time" value="' .$hour. ':' .$minute. '" >
+    <span class="input-group-addon">
+        <span class="glyphicon glyphicon-time" ></span>
+    </span>
 	</div>';
     echo '<script type="text/javascript">
         $(\'#'.$typeTime.'\').timepicker({
             \'step\': '.($dureepardefaultsec/60).',
             \'scrollDefault\': \''.$hour.':'.$minute.'\',
-            \'timeFormat\': "H:i",
+            \'timeFormat\': \''.$timeFormat.'\',
             \'forceRoundTime\': true,
         });
+        $(\'#'.$typeTime.'\').timepicker(\'setTime\', \''.$hour.':'.$minute.'\');
         </script>';
 }
 
@@ -5329,10 +5302,10 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<link rel="stylesheet" type="text/css" href="../include/admin_grr.css" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/select2.css" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/select2-bootstrap.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/jquery-ui.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
+		//$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-multiselect.css">'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/jquery-ui.min.css" />'.PHP_EOL;
         $a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
         $a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
         //$a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/types.css" />'.PHP_EOL; // les couleurs des types de réservation
@@ -5340,12 +5313,13 @@ function pageHead2($title, $page = "with_session")
 		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 			$a .= '<link rel="stylesheet" type="text/css" href="../themes/print/css/style.css" />'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/jquery-ui.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/jquery.validate.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/bootstrap-multiselect.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/jquery-ui.min.js"></script>'.PHP_EOL;
+        $a .= '<script type="text/javascript" src="../js/jquery-ui-i18n.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/jquery.validate.js"></script>'.PHP_EOL;
+		//$a .= '<script type="text/javascript" src="../js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/html2canvas.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/menu.js"></script>'.PHP_EOL;        
         $a .= '<script type="text/javascript" src="../js/jquery.floatThead.min.js"></script>'.PHP_EOL;
@@ -5376,8 +5350,8 @@ function pageHead2($title, $page = "with_session")
 			$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-multiselect.css">'.PHP_EOL;
 			$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
 		}
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.min.css" />'.PHP_EOL;
+		//$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
         $a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
         $a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
         //$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/types.css" />'.PHP_EOL; // les couleurs des types de réservation        
@@ -5386,11 +5360,13 @@ function pageHead2($title, $page = "with_session")
 			$a .= '<link rel="stylesheet" type="text/css" href="include/admin_grr.css" />'.PHP_EOL;
 		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 			$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
+        $a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery.timepicker.min.css" />';
 		$a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
         $a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
+        $a .= '<script type="text/javascript" src="js/jquery-ui-i18n.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
+		//$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/html2canvas.js"></script>'.PHP_EOL;
         $a .= '<script type="text/javascript" src="js/jquery.floatThead.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;     
@@ -5399,6 +5375,7 @@ function pageHead2($title, $page = "with_session")
 		// $a .= '<script type="text/javascript" src="js/pdf.js" ></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/popup.js" charset="utf-8"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/functions.js" ></script>'.PHP_EOL;
+        $a .= '<script type="text/javascript" src="js/jquery.timepicker.min.js"></script>';
 		if (isset($use_select2))
 		{
 			$a .= '<script type="text/javascript" src="js/bootstrap-clockpicker.js"></script>'.PHP_EOL;

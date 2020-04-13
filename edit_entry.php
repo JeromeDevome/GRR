@@ -163,9 +163,9 @@ if (isset($id)) // édition d'une réservation existante
 		$row = grr_sql_row($res, 0);
 		grr_sql_free($res);
 		$rep_type = $row[0];
-		if ($rep_type == 2) // périodidicté chaque semaine
+		if ($rep_type == 2) // périodicité chaque semaine
 			$rep_num_weeks = $row[4];
-		if ($rep_type == 7) // périodidicté X Y du mois
+		if ($rep_type == 7) // périodicité X Y du mois
 		{
 			$rep_month_abs1 = $row[4];
 			$rep_month_abs2 = $row[3];
@@ -805,24 +805,23 @@ if ($enable_periods == 'y')
 }
 else
 {
-	echo "<b>".get_vocab("time")." : </b>";
+	//echo "<b>".get_vocab("time")." : </b>";
 	if (isset ($_GET['id']))
 	{
-		$duree_par_defaut_reservation_area = $duration;
-		jQuery_TimePicker('start_', $start_hour, $start_min,$duree_par_defaut_reservation_area);
+		$duree_par_defaut_reservation_area = $resolution;
+		jQuery_TimePicker2('start_', $start_hour, $start_min,$duree_par_defaut_reservation_area,$twentyfourhour_format);
 	}
 	else
 	{
-		jQuery_TimePicker('start_', '', '',$duree_par_defaut_reservation_area);
+		jQuery_TimePicker2('start_', '', '',$duree_par_defaut_reservation_area,$twentyfourhour_format);
 	}
-	if (!$twentyfourhour_format)
+	/*if (!$twentyfourhour_format)
 	{
 		$checked = ($start_hour < 12) ? 'checked="checked"' : "";
 		echo '<input name="ampm" type="radio" value="am" '.$checked.' />'.date("a",mktime(1,0,0,1,1,1970));
 		$checked = ($start_hour >= 12) ? 'checked="checked"' : "";
 		echo '<input name="ampm" type="radio" value="pm" '.$checked.' />'.date("a",mktime(13,0,0,1,1,1970));
-	}
-
+	}*/
 }
 echo '</div>'.PHP_EOL;
 echo "</td></tr>".PHP_EOL;
@@ -916,22 +915,22 @@ else // sélection de l'heure ou du créneau de fin
 	}
 	else
 	{
-		echo "<b>".get_vocab("time")." : </b>";
+		//echo "<b>".get_vocab("time")." : </b>";
 		if (isset ($_GET['id']))
 		{
-			jQuery_TimePicker('end_', $end_hour, $end_min,$duree_par_defaut_reservation_area);
+			jQuery_TimePicker2('end_', $end_hour, $end_min,$duree_par_defaut_reservation_area,$twentyfourhour_format);
 		}
 		else
 		{
-			jQuery_TimePicker('end_', '', '',$duree_par_defaut_reservation_area);
+			jQuery_TimePicker2('end_', '', '',$duree_par_defaut_reservation_area,$twentyfourhour_format);
 		}
-		if (!$twentyfourhour_format)
+/*		if (!$twentyfourhour_format)
 		{
 			$checked = ($end_hour < 12) ? "checked=\"checked\"" : "";
 			echo "<input name=\"ampm\" type=\"radio\" value=\"am\" $checked />".date("a",mktime(1,0,0,1,1,1970));
 			$checked = ($end_hour >= 12) ? "checked=\"checked\"" : "";
 			echo "<input name=\"ampm\" type=\"radio\" value=\"pm\" $checked />".date("a",mktime(13,0,0,1,1,1970));
-		}
+		}*/
 	}
 	echo '</div>'.PHP_EOL;
 	echo '</td></tr>'.PHP_EOL;
@@ -1019,7 +1018,7 @@ foreach ($tab_rooms_noaccess as $key)
 $sql .= " ORDER BY order_display,room_name";
 $res = grr_sql_query($sql);
 $len = grr_sql_count($res);
-//Sélection de la "room" dans l'"area"
+//sélection de la "room" dans l'"area"
 echo "<tr><td class=\"CL\" style=\"vertical-align:top;\"><table border=\"0\"><tr><td><select name=\"rooms[]\" size=\"".min($longueur_liste_ressources_max,$len)."\" multiple=\"multiple\" onchange=\"changeRoom(this.form) ;\">";
 if ($res)
 {
@@ -1155,7 +1154,7 @@ if($periodiciteConfig == 'y'){
 			}
 		}
 		echo "</table>\n\n";
-		echo "<!-- ***** Fin de périodidité ***** -->\n";
+		echo "<!-- ***** Fin de périodicité **** -->\n";
 		echo "</td></tr>";
 		echo "<tr><td class=\"F\"><b>".get_vocab("rep_end_date")."</b></td></tr>\n";
 		echo "<tr><td class=\"CL\">";
