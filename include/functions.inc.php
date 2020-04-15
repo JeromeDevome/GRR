@@ -5306,6 +5306,7 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-multiselect.css">'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/jquery-ui.min.css" />'.PHP_EOL;
+        $a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/jquery.timepicker.min.css" />';
         $a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
         $a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
         //$a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/types.css" />'.PHP_EOL; // les couleurs des types de réservation
@@ -5351,6 +5352,7 @@ function pageHead2($title, $page = "with_session")
 			$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
 		}
 		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.min.css" />'.PHP_EOL;
+        $a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery.timepicker.min.css" />';
 		//$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
         $a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
         $a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
@@ -5360,7 +5362,6 @@ function pageHead2($title, $page = "with_session")
 			$a .= '<link rel="stylesheet" type="text/css" href="include/admin_grr.css" />'.PHP_EOL;
 		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 			$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
-        $a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery.timepicker.min.css" />';
 		$a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
         $a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
