@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2020-04-09
+# Last modification : 2020-04-17
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -851,6 +851,7 @@ $vocab['tentative_reservation_ressource_indisponible'] = "PROBLEM: You tried to 
 $vocab['texte_en_attente_de_moderation'] = "Your request is waiting for a moderation. You will be notified from the decision of the resource manager.";
 $vocab['the_room'] = "the resource: ";
 $vocab['the_user'] = "The user ";
+$vocab['theme_perso'] = "Personalized colours";
 $vocab['through'] = " to ";
 $vocab['time'] = "Time";
 $vocab['title_automatic_mail'] = "Sending of automatic mails";

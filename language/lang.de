@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr
 # GRR : fichier de langue allemande
-# Last modification : 2020-04-09
+# Last modification : 2020-04-17
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -844,6 +844,7 @@ $vocab['tentative_reservation_ressource_indisponible'] = "PROBLEM: Sie haben ver
 $vocab['texte_en_attente_de_moderation'] = "Ihr Antrag ist im Warten von Moderation.\nSie werden die Entscheidung erfahren, sobald ein Ressourceverwalter Ihren Antrag in Betracht gezogen hat.";
 $vocab['the_room'] = "Ressource: ";
 $vocab['the_user'] = "Benutzer ";
+$vocab['theme_perso'] = "Couleurs personnalisées";// à traduire
 $vocab['through'] = " am ";
 $vocab['time'] = "Uhrzeit";
 $vocab['title_automatic_mail'] = "Versenden von automatischen E-Mails";
