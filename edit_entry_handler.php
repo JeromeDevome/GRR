@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Permet de vérifier la validité de l'édition ou de la création d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-06 11:20$
+ * Dernière modification : $Date: 2020-04-17 18:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -78,6 +78,13 @@ if (isset($_GET["start_"])){
 	$debut = explode(':', $_GET["start_"]);
 	$hour = $debut[0];
 	$minute = isset($debut[1])? $debut[1]:'00';
+    $pos = strpos($minute," ");
+    if ($pos !== false){
+        $debmin = explode(' ',$minute);
+        $minute = $debmin[0];
+        if ($debmin[1] == "pm"){$hour += 12;}
+    }
+    echo $hour.":".$minute;
 }
 if (isset($hour))
 {
@@ -274,11 +281,11 @@ if ($type_affichage_reser == 0)
 	}
 	else
 	{
-		if (!$twentyfourhour_format)
+		/*if (!$twentyfourhour_format)
 		{
 			if (isset($ampm) && ($ampm == "pm"))
 				$hour += 12;
-		}
+		}*/
 		$starttime = mktime($hour, $minute, 0, $month, $day, $year);
 		$endtime   = mktime($hour, $minute, 0, $month, $day, $year) + intval($units) * floatval($duration);
 		if ($endtime <= $starttime)
@@ -309,6 +316,11 @@ else
 		$fin = explode(':', clean_input($_GET["end_"]));
 		$_GET["end_hour"] = $fin[0];
 		$_GET["end_minute"] = $fin[1];
+        $pos = strpos($fin[1],' ');
+        if ($pos !== false){
+            $finmin = explode(" ",$fin[1]);
+            if ($finmin[1] == "pm"){$_GET['end_hour'] += 12;}
+        }
 	}
 
 	if (!isset($_GET["end_day"]) || !isset($_GET["end_month"]) || !isset($_GET["end_year"]) || !isset($_GET["end_hour"]) || !isset($_GET["end_minute"]) )
@@ -771,6 +783,7 @@ if ($error_qui_peut_reserver_pour == 'yes')
 if ($error_heure_debut_fin == 'yes')
 {
 	start_page_w_header();
+    echo strftime($starttime);
 	echo "<h2>" . get_vocab("error_heure_debut_fin") ."</h2>";
 	// echo $start_day; // cette variable n'est pas définie ? YN
 	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
