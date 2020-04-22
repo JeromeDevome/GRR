@@ -3,7 +3,7 @@
  * my_account_modif_listes.php
  * Page "Ajax" utilisée pour générer les listes de domaines et de ressources, en liaison avec my_account.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-01-10 14:20$
+ * Dernière modification : $Date: 2020-04-20 14:30$
  * @author    Laurent Delineau & JeromeB
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -81,7 +81,7 @@ if ($_GET['type'] == "domaine")
 	if (($id_site!=-1) || ($use_site=='n')){
 		$resultat = grr_sql_query($sql);
 	}
-	$display_liste = '<table border="0"><tr><td>'.get_vocab('default_area').'</td><td><select class="form-control" id="id_area" name="id_area" onchange="modifier_liste_ressources(1)"><option value="-1">'.get_vocab('choose_an_area').'</option>'."\n";
+	$display_liste = '<div class="form-group"><label class="control-label col-md-3 col-sm-3 col-xs-4">'.get_vocab('default_area').'</label><div class="col-md-4 col-sm-6 col-xs-8"><select class="form-control" id="id_area" name="id_area" onchange="modifier_liste_ressources(1)"><option value="-1">'.get_vocab('choose_an_area').'</option>'."\n";
 	if (($id_site!=-1) || ($use_site=='n')){
 
 		for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); $enr++)
@@ -99,9 +99,8 @@ if ($_GET['type'] == "domaine")
 		}
 	}
 	$display_liste .= '            </select>';
-	// $id_area = 5; ?? YN le 10/01/2020
-	$display_liste .=  '</td>
-</tr></table>'."\n";
+	$display_liste .=  '</div>
+</div>'."\n";
 }
 if ($_GET['type'] == "ressource")
 {
@@ -115,7 +114,7 @@ if ($_GET['type'] == "ressource")
 	if ($_GET['action'] == 2)
 	{
 	//on vide la liste des ressources
-		$display_liste = '<table border="0"><tr><td>'.get_vocab('default_room').'</td><td><select class="form-control" name="id_room"><option value="-1">'.get_vocab('default_room_all').'</option></select></td></tr></table>'."\n";
+		$display_liste = '<div class="form-group"><label class="control-label col-md-3 col-sm-3 col-xs-4">'.get_vocab('default_room').'</label><div class="col-md-4 col-sm-6 col-xs-8"><select class="form-control" name="id_room"><option value="-1">'.get_vocab('default_room_all').'</option></select></div></div>'."\n";
 	}
 	else
 	{
@@ -137,7 +136,7 @@ if ($_GET['type'] == "ressource")
 		}
 		$sql .= " ORDER BY order_display,room_name";
 		$resultat = grr_sql_query($sql);
-		$display_liste = '<table border="0"><tr><td>'.get_vocab('default_room').'</td><td><select class="form-control" name="id_room"><option value="-1"';
+		$display_liste = '<div class="form-group"><label class="control-label col-md-3 col-sm-3 col-xs-4">'.get_vocab('default_room').'</label><div class="col-md-4 col-sm-6 col-xs-8"><select class="form-control" name="id_room"><option value="-1"';
 		if ($default_room == -1)
 			$display_liste .= ' selected="selected" ';
 		$display_liste .= ' >'.get_vocab('default_room_all').'</option>'."\n".
@@ -161,7 +160,7 @@ if ($_GET['type'] == "ressource")
 			$display_liste .= '>'.htmlspecialchars($row[1]).' '.get_vocab('display_week');
 			$display_liste .= '</option>'."\n";
 		}
-		$display_liste .= '</select></td></tr></table>'."\n";
+		$display_liste .= '</select></div></div>'."\n";
 	}
 }
 if ($unicode_encoding)

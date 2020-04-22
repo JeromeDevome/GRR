@@ -3,7 +3,7 @@
  * my_account.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-24 10:30$
+ * Dernière modification : $Date: 2020-04-22 10:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -30,70 +30,55 @@ if (!Settings::load())
 $desactive_VerifNomPrenomUser='y';
 if (!grr_resumeSession())
 {
-	header('Location: logout.php?auto=1&url=$url');
+	header('Location: logout.php?auto=1&url='.$grr_script_name);
 	die();
 };
-// Definition_ressource_domaine_site();
-$day = isset($_POST['day']) ? $_POST['day'] : (isset($_GET['day']) ? $_GET['day'] : date('d'));
-$month = isset($_POST['month']) ? $_POST['month'] : (isset($_GET['month']) ? $_GET['month'] : date('m'));
-$year = isset($_POST['year']) ? $_POST['year'] : (isset($_GET['year']) ? $_GET['year'] : date('Y'));
 include_once('include/language.inc.php');
-//include "include/resume_session.php";
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-$user_login = isset($_POST['user_login']) ? $_POST['user_login'] : ($user_login = isset($_GET['user_login']) ? $_GET['user_login'] : NULL);
-$valid = isset($_POST['valid']) ? $_POST['valid'] : NULL;
+$msg='';
+if (Settings::get("module_multisite") == "Oui")
+	$use_site = 'y';
+else
+	$use_site = 'n';
+$menus = array('moi','param','pwd','conn','resa');
+$pill = array();
+foreach ($menus as $menu){
+    $pill[$menu] = '<li><a data-toggle="pill" href="#menu_'.$menu.'">'.get_vocab($menu).'</a></li>';
+}
+$divs = array();
+foreach ($menus as $menu){
+    $divs[$menu] = '<div id="menu_'.$menu.'" class="tab-pane fade">';
+}
 // valeurs par défaut pour le reset
 $reset_site = Settings::get('default_site');
 $reset_area = Settings::get('default_area');
 $reset_room = Settings::get('default_room');
-$msg = '';
-if ($valid == 'yes')
+// paramètres récupérés
+// print_r($_POST);
+$valid = isset($_POST['valid']) ? $_POST['valid'] : NULL;
+// activation des pills et tabs
+if (in_array($valid,$menus))
+{   $pill[$valid] = '<li class="active"><a data-toggle="pill" href="#menu_'.$valid.'">'.get_vocab($valid).'</a></li>';
+    $divs[$valid] = '<div id="menu_'.$valid.'" class="tab-pane fade in active">';
+}
+else{ // par défaut on affiche la page des coordonnées
+    $pill['moi'] = '<li class="active"><a data-toggle="pill" href="#menu_'.'moi'.'">'.get_vocab('moi').'</a></li>';
+    $divs['moi'] = '<div id="menu_'.'moi'.'" class="tab-pane fade in active">';
+}
+
+$span = (isset($_POST['span'])&&(($_POST['span']==0)||($_POST['span']==1)))? $_POST['span'] : 1; // par défaut résas à venir
+
+if ($valid == 'moi')
 {
-	if (IsAllowedToModifyMdp())
-	{
-		$reg_password_a = isset($_POST['reg_password_a']) ? $_POST['reg_password_a'] : NULL;
-		$reg_password1 = isset($_POST['reg_password1']) ? $_POST['reg_password1'] : NULL;
-		$reg_password2 = isset($_POST['reg_password2']) ? $_POST['reg_password2'] : NULL;
-		if (($reg_password_a != '') && ($reg_password1 != ''))
-		{
-			$reg_password_a_c = md5($reg_password_a);
-			if ($_SESSION['password'] == $reg_password_a_c)
-			{
-				if ($reg_password1 != $reg_password2)
-					$msg = get_vocab('wrong_pwd2');
-				else
-				{
-					VerifyModeDemo();
-					$reg_password1 = md5($reg_password1);
-					$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='".protect_data_sql($reg_password1)."' WHERE login='".getUserName()."'";
-					if (grr_sql_command($sql) < 0)
-						fatal_error(0, get_vocab('update_pwd_failed') . grr_sql_error());
-					else
-					{
-						$msg = get_vocab('update_pwd_succeed');
-						$_SESSION['password'] = $reg_password1;
-					}
-				}
-			}
-			else
-				$msg = get_vocab('wrong_old_pwd');
-		}
-	}
-	$sql = "SELECT email,source,nom,prenom
+	$sql = "SELECT nom,prenom,email
 	FROM ".TABLE_PREFIX."_utilisateurs
 	WHERE login='".getUserName()."'";
 	$res = grr_sql_query($sql);
 	if ($res)
 	{
-		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-		{
-			$user_email = $row[0];
-			$user_source = $row[1];
-			$user_nom = $row[2];
-			$user_prenom = $row[3];
-		}
+		$row = grr_sql_row($res, 0);
+		$user_nom = $row[0];
+		$user_prenom = $row[1];
+		$user_email = $row[2];
 	}
 	$reg_email = isset($_POST['reg_email']) ? clean_input($_POST['reg_email']) : $user_email;
 	$reg_nom = isset($_POST['reg_nom']) ? clean_input($_POST['reg_nom']) : $user_nom;
@@ -103,7 +88,7 @@ if ($valid == 'yes')
 		$champ_manquant = 'y';
 	if (trim($reg_prenom) == '')
 		$champ_manquant = 'y';
-	if (($user_email != $reg_email) || ($user_nom != $reg_nom) || ($user_prenom != $reg_prenom))
+	if (($user_email != $reg_email) || ($user_nom != $reg_nom) || ($user_prenom != $reg_prenom)) //MAJ
 	{
 		$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET ";
 		$flag_virgule = 'n';
@@ -141,9 +126,9 @@ if ($valid == 'yes')
 	if (IsAllowedToModifyProfil() && ($champ_manquant=='y'))
 		$msg .= "\\n".str_replace("\'","'",get_vocab('required'));
 }
-if (($valid == 'yes') || ($valid=='reset'))
+if (($valid == 'param')||($valid == 'reset'))
 {
-	$default_site = isset($_POST['id_site']) ? intval($_POST['id_site']) : NULL;
+    $default_site = isset($_POST['id_site']) ? intval($_POST['id_site']) : NULL;
 	$default_area = isset($_POST['id_area']) ? intval($_POST['id_area']) : NULL;
 	$default_room = isset($_POST['id_room']) ? intval($_POST['id_room']) : NULL;
 	$default_style = isset($_POST['default_css']) ? clean_input($_POST['default_css']) : NULL;
@@ -187,52 +172,303 @@ if (($valid == 'yes') || ($valid=='reset'))
 			$_SESSION['default_language'] = Settings::get('default_language');
 	}
 }
-$use_prototype = 'y';
-// début du code HTML
-start_page_w_header($day, $month, $year, $type="with_session");
-echo "\n    <!-- Repere ".$grr_script_name." -->\n";
-if (Settings::get("module_multisite") == "Oui")
-	$use_site = 'y';
-else
-	$use_site = 'n';
+if (($valid == 'pwd')&& IsAllowedToModifyMdp())
+{
+    $reg_password_a = isset($_POST['reg_password_a']) ? $_POST['reg_password_a'] : NULL;
+    $reg_password1 = isset($_POST['reg_password1']) ? $_POST['reg_password1'] : NULL;
+    $reg_password2 = isset($_POST['reg_password2']) ? $_POST['reg_password2'] : NULL;
+    if (($reg_password_a != '') && ($reg_password1 != ''))
+    {
+        $reg_password_a_c = md5($reg_password_a);
+        if ($_SESSION['password'] == $reg_password_a_c)
+        {
+            if ($reg_password1 != $reg_password2)
+                $msg = get_vocab('wrong_pwd2');
+            else
+            {
+                VerifyModeDemo();
+                $reg_password1 = md5($reg_password1);
+                $sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='".protect_data_sql($reg_password1)."' WHERE login='".getUserName()."'";
+                if (grr_sql_command($sql) < 0)
+                    fatal_error(0, get_vocab('update_pwd_failed') . grr_sql_error());
+                else
+                {
+                    $msg = get_vocab('update_pwd_succeed');
+                    $_SESSION['password'] = $reg_password1;
+                }
+            }
+        }
+        else
+            $msg = get_vocab('wrong_old_pwd');
+    }
+    else 
+        $msg = get_vocab('wrong_old_pwd');
+}
+
 // données utilisateur
+$user=array();
 $sql = "SELECT nom,prenom,statut,email,default_site,default_area,default_room,default_style,default_list_type,default_language,source FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".getUserName()."'";
 $res = grr_sql_query($sql);
 if ($res)
 {
-	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-	{
-		$user_nom = $row[0];
-		$user_prenom = $row[1];
-		$user_statut = $row[2];
-		$user_email = $row[3];
-		if (($row[4] != '') && ($row[4] !='0'))
-			$default_site = $row[4];
-		else
-			$default_site = Settings::get('default_site');
-		if (($row[5] != '') && ($row[5] !='0'))
-			$default_area = $row[5];
-		else
-			$default_area = Settings::get('default_area');
-		if (($row[6] != '') && ($row[6] !='0'))
-			$default_room = $row[6];
-		else
-			$default_room = Settings::get('default_room');
-		if ($row[7] != '')
-			$default_css = $row[7];
-		else
-			$default_css = Settings::get('default_css');
-		if ($row[8] != '')
-			$default_list_type = $row[8];
-		else
-			$default_list_type = Settings::get('area_list_format');
-		if ($row[9] != '')
-			$default_language = $row[9];
-		else
-			$default_language = Settings::get('default_language');
-		$user_source = $row[10];
-	}
+	$user = grr_sql_row_keyed($res, 0); // utilisateur.login est unique
+    grr_sql_free($res);
 }
+$default_site = (isset($user['default_site']) && ($user['default_site'] != '0') && ($user['default_site'] != ''))? $user['default_site'] : Settings::get('default_site');
+$default_area = (isset($user['default_area']) && ($user['default_area'] != '0') && ($user['default_area'] != ''))? $user['default_area'] : Settings::get('default_area');
+$default_room = (isset($user['default_room']) && ($user['default_room'] != '0') && ($user['default_room'] != ''))? $user['default_room'] : Settings::get('default_room');
+$default_css = (isset($user['default_style']) && ($user['default_style'] != ''))? $user['default_style'] : Settings::get('default_css');
+$default_list_type = (isset($user['default_list_type']) && ($user['default_list_type'] != ''))? $user['default_list_type'] : Settings::get('area_list_format');
+$default_language = (isset($user['default_language']) && ($user['default_language'] != ''))? $user['default_language'] : Settings::get('default_language');
+
+function menu_moi($user){
+    $mod_profil = IsAllowedToModifyProfil();
+    $mod_email = IsAllowedToModifyEmail();
+    $html = '<div class="container">';
+	$html .= '<form class="form-horizontal" id="form_moi" action="my_account.php" method="post">';
+    $html .= '<div class="form-group">';
+    $html .= '<label class="control-label col-md-2 col-sm-3 col-xs-4" for="login">'.get_vocab('login').get_vocab('deux_points').'</label>';
+    $html .= '<div class="col-md-4 col-sm-6 col-xs-8">';
+    $html .= '<input class="form-control" for="nom" type="text" name="reg_nom" value="'.getUserName().'" size="30" disabled/>';
+    $html .= '</div></div>';
+    $html .= '<div class="form-group">';
+    $html .= '<label class="control-label col-md-2 col-sm-3 col-xs-4" for="nom">'.get_vocab('last_name').get_vocab('deux_points').'*</label>';
+    $html .= '<div class="col-md-4 col-sm-6 col-xs-8">';
+    $html .= '<input class="form-control" for="nom" type="text" name="reg_nom" value="';
+    if ($user['nom'])
+        $html .= htmlspecialchars($user['nom']);
+    if (!$mod_profil) 
+        $html .= " disabled";
+    $html .= '" size="30" /></div>';
+    $html .= '</div>';
+    $html .= '<div class="form-group">';
+    $html .= '<label class="control-label col-md-2 col-sm-3 col-xs-4" for="prenom">'.get_vocab('first_name').get_vocab('deux_points').'*</label>';
+    $html .= '<div class="col-md-4 col-sm-6 col-xs-8">';
+    $html .= '<input class="form-control" for="prenom" type="text" name="reg_prenom" value="';
+    if ($user['prenom'])
+        $html .= htmlspecialchars($user['prenom']);
+    if (!$mod_profil) 
+        $html .= " disabled";
+    $html .= '" size="30" /></div>';
+    $html .= '</div>';
+    $html .= '<div class="form-group">';
+    $html .= '<label class="control-label col-md-2 col-sm-3 col-xs-4" for="email">'.get_vocab('mail_user').get_vocab('deux_points').'</label>';
+    $html .= '<div class="col-md-4 col-sm-6 col-xs-8">';
+    $html .= '<input class="form-control" for="email" type="text" name="reg_email" value="';
+    if ($user['email'])
+        $html .= htmlspecialchars($user['email']);
+    if (!$mod_email) 
+        $html .= " disabled";
+    $html .= '" size="30" /></div>';
+    $html .= '</div>';
+	if ($user['statut'] == "utilisateur")
+		$text_user_statut = get_vocab("statut_user");
+	else if ($user['statut'] == "visiteur")
+		$text_user_statut = get_vocab("statut_visitor");
+	else if ($user['statut'] == "gestionnaire_utilisateur")
+		$text_user_statut = get_vocab("statut_user_administrator");
+	else if ($user['statut'] == "administrateur")
+		$text_user_statut = get_vocab("statut_administrator");
+	else
+		$text_user_statut = $user['statut'];
+    $html .= '<div class="form-group">';
+    $html .= '<label class="control-label col-md-2 col-sm-3 col-xs-4" for="statut">'.get_vocab('statut').get_vocab('deux_points').'</label>';
+    $html .= '<div class="col-md-4 col-sm-6 col-xs-8">';
+    $html .= '<input class="form-control" for="statut" type="text" name="reg_prenom" value="'.$text_user_statut.'"';
+    $html .= ' disabled size="30" /></div>';
+    $html .= '</div>';
+	$html .= '<div id="fixe">
+            <input type="hidden" name="valid" value="moi" />
+            <input class="btn btn-primary" type="submit" value="'.get_vocab('save').'" />
+            </div>';
+    $html .= "</form>";
+	if (IsAllowedToModifyProfil())
+	{
+		$html .= '<p><em>('.str_replace("\'","'",get_vocab('required')).')</em></p>';
+		if ((trim($user['nom']) == "") || (trim($user['prenom']) == ''))
+			$html .= "\n".'      <h2 class="avertissement">'.get_vocab('nom_prenom_valides').'</h2>';
+	}
+    $html .= "</div>";
+    return $html;
+}
+function menu_conn($login){
+    // on commence par récupérer les données de connexion
+    $sql = "SELECT START, SESSION_ID, REMOTE_ADDR, USER_AGENT, REFERER, AUTOCLOSE, END FROM ".TABLE_PREFIX."_log WHERE LOGIN = '".$login."' ORDER by START desc";
+    $res = grr_sql_query($sql);
+    if (!$res){
+        grr_sql_error();
+    }
+    else {
+        // affichage des résultats
+        $html = '<p>'.get_vocab("see_connexions_explain").'</p>';
+        $html .= '<table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th class="col">
+                        '.get_vocab("begining_of_session").'
+                    </th>
+                    <th class="col">
+                        '.get_vocab("end_of_session").'
+                    </th>   
+                    <th class="col">
+                        '.get_vocab("ip_adress").'
+                    </th>
+                    <th class="col">
+                        '.get_vocab("navigator").'
+                    </th>
+                    <th class="col">
+                        '.get_vocab("referer").'
+                    </th>
+                  </tr>
+                </thead>
+                ';
+        $html .= "<tbody>";
+        $now = time();
+        for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+        {
+            $annee = substr($row[6],0,4);
+            $mois =  substr($row[6],5,2);
+            $jour =  substr($row[6],8,2);
+            $heures = substr($row[6],11,2);
+            $minutes = substr($row[6],14,2);
+            $secondes = substr($row[6],17,2);
+            $end_time = mktime($heures, $minutes, $secondes, $mois, $jour, $annee);
+            $temp1 = '';
+            $temp2 = '';
+            if ($end_time > $now)
+            {
+                $temp1 = "<span style=\"color:green;\">";
+                $temp2 = "</span>";
+            }
+            else if ($row[5])
+            {
+                $temp1 = "<span style=\"color:red\">";
+                $temp2 = "</span>";
+            }
+            $html .= "<tr>\n";
+            $html .= "<td class=\"col\">".$temp1.$row[0].$temp2."</td>";
+            $html .= "<td class=\"col\">".$temp1.$row[6].$temp2."</td>\n";
+            $html .= "<td class=\"col\">".$temp1.$row[2].$temp2."</td>\n";
+            $html .= "<td class=\"col\">".$temp1.$row[3].$temp2."</td>\n";
+            $html .= "<td class=\"col\">".$temp1.$row[4].$temp2."</td>\n";
+            $html .= "</tr>\n";
+        }
+        $html .= "</tbody></table>";
+        return $html;
+    }
+}
+/* met en forme une ligne du tableau des réservations à partir des données SQL et du paramètre $dformat
+*/
+// Report on one entry. See below for columns in $row[].
+function reportone(&$row, $dformat)
+{
+	global $vocab, $enable_periods;
+	echo "<tr>";
+		//Affichage de l'heure et de la durée de réservation
+	if ($enable_periods == 'y')
+		list($start_date, $start_time ,$duration, $dur_units) =  describe_period_span($row[1], $row[2]);
+	else
+		list($start_date, $start_time ,$duration, $dur_units) = describe_span($row[1], $row[2], $dformat);
+
+        // Date début réservation
+	echo "<td>".$start_date . "</td>";
+        // Heure début réservation
+	echo "<td>".$start_time . "</td>";
+        // Durée réservation
+	echo "<td>".$duration ." ". $dur_units ."</td>";
+        //Affiche "area"
+	$area_nom = htmlspecialchars($row[8]);
+	$areadescrip = htmlspecialchars($row[10]);
+	if ($areadescrip != "")
+		$titre_area_descript = "title=\"".$areadescrip."\"";
+	else
+		$titre_area_descript = "";
+	echo "<td ".$titre_area_descript." >".$area_nom."</td>";
+		//Affiche "room"
+	$room = htmlspecialchars($row[9]);
+	echo "<td>".$room."</td>";
+		// Breve description (title), avec un lien
+	$breve_description = affichage_lien_resa_planning($row[3],$row[0]);
+	$breve_description = "<a href=\"view_entry.php?id=$row[0]&amp;mode=page\">". $breve_description . "</a>";
+	echo "<td>".$breve_description."</td>\n";
+		//Description complète
+	if ($row[4] != "")
+		$description = nl2br(htmlspecialchars($row[4]));
+	else
+		$description = " ";
+	echo "<td>". $description . "</td>\n";
+		//Type de réservation
+	$et = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$row[5]."'");
+	if ($et == -1)
+		$et = "?".$row[5]."?";
+	echo "<td>".$et."</td>\n";
+		//Affichage de la date de la dernière mise à jour
+	echo "<td>". date_time_string($row[7],$dformat) . "</td>\n";
+	echo "</tr>\n";
+}
+/* paramètres : $login = login de l'utilisateur, $span = 0 : toutes | 1 : à venir
+*/
+function mes_resas($login,$span,$dformat){
+    $sql = "SELECT distinct e.id, e.start_time, e.end_time, e.name, e.description, "
+    . "e.type, e.beneficiaire, "
+    .  grr_sql_syntax_timestamp_to_unix("e.timestamp")
+    . ", a.area_name, r.room_name, r.description, a.id, e.overload_desc, r.order_display, t.type_name"
+	. ", e.beneficiaire_ext"
+    . " FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_room r, ".TABLE_PREFIX."_type_area t"
+    . " WHERE e.room_id = r.id AND r.area_id = a.id"
+    . " AND e.beneficiaire = '".$login."' ";
+    if ($span)
+        $sql .= "AND e.start_time >= ".time() ;
+    $sql .= " AND  t.type_letter = e.type ";
+    $sql .= "ORDER BY e.start_time ASC ";
+
+    $res = grr_sql_query($sql);
+    if (!$res)
+        fatal_error(0, grr_sql_error());
+    $nmatch = grr_sql_count($res);
+    if ($nmatch == 0)
+    {
+        echo "<p><b>" . get_vocab("nothing_found") . "</b></p>\n";
+        grr_sql_free($res);
+    }
+    else
+    {
+        echo "<p><b>" . $nmatch . " "
+        . ($nmatch == 1 ? get_vocab("entry_found") : get_vocab("entries_found"))
+        .  "</b></p>\n";
+        echo "<table class='table table-bordered table-condensed'>";
+        echo '<thead><tr><th>Date de début</th><th>Heure</th><th>Durée :</th><th>Domaine</th><th>Ressource</th><th>Brève description</th><th>Description complète </th><th>Type</th><th>Dernière mise à jour</th></tr></thead>';
+        echo '<tbody>';
+        for ($i = 0; ($row = grr_sql_row($res, $i)); $i++){
+            get_planning_area_values($row[11]); // détermine le format d'affichage $dformat
+            reportone($row, $dformat);
+        }
+        grr_sql_free($res);
+        echo '</tbody></table>';
+    }
+}
+/* paramètres : $login = login de l'utilisateur, $dformat = format des dates, issu de language.inc.php
+*/
+function menu_resa($login,$span,$dformat){
+    echo get_vocab('resa_menu_explain');
+    echo '<form class="form-inline" action="my_account.php" method="POST">'.PHP_EOL;
+    echo '<input type="hidden" name="valid" value="resa" />'.PHP_EOL;
+    echo '<input class="btn btn-default" type="submit" value="'.get_vocab('goto').'" />'.PHP_EOL;
+    echo '<label class="radio-inline"><input type="radio" name="span" value=0';
+    if ($span == 0)
+        echo ' checked';
+    echo ' />'.get_vocab('resas_toutes').'</label>';
+    echo '<label class="radio-inline"><input type="radio" name="span" value=1';
+    if ($span == 1)
+        echo ' checked';
+    echo ' />'.get_vocab('resas_a_venir').'</label>';
+    echo '</form>'.PHP_EOL;
+    echo mes_resas($login,$span,$dformat);
+}
+
+start_page_w_header();
+affiche_pop_up($msg,'admin');
+// print_r($_POST);
 ?>
 <script type="text/javascript" >
 	function modifier_liste_domaines(){
@@ -278,231 +514,55 @@ if ($res)
 	}
 </script>
 <?php
-affiche_pop_up($msg,'admin');
-echo ('
-	<div class="container">
-	<form id="param_account" action="my_account.php" method="post">
-		<table>');
-	if (!(IsAllowedToModifyProfil()))
-	{
-		echo '
-		<tr>
-			<td><b>'.get_vocab('login').get_vocab('deux_points').'</b></td>
-			<td>'.getUserName().'</td>
-		</tr>';
-		echo '
-		<tr>
-			<td><b>'.get_vocab('last_name').get_vocab('deux_points').'</b></td>
-			<td>'.$user_nom.'</td>
-		</tr>';
-		echo '
-		<tr>
-			<td><b>'.get_vocab('first_name').get_vocab('deux_points').'</b></td>
-			<td>'.$user_prenom.'</td>
-		</tr>';
-	}
-	else
-	{
-		echo '<tr><td><b>'.get_vocab('login').get_vocab('deux_points').'</b></td>';
-		echo '<td>'.getUserName().'</td></tr>';
-		echo '<tr><td><b>'.get_vocab('last_name').get_vocab('deux_points').'</b>*</td>';
-		echo '<td><input class="form-control" type="text" name="reg_nom" value="';
-		if ($user_nom)
-			echo htmlspecialchars($user_nom);
-		echo '" size="30" /></td></tr>';
-		echo '<tr><td><b>'.get_vocab('first_name').get_vocab('deux_points').'</b>*</td><td><input class="form-control" type="text" name="reg_prenom" value="';
-		if ($user_prenom)
-			echo htmlspecialchars($user_prenom);
-		echo '" size="30" /></td></tr>';
-	}
-	if (!(IsAllowedToModifyEmail()))
-	{
-		echo '
-		<tr>
-			<td><b>'.get_vocab('mail_user').get_vocab('deux_points').'</b></td>
-			<td>'.$user_email.'</td>
-		</tr>';
-	}
-	else
-	{
-		echo '<tr><td><b>'.get_vocab('mail_user').get_vocab('deux_points').'</b></td><td><input class="form-control" type="text" name="reg_email" value="';
-		if ($user_email)
-			echo htmlspecialchars($user_email);
-		echo '" size="30" /></td></tr>';
-	}
-	if ($user_statut == "utilisateur")
-		$text_user_statut = get_vocab("statut_user");
-	else if ($user_statut == "visiteur")
-		$text_user_statut = get_vocab("statut_visitor");
-	else if ($user_statut == "gestionnaire_utilisateur")
-		$text_user_statut = get_vocab("statut_user_administrator");
-	else if ($user_statut == "administrateur")
-		$text_user_statut = get_vocab("statut_administrator");
-	else
-		$text_user_statut = $user_statut;
-	echo '<tr><td><b>'.get_vocab('statut').get_vocab('deux_points').'</b></td><td>'.$text_user_statut.'</td></tr></table>';
-	if (IsAllowedToModifyProfil())
-	{
-		echo '<p>('.str_replace("\'","'",get_vocab('required')).')</p>';
-		if ((trim($user_nom) == "") || (trim($user_prenom) == ''))
-			echo "\n".'      <h2 class="avertissement">'.get_vocab('nom_prenom_valides').'</h2>';
-	}
-	if (IsAllowedToModifyMdp())
-	{
-		echo '
-		<div>
-			<table  class="table table-noborder">
-				<tr>
-					<td onclick="clicMenu(\'1\')" class="fontcolor4 center">
-							<b><a href="#"><font color=black>'.get_vocab('click_here_to_modify_pwd').'</font></a></b>
-					</td>
-				</tr>
-				<tr style="display:none" id="menu1">
-					<td>
-						<br />
-						<p>'.get_vocab('pwd_msg_warning').'</p>'.get_vocab('old_pwd').get_vocab('deux_points').'
-						<input type="password" name="reg_password_a" size="20" />
-						<br />'.get_vocab('new_pwd1').get_vocab('deux_points').'
-						<input type="password" name="reg_password1" size="20" />
-						<br />'.get_vocab('new_pwd1').get_vocab('deux_points').'
-						<input type="password" name="reg_password2" size="20" />
-					</td>
-				</tr>
-			</table>
-		</div>
-		<hr />';
-	}
-    if (isset($_GET['see_conn']) && ($_GET['see_conn']==1))
-    {
-        // on commence par récupérer les données de connexion
-        $sql = "SELECT START, SESSION_ID, REMOTE_ADDR, USER_AGENT, REFERER, AUTOCLOSE, END FROM ".TABLE_PREFIX."_log WHERE LOGIN = '".getUserName()."' ORDER by START desc";
-        $res = grr_sql_query($sql);
-        if (!$res){
-            grr_sql_error();
-        }
-        else {
-            echo '
-                <div class="center">
-                    <b><a href="my_account.php?see_conn=0">
-                    <font color=black>'.get_vocab('click_here_to_hide_connexions').'</font></a></b>
-                </div>';
-            // affichage des résultats
-            echo '<p>'.get_vocab("see_connexions_explain").'</p>';
-            echo '<table class="table-bordered">
-                    <thead>
-                    	<th class="col">
-                            '.get_vocab("begining_of_session").'
-                        </th>
-                        <th class="col">
-                            '.get_vocab("end_of_session").'
-                        </th>   
-                        <th class="col">
-                            '.get_vocab("ip_adress").'
-                        </th>
-                        <th class="col">
-                            '.get_vocab("navigator").'
-                        </th>
-                        <th class="col">
-                            '.get_vocab("referer").'
-                        </th>
-                    </thead>
-                    ';
-            echo "<tbody>";
-            $now = time();
-            for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-			{
-				$annee = substr($row[6],0,4);
-				$mois =  substr($row[6],5,2);
-				$jour =  substr($row[6],8,2);
-				$heures = substr($row[6],11,2);
-				$minutes = substr($row[6],14,2);
-				$secondes = substr($row[6],17,2);
-				$end_time = mktime($heures, $minutes, $secondes, $mois, $jour, $annee);
-				$temp1 = '';
-				$temp2 = '';
-				if ($end_time > $now)
-				{
-					$temp1 = "<span style=\"color:green;\">";
-					$temp2 = "</span>";
-				}
-                else if ($row[5])
-                {
-                    $temp1 = "<span style=\"color:red\">";
-                    $temp2 = "</span>";
-                }
-				echo "<tr>\n";
-				echo "<td class=\"col\">".$temp1.$row[0].$temp2."</td>";
-				echo "<td class=\"col\">".$temp1.$row[6].$temp2."</td>\n";
-				echo "<td class=\"col\">".$temp1.$row[2].$temp2."</td>\n";
-				echo "<td class=\"col\">".$temp1.$row[3].$temp2."</td>\n";
-				echo "<td class=\"col\">".$temp1.$row[4].$temp2."</td>\n";
-				echo "</tr>\n";
-			}
-            echo "</tbody></table>";
-        }
-        echo "<hr />";
-    }
-    else 
-    {
-        echo '
-        <div class="center">
-            <b><a href="my_account.php?see_conn=1">
-            <font color=black>'.get_vocab('click_here_to_see_connexions').'</font></a></b>
-        </div>
-        <hr />';
-    }
-	echo "\n".'<h3>'.get_vocab('default_parameter_values_title').'</h3>';
-	echo "\n".'<h4>'.get_vocab('explain_area_list_format').'</h4>';
-	echo '
-	<table>
-		<tr>
-			<td>'.get_vocab('liste_area_list_format').'</td>
-			<td>
-				<input type="radio" name="area_item_format" value="list" ';
-				if ($default_list_type == 'list')
+echo '<div class="container">';
+echo '  <h2>'.get_vocab('my_data').'</h2>';
+echo '  <ul class="nav nav-pills">';
+foreach ($menus as $menu){
+    echo $pill[$menu];
+}
+echo ' </ul>';
+echo '   <div class="tab-content">';
+echo $divs['moi'];
+echo '      <h3>'.get_vocab('moi').'</h3>';
+echo menu_moi($user);
+echo '    </div>';
+echo $divs['param'];
+        echo '<h3>'.get_vocab('default_parameter_values_title').'</h3>';
+        echo '<div class="container">';
+        echo '<form class="form-horizontal" id="form_param" action="my_account.php" method="post">';
+        echo "\n".'<h4>'.get_vocab('explain_area_list_format').'</h4>';
+        echo '<div class="radio">
+                <label><input type="radio" name="area_item_format" value="list" ';
+				if ($user['default_list_type'] == 'list')
 					echo 'checked="checked"';
-				echo ' />';
-				echo '
-			</td>
-		</tr>
-		<tr>
-			<td>'.get_vocab('select_area_list_format').'</td>
-			<td>
-				<input type="radio" name="area_item_format" value="select" ';
-				if ($default_list_type == 'select')
+				echo ' />'.get_vocab('liste_area_list_format').'</label>
+              </div>';
+        echo '<div class="radio">
+                <label><input type="radio" name="area_item_format" value="select" ';
+				if ($user['default_list_type'] == 'select')
 					echo 'checked="checked" ';
-				echo ' />';
-				echo '
-			</td>
-		</tr>
-		<tr>
-			<td>'.get_vocab('item_area_list_format').'</td>
-			<td>
-				<input type="radio" name="area_item_format" value="item" ';
-				if ($default_list_type == 'item')
+				echo ' />'.get_vocab('select_area_list_format').'</label>
+                </div>';
+        echo '<div class="radio">
+                <label><input type="radio" name="area_item_format" value="item" ';
+				if ($user['default_list_type'] == 'item')
 					echo 'checked="checked" ';
-				echo ' />';
-				echo '
-			</td>
-		</tr>
-	</table>';
+				echo ' />'.get_vocab('item_area_list_format').'</label>
+                </div> ';
 /**
  * Liste des sites
  */
-	if (Settings::get("module_multisite") == "Oui")
+	if ($use_site == 'y')
 	{
 		echo '<h4>'.get_vocab('explain_default_area_and_room_and_site').'</h4>';
-
 		$sql = "SELECT id,sitecode,sitename
 		FROM ".TABLE_PREFIX."_site
 		ORDER BY id ASC";
 		$resultat = grr_sql_query($sql);
-		echo '
-		<table>
-			<tr>
-				<td>'.get_vocab('default_site').get_vocab('deux_points').'</td>
-				<td>
-					<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
+		echo '<div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-4" for="id_site">'.get_vocab('default_site').get_vocab('deux_points').'</label>
+				<div class="col-md-4 col-sm-6 col-xs-8">
+                <select class="form-control" id="id_site" name="id_site" for="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
 						<option value="-1">'.get_vocab('choose_a_site').'</option>'."\n";
 						for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); $enr++)
 						{
@@ -513,24 +573,21 @@ echo ('
 							echo '</option>'."\n";
 						}
 						echo '</select>
-					</td>
-				</tr>';
+                </div>
+			</div>';
 	}
 	else
 	{
 		echo '<h4>'.get_vocab('explain_default_area_and_room').'</h4>';
-		echo '<input type="hidden" id="id_site" name="id_site" value="-1" />
-		<table>';
+		echo '<input type="hidden" id="id_site" name="id_site" value="-1" />';
 	}
-	/* Liste des domaines */
-	echo '<tr><td colspan="2">';
+/* Liste des domaines */
 	echo '<div id="div_liste_domaines">';
-	echo '</div></td></tr>';
+	echo '</div>';
 	/* Liste des ressources */
-	echo '<tr><td colspan="2">';
 	echo '<div id="div_liste_ressources">';
 	echo '<input type="hidden" id="id_area" name="id_area" value="'.$default_area.'" />';
-	echo '</div></td></tr></table>';
+	echo '</div>';
 	/* Au chargement de la page, on initialise les select */
 	echo '<script type="text/javascript">modifier_liste_domaines();</script>'."\n";
 	echo '<script type="text/javascript">modifier_liste_ressources(1);</script>'."\n";
@@ -538,12 +595,10 @@ echo ('
  * Choix de la feuille de style par défaut
  */
 	echo '<h4>'.get_vocab('explain_css').'</h4>';
-	echo '
-		<table>
-			<tr>
-				<td>'.get_vocab('choose_css').'</td>
-				<td>
-					<select class="form-control" name="default_css">'."\n";
+	echo '<div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-4" for="css">'.get_vocab('choose_css').'</label>
+				<div class="col-md-4 col-sm-6 col-xs-8">
+					<select class="form-control" name="default_css" for="css">'."\n";
 						$i = 0;
 						while ($i < count($liste_themes))
 						{
@@ -554,19 +609,16 @@ echo ('
 							$i++;
 						}
 						echo '</select>
-					</td>
-				</tr>
-			</table>'."\n";
+				</div>
+		  </div>'."\n";
 /**
  * Choix de la langue
  */
 	echo '      <h4>'.get_vocab('choose_language').'</h4>';
-	echo '
-        <table>
-            <tr>
-                <td>'.get_vocab('choose_css').'</td>
-                <td>
-                    <select class="form-control" name="default_language">'."\n";
+	echo '<div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-4" for="lang">'.get_vocab('choose_css').'</label>
+            <div class="col-md-4 col-sm-6 col-xs-8">
+                    <select class="form-control" name="default_language" for="lang">'."\n";
                         $i = 0;
                         while ($i < count($liste_language))
                         {
@@ -577,15 +629,11 @@ echo ('
                             $i++;
                         }
                         echo '</select>
-                    </td>
-                </tr>
-            </table>
-      <div id="fixe">
+            </div>
+         </div>';
+    echo '<div id="fixe">
             <div>
-                <input type="hidden" name="valid" value="yes" />
-                <input type="hidden" name="day" value="'.$day.'" />
-                <input type="hidden" name="month" value="'.$month.'" />
-                <input type="hidden" name="year" value="'.$year.'" />
+                <input type="hidden" name="valid" value="param" />
                 <br />
                 <input class="btn btn-primary" type="submit" value="'.get_vocab('save').'" />
             </div>
@@ -594,9 +642,6 @@ echo ('
         <form id="reset" action="my_account.php" method="post">
             <div>
                 <input type="hidden" name="valid" value="reset" />
-                <input type="hidden" name="day" value="'.$day.'" />
-                <input type="hidden" name="month" value="'.$month.'" />
-                <input type="hidden" name="year" value="'.$year.'" />
                 <input type="hidden" name="id_site" value="'.$reset_site.'" />
                 <input type="hidden" name="id_area" value="'.$reset_area.'" />
                 <input type="hidden" name="id_room" value="'.$reset_room.'" />
@@ -608,7 +653,58 @@ echo ('
         </form>
         </div>
       </div>
-    </section>
-</body>
-</html>';
+    </div>';
+echo $divs['pwd'];
+echo '  <h3>'.get_vocab('pwd').'</h3>';
+//echo menu_pwd(getUserName());
+if (!IsAllowedToModifyMdp()){
+    echo '<p class="">'.get_vocab('user_change_pwd_interdit').'</p>';
+}
+else {
+    echo '<div class="container">';
+    echo '<script type="text/javascript" src="./js/pwd_strength.js"></script>';
+    echo '  <p>'.get_vocab('pwd_msg_warning').'</p>
+            <form class="form-horizontal" id="form_pwd" action="my_account.php" method="post">
+              <div class="form-group">
+                <label class="control-label col-md-4 col-sm-6 col-xs-8" for="opwd">'.get_vocab('old_pwd').get_vocab('deux_points').'</label>
+                <div class="col-md-3 col-sm-4 col-xs-6">
+                <input class="form-control" for="opwd" type="password" name="reg_password_a" size="20" required /></div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd1">'.get_vocab('new_pwd1').get_vocab('deux_points').'</label>
+                <div class="col-md-3 col-sm-4 col-xs-6">
+                <input id="pwd1" class="form-control" for="pwd1" type="password" name="reg_password1" size="20" 
+                onkeyup="runPassword(this.value, \'pwd1\');" required /></div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-4 col-sm-6 col-xs-8"><p class="text-right">'.get_vocab('pwd_strength').get_vocab('deux_points').'</p></div>
+                <div class="col-md-3 col-sm-4 col-xs-6">
+                  <div id="pwd1_text" style="font-size: 11px;"></div>
+                  <div id="pwd1_bar" style="font-size: 1px; height: 3px; width: 0px; border: 1px solid white;"></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd2">'.get_vocab('new_pwd2').get_vocab('deux_points').'</label>
+                <div class="col-md-3 col-sm-4 col-xs-6">
+                <input class="form-control" for="pwd2" type="password" name="reg_password2" size="20" required /></div>
+              </div>';
+	echo '<div id="fixe">
+            <input type="hidden" name="valid" value="pwd" />
+            <input class="btn btn-primary" type="submit" value="'.get_vocab('save').'" />
+          </div>';
+    echo "  </form>
+         </div>";
+}
+echo '</div>';
+echo $divs['conn'];
+echo '      <h3>'.get_vocab('conn').'</h3>';
+echo menu_conn(getUserName());
+echo '</div>';
+echo $divs['resa'];
+echo '      <h3>'.get_vocab('resa').'</h3>';
+echo menu_resa(getUserName(),$span,$dformat);
+echo '</div>';
+echo '</div>'; // tab content
+echo '</div>'; // container
+end_page();
 ?>

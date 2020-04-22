@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2020-04-17
+# Last modification : 2020-04-22
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -544,7 +544,7 @@ $vocab['maj_recherche_grr'] = "Recherche de mises à jour avec le serveur offici
 $vocab['maj_no_update_to_do'] = "Non avete aggiornamenti della base di dati ad effettuare.";
 $vocab['maj_submit_update'] = "Aggiornare";
 $vocab['maj_version_bdd'] = "Numero di versione della database: GRR";
-$vocab['manage_my_account'] = "Gestire il mio conto";
+$vocab['manage_my_account'] = "Mio conto";
 $vocab['match_area'] = "settore";
 $vocab['match_descr'] = "Descrizione complete ";
 $vocab['match_entry'] = ""; // A traduire
@@ -690,6 +690,7 @@ $vocab['pwd'] = "Password";
 $vocab['pwd_change'] = "Cambiamento dello password";
 $vocab['pwd_msg_warning'] = "Attenzione: la parola d'ordine deve comportare ".$pass_leng." caratteri minimi (lettere, cifre...). È fortemente consigliato non di scegliere una parola d'ordine troppo semplice.";
 $vocab['pwd_msg_warning2'] = "Per ragioni di sicurezza, volete utilizzare il modulo \"Gestire il mio conto \" accessibile a partire dalla pagina d'accoglienza per cambiare la vostra parola d'ordine!";
+$vocab['pwd_strength'] = "Password strength";
 $vocab['pwd_toot_short'] = "Password (a confermare)";
 $vocab['qui_peut_reserver_pour_autre_utilisateur'] = "Hormis les administrateurs, précisez ci-contre quels types d'utilisateurs ont le droit de faire des réservations au nom d'autres utilisateurs."; // A traduire
 $vocab['qui_peut_voir_ressource'] = "Qui peut voir cette ressource (et éventuellement réserver selon les droits attribués) ?"; // A traduire
@@ -901,6 +902,7 @@ $vocab['user_admin_area_list'] = "Elenco delle persone autorizzate a gestire il 
 $vocab['user_admin_site_list'] = "Liste des personnes autorisées à gérer le site ci-contre (hormis les administrateurs généraux)"; // A traduire
 $vocab['user_area_list'] = "Elenco delle persone aventi accesso a questo settore (eccetto gli amministratori):";
 $vocab['user_change_pwd_connexion'] = "L'utilisateur doit changer sont mot de passe à la prochaine connexion"; // A traduire
+$vocab['user_change_pwd_interdit'] = "Vous n'êtes pas autorisé à changer votre mot de passe !";
 $vocab['user_change_pwd_obligatoire'] = "Vous devez changer votre mot de passe"; // A traduire
 $vocab['user_list'] = "Elenco delle persone autorizzate a gestire/i risorsa (s) a fianco (eccetto gli amministratori):";
 $vocab['user_name'] = "Cognome et nome dell'utente :";
@@ -1046,4 +1048,12 @@ $vocab['ssmenuadm_actif'] = "Submenu active item";
 $vocab['default'] = "Default values";
 $vocab['resaToModerate'] = " reservation to moderate";
 $vocab['resasToModerate'] = " reservations to moderate";
+$vocab['conn'] = "My connexions";
+$vocab['param'] = "My parameters";
+$vocab['moi'] = "My personal data";
+$vocab['my_data'] = "My data";
+$vocab['resa'] = "My bookings";
+$vocab['resa_menu_explain'] = "List of bookings for which you are the beneficiary.";
+$vocab['resas_a_venir'] = "upcoming bookings.";
+$vocab['resas_toutes'] = "all bookings, ";
 ?>
