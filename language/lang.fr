@@ -195,6 +195,7 @@ $vocab['bookingsfor'] = "Réservation pour<br />";
 $vocab['booking_in_past'] = "Réservation antérieure à la date actuelle";
 $vocab['booking_in_past_explain'] = "La date de début de la nouvelle réservation est passée. Veuillez choisir une date de début de réservation postérieure à la date actuelle :";
 $vocab['booking_in_past_explain_with_periodicity'] = "Une ou plusieurs réservations posent problème car elles se situent dans le passé.<br />Veuillez choisir des dates de fin de réservation postérieures à la date actuelle :";
+$vocab['booking_range'] = "Portée de la restriction en nombre max. de réservations par utilisateur (-1 si pas de restriction)";
 $vocab['brief_description'] = "la description brève.";
 $vocab['cacher_page_login'] = "Vous avez activé la prise en charge d'un SSO. Vous pouvez spécifier ci-dessous une adresse internet (http://...) afin d'empêcher l'accès à la page de login en dirigeant l'utilisateur non authentifié vers l'adresse spécifiée ci-dessous. <br /><b>Remarque</b> : il sera toujours possible d'accéder à la page de login par une adresse du type http://.../grr/login.php?local :";
 $vocab['calendriers'] = "Calendriers";
@@ -602,6 +603,7 @@ $vocab['montrer_fiche_presentation_ressource'] = "Rendre visible la fiche de pr�
 $vocab['morningstarts_area'] = "Heure de début de journée";
 $vocab['motif'] = "Motif";
 $vocab['mrbs'] = "GRR (Gestion et Réservation de Ressources)";
+$vocab['msg_booking_range'] = "Le nombre maximum de réservations de cette ressource par utilisateur est limité sur une période de ";
 $vocab['msg_del_bookings'] = "Attention, les changements des dates de début et de fin des réservations que vous avez effectués vont entraîner la suppression définitive des réservations déjà effectuées en dehors des nouvelles dates autorisées !<br /><br />Etes-vous sûr de vouloir continuer ?";
 $vocab['msg_explain_log'] = "Les dates apparaissant en rouge marquent les utilisateurs déconnectés automatiquement après un trop long délai d'inactivité.<br />Les lignes apparaissant en vert marquent les utilisateurs actuellement connectés.";
 $vocab['msg_login1'] = "<b>GRR</b> est une sous licence GPL, adaptée de <a href='http://mrbs.sourceforge.net'>MRBS</a>.<br />Pour tout renseignement concernant <b>GRR</b>, rendez-vous sur le site : ";

@@ -3,7 +3,7 @@
  * admin_edit_room.php
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-09 16:10$
+ * Dernière modification : $Date: 2020-04-23 17:10$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -52,6 +52,9 @@ $who_can_see  = isset($_POST["who_can_see"]) ? intval(clean_input($_POST["who_ca
 $max_booking = isset($_POST["max_booking"]) ? intval(clean_input($_POST["max_booking"])) : NULL;
 if ($max_booking<-1)
 	$max_booking = -1;
+$booking_range = isset($_POST["booking_range"]) ? intval(clean_input($_POST["booking_range"])) : NULL;
+if ($booking_range<-1)
+	$booking_range = -1;
 $statut_room = isset($_POST["statut_room"]) ? "0" : "1";
 $show_fic_room = isset($_POST["show_fic_room"]) ? "y" : "n";
 if (isset($_POST["active_ressource_empruntee"]))
@@ -247,6 +250,7 @@ if ((!empty($room)) || (isset($area_id)))
 			order_display='".protect_data_sql($area_order)."',
 			type_affichage_reser='".protect_data_sql($type_affichage_reser)."',
 			max_booking='".protect_data_sql($max_booking)."',
+            booking_range='".protect_data_sql($booking_range)."',
 			moderate='".$moderate."',
 			statut_room='".$statut_room."'
 			WHERE id=$room";
@@ -278,6 +282,7 @@ if ((!empty($room)) || (isset($area_id)))
 			order_display='".protect_data_sql($area_order)."',
 			type_affichage_reser='".protect_data_sql($type_affichage_reser)."',
 			max_booking='".protect_data_sql($max_booking)."',
+            booking_range='".protect_data_sql($booking_range)."',
 			moderate='".$moderate."',
 			statut_room='".$statut_room."'";
 			if (grr_sql_command($sql) < 0)
@@ -444,6 +449,7 @@ if ((!empty($room)) || (isset($area_id)))
 		$row["order_display"]  = 0;
 		$row["type_affichage_reser"]  = 0;
 		$row["max_booking"] = -1;
+        $row["booking_range"] = -1;
 		$row['statut_room'] = '';
 		$row['moderate'] = '';
 		$row['show_fic_room'] = '';
@@ -469,7 +475,7 @@ if ((!empty($room)) || (isset($area_id)))
 	echo "<tr><td>".get_vocab("name").get_vocab("deux_points")."</td><td>\n";
     // seul l'administrateur peut modifier le nom de la ressource
     if ((authGetUserLevel(getUserName(),$area_id,"area") >= 4) || (authGetUserLevel(getUserName(),$room) >= 4))
-        echo "<input type=\"text\" name=\"room_name\" maxlength=\"60\" size=\"40\" value=\"".clean_input($row["room_name"])."\" />\n";
+        echo "<input class=\"form-control\" type=\"text\" name=\"room_name\" maxlength=\"60\" size=\"40\" value=\"".clean_input($row["room_name"])."\" />\n";
     else
     {
         echo "<input type=\"hidden\" name=\"room_name\" value=\"".clean_input($row["room_name"])."\" />\n";
@@ -477,7 +483,7 @@ if ((!empty($room)) || (isset($area_id)))
     }
     echo "</td></tr>\n";
     // Description
-    echo "<tr><td>".get_vocab("description")."</td><td><input type=\"text\" name=\"description\"  maxlength=\"60\" size=\"40\" value=\"".clean_input($row["description"])."\" /></td></tr>\n";
+    echo "<tr><td>".get_vocab("description")."</td><td><input class=\"form-control\" type=\"text\" name=\"description\"  maxlength=\"60\" size=\"40\" value=\"".clean_input($row["description"])."\" /></td></tr>\n";
     // Domaine
     $enable_periods = grr_sql_query1("select enable_periods from ".TABLE_PREFIX."_area where id='".$area_id."'");
     if (((authGetUserLevel(getUserName(),$area_id,"area") >=4 ) || (authGetUserLevel(getUserName(),$room) >= 4)) && ($enable_periods == 'n'))
@@ -653,6 +659,18 @@ if ((!empty($room)) || (isset($area_id)))
 				if ($row["max_booking"] != "-1")
 					echo "<tr><td>".get_vocab("msg_max_booking").get_vocab("deux_points")."</td><td><b>".clean_input($row["max_booking"])."</b></td></tr>";
 				echo "<input type=\"hidden\" name=\"max_booking\" value=\"".clean_input($row["max_booking"])."\" />";
+			}
+	// seuls les administrateurs de la ressource peuvent modifier la durée de limitation des reservations par utilisateur
+			if ((authGetUserLevel(getUserName(),$area_id,"area") >= 4) || (authGetUserLevel(getUserName(),$room) >= 4))
+			{
+				echo "<tr><td>".get_vocab("booking_range")." ";
+				echo "</td><td><input class=\"form-control\" type=\"text\" name=\"booking_range\" size=\"1\" value=\"".clean_input($row["booking_range"])."\" /></td></tr>";
+			}
+			else 
+			{
+				if ($row["booking_range"] != "-1")
+					echo "<tr><td>".get_vocab("msg_booking_range").get_vocab("deux_points")."</td><td><b>".clean_input($row["booking_range"]).get_vocab('days')."</b></td></tr>";
+				echo "<input type=\"hidden\" name=\"booking_range\" value=\"".clean_input($row["booking_range"])."\" />";
 			}
 // L'utilisateur ne peut pas reserver au-delà d'un certain temps
 			echo "<tr><td>".get_vocab("delais_max_resa_room").": </td><td><input class=\"form-control\" type=\"text\" name=\"delais_max_resa_room\" size=\"1\" value=\"".clean_input($row["delais_max_resa_room"])."\" /></td></tr>\n";

@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-04-15 12:15$
+ * Dernière modification : $Date: 2020-04-23 14:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -3315,7 +3315,7 @@ function authUserAccesArea($user,$id)
 }
 // function UserRoomMaxBooking
 // Cette fonction teste si l'utilisateur a la possibilité d'effectuer une réservation, compte tenu
-// des limitations éventuelles de la ressources et du nombre de réservations déjà effectuées.
+// des limitations éventuelles de la ressource et du nombre de réservations déjà effectuées.
 //
 function UserRoomMaxBooking($user, $id_room, $number)
 {
@@ -3381,7 +3381,92 @@ function UserRoomMaxBooking($user, $id_room, $number)
 	}
 	else if ($max_booking_per_room == 0)
 		return 0;
-	// A ce stade, il s'agit d'un utilisateu et il n'y a pas eu de dépassement, ni pour l'ensemble des domaines, ni pour le domaine, ni pour la ressource
+	// A ce stade, il s'agit d'un utilisateur et il n'y a pas eu de dépassement, ni pour l'ensemble des domaines, ni pour le domaine, ni pour la ressource
+	return 1;
+}
+// function UserRoomMaxBookingRange
+// Cette fonction teste si l'utilisateur $user a la possibilité d'effectuer une réservation, compte tenu
+// des limitations éventuelles de la ressource $id_room et du nombre $number de réservations à effectuer, sans que le quota défini sur l'intervalle [$start_time - $range, $start_time] dépasse la limite.
+//
+function UserRoomMaxBookingRange($user, $id_room, $number, $start_time)
+{
+	global $enable_periods,$id_room_autorise;
+	$level = authGetUserLevel($user,$id_room);
+	if ($id_room == '')
+		return 0;
+	if ($level >= 3)
+		return 1;
+	else if (($level == 1 ) &&  !((in_array($id_room,$id_room_autorise)) && ($id_room_autorise != "")))
+		return 0;
+	else if ($level  < 1 )
+		return 0;
+	// A ce niveau, l'utilisateur est simple utilisateur ou bien simple visiteur sur un domaine autorisé
+	// On regarde si le nombre de réservation de la ressource est limité
+	$max_booking_per_room = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($id_room)."'");
+    // limitation dans le temps
+    $booking_range = grr_sql_query1("SELECT booking_range FROM ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($id_room)."'"); // jours
+    $min_int = $start_time - $booking_range * 86400 ;// approximatif, mais devrait être convenable
+	// Calcul de l'id de l'area de la ressource.
+	$id_area = mrbsGetRoomArea($id_room);
+	// On regarde si le nombre de réservation du domaine est limité
+	$max_booking_per_area = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_area WHERE id = '".protect_data_sql($id_area)."'");
+	// On regarde si le nombre de réservation pour l'ensemble des ressources est limité
+	$max_booking = Settings::get("UserAllRoomsMaxBooking");
+	// Si aucune limitation
+	if (($max_booking_per_room < 0) && ($max_booking_per_area < 0) && ($max_booking < 0))
+		return 1;
+	// A ce niveau, il s'agit d'un utilisateur et il y a au moins une limitation
+	$day   = date("d");
+	$month = date("m");
+	$year  = date("Y");
+	$hour  = date("H");
+	$minute = date("i");
+	if ($enable_periods == 'y')
+		$now = mktime(0, 0, 0, $month, $day, $year);
+	else
+		$now = mktime($hour, $minute, 0, $month, $day, $year);
+	// y-a-t-il dépassement pour l'ensemble des ressources ?
+	if ($max_booking > 0)
+	{
+		$nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry r WHERE (beneficiaire = '".protect_data_sql($user)."' and end_time > '$now')");
+		$nb_bookings += $number;
+		if ($nb_bookings > $max_booking)
+			return 0;
+	}
+	else if ($max_booking == 0)
+		return 0;
+	// y-a-t-il dépassement pour l'ensemble des ressources du domaine ?
+	if ($max_booking_per_area > 0)
+	{
+		$nb_bookings = grr_sql_query1("SELECT count(e.id) FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_room r WHERE (e.room_id=r.id and r.area_id='".$id_area."' and e.beneficiaire = '".protect_data_sql($user)."' and e.end_time > '$now')");
+		$nb_bookings += $number;
+		if ($nb_bookings > $max_booking_per_area)
+			return 0;
+	}
+	else if ($max_booking_per_area == 0)
+		return 0;
+	// y-a-t-il dépassement pour la ressource
+	if ($max_booking_per_room > 0)
+	{
+		$nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry WHERE (room_id = '".protect_data_sql($id_room)."' and beneficiaire = '".protect_data_sql($user)."' and end_time > '$now')");
+		$nb_bookings += $number;
+		if ($nb_bookings > $max_booking_per_room)
+			return 0;
+	}
+	else if ($max_booking_per_room == 0)
+		return 0;
+    // limitation sur l'intervalle
+    if ($booking_range > 0 ){
+        $nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry WHERE (
+        room_id = '".protect_data_sql($id_room)."'
+        AND beneficiaire = '".protect_data_sql($user)."'
+        AND end_time > '".$now."'
+        AND start_time > '".min_int."')");
+        $nb_bookings += $number;
+        if ($nb_bookings > $max_booking_per_room)
+            return 0;
+    }
+	// A ce stade, il s'agit d'un utilisateur et il n'y a pas eu de dépassement, ni pour l'ensemble des domaines, ni pour le domaine, ni pour la ressource, ni sur l'intervalle de temps
 	return 1;
 }
 /* function verif_booking_date($user, $id, $date_booking, $date_now)
@@ -3671,12 +3756,10 @@ function VerifyModeDemo() {
 	if (Settings::get("ActiveModeDemo") == 'y')
 	{
 		print_header("", "", "", "");
-		?>
-		<h1>Op&eacute;ration non autoris&eacute;e</h1>
+		echo "<h1>Opération non autorisée</h1>
 		<p>Vous êtes dans une <b>version de démonstration de GRR</b>.
 			<br />Certaines fonctions ont été volontairement bridées. C'est le cas pour l'opération que vous avez tenté d'effectuer.</p>
-		</body></html>
-		<?php
+		</body></html>";
 		die();
 	}
 }
@@ -3753,10 +3836,8 @@ function showAccessDeniedMaxBookings($day, $month, $year, $id_room, $back)
 {
 	global $vocab;
 	print_header($day, $month, $year, $type="with_session");
-	?>
-	<h1><?php echo get_vocab("accessdenied")?></h1>
-	<p>
-		<?php
+	echo '<h1>'.get_vocab("accessdenied").'</h1>';
+	echo '<p>';
 		// Limitation par ressource
 		$max_booking_per_room = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($id_room)."'");
 		if ($max_booking_per_room >= 0)
@@ -3771,15 +3852,13 @@ function showAccessDeniedMaxBookings($day, $month, $year, $id_room, $back)
 		$max_booking_all = Settings::get("UserAllRoomsMaxBooking");
 		if ($max_booking_all >= 0)
 			echo get_vocab("msg_max_booking_all").get_vocab("deux_points").$max_booking_all."<br />";
-		echo "<br />".get_vocab("accessdeniedtoomanybooking");
-		?>
-	</p>
+		echo "<br />".get_vocab("accessdeniedtoomanybooking").
+	'</p>
 	<p>
-		<a href="<?php echo $back; ?>"><?php echo get_vocab("returnprev"); ?></a>
+		<a href="'.$back.'" >'.get_vocab("returnprev").'</a>
 	</p>
 </body>
-</html>
-<?php
+</html>';
 }
 /* fonction qui rend TRUE lorsque la date proposée est en dehors de la période réservable
 */
@@ -4699,7 +4778,7 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
  		return $_statut;
  }
 
-	function jQuery_DatePicker($typeDate){
+function jQuery_DatePicker($typeDate){
 
 		if (@file_exists('../include/connect.inc.php')){
 			$racine = "../";

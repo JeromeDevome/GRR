@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Permet de vérifier la validité de l'édition ou de la création d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-17 18:20$
+ * Dernière modification : $Date: 2020-04-23 14:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -567,7 +567,8 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 			$compt = 1;
 		if ($rep_type != 0 && !empty($reps))
 		{
-			if (UserRoomMaxBooking(getUserName(), $room_id, count($reps) - 1 + $compt + $compt_room) == 0)
+			//if (UserRoomMaxBooking(getUserName(), $room_id, count($reps) - 1 + $compt + $compt_room) == 0)
+            if (UserRoomMaxBookingRange(getUserName(), $room_id, count($reps) - 1 + $compt + $compt_room,$starttime) == 0)
 			{
 				showAccessDeniedMaxBookings($day, $month, $year, $room_id, $back);
 				exit();
@@ -577,7 +578,8 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 		}
 		else
 		{
-			if (UserRoomMaxBooking(getUserName(), $room_id, $compt + $compt_room) == 0)
+			//if (UserRoomMaxBooking(getUserName(), $room_id, $compt + $compt_room) == 0)
+            if (UserRoomMaxBookingRange(getUserName(), $room_id, $compt + $compt_room,$starttime) == 0)
 			{
 				showAccessDeniedMaxBookings($day, $month, $year, $room_id, $back);
 				exit();

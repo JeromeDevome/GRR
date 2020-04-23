@@ -730,10 +730,9 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
 <?php
 echo '<input type="hidden" name="oldRessource" value="'.$room_id.'">'.PHP_EOL;
 echo '<div id="error"></div>';
-//echo '<table class="table-bordered EditEntryTable"><tr>'.PHP_EOL;
+
 echo '<div class="row2">';
 echo '<div class="col-sm-6 col-xs-12">';
-//echo '<td style="width:50%; vertical-align:top; padding-left:15px; padding-top:5px; padding-bottom:5px;">'.PHP_EOL;
 
 echo '<table>'.PHP_EOL;
 // bloc choix du bénéficiaire
