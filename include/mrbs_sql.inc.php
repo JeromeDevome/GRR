@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2020-03-27 10:30$
+ * Dernière modification : $Date: 2020-04-20 09:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -195,10 +195,11 @@ function mrbsGetAreaIdFromRoomId($room_id)
 /** mrbsOverloadGetFieldslist()
  *
  * Return an array with all fields name
- * $id_area - Id of the id_area
+ * $id_area : Id of the area
+ * $room_id : Id of the room
  *
  */
-function mrbsOverloadGetFieldslist($id_area, $room_id = 0)
+function mrbsOverloadGetFieldslist($id_area="", $room_id = 0)
 {
 	if ($room_id > 0 )
 	{
@@ -402,12 +403,19 @@ function grrExtractValueFromOverloadDesc($chaine,$id)
  * $entry_type  - Entry type
  * $repeat_id   - Repeat ID
  * $room_id     - Room ID
+ * $creator
  * $beneficiaire       - beneficiaire
  * $beneficiaire_ext - bénéficiaire extérieur
  * $name        - Name
  * $type        - Type (Internal/External)
  * $description - Description
- *$rep_jour_c - Le jour cycle d'une réservation, si aucun 0
+ * $option_reservation
+ * $overload_data
+ * $moderate
+ * $rep_jour_c - Le jour cycle d'une réservation, si aucun 0
+ * $statut_entry
+ * $keys
+ * $courrier
  *
  * Returns:
  *   0        - An error occured while inserting the entry
@@ -703,7 +711,7 @@ function mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate
 function mrbsGetEntryInfo($id)
 {
 	$sql = "SELECT start_time, end_time, entry_type, repeat_id, room_id,
-	timestamp, beneficiaire, name, type, description
+	timestamp, beneficiaire, name, type, description, moderate
 	FROM ".TABLE_PREFIX."_entry
 	WHERE id = '".$id."'";
 	$res = grr_sql_query($sql);
@@ -725,6 +733,7 @@ function mrbsGetEntryInfo($id)
 		$ret["name"]        = $row[7];
 		$ret["type"]        = $row[8];
 		$ret["description"] = $row[9];
+        $ret['moderate']    = $row[10];
 	}
 	grr_sql_free($res);
 	return $ret;
@@ -780,6 +789,7 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 		$_moderate = "0";
 		$series = 1;
 	}
+	$tab_id_moderes = array();
 	if ($series==0)
 	{
 		//moderation de la ressource
@@ -792,7 +802,6 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 			fatal_error(0, grr_sql_error());
 		if (!(grr_backup($_id,$_SESSION['login'],$_description)))
 			fatal_error(0, grr_sql_error());
-		$tab_id_moderes = array();
 	}
 	else
 	{
@@ -805,7 +814,6 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 		$tab_entry = array();
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 			$tab_entry[] = $row['0'];
-		$tab_id_moderes = array();
 		// Boucle sur les résas
 		foreach ($tab_entry as $entry_tom)
 		{

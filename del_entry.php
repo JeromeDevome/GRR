@@ -3,7 +3,7 @@
  * del_entry.php
  * Interface de suppression d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-24 12:00$
+ * Dernière modification : $Date: 2020-04-24 11:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -72,6 +72,10 @@ if ($info = mrbsGetEntryInfo($id))
 	}
 	if (Settings::get("automatic_mail") == 'yes')
 		$_SESSION['session_message_error'] = send_mail($id,3,$dformat);
+    // traitement des réservations modérées : envoie un mail au modérateur
+    if ($info['moderate'] != 0){ // cette réservation est à modérer ou a été modérée
+        $_SESSION['session_message_error'] .= send_mail($id,3,$dformat);
+    }
 	$room_id = grr_sql_query1("SELECT ".TABLE_PREFIX."_entry.room_id FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id AND ".TABLE_PREFIX."_entry.id='".$id."'");
 	$date_now = time();
 	get_planning_area_values($area);
