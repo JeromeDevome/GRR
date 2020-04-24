@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2020-03-27 10:30$
+ * Dernière modification : $Date: 2020-04-20 09:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -711,7 +711,7 @@ function mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate
 function mrbsGetEntryInfo($id)
 {
 	$sql = "SELECT start_time, end_time, entry_type, repeat_id, room_id,
-	timestamp, beneficiaire, name, type, description
+	timestamp, beneficiaire, name, type, description, moderate
 	FROM ".TABLE_PREFIX."_entry
 	WHERE id = '".$id."'";
 	$res = grr_sql_query($sql);
@@ -733,6 +733,7 @@ function mrbsGetEntryInfo($id)
 		$ret["name"]        = $row[7];
 		$ret["type"]        = $row[8];
 		$ret["description"] = $row[9];
+        $ret['moderate']    = $row[10];
 	}
 	grr_sql_free($res);
 	return $ret;

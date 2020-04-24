@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-04-23 14:15$
+ * Dernière modification : $Date: 2020-04-24 10:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -3040,6 +3040,23 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
         if ($expediteur ==''){$expediteur = $repondre2;}
 		Email::Envois($destinataire2, $sujet2, $message2, $expediteur, '', '', $repondre2);
 	}
+    // Cas d'une réservation modérée : le bénéficiaire peut éventuellement la supprimer, mais on prévient le modérateur
+    if (($action == 3)&&($moderate >0)){// on prévient aussi le modérateur
+        $sql = "SELECT email FROM ".TABLE_PREFIX."_utilisateurs u JOIN ".TABLE_PREFIX."_entry_moderate e ON e.login_moderateur = u.login 
+        WHERE e.id = ".$id_entry." ";
+        $mail_modo = grr_sql_query1($sql);
+        if (($mail_modo != -1)&&($mail_modo != '')){// on a le mail du modérateur
+            $sujet2 .= $vocab["subject_mail_delete"];
+			$message2 .= $vocab["delete_booking"];
+			$message2 .= $vocab["the_room"].$room_name." (".$area_name.") \n";
+			$message2 .= "\n".$reservation;
+            $message2 = html_entity_decode($message2);
+            $destinataire2 = $mail_modo;
+            $repondre2 = $user_email;
+            if ($expediteur ==''){$expediteur = $repondre2;}
+            Email::Envois($destinataire2, $sujet2, $message2, $expediteur, '', '', $repondre2);
+        }
+    }
 
 	return $message_erreur;
 } // Fin fonction send_mail
