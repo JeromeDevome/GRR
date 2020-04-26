@@ -1,9 +1,9 @@
 <?php
 /**
  * week_all.php
- * Permet l'affichage des réservations d'une semaine pour toutes les ressources d'un domaine.
+ * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-04 09:45$
+ * Dernière modification : $Date: 2020-04-26 15:17$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -556,7 +556,7 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 									echo '<a class="lienCellule" style = "border-bottom:1px solid #FFF" title="Voir la réservation" href="view_entry.php?id='.$d[$cday]["id"][$i].'&amp;page=week_all&amp;day='.$cday.'&amp;month='.$cmonth.'&amp;year='.$cyear.'&amp;" >'.PHP_EOL;
 							}
 
-								echo '<table class="table-header">'.PHP_EOL;
+								echo '<table class="pleine">'.PHP_EOL;
 									echo '<tr>'.PHP_EOL;
 										tdcell($d[$cday]["color"][$i]);
 											echo $d[$cday]["resa"][$i];
@@ -620,14 +620,14 @@ echo "</body></html>";
 ?>
 <script type="text/javascript">
 	$(document).ready(function(){
-		$('table.table-bordered td').each(function(){
+		/*$('table.table-bordered td').each(function(){
 			var $row = $(this);
 			var height = $row.height();
 			var h2 = $row.find('a').height();
 			$row.find('a').css('min-height', height);
 			$row.find('a').css('padding-top', height/2 - h2/2);
 
-		});
+		});*/
         if ( $(window).scrollTop() == 0 )
             $("#toTop").hide(1);
 	});

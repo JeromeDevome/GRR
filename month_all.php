@@ -3,7 +3,7 @@
  * month_all.php
  * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-04 09:25$
+ * Dernière modification : $Date: 2020-04-26 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -441,9 +441,9 @@ echo "</caption>";
 			if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) > -1)
 			{
 				if (intval($jour_cycle) > 0)
-					echo " - ".get_vocab("rep_type_6")." ".$jour_cycle;
+					echo "<span class='tiny'> - ".get_vocab("rep_type_6")." ".$jour_cycle."</span>";
 				else
-					echo " - ".$jour_cycle;
+					echo "<span class='tiny'> - ".$jour_cycle."</span>";
 			}
 			echo '</a>',PHP_EOL,'</div>',PHP_EOL;
 			if (est_hors_reservation(mktime(0,0,0,$month,$cday,$year),$area))

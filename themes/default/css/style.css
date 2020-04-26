@@ -6,9 +6,10 @@ a.poplight{display:block;font-weight:400;font-size:14px;height:100%;width:100%;v
 a.lienCellule{display:block;font-weight:400;font-size:14px;height:100%;width:100%;vertical-align:middle;text-align:center;cursor:pointer;font-weight:700;text-decoration:none}
 caption{text-align: center}
 .small{font-size:.8em}
+.tiny{font-size:.5em}
 .larger{font-size:1.4em}
 .avertissement{background-color:#ff8585;text-align:center}
-.bground {background-color:#AAA;}
+.bground{background-color:#AAA;}
 .center{width:100%;margin-left:auto;margin-right:auto;text-align:center}
 .left{float:left}
 .right{float:right}
@@ -139,6 +140,7 @@ th.jour_sem{width:10%;background-color:gray;color:white;}
 }
 div.ui-datepicker{
  font-size:110%;
+ z-index: 3 !important;
 }
 .ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {
     margin-left: 30%;
