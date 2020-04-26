@@ -3041,7 +3041,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		Email::Envois($destinataire2, $sujet2, $message2, $expediteur, '', '', $repondre2);
 	}
     // Cas d'une réservation modérée : le bénéficiaire peut éventuellement la supprimer, mais on prévient le modérateur
-    if (($action == 3)&&($moderate >0)){// on prévient aussi le modérateur
+    if (($action == 3)&&($moderate >0)){
         $sql = "SELECT email FROM ".TABLE_PREFIX."_utilisateurs u JOIN ".TABLE_PREFIX."_entry_moderate e ON e.login_moderateur = u.login 
         WHERE e.id = ".$id_entry." ";
         $mail_modo = grr_sql_query1($sql);

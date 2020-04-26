@@ -3,7 +3,7 @@
  * admin_edit_room.php
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-23 17:10$
+ * Dernière modification : $Date: 2020-04-24 12:25$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1044,11 +1044,11 @@ if ((!empty($id_area)) || (isset($add_area)))
 		echo "<table class='table table-bordered'><tr>";
 		// Nom du domaine
 		echo "<td>".get_vocab("name").get_vocab("deux_points")."</td>\n";
-		echo "<td style=\"width:30%;\"><input type=\"text\" name=\"area_name\" maxlength=\"30\" size=\"40\" value=\"".clean_input($row["area_name"])."\" /></td>\n";
+		echo "<td style=\"width:30%;\"><input class=\"form-control\" type=\"text\" name=\"area_name\" maxlength=\"30\" size=\"40\" value=\"".clean_input($row["area_name"])."\" /></td>\n";
 		echo "</tr><tr>\n";
 		// Ordre d'affichage du domaine
 		echo "<td>".get_vocab("order_display").get_vocab("deux_points")."</td>\n";
-		echo "<td><input type=\"text\" name=\"area_order\" size=\"1\" value=\"".clean_input($row["order_display"])."\" /></td>\n";
+		echo "<td><input class=\"form-control\" type=\"text\" name=\"area_order\" size=\"1\" value=\"".clean_input($row["order_display"])."\" /></td>\n";
 		echo "</tr><tr>\n";
 		// Acces restreint ou non ?
 		echo "<td>".get_vocab("access").get_vocab("deux_points")."</td>\n";

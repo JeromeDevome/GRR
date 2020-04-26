@@ -35,25 +35,25 @@ include "include/language.inc.php";
 global $area, $site;
 // echo "paramètres ".$_GET['site']." ".$_GET['area'];
 if (isset($_GET['area']))
-	{
-        $area = mysqli_real_escape_string($GLOBALS['db_c'], $_GET['area']);
-        settype($area, "integer");
-        $site = mrbsGetAreaSite($area);
+{
+    $area = mysqli_real_escape_string($GLOBALS['db_c'], $_GET['area']);
+    settype($area, "integer");
+    $site = mrbsGetAreaSite($area);
+}
+else
+{
+    if (isset($_GET["site"]))
+    {
+        $site = mysqli_real_escape_string($GLOBALS['db_c'], $_GET["site"]);
+        settype($site, "integer");
+        $area = get_default_area($site);
     }
     else
     {
-        if (isset($_GET["site"]))
-        {
-            $site = mysqli_real_escape_string($GLOBALS['db_c'], $_GET["site"]);
-            settype($site, "integer");
-            $area = get_default_area($site);
-        }
-        else
-        {
-            $site = get_default_site();
-            $area = get_default_area($site);
-        }
+        $site = get_default_site();
+        $area = get_default_area($site);
     }
+}
 // On affiche le lien "format imprimable" en bas de la page
 $affiche_pview = '1';
 if (!isset($_GET['pview']))

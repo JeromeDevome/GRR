@@ -533,7 +533,6 @@ if ($_GET['pview'] != 1)
 	echo '</div>'.PHP_EOL;
 }
 echo '</div>'.PHP_EOL; // fin planning2
-//echo '</div>'.PHP_EOL;
 affiche_pop_up(get_vocab('message_records'), 'user');
 unset($row);
 echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
