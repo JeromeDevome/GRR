@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-04-24 10:50$
+ * Dernière modification : $Date: 2020-04-26 18:10$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5230,7 +5230,7 @@ function pageHead2($title, $page = "with_session")
 		}
 	}
 	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin;
-	header('Content-Type: text/html; charset=utf-8');
+	// header('Content-Type: text/html; charset=utf-8'); semble problématique avec certains serveurs YN le 26/04/2020
 	if (!isset($_COOKIE['open']))
 	{
 		setcookie("open", "true", time()+3600, "", "", false, false);
@@ -5536,6 +5536,7 @@ function start_page_w_header($day = '', $month = '', $year = '', $type_session =
     }
     include $racine."/include/hook.class.php";
     // code HTML
+    header('Content-Type: text/html; charset=utf-8');
     echo '<!DOCTYPE html>'.PHP_EOL;
     echo '<html lang="fr">'.PHP_EOL;
     // section <head>
@@ -5571,6 +5572,7 @@ function start_page_wo_header($titre, $type_session = 'with_session')
     }
     include $racine."/include/hook.class.php";
     // code HTML
+    header('Content-Type: text/html; charset=utf-8');
     echo '<!DOCTYPE html>'.PHP_EOL;
     echo '<html lang="fr">'.PHP_EOL;
     // section <head>

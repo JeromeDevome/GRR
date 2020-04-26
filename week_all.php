@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-04 10:07$
+ * Dernière modification : $Date: 2020-04-26 18:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -661,14 +661,14 @@ echo "</body></html>";
 ?>
 <script type="text/javascript">
 	$(document).ready(function(){
-		$('table.table-bordered td').each(function(){
+		/*$('table.table-bordered td').each(function(){
 			var $row = $(this);
 			var height = $row.height();
 			var h2 = $row.find('a').height();
 			$row.find('a').css('min-height', height);
 			$row.find('a').css('padding-top', height/2 - h2/2);
 
-		});
+		});*/
         if ( $(window).scrollTop() == 0 )
             $("#toTop").hide(1);
 	});
