@@ -3,9 +3,9 @@
  * contactFormulaire.php
  * Formulaire d'envoi de mail
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-12-21 19:00$
+ * Dernière modification : $Date: 2020-04-27 15:40$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -66,6 +66,11 @@ include "./include/hook.class.php";
 	
 <?php
 // code HTML
+header('Content-Type: text/html; charset=utf-8');
+if (!isset($_COOKIE['open']))
+{
+    setcookie("open", "true", time()+3600, "", "", false, false);
+}
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;
 // section <head>
