@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-06 11:25$
+ * Dernière modification : $Date: 2020-04-27 15:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -314,6 +314,11 @@ $racineAd = "./admin/";
 include "./include/hook.class.php";
 // début du code html ici, sinon le javascript provoque une erreur "header already sent by"
 //print_header($day, $month, $year, $type="with_session");
+header('Content-Type: text/html; charset=utf-8');
+if (!isset($_COOKIE['open']))
+{
+	setcookie("open", "true", time()+3600, "", "", false, false);
+}
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;
 // section <head>
