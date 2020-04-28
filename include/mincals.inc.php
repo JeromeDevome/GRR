@@ -3,9 +3,9 @@
  * mincals.inc.php
  * Fonctions permettant d'afficher le mini calendrier
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-06-12 10:00$
+ * Dernière modification : $Date: 2020-04-28 13:00$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -187,7 +187,12 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 
 		private function getFirstDays()
 		{
-			global $weekstarts, $display_day;
+			global $weekstarts, $display_day, $nb_display_day;
+            if ($nb_display_day == 0){// aucun jour à afficher ? on force l'affichage
+                for ($i=0;$i<7;$i++){
+                    $display_day[$i] = 1;
+                }
+            }
 			$basetime = mktime(12, 0, 0, 6, 11 + $weekstarts, 2000);
 			for ($i = 0, $s = ""; $i < 7; $i++)
 			{

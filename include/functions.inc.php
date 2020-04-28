@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-04-27 15:00$
+ * Dernière modification : $Date: 2020-04-28 11:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -280,9 +280,7 @@ function Definition_ressource_domaine_site()
 	global $room, $area, $id_site;
 	if (isset($_GET['room']))
 	{
-		//$room = $_GET['room'];
-		$room = mysqli_real_escape_string($GLOBALS['db_c'], $_GET['room']);
-		settype($room, "integer");
+		$room = intval(clean_input($_GET['room']));
 		$area = mrbsGetRoomArea($room);
 		$id_site = mrbsGetAreaSite($area);
 	}
@@ -291,9 +289,7 @@ function Definition_ressource_domaine_site()
 		$room = NULL;
 		if (isset($_GET['area']))
 		{
-			//$area = $_GET['area'];
-			$area = mysqli_real_escape_string($GLOBALS['db_c'], $_GET['area']);
-			settype($area, "integer");
+			$area = intval(clean_input($_GET['area']));
 			$id_site = mrbsGetAreaSite($area);
 		}
 		else
@@ -301,9 +297,7 @@ function Definition_ressource_domaine_site()
 			$area = NULL;
 			if (isset($_GET["id_site"]))
 			{
-				//$id_site = $_GET["id_site"];
-				$id_site = mysqli_real_escape_string($GLOBALS['db_c'], $_GET["id_site"]);
-				settype($id_site, "integer");
+				$id_site = intval(clean_input($_GET["id_site"]));
 				$area = get_default_area($id_site);
 			}
 			else
@@ -1966,8 +1960,6 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user)
 {
 	global $vocab;
 	$nb_sites_a_afficher = 0;
-	$out_html = '<b><i>'.get_vocab('sites').get_vocab('deux_points').'</i></b><form id="site_001" action="'.$_SERVER['PHP_SELF'].'"><div>';
-	$out_html .= '<select class="form-control" name="site" onchange="site_go()">';
 	if (strncmp("4.1", grr_sql_version(), 3) < 0)
 	{
 		$sql = "SELECT id,sitename
@@ -1985,9 +1977,10 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user)
 		ORDER BY id ASC
 		";
 	}
-	$res = grr_sql_query($sql);
+	$res = grr_sql_query($sql); // devrait donner la liste des sites non vides
 	if ($res)
 	{
+        $out = array();
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
 			// Pour chaque site, on détermine le premier domaine disponible
@@ -1995,7 +1988,6 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user)
 			FROM ".TABLE_PREFIX."_j_site_area
 			WHERE ".TABLE_PREFIX."_j_site_area.id_site='".$row[0]."'";
 			$res2 = grr_sql_query($sql);
-							// A on un résultat ?
 			$default_area = -1;
 			if ($res2 && grr_sql_count($res2) > 0)
 			{
@@ -2005,8 +1997,7 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user)
 					{
 						// on a trouvé un domaine autorisé
 						$default_area = $row2[0];
-						$j = grr_sql_count($res2) + 1;
-						// On arrête la boucle
+						break; // On arrête la boucle
 					}
 				}
 			}
@@ -2018,12 +2009,17 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user)
 				$nb_sites_a_afficher++;
 				$selected = ($row[0] == $current_site) ? 'selected="selected"' : '';
 				$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$default_area;
-				$out_html .= '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
+				$out[] = '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
 			}
 		}
 	}
 	if ($nb_sites_a_afficher > 1)
 	{
+        $out_html = '<b><i>'.get_vocab('sites').get_vocab('deux_points').'</i></b><form id="site_001" action="'.$_SERVER['PHP_SELF'].'"><div>';
+        $out_html .= '<select class="form-control" name="site" onchange="site_go()">';
+        foreach($out as $row){
+            $out_html .= $row;
+        }
 		$out_html .= "</select>".PHP_EOL;
 		$out_html .= "</div>".PHP_EOL;
 		$out_html .= "<script type=\"text/javascript\">".PHP_EOL;
@@ -2059,21 +2055,19 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user)
 function make_area_select_html( $link, $current_site, $current_area, $year, $month, $day, $user)
 {
 	global $vocab;
+    $out_html = "";//$link. $current_site. $current_area. $year. $month. $day. $user.'<br />'.PHP_EOL;
 	if (Settings::get("module_multisite") == "Oui")
-		$use_multi_site = 'y';
-	else
-		$use_multi_site = 'n';
-	if ($use_multi_site == 'y')
 	{
 		// on a activé les sites
 		if ($current_site != -1)
 			$sql = "SELECT a.id, a.area_name,a.access FROM ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_j_site_area j WHERE a.id=j.id_area and j.id_site=$current_site ORDER BY a.order_display, a.area_name";
-		else
-			$sql = "";
+		else // $current_site = -1 correspond à un domaine (ou une ressource) inconnu
+            return $out_html;
+			//$sql = ""; une requête vide déclenche une erreur non rattrapée
 	}
 	else
 		$sql = "SELECT id, area_name,access FROM ".TABLE_PREFIX."_area ORDER BY order_display, area_name";
-	$out_html = '<b><i>'.get_vocab("areas").'</i></b>'.PHP_EOL;
+	$out_html .= '<b><i>'.get_vocab("areas").'</i></b>'.PHP_EOL;
 	$out_html .= '<form id="area_001" action="'.$_SERVER['PHP_SELF'].'">'.PHP_EOL;
 	$out_html .= '<div><select class="form-control" name="area" ';
 	$out_html .= ' onchange="area_go()" ';
@@ -2135,7 +2129,8 @@ function make_area_select_all_html( $link, $current_site, $current_area, $year, 
 		if ($current_site != -1)
 			$sql = "SELECT a.id, a.area_name,a.access FROM ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_j_site_area j WHERE a.id=j.id_area and j.id_site=$current_site ORDER BY a.order_display, a.area_name";
 		else
-			$sql = "";
+            return "";
+			//$sql = "";
 	}
 	else
 		$sql = "SELECT id, area_name,access FROM ".TABLE_PREFIX."_area ORDER BY order_display, area_name";
@@ -2193,14 +2188,14 @@ function make_area_select_all_html( $link, $current_site, $current_area, $year, 
 function make_room_select_html($link, $current_area, $current_room, $year, $month, $day)
 {
 	global $vocab;
-	$out_html = "<b><i>".get_vocab('rooms').get_vocab("deux_points")."</i></b><br /><form id=\"room_001\" action=\"".$_SERVER['PHP_SELF']."\"><div><select class=\"form-control\" name=\"room\" onchange=\"room_go()\">";
-	$out_html .= "<option value=\"".$link;
-    if ($link != "day"){$out_html .= "_all";}
-    $out_html .= ".php?year=$year&amp;month=$month&amp;day=$day&amp;area=$current_area\">".get_vocab("all_rooms")."</option>";
 	$sql = "select id, room_name, description from ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($current_area)."' order by order_display,room_name";
 	$res = grr_sql_query($sql);
-	if ($res)
+	if ($res && (grr_sql_count($res)>0)) // il y a des ressources à afficher
 	{
+        $out_html = "<b><i>".get_vocab('rooms').get_vocab("deux_points")."</i></b><br /><form id=\"room_001\" action=\"".$_SERVER['PHP_SELF']."\"><div><select class=\"form-control\" name=\"room\" onchange=\"room_go()\">";
+        $out_html .= "<option value=\"".$link;
+        if ($link != "day"){$out_html .= "_all";}
+        $out_html .= ".php?year=$year&amp;month=$month&amp;day=$day&amp;area=$current_area\">".get_vocab("all_rooms")."</option>";
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
 			if (verif_acces_ressource(getUserName(),$row[0]))
@@ -2214,24 +2209,24 @@ function make_room_select_html($link, $current_area, $current_room, $year, $mont
 				$out_html .= "<option $selected value=\"$link2\">" . htmlspecialchars($row[1].$temp)."</option>".PHP_EOL;
 			}
 		}
+        $out_html .= "</select>".PHP_EOL;
+        $out_html .= "</div>".PHP_EOL;
+        $out_html .= "<script type=\"text/javascript\">".PHP_EOL;
+        $out_html .= "function room_go()".PHP_EOL;
+        $out_html .= " {".PHP_EOL;
+        $out_html .= "box = document.getElementById(\"room_001\").room;".PHP_EOL;
+        $out_html .= "destination = box.options[box.selectedIndex].value;".PHP_EOL;
+        $out_html .= "if (destination) location.href = destination;".PHP_EOL;
+        $out_html .= "}".PHP_EOL;
+        $out_html .= "</script>".PHP_EOL;
+        $out_html .= "<noscript>".PHP_EOL;
+        $out_html .= "<div>".PHP_EOL;
+        $out_html .= "<input type=\"submit\" value=\"Change\" />".PHP_EOL;
+        $out_html .= "</div>".PHP_EOL;
+        $out_html .= "</noscript>".PHP_EOL;
+        $out_html .= "</form>".PHP_EOL;
+        return $out_html;
 	}
-	$out_html .= "</select>".PHP_EOL;
-	$out_html .= "</div>".PHP_EOL;
-	$out_html .= "<script type=\"text/javascript\">".PHP_EOL;
-	$out_html .= "function room_go()".PHP_EOL;
-	$out_html .= " {".PHP_EOL;
-	$out_html .= "box = document.getElementById(\"room_001\").room;".PHP_EOL;
-	$out_html .= "destination = box.options[box.selectedIndex].value;".PHP_EOL;
-	$out_html .= "if (destination) location.href = destination;".PHP_EOL;
-	$out_html .= "}".PHP_EOL;
-	$out_html .= "</script>".PHP_EOL;
-	$out_html .= "<noscript>".PHP_EOL;
-	$out_html .= "<div>".PHP_EOL;
-	$out_html .= "<input type=\"submit\" value=\"Change\" />".PHP_EOL;
-	$out_html .= "</div>".PHP_EOL;
-	$out_html .= "</noscript>".PHP_EOL;
-	$out_html .= "</form>".PHP_EOL;
-	return $out_html;
 }
 /**
  * Affichage des domaines sous la forme d'une liste
@@ -2248,13 +2243,8 @@ function make_site_list_html($link, $current_site, $year, $month, $day,$user)
 {
 	global $vocab;
 	// On affiche le site
-
 	if (Settings::get("module_multisite") == "Oui")
 	{
-
-		$out_html = '
-		<b><i><span class="bground">'.get_vocab('sites').get_vocab('deux_points').'</span></i></b>
-		<br />';
 		$sql = "SELECT id,sitename
 		FROM ".TABLE_PREFIX."_site
 		ORDER BY sitename";
@@ -2262,6 +2252,7 @@ function make_site_list_html($link, $current_site, $year, $month, $day,$user)
 		$res = grr_sql_query($sql);
 		if ($res)
 		{
+            $out = array();
 			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 			{
 				// Pour chaque site, on détermine s'il y a des domaines visibles par l'utilisateur
@@ -2278,8 +2269,7 @@ function make_site_list_html($link, $current_site, $year, $month, $day,$user)
 						{
 							// on a trouvé un domaine autorisé
 							$au_moins_un_domaine = true;
-							$j = grr_sql_count($res2) + 1;
-							// On arrête la boucle
+							break;	// On arrête la boucle
 						}
 					}
 				}
@@ -2291,21 +2281,26 @@ function make_site_list_html($link, $current_site, $year, $month, $day,$user)
 					$nb_sites_a_afficher++;
 					if ($row[0] == $current_site)
 					{
-						$out_html .= '
+						$out[] = '
 						<b><a id="liste_select"   href="'.$link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$row[0].'" title="'.$row[1].'">&gt; '.htmlspecialchars($row[1]).'</a></b>
 						<br />'."\n";
 					}
 					else
 					{
-						$out_html .= '
+						$out[] = '
 						<a id="liste"  href="'.$link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$row[0].'" title="'.$row[1].'">'.htmlspecialchars($row[1]).'</a>
 						<br />'."\n";
 					}
 				}
 			}
 		}
-		if ($nb_sites_a_afficher > 1)
-			return $out_html;
+		if ($nb_sites_a_afficher > 1){
+            $out_html = '<b><i><span class="bground">'.get_vocab('sites').get_vocab('deux_points').'</span></i></b><br />';
+            foreach($out as $row){
+                $out_html .= $row;
+            }
+            return $out_html;
+        }
 		else
 			return '';
 	}
@@ -2413,7 +2408,6 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 {
 	global $vocab;
 	$nb_sites_a_afficher = 0;
-//	$out_html = '<ul class="list-group"><li class="list-group-item">'.get_vocab('sites').get_vocab('deux_points').'</li></ul><form class="ressource" id="site_001" action="'.$_SERVER['PHP_SELF'].'"><div>';
 	$sql = "SELECT id, sitename
 	FROM ".TABLE_PREFIX."_site
 	left join ".TABLE_PREFIX."_j_site_area on ".TABLE_PREFIX."_site.id = ".TABLE_PREFIX."_j_site_area.id_site
@@ -2421,10 +2415,10 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 	GROUP BY id_site
 	ORDER BY id ASC
 	";
-	$res = grr_sql_query($sql);
+	$res = grr_sql_query($sql);// devrait donner la liste des sites non vides
 	if ($res)
-	{     
-        $out_html = '<br />'.PHP_EOL.'<div class="panel panel-default">'.PHP_EOL.'<div class="panel-heading">'.get_vocab('sites').get_vocab('deux_points').'</div>'.PHP_EOL.'<div class="panel-body">'.PHP_EOL.'<form class="ressource" id="site_001" action="'.$_SERVER['PHP_SELF'].'">';
+	{
+        $out = array();
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
 			$sql = "SELECT id_area FROM ".TABLE_PREFIX."_j_site_area WHERE ".TABLE_PREFIX."_j_site_area.id_site='".$row[0]."'";
@@ -2437,7 +2431,7 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 					if (authUserAccesArea($user,$row2[0]) == 1)
 					{
 						$default_area = $row2[0];
-						$j = grr_sql_count($res2) + 1;
+						break; // un domaine est accessible, on sort de la boucle
 					}
 				}
 			}
@@ -2453,16 +2447,20 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 			if ($current_site != null)
 			{
 				if ($current_site == $row[0])
-					$out_html .= "<input id=\"item_select\" type=\"button\" class=\"btn btn-primary btn-lg btn-block item_select\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])."\" onclick=\"location.href='$link2';charger();\" />".PHP_EOL;
+					$out[] = "<input id=\"item_select\" type=\"button\" class=\"btn btn-primary btn-lg btn-block item_select\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])."\" onclick=\"location.href='$link2';charger();\" />".PHP_EOL;
 				else
-					$out_html .= "<input type=\"button\" class=\"btn btn-default btn-lg btn-block item\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])." \" onclick=\"location.href='$link2';charger();\" />".PHP_EOL;
+					$out[] = "<input type=\"button\" class=\"btn btn-default btn-lg btn-block item\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])." \" onclick=\"location.href='$link2';charger();\" />".PHP_EOL;
 			}
 			else
-				$out_html .= "<input type=\"button\" class=\"btn btn-default btn-lg btn-block item\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])." \" onclick=\"location.href='$link2';charger();\" /><br />".PHP_EOL;
+				$out[] = "<input type=\"button\" class=\"btn btn-default btn-lg btn-block item\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])." \" onclick=\"location.href='$link2';charger();\" /><br />".PHP_EOL;
 		}
 	}
 	if ($nb_sites_a_afficher > 1)// s'il y a au moins deux sites à afficher, on affiche une liste de boutons, sinon rien.
 	{
+        $out_html = '<br />'.PHP_EOL.'<div class="panel panel-default">'.PHP_EOL.'<div class="panel-heading">'.get_vocab('sites').get_vocab('deux_points').'</div>'.PHP_EOL.'<div class="panel-body">'.PHP_EOL.'<form class="ressource" id="site_001" action="'.$_SERVER['PHP_SELF'].'">';
+        foreach($out as $row){
+            $out_html .= $row;
+        }
 		$out_html .= '</form>'.PHP_EOL;
 		$out_html .= '</div></div>'.PHP_EOL;
 		$out_html .= '<script type="text/javascript">'.PHP_EOL;
@@ -2478,7 +2476,6 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 		$out_html .= '<input type="submit" value="change" />'.PHP_EOL;
 		$out_html .= '</div>'.PHP_EOL;
 		$out_html .= '</noscript>'.PHP_EOL;
-		//$out_html .= '</form>'.PHP_EOL;
 		return $out_html;
 	}
     else return "";
@@ -2498,19 +2495,14 @@ function make_area_item_html( $link, $current_site, $current_area, $year, $month
 {
 	global $vocab;
 	if (Settings::get("module_multisite") == "Oui")
-		$use_multi_site = 'y';
-	else
-		$use_multi_site = 'n';
-	if ($use_multi_site == 'y')
-	{
-		// on a activé les sites
+	{// on a activé les sites
 		if ($current_site != -1)
 			$sql = "SELECT a.id, a.area_name,a.access
 		FROM ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_j_site_area j
 		WHERE a.id=j.id_area and j.id_site=$current_site
 		ORDER BY a.order_display, a.area_name";
 		else
-			$sql = "";
+			return ""; // cas d'une ressource ou d'un domaine inconnu
 	}
 	else
 	{
@@ -2528,10 +2520,9 @@ function make_area_item_html( $link, $current_site, $current_area, $year, $month
 			$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
 			if (authUserAccesArea($user, $row[0]) == 1)
 			{
-				/* Couleur du domaine selectionné*/
 				if ($current_area != null)
 				{
-					if ($current_area == $row[0])
+					if ($current_area == $row[0]) /* Couleur du domaine selectionné*/
 						$out_html .= '<input class="btn btn-primary btn-lg btn-block item_select" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\' ;charger();"/>'.PHP_EOL;
 					else
 						$out_html .= '<input class="btn btn-default btn-lg btn-block item " name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\' ;charger();"/>'.PHP_EOL;
@@ -2559,11 +2550,11 @@ function make_area_item_html( $link, $current_site, $current_area, $year, $month
 function make_room_item_html($link, $current_area, $current_room, $year, $month, $day)
 {
 	global $vocab;
-	$out_html = '<br />'.PHP_EOL.'<div class="panel panel-default">'.PHP_EOL.'<div class="panel-heading">'.get_vocab("rooms").get_vocab("deux_points").'</div>'.PHP_EOL.'<div class="panel-body">'.PHP_EOL.'<form class="ressource" id="room_001" action="'.$_SERVER['PHP_SELF'].'">'.PHP_EOL;
 	$sql = "SELECT id, room_name, description FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($current_area)."' ORDER BY order_display,room_name";
 	$res = grr_sql_query($sql);
-	if ($res)
+	if ($res && (grr_sql_count($res)>0)) // il y a des ressources à afficher
 	{
+        $out_html = '<br />'.PHP_EOL.'<div class="panel panel-default">'.PHP_EOL.'<div class="panel-heading">'.get_vocab("rooms").get_vocab("deux_points").'</div>'.PHP_EOL.'<div class="panel-body">'.PHP_EOL.'<form class="ressource" id="room_001" action="'.$_SERVER['PHP_SELF'].'">'.PHP_EOL;
         $all_ressource = 0; // permet l'affichage de toutes les ressources
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
@@ -2592,9 +2583,9 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
 				}
 			}
 		}
-	}
-	$out_html .= '</form>'.PHP_EOL.'</div>'.PHP_EOL.'</div>'.PHP_EOL;
-	return $out_html;
+		$out_html .= '</form>'.PHP_EOL.'</div>'.PHP_EOL.'</div>'.PHP_EOL;
+        return $out_html;
+    }
 }
 // end make_room_item_html
 /**
@@ -3995,7 +3986,7 @@ function get_planning_area_values($id_area)
 	$res = grr_sql_query($sql);
 	if (!$res)
 	{
-		//fatal_error(0, grr_sql_error());
+		// fatal_error(0, grr_sql_error());
 		include "trailer.inc.php";
 		exit;
 	}
