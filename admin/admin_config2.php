@@ -111,7 +111,7 @@ echo "<h2>".get_vocab('admin_config2.php')."</h2>";
 echo "<form action=\"./admin_config2.php\" method=\"get\" >\n";
 // Type d'accès
 # authentification_obli = 1 : il est obligatoire de se connecter pour accéder au site.
-# authentification_obli = 0 : Il n'est pas nécessaire de se connecter pour voir les réservations mais la connection est
+# authentification_obli = 0 : Il n'est pas nécessaire de se connecter pour voir les réservations mais la connexion est
 # obligatoire si l'utilisateur veut réserver ou modifier une réservation
 echo "<h3>".get_vocab("authentification_obli_msg")."</h3>\n";
 echo "<table>\n";

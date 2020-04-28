@@ -1,9 +1,9 @@
 /*
  * ./js/functions.js
  * fichier Bibliothèque de fonctions Javascript de GRR
- * Dernière modification : $Date: 2018-10-26 15:00$
+ * Dernière modification : $Date: 2020-04-27 16:46$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -460,7 +460,7 @@ function menuHaut(){
         setCookie("open",e,365)
 }*/
 /*
- *Fonction permettant l'ouverture d'un PopUP de la page view entry.php
+ *Fonction permettant l'ouverture d'un PopUP de la page view entry.php pour création d'un pdf
  */
 function popUpPdf(id) {
     var myWindow = window.open("pdfgenerator.php?id="+id+"", "_blank", "width=960");

@@ -24,7 +24,7 @@ include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
 include "include/mrbs_sql.inc.php";
 
-//Paramètres de connection
+//Paramètres de connexion
 require_once("./include/settings.class.php");
 //Chargement des valeurs de la table settings
 if (!Settings::load())
