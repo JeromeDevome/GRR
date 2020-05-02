@@ -1,5 +1,10 @@
 <?php
-/*
+/* delete_user.php 
+ * supprime les entrées d'un utilisateur identifié par LASSO lors de sa suppression
+ * Ce script fait partie de l'application GRR
+ * Dernière modification : $Date: 2020-05-02 11:43$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * Copyright 2003-2005 Laurent Delineau
  * Copyright (C) 2008  Cliss XXI
  *
@@ -40,7 +45,8 @@ function delete_user($login)
 	grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_room      WHERE login='$login'");
 	grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='$login'");
 	grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='$login'");
-      }
+    grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_userbook_room  WHERE login='$login'");
+    }
 
       // Fin de la session
       grr_closeSession($_GET['auto']);

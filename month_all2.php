@@ -3,7 +3,7 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-27 15:09$
+ * Dernière modification : $Date: 2020-05-01 14:46$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -119,8 +119,9 @@ if ($area <= 0)
 	exit();
 }
 
+$user_name = getUserName();
 // Calcul du niveau de droit de réservation
-$authGetUserLevel = authGetUserLevel(getUserName(), -1);
+$authGetUserLevel = authGetUserLevel($user_name, -1);
 // vérifie si la date est dans la période réservable
 if (check_begin_end_bookings($day, $month, $year))
 {
@@ -128,7 +129,7 @@ if (check_begin_end_bookings($day, $month, $year))
 	exit();
 }
 //Renseigne les droits de l'utilisateur, si les droits sont insuffisants, l'utilisateur est averti.
-if ((($authGetUserLevel < 1) && (Settings::get("authentification_obli") == 1)) || authUserAccesArea(getUserName(), $area) == 0)
+if ((($authGetUserLevel < 1) && (Settings::get("authentification_obli") == 1)) || authUserAccesArea($user_name, $area) == 0)
 {
 	showAccessDenied($back);
 	exit();
@@ -367,7 +368,7 @@ if ($_GET['pview'] == 1 && (isset($_GET['precedent']) && $_GET['precedent'] == 1
 </span>";
 }
 // le corps de la table 
-$sql = "SELECT room_name, capacity, id, description, statut_room FROM ".TABLE_PREFIX."_room WHERE area_id=$area ORDER BY order_display,room_name";
+$sql = "SELECT room_name, capacity, id, description, statut_room, who_can_book FROM ".TABLE_PREFIX."_room WHERE area_id=$area ORDER BY order_display,room_name";
 $res = grr_sql_query($sql);
 echo "<thead><tr>";
 echo "<th class='cell_hours'>".get_vocab('rooms');
@@ -438,11 +439,14 @@ echo "<tbody>";
 $li = 0;
 for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++) // traitement d'une ressource sur le mois
 {
-	$verif_acces_ressource = verif_acces_ressource(getUserName(), $row[2]);
+	$verif_acces_ressource = verif_acces_ressource($user_name, $row[2]);
 	if ($verif_acces_ressource)
 	{
-		$acces_fiche_reservation = verif_acces_fiche_reservation(getUserName(), $row[2]);
-		echo "<tr><th >" . htmlspecialchars($row[0]) ."</th>\n";
+		$acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $row[2]);
+        $authGetUserLevel = authGetUserLevel($user_name, $row[2]);
+        // si la ressource est restreinte, l'utilisateur peut-il réserver ?
+        $user_can_book = $row[5] || ($authGetUserLevel > 2) || (authBooking($user_name,$row['2']));
+		echo "<tr><th >" .htmlspecialchars($row[0]) ."</th>\n";
 		$li++;
 		for ($k = 1; $k <= $days_in_month; $k++)
 		{
@@ -510,8 +514,15 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++) // traitement d'une ressou
                     // la ressource est-elle accessible en réservation ? on affiche le lien vers edit_entry
                     $date_booking = $t2 +86400 ; // le jour courant à minuit
                     $hour =  date("H",$date_now); // l'heure courante, par défaut
-                    if ((($authGetUserLevel > 1) || (auth_visiteur(getUserName(), $row['2']) == 1)) && (UserRoomMaxBooking(getUserName(), $row['2'], 1) != 0) && verif_booking_date(getUserName(), -1, $row['2'], $date_booking, $date_now, $enable_periods) && verif_delais_max_resa_room(getUserName(), $row['2'], $date_booking) && verif_delais_min_resa_room(getUserName(), $row['2'], $date_booking) && plages_libre_semaine_ressource($row['2'], $month, $cday, $year) && (($row['4'] == "1") || (($row['4'] == "0") && (authGetUserLevel(getUserName(),$row['2']) > 2) )) && $_GET['pview'] != 1)
-					{
+                    if ((($authGetUserLevel > 1) || (auth_visiteur($user_name, $row['2']) == 1)) 
+                        && (UserRoomMaxBooking($user_name, $row['2'], 1) != 0) 
+                        && verif_booking_date($user_name, -1, $row['2'], $date_booking, $date_now, $enable_periods) 
+                        && verif_delais_max_resa_room($user_name, $row['2'], $date_booking) 
+                        && verif_delais_min_resa_room($user_name, $row['2'], $date_booking) 
+                        && plages_libre_semaine_ressource($row['2'], $month, $cday, $year) 
+                        && (($row['4'] == "1") || (($row['4'] == "0") && (authGetUserLevel($user_name,$row['2']) > 2) )) 
+                        && $user_can_book
+                        && $_GET['pview'] != 1){
 						if ($enable_periods == 'y')
 							echo '<a href="edit_entry.php?room=',$row["2"],'&amp;period=&amp;year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;page=month_all2" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;
 						else
@@ -535,7 +546,6 @@ if ($_GET['pview'] != 1)
     echo " </div>";
 }
 affiche_pop_up(get_vocab("message_records"),"user");
-end_page();
 ?>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -547,3 +557,6 @@ end_page();
 		$("#popup_name").resizable();
 	});
 </script>
+<?php 
+end_page();
+?>

@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-27 15:23$
+ * Dernière modification : $Date: 2020-04-30 16:16$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -63,7 +63,8 @@ global $racine, $racineAd, $desactive_VerifNomPrenomUser;
 $back = (isset($_SERVER['HTTP_REFERER']))? $_SERVER['HTTP_REFERER'] : page_accueil() ;
 
 // Type de session
-if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
+$user_name = getUserName();
+if ((Settings::get("authentification_obli") == 0) && ($user_name == ''))
 	$type_session = "no_session";
 else
 	$type_session = "with_session";
@@ -164,9 +165,9 @@ $room_back = isset($_GET['room']) ? $_GET['room'] : 'all';
 
 // Détermination des ressources à afficher
 if($room_back != 'all'){
-	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' and id = '".protect_data_sql($room_back)."' ORDER BY order_display, room_name";
+	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' and id = '".protect_data_sql($room_back)."' ORDER BY order_display, room_name";
 }
-else $sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' ORDER BY order_display, room_name";
+else $sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' ORDER BY order_display, room_name";
 $ressources = grr_sql_query($sql);
 if (!$ressources)
 	fatal_error(0, grr_sql_error());
@@ -295,16 +296,18 @@ else
 $nbcol = 0;
 $rooms = array();
 $a = 0;
-for ($i = 0; ($row = grr_sql_row($ressources, $i)); $i++)
+//for ($i = 0; ($row = grr_sql_row($ressources, $i)); $i++)
+while($row = mysqli_fetch_array($ressources))    
 {
 	$id_room[$i] = $row['2'];
 	$nbcol++;
-	if (verif_acces_ressource(getUserName(), $id_room[$i]))
+	if (verif_acces_ressource($user_name, $id_room[$i]))
 	{
 		$room_name[$i] = $row['0'];
 		$statut_room[$id_room[$i]] =  $row['4'];
 		$statut_moderate[$id_room[$i]] =  $row['7'];
-		$acces_fiche_reservation = verif_acces_fiche_reservation(getUserName(), $id_room[$i]);
+        $who_can_book[$id_room[$i]] = $row[8];
+		$acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $id_room[$i]);
 		if ($row['1']  && $_GET['pview'] != 1)
 			$temp = '<br /><span class="small">('.$row['1'].' '.($row['1'] > 1 ? get_vocab("number_max2") : get_vocab("number_max")).')</span>'.PHP_EOL;
 		else
@@ -328,10 +331,10 @@ for ($i = 0; ($row = grr_sql_row($ressources, $i)); $i++)
 			echo $saut.htmlspecialchars($row['3']).$temp."\n";
 		}
 		echo '<br />';
-		if (verif_display_fiche_ressource(getUserName(), $id_room[$i]) && $_GET['pview'] != 1)
+		if (verif_display_fiche_ressource($user_name, $id_room[$i]) && $_GET['pview'] != 1)
 			echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$id_room[$i].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'">
 		<span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
-		if (authGetUserLevel(getUserName(),$id_room[$i]) > 2 && $_GET['pview'] != 1)
+		if (authGetUserLevel($user_name,$id_room[$i]) > 2 && $_GET['pview'] != 1)
 			echo '<a href="./admin/admin_edit_room.php?room='.$id_room[$i].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a><br/>'.PHP_EOL;
 		affiche_ressource_empruntee($id_room[$i]);
 		echo '<span id="boutonSelection'.$a.'" style="display:none;">'.PHP_EOL;
@@ -385,8 +388,10 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 	//while (list($key, $room) = each($rooms)) deprecated in php 7.2.0
     foreach($rooms as $key=>$room)
 	{
-		if (verif_acces_ressource(getUserName(), $room))
+		if (verif_acces_ressource($user_name, $room))
 		{
+            $authLevel = authGetUserLevel($user_name,$room);
+            $user_can_book = $who_can_book[$room] || ($authLevel > 2) || (authBooking($user_name,$room));
 			if (isset($today[$room][$t]["id"]))
 			{
 				$id    = $today[$room][$t]["id"];
@@ -431,7 +436,14 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 				}
 				else
 				{
-					if (((authGetUserLevel(getUserName(), -1) > 1) || (auth_visiteur(getUserName(), $room) == 1)) && (UserRoomMaxBooking(getUserName(), $room, 1) != 0) && verif_booking_date(getUserName(), -1, $room, $date_booking, $date_now, $enable_periods) && verif_delais_max_resa_room(getUserName(), $room, $date_booking) && verif_delais_min_resa_room(getUserName(), $room, $date_booking) && (($statut_room[$room] == "1") || (($statut_room[$room] == "0") && (authGetUserLevel(getUserName(),$room) > 2) )) && $_GET['pview'] != 1)
+					if ((($authLevel > 1) || (auth_visiteur($user_name, $room) == 1)) 
+                        && (UserRoomMaxBooking($user_name, $room, 1) != 0) 
+                        && verif_booking_date($user_name, -1, $room, $date_booking, $date_now, $enable_periods) 
+                        && verif_delais_max_resa_room($user_name, $room, $date_booking) 
+                        && verif_delais_min_resa_room($user_name, $room, $date_booking) 
+                        && (($statut_room[$room] == "1") || (($statut_room[$room] == "0") && ($authLevel > 2) )) 
+                        && $user_can_book
+                        && $_GET['pview'] != 1)
 					{
 						if ($enable_periods == 'y')
 						{
@@ -463,7 +475,7 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 				{
 					echo '<img src="img_grr/flag_moderation.png" alt="'.get_vocab("en_attente_moderation").'" title="'.get_vocab("en_attente_moderation").'" class="image" />'.PHP_EOL;
 				}
-				if (($statut_room[$room] == "1") || (($statut_room[$room] == "0") && (authGetUserLevel(getUserName(), $room) > 2) ))
+				if (($statut_room[$room] == "1") || (($statut_room[$room] == "0") && ($authLevel > 2) ))
 				{
 					if ($acces_fiche_reservation)
 					{
@@ -542,7 +554,6 @@ affiche_pop_up(get_vocab('message_records'), 'user');
 unset($row);
 echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
 echo "</section>";
-echo "</body></html>";
 ?>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -563,3 +574,5 @@ echo "</body></html>";
 	});
 
 </script>
+</body>
+</html>

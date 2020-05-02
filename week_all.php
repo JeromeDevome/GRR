@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-27 15:00$
+ * Dernière modification : $Date: 2020-05-01 11:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -119,7 +119,8 @@ if ($area <= 0)
 }
 
 // Calcul du niveau de droit de réservation
-$authGetUserLevel = authGetUserLevel(getUserName(), -1);
+$user_name = getUserName();
+$authGetUserLevel = authGetUserLevel($user_name, -1);
 // vérifie si la date est dans la période réservable
 if (check_begin_end_bookings($day, $month, $year))
 {
@@ -127,7 +128,7 @@ if (check_begin_end_bookings($day, $month, $year))
 	exit();
 }
 //Renseigne les droits de l'utilisateur, si les droits sont insuffisants, l'utilisateur est averti.
-if ((($authGetUserLevel < 1) && (Settings::get("authentification_obli") == 1)) || authUserAccesArea(getUserName(), $area) == 0)
+if ((($authGetUserLevel < 1) && (Settings::get("authentification_obli") == 1)) || authUserAccesArea($user_name, $area) == 0)
 {
 	showAccessDenied($back);
 	exit();
@@ -144,7 +145,7 @@ if (Settings::get("verif_reservation_auto") == 0)
 }
 
 // Selection des ressources
-$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display, room_name";
+$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display, room_name";
 $ressources = grr_sql_query($sql);
 
 if (!$ressources)
@@ -491,13 +492,15 @@ echo "<tbody>";
 $li = 0;
 for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 {
-	$verif_acces_ressource = verif_acces_ressource(getUserName(), $row['2']);
+	$verif_acces_ressource = verif_acces_ressource($user_name, $row['2']);
 	if ($verif_acces_ressource)
 	{
-		$acces_fiche_reservation = verif_acces_fiche_reservation(getUserName(), $row['2']);
-		$UserRoomMaxBooking = UserRoomMaxBooking(getUserName(), $row['2'], 1);
-		$authGetUserLevel = authGetUserLevel(getUserName(), -1);
-		$auth_visiteur = auth_visiteur(getUserName(), $row['2']);
+		$acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $row['2']);
+		$UserRoomMaxBooking = UserRoomMaxBooking($user_name, $row['2'], 1);
+		$authGetUserLevel = authGetUserLevel($user_name, $row[2]);
+		$auth_visiteur = auth_visiteur($user_name, $row['2']);
+        // si la ressource est restreinte, l'utilisateur peut-il réserver ?
+        $user_can_book = $row[8] || ($authGetUserLevel > 2) || (authBooking($user_name,$row['2']));
 		echo '<tr>'.PHP_EOL;
 		if ($li % 2 == 1)
 			echo tdcell("cell_hours");
@@ -508,12 +511,12 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 			echo '<span class="small">('.$row['1'].' '.($row['1'] > 1 ? get_vocab("number_max2") : get_vocab("number_max")).')</span>'.PHP_EOL;
 		if ($row['4'] == "0")
 			echo '<span class="texte_ress_tempo_indispo">'.get_vocab("ressource_temporairement_indisponible").'</span><br />'.PHP_EOL;
-		if (verif_display_fiche_ressource(getUserName(), $row['2']) && $_GET['pview'] != 1)
+		if (verif_display_fiche_ressource($user_name, $row['2']) && $_GET['pview'] != 1)
 		{
 			echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$row['2'].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'">'.PHP_EOL;
 			echo '<span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
 		}
-		if (authGetUserLevel(getUserName(),$row['2']) > 2 && $_GET['pview'] != 1)
+		if (authGetUserLevel($user_name,$row['2']) > 2 && $_GET['pview'] != 1)
 			echo '<a href="./admin/admin_edit_room.php?room='.$row['2'].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a>'.PHP_EOL;
 		affiche_ressource_empruntee($row['2']);
 		echo '</td>'.PHP_EOL;
@@ -589,7 +592,15 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 					echo '<img src="img_grr/stop.png" alt="',get_vocab("reservation_impossible"),'" title="',get_vocab("reservation_impossible"),'" width="16" height="16" class="',$class_image,'" />',PHP_EOL;
 				else
 				{
-					if ((($authGetUserLevel > 1) || ($auth_visiteur == 1)) && ($UserRoomMaxBooking != 0) && verif_booking_date(getUserName(), -1, $row['2'], $date_booking, $date_now, $enable_periods) && verif_delais_max_resa_room(getUserName(), $row['2'], $date_booking) && verif_delais_min_resa_room(getUserName(), $row['2'], $date_booking) && plages_libre_semaine_ressource($row['2'], $cmonth, $cday, $cyear) && (($row['4'] == "1") || (($row['4'] == "0") && (authGetUserLevel(getUserName(),$row['2']) > 2) )) && $_GET['pview'] != 1)
+					if ((($authGetUserLevel > 1) || ($auth_visiteur == 1)) && 
+                    ($UserRoomMaxBooking != 0) && 
+                    verif_booking_date($user_name, -1, $row['2'], $date_booking, $date_now, $enable_periods) && 
+                    verif_delais_max_resa_room($user_name, $row['2'], $date_booking) && 
+                    verif_delais_min_resa_room($user_name, $row['2'], $date_booking) && 
+                    plages_libre_semaine_ressource($row['2'], $cmonth, $cday, $cyear) && 
+                    (($row['4'] == "1") || (($row['4'] == "0") && (authGetUserLevel($user_name,$row['2']) > 2) )) && 
+                    $user_can_book && 
+                    $_GET['pview'] != 1)
 					{
 						if ($enable_periods == 'y')
 							echo '<a href="edit_entry.php?room=',$row["2"],'&amp;period=&amp;year=',$cyear,'&amp;month=',$cmonth,'&amp;day=',$cday,'&amp;page=week_all" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;
@@ -621,7 +632,6 @@ echo '</div>'.PHP_EOL; // planning2
 echo '</section>'.PHP_EOL; // row
 unset($row);
 echo '<div id="popup_name" class="popup_block col-xs-12" ></div>'.PHP_EOL;
-echo "</body></html>";
 ?>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -641,3 +651,5 @@ echo "</body></html>";
 		$("#popup_name").resizable({animate: true});
 	});
 </script>
+</body>
+</html>

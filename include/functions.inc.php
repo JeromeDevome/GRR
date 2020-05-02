@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-04-28 11:30$
+ * Dernière modification : $Date: 2020-05-02 17:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -3075,6 +3075,8 @@ function getWritable($beneficiaire, $user, $id)
 	//if ($beneficiaire == "") $beneficiaire = $user;
 	// Dans le cas d'un bénéficiaire extérieur, $beneficiaire est vide. On fait comme si $user était le bénéficiaire
 	$dont_allow_modify = grr_sql_query1("select dont_allow_modify from ".TABLE_PREFIX."_room WHERE id = '".$id_room."'");
+    $who_can_book = grr_sql_query1("SELECT who_can_book FROM ".TABLE_PREFIX."_room WHERE id = '".$id_room."'");
+    $user_can_book = $who_can_book || authBooking($user,$id_room);
 	$owner = strtolower(grr_sql_query1("SELECT create_by FROM ".TABLE_PREFIX."_entry WHERE id='".protect_data_sql($id)."'"));
 	$beneficiaire = strtolower($beneficiaire);
 	$user = strtolower($user);
@@ -3097,7 +3099,7 @@ function getWritable($beneficiaire, $user, $id)
 		if ($dont_allow_modify == 'y')
 			return 0;
 		else
-			return 1;
+			return $user_can_book;//1;
 	}
 	else if ($user == $owner)
 	{
@@ -3107,7 +3109,7 @@ function getWritable($beneficiaire, $user, $id)
 		{
 			$qui_peut_reserver_pour = grr_sql_query1("SELECT qui_peut_reserver_pour FROM ".TABLE_PREFIX."_room WHERE id='".$id_room."'");
 			if (authGetUserLevel($user, $id_room) >= $qui_peut_reserver_pour)
-				return 1;
+				return $user_can_book;//1;
 			else
 				return 0;
 		}
@@ -3477,7 +3479,16 @@ function UserRoomMaxBookingRange($user, $id_room, $number, $start_time)
 	// A ce stade, il s'agit d'un utilisateur et il n'y a pas eu de dépassement, ni pour l'ensemble des domaines, ni pour le domaine, ni pour la ressource, ni sur l'intervalle de temps
 	return 1;
 }
-/* function verif_booking_date($user, $id, $date_booking, $date_now)
+/* function authBooking($user,$room)
+à utiliser avec une ressource restreinte : détermine si $user est autorisé à réserver dans $room
+utilise la table grr_j_userbook_room
+*/
+function authBooking($user,$room){
+    $sql = "SELECT COUNT(*) FROM ".TABLE_PREFIX."_j_userbook_room WHERE (login = '".protect_data_sql($user)."' AND id_room = '".protect_data_sql($room)."')";
+	$test = grr_sql_query1($sql);
+    return ($test > 0);
+}
+/* function verif_booking_date($user, $id, $id_room, $date_booking, $date_now, $enable_periods, $endtime = '')
  $user : le login de l'utilisateur
  $id : l'id de la résa. Si -1, il s'agit d'une nouvelle réservation
  $id_room : id de la ressource
@@ -3672,6 +3683,28 @@ function verif_acces_ressource($user, $id_room)
 		}
 		return $tab_rooms_noaccess;
 	}
+}
+/* function no_book_rooms($user)
+détermine les ressources (rooms) dans lesquelles $user ne peut pas réserver (droits insuffisants ou ressource restreinte)
+*/
+function no_book_rooms($user){
+    $rooms_no_book = array();
+    $sql = "SELECT id,who_can_see,who_can_book FROM ".TABLE_PREFIX."_room";
+    $rooms = grr_sql_query($sql);
+    if (!$rooms)
+        fatal_error(0,grr_sql_error());
+    while($room = mysqli_fetch_array($rooms)){
+        if (authGetUserLevel($user,$room['id']) < $room['who_can_see'])
+            $rooms_no_book[] = $room['id'];
+        if (!$room['who_can_book']){
+            $sql = "SELECT login FROM ".TABLE_PREFIX."_j_userbook_room j WHERE j.login = '".$user."' AND j.id_room = '".$room['id']."'";
+            $login = grr_sql_query1($sql);
+            if ($login != $user){
+                $rooms_no_book[] = $room['id'];
+            }
+        }
+    }
+    return $rooms_no_book;
 }
 // function verif_delais_min_resa_room($user, $id_room, $date_booking)
 // $user : le login de l'utilisateur

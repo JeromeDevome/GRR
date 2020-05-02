@@ -49,6 +49,7 @@ $allow_action_in_past  = isset($_POST["allow_action_in_past"]) ? clean_input($_P
 $dont_allow_modify  = isset($_POST["dont_allow_modify"]) ? clean_input($_POST["dont_allow_modify"]) : NULL;
 $qui_peut_reserver_pour  = isset($_POST["qui_peut_reserver_pour"]) ? clean_input($_POST["qui_peut_reserver_pour"]) : NULL;
 $who_can_see  = isset($_POST["who_can_see"]) ? intval(clean_input($_POST["who_can_see"])) : NULL;
+$who_can_book  = isset($_POST["who_can_book"]) ? intval(clean_input($_POST["who_can_book"])) : 1;
 $max_booking = isset($_POST["max_booking"]) ? intval(clean_input($_POST["max_booking"])) : NULL;
 if ($max_booking<-1)
 	$max_booking = -1;
@@ -247,6 +248,7 @@ if ((!empty($room)) || (isset($area_id)))
 			dont_allow_modify='".$dont_allow_modify."',
 			qui_peut_reserver_pour = '".$qui_peut_reserver_pour."',
 			who_can_see = '".$who_can_see."',
+            who_can_book = '".$who_can_book."',
 			order_display='".protect_data_sql($area_order)."',
 			type_affichage_reser='".protect_data_sql($type_affichage_reser)."',
 			max_booking='".protect_data_sql($max_booking)."',
@@ -279,6 +281,7 @@ if ((!empty($room)) || (isset($area_id)))
 			dont_allow_modify='".$dont_allow_modify."',
 			qui_peut_reserver_pour = '".$qui_peut_reserver_pour."',
 			who_can_see = '".$who_can_see."',
+            who_can_book = '".$who_can_book."',
 			order_display='".protect_data_sql($area_order)."',
 			type_affichage_reser='".protect_data_sql($type_affichage_reser)."',
 			max_booking='".protect_data_sql($max_booking)."',
@@ -446,6 +449,7 @@ if ((!empty($room)) || (isset($area_id)))
 		$row["dont_allow_modify"] = 'n';
 		$row["qui_peut_reserver_pour"] = 6;
 		$row["who_can_see"] = 0;
+        $row["who_can_book"] = 1;
 		$row["order_display"]  = 0;
 		$row["type_affichage_reser"]  = 0;
 		$row["max_booking"] = -1;
@@ -535,13 +539,6 @@ if ((!empty($room)) || (isset($area_id)))
     echo "<tr><td>".get_vocab("order_display").get_vocab("deux_points")."</td>\n";
     echo "<td><input class=\"form-control\" type=\"text\" name=\"area_order\" size=\"1\" value=\"".clean_input($row["order_display"])."\" /></td>\n";
     echo "</tr>\n";
-    // Accès restreint
-    /*echo "<td>".get_vocab("access").get_vocab("deux_points")."</td>\n";
-    echo "<td><input type=\"checkbox\" name=\"access\"";
-    if ($row["access"] == 'r')
-        echo "checked=\"checked\"";
-    echo " /></td>\n";
-    echo "</tr>";*/
     // Qui peut voir cette ressource
     echo "<tr><td colspan=\"2\">".get_vocab("qui_peut_voir_ressource")."<br />\n";
     echo "<select class=\"form-control\" name=\"who_can_see\" size=\"1\">\n
@@ -572,6 +569,13 @@ if ((!empty($room)) || (isset($area_id)))
     if ($row["who_can_see"] == 6)
         echo " selected=\"selected\" ";
     echo ">".get_vocab("visu_fiche_description6")."</option>\n</select></td></tr>\n";
+    // Accès restreint
+    echo "<td>".get_vocab("access").get_vocab("deux_points")."<br /><em>".get_vocab("who_can_book_explain")."</em></td>\n";
+    echo "<td><input type=\"checkbox\" name=\"who_can_book\"";
+    if ($row["who_can_book"] == 0)
+        echo "checked=\"checked\"";
+    echo " /></td>\n";
+    echo "</tr>";
     // Declarer ressource indisponible
     echo "<tr><td>".get_vocab("declarer_ressource_indisponible")."<br /><i>".get_vocab("explain_max_booking")."</i></td><td><input type=\"checkbox\" name=\"statut_room\" ";
     if ($row['statut_room'] == "0")

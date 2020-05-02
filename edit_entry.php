@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-27 15:20$
+ * Dernière modification : $Date: 2020-05-01 17:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -16,8 +16,8 @@
  * (at your option) any later version.
  */
 $grr_script_name = "edit_entry.php"; 
-/* à décommenter si besoin de débogage
-ini_set('display_errors', 'On');
+// à décommenter si besoin de débogage
+/*ini_set('display_errors', 'On');
 error_reporting(E_ALL); */
 include "include/admin.inc.php";
 $id = (isset($_GET["id"]))? intval($_GET["id"]): NULL;
@@ -84,6 +84,7 @@ if (isset($_SERVER['HTTP_REFERER']))
 $longueur_liste_ressources_max = Settings::get("longueur_liste_ressources_max");
 if ($longueur_liste_ressources_max == '')
 	$longueur_liste_ressources_max = 20;
+$user_name = getUserName();
 if (check_begin_end_bookings($day, $month, $year))
 {
 	/* if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
@@ -93,12 +94,12 @@ if (check_begin_end_bookings($day, $month, $year))
 	showNoBookings($day, $month, $year, $back);
 	exit();
 }
-if ((authGetUserLevel(getUserName(),-1) < 2) && (auth_visiteur(getUserName(),$room) == 0))
+if ((authGetUserLevel($user_name,-1) < 2) && (auth_visiteur($user_name,$room) == 0))
 {
 	showAccessDenied($back);
 	exit();
 }
-if (authUserAccesArea(getUserName(), $area) == 0)
+if (authUserAccesArea($user_name, $area) == 0)
 {
 	showAccessDenied($back);
 	exit();
@@ -107,10 +108,17 @@ if (isset($id) && ($id != 0))
 	$compt = 0;
 else
 	$compt = 1;
-if (UserRoomMaxBooking(getUserName(), $room, $compt) == 0)
+if (UserRoomMaxBooking($user_name, $room, $compt) == 0)
 {
 	showAccessDeniedMaxBookings($day, $month, $year, $room, $back);
 	exit();
+}
+if ($room != -1){// on vérifie que la ressource n'est pas restreinte ou que l'accès est autorisé
+    $who_can_book = grr_sql_query1("SELECT who_can_book FROM ".TABLE_PREFIX."_room WHERE id='".$room."' ");
+    if (!($who_can_book || (authBooking($user_name,$room)) || (authGetUserLevel($user_name,$room) > 2))){
+        showAccessDenied($back."&alerte=acces");
+        exit();
+    }
 }
 $etype = 0;
 if (isset($id)) // édition d'une réservation existante
@@ -163,7 +171,7 @@ if (isset($id)) // édition d'une réservation existante
 		$row = grr_sql_row($res, 0);
 		grr_sql_free($res);
 		$rep_type = $row[0];
-		if ($rep_type == 2) // périodicité chaque semaine
+		if ($rep_type == 2) // périodicité chaque semaine, etc.
 			$rep_num_weeks = $row[4];
 		if ($rep_type == 7) // périodicité X Y du mois
 		{
@@ -239,10 +247,10 @@ else // nouvelle réservation
 		$breve_description = $_SESSION['prenom']." ".$_SESSION['nom'];
 	else
 		$breve_description = "";
-	$beneficiaire   = getUserName();
+	$beneficiaire   = $user_name;
 	/*$tab_benef["nom"] = "";
 	$tab_benef["email"] = "";*/
-	$create_by    = getUserName();
+	$create_by    = $user_name;
 	$description = "";
 	$start_day   = $day;
 	$start_month = $month;
@@ -286,7 +294,7 @@ if ($enable_periods == 'y')
 	toPeriodString($start_min, $duration, $dur_units);
 else
 	toTimeString($duration, $dur_units, true);
-if (!getWritable($beneficiaire, getUserName(),$id))
+if (!getWritable($beneficiaire, $user_name,$id))
 {
 	showAccessDenied($back);
 	exit;
@@ -300,7 +308,7 @@ if ($res)
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
 		array_push($allareas_id, $row[0]);
-		if (authUserAccesArea(getUserName(), $row[0])==1)
+		if (authUserAccesArea($user_name, $row[0])==1)
 		{
 			$nb_areas++;
 		}
@@ -683,11 +691,12 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
 			{
 				for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 				{
-					if (authUserAccesArea(getUserName(), $row[0]) == 1)
+					if (authUserAccesArea($user_name, $row[0]) == 1)
 					{
 						print "      case \"".$row[0]."\":\n";
 						$sql2 = "SELECT id, room_name FROM ".TABLE_PREFIX."_room WHERE area_id='".$row[0]."'";
-						$tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
+						//$tab_rooms_noaccess = verif_acces_ressource($user_name, 'all');
+                        $tab_rooms_noaccess = no_book_rooms($user_name);
 						foreach($tab_rooms_noaccess as $key)
 						{
 							$sql2 .= " AND id != $key ";
@@ -714,7 +723,7 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
 		}
         roomsObj = eval( "formObj.elements['rooms[]']" );
         room = roomsObj[roomsObj.selectedIndex].value;
-        insertBeneficiaires(area,room,<?php echo json_encode(getUserName())?>);
+        insertBeneficiaires(area,room,<?php echo json_encode($user_name)?>);
         insertChampsAdd(area,<?php echo $id;?>,room);
         insertTypes(area,room);
         //insertProfilBeneficiaire();
@@ -725,7 +734,7 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
 		area = areasObj[areasObj.selectedIndex].value
         roomsObj = eval("formObj.elements['rooms[]']");
         room = roomsObj[roomsObj.selectedIndex].value;
-        insertBeneficiaires(area,room,<?php echo json_encode(getUserName())?>);
+        insertBeneficiaires(area,room,<?php echo json_encode($user_name)?>);
         insertChampsAdd(area,<?php echo $id;?>,room);
         insertTypes(area,room);
         
@@ -1000,7 +1009,7 @@ if ($res)
 {
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-		if (authUserAccesArea(getUserName(),$row[0]) == 1)
+		if (authUserAccesArea($user_name,$row[0]) == 1)
 		{
 			$selected = "";
 			if ($row[0] == $area)
@@ -1014,7 +1023,8 @@ echo '</select>',PHP_EOL,'</div>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL;
 echo '<!-- ************* Ressources edition ***************** -->',PHP_EOL;
 echo "<tr><td class=\"E\"><b>".get_vocab("rooms").get_vocab("deux_points")."</b></td></tr>\n";
 $sql = "SELECT id, room_name, description FROM ".TABLE_PREFIX."_room WHERE area_id=$area_id ";
-$tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
+//$tab_rooms_noaccess = verif_acces_ressource($user_name, 'all');
+$tab_rooms_noaccess = no_book_rooms($user_name);
 foreach ($tab_rooms_noaccess as $key)
 {
 	$sql .= " and id != $key ";
@@ -1041,7 +1051,7 @@ echo '<tr>',PHP_EOL,'<td>',PHP_EOL,'<div id="div_types">',PHP_EOL;
 echo '</div>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL;
 ?>
 <script type="text/javascript" >
-    insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode(getUserName());?>);
+    insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode($user_name);?>);
 	insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>);
 	insertTypes(<?php echo $area?>,<?php echo $room?>);
 	// insertProfilBeneficiaire();
@@ -1273,7 +1283,7 @@ if($periodiciteConfig == 'y'){
 		</div>
 	</form>
 	<script type="text/javascript">
-		insertBeneficiaires(<?php echo $area;?>,<?php echo $room;?>,<?php echo json_encode(getUserName());?>);
+		insertBeneficiaires(<?php echo $area;?>,<?php echo $room;?>,<?php echo json_encode($user_name);?>);
 		insertChampsAdd(<?php echo $area; ?>,<?php echo $id; ?>,<?php echo $room; ?>);
 		insertTypes(<?php echo $area; ?>,<?php echo $room; ?>)
 	</script>

@@ -3,7 +3,7 @@
  * admin_user.php
  * interface de gestion des utilisateurs de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-07 10:20$
+ * Dernière modification : $Date: 2020-05-02 15:40$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -99,6 +99,7 @@ if ((isset($_GET['action'])) && ($_GET['action'] == "nettoyage") && (Settings::g
 					grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_mailuser_room WHERE login='".$user_login."'");
 					grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE login='".$user_login."'");
 					grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE login='".$user_login."'");
+                    grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_userbook_room WHERE login='".$user_login."'");
 					grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='".$user_login."'");
 					grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='".$user_login."'");
 					$msg .= "\\n".$user_login;
@@ -225,6 +226,7 @@ if ((isset($_GET['action_del'])) and ($_GET['js_confirmed'] == 1))
 			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_mailuser_room WHERE login='$temp'");
 			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE login='$temp'");
 			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE login='$temp'");
+            grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_userbook_room WHERE login='".$user_login."'");
 			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='$temp'");
 			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='$temp'");
 			$msg=get_vocab("del_user_succeed");

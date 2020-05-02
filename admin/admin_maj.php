@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-23 17:20$
+ * Dernière modification : $Date: 2020-04-29 17:00$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
@@ -909,6 +909,8 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
         $result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_overload DROP PRIMARY KEY, ADD PRIMARY KEY (`id_area`,`fieldname`), ADD UNIQUE KEY `id` (`id`);");
         $result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_site ADD UNIQUE KEY `name` (`sitename`), ADD UNIQUE KEY `code` (`sitecode`);");
         $result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_room ADD `booking_range` SMALLINT(6) NOT NULL DEFAULT '-1' AFTER `who_can_see`;");
+        $result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_room ADD `who_can_book` TINYINT(1) NOT NULL DEFAULT '1' AFTER `booking_range`;");
+        $result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_j_userbook_room (`login` varchar(40) NOT NULL, `id_room` int(11) NOT NULL) DEFAULT CHARSET=latin1;");
 
         if ($result_inter == '')
             $result .= formatresult("Ok !","<span style='color:green;'>","</span>");

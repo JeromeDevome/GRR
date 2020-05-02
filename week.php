@@ -3,7 +3,7 @@
  * week.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "semaine".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-27 15:01$
+ * Dernière modification : $Date: 2020-05-01 11:36$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -114,28 +114,48 @@ $pm7 = mktime($eveningends, $eveningends_minutes, 0, $month, $day_week, $year_we
 $week_midnight = mktime(0, 0, 0, $month_week, $day_week, $year_week);
 $week_start = $am7;
 $week_end = mktime($eveningends, $eveningends_minutes, 0, $month_week, $day_week + 6, $year_week);
-$this_area_name = "";
-$this_room_name = "";
-$this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=$area");
-$this_area_resolution = grr_sql_query1("SELECT resolution_area FROM ".TABLE_PREFIX."_area WHERE id=$area");
-$this_room_name = grr_sql_query1("SELECT room_name FROM ".TABLE_PREFIX."_room WHERE id=$room");
+$sql= "SELECT area_name, resolution_area FROM ".TABLE_PREFIX."_area WHERE id=$area";
+$res = grr_sql_query($sql);
+if ($res){
+    $this_area = grr_sql_row($res,0);
+}
+$this_area_name = (isset($this_area[0]))? $this_area[0]:"";
+$this_area_resolution = (isset($this_area[1]))? $this_area[1]:"";
+grr_sql_free($res);
+//$this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=$area");
+//$this_area_resolution = grr_sql_query1("SELECT resolution_area FROM ".TABLE_PREFIX."_area WHERE id=$area");
+$sql = "SELECT * FROM ".TABLE_PREFIX."_room WHERE id=$room";
+$res = grr_sql_query($sql);
+if ($res){
+    $this_room = grr_sql_row_keyed($res,0);
+}
+$this_room_name = (isset($this_room['room_name']))? $this_room['room_name']:"";
+$this_room_max = (isset($this_room['capacity']))? $this_room['capacity']:0;
+$this_room_name_des = (isset($this_room['description']))? $this_room['description']:'';
+$this_statut_room = (isset($this_room['statut_room']))? $this_room['statut_room']:1;
+$this_moderate_room = (isset($this_room['moderate']))? $this_room['moderate']:0;
+$this_delais_option_reservation = (isset($this_room['delais_option_reservation']))? $this_room['delais_option_reservation']:0;
+$this_room_comment = (isset($this_room['comment_room']))? $this_room['comment_room']:'';
+$this_room_show_comment = (isset($this_room['show_comment']))? $this_room['show_comment']:'n';
+$who_can_book = (isset($this_room['who_can_book']))? $this_room['who_can_book']:1;
+grr_sql_free($res);
+/*$this_room_name = grr_sql_query1("SELECT room_name FROM ".TABLE_PREFIX."_room WHERE id=$room");
 $this_room_max = grr_sql_query1("SELECT capacity FROM ".TABLE_PREFIX."_room WHERE id=$room");
 $this_room_name_des = grr_sql_query1("SELECT description FROM ".TABLE_PREFIX."_room WHERE id=$room");
 $this_statut_room = grr_sql_query1("SELECT statut_room FROM ".TABLE_PREFIX."_room WHERE id=$room");
 $this_moderate_room = grr_sql_query1("SELECT moderate FROM ".TABLE_PREFIX."_room WHERE id=$room");
 $this_delais_option_reservation = grr_sql_query1("SELECT delais_option_reservation FROM ".TABLE_PREFIX."_room WHERE id=$room");
 $this_area_comment = grr_sql_query1("SELECT comment_room FROM ".TABLE_PREFIX."_room WHERE id=$room");
-$this_area_show_comment = grr_sql_query1("SELECT show_comment FROM ".TABLE_PREFIX."_room WHERE id=$room");
+$this_area_show_comment = grr_sql_query1("SELECT show_comment FROM ".TABLE_PREFIX."_room WHERE id=$room");*/
 
 //Pour vérifier si la plage de fin arrive sur un créneau ou non.
 $minutesFinCrenaux = array();
 for($h=0; $h<3600; $h+=$this_area_resolution) {
 	$minutesFinCrenaux[] = date('i', $h);
 }
-if (($this_room_name_des) && ($this_room_name_des != "-1"))
+if ($this_room_name_des != "")
 	$this_room_name_des = " (".$this_room_name_des.")";
-else
-	$this_room_name_des = "";
+
 switch ($dateformat) {
 	case "en":
 	$dformat = "%A, %b %d";
@@ -173,18 +193,21 @@ pageHeader2($day, $month, $year, $type_session);
 echo "</header>";
 // Debut de la page
 echo "<section>".PHP_EOL;
-// Calcul du niveau de droit de réservation
-$authGetUserLevel = authGetUserLevel(getUserName(), -1);
-// Determine si un visiteur peut réserver une ressource
-$auth_visiteur = auth_visiteur(getUserName(), $room);
-// Calcul du niveau d'accès aux fiche de réservation détaillées des ressources
-$acces_fiche_reservation = verif_acces_fiche_reservation(getUserName(), $room);
-// Calcul du test si l'utilisateur a la possibilité d'effectuer une réservation, compte tenu des limitations éventuelles de la ressources et du nombre de réservations déjà effectuées.
-$UserRoomMaxBooking	= UserRoomMaxBooking(getUserName(), $room, 1);
 // Affichage du menu
 include("menu_gauche2.php");
 include("chargement.php");
 
+$user_name = getUserName();
+// Calcul du niveau de droit de réservation
+$authGetUserLevel = authGetUserLevel($user_name, $room);
+// Determine si un visiteur peut réserver une ressource
+$auth_visiteur = auth_visiteur($user_name, $room);
+// si la ressource est restreinte, l'utilisateur peut-il réserver ?
+$user_can_book = $who_can_book || ($authGetUserLevel > 2) || (authBooking($user_name,$room));
+// Calcul du niveau d'accès aux fiche de réservation détaillées des ressources
+$acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $room);
+// Calcul du test si l'utilisateur a la possibilité d'effectuer une réservation, compte tenu des limitations éventuelles de la ressources et du nombre de réservations déjà effectuées.
+$UserRoomMaxBooking	= UserRoomMaxBooking($user_name, $room, 1);
 // calcul des cellules du planning
 $sql = "SELECT start_time, end_time, type, name, id, beneficiaire, statut_entry, description, option_reservation, moderate, beneficiaire_ext
 FROM ".TABLE_PREFIX."_entry
@@ -431,12 +454,12 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
         ';
     }
 }
-if (verif_display_fiche_ressource(getUserName(), $room) && $_GET['pview'] != 1)
+if (verif_display_fiche_ressource($user_name, $room) && $_GET['pview'] != 1)
 {
 	echo '<a href="javascript:centrerpopup(\'view_room.php?id_room=',$room,'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="',
 	get_vocab("fiche_ressource"),'"><span class="glyphcolor glyphalign glyphicon glyphicon-search"></span></a>',PHP_EOL;
 }
-if (authGetUserLevel(getUserName(),$room) > 2 && $_GET['pview'] != 1)
+if ($authGetUserLevel > 2 && $_GET['pview'] != 1)
 {
 	echo "<a href='./admin/admin_edit_room.php?room=$room'><span class=\"glyphcolor glyphalign glyphicon glyphicon-cog\"></span></a>";
 }
@@ -449,9 +472,9 @@ if ($this_moderate_room == "1" && $_GET['pview'] != 1)
 {
 	echo '<br><span class="texte_ress_moderee">',get_vocab("reservations_moderees"),'</span>',PHP_EOL;
 }
-if ($this_area_show_comment == "y" && $_GET['pview'] != 1 && ($this_area_comment != "") && ($this_area_comment != -1))
+if ($this_room_show_comment == "y" && $_GET['pview'] != 1 && ($this_room_comment != "") && ($this_room_comment != -1))
 {
-	echo '<span style="text-align:center;">',$this_area_comment,'</span>',PHP_EOL;
+	echo '<span style="text-align:center;">',$this_room_comment,'</span>',PHP_EOL;
 }
 
 echo '<h4 class="titre">'.ucfirst($this_area_name).' - '.$this_room_name.' '.$this_room_name_des;
@@ -657,7 +680,7 @@ $semaine_changement_heure_hiver = 'no';
 						echo "<img src=\"img_grr/stop.png\" alt=\"".get_vocab("reservation_impossible")."\"  title=\"".get_vocab("reservation_impossible")."\" width=\"16\" height=\"16\" class=\"".$class_image."\"  />";
 					else
 					{
-						if ((($authGetUserLevel > 1) || ($auth_visiteur == 1)) && ($UserRoomMaxBooking != 0) && verif_booking_date(getUserName(), -1, $room, $date_booking, $date_now, $enable_periods) && verif_delais_max_resa_room(getUserName(), $room, $date_booking) && verif_delais_min_resa_room(getUserName(), $room, $date_booking) && (($this_statut_room == "1") || (($this_statut_room == "0") && (authGetUserLevel(getUserName(),$room) > 2) )) && $_GET['pview'] != 1)
+						if ((($authGetUserLevel > 1) || ($auth_visiteur == 1)) && ($UserRoomMaxBooking != 0) && verif_booking_date($user_name, -1, $room, $date_booking, $date_now, $enable_periods) && verif_delais_max_resa_room($user_name, $room, $date_booking) && verif_delais_min_resa_room($user_name, $room, $date_booking) && (($this_statut_room == "1") || (($this_statut_room == "0") && ($authGetUserLevel > 2))) && $user_can_book && $_GET['pview'] != 1)
 						{
 							if ($enable_periods == 'y')
 							{
@@ -767,7 +790,6 @@ $semaine_changement_heure_hiver = 'no';
 	echo '</div>'.PHP_EOL; // fin de planning
 	echo '<div id="popup_name" class="popup_block" ></div>',PHP_EOL;
 echo "</section>";
-echo "</body></html>";
 ?>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -787,3 +809,5 @@ echo "</body></html>";
 		$("#popup_name").resizable();
 	});
 </script>
+</body>
+</html>

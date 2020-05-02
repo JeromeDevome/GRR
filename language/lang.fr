@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2020-04-22
+# Last modification : 2020-05-02
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -160,6 +160,7 @@ $vocab['any_area'] = "Tous les domaines";
 $vocab['areas'] = "Domaines :";
 $vocab['attention_mail_automatique_désactive'] = "ATTENTION : l'envoi de mails automatiques est actuellement désactivé. Pour l'activer, rendez-vous dans le panneau de configuration générale.";
 $vocab['aucun autilisateur'] = "Aucun utilisateur ne dispose de privilèges";
+$vocab['aucun_utilisateur_reservant'] = "Aucun utilisateur sans privilèges ne peut réserver.";
 $vocab['aucune_correspondance'] = "Aucune correspondance profil / statut GRR actuellement enregistrée";
 $vocab['aucune_periodicite_associe'] = "Aucune périodicité n'est associée à cette réservation.";
 $vocab['authentification'] = "Authentification";
@@ -947,6 +948,7 @@ $vocab['utilisateurs gestionnaires ressource'] = "Les utilisateurs suivants sont
 $vocab['utilisateurs mail automatique'] = "Les utilisateurs suivants sont avertis par email :";
 $vocab['utilisateur_inconnu'] = "Utilisateur inconnu (identifiant : ";
 $vocab['utilisateur_rendu_inactif'] = "Attention : l'utilisateur sélectionné ci-dessus est un utilisateur rendu inactif par l'administrateur.";
+$vocab['utilisateurs_reservant'] = "La ressource est restreinte. Les utilisateurs suivants peuvent réserver cette ressource :";
 $vocab['utilisateur_simple_visiteur'] = "Attention : l'utilisateur sélectionné ci-dessus est un utilisateur ayant le statut de \"visiteur\".";
 $vocab['utilisateur_supprime'] = "Attention : le bénéficiaire actuellement enregistré est un utilisateur ayant été supprimé de la base des utilisateurs. ";
 $vocab['utilisateur_doublon'] ="Plusieurs utilisateurs ont le même identifiant que l'utilisateur ci-dessus. Signalez ce problème à l'administrateur.";
@@ -989,6 +991,7 @@ $vocab['weeks'] = "semaine(s)";
 $vocab['weekstarts_area'] = "Début de la semaine";
 $vocab['welcome'] = "Accueil";
 $vocab['welcome_to'] = "Bienvenue ";
+$vocab['who_can_book_explain'] = "Si la case est cochée, seuls les utilisateurs autorisés peuvent réserver cette ressource.";
 $vocab['wrong_old_pwd'] = "L'ancien mot de passe n'est pas correct !";
 $vocab['wrong_pwd'] = "Identifiant ou mot de passe incorrect";
 $vocab['wrong_pwd2'] = "Erreur lors de la saisie du mot de passe, veuillez recommencer !";
@@ -1076,4 +1079,10 @@ $vocab['ssmenuadm_actif'] = "Item de sous-menu actif";
 $vocab['default'] = "Valeurs par défaut";
 $vocab['resaToModerate'] = " réservation à modérer";
 $vocab['resasToModerate'] = " réservations à modérer";
+$vocab['admin_book_room.php'] = "Accès à la réservation des ressources restreintes";
+$vocab["no_userbook_room"] = "Aucun utilisateur ne peut réserver cette ressource";
+$vocab["user_book_room_list"] = "Utilisateurs autorisés à réserver cette ressource";
+$vocab["no_restricted_room"] = "Aucune ressource restreinte n'a été définie";
+$vocab["no_room_selected"] = "Aucune ressource n'a été sélectionnée";
+$vocab['user_can_book'] = "peut réserver les ressources restreintes :";
 ?>

@@ -3,7 +3,7 @@
  * swap_entry.php
  * Interface d'échange d'une réservation avec une autre, à choisir
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-27 15:07$
+ * Dernière modification : $Date: 2020-05-01 15:26$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -307,7 +307,12 @@ else { // on connaît $id de la réservation à échanger, on va en chercher une
                     $id_alt = $a[0]; // id de la résa alternative
                     $info_alt = mrbsGetEntryInfo($id_alt);
                     $current_user = getUserName();
-                    if (verif_acces_ressource($current_user,$info_alt['room_id']) && verif_acces_fiche_reservation($current_user,$info_alt['room_id']) && UserRoomMaxBooking($current_user,$info_alt['room_id'],1)){ // si l'utilisateur peut accéder à la ressource et la modifier, on l'affiche
+                    $who_can_book = grr_sql_query1("SELECT who_can_book FROM ".TABLE_PREFIX."_room WHERE id='".$info_alt['room_id']."' ");
+                    $user_can_book = $who_can_book || (authBooking($current_user,$info_alt['room_id']));
+                    if (verif_acces_ressource($current_user,$info_alt['room_id']) 
+                        && verif_acces_fiche_reservation($current_user,$info_alt['room_id']) 
+                        && $user_can_book
+                        && UserRoomMaxBooking($current_user,$info_alt['room_id'],1)){ // si l'utilisateur peut accéder à la ressource et la modifier, on l'affiche
                         echo "<tr style='text-align:center;'>";
                         echo "<td><input type='radio' name='id_alt' value=".$id_alt." /></td>"; // colonne pour les choix
                         echo "<td>".$info_alt['description']."</td>";
@@ -342,7 +347,9 @@ function roomDesc($id_room){ // rend nom + description à partir de l'identifian
     $res = grr_sql_query($sql);
     if ($res){
         $data = grr_sql_row($res,0);
-        return $data[0]." ".$data[1];
+        $desc = $data[0];
+        if ($data[1]!=''){$desc .= ' ('.$data[1].')';}
+        return $desc;
     }
     else 
         print(grr_sql_error($res));

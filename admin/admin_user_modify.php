@@ -3,7 +3,7 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-03 10:05$
+ * Dernière modification : $Date: 2020-05-02 16:13$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -407,6 +407,19 @@ if ((isset($user_login)) && ($user_login != ''))
             }
         }
     }
+    // peut réserver une ressource restreinte ?
+    $req_room = "SELECT r.id, r.room_name FROM ".TABLE_PREFIX."_room r JOIN ".TABLE_PREFIX."_j_userbook_room j ON j.id_room = r.id WHERE j.login = '".$user_login."'";
+    $res_room = grr_sql_query($req_room);
+    if ($res_room && grr_sql_count($res_room)>0){
+        $html_privileges .= "<h3>".get_vocab('user_can_book')."</h3><ul>";
+        while($room = mysqli_fetch_array($res_room)){
+            $html_privileges .= "<li>".$room['room_name']." (".$room['id'].") </li>";
+        }
+        $html_privileges .= "</ul>";
+        $a_privileges = 'y';
+    }
+    grr_sql_free($res_room);
+
     if ($a_privileges == 'n')
     {
         if ($utilisateur['statut'] == 'administrateur')
@@ -470,19 +483,19 @@ echo '<form action="admin_user_modify.php?display='.$display.'" method="get"><di
         if ($utilisateur['source'] == 'ext')
             echo " selected=\"selected\" ";
         echo ">".get_vocab("authentification_base_externe")."</option>\n";
-        echo "</select><br /><br />\n";
+        echo "</select><br /><br />".PHP_EOL;
     }
     echo get_vocab("login")." *".get_vocab("deux_points");
     if (isset($user_login) && ($user_login!=''))
     {
         echo $user_login;
-        echo "<input type=\"hidden\" name=\"reg_login\" value=\"$user_login\" />\n";
+        echo "<input type=\"hidden\" name=\"reg_login\" value=\"$user_login\" />";
     }
     else
     {
-        echo "<input type=\"text\" name=\"new_login\" size=\"40\" required />\n";
+        echo "<input type=\"text\" name=\"new_login\" size=\"40\" required />";
     }
-    echo "<table class='table-noborder'><tr>\n";
+    echo "<table class='table-noborder'><tr>".PHP_EOL;
     echo "<td>".get_vocab("last_name")." *".get_vocab("deux_points")."</td>\n<td><input type=\"text\" name=\"reg_nom\" size=\"40\" value=\"";
     if ($utilisateur['nom'])
         echo htmlspecialchars($utilisateur['nom']);

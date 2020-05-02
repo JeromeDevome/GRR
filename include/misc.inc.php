@@ -2,7 +2,7 @@
 /**
  * misc.inc.php
  * fichier de variables diverses
- * Dernière modification : $Date: 2020-03-30 11:25$
+ * Dernière modification : $Date: 2020-05-01 17:57$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -59,6 +59,7 @@ $liste_tables = array(
 	"_correspondance_statut",
 	"_page",
 	"_modulesext",
+    "_j_userbook_room"
 	);
 
 # Liste des feuilles de style

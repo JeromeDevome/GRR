@@ -3,7 +3,7 @@
  * admin_room_del
  * Interface de confirmation de suppression d'un domaine ou d'une ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-23 12:15$
+ * Dernière modification : $Date: 2020-05-02 11:47$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -47,6 +47,7 @@ if ($type == "room")
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE room_id=$room");
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_mailuser_room  WHERE id_room=$room");
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE id_room=$room");
+        grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_userbook_room WHERE id_room=$room");
 		//Now take out the room itself
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_room WHERE id=$room");
 		//Go back to the admin page
