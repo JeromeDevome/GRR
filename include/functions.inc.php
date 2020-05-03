@@ -1307,7 +1307,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 				else
 					$d['nomUtilisateur'] =  htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']);
 
-				// Déconnection
+				// Déconnexion
 				$disconnect_link = false;
 				if (!((Settings::get("cacher_lien_deconnecter") == 'y') && (isset($_SESSION['est_authentifie_sso']))))
 				{

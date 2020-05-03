@@ -385,7 +385,8 @@ if ((!empty($id_area)) || (isset($add_area)))
 		if (isset($add_area))
 			$trad['dHidden3'] = "<input type=\"hidden\" name=\"add_area\" value=\"".$add_area."\" />\n";
 
-		// Site
+		// Sites
+        $sites = array();
 		if (Settings::get("module_multisite") == "Oui")
 		{
 
