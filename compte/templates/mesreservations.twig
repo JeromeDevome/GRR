@@ -1,0 +1,71 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+	<p>{{ trad.resa_menu_explain }}</p>
+
+	<form class="form-inline" action="compte.php?p=mesreservations" method="POST">
+		<label class="radio-inline"><input type="radio" name="choix" value="0" {% if d.choix == 0 %}checked{% endif %} />{{ trad.resas_toutes }}</label>
+		<label class="radio-inline"><input type="radio" name="choix" value="1" {% if d.choix == 1 %}checked{% endif %} />{{ trad.resas_a_venir }}</label>
+		<input class="btn btn-default" type="submit" value="{{ trad.goto }}" />
+	</form>
+
+	<table class="table-bordered table-condensed">
+		<thead>
+			<th class="col">{{ trad.start_date }}</th>
+			<th class="col">{{ trad.time }}</th>
+			<th class="col">{{ trad.duration }}</th>
+			<th class="col">{{ trad.match_area }}</th>
+			<th class="col">{{ trad.room }}</th>
+			<th class="col">{{ trad.sum_by_descrip }}</th>
+			<th class="col">{{ trad.fulldescription }}</th>
+			<th class="col">{{ trad.type }}</th>
+			<th class="col">{{ trad.lastupdate }}</th>
+		</thead>
+		<tbody>
+		{% for resa in reservations %}
+			<tr>
+				<td class="col"><span style="color:{{resa.couleur}};">{{ resa.datedebut }}</span></td>
+				<td class="col"><span style="color:{{resa.couleur}};">{{ resa.heuredebut }}</span></td>
+				<td class="col"><span style="color:{{resa.couleur}};">{{ resa.duree }}</span></td>
+				<td class="col" {% if resa.domainedesc %}title="{{ resa.domainedesc }}"{% endif %}><span style="color:{{resa.couleur}};">{{ resa.domaine }}</span></td>
+				<td class="col"><span style="color:{{resa.couleur}};">{{ resa.ressource }}</span></td>
+				<td class="col"><span style="color:{{resa.couleur}};">{{ resa.descriptionc | raw }}</span></td>
+				<td class="col"><span style="color:{{resa.couleur}};">{{ resa.descriptionl }}</span></td>
+				<td class="col"><span style="color:{{resa.couleur}};">{{ resa.type }}</span></td>
+				<td class="col"><span style="color:{{resa.couleur}};">{{ resa.datemaj }}</span></td>
+			</tr>
+		{% endfor %}
+		</tbody>
+		<footer>
+			<tr>
+				<td colspan="9">
+					<p class="center">
+						{% if d.nbResultat == 1 %}
+							{{ d.nbResultat }} {{ trad.entry_found }}
+						{% elseif d.nbResultat > 1 %}
+							{{ d.nbResultat }} {{ trad.entries_found }}
+						{% else %}
+							{{ trad.nothing_found }}
+						{% endif %}
+					</p>
+				</td>
+			</tr>
+		</footer>
+	</table>
+
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
