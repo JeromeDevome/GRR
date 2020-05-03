@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2020-04-20 09:30$
+ * Dernière modification : $Date: 2020-05-03 17:42$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -566,6 +566,13 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
 	$entrys_return = array();
 	$k = 0;
     $valide = TRUE;
+    // recale le jour de départ sur un jour de la série (répétition semaine)
+    if ($rep_type == 2){
+        $start_day = date("w", $time);
+        for ($j=$start_day; ($j<7+$start_day) && !$rep_opt[$j%7]; $j++){
+            $day++;
+        }
+    }
 	for($i = 0; $i < $max_ittr; $i++)
 	{
 		$time = mktime($hour, $min, $sec, $month, $day, $year);
@@ -586,12 +593,22 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
 			break;
 			//Weekly repeat
 			case 2:
-			$j = $cur_day = date("w", $entrys[$i]);
-			//Skip over days of the week which are not enabled:
-			while ((($j = ($j + 1) % (7 * $rep_num_weeks)) != $cur_day && $j < 7 && !$rep_opt[$j]) or ($j >= 7))
-				$day += 1;
-			$day += 1;
-			break;
+            $j = $cur_day = date("w", $time);
+            // Skip over days of the week which are not enabled:
+            do
+            {
+              $day++;
+              $j = ($j + 1) % 7;
+              // If we've got back to the beginning of the week, then skip
+              // over the weeks we've got to miss out (eg miss out one week
+              // if we're repeating every two weeks)
+              if ($j == $start_day)
+              {
+                $day += 7 * ($rep_num_weeks - 1);
+              }
+            }
+            while (($j != $cur_day) && !$rep_opt[$j]);
+            break;
 			//Monthly repeat
 			case 3:
 			$month += 1;
