@@ -37,29 +37,36 @@
 		<hr>
 
 		{% if modificationMDP == false %}
-			<div>
-				<table  border="0" width="100%">
-					<tr>
-						<td onclick="clicMenu('1')" class="fontcolor4" style="cursor: inherit" align="center">
-							<span class="bground">
-								<b><a href="#"><font color=black>{{ trad.click_here_to_modify_pwd |raw }}</font></a></b>
-							</span>
-						</td>
-					</tr>
-					<tr style="display:none" id="menu1">
-						<td>
-							<br />
-							<p>{{ trad.pwd_msg_warning }}</p>
-							{{ trad.old_pwd }}
-							<input type="password" name="reg_password_a" size="20" />
-							<br />{{ trad.new_pwd1 }}
-							<input type="password" name="reg_password1" size="20" />
-							<br />{{ trad.new_pwd1 }}
-							<input type="password" name="reg_password2" size="20" />
-						</td>
-					</tr>
-				</table>
+			<div class="container">
+				<p>{{ trad.pwd_msg_warning }}</p>
+				<form class="form-horizontal" id="form_pwd" action="compte.php?moncompte" method="post">
+					<div class="form-group">
+						<label class="control-label col-md-4 col-sm-6 col-xs-8" for="opwd">{{ trad.old_pwd }}</label>
+						<div class="col-md-8 col-sm-6 col-xs-6">
+						<input class="form-control" for="opwd" type="password" name="reg_password_a" size="20" required /></div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd1">{{ trad.new_pwd1 }}</label>
+						<div class="col-md-8 col-sm-4 col-xs-6">
+						<input id="pwd1" class="form-control" for="pwd1" type="password" name="reg_password1" size="20" onkeyup="runPassword(this.value, 'pwd1');" required /></div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-4 col-sm-6 col-xs-8"></div>
+						<div class="col-md-4 col-sm-6 col-xs-8"><p class="right">{{ trad.pwd_strength }}</p></div>
+						<div class="col-md-4 col-sm-6 col-xs-8">&nbsp;
+							<div id="pwd1_text" style="font-size: 11px;">&nbsp;</div>
+							<div id="pwd1_bar" style="font-size: 1px; height: 3px; width: 0px; border: 1px solid white;"></div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd2">{{ trad.new_pwd2 }}</label>
+						<div class="col-md-8 col-sm-4 col-xs-6">
+						<input class="form-control" for="pwd2" type="password" name="reg_password2" size="20" required /></div>
+					</div>
+				</form>
 			</div>
+		{% else %}
+			<p>{{ trad.user_change_pwd_interdit }}</p>
 		{% endif %}
 
 		<hr>
@@ -178,6 +185,7 @@
 {% endblock %}
 
 {% block javascript %}
+	<script type="text/javascript" src="../js/pwd_strength.js"></script>
 	<script type="text/javascript">
 		function modifier_liste_domaines(){
 			$.ajax({

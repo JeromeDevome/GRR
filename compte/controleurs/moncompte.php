@@ -245,10 +245,11 @@ get_vocab_admin('mail_user');
 get_vocab_admin('statut');
 get_vocab_admin('required');
 
-get_vocab_admin('click_here_to_modify_pwd');
 get_vocab_admin('pwd_msg_warning');
 get_vocab_admin('old_pwd');
 get_vocab_admin('new_pwd1');
+get_vocab_admin('new_pwd2');
+get_vocab_admin('pwd_strength');
 
 get_vocab_admin('default_parameter_values_title');
 get_vocab_admin('explain_area_list_format');
