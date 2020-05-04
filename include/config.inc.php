@@ -17,8 +17,8 @@
  
 ### A LIRE ###
 # Il est préférable de pas modifier ce fichier, car celui-ci sera écrasé lors des mises à jours
-# Nous conseillons de creer un fichier dans ce dossier en l'appelant "configperso.inc.php"
-# Dans ce dernier ajouter les variables souhaité avec les valeurs souhaité, vos valeurs écraserons ce de ce fichier
+# Nous conseillons de creer un fichier dans le dossier peronnalisation en l'appelant "configperso.inc.php"
+# Dans ce dernier ajouter les variables souhaité avec les valeurs souhaité, vos valeurs écraserons celles de ce fichier
 ##############
 
 /*
