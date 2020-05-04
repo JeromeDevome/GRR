@@ -214,9 +214,13 @@ $grrPages = array();
 # Make sure notice errors are not reported
 #error_reporting (E_ALL ^ E_NOTICE);
 
-if(file_exists('../include/configperso.inc.php'))
-	include('../include/configperso.inc.php');
-if(file_exists('./include/configperso.inc.php'))
-	include('./include/configperso.inc.php');
+# Création d'un dossier personnalisation pour mettre tout fichiers importé modifié par les utilisateurs de GRR
+$gcDossierImg = "images";
+$gcDossierXml = "xml";
+
+if(file_exists('../personnalisation/configperso.inc.php'))
+	include('../personnalisation/configperso.inc.php');
+if(file_exists('./personnalisation/configperso.inc.php'))
+	include('./personnalisation/configperso.inc.php');
 
 ?>
