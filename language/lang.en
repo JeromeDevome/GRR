@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2020-05-02
+# Last modification : 2020-05-05
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -51,6 +51,12 @@ $vocab['admin_calendar_explain_1.php'] = "This procedure allows you <b>to reserv
 $vocab['admin_calendar_title.php'] = "Outright Reservation/Suppression ";
 $vocab['admin_calend_ignore.php'] = "Calendar except reservation";
 $vocab['admin_calend_jour_cycle.php'] = "Calendar of \"cycles days\"";
+$vocab['admin_calend_vacances_feries.php'] = "Calendar of school or business holidays";
+$vocab['vacances_feries_description'] = "Les journées cochées seront mises en évidence sur le planning si l'option \"Afficher les Vacances scolaires et les jours fériés\" est à OUI.";
+$vocab['vacances_feries_FR'] = "Cocher les jours fériés français";
+$vocab['vacances_FR'] = "Cocher les jours de vacances scolaires de la zone ";
+$vocab['admin_calend_ignore_feries'] = "Click to select all business holidays ";
+$vocab['admin_calend_ignore_vacances'] = "Click to select all school holidays ";
 $vocab['admin_clean_accounts_desc'] = "L'action ci-dessous permet de <b>nettoyer</b> toutes les tables de liaison des comptes utilisateurs. Il s'agit d'une opération de maintenance, normalement inutile et  sans conséquence sur le fonctionnement de GRR. <b>Par précaution, faites une sauvegarde de la base de données au  préalable</b>"; // A traduire
 $vocab['admin_cgu.php'] = "CGU"; // A traduire
 $vocab['admin_config.php'] = "General configuration";
@@ -1077,4 +1083,5 @@ $vocab["user_book_room_list"] = "Users authorized to book this room";
 $vocab["no_restricted_room"] = "No restricted room has been defined";
 $vocab["no_room_selected"] = "No room has been selected";
 $vocab['user_can_book'] = "can book the restricted rooms:";
+$vocab['cycle_cplt'] = "Check to select all the days in the cycle";
 ?>

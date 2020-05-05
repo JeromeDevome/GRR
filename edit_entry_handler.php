@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Permet de vérifier la validité de l'édition ou de la création d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-23 14:20$
+ * Dernière modification : $Date: 2020-05-05 11:52$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -101,6 +101,8 @@ if (isset($minute))
 $statut_entry = isset($_GET["statut_entry"]) ? $_GET["statut_entry"] : "-";
 $rep_jour_c = isset($_GET["rep_jour_"]) ? $_GET["rep_jour_"] : 0;
 $rep_jour_c = intval(clean_input($rep_jour_c));
+$cycle_cplt = isset($_GET['cycle_cplt'])? intval($_GET['cycle_cplt']) :0;
+if ($cycle_cplt) $rep_jour_c =-1; // indique que le cycle complet est sélectionné
 $type = isset($_GET["type"]) ? $_GET["type"] : NULL;
 $rep_type = isset($_GET["rep_type"]) ? $_GET["rep_type"] : NULL;
 if (isset($rep_type))
@@ -246,7 +248,7 @@ if ($type_affichage_reser == 0)
 		$hour = 12;
 		$minute = $period;
 		$max_periods = count($periods_name);
-		if ( $dur_units == "periods" && ($minute + $duration) > $max_periods)
+		if ( $dur_units == "periods" && (((int)$minute + (int)$duration) > $max_periods))
 			$duration = (24 * 60 * floor($duration / $max_periods)) + ($duration % $max_periods);
 	}
 	$units = 1.0;
@@ -681,6 +683,7 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 	if ($message_error != "") // si erreur, retour à la page d'appel
     {
         $_SESSION['session_message_error'] = $message_error;
+        display_mail_msg();
             if (($room_back != 'all')&&(strpos($page, 'all') === false)){
                 Header("Location: ".$page.".php?year=$year&month=$month&day=$day&area=$area&room=$room_back");
             }

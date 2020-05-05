@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-01 17:50$
+ * Dernière modification : $Date: 2020-05-05 11:52$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1186,7 +1186,7 @@ if($periodiciteConfig == 'y'){
 			echo " onclick=\"check_1()\" />" . day_name($wday) . "\n";
 		}
 		echo "</td></tr>\n</table>\n";
-		echo "<table style=\"display:none\" id=\"menuP\" width=\"100%\">\n";
+		echo "<table style=\"display:none\" id=\"menuP\" width=\"100%\">\n"; // choix des jours cycle
 		echo "<tr><td class=\"F\"><b>Jours/Cycle</b></td></tr>\n";
 		echo "<tr><td class=\"CL\">";
 		for ($i = 1; $i < (Settings::get("nombre_jours_Jours/Cycles") + 1); $i++)
@@ -1200,6 +1200,11 @@ if($periodiciteConfig == 'y'){
 			}
 			echo ' onclick="check_1()" />',get_vocab("rep_type_6"),' ',$wday,PHP_EOL;
 		}
+        echo '</td>',PHP_EOL,'</tr>',PHP_EOL,'<tr>',PHP_EOL,'<td>',PHP_EOL; // case pour choisir tous les jours du cycle
+        echo '<input type="checkbox" name="cycle_cplt" value=1';
+        if (isset($cycle_cplt) && ($cycle_cplt == 1))
+            echo ' checked="checked"';
+        echo ' onclick="check_1()" />'.get_vocab('cycle_cplt').PHP_EOL;
 		echo '</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL;
 	}
 	else

@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2020-05-03 17:42$
+ * Dernière modification : $Date: 2020-05-05 11:51$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -467,7 +467,7 @@ function mrbsCreateSingleEntry($starttime, $endtime, $entry_type, $repeat_id, $r
  * $name        - Name
  * $type        - Type (Internal/External)
  * $description - Description
- * $rep_jour_c - Le jour cycle d'une réservation, si aucun 0
+ * $rep_jour_c - Le jour cycle d'une réservation, si aucun : 0
  *
  * Returns:
  *   0        - An error occured while inserting the entry
@@ -546,7 +546,7 @@ function get_day_of_month($time, $rep_month_abs1, $rep_month_abs2)
  * $rep_type - What type of repeat is it
  * $rep_opt  - The repeat entrys
  * $max_ittr - After going through this many entrys assume an error has occured
- * $rep_jour_c - Le jour cycle d'une réservation, si aucun 0
+ * $rep_jour_c - Le jour cycle d'une réservation, si aucun 0, si tous les jours du cycle : -1
  * $area     - Le domaine de réservation (pour contrôler la date de fin)
  * $rep_month_abs1, $rep_month_abs2 - X, Y dans le mode "X Y du mois"
  *
@@ -626,7 +626,8 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
 			//Si la périodicité est par Jours/Cycle
 			case 6:
 			$tableFinale = array();
-			$sql = "SELECT * FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY >= '".$time2."' AND DAY <= '".$enddate."' AND Jours = '".$rep_jour_c."'";
+			$sql = "SELECT * FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY >= '".$time2."' AND DAY <= '".$enddate."'";
+            if (isset($rep_jours_c) && ($rep_jours_c != -1)) $sql.= " AND Jours = '".$rep_jour_c."'";
 			$result = mysqli_query($GLOBALS['db_c'], $sql);
             if ($result){
                 $kk = 0;
