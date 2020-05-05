@@ -3,7 +3,7 @@
  * week.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "semaine".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-01 11:36$
+ * Dernière modification : $Date: 2020-05-05 18:35$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -672,6 +672,8 @@ $semaine_changement_heure_hiver = 'no';
 				if (!isset($d[$weekday][$slot - $decale_slot * $nb_case]["color"]))
 				{
 					$date_booking = mktime($hour, $minute, 0, $wmonth, $wday, $wyear);
+                    if ($enable_periods == 'y')
+                        $date_booking = mktime(23,59,0,$wmonth,$wday,$wyear);
 					if ($this_statut_room == "0")
 						tdcell("avertissement");
 					else
@@ -680,7 +682,7 @@ $semaine_changement_heure_hiver = 'no';
 						echo "<img src=\"img_grr/stop.png\" alt=\"".get_vocab("reservation_impossible")."\"  title=\"".get_vocab("reservation_impossible")."\" width=\"16\" height=\"16\" class=\"".$class_image."\"  />";
 					else
 					{
-						if ((($authGetUserLevel > 1) || ($auth_visiteur == 1)) && ($UserRoomMaxBooking != 0) && verif_booking_date($user_name, -1, $room, $date_booking, $date_now, $enable_periods) && verif_delais_max_resa_room($user_name, $room, $date_booking) && verif_delais_min_resa_room($user_name, $room, $date_booking) && (($this_statut_room == "1") || (($this_statut_room == "0") && ($authGetUserLevel > 2))) && $user_can_book && $_GET['pview'] != 1)
+						if ((($authGetUserLevel > 1) || ($auth_visiteur == 1)) && ($UserRoomMaxBooking != 0) && verif_booking_date($user_name, -1, $room, $date_booking, $date_now, $enable_periods) && verif_delais_max_resa_room($user_name, $room, $date_booking) && verif_delais_min_resa_room($user_name, $room, $date_booking, $enable_periods) && (($this_statut_room == "1") || (($this_statut_room == "0") && ($authGetUserLevel > 2))) && $user_can_book && $_GET['pview'] != 1)
 						{
 							if ($enable_periods == 'y')
 							{

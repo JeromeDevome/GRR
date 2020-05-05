@@ -3,7 +3,7 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-01 14:46$
+ * Dernière modification : $Date: 2020-05-05 18:33$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -512,13 +512,13 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++) // traitement d'une ressou
                         echo '</table>';
                     }
                     // la ressource est-elle accessible en réservation ? on affiche le lien vers edit_entry
-                    $date_booking = $t2 +86400 ; // le jour courant à minuit
+                    $date_booking = mktime(23,59,0,$month,$k,$year) ; // le jour courant à presque minuit
                     $hour =  date("H",$date_now); // l'heure courante, par défaut
                     if ((($authGetUserLevel > 1) || (auth_visiteur($user_name, $row['2']) == 1)) 
                         && (UserRoomMaxBooking($user_name, $row['2'], 1) != 0) 
                         && verif_booking_date($user_name, -1, $row['2'], $date_booking, $date_now, $enable_periods) 
                         && verif_delais_max_resa_room($user_name, $row['2'], $date_booking) 
-                        && verif_delais_min_resa_room($user_name, $row['2'], $date_booking) 
+                        && verif_delais_min_resa_room($user_name, $row['2'], $date_booking, $enable_periods) 
                         && plages_libre_semaine_ressource($row['2'], $month, $cday, $year) 
                         && (($row['4'] == "1") || (($row['4'] == "0") && (authGetUserLevel($user_name,$row['2']) > 2) )) 
                         && $user_can_book

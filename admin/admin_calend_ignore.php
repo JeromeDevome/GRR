@@ -3,7 +3,7 @@
  * admin_calend_ignore.php
  * Interface permettant la la réservation en bloc de journées entières
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-23  13:00$
+ * Dernière modification : $Date: 2020-05-04  11:42$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -79,6 +79,16 @@ if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 			$month = 1;
 		}
 	}
+    // on traite le cas des jours hors réservation
+    if (isset($_POST['delai_ouvert'])){
+        if ($_POST['delai_ouvert']==1)
+            Settings::set('delai_ouvert',1);
+    }
+    else 
+        Settings::set('delai_ouvert',0);
+    $test = grr_sql_query1("SELECT COUNT(*) FROM ".TABLE_PREFIX."_setting WHERE name='delai_ouvert' ");
+    if ($test == -1)
+        echo get_vocab('message_records_error');
 }
 // code HTML
 # print the page header
@@ -88,6 +98,13 @@ include "admin_col_gauche2.php";
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 echo "<h2>".get_vocab('calendrier_des_jours_hors_reservation')."</h2>\n";
 echo "\n<p>".get_vocab("les_journees_cochees_sont_ignorees")."</p>";
+echo "<form action=\"admin_calend_ignore.php\" method=\"post\" id=\"formulaire\">\n";
+echo "<p><b>Option :</b> Cochez la case ci-contre pour ajouter au délai minimum avant réservation la durée des jours hors réservation ";
+echo "<input type='checkbox' name='delai_ouvert' value='1' ";
+if (Settings::get('delai_ouvert') == 1) echo 'checked="checked"';
+echo " /><br />";
+echo "<em>Ainsi si le dimanche est hors réservation et que le délai avant réservation est de trois jours (4320 minutes), une ressource ne peut pas être réservée du vendredi au lundi.</em>";
+echo "</p>";
 echo "\n<table class='table-noborder'>\n";
 $basetime = mktime(12, 0, 0, 6, 11 + $weekstarts, 2000);
 for ($i = 0; $i < 7; $i++)
@@ -131,7 +148,7 @@ if (Settings::get("show_holidays") == 'Oui'){ // on n'affiche ce choix que si le
 echo "<tr>\n<td></td><td><span class='small'><a href='admin_calend_ignore.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span></td>\n";
 echo "</tr>\n";
 echo "</table>\n";
-echo "<form action=\"admin_calend_ignore.php\" method=\"post\" id=\"formulaire\">\n";
+//echo "<form action=\"admin_calend_ignore.php\" method=\"post\" id=\"formulaire\">\n";
 echo "<table>\n";
 $n = Settings::get("begin_bookings");
 $end_bookings = Settings::get("end_bookings");

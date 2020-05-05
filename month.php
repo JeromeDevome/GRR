@@ -3,7 +3,7 @@
  * month.php
  * Interface d'accueil avec affichage par mois
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-01 12:20$
+ * Dernière modification : $Date: 2020-05-05 18:32$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -484,12 +484,12 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                 echo '<div class="empty_cell">'.PHP_EOL;
                 $date_now = time();
                 $hour = date("H",$date_now);
-                $date_booking = mktime(24, 0, 0, $month, $cday, $year);
+                $date_booking = mktime(23,59, 0, $month, $cday, $year);
                 if ((($authGetUserLevel > 1) || ($auth_visiteur == 1))
                     && ($userRoomMaxBooking != 0)
                     && verif_booking_date($user_name, -1, $room, $date_booking, $date_now, $enable_periods)
                     && verif_delais_max_resa_room($user_name, $room, $date_booking)
-                    && verif_delais_min_resa_room($user_name, $room, $date_booking)
+                    && verif_delais_min_resa_room($user_name, $room, $date_booking, $enable_periods)
                     && (($this_statut_room == "1") || (($this_statut_room == "0") && ($authGetUserLevel > 2)))
                     && $user_can_book
                     && $_GET['pview'] != 1)

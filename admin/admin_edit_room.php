@@ -679,7 +679,7 @@ if ((!empty($room)) || (isset($area_id)))
 // L'utilisateur ne peut pas reserver au-delà d'un certain temps
 			echo "<tr><td>".get_vocab("delais_max_resa_room").": </td><td><input class=\"form-control\" type=\"text\" name=\"delais_max_resa_room\" size=\"1\" value=\"".clean_input($row["delais_max_resa_room"])."\" /></td></tr>\n";
 // L'utilisateur ne peut pas reserver en-dessous d'un certain temps
-			echo "<tr><td>".get_vocab("delais_min_resa_room").": ";
+			echo "<tr><td>".get_vocab("delais_min_resa_room");
 			echo "</td><td><input class=\"form-control\" type=\"text\" name=\"delais_min_resa_room\" size=\"5\" value=\"".clean_input($row["delais_min_resa_room"])."\" /></td></tr>\n";
 // L'utilisateur peut poser poser une option de reservation
 			echo "<tr><td>".get_vocab("msg_option_de_reservation")."</td><td><input class=\"form-control\" type=\"text\" name=\"delais_option_reservation\" size=\"5\" value=\"".clean_input($row["delais_option_reservation"])."\" /></td></tr>\n";

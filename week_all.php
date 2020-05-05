@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-01 11:30$
+ * Dernière modification : $Date: 2020-05-05 18:36$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -587,7 +587,7 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 				//else
 				//	echo '<div class="empty_cell">'.PHP_EOL;
 				$hour = date("H", $date_now);
-				$date_booking = mktime(24, 0, 0, $cmonth, $cday, $cyear);
+				$date_booking = mktime(23,59, 0, $cmonth, $cday, $cyear);
 				if ($estHorsReservation)
 					echo '<img src="img_grr/stop.png" alt="',get_vocab("reservation_impossible"),'" title="',get_vocab("reservation_impossible"),'" width="16" height="16" class="',$class_image,'" />',PHP_EOL;
 				else
@@ -596,7 +596,7 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
                     ($UserRoomMaxBooking != 0) && 
                     verif_booking_date($user_name, -1, $row['2'], $date_booking, $date_now, $enable_periods) && 
                     verif_delais_max_resa_room($user_name, $row['2'], $date_booking) && 
-                    verif_delais_min_resa_room($user_name, $row['2'], $date_booking) && 
+                    verif_delais_min_resa_room($user_name, $row['2'], $date_booking, $enable_periods) && 
                     plages_libre_semaine_ressource($row['2'], $cmonth, $cday, $cyear) && 
                     (($row['4'] == "1") || (($row['4'] == "0") && (authGetUserLevel($user_name,$row['2']) > 2) )) && 
                     $user_can_book && 

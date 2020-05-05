@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-30 16:16$
+ * Dernière modification : $Date: 2020-05-05 18:29$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -430,6 +430,8 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 				$hour = date("H", $t);
 				$minute = date("i", $t);
 				$date_booking = mktime($hour, $minute, 0, $month, $day, $year);
+                if ($enable_periods == 'y')
+                    $date_booking = mktime(23,59,0,$month,$day,$year);
 				if (est_hors_reservation(mktime(0, 0, 0, $month, $day, $year), $area))
 				{
 					echo '<img src="img_grr/stop.png" alt="'.get_vocab("reservation_impossible").'"  title="'.get_vocab("reservation_impossible").'" width="16" height="16" class="'.$class_image.'" />'.PHP_EOL;
@@ -440,7 +442,7 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
                         && (UserRoomMaxBooking($user_name, $room, 1) != 0) 
                         && verif_booking_date($user_name, -1, $room, $date_booking, $date_now, $enable_periods) 
                         && verif_delais_max_resa_room($user_name, $room, $date_booking) 
-                        && verif_delais_min_resa_room($user_name, $room, $date_booking) 
+                        && verif_delais_min_resa_room($user_name, $room, $date_booking, $enable_periods) 
                         && (($statut_room[$room] == "1") || (($statut_room[$room] == "0") && ($authLevel > 2) )) 
                         && $user_can_book
                         && $_GET['pview'] != 1)
