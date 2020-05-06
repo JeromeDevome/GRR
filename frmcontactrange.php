@@ -3,7 +3,7 @@
  * frmcontactrange.php
  * calcule le code html de la partie intervalle du formulaire de contact
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-13 11:00$
+ * Dernière modification : $Date: 2020-05-06 15:06$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -48,8 +48,8 @@ if ($enable_periods)
         }
     echo '</select>';
     // choisir le nombre de créneaux
-    echo '  <label for="duree" >Nombre de créneaux : &nbsp;</label>';
-    echo '  <input type="number" id="duree" size="2" name="duree" value="1" min="1" required />';
+    echo '  <label for="dureemin" >Nombre de créneaux : &nbsp;</label>';
+    echo '  <input type="number" id="dureemin" size="2" name="dureemin" value="1" min="1" required />';
     echo '</div>';
 }
 else 

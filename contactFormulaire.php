@@ -3,7 +3,7 @@
  * contactFormulaire.php
  * Formulaire d'envoi de mail demandant une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-27 15:25$
+ * Dernière modification : $Date: 2020-05-06 18:35$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -52,7 +52,9 @@ pageHeader2($day, $month, $year, "no_session");
 echo "</header>";
 // Debut de la page
 echo '<section>'.PHP_EOL;
-bouton_retour_haut();
+//echo '<div id="toTop">',PHP_EOL,'<b>',get_vocab("top_of_page"),'</b>',PHP_EOL;
+//echo '</div>',PHP_EOL;
+bouton_retour_haut ();
 ?>	
 	<form id="frmContact" method="post" action="traitementcontact.php">
 	<div id="formContact" class="container">
@@ -114,6 +116,32 @@ bouton_retour_haut();
                         }
                     ?>
 				</select>
+				<label for="room">Ressources : </label>
+                <select id="room" name="room" class="form-control" required>
+                        <option>SELECTIONNER UNE RESSOURCE </option>
+                </select>
+				</div>
+				<div class="col-md-6 col-sm-12">	
+                <div class="form-group">
+                    <div class="input-group">
+						<br />
+                        <label><b> Date :</b></label>
+						<?php
+						jQuery_DatePicker('start');
+						?>
+                        <br />
+                    </div>
+                </div>
+				<div id="intervalle"> </div>
+			</fieldset>
+	        </div>
+        </div>
+    </div>
+    </form>
+</section>
+<footer>
+<div id="toTop"><b><?php echo get_vocab("top_of_page"); ?></b>
+</footer>
 
 <script>
     $(document).ready(function()
@@ -161,50 +189,9 @@ bouton_retour_haut();
                 });
             }
         });
+        if ( $(window).scrollTop() == 0 )
+            $("#toTop").hide(1);
     });
 </script>
-				<label for="room">Ressources : </label>
-                <select id="room" name="room" class="form-control" required>
-                        <option>SELECTIONNER UNE RESSOURCE </option>
-                </select>
-				</div>
-				<div class="col-md-6 col-sm-12">	
-                <div class="form-group">
-                    <div class="input-group">
-						<br />
-                        <label><b> Date :</b></label>
-						<?php
-						jQuery_DatePicker('start');
-						?>
-                        <br />
-                    </div>
-                </div>
-				<div id="intervalle"> </div>
-
-            <div id="toTop">
-            <?php echo get_vocab('top_of_page'); ?>
-            </div>
-<script>
-    jQuery(document).ready(function() {
-        jQuery("#formStep").validate({
-          rules: {
-            "email": {
-                "email": true,
-                "maxlength": 255
-                }}
-            })
-    });
-    jQuery.extend(jQuery.validator.messages, {
-        required: "votre message",
-        remote: "votre message",
-        email: "votre message",
-    });
-</script>
-			</fieldset>
-	        </div>
-        </div>
-    </div>
-    </form>
-</section>
 </body>
 </html>

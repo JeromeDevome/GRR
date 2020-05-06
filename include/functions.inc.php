@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-05-02 17:30$
+ * Dernière modification : $Date: 2020-05-05 18:37$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -3710,9 +3710,10 @@ function no_book_rooms($user){
 // $user : le login de l'utilisateur
 // $id_room : l'id de la ressource. Si -1, il s'agit d'une nouvelle ressoure
 // $date_booking : la date de la réservation (n'est utile que si $id=-1)
-// $date_now : la date actuelle
+// $enable_periods : base temps (par défaut) ou créneaux
+// renvoie vrai ou faux selon que le délai est respecté
 //
-function verif_delais_min_resa_room($user, $id_room, $date_booking)
+function verif_delais_min_resa_room($user, $id_room, $date_booking, $enable_periods = 'n')
 {
 	if (authGetUserLevel($user,$id_room) >= 3)
 		return true;
@@ -3721,18 +3722,42 @@ function verif_delais_min_resa_room($user, $id_room, $date_booking)
 		return true;
 	else
 	{
+        $area = mrbsGetRoomArea($id_room);
 		$hour = date("H");
 		$minute  = date("i") + $delais_min_resa_room;
 		$day   = date("d");
 		$month = date("m");
 		$year  = date("Y");
-		$date_limite = mktime($hour, $minute, 0, $month, $day, $year);
+        $date_limite = mktime($hour, $minute, 0, $month, $day, $year);
+        $limite = getdate($date_limite);
+        if ($enable_periods == 'y'){
+            $date_limite = mktime(0,0,0,$limite['mon'],$limite['mday'],$limite['year']);
+            $limite['hours'] = 0;
+            $limite['minutes'] = 0;
+        }
+        //echo "day_limite".$limite['mday']."<br/>";
+        //echo "date_booking".strftime("%c",$date_booking)."<br/>";
+        $day_limite = $limite['mday'];
+        if (($limite['mday'] != $day)&&(Settings::get('delai_ouvert') == 1)){// jour différent et test pour jours ouvrés ?
+            $cur_day = mktime(0,0,0,$month,$day,$year);
+            while ($cur_day < $date_booking){
+                //echo "jour".strftime("%c",$cur_day)."<br/>";
+                //echo "limit".strftime('%c',$date_limite)."<br/>";
+                if (est_hors_reservation($cur_day,$area)){// teste si le jour est hors réservation et dans ce cas allonge le délai
+                    $day_limite++;
+                    $date_limite = mktime($limite['hours'],$limite['minutes'],0,$limite['mon'],$day_limite,$limite['year']);
+                    //echo "testé<br/>";
+                }
+                $day ++;
+                $cur_day = mktime(0,0,0,$month,$day,$year);
+            }
+        }
 		if ($date_limite > $date_booking)
 			return false;
 		return true;
 	}
 }
-// Vérifie que la date de confirmation est inférieur à la date de début de réservation
+// Vérifie que la date de confirmation est inférieure à la date de début de réservation
 function verif_date_option_reservation($option_reservation, $starttime)
 {
 	if ($option_reservation == -1)
@@ -5761,12 +5786,29 @@ function start_page_wo_header($titre, $type_session = 'with_session')
     echo '<section>'.PHP_EOL;
     // doit être fermé par la fonction end_page
 } 
-/* Fonction qui ferme les balises restées ouvertes dans les précédentes */
+/* Fonction qui ferme les balises restées ouvertes dans les précédentes 
+*/
 function end_page()
 {
     echo '</section></body></html>';
 }
-
+/* Fonction qui affiche, si un mail n'a pas pu être envoyé, un pop-up avec le message d'erreur
+*/
+function display_mail_msg()
+{
+    if (!(Settings::get("javascript_info_disabled")))
+    {
+        if ((isset($_SESSION['session_message_error'])) && ($_SESSION['session_message_error'] != ''))
+        {
+            echo "<script type=\"text/javascript\">";
+            echo "<!--\n";
+            echo " alert(\"".get_vocab("title_automatic_mail")."\\n".$_SESSION['session_message_error']."\\n".get_vocab("technical_contact")."\")";
+            echo "//-->";
+            echo "</script>";
+            $_SESSION['session_message_error'] = "";
+        }
+    }
+}
 // Génération d'un Token aléatoire
 function generationToken()
 {
