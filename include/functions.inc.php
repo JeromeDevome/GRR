@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-04-27 15:38$
+ * Dernière modification : $Date: 2020-05-07 10:08$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4557,7 +4557,7 @@ function affichage_resa_planning_complet($vue, $resa, $heures)
 		$affichage .= "<br>".$resa[15];
 
 	// Bénéficiaire
-	if (Settings::get("display_beneficicaire") == 1)
+	if (Settings::get("display_beneficiaire") == 1)
 		$affichage .= "<br>".affiche_nom_prenom_email($resa[4], $resa[12], "nomail");
 
 	// Type

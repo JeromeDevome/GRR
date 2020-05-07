@@ -3,9 +3,9 @@
  * admin_config.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2018-03-30 16:00$
+ * Dernière modification : $Date: 2020-05-07 10:10$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -137,10 +137,10 @@ if (isset($_POST['display_type'])) {
         die();
     }
 }
-// display_beneficicaire
-if (isset($_POST['display_beneficicaire'])) {
-    if (!Settings::set('display_beneficicaire', $_POST['display_beneficicaire'])) {
-        echo "Erreur lors de l'enregistrement de display_beneficicaire !<br />";
+// display_beneficiaire
+if (isset($_POST['display_beneficiaire'])) {
+    if (!Settings::set('display_beneficiaire', $_POST['display_beneficiaire'])) {
+        echo "Erreur lors de l'enregistrement de display_beneficiaire !<br />";
         die();
     }
 }
