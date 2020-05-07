@@ -3,7 +3,7 @@
  * admin_config1.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2020-03-27 18:50$
+ * Dernière modification : $Date: 2020-05-07 10:13$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -184,10 +184,10 @@ if (isset($_POST['display_type'])) {
         die();
     }
 }
-// display_beneficicaire
-if (isset($_POST['display_beneficicaire'])) {
-    if (!Settings::set('display_beneficicaire', $_POST['display_beneficicaire'])) {
-        echo "Erreur lors de l'enregistrement de display_beneficicaire !<br />";
+// display_beneficiaire
+if (isset($_POST['display_beneficiaire'])) {
+    if (!Settings::set('display_beneficiaire', $_POST['display_beneficiaire'])) {
+        echo "Erreur lors de l'enregistrement de display_beneficiaire !<br />";
         die();
     }
 }
@@ -277,8 +277,15 @@ if (isset($_POST['allow_pdf'])) {
 }
 
 if (isset($_POST['mail_etat_destinataire'])) {
-    if (!Settings::set('mail_etat_destinataire', $_POST['mail_etat_destinataire'])) {
+    if (!Settings::set('mail_etat_destinataire', clean_input($_POST['mail_etat_destinataire']))) {
         echo "Erreur lors de l'enregistrement de mail_etat_destinataire !<br />";
+        die();
+    }
+}
+
+if (isset($_POST['nb_max_resa_form'])){
+    if (!Settings::set('nb_max_resa_form', clean_input($_POST['nb_max_resa_form']))) {
+        echo "Erreur lors de l'enregistrement de nb_max_resa_form !<br />";
         die();
     }
 }
@@ -1008,8 +1015,9 @@ echo ' />'.PHP_EOL;
 echo '</td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
 echo '</table>'.PHP_EOL;
-#mail_destinataire = 0 //Le formulaire de contact est désactivé (0 par défaut)
-#mail_destinataire = 1 //Le formulaire de contact est activé
+#mail_etat_destinataire = 0 //Le formulaire de contact est désactivé (0 par défaut)
+#mail_etat_destinataire = 1 //Le formulaire de contact est activé
+#mail_etat_destinataire = 2 //Le formulaire de contact est activé uniquement pour les visiteurs connectés
 echo '<hr />'.PHP_EOL;
 echo '<h3>'.get_vocab('display_mail_etat_destinataire').'</h3>'.PHP_EOL;
 echo '<p>'.get_vocab('display_mail_etat_destinataire_1').'</p>'.PHP_EOL;
@@ -1051,6 +1059,11 @@ echo '<td>'.PHP_EOL;
 echo '<input class="form-control" type="text" id="mail_destinataire" name="mail_destinataire" value="'.Settings::get('mail_destinataire').'" size="30">'.PHP_EOL;
 echo '</td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
+echo '<tr><td>'.PHP_EOL;
+echo get_vocab('nb_max_resa_form');
+echo '</td><td>'.PHP_EOL;
+echo '<input type="number" name="nb_max_resa_form" value="'.Settings::get('nb_max_resa_form').'" size="5" min="-1" />'.PHP_EOL;
+echo '</td></tr>'.PHP_EOL;
 echo '</table>'.PHP_EOL;
 // modification du formulaire de choix, reste à internationaliser
 echo '<section id="display_planning_resa">';
@@ -1064,11 +1077,11 @@ echo '		</tr></thead>';
 echo '		<tbody>';
 echo '			<tr>';
 echo '				<td>'.get_vocab('sum_by_creator').'</td>';
-echo '				<td><input type="radio" name="display_beneficicaire" value="0"';
-if (Settings::get('display_beneficicaire') == '0') echo 'checked="checked"';
+echo '				<td><input type="radio" name="display_beneficiaire" value="0"';
+if (Settings::get('display_beneficiaire') == '0') echo 'checked="checked"';
 echo '				 /></td>';
-echo '				<td><input type="radio" name="display_beneficicaire" value="1"';
-if (Settings::get('display_beneficicaire') == '1') echo 'checked="checked"';
+echo '				<td><input type="radio" name="display_beneficiaire" value="1"';
+if (Settings::get('display_beneficiaire') == '1') echo 'checked="checked"';
 echo '				 /></td>';
 echo '			</tr>';
 echo '			<tr>';

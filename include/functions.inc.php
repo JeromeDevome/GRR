@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-05-05 18:37$
+ * Dernière modification : $Date: 2020-05-07 11:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4570,7 +4570,7 @@ function affichage_resa_planning_complet($vue, $resa, $heures)
 		$affichage .= "<br>".$resa[15];
 
 	// Bénéficiaire
-	if (Settings::get("display_beneficicaire") == 1)
+	if (Settings::get("display_beneficiaire") == 1)
 		$affichage .= "<br>".affiche_nom_prenom_email($resa[4], $resa[12], "nomail");
 
 	// Type
@@ -5603,9 +5603,8 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			//Mail réservation
 			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
 			$res = grr_sql_query1($sql);
-			grr_sql_free($res);
 
-			if ( ( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )
+			if ((( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )&& acces_formulaire_reservation())
 			{
 				echo '<div class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</div>',PHP_EOL;
 			}
@@ -5824,6 +5823,24 @@ function clean_input($data){
     $data = htmlspecialchars($data);
     return $data;
 }
+
+/* fonction acces_formulaire_reservation
+* détermine si le quota de réservations par formulaire non modérées est atteint
+* rend TRUE ou FALSE (y compris si l'accès à la base est impossible)
+*/
+function acces_formulaire_reservation(){
+    if (!Settings::get('nb_max_resa_form'))
+        return FALSE;
+    else {
+        $quota = grr_sql_query1("SELECT COUNT(*) FROM ".TABLE_PREFIX."_entry WHERE (entry_type = -1 AND moderate = 1)");
+        // echo $quota;
+        if ($quota == -1)
+            return FALSE;
+        else 
+            return ((Settings::get('nb_max_resa_form') - $quota) > 0);
+    }
+}
+
 // Les lignes suivantes permettent la compatibilité de GRR avec la variable register_global à off
 unset($day);
 if (isset($_GET["day"]))

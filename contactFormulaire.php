@@ -3,7 +3,7 @@
  * contactFormulaire.php
  * Formulaire d'envoi de mail demandant une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-06 18:35$
+ * Dernière modification : $Date: 2020-05-07 11:25$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -33,7 +33,12 @@ include "./include/language.inc.php";
 
 // pour le traitement des modules
 include "./include/hook.class.php";
-
+// contrôle d'accès pour limiter les demandes
+if (!acces_formulaire_reservation()){
+    begin_page('','','','no_session');
+    showAccessDenied(page_accueil());
+    die();
+}
 // code HTML
 header('Content-Type: text/html; charset=utf-8');
 if (!isset($_COOKIE['open']))

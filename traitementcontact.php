@@ -3,7 +3,7 @@
  * traitementcontact.php
  * envoie l'email suite au formulaire
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-06 18:41$
+ * Dernière modification : $Date: 2020-05-07 11:24$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -31,6 +31,12 @@ require_once("./include/settings.class.php");
 if (!Settings::load())
 	die("Erreur chargement settings");
 // $link = page_accueil();
+// contrôle d'accès 
+if (!acces_formulaire_reservation()){
+    start_page_w_header('','','','no_session');
+    showAccessDenied(page_accueil());
+    die();
+}
 // vérification des paramètres
 $msg_erreur = "Erreur. Les champs suivants doivent être obligatoirement remplis : \\n  \\n  ";
 $msg_ok = "Votre demande a bien été prise en compte.";
@@ -74,11 +80,11 @@ else {// les paramètres sont vérifiés, le créneau demandé est-il libre ?
     }
     else 
         fatal_error(0,"ne devrait pas être atteint");
-    echo $input['room'],'/',strftime("%c",$starttime),'/',strftime("%c",$endtime);
+    //echo $input['room'],'/',strftime("%c",$starttime),'/',strftime("%c",$endtime);
     $plage_libre = mrbsCheckFree($input['room'],$starttime,$endtime,0,0);
-    echo '<br>'.$plage_libre ;
+    //echo '<br>'.$plage_libre ;
     if ($plage_libre == ""){// la plage est libre, on pose une réservation modérée et on envoie un courrier
-        $entry_id = mrbsCreateSingleEntry($starttime, $endtime, 0, 0, $input['room'], '', '', $input['nom'].' '.$input['prenom'], $input['nom'].' '.$input['prenom'], 'A', $input['sujet'], -1,array(), 1, 0, '-', 0, 0);
+        $entry_id = mrbsCreateSingleEntry($starttime, $endtime, -1, 0, $input['room'], '', '', $input['nom'].' '.$input['prenom'].'|'.$input['email'], $input['nom'].' '.$input['prenom'], 'A', $input['sujet'], -1,array(), 1, 0, '-', 0, 0);
         if ($entry_id != 0){ // l'insertion a réussi
             $message = "réservation posée sous réserve";
             // on envoie un message pour averir de la demande
@@ -108,7 +114,7 @@ else {// les paramètres sont vérifiés, le créneau demandé est-il libre ?
                     while (($a = grr_sql_row($pnres, $i++))) 
                     { $periods_name[$i] = $a[0];}
                 }
-                print_r($periods_name);
+                //print_r($periods_name);
                 $start_period = isset($periods_name[$input['start']])? $periods_name[$input['start']] :"";
                 $mail_corps .= "Premier créneau : ". $start_period." \n";
                 $mail_corps .= "Durée de la réservation : ".$input['dureemin']." créneau(x) \n";
@@ -131,7 +137,7 @@ else {// les paramètres sont vérifiés, le créneau demandé est-il libre ?
     else
         $message = "au moins une partie de la plage demandée est occupée";
 }
-
+// une page toute simple pour revenir au planning si on a suivi le chemin normal
 echo '<!DOCTYPE html>
 <html><body>
 <script>
@@ -140,81 +146,4 @@ echo '<!DOCTYPE html>
 </script>
 </body></html>';
 die();
-
-// recherche si la plage demandée est libre
-$room_id = protect_data_sql($_POST['room']);
-$starttime = mktime($_POST['heure'],$_POST['minutes'],0,$_POST['start_month'],$_POST['start_day'],$_POST['start_year']);
-$endtime = $starttime + $_POST['duree']*3600 + $_POST['dureemin']*60;
-$plage_libre = mrbsCheckFree($room_id,$starttime,$endtime,0,0);
-if ($plage_libre != "") // la plage n'est pas libre
-{
-	// echo "la plage est au moins partiellement occupée";
-    start_page_w_header('','','','no_session');
-	echo "<script type=\"text/javascript\">";
-	echo "<!--\n";
-	echo " alert(\"la plage est au moins partiellement occupée\");";
-    echo "window.location.assign('$link');";
-	echo "//-->";
-	echo "</script>";
-    end_page();
-	die();
-}
-else 
-{	// la plage est libre, on préréserve le créneau sous forme d'une réservation à modérer, à compléter
-	$id_resa = grr_sql_insert_id(); // récupère l'id de la résa juste créée -> mail au modérateur
-	echo "plage libre";
-	die();
-}
-// traitement des erreurs
-$message = "ok?";
-//if ($message != "")
-//{
-	$message = $msg_erreur.$message; 
-	echo "<br />".$message;
-	affiche_pop_up($message);
-	//die();
-//}
-
-foreach ($_POST as $index => $valeur)
-	$index = stripslashes(trim($valeur));
-// $mail_entete n'est plus utilisé, phpmailer s'en charge
-/* $mail_entete  = "MIME-Version: 1.0\r\n";
-$mail_entete .= "From: {$_POST['nom']} "
-."<{$_POST['email']}>\r\n";
-$mail_entete .= 'Reply-To: '.$_POST['email']."\r\n";
-$mail_entete .= 'Content-Type: text/plain; charset="iso-8859-1"';
-$mail_entete .= "\r\nContent-Transfer-Encoding: 8bit\r\n";
-$mail_entete .= 'X-Mailer:PHP/' . phpversion()."\r\n"; */
-
-$DE = $_POST['email']; // a été filtrée
-
-$mail_corps  = "<html><head></head><body> Message de :" .$_POST['prenom']." " .$_POST['nom'] . "<br/>";
-$mail_corps  .= "Email : ".$_POST['email']. "<br/>";
-$mail_corps  .= "Téléphone : ".$_POST['telephone']. "<br/><br/>";
-$mail_corps  .= "<b> Sujet de la réservation :".$_POST['sujet']. "</b><br/><br/>";
-
-$id = $_POST['area'] ;
-$sql_areaName = "SELECT area_name FROM ".TABLE_PREFIX."_area where id = \"$id\" ";
-$res_areaName = grr_sql_query1($sql_areaName);
-$mail_corps  .= "Domaine : ".$res_areaName. "<br/> ";
-$mail_corps  .= "Salle : ".$_POST['room']. "<br/><br/>";
-$mail_corps  .= "Date  :".$_POST['start_day']."/".$_POST['start_month']."/".$_POST['start_year']. " <br/>";
-$mail_corps  .= "Heure réservation  : ".$_POST['heure']. "h  ".$_POST['minutes']. "min<br/>";
-$mail_corps  .= "Durée de la réservation : ".$_POST['duree'];
-$mail_corps  .= " h ".$_POST['dureemin']. " min \n";
-// ici insérer un lien de validation, cf functions.inc.php, ligne 2964
-if (isset($id_resa)){
-	$mail_corps .="";
-}
-$mail_corps .= "</body></html>";
-$sujet ="Réservation d'une salle";
-$destinataire = Settings::get("mail_destinataire");
-
-require_once 'phpmailer/PHPMailerAutoload.php';
-require_once 'include/mail.class.php';
-
-Email::Envois($destinataire, $sujet, $mail_corps, $DE, '', '');
-
-// retour vers la page d'accueil
-header('Location: '.$link);
 ?>
