@@ -105,7 +105,7 @@ if ($row["delais_max_resa_room"] != "-1")
 if ($row["delais_min_resa_room"] != "0")
 	echo "<p>".get_vocab("delais_min_resa_room_2")." <b>".$row["delais_min_resa_room"]."</b></p>";
 $nom_picture = '';
-if ($row['picture_room'] != '') $nom_picture = "./images/".$row['picture_room'];
+if ($row['picture_room'] != '') $nom_picture = "./personnalisation/".$gcDossierImg."/ressources/".$row['id']."/".$row['picture_room'];
 echo "<div style=\"text-align:center; margin-top:30px\"><b>";
 if (@file_exists($nom_picture) && $nom_picture)
 	echo get_vocab("Image de la ressource").": </b><br /><img src=\"".$nom_picture."\" alt=\"logo\" />";
