@@ -104,9 +104,9 @@ if (isset($_GET['activation'])) {
 				grr_sql_command("UPDATE ".TABLE_PREFIX."_modulesext SET actif = '0' WHERE `nom` = '".$iter."'");
 			}
 		} else{
-			if(is_file('../modules/'.$iter.'/installation.php') && is_file('../modules/'.$iter.'/infos.php')){
-				include '../modules/'.$iter.'/installation.php';
-				include '../modules/'.$iter.'/infos.php';
+			if(is_file('../personnalisation/modules/'.$iter.'/installation.php') && is_file('../personnalisation/modules/'.$iter.'/infos.php')){
+				include '../personnalisation/modules/'.$iter.'/installation.php';
+				include '../personnalisation/modules/'.$iter.'/infos.php';
 				Module::Installation($iter, $module_versionBDD);
 				
 			} else{
@@ -154,7 +154,7 @@ if (isset($_POST['ok']) && $upload_Module == 1) {
                     } else {
 						$zip = new ZipArchive;
 						if ($zip->open($picturePath) === TRUE) {
-							$zip->extractTo('../modules/');
+							$zip->extractTo('../personnalisation/modules/');
 							$zip->close();
 						} else {
 							$msg .= "Erreur 8 - Le module n\'a pas pu être installé\\n";
@@ -222,7 +222,7 @@ else
 // Listes des modules Ext
 $ligne = "";
 
-$path = "../modules/"; // chemin vers le dossier
+$path = "../personnalisation/modules/"; // chemin vers le dossier
 $iter = new DirectoryIterator($path);
 $lienActivation = "";
 $files = [];
@@ -232,9 +232,9 @@ foreach ($iter as $fileinfo) {
 
 	} else {
 		if($iter != "." && $iter != ".." && $iter != ""){
-			if(is_file('../modules/'.$iter.'/infos.php')){
+			if(is_file('../personnalisation/modules/'.$iter.'/infos.php')){
 				$module_nom = "";
-				include '../modules/'.$iter.'/infos.php';
+				include '../personnalisation/modules/'.$iter.'/infos.php';
 				if($module_nom != "") {
 
 					$sql = "SELECT `nom`, `actif` FROM ".TABLE_PREFIX."_modulesext WHERE `nom` = '".$iter."';";

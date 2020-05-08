@@ -116,10 +116,10 @@ if (version_compare(grr_sql_version(), $mysql_mini, '<')) {
 
 
 // Dossier
-$trad['dDossierImgEcriture'] = testDroits("../images/");
+$trad['dDossierImgEcriture'] = testDroits("../personnalisation/".$gcDossierImg."/");
 $trad['dDossierExportEcriture'] = testDroits("../export/");
-$trad['dDossierTempEcriture'] = testDroits("../export/");
-$trad['dDossierModulesEcriture'] = testDroits("../modules/");
+$trad['dDossierTempEcriture'] = testDroits("../temp/");
+$trad['dDossierModulesEcriture'] = testDroits("../personnalisation/modules/");
 
 if(file_exists('../installation/'))
 	$trad['dDossierInstallation'] = 1;
