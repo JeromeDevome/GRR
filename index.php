@@ -53,25 +53,25 @@ if ($dbsys == "mysql")
 				}
 				if ($flag == 'yes')
 				{
-					$msg = "<p>La connection au serveur $dbsys est établie mais certaines tables sont absentes de la base $dbDb.</p>";
+					$msg = "<p>La connexion au serveur $dbsys est établie mais certaines tables sont absentes de la base $dbDb.</p>";
 					$correct_install = 'no';
 				}
 			}
 			else
 			{
-				$msg = "La connection au serveur $dbsys est établie mais impossible de sélectionner la base contenant les tables GRR.";
+				$msg = "La connexion au serveur $dbsys est établie mais impossible de sélectionner la base contenant les tables GRR.";
 				$correct_install = 'no';
 			}
 		}
 		else
 		{
-			$msg = "Erreur de connection au serveur $dbsys. Le fichier \"connect.inc.php\" ne contient peut-être pas les bonnes informations de connection.";
+			$msg = "Erreur de connexion au serveur $dbsys. Le fichier \"connect.inc.php\" ne contient peut-être pas les bonnes informations de connexion.";
 			$correct_install = 'no';
 		}
 	}
 	else
 	{
-		$msg = "Le fichier \"connect.inc.php\" contenant les informations de connection est introuvable.";
+		$msg = "Le fichier \"connect.inc.php\" contenant les informations de connexion est introuvable.";
 		$correct_install = 'no';
 	}
 	if ($correct_install == 'no')
