@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-05-07 11:00$
+ * Dernière modification : $Date: 2020-05-10 11:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -3694,12 +3694,13 @@ function no_book_rooms($user){
     if (!$rooms)
         fatal_error(0,grr_sql_error());
     while($room = mysqli_fetch_array($rooms)){
-        if (authGetUserLevel($user,$room['id']) < $room['who_can_see'])
+        $auth_level = authGetUserLevel($user,$room['id']);
+        if ($auth_level < $room['who_can_see'])
             $rooms_no_book[] = $room['id'];
-        if (!$room['who_can_book']){
+        elseif (!$room['who_can_book']){ // ressource restreinte
             $sql = "SELECT login FROM ".TABLE_PREFIX."_j_userbook_room j WHERE j.login = '".$user."' AND j.id_room = '".$room['id']."'";
             $login = grr_sql_query1($sql);
-            if ($login != $user){
+            if (($login != $user) && ($auth_level < 3)){ // un gestionnaire de ressource peut toujours accéder !
                 $rooms_no_book[] = $room['id'];
             }
         }

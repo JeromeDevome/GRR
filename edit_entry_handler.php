@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Permet de vérifier la validité de l'édition ou de la création d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-05 18:31$
+ * Dernière modification : $Date: 2020-05-10 10:35$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -85,7 +85,6 @@ if (isset($_GET["start_"])){
         $minute = $debmin[0];
         if ($debmin[1] == "pm"){$hour += 12;}
     }
-    echo $hour.":".$minute;
 }
 if (isset($hour))
 {
@@ -519,6 +518,18 @@ if (($error_booking_in_past == 'no') && ($error_chevaussement == 'no') && ($erro
 			if (count($reps) < $max_rep_entrys)
 			{
 				$diff = $endtime - $starttime;
+                if (isset($_GET['skip_entry_in_conflict']) && ($_GET['skip_entry_in_conflict'] == 'yes')){
+                    // ôte de la liste les nouvelles réservations en conflit
+                    $ignore = array();
+                    for ($i = 0; $i < count($reps); $i++){
+                        $tmp = mrbsCheckFree($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id);
+                        if (!empty($tmp)){
+                            $ignore[] = $reps[$i];
+                            unset($reps[$i]);
+                        }
+                    }
+                    $reps = array_values($reps);
+                }
 				for ($i = 0; $i < count($reps); $i++)
 				{
 					if (isset($_GET['del_entry_in_conflict']) && ($_GET['del_entry_in_conflict'] == 'yes'))
@@ -625,7 +636,7 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 		}
 		if ($rep_type != 0)
 		{
-			mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $rep_month_abs1, $rep_month_abs2);
+			mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $rep_month_abs1, $rep_month_abs2, $ignore);
 			if (Settings::get("automatic_mail") == 'yes')
 			{
 				if (isset($id) && ($id != 0))
@@ -809,10 +820,14 @@ if (strlen($err))
 	echo $err;
 	if (!isset($hide_title))
 		echo "</UL>";
-	if (authGetUserLevel($user,$area,'area') >= 4)
+	if (authGetUserLevel($user,$area,'area') >= 4){
 		// echo "<center><table border=\"1\" cellpadding=\"10\" cellspacing=\"1\"><tr><td class='avertissement'><h3><a href='".traite_grr_url("","y")."edit_entry_handler.php?".$_SERVER['QUERY_STRING']."&amp;del_entry_in_conflict=yes'>".get_vocab("del_entry_in_conflict")."</a></h4></td></tr></table></center><br />"; modifié le 15/03/2018 YN
         // echo "<center><table border=\"1\" cellpadding=\"10\" cellspacing=\"1\"><tr><td class='avertissement'><h3><a href='edit_entry_handler.php?".$_SERVER['QUERY_STRING']."&amp;del_entry_in_conflict=yes'>".get_vocab("del_entry_in_conflict")."</a></h3></td></tr></table></center><br />";
-        echo '<center><a class="btn btn-danger" type="button" href="edit_entry_handler.php?'.$_SERVER['QUERY_STRING'].'&amp;del_entry_in_conflict=yes">'.get_vocab("del_entry_in_conflict").'</a></center><br />';
+        echo '<center>';
+        echo '<a class="btn btn-danger" type="button" href="edit_entry_handler.php?'.$_SERVER['QUERY_STRING'].'&amp;del_entry_in_conflict=yes">'.get_vocab("del_entry_in_conflict").'</a>';
+        echo '<a class="btn btn-success" type=""button" href="edit_entry_handler.php?'.$_SERVER['QUERY_STRING'].'&amp;skip_entry_in_conflict=yes">'.get_vocab('skip_entry_in_conflict').'</a>';
+        echo '</center><br />';
+    }
 }
 echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a><p>"; // à modifier aussi ? YN
 // echo "<a href=\"".$back."\">".get_vocab('returnprev')."</a>";

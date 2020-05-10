@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2020-05-07
+# Last modification : 2020-05-10
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1069,4 +1069,5 @@ $vocab["no_room_selected"] = "No room has been selected";
 $vocab['user_can_book'] = "can book the restricted rooms:";
 $vocab['cycle_cplt'] = "Check to select all the days in the cycle";
 $vocab['nb_max_resa_form'] = "Max. number of pending reservations via contact form (-1 if no restriction) :";
+$vocab['skip_entry_in_conflict'] = "Make new reservations except those in conflict";
 ?>
