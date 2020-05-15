@@ -84,7 +84,8 @@ else {// les paramètres sont vérifiés, le créneau demandé est-il libre ?
     $plage_libre = mrbsCheckFree($input['room'],$starttime,$endtime,0,0);
     //echo '<br>'.$plage_libre ;
     if ($plage_libre == ""){// la plage est libre, on pose une réservation modérée et on envoie un courrier
-        $entry_id = mrbsCreateSingleEntry($starttime, $endtime, -1, 0, $input['room'], '', '', $input['nom'].' '.$input['prenom'].'|'.$input['email'], $input['nom'].' '.$input['prenom'], 'A', $input['sujet'], -1,array(), 1, 0, '-', 0, 0);
+        $benef_ext = concat_nom_email($input['nom'].' '.$input['prenom'],$input['email']);
+        $entry_id = mrbsCreateSingleEntry($starttime, $endtime, -1, 0, $input['room'], '', '', $benef_ext, $input['nom'].' '.$input['prenom'], 'A', $input['sujet'], -1,array(), 1, 0, '-', 0, 0);
         if ($entry_id != 0){ // l'insertion a réussi
             $message = "réservation posée sous réserve";
             // on envoie un message pour averir de la demande

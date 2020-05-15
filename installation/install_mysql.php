@@ -135,7 +135,7 @@ if (@file_exists($nom_fic))
                         {
                             echo "<br /><h2>Dernière étape : C'est terminé !</h2>";
                             echo "<p>Vous pouvez maintenant commencer à utiliser le système de réservation de ressources ...</p>";
-                            echo "<p>Pour vous connecter la première fois en tant qu'administrateur, utilisez le nom de connection <b>\"ADMINISTRATEUR\"</b> et le mot de passe renseigné à l'étape précédente</p>";
+                            echo "<p>Pour vous connecter la première fois en tant qu'administrateur, utilisez le nom de connexion <b>\"ADMINISTRATEUR\"</b> et le mot de passe renseigné à l'étape précédente</p>";
                                         echo "<br /><center><a href = '../login.php'>Se connecter à GRR</a></center>";
                         }
                         else

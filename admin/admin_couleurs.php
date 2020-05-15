@@ -3,7 +3,7 @@
  * admin_couleurs.php
  * Interface permettant à l'administrateur la personnalisation de certaines couleurs
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2020-04-17 17:20$
+ * Dernière modification : $Date: 2020-04-29 12:00$
  * @author    Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -414,7 +414,6 @@ echo "<footer id='masque' style='visibility:hidden'>";
 echo "Ceci sera caché";
 echo "<div id='HEADER' style='background-color:$header_bgcolor ; color:$header_text'></div>";
 echo "</footer>";
-echo "</body>";
 ?>
 <script>
 // reprendre les couleurs par groupe pour itérer
@@ -774,4 +773,5 @@ update17();
 update18();
 update19();
 </script>
+</body>
 </html>

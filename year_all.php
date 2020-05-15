@@ -3,7 +3,7 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservations de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-27 15:00 $
+ * Dernière modification : $Date: 2020-04-29 12:13 $
  * @author    Yan Naessens, Laurent Delineau 
  * @copyright Copyright 2003-2020 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -620,7 +620,6 @@ if ($_GET['pview'] != 1)
 	echo '</div>'.PHP_EOL;
 }
 echo "</section>";
-echo "</body></html>";
 ?>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -632,3 +631,5 @@ echo "</body></html>";
 		$("#popup_name").resizable();
 	});
 </script>
+</body>
+</html>

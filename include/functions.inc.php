@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-05-10 11:00$
+ * Dernière modification : $Date: 2020-05-15 18:40$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5001,15 +5001,15 @@ function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaults
 		}
 		else
 		{
-			$hour = date("h");
-			$minute = date("m");
+			$hour = date("H");
+			$minute = date("i");
 		}
 	}
 	else
 	{
-		$hour = (isset ($_GET['hour']))? clean_input($_GET['hour']) : date("h");
-		$minute = (isset ($_GET['minute']))? clean_input($_GET['minute']) : date("m");
-			
+		$hour = (isset ($_GET['hour']))? clean_input($_GET['hour']) : date("H");
+		$minute = (isset ($_GET['minute']))? clean_input($_GET['minute']) : date("i");
+
 		if ($typeTime == 'end_')
         {
             $dureepardefautmin = $dureepardefaultsec/60;
@@ -5024,7 +5024,6 @@ function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaults
                     $hour++;
                     $minute = $minute%60;
                 }
-                $minute = str_pad($minute, 2, 0, STR_PAD_LEFT);
             }
             if ($dureepardefautmin > 60)
             {
@@ -5032,14 +5031,14 @@ function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaults
                 $hour = ($hour + $dureepardefautheure)%24;
                 $hour = str_pad($hour, 2, 0, STR_PAD_LEFT);
                 $minute = $dureepardefautmin % 60;
-                $minute = str_pad($minute, 2, 0, STR_PAD_LEFT);
             }
         }
+        $minute = str_pad($minute, 2, 0, STR_PAD_LEFT);
 	}
     $timeFormat = ($twentyfourhour_format)? "H:i" : "h:i a";
 	echo '<label for="'.$typeTime.'">'.get_vocab('time').get_vocab('deux_points').'</label>
     <div class="input-group timepicker">
-	<input id="'.$typeTime.'" name="' .$typeTime. '" type="text" class="form-control time" value="' .$hour. ':' .$minute. '" >
+	<input id="'.$typeTime.'" name="'.$typeTime.'" type="text" class="form-control time" value="'.$hour.':'.$minute. '" >
     <span class="input-group-addon">
         <span class="glyphicon glyphicon-time" ></span>
     </span>

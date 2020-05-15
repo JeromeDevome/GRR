@@ -2,7 +2,7 @@
 /**
  * moderate_entry_do.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-25 10:00$
+ * Dernière modification : $Date: 2020-05-04 10:11$
  * @author    Laurent Delineau & JeromeB
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -124,6 +124,7 @@ else
 }
 // Avant d'effacer la réservation, on procède à la notification par mail
 send_mail(clean_input($id_room),6,$dformat,$tab_id_moderes);
+display_mail_msg();
 //moderation de la ressource
 if ($_POST['moderate'] != 1)
 {

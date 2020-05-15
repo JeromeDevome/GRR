@@ -570,10 +570,10 @@ if ((!empty($room)) || (isset($area_id)))
         echo " selected=\"selected\" ";
     echo ">".get_vocab("visu_fiche_description6")."</option>\n</select></td></tr>\n";
     // Accès restreint
-    echo "<td>".get_vocab("access").get_vocab("deux_points")."<br /><em>".get_vocab("who_can_book_explain")."</em></td>\n";
+    echo "<tr><td>".get_vocab("access").get_vocab("deux_points")."<br /><em>".get_vocab("who_can_book_explain")."</em></td>\n";
     echo "<td><input type=\"checkbox\" name=\"who_can_book\"";
     if ($row["who_can_book"] == 0)
-        echo "checked=\"checked\"";
+        echo " checked=\"checked\"";
     echo " /></td>\n";
     echo "</tr>";
     // Declarer ressource indisponible
@@ -627,11 +627,11 @@ if ((!empty($room)) || (isset($area_id)))
                 });
             </script>
             <?php
-        }
-        else
-            echo "<textarea class=\"form-control\" name=\"comment_room\" rows=\"8\" cols=\"120\" >".clean_input($row['comment_room'])."</textarea>";
-        echo "</td></tr></table>\n";
-        echo "<h3>".get_vocab("configuration_ressource")."</h3>\n";
+    }
+    else
+        echo "<textarea class=\"form-control\" name=\"comment_room\" rows=\"8\" cols=\"120\" >".clean_input($row['comment_room'])."</textarea>";
+    echo "</td></tr></table>\n";
+    echo "<h3>".get_vocab("configuration_ressource")."</h3>\n";
 // Type d'affichage : duree ou heure/date de fin de reservation
         echo "<table class='table table-bordered'>\n";
 			echo "<tr><td>".get_vocab("type_affichage_reservation").get_vocab("deux_points")."</td>\n";

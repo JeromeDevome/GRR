@@ -138,6 +138,5 @@ if ($_GET['pview'] != 1)
 	//
 	echo '</div>';
 	// echo '</div>';
-
 }
 ?>

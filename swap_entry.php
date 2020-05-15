@@ -3,7 +3,7 @@
  * swap_entry.php
  * Interface d'échange d'une réservation avec une autre, à choisir
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-01 15:26$
+ * Dernière modification : $Date: 2020-05-04 10:08$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -328,6 +328,7 @@ else { // on connaît $id de la réservation à échanger, on va en chercher une
             echo "</table>";
         echo "</form>";
         // bas de page
+        display_mail_msg();
         end_page();
     }
     else 
