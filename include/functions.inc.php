@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-05-15 18:40$
+ * Dernière modification : $Date: 2020-05-16 15:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4990,8 +4990,11 @@ $(\'.clockpicker\').clockpicker({
 });
 </script>';
 }
-function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaultsec,$twentyfourhour_format=0)
+function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaultsec,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format=0)
 {
+    $minTime = $morningstarts.":00";
+    $eveningends_minutes = str_pad($eveningends_minutes, 2, 0, STR_PAD_LEFT);
+    $maxTime = $eveningends.":".$eveningends_minutes;
 	if (isset ($_GET['id']))
 	{
 		if (isset($start_hour) && isset($start_min))
@@ -5039,7 +5042,7 @@ function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaults
 	echo '<label for="'.$typeTime.'">'.get_vocab('time').get_vocab('deux_points').'</label>
     <div class="input-group timepicker">
 	<input id="'.$typeTime.'" name="'.$typeTime.'" type="text" class="form-control time" value="'.$hour.':'.$minute. '" >
-    <span class="input-group-addon">
+    <span class="input-group-addon" id="'.$typeTime.'clock'.'">
         <span class="glyphicon glyphicon-time" ></span>
     </span>
 	</div>';
@@ -5047,10 +5050,15 @@ function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaults
         $(\'#'.$typeTime.'\').timepicker({
             \'step\': '.($dureepardefaultsec/60).',
             \'scrollDefault\': \''.$hour.':'.$minute.'\',
+            \'minTime\': \''.$minTime.'\',
+            \'maxTime\': \''.$maxTime.'\',
             \'timeFormat\': \''.$timeFormat.'\',
             \'forceRoundTime\': true,
         });
         $(\'#'.$typeTime.'\').timepicker(\'setTime\', \''.$hour.':'.$minute.'\');
+		$(\'#'.$typeTime.'clock'.'\').on(\'click\', function() {
+            $(\'#'.$typeTime.'\').timepicker(\'show\');
+        });
         </script>';
 }
 
