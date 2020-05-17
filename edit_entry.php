@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-16 15:00$
+ * Dernière modification : $Date: 2020-05-17 16:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -292,8 +292,11 @@ if ( isset($_GET["Err"]))
 	$Err = $_GET["Err"];
 if ($enable_periods == 'y')
 	toPeriodString($start_min, $duration, $dur_units);
-else
-	toTimeString($duration, $dur_units, true);
+else{
+    $duree_sec = $duration; // durée en secondes
+    toTimeString($duration, $dur_units, true); // durée convertie en clair
+}
+
 if (!getWritable($beneficiaire, $user_name,$id))
 {
 	showAccessDenied($back);
@@ -820,12 +823,11 @@ else
 {
 	if (isset ($_GET['id']))
 	{
-		$duree_par_defaut_reservation_area = $resolution;
-		jQuery_TimePicker2('start_', $start_hour, $start_min,$duree_par_defaut_reservation_area,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format);
+		jQuery_TimePicker2('start_', $start_hour, $start_min,$duree_sec,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format);
 	}
 	else
 	{
-		jQuery_TimePicker2('start_', '', '',$duree_par_defaut_reservation_area,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format);
+		jQuery_TimePicker2('start_', '', '',$duree_par_defaut_reservation_area,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format);
 	}
 	/*if (!$twentyfourhour_format)
 	{
@@ -929,11 +931,11 @@ else // sélection de l'heure ou du créneau de fin
 		//echo "<b>".get_vocab("time")." : </b>";
 		if (isset ($_GET['id']))
 		{
-			jQuery_TimePicker2('end_', $end_hour, $end_min,$duree_par_defaut_reservation_area,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format);
+			jQuery_TimePicker2('end_', $end_hour, $end_min,$duree_sec,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format);
 		}
 		else
 		{
-			jQuery_TimePicker2('end_', '', '',$duree_par_defaut_reservation_area,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format);
+			jQuery_TimePicker2('end_', '', '',$duree_par_defaut_reservation_area,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format);
 		}
 /*		if (!$twentyfourhour_format)
 		{

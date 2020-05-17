@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-05-16 15:00$
+ * Dernière modification : $Date: 2020-05-17 16:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4990,7 +4990,7 @@ $(\'.clockpicker\').clockpicker({
 });
 </script>';
 }
-function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaultsec,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format=0)
+function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaultsec,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format=0)
 {
     $minTime = $morningstarts.":00";
     $eveningends_minutes = str_pad($eveningends_minutes, 2, 0, STR_PAD_LEFT);
@@ -5033,7 +5033,7 @@ function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaults
                 $dureepardefautheure = $dureepardefautmin/60;
                 $hour = ($hour + $dureepardefautheure)%24;
                 $hour = str_pad($hour, 2, 0, STR_PAD_LEFT);
-                $minute = $dureepardefautmin % 60;
+                $minute += $dureepardefautmin % 60;
             }
         }
         $minute = str_pad($minute, 2, 0, STR_PAD_LEFT);
@@ -5042,13 +5042,13 @@ function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaults
 	echo '<label for="'.$typeTime.'">'.get_vocab('time').get_vocab('deux_points').'</label>
     <div class="input-group timepicker">
 	<input id="'.$typeTime.'" name="'.$typeTime.'" type="text" class="form-control time" value="'.$hour.':'.$minute. '" >
-    <span class="input-group-addon" id="'.$typeTime.'clock'.'">
+    <span class="input-group-addon btn" id="'.$typeTime.'clock'.'">
         <span class="glyphicon glyphicon-time" ></span>
     </span>
 	</div>';
     echo '<script type="text/javascript">
         $(\'#'.$typeTime.'\').timepicker({
-            \'step\': '.($dureepardefaultsec/60).',
+            \'step\': '.($resolution/60).',
             \'scrollDefault\': \''.$hour.':'.$minute.'\',
             \'minTime\': \''.$minTime.'\',
             \'maxTime\': \''.$maxTime.'\',
