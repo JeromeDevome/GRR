@@ -3,7 +3,7 @@
  * install_mysql.php
  * Interface d'installation de GRR pour un environnement mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-30 10:20$
+ * Dernière modification : $Date: 2020-05-18 12:40$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -108,8 +108,12 @@ if (@file_exists($nom_fic))
 				}
 				$j++;
 			}
-			$call_test = mysqli_query($db, "SELECT * FROM ".$table_prefix."_setting WHERE NAME='sessionMaxLength'");
-			$test2 = mysqli_num_rows($call_test);
+			if ($call_test = mysqli_query($db, "SELECT * FROM ".$table_prefix."_setting WHERE NAME='sessionMaxLength'")){
+                $test2 = mysqli_num_rows($call_test);
+                mysqli_free_result($call_test);
+            }
+            else
+                $test2 = 0;
 			if (($test2 != 0) && ($test1 != 'no'))
 			{
 				echo begin_page("Installation de GRR");
