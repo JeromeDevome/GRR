@@ -440,6 +440,7 @@ $vocab['grr_url'] = "Site address";
 $vocab['grr_url_explain'] = "Use the address above for some links, especially the \"printable version\" links. If you do not tick the box, or if the field above is empty, GRR will try himself to determine the site address.";
 $vocab['grr_version'] = "Version ";
 $vocab['help'] = "Help";
+$vocab['horaires'] = "Horaires"; // A traduire
 $vocab['hours'] = "hour (s)";
 $vocab['http_domaine_particulier'] = "Domain name";
 $vocab['http_explain_statut_domaine'] = "Si vous avez renseigné le champ \"Email\" ci-dessus, vous pouvez préciser ci-dessous un nom de domaine (exemple \"mon-domaine.fr\" et un statut. les nouveaux utilisateurs dont l'adresse email appartient au domaine ci-dessous (exemple \"f.dupont@mon-domaine.fr\") se verront attribuer le statut précisé ci-dessous."; // A traduire

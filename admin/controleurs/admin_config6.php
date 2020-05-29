@@ -144,6 +144,13 @@ if (isset($_POST['display_beneficiaire'])) {
         die();
     }
 }
+// display_horaires
+if (isset($_POST['display_horaires'])) {
+    if (!Settings::set('display_horaires', $_POST['display_horaires'])) {
+        echo "Erreur lors de l'enregistrement de display_horaires !<br />";
+        die();
+    }
+}
 // display_full_description
 if (isset($_POST['display_full_description'])) {
     if (!Settings::set('display_full_description', $_POST['display_full_description'])) {
@@ -319,6 +326,7 @@ get_vocab_admin('display_mail_destinataire');
 
 // Affichage des réservations dans les vues journées, semaine et mois
 get_vocab_admin('display_planning_resa');
+get_vocab_admin('horaires');
 get_vocab_admin('sum_by_creator');
 get_vocab_admin('namebooker');
 get_vocab_admin('match_descr');

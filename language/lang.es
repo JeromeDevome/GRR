@@ -434,6 +434,7 @@ $vocab['grr_url'] = "Dirección del sitio";
 $vocab['grr_url_explain'] = "Usar la dirección más arriba para algunos enlaces, sobre todos los enlaces \"formato imprimible\". Si usted no marca la casilla, o bien si el campo más arriba está vacío, GRR mismo intentará de determinar la dirección del sitio.";
 $vocab['grr_version'] = "Versión ";
 $vocab['help'] = "Ayuda";
+$vocab['horaires'] = "Horaires"; // A traduire
 $vocab['hours'] = "hora(s)";
 $vocab['http_domaine_particulier'] = "Nom de domaine"; // A traduire
 $vocab['http_explain_statut_domaine'] = "Si vous avez renseigné le champ \"Email\" ci-dessus, vous pouvez préciser ci-dessous un nom de domaine (exemple \"mon-domaine.fr\" et un statut. les nouveaux utilisateurs dont l'adresse email appartient au domaine ci-dessous (exemple \"f.dupont@mon-domaine.fr\") se verront attribuer le statut précisé ci-dessous."; // A traduire

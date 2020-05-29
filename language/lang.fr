@@ -446,6 +446,7 @@ $vocab['grr_url'] = "Adresse (URL) exacte de GRR";
 $vocab['grr_url_explain'] = "Utiliser l'adresse ci-dessus pour certains liens, notamment les liens \"format imprimable\". Si vous ne cochez pas la case, ou bien si le champ ci-dessus est vide, GRR tentera lui-même de déterminer l'adresse du site.";
 $vocab['grr_version'] = "Version ";
 $vocab['help'] = "Aide";
+$vocab['horaires'] = "Horaires";
 $vocab['hours'] = "heure(s)";
 $vocab['http_domaine_particulier'] = "Nom de domaine";
 $vocab['http_explain_statut_domaine'] = "Si vous avez renseigné le champ \"Email\" ci-dessus, vous pouvez préciser ci-dessous un nom de domaine (exemple \"mon-domaine.fr\" et un statut. les nouveaux utilisateurs dont l'adresse email appartient au domaine ci-dessous (exemple \"f.dupont@mon-domaine.fr\") se verront attribuer le statut précisé ci-dessous.";

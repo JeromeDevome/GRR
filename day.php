@@ -489,14 +489,14 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 						$end_time   = $row['2'];
 						$clef 		= $row['3'];
 						$courrier	= $row['4'];
-						if ($enable_periods != 'y') {
+						if ($enable_periods != 'y' && Settings::get("display_horaires") == '1') {
                             $heure_fin = date('H:i',min($pm7,$end_time));
-                            if ($heure_fin == '00:00') {$heure_fin = '24:00';}
+                            if ($heure_fin == '00:00')
+								$heure_fin = '24:00';
 							echo '<br/>',date('H:i', max($am7,$start_time)),get_vocab("to"),$heure_fin,'<br/>';
 						}
 						if (($type_name != -1)&&(Settings::get("type") == '1'))
-							echo  $type_name;
-						echo '<br>'.PHP_EOL;
+							echo  $type_name.'<br>'.PHP_EOL;
 						if ($clef == 1)
 							echo '<img src="img_grr/skey.png" alt="clef">'.PHP_EOL;
 						if (Settings::get('show_courrier') == 'y')

@@ -123,6 +123,11 @@
 									<td><input type="radio" name="display_beneficiaire" value="1" id="label_4b" {% if settings.display_beneficiaire == '1' %} checked {% endif %} /></td>
 								</tr>
 								<tr>
+									<td>{{ trad.horaires }}</td>
+									<td><input type="radio" name="display_horaires" value="0" id="label_4a" {% if settings.display_horaires == '0' %} checked {% endif %} /></td>
+									<td><input type="radio" name="display_horaires" value="1" id="label_4b" {% if settings.display_horaires == '1' %} checked {% endif %} /></td>
+								</tr>
+								<tr>
 									<td>{{ trad.namebooker }}</td>
 									<td><input type="radio" name="display_short_description" value="0" id="label_4a" {% if settings.display_short_description == '0' %} checked {% endif %} /></td>
 									<td><input type="radio" name="display_short_description" value="1" id="label_4b" {% if settings.display_short_description == '1' %} checked {% endif %} /></td>
