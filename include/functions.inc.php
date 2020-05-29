@@ -1173,7 +1173,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 function print_header_twig($day = '', $month = '', $year = '', $type_session = 'with_session')
 {
 	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
-	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $d;
+	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $d, $gcDossierImg ;
 	
 	if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
 		header("Location: ./changepwd.php");
@@ -1247,7 +1247,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			$d['pageAccueil'] = $racine.page_accueil('yes').$paramUrl;
 
 			//Logo
-			$nom_picture = $racine."images/".Settings::get("logo");
+			$nom_picture = $racine."personnalisation/".$gcDossierImg."/logos/".Settings::get("logo");
 			if ((Settings::get("logo") != '') && (@file_exists($nom_picture)))
 				$d['logo'] = $nom_picture;
 			
@@ -5520,7 +5520,7 @@ function pageHead2($title, $page = "with_session")
 function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_session')
 {
 	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name, $racine, $racineAd;
-	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2;
+	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $gcDossierImg;
         $parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
         
 	Hook::Appel("hookHeader2");
@@ -5571,7 +5571,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			$year  = date("Y",$date_);
 			echo '<div id="panel">'.PHP_EOL;
 			//Logo
-			$nom_picture = $racine."images/".Settings::get("logo");
+			$nom_picture = $racine."personnalisation/".$gcDossierImg."/logos/".Settings::get("logo");
 			if ((Settings::get("logo") != '') && (@file_exists($nom_picture)))
 				echo '<div class="logo" height="100">'.PHP_EOL.'<a href="'.$racine.page_accueil('yes').'day='.$day.'&amp;year='.$year.'&amp;month='.$month.'"><img src="'.$nom_picture.'" alt="logo"/></a>'.PHP_EOL.'</div>'.PHP_EOL;
 			//Accueil
