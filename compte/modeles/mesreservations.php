@@ -18,6 +18,7 @@
 class MesReservations
 {
 	public static function mes_resas($login,$span,$dformat){
+		global $gListeReservations;
 
 		$sql = "SELECT distinct e.id, e.start_time, e.end_time, e.name, e.description, "
 		. "e.type, e.beneficiaire, "
@@ -37,7 +38,7 @@ class MesReservations
 			fatal_error(0, grr_sql_error());
 
 		$nmatch = grr_sql_count($res);
-		$gListeReservations[] = array();
+		$gListeReservations = array();
 
 		if ($nmatch > 0)
 		{
