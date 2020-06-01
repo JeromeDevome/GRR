@@ -116,7 +116,8 @@ if (version_compare(grr_sql_version(), $mysql_mini, '<')) {
 
 
 // Dossier
-$trad['dDossierImgEcriture'] = testDroits("../personnalisation/".$gcDossierImg."/");
+$trad['dDossierImgRessourcesEcriture'] = testDroits("../personnalisation/".$gcDossierImg."/ressources/");
+$trad['dDossierImgLogosEcriture'] = testDroits("../personnalisation/".$gcDossierImg."/logos/");
 $trad['dDossierExportEcriture'] = testDroits("../export/");
 $trad['dDossierTempEcriture'] = testDroits("../temp/");
 $trad['dDossierModulesEcriture'] = testDroits("../personnalisation/modules/");
