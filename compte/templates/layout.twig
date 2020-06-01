@@ -25,6 +25,7 @@
 				</div>
 				<div class="accueil">
 					<h2><a href="{{ d.pageAccueil |raw }}">{{ settings.company }}</a></h2>
+					<p>{{ settings.message_accueil |raw }}</p>
 				</div>
 				<div class="administration">
 					{%if d.lienAdmin != ''%}<br><a href='{{ d.lienAdmin |raw }}'>{{ trad.admin }}</a>{%endif%}

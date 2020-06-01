@@ -169,7 +169,7 @@ table.ui-datepicker-calendar:{z-index: 10;}
 
 /* nouveau style */
 body{font-size:14px;font-family:arial,verdana,sans-serif;width:100%;margin:0 auto}
-header{width:100%;z-index:999;text-align:center;border-bottom:1px solid;}
+header{width:100%;z-index:999;border-bottom:1px solid;}
 a:hover{color:#999;}
 a:link,a:visited{font-weight:700;text-decoration:none}
 a.lienCellule{color:#000;font-weight:400;display:block}
