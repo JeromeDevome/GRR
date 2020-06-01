@@ -151,7 +151,7 @@ echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("compan
 <script type="text/javascript" src="js/functions.js" ></script>
 <div class="center">
 	<?php
-	$nom_picture = "./images/".Settings::get("logo");
+	$nom_picture = "./personnalisation/".$gcDossierImg."/logos/".Settings::get("logo");
 	if ((Settings::get("logo") != '') && (@file_exists($nom_picture)))
 		echo "<a href=\"javascript:history.back()\"><img src=\"".$nom_picture."\" alt=\"logo\" /></a>\n";"";
 	?>
