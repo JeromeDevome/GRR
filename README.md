@@ -3,7 +3,7 @@ GRR
 
 **Requiert :**
 
-PHP : > 7.0 && <= 7.2, compatibilité vraisemblable avec PHP 7.3 ; nécessite au moins les modules php-gd, php-mysqli, php-mysqlnd, php-xml (*)
+PHP : > 7.0 && <= 7.2, compatibilité vraisemblable avec PHP 7.3 ; nécessite au moins les modules php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml (*)
 MySQL: > 5.4 && < 5.6, compatibilité vraisemblable avec MySQL 5.7
 
 http://grr.devome.com/
