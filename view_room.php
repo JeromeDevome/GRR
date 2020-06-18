@@ -3,7 +3,7 @@
  * view_room.php
  * Fiche ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-20 11:15$
+ * Dernière modification : $Date: 2020-06-18 19:25$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -87,7 +87,7 @@ if (authGetUserLevel(getUserName(),-1) >= Settings::get("visu_fiche_description"
 if ((authGetUserLevel(getUserName(),-1) >= Settings::get("acces_fiche_reservation")) && ($row["comment_room"] != ''))
 {
 	echo "<h3>".get_vocab("match_descr")."</h3>\n";
-	echo "<div>".clean_input($row["comment_room"])."</div>\n";
+	echo "<div>".$row["comment_room"]."</div>\n";
 }
 
 // Afficher capacité

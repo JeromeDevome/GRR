@@ -113,7 +113,7 @@ Procédure de mise à jour, depuis GRR 1.9.7e, voir plus bas
 Il n'y a pas de procédure de mise à jour automatique de l'ensemble logiciel GRR.
 Par sécurité, avant de mettre les scripts à jour, faites une sauvegarde de la base de données, puis de l'ensemble de l'arborescence de GRR.
 Téléchargez sur votre serveur les scripts de la nouvelle version de GRR.
-Recopiez les fichiers de configuration (/include/config.inc.php, /include/connect.inc.php et - éventuellement - /include/config_ldap.inc.php) et le fichier de style des types de réservation (/themes/default/css/types).
+Recopiez les fichiers de configuration (/include/config.inc.php, /include/connect.inc.php et - éventuellement - /include/config_ldap.inc.php) et le fichier de style des types de réservation (/themes/default/css/types.css).
 Vérifiez les droits en écriture sur les fichiers et le dossier indiqués à l'étape 2.
 Connectez-vous à GRR avec un compte administrateur. Si vous avez fait une montée de version, GRR demandera une mise à jour de la base de données. Faites-la puis connectez-vous. Vous devriez avoir de nouveau GRR opérationnel.
 
