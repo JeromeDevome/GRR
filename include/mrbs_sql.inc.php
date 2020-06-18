@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2020-04-20 09:30$
+ * Dernière modification : $Date: 2020-06-18 22:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -524,17 +524,17 @@ function get_day_of_month($time, $rep_month_abs1, $rep_month_abs2)
 	$days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
 	$rep = array('first', 'second', 'third', 'fourth', 'fifth', 'last');
     $time = mktime(0,0,0,date("m",$time)+1,1,date("Y",$time)); // avance d'un mois
-    if (in_array($rep_month_abs1,[0,1,2,3,5])){
+    if (in_array($rep_month_abs1,array(0,1,2,3,5))){
         $str = $rep[$rep_month_abs1].' '.$days[$rep_month_abs2 - 1].' of '.date("F", $time).' '.date("Y", $time);
-        return [TRUE,strtotime($str)];
+        return array(TRUE,strtotime($str));
     }
     if ($rep_month_abs1 == 4){
         $str = $rep[4].' '.$days[$rep_month_abs2 - 1].' of '.date("F", $time).' '.date("Y", $time);
         $cinq = strtotime($str,$time);
         $str = 'last '.$days[$rep_month_abs2 - 1].' of '.date("F", $time).' '.date("Y", $time);
         $last = strtotime($str,$time);
-        if ($cinq == $last) return [TRUE,$cinq];
-        else return [FALSE,$last];
+        if ($cinq == $last) return array(TRUE,$cinq);
+        else return array(FALSE,$last);
     }
 }
 /** mrbsGetRepeatEntryList
