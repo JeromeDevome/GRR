@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-17 16:00$
+ * Dernière modification : $Date: 2020-07-09 17:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -344,7 +344,7 @@ echo "</header>";
 echo '<section>'.PHP_EOL;
 ?>
 <script type="text/javascript" >
-function insertBeneficiaires(area_,room_,user_){
+function insertBeneficiaires(area_,room_,user_,id_){
 	jQuery.ajax({
 		type: 'GET',
 		url: 'edit_entry_beneficiaire.php',
@@ -352,6 +352,7 @@ function insertBeneficiaires(area_,room_,user_){
 			area: area_,
 			room: room_,
             user: user_,
+            id: id_
 		},
 		success: function(returnData)
 		{
@@ -726,7 +727,7 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
 		}
         roomsObj = eval( "formObj.elements['rooms[]']" );
         room = roomsObj[roomsObj.selectedIndex].value;
-        insertBeneficiaires(area,room,<?php echo json_encode($user_name)?>);
+        insertBeneficiaires(area,room,<?php echo json_encode($user_name).','.$id;?>);
         insertChampsAdd(area,<?php echo $id;?>,room);
         insertTypes(area,room);
         //insertProfilBeneficiaire();
@@ -737,7 +738,7 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
 		area = areasObj[areasObj.selectedIndex].value
         roomsObj = eval("formObj.elements['rooms[]']");
         room = roomsObj[roomsObj.selectedIndex].value;
-        insertBeneficiaires(area,room,<?php echo json_encode($user_name)?>);
+        insertBeneficiaires(area,room,<?php echo json_encode($user_name).','.$id;?>);
         insertChampsAdd(area,<?php echo $id;?>,room);
         insertTypes(area,room);
         
@@ -1051,7 +1052,7 @@ echo '<tr>',PHP_EOL,'<td>',PHP_EOL,'<div id="div_types">',PHP_EOL;
 echo '</div>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL;
 ?>
 <script type="text/javascript" >
-    insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode($user_name);?>);
+    insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode($user_name);?>,<?php echo $id?>);
 	insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>);
 	insertTypes(<?php echo $area?>,<?php echo $room?>);
 	// insertProfilBeneficiaire();
@@ -1288,7 +1289,7 @@ if($periodiciteConfig == 'y'){
 		</div>
 	</form>
 	<script type="text/javascript">
-		insertBeneficiaires(<?php echo $area;?>,<?php echo $room;?>,<?php echo json_encode($user_name);?>);
+		insertBeneficiaires(<?php echo $area;?>,<?php echo $room;?>,<?php echo json_encode($user_name);?>,<?php echo $id;?>);
 		insertChampsAdd(<?php echo $area; ?>,<?php echo $id; ?>,<?php echo $room; ?>);
 		insertTypes(<?php echo $area; ?>,<?php echo $room; ?>)
 	</script>
