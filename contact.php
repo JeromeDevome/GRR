@@ -3,7 +3,7 @@
  * contact.php
  * Formulaire d'envoi de mail
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-25 09:40$
+ * Dernière modification : $Date: 2020-07-09 18:40$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -54,7 +54,7 @@ if ($type_cible != 'identifiant:non')
 $action = isset($_POST["action"]) ? $_POST["action"] : '';
 $corps_message = isset($_POST["message"]) ? $_POST["message"] : '';
 $email_reponse = isset($_POST["email_reponse"]) ? clean_input($_POST["email_reponse"]) : '';
-if (!filter_var($email_reponse, FILTER_VALIDATE_EMAIL))
+if (!validate_email($email_reponse))
     $email_reponse = '';
 $error_subject = FALSE;
 if (isset($_POST["objet_message"]))

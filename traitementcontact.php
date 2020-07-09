@@ -3,7 +3,7 @@
  * traitementcontact.php
  * envoie l'email suite au formulaire
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-07 11:24$
+ * Dernière modification : $Date: 2020-07-09 18:40$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -47,7 +47,7 @@ if (empty($_POST['nom']))
 //	$message .= "Votre prénom  \\n  ";
 if (empty($_POST['email']))
 	$message .= "Votre adresse email  \\n  ";
-if( !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) )
+if (!validate_email($_POST['email']))
 	$message .= "Adresse email non valide<br />";
 if (empty($_POST['sujet']))
 	$message .= "Le sujet de votre demande  \\n  ";

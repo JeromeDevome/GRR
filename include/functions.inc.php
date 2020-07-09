@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-05-17 16:00$
+ * Dernière modification : $Date: 2020-07-09 18:40$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -261,7 +261,7 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 		}
 		else
 		{
-            if (filter_var($_email,FILTER_VALIDATE_EMAIL))
+            if (validate_email($_email))
             {
                 $affichage = '<a href="mailto:'.$_email.'">'.$_identite.'</a>';
             }
@@ -5611,7 +5611,6 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			//Mail réservation
 			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
 			$res = grr_sql_query1($sql);
-
 			if ((( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )&& acces_formulaire_reservation())
 			{
 				echo '<div class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</div>',PHP_EOL;
