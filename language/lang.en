@@ -13,6 +13,7 @@ $vocab['accessdenied'] = "Access denied";
 $vocab['accessdeniedtoomanybooking'] = "Access denied: Your reservation request has been rejected as it would be above the number of authorized reservations!";
 $vocab['acces_fiche_reservation_msg'] = "Who has access to the detailed reservation form of a resource?";
 $vocab['action'] = "Action";
+$vocab['activer_fonctionalite_participant'] = "Activer la fonctionnalité \"participant\""; // A traduire
 $vocab['activer_fonctionalite_ressource_empruntee_restituee'] = "Activate the functionality \"borrowed / restored resource\"";
 $vocab['activer_fonctionalite_gestion_cle'] = "Activate the functionality \"keys management\"";
 $vocab['Activer_module_jours_cycles'] = "Activate the functionalities \"cycle days\"";

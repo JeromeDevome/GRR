@@ -12,6 +12,7 @@ $vocab['accessdenied'] = "Acceso rechazado";
 $vocab['accessdeniedtoomanybooking'] = "Acceso rechazado : ¡se rechaza su solicitud de reserva ya que superaría el máximo de reservas autorizado!";
 $vocab['acces_fiche_reservation_msg'] = "¿Quién tiene acceso a la ficha de reserva detallada de un recurso?";
 $vocab['action'] = "Acción";
+$vocab['activer_fonctionalite_participant'] = "Activer la fonctionnalité \"participant\""; // A traduire
 $vocab['activer_fonctionalite_ressource_empruntee_restituee'] = "Activar la funcionalidad \"recurso prestado/restituido\"";
 $vocab['activer_fonctionalite_gestion_cle'] = "Activer la fonctionnalité \"gestion des clés\""; // A traduire
 $vocab['Activer_module_jours_cycles'] = "Activar las funcionalidades \"días ciclo\"";

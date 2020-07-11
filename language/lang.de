@@ -15,6 +15,7 @@ $vocab['accessdenied'] = "Zugang verweigert";
 $vocab['accessdeniedtoomanybooking'] = "Zugang verweigert: Ihre Reservierungsanfrage ist zurückgewiesen worden, weil Sie das zulässige Reservierungsmaximum übersteigen!";
 $vocab['acces_fiche_reservation_msg'] = "Qui a accès à la fiche de réservation détaillée d'une ressource ?"; // A traduire
 $vocab['action'] = "Action"; // A traduire
+$vocab['activer_fonctionalite_participant'] = "Activer la fonctionnalité \"participant\""; // A traduire
 $vocab['activer_fonctionalite_ressource_empruntee_restituee'] = "Activer la fonctionnalité \"ressource empruntée/restituée\""; // A traduire
 $vocab['activer_fonctionalite_gestion_cle'] = "Activer la fonctionnalité \"gestion des clés\""; // A traduire
 $vocab['Activer_module_jours_cycles'] = "Activer les fonctionnalités \"jours cycle\""; // A traduire

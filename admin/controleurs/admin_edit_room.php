@@ -58,6 +58,12 @@ else
 	// toutes les reservations sont considerees comme restituee
 	grr_sql_query("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id = '".$room."'");
 }
+if (isset($_POST["active_participant"]))
+	$active_participant = 'y';
+else
+{
+	$active_participant = 'n';
+}
 $picture_room = isset($_POST["picture_room"]) ? $_POST["picture_room"] : NULL;
 $comment_room = isset($_POST["comment_room"]) ? $_POST["comment_room"] : NULL;
 $show_comment = isset($_POST["show_comment"]) ? "y" : "n";
@@ -165,6 +171,7 @@ $dossier = '../personnalisation/'.$gcDossierImg.'/ressources/'.$room.'/';
 			show_fic_room='".$show_fic_room."',
 			active_ressource_empruntee = '".$active_ressource_empruntee."',
 			active_cle = '".$active_cle."',
+			active_participant = '".$active_participant."',
 			capacity='".$capacity."',
 			delais_max_resa_room='".$delais_max_resa_room."',
 			delais_min_resa_room='".$delais_min_resa_room."',
@@ -196,6 +203,7 @@ $dossier = '../personnalisation/'.$gcDossierImg.'/ressources/'.$room.'/';
 			show_fic_room='".$show_fic_room."',
 			active_ressource_empruntee = '".$active_ressource_empruntee."',
 			active_cle = '".$active_cle."',
+			active_participant = '".$active_participant."',
 			capacity='".$capacity."',
 			delais_max_resa_room='".$delais_max_resa_room."',
 			delais_min_resa_room='".$delais_min_resa_room."',
@@ -294,6 +302,7 @@ $dossier = '../personnalisation/'.$gcDossierImg.'/ressources/'.$room.'/';
 		$row['show_fic_room'] = '';
 		$row['active_ressource_empruntee'] = 'n';
 		$row['active_cle'] = 'n';
+		$row['active_participant'] = 'n';
 		$area_name = grr_sql_query1("select area_name from ".TABLE_PREFIX."_area where id='".$area_id."'");
 
 		$typeAction = get_vocab("addroom");
@@ -351,6 +360,7 @@ $dossier = '../personnalisation/'.$gcDossierImg.'/ressources/'.$room.'/';
 		get_vocab_admin("tous_les_utilisateurs");
 		get_vocab_admin("activer_fonctionalite_ressource_empruntee_restituee");
 		get_vocab_admin("activer_fonctionalite_gestion_cle");
+		get_vocab_admin("activer_fonctionalite_participant");
 
 		get_vocab_admin("back");
 		get_vocab_admin("save");
