@@ -724,6 +724,8 @@ function execute_maj($version_old, $version_grr)
 		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_overload ADD `mail_spec` TEXT NOT NULL AFTER `overload_mail`;");
 		$result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_log_mail (`idlogmail` int(11) NOT NULL AUTO_INCREMENT, `date` int(11) NOT NULL, `de` varchar(255) NOT NULL, `a` varchar(255) NOT NULL, `sujet` varchar(255) NOT NULL, `message` text NOT NULL, PRIMARY KEY (`idlogmail`));");
 		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_room ADD `active_participant` char(1) NOT NULL DEFAULT 'n' AFTER `active_cle`;");
+		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_entry ADD `nbparticipantmax` int(11) NOT NULL DEFAULT '0' AFTER `courrier`;");
+		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_repeat ADD `nbparticipantmax` int(11) NOT NULL DEFAULT '0' AFTER `courrier`;");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");

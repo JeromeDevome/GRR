@@ -588,6 +588,8 @@ $vocab['name'] = "Nome";
 $vocab['namebooker'] = "Breve descrizione";
 $vocab['names'] = "Nome";
 $vocab['navigator'] = "Navigatore";
+$vocab['nb_participant_max'] = "Nombre de parcipant max"; // A traduire
+$vocab['nb_participant_zero'] = "(0 = Ne pas activer l'option)"; // A traduire
 $vocab['ne contient pas'] = "non contiene";
 $vocab['necessite fonction mail automatique'] = "nécessite que la fonction d'envoi automatique de mail soit activée et que le champ \"email\" de l'emprunteur soit renseignée."; // A traduire
 $vocab['new_pwd1'] = "Nuovo password (".$pass_leng." caratteri minimi)";

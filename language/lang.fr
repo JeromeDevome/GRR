@@ -603,6 +603,8 @@ $vocab['name'] = "Nom";
 $vocab['namebooker'] = "Brève description";
 $vocab['names'] = "Nom et prénom";
 $vocab['navigator'] = "Navigateur";
+$vocab['nb_participant_max'] = "Nombre de parcipant max";
+$vocab['nb_participant_zero'] = "(0 = Ne pas activer l'option)";
 $vocab['ne contient pas'] = "ne contient pas";
 $vocab['necessite fonction mail automatique'] = "nécessite que la fonction d'envoi automatique de mail soit activée et que le champ \"email\" de l'emprunteur soit renseignée.";
 $vocab['new_pwd1'] = "Nouveau mot de passe (".$pass_leng." caractères minimum)";

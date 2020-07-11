@@ -67,6 +67,7 @@ if ($courrier == 'y')
 	$courrier = 1;
 else
 	$courrier = 0;
+$nbparticipantmax = isset($_GET["nbparticipantmax"]) ? $_GET["nbparticipantmax"] : NULL;
 $day = isset($_GET["start_day"]) ? clean_input($_GET["start_day"]) : NULL;
 $month = isset($_GET["start_month"]) ? clean_input($_GET["start_month"]) : NULL;
 $year = isset($_GET["start_year"]) ? clean_input($_GET["start_year"]) : NULL;
@@ -608,7 +609,7 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 		}
 		if ($rep_type != 0)
 		{
-			mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $rep_month_abs1, $rep_month_abs2);
+			mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $nbparticipantmax, $rep_month_abs1, $rep_month_abs2);
 			if (Settings::get("automatic_mail") == 'yes')
 			{
 				if (isset($id) && ($id != 0))
@@ -633,7 +634,7 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 				$entry_type = 2;
 			else
 				$entry_type = 0;
-			mrbsCreateSingleEntry($starttime, $endtime, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $keys, $courrier);
+			mrbsCreateSingleEntry($starttime, $endtime, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $keys, $courrier,$nbparticipantmax);
 			$new_id = grr_sql_insert_id();
 			if (Settings::get("automatic_mail") == 'yes')
 			{

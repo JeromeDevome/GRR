@@ -87,6 +87,7 @@ $type_affichage_reser = grr_sql_query1("SELECT type_affichage_reser FROM ".TABLE
 $delais_option_reservation  = grr_sql_query1("SELECT delais_option_reservation FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $qui_peut_reserver_pour  = grr_sql_query1("SELECT qui_peut_reserver_pour FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $active_cle  = grr_sql_query1("SELECT active_cle FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
+$active_participant  = grr_sql_query1("SELECT active_participant FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $periodiciteConfig = Settings::get("periodicite");
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
@@ -125,7 +126,7 @@ if (UserRoomMaxBooking(getUserName(), $room, $compt) == 0)
 $etype = 0;
 if (isset($id)) // édition d'une réservation existante
 {
-	$sql = "SELECT name, beneficiaire, description, start_time, end_time, type, room_id, entry_type, repeat_id, option_reservation, jours, create_by, beneficiaire_ext, statut_entry, clef, courrier FROM ".TABLE_PREFIX."_entry WHERE id=$id";
+	$sql = "SELECT name, beneficiaire, description, start_time, end_time, type, room_id, entry_type, repeat_id, option_reservation, jours, create_by, beneficiaire_ext, statut_entry, clef, courrier, nbparticipantmax FROM ".TABLE_PREFIX."_entry WHERE id=$id";
 	$res = grr_sql_query($sql);
 	if (!$res)
 		fatal_error(1, grr_sql_error());
@@ -159,6 +160,7 @@ if (isset($id)) // édition d'une réservation existante
 	$jours_c = $row[10];
 	$clef = $row[14];
 	$courrier = $row[15];
+	$nbparticipantmax = $row[16];
 	$modif_option_reservation = 'n';
 
 	if ($entry_type >= 1)
@@ -289,6 +291,7 @@ else // nouvelle réservation
 	$rep_jour      	= 0;
 	$option_reservation = -1;
 	$modif_option_reservation = 'y';
+	$nbparticipantmax = 0;
 }
 if ( isset($_GET["Err"]))
 	$Err = $_GET["Err"];
@@ -769,6 +772,13 @@ echo '<tr><td>'.PHP_EOL;
 echo '<div id="div_champs_add">'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;
+
+if($active_participant == 'y'){
+	echo '<tr><td class="E"><br>'.PHP_EOL;
+	echo '<b>'.get_vocab("nb_participant_max").get_vocab("deux_points").'</b>'.PHP_EOL;
+	echo '<input name="nbparticipantmax" type="number" value="'.$nbparticipantmax.'" > '.get_vocab("nb_participant_zero");
+	echo '</td></tr>'.PHP_EOL;
+}
 
 if($active_cle == 'y'){
 	echo '<tr><td class="E"><br>'.PHP_EOL;
