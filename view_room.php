@@ -87,7 +87,7 @@ if (authGetUserLevel(getUserName(),-1) >= Settings::get("visu_fiche_description"
 if ((authGetUserLevel(getUserName(),-1) >= Settings::get("acces_fiche_reservation")) && ($row["comment_room"] != ''))
 {
 	echo "<h3>".get_vocab("match_descr")."</h3>\n";
-	echo "<div>".clean_input($row["comment_room"])."</div>\n";
+	echo "<div>".$row["comment_room"]."</div>\n";
 }
 
 // Afficher capacité
