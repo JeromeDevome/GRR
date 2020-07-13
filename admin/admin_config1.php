@@ -3,7 +3,7 @@
  * admin_config1.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2020-05-07 10:13$
+ * Dernière modification : $Date: 2020-07-13 15:34$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -646,13 +646,14 @@ if (Settings::get('use_fckeditor') == 1) {
 		//<![CDATA[
 		CKEDITOR.replace( 'editor1',
 		{
+            extraPlugins: 'colorbutton,colordialog',
 			toolbar :
 			[
 			['Source'],
 			['Cut','Copy','Paste','PasteText','PasteFromWord', 'SpellChecker', 'Scayt'],
 			['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
 			['Bold','Italic','Underline','Strike','-','Subscript','Superscript','-','TextColor','BGColor'],
-			['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+			['NumberedList','BulletedList','-','Outdent','Indent'],
 			['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 			['Link','Unlink','Anchor'],
 			['Image','Table','HorizontalRule','SpecialChar','PageBreak'],

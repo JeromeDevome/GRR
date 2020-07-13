@@ -3,7 +3,7 @@
  * admin_edit_room.php
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-24 12:25$
+ * Dernière modification : $Date: 2020-07-13 15:35$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -611,20 +611,23 @@ if ((!empty($room)) || (isset($area_id)))
         echo "</textarea>\n";
             ?>
             <script type="text/javascript">
+                //<![CDATA[
                 CKEDITOR.replace( 'editor1',
                 {
+                    extraPlugins: 'colorbutton,colordialog',
                     toolbar :
                     [
                     ['Source'],
                     ['Cut','Copy','Paste','PasteText','PasteFromWord', 'SpellChecker', 'Scayt'],
                     ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-                    ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-                    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+                    ['Bold','Italic','Underline','Strike','-','Subscript','Superscript','-','TextColor','BGColor'],
+                    ['NumberedList','BulletedList','-','Outdent','Indent'],
                     ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
                     ['Link','Unlink','Anchor'],
                     ['Image','Table','HorizontalRule','SpecialChar','PageBreak'],
                     ]
                 });
+                //]]>
             </script>
             <?php
     }
