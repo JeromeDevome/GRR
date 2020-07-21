@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-03 11:45$
+ * Dernière modification : $Date: 2020-07-20 19:05$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -27,9 +27,6 @@ require_once('include/settings.class.php');
 if (!Settings::load())
 	die("Erreur chargement settings");
 require_once("./include/session.inc.php");
-
-// Paramètres langage
-include "include/language.inc.php";
 
 $page = verif_page();
 
@@ -57,6 +54,10 @@ else
 	header("Location: ./login.php");
 	die();
 }	
+
+// Paramètres langage
+include "include/language.inc.php";
+
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES);
