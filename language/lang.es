@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2020-03-21
+# Last modification : 2020-07-24
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1034,4 +1034,8 @@ $vocab['ssmenuadm_actif'] = "Submenu active item";
 $vocab['default'] = "Default values";
 $vocab['resaToModerate'] = " reservation to moderate";
 $vocab['resasToModerate'] = " reservations to moderate";
+$vocab['swap_entry_confirm'] = " Etes-vous sûr de vouloir échanger la réservation ";
+$vocab['swap_entry_confirm1'] = " avec la réservation ";
+$vocab['swap_entry_choose'] = "Dans le tableau ci-dessous, cochez la ligne correspondant à la réservation que vous voulez échanger avec la réservation courante<br />puis Validez, ou Annulez pour revenir au planning.<br />";
+$vocab['Choose'] = "Choisir";
 ?>

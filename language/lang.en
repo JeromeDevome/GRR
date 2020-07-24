@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2020-03-21
+# Last modification : 2020-07-24
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1044,4 +1044,8 @@ $vocab['ssmenuadm_actif'] = "Submenu active item";
 $vocab['default'] = "Default values";
 $vocab['resaToModerate'] = " reservation to moderate";
 $vocab['resasToModerate'] = " reservations to moderate";
+$vocab['swap_entry_confirm'] = " You are about to swap entry ";
+$vocab['swap_entry_confirm1'] = " with entry ";
+$vocab['swap_entry_choose'] = "In the table below, check the line corresponding to the entry that you want to swap with the current entry<br />then Validate, or Cancel to go back to planning.<br />";
+$vocab['Choose'] = "Choose";
 ?>
