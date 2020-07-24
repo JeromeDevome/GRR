@@ -1048,4 +1048,8 @@ $vocab['swap_entry_confirm'] = " You are about to swap entry ";
 $vocab['swap_entry_confirm1'] = " with entry ";
 $vocab['swap_entry_choose'] = "In the table below, check the line corresponding to the entry that you want to swap with the current entry<br />then Validate, or Cancel to go back to planning.<br />";
 $vocab['Choose'] = "Choose";
+$vocab['admin_site_err1'] = "An error occurred while counting sites.";
+$vocab['admin_site_err2'] = "An error occurred while preparing the request to count sites.";
+$vocab['admin_site_err3'] = "An error occurred while preparing the request to read sites.";
+$vocab['check_right'] = "You want to check rights for id: ";
 ?>

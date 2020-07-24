@@ -3,7 +3,7 @@
  * admin_site.php
  * Interface d'accueil de Gestion des sites de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-23 12:15$
+ * Dernière modification : $Date: 2020-07-24 10:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,7 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
- // cette page reste à internationaliser
+
 $grr_script_name = "admin_site.php";
 /**
  * Compte le nombre de sites définis
@@ -34,7 +34,7 @@ function count_sites()
 			return $sites[0];
 		else
 		{
-			echo '      <p>Une erreur est survenue pendant le comptage des sites.</p>';
+			echo '      <p>'.get_vocab['admin_site_err1'].'</p>';
 			// fin de l'affichage de la colonne de droite
 			end_page();
 			die();
@@ -42,7 +42,7 @@ function count_sites()
 	}
 	else
 	{
-		echo '      <p>Une erreur est survenue pendant la préparation de la requète de comptage des sites.</p>';
+		echo '      <p>'.get_vocab['admin_site_err2'].'</p>';
 		// fin de l'affichage de la colonne de droite
 		end_page();
 		die();
@@ -179,7 +179,7 @@ function read_sites()
 		}
 		else
 		{
-			echo '      <p>Une erreur est survenue pendant la préparation de la requête de lecture des sites.</p>';
+			echo '      <p>'.get_vocab['admin_site_err3'].'</p>';
 		}
 		// fin de l'affichage de la colonne de droite et de la page
 		echo "</div></section></body></html>";
@@ -323,7 +323,7 @@ function delete_site($id)
 }
 function check_right($id)
 {
-    echo 'Vous voulez vérifier les droits pour l\'identifiant '.$id;
+    echo get_vocab['check_right'].$id;
 }
 
 include_once('../include/admin.inc.php');

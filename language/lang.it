@@ -1036,4 +1036,8 @@ $vocab['swap_entry_confirm'] = " Etes-vous sûr de vouloir échanger la réserva
 $vocab['swap_entry_confirm1'] = " avec la réservation ";
 $vocab['swap_entry_choose'] = "Dans le tableau ci-dessous, cochez la ligne correspondant à la réservation que vous voulez échanger avec la réservation courante<br />puis Validez, ou Annulez pour revenir au planning.<br />";
 $vocab['Choose'] = "Choisir";
+$vocab['admin_site_err1'] = "Une erreur est survenue pendant le comptage des sites.";
+$vocab['admin_site_err2'] = "Une erreur est survenue pendant la préparation de la requète de comptage des sites.";
+$vocab['admin_site_err3'] = "Une erreur est survenue pendant la préparation de la requête de lecture des sites.";
+$vocab['check_right'] = "Vous voulez vérifier les droits pour l'identifiant :";
 ?>
