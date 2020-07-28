@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2020-07-24
+# Last modification : 2020-07-28
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1040,4 +1040,61 @@ $vocab['admin_site_err1'] = "Une erreur est survenue pendant le comptage des sit
 $vocab['admin_site_err2'] = "Une erreur est survenue pendant la préparation de la requète de comptage des sites.";
 $vocab['admin_site_err3'] = "Une erreur est survenue pendant la préparation de la requête de lecture des sites.";
 $vocab['check_right'] = "Vous voulez vérifier les droits pour l'identifiant :";
+$vocab['error_settings_load'] = "Erreur chargement settings";
+$vocab['delete_entry_before'] = "Supprimer des réservations commençant avant une date donnée";
+$vocab['delete_entry_before1'] = "Les réservations antérieures au ";
+$vocab['delete_entry_before2'] = " à 00 heures 00 dans la salle ";
+$vocab['delete_entry_before3'] = " ont été supprimées.";
+$vocab['delete_entry_error'] = "Erreur dans la suppression des réservations dans la salle ";
+$vocab['delete_entry_before_expl'] = "Utiliser ce script pour supprimer des réservations dans des domaines donnés avant une date donnée:<br />toutes les réservations avant la date donnée à minuit dans les domaines cochés seront supprimées";
+$vocab['delete_entry_warn'] = "Il est conseillé de procéder à la sauvegarde de la base de données avant la suppression";
+$vocab['delete_entry_areas'] = "Sélectionnez les domaines concernés par la suppression";
+$vocab['delete_entry_end'] = "Jour de fin de la suppression <i>(opération irréversible ! )</i>";
+$vocab['delete_entry_go'] = " Supprimer les réservations ! ";
+$vocab['delete_entry_after'] = "Supprimer des réservations commençant après une date donnée";
+$vocab['delete_entry_after1'] = "Les réservations postérieures au ";
+$vocab['delete_entry_after_expl'] = "Utiliser ce script pour supprimer des réservations dans des domaines donnés après une date donnée:<br />toutes les réservations commençant après la date donnée à 00 heures dans les domaines cochés seront supprimées";
+$vocab['delete_entry_start'] = "Jour de début de la suppression <i>(opération irréversible ! )</i>";
+$vocab['save_err'] = "Erreur lors de l'enregistrement de ";
+$vocab['backup_pwd_save_err'] = $vocab['save_err']." motdepasse_backup !";
+$vocab['disable_login_save_err'] = $vocab['save_err']." disable_login !";
+$vocab['url_disconnect_save_err'] = $vocab['save_err']." url_disconnect !";
+$vocab['ip_autorise_save_err'] = $vocab['save_err']." ip_autorise !";
+$vocab['sessionMaxLength_save_err'] = $vocab['save_err']." sessionMaxLength !";
+$vocab['pass_leng_save_err'] = $vocab['save_err']." pass_leng !";
+$vocab['explain_restore'] = "En cas de perte de donnée ou de problème sur la base GRR, cette fonction vous permet de la retrouver dans l'état antérieur lors d'une sauvegarde. Vous devez sélectionner un fichier créé à l'aide de la fonction Lancer une sauvegarde.";
+$vocab['warning_restore'] = "Attention! Restaurer la base vous fera perdre toutes les données qu'elle contient actuellement. De plus, tous les utilisateurs présentement connectés, ainsi que vous-mêmes, serez déconnectés. Alors, il est conseillé de créer d'abord une sauvegarde et de vous assurer que vous êtes le seul connecté.";
+$vocab['automatic_mail_save_err'] = $vocab['save_err']." automatic_mail !";
+$vocab['envoyer_email_avec_formulaire_save_err'] = $vocab['save_err']." envoyer_email_avec_formulaire !";
+$vocab['javascript_info_disabled_save_err'] = $vocab['save_err']." javascript_info_disabled !";
+$vocab['javascript_info_admin_disabled_save_err'] = $vocab['save_err']." javascript_info_admin_disabled !";
+$vocab['grr_mail_method_save_err'] = $vocab['save_err']." grr_mail_method !";
+$vocab['grr_mail_smtp_save_err'] = $vocab['save_err']." grr_mail_smtp !";
+$vocab['grr_mail_Username_save_err'] = $vocab['save_err']." grr_mail_Username !";
+$vocab['grr_mail_Password_save_err'] = $vocab['save_err']." grr_mail_Password !";
+$vocab['grr_mail_from_save_err'] = $vocab['save_err']." grr_mail_from !";
+$vocab['grr_mail_fromname_save_err'] = $vocab['save_err']." grr_mail_fromname !";
+$vocab['smtp_secure_save_err'] = $vocab['save_err']." smtp_secure !";
+$vocab['smtp_port_save_err'] = $vocab['save_err']." smtp_port !";
+$vocab['grr_mail_Bcc_save_err'] = $vocab['save_err']." grr_mail_Bcc !";
+$vocab['verif_reservation_auto_save_err'] = $vocab['save_err']." verif_reservation_auto !";
+$vocab['invalid_test_mail_address'] = "L'adresse mail de test n'est pas valide";
+$vocab['module_info_missing'] = "Impossible de trouver le fichier d'installation ou d'infos !\\n";
+$vocab['zip_import_err'] = "Le module n\'a pas pu être importé : la seule extension autorisée est zip.\\n";
+$vocab['module_transfer_err'] = "Le module n\'a pas pu être importé : problème de transfert.";
+$vocab['transfer_err'] = " n\'a pas pu être transféré sur le répertoire \"temp\".";
+$vocab['refer_to_admin'] = " Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
+$vocab['module_not_installed'] = "Le module n\'a pas pu être installé\\n";
+$vocab['archive_not_deleted'] = "Installation réussie, cependant archive non supprimée.  Cette erreur peut être ignorée.\\n";
+$vocab['module_not_recorded'] = "Le module n\'a pas pu être enregistré !";
+$vocab['temp_access'] = " Problème d\'écriture sur le répertoire \"temp\".";
+$vocab['invalid_file'] = "Le fichier sélectionné n'est pas valide !\\n";
+$vocab['auteur'] = "Auteur";
+$vocab['licence'] = "Licence";
+$vocab['activation'] = "Activation";
+$vocab['Erreur lecture'] = "Erreur lecture";
+$vocab['Impossible'] = "Impossible";
+$vocab['Activer'] = "Activer";
+$vocab['Désactiver'] = "Désactiver";
+$vocab['Installer'] = "Installer";
 ?>
