@@ -913,8 +913,8 @@ function begin_page($title, $page = "with_session")
 		$a .= '<script type="text/javascript" src="js/selection.js" ></script>'.PHP_EOL;
 	if (@file_exists('js/'.$clock_file))
 		$a .= '<script type="text/javascript" src="js/'.$clock_file.'"></script>'.PHP_EOL;
-	if (substr(phpversion(), 0, 1) == 3)
-		$a .= get_vocab('not_php3');
+	if (substr(phpversion(), 0, 1) < 7)
+		$a .= get_vocab('not_php');
 
 	$a .= '</head>'.PHP_EOL;
 	$a .= '<body>'.PHP_EOL;
@@ -5516,8 +5516,8 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<script type="text/javascript" src="js/selection.js" ></script>'.PHP_EOL;
 	if (@file_exists('js/'.$clock_file))
 		$a .= '<script type="text/javascript" src="js/'.$clock_file.'"></script>'.PHP_EOL;
-	if (substr(phpversion(), 0, 1) == 3)
-		$a .= get_vocab('not_php3');
+	if (substr(phpversion(), 0, 1) < 7)
+		$a .= get_vocab('not_php');
 
 	$a .= '</head>'.PHP_EOL;
 	return $a;
