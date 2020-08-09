@@ -14,7 +14,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-
+/* Commenté le 09/08/2020
 function returnmsg($type,$test, $status, $msg = '')
 {
 	echo encode_message_utf8('<div class="alert alert-'.$type.'" role="alert"><h3>'.$test);
@@ -22,7 +22,7 @@ function returnmsg($type,$test, $status, $msg = '')
 	if ($msg != '')
 		echo encode_message_utf8("($msg)"),PHP_EOL;
 	echo '</div>',PHP_EOL;
-}
+}*/
 
 function getDaysInMonth($month, $year)
 {
@@ -321,14 +321,14 @@ function bouton_retour_haut()
 		'});',PHP_EOL,'$("#toTop").click(function()',PHP_EOL,'{',PHP_EOL,'$("body,html").animate({scrollTop:0},800);',PHP_EOL,
 		'});',PHP_EOL,'});',PHP_EOL,'</script>',PHP_EOL;
 }
-
+/* Commenté le 09/08/2020
 function bouton_aller_bas()
 {
 	echo '<script type="text/javascript">',PHP_EOL,'$(function()',PHP_EOL,'{',PHP_EOL,'$(window).scroll(function()',PHP_EOL,'{',PHP_EOL,
 		'if ($(this).scrollTop() != 800)',PHP_EOL,'$("#toBot").fadeIn();',PHP_EOL,'else',PHP_EOL,'$("#toBot").fadeOut();',PHP_EOL,
 		'});',PHP_EOL,'$("#toBot").click(function()',PHP_EOL,'{',PHP_EOL,'$("body,html").animate({scrollTop:800},0);',PHP_EOL,
 		'});',PHP_EOL,'});',PHP_EOL,'</script>',PHP_EOL;
-}
+}*/
 /**
  *function affiche_ressource_empruntee
  *- $id_room : identifiant de la ressource
@@ -1863,6 +1863,7 @@ function get_default_site()
 // fonction get_default_room
 /*  renvoie id_room de la ressource par défaut de l'utilisateur, sinon celle de la table setting, sinon celle de plus petit indice dans la table room 
 */
+/* Commenté le 09/08/2020
 function get_default_room(){
     $user = getUserName();
     if ($user != ''){
@@ -1878,6 +1879,7 @@ function get_default_room(){
         return($id_room);
     }
 }
+*/
 # Get the local day name based on language. Note 2000-01-02 is a Sunday.
 /**
  * @param integer $daynumber
@@ -1994,6 +1996,7 @@ ancien code. Je ne vois pas l'intérêt du test YN le 25/09/19
 }*/
 
 // Renvoie une balise span avec un style background-color correspondant au type de  la réservation
+/* Commenté le 09/08/2020
 function span_bgground($colclass)
 {
 	global $tab_couleur;
@@ -2002,7 +2005,7 @@ function span_bgground($colclass)
 	$row = grr_sql_row($res, 0);
 	echo '<span style="background-color: '.$row[0].'; background-image: none; background-repeat: repeat; background-attachment: scroll;color: '.$row[1].';">'.PHP_EOL;
 }
-
+*/
 //Output a start table cell tag <td> with color class and fallback color.
 function tdcell($colclass, $width = '')
 {
@@ -2074,6 +2077,7 @@ function show_colour_key($area_id)
 	}
 }
 //Display the entry-type color keys. This has up to 2 rows, up to 10 columns.
+/* Commenté le 09/08/2020
 function show_colour_keys()
 {
 	echo '<table class="legende">';
@@ -2103,7 +2107,9 @@ function show_colour_keys()
 	}
 	echo '</table>'.PHP_EOL;
 }
+*/
 // transforme une chaine de caractères en couleur hexadécimale valide
+/* Commenté le 09/08/2020
 function valid_color($entry)
 {
 	$out = preg_replace('/[^a-fA-F0-9]/','',$entry);
@@ -2117,6 +2123,7 @@ function valid_color($entry)
 	}
 	return($out);
 }
+*/
 //Round time down to the nearest resolution
 function round_t_down($t, $resolution, $am7)
 {
@@ -5002,6 +5009,7 @@ $(\'.clockpicker\').clockpicker({
 });
 </script>';
 }
+/* Commenté le 09/08/2020
 function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaultsec)
 {
 	if (isset ($_GET['id']))
@@ -5067,7 +5075,8 @@ function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaults
         });
         </script>';
 }
-
+*/
+/* Commenté le 09/08/2020
 function spinner ($duration)
 {
 	echo "<input class=\"form-control\" name=\"duration\" value=\"" .$duration. "\" id=\"spinner\" />";
@@ -5078,7 +5087,7 @@ function spinner ($duration)
 			page: 10,
 		});});
 </script>";
-}
+}*/
 /** supprimerReservationsUtilisateursEXT()
  *
  * Supprime les réservations des membres qui proviennent d'une source "EXT"
@@ -5730,6 +5739,7 @@ function start_page_w_header($day = '', $month = '', $year = '', $type_session =
 /*
 ** Fonction qui affiche le début d'une page sans entête et avec une balise <section>
 */
+/* Commenté le 09/08/2020
 function start_page_wo_header($titre, $type_session = 'with_session')
 {
     // pour le traitement des modules
@@ -5767,7 +5777,7 @@ function start_page_wo_header($titre, $type_session = 'with_session')
     // Debut de la page
     echo '<section>'.PHP_EOL;
     // doit être fermé par la fonction end_page
-} 
+} */
 /* Fonction qui ferme les balises restées ouvertes dans les précédentes */
 function end_page()
 {
