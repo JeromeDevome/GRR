@@ -201,6 +201,8 @@ get_vocab_admin("sum_by_descrip");
 get_vocab_admin("action");
 
 get_vocab_admin("Activer_module_jours_cycles");
+get_vocab_admin("explication_debut_Jours_Cycles");
+get_vocab_admin("explain_multisite");
 get_vocab_admin("Activer_module_multisite");
 
 get_vocab_admin("Module_Ext_Import_Description");
