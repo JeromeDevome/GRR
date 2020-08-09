@@ -85,7 +85,7 @@ if (isset($_POST['login']) && isset($_POST['password']))
 	{
 		$message = get_vocab("echec_connexion_GRR");
 		$message .= "<br />". get_vocab("connexion_a_grr_non_autorisee");
-		$message .= "<br />". get_vocab("format identifiant incorrect");
+		$message .= "<br />". get_vocab("format_identifiant_incorrect");
 	}
 	else if ($result == "7")
 	{

@@ -104,6 +104,6 @@ if ($area_access == 'r')
 	}
 }
 if ($a_privileges == 'n')
-	echo "<p>".get_vocab("aucun autilisateur").".</p>";
+	echo "<p>".get_vocab("aucun_autilisateur").".</p>";
 include "include/trailer.inc.php";
 ?>

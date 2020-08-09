@@ -108,7 +108,7 @@ $nom_picture = '';
 if ($row['picture_room'] != '') $nom_picture = "./personnalisation/".$gcDossierImg."/ressources/".$row['id']."/".$row['picture_room'];
 echo "<div style=\"text-align:center; margin-top:30px\"><b>";
 if (@file_exists($nom_picture) && $nom_picture)
-	echo get_vocab("Image de la ressource").": </b><br /><img src=\"".$nom_picture."\" alt=\"logo\" />";
+	echo get_vocab("Image_de_la_ressource").": </b><br /><img src=\"".$nom_picture."\" alt=\"logo\" />";
 else
 	echo get_vocab("Pas_image_disponible")."</b>";
 echo "</div>";

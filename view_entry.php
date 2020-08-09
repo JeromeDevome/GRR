@@ -650,17 +650,17 @@ if ($active_ressource_empruntee == 'y')
             echo " disabled ";
         echo " />".get_vocab("signaler_reservation_en_cours_option_2");
         if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
-            echo "<br /><i>(".get_vocab("necessite fonction mail automatique").")</i>";
+            echo "<br /><i>(".get_vocab("necessite_fonction_mail_automatique").")</i>";
         if (Settings::get("automatic_mail") == 'yes')
         {
             echo "<br /><br /><input type=\"checkbox\" name=\"envoyer_mail\" value=\"y\" ";
             if ($mail_exist == "")
                 echo " disabled ";
-            echo " />".get_vocab("envoyer maintenant mail retard");
+            echo " />".get_vocab("envoyer_maintenant_mail_retard");
             echo "<input type=\"hidden\" name=\"mail_exist\" value=\"".$mail_exist."\" />";
         }
      /*   if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
-            echo "<br /><i>(".get_vocab("necessite fonction mail automatique").")</i>"; en doublon ? YN */ 
+            echo "<br /><i>(".get_vocab("necessite_fonction_mail_automatique").")</i>"; en doublon ? YN */ 
         //echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=\"".get_vocab("save")."\" /></div>";
 		echo "</fieldset>\n";
       /*  echo "<div><input type=\"hidden\" name=\"day\" value=\"".$day."\" />";

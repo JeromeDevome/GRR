@@ -117,7 +117,7 @@ if (grr_sql_count($res) != 0)
 }
 $display_type .=  '</select>'.PHP_EOL;
 if ($aff_default)
-	$display_type .= '<input type="button" class="btn btn-primary" value="'.get_vocab("definir par defaut").'" onclick="setdefault(\'type_default\',document.getElementById(\'main\').type.options[document.getElementById(\'main\').type.options.selectedIndex].text)" />'.PHP_EOL;
+	$display_type .= '<input type="button" class="btn btn-primary" value="'.get_vocab("definir_par_defaut").'" onclick="setdefault(\'type_default\',document.getElementById(\'main\').type.options[document.getElementById(\'main\').type.options.selectedIndex].text)" />'.PHP_EOL;
 $display_type .= '</td></tr></table>'.PHP_EOL;
 if ($nb_type > 1)
 	echo $display_type;

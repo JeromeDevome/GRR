@@ -64,7 +64,7 @@ if (isset($_POST["objet_message"]))
 $casier = isset($_POST["casier"]) ? $_POST["casier"] : '';
 if ($error_subject == 'y')
 	$action='';
-echo "<h1>".get_vocab("Envoi d_un courriel")."</h1>";
+echo "<h1>".get_vocab("Envoi_d_un courriel")."</h1>";
 switch ($action)
 {
 //envoi du message
@@ -116,7 +116,7 @@ switch ($action)
 	default:
 	echo "<table>";
 	if (($fin_session == 'n') && (getUserName() != ''))
-		echo "<tr><td>".get_vocab("Message poste par").get_vocab("deux_points")."</td><td><b> ".affiche_nom_prenom_email(getUserName(), "", $type = "nomail")."</b></td></tr>\n";
+		echo "<tr><td>".get_vocab("Message_poste_par").get_vocab("deux_points")."</td><td><b> ".affiche_nom_prenom_email(getUserName(), "", $type = "nomail")."</b></td></tr>\n";
 	echo "<tr><td>".get_vocab("webmaster_name").get_vocab("deux_points")."</td><td><b> ".Settings::get("webmaster_name")."</b></td></tr>\n";
 	echo "<tr><td>".get_vocab("company").get_vocab("deux_points")."</td><td><b> ".Settings::get("company")."</b></td></tr>\n";
 	echo "<tr><td colspan=\"2\">".get_vocab("Redigez votre message ci-dessous").get_vocab("deux_points")."</td></tr>\n";
@@ -128,10 +128,10 @@ switch ($action)
 		echo "<input type=\"hidden\" name=\"cible\" value=\"".$cible."\" />\n";
 	if ($type_cible != '')
 		echo "<input type=\"hidden\" name=\"type_cible\" value=\"".$type_cible."\" />\n";
-	echo get_vocab("Objet du message").get_vocab("deux_points");
+	echo get_vocab("Objet_du_message").get_vocab("deux_points");
 	echo "<br /><input type=\"text\" name=\"objet_message\" id=\"objet_message\" size=\"40\" maxlength=\"256\" value='' placeholder=\"Objet\" required/>\n";
 	echo "<br /><textarea name=\"message\" cols=\"50\" rows=\"5\" placeholder=\"Votre message\">".$corps_message."</textarea><br />";
-	echo get_vocab("E-mail pour la reponse").get_vocab("deux_points");
+	echo get_vocab("Email_pour_la_reponse").get_vocab("deux_points");
 	echo "<input type=\"text\" name=\"email_reponse\" id=\"email_reponse\" size=\"40\" maxlength=\"256\" ";
 	if ($email_reponse != '')
 		echo "value='".$email_reponse."' ";

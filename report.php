@@ -522,7 +522,7 @@ if (($summarize != 4) && ($summarize != 5))
             echo "<option value=\"0\" ";
             if (isset($type_recherche[$k]) && ($type_recherche[$k] == "0"))
                 echo " selected=\"selected\" ";
-            echo ">".get_vocab("ne contient pas").get_vocab("deux_points")."</option>\n";
+            echo ">".get_vocab("ne_contient_pas").get_vocab("deux_points")."</option>\n";
             echo "</select></div>";
             if (!isset($texte_default[$k])) $texte_default[$k] ="";
             echo "<div class=\"form-group\"><input class=\"form-control\" type=\"text\" name=\"texte[]\" value=\"".$texte_default[$k]."\" size=\"20\" /></div></div></div></td></tr>";

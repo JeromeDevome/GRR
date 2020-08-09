@@ -541,7 +541,7 @@ function validate_and_submit (){
         if ((document.forms["main"].beneficiaire.options[0].selected) &&(document.forms["main"].benef_ext_nom.value == ""))
         //if ((document.forms["main"].beneficiaire.value == "") &&(document.forms["main"].benef_ext_nom.value == ""))
         {
-            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("you_have_not_entered").get_vocab("deux_points").lcfirst(get_vocab("nom beneficiaire")) ?></div>');
+            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("you_have_not_entered").get_vocab("deux_points").lcfirst(get_vocab("nom_beneficiaire")) ?></div>');
             err = 1;
         }
     }
@@ -998,7 +998,7 @@ if (($delais_option_reservation > 0) && (($modif_option_reservation == 'y') || (
 	{
 		echo "<input type=\"hidden\" name=\"option_reservation\" value=\"".$option_reservation."\" /> <b>".
 		time_date_string_jma($option_reservation,$dformat)."</b>\n";
-		echo "<br /><input type=\"checkbox\" name=\"confirm_reservation\" value=\"y\" />".get_vocab("confirmer reservation")."\n";
+		echo "<br /><input type=\"checkbox\" name=\"confirm_reservation\" value=\"y\" />".get_vocab("confirmer_reservation")."\n";
 	}
 	echo '<br /><div class="alert alert-danger" role="alert">'.get_vocab("avertissement_reservation_a_confirmer").'</b></div>'.PHP_EOL;
 	echo "</div></td></tr>\n";

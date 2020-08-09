@@ -78,7 +78,7 @@ if ($flag_qui_peut_reserver_pour ) // on crée les sélecteurs à afficher
 }
 echo '</select>'.PHP_EOL;
 
-echo '<input type="button" class="btn btn-primary" value="'.get_vocab("definir par defaut").'" onclick="setdefault(\'beneficiaire_default\',document.getElementById(\'main\').beneficiaire.options[document.getElementById(\'main\').beneficiaire.options.selectedIndex].value)" />'.PHP_EOL;
+echo '<input type="button" class="btn btn-primary" value="'.get_vocab("definir_par_defaut").'" onclick="setdefault(\'beneficiaire_default\',document.getElementById(\'main\').beneficiaire.options[document.getElementById(\'main\').beneficiaire.options.selectedIndex].value)" />'.PHP_EOL;
 //echo '<div id="div_profilBeneficiaire">'.PHP_EOL;
 //echo '</div>'.PHP_EOL;
 /*if (isset($statut_beneficiaire))
@@ -92,7 +92,7 @@ else
 echo '<div class="form-group">'.PHP_EOL;
 echo '    <div class="input-group">'.PHP_EOL;
 echo '      <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>'.PHP_EOL;
-echo '      <input class="form-control" type="text" name="benef_ext_nom" value="'.htmlspecialchars($tab_benef["nom"]).'" placeholder="'.get_vocab("nom beneficiaire").'">'.PHP_EOL;
+echo '      <input class="form-control" type="text" name="benef_ext_nom" value="'.htmlspecialchars($tab_benef["nom"]).'" placeholder="'.get_vocab("nom_beneficiaire").'">'.PHP_EOL;
 echo '    </div>'.PHP_EOL;
 echo '  </div>'.PHP_EOL;
 $affiche_mess_asterisque = true;
@@ -101,7 +101,7 @@ if (Settings::get("automatic_mail") == 'yes')
 	echo '<div class="form-group">'.PHP_EOL;
 	echo '    <div class="input-group">'.PHP_EOL;
 	echo '      <div class="input-group-addon"><span class="glyphicon glyphicon-envelope" ></span></div>'.PHP_EOL;
-	echo '      <input class="form-control" type="email" name="benef_ext_email" value="'.htmlspecialchars($tab_benef["email"]).'" placeholder="'.get_vocab("email beneficiaire").'">'.PHP_EOL;
+	echo '      <input class="form-control" type="email" name="benef_ext_email" value="'.htmlspecialchars($tab_benef["email"]).'" placeholder="'.get_vocab("email_beneficiaire").'">'.PHP_EOL;
 	echo '    </div>'.PHP_EOL;
 	echo '  </div>'.PHP_EOL;
 }

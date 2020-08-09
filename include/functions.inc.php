@@ -352,7 +352,7 @@ function affiche_ressource_empruntee($id_room, $type = "logo")
 				$beneficiaire_ext = grr_sql_query1("SELECT beneficiaire_ext FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
 				echo '<br /><b><span class="avertissement">'.PHP_EOL;
 				echo '<img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("ressource actuellement empruntee").'" width="30" height="30" class="image" />'.PHP_EOL;
-				echo get_vocab("ressource actuellement empruntee").' '.get_vocab("nom emprunteur").get_vocab("deux_points").affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"withmail");
+				echo get_vocab("ressource actuellement empruntee").' '.get_vocab("nom_emprunteur").get_vocab("deux_points").affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"withmail");
 				echo '<a href="view_entry.php?id='.$id_resa.'&amp;mode=page">'.get_vocab("entryid").$id_resa.'</a>'.PHP_EOL.'</span></b>'.PHP_EOL;
 			}
 			else
@@ -3023,7 +3023,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 
 		$message .= $vocab["message_mail_retard"].$vocab["deux_points"]." \n";
 		$message .= $room_name." (".$area_name.") \n";
-		$message .= $vocab["nom emprunteur"].$vocab["deux_points"];
+		$message .= $vocab["nom_emprunteur"].$vocab["deux_points"];
 		$message .= affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
 		if ($beneficiaire_email != "")
 			$message .= $vocab["un email envoye"].$beneficiaire_email." \n";

@@ -386,7 +386,7 @@ $utilisateur['reg_login'] = $user_login;
 					if ($test_admin_site >= 1)
 					{
 						$a_privileges = 'y';
-						$trad['dAdministrateurSite'] = "<li>".get_vocab("site")." ".$row_site[1].get_vocab("deux_points")." ".get_vocab("administrateur du site")."</li>";
+						$trad['dAdministrateurSite'] = "<li>".get_vocab("site")." ".$row_site[1].get_vocab("deux_points")." ".get_vocab("administrateur_du_site")."</li>";
 					}
 				}
 			}
@@ -457,18 +457,18 @@ $utilisateur['reg_login'] = $user_login;
 					$dAdministrateurDomaine .= "<ul>";
 					
 					if ($is_admin == 'y')
-						$dAdministrateurDomaine .= "<li>".get_vocab("administrateur du domaine")."</li>";
+						$dAdministrateurDomaine .= "<li>".get_vocab("administrateur_du_domaine")."</li>";
 					if ($is_restreint == 'y')
-						$dAdministrateurDomaine .= "<li>".get_vocab("a acces au domaine")."</li>";
+						$dAdministrateurDomaine .= "<li>".get_vocab("a_acces_au_domaine")."</li>";
 					if ($is_gestionnaire != '')
 					{
-						$dAdministrateurDomaine .= "<li>".get_vocab("gestionnaire des resources suivantes")."<br />";
+						$dAdministrateurDomaine .= "<li>".get_vocab("gestionnaire_des_resources_suivantes")."<br />";
 						$dAdministrateurDomaine .= $is_gestionnaire;
 						$dAdministrateurDomaine .= "</li>";
 					}
 					if ($is_mail != '')
 					{
-						$dAdministrateurDomaine .= "<li>".get_vocab("est prevenu par mail")."<br />";
+						$dAdministrateurDomaine .= "<li>".get_vocab("est_prevenu_par_mail")."<br />";
 						$dAdministrateurDomaine .= $is_mail;
 						$dAdministrateurDomaine .= "</li>";
 					}
@@ -481,7 +481,7 @@ $utilisateur['reg_login'] = $user_login;
 		if ($a_privileges == 'n')
 		{
 			if ($utilisateur['statut'] == 'administrateur')
-				$trad['dAdministrateurOuRien'] = "<li>".get_vocab("administrateur general")."</li>";
+				$trad['dAdministrateurOuRien'] = "<li>".get_vocab("administrateur_general")."</li>";
 			else
 				$trad['dAdministrateurOuRien'] = "<li>".get_vocab("pas de privileges")."</li>";
 		}

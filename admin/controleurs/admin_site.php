@@ -178,7 +178,7 @@ function update_site($id)
 		exit();
 	}
 
-	$trad['addsite'] = get_vocab('modifier site');
+	$trad['addsite'] = get_vocab('modifier_site');
 	$trad['dIdSite'] = $id;
 	$trad['dAction'] = 'update';
 	get_vocab_admin('required');
