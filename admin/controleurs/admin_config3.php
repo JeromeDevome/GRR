@@ -126,6 +126,47 @@ if (isset($_GET['smtp_port']))
 		die();
 	}
 }
+if (isset($_GET['smtp_allow_self_signed']))
+{
+	if (!Settings::set("smtp_allow_self_signed", $_GET['smtp_allow_self_signed']))
+	{
+		echo "Erreur lors de l'enregistrement de smtp_allow_self_signed !<br />";
+		die();
+	}
+}
+if (isset($_GET['smtp_cafile']))
+{
+	if (!Settings::set("smtp_cafile", $_GET['smtp_cafile']))
+	{
+		echo "Erreur lors de l'enregistrement de smtp_cafile !<br />";
+		die();
+	}
+}
+if (isset($_GET['smtp_verify_peer_name']))
+{
+	if (!Settings::set("smtp_verify_peer_name", $_GET['smtp_verify_peer_name']))
+	{
+		echo "Erreur lors de l'enregistrement de smtp_verify_peer_name !<br />";
+		die();
+	}
+}
+if (isset($_GET['smtp_verify_peer']))
+{
+	if (!Settings::set("smtp_verify_peer", $_GET['smtp_verify_peer']))
+	{
+		echo "Erreur lors de l'enregistrement de smtp_verify_peer !<br />";
+		die();
+	}
+}
+if (isset($_GET['smtp_verify_depth']))
+{
+	if (!Settings::set("smtp_verify_depth", $_GET['smtp_verify_depth']))
+	{
+		echo "Erreur lors de l'enregistrement de smtp_verify_depth !<br />";
+		die();
+	}
+}
+
 // Si Email test renseigné on y envois un mail
 if (isset($_GET['mail_test']) && !empty($_GET['mail_test']))
 {
@@ -207,6 +248,7 @@ get_vocab_admin("envoyer_email_avec_formulaire_non");
 get_vocab_admin("Parametres_configuration_envoi_automatique_mails");
 get_vocab_admin("Explications_des_Parametres_configuration_envoi_automatique_mails");
 get_vocab_admin("methode_mail");
+get_vocab_admin("methode_mail_bloque");
 get_vocab_admin("methode_mail_desactive");
 get_vocab_admin("methode_smtp");
 get_vocab_admin("Explications_methode_smtp_1");
@@ -216,6 +258,11 @@ get_vocab_admin("Email_expediteur_messages_automatiques");
 get_vocab_admin("Nom_expediteur_messages_automatiques");
 get_vocab_admin("smtp_secure");
 get_vocab_admin("smtp_port");
+get_vocab_admin("smtp_param_sup");
+get_vocab_admin("smtp_allow_self_signed");
+get_vocab_admin("smtp_verify_peer_name");
+get_vocab_admin("smtp_verify_peer");
+get_vocab_admin("smtp_verify_depth");
 get_vocab_admin("mail_test");
 get_vocab_admin("copie_cachee");
 
