@@ -45,7 +45,7 @@
     "inputmask": "^3.3.7",
     "ion-rangeslider": "^2.3",
     "ionicons": "^3",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jquery-knob": "^1.2.11",
     "jquery-sparkline": "^2.4",
     "jquery-ui": "^1.12.1",
