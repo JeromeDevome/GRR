@@ -92,7 +92,6 @@ class Email{
 			'" . protect_data_sql($message) . "'
 			)
 		;";
-		echo $sql;
 		grr_sql_query($sql);
 
 	}
