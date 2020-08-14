@@ -86,7 +86,9 @@ $mail_corps  .= " h ".$_POST['dureemin']. " \n</body></html>";
 $sujet ="Réservation d'une salle";
 $destinataire = Settings::get("mail_destinataire");
 
-require_once 'phpmailer/PHPMailerAutoload.php';
+require_once 'phpmailer/src/PHPMailer.php';
+require_once 'phpmailer/src/SMTP.php';
+require_once 'phpmailer/src/Exception.php';
 require_once 'include/mail.class.php';
 
 Email::Envois($destinataire, $sujet, $mail_corps, $_POST['email'], '', '');
