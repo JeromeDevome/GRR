@@ -21,7 +21,7 @@
 		<header>
 			<div id="panel">
 				<div class="logo" height="100">
-					<a href="{{ d.pageAccueil |raw }}"><img src="{{ d.logo }}" alt="logo"></a>
+					{%if d.logo != ''%}<a href="{{ d.pageAccueil |raw }}"><img src="{{ d.logo }}" alt="logo"></a>{%endif%}
 				</div>
 				<div class="accueil">
 					<h2><a href="{{ d.pageAccueil |raw }}">{{ settings.company }}</a></h2>
