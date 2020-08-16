@@ -139,3 +139,4 @@ INSERT INTO grr_setting VALUES ('smtp_allow_self_signed', 'false');
 INSERT INTO grr_setting VALUES ('smtp_verify_peer_name', 'true');
 INSERT INTO grr_setting VALUES ('smtp_verify_peer', 'true');
 INSERT INTO grr_setting VALUES ('smtp_verify_depth', '3');
+INSERT INTO grr_setting VALUES ('backup_date', '');

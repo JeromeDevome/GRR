@@ -26,7 +26,6 @@ if(isset($_GET['p'])){
 
 // GRR
 include "../include/admin.inc.php";
-include "./modeles/AdminFonctions.php";
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
