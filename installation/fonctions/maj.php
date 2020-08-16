@@ -730,7 +730,6 @@ function execute_maj($version_old, $version_grr)
 		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_peer_name', 'true')");
 		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_peer', 'true')");
 		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_depth', '3')");
-		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('backup_date', '')");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");

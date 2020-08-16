@@ -193,6 +193,4 @@ while ($j < count($liste_tables))
 }
 $fd.="#********* fin du fichier ***********";
 echo $fd;
-
-Settings::set("backup_date", time());
 ?>
