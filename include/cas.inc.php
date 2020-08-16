@@ -8,7 +8,7 @@
  * @copyright Copyright 2008-2008 Laurent Delineau
  * @author    JeromeB & Laurent Delineau & Olivier MOUNIER
  * @author    Laurent Delineau
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @author    Yan Naessens
  * @copyright Copyright 2017 Yan Naessens
  * @link      http://www.gnu.org/licenses/licenses.html
