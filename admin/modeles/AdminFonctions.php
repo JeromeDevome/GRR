@@ -88,6 +88,13 @@ class AdminFonctions
 			$lien = "?p=admin_config";
 		}
 
+		if ( (time() - 2592000) > Settings::get("backup_date") ){
+			$type = "warning";
+			$MessageWarning = "La dernière sauvegarde de la BDD date de plus d'un mois !";
+			$NomLien = "Faire une sauvegarde";
+			$lien = "admin_save_mysql.php?flag_connect=yes";
+		}
+
 		return array($type, $MessageWarning, $NomLien, $lien);
 	}
 
