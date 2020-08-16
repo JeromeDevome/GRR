@@ -145,8 +145,8 @@ while ($j < count($liste_tables))
 		$schema = $row[1].";";
 		$fd.="$schema\n";
 	}
-	//On ne sauvegarde pas les données de la table ".TABLE_PREFIX."_log
-	if ($donnees && $temp!="".TABLE_PREFIX."_log")
+	//On ne sauvegarde pas les données des tables de logs
+	if ($donnees && $temp!="".TABLE_PREFIX."_log" && $temp!="".TABLE_PREFIX."_log_mail")
 	{
 		// les données de la table
 		$fd.="#\n# Données de $temp\n#\n";
