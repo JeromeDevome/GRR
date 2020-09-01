@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2020-07-28
+# Last modification : 2020-09-08
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1097,4 +1097,131 @@ $vocab['Impossible'] = "Impossible";
 $vocab['Activer'] = "Activer";
 $vocab['Désactiver'] = "Désactiver";
 $vocab['Installer'] = "Installer";
+$vocab['admin_config_imap_pop'] = "Configuration de l'authentification IMAP/POP";
+$vocab['the_file'] = "Le fichier ";
+$vocab['not_writable_and_reload'] = " n'est pas accessible en écriture.<br />Vous devez modifier les permissions sur ce fichier puis recharger cette page.";
+$vocab['cant_create'] = "Impossible de créer le fichier";
+$vocab['renommer'] = "Vous pouvez renommer manuellement le fichier";
+$vocab['en'] = "en";
+$vocab['donner_droits'] = "et lui donner les droits suffisants.";
+$vocab['modifier_droits'] = "Vous devez modifier les droits sur le répertoire include.";
+$vocab['cant_record'] = "Impossible d'enregistrer le fichier";
+$vocab['imap_record_success'] = "Les donnees concernant l'accès à l'annuaire IMAP/POP sont maintenant enregistrées dans le fichier ";
+$vocab['Terminer'] = "Terminer";
+$vocab['nomDomaineImap'] = "Nom de domaine IMAP/POP";
+$vocab['nomDomaineImapComm'] = "(Utilisé pour compléter l'adresse email)";
+$vocab['adresseServeurImap'] = "Adresse Serveur IMAP/POP";
+$vocab['portNo'] = "Numéro de Port";
+$vocab['imapPort'] = "IMAP, port par défaut : 143";
+$vocab['imapSPort'] = "IMAP sécurisé, port par défaut 993";
+$vocab['pop3Port'] = "POP3, port par défaut 110";
+$vocab['pop3SPort'] = "POP3 sécurisé, port par défaut";
+$vocab['optionsConnexion'] = "Options de connexion :";
+$vocab['noSSL'] = "Ne pas utiliser SSL";
+$vocab['SSL'] = "Utiliser SSL";
+$vocab['non_precise'] = "non précisé";
+$vocab['Remarques'] = 'Remarques';
+$vocab['SSLexplain'] = "<b>SSL</b> : utilise Secure Socket Layer pour crypter la session";
+$vocab['TLSexplain'] = "<b>TLS</b> : force l'utilisation de start-TLS pour crypter la session et rejette les connexions aux serveurs qui ne le supportent pas.";
+$vocab['validate_cert_explain'] = " : valide les certificats depuis le serveur TLS/SSL (c'est le comportement par défaut)";
+$vocab['no_validate_cert_explain'] = " : ne pas valider les certificats depuis le serveur TLS/SSL, nécessaire si le serveur utilise des certificats auto-signés";
+$vocab['noImapOnPhp'] = "<b>Attention </b> : les fonctions liées à l'authentification <b>IMAP/POP</b> ne sont pas activées sur votre serveur PHP.<br />";
+$vocab['imapImpossible'] = "La configuration IMAP/POP est donc actuellement impossible.";
+$vocab['imapActive'] = "L'authentification IMAP/POP est activée.";
+$vocab['statutDefaut'] = "Statut par défaut des utilisateurs importés : ";
+$vocab['Ou_bien'] = "Ou bien";
+$vocab['imapDesactiver'] = "Désactiver l'authentification IMAP/POP";
+$vocab['connexionTest'] = "Test de connexion :";
+$vocab['userName'] = "Nom d'utilisateur : ";
+$vocab['userPwd'] = "Mot de passe de l'utilisateur : ";
+$vocab['Test'] = "Test";
+$vocab['configurationActuelle'] = "Configuration actuelle";
+$vocab['infosinFile'] = "Informations contenues dans le fichier";
+$vocab['useCert'] = "Utiliser Certificat";
+$vocab['useTLS'] = "Utiliser TLS";
+$vocab['newImapConfig'] = "Vous pouvez procéder à une nouvelle configuration IMAP/POP.";
+$vocab['imapNonConfigure'] = "L'accès a l'annuaire IMAP/POP n'est pas configuré.";
+$vocab['configureImap'] = "Configurer IMAP/POP";
+$vocab['imapInactive'] = "L'authentification IMAP/POP n'est pas activée.";
+$vocab['imapActiverExplain'] = "Activez l'authentification IMAP/POP en choisissant le statut qui sera attribué aux personnes présentes dans l'annuaire IMAP/POP lorsqu'elles se connectent pour la première fois. Vous pourrez par la suite modifier cette valeur pour chaque utilisateur.";
+$vocab['nonActive'] = "Ne pas activer";
+$vocab['titreLdap'] = "Configuration de l'authentification LDAP";
+$vocab['configurerLdap'] = "Configuration de l'accès à LDAP";
+$vocab['enregistrerConfig'] = "Enregistrement de la configuration.";
+$vocab['cheminNonValide'] = "<b>Problème</b> : Le chemin que vous avez choisi <b>ne semble pas valide</b>";
+$vocab['cheminOuFiltreNonValide'] = "<b>Problème</b> : Le chemin et/ou le filtre additionnel que vous avez choisi <b>ne semblent pas valides</b>";
+$vocab['cheminOKetResultatKO'] = "<b>Problème</b> : Le chemin que vous avez choisi semble valide mais la recherche sur ce chemin ne renvoie aucun résultat.";
+$vocab['cheminFiltreOKetResultatKO'] = "<b>Problème</b> : Le chemin et le filtre additionnel que vous avez choisi semblent valides  mais la recherche sur ce chemin ne renvoie aucun résultat.";
+$vocab['cantDeleteFile'] = "Impossible de supprimer le fichier";
+$vocab['cantDeleteFileComm'] = "existant.<br />Vous devez modifier les permissions sur ce fichier puis recharger cette page.";
+$vocab['ldap_record_success'] = "Les données concernant l'accès à l'annuaire LDAP sont maintenant enregistrées dans le fichier";
+$vocab['ldapConnexion'] = "Connexion à l'annuaire LDAP.";
+$vocab['ldapConnectSuccess'] = "La connexion LDAP a réussi.";
+$vocab['selectLdapPath'] = "Sélectionnez ci-dessous le chemin d'accès dans l'annuaire :";
+$vocab['preciserChemin'] = "Précisez le chemin : ";
+$vocab['ldapAddFilter'] = "Filtre LDAP supplémentaire (facultatif) :";
+$vocab['saveInfos'] = "Enregistrer les informations";
+$vocab['saveInfosLDAPWarning'] = "Remarque : pour le moment, aucune modification n'a été apportée au fichier de configuration \"config_ldap.inc.php\".";
+$vocab['saveInfosLDAPWarning2'] = "Les informations ne seront enregistrées qu'à la fin de la procédure de configuration.";
+$vocab['clickToSave'] = "Pour enregistrer les informations, cliquez sur le bouton";
+$vocab['ldapConnFailed'] = "La connexion au serveur LDAP a échoué.";
+$vocab['goBackVerify'] = "Revenez à la page précédente et vérifiez les informations fournies.";
+$vocab['pagePrecedente'] = "Page précédente";
+$vocab['ldapConnInfo'] = "Informations de connexion à l'annuaire LDAP.";
+$vocab['dirURI'] = "URI de l'annuaire";
+$vocab['dirURIexpl'] = "Laissez «ldap://localhost» si l'annuaire est installé sur la même machine que GRR. Sinon, indiquez l'adresse du serveur.<br />Utilisez le protocole ldaps:// si c'est votre cas.<br/>";
+$vocab['dirURIPort'] = "Numéro de port de l'annuaire";
+$vocab['dirURIPortExpl'] = "Dans le doute, laissez la valeur par défaut : 389<br />(3268 pour serveur de catalogues global AD, 636 pour ldaps (LDAP over SSH)<br />";
+$vocab['typeAcces'] = "Type d'accès";
+$vocab['typeAccesExpl'] = "Si le serveur LDAP n'accepte pas d'accès anonyme, veuillez préciser un identifiant (par exemple « cn=jean, o=lycée, c=fr »). Dans le doute, laissez les champs suivants vides pour un accès anonyme.";
+$vocab['ldapPwdWarning'] = "Remarque : des problèmes liés à un mot de passe contenant un ou plusieurs caractères accentués ont déjà été constatés.";
+$vocab['Oui'] = "Oui";
+$vocab['Non'] = "Non";
+$vocab['LDAPinactive'] = "<b>Attention </b> : les fonctions liées à l'authentification <b>LDAP</b> ne sont pas activées sur votre serveur PHP.";
+$vocab['LDAPimpossible'] = "La configuration LDAP est donc actuellement impossible.";
+$vocab['LDAPpossible'] = "Si vous avez accès à un annuaire <b>LDAP</b>, vous pouvez configurer GRR afin que cet annuaire soit utilisé pour importer automatiquement des utilisateurs.";
+$vocab['LDAPauthActive'] = "L'authentification LDAP est activée.";
+$vocab['choixStatutDefaut'] = "Choisissez le statut qui sera attribué aux personnes présentes dans l'annuaire LDAP lorsqu'elles se connectent pour la première fois. Vous pourrez par la suite modifier cette valeur pour chaque utilisateur.";
+$vocab['desactiverLDAPauth'] = "Désactiver l'authentification LDAP";
+$vocab['UTF8storage'] = "Les données (noms, prénom...) sont stockées en UTF-8 dans l'annuaire (configuration par défaut)";
+$vocab['modeDiagnostic'] = "Activer le mode \"diagnostic\" en cas d'erreur de connexion, les messages renvoyés par GRR sont plus explicites. De cette façon, il peut être plus facile de déterminer la cause du problème.";
+$vocab['searchAttr'] = "Attribut utilisé pour la recherche dans l'annuaire";
+$vocab['champNonVide'] = "Le champ ci-dessous ne doit pas être vide.";
+$vocab['ldapFieldExpl'] = "La valeur à indiquer ci-dessus varie selon le type d'annuaire utilisé et selon sa configuration
+            <br /><span class='small'>Exemples de champs généralement utilisés pour les annuaires ldap : \"uid\", \"cn\", \"sn\".
+            <br />Exemples de champs généralement utilisés pour les Active Directory : \"samaccountname\", \"userprincipalname\".
+            <br />Même si cela n'est pas conseillé, vous pouvez indiquer plusieurs attributs séparés par le caractère | (exemple : uid|sn|cn).</span>
+            ";
+$vocab['liaisonsGrrLdap'] = "Liaisons GRR/LDAP";
+$vocab['familyName'] = "Nom de famille : ";
+$vocab['ldapSE3Expl'] = "<b>Cas particulier des serveur SE3</b> : <span class=\"small\">dans le champ ci-dessous, vous pouvez préciser la liste des groupes SE3 autorisés à accéder à GRR.
+            Si le champ est laissé vide, il n'y a pas de restrictions.
+            Dans le cas contraire, seuls les utilisateurs appartenant à au moins l'un des groupes listés seront autorisés à accéder à GRR.
+            Ecrivez les groupes en les séparant par un point-vigule, par exemple : \"Profs;Administratifs\".
+            Seuls les groupes de type \"posixGroup\" sont supportés (les groupes de type \"groupOfNames\" ne sont pas supportés).</span>";
+$vocab['ldapAuthInactive'] = "L'authentification LDAP n'est pas activée.";
+$vocab['LDAPstatutExpl'] = " Activez l'authentification LDAP en choisissant le statut qui sera attribué aux personnes présentes
+            dans l'annuaire LDAP lorsqu'elles se connectent pour la première fois.
+            Vous pourrez par la suite modifier cette valeur pour chaque utilisateur.";
+$vocab["Echec"] = "Echec";
+$vocab['testConnAnnuaire'] = "Test de connexion à l\'annuaire";
+$vocab['LDAPV3impossible'] = "Impossible d\'utiliser la norme LDAP V3";
+$vocab['TLSimpossible'] = "Impossible d\'utiliser TLS";
+$vocab['connOK_idKO'] = "Connexion établie mais l\'identification auprès du serveur a échoué";
+$vocab['connKO'] = "Impossible d\'établir la connexion";
+$vocab['testRechChemAnn'] = "Test de recherche sur l\'annuaire avec le chemin spécifié";
+$vocab('testConnChemAnnErr1') = "<b>Problème</b> : Le chemin que vous avez choisi <b>ne semble pas valide</b>.";
+$vocab('testConnChemAnnErr1bis') = "<b>Problème</b> : Le chemin et/ou le filtre additionnel que vous avez choisi <b>ne semblent pas valides</b>.";
+$vocab('testConnChemAnnErr2') = "<b>Problème</b> : Le chemin que vous avez choisi semble valide mais la recherche sur ce chemin ne renvoie aucun résultat.";
+$vocab('testConnChemAnnErr2bis') = "<b>Problème</b> : Le chemin et le filtre additionnel que vous avez choisi semblent valides  mais la recherche sur ce chemin ne renvoie aucun résultat.";
+$vocab('LDAPadresse') = "Adresse de l'annuaire LDAP ";
+$vocab('portUtilise') = "Port utilisé";
+$vocab('ldapPath') = "Chemin d'accès dans l'annuaire";
+$vocab('filtreLdapSupp') = "Filtre LDAP supplémentaire";
+$vocab('ldapLogin') = "Compte pour l'accès";
+$vocab('accesAnonyme') = "Accès anonyme.";
+$vocab('newLdapConfig') = "Vous pouvez procéder à une nouvelle configuration LDAP.";
+$vocab('accesLdapNonConfigure') = "L'accès à l'annuaire LDAP n'est pas configuré.";
+$vocab('ldapAuthImpossible') = "L'authentification LDAP est donc pour le moment impossible.";
+$vocab('configureLdap') = "Configurer LDAP";
 ?>
