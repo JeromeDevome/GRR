@@ -19,8 +19,7 @@
 ################################
 # Development information
 #################################
-$grr_devel_email = "support@devome.com";
-$grr_devel_url = "http://grr.devome.com/";
+$grr_devel_url = "https://grr.devome.com/";
 
 // Numéro de version actuel
 # Format X.X.XRCX | exemples : 4.0.0a (alpha) ou 4.0.0b (beta) 3.4.0RC1 (Realesa Candidate) ou 3.4.0 (version OK)
