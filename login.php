@@ -237,9 +237,6 @@ echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("compan
 	<br />
 	<?php
 	echo "<br /><p class=\"small\"><a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a>";
-	$email = explode('@',$grr_devel_email);
-	$person = $email[0];
-	$domain = $email[1];
 	echo "<br />".get_vocab("msg_login1")."<a href=\"".$grr_devel_url."\">".$grr_devel_url."</a>";
 	?>
 </div>
