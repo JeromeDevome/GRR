@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2020-09-08
+# Last modification : 2020-09-09
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -287,10 +287,10 @@ $vocab['default_parameter_values_title'] = "Choice of display parameters by defa
 $vocab['default_report_days_explain'] = "Value by default of the time interval between the start date of the research and the end date (in number of days)";
 $vocab['default_report_days_msg'] = "Setup of the \"Research - Report -Statistics\" tool";
 $vocab['default_room'] = "Displayed resource(s): ";
-$vocab['default_room_all'] = "All resources (display 'day')";
-$vocab['default_room_month_all'] = "All resources (display 'month')";
+$vocab['default_room_all'] = "All resources (display 'day']";
+$vocab['default_room_month_all'] = "All resources (display 'month']";
 $vocab['default_room_month_all_bis'] = "All resources (display 'month' bis)";
-$vocab['default_room_week_all'] = "All resources (display 'week')";
+$vocab['default_room_week_all'] = "All resources (display 'week']";
 $vocab['default_site'] = "Site by default";
 $vocab['definir par defaut'] = "Define as default";
 $vocab['del'] = "Delete";
@@ -332,7 +332,7 @@ $vocab['display_short_description1'] = "the short description displays";
 $vocab['display_short_description_msg'] = "Display of the short description of the reservation in the views days, week, and month.";
 $vocab['display_user_off.php'] = "inactive users";
 $vocab['display_user_on.php'] = "active users";
-$vocab['display_week'] = "(display 'week')";
+$vocab['display_week'] = "(display 'week']";
 $vocab['disponible_pour'] = "Disponible pour"; // A traduire
 $vocab['dlrapportcsv'] = "CSV file of the reservations";
 $vocab['dlresumecsv'] = "CSV file of the summary";
@@ -1222,18 +1222,26 @@ $vocab['TLSimpossible'] = "Impossible d\'utiliser TLS";
 $vocab['connOK_idKO'] = "Connexion établie mais l\'identification auprès du serveur a échoué";
 $vocab['connKO'] = "Impossible d\'établir la connexion";
 $vocab['testRechChemAnn'] = "Test de recherche sur l\'annuaire avec le chemin spécifié";
-$vocab('testConnChemAnnErr1') = "<b>Problème</b> : Le chemin que vous avez choisi <b>ne semble pas valide</b>.";
-$vocab('testConnChemAnnErr1bis') = "<b>Problème</b> : Le chemin et/ou le filtre additionnel que vous avez choisi <b>ne semblent pas valides</b>.";
-$vocab('testConnChemAnnErr2') = "<b>Problème</b> : Le chemin que vous avez choisi semble valide mais la recherche sur ce chemin ne renvoie aucun résultat.";
-$vocab('testConnChemAnnErr2bis') = "<b>Problème</b> : Le chemin et le filtre additionnel que vous avez choisi semblent valides  mais la recherche sur ce chemin ne renvoie aucun résultat.";
-$vocab('LDAPadresse') = "Adresse de l'annuaire LDAP ";
-$vocab('portUtilise') = "Port utilisé";
-$vocab('ldapPath') = "Chemin d'accès dans l'annuaire";
-$vocab('filtreLdapSupp') = "Filtre LDAP supplémentaire";
-$vocab('ldapLogin') = "Compte pour l'accès";
-$vocab('accesAnonyme') = "Accès anonyme.";
-$vocab('newLdapConfig') = "Vous pouvez procéder à une nouvelle configuration LDAP.";
-$vocab('accesLdapNonConfigure') = "L'accès à l'annuaire LDAP n'est pas configuré.";
-$vocab('ldapAuthImpossible') = "L'authentification LDAP est donc pour le moment impossible.";
-$vocab('configureLdap') = "Configurer LDAP";
+$vocab['testConnChemAnnErr1'] = "<b>Problème</b> : Le chemin que vous avez choisi <b>ne semble pas valide</b>.";
+$vocab['testConnChemAnnErr1bis'] = "<b>Problème</b> : Le chemin et/ou le filtre additionnel que vous avez choisi <b>ne semblent pas valides</b>.";
+$vocab['testConnChemAnnErr2'] = "<b>Problème</b> : Le chemin que vous avez choisi semble valide mais la recherche sur ce chemin ne renvoie aucun résultat.";
+$vocab['testConnChemAnnErr2bis'] = "<b>Problème</b> : Le chemin et le filtre additionnel que vous avez choisi semblent valides  mais la recherche sur ce chemin ne renvoie aucun résultat.";
+$vocab['LDAPadresse'] = "Adresse de l'annuaire LDAP ";
+$vocab['portUtilise'] = "Port utilisé";
+$vocab['ldapPath'] = "Chemin d'accès dans l'annuaire";
+$vocab['filtreLdapSupp'] = "Filtre LDAP supplémentaire";
+$vocab['ldapLogin'] = "Compte pour l'accès";
+$vocab['accesAnonyme'] = "Accès anonyme.";
+$vocab['newLdapConfig'] = "Vous pouvez procéder à une nouvelle configuration LDAP.";
+$vocab['accesLdapNonConfigure'] = "L'accès à l'annuaire LDAP n'est pas configuré.";
+$vocab['ldapAuthImpossible'] = "L'authentification LDAP est donc pour le moment impossible.";
+$vocab['configureLdap'] = "Configurer LDAP";
+$vocab['errSuppLogo'] = "L\'image n\'a pas pu être supprimée : problème d\'écriture sur le répertoire. Veuillez signaler ce problème à l\'administrateur du serveur.";
+$vocab['errRecLogo'] = "Erreur lors de l'enregistrement du logo !";
+$vocab['errTypeLogo'] = "L\'image n\'a pas pu être enregistrée : les seules extentions autorisées sont gif, png et jpg.";
+$vocab['errRecMimeLogo'] = "L\'image n\'a pas pu être enregistrée : type mime incompatible.";
+$vocab['errCorruptedFile'] = "L\'image n\'a pas pu être enregistrée : fichier corrompu.";
+$vocab['errImgTransfer'] = "L\'image n\'a pas pu être enregistrée : problème de transfert. Le fichier n\'a pas pu être transféré sur le répertoire IMAGES. Veuillez signaler ce problème à l\'administrateur du serveur.";
+$vocab['errTempLogo'] = "Erreur lors de l'enregistrement du logo ! (suppression du fichier temporaire)";
+$vocab['errInvalidFile'] = "L\'image n\'a pas pu être enregistrée : le fichier image sélectionné n'est pas valide !";
 ?>
