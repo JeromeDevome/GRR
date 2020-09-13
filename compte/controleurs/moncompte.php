@@ -50,7 +50,7 @@ if ($valid == 'yes')
 		$reg_password2 = isset($_POST['reg_password2']) ? $_POST['reg_password2'] : NULL;
 		if (($reg_password_a != '') && ($reg_password1 != ''))
 		{
-			$reg_password_a_c = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$reg_password_a));
+			$reg_password_a_c = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$reg_password_a);
 			if ($_SESSION['password'] == $reg_password_a_c)
 			{
 				if ($reg_password1 != $reg_password2)
