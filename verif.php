@@ -1,5 +1,5 @@
 <?php
-include "include/connect.inc.php";
+include "personnalisation/connect.inc.php";
 include "include/config.inc.php";
 include "include/functions.inc.php";
 include "include/$dbsys.inc.php";

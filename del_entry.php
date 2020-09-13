@@ -16,7 +16,7 @@
  * (at your option) any later version.
  */
 $grr_script_name = "del_entry.php";
-include "include/connect.inc.php";
+include "personnalisation/connect.inc.php";
 include "include/config.inc.php";
 include "include/functions.inc.php";
 include "include/$dbsys.inc.php";

@@ -50,7 +50,7 @@ if ($valid == 'yes')
 		$reg_password2 = isset($_POST['reg_password2']) ? $_POST['reg_password2'] : NULL;
 		if (($reg_password_a != '') && ($reg_password1 != ''))
 		{
-			$reg_password_a_c = md5($reg_password_a);
+			$reg_password_a_c = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$reg_password_a));
 			if ($_SESSION['password'] == $reg_password_a_c)
 			{
 				if ($reg_password1 != $reg_password2)
@@ -58,7 +58,7 @@ if ($valid == 'yes')
 				else
 				{
 					VerifyModeDemo();
-					$reg_password1 = md5($reg_password1);
+					$reg_password1 =  hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$reg_password1);
 					$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='".protect_data_sql($reg_password1)."' WHERE login='".getUserName()."'";
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, get_vocab('update_pwd_failed') . grr_sql_error());

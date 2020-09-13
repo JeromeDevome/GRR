@@ -18,7 +18,6 @@
 
 $grr_script_name = "admin_user_mdp_facile.php";
 
-
 $msg = '';
 $col = array();
 
@@ -56,8 +55,8 @@ if ($res)
 
 		// Les mdp facile
 		// Tableau définit dans config.inc.php : $mdpFacile . On y ajoute les varibales en liason avec l'utilisateur
-		$mdpFacile[] = md5(strtoupper($row[3])); // Mot de passe = login en majuscule
-		$mdpFacile[] = md5(strtolower($row[3])); // Mot de passe = login en minuscule
+		$mdpFacile[] = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").strtoupper($row[3])); // Mot de passe = login en majuscule
+		$mdpFacile[] = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").strtolower($row[3])); // Mot de passe = login en minuscule
 
 		if(in_array($row[6], $mdpFacile)){
 

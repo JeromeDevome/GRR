@@ -17,7 +17,7 @@
  */
 // YN le 30-06-18 : il me semble que des vérifications sont déjà faites par validate_and_submit() dans edit_entry.php et sont reprises ici 
 $grr_script_name = "edit_entry_handler.php";
-include "include/connect.inc.php";
+include "personnalisation/connect.inc.php";
 include "include/config.inc.php";
 include "include/functions.inc.php";
 include "include/$dbsys.inc.php";

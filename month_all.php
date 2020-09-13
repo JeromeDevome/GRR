@@ -18,7 +18,7 @@
 
 $grr_script_name = "month_all.php";
 
-include "include/connect.inc.php";
+include "personnalisation/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
 include "include/functions.inc.php";

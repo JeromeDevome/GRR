@@ -17,7 +17,7 @@
  */
 $grr_script_name = 'view_entry.php'; 
 
-include_once('include/connect.inc.php');
+include_once('personnalisation/connect.inc.php');
 include_once('include/config.inc.php');
 include_once('include/functions.inc.php');
 include_once('include/'.$dbsys.'.inc.php');

@@ -50,7 +50,7 @@ web du serveur ("htdocs" dans le cas d'Apache).
 
 Modification des droits : les droits d'écriture doivent être attribués
 * au répertoire "/images"       (chargement d'images pour les fiches de présentation des ressources)
-* au fichier "include/connect.inc.php"      (dans le cas d'une installation automatisée)
+* au fichier "personnalisation/connect.inc.php"      (dans le cas d'une installation automatisée)
 * au fichier "include/config_ldap.inc.php"  (dans le cas d'une authentification ldap)
 
 ***************************************************

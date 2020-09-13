@@ -16,7 +16,7 @@
  * (at your option) any later version.
  */
 $titre = "GRR - Ex&eacute;cution de t&acirc;ches automatiques";
-include "include/connect.inc.php";
+include "personnalisation/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
 include "include/functions.inc.php";

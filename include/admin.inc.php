@@ -17,7 +17,7 @@
  */
 
 
-include "connect.inc.php";
+include "../personnalisation/connect.inc.php";
 include "config.inc.php";
 include "mrbs_sql.inc.php";
 include "misc.inc.php";

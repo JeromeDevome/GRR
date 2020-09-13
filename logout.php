@@ -15,7 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-require_once("include/connect.inc.php");
+require_once("personnalisation/connect.inc.php");
 require_once("include/config.inc.php");
 include "include/misc.inc.php";
 include "include/functions.inc.php";

@@ -4844,7 +4844,7 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
 
 	function jQuery_DatePicker($typeDate){
 
-		if (@file_exists('../include/connect.inc.php')){
+		if (@file_exists('../personnalisation/connect.inc.php')){
 			$racine = "../";
 		} else{
 			$racine = "./";

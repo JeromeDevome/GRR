@@ -16,8 +16,8 @@
  */
 
 require_once("include/config.inc.php");
-if (file_exists("include/connect.inc.php"))
-	include "include/connect.inc.php";
+if (file_exists("personnalisation/connect.inc.php"))
+	include "personnalisation/connect.inc.php";
 require_once("include/misc.inc.php");
 require_once("include/functions.inc.php");
 require_once("include/settings.class.php");
@@ -29,9 +29,9 @@ if ($dbsys == "mysql")
 	$flag = '';
 	$correct_install = '';
 	$msg = '';
-	if (file_exists("include/connect.inc.php"))
+	if (file_exists("personnalisation/connect.inc.php"))
 	{
-		require_once("include/connect.inc.php");
+		require_once("personnalisation/connect.inc.php");
 		$db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbDb", "$dbPort");
 		if ($db)
 		{

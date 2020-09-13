@@ -16,7 +16,7 @@
  * (at your option) any later version.
  */
 $grr_script_name = 'contact.php';
-include_once('include/connect.inc.php');
+include_once('personnalisation/connect.inc.php');
 include_once('include/config.inc.php');
 include_once('include/functions.inc.php');
 include_once('include/'.$dbsys.'.inc.php');

@@ -304,7 +304,7 @@ else
 	for ($row = 1; $row < $nb_row; $row++)
 	{
 		if ($reg_type_auth[$row] != "ext")
-			$reg_mdp[$row] = md5(unslashes($reg_mdp[$row]));
+			$reg_mdp[$row] = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$reg_mdp[$row]);
 		// On nettoie les windozeries
 		$reg_nom[$row] = protect_data_sql(corriger_caracteres($reg_nom[$row]));
 		$reg_prenom[$row] = protect_data_sql(corriger_caracteres($reg_prenom[$row]));

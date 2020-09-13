@@ -35,7 +35,7 @@ if (!$settings)
  */
 function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_login = array(), $tab_groups = array())
 {
-	global $motDePasseConfig;
+	global $motDePasseConfig, $algoPwd, $hashpwd1;
 	// Initialisation de $auth_ldap
 	$auth_ldap = 'no';
 	// Initialisation de $auth_imap
@@ -303,10 +303,11 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     else
     {
         $passwd_md5 = md5($_password);
+		$pasword_hash = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$_password);
         $sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
         from ".TABLE_PREFIX."_utilisateurs
         where login = '" . protect_data_sql($_login) . "' and
-        password = '".$passwd_md5."'";
+        (password = '".$passwd_md5."' OR password = '".$pasword_hash."')";
         $res_user = grr_sql_query($sql);
         $num_row = grr_sql_count($res_user);
         //On est toujours dans le cas NON SSO - L'utilisateur n'est pas présent dans la base locale
@@ -563,212 +564,217 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
             return "11";
         }
     }
-            //
-            // A ce stade, on dispose dans tous les cas d'un tableau $row contenant les informations nécessaires à l'établissement d'une session
-            //
-            // Session starts now
+	//
+	// A ce stade, on dispose dans tous les cas d'un tableau $row contenant les informations nécessaires à l'établissement d'une session
+	//
+	// Session starts now
     session_name(SESSION_NAME);
     @session_start();
-            // Is this user already connected ?
+	// Is this user already connected ?
     $sql = "SELECT SESSION_ID from ".TABLE_PREFIX."_log where SESSION_ID = '" . session_id() . "' and LOGIN = '" . protect_data_sql($_login) . "' and now() between START and END";
     $res = grr_sql_query($sql);
     $num_row = grr_sql_count($res);
-if (($num_row > 0) and isset($_SESSION['start']))
-{
-	$sql = "UPDATE ".TABLE_PREFIX."_log set END = now() + interval " . Settings::get("sessionMaxLength") . " minute where SESSION_ID = '" . session_id() . "' and START = '" . $_SESSION['start'] . "'";
-		//  $sql = "update ".TABLE_PREFIX."_log set END = now() + interval " . Settings::get("sessionMaxLength") . " minute where SESSION_ID = '" . session_id() . "'";
-	$res = grr_sql_query($sql);
-	if (!$res)
-		fatal_error(0, 'erreur mysql' . grr_sql_error());
+
+	if (($num_row > 0) and isset($_SESSION['start']))
+	{
+		$sql = "UPDATE ".TABLE_PREFIX."_log set END = now() + interval " . Settings::get("sessionMaxLength") . " minute where SESSION_ID = '" . session_id() . "' and START = '" . $_SESSION['start'] . "'";
+		$res = grr_sql_query($sql);
+		if (!$res)
+			fatal_error(0, 'erreur mysql' . grr_sql_error());
+		if($row[14] == 1)
+			return "12";
+		else
+			return "1";
+	}
+	else
+	{
+		session_unset();
+	}
+
+	if($row[1] == $passwd_md5){
+		$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password = '".$pasword_hash."' WHERE login = '".$row[0]."'";
+		$res = grr_sql_query($sql);
+		if (!$res)
+			fatal_error(0, 'erreur mysql' . grr_sql_error());	
+	}
+
+	$_SESSION = array();
+	$_SESSION['login'] = $row[0];
+	$_SESSION['password'] = $row[1];
+	$_SESSION['prenom'] = $row[2];
+	$_SESSION['nom'] = $row[3];
+	$_SESSION['statut'] = $row[4];
+	$_SESSION['start'] = $row[5];
+	$_SESSION['maxLength'] = Settings::get("sessionMaxLength");
+	if ($row[6] > 0)
+		$_SESSION['default_area'] = $row[6];
+	else
+		$_SESSION['default_area'] = Settings::get("default_area");
+	//if ($row[7] > 0) en lien avec le calcul de la page d'accueil YN le 11/04/2018
+	if ($row[7] != 0)
+		$_SESSION['default_room'] = $row[7];
+	else
+		$_SESSION['default_room'] = Settings::get("default_room");
+	if ($row[8] !='')
+		$_SESSION['default_style'] = $row[8];
+	else
+		$_SESSION['default_style'] = Settings::get("default_css");
+	if ($row[9] !='')
+		$_SESSION['default_list_type'] = $row[9];
+	else
+		$_SESSION['default_list_type'] = Settings::get("area_list_format");
+	if ($row[10] !='')
+		$_SESSION['default_language'] = $row[10];
+	else
+		$_SESSION['default_language'] = Settings::get("default_language");
+	if ($row[13] > 0)
+		$_SESSION['default_site'] = $row[13];
+	else
+		$_SESSION['default_site'] = Settings::get("default_site");
+	$_SESSION['source_login'] = $row[11];
+	if ($est_authentifie_sso) /// Variable de session qui permet de savoir qu'un utilisateur est authentifié à un SSO
+		$_SESSION['est_authentifie_sso'] = "y";
+	$_SESSION['changepwd'] = $row[14];
+			// It's a new connection, insert into log
+	if (isset($_SERVER["HTTP_REFERER"]))
+		$httpreferer = substr($_SERVER["HTTP_REFERER"],0,254);
+	else
+		$httpreferer = '';
+	$ua = $_SERVER['HTTP_USER_AGENT'];
+	$ua = explode(' ', $ua);
+	$count = count($ua);
+	for ($i = 0; $i < $count; $i++)
+	{
+		if (strncmp($ua[$i], '(Windows', 8) == 0)
+		{
+			$os = "Windows ";
+			$i += 2;
+			switch ($ua[$i])
+			{
+				case '6.1;':
+					$os .= "7";
+					break;
+				case '6.2;':
+					$os .= "8";
+					break;
+				case '6.3;':
+					$os .= "8.1";
+					break;
+				default:
+					$os .= "";
+					break;
+			}
+		}
+		if (strncmp($ua[$i], 'Trident', 7) == 0)
+		{
+			$brow = "Internet Explorer ";
+			$i += 1;
+			$b = explode(':', $ua[$i]);
+			$brow .= trim($b[1], ")");
+		}
+		if (strncmp($ua[$i], 'Firefox', 7) == 0)
+		{
+			$b = explode('/', $ua[$i]);
+			$brow = $b[0].' '.$b[1];
+		}
+		if (strncmp($ua[$i], 'Chrome', 6) == 0)
+		{
+			$b = explode('/', $ua[$i]);
+			$brow = $b[0].' '.$b[1];
+		}
+	}
+
+	if (isset($os) && isset($brow))
+		$useragent = $os.' '.$brow;
+	else
+		$useragent = substr($_SERVER['HTTP_USER_AGENT'],0,254);
+
+	$sql = "INSERT INTO ".TABLE_PREFIX."_log (LOGIN, START, SESSION_ID, REMOTE_ADDR, USER_AGENT, REFERER, AUTOCLOSE, END) values (
+		'" . protect_data_sql($_SESSION['login']) . "',
+		'" . $_SESSION['start'] . "',
+		'" . session_id() . "',
+		'" . $_SERVER['REMOTE_ADDR'] . "',
+		'" . $useragent . "',
+		'" . $httpreferer . "',
+		'1',
+		'" . $_SESSION['start'] . "' + interval " . Settings::get("sessionMaxLength") . " minute
+		)
+	;";
+	grr_sql_query($sql);
+
+	/* Suppression des logs. Bloc supprimé en lien avec la modification de login.php
+	if($nbMaxJoursLogConnexion > 0){
+		$dateActu = date_create($_SESSION['start']);
+		$dateMax = date_sub($dateActu, date_interval_create_from_date_string($nbMaxJoursLogConnexion.' days'));
+		$dateMax = $dateMax->format('Y-m-d H:i:s');
+		$sql = "DELETE FROM ".TABLE_PREFIX."_log WHERE START < '" . $dateMax . "';";
+		grr_sql_query($sql);
+	} */
+
+	// L'utilisateur doit changer son mot de passe
 	if($row[14] == 1)
 		return "12";
-	else
-		return "1";
-}
-else
-{
-	session_unset();
-//      session_destroy();
-}
 
-		// reset $_SESSION
-$_SESSION = array();
-$_SESSION['login'] = $row[0];
-$_SESSION['password'] = $row[1];
-$_SESSION['prenom'] = $row[2];
-$_SESSION['nom'] = $row[3];
-$_SESSION['statut'] = $row[4];
-$_SESSION['start'] = $row[5];
-$_SESSION['maxLength'] = Settings::get("sessionMaxLength");
-if ($row[6] > 0)
-	$_SESSION['default_area'] = $row[6];
-else
-	$_SESSION['default_area'] = Settings::get("default_area");
-//if ($row[7] > 0) en lien avec le calcul de la page d'accueil YN le 11/04/2018
-if ($row[7] != 0)
-	$_SESSION['default_room'] = $row[7];
-else
-	$_SESSION['default_room'] = Settings::get("default_room");
-if ($row[8] !='')
-	$_SESSION['default_style'] = $row[8];
-else
-	$_SESSION['default_style'] = Settings::get("default_css");
-if ($row[9] !='')
-	$_SESSION['default_list_type'] = $row[9];
-else
-	$_SESSION['default_list_type'] = Settings::get("area_list_format");
-if ($row[10] !='')
-	$_SESSION['default_language'] = $row[10];
-else
-	$_SESSION['default_language'] = Settings::get("default_language");
-if ($row[13] > 0)
-	$_SESSION['default_site'] = $row[13];
-else
-	$_SESSION['default_site'] = Settings::get("default_site");
-$_SESSION['source_login'] = $row[11];
-if ($est_authentifie_sso) /// Variable de session qui permet de savoir qu'un utilisateur est authentifié à un SSO
-	$_SESSION['est_authentifie_sso'] = "y";
-$_SESSION['changepwd'] = $row[14];
-		// It's a new connection, insert into log
-if (isset($_SERVER["HTTP_REFERER"]))
-	$httpreferer = substr($_SERVER["HTTP_REFERER"],0,254);
-else
-	$httpreferer = '';
-$ua = $_SERVER['HTTP_USER_AGENT'];
-$ua = explode(' ', $ua);
-$count = count($ua);
-for ($i = 0; $i < $count; $i++)
-{
-	if (strncmp($ua[$i], '(Windows', 8) == 0)
+
+	/* Fonctionnalité SE3 (Palissy - Saintes - philippe.duval@ac-poitiers.fr) :
+	Utilisation du LDAP pour inscrire automatiquement les utilisateurs dans les groupes administration, accès et gestion
+	Ce code est associé à une nouvelle table :
+	CREATE TABLE ".TABLE_PREFIX."_j_groupe_se3 (groupe varchar(40) NOT NULL default '',id_area_room int(11) NOT NULL default '0', statut varchar(20) NOT NULL default '',  PRIMARY KEY  (`groupe`,`id_area_room`));
+	Par ailleurs, pour que cette fonctionnalité soit complète et dans l'esprit de GRR, il faudra développer une "petite" interface dans GRR pour gérer les entrées dans cette table.
+	*/
+		// Début de la fonctionnalité SE3
+	$grp = @grr_sql_query("SELECT groupe, id_area_room, statut FROM ".TABLE_PREFIX."_j_groupe_se3");
+	if ($grp)
 	{
-		$os = "Windows ";
-		$i += 2;
-		switch ($ua[$i])
+		// si la table ".TABLE_PREFIX."_j_groupe_se3 est implantée et non vide
+		//A modifier recalcul a chaque boucle
+		while ($resgrp = @mysqli_fetch_array($grp))
 		{
-			case '6.1;':
-				$os .= "7";
-				break;
-			case '6.2;':
-				$os .= "8";
-				break;
-			case '6.3;':
-				$os .= "8.1";
-				break;
-			default:
-				$os .= "";
-				break;
+			// balaye tous les groupes présents dans la table ".TABLE_PREFIX."_j_groupadmin_area
+			$statut_se3 = $resgrp['statut'];
+			$area_se3 = $resgrp['id_area_room'];
+			if ($statut_se3 == 'administrateur')
+			{
+				$table_user_se3 = "".TABLE_PREFIX."_j_useradmin_area"; $type_res = 'id_area';
+			}
+			if ($statut_se3 == 'acces_restreint')
+			{
+				$table_user_se3 = "".TABLE_PREFIX."_j_user_area"; $type_res = 'id_area';
+			}
+			if ($statut_se3 == 'gestionnaire')
+			{
+				$table_user_se3 = "".TABLE_PREFIX."_j_user_room"; $type_res = 'id_room';
+			}
+			if (se3_grp_members($resgrp['groupe'],$_login)=="oui")
+				@grr_sql_query("INSERT INTO `".$table_user_se3."` (login, ".$type_res.") values('".$_login."',".$area_se3.")");
+			else
+				@grr_sql_query("DELETE FROM `".$table_user_se3."` WHERE `login`='".$_login."' AND `".$type_res."`=".$area_se3);
 		}
 	}
-	if (strncmp($ua[$i], 'Trident', 7) == 0)
-	{
-		$brow = "Internet Explorer ";
-		$i += 1;
-		$b = explode(':', $ua[$i]);
-		$brow .= trim($b[1], ")");
-	}
-	if (strncmp($ua[$i], 'Firefox', 7) == 0)
-	{
-		$b = explode('/', $ua[$i]);
-		$brow = $b[0].' '.$b[1];
-	}
-	if (strncmp($ua[$i], 'Chrome', 6) == 0)
-	{
-		$b = explode('/', $ua[$i]);
-		$brow = $b[0].' '.$b[1];
-	}
-}
-
-if (isset($os) && isset($brow))
-	$useragent = $os.' '.$brow;
-else
-	$useragent = substr($_SERVER['HTTP_USER_AGENT'],0,254);
-
-$sql = "INSERT INTO ".TABLE_PREFIX."_log (LOGIN, START, SESSION_ID, REMOTE_ADDR, USER_AGENT, REFERER, AUTOCLOSE, END) values (
-	'" . protect_data_sql($_SESSION['login']) . "',
-	'" . $_SESSION['start'] . "',
-	'" . session_id() . "',
-	'" . $_SERVER['REMOTE_ADDR'] . "',
-	'" . $useragent . "',
-	'" . $httpreferer . "',
-	'1',
-	'" . $_SESSION['start'] . "' + interval " . Settings::get("sessionMaxLength") . " minute
-	)
-;";
-grr_sql_query($sql);
-
-/* Suppression des logs. Bloc supprimé en lien avec la modification de login.php
-if($nbMaxJoursLogConnexion > 0){
-	$dateActu = date_create($_SESSION['start']);
-	$dateMax = date_sub($dateActu, date_interval_create_from_date_string($nbMaxJoursLogConnexion.' days'));
-	$dateMax = $dateMax->format('Y-m-d H:i:s');
-	$sql = "DELETE FROM ".TABLE_PREFIX."_log WHERE START < '" . $dateMax . "';";
-	grr_sql_query($sql);
-} */
-
-// L'utilisateur doit changer son mot de passe
-if($row[14] == 1)
-	return "12";
-
-
-/* Fonctionnalité SE3 (Palissy - Saintes - philippe.duval@ac-poitiers.fr) :
-Utilisation du LDAP pour inscrire automatiquement les utilisateurs dans les groupes administration, accès et gestion
-Ce code est associé à une nouvelle table :
-CREATE TABLE ".TABLE_PREFIX."_j_groupe_se3 (groupe varchar(40) NOT NULL default '',id_area_room int(11) NOT NULL default '0', statut varchar(20) NOT NULL default '',  PRIMARY KEY  (`groupe`,`id_area_room`));
-Par ailleurs, pour que cette fonctionnalité soit complète et dans l'esprit de GRR, il faudra développer une "petite" interface dans GRR pour gérer les entrées dans cette table.
-*/
-	// Début de la fonctionnalité SE3
-$grp = @grr_sql_query("SELECT groupe, id_area_room, statut FROM ".TABLE_PREFIX."_j_groupe_se3");
-if ($grp)
-{
-	// si la table ".TABLE_PREFIX."_j_groupe_se3 est implantée et non vide
-	//A modifier recalcul a chaque boucle
-	while ($resgrp = @mysqli_fetch_array($grp))
-	{
-		// balaye tous les groupes présents dans la table ".TABLE_PREFIX."_j_groupadmin_area
-		$statut_se3 = $resgrp['statut'];
-		$area_se3 = $resgrp['id_area_room'];
-		if ($statut_se3 == 'administrateur')
-		{
-			$table_user_se3 = "".TABLE_PREFIX."_j_useradmin_area"; $type_res = 'id_area';
-		}
-		if ($statut_se3 == 'acces_restreint')
-		{
-			$table_user_se3 = "".TABLE_PREFIX."_j_user_area"; $type_res = 'id_area';
-		}
-		if ($statut_se3 == 'gestionnaire')
-		{
-			$table_user_se3 = "".TABLE_PREFIX."_j_user_room"; $type_res = 'id_room';
-		}
-		if (se3_grp_members($resgrp['groupe'],$_login)=="oui")
-			@grr_sql_query("INSERT INTO `".$table_user_se3."` (login, ".$type_res.") values('".$_login."',".$area_se3.")");
-		else
-			@grr_sql_query("DELETE FROM `".$table_user_se3."` WHERE `login`='".$_login."' AND `".$type_res."`=".$area_se3);
-	}
-}
-	// Note : Il reste à gérer finement l'interface graphique et à déduire l'incompatibilité éventuelle entre le domaine par défaut et les domaines autorisés pour chaque utilisateur
-	// Fin de la fonctionnalité SE3
-/* Application du patch en production depuis la rentrée à Palissy : Zéro problème (ci-dessous, l'extraction de la table via phpmyadmin)
-CREATE TABLE `".TABLE_PREFIX."_j_groupe_se3` (
-	`groupe` varchar(40) NOT NULL default '',
-	`id_area_room` int(11) NOT NULL default '0',
-	`statut` varchar(20) NOT NULL default '',
-	PRIMARY KEY  (`groupe`,`id_area_room`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-INSERT INTO `".TABLE_PREFIX."_j_groupe_se3` (`groupe`, `id_area_room`, `statut`) VALUES
-('GRR_ADMIN_SALLES_REUNIONS', 1, 'administrateur'),
-('GRR_ADMIN_SALLES_PEDAGOGIQUES', 2, 'administrateur'),
-('GRR_ADMIN_LABOS_LANGUES', 3, 'administrateur'),
-('GRR_SALLES_REUNIONS', 1, 'acces_restreint'),
-('GRR_SALLES_PEDAGOGIQUES', 2, 'acces_restreint'),
-('GRR_LABOS_LANGUES', 3, 'acces_restreint'),
-('GRR_GESTION_SALLE_A01', 1, 'gestionnaire'),
-('GRR_GESTION_SALLE_A03', 2, 'gestionnaire'),
-('GRR_GESTION_SALLE_A314', 3, 'gestionnaire'),
-('GRR_GESTION_SALLE_A409', 4, 'gestionnaire'),
-('GRR_GESTION_SALLE_D05', 5, 'gestionnaire'),
-('GRR_GESTION_SALLE_A301E', 6, 'gestionnaire');
-*/
-return "1";
+		// Note : Il reste à gérer finement l'interface graphique et à déduire l'incompatibilité éventuelle entre le domaine par défaut et les domaines autorisés pour chaque utilisateur
+		// Fin de la fonctionnalité SE3
+	/* Application du patch en production depuis la rentrée à Palissy : Zéro problème (ci-dessous, l'extraction de la table via phpmyadmin)
+	CREATE TABLE `".TABLE_PREFIX."_j_groupe_se3` (
+		`groupe` varchar(40) NOT NULL default '',
+		`id_area_room` int(11) NOT NULL default '0',
+		`statut` varchar(20) NOT NULL default '',
+		PRIMARY KEY  (`groupe`,`id_area_room`)
+	) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+	INSERT INTO `".TABLE_PREFIX."_j_groupe_se3` (`groupe`, `id_area_room`, `statut`) VALUES
+	('GRR_ADMIN_SALLES_REUNIONS', 1, 'administrateur'),
+	('GRR_ADMIN_SALLES_PEDAGOGIQUES', 2, 'administrateur'),
+	('GRR_ADMIN_LABOS_LANGUES', 3, 'administrateur'),
+	('GRR_SALLES_REUNIONS', 1, 'acces_restreint'),
+	('GRR_SALLES_PEDAGOGIQUES', 2, 'acces_restreint'),
+	('GRR_LABOS_LANGUES', 3, 'acces_restreint'),
+	('GRR_GESTION_SALLE_A01', 1, 'gestionnaire'),
+	('GRR_GESTION_SALLE_A03', 2, 'gestionnaire'),
+	('GRR_GESTION_SALLE_A314', 3, 'gestionnaire'),
+	('GRR_GESTION_SALLE_A409', 4, 'gestionnaire'),
+	('GRR_GESTION_SALLE_D05', 5, 'gestionnaire'),
+	('GRR_GESTION_SALLE_A301E', 6, 'gestionnaire');
+	*/
+	return "1";
 }
 /**
  * Resume a session
