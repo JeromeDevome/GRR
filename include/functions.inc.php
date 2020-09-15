@@ -2593,14 +2593,14 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
 				if (!isset($_GET['room']))
 				{
 					if (isset($all_ressource) && $all_ressource == 0)
-						$out_html .= /*'<div class="panel-body">'.PHP_EOL.*/'<input id="item_select" class="btn btn-primary btn-lg btn-block item_select" name="all_room" value="Toutes les ressources" onclick="location.href=\''.$link_all_room.'\' ;charger();"/>'.PHP_EOL;
+						$out_html .= /*'<div class="panel-body">'.PHP_EOL.*/'<input id="item_select" class="btn btn-primary btn-lg btn-block item_select" name="all_room" value="'.get_vocab("all_rooms").'" onclick="location.href=\''.$link_all_room.'\' ;charger();"/>'.PHP_EOL;
 					$out_html .= '<input class="btn btn-default btn-lg btn-block item" type="button" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\' ;charger();"/>'.PHP_EOL;
 					$all_ressource = 1;
 				}
 				else //changed (Ajout de type = " button pr gerer saut de ligne " 
 				{
 					if (isset($all_ressource) && $all_ressource == 0)
-						$out_html .= '<input class="btn btn-default btn-lg btn-block item" type="button" name="all_room" value="Toutes les ressources" onclick="location.href=\''.$link_all_room.'\' ;charger();"/>'.PHP_EOL;
+						$out_html .= '<input class="btn btn-default btn-lg btn-block item" type="button" name="all_room" value="'.get_vocab("all_rooms").'" onclick="location.href=\''.$link_all_room.'\' ;charger();"/>'.PHP_EOL;
 					$all_ressource = 1;
 					if ($current_room == $row[0])
 						$out_html .= '<input class="btn btn-primary btn-lg btn-block item_select" type="button" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\';charger();"/>'.PHP_EOL;
