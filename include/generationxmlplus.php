@@ -3,9 +3,9 @@
  * generationxmlplus.php
  *
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2020-03-22 15:30$
+ * @author    JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -26,10 +26,10 @@ $export.="<RESERVATIONS>";
 while($row = mysqli_fetch_array($result)){
 
 
-	$beneficiaire = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$row['beneficiaire']."';");
+	$beneficiaire = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".protect_data_sql($row['beneficiaire'])."';");
 	$beneficiaire = mysqli_fetch_array($beneficiaire);
 
-	$salle = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_room WHERE id = '".$row['room_id']."' LIMIT 1;");
+	$salle = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($row['room_id'])."' LIMIT 1;");
 	$salle = mysqli_fetch_array($salle);
 
 		$export.="<RESERVATION>";

@@ -2,9 +2,9 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2019-11-19 16:15$
+ * Dernière modification : $Date: 2020-06-18 22:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -195,10 +195,11 @@ function mrbsGetAreaIdFromRoomId($room_id)
 /** mrbsOverloadGetFieldslist()
  *
  * Return an array with all fields name
- * $id_area - Id of the id_area
+ * $id_area : Id of the area
+ * $room_id : Id of the room
  *
  */
-function mrbsOverloadGetFieldslist($id_area, $room_id = 0)
+function mrbsOverloadGetFieldslist($id_area="", $room_id = 0)
 {
 	if ($room_id > 0 )
 	{
@@ -402,12 +403,19 @@ function grrExtractValueFromOverloadDesc($chaine,$id)
  * $entry_type  - Entry type
  * $repeat_id   - Repeat ID
  * $room_id     - Room ID
+ * $creator
  * $beneficiaire       - beneficiaire
  * $beneficiaire_ext - bénéficiaire extérieur
  * $name        - Name
  * $type        - Type (Internal/External)
  * $description - Description
- *$rep_jour_c - Le jour cycle d'une réservation, si aucun 0
+ * $option_reservation
+ * $overload_data
+ * $moderate
+ * $rep_jour_c - Le jour cycle d'une réservation, si aucun 0
+ * $statut_entry
+ * $keys
+ * $courrier
  *
  * Returns:
  *   0        - An error occured while inserting the entry
@@ -516,17 +524,17 @@ function get_day_of_month($time, $rep_month_abs1, $rep_month_abs2)
 	$days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
 	$rep = array('first', 'second', 'third', 'fourth', 'fifth', 'last');
     $time = mktime(0,0,0,date("m",$time)+1,1,date("Y",$time)); // avance d'un mois
-    if (in_array($rep_month_abs1,[0,1,2,3,5])){
+    if (in_array($rep_month_abs1,array(0,1,2,3,5))){
         $str = $rep[$rep_month_abs1].' '.$days[$rep_month_abs2 - 1].' of '.date("F", $time).' '.date("Y", $time);
-        return [TRUE,strtotime($str)];
+        return array(TRUE,strtotime($str));
     }
     if ($rep_month_abs1 == 4){
         $str = $rep[4].' '.$days[$rep_month_abs2 - 1].' of '.date("F", $time).' '.date("Y", $time);
         $cinq = strtotime($str,$time);
         $str = 'last '.$days[$rep_month_abs2 - 1].' of '.date("F", $time).' '.date("Y", $time);
         $last = strtotime($str,$time);
-        if ($cinq == $last) return [TRUE,$cinq];
-        else return [FALSE,$last];
+        if ($cinq == $last) return array(TRUE,$cinq);
+        else return array(FALSE,$last);
     }
 }
 /** mrbsGetRepeatEntryList
@@ -600,18 +608,20 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
             return mrbsGetRepeatEntryList($time, $enddate, 7, $rep_opt, $max_ittr, $rep_num_weeks, $rep_jour_c, $area, $num_week, $num_jour);
 			//Si la périodicité est par Jours/Cycle
 			case 6:
+			$tableFinale = array();
 			$sql = "SELECT * FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY >= '".$time2."' AND DAY <= '".$enddate."' AND Jours = '".$rep_jour_c."'";
 			$result = mysqli_query($GLOBALS['db_c'], $sql);
-			$kk = 0;
-			$tableFinale = array();
-			while ($table = mysqli_fetch_array($result))
-			{
-				$day   = date("d", $table['DAY']);
-				$month = date("m", $table['DAY']);
-				$year  = date("Y", $table['DAY']);
-				$tableFinale[$kk] = mktime($hour, $min, $sec, $month, $day, $year);
-				$kk++;
-			}
+            if ($result){
+                $kk = 0;
+                while ($table = mysqli_fetch_array($result))
+                {
+                    $day   = date("d", $table['DAY']);
+                    $month = date("m", $table['DAY']);
+                    $year  = date("Y", $table['DAY']);
+                    $tableFinale[$kk] = mktime($hour, $min, $sec, $month, $day, $year);
+                    $kk++;
+                }
+            }
 			return $tableFinale;
             // X Y du mois
 			case 7:
@@ -701,7 +711,7 @@ function mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate
 function mrbsGetEntryInfo($id)
 {
 	$sql = "SELECT start_time, end_time, entry_type, repeat_id, room_id,
-	timestamp, beneficiaire, name, type, description
+	timestamp, beneficiaire, name, type, description, moderate
 	FROM ".TABLE_PREFIX."_entry
 	WHERE id = '".$id."'";
 	$res = grr_sql_query($sql);
@@ -723,6 +733,7 @@ function mrbsGetEntryInfo($id)
 		$ret["name"]        = $row[7];
 		$ret["type"]        = $row[8];
 		$ret["description"] = $row[9];
+        $ret['moderate']    = $row[10];
 	}
 	grr_sql_free($res);
 	return $ret;
@@ -778,6 +789,7 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 		$_moderate = "0";
 		$series = 1;
 	}
+	$tab_id_moderes = array();
 	if ($series==0)
 	{
 		//moderation de la ressource
@@ -790,7 +802,6 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 			fatal_error(0, grr_sql_error());
 		if (!(grr_backup($_id,$_SESSION['login'],$_description)))
 			fatal_error(0, grr_sql_error());
-		$tab_id_moderes = array();
 	}
 	else
 	{
@@ -803,7 +814,6 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 		$tab_entry = array();
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 			$tab_entry[] = $row['0'];
-		$tab_id_moderes = array();
 		// Boucle sur les résas
 		foreach ($tab_entry as $entry_tom)
 		{

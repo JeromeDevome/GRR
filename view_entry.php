@@ -3,9 +3,9 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-10-15 13:45$
+ * Dernière modification : $Date: 2020-07-20 19:05$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -28,9 +28,6 @@ if (!Settings::load())
 	die("Erreur chargement settings");
 require_once("./include/session.inc.php");
 
-// Paramètres langage
-include "include/language.inc.php";
-
 $page = verif_page();
 
 $fin_session = 'n';
@@ -49,7 +46,7 @@ unset($reg_statut_id);
 $reg_statut_id = isset($_GET["statut_id"]) ? htmlspecialchars($_GET["statut_id"]) : "";
 if (isset($_GET["id"]))
 {
-	$id = htmlspecialchars($_GET["id"]);
+	$id = clean_input($_GET["id"]);
 	settype($id, "integer");
 }
 else
@@ -57,9 +54,13 @@ else
 	header("Location: ./login.php");
 	die();
 }	
+
+// Paramètres langage
+include "include/language.inc.php";
+
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars_decode($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 // echo $back;
 if (isset($_GET["action_moderate"])){
     // ici on a l'id de la réservation, on peut donc construire un lien de retour complet, à la bonne date et avec la ressource précise
@@ -80,7 +81,7 @@ if (isset($_GET["action_moderate"])){
             $year = date ('Y', $row1['0']);
             $month = date ('m', $row1['0']);
             $day = date ('d', $row1['0']);
-            $page = (isset($_GET['page']))? $_GET['page'] : "day";
+            $page = (isset($_GET['page']))? clean_input($_GET['page']) : "day";
             $back = $page.'.php?year='.$year.'&month='.$month.'&day='.$day;
             if (($page == "week_all") || ($page == "month_all") || ($page == "month_all2") || ($page == "day"))
                 $back .= "&area=".mrbsGetRoomArea($row1['1']);
@@ -241,10 +242,11 @@ if (($fin_session == 'n') && (getUserName()!='') && (authGetUserLevel(getUserNam
 			if ($_SESSION['session_message_error'] == "")
 			{
 				$_SESSION['displ_msg'] = "yes";
-				$_SESSION["msg_a_afficher"] = get_vocab("un email envoye")." ".$_GET["mail_exist"];
+				$_SESSION["msg_a_afficher"] = get_vocab("un email envoye")." ".clean_input($_GET["mail_exist"]);
 			}
 		}
-		header("Location: ".$_GET['back']."");
+        $back = filter_var($_GET['back'], FILTER_SANITIZE_URL);
+		header("Location: ".$back."");
 		die();
 	}
 }
@@ -593,11 +595,12 @@ if (Settings::get("pdf") == '1'){
     if ((authGetUserLevel(getUserName(), $area_id, "area") > 1) || (authGetUserLevel(getUserName(), $room) >= 4))
        echo '<br><input class="btn btn-primary" onclick="myFunction(',$id,')" value="',get_vocab("Generer_pdf"),'" />',PHP_EOL;
 }
-// début du formulaire
+// début du formulaire, n'a lieu d'être affiché que pour un utilisateur autorisé
+if ($fin_session == 'n'){
 echo "<form action=\"view_entry.php\" method=\"get\">\n";
 echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
 if (isset($_GET['page']))
-	echo "<input type=\"hidden\" name=\"page\" value=\"".$_GET['page']."\" />\n";
+	echo "<input type=\"hidden\" name=\"page\" value=\"".clean_input($_GET['page'])."\" />\n";
 if ((getUserName() != '') && (authGetUserLevel(getUserName(), $room_id) >= 3) && ($moderate == 1))
 {
     //echo "<form action=\"view_entry.php\" method=\"get\">\n";
@@ -709,6 +712,7 @@ echo '<input type="hidden" name="id" value="',$id,'" />',PHP_EOL;
 echo '<input type="hidden" name="back" value="',$back,'" /></div>',PHP_EOL;
 echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"commit\" value=\"".get_vocab("save")."\" /></div>\n";
 echo '</form>',PHP_EOL;
+} // fin du formulaire
 //include_once('include/trailer.inc.php');
 if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')) // si mode page, on ferme le container
 {

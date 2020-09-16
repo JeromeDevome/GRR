@@ -3,9 +3,9 @@
  * language.inc.php
  * Configuration de la langue
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Laurent Delineau
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2020-03-22 14:50$
+ * @author    JeromeB & Laurent Delineau & Yan Naessens
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -65,12 +65,12 @@ elseif (@file_exists("../language/lang_subst." . $locale))
 if (isset($_GET['area']))
 {
 // Si l'id du domaine est passé en paramètre, on le récupère
-	$subst_id_area = $_GET['area'];
+	$subst_id_area = clean_input($_GET['area']);
 }
 else if (isset($_GET['room']))
 {
 // sinon, on essaye avec l'id de la ressource
-	$subst_id_area = mrbsGetRoomArea($_GET['room']);
+	$subst_id_area = mrbsGetRoomArea(clean_input($_GET['room']));
 }
 if (isset($subst_id_area))
 {

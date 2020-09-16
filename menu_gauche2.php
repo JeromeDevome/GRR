@@ -3,7 +3,7 @@
  * menu_gauche2.php
  * Menu calendrier & domaines & ressource & légende
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-03-22 15:00$
+ * Dernière modification : $Date: 2020-07-20 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -18,7 +18,7 @@
 
 if ($_GET['pview'] != 1)
 {
-	$path = $_SERVER['PHP_SELF'];
+	$path = isset($_SERVER['PHP_SELF'])? $_SERVER['PHP_SELF']:(isset($_SERVER['SCRIPT_NAME'])? $_SERVER['SCRIPT_NAME']:"day");
 	$file = basename ($path);
     echo "<div id='menuGauche2'>";
 	if ( $file== 'month_all2.php' or Settings::get("menu_gauche") == 0){
@@ -48,7 +48,7 @@ if ($_GET['pview'] != 1)
 	}
 	echo '<div id="menuGauche">'; */
 
-	$pageActuel = str_replace(".php","",basename($_SERVER['PHP_SELF']));
+	$pageActuel = str_replace(".php","",$file);
     // détermine le contexte d'appel : jour, semaine ou mois
     $pageSimple = str_replace(".php","",$file);
     $pageSimple = str_replace("_all","",$pageSimple);

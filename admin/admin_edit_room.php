@@ -3,7 +3,7 @@
  * admin_edit_room.php
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-01-28 11:10$
+ * Dernière modification : $Date: 2020-03-31 14:30$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -20,32 +20,36 @@ $grr_script_name = "admin_edit_room.php";
 include "../include/admin.inc.php";
 
 $ok = NULL;
-if (Settings::get("module_multisite") == "Oui")
+if (Settings::get("module_multisite") == "Oui"){
 	$id_site = isset($_POST["id_site"]) ? $_POST["id_site"] : (isset($_GET["id_site"]) ? $_GET["id_site"] : -1);
+    $id_site = intval($id_site);
+}
 $action = isset($_POST["action"]) ? $_POST["action"] : (isset($_GET["action"]) ? $_GET["action"] : NULL);
 $add_area = isset($_POST["add_area"]) ? $_POST["add_area"] : (isset($_GET["add_area"]) ? $_GET["add_area"] : NULL);
 $area_id = isset($_POST["area_id"]) ? $_POST["area_id"] : (isset($_GET["area_id"]) ? $_GET["area_id"] : NULL);
+if (isset($area_id)) $area_id = intval(clean_input($area_id));
 $retour_page = isset($_POST["retour_page"]) ? $_POST["retour_page"] : (isset($_GET["retour_page"]) ? $_GET["retour_page"] : NULL);
 $room = isset($_POST["room"]) ? $_POST["room"] : (isset($_GET["room"]) ? $_GET["room"] : NULL);
+if (isset($room)) $room = intval($room);
 $id_area = isset($_POST["id_area"]) ? $_POST["id_area"] : (isset($_GET["id_area"]) ? $_GET["id_area"] : NULL);
+if (isset($id_area)) $id_area = intval(clean_input($id_area));
 $change_area = isset($_POST["change_area"]) ? $_POST["change_area"] : NULL;
-$area_name = isset($_POST["area_name"]) ? $_POST["area_name"] : NULL;
+$area_name = isset($_POST["area_name"]) ? clean_input($_POST["area_name"]) : NULL;
 $access = isset($_POST["access"]) ? $_POST["access"] : NULL;
-$ip_adr = isset($_POST["ip_adr"]) ? $_POST["ip_adr"] : NULL;
-$room_name = isset($_POST["room_name"]) ? $_POST["room_name"] : NULL;
-$description = isset($_POST["description"]) ? $_POST["description"] : NULL;
-$capacity = isset($_POST["capacity"]) ? $_POST["capacity"] : NULL;
-$duree_max_resa_area1  = isset($_POST["duree_max_resa_area1"]) ? $_POST["duree_max_resa_area1"] : NULL;
-$duree_max_resa_area2  = isset($_POST["duree_max_resa_area2"]) ? $_POST["duree_max_resa_area2"] : NULL;
-$delais_max_resa_room  = isset($_POST["delais_max_resa_room"]) ? $_POST["delais_max_resa_room"] : NULL;
-$delais_min_resa_room  = isset($_POST["delais_min_resa_room"]) ? $_POST["delais_min_resa_room"] : NULL;
-$delais_option_reservation  = isset($_POST["delais_option_reservation"]) ? $_POST["delais_option_reservation"] : NULL;
-$allow_action_in_past  = isset($_POST["allow_action_in_past"]) ? $_POST["allow_action_in_past"] : NULL;
-$dont_allow_modify  = isset($_POST["dont_allow_modify"]) ? $_POST["dont_allow_modify"] : NULL;
-$qui_peut_reserver_pour  = isset($_POST["qui_peut_reserver_pour"]) ? $_POST["qui_peut_reserver_pour"] : NULL;
-$who_can_see  = isset($_POST["who_can_see"]) ? $_POST["who_can_see"] : NULL;
-$max_booking = isset($_POST["max_booking"]) ? $_POST["max_booking"] : NULL;
-settype($max_booking, "integer");
+$ip_adr = isset($_POST["ip_adr"]) ? clean_input($_POST["ip_adr"]) : NULL;
+$room_name = isset($_POST["room_name"]) ? clean_input($_POST["room_name"]) : NULL;
+$description = isset($_POST["description"]) ? clean_input($_POST["description"]) : NULL;
+$capacity = isset($_POST["capacity"]) ? clean_input($_POST["capacity"]) : NULL;
+$duree_max_resa_area1  = isset($_POST["duree_max_resa_area1"]) ? clean_input($_POST["duree_max_resa_area1"]) : NULL;
+$duree_max_resa_area2  = isset($_POST["duree_max_resa_area2"]) ? clean_input($_POST["duree_max_resa_area2"]) : NULL;
+$delais_max_resa_room  = isset($_POST["delais_max_resa_room"]) ? intval(clean_input($_POST["delais_max_resa_room"])) : NULL;
+$delais_min_resa_room  = isset($_POST["delais_min_resa_room"]) ? intval(clean_input($_POST["delais_min_resa_room"])) : NULL;
+$delais_option_reservation  = isset($_POST["delais_option_reservation"]) ? intval(clean_input($_POST["delais_option_reservation"])) : NULL;
+$allow_action_in_past  = isset($_POST["allow_action_in_past"]) ? clean_input($_POST["allow_action_in_past"]) : NULL;
+$dont_allow_modify  = isset($_POST["dont_allow_modify"]) ? clean_input($_POST["dont_allow_modify"]) : NULL;
+$qui_peut_reserver_pour  = isset($_POST["qui_peut_reserver_pour"]) ? clean_input($_POST["qui_peut_reserver_pour"]) : NULL;
+$who_can_see  = isset($_POST["who_can_see"]) ? clean_input($_POST["who_can_see"]) : NULL;
+$max_booking = isset($_POST["max_booking"]) ? intval(clean_input($_POST["max_booking"])) : NULL;
 if ($max_booking<-1)
 	$max_booking = -1;
 $statut_room = isset($_POST["statut_room"]) ? "0" : "1";
@@ -56,7 +60,7 @@ else
 {
 	$active_ressource_empruntee = 'n';
 	// toutes les reservations sont considerees comme restituee
-	grr_sql_query("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id = '".$room."'");
+	grr_sql_query("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id = '".protect_data_sql($room)."'");
 }
 if (isset($_POST["active_cle"]))
 	$active_cle = 'y';
@@ -64,22 +68,22 @@ else
 {
 	$active_cle = 'n';
 	// toutes les reservations sont considerees comme restituee
-	grr_sql_query("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id = '".$room."'");
+	grr_sql_query("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id = '".protect_data_sql($room)."'");
 }
-$picture_room = isset($_POST["picture_room"]) ? $_POST["picture_room"] : NULL;
+$picture_room = isset($_POST["picture_room"]) ? clean_input($_POST["picture_room"]) : NULL;
 $comment_room = isset($_POST["comment_room"]) ? $_POST["comment_room"] : NULL;
 $show_comment = isset($_POST["show_comment"]) ? "y" : "n";
 $change_done = isset($_POST["change_done"]) ? $_POST["change_done"] : NULL;
 if(!isset($_POST["area_order"]) || empty($_POST["area_order"])){
 	$area_order = 0;
 } else{
-	$area_order = $_POST["area_order"];
+	$area_order = intval($_POST["area_order"]);
 }
 
 $room_order = isset($_POST["room_order"]) ? $_POST["room_order"] : NULL;
 $change_room = isset($_POST["change_room"]) ? $_POST["change_room"] : NULL;
 $number_periodes = isset($_POST["number_periodes"]) ? $_POST["number_periodes"] : NULL;
-$type_affichage_reser = isset($_POST["type_affichage_reser"]) ? $_POST["type_affichage_reser"] : NULL;
+$type_affichage_reser = isset($_POST["type_affichage_reser"]) ? clean_input($_POST["type_affichage_reser"]) : NULL;
 $retour_resa_obli = isset($_POST["retour_resa_obli"]) ? $_POST["retour_resa_obli"] : NULL;
 $moderate = isset($_POST['moderate']) ? $_POST["moderate"] : NULL;
 if ($moderate == 'on')
@@ -90,7 +94,7 @@ settype($type_affichage_reser, "integer");
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 
 if (isset($_POST["change_room_and_back"]))
 {
@@ -108,13 +112,13 @@ if (!isset($retour_page))
 {
 	$retour_page = $back;
 	// on nettoie la chaine :
-	$long_chaine_a_supprimer = strlen(strstr($retour_page, "&amp;msg=")); // longueur de la chaine e partir de la premiere occurence de &amp;msg=
+	$long_chaine_a_supprimer = strlen(strstr($retour_page, "&amp;msg=")); // longueur de la chaine à partir de la premiere occurrence de &amp;msg=
 	if ($long_chaine_a_supprimer == 0)
 		$long_chaine_a_supprimer = strlen(strstr($retour_page, "?msg="));
 	$long = strlen($retour_page) - $long_chaine_a_supprimer;
 	$retour_page = substr($retour_page, 0, $long);
 }
-// modification d'une resource : admin ou gestionnaire
+// modification d'une ressource : admin ou gestionnaire
 if (authGetUserLevel(getUserName(),-1) < 6)
 {
 	if (isset($room))
@@ -171,32 +175,38 @@ if ((!empty($room)) || (isset($area_id)))
 	if (isset($change_room))
 	{
 		if (isset($_POST['sup_img']))
-		{
-			$dest = '../images/';
-			$ok1 = false;
-			if ($f = @fopen("$dest/.test", "w"))
-			{
-				@fputs($f, '<'.'?php $ok1 = true; ?'.'>');
-				@fclose($f);
-				include("$dest/.test");
-			}
-			if (!$ok1)
-			{
-				$msg .= "L\'image n\'a pas pu etre supprimee : probleme d\'écriture sur le repertoire. Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
-				$ok = 'no';
-			}
-			else
-			{
-				if (@file_exists($dest."img_".TABLE_PREFIX."".$room.".jpg"))
-					unlink($dest."img_".TABLE_PREFIX."".$room.".jpg");
-				if (@file_exists($dest."img_".TABLE_PREFIX."".$room.".png"))
-					unlink($dest."img_".TABLE_PREFIX."".$room.".png");
-				if (@file_exists($dest."img_".TABLE_PREFIX."".$room.".gif"))
-					unlink($dest."img_".TABLE_PREFIX."".$room.".gif");
-				$picture_room = "";
-			}
-		}
-		if (empty($capacity))
+        {
+            $dest = '../images/';
+            $ok1 = false;
+            if ($f = @fopen("$dest/.test", "w"))
+            {
+                @fputs($f, '<'.'?php $ok1 = true; ?'.'>');
+                @fclose($f);
+                include("$dest/.test");
+            }
+            if (!$ok1)
+            {
+                $msg .= "L\'image n\'a pas pu etre supprimee : probleme d\'écriture sur le repertoire. Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
+                $ok = 'no';
+            }
+            else
+            {
+                if (@file_exists($dest."img_".TABLE_PREFIX."".$room.".jpg"))
+                    unlink($dest."img_".TABLE_PREFIX."".$room.".jpg");
+                if (@file_exists($dest."img_".TABLE_PREFIX."".$room.".png"))
+                    unlink($dest."img_".TABLE_PREFIX."".$room.".png");
+                if (@file_exists($dest."img_".TABLE_PREFIX."".$room.".gif"))
+                    unlink($dest."img_".TABLE_PREFIX."".$room.".gif");
+                // $picture_room = ""; mettre à jour la donnée room
+                $sql_picture = "UPDATE ".TABLE_PREFIX."_room SET picture_room='' WHERE id=".protect_data_sql($room);
+                if (grr_sql_command($sql_picture) < 0)
+                {
+                    fatal_error(0, get_vocab('update_room_failed') . grr_sql_error());
+                    $ok = 'no';
+                }
+            }
+        }
+        if (empty($capacity))
 			$capacity = 0;
 		if ($capacity < 0)
 			$capacity = 0;
@@ -222,21 +232,21 @@ if ((!empty($room)) || (isset($area_id)))
 				$sql .= "picture_room='".protect_data_sql($picture_room)."', ";
 			$sql .= "comment_room='".protect_data_sql(corriger_caracteres($comment_room))."',
 			show_comment='".$show_comment."',
-			area_id='".$area_id."',
+			area_id='".protect_data_sql($area_id)."',
 			show_fic_room='".$show_fic_room."',
 			active_ressource_empruntee = '".$active_ressource_empruntee."',
 			active_cle = '".$active_cle."',
-			capacity='".$capacity."',
-			delais_max_resa_room='".$delais_max_resa_room."',
-			delais_min_resa_room='".$delais_min_resa_room."',
-			delais_option_reservation='".$delais_option_reservation."',
-			allow_action_in_past='".$allow_action_in_past."',
+			capacity='".protect_data_sql($capacity)."',
+			delais_max_resa_room='".protect_data_sql($delais_max_resa_room)."',
+			delais_min_resa_room='".protect_data_sql($delais_min_resa_room)."',
+			delais_option_reservation='".protect_data_sql($delais_option_reservation)."',
+			allow_action_in_past='".protect_data_sql($allow_action_in_past)."',
 			dont_allow_modify='".$dont_allow_modify."',
 			qui_peut_reserver_pour = '".$qui_peut_reserver_pour."',
 			who_can_see = '".$who_can_see."',
 			order_display='".protect_data_sql($area_order)."',
-			type_affichage_reser='".$type_affichage_reser."',
-			max_booking='".$max_booking."',
+			type_affichage_reser='".protect_data_sql($type_affichage_reser)."',
+			max_booking='".protect_data_sql($max_booking)."',
 			moderate='".$moderate."',
 			statut_room='".$statut_room."'
 			WHERE id=$room";
@@ -250,24 +260,24 @@ if ((!empty($room)) || (isset($area_id)))
 		{
 			$sql = "insert into ".TABLE_PREFIX."_room
 			SET room_name='".protect_data_sql($room_name)."',
-			area_id='".$area_id."',
+			area_id='".protect_data_sql($area_id)."',
 			description='".protect_data_sql($description)."',
 			picture_room='".protect_data_sql($picture_room)."',
 			comment_room='".protect_data_sql(corriger_caracteres($comment_room))."',
 			show_fic_room='".$show_fic_room."',
 			active_ressource_empruntee = '".$active_ressource_empruntee."',
 			active_cle = '".$active_cle."',
-			capacity='".$capacity."',
-			delais_max_resa_room='".$delais_max_resa_room."',
-			delais_min_resa_room='".$delais_min_resa_room."',
-			delais_option_reservation='".$delais_option_reservation."',
-			allow_action_in_past='".$allow_action_in_past."',
+			capacity='".protect_data_sql($capacity)."',
+			delais_max_resa_room='".protect_data_sql($delais_max_resa_room)."',
+			delais_min_resa_room='".protect_data_sql($delais_min_resa_room)."',
+			delais_option_reservation='".protect_data_sql($delais_option_reservation)."',
+			allow_action_in_past='".protect_data_sql($allow_action_in_past)."',
 			dont_allow_modify='".$dont_allow_modify."',
 			qui_peut_reserver_pour = '".$qui_peut_reserver_pour."',
 			who_can_see = '".$who_can_see."',
 			order_display='".protect_data_sql($area_order)."',
-			type_affichage_reser='".$type_affichage_reser."',
-			max_booking='".$max_booking."',
+			type_affichage_reser='".protect_data_sql($type_affichage_reser)."',
+			max_booking='".protect_data_sql($max_booking)."',
 			moderate='".$moderate."',
 			statut_room='".$statut_room."'";
 			if (grr_sql_command($sql) < 0)
@@ -280,65 +290,102 @@ if ((!empty($room)) || (isset($area_id)))
 			$room_name = get_vocab("room")." ".$room;
 			grr_sql_command("UPDATE ".TABLE_PREFIX."_room SET room_name='".protect_data_sql($room_name)."' WHERE id=$room");
 		}
-		$doc_file = isset($_FILES["doc_file"]) ? $_FILES["doc_file"] : NULL;
-		if (preg_match("`\.([^.]+)$`", $doc_file['name'], $match))
-		{
-			$ext = strtolower($match[1]);
-			if ($ext != 'jpg' && $ext != 'png'&& $ext != 'gif')
-			{
-				$msg .= "L\'image n\'a pas pu etre enregistree : les seules extentions autorisees sont gif, png et jpg.\\n";
-				$ok = 'no';
-			}
-			else
-			{
-				$dest = '../images/';
-				$ok1 = false;
-				if ($f = @fopen("$dest/.test", "w"))
-				{
-					@fputs($f, '<'.'?php $ok1 = true; ?'.'>');
-					@fclose($f);
-					include("$dest/.test");
-				}
-				if (!$ok1)
-				{
-					$msg .= "L\'image n\'a pas pu etre enregistree : probleme d\'ecriture sur le repertoire IMAGES. Veuillez signaler ce probleme e l\'administrateur du serveur.\\n";
-					$ok = 'no';
-				}
-				else
-				{
-					$ok1 = @copy($doc_file['tmp_name'], $dest.$doc_file['name']);
-					if (!$ok1)
-						$ok1 = @move_uploaded_file($doc_file['tmp_name'], $dest.$doc_file['name']);
-					if (!$ok1)
-					{
-						$msg .= "L\'image n\'a pas pu etre enregistree : probleme de transfert. Le fichier n\'a pas pu etre transfere sur le repertoire IMAGES. Veuillez signaler ce probleme e l\'administrateur du serveur.\\n";
-						$ok = 'no';
-					}
-					else
-					{
-						$tab = explode(".", $doc_file['name']);
-						$ext = strtolower($tab[1]);
-						if (@file_exists($dest."img_".TABLE_PREFIX."".$room.".".$ext))
-							@unlink($dest."img_".TABLE_PREFIX."".$room.".".$ext);
-						rename($dest.$doc_file['name'],$dest."img_".TABLE_PREFIX."".$room.".".$ext);
-						@chmod($dest."img_".TABLE_PREFIX."".$room.".".$ext, 0666);
-						$picture_room = "img_".TABLE_PREFIX."".$room.".".$ext;
-						$sql_picture = "UPDATE ".TABLE_PREFIX."_room SET picture_room='".protect_data_sql($picture_room)."' WHERE id=".$room;
-						if (grr_sql_command($sql_picture) < 0)
-						{
-							fatal_error(0, get_vocab('update_room_failed') . grr_sql_error());
-							$ok = 'no';
-						}
-					}
-				}
-			}
-		}
-		else if ($doc_file['name'] != '')
-		{
-			$msg .= "L\'image n\'a pas pu etre enregistree : le fichier image selectionne n'est pas valide !\\n";
-			$ok = 'no';
-		}
-		$msg .= get_vocab("message_records");
+        // image d'illustration
+        $doc_file = isset($_FILES["doc_file"]) ? $_FILES["doc_file"] : NULL;
+        /* Test premier, juste pour bloquer les double extensions */
+        if (count(explode('.', $doc_file['name'])) > 2) {
+            $msg .= "L\'image n\'a pas pu être enregistrée : les seules extentions autorisées sont gif, png et jpg.\\n";
+            $ok = 'no';
+        } 
+        elseif  (preg_match("`\.([^.]+)$`", $doc_file['name'], $match)) {
+            $ext = strtolower($match[1]);
+            if ($ext != 'jpg' && $ext != 'png'&& $ext != 'gif')
+            {
+                $msg .= "L\'image n\'a pas pu etre enregistree : les seules extentions autorisees sont gif, png et jpg.\\n";
+                $ok = 'no';
+            }
+            else {
+                /* deuxième test passé, l'extension est autorisée */
+                /* 3ème test avec fileinfo */
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $fileType = finfo_file($finfo, $doc_file['tmp_name']);
+                /* 4ème test avec gd pour valider que c'est bien une image malgré tout - nécessaire ou parano ? */
+                switch($fileType) {
+                    case "image/gif":
+                        /* recreate l'image, supprime les data exif */
+                        $logoRecreated = @imagecreatefromgif ( $doc_file['tmp_name'] );
+                        /* fix pour la transparence */
+                        imageAlphaBlending($logoRecreated, true);
+                        imageSaveAlpha($logoRecreated, true);
+                        $extSafe = "gif";
+                        break;
+                    case "image/jpeg":
+                        $logoRecreated = @imagecreatefromjpeg ( $doc_file['tmp_name'] );
+                        $extSafe = "jpg";
+                        break;
+                    case "image/png":
+                        $logoRecreated = @imagecreatefrompng ( $doc_file['tmp_name'] );
+                        /* fix pour la transparence */
+                        imageAlphaBlending($logoRecreated, true);
+                        imageSaveAlpha($logoRecreated, true);
+                        $extSafe = "png";
+                        break;
+                    default:
+                        $msg .= "L\'image n\'a pas pu être enregistrée : type mime incompatible.\\n";
+                        $ok = 'no';
+                        $extSafe = false;
+                        break;
+                }
+            }
+            if (!$logoRecreated || $extSafe === false) {
+                /* la fonction imagecreate a échoué, donc l'image est corrompue ou craftée */
+                $msg .= "L\'image n\'a pas pu être enregistrée : fichier corrompu.\\n";
+                $ok = 'no';
+            }
+            else
+            {   /* je teste si la destination est writable */
+                $dest = '../images/';
+                $ok1 = is_writable($dest);
+                if (!$ok1)
+                {
+                    $msg .= "L\'image n\'a pas pu etre enregistree : probleme d\'ecriture sur le repertoire IMAGES. Veuillez signaler ce probleme e l\'administrateur du serveur.\\n";
+                    $ok = 'no';
+                }
+                else
+                {
+                    $ok1 = @copy($doc_file['tmp_name'], $dest.$doc_file['name']);
+                    if (!$ok1)
+                        $ok1 = @move_uploaded_file($doc_file['tmp_name'], $dest.$doc_file['name']);
+                    if (!$ok1)
+                    {
+                        $msg .= "L\'image n\'a pas pu etre enregistree : probleme de transfert. Le fichier n\'a pas pu etre transfere sur le repertoire IMAGES. Veuillez signaler ce probleme à l\'administrateur du serveur.\\n";
+                        $ok = 'no';
+                    }
+                    else
+                    {
+                        $tab = explode(".", $doc_file['name']);
+                        $ext = strtolower($tab[1]);
+                        if (@file_exists($dest."img_".TABLE_PREFIX."".$room.".".$extSafe))
+                            @unlink($dest."img_".TABLE_PREFIX."".$room.".".$extSafe);
+                        rename($dest.$doc_file['name'],$dest."img_".TABLE_PREFIX."".$room.".".$extSafe);
+                        @chmod($dest."img_".TABLE_PREFIX."".$room.".".$extSafe, 0666);
+                        $picture_room = "img_".TABLE_PREFIX."".$room.".".$extSafe;
+                        $sql_picture = "UPDATE ".TABLE_PREFIX."_room SET picture_room='".protect_data_sql($picture_room)."' WHERE id=".protect_data_sql($room);
+                        if (grr_sql_command($sql_picture) < 0)
+                        {
+                            fatal_error(0, get_vocab('update_room_failed') . grr_sql_error());
+                            $ok = 'no';
+                        }
+                    }
+                }
+            }
+        }
+        else if ($doc_file['name'] != '')
+        {
+            $msg .= "L\'image n\'a pas pu être enregistrée : le fichier image sélectionné n'est pas valide !\\n";
+            $ok = 'no';
+        }
+        $msg .= get_vocab("message_records");
 	}
 	// Si pas de probleme, retour à la page d'accueil apres enregistrement
 	if ((isset($change_done)) && (!isset($ok)))
@@ -410,27 +457,27 @@ if ((!empty($room)) || (isset($area_id)))
 		if (isset($action))
 			echo "<input type=\"hidden\" name=\"action\" value=\"duplique_room\" />\n";
 		if ($row["id"] != '')
-			echo "<input type=\"hidden\" name=\"room\" value=\"".$row["id"]."\" />\n";
+			echo "<input type=\"hidden\" name=\"room\" value=\"".clean_input($row["id"])."\" />\n";
 		if (isset($retour_page))
 			echo "<input type=\"hidden\" name=\"retour_page\" value=\"".$retour_page."\" />\n";
 	echo "</div>";
     $nom_picture = '';
-    if ($row['picture_room'] != '') $nom_picture = "../images/".$row['picture_room'];
+    if ($row['picture_room'] != '') $nom_picture = "../images/".clean_input($row['picture_room']);
     if (Settings::get("use_fckeditor") == 1)
         echo "<script type=\"text/javascript\" src=\"../js/ckeditor/ckeditor.js\"></script>\n";
     echo "<table class='table table-bordered'>\n";
 	echo "<tr><td>".get_vocab("name").get_vocab("deux_points")."</td><td>\n";
     // seul l'administrateur peut modifier le nom de la ressource
     if ((authGetUserLevel(getUserName(),$area_id,"area") >= 4) || (authGetUserLevel(getUserName(),$room) >= 4))
-        echo "<input type=\"text\" name=\"room_name\" maxlength=\"60\" size=\"40\" value=\"".htmlspecialchars($row["room_name"])."\" />\n";
+        echo "<input type=\"text\" name=\"room_name\" maxlength=\"60\" size=\"40\" value=\"".clean_input($row["room_name"])."\" />\n";
     else
     {
-        echo "<input type=\"hidden\" name=\"room_name\" value=\"".htmlspecialchars($row["room_name"])."\" />\n";
-        echo "<b>".htmlspecialchars($row["room_name"])."</b>\n";
+        echo "<input type=\"hidden\" name=\"room_name\" value=\"".clean_input($row["room_name"])."\" />\n";
+        echo "<b>".clean_input($row["room_name"])."</b>\n";
     }
     echo "</td></tr>\n";
     // Description
-    echo "<tr><td>".get_vocab("description")."</td><td><input type=\"text\" name=\"description\"  maxlength=\"60\" size=\"40\" value=\"".htmlspecialchars($row["description"])."\" /></td></tr>\n";
+    echo "<tr><td>".get_vocab("description")."</td><td><input type=\"text\" name=\"description\"  maxlength=\"60\" size=\"40\" value=\"".clean_input($row["description"])."\" /></td></tr>\n";
     // Domaine
     $enable_periods = grr_sql_query1("select enable_periods from ".TABLE_PREFIX."_area where id='".$area_id."'");
     if (((authGetUserLevel(getUserName(),$area_id,"area") >=4 ) || (authGetUserLevel(getUserName(),$room) >= 4)) && ($enable_periods == 'n'))
@@ -461,7 +508,7 @@ if ((!empty($room)) || (isset($area_id)))
                 echo "<option value=\"".$row1[0]."\"";
                 if ($area_id == $row1[0])
                     echo ' selected="selected"';
-                echo '>'.htmlspecialchars($row1[1]);
+                echo '>'.htmlspecialchars($row1[1], ENT_QUOTES);
                 echo '</option>'."\n";
             }
         grr_sql_free($res);
@@ -480,7 +527,7 @@ if ((!empty($room)) || (isset($area_id)))
     }
     // Ordre d'affichage du domaine
     echo "<tr><td>".get_vocab("order_display").get_vocab("deux_points")."</td>\n";
-    echo "<td><input class=\"form-control\" type=\"text\" name=\"area_order\" size=\"1\" value=\"".htmlspecialchars($row["order_display"])."\" /></td>\n";
+    echo "<td><input class=\"form-control\" type=\"text\" name=\"area_order\" size=\"1\" value=\"".clean_input($row["order_display"])."\" /></td>\n";
     echo "</tr>\n";
     // Qui peut voir cette ressource
     echo "<tr><td colspan=\"2\">".get_vocab("qui_peut_voir_ressource")."<br />\n";
@@ -523,13 +570,14 @@ if ((!empty($room)) || (isset($area_id)))
         echo " checked=\"checked\" ";
     echo "/><a href='javascript:centrerpopup(\"../view_room.php?id_room=$room\",600,480,\"scrollbars=yes,statusbar=no,resizable=yes\")' title=\"".get_vocab("fiche_ressource")."\"><span class=\"glyphicon glyphicon-search\"></span></a></td></tr>\n";
     // Choix de l'image de la ressource
-    echo "<tr><td>".get_vocab("choisir_image_ressource")."</td><td><input type=\"file\" name=\"doc_file\" size=\"30\" /></td></tr>\n";
+    echo "<tr><td>".get_vocab("choisir_image_ressource")."</td><td><input type=\"file\" name=\"doc_file\" accept='.jpg,.png,.gif' size=\"30\" /></td></tr>\n";
     echo "<tr><td>".get_vocab("supprimer_image_ressource").get_vocab("deux_points");
     if (@file_exists($nom_picture))
     {
         echo "<b>$nom_picture</b></td><td><input type=\"checkbox\" name=\"sup_img\" /></td></tr>";}
     else
         echo "<b>".get_vocab("nobody")."</b></td><td><input type=\"checkbox\" disabled=\"disabled\" name=\"sup_img\" /></td></tr>";
+    // affichage description complète
     echo "<tr><td>".get_vocab("Afficher_description_complete_dans_titre_plannings")."</td>\n<td><input type=\"checkbox\" name=\"show_comment\" ";
     if ($row['show_comment'] == "y")
         echo " checked ";
@@ -542,7 +590,7 @@ if ((!empty($room)) || (isset($area_id)))
     if (Settings::get("use_fckeditor") == 1)
     {
         echo "<textarea class=\"ckeditor\" id=\"editor1\" name=\"comment_room\" rows=\"8\" cols=\"120\">\n";
-        echo htmlspecialchars($row['comment_room']);
+        echo clean_input($row['comment_room']);
         echo "</textarea>\n";
             ?>
             <script type="text/javascript">
@@ -564,7 +612,7 @@ if ((!empty($room)) || (isset($area_id)))
             <?php
         }
         else
-            echo "<textarea class=\"form-control\" name=\"comment_room\" rows=\"8\" cols=\"120\" >".$row['comment_room']."</textarea>";
+            echo "<textarea class=\"form-control\" name=\"comment_room\" rows=\"8\" cols=\"120\" >".clean_input($row['comment_room'])."</textarea>";
         echo "</td></tr></table>\n";
         echo "<h3>".get_vocab("configuration_ressource")."</h3>\n";
 // Type d'affichage : duree ou heure/date de fin de reservation
@@ -585,27 +633,27 @@ if ((!empty($room)) || (isset($area_id)))
 			echo "</tr>\n";
 
 	// Capacite
-			echo "<tr><td>".get_vocab("capacity").": </td><td><input class=\"form-control\" type=\"text\" name=\"capacity\" size=\"1\" value=\"".$row["capacity"]."\" /></td></tr>\n";
+			echo "<tr><td>".get_vocab("capacity").": </td><td><input class=\"form-control\" type=\"text\" name=\"capacity\" size=\"1\" value=\"".clean_input($row["capacity"])."\" /></td></tr>\n";
 	// seuls les administrateurs de la ressource peuvent modifier le nombre max de reservation par utilisateur
 			if ((authGetUserLevel(getUserName(),$area_id,"area") >= 4) || (authGetUserLevel(getUserName(),$room) >= 4))
 			{
 				echo "<tr><td>".get_vocab("max_booking")." ";
-				echo "</td><td><input class=\"form-control\" type=\"text\" name=\"max_booking\" size=\"1\" value=\"".$row["max_booking"]."\" /></td></tr>";
+				echo "</td><td><input class=\"form-control\" type=\"text\" name=\"max_booking\" size=\"1\" value=\"".clean_input($row["max_booking"])."\" /></td></tr>";
 
 			}
 			else 
 			{
 				if ($row["max_booking"] != "-1")
-					echo "<tr><td>".get_vocab("msg_max_booking").get_vocab("deux_points")."</td><td><b>".htmlspecialchars($row["max_booking"])."</b></td></tr>";
-				echo "<input type=\"hidden\" name=\"max_booking\" value=\"".$row["max_booking"]."\" />";
+					echo "<tr><td>".get_vocab("msg_max_booking").get_vocab("deux_points")."</td><td><b>".clean_input($row["max_booking"])."</b></td></tr>";
+				echo "<input type=\"hidden\" name=\"max_booking\" value=\"".clean_input($row["max_booking"])."\" />";
 			}
 // L'utilisateur ne peut pas reserver au-delà d'un certain temps
-			echo "<tr><td>".get_vocab("delais_max_resa_room").": </td><td><input class=\"form-control\" type=\"text\" name=\"delais_max_resa_room\" size=\"1\" value=\"".$row["delais_max_resa_room"]."\" /></td></tr>\n";
+			echo "<tr><td>".get_vocab("delais_max_resa_room").": </td><td><input class=\"form-control\" type=\"text\" name=\"delais_max_resa_room\" size=\"1\" value=\"".clean_input($row["delais_max_resa_room"])."\" /></td></tr>\n";
 // L'utilisateur ne peut pas reserver en-dessous d'un certain temps
 			echo "<tr><td>".get_vocab("delais_min_resa_room").": ";
-			echo "</td><td><input class=\"form-control\" type=\"text\" name=\"delais_min_resa_room\" size=\"5\" value=\"".$row["delais_min_resa_room"]."\" /></td></tr>\n";
+			echo "</td><td><input class=\"form-control\" type=\"text\" name=\"delais_min_resa_room\" size=\"5\" value=\"".clean_input($row["delais_min_resa_room"])."\" /></td></tr>\n";
 // L'utilisateur peut poser poser une option de reservation
-			echo "<tr><td>".get_vocab("msg_option_de_reservation")."</td><td><input class=\"form-control\" type=\"text\" name=\"delais_option_reservation\" size=\"5\" value=\"".$row["delais_option_reservation"]."\" /></td></tr>\n";
+			echo "<tr><td>".get_vocab("msg_option_de_reservation")."</td><td><input class=\"form-control\" type=\"text\" name=\"delais_option_reservation\" size=\"5\" value=\"".clean_input($row["delais_option_reservation"])."\" /></td></tr>\n";
 // Les demandes de reservations sont moderées
 			echo "<tr><td>".get_vocab("msg_moderation_reservation").get_vocab("deux_points");
 			echo "</td>" ."<td><input type='checkbox' name='moderate' ";
@@ -670,7 +718,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 {
 	if (isset($change_area))
 	{
-	// Affectation e un site : si aucun site n'a ete affecte
+	// Affectation à un site : si aucun site n'a ete affecte
 		if ((Settings::get("module_multisite") == "Oui") && ($id_site == -1))
 		{
 	  		// On affiche un message d'avertissement
@@ -679,7 +727,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 				alert("<?php echo get_vocab('choose_a_site'); ?>");
 			</script>
 			<?php
-	  		// On empeche le retour e la page admin_room
+	  		// On empeche le retour à la page admin_room
 			unset($change_done);
 		}
 		else
@@ -755,7 +803,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 				weekstarts_area = '".protect_data_sql($_POST['weekstarts_area'])."',
 				enable_periods = '".protect_data_sql($_POST['enable_periods'])."',
 				twentyfourhour_format_area = '".protect_data_sql($_POST['twentyfourhour_format_area'])."',
-				max_booking='".$max_booking."',
+				max_booking='".protect_data_sql($max_booking)."',
 				display_days = '".$display_days."'
 				WHERE id=$id_area";
 				if (grr_sql_command($sql) < 0)
@@ -782,20 +830,20 @@ if ((!empty($id_area)) || (isset($add_area)))
 				enable_periods = '".protect_data_sql($_POST['enable_periods'])."',
 				twentyfourhour_format_area = '".protect_data_sql($_POST['twentyfourhour_format_area'])."',
 				display_days = '".$display_days."',
-				max_booking='".$max_booking."',
+				max_booking='".protect_data_sql($max_booking)."',
 				id_type_par_defaut = '-1'
 				";
 				if (grr_sql_command($sql) < 0)
 					fatal_error(1, "<p>" . grr_sql_error());
 				$id_area = grr_sql_insert_id();
 			}
-	  		// Affectation e un site
+	  		// Affectation à un site
 			if (Settings::get("module_multisite") == "Oui")
 			{
-				$sql = "delete from ".TABLE_PREFIX."_j_site_area where id_area='".$id_area."'";
+				$sql = "delete from ".TABLE_PREFIX."_j_site_area where id_area='".protect_data_sql($id_area)."'";
 				if (grr_sql_command($sql) < 0)
 					fatal_error(0, "<p>".grr_sql_error()."</p>");
-				$sql = "INSERT INTO ".TABLE_PREFIX."_j_site_area SET id_site='".$id_site."', id_area='".$id_area."'";
+				$sql = "INSERT INTO ".TABLE_PREFIX."_j_site_area SET id_site='".protect_data_sql($id_site)."', id_area='".protect_data_sql($id_area)."'";
 				if (grr_sql_command($sql) < 0)
 					fatal_error(0, "<p>".grr_sql_error()."</p>");
 			}
@@ -803,7 +851,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 			if ($area_name == '')
 			{
 				$area_name = get_vocab("match_area")." ".$id_area;
-				grr_sql_command("UPDATE ".TABLE_PREFIX."_area SET area_name='".protect_data_sql($area_name)."' WHERE id=$id_area");
+				grr_sql_command("UPDATE ".TABLE_PREFIX."_area SET area_name='".protect_data_sql($area_name)."' WHERE id='".protect_data_sql($id_area)."' ");
 			}
 		  	#on cree ou recree ".TABLE_PREFIX."_area_periodes pour le domaine
 			if (protect_data_sql($_POST['enable_periods']) == 'y')
@@ -825,7 +873,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 						{
 							$nom_periode = corriger_caracteres($_POST[$temp]);
 							$reg_periode = grr_sql_query("insert into ".TABLE_PREFIX."_area_periodes set
-								id_area='".$id_area."',
+								id_area='".protect_data_sql($id_area)."',
 								num_periode='".$num."',
 								nom_periode='".protect_data_sql($nom_periode)."'
 								");
@@ -910,6 +958,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 	echo "<div class=\"col-md-9 col-sm-8 col-xs-12\">";
 	if (isset($id_area))
 	{
+        $id_area = intval($id_area);
 		$res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_area WHERE id=$id_area");
 		if (! $res)
 			fatal_error(0, get_vocab('error_area') . $id_area . get_vocab('not_found'));
@@ -963,18 +1012,18 @@ if ((!empty($id_area)) || (isset($add_area)))
 		if (isset($retour_page))
 			echo "<input type=\"hidden\" name=\"retour_page\" value=\"".$retour_page."\" />";
 		if ($row['id'] != '')
-			echo "<input type=\"hidden\" name=\"id_area\" value=\"".$row["id"]."\" />";
+			echo "<input type=\"hidden\" name=\"id_area\" value=\"".clean_input($row["id"])."\" />";
 		if (isset($add_area))
 			echo "<input type=\"hidden\" name=\"add_area\" value=\"".$add_area."\" />\n";
 		echo "</div>";
 		echo "<table class='table table-bordered'><tr>";
 		// Nom du domaine
 		echo "<td>".get_vocab("name").get_vocab("deux_points")."</td>\n";
-		echo "<td style=\"width:30%;\"><input type=\"text\" name=\"area_name\" maxlength=\"30\" size=\"40\" value=\"".htmlspecialchars($row["area_name"])."\" /></td>\n";
+		echo "<td style=\"width:30%;\"><input type=\"text\" name=\"area_name\" maxlength=\"30\" size=\"40\" value=\"".clean_input($row["area_name"])."\" /></td>\n";
 		echo "</tr><tr>\n";
 		// Ordre d'affichage du domaine
 		echo "<td>".get_vocab("order_display").get_vocab("deux_points")."</td>\n";
-		echo "<td><input type=\"text\" name=\"area_order\" size=\"1\" value=\"".htmlspecialchars($row["order_display"])."\" /></td>\n";
+		echo "<td><input type=\"text\" name=\"area_order\" size=\"1\" value=\"".clean_input($row["order_display"])."\" /></td>\n";
 		echo "</tr><tr>\n";
 		// Acces restreint ou non ?
 		echo "<td>".get_vocab("access").get_vocab("deux_points")."</td>\n";
@@ -1008,7 +1057,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 					echo "<option value=\"".$row1[0]."\"";
 					if ($id_site == $row1[0])
 						echo ' selected="selected"';
-					echo '>'.htmlspecialchars($row1[2]);
+					echo '>'.htmlspecialchars($row1[2], ENT_QUOTES);
 					echo '</option>'."\n";
 				}
 				grr_sql_free($res);
@@ -1026,7 +1075,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 		{
 			echo "<tr>\n";
 			echo "<td>".get_vocab("ip_adr").get_vocab("deux_points")."</td>";
-			echo "<td><input class=\"form-control\" type=\"text\" name=\"ip_adr\" value=\"".htmlspecialchars($row["ip_adr"])."\" /></td>\n";
+			echo "<td><input class=\"form-control\" type=\"text\" name=\"ip_adr\" value=\"".clean_input($row["ip_adr"])."\" /></td>\n";
 			echo "</tr>\n";
 			echo "<tr>\n";
 			echo "<td colspan=\"2\">".get_vocab("ip_adr_explain")."</td>\n";
@@ -1052,7 +1101,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 		}
 		echo "</select></td>\n";
 		echo "</tr>";
-		// Definition des jours de la semaine e afficher sur les plannings et calendriers
+		// Definition des jours de la semaine à afficher sur les plannings et calendriers
 		echo "<tr>\n";
 		echo "<td>".get_vocab("cocher_jours_a_afficher")."</td>\n";
 		echo "<td>\n";
@@ -1144,22 +1193,22 @@ if ((!empty($id_area)) || (isset($add_area)))
 			}
 			echo "</select></td>\n";
 			echo "</tr>";
-			// Minutes e ajouter e l'heure $eveningends pour avoir la fin reelle d'une journee.
+			// Minutes à ajouter à l'heure $eveningends pour avoir la fin réelle d'une journée.
 			echo "<tr>\n";
 			echo "<td>".get_vocab("eveningends_minutes_area").get_vocab("deux_points")."</td>\n";
-			echo "<td><input class=\"form-control\" type=\"text\" name=\"eveningends_minutes_area\" size=\"5\" value=\"".htmlspecialchars($row["eveningends_minutes_area"])."\" /></td>\n";
+			echo "<td><input class=\"form-control\" type=\"text\" name=\"eveningends_minutes_area\" size=\"5\" value=\"".clean_input($row["eveningends_minutes_area"])."\" /></td>\n";
 			echo "</tr>";
 			// Resolution - quel bloc peut etre reserve, en secondes
 			echo "<tr>\n";
 			echo "<td>".get_vocab("resolution_area").get_vocab("deux_points")."</td>\n";
-			echo "<td><input class=\"form-control\" type=\"text\" name=\"resolution_area\" size=\"5\" value=\"".htmlspecialchars($row["resolution_area"])."\" /></td>\n";
+			echo "<td><input class=\"form-control\" type=\"text\" name=\"resolution_area\" size=\"5\" value=\"".clean_input($row["resolution_area"])."\" /></td>\n";
 			echo "</tr>";
 			// Valeur par defaut de la duree d'une reservation
 			echo "<tr>\n";
 			echo "<td>".get_vocab("duree_par_defaut_reservation_area").get_vocab("deux_points")."</td>\n";
-			echo "<td><input class=\"form-control\" type=\"text\" name=\"duree_par_defaut_reservation_area\" size=\"5\" value=\"".htmlspecialchars($row["duree_par_defaut_reservation_area"])."\" /></td>\n";
+			echo "<td><input class=\"form-control\" type=\"text\" name=\"duree_par_defaut_reservation_area\" size=\"5\" value=\"".clean_input($row["duree_par_defaut_reservation_area"])."\" /></td>\n";
 			echo "</tr>";
-			// Format d'affichage du temps : valeur 0 pour un affichage ee12 heuresee et valeur 1 pour un affichage  ee24 heureee.
+			// Format d'affichage du temps : valeur 0 pour un affichage sur 12 heures et valeur 1 pour un affichage sur 24 heures.
 			echo "<tr>\n";
 			echo "<td>".get_vocab("twentyfourhour_format_area").get_vocab("deux_points")."</td>\n";
 			echo "<td>\n";
@@ -1175,10 +1224,10 @@ if ((!empty($id_area)) || (isset($add_area)))
 			echo "</tr>\n";
 			// L'utilisateur ne peut reserver qu'une duree limitee (-1 desactivee), exprimee en minutes
 			echo "<tr>\n<td>".get_vocab("duree_max_resa_area").get_vocab("deux_points");
-			echo "</td>\n<td><input class=\"form-control\" type=\"text\" name=\"duree_max_resa_area1\" size=\"5\" value=\"".$row["duree_max_resa_area"]."\" /></td></tr>\n";
+			echo "</td>\n<td><input class=\"form-control\" type=\"text\" name=\"duree_max_resa_area1\" size=\"5\" value=\"".clean_input($row["duree_max_resa_area"])."\" /></td></tr>\n";
 			// Nombre max de reservation par domaine
 			echo "<tr><td>".get_vocab("max_booking")." -  ".get_vocab("all_rooms_of_area").get_vocab("deux_points");
-			echo "</td><td><input class=\"form-control\" type=\"text\" name=\"max_booking\" value=\"".$row['max_booking']."\" /></td>\n";
+			echo "</td><td><input class=\"form-control\" type=\"text\" name=\"max_booking\" value=\"".clean_input($row['max_booking'])."\" /></td>\n";
 			echo "</tr></table>";
 			Hook::Appel("hookEditArea1");
 			echo "<div class=\"center\">\n";

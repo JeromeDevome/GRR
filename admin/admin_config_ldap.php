@@ -3,7 +3,7 @@
  * admin_config_ldap.php
  * Interface permettant la configuration de l'accès à un annuaire LDAP
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-01-28 11:10$
+ * Dernière modification : $Date: 2020-09-08 22:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,8 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-// cette page reste à internationaliser (et à restructurer ?)
- $grr_script_name = "admin_config_ldap.php";
+$grr_script_name = "admin_config_ldap.php";
 
 include "../include/connect.inc.php";
 include "../include/config.inc.php";
@@ -32,13 +31,13 @@ require_once("../include/session.inc.php");
 include "../include/language.inc.php";
 //Chargement des valeurs de la table settingS
 if (!Settings::load())
-	die("Erreur chargement settings");
+	die(get_vocab('error_settings_load'));
 $valid = isset($_POST["valid"]) ? $_POST["valid"] : 'no';
 $etape = isset($_POST["etape"]) ? $_POST["etape"] : '0';
-$adresse = isset($_POST["adresse"]) ? $_POST["adresse"] : NULL;
-$port = isset($_POST["port"]) ? $_POST["port"] : NULL;
-$login_ldap = isset($_POST["login_ldap"]) ? $_POST["login_ldap"] : NULL;
-$pwd_ldap = isset($_POST["pwd_ldap"]) ? unslashes($_POST["pwd_ldap"]) : NULL;
+$adresse = isset($_POST["adresse"]) ? clean_input($_POST["adresse"]) : NULL;
+$port = isset($_POST["port"]) ? clean_input($_POST["port"]) : NULL;
+$login_ldap = isset($_POST["login_ldap"]) ? clean_input($_POST["login_ldap"]) : NULL;
+$pwd_ldap = isset($_POST["pwd_ldap"]) ? clean_input($_POST["pwd_ldap"]) : NULL;
 
 if (isset($_POST["use_tls"]))
 {
@@ -48,16 +47,15 @@ if (isset($_POST["use_tls"]))
 }
 else
 	$use_tls = FALSE;
-$base_ldap = isset($_POST["base_ldap"]) ? $_POST["base_ldap"] : NULL;
-$base_ldap_autre = isset($_POST["base_ldap_autre"]) ? $_POST["base_ldap_autre"] : NULL;
-$ldap_filter = isset($_POST["ldap_filter"]) ? $_POST["ldap_filter"] : NULL;
+$base_ldap = isset($_POST["base_ldap"]) ? clean_input($_POST["base_ldap"]) : NULL;
+$base_ldap_autre = isset($_POST["base_ldap_autre"]) ? clean_input($_POST["base_ldap_autre"]) : NULL;
+$ldap_filter = isset($_POST["ldap_filter"]) ? clean_input($_POST["ldap_filter"]) : NULL;
 
-$ldap_group_member_attr = isset($_POST["ldap_group_member_attr"]) ? $_POST["ldap_group_member_attr"] : NULL;
-$ldap_group_base = isset($_POST["ldap_group_base"]) ? $_POST["ldap_group_base"] : NULL;
-$ldap_group_filter = isset($_POST["ldap_group_filter"]) ? $_POST["ldap_group_filter"] : NULL;
-$ldap_group_user_field = isset($_POST["ldap_group_user_field"]) ? $_POST["ldap_group_user_field"] : NULL;
+$ldap_group_member_attr = isset($_POST["ldap_group_member_attr"]) ? clean_input($_POST["ldap_group_member_attr"]) : NULL;
+$ldap_group_base = isset($_POST["ldap_group_base"]) ? clean_input($_POST["ldap_group_base"]) : NULL;
+$ldap_group_filter = isset($_POST["ldap_group_filter"]) ? clean_input($_POST["ldap_group_filter"]) : NULL;
+$ldap_group_user_field = isset($_POST["ldap_group_user_field"]) ? clean_input($_POST["ldap_group_user_field"]) : NULL;
 
-$titre_ldap = "Configuration de l'authentification LDAP";
 if (isset($_POST['reg_ldap_statut']))
 {
 	if ($_POST['ldap_statut'] == "no_ldap")
@@ -68,7 +66,7 @@ if (isset($_POST['reg_ldap_statut']))
 	else
 	{
 		if (!Settings::set("ldap_statut", $_POST['ldap_statut']))
-			echo encode_message_utf8("Erreur lors de l'enregistrement de ldap_statut !<br />");
+			echo encode_message_utf8($vocab['save_err']." ldap_statut !<br />");
 		$grrSettings['ldap_statut'] = $_POST['ldap_statut'];
 	}
 	if (isset($_POST['Valider1']))
@@ -78,35 +76,35 @@ if (isset($_POST['reg_ldap_statut']))
 		else
 			$ConvertLdapUtf8toIso = "y";
 		if (!Settings::set("ConvertLdapUtf8toIso", $ConvertLdapUtf8toIso))
-			echo "Erreur lors de l'enregistrement de ConvertLdapUtf8toIso !<br />";
+			echo $vocab['save_err']." ConvertLdapUtf8toIso !<br />";
 		$grrSettings['ConvertLdapUtf8toIso'] = $ConvertLdapUtf8toIso;
 		if (!isset($_POST['ActiveModeDiagnostic']))
 			$ActiveModeDiagnostic = "n";
 		else
 			$ActiveModeDiagnostic = "y";
 		if (!Settings::set("ActiveModeDiagnostic", $ActiveModeDiagnostic))
-			echo "Erreur lors de l'enregistrement de ActiveModeDiagnostic !<br />";
+			echo $vocab['save_err']." ActiveModeDiagnostic !<br />";
 		$grrSettings['ActiveModeDiagnostic'] = $ActiveModeDiagnostic;
 		if (!Settings::set("ldap_champ_recherche", $_POST['ldap_champ_recherche']))
-			echo "Erreur lors de l'enregistrement de ldap_champ_recherche !<br />";
+			echo $vocab['save_err']." ldap_champ_recherche !<br />";
 		$grrSettings['ldap_champ_recherche'] = $_POST['ldap_champ_recherche'];
 		if ($_POST['ldap_champ_nom'] == '')
 			$_POST['ldap_champ_nom'] = "sn";
 		if (!Settings::set("ldap_champ_nom", $_POST['ldap_champ_nom']))
-			echo "Erreur lors de l'enregistrement de ldap_champ_nom !<br />";
+			echo $vocab['save_err']." ldap_champ_nom !<br />";
 		$grrSettings['ldap_champ_nom'] = $_POST['ldap_champ_nom'];
 		if ($_POST['ldap_champ_prenom'] == '')
 			$_POST['ldap_champ_prenom'] = "sn";
 		if (!Settings::set("ldap_champ_prenom", $_POST['ldap_champ_prenom']))
-			echo "Erreur lors de l'enregistrement de ldap_champ_prenom !<br />";
+			echo $vocab['save_err']." ldap_champ_prenom !<br />";
 		$grrSettings['ldap_champ_prenom'] = $_POST['ldap_champ_prenom'];
 		if ($_POST['ldap_champ_email'] == '')
 			$_POST['ldap_champ_email'] = "sn";
 		if (!Settings::set("ldap_champ_email", $_POST['ldap_champ_email']))
-			echo "Erreur lors de l'enregistrement de ldap_champ_email !<br />";
+			echo $vocab['save_err']." ldap_champ_email !<br />";
 		$grrSettings['ldap_champ_email'] = $_POST['ldap_champ_email'];
 		if (!Settings::set("se3_liste_groupes_autorises", $_POST['se3_liste_groupes_autorises']))
-			echo "Erreur lors de l'enregistrement de se3_liste_groupes_autorises !<br />";
+			echo $vocab['save_err']." se3_liste_groupes_autorises !<br />";
 		$grrSettings['se3_liste_groupes_autorises'] = $_POST['se3_liste_groupes_autorises'];
 	}
 }
@@ -128,13 +126,13 @@ if ((!grr_resumeSession()) && $valid != 'yes')
 {
     echo "<!DOCTYPE html>";
     echo '<html>
-		<head>
-			<link rel="stylesheet" href="style.css" type="text/css">
-			<title> grr </title>
-			<link rel="shortcut icon" href="./favicon.ico">
+            <head>
+                <link rel="stylesheet" href="../themes/default/css/style.css" type="text/css">
+                <title> grr </title>
+                <link rel="shortcut icon" href="./favicon.ico">
 			</head>
 			<body>';
-    echo "<h2>Configuration de l'accès à LDAP</h2>";
+    echo "<h2>".get_vocab('configurerLdap')."</h2>";
 	echo '<form action="admin_config_ldap.php" method="post">';
 	if (isset($message))
 		echo("<p class=\"avertissement\">" . $message . "</p>");
@@ -163,7 +161,7 @@ if ((!grr_resumeSession()) && $valid != 'yes')
 };
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-    $back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+    $back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 if ((isset($ldap_restrictions)) && ($ldap_restrictions == true))
 {
     showAccessDenied($back);
@@ -193,8 +191,8 @@ else
 }
 if ($etape == 3)
 {
-    echo "<h2>".$titre_ldap."</h2>\n";
-    echo "<h2>".encode_message_utf8("Enregistrement de la configuration.")."</h2>\n";
+    echo "<h2>".get_vocab('titreLdap')."</h2>\n";
+    echo "<h2>".encode_message_utf8(get_vocab('enregistrerConfig'))."</h2>\n";
     if (!$base_ldap)
         $base_ldap = $base_ldap_autre;
     $ds = grr_connect_ldap($adresse,$port,$login_ldap,$pwd_ldap,$use_tls);
@@ -203,16 +201,16 @@ if ($etape == 3)
     if ($result == "error_1")
     {
         if ($ldap_filter == "")
-            echo "<p>".encode_message_utf8("<b>Problème</b> : Le chemin que vous avez choisi <b>ne semble pas valide</b>.</p><br />");
+            echo "<p>".encode_message_utf8(get_vocab('cheminNonValide'))."</p><br />";
         else
-            echo "<p>".encode_message_utf8("<b>Problème</b> : Le chemin et/ou le filtre additionnel que vous avez choisi <b>ne semblent pas valides</b>.</p><br />");
+            echo "<p>".encode_message_utf8(get_vocab('cheminOuFiltreNonValide'))."</p><br />";
     }
     else if ($result == "error_2")
     {
         if ($ldap_filter == "")
-            echo "<p>".encode_message_utf8("<b>Problème</b> : Le chemin que vous avez choisi semble valide mais la recherche sur ce chemin ne renvoie aucun résultat.</p><br />");
+            echo "<p>".encode_message_utf8(get_vocab('cheminOKetResultatKO'))."</p><br />";
         else
-            echo "<p>".encode_message_utf8("<b>Problème</b> : Le chemin et le filtre additionnel que vous avez choisi semblent valides  mais la recherche sur ce chemin ne renvoie aucun résultat.</p><br />");
+            echo "<p>".encode_message_utf8(get_vocab('cheminFiltreOKetResultatKO'))."</p><br />";
     }
     // Le cas "error_3" n'est pas analysé car on accepte les  cas où il y a plusieurs entrées dans l'annuaire à l'issue de la recherche
     $erreur = '';
@@ -221,18 +219,18 @@ if ($etape == 3)
     {
         unlink($nom_fic);
         if (@file_exists($nom_fic))
-            $erreur = "Impossible de supprimer le fichier \"".$nom_fic."\" existant.<br />Vous devez modifier les permissions sur ce fichier puis recharger cette page.";
+            $erreur = get_vocab('cantDeleteFile')." \"".$nom_fic."\" ".get_vocab('cantDeleteFileComm');
     }
     if ($erreur == '')
     {
         $f = @fopen($nom_fic, "wb");
         if (!$f)
         {
-            $erreur = "Impossible de créer le fichier \"".$nom_fic."\".";
+            $erreur = get_vocab('cant_cerate')." \"".$nom_fic."\".";
             if (@file_exists($nom_fic.".ori"))
-                $erreur .= "<br />Vous pouvez renommer manuellement le fichier \"".$nom_fic.".ori\" en \"".$nom_fic."\", et lui donner les droits suffisants.";
+                $erreur .= "<br />".get_vocab('renommer')." \"".$nom_fic.".ori\" ".get_vocab('en')." \"".$nom_fic."\", ".get_vocab('donner_droits');
             else
-                $erreur .= "<br />Vous devez modifier les droits sur le répertoire include.";
+                $erreur .= "<br />".get_vocab('modifier_droits');
         }
     }
     if ($erreur == '')
@@ -276,7 +274,7 @@ if ($etape == 3)
             $erreur = "Impossible d'enregistrer le fichier \"".$nom_fic."\".";
     }
     if ($erreur == '')
-        echo "<p>".encode_message_utf8("<b>Les données concernant l'accès à l'annuaire LDAP sont maintenant enregistrées dans le fichier \"".$nom_fic."\".</b></p>");
+        echo "<p>".encode_message_utf8("<b>".get_vocab('ldap_record_success'))." \"".$nom_fic."\".</b></p>";
     else
         echo encode_message_utf8("<p>".$erreur."</p>");
     if ($erreur == '')
@@ -284,14 +282,14 @@ if ($etape == 3)
         echo "<form action=\"admin_config_ldap.php\" method=\"post\">\n";
         echo "<div><input type=\"hidden\" name=\"etape\" value=\"0\" />\n";
         echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" />\n";
-        echo "<div class=\"center\"><input type=\"submit\" name=\"Valider\" value=\"Terminer\" /></div>\n";
+        echo "<div class=\"center\"><input type=\"submit\" name=\"Valider\" value=\"".get_vocab('Terminer')."\" /></div>\n";
         echo "</div></form>";
     }
 }
 else if ($etape == 2)
 {
-    echo "<h2>".$titre_ldap."</h2>\n";
-    echo "<h2>".encode_message_utf8("Connexion à l'annuaire LDAP.")."</h2>\n";
+    echo "<h2>".get_vocab('titreLdap')."</h2>\n";
+    echo "<h2>".encode_message_utf8(get_vocab('ldapConnexion'))."</h2>\n";
     // Connexion à l'annuaire
     $ds = grr_connect_ldap($adresse,$port,$login_ldap,$pwd_ldap,$use_tls);
     if ($ds)
@@ -300,7 +298,7 @@ else if ($etape == 2)
         $connexion_ok = 'no';
     if ($connexion_ok == 'yes')
     {
-        echo "<p>".encode_message_utf8("<b>La connexion LDAP a réussi.</b></p>\n");
+        echo "<p><b>".encode_message_utf8(get_vocab('ldapConnectSuccess'))."</b></p>\n";
         echo "<form action=\"admin_config_ldap.php\" method=\"post\"><div>\n";
         // On lit toutes les infos (objectclass=*) dans le dossier
         // Retourne un identifiant de résultat ($result), ou bien FALSE en cas d'erreur.
@@ -317,7 +315,7 @@ else if ($etape == 2)
         $checked = false;
         if (is_array($info) && $info["count"] > 0)
         {
-            echo encode_message_utf8("<p>Sélectionnez ci-dessous le chemin d'accès dans l'annuaire :</p>");
+            echo "<p>".encode_message_utf8(get_vocab('selectLdapPath'))."</p>";
             $n = 0;
             for ($i = 0; $i < $info["count"]; $i++)
             {
@@ -338,7 +336,7 @@ else if ($etape == 2)
                     }
                 }
             }
-            echo "<br />Ou bien \n";
+            echo "<br />".get_vocab('Ou_bien')." \n";
         }
         echo "<br /><input name=\"base_ldap\" value=\"\" type='radio' id=\"autre\"";
         if (!$checked)
@@ -347,7 +345,7 @@ else if ($etape == 2)
             $checked = true;
         }
         echo " />\n";
-        echo "<label for=\"autre\">".encode_message_utf8("Précisez le chemin : ")."</label>\n ";
+        echo "<label for=\"autre\">".encode_message_utf8(get_vocab('preciserChemin'))."</label>\n ";
         if (isset($_POST["ldap_base"]))
             $ldap_base = $_POST["ldap_base"];
         else
@@ -356,10 +354,10 @@ else if ($etape == 2)
             $ldap_filter = $_POST["ldap_filter"];
         else $ldap_filter ="";
         echo "<input type=\"text\" name=\"base_ldap_autre\" value=\"$ldap_base\" size=\"40\" />\n";
-        echo "<br /><br />".encode_message_utf8("Filtre LDAP supplémentaire (facultatif) :\n");
+        echo "<br /><br />".encode_message_utf8(get_vocab('ldapAddFilter'));
         echo "<br /><input type=\"text\" name=\"ldap_filter\" value=\"$ldap_filter\" size=\"50\" />\n";
         echo "<br /><br />\n";
-        echo encode_message_utf8("<b>Remarque : pour le moment, aucune modification n'a été apportée au fichier de configuration \"config_ldap.inc.php\".</b><br />Pour enregistrer les informations, cliquez sur le bouton \"Enregistrer les informations\".<br /><br />\n");
+        echo "<b>".encode_message_utf8(get_vocab('saveInfosLDAPWarning')."</b><br /><br />".get_vocab('clickToSave')." \"".get_vocab('saveInfos')."\".<br /><br />\n");
         echo "<input type=\"hidden\" name=\"etape\" value=\"3\" />\n";
         echo "<input type=\"hidden\" name=\"adresse\" value=\"$adresse\" />\n";
         echo "<input type=\"hidden\" name=\"port\" value=\"$port\" />\n";
@@ -368,13 +366,13 @@ else if ($etape == 2)
         echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" />\n";
         if ($use_tls)
             echo "<input type=\"hidden\" name=\"use_tls\" value=\"y\" />\n";
-        echo "<div class=\"center\"><input type=\"submit\" name=\"Valider\" value=\"Enregistrer les informations\" /></div>\n";
+        echo "<div class=\"center\"><input type=\"submit\" name=\"Valider\" value=\"".get_vocab('saveInfos')."\" /></div>\n";
         echo "</div></form>";
     }
     else
     {
-        echo encode_message_utf8("<b>La connexion au serveur LDAP a échoué.</b><br />\n");
-        echo encode_message_utf8("Revenez à la page précédente et vérifiez les informations fournies.");
+        echo "<b>".encode_message_utf8(get_vocab('ldapConnFailed'))."</b><br />\n";
+        echo encode_message_utf8(get_vocab('goBackVerify'));
         echo "<form method=\"post\" action=\"admin_config_ldap.php\">\n";
         echo "<div>\n<input type=\"hidden\" name=\"etape\" value=\"1\" />\n";
         echo "<input type=\"hidden\" name=\"ldap_adresse\" value=\"$adresse\" />\n";
@@ -382,7 +380,7 @@ else if ($etape == 2)
         echo "<input type=\"hidden\" name=\"ldap_login\" value=\"$login_ldap\" />\n";
         if ($use_tls)
             echo "<input type=\"hidden\" name=\"use_tls\" value=\"y\" />\n";
-        echo "<input type=\"submit\" name=\"valider\" value=\"".encode_message_utf8("Page précédente")."\" />\n";
+        echo "<input type=\"submit\" name=\"valider\" value=\"".encode_message_utf8(get_vocab('pagePrecedente'))."\" />\n";
         echo "</div></form>\n";
     }
 }
@@ -396,8 +394,8 @@ else if ($etape == 1)
     }
     else if (@file_exists("../include/config_ldap.inc.php"))
         include("../include/config_ldap.inc.php");
-    echo encode_message_utf8("<h2>".$titre_ldap."</h2>\n");
-    echo "<h2>".encode_message_utf8("Informations de connexion à l'annuaire LDAP.")."</h2>\n";
+    echo encode_message_utf8("<h2>".get_vocab('titreLdap')."</h2>\n");
+    echo "<h2>".encode_message_utf8(get_vocab('ldapConnInfo'))."</h2>\n";
     echo "<form action=\"admin_config_ldap.php\" method=\"post\">\n";
     if ((!(isset($ldap_adresse))) || ($ldap_adresse == ""))
         $ldap_adresse = 'ldap://localhost';
@@ -409,34 +407,33 @@ else if ($etape == 1)
         $ldap_pwd = "";
     echo "<div>\n<input type=\"hidden\" name=\"etape\" value=\"2\" />\n";
     echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" /></div>\n";
-    echo encode_message_utf8("<h3>URI de l'annuaire</h3><div>Laissez «ldap://localhost» si l'annuaire est installé sur la même machine que GRR. Sinon, indiquez l'adresse du serveur.<br />Utilisez le protocole ldaps:// si c'est votre cas.<br/>");
+    echo "<h3>".encode_message_utf8(get_vocab('dirURI'))."</h3><div>".get_vocab('dirURIexpl');
     echo "<input type=\"text\" name=\"adresse\" value=\"".$ldap_adresse."\" size=\"20\" />";
-    echo encode_message_utf8("<h3>Numéro de port de l'annuaire</h3>Dans le doute, laissez la valeur par défaut : 389<br />(3268 pour serveur de catalogues global AD, 636 pour pour ldaps (LDAP over SSH)<br />");
+    echo "<h3>".encode_message_utf8(get_vocab('dirURIPort'))."</h3>".get_vocab('dirURIPortExpl');
     echo "<input type='text' name='port' value=\"$ldap_port\" size=\"20\" /></div>";
-    echo encode_message_utf8("<h3>Type d'accès</h3><div>Si le serveur LDAP n'accepte pas d'accès anonyme, veuillez préciser un identifiant (par exemple « cn=jean, o=lycée, c=fr »). Dans le doute, laissez les champs suivants vides pour un accès anonyme.<br /><b>Identifiant :</b><br />");
+    echo "<h3>".encode_message_utf8(get_vocab('typeAcces'))."</h3><div>".get_vocab('typeAccesExpl')."<br /><b>".get_vocab('login').get_vocab('deux_points')."</b><br />";
     echo "<input type=\"text\" name=\"login_ldap\" value=\"".$ldap_login."\" size=\"40\" /><br />";
-    echo "<b>Mot de passe :</b><br />";
-    echo encode_message_utf8("Remarque : des problèmes liés à un mot de passe contenant un ou plusieurs caractères accentués ont déjà été constatés.<br />");
+    echo "<b>".get_vocab('pwd').get_vocab('deux_points')."</b><br />";
+    echo encode_message_utf8(get_vocab('ldapPwdWarning'))."<br />";
     echo "<input type=\"password\" name=\"pwd_ldap\" value=\"".$ldap_pwd."\" size=\"40\" /><br /></div>\n";
-    echo "<h3>Utiliser TLS :</h3>\n";
+    echo "<h3>".get_vocab('useTLS').get_vocab('deux_points')."</h3>\n";
     echo "<div>\n<input type=\"radio\" name=\"use_tls\" value=\"y\" ";
     if ($use_tls)
         echo " checked=\"checked\" ";
-    echo "/> Oui\n";
+    echo "/>".get_vocab('Oui')."\n";
     echo "<input type=\"radio\" name=\"use_tls\" value=\"n\" ";
     if (!($use_tls))
         echo " checked=\"checked\" ";
-    echo "/> Non\n";
+    echo "/>".get_vocab('Non')."\n";
     if (isset($ldap_filter))
         echo "<input type=\"hidden\" name=\"ldap_filter\" value=\"$ldap_filter\" />";
     if (isset($ldap_base))
         echo "<input type=\"hidden\" name=\"ldap_base\" value=\"$ldap_base\" />";
     //TODO: Ajouter les informations pour les groupes
-    echo encode_message_utf8("<br /><br /><b>Remarque : pour le moment, aucune modification n'a été apportée au fichier de configuration \"config_ldap.inc.php\".</b><br />
-        Les informations ne seront enregistrées qu'à la fin de la procédure de configuration.</div>");
+    echo "<br /><br /><b>".encode_message_utf8(get_vocab('saveInfosLDAPWarning')."</b><br />".get_vocab('saveInfosLDAPWarning2')."</div>");
 
 
-    echo "<div style=\"text-align:center;\"><input type=\"submit\" value=\"Suivant\" /></div>";
+    echo "<div style=\"text-align:center;\"><input type=\"submit\" value=\"".get_vocab('next')."\" /></div>";
     echo "</form>";
 
 }
@@ -445,85 +442,74 @@ else if ($etape == 0)
     if (!(function_exists("ldap_connect")))
     {
 		echo "<div class='col-sm-9 col-xs-12'>";
-        echo encode_message_utf8("<h2>".$titre_ldap."</h2>\n");
-        echo encode_message_utf8("<p class=\"avertissement\"><b>Attention </b> : les fonctions liées à l'authentification <b>LDAP</b> ne sont pas activées sur votre serveur PHP.
-            <br />La configuration LDAP est donc actuellement impossible.</p></div></section></body></html>");
+        echo encode_message_utf8("<h2>".get_vocab('titreLdap')."</h2>\n");
+        echo encode_message_utf8("<p class=\"avertissement\">".get_vocab('LDAPinactive')."<br />".get_vocab('LDAPimpossible')."</p></div></section></body></html>");
         die();
     }
-    echo encode_message_utf8("<h2>".$titre_ldap."</h2>\n");
-    echo "<p>".encode_message_utf8("Si vous avez accès à un annuaire <b>LDAP</b>, vous pouvez configurer GRR afin que cet annuaire soit utilisé pour importer automatiquement des utilisateurs.")."</p>";
+    echo encode_message_utf8("<h2>".get_vocab('titreLdap')."</h2>\n");
+    echo "<p>".encode_message_utf8(get_vocab('LDAPpossible'))."</p>";
     echo "<form action=\"admin_config_ldap.php\" method=\"post\">\n";
     echo "<div>\n<input type=\"hidden\" name=\"etape\" value=\"0\" />\n";
     echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" />\n";
     echo "<input type=\"hidden\" name=\"reg_ldap_statut\" value=\"yes\" /></div>\n";
     if (Settings::get("ldap_statut") != '')
     {
-        echo encode_message_utf8("<h3>L'authentification LDAP est activée.</h3>\n");
-        echo encode_message_utf8("<h3>Statut par défaut des utilisateurs importés</h3>\n");
-        echo "<div>".encode_message_utf8("Choisissez le statut qui sera attribué aux personnes présentes dans l'annuaire LDAP lorsqu'elles se connectent pour la première fois.	Vous pourrez par la suite modifier cette valeur pour chaque utilisateur.<br />");
+        echo "<h3>".encode_message_utf8(get_vocab('LDAPauthActive'))."</h3>\n";
+        echo "<h3>".encode_message_utf8(get_vocab('statutDefaut'))."</h3>\n";
+        echo "<div>".encode_message_utf8(get_vocab('choixStatutDefaut'))."<br />";
         echo "<input type=\"radio\" name=\"ldap_statut\" value=\"visiteur\" ";
         if (Settings::get("ldap_statut") == 'visiteur')
             echo " checked=\"checked\" ";
-        echo "/>Visiteur<br />";
+        echo "/>".get_vocab('statut_visitor')."<br />";
         echo "<input type=\"radio\" name=\"ldap_statut\" value=\"utilisateur\" ";
         if (Settings::get("ldap_statut") == 'utilisateur')
             echo " checked=\"checked\" ";
-        echo "/>Usager<br />";
-        echo "Ou bien <br />";
-        echo "<input type=\"radio\" name=\"ldap_statut\" value=\"no_ldap\" />".encode_message_utf8("Désactiver l'authentification LDAP")."<br />";
+        echo "/>".get_vocab('statut_user')."<br />";
+        echo get_vocab('Ou_bien')."<br />";
+        echo "<input type=\"radio\" name=\"ldap_statut\" value=\"no_ldap\" />".encode_message_utf8(get_vocab('desactiverLDAPauth'))."<br />";
         echo "<br />";
         echo "<input type=\"checkbox\" name=\"ConvertLdapUtf8toIso\" value=\"y\" ";
         if (Settings::get("ConvertLdapUtf8toIso") == "y")
             echo " checked=\"checked\"";
         echo " />";
-        echo encode_message_utf8("Les données (noms, prénom...) sont stockées en UTF-8 dans l'annuaire (configuration par défaut)");
+        echo encode_message_utf8(get_vocab('UTF8storage'));
         echo "<br />";
         echo "<input type=\"checkbox\" name=\"ActiveModeDiagnostic\" value=\"y\" ";
         if (Settings::get("ActiveModeDiagnostic") == "y")
             echo " checked=\"checked\"";
         echo " />";
-        echo encode_message_utf8("Activer le mode \"diagnostic\" en cas d'erreur de connexion, les messages renvoyés par GRR sont plus explicites. De cette façon, il peut être plus facile de déterminer la cause du problème.");
+        echo encode_message_utf8(get_vocab('modeDiagnostic'));
         echo "<br /><br />";
         if (Settings::get("ldap_champ_recherche") == '')
             echo "<span class=\"avertissement\">";
-        echo encode_message_utf8("<b>Attribut utilisé pour la recherche dans l'annuaire</b> :");
+        echo "<b>".encode_message_utf8(get_vocab('searchAttr'))."</b>".get_vocab('deux_points');
         echo "<input class=\"form-control\" type=\"text\" name=\"ldap_champ_recherche\" value=\"".htmlentities( Settings::get("ldap_champ_recherche"))."\" size=\"50\" />";
         if (Settings::get("ldap_champ_recherche") == '')
-            echo "<br />Le champ ci-dessous ne doit pas être vide.</span>";
+            echo "<br />".get_vocab('champNonVide')."</span>";
         echo "<br />";
-        echo encode_message_utf8("La valeur à indiquer ci-dessus varie selon le type d'annuaire utilisé et selon sa configuration
-            <br /><span class='small'>Exemples de champs généralement utilisés pour les annuaires ldap : \"uid\", \"cn\", \"sn\".
-            <br />Exemples de champs généralement utilisés pour les Active Directory : \"samaccountname\", \"userprincipalname\".
-            <br />Même si cela n'est pas conseillé, vous pouvez indiquer plusieurs attributs séparés par le caractère | (exemple : uid|sn|cn).</span>
-            ");
-        echo "<br /><br /><b>Liaisons GRR/LDAP</b>";
+        echo encode_message_utf8(get_vocab('ldapFieldExpl'));
+        echo "<br /><br /><b>".get_vocab('liaisonsGrrLdap')."</b>";
         echo "<table><tr>";
-        echo "<td>Nom de famille : </td>";
+        echo "<td>".get_vocab('familyName')."</td>";
         echo "<td><input class=\"form-control\" type=\"text\" name=\"ldap_champ_nom\" value=\"".htmlentities( Settings::get("ldap_champ_nom"))."\" size=\"20\" /></td>";
-        echo "<td>".encode_message_utf8("Prénom")." : </td>";
+        echo "<td>".encode_message_utf8(get_vocab('first_name'))." : </td>";
         echo "<td><input class=\"form-control\" type=\"text\" name=\"ldap_champ_prenom\" value=\"".htmlentities( Settings::get("ldap_champ_prenom"))."\" size=\"20\" /></td>";
-        echo "<td>Email : </td>";
+        echo "<td>".get_vocab('mail_user').get_vocab('deux_points')."</td>";
         echo "<td><input class=\"form-control\" type=\"text\" name=\"ldap_champ_email\" value=\"".htmlentities( Settings::get("ldap_champ_email"))."\" size=\"20\" /></td>";
         echo "</tr></table>";
-        echo encode_message_utf8("<br /><br /><b>Cas particulier des serveur SE3</b> : <span class=\"small\">dans le champs ci-dessous, vous pouvez préciser la liste des groupes SE3 autorisés à accéder à GRR.
-            Si le champ est laissé vide, il n'y a pas de restrictions.
-            Dans le cas contraire, seuls les utilisateurs appartenant à au moins l'un des groupes listés seront autorisés à accéder à GRR.
-            Ecrivez les groupes en les séparant par un point-vigule, par exemple : \"Profs;Administratifs\".
-            Seuls les groupes de type \"posixGroup\" sont supportés (les groupes de type \"groupOfNames\" ne sont pas supportés).</span>");
+        echo "<br /><br />".encode_message_utf8(get_vocab('ldapSE3Expl'));
         echo "<br />\n<input class=\"form-control\" type=\"text\" name=\"se3_liste_groupes_autorises\" value=\"".htmlentities( Settings::get("se3_liste_groupes_autorises"))."\" size=\"50\" />\n";
         echo "</div>\n";
-        echo "<div class=\"center\">\n<input class=\"btn btn-primary\" type=\"submit\" name=\"Valider1\" value=\"Valider\" />\n</div>\n";
+        echo "<div class=\"center\">\n<input class=\"btn btn-primary\" type=\"submit\" name=\"Valider1\" value=\"".get_vocab('OK')."\" />\n</div>\n";
     }
     else
     {
-        echo encode_message_utf8("<h3>L'authentification LDAP n'est pas activée.</h3>\n");
-        echo "<div>".encode_message_utf8("<b>L'authentification LDAP est donc pour le moment impossible</b>. Activez l'authentification LDAP en choisissant le statut qui sera attribué aux personnes présentes
-            dans l'annuaire LDAP lorsqu'elles se connectent pour la première fois.
-            Vous pourrez par la suite modifier cette valeur pour chaque utilisateur.<br />");
-        echo "<input type=\"radio\" name=\"ldap_statut\" value=\"visiteur\" />Visiteur<br />\n";
-        echo "<input type=\"radio\" name=\"ldap_statut\" value=\"utilisateur\" />Usager<br />\n";
-        echo "<input type=\"radio\" name=\"ldap_statut\" value=\"no_ldap\" checked=\"checked\" />Ne pas activer<br /></div>\n";
-        echo "<div class=\"center\"><input type=\"submit\" name=\"Valider2\" value=\"Valider\"  /></div>\n";
+        echo "<h3>".encode_message_utf8(get_vocab('ldapAuthInactive'))."</h3>\n";
+        echo "<div><b>".encode_message_utf8(get_vocab('LDAPimpossible'))."</b>".encode_message_utf8(get_vocab('LDAPstatutExpl'))."<br />";
+        echo "<input type=\"radio\" name=\"ldap_statut\" value=\"visiteur\" />".get_vocab('statut_visitor')."<br />\n";
+        echo "<input type=\"radio\" name=\"ldap_statut\" value=\"utilisateur\" />".get_vocab('statut_user')."<br />\n";
+        echo "<input type=\"radio\" name=\"ldap_statut\" value=\"no_ldap\" checked=\"checked\" />".get_vocab('nonActive')."<br /></div>\n";
+        echo "<div class=\"center\"><input type=\"submit\" name=\"Valider2\" value=\"".get_vocab('OK')."\"  /></div>\n";
         // fin de l'affichage de la colonne de droite
         if ($valid == 'no')
             echo "</div>";
@@ -538,31 +524,30 @@ else if ($etape == 0)
         if (($ldap_adresse != '') && ($ldap_port != ''))
         {
             $ok = "OK";
-            $failed = "Echec";
+            $failed = get_vocab("Echec");
             echo "<hr />\n";
             $ds = grr_connect_ldap($ldap_adresse,$ldap_port,$ldap_login,$ldap_pwd,$use_tls,'y');
             if ($ds == "error_1")
             {
-                returnmsg('danger','Test de connexion à l\'annuaire : ', $failed, 'Impossible d\'utiliser la norme LDAP V3');
+                returnmsg('danger',get_vocab('testConnAnnuaire').get_vocab('deux_points'), $failed, get_vocab('LDAPV3impossible'));
             }
             else if ($ds == "error_2")
             {
-                returnmsg('danger' ,'Test de connexion à l\'annuaire : ', $failed, 'Impossible d\'utiliser TLS');
+                returnmsg('danger' ,get_vocab('testConnAnnuaire').get_vocab('deux_points'), $failed, get_vocab('TLSimpossible'));
             }
             else if ($ds == "error_3")
             {
-                returnmsg('danger' ,'Test de connexion à l\'annuaire : ', $failed, 'Connexion établie mais l\'identification auprès du serveur a échoué');
+                returnmsg('danger' ,get_vocab('testConnAnnuaire').get_vocab('deux_points'), $failed, get_vocab('connOK_idKO'));
             }
             else if ($ds == "error_4")
             {
-                returnmsg('danger' ,'Test de connexion à l\'annuaire : ', $failed, 'Impossible d\'établir la connexion');
+                returnmsg('danger' ,get_vocab('testConnAnnuaire').get_vocab('deux_points'), $failed, get_vocab('connKO'));
             }
             else if (!$ds)
                 echo encode_message_utf8($failed)."</h3></div>";
             else
             {
-                returnmsg('success','Test de connexion à l\'annuaire : ', $ok, '');
-                //echo encode_message_utf8("<h3>Test de recherche sur l'annuaire avec le chemin spécifié : ");
+                returnmsg('success',get_vocab('testConnAnnuaire').get_vocab('deux_points'), $ok, '');
                 $result = "";
                 $result = grr_ldap_search_user($ds, $ldap_base, "objectClass", "*",$ldap_filter,"y");
                 if ($result == "error_1")
@@ -570,64 +555,64 @@ else if ($etape == 0)
 
                     $test_chemin = 'failed';
                     if ($ldap_filter == "")
-                        returnmsg('danger','Test de recherche sur l\'annuaire avec le chemin spécifié : ', $failed, '<b>Problème</b> : Le chemin que vous avez choisi <b>ne semble pas valide</b>.');
+                        returnmsg('danger',get_vocab('testConnChemAnn').get_vocab('deux_points'), $failed, get_vocab('testConnChemAnnErr1'));
                     else
-                        returnmsg('danger','Test de recherche sur l\'annuaire avec le chemin spécifié : ', $failed, '<b>Problème</b> : Le chemin et/ou le filtre additionnel que vous avez choisi <b>ne semblent pas valides</b>.');
+                        returnmsg('danger',get_vocab('testConnChemAnn').get_vocab('deux_points'), $failed, get_vocab('testConnChemAnnErr1bis'));
                 }
                 else if ($result == "error_2")
                 {
                     $test_chemin = 'failed';
                     if ($ldap_filter == "")
-                        returnmsg('danger','Test de recherche sur l\'annuaire avec le chemin spécifié : ', $failed, '<b>Problème</b> : Le chemin que vous avez choisi semble valide mais la recherche sur ce chemin ne renvoie aucun résultat.');
+                        returnmsg('danger',get_vocab('testConnChemAnn').get_vocab('deux_points'), $failed, get_vocab('testConnChemAnnErr2'));
                     else
-                        returnmsg('danger','Test de recherche sur l\'annuaire avec le chemin spécifié : ', $failed, '<b>Problème</b> : Le chemin et le filtre additionnel que vous avez choisi semblent valides  mais la recherche sur ce chemin ne renvoie aucun résultat.');
+                        returnmsg('danger',get_vocab('testConnChemAnn').get_vocab('deux_points'), $failed, get_vocab('testConnChemAnnErr2bis'));
                 }
                 else
-                    returnmsg('success','Test de recherche sur l\'annuaire avec le chemin spécifié : ', $ok, '');
+                    returnmsg('success',get_vocab('testConnChemAnn').get_vocab('deux_points'), $ok, '');
             }
         }
     }
     echo "<hr />";
     if (@file_exists("../include/config_ldap.inc.php"))
     {
-        echo encode_message_utf8("<h3>Configuration actuelle</h3> (Informations contenues dans le fichier \"config_ldap.inc.php\") :<br /><ul>");
-        echo encode_message_utf8("<li>Adresse de l'annuaire LDAP <b>: ".$ldap_adresse."</b></li>");
-        echo encode_message_utf8("<li>Port utilisé : <b>".$ldap_port."</b></li>");
+        echo "<h3>".encode_message_utf8(get_vocab('configurationActuelle'))."</h3>(".get_vocab('infosinFile')." \"config_ldap.inc.php\") :<br /><ul>";
+        echo "<li>".encode_message_utf8(get_vocab('LDAPadresse'))." <b>: ".$ldap_adresse."</b></li>";
+        echo "<li>".encode_message_utf8(get_vocab('portUtilise').get_vocab('deux_points'))." <b>".$ldap_port."</b></li>";
         if ($test_chemin == 'failed')
-            echo encode_message_utf8("<li><div class=\"alert alert-danger\" role=\"alert\">Chemin d'accès dans l'annuaire : <b> ".$ldap_base."</b></div></li>");
+            echo "<li><div class=\"alert alert-danger\" role=\"alert\">".encode_message_utf8(get_vocab(ldapPath).get_vocab('deux_points'))."<b> ".$ldap_base."</b></div></li>";
         else
-            echo encode_message_utf8("<li>Chemin d'accès dans l'annuaire : <b> ".$ldap_base."</b></li>");
+            echo "<li>".encode_message_utf8(get_vocab(ldapPath).get_vocab('deux_points'))."<b> ".$ldap_base."</b></li>";
         if ($ldap_filter!="")
             $ldap_filter_text = $ldap_filter;
         else
             $ldap_filter_text = "non";
         if (($test_chemin == 'failed') && ($ldap_filter!=""))
-            echo encode_message_utf8("<li><div class=\"alert alert-danger\" role=\"alert\">Filtre LDAP supplémentaire : <b> ".$ldap_filter_text."</b></div></li>");
+            echo "<li><div class=\"alert alert-danger\" role=\"alert\">".encode_message_utf8(get_vocab('filtreLdapSupp').get_vocab('deux_points'))."<b> ".$ldap_filter_text."</b></div></li>";
         else
-            echo encode_message_utf8("<li>Filtre LDAP supplémentaire : <b> ".$ldap_filter_text."</b></li>");
+            echo "<li>".encode_message_utf8(get_vocab('filtreLdapSupp').get_vocab('deux_points'))."<b> ".$ldap_filter_text."</b></li>";
         if ($ldap_login) {
-            echo encode_message_utf8("<li>Compte pour l'accès : <br />");
-            echo "Identifiant : <b>".$ldap_login."</b><br />";
+            echo "<li>".encode_message_utf8(get_vocab('ldapLogin'))."<br />";
+            echo get_vocab('login').get_vocab('deux_points')."<b>".$ldap_login."</b><br />";
             $ldap_pwd_hide = "";
             for ($i=0;$i<strlen($ldap_pwd);$i++)
                 $ldap_pwd_hide .= "*";
-            echo "Mot de passe : <b>".$ldap_pwd_hide."</b></li>";
+            echo get_vocab('pwd').get_vocab('deux_points')."<b>".$ldap_pwd_hide."</b></li>";
         }
         else
-            echo encode_message_utf8("<li>Accès anonyme.</li>");
+            echo "<li>".encode_message_utf8(get_vocab('accesAnonyme'))."</li>";
         if ($use_tls)
             $use_tls_text = "oui";
         else
             $use_tls_text = "non";
-        echo encode_message_utf8("<li>Utiliser TLS : <b>".$use_tls_text."</b></li>");
-        echo encode_message_utf8("</ul>Vous pouvez procéder à une nouvelle configuration LDAP.<br />");
+        echo "<li>".encode_message_utf8(get_vocab('useTLS').get_vocab('deux_points'))."<b>".$use_tls_text."</b></li></ul>";
+        echo encode_message_utf8(get_vocab('newLdapConfig'))."<br />";
     }
     else
-        echo encode_message_utf8("<h3>L'accès à l'annuaire LDAP n'est pas configuré.</h3>\n<b>L'authentification LDAP est donc pour le moment impossible.</b>\n");
+        echo "<h3>".encode_message_utf8(get_vocab('accesLdapNonConfigure'))."</h3>\n<b>".get_vocab('ldapAuthImpossible')."</b>\n";
     echo "<form action=\"admin_config_ldap.php\" method=\"post\">\n";
     echo "<div><input type=\"hidden\" name=\"etape\" value=\"1\" />\n";
     echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" /></div>\n";
-    echo "<div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" value=\"Configurer LDAP\" /></div></form>\n";
+    echo "<div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" value=\"".get_vocab('configureLdap')."\" /></div></form>\n";
 }
 if ($valid == 'no') echo "</div>";
 end_page();

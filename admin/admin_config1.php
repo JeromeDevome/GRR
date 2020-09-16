@@ -3,9 +3,9 @@
  * admin_config1.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2018-11-15 12:20$
+ * Dernière modification : $Date: 2020-09-09 12:00$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -15,7 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-// cette page reste à internationaliser
+// cette page reste à scinder comme en version 4
 $grr_script_name = "admin_config1.php";
 
 include "../include/admin.inc.php";
@@ -31,67 +31,67 @@ check_access(6, $back);
 // vérifications 
 if (isset($_POST['title_home_page'])) {
     if (!Settings::set('title_home_page', $_POST['title_home_page'])) {
-        echo "Erreur lors de l'enregistrement de title_home_page !<br />";
+        echo $vocab['save_err']." title_home_page !<br />";
         die();
     }
 }
 if (isset($_POST['show_courrier'])) {
     if (!Settings::set('show_courrier', $_POST['show_courrier'])) {
-        echo "Erreur lors de l'enregistrement de show_courrier !<br />";
+        echo $vocab['save_err']." show_courrier !<br />";
         die();
     }
 }
 if (isset($_POST['show_holidays'])) {
     if (!Settings::set('show_holidays', $_POST['show_holidays'])) {
-        echo "Erreur lors de l'enregistrement de show_holidays !<br />";
+        echo $vocab['save_err']." show_holidays !<br />";
         die();
     }
 }
 if (isset($_POST['holidays_zone'])) {
     if (!Settings::set('holidays_zone', $_POST['holidays_zone'])) {
-        echo "Erreur lors de l'enregistrement de holidays_zone !<br />";
+        echo $vocab['save_err']." holidays_zone !<br />";
         die();
     }
 }
 if (isset($_POST['message_home_page'])) {
     if (!Settings::set('message_home_page', $_POST['message_home_page'])) {
-        echo "Erreur lors de l'enregistrement de message_home_page !<br />";
+        echo $vocab['save_err']." message_home_page !<br />";
         die();
     }
 }
 if (isset($_POST['company'])) {
     if (!Settings::set('company', $_POST['company'])) {
-        echo "Erreur lors de l'enregistrement de company !<br />";
+        echo $vocab['save_err']." company !<br />";
         die();
     }
 }
 if (isset($_POST['webmaster_name'])) {
     if (!Settings::set('webmaster_name', $_POST['webmaster_name'])) {
-        echo "Erreur lors de l'enregistrement de webmaster_name !<br />";
+        echo $vocab['save_err']." webmaster_name !<br />";
         die();
     }
 }
 if (isset($_POST['webmaster_email'])) {
     if (!Settings::set('webmaster_email', $_POST['webmaster_email'])) {
-        echo "Erreur lors de l'enregistrement de webmaster_email !<br />";
+        echo $vocab['save_err']." webmaster_email !<br />";
         die();
     }
 }
 if (isset($_POST['technical_support_email'])) {
     if (!Settings::set('technical_support_email', $_POST['technical_support_email'])) {
-        echo "Erreur lors de l'enregistrement de technical_support_email !<br />";
+        echo $vocab['save_err']." technical_support_email !<br />";
         die();
     }
 }
 if (isset($_POST['message_accueil'])) {
     if (!Settings::set('message_accueil', $_POST['message_accueil'])) {
-        echo "Erreur lors de l'enregistrement de message_accueil !<br />";
+        echo $vocab['save_err']." message_accueil !<br />";
         die();
     }
 }
 if (isset($_POST['grr_url'])) {
     if (!Settings::set('grr_url', $_POST['grr_url'])) {
-        echo "Erreur lors de l'enregistrement de grr_url !<br />";
+        echo $vocab['save_err']." grr_url !<br />";
         die();
     }
 }
@@ -102,21 +102,21 @@ if (isset($_POST['ok'])) {
         $use_grr_url = 'n';
     }
     if (!Settings::set('use_grr_url', $use_grr_url)) {
-        echo "Erreur lors de l'enregistrement de use_grr_url !<br />";
+        echo $vocab['save_err']." use_grr_url !<br />";
         die();
     }
 }
 // Style/thème
 if (isset($_POST['default_css'])) {
     if (!Settings::set('default_css', $_POST['default_css'])) {
-        echo "Erreur lors de l'enregistrement de default_css !<br />";
+        echo $vocab['save_err']." default_css !<br />";
         die();
     }
 }
 // langage
 if (isset($_POST['default_language'])) {
     if (!Settings::set('default_language', $_POST['default_language'])) {
-        echo "Erreur lors de l'enregistrement de default_language !<br />";
+        echo $vocab['save_err']." default_language !<br />";
         die();
     }
     unset($_SESSION['default_language']);
@@ -124,146 +124,147 @@ if (isset($_POST['default_language'])) {
 // Type d'affichage des listes des domaines et des ressources
 if (isset($_POST['area_list_format'])) {
     if (!Settings::set('area_list_format', $_POST['area_list_format'])) {
-        echo "Erreur lors de l'enregistrement de area_list_format !<br />";
+        echo $vocab['save_err']." area_list_format !<br />";
         die();
     }
 }
 // site par défaut
 if (isset($_POST['id_site'])) {
     if (!Settings::set('default_site', $_POST['id_site'])) {
-        echo "Erreur lors de l'enregistrement de default_site !<br />";
+        echo $vocab['save_err']." default_site !<br />";
         die();
     }
 }
 // domaine par défaut
 if (isset($_POST['id_area'])) {
     if (!Settings::set('default_area', $_POST['id_area'])) {
-        echo "Erreur lors de l'enregistrement de default_area !<br />";
+        echo $vocab['save_err']." default_area !<br />";
         die();
     }
 }
+// ressource par défaut
 if (isset($_POST['id_room'])) {
     if (!Settings::set('default_room', $_POST['id_room'])) {
-        echo "Erreur lors de l'enregistrement de default_room !<br />";
+        echo $vocab['save_err']." default_room !<br />";
         die();
     }
 }
 // Affichage de l'adresse email
 if (isset($_POST['display_level_email'])) {
     if (!Settings::set('display_level_email', $_POST['display_level_email'])) {
-        echo "Erreur lors de l'enregistrement de display_level_email !<br />";
+        echo $vocab['save_err']." display_level_email !<br />";
         die();
     }
 }
 /*-----MAJ Loïs THOMAS  --> Affichage de la page view_entry pour les réservations  -----*/
 if (isset($_POST['display_level_view_entry'])) {
     if (!Settings::set('display_level_view_entry', $_POST['display_level_view_entry'])) {
-        echo "Erreur lors de l'enregistrement de display_level_view_entry !<br />";
+        echo $vocab['save_err']." display_level_view_entry !<br />";
         die();
     }
 }
 // display_info_bulle
 if (isset($_POST['display_info_bulle'])) {
     if (!Settings::set('display_info_bulle', $_POST['display_info_bulle'])) {
-        echo "Erreur lors de l'enregistrement de display_info_bulle !<br />";
+        echo $vocab['save_err']." display_info_bulle !<br />";
         die();
     }
 }
 // menu_gauche
 if (isset($_POST['menu_gauche'])) {
     if (!Settings::set('menu_gauche', $_POST['menu_gauche'])) {
-        echo "Erreur lors de l'enregistrement de menu_gauche !<br />";
+        echo $vocab['save_err']." menu_gauche !<br />";
         die();
     }
 }
 // display_full_description
 if (isset($_POST['display_full_description'])) {
     if (!Settings::set('display_full_description', $_POST['display_full_description'])) {
-        echo "Erreur lors de l'enregistrement de display_full_description !<br />";
+        echo $vocab['save_err']." display_full_description !<br />";
         die();
     }
 }
 // display_short_description
 if (isset($_POST['display_short_description'])) {
     if (!Settings::set('display_short_description', $_POST['display_short_description'])) {
-        echo "Erreur lors de l'enregistrement de display_short_description !<br />";
+        echo $vocab['save_err']." display_short_description !<br />";
         die();
     }
 }
 // remplissage de la description brève
 if (isset($_POST['remplissage_description_breve'])) {
     if (!Settings::set('remplissage_description_breve', $_POST['remplissage_description_breve'])) {
-        echo "Erreur lors de l'enregistrement de remplissage_description_breve !<br />";
+        echo $vocab['save_err']." remplissage_description_breve !<br />";
         die();
     }
 }
 // remplissage de la description complète
 if (isset($_POST['remplissage_description_complete'])) {
     if (!Settings::set('remplissage_description_complete', $_POST['remplissage_description_complete'])) {
-        echo "Erreur lors de l'enregistrement de remplissage_description_complete !<br />";
+        echo $vocab['save_err']." remplissage_description_complete !<br />";
         die();
     }
 }
 // pview_new_windows
 if (isset($_POST['pview_new_windows'])) {
     if (!Settings::set('pview_new_windows', $_POST['pview_new_windows'])) {
-        echo "Erreur lors de l'enregistrement de pview_new_windows !<br />";
+        echo $vocab['save_err']." pview_new_windows !<br />";
         die();
     }
 }
 /*-----MAJ Loïs THOMAS  -->Affichage ou non de la legende -----*/
 if (isset($_POST['legend'])) {
     if (!Settings::set('legend', $_POST['legend'])) {
-        echo "Erreur lors de l'enregistrement de legend !<br />";
+        echo $vocab['save_err']." legend !<br />";
         die();
     }
 }
 // Affichage imprimante
 if (isset($_POST['imprimante'])) {
     if (!Settings::set('imprimante', $_POST['imprimante'])) {
-        echo "Erreur lors de l'enregistrement de imprimante !<br />";
+        echo $vocab['save_err']." imprimante !<br />";
         die();
     }
 }
 // Affichage pdf 
 if (isset($_POST['pdf'])) {
     if (!Settings::set('pdf', $_POST['pdf'])) {
-        echo "Erreur lors de l'enregistrement de affichage pdf !<br />";
+        echo $vocab['save_err']." affichage pdf !<br />";
         die();
     }
 }
 // Affichage type 
 if (isset($_POST['type'])) {
     if (!Settings::set('type', $_POST['type'])) {
-        echo "Erreur lors de l'enregistrement de affichage type !<br />";
+        echo $vocab['save_err']." affichage type !<br />";
         die();
     }
 }
 // Option peridodicite
 if (isset($_POST['periodicite'])) {
     if (!Settings::set('periodicite', $_POST['periodicite'])) {
-        echo "Erreur lors de l'enregistrement de periodicite !<br />";
+        echo $vocab['save_err']." periodicite !<br />";
         die();
     }
 }
 /*-----MAJ David VOUE 22/01/2014-->Affichage ou non du formulaire de contact et adresse mail du destinataire -----*/
 if (isset($_POST['mail_destinataire'])) {
     if (!Settings::set('mail_destinataire', $_POST['mail_destinataire'])) {
-        echo "Erreur lors de l'enregistrement de mail_destinataire !<br />";
+        echo $vocab['save_err']." mail_destinataire !<br />";
         die();
     }
 }
 
 if (isset($_POST['allow_pdf'])) {
     if (!Settings::set('allow_pdf', $_POST['allow_pdf'])) {
-        echo "Erreur lors de l'enregistrement de allow_pdf !<br />";
+        echo $vocab['save_err']." allow_pdf !<br />";
         die();
     }
 }
 
 if (isset($_POST['mail_etat_destinataire'])) {
     if (!Settings::set('mail_etat_destinataire', $_POST['mail_etat_destinataire'])) {
-        echo "Erreur lors de l'enregistrement de mail_etat_destinataire !<br />";
+        echo $vocab['save_err']." mail_etat_destinataire !<br />";
         die();
     }
 }
@@ -275,11 +276,11 @@ if (isset($_POST['gestion_lien_aide'])) {
         $_POST['lien_aide'] = '';
     }
     if (!Settings::set('lien_aide', $_POST['lien_aide'])) {
-        echo "Erreur lors de l'enregistrement de lien_aide !<br />";
+        echo $vocab['save_err']." lien_aide !<br />";
         die();
     }
     if (!Settings::set('gestion_lien_aide', $_POST['gestion_lien_aide'])) {
-        echo "Erreur lors de l'enregistrement de gestion_lien_aide !<br />";
+        echo $vocab['save_err']." gestion_lien_aide !<br />";
         die();
     }
 }
@@ -291,7 +292,7 @@ if (isset($_POST['default_report_days'])) {
         $_POST['default_report_days'] = 0;
     }
     if (!Settings::set('default_report_days', $_POST['default_report_days'])) {
-        echo "Erreur lors de l'enregistrement de default_report_days !<br />";
+        echo $vocab['save_err']." default_report_days !<br />";
         die();
     }
 }
@@ -301,7 +302,7 @@ if (isset($_POST['longueur_liste_ressources_max'])) {
         $_POST['longueur_liste_ressources_max'] = 1;
     }
     if (!Settings::set('longueur_liste_ressources_max', $_POST['longueur_liste_ressources_max'])) {
-        echo "Erreur lors de l'enregistrement de longueur_liste_ressources_max !<br />";
+        echo $vocab['save_err']." longueur_liste_ressources_max !<br />";
         die();
     }
 }
@@ -317,7 +318,7 @@ if (isset($_POST['ok'])) {
             include "$dest/.test";
         }
         if (!$ok1) {
-            $msg .= "L\'image n\'a pas pu être supprimée : problème d\'écriture sur le répertoire. Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
+            $msg .= get_vocab('errSuppLogo')."\\n";
             $ok = 'no';
         } else {
             $nom_picture = '../images/'.Settings::get('logo');
@@ -325,7 +326,7 @@ if (isset($_POST['ok'])) {
                 unlink($nom_picture);
             }
             if (!Settings::set('logo', '')) {
-                $msg .= "Erreur lors de l'enregistrement du logo !\\n";
+                $msg .= get_vocab('errRecLogo')."\\n";
                 $ok = 'no';
             }
         }
@@ -335,7 +336,7 @@ if (isset($_POST['ok'])) {
     /* Test premier, juste pour bloquer les double extensions */
     if (count(explode('.', $doc_file['name'])) > 2) {
 
-        $msg .= "L\'image n\'a pas pu être enregistrée : les seules extentions autorisées sont gif, png et jpg.\\n";
+        $msg .= get_vocab('errTypeLogo')."\\n";
         $ok = 'no';
 
     } elseif (preg_match("`\.([^.]+)$`", $doc_file['name'], $match)) {
@@ -343,15 +344,13 @@ if (isset($_POST['ok'])) {
 
         $ext = strtolower($match[1]);
         if ($ext != 'jpg' && $ext != 'png' && $ext != 'gif') {
-            $msg .= "L\'image n\'a pas pu être enregistrée : les seules extentions autorisées sont gif, png et jpg.\\n";
+            $msg .= get_vocab('errTypeLogo')."\\n";
             $ok = 'no';
         } else {
             /* deuxième test passé, l'extension est autorisée */
-
             /* je fais le 3ème test avec fileinfo */
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $fileType = finfo_file($finfo, $doc_file['tmp_name']);
-
             /* 4ème test avec gd pour valider que c'est bien une image malgré tout - nécessaire ou parano ? */
             switch($fileType) {
                 case "image/gif":
@@ -374,14 +373,14 @@ if (isset($_POST['ok'])) {
                     $extSafe = "png";
                     break;
                 default:
-                    $msg .= "L\'image n\'a pas pu être enregistrée : type mime incompatible.\\n";
+                    $msg .= get_vocab('errRecMimeLogo')."\\n";
                     $ok = 'no';
                     $extSafe = false;
                     break;
             }
             if (!$logoRecreated || $extSafe === false) {
                 /* la fonction imagecreate a échoué, donc l'image est corrompue ou craftée */
-                $msg .= "L\'image n\'a pas pu être enregistrée : fichier corrompu.\\n";
+                $msg .= get_vocab('errCorruptedFile')."\\n";
                 $ok = 'no';
             } else {
                 /* j'ai une image valide, sans data exif, avec un bon type mime */
@@ -397,13 +396,13 @@ if (isset($_POST['ok'])) {
                     /* je copie le logo pour valider avec la fonction move_uploaded_file */
                     $moveUploadReturn = move_uploaded_file($doc_file['tmp_name'], $picturePath);
                     if (!$moveUploadReturn) {
-                        $msg .= "L\'image n\'a pas pu être enregistrée : problème de transfert. Le fichier n\'a pas pu être transféré sur le répertoire IMAGES. Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
+                        $msg .= get_vocab('errImgTransfer')."\\n";
                         $ok = 'no';
                     } else {
                         /* si c'est bon, je supprime l'image et je la remplace par l'image create avec gd */
                         $unlinkReturn = unlink($picturePath);
                         if (!$unlinkReturn) {
-                            $msg .= "Erreur lors de l'enregistrement du logo ! (suppression du fichier temporaire)\\n";
+                            $msg .= get_vocab('errTempLogo')."\\n";
                             $ok = 'no';
                         } else {
                             /* j'ai supprimé le logo copié, je  vais enregistrer l'image à la place */
@@ -424,44 +423,50 @@ if (isset($_POST['ok'])) {
                                 $msg .= " (Erreur de imagedestroy)\\n";
                             }
                             if (!Settings::set('logo', $pictureName)) {
-                                $msg .= "Erreur lors de l'enregistrement du logo !\\n";
+                                $msg .= get_vocab('errRecLogo')."\\n";
                                 $ok = 'no';
                             }
                         }
                     }
 
                 } else {
-                    $msg .= "L\'image n\'a pas pu être enregistrée : problème d\'écriture sur le répertoire \"images\". Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
+                    $msg .= get_vocab('errImgTransfer')."\\n";
                     $ok = 'no';
                 }
             }
         }
     } elseif ($doc_file['name'] != '') {
-        $msg .= "L\'image n\'a pas pu être enregistrée : le fichier image sélectionné n'est pas valide !\\n";
+        $msg .= get_vocab('errInvalidFile')."\\n";
         $ok = 'no';
     }
 }
 $demande_confirmation = 'no';
 if (isset($_POST['begin_day']) && isset($_POST['begin_month']) && isset($_POST['begin_year'])) {
-    while (!checkdate($_POST['begin_month'], $_POST['begin_day'], $_POST['begin_year'])) {
-        $_POST['begin_day']--;
+    $begin_day = clean_input($_POST['begin_day']);
+    $begin_month = clean_input($_POST['begin_month']);
+    $begin_year = clean_input($_POST['begin_year']);
+    while (!checkdate($begin_month, $begin_day, $begin_year)) {
+        $begin_day--;
     }
-    $begin_bookings = mktime(0, 0, 0, $_POST['begin_month'], $_POST['begin_day'], $_POST['begin_year']);
+    $begin_bookings = mktime(0, 0, 0, $begin_month, $begin_day, $begin_year);
     $test_del1 = mysqli_num_rows(mysqli_query($GLOBALS['db_c'], 'SELECT * FROM '.TABLE_PREFIX."_entry WHERE (end_time < '$begin_bookings' )"));
     $test_del2 = mysqli_num_rows(mysqli_query($GLOBALS['db_c'], 'SELECT * FROM '.TABLE_PREFIX."_repeat WHERE (end_date < '$begin_bookings')"));
     if (($test_del1 != 0) || ($test_del2 != 0)) {
         $demande_confirmation = 'yes';
     } else {
         if (!Settings::set('begin_bookings', $begin_bookings)) {
-            echo "Erreur lors de l'enregistrement de begin_bookings !<br />";
+            echo $vocab['save_err']." begin_bookings !<br />";
         }
     }
 
     if (isset($_POST['end_day']) && isset($_POST['end_month']) && isset($_POST['end_year'])) {
-        while (!checkdate($_POST['end_month'], $_POST['end_day'], $_POST['end_year'])) {
-            $_POST['end_day']--;
+        $end_day = clean_input($_POST['end_day']);
+        $end_month = clean_input($_POST['end_month']);
+        $end_year = clean_input($_POST['end_year']);
+        while (!checkdate($end_month, $end_day, $end_year)) {
+            $end_day--;
         }
-        $end_bookings = mktime(23, 59, 59, $_POST['end_month'], $_POST['end_day'], $_POST['end_year']);
+        $end_bookings = mktime(23, 59, 59, $end_month, $end_day, $end_year);
         if ($end_bookings < $begin_bookings) {
             $end_bookings = $begin_bookings;
         }
@@ -471,7 +476,7 @@ if (isset($_POST['begin_day']) && isset($_POST['begin_month']) && isset($_POST['
             $demande_confirmation = 'yes';
         } else {
             if (!Settings::set('end_bookings', $end_bookings)) {
-                echo "Erreur lors de l'enregistrement de end_bookings !<br />";
+                echo $vocab['save_err']." end_bookings !<br />";
             }
         }
     }
@@ -482,7 +487,7 @@ if (isset($_POST['begin_day']) && isset($_POST['begin_month']) && isset($_POST['
     }
 }
 if (!Settings::load()) {
-    die('Erreur chargement settings');
+    die(get_vocab('error_settings_load'));
 }
 // Si pas de problème, message de confirmation
 if (isset($_POST['ok'])) {
@@ -643,14 +648,12 @@ echo '</p>'.PHP_EOL;
 //******************************
 //
 echo '<hr /><h3>'.get_vocab('title_begin_end_bookings')."</h3>\n";
-?>
-<table class="table_adm">
-	<tr>
-		<td>
-			<?php echo get_vocab('begin_bookings'); ?>
-		</td>
-		<td>
-			<?php
+echo '<table class="table_adm">';
+echo '	<tr>';
+echo '		<td>';
+			echo get_vocab('begin_bookings');
+echo '		</td>';
+echo '  	<td>';
             $typeDate = 'begin_';
             $bday = strftime('%d', Settings::get('begin_bookings'));
             $bmonth = strftime('%m', Settings::get('begin_bookings'));

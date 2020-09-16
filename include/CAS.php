@@ -61,7 +61,7 @@ if (!defined('E_USER_DEPRECATED')) {
 /**
  * phpCAS version. accessible for the user by phpCAS::getVersion().
  */
-define('PHPCAS_VERSION', '1.3.7');
+define('PHPCAS_VERSION', '1.3.8');
 
 /**
  * @addtogroup public
@@ -371,10 +371,10 @@ class phpCAS
         phpCAS :: traceEnd();
     }
     */
-     // client patché selon la méthode GEPI
+     // client patchÃ© selon la mÃ©thode GEPI
 public static function client($server_version, $server_hostname,
         $server_port, $server_uri, $changeSessionID = true,
-        $service_address = null // Utilisé pour forcer l'URL de base
+        $service_address = null // UtilisÃ© pour forcer l'URL de base
     ) {
         phpCAS :: traceBegin();
         if (is_object(self::$_PHPCAS_CLIENT)) {
@@ -2064,4 +2064,3 @@ public static function client($server_version, $server_hostname,
 /**
  * @example example_advanced_saml11.php
  */
-?>

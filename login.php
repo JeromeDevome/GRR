@@ -3,9 +3,9 @@
  * login.php
  * interface de connexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-02 18:00$
+ * Dernière modification : $Date: 2020-04-27 11:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -127,6 +127,7 @@ MajMysqlModeDemo();
 if ((Settings::get("Url_cacher_page_login") != "") && ((!isset($sso_super_admin)) || ($sso_super_admin == false)) && (!isset($_GET["local"])))
 	header("Location: ./index.php");
 // echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("company"),"no_session");
+header('Content-Type: text/html; charset=utf-8');
 echo '<!DOCTYPE html>'.PHP_EOL.'<html lang="fr">';
 echo pageHead2("GRR (Gestion et Réservation de Ressources) ");
 echo '<body>';
@@ -204,7 +205,7 @@ if (Settings::get("webmaster_email") != "")
     if ($lien != "")
         echo "<p>[".$lien."]</p>";
 }
-echo "<p>[<a href='page.php?page=CGU' target='_blank'>".get_vocab("cgu")."</a>]</p>";
+echo "<p>[<a href='page.php?page=CGU' target='_blank' rel='noopener noreferer'>".get_vocab("cgu")."</a>]</p>";
 echo "<a href=\"javascript:history.back()\">".get_vocab("previous")." - <b>".Settings::get("company")."</b></a>";
 echo "<br /><br />";
 echo "<br /><p class=\"small\"><a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a> - ".get_vocab("grr_version").affiche_version();

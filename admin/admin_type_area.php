@@ -20,7 +20,7 @@ $grr_script_name = "admin_type_area.php";
 include "../include/admin.inc.php";
 
 // Initialisation
-$id_area = isset($_GET["id_area"]) ? $_GET["id_area"] : NULL;
+$id_area = isset($_GET["id_area"]) ? intval($_GET["id_area"]) : NULL;
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
@@ -34,7 +34,7 @@ if (isset($_SERVER['HTTP_REFERER']))
 // Gestion du retour à la page précédente sans enregistrement
 if (isset($_GET['change_done']))
 {
-	Header("Location: "."admin_room.php?id_area=".$_GET['id_area']);
+	Header("Location: "."admin_room.php?id_area=".$id_area);
 	exit();
 }
 if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes') )

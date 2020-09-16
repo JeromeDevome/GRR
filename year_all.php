@@ -3,7 +3,7 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-01-10 18:50 $
+ * Dernière modification : $Date: 2020-04-27 10:45 $
  * @author    Yan Naessens, Laurent Delineau 
  * @copyright Copyright 2003-2020 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -184,6 +184,11 @@ $days_in_to_month = date("t", $month_end);
 $month_end = mktime(23,59,59,$to_month,$days_in_to_month,$to_year);
 
 // début du code html
+header('Content-Type: text/html; charset=utf-8');
+if (!isset($_COOKIE['open']))
+{
+	setcookie("open", "true", time()+3600, "", "", false, false);
+}
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;
 // section <head>
@@ -229,7 +234,7 @@ if ($_GET['pview'] != 1)
 // construit la liste des ressources
 if ($site == -1) 
 {   // cas 1 : le multisite n'est pas activé $site devrait être à -1
-    $sql  = "SELECT DISTINCT r.id,r.room_name,a.id FROM ".TABLE_PREFIX."_room r ,".TABLE_PREFIX."_area a ORDER BY a.order_display,r.order_display";
+    $sql  = "SELECT DISTINCT r.id,r.room_name,a.id FROM ".TABLE_PREFIX."_room r JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id ORDER BY a.order_display,r.order_display";
 }
 else
 {
@@ -609,11 +614,21 @@ affiche_pop_up(get_vocab("message_records"),"user");
 echo  "<div id=\"popup_name\" class=\"popup_block\" ></div>";
 if ($_GET['pview'] != 1)
 {
-	echo "<div id=\"toTop\"> ^ Haut de la page";
-    bouton_retour_haut ();
-    echo " </div>";
+	echo '<div id="toTop">'.PHP_EOL;
+	echo '<b>'.get_vocab('top_of_page').'</b>'.PHP_EOL;
+	bouton_retour_haut ();
+	echo '</div>'.PHP_EOL;
 }
-
 echo "</section>";
 echo "</body></html>";
 ?>
+<script type="text/javascript">
+	$(document).ready(function(){
+        if ( $(window).scrollTop() == 0 )
+            $("#toTop").hide(1);
+	});
+	jQuery(document).ready(function($){
+		$("#popup_name").draggable({containment: "#container"});
+		$("#popup_name").resizable();
+	});
+</script>

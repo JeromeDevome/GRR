@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-02-20 16:30$
+ * Dernière modification : $Date: 2020-04-27 10:40$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -504,7 +504,7 @@ function bbCode($t,$type)
 		if (preg_match($regLienSimple, $t))
 			$t = preg_replace($regLienSimple, "<a href=\"\\1\">\\1</a>", $t);
 		else
-			$t = preg_replace($regLienEtendu, "<a href=\"\\1\" target=\"_blank\">\\2</a>", $t);
+			$t = preg_replace($regLienEtendu, "<a href=\"\\1\" target=\"_blank\" rel=\"noopener noreferer\" >\\2</a>", $t);
 	}
 	$regMailSimple = "`\[email\] ?([^\[]*) ?\[/email\]\`";
 	$regMailEtendu = "`\[email ?=([^\[]*) ?] ?([^]]*) ?\[/email\]`";
@@ -893,7 +893,7 @@ function begin_page($title, $page = "with_session")
 			$sheetcss = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
 		if (isset($_GET['default_language']))
 		{
-			$_SESSION['default_language'] = $_GET['default_language'];
+			$_SESSION['default_language'] = clean_input($_GET['default_language']);
 			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 				header("Location: ".$_SESSION['chemin_retour']);
 			else
@@ -909,7 +909,7 @@ function begin_page($title, $page = "with_session")
 			$sheetcss = 'themes/default/css';
 		if (isset($_GET['default_language']))
 		{
-			$_SESSION['default_language'] = $_GET['default_language'];
+			$_SESSION['default_language'] = clean_input($_GET['default_language']);
 			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 				header("Location: ".$_SESSION['chemin_retour']);
 			else
@@ -921,7 +921,7 @@ function begin_page($title, $page = "with_session")
 	header('Content-Type: text/html; charset=utf-8');
 	if (!isset($_COOKIE['open']))
 	{
-		setcookie("open", "true", time()+3600);
+		setcookie("open", "true", time()+3600, "", "", false, false);
 	}
 	$a = '<!DOCTYPE html>'.PHP_EOL;
 	$a .= '<html lang="fr">'.PHP_EOL;
@@ -2593,14 +2593,14 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
 				if (!isset($_GET['room']))
 				{
 					if (isset($all_ressource) && $all_ressource == 0)
-						$out_html .= /*'<div class="panel-body">'.PHP_EOL.*/'<input id="item_select" class="btn btn-primary btn-lg btn-block item_select" name="all_room" value="Toutes les ressources" onclick="location.href=\''.$link_all_room.'\' ;charger();"/>'.PHP_EOL;
+						$out_html .= /*'<div class="panel-body">'.PHP_EOL.*/'<input id="item_select" class="btn btn-primary btn-lg btn-block item_select" name="all_room" value="'.get_vocab("all_rooms").'" onclick="location.href=\''.$link_all_room.'\' ;charger();"/>'.PHP_EOL;
 					$out_html .= '<input class="btn btn-default btn-lg btn-block item" type="button" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\' ;charger();"/>'.PHP_EOL;
 					$all_ressource = 1;
 				}
 				else //changed (Ajout de type = " button pr gerer saut de ligne " 
 				{
 					if (isset($all_ressource) && $all_ressource == 0)
-						$out_html .= '<input class="btn btn-default btn-lg btn-block item" type="button" name="all_room" value="Toutes les ressources" onclick="location.href=\''.$link_all_room.'\' ;charger();"/>'.PHP_EOL;
+						$out_html .= '<input class="btn btn-default btn-lg btn-block item" type="button" name="all_room" value="'.get_vocab("all_rooms").'" onclick="location.href=\''.$link_all_room.'\' ;charger();"/>'.PHP_EOL;
 					$all_ressource = 1;
 					if ($current_room == $row[0])
 						$out_html .= '<input class="btn btn-primary btn-lg btn-block item_select" type="button" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\';charger();"/>'.PHP_EOL;
@@ -2940,7 +2940,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 				$destinataire .= ";". $value;
 			}
 
-			Email::Envois($destinataire, $sujet, $message, $repondre, '', '');
+		//	Email::Envois($destinataire, $sujet, $message, $repondre, '', '');  semble incomplet YN le 21/02/2020
 		}
 
 		$sujet7 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
@@ -3050,6 +3050,23 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 
 		Email::Envois($destinataire2, $sujet2, $message2, $repondre2, '', '');
 	}
+    // Cas d'une réservation modérée : le bénéficiaire peut éventuellement la supprimer, mais on prévient le modérateur
+    if (($action == 3)&&($moderate >0)){
+        $sql = "SELECT email FROM ".TABLE_PREFIX."_utilisateurs u JOIN ".TABLE_PREFIX."_entry_moderate e ON e.login_moderateur = u.login 
+        WHERE e.id = ".$id_entry." ";
+        $mail_modo = grr_sql_query1($sql);
+        if (($mail_modo != -1)&&($mail_modo != '')){// on a le mail du modérateur
+            $sujet2 .= $vocab["subject_mail_delete"];
+			$message2 .= $vocab["delete_booking"];
+			$message2 .= $vocab["the_room"].$room_name." (".$area_name.") \n";
+			$message2 .= "\n".$reservation;
+            $message2 = html_entity_decode($message2);
+            $destinataire2 = $mail_modo;
+            $repondre2 = $user_email;
+            if (!isset($expediteur)||($expediteur =='')){$expediteur = $repondre2;}
+            Email::Envois($destinataire2, $sujet2, $message2, $expediteur, '', '', $repondre2);
+        }
+    }
 
 	return $message_erreur;
 } // Fin fonction send_mail
@@ -3709,7 +3726,7 @@ function MajMysqlModeDemo() {
 				$query = fgets($fd, 5000);
 				$query = trim($query);
 				if ($query != '')
-					mysqli_query($GLOBALS['db_c'], $query);
+					@mysqli_query($GLOBALS['db_c'], $query);
 			}
 			fclose($fd);
 			if (!Settings::set("date_verify_demo", $date_now))
@@ -4349,7 +4366,7 @@ function traite_grr_url($grr_script_name = "", $force_use_grr_url = "n")
 		return Settings::get("grr_url").$ad_signe.$grr_script_name;
 	}
 	else
-		return $_SERVER['PHP_SELF'];
+		return filter_var($_SERVER['PHP_SELF'], FILTER_SANITIZE_URL);
 }
 // Pour les Jours/Cycles
 //Crée le calendrier Jours/Cycles
@@ -5188,7 +5205,7 @@ function pageHead2($title, $page = "with_session")
         }
 		if (isset($_GET['default_language']))
 		{
-			$_SESSION['default_language'] = $_GET['default_language'];
+			$_SESSION['default_language'] = clean_input($_GET['default_language']);
 			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 				header("Location: ".$_SESSION['chemin_retour']);
 			else
@@ -5204,7 +5221,7 @@ function pageHead2($title, $page = "with_session")
 			$sheetcss = 'themes/default/css';
 		if (isset($_GET['default_language']))
 		{
-			$_SESSION['default_language'] = $_GET['default_language'];
+			$_SESSION['default_language'] = clean_input($_GET['default_language']);
 			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 				header("Location: ".$_SESSION['chemin_retour']);
 			else
@@ -5213,11 +5230,13 @@ function pageHead2($title, $page = "with_session")
 		}
 	}
 	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin;
-	header('Content-Type: text/html; charset=utf-8');
-	if (!isset($_COOKIE['open']))
+	// header('Content-Type: text/html; charset=utf-8'); semble problématique avec certains serveurs YN le 26/04/2020
+	/*if (!isset($_COOKIE['open']))
 	{
-		setcookie("open", "true", time()+3600);
+		setcookie("open", "true", time()+3600, "", "", false, false);
 	}
+    déplacé dans start_page_w_header et start_page_wo_header
+    */
     // code de la partie <head> 
 	$a  = '<head>'.PHP_EOL;
 	$a .= '<meta charset="utf-8">'.PHP_EOL;
@@ -5519,6 +5538,11 @@ function start_page_w_header($day = '', $month = '', $year = '', $type_session =
     }
     include $racine."/include/hook.class.php";
     // code HTML
+    header('Content-Type: text/html; charset=utf-8');
+    if (!isset($_COOKIE['open']))
+	{
+		setcookie("open", "true", time()+3600, "", "", false, false);
+	}
     echo '<!DOCTYPE html>'.PHP_EOL;
     echo '<html lang="fr">'.PHP_EOL;
     // section <head>
@@ -5554,6 +5578,11 @@ function start_page_wo_header($titre, $type_session = 'with_session')
     }
     include $racine."/include/hook.class.php";
     // code HTML
+    header('Content-Type: text/html; charset=utf-8');
+    if (!isset($_COOKIE['open']))
+	{
+		setcookie("open", "true", time()+3600, "", "", false, false);
+	}
     echo '<!DOCTYPE html>'.PHP_EOL;
     echo '<html lang="fr">'.PHP_EOL;
     // section <head>
@@ -5572,7 +5601,15 @@ function end_page()
 {
     echo '</section></body></html>';
 }
-    
+/* fonction clean_input
+* pour réduire le risque XSS
+*/
+function clean_input($data){
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
 // Les lignes suivantes permettent la compatibilité de GRR avec la variable register_global à off
 unset($day);
 if (isset($_GET["day"]))

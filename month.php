@@ -3,9 +3,9 @@
  * month.php
  * Interface d'accueil avec affichage par mois
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-11-29 11:20$
+ * Dernière modification : $Date: 2020-04-27 11:05$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -84,6 +84,11 @@ if (!($desactive_VerifNomPrenomUser))
 VerifNomPrenomUser($type_session);
 
 // code html
+header('Content-Type: text/html; charset=utf-8');
+if (!isset($_COOKIE['open']))
+{
+	setcookie("open", "true", time()+3600, "", "", false, false);
+}
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;
 // section <head>
@@ -403,9 +408,9 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
         if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
         {
             if (intval($jour_cycle) > 0)
-                echo ' - ',get_vocab("rep_type_6"),' ',$jour_cycle;
+                echo '<span class="tiny"> - ',get_vocab("rep_type_6"),' ',$jour_cycle,'</span>';
             else
-                echo ' - ',$jour_cycle;
+                echo '<span class="tiny"> - ',$jour_cycle,'</span>';
         }
         echo '</a>',PHP_EOL,'</div>',PHP_EOL;
         if (est_hors_reservation(mktime(0, 0, 0, $month, $cday, $year), $area))
@@ -507,19 +512,18 @@ if ($_GET['pview'] != 1)
 }
 
 echo "</div>"; // fin de planning2
-// </div>
-echo '
-<script type="text/javascript">
-	jQuery(document).ready(function($){
-		$("#popup_name").draggable({containment: "#container"});
-		$("#popup_name").resizable();
-	});
-		
-</script>';
-
 affiche_pop_up(get_vocab("message_records"),"user");
-//echo '</div>'.PHP_EOL; 
 echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
 echo "</section>";
 echo "</body></html>";
 ?>
+<script type="text/javascript">
+	$(document).ready(function(){
+        if ( $(window).scrollTop() == 0 )
+            $("#toTop").hide(1);
+	});
+	jQuery(document).ready(function($){
+		$("#popup_name").draggable({containment: "#container"});
+		$("#popup_name").resizable();
+	});
+</script>

@@ -3,9 +3,9 @@
  * week.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "semaine".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-06-11 12:30$
+ * Dernière modification : $Date: 2020-04-27 10:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -153,6 +153,11 @@ $ty = date("Y", $i);
 $tm = date("m", $i);
 $td = date("d", $i);
 // début du code HTML
+header('Content-Type: text/html; charset=utf-8');
+if (!isset($_COOKIE['open']))
+{
+	setcookie("open", "true", time()+3600, "", "", false, false);
+}
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;
 // section <head>
@@ -759,29 +764,26 @@ $semaine_changement_heure_hiver = 'no';
 		echo '</div>',PHP_EOL;
 	}
 	affiche_pop_up(get_vocab("message_records"),"user");
-	echo '
-	<script type="text/javascript">
-		$(document).ready(function(){
-			$(\'table.table-bordered td\').each(function(){
-				var $row = $(this);
-				var height = $row.height();
-				var h2 = $row.find(\'a\').height();
-				$row.find(\'a\').css(\'min-height\', height);
-				$row.find(\'a\').css(\'padding-top\', height/2 - h2/2);
-			});
-		});
-
-		jQuery(document).ready(function($){
-				$("#popup_name").draggable({containment: "#container"});
-				$("#popup_name").resizable();
-		});
-
-	</script>';
-
 	echo '</div>'.PHP_EOL; // fin de planning
-	// echo '</div>'.PHP_EOL;
 	echo '<div id="popup_name" class="popup_block" ></div>',PHP_EOL;
-
 echo "</section>";
 echo "</body></html>";
 ?>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('table.table-bordered td').each(function(){
+			var $row = $(this);
+			var height = $row.height();
+			var h2 = $row.find('a').height();
+			$row.find('a').css('min-height', height);
+			$row.find('a').css('padding-top', height/2 - h2/2);
+
+		});
+        if ( $(window).scrollTop() == 0 )
+            $("#toTop").hide(1);
+	});
+	jQuery(document).ready(function($){
+		$("#popup_name").draggable({containment: "#container"});
+		$("#popup_name").resizable();
+	});
+</script>

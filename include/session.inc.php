@@ -3,7 +3,7 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-01-28 11:20$
+ * Dernière modification : $Date: 2020-03-26 12:20$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -126,6 +126,8 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 					//  On détecte si Nom, Prénom ou Email ont changé,
 					// Si c'est le cas, on met à jour les champs
 					$req = grr_sql_query("SELECT nom, prenom, email from ".TABLE_PREFIX."_utilisateurs where login ='".protect_data_sql($_login)."'");
+                    if (!$req)
+                        fatal_error(0, "erreur de lecture dans la base de données".grr_sql_error());
 					$res = mysqli_fetch_array($req);
 					$nom_en_base = $res[0];
 					$prenom_en_base = $res[1];
@@ -197,7 +199,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 				}
 				else if ((Settings::get("ldap_statut") != '') && (@function_exists("ldap_connect")) && (@file_exists("include/config_ldap.inc.php")) && ($_user_ext_authentifie == 'cas'))
 				{
-				// On initialise au cas où on ne réussisse pas à récupérer les infos dans l'annuaire.
+				// On initialise au cas où on ne réussit pas à récupérer les infos dans l'annuaire.
 					$l_nom = $_login;
 					$l_email = '';
 					$l_prenom = '';
@@ -378,8 +380,7 @@ else
 			else
 				return "4";
 		}
-		elseif ((Settings::get("imap_statut") != '') and (@function_exists("imap_open")) and (@file_exists("include/config_imap.inc.php")))
-		{
+		elseif ((Settings::get("imap_statut") != '') and (@function_exists("imap_open")) and (@file_exists("include/config_imap.inc.php"))){
 			//  $login_search = ereg_replace("[^-@._[:space:][:alnum:]]", "", $_login);
 			$login_search = preg_replace("/[^\-@._[:space:]a-zA-Z0-9]/", "", $_login);
 			if ($login_search != $_login)
@@ -392,13 +393,15 @@ else
 			}
 			else
 				return "10";
-		} elseif($_login == "DEVOME99" && $motDePasseConfig != "" && $motDePasseConfig == md5($_password)){
+		} 
+        elseif ($_login == "DEVOME99" && $motDePasseConfig != "" && $motDePasseConfig == md5($_password)) {
 				$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site
 				from ".TABLE_PREFIX."_utilisateurs
 				where statut = 'administrateur'";
 				$res_user = grr_sql_query($sql);;
 				$row = grr_sql_row($res_user, 0);
-		} else
+		} 
+        else
 			return "2";
 	}
 	else
@@ -908,7 +911,7 @@ function grr_closeSession(&$_auto)
 	$_SESSION = array();
 		// Détruit le cookie sur le navigateur
 	$CookieInfo = session_get_cookie_params();
-	@setcookie(session_name(), '', time()-3600, $CookieInfo['path']);
+	@setcookie(session_name(), '', 1, $CookieInfo['path']);
 		// On détruit la session
 	session_destroy();
 }

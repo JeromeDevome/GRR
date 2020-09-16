@@ -3,9 +3,9 @@
  * admin_config3.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (interactivité)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-22 10:30$
+ * Dernière modification : $Date: 2020-07-28 11:55$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -15,14 +15,14 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-// page à internationaliser
+
 $grr_script_name = "admin_config3.php";
 
 include "../include/admin.inc.php";
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 $_SESSION['chemin_retour'] = "admin_accueil.php";
 $day   = date("d");
 $month = date("m");
@@ -34,7 +34,7 @@ if (isset($_GET['automatic_mail']))
 {
 	if (!Settings::set("automatic_mail", $_GET['automatic_mail']))
 	{
-		echo "Erreur lors de l'enregistrement de automatic_mail !<br />";
+		echo get_vocab('automatic_mail_save_err');
 		die();
 	}
 }
@@ -43,7 +43,7 @@ if (isset($_GET['envoyer_email_avec_formulaire']))
 {
 	if (!Settings::set("envoyer_email_avec_formulaire", $_GET['envoyer_email_avec_formulaire']))
 	{
-		echo "Erreur lors de l'enregistrement de envoyer_email_avec_formulaire !<br />";
+		echo get_vocab('envoyer_email_avec_formulaire_save_err');
 		die();
 	}
 }
@@ -52,7 +52,7 @@ if (isset($_GET['javascript_info_disabled']))
 {
 	if (!Settings::set("javascript_info_disabled", $_GET['javascript_info_disabled']))
 	{
-		echo "Erreur lors de l'enregistrement de javascript_info_disabled !<br />";
+		echo get_vocab('javascript_info_disabled_save_err');
 		die();
 	}
 }
@@ -61,7 +61,7 @@ if (isset($_GET['javascript_info_admin_disabled']))
 {
 	if (!Settings::set("javascript_info_admin_disabled", $_GET['javascript_info_admin_disabled']))
 	{
-		echo "Erreur lors de l'enregistrement de javascript_info_admin_disabled !<br />";
+		echo get_vocab('javascript_info_admin_disabled_save_err');
 		die();
 	}
 }
@@ -69,7 +69,7 @@ if (isset($_GET['grr_mail_method']))
 {
 	if (!Settings::set("grr_mail_method", $_GET['grr_mail_method']))
 	{
-		echo "Erreur lors de l'enregistrement de grr_mail_method !<br />";
+		echo get_vocab('grr_mail_method_save_err');
 		die();
 	}
 }
@@ -77,7 +77,7 @@ if (isset($_GET['grr_mail_smtp']))
 {
 	if (!Settings::set("grr_mail_smtp", $_GET['grr_mail_smtp']))
 	{
-		echo "Erreur lors de l'enregistrement de grr_mail_smtp !<br />";
+		echo get_vocab('grr_mail_smtp_save_err');
 		die();
 	}
 }
@@ -85,7 +85,7 @@ if (isset($_GET['grr_mail_Username']))
 {
 	if (!Settings::set("grr_mail_Username", $_GET['grr_mail_Username']))
 	{
-		echo "Erreur lors de l'enregistrement de grr_mail_Username !<br />";
+		echo get_vocab('grr_mail_Username_save_err');
 		die();
 	}
 }
@@ -93,7 +93,7 @@ if (isset($_GET['grr_mail_Password']))
 {
 	if (!Settings::set("grr_mail_Password", $_GET['grr_mail_Password']))
 	{
-		echo "Erreur lors de l'enregistrement de grr_mail_Password !<br />";
+		echo get_vocab('grr_mail_Password_save_err');
 		die();
 	}
 }
@@ -101,7 +101,7 @@ if (isset($_GET['grr_mail_from']))
 {
 	if (!Settings::set("grr_mail_from", $_GET['grr_mail_from']))
 	{
-		echo "Erreur lors de l'enregistrement de grr_mail_from !<br />";
+		echo get_vocab('grr_mail_from_save_err');
 		die();
 	}
 }
@@ -109,7 +109,7 @@ if (isset($_GET['grr_mail_fromname']))
 {
 	if (!Settings::set("grr_mail_fromname", $_GET['grr_mail_fromname']))
 	{
-		echo "Erreur lors de l'enregistrement de grr_mail_fromname !<br />";
+		echo get_vocab('grr_mail_fromname_save_err');
 		die();
 	}
 }
@@ -117,7 +117,7 @@ if (isset($_GET['smtp_secure']))
 {
 	if (!Settings::set("smtp_secure", $_GET['smtp_secure']))
 	{
-		echo "Erreur lors de l'enregistrement de smtp_secure !<br />";
+		echo get_vocab('save_err')." smtp_secure !<br />";
 		die();
 	}
 }
@@ -125,16 +125,21 @@ if (isset($_GET['smtp_port']))
 {
 	if (!Settings::set("smtp_port", $_GET['smtp_port']))
 	{
-		echo "Erreur lors de l'enregistrement de smtp_port !<br />";
+		echo get_vocab('smtp_port_save_err');
 		die();
 	}
 }
 // Si Email test renseigné on y envoie un mail
 if (isset($_GET['mail_test']) && !empty($_GET['mail_test']))
 {
+    $mail_test = filter_var(clean_input($_GET['mail_test']),FILTER_VALIDATE_EMAIL);
+    if (!$mail_test){
+        echo get_vocab('invalid_test_mail_address');
+        die();
+    }
 	require_once '../include/mail.class.php';
 	require_once '../phpmailer/PHPMailerAutoload.php';
-	Email::Envois($_GET['mail_test'], 'GRR, votre système de réservations', "Ceci est un test depuis l'administration de votre GRR.<br>Le mail est arrivé à destination.", Settings::get('grr_mail_from'), '', '');
+	Email::Envois($mail_test, 'GRR, votre système de réservations', "Ceci est un test depuis l'administration de votre GRR.<br>Le mail est arrivé à destination.", Settings::get('grr_mail_from'), '', '');
 }
 if (isset($_GET['ok']))
 {
@@ -144,7 +149,7 @@ if (isset($_GET['ok']))
 		$grr_mail_Bcc = "n";
 	if (!Settings::set("grr_mail_Bcc", $grr_mail_Bcc))
 	{
-		echo "Erreur lors de l'enregistrement de grr_mail_Bcc !<br />";
+		echo get_vocab('grr_mail_Bcc_save_err');
 		die();
 	}
 }
@@ -152,7 +157,7 @@ if (isset($_GET['verif_reservation_auto']))
 {
 	if (!Settings::set("verif_reservation_auto", $_GET['verif_reservation_auto']))
 	{
-		echo "Erreur lors de l'enregistrement de verif_reservation_auto !<br />";
+		echo get_vocab('save_err')." verif_reservation_auto !<br />";
 		die();
 	}
 	if ($_GET['verif_reservation_auto'] == 0)
@@ -167,7 +172,7 @@ if (isset($_GET['motdepasse_verif_auto_grr']))
 		$msg .= "l'exécution du script verif_auto_grr.php requiert un mot de passe !\\n";
 	if (!Settings::set("motdepasse_verif_auto_grr", $_GET['motdepasse_verif_auto_grr']))
 	{
-		echo "Erreur lors de l'enregistrement de motdepasse_verif_auto_grr !<br />";
+		echo $vocab['save_err']." motdepasse_verif_auto_grr !<br />";
 		die();
 	}
 }
@@ -175,12 +180,12 @@ if (isset($_GET['chemin_complet_grr']))
 {
 	if (!Settings::set("chemin_complet_grr", $_GET['chemin_complet_grr']))
 	{
-		echo "Erreur lors de l'enregistrement de chemin_complet_grr !<br />";
+		echo $vocab['save_err']." chemin_complet_grr !<br />";
 		die();
 	}
 }
 if (!Settings::load())
-	die("Erreur chargement settings");
+	die(".get_vocab('error_settings_load').");
 # print the page header
 start_page_w_header("", "", "", $type="with_session");
 if (isset($_GET['ok']))
@@ -266,7 +271,7 @@ echo "\n<br />".get_vocab('smtp_port').get_vocab('deux_points');
 echo "\n<input type = \"text\" name=\"smtp_port\" value =\"".Settings::get('smtp_port')."\" size=\"30\" />";
 // Mail Test
 echo "\n<br />".get_vocab('mail_test').get_vocab('deux_points');
-echo "\n<input type = \"text\" name=\"mail_test\" value =\"\" size=\"30\" />";
+echo "\n<input type = \"email\" name=\"mail_test\" value =\"\" size=\"30\" />";
 // Copie CCi
 echo "\n<br /><br />";
 echo "\n<input type=\"checkbox\" name=\"grr_mail_Bcc\" value=\"y\" ";

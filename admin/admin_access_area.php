@@ -3,9 +3,9 @@
  * admin_access_area.php
  * Interface de gestion des accès restreints aux domaines
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-29 15:10$
+ * Dernière modification : $Date: 2020-03-232 11:40$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -22,6 +22,8 @@ include "../include/admin.inc.php";
 $id_area = isset($_POST["id_area"]) ? $_POST["id_area"] : (isset($_GET["id_area"]) ? $_GET["id_area"] : NULL);
 if (!isset($id_area))
 	settype($id_area,"integer");
+else 
+    $id_area = intval(clean_input($id_area));
 $reg_user_login = isset($_POST["reg_user_login"]) ? $_POST["reg_user_login"] : NULL;
 $reg_multi_user_login = isset($_POST["reg_multi_user_login"]) ? $_POST["reg_multi_user_login"] : NULL;
 $test_user =  isset($_POST["reg_multi_user_login"]) ? "multi" : (isset($_POST["reg_user_login"]) ? "simple" : NULL);
@@ -30,7 +32,7 @@ $msg = '';
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 check_access(4, $back);
 
 // Si la table j_user_area est vide, il faut modifier la requête

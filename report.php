@@ -3,9 +3,9 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-11-28 16:00$
+ * Dernière modification : $Date: 2020-03-28 15:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -24,7 +24,7 @@ include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
 include "include/mrbs_sql.inc.php";
 
-//Paramètres de connection
+//Paramètres de connexion
 require_once("./include/settings.class.php");
 //Chargement des valeurs de la table settings
 if (!Settings::load())
@@ -608,7 +608,7 @@ if (isset($_GET["is_posted"]))
             echo '<p style="text-align:center;">
             <a href="./report.php'. '?' . htmlspecialchars($_SERVER['QUERY_STRING']) . '&amp;pview=1" ';
             if (Settings::get("pview_new_windows") == 1)
-                echo ' target="_blank"';
+                echo ' target="_blank" rel="noopener noreferer"';
             echo ' title="'.get_vocab('ppreview').'"><span class="glyphicon glyphicon-print"></span></a>
             </p>';
         }

@@ -3,9 +3,9 @@
  * admin_site.php
  * Interface d'accueil de Gestion des sites de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-23 14:00$
+ * Dernière modification : $Date: 2020-07-24 10:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -15,7 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
- // cette page reste à internationaliser
+
 $grr_script_name = "admin_site.php";
 /**
  * Compte le nombre de sites définis
@@ -34,7 +34,7 @@ function count_sites()
 			return $sites[0];
 		else
 		{
-			echo '      <p>Une erreur est survenue pendant le comptage des sites.</p>';
+			echo '      <p>'.get_vocab['admin_site_err1'].'</p>';
 			// fin de l'affichage de la colonne de droite
 			end_page();
 			die();
@@ -42,7 +42,7 @@ function count_sites()
 	}
 	else
 	{
-		echo '      <p>Une erreur est survenue pendant la préparation de la requète de comptage des sites.</p>';
+		echo '      <p>'.get_vocab['admin_site_err2'].'</p>';
 		// fin de l'affichage de la colonne de droite
 		end_page();
 		die();
@@ -153,7 +153,7 @@ function read_sites()
 		if ($res)
 		{
 			// Affichage de l'entête du tableau
-			echo '      <table class="table-bordered">
+			echo '      <table class="table table-bordered table-condensed">
 			<tr>
 				<th>'.get_vocab('action').'</th>
 				<th>'.get_vocab('site_code').'</th>
@@ -179,7 +179,7 @@ function read_sites()
 		}
 		else
 		{
-			echo '      <p>Une erreur est survenue pendant la préparation de la requête de lecture des sites.</p>';
+			echo '      <p>'.get_vocab['admin_site_err3'].'</p>';
 		}
 		// fin de l'affichage de la colonne de droite et de la page
 		echo "</div></section></body></html>";
@@ -323,22 +323,18 @@ function delete_site($id)
 }
 function check_right($id)
 {
-    echo 'Vous voulez vérifier les droits pour l\'identifiant '.$id;
+    echo get_vocab['check_right'].$id;
 }
 
 include_once('../include/admin.inc.php');
-$grr_script_name = 'admin_site.php';
-if (authGetUserLevel(getUserName(), -1, 'site') < 4)
-{
-    $back = '';
-    if (isset($_SERVER['HTTP_REFERER']))
-        $back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+
+$back = "";
+if (isset($_SERVER['HTTP_REFERER']))
+    $back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
+if (authGetUserLevel(getUserName(), -1, 'site') < 4){
     showAccessDenied($back);
     exit();
 }
-$back = "";
-if (isset($_SERVER['HTTP_REFERER']))
-    $back = htmlspecialchars($_SERVER['HTTP_REFERER']);
 // print the page header
 start_page_w_header("", "", "", $type="with_session");
 // Affichage de la colonne de gauche

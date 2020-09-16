@@ -2,9 +2,9 @@
 /**
  * index.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-16 15:30$
+ * Dernière modification : $Date: 2020-04-27 11:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -14,8 +14,10 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "index.php";
+/* à décommenter si besoin de débogage 
 if (!@file_exists("/var/www/lcs/includes/headerauth.inc.php"))
-	error_reporting (E_ALL);
+	error_reporting (E_ALL);*/
 require_once("include/config.inc.php");
 if (file_exists("include/connect.inc.php"))
 	include "include/connect.inc.php";
@@ -51,34 +53,31 @@ if ($dbsys == "mysql")
 				}
 				if ($flag == 'yes')
 				{
-					$msg = "<p>La connection au serveur $dbsys est établie mais certaines tables sont absentes de la base $dbDb.</p>";
+					$msg = "<p>La connexion au serveur $dbsys est établie mais certaines tables sont absentes de la base $dbDb.</p>";
 					$correct_install = 'no';
 				}
 			}
 			else
 			{
-				$msg = "La connection au serveur $dbsys est établie mais impossible de sélectionner la base contenant les tables GRR.";
+				$msg = "La connexion au serveur $dbsys est établie mais impossible de sélectionner la base contenant les tables GRR.";
 				$correct_install = 'no';
 			}
 		}
 		else
 		{
-			$msg = "Erreur de connection au serveur $dbsys. Le fichier \"connect.inc.php\" ne contient peut-être pas les bonnes informations de connection.";
+			$msg = "Erreur de connexion au serveur $dbsys. Le fichier \"connect.inc.php\" ne contient peut-être pas les bonnes informations de connexion.";
 			$correct_install = 'no';
 		}
 	}
 	else
 	{
-		$msg = "Le fichier \"connect.inc.php\" contenant les informations de connection est introuvable.";
+		$msg = "Le fichier \"connect.inc.php\" contenant les informations de connexion est introuvable.";
 		$correct_install = 'no';
 	}
 	if ($correct_install == 'no')
 	{
-		// echo begin_page("GRR (Gestion et Réservation de Ressources) ");
-        echo '<!DOCTYPE html>'.PHP_EOL.'<html lang="fr">';
-        echo pageHead2("GRR (Gestion et Réservation de Ressources) ");
-        echo "<body>";
-		echo "<h1 class=\"center\">Gestion et Réservation de Ressources</h1>\n";
+		echo begin_page("GRR (Gestion et Réservation de Ressources) ", "no_session");
+        echo "<h1 class=\"center\">Gestion et Réservation de Ressources</h1>\n";
 		echo "<div style=\"text-align:center;\"><span style=\"color:red;font-weight:bold\">".$msg."</span>\n";
 		echo "<ul><li>Soit vous procédez à une mise à jour vers une nouvelle version de GRR. Dans ce cas, vous devez procéder à une mise à jour de la base de données MySql.<br />";
 		echo "<b><a href='./admin/admin_maj.php'>Mettre à jour la base Mysql</a></b><br /></li>";
@@ -164,11 +163,11 @@ if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statu
 else if ((Settings::get('sso_statut') == 'lemon_visiteur') || (Settings::get('sso_statut') == 'lemon_utilisateur'))
 {
 	if (isset($_GET['login']))
-		$login = $_GET['login'];
+		$login = clean_input($_GET['login']);
 	else
 		$login = "";
 	if (isset($_COOKIE['user']))
-		$cookie_user = $_COOKIE['user'];
+		$cookie_user = clean_input($_COOKIE['user']);
 	else
 		$cookie_user = "";
 	if (empty($cookie_user) || $cookie_user != $login)
@@ -412,12 +411,12 @@ else if ((Settings::get('sso_statut') == 'http_visiteur') || (Settings::get('sso
 	// Cas le plus courant :
 	if (isset($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_USER']))
 	{
-		$login = $_SERVER['PHP_AUTH_USER'];
+		$login = clean_input($_SERVER['PHP_AUTH_USER']);
 		// Pour les versions plus anciennes de PHP < 4.1.0 (en fait inutile ici car GRR exige PHP > 4.3.1
 	}
 	else if (isset($HTTP_SERVER_VARS['PHP_AUTH_USER']) && !empty($HTTP_SERVER_VARS['PHP_AUTH_USER']))
 	{
-		$login = $HTTP_SERVER_VARS['PHP_AUTH_USER'];
+		$login = clean_input($HTTP_SERVER_VARS['PHP_AUTH_USER']);
 		// L'utilisateur est authentifié mais $_SERVER['PHP_AUTH_USER'] est vide, on tente de récupérer le login dans $_SERVER['REMOTE_USER']
 	}
 	else if (isset($_SERVER['REMOTE_USER']) && !empty($_SERVER['REMOTE_USER']))
@@ -444,7 +443,7 @@ else if ((Settings::get('sso_statut') == 'http_visiteur') || (Settings::get('sso
 		else
 		{
 			// Cas normal
-			$login = $_SERVER['REMOTE_USER'];
+			$login = clean_input($_SERVER['REMOTE_USER']);
 		}
 		// Cas de PHP4 en mode CGI sur IIS
 	}
@@ -461,11 +460,8 @@ else if ((Settings::get('sso_statut') == 'http_visiteur') || (Settings::get('sso
 		header('WWW-Authenticate: Basic realm="' . $my_message . '"');
 		header('HTTP/1.0 401 Unauthorized');
 		// en cas d'annulation
-		// echo begin_page(get_vocab("mrbs"),"no_session");
-        echo '<!DOCTYPE html>'.PHP_EOL.'<html lang="fr">';
-        echo pageHead2("GRR (Gestion et Réservation de Ressources) ");
-        echo "<body>";
-		echo "<h3>".get_vocab("wrong_pwd")."</h3>";
+		echo begin_page(get_vocab("mrbs"),"no_session");
+        echo "<h3>".get_vocab("wrong_pwd")."</h3>";
 		echo "<h3>".get_vocab("connexion_a_grr_non_autorisee")."</h3>";
 		echo "</body></html>";
 		exit();

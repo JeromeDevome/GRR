@@ -3,7 +3,7 @@
  * traitementcontact.php
  * envoie l'email suite au formulaire
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-01-19 12:10$
+ * Dernière modification : $Date: 2020-04-27 11:40$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -71,13 +71,13 @@ if ($plage_libre != "") // la plage n'est pas libre
 	echo " alert(\"la plage est au moins partiellement occupée\")";
 	echo "//-->";
 	echo "</script>";
-	die();// à modifier pour renvoyer sur une page
+	//die();// à modifier pour renvoyer sur une page
 }
 else 
-{	// la plage est libre, on préréserve le créneau sous forme d'une réservation à modérer
+{	// la plage est libre, on préréserve le créneau sous forme d'une réservation à modérer ... à achever
 	$id_resa = grr_sql_insert_id(); // récupère l'id de la résa juste créée -> mail au modérateur
 	echo "plage libre";
-	die();
+	//die();
 }
 // traitement des erreurs
 $message = "ok?";
@@ -89,8 +89,9 @@ $message = "ok?";
 	//die();
 //}
 
-foreach ($_POST as $index => $valeur)
-	$index = stripslashes(trim($valeur));
+foreach ($_POST as $index => &$valeur)
+	$valeur = clean_input($valeur);
+unset($valeur);
 // $mail_entete n'est plus utilisé, phpmailer s'en charge
 /* $mail_entete  = "MIME-Version: 1.0\r\n";
 $mail_entete .= "From: {$_POST['nom']} "

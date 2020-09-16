@@ -3,9 +3,9 @@
  * del_entry.php
  * Interface de suppression d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-05-14 18:30$
+ * Dernière modification : $Date: 2020-04-24 11:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -39,11 +39,13 @@ if (isset($series))
 $page = verif_page();
 if (isset($_GET["id"]))
 {
-	$id = $_GET["id"];
+	$id = clean_input($_GET["id"]);
 	settype($id,"integer");
 }
-else
+else{
+	header("Location: ./login.php");
 	die();
+}
 if ($info = mrbsGetEntryInfo($id))
 {
 	$day   = strftime("%d", $info["start_time"]);
@@ -70,6 +72,10 @@ if ($info = mrbsGetEntryInfo($id))
 	}
 	if (Settings::get("automatic_mail") == 'yes')
 		$_SESSION['session_message_error'] = send_mail($id,3,$dformat);
+    // traitement des réservations modérées : envoie un mail au modérateur
+    if ($info['moderate'] != 0){ // cette réservation est à modérer ou a été modérée
+        $_SESSION['session_message_error'] .= send_mail($id,3,$dformat);
+    }
 	$room_id = grr_sql_query1("SELECT ".TABLE_PREFIX."_entry.room_id FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id AND ".TABLE_PREFIX."_entry.id='".$id."'");
 	$date_now = time();
 	get_planning_area_values($area);
@@ -81,7 +87,7 @@ if ($info = mrbsGetEntryInfo($id))
 	$result = mrbsDelEntry(getUserName(), $id, $series, 1);
 	if ($result)
 	{
-        $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $info['room_id'];
+        $room_back = isset($_GET['room_back']) ? clean_input($_GET['room_back']) : $info['room_id'];
 		$_SESSION['displ_msg'] = 'yes';
         $ress = '';
         if ($room_back != 'all')  {$ress = "&room=".$room_back;}

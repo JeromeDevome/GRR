@@ -55,7 +55,7 @@ input { text-indent : 2px; }
                 							</tr>
                 							<tr>
                   								<td align="right" width="45%"><span class="gen">Adresse email:</span></td>
-                  								<td><input type="text" name="destinataire"></td>
+                  								<td><input type="email" name="destinataire"></td>
                 							</tr>
                 							<tr align="center">
                   								<td colspan="2"> <input type="submit" value="Envoyer l'email" name="submit" /></td>
@@ -71,6 +71,11 @@ input { text-indent : 2px; }
 if (isset($_POST['destinataire']))
 {
 $destinataire = $_POST['destinataire'];
+$destinataire = filter_var($destinataire,FILTER_VALIDATE_EMAIL);
+if (!$destinataire){
+    echo "L'adresse mail entrée est non valide !";
+    die();
+}
 $sujet = "Test de la fonction mail() de PHP";
 $message = "Félicitations, la fonction mail() de votre hebergeur fonctionne!";
 
