@@ -1281,7 +1281,7 @@ if($periodiciteConfig == 'y'){
 		insertChampsAdd(<?php echo $area; ?>,<?php echo $id; ?>,<?php echo $room; ?>);
 		insertTypes(<?php echo $area; ?>,<?php echo $room; ?>)
 	</script>
-	<script type="text/javascript">
+<?php	/* <script type="text/javascript">
 		$('#areas').on('change', function(){
 			$('.multiselect').multiselect('destroy');
 			$('.multiselect').multiselect();
@@ -1290,7 +1290,7 @@ if($periodiciteConfig == 'y'){
 			$('.multiselect').multiselect();
 			$("#select2").select2();
 		});
-	</script>
+	</script> */ ?>
 	<script type="text/javascript" >
 		document.getElementById('main').name.focus();
 		<?php

@@ -106,6 +106,7 @@ if ($row["delais_max_resa_room"] != "-1")
 	echo "<p>".get_vocab("delais_max_resa_room_2")." <b>".clean_input($row["delais_max_resa_room"])."</b></p>";
 if ($row["delais_min_resa_room"] != "0")
 	echo "<p>".get_vocab("delais_min_resa_room_2")." <b>".clean_input($row["delais_min_resa_room"])."</b></p>";
+// image de la ressource
 $nom_picture = '';
 if ($row['picture_room'] != '') $nom_picture = "./images/".clean_input($row['picture_room']);
 echo "<div class='center'><b>";
