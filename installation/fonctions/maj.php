@@ -713,6 +713,7 @@ function execute_maj($version_old, $version_grr)
 	if (version_compare($version_old, "4.0.0", '<')) 
 	{
 		$result .= formatresult("Mise à jour jusqu'à la version 4.0.0 :","<b>","</b>");
+		$hash_pwd2 = bin2hex(random_bytes(12));
 
 		$result_inter .= traite_requete("DELETE FROM ".TABLE_PREFIX."_setting WHERE NAME='versionRC'");
 		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('display_beneficiaire', '0')");
@@ -731,6 +732,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_peer', 'true')");
 		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_depth', '3')");
 		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('backup_date', '')");
+		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('hashpwd2', '".$hash_pwd2."')");
 		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE `password` `password` VARCHAR(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
 
 		if ($result_inter == '')
