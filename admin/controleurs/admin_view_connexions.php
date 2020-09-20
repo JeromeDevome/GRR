@@ -77,6 +77,9 @@ get_vocab_admin('users_connected');
 
 $sql = "SELECT u.login, concat(prenom, ' ', nom) utili, l.START, l.SESSION_ID, l.REMOTE_ADDR, l.USER_AGENT, l.REFERER, l.AUTOCLOSE, l.END, u.email FROM ".TABLE_PREFIX."_log l, ".TABLE_PREFIX."_utilisateurs u WHERE l.LOGIN = u.login ORDER by START desc";
 $res = grr_sql_query($sql);
+
+$logsConnexion = array ();
+
 if ($res)
 {
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
@@ -100,13 +103,18 @@ get_vocab_admin("del");
 
 $sql = "select START from ".TABLE_PREFIX."_log order by END";
 $res = grr_sql_query($sql);
-$trad['dNombreLog'] = grr_sql_count($res);
-$row = grr_sql_row($res, 0);
-$annee = substr($row[0],0,4);
-$mois =  substr($row[0],5,2);
-$jour =  substr($row[0],8,2);
 
-$trad['dDatePlusAncienne'] =  $jour."/".$mois."/".$annee;
+if($res) {
+	$trad['dNombreLog'] = grr_sql_count($res);
+	$row = grr_sql_row($res, 0);
+	$annee = substr($row[0],0,4);
+	$mois =  substr($row[0],5,2);
+	$jour =  substr($row[0],8,2);
+	$trad['dDatePlusAncienne'] = $jour."/".$mois."/".$annee;
+} else{
+	$trad['dNombreLog'] = 0;
+	$trad['dDatePlusAncienne'] = "-";
+}
 
 $trad['dTitreDateLog'] = get_vocab("log").$trad['dDatePlusAncienne'];
 

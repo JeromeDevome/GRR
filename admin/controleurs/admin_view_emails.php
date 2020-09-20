@@ -3,7 +3,7 @@
  * admin_view_emails.php
  * Interface de gestion des connexions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-08 16:56$
+ * Dernière modification : $Date: 2020-09-20 14:35$
  * @author    JeromeB
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -42,11 +42,14 @@ get_vocab_admin('users_connected');
 
 $sql = "SELECT date, de, a, sujet, message FROM ".TABLE_PREFIX."_log_mail ORDER by date desc";
 $res = grr_sql_query($sql);
+
+$logsMail = array ();
+
 if ($res)
 {
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-		$logsConnexion[] = array('date' => date("d-m-Y H:i:s", $row[0]), 'de' => $row[1], 'a' => $row[2], 'sujet' => $row[3], 'message' => substr($row[4], 0, 50));
+		$logsMail[] = array('date' => date("d-m-Y H:i:s", $row[0]), 'de' => $row[1], 'a' => $row[2], 'sujet' => $row[3], 'message' => substr($row[4], 0, 50));
 	}
 }
 
@@ -60,12 +63,17 @@ get_vocab_admin("del");
 
 $sql = "select date from ".TABLE_PREFIX."_log_mail order by date";
 $res = grr_sql_query($sql);
-$trad['dNombreLog'] = grr_sql_count($res);
-$row = grr_sql_row($res, 0);
 
-$trad['dDatePlusAncienne'] =  date("d-m-Y", $row[0]);
+if($res) {
+	$trad['dNombreLog'] = grr_sql_count($res);
+	$row = grr_sql_row($res, 0);
+	$trad['dDatePlusAncienne'] = date("d-m-Y", $row[0]);
+} else{
+	$trad['dNombreLog'] = 0;
+	$trad['dDatePlusAncienne'] = "-";
+}
 
 $trad['dTitreDateLog'] = get_vocab("log_mail").$trad['dDatePlusAncienne'];
 
-echo $twig->render('admin_view_emails.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'logsconnexion' => $logsConnexion ));
+echo $twig->render('admin_view_emails.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'logsmail' => $logsMail ));
 ?>
