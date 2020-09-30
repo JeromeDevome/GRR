@@ -3,7 +3,7 @@
  * traitementcontact.php
  * envoie l'email suite au formulaire
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-27 11:40$
+ * Dernière modification : $Date: 2020-09-30 16:33$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -71,7 +71,8 @@ if ($plage_libre != "") // la plage n'est pas libre
 	echo " alert(\"la plage est au moins partiellement occupée\")";
 	echo "//-->";
 	echo "</script>";
-	//die();// à modifier pour renvoyer sur une page
+    header("Location: ".page_accueil());
+	die();
 }
 else 
 {	// la plage est libre, on préréserve le créneau sous forme d'une réservation à modérer ... à achever
@@ -123,7 +124,12 @@ if (isset($id_resa)){
 }
 $mail_corps .= "</body></html>";
 $sujet ="Réservation d'une salle";
-$destinataire = Settings::get("mail_destinataire");
+//$destinataire = Settings::get("mail_destinataire");
+$tab_emails = find_active_user_room($_POST['room']);
+foreach ($tab_emails as $value)
+{
+    $destinataire .= $value.";";
+}
 
 require_once 'phpmailer/PHPMailerAutoload.php';
 require_once 'include/mail.class.php';
