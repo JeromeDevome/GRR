@@ -3,7 +3,7 @@
  * traitementcontact.php
  * envoie l'email suite au formulaire
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-09-30 16:33$
+ * Dernière modification : $Date: 2020-10-01 10:04$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -41,7 +41,7 @@ if (empty($_POST['prenom']))
 	$message .= "Votre prénom<br/>";
 if (empty($_POST['email']))
 	$message .= "Votre adresse email<br/>";
-if( !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) )
+if( !validate_email($_POST['email']) )
 	$message .= "Adresse email non valide<br />";
 if (empty($_POST['subject']))
 	$message .= "Le sujet de votre demande<br/>";
@@ -81,14 +81,14 @@ else
 	//die();
 }
 // traitement des erreurs
-$message = "ok?";
-//if ($message != "")
-//{
+//$message = "ok?";
+if ($message != "")
+{
 	$message = $msg_erreur.$message; 
 	echo "<br />".$message;
 	affiche_pop_up($message);
-	//die();
-//}
+	die();
+}
 
 foreach ($_POST as $index => &$valeur)
 	$valeur = clean_input($valeur);
@@ -125,6 +125,7 @@ if (isset($id_resa)){
 $mail_corps .= "</body></html>";
 $sujet ="Réservation d'une salle";
 //$destinataire = Settings::get("mail_destinataire");
+$destinataire = "";
 $tab_emails = find_active_user_room($_POST['room']);
 foreach ($tab_emails as $value)
 {
