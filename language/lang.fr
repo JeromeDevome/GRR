@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2020-09-09
+# Last modification : 2020-09-30
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -340,7 +340,7 @@ $vocab['dlrapportcsv'] = "Fichier CSV des réservations";
 $vocab['dlresumecsv'] = "Fichier CSV du résumé";
 $vocab['domaines_de_type_incompatibles'] = "<b>Remarque : </b> Seule la réservation de journées entières est possible car les ressources sélectionnées appartiennent à des domaines de type différents.";
 $vocab['dont_allow_modify'] = "Ne pas permettre aux utilisateurs (hormis les gestionnaires et les administrateurs) de modifier ou de supprimer leurs propres réservations.";
-$vocab['droits_insuffisants_pour_voir_ressources'] = "Vous n'avez pas les droits suffisants pour accéder aux ressource de ce domaine.";
+$vocab['droits_insuffisants_pour_voir_ressources'] = "Vous n'avez pas les droits suffisants pour accéder aux ressources de ce domaine.";
 $vocab['duplique_domaine'] = "Dupliquer le domaine";
 $vocab['duplique_ressource'] = "Dupliquer la ressource";
 $vocab['duration'] = "Durée :";

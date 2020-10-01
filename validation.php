@@ -497,7 +497,7 @@ if (isset($_GET['id'])) // appel initial
 }
 elseif (isset($_POST['commit'])&& isset($_POST['action_moderate']))// deuxième appel au script pour validation
 {
-	print_r($_POST);
+	//print_r($_POST);
 	$id_resa = htmlspecialchars($_POST['id']);
 	settype($id_resa,"integer");
 	moderate_entry_do($id_resa,$_POST["moderate"], $_POST["description"]);

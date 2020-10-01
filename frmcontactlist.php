@@ -3,7 +3,7 @@
  * frmcontactlist.php
  * calcule la liste des ressources visibles dans un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-13 11:00$
+ * Dernière modification : $Date: 2020-09-30 18:00$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -35,7 +35,7 @@ if ($nbresult != 0)
         $id_room = $row_roomName[1];
         if (verif_acces_ressource($user_name,$id_room)){
             $room_name = $row_roomName[0];
-            $a .= " <option value =\"$room_name\">$room_name</option>";
+            $a .= " <option value =\"$id_room\">$room_name</option>";
         }
 	}
     if ($a != "")
