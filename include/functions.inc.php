@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-04-27 10:40$
+ * Dernière modification : $Date: 2020-09-30 16:51$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -316,7 +316,7 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 		}
 		else
 		{
-            if (filter_var($_email,FILTER_VALIDATE_EMAIL))
+            if (validate_email($_email))
             {
                 $affichage = '<a href="mailto:'.$_email.'">'.$_identite.'</a>';
             }
@@ -2925,19 +2925,19 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 				$tab_destinataire[] = $row[0];
 		}
 		foreach ($tab_destinataire as $value){
-			$destinataire .= ";". $value;
+			$destinataire .= $value.";";
 		}
 
 		Email::Envois($destinataire, $sujet, $message, $repondre, '', '');
 	}
 
 	if ($action == 7){
-		$mail_admin = find_user_room ($room_id);
+		$mail_admin = find_user_room($room_id);
 		$destinataire = "";
 		if (count($mail_admin) > 0)
 		{
 			foreach ($mail_admin as $value){
-				$destinataire .= ";". $value;
+				$destinataire .= $value.";";
 			}
 
 		//	Email::Envois($destinataire, $sujet, $message, $repondre, '', '');  semble incomplet YN le 21/02/2020
@@ -2970,7 +2970,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		if (count($mail_admin) > 0){
 
 			foreach ($mail_admin as $value){
-				$destinataire .= ";". $value;
+				$destinataire .= $value.";";
 			}
 		
 			$sujet5 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
@@ -3015,7 +3015,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		Email::Envois($destinataire6, $sujet6, $message6, $repondre6, '', '');
 	}
 
-	// Cas d'une création, modification ou suppression d'un message par un utilisateur différent du bénéficiaire :
+	// Cas d'une création, modification ou suppression d'une réservation par un utilisateur différent du bénéficiaire :
 	// On envoie un message au bénéficiaire de la réservation pour l'avertir d'une modif ou d'une suppression
 	if ((($action == 1) || ($action == 2) || ($action == 3)) && ((strtolower($user_login) != strtolower($beneficiaire)) || (Settings::get('send_always_mail_to_creator') == '1')) && ($beneficiaire_email != '') && ($beneficiaire_actif == 'actif'))
 	{
@@ -4063,7 +4063,7 @@ function verify_retard_reservation()
 	if (((Settings::get("date_verify_reservation2") == "") || (Settings::get("date_verify_reservation2") < $date_now )) && (Settings::get("automatic_mail") == 'yes'))
 	{
 		$res = grr_sql_query("SELECT id FROM ".TABLE_PREFIX."_room");
-		if (! $res)
+		if (!$res)
 		{
 			include "trailer.inc.php";
 			exit;

@@ -3,7 +3,7 @@
  * admin_config3.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (interactivité)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-07-28 11:55$
+ * Dernière modification : $Date: 2020-09-30 16:56$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -132,8 +132,8 @@ if (isset($_GET['smtp_port']))
 // Si Email test renseigné on y envoie un mail
 if (isset($_GET['mail_test']) && !empty($_GET['mail_test']))
 {
-    $mail_test = filter_var(clean_input($_GET['mail_test']),FILTER_VALIDATE_EMAIL);
-    if (!$mail_test){
+    $mail_test = clean_input($_GET['mail_test']);
+    if (!validate_email($mail_test)){
         echo get_vocab('invalid_test_mail_address');
         die();
     }
