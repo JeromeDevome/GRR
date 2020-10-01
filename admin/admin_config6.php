@@ -3,7 +3,7 @@
  * admin_config6.php
  * Interface permettant à l'administrateur la configuration des paramètres pour les modules externes
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-22 14:45$
+ * Dernière modification : $Date: 2020-10-01 14:15$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,7 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-// cette page reste à internationaliser
+
 $grr_script_name = "admin_config6.php";
 
 include "../include/admin.inc.php";
@@ -54,7 +54,7 @@ if (isset($_GET['activation']))
 				Module::Installation($iter, $module_versionBDD);
 				
 			} else{
-				$msg .= "Impossible de trouver le fichier d'installation et ou d'infos !\\n";
+				$msg .= get_vocab('module_info_missing');
 			}
 		}
 	}
@@ -69,14 +69,14 @@ if (isset($_POST['ok']) && $upload_Module == 1)
         exit('Erreur n°'.$_FILES['file']['error']);
     }    /* Test premier, juste pour bloquer les double extensions */
     if (count(explode('.', $_FILES['doc_file']['name'])) > 2) {
-        $msg .= "Erreur 1 - Le module n\'a pas pu être importé : la seule extension autorisée est zip.\\n";
+        $msg .= get_vocab('error')." 1 - ".get_vocab('zip_import_err');
         $ok = 'no';
     } 
     elseif (preg_match("`\.([^.]+)$`", $_FILES['doc_file']['name'], $match)) {
         /* normalement, si on arrive ici l'image n'a qu'une extension */
         $ext = strtolower($match[1]);
         if ($ext != 'zip') {
-            $msg .= "Erreur 2 - Le module n\'a pas pu être importé : la seule extension autorisée est zip.\\n";
+            $msg .= get_vocab('error')." 2 - ".get_vocab('zip_import_err');
             $ok = 'no';
         } 
         else {
@@ -89,7 +89,7 @@ if (isset($_POST['ok']) && $upload_Module == 1)
                     /* je copie le (logo ???) pour valider avec la fonction move_uploaded_file */
                     $moveUploadReturn = move_uploaded_file($_FILES['doc_file']['tmp_name'], $picturePath);
                     if (!$moveUploadReturn) {
-                        $msg .= "Erreur 3 - Le module n\'a pas pu être importé : problème de transfert. Le fichier ".$_FILES['doc_file']['name']." n\'a pas pu être transféré sur le répertoire \"temp\". Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
+                        $msg .= get_vocab('error')." 3 - ".get_vocab('module_transfer_err')." Le fichier ".$_FILES['doc_file']['name'].get_vocab('transfer_err').get_vocab('refer_to_admin');
                         $ok = 'no';
                     } 
                     else {
@@ -99,29 +99,29 @@ if (isset($_POST['ok']) && $upload_Module == 1)
 							$zip->close();
 						} 
                         else {
-							$msg .= "Erreur 8 - Le module n\'a pas pu être installé\\n";
+							$msg .= get_vocab('error')." 8 - ".get_vocab('module_not_installed');
 							$ok = 'no';
 						}
                         $unlinkReturn = unlink($picturePath);
                         if (!$unlinkReturn) {
-                            $msg .= "Erreur 9 - Installation réussie, cependant archive non supprimée.  Cette erreur peut être ignorée.\\n";
+                            $msg .= get_vocab('error')." 9 - ".get_vocab('archive_not_deleted');
                             $ok = 'no';
                         }
                     }
                 } 
                 else {
-                    $msg .= "Erreur 5 - Le module n\'a pas pu être enregistré : problème d\'écriture sur le répertoire \"temp\". Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
+                    $msg .= get_vocab('error')." 5 - ".get_vocab('module_not_recorded').get_vocab('temp_access').get_vocab('refer_to_admin');
                     $ok = 'no';
                 }
 			} 
             else {
-			    $msg .= "Erreur 7 - Le module n\'a pas pu être enregistré !\\n";
+			    $msg .= get_vocab('error')." 7 - ".get_vocab('module_not_recorded');
 				$ok = 'no';	
 			}
         }
     } 
     elseif ($_FILES['doc_file']['name'] != '') {
-        $msg .= "Erreur 6 - Le module n\'a pas pu être enregistré : le fichier sélectionné n'est pas valide !\\n";
+        $msg .= get_vocab('error')." 6 - ".get_vocab('module_not_recorded').get_vocab('invalid_file');
         $ok = 'no';
     }
 }
@@ -165,7 +165,7 @@ if($upload_Module == 1){
 	$ligne = "";
 	echo "<h3>".get_vocab("Module_Ext_Gestion")."</h3>\n";
 	echo "<table class='table table-bordered'>";
-	echo "<tr><th>Nom</th><th>Description</th><th>Version</th><th>Auteur</th><th>Licence</th><th>Activation</th></tr>";
+	echo "<tr><th>".get_vocab('name')."</th><th>".get_vocab('description')."</th><th>".get_vocab('grr_version')."</th><th>".get_vocab('auteur')."</th><th>".get_vocab('licence')."</th><th>".get_vocab('activation')."</th></tr>";
 	$path = "../modules/"; // chemin vers le dossier
 	$iter = new DirectoryIterator($path);
 	$lienActivation = "";
@@ -182,12 +182,12 @@ if($upload_Module == 1){
 				}
 				if(!isset($infosModule)){
 					$infosModule = array();
-					$infosModule[0] = "<font color='red'>Erreur lecture</font>";
-					$infosModule[1] = "<font color='red'>Erreur lecture</font>";
-					$infosModule[2] = "<font color='red'>Erreur lecture</font>";
-					$infosModule[3] = "<font color='red'>Erreur lecture</font>";
-					$infosModule[4] = "<font color='red'>Erreur lecture</font>";
-					$activation = "<font color='red'>Impossible</font>";
+					$infosModule[0] = "<font color='red'>".get_vocab('Erreur lecture')."</font>";
+					$infosModule[1] = "<font color='red'>".get_vocab('Erreur lecture')."</font>";
+					$infosModule[2] = "<font color='red'>".get_vocab('Erreur lecture')."</font>";
+					$infosModule[3] = "<font color='red'>".get_vocab('Erreur lecture')."</font>";
+					$infosModule[4] = "<font color='red'>".get_vocab('Erreur lecture')."</font>";
+					$activation = "<font color='red'>".get_vocab('Impossible')."</font>";
 					$lienActivation = "#";
 				} 
                 else{
@@ -201,12 +201,12 @@ if($upload_Module == 1){
 							$row = grr_sql_row($res, 0);
 							
 							if($row[1] == 0)
-								$activation = "Activer";
+								$activation = get_vocab("Activer");
 							else
-								$activation = "Désactiver";
+								$activation = get_vocab("Désactiver");
 						} 
                         else{
-							$activation = "Installer";
+							$activation = get_vocab("Installer");
 						}
 					}
 				}

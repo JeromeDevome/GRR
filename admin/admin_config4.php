@@ -3,9 +3,9 @@
  * admin_config4.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (sécurité, connexions)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-01-06 16:15$
+ * Dernière modification : $Date: 2020-07-28 11:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -15,7 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-// page à internationaliser 
+
 $grr_script_name = "admin_config4.php";
 
 include "../include/admin.inc.php";
@@ -30,12 +30,12 @@ $year  = date("Y");
 check_access(6, $back);
 //vérifications
 if (!Settings::load())
-	die("Erreur chargement settings");
+	die(get_vocab['error_settings_load']);
 if (isset($_GET['motdepasse_backup']))
 {
 	if (!Settings::set("motdepasse_backup", $_GET['motdepasse_backup']))
 	{
-		echo "Erreur lors de l'enregistrement de motdepasse_backup !<br />";
+		echo get_vocab('backup_pwd_save_err');
 		die();
 	}
 }
@@ -43,20 +43,20 @@ if (isset($_GET['disable_login']))
 {
 	if (!Settings::set("disable_login", $_GET['disable_login']))
 	{
-		echo "Erreur lors de l'enregistrement de disable_login !<br />";
+		echo get_vocab('disable_login_save_err');
 		die();
 	}
 }
 if (isset($_GET['url_disconnect']))
 {
 	if (!Settings::set("url_disconnect", $_GET['url_disconnect']))
-		echo "Erreur lors de l'enregistrement de url_disconnect ! <br />";
+		echo get_vocab('url_disconnect_save_err');
 }
 // Restriction iP
 if (isset($_GET['ip_autorise']))
 {
 	if (!Settings::set("ip_autorise", $_GET['ip_autorise']))
-		echo "Erreur lors de l'enregistrement de ip_autorise !<br />";
+		echo get_vocab('ip_autorise_save_err');
 }
 // Max session length
 if (isset($_GET['sessionMaxLength']))
@@ -65,7 +65,7 @@ if (isset($_GET['sessionMaxLength']))
 	if ($_GET['sessionMaxLength'] < 1)
 		$_GET['sessionMaxLength'] = 30;
 	if (!Settings::set("sessionMaxLength", $_GET['sessionMaxLength']))
-		echo "Erreur lors de l'enregistrement de sessionMaxLength !<br />";
+		echo get_vocab('sessionMaxLength_save_err');
 }
 // pass_leng
 if (isset($_GET['pass_leng']))
@@ -74,7 +74,7 @@ if (isset($_GET['pass_leng']))
 	if ($_GET['pass_leng'] < 1)
 		$_GET['pass_leng'] = 1;
 	if (!Settings::set("pass_leng", $_GET['pass_leng']))
-		echo "Erreur lors de l'enregistrement de pass_leng !<br />";
+		echo get_vocab('pass_leng_save_err');
 }
 // début du code html
 # print the page header
@@ -111,9 +111,9 @@ if ($dbsys == "mysql")
     //********************************
     //
 	if($restaureBBD == 1){
-		echo "\n<hr /><h3>".get_vocab('Restauration_de_la_base_GRR')."</h3>";
-		echo "\n<p>En cas de perte de donnée ou de problème sur la base GRR, cette fonction vous permet de la retrouver dans l'état antérieur lors d'une sauvegarde. Vous devez sélectionner un fichier créé à l'aide de la fonction Lancer une sauvegarde.</p>";
-		echo "\n<p><span class=\"avertissement\"><i>Attention! Restaurer la base vous fera perdre toutes les données qu'elle contient actuellement. De plus, tous les utilisateurs présentement connectés, ainsi que vous-mêmes, serez déconnectés. Alors, il est conseillé de créer d'abord une sauvegarde et de vous assurer que vous êtes le seul connecté.</i></span></p>\n";
+		echo "\n<hr /><h3>".get_vocab('Restauration de la base GRR')."</h3>";
+		echo "\n<p>".get_vocab('explain_restore')."</p>";
+		echo "\n<p><span class=\"avertissement\"><i>".get_vocab('warning_restore')."</i></span></p>\n";
 		?>
 		<form method="post" enctype="multipart/form-data" action="admin_open_mysql.php">
 			<div class="center">
@@ -162,18 +162,18 @@ if ($dbsys == "mysql")
 	//********************
 	//
 echo "<h3>".get_vocab("title_session_max_length")."</h3>";
-?>
+echo "
 <table>
 	<tr>
+		<td>";
+echo get_vocab("session_max_length");
+echo "		</td>
 		<td>
-			<?php echo get_vocab("session_max_length"); ?>
-		</td>
-		<td>
-			<input type="number" name="sessionMaxLength" size="5" value="<?php echo(Settings::get("sessionMaxLength")); ?>" />
+			<input type=\"number\" name=\"sessionMaxLength\" size=\"5\" value=\"".Settings::get("sessionMaxLength")."\" />
 		</td>
 	</tr>
-</table>
-<?php echo "<p>".get_vocab("explain_session_max_length")."</p>";
+</table>";
+echo "<p>".get_vocab("explain_session_max_length")."</p>";
 //Longueur minimale du mot de passe exigé
 echo "<hr /><h3>".get_vocab("pwd")."</h3>";
 echo "\n<p>".get_vocab("pass_leng_explain").get_vocab("deux_points")."

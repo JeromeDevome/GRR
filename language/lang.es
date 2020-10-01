@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2020-09-09
+# Last modification : 2020-10-01
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1270,4 +1270,6 @@ $vocab['errCorruptedFile'] = "L\'image n\'a pas pu être enregistrée : fichier 
 $vocab['errImgTransfer'] = "L\'image n\'a pas pu être enregistrée : problème de transfert. Le fichier n\'a pas pu être transféré sur le répertoire IMAGES. Veuillez signaler ce problème à l\'administrateur du serveur.";
 $vocab['errTempLogo'] = "Erreur lors de l'enregistrement du logo ! (suppression du fichier temporaire)";
 $vocab['errInvalidFile'] = "L\'image n\'a pas pu être enregistrée : le fichier image sélectionné n'est pas valide !";
+$vocab['Display'] = "Afficher";
+$vocab['dontDisplay'] = "Ne pas afficher";
 ?>

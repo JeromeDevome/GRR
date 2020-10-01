@@ -28,7 +28,7 @@ include "include/mrbs_sql.inc.php";
 require_once("./include/settings.class.php");
 $settings = new Settings();
 if (!$settings)
-	die("Erreur chargement settings");
+	die(get_vocab('error_settings_load'));
 require_once("./include/session.inc.php");
 include "include/resume_session.php";
 include "include/language.inc.php";

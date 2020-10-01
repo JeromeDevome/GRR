@@ -3,7 +3,7 @@
  * admin_config_imap.php
  * Interface permettant l'activation de la configuration de l'authentification pop/imap  
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-23 11:50$
+ * Dernière modification : $Date: 2020-09-01 12:30$
  * @author    Laurent Delineau & JeromeB & Gilles Martin & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,7 +15,6 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-// cette page reste à internationaliser
 $grr_script_name = "admin_config_imap.php";
  
 include "../include/admin.inc.php";
@@ -49,7 +48,7 @@ if (isset($_POST['imap_statut']))
 	else
 	{
 		if (!Settings::set("imap_statut", $_POST['imap_statut']))
-			echo encode_message_utf8("Erreur lors de l'enregistrement de imap_statut !<br />");
+			echo encode_message_utf8($vocab['save_err']." imap_statut !<br />");
 		$grrSettings['imap_statut'] = $_POST['imap_statut'];
 	}
 }
@@ -72,7 +71,7 @@ start_page_w_header("", "", "", $type="with_session");
 include "admin_col_gauche2.php";
 // colonne de droite
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-echo encode_message_utf8("<h2>Configuration de l'authentification IMAP/POP"."</h2>");
+echo encode_message_utf8("<h2>".get_vocab('admin_config_imap_pop')."</h2>");
 if ($etape == 1)
 {
 	if (isset($_POST["Valider1"]))
@@ -90,18 +89,18 @@ if ($etape == 1)
 		{
 			$f = @fopen($nom_fic, "w+");
 			if (!$f)
-				$erreur = "Le fichier \"".$nom_fic."\" n'est pas accessible en écriture.<br />Vous devez modifier les permissions sur ce fichier puis recharger cette page.";
+				$erreur = get_vocab('the_file').' "'.$nom_fic.'" '.get_vocab('not_writable_and_reload');
 		}
 		else
 		{
 			$f = @fopen($nom_fic, "wb");
 			if (!$f)
 			{
-				$erreur = "Impossible de créer le fichier \"".$nom_fic."\".";
+				$erreur = get_vocab('cant_create')." \"".$nom_fic."\".";
 				if (@file_exists($nom_fic.".ori"))
-					$erreur .= "<br />Vous pouvez renommer manuellement le fichier \"".$nom_fic.".ori\" en \"".$nom_fic."\", et lui donner les droits suffisants.";
+					$erreur .= "<br />".get_vocab('renommer')." \"".$nom_fic.".ori\"".get_vocab('en')." \"".$nom_fic."\", ".get_vocab('donner_droits');
 				else
-					$erreur .= "<br />Vous devez modifier les droits sur le répertoire include.";
+					$erreur .= "<br />".get_vocab('modifier_droits');
 			}
 		}
 		if ($erreur == '')
@@ -125,10 +124,10 @@ if ($etape == 1)
 			$conn .= "?".">";
 			@fputs($f, $conn);
 			if (!@fclose($f))
-				$erreur="Impossible d'enregistrer le fichier \"".$nom_fic."\".";
+				$erreur=get_vocab('cant_record')." \"".$nom_fic."\".";
 		}
 		if ($erreur == '')
-			echo encode_message_utf8("<b><span style=\"color:green;\">Les donnees concernant l'accès a l'annuaire IMAP/POP sont maintenant enregistrées dans le fichier \"".$nom_fic."\".</span></b>");
+			echo encode_message_utf8("<b><span style=\"color:green;\">".get_vocab('imap_record_success')." \"".$nom_fic."\".</span></b>");
 		else
 			echo encode_message_utf8("<p><b><span style=\"color:red;\">".$erreur."</span></b></p>");
 		if ($erreur == '')
@@ -136,7 +135,7 @@ if ($etape == 1)
 			echo "<form action=\"admin_config_imap.php\" method=\"post\">";
 			echo "<input type=\"hidden\" name=\"etape\" value=\"0\" />";
 			echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" />";
-			echo "<div class='center'><input type=\"submit\" name=\"Valider\" value=\"Terminer\" /></div>";
+			echo "<div class='center'><input type=\"submit\" name=\"Valider\" value=\"".get_vocab('Terminer')."\" /></div>";
 			echo "</form>";
 		}
 	}
@@ -144,14 +143,14 @@ if ($etape == 1)
 		include("../include/config_imap.inc.php");
 	echo "<form action=\"admin_config_imap.php\" method=\"post\"><div>";
 	echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" />";
-	echo encode_message_utf8("<h3>Nom domaine IMAP/POP</h3>");
-	echo encode_message_utf8("<p>(Utilisé pour compléter l'adresse email)</p>");
+	echo encode_message_utf8("<h3>".get_vocab('nomDomaineImap')."</h3>");
+	echo encode_message_utf8("<p>".get_vocab('nomDomaineImapComm')."</p>");
 	echo "<input type=\"text\" name=\"imap_domaine\" value=\"$imap_domaine\" size=\"20\" />";
-	echo encode_message_utf8("<h3>Adresse Serveur IMAP/POP</h3>");
+	echo encode_message_utf8("<h3>".get_vocab('adresseServeurImap')."</h3>");
 	echo "<input type=\"text\" name=\"imap_adresse\" value=\"$imap_adresse\" size=\"20\" />";
-	echo encode_message_utf8("<h3>Numero de port</h3>* IMAP, port par défaut : 143<br />* IMAP sécurisé, port par défaut 993<br />* POP3, port par défaut 110<br />* POP3 sécurisé, port par défaut<br/>");
+	echo encode_message_utf8("<h3>".get_vocab('portNo')."</h3>* ".get_vocab('imapPort')."<br />* ".get_vocab('imapSPort')."<br />* ".get_vocab('pop3Port')."<br />* ".get_vocab('pop3SPort')."<br/>");
 	echo "<input type='text' name='imap_port' value=\"$imap_port\" size=\"20\" />";
-	echo encode_message_utf8("<h3>Options de connexion:</h3>");
+	echo encode_message_utf8("<h3>".get_vocab('optionsConnexion')."</h3>");
 	// Imap ou pop
 	echo "<select name=\"server_type\">";
 	echo "<option value=\"/imap\" ";
@@ -169,17 +168,17 @@ if ($etape == 1)
 	echo " <option value=\"\" ";
 	if ($imap_ssl == "")
 		echo "selected=\"selected\"";
-	echo ">Ne pas utiliser SSL</option>";
+	echo ">".get_vocab('noSSL')."</option>";
 	echo "<option value=\"/ssl\"";
 	if ($imap_ssl == "/ssl")
 		echo "selected=\"selected\"";
-	echo ">Utiliser SSL</option>";
+	echo ">".get_vocab('SSL')."</option>";
 	echo "</select>";
 	echo "<select name=\"server_cert\" >";
 	echo "<option value=\"\" ";
 	if ($imap_cert == "")
 		echo "selected=\"selected\"";
-	echo ">(non précisé)</option>";
+	echo ">(".get_vocab('non_precise').")</option>";
 	echo "<option value=\"/novalidate-cert\" ";
 	if ($imap_cert == "/novalidate-cert")
 		echo "selected=\"selected\"";
@@ -193,7 +192,7 @@ if ($etape == 1)
 	echo "<option value=\"\" ";
 	if ($imap_tls == "")
 		echo "selected=\"selected\"";
-	echo ">(non précisé)</option>";
+	echo ">(".get_vocab('non_precise').")</option>";
 	echo "<option value=\"/tls\" ";
 	if ($imap_tls == "/tls")
 		echo "selected=\"selected\"";
@@ -203,54 +202,54 @@ if ($etape == 1)
 		echo "selected=\"selected\"";
 	echo ">NO-TLS</option>";
 	echo "</select>";
-	echo "<div style=\"text-align:center;\"><input type=\"submit\" name=\"Valider1\" value=\"Enregistrer\" /></div>";
+	echo "<div style=\"text-align:center;\"><input type=\"submit\" name=\"Valider1\" value=\"".get_vocab('save')."\" /></div>";
 	echo "<input type=\"hidden\" name=\"etape\" value=\"1\" />";
 	echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" />";
 	echo "</div></form>";
-	echo "<h3>Remarques</h3>\n";
-	echo "<ul><li><b>SSL</b> : utilise Secure Socket Layer pour crypter la session</li>\n";
-	echo "<li><b>TLS</b> : force l'utilisation de start-TLS pour crypter la session et rejette les connexions aux serveurs qui ne le supportent pas.</li>\n";
-	echo "<li><b>validate-cert</b> : valide les certificats depuis le serveur TLS/SSL (c'est le comportement par défaut)</li>\n";
-	echo "<li><b>novalidate-cert</b> : ne pas valider les certificats depuis le serveur TLS/SSL, nécessaire si le serveur utilise des certificats auto-signés</li></ul>\n";
+	echo "<h3>".get_vocab('Remarques')."</h3>\n";
+	echo "<ul><li>".get_vocab('SSLexplain')."</li>\n";
+	echo "<li>".get_vocab('TLSexplain')."</li>\n";
+	echo "<li><b>validate-cert</b>".get_vocab('validate_cert_explain')."</li>\n";
+	echo "<li><b>novalidate-cert</b>".get_vocab('no_validate_cert_explain')."</li></ul>\n";
 
 }
 else if ($etape ==0)
 {
 	if (!(function_exists("imap_open")))
 	{
-		echo encode_message_utf8("<p class=\"avertissement\"><b>Attention </b> : les fonctions liées à l'authentification <b>IMAP/POP</b> ne sont pas activées sur votre serveur PHP.<br />La configuration IMAP/POP est donc actuellement impossible.</p></div></section></body></html>");
+		echo encode_message_utf8("<p class=\"avertissement\">".get_vocab('noImapOnPhp').get_vocab('imapImpossible')."</p></div></section></body></html>");
 		die();
 	}
 	if (Settings::get("imap_statut") != '')
 	{
 		echo "<form action=\"admin_config_imap.php\" method=\"post\"><div>";
 		echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" />";
-		echo encode_message_utf8("<h3>L'authentification IMAP/POP est activée.</h3>");
-		echo encode_message_utf8("<h3>Statut par défaut des utilisateurs importés: </h3>");
+		echo encode_message_utf8("<h3>".get_vocab('imapActive')."</h3>");
+		echo encode_message_utf8("<h3>".get_vocab('statutDefaut')."</h3>");
 		echo "<input type=\"radio\" name=\"imap_statut\" value=\"visiteur\" ";
 		if (Settings::get("imap_statut") == 'visiteur')
 			echo "checked=\"checked\" ";
-		echo "/>Visiteur<br />";
+		echo "/>".get_vocab('statut_visitor')."<br />";
 		echo "<input type=\"radio\" name=\"imap_statut\" value=\"utilisateur\" ";
 		if (Settings::get("imap_statut") == 'utilisateur')
 			echo "checked=\"checked\" ";
-		echo "/>Usager<br />";
-		echo "Ou bien <br />";
-		echo "<input type=\"radio\" name=\"imap_statut\" value=\"no_imap\" />".encode_message_utf8("Désactiver l'authentification IMAP/POP")."<br />";
-		echo "<div style=\"text-align:center;\"><input type=\"submit\" value=\"Valider\" /></div></div></form>";
+		echo "/>".get_vocab('statut_user')."<br />";
+		echo get_vocab('Ou_bien')." <br />";
+		echo "<input type=\"radio\" name=\"imap_statut\" value=\"no_imap\" />".encode_message_utf8(get_vocab('imapDesactiver'))."<br />";
+		echo "<div style=\"text-align:center;\"><input type=\"submit\" value=\"".get_vocab('OK')."\" /></div></div></form>";
 		if (@file_exists("../include/config_imap.inc.php"))
 		{
 			include("../include/config_imap.inc.php");
 			if (($imap_adresse != '') && ($imap_port != ''))
 			{
 				echo "<hr/>";
-				echo "<h3>Test de connexion:</h3>";
+				echo "<h3>".get_vocab('connexionTest')."</h3>";
 				echo "<form action=\"admin_config_imap.php\" method=\"post\"><div>";
-				echo encode_message_utf8("Nom d'utilisateur : ");
+				echo encode_message_utf8(get_vocab('userName'));
 				echo "<input type='text' name='imap_login' value=\"\" size=\"20\" /><br />";
-				echo encode_message_utf8("Mot de passe de l'utilisateur : ");
+				echo encode_message_utf8(get_vocab('userPwd'));
 				echo "<input type='password' name='imap_password' value=\"\" size=\"20\" />";
-				echo "<div style=\"text-align:center;\"><input type=\"submit\" name=\"Valider2\" value=\"Test\"  /></div>";
+				echo "<div style=\"text-align:center;\"><input type=\"submit\" name=\"Valider2\" value=\"".get_vocab('Test')."\"  /></div>";
 				echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" />";
 				echo "</div></form>";
 				if ((isset($_POST['Valider2'])) && $_POST['Valider2'] == "Test")
@@ -260,30 +259,30 @@ else if ($etape ==0)
 		echo "<hr/>";
 		if (@file_exists("../include/config_imap.inc.php"))
 		{
-			echo encode_message_utf8("<h3>Configuration actuelle</h3> (Informations contenues dans le fichier \"config_imap.inc.php\") :<br /><ul>");
-			echo encode_message_utf8("<li>Nom de domaine IMAP/POP <b>: ".$imap_domaine."</b></li>");
-			echo encode_message_utf8("<li>Adresse Serveur IMAP/POP <b>: ".$imap_adresse."</b></li>");
-			echo encode_message_utf8("<li>Port utilise : <b>".$imap_port."</b></li>");
+			echo encode_message_utf8("<h3>".get_vocab('configurationActuelle')."</h3> (".get_vocab('infosinFile')." \"config_imap.inc.php\") :<br /><ul>");
+			echo encode_message_utf8("<li>".get_vocab('nomDomaineImap')."<b>: ".$imap_domaine."</b></li>");
+			echo encode_message_utf8("<li>".get_vocab('adresseServeurImap')."<b> : ".$imap_adresse."</b></li>");
+			echo encode_message_utf8("<li>".get_vocab('portNo')."<b> : ".$imap_port."</b></li>");
 			if (($imap_type == "/imap") || ($imap_adresse != "" && $imap['port'] != "" && $imap['type'] == ""))
 				$use_type = "IMAP";
 			else if ($imap_type == "/pop3")
 				$use_type = "POP3";
 			else
-				$use_type = "(non précisé)";
+				$use_type = "(".get_vocab('non_precise').")";
 			echo encode_message_utf8("<li>type : <b>".$use_type."</b></li>");
 
 			if ($imap_ssl == "/ssl")
 				$use_ssl = "oui";
 			else
 				$use_ssl = "non";
-			echo encode_message_utf8("<li>Utiliser SSL : <b>".$use_ssl."</b></li>");
+			echo encode_message_utf8("<li>".get_vocab('SSL')." : <b>".$use_ssl."</b></li>");
 			if ($imap_cert == "/validate-cert")
 				$use_cert = "oui";
 			else if ($imap_cert == "/novalidate-cert")
 				$use_cert = "non";
 			else
-				$use_cert = "(non précisé)";
-			echo encode_message_utf8("<li>Utiliser Certificat : <b>".$use_cert."</b></li>");
+				$use_cert = "(".get_vocab('non_precise').")";
+			echo encode_message_utf8("<li>".get_vocab('useCert')."<b> : ".$use_cert."</b></li>");
 
 			if ($imap_tls == "/tls" && $imap['adresse'] != "" && $imap['port'] != "")
 				$use_tls = "oui";
@@ -291,26 +290,26 @@ else if ($etape ==0)
 				$use_tls = "non";
 			else
 				$use_tls = "(non précisé)";
-			echo encode_message_utf8("<li>Utiliser TLS : <b>".$use_tls."</b></li>");
-			echo encode_message_utf8("</ul>Vous pouvez proceder a une nouvelle configuration IMAP/POP.<br />");
+			echo encode_message_utf8("<li>".get_vocab('useTLS')."<b> : ".$use_tls."</b></li>");
+			echo encode_message_utf8("</ul>".get_vocab('newImapConfig')."<br />");
 		}
 		else
-			echo encode_message_utf8("<h3>L'accès a l'annuaire IMAP/POP n'est pas configuré.</h3><b>L'authentification IMAP/POP est donc pour le moment impossible.</b>");
+			echo encode_message_utf8("<h3>".get_vocab('imapNonConfigure')."</h3><b>".get_vocab('imapImpossible')."</b>");
 		echo "<form action=\"admin_config_imap.php\" method=\"post\"><div>";
 		echo "<input type=\"hidden\" name=\"etape\" value=\"1\" />";
 		echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" />";
-		echo "<div style=\"text-align:center;\"><input type=\"submit\" value=\"Configurer IMAP/POP\" /></div></div></form>";
+		echo "<div style=\"text-align:center;\"><input type=\"submit\" value=\"".get_vocab('configureImap')."\" /></div></div></form>";
 	}
 	else
 	{
-		echo encode_message_utf8("<h3>L'authentification IMAP/POP n'est pas activée.</h3>");
-		echo encode_message_utf8("<b>L'authentification IMAP/POP est donc pour le moment impossible</b>. Activez l'authentification IMAP/POP en choisissant le statut qui sera attribué aux personnes présentes dans l'annuaire IMAP/POP lorsqu'elles se connectent pour la première fois. Vous pourrez par la suite modifier cette valeur pour chaque utilisateur.<br />");
+		echo encode_message_utf8("<h3>".get_vocab('imapInactive')."</h3>");
+		echo encode_message_utf8("<b>".get_vocab('imapImpossible')."</b> ".get_vocab('imapActiverExplain')."<br />");
 		echo "<form action=\"admin_config_imap.php\" method=\"post\"><div>\n";
-		echo "<input type=\"radio\" name=\"imap_statut\" value=\"visiteur\" />Visiteur<br />\n";
-		echo "<input type=\"radio\" name=\"imap_statut\" value=\"utilisateur\" />Usager<br />\n";
-		echo "<input type=\"radio\" name=\"imap_statut\" value=\"no_imap\" checked=\"checked\" />Ne pas activer<br />\n";
+		echo "<input type=\"radio\" name=\"imap_statut\" value=\"visiteur\" />".get_vocab('statut_visitor')."<br />\n";
+		echo "<input type=\"radio\" name=\"imap_statut\" value=\"utilisateur\" />".get_vocab('statut_user')."<br />\n";
+		echo "<input type=\"radio\" name=\"imap_statut\" value=\"no_imap\" checked=\"checked\" />".get_vocab('nonActive')."<br />\n";
 		echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" />\n";
-		echo "<div style=\"text-align:center;\"><input type=\"submit\" name=\"Valider2\" value=\"Valider\"  /></div>\n";
+		echo "<div style=\"text-align:center;\"><input type=\"submit\" name=\"Valider2\" value=\"".get_vocab('OK')."\"  /></div>\n";
 		echo "</div></form>";
 	}
 }
