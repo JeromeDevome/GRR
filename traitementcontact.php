@@ -3,7 +3,7 @@
  * traitementcontact.php
  * envoie l'email suite au formulaire
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-07-09 18:40$
+ * Dernière modification : $Date: 2020-10-01 10:55$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -25,12 +25,12 @@ include "include/$dbsys.inc.php";
 include "include/mrbs_sql.inc.php";
 include "include/language.inc.php";
 include "phpmailer/class.phpmailer.php";
-//print_r($_POST);
+
 // Settings
 require_once("./include/settings.class.php");
 if (!Settings::load())
 	die("Erreur chargement settings");
-// $link = page_accueil();
+
 // contrôle d'accès 
 if (!acces_formulaire_reservation()){
     start_page_w_header('','','','no_session');
@@ -88,7 +88,7 @@ else {// les paramètres sont vérifiés, le créneau demandé est-il libre ?
         $entry_id = mrbsCreateSingleEntry($starttime, $endtime, -1, 0, $input['room'], '', '', $benef_ext, $input['nom'].' '.$input['prenom'], 'A', $input['sujet'], -1,array(), 1, 0, '-', 0, 0);
         if ($entry_id != 0){ // l'insertion a réussi
             $message = "réservation posée sous réserve";
-            // on envoie un message pour averir de la demande
+            // on envoie un message pour avertir de la demande
             $DE = $input['email']; // a été filtrée
 
             $mail_corps  = "<html><head></head><body> Message de :" .$input['prenom']." " .$input['nom'] . "<br/>";
@@ -125,8 +125,12 @@ else {// les paramètres sont vérifiés, le créneau demandé est-il libre ?
 			$mail_corps .= "\n".traite_grr_url("","y")."validation.php?id=".$entry_id;
             $mail_corps .= "</body></html>";
             $sujet ="Réservation d'une salle";
-            $destinataire = Settings::get("mail_destinataire");
-
+            $destinataire = "";
+            $tab_emails = find_active_user_room($_POST['room']);
+            foreach ($tab_emails as $value)
+            {
+                $destinataire .= $value.";";
+            }
             require_once 'phpmailer/PHPMailerAutoload.php';
             require_once 'include/mail.class.php';
 
