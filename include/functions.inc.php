@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-07-09 18:40$
+ * Dernière modification : $Date: 2020-10-01 14:49$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -3854,7 +3854,7 @@ function MajMysqlModeDemo() {
 			fclose($fd);
 			if (!Settings::set("date_verify_demo", $date_now))
 			{
-				echo "Erreur lors de l'enregistrement de date_verify_demo !<br />";
+				echo $vocab['save_err']." date_verify_demo !<br />";
 				die();
 			}
 		}
@@ -4159,7 +4159,7 @@ function verify_confirm_reservation()
 		}
 		if (!Settings::set("date_verify_reservation", $date_now))
 		{
-			echo "Erreur lors de l'enregistrement de date_verify_reservation !<br />";
+			echo $vocab['save_err']." date_verify_reservation !<br />";
 			die();
 		}
 	}
@@ -4201,7 +4201,7 @@ function verify_retard_reservation()
 		}
 		if (!Settings::set("date_verify_reservation2", $date_now))
 		{
-			echo "Erreur lors de l'enregistrement de date_verify_reservation2 !<br />";
+			echo $vocab['save_err']." date_verify_reservation2 !<br />";
 			die();
 		}
 	}
@@ -5481,8 +5481,8 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<script type="text/javascript" src="../js/select2_locale_fr.js"></script>'.PHP_EOL;
 		//if (isset($use_tooltip_js))
 			//echo '<script type="text/javascript" src="../js/tooltip.js"></script>'.PHP_EOL;
-		if (!isset($_SESSION['selection']))
-			$a .= '<script type="text/javascript" src="../js/selection.js" ></script>'.PHP_EOL;
+		//if (!isset($_SESSION['selection']))
+			// $a .= '<script type="text/javascript" src="../js/selection.js" ></script>'.PHP_EOL;
 		if (@file_exists('js/'.$clock_file))
 			$a .= '<script type="text/javascript" src="../js/'.$clock_file.'"></script>'.PHP_EOL;
         $a .= '<script type="text/javascript" src="../js/jscolor.js"></script>';
@@ -5534,8 +5534,8 @@ function pageHead2($title, $page = "with_session")
 		}
 		//if (isset($use_tooltip_js))
 			//echo '<script type="text/javascript" src="./js/tooltip.js"></script>'.PHP_EOL;
-		if (!isset($_SESSION['selection']))
-			$a .= '<script type="text/javascript" src="js/selection.js" ></script>'.PHP_EOL;
+		//if (!isset($_SESSION['selection']))
+			//$a .= '<script type="text/javascript" src="js/selection.js" ></script>'.PHP_EOL;
 		if (@file_exists('js/'.$clock_file))
 			$a .= '<script type="text/javascript" src="js/'.$clock_file.'"></script>'.PHP_EOL;
 		if (substr(phpversion(), 0, 1) == 3)
@@ -5833,11 +5833,13 @@ function clean_input($data){
 
 /* fonction acces_formulaire_reservation
 * détermine si le quota de réservations par formulaire non modérées est atteint
-* rend TRUE ou FALSE (y compris si l'accès à la base est impossible)
+* rend TRUE si le formulaire est accessible ou FALSE (y compris si l'accès à la base est impossible)
 */
 function acces_formulaire_reservation(){
-    if (!Settings::get('nb_max_resa_form'))
+    if (null == Settings::get('nb_max_resa_form'))
         return FALSE;
+    elseif (Settings::get('nb_max_resa_form') == '-1')
+        return TRUE;
     else {
         $quota = grr_sql_query1("SELECT COUNT(*) FROM ".TABLE_PREFIX."_entry WHERE (entry_type = -1 AND moderate = 1)");
         // echo $quota;
