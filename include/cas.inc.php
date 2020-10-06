@@ -63,6 +63,7 @@ Commentez la ligne suivante si vous avez une erreur du type
 PHP Fatal error:  Call to undefined method phpCAS::handlelogoutrequests() in /var/www/html/grr/include/cas.inc.php
 */
 phpCAS::handleLogoutRequests(false);
+
 if (phpCAS::checkAuthentication())
 {
 	// L'utilisateur est déjà authentifié, on continue

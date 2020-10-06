@@ -65,6 +65,13 @@ Sous-version 3.4.1b
 Sous-version 3.4.1c
     [correction] failles de sécurité dans formulaire de contact et gestion des ressources
     [correction] divers bugs, erreurs de syntaxe ou orthographiques
+Sous-version 3.4.1d
+    [ajout] mail au modérateur en cas de suppression
+    [correction] filtrage amélioré des données
+    [correction] dans view_entry, le formulaire est affiché seulement pour les utilisateurs autorisés
+    [correction] syntaxe php et html
+    [correction] visibilité du bouton toTop
+    [mises à jour] ckeditor v.4.14, phpCAS V.1.38, phpmailer v.5.2.28, floatThead v.2.1.4, vacances.xml
 -----
 --
 -----

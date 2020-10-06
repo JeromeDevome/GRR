@@ -27,7 +27,7 @@ Pré-requis
 Pour installer et faire fonctionner GRR, vous avez besoin de :
 -> Un serveur web/php et un serveur mysql (éventuellement sur la même
 machine)
--> Nécessité de disposer d'une version de php version supérieure ou égale à 5.4.0 (gestion des variables de type $_SESSION, fonction mysql_real_escape_string(),  ...)
+-> Nécessité de disposer d'une version de php version supérieure ou égale à 5.6.0 (gestion des variables de type $_SESSION, fonction mysql_real_escape_string(),  ...)
 
 ************************************************
 Installation - Etape 1 : Configuration de GRR
@@ -113,7 +113,7 @@ Procédure de mise à jour, depuis GRR 1.9.7e, voir plus bas
 Il n'y a pas de procédure de mise à jour automatique de l'ensemble logiciel GRR.
 Par sécurité, avant de mettre les scripts à jour, faites une sauvegarde de la base de données, puis de l'ensemble de l'arborescence de GRR.
 Téléchargez sur votre serveur les scripts de la nouvelle version de GRR.
-Recopiez les fichiers de configuration (/include/config.inc.php, /include/connect.inc.php et - éventuellement - /include/config_ldap.inc.php) et le fichier de style des types de réservation (/themes/default/css/types).
+Recopiez les fichiers de configuration (/include/config.inc.php, /include/connect.inc.php et - éventuellement - /include/config_ldap.inc.php) et le fichier de style des types de réservation (/themes/default/css/types.css).
 Vérifiez les droits en écriture sur les fichiers et le dossier indiqués à l'étape 2.
 Connectez-vous à GRR avec un compte administrateur. Si vous avez fait une montée de version, GRR demandera une mise à jour de la base de données. Faites-la puis connectez-vous. Vous devriez avoir de nouveau GRR opérationnel.
 
@@ -122,8 +122,8 @@ Pour mettre à jour depuis GRR 1.9.7e ou antérieur, voici les étapes recommandées
 - éventuellement vider la table de connexions (grr_log)
 - refaire une sauvegarde depuis GRR 1.9.7e
 - déplacer les scripts de GRR197 à titre de sauvegarde
-- installer les scripts de GRR 3.4.1 dans un dossier vide
-- initialiser GRR 3.4.1
+- installer les scripts de GRR 3.4.2 dans un dossier vide
+- initialiser GRR 3.4.2
 - convertir le fichier de sauvegarde GRR197 à l'encodage UTF-8 (sans BOM) pour convertir les accents
 - restaurer la sauvegarde faite avec GRR 1.9.7e.
 Vous devriez avoir de nouveau GRR opérationnel.

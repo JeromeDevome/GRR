@@ -94,7 +94,7 @@ require_once("./include/session.inc.php");
 require_once("./include/settings.class.php");
 //Chargement des valeurs de la table settingS
 if (!Settings::load())
-	die("Erreur chargement settings");
+	die(get_vocab('error_settings_load'));
 $cook = session_get_cookie_params();
 // Cas d'une authentification CAS
 if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
@@ -499,6 +499,77 @@ else if ((Settings::get('sso_statut') == 'http_visiteur') || (Settings::get('sso
 	{
 		header("Location: ".htmlspecialchars_decode(page_accueil())."");
 	}
+}
+// Cas d'une authentification sur une base Joomla!
+else if (Settings::get('sso_statut') == 'joomla')
+{
+    //echo "506 : ".session_id();
+	require_once("./include/joomla.inc.php");
+    require("./include/joomla_form.php"); // on revient ici avec identifiant, email, nom et groupes joomla
+    $login = $username;
+    $password = '';
+    //$user_ext_authentifie = 'joomla';
+    $joomla_tab_login = array();
+    if (!isset($user_name))
+		$user_name='';
+	$joomla_tab_login["user_nom"] = $user_name;
+    if (!isset($user_email))
+		$user_email='';
+	$joomla_tab_login["user_email"] = $user_email;
+    /*echo "User with name ".$user_name." email ".$user_email." and id ".$login." belongs to these groups ";
+    print_r($user_groups);print_r($joomla2grr_admin_access_levels);
+    echo "<br />";
+    print_r(array_intersect($user_groups,$joomla2grr_admin_access_levels));
+    die();*/
+    if (!empty(array_intersect($user_groups,$joomla2grr_admin_access_levels))){// droits d'administrateur
+        $user_ext_authentifie = 'joomla_admin';
+    }
+    elseif (!empty(array_intersect($user_groups,$joomla2grr_user_access_levels))){// droits d'utilisateur
+        $user_ext_authentifie = 'joomla_user';
+    }
+    else $user_ext_authentifie = 'joomla_visitor';
+    //echo "531 : ".$user_ext_authentifie;
+    $result = grr_opensession($login,$password,$user_ext_authentifie,$joomla_tab_login);
+    //echo $result;
+    session_write_close();
+	$message = '';
+	if ($result == "2")
+	{
+		$message = get_vocab("echec_connexion_GRR");
+		$message .= " ".get_vocab("wrong_pwd");
+	}
+	else if ($result == "3")
+	{
+		$message = get_vocab("echec_connexion_GRR");
+		$message .= "<br />". get_vocab("importation_impossible");
+	}
+    else if ($result != "1")
+	{
+		$message = get_vocab("echec_connexion_GRR");
+		$message .= "<br />Cause inconnue.";
+	}
+	if ($message != '')
+	{
+		echo $message;
+		die();
+	}
+    //echo "<br /> 556 : ".$result;
+    //echo "<br />".session_id(); // les session_id() donnent la même valeur
+    //print_r($_SESSION);
+    //die();
+	if (grr_resumeSession())
+    {
+        //echo "reprise de la session"; // on arrive bien ici lors de la création d'une nouvelle session
+        //echo "563 : ".session_id()."<br />";
+        //print_r($_SESSION);
+		header("Location: ".htmlspecialchars_decode(page_accueil())."");
+        //die();
+    }
+    else {
+        echo "échec de la reprise";
+        print_r($_SESSION);
+        die();
+    }
 }
 else
 {

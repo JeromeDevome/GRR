@@ -324,7 +324,6 @@ $racineAd = "./admin/";
 // pour le traitement des modules
 include "./include/hook.class.php";
 // début du code html ici, sinon le javascript provoque une erreur "header already sent by"
-//print_header($day, $month, $year, $type="with_session");
 header('Content-Type: text/html; charset=utf-8');
 if (!isset($_COOKIE['open']))
 {

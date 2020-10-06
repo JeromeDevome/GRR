@@ -3,7 +3,7 @@
  * admin_config1.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2020-10-01 12:00$
+ * Dernière modification : $Date: 2020-10-01 14:20$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1064,7 +1064,7 @@ echo '</td><td>'.PHP_EOL;
 echo '<input type="number" name="nb_max_resa_form" value="'.Settings::get('nb_max_resa_form').'" size="5" min="-1" />'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;
 echo '</table>'.PHP_EOL;
-// modification du formulaire de choix, reste à internationaliser
+// modification du formulaire de choix
 echo '<section id="display_planning_resa">';
 echo '<h3>'.get_vocab('display_planning_resa').'</h3>';
 echo '	<table class="table table-condensed">';

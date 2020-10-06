@@ -3,7 +3,7 @@
  * frmcontactlist.php
  * calcule la liste des ressources visibles dans un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-06 18:34$
+ * Dernière modification : $Date: 2020-09-30 18:00$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
