@@ -3,7 +3,7 @@
  * validation.php
  * Interface de validation d'une réservation modérée
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-05 18:33$
+ * Dernière modification : $Date: 2020-10-14 15:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -176,7 +176,7 @@ if (isset($_GET['id'])) // appel initial
 				$affiche_champ = TRUE;
 			else
 			{
-				if (($fin_session != 'n') || ($user==''))
+				if ($user=='')
 					$affiche_champ = FALSE;
 				else
 				{
@@ -213,7 +213,7 @@ if (isset($_GET['id'])) // appel initial
 			if ($type_name == -1)
 				$type_name = "?$type?";
 		echo '<td>',$type_name,'</td>',PHP_EOL,'</tr>',PHP_EOL;
-		if ($beneficiaire != $create_by)
+		if (($beneficiaire != $create_by)||($beneficiaire_ext != ''))
 		{
 			echo '<tr>';
 			echo '	<td><b>'.get_vocab("reservation_au_nom_de"),get_vocab("deux_points").'</b></td>';
@@ -223,18 +223,18 @@ if (isset($_GET['id'])) // appel initial
 		echo '	<tr>';
 		echo '		<td><b>'.get_vocab("created_by"),get_vocab("deux_points").'</b></td>';
 		echo '		<td>'.affiche_nom_prenom_email($create_by, "", $option_affiche_nom_prenom_email);
-			if ($active_ressource_empruntee == 'y')
-			{
-				$id_resa_en_cours = grr_sql_query1("SELECT id from ".TABLE_PREFIX."_entry where room_id = '".$room_id."' and statut_entry='y'");
-				if ($id_resa ==$id_resa_en_cours)
-				echo '<span class="avertissement">(',get_vocab("reservation_en_cours"),') <img src="img_grr/buzy_big.png" align=middle alt="',get_vocab("ressource actuellement empruntee"),'" title="',get_vocab("ressource actuellement empruntee"),'" border="0" width="30" height="30" class="print_image" /></span>',PHP_EOL;
-			}
 		echo '		</td>';
 		echo '	</tr>';
 		echo '	<tr>';
 		echo '		<td><b>'.get_vocab("lastupdate"),get_vocab("deux_points").'</b></td>';
 		echo '		<td>'.$updated.'</td>';
 		echo '	</tr>';
+        if ($active_ressource_empruntee == 'y')
+			{
+				$id_resa_en_cours = grr_sql_query1("SELECT id from ".TABLE_PREFIX."_entry where room_id = '".$room_id."' and statut_entry='y'");
+				if ($id_resa ==$id_resa_en_cours)
+                    echo '<tr><td><span class="avertissement">(',get_vocab("reservation_en_cours"),') <img src="img_grr/buzy_big.png" align=middle alt="',get_vocab("ressource actuellement empruntee"),'" title="',get_vocab("ressource actuellement empruntee"),'" border="0" width="30" height="30" class="print_image" /></span></td></tr>',PHP_EOL;
+			}
 		if ($keys == 1)
 		{
 			echo '<tr>';
@@ -497,7 +497,7 @@ if (isset($_GET['id'])) // appel initial
 }
 elseif (isset($_POST['commit'])&& isset($_POST['action_moderate']))// deuxième appel au script pour validation
 {
-	print_r($_POST);
+	//print_r($_POST);
 	$id_resa = htmlspecialchars($_POST['id']);
 	settype($id_resa,"integer");
 	moderate_entry_do($id_resa,$_POST["moderate"], $_POST["description"]);
