@@ -3,9 +3,9 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-10-10 10:10$
- * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2020-10-20 14:30$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -90,6 +90,8 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 					//  On détecte si Nom, Prénom ou Email ont changé,
 					// Si c'est le cas, on met à jour les champs
 					$req = grr_sql_query("SELECT nom, prenom, email from ".TABLE_PREFIX."_utilisateurs where login ='".protect_data_sql($_login)."'");
+                    if (!$req)
+                        fatal_error(0, "erreur de lecture dans la base de données".grr_sql_error());
 					$res = mysqli_fetch_array($req);
 					$nom_en_base = $res[0];
 					$prenom_en_base = $res[1];
@@ -791,7 +793,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 function grr_resumeSession()
 {
 		// Resuming session
-	session_name(SESSION_NAME);
+	@session_name(SESSION_NAME); // palliatif aux changements introduits dans php 7.2
 	@session_start();
 
 		// La session est-elle expirée
@@ -852,7 +854,7 @@ function grr_closeSession(&$_auto)
 	$_SESSION = array();
 		// Détruit le cookie sur le navigateur
 	$CookieInfo = session_get_cookie_params();
-	@setcookie(session_name(), '', time()-3600, $CookieInfo['path']);
+	@setcookie(session_name(), '', 1, $CookieInfo['path']);
 		// On détruit la session
 	session_destroy();
 }
@@ -913,7 +915,14 @@ function grr_verif_ldap($_login, $_password)
 }
 function grr_connect_ldap($l_adresse,$l_port,$l_login,$l_pwd, $use_tls, $msg_error = "no")
 {
-	$ds = @ldap_connect($l_adresse, $l_port);
+/* Daniel Antelme
+Obsolete function signature and it doesn't allow to use LDAPS
+//      $ds = @ldap_connect($l_adresse, $l_port);
+*/
+      $l_uri_port = $l_port != "" ? $l_adresse.":".$l_port : $l_adresse;
+      $ds = @ldap_connect($l_uri_port);
+      
+
 	if ($ds)
 	{
 			 // On dit qu'on utilise LDAP V3, sinon la V2 par défaut est utilisé et le bind ne passe pas.
@@ -1107,53 +1116,44 @@ function grr_connect_imap($i_adresse,$i_port,$i_login,$i_pwd,$use_type,$use_ssl,
 }
 function grr_getinfo_ldap($_dn, $_login, $_password)
 {
-	// Lire les infos sur l'utilisateur depuis LDAP
-	include "config_ldap.inc.php";
-	// Connexion à l'annuaire
-	$ds = grr_connect_ldap($ldap_adresse,$ldap_port,$ldap_login,$ldap_pwd,$use_tls);
-	// Test with login and password of the user
-	if (!$ds)
-	{
-		$ds = grr_connect_ldap($ldap_adresse,$ldap_port,$_login,$_password,$use_tls);
-	}
-	if ($ds)
-	{
-		$result = @ldap_read($ds, $_dn, "objectClass=*", array(Settings::get("ldap_champ_nom"),Settings::get("ldap_champ_prenom"),Settings::get("ldap_champ_email")));
-	}
-	if (!$result)
-		return "2";
-	// Recuperer les donnees de l'utilisateur
-	$info = @ldap_get_entries($ds, $result);
-	if (!is_array($info))
-		return "2";
-	for ($i = 0; $i < $info["count"]; $i++)
-	{
-		$val = $info[$i];
-		if (is_array($val))
-		{
-			if (isset($val[Settings::get("ldap_champ_nom")][0]))
-				$l_nom = ucfirst($val[Settings::get("ldap_champ_nom")][0]);
-			else
-				$l_nom = iconv("ISO-8859-1","utf-8","Nom à préciser");
-			if (isset($val[Settings::get("ldap_champ_prenom")][0]))
-				$l_prenom = ucfirst($val[Settings::get("ldap_champ_prenom")][0]);
-			else
-				$l_prenom = iconv("ISO-8859-1","utf-8","Prénom à préciser");
-			if (isset($val[Settings::get("ldap_champ_email")][0]))
-				$l_email = $val[Settings::get("ldap_champ_email")][0];
-			else
-				$l_email = '';
-		}
-	}
-	// Convertir depuis UTF-8 (jeu de caracteres par defaut)
-	if ((function_exists("utf8_decode")) and (Settings::get("ConvertLdapUtf8toIso") == "y"))
-	{
-		$l_email = utf8_decode($l_email);
-		$l_nom = utf8_decode($l_nom);
-		$l_prenom = utf8_decode($l_prenom);
-	}
-	// Return infos
-	return array($l_nom, $l_prenom, $l_email);
+    // Lire les infos sur l'utilisateur depuis LDAP
+    include "config_ldap.inc.php";
+    // Connexion à l'annuaire
+    $ds = grr_connect_ldap($ldap_adresse,$ldap_port,$ldap_login,$ldap_pwd,$use_tls);
+    // Test with login and password of the user
+    if (!$ds)
+    {
+        $ds = grr_connect_ldap($ldap_adresse,$ldap_port,$_login,$_password,$use_tls);
+    }
+    if ($ds)
+    {
+        $result = @ldap_read($ds, $_dn, "objectClass=*", array(Settings::get("ldap_champ_nom"),Settings::get("ldap_champ_prenom"),Settings::get("ldap_champ_email")));
+    }
+    if (!$result)
+        return "2";
+    // Recuperer les donnees de l'utilisateur
+    $info = @ldap_get_entries($ds, $result);
+    if (!is_array($info))
+        return "2";
+    for ($i = 0; $i < $info["count"]; $i++)
+    {
+        $val = $info[$i];
+        if (is_array($val))
+        {
+            $l_nom =    (isset($val[strtolower(Settings::get("ldap_champ_nom"))][0]))   ? ucfirst($val[strtolower(Settings::get("ldap_champ_nom"))][0]) : "Nom à préciser";
+            $l_prenom = (isset($val[strtolower(Settings::get("ldap_champ_prenom"))][0]))? ucfirst($val[strtolower(Settings::get("ldap_champ_prenom"))][0]) : "Prénom à préciser";
+            $l_email =  (isset($val[strtolower(Settings::get("ldap_champ_email"))][0])) ? $val[strtolower(Settings::get("ldap_champ_email"))][0] : '';
+        }
+    }
+    // Convertir depuis UTF-8 (jeu de caracteres par defaut)
+    if ((function_exists("utf8_decode")) and (Settings::get("ConvertLdapUtf8toIso") == "y"))
+    {
+            $l_email = utf8_decode($l_email);
+            $l_nom = utf8_decode($l_nom);
+            $l_prenom = utf8_decode($l_prenom);
+    }
+    // Return infos
+    return array($l_nom, $l_prenom, $l_email);
 }
 // On fabrique l'url
 $url = rawurlencode(str_replace('&amp;','&',get_request_uri()));
