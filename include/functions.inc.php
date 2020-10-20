@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-10-14 15:50$
+ * Dernière modification : $Date: 2020-10-16 10:50$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4556,8 +4556,9 @@ function affichage_champ_add_mails($id_resa)
 /*
 Construit les informations à afficher sur les plannings
 $vue = 1 pour une ressource / 2 vue multiple ressource
+$ofl = overload fields list, ne dépend que du domaine, donc est constant dans la boucle d'affichage
 */
-function affichage_resa_planning_complet($vue, $resa, $heures)
+function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 {
 	global $dformat;
 
@@ -4566,7 +4567,7 @@ function affichage_resa_planning_complet($vue, $resa, $heures)
 	// Heures ou crénaux + symboles <== ==>
 	$affichage .= $heures;
 
-	// Ressource seulement dans les vues global
+	// Ressource seulement dans les vues globales
 	if($vue == 2)
 		$affichage .= "<br>".$resa[15];
 
@@ -4577,7 +4578,7 @@ function affichage_resa_planning_complet($vue, $resa, $heures)
 	// Type
 	if (Settings::get("display_type") == 1)
 	{
-		$typeResa = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area,".TABLE_PREFIX."_entry  WHERE  ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter  AND ".TABLE_PREFIX."_entry.id = '".$resa[2]."';");
+        $typeResa = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area JOIN ".TABLE_PREFIX."_entry ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter WHERE ".TABLE_PREFIX."_entry.id = '".$resa[2]."';");
 		if ($typeResa != -1)
 			$affichage .= "<br>".$typeResa;
 	}
@@ -4592,12 +4593,13 @@ function affichage_resa_planning_complet($vue, $resa, $heures)
 	if (Settings::get("display_full_description") == 1)
 		$affichage .= "<br>".htmlspecialchars($resa[8],ENT_NOQUOTES);
 
-	// Champs Additionnel
+	// Champs Additionnels
     // la ressource associée à la réservation :
-	$res = mrbsGetEntryInfo($resa[2]);
-	$room = (!$res) ? -1 : $res["room_id"]; 
+	//$res = mrbsGetEntryInfo($resa[2]);
+	//$room = (!$res) ? -1 : $res["room_id"]; 
+    $room = $resa[5];
 	// Les champs add :
-	$overload_data = mrbsEntryGetOverloadDesc($resa[2]);
+	$overload_data = grrGetOverloadDescArray($ofl, $resa[16]);//mrbsEntryGetOverloadDesc($resa[2]);
 	foreach ($overload_data as $fieldname=>$field)
 	{
 		if (( (authGetUserLevel(getUserName(), $room) >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "")
@@ -5632,8 +5634,8 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 					echo '</div>'.PHP_EOL;
 				}
 			}
-			if ($type_session != "with_session")
-				echo '<script>selection()</script>'.PHP_EOL;
+			//if ($type_session != "with_session")
+			//	echo '<script>selection()</script>'.PHP_EOL;
 			echo '<div class="configuration" >'.PHP_EOL;
 			if (@file_exists('js/'.$clock_file))
 			{
@@ -5841,6 +5843,88 @@ function acces_formulaire_reservation(){
         else 
             return ((Settings::get('nb_max_resa_form') - $quota) > 0);
     }
+}
+/** grrGetOverloadDescArray($od)
+ *
+ * Return an array with all additionnal fields from grr_entry.overload_desc
+ * $od - overload_desc of the entry
+ * $ofl - overload fields list (depends on the area)
+ *
+ */
+function grrGetOverloadDescArray($ofl,$od)
+{
+	$overload_array = array();
+    foreach ($ofl as $field=>$fieldtype)
+    {
+        $begin_string = "@".$ofl[$field]["id"]."@";
+        $end_string = "@/".$ofl[$field]["id"]."@";
+        $l1 = strlen($begin_string);
+        $l2 = strlen($end_string);
+        $chaine = $od;
+        $balise_fermante = 'n';
+        $balise_ouvrante = 'n';
+        $traitement1 = true;
+        $traitement2 = true;
+        while (($traitement1 !== false) || ($traitement2 !== false))
+        {
+            // le premier traitement cherche la prochaine occurrence de $begin_string et retourne la portion de chaine après cette occurrence
+            if ($traitement1 != false)
+            {
+                $chaine1 = strstr ($chaine, $begin_string);
+                // retourne la sous-chaîne de $chaine, allant de la première occurrence de $begin_string jusqu'à la fin de la chaîne.
+                if ($chaine1 !== false)
+                {
+                    // on a trouvé une occurrence de $begin_string
+                    $balise_ouvrante = 'y';
+                    // on sait qu'il y a au moins une balise ouvrante
+                    $chaine = substr($chaine1, $l1, strlen($chaine1)- $l1);
+                    // on retourne la chaine en ayant éliminé le début de chaine correspondant à $begin_string
+                    $result = $chaine;
+                    // On mémorise la valeur précédente
+                }
+                else
+                    $traitement1 = false;
+            }
+            //le 2ème traitement cherche la dernière occurrence de $end_string en partant de la fin et retourne la portion de chaine avant cette occurrence
+            if ($traitement2 != false)
+            {
+                //La boucle suivante a pour effet de déterminer la dernière occurrence de $end_string
+                $ind = 0;
+                $end_pos = true;
+                while ($end_pos !== false)
+                {
+                    $end_pos = strpos($chaine,$end_string,$ind);
+                    if ($end_pos !== false)
+                    {
+                        $balise_fermante='y';
+                        $ind_old = $end_pos;
+                        $ind = $end_pos + $l2;
+                    }
+                    else
+                        break;
+                }
+                //a ce niveau, $ind_old est la dernière occurrence de $end_string trouvée dans $chaine
+                if ($ind != 0 )
+                {
+                    $chaine = substr($chaine,0,$ind_old);
+                    $result = $chaine;
+                }
+                else
+                    $traitement2=false;
+            }
+        }
+        // while
+        if (($balise_fermante == 'n' ) || ($balise_ouvrante == 'n'))
+            $overload_array[$field]["valeur"]='';
+        else
+            $overload_array[$field]["valeur"]=urldecode($result);
+        $overload_array[$field]["id"] = $ofl[$field]["id"];
+        $overload_array[$field]["affichage"] = grr_sql_query1("SELECT affichage FROM ".TABLE_PREFIX."_overload WHERE id = '".$ofl[$field]["id"]."'");
+        $overload_array[$field]["overload_mail"] = grr_sql_query1("SELECT overload_mail FROM ".TABLE_PREFIX."_overload WHERE id = '".$ofl[$field]["id"]."'");
+        $overload_array[$field]["obligatoire"] = grr_sql_query1("SELECT obligatoire FROM ".TABLE_PREFIX."_overload WHERE id = '".$ofl[$field]["id"]."'");
+        $overload_array[$field]["confidentiel"] = grr_sql_query1("SELECT confidentiel FROM ".TABLE_PREFIX."_overload WHERE id = '".$ofl[$field]["id"]."'");
+    }
+    return $overload_array;
 }
 
 // Les lignes suivantes permettent la compatibilité de GRR avec la variable register_global à off

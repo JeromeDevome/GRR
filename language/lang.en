@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2020-10-01
+# Last modification : 2020-10-25
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1287,4 +1287,6 @@ $vocab['errTempLogo'] = "Error while saving the logo! (deletion of the temporary
 $vocab['errInvalidFile'] = "The image could not be saved: the selected image file is not valid!";
 $vocab['Display'] = "Display";
 $vocab['dontDisplay'] = "Don't display";
+$vocab['From_'] = "From ";
+$vocab['voir_resa'] = "See the booking";
 ?>
