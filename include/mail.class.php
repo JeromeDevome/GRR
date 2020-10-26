@@ -3,7 +3,7 @@
  * include/mail.class.php
  * fichier de définition d'une classe de traitement des e-mails
  * fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-08 11:10$
+ * Dernière modification : $Date: 2020-10-16 09:53$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -43,7 +43,12 @@ class Email{
 			$mail->Host = $smtp1;
 			$mail->Username = $username;
 			$mail->Password = $password;
-			$mail->SMTPSecure = $smtpsecure;	// Enable TLS encryption, `ssl` also accepted
+            if ($smtpsecure != '')
+                $mail->SMTPSecure = $smtpsecure;	// Enable TLS encryption, `ssl` also accepted
+            else {
+                $mail->SMTPSecure = false;
+                $mail->SMTPAutoTLS = false; // évite l'envoi en SMTPS par défaut
+            }
 			$mail->Port = $port;
 
 			if (Settings::get('grr_mail_Username') != "") {
