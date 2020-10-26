@@ -3,7 +3,7 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-10-26 15:33$
+ * Dernière modification : $Date: 2020-10-26 18:26$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -293,7 +293,7 @@ else
 					break;
 				$day_num++;
 				$t = $midnight = $midnight_tonight;
-		}
+            }
 		}
 	}
 }
