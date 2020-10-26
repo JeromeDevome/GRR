@@ -3,7 +3,7 @@
  * month_all.php
  * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-29 12:10$
+ * Dernière modification : $Date: 2020-10-26 09:02$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -67,15 +67,10 @@ if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
 else
 	$type_session = "with_session";
 // autres initialisations
-if (@file_exists('./admin_access_area.php')){
-    $adm = 1;
-    $racine = "../";
-    $racineAd = "./";
-}else{
-    $adm = 0;
-    $racine = "./";
-    $racineAd = "./admin/";
-}
+$adm = 0;
+$racine = "./";
+$racineAd = "./admin/";
+
 // pour le traitement des modules
 include $racine."/include/hook.class.php";
 
@@ -83,7 +78,7 @@ if (!($desactive_VerifNomPrenomUser))
     $desactive_VerifNomPrenomUser = 'n';
 // On vérifie que les noms et prénoms ne sont pas vides
 VerifNomPrenomUser($type_session);
-
+/*
 // code html
 header('Content-Type: text/html; charset=utf-8');
 if (!isset($_COOKIE['open']))
@@ -109,10 +104,11 @@ echo '<section>'.PHP_EOL;
 // Affichage du menu
 include("menu_gauche2.php");
 include("chargement.php");
-
+*/
 // Dans le cas d'une selection invalide
 if ($area <= 0)
 {
+    start_page_w_header($day,$month,$year,$type_session);
 	echo '<h1>'.get_vocab("noareas").'</h1>';
 	echo '<a href="./admin/admin_accueil.php">'.get_vocab("admin").'</a>'.PHP_EOL.'</body>'.PHP_EOL.'</html>';
 	exit();
@@ -123,12 +119,14 @@ $authGetUserLevel = authGetUserLevel(getUserName(), -1);
 // vérifie si la date est dans la période réservable
 if (check_begin_end_bookings($day, $month, $year))
 {
+    start_page_w_header($day,$month,$year,$type_session);
 	showNoBookings($day, $month, $year, $back);
 	exit();
 }
 //Renseigne les droits de l'utilisateur, si les droits sont insuffisants, l'utilisateur est averti.
 if ((($authGetUserLevel < 1) && (Settings::get("authentification_obli") == 1)) || authUserAccesArea(getUserName(), $area) == 0)
 {
+    start_page_w_header($day,$month,$year,$type_session);
 	showAccessDenied($back);
 	exit();
 }
@@ -156,7 +154,7 @@ if (grr_sql_count($ressources) == 0)
 	echo "<h1>".get_vocab("no_rooms_for_area")."</h1>";
 	die();
 }
-
+grr_sql_free($ressources);
 // calcul du contenu du planning
 $month_start = mktime(0, 0, 0, $month, 1, $year);
 $weekday_start = (date("w", $month_start) - $weekstarts + 7) % 7;
@@ -180,6 +178,7 @@ $ty = date("Y",$i);
 $tm = date("n",$i);
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
 //Get all meetings for this month in the area that we care about
+/*
 //row[0] = Start time
 //row[1] = End time
 //row[2] = Entry ID
@@ -196,133 +195,184 @@ $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiai
 FROM (".TABLE_PREFIX."_entry inner join ".TABLE_PREFIX."_room on ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) 
   inner join ".TABLE_PREFIX."_type_area on ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
 WHERE (start_time <= $month_end AND end_time > $month_start and area_id='".$area."')
-ORDER by start_time, end_time, ".TABLE_PREFIX."_room.room_name";
+ORDER by ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time ";
+*/
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc
+FROM (".TABLE_PREFIX."_entry INNER JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) 
+  INNER JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
+WHERE (start_time <= $month_end AND end_time > $month_start AND area_id='".$area."')
+ORDER by ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time ";
+/* contenu de la réponse si succès :
+    $row[0] : start_time
+    $row[1] : end_time
+    $row[2] : entry id
+    $row[3] : name
+    $row[4] : beneficiaire
+    $row[5] : room name
+    $row[6] : type
+    $row[7] : statut_entry
+    $row[8] : entry description
+    $row[9] : entry option_reservation
+    $row[10]: room delais_option_reservation
+    $row[11]: entry moderate
+    $row[12]: beneficiaire_ext
+    $row[13]: clef
+    $row[14]: courrier
+	$row[15]: Type_name
+    $row[16]: overload fields description
+*/
 
 //Build an array of information about each day in the month.
-//The information is stored as:
-//d[monthday]["id"][] = ID of each entry, for linking.
-//d[monthday]["data"][] = "start-stop" times of each entry.
+
 $res = grr_sql_query($sql);
 if (!$res)
 	echo grr_sql_error();
 else
-{ // les infos sont recueillies, on passe au planning
-	// echo '<div class="contenu_planning">'.PHP_EOL;
+{
+    $overloadFieldList = mrbsOverloadGetFieldslist($area);
     $verif_acces_ressource = array();
     $acces_fiche_reservation = array();
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-		if ($row['11'] <> (Settings::get('exclude_type_in_views_all')))
-			{
-				$verif_acces_ressource[$row[10]] = verif_acces_ressource(getUserName(), $row[10]);
-				$acces_fiche_reservation[$row[10]] = verif_acces_fiche_reservation(getUserName(), $row[10]);
-				$t = max((int)$row[0], $month_start);
-				$end_t = min((int)$row[1], $month_end);
-				$day_num = date("j", $t);
-				if ($enable_periods == 'y')
-					$midnight = mktime(12, 0, 0, $month, $day_num, $year);
-				else
-					$midnight = mktime(0, 0, 0, $month, $day_num, $year);
-				while ($t < $end_t)
-				{
-					$d[$day_num]["id"][] = $row[2];
-					$d[$day_num]["id_room"][] = $row[10];
-					if (Settings::get("display_info_bulle") == 1)
-						$d[$day_num]["who"][] = get_vocab("reservee au nom de").affiche_nom_prenom_email($row[4], $row[9], "nomail");
-					else if (Settings::get("display_info_bulle") == 2)
-						$d[$day_num]["who"][] = $row[6];
-					else
-						$d[$day_num]["who"][] = "";
-					$d[$day_num]["who1"][] = affichage_lien_resa_planning($row[3],$row[2]);
-					$d[$day_num]["room"][] = $row[5] ;
-					$d[$day_num]["color"][] = $row[7];
-					$d[$day_num]["description"][] = affichage_resa_planning($row[6],$row[2]);
-					$d[$day_num]["moderation"][] = $row[8];
-					$midnight_tonight = $midnight + 86400;
-				//Describe the start and end time, accounting for "all day"
-				//and for entries starting before/ending after today.
-				//There are 9 cases, for start time < = or > midnight this morning,
-				//and end time < = or > midnight tonight.
-				//Use ~ (not -) to separate the start and stop times, because MSIE
-				//will incorrectly line break after a -.
-					if ($enable_periods == 'y')
-					{
-						$start_str = preg_replace("/ /", " ", period_time_string($row[0]));
-						$end_str   = preg_replace("/ /", " ", period_time_string($row[1], -1));
-					// Debug
-					//echo affiche_date($row[0])." ".affiche_date($midnight)." ".affiche_date($row[1])." ".affiche_date($midnight_tonight)."<br />";
-						switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
-						{
-								case "> < ":         //Starts after midnight, ends before midnight
-								case "= < ":         //Starts at midnight, ends before midnight
-								if ($start_str == $end_str)
-									$d[$day_num]["data"][] = $start_str;
-								else
-									$d[$day_num]["data"][] = $start_str . get_vocab("to") . $end_str;
-								break;
-								case "> = ":         //Starts after midnight, ends at midnight
-								$d[$day_num]["data"][] = $start_str . get_vocab("to")."24:00";
-								break;
-								case "> > ":         //Starts after midnight, continues tomorrow
-								$d[$day_num]["data"][] = $start_str . get_vocab("to")."&gt;";
-								break;
-								case "= = ":         //Starts at midnight, ends at midnight
-								$d[$day_num]["data"][] = $all_day;
-								break;
-								case "= > ":         //Starts at midnight, continues tomorrow
-								$d[$day_num]["data"][] = $all_day . "&gt;";
-								break;
-								case "< < ":         //Starts before today, ends before midnight
-								$d[$day_num]["data"][] = "&lt;".get_vocab("to") . $end_str;
-								break;
-								case "< = ":         //Starts before today, ends at midnight
-								$d[$day_num]["data"][] = "&lt;" . $all_day;
-								break;
-								case "< > ":         //Starts before today, continues tomorrow
-								$d[$day_num]["data"][] = "&lt;" . $all_day . "&gt;";
-								break;
-							}
-						}
-						else
-						{
-							switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
-							{
-								case "> < ":         //Starts after midnight, ends before midnight
-								case "= < ":         //Starts at midnight, ends before midnight
-								$d[$day_num]["data"][] = date(hour_min_format(), $row[0]) . get_vocab("to") . date(hour_min_format(), $row[1]);
-								break;
-								case "> = ":         //Starts after midnight, ends at midnight
-								$d[$day_num]["data"][] = date(hour_min_format(), $row[0]) . get_vocab("to")."24:00";
-								break;
-								case "> > ":         //Starts after midnight, continues tomorrow
-								$d[$day_num]["data"][] = date(hour_min_format(), $row[0]) . get_vocab("to")."&gt;";
-								break;
-								case "= = ":         //Starts at midnight, ends at midnight
-								$d[$day_num]["data"][] = $all_day;
-								break;
-								case "= > ":         //Starts at midnight, continues tomorrow
-								$d[$day_num]["data"][] = $all_day . "&gt;";
-								break;
-								case "< < ":         //Starts before today, ends before midnight
-								$d[$day_num]["data"][] = "&lt;".get_vocab("to") . date(hour_min_format(), $row[1]);
-								break;
-								case "< = ":         //Starts before today, ends at midnight
-								$d[$day_num]["data"][] = "&lt;" . $all_day;
-								break;
-								case "< > ":         //Starts before today, continues tomorrow
-								$d[$day_num]["data"][] = "&lt;" . $all_day . "&gt;";
-								break;
-							}
-						}
-						//Only if end time > midnight does the loop continue for the next day.
-						if ($row[1] <= $midnight_tonight)
-							break;
-						$day_num++;
-						$t = $midnight = $midnight_tonight;
-					}
-			}
+		if ($row['15'] <> (Settings::get('exclude_type_in_views_all')))
+        {
+            $verif_acces_ressource[$row[5]] = verif_acces_ressource(getUserName(), $row[5]);
+            $acces_fiche_reservation[$row[5]] = verif_acces_fiche_reservation(getUserName(), $row[5]);
+            $t = max((int)$row[0], $month_start);
+            $end_t = min((int)$row[1], $month_end);
+            $day_num = date("j", $t);
+            if ($enable_periods == 'y')
+                $midnight = mktime(12, 0, 0, $month, $day_num, $year);
+            else
+                $midnight = mktime(0, 0, 0, $month, $day_num, $year);
+            while ($t < $end_t)
+            {
+                $d[$day_num]["id"][] = $row[2];
+                $d[$day_num]["id_room"][] = $row[5];
+                /*if (Settings::get("display_info_bulle") == 1)
+                    $d[$day_num]["who"][] = get_vocab("reservee au nom de").affiche_nom_prenom_email($row[4], $row[9], "nomail");
+                else if (Settings::get("display_info_bulle") == 2)
+                    $d[$day_num]["who"][] = $row[6];
+                else
+                    $d[$day_num]["who"][] = "";*/
+                //$d[$day_num]["who1"][] = affichage_lien_resa_planning($row[3],$row[2]);
+                $d[$day_num]["room"][] = $row[5] ;
+                $d[$day_num]["color"][] = $row[6];
+                //$d[$day_num]["description"][] = affichage_resa_planning($row[6],$row[2]);
+                //$d[$day_num]["moderation"][] = $row[8];
+                $midnight_tonight = $midnight + 86400;
+            //Describe the start and end time, accounting for "all day"
+            //and for entries starting before/ending after today.
+            //There are 9 cases, for start time < = or > midnight this morning,
+            //and end time < = or > midnight tonight.
+            //Use ~ (not -) to separate the start and stop times, because MSIE
+            //will incorrectly line break after a -.
+                if ($enable_periods == 'y')
+                {
+                    $start_str = preg_replace("/ /", " ", period_time_string($row[0]));
+                    $end_str   = preg_replace("/ /", " ", period_time_string($row[1], -1));
+                // Debug
+                //echo affiche_date($row[0])." ".affiche_date($midnight)." ".affiche_date($row[1])." ".affiche_date($midnight_tonight)."<br />";
+                    switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
+                    {
+                        case "> < ":         //Starts after midnight, ends before midnight
+                        case "= < ":         //Starts at midnight, ends before midnight
+                        if ($start_str == $end_str)
+                            $horaires = $start_str;
+                        else
+                            $horaires = $start_str . get_vocab("to") . $end_str;
+                        break;
+                        case "> = ":         //Starts after midnight, ends at midnight
+                        $horaires = $start_str . get_vocab("to")."24:00";
+                        break;
+                        case "> > ":         //Starts after midnight, continues tomorrow
+                        $horaires = $start_str . get_vocab("to")."&gt;";
+                        break;
+                        case "= = ":         //Starts at midnight, ends at midnight
+                        $horaires = $all_day;
+                        break;
+                        case "= > ":         //Starts at midnight, continues tomorrow
+                        $horaires = $all_day . "&gt;";
+                        break;
+                        case "< < ":         //Starts before today, ends before midnight
+                        $horaires = "&lt;".get_vocab("to") . $end_str;
+                        break;
+                        case "< = ":         //Starts before today, ends at midnight
+                        $horaires = "&lt;" . $all_day;
+                        break;
+                        case "< > ":         //Starts before today, continues tomorrow
+                        $horaires = "&lt;" . $all_day . "&gt;";
+                        break;
+                    }
+                }
+                else
+                {
+                    switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
+                    {
+                        case "> < ":         //Starts after midnight, ends before midnight
+                        case "= < ":         //Starts at midnight, ends before midnight
+                        $horaires = date(hour_min_format(), $row[0]) . get_vocab("to") . date(hour_min_format(), $row[1]);
+                        break;
+                        case "> = ":         //Starts after midnight, ends at midnight
+                        $horaires = date(hour_min_format(), $row[0]) . get_vocab("to")."24:00";
+                        break;
+                        case "> > ":         //Starts after midnight, continues tomorrow
+                        $horaires = date(hour_min_format(), $row[0]) . get_vocab("to")."&gt;";
+                        break;
+                        case "= = ":         //Starts at midnight, ends at midnight
+                        $horaires = $all_day;
+                        break;
+                        case "= > ":         //Starts at midnight, continues tomorrow
+                        $horaires = $all_day . "&gt;";
+                        break;
+                        case "< < ":         //Starts before today, ends before midnight
+                        $horaires = "&lt;".get_vocab("to") . date(hour_min_format(), $row[1]);
+                        break;
+                        case "< = ":         //Starts before today, ends at midnight
+                        $horaires = "&lt;" . $all_day;
+                        break;
+                        case "< > ":         //Starts before today, continues tomorrow
+                        $horaires = "&lt;" . $all_day . "&gt;";
+                        break;
+                    }
+                }
+                $d[$day_num]["resa"][] = affichage_resa_planning_complet($overloadFieldList, 2, $row, $horaires);
+                //Only if end time > midnight does the loop continue for the next day.
+                if ($row[1] <= $midnight_tonight)
+                    break;
+                $day_num++;
+                $t = $midnight = $midnight_tonight;
+            }
+        }
 	}
+    grr_sql_free($res);
 }
+// code html de la page
+header('Content-Type: text/html; charset=utf-8');
+if (!isset($_COOKIE['open']))
+{
+	setcookie("open", "true", time()+3600, "", "", false, false);
+}
+echo '<!DOCTYPE html>'.PHP_EOL;
+echo '<html lang="fr">'.PHP_EOL;
+// section <head>
+if ($type_session == "with_session")
+    echo pageHead2(Settings::get("company"),"with_session");
+else
+    echo pageHead2(Settings::get("company"),"no_session");
+// section <body>
+echo "<body>";
+// Menu du haut = section <header>
+echo "<header>";
+pageHeader2($day, $month, $year, $type_session);
+echo "</header>";
+// Debut de la page
+echo '<section>'.PHP_EOL;
+
+// Affichage du menu
+include("menu_gauche2.php");
+include("chargement.php");
+
 // Début du tableau affichant le planning
 if ($_GET['pview'] != 1){
     echo "<div id='planning2'>";
@@ -425,9 +475,8 @@ echo "</caption>";
 		$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$t'");
 		if ($weekcol == 0)
 			echo '<tr>',PHP_EOL;
-		if ($display_day[$num_week_day] == 1)
+		if ($display_day[$num_week_day] == 1) // début condition "on n'affiche pas tous les jours de la semaine"
 		{
-			// début condition "on n'affiche pas tous les jours de la semaine"
 			echo '<td >',PHP_EOL;
 			// On affiche les jours du mois dans le coin supérieur gauche de chaque cellule
 			$ferie_true = 0;
@@ -462,21 +511,18 @@ echo "</caption>";
 				if (isset($d[$cday]["id"][0]))
 				{
 					$n = count($d[$cday]["id"]);
-					//Show the start/stop times, 2 per line, linked to view_entry.
+					//Show the reservation information, linked to view_entry.
 					//If there are 12 or fewer, show them, else show 11 and "...".
 					for ($i = 0; $i < $n; $i++)
 					{
-						if ($verif_acces_ressource[$d[$cday]["id_room"][$i]])
-						{
-							// On n'affiche pas les réservation des ressources non visibles pour l'utilisateur.
+						if ($verif_acces_ressource[$d[$cday]["id_room"][$i]]) // On n'affiche pas les réservations des ressources non visibles pour l'utilisateur.
+						{	
 							if ($i == 11 && $n > 12)
 							{
 								echo " ...\n";
 								break;
 							}
-
 							echo '<table class="pleine table-bordered table-striped">',PHP_EOL,'<tr>',PHP_EOL;
-
 							tdcell($d[$cday]["color"][$i]);
 							echo '<span class="small_planning">',PHP_EOL;
 							if ($acces_fiche_reservation[$d[$cday]["id_room"][$i]])
@@ -485,52 +531,44 @@ echo "</caption>";
 								{
 									$currentPage = 'month_all';
 									$id =   $d[$cday]["id"][$i];
-									echo '<a title="',htmlspecialchars($d[$cday]["who"][$i]),'" data-width="675" onclick="request(',$id,',',$cday,',',$month,',',$year.',\'all\',\''.$currentPage,'\',readData);" data-rel="popup_name" class="poplight lienCellule">',PHP_EOL;
+									echo '<a title="',get_vocab('voir_resa'),'" data-width="675" onclick="request(',$id,',',$cday,',',$month,',',$year.',\'all\',\''.$currentPage,'\',readData);" data-rel="popup_name" class="poplight lienCellule">',PHP_EOL;
 								}
 								else
 								{
-									echo '<a class="lienCellule" title="',htmlspecialchars($d[$cday]["who"][$i]),'" href="view_entry.php?id=',$d[$cday]["id"][$i],'&amp;day=',$cday,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=month_all">',PHP_EOL;
+									echo '<a class="lienCellule" title="',get_vocab('voir_resa'),'" href="view_entry.php?id=',$d[$cday]["id"][$i],'&amp;day=',$cday,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=month_all">',PHP_EOL;
 								}
 							}
-							echo $d[$cday]["data"][$i],'<br>',htmlspecialchars($d[$cday]["room"][$i]),'<br>',$d[$cday]["who1"][$i],'<br/>',PHP_EOL;
+                            echo $d[$cday]["resa"][$i];
+							/*echo $d[$cday]["data"][$i],'<br>',htmlspecialchars($d[$cday]["room"][$i]),'<br>',$d[$cday]["who1"][$i],'<br/>',PHP_EOL;
 							$Son_GenreRepeat = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area ,".TABLE_PREFIX."_entry  WHERE  ".TABLE_PREFIX."_entry.id= ".$d[$cday]["id"][$i]." AND ".TABLE_PREFIX."_entry.type= ".TABLE_PREFIX."_type_area.type_letter");
                             if (Settings::get("type") == '1')               
                                 echo $Son_GenreRepeat."<br/>";
 							if ($d[$cday]["description"][$i] != "")
 								echo $d[$cday]["description"][$i]."<br/>";
 							if ((isset($d[$cday]["moderation"][$i])) && ($d[$cday]["moderation"][$i] == 1))
-								echo '<img src="img_grr/flag_moderation.png" alt="',get_vocab("en_attente_moderation"),'" title="',get_vocab("en_attente_moderation"),'" class="image" />',PHP_EOL;
+								echo '<img src="img_grr/flag_moderation.png" alt="',get_vocab("en_attente_moderation"),'" title="',get_vocab("en_attente_moderation"),'" class="image" />',PHP_EOL;*/
 							if ($acces_fiche_reservation[$d[$cday]["id_room"][$i]])
 								echo '</a>',PHP_EOL;
 							echo '</span>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;
 						}
 					}
-				/*} else{
-
-					echo "\n<table class='table-noborder'><tr>\n";
-					tdcell('#F49AC2');
-					echo "<span class=\"small_planning\">";
-
-
-				//	echo "<a href=\"edit_entry.php?room=$room&amp;period=$time_t_stripped&amp;year=$year&amp;month=$month&amp;day=$day&amp;page=day\" title=\"".get_vocab("cliquez_pour_effectuer_une_reservation")."\" ><span class=\"glyphicon glyphicon-plus\"></span></a>";
-					echo "<a title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day")).$title."\" href=\"day.php?year=$year&amp;month=$month&amp;day=$cday&amp;area=$area\"><span class=\"glyphicon glyphicon-plus\"></span></a>";
-							echo "</span></td></tr></table>\n";
+				/*
+                envisager d'inclure ici un + pour ouvrir une fenêtre de réservation
 				*/
 				}
                 else 
                     echo "<div class='empty_cell'> </div>";
             }
 			echo '</td>',PHP_EOL;
-		}
-			// fin condition "on n'affiche pas tous les jours de la semaine"
+		} // fin condition "on n'affiche pas tous les jours de la semaine"
 		if (++$weekcol == 7)
 		{
 			$weekcol = 0;
 			echo '</tr>',PHP_EOL;
 		}
 	}
-		// Fin Première boucle sur les jours du mois !
-		// On grise les cellules appartenant au mois suivant
+	// Fin Première boucle sur les jours du mois !
+	// On grise les cellules appartenant au mois suivant
 	if ($weekcol > 0)
 	{
 		for (; $weekcol < 7; $weekcol++)

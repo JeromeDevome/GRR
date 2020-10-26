@@ -3,7 +3,7 @@
  * month.php
  * Interface d'accueil avec affichage par mois
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-10-25 15:20$
+ * Dernière modification : $Date: 2020-10-26 09:05$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -177,7 +177,7 @@ FROM ".TABLE_PREFIX."_entry
 WHERE room_id=$room
 AND start_time <= $month_end AND end_time > $month_start
 ORDER by 1";*/
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.id,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
 where
 ".TABLE_PREFIX."_entry.room_id = '".$room."' and
@@ -193,7 +193,7 @@ ORDER by start_time, end_time";
     $row[2] : entry id
     $row[3] : name
     $row[4] : beneficiaire
-    $row[5] : room id
+    $row[5] : room name
     $row[6] : type
     $row[7] : statut_entry
     $row[8] : entry description
@@ -311,6 +311,7 @@ else
 			$t = $midnight = $midnight_tonight;
 		}
 	}
+    grr_sql_free($res);
 }    
 // code html de la page
 header('Content-Type: text/html; charset=utf-8');

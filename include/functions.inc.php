@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-10-16 10:50$
+ * Dernière modification : $Date: 2020-10-26 09:29$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4569,7 +4569,7 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 
 	// Ressource seulement dans les vues globales
 	if($vue == 2)
-		$affichage .= "<br>".$resa[15];
+		$affichage .= "<br>".$resa[5];
 
 	// Bénéficiaire
 	if (Settings::get("display_beneficiaire") == 1)

@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-10-25 15:15$
+ * Dernière modification : $Date: 2020-10-26 08:57$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -155,7 +155,7 @@ if (grr_sql_count($ressources) == 0)
 	echo "<h1>".get_vocab("no_rooms_for_area")."</h1>";
 	die();
 }
-
+grr_sql_free($ressources);
 // calcul du contenu du planning
 if ($enable_periods == 'y')
 {
@@ -202,7 +202,7 @@ $ty = date("Y", $i);
 $tm = date("m", $i);
 $td = date("d", $i);
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.id,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
 where
 ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id and
@@ -218,7 +218,7 @@ ORDER by start_time, end_time, ".TABLE_PREFIX."_entry.id";
     $row[2] : entry id
     $row[3] : name
     $row[4] : beneficiaire
-    $row[5] : room id
+    $row[5] : room name
     $row[6] : type
     $row[7] : statut_entry
     $row[8] : entry description
@@ -367,6 +367,7 @@ else
 			}   // ModifExclure Ajouté
 		}
 	}
+    grr_sql_free($res2);
 }
 // début de page
 start_page_w_header($day,$month,$year,$type_session);
