@@ -19,6 +19,7 @@ Dans le cas contraire, vous devez impérativement renseigner ce fichier :
 -  $dbDb : le nom de votre base mysql.
 -  $dbUser : le nom de l'utilisateur mysql qui a les droits sur la base.
 -  $dbPass : le mot de passe de l'utilisateur mysql ci-dessus.
+-  $dbPort : le port de communication utilisé par le serveur MySQL (3306 par défaut).
 
 ***********
 Pré-requis
