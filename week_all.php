@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-10-26 08:57$
+ * Dernière modification : $Date: 2020-10-26 15:35$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -112,10 +112,6 @@ if ($area <= 0)
 	echo '<a href="./admin/admin_accueil.php">'.get_vocab("admin").'</a>'.PHP_EOL.'</body>'.PHP_EOL.'</html>';
 	exit();
 }
-
-// Calcul du niveau de droit de réservation
-$user_name = getUserName();
-$authGetUserLevel = authGetUserLevel($user_name, -1);
 // vérifie si la date est dans la période réservable
 if (check_begin_end_bookings($day, $month, $year))
 {
@@ -123,7 +119,9 @@ if (check_begin_end_bookings($day, $month, $year))
 	showNoBookings($day, $month, $year, $back);
 	exit();
 }
-//Renseigne les droits de l'utilisateur, si les droits sont insuffisants, l'utilisateur est averti.
+// Calcule les droits de l'utilisateur, si les droits sont insuffisants, l'utilisateur est averti.
+$user_name = getUserName();
+$authGetUserLevel = authGetUserLevel($user_name, -1);
 if ((($authGetUserLevel < 1) && (Settings::get("authentification_obli") == 1)) || authUserAccesArea($user_name, $area) == 0)
 {
     start_page_w_header($day,$month,$year,$type_session);

@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-10-26 09:29$
+ * Dernière modification : $Date: 2020-10-26 11:38$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4554,7 +4554,7 @@ function affichage_champ_add_mails($id_resa)
 	return $affichage;
 }
 /*
-Construit les informations à afficher sur les plannings
+Construit les informations à afficher sur les plannings week_all, month ou month_all
 $vue = 1 pour une ressource / 2 vue multiple ressource
 $ofl = overload fields list, ne dépend que du domaine, donc est constant dans la boucle d'affichage
 */
@@ -4564,7 +4564,7 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 
 	$affichage = "";
 
-	// Heures ou crénaux + symboles <== ==>
+	// Heures ou créneaux + symboles <== ==>
 	$affichage .= $heures;
 
 	// Ressource seulement dans les vues globales
@@ -4633,6 +4633,97 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 			$affichage .= " <img src=\"img_grr/hourglass.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Buzy\"> ";
 	}
 
+	return $affichage;
+}
+/*
+Construit les informations à afficher en pop-up sur les plannings month_all2, year ou year_all
+$ofl = overload fields list, ne dépend que du domaine, donc est constant dans la boucle d'affichage
+*/
+function titre_compact($ofl, $resa, $heures)
+{
+	global $dformat;
+
+	$affichage = "";
+
+	// Heures ou créneaux + symboles <== ==>
+	$affichage .= $heures;
+
+	// Bénéficiaire
+	if (Settings::get("display_beneficiaire") == 1)
+		$affichage .= "\n".affiche_nom_prenom_email($resa[4], $resa[12], "nomail");
+
+	// Type
+	if (Settings::get("display_type") == 1)
+	{
+        $typeResa = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area JOIN ".TABLE_PREFIX."_entry ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter WHERE ".TABLE_PREFIX."_entry.id = '".$resa[2]."';");
+		if ($typeResa != -1)
+			$affichage .= "\n".$typeResa;
+	}
+
+	// Brève description ou le numéro de la réservation
+	if ((Settings::get("display_short_description") == 1) && ($resa[3] != ""))
+		$affichage .= "\n".htmlspecialchars($resa[3],ENT_NOQUOTES);
+	else
+		$affichage .= "\n".get_vocab("entryid").$resa[2];
+
+	// Description Complète
+	if (Settings::get("display_full_description") == 1)
+		$affichage .= "\n".htmlspecialchars($resa[8],ENT_NOQUOTES);
+
+	// Champs Additionnels
+    // la ressource associée à la réservation :
+    $room = $resa[5];
+	// Les champs add :
+	$overload_data = grrGetOverloadDescArray($ofl, $resa[16]);//mrbsEntryGetOverloadDesc($resa[2]);
+	foreach ($overload_data as $fieldname=>$field)
+	{
+		if (( (authGetUserLevel(getUserName(), $room) >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "")
+			$affichage .= "\n".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($field["valeur"],ENT_NOQUOTES|ENT_SUBSTITUTE);
+	}
+
+	return $affichage;
+}
+/*
+Construit les informations à afficher dans la cellule du planning month_all2, year ou year_all :
+description abrégée, statut, option, modération
+*/
+function lien_compact($resa)
+{
+    global $dformat;
+	$affichage = "";
+	// Bénéficiaire
+	if (Settings::get("display_beneficiaire") == 1)
+		$affichage .= affiche_nom_prenom_email($resa[4], $resa[12], "nomail");
+	// Brève description ou le numéro de la réservation
+	if ((Settings::get("display_short_description") == 1) && ($resa[3] != ""))
+		$affichage .= htmlspecialchars($resa[3],ENT_NOQUOTES);
+	else
+		$affichage .= get_vocab("entryid").$resa[2];
+	// Description Complète
+	if (Settings::get("display_full_description") == 1)
+		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES);
+    // on coupe aux quatre premiers caractères
+    $affichage = substr($affichage,0,4)."<br />";
+	// Emprunte
+	if($resa[7] != "-")
+		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"'.get_vocab(\"ressource actuellement empruntee\").'\" title=\"'.get_vocab(\"ressource actuellement empruntee\").'\" width=\"20\" height=\"20\" class=\"image\" /> ";
+	// Option réservation
+	if($resa[10] > 0)
+		$affichage .=  " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le").time_date_string_jma($resa[9],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> ";
+	// Modération
+	if($resa[11] == 1)
+		$affichage .= " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
+	// Clef
+	if($resa[13] == 1)
+		$affichage .= " <img src=\"img_grr/skey.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Clef\"> ";
+	// Courrier
+	if (Settings::get('show_courrier') == 'y')
+	{
+		if($resa[14] == 1)
+			$affichage .= " <img src=\"img_grr/scourrier.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Courrier\"> ";
+		else
+			$affichage .= " <img src=\"img_grr/hourglass.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Buzy\"> ";
+	}
 	return $affichage;
 }
 /*

@@ -3,7 +3,7 @@
  * month_all.php
  * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-10-26 09:02$
+ * Dernière modification : $Date: 2020-10-26 15:37$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -70,9 +70,6 @@ else
 $adm = 0;
 $racine = "./";
 $racineAd = "./admin/";
-
-// pour le traitement des modules
-include $racine."/include/hook.class.php";
 
 if (!($desactive_VerifNomPrenomUser))
     $desactive_VerifNomPrenomUser = 'n';
@@ -178,25 +175,6 @@ $ty = date("Y",$i);
 $tm = date("n",$i);
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
 //Get all meetings for this month in the area that we care about
-/*
-//row[0] = Start time
-//row[1] = End time
-//row[2] = Entry ID
-//row[3] = Entry name (brief description)
-//row[4] = beneficiaire of the booking
-//row[5] = Nom de la ressource
-//row[6] = Description complète
-//row[7] = type
-//row[8] = Modération
-//row[9] = beneficiaire extérieur
-//row[10] = id de la ressource
-//row[11] = Type_name
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, room_name, ".TABLE_PREFIX."_entry.description, type, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, ".TABLE_PREFIX."_room.id, ".TABLE_PREFIX."_type_area.type_name 
-FROM (".TABLE_PREFIX."_entry inner join ".TABLE_PREFIX."_room on ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) 
-  inner join ".TABLE_PREFIX."_type_area on ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
-WHERE (start_time <= $month_end AND end_time > $month_start and area_id='".$area."')
-ORDER by ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time ";
-*/
 $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc
 FROM (".TABLE_PREFIX."_entry INNER JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) 
   INNER JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
@@ -347,6 +325,8 @@ else
 	}
     grr_sql_free($res);
 }
+// pour le traitement des modules
+include $racine."/include/hook.class.php";
 // code html de la page
 header('Content-Type: text/html; charset=utf-8');
 if (!isset($_COOKIE['open']))
