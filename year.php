@@ -3,7 +3,7 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-10-26 18:26$
+ * Dernière modification : $Date: 2020-10-27 11:33$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -183,7 +183,8 @@ $type_exclu = Settings::get('exclude_type_in_views_all'); // nom du type exclu
 $sql = "SELECT type_letter FROM ".TABLE_PREFIX."_type_area WHERE ".TABLE_PREFIX."_type_area.type_name = '".$type_exclu."' ";
 $res = grr_sql_query($sql);
 $row = grr_sql_row($res,'0');
-$typeExclu = (isset($row[0]))? $row[0]:NULL; // lettre identifiant le type exclu  
+$typeExclu = (isset($row[0]))? $row[0]:NULL; // lettre identifiant le type exclu
+grr_sql_free($res);
 //Get all meetings for these months in the area that we care about
 //row[0] = Start time
 //row[1] = End time
@@ -361,7 +362,7 @@ else
         } // fin condition type exclu
 	}
 }
-
+grr_sql_free($res);
 // pour le traitement des modules
 include $racine."/include/hook.class.php";
 
@@ -552,6 +553,7 @@ while ($month_indice < $month_end)
 		} // fin ressources accessibles
 	} // fin boucle ressources
 	echo "</table>\n";
+    grr_sql_free($res);
 	$month_indice = mktime(0, 0, 0, $month_num + 1, 1, $year_num);
 } // Fin de la boucle sur les mois
 echo "<div class='pleine center'>";
