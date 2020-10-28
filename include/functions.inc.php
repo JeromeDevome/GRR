@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-10-26 11:38$
+ * Dernière modification : $Date: 2020-10-28 17:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4565,33 +4565,34 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 	$affichage = "";
 
 	// Heures ou créneaux + symboles <== ==>
-	$affichage .= $heures;
+	if ($heures != "")
+        $affichage .= $heures."<br>";
 
 	// Ressource seulement dans les vues globales
 	if($vue == 2)
-		$affichage .= "<br>".$resa[5];
+		$affichage .= $resa[5]."<br>";
 
 	// Bénéficiaire
 	if (Settings::get("display_beneficiaire") == 1)
-		$affichage .= "<br>".affiche_nom_prenom_email($resa[4], $resa[12], "nomail");
+		$affichage .= affiche_nom_prenom_email($resa[4], $resa[12], "nomail")."<br>";
 
 	// Type
 	if (Settings::get("display_type") == 1)
 	{
         $typeResa = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area JOIN ".TABLE_PREFIX."_entry ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter WHERE ".TABLE_PREFIX."_entry.id = '".$resa[2]."';");
 		if ($typeResa != -1)
-			$affichage .= "<br>".$typeResa;
+			$affichage .= $typeResa."<br>";
 	}
 
 	// Brève description ou le numéro de la réservation
 	if ((Settings::get("display_short_description") == 1) && ($resa[3] != ""))
-		$affichage .= "<br>".htmlspecialchars($resa[3],ENT_NOQUOTES);
+		$affichage .= htmlspecialchars($resa[3],ENT_NOQUOTES)."<br>";
 	else
-		$affichage .= "<br>".get_vocab("entryid").$resa[2];
+		$affichage .= get_vocab("entryid").$resa[2]."<br>";
 
 	// Description Complète
 	if (Settings::get("display_full_description") == 1)
-		$affichage .= "<br>".htmlspecialchars($resa[8],ENT_NOQUOTES);
+		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES)."<br>";
 
 	// Champs Additionnels
     // la ressource associée à la réservation :
@@ -4603,10 +4604,8 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 	foreach ($overload_data as $fieldname=>$field)
 	{
 		if (( (authGetUserLevel(getUserName(), $room) >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "")
-			$affichage .= "<br><i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($field["valeur"],ENT_NOQUOTES|ENT_SUBSTITUTE)."</i>";
+			$affichage .= "<i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($field["valeur"],ENT_NOQUOTES|ENT_SUBSTITUTE)."</i><br />";
 	}
-
-	$affichage .= "<br>";
 
 	// Emprunte
 	if($resa[7] != "-")
