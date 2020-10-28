@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-10-26 15:35$
+ * Dernière modification : $Date: 2020-10-28 17:35$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -200,7 +200,7 @@ $ty = date("Y", $i);
 $tm = date("m", $i);
 $td = date("d", $i);
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc, ".TABLE_PREFIX."_entry.room_id 
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
 where
 ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id and
@@ -258,7 +258,7 @@ else
 				else
 					$d[$day_num]["who"][] = "";*/
 				//$d[$day_num]["who1"][] = affichage_lien_resa_planning($row['3'], $row['2']);
-				$d[$day_num]["id_room"][]=$row['5'] ;
+				$d[$day_num]["id_room"][]=$row['17'] ;
 				$d[$day_num]["color"][]=$row['6'];
 				//$d[$day_num]["res"][] = $row['7'];
 				//$descro = affichage_resa_planning($row['8'], $row['2']);
@@ -357,7 +357,6 @@ else
 					}
 				}
 				$d[$day_num]["resa"][] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
-
 				if ($row[1] <= $midnight_tonight)
 					break;
 				$t = $midnight = $midnight_tonight;
@@ -365,6 +364,7 @@ else
 			}   // ModifExclure Ajouté
 		}
 	}
+    // print_r($d)."<br>";
     grr_sql_free($res2);
 }
 // début de page
@@ -550,8 +550,10 @@ for ($ir = 0; ($row = grr_sql_row($ressources, $ir)); $ir++)
 				if ((isset($d[$cday]["id"][0])) && !$estHorsReservation)
 				{
 					$n = count($d[$cday]["id"]);
+                    //echo $cday." ".$n."<br>";
 					for ($i = 0; $i < $n; $i++)
 					{
+                        //echo $d[$cday]["id_room"][$i]."?".$row['2']."<br>";
 						if ($d[$cday]["id_room"][$i]==$row['2'])
 						{
 							if ($no_td)
