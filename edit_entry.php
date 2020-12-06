@@ -341,295 +341,7 @@ pageHeader2($day, $month, $year, $type_session);
 echo "</header>";
 // Debut de la page
 echo '<section>'.PHP_EOL;
-?>
-<script type="text/javascript" >
-function insertBeneficiaires(area_,room_,user_,id_){
-	jQuery.ajax({
-		type: 'GET',
-		url: 'edit_entry_beneficiaire.php',
-		data: {
-			area: area_,
-			room: room_,
-            user: user_,
-            id: id_
-		},
-		success: function(returnData)
-		{
-			$("#div_beneficiaire").html(returnData);
-		},
-		error: function(data)
-		{
-			alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_beneficiaire.php ');
-		}
-    });
-}
-function insertChampsAdd(areas_,id_,room_){
-	jQuery.ajax({
-		type: 'GET',
-		url: 'edit_entry_champs_add.php',
-		data: {
-			areas: areas_,
-			id: id_,
-			room: room_,
-		},
-		success: function(returnData)
-		{
-			$("#div_champs_add").html(returnData);
-		},
-		error: function(data)
-		{
-			alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_champs_add.php ');
-		}
-    });
-}
-function insertTypes(areas_,room_){
-    jQuery.ajax({
-        type: 'GET',
-        url: 'edit_entry_types.php',
-        data: {
-            areas: areas_,
-            type: '<?php echo $etype; ?>',
-            room: room_,
-        },
-        success: function(returnData){
-            $('#div_types').html(returnData);
-        },
-        error: function(data){
-            alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_types.php ');
-        }
-    });
-}
-/*function insertProfilBeneficiaire(){
-    jQuery.ajax({
-        type: 'GET',
-        url: 'edit_entry_beneficiaire.php',
-        data: {
-            beneficiaire:'ADMINISTRATEUR',
-            identifiant_beneficiaire: '<?php echo $beneficiaire; ?>'
-        },
-        success: function(returnData)
-
-        {
-            $("#div_profilBeneficiaire").html(returnData);
-        },
-        error: function(data)
-
-        {
-            alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_beneficiaire.php ');
-        }
-    });
-}*/
-function check_1(){
-    menu = document.getElementById('menu2');
-    if (menu)
-    {
-        if (!document.forms["main"].rep_type[2].checked)
-        {
-            document.forms["main"].elements['rep_day[0]'].checked=false;
-            document.forms["main"].elements['rep_day[1]'].checked=false;
-            document.forms["main"].elements['rep_day[2]'].checked=false;
-            document.forms["main"].elements['rep_day[3]'].checked=false;
-            document.forms["main"].elements['rep_day[4]'].checked=false;
-            document.forms["main"].elements['rep_day[5]'].checked=false;
-            document.forms["main"].elements['rep_day[6]'].checked=false;
-            menu.style.display = "none";
-        }
-        else
-        {
-            menu.style.display = "";
-        }
-    }
-    <?php
-    if (Settings::get("jours_cycles_actif") == "Oui") {
-        ?>
-        menu = document.getElementById('menuP');
-        if (menu)
-        {
-            if (!document.forms["main"].rep_type[5].checked)
-            {
-                menu.style.display = "none";
-            }
-            else
-            {
-                menu.style.display = "";
-            }
-        }
-        <?php
-    }
-    ?>
-}
-function check_2 (){
-    document.forms["main"].rep_type[2].checked=true;
-    check_1 ();
-}
-function check_3 (){
-    document.forms["main"].rep_type[3].checked=true;
-}
-function check_4 (){
-    menu = document.getElementById('menu4');
-    if (menu)
-    {
-        if (!document.forms["main"].beneficiaire.options[0].selected)
-        //if (document.forms["main"].beneficiaire.value != '')
-        {
-            menu.style.display = "none";
-            <?php
-            if (Settings::get("remplissage_description_breve") == '2')
-            {
-                ?>
-               document.forms["main"].name.value=document.forms["main"].beneficiaire.options[document.forms["main"].beneficiaire.options.selectedIndex].text;
-               // document.forms["main"].name.value=document.forms["main"].beneficiaire.value;
-                <?php
-            }
-            ?>
-        }
-        else
-        {
-            menu.style.display = "";
-            <?php
-            if (Settings::get("remplissage_description_breve") == '2')
-            {
-                ?>
-                document.forms["main"].name.value="";
-                <?php
-            }
-            ?>
-        }
-    }
-}
-function check_5 (){
-    var menu; var menup; var menu2;
-    menu = document.getElementById('menu1');
-    menup = document.getElementById('menuP');
-    menu2 = document.getElementById('menu2');
-    if ((menu)&&(menu.style.display == "none"))
-    {
-        menup.style.display = "none";
-        menu2.style.display = "none";
-    }
-    else
-        check_1();
-}
-function setdefault (name,input){
-    document.cookie = escape(name) + "=" + escape(input) +
-    ( "" ? ";expires=" + ( new Date( ( new Date() ).getTime() + ( 1000 * lifeTime ) ) ).toGMTString() : "" ) +
-    ( "" ? ";path=" + path : "") +
-    ( "" ? ";domain=" + domain : "") +
-    ( "" ? ";secure" : "");
-}
-function Load_entry (){
-    recoverInputs(document.forms["main"],retrieveCookie('Grr_entry'),true);
-    <?php
-    if (!$id <> "")
-    {
-        ?>
-        if (!document.forms["main"].rep_type[0].checked)
-            clicMenu('1');
-        <?php
-    }
-    ?>
-}
-function Save_entry (){
-    setCookie('Grr_entry',getFormString(document.forms["main"],true),10000,"","",0,0);
-}
-function validate_and_submit (){
-    var err;
-    $("#error").html("");
-    if (document.forms["main"].benef_ext_nom)
-    {
-        if ((document.forms["main"].beneficiaire.options[0].selected) &&(document.forms["main"].benef_ext_nom.value == ""))
-        //if ((document.forms["main"].beneficiaire.value == "") &&(document.forms["main"].benef_ext_nom.value == ""))
-        {
-            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("you_have_not_entered").get_vocab("deux_points").lcfirst(get_vocab("nom beneficiaire")) ?></div>');
-            err = 1;
-        }
-    }
-    <?php if (Settings::get("remplissage_description_breve") == '1' || Settings::get("remplissage_description_breve") == '2')
-    {
-        ?>
-        if (document.forms["main"].name.value == "")
-        {
-            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("you_have_not_entered").get_vocab("deux_points").get_vocab("brief_description") ?></div>');
-            err = 1;
-        }
-        <?php
-    }
-     if (Settings::get("remplissage_description_complete") == '1')
-    {
-        ?>
-        if (document.forms["main"].description.value == "")
-        {
-            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("you_have_not_entered").get_vocab("deux_points").get_vocab("fulldescription") ?></div>');
-            err = 1;
-        }
-        <?php
-    }
-    foreach ($allareas_id as $idtmp)
-    {
-        $overload_fields = mrbsOverloadGetFieldslist($idtmp);
-        foreach ($overload_fields as $fieldname=>$fieldtype)
-        {
-            if ($overload_fields[$fieldname]["obligatoire"] == 'y')
-            {
-                if ($overload_fields[$fieldname]["type"] != "list")
-                {
-                    echo "if ((document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) && (document.forms[\"main\"].addon_".$overload_fields[$fieldname]["id"].".value == \"\")) {\n";
-                }
-                else
-                {
-                    echo "if ((document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) && (document.forms[\"main\"].addon_".$overload_fields[$fieldname]["id"].".options[0].selected == true)) {\n";
-                }
-                ?>
-					$("#error").append("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><?php echo get_vocab('required'); ?></div>");
-					err = 1;
-				}
-				<?php
-			}
-			if ($overload_fields[$fieldname]["type"] == "numeric")
-			{
-            ?>
-				if (isNaN((document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) && (document.forms['main'].addon_<?php echo $overload_fields[$fieldname]['id']?>.value))) 
-                {
-					$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo addslashes($overload_fields[$fieldname]["name"]).get_vocab("deux_points"). get_vocab("is_not_numeric") ?></div>');
-					err = 1;
-				}
-                <?php
-            }
-        }
-    }
-?>
-    if  (document.forms["main"].type.value=='0')
-    {
-        $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("choose_a_type"); ?></div>');
-        err = 1;
-    }
-    <?php
-    if (($edit_type == "series") && ($periodiciteConfig == 'y'))
-    {
-        ?>
-        i1 = parseInt(document.forms["main"].id.value);
-        i2 = parseInt(document.forms["main"].rep_id.value);
-        n = parseInt(document.forms["main"].rep_num_weeks.value);
-        if ((document.forms["main"].elements['rep_day[0]'].checked || document.forms["main"].elements['rep_day[1]'].checked || document.forms["main"].elements['rep_day[2]'].checked || document.forms["main"].elements['rep_day[3]'].checked || document.forms["main"].elements['rep_day[4]'].checked || document.forms["main"].elements['rep_day[5]'].checked || document.forms["main"].elements['rep_day[6]'].checked) && (!document.forms["main"].rep_type[2].checked))
-        {
-            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("no_compatibility_with_repeat_type"); ?></div>');
-            err = 1;
-        }
-        if ((!document.forms["main"].elements['rep_day[0]'].checked && !document.forms["main"].elements['rep_day[1]'].checked && !document.forms["main"].elements['rep_day[2]'].checked && !document.forms["main"].elements['rep_day[3]'].checked && !document.forms["main"].elements['rep_day[4]'].checked && !document.forms["main"].elements['rep_day[5]'].checked && !document.forms["main"].elements['rep_day[6]'].checked) && (document.forms["main"].rep_type[2].checked))
-        {
-            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("choose_a_day"); ?></div>');
-            err = 1;
-        }
-        <?php
-    }
-    ?>
-    if (err == 1)
-        return false;
-    document.forms["main"].submit();
-    return true;
-}
-</script>
-<?php
+print_r($_COOKIE);
 if ($id == 0)
 	$A = get_vocab("addentry");
 else
@@ -661,90 +373,16 @@ if (Settings::get("remplissage_description_complete") == '1')
 $D .= get_vocab("deux_points");
 $E = htmlspecialchars ( $description );
 $F = get_vocab("date").get_vocab("deux_points");
-$sql = "SELECT area_id FROM ".TABLE_PREFIX."_room WHERE id=$room_id";
+/*$sql = "SELECT area_id FROM ".TABLE_PREFIX."_room WHERE id=$room_id";
 $res = grr_sql_query($sql);
 $row = grr_sql_row($res, 0);
-$area_id = $row[0];
+$area_id = $row[0];*/
+$area_id = mrbsGetAreaIdFromRoomId($room_id);
 $moderate = grr_sql_query1("SELECT moderate FROM ".TABLE_PREFIX."_room WHERE id='".$room_id."'");
 echo '<h2>'.$A.'</h2>'.PHP_EOL;
 if ($moderate)
 	echo '<h3><span class="texte_ress_moderee">'.$vocab["reservations_moderees"].'</span></h3>'.PHP_EOL;
 echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method="get">'.PHP_EOL;
-?>
-<script type="text/javascript" >
-	function changeRooms( formObj )
-	{
-		areasObj = eval( "formObj.areas" );
-		area = areasObj[areasObj.selectedIndex].value
-		roomsObj = eval( "formObj.elements['rooms[]']" )
-		l = roomsObj.length;
-		for (i = l; i > 0; i-- )
-		{
-			roomsObj.options[i] = null
-		}
-		switch (area)
-		{
-			<?php
-			if ($enable_periods == 'y')
-				$sql = "SELECT id, area_name FROM ".TABLE_PREFIX."_area WHERE id='".$area."' ORDER BY area_name";
-			else
-				$sql = "SELECT id, area_name FROM ".TABLE_PREFIX."_area WHERE enable_periods != 'y' ORDER BY area_name";
-			$res = grr_sql_query($sql);
-			if ($res)
-			{
-				for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-				{
-					if (authUserAccesArea($user_name, $row[0]) == 1)
-					{
-						print "      case \"".$row[0]."\":\n";
-						$sql2 = "SELECT id, room_name FROM ".TABLE_PREFIX."_room WHERE area_id='".$row[0]."'";
-						//$tab_rooms_noaccess = verif_acces_ressource($user_name, 'all');
-                        $tab_rooms_noaccess = no_book_rooms($user_name);
-						foreach($tab_rooms_noaccess as $key)
-						{
-							$sql2 .= " AND id != $key ";
-						}
-						$sql2 .= " ORDER BY room_name";
-						$res2 = grr_sql_query($sql2);
-						if ($res2)
-						{
-							$len = grr_sql_count($res2);
-							print "roomsObj.size=".min($longueur_liste_ressources_max,$len).";\n";
-							for ($j = 0; ($row2 = grr_sql_row($res2, $j)); $j++)
-                            {
-                                print "roomsObj.options[$j] = new Option(\"".str_replace('"','\\"',$row2[1])."\",".$row2[0] .")\n";
-/*                                 if (($j == 0)&&($row[0] == 4))
-                                    $room = $row2[0]; */
-                            }
-							print "roomsObj.options[0].selected = true\n";
-						}
-						print "break\n";
-					}
-				}
-			}
-			?>
-		}
-        roomsObj = eval( "formObj.elements['rooms[]']" );
-        room = roomsObj[roomsObj.selectedIndex].value;
-        insertBeneficiaires(area,room,<?php echo json_encode($user_name).','.$id;?>);
-        insertChampsAdd(area,<?php echo $id;?>,room);
-        insertTypes(area,room);
-        //insertProfilBeneficiaire();
-	}
-    function changeRoom( formObj)
-    {	
-        areasObj = eval( "formObj.areas" );
-		area = areasObj[areasObj.selectedIndex].value
-        roomsObj = eval("formObj.elements['rooms[]']");
-        room = roomsObj[roomsObj.selectedIndex].value;
-        insertBeneficiaires(area,room,<?php echo json_encode($user_name).','.$id;?>);
-        insertChampsAdd(area,<?php echo $id;?>,room);
-        insertTypes(area,room);
-        
-    }
-</script>
-
-<?php
 echo '<input type="hidden" name="oldRessource" value="'.$room_id.'">'.PHP_EOL;
 echo '<div id="error"></div>';
 
@@ -767,10 +405,8 @@ echo '</td></tr>'.PHP_EOL;
 echo '<tr><td class="TL">'.PHP_EOL;
 echo '<textarea name="description" class="pleine form-control" rows="4" columns="60" >'.$E.'</textarea>'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;
-echo '<tr><td>'.PHP_EOL;
-echo '<div id="div_champs_add">'.PHP_EOL;
-echo '</div>'.PHP_EOL;
-echo '</td></tr>'.PHP_EOL;
+// champs additionnels
+echo '<tr><td><div id="div_champs_add"></div></td></tr>'.PHP_EOL;
 
 if($active_cle == 'y'){
 	echo '<tr><td class="E"><br>'.PHP_EOL;
@@ -1050,12 +686,6 @@ echo '</td>',PHP_EOL,'</tr>',PHP_EOL;
 echo '<tr>',PHP_EOL,'<td>',PHP_EOL,'<div id="div_types">',PHP_EOL;
 echo '</div>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL;
 ?>
-<script type="text/javascript" >
-    insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode($user_name);?>,<?php echo $id?>);
-	insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>);
-	insertTypes(<?php echo $area?>,<?php echo $room?>);
-	// insertProfilBeneficiaire();
-</script>
 <?php
 echo '<tr>',PHP_EOL,'<td class="E">',PHP_EOL;
 // if ($affiche_mess_asterisque)
@@ -1287,22 +917,385 @@ if($periodiciteConfig == 'y'){
 ?>
 		</div>
 	</form>
+    <div id="footer"></div>
+<script type="text/javascript" >
+function insertBeneficiaires(area_,room_,user_,id_){
+	jQuery.ajax({
+		type: 'GET',
+		url: 'edit_entry_beneficiaire.php',
+		data: {
+			area: area_,
+			room: room_,
+            user: user_,
+            id: id_
+		},
+		success: function(returnData)
+		{
+			$("#div_beneficiaire").html(returnData);
+		},
+		error: function(data)
+		{
+			alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_beneficiaire.php ');
+		}
+    });
+}
+function insertChampsAdd(area_,id_,room_){
+	jQuery.ajax({
+		type: 'GET',
+		url: 'edit_entry_champs_add.php',
+		data: {
+			area: area_,
+			id: id_,
+			room: room_,
+		},
+		success: function(returnData)
+		{
+			$("#div_champs_add").html(returnData);
+		},
+		error: function(data)
+		{
+			alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_champs_add.php ');
+		}
+    });
+}
+function insertTypes(area_,room_){
+    jQuery.ajax({
+        type: 'GET',
+        url: 'edit_entry_types.php',
+        data: {
+            area: area_,
+            type: '<?php echo $etype; ?>',
+            room: room_,
+        },
+        success: function(returnData){
+            $('#div_types').html(returnData);
+        },
+        error: function(data){
+            alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_types.php ');
+        }
+    });
+}
+/*function insertProfilBeneficiaire(){
+    jQuery.ajax({
+        type: 'GET',
+        url: 'edit_entry_beneficiaire.php',
+        data: {
+            beneficiaire:'ADMINISTRATEUR',
+            identifiant_beneficiaire: '<?php echo $beneficiaire; ?>'
+        },
+        success: function(returnData)
+
+        {
+            $("#div_profilBeneficiaire").html(returnData);
+        },
+        error: function(data)
+
+        {
+            alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_beneficiaire.php ');
+        }
+    });
+}*/
+function check_1(){
+    menu = document.getElementById('menu2');
+    if (menu)
+    {
+        if (!document.forms["main"].rep_type[2].checked)
+        {
+            document.forms["main"].elements['rep_day[0]'].checked=false;
+            document.forms["main"].elements['rep_day[1]'].checked=false;
+            document.forms["main"].elements['rep_day[2]'].checked=false;
+            document.forms["main"].elements['rep_day[3]'].checked=false;
+            document.forms["main"].elements['rep_day[4]'].checked=false;
+            document.forms["main"].elements['rep_day[5]'].checked=false;
+            document.forms["main"].elements['rep_day[6]'].checked=false;
+            menu.style.display = "none";
+        }
+        else
+        {
+            menu.style.display = "";
+        }
+    }
+    <?php
+    if (Settings::get("jours_cycles_actif") == "Oui") {
+        ?>
+        menu = document.getElementById('menuP');
+        if (menu)
+        {
+            if (!document.forms["main"].rep_type[5].checked)
+            {
+                menu.style.display = "none";
+            }
+            else
+            {
+                menu.style.display = "";
+            }
+        }
+        <?php
+    }
+    ?>
+}
+function check_2 (){
+    document.forms["main"].rep_type[2].checked=true;
+    check_1 ();
+}
+function check_3 (){
+    document.forms["main"].rep_type[3].checked=true;
+}
+function check_4 (){
+    menu = document.getElementById('menu4');
+    if (menu)
+    {
+        if (!document.forms["main"].beneficiaire.options[0].selected)
+        //if (document.forms["main"].beneficiaire.value != '')
+        {
+            menu.style.display = "none";
+            <?php
+            if (Settings::get("remplissage_description_breve") == '2')
+            {
+                ?>
+               document.forms["main"].name.value=document.forms["main"].beneficiaire.options[document.forms["main"].beneficiaire.options.selectedIndex].text;
+               // document.forms["main"].name.value=document.forms["main"].beneficiaire.value;
+                <?php
+            }
+            ?>
+        }
+        else
+        {
+            menu.style.display = "";
+            <?php
+            if (Settings::get("remplissage_description_breve") == '2')
+            {
+                ?>
+                document.forms["main"].name.value="";
+                <?php
+            }
+            ?>
+        }
+    }
+}
+function check_5 (){
+    var menu; var menup; var menu2;
+    menu = document.getElementById('menu1');
+    menup = document.getElementById('menuP');
+    menu2 = document.getElementById('menu2');
+    if ((menu)&&(menu.style.display == "none"))
+    {
+        menup.style.display = "none";
+        menu2.style.display = "none";
+    }
+    else
+        check_1();
+}
+function setdefault (name,input){
+    document.cookie = escape(name) + "=" + escape(input) +
+    ( "" ? ";expires=" + ( new Date( ( new Date() ).getTime() + ( 1000 * lifeTime ) ) ).toGMTString() : "" ) +
+    ( "" ? ";path=" + path : "") +
+    ( "" ? ";domain=" + domain : "") +
+    ( "" ? ";secure" : "");
+}
+function Load_entry (){
+    recoverInputs(document.forms["main"],retrieveCookie('Grr_entry'),true);
+    <?php
+    if (!$id <> "")
+    {
+        ?>
+        if (!document.forms["main"].rep_type[0].checked)
+            clicMenu('1');
+        <?php
+    }
+    ?>
+}
+function Save_entry (){
+    setCookie('Grr_entry',getFormString(document.forms["main"],true),10000,"","",0,0);
+}
+function validate_and_submit (){
+    var err;
+    $("#error").html("");
+    if (document.forms["main"].benef_ext_nom)
+    {
+        if ((document.forms["main"].beneficiaire.options[0].selected) &&(document.forms["main"].benef_ext_nom.value == ""))
+        //if ((document.forms["main"].beneficiaire.value == "") &&(document.forms["main"].benef_ext_nom.value == ""))
+        {
+            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("you_have_not_entered").get_vocab("deux_points").lcfirst(get_vocab("nom beneficiaire")) ?></div>');
+            err = 1;
+        }
+    }
+    <?php if (Settings::get("remplissage_description_breve") == '1' || Settings::get("remplissage_description_breve") == '2')
+    {
+        ?>
+        if (document.forms["main"].name.value == "")
+        {
+            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("you_have_not_entered").get_vocab("deux_points").get_vocab("brief_description") ?></div>');
+            err = 1;
+        }
+        <?php
+    }
+     if (Settings::get("remplissage_description_complete") == '1')
+    {
+        ?>
+        if (document.forms["main"].description.value == "")
+        {
+            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("you_have_not_entered").get_vocab("deux_points").get_vocab("fulldescription") ?></div>');
+            err = 1;
+        }
+        <?php
+    }
+    foreach ($allareas_id as $idtmp)
+    {
+        $overload_fields = mrbsOverloadGetFieldslist($idtmp);
+        foreach ($overload_fields as $fieldname=>$fieldtype)
+        {
+            if ($overload_fields[$fieldname]["obligatoire"] == 'y')
+            {
+                if ($overload_fields[$fieldname]["type"] != "list")
+                {
+                    echo "if ((document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) && (document.forms[\"main\"].addon_".$overload_fields[$fieldname]["id"].".value == \"\")) {\n";
+                }
+                else
+                {
+                    echo "if ((document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) && (document.forms[\"main\"].addon_".$overload_fields[$fieldname]["id"].".options[0].selected == true)) {\n";
+                }
+                ?>
+					$("#error").append("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><?php echo get_vocab('required'); ?></div>");
+					err = 1;
+				}
+				<?php
+			}
+			if ($overload_fields[$fieldname]["type"] == "numeric")
+			{
+            ?>
+				if (isNaN((document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) && (document.forms['main'].addon_<?php echo $overload_fields[$fieldname]['id']?>.value))) 
+                {
+					$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo addslashes($overload_fields[$fieldname]["name"]).get_vocab("deux_points"). get_vocab("is_not_numeric") ?></div>');
+					err = 1;
+				}
+                <?php
+            }
+        }
+    }
+?>
+    if  (document.forms["main"].type.value=='0')
+    {
+        $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("choose_a_type"); ?></div>');
+        err = 1;
+    }
+    <?php
+    if (($edit_type == "series") && ($periodiciteConfig == 'y'))
+    {
+        ?>
+        i1 = parseInt(document.forms["main"].id.value);
+        i2 = parseInt(document.forms["main"].rep_id.value);
+        n = parseInt(document.forms["main"].rep_num_weeks.value);
+        if ((document.forms["main"].elements['rep_day[0]'].checked || document.forms["main"].elements['rep_day[1]'].checked || document.forms["main"].elements['rep_day[2]'].checked || document.forms["main"].elements['rep_day[3]'].checked || document.forms["main"].elements['rep_day[4]'].checked || document.forms["main"].elements['rep_day[5]'].checked || document.forms["main"].elements['rep_day[6]'].checked) && (!document.forms["main"].rep_type[2].checked))
+        {
+            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("no_compatibility_with_repeat_type"); ?></div>');
+            err = 1;
+        }
+        if ((!document.forms["main"].elements['rep_day[0]'].checked && !document.forms["main"].elements['rep_day[1]'].checked && !document.forms["main"].elements['rep_day[2]'].checked && !document.forms["main"].elements['rep_day[3]'].checked && !document.forms["main"].elements['rep_day[4]'].checked && !document.forms["main"].elements['rep_day[5]'].checked && !document.forms["main"].elements['rep_day[6]'].checked) && (document.forms["main"].rep_type[2].checked))
+        {
+            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("choose_a_day"); ?></div>');
+            err = 1;
+        }
+        <?php
+    }
+    ?>
+    if (err == 1)
+        return false;
+    document.forms["main"].submit();
+    return true;
+}
+</script>
+
+<script type="text/javascript" >
+    insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode($user_name);?>,<?php echo $id?>);
+	insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>);
+	insertTypes(<?php echo $area?>,<?php echo $room?>);
+	// insertProfilBeneficiaire();
+</script>
+<script type="text/javascript" >
+	function changeRooms( formObj )
+	{
+		areasObj = eval( "formObj.areas" );
+		area = areasObj[areasObj.selectedIndex].value
+		roomsObj = eval( "formObj.elements['rooms[]']" )
+		l = roomsObj.length;
+		for (i = l; i > 0; i-- )
+		{
+			roomsObj.options[i] = null
+		}
+		switch (area)
+		{
+			<?php
+			if ($enable_periods == 'y')
+				$sql = "SELECT id, area_name FROM ".TABLE_PREFIX."_area WHERE id='".$area."' ORDER BY area_name";
+			else
+				$sql = "SELECT id, area_name FROM ".TABLE_PREFIX."_area WHERE enable_periods != 'y' ORDER BY area_name";
+			$res = grr_sql_query($sql);
+			if ($res)
+			{
+				for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+				{
+					if (authUserAccesArea($user_name, $row[0]) == 1)
+					{
+						print "      case \"".$row[0]."\":\n";
+						$sql2 = "SELECT id, room_name FROM ".TABLE_PREFIX."_room WHERE area_id='".$row[0]."'";
+						//$tab_rooms_noaccess = verif_acces_ressource($user_name, 'all');
+                        $tab_rooms_noaccess = no_book_rooms($user_name);
+						foreach($tab_rooms_noaccess as $key)
+						{
+							$sql2 .= " AND id != $key ";
+						}
+						$sql2 .= " ORDER BY room_name";
+						$res2 = grr_sql_query($sql2);
+						if ($res2)
+						{
+							$len = grr_sql_count($res2);
+							print "roomsObj.size=".min($longueur_liste_ressources_max,$len).";\n";
+							for ($j = 0; ($row2 = grr_sql_row($res2, $j)); $j++)
+                            {
+                                print "roomsObj.options[$j] = new Option(\"".str_replace('"','\\"',$row2[1])."\",".$row2[0] .")\n";
+/*                                 if (($j == 0)&&($row[0] == 4))
+                                    $room = $row2[0]; */
+                            }
+							print "roomsObj.options[0].selected = true\n";
+						}
+						print "break\n";
+					}
+				}
+			}
+			?>
+		}
+        roomsObj = eval( "formObj.elements['rooms[]']" );
+        room = roomsObj[roomsObj.selectedIndex].value;
+        insertBeneficiaires(area,room,<?php echo json_encode($user_name).','.$id;?>);
+        insertChampsAdd(area,<?php echo $id;?>,room);
+        insertTypes(area,room);
+        //insertProfilBeneficiaire();
+	}
+    function changeRoom( formObj)
+    {	
+        areasObj = eval( "formObj.areas" );
+		area = areasObj[areasObj.selectedIndex].value
+        roomsObj = eval("formObj.elements['rooms[]']");
+        room = roomsObj[roomsObj.selectedIndex].value;
+        insertBeneficiaires(area,room,<?php echo json_encode($user_name).','.$id;?>);
+        insertChampsAdd(area,<?php echo $id;?>,room);
+        insertTypes(area,room);
+        
+    }
+</script>
+
 	<script type="text/javascript">
-		insertBeneficiaires(<?php echo $area;?>,<?php echo $room;?>,<?php echo json_encode($user_name);?>,<?php echo $id;?>);
-		insertChampsAdd(<?php echo $area; ?>,<?php echo $id; ?>,<?php echo $room; ?>);
-		insertTypes(<?php echo $area; ?>,<?php echo $room; ?>)
-	</script>
-	<script type="text/javascript">
-		$('#areas').on('change', function(){
-			$('.multiselect').multiselect('destroy');
-			$('.multiselect').multiselect();
-		});
 		$(document).ready(function() {
-			$('.multiselect').multiselect();
 			$("#select2").select2();
+            var valeur = '';
+            var formRef = document.forms['main'];
+            for (var x = 0; formRef.elements[x]; x++ ){
+                var oE = formRef.elements[x];
+                valeur += oE.name + '->' + oE.value + ' ; ';
+            }
+            $("#footer").append(valeur);
 		});
-	</script>
-	<script type="text/javascript" >
 		document.getElementById('main').name.focus();
 		<?php
 		if (isset($cookie) && $cookie)
