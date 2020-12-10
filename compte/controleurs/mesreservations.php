@@ -15,13 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-include_once('../include/connect.inc.php');
-include_once('../include/config.inc.php');
-include_once('../include/misc.inc.php');
-include_once('../include/functions.inc.php');
-require_once('../include/'.$dbsys.'.inc.php');
-require_once('../include/session.inc.php');
-include_once('../include/settings.class.php');
+
 include_once('./modeles/mesreservations.php');
 $grr_script_name = 'mesreservations.php';
 if (!Settings::load())
