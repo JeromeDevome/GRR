@@ -593,7 +593,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 		session_unset();
 	}
 
-	if($row[1] == $passwd_md5){
+	if($row[1] == $passwd_md5 && version_compare($version_grr, '4.0.0', '>=')){
 		$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password = '".$pasword_hash."' WHERE login = '".$row[0]."'";
 		$res = grr_sql_query($sql);
 		if (!$res)
