@@ -46,6 +46,10 @@ Sous-version 3.4.1e
     [correction] syntaxe
     [modification] acceptation des adresses mail en localhost
     [modification] alerte envoyée aux administrateurs de la ressource, à défaut du domaine, à défaut du site, sinon aux administrateurs généraux
+Sous-version 3.4.1f
+    [amélioration] prise en charge du protocole LDAPS
+    [correction] points mineurs du code
+    [modification] évite l'autonégociation en SMTPS
 -----
 --
 -----

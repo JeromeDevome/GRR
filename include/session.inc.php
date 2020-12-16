@@ -3,7 +3,7 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-26 12:20$
+ * Dernière modification : $Date: 2020-10-10 09:52$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -980,7 +980,6 @@ Obsolete function signature and it doesn't allow to use LDAPS
 */
       $l_uri_port = $l_port != "" ? $l_adresse.":".$l_port : $l_adresse;
       $ds = @ldap_connect($l_uri_port);
-      
 
 	if ($ds)
 	{
