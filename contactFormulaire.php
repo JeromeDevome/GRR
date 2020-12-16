@@ -3,7 +3,7 @@
  * contactFormulaire.php
  * Formulaire d'envoi de mail demandant une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-07 11:25$
+ * Dernière modification : $Date: 2020-12-16 18:00$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -43,7 +43,8 @@ if (!acces_formulaire_reservation()){
 header('Content-Type: text/html; charset=utf-8');
 if (!isset($_COOKIE['open']))
 {
-	setcookie("open", "true", time()+3600, "", "", false, false);
+	//setcookie("open", "true", time()+3600, "", "", false, false);
+    header('Set-Cookie: open=true; SameSite=Lax');
 }
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;

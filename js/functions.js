@@ -1,7 +1,7 @@
 /*
  * ./js/functions.js
  * fichier Bibliothèque de fonctions Javascript de GRR
- * Dernière modification : $Date: 2020-04-27 16:46$
+ * Dernière modification : $Date: 2020-12-16 18:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -110,39 +110,9 @@ function confirmButton(theform,themessage)
  *
  * the_form   string   the form name
  * do_check   boolean  whether to check or to uncheck the element
- * day la valaur de la boîte à cocher ou à décocher
+ * day la valeur de la boîte à cocher ou à décocher
  * return  boolean  always true
  */
- function setCheckboxesGrr(elts, do_check, day)
- {
- 	for (i = 0; i < elts.length; i++)
- 	{
- 		type = elts.type;
- 		if (type="checkbox")
- 		{
- 			if ((elts[i].value== day) || (day=='all'))
- 			{
- 				elts[i].checked = do_check;
- 			}
- 		}
- 	}
- 	return true;
-} // end of the 'setCheckboxes()' function
- function setCheckboxesGrrName(elts, do_check, day)
- {
- 	for (i = 0; i < elts.length; i++)
- 	{
- 		type = elts.type;
- 		if (type="checkbox")
- 		{
- 			if (elts[i].name== day)
- 			{
- 				elts[i].checked = do_check;
- 			}
- 		}
- 	}
- 	return true;
-} // end of the 'setCheckboxes()' function
 function _setCheckboxesGrr(the_form, do_check, day)
 {
 	var elts = document.forms[the_form];
@@ -160,11 +130,28 @@ function _setCheckboxesGrr(the_form, do_check, day)
 	return true;
 }
 // end of the 'setCheckboxes()' function
+ function setCheckboxesGrrName(elts, do_check, day)
+ {
+ 	for (i = 0; i < elts.length; i++)
+ 	{
+ 		type = elts.type;
+ 		if (type="checkbox")
+ 		{
+ 			if (elts[i].name== day)
+ 			{
+ 				elts[i].checked = do_check;
+ 			}
+ 		}
+ 	}
+ 	return true;
+} // end of the 'setCheckboxes()' function
+
 // Les quatre fonctions qui suivent servent à enregistrer un cookie
 // Elles sont utilisées par edit_entry.php pour conserver les informations de la saisie pour
 // pouvoir les récupérer lors d'une erreur.
 //Hugo
 // Voir http://www.howtocreate.co.uk/jslibs/script-saveformvalues
+// les erreurs constatées lors de l'utilisation de champs additionnels sont prévisibles : howtocreate déconseille l'utilisation des scripts lorsque le formulaire est calculé par Javascript :-(
 var FS_INCLUDE_NAMES = 0, FS_EXCLUDE_NAMES = 1, FS_INCLUDE_IDS = 2, FS_EXCLUDE_IDS = 3, FS_INCLUDE_CLASSES = 4, FS_EXCLUDE_CLASSES = 5;
 //Hugo - fonction qui récupère les informations des champs input pour les stocker dans un cookie (Voir http://www.howtocreate.co.uk/jslibs/script-saveformvalues)
 function getFormString( formRef, oAndPass, oTypes, oNames )
@@ -265,6 +252,83 @@ function recoverInputs( formRef, oStr, oAndPass, oTypes, oNames )
 		}
 	}
 }
+// alternative
+// récupère les champs d'un formulaire et les transforme en une chaîne qui sera stockée dans un cookie
+function getFormString( formRef)
+{
+     var fields = $(formRef).serializeArray();
+     var valeurs = "";
+     $.each(fields, function(i, field){
+       var valeur = field.value.replace(/%/g,'%p').replace(/,/g,'%c'); // code virgule et pourcent
+       valeurs += field.name + ":" + valeur + ",";
+     });
+     return valeurs;
+}
+// parse la chaîne issue du cookie et attribue les valeurs aux champs du formulaire
+function recoverInputs( formRef, oStr)
+{
+    if (oStr) // vérifie que le paramètre est non NULL
+    {
+        oStr = oStr.split( ',' );
+        var valeurs = "";
+        oStr.forEach(myFunction);
+        function myFunction(a){
+            a = a.split(':');
+            valeurs += a[0] + '::'+ a[1] + '??';
+        }
+     $("#panel").append(valeurs);
+    }
+}
+function recoverInputs( formRef, oStr)
+{
+    if (oStr) // vérifie que le paramètre est non NULL
+    {
+        oStr = oStr.split( ',' );
+        oVal = new Object();
+        var valeurs = "";
+        function f(s){
+            s = s.split(':');
+            oVal[s[0]] = s[1];
+        }
+        oStr.forEach(f);
+        for(var v in oVal){
+            valeurs += v + ':::' + oVal[v] + '<br>'; // remplacer par l'affectation des valeurs aux champs du formulaire document.getElementById("queryString").value = "$thisValue";
+        }
+        for (var x = 0; formRef.elements[x]; x++ )
+		{
+			if (formRef.elements[x].type)
+			{
+                var oE = formRef.elements[x];var oT = oE.type.toLowerCase();var oN = oE.name;
+				try{
+                    if (oT == 'text' || oT == 'textarea' || oT == 'password' || oT == 'datetime' || oT == 'datetime-local' || oT == 'date' || oT == 'month' || oT == 'week' || oT == 'time' || oT == 'number' || oT == 'range' || oT == 'email' || oT == 'url' )
+                    {
+                        oE.value = oVal[oN].replace(/%c/g,',').replace(/%p/g,'%'); // si oVal[oN] n'est pas défini: déclenche une erreur, d'où try
+                    }
+                    else if (oT == 'radio' || oT == 'checkbox')
+                    {
+                        oE.checked = oVal[oN] ? true : false;
+                    }
+                    else if ( oT == 'select-one')
+                    {
+                        oE.selectedIndex = parseInt( oVal[oN]);
+                    }
+                    else if ( oT == 'select-multiple')
+                    {
+                        for (var oO = oE.options, i = 0; oO[i]; i++ )
+                        {
+                            oO[i].selected = oVal[oN] ? true : false;
+                        }
+                    }
+                }
+                catch(err)
+                {
+                    continue;
+                }
+            }
+        }
+        $("#panel").append(valeurs);
+    }
+}
 function retrieveCookie(cookieName)
 {
 	/* retrieved in the format
@@ -296,7 +360,7 @@ function setCookie(cookieName, cookieValue, lifeTime, path, domain, isSecure)
 	syntax: cookieName=cookieValue[;expires=dataAsString[;path=pathAsString[;domain=domainAsString[;secure]]]]
 	Because of the way that document.cookie behaves, writing this here is equivalent to writing
 	document.cookie = whatIAmWritingNow + "; " + document.cookie; */
-	document.cookie = escape(cookieName) + "=" + escape(cookieValue) + (lifeTime ? ";expires=" + (new Date((new Date()).getTime() + (1000 * lifeTime))).toGMTString() : "") + (path ? ";path=" + path : "") + (domain ? ";domain=" + domain : "") + (isSecure ? ";secure" : "");
+	document.cookie = escape(cookieName) + "=" + escape(cookieValue) + (lifeTime ? ";expires=" + (new Date((new Date()).getTime() + (1000 * lifeTime))).toGMTString() : "") + (path ? ";path=" + path : "") + (domain ? ";domain=" + domain : "") + (isSecure ? ";secure" : "") + "; SameSite=Lax";
 	//check if the cookie has been set/deleted as required
 	if ( lifeTime < 0 )
 	{
