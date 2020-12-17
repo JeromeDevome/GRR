@@ -16,8 +16,12 @@
  * (at your option) any later version.
  */
 
+if (@file_exists('../personnalisation/connect.inc.php')){
+	include "../personnalisation/connect.inc.php";
+}else{
+	include "./personnalisation/connect.inc.php";
+}
 
-include "../personnalisation/connect.inc.php";
 include "config.inc.php";
 include "mrbs_sql.inc.php";
 include "misc.inc.php";
