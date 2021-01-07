@@ -634,23 +634,24 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 				$entry_type = 2;
 			else
 				$entry_type = 0;
-			mrbsCreateSingleEntry($starttime, $endtime, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $keys, $courrier,$nbparticipantmax);
-			$new_id = grr_sql_insert_id();
+			mrbsCreateSingleEntry($id, $starttime, $endtime, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $keys, $courrier,$nbparticipantmax);
+			if($id == 0 || $id == NULL)
+				$id = grr_sql_insert_id();
 			if (Settings::get("automatic_mail") == 'yes')
 			{
-				if (isset($id) && ($id != 0)) // ici, c'est $id ou $new_id qui convient ? YN le 18/01/2020
+				if (isset($id) && ($id != 0))
 				{
 					if ($send_mail_moderate)
-						$message_error = send_mail($new_id,5,$dformat);
+						$message_error = send_mail($id,5,$dformat);
 					else
-						$message_error = send_mail($new_id,2,$dformat, array(), $oldRessource);
+						$message_error = send_mail($id,2,$dformat, array(), $oldRessource);
 				}
 				else
 				{
 					if ($send_mail_moderate)
-						$message_error = send_mail($new_id,5,$dformat);
+						$message_error = send_mail($id,5,$dformat);
 					else
-						$message_error = send_mail($new_id,1,$dformat);
+						$message_error = send_mail($id,1,$dformat);
 				}
 			}
 		}
@@ -659,8 +660,8 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 	{
 		if ($rep_type != 0)
 			mrbsDelEntry(getUserName(), $id, "series", 1);
-		else
-			mrbsDelEntry(getUserName(), $id, NULL, 1);
+	//	else
+	//		mrbsDelEntry(getUserName(), $id, NULL, 1);
 	}
 	grr_sql_mutex_unlock("".TABLE_PREFIX."_entry");
 	$area = mrbsGetRoomArea($room_id);

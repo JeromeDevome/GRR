@@ -265,7 +265,7 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
 		$courrier = 0;
 		$nbmaxparticipant = 0;
 		$txtRetour .= date('c',$starttime)." ".date('c',$endtime)."</br>";
-		$ecriture=mrbsCreateSingleEntry($starttime, $endtime, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, 
+		$ecriture=mrbsCreateSingleEntry(0,$starttime, $endtime, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, 
 						$name, $type, $description, $option_reservation,$overload_data, $moderate, $rep_jour_c, $statut_entry, $keys, $courrier, $nbmaxparticipant);
 		$txtRetour .= $ecriture."</br>";
 		return array(true, $txtRetour);
