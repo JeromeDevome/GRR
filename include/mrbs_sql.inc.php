@@ -835,4 +835,22 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 		}
 	}
 }
+
+function PaticipationAjout($entry_id, $creator, $beneficiaire, $beneficiaire_ext)
+{
+
+	$sql = "INSERT INTO ".TABLE_PREFIX."_participants (idresa, cree_par, beneficiaire, beneficiaire_ext) VALUES (".$entry_id.", '".$creator."', '".protect_data_sql($beneficiaire)."', '".protect_data_sql($beneficiaire_ext)."' )";
+
+	if (grr_sql_command($sql) < 0)
+		fatal_error(0, "Requete error  = ".$sql);
+
+}
+
+function PaticipationAnnulation($entry_id, $beneficiaire)
+{
+	
+	grr_sql_query("DELETE FROM ".TABLE_PREFIX."_participants WHERE idresa=$entry_id AND beneficiaire='$beneficiaire'");
+
+}
+
 ?>

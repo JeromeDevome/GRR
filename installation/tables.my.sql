@@ -13,7 +13,7 @@ CREATE TABLE grr_j_useradmin_area (login varchar(40) NOT NULL default '', id_are
 DROP TABLE IF EXISTS grr_log;
 CREATE TABLE grr_log (LOGIN varchar(40) NOT NULL default '', `START` datetime NOT NULL default '1970-01-01 00:00:00', SESSION_ID varchar(64) NOT NULL default '', REMOTE_ADDR varchar(16) NOT NULL default '', USER_AGENT varchar(255) NOT NULL default '', REFERER varchar(255) NOT NULL default '', AUTOCLOSE enum('0','1') NOT NULL default '0', `END` datetime NOT NULL default '1970-01-01 00:00:00', PRIMARY KEY  (SESSION_ID,`START`));
 DROP TABLE IF EXISTS grr_log_mail;
-CREATE TABLE IF NOT EXISTS grr_log_mail (idlogmail int(11) NOT NULL AUTO_INCREMENT, date int(11) NOT NULL, de varchar(255) NOT NULL, a varchar(255) NOT NULL, sujet varchar(255) NOT NULL, message text NOT NULL, PRIMARY KEY (`idlogmail`));
+CREATE TABLE grr_log_mail (idlogmail int(11) NOT NULL AUTO_INCREMENT, date int(11) NOT NULL, de varchar(255) NOT NULL, a varchar(255) NOT NULL, sujet varchar(255) NOT NULL, message text NOT NULL, PRIMARY KEY (`idlogmail`));
 DROP TABLE IF EXISTS grr_area;
 CREATE TABLE grr_area (id int(11) NOT NULL auto_increment, area_name varchar(30) NOT NULL default '', access char(1) NOT NULL default '', order_display smallint(6) NOT NULL default '0', ip_adr varchar(15) NOT NULL default '',   morningstarts_area smallint(6) NOT NULL default '0', eveningends_area smallint(6) NOT NULL default '0', duree_max_resa_area INT NOT NULL default '-1', resolution_area INT NOT NULL default '0', eveningends_minutes_area smallint(6) NOT NULL default '0', weekstarts_area smallint(6) NOT NULL default '0', twentyfourhour_format_area smallint(6) NOT NULL default '0', calendar_default_values char(1) NOT NULL default 'y', enable_periods char(1) NOT NULL default 'n', display_days varchar(7) NOT NULL default 'yyyyyyy', id_type_par_defaut int(11) NOT NULL default '-1', duree_par_defaut_reservation_area INT NOT NULL DEFAULT '0', max_booking smallint(6) NOT NULL default '-1', PRIMARY KEY  (id));
 DROP TABLE IF EXISTS grr_entry;
@@ -53,6 +53,8 @@ CREATE TABLE grr_page ( nom varchar(30) NOT NULL, valeur longtext NOT NULL, PRIM
 INSERT INTO grr_page VALUES ('CGU', 'Les CGU');
 DROP TABLE IF EXISTS grr_modulesext;
 CREATE TABLE grr_modulesext ( nom varchar(50) NOT NULL, actif tinyint(1) NOT NULL DEFAULT '0', version INT(11) NOT NULL, PRIMARY KEY  (`nom`));
+DROP TABLE IF EXISTS grr_participants;
+CREATE TABLE grr_participants (id_participation int(11) NOT NULL auto_increment, idresa int(11) NOT NULL, timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, cree_par varchar(200) NOT NULL default '', beneficiaire varchar(200) NOT NULL default '', beneficiaire_ext varchar(200) NOT NULL default '', moderation tinyint(1) NOT NULL default '0' PRIMARY KEY  (id_participation));
 INSERT INTO grr_type_area VALUES (1, 'Cours', 1, 1, '#1abc9c', '#000000', 'A', 2);
 INSERT INTO grr_type_area VALUES (2, 'Réunion', 2, 2, '#C03000', '#000000', 'B', 2);
 INSERT INTO grr_type_area VALUES (3, 'Autre', 3, 3, '#4BB5C1', '#000000', 'C', 2);

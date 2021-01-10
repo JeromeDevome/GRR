@@ -118,7 +118,8 @@ $sql = "SELECT ".TABLE_PREFIX."_entry.name,
 ".TABLE_PREFIX."_room.active_ressource_empruntee,
 ".TABLE_PREFIX."_entry.clef,
 ".TABLE_PREFIX."_entry.courrier,
-".TABLE_PREFIX."_room.active_cle
+".TABLE_PREFIX."_room.active_cle,
+".TABLE_PREFIX."_entry.nbparticipantmax
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
 WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
 AND ".TABLE_PREFIX."_room.area_id = ".TABLE_PREFIX."_area.id
@@ -188,6 +189,7 @@ $active_ressource_empruntee = htmlspecialchars($row[20]);
 $keys						= $row[21];
 $courrier					= $row[22];
 $active_cle					= $row[23];
+$nbParticipantMax			= $row[24];
 $rep_type 					= 0;
 $verif_display_email 		= verif_display_email(getUserName(), $room_id);
 if ($verif_display_email)
@@ -440,50 +442,108 @@ if ($moderate == 1)
 }
 elseif ($moderate == 2)
 {
-$sql = "SELECT motivation_moderation, login_moderateur FROM ".TABLE_PREFIX."_entry_moderate WHERE id=".$id;
-$res = grr_sql_query($sql);
-if (!$res)
-fatal_error(0, grr_sql_error());
-$row2 = grr_sql_row($res, 0);
-$description = $row2[0];
-$sql ="SELECT nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$row2[1]."'";
-$res = grr_sql_query($sql);
-if (!$res)
-fatal_error(0, grr_sql_error());
-$row3 = grr_sql_row($res, 0);
-$nom_modo = $row3[1]. ' '. $row3[0];
-if (authGetUserLevel(getUserName(), -1) > 1)
-{
-    echo '<tr>',PHP_EOL,'<td><b>'.get_vocab("moderation").get_vocab("deux_points").'</b></td><td><strong>'.get_vocab("moderation_acceptee_par").' '.$nom_modo.'</strong>';
-    if ($description != "")
-        echo ' : <br />('.$description.')';
-    echo '</td>',PHP_EOL,'</tr>',PHP_EOL;
-}
+	$sql = "SELECT motivation_moderation, login_moderateur FROM ".TABLE_PREFIX."_entry_moderate WHERE id=".$id;
+	$res = grr_sql_query($sql);
+	if (!$res)
+	fatal_error(0, grr_sql_error());
+	$row2 = grr_sql_row($res, 0);
+	$description = $row2[0];
+	$sql ="SELECT nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$row2[1]."'";
+	$res = grr_sql_query($sql);
+	if (!$res)
+	fatal_error(0, grr_sql_error());
+	$row3 = grr_sql_row($res, 0);
+	$nom_modo = $row3[1]. ' '. $row3[0];
+	if (authGetUserLevel(getUserName(), -1) > 1)
+	{
+		echo '<tr>',PHP_EOL,'<td><b>'.get_vocab("moderation").get_vocab("deux_points").'</b></td><td><strong>'.get_vocab("moderation_acceptee_par").' '.$nom_modo.'</strong>';
+		if ($description != "")
+			echo ' : <br />('.$description.')';
+		echo '</td>',PHP_EOL,'</tr>',PHP_EOL;
+	}
 }
 elseif ($moderate == 3)
 {
-$sql = "SELECT motivation_moderation, login_moderateur from ".TABLE_PREFIX."_entry_moderate where id=".$id;
-$res = grr_sql_query($sql);
-if (!$res)
-    fatal_error(0, grr_sql_error());
-$row4 = grr_sql_row($res, 0);
-$description = $row4[0];
-$sql ="SELECT nom, prenom from ".TABLE_PREFIX."_utilisateurs where login = '".$row4[1]."'";
-$res = grr_sql_query($sql);
-if (!$res)
-    fatal_error(0, grr_sql_error());
-$row5 = grr_sql_row($res, 0);
-$nom_modo = $row5[1]. ' '. $row5[0];
-if (authGetUserLevel(getUserName(), -1) > 1)
-{
-    echo '<tr><td><b>'.get_vocab("moderation").get_vocab("deux_points").'</b></td>';
-    tdcell("avertissement");
-    echo '<strong>'.get_vocab("moderation_refusee").'</strong> par '.$nom_modo;
-    if ($description != "")
-        echo ' : <br />('.$description.')';
-    echo '</td>',PHP_EOL,'</tr>',PHP_EOL;;
+	$sql = "SELECT motivation_moderation, login_moderateur from ".TABLE_PREFIX."_entry_moderate where id=".$id;
+	$res = grr_sql_query($sql);
+	if (!$res)
+		fatal_error(0, grr_sql_error());
+	$row4 = grr_sql_row($res, 0);
+	$description = $row4[0];
+	$sql ="SELECT nom, prenom from ".TABLE_PREFIX."_utilisateurs where login = '".$row4[1]."'";
+	$res = grr_sql_query($sql);
+	if (!$res)
+		fatal_error(0, grr_sql_error());
+	$row5 = grr_sql_row($res, 0);
+	$nom_modo = $row5[1]. ' '. $row5[0];
+	if (authGetUserLevel(getUserName(), -1) > 1)
+	{
+		echo '<tr><td><b>'.get_vocab("moderation").get_vocab("deux_points").'</b></td>';
+		tdcell("avertissement");
+		echo '<strong>'.get_vocab("moderation_refusee").'</strong> par '.$nom_modo;
+		if ($description != "")
+			echo ' : <br />('.$description.')';
+		echo '</td>',PHP_EOL,'</tr>',PHP_EOL;;
+	}
 }
+
+if($nbParticipantMax > 0){
+
+	$userParticipe = false;
+	$listePaticipant = "";
+	// Compte nb de participant actuel
+	$resp = grr_sql_query("SELECT beneficiaire, timestamp FROM ".TABLE_PREFIX."_participants WHERE idresa=$id");
+    if (!$resp)
+        fatal_error(0, grr_sql_error());
+	
+	$nbParticipantInscrit = grr_sql_count($resp);
+
+	// Liste des participants
+	if ($nbParticipantInscrit > 0)
+	{
+		for ($i = 0; ($rowp = grr_sql_row($resp, $i)); $i++)
+		{
+			if( $rowp[0] == getUserName())
+				$userParticipe = true;
+
+			$listePaticipant .= "<tr><td>".affiche_nom_prenom_email($rowp[0], "", $option_affiche_nom_prenom_email)."</td><td>".$rowp[1]."</td></tr>";
+		}
+	}
+	grr_sql_free($resp);
+	
+	echo "<tr>";
+        echo "<td>";
+            echo "<h4>".get_vocab("participants").get_vocab("deux_points")."</h4>";
+        echo "</td>";
+        echo "<td>";
+		// A faire : si réservation et pas antérieur a date du jour
+		if($userParticipe == false)
+		{
+			if($nbParticipantInscrit < $nbParticipantMax)
+			{
+				$room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
+				$message_confirmation = str_replace("'", "\\'", get_vocab("participant_confirm_validation"));
+				echo "<a class=\"btn btn-primary btn-xs\" type=\"button\" href=\"participation_entry.php?id=".$id."&amp;series=0&amp;page=".$page."&amp;room_back=".$room_back." \"  onclick=\"return confirm('$message_confirmation');\" />".get_vocab("participant_validation")."</a>";
+			}
+		} else
+		{
+			$room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
+			$message_confirmation = str_replace("'", "\\'", get_vocab("participant_confirm_annulation"));
+			echo "<a class=\"btn btn-warning btn-xs\" type=\"button\" href=\"participation_entry.php?id=".$id."&amp;series=0&amp;page=".$page."&amp;room_back=".$room_back." \"  onclick=\"return confirm('$message_confirmation');\" />".get_vocab("participant_annulation")."</a>";
+		}
+		echo "</td>";
+    echo "</tr>";
+		echo "<tr>";
+        echo "<td>";
+            echo "<b>".get_vocab("participant_inscrit").get_vocab("deux_points")."</b>";
+        echo "</td>";
+		echo "<td>".$nbParticipantInscrit." / ".$nbParticipantMax."</td>";
+    echo "</tr>";
+
+	echo $listePaticipant;	
+
 }
+
 if ((getWritable($beneficiaire, getUserName(), $id)) && verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room(getUserName(), $room_id, $row[10]) && (!$was_del))
 {
     echo "<tr>";
