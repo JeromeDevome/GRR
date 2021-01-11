@@ -3,9 +3,9 @@
  * month_all.php
  * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-10-26 15:37$
+ * Dernière modification : $Date: 2021-01-11 11:32$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -329,9 +329,13 @@ else
 include $racine."/include/hook.class.php";
 // code html de la page
 header('Content-Type: text/html; charset=utf-8');
-if (!isset($_COOKIE['open']))
+/*if (!isset($_COOKIE['open']))
 {
 	setcookie("open", "true", time()+3600, "", "", false, false);
+}*/
+if (!isset($_COOKIE['open']))
+{
+	header('Set-Cookie: open=true; SameSite=Lax');
 }
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;

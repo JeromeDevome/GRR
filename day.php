@@ -3,9 +3,9 @@
  * day.php
  * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-10-28 17:00$
+ * Dernière modification : $Date: 2021-01-11 11:28$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -210,9 +210,13 @@ $langue= isset($_SESSION['default_language'])? $_SESSION['default_language']: Se
 include $racine."/include/hook.class.php";
 // code HTML
 header('Content-Type: text/html; charset=utf-8');
-if (!isset($_COOKIE['open']))
+/*if (!isset($_COOKIE['open']))
 {
 	setcookie("open", "true", time()+3600, "", "", false, false);
+}*/
+if (!isset($_COOKIE['open']))
+{
+	header('Set-Cookie: open=true; SameSite=Lax');
 }
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;

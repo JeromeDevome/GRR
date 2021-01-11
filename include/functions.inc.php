@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-10-28 17:00$
+ * Dernière modification : $Date: 2021-01-11 11:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -835,10 +835,14 @@ function begin_page($title, $page = "with_session")
 	}
 	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin;
 	header('Content-Type: text/html; charset=utf-8');
-	if (!isset($_COOKIE['open']))
+	/*if (!isset($_COOKIE['open']))
 	{
 		setcookie("open", "true", time()+3600, "", "", false, false);
-	}
+	}*/
+    if (!isset($_COOKIE['open']))
+    {
+        header('Set-Cookie: open=true; SameSite=Lax');
+    }
 	$a = '<!DOCTYPE html>'.PHP_EOL;
 	$a .= '<html lang="fr">'.PHP_EOL;
 	$a .= '<head>'.PHP_EOL;
@@ -855,7 +859,7 @@ function begin_page($title, $page = "with_session")
 		$a .= '<link rel="stylesheet" type="text/css" href="../include/admin_grr.css" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/select2.css" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/select2-bootstrap.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/jquery-ui.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/jquery-ui.min.css" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-multiselect.css">'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
@@ -899,7 +903,7 @@ function begin_page($title, $page = "with_session")
 			$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-multiselect.css">'.PHP_EOL;
 			$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
 		}
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.min.css" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
         $a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
         $a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
@@ -5537,7 +5541,7 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<link rel="stylesheet" type="text/css" href="../include/admin_grr.css" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/select2.css" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/select2-bootstrap.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/jquery-ui.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/jquery-ui.min.css" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-multiselect.css">'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
@@ -5741,11 +5745,11 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			{
 				//$parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
 				$_SESSION['chemin_retour'] = traite_grr_url($grr_script_name)."?". $_SERVER['QUERY_STRING'];
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="Français" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="Deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Español" title="Español" width="20" height="13" class="image" /></a>'.PHP_EOL;
 			}
 			if ($type_session == 'no_session')
 			{
@@ -5820,10 +5824,14 @@ function start_page_w_header($day = '', $month = '', $year = '', $type_session =
     include $racine."/include/hook.class.php";
     // code HTML
     header('Content-Type: text/html; charset=utf-8'); // en liaison avec la modification de pageHead2
-    if (!isset($_COOKIE['open']))
+    /*if (!isset($_COOKIE['open']))
 	{
 		setcookie("open", "true", time()+3600, "", "", false, false);
-	}
+	}*/
+    if (!isset($_COOKIE['open']))
+    {
+        header('Set-Cookie: open=true; SameSite=Lax');
+    }
     echo '<!DOCTYPE html>'.PHP_EOL;
     echo '<html lang="fr">'.PHP_EOL;
     // section <head>
@@ -5860,10 +5868,14 @@ function start_page_wo_header($titre, $type_session = 'with_session')
     include $racine."/include/hook.class.php";
     // code HTML
     header('Content-Type: text/html; charset=utf-8');
-    if (!isset($_COOKIE['open']))
+    /*if (!isset($_COOKIE['open']))
 	{
 		setcookie("open", "true", time()+3600, "", "", false, false);
-	}
+	}*/
+    if (!isset($_COOKIE['open']))
+    {
+        header('Set-Cookie: open=true; SameSite=Lax');
+    }
     echo '<!DOCTYPE html>'.PHP_EOL;
     echo '<html lang="fr">'.PHP_EOL;
     // section <head>

@@ -3,9 +3,9 @@
  * month.php
  * Interface d'accueil avec affichage par mois
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-10-26 09:05$
+ * Dernière modification : $Date: 2021-01-11 11:31$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -315,9 +315,13 @@ else
 }    
 // code html de la page
 header('Content-Type: text/html; charset=utf-8');
-if (!isset($_COOKIE['open']))
+/*if (!isset($_COOKIE['open']))
 {
 	setcookie("open", "true", time()+3600, "", "", false, false);
+}*/
+if (!isset($_COOKIE['open']))
+{
+	header('Set-Cookie: open=true; SameSite=Lax');
 }
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;
