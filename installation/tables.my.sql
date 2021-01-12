@@ -54,7 +54,7 @@ INSERT INTO grr_page VALUES ('CGU', 'Les CGU');
 DROP TABLE IF EXISTS grr_modulesext;
 CREATE TABLE grr_modulesext ( nom varchar(50) NOT NULL, actif tinyint(1) NOT NULL DEFAULT '0', version INT(11) NOT NULL, PRIMARY KEY  (`nom`));
 DROP TABLE IF EXISTS grr_participants;
-CREATE TABLE grr_participants (id_participation int(11) NOT NULL auto_increment, idresa int(11) NOT NULL, timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, cree_par varchar(200) NOT NULL default '', beneficiaire varchar(200) NOT NULL default '', beneficiaire_ext varchar(200) NOT NULL default '', moderation tinyint(1) NOT NULL default '0' PRIMARY KEY  (id_participation));
+CREATE TABLE grr_participants (id_participation int(11) NOT NULL auto_increment, idresa int(11) NOT NULL, timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, cree_par varchar(200) NOT NULL default '', beneficiaire varchar(200) NOT NULL default '', beneficiaire_ext varchar(200) NOT NULL default '', moderation tinyint(1) NOT NULL default '0', PRIMARY KEY (`id_participation`));
 INSERT INTO grr_type_area VALUES (1, 'Cours', 1, 1, '#1abc9c', '#000000', 'A', 2);
 INSERT INTO grr_type_area VALUES (2, 'Réunion', 2, 2, '#C03000', '#000000', 'B', 2);
 INSERT INTO grr_type_area VALUES (3, 'Autre', 3, 3, '#4BB5C1', '#000000', 'C', 2);
@@ -87,7 +87,7 @@ INSERT INTO grr_setting VALUES ('default_site', '-1');
 INSERT INTO grr_setting VALUES ('disable_login', 'no');
 INSERT INTO grr_setting VALUES ('display_beneficiaire', '1');
 INSERT INTO grr_setting VALUES ('display_full_description', '1');
-INSERT INTO grr_setting VALUES ('display_horaires', '1'
+INSERT INTO grr_setting VALUES ('display_horaires', '1');
 INSERT INTO grr_setting VALUES ('display_info_bulle', '1');
 INSERT INTO grr_setting VALUES ('display_level_email', '0');
 INSERT INTO grr_setting VALUES ('display_level_view_entry', '0');

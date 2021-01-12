@@ -3,10 +3,10 @@
  * installation/fonctions/maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-07 10:07$
+ * Dernière modification : $Date: 2021-01-12 17:33$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -734,7 +734,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('backup_date', '')");
 		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('hashpwd2', '".$hash_pwd2."')");
 		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE `password` `password` VARCHAR(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
-		$result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_participants (`id_participation` int(11) NOT NULL AUTO_INCREMENT, idresa int(11) NOT NULL, timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, cree_par varchar(200) NOT NULL default '', beneficiaire varchar(200) NOT NULL default '', beneficiaire_ext varchar(200) NOT NULL default '', moderation tinyint(1) NOT NULL default '0' PRIMARY KEY  (id_participation));");
+		$result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_participants (`id_participation` int(11) NOT NULL AUTO_INCREMENT, idresa int(11) NOT NULL, timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, cree_par varchar(200) NOT NULL default '', beneficiaire varchar(200) NOT NULL default '', beneficiaire_ext varchar(200) NOT NULL default '', moderation tinyint(1) NOT NULL default '0', PRIMARY KEY  (id_participation));");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");

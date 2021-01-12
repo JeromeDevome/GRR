@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2018-08-15
+# Last modification : 2021-01-12
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -604,7 +604,7 @@ $vocab['name'] = "Nom";
 $vocab['namebooker'] = "Brève description";
 $vocab['names'] = "Nom et prénom";
 $vocab['navigator'] = "Navigateur";
-$vocab['nb_participant_max'] = "Nombre de parcipant max";
+$vocab['nb_participant_max'] = "Nombre de participants max";
 $vocab['nb_participant_zero'] = "(0 = Ne pas activer l'option)";
 $vocab['ne_contient_pas'] = "ne contient pas";
 $vocab['necessite_fonction_mail_automatique'] = "nécessite que la fonction d'envoi automatique de mail soit activée et que le champ \"email\" de l'emprunteur soit renseignée.";
@@ -664,8 +664,8 @@ $vocab['participants'] = "Participants";
 $vocab['participant_confirm_annulation'] = "Etes vous sûr de vouloir retirer votre participation ?";
 $vocab['participant_confirm_validation'] = "Etes vous sûr de vouloir participer ?";
 $vocab['participant_annulation'] = "J'annule ma participation";
-$vocab['participant_inscrit'] = "Participants inscrit";
-$vocab['participant_validation'] = "Je m'inscrit";
+$vocab['participant_inscrit'] = "Participants inscrits";
+$vocab['participant_validation'] = "Je m'inscris";
 $vocab['pas de privileges'] = "Pas de privilèges";
 $vocab['Pas_image_disponible'] = "Pas d'image disponible";
 $vocab['passwd_error'] = "Erreur lors de la saisie du mot de passe, veuillez recommencer !";

@@ -27,17 +27,17 @@ Pour une installation simplifiée, décompressez simplement cette archive sur un
 Mise à jour
 -------------
 
-La version 4 est en cours de développement il est déconseiller de mettre à jour vos sites en production.
+La version 4 est en cours de développement il est déconseillé de mettre à jour vos sites en production.
 
-Vous devez faire une mise àjour classique en suivant la procédure habituelle ( https://site.devome.com/fr/grr/telechargement/category/2-informations-documentations?download=2:mise-a-jour-de-votre-grr) . Attention PHP 7 minimum !
+Vous devez faire une mise à jour classique en suivant la procédure habituelle ( https://site.devome.com/fr/grr/telechargement/category/2-informations-documentations?download=2:mise-a-jour-de-votre-grr) . Attention PHP 7 minimum !
 
-En plus de la mise à jour classique, veuillez rendre accessible le dossier "personnalisation" en écriture. S'est désormais dans ce dossier que vos personnalisation seront sauvegardé.
+En plus de la mise à jour classique, veuillez rendre accessible le dossier "personnalisation" en écriture. C'est désormais dans ce dossier que vos personnalisations seront sauvegardées.
 
-- Editer votre fichier connect.inc.php et ajouter la ligne suivante en y mettant 12 caractères alphanumérique
+- Editer votre fichier connect.inc.php et ajouter la ligne suivante en y mettant 12 caractères alphanumériques
 	$hashpwd1="ici vos 12 caractères";
 - Déplacer votre fichier connect.inc.php dans personnalisation
-- Si vous posséder des modules vous devez les déplacer dans le dossier "personnalisation/modules"
-- Désormais vos variables personnalé dans "config.inc.php" doivent être dans "/personnalisation/configperso.inc.php" (fichier à créer vous même, cela empèchera les prochaines mise à jour d'écraser vos modifications)
+- Si vous possédez des modules vous devez les déplacer dans le dossier "personnalisation/modules"
+- Désormais vos variables personnalisées dans "config.inc.php" doivent être dans "/personnalisation/configperso.inc.php" (fichier à créer vous-même, cela empèchera les prochaines mises à jour d'écraser vos modifications)
 
 Vous devrez importer vos images via l'administration.
 

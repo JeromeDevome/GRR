@@ -593,7 +593,7 @@ $vocab['name'] = "Name";
 $vocab['namebooker'] = "Short description";
 $vocab['names'] = "Name and first name";
 $vocab['navigator'] = "Browser";
-$vocab['nb_participant_max'] = "Nombre de parcipant max"; // A traduire
+$vocab['nb_participant_max'] = "Nombre de participants max"; // A traduire
 $vocab['nb_participant_zero'] = "(0 = Ne pas activer l'option)"; // A traduire
 $vocab['ne_contient_pas'] = "doesn't contain";
 $vocab['necessite_fonction_mail_automatique'] = "requires to activate the function of sending automatic e-mail and to fill the field \"email\" of the borrower.";
