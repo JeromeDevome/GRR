@@ -3,9 +3,9 @@
  * admin_config1.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2020-09-09 12:00$
+ * Dernière modification : $Date: 2021-01-12 10:11$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -440,6 +440,14 @@ if (isset($_POST['ok'])) {
         $ok = 'no';
     }
 }
+// nombre de calendriers
+if (isset($_POST['nb_calendar'])) {
+    settype($_POST['nb_calendar'], 'integer');
+    if (!Settings::set('nb_calendar', $_POST['nb_calendar'])) {
+        echo get_vocab('save_err')." nb_calendar !<br />";
+        die();
+    }
+}
 $demande_confirmation = 'no';
 if (isset($_POST['begin_day']) && isset($_POST['begin_month']) && isset($_POST['begin_year'])) {
     $begin_day = clean_input($_POST['begin_day']);
@@ -606,6 +614,18 @@ if ((Settings::get('logo') != '') && (@file_exists($nom_picture))) {
     echo '</tr>'.PHP_EOL;
 }
 echo '</table>'.PHP_EOL;
+echo '<h3>'.get_vocab('affichage_calendriers').'</h3>'.PHP_EOL;
+echo '<p>'.get_vocab('affichage_calendriers_msg').get_vocab('deux_points').PHP_EOL;
+echo '<select class="form-control" name="nb_calendar" >'.PHP_EOL;
+for ($k = 0; $k < 6; ++$k) {
+    echo '<option value="'.$k.'" ';
+    if (Settings::get('nb_calendar') == $k) {
+        echo ' selected="selected" ';
+    }
+    echo '>'.$k.'</option>'.PHP_EOL;
+}
+echo '</select>'.PHP_EOL;
+echo '</p>'.PHP_EOL;
 if (Settings::get('use_fckeditor') == 1) {
     echo '<script type="text/javascript" src="../js/ckeditor/ckeditor.js"></script>'.PHP_EOL;
 }
