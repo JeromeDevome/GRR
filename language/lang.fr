@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2020-10-25
+# Last modification : 2020-11-16
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -390,7 +390,7 @@ $vocab['erase_log'] = "Les entrées du journal antérieures à la date ci-dessou
 $vocab['erreur_choix_statut'] = "Vous n'avez pas les droits suffisants pour modifier ou créer un utilisateur ayant un statut d'administrateur ou de gestionnaire d'utilisateurs.";
 $vocab['error'] = "Erreur";
 $vocab['error_area'] = "Erreur : domaine ";
-$vocab['error_chevaussement'] = "Attention, réservation impossible : les créneaux de réservation et la périodicité sont tels que certains créneaux se chevauchent.";
+$vocab['error_chevauchement'] = "Attention, réservation impossible : les créneaux de réservation et la périodicité sont tels que certains créneaux se chevauchent.";
 $vocab['error_date_confirm_reservation'] = "Vous devez choisir une date de confirmation inférieure à la date de début de réservation.";
 $vocab['error_delais_max_resa_room'] = "Vous n'êtes pas autorisé à réserver cette ressource aussi longtemps à l'avance.";
 $vocab['error_delais_min_resa_room'] = "Vous n'êtes pas autorisé à réserver cette ressource ou à effectuer cette modification : le délai minimal de réservation de cette ressource est dépassé.";
@@ -1292,4 +1292,5 @@ $vocab['Display'] = "Afficher";
 $vocab['dontDisplay'] = "Ne pas afficher";
 $vocab['From_'] = "De ";
 $vocab['voir_resa'] = "Voir la réservation";
+$vocab['invalid_owner_email_address'] = "Adresse email du bénéficiaire incorrecte";
 ?>

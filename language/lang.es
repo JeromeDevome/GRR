@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2020-10-25
+# Last modification : 2020-11-16
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -379,7 +379,7 @@ $vocab['erase_log'] = "Las entradas anteriores del diario desaparecerán a la fe
 $vocab['erreur_choix_statut'] = "No tiene los derechos suficientes para modificar o crear un usuario con un estatuto de administrador o gestor de usuarios.";
 $vocab['error'] = "Error";
 $vocab['error_area'] = "Error: campo";
-$vocab['error_chevaussement'] = "Cuidado, reserva imposible: los horarios de reserva y la periodicidad generan una superposición de ciertos horarios. ";
+$vocab['error_chevauchement'] = "Cuidado, reserva imposible: los horarios de reserva y la periodicidad generan una superposición de ciertos horarios. ";
 $vocab['error_date_confirm_reservation'] = "Debe elegir una fecha de confirmación inferior a la fecha de principio de reserva.";
 $vocab['error_delais_max_resa_room'] = "No se les autorizó a reservar este recurso con tanta anticipación.";
 $vocab['error_delais_min_resa_room'] = "No se les autorizó a reservar este recurso o a efectuar esta modificación : el plazo mínimo de reserva de este recurso pasó.";
@@ -1274,4 +1274,5 @@ $vocab['Display'] = "Afficher";
 $vocab['dontDisplay'] = "Ne pas afficher";
 $vocab['From_'] = "From ";
 $vocab['voir_resa'] = "Voir la réservation";
+$vocab['invalid_owner_email_address'] = "Adresse email du bénéficiaire incorrecte";
 ?>
