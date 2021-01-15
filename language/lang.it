@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2020-10-25
+# Last modification : 2020-11-16
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -379,7 +379,7 @@ $vocab['erase_log'] = "Le entrate del giornale precedenti alla data qui di segui
 $vocab['erreur_choix_statut'] = "Non avete i diritti sufficienti per modificare o creare un utente che ha un statuto di amministratore o di gestore di utenti.";
 $vocab['error'] = "Errore";
 $vocab['error_area'] = "Errore: settore";
-$vocab['error_chevaussement'] = "Attenzione, prenotazione impossibile,: gli interstizi di prenotazione e la periodicità sono come certi interstizi si chevaussent.";
+$vocab['error_chevauchement'] = "Attenzione, prenotazione impossibile,: gli interstizi di prenotazione e la periodicità sono come certi interstizi si chevaussent.";
 $vocab['error_date_confirm_reservation'] = "dovete scegliere una data di conferma inferiore alla data di inizio di prenotazione.";
 $vocab['error_delais_max_resa_room'] = "Non siete autorizzati a riservare questa risorsa così a lungo in anticipo.";
 $vocab['error_delais_min_resa_room'] = "Non siete autorizzati a riservare questa risorsa o effettuare questa modifica: i tempo minimo di prenotazione di questa risorsa è superato.";
@@ -1271,4 +1271,5 @@ $vocab['Display'] = "Afficher";
 $vocab['dontDisplay'] = "Ne pas afficher";
 $vocab['From_'] = "From ";
 $vocab['voir_resa'] = "Voir la réservation";
+$vocab['invalid_owner_email_address'] = "Adresse email du bénéficiaire incorrecte";
 ?>

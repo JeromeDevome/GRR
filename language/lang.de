@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr
 # GRR : fichier de langue allemande
-# Last modification : 2020-10-25
+# Last modification : 2020-11-16
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -380,7 +380,7 @@ $vocab['erase_log'] = "Die vor dem nachstehenden Datum erfolgten Logbucheintragu
 $vocab['erreur_choix_statut'] = "Sie haben nicht ausreichendes Recht, um einen Benutzer als Benutzerverwalter oder Administrator zu befördern, oder zu schaffen.";
 $vocab['error'] = "Fehler";
 $vocab['error_area'] = "Fehler: Bereich ";
-$vocab['error_chevaussement'] = "Achtung, unmögliche Reservierung: Reservierungsabstände und Häufigkeit wurden so gewählt, dass sie sich selbst überlappen";
+$vocab['error_chevauchement'] = "Achtung, unmögliche Reservierung: Reservierungsabstände und Häufigkeit wurden so gewählt, dass sie sich selbst überlappen";
 $vocab['error_date_confirm_reservation'] = "Sie müssen ein Bestätigungsdatum früher als das Anfangsdatum der Reservierung wählen.";
 $vocab['error_delais_max_resa_room'] = "Sie sind nicht berechtigt, diese Ressource so lange im Voraus zu reservieren.";
 $vocab['error_delais_min_resa_room'] = "Sie sind nicht berechtigt diese Ressource zu reservieren oder diese Änderung vorzunehmen: die Mindestreservierungsfrist für diese Ressource ist überschritten.";
@@ -1279,4 +1279,5 @@ $vocab['Display'] = "Afficher";
 $vocab['dontDisplay'] = "Ne pas afficher";
 $vocab['From_'] = "From ";
 $vocab['voir_resa'] = "Siehe die Reservierung";
+$vocab['invalid_owner_email_address'] = "Adresse email du bénéficiaire incorrecte";
 ?>

@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2020-10-25
+# Last modification : 2020-11-16
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -111,7 +111,7 @@ $vocab['admin_purge_accounts.php'] = "Purge accounts and associated reservations
 $vocab['admin_purge_accounts_confirm'] = "WARNING: This action will erase all users (except general administrators), external to GRR and their privileges. Reservations associated with these accounts will not be deleted. Are you sure you want to take this action?";
 $vocab['admin_purge_accounts_confirm2'] = "WARNING: This action will erase all users (except general administrators), external to GRR and their privileges, as well as all associated reservations (past and future). Are you sure you want to take this action?";
 $vocab['admin_purge_accounts_confirm4'] = "WARNING: This action will delete all users external to GRR, except general administrators and users with privileges. Reservations associated with these accounts will not be deleted. Are you sure you want to take this action?";
-$vocab['admin_purge_accounts_desc'] = "The actions below will <b> delete </b> all user accounts that have been added through a <b> source external to GRR </b> and that are not global administrators, as well as, according to the option chosen, <b> all associated reservations </b>. <br /> Warning, <b> these actions are irreversible </b>, make sure you want to perform this deletion. <b> Make a backup of the database beforehand </b> <br /> <br /> <b> Note </b>: be sure to perform this operation without a user logged in to GRR (except the administrator) . <br /> <b> Reminder </b>: you can temporarily disable connections to GRR (menu \ "". $vocab['admin_config4.php']. "\").";
+$vocab['admin_purge_accounts_desc'] = "The actions below will <b> delete </b> all user accounts that have been added through a <b> source external to GRR </b> and that are not global administrators, as well as, according to the option chosen, <b> all associated reservations </b>. <br /> Warning, <b> these actions are irreversible </b>, make sure you want to perform this deletion. <b> Make a backup of the database beforehand </b> <br /> <br /> <b> Note </b>: be sure to perform this operation without a user logged in to GRR (except the administrator) . <br /> <b> Reminder </b>: you can temporarily disable connections to GRR (menu \"". $vocab['admin_config4.php']. "\").";
 $vocab['admin_purge_accounts_sauf_privileges'] = "Purge only external accounts that do not have privileges";
 $vocab['admin_purge_accounts_with_bookings'] = "Purge external accounts and associated reservations";
 $vocab['admin_purge_tables_confirm'] = "This action will clean up the user link tables. Do you confirm this action?";
@@ -387,7 +387,7 @@ $vocab['erase_log'] = "Record entries prior to the following date will be delete
 $vocab['erreur_choix_statut'] = "You don't have the adequate rights to modify or create a user with an administrator or a user's manager status.";
 $vocab['error'] = "Error";
 $vocab['error_area'] = "Error: area ";
-$vocab['error_chevaussement'] = "Caution, this reservation is impossible: time slots and periodicity are overlaping in a few instances. ";
+$vocab['error_chevauchement'] = "Caution, this reservation is impossible: time slots and periodicity are overlaping in a few instances. ";
 $vocab['error_date_confirm_reservation'] = "You have to choose a confirmation date prior to the start date of reservation.";
 $vocab['error_delais_max_resa_room'] = "You're not allowed to reserve this resource so long in advance.";
 $vocab['error_end_date'] = "Error in the end date of reservation";
@@ -406,7 +406,7 @@ $vocab['eveningends_minutes_area'] = "Number of minutes to be added at the close
 $vocab['every week'] = "every week";
 $vocab['exclude_type_in_views_all'] = "Here You can define a type that will not be displayed in views per domain (week_all, month_all, month_all2, year et year_all).";
 $vocab['execution automatique backup'] = "Automatic backup execution"; 
-$vocab['execution automatique backup explications'] = "An automatic backup can be triggered by executing the "admin_save_mysql.php" script, for example by scheduling its execution using a "cron" job.
+$vocab['execution automatique backup explications'] = "An automatic backup can be triggered by executing the \"admin_save_mysql.php\" script, for example by scheduling its execution using a \"cron\" job.
 <br />
 To enable this feature, you need to set a password below.
 <br /> For example, if the password is jamesbond007, the URL of the type: <b> http://mon-site.fr/grr/admin_save_mysql.php?mdp=jamesbond007 </b> will trigger the backup .
@@ -418,7 +418,7 @@ $vocab['explain_automatic_mail1'] = "When a user <b>reserves a resource, </b>, <
 $vocab['explain_automatic_mail2'] = "Besides, when a user <b>reserves a resource</b>, <b>modifies</b> or <b>deletes</b> a reservation, some users may be informed by e-mail. For each resource, you can select one or several users who will be informed of the change:";
 $vocab['explain_automatic_mail3'] = " When a user <b>reserves a resource</b>, <b>modifies </b> or <b>deletes </b> a reservation in the name of another user, the latter (if the field e-mail was filled in) is automatically warned by e-mail.";
 $vocab['explain_backup'] = "Creation of a complete backup file of GRR database.In case of a problem on GRR database, use a tool such as PHPMYADMIN to restore database.";
-$vocab['explain_champs recherche'] = "In the case of HTTP authentication, it is possible to attempt to retrieve the names, first names and email addresses of the users using the information contained in the \ $ _ SERVER table and transmitted by the authentication system. <br /> <br /> For example, if \ $ _ SERVER [\ "sn \"] contains the name of the user, indicate \"sn \" in the first field below. Likewise indicate \"givenName \" in the second line if \ $ _ SERVER [\ "givenName \"] contains the first name and indicate \"mail \" in the third line if \ $ _ SERVER [\ "mail \"] contains the mail.";
+$vocab['explain_champs recherche'] = "In the case of HTTP authentication, it is possible to attempt to retrieve the names, first names and email addresses of the users using the information contained in the \ $ _ SERVER table and transmitted by the authentication system. <br /> <br /> For example, if \ $ _ SERVER [\"sn \"] contains the name of the user, indicate \"sn \" in the first field below. Likewise indicate \"givenName \" in the second line if \$ _ SERVER [\"givenName \"] contains the first name and indicate \"mail \" in the third line if \ $ _ SERVER [\"mail \"] contains the mail.";
 $vocab['explain_css'] = "Select style/theme";
 $vocab['explain_default_area_and_room'] = "Area and resource by default";
 $vocab['explain_default_area_and_room_and_site'] = "Site, area and resource by default";
@@ -1289,4 +1289,5 @@ $vocab['Display'] = "Display";
 $vocab['dontDisplay'] = "Don't display";
 $vocab['From_'] = "From ";
 $vocab['voir_resa'] = "See the booking";
+$vocab['invalid_owner_email_address'] = "Invalid owner email address";
 ?>
