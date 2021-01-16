@@ -4,13 +4,13 @@ Bugs connus sur la version de GitHub :
  - l'entrée des couleurs des types doit se faire dans l'ordre texte PUIS fond si on veut prendre une couleur prédéfinie
 
 Tâches prévues :
- - gestion des accès au niveau de la ressource (et pas seulement au niveau des domaines)
  - authentification liée à Joomla!
+ - gestion des champs additionnels sur plusieurs domaines
 -----
 --
 -----
 
-Version 3.4.2 RC1 (en cours de développement : pour l'installation, partez de zéro, restaurez vos anciennes données si vous en avez, procédez à la mise à jour des tables quand le logiciel le demande)
+Version 3.4.2 RC1 
     ajout : fonctionnalité de limitation du quota de réservations sur une période
     ajout : indicateur de complexité de MDP + mes réservations + refonte de la page my_account.php
     ajout : popup de visualisation des administrateurs de site
@@ -72,6 +72,16 @@ Sous-version 3.4.1d
     [correction] syntaxe php et html
     [correction] visibilité du bouton toTop
     [mises à jour] ckeditor v.4.14, phpCAS V.1.38, phpmailer v.5.2.28, floatThead v.2.1.4, vacances.xml
+Sous-version 3.4.1e
+    [amélioration] internationalisation
+    [correction] nom du bénéficiaire en modification d'une réservation existante
+    [correction] syntaxe
+    [modification] acceptation des adresses mail en localhost
+    [modification] alerte envoyée aux administrateurs de la ressource, à défaut du domaine, à défaut du site, sinon aux administrateurs généraux
+Sous-version 3.4.1f
+    [amélioration] prise en charge du protocole LDAPS
+    [correction] points mineurs du code
+    [modification] évite l'autonégociation en SMTPS
 -----
 --
 -----

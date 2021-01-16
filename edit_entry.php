@@ -3,9 +3,9 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-07-09 17:30$
+ * Dernière modification : $Date: 2021-01-16 10:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -341,7 +341,7 @@ pageHeader2($day, $month, $year, $type_session);
 echo "</header>";
 // Debut de la page
 echo '<section>'.PHP_EOL;
-print_r($_COOKIE);
+//print_r($_COOKIE);
 if ($id == 0)
 	$A = get_vocab("addentry");
 else
@@ -1091,7 +1091,8 @@ function setdefault (name,input){
     ( "" ? ";expires=" + ( new Date( ( new Date() ).getTime() + ( 1000 * lifeTime ) ) ).toGMTString() : "" ) +
     ( "" ? ";path=" + path : "") +
     ( "" ? ";domain=" + domain : "") +
-    ( "" ? ";secure" : "");
+    ( "" ? ";secure" : ""); + 
+    "; SameSite=Lax";
 }
 function Load_entry (){
     recoverInputs(document.forms["main"],retrieveCookie('Grr_entry'),true);
@@ -1204,108 +1205,94 @@ function validate_and_submit (){
     document.forms["main"].submit();
     return true;
 }
-</script>
-
-<script type="text/javascript" >
-    insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode($user_name);?>,<?php echo $id?>);
-	insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>);
-	insertTypes(<?php echo $area?>,<?php echo $room?>);
-	// insertProfilBeneficiaire();
-</script>
-<script type="text/javascript" >
-	function changeRooms( formObj )
-	{
-		areasObj = eval( "formObj.areas" );
-		area = areasObj[areasObj.selectedIndex].value
-		roomsObj = eval( "formObj.elements['rooms[]']" )
-		l = roomsObj.length;
-		for (i = l; i > 0; i-- )
-		{
-			roomsObj.options[i] = null
-		}
-		switch (area)
-		{
-			<?php
-			if ($enable_periods == 'y')
-				$sql = "SELECT id, area_name FROM ".TABLE_PREFIX."_area WHERE id='".$area."' ORDER BY area_name";
-			else
-				$sql = "SELECT id, area_name FROM ".TABLE_PREFIX."_area WHERE enable_periods != 'y' ORDER BY area_name";
-			$res = grr_sql_query($sql);
-			if ($res)
-			{
-				for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-				{
-					if (authUserAccesArea($user_name, $row[0]) == 1)
-					{
-						print "      case \"".$row[0]."\":\n";
-						$sql2 = "SELECT id, room_name FROM ".TABLE_PREFIX."_room WHERE area_id='".$row[0]."'";
-						//$tab_rooms_noaccess = verif_acces_ressource($user_name, 'all');
-                        $tab_rooms_noaccess = no_book_rooms($user_name);
-						foreach($tab_rooms_noaccess as $key)
-						{
-							$sql2 .= " AND id != $key ";
-						}
-						$sql2 .= " ORDER BY room_name";
-						$res2 = grr_sql_query($sql2);
-						if ($res2)
-						{
-							$len = grr_sql_count($res2);
-							print "roomsObj.size=".min($longueur_liste_ressources_max,$len).";\n";
-							for ($j = 0; ($row2 = grr_sql_row($res2, $j)); $j++)
-                            {
-                                print "roomsObj.options[$j] = new Option(\"".str_replace('"','\\"',$row2[1])."\",".$row2[0] .")\n";
-/*                                 if (($j == 0)&&($row[0] == 4))
-                                    $room = $row2[0]; */
-                            }
-							print "roomsObj.options[0].selected = true\n";
-						}
-						print "break\n";
-					}
-				}
-			}
-			?>
-		}
-        roomsObj = eval( "formObj.elements['rooms[]']" );
-        room = roomsObj[roomsObj.selectedIndex].value;
-        insertBeneficiaires(area,room,<?php echo json_encode($user_name).','.$id;?>);
-        insertChampsAdd(area,<?php echo $id;?>,room);
-        insertTypes(area,room);
-        //insertProfilBeneficiaire();
-	}
-    function changeRoom( formObj)
-    {	
-        areasObj = eval( "formObj.areas" );
-		area = areasObj[areasObj.selectedIndex].value
-        roomsObj = eval("formObj.elements['rooms[]']");
-        room = roomsObj[roomsObj.selectedIndex].value;
-        insertBeneficiaires(area,room,<?php echo json_encode($user_name).','.$id;?>);
-        insertChampsAdd(area,<?php echo $id;?>,room);
-        insertTypes(area,room);
-        
+function changeRooms( formObj )
+{
+    areasObj = eval( "formObj.areas" );
+    area = areasObj[areasObj.selectedIndex].value
+    roomsObj = eval( "formObj.elements['rooms[]']" )
+    l = roomsObj.length;
+    for (i = l; i > 0; i-- )
+    {
+        roomsObj.options[i] = null
     }
+    switch (area)
+    {
+        <?php
+        if ($enable_periods == 'y')
+            $sql = "SELECT id, area_name FROM ".TABLE_PREFIX."_area WHERE id='".$area."' ORDER BY area_name";
+        else
+            $sql = "SELECT id, area_name FROM ".TABLE_PREFIX."_area WHERE enable_periods != 'y' ORDER BY area_name";
+        $res = grr_sql_query($sql);
+        if ($res)
+        {
+            for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+            {
+                if (authUserAccesArea($user_name, $row[0]) == 1)
+                {
+                    print "      case \"".$row[0]."\":\n";
+                    $sql2 = "SELECT id, room_name FROM ".TABLE_PREFIX."_room WHERE area_id='".$row[0]."'";
+                    //$tab_rooms_noaccess = verif_acces_ressource($user_name, 'all');
+                    $tab_rooms_noaccess = no_book_rooms($user_name);
+                    foreach($tab_rooms_noaccess as $key)
+                    {
+                        $sql2 .= " AND id != $key ";
+                    }
+                    $sql2 .= " ORDER BY room_name";
+                    $res2 = grr_sql_query($sql2);
+                    if ($res2)
+                    {
+                        $len = grr_sql_count($res2);
+                        print "roomsObj.size=".min($longueur_liste_ressources_max,$len).";\n";
+                        for ($j = 0; ($row2 = grr_sql_row($res2, $j)); $j++)
+                        {
+                            print "roomsObj.options[$j] = new Option(\"".str_replace('"','\\"',$row2[1])."\",".$row2[0] .")\n";
+/*                                 if (($j == 0)&&($row[0] == 4))
+                                $room = $row2[0]; */
+                        }
+                        print "roomsObj.options[0].selected = true\n";
+                    }
+                    print "break\n";
+                }
+            }
+        }
+        ?>
+    }
+    roomsObj = eval( "formObj.elements['rooms[]']" );
+    room = roomsObj[roomsObj.selectedIndex].value;
+    insertBeneficiaires(area,room,<?php echo json_encode($user_name).','.$id;?>);
+    insertChampsAdd(area,<?php echo $id;?>,room);
+    insertTypes(area,room);
+}
+function changeRoom( formObj)
+{	
+    areasObj = eval( "formObj.areas" );
+    area = areasObj[areasObj.selectedIndex].value
+    roomsObj = eval("formObj.elements['rooms[]']");
+    room = roomsObj[roomsObj.selectedIndex].value;
+    insertBeneficiaires(area,room,<?php echo json_encode($user_name).','.$id;?>);
+    insertChampsAdd(area,<?php echo $id;?>,room);
+    insertTypes(area,room);
+    
+}
 </script>
 
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#select2").select2();
-            var valeur = '';
-            var formRef = document.forms['main'];
-            for (var x = 0; formRef.elements[x]; x++ ){
-                var oE = formRef.elements[x];
-                valeur += oE.name + '->' + oE.value + ' ; ';
-            }
-            $("#footer").append(valeur);
-		});
-		document.getElementById('main').name.focus();
-		<?php
-		if (isset($cookie) && $cookie)
-			echo "check_4();";
-		if (($id <> "") && (!isset($flag_periodicite)))
-			echo "clicMenu('1'); check_5();\n";
-		if (isset($Err) && $Err == "yes")
-			echo "timeoutID = window.setTimeout(\"Load_entry();check_5();\",500);\n";
-		?>
-	</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".select2").select2();
+        insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode($user_name);?>,<?php echo $id?>);
+        insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>);
+        insertTypes(<?php echo $area?>,<?php echo $room?>);
+    });
+    document.getElementById('main').name.focus();
+    <?php
+    if (isset($cookie) && $cookie)
+        echo "check_4();";
+    if (($id <> "") && (!isset($flag_periodicite)))
+        echo "clicMenu('1'); check_5();\n";
+    if (isset($Err) && $Err == "yes")
+        echo "timeoutID = window.setTimeout(\"Load_entry();check_5();\",500);\n";
+    ?>
+</script>
 </section>
 </body>
 </html>
