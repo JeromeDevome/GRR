@@ -22,18 +22,37 @@ class Import {
 
 		$msg = "";
 
+		$erreurDefautUpload = array(
+			0=>"",
+			1=>"La taille du fichier téléchargé excède la valeur de upload_max_filesize, configurée dans le php.ini",
+			2=>"La taille du fichier téléchargé excède la valeur de MAX_FILE_SIZE, qui a été spécifiée dans le formulaire HTML.",
+			3=>"Le fichier n'a été que partiellement téléchargé.",
+			4=>"Aucun fichier n'a été téléchargé.",
+			6=>"Un dossier temporaire est manquant.",
+			7=>"Échec de l'écriture du fichier sur le disque.",
+			8=>"Une extension PHP a arrêté l'envoi de fichier."
+		);
+
 		$doc_file = isset($_FILES["doc_file"]) ? $_FILES["doc_file"] : NULL;
-        /* Test premier, juste pour bloquer les double extensions */
-        if (count(explode('.', $doc_file['name'])) > 2) {
+
+		if($doc_file['error'] > 0)
+		{
+			$msg .= $erreurDefautUpload[$doc_file['error']];
+		}
+		/* Test pour bloquer les double extensions */
+        elseif (count(explode('.', $doc_file['name'])) > 2)
+		{
             $msg .= "L\'image n\'a pas pu être enregistrée : les seules extentions autorisées sont gif, png et jpg.\\n";
-        } 
-        elseif  (preg_match("`\.([^.]+)$`", $doc_file['name'], $match)) {
+        }
+        elseif  (preg_match("`\.([^.]+)$`", $doc_file['name'], $match))
+		{
             $ext = strtolower($match[1]);
             if ($ext != 'jpg' && $ext != 'png'&& $ext != 'gif')
             {
                 $msg .= "L\'image n\'a pas pu etre enregistree : les seules extentions autorisees sont gif, png et jpg.\\n";
             }
-            else {
+            else
+			{
                 /* deuxième test passé, l'extension est autorisée */
                 /* 3ème test avec fileinfo */
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -65,7 +84,8 @@ class Import {
                         break;
                 }
             }
-            if (!$logoRecreated || $extSafe === false) {
+            if (!$logoRecreated || $extSafe === false)
+			{
                 /* la fonction imagecreate a échoué, donc l'image est corrompue ou craftée */
                 $msg .= "L\'image n\'a pas pu être enregistrée : fichier corrompu.\\n";
             }
