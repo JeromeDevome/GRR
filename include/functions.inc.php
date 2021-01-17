@@ -3905,11 +3905,13 @@ function MajMysqlModeDemo() {
  *
  * Returns: Nothing
  */
-function showAccessDenied($back)
+function showAccessDenied($back, $infodebug = '')
 {
-	global $vocab;
+	global $vocab, $debug_flag;
 	echo '<h1>'.get_vocab("accessdenied").'</h1>';
 	echo '<p>'.get_vocab("norights").'</p>';
+	if($debug_flag)
+		echo '<p>'.$infodebug.'</p>';
 	echo '<p><a href="'.$back.'">'.get_vocab("returnprev").'</a></p>';
 	end_page();
 }
