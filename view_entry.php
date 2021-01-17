@@ -516,10 +516,9 @@ if($nbParticipantMax > 0){
             echo "<h4>".get_vocab("participants").get_vocab("deux_points")."</h4>";
         echo "</td>";
         echo "<td>";
-		// A faire : si réservation et pas antérieur a date du jour
 		if($userParticipe == false)
 		{
-			if($nbParticipantInscrit < $nbParticipantMax)
+			if( ($nbParticipantInscrit < $nbParticipantMax) && (verif_participation_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods)) || (!(verif_participation_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")) )
 			{
 				$room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
 				$message_confirmation = str_replace("'", "\\'", get_vocab("participant_confirm_validation"));
@@ -527,9 +526,12 @@ if($nbParticipantMax > 0){
 			}
 		} else
 		{
-			$room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
-			$message_confirmation = str_replace("'", "\\'", get_vocab("participant_confirm_annulation"));
-			echo "<a class=\"btn btn-warning btn-xs\" type=\"button\" href=\"participation_entry.php?id=".$id."&amp;series=0&amp;page=".$page."&amp;room_back=".$room_back." \"  onclick=\"return confirm('$message_confirmation');\" />".get_vocab("participant_annulation")."</a>";
+			if( verif_participation_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods) || (!(verif_participation_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")))
+			{
+				$room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
+				$message_confirmation = str_replace("'", "\\'", get_vocab("participant_confirm_annulation"));
+				echo "<a class=\"btn btn-warning btn-xs\" type=\"button\" href=\"participation_entry.php?id=".$id."&amp;series=0&amp;page=".$page."&amp;room_back=".$room_back." \"  onclick=\"return confirm('$message_confirmation');\" />".get_vocab("participant_annulation")."</a>";
+			}
 		}
 		echo "</td>";
     echo "</tr>";

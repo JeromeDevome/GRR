@@ -53,19 +53,30 @@ if ($info = mrbsGetEntryInfo($id))
 	$back = "";
 	if (isset($_SERVER['HTTP_REFERER']))
 		$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-	if (authGetUserLevel(getUserName(), -1) < 1)
+	
+	$authGetUserLevel = authGetUserLevel(getUserName(), -1);
+	if ($authGetUserLevel < 1)
 	{
-		showAccessDenied($back);
+		showAccessDenied($back, 'authGetUserLevel');
 		exit();
 	}
-	if (!getWritable($info["beneficiaire"], getUserName(), $id))
+
+	$lvl_participation = grr_sql_query1("SELECT ".TABLE_PREFIX."_room.active_participant FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id AND ".TABLE_PREFIX."_entry.id='".$id."'");
+
+	if ($lvl_participation < 1)
 	{
-		showAccessDenied($back);
+		showAccessDenied($back, 'lvl_participationInf1');
 		exit;
 	}
+	if($authGetUserLevel < $lvl_participation)
+	{
+		showAccessDenied($back, 'authGetUserLevel_Inf_Lvl_participation');
+		exit;
+	}	
+
 	if (authUserAccesArea(getUserName(), $area) == 0)
 	{
-		showAccessDenied($back);
+		showAccessDenied($back, 'authUserAccesArea');
 		exit();
 	}
 	//if (Settings::get("automatic_mail") == 'yes')
@@ -73,9 +84,9 @@ if ($info = mrbsGetEntryInfo($id))
 	$room_id = grr_sql_query1("SELECT ".TABLE_PREFIX."_entry.room_id FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id AND ".TABLE_PREFIX."_entry.id='".$id."'");
 	$date_now = time();
 	get_planning_area_values($area);
-	if ((!(verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods))) || ((verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")))
+	if ((!(verif_participation_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods))) || ((verif_participation_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")))
 	{
-		showAccessDenied($back);
+		showAccessDenied($back, 'verif_participation_date');
 		exit();
 	}
 
@@ -88,7 +99,22 @@ if ($info = mrbsGetEntryInfo($id))
     if (grr_sql_count($res) >= 1)
 		PaticipationAnnulation($id, getUserName());
 	else
-		PaticipationAjout($id, getUserName(), getUserName(),'');
+	{
+		$resp = grr_sql_query("SELECT beneficiaire FROM ".TABLE_PREFIX."_participants WHERE idresa=$id");
+		if (!$resp)
+			fatal_error(0, grr_sql_error());
+		
+		$maxParticipant = grr_sql_query1("SELECT nbparticipantmax FROM ".TABLE_PREFIX."_entry WHERE id='".$id."'");
+
+		if (grr_sql_count($resp) < $maxParticipant)
+			PaticipationAjout($id, getUserName(), getUserName(),'');
+		else
+		{
+			showAccessDenied($back, 'maxParticipant');
+			exit();
+		}
+		
+	}
 
 	grr_sql_free($res);
 
@@ -102,5 +128,5 @@ if ($info = mrbsGetEntryInfo($id))
 		exit();
 	}
 }
-showAccessDenied($back);
+showAccessDenied($back, 'defaut');
 ?>

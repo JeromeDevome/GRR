@@ -3697,6 +3697,92 @@ function UserRoomMaxBooking($user, $id_room, $number)
  		return false;
  	return true;
  }
+
+
+
+/* function verif_participation_date($user, $id, $date_booking, $date_now)
+ $user : le login de l'utilisateur
+ $id : l'id de la résa. Si -1, il s'agit d'une nouvelle réservation
+ $id_room : id de la ressource
+ $date_booking : la date de la réservation (n'est utile que si $id=-1)
+ $date_now : la date actuelle
+*/
+ /**
+  * @param string $date_booking
+  * @param integer $date_now
+  */
+ function verif_participation_date($user, $id, $id_room, $date_booking, $date_now, $enable_periods, $endtime = '')
+ {
+ 	global $correct_diff_time_local_serveur, $can_delete_or_create;
+ 	$can_delete_or_create = "y";
+	// On teste si l'utilisateur est administrateur
+ 	$sql = "SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".protect_data_sql($user)."'";
+ 	$statut_user = grr_sql_query1($sql);
+ 	if ($statut_user == 'administrateur')
+ 		return true;
+	// Correction de l'avance en nombre d'heure du serveur sur les postes clients
+ 	if ((isset($correct_diff_time_local_serveur)) && ($correct_diff_time_local_serveur!=0))
+ 		$date_now -= 3600 * $correct_diff_time_local_serveur;
+	// Créneaux basés sur les intitulés
+	// Dans ce cas, on prend comme temps présent le jour même à minuit.
+	// Cela signifie qu'il est possible de modifier/réserver/supprimer tout au long d'une journée
+	// même si l'heure est passée.
+	// Cela demande donc à être améliorer en introduisant pour chaque créneau une heure limite de réservation.
+ 	if ($enable_periods == "y")
+ 	{
+ 		$month = date("m",$date_now);
+ 		$day = date("d",$date_now);
+ 		$year = date("Y",$date_now);
+ 		$date_now = mktime(0, 0, 0, $month, $day, $year);
+ 	}
+ 	if ($id != -1)
+ 	{
+		// il s'agit de l'edition d'une réservation existante
+ 		if (($endtime != '') && ($endtime < $date_now))
+ 			return false;
+ 		if ((Settings::get("allow_user_delete_after_begin") == 1) || (Settings::get("allow_user_delete_after_begin") == 2))
+ 			$sql = "SELECT end_time FROM ".TABLE_PREFIX."_entry WHERE id = '".protect_data_sql($id)."'";
+ 		else
+ 			$sql = "SELECT start_time FROM ".TABLE_PREFIX."_entry WHERE id = '".protect_data_sql($id)."'";
+ 		$date_booking = grr_sql_query1($sql);
+ 		if ($date_booking < $date_now)
+ 			return false;
+ 		else
+ 		{
+			// dans le cas où le créneau est entamé, on teste si l'utilisateur a le droit de supprimer la réservation
+			// Si oui, on transmet la variable $only_modify = true avant que la fonction de retourne true.
+ 			if (Settings::get("allow_user_delete_after_begin") == 2)
+ 			{
+ 				$date_debut = grr_sql_query1("SELECT start_time FROM ".TABLE_PREFIX."_entry WHERE id = '".protect_data_sql($id)."'");
+ 				if ($date_debut < $date_now)
+ 					$can_delete_or_create = "n";
+ 				else
+ 					$can_delete_or_create = "y";
+ 			}
+ 			return true;
+ 		}
+ 	}
+ 	else
+ 	{
+ 		if (Settings::get("allow_user_delete_after_begin") == 1)
+ 		{
+ 			$id_area = grr_sql_query1("select area_id from ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($id_room)."'");
+ 			$resolution_area = grr_sql_query1("select resolution_area from ".TABLE_PREFIX."_area WHERE id = '".$id_area."'");
+ 			if ($date_booking > $date_now - $resolution_area)
+ 				return true;
+ 			return false;
+ 		}
+ 		else
+ 		{
+ 			if ($date_booking > $date_now)
+ 				return true;
+ 			return false;
+ 		}
+ 	}
+ }
+
+ 
+
 // function verif_access_search : vérifier l'accès à l'outil de recherche
 // $user : le login de l'utilisateur
 // $id_room : l'id de la ressource.
