@@ -224,17 +224,20 @@ $dossier = '../personnalisation/'.$gcDossierImg.'/ressources/'.$room.'/';
 			grr_sql_command("UPDATE ".TABLE_PREFIX."_room SET room_name='".protect_data_sql($room_name)."' WHERE id=$room");
 		}
 		// image d'illustration
-		list($nomImage, $resultImport) = Import::Image($dossier, $room);
+		if (!empty($_FILES['doc_file']['tmp_name']))
+		{
+			list($nomImage, $resultImport) = Import::Image($dossier, $room);
 
-		if($resultImport == ""){
-			$sql_picture = "UPDATE ".TABLE_PREFIX."_room SET picture_room='".protect_data_sql($nomImage)."' WHERE id=".protect_data_sql($room);
-			if (grr_sql_command($sql_picture) < 0)
-			{
-				fatal_error(0, get_vocab('update_room_failed') . grr_sql_error());
+			if($resultImport == ""){
+				$sql_picture = "UPDATE ".TABLE_PREFIX."_room SET picture_room='".protect_data_sql($nomImage)."' WHERE id=".protect_data_sql($room);
+				if (grr_sql_command($sql_picture) < 0)
+				{
+					fatal_error(0, get_vocab('update_room_failed') . grr_sql_error());
+				}
+			} else {
+				$msg .= $resultImport;
+				$ok = 'no';
 			}
-		} else {
-			$msg .= $resultImport;
-			$ok = 'no';
 		}
 
         $msg .= get_vocab("message_records");

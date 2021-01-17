@@ -113,16 +113,19 @@ if (isset($_POST['ok'])) {
     }
 
     // Enregistrement du logo
-	list($nomImage, $resultImport) = Import::Image($dossier, 'logo');
+	if (!empty($_FILES['doc_file']['tmp_name']))
+	{
+		list($nomImage, $resultImport) = Import::Image($dossier, 'logo');
 
-	if($resultImport == ""){
-		if (!Settings::set('logo', $nomImage)) {
-			$msg .= "Erreur lors de l'enregistrement du logo !\\n";
+		if($resultImport == ""){
+			if (!Settings::set('logo', $nomImage)) {
+				$msg .= "Erreur lors de l'enregistrement du logo !\\n";
+				$ok = 'no';
+			}
+		} else {
+			$msg .= $resultImport;
 			$ok = 'no';
 		}
-	} else {
-		$msg .= $resultImport;
-		$ok = 'no';
 	}
 }
 // nombre de calendriers
