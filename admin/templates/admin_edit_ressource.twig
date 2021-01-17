@@ -188,7 +188,11 @@
 							<div class="form-group col-sm-12">
 								<label class="col-sm-8" for="active_participant">{{ trad.activer_fonctionalite_participant }}</label>
 								<div class="col-sm-4">
-									<input type="checkbox" name="active_participant" value="y" {% if ressource.active_participant == 'y' %} checked {% endif %}>
+									<select class="form-control" name="active_participant">
+										<option value="0" {% if ressource.active_participant == 0 %} selected {% endif %}>{{ trad.personne }}</option>
+										<option value="1" {% if ressource.active_participant == 1 %} selected {% endif %}>{{ trad.visu_fiche_description1 }}</option>
+										<option value="2" {% if ressource.active_participant == 2 %} selected {% endif %}>{{ trad.visu_fiche_description2 }}</option>
+									</select>
 								</div>
 							</div>
 

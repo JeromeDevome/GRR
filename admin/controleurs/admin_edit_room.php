@@ -58,12 +58,8 @@ else
 	// toutes les reservations sont considerees comme restituee
 	grr_sql_query("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id = '".$room."'");
 }
-if (isset($_POST["active_participant"]))
-	$active_participant = 'y';
-else
-{
-	$active_participant = 'n';
-}
+
+$active_participant = isset($_POST["active_participant"]) ? $_POST["active_participant"] : NULL;
 $picture_room = isset($_POST["picture_room"]) ? $_POST["picture_room"] : NULL;
 $comment_room = isset($_POST["comment_room"]) ? $_POST["comment_room"] : NULL;
 $show_comment = isset($_POST["show_comment"]) ? "y" : "n";
@@ -361,6 +357,8 @@ $dossier = '../personnalisation/'.$gcDossierImg.'/ressources/'.$room.'/';
 		get_vocab_admin("activer_fonctionalite_ressource_empruntee_restituee");
 		get_vocab_admin("activer_fonctionalite_gestion_cle");
 		get_vocab_admin("activer_fonctionalite_participant");
+		get_vocab_admin("visu_fiche_description1");
+		get_vocab_admin("visu_fiche_description2");
 
 		get_vocab_admin("back");
 		get_vocab_admin("save");

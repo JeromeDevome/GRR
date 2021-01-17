@@ -773,7 +773,7 @@ echo '<div id="div_champs_add">'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;
 
-if($active_participant == 'y'){
+if($active_participant > 0){
 	echo '<tr><td class="E"><br>'.PHP_EOL;
 	echo '<b>'.get_vocab("nb_participant_max").get_vocab("deux_points").'</b>'.PHP_EOL;
 	echo '<input name="nbparticipantmax" type="number" value="'.$nbparticipantmax.'" > '.get_vocab("nb_participant_zero");
