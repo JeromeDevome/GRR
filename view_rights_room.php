@@ -62,7 +62,7 @@ if ($area_access == 'r')
 echo ")";
 echo "</h3>";
 // On affiche pour les administrateurs les utilisateurs ayant des privilèges sur cette ressource
-echo "\n<h2>".get_vocab('utilisateurs ayant privileges')."</h2>";
+echo "\n<h2>".get_vocab('utilisateurs_ayant_privileges')."</h2>";
 $a_privileges = 'n';
 // on teste si des utilateurs administre le domaine
 $req_admin = "SELECT u.login, u.nom, u.prenom  FROM ".TABLE_PREFIX."_utilisateurs u left join ".TABLE_PREFIX."_j_useradmin_area j on u.login=j.login WHERE j.id_area = '".$id_area."' order by u.nom, u.prenom";
@@ -76,7 +76,7 @@ if ($res_admin)
 if ($is_admin != '')
 {
 	$a_privileges = 'y';
-	echo "\n<h3><b>".get_vocab("utilisateurs administrateurs")."</b></h3>";
+	echo "\n<h3><b>".get_vocab("utilisateurs_administrateurs")."</b></h3>";
 	echo "<p>".$is_admin."</p>";
 }
 // On teste si des utilisateurs administrent la ressource
@@ -91,7 +91,7 @@ if ($res_room)
 if ($is_gestionnaire != '')
 {
 	$a_privileges = 'y';
-	echo "\n<h3><b>".get_vocab("utilisateurs gestionnaires ressource")."</b></h3>";
+	echo "\n<h3><b>".get_vocab("utilisateurs_gestionnaires_ressource")."</b></h3>";
 	echo "<p>".$is_gestionnaire."</p>";
 }
 // On teste si des utilisateurs reçoivent des mails automatiques
@@ -106,7 +106,7 @@ if ($res_mail)
 if ($is_mail != '')
 {
 	$a_privileges = 'y';
-	echo "\n<h3><b>".get_vocab("utilisateurs mail automatique")."</b></h3>";
+	echo "\n<h3><b>".get_vocab("utilisateurs_mail_automatique")."</b></h3>";
 	echo "<p>".$is_mail."</p>";
 }
 // Si le domaine est restreint, on teste si des utilateurs y ont accès
@@ -123,7 +123,7 @@ if ($area_access == 'r')
 	if ($is_restreint != '')
 	{
 		$a_privileges = 'y';
-		echo "\n<h3><b>".get_vocab("utilisateurs acces restreint")."</b></h3>\n";
+		echo "\n<h3><b>".get_vocab("utilisateurs_acces_restreint")."</b></h3>\n";
 		echo "<p>".$is_restreint."</p>";
 	}
 }

@@ -228,7 +228,7 @@ else
 					$d[$day_num]["id"][] = $row[2];
 					$d[$day_num]["id_room"][] = $row[10];
 					if (Settings::get("display_info_bulle") == 1)
-						$d[$day_num]["who"][] = get_vocab("reservee au nom de").affiche_nom_prenom_email($row[4], $row[9], "nomail");
+						$d[$day_num]["who"][] = get_vocab("reservee_au_nom_de").affiche_nom_prenom_email($row[4], $row[9], "nomail");
 					else if (Settings::get("display_info_bulle") == 2)
 						$d[$day_num]["who"][] = $row[6];
 					else

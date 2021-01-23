@@ -345,14 +345,14 @@ function affiche_ressource_empruntee($id_room, $type = "logo")
 		if ($id_resa != -1)
 		{
 			if ($type == "logo")
-				echo '<a href="view_entry.php?id='.$id_resa.'"><img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("reservation_en_cours").'" width="30" height="30" class="image" /></a>'.PHP_EOL;
+				echo '<a href="view_entry.php?id='.$id_resa.'"><img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource_actuellement_empruntee").'" title="'.get_vocab("reservation_en_cours").'" width="30" height="30" class="image" /></a>'.PHP_EOL;
 			else if ($type == "texte")
 			{
 				$beneficiaire = grr_sql_query1("SELECT beneficiaire FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
 				$beneficiaire_ext = grr_sql_query1("SELECT beneficiaire_ext FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
 				echo '<br /><b><span class="avertissement">'.PHP_EOL;
-				echo '<img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("ressource actuellement empruntee").'" width="30" height="30" class="image" />'.PHP_EOL;
-				echo get_vocab("ressource actuellement empruntee").' '.get_vocab("nom_emprunteur").get_vocab("deux_points").affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"withmail");
+				echo '<img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource_actuellement_empruntee").'" title="'.get_vocab("ressource_actuellement_empruntee").'" width="30" height="30" class="image" />'.PHP_EOL;
+				echo get_vocab("ressource_actuellement_empruntee").' '.get_vocab("nom_emprunteur").get_vocab("deux_points").affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"withmail");
 				echo '<a href="view_entry.php?id='.$id_resa.'&amp;mode=page">'.get_vocab("entryid").$id_resa.'</a>'.PHP_EOL.'</span></b>'.PHP_EOL;
 			}
 			else
@@ -2906,7 +2906,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		toPeriodString($start_period, $duration, $dur_units);
 	else
 		toTimeString($duration, $dur_units);
-	$weeklist = array("unused", "every week", "week 1/2", "week 1/3", "week 1/4", "week 1/5");
+	$weeklist = array("unused", "every week", "week_1_of_2", "week_1_of_3", "week_1_of_4", "week_1_of_5");
 	if ($rep_type == 2)
 		$affiche_period = $vocab[$weeklist[$rep_num_weeks]];
 	else
@@ -2954,7 +2954,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 			$message .= $vocab["the_room"]." ".$oldRessource." => ".$room_name." (".$area_name.") ";
 		else
 			$message .= $vocab["the_room"].$room_name." (".$area_name.") ";
-		$message .= $vocab["reservee au nom de"];
+		$message .= $vocab["reservee_au_nom_de"];
 		$message .= $vocab["the_user"].affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
 		$repondre = $user_email;
 	}
@@ -2965,7 +2965,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
 		$message .= $vocab["delete_booking"];
 		$message .= $vocab["the_room"].$room_name." (".$area_name.") \n";
-		$message .= $vocab["reservee au nom de"];
+		$message .= $vocab["reservee_au_nom_de"];
 		$message .= $vocab["the_user"].affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
 		$repondre = $user_email;
 	}
@@ -2997,7 +2997,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
 		$message .= $vocab["traite_moderation"];
 		$message .= $vocab["the_room"].$room_name." (".$area_name.") ";
-		$message .= $vocab["reservee au nom de"];
+		$message .= $vocab["reservee_au_nom_de"];
 		$message .= $vocab["the_user"].affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
 		if ($moderate_decision == 2)
 			$message .= "\n".$vocab["moderation_acceptee"];
@@ -3028,7 +3028,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$message .= $vocab["nom_emprunteur"].$vocab["deux_points"];
 		$message .= affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
 		if ($beneficiaire_email != "")
-			$message .= $vocab["un email envoye"].$beneficiaire_email." \n";
+			$message .= $vocab["un_email_envoye"].$beneficiaire_email." \n";
 		$message .= "\n".$vocab["changer statut lorsque ressource restituee"].$vocab["deux_points"];
 		$message .= "\n".traite_grr_url("","y")."view_entry.php?id=".$id_entry." \n";
 
@@ -3126,7 +3126,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$sujet7 .= $vocab["subject_mail_retard"];
 		$message7 = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
 		$message7 .= traite_grr_url("","y")."\n\n";
-		$message7 .= $vocab["ressource empruntee non restituée"]."\n";
+		$message7 .= $vocab["ressource_empruntee_non_restituee"]."\n";
 		$message7 .= $room_name." (".$area_name.")";
 		$message7 .= "\n".$reservation;
 		$message7 = html_entity_decode($message7);
@@ -4691,7 +4691,7 @@ function affichage_resa_planning_complet($vue, $resa, $heures)
 
 	// Emprunte
 	if($resa[7] != "-")
-		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"'.get_vocab(\"ressource actuellement empruntee\").'\" title=\"'.get_vocab(\"ressource actuellement empruntee\").'\" width=\"20\" height=\"20\" class=\"image\" /> ";
+		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"'.get_vocab(\"ressource_actuellement_empruntee\").'\" title=\"'.get_vocab(\"ressource_actuellement_empruntee\").'\" width=\"20\" height=\"20\" class=\"image\" /> ";
 
 	// Option réservation
 	if($resa[10] > 0)

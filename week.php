@@ -284,7 +284,7 @@ else
                         $d[$weekday][$slot]["data"] = affichage_lien_resa_planning($row[3],$row[4]);
                         $d[$weekday][$slot]["id"] = $row[4];
                         if (Settings::get("display_info_bulle") == 1)
-                            $d[$weekday][$slot]["who"] = get_vocab("reservee au nom de").affiche_nom_prenom_email($row[5],$row[10],"nomail");
+                            $d[$weekday][$slot]["who"] = get_vocab("reservee_au_nom_de").affiche_nom_prenom_email($row[5],$row[10],"nomail");
                         else if (Settings::get("display_info_bulle") == 2)
                             $d[$weekday][$slot]["who"] = $row[7];
                         else
@@ -359,7 +359,7 @@ else
                         $d[$weekday][$slot]["data"] = affichage_lien_resa_planning($row[3],$row[4]);
                         $d[$weekday][$slot]["id"] = $row[4];
                         if (Settings::get("display_info_bulle") == 1)
-                            $d[$weekday][$slot]["who"] = get_vocab("reservee au nom de").affiche_nom_prenom_email($row[5],$row[10],"nomail");
+                            $d[$weekday][$slot]["who"] = get_vocab("reservee_au_nom_de").affiche_nom_prenom_email($row[5],$row[10],"nomail");
                         else if (Settings::get("display_info_bulle") == 2)
                             $d[$weekday][$slot]["who"] = $row[7];
                         else
@@ -733,7 +733,7 @@ $semaine_changement_heure_hiver = 'no';
 									echo '<img src="img_grr/hourglass.png" alt="buzy">'.PHP_EOL;
 							}
 							if ((isset($d[$weekday][$slot - $decale_slot * $nb_case]["statut"])) && ($d[$weekday][$slot - $decale_slot * $nb_case]["statut"] != '-'))
-							echo '<img src="img_grr/buzy.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("ressource actuellement empruntee").'" width="20" height="20" class="image" /></td>'.PHP_EOL;
+							echo '<img src="img_grr/buzy.png" alt="'.get_vocab("ressource_actuellement_empruntee").'" title="'.get_vocab("ressource_actuellement_empruntee").'" width="20" height="20" class="image" /></td>'.PHP_EOL;
 							if (($this_delais_option_reservation > 0) && (isset($d[$weekday][$slot - $decale_slot * $nb_case]["option_reser"])) && ($d[$weekday][$slot - $decale_slot * $nb_case]["option_reser"] != -1))
 								echo '<img src="img_grr/small_flag.png" alt="'.get_vocab("reservation_a_confirmer_au_plus_tard_le").'" title="'.get_vocab("reservation_a_confirmer_au_plus_tard_le").' '.time_date_string_jma($d[$weekday][$slot - $decale_slot * $nb_case]["option_reser"], $dformat).'" width="20" height="20" class="image" /></td>'.PHP_EOL;
 							if ((isset($d[$weekday][$slot - $decale_slot * $nb_case]["moderation"])) && ($d[$weekday][$slot - $decale_slot * $nb_case]["moderation"] == '1'))

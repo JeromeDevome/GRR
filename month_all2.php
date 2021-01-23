@@ -214,7 +214,7 @@ else
 				$d[$day_num]["id"][] = $row[2];
 				$temp = "";
 				if (Settings::get("display_info_bulle") == 1)
-					$temp = get_vocab("reservee au nom de").$row_user[0]." ".$row_user[1];
+					$temp = get_vocab("reservee_au_nom_de").$row_user[0]." ".$row_user[1];
 				else if (Settings::get("display_info_bulle") == 2)
 					$temp = $row[7];
 				if ($temp != "")
@@ -478,7 +478,7 @@ for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++) // traitement d'une ressou
 									tdcell($d[$cday]["color"][$i]);
                                     echo "<span class=\"small_planning\">";
 									if ($d[$cday]["res"][$i] != '-')
-										echo " <img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> \n";
+										echo " <img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource_actuellement_empruntee")."\" title=\"".get_vocab("ressource_actuellement_empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> \n";
 									if ((isset($d[$cday]["option_reser"][$i])) && ($d[$cday]["option_reser"][$i] != -1))
 										echo " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")." ".time_date_string_jma($d[$cday]["option_reser"][$i],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> \n";
 									if ((isset($d[$cday]["moderation"][$i])) && ($d[$cday]["moderation"][$i] == 1))

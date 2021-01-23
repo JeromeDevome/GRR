@@ -986,7 +986,7 @@ if (($delais_option_reservation > 0) && (($modif_option_reservation == 'y') || (
 			$aff_options .= ">".$aff_date_courante."</option>\n";
 			$k++;
 		}
-		echo "<option value = \"-1\">".get_vocab("Reservation confirmee")."</option>\n";
+		echo "<option value = \"-1\">".get_vocab("reservation_confirmee")."</option>\n";
 		if (($selected == 'n') and ($option_reservation != -1))
 		{
 			echo "<option value = \"".$option_reservation."\" selected=\"selected\">".time_date_string_jma($option_reservation, $dformat)."</option>\n";
@@ -1080,7 +1080,7 @@ echo '<table class="table-header">',PHP_EOL;
 $sql = "SELECT id FROM ".TABLE_PREFIX."_area;";
 $res = grr_sql_query($sql);
 echo '<!-- ************* Periodic edition ***************** -->',PHP_EOL;
-$weeklist = array("unused","every week","week 1/2","week 1/3","week 1/4","week 1/5");
+$weeklist = array("unused","every week","week_1_of_2","week_1_of_3","week_1_of_4","week_1_of_5");
 $monthlist = array("firstofmonth","secondofmonth","thirdofmonth","fouthofmonth","fiveofmonth","lastofmonth");
 if($periodiciteConfig == 'y'){
 	if ( ($edit_type == "series") || (isset($flag_periodicite)))

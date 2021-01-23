@@ -121,7 +121,7 @@ switch ($action)
 		echo "<tr><td>".get_vocab("Message_poste_par").get_vocab("deux_points")."</td><td><b> ".affiche_nom_prenom_email(getUserName(), "", $type = "nomail")."</b></td></tr>\n";
 	echo "<tr><td>".get_vocab("webmaster_name").get_vocab("deux_points")."</td><td><b> ".Settings::get("webmaster_name")."</b></td></tr>\n";
 	echo "<tr><td>".get_vocab("company").get_vocab("deux_points")."</td><td><b> ".Settings::get("company")."</b></td></tr>\n";
-	echo "<tr><td colspan=\"2\">".get_vocab("Redigez votre message ci-dessous").get_vocab("deux_points")."</td></tr>\n";
+	echo "<tr><td colspan=\"2\">".get_vocab("Redigez_votre_message_ci_dessous").get_vocab("deux_points")."</td></tr>\n";
 	echo "</table>\n";
 	echo "<form action=\"contact.php\" method=\"post\" id=\"doc\">\n";
 	echo "<div>\n";

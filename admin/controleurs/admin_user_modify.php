@@ -479,7 +479,7 @@ $utilisateur['reg_login'] = $user_login;
 			if ($utilisateur['statut'] == 'administrateur')
 				$trad['dAdministrateurOuRien'] = "<li>".get_vocab("administrateur_general")."</li>";
 			else
-				$trad['dAdministrateurOuRien'] = "<li>".get_vocab("pas de privileges")."</li>";
+				$trad['dAdministrateurOuRien'] = "<li>".get_vocab("pas_de_privileges")."</li>";
 		}
 	}
 

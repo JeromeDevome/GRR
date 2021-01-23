@@ -244,7 +244,7 @@ if (($fin_session == 'n') && (getUserName()!='') && (authGetUserLevel(getUserNam
 			if ($_SESSION['session_message_error'] == "")
 			{
 				$_SESSION['displ_msg'] = "yes";
-				$_SESSION["msg_a_afficher"] = get_vocab("un email envoye")." ".$_GET["mail_exist"];
+				$_SESSION["msg_a_afficher"] = get_vocab("un_email_envoye")." ".$_GET["mail_exist"];
 			}
 		}
 		header("Location: ".$_GET['back']."");
@@ -463,7 +463,7 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
 			{
 				$id_resa = grr_sql_query1("SELECT id from ".TABLE_PREFIX."_entry where room_id = '".$room_id."' and statut_entry='y'");
 				if ($id_resa ==$id)
-				echo '<span class="avertissement">(',get_vocab("reservation_en_cours"),') <img src="img_grr/buzy_big.png" align=middle alt="',get_vocab("ressource actuellement empruntee"),'" title="',get_vocab("ressource actuellement empruntee"),'" border="0" width="30" height="30" class="print_image" /></span>',PHP_EOL;
+				echo '<span class="avertissement">(',get_vocab("reservation_en_cours"),') <img src="img_grr/buzy_big.png" align=middle alt="',get_vocab("ressource_actuellement_empruntee"),'" title="',get_vocab("ressource_actuellement_empruntee"),'" border="0" width="30" height="30" class="print_image" /></span>',PHP_EOL;
 			}
 			?>
 		</td>
@@ -620,7 +620,7 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
             toPeriodString($start_period, $duration, $dur_units);
         else
             toTimeString($duration, $dur_units);
-        $weeklist = array("unused", "every week", "week 1/2", "week 1/3", "week 1/4", "week 1/5");
+        $weeklist = array("unused", "every week", "week_1_of_2", "week_1_of_3", "week_1_of_4", "week_1_of_5");
         if ($rep_type == 2)
             $affiche_period = get_vocab($weeklist[$rep_num_weeks]);
         else

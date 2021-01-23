@@ -237,7 +237,7 @@ else
 			// Info-bulle
 			$temp = "";
 			if (Settings::get("display_info_bulle") == 1)
-				$temp = get_vocab("reservee au nom de").affiche_nom_prenom_email($row[4],$row[12],"nomail");
+				$temp = get_vocab("reservee_au_nom_de").affiche_nom_prenom_email($row[4],$row[12],"nomail");
 			else if (Settings::get("display_info_bulle") == 2)
 				$temp = $row[7];
 			if ($temp != "")
@@ -491,7 +491,7 @@ while ($month_indice < $month_end)
 									echo "\n<table class='pleine table-bordered' ><tr>\n";
 									tdcell($d[$cday][$cmonth][$cyear]["color"][$i]);
 									if ($d[$cday][$cmonth][$cyear]["res"][$i] != '-')
-										echo " <img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> \n";
+										echo " <img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource_actuellement_empruntee")."\" title=\"".get_vocab("ressource_actuellement_empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> \n";
 		   								// si la réservation est à confirmer, on le signale
 									if ((isset($d[$cday][$cmonth][$cyear]["option_reser"][$i])) && ($d[$cday][$cmonth][$cyear]["option_reser"][$i] != -1))
 										echo " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")." ".time_date_string_jma($d[$cday][$cmonth][$cyear]["option_reser"][$i],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> \n";

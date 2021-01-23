@@ -452,7 +452,7 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 			{
 				if ((isset($today[$room][$t]["statut"])) && ($today[$room][$t]["statut"] != '-'))
 				{
-					echo '<img src="img_grr/buzy.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("ressource actuellement empruntee").'" width="20" height="20" class="image" />'.PHP_EOL;
+					echo '<img src="img_grr/buzy.png" alt="'.get_vocab("ressource_actuellement_empruntee").'" title="'.get_vocab("ressource_actuellement_empruntee").'" width="20" height="20" class="image" />'.PHP_EOL;
 				}
 				if (($delais_option_reservation[$room] > 0) && (isset($today[$room][$t]["option_reser"])) && ($today[$room][$t]["option_reser"] != -1))
 				{

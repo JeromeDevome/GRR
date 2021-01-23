@@ -52,7 +52,7 @@ if ($flag_qui_peut_reserver_pour ) // on crée les sélecteurs à afficher
     //echo "domaine".$area." ressource".$room." utilisateur".$user." droits requis".$qui_peut_reserver_pour;
     //echo "Choix du bénéficiaire";
 	echo '<select size="1" class="form-control" name="beneficiaire" id="beneficiaire" onchange="setdefault(\'beneficiaire_default\',\'\');check_4();">'.PHP_EOL;
-	echo '<option value="" >'.get_vocab("personne exterieure").'</option>'.PHP_EOL;
+	echo '<option value="" >'.get_vocab("personne_exterieure").'</option>'.PHP_EOL;
 	$sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (etat!='inactif' and statut!='visiteur' ) OR (login='".$user."') ORDER BY nom, prenom";
 	$res = grr_sql_query($sql);
 	if ($res)
