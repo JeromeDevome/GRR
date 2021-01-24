@@ -1,7 +1,8 @@
 <?php
-# GRR : fichier de langue française
-# Last modification : 2021-01-12
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
+# GRR: fichier de langue française
+# GRR: Traduction
+# Last modification : 2021-01-24
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accepter la réservation";
