@@ -3,7 +3,7 @@
  * admin_config1.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2021-01-12 10:11$
+ * Dernière modification : $Date: 2021-01-13 16:01$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -635,7 +635,7 @@ if (Settings::get('use_fckeditor') != 1) {
     echo ' '.get_vocab('description complete2');
 }
 if (Settings::get('use_fckeditor') == 1) {
-    echo '<textarea class="ckeditor" id="editor1" name="message_accueil" rows="8" cols="120">'.PHP_EOL;
+    echo '<textarea id="editor1" name="message_accueil" rows="8" cols="120">'.PHP_EOL;
     echo htmlspecialchars(Settings::get('message_accueil'));
     echo "</textarea>\n";
     ?>
