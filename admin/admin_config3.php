@@ -3,9 +3,9 @@
  * admin_config3.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (interactivité)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-10-01 14:06$
+ * Dernière modification : $Date: 2021-01-28 17:09$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -191,7 +191,7 @@ if (isset($_POST['chemin_complet_grr']))
 	}
 }
 if (!Settings::load())
-	die(".get_vocab('error_settings_load').");
+	die(get_vocab('error_settings_load'));
 # print the page header
 start_page_w_header("", "", "", $type="with_session");
 if (isset($_POST['ok']))
