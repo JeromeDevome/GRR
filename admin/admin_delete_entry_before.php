@@ -3,9 +3,9 @@
  * admin_delete_entry_before.php
  * Interface permettant à l'administrateur de supprimer des réservations avant une date donnée
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-07-28 10:20$
+ * Dernière modification : $Date: 2021-01-28 16:53$
  * @author    JeromeB & Yan Naessens & Denis Monasse
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -26,7 +26,7 @@ if (isset($_SERVER['HTTP_REFERER']))
 $_SESSION['chemin_retour'] = "admin_config.php";
 
 if (!Settings::load()) {
-    die('.get_vocab('error_settings_load').');
+    die(get_vocab('error_settings_load'));
 }
 
 # print the page header
