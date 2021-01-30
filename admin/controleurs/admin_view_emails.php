@@ -16,7 +16,7 @@
  * (at your option) any later version.
  */
 
-$grr_script_name = "admin_view_connexions.php";
+$grr_script_name = "admin_view_emails.php";
 
 check_access(6, $back);
 
