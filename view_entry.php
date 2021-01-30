@@ -597,7 +597,7 @@ if ($repeat_id != 0)
         $start_date = time_date_string($start_time, $dformat);
 		toTimeString($duration, $dur_units);
 	}
-    $weeklist = array("unused", "every week", "week_1_of_2", "week_1_of_3", "week_1_of_4", "week_1_of_5");
+    $weeklist = array("unused", "every_week", "week_1_of_2", "week_1_of_3", "week_1_of_4", "week_1_of_5");
     if ($rep_type == 2)
         $affiche_period = get_vocab($weeklist[$rep_num_weeks]);
     else

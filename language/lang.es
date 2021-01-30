@@ -1,8 +1,8 @@
 <?php
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR : fichier de langue espagnole
-# GRR: Traduction
-# Last modification : 2021-01-24
+# GRR: Traduction By JeromeB
+# Last modification : 2021-01-30
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Aceptar la reserva";
@@ -357,7 +357,7 @@ $vocab['entry'] = "Reserva";
 $vocab['entryid'] = "Reserva n° ";
 $vocab['entry_found'] = "reserva encontrada";
 $vocab['envois_mail_spec_exp'] = "Dans le cas ou le champ est rempli ou différent de zéro, envoie un mail au destinataire spécifié."; // A traduire
-$vocab['Envoi_d_un courriel'] = "Envoi d'un courriel"; // A traduire
+$vocab['Envoi_d_un_courriel'] = "Envoi d'un courriel"; // A traduire
 $vocab['envoyer_email_avec_formulaire_non'] = "Utiliser les balises \"mailto\" : dans ce cas, un clic sur un \"lien email\" ouvre le logiciel de courrier par défaut de la machine du client et prépare un nouveau message en complétant automatiquement le champ des destinataires (à noter que bien que les adresses email apparaissent en clair dans GRR, un mécanisme d'encodage permet d'éviter que celles-ci ne soient récupérées par les robots-spameurs)."; // A traduire
 $vocab['envoyer_email_avec_formulaire_oui'] = "Utiliser le formulaire d'envoi de mails : dans ce cas, un clic sur un \"lien email\" affiche un formulaire qui permet d'envoyer un mail au(x) destinataire(s), sans divulguer leur adresse email."; // A traduire
 $vocab['envoyer_maintenant_mail_retard'] = " Enviar inmediatamente un mail de notificación de retraso (no restitución en los plazos)";
@@ -380,7 +380,7 @@ $vocab['est_prevenu_par_mail'] = "Este usuario está advertido automáticamente 
 $vocab['etape_n'] = "Etapa n° ";
 $vocab['eveningends_area'] = "Hora de fin de día (superior a la hora de comienzo de día)";
 $vocab['eveningends_minutes_area'] = "Número de minutos a añadir a la hora de fin de día para tener el fin real de un día.";
-$vocab['every week'] = "cada semana";
+$vocab['every_week'] = "cada semana";
 $vocab['execution_automatique_backup'] = "Exécution automatique de la sauvegarde"; // A traduire
 $vocab['execution_automatique_backup_explications'] = "Une sauvegarde automatique peut être déclenchée par l'exécution du script « admin_save_mysql.php », par exemple en programmant son exécution à l'aide d'une tâche « cron ».<br />Pour activer cette fonctionnalité, vous devez définir ci-dessous un mot de passe.<br />Par exemple, si le mot de passe est jamesbond007, l'URL du type : <b>http://mon-site.fr/grr/admin_save_mysql.php?mdp=jamesbond007</b> déclenchera la sauvegarde.<br /><b>Il est fortement conseillé de choisir un mot de passe complexe avec lettres, chiffres et caractères spéciaux !</b>"; // A traduire
 $vocab['execution_automatique_backup_mdp'] = "Mot de passe utilisé pour l'exécution du script « admin_save_mysql.php »"; // A traduire

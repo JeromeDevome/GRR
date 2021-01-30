@@ -64,7 +64,7 @@ if (isset($_POST["objet_message"]))
 $casier = isset($_POST["casier"]) ? $_POST["casier"] : '';
 if ($error_subject == 'y')
 	$action='';
-echo "<h1>".get_vocab("Envoi_d_un courriel")."</h1>";
+echo "<h1>".get_vocab("Envoi_d_un_courriel")."</h1>";
 switch ($action)
 {
 //envoi du message
