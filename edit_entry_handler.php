@@ -67,7 +67,7 @@ if ($courrier == 'y')
 	$courrier = 1;
 else
 	$courrier = 0;
-$nbparticipantmax = isset($_GET["nbparticipantmax"]) ? $_GET["nbparticipantmax"] : NULL;
+$nbparticipantmax = isset($_GET["nbparticipantmax"]) ? $_GET["nbparticipantmax"] : 0;
 $day = isset($_GET["start_day"]) ? clean_input($_GET["start_day"]) : NULL;
 $month = isset($_GET["start_month"]) ? clean_input($_GET["start_month"]) : NULL;
 $year = isset($_GET["start_year"]) ? clean_input($_GET["start_year"]) : NULL;
