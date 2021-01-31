@@ -84,6 +84,7 @@ $vocab['admin_import_users_csv7'] = "Les logins qui apparaissent en orange corre
 $vocab['admin_import_users_csv9'] = "Les symboles ??? signifient que le champ en question n'est pas valide. L'opération d'importation des données ne peut continuer normalement. Veuillez corriger le fichier à importer.";
 $vocab['admin_import_users_fichier'] = "Importer un fichier utilisateurs";
 $vocab['admin_infos'] = "Informations GRR et Serveur";
+$vocab['admin_log_resa_liste'] = "Logs réservations";
 $vocab['admin_maj'] = "Version et mise à jour";
 $vocab['admin_menu_connexion_externe'] = "Connexions externes";
 $vocab['admin_menu_user'] = "Utilisateurs et accès";

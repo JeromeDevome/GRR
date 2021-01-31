@@ -81,7 +81,7 @@ if ($series == 0)
 	$res = grr_sql_query($sql);
 	if (!$res)
 		fatal_error(0, grr_sql_error());
-	if (!(grr_backup($_POST['id'],getUserName(),$_POST['description'])))
+	if (!(grr_add_ligne_moderation($_POST['id'],getUserName(),$_POST['description'])))
 		fatal_error(0, grr_sql_error());
 	$tab_id_moderes = array();
 }
@@ -113,7 +113,7 @@ else
 			$res = grr_sql_query($sql);
 			if (!$res)
 				fatal_error(0, grr_sql_error());
-			if (!(grr_backup($entry_tom,getUserName(),$_POST['description'])))
+			if (!(grr_add_ligne_moderation($entry_tom,getUserName(),$_POST['description'])))
 				fatal_error(0, grr_sql_error());
 			// Backup : on enregistre les infos dans ".TABLE_PREFIX."_entry_moderate
 			// On constitue un tableau des réservations modérées

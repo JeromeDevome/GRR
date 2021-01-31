@@ -634,9 +634,19 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 				$entry_type = 2;
 			else
 				$entry_type = 0;
+			if($id > 0)
+				$differenceAvAp = compareEntrys($id, $starttime, $endtime, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $keys, $courrier,$nbparticipantmax);
 			mrbsCreateSingleEntry($id, $starttime, $endtime, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $keys, $courrier,$nbparticipantmax);
 			if($id == 0 || $id == NULL)
+			{
 				$id = grr_sql_insert_id();
+				insertLogResa($id, 1, 'Création via calendrier');
+			}
+			else
+			{
+				insertLogResa($id, 2, $differenceAvAp);
+			}
+				
 			if (Settings::get("automatic_mail") == 'yes')
 			{
 				if (isset($id) && ($id != 0))

@@ -84,6 +84,7 @@ $vocab['admin_import_users_csv7'] = "Die orange erscheinenden Identifizierungsco
 $vocab['admin_import_users_csv9'] = "Die Symbole ??? bedeuten, dass das betreffende Feld nicht gültig ist. Der Datenimportvorgang kann nicht normal fortgesetzt werden. Bitte korrigieren Sie die zu importierende Datei.";
 $vocab['admin_import_users_fichier'] = "Importer un fichier utilisateurs"; // A traduire
 $vocab['admin_infos'] = "Informations GRR et Serveur";
+$vocab['admin_log_resa_liste'] = "Logs réservations"; // A traduire
 $vocab['admin_maj'] = "Seriennummer der Version und Update";// A traduire
 $vocab['admin_menu_connexion_externe'] = "Connexions externes"; // A traduire
 $vocab['admin_menu_user'] = "Benutzer und Zugriff";

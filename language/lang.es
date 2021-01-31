@@ -84,6 +84,7 @@ $vocab['admin_import_users_csv7'] = "Las claves de acceso que aparecen en naranj
 $vocab['admin_import_users_csv9'] = "Los símbolos ??? significan que el campo en cuestión no es válido. La operación de importación de los datos no puede continuar normalmente. Por favor corrija el fichero para importar.";
 $vocab['admin_import_users_fichier'] = "Importer un fichier utilisateurs"; // A traduire
 $vocab['admin_infos'] = "Informations GRR et Serveur"; // A traduire
+$vocab['admin_log_resa_liste'] = "Logs réservations"; // A traduire
 $vocab['admin_maj'] = "Número de versión y actualización";
 $vocab['admin_menu_connexion_externe'] = "Connexions externes"; // A traduire
 $vocab['admin_menu_user'] = "Usuarios y acceso";

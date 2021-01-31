@@ -84,6 +84,7 @@ $vocab['admin_import_users_csv7'] = "Login-names which appear in orange correspo
 $vocab['admin_import_users_csv9'] = "Symbols ??? signify that the field is not valid. The process of importing data cannot go on normally. Please correct the file before importing it.";
 $vocab['admin_import_users_fichier'] = "Importer un fichier utilisateurs"; // A traduire
 $vocab['admin_infos'] = "Informations GRR et Serveur"; // A traduire
+$vocab['admin_log_resa_liste'] = "Logs réservations"; // A traduire
 $vocab['admin_maj'] = "Version number and update";
 $vocab['admin_menu_connexion_externe'] = "Connexions externes"; // A traduire
 $vocab['admin_menu_user'] = "Users and access";

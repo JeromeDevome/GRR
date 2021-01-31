@@ -645,33 +645,67 @@ Insère dans la table ".TABLE_PREFIX."_entry_moderate les valeurs de ".TABLE_PRE
 /**
  * @param string $motivation_moderation
  */
-function  grr_backup($id_entry, $login_moderateur, $motivation_moderation)
+function  grr_add_ligne_moderation($id_entry, $login_moderateur, $motivation_moderation)
 {
+	$sql = "SELECT id FROM ".TABLE_PREFIX."_entry_moderate WHERE id=$id_entry";
+	$resCompteur = grr_sql_query($sql);
+	if (!$resCompteur)
+		fatal_error(1, grr_sql_error());
+	
 	$sql = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id='".$id_entry."'";
 	$res = grr_sql_query($sql);
 	if (!$res)
 		return false;
 	$row = grr_sql_row_keyed($res, 0);
 	grr_sql_free($res);
-	$req = "INSERT INTO ".TABLE_PREFIX."_entry_moderate SET
-	id = '".$row['id']."',
-	start_time = '".$row['start_time']."',
-	end_time  = '".$row['end_time']."',
-	entry_type  = '".$row['entry_type']."',
-	repeat_id  = '".$row['repeat_id']."',
-	room_id = '".$row['room_id']."',
-	timestamp = '".$row['timestamp']."',
-	create_by = '".$row['create_by']."',
-	beneficiaire = '".$row['beneficiaire']."',
-	name = '".protect_data_sql($row['name'])."',
-	type = '".$row['type']."',
-	description = '".protect_data_sql($row['description'])."',
-	statut_entry = '".$row['statut_entry']."',
-	option_reservation = '".$row['option_reservation']."',
-	overload_desc  = '".protect_data_sql($row['overload_desc'])."',
-	moderate = '".$row['moderate']."',
-	motivation_moderation = '".protect_data_sql(strip_tags($motivation_moderation))."',
-	login_moderateur = '".protect_data_sql($login_moderateur)."'";
+
+	if (grr_sql_count($resCompteur) == 1)
+	{
+		$req = "UPDATE ".TABLE_PREFIX."_entry_moderate SET
+		start_time = '".$row['start_time']."',
+		end_time  = '".$row['end_time']."',
+		entry_type  = '".$row['entry_type']."',
+		repeat_id  = '".$row['repeat_id']."',
+		room_id = '".$row['room_id']."',
+		timestamp = '".$row['timestamp']."',
+		create_by = '".$row['create_by']."',
+		beneficiaire = '".$row['beneficiaire']."',
+		name = '".protect_data_sql($row['name'])."',
+		type = '".$row['type']."',
+		description = '".protect_data_sql($row['description'])."',
+		statut_entry = '".$row['statut_entry']."',
+		option_reservation = '".$row['option_reservation']."',
+		overload_desc  = '".protect_data_sql($row['overload_desc'])."',
+		moderate = '".$row['moderate']."',
+		motivation_moderation = '".protect_data_sql(strip_tags($motivation_moderation))."',
+		login_moderateur = '".protect_data_sql($login_moderateur)."'
+		WHERE id= '".$id_entry."'";
+	}
+	else
+	{
+		$req = "INSERT INTO ".TABLE_PREFIX."_entry_moderate SET
+		id = '".$row['id']."',
+		start_time = '".$row['start_time']."',
+		end_time  = '".$row['end_time']."',
+		entry_type  = '".$row['entry_type']."',
+		repeat_id  = '".$row['repeat_id']."',
+		room_id = '".$row['room_id']."',
+		timestamp = '".$row['timestamp']."',
+		create_by = '".$row['create_by']."',
+		beneficiaire = '".$row['beneficiaire']."',
+		name = '".protect_data_sql($row['name'])."',
+		type = '".$row['type']."',
+		description = '".protect_data_sql($row['description'])."',
+		statut_entry = '".$row['statut_entry']."',
+		option_reservation = '".$row['option_reservation']."',
+		overload_desc  = '".protect_data_sql($row['overload_desc'])."',
+		moderate = '".$row['moderate']."',
+		motivation_moderation = '".protect_data_sql(strip_tags($motivation_moderation))."',
+		login_moderateur = '".protect_data_sql($login_moderateur)."'";
+	}
+	
+	grr_sql_free($resCompteur);
+
 	$res = grr_sql_query($req);
 	if (!$res)
 		return false;
@@ -5512,6 +5546,22 @@ function nettoieLogEmail($delai){
         grr_sql_query($sql);
     }
 }
+
+function insertLogResa($idresa, $idAction, $infos){
+
+	$sql = "INSERT INTO ".TABLE_PREFIX."_log_resa (date, idresa, identifiant, action, infoscomp) values (
+		'" . time() . "',
+		'" . $idresa . "',
+		'" . getUserName() . "',
+		'" . $idAction . "',
+		'" . $infos . "'
+		)
+	;";
+	grr_sql_query($sql);
+
+}
+
+
 // suggestions pour reformuler les pages plannings
 function pageHead2($title, $page = "with_session") 
 {

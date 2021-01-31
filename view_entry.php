@@ -202,40 +202,60 @@ if (($fin_session == 'n') && (getUserName()!='') && (authGetUserLevel(getUserNam
 	{
 		if ($reg_statut_id != "")
 		{
-			$upd1 = "UPDATE ".TABLE_PREFIX."_entry SET statut_entry='-' WHERE room_id = '".$room_id."'";
-			if (grr_sql_command($upd1) < 0)
-				fatal_error(0, grr_sql_error());
-			$upd2 = "UPDATE ".TABLE_PREFIX."_entry SET statut_entry='$reg_statut_id' WHERE id = '".$id."'";
-			if (grr_sql_command($upd2) < 0)
-				fatal_error(0, grr_sql_error());
+			if($statut_id != $reg_statut_id)
+			{
+				$upd1 = "UPDATE ".TABLE_PREFIX."_entry SET statut_entry='-' WHERE room_id = '".$room_id."'";
+				if (grr_sql_command($upd1) < 0)
+					fatal_error(0, grr_sql_error());
+				$upd2 = "UPDATE ".TABLE_PREFIX."_entry SET statut_entry='$reg_statut_id' WHERE id = '".$id."'";
+				if (grr_sql_command($upd2) < 0)
+					fatal_error(0, grr_sql_error());
+				insertLogResa($id, 6, $reg_statut_id);
+			}
 		}
 		if (isset($_GET['clef']))
 		{
 			$clef = 1;
-			$upd = "UPDATE ".TABLE_PREFIX."_entry SET clef='$clef' WHERE id = '".$id."'";
-			if (grr_sql_command($upd) < 0)
-				fatal_error(0, grr_sql_error());
+			if($active_cle != $clef)
+			{
+				$upd = "UPDATE ".TABLE_PREFIX."_entry SET clef='$clef' WHERE id = '".$id."'";
+				if (grr_sql_command($upd) < 0)
+					fatal_error(0, grr_sql_error());
+				insertLogResa($id, 7, "Clé empruntée");
+			}
 		}
 		else
 		{
 			$clef = 0;
-			$upd = "UPDATE ".TABLE_PREFIX."_entry SET clef='$clef' WHERE id = '".$id."'";
-			if (grr_sql_command($upd) < 0)
-				fatal_error(0, grr_sql_error());
+			if($active_cle != $clef)
+			{
+				$upd = "UPDATE ".TABLE_PREFIX."_entry SET clef='$clef' WHERE id = '".$id."'";
+				if (grr_sql_command($upd) < 0)
+					fatal_error(0, grr_sql_error());
+				insertLogResa($id, 7, "Clé restituée");
+			}
 		}
 		if (isset($_GET['courrier']))
 		{
-			$courrier = 1;
-			$upd = "UPDATE ".TABLE_PREFIX."_entry SET courrier='$courrier' WHERE id = '".$id."'";
-			if (grr_sql_command($upd) < 0)
-				fatal_error(0, grr_sql_error());
+			$courrierNew = 1;
+			if($courrier != $courrier)
+			{
+				$upd = "UPDATE ".TABLE_PREFIX."_entry SET courrier='$courrierNew' WHERE id = '".$id."'";
+				if (grr_sql_command($upd) < 0)
+					fatal_error(0, grr_sql_error());
+				insertLogResa($id, 8, "Courrier");
+			}
 		}
 		else
 		{
-			$courrier = 0;
-			$upd = "UPDATE ".TABLE_PREFIX."_entry SET courrier='$courrier' WHERE id = '".$id."'";
-			if (grr_sql_command($upd) < 0)
-				fatal_error(0, grr_sql_error());
+			$courrierNew = 0;
+			if($courrier != $courrier)
+			{
+				$upd = "UPDATE ".TABLE_PREFIX."_entry SET courrier='$courrierNew' WHERE id = '".$id."'";
+				if (grr_sql_command($upd) < 0)
+					fatal_error(0, grr_sql_error());
+				insertLogResa($id, 8, "Pas de courrier");
+			}
 		}
 		if ((isset($_GET["envoyer_mail"])) && (Settings::get("automatic_mail") == 'yes'))
 		{

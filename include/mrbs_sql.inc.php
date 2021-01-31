@@ -442,9 +442,10 @@ function mrbsCreateSingleEntry($id, $starttime, $endtime, $entry_type, $repeat_i
 	if (grr_sql_command($sql) < 0)
 		fatal_error(0, "Requete error  = ".$sql);
 	// s'il s'agit d'une modification d'une ressource déjà modérée et acceptée : on met à jour les infos dans la table ".TABLE_PREFIX."_entry_moderate
-	$new_id = grr_sql_insert_id();
+	if($id == 0 || $id == NULL)
+		$id = grr_sql_insert_id();
 	if ($moderate == 2)
-		moderate_entry_do($new_id, 1, "", "no");
+		moderate_entry_do($id, 1, "", "no");
 }
 /** mrbsCreateRepeatEntry()
  *
@@ -490,6 +491,60 @@ function mrbsCreateRepeatEntry($starttime, $endtime, $rep_type, $rep_enddate, $r
 	if (grr_sql_command($sql) < 0)
 		return 0;
 	return grr_sql_insert_id();
+}
+
+function compareEntrys($id, $starttime, $endtime, $entry_type, $repeat_id, $room_id, $creator, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation,$overload_data, $moderate, $rep_jour_c, $statut_entry, $keys, $courrier, $nbparticipantmax)
+{
+	$differences = "";
+	$sql = "SELECT name, beneficiaire, description, start_time, end_time, type, room_id, entry_type, repeat_id, option_reservation, jours, create_by, beneficiaire_ext, statut_entry, clef, courrier, nbparticipantmax FROM ".TABLE_PREFIX."_entry WHERE id=$id";
+	$res = grr_sql_query($sql);
+	if (!$res)
+		fatal_error(1, grr_sql_error());
+	if (grr_sql_count($res) != 1)
+		fatal_error(1, get_vocab('entryid') . $id . get_vocab('not_found'));
+	$row = grr_sql_row($res, 0);
+	grr_sql_free($res);
+
+	if($starttime <> $row[3])
+		$differences .= "Heure début: ".date("d-m-Y H:i:s", $row[3])." => ".date("d-m-Y H:i:s", $starttime)."<br>";
+	
+	if($endtime <> $row[4])
+		$differences .= "Heure fin: ".date("d-m-Y H:i:s", $row[4])." => ".date("d-m-Y H:i:s", $endtime)."<br>";
+	
+	if($entry_type <> $row[7])
+		$differences .= "Type Resa: ".$row[7]." => ".$entry_type."<br>";
+
+	if($room_id <> $row[6])
+		$differences .= "Ressource: ".$row[6]." => ".$room_id."<br>";
+	
+	if($beneficiaire <> $row[1])
+		$differences .= "Beneficiaire: ".$row[1]." => ".$beneficiaire."<br>";
+	
+	if($beneficiaire_ext <> $row[12])
+		$differences .= "Beneficiaire Ext: ".$row[12]." => ".$beneficiaire_ext."<br>";
+
+	if($name <> $row[0])
+		$differences .= "Nom: ".$row[0]." => ".$name."<br>";
+
+	if($type <> $row[5])
+		$differences .= "Type: ".$row[5]." => ".$type."<br>";
+
+	if($description <> $row[2])
+		$differences .= "Description: ".$row[2]." => ".$description."<br>";
+
+	if($keys <> $row[14])
+		$differences .= "Clé: ".$row[14]." => ".$keys."<br>";
+
+	if($statut_entry <> $row[13])
+		$differences .= "Statut: ".$row[13]." => ".$statut_entry."<br>";
+
+	if($courrier <> $row[15])
+		$differences .= "Courrier: ".$row[15]." => ".$courrier."<br>";
+
+	if($nbparticipantmax <> $row[16])
+		$differences .= "Nb participant max: ".$row[16]." => ".$nbparticipantmax."<br>";
+
+	return $differences;
 }
 /** same_day_next_month
  *  Return the number of days to step forward for a "monthly repeat,
@@ -754,13 +809,19 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 	{
 		//moderation de la ressource
 		if ($_moderate == 1)
+		{
 			$sql = "UPDATE ".TABLE_PREFIX."_entry SET moderate = 2 WHERE id = ".$_id;
+			insertLogResa($_id, 3, 'Réservation validée');
+		}
 		else
+		{
 			$sql = "UPDATE ".TABLE_PREFIX."_entry SET moderate = 3 WHERE id = ".$_id;
+			insertLogResa($_id, 3, 'Réservation refusée');
+		}
 		$res = grr_sql_query($sql);
 		if (!$res)
 			fatal_error(0, grr_sql_error());
-		if (!(grr_backup($_id,$_SESSION['login'],$_description)))
+		if (!(grr_add_ligne_moderation($_id,$_SESSION['login'],$_description)))
 			fatal_error(0, grr_sql_error());
 		$tab_id_moderes = array();
 	}
@@ -786,13 +847,19 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 			{
 				//moderation de la ressource
 				if ($_moderate == 1)
+				{
 					$sql = "UPDATE ".TABLE_PREFIX."_entry SET moderate = 2 WHERE id = '".$entry_tom."'";
+					insertLogResa($entry_tom, 3, 'Réservation validée');
+				}
 				else
+				{
 					$sql = "UPDATE ".TABLE_PREFIX."_entry SET moderate = 3 WHERE id = '".$entry_tom."'";
+					insertLogResa($entry_tom, 3, 'Réservation refusée');
+				}
 				$res = grr_sql_query($sql);
 				if (! $res)
 					fatal_error(0, grr_sql_error());
-				if (!(grr_backup($entry_tom,$_SESSION['login'],$_description)))
+				if (!(grr_add_ligne_moderation($entry_tom,$_SESSION['login'],$_description)))
 					fatal_error(0, grr_sql_error());
 				// Backup : on enregistre les infos dans ".TABLE_PREFIX."_entry_moderate
 				// On constitue un tableau des réservations modérées
@@ -844,6 +911,8 @@ function PaticipationAjout($entry_id, $creator, $beneficiaire, $beneficiaire_ext
 	if (grr_sql_command($sql) < 0)
 		fatal_error(0, "Requete error  = ".$sql);
 
+	insertLogResa($entry_id, 4, 'Participe');
+
 }
 
 function PaticipationAnnulation($entry_id, $beneficiaire)
@@ -851,6 +920,7 @@ function PaticipationAnnulation($entry_id, $beneficiaire)
 	
 	grr_sql_query("DELETE FROM ".TABLE_PREFIX."_participants WHERE idresa=$entry_id AND beneficiaire='$beneficiaire'");
 
+	insertLogResa($entry_id, 4, 'Ne participe plus');
 }
 
 ?>
