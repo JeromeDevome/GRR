@@ -3,9 +3,9 @@
  * edit_entry_champs_add.php
  * Page "Ajax" utilisée pour générer les champs additionnels dans la page de réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-03-31 17:30$
+ * Dernière modification : $Date: 2021-02-01 15:46$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -29,9 +29,9 @@ if (isset($_GET["id"]))
 }
 else
 	die();
-if (isset($_GET['areas']))
+if (isset($_GET['area']))
 {
-	$areas = $_GET['areas'];
+	$areas = $_GET['area'];
 	settype($areas,"integer");
 }
 else
