@@ -3,7 +3,7 @@
  * admin_config3.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (interactivité)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-01-29 15:39$
+ * Dernière modification : $Date: 2021-02-02 18:13$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -83,7 +83,14 @@ if (isset($_POST['grr_mail_smtp'])) // à filtrer mieux?
 }
 if (isset($_POST['grr_mail_Username']))
 {
-	if (!Settings::set("grr_mail_Username", clean_input($_POST['grr_mail_Username'])))
+    $grrMailUserName = clean_input($_POST['grr_mail_Username']); // clean_input enlève les \, ce qui peut être gênant dans un domaine AD
+    if ($grrMailUserName != clean_input($_POST['grr_mail_Username'])){ // rattrapage pour domaine AD
+        $regexAD = '/^[a-zA-Z][a-zA-Z0-9\-\.]{1,61}[a-zA-Z]\\[a-zA-Z0-9]{2,}$/i'; // domaine AD
+        if(preg_match($regexAD, $_POST['grr_mail_Username']))
+            $grrMailUserName = $_POST['grr_mail_Username'];
+        else $grrMailUserNameValid = FALSE;
+    }
+	if (!$grrMailUserNameValid || (!Settings::set("grr_mail_Username", $grrMailUserName)))
 	{
 		echo get_vocab('grr_mail_Username_save_err');
 		die();

@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-02-01 18:38$
+ * Dernière modification : $Date: 2021-02-02 17:50$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4413,12 +4413,7 @@ function validate_email ($email)
 		return true;
 	else {
         $regex2 = '/^' . $atom . '+' . '(\.' . $atom . '+)*' . '@' . 'localhost/i';
-        if(preg_match($regex2, $email))
-            return true;
-        else {
-            $regex3 = '/^[a-zA-Z][a-zA-Z0-9\-\.]{1,61}[a-zA-Z]\\[a-zA-Z0-9]{2,}$/i'; // domaine AD
-            return preg_match($regex3, $email);
-        }
+        return preg_match($regex2, $email);
     }
 }
 /** grrDelOverloadFromEntries()
