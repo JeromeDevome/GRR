@@ -3,9 +3,9 @@
  * my_account.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-22 10:45$
+ * Dernière modification : $Date: 2021-02-05 18:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -229,37 +229,40 @@ function menu_moi($user){
     $html .= '<div class="form-group">';
     $html .= '<label class="control-label col-md-2 col-sm-3 col-xs-4" for="login">'.get_vocab('login').get_vocab('deux_points').'</label>';
     $html .= '<div class="col-md-4 col-sm-6 col-xs-8">';
-    $html .= '<input class="form-control" for="nom" type="text" name="reg_nom" value="'.getUserName().'" size="30" disabled/>';
+    $html .= '<input class="form-control" id="login" type="text" name="login" value="'.getUserName().'" size="30" disabled/>';
     $html .= '</div></div>';
     $html .= '<div class="form-group">';
     $html .= '<label class="control-label col-md-2 col-sm-3 col-xs-4" for="nom">'.get_vocab('last_name').get_vocab('deux_points').'*</label>';
     $html .= '<div class="col-md-4 col-sm-6 col-xs-8">';
-    $html .= '<input class="form-control" for="nom" type="text" name="reg_nom" value="';
+    $html .= '<input class="form-control" id="nom" type="text" name="reg_nom" value="';
     if ($user['nom'])
         $html .= htmlspecialchars($user['nom']);
+    $html .= '"';
     if (!$mod_profil) 
-        $html .= " disabled";
-    $html .= '" size="30" /></div>';
+        $html .= ' disabled';
+    $html .= ' size="30" /></div>';
     $html .= '</div>';
     $html .= '<div class="form-group">';
     $html .= '<label class="control-label col-md-2 col-sm-3 col-xs-4" for="prenom">'.get_vocab('first_name').get_vocab('deux_points').'*</label>';
     $html .= '<div class="col-md-4 col-sm-6 col-xs-8">';
-    $html .= '<input class="form-control" for="prenom" type="text" name="reg_prenom" value="';
+    $html .= '<input class="form-control" id="prenom" type="text" name="reg_prenom" value="';
     if ($user['prenom'])
         $html .= htmlspecialchars($user['prenom']);
+    $html .= '"';
     if (!$mod_profil) 
-        $html .= " disabled";
-    $html .= '" size="30" /></div>';
+        $html .= ' disabled';
+    $html .= ' size="30" /></div>';
     $html .= '</div>';
     $html .= '<div class="form-group">';
     $html .= '<label class="control-label col-md-2 col-sm-3 col-xs-4" for="email">'.get_vocab('mail_user').get_vocab('deux_points').'</label>';
     $html .= '<div class="col-md-4 col-sm-6 col-xs-8">';
-    $html .= '<input class="form-control" for="email" type="text" name="reg_email" value="';
+    $html .= '<input class="form-control" id="email" type="text" name="reg_email" value="';
     if ($user['email'])
         $html .= htmlspecialchars($user['email']);
+    $html .= '"';
     if (!$mod_email) 
-        $html .= " disabled";
-    $html .= '" size="30" /></div>';
+        $html .= ' disabled';
+    $html .= ' size="30" /></div>';
     $html .= '</div>';
 	if ($user['statut'] == "utilisateur")
 		$text_user_statut = get_vocab("statut_user");
@@ -274,7 +277,7 @@ function menu_moi($user){
     $html .= '<div class="form-group">';
     $html .= '<label class="control-label col-md-2 col-sm-3 col-xs-4" for="statut">'.get_vocab('statut').get_vocab('deux_points').'</label>';
     $html .= '<div class="col-md-4 col-sm-6 col-xs-8">';
-    $html .= '<input class="form-control" for="statut" type="text" name="reg_prenom" value="'.$text_user_statut.'"';
+    $html .= '<input class="form-control" id="statut" type="text" name="reg_statut" value="'.$text_user_statut.'"';
     $html .= ' disabled size="30" /></div>';
     $html .= '</div>';
 	$html .= '<div id="fixe">
