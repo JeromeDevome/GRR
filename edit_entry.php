@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-01-16 10:15$
+ * Dernière modification : $Date: 2021-02-06 16:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -909,9 +909,10 @@ if($periodiciteConfig == 'y'){
 		echo '<input type="hidden" name="statut_entry" value="'.$statut_entry.'" />'.PHP_EOL;
 		echo '<input type="hidden" name="create_by" value="'.$create_by.'" />'.PHP_EOL;
 		if ($id!=0)
-			if (isset($_GET["copier"]))
+			/*if (isset($_GET["copier"]))
 				$id = NULL;
-			else
+			else*/
+            if (!isset($_GET['copier']))
 				echo '<input type="hidden" name="id" value="'.$id.'" />'.PHP_EOL;
 			echo '<input type="hidden" name="type_affichage_reser" value="'.$type_affichage_reser.'" />'.PHP_EOL;
 ?>
