@@ -3,7 +3,7 @@
  * swap_entry.php
  * Interface d'échange d'une réservation avec une autre, à choisir
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-01-11 11:33$
+ * Dernière modification : $Date: 2021-02-06 18:43$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -37,7 +37,8 @@ if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
 	$type_session = "no_session";
 else
 	$type_session = "with_session";
-include "include/language.inc.php";
+//include "./include/language.inc.php";
+require_once "./include/language.inc.php";
 $series = isset($_GET["series"]) ? $_GET["series"] : NULL;
 if (isset($series))
 	settype($series,"integer");
@@ -156,15 +157,15 @@ if (isset($_GET['id_alt'])){ // cas où tout est décidé
     else { // on demande confirmation
         $info = mrbsGetEntryInfo($id);
         $info_alt = mrbsGetEntryInfo($_GET['id_alt']);
-        echo "<p><strong>".get_vocab['swap_entry_confirm']."</strong></p>";
+        echo "<p><strong>".get_vocab('swap_entry_confirm')."</strong></p>";
         echo "<table class='table table-bordered'>";
             echo "<tr>";
-                echo "<th>".get_vocab['description']."</th>";
-                echo "<th>".get_vocab['date']."</th>";
-                echo "<th>".get_vocab['fin_reservation']."</th>";
-                echo "<th>".get_vocab['room']."</th>";
-                echo "<th>".get_vocab['sum_by_creator']."</th>";
-                echo "<th>".get_vocab['type']."</th>";
+                echo "<th>".get_vocab('description')."</th>";
+                echo "<th>".get_vocab('date')."</th>";
+                echo "<th>".get_vocab('fin_reservation')."</th>";
+                echo "<th>".get_vocab('room')."</th>";
+                echo "<th>".get_vocab('sum_by_creator')."</th>";
+                echo "<th>".get_vocab('type')."</th>";
             echo "</tr>";
             echo "<tr style='text-align:center;'>";
                 echo "<td>".$info['description']."</td>";
@@ -175,15 +176,15 @@ if (isset($_GET['id_alt'])){ // cas où tout est décidé
                 echo "<td>".libelle($info['type'])."</td>";
             echo "</tr>";
         echo "</table>";
-        echo "<p><strong>".get_vocab['swap_entry_confirm1']."</strong></p>";
+        echo "<p><strong>".get_vocab('swap_entry_confirm1')."</strong></p>";
         echo "<table class='table table-bordered'>";
             echo "<tr>";
-                echo "<th>".get_vocab['description']."</th>";
-                echo "<th>".get_vocab['date']."</th>";
-                echo "<th>".get_vocab['fin_reservation']."</th>";
-                echo "<th>".get_vocab['room']."</th>";
-                echo "<th>".get_vocab['sum_by_creator']."</th>";
-                echo "<th>".get_vocab['type']."</th>";
+                echo "<th>".get_vocab('description')."</th>";
+                echo "<th>".get_vocab('date')."</th>";
+                echo "<th>".get_vocab('fin_reservation')."</th>";
+                echo "<th>".get_vocab('room')."</th>";
+                echo "<th>".get_vocab('sum_by_creator')."</th>";
+                echo "<th>".get_vocab('type')."</th>";
             echo "</tr>";
             echo "<tr style='text-align:center;'>";
                 echo "<td>".$info_alt['description']."</td>";
@@ -256,25 +257,25 @@ else { // on connaît $id de la réservation à échanger, on va en chercher une
         $sql = "SELECT id FROM ".TABLE_PREFIX."_entry WHERE (start_time = '".$info['start_time']."' AND end_time = '".$info['end_time']."' AND id != '".$id."')";
         $reps = grr_sql_query($sql);
         if (!$reps){grr_sql_error($reps);}
-        echo get_vocab['swap_entry_choose'];
+        echo get_vocab('swap_entry_choose');
         echo '<form method="GET" action="swap_entry.php" >';
         echo "<p style='text-align:center;'>";
         echo "<input type='hidden' name='ret_page' value='".$ret_page."' />";
         echo "<input type='hidden' name='id' value='".$id."' />";
-        echo "<input class='btn btn-primary' type='submit' value='".get_vocab['OK']."' />";
+        echo "<input class='btn btn-primary' type='submit' value='".get_vocab('OK')."' />";
         echo "<input type='button' class='btn btn-danger' value='".get_vocab("cancel")."' onclick='window.location.href=\" ".$ret_page."\"'/>";
         echo "</p>"; 
         // tableau donnant la réservation à échanger et celles avec lesquelles échanger
         echo "<table class='table table-bordered'>";
             echo "<thead>";
                 echo "<tr>";
-                    echo "<th>".get_vocab['Choose']."</th>"; // colonne pour les choix
-                    echo "<th>".get_vocab['description']."</th>";
-                    echo "<th>".get_vocab['date']."</th>";
-                    echo "<th>".get_vocab['fin_reservation']."</th>";
-                    echo "<th>".get_vocab['room']."</th>";
-                    echo "<th>".get_vocab['sum_by_creator']."</th>";
-                    echo "<th>".get_vocab['type']."</th>";
+                    echo "<th>".get_vocab('Choose')."</th>"; // colonne pour les choix
+                    echo "<th>".get_vocab('description')."</th>";
+                    echo "<th>".get_vocab('date')."</th>";
+                    echo "<th>".get_vocab('fin_reservation')."</th>";
+                    echo "<th>".get_vocab('room')."</th>";
+                    echo "<th>".get_vocab('sum_by_creator')."</th>";
+                    echo "<th>".get_vocab('type')."</th>";
                 echo "</tr>";
                 echo "<tr>";
                     echo "<th><span class='glyphicon glyphicon-arrow-down'></span></th>"; // colonne pour les choix
