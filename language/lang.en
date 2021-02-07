@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2020-11-16
+# Last modification : 2021-01-29
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -82,7 +82,7 @@ $vocab['admin_import_users_csv1'] = "The file to be imported includes a heading 
 $vocab['admin_import_users_csv10'] = "Importing process has failed!";
 $vocab['admin_import_users_csv11'] = "No file selected!";
 $vocab['admin_import_users_csv12'] = "User created!";
-$vocab['admin_import_users_csv2'] = "<p>Imported file is to be in CSV format (delimiter: semicolon)<br />File is to contain the following fields:<br />--> <B>Login</B>: login-name<br />--> <B>Name</B><br />--> <B>First name</B><br />--> <B>Password</B><br />--> <B>Email address</B> (optional)<br />--> <B>User type: four authorized values: visiteur (visitor), utilisateur (user), administrateur (administrator), gestionnaire_utilisateur (user administrator)</B><br />--> <B>Status: two authorized values: \"active\" ou \"inactive\"</B><br />--> <B>Type of authentification : two authorized values: \"local\" ou \"ext\"</B><br />";
+$vocab['admin_import_users_csv2'] = "<p>Imported file is to be in CSV format (delimiter: semicolon)<br />File is to contain the following fields:<br />--> <B>Login</B>: login-name<br />--> <B>Name</B><br />--> <B>First name</B><br />--> <B>Password</B><br />--> <B>Email address</B> (optional)<br />--> <B>User type: four authorized values: visiteur (visitor), utilisateur (user), administrateur (administrator), gestionnaire_utilisateur (user administrator)</B><br />--> <B>Status: two authorized values: \"active\" ou \"inactive\"</B><br />--> <B>Type of authentification : two authorized values: \"local\" ou \"ext\"</B><br />--> <b>Password change at next connection: two authorized values: \"0\" = no or \"1\" = yes</b><br />";
 $vocab['admin_import_users_csv3'] = "<p><b>SOME PRECISIONS:</b><br /><br /><b>Login-name</b><br />20 characters maximum. They can be any series of characters and/or figures without space. The character _ is also authorized. In case this format has not been respected, the following series of characters ??? appears instead of login-name. Login-names appearing in red correspond to login-names which already exist on GRR database. Existing data will then be crashed by the data which are on the imported file!<br /><br /><b>Name</b><br />User's name. 30 characters maximum. They can be any series of characters and/or figures with spaces and apostrophes.<br /><br /><b>First name</b><br />User's first name. It works in the same way as the name. Names and first names appearing in blue correspond to users who already exist in GRR database and bear the same names and first names.<br /><br /><b>Password</b><br />Leave some space if the kind of authentification is \"ext\".".$pass_leng." characters minimum and 30 characters maximum.<br /><br /><b>Email address</b><br />100 characters maximum.<br /><br /><b>Type of authentification</b><br />Put \"local\" in the general case and \"ext\" if it is about a user connecting through a ldap directory, or about a system of authentification (CAS, LCS, LemonLdap, ...)<br /><br /></p>";
 $vocab['admin_import_users_csv4'] = "File CSV can't be opened";
 $vocab['admin_import_users_csv5'] = "First phase of importation: ";
