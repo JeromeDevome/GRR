@@ -465,7 +465,7 @@ if (isset($_POST['ok'])) {
 if (isset($_POST['nb_calendar'])) {
     settype($_POST['nb_calendar'], 'integer');
     if (!Settings::set('nb_calendar', $_POST['nb_calendar'])) {
-        echo "Erreur lors de l'enregistrement de nb_calendar !<br />";
+        echo get_vocab('save_err')." nb_calendar !<br />";
         die();
     }
 }

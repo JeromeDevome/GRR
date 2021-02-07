@@ -3,7 +3,7 @@
  * admin_config3.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (interactivité)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-01-28 17:08$
+ * Dernière modification : $Date: 2021-02-07 14:36$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -83,7 +83,15 @@ if (isset($_POST['grr_mail_smtp'])) // à filtrer mieux?
 }
 if (isset($_POST['grr_mail_Username']))
 {
-	if (!Settings::set("grr_mail_Username", clean_input($_POST['grr_mail_Username'])))
+    $grrMailUserNameValid = TRUE;
+    $grrMailUserName = clean_input($_POST['grr_mail_Username']); // clean_input enlève les \, ce qui peut être gênant dans un domaine AD
+    if ($grrMailUserName != clean_input($_POST['grr_mail_Username'])){ // rattrapage pour domaine AD
+        $regexAD = '/^[a-zA-Z][a-zA-Z0-9\-\.]{1,61}[a-zA-Z]\\\\[a-zA-Z0-9]{2,}$/i'; // domaine AD
+        if(preg_match($regexAD, $_POST['grr_mail_Username']))
+            $grrMailUserName = $_POST['grr_mail_Username'];
+        else $grrMailUserNameValid = FALSE;
+    }
+	if (!$grrMailUserNameValid || (!Settings::set("grr_mail_Username", $grrMailUserName)))
 	{
 		echo get_vocab('grr_mail_Username_save_err');
 		die();
@@ -132,7 +140,7 @@ if ((isset($_POST['smtp_port']))&&(is_numeric($_POST['smtp_port'])))
 // Si Email test renseigné on y envoie un mail
 if (isset($_POST['mail_test']) && !empty($_POST['mail_test']))
 {
-    $mail_test = clean_input($_GET['mail_test']);
+    $mail_test = clean_input($_POST['mail_test']);
     if (!validate_email($mail_test)){
         echo get_vocab('invalid_test_mail_address');
         die();
