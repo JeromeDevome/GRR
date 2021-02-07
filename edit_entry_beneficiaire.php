@@ -56,7 +56,7 @@ if ($flag_qui_peut_reserver_pour ) // on crée les sélecteurs à afficher
 	echo '<td class="CL">'.PHP_EOL;
     //echo "domaine".$area." ressource".$room." utilisateur".$user." droits requis".$qui_peut_reserver_pour;
     //echo "Choix du bénéficiaire";
-	echo '<select size="1" class="form-control" name="beneficiaire" id="beneficiaire" onchange="setdefault(\'beneficiaire_default\',\'\');check_4();">'.PHP_EOL;
+	echo '<select size="1" class="select2 form-control" name="beneficiaire" id="beneficiaire" onchange="setdefault(\'beneficiaire_default\',\'\');check_4();">'.PHP_EOL;
 	echo '<option value="" >'.get_vocab("personne exterieure").'</option>'.PHP_EOL;
 	$sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (etat!='inactif' and statut!='visiteur' ) OR (login='".$user."') ORDER BY nom, prenom";
 	$res = grr_sql_query($sql);
@@ -104,7 +104,7 @@ if (Settings::get("automatic_mail") == 'yes')
 	echo '      <div class="input-group-addon"><span class="glyphicon glyphicon-envelope" ></span></div>'.PHP_EOL;
 	echo '      <input class="form-control" type="email" name="benef_ext_email" value="'.htmlspecialchars($tab_benef["email"]).'" placeholder="'.get_vocab("email beneficiaire").'">'.PHP_EOL;
 	echo '    </div>'.PHP_EOL;
-	echo '  </div>'.PHP_EOL;
+	echo '</div>'.PHP_EOL;
 }
 echo "</td></tr>\n";
 }

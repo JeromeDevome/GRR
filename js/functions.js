@@ -1,9 +1,9 @@
 /*
  * ./js/functions.js
  * fichier Bibliothèque de fonctions Javascript de GRR
- * Dernière modification : $Date: 2020-12-16 18:00$
+ * Dernière modification : $Date: 2021-02-06 16:21$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -326,7 +326,7 @@ function recoverInputs( formRef, oStr)
                 }
             }
         }
-        $("#panel").append(valeurs);
+        //$("#panel").append(valeurs);
     }
 }
 function retrieveCookie(cookieName)

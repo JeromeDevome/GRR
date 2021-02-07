@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-01-24 18:52$
+ * Dernière modification : $Date: 2021-02-02 11:07$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,7 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
- // les modifications apportées sont OK avec la méthode GET, à vérifier quand on passera edit_entry en méthode POST
+ // les modifications apportées semblent OK avec la méthode GET, à vérifier quand on passera edit_entry en méthode POST
 $grr_script_name = "edit_entry_handler.php";
 include "include/connect.inc.php";
 include "include/config.inc.php";
@@ -31,8 +31,8 @@ if (!Settings::load())
 // Session related functions
 require_once("./include/session.inc.php");
 // paramètres
-print_r($_COOKIE);
-print_r($_GET);
+//print_r($_COOKIE);
+//print_r($_GET);
 // die();
 // Resume session
 if (!grr_resumeSession())
@@ -44,9 +44,9 @@ $user = getUserName(); // ici on devrait avoir un identifiant
 // Paramètres langage
 include "include/language.inc.php";
 // on devrait arriver sur cette page depuis edit_entry ou edit_entry_handler, mais au cas où un accès direct serait tenté, on vérifie les droits d'accès
-if (authGetUserLevel($user, -1) < 1)
+if (authGetUserLevel($user, -1) < 6)
 {
-	showAccessDenied($back);
+	showAccessDenied(page_accueil());
 	exit();
 }
 // et éventuellement la page d'appel
@@ -60,6 +60,24 @@ function getFormVar($nom,$type=''){
         settype($valeur,$type);
     return $valeur;
 }
+// ajoute le code html correspondant aux entrées cachées d'un formulaire (évite le passage par les cookies)
+// ne fonctionne pas car les valeurs de $var ne sont pas connues de la fonction... code passé en ligne
+function addHiddenInputs($form_vars){ // traite les champs réguliers, voir les champs additionnels
+    $output = "chaîne des hidden inputs"; // chaîne des hidden inputs 
+    foreach($form_vars as $var=>$var_type){
+        if ($var_type == "array"){
+            foreach($$var as $value){
+                if(isset($value)){
+                    $output .= "<input name='${var}[]' value='".$value."' >";
+                }
+            }
+        }
+        elseif(isset($$var)){
+            $output .= "<input name='".$var."' value='".$$var."' >";
+        }
+    }
+    echo $output;
+}
 // les variables attendues et leur type
 $form_vars = array(
   'create_by'          => 'string',
@@ -70,6 +88,11 @@ $form_vars = array(
   'start_year'         => 'int',
   'start_'             => 'string', // par ex. 12:00 
   'start_time'         => 'int',
+  'hour'               => 'int', // depuis un planning
+  'minute'             => 'int',
+  'day'                => 'int',
+  'month'              => 'int',
+  'year'               => 'int',
   'end_day'            => 'int',
   'end_month'          => 'int',
   'end_year'           => 'int',
@@ -78,7 +101,7 @@ $form_vars = array(
   'all_day'            => 'string',  // yes ou vide
   'type'               => 'string',
   'rooms'              => 'array',
-  'room_id'            => 'int',     // celle de la page d'appel
+  'room'               => 'int',     // celle de la page d'appel
   'returl'             => 'string',  // là où aller en cas d'abandon
   'id'                 => 'int',     // id de la réservation en modification ou copie
   'rep_id'             => 'int',     // modification ou copie d'une série
@@ -97,6 +120,7 @@ $form_vars = array(
   'option_reservation' => 'int',
   'moderate'           => 'int',
   'courrier'           => 'string',
+  'keys'               => 'string',
   'oldRessource'       => 'int', 
   'areas'              => 'int', 
   'rep_month'          => 'int', 
@@ -109,7 +133,7 @@ $form_vars = array(
   'rep_jour_'          => 'int',
   'cycle_cplt'         => 'string',
   'page'               => 'string', // récupérable dans page_ret, à filtrer parmi celles qui sont acceptables (plannings)
-  'room_back'          => 'int', // doublon avec oldRessource ?
+  'room_back'          => 'string', // palliatif de l'absence de day_all
   'page_ret'           => 'string',
   'type_affichage_reser' => 'int',
   'duration'           => 'int',
@@ -117,7 +141,9 @@ $form_vars = array(
   'period'             => 'int',
   'end_period'         => 'int',
   'dur_units'          => 'string',
-  'areas'              => 'int'
+  'areas'              => 'int',
+  'del_entry_in_conflict' => 'string',
+  'skip_entry_in_conflict' => 'string'
 );
 // tableau à compléter autant que nécessaire
 // récupération des valeurs des variables passées en paramètres
@@ -134,11 +160,12 @@ foreach($form_vars as $var => $var_type)
 }
 // traiter aussi les champs additionnels (addon_x)!
 // vérification
+/*echo "<br>vérification<br>";
 foreach($form_vars as $var => $var_type)
 {
     echo $var.' -> ';print_r($$var);
     echo '<br/>';
-}
+}*/
 //die();
 // traitement des données
 // données communes
@@ -163,7 +190,7 @@ $duration = str_replace(",", ".", "$duration ");
 if (isset($start_)){
 	$debut = array();
 	$debut = explode(':', $start_);
-	$start_hour = $debut[0]; // préférer start_hour etc.
+	$start_hour = $debut[0];
 	$start_minute = isset($debut[1])? $debut[1]:'00';
     $pos = strpos($start_minute," ");
     if ($pos !== false){
@@ -190,15 +217,13 @@ if (($rep_type == 3) && ($rep_month == 3))
 	$rep_type = 3;
 if (($rep_type == 3) && ($rep_month == 5))
 	$rep_type = 5;
-$create_by = isset($create_by)? clean_input($create_by) : NULL;
+$create_by = isset($create_by)? clean_input($create_by) : NULL; // devrait être $user_name ?
 $beneficiaire = isset($beneficiaire)? clean_input($beneficiaire) : "";
 $benef_ext_nom = isset($benef_ext_nom)? clean_input($benef_ext_nom) : "";
 $benef_ext_email = isset($benef_ext_email)? clean_input($benef_ext_email) : "";
 $beneficiaire_ext = concat_nom_email($benef_ext_nom, $benef_ext_email);
 if (isset($room_back) && ($room_back != 'all'))
-	settype($room_back,"integer");
-else 
-    $room_back = 'all';
+    $room_back = ''; // room_back c'est NULL, '' ou 'all'
 $page = verif_page(); // vérifie $_GET['page'], à revoir
 if (!isset($option_reservation))
 	$option_reservation = -1;
@@ -233,17 +258,17 @@ if ((!isset($rooms[0])||(intval($rooms[0])==0)))
 	die();
 }
 else 
-    $room_back = intval($rooms[0]); // si besoin on renvoie sur la première page de la sélection
+    $room = intval($rooms[0]); // si besoin on renvoie sur la première page de la sélection
 $referer = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars($_SERVER['HTTP_REFERER']) :'';
 // $_SERVER['HTTP_REFERER'] ne contient pas les informations correctes s'il y a eu changement de ressource/domaine lors de l'édition de la réservation : il vaut mieux calculer la page précédente
 $referer = explode('?',$referer);
 if (!$referer[0])
 {
-    $back = traite_grr_url()."edit_entry.php?room=".$room_back;
+    $back = traite_grr_url()."edit_entry.php?room=".$room;
 }
 else 
-    $back = $referer[0]."?room=".$room_back; // les autres paramètres devraient être dans le cookie
-print_r($back);
+    $back = $referer[0]."?room=".$room; // les autres paramètres devraient être dans le cookie
+//print_r($back);
 // page de retour
 $page_ret = (isset($page_ret))? $page_ret : $back;
 $area = mrbsGetRoomArea(intval($rooms[0]));
@@ -282,7 +307,7 @@ foreach ($overload_fields_list as $overfield=>$fieldtype)
 		$overload_data[$id_field] = "";
 }
 get_planning_area_values($area);
-// reprendre ici : je pense qu'il faut expliciter start_day etc.
+
 if (!isset($start_day) || !isset($start_month) || !isset($start_year)) // erreur fatale : date incomplète
 {
     start_page_w_header();
@@ -295,7 +320,7 @@ if (check_begin_end_bookings($start_day, $start_month, $start_year))
 	showNoBookings($start_day, $start_month, $start_year, $back."&amp;Err=yes");  // mettre un haut de page, ou réserver l'erreur ?
 	exit();
 }
-echo 'day'.$start_day.' month '.$start_month.' year '.$start_year;
+//echo 'day'.$start_day.' month '.$start_month.' year '.$start_year;
 //die();
 if (($enable_periods == 'y')&&(!isset($period)))
     fatal_error('paramètre créneau manquant');
@@ -336,7 +361,7 @@ if ($type_affichage_reser == 0) // définition par start_time et duration
 		}
 		else
 		{
-			$start_time = mktime($morningstarts, 0, 0, $start_month, $start_day  , $start_year);
+			$start_time = mktime($morningstarts, 0, 0, $start_month, $start_day, $start_year);
 			$end_time   = mktime($eveningends, $eveningends_minutes, 0, $start_month, $start_day, $start_year);
 		}
 	}
@@ -363,7 +388,8 @@ else // définition par début et fin
 		else
 			fatal_error('paramètre créneau de fin manquant');
 	}
-	else {
+	else 
+    {
 		$fin = array();
 		$fin = explode(':', clean_input($end_));
 		$end_hour = $fin[0];
@@ -445,8 +471,8 @@ if ($rep_type != 0)
 foreach ($rooms as $key=>$room_id){
     $rooms[$key] = intval($room_id);
 }
-echo "<br/> salles :";
-print_r($rooms);
+//echo "<br/> salles :";
+//print_r($rooms);
 //die(); //OK jusqu'ici, si on déverrouille, on revient au planning avec une réservation effectuée, testé sur week_all, donnait une erreur, corrigée, à voir avec les autres plannings
 
 $date_now = time();
@@ -552,7 +578,7 @@ if (!in_array(TRUE,$error_))
             $ignore = array();
 			if (count($reps) < $max_rep_entrys)
 			{
-                if (isset($_GET['skip_entry_in_conflict']) && ($_GET['skip_entry_in_conflict'] == 'yes')){
+                if (isset($skip_entry_in_conflict) && ($skip_entry_in_conflict == 'yes')){
                     // stocke dans $ignore la liste des nouvelles réservations en conflit
                     for ($i = 0; $i < count($reps); $i++){
                         $tmp = mrbsCheckFree($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id);
@@ -566,7 +592,7 @@ if (!in_array(TRUE,$error_))
                 }
 				for ($i = 0; $i < count($reps); $i++)
 				{
-					if (isset($_GET['del_entry_in_conflict']) && ($_GET['del_entry_in_conflict'] == 'yes'))
+					if (isset($del_entry_in_conflict) && ($del_entry_in_conflict == 'yes'))
 						grrDelEntryInConflict($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id, 0);
 					/*if ($i == (count($reps) - 1))
 						$tmp = mrbsCheckFree($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id);
@@ -584,7 +610,7 @@ if (!in_array(TRUE,$error_))
 		}
 		else
 		{
-			if (isset($_GET['del_entry_in_conflict']) && ($_GET['del_entry_in_conflict'] == 'yes'))
+			if (isset($del_entry_in_conflict) && ($del_entry_in_conflict == 'yes'))
 				grrDelEntryInConflict($room_id, $start_time, $end_time-1, $ignore_id, $repeat_id, 0);
 			$conflits .= mrbsCheckFree($room_id, $start_time, $end_time - 1, $ignore_id, $repeat_id);
 		}
@@ -617,7 +643,7 @@ if (empty($conflits) && (!in_array(TRUE, $error_)))
 			//if (UserRoomMaxBooking($user, $room_id, count($reps) - 1 + $compt + $compt_room) == 0)
             if (UserRoomMaxBookingRange($user, $room_id, count($reps) - 1 + $compt + $compt_room,$start_time) == 0)
 			{
-				showAccessDeniedMaxBookings($day, $month, $year, $room_id, $back);
+				showAccessDeniedMaxBookings($start_day, $start_month, $start_year, $room_id, $back);
 				exit();
 			}
 			else
@@ -628,7 +654,7 @@ if (empty($conflits) && (!in_array(TRUE, $error_)))
 			//if (UserRoomMaxBooking($user, $room_id, $compt + $compt_room) == 0)
             if (UserRoomMaxBookingRange($user, $room_id, $compt + $compt_room,$start_time) == 0)
 			{
-				showAccessDeniedMaxBookings($day, $month, $year, $room_id, $back);
+				showAccessDeniedMaxBookings($start_day, $start_month, $start_year, $room_id, $back);
 				exit();
 			}
 			else
@@ -680,11 +706,11 @@ if (empty($conflits) && (!in_array(TRUE, $error_)))
 						$message_error = send_mail($id_first_resa, 2, $dformat, array(), $oldRessource);
 				}
 				else // ici $id_first_resa n'est pas défini ou nul, i.e. la série de réservations n'est pas posée => message à modifier ?
-				{
+				{/*
 					if ($send_mail_moderate)
 						$message_error = send_mail($id_first_resa, 5, $dformat);
 					else
-						$message_error = send_mail($id_first_resa, 1, $dformat);
+						$message_error = send_mail($id_first_resa, 1, $dformat);*/
 				}
 			}
 		}
@@ -706,11 +732,11 @@ if (empty($conflits) && (!in_array(TRUE, $error_)))
 						$message_error = send_mail($new_id,2,$dformat, array(), $oldRessource);
 				}
 				else // ici $new_id n'est pas défini ou nul, i.e. la réservation n'est pas posée => message à modifier ?
-				{
+				{/*
 					if ($send_mail_moderate)
 						$message_error = send_mail($new_id,5,$dformat);
 					else
-						$message_error = send_mail($new_id,1,$dformat);
+						$message_error = send_mail($new_id,1,$dformat);*/
 				}
 			}
 		}
@@ -728,15 +754,15 @@ if (empty($conflits) && (!in_array(TRUE, $error_)))
         $_SESSION['session_message_error'] = $message_error;
         display_mail_msg();
             if (($room_back != 'all')&&(strpos($page, 'all') === false)){
-                Header("Location: ".$page.".php?year=$year&month=$month&day=$day&area=$area&room=$room_back"); // à voir
+                Header("Location: ".$page.".php?year=$start_year&month=$start_month&day=$start_day&area=$area&room=$room"); // à voir
             }
-            else Header("Location: ".$page.".php?year=$year&month=$month&day=$day&area=$area"); // à voir si $ret_page n'est pas mieux
+            else Header("Location: ".$page.".php?year=$start_year&month=$start_month&day=start_$day&area=$area"); // à voir si $ret_page n'est pas mieux
     }
 	else // sinon, retour sur la page de la réservation validée
     {
         if (($room_back != 'all')&&(strpos($page, 'all') === false))
         {
-            Header("Location: ".$page.".php?year=$start_year&month=$start_month&day=$start_day&area=$area&room=$room_id");
+            Header("Location: ".$page.".php?year=$start_year&month=$start_month&day=$start_day&area=$area&room=$room");
         }
         else Header("Location: ".$page.".php?year=$start_year&month=$start_month&day=$start_day&area=$area");        
     }        
@@ -746,84 +772,81 @@ if (empty($conflits) && (!in_array(TRUE, $error_)))
 grr_sql_mutex_unlock("".TABLE_PREFIX."_entry");
 
 // page en cas d'erreur ou de conflit
-start_page_w_header();
-
-if ($error_['booking_in_past'])
-{
-	$str_date = utf8_strftime("%d %B %Y, %H:%M", $date_now);
-	echo "<h2>" . get_vocab("booking_in_past") . "</h2>";
-	if ($rep_type != 0 && !empty($reps))
-		echo "<p>" . get_vocab("booking_in_past_explain_with_periodicity") . $str_date."</p>";
-	else
-		echo "<p>" . get_vocab("booking_in_past_explain") . $str_date."</p>";
-	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-//	end_page();
-//	die();
+$hiddenInputs = ""; // chaîne des hidden inputs 
+foreach($form_vars as $var=>$var_type){
+    if ($var_type == "array"){
+        foreach($$var as $value){
+            if(isset($value)){
+                $hiddenInputs .= "<input type='hidden' name='${var}[]' value='".$value."' >";
+            }
+        }
+    }
+    elseif(isset($$var)&& ($$var != NULL)){
+        $hiddenInputs .= "<input type='hidden' name='".$var."' value='".$$var."' >";
+    }
 }
-if ($error_['duree_max_resa_area'])
-{
-	$area_id = grr_sql_query1("SELECT area_id FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($room_id)."'");
-	$duree_max_resa_area = grr_sql_query1("SELECT duree_max_resa_area FROM ".TABLE_PREFIX."_area WHERE id='".$area_id."'");
-	$temps_format = $duree_max_resa_area*60;
-	toTimeString($temps_format, $dur_units, true);
-	echo "<h2>" . get_vocab("error_duree_max_resa_area").$temps_format ." " .$dur_units."</h2>";
-	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-//	end_page();
-//	die();
+foreach ($overload_fields_list as $overfield=>$fieldtype){
+    $id_field = $overload_fields_list[$overfield]["id"];
+    $fieldname = "addon_".$id_field;
+    $$fieldname = getFormVar($fieldname,'string');
+    if ($$fieldname != NULL){
+        $hiddenInputs .= "<input type='hidden' name='".$fieldname."' value='".$$fieldname."' >";
+    }
 }
-if ($error_['delais_max_resa_room'])
-{
-	echo "<h2>" . get_vocab("error_delais_max_resa_room") ."</h2>";
-	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-//	end_page();
-//	die();
-}
-if ($error_['chevauchement'])
-{
-	echo "<h2>" . get_vocab("error_chevauchement") ."</h2>";
-	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-	// end_page();
-	// die();
-}
-if ($error_['delais_min_resa_room'])
-{
-	echo "<h2>" . get_vocab("error_delais_min_resa_room") ."</h2>";
-	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-	// end_page();
-	// die();
-}
-if ($error_['date_option_reservation'])
-{
-	echo "<h2>" . get_vocab("error_date_confirm_reservation") ."</h2>";
-	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-	// end_page();
-	// die();
-}
-if ($error_['booking_room_out'])
-{
-	echo "<h2>" . get_vocab("norights") . "</h2>";
-	echo "<p><b>" . get_vocab("tentative_reservation_ressource_indisponible") . "</b></p>";
-	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-	// end_page();
-	// die();
-}
-if ($error_['qui_peut_reserver_pour'])
-{
-	echo "<h2>" . get_vocab("error_qui_peut_reserver_pour") ."</h2>";
-	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-	// end_page();
-	// die();
-}
-if ($error_['heure_debut_fin'])
-{
-    echo strftime($start_time);
-	echo "<h2>" . get_vocab("error_heure_debut_fin") ."</h2>";
-	echo "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
-	// end_page();
-	// die();
+// cas 1 : erreur
+if (in_array(TRUE,$error_)){// il existe une ou des erreurs dans les paramètres
+    start_page_w_header();
+    echo "<form action='".$back."' method='GET'>";
+    echo $hiddenInputs;
+    echo "<input type='hidden' name='Err' value='yes' >";
+    //suivent les différents cas
+    if ($error_['booking_in_past']){
+        $str_date = utf8_strftime("%d %B %Y, %H:%M", $date_now);
+        echo "<h2>" . get_vocab("booking_in_past") . "</h2>";
+        if ($rep_type != 0 && !empty($reps))
+            echo "<p>" . get_vocab("booking_in_past_explain_with_periodicity") . $str_date."</p>";
+        else
+            echo "<p>" . get_vocab("booking_in_past_explain") . $str_date."</p>";
+    }
+    if ($error_['duree_max_resa_area']){
+        $area_id = grr_sql_query1("SELECT area_id FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($room)."'");
+        $duree_max_resa_area = grr_sql_query1("SELECT duree_max_resa_area FROM ".TABLE_PREFIX."_area WHERE id='".$area_id."'");
+        $temps_format = $duree_max_resa_area*60;
+        toTimeString($temps_format, $dur_units, true);
+        echo "<h2>" . get_vocab("error_duree_max_resa_area").$temps_format ." " .$dur_units."</h2>";
+    }
+    if ($error_['delais_max_resa_room']){
+        echo "<h2>" . get_vocab("error_delais_max_resa_room") ."</h2>";
+    }
+    if ($error_['chevauchement']){
+        echo "<h2>" . get_vocab("error_chevauchement") ."</h2>";
+    }
+    if ($error_['delais_min_resa_room']){
+        echo "<h2>" . get_vocab("error_delais_min_resa_room") ."</h2>";
+    }
+    if ($error_['date_option_reservation']){
+        echo "<h2>" . get_vocab("error_date_confirm_reservation") ."</h2>";
+    }
+    if ($error_['booking_room_out']){
+        echo "<h2>" . get_vocab("norights") . "</h2>";
+        echo "<p><b>" . get_vocab("tentative_reservation_ressource_indisponible") . "</b></p>";
+    }
+    if ($error_['qui_peut_reserver_pour']){
+        echo "<h2>" . get_vocab("error_qui_peut_reserver_pour") ."</h2>";
+    }
+    if ($error_['heure_debut_fin']){
+        echo "<h2>" . get_vocab("error_heure_debut_fin") ."</h2>";
+        echo strftime($start_time);
+    }
+    // bouton de retour vers edit_entry et fin du code de la page
+    echo "<input class='btn btn-primary' type='submit' value='".get_vocab('returnprev')."' />";
+    echo '</form>';
+	end_page();
+	die();
 }
 if (strlen($conflits))
 {
+    start_page_w_header();
 	echo "<h2>" . get_vocab("sched_conflict") . "</h2>";
 	if (!isset($hide_title))
 	{
@@ -837,14 +860,31 @@ if (strlen($conflits))
 		// echo "<center><table border=\"1\" cellpadding=\"10\" cellspacing=\"1\"><tr><td class='avertissement'><h3><a href='".traite_grr_url("","y")."edit_entry_handler.php?".$_SERVER['QUERY_STRING']."&amp;del_entry_in_conflict=yes'>".get_vocab("del_entry_in_conflict")."</a></h4></td></tr></table></center><br />"; modifié le 15/03/2018 YN
         // echo "<center><table border=\"1\" cellpadding=\"10\" cellspacing=\"1\"><tr><td class='avertissement'><h3><a href='edit_entry_handler.php?".$_SERVER['QUERY_STRING']."&amp;del_entry_in_conflict=yes'>".get_vocab("del_entry_in_conflict")."</a></h3></td></tr></table></center><br />";
         echo '<center>';
-        echo '<a class="btn btn-danger" type="button" href="edit_entry_handler.php?'.$_SERVER['QUERY_STRING'].'&amp;del_entry_in_conflict=yes">'.get_vocab("del_entry_in_conflict").'</a>';
-        echo '<a class="btn btn-success" type=""button" href="edit_entry_handler.php?'.$_SERVER['QUERY_STRING'].'&amp;skip_entry_in_conflict=yes">'.get_vocab('skip_entry_in_conflict').'</a>';
+        //echo '<a class="btn btn-danger" type="button" href="edit_entry_handler.php?'.$_SERVER['QUERY_STRING'].'&amp;del_entry_in_conflict=yes">'.get_vocab("del_entry_in_conflict").'</a>';
+        echo '<form method="POST">';
+        echo $hiddenInputs;
+        echo '<input type="hidden" name="del_entry_in_conflict" value="yes" />';
+        echo '<input class="btn btn-danger" type="submit" value="'.get_vocab("del_entry_in_conflict").'" />';
+        echo '</form>';
+        //echo '<a class="btn btn-success" type="button" href="edit_entry_handler.php?'.$_SERVER['QUERY_STRING'].'&amp;skip_entry_in_conflict=yes">'.get_vocab('skip_entry_in_conflict').'</a>';
+        echo '<form method="POST">';
+        echo $hiddenInputs;
+        echo '<input type="hidden" name="skip_entry_in_conflict" value="yes" />';
+        echo '<input class="btn btn-success" type="submit" value="'.get_vocab("skip_entry_in_conflict").'" />';
+        echo '</form>';
         echo '</center><br />';
     }
     // echo "<a class='btn btn-primary' type='button' href='edit_entry.php?".$_SERVER['QUERY_STRING']."&amp;Err=yes'>".get_vocab('returnprev')."</a>"; // pose pb avec une erreur de réservation non trouvée YN le 17/01/2021
-    echo "<a class='btn btn-primary' type='button' href=\"".$back."\">".get_vocab('returnprev')."</a>"; // ici on a perdu toutes les données du formulaire
+    //echo "<a class='btn btn-primary' type='button' href=\"".$back."\">".get_vocab('returnprev')."</a>"; // ici on a perdu toutes les données du formulaire
+    echo '<form action="./edit_entry.php" method="GET">'; 
+    echo $hiddenInputs;
+    echo "<input class='btn btn-primary' type='submit' value='".get_vocab('returnprev')."' />";
+    echo '</form>';
     // bouton pour abandonner
-    echo '<a class="btn btn-warning" type="button" href="'.$page_ret.'">'.get_vocab('cancel').'</a>'; // ramène à un planning
+    //echo '<a class="btn btn-warning" type="button" href="'.$page_ret.'">'.get_vocab('cancel').'</a>'; // ramène à un planning
+    echo '<form action="'.$page_ret.'">';
+    echo '<input class="btn btn-warning" type="submit" value="'.get_vocab('cancel').'" />';
+    echo '</form>';
+    end_page();
 } // fin de traitement des conflits
-end_page(); 
 ?>

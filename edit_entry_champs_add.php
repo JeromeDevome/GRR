@@ -3,9 +3,9 @@
  * edit_entry_champs_add.php
  * Page "Ajax" utilisée pour générer les champs additionnels dans la page de réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-03-31 17:30$
+ * Dernière modification : $Date: 2021-02-01 15:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -18,7 +18,7 @@
 include "include/admin.inc.php";
 /* Ce script a besoin de trois arguments passés par la méthode GET :
 $id : l'identifiant de la réservation (0 si nouvelle réservation)
-$areas : l'identifiant du domaine
+$area : l'identifiant du domaine
 $room : l'identifiant de la ressource
 */
 // Initialisation
@@ -29,10 +29,10 @@ if (isset($_GET["id"]))
 }
 else
 	die();
-if (isset($_GET['areas']))
+if (isset($_GET['area']))
 {
-	$areas = $_GET['areas'];
-	settype($areas,"integer");
+	$area = $_GET['area'];
+	settype($area,"integer");
 }
 else
 	die();
@@ -49,7 +49,7 @@ if ((authGetUserLevel(getUserName(), -1) < 2) && (auth_visiteur(getUserName(), $
 	showAccessDenied("");
 	exit();
 }
-if (authUserAccesArea(getUserName(), $areas) == 0)
+if (authUserAccesArea(getUserName(), $area) == 0)
 {
 	showAccessDenied("");
 	exit();
@@ -62,29 +62,29 @@ if ($unicode_encoding)
 else
 	header("Content-Type: text/html;charset=".$charset_html);
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-// Boucle sur les areas
-$overload_fields = mrbsOverloadGetFieldslist($areas);
+// Boucle sur les champs additionnels de l'area
+$overload_fields = mrbsOverloadGetFieldslist($area);
 foreach ($overload_fields as $fieldname=>$fieldtype)
 {
 	if ($overload_fields[$fieldname]["obligatoire"] == "y")
 		$flag_obli = " *" ;
 	else
 		$flag_obli = "";
-	echo "<table class='pleine' id=\"id_".$areas."_".$overload_fields[$fieldname]["id"]."\">";
-	echo "<tr><td class=E><b>".removeMailUnicode($fieldname).$flag_obli."</b></td></tr>\n";
+	echo "<div id=\"id_".$area."_".$overload_fields[$fieldname]["id"]."\" class='form-group'>";
+	echo "<label for='addon_".$overload_fields[$fieldname]["id"]."'>".removeMailUnicode($fieldname).$flag_obli."</label>\n";
 	if (isset($overload_data[$fieldname]["valeur"]))
 		$data = $overload_data[$fieldname]["valeur"];
 	else
 		$data = "";
 	if ($overload_fields[$fieldname]["type"] == "textarea" )
-		echo "<tr><td><div class=\"col-xs-12\"><textarea class=\"pleine form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\">".htmlspecialchars($data,ENT_SUBSTITUTE)."</textarea></div></td></tr>\n";
+		echo "<div class=\"col-xs-12\"><textarea class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\">".htmlspecialchars($data,ENT_SUBSTITUTE)."</textarea></div>\n";
 	else if ($overload_fields[$fieldname]["type"] == "text" )
-		echo "<tr><td><div class=\"col-xs-12\"><input class=\"pleine form-control\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" /></div></td></tr>\n";
+		echo "<input class=\"form-control\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" />";
 	else if ($overload_fields[$fieldname]["type"] == "numeric" )
-		echo "<tr><td><div class=\"col-xs-12\"><input class=\"pleine form-control\" size=\"20\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" /></div></td></tr>\n";
+		echo "<input class=\"form-control\" size=\"20\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" />\n";
 	else
 	{
-		echo "<tr><td><div class=\"col-xs-12\"><select class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" size=\"1\">\n";
+		echo "<div class=\"col-xs-12\"><select class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" size=\"1\">\n";
 		if ($overload_fields[$fieldname]["obligatoire"] == 'y')
 			echo '<option value="">'.get_vocab('choose').'</option>';
 		foreach ($overload_fields[$fieldname]["list"] as $value)
@@ -94,9 +94,8 @@ foreach ($overload_fields as $fieldname=>$fieldtype)
 				echo " selected=\"selected\"";
 			echo ">".trim($value,"&")."</option>\n";
 		}
-		echo "</select></div>\n</td></tr>\n";
+		echo "</select></div>\n";
 	}
-	echo "</table>\n";
+	echo "</div>\n";
 }
-
 ?>
