@@ -76,10 +76,9 @@ if (!($desactive_VerifNomPrenomUser))
     $desactive_VerifNomPrenomUser = 'n';
 // On vérifie que les noms et prénoms ne sont pas vides
 VerifNomPrenomUser($type_session);
-
 $debug_flag = FALSE;
 // le paramètre $room est obligatoire
-if (!isset($room)){
+if (!isset($room) || ($room == 0)){
     $msg = get_vocab('choose_a_room');
     $lien = "week_all.php?area=".$area."&day=".$day."&month=".$month."&year=".$year;
     echo "<script type='text/javascript'>
@@ -87,7 +86,7 @@ if (!isset($room)){
         document.location.href='$lien';
     </script>";
     echo "<p><br/>";
-        echo get_vocab('choose_room')."<a href='week_all.php'>".get_vocab("link")."</a>";
+        echo $msg."<a href='week_all.php'>".get_vocab("link")."</a>";
     echo "</p>";
     die();
 }
