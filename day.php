@@ -112,7 +112,7 @@ $sql = "SELECT ".TABLE_PREFIX."_room.id, start_time, end_time, name, ".TABLE_PRE
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room
 WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
 AND area_id = '".protect_data_sql($area)."'
-AND start_time < ".($pm7+$resolution)." AND end_time > $am7 ORDER BY start_time";
+AND start_time < ".($pm7+$resolution)." AND end_time > $am7 AND supprimer = 0 ORDER BY start_time";
 $res = grr_sql_query($sql);
 if (!$res)
 	echo grr_sql_error();

@@ -211,7 +211,7 @@ where
 ".TABLE_PREFIX."_area.id = '".$area."' and
 ".TABLE_PREFIX."_type_area.type_letter = ".TABLE_PREFIX."_entry.type AND
 start_time <= $date_end AND
-end_time > $date_start
+end_time > $date_start AND supprimer = 0
 ORDER by start_time, end_time, ".TABLE_PREFIX."_entry.id";
 /* contenu de la réponse si succès :
     $row[0] : start_time

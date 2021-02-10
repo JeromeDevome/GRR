@@ -207,7 +207,7 @@ $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiai
  room_name, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation,
  ".TABLE_PREFIX."_room.delais_option_reservation, type, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext
 FROM ".TABLE_PREFIX."_entry inner join ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id
-WHERE (start_time <= $month_end AND end_time > $month_start and area_id='".$area."' AND type <> '".$typeExclu."')
+WHERE (start_time <= $month_end AND end_time > $month_start and area_id='".$area."' AND type <> '".$typeExclu."') AND supprimer = 0 
 ORDER by start_time, end_time, ".TABLE_PREFIX."_room.room_name";
 //Build an array of information about each day in the month.
 //The information is stored as:

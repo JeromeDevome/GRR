@@ -40,7 +40,7 @@ get_vocab_admin('mail_message');
 
 get_vocab_admin('users_connected');
 
-$sql = "SELECT id, start_time, end_time, name FROM ".TABLE_PREFIX."_entry ORDER by start_time desc";
+$sql = "SELECT id, start_time, end_time, name, supprimer FROM ".TABLE_PREFIX."_entry ORDER by start_time desc";
 $res = grr_sql_query($sql);
 
 $logsMail = array ();
@@ -49,7 +49,7 @@ if ($res)
 {
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-		$logsMail[] = array('idresa' => $row[0], 'debut' => date("d-m-Y H:i:s", $row[1]), 'fin' => date("d-m-Y H:i:s", $row[2]), 'titre' => $row[3]);
+		$logsMail[] = array('idresa' => $row[0], 'debut' => date("d-m-Y H:i:s", $row[1]), 'fin' => date("d-m-Y H:i:s", $row[2]), 'titre' => $row[3], 'sup' => $row[4]);
 	}
 }
 

@@ -31,7 +31,7 @@
 								<tr>
 									<td>{{ log.debut }}</td>
 									<td>{{ log.fin }}</td>
-									<td>{{ log.titre }}</td>
+									<td>{{ log.titre }} {% if log.sup == 1 %} <i class="fa fa-trash"></i>{%endif%}</td>
 									<td><a class="btn btn-block btn-info btn-xs" href="?p=admin_log_resa&idresa={{ log.idresa }}"><i class="fa fa-search bg-aqua"></i></a></td>
 								</tr>
 							{% endfor %}

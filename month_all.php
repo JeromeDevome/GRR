@@ -195,7 +195,7 @@ $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
 $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, room_name, ".TABLE_PREFIX."_entry.description, type, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, ".TABLE_PREFIX."_room.id, ".TABLE_PREFIX."_type_area.type_name 
 FROM (".TABLE_PREFIX."_entry inner join ".TABLE_PREFIX."_room on ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) 
   inner join ".TABLE_PREFIX."_type_area on ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
-WHERE (start_time <= $month_end AND end_time > $month_start and area_id='".$area."')
+WHERE (start_time <= $month_end AND end_time > $month_start and area_id='".$area."') AND supprimer = 0 
 ORDER by start_time, end_time, ".TABLE_PREFIX."_room.room_name";
 
 //Build an array of information about each day in the month.

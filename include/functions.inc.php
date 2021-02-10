@@ -4281,7 +4281,8 @@ function verify_confirm_reservation()
 						if (Settings::get("automatic_mail") == 'yes')
 							$_SESSION['session_message_error'] = send_mail($row2[0],4,$dformat);
 						// On efface la réservation
-						grr_sql_command("DELETE FROM ".TABLE_PREFIX."_entry WHERE id=" . $row2[0]);
+						grr_sql_command("UPDATE ".TABLE_PREFIX."_entry SET supprimer = 1 WHERE id=" . $row2[0]);
+						insertLogResa($row2[0], 5, "Délai de confirmation est dépassé");
 						// On efface le cas écheant également  dans ".TABLE_PREFIX."_entry_moderate
 						grr_sql_command("DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE id=" . $row2[0]);
 					}

@@ -189,7 +189,7 @@ include("chargement.php");
 $sql = "SELECT start_time, end_time, type, name, id, beneficiaire, statut_entry, description, option_reservation, moderate, beneficiaire_ext
 FROM ".TABLE_PREFIX."_entry
 WHERE room_id=$room
-AND start_time < ".$week_end." AND end_time > $week_start ORDER BY start_time";
+AND start_time < ".$week_end." AND end_time > $week_start AND supprimer = 0 ORDER BY start_time";
 if ($enable_periods == 'y')
 {
     $first_slot = 0;

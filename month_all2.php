@@ -183,7 +183,7 @@ $tm = date("n",$i);
 $all_day = preg_replace("/ /", " ", get_vocab("all_day"));
 $sql = "SELECT start_time, end_time,".TABLE_PREFIX."_entry.id, name, beneficiaire, room_name, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, type, ".TABLE_PREFIX."_entry.moderate , ".TABLE_PREFIX."_type_area.type_name 
 FROM (".TABLE_PREFIX."_entry inner join ".TABLE_PREFIX."_room on ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) inner join ".TABLE_PREFIX."_type_area on  ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
-WHERE (start_time <= $month_end AND end_time > $month_start and area_id='".$area."')
+WHERE (start_time <= $month_end AND end_time > $month_start and area_id='".$area."') AND supprimer = 0 
 ORDER by start_time, end_time, ".TABLE_PREFIX."_room.room_name";
 $res = grr_sql_query($sql);
 if (!$res)

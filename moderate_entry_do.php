@@ -129,10 +129,11 @@ if ($_POST['moderate'] != 1)
 	// on efface l'entrée de la base
 	if ($series == 0)
 	{
-		$sql = "DELETE FROM ".TABLE_PREFIX."_entry WHERE id = ".$_POST['id'];
+		$sql = "UPDATE ".TABLE_PREFIX."_entry SET supprimer = 1 WHERE id = ".$_POST['id'];
 		$res = grr_sql_query($sql);
 		if (!$res)
 			fatal_error(0, grr_sql_error());
+		insertLogResa($_POST['id'], 5, "Via modération");
 	}
 	else
 	{
@@ -147,7 +148,10 @@ if ($_POST['moderate'] != 1)
 			$test = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry_moderate WHERE id = '".$entry_tom."' and moderate='3'");
 			// Si oui, on supprime la réservation
 			if ($test > 0)
-				$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_entry WHERE id = '".$entry_tom."'");
+			{
+				$del = grr_sql_query("UPDATE ".TABLE_PREFIX."_entry SET supprimer = 1 WHERE id = '".$entry_tom."'");
+				insertLogResa($entry_tom, 5, "Via modération périodicité");
+			}
 		}
 		// On supprime l'info de périodicité
 		$del_repeat = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_repeat WHERE id='".$repeat_id."'");

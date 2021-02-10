@@ -256,7 +256,7 @@ $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
 $sql = "SELECT start_time, end_time, id, name, beneficiaire, description, type, moderate, beneficiaire_ext
 FROM ".TABLE_PREFIX."_entry
 WHERE room_id=$room
-AND start_time <= $month_end AND end_time > $month_start
+AND start_time <= $month_end AND end_time > $month_start AND supprimer = 0
 ORDER by 1";
 $res = grr_sql_query($sql);
 if (!$res)

@@ -33,7 +33,7 @@ function mrbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore, $lin
 {
 	global $vocab;
 	//SELECT any meetings which overlap ($starttime,$endtime) for this room:
-	$sql = "SELECT id, name, start_time FROM ".TABLE_PREFIX."_entry WHERE start_time < '".$endtime."' AND end_time > '".$starttime."' AND room_id = '".$room_id."'";
+	$sql = "SELECT id, name, start_time FROM ".TABLE_PREFIX."_entry WHERE start_time < '".$endtime."' AND end_time > '".$starttime."' AND room_id = '".$room_id."' AND supprimer = 0";
 	if ($ignore > 0)
 		$sql .= " AND id <> $ignore";
 	if ($repignore > 0)
@@ -105,7 +105,7 @@ function grrDelEntryInConflict($room_id, $starttime, $endtime, $ignore, $repigno
 {
 	global $vocab, $dformat;
 	//Select any meetings which overlap ($starttime,$endtime) for this room:
-	$sql = "SELECT id FROM ".TABLE_PREFIX."_entry WHERE start_time < '".$endtime."' AND end_time > '".$starttime."' AND room_id = '".$room_id."'";
+	$sql = "SELECT id FROM ".TABLE_PREFIX."_entry WHERE start_time < '".$endtime."' AND end_time > '".$starttime."' AND room_id = '".$room_id."' AND supprimer = 0";
 	if ($ignore > 0)
 		$sql .= " AND id <> $ignore";
 	if ($repignore > 0)
@@ -166,8 +166,11 @@ function mrbsDelEntry($user, $id, $series, $all)
 			continue;
 		if ($series && $row[2] == 2 && !$all)
 			continue;
-		if (grr_sql_command("DELETE FROM ".TABLE_PREFIX."_entry WHERE id=" . $row[1]) > 0)
+		if (grr_sql_command("UPDATE ".TABLE_PREFIX."_entry SET supprimer = 1 WHERE id=" . $row[1]) > 0)
+		{
 			$removed++;
+			insertLogResa($row[1], 5, "");
+		}
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE id=" . $row[1]);
 	}
 	if ($repeat_id > 0 &&
@@ -876,10 +879,11 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 		// on efface l'entrée de la base
 		if ($series == 0)
 		{
-			$sql = "DELETE FROM ".TABLE_PREFIX."_entry WHERE id = ".$_id;
+			$sql = "UPDATE ".TABLE_PREFIX."_entry SET supprimer = 1 WHERE id = ".$_id;
 			$res = grr_sql_query($sql);
 			if (! $res)
 				fatal_error(0, grr_sql_error());
+			insertLogResa($_id, 5, "");
 		}
 		else
 		{
@@ -894,7 +898,10 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 				$test = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry_moderate WHERE id = '".$entry_tom."' AND moderate='3'");
 				// Si oui, on supprime la réservation
 				if ($test > 0)
-					grr_sql_query("DELETE FROM ".TABLE_PREFIX."_entry WHERE id = '".$entry_tom."'");
+				{
+					grr_sql_query("UPDATE ".TABLE_PREFIX."_entry SET supprimer = 1 WHERE id = '".$entry_tom."'");
+					insertLogResa($entry_tom, 5, "");
+				}
 			}
 			// On supprime l'info de périodicité
 			grr_sql_query("DELETE FROM ".TABLE_PREFIX."_repeat WHERE id='".$repeat_id."'");
