@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2021-01-29
+# Last modification : 2021-02-10
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1275,4 +1275,11 @@ $vocab['dontDisplay'] = "Ne pas afficher";
 $vocab['From_'] = "From ";
 $vocab['voir_resa'] = "Voir la réservation";
 $vocab['invalid_owner_email_address'] = "Adresse email du bénéficiaire incorrecte";
+$vocab['invalid_parameters'] = "Données incorrectes";
+$vocab['incomplete_date'] = "date incomplète";
+$vocab['incomplete_end_date'] = 'date de fin incomplète';
+$vocab['missing_period'] = 'paramètre créneau manquant';
+$vocab['missing_end_period'] = 'paramètre créneau de fin manquant';
+$vocab['booking_room_out'] = "Réservation impossible";
+$vocab['duree_max_resa_aera'] = "La réservation demandée est trop longue";
 ?>
