@@ -172,6 +172,7 @@ function mrbsDelEntry($user, $id, $series, $all)
 			insertLogResa($row[1], 5, "");
 		}
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE id=" . $row[1]);
+		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_participants WHERE idresa=" . $row[1]);
 	}
 	if ($repeat_id > 0 &&
 		grr_sql_query1("SELECT count(*) FROM ".TABLE_PREFIX."_entry WHERE repeat_id='".protect_data_sql($repeat_id)."'") == 0)

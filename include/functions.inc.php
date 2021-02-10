@@ -4285,6 +4285,7 @@ function verify_confirm_reservation()
 						insertLogResa($row2[0], 5, "Délai de confirmation est dépassé");
 						// On efface le cas écheant également  dans ".TABLE_PREFIX."_entry_moderate
 						grr_sql_command("DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE id=" . $row2[0]);
+						grr_sql_command("DELETE FROM ".TABLE_PREFIX."_participants WHERE idresa=" . $row2[0]);
 					}
 				}
 			}
