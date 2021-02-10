@@ -15,18 +15,19 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "traitementcontact.php";
 include "personnalisation/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
 include "include/$dbsys.inc.php";
 include "include/mrbs_sql.inc.php";
-include "phpmailer/class.phpmailer.php";
-
-$grr_script_name = "traitementcontact.php";
 // Settings
 require_once("./include/settings.class.php");
 if (!Settings::load())
 	die("Erreur chargement settings");
+include "include/language.inc.php";
+include "phpmailer/class.phpmailer.php";
+
 $msg_erreur = "Erreur. Les champs suivants doivent être obligatoirement
 remplis :<br/><br/>";
 $msg_ok = "Votre demande a bien été prise en compte.";
