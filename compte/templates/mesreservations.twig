@@ -29,19 +29,21 @@
 			<th class="col">{{ trad.fulldescription }}</th>
 			<th class="col">{{ trad.type }}</th>
 			<th class="col">{{ trad.lastupdate }}</th>
+			<th class="col">{{ trad.statut }}</th>
 		</thead>
 		<tbody>
 		{% for resa in reservations %}
-			<tr>
-				<td class="col"><span style="color:{{resa.couleur}};">{{ resa.datedebut }}</span></td>
-				<td class="col"><span style="color:{{resa.couleur}};">{{ resa.heuredebut }}</span></td>
-				<td class="col"><span style="color:{{resa.couleur}};">{{ resa.duree }}</span></td>
-				<td class="col" {% if resa.domainedesc %}title="{{ resa.domainedesc }}"{% endif %}><span style="color:{{resa.couleur}};">{{ resa.domaine }}</span></td>
-				<td class="col"><span style="color:{{resa.couleur}};">{{ resa.ressource }}</span></td>
-				<td class="col"><span style="color:{{resa.couleur}};">{{ resa.descriptionc | raw }}</span></td>
-				<td class="col"><span style="color:{{resa.couleur}};">{{ resa.descriptionl }}</span></td>
-				<td class="col"><span style="color:{{resa.couleur}};">{{ resa.type }}</span></td>
-				<td class="col"><span style="color:{{resa.couleur}};">{{ resa.datemaj }}</span></td>
+			<tr style="color:{{resa.couleur}};{%if resa.supprimer == 1 %}background-color:#D60021;{%endif%}">
+				<td class="col">{{ resa.datedebut }}</td>
+				<td class="col">{{ resa.heuredebut }}</td>
+				<td class="col">{{ resa.duree }}</td>
+				<td class="col" {% if resa.domainedesc %}title="{{ resa.domainedesc }}"{% endif %}>{{ resa.domaine }}</td>
+				<td class="col">{{ resa.ressource }}</td>
+				<td class="col">{{ resa.descriptionc | raw }}</td>
+				<td class="col">{{ resa.descriptionl }}</td>
+				<td class="col">{{ resa.type }}</td>
+				<td class="col">{{ resa.datemaj }}</td>
+				<td class="col">{%if resa.supprimer == 1 %}<i class="fa fa-trash"></i>{%endif%}</td>
 			</tr>
 		{% endfor %}
 		</tbody>

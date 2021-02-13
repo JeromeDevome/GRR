@@ -24,7 +24,7 @@ class MesReservations
 		. "e.type, e.beneficiaire, "
 		.  grr_sql_syntax_timestamp_to_unix("e.timestamp")
 		. ", a.area_name, r.room_name, r.description, a.id, e.overload_desc, r.order_display, t.type_name"
-		. ", e.beneficiaire_ext, e.moderate"
+		. ", e.beneficiaire_ext, e.moderate, e.supprimer"
 		. " FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_room r, ".TABLE_PREFIX."_type_area t"
 		. " WHERE e.room_id = r.id AND r.area_id = a.id"
 		. " AND e.beneficiaire = '".$login."' ";
@@ -66,7 +66,7 @@ class MesReservations
 		else
 			list($start_date, $start_time ,$duration, $dur_units) = describe_span($row[1], $row[2], $dformat);
 
-		// Couleur (noir antérieur a ce passé, vert à venir et/ou modération accepté, orange en attente de modération, rouge refusé) 
+		// Couleur texte (noir antérieur a ce passé, vert à venir et/ou modération accepté, orange en attente de modération, rouge refusé) 
 		if($row[8] == 1)
 			$couleur = 'orange';
 		elseif($row[2] > time())
@@ -100,7 +100,7 @@ class MesReservations
 		//Affichage de la date de la dernière mise à jour
 		$dateMAJ = date_time_string($row[7],$dformat);
 
-		$gListeReservations[] = array('couleur' => $couleur, 'datedebut' => $start_date, 'heuredebut' => $start_time, 'duree' => $duration, 'domaine' => $domaine, 'domainedesc' => $domainedesc, 'ressource' => $ressource, 'descriptionc' => $descriC, 'descriptionl' => $descriL, 'type' => $type, 'datemaj' => $dateMAJ);
+		$gListeReservations[] = array('couleur' => $couleur, 'datedebut' => $start_date, 'heuredebut' => $start_time, 'duree' => $duration, 'domaine' => $domaine, 'domainedesc' => $domainedesc, 'ressource' => $ressource, 'descriptionc' => $descriC, 'descriptionl' => $descriL, 'type' => $type, 'datemaj' => $dateMAJ, 'supprimer' => $row[17]);
 
 	}
 

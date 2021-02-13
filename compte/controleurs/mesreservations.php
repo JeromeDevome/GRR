@@ -65,6 +65,7 @@ get_vocab_admin('sum_by_descrip');
 get_vocab_admin('fulldescription');
 get_vocab_admin('type');
 get_vocab_admin('lastupdate');
+get_vocab_admin('statut');
 get_vocab_admin('entry_found');
 get_vocab_admin('entries_found');
 get_vocab_admin('nothing_found');
