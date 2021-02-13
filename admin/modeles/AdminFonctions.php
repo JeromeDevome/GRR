@@ -127,7 +127,7 @@ class AdminFonctions
 		global $dformat;
 
 		$listeModeration = array();
-		$sql = "SELECT r.room_name, e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE e.moderate = 1";
+		$sql = "SELECT r.room_name, e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE e.moderate = 1 AND e.supprimer = 0";
 		$resa_mode = grr_sql_query($sql);
 		$nbAModerer = grr_sql_count($resa_mode);
  
