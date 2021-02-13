@@ -650,7 +650,7 @@ if (isset($_GET["is_posted"]))
     if (authGetUserLevel(getUserName(),-1) < 6)
         if ($test_grr_j_user_area != 0)
             $sql .= ", ".TABLE_PREFIX."_j_user_area j ";
-        $sql .= " WHERE e.room_id = r.id AND r.area_id = a.id";
+        $sql .= " WHERE e.room_id = r.id AND r.area_id = a.id AND supprimer =0";
 	// on ne cherche pas parmi les ressources invisibles pour l'utilisateur
     $tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
     foreach ($tab_rooms_noaccess as $key)
