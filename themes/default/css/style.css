@@ -2,7 +2,7 @@
 body{font-size:14px;font-family:arial,verdana,sans-serif;width:100%;margin:0 auto}
 a{text-decoration:none;}
 a:link,a:visited{font-weight:700;text-decoration:none;}
-a.poplight{display:block;font-weight:400;font-size:14px;height:100%;width:100%;vertical-align:middle;text-align:center;cursor:pointer;font-weight:700;text-decoration:none}
+a.poplight{display:block;font-weight:400;font-size:14px;width:100%;vertical-align:middle;text-align:center;cursor:pointer;font-weight:700;text-decoration:none}
 a.lienCellule{display:block;font-weight:400;font-size:14px;width:100%;vertical-align:middle;text-align:center;cursor:pointer;font-weight:700;text-decoration:none}
 caption{text-align: center}
 .small{font-size:.8em}
