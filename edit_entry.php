@@ -3,9 +3,9 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-07-09 17:30$
+ * Dernière modification : $Date: 2021-02-15 10:55$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -685,35 +685,46 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
 			$res = grr_sql_query($sql);
 			if ($res)
 			{
+				$ids = [];
 				for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 				{
-					if (authUserAccesArea($user_name, $row[0]) == 1)
+					if (authUserAccesArea(getUserName(), $row[0]) == 1)
 					{
-						print "      case \"".$row[0]."\":\n";
-						$sql2 = "SELECT id, room_name FROM ".TABLE_PREFIX."_room WHERE area_id='".$row[0]."'";
-						$tab_rooms_noaccess = verif_acces_ressource($user_name, 'all');
-						foreach($tab_rooms_noaccess as $key)
-						{
-							$sql2 .= " AND id != $key ";
+						$ids[] = $row[0];
+					}
+				}
+				// modification proposée par Eric Marie (Github)
+				$sql2 = "SELECT area_id, id, room_name FROM ".TABLE_PREFIX."_room WHERE area_id IN ('" . implode("', '", $ids) . "')";
+				$tab_rooms_noaccess = verif_acces_ressource($user_name, 'all');
+				foreach($tab_rooms_noaccess as $key)
+				{
+					$sql2 .= " AND id != $key ";
+				}
+				$sql2 .= " ORDER BY area_id, room_name";
+				
+				$res2 = grr_sql_query($sql2);
+				$results = [];
+				if ($res2)
+				{
+					for ($j = 0; ($row2 = grr_sql_row($res2, $j)); $j++)
+					{
+						$results[$row2[0]][] = [$row2[1], $row2[2]];
+					}
+					foreach($results as $areaId => $rows2) {
+						print "      case \"".$areaId."\":\n";
+						print "roomsObj.size=" . min($longueur_liste_ressources_max, count($rows2)) . ";\n";
+						$i = 0;
+						foreach($rows2 as $row2) {
+							print "roomsObj.options[$i] = new Option(\"".str_replace('"','\\"',$row2[1])."\",".$row2[0] .")\n";
+							$i++;
 						}
-						$sql2 .= " ORDER BY room_name";
-						$res2 = grr_sql_query($sql2);
-						if ($res2)
-						{
-							$len = grr_sql_count($res2);
-							print "roomsObj.size=".min($longueur_liste_ressources_max,$len).";\n";
-							for ($j = 0; ($row2 = grr_sql_row($res2, $j)); $j++)
-                            {
-                                print "roomsObj.options[$j] = new Option(\"".str_replace('"','\\"',$row2[1])."\",".$row2[0] .")\n";
-/*                                 if (($j == 0)&&($row[0] == 4))
-                                    $room = $row2[0]; */
-                            }
-							print "roomsObj.options[0].selected = true\n";
-						}
+						print "roomsObj.options[0].selected = true\n";
 						print "break\n";
 					}
 				}
+                grr_sql_free($res2);
 			}
+            grr_sql_free($res);
 			?>
 		}
         roomsObj = eval( "formObj.elements['rooms[]']" );
@@ -723,6 +734,7 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
         insertTypes(area,room);
         //insertProfilBeneficiaire();
 	}
+    
     function changeRoom( formObj)
     {	
         areasObj = eval( "formObj.areas" );
