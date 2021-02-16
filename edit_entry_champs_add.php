@@ -3,7 +3,7 @@
  * edit_entry_champs_add.php
  * Page "Ajax" utilisée pour générer les champs additionnels dans la page de réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-02-01 15:15$
+ * Dernière modification : $Date: 2021-02-16 11:52$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -44,6 +44,10 @@ if (isset($_GET['room']))
 }
 else
 	die();
+if (isset($_GET['overloadFields']))
+    $overloadFields = $_GET['overloadFields'];
+else 
+    $overloadFields = array();
 if ((authGetUserLevel(getUserName(), -1) < 2) && (auth_visiteur(getUserName(), $room) == 0))
 {
 	showAccessDenied("");
@@ -74,6 +78,8 @@ foreach ($overload_fields as $fieldname=>$fieldtype)
 	echo "<label for='addon_".$overload_fields[$fieldname]["id"]."'>".removeMailUnicode($fieldname).$flag_obli."</label>\n";
 	if (isset($overload_data[$fieldname]["valeur"]))
 		$data = $overload_data[$fieldname]["valeur"];
+    elseif (isset($overloadFields[$overload_fields[$fieldname]["id"]]))
+        $data = $overloadFields[$overload_fields[$fieldname]["id"]];
 	else
 		$data = "";
 	if ($overload_fields[$fieldname]["type"] == "textarea" )

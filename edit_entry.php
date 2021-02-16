@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-02-10 14:30
+ * Dernière modification : $Date: 2021-02-16 11:53
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -52,11 +52,13 @@ function pageHead($title,$monStyle=''){
     echo '<head>
     <meta charset="UTF-8">
 	<title>'.$title.'</title>
-	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="./js/flatpickr/flatpickr.min.css">';
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css" />';
+//    <link rel="stylesheet" href="./js/flatpickr/flatpickr.min.css">
 //    <link rel="stylesheet" href="./js/flatpickr/airbnb.css">
     echo '<link rel="stylesheet" href="./js/select2/css/select2.min.css" />
     <link rel="stylesheet" href="./bootstrap/css/select2-bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery.timepicker.min.css" >
     <link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />
     <link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />';
     echo '
@@ -74,7 +76,7 @@ function pageHead($title,$monStyle=''){
         <script src="./js/select2/js/select2.min.js"></script>
         <script src="./js/select2/js/i18n/fr.js"></script>
         <script src="./js/bandeau.js"></script>
-        <script src="./js/functions.js"></script>'; // clock à adapter
+        <script src="./js/functions.js"></script>'; // à localiser
     echo '</head>';
 }
 // récupère les variables passées par GET ou POST ou bien par COOKIE, et leur affecte le type indiqué (int ou string)
@@ -236,13 +238,28 @@ foreach($form_vars as $var => $var_type)
     }
 }
 // traiter aussi les champs additionnels (addon_x)!
+$sql = "SELECT id FROM ".TABLE_PREFIX."_overload";
+$res = grr_sql_query("SELECT id FROM ".TABLE_PREFIX."_overload");
+$overloadFields = array(); // contiendra, s'il en existe, les valeurs des champs additionnels définies dans le formulaire
+if ($res){
+    foreach($res as $row){
+        $overloadField = 'addon_'.$row['id'];
+        $overloadFields[$row['id']] = getFormVar($overloadField);
+    }
+}
+//$overloadFields = mrbsOverloadGetFieldslist();
+//print_r($overloadFields);
 // vérification
-/*echo "<br>vérification<br>";
+/*
+echo "<br>vérification<br>";
 foreach($form_vars as $var => $var_type)
 {
     echo $var.' -> ';print_r($$var);
     echo '<br/>';
-}*/
+}
+echo "<br>Champs additionnels<br>";
+print_r($overloadFields);
+*/
 //die();
 // traitement des données
 // URL de retour. À faire avant l'ouverture de session.
@@ -649,7 +666,7 @@ echo '<html lang="fr">'.PHP_EOL;
 pageHead(Settings::get("company"));
 // section <body>
 echo "<body>";
-echo $C;
+//echo $C;
 // Menu du haut = section <header>
 echo "<header>";
 pageHeader2($day, $month, $year, $type_session="with_session");
@@ -1132,7 +1149,7 @@ function insertBeneficiaires(area_,room_,user_,id_){
 		}
     });
 }
-function insertChampsAdd(area_,id_,room_){
+function insertChampsAdd(area_,id_,room_,olf_){
 	jQuery.ajax({
 		type: 'GET',
 		url: 'edit_entry_champs_add.php',
@@ -1140,6 +1157,7 @@ function insertChampsAdd(area_,id_,room_){
 			area: area_,
 			id: id_,
 			room: room_,
+            overloadFields: olf_,
 		},
 		success: function(returnData)
 		{
@@ -1434,7 +1452,7 @@ function changeRooms( formObj ){
         roomsObj = eval( "formObj.elements['rooms[]']" );
         room = roomsObj[roomsObj.selectedIndex].value;
         //insertBeneficiaires(area,room,<?php echo json_encode($user_name).','.$id;?>);
-        insertChampsAdd(area,<?php echo $id;?>,room);
+        insertChampsAdd(area,<?php echo $id;?>,room,<?php echo json_encode($overloadFields);?>);
         insertTypes(area,room);
 	}
 function changeRoom( formObj)
@@ -1444,7 +1462,7 @@ function changeRoom( formObj)
     roomsObj = eval("formObj.elements['rooms[]']");
     room = roomsObj[roomsObj.selectedIndex].value;
     //insertBeneficiaires(area,room,<?php echo json_encode($user_name).','.$id;?>);
-    insertChampsAdd(area,<?php echo $id;?>,room);
+    insertChampsAdd(area,<?php echo $id;?>,room,<?php echo json_encode($overloadFields);?>);
     insertTypes(area,room);
     
 }
@@ -1457,7 +1475,7 @@ function changeRoom( formObj)
 		});
 		$(document).ready(function() {
             //insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode($user_name);?>,<?php echo $id?>);
-            insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>);
+            insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>,<?php echo json_encode($overloadFields);?>);
             insertTypes(<?php echo $area?>,<?php echo $room?>);
 			$('.multiselect').multiselect();
 			$(".select2").select2();

@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-02-10 14:29$
+ * Dernière modification : $Date: 2021-02-16 10:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -253,7 +253,7 @@ try {
             $start_minute = $period;
             $max_periods = count($periods_name);
             if ( $dur_units == "periods" && (((int)$start_minute + (int)$duration) > $max_periods))
-                $duration = (24 * 60 * floor($duration / $max_periods)) + ($duration % $max_periods);
+                $duration = (24 * 60 * floor($duration / $max_periods)) + ($duration % $max_periods); // cas d'un changement d'heure été/hiver ???
         }
         $units = 1.0;
         switch($dur_units)
@@ -295,6 +295,9 @@ try {
                     $end_time += $resolution - $tmp; // arrondi à la résolution supérieure
             }// sinon, erreur récupérée ensuite
         }
+        $end_day = date("d",$end_time);
+        $end_month = date("m",$end_time);
+        $end_year = date("Y",$end_time);
     }
     else // définition par début et fin
     {
@@ -354,6 +357,8 @@ try {
     if (($end_time <= $start_time)||(!checkdate($end_month, $end_day, $end_year)))
     {
         $err_type = 'error_end_date';
+        $err_msg = 'debut '.$start_time.' fin '.$end_time;
+        $err_msg .= '<br />date de fin '.$end_day.'/'.$end_month.'/'.$end_year;
         throw new Exception('erreur');
     }
     $starttime_midnight = mktime(0, 0, 0, $start_month, $start_day, $start_year);
@@ -376,7 +381,7 @@ try {
     if (($rep_type == 3) && ($rep_month == 5))
         $rep_type = 5;
     // paramètres pour une série
-    if (isset($rep_type) && isset($rep_end_month) && isset($rep_end_day) && isset($rep_end_year))
+    if (isset($rep_type) && ($rep_type != 0) && isset($rep_end_month) && isset($rep_end_day) && isset($rep_end_year))
     {
         $rep_enddate = mktime($end_hour, $end_minute, 0, $rep_end_month, $rep_end_day, $rep_end_year);
         if ($rep_enddate > Settings::get("end_bookings"))
@@ -827,85 +832,4 @@ catch (Exception $e){
 }
 // code commun
 end_page();
-die();
-//$description = isset($description)? clean_input($description) : NULL;
-//$duration = isset($duration)? clean_input($duration) : NULL;
-//echo "<br/> salles :";
-//print_r($rooms);
-//die(); //OK jusqu'ici, si on déverrouille, on revient au planning avec une réservation effectuée, testé sur week_all, donnait une erreur, corrigée, à voir avec les autres plannings
-
-/*
-$error_ = array( 
-    'booking_in_past' => FALSE,
-    'booking_room_out' => FALSE,
-    'duree_max_resa_area' => FALSE,
-    'delais_max_resa_room' => FALSE,
-    'delais_min_resa_room' => FALSE,
-    'date_option_reservation' => FALSE,
-    'chevauchement' => FALSE,
-    'qui_peut_reserver_pour' => FALSE,
-    'heure_debut_fin' => FALSE
-);
-*/
-
-
-// page en cas d'erreur ou de conflit
-
-// cas 1 : erreur
-if (in_array(TRUE,$error_)){// il existe une ou des erreurs dans les paramètres
-    start_page_w_header();
-    echo "<form action='".$back."' method='GET'>";
-    echo $hiddenInputs;
-    echo "<input type='hidden' name='Err' value='yes' >";
-    //suivent les différents cas
-    if ($error_['booking_in_past']){
-        $str_date = utf8_strftime("%d %B %Y, %H:%M", $date_now);
-        echo "<h2>" . get_vocab("booking_in_past") . "</h2>";
-        if ($rep_type != 0 && !empty($reps))
-            echo "<p>" . get_vocab("booking_in_past_explain_with_periodicity") . $str_date."</p>";
-        else
-            echo "<p>" . get_vocab("booking_in_past_explain") . $str_date."</p>";
-    }
-    if ($error_['duree_max_resa_area']){
-        $area_id = grr_sql_query1("SELECT area_id FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($room)."'");
-        $duree_max_resa_area = grr_sql_query1("SELECT duree_max_resa_area FROM ".TABLE_PREFIX."_area WHERE id='".$area_id."'");
-        $temps_format = $duree_max_resa_area*60;
-        toTimeString($temps_format, $dur_units, true);
-        echo "<h2>" . get_vocab("error_duree_max_resa_area").$temps_format ." " .$dur_units."</h2>";
-    }
-    if ($error_['delais_max_resa_room']){
-        echo "<h2>" . get_vocab("error_delais_max_resa_room") ."</h2>";
-    }
-    if ($error_['chevauchement']){
-        echo "<h2>" . get_vocab("error_chevauchement") ."</h2>";
-    }
-    if ($error_['delais_min_resa_room']){
-        echo "<h2>" . get_vocab("error_delais_min_resa_room") ."</h2>";
-    }
-    if ($error_['date_option_reservation']){
-        echo "<h2>" . get_vocab("error_date_confirm_reservation") ."</h2>";
-    }
-    if ($error_['booking_room_out']){
-        echo "<h2>" . get_vocab("norights") . "</h2>";
-        echo "<p><b>" . get_vocab("tentative_reservation_ressource_indisponible") . "</b></p>";
-    }
-    if ($error_['qui_peut_reserver_pour']){
-        echo "<h2>" . get_vocab("error_qui_peut_reserver_pour") ."</h2>";
-    }
-    if ($error_['heure_debut_fin']){
-        echo "<h2>" . get_vocab("error_heure_debut_fin") ."</h2>";
-        echo strftime($start_time);
-    }
-    // bouton de retour vers edit_entry et fin du code de la page
-    echo "<input class='btn btn-primary' type='submit' value='".get_vocab('returnprev')."' />";
-    echo '</form>';
-	end_page();
-	die();
-}
-// cas 2 : conflit
-if (strlen($conflits))
-{
-    
-    end_page();
-} // fin de traitement des conflits
 ?>
