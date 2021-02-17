@@ -1100,7 +1100,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 
 			if ( ( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )
 			{
-				echo '<td class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</td>',PHP_EOL;
+				echo '<td class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onClick="javascript:location.href=\'app.php?p=contactresa&day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</td>',PHP_EOL;
 			}
 			// Administration
 			if ($type_session == "with_session")
@@ -1207,7 +1207,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $d, $gcDossierImg ;
 	
-	if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
+	if(isset($_SESSION['changepwd']) && $_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
 		header("Location: ./changepwd.php");
 	}
 
@@ -1220,8 +1220,6 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 		$racine = "./";
 		$racineAd = "./compte/";
 	}
-
-	include $racine."/include/hook.class.php";
 
 	if (!($desactive_VerifNomPrenomUser))
 		$desactive_VerifNomPrenomUser = 'n';
@@ -1290,7 +1288,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 
 			if ( ( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )
 			{
-				echo '<td class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</td>',PHP_EOL;
+				$d['lienFormaulaireResa'] = 1;
 			}
 			// Administration
 			if ($type_session == "with_session")
@@ -1312,7 +1310,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 				echo '<script>selection()</script>'.PHP_EOL;
 
 			// Heure selon la langue
-			if (@file_exists('../js/'.$clock_file))
+			if (@file_exists($racine.'js/'.$clock_file))
 				$d['jsHeure'] = $clock_file;
 
 			$_SESSION['chemin_retour'] = '';
@@ -5065,6 +5063,88 @@ echo '	});'.PHP_EOL;
 echo '</script>'.PHP_EOL;
 }
 
+function jQuery_DatePickerTwig($typeDate){
+
+	if (@file_exists('../personnalisation/connect.inc.php')){
+		$racine = "../";
+	} else{
+		$racine = "./";
+	}
+
+	if ($typeDate == 'rep_end' && isset($_GET['id'])){
+		$res = grr_sql_query("SELECT repeat_id FROM ".TABLE_PREFIX."_entry WHERE id=".$_GET['id'].";");
+		if (!$res){
+			fatal_error(0, grr_sql_error());
+		}
+		$repeat_id = implode('', grr_sql_row($res, 0));
+		$res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks, start_time, end_time FROM ".TABLE_PREFIX."_repeat WHERE id=$repeat_id");
+		if (!$res){
+			fatal_error(0, grr_sql_error());
+		}
+		if (grr_sql_count($res) == 1){
+			$row6 = grr_sql_row($res, 0);
+			$date = date_parse(date("Y-m-d H:i:s",$row6[1]));
+			$day = $date['day'];
+			$month = $date['month'];
+			$year = $date['year'];
+		} else{
+			if (isset ($_GET['day']))
+				$day = $_GET['day'];
+			else
+				$day = date("d");
+			if (isset ($_GET['month']))
+				$month = $_GET['month'];
+			else
+				$month = date("m");
+			if (isset ($_GET['year']))
+				$year = $_GET['year'];
+			else
+				$year = date("Y");
+		}
+	} else{
+		global $start_day, $start_month, $start_year, $end_day, $end_month, $end_year;
+
+		if (isset ($_GET['day'])){
+			$day = $_GET['day'];
+		} else{
+			$day = date("d");
+		}
+
+		if (isset($start_day) && $typeDate=='start'){
+			$day = $start_day;
+		} elseif (isset($end_day) && $typeDate=='end'){
+			$day = $end_day;
+		}
+
+		if (isset ($_GET['month'])){
+			$month = $_GET['month'];
+		} else{
+			$month = date("m");
+		}
+
+		if (isset($start_month) && $typeDate=='start'){
+			$month = $start_month;
+		} elseif (isset($end_month) && $typeDate=='end'){
+			$month = $end_month;
+		}
+
+		if(isset ($_GET['year'])){
+			$year = $_GET['year'];
+		} else{
+			$year = date("Y");
+		}
+
+		if (isset($start_year) && $typeDate=='start'){
+			$year = $start_year;
+		} elseif (isset($end_year) && $typeDate=='end'){
+			$year = $end_year;
+		}
+ 	}
+ 	$retour = genDateSelectorForm("".$typeDate."_", "$day", "$month", "$year","");
+
+	return $retour;
+}
+
 function jQuery_TimePicker($typeTime, $start_hour, $start_min,$dureepardefaultsec)
 {
 	if (isset ($_GET['id']))
@@ -5732,7 +5812,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 
 			if ( ( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )
 			{
-				echo '<div class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</div>',PHP_EOL;
+				echo '<div class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onClick="javascript:location.href=\'app.php?p=contactresa&day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</div>',PHP_EOL;
 			}
 			// Administration
 			if ($type_session == "with_session")

@@ -28,7 +28,6 @@ if(isset($_GET['p'])){
 include "../include/admin.inc.php";
 require_once('../include/session.inc.php');
 include_once('../include/settings.class.php');
-include_once('../include/hook.class.php');
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))

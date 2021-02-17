@@ -16,20 +16,36 @@
  * (at your option) any later version.
  */
 
-require '../vendor/autoload.php';
-require '../include/twiggrr.class.php';
+require './vendor/autoload.php';
+require './include/twiggrr.class.php';
 
-$page = 'moncompte';
+$page = 'login';
 if(isset($_GET['p'])){
 	$page = $_GET['p'];
 }
 
 // GRR
-include "../include/admin.inc.php";
-require_once('../include/session.inc.php');
-include_once('../include/settings.class.php');
-include_once('../include/hook.class.php');
+include "./personnalisation/connect.inc.php";
+include "./include/config.inc.php";
+include "./include/misc.inc.php";
+include "./include/functions.inc.php";
+include "./include/$dbsys.inc.php";
+include "./include/mincals.inc.php";
+include "./include/mrbs_sql.inc.php";
 
+require_once("./include/settings.class.php");
+if (!Settings::load())
+	die("Erreur chargement settings");
+require_once("./include/session.inc.php");
+include "./include/resume_session.php";
+include "./include/language.inc.php";
+
+// pour le traitement des modules
+include "./include/hook.class.php";
+
+$trad="";
+
+/*
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
@@ -38,8 +54,9 @@ if ((authGetUserLevel(getUserName(), -1, 'area') < 4) && (authGetUserLevel(getUs
 	showAccessDenied($back);
 	exit();
 }
+*/
 
-print_header_twig("", "", "", $type="with_session");
+print_header_twig("", "", "", $type="no_session");
 
 $day = isset($_POST['day']) ? $_POST['day'] : (isset($_GET['day']) ? $_GET['day'] : date('d'));
 $month = isset($_POST['month']) ? $_POST['month'] : (isset($_GET['month']) ? $_GET['month'] : date('m'));
@@ -51,25 +68,21 @@ $d['dYear'] = $year;
 
 $d['accesStats'] = verif_access_search(getUserName());
 
-get_vocab_admin('admin');
-get_vocab_admin('manage_my_account');
-get_vocab_admin('report');
-get_vocab_admin('retour_planning');
-get_vocab_admin('admin_view_connexions');
-
+/*
+get_vocab('admin');
+get_vocab('manage_my_account');
+get_vocab('report');
+get_vocab('retour_planning');
+get_vocab('admin_view_connexions');
+*/
 $AllSettings = Settings::getAll();
 
 // Template Twig
-$loader = new Twig_Loader_Filesystem(__DIR__ . '/templates');
+$loader = new Twig_Loader_Filesystem(__DIR__ . '/reservation/templates');
 $twig = new Twig_Environment($loader,['charset']);
 $twig->addExtension(new TwigGRR());
 
-// Menu GRR
-$menuAdminT = array();
-$menuAdminTN2 = array();
-//include "admin_col_gauche.php";
-
-include('controleurs/'.$page.'.php');
+include('./reservation/controleurs/'.$page.'.php');
 
 
 ?>
