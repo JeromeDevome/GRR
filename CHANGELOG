@@ -10,6 +10,15 @@ Tâches prévues :
 --
 -----
 
+Version 3.4.2 RC2
+    correctifs : divers, syntaxe et calcul
+    correctif : le nom d'utilisateur SMTP peut dépendre d'un domaine AD
+    correctif : prévient une mauvaise mise en page par Firefox du planning week_all en mode preview
+    mise à jour : jquery en 3.4.1 (progressivement)
+    mise à jour : select2 en 4.0.13
+    modification : rétablissement du choix du nombre de calendriers à afficher dans le menu gauche (ou haut)
+    modification : calcul et présentation de la page d'édition des réservations, les champs additionnels ne devraient plus être perdus
+
 Version 3.4.2 RC1 
     ajout : fonctionnalité de limitation du quota de réservations sur une période
     ajout : indicateur de complexité de MDP + mes réservations + refonte de la page my_account.php
