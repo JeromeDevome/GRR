@@ -104,7 +104,7 @@ if (Settings::get("automatic_mail") == 'yes')
 	echo '      <div class="input-group-addon"><span class="glyphicon glyphicon-envelope" ></span></div>'.PHP_EOL;
 	echo '      <input class="form-control" type="email" name="benef_ext_email" value="'.htmlspecialchars($tab_benef["email"]).'" placeholder="'.get_vocab("email beneficiaire").'">'.PHP_EOL;
 	echo '    </div>'.PHP_EOL;
-	echo '  </div>'.PHP_EOL;
+	echo '</div>'.PHP_EOL;
 }
 echo "</td></tr>\n";
 }

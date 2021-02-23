@@ -1,7 +1,7 @@
 /*
  * ./js/functions.js
  * fichier Bibliothèque de fonctions Javascript de GRR
- * Dernière modification : $Date: 2021-02-06 16:24$
+ * Dernière modification : $Date: 2021-02-06 16:21$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -276,7 +276,7 @@ function recoverInputs( formRef, oStr)
             a = a.split(':');
             valeurs += a[0] + '::'+ a[1] + '??';
         }
-     //$("#panel").append(valeurs);
+     $("#panel").append(valeurs);
     }
 }
 function recoverInputs( formRef, oStr)

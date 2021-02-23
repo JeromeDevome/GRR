@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2021-01-29
+# Last modification : 2021-02-10
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1274,4 +1274,11 @@ $vocab['errImgTransfer'] = "The image could not be saved: transfer problem. The 
 $vocab['errTempLogo'] = "Error while saving the logo! (deletion of the temporary file)";
 $vocab['errInvalidFile'] = "The image could not be saved: the selected image file is not valid!";
 $vocab['top_of_page'] = "^ Seitenanfang";
+$vocab['invalid_parameters'] = "Invalid parameters";
+$vocab['incomplete_date'] = "incomplete date";
+$vocab['incomplete_end_date'] = 'incomplete end date';
+$vocab['missing_period'] = 'missing period';
+$vocab['missing_end_period'] = 'missing end period';
+$vocab['booking_room_out'] = "Booking not possible";
+$vocab['duree_max_resa_aera'] = "The requested booking is too long";
 ?>
