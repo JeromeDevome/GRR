@@ -3,9 +3,9 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-10-28 17:35$
+ * Dernière modification : $Date: 2021-01-24 16:07$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -52,9 +52,9 @@ else
 	$class_image = "image";
 // initialisation des paramètres de temps
 $date_now = time();
-$day = (isset($_GET['day']))? $_GET['day'] : date("d"); // ou 1 ? YN le 07/03/2018
-$month = (isset($_GET['month']))? $_GET['month'] : date("m");
-$year = (isset($_GET['year']))? $_GET['year'] : date("Y");
+$day = (isset($_GET['day']) && is_numeric($_GET['day']))? $_GET['day'] : date("d"); 
+$month = (isset($_GET['month']) && is_numeric($_GET['month']))? $_GET['month'] : date("m");
+$year = (isset($_GET['year']) && is_numeric($_GET['year']))? $_GET['year'] : date("Y");
 // définition de variables globales
 global $racine, $racineAd, $desactive_VerifNomPrenomUser;
 

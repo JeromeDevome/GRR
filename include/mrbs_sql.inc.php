@@ -416,14 +416,14 @@ function grrExtractValueFromOverloadDesc($chaine,$id)
  * $statut_entry
  * $keys
  * $courrier
- *
- * Returns:
- *   0        - An error occured while inserting the entry
- *   non-zero - The entry's ID
  * @param integer $entry_type
  * @param integer $repeat_id
  * @param string $statut_entry
  * @param integer $keys
+ *
+ * Returns:
+ *   0        - An error occured while inserting the entry
+ *   non-zero - The entry's ID
  */
 function mrbsCreateSingleEntry($starttime, $endtime, $entry_type, $repeat_id, $room_id, $creator, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation,$overload_data, $moderate, $rep_jour_c, $statut_entry, $keys, $courrier)
 {
@@ -719,7 +719,7 @@ function mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate
 				$id_first_resa = $id_new_resa;
 		}
 	}
-	return $ent;
+	return $id_first_resa;//$ent;
 }
 /* mrbsGetEntryInfo()
  *

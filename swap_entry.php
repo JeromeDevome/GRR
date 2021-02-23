@@ -3,7 +3,7 @@
  * swap_entry.php
  * Interface d'échange d'une réservation avec une autre, à choisir
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-02-06 18:43$
+ * Dernière modification : $Date: 2021-02-23 09:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -325,6 +325,7 @@ function libelle($type){ // rend la description du type_lettre de réservation
     }
     else 
         print(grr_sql_error($res));
+    grr_sql_free($res);
 }
 function roomDesc($id_room){ // rend nom + description à partir de l'identifiant de la ressource
     $sql = "SELECT room_name,description FROM ".TABLE_PREFIX."_room WHERE id = '".$id_room."' ";
@@ -337,5 +338,6 @@ function roomDesc($id_room){ // rend nom + description à partir de l'identifian
     }
     else 
         print(grr_sql_error($res));
+    grr_sql_free($res);
 }
 ?>
