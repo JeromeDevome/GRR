@@ -329,14 +329,14 @@ echo "</p>";
 # 1 = Oui, 0 = Non
 echo "\n<hr /><h3>".get_vocab("javascript_info_admin_disabled_msg")."</h3>";
 echo "<p>";
-echo "\n<input id='label_9' type='radio' name='javascript_info_disabled' value='0' ";
-if (Settings::get("javascript_info_disabled") == '0')
+echo "\n<input id='label_9' type='radio' name='javascript_info_admin_disabled' value='0' ";
+if (Settings::get("javascript_info_admin_disabled") == '0')
 	echo "checked=\"checked\"";
 echo " />";
 echo "\n<label for='label_9'>&nbsp;".get_vocab("javascript_info_admin_disabled0")."</label>";
 echo "\n<br />";
-echo "\n<input id='label_10' type='radio' name='javascript_info_disabled' value='1' ";
-if (Settings::get("javascript_info_disabled") == '1')
+echo "\n<input id='label_10' type='radio' name='javascript_info_admin_disabled' value='1' ";
+if (Settings::get("javascript_info_admin_disabled") == '1')
 	echo "checked=\"checked\"";
 echo " />";
 echo "\n<label for='label_10'>&nbsp;".get_vocab("javascript_info_admin_disabled1")."</label>";
