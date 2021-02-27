@@ -36,7 +36,7 @@
     "bootstrap-slider": "^9.10.0",
     "chart.js": "^1",
     "ckeditor": "^4.11.2",
-    "datatables.net": "^1.10.19",
+    "datatables.net": "^1.10.22",
     "datatables.net-bs": "^1.10.19",
     "fastclick": "^1.0.6",
     "flot": "^0.8.3",
