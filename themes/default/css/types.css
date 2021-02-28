@@ -1,0 +1,9 @@
+/* fichier de style reprenant les paramètres des types de réservation */ 
+td.typeA{background:##1abc9c !important;color:#000 !important;}
+td.typeA a.lienCellule{color:#000 !important;}
+ 
+td.typeB{background:#C03000 !important;color:#FFFFFF !important;}
+td.typeB a.lienCellule{color:#FFFFFF !important;}
+ 
+td.typeC{background:#4BB5C1 !important;color:#000000 !important;}
+td.typeC a.lienCellule{color:#000000 !important;}
