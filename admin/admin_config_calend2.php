@@ -89,14 +89,14 @@ for ($i = 0; $i < 7; $i++)
 	$show = $basetime + ($i * 24 * 60 * 60);
 	$lday = utf8_strftime('%A',$show);
 	echo "<tr>\n";
-	echo "<td><span class='small'><a href='admin_calend_jour_cycle.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), true, '$lday' ); return false;\">".get_vocab("check_all_the").$lday."s</a></span></td>\n";
-	echo "<td><span class='small'><a href='admin_calend_jour_cycle.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, '$lday' ); return false;\">".get_vocab("uncheck_all_the").$lday."s</a></span></td>\n";
+	echo "<td><span class='small'><a href='admin_calend_jour_cycle.php' onclick=\"setCheckboxesGrr('formulaire', true, '$lday' ); return false;\">".get_vocab("check_all_the").$lday."s</a></span></td>\n";
+	echo "<td><span class='small'><a href='admin_calend_jour_cycle.php' onclick=\"setCheckboxesGrr('formulaire', false, '$lday' ); return false;\">".get_vocab("uncheck_all_the").$lday."s</a></span></td>\n";
 	echo "</tr>\n";
 }
-echo "<tr>\n<td><span class='small'><a href='admin_calend_jour_cycle.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span></td>\n";
+echo "<tr>\n<td><span class='small'><a href='admin_calend_jour_cycle.php' onclick=\"setCheckboxesGrr('formulaire', false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span></td>\n";
 echo "<td></td></tr>\n";
 echo "</table>\n";
-echo "<form action=\"admin_calend_jour_cycle.php?page_calend=2\" method=\"post\" id=\"formulaire\">\n";
+echo "<form action=\"admin_calend_jour_cycle.php?page_calend=2\" method=\"post\" id=\"formulaire\" name=\"formulaire\">\n";
 echo "<table>\n";
 $n = Settings::get("begin_bookings");
 $end_bookings = Settings::get("end_bookings");

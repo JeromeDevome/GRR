@@ -186,7 +186,7 @@ if ($etape == 3) //sélection des jours
 		die();
 	}
 
-	echo "<form action=\"admin_calend2.php\" method=\"post\" id=\"formulaire\" >\n";
+	echo "<form action=\"admin_calend2.php\" method=\"post\" id=\"formulaire\" name=\"formulaire\" >\n";
 	$test_enable_periods_y = 0;
 	$test_enable_periods_n = 0;
 	foreach ( $rooms as $room_id )
@@ -265,13 +265,13 @@ if ($etape == 3) //sélection des jours
 		$show = $basetime + ($i * 24 * 60 * 60);
 		$lday = utf8_strftime('%A',$show);
 		echo "<tr>\n";
-		echo "<td><span class='small'><a href='admin_calend2.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), true, '$lday' ); return false;\">".get_vocab("check_all_the").$lday."s</a></span></td>\n";
-		echo "<td><span class='small'><a href='admin_calend2.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, '$lday' ); return false;\">".get_vocab("uncheck_all_the").$lday."s</a></span></td>\n";
+		echo "<td><span class='small'><a href='admin_calend2.php' onclick=\"setCheckboxesGrr('formulaire', true, '$lday' ); return false;\">".get_vocab("check_all_the").$lday."s</a></span></td>\n";
+		echo "<td><span class='small'><a href='admin_calend2.php' onclick=\"setCheckboxesGrr('formulaire', false, '$lday' ); return false;\">".get_vocab("uncheck_all_the").$lday."s</a></span></td>\n";
 		if ($i == 0)
 			echo "<td rowspan=\"8\">  </td><td rowspan=\"8\">$texte_debut_fin_reservation</td>\n";
 		echo "</tr>\n";
 	}
-	echo "<tr>\n<td><span class='small'><a href='admin_calend2.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span></td>\n";
+	echo "<tr>\n<td><span class='small'><a href='admin_calend2.php' onclick=\"setCheckboxesGrr('formulaire', false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span></td>\n";
 	echo "<td> </td></tr>\n";
 	echo "</table>\n";
 	echo "<table>\n";

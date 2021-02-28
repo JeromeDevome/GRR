@@ -119,10 +119,10 @@ else if (!isset($_POST['define_holidays'])){
             }
 
             echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"{$cocheFeries} return false;\">".get_vocab("vacances_feries_FR")."</a></span> || ";
-            echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaireF'), false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span> || ";
+            echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"setCheckboxesGrr('formulaireF', false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span> || ";
             echo "<span class='small'><a href='admin_calend_vacances_feries.php' >".get_vocab("returnprev")."</a></span>";
 
-            echo "<form action=\"admin_calend_vacances_feries.php\" method=\"post\" id=\"formulaireF\">\n";
+            echo "<form action=\"admin_calend_vacances_feries.php\" method=\"post\" id=\"formulaireF\" name=\"formulaireF\">\n";
             echo "<table cellspacing=\"20\">\n";
             $debligne = 1;
             $inc = 0;
@@ -257,10 +257,10 @@ else if (!isset($_POST['define_holidays'])){
                 unset($schoolHoliday);
 
                 echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"{$cocheVacances} return false;\">".get_vocab("vacances_FR").$zone."</a></span> || ";
-                echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaireV'), false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span> || ";
+                echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"setCheckboxesGrr('formulaireV', false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span> || ";
                 echo "<span class='small'><a href='admin_calend_vacances_feries.php' >".get_vocab("returnprev")."</a></span>\n";
 
-                echo "<form action=\"admin_calend_vacances_feries.php\" method=\"post\" id=\"formulaireV\">\n";
+                echo "<form action=\"admin_calend_vacances_feries.php\" method=\"post\" id=\"formulaireV\" name=\"formulaireV\">\n";
                 echo "<table cellspacing=\"20\">\n";
                 $debligne = 1;
                 $inc = 0;

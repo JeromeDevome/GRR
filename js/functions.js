@@ -113,7 +113,7 @@ function confirmButton(theform,themessage)
  * day la valeur de la boîte à cocher ou à décocher
  * return  boolean  always true
  */
-function _setCheckboxesGrr(the_form, do_check, day)
+function setCheckboxesGrr(the_form, do_check, day)
 {
 	var elts = document.forms[the_form];
 	for (i = 0; i < elts.elements.length; i++)
