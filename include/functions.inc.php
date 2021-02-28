@@ -890,7 +890,7 @@ function begin_page($title, $page = "with_session")
 			die();
 		}
 	}
-	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2;
+	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $gcDossierCss;
 	header('Content-Type: text/html; charset=utf-8');
 	if (!isset($_COOKIE['open']))
 	{
@@ -921,6 +921,8 @@ function begin_page($title, $page = "with_session")
 	$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL;
 	if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
+	if(file_exists("personnalisation/".$gcDossierCss."/perso.css"))
+		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css\" />".PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
@@ -2139,7 +2141,6 @@ function show_colour_keys()
 }
 */
 // transforme une chaine de caractères en couleur hexadécimale valide
-/* Commenté le 09/08/2020
 function valid_color($entry)
 {
 	$out = preg_replace('/[^a-fA-F0-9]/','',$entry);
@@ -2153,7 +2154,6 @@ function valid_color($entry)
 	}
 	return($out);
 }
-*/
 //Round time down to the nearest resolution
 function round_t_down($t, $resolution, $am7)
 {
@@ -5688,7 +5688,7 @@ function pageHead2($title, $page = "with_session")
 			die();
 		}
 	}
-	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2;
+	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $gcDossierCss;
     // code de la partie <head> 
 	$a  = '<head>'.PHP_EOL;
 	$a .= '<meta charset="utf-8">'.PHP_EOL;
@@ -5711,6 +5711,8 @@ function pageHead2($title, $page = "with_session")
 	$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
 	if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
+	if(file_exists("personnalisation/".$gcDossierCss."/perso.css"))
+		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css\" />".PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;

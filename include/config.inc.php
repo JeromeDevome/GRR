@@ -213,6 +213,7 @@ $grrPages = array();
 #error_reporting (E_ALL ^ E_NOTICE);
 
 # Création d'un dossier personnalisation pour mettre tout fichiers importé modifié par les utilisateurs de GRR
+$gcDossierCss = "css";
 $gcDossierImg = "images";
 $gcDossierXml = "xml";
 

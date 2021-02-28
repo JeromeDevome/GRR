@@ -107,6 +107,8 @@ function afficheLienNiveau2($nomSection,$image,$liste,$iN2)
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 		$liste[] = 'admin_cgu';
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
+		$liste[] = 'admin_couleurs';
+	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 		$liste[] = 'admin_infos';
 
 	afficheLienNiveau2("admin_menu_various", "fa fa-database",$liste,$iN2++);
