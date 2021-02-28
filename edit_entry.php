@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-02-16 11:53
+ * Dernière modification : $Date: 2021-02-28 18:56
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -689,8 +689,8 @@ echo '<div id="error"></div>';
 echo '<div class="row2">';
 echo '<div class="col-sm-6 col-xs-12">';
 // bloc choix du bénéficiaire
-//echo '<div id="div_beneficiaire"></div>';
-divBeneficiaire($id,$user_name,$room,$area_id);
+echo '<div id="choix_beneficiaire"></div>';
+//divBeneficiaire($id,$user_name,$room,$area_id);
 // description brève
 echo '<label for="name">'.$Booker.'</label>'.PHP_EOL;
 echo '<input id="name" class="form-control" name="name" maxlength="80" size="60" value="'.$C.'" />'.PHP_EOL;
@@ -1141,7 +1141,7 @@ function insertBeneficiaires(area_,room_,user_,id_){
 		},
 		success: function(returnData)
 		{
-			$("#div_beneficiaire").html(returnData);
+			$("#choix_beneficiaire").html(returnData);
 		},
 		error: function(data)
 		{
@@ -1252,7 +1252,7 @@ function check_4(){
         }
         else
         {
-            menu.style.display = "";
+            menu.style.display = "block";
             <?php
             if (Settings::get("remplissage_description_breve") == '2')
             {
@@ -1451,17 +1451,17 @@ function changeRooms( formObj ){
 		}
         roomsObj = eval( "formObj.elements['rooms[]']" );
         room = roomsObj[roomsObj.selectedIndex].value;
-        //insertBeneficiaires(area,room,<?php echo json_encode($user_name).','.$id;?>);
+        insertBeneficiaires(area,room,<?php echo json_encode($user_name).','.$id;?>);
         insertChampsAdd(area,<?php echo $id;?>,room,<?php echo json_encode($overloadFields);?>);
         insertTypes(area,room);
 	}
-function changeRoom( formObj)
+function changeRoom(formObj)
 {	
     areasObj = eval( "formObj.areas" );
     area = areasObj[areasObj.selectedIndex].value
     roomsObj = eval("formObj.elements['rooms[]']");
     room = roomsObj[roomsObj.selectedIndex].value;
-    //insertBeneficiaires(area,room,<?php echo json_encode($user_name).','.$id;?>);
+    insertBeneficiaires(area,room,<?php echo json_encode($user_name).','.$id;?>);
     insertChampsAdd(area,<?php echo $id;?>,room,<?php echo json_encode($overloadFields);?>);
     insertTypes(area,room);
     
@@ -1474,7 +1474,7 @@ function changeRoom( formObj)
 			$('.multiselect').multiselect();
 		});
 		$(document).ready(function() {
-            //insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode($user_name);?>,<?php echo $id?>);
+            insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode($user_name);?>,<?php echo $id?>);
             insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>,<?php echo json_encode($overloadFields);?>);
             insertTypes(<?php echo $area?>,<?php echo $room?>);
 			$('.multiselect').multiselect();
