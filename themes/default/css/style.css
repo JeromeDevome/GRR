@@ -91,6 +91,8 @@ td.cell_hours2 a{color:#000;}
 .cell_hours a{color:white;}
 td.cell_month_o{background-color:#ccc}
 .empty_cell{text-align:center;min-height:20px;height:100%;vertical-align:middle}
+.empty_cell a{display:block;}
+.empty_cell a:hover{background:lightgrey;;}
 .jour, .mois, .semaine{width:100%;text-align:center;vertical-align:top;}
 .jour caption, .mois caption, .semaine caption{padding: 0 0 0 0;text-align:center;}
 .jour th, .mois th, .semaine th{text-align:center;background-color:white;}
