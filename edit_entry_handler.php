@@ -3,9 +3,9 @@
  * edit_entry_handler.php
  * Permet de vérifier la validité de l'édition ou de la création d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-28 11:30$
+ * Dernière modification : $Date: 2021-03-13 11:22$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -168,9 +168,8 @@ if ((!isset($_GET['rooms'][0])||(intval($_GET['rooms'][0])==0)))
 	end_page();
 	die();
 }
-$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars($_SERVER['HTTP_REFERER']) :'';
-//if (isset($_SERVER['HTTP_REFERER']))
-//	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+// page d'appel si HTTP_REFERER accessible
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : page_accueil() ;
 // page de retour
 $ret_page = (isset($_GET['page_ret']))? $_GET['page_ret'] : $back;
 

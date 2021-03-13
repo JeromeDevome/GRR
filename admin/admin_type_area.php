@@ -3,9 +3,9 @@
  * admin_type_area.php
  * interface de gestion des types de réservations pour un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-08 14:15$
+ * Dernière modification : $Date: 2021-03-13 11:36$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -20,17 +20,13 @@ $grr_script_name = "admin_type_area.php";
 include "../include/admin.inc.php";
 
 // Initialisation
-$id_area = isset($_GET["id_area"]) ? intval($_GET["id_area"]) : NULL;
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 $day   = date("d");
 $month = date("m");
 $year  = date("Y");
 check_access(4, $back);
-$back = "";
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+$id_area = isset($_GET["id_area"]) ? intval($_GET["id_area"]) : NULL;
+
 // Gestion du retour à la page précédente sans enregistrement
 if (isset($_GET['change_done']))
 {

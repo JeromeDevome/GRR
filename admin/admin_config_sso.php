@@ -3,9 +3,9 @@
  * admin_config_sso.php
  * Interface permettant l'activation de la prise en compte d'un environnement SSO
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-23 12:00$
+ * Dernière modification : $Date: 2021-03-13 11:53$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -19,9 +19,7 @@ $grr_script_name = "admin_config_sso.php";
 
 include "../include/admin.inc.php";
 
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 if ((isset($sso_restrictions)) && ($sso_restrictions==true))
 {
 	showAccessDenied($back);
@@ -138,8 +136,6 @@ if (isset($_POST['valid']))
 		echo "Erreur lors de l'enregistrement de sso_redirection_accueil_grr !<br />";
 }
 
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
 if ((authGetUserLevel(getUserName(), -1) < 6) && ($valid != 'yes'))
 {
 	showAccessDenied($back);

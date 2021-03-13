@@ -3,9 +3,9 @@
  * admin_room.php
  * Interface d'accueil de Gestion des domaines et ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-23 12:10$
+ * Dernière modification : $Date: 2021-03-13 11:42$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -28,9 +28,7 @@ if ((isset($id_area))&&($id_area != -1))
 if (!isset($id_site))
 	$id_site = isset($_POST['id_site']) ? $_POST['id_site'] : (isset($_GET['id_site']) ? $_GET['id_site'] : -1);
 settype($id_site,"integer");
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 check_access(4, $back);
 // If area is set but area name is not known, get the name.
 if ((isset($id_area)) && ($id_area != -1))

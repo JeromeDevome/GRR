@@ -2,9 +2,9 @@
 /**
  * moderate_entry_do.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-25 10:00$
+ * Dernière modification : $Date: 2021-03-13 11:14$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -45,9 +45,7 @@ else
 // On vérifie que l'utilisateur a bien le droit d'être ici
 $id_room = isset($_POST['id'])? intval($_POST['id']) : -1;
 $room_id = grr_sql_query1("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id='".$id_room."'");
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : page_accueil() ;
 if (authGetUserLevel(getUserName(), $room_id) < 3)
 {
 	showAccessDenied($back);
