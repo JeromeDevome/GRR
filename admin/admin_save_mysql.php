@@ -3,9 +3,9 @@
  * admin_save_mysql.php
  * Script de sauvegarde de la base de donnée mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-27 10:00$
+ * Dernière modification : $Date: 2021-03-13 11:39$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -51,9 +51,7 @@ if (isset($_GET['mdp']))
 else
 {
 	include(dirname(__FILE__)."/../include/admin.inc.php");
-	$back = '';
-	if (isset($_SERVER['HTTP_REFERER']))
-		$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
+	$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 	if (authGetUserLevel(getUserName(),-1) < 6)
 	{
 		showAccessDenied($back);

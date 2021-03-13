@@ -3,10 +3,10 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-15 15:00$
+ * Dernière modification : $Date: 2021-03-13 11:45$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -169,7 +169,7 @@ if (Settings::get('sso_statut') == 'lcs')
 
 if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
 {
-    echo '<!DOCTYPE html>
+	echo '<!DOCTYPE html>
             <html lang="fr-FR">
                 <head>
                     <meta charset="UTF-8">
@@ -206,9 +206,7 @@ if ( (!@grr_resumeSession()) && $valid!='yes' && $connexionAdminMAJ == 1)
     die();
 }
 
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-    $back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 
 if ((authGetUserLevel(getUserName(),-1) < 6) && ($valid != 'yes') && $connexionAdminMAJ == 1)
 {
@@ -1014,29 +1012,29 @@ else
 
 if(!$majscript) {
     echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-    echo "<h2>".get_vocab('admin_maj.php')."</h2>";
-    echo "<hr />";
+	echo "<h2>".get_vocab('admin_maj.php')."</h2>";
+	echo "<hr />";
 
-    // Numéro de version
-    echo "<h3>".get_vocab("num_version_title")."</h3>\n";
+	// Numéro de version
+	echo "<h3>".get_vocab("num_version_title")."</h3>\n";
 
-    echo "<button id='copy' type='button'>".get_vocab("copy_clipboard")."</button><br>";
-    echo "<textarea id='to-copy' rows='10' cols='80'>";
+	echo "<button id='copy' type='button'>".get_vocab("copy_clipboard")."</button><br>";
+	echo "<textarea id='to-copy' rows='10' cols='80'>";
 
-    echo get_vocab("num_version")."".$display_version_grr." ".$versionReposite."\n";
-    echo get_vocab("num_versionbdd")."".$display_version_old."\n";
-    echo get_vocab("prefixe")." : ".TABLE_PREFIX."\n";
-    echo "---\n";
-    echo get_vocab('system') . php_uname() . "\n";
-    echo "Version PHP : " . phpversion() . "\n";
-    echo get_vocab('database') .$dbsys." ". grr_sql_version() . "\n";
-    echo "---\n";
-    echo "Time : " .time()."\n";
-    echo "Date du serveur (Jour-Mois-Annee) : " .date('d-m-Y').". Heure : ".date("H:i")."\n";
-    echo "Timezone (date_default_timezone_set) : ".date_default_timezone_get()."\n";
+	echo get_vocab("num_version")."".$display_version_grr." ".$versionReposite."\n";
+	echo get_vocab("num_versionbdd")."".$display_version_old."\n";
+	echo get_vocab("prefixe")." : ".TABLE_PREFIX."\n";
+	echo "---\n";
+	echo get_vocab('system') . php_uname() . "\n";
+	echo "Version PHP : " . phpversion() . "\n";
+	echo get_vocab('database') .$dbsys." ". grr_sql_version() . "\n";
+	echo "---\n";
+	echo "Time : " .time()."\n";
+	echo "Date du serveur (Jour-Mois-Annee) : " .date('d-m-Y').". Heure : ".date("H:i")."\n";
+	echo "Timezone (date_default_timezone_set) : ".date_default_timezone_get()."\n";
 
-    echo "</textarea>";
-    echo "<hr><h3>".get_vocab("maj_recherche_grr")."</h3>";
+	echo "</textarea>";
+	echo "<hr><h3>".get_vocab("maj_recherche_grr")."</h3>";
 }
 
 // Recherche mise à jour sur serveur GRR

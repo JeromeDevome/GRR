@@ -3,9 +3,9 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-28 15:00$
+ * Dernière modification : $Date: 2021-03-14 11:33$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -41,10 +41,9 @@ if (!isset($_GET['pview']))
 	$_GET['pview'] = 0;
 else
 	$_GET['pview'] = 1;
-//Récupération des informations relatives au serveur.
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+//Lien de retour
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES): page_accueil();
+
 //Renseigne les droits de l'utilisateur, si les droits sont insuffisants, l'utilisateur est averti.
 if (!verif_access_search(getUserName()))
 {

@@ -3,9 +3,9 @@
  * validation.php
  * Interface de validation d'une réservation modérée
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-10-14 15:30$
+ * Dernière modification : $Date: 2021-03-13 10:54$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -56,9 +56,7 @@ if (isset($_GET['id'])) // appel initial
 	{
 		$area = mrbsGetRoomArea($room_id);
 		get_planning_area_values($area);
-		$back = '';
-		if (isset($_SERVER['HTTP_REFERER']))
-			$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+		$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : page_accueil() ;
 		$user = getUserName();
 		if (authUserAccesArea($user, $area) == 0)// vérifie l'accès de l'utilisateur à ce domaine
 		{

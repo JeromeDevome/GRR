@@ -3,9 +3,9 @@
  * del_entry.php
  * Interface de suppression d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-04 10:17$
+ * Dernière modification : $Date: 2021-03-13 11:24$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -52,9 +52,7 @@ if ($info = mrbsGetEntryInfo($id))
 	$month = strftime("%m", $info["start_time"]);
 	$year  = strftime("%Y", $info["start_time"]);
 	$area  = mrbsGetRoomArea($info["room_id"]);
-	$back = "";
-	if (isset($_SERVER['HTTP_REFERER']))
-		$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : page_accueil() ;
 	if (authGetUserLevel(getUserName(), -1) < 1)
 	{
 		showAccessDenied($back);
