@@ -50,6 +50,12 @@ Sous-version 3.4.1f
     [amélioration] prise en charge du protocole LDAPS
     [correction] points mineurs du code
     [modification] évite l'autonégociation en SMTPS
+Sous-version 3.4.1g
+    [correction] erreurs syntaxiques
+    [correction] affichage des plannings week_all en mode preview
+    [correction] pallie l'absence de $_SERVER['HTTP_REFERER'] si le serveur ne donne pas cette valeur
+    [modification] rétablissement du choix du nombre de calendriers à afficher dans le menu gauche (ou haut)
+    [modification] définition de la fonction changeRooms ; devrait accélérer l'affichage de la page edit_entry
 -----
 --
 -----
