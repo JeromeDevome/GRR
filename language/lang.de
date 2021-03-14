@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2021-02-10
+# Last modification : 2021-03-14
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -233,6 +233,7 @@ $vocab['choose_a_day'] = "Wählen Sie mindestens einen Tag in der Woche.";
 $vocab['choose_a_room'] = "Sie müssen wenigstens eine Ressource nehmen.";
 $vocab['choose_a_site'] = "(Choisissez un site)"; // A traduire
 $vocab['choose_a_type'] = "Wählen Sie bitte eine Reservierungsart.";
+$vocab['choose_date'] = "Datum wählen";
 $vocab['choose_css'] = "Wählen Sie aus der beigeordneten Liste: ";
 $vocab['choose_language'] = "Sprachenwahl der Grundeinstellung";
 $vocab['cleaning_log'] = "Säuberung des Logbuchs";
@@ -1281,4 +1282,5 @@ $vocab['missing_period'] = 'missing period';
 $vocab['missing_end_period'] = 'missing end period';
 $vocab['booking_room_out'] = "Booking not possible";
 $vocab['duree_max_resa_aera'] = "The requested booking is too long";
+$vocab['voir_resa'] = "Die Reservierung sehen";
 ?>

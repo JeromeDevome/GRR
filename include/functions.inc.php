@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-02-02 17:50$
+ * Dernière modification : $Date: 2021-03-14 17:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4937,7 +4937,7 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
  }
 
 function jQuery_DatePicker($typeDate){
-
+    global $locale;
 		if (@file_exists('../include/connect.inc.php')){
 			$racine = "../";
 		} else{
@@ -4998,10 +4998,11 @@ function jQuery_DatePicker($typeDate){
  	echo '<input type="hidden" disabled="disabled" id="mydate_' .$typeDate. '">'.PHP_EOL;
  	echo '<script type="text/javascript">'.PHP_EOL;
  	//echo '	$(function() {'.PHP_EOL;
- 		echo '$.datepicker.setDefaults( $.datepicker.regional["fr"] );'.PHP_EOL;
- 		echo '	$(\'#mydate_' .$typeDate. '\').datepicker({'.PHP_EOL;
+ 		echo '$(\'#mydate_' .$typeDate. '\').datepicker($.datepicker.regional["fr"] );'.PHP_EOL;
+        //echo '$(\'#mydate_' .$typeDate. '\').datepicker($.datepicker.regional["'.$locale.'"] );'.PHP_EOL;
+ 		echo '	$(\'#mydate_' .$typeDate. '\').datepicker("option",{'.PHP_EOL;
  			echo '		beforeShow: readSelected, onSelect: updateSelected,'.PHP_EOL;
- 			echo '		showOn: \'both\', buttonImageOnly: true, buttonImage: \'img_grr/calendar.png\',buttonText: "Choisir la date",'.PHP_EOL;
+ 			echo '		showOn: \'both\', buttonImageOnly: true, buttonImage: \'img_grr/calendar.png\',buttonText: "'.get_vocab('choose_date').'",'.PHP_EOL;
             echo '      dayNamesMin: [ "Di","Lu","Ma","Me","Je","Ve","Sa" ],'.PHP_EOL;
             echo '      minDate:\''.$mindate.'\','.PHP_EOL;
             echo '      maxDate:\''.$maxdate.'\','.PHP_EOL;

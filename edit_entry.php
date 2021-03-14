@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-01 10:11
+ * Dernière modification : $Date: 2021-03-14 17:34
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -31,7 +31,8 @@ require_once("./include/settings.class.php");
 if (!Settings::load())
 	die("Erreur chargement settings");
 // fonctions locales
-function pageHead($title,$monStyle=''){
+function pageHead($title,$locale) // $locale est la langue utilisée
+{
     if (isset($_SESSION['default_style']))
         $sheetcss = 'themes/'.$_SESSION['default_style'].'/css';
     else {
@@ -72,9 +73,9 @@ function pageHead($title,$monStyle=''){
         <script src="./js/jquery.timepicker.min.js"></script>
         <script src="./js/bootstrap-clockpicker.js"></script>
         <script src="./js/bootstrap-multiselect.js"></script>
-        <script src="./js/clock_fr.js"></script>
+        <script src="./js/clock_'.$locale.'.js"></script>
         <script src="./js/select2/js/select2.min.js"></script>
-        <script src="./js/select2/js/i18n/fr.js"></script>
+        <script src="./js/select2/js/i18n/'.$locale.'.js"></script>
         <script src="./js/bandeau.js"></script>
         <script src="./js/functions.js"></script>'; // à localiser
     echo '</head>';
@@ -270,10 +271,13 @@ if (!isset($page_ret) || ($page_ret == ''))
 {
     $referer = isset($_SERVER['HTTP_REFERER']) ? htmlspecialchars($_SERVER['HTTP_REFERER']) : '';
     $ref = explode('?',$referer);
-    if (isset($ref[0]) && ((strpos($ref[0],'view_entry.php') !== FALSE)||(strpos($ref[0],'validation.php') !== FALSE)))
+    if (isset($ref[0]) && 
+        ((strpos($ref[0],'edit_entry.php') !== FALSE)||
+         (strpos($ref[0],'view_entry.php') !== FALSE)||
+         (strpos($ref[0],'validation.php') !== FALSE)))
     {
         if (isset($page) && isset($month) && isset($day) && isset($year)){
-            $page_ret = $page.'?month='.$month.'&amp;day='.$day.'&amp;year='.$year;
+            $page_ret = $page.'.php?month='.$month.'&amp;day='.$day.'&amp;year='.$year;
             if (isset($room))
                 $page_ret .= '&amp;room='.$room;
             elseif (isset($area))
@@ -285,7 +289,7 @@ if (!isset($page_ret) || ($page_ret == ''))
     else 
         $page_ret = isset($referer)? $referer : page_accueil();
 }
-//echo "referer : ".$_SERVER['HTTP_REFERER']."page retour : ".$page_ret."accueil : ".page_accueil();
+//echo "referer : ".$_SERVER['HTTP_REFERER']." ref : ".$ref[0]." page retour : ".$page_ret."accueil : ".page_accueil();
 // ouverture de session
 require_once("./include/session.inc.php");
 // Resume session
@@ -297,7 +301,7 @@ if (!grr_resumeSession())
 $user_name = getUserName(); // ici on devrait avoir un identifiant
 // Paramètres langage
 include "include/language.inc.php";
-
+//echo $locale;
 if (isset($period))
 	$end_period = $period;
 if (!isset($edit_type))
@@ -660,10 +664,10 @@ if (!isset($_COOKIE['open']))
 	header('Set-Cookie: open=true; SameSite=Lax');
 }
 echo '<!DOCTYPE html>'.PHP_EOL;
-echo '<html lang="fr">'.PHP_EOL;
+echo '<html lang="'.$locale.'">'.PHP_EOL;
 // section <head>
 //echo pageHead2(Settings::get("company"),$type_session="with_session");
-pageHead(Settings::get("company"));
+pageHead(Settings::get("company"),$locale);
 // section <body>
 echo "<body>";
 //echo $C;
