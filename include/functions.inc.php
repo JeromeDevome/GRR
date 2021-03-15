@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-03-14 17:30$
+ * Dernière modification : $Date: 2021-03-15 12:23$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4998,14 +4998,15 @@ function jQuery_DatePicker($typeDate){
  	echo '<input type="hidden" disabled="disabled" id="mydate_' .$typeDate. '">'.PHP_EOL;
  	echo '<script type="text/javascript">'.PHP_EOL;
  	//echo '	$(function() {'.PHP_EOL;
- 		echo '$(\'#mydate_' .$typeDate. '\').datepicker($.datepicker.regional["fr"] );'.PHP_EOL;
-        //echo '$(\'#mydate_' .$typeDate. '\').datepicker($.datepicker.regional["'.$locale.'"] );'.PHP_EOL;
+ 		//echo '$(\'#mydate_' .$typeDate. '\').datepicker($.datepicker.regional["fr"] );'.PHP_EOL;
+        echo '$(\'#mydate_' .$typeDate. '\').datepicker($.datepicker.regional["'.$locale.'"] );'.PHP_EOL;
  		echo '	$(\'#mydate_' .$typeDate. '\').datepicker("option",{'.PHP_EOL;
  			echo '		beforeShow: readSelected, onSelect: updateSelected,'.PHP_EOL;
  			echo '		showOn: \'both\', buttonImageOnly: true, buttonImage: \'img_grr/calendar.png\',buttonText: "'.get_vocab('choose_date').'",'.PHP_EOL;
-            echo '      dayNamesMin: [ "Di","Lu","Ma","Me","Je","Ve","Sa" ],'.PHP_EOL;
+            //echo '      dayNamesMin: [ "Di","Lu","Ma","Me","Je","Ve","Sa" ],'.PHP_EOL;
             echo '      minDate:\''.$mindate.'\','.PHP_EOL;
             echo '      maxDate:\''.$maxdate.'\','.PHP_EOL;
+            echo '      dateFormat:"dd/mm/yy",'.PHP_EOL;
             echo '});'.PHP_EOL;
 echo '		function readSelected()'.PHP_EOL;
 echo '		{'.PHP_EOL;
