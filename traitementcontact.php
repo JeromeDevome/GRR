@@ -3,9 +3,9 @@
  * traitementcontact.php
  * envoie l'email suite au formulaire
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-10-01 10:04$
+ * Dernière modification : $Date: 2021-03-16 09:56$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -43,17 +43,17 @@ if (empty($_POST['email']))
 	$message .= "Votre adresse email<br/>";
 if( !validate_email($_POST['email']) )
 	$message .= "Adresse email non valide<br />";
-if (empty($_POST['subject']))
+if (empty($_POST['sujet']))
 	$message .= "Le sujet de votre demande<br/>";
 if (empty($_POST['area']))
 	$message .= "Le domaine n'est pas rempli<br/>";
 if (empty($_POST['room']))
 	$message .= "Aucune salle de choisie<br/>";
-if (empty($_POST['jours']))
+if (empty($_POST['start_day']))
 	$message .= "Aucun jour choisi <br/>";
-if (empty($_POST['mois']))
+if (empty($_POST['start_month']))
 	$message .= "Aucun mois choisi <br/>";
-if (empty($_POST['année']))
+if (empty($_POST['start_year']))
 	$message .= "Aucune année choisie <br/>";
 if (empty($_POST['duree']))
 	$message .= "Aucune durée choisie <br/>";
