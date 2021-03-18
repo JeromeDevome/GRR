@@ -906,8 +906,10 @@ function begin_page($title, $page = "with_session")
 	$a .= '<title>'.$title.'</title>'.PHP_EOL;
 	$a .= '<link rel="shortcut icon" href="./favicon.ico" />'.PHP_EOL;
 
-	$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/bootstrap.min.css" />'.PHP_EOL;
-	$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/mod_bootstrap.css" />'.PHP_EOL;
+	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />'.PHP_EOL;
+	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.css" />'.PHP_EOL;
+	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
+	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/mod_bootstrap.css" />'.PHP_EOL;
 
 	if (isset($use_select2))
 	{
@@ -916,8 +918,8 @@ function begin_page($title, $page = "with_session")
 		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-multiselect.css">'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
 	}
-	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.css" />'.PHP_EOL;
-	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
+	
+	
 	$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL;
 	if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
