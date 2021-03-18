@@ -1,9 +1,9 @@
 <?php
 /**
- * admin.php
+ * app.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2020-02-16 15:30$
+ * Dernière modification : $Date: 2021-03-18 15:30$
  * @author    JeromeB
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -43,7 +43,7 @@ include "./include/language.inc.php";
 // pour le traitement des modules
 include "./include/hook.class.php";
 
-$trad="";
+$trad= array();
 
 /*
 $back = '';
@@ -67,14 +67,6 @@ $d['dMonth'] = $month;
 $d['dYear'] = $year;
 
 $d['accesStats'] = verif_access_search(getUserName());
-
-/*
-get_vocab('admin');
-get_vocab('manage_my_account');
-get_vocab('report');
-get_vocab('retour_planning');
-get_vocab('admin_view_connexions');
-*/
 $AllSettings = Settings::getAll();
 
 // Template Twig
