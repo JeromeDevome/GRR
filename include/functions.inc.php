@@ -918,13 +918,15 @@ function begin_page($title, $page = "with_session")
 		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-multiselect.css">'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
 	}
+	$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
 	
-	
-	$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL;
 	if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
-	if(file_exists("personnalisation/".$gcDossierCss."/perso.css"))
-		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css\" />".PHP_EOL;
+	if($_SESSION['default_style'] == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
+		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css\" />".PHP_EOL; // style perso via admin
+	else
+		$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL; // le style couleurs prédéfinis
+	
 	$a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
@@ -959,12 +961,15 @@ function begin_page($title, $page = "with_session")
 
 function begin_page_twig($title, $page = "with_session")
 {
-	global $d;
+	global $d, $gcDossierCss;
 
 	if ($page == "with_session")
 	{
 		if (isset($_SESSION['default_style']))
-			$d['sheetcss'] = 'themes/'.$_SESSION['default_style'].'/css';
+			if($_SESSION['default_style'] == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
+				$d['sheetcss'] = 'personnalisation/'.$gcDossierCss.'/perso.css';
+			else
+				$d['sheetcss'] = 'themes/'.$_SESSION['default_style'].'/css/style.css';
 
 		else
 			$d['sheetcss'] = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
@@ -1303,7 +1308,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 				if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1) || ($mess_resa != ''))
 				{
 					if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1))
-                       $d['lienAdmin'] = '../admin/admin.php?p=admin_accueil&'.$paramUrl;
+                       $d['lienAdmin'] = 'admin/admin.php?p=admin_accueil&'.$paramUrl;
 					if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 						$d['nbConnecte'] = nb_connecte();
 				}
@@ -5710,11 +5715,13 @@ function pageHead2($title, $page = "with_session")
 	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.css" />'.PHP_EOL;
 	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
 	$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
-	$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
+	
 	if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
-	if(file_exists("personnalisation/".$gcDossierCss."/perso.css"))
-		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css\" />".PHP_EOL;
+	if($_SESSION['default_style'] == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
+		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css\" />".PHP_EOL; // style perso via admin
+	else
+		$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL; // le style couleurs prédéfinis
 	$a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;

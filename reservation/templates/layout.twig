@@ -11,7 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui.css" />
 		<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui-timepicker-addon.css" >
 		<link rel="stylesheet" type="text/css" href="./themes/default/css/style.css" />
-		<link rel="stylesheet" type="text/css" href="./{{ d.sheetcss }}/style.css" />
+		<link rel="stylesheet" type="text/css" href="./{{ d.sheetcss }}" />
 		<link rel="stylesheet" href="./bootstrap/AdminLTE/bower_components/font-awesome/css/all.css">
 		{% block css %}{% endblock %}
 	</head>
@@ -33,7 +33,7 @@
 				{%endif%}
 				<div class="administration">
 				{%if d.lienDeconnexion %}
-					{%if d.lienAdmin != ''%}<br><a href='{{ d.lienAdmin |raw }}'>{{ trad.admin }}</a>{%endif%}
+					{%if d.lienAdmin != ''%}<br><a href='./{{ d.lienAdmin |raw }}'>{{ trad.admin }}</a>{%endif%}
 					{%if d.nbConnecte %}<br>{{ d.nbConnecte |raw }}{%endif%}
 					{%if d.mess_resa %}<br><p class='avertissement'>{{ d.mess_resa }}</p>{%endif%}
 				{%endif%}
@@ -51,7 +51,7 @@
 					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=en"><img src="./img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>
 					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=it"><img src="./img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>
 					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=es"><img src="./img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>
-					{%if d.lienDeconnexion %}<br /><a href="./compte.php?{{ d.paramUrl |raw }}">{{ d.nomUtilisateur }} - {{ trad.manage_my_account }}</a>{%endif%}
+					{%if d.lienDeconnexion %}<br /><a href="./compte/compte.php?{{ d.paramUrl |raw }}">{{ d.nomUtilisateur }} - {{ trad.manage_my_account }}</a>{%endif%}
 					{%if d.accesStats %}<br /><a href="./app.php?p=report">{{ trad.report }}</a>{%endif%}
 					{{ d.lienDeconnexion |raw }}
 					{{ d.lienConnexion |raw }}

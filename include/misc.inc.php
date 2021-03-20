@@ -85,7 +85,8 @@ $liste_themes = array(
 	"bleu",
 	"rouge",
 	"rose",
-	"fluo"
+	"fluo",
+	"perso"
 	);
 
 # Liste des noms des styles
@@ -98,7 +99,8 @@ $liste_name_themes = array(
 	"Bleu Talmont",
 	"Rouge Feu",
 	"Roseline",
-	"Jaune Fluo"
+	"Jaune Fluo",
+	"Personnalisé via l'admin"
 	);
 
 # Liste des langues
