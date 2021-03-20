@@ -6,9 +6,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="Robots" content="noindex" />
 		<title>GRR - {{ settings.company }}</title>
-		<link rel="shortcut icon" href="../favicon.ico" />
+		<link rel="shortcut icon" href="favicon.ico" />
 		<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css" />
-		<link rel="stylesheet" type="text/css" href="./bootstrap/css/mod_bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui.css" />
 		<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui-timepicker-addon.css" >
 		<link rel="stylesheet" type="text/css" href="./themes/default/css/style.css" />
@@ -61,30 +60,22 @@
 			<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>
 		</header>
 		<section>
-			<div id="menu-compte" class="col-lg-10 col-md-10 col-xs-12">
-				{% block content %}{% endblock %}
-			</div>
+			{% block content %}{% endblock %}
 
 			<div id="popup_name" class="popup_block"></div>
 		</section>
-
-		<script type="text/javascript" src="./js/jquery-2.1.1.min.js"></script>
+		{% block javascript %}{% endblock %}
 		<script type="text/javascript" src="./js/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="./js/jquery.validate.js"></script>
 		<script type="text/javascript" src="./js/jquery-ui-timepicker-addon.js"></script>
 		<script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="./js/html2canvas.js"></script>
 		<script type="text/javascript" src="./js/menu.js"></script>
-		<script type="text/javascript" src="./js/jspdf.min.js"></script>
-		<script type="text/javascript" src="./js/pdf.js" ></script>
 		<script type="text/javascript" src="./js/popup.js" charset="utf-8"></script>
 		<script type="text/javascript" src="./js/functions.js" ></script>
-		<script type="text/javascript" src="./js/drag.js" ></script>
 		<script type="text/javascript" src="./js/selection.js" ></script>
 		{%if d.jsHeure %}
 			<script type="text/javascript" src="./js/{{ d.jsHeure }}"></script>
 		{%endif%}
-		{% block javascript %}{% endblock %}
-
 	</body>
 </html>

@@ -30,7 +30,7 @@ include "./include/config.inc.php";
 include "./include/misc.inc.php";
 include "./include/functions.inc.php";
 include "./include/$dbsys.inc.php";
-include "./include/mincals.inc.php";
+include "./include/mincals.inc.php"; // JeromeB :Pas besoin partout le laisser ici ? 
 include "./include/mrbs_sql.inc.php";
 
 require_once("./include/settings.class.php");
@@ -56,7 +56,12 @@ if ((authGetUserLevel(getUserName(), -1, 'area') < 4) && (authGetUserLevel(getUs
 }
 */
 
-print_header_twig("", "", "", $type="no_session");
+if(getUserName() != '')
+	$userConnecte = "with_session";
+else
+	$userConnecte = "no_session";
+
+print_header_twig("", "", "", $userConnecte);
 
 $day = isset($_POST['day']) ? $_POST['day'] : (isset($_GET['day']) ? $_GET['day'] : date('d'));
 $month = isset($_POST['month']) ? $_POST['month'] : (isset($_GET['month']) ? $_GET['month'] : date('m'));
@@ -68,6 +73,10 @@ $d['dYear'] = $year;
 
 $d['accesStats'] = verif_access_search(getUserName());
 $AllSettings = Settings::getAll();
+
+get_vocab_admin("admin");
+get_vocab_admin("manage_my_account");
+get_vocab_admin("report");
 
 // Template Twig
 $loader = new Twig_Loader_Filesystem(__DIR__ . '/reservation/templates');

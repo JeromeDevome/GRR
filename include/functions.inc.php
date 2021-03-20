@@ -1310,8 +1310,8 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			}
 
 			// ???
-			if ($type_session != "with_session")
-				echo '<script>selection()</script>'.PHP_EOL;
+			//if ($type_session != "with_session")
+			//	echo '<script>selection()</script>'.PHP_EOL;
 
 			// Heure selon la langue
 			if (@file_exists($racine.'js/'.$clock_file))

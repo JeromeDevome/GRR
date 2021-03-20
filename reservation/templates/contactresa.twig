@@ -8,124 +8,127 @@
 
 {% block content %}
 
-<div class="container">
-	<form id="frmContact" method="post" action="?p=contactresa">
-		<div id="formContact">
-			<div class="row">
-				<fieldset>
-					<legend><b>Vos coordonnées</b></legend>
-					<div class="col-lg-6 col-md-6 col-xs-12">
-						<div class="form-group">
-							<div class="input-group">
-								<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-								<input class="form-control" type="text" id="nom"  size="8" name="nom" placeholder="Votre nom" required />
+<div id="page-resa" class="col-lg-12 col-md-12 col-xs-12">
+	<div class="container">
+		<form id="frmContact" method="post" action="?p=contactresa">
+			<div id="formContact">
+				<div class="row">
+					<fieldset>
+						<legend><b>Vos coordonnées</b></legend>
+						<div class="col-lg-6 col-md-6 col-xs-12">
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+									<input class="form-control" type="text" id="nom"  size="8" name="nom" placeholder="Votre nom" required />
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+									<input class="form-control" type="text" size="8" id="prenom"  name="prenom" placeholder="Votre prénom" />
+								</div>
 							</div>
 						</div>
-						<div class="form-group">
-							<div class="input-group">
-								<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-								<input class="form-control" type="text" size="8" id="prenom"  name="prenom" placeholder="Votre prénom" />
+						<div class="col-lg-6 col-md-6 col-xs-12">
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
+									<input class="form-control" type="email" id="email" size="8" name="email" placeholder="Votre adresse de courriel" required />
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-addon"><span class="glyphicon glyphicon-earphone"></span></div>
+									<input class="form-control" type="text" size="8" maxlength="14" id="telephone" name="telephone" placeholder="Votre numéro de téléphone" />
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-lg-6 col-md-6 col-xs-12">
-						<div class="form-group">
-							<div class="input-group">
-								<div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
-								<input class="form-control" type="email" id="email" size="8" name="email" placeholder="Votre adresse de courriel" required />
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="input-group">
-								<div class="input-group-addon"><span class="glyphicon glyphicon-earphone"></span></div>
-								<input class="form-control" type="text" size="8" maxlength="14" id="telephone" name="telephone" placeholder="Votre numéro de téléphone" />
-							</div>
-						</div>
-					</div>
-				</fieldset>
-			</div>
-			<div class="row">
-				<fieldset>
-					<legend><b>Réservation</b></legend>
-					<label for="subject">Sujet :</label>
-					<textarea class="form-control" id="subject" name="sujet" cols="30" rows="4"></textarea><br/>
-					<label>Domaines : </label>
-					<select id="area" name="area" class="form-control" required>
-						<option>SELECTIONNER UN DOMAINE </option>
-						{% for domaine in domaineDispo %}
-							<option onclick="" value="{{domaine.id}}/{{domaine.resolution}}">{{domaine.nom}}</option>
-						{% endfor %}
-					</select>
+					</fieldset>
+				</div>
+				<div class="row">
+					<fieldset>
+						<legend><b>Réservation</b></legend>
+						<label for="subject">Sujet :</label>
+						<textarea class="form-control" id="subject" name="sujet" cols="30" rows="4"></textarea><br/>
+						<label>Domaines : </label>
+						<select id="area" name="area" class="form-control" required>
+							<option>SELECTIONNER UN DOMAINE </option>
+							{% for domaine in domaineDispo %}
+								<option onclick="" value="{{domaine.id}}/{{domaine.resolution}}">{{domaine.nom}}</option>
+							{% endfor %}
+						</select>
 
-					<label for="room">Ressources : </label>
-					<select id="room" name="room" class="form-control" required>
-							<option>SELECTIONNER UNE RESSOURCE </option>
-					</select>
-				</fieldset>			
-			</div>
-			<div class="row">	
-				<div class="col-lg-6 col-md-6 col-xs-12">
-					<div class="form-group">
-						<div class="input-group">				
-							<legend><b> Date :</b></legend>
-							{{d.jQuery_DatePicker |raw}}
-							<input type="hidden" disabled="disabled" id="mydate_start">
-							<br /><br />
-							<label for="heure">Heure début :</label>
-							<select name="heure" id="heure">
-								<option value="1">01h</option>
-								<option value="2">02h</option>
-								<option value="3">03h</option>
-								<option value="4">04h</option>
-								<option value="5">05h</option>
-								<option value="6">06h</option>
-								<option value="7">07h</option>
-								<option value="8">08h</option>
-								<option value="9">09h</option>
-								<option value="10">10h</option>
-								<option value="11">11h</option>
-								<option value="12">12h</option>
-								<option value="13">13h</option>
-								<option value="14">14h</option>
-								<option value="15">15h</option>
-								<option value="16">16h</option>
-								<option value="17">17h</option>
-								<option value="18">18h</option>
-								<option value="19">19h</option>
-								<option value="20">20h</option>
-								<option value="21">21h</option>
-								<option value="22">22h</option>
-								<option value="23">23h</option>
-							</select>
-							<select id='debdureemin' name="minutes"></select><!-- class test non défini ?-->
+						<label for="room">Ressources : </label>
+						<select id="room" name="room" class="form-control" required>
+								<option>SELECTIONNER UNE RESSOURCE </option>
+						</select>
+					</fieldset>			
+				</div>
+				<div class="row">	
+					<div class="col-lg-6 col-md-6 col-xs-12">
+						<div class="form-group">
+							<div class="input-group">				
+								<legend><b> Date :</b></legend>
+								{{d.jQuery_DatePicker |raw}}
+								<input type="hidden" disabled="disabled" id="mydate_start">
+								<br /><br />
+								<label for="heure">Heure début :</label>
+								<select name="heure" id="heure">
+									<option value="1">01h</option>
+									<option value="2">02h</option>
+									<option value="3">03h</option>
+									<option value="4">04h</option>
+									<option value="5">05h</option>
+									<option value="6">06h</option>
+									<option value="7">07h</option>
+									<option value="8">08h</option>
+									<option value="9">09h</option>
+									<option value="10">10h</option>
+									<option value="11">11h</option>
+									<option value="12">12h</option>
+									<option value="13">13h</option>
+									<option value="14">14h</option>
+									<option value="15">15h</option>
+									<option value="16">16h</option>
+									<option value="17">17h</option>
+									<option value="18">18h</option>
+									<option value="19">19h</option>
+									<option value="20">20h</option>
+									<option value="21">21h</option>
+									<option value="22">22h</option>
+									<option value="23">23h</option>
+								</select>
+								<select id='debdureemin' name="minutes"></select><!-- class test non défini ?-->
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<div class="input-group">
-						<label for="duree" >Durée en heure :</label>
-						<input type="number" id="duree" size="2" name="duree" value="1" min="0" required />
-						<label for="dureemin"> et </label>
-							<select id="dureemin" name="dureemin">
-								<option> </option>
-								<option> </option>
-							</select>
-						</div>
-						<br/>
-						<br/>
-						<div>
-							<input class="btn btn-primary" type="submit" name="submit" value="Envoyer la demande de réservation">
-							<input class="btn btn-danger" type="button" name="retouraccueil" value="Retour" onClick="javascript:location.href='javascript:history.go(-1)'">
+						<div class="form-group">
+							<div class="input-group">
+							<label for="duree" >Durée en heure :</label>
+							<input type="number" id="duree" size="2" name="duree" value="1" min="0" required />
+							<label for="dureemin"> et </label>
+								<select id="dureemin" name="dureemin">
+									<option> </option>
+									<option> </option>
+								</select>
+							</div>
+							<br/>
+							<br/>
+							<div>
+								<input class="btn btn-primary" type="submit" name="submit" value="Envoyer la demande de réservation">
+								<input class="btn btn-danger" type="button" name="retouraccueil" value="Retour" onClick="javascript:location.href='javascript:history.go(-1)'">
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	 </form>
+		 </form>
+	</div>
 </div>
 
 {% endblock %}
 
 {% block javascript %}
+	<script type="text/javascript" src="./js/jquery-2.1.1.min.js"></script>
 	<script>
 		$(document).ready(function()
 		{
