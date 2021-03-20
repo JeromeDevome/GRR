@@ -860,10 +860,10 @@ function begin_page($title, $page = "with_session")
 	if ($page == "with_session")
 	{
 		if (isset($_SESSION['default_style']))
-			$sheetcss = 'themes/'.$_SESSION['default_style'].'/css';
+			$sheetcss = $_SESSION['default_style'];
 
 		else
-			$sheetcss = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
+			$sheetcss = "default"; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
 		if (isset($_GET['default_language']))
 		{
 			$_SESSION['default_language'] = clean_input($_GET['default_language']);
@@ -877,9 +877,9 @@ function begin_page($title, $page = "with_session")
 	else
 	{
 		if (Settings::get("default_css"))
-			$sheetcss = 'themes/'.Settings::get("default_css").'/css';
+			$sheetcss = Settings::get("default_css");
 		else
-			$sheetcss = 'themes/default/css';
+			$sheetcss = "default";
 		if (isset($_GET['default_language']))
 		{
 			$_SESSION['default_language'] = clean_input($_GET['default_language']);
@@ -922,10 +922,10 @@ function begin_page($title, $page = "with_session")
 	
 	if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
-	if($_SESSION['default_style'] == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
+	if($sheetcss == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
 		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css\" />".PHP_EOL; // style perso via admin
 	else
-		$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL; // le style couleurs prédéfinis
+		$a .= '<link rel="stylesheet" type="text/css" href="themes/'.$sheetcss.'/css/style.css" />'.PHP_EOL; // le style couleurs prédéfinis
 	
 	$a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
@@ -972,7 +972,7 @@ function begin_page_twig($title, $page = "with_session")
 				$d['sheetcss'] = 'themes/'.$_SESSION['default_style'].'/css/style.css';
 
 		else
-			$d['sheetcss'] = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
+			$d['sheetcss'] = 'themes/default/css/style.css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
 		if (isset($_GET['default_language']))
 		{
 			$_SESSION['default_language'] = $_GET['default_language'];
@@ -986,9 +986,12 @@ function begin_page_twig($title, $page = "with_session")
 	else
 	{
 		if (Settings::get("default_css"))
-			$d['sheetcss'] = 'themes/'.Settings::get("default_css").'/css';
+			if (Settings::get("default_css") == "perso")
+				$d['sheetcss'] =  'personnalisation/'.$gcDossierCss.'/perso.css';
+			else
+				$d['sheetcss'] = 'themes/'.Settings::get("default_css").'/css/style.css';
 		else
-			$d['sheetcss'] = 'themes/default/css';
+			$d['sheetcss'] = 'themes/default/css/style.css';
 		if (isset($_GET['default_language']))
 		{
 			$_SESSION['default_language'] = $_GET['default_language'];
@@ -5718,7 +5721,7 @@ function pageHead2($title, $page = "with_session")
 	
 	if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
-	if($_SESSION['default_style'] == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
+	if($sheetcss == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
 		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css\" />".PHP_EOL; // style perso via admin
 	else
 		$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL; // le style couleurs prédéfinis
