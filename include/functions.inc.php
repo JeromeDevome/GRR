@@ -1169,7 +1169,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			
 				echo '<br /><a href="'.$racine.'/compte/compte.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'. $nomAffichage .' - '.get_vocab("manage_my_account").'</a>'.PHP_EOL;
 				if (verif_access_search(getUserName()))
-					echo '<br/><a href="'.$racine.'report.php">'.get_vocab("report").'</a>'.PHP_EOL;
+					echo '<br/><a href="'.$racine.'app.php?p=report">'.get_vocab("report").'</a>'.PHP_EOL;
 				$disconnect_link = false;
 				if (!((Settings::get("cacher_lien_deconnecter") == 'y') && (isset($_SESSION['est_authentifie_sso']))))
 				{
@@ -5881,7 +5881,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			
 				echo '<br /><a href="'.$racine.'compte/compte.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'. $nomAffichage .' - '.get_vocab("manage_my_account").'</a>'.PHP_EOL;
 				if (verif_access_search(getUserName()))
-					echo '<br/><a href="'.$racine.'report.php">'.get_vocab("report").'</a>'.PHP_EOL;
+					echo '<br/><a href="'.$racine.'app.php?p=report">'.get_vocab("report").'</a>'.PHP_EOL;
 				$disconnect_link = false;
 				if (!((Settings::get("cacher_lien_deconnecter") == 'y') && (isset($_SESSION['est_authentifie_sso']))))
 				{
