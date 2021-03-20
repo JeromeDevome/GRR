@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2020-05-07 10:08$
+ * Dernière modification : $Date: 2021-03-20 15:55$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -4732,7 +4732,7 @@ function affichage_resa_planning_complet($vue, $resa, $heures)
 
 	// Emprunte
 	if($resa[7] != "-")
-		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"'.get_vocab(\"ressource_actuellement_empruntee\").'\" title=\"'.get_vocab(\"ressource_actuellement_empruntee\").'\" width=\"20\" height=\"20\" class=\"image\" /> ";
+		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource_actuellement_empruntee")."\" title=\"".get_vocab("ressource_actuellement_empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
 
 	// Option réservation
 	if($resa[10] > 0)
