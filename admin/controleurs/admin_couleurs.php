@@ -41,7 +41,6 @@ get_vocab_admin('icons_color');
 get_vocab_admin('btn_primary_');
 get_vocab_admin('active_btn_primary_');
 get_vocab_admin('focus_btn_primary_');
-get_vocab_admin('ssmenuadm_actif');
 
 get_vocab_admin('text');
 get_vocab_admin('bgcolor');
@@ -90,8 +89,8 @@ $champs_couleur=array('header_bgcolor' => '--header-bgcolor'
 ,'focus_btn_primary_bgcolor' => '--focus-btn-primary-bgcolor'
 ,'focus_btn_primary_bordcolor' => '--focus-btn-primary-bordcolor'
 ,'focus_btn_primary_color' => '--focus-btn-primary-color'
-,'ssmenuadm_actif_bgcolor' => '--ssmenuadm-actif-bg'
-,'ssmenuadm_actif_color' => '--ssmenuadm-actif-color');// NOTE: Pour JavaScript, on n'a pas le droit au '-' dans un nom de variable
+);
+// NOTE: Pour JavaScript, on n'a pas le droit au '-' dans un nom de variable
 // liste des couleurs en cours d'utilisation -reste à mettre au point
 $current_color_tab=array();
 // liste des couleurs par défaut, ce sont celles du modèle "default"
@@ -131,56 +130,17 @@ $default_color_tab=array('header_bgcolor' => '#FFF'
 ,'focus_btn_primary_bgcolor' => '#286090'
 ,'focus_btn_primary_bordcolor' => '#204D74'
 ,'focus_btn_primary_color' => '#FFF'
-,'ssmenuadm_actif_bgcolor' => '#F5F5F5'
-,'ssmenuadm_actif_color' => '#F00'
 );
 
 $msg = '';
-// couleurs pour le formulaire ; si on arrive ici sans avoir enregistré, on récupère les valeurs par défaut, définies dans le tableau $default_color_tab
-$hexa['header_text'] = (isset($_POST['header_text']))? valid_color($_POST['header_text']) : $default_color_tab["header_text"];
-$hexa['header_bgcolor'] = (isset($_POST['header_bgcolor']))? valid_color($_POST['header_bgcolor']) : $default_color_tab["header_bgcolor"];
-$hexa['header_hover'] = (isset($_POST['header_hover']))? valid_color($_POST["header_hover"]) : $default_color_tab["header_hover"];
-$hexa['menuG_color'] = (isset($_POST['menuG_color']))? valid_color($_POST['menuG_color']) : $default_color_tab["menuG_color"];
-$hexa['menuG_bgcolor'] = (isset($_POST['menuG_bgcolor']))? valid_color($_POST['menuG_bgcolor']) : $default_color_tab["menuG_bgcolor"];
-$hexa['cal_titrecolor'] = (isset($_POST['cal_titrecolor']))? valid_color($_POST['cal_titrecolor']) : $default_color_tab["cal_titrecolor"];
-$hexa['cal_titrebgcolor'] = (isset($_POST['cal_titrebgcolor']))? valid_color($_POST['cal_titrebgcolor']) : $default_color_tab["cal_titrebgcolor"];
-$hexa['cal_jourscolor'] = (isset($_POST['cal_jourscolor']))? valid_color($_POST['cal_jourscolor']) : $default_color_tab["cal_jourscolor"];
-$hexa['cal_joursbgcolor'] = (isset($_POST['cal_joursbgcolor']))? valid_color($_POST['cal_joursbgcolor']) : $default_color_tab["cal_joursbgcolor"];
-$hexa['cal_semcolor'] = (isset($_POST['cal_semcolor']))? valid_color($_POST['cal_semcolor']) : $default_color_tab["cal_semcolor"];
-$hexa['cal_sembgcolor'] = (isset($_POST['cal_sembgcolor']))? valid_color($_POST['cal_sembgcolor']) : $default_color_tab["cal_sembgcolor"];
-$hexa['cal_semhovercolor'] = (isset($_POST['cal_semhovercolor']))? valid_color($_POST["cal_semhovercolor"]) : $default_color_tab["cal_semhovercolor"];
-$hexa['cal_weekcolor'] = (isset($_POST['cal_weekcolor']))? valid_color($_POST['cal_weekcolor']) : $default_color_tab["cal_weekcolor"];
-$hexa['cal_weekbgcolor'] = (isset($_POST['cal_weekbgcolor']))? valid_color($_POST['cal_weekbgcolor']) : $default_color_tab["cal_weekbgcolor"];
-$hexa['cal_cellcolor'] = (isset($_POST['cal_cellcolor']))? valid_color($_POST['cal_cellcolor']) : $default_color_tab["cal_cellcolor"];
-$hexa['cal_cellbgcolor'] = (isset($_POST['cal_cellbgcolor']))? valid_color($_POST['cal_cellbgcolor']) : $default_color_tab["cal_cellbgcolor"];
-$hexa['cal_cellhovercolor'] = (isset($_POST['cal_cellhovercolor']))? valid_color($_POST['cal_cellhovercolor']) : $default_color_tab["cal_cellhovercolor"];
-$hexa['cal_cellhoverbgcolor'] = (isset($_POST['cal_cellhoverbgcolor']))? valid_color($_POST['cal_cellhoverbgcolor']) : $default_color_tab['cal_cellhoverbgcolor'];
-$hexa['cal_current_day_color'] = (isset($_POST['cal_current_day_color']))? valid_color($_POST['cal_current_day_color']) : $default_color_tab["cal_current_day_color"];
-$hexa['cal_current_day_bgcolor'] = (isset($_POST['cal_current_day_bgcolor']))? valid_color($_POST['cal_current_day_bgcolor']) : $default_color_tab["cal_current_day_bgcolor"];
-$hexa['pl2_titrecolor'] = (isset($_POST['pl2_titrecolor']))? valid_color($_POST['pl2_titrecolor']) : $default_color_tab["pl2_titrecolor"];
-$hexa['pl2_titrebgcolor'] = (isset($_POST['pl2_titrebgcolor']))? valid_color($_POST['pl2_titrebgcolor']) : $default_color_tab['pl2_titrebgcolor'];
-$hexa['pl2_entetecolor'] = (isset($_POST['pl2_entetecolor']))? valid_color($_POST['pl2_entetecolor']) : $default_color_tab["pl2_entetecolor"];
-$hexa['pl2_entetebgcolor'] = (isset($_POST['pl2_entetebgcolor']))? valid_color($_POST['pl2_entetebgcolor']) : $default_color_tab["pl2_entetebgcolor"];
-$hexa['pl2_cellcolor'] = (isset($_POST['pl2_cellcolor']))? valid_color($_POST['pl2_cellcolor']) : $default_color_tab["pl2_cellcolor"];
-$hexa['pl2_cellbgcolor'] = (isset($_POST['pl2_cellbgcolor']))? valid_color($_POST['pl2_cellbgcolor']) : $default_color_tab["pl2_cellbgcolor"];
-$hexa['icons_color'] = (isset($_POST['icons_color']))? valid_color($_POST["icons_color"]) : $default_color_tab["icons_color"];
-$hexa['btn_primary_color'] = (isset($_POST['btn_primary_color']))? valid_color($_POST['btn_primary_color']) : $default_color_tab["btn_primary_color"];
-$hexa['btn_primary_bgcolor'] = (isset($_POST['btn_primary_bgcolor']))? valid_color($_POST['btn_primary_bgcolor']) : $default_color_tab["btn_primary_bgcolor"];
-$hexa['btn_primary_bordcolor'] = (isset($_POST['btn_primary_bordcolor']))? valid_color($_POST['btn_primary_bordcolor']) : $default_color_tab["btn_primary_bordcolor"];
-$hexa['active_btn_primary_color'] = (isset($_POST['active_btn_primary_color']))? valid_color($_POST['active_btn_primary_color']) : $default_color_tab["active_btn_primary_color"];
-$hexa['active_btn_primary_bgcolor'] = (isset($_POST['active_btn_primary_bgcolor']))? valid_color($_POST['active_btn_primary_bgcolor']) : $default_color_tab["active_btn_primary_bgcolor"];
-$hexa['active_btn_primary_bordcolor'] = (isset($_POST['active_btn_primary_bordcolor']))? valid_color($_POST['active_btn_primary_bordcolor']) : $default_color_tab["active_btn_primary_bordcolor"];
-$hexa['focus_btn_primary_color'] = (isset($_POST['focus_btn_primary_color']))? valid_color($_POST['focus_btn_primary_color']) : $default_color_tab["focus_btn_primary_color"];
-$hexa['focus_btn_primary_bgcolor'] = (isset($_POST['focus_btn_primary_bgcolor']))? valid_color($_POST['focus_btn_primary_bgcolor']) : $default_color_tab["focus_btn_primary_bgcolor"];
-$hexa['focus_btn_primary_bordcolor'] = (isset($_POST['focus_btn_primary_bordcolor']))? valid_color($_POST['focus_btn_primary_bordcolor']) : $default_color_tab["focus_btn_primary_bordcolor"];
-$hexa['ssmenuadm_actif_color'] = (isset($_POST['ssmenuadm_actif_color']))? valid_color($_POST['ssmenuadm_actif_color']) : $default_color_tab["ssmenuadm_actif_color"];
-$hexa['ssmenuadm_actif_bgcolor'] = (isset($_POST['ssmenuadm_actif_bgcolor']))? valid_color($_POST['ssmenuadm_actif_bgcolor']) : $default_color_tab["ssmenuadm_actif_bgcolor"];
-
-
-
 if(isset($_GET['theme']) && $_GET['theme'] == 'defaut') // Reset CSS
 {
-	unlink("../personnalisation/".$gcDossierCss."/perso.css");
+	foreach($champs_couleur as $code_js => $code_css)
+	{
+		Settings::delette("sp_".$code_js);	
+    }
+	if(file_exists("../personnalisation/".$gcDossierCss."/perso.css"))
+		unlink("../personnalisation/".$gcDossierCss."/perso.css");
 }
 elseif ((isset($_POST['record'])) && (!isset($ok))) // Enregistrement des données si enregistrement
 {
@@ -193,8 +153,10 @@ elseif ((isset($_POST['record'])) && (!isset($ok))) // Enregistrement des donné
         foreach($champs_couleur as $code_js => $code_css)
 		{
             $couleur = valid_color($_POST[$code_js]);
+			Settings::set("sp_".$code_js, $couleur);
             fwrite($fich," 
     ".$code_css.": ".$couleur.";");
+			
         }
         fwrite($fich,"}
 ");
@@ -212,6 +174,47 @@ elseif ((isset($_POST['record'])) && (!isset($ok))) // Enregistrement des donné
         $msg = get_vocab('message_records');
     }
 }
+
+$AllSettings = Settings::getAll(); //Refresh
+
+// couleurs pour le formulaire ; si on arrive ici sans avoir enregistré, on récupère les valeurs par défaut, définies dans le tableau $default_color_tab
+$hexa['header_text'] = (isset($AllSettings['sp_header_text']))? valid_color($AllSettings['sp_header_text']) : $default_color_tab["header_text"];
+$hexa['header_bgcolor'] = (isset($AllSettings['sp_header_bgcolor']))? valid_color($AllSettings['sp_header_bgcolor']) : $default_color_tab["header_bgcolor"];
+$hexa['header_hover'] = (isset($AllSettings['sp_header_hover']))? valid_color($AllSettings['sp_header_hover']) : $default_color_tab["header_hover"];
+$hexa['menuG_color'] = (isset($AllSettings['sp_menuG_color']))? valid_color($AllSettings['sp_menuG_color']) : $default_color_tab["menuG_color"];
+$hexa['menuG_bgcolor'] = (isset($AllSettings['sp_menuG_bgcolor']))? valid_color($AllSettings['sp_menuG_bgcolor']) : $default_color_tab["menuG_bgcolor"];
+$hexa['cal_titrecolor'] = (isset($AllSettings['sp_cal_titrecolor']))? valid_color($AllSettings['sp_cal_titrecolor']) : $default_color_tab["cal_titrecolor"];
+$hexa['cal_titrebgcolor'] = (isset($AllSettings['sp_cal_titrebgcolor']))? valid_color($AllSettings['sp_cal_titrebgcolor']) : $default_color_tab["cal_titrebgcolor"];
+$hexa['cal_jourscolor'] = (isset($AllSettings['sp_cal_jourscolor']))? valid_color($AllSettings['sp_cal_jourscolor']) : $default_color_tab["cal_jourscolor"];
+$hexa['cal_joursbgcolor'] = (isset($AllSettings['sp_cal_joursbgcolor']))? valid_color($AllSettings['sp_cal_joursbgcolor']) : $default_color_tab["cal_joursbgcolor"];
+$hexa['cal_semcolor'] = (isset($AllSettings['sp_cal_semcolor']))? valid_color($AllSettings['sp_cal_semcolor']) : $default_color_tab["cal_semcolor"];
+$hexa['cal_sembgcolor'] = (isset($AllSettings['sp_cal_sembgcolor']))? valid_color($AllSettings['sp_cal_sembgcolor']) : $default_color_tab["cal_sembgcolor"];
+$hexa['cal_semhovercolor'] = (isset($AllSettings['sp_cal_semhovercolor']))? valid_color($AllSettings['sp_cal_semhovercolor']) : $default_color_tab["cal_semhovercolor"];
+$hexa['cal_weekcolor'] = (isset($AllSettings['sp_cal_weekcolor']))? valid_color($AllSettings['sp_cal_weekcolor']) : $default_color_tab["cal_weekcolor"];
+$hexa['cal_weekbgcolor'] = (isset($AllSettings['sp_cal_weekbgcolor']))? valid_color($AllSettings['sp_cal_weekbgcolor']) : $default_color_tab["cal_weekbgcolor"];
+$hexa['cal_cellcolor'] = (isset($AllSettings['sp_cal_cellcolor']))? valid_color($AllSettings['sp_cal_cellcolor']) : $default_color_tab["cal_cellcolor"];
+$hexa['cal_cellbgcolor'] = (isset($AllSettings['sp_cal_cellbgcolor']))? valid_color($AllSettings['sp_cal_cellbgcolor']) : $default_color_tab["cal_cellbgcolor"];
+$hexa['cal_cellhovercolor'] = (isset($AllSettings['sp_cal_cellhovercolor']))? valid_color($AllSettings['sp_cal_cellhovercolor']) : $default_color_tab["cal_cellhovercolor"];
+$hexa['cal_cellhoverbgcolor'] = (isset($AllSettings['sp_cal_cellhoverbgcolor']))? valid_color($AllSettings['sp_cal_cellhoverbgcolor']) : $default_color_tab['cal_cellhoverbgcolor'];
+$hexa['cal_current_day_color'] = (isset($AllSettings['sp_cal_current_day_color']))? valid_color($AllSettings['sp_cal_current_day_color']) : $default_color_tab["cal_current_day_color"];
+$hexa['cal_current_day_bgcolor'] = (isset($AllSettings['sp_cal_current_day_bgcolor']))? valid_color($AllSettings['sp_cal_current_day_bgcolor']) : $default_color_tab["cal_current_day_bgcolor"];
+$hexa['pl2_titrecolor'] = (isset($AllSettings['sp_pl2_titrecolor']))? valid_color($AllSettings['sp_pl2_titrecolor']) : $default_color_tab["pl2_titrecolor"];
+$hexa['pl2_titrebgcolor'] = (isset($AllSettings['sp_pl2_titrebgcolor']))? valid_color($AllSettings['sp_pl2_titrebgcolor']) : $default_color_tab['pl2_titrebgcolor'];
+$hexa['pl2_entetecolor'] = (isset($AllSettings['sp_pl2_entetecolor']))? valid_color($AllSettings['sp_pl2_entetecolor']) : $default_color_tab["pl2_entetecolor"];
+$hexa['pl2_entetebgcolor'] = (isset($AllSettings['sp_pl2_entetebgcolor']))? valid_color($AllSettings['sp_pl2_entetebgcolor']) : $default_color_tab["pl2_entetebgcolor"];
+$hexa['pl2_cellcolor'] = (isset($AllSettings['sp_pl2_cellcolor']))? valid_color($AllSettings['sp_pl2_cellcolor']) : $default_color_tab["pl2_cellcolor"];
+$hexa['pl2_cellbgcolor'] = (isset($AllSettings['sp_pl2_cellbgcolor']))? valid_color($AllSettings['sp_pl2_cellbgcolor']) : $default_color_tab["pl2_cellbgcolor"];
+$hexa['icons_color'] = (isset($AllSettings['sp_icons_color']))? valid_color($AllSettings['sp_icons_color']) : $default_color_tab["icons_color"];
+$hexa['btn_primary_color'] = (isset($AllSettings['sp_btn_primary_color']))? valid_color($AllSettings['sp_btn_primary_color']) : $default_color_tab["btn_primary_color"];
+$hexa['btn_primary_bgcolor'] = (isset($AllSettings['sp_btn_primary_bgcolor']))? valid_color($AllSettings['sp_btn_primary_bgcolor']) : $default_color_tab["btn_primary_bgcolor"];
+$hexa['btn_primary_bordcolor'] = (isset($AllSettings['sp_btn_primary_bordcolor']))? valid_color($AllSettings['sp_btn_primary_bordcolor']) : $default_color_tab["btn_primary_bordcolor"];
+$hexa['active_btn_primary_color'] = (isset($AllSettings['sp_active_btn_primary_color']))? valid_color($AllSettings['sp_active_btn_primary_color']) : $default_color_tab["active_btn_primary_color"];
+$hexa['active_btn_primary_bgcolor'] = (isset($AllSettings['sp_active_btn_primary_bgcolor']))? valid_color($AllSettings['sp_active_btn_primary_bgcolor']) : $default_color_tab["active_btn_primary_bgcolor"];
+$hexa['active_btn_primary_bordcolor'] = (isset($AllSettings['sp_active_btn_primary_bordcolor']))? valid_color($AllSettings['sp_active_btn_primary_bordcolor']) : $default_color_tab["active_btn_primary_bordcolor"];
+$hexa['focus_btn_primary_color'] = (isset($AllSettings['sp_focus_btn_primary_color']))? valid_color($AllSettings['sp_focus_btn_primary_color']) : $default_color_tab["focus_btn_primary_color"];
+$hexa['focus_btn_primary_bgcolor'] = (isset($AllSettings['sp_focus_btn_primary_bgcolor']))? valid_color($AllSettings['sp_focus_btn_primary_bgcolor']) : $default_color_tab["focus_btn_primary_bgcolor"];
+$hexa['focus_btn_primary_bordcolor'] = (isset($AllSettings['sp_focus_btn_primary_bordcolor']))? valid_color($AllSettings['sp_focus_btn_primary_bordcolor']) : $default_color_tab["focus_btn_primary_bordcolor"];
+
 
 
 affiche_pop_up($msg,"admin");
