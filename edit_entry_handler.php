@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-02-16 10:45$
+ * Dernière modification : $Date: 2021-03-14 11:28$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -410,7 +410,7 @@ try {
    // echo $page;
     $page = verif_page();
   //  echo $page;
-    $referer = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars($_SERVER['HTTP_REFERER']) :'';
+    $referer = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'],ENT_QUOTES) :'';
     // $_SERVER['HTTP_REFERER'] ne contient pas les informations correctes s'il y a eu changement de ressource/domaine lors de l'édition de la réservation : il vaut mieux calculer la page précédente et peut-être plus tôt
     $referer = explode('?',$referer);
     if (!$referer[0])
