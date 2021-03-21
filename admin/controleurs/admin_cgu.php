@@ -27,6 +27,7 @@ if (!Pages::load()) {
 
 /* Enregistrement de la page */
 if (isset($_POST['CGU'])) {
+	VerifyModeDemo();
     if (!Pages::set("CGU", $_POST['CGU'])) {
         echo "Erreur lors de l'enregistrement de CGU !<br />";
         die();
