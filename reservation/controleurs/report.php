@@ -221,6 +221,7 @@ while ($k < $nb_ligne)
 // [12]  les champs additionnele -> e.overload_desc
 
 // On récupère les infos sur le champ add pour le résumé par...
+$champsAddResume = array();
 $overload_fields = mrbsOverloadGetFieldslist("");
 // Boucle sur tous les champs additionnels de l'area
 foreach ($overload_fields as $fieldname=>$fieldtype)
