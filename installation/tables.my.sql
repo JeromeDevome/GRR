@@ -150,7 +150,7 @@ INSERT INTO grr_setting VALUES ('url_disconnect', '');
 INSERT INTO grr_setting VALUES ('use_fckeditor', '1');
 INSERT INTO grr_setting VALUES ('UserAllRoomsMaxBooking', '-1');
 INSERT INTO grr_setting VALUES ('verif_reservation_auto', '0');
-INSERT INTO grr_setting VALUES ('version', '3.4.0');
+INSERT INTO grr_setting VALUES ('version', '4.0.0a');
 INSERT INTO grr_setting VALUES ('versionRC', '');
 INSERT INTO grr_setting VALUES ('visu_fiche_description', '0');
 INSERT INTO grr_setting VALUES ('webmaster_name', 'Webmestre de GRR');
