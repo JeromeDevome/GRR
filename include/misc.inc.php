@@ -33,14 +33,14 @@ $versionReposite = "GitHub";
 // Version PHP minimum
 $php_mini = "7.0.0";
 // Version PHP maximum testé et validé par : JeromeB
-$php_max_valide = "7.2.9";
+$php_max_valide = "7.3.21";
 // Version PHP maximum qui est sensé fonctionné, si compatible avec toutes les versions à ce jour laisser vide
-$php_maxi = "";
+$php_maxi = "7.3";
 
 // Version MySQL minimum
 $mysql_mini = "5.4.0";
 // Version MySQL maximum testé et validé par : JeromeB
-$mysql_max_valide = "5.7.19";
+$mysql_max_valide = "5.7.31";
 // Version MySQL maximum qui est sensé fonctionné
 $mysql_maxi = "";
 
