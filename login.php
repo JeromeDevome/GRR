@@ -45,10 +45,18 @@ if (verif_version())
 	exit();
 }
 
-// Si Token Installation n'est pas initialisé on le fait ici car s'est la 1ere page affiché 
-if(Settings::get("tokeninstallation") == ""){
-	Settings::set("tokeninstallation",  generationToken());
-}
+// Si Token  n'est pas initialisé on le fait ici car s'est la 1ere page affiché 
+if(Settings::get("tokenprivee") == "")
+	Settings::set("tokenprivee",  generationToken());
+
+if(Settings::get("tokenpublic") == "")
+	Settings::set("tokenpublic",  generationToken());
+
+if(Settings::get("tokenapi") == "")
+	Settings::set("tokenapi",  generationToken());
+
+if(Settings::get("tokenuser") == "")
+	Settings::set("tokenuser",  generationToken());
 
 // User wants to be authentified
 if (isset($_POST['login']) && isset($_POST['password']))
