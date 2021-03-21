@@ -83,5 +83,12 @@ class Settings {
 		self::$grrSettings[$_name] = $_value;
 		return true;
 	}
+
+	static function delette($name)
+	{
+		$AllSettings = array();
+		$sql_query="DELETE FROM ".TABLE_PREFIX."_setting WHERE NAME = '" . protect_data_sql($name) . "'";
+		$res=grr_sql_query($sql_query);
+	}
 }
 ?>
