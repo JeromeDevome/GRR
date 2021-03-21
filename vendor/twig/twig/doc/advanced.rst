@@ -346,7 +346,7 @@ This is used by many of the tests built into Twig::
             $compiler
                 ->raw('(')
                 ->subcompile($this->getNode('node'))
-                ->raw(' % 2 == 1')
+                ->raw(' % 2 != 0')
                 ->raw(')')
             ;
         }
@@ -365,6 +365,7 @@ tests also have access to the ``arguments`` node. This node will contain the
 various other arguments that have been provided to your test.
 
 .. versionadded:: 2.6
+
     Dynamic tests support was added in Twig 2.6.
 
 If you want to pass a variable number of positional or named arguments to the
@@ -913,6 +914,5 @@ Testing the node visitors can be complex, so extend your test cases from
 ``\Twig\Test\NodeTestCase``. Examples can be found in the Twig repository
 `tests/Twig/Node`_ directory.
 
-.. _`rot13`:               https://secure.php.net/manual/en/function.str-rot13.php
 .. _`tests/Twig/Fixtures`: https://github.com/twigphp/Twig/tree/2.x/tests/Fixtures
 .. _`tests/Twig/Node`:     https://github.com/twigphp/Twig/tree/2.x/tests/Node

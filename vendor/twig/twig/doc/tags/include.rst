@@ -1,7 +1,7 @@
 ``include``
 ===========
 
-The ``include`` statement includes a template and returns the rendered content
+The ``include`` statement includes a template and outputs the rendered content
 of that file:
 
 .. code-block:: twig
@@ -31,10 +31,10 @@ of that file:
           {# vs #}
           {% set content = include('template.html') %}
 
-          {# Filter a rendered template #}
-          {% filter upper %}
+          {# Apply filter on a rendered template #}
+          {% apply upper %}
               {% include 'template.html' %}
-          {% endfilter %}
+          {% endapply %}
           {# vs #}
           {{ include('template.html')|upper }}
 
