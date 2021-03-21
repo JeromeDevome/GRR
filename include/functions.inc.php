@@ -2846,15 +2846,15 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	$message_erreur = '';
 
 	if (@file_exists('include/mail.class.php')){
-		require_once 'phpmailer/src/PHPMailer.php';
-		require_once 'phpmailer/src/SMTP.php';
-		require_once 'phpmailer/src/Exception.php';
+		require_once 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
+		require_once 'vendor/phpmailer/phpmailer/src/SMTP.php';
+		require_once 'vendor/phpmailer/phpmailer/src/Exception.php';
 		require_once 'include/mail.class.php';
 	}else{
-		require_once '../phpmailer/src/PHPMailer.php';
-		require_once '../phpmailer/src/SMTP.php';
-		require_once '../phpmailer/src/Exception.php';
-		require_once '../include/mail.class.php';
+		require_once '../vendor/phpmailer/phpmailer/src/PHPMailer.php';
+		require_once '../vendor/phpmailer/phpmailer/src/SMTP.php';
+		require_once '../vendor/phpmailer/phpmailer/src/Exception.php';
+		require_once '../vendor/phpmailer/include/mail.class.php';
 	}
 
 	$sql = "SELECT ".TABLE_PREFIX."_entry.name,

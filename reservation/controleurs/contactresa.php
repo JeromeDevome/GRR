@@ -65,9 +65,9 @@ $message = $msg_erreur;
 
 if(isset($_POST['nom'])){ 
 
-	require_once 'phpmailer/src/PHPMailer.php';
-	require_once 'phpmailer/src/SMTP.php';
-	require_once 'phpmailer/src/Exception.php';
+	require_once 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
+	require_once 'vendor/phpmailer/phpmailer/src/SMTP.php';
+	require_once 'vendor/phpmailer/phpmailer/src/Exception.php';
 	require_once 'include/mail.class.php';
 
 	if (empty($_POST['nom']))
