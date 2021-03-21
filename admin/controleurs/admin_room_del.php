@@ -18,6 +18,8 @@
 
 $grr_script_name = "admin_room_del.php";
 
+include('../include/fichier.class.php');
+
 $type = isset($_GET["type"]) ? $_GET["type"] : NULL;
 $confirm = isset($_GET["confirm"]) ? $_GET["confirm"] : NULL;
 $room = isset($_GET["room"]) ? $_GET["room"] : NULL;
@@ -50,6 +52,12 @@ if ($type == "room")
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE id_room=$room");
 		//Now take out the room itself
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_room WHERE id=$room");
+
+		// Supprimer les images de la ressources
+		$cledDossier = hash('ripemd128', $room.Settings::get("tokenprivee"));
+		$dossier = '../personnalisation/'.$gcDossierImg.'/ressources/'.$room.'-'.$cledDossier.'/';
+		Fichier::SupprimeDossier($room.'-'.$cledDossier,1);
+
 		//Go back to the admin page
 		Header("Location: ?p=admin_room&id_area=$id_area&id_site=$id_site");
 	}
