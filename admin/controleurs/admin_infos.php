@@ -19,27 +19,7 @@
 
 $grr_script_name = "admin_infos.php";
 
-function testDroits($dossier){
-
-	$ok1 = false;
-
-	if ($f = @fopen($dossier.".test", "w"))
-	{
-		@fputs($f, '<'.'?php $ok1 = true; ?'.'>');
-		@fclose($f);
-		include($dossier.".test");
-	}
-	if (!$ok1)
-		$statut = 0;
-	else
-	{
-		$statut = 1;
-		unlink($dossier.".test");
-	}
-
-	return $statut;
-}
-
+include('../include/fichier.class.php');
 
 $valid = isset($_POST["valid"]) ? $_POST["valid"] : 'no';
 $version_old = isset($_POST["version_old"]) ? $_POST["version_old"] : '';
@@ -116,11 +96,11 @@ if (version_compare(grr_sql_version(), $mysql_mini, '<')) {
 
 
 // Dossier
-$trad['dDossierImgRessourcesEcriture'] = testDroits("../personnalisation/".$gcDossierImg."/ressources/");
-$trad['dDossierImgLogosEcriture'] = testDroits("../personnalisation/".$gcDossierImg."/logos/");
-$trad['dDossierExportEcriture'] = testDroits("../export/");
-$trad['dDossierTempEcriture'] = testDroits("../temp/");
-$trad['dDossierModulesEcriture'] = testDroits("../personnalisation/modules/");
+$trad['dDossierImgRessourcesEcriture'] = Fichier::TestDroitsDossier("../personnalisation/".$gcDossierImg."/ressources/");
+$trad['dDossierImgLogosEcriture'] =  Fichier::TestDroitsDossier("../personnalisation/".$gcDossierImg."/logos/");
+$trad['dDossierExportEcriture'] =  Fichier::TestDroitsDossier("../export/");
+$trad['dDossierTempEcriture'] =  Fichier::TestDroitsDossier("../temp/");
+$trad['dDossierModulesEcriture'] =  Fichier::TestDroitsDossier("../personnalisation/modules/");
 
 if(file_exists('../installation/'))
 	$trad['dDossierInstallation'] = 1;
