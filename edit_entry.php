@@ -96,10 +96,21 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
     if ($flag_qui_peut_reserver_pour ) // on crée les sélecteurs à afficher 
     {
         $benef = "";
+        $benef_ext_nom = "";
+        $benef_ext_email = "";
         if ($id_resa == 0 && isset($_COOKIE['beneficiaire_default']))
             $benef = $_COOKIE['beneficiaire_default'];
         elseif ($id_resa != 0) 
             $benef = grr_sql_query1("SELECT beneficiaire FROM ".TABLE_PREFIX."_entry WHERE id='".$id_resa."' ");
+        //echo 'benef :'.$benef;
+        if ($benef == -1){
+            $benef = "";
+            $benef_ext = grr_sql_query1("SELECT beneficiaire_ext FROM ".TABLE_PREFIX."_entry WHERE id='".$id_resa."' ");
+            $tab_benef = explode('|',$benef_ext);
+            $benef_ext_nom = $tab_benef[0];
+            $benef_ext_email = (isset($tab_benef[1]))? $tab_benef[1]:"";
+            //print_r($tab_benef);
+        }
         $bnf = array(); // tableau des bénéficiaires autorisés (login,nom,prénom)
         $sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (etat!='inactif' and statut!='visiteur' ) OR (login='".$id_user."') ORDER BY nom, prenom";
         $res = grr_sql_query($sql);
@@ -108,10 +119,13 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
         }
         //print_r($bnf);
         $option = "";
-        $option .= '<option value="" >'.get_vocab("personne exterieure").'</option>'.PHP_EOL;
+        if (!isset($benef_ext_nom))
+            $option .= '<option value="" >'.get_vocab("personne exterieure").'</option>'.PHP_EOL;
+        else
+            $option .= '<option value="" selected="selected">'.get_vocab("personne exterieure").'</option>'.PHP_EOL;
         foreach ($bnf as $b){
             $option .= '<option value="'.$b[0].'" ';
-            if ((!$benef && strtolower($id_user) == strtolower($b[0])) || ($benef && $benef == $b[0]))
+            if (((!$benef && !$benef_ext_nom) && strtolower($id_user) == strtolower($b[0])) || ($benef && $benef == $b[0]))
                 {
                     $option .= ' selected="selected" ';
                 }
@@ -130,11 +144,14 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
         echo '<div class="col-sm-3">'.PHP_EOL;
         echo '<input type="button" id="bnfdef" class="btn btn-primary" value="'.get_vocab("definir par defaut").'" onclick="setdefault(\'beneficiaire_default\',document.getElementById(\'main\').beneficiaire.options[document.getElementById(\'main\').beneficiaire.options.selectedIndex].value)" />'.PHP_EOL;
         echo '</div></div>'.PHP_EOL;
-        echo '<div id="menu4" class="form-inline">';
+        echo '<div id="menu4" class="form-inline" ';
+        if (!$benef_ext_nom) 
+            echo ' style="display:none"';
+        echo '>';
         echo '<div class="form-group col-sm-6">'.PHP_EOL;
         echo '    <div class="input-group">'.PHP_EOL;
         echo '      <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>'.PHP_EOL;
-        echo '      <input class="form-control" type="text" name="benef_ext_nom" value="" placeholder="'.get_vocab("nom beneficiaire").'" required>'.PHP_EOL;
+        echo '      <input class="form-control" type="text" name="benef_ext_nom" value="'.$benef_ext_nom.'" placeholder="'.get_vocab("nom beneficiaire").'" required onchange="check_4()">'.PHP_EOL;
         echo '    </div>'.PHP_EOL;
         echo '  </div>'.PHP_EOL;
         if (Settings::get("automatic_mail") == 'yes')
@@ -142,7 +159,7 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
             echo '<div class="form-group col-sm-6">'.PHP_EOL;
             echo '    <div class="input-group">'.PHP_EOL;
             echo '      <div class="input-group-addon"><span class="glyphicon glyphicon-envelope" ></span></div>'.PHP_EOL;
-            echo '      <input class="form-control" type="email" name="benef_ext_email" value="" placeholder="'.get_vocab("email beneficiaire").'">'.PHP_EOL;
+            echo '      <input class="form-control" type="email" name="benef_ext_email" value="'.$benef_ext_email.'" placeholder="'.get_vocab("email beneficiaire").'">'.PHP_EOL;
             echo '    </div>'.PHP_EOL;
             echo '</div>'.PHP_EOL;
         }
@@ -1253,7 +1270,7 @@ function check_4(){
             {
                 ?>
                document.forms["main"].name.value=document.forms["main"].beneficiaire.options[document.forms["main"].beneficiaire.options.selectedIndex].text;
-               // document.forms["main"].name.value=document.forms["main"].beneficiaire.value;
+              // document.forms["main"].name.value=document.forms["main"].beneficiaire.value;
                 <?php
             }
             ?>
@@ -1265,7 +1282,7 @@ function check_4(){
             if (Settings::get("remplissage_description_breve") == '2')
             {
                 ?>
-                document.forms["main"].name.value="";
+                document.forms["main"].name.value=document.forms["main"].benef_ext_nom.value;
                 <?php
             }
             ?>
@@ -1479,7 +1496,7 @@ function changeRoom(formObj)
             insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode($user_name);?>,<?php echo $id?>);
             insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>,<?php echo json_encode($overloadFields);?>);
             insertTypes(<?php echo $area?>,<?php echo $room?>);
-            check_4();
+            //check_4();
 		});
 		document.getElementById('main').name.focus();
 		<?php

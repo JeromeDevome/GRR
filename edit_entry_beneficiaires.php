@@ -1,9 +1,9 @@
 <?php
 /**
- * edit_entry_beneficiaire.php
- * Page "Ajax" utilisée dans edit_entry.php
+ * edit_entry_beneficiaires.php
+ * Page "Ajax" utilisée dans edit_entry.php, calcule les data pour le sélecteur #beneficiaire
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-02-28 18:53$
+ * Dernière modification : $Date: 2021-03-22 11:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -40,17 +40,23 @@ $flag_qui_peut_reserver_pour = (authGetUserLevel($id_user, $id_room, "room") >= 
 $flag_qui_peut_reserver_pour = $flag_qui_peut_reserver_pour || (authGetUserLevel($id_user, $id_area, "area") >= $qui_peut_reserver_pour); // accès au domaine
 $flag_qui_peut_reserver_pour = $flag_qui_peut_reserver_pour && (($id_resa == 0) || (authGetUserLevel($id_user, $id_room) > 2) ); // création d'une nouvelle réservation ou usager 
 $bnf = array(); // tableau des bénéficiaires autorisés (id -> login, text -> nom prénom)
-if ($flag_qui_peut_reserver_pour ) // on crée les sélecteurs à afficher 
+if ($flag_qui_peut_reserver_pour ) // on crée la liste des options pour le sélecteur #beneficiaire 
 {
-    $tab_benef = array();
-    $tab_benef["nom"] = "";
-    $tab_benef["email"] = "";
     $benef = "";
     if ($id_resa == 0 && isset($_COOKIE['beneficiaire_default']))
         $benef = $_COOKIE['beneficiaire_default'];
     elseif ($id_resa != 0) 
         $benef = grr_sql_query1("SELECT beneficiaire FROM ".TABLE_PREFIX."_entry WHERE id='".$id_resa."' ");
-    $bnf[] = array('id'=>"",'text'=>get_vocab("personne exterieure"));
+    if ($benef == -1){
+        $benef_ext = grr_sql_query1("SELECT beneficiaire_ext FROM ".TABLE_PREFIX."_entry WHERE id='".$id_resa."' ");
+        $tab_benef = explode('|',$benef_ext);
+        $benef_ext_nom = $tab_benef[0];
+        $benef_ext_email = (isset($tab_benef[1]))? $tab_benef[1]:"";
+    }
+    if (!isset($benef_ext_nom))
+        $bnf[] = array('id'=>"",'text'=>get_vocab("personne exterieure"));
+    else
+        $bnf[] = array('id'=>"",'text'=>get_vocab("personne exterieure"),'selected'=>TRUE);
     $sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (etat!='inactif' and statut!='visiteur' ) OR (login='".$id_user."') ORDER BY nom, prenom";
     $res = grr_sql_query($sql);
     if ($res){
