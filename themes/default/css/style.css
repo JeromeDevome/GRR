@@ -108,6 +108,8 @@ th.jour_sem{width:10%;background-color:gray;color:white;}
 .titre_planning table{border:0}
 .dropdown-menu > li > a.active{background-color: #F5F5F5; color: #FF0000;}
 .dropdown .actif{background-color: #2C6CA3;border-color: #2E6DA4; color: #FFF;}
+/* edit_entry */
+#choix_beneficiaire > #menu4{display:none;}
 
 @media only screen and (max-width:800px) { 
 	.accueil {
