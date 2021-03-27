@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-14 17:34
+ * Dernière modification : $Date: 2021-03-27 12:07
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -77,7 +77,7 @@ function pageHead($title,$locale) // $locale est la langue utilisée
         <script src="./js/select2/js/select2.min.js"></script>
         <script src="./js/select2/js/i18n/'.$locale.'.js"></script>
         <script src="./js/bandeau.js"></script>
-        <script src="./js/functions.js"></script>'; // à localiser
+        <script src="./js/functions.js"></script>'; 
     echo '</head>';
 }
 // récupère les variables passées par GET ou POST ou bien par COOKIE, et leur affecte le type indiqué (int ou string)
@@ -89,9 +89,6 @@ function getFormVar($nom,$type=''){
     return $valeur;
 }
 function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
-    $tab_benef = array();
-    $tab_benef["nom"] = "";
-    $tab_benef["email"] = "";
     $qui_peut_reserver_pour  = grr_sql_query1("SELECT qui_peut_reserver_pour FROM ".TABLE_PREFIX."_room WHERE id='".$id_room."'");
     $flag_qui_peut_reserver_pour = (authGetUserLevel($id_user, $id_room, "room") >= $qui_peut_reserver_pour); // accès à la ressource
     $flag_qui_peut_reserver_pour = $flag_qui_peut_reserver_pour || (authGetUserLevel($id_user, $id_area, "area") >= $qui_peut_reserver_pour); // accès au domaine
@@ -99,10 +96,21 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
     if ($flag_qui_peut_reserver_pour ) // on crée les sélecteurs à afficher 
     {
         $benef = "";
+        $benef_ext_nom = "";
+        $benef_ext_email = "";
         if ($id_resa == 0 && isset($_COOKIE['beneficiaire_default']))
             $benef = $_COOKIE['beneficiaire_default'];
         elseif ($id_resa != 0) 
             $benef = grr_sql_query1("SELECT beneficiaire FROM ".TABLE_PREFIX."_entry WHERE id='".$id_resa."' ");
+        //echo 'benef :'.$benef;
+        if ($benef == -1){
+            $benef = "";
+            $benef_ext = grr_sql_query1("SELECT beneficiaire_ext FROM ".TABLE_PREFIX."_entry WHERE id='".$id_resa."' ");
+            $tab_benef = explode('|',$benef_ext);
+            $benef_ext_nom = $tab_benef[0];
+            $benef_ext_email = (isset($tab_benef[1]))? $tab_benef[1]:"";
+            //print_r($tab_benef);
+        }
         $bnf = array(); // tableau des bénéficiaires autorisés (login,nom,prénom)
         $sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (etat!='inactif' and statut!='visiteur' ) OR (login='".$id_user."') ORDER BY nom, prenom";
         $res = grr_sql_query($sql);
@@ -110,11 +118,15 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
             for ($i = 0; ($row = grr_sql_row($res, $i)); $i++) {$bnf[$i] = $row;}
         }
         //print_r($bnf);
+        grr_sql_free($res);
         $option = "";
-        $option .= '<option value="" >'.get_vocab("personne exterieure").'</option>'.PHP_EOL;
+        if (!isset($benef_ext_nom))
+            $option .= '<option value="" >'.get_vocab("personne exterieure").'</option>'.PHP_EOL;
+        else
+            $option .= '<option value="" selected="selected">'.get_vocab("personne exterieure").'</option>'.PHP_EOL;
         foreach ($bnf as $b){
             $option .= '<option value="'.$b[0].'" ';
-            if ((!$benef && strtolower($id_user) == strtolower($b[0])) || ($benef && $benef == $b[0]))
+            if (((!$benef && !$benef_ext_nom) && strtolower($id_user) == strtolower($b[0])) || ($benef && $benef == $b[0]))
                 {
                     $option .= ' selected="selected" ';
                 }
@@ -128,31 +140,33 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
         echo '<div id="choix_beneficiaire" class="form-group">'.PHP_EOL;
         echo '<label for="beneficiaire" >'.ucfirst(trim(get_vocab("reservation_au_nom_de"))).get_vocab("deux_points").'</label>'.PHP_EOL;
         echo '<div class="col-sm-9">'.PHP_EOL;
-        echo '<select class="select2" name="beneficiaire" id="beneficiaire" data-input onchange="check_4();">'.$option.'</select>'.PHP_EOL;
+        echo '<select class="select2" name="beneficiaire" id="beneficiaire" onchange="check_4();">'.$option.'</select>'.PHP_EOL;
         echo '</div>';
         echo '<div class="col-sm-3">'.PHP_EOL;
         echo '<input type="button" id="bnfdef" class="btn btn-primary" value="'.get_vocab("definir par defaut").'" onclick="setdefault(\'beneficiaire_default\',document.getElementById(\'main\').beneficiaire.options[document.getElementById(\'main\').beneficiaire.options.selectedIndex].value)" />'.PHP_EOL;
         echo '</div></div>'.PHP_EOL;
-        echo '<div id="menu4" class="form-inline">';
+        echo '<div id="menu4" class="form-inline" ';
+        if (!$benef_ext_nom) 
+            echo ' style="display:none"';
+        echo '>';
         echo '<div class="form-group col-sm-6">'.PHP_EOL;
         echo '    <div class="input-group">'.PHP_EOL;
         echo '      <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>'.PHP_EOL;
-        echo '      <input class="form-control" type="text" name="benef_ext_nom" value="'.htmlspecialchars($tab_benef["nom"]).'" placeholder="'.get_vocab("nom beneficiaire").'" required>'.PHP_EOL;
+        echo '      <input class="form-control" type="text" name="benef_ext_nom" value="'.$benef_ext_nom.'" placeholder="'.get_vocab("nom beneficiaire").'" required onchange="check_4()">'.PHP_EOL;
         echo '    </div>'.PHP_EOL;
         echo '  </div>'.PHP_EOL;
-        $affiche_mess_asterisque = true;
         if (Settings::get("automatic_mail") == 'yes')
         {
             echo '<div class="form-group col-sm-6">'.PHP_EOL;
             echo '    <div class="input-group">'.PHP_EOL;
             echo '      <div class="input-group-addon"><span class="glyphicon glyphicon-envelope" ></span></div>'.PHP_EOL;
-            echo '      <input class="form-control" type="email" name="benef_ext_email" value="'.htmlspecialchars($tab_benef["email"]).'" placeholder="'.get_vocab("email beneficiaire").'">'.PHP_EOL;
+            echo '      <input class="form-control" type="email" name="benef_ext_email" value="'.$benef_ext_email.'" placeholder="'.get_vocab("email beneficiaire").'">'.PHP_EOL;
             echo '    </div>'.PHP_EOL;
             echo '</div>'.PHP_EOL;
         }
         echo '</div>'.PHP_EOL; // fin menu4
     }
-    else
+    else // "réservation au nom de" impossible
     {
         echo '<input type="hidden" name="beneficiaire" value="'.$id_user.'" />'.PHP_EOL;
     }
@@ -248,6 +262,7 @@ if ($res){
         $overloadFields[$row['id']] = getFormVar($overloadField);
     }
 }
+grr_sql_free($res);
 //$overloadFields = mrbsOverloadGetFieldslist();
 //print_r($overloadFields);
 // vérification
@@ -436,40 +451,42 @@ if (isset($id)) // édition d'une réservation existante
         showAccessDenied($page_ret);
         exit;
     }
-	$sql = "SELECT name, beneficiaire, description, start_time, end_time, type, room_id, entry_type, repeat_id, option_reservation, jours, create_by, beneficiaire_ext, statut_entry, clef, courrier FROM ".TABLE_PREFIX."_entry WHERE id=$id";
-	$res = grr_sql_query($sql);
+	//$sql = "SELECT name, beneficiaire, description, start_time, end_time, type, room_id, entry_type, repeat_id, option_reservation, jours, create_by, beneficiaire_ext, statut_entry, clef, courrier FROM ".TABLE_PREFIX."_entry WHERE id=$id";
+	$sql = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id=$id";
+    $res = grr_sql_query($sql);
 	if (!$res)
 		fatal_error(1, grr_sql_error());
 	if (grr_sql_count($res) != 1)
 		fatal_error(1, get_vocab('entryid') . $id . get_vocab('not_found'));
-	$row = grr_sql_row($res, 0);
+	$row = grr_sql_row_keyed($res, 0);
+    $data = array_merge(array(), $row);
 	grr_sql_free($res);
-	$name = $row[0];
-	$beneficiaire = $row[1];
-	$beneficiaire_ext = $row[12];
+	$name = $row['name'];
+	$beneficiaire = $row['beneficiaire'];
+	$beneficiaire_ext = $row['beneficiaire_ext'];
 	$tab_benef = donne_nom_email($beneficiaire_ext);
-	$create_by = $row[11];
-	$description = $row[2];
-	$statut_entry = $row[13];
-	$day = strftime('%d', $row[3]);
-	$month = strftime('%m', $row[3]);
-	$year = strftime('%Y', $row[3]);
-	$start_hour = strftime('%H', $row[3]);
-	$start_min = strftime('%M', $row[3]);
-	$end_day = strftime('%d', $row[4]);
-	$end_month = strftime('%m', $row[4]);
-	$end_year = strftime('%Y', $row[4]);
-	$end_hour = strftime('%H', $row[4]);
-	$end_min  = strftime('%M', $row[4]);
-	$duration = $row[4]-$row[3];
-	$etype = $row[5];
-	$room_id = $row[6];
-	$entry_type = $row[7];
-	$rep_id = $row[8];
-	$option_reservation = $row[9];
-	$jours_c = $row[10];
-	$clef = $row[14];
-	$courrier = $row[15];
+	$create_by = $row['create_by'];
+	$description = $row['description'];
+	$statut_entry = $row['statut_entry'];
+	$day = strftime('%d', $row['start_time']);
+	$month = strftime('%m', $row['start_time']);
+	$year = strftime('%Y', $row['start_time']);
+	$start_hour = strftime('%H', $row['start_time']);
+	$start_min = strftime('%M', $row['start_time']);
+	$end_day = strftime('%d', $row['end_time']);
+	$end_month = strftime('%m', $row['end_time']);
+	$end_year = strftime('%Y', $row['end_time']);
+	$end_hour = strftime('%H', $row['end_time']);
+	$end_min  = strftime('%M', $row['end_time']);
+	$duration = $row['end_time']-$row['start_time'];
+	$etype = $row['type'];
+	$room_id = $row['room_id'];
+	$entry_type = $row['entry_type'];
+	$rep_id = $row['repeat_id'];
+	$option_reservation = $row['option_reservation'];
+	$jours_c = $row['jours'];
+	$clef = $row['clef'];
+	$courrier = $row['courrier'];
 	$modif_option_reservation = 'n';
 
 	if ($entry_type >= 1) // entrée associée à une périodicité
@@ -534,7 +551,7 @@ if (isset($id)) // édition d'une réservation existante
 	}
 	else
 	{
-		$flag_periodicite = 'y'; // utilité ?
+		$flag_periodicite = 'y'; // utilisé pour le non-affichage de la seconde colonne pour une réservation non périodique
 		$rep_id        = 0;
 		$rep_type      = 0;
 		$rep_end_day   = $day;
@@ -599,7 +616,7 @@ else // nouvelle réservation
 	$modif_option_reservation = 'y';
 }
 
-$Err = getFormVar("Err",'string');
+$Err = getFormVar("Err",'string'); // utilité ?
 if ($enable_periods == 'y')
 	toPeriodString($start_min, $duration, $dur_units);
 else{
@@ -626,7 +643,7 @@ if ($res)
 else 
     fatal_error(1,grr_sql_error());
 grr_sql_free($res);
-$racine = "./";
+
 if ($id == 0)
 	$titre = get_vocab("addentry");
 else
@@ -671,6 +688,7 @@ pageHead(Settings::get("company"),$locale);
 // section <body>
 echo "<body>";
 //echo $C;
+//print_r($data);
 // Menu du haut = section <header>
 echo "<header>";
 pageHeader2($day, $month, $year, $type_session="with_session");
@@ -687,7 +705,7 @@ echo '<h2>'.$titre.'</h2>'.PHP_EOL;
 if ($moderate)
 	echo '<h3><span class="texte_ress_moderee">'.$vocab["reservations_moderees"].'</span></h3>'.PHP_EOL;
 echo '<form id="main" action="edit_entry_handler.php" method="get">'.PHP_EOL;
-echo '<input type="hidden" name="oldRessource" value="'.$room_id.'">'.PHP_EOL;
+echo '<input type="hidden" name="oldRessource" value="'.$room_id.'">'.PHP_EOL; // oldRessource utile ?
 echo '<div id="error"></div>';
 
 echo '<div class="row2">';
@@ -730,10 +748,10 @@ else
 		jQuery_TimePicker2('start_', '', '',$duree_par_defaut_reservation_area,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format);
 	}
 }
-echo '</div></div>'.PHP_EOL;
+echo '</div></div>'.PHP_EOL; // fin début
 if ($type_affichage_reser == 0) // sélection de la durée
 {
-	echo '<div>'.PHP_EOL;
+	echo '<div class="E form-inline">'.PHP_EOL;
     echo '<label for="duration">'.get_vocab("duration").'</label>'.PHP_EOL;
 	echo '<input class="form-control" id="duree" name="duration" type="number" value="'.$duration.'" min="1">'; 
     echo '<select class="form-control" name="dur_units">'.PHP_EOL;
@@ -742,9 +760,9 @@ if ($type_affichage_reser == 0) // sélection de la durée
 	else
 	{
 		$duree_max_resa_area = grr_sql_query1("SELECT duree_max_resa_area FROM ".TABLE_PREFIX."_area WHERE id='".$area."'");
-		if ($duree_max_resa_area < 0)
+		if ($duree_max_resa_area < 0) // pas de limite
 			$units = array("minutes", "hours", "days", "weeks");
-		else if ($duree_max_resa_area < 60)
+		else if ($duree_max_resa_area < 60) // limite inférieure à une heure, etc.
 			$units = array("minutes");
 		else if ($duree_max_resa_area < 60*24)
 			$units = array("minutes", "hours");
@@ -803,7 +821,7 @@ else // sélection de l'heure ou du créneau de fin
 			jQuery_TimePicker2('end_', '', '',$duree_par_defaut_reservation_area,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format);
 		}
 	}
-	echo '</div></div>'.PHP_EOL;
+	echo '</div></div>'.PHP_EOL; // fin heure de fin
 }
 // domaines et ressources
 echo "<div ";
@@ -831,6 +849,7 @@ if ($res)
 		}
 	}
 }
+grr_sql_free($res);
 echo '</select>',PHP_EOL,'</div>',PHP_EOL; // fin domaines
 
 echo '<!-- ************* Ressources edition ***************** -->',PHP_EOL;
@@ -857,6 +876,7 @@ if ($res)
 		echo '<option ',$selected,' value="',$row['id'],'" title="',$row['description'],'">',$row['room_name'],'</option>',PHP_EOL;
 	}
 }
+grr_sql_free($res);
 echo '</select>',PHP_EOL,'&nbsp; &nbsp;',get_vocab("ctrl_click"),'</div>',PHP_EOL;
 
 // réservation conditionnelle
@@ -932,9 +952,9 @@ if (Settings::get("show_courrier") == 'y'){ // proposition scoubinaire le 12/03/
     echo ' > '.get_vocab("msg_courrier");
     echo '</div>'.PHP_EOL;
 }
-echo '<div class="bg-info">',PHP_EOL;
-echo '<p><b>'.get_vocab("required").'</b></p></div>';
 
+echo '<div class="bg-info">',PHP_EOL;
+echo '<p><b>'.get_vocab("required").'</b></p></div>'.PHP_EOL;
 echo "</div>",PHP_EOL; 
 // fin du bloc de "gauche"
 
@@ -979,7 +999,7 @@ if($periodiciteConfig == 'y'){
 						echo '>',get_vocab($weeklist[$weekit]),'</option>',PHP_EOL;
 					}
 					echo '</select>',PHP_EOL;
-                    echo "<div style=\"display:none\" id=\"menu2\" width=\"100%\">\n";
+                    echo "<div style=\"display:none\" id=\"menu2\" width=\"100%\">\n"; // jour(s) de la semaine
                     echo "<div class='F'><b>".get_vocab("rep_rep_day")."</b></div>\n";
                     echo "<div class=\"CL\">";
                     for ($d = 0; $d < 7; $d++)
@@ -1134,24 +1154,26 @@ echo '<div id="footer"></div>'.PHP_EOL;
 
 <script type="text/javascript" >
 function insertBeneficiaires(area_,room_,user_,id_){
-	jQuery.ajax({
-		type: 'GET',
-		url: 'edit_entry_beneficiaire.php',
-		data: {
-			area: area_,
-			room: room_,
+    jQuery.ajax({
+        type: 'GET',
+        url : 'edit_entry_beneficiaires.php',
+        data: {
+            area: area_,
+            room: room_,
             user: user_,
-            id: id_
-		},
-		success: function(returnData)
-		{
-			$("#choix_beneficiaire").html(returnData);
-		},
-		error: function(data)
+            id  : id_
+        },
+        success: function(returnData)
+        {
+            $("#beneficiaire").select2({
+                data: returnData
+            })
+        },
+        error: function(data)
 		{
 			alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_beneficiaire.php ');
 		}
-    });
+    })
 }
 function insertChampsAdd(area_,id_,room_,olf_){
 	jQuery.ajax({
@@ -1249,7 +1271,7 @@ function check_4(){
             {
                 ?>
                document.forms["main"].name.value=document.forms["main"].beneficiaire.options[document.forms["main"].beneficiaire.options.selectedIndex].text;
-               // document.forms["main"].name.value=document.forms["main"].beneficiaire.value;
+              // document.forms["main"].name.value=document.forms["main"].beneficiaire.value;
                 <?php
             }
             ?>
@@ -1261,7 +1283,7 @@ function check_4(){
             if (Settings::get("remplissage_description_breve") == '2')
             {
                 ?>
-                document.forms["main"].name.value="";
+                document.forms["main"].name.value=document.forms["main"].benef_ext_nom.value;
                 <?php
             }
             ?>
@@ -1288,21 +1310,6 @@ function setdefault (name,input){
     ( "" ? ";domain=" + domain : "") +
     ( "" ? ";secure" : "") + 
     "; SameSite=Lax";
-}
-function Load_entry (){
-    recoverInputs(document.forms["main"],retrieveCookie('Grr_entry'),true);
-    <?php
-    if (!$id <> "")
-    {
-        ?>
-        if (!document.forms["main"].rep_type[0].checked)
-            clicMenu('1');
-        <?php
-    }
-    ?>
-}
-function Save_entry (){
-    setCookie('Grr_entry',getFormString(document.forms["main"],true),10000,"","",0,0);
 }
 function validate_and_submit (){
     var err;
@@ -1487,12 +1494,10 @@ function changeRoom(formObj)
 			$('.multiselect').multiselect();
 		});
 		$(document).ready(function() {
-            //insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode($user_name);?>,<?php echo $id?>);
+            insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode($user_name);?>,<?php echo $id?>);
             insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>,<?php echo json_encode($overloadFields);?>);
             insertTypes(<?php echo $area?>,<?php echo $room?>);
-			$('.multiselect').multiselect();
-			$(".select2").select2();
-            check_4();
+            //check_4();
 		});
 		document.getElementById('main').name.focus();
 		<?php
