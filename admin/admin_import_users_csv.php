@@ -3,9 +3,9 @@
  * admin_import_user_csv.php
  * script d'importation d'utilisateurs à partir d'un fichier CSV
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-23 12:10$
+ * Dernière modification : $Date: 2021-03-16 11:22$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -19,9 +19,7 @@ $grr_script_name = "admin_import_users_csv.php";
 
 include "../include/admin.inc.php";
 
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
 {
 	showAccessDenied($back);
@@ -78,36 +76,40 @@ if ($reg_data != 'yes')
             if ((count($split) > 2)||(strtolower(end($split)) != 'csv')) {
                 echo get_vocab("admin_import_users_csv4")."</form>";
             }
-            else {
+            else 
+            {
                 $fp = @fopen($csv_file['tmp_name'], "r");
                 if (!$fp)
                     echo get_vocab("admin_import_users_csv4")."</form>";
-                else
+                else // lecture des données
                 {
                     $row = 0;
-                    echo "<table class='table table-bordered'><tr><td><p>".get_vocab("login")."</p></td>
-                    <td><p>".get_vocab("name")."</p></td>
-                    <td><p>".get_vocab("first_name")."</p></td>
-                    <td><p>".get_vocab("pwd")."</p></td>
-                    <td><p>".get_vocab("email")."</p></td>
-                    <td><p>".get_vocab("type")."</p></td>
-                    <td><p>".get_vocab("statut")."</p></td>
-                    <td><p>".get_vocab("authentification")."</p></td>
+                    echo "<table class='table table-bordered table-condensed'>
+                    <tr>
+                        <td>".get_vocab("login")."</td>
+                        <td>".get_vocab("name")."</td>
+                        <td>".get_vocab("first_name")."</td>
+                        <td>".get_vocab("pwd")."</td>
+                        <td>".get_vocab("email")."</td>
+                        <td>".get_vocab("type")."</td>
+                        <td>".get_vocab("statut")."</td>
+                        <td>".get_vocab("authentification")."</td>
+                        <td>".get_vocab("pwd_change")."</td>
                     </tr>";
                     $valid = 1;
                     while (!feof($fp))
                     {
                         if ($en_tete == 'yes')
                         {
-                            $data = fgetcsv ($fp, $long_max, ";");
+                            $data = fgetcsv($fp, $long_max, ";");
                             $en_tete = 'no';
                         }
-                        $data = fgetcsv ($fp, $long_max, ";");
+                        $data = fgetcsv($fp, $long_max, ";");
                         if($data != "")
                             $num = count($data);
                         else
                             $num = 0;
-                        if ($num == 8)
+                        if ($num == 9)
                         {
                             $row++;
                             echo "<tr>";
@@ -120,11 +122,11 @@ if ($reg_data != 'yes')
                                     $test_login = preg_replace("/([A-Za-z0-9_@. -])/","",$data[$c]);
                                     if ($test_login=="")
                                     {
-                                        $data[$c] =    strtoupper($data[$c]);
+                                        $data[$c] = strtoupper($data[$c]);
                                         $test = grr_sql_count(grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$data[$c]'"));
                                         if ($test!='0')
                                         {
-                                            echo "<td><p><font color=\"red\">$data[$c]</font></p>\n";
+                                            echo "<td><font color=\"red\">$data[$c]</font>\n";
                                             echo "<input type=\"hidden\" name=\"reg_stat[$row]\" value=\"existant\" />\n";
                                             $test_login_existant = "oui";
                                             $login_exist = "oui";
@@ -132,7 +134,7 @@ if ($reg_data != 'yes')
                                         }
                                         else
                                         {
-                                            echo "<td><p>$data[$c]</p>\n";
+                                            echo "<td>$data[$c]\n";
                                             echo "<input type=\"hidden\" name=\"reg_stat[$row]\" value=\"nouveau\" />\n";
                                             $login_exist = "non";
                                         }
@@ -156,24 +158,27 @@ if ($reg_data != 'yes')
                                         if ($test_nom_prenom != '0')
                                         {
                                             $test_nom_prenom_existant = 'yes';
-                                            echo "<td><p><font color=\"blue\">$data[$c]</font></p>";
+                                            echo "<td><font color=\"blue\">$data[$c]</font>";
                                         }
                                         else
-                                            echo "<td><p>$data[$c]</p>";
+                                            echo "<td>$data[$c]";
                                         $data_nom = htmlentities($data[$c]);
                                         echo "<input type=\"hidden\" name=\"reg_nom[$row]\" value=\"$data_nom\" /></td>";
                                     }
                                     else
+                                    {
                                         echo "<td><font color=\"red\">???</font></td>";
+                                        $valid = 0;
+                                    }
                                     break;
                                     case 2:
                                     //Prenom
                                     if (preg_match ("`^.{1,30}$`", $data[$c]))
                                     {
                                         if ($test_nom_prenom_existant == 'yes')
-                                            echo "<td><p><font color=\"blue\">$data[$c]</font></p>";
+                                            echo "<td><font color=\"blue\">$data[$c]</font>";
                                         else 
-                                            echo "<td><p>$data[$c]</p>";
+                                            echo "<td>$data[$c]";
                                         $data_prenom = htmlentities($data[$c]);
                                         echo "<input type=\"hidden\" name=\"reg_prenom[$row]\" value=\"$data_prenom\" /></td>";
                                     }
@@ -188,7 +193,7 @@ if ($reg_data != 'yes')
                                     if ((preg_match ("`^.{".$pass_leng.",30}$`", $data[$c])) || ($data[$c] == ''))
                                     {
                                         $data_mdp = htmlentities($data[$c]);
-                                        echo "<td><p>$data[$c] </p>";
+                                        echo "<td>$data[$c]";
                                         echo "<input type=\"hidden\" name=\"reg_mdp[$row]\" value=\"$data_mdp\" /></td>";
                                     }
                                     else
@@ -199,10 +204,11 @@ if ($reg_data != 'yes')
                                     break;
                                     case 4:
                                     // Adresse E-mail
-                                    if ((preg_match ("`^.{1,100}$`", $data[$c])) || ($data[$c] ==''))
+                                    $masque = "/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}$/";
+                                    if ((preg_match ($masque, $data[$c])) || ($data[$c] ==''))
                                     {
                                         $data_email = htmlentities($data[$c]);
-                                        echo "<td><p>$data[$c] </p>";
+                                        echo "<td>$data[$c]";
                                         echo "<input type=\"hidden\" name=\"reg_email[$row]\" value=\"$data_email\" /></td>";
                                     }
                                     else if ($data[$c]=='-')
@@ -220,14 +226,14 @@ if ($reg_data != 'yes')
                                     // Type d'utilisateur : quatre valeurs autorisées : visiteur, utilisateur, administrateur, gestionnaire_utilisateur
                                     // Si c'est un gestionnaire d'utilisateurs qui importe, seuls les types visiteur et utilisateur sont autorisés
                                     if (authGetUserLevel(getUserName(), -1) >= 6)
-                                        $filtre = "(visiteur|utilisateur|administrateur|gestionnaire_utilisateur)";
+                                        $filtre = "(\bvisiteur\b|\butilisateur\b|\badministrateur\b|\bgestionnaire_utilisateur\b)";
                                     else
-                                        $filtre = "`(visiteur|utilisateur)`";
+                                        $filtre = "`(\bvisiteur\b|\butilisateur\b)`";
 
                                     if (preg_match ($filtre, $data[$c]))
                                     {
                                         $data_type_user = htmlentities($data[$c]);
-                                        echo "<td><p>$data[$c] </p>";
+                                        echo "<td>$data[$c]";
                                         echo "<input type=\"hidden\" name=\"reg_type_user[$row]\" value=\"$data_type_user\" /></td>";
                                     }
                                     else
@@ -238,19 +244,20 @@ if ($reg_data != 'yes')
                                     break;
                                     case 6:
                                     // statut: deux valeurs autorisées : actif ou inactif
-                                    if (preg_match ("`(actif|inactif)`", $data[$c]))
+                                    if (preg_match ("`(\bactif\b|\binactif\b)`", $data[$c]))
                                     {
                                         $data_statut = htmlentities($data[$c]);
-                                        echo "<td><p>$data[$c] </p>";
+                                        echo "<td>$data[$c]";
                                         echo "<input type=\"hidden\" name=\"reg_statut[$row]\" value=\"$data_statut\" /></td>";
-                                    } else {
+                                    } 
+                                    else {
                                         echo "<td><font color=\"red\">???</font></td>";
                                         $valid = 0;
                                     }
                                     break;
                                     case 7:
                                     // Type d'authentification : deux valeurs autorisées : local ou ext
-                                    if (preg_match ("`(local|ext)`", $data[$c])) {
+                                    if (preg_match ("`(\blocal\b|\bext\b)`", $data[$c])) {
                                         $data_type_auth = htmlentities($data[$c]);
                                         if (($data_mdp == "") && ($data_type_auth == "local"))
                                         {
@@ -264,12 +271,22 @@ if ($reg_data != 'yes')
                                         }
                                         else
                                         {
-                                            echo "<td><p>$data[$c] </p>";
+                                            echo "<td>$data[$c]";
                                             echo "<input type=\"hidden\" name=\"reg_type_auth[$row]\" value=\"$data_type_auth\" /></td>";
                                         }
                                     }
-                                    else
-                                    {
+                                    else {
+                                        echo "<td><font color=\"red\">???</font></td>";
+                                        $valid = 0;
+                                    }
+                                    break;
+                                    case 8:
+                                    // Doit changer mot de passe à la connexion: deux valeurs autorisées : 1 (oui) ou 0 (non)changerpwd
+                                    if (preg_match("(\b0\b|\b1\b)", $data[$c])){
+                                        echo "<td>$data[$c]";
+                                        echo "<input type=\"hidden\" name=\"reg_changer_pwd[$row]\" value=\"$data[$c]\" /></td>";
+                                    }
+                                    else {
                                         echo "<td><font color=\"red\">???</font></td>";
                                         $valid = 0;
                                     }
@@ -278,9 +295,10 @@ if ($reg_data != 'yes')
                             }
                             echo "</tr>";
                         }
+                    // pas de message si le nombre de données n'est pas correct, i.e. 9 ?
                     }
-                    fclose($fp);
                     echo "</table>";
+                    fclose($fp);
                     echo "<p>".get_vocab("admin_import_users_csv5")."$row ".get_vocab("admin_import_users_csv6")."</p>\n";
                     if ($row > 0)
                     {
