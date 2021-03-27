@@ -325,6 +325,7 @@ function libelle($type){ // rend la description du type_lettre de réservation
     }
     else 
         print(grr_sql_error($res));
+    grr_sql_free($res);
 }
 function roomDesc($id_room){ // rend nom + description à partir de l'identifiant de la ressource
     $sql = "SELECT room_name,description FROM ".TABLE_PREFIX."_room WHERE id = '".$id_room."' ";

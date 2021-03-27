@@ -3,7 +3,7 @@
  * my_account.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-02-05 18:30$
+ * Dernière modification : $Date: 2021-02-23 09:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -601,7 +601,7 @@ echo $divs['param'];
 	echo '<div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-4" for="css">'.get_vocab('choose_css').'</label>
 				<div class="col-md-4 col-sm-6 col-xs-8">
-					<select class="form-control" name="default_css" for="css">'."\n";
+					<select class="form-control" name="default_css" id="css">'."\n";
 						$i = 0;
 						while ($i < count($liste_themes))
 						{
@@ -621,7 +621,7 @@ echo $divs['param'];
 	echo '<div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-4" for="lang">'.get_vocab('choose_css').'</label>
             <div class="col-md-4 col-sm-6 col-xs-8">
-                    <select class="form-control" name="default_language" for="lang">'."\n";
+                    <select class="form-control" name="default_language" id="lang">'."\n";
                         $i = 0;
                         while ($i < count($liste_language))
                         {
@@ -671,12 +671,12 @@ else {
               <div class="form-group">
                 <label class="control-label col-md-4 col-sm-6 col-xs-8" for="opwd">'.get_vocab('old_pwd').get_vocab('deux_points').'</label>
                 <div class="col-md-3 col-sm-4 col-xs-6">
-                <input class="form-control" for="opwd" type="password" name="reg_password_a" size="20" required /></div>
+                <input class="form-control" id="opwd" type="password" name="reg_password_a" size="20" required /></div>
               </div>
               <div class="form-group">
                 <label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd1">'.get_vocab('new_pwd1').get_vocab('deux_points').'</label>
                 <div class="col-md-3 col-sm-4 col-xs-6">
-                <input id="pwd1" class="form-control" for="pwd1" type="password" name="reg_password1" size="20" 
+                <input id="pwd1" class="form-control" id="pwd1" type="password" name="reg_password1" size="20" 
                 onkeyup="runPassword(this.value, \'pwd1\');" required /></div>
               </div>
               <div class="form-group">
@@ -689,7 +689,7 @@ else {
               <div class="form-group">
                 <label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd2">'.get_vocab('new_pwd2').get_vocab('deux_points').'</label>
                 <div class="col-md-3 col-sm-4 col-xs-6">
-                <input class="form-control" for="pwd2" type="password" name="reg_password2" size="20" required /></div>
+                <input class="form-control" id="pwd2" type="password" name="reg_password2" size="20" required /></div>
               </div>';
 	echo '<div id="fixe">
             <input type="hidden" name="valid" value="pwd" />

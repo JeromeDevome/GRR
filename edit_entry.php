@@ -118,6 +118,7 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
             for ($i = 0; ($row = grr_sql_row($res, $i)); $i++) {$bnf[$i] = $row;}
         }
         //print_r($bnf);
+        grr_sql_free($res);
         $option = "";
         if (!isset($benef_ext_nom))
             $option .= '<option value="" >'.get_vocab("personne exterieure").'</option>'.PHP_EOL;
@@ -686,8 +687,8 @@ echo '<html lang="'.$locale.'">'.PHP_EOL;
 pageHead(Settings::get("company"),$locale);
 // section <body>
 echo "<body>";
-echo $C;
-print_r($data);
+//echo $C;
+//print_r($data);
 // Menu du haut = section <header>
 echo "<header>";
 pageHeader2($day, $month, $year, $type_session="with_session");

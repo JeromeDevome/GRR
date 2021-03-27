@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-02-08 14:30$
+ * Dernière modification : $Date: 2021-03-20 15:20$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4614,7 +4614,7 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 
 	// Emprunte
 	if($resa[7] != "-")
-		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"'.get_vocab(\"ressource actuellement empruntee\").'\" title=\"'.get_vocab(\"ressource actuellement empruntee\").'\" width=\"20\" height=\"20\" class=\"image\" /> ";
+		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
 
 	// Option réservation
 	if($resa[10] > 0)
@@ -4710,7 +4710,7 @@ function lien_compact($resa)
     $affichage = substr($affichage,0,4)."<br />";
 	// Emprunte
 	if($resa[7] != "-")
-		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"'.get_vocab(\"ressource actuellement empruntee\").'\" title=\"'.get_vocab(\"ressource actuellement empruntee\").'\" width=\"20\" height=\"20\" class=\"image\" /> ";
+		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
 	// Option réservation
 	if($resa[10] > 0)
 		$affichage .=  " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le").time_date_string_jma($resa[9],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> ";
