@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-03-15 12:23$
+ * Dernière modification : $Date: 2021-03-28 09:50$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -741,14 +741,15 @@ function protect_data_sql($_value)
 	return $_value;
 }
 
-// Traite les données envoyées par la methode GET de la variable $_GET["page"], renvoie "day" si la page n'est pas définie
+// Traite les données envoyées par la methode GET|POST de la variable $_GET|POST["page"], renvoie "day" si la page n'est pas définie
 function verif_page()
 {
-	$page = array("day", "week", "month", "week_all", "month_all", "month_all2", "year", "year_all");
-	if (isset($_GET["page"]))
+	$pages = array("day", "week", "month", "week_all", "month_all", "month_all2", "year", "year_all");
+    $page = (isset($_GET["page"]))? $_GET["page"]:((isset($_POST["page"]))? $_POST["page"]:NULL);
+    if (isset($page))
 	{
-		if (in_array($_GET["page"], $page))
-			return $_GET["page"];
+		if (in_array($page, $pages))
+			return $page;
 		else
 			return "day";
 	}

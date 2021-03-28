@@ -3,9 +3,9 @@
  * traitementcontact.php
  * envoie l'email suite au formulaire
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-10-01 10:55$
+ * Dernière modification : $Date: 2021-03-16 09:56$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -16,7 +16,7 @@
  * (at your option) any later version.
  */
 $grr_script_name = "traitementcontact.php";
-// cette page doit être internationalisée
+
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/functions.inc.php";

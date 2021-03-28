@@ -10,6 +10,14 @@ Tâches prévues :
 --
 -----
 
+Version 3.4.2 RC4
+    amélioration : page edit_entry
+
+Version 3.4.2 RC3
+    correctifs : divers, syntaxe et calcul
+    correctif : prise en compte du changement de mot de passe dans les imports csv d'utilisateurs
+    amélioration : calcul de la page edit_entry
+
 Version 3.4.2 RC2
     correctifs : divers, syntaxe et calcul
     correctif : le nom d'utilisateur SMTP peut dépendre d'un domaine AD
