@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue française
 # GRR: Traduction By JeromeB & Laurent Delineau & Yan Naessens
-# Last modification : 2021-01-30
+# Last modification : 2021-04-02
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accepter la réservation";
@@ -921,7 +921,7 @@ $vocab['vacances_feries_description'] = "Les journées cochées seront mises en 
 $vocab['vacances_feries_FR'] = "Cocher les jours fériés français";
 $vocab['vacances_FR'] = "Cocher les jours de vacances scolaires de la zone ";
 $vocab['valide_au_moins_une_des_conditions_suivantes'] = "Valide au moins une des conditions suivantes";
-$vocab['valide_toutes_les_conditions_suivantes'] = "valide toutes les conditions suivantesalide toutes les conditions suivantes";
+$vocab['valide_toutes_les_conditions_suivantes'] = "Valide toutes les conditions suivantes";
 $vocab['verif_reservation_auto0'] = "La tâche automatique est déclenchée une fois par jour lors de la connexion du premier utilisateur";
 $vocab['verif_reservation_auto1'] = "La tâche automatique est déclenchée par l'exécution du script « verif_auto_grr.php ». (nécessite la possibilité de programmer l'exécution automatique et périodique du script verif_auto_grr.php)";
 $vocab['verif_reservation_auto2'] = "Mot de passe utilisé pour l'exécution du script verif_auto_grr.php (uniquement si vous avez choisi la 2ème option)";
