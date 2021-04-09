@@ -25,7 +25,7 @@ $grr_devel_url = "https://grr.devome.com/";
 # Format X.X.XRCX | exemples : 4.0.0a (alpha) ou 4.0.0b (beta) 3.4.0RC1 (Realesa Candidate) ou 3.4.0 (version OK)
 $version_grr = "4.0.0a";
 // Version repository (GitHub)
-$versionReposite = "GitHub";
+$versionReposite = "GitHub-Release-4.0.0a";
 
 ################################
 # Configuration Requise
