@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-27 12:07
+ * Dernière modification : $Date: 2021-04-11 11:19
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -16,6 +16,8 @@
  * (at your option) any later version.
  */
 $grr_script_name = "edit_entry.php"; 
+$racine = "./";
+$racineAd = "./admin/";
 // à décommenter si besoin de débogage
 /*ini_set('display_errors', 'On');
 error_reporting(E_ALL); */
