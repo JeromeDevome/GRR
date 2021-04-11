@@ -3,7 +3,7 @@
  * edit_entry_beneficiaires.php
  * Page "Ajax" utilisée dans edit_entry.php, calcule les data pour le sélecteur #beneficiaire
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-22 11:00$
+ * Dernière modification : $Date: 2021-04-11 19:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -80,5 +80,6 @@ else
     $benef = ($benef != " ")? $benef : get_vocab('utilisateur_inconnu').$id_user.')';
     $bnf[] = array('id'=>$id_user,'text'=>$benef,'disabled'=>TRUE,'selected'=>TRUE);
 }
-echo json_encode($bnf);
+$json = json_encode($bnf);
+echo $json;
 ?>

@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-04-11 11:19
+ * Dernière modification : $Date: 2021-04-11 19:26
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1156,6 +1156,7 @@ echo '<div id="footer"></div>'.PHP_EOL;
 
 <script type="text/javascript" >
 function insertBeneficiaires(area_,room_,user_,id_){
+// cette fonction donne la liste des items du sélecteur, mais suivie de toutes les lettres de l'objet JSON :-(
     jQuery.ajax({
         type: 'GET',
         url : 'edit_entry_beneficiaires.php',
@@ -1168,13 +1169,15 @@ function insertBeneficiaires(area_,room_,user_,id_){
         success: function(returnData)
         {
             $("#beneficiaire").select2({
-                data: returnData
+                data: returnData,
+                dataType: 'json',
             })
         },
         error: function(data)
 		{
-			alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_beneficiaire.php ');
-		}
+			alert('Erreur lors de l execution de la commande AJAX pour edit_entry_beneficiaires.php ');
+		},
+        dataType: 'json',
     })
 }
 function insertChampsAdd(area_,id_,room_,olf_){
