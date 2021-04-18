@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2021-03-14
+# Last modification : 2021-04-17
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -381,7 +381,7 @@ $vocab['entry'] = "Réservation";
 $vocab['entryid'] = "Réservation n° ";
 $vocab['entry_found'] = "réservation trouvée";
 $vocab['Envoi d_un courriel'] = "Envoi d'un courriel";
-$vocab['envois_mail_spec_exp'] = "Dans le cas ou le champ est rempli ou différent de zéro, envoie un mail au destinataire spécifié.";
+$vocab['envois_mail_spec_exp'] = "Dans le cas où le champ est rempli ou différent de zéro, envoie un mail au destinataire spécifié.";
 $vocab['envoy_mail_specifique'] = "Envoie un mail spécifique";
 $vocab['envoyer maintenant mail retard'] = "Envoyer immédiatement un mail de notification de retard (non restitution dans les délais)";
 $vocab['envoyer_email_avec_formulaire_non'] = "<b>Utiliser les balises \"mailto\"</b> : dans ce cas, un clic sur un \"lien email\" ouvre le logiciel de courrier par défaut de la machine du client et prépare un nouveau message en complétant automatiquement le champ des destinataires (à noter que bien que les adresses email apparaissent en clair dans GRR, un mécanisme d'encodage permet d'éviter que celles-ci ne soient récupérées par les robots-spameurs).";

@@ -10,6 +10,11 @@ Tâches prévues :
 --
 -----
 
+Version 3.4.2 RC5
+    amélioration : prise en compte de plusieurs comptes mail d'administrateurs
+    correctif : page edit_entry, liste déroulante des bénéficiaires
+    correctif : gestion des champs additionnels dans les rapports statistiques
+
 Version 3.4.2 RC4
     amélioration : page edit_entry
 
