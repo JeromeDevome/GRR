@@ -1,9 +1,9 @@
 <?php
 /**
  * day.php
- * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "jour".
+ * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-01-11 11:28$
+ * Dernière modification : $Date: 2021-04-20 17:40$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -31,7 +31,6 @@ if (!$settings)
 require_once("./include/session.inc.php");
 include "include/resume_session.php";
 include "include/language.inc.php";
-
 //Construction des identifiants de la ressource $room, du domaine $area, du site $id_site
 Definition_ressource_domaine_site();
 
@@ -77,9 +76,11 @@ if (!($desactive_VerifNomPrenomUser))
 // On vérifie que les noms et prénoms ne sont pas vides
 VerifNomPrenomUser($type_session);
 
+// langue utilisée
+$langue= isset($_SESSION['default_language'])? $_SESSION['default_language']: Settings::get('default_language');
 // $room_back sert à pallier l'absence de page day_all => si room_back contient 'all', il ne faut pas passer room en paramètre
 $room_back = isset($_GET['room']) ? intval($_GET['room']) : 'all';
-
+// calcul des données à afficher
 $date_now = time();
 $ind = 1;
 $test = 0;
@@ -110,11 +111,6 @@ $am7 = mktime($morningstarts, 0, 0, $month, $day, $year);
 $pm7 = mktime($eveningends, $eveningends_minutes, 0, $month, $day, $year);
 $this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id='".protect_data_sql($area)."'"); // nom du domaine
 // les réservations associées à notre recherche, ce jour dans ce domaine
-/*$sql = "SELECT ".TABLE_PREFIX."_room.id, start_time, end_time, name, ".TABLE_PREFIX."_entry.id, type, beneficiaire, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext
-FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room
-WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
-AND area_id = '".protect_data_sql($area)."'
-AND start_time < ".($pm7+$resolution)." AND end_time > $am7 ORDER BY start_time";*/
 $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
 WHERE
@@ -180,7 +176,6 @@ else
         }
 		if ($row["start_time"] < $am7)
 		{
-			//$today[$row["room_id"]][$am7]["data"] = affichage_lien_resa_planning($row["name"], $row["id"]);
             $today[$row["room_id"]][$am7]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
 			if ($settings->get("display_info_bulle") == 1)
 				$today[$row["room_id"]][$am7]["who"] = get_vocab("reservation_au_nom_de").affiche_nom_prenom_email($row["beneficiaire"], $row["beneficiaire_ext"], "nomail");
@@ -191,7 +186,6 @@ else
 		}
 		else
 		{
-			//$today[$row["room_id"]][$start_t]["data"] = affichage_lien_resa_planning($row["name"], $row["id"]);
             $today[$row["room_id"]][$start_t]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
 			if ($settings->get("display_info_bulle") == 1)
 				$today[$row["room_id"]][$start_t]["who"] = get_vocab("reservation_au_nom_de").affiche_nom_prenom_email($row["beneficiaire"], $row["beneficiaire_ext"]);
@@ -204,16 +198,19 @@ else
 }
 grr_sql_free($res);
 
-// langue utilisée
-$langue= isset($_SESSION['default_language'])? $_SESSION['default_language']: Settings::get('default_language');
+// Détermination des ressources à afficher
+if($room_back != 'all'){
+	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book FROM ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($room_back)."' ";
+}
+else $sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' ORDER BY order_display, room_name";
+$ressources = grr_sql_query($sql);
+if (!$ressources)
+	fatal_error(0, grr_sql_error());
+
 // pour le traitement des modules
 include $racine."/include/hook.class.php";
 // code HTML
 header('Content-Type: text/html; charset=utf-8');
-/*if (!isset($_COOKIE['open']))
-{
-	setcookie("open", "true", time()+3600, "", "", false, false);
-}*/
 if (!isset($_COOKIE['open']))
 {
 	header('Set-Cookie: open=true; SameSite=Lax');
@@ -222,7 +219,7 @@ echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;
 // section <head>
 if ($type_session == "with_session")
-    echo pageHead2(Settings::get("company"),"with_session");
+    echo pageHead2(Settings::get("company"),"with_session"); // voir le lancement de floatthead
 else
     echo pageHead2(Settings::get("company"),"no_session");
 // section <body>
@@ -231,17 +228,17 @@ echo "<body>";
 echo "<header>";
 pageHeader2($day, $month, $year, $type_session);
 echo "</header>";
+echo '<div id="chargement"></div>'.PHP_EOL; // à éliminer ?
 // Debut de la page
 echo '<section>'.PHP_EOL;
-// Affichage du menu
-include("menu_gauche2.php");
-include("chargement.php");
+// Affichage du menu en haut ou à gauche
+include("menuHG.php");
 // planning
 if ($_GET['pview'] != 1){
     echo "<div id='planning2'>";
 }
 else{
-	echo '<div id="print_planning">'.PHP_EOL;
+	echo '<div id="print_planning">';
 }
 echo "<table class='jour floatthead table-striped table-bordered'>";
 echo "<caption>";
@@ -259,7 +256,7 @@ if ($settings->get("show_holidays") == "Oui")
 }
 echo '<div class="'.$class.'">'.PHP_EOL;
 if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
-{
+{ // menu de navigation dans les jours avant/après en tête du planning
     echo "<div class='ligne23'>";
     if ($room_back == 'all'){
         echo '<div class="left">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'day.php?year='.$yy.'&amp;month='.$ym.'&amp;day='.$yd.'&amp;area='.$area.'\';"> <span class="glyphicon glyphicon-backward"></span> ',get_vocab("daybefore"),'</button>','</div>',PHP_EOL;
@@ -274,33 +271,18 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 	else{
         echo '<div class="right">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'day.php?year='.$ty.'&amp;month='.$tm.'&amp;day='.$td.'&amp;area='.$area.'&amp;room='.$room_back.'\';">  '.get_vocab('dayafter').'  <span class="glyphicon glyphicon-forward"></span></button>','</div>',PHP_EOL;
     }
-    echo "</div>";
+    echo "</div>".PHP_EOL;
 }
-echo "<div>";
+echo "<div>".PHP_EOL;
 if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
-{ // afficher ou cacher le menu
-    echo "<div class=\"left\"> ";
+{    
+    echo "<div class=\"left\"> "; // afficher ou cacher le menu
     $mode = Settings::get("menu_gauche");
     $alt = $mode;
     if ($mode == 0) $alt = 1; // il faut bien que le menu puisse s'afficher, par défaut ce sera à gauche sauf choix autre par setting
-    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuGauche($alt)\" title='".get_vocab('show_left_menu')."'><span class=\"glyphicon glyphicon-chevron-right\"></span></button></div> ";
-    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuGauche(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
+    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG($alt)\" title='".get_vocab('show_left_menu')."'><span class=\"glyphicon glyphicon-chevron-right\"></span></button></div> ";
+    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
 	echo "</div>";
-    if ($mode == 1){
-        echo '<script type="text/javascript">
-                document.getElementById("cacher").style.display = "inline";
-                document.getElementById("voir").style.display = "none";
-                document.getElementById("planning2").style.width = "75%"; 
-            </script>
-        ';
-    }
-    if ($mode == 2){
-        echo '<script type="text/javascript">
-                document.getElementById("cacher").style.display = "inline";
-                document.getElementById("voir").style.display = "none";
-            </script>
-        ';
-    }
 }
 echo '<h4>' . ucfirst($this_area_name).' - '.get_vocab("all_areas");
 if ($settings->get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
@@ -328,14 +310,6 @@ else
 	echo get_vocab("time");
 echo  '</td>'.PHP_EOL;
 
-// Détermination des ressources à afficher
-if($room_back != 'all'){
-	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book FROM ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($room_back)."' ";
-}
-else $sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' ORDER BY order_display, room_name";
-$ressources = grr_sql_query($sql);
-if (!$ressources)
-	fatal_error(0, grr_sql_error());
 if(grr_sql_count($ressources) != 0)
 	$room_column_width = (int)(90 / grr_sql_count($ressources));
 else
@@ -508,19 +482,7 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 			}
 			else if ($descr != "")
 			{
-				/*if ((isset($today[$room][$t]["statut"])) && ($today[$room][$t]["statut"] != '-'))
-				{
-					echo '<img src="img_grr/buzy.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("ressource actuellement empruntee").'" width="20" height="20" class="image" />'.PHP_EOL;
-				}*/
-				/*if (($delais_option_reservation[$room] > 0) && (isset($today[$room][$t]["option_reser"])) && ($today[$room][$t]["option_reser"] != -1))
-				{
-					echo '<img src="img_grr/small_flag.png" alt="'.get_vocab("reservation_a_confirmer_au_plus_tard_le").'" title="'.get_vocab("reservation_a_confirmer_au_plus_tard_le").' '.time_date_string_jma($today[$room][$t]["option_reser"],$dformat).'" width="20" height="20" class="image" />'.PHP_EOL;
-				}*/
-				/*if ((isset($today[$room][$t]["moderation"])) && ($today[$room][$t]["moderation"] == '1'))
-				{
-					echo '<img src="img_grr/flag_moderation.png" alt="'.get_vocab("en_attente_moderation").'" title="'.get_vocab("en_attente_moderation").'" class="image" />'.PHP_EOL;
-				}*/
-				if (($statut_room[$room] == "1") || (($statut_room[$room] == "0") && ($authLevel > 2) ))
+                if (($statut_room[$room] == "1") || (($statut_room[$room] == "0") && ($authLevel > 2) ))
 				{
 					if ($acces_fiche_reservation)
 					{
@@ -538,37 +500,6 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 					{
 						echo ' '.$descr;
 					}
-					//$sql = "SELECT type_name,start_time,end_time,clef,courrier FROM ".TABLE_PREFIX."_type_area ,".TABLE_PREFIX."_entry  WHERE  ".TABLE_PREFIX."_entry.id= ".$today[$room][$t]["id"]." AND ".TABLE_PREFIX."_entry.type= ".TABLE_PREFIX."_type_area.type_letter";
-					//$res = grr_sql_query($sql);
-					/*for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-					{
-						$type_name  = $row['0'];
-						$start_time = $row['1'];
-						$end_time   = $row['2'];
-						$clef 		= $row['3'];
-						$courrier	= $row['4'];
-						if ($enable_periods != 'y') {
-                            $heure_fin = date('H:i',min($pm7,$end_time));
-                            if ($heure_fin == '00:00') {$heure_fin = '24:00';}
-							echo '<br/>',date('H:i', max($am7,$start_time)),get_vocab("to"),$heure_fin,'<br/>';
-						}
-						/*if (($type_name != -1)&&(Settings::get("type") == '1'))
-							echo  $type_name;*/
-						//echo '<br>'.PHP_EOL;
-						/*if ($clef == 1)
-							echo '<img src="img_grr/skey.png" alt="clef">'.PHP_EOL;*/
-						/*if (Settings::get('show_courrier') == 'y')
-						{
-							if ($courrier == 1)
-								echo '<img src="img_grr/scourrier.png" alt="courrier">'.PHP_EOL;
-							else
-								echo '<img src="img_grr/hourglass.png" alt="buzy">'.PHP_EOL;
-						}
-					}*/
-					/*if ($today[$room][$t]["description"]!= "")
-					{
-						echo '<br /><i>',$today[$room][$t]["description"],'</i>';
-					}*/
 				}
 				else
 				{
@@ -596,9 +527,14 @@ if ($_GET['pview'] != 1)
 }
 echo '</div>'.PHP_EOL; // fin planning2
 affiche_pop_up(get_vocab('message_records'), 'user');
+
+?>
+
+<?php
 unset($row);
 echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
-echo "</section>";
+
+echo "</section>\n";
 ?>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -610,14 +546,12 @@ echo "</section>";
 			$row.find('a').css('padding-top', height/2 - h2/2);
 
 		});
+        $("#popup_name").draggable({containment: "#container"});
+		$("#popup_name").resizable();
+        afficheMenuHG(<?php echo $mode; ?>);
         if ( $(window).scrollTop() == 0 )
             $("#toTop").hide(1);
 	});
-	jQuery(document).ready(function($){
-		$("#popup_name").draggable({containment: "#container"});
-		$("#popup_name").resizable();
-	});
-
 </script>
 </body>
 </html>

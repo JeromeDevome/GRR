@@ -3,9 +3,9 @@
  * mincals.inc.php
  * Fonctions permettant d'afficher le mini calendrier
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-28 13:00$
+ * Dernière modification : $Date: 2021-04-20 11:40$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -16,10 +16,7 @@
  * (at your option) any later version.
  */
 
-function minicals($year, $month, $day, $area, $room, $dmy)
-{
-	global $display_day, $vocab;
-	get_planning_area_values($area);
+
 	class Calendar
 	{
 		private $month;
@@ -226,11 +223,10 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 			$first = (strftime("%w",$date) + 7 - $weekstarts) % 7;
 			$monthName = ucfirst(utf8_strftime("%B", $date));
 			if(Settings::get("menu_gauche") == 2){
-				$s .= "\n<div class=\"col-lg-3 col-md-4 col-xs-12\">\n".PHP_EOL;
+				$s .= "\n<div class=\"col-lg-4 col-md-6 col-xs-12\">\n".PHP_EOL;
 			} else{
-				$s .= "\n<div class=\"col-lg-12 col-md-12 col-xs-12\">\n".PHP_EOL;
+				$s .= "\n<div class=\"col-xs-12\">\n".PHP_EOL;
 			}
-			//$s .= "\n<div class=\"col-lg-3 col-md-12 col-xs-12\">\n";
 			$s .= "\n<table class=\"calendar\">\n";
 			$s .= "<caption>";
 			$week = $this->getWeekNumber($date);
@@ -262,6 +258,10 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 		}
 	}
 
+function minicals($year, $month, $day, $area, $room, $dmy)
+{
+	global $display_day, $vocab;
+	get_planning_area_values($area);
 	$nb_calendar = Settings::get("nb_calendar");
 	if ($nb_calendar >= 1)
 	{
