@@ -5949,7 +5949,7 @@ function acces_formulaire_reservation(){
             return ((Settings::get('nb_max_resa_form') - $quota) > 0);
     }
 }
-/** grrGetOverloadDescArray($od)
+/** grrGetOverloadDescArray($ofl,$od)
  *
  * Return an array with all additionnal fields from grr_entry.overload_desc
  * $od - overload_desc of the entry

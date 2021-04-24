@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-04-11 19:26
+ * Dernière modification : $Date: 2021-04-24 14:10
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -139,13 +139,14 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
         {
             $option .= '<option value="-1" selected="selected" >'.get_vocab("utilisateur_inconnu").$id_user.')</option>'.PHP_EOL;
         }
-        echo '<div id="choix_beneficiaire" class="form-group">'.PHP_EOL;
-        echo '<label for="beneficiaire" >'.ucfirst(trim(get_vocab("reservation_au_nom_de"))).get_vocab("deux_points").'</label>'.PHP_EOL;
+        echo '<div id="choix_beneficiaire" class="row">'.PHP_EOL;
+        //echo '<label for="beneficiaire" >'.ucfirst(trim(get_vocab("reservation_au_nom_de"))).get_vocab("deux_points").'</label>'.PHP_EOL;
         echo '<div class="col-sm-9">'.PHP_EOL;
+		echo '<label for="beneficiaire" >'.ucfirst(trim(get_vocab("reservation_au_nom_de"))).get_vocab("deux_points").'</label><br />'.PHP_EOL;
         echo '<select class="select2" name="beneficiaire" id="beneficiaire" onchange="check_4();">'.$option.'</select>'.PHP_EOL;
         echo '</div>';
         echo '<div class="col-sm-3">'.PHP_EOL;
-        echo '<input type="button" id="bnfdef" class="btn btn-primary" value="'.get_vocab("definir par defaut").'" onclick="setdefault(\'beneficiaire_default\',document.getElementById(\'main\').beneficiaire.options[document.getElementById(\'main\').beneficiaire.options.selectedIndex].value)" />'.PHP_EOL;
+        echo '<br /><input type="button" id="bnfdef" class="btn btn-primary" value="'.get_vocab("definir par defaut").'" onclick="setdefault(\'beneficiaire_default\',document.getElementById(\'main\').beneficiaire.options[document.getElementById(\'main\').beneficiaire.options.selectedIndex].value)" />'.PHP_EOL;
         echo '</div></div>'.PHP_EOL;
         echo '<div id="menu4" class="form-inline" ';
         if (!$benef_ext_nom) 
@@ -716,11 +717,15 @@ echo '<div class="col-sm-6 col-xs-12">';
 //echo '<div id="choix_beneficiaire"></div>';
 divBeneficiaire($id,$user_name,$room,$area_id);
 // description brève
+echo '<div>'.PHP_EOL;
 echo '<label for="name">'.$Booker.'</label>'.PHP_EOL;
 echo '<input id="name" class="form-control" name="name" maxlength="80" size="60" value="'.$C.'" />'.PHP_EOL;
+echo '</div>'.PHP_EOL;
 // description complète
+echo '<div>'.PHP_EOL;
 echo '<label for="description">'.$D.'</label>'.PHP_EOL;
 echo '<textarea name="description" class="form-control" rows="4">'.$E.'</textarea>'.PHP_EOL;
+echo '</div>'.PHP_EOL;
 // date et heure de début
 echo '<div class="E form-inline"><b>'.$date_debut.'</b>'.PHP_EOL;
 echo '<div class="form-group">'.PHP_EOL;
