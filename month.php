@@ -3,7 +3,7 @@
  * month.php
  * Interface d'accueil avec affichage par mois
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-01-11 11:31$
+ * Dernière modification : $Date: 2021-05-01 14:31$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -70,40 +70,10 @@ $adm = 0;
 $racine = "./";
 $racineAd = "./admin/";
 
-// pour le traitement des modules
-include $racine."/include/hook.class.php";
-
 if (!($desactive_VerifNomPrenomUser))
     $desactive_VerifNomPrenomUser = 'n';
 // On vérifie que les noms et prénoms ne sont pas vides
 VerifNomPrenomUser($type_session);
-/*
-// code html
-header('Content-Type: text/html; charset=utf-8');
-if (!isset($_COOKIE['open']))
-{
-	setcookie("open", "true", time()+3600, "", "", false, false);
-}
-echo '<!DOCTYPE html>'.PHP_EOL;
-echo '<html lang="fr">'.PHP_EOL;
-// section <head>
-if ($type_session == "with_session")
-    echo pageHead2(Settings::get("company"),"with_session");
-else
-    echo pageHead2(Settings::get("company"),"no_session");
-// section <body>
-echo "<body>";
-// Menu du haut = section <header>
-echo "<header>";
-pageHeader2($day, $month, $year, $type_session);
-echo "</header>";
-// Debut de la page
-echo '<section>'.PHP_EOL;
-
-// Affichage du menu
-include("menu_gauche2.php");
-include("chargement.php");
-*/
 // Dans le cas d'une selection invalide
 if ($area <= 0)
 {
@@ -172,11 +142,6 @@ $user_can_book = $who_can_book || ($authGetUserLevel > 2) || (authBooking($user_
 
 // calcul du contenu du planning
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
-/*$sql = "SELECT start_time, end_time, id, name, beneficiaire, description, type, moderate, beneficiaire_ext
-FROM ".TABLE_PREFIX."_entry
-WHERE room_id=$room
-AND start_time <= $month_end AND end_time > $month_start
-ORDER by 1";*/
 $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
 where
@@ -212,7 +177,7 @@ if (!$res)
 else
 {
     $overloadFieldList = mrbsOverloadGetFieldslist($area);
-	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++) // foreach ne peut être utilisé à cause de affichage_resa_planning_complet
 	{
 		$t = max((int)$row[0], $month_start);
 		$end_t = min((int)$row[1], $month_end);
@@ -224,16 +189,7 @@ else
 		while ($t < $end_t)
 		{
 			$d[$day_num]["id"][] = $row[2];
-			/*if (Settings::get("display_info_bulle") == 1)
-				$d[$day_num]["who"][] = get_vocab("reservee au nom de").affiche_nom_prenom_email($row[4],$row[8],"nomail");
-			else if (Settings::get("display_info_bulle") == 2)
-				$d[$day_num]["who"][] = $row[5];
-			else
-				$d[$day_num]["who"][] = "";*/
-			//$d[$day_num]["who1"][] = affichage_lien_resa_planning($row[3],$row[2]);
 			$d[$day_num]["color"][] = $row[6];
-			//$d[$day_num]["description"][] =  affichage_resa_planning($row[5],$row[2]);
-			//$d[$day_num]["moderation"][] = $row[7];
 			$midnight_tonight = $midnight + 86400;
 			if ($enable_periods == 'y')
 			{
@@ -313,12 +269,11 @@ else
 	}
     grr_sql_free($res);
 }    
+
+// pour le traitement des modules
+include $racine."/include/hook.class.php";
 // code html de la page
 header('Content-Type: text/html; charset=utf-8');
-/*if (!isset($_COOKIE['open']))
-{
-	setcookie("open", "true", time()+3600, "", "", false, false);
-}*/
 if (!isset($_COOKIE['open']))
 {
 	header('Set-Cookie: open=true; SameSite=Lax');
@@ -336,14 +291,12 @@ echo "<body>";
 echo "<header>";
 pageHeader2($day, $month, $year, $type_session);
 echo "</header>";
+echo '<div id="chargement"></div>'.PHP_EOL; // à éliminer ?
 // Debut de la page
-echo '<section>'.PHP_EOL;
-
-// Affichage du menu
-include("menu_gauche2.php");
-include("chargement.php");
-// on a les éléments pour afficher l'entête du planning
-// Début du tableau affichant le planning
+echo "<section>".PHP_EOL;
+// Affichage du menu en haut ou à gauche
+include("menuHG.php");
+// affichage du planning
 if ($_GET['pview'] != 1){
     echo "<div id='planning2'>";
 }
@@ -371,28 +324,12 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 echo "<div>";
 if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 {
-	echo "<div class=\"left\"> ";
+    echo "<div class=\"left\"> "; // afficher ou cacher le menu
     $mode = Settings::get("menu_gauche");
-    $alt = $mode;
-    if ($mode == 0) $alt = 1; // il faut bien que le menu puisse s'afficher, par défaut ce sera à gauche sauf choix autre par setting
-    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuGauche($alt)\" title='".get_vocab('show_left_menu')."'><span class=\"glyphicon glyphicon-chevron-right\"></span></button></div> ";
-    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuGauche(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
+    $alt = ($mode != 0)? $mode : 1; // il faut bien que le menu puisse s'afficher, par défaut ce sera à gauche sauf choix autre par setting
+    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG($alt)\" title='".get_vocab('show_left_menu')."'><span class=\"glyphicon glyphicon-chevron-right\"></span></button></div> ";
+    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
 	echo "</div>";
-    if ($mode == 1){
-        echo '<script type="text/javascript">
-                document.getElementById("cacher").style.display = "inline";
-                document.getElementById("voir").style.display = "none";
-                document.getElementById("planning2").style.width = "75%"; 
-            </script>
-        ';
-    }
-    if ($mode == 2){
-        echo '<script type="text/javascript">
-                document.getElementById("cacher").style.display = "inline";
-                document.getElementById("voir").style.display = "none";
-            </script>
-        ';
-    }
 }    
 $maxCapacite = "";
 if ($this_room_max  && $_GET['pview'] != 1)
@@ -507,21 +444,11 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                         }
                     }
                     echo $d[$cday]["resa"][$i],'<br/>';
-                    /*if ((isset($d[$cday]["moderation"][$i])) && ($d[$cday]["moderation"][$i] == 1))
-                        echo '<img src="img_grr/flag_moderation.png" alt="',get_vocab("en_attente_moderation"),'" title="',get_vocab("en_attente_moderation"),'" class="image" />',PHP_EOL;
-                    //echo $d[$cday]["who1"][$i],'<br/>';*/
-                    /*$Son_GenreRepeat = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area ,".TABLE_PREFIX."_entry  WHERE  ".TABLE_PREFIX."_entry.id= ".$d[$cday]["id"][$i]." AND ".TABLE_PREFIX."_entry.type= ".TABLE_PREFIX."_type_area.type_letter");
-                    if (Settings::get("type") == '1')               
-                        echo $Son_GenreRepeat,'<br/>';*/
-                    /*if ($d[$cday]["description"][$i] != "")
-                        echo '<br /><i>(',$d[$cday]["description"][$i],')</i>';*/
                     if ($acces_fiche_reservation)
                         echo '</a>',PHP_EOL;
                     echo '</span>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;
                 }
             }
-           // else
-             //   echo '<div class="empty_cell"> </div>';
             if (plages_libre_semaine_ressource($room, $month, $cday, $year)){
                 echo '<div class="empty_cell">'.PHP_EOL;
                 $date_now = time();
@@ -536,12 +463,10 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                     && $user_can_book
                     && $_GET['pview'] != 1)
                 {
-                    //echo '<div class="empty_cell">',PHP_EOL;
                     if ($enable_periods == 'y')
                         echo '<a href="edit_entry.php?room=',$room,'&amp;period=&amp;year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;page=month" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;
                     else
                         echo '<a href="edit_entry.php?room=',$room,'&amp;hour=',$hour,'&amp;minute=0&amp;year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;page=month" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;
-                    //echo '</div>'.PHP_EOL;
                 }
                 echo '</div>'.PHP_EOL;
             }
@@ -577,12 +502,19 @@ echo "</section>";
 ?>
 <script type="text/javascript">
 	$(document).ready(function(){
+		/*$('table.table-bordered td').each(function(){
+			var $row = $(this);
+			var height = $row.height();
+			var h2 = $row.find('a').height();
+			$row.find('a').css('min-height', height);
+			$row.find('a').css('padding-top', height/2 - h2/2);
+
+		});*/
+        $("#popup_name").draggable({containment: "#container"});
+		$("#popup_name").resizable();
+        afficheMenuHG(<?php echo $mode; ?>);
         if ( $(window).scrollTop() == 0 )
             $("#toTop").hide(1);
-	});
-	jQuery(document).ready(function($){
-		$("#popup_name").draggable({containment: "#container"});
-		$("#popup_name").resizable();
 	});
 </script>
 </body>
