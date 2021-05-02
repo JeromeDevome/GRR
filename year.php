@@ -3,7 +3,7 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-05-02 15:23$
+ * Dernière modification : $Date: 2021-05-02 18:59$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -353,6 +353,7 @@ echo "<body>";
 echo "<header>";
 pageHeader2('', '', '', $type_session);
 echo "</header>";
+echo '<div id="chargement"></div>'.PHP_EOL; // à éliminer ?
 // Debut de la page
 echo "<section>";
 $this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=$area");
