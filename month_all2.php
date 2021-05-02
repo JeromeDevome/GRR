@@ -3,9 +3,9 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-10-26 18:26$
+ * Dernière modification : $Date: 2021-05-02 10:59$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -63,7 +63,8 @@ global $racine, $racineAd, $desactive_VerifNomPrenomUser;
 $back = (isset($_SERVER['HTTP_REFERER']))? $_SERVER['HTTP_REFERER'] : page_accueil() ;
 
 // Type de session
-if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
+$user_name = getUserName();
+if ((Settings::get("authentification_obli") == 0) && ($user_name == ''))
 	$type_session = "no_session";
 else
 	$type_session = "with_session";
@@ -92,7 +93,6 @@ if (check_begin_end_bookings($day, $month, $year))
 	exit();
 }
 // Calcule les droits de l'utilisateur, si les droits sont insuffisants, l'utilisateur est averti.
-$user_name = getUserName();
 $authGetUserLevel = authGetUserLevel($user_name, -1);
 if ((($authGetUserLevel < 1) && (Settings::get("authentification_obli") == 1)) || authUserAccesArea($user_name, $area) == 0)
 {
@@ -110,7 +110,6 @@ if (Settings::get("verif_reservation_auto") == 0)
 	verify_retard_reservation();
 }
 // Selection des ressources
-//$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display, room_name";
 $sql = "SELECT * FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display, room_name";
 $ressources = grr_sql_query($sql);
 if (!$ressources)
@@ -146,11 +145,6 @@ $tm = date("n",$i);
 
 $all_day = preg_replace("/ /", " ", get_vocab("all_day"));
 //Get all meetings for this month in the area that we care about
-/*
-$sql = "SELECT start_time, end_time,".TABLE_PREFIX."_entry.id, name, beneficiaire, room_name, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, type, ".TABLE_PREFIX."_entry.moderate , ".TABLE_PREFIX."_type_area.type_name 
-FROM (".TABLE_PREFIX."_entry inner join ".TABLE_PREFIX."_room on ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) inner join ".TABLE_PREFIX."_type_area on  ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
-WHERE (start_time <= $month_end AND end_time > $month_start and area_id='".$area."')
-ORDER by start_time, end_time, ".TABLE_PREFIX."_room.room_name";*/
 $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc
 FROM (".TABLE_PREFIX."_entry INNER JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) 
   INNER JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
@@ -184,11 +178,7 @@ else
 	for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
 	{
 		if ($row["type_name"] <> (Settings::get('exclude_type_in_views_all')))   // Nom du type
-		{ 
-			/*$sql_beneficiaire = "SELECT prenom, nom FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$row[4]'";
-			$res_beneficiaire = grr_sql_query($sql_beneficiaire);
-			if ($res_beneficiaire)
-				$row_user = grr_sql_row($res_beneficiaire, 0);*/
+		{
 			if ($debug_flag)
 				echo "<br />DEBUG: result $i, id $row[2], starts $row[0], ends $row[1]\n";
 			$t = max((int)$row[0], $month_start);
@@ -203,23 +193,9 @@ else
 				if ($debug_flag)
 					echo "<br />DEBUG: Entry $row[2] day $day_num\n";
 				$d[$day_num]["id"][] = $row["id"];
-				/*$temp = "";
-				if (Settings::get("display_info_bulle") == 1)
-					$temp = get_vocab("reservee au nom de").$row_user[0]." ".$row_user[1];
-				else if (Settings::get("display_info_bulle") == 2)
-					$temp = $row["description"];
-				if ($temp != "")
-					$temp = " - ".$temp;*/
-				//$d[$day_num]["who1"][] = affichage_lien_resa_planning($row["name"],$row["id"]);
-                $d[$day_num]["lien"][] = lien_compact($row);
+				$d[$day_num]["lien"][] = lien_compact($row);
 				$d[$day_num]["room"][] = $row["room_name"] ;
-				//$d[$day_num]["res"][] = $row["statut_entry"];
 				$d[$day_num]["color"][] = $row["type"];
-				/*if ($row["delais_option_reservation"] > 0)
-					$d[$day_num]["option_reser"][] = $row["option_reservation"];
-				else
-					$d[$day_num]["option_reser"][] = -1;*/
-				//$d[$day_num]["moderation"][] = $row["moderate"];
 				$midnight_tonight = $midnight + 86400;
 				if ($enable_periods == 'y')
 				{
@@ -319,12 +295,12 @@ echo "<body>";
 echo "<header>";
 pageHeader2($day, $month, $year, $type_session);
 echo "</header>";
+echo '<div id="chargement"></div>'.PHP_EOL; // à éliminer ?
 // Debut de la page
 echo '<section>'.PHP_EOL;
+// Affichage du menu en haut ou à gauche
+include("menuHG.php");
 
-// Affichage du menu
-include("menu_gauche2.php");
-include("chargement.php");
 if ($debug_flag)
 {
 	echo '<p>DEBUG: Array of month day data:<p><pre>'.PHP_EOL;
@@ -369,16 +345,16 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 echo "<div>";
 if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 {
-	echo "<div class=\"left\"> ";
+    echo "<div class=\"left\"> "; // afficher ou cacher le menu
     $mode = Settings::get("menu_gauche");
-    if ($mode == 0) $mode = 1; // il faut bien que le menu puisse s'afficher, par défaut ce sera à gauche sauf choix autre par setting
-    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuGauche($mode)\" title='".get_vocab('show_left_menu')."'><span class=\"glyphicon glyphicon-chevron-right\"></span></button></div> ";
-    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuGauche(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
+    $alt = ($mode != 0)? $mode : 1; // il faut bien que le menu puisse s'afficher, par défaut ce sera à gauche sauf choix autre par setting
+    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG($alt)\" title='".get_vocab('show_left_menu')."'><span class=\"glyphicon glyphicon-chevron-right\"></span></button></div> ";
+    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
 	echo "</div>";
 }    
-    echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.get_vocab("all_areas").'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php?area='.$area.'" title="'.get_vocab('see_all_the_rooms_for_several_months').'">'.ucfirst(utf8_strftime("%Y", $month_start)).'</a></h4>'.PHP_EOL;
-    if ($_GET['pview'] != 1)
-        echo " <a href=\"month_all.php?year=$year&amp;month=$month&amp;area=$area\" title=\" ".get_vocab('default_room_month_all')." \"><span class='glyphicon glyphicon-refresh'></span></a>";
+echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.get_vocab("all_areas").'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php?area='.$area.'" title="'.get_vocab('see_all_the_rooms_for_several_months').'">'.ucfirst(utf8_strftime("%Y", $month_start)).'</a></h4>'.PHP_EOL;
+if ($_GET['pview'] != 1)
+    echo " <a href=\"month_all.php?year=$year&amp;month=$month&amp;area=$area\" title=\" ".get_vocab('default_room_month_all')." \"><span class='glyphicon glyphicon-refresh'></span></a>";
 echo "</div>";
 echo "</caption>";
 if ($_GET['pview'] == 1 && (isset($_GET['precedent']) && $_GET['precedent'] == 1))
@@ -429,10 +405,7 @@ echo tdcell("cell_hours");
 echo "</td>";
 echo $html_jours;
 echo "</tr></tfoot>";
-// le corps de la table 
-/*$sql = "SELECT room_name, capacity, id, description, statut_room, who_can_book FROM ".TABLE_PREFIX."_room WHERE area_id=$area ORDER BY order_display,room_name";
-$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display, room_name";
-$res = grr_sql_query($sql);*/
+// corps du planning
 echo "<tbody>";
 $li = 0;
 for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement d'une ressource sur le mois
@@ -479,13 +452,6 @@ for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement
                                     echo "<tr>";
 									tdcell($d[$cday]["color"][$i]);
                                     echo "<span class=\"small_planning\">";
-									/*if ($d[$cday]["res"][$i] != '-')
-										echo " <img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> \n";*/
-									/*if ((isset($d[$cday]["option_reser"][$i])) && ($d[$cday]["option_reser"][$i] != -1))
-										echo " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")." ".time_date_string_jma($d[$cday]["option_reser"][$i],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> \n";*/
-									/*if ((isset($d[$cday]["moderation"][$i])) && ($d[$cday]["moderation"][$i] == 1))
-										echo " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" class=\"image\" /> \n";*/
-									
 									if ($acces_fiche_reservation)
 									{
 										if (Settings::get("display_level_view_entry") == 0)
@@ -547,14 +513,14 @@ affiche_pop_up(get_vocab("message_records"),"user");
 ?>
 <script type="text/javascript">
 	$(document).ready(function(){
+        $("#popup_name").draggable({containment: "#container"});
+		$("#popup_name").resizable();
+        afficheMenuHG(0);
         if ( $(window).scrollTop() == 0 )
             $("#toTop").hide(1);
 	});
-	jQuery(document).ready(function($){
-		$("#popup_name").draggable({containment: "#container"});
-		$("#popup_name").resizable();
-	});
 </script>
 <?php 
+// a priori on n'affiche pas le menu en page month_all2
 end_page();
 ?>
