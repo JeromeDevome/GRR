@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-05-09 11:55
+ * Dernière modification : $Date: 2021-05-09 15:31
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1139,7 +1139,7 @@ echo '<input type="hidden" name="edit_type" value="'.$edit_type.'" />';
 echo '<input type="hidden" name="page" value="'.$page.'" />';
 echo '<input type="hidden" name="room_back" value="'.$room_back.'" />';
 echo '<input type="hidden" name="page_ret" value="'.$page_ret.'" />';
-if (!isset($statut_entry))
+if (!isset($statut_entry) || ($statut_entry == ""))
 	$statut_entry = "-";
 echo '<input type="hidden" name="statut_entry" value="'.$statut_entry.'" />'.PHP_EOL;
 echo '<input type="hidden" name="create_by" value="'.$create_by.'" />'.PHP_EOL;
