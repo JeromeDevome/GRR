@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-04-24 14:10
+ * Dernière modification : $Date: 2021-05-09 11:55
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -256,7 +256,6 @@ foreach($form_vars as $var => $var_type)
     }
 }
 // traiter aussi les champs additionnels (addon_x)!
-$sql = "SELECT id FROM ".TABLE_PREFIX."_overload";
 $res = grr_sql_query("SELECT id FROM ".TABLE_PREFIX."_overload");
 $overloadFields = array(); // contiendra, s'il en existe, les valeurs des champs additionnels définies dans le formulaire
 if ($res){
@@ -378,7 +377,6 @@ else{
 }
 if (((authGetUserLevel($user_name,-1) < 2) && (auth_visiteur($user_name,$room) == 0))||(authUserAccesArea($user_name, $area) == 0))
 {
-    //echo "<br> ligne 268";
     start_page_w_header('','','','with_session');
 	showAccessDenied($page_ret);
 	exit();
@@ -386,7 +384,6 @@ if (((authGetUserLevel($user_name,-1) < 2) && (auth_visiteur($user_name,$room) =
 if (isset($room) && ($room != -1)){// on vérifie que la ressource n'est pas restreinte ou que l'accès est autorisé
     $who_can_book = grr_sql_query1("SELECT who_can_book FROM ".TABLE_PREFIX."_room WHERE id='".$room."' ");
     if (!($who_can_book || (authBooking($user_name,$room)) || (authGetUserLevel($user_name,$room) > 2))){
-        //echo "<br>ligne 276";
         start_page_w_header('','','','with_session');
         showAccessDenied($page_ret."&alerte=acces");
         exit();
@@ -394,7 +391,6 @@ if (isset($room) && ($room != -1)){// on vérifie que la ressource n'est pas res
 }
 // récupérons les paramètres du domaine en cours
 get_planning_area_values($area);
-//echo "<br> ligne 285";
 if (isset($room) && ($room != -1)){ // on récupère les propriétés de la ressource
     $sql = "SELECT * FROM ".TABLE_PREFIX."_room WHERE id='".$room."'";
     $res = grr_sql_query($sql);
@@ -438,7 +434,6 @@ else
 //die();
 if (UserRoomMaxBooking($user_name, $room, $compt) == 0)
 {
-    //echo "<br> ligne 324";
     echo "<br> user : ".$user_name." room: ".$room." compt : ".$compt;
     start_page_w_header('','','','with_session');
 	showAccessDeniedMaxBookings($day, $month, $year, $room, $page_ret);
@@ -1148,11 +1143,8 @@ if (!isset($statut_entry))
 	$statut_entry = "-";
 echo '<input type="hidden" name="statut_entry" value="'.$statut_entry.'" />'.PHP_EOL;
 echo '<input type="hidden" name="create_by" value="'.$create_by.'" />'.PHP_EOL;
-if ($id!=0)
-	if (isset($_GET["copier"]))
-		$id = NULL;
-	else
-        echo '<input type="hidden" name="id" value="'.$id.'" />'.PHP_EOL;
+if (($id!=0)&&(!isset($_GET["copier"])))
+    echo '<input type="hidden" name="id" value="'.$id.'" />'.PHP_EOL;
 echo '<input type="hidden" name="type_affichage_reser" value="'.$type_affichage_reser.'" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '</form>'.PHP_EOL;
@@ -1161,7 +1153,7 @@ echo '<div id="footer"></div>'.PHP_EOL;
 
 <script type="text/javascript" >
 function insertBeneficiaires(area_,room_,user_,id_){
-// cette fonction donne la liste des items du sélecteur, mais suivie de toutes les lettres de l'objet JSON :-(
+// cette fonction donne la liste des items du sélecteur
     jQuery.ajax({
         type: 'GET',
         url : 'edit_entry_beneficiaires.php',
