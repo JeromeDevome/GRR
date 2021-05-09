@@ -10,56 +10,44 @@ Tâches prévues :
 --
 -----
 
-Version 3.4.2 RC5
-    amélioration : prise en compte de plusieurs comptes mail d'administrateurs
-    correctif : page edit_entry, liste déroulante des bénéficiaires
-    correctif : gestion des champs additionnels dans les rapports statistiques
-
-Version 3.4.2 RC4
-    amélioration : page edit_entry
-
-Version 3.4.2 RC3
-    correctifs : divers, syntaxe et calcul
-    correctif : prise en compte du changement de mot de passe dans les imports csv d'utilisateurs
-    amélioration : calcul de la page edit_entry
-
-Version 3.4.2 RC2
-    correctifs : divers, syntaxe et calcul
-    correctif : le nom d'utilisateur SMTP peut dépendre d'un domaine AD
-    correctif : prévient une mauvaise mise en page par Firefox du planning week_all en mode preview
-    mise à jour : jquery en 3.4.1 (progressivement)
-    mise à jour : select2 en 4.0.13
-    modification : rétablissement du choix du nombre de calendriers à afficher dans le menu gauche (ou haut)
-    modification : calcul et présentation de la page d'édition des réservations, les champs additionnels ne devraient plus être perdus
-
-Version 3.4.2 RC1 
+Version 3.4.2 
     ajout : fonctionnalité de limitation du quota de réservations sur une période
     ajout : indicateur de complexité de MDP + mes réservations + refonte de la page my_account.php
     ajout : popup de visualisation des administrateurs de site
     ajout : possibilité de fixer l'expéditeur des mails (devrait passer les serveurs SMTP refusant le relai)
     ajout : champs additionnels dans les messages de modération
     ajout : info-bulle sur les privilèges
-    ajout : champ mot de passe à modifier dans le fichier csv d'importation d'utilisateurs
+    ajout : champ "mot de passe à modifier" dans le fichier csv d'importation d'utilisateurs
+    amélioration : prise en compte de plusieurs comptes mail d'administrateurs
     amélioration : possibilité d'imposer un changement de mot de passe (rétro-portage et amélioration du code)
     amélioration : récupération des couleurs personnalisées
     amélioration : traitement des doublons dans la définition des sites
     amélioration : premiers paramètres à l'installation
-    correctifs : gestion de timePicker et DatePicker
-    correctif : décompte des réservations à modérer pour un gestionnaire de ressource
-    correctif : récupération des champs additionnels dans la page d'édition des réservations
     correctif : affichage des ressources par domaine dans la page year_all (monosite)
     correctif : visibilité du bouton toTop
     correctif : formulaire affiché seulement pour un utilisateur autorisé
-    correctif : astérisque dans edit_entry
-    MAJ jQuery-UI en v1.12.1
-    mise à jour ckeditor en version 4.14
-    mise à jour phpmailer en version 5.2.28
-    mise à jour phpCAS en version 1.3.8
+    correctifs : gestion de timePicker et DatePicker
+    correctif : décompte des réservations à modérer pour un gestionnaire de ressource
+    correctif : gestion des champs additionnels dans les rapports statistiques
+    correctifs : divers, syntaxe et calcul
+    correctif : prise en compte du changement de mot de passe dans les imports csv d'utilisateurs
+    correctif : le nom d'utilisateur SMTP peut dépendre d'un domaine AD
+    correctif : prévient une mauvaise mise en page par Firefox du planning week_all en mode preview
+    mise à jour : jquery en 3.4.1 (progressivement)
+    mise à jour : select2 en 4.0.13
+    mise à jour : jQuery-UI en v1.12.1
+    mise à jour : ckeditor en version 4.14
+    mise à jour : phpmailer en version 5.2.28
+    mise à jour : phpCAS en version 1.3.8
     mise à jour : script floatThead
+    modification : calcul et présentation de la page d'édition des réservations (edit_entry.php), avec notamment un outil de recherche d'utilisateurs, les champs additionnels ne devraient plus être perdus, les champs obligatoires sont mieux identifiés
+    modification : rétablissement du choix du nombre de calendriers à afficher dans le menu gauche (ou haut)
     modification : gestion des types (n'utilise plus le fichier types.css mais évalue les types avant de calculer la section <head>, devrait résoudre les pbs de cache)
     modification : champ destinataire spécifique, style de la page, clé unique dans la définition des champs additionnels
     modification : conformité avec le schéma v4.0
     modification : séparation des date, heure de début et durée dans les rapports
+    modification : calcul et présentation des pages planning
+
 -----
 --
 -----
