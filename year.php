@@ -3,7 +3,7 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-01-11 11:35$
+ * Dernière modification : $Date: 2021-05-02 18:59$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -186,25 +186,6 @@ $row = grr_sql_row($res,'0');
 $typeExclu = (isset($row[0]))? $row[0]:NULL; // lettre identifiant le type exclu
 grr_sql_free($res);
 //Get all meetings for these months in the area that we care about
-//row[0] = Start time
-//row[1] = End time
-//row[2] = Entry ID
-//row[3] = Entry name (brief description)
-//row[4] = beneficiaire of the booking
-//row[5] = Nom de la ressource
-//row[6] = statut
-//row[7] = Description complète
-//row[8] = option reservation
-//row[9] = delai option reservation
-//row[10]= type  -> lettre du type de l'entrée
-//row[11]= état de la modération
-//row[12]= bénéficiaire extérieur
-/* $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire,
- room_name, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation,
- ".TABLE_PREFIX."_room.delais_option_reservation, type, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext
-FROM ".TABLE_PREFIX."_entry inner join ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id
-WHERE (start_time <= $month_end AND end_time > $month_start and area_id='".$area."' AND type <> '".$typeExclu."')
-ORDER by start_time, end_time, ".TABLE_PREFIX."_room.room_name";*/
 $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc
 FROM (".TABLE_PREFIX."_entry INNER JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) 
   INNER JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
@@ -258,22 +239,9 @@ else
             {
                 $d[$day_num][$month_num][$year_num]["id"][] = $row["id"];
                 // Info-bulle
-                /*$temp = "";
-                if (Settings::get("display_info_bulle") == 1)
-                    $temp = get_vocab("reservee au nom de").affiche_nom_prenom_email($row[4],$row[12],"nomail");
-                else if (Settings::get("display_info_bulle") == 2)
-                    $temp = $row[7];
-                if ($temp != "")
-                    $temp = " - ".$temp;*/
-                $d[$day_num][$month_num][$year_num]["lien"][] = lien_compact($row);//affichage_lien_resa_planning($row[3],$row[2]);
+                $d[$day_num][$month_num][$year_num]["lien"][] = lien_compact($row);
                 $d[$day_num][$month_num][$year_num]["room"][]=$row[5] ;
-                //$d[$day_num][$month_num][$year_num]["res"][] = $row[6];
                 $d[$day_num][$month_num][$year_num]["color"][] = $row["type"];
-                /*if ($row[9] > 0)
-                    $d[$day_num][$month_num][$year_num]["option_reser"][] = $row[8];
-                else
-                    $d[$day_num][$month_num][$year_num]["option_reser"][] = -1;*/
-                //$d[$day_num][$month_num][$year_num]["moderation"][] = $row[11];
                 $midnight_tonight = $midnight + 86400;
                 //Describe the start and end time, accounting for "all day"
                 //and for entries starting before/ending after today.
@@ -363,15 +331,11 @@ else
 	}
 }
 grr_sql_free($res);
+
 // pour le traitement des modules
 include $racine."/include/hook.class.php";
-
 // code html
 header('Content-Type: text/html; charset=utf-8');
-/*if (!isset($_COOKIE['open']))
-{
-	setcookie("open", "true", time()+3600, "", "", false, false);
-}*/
 if (!isset($_COOKIE['open']))
 {
 	header('Set-Cookie: open=true; SameSite=Lax');
@@ -389,6 +353,7 @@ echo "<body>";
 echo "<header>";
 pageHeader2('', '', '', $type_session);
 echo "</header>";
+echo '<div id="chargement"></div>'.PHP_EOL; // à éliminer ?
 // Debut de la page
 echo "<section>";
 $this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=$area");
@@ -448,7 +413,6 @@ while ($month_indice < $month_end)
 		$name_day = ucfirst(utf8_strftime("%a<br />%d", $t2)); // On inscrit le quantième du jour dans la deuxième ligne
 		$temp = mktime(0,0,0,$cmonth,$cday,$cyear);
 		$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$temp'");
-		// $t2 += 86400; pose pb avec le passage à l'heure d'hiver
         $t2 = mktime(0,0,0,$month_num,$cday+1,$year_num);
 		if ($display_day[$cweek] == 1)
 		{
@@ -486,14 +450,11 @@ while ($month_indice < $month_end)
 			echo "<tr><th>";
 			echo htmlspecialchars($row[0]) ."</th>\n";
 			$li++;
-			//$t2 = mktime(0, 0, 0, $month_num, 1, $year_num);
 			for ($k = 1; $k <= $days_in_month; $k++)
 			{
                 $t2 = mktime(0, 0, 0,$month_num, $k, $year_num);
 				$cday = date("j", $t2);
 				$cweek = date("w", $t2);
-				// $t2 += 86400;
-                // $t2 = mktime(0,0,0,$month_num,1+$k,$year_num); // passe au jour suivant
 				if ($display_day[$cweek] == 1) // Début condition "on n'affiche pas tous les jours de la semaine"
 				{
 					echo "<td> \n";
@@ -521,14 +482,6 @@ while ($month_indice < $month_end)
 										//if ($i > 0 && $i % 2 == 0) echo "<br />"; else echo " ";
 									echo "\n<table class='pleine table-bordered' ><tr>\n";
 									tdcell($d[$cday][$cmonth][$cyear]["color"][$i]);
-									/*if ($d[$cday][$cmonth][$cyear]["res"][$i] != '-')
-										echo " <img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> \n";*/
-		   								// si la réservation est à confirmer, on le signale
-									/*if ((isset($d[$cday][$cmonth][$cyear]["option_reser"][$i])) && ($d[$cday][$cmonth][$cyear]["option_reser"][$i] != -1))
-										echo " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")." ".time_date_string_jma($d[$cday][$cmonth][$cyear]["option_reser"][$i],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> \n";*/
-		   								// si la réservation est à modérer, on le signale
-									/*if ((isset($d[$cday][$cmonth][$cyear]["moderation"][$i])) && ($d[$cday][$cmonth][$cyear]["moderation"][$i] == 1))
-										echo " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" class=\"image\" /> \n";*/
 									if ($acces_fiche_reservation)
 									{
 										if (Settings::get("display_level_view_entry") == 0)
@@ -584,11 +537,9 @@ echo "</section>";
 	$(document).ready(function(){
         if ( $(window).scrollTop() == 0 )
             $("#toTop").hide(1);
-	});
-	jQuery(document).ready(function($){
 		$("#popup_name").draggable({containment: "#container"});
 		$("#popup_name").resizable();
-	});
+    });
 </script>
 </body>
 </html>

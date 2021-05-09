@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-03-28 09:50$
+ * Dernière modification : $Date: 2021-04-24 17:43$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1959,9 +1959,10 @@ function round_t_up($t, $resolution, $am7)
  * @param string $month
  * @param string $day
  * @param string $user
+ * @param string $pos
  * @return string
  */
-function make_site_select_html($link, $current_site, $year, $month, $day, $user)
+function make_site_select_html($link, $current_site, $year, $month, $day, $user, $pos="G")
 {
 	global $vocab;
 	$nb_sites_a_afficher = 0;
@@ -2006,7 +2007,7 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user)
 					}
 				}
 			}
-			// On libère la ressource2
+			// On libère le résultat $res2
 			grr_sql_free($res2);
 			if ($default_area != -1)
 			{
@@ -2020,17 +2021,17 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user)
 	}
 	if ($nb_sites_a_afficher > 1)
 	{
-        $out_html = '<b><i>'.get_vocab('sites').get_vocab('deux_points').'</i></b><form id="site_001" action="'.$_SERVER['PHP_SELF'].'"><div>';
-        $out_html .= '<select class="form-control" name="site" onchange="site_go()">';
+        $out_html = '<b><i>'.get_vocab('sites').get_vocab('deux_points').'</i></b><form id="site_'.$pos.'" action="'.$_SERVER['PHP_SELF'].'"><div>';
+        $out_html .= '<select class="form-control" name="site" onchange="site_go_'.$pos.'()">';
         foreach($out as $row){
             $out_html .= $row;
         }
 		$out_html .= "</select>".PHP_EOL;
 		$out_html .= "</div>".PHP_EOL;
 		$out_html .= "<script type=\"text/javascript\">".PHP_EOL;
-		$out_html .= "function site_go()".PHP_EOL;
+		$out_html .= "function site_go_".$pos."(n)".PHP_EOL;
 		$out_html .= "{".PHP_EOL;
-		$out_html .= "box = document.getElementById(\"site_001\").site;".PHP_EOL;
+		$out_html .= "box = document.getElementById(\"site_".$pos."\").site;".PHP_EOL;
 		$out_html .= "destination = box.options[box.selectedIndex].value;".PHP_EOL;
 		$out_html .= "if (destination) location.href = destination;".PHP_EOL;
 		$out_html .= "}".PHP_EOL;
@@ -2055,9 +2056,10 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user)
  * @param string $month
  * @param string $day
  * @param string $user
+ * @param string $pos
  * @return string
  */
-function make_area_select_html( $link, $current_site, $current_area, $year, $month, $day, $user)
+function make_area_select_html( $link, $current_site, $current_area, $year, $month, $day, $user, $pos="G")
 {
 	global $vocab;
     $out_html = "";//$link. $current_site. $current_area. $year. $month. $day. $user.'<br />'.PHP_EOL;
@@ -2073,9 +2075,9 @@ function make_area_select_html( $link, $current_site, $current_area, $year, $mon
 	else
 		$sql = "SELECT id, area_name,access FROM ".TABLE_PREFIX."_area ORDER BY order_display, area_name";
 	$out_html .= '<b><i>'.get_vocab("areas").'</i></b>'.PHP_EOL;
-	$out_html .= '<form id="area_001" action="'.$_SERVER['PHP_SELF'].'">'.PHP_EOL;
+	$out_html .= '<form id="area_'.$pos.'" action="'.$_SERVER['PHP_SELF'].'">'.PHP_EOL;
 	$out_html .= '<div><select class="form-control" name="area" ';
-	$out_html .= ' onchange="area_go()" ';
+	$out_html .= ' onchange="area_go_'.$pos.'()" ';
 	$out_html .= '>'.PHP_EOL;
 	$res = grr_sql_query($sql);
 	if ($res)
@@ -2093,9 +2095,9 @@ function make_area_select_html( $link, $current_site, $current_area, $year, $mon
 	$out_html .= '</select>'.PHP_EOL;
 	$out_html .= '</div>'.PHP_EOL;
 	$out_html .= '<script type="text/javascript">'.PHP_EOL;
-	$out_html .= 'function area_go()'.PHP_EOL;
+	$out_html .= 'function area_go_'.$pos.'()'.PHP_EOL;
 	$out_html .= '{'.PHP_EOL;
-	$out_html .= 'box = document.getElementById("area_001").area;'.PHP_EOL;
+	$out_html .= 'box = document.getElementById("area_'.$pos.'").area;'.PHP_EOL;
 	$out_html .= 'destination = box.options[box.selectedIndex].value;'.PHP_EOL;
 	$out_html .= 'if (destination) location.href = destination;'.PHP_EOL;
 	$out_html .= '}'.PHP_EOL;
@@ -2188,16 +2190,17 @@ function make_area_select_all_html( $link, $current_site, $current_area, $year, 
  * @param string $year
  * @param string $month
  * @param string $day
+ * @param string $pos
  * @return string
  */
-function make_room_select_html($link, $current_area, $current_room, $year, $month, $day)
+function make_room_select_html($link, $current_area, $current_room, $year, $month, $day, $pos="G")
 {
 	global $vocab;
 	$sql = "select id, room_name, description from ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($current_area)."' order by order_display,room_name";
 	$res = grr_sql_query($sql);
 	if ($res && (grr_sql_count($res)>0)) // il y a des ressources à afficher
 	{
-        $out_html = "<b><i>".get_vocab('rooms').get_vocab("deux_points")."</i></b><br /><form id=\"room_001\" action=\"".$_SERVER['PHP_SELF']."\"><div><select class=\"form-control\" name=\"room\" onchange=\"room_go()\">";
+        $out_html = "<b><i>".get_vocab('rooms').get_vocab("deux_points")."</i></b><br /><form id=\"room_".$pos."\" action=\"".$_SERVER['PHP_SELF']."\"><div><select class=\"form-control\" name=\"room\" onchange=\"room_go_".$pos."()\">";
         $out_html .= "<option value=\"".$link;
         if ($link != "day"){$out_html .= "_all";}
         $out_html .= ".php?year=$year&amp;month=$month&amp;day=$day&amp;area=$current_area\">".get_vocab("all_rooms")."</option>";
@@ -2217,9 +2220,9 @@ function make_room_select_html($link, $current_area, $current_room, $year, $mont
         $out_html .= "</select>".PHP_EOL;
         $out_html .= "</div>".PHP_EOL;
         $out_html .= "<script type=\"text/javascript\">".PHP_EOL;
-        $out_html .= "function room_go()".PHP_EOL;
+        $out_html .= "function room_go_".$pos."()".PHP_EOL;
         $out_html .= " {".PHP_EOL;
-        $out_html .= "box = document.getElementById(\"room_001\").room;".PHP_EOL;
+        $out_html .= "box = document.getElementById(\"room_".$pos."\").room;".PHP_EOL;
         $out_html .= "destination = box.options[box.selectedIndex].value;".PHP_EOL;
         $out_html .= "if (destination) location.href = destination;".PHP_EOL;
         $out_html .= "}".PHP_EOL;

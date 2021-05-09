@@ -1,7 +1,7 @@
 /*
  * ./js/functions.js
  * fichier Bibliothèque de fonctions Javascript de GRR
- * Dernière modification : $Date: 2021-02-06 16:21$
+ * Dernière modification : $Date: 2021-04-20 14:51$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -477,31 +477,48 @@ function afficherMenuGauche(){
 	document.getElementById("voir").style.display = "none";
 }
 
-function afficheMenuGauche(mode){
-    if (mode == 0) /* menu caché */
+function afficheMenuHG(mode){
+    var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    var menuGw,planningw,realmode;
+    if (w < 992){
+        realmode = 2;
+    }
+    else if (w < 1240){
+        realmode = mode;
+        menuGw = "25%";
+        planningw = "75%";
+    }
+    else {
+        realmode = mode;
+        menuGw = "20%";
+        planningw = "80%";
+    }
+    if (mode == 0) /* menus cachés */
     {
+        document.getElementById("menuHaut").style.display = "none";
         document.getElementById("menuGauche2").style.display = "none";
         document.getElementById("planning2").style.width = "100%";
         document.getElementById("cacher").style.display = "none";
-        document.getElementById("voir").style.display = "inline";
+        document.getElementById("voir").style.display = "inline-block";
         $('.floatthead').floatThead('reflow');
     }
-    else if (mode == 1) /* menu affiché */
+    else if (mode == 1) /* menu affiché à gauche*/
     {
+        document.getElementById("menuHaut").style.display = "none";
         document.getElementById("menuGauche2").style.display = "inline-block";
-        document.getElementById("planning2").style.width = "75%";
-        document.getElementById("cacher").style.display = "inline";
+        document.getElementById("menuGauche2").style.width = menuGw;
+        document.getElementById("planning2").style.width = planningw;
+        document.getElementById("cacher").style.display = "inline-block";
         document.getElementById("voir").style.display = "none";
         $('.floatthead').floatThead('reflow');
     }
-    else if (mode == 2) /* menu en haut */
+    else if (mode == 2) /* menu affiché en haut */
     {
-        document.getElementById("menuGauche2").style.display = "inline-block";
-        document.getElementById("menuGauche2").style.maxWidth = "100%";
-        document.getElementById("menuGauche2").style.minWidth = "100%";
+        document.getElementById("menuHaut").style.display = "inline-block";
+        document.getElementById("menuGauche2").style.display = "none";
         document.getElementById("planning2").style.display = "inline-block";
         document.getElementById("planning2").style.width = "100%";
-        document.getElementById("cacher").style.display = "inline";
+        document.getElementById("cacher").style.display = "inline-block";
         document.getElementById("voir").style.display = "none";
         $('.floatthead').floatThead('reflow');
     }

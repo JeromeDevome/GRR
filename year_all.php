@@ -3,7 +3,7 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservations de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-01-11 11:36 $
+ * Dernière modification : $Date: 2021-05-02 18:59 $
  * @author    Yan Naessens, Laurent Delineau 
  * @copyright Copyright 2003-2021 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -134,8 +134,6 @@ else
 	$type_session = "with_session";
 
 $back = 'year.php';
-/*if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);*/
 if (check_begin_end_bookings($day, $from_month, $from_year))
 {
     start_page_w_header($day, $from_month, $from_year, $type_session);
@@ -177,58 +175,6 @@ $month_start = mktime(0, 0, 0, $from_month, 1, $from_year);
 $month_end = mktime(23, 59, 59, $to_month, 1, $to_year);
 $days_in_to_month = date("t", $month_end);
 $month_end = mktime(23,59,59,$to_month,$days_in_to_month,$to_year);
-/*
-// pour le traitement des modules
-include $racine."/include/hook.class.php";
-
-// début du code html
-header('Content-Type: text/html; charset=utf-8');
-if (!isset($_COOKIE['open']))
-{
-	setcookie("open", "true", time()+3600, "", "", false, false);
-}
-echo '<!DOCTYPE html>'.PHP_EOL;
-echo '<html lang="fr">'.PHP_EOL;
-// section <head>
-if ($type_session == "with_session")
-    echo pageHead2(Settings::get("company"),"with_session");
-else
-    echo pageHead2(Settings::get("company"),"no_session");
-// section <body>
-echo "<body>";
-// Menu du haut = section <header>
-echo "<header>";
-pageHeader2('', '', '', $type_session);
-echo "</header>";
-echo "<section>";
-// Si format imprimable ($_GET['pview'] = 1), on n'affiche pas cette partie
-if ($_GET['pview'] != 1)
-{
-    echo "<div class='row'>";
-        echo "\n<div class=\"col-lg-2 col-md-3 col-xs-12\">\n".PHP_EOL; // lien de retour
-            echo '&nbsp; <a title="'.htmlspecialchars(get_vocab('back')).'" href="'.$back.'">'.htmlspecialchars(get_vocab('back')).'</a>';
-        echo "</div>";
-        echo "<form method=\"get\" action=\"year_all.php\">";
-            echo "\n<div class=\"col-lg-4 col-md-6 col-xs-12\">\n".PHP_EOL; // choix des dates 
-            echo "<table>\n";
-            echo "<tr><td>".get_vocab("report_start").get_vocab("deux_points")."&nbsp;</td>";
-            echo "<td>";
-            echo genDateSelector("from_", "", $from_month, $from_year,"");
-            echo "</td></tr>";
-            echo "<tr><td>".get_vocab("report_end").get_vocab("deux_points")."&nbsp;</td><td>\n";
-            echo genDateSelector("to_", "", $to_month, $to_year,"");
-            echo "</td></tr>\n";
-            echo "</table>\n";
-            echo "</div>";
-            //echo "<tr><td class=\"CR\">\n";
-            echo "<br><p>";
-            echo "<input type=\"hidden\" name=\"site\" value=\"$site\" />\n";
-            echo "<input type=\"hidden\" name=\"area\" value=\"$area\" />\n";
-            echo "<input type=\"submit\" name=\"valider\" value=\"".$vocab["goto"]."\" /></p>";//</td></tr>\n";
-
-        echo "</form>";
-    echo "</div>";
-}*/
 // construit la liste des ressources et domaines
 if ($site == -1) 
 {   // cas 1 : le multisite n'est pas activé $site devrait être à -1
@@ -286,7 +232,6 @@ else
         $nom_site = grr_sql_query1("SELECT sitename FROM ".TABLE_PREFIX."_site WHERE id=".$site);
     }
     else $nom_site = get_vocab('any_area');
-    //echo '<div class="titre_planning"><h4>'.ucfirst($nom_site)." - ".get_vocab("all_areas").'</h4></div>';
     $tables = array(); // contiendra les codes html des tables mensuelles
     // Boucle sur les mois
     $month_indice =  $month_start;
@@ -360,24 +305,6 @@ else
                     //Used below: localized "all day" text but with non-breaking spaces:
                     $all_day = preg_replace("/ /", " ", get_vocab("all_day"));
                     //Get all meetings for this month in the room that we care about
-                    //row[0] = Start time
-                    //row[1] = End time
-                    //row[2] = Entry ID
-                    //row[3] = Entry name (brief description)
-                    //row[4] = beneficiaire of the booking
-                    //row[5] = Nom de la ressource
-                    //row[6] = statut
-                    //row[7] = Description complète
-                    //row[8] = Option sur la réservation
-                    //row[9] = Délai pour l'option
-                    //row[10]= type de la réservation
-                    //row[11]= Modération
-                    //row[12]= Bénéficiaire extérieur
-					//row[13]= Type_name
-                    /*$sql = 'SELECT start_time, end_time, '.TABLE_PREFIX.'_entry.id, name, beneficiaire, room_name, statut_entry, '.TABLE_PREFIX.'_entry.description, option_reservation, '.TABLE_PREFIX.'_room.delais_option_reservation, type,'.TABLE_PREFIX.'_entry.moderate, beneficiaire_ext, '.TABLE_PREFIX.'_type_area.type_name 
-					FROM ('.TABLE_PREFIX.'_entry INNER JOIN '.TABLE_PREFIX.'_room ON '.TABLE_PREFIX.'_entry.room_id='.TABLE_PREFIX.'_room.id) INNER JOIN '.TABLE_PREFIX.'_type_area on '.TABLE_PREFIX.'_entry.type='.TABLE_PREFIX.'_type_area.type_letter
-					WHERE (start_time <= '.$end_month.' AND end_time > '.$begin_month.' AND '.TABLE_PREFIX.'_entry.room_id='.$room_id.') 
-					ORDER by start_time, end_time';*/
                     $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc
                     FROM (".TABLE_PREFIX."_entry INNER JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) 
                       INNER JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
@@ -429,23 +356,9 @@ else
                                 {
                                     $d[$day_num][$month_num][$year_num]["id"][] = $row["id"];
                                     // Info-bulle
-                                    /*$temp = "";
-                                    if (Settings::get("display_info_bulle") == 1)
-                                        $temp = get_vocab("reservee au nom de").affiche_nom_prenom_email($row[4],$row[12],"nomail");
-                                    else if (Settings::get("display_info_bulle") == 2)
-                                        $temp = $row[7];
-                                    if ($temp != "")
-                                        $temp = " - ".$temp;*/
                                     $d[$day_num][$month_num][$year_num]["lien"][] = lien_compact($row);
-                                    //$d[$day_num][$month_num][$year_num]["who1"][] = affichage_lien_resa_planning($row[3],$row[2]);
                                     $d[$day_num][$month_num][$year_num]["room"][]=$row["room_name"] ;
-                                    //$d[$day_num][$month_num][$year_num]["res"][] = $row[6];
                                     $d[$day_num][$month_num][$year_num]["color"][] = $row["type"];
-                                    /*if ($row[9] > 0)
-                                        $d[$day_num][$month_num][$year_num]["option_reser"][] = $row[8];
-                                    else
-                                        $d[$day_num][$month_num][$year_num]["option_reser"][] = -1;*/
-                                    //$d[$day_num][$month_num][$year_num]["moderation"][] = $row[11];
                                     $midnight_tonight = $midnight + 86400; // potentiellement problématique avec les jours de changement d'heure YN 
                                     //Describe the start and end time, accounting for "all day"
                                     //and for entries starting before/ending after today.
@@ -453,7 +366,6 @@ else
                                     //and end time < = or > midnight tonight.
                                     //Use ~ (not -) to separate the start and stop times, because MSIE
                                     //will incorrectly line break after a -.
-                                    $all_day2 = preg_replace("/ /", " ", $all_day);
                                     if ($enable_periods == 'y')
                                     {
                                         $start_str = preg_replace("/ /", " ", period_time_string($row["start_time"]));
@@ -474,19 +386,19 @@ else
                                             $horaires = $start_str . "~==>";
                                             break;
                                             case "= = ":
-                                            $horaires = $all_day2;
+                                            $horaires = $all_day;
                                             break;
                                             case "= > ":
-                                            $horaires = $all_day2 . "==>";
+                                            $horaires = $all_day . "==>";
                                             break;
                                             case "< < ":
                                             $horaires = "<==~" . $end_str;
                                             break;
                                             case "< = ":
-                                            $horaires = "<==" . $all_day2;
+                                            $horaires = "<==" . $all_day;
                                             break;
                                             case "< > ":
-                                            $horaires = "<==" . $all_day2 . "==>";
+                                            $horaires = "<==" . $all_day . "==>";
                                             break;
                                         }
                                     }
@@ -505,19 +417,19 @@ else
                                             $horaires = date(hour_min_format(), $row[0]) . "~==>";
                                             break;
                                             case "= = ":
-                                            $horaires = $all_day2;
+                                            $horaires = $all_day;
                                             break;
                                             case "= > ":
-                                            $horaires = $all_day2 . "==>";
+                                            $horaires = $all_day . "==>";
                                             break;
                                             case "< < ":
                                             $horaires = "<==~" . date(hour_min_format(), $row[1]);
                                             break;
                                             case "< = ":
-                                            $horaires = "<==" . $all_day2;
+                                            $horaires = "<==" . $all_day;
                                             break;
                                             case "< > ":
-                                            $horaires = "<==" . $all_day2 . "==>";
+                                            $horaires = "<==" . $all_day . "==>";
                                             break;
                                         }
                                     }
@@ -570,15 +482,6 @@ else
                                             {
                                                 $tables[$month_indice] .= "\n<table class='pleine table-bordered' ><tr>\n";
                                                 $tables[$month_indice] .= "<td class='type".$d[$cday][$cmonth][$cyear]["color"][$i]."'>";
-                                                /*if ($d[$cday][$cmonth][$cyear]["res"][$i] != '-')
-                                                    $tables[$month_indice] .= " <img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> \n";*/
-                                                // si la réservation est à confirmer, on le signale
-                                                /*if ((isset($d[$cday][$cmonth][$cyear]["option_reser"][$i])) && ($d[$cday][$cmonth][$cyear]["option_reser"][$i] != -1))
-                                                    $tables[$month_indice] .= " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")." ".time_date_string_jma($d[$cday][$cmonth][$cyear]["option_reser"][$i],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> \n";
-                                               */ // si la réservation est à modérer, on le signale
-                                                /*if ((isset($d[$cday][$cmonth][$cyear]["moderation"][$i])) && ($d[$cday][$cmonth][$cyear]["moderation"][$i] == 1))
-                                                    $tables[$month_indice] .= " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" class=\"image\" /> \n";
-                                                */
                                                 if ($acces_fiche_reservation)
                                                 {
                                                     if (Settings::get("display_level_view_entry") == 0)
@@ -619,10 +522,6 @@ include $racine."/include/hook.class.php";
 
 // début du code html
 header('Content-Type: text/html; charset=utf-8');
-/*if (!isset($_COOKIE['open']))
-{
-	setcookie("open", "true", time()+3600, "", "", false, false);
-}*/
 if (!isset($_COOKIE['open']))
 {
 	header('Set-Cookie: open=true; SameSite=Lax');
@@ -640,6 +539,7 @@ echo "<body>";
 echo "<header>";
 pageHeader2('', '', '', $type_session);
 echo "</header>";
+echo '<div id="chargement"></div>'.PHP_EOL; // à éliminer ?
 echo "<section>";
 // Si format imprimable ($_GET['pview'] = 1), on n'affiche pas cette partie
 if ($_GET['pview'] != 1)
@@ -660,7 +560,6 @@ if ($_GET['pview'] != 1)
             echo "</td></tr>\n";
             echo "</table>\n";
             echo "</div>";
-            //echo "<tr><td class=\"CR\">\n";
             echo "<br><p>";
             echo "<input type=\"hidden\" name=\"site\" value=\"$site\" />\n";
             echo "<input type=\"hidden\" name=\"area\" value=\"$area\" />\n";
@@ -704,11 +603,9 @@ echo "</section>";
 	$(document).ready(function(){
         if ( $(window).scrollTop() == 0 )
             $("#toTop").hide(1);
-	});
-	jQuery(document).ready(function($){
 		$("#popup_name").draggable({containment: "#container"});
 		$("#popup_name").resizable();
-	});
+    });
 </script>
 </body>
 </html>
