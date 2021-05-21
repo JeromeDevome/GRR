@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-05-09 15:31
+ * Dernière modification : $Date: 2021-05-21 16:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -966,7 +966,8 @@ echo "<div class='col-sm-6 col-xs-12 form-inline'>";
 echo '<!-- ************* Periodic edition ***************** -->',PHP_EOL;
 $weeklist = array("unused","every week","week 1/2","week 1/3","week 1/4","week 1/5");
 $monthlist = array("firstofmonth","secondofmonth","thirdofmonth","fouthofmonth","fiveofmonth","lastofmonth");
-if($periodiciteConfig == 'y'){
+if($periodiciteConfig == 'y')
+{
 	if ( ($edit_type == "series") || (isset($flag_periodicite)))
 	{
         echo '<div id="ouvrir" class="CC">',PHP_EOL,
@@ -1048,13 +1049,13 @@ if($periodiciteConfig == 'y'){
                     echo "<div id='menuP'>\n"; // choix des jours cycle
                     echo "<b>Jours/Cycle</b><br />\n";
                     echo "<div class='form-inline'>";
-                    for ($i = 1; $i < (Settings::get("nombre_jours_Jours/Cycles") + 1); $i++)
+                    for ($d = 1; $d <= (Settings::get("nombre_jours_Jours_Cycles")); $d++)
                     {
-                        $wday = $i;
+                        $wday = $d;
                         echo "<input type=\"radio\" name=\"rep_jour_\" value=\"$wday\"";
                         if (isset($jours_c))
                         {
-                            if ($i == $jours_c)
+                            if ($d == $jours_c)
                                 echo ' checked="checked"';
                         }
                         echo ' onclick="check_1()" />',get_vocab("rep_type_6"),' ',$wday,PHP_EOL;

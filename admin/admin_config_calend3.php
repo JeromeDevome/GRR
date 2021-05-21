@@ -3,7 +3,7 @@
  * admin_config_calend3.php
  * interface permettant la configuration des jours-cycles (étape 3)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:56$
+ * Dernière modification : $Date: 2021-05-21 14:35$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -135,7 +135,7 @@ if (!isset($_GET['pview']))
 			echo " checked=\"checked\"";
 		echo " />\n".get_vocab("nouveau_jour_cycle");
 		echo "<select name=\"newDay\" size=\"1\" onclick=\"check(1)\">";
-		for ($i = 1; $i < (Settings::get("nombre_jours_Jours/Cycles") + 1); $i++)
+		for ($i = 1; $i < (Settings::get("nombre_jours_Jours_Cycles") + 1); $i++)
 		{
 			echo "<option value=\"".$i."\" ";
 			if ($jour_cycle == $i)
