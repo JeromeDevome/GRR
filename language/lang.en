@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue anglaise
 # GRR: Translations provided by: JeromeB & Patricia Gaubert-Dubois et Yan Naessens
-# Last modification : 2021-01-30
+# Last modification : 2021-05-21
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accept the reservation ";
@@ -414,7 +414,7 @@ $vocab['explain_default_parameter'] = "From this rubric, select the display by d
 $vocab['explain_disable_login'] = "When connections are disabled, users -apart from administrators- can no longer connect to the site. Moreover, users currently connected will be automatically disconnected.<br />Nevertheless, if connection is not obligatory for the access to the site in visualization, this access remains possible.";
 $vocab['explain_ip_autorise'] = "Restricts the connexion of users via an IP (except for administrators). If GRR is hosted, please use a public IP; if not, use a private IP. The authorized IPs must de separated with semicolons";
 $vocab['explain_max_booking'] = "Restriction does not apply to potential administrators of resource.";
-$vocab['explain_multisite'] = "Permet de gérer un niveau supplémentaires. Les domaines sont attachés à des sites."; // A traduire
+$vocab['explain_multisite'] = "Allows you to manage an additional level. Domains are attached to sites.";
 $vocab['explain_session_max_length'] = "This duration indicates the maximum time of inactivity at the end of which a user is automatically disconnected.";
 $vocab['explications_active_type'] = "Comment: when a type is not ticked, it's no more available to users, but what is already made still appear on plannings with this type, although desactivated.";
 $vocab['Explications_des_Parametres_configuration_envoi_automatique_mails'] = "GRR uses PHPMailer for the sending of mails. With PHPMailer, there are two methods to send mails:<br />1) The \"smtp\" method allowing to connect to a remote server of mail;<br />2)The \"mail\" method when the server of mail is local.The \"smtp\" method can be also used with a local server but it's better to privilege the \"mail\" method  with a local server because it is faster.";

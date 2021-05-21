@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML Codage de certains caractères particuliers : &#x00DF; -> "double s" allemand http://www.unicode.org/charts/PDF/U0080.pdf
 # GRR : fichier de langue allemande
 # GRR: Traduction by: JeromeB & Karsten Schinkel & Jean-Yves Migeon
-# Last modification : 2021-01-30
+# Last modification : 2021-05-21
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Reservierung akzeptieren";
@@ -414,7 +414,7 @@ $vocab['explain_default_parameter'] = "Wählen Sie in diesem Bereich die Basisan
 $vocab['explain_disable_login'] = "Indem Sie Ihre Verbindungen deaktivieren, machen Sie die Verbindung mit der Webseite für andere Benutzer unmöglich, au&#x00DF;er für die Administratoren. Au&#x00DF;erdem werden die zur Zeit verbundenen Benutzer automatisch ausgeloggt.<br />Auch wenn die Netzverbindung für den Zugang zur Webseite nicht obligatorish ist, bleibt dieser Zugang dennoch möglich.";
 $vocab['explain_ip_autorise'] = "Limite la connexion des utilisateurs via une iP (hors administrateurs). Si GRR est hébergé, veuillez mettre une iP publique sinon les iP interne. Séparez les différentes iP par des points virgules"; // A traduire
 $vocab['explain_max_booking'] = "Die Beschränkung gilt nicht für die möglichen Verwalter der Ressource.";
-$vocab['explain_multisite'] = "Permet de gérer un niveau supplémentaires. Les domaines sont attachés à des sites."; // A traduire
+$vocab['explain_multisite'] = "Ermöglicht das Verwalten einer zusätzlichen Ebene. Domains sind an Sites angehängt.";
 $vocab['explain_session_max_length'] = "Diese Dauer zeigt die maximale Inaktivitätszeit an, nach der ein Benutzer automatisch ausgeloggt wird.";
 $vocab['explications_active_type'] = "Anmerkung: wenn eine Art nicht angeklickt wurde, kann sie vom Benutzer nicht mehr gewählt werden, aber die bereits getätigten Reservierungen erscheinen weiterhin auf der Übersicht mit der Reservierungsart.";
 $vocab['Explications_des_Parametres_configuration_envoi_automatique_mails'] = "GRR utilise PHPMailer pour l'envoi de mails. Avec PHPMailer, il y a deux méthodes pour envoyer des mails :<br />1) La méthode \"smtp\" permettant de se connecter à un serveur de mail distant ;<br />2) La méthode \"mail\" lorsque le serveur de mail est local.<br />La méthode \"smtp\" peut également être utilisée avec un serveur local mais il est préférable de privilégier la méthode \"mail\" avec un serveur local car elle est plus rapide."; // A traduire

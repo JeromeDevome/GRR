@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR : fichier de langue italienne
 # GRR: Translations provided by JeromeB & Marc HENNETIER & Antony AUDOUARD
-# Last modification : 2021-01-30
+# Last modification : 2021-05-21
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accettare la prenotazione";
@@ -414,7 +414,7 @@ $vocab['explain_default_parameter'] = "Scegliete in questa rubrica, la visualizz
 $vocab['explain_disable_login'] = "Disattivando i collegamenti, rendete impossibile il collegamento alla località per gli utenti, eccetto gli amministratori. Inoltre, gli utenti attualmente collegati sono automaticamente staccati.<br />Tuttavia, se il collegamento non è obbligatorio per l'accesso alla località in visualizzazione, quest'accesso resta possibile.";
 $vocab['explain_ip_autorise'] = "Limite la connexion des utilisateurs via une iP (hors administrateurs). Si GRR est hébergé, veuillez mettre une iP publique sinon les iP interne. Séparez les différentes iP par des points virgules"; // A traduire
 $vocab['explain_max_booking'] = "La restrizione non si applica agli amministratori della risorsa.";
-$vocab['explain_multisite'] = "Permet de gérer un niveau supplémentaires. Les domaines sont attachés à des sites."; // A traduire
+$vocab['explain_multisite'] = "Ti permette di gestire un livello aggiuntivo. I domini sono allegati ai siti.";
 $vocab['explain_session_max_length'] = "Questa durata indica il tempo massimo d'inattività alla fine del quale un utente è automaticamente staccato.";
 $vocab['explications_active_type'] = "Osservazione: cuando un tipo è scoccato, questo non è proposto più all'utente che effettua o modificante una prenotazione, ma le prenotazioni già effettuate continuano di apparire sulle programmazioni con questo tipo, sebbene disattivato.";
 $vocab['Explications_des_Parametres_configuration_envoi_automatique_mails'] = "GRR utilise PHPMailer pour l'envoi de mails. Avec PHPMailer, il y a deux méthodes pour envoyer des mails :<br />1) La méthode \"smtp\" permettant de se connecter à un serveur de mail distant ;<br />2) La méthode \"mail\" lorsque le serveur de mail est local.<br />La méthode \"smtp\" peut également être utilisée avec un serveur local mais il est préférable de privilégier la méthode \"mail\" avec un serveur local car elle est plus rapide."; // A traduire
