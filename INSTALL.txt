@@ -27,7 +27,7 @@ Pré-requis
 Pour installer et faire fonctionner GRR, vous avez besoin de :
 -> Un serveur web/php et un serveur mysql (éventuellement sur la même
 machine)
--> Nécessité de disposer d'une version de php version supérieure ou égale à 5.4.0 (gestion des variables de type $_SESSION, fonction mysql_real_escape_string(),  ...)
+-> Nécessité de disposer d'une version de php version supérieure ou égale à 7.2.3 (gestion des variables de type $_SESSION, fonction mysql_real_escape_string(),  ...)
 
 ************************************************
 Installation - Etape 1 : Configuration de GRR
@@ -49,8 +49,7 @@ On pourra par exemple créer un répertoire "grr" dans le répertoire
 web du serveur ("htdocs" dans le cas d'Apache).
 
 Modification des droits : les droits d'écriture doivent être attribués
-* au répertoire "/images"       (chargement d'images pour les fiches de présentation des ressources)
-* au fichier "personnalisation/connect.inc.php"      (dans le cas d'une installation automatisée)
+* au répertoire "/personnalisation" 
 * au fichier "include/config_ldap.inc.php"  (dans le cas d'une authentification ldap)
 
 ***************************************************
@@ -99,8 +98,5 @@ Après l'installation : configuration de GRR en ligne
 ******************************************************
 
 Une fois le système installé, vous pouvez vous connecter à GRR :
--  nom de connexion : 'administrateur' et mot de passe : 'azerty'),
--  Par sécurité, CHANGEZ LE MOT DE PASSE de 'admin' grâce au lien "gérer mon
-compte" dans le bandeau en haut !
--  allez dans la partie "gestion" (lien dans le bandeau en haut)
+-  nom de connexion : 'administrateur' et mot de passe créé lors de l'installation'
 
