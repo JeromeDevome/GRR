@@ -18,10 +18,10 @@ namespace Twig\Profiler;
  */
 class Profile implements \IteratorAggregate, \Serializable
 {
-    const ROOT = 'ROOT';
-    const BLOCK = 'block';
-    const TEMPLATE = 'template';
-    const MACRO = 'macro';
+    public const ROOT = 'ROOT';
+    public const BLOCK = 'block';
+    public const TEMPLATE = 'template';
+    public const MACRO = 'macro';
 
     private $template;
     private $name;
@@ -33,7 +33,7 @@ class Profile implements \IteratorAggregate, \Serializable
     public function __construct(string $template = 'main', string $type = self::ROOT, string $name = 'main')
     {
         if (__CLASS__ !== static::class) {
-            @trigger_error('Overriding '.__CLASS__.' is deprecated since Twig 2.4.0 and the class will be final in 3.0.', E_USER_DEPRECATED);
+            @trigger_error('Overriding '.__CLASS__.' is deprecated since Twig 2.4.0 and the class will be final in 3.0.', \E_USER_DEPRECATED);
         }
 
         $this->template = $template;

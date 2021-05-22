@@ -38,12 +38,12 @@ use Twig\TokenParser\TokenParserInterface;
  */
 class Environment
 {
-    const VERSION = '2.14.4';
-    const VERSION_ID = 21404;
-    const MAJOR_VERSION = 2;
-    const MINOR_VERSION = 14;
-    const RELEASE_VERSION = 4;
-    const EXTRA_VERSION = '';
+    public const VERSION = '2.14.6';
+    public const VERSION_ID = 21406;
+    public const MAJOR_VERSION = 2;
+    public const MINOR_VERSION = 14;
+    public const RELEASE_VERSION = 6;
+    public const EXTRA_VERSION = '';
 
     private $charset;
     private $loader;
@@ -118,7 +118,7 @@ class Environment
         $this->setCharset($options['charset']);
         $this->baseTemplateClass = '\\'.ltrim($options['base_template_class'], '\\');
         if ('\\'.Template::class !== $this->baseTemplateClass && '\Twig_Template' !== $this->baseTemplateClass) {
-            @trigger_error('The "base_template_class" option on '.__CLASS__.' is deprecated since Twig 2.7.0.', E_USER_DEPRECATED);
+            @trigger_error('The "base_template_class" option on '.__CLASS__.' is deprecated since Twig 2.7.0.', \E_USER_DEPRECATED);
         }
         $this->autoReload = null === $options['auto_reload'] ? $this->debug : (bool) $options['auto_reload'];
         $this->strictVariables = (bool) $options['strict_variables'];
@@ -138,7 +138,7 @@ class Environment
     public function getBaseTemplateClass()
     {
         if (1 > \func_num_args() || \func_get_arg(0)) {
-            @trigger_error('The '.__METHOD__.' is deprecated since Twig 2.7.0.', E_USER_DEPRECATED);
+            @trigger_error('The '.__METHOD__.' is deprecated since Twig 2.7.0.', \E_USER_DEPRECATED);
         }
 
         return $this->baseTemplateClass;
@@ -151,7 +151,7 @@ class Environment
      */
     public function setBaseTemplateClass($class)
     {
-        @trigger_error('The '.__METHOD__.' is deprecated since Twig 2.7.0.', E_USER_DEPRECATED);
+        @trigger_error('The '.__METHOD__.' is deprecated since Twig 2.7.0.', \E_USER_DEPRECATED);
 
         $this->baseTemplateClass = $class;
         $this->updateOptionsHash();
@@ -271,7 +271,7 @@ class Environment
         } elseif ($cache instanceof CacheInterface) {
             $this->originalCache = $this->cache = $cache;
         } else {
-            throw new \LogicException(sprintf('Cache can only be a string, false, or a \Twig\Cache\CacheInterface implementation.'));
+            throw new \LogicException('Cache can only be a string, false, or a \Twig\Cache\CacheInterface implementation.');
         }
     }
 
@@ -351,7 +351,7 @@ class Environment
         }
 
         if ($name instanceof Template) {
-            @trigger_error('Passing a \Twig\Template instance to '.__METHOD__.' is deprecated since Twig 2.7.0, use \Twig\TemplateWrapper instead.', E_USER_DEPRECATED);
+            @trigger_error('Passing a \Twig\Template instance to '.__METHOD__.' is deprecated since Twig 2.7.0, use \Twig\TemplateWrapper instead.', \E_USER_DEPRECATED);
 
             return new TemplateWrapper($this, $name);
         }
@@ -623,7 +623,7 @@ class Environment
      */
     public function setCharset($charset)
     {
-        if ('UTF8' === $charset = strtoupper($charset)) {
+        if ('UTF8' === $charset = null === $charset ? null : strtoupper($charset)) {
             // iconv on Windows requires "UTF-8" instead of "UTF8"
             $charset = 'UTF-8';
         }
@@ -982,8 +982,8 @@ class Environment
     {
         $this->optionsHash = implode(':', [
             $this->extensionSet->getSignature(),
-            PHP_MAJOR_VERSION,
-            PHP_MINOR_VERSION,
+            \PHP_MAJOR_VERSION,
+            \PHP_MINOR_VERSION,
             self::VERSION,
             (int) $this->debug,
             $this->baseTemplateClass,
