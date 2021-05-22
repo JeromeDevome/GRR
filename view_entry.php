@@ -674,7 +674,7 @@ if (!isset($room))
     $room = 1;
 if (Settings::get("pdf") == '1'){
     if ((authGetUserLevel(getUserName(), $area_id, "area") > 1) || (authGetUserLevel(getUserName(), $room) >= 4))
-       echo '<br><input class="btn btn-primary" onclick="myFunction(',$id,')" value="',get_vocab("Generer_pdf"),'" />',PHP_EOL;
+       echo '<br><input class="btn btn-primary" onclick="lienPDF(',$id,')" value="',get_vocab("Generer_pdf"),'" />',PHP_EOL;
 }
 // début du formulaire, n'a lieu d'être affiché que pour un utilisateur autorisé
 if ($fin_session == 'n'){

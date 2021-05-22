@@ -437,3 +437,10 @@ function afficheMenuGauche(mode){
         document.getElementById("voir").style.display = "none";
     }
 }
+
+/*
+ *Fichier permettant l'ouverture d'un PopUP de la page view entry.php
+ */
+function lienPDF(id) {
+    var myWindow = window.open("app.php?p=pdfgenerator&id="+id+"", "_blank", "width=960");
+}
