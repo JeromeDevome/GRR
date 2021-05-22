@@ -200,6 +200,13 @@ if (isset($_POST['imprimante'])) {
         die();
     }
 }
+// Affichage pdf
+if (isset($_POST['pdf'])) {
+    if (!Settings::set('pdf', $_POST['pdf'])) {
+        echo "Erreur lors de l'enregistrement de pdf !<br />";
+        die();
+    }
+}
 // Option peridodicite
 if (isset($_POST['periodicite'])) {
     if (!Settings::set('periodicite', $_POST['periodicite'])) {
@@ -370,6 +377,7 @@ get_vocab_admin('pview_new_windows1');
 
 get_vocab_admin('legend_msg');
 get_vocab_admin('imprimante_msg');
+get_vocab_admin('affichage_pdf');
 get_vocab_admin('periodicite_msg');
 get_vocab_admin('courrier_msg');
 get_vocab_admin('holidays_msg');

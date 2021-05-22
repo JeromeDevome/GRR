@@ -122,6 +122,7 @@ $vocab['admin_view_connexions'] = "Suivi des connexions";
 $vocab['admin_view_emails'] = "Suivi des mails";
 $vocab['affichage_calendriers'] = "Affichage des calendriers";
 $vocab['affichage_calendriers_msg'] = "Nombre de calendriers à afficher sur chaque planning";
+$vocab['affichage_pdf'] = "Affichage du bouton \"Générer pdf\"";
 $vocab['affichage_reservation_date_heure'] = "la date/heure de fin de réservation";
 $vocab['affichage_reservation_duree'] = " la durée de la réservation";
 $vocab['Afficher_description_complete_dans_titre_plannings'] = "Afficher la description complète dans le titre des plannings.";

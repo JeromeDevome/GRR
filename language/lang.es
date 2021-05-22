@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR : fichier de langue espagnole
 # GRR: Traduction By JeromeB
-# Last modification : 2021-05-21
+# Last modification : 2021-05-22
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Aceptar la reserva";
@@ -122,6 +122,7 @@ $vocab['admin_view_connexions'] = "Control de las conexiones";
 $vocab['admin_view_emails'] = "Suivi des mails"; // A traduire
 $vocab['affichage_calendriers'] = "Presentación de los calendarios";
 $vocab['affichage_calendriers_msg'] = "Cantidad de calendarios mensuales a presentar en cada planificación de reserva ";
+$vocab['affichage_pdf'] = "Affichage du bouton \"Générer pdf\""; // A traduire
 $vocab['affichage_reservation_date_heure'] = "la fecha/hora de fín de reserva ";
 $vocab['affichage_reservation_duree'] = "la duración de la reserva ";
 $vocab['Afficher_description_complete_dans_titre_plannings'] = "Afficher la description complète dans le titre des plannings."; // A traduire
@@ -414,7 +415,7 @@ $vocab['explain_default_parameter'] = "Elija en esta rúbrica, la visualización
 $vocab['explain_disable_login'] = "Desactivando las conexiones, usted hace que la conexión al sitio para los usuarios sea imposible, excepto para los administradores. Además, los usuarios actualmente conectados están desconectados automáticamente.<br />Sin embargo, si la conexión no es obligatoria para el acceso al sitio en visualización, este acceso sigue siendo posible.";
 $vocab['explain_ip_autorise'] = "Limite la connexion des utilisateurs via une iP (hors administrateurs). Si GRR est hébergé, veuillez mettre une iP publique sinon les iP interne. Séparez les différentes iP par des points virgules"; // A traduire
 $vocab['explain_max_booking'] = "La restricción no se aplica a los gestores del recurso.";
-$vocab['explain_multisite'] = "Le permite administrar un nivel adicional. Los dominios se adjuntan a los sitios. "; 
+$vocab['explain_multisite'] = "Le permite administrar un nivel adicional. Los dominios se adjuntan a los sitios."; 
 $vocab['explain_session_max_length'] = "Esta duración indica el tiempo máximo de inactividad al final del cual un usuario está desconectado automáticamente.";
 $vocab['explications_active_type'] = "Observación: cuando un tipo ya no está punteado, este ya no se propone al usuario efectuando o modificando una reserva, pero las reservas ya efectuadas siguen apareciendo en las planifaciones con este tipo, a pesar de estar desactivado.";
 $vocab['Explications_des_Parametres_configuration_envoi_automatique_mails'] = "GRR usa PHPMailer para el envío de correos electrónicos. Con PHPMailer, hay dos métodos para enviar mails:<br />1) El método \"smtp\" permitiendo de conectarse a un servidor de mail lejano;<br />2) El método \"mail\" cuando el servidor de mail es local.<br />El método \"smtp\" puede también ser utilizado con un servidor local pero es preferible privilegiar la méthode \"mail\" con un servidor local porque es más rápida..";

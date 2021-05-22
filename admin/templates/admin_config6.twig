@@ -222,6 +222,12 @@
 									<td></td>
 								</tr>
 								<tr>
+									<td>{{ trad.affichage_pdf }}</td>
+									<td><input type="radio" name="pdf" value="1" id="label_14a" {% if settings.pdf == '1' %} checked {% endif %} /></td>
+									<td><input type="radio" name="pdf" value="0" id="label_14b" {% if settings.pdf == '0' %} checked {% endif %} /></td>
+									<td></td>
+								</tr>
+								<tr>
 									<td>{{ trad.holidays_msg }}</td>
 									<td><input type="radio" name="show_holidays" value="Oui" id="label_13a" {% if settings.show_holidays == 'Oui' %} checked {% endif %} /></td>
 									<td><input type="radio" name="show_holidays" value="Non" id="label_13b" {% if settings.show_holidays == 'Non' %} checked {% endif %} /></td>
