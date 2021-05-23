@@ -8,6 +8,7 @@
     ],
     "require": {
         "twig/twig": "^2.0",
-        "phpmailer/phpmailer": "^6.3"
+        "phpmailer/phpmailer": "^6.3",
+        "tecnickcom/tcpdf": "^6.4"
     }
 }

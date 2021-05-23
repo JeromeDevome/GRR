@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="./themes/default/css/pdf.css">
+	</head>
+	<body>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12" id="img">
+					<img src="{{d.logo}}" height="110" alt="logo"><br>
+					{{d.etat}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 col-md-offset-8" id="adressedestinataire">
+						{{d.nom}}<br>
+						{{d.adresse}}<br>
+						{{d.adresse2}}<br/>
+						{{d.cp}} {{d.ville}}
+				</div>
+			</div>
+			<br/>
+			<div class="row">
+				<strong> Objet: Confirmation de réservation</strong>
+			</div>
+			<!--Réservation unique-->
+			{%if d.period == 0%}
+			<div class="row">
+				<div class="col-md-8 col-md-offset-1">
+					Bonjour,<br>
+					Suite à votre demande du {{d.date}} dernier,
+					nous avons le plaisir de vous informer que la ressource <b>{{d.salle}}</b> sera mise à votre disposition,
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 col-md-offset-4">
+					<b> Du {{d.jour}} à {{d.heure}}</b>
+					<br>
+					<b> Au {{d.jour2}} à {{d.heure2}}</b>
+				</div>
+			</div>
+			<!--Réservation périodique-->
+			{%else%}
+				<div class="row">
+					<div class="col-md-8 col-md-offset-1">
+						Bonjour,<br>
+						Suite à votre demande du {{d.date}} dernier,
+						nous avons le plaisir de vous informer que la ressource <b>{{d.salle}}</b> sera mise à votre disposition chaques {{d.jourPeriode}} de {{d.heure}} à {{d.heure2}} à compté du {{d.jour}} jusqu'au {{d.finPeriode}}.
+					</div>
+				</div>
+			{% endif %}
+			<!---->
+			<div class="row">
+				<div class="col-md-8 col-md-offset-1">
+					Restant à votre disposition pour tous renseignements complémentaires.
+				</div>
+			</div>
+			<div class="row" id="signature">
+				<div class="col-md-3 col-md-offset-7">
+					Signature
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -15,50 +15,32 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-/*include "personnalisation/connect.inc.php";
-include "include/config.inc.php";
-include "include/misc.inc.php";
-include "include/functions.inc.php";
-include "include/$dbsys.inc.php";
-include "include/mincals.inc.php";
-include "include/mrbs_sql.inc.php";*/
+
 $grr_script_name = "pdfgenerator.php";
-/*require_once("./include/settings.class.php");
-if (!Settings::load())
-	die("Erreur chargement settings");
-require_once("./include/session.inc.php");
-include "include/resume_session.php";
-include "include/language.inc.php";
-setlocale(LC_TIME, 'french');*/
 
 if ("POST" == $_SERVER['REQUEST_METHOD']) 
 {
-	$logo = $_POST['logo'];
-	$etablisement = $_POST['etat'];
-	$nom = $_POST['nom'];
 	$orga = $_POST['orga'];
-	$adresse = $_POST['adresse'];
-	$adresse2 = $_POST['adresse2'];
-	$ville = $_POST['ville'];
-	$cp = $_POST['cp'];
-	$id = $_POST['id'];
-	$salle = $_POST['salle'];
-	$jour = $_POST['jour'];
-	$date = $_POST['date'];
-	$heure = $_POST['heure'];
-	$heure2 = $_POST['heure2'];
-	$jour2 = $_POST['jour2'];
-	$period = $_POST['period'];
-	$finPeriode= $_POST['finPeriode'];
-	$jourPeriode = $_POST['jourPeriode'];
-	$cle = $_POST['cle'];
-	
-	if ($period == 0){
-		include 'pdf/pdf_ResUnique.php';
-	}else{
-		include 'pdf/pdf_ResPeriode_Sem.php';
-	}
-	include 'pdf/printPDF.php';
+	$id = intval($_POST['id']);
+	$d = $_POST;
+
+	// Création PDF
+	require_once('vendor/tecnickcom/tcpdf/tcpdf.php');
+	$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+	$pdf->SetCreator(PDF_CREATOR);
+	$pdf->SetTitle("Reservation ".$id);
+	$pdf->setPrintHeader(false);
+	$pdf->setPrintFooter(false);
+	$pdf->SetMargins(PDF_MARGIN_LEFT, 1, PDF_MARGIN_RIGHT);
+	$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+	$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+	$pdf->AddPage();
+
+	$html = $twig->render('pdfconfirmation.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
+
+	$pdf->writeHTML($html, true, false, true, false, '');
+	$pdf->lastPage();
+	$pdf->Output("reservation".$id.".pdf", 'I');
 }
 else
 {
@@ -86,7 +68,6 @@ else
 			$row6 = grr_sql_row($res2, 0);
 			//$rep_type = $row6[0];
 			$d['rep_end_date'] = utf8_strftime($dformat,$row6[1]);
-			$d['jourPeriode'] = utf8_encode(strftime('%A' ,$row6[1]));
 			//$rep_opt = $row6[2];
 			//$rep_num_weeks = $row6[3];
 			//$start_time = $row6[4];
@@ -97,6 +78,7 @@ else
 		$d['dossierImg'] = $gcDossierImg;
 		$d['organisme'] = $row[10];
 		$d['salle'] = $row2[0];
+		$d['datedemande'] = utf8_encode(strftime('%A %d %B %Y' ,strtotime($row[6])));
 		$d['jour'] = utf8_encode(strftime('%A %d %B %Y' ,$row[1]));
 		$d['heure'] = strftime('%H:%M' ,$row[1]);
 		$d['heure2'] = strftime('%H:%M' ,$row[2]);
@@ -104,11 +86,12 @@ else
 
 		if ($row[4]!=0){
 			$d['period'] = 1;
-			$d['datedemande'] = utf8_encode(strftime('%A %d %B %Y' ,strtotime($row[6])));
+			$d['jourPeriode'] = utf8_encode(strftime('%A' ,$row6[1]));
+			
 		}else{
 			$d['period'] = 0;
 			$d['rep_end_date'] = 0;
-			$d['datedemande'] = 0;
+			$d['jourPeriode'] = 0;
 		}
 
 		echo $twig->render('pdfgenerator.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
