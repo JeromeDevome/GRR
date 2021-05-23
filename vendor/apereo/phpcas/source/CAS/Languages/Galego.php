@@ -19,96 +19,99 @@
  *
  * PHP Version 5
  *
- * @file     CAS/Language/Catalan.php
+ * @file     CAS/Language/Galego.php
  * @category Authentication
  * @package  PhpCAS
- * @author   Iv??n-Benjam??n Garc??a Tor?? <ivaniclixx@gmail.com>
+ * @author   Enrique Huelva Rivero enrique.huelvarivero@plexus.es
  * @license  http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  * @link     https://wiki.jasig.org/display/CASC/phpCAS
  */
 
 /**
- * Catalan language class
+ * Galego language class
  *
- * @class    CAS_Languages_Catalan
+ * @class    CAS_Languages_Galego
  * @category Authentication
  * @package  PhpCAS
- * @author   Iv??n-Benjam??n Garc??a Tor?? <ivaniclixx@gmail.com>
+ * @author   Enrique Huelva Rivero enrique.huelvarivero@plexus.es
  * @license  http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  * @link     https://wiki.jasig.org/display/CASC/phpCAS
  *
+
  * @sa @link internalLang Internationalization @endlink
  * @ingroup internalLang
  */
-class CAS_Languages_Catalan implements CAS_Languages_LanguageInterface
+class CAS_Languages_Galego implements CAS_Languages_LanguageInterface
 {
     /**
-    * Get the using server string
-    *
-    * @return string using server
-    */
+     * Get the using server string
+     *
+     * @return string using server
+     */
     public function getUsingServer()
     {
-        return 'usant servidor';
+        return 'usando servidor';
     }
 
     /**
-    * Get authentication wanted string
-    *
-    * @return string authentication wanted
-    */
+     * Get authentication wanted string
+     *
+     * @return string authentication wanted
+     */
     public function getAuthenticationWanted()
     {
-        return 'Autentificaci?? CAS necess??ria!';
+        return 'Autenticación CAS necesaria!';
     }
 
     /**
-    * Get logout string
-    *
-    * @return string logout
-    */
+     * Get logout string
+     *
+     * @return string logout
+     */
     public function getLogout()
     {
-        return 'Sortida de CAS necess??ria!';
+        return 'Saída CAS necesaria!';
     }
 
     /**
-    * Get the should have been redirected string
-    *
-    * @return string should habe been redirected
-    */
+     * Get the should have been redirected string
+     *
+     * @return string should habe been redirected
+     */
     public function getShouldHaveBeenRedirected()
     {
-        return 'Ja hauria d\ haver estat redireccionat al servidor CAS. Feu click <a href="%s">aqu??</a> per a continuar.';
+        return 'Xa debería ser redireccionado ao servidor CAS. Faga click <a href="%s">aquí</a> para continuar';
     }
 
     /**
-    * Get authentication failed string
-    *
-    * @return string authentication failed
-    */
+     * Get authentication failed string
+     *
+     * @return string authentication failed
+     */
     public function getAuthenticationFailed()
     {
-        return 'Autentificaci?? CAS fallida!';
+        return 'Autenticación CAS errada!';
     }
 
     /**
-    * Get the your were not authenticated string
-    *
-    * @return string not authenticated
-    */
+     * Get the your were not authenticated string
+     *
+     * @return string not authenticated
+     */
     public function getYouWereNotAuthenticated()
     {
-        return '<p>No est??s autentificat.</p><p>Pots tornar a intentar-ho fent click <a href="%s">aqu??</a>.</p><p>Si el problema persisteix haur??a de contactar amb l\'<a href="mailto:%s">administrador d\'aquest llocc</a>.</p>';
+        return '
+        <p>Non estás autenticado</p><p>Podes volver tentalo facendo click <a href="%s">aquí</a>.</p><p>Se o problema persiste debería contactar con el <a href="mailto:%s">administrador deste sitio</a>.</p>';   
     }
 
     /**
-    * Get the service unavailable string
-    *
-    * @return string service unavailable
-    */
+     * Get the service unavailable string
+     *
+     * @return string service unavailable
+     */
     public function getServiceUnavailable()
     {
-        return 'El servei `<b>%s</b>\' no est?? disponible (<b>%s</b>).';
+        return 'O servizo `<b>%s</b>\' non está dispoñible (<b>%s</b>).';
     }
 }
+?>

@@ -19,28 +19,28 @@
  *
  * PHP Version 5
  *
- * @file     CAS/Language/ChineseSimplified.php
+ * @file     CAS/Language/French.php
  * @category Authentication
  * @package  PhpCAS
- * @author   Pascal Aubry <pascal.aubry@univ-rennes1.fr>, Phy25 <caslang@phy25.com>
+ * @author   Pascal Aubry <pascal.aubry@univ-rennes1.fr>
  * @license  http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  * @link     https://wiki.jasig.org/display/CASC/phpCAS
  */
 
 /**
- * Chinese Simplified language class
+ * French language class
  *
- * @class    CAS_Languages_ChineseSimplified
+ * @class    CAS_Languages_French
  * @category Authentication
  * @package  PhpCAS
- * @author   Pascal Aubry <pascal.aubry@univ-rennes1.fr>, Phy25 <caslang@phy25.com>
+ * @author   Pascal Aubry <pascal.aubry@univ-rennes1.fr>
  * @license  http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  * @link     https://wiki.jasig.org/display/CASC/phpCAS
  *
  * @sa @link internalLang Internationalization @endlink
  * @ingroup internalLang
  */
-class CAS_Languages_ChineseSimplified implements CAS_Languages_LanguageInterface
+class CAS_Languages_French implements CAS_Languages_LanguageInterface
 {
     /**
      * Get the using server string
@@ -49,7 +49,7 @@ class CAS_Languages_ChineseSimplified implements CAS_Languages_LanguageInterface
      */
     public function getUsingServer()
     {
-        return '??????????????????';
+        return 'utilisant le serveur';
     }
 
     /**
@@ -59,7 +59,7 @@ class CAS_Languages_ChineseSimplified implements CAS_Languages_LanguageInterface
      */
     public function getAuthenticationWanted()
     {
-        return '????????? CAS ?????????';
+        return 'Authentication CAS nécessaire&nbsp;!';
     }
 
     /**
@@ -69,7 +69,7 @@ class CAS_Languages_ChineseSimplified implements CAS_Languages_LanguageInterface
      */
     public function getLogout()
     {
-        return '????????? CAS ?????????';
+        return 'Déconnexion demandée&nbsp;!';
     }
 
     /**
@@ -79,36 +79,38 @@ class CAS_Languages_ChineseSimplified implements CAS_Languages_LanguageInterface
      */
     public function getShouldHaveBeenRedirected()
     {
-        return '????????????????????? CAS ????????????<a href="%s">????????????</a>?????????';
+        return 'Vous auriez du etre redirigé(e) vers le serveur CAS. Cliquez <a href="%s">ici</a> pour continuer.';
     }
 
     /**
-    * Get authentication failed string
-    *
-    * @return string authentication failed
-    */
+     * Get authentication failed string
+     *
+     * @return string authentication failed
+     */
     public function getAuthenticationFailed()
     {
-        return 'CAS ???????????????';
+        return 'Authentification CAS infructueuse&nbsp;!';
     }
 
     /**
-    * Get the your were not authenticated string
-    *
-    * @return string not authenticated
-    */
+     * Get the your were not authenticated string
+     *
+     * @return string not authenticated
+     */
     public function getYouWereNotAuthenticated()
     {
-        return '<p>????????????????????????</p><p>?????????<a href="%s">????????????????????????</a>???</p><p>??????????????????????????????<a href="mailto:%s">?????????????????????</a>???</p>';
+        return '<p>Vous n\'avez pas été authentifié(e).</p><p>Vous pouvez soumettre votre requete à nouveau en cliquant <a href="%s">ici</a>.</p><p>Si le problème persiste, vous pouvez contacter <a href="mailto:%s">l\'administrateur de ce site</a>.</p>';
     }
 
     /**
-    * Get the service unavailable string
-    *
-    * @return string service unavailable
-    */
+     * Get the service unavailable string
+     *
+     * @return string service unavailable
+     */
     public function getServiceUnavailable()
     {
-        return '????????? <b>%s</b> ????????????<b>%s</b>??????';
+        return 'Le service `<b>%s</b>\' est indisponible (<b>%s</b>)';
     }
 }
+
+?>

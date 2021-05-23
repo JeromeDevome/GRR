@@ -11,6 +11,15 @@
   ),
   'versions' => 
   array (
+    'apereo/phpcas' => 
+    array (
+      'pretty_version' => '1.3.9',
+      'version' => '1.3.9.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '7325865c4cfb5005ed4e4c5cf01823be1726a2a0',
+    ),
     'devome/twig' => 
     array (
       'pretty_version' => '1.0.0+no-version-set',
@@ -28,6 +37,15 @@
       array (
       ),
       'reference' => '9256f12d8fb0cd0500f93b19e18c356906cbed3d',
+    ),
+    'psr/log' => 
+    array (
+      'pretty_version' => '1.1.4',
+      'version' => '1.1.4.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'd49695b909c3b7628b6289db5479a1c204601f11',
     ),
     'symfony/polyfill-ctype' => 
     array (
