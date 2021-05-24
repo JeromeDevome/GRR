@@ -17,23 +17,21 @@
  * (at your option) any later version.
  */
 
-include "../include/connect.inc.php";
-include "../include/config.inc.php";
-include "../include/misc.inc.php";
-include "../include/functions.inc.php";
-include "../include/$dbsys.inc.php";
-
+require_once("../personnalisation/connect.inc.php");
+require_once("../include/config.inc.php");
+require_once("../include/misc.inc.php");
+require_once("../include/functions.inc.php");
+require_once("../include/$dbsys.inc.php");
+require_once("../include/settings.class.php");
+include("../include/language.inc.php");
+include("./fonctions/maj.php");
 $grr_script_name = "maj.php";
 
-// Settings
-require_once("../include/settings.class.php");
-//Chargement des valeurs de la table settingS
-if (!Settings::load())
+//Chargement des valeurs de la table settings
+$settings = new Settings();
+if (!$settings)
 	die("Erreur chargement settings");
 
-// Paramètres langage
-include "../include/language.inc.php";
-include "./fonctions/maj.php";
 
 $valid		= isset($_POST["valid"]) ? $_POST["valid"] : 'no';
 $majscript	= false;
@@ -106,6 +104,7 @@ if(!$majscript) {
 	else
 	{
 		echo "<p>".get_vocab("maj_no_update_to_do")."</p>";
+		echo "<p>Forcer MaJ (ATTENTION) <a href=\"maj.php?forcemaj=".$version_old."\">Cliquez ici</a></p>";
 		echo "<p style=\"text-align:center;\"><a href=\"../\">".get_vocab("welcome")."</a></p>";
 	}
 }
