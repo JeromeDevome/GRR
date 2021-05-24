@@ -1,5 +1,6 @@
-[![GitHub Release][releases-shield]][releases]
-![Project Stage][project-stage-shield]
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/JeromeDevome/GRR)
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/JeromeDevome/GRR?include_prereleases)
+
 
 GRR
 ===================
@@ -7,6 +8,7 @@ GRR
 **Requiert :**
 
 PHP : >= 7.2.5 && <= 7.3; nécessite au moins les modules php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml (*)
+
 MySQL: >= 5.4 && <= 5.7
 
 https://grr.devome.com/
@@ -59,3 +61,4 @@ La sécurisation de **GRR** est dépendante de celle du serveur. Nous vous recom
 L'EQUIPE DE DEVELOPPEMENT DE GRR NE SAURAIT EN AUCUN CAS ETRE TENUE POUR RESPONSABLE EN CAS D'INTRUSION EXTERIEURE LIEE A UNE FAIBLESSE DE GRR OU DE SON SUPPORT SERVEUR.
 
 (*) en cas de dysfonctionnement, il est possible que d'autres modules de PHP soient manquants. Merci d'en tenir l'équipe de développement informée.
+
