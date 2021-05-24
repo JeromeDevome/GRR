@@ -1,3 +1,6 @@
+[![GitHub Release][releases-shield]][releases]
+![Project Stage][project-stage-shield]
+
 GRR
 ===================
 
