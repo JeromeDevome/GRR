@@ -1,9 +1,26 @@
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/JeromeDevome/GRR)
-![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/JeromeDevome/GRR?include_prereleases)
-
 
 GRR
 ===================
+
+GRR est un outil de gestion et de réservation de ressources. **GRR** est une adaptation d'une application **MRBS**.
+
+
+![GitHub language count](https://img.shields.io/github/languages/count/JeromeDevome/GRR)
+![GitHub top language](https://img.shields.io/github/languages/top/JeromeDevome/GRR)
+
+![GitHub Release Date](https://img.shields.io/github/release-date/JeromeDevome/GRR?label=date%20release)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/JeromeDevome/GRR)
+
+![GitHub (Pre-)Release Date](https://img.shields.io/github/release-date-pre/JeromeDevome/GRR?label=date%20pre-releases)
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/JeromeDevome/GRR?include_prereleases&label=pre-release)
+
+Site: https://grr.devome.com/
+
+Forum : https://site.devome.com/fr/grr/forum-grr
+
+Chat/Dicord : https://discord.com/channels/484639573243068417/
+
+
 
 **Requiert :**
 
@@ -11,9 +28,7 @@ PHP : >= 7.2.5 && <= 7.3; nécessite au moins les modules php-gd, php-mbstring, 
 
 MySQL: >= 5.4 && <= 5.7
 
-https://grr.devome.com/
 
-GRR est un outil de gestion et de réservation de ressources. **GRR** est une adaptation d'une application **MRBS**.
 
 ----------
 
