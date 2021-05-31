@@ -18,7 +18,7 @@ Site: https://grr.devome.com/
 
 Forum : https://site.devome.com/fr/grr/forum-grr
 
-Chat/Dicord : https://discord.com/channels/484639573243068417/
+Chat/Discord : https://discord.com/channels/484639573243068417/
 
 
 
