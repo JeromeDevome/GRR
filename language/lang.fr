@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue française
 # GRR: Traduction By JeromeB & Laurent Delineau & Yan Naessens
-# Last modification : 2021-05-21
+# Last modification : 2021-05-31
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accepter la réservation";
@@ -268,7 +268,7 @@ $vocab['creation_booking_for_you'] = " a réservé pour vous ";
 $vocab['creneaux_de_reservation_pre_definis'] = "Les créneaux de réservation sont basés sur des intitulés pré-définis.";
 $vocab['creneaux_de_reservation_temps'] = "Les créneaux de réservation sont basés sur le temps.";
 $vocab['ctrl_click'] = "CTRL + clic souris pour sélectionner plus d'une ressource";
-$vocab['database'] = "Base de donnée : ";
+$vocab['database'] = "Base de données : ";
 $vocab['date'] = "Début de la réservation";
 $vocab['date2'] = "Date";
 $vocab['dayafter'] = "Voir le jour suivant  ";
@@ -786,7 +786,7 @@ $vocab['smtp_allow_self_signed'] = "Permet les certificats autosignés (Défaut 
 $vocab['smtp_param_sup'] = "Ci-dessous, des paramètres supplémentaires qui sont réservés pour des utilisateurs avertis.";
 $vocab['smtp_port'] = "Port du serveur SMTP";
 $vocab['smtp_secure'] = "Connexion chiffrée (vide, ssl, tls)";
-$vocab['smtp_verify_depth'] = "Profondaire de la chaine (Défaut 3)";
+$vocab['smtp_verify_depth'] = "Profondeur de la chaine (Défaut 3)";
 $vocab['smtp_verify_peer'] = "Vérification du nom de paires (Défaut true)";
 $vocab['smtp_verify_peer_name'] = "Vérification du certificat SSL utilisé (Défaut true)";
 $vocab['ssmenuadm_actif'] = "Item de sous-menu actif";

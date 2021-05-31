@@ -11,6 +11,6 @@ $dbUser="grr";
 $dbPass="grr";
 # ligne suivante : Port MySQL laissé par défaut
 $dbPort="3306";
-# ligne suivante : permet l'encodage des mdp\n";
+# ligne suivante : permet l'encodage des mdp
 $hashpwd1= "0000111122223333GRR";
 ?>

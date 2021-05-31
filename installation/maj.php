@@ -3,7 +3,7 @@
  * installation/maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-20 19:00$
+ * Dernière modification : $Date: 2021-05-31 18:26$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
@@ -84,7 +84,7 @@ if(!$majscript)
 
 if(!$majscript) {
 
-	// Mise à jour de la base de donnée
+	// Mise à jour de la base de données
 	echo "<h3>".get_vocab("maj_bdd")."</h3>";
 
 	// Vérification du numéro de version

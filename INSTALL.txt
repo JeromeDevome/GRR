@@ -9,12 +9,12 @@ L'ensemble des fichiers nécessaires à l'installation sont rassemblés dans
 l'archive que vous avez téléchargée.
 Parmi ces fichiers figure le fichier "connect.inc.php". La configuration
 du fichier "connect.inc.php" n'est pas obligatoire si vous optez pour une
-installation automatisée de la base de donnée. En effet, la procédure
+installation automatisée de la base de données. En effet, la procédure
 d'installation vous invitera alors à entrer dans un formulaire vos paramètres
 de connexion.
 
 Dans le cas contraire, vous devez impérativement renseigner ce fichier :
--  $dbHost : le nom du serveur qui héberge votre base de donnée mysql. Si
+-  $dbHost : le nom du serveur qui héberge votre base de données mysql. Si
    c'est le même que celui qui héberge les fichiers php, mettre "localhost".
 -  $dbDb : le nom de votre base mysql.
 -  $dbUser : le nom de l'utilisateur mysql qui a les droits sur la base.
@@ -56,7 +56,7 @@ Modification des droits : les droits d'écriture doivent être attribués
 Installation - Etape 3 : création de la base Mysql
 ***************************************************
 
-Vous avez le choix entre deux types d'installation de la base de donnée Mysql:
+Vous avez le choix entre deux types d'installation de la base de données Mysql:
 
 -  une installation automatisée,
 -  une installation manuelle, réservée aux experts.

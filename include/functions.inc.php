@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-03-20 15:55$
+ * Dernière modification : $Date: 2021-05-31 18:41$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5756,7 +5756,7 @@ function pageHead2($title, $page = "with_session")
 /*
 ** Fonction qui affiche le header
 */
-function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_session')
+function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_session', $adm = 0)
 {
 	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name, $racine, $racineAd;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $gcDossierImg;

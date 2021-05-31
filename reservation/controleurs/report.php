@@ -165,6 +165,8 @@ else
 	$nb_ligne = 5;
 $k = 0;
 $conditions = array();
+// On récupère les infos sur les champs additionnels
+$overload_fields = mrbsOverloadGetFieldslist("");
 
 while ($k < $nb_ligne)
 {
@@ -182,9 +184,9 @@ while ($k < $nb_ligne)
 	if (isset($champ[$k]) && ($champ[$k] == "login"))
 		$selectCritere = "login";
 
-	// On récupère les infos sur le champ add
-	$overload_fields = mrbsOverloadGetFieldslist("");
-	// Boucle sur tous les champs additionnels de l'area
+	// On récupère les infos sur les champs additionnels
+	//$overload_fields = mrbsOverloadGetFieldslist("");
+	// Boucle sur tous les champs additionnels
 	$champsAdd = array();
 	foreach ($overload_fields as $fieldname=>$fieldtype)
 	{
@@ -363,7 +365,6 @@ if (isset($_GET["is_posted"]))
 	}
 	else
 	{
-
 		if (($summarize == 1) || ($summarize == 3)) // tableau des détails des réservations
 		{
 			// X Colonnes champs additionnels

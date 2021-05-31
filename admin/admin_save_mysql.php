@@ -1,9 +1,9 @@
 <?php
 /**
  * admin_save_mysql.php
- * Script de sauvegarde de la base de donnée mysql
+ * Script de sauvegarde de la base de données mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2021-05-31 18:26$
  * @author    Laurent Delineau & JeromeB
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
