@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:45$
+ * Dernière modification : $Date: 2021-05-31 10:14$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
@@ -897,7 +897,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
     }
     if ($version_old < "3.4.2")
     {
-        $result .= formatresult("Mise à jour jusqu'à la version 3.4.2 RC1 :","<b>","</b>");
+        $result .= formatresult("Mise à jour jusqu'à la version 3.4.2 :","<b>","</b>");
         
         $result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET `NAME` = 'nombre_jours_Jours_Cycles' WHERE `NAME` = 'nombre_jours_Jours/Cycles';");
         $result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET `NAME` = 'jour_debut_Jours_Cycles' WHERE `NAME` = 'jour_debut_Jours/Cycles';");
@@ -916,6 +916,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
             $result .= $result_inter;
         $result_inter = '';
     }
+    
     // Vérification du format des champs additionnels
     // Avant version 1.9.4, les champs add étaient stockés sous la forme <id_champ>champ_encode_en_base_64</id_champ>
     // A partir de la version 1.9.4, les champs add. sont stockés sous la forme @id_champ@url_encode(champ)@/id_champ@

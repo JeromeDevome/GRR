@@ -1,17 +1,19 @@
 GRR
-version 3.4.2 RC1, a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7
+version 3.4.2, a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7
 ===================
 
-Pour une installation en production, il est recommandé d'installer la version 3.4.1, mais si vous voulez profiter des dernières évolutions, c'est ici !
+GRR est un outil de gestion et de réservation de ressources. **GRR** est une adaptation d'une application **MRBS**.
 
 **Requiert :**
 
 PHP : >= 5.6 && <= 7.2, compatibilité vraisemblable avec PHP 7.3 ; nécessite au moins les modules php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml (*)
 MySQL: > 5.4 && <= 5.6, compatibilité vraisemblable avec MySQL 5.7
 
-http://grr.devome.com/
+Site: https://grr.devome.com/
 
-GRR est un outil de gestion et de réservation de ressources. **GRR** est une adaptation d'une application **MRBS**.
+Forum : https://site.devome.com/fr/grr/forum-grr
+
+Chat/Discord : https://discord.com/channels/484639573243068417/
 
 -------------
 Installation
