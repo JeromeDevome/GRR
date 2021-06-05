@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-06-01 18:36$
+ * Dernière modification : $Date: 2021-06-05 14:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -720,8 +720,7 @@ function verif_version()
 	global $version_grr;
 	$_version_grr = $version_grr;
 	$version_old = Settings::get("version");
-
-	if ($version_old == '' || version_compare($_version_grr, $version_old, '<'))
+	if ($version_old == '' || version_compare($_version_grr, $version_old, '>'))
 		return true;
 	else
 		return false;

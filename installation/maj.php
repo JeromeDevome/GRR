@@ -17,6 +17,8 @@
  * (at your option) any later version.
  */
 
+$grr_script_name = "maj.php";
+
 require_once("../personnalisation/connect.inc.php");
 require_once("../include/config.inc.php");
 require_once("../include/misc.inc.php");
@@ -25,7 +27,6 @@ require_once("../include/$dbsys.inc.php");
 require_once("../include/settings.class.php");
 include("../include/language.inc.php");
 include("./fonctions/maj.php");
-$grr_script_name = "maj.php";
 
 //Chargement des valeurs de la table settings
 $settings = new Settings();
