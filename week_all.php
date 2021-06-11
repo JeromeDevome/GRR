@@ -415,7 +415,8 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
     echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
 	echo "</div>";
 }
-echo '<h4 class="titre">'.$this_area_name.' - '.get_vocab("all_rooms").'<br>'.get_vocab("From_").utf8_strftime($dformat, $date_start).get_vocab('to'). utf8_strftime($dformat, $date_end). '</h4>'.PHP_EOL;
+echo '<h4 class="titre">'.$this_area_name.' - '.get_vocab("all_rooms").PHP_EOL;
+echo '<br>'.get_vocab("week").get_vocab("deux_points").utf8_strftime($dformat, $date_start).' - '.utf8_strftime($dformat, $date_end).'</h4>'.PHP_EOL;
 echo "</div>";
 echo "</caption>";
 echo '<thead>'.PHP_EOL;

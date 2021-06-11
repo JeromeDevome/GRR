@@ -3,7 +3,7 @@
  * admin_config4.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (sécurité, connexions)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:59$
+ * Dernière modification : $Date: 2021-06-05 14:59$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -109,7 +109,7 @@ if ($dbsys == "mysql")
     //********************************
     //
 	if($restaureBBD == 1){
-		echo "\n<hr /><h3>".get_vocab('Restauration de la base GRR')."</h3>";
+		echo "\n<hr /><h3>".get_vocab('Restauration_de_la_base_GRR')."</h3>";
 		echo "\n<p>".get_vocab('explain_restore')."</p>";
 		echo "\n<p><span class=\"avertissement\"><i>".get_vocab('warning_restore')."</i></span></p>\n";
 		?>

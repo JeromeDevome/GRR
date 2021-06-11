@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-04-24 15:24$
+ * Dernière modification : $Date: 2021-06-11 09:53$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -37,7 +37,7 @@ include "include/language.inc.php";
 Definition_ressource_domaine_site();
 
 // Initilisation des variables
-//$affiche_pview = '1';
+$affiche_pview = '1';
 if (!isset($_GET['pview']))
 	$_GET['pview'] = 0;
 else
@@ -439,17 +439,20 @@ else{
 echo '<table class="semaine floatthead table-bordered table-striped">',PHP_EOL;
 // le titre de la table
 echo "<caption>";
-echo "<div class=ligne23>";
-if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
+// liens semaine avant-après et imprimante si page non imprimable
+if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 {
-	echo '<div class="left">',PHP_EOL,
-	'<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'week.php?year=',$yy,'&amp;month=',$ym,'&amp;day=',$yd,'&amp;room=',$room,
-	'\';"><span class="glyphicon glyphicon-backward"></span>',get_vocab("weekbefore"),'</button></div>';
-	include "include/trailer.inc.php";
-	echo '<div class="right">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'week.php?year=',$ty,
-	'&amp;month=',$tm,'&amp;day=',$td,'&amp;room=',$room,'\';">',get_vocab('weekafter'),'<span class="glyphicon glyphicon-forward"></span></button></div>';
+	echo "\n
+	<div class='ligne23'>
+		<div class=\"left\">
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='week.php?year=$yy&amp;month=$ym&amp;day=$yd&amp;room=$room';\"><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("weekbefore")." </button>
+		</div>";
+		include "./include/trailer.inc.php";
+		echo "<div class=\"right\">
+			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='week.php?year=$ty&amp;month=$tm&amp;day=$td&amp;room=$room';\">".get_vocab('weekafter')." <span class=\"glyphicon glyphicon-forward\"></span></button>
+		</div>
+	</div>";
 }
-echo "</div>";
 echo "<div>";
 if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 {
