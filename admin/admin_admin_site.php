@@ -3,9 +3,9 @@
  * admin_admin_site.php
  * Interface de gestion des administrateurs de sites de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-23 11:50$
+ * Dernière modification : $Date: 2021-03-13 12:09$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -26,9 +26,7 @@ if (!isset($id_site))
 	settype($id_site, "integer");
 else 
     $id_site = intval(clean_input($id_site));
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 check_access(6, $back);
 if (Settings::get("module_multisite") != "Oui")
 {

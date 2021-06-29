@@ -3,9 +3,9 @@
  * admin_config_calend3.php
  * interface permettant la configuration des jours-cycles (étape 3)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-27 12:50$
+ * Dernière modification : $Date: 2021-05-21 14:35$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -17,7 +17,6 @@
  */
 $grr_script_name = "admin_config_calend3.php";
 
-$back = '';
 function cal3($month, $year)
 {
     global $weekstarts;
@@ -96,8 +95,7 @@ function cal3($month, $year)
     $s .= "</table>\n";
     return $s;
 }
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 check_access(6, $back);
 // code HTML
 start_page_w_header("", "", "", $type = "with_session");
@@ -137,7 +135,7 @@ if (!isset($_GET['pview']))
 			echo " checked=\"checked\"";
 		echo " />\n".get_vocab("nouveau_jour_cycle");
 		echo "<select name=\"newDay\" size=\"1\" onclick=\"check(1)\">";
-		for ($i = 1; $i < (Settings::get("nombre_jours_Jours/Cycles") + 1); $i++)
+		for ($i = 1; $i < (Settings::get("nombre_jours_Jours_Cycles") + 1); $i++)
 		{
 			echo "<option value=\"".$i."\" ";
 			if ($jour_cycle == $i)

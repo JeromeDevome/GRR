@@ -3,9 +3,9 @@
  * admin_calend2.php
  * interface permettant la réservation en bloc d'un créneau sur plusieurs Jours ou ressources
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-23 11:50$
+ * Dernière modification : $Date: 2021-03-13 12:06$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -19,9 +19,7 @@ $grr_script_name = "admin_calend2.php";
 
 include "../include/admin.inc.php";
 
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 check_access(4, $back);
 // Initialisation
 $etape = isset($_POST["etape"]) ? $_POST["etape"] : NULL;
@@ -186,7 +184,7 @@ if ($etape == 3) //sélection des jours
 		die();
 	}
 
-	echo "<form action=\"admin_calend2.php\" method=\"post\" id=\"formulaire\" >\n";
+	echo "<form action=\"admin_calend2.php\" method=\"post\" id=\"formulaire\" name=\"formulaire\" >\n";
 	$test_enable_periods_y = 0;
 	$test_enable_periods_n = 0;
 	foreach ( $rooms as $room_id )
@@ -265,13 +263,13 @@ if ($etape == 3) //sélection des jours
 		$show = $basetime + ($i * 24 * 60 * 60);
 		$lday = utf8_strftime('%A',$show);
 		echo "<tr>\n";
-		echo "<td><span class='small'><a href='admin_calend2.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), true, '$lday' ); return false;\">".get_vocab("check_all_the").$lday."s</a></span></td>\n";
-		echo "<td><span class='small'><a href='admin_calend2.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, '$lday' ); return false;\">".get_vocab("uncheck_all_the").$lday."s</a></span></td>\n";
+		echo "<td><span class='small'><a href='admin_calend2.php' onclick=\"setCheckboxesGrr('formulaire', true, '$lday' ); return false;\">".get_vocab("check_all_the").$lday."s</a></span></td>\n";
+		echo "<td><span class='small'><a href='admin_calend2.php' onclick=\"setCheckboxesGrr('formulaire', false, '$lday' ); return false;\">".get_vocab("uncheck_all_the").$lday."s</a></span></td>\n";
 		if ($i == 0)
 			echo "<td rowspan=\"8\">  </td><td rowspan=\"8\">$texte_debut_fin_reservation</td>\n";
 		echo "</tr>\n";
 	}
-	echo "<tr>\n<td><span class='small'><a href='admin_calend2.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span></td>\n";
+	echo "<tr>\n<td><span class='small'><a href='admin_calend2.php' onclick=\"setCheckboxesGrr('formulaire', false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span></td>\n";
 	echo "<td> </td></tr>\n";
 	echo "</table>\n";
 	echo "<table>\n";

@@ -3,9 +3,9 @@
  * admin_type_modify.php
  * interface de création/modification des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-26 12:00$
+ * Dernière modification : $Date: 2021-03-13 11:35$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -20,9 +20,7 @@ $grr_script_name = "admin_type_modify.php";
 include "../include/admin.inc.php";
 
 $ok = NULL;
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-    $back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 check_access(6, $back);
 // Initialisation
 $id_type = isset($_GET["id_type"]) ? $_GET["id_type"] : 0;

@@ -4,9 +4,9 @@
  * admin_confirm_change_date_bookings.php
  * interface de confirmation des changements de date de début et de fin de réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-23 12:00$
+ * Dernière modification : $Date: 2021-03-13 11:52$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -20,9 +20,7 @@ $grr_script_name = "admin_confirm_change_date_bookings.php";
 
 include "../include/admin.inc.php";
 
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 unset($display);
 $display = isset($_GET["display"]) ? $_GET["display"] : NULL;
 $day   = date("d");

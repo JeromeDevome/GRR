@@ -3,9 +3,9 @@
  * admin_config_calend2.php
  * interface permettant la configuration des jours-cycles (étape 2)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-10 15:10$
+ * Dernière modification : $Date: 2021-03-13 11:57$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -17,9 +17,7 @@
  */
 $grr_script_name = "admin_config_calend2.php";
 
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 check_access(6, $back);
 if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 {
@@ -89,14 +87,14 @@ for ($i = 0; $i < 7; $i++)
 	$show = $basetime + ($i * 24 * 60 * 60);
 	$lday = utf8_strftime('%A',$show);
 	echo "<tr>\n";
-	echo "<td><span class='small'><a href='admin_calend_jour_cycle.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), true, '$lday' ); return false;\">".get_vocab("check_all_the").$lday."s</a></span></td>\n";
-	echo "<td><span class='small'><a href='admin_calend_jour_cycle.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, '$lday' ); return false;\">".get_vocab("uncheck_all_the").$lday."s</a></span></td>\n";
+	echo "<td><span class='small'><a href='admin_calend_jour_cycle.php' onclick=\"setCheckboxesGrr('formulaire', true, '$lday' ); return false;\">".get_vocab("check_all_the").$lday."s</a></span></td>\n";
+	echo "<td><span class='small'><a href='admin_calend_jour_cycle.php' onclick=\"setCheckboxesGrr('formulaire', false, '$lday' ); return false;\">".get_vocab("uncheck_all_the").$lday."s</a></span></td>\n";
 	echo "</tr>\n";
 }
-echo "<tr>\n<td><span class='small'><a href='admin_calend_jour_cycle.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span></td>\n";
+echo "<tr>\n<td><span class='small'><a href='admin_calend_jour_cycle.php' onclick=\"setCheckboxesGrr('formulaire', false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span></td>\n";
 echo "<td></td></tr>\n";
 echo "</table>\n";
-echo "<form action=\"admin_calend_jour_cycle.php?page_calend=2\" method=\"post\" id=\"formulaire\">\n";
+echo "<form action=\"admin_calend_jour_cycle.php?page_calend=2\" method=\"post\" id=\"formulaire\" name=\"formulaire\">\n";
 echo "<table>\n";
 $n = Settings::get("begin_bookings");
 $end_bookings = Settings::get("end_bookings");

@@ -3,9 +3,9 @@
  * admin_room_del
  * Interface de confirmation de suppression d'un domaine ou d'une ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-02 11:47$
+ * Dernière modification : $Date: 2021-03-13 11:41$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -30,8 +30,7 @@ if (isset($id_area))
 	settype($id_area,"integer");
 if (isset($id_site))
 	settype($id_site,"integer");
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 if ($type == "room")
 {
 	if ((authGetUserLevel(getUserName(),$room) < 4) || (!verif_acces_ressource(getUserName(), $room)))

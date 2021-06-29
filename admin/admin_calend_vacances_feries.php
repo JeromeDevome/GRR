@@ -3,9 +3,9 @@
  * admin_calend_vacances_feries.php
  * Interface permettant la définiton des jours fériés ou de vacances
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-23 11:50$
+ * Dernière modification : $Date: 2021-03-13 12:05$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -19,9 +19,7 @@ $grr_script_name = "admin_calend_vacances_feries.php";
 
 include "../include/admin.inc.php";
 
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 check_access(6, $back);
 # print the page header
 start_page_w_header("", "", "", $type="with_session");
@@ -119,10 +117,10 @@ else if (!isset($_POST['define_holidays'])){
             }
 
             echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"{$cocheFeries} return false;\">".get_vocab("vacances_feries_FR")."</a></span> || ";
-            echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaireF'), false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span> || ";
+            echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"setCheckboxesGrr('formulaireF', false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span> || ";
             echo "<span class='small'><a href='admin_calend_vacances_feries.php' >".get_vocab("returnprev")."</a></span>";
 
-            echo "<form action=\"admin_calend_vacances_feries.php\" method=\"post\" id=\"formulaireF\">\n";
+            echo "<form action=\"admin_calend_vacances_feries.php\" method=\"post\" id=\"formulaireF\" name=\"formulaireF\">\n";
             echo "<table cellspacing=\"20\">\n";
             $debligne = 1;
             $inc = 0;
@@ -257,10 +255,10 @@ else if (!isset($_POST['define_holidays'])){
                 unset($schoolHoliday);
 
                 echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"{$cocheVacances} return false;\">".get_vocab("vacances_FR").$zone."</a></span> || ";
-                echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaireV'), false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span> || ";
+                echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"setCheckboxesGrr('formulaireV', false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span> || ";
                 echo "<span class='small'><a href='admin_calend_vacances_feries.php' >".get_vocab("returnprev")."</a></span>\n";
 
-                echo "<form action=\"admin_calend_vacances_feries.php\" method=\"post\" id=\"formulaireV\">\n";
+                echo "<form action=\"admin_calend_vacances_feries.php\" method=\"post\" id=\"formulaireV\" name=\"formulaireV\">\n";
                 echo "<table cellspacing=\"20\">\n";
                 $debligne = 1;
                 $inc = 0;

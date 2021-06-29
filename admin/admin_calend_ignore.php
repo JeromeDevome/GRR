@@ -3,9 +3,9 @@
  * admin_calend_ignore.php
  * Interface permettant la la réservation en bloc de journées entières
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-04  11:42$
+ * Dernière modification : $Date: 2021-03-13  12:06$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -19,9 +19,7 @@ $grr_script_name = "admin_calend_ignore.php";
 
 include "../include/admin.inc.php";
 
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 check_access(6, $back);
 if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 {
@@ -98,7 +96,7 @@ include "admin_col_gauche2.php";
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 echo "<h2>".get_vocab('calendrier_des_jours_hors_reservation')."</h2>\n";
 echo "\n<p>".get_vocab("les_journees_cochees_sont_ignorees")."</p>";
-echo "<form action=\"admin_calend_ignore.php\" method=\"post\" id=\"formulaire\">\n";
+echo "<form action=\"admin_calend_ignore.php\" method=\"post\" id=\"formulaire\" name=\"formulaire\">\n";
 echo "<p><b>Option :</b> Cochez la case ci-contre pour ajouter au délai minimum avant réservation la durée des jours hors réservation ";
 echo "<input type='checkbox' name='delai_ouvert' value='1' ";
 if (Settings::get('delai_ouvert') == 1) echo 'checked="checked"';
@@ -112,8 +110,8 @@ for ($i = 0; $i < 7; $i++)
 	$show = $basetime + ($i * 24 * 60 * 60);
 	$lday = utf8_strftime('%A',$show);
 	echo "<tr>\n";
-	echo "<td><span class='small'><a href='admin_calend_ignore.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), true, '$lday' ); return false;\">".get_vocab("check_all_the").$lday."s</a></span></td>\n";
-	echo "<td><span class='small'><a href='admin_calend_ignore.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, '$lday' ); return false;\">".get_vocab("uncheck_all_the").$lday."s</a></span></td>\n";
+	echo "<td><span class='small'><a href='admin_calend_ignore.php' onclick=\"setCheckboxesGrr('formulaire', true, '$lday' ); return false;\">".get_vocab("check_all_the").$lday."s</a></span></td>\n";
+	echo "<td><span class='small'><a href='admin_calend_ignore.php' onclick=\"setCheckboxesGrr('formulaire', false, '$lday' ); return false;\">".get_vocab("uncheck_all_the").$lday."s</a></span></td>\n";
 	echo "</tr>\n";
 }
 if (Settings::get("show_holidays") == 'Oui'){ // on n'affiche ce choix que si les jours fériés et les vacances sont définis
@@ -145,7 +143,7 @@ if (Settings::get("show_holidays") == 'Oui'){ // on n'affiche ce choix que si le
     echo "</td>";
     echo "</tr>";
 }
-echo "<tr>\n<td></td><td><span class='small'><a href='admin_calend_ignore.php' onclick=\"setCheckboxesGrr(document.getElementById('formulaire'), false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span></td>\n";
+echo "<tr>\n<td></td><td><span class='small'><a href='admin_calend_ignore.php' onclick=\"setCheckboxesGrr('formulaire', false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span></td>\n";
 echo "</tr>\n";
 echo "</table>\n";
 //echo "<form action=\"admin_calend_ignore.php\" method=\"post\" id=\"formulaire\">\n";

@@ -3,9 +3,9 @@
  * admin_config_imap.php
  * Interface permettant l'activation de la configuration de l'authentification pop/imap  
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-09-01 12:30$
+ * Dernière modification : $Date: 2021-03-13 11:55$
  * @author    Laurent Delineau & JeromeB & Gilles Martin & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -52,9 +52,7 @@ if (isset($_POST['imap_statut']))
 		$grrSettings['imap_statut'] = $_POST['imap_statut'];
 	}
 }
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 if ((isset($imap_restrictions)) && ($imap_restrictions == true))
 {
 	showAccessDenied($back);

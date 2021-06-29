@@ -3,9 +3,9 @@
  * admin_config4.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (sécurité, connexions)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-07-28 11:10$
+ * Dernière modification : $Date: 2021-06-05 14:59$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -20,9 +20,7 @@ $grr_script_name = "admin_config4.php";
 
 include "../include/admin.inc.php";
 
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 $_SESSION['chemin_retour'] = "admin_accueil.php";
 $day   = date("d");
 $month = date("m");
@@ -111,7 +109,7 @@ if ($dbsys == "mysql")
     //********************************
     //
 	if($restaureBBD == 1){
-		echo "\n<hr /><h3>".get_vocab('Restauration de la base GRR')."</h3>";
+		echo "\n<hr /><h3>".get_vocab('Restauration_de_la_base_GRR')."</h3>";
 		echo "\n<p>".get_vocab('explain_restore')."</p>";
 		echo "\n<p><span class=\"avertissement\"><i>".get_vocab('warning_restore')."</i></span></p>\n";
 		?>
