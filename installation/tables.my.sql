@@ -11,7 +11,7 @@ CREATE TABLE grr_j_user_room (login varchar(40) NOT NULL default '', id_room int
 DROP TABLE IF EXISTS grr_j_useradmin_area;
 CREATE TABLE grr_j_useradmin_area (login varchar(40) NOT NULL default '', id_area int(11) NOT NULL default '0', PRIMARY KEY  (login,id_area) );
 DROP TABLE IF EXISTS grr_log;
-CREATE TABLE grr_log (LOGIN varchar(40) NOT NULL default '', `START` datetime NOT NULL default '1970-01-01 00:00:00', SESSION_ID varchar(64) NOT NULL default '', REMOTE_ADDR varchar(16) NOT NULL default '', USER_AGENT varchar(255) NOT NULL default '', REFERER varchar(255) NOT NULL default '', AUTOCLOSE enum('0','1') NOT NULL default '0', `END` datetime NOT NULL default '1970-01-01 00:00:00', PRIMARY KEY  (SESSION_ID,`START`));
+CREATE TABLE grr_log (LOGIN varchar(40) NOT NULL default '', `START` datetime NOT NULL default '1970-01-01 00:00:00', SESSION_ID varchar(64) NOT NULL default '', REMOTE_ADDR varchar(40) NOT NULL default '', USER_AGENT varchar(255) NOT NULL default '', REFERER varchar(255) NOT NULL default '', AUTOCLOSE enum('0','1') NOT NULL default '0', `END` datetime NOT NULL default '1970-01-01 00:00:00', PRIMARY KEY  (SESSION_ID,`START`));
 DROP TABLE IF EXISTS grr_log_mail;
 CREATE TABLE grr_log_mail (idlogmail int(11) NOT NULL AUTO_INCREMENT, date int(11) NOT NULL, de varchar(255) NOT NULL, a varchar(255) NOT NULL, sujet varchar(255) NOT NULL, message text NOT NULL, PRIMARY KEY (`idlogmail`));
 DROP TABLE IF EXISTS grr_log_resa;
