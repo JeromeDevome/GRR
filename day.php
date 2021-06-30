@@ -58,8 +58,7 @@ $year = isset($_GET['year']) ? intval($_GET['year']) : date("Y");
 global $racine, $racineAd, $desactive_VerifNomPrenomUser;
 
 // Lien de retour
-$back = (isset($_SERVER['HTTP_REFERER']))? $_SERVER['HTTP_REFERER'] : page_accueil() ;
-
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : page_accueil() ;
 // Type de session
 $user_name = getUserName();
 if ((Settings::get("authentification_obli") == 0) && ($user_name == ''))
@@ -238,7 +237,7 @@ if ($_GET['pview'] != 1){
     echo "<div id='planning2'>";
 }
 else{
-	echo '<div id="print_planning">';
+	echo '<div id="print_planning">'.PHP_EOL;
 }
 echo "<table class='jour floatthead table-striped table-bordered'>";
 echo "<caption>";
@@ -275,8 +274,8 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 }
 echo "<div>".PHP_EOL;
 if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
-{    
-    echo "<div class=\"left\"> "; // afficher ou cacher le menu
+{ // afficher ou cacher le menu
+    echo "<div class=\"left\"> ";
     $mode = Settings::get("menu_gauche");
     $alt = $mode;
     if ($mode == 0) $alt = 1; // il faut bien que le menu puisse s'afficher, par défaut ce sera à gauche sauf choix autre par setting
@@ -527,14 +526,9 @@ if ($_GET['pview'] != 1)
 }
 echo '</div>'.PHP_EOL; // fin planning2
 affiche_pop_up(get_vocab('message_records'), 'user');
-
-?>
-
-<?php
 unset($row);
 echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
-
-echo "</section>\n";
+echo "</section>";
 ?>
 <script type="text/javascript">
 	$(document).ready(function(){

@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-01-25 11:27$
+ * Dernière modification : $Date: 2021-05-13 10:51$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -56,7 +56,7 @@ $year = (isset($_GET['year']) && is_numeric($_GET['year']))? $_GET['year'] : dat
 global $racine, $racineAd, $desactive_VerifNomPrenomUser;
 
 // Lien de retour
-$back = (isset($_SERVER['HTTP_REFERER']))? $_SERVER['HTTP_REFERER'] : page_accueil() ;
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES): page_accueil();
 
 // Type de session
 if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
@@ -415,7 +415,8 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
     echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
 	echo "</div>";
 }
-echo '<h4 class="titre">'.$this_area_name.' - '.get_vocab("all_rooms").'<br>'.get_vocab("From_").utf8_strftime($dformat, $date_start).get_vocab('to'). utf8_strftime($dformat, $date_end). '</h4>'.PHP_EOL;
+echo '<h4 class="titre">'.$this_area_name.' - '.get_vocab("all_rooms").PHP_EOL;
+echo '<br>'.get_vocab("week").get_vocab("deux_points").utf8_strftime($dformat, $date_start).' - '.utf8_strftime($dformat, $date_end).'</h4>'.PHP_EOL;
 echo "</div>";
 echo "</caption>";
 echo '<thead>'.PHP_EOL;
@@ -586,9 +587,9 @@ foreach($ressources as $row)
                     $_GET['pview'] != 1)
 					{
 						if ($enable_periods == 'y')
-							echo '<a href="edit_entry.php?room=',$row["2"],'&amp;period=&amp;year=',$cyear,'&amp;month=',$cmonth,'&amp;day=',$cday,'&amp;page=week_all" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;
+							echo '<a href="edit_entry.php?room=',$row['id'],'&amp;period=&amp;year=',$cyear,'&amp;month=',$cmonth,'&amp;day=',$cday,'&amp;page=week_all" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;
 						else
-							echo '<a href="edit_entry.php?room=',$row["2"],'&amp;hour=',$hour,'&amp;minute=0&amp;year=',$cyear,'&amp;month=',$cmonth,'&amp;day=',$cday,'&amp;page=week_all" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;;
+							echo '<a href="edit_entry.php?room=',$row['id'],'&amp;hour=',$hour,'&amp;minute=0&amp;year=',$cyear,'&amp;month=',$cmonth,'&amp;day=',$cday,'&amp;page=week_all" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;;
 					}
 					else
 						echo ' '.PHP_EOL;

@@ -59,8 +59,7 @@ $year = (isset($_GET['year']))? $_GET['year'] : date("Y");
 global $racine, $racineAd, $desactive_VerifNomPrenomUser;
 
 // Lien de retour
-$back = (isset($_SERVER['HTTP_REFERER']))? $_SERVER['HTTP_REFERER'] : page_accueil() ;
-
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : page_accueil() ;
 // Type de session
 $user_name = getUserName();
 if ((Settings::get("authentification_obli") == 0) && ($user_name == ''))
