@@ -2,9 +2,9 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2020-10-06 16:00$
+ * Dernière modification : $Date: 2021-04-18 17:48$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -894,4 +894,164 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 		}
 	}
 }
+/** grrOverloadGetFieldslist()
+ * paramètres : $id_area = id du domaine, $room_id = id de la ressource
+ * résultat : un tableau de tableaux, indexé par les id des champs additionnels, de contenus les attributs des champs additionnels
+ *
+ */
+function grrOverloadGetFieldslist($id_area="", $room_id = 0)
+{
+	if ($room_id > 0 )
+	{
+		// il faut rechercher le id_area en fonction du room_id, car les champs sont définis au niveau des domaines
+		$id_area = grr_sql_query1("SELECT area_id FROM ".TABLE_PREFIX."_room WHERE id='".$room_id."'");
+		if ($id_area == -1)
+		{
+			fatal_error(1, get_vocab('error_room') . $room_id . get_vocab('not_found'));
+			$id_area = "";
+		}
+	}
+	if ($id_area == "") // si l'id de l'area n'est pas précisé, on cherche tous les champs additionnels
+		$sqlstring = "SELECT fieldname ,fieldtype, ".TABLE_PREFIX."_overload.id, fieldlist, ".TABLE_PREFIX."_area.area_name, affichage, overload_mail, ".TABLE_PREFIX."_overload.obligatoire, ".TABLE_PREFIX."_overload.confidentiel FROM ".TABLE_PREFIX."_overload, ".TABLE_PREFIX."_area WHERE(".TABLE_PREFIX."_overload.id_area = ".TABLE_PREFIX."_area.id) ORDER BY fieldname,fieldtype ";
+	else
+		$sqlstring = "SELECT fieldname,fieldtype, id, fieldlist, affichage, overload_mail, obligatoire, confidentiel FROM ".TABLE_PREFIX."_overload WHERE id_area='".$id_area."' ORDER BY fieldname,fieldtype";
+	$result = grr_sql_query($sqlstring);
+	if (!$result)
+		fatal_error(1, grr_sql_error());
+	if (grr_sql_count($result) <0)
+		fatal_error(1, get_vocab('error_area') . $id_area . get_vocab('not_found'));
+    $fieldslist = array();
+	foreach($result as $field_row)
+	{
+		if ($id_area == "")
+            $fieldslist[$field_row["id"]]["name"] = $field_row["fieldname"]." (".$field_row["area_name"].")";
+        else 
+            $fieldslist[$field_row["id"]]["name"] = $field_row["fieldname"];
+		$fieldslist[$field_row["id"]]["type"] = $field_row["fieldtype"];
+        if (trim($field_row["fieldlist"]) != "")
+        {
+            $tab_list = explode("|", $field_row["fieldlist"]);
+            foreach ($tab_list as $value)
+            {
+                if (trim($value) != "")
+                    $fieldslist[$field_row["id"]]["list"][] = trim($value);
+            }
+        }
+        $fieldslist[$field_row["id"]]["affichage"] = $field_row["affichage"];
+        $fieldslist[$field_row["id"]]["overload_mail"] = $field_row["overload_mail"];
+        $fieldslist[$field_row["id"]]["obligatoire"] = $field_row["obligatoire"];
+        $fieldslist[$field_row["id"]]["confidentiel"] = $field_row["confidentiel"];
+	}
+	return $fieldslist;
+}
+/** grrEntryGetOverloadDesc()
+ * paramètre : $id_entry = id de la réservation
+ * renvoie un tableau bidimensionnel indexé par les id des champs additionnels, de contenus les attributs des champs additionnels
+ *
+ */
+function grrEntryGetOverloadDesc($id_entry)
+{
+	$room_id = 0;
+	$overload_array = array();
+	$overload_desc = "";
+	//On récupère les données overload desc dans ".TABLE_PREFIX."_entry.
+	if ($id_entry != NULL)
+	{
+		$overload_array = array();
+		$sqlstring = "SELECT overload_desc,room_id FROM ".TABLE_PREFIX."_entry WHERE id=".$id_entry.";";
+		$result = grr_sql_query($sqlstring);
+		if (!$result)
+			fatal_error(1, grr_sql_error());
+		if (grr_sql_count($result) != 1)
+			fatal_error(1, get_vocab('entryid') . $id_entry . get_vocab('not_found'));
+		$overload_desc_row = grr_sql_row($result, 0);
+		grr_sql_free($result);
+		$overload_desc = $overload_desc_row[0];
+		$room_id = $overload_desc_row[1];
+	}
+	if ( $room_id >0 )
+	{
+		$area_id = mrbsGetAreaIdFromRoomId($room_id);
+		// Avec l'id_area on récupère la liste des champs additionnels dans ".TABLE_PREFIX."_overload.
+		$fieldslist = grrOverloadGetFieldslist($area_id);
+		foreach ($fieldslist as $fieldid=>$fielddata)
+		{
+			$begin_string = "@".$fieldid."@";
+			$end_string = "@/".$fieldid."@";
+			$l1 = strlen($begin_string);
+			$l2 = strlen($end_string);
+			$chaine = $overload_desc;
+			$balise_fermante = 'n';
+			$balise_ouvrante = 'n';
+			$traitement1 = true;
+			$traitement2 = true;
+			while (($traitement1 !== false) || ($traitement2 !== false))
+			{
+				// le premier traitement cherche la prochaine occurrence de $begin_string et retourne la portion de chaine après cette occurrence
+				if ($traitement1 != false)
+				{
+					$chaine1 = strstr($chaine, $begin_string);
+					// retourne la sous-chaîne de $chaine, allant de la première occurrence de $begin_string jusqu'à la fin de la chaîne.
+					if ($chaine1 !== false)
+					{
+						// on a trouvé une occurence de $begin_string
+						$balise_ouvrante = 'y';
+						// on sait qu'il y a au moins une balise ouvrante
+						$chaine = substr($chaine1, $l1, strlen($chaine1)- $l1);
+						// on retourne la chaine en ayant éliminé le début de chaine correspondant à $begin_string
+						$result = $chaine;
+						// On mémorise la valeur précédente
+					}
+					else
+						$traitement1 = false;
+				}
+				//le 2ème traitement cherche la dernière occurence de $end_string en partant de la fin et retourne la portion de chaine avant cette occurence
+				if ($traitement2 != false)
+				{
+					//La boucle suivante a pour effet de déterminer la dernière occurence de $end_string
+					$ind = 0;
+					$end_pos = true;
+					while ($end_pos !== false)
+					{
+						$end_pos = strpos($chaine,$end_string,$ind);
+						if ($end_pos !== false)
+						{
+							$balise_fermante='y';
+							$ind_old = $end_pos;
+							$ind = $end_pos + $l2;
+						}
+						else
+							break;
+					}
+					//a ce niveau, $ind_old est la dernière occurrence de $end_string trouvée dans $chaine
+					if ($ind != 0 )
+					{
+						$chaine = substr($chaine,0,$ind_old);
+						$result = $chaine;
+					}
+					else
+						$traitement2=false;
+				}
+			}
+			// while
+			if (($balise_fermante == 'n' ) || ($balise_ouvrante == 'n'))
+				$overload_array[$fieldid]["valeur"]='';
+			else
+				$overload_array[$fieldid]["valeur"]=urldecode($result);
+            $sql = "SELECT fieldname, affichage, overload_mail, obligatoire, confidentiel FROM ".TABLE_PREFIX."_overload WHERE id = '".$fieldid."'";
+            $res = grr_sql_query($sql);
+            if (!$res)
+                fatal_error(1, grr_sql_error());
+            $row = grr_sql_row_keyed($res,0);
+            $overload_array[$fieldid]["name"] = $row["fieldname"];
+			$overload_array[$fieldid]["affichage"] = $row["affichage"];
+			$overload_array[$fieldid]["overload_mail"] = $row["overload_mail"];
+			$overload_array[$fieldid]["obligatoire"] = $row["obligatoire"];
+			$overload_array[$fieldid]["confidentiel"] = $row["confidentiel"];
+		}
+		return $overload_array;
+	}
+	return $overload_array;
+}
+
 ?>
