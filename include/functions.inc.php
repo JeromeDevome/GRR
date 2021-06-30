@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-04-24 17:43$
+ * Dernière modification : $Date: 2021-06-30 18:43$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -3500,13 +3500,9 @@ function authBooking($user,$room){
  $user : le login de l'utilisateur
  $id : l'id de la résa. Si -1, il s'agit d'une nouvelle réservation
  $id_room : id de la ressource
- $date_booking : la date de la réservation (n'est utile que si $id=-1)
- $date_now : la date actuelle
+ @param string $date_booking : la date de la réservation (n'est utile que si $id=-1)
+ @param integer $date_now : la date actuelle
 */
- /**
-  * @param string $date_booking
-  * @param integer $date_now
-  */
  function verif_booking_date($user, $id, $id_room, $date_booking, $date_now, $enable_periods, $endtime = '')
  {
  	global $correct_diff_time_local_serveur, $can_delete_or_create;
@@ -3715,7 +3711,7 @@ function no_book_rooms($user){
     }
     return $rooms_no_book;
 }
-// function verif_delais_min_resa_room($user, $id_room, $date_booking)
+// function verif_delais_min_resa_room($user, $id_room, $date_booking, $enable_periods)
 // $user : le login de l'utilisateur
 // $id_room : l'id de la ressource. Si -1, il s'agit d'une nouvelle ressoure
 // $date_booking : la date de la réservation (n'est utile que si $id=-1)
@@ -4599,7 +4595,7 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 		$affichage .= get_vocab("entryid").$resa[2]."<br>";
 
 	// Description Complète
-	if (Settings::get("display_full_description") == 1)
+	if ((Settings::get("display_full_description") == 1) && ($resa[8] != ""))
 		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES)."<br>";
 
 	// Champs Additionnels
@@ -5565,7 +5561,7 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<script type="text/javascript" src="../js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/bootstrap-multiselect.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/html2canvas.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/menu.js"></script>'.PHP_EOL;        
+		$a .= '<script type="text/javascript" src="../js/menu.js"></script>'.PHP_EOL;
         $a .= '<script type="text/javascript" src="../js/jquery.floatThead.min.js"></script>'.PHP_EOL;
         $a .= '<script type="text/javascript" src="../js/planning2Thead.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jspdf.min.js"></script>'.PHP_EOL;
