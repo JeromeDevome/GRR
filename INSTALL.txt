@@ -101,14 +101,14 @@ Après l'installation : configuration de GRR en ligne
 ******************************************************
 
 Une fois le système installé, vous pouvez vous connecter à GRR :
--  nom de connexion : 'administrateur' et mot de passe : 'azerty'),
+-  nom de connexion : 'administrateur' et mot de passe : 'azerty', sauf dans le cas d'une installation assistée
 -  Par sécurité, CHANGEZ LE MOT DE PASSE de 'administrateur' grâce au lien "gérer mon
 compte" dans le bandeau en haut !
--  allez dans la partie "Administration" (lien dans le bandeau en haut) pour créer domaines, ressrouces et utilisateurs.
+-  allez dans la partie "Administration" (lien dans le bandeau en haut) pour créer domaines, ressources et utilisateurs.
 
 
 ************************************************************
-Procédure de mise à jour, depuis GRR 1.9.7e, voir plus bas
+Procédure de mise à jour (depuis GRR 1.9.7e, voir plus bas)
 ************************************************************
 
 Il n'y a pas de procédure de mise à jour automatique de l'ensemble logiciel GRR.
