@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-05-31 10:14$
+ * Dernière modification : $Date: 2021-06-30 16:39$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
@@ -920,7 +920,8 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
     {
         $result .= formatresult("Mise à jour jusqu'à la version 3.4.3 RC0:","<b>","</b>");
 
-        $result_inter .= traite_requete("ALTER TABLE `grr_log` CHANGE `REMOTE_ADDR` `REMOTE_ADDR` VARCHAR(40) NOT NULL DEFAULT ''");
+        $result_inter .= traite_requete("ALTER TABLE `".TABLE_PREFIX."_log` CHANGE `REMOTE_ADDR` `REMOTE_ADDR` VARCHAR(40) NOT NULL DEFAULT ''");
+        $result_inter .= traite_requete("ALTER TABLE `".TABLE_PREFIX."_entry` ADD INDEX( `room_id`)");
 
         if ($result_inter == '')
             $result .= formatresult("Ok !","<span style='color:green;'>","</span>");
