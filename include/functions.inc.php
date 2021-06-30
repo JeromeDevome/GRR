@@ -3500,13 +3500,9 @@ function authBooking($user,$room){
  $user : le login de l'utilisateur
  $id : l'id de la résa. Si -1, il s'agit d'une nouvelle réservation
  $id_room : id de la ressource
- $date_booking : la date de la réservation (n'est utile que si $id=-1)
- $date_now : la date actuelle
+ @param string $date_booking : la date de la réservation (n'est utile que si $id=-1)
+ @param integer $date_now : la date actuelle
 */
- /**
-  * @param string $date_booking
-  * @param integer $date_now
-  */
  function verif_booking_date($user, $id, $id_room, $date_booking, $date_now, $enable_periods, $endtime = '')
  {
  	global $correct_diff_time_local_serveur, $can_delete_or_create;
@@ -3715,7 +3711,7 @@ function no_book_rooms($user){
     }
     return $rooms_no_book;
 }
-// function verif_delais_min_resa_room($user, $id_room, $date_booking)
+// function verif_delais_min_resa_room($user, $id_room, $date_booking, $enable_periods)
 // $user : le login de l'utilisateur
 // $id_room : l'id de la ressource. Si -1, il s'agit d'une nouvelle ressoure
 // $date_booking : la date de la réservation (n'est utile que si $id=-1)
@@ -4941,7 +4937,7 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
  }
 
 function jQuery_DatePicker($typeDate){
-
+    global $locale;
 		if (@file_exists('../include/connect.inc.php')){
 			$racine = "../";
 		} else{
@@ -5002,13 +4998,15 @@ function jQuery_DatePicker($typeDate){
  	echo '<input type="hidden" disabled="disabled" id="mydate_' .$typeDate. '">'.PHP_EOL;
  	echo '<script type="text/javascript">'.PHP_EOL;
  	//echo '	$(function() {'.PHP_EOL;
- 		echo '$.datepicker.setDefaults( $.datepicker.regional["fr"] );'.PHP_EOL;
- 		echo '	$(\'#mydate_' .$typeDate. '\').datepicker({'.PHP_EOL;
+ 		//echo '$(\'#mydate_' .$typeDate. '\').datepicker($.datepicker.regional["fr"] );'.PHP_EOL;
+        echo '$(\'#mydate_' .$typeDate. '\').datepicker($.datepicker.regional["'.$locale.'"] );'.PHP_EOL;
+ 		echo '	$(\'#mydate_' .$typeDate. '\').datepicker("option",{'.PHP_EOL;
  			echo '		beforeShow: readSelected, onSelect: updateSelected,'.PHP_EOL;
- 			echo '		showOn: \'both\', buttonImageOnly: true, buttonImage: \'img_grr/calendar.png\',buttonText: "Choisir la date",'.PHP_EOL;
-            echo '      dayNamesMin: [ "Di","Lu","Ma","Me","Je","Ve","Sa" ],'.PHP_EOL;
+ 			echo '		showOn: \'both\', buttonImageOnly: true, buttonImage: \'img_grr/calendar.png\',buttonText: "'.get_vocab('choose_date').'",'.PHP_EOL;
+            //echo '      dayNamesMin: [ "Di","Lu","Ma","Me","Je","Ve","Sa" ],'.PHP_EOL;
             echo '      minDate:\''.$mindate.'\','.PHP_EOL;
             echo '      maxDate:\''.$maxdate.'\','.PHP_EOL;
+            echo '      dateFormat:"dd/mm/yy",'.PHP_EOL;
             echo '});'.PHP_EOL;
 echo '		function readSelected()'.PHP_EOL;
 echo '		{'.PHP_EOL;
@@ -5563,7 +5561,7 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<script type="text/javascript" src="../js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/bootstrap-multiselect.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/html2canvas.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/menu.js"></script>'.PHP_EOL;        
+		$a .= '<script type="text/javascript" src="../js/menu.js"></script>'.PHP_EOL;
         $a .= '<script type="text/javascript" src="../js/jquery.floatThead.min.js"></script>'.PHP_EOL;
         $a .= '<script type="text/javascript" src="../js/planning2Thead.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jspdf.min.js"></script>'.PHP_EOL;
@@ -5950,7 +5948,7 @@ function acces_formulaire_reservation(){
             return ((Settings::get('nb_max_resa_form') - $quota) > 0);
     }
 }
-/** grrGetOverloadDescArray($od)
+/** grrGetOverloadDescArray($ofl,$od)
  *
  * Return an array with all additionnal fields from grr_entry.overload_desc
  * $od - overload_desc of the entry
