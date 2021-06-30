@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-20 12:45
+ * Dernière modification : $Date: 2021-05-21 16:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -16,6 +16,8 @@
  * (at your option) any later version.
  */
 $grr_script_name = "edit_entry.php"; 
+$racine = "./";
+$racineAd = "./admin/";
 // à décommenter si besoin de débogage
 /*ini_set('display_errors', 'On');
 error_reporting(E_ALL); */
@@ -137,13 +139,14 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
         {
             $option .= '<option value="-1" selected="selected" >'.get_vocab("utilisateur_inconnu").$id_user.')</option>'.PHP_EOL;
         }
-        echo '<div id="choix_beneficiaire" class="form-group">'.PHP_EOL;
-        echo '<label for="beneficiaire" >'.ucfirst(trim(get_vocab("reservation_au_nom_de"))).get_vocab("deux_points").'</label>'.PHP_EOL;
+        echo '<div id="choix_beneficiaire" class="row">'.PHP_EOL;
+        //echo '<label for="beneficiaire" >'.ucfirst(trim(get_vocab("reservation_au_nom_de"))).get_vocab("deux_points").'</label>'.PHP_EOL;
         echo '<div class="col-sm-9">'.PHP_EOL;
+		echo '<label for="beneficiaire" >'.ucfirst(trim(get_vocab("reservation_au_nom_de"))).get_vocab("deux_points").'</label><br />'.PHP_EOL;
         echo '<select class="select2" name="beneficiaire" id="beneficiaire" onchange="check_4();">'.$option.'</select>'.PHP_EOL;
         echo '</div>';
         echo '<div class="col-sm-3">'.PHP_EOL;
-        echo '<input type="button" id="bnfdef" class="btn btn-primary" value="'.get_vocab("definir par defaut").'" onclick="setdefault(\'beneficiaire_default\',document.getElementById(\'main\').beneficiaire.options[document.getElementById(\'main\').beneficiaire.options.selectedIndex].value)" />'.PHP_EOL;
+        echo '<br /><input type="button" id="bnfdef" class="btn btn-primary" value="'.get_vocab("definir par defaut").'" onclick="setdefault(\'beneficiaire_default\',document.getElementById(\'main\').beneficiaire.options[document.getElementById(\'main\').beneficiaire.options.selectedIndex].value)" />'.PHP_EOL;
         echo '</div></div>'.PHP_EOL;
         echo '<div id="menu4" class="form-inline" ';
         if (!$benef_ext_nom) 
@@ -253,7 +256,6 @@ foreach($form_vars as $var => $var_type)
     }
 }
 // traiter aussi les champs additionnels (addon_x)!
-$sql = "SELECT id FROM ".TABLE_PREFIX."_overload";
 $res = grr_sql_query("SELECT id FROM ".TABLE_PREFIX."_overload");
 $overloadFields = array(); // contiendra, s'il en existe, les valeurs des champs additionnels définies dans le formulaire
 if ($res){
@@ -375,7 +377,6 @@ else{
 }
 if (((authGetUserLevel($user_name,-1) < 2) && (auth_visiteur($user_name,$room) == 0))||(authUserAccesArea($user_name, $area) == 0))
 {
-    //echo "<br> ligne 268";
     start_page_w_header('','','','with_session');
 	showAccessDenied($page_ret);
 	exit();
@@ -383,7 +384,6 @@ if (((authGetUserLevel($user_name,-1) < 2) && (auth_visiteur($user_name,$room) =
 if (isset($room) && ($room != -1)){// on vérifie que la ressource n'est pas restreinte ou que l'accès est autorisé
     $who_can_book = grr_sql_query1("SELECT who_can_book FROM ".TABLE_PREFIX."_room WHERE id='".$room."' ");
     if (!($who_can_book || (authBooking($user_name,$room)) || (authGetUserLevel($user_name,$room) > 2))){
-        //echo "<br>ligne 276";
         start_page_w_header('','','','with_session');
         showAccessDenied($page_ret."&alerte=acces");
         exit();
@@ -391,7 +391,6 @@ if (isset($room) && ($room != -1)){// on vérifie que la ressource n'est pas res
 }
 // récupérons les paramètres du domaine en cours
 get_planning_area_values($area);
-//echo "<br> ligne 285";
 if (isset($room) && ($room != -1)){ // on récupère les propriétés de la ressource
     $sql = "SELECT * FROM ".TABLE_PREFIX."_room WHERE id='".$room."'";
     $res = grr_sql_query($sql);
@@ -435,7 +434,6 @@ else
 //die();
 if (UserRoomMaxBooking($user_name, $room, $compt) == 0)
 {
-    //echo "<br> ligne 324";
     echo "<br> user : ".$user_name." room: ".$room." compt : ".$compt;
     start_page_w_header('','','','with_session');
 	showAccessDeniedMaxBookings($day, $month, $year, $room, $page_ret);
@@ -714,11 +712,15 @@ echo '<div class="col-sm-6 col-xs-12">';
 //echo '<div id="choix_beneficiaire"></div>';
 divBeneficiaire($id,$user_name,$room,$area_id);
 // description brève
+echo '<div>'.PHP_EOL;
 echo '<label for="name">'.$Booker.'</label>'.PHP_EOL;
 echo '<input id="name" class="form-control" name="name" maxlength="80" size="60" value="'.$C.'" />'.PHP_EOL;
+echo '</div>'.PHP_EOL;
 // description complète
+echo '<div>'.PHP_EOL;
 echo '<label for="description">'.$D.'</label>'.PHP_EOL;
 echo '<textarea name="description" class="form-control" rows="4">'.$E.'</textarea>'.PHP_EOL;
+echo '</div>'.PHP_EOL;
 // date et heure de début
 echo '<div class="E form-inline"><b>'.$date_debut.'</b>'.PHP_EOL;
 echo '<div class="form-group">'.PHP_EOL;
@@ -964,7 +966,8 @@ echo "<div class='col-sm-6 col-xs-12 form-inline'>";
 echo '<!-- ************* Periodic edition ***************** -->',PHP_EOL;
 $weeklist = array("unused","every week","week 1/2","week 1/3","week 1/4","week 1/5");
 $monthlist = array("firstofmonth","secondofmonth","thirdofmonth","fouthofmonth","fiveofmonth","lastofmonth");
-if($periodiciteConfig == 'y'){
+if($periodiciteConfig == 'y')
+{
 	if ( ($edit_type == "series") || (isset($flag_periodicite)))
 	{
         echo '<div id="ouvrir" class="CC">',PHP_EOL,
@@ -1046,13 +1049,13 @@ if($periodiciteConfig == 'y'){
                     echo "<div id='menuP'>\n"; // choix des jours cycle
                     echo "<b>Jours/Cycle</b><br />\n";
                     echo "<div class='form-inline'>";
-                    for ($i = 1; $i < (Settings::get("nombre_jours_Jours/Cycles") + 1); $i++)
+                    for ($d = 1; $d <= (Settings::get("nombre_jours_Jours_Cycles")); $d++)
                     {
-                        $wday = $i;
+                        $wday = $d;
                         echo "<input type=\"radio\" name=\"rep_jour_\" value=\"$wday\"";
                         if (isset($jours_c))
                         {
-                            if ($i == $jours_c)
+                            if ($d == $jours_c)
                                 echo ' checked="checked"';
                         }
                         echo ' onclick="check_1()" />',get_vocab("rep_type_6"),' ',$wday,PHP_EOL;
@@ -1137,15 +1140,12 @@ echo '<input type="hidden" name="edit_type" value="'.$edit_type.'" />';
 echo '<input type="hidden" name="page" value="'.$page.'" />';
 echo '<input type="hidden" name="room_back" value="'.$room_back.'" />';
 echo '<input type="hidden" name="page_ret" value="'.$page_ret.'" />';
-if (!isset($statut_entry))
+if (!isset($statut_entry) || ($statut_entry == ""))
 	$statut_entry = "-";
 echo '<input type="hidden" name="statut_entry" value="'.$statut_entry.'" />'.PHP_EOL;
 echo '<input type="hidden" name="create_by" value="'.$create_by.'" />'.PHP_EOL;
-if ($id!=0)
-	if (isset($_GET["copier"]))
-		$id = NULL;
-	else
-        echo '<input type="hidden" name="id" value="'.$id.'" />'.PHP_EOL;
+if (($id!=0)&&(!isset($_GET["copier"])))
+    echo '<input type="hidden" name="id" value="'.$id.'" />'.PHP_EOL;
 echo '<input type="hidden" name="type_affichage_reser" value="'.$type_affichage_reser.'" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '</form>'.PHP_EOL;
@@ -1154,6 +1154,7 @@ echo '<div id="footer"></div>'.PHP_EOL;
 
 <script type="text/javascript" >
 function insertBeneficiaires(area_,room_,user_,id_){
+// cette fonction donne la liste des items du sélecteur
     jQuery.ajax({
         type: 'GET',
         url : 'edit_entry_beneficiaires.php',
@@ -1166,13 +1167,15 @@ function insertBeneficiaires(area_,room_,user_,id_){
         success: function(returnData)
         {
             $("#beneficiaire").select2({
-                data: returnData
+                data: returnData,
+                dataType: 'json',
             })
         },
         error: function(data)
 		{
-			alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_beneficiaire.php ');
-		}
+			alert('Erreur lors de l execution de la commande AJAX pour edit_entry_beneficiaires.php ');
+		},
+        dataType: 'json',
     })
 }
 function insertChampsAdd(area_,id_,room_,olf_){

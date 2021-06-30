@@ -3,7 +3,7 @@
  * swap_entry.php
  * Interface d'échange d'une réservation avec une autre, à choisir
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-02-06 18:43$
+ * Dernière modification : $Date: 2021-03-13 10:55$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -209,17 +209,15 @@ if (isset($_GET['id_alt'])){ // cas où tout est décidé
     }
 }
 else { // on connaît $id de la réservation à échanger, on va en chercher une autre pour l'échange
-    $back = "";
+    $back = page_accueil();
     if ($info = mrbsGetEntryInfo($id))
     {
+        $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : page_accueil() ;
         $day   = strftime("%d", $info["start_time"]);
         $month = strftime("%m", $info["start_time"]);
         $year  = strftime("%Y", $info["start_time"]);
         $area  = mrbsGetRoomArea($info["room_id"]);
         // on commence par vérifier les droits d'accès
-        // $back = "";
-        if (isset($_SERVER['HTTP_REFERER']))
-            $back = htmlspecialchars($_SERVER['HTTP_REFERER']);
         if (authGetUserLevel(getUserName(), -1) < 1)
         {
             showAccessDenied($back);
@@ -338,5 +336,6 @@ function roomDesc($id_room){ // rend nom + description à partir de l'identifian
     }
     else 
         print(grr_sql_error($res));
+    grr_sql_free($res);
 }
 ?>
