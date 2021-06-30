@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2021-02-10
+# Last modification : 2021-04-17
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -236,6 +236,7 @@ $vocab['choose_a_room'] = "Vous devez choisir au moins une ressource.";
 $vocab['choose_a_site'] = "(Choisissez un site)";
 $vocab['choose_a_type'] = "Vous devez choisir un type de réservation.";
 $vocab['choose_css'] = "Choisissez dans la liste ci-contre : ";
+$vocab['choose_date'] = "Choisir la date";
 $vocab['choose_language'] = "Choix de la langue par défaut";
 $vocab['cleaning_log'] = "Nettoyage du journal";
 $vocab['click_here_for_series_close'] = "&gt;&gt;&gt;Cliquez ici pour fermer les options de périodicité&lt;&lt;&lt;";
@@ -380,7 +381,7 @@ $vocab['entry'] = "Réservation";
 $vocab['entryid'] = "Réservation n° ";
 $vocab['entry_found'] = "réservation trouvée";
 $vocab['Envoi d_un courriel'] = "Envoi d'un courriel";
-$vocab['envois_mail_spec_exp'] = "Dans le cas ou le champ est rempli ou différent de zéro, envoie un mail au destinataire spécifié.";
+$vocab['envois_mail_spec_exp'] = "Dans le cas où le champ est rempli ou différent de zéro, envoie un mail au destinataire spécifié.";
 $vocab['envoy_mail_specifique'] = "Envoie un mail spécifique";
 $vocab['envoyer maintenant mail retard'] = "Envoyer immédiatement un mail de notification de retard (non restitution dans les délais)";
 $vocab['envoyer_email_avec_formulaire_non'] = "<b>Utiliser les balises \"mailto\"</b> : dans ce cas, un clic sur un \"lien email\" ouvre le logiciel de courrier par défaut de la machine du client et prépare un nouveau message en complétant automatiquement le champ des destinataires (à noter que bien que les adresses email apparaissent en clair dans GRR, un mécanisme d'encodage permet d'éviter que celles-ci ne soient récupérées par les robots-spameurs).";
