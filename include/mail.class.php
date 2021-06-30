@@ -3,9 +3,9 @@
  * include/mail.class.php
  * fichier de définition d'une classe de traitement des e-mails
  * fait partie de l'application GRR
- * Dernière modification : $Date: 2020-10-16 09:53$
+ * Dernière modification : $Date: 2021-04-10 19:05$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -68,7 +68,12 @@ class Email{
 				}
 			}
             if ($RE != '')
-                $mail->addReplyTo($RE, 'GRR');
+            {
+                $lesRepondreA = explode(";", $RE);
+                for($i=0;$i<count($lesRepondreA);$i++){
+                    $mail->addReplyTo($lesRepondreA[$i],'GRR');
+                }
+            }
 			else
                 $mail->addReplyTo($DE, 'GRR');
 
