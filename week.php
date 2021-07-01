@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-06-04 10:20$
+ * Dernière modification : $Date: 2021-06-11 10:04$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -37,7 +37,7 @@ include "include/language.inc.php";
 Definition_ressource_domaine_site();
 
 // Initilisation des variables
-//$affiche_pview = '1';
+$affiche_pview = '1';
 if (!isset($_GET['pview']))
 	$_GET['pview'] = 0;
 else
