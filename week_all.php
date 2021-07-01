@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-05-13 10:51$
+ * Dernière modification : $Date: 2021-07-01 10:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -611,9 +611,10 @@ if ($_GET['pview'] != 1)
 	echo '</div>',PHP_EOL;
 }
 echo '</div>'.PHP_EOL; // planning2
-echo '</section>'.PHP_EOL; // row
+echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
+affiche_pop_up(get_vocab("message_records"),"user");
+echo "</section>";
 unset($row);
-echo '<div id="popup_name" class="popup_block col-xs-12" ></div>'.PHP_EOL;
 ?>
 <script type="text/javascript">
 	$(document).ready(function(){
