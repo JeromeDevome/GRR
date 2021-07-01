@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-06-30 18:43$
+ * Dernière modification : $Date: 2021-07-01 16:11$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -2237,7 +2237,7 @@ function make_room_select_html($link, $current_area, $current_room, $year, $mont
 	}
 }
 /**
- * Affichage des domaines sous la forme d'une liste
+ * Affichage des sites sous la forme d'une liste
  *
  * @param string $link
  * @param string $current_site
@@ -2332,7 +2332,7 @@ function make_area_list_html($link, $current_site, $current_area, $year, $month,
 		$use_multi_site = 'y';
 	else
 		$use_multi_site = 'n';
-	echo "<b><i><span class=\"bground\">".get_vocab("areas")."</span></i></b><br />";
+	$out_html = "<b><i><span class=\"bground\">".get_vocab("areas")."</span></i></b><br />";
 	if ($use_multi_site == 'y')
 	{
 		// on a activé les sites
@@ -2361,14 +2361,15 @@ function make_area_list_html($link, $current_site, $current_area, $year, $month,
 			{
 				if ($row[0] == $current_area)
 				{
-					echo "<a id=\"liste_select\" onclick=\"charger();\" href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\">&gt; ".htmlspecialchars($row[1])."</a></b><br />\n";
+					$out_html .= "<a id=\"liste_select\" onclick=\"charger();\" href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\">&gt; ".htmlspecialchars($row[1])."</a></b><br />\n";
 				} else {
-					echo "<a id=\"liste\" onclick=\"charger();\" href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\"> ".htmlspecialchars($row[1])."</a><br />\n";
+					$out_html .= "<a id=\"liste\" onclick=\"charger();\" href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\"> ".htmlspecialchars($row[1])."</a><br />\n";
 				}
 			}
 		}
 	}
 	grr_sql_free($res);
+    return $out_html;
 }
 /**
  * Affichage des room sous la forme d'une liste
@@ -2384,7 +2385,7 @@ function make_area_list_html($link, $current_site, $current_area, $year, $month,
 function make_room_list_html($link,$current_area, $current_room, $year, $month, $day)
 {
 	global $vocab;
-	echo "<b><i><span class=\"bground\">".get_vocab("rooms").get_vocab("deux_points")."</span></i></b><br />";
+	$out_html = "<b><i><span class=\"bground\">".get_vocab("rooms").get_vocab("deux_points")."</span></i></b><br />";
 	$sql = "select id, room_name, description from ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($current_area)."' order by order_display,room_name";
 	$res = grr_sql_query($sql);
 	if ($res)
@@ -2395,12 +2396,14 @@ function make_room_list_html($link,$current_area, $current_room, $year, $month, 
 			if (verif_acces_ressource(getUserName(), $row[0]))
 			{
 				if ($row[0] == $current_room)
-					echo "<span id=\"liste_select\">&gt; ".htmlspecialchars($row[1])."</span><br />\n";
+					$out_html .= "<span id=\"liste_select\">&gt; ".htmlspecialchars($row[1])."</span><br />\n";
 				else
-					echo "<a id=\"liste\" onclick=\"charger();\" href=\"".$link.".php?year=$year&amp;month=$month&amp;day=$day&amp;&amp;room=$row[0]\">".htmlspecialchars($row[1]). "</a><br />\n";
+					$out_html .= "<a id=\"liste\" onclick=\"charger();\" href=\"".$link.".php?year=$year&amp;month=$month&amp;day=$day&amp;&amp;room=$row[0]\">".htmlspecialchars($row[1]). "</a><br />\n";
 			}
 		}
 	}
+    grr_sql_free($res);
+    return $out_html;
 }
 /*
  * Affichage des sites sous la forme d'une liste de boutons
