@@ -1330,7 +1330,7 @@ echo ' />'.PHP_EOL;
 echo '</td>'.PHP_EOL;
 echo '</tr>'.PHP_EOL;
 echo '</table>'.PHP_EOL;
-# Afficher la legende en couleur dans le menu gauche
+# Afficher la legende en couleur dans le menu gauche ou haut
 echo '<hr />'.PHP_EOL;
 echo '<h3>'.get_vocab('legend_msg').'</h3>'.PHP_EOL;
 echo '<table>'.PHP_EOL;
