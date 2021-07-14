@@ -1,0 +1,23 @@
+@import "perso.css";
+
+header, header a,#Date{background-color: var(--header-bgcolor);color: var(--header-text);}
+header a:hover{color: var(--header-hover);}
+#menuGauche2, #menuGauche2 caption{background-color: var(--menuG-bgcolor); color: var(--menuG-color);}
+#calendriers .calendar caption{background-color: var(--cal-titrebgcolor);color: var(--cal-titrecolor);} 
+.calendar th{background-color: var(--cal-joursbgcolor);color: var(--cal-jourscolor);}
+.calendar td, .calendar td>a{background-color: var(--cal-cellbgcolor);color: var(--cal-cellcolor);}
+.calendar td>a:hover{background-color: var(--cal-cellhoverbgcolor);color: var(--cal-cellhovercolor);}
+td.calendarcol1, td.calendarcol1>a {background-color: var(--cal-sembgcolor);color: var(--cal-semcolor);}
+td.calendarcol1>a:hover{color: var(--cal-semhovercolor);}
+.week td, .week td a, tr.week>td.calendarcol1, tr.week>td.calendarcol1>a{background-color: var(--cal-weekbgcolor);color: var(--cal-weekcolor);}
+.cal_current_day{background-color: var(--cal-current-day-bg); color: var(--cal-current-day-col);} 
+#planning2 caption{background-color: var(--pl2-titrebgcolor); color: var(--pl2-titrecolor);}
+#planning2 thead{background-color: var(--pl2-entetebgcolor); color: var(--pl2-entetecolor);}
+#planning2 tbody{background-color: var(--pl2-cellbgcolor); color: var(--pl2-cellcolor);}
+.monthday a {background-color: transparent; color: var(--pl2-cellcolor);}
+.glyphicon {color: var(--icons-color);}
+.btn-primary{color: var(--btn-primary-color);background-color: var(--btn-primary-bgcolor);border-color: var(--btn-primary-bordcolor)}
+.btn-primary:hover,.btn-primary:focus{background-color: var(--focus-btn-primary-bgcolor);border-color: var(--focus-btn-primary-bordcolor);color: var(--focus-btn-primary-color);}
+.btn-primary:active{background-color: var(--active-btn-primary-bgcolor);border-color: var(--active-btn-primary-bordcolor);color: var(--active-btn-primary-color);}
+.dropdown-menu > li > a.active{background-color: var(--ssmenuadm-actif-bg); color: var(--ssmenuadm-actif-color);}
+.dropdown .actif{background-color: var(--active-btn-primary-bgcolor);border-color: var(--active-btn-primary-bordcolor);color: var(--active-btn-primary-color);}

@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-07-14 17:56$
+ * Dernière modification : $Date: 2021-07-14 19:06$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5956,7 +5956,7 @@ function pageHead2($title, $page = "with_session")
 	if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
 	if($sheetcss == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
-		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css\" />".PHP_EOL; // style perso via admin
+		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/style.css\" />".PHP_EOL; // style perso via admin
 	else
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/'.$sheetcss.'/css/style.css" />'.PHP_EOL; // le style couleurs prédéfinis
 	$a .= $types;
