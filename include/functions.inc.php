@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-07-01 16:19$
+ * Dernière modification : $Date: 2021-07-14 17:56$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4875,7 +4875,7 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 		$affichage .= get_vocab("entryid").$resa[2]."<br>";
 
 	// Description Complète
-	if (Settings::get("display_full_description") == 1)
+	if ((Settings::get("display_full_description") == 1) && ($resa[8] != ""))
 		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES)."<br>";
 
 	// Champs Additionnels
