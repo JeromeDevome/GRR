@@ -177,9 +177,9 @@ $use_prototype = 'y';
 
 echo "\n    <!-- Repere ".$grr_script_name." -->\n";
 if (Settings::get("module_multisite") == "Oui")
-	$use_site = 'y';
+	$d['use_site'] = 'y';
 else
-	$use_site = 'n';
+	$d['use_site'] = 'n';
 $sql = "SELECT nom,prenom,statut,email,default_site,default_area,default_room,default_style,default_list_type,default_language,source FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".getUserName()."'";
 $res = grr_sql_query($sql);
 if ($res)
@@ -278,6 +278,7 @@ $d['default_site'] = $default_site;
 $d['default_area'] = $default_area;
 $d['default_css'] = $default_css;
 $d['default_language'] = $default_language;
+$d['default_room'] = $default_room;
 
 	if (IsAllowedToModifyProfil())
 	{
