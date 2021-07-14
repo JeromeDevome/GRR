@@ -442,7 +442,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                             echo '<a class="lienCellule" title="'.get_vocab('voir_resa').'" href="view_entry.php?id=',$d[$cday]["id"][$i],'&amp;day=',$cday,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=month">';
                         }
                     }
-                    echo $d[$cday]["resa"][$i],'<br/>';
+                    echo $d[$cday]["resa"][$i];
                     if ($acces_fiche_reservation)
                         echo '</a>',PHP_EOL;
                     echo '</span>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;
