@@ -5887,13 +5887,12 @@ function pageHead2($title, $page = "with_session")
 		} // est-ce bien placé ? YN le 27/02/2020
 
 		if (isset($_SESSION['default_style']))
-			$sheetcss = 'themes/'.$_SESSION['default_style'].'/css';
-
+			$sheetcss = $_SESSION['default_style'];
 		else {
-            if (Settings::get("default_css"))
-			$sheetcss = 'themes/'.Settings::get("default_css").'/css'; // thème global par défaut
-		else
-			$sheetcss = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini
+            if (Settings::get("default_css")) 
+				$sheetcss = Settings::get("default_css"); // thème global par défaut
+			else
+				$sheetcss = 'default'; // utilise le thème par défaut s'il n'a pas été défini
         }
 		if (isset($_GET['default_language']))
 		{
@@ -5908,9 +5907,9 @@ function pageHead2($title, $page = "with_session")
 	else
 	{
 		if (Settings::get("default_css"))
-			$sheetcss = 'themes/'.Settings::get("default_css").'/css';
+			$sheetcss = Settings::get("default_css");
 		else
-			$sheetcss = 'themes/default/css';
+			$sheetcss = 'default';
 		if (isset($_GET['default_language']))
 		{
 			$_SESSION['default_language'] = clean_input($_GET['default_language']);
@@ -5921,7 +5920,7 @@ function pageHead2($title, $page = "with_session")
 			die();
 		}
 	}
-	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin;
+	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin, $gcDossierCss;
     // récupération des couleurs des types
     $types = '';
     $sql = "SELECT type_letter,couleurhexa,couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE 1";
@@ -5959,7 +5958,7 @@ function pageHead2($title, $page = "with_session")
 	if($sheetcss == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
 		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css\" />".PHP_EOL; // style perso via admin
 	else
-		$a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL; // le style couleurs prédéfinis
+		$a .= '<link rel="stylesheet" type="text/css" href="themes/'.$sheetcss.'/css/style.css" />'.PHP_EOL; // le style couleurs prédéfinis
 	$a .= $types;
     $a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
