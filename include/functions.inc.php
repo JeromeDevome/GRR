@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-07-01 16:11$
+ * Dernière modification : $Date: 2021-07-24 17:03$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -778,6 +778,10 @@ function page_accueil($param = 'no')
 		$defaultarea = Settings::get("default_area");
 	else
 		$defaultarea = get_default_area($defaultsite);
+    // on vérifie que le domaine est accessible à l'utilisateur connecté
+    $user = getUserName();
+    if (($user != '')&&(!authUserAccesArea($user,$defaultarea)))
+        $defaultarea = get_default_area($defaultsite);
 	// Calcul de $page_accueil
 	if ($defaultarea == - 1)
 		$page_accueil = 'day.php?noarea=';

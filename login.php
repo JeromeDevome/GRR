@@ -3,9 +3,9 @@
  * login.php
  * interface de connexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-29 16:55$
+ * Dernière modification : $Date: 2021-07-24 17:04$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -18,8 +18,9 @@
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
-include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
+include "include/mrbs_sql.inc.php";
+include "include/functions.inc.php";
 // Settings
 require_once("./include/settings.class.php");
 //Chargement des valeurs de la table settingS
