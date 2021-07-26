@@ -1,141 +1,73 @@
-/* ancien style */
-a:after{content:"" !important}
-p{font-size:10pt;font-family:arial,sans-serif;background-color:#fff}
-input,submit,textarea{color:#000;font-size:11pt;font-family:arial,sans-serif}
-form{margin-bottom:5pt;margin-top:5pt}
-.formModifie{margin-bottom:0;margin-top:0;display:inline}
-.styleBoutton{color:#000}
-.EditEntryTable{background-color:#ddd}
-.small{font-size:.8em}
-.larger{font-size:1.4em}
-a:link,a:visited{color:#000;font-weight:700;text-decoration:none}
-a:hover{color:#AAA}
-h1{color:#000;font-family:verdana,sans-serif;font-size:16pt}
-h2{color:#000;font-family:verdana,sans-serif;font-size:14pt}
-h3{color:#000;font-family:verdana,sans-serif;font-size:12pt}
-td{font-size:10pt;font-family:arial,sans-serif;border-width:1px;vertical-align:top}
-td.CR{vertical-align:middle;text-align:right}
-td.CL{vertical-align:middle;text-align:left}
-td.BR{vertical-align:baseline;text-align:right}
-td.BL{vertical-align:baseline;text-align:left}
-td.TR{vertical-align:top;text-align:right}
-td.TL{vertical-align:top;text-align:left}
-table.table-striped th{background-color:gray;}
-.fontcolor1{color:#fff}
-.fontcolor2,.fontcolor3{color:#9CF}
-.fontcolor4{color:#FFF}
-#header{border:0;position:relative;width:100%}
-#menu1{border:0;width:100%}
-.image{border:0;vertical-align:middle}
-.logo{min-width:.1%;max-width:18%;min-height:.1%;max-height:115px;display:inline-block;float:left}
-.logo img{margin-top:5px;margin-left:5px;max-height:115px}
-.accueil{background-color:#fff;padding-left:1%; width:30%;display:inline-block}
-.administration{background-color:#fff;width:15%;text-align:center;margin:0 auto;display:inline-block}
-.configuration{background-color:#fff;width:22%;text-align:center;margin:0 auto;display:inline-block;float:right}
-.contactformulaire{background-color:#fff;width:15%;vertical-align:middle;text-align:center;display:inline-block}
-.cal_current_day{color:#000;vertical-align:middle;text-align:center;line-height:30px}
-.table-header{width:100%}
-.table-noborder{width:100%;border:0px !important}
-.table-bordered{border-collapse:collapse;border-spacing:0;width:100%}
-table.calendar{text-align:center;width:99%;padding:1px;margin:auto;background-color:#fff}
-.dayBouton{width:80px}
-.dayBoutonJourApres{width:125px}
-a.calendar{display:block;color:#FFF;height:100%;width:100%;vertical-align:middle;text-align:center}
-.calendarcol1{padding:0;font-weight:700;background-color:#fff;text-align:center;height:30px;width:40px;line-height:30px}
-.lienSemaine a{height:100%;width:100%;display:block;vertical-align:middle;text-align:center;color:#000}
-.titre{color:#fff;text-align:center;margin-top:1px;}
-.cellcalendar a:hover{background-color:#fff}
-a.lienPlanning:link,a.lienPlanning:visited{color:#fff;display:block}
-a.lienPlanning:hover{display:block ;color:#AAA;}
-span a{color:#FFF }
-.left{float:left}
-.right{float:right}
-#chargement{left:35%;top:322px;position:absolute;display:none;z-index:10}
-#chargement p{padding:0;background-color:gray}
-#chargement img{border:2px solid #000}
-.ressource{text-align:center}
-.item:hover{cursor:pointer}
-b,strong{color:#000;text-align:center}
-#liste_select{color:#CAA;font-weight:700}
-#liste{color:#CCF}
-td.cell_hours{color:#fff;background-color:gray !important;text-align:center;font-size:13px;height:20px;line-height:20px;border: none !important}
-td.cell_hours2{color:#000;background-color:#ccc !important;text-align:center;font-size:13px;height:20px;line-height:20px;border: none !important}
-td.cell_hours a{color:#fff}
-td.cell_month_o{background-color:#ccc}
-.empty_cell{background-color:#fff;text-align:center;min-height:20px;height:100%;vertical-align:middle}
-.monthday{font-size:2.1em;text-align:center}
-.center{width:100%;margin-left:auto;margin-right:auto;text-align:center}
-.avertissement{background-color:#ff8585;text-align:center}
-td.calendar2{text-align:center;border:2px;font-size:8pt}
-#colgauche fieldset{border:1px solid #000;margin:10px;padding:10px}
-#colgauche fieldset legend{color:#000;margin-bottom:5px}
-#colgauche fieldset ul{margin:0;padding-bottom:0;padding-top:0;padding-left:10px}
-#colgauche fieldset ul li{list-style-type:disc}
-td.colgauche_admin{width:25%}
-div.tooltip{color:#000;background:#ffb200;margin:5px;padding:5px}
-#planningMonthAll2{margin-left:0}
-.titre_planning table{border:0}
-.contenu_planning a{display:block}
-a.lienCellule{color:#000;font-weight:400;display:block}
-a:hover.lienCellule{color:#AAA;font-weight:700;display:block}
-.small_planning{font-size:.9em}
-.texte_ress_tempo_indispo{color:#ba2828;font-weight:700}
-.texte_ress_moderee{color:#ba2828;font-weight:700}
-th.tableau_month2{padding:2px}
-#lienPrecedent a{text-align:left;font-size:20px}
-a.poplight{display:block;color:#000;font-weight:400;font-size:14px;height:100%;width:100%;vertical-align:middle;text-align:center;cursor:pointer}
-.popup_block{display:none;background:#fff;padding-left:20px!important;border:10px solid #ddd;float:left;font-size:1.2em;position:fixed;top:10%;left:50%;z-index:99999;-webkit-box-shadow:0 0 20px #000;-moz-box-shadow:0 0 20px #000;box-shadow:0 0 20px #000}
-html #fade,html .popup_block{position:absolute}
-#toTop{width:100px;border:1px solid #ccc;background:#f7f7f7;text-align:center;padding:5px;position:fixed;bottom:10px;right:10px;cursor:pointer;color:#333;font-family:verdana;font-size:14px}
-#toTop b{color:#000}
-a.buttonsReservation{cursor:pointer}
-.glyphcolor{color:#FFF}
-.jour_sem{width:10% !important}
-.clock{margin:0 auto}
-#Date{font-size:1em;text-align:center;font-weight:700}
-.clock ul{margin:0 auto;padding:0;list-style:none;text-align:center;font-weight:700}
-.clock ul li{display:inline;font-size:1em;text-align:center;font-weight:700}
-#panel{width:100%;max-height:115px;overflow:hidden;position:relative;z-index:3}
-#panel a{text-decoration:none}
-.pad-15,.pad-15 tbody{padding-left:15px !important}
-#fixe{position:fixed;right:5%;bottom:5%}
-.small a{color:#000 !important}
-.col a{color:#000 !important}
-.col span a{color:#000 !important}
-#formContact{margin-left : 18%; margin-top : 1%; width: 60%;  border :20px; }
-#planning{text-align:center}
+/* personnalisations */
+:root{
+    --header-bgcolor: #FFF;
+    --header-text: #000;
+    --header-hover: #CCC;
+    --menuG-bgcolor: #31A3DD;
+    --menuG-color: #333;
+    --cal-titrecolor: #FFF;
+    --cal-titrebgcolor: #31A3DD;
+    --cal-joursbgcolor: #FFF;
+    --cal-jourscolor: #333;
+    --cal-sembgcolor: #FFF;
+    --cal-semcolor: #000;
+    --cal-semhovercolor: #CCC;
+    --cal-weekbgcolor: gray;
+    --cal-weekcolor: #FFF;
+    --cal-cellbgcolor: #31A3DD;
+    --cal-cellcolor: #FFF;
+    --cal-cellhoverbgcolor: #FFF;
+    --cal-cellhovercolor: #000;
+    --cal-current-day-bg: transparent;
+    --cal-current-day-col: #000;
+    --pl2-titrebgcolor: #31A3DD;
+    --pl2-titrecolor: white;
+    --pl2-entetebgcolor: gray;
+    --pl2-entetecolor: white;
+    --pl2-cellbgcolor: transparent;
+    --pl2-cellcolor: #000;
+    --icons-color: #333;
+    --btn-primary-color: #000;
+    --btn-primary-bgcolor: #31A3DD;
+    --btn-primary-bordcolor: #299BD6; 
+    --active-btn-primary-color: #FFF;
+    --active-btn-primary-bgcolor: #3071A9;
+    --active-btn-primary-bordcolor: #285E8E; 
+    --focus-btn-primary-bgcolor: #3071A9;
+    --focus-btn-primary-bordcolor: #285E8E;
+    --focus-btn-primary-color: #FFF;
+    --menuadm-item-actif: #F00;
+    --ssmenuadm-actif-bg: #00A; 
+    --ssmenuadm-actif-color: #FFA;
+}
 
-/* anciens styles non utilisés 
-header{width:100%;z-index:999;text-align:center;border-bottom:1px solid #E8501F}
-.pied_menuGauche{border-top:3px solid #E8501F}
-td.cell_hours_vacance{color:#000;background-color:rgba(46,204,113,.5) !important;text-align:center;font-size:13px;height:20px;line-height:20px;border: none !important}
-td.cell_hours_ferie{color:#000;background-color:#c0392b !important;text-align:center;font-size:13px;height:20px;line-height:20px;border: none !important}
-td.cell_month{background-color:#fff;vertical-align:top}
-.cell_month a{color:#000;font-weight:400;text-align:center}
-.cell_month a:hover{color:#000;font-weight:700}
-.cell_hours_ferie a{color:#000;}
-.formo{width:100%;background-color:#fff0e0;background-position:center bottom;float:none;color:#000}
-.fondo{background-color:#fff0e0;background-position:center bottom;float:none;color:#000}
-.fondl{background-color:#CCC;background-position:center bottom;float:none;color:#000}
-.titre_planning_week{background-color:#E8501F;height:100%;color:#000;text-align:center;font-size:1.2em}
-.tableau_month_all2{font-size:.8em}
-#fade{display:none;background:#000;position:fixed;left:0;top:0;width:100%;height:100%;opacity:.8;z-index:9999}
-img.btn_close{position:relative;z-index:5;border:0;float:right;}
-html #fade,html .popup_block{position:absolute}
-.btn-group-lg>.btn,.btn-lg,form.ressource div.panel-body{padding:0 !important}
-.ui-spinner-input{margin:0 !important}
-.closepop{float:right;cursor:pointer}
-#formContactIdentite{float : left; margin-left:20% ; width:25%}
-#formContactadresse{float : left; margin-left :5%; width: 32%;}
-#formContactDomRoom{}
-#formContactdom{float : left; margin-left:20% ; width: 25%;}
-#formContactroom{float : left; margin-left:5% ;margin-bottom:5%;width: 32%;}
-#formContacthorraires{margin-top:2%; margin-left:14% ; width: 70%}
-#formContactheure{margin-left:20% ; width: 70% ; margin-top:4%;}
-.glyphalign{margin-left:70px}
-#heure {width: 25%} */
-/* modifications bootstrap */
-a{color:#31A3DD;text-decoration:none}
+header, header a,#Date{background-color: var(--header-bgcolor);color: var(--header-text);}
+header a:hover{color: var(--header-hover);}
+#menuGauche2, #menuGauche2 caption{background-color: var(--menuG-bgcolor); color: var(--menuG-color);}
+#calendriers .calendar caption{background-color: var(--cal-titrebgcolor);color: var(--cal-titrecolor);} 
+.calendar th{background-color: var(--cal-joursbgcolor);color: var(--cal-jourscolor);}
+.calendar td, .calendar td>a{background-color: var(--cal-cellbgcolor);color: var(--cal-cellcolor);}
+.calendar td>a:hover{background-color: var(--cal-cellhoverbgcolor);color: var(--cal-cellhovercolor);}
+td.calendarcol1, td.calendarcol1>a {background-color: var(--cal-sembgcolor);color: var(--cal-semcolor);}
+td.calendarcol1>a:hover{color: var(--cal-semhovercolor);}
+.week td, .week td a, tr.week>td.calendarcol1, tr.week>td.calendarcol1>a{background-color: var(--cal-weekbgcolor);color: var(--cal-weekcolor);}
+.cal_current_day{background-color: var(--cal-current-day-bg); color: var(--cal-current-day-col);} 
+#planning2 caption, #planning2 caption a .glyphicon{background-color: var(--pl2-titrebgcolor); color: var(--pl2-titrecolor);}
+#planning2 thead, .jour th, a.lienPlanning, #planning2 thead .glyphicon {background-color: var(--pl2-entetebgcolor); color: var(--pl2-entetecolor);}
+#planning2 tbody{background-color: var(--pl2-cellbgcolor); color: var(--pl2-cellcolor);}
+.monthday a {background-color: transparent; color: var(--pl2-cellcolor);}
+.glyphicon {color: var(--icons-color);}
+.btn-primary{color: var(--btn-primary-color);background-color: var(--btn-primary-bgcolor);border-color: var(--btn-primary-bordcolor)}
+.btn-primary:hover,.btn-primary:focus{background-color: var(--focus-btn-primary-bgcolor);border-color: var(--focus-btn-primary-bordcolor);color: var(--focus-btn-primary-color);}
+.btn-primary:active{background-color: var(--active-btn-primary-bgcolor);border-color: var(--active-btn-primary-bordcolor);color: var(--active-btn-primary-color);}
+.dropdown-menu > li > a.active{color:var(--menuadm-item-actif);}
+.dropdown .actif{background-color: var(--ssmenuadm-actif-bg); color: var(--ssmenuadm-actif-color);}
+
+/* anciennes définitions
+ personnalisations au style par défaut 
+
+/* modifications bootstrap 
+a{color:#333;text-decoration:none}
 .text-primary{color:#31A3DD}
 .bg-primary{color:#fff;background-color:#31A3DD}
 .btn-primary{color:#fff;background-color:#31A3DD;border-color:#31A3DD}
@@ -163,82 +95,14 @@ fieldset[disabled] .btn-primary.active{background-color:#31A3DD;border-color:#31
 .panel-primary>.panel-footer+.panel-collapse>.panel-body{border-bottom-color:#31A3DD}
 caption{text-align: center}
 
-table.ui-datepicker-calendar: {z-index: 10;}
-
-/* nouveau style */
-body{font-size:14px;font-family:arial,verdana,sans-serif;width:100%;margin:0 auto}
-header{width:100%;z-index:999;text-align:center;border-bottom:1px solid;}
-a:hover{color:#999;}
-a:link,a:visited{font-weight:700;text-decoration:none}
-a.lienCellule{color:#000;font-weight:400;display:block}
-a:hover.lienCellule{color:#999;font-weight:700;display:block}
-#panel{width:100%;max-height:115px;overflow:hidden;position:relative;z-index:3}
-#panel a{text-decoration:none}
-.accueil{background-color: transparent;padding-left:1%; width:30%;display:inline-block}
-.administration{background-color: transparent;width:15%;text-align:center;margin:0 auto;display:inline-block}
-.configuration{background-color: transparent;width:22%;text-align:center;margin:0 auto;display:inline-block;float:right}
-.clock{margin:0 auto}
-.avertissement{background-color:#ff8585;text-align:center}
-#Date{font-size:1em;text-align:center;font-weight:700}
-.contactformulaire{background-color:#fff;width:15%;vertical-align:middle;text-align:center;display:inline-block}
-#menuGauche2{float:left;height:100%;min-width:230px;width:25%;padding-bottom:10px;display:inline-block}
-table.calendar{text-align:center;padding:1px;margin:auto;}
-.calendar caption{text-align:center;}
-a.calendar{display:block;height:100%;width:100%;vertical-align:middle;text-align:center}
-.calendarcol1{padding:0;font-weight:700;text-align:center;height:30px;width:40px;line-height:30px}
-.lienSemaine a{height:100%;width:100%;display:block;vertical-align:middle;text-align:center;color:#000}
-.cellcalendar{vertical-align:middle;text-align:center;height:30px;width:40px;line-height:30px}
-.cellcalendar a:hover{background-color:#fff;color:#999;}
-.week td a{background-color:#AAA;vertical-align:middle;text-align:center;height:100%;width:100%}
-table.legende{width:100%;}
-table.legende td{width:50%;text-align:center}.progress{margin-bottom:0px;}
-#chargement{left:35%;top:322px;position:absolute;display:none;z-index:10}
-#chargement p{padding:0;background-color:gray}
-#chargement img{border:2px solid #000}
-.row{margin-left:0;margin-right:0;}
-#planning2{text-align:center;min-width:600px;display:inline-block;width:100%;}
-.titre_planning{position:relative;height:100%;width:100%;display:block;text-align:center;font-size:1.2em}
-.titre_planning table{border:0}
-.ligne23{min-height:23px;text-align:center;}
-.left{float:left}
-.right{float:right}
-.jour, .mois, .semaine{width:100%;text-align:center;vertical-align:top;}
-.jour caption, .mois caption, .semaine caption{padding: 0 0 0 0;text-align:center;}
-.jour th, .mois th, .semaine th{text-align:center;}
-.jour td, .mois td{vertical-align:top;}
-td.cell_month_o{background-color:#ccc}
-#voir{display:block}
-#cacher{display:none}
-.jour_sem{width:10%;background-color:gray;color:white;}
-.jour_sem a{color:white;}
-.cell_hours{background-color:gray;color:white;}
-.cell_hours a{color:white;}
-.cell_hours2{background-color:white;color:black;}
-.vacance, .vacance a, th.vacance, td.vacance{background-color:rgb(46,204,113) !important;color:black !important}
-.ferie, .ferie a, th.ferie, td.ferie{background-color:#c0392b !important;color:white !important;}
-.jour_sem a:hover, .cell_hours a:hover, .ferie a:hover, .vacance a:hover{color:#999;}
-.empty_cell{text-align:center;min-height:20px;height:100%;vertical-align:middle}
-.table-header{width:100%}
-td.CR{vertical-align:middle;text-align:right}
-td.CL{vertical-align:middle;text-align:left}
-td.BR{vertical-align:baseline;text-align:right}
-td.BL{vertical-align:baseline;text-align:left}
-td.TR{vertical-align:top;text-align:right}
-td.TL{vertical-align:top;text-align:left}
-a.poplight{display:block;color:#000;font-weight:400;font-size:14px;height:100%;width:100%;vertical-align:middle;text-align:center;cursor:pointer;font-weight:700;text-decoration:none}
-a:hover{color:#999;}
-.popup_block{display:none;background:#fff;padding-left:20px!important;border:10px solid #ddd;float:left;font-size:1.2em;position:fixed;top:10%;left:50%;z-index:99999;-webkit-box-shadow:0 0 20px #000;-moz-box-shadow:0 0 20px #000;box-shadow:0 0 20px #000}
-html #fade,html .popup_block{position:absolute}
-#toTop{width:100px;border:1px solid #ccc;background:#f7f7f7;color:black;text-align:center;padding:5px;position:fixed;bottom:10px;right:10px;cursor:pointer;font-family:verdana;font-size:14px}
-#duree{text-align:center;min-width:50px;width:15%;}
-
-/* personnalisation sur le modèle standard */
+/* personnalisation sur le modèle standard 
 .table-bordered caption{background:#31A3DD;padding: 0 0 0 0;}
 .glyphicon-plus{color:#31A3DD}
 #menuGauche{background-color:#31A3DD;float:left;height:100%;min-width:200px;width:100%;padding-bottom:10px}
 #menuGaucheMonthAll2{display:none;background-color:#31A3DD;float:left;height:100%;min-width:200px;width:300px;padding-bottom:10px}
 #menuGauche2{background-color:#31A3DD;color:black;}
 .calendar caption{background-color:#31A3DD}
+.calendar a{color:#FFF}
 .cellcalendar{background:#31A3DD;vertical-align:middle;text-align:center;height:30px;width:40px;line-height:30px}
 td.calendarHeader2{text-align:center;border:0;font-size:10pt;width:200px;background-color:#31A3DD;color:#FFF;font-weight:bold;font-size:18px;}
 #toppanel{position:relative;top:0;width:100%;z-index:999;text-align:center;border-bottom:1px solid #31A3DD}
@@ -269,3 +133,4 @@ table.legende caption{color:black;}
 	FLOAT:LEFT;
 	}
 }
+*/

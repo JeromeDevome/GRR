@@ -5,7 +5,7 @@
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2017-12-16 14:00$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -85,7 +85,7 @@ if ($valid == "yes")
 			}
 			$new_login = strtoupper($new_login);
 			if ($reg_password !='')
-				$reg_password_c = md5($reg_password);
+				$reg_password_c = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$reg_password);
 			else
 			{
 				if ($reg_type_authentification != "locale")
@@ -184,7 +184,7 @@ if ($valid == "yes")
 				}
 				else
 				{
-					$reg_password_c = md5($reg_password);
+					$reg_password_c = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$reg_password);
 					if (($reg_password != $reg_password2) || (strlen($reg_password) < $pass_leng))
 					{
 						$msg = get_vocab("passwd_error");
@@ -309,10 +309,6 @@ if (isset($user_login) && ($user_login != ''))
 		}
 	}*/
 }
-if ($user_source=="local")
-	$statut_div = "visible";
-else
-	$statut_div = "hidden";
 if ((authGetUserLevel(getUserName(), -1) < 1) && (Settings::get("authentification_obli") == 1))
 {
 	showAccessDenied($back);
@@ -386,7 +382,7 @@ $utilisateur['reg_login'] = $user_login;
 					if ($test_admin_site >= 1)
 					{
 						$a_privileges = 'y';
-						$trad['dAdministrateurSite'] = "<li>".get_vocab("site")." ".$row_site[1].get_vocab("deux_points")." ".get_vocab("administrateur du site")."</li>";
+						$trad['dAdministrateurSite'] = "<li>".get_vocab("site")." ".$row_site[1].get_vocab("deux_points")." ".get_vocab("administrateur_du_site")."</li>";
 					}
 				}
 			}
@@ -457,18 +453,18 @@ $utilisateur['reg_login'] = $user_login;
 					$dAdministrateurDomaine .= "<ul>";
 					
 					if ($is_admin == 'y')
-						$dAdministrateurDomaine .= "<li>".get_vocab("administrateur du domaine")."</li>";
+						$dAdministrateurDomaine .= "<li>".get_vocab("administrateur_du_domaine")."</li>";
 					if ($is_restreint == 'y')
-						$dAdministrateurDomaine .= "<li>".get_vocab("a acces au domaine")."</li>";
+						$dAdministrateurDomaine .= "<li>".get_vocab("a_acces_au_domaine")."</li>";
 					if ($is_gestionnaire != '')
 					{
-						$dAdministrateurDomaine .= "<li>".get_vocab("gestionnaire des resources suivantes")."<br />";
+						$dAdministrateurDomaine .= "<li>".get_vocab("gestionnaire_des_resources_suivantes")."<br />";
 						$dAdministrateurDomaine .= $is_gestionnaire;
 						$dAdministrateurDomaine .= "</li>";
 					}
 					if ($is_mail != '')
 					{
-						$dAdministrateurDomaine .= "<li>".get_vocab("est prevenu par mail")."<br />";
+						$dAdministrateurDomaine .= "<li>".get_vocab("est_prevenu_par_mail")."<br />";
 						$dAdministrateurDomaine .= $is_mail;
 						$dAdministrateurDomaine .= "</li>";
 					}
@@ -481,9 +477,9 @@ $utilisateur['reg_login'] = $user_login;
 		if ($a_privileges == 'n')
 		{
 			if ($utilisateur['statut'] == 'administrateur')
-				$trad['dAdministrateurOuRien'] = "<li>".get_vocab("administrateur general")."</li>";
+				$trad['dAdministrateurOuRien'] = "<li>".get_vocab("administrateur_general")."</li>";
 			else
-				$trad['dAdministrateurOuRien'] = "<li>".get_vocab("pas de privileges")."</li>";
+				$trad['dAdministrateurOuRien'] = "<li>".get_vocab("pas_de_privileges")."</li>";
 		}
 	}
 

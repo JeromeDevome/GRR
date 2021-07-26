@@ -1,11 +1,11 @@
 <?php
 /**
  * day.php
- * Permet l'affichage de la page d'accueil lorsque l'on est en mode d'affichage "jour".
+ * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-11-22 18:10$
+ * Dernière modification : $Date: 2021-04-20 17:40$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -17,8 +17,7 @@
  */
 $grr_script_name = "day.php";
 
-//include "include/planning_init.inc.php";
-include "include/connect.inc.php";
+include "personnalisation/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
 include "include/functions.inc.php";
@@ -28,11 +27,10 @@ include "include/mrbs_sql.inc.php";
 require_once("./include/settings.class.php");
 $settings = new Settings();
 if (!$settings)
-	die("Erreur chargement settings");
+	die(get_vocab('error_settings_load'));
 require_once("./include/session.inc.php");
 include "include/resume_session.php";
 include "include/language.inc.php";
-
 //Construction des identifiants de la ressource $room, du domaine $area, du site $id_site
 Definition_ressource_domaine_site();
 
@@ -52,18 +50,18 @@ else
 	$class_image = "image";
 
 // paramètres temporels
-$day = isset($_GET['day']) ? $_GET['day'] : date("d");
-$month = isset($_GET['month']) ? $_GET['month'] : date("m");
-$year = isset($_GET['year']) ? $_GET['year'] : date("Y");
+$day = isset($_GET['day']) ? intval($_GET['day']) : date("d");
+$month = isset($_GET['month']) ? intval($_GET['month']) : date("m");
+$year = isset($_GET['year']) ? intval($_GET['year']) : date("Y");
 
 // définition de variables globales
 global $racine, $racineAd, $desactive_VerifNomPrenomUser;
 
 // Lien de retour
-$back = (isset($_SERVER['HTTP_REFERER']))? $_SERVER['HTTP_REFERER'] : page_accueil() ;
-
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : page_accueil() ;
 // Type de session
-if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
+$user_name = getUserName();
+if ((Settings::get("authentification_obli") == 0) && ($user_name == ''))
 	$type_session = "no_session";
 else
 	$type_session = "with_session";
@@ -71,14 +69,17 @@ else
 $adm = 0;
 $racine = "./";
 $racineAd = "./admin/";
-// pour le traitement des modules
-include $racine."/include/hook.class.php";
 
 if (!($desactive_VerifNomPrenomUser))
     $desactive_VerifNomPrenomUser = 'n';
 // On vérifie que les noms et prénoms ne sont pas vides
 VerifNomPrenomUser($type_session);
 
+// langue utilisée
+$langue= isset($_SESSION['default_language'])? $_SESSION['default_language']: Settings::get('default_language');
+// $room_back sert à pallier l'absence de page day_all => si room_back contient 'all', il ne faut pas passer room en paramètre
+$room_back = isset($_GET['room']) ? intval($_GET['room']) : 'all';
+// calcul des données à afficher
 $date_now = time();
 $ind = 1;
 $test = 0;
@@ -107,77 +108,117 @@ $tm = date("m",$i);
 $td = date("d",$i);
 $am7 = mktime($morningstarts, 0, 0, $month, $day, $year);
 $pm7 = mktime($eveningends, $eveningends_minutes, 0, $month, $day, $year);
-$this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id='".protect_data_sql($area)."'");
-$sql = "SELECT ".TABLE_PREFIX."_room.id, start_time, end_time, name, ".TABLE_PREFIX."_entry.id, type, beneficiaire, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext
-FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room
-WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
-AND area_id = '".protect_data_sql($area)."'
-AND start_time < ".($pm7+$resolution)." AND end_time > $am7 ORDER BY start_time";
+$this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id='".protect_data_sql($area)."'"); // nom du domaine
+// les réservations associées à notre recherche, ce jour dans ce domaine
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id
+FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
+WHERE
+".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id AND ".TABLE_PREFIX."_area.id = ".TABLE_PREFIX."_room.area_id";
+if (isset($room)) 
+    $sql .= " AND ".TABLE_PREFIX."_room.id = '".$room."' ";
+else 
+    $sql .= " AND ".TABLE_PREFIX."_room.area_id = '".$area."' ";
+$sql .= " AND ".TABLE_PREFIX."_type_area.type_letter = ".TABLE_PREFIX."_entry.type 
+AND start_time < ".($pm7+$resolution)." AND end_time > ".$am7." 
+ORDER BY start_time";
+/* contenu de la réponse si succès :
+    $row[0] : start_time
+    $row[1] : end_time
+    $row[2] : entry id
+    $row[3] : name
+    $row[4] : beneficiaire
+    $row[5] : room name
+    $row[6] : type
+    $row[7] : statut_entry
+    $row[8] : entry description
+    $row[9] : entry option_reservation
+    $row[10]: room delais_option_reservation
+    $row[11]: entry moderate
+    $row[12]: beneficiaire_ext
+    $row[13]: clef
+    $row[14]: courrier
+	$row[15]: Type_name
+    $row[16]: overload fields description
+    $row[17]: room_id
+*/
 $res = grr_sql_query($sql);
 if (!$res)
 	echo grr_sql_error();
 else
 {
-	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+    $overloadFieldList = mrbsOverloadGetFieldslist($area);
+    $cellules = array();
+    $compteur = array();
+    $today = array();
+	for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
 	{
-		$start_t = max(round_t_down($row['1'], $resolution, $am7), $am7);
-		$end_t = min(round_t_up($row['2'], $resolution, $am7) - $resolution, $pm7);
-		$cellules[$row['4']] = ($end_t - $start_t) / $resolution + 1; // à vérifier YN le 14/10/18
-		$compteur[$row['4']] = 0;
+		$start_t = max(round_t_down($row["start_time"], $resolution, $am7), $am7);
+		$end_t = min(round_t_up($row["end_time"], $resolution, $am7) - $resolution, $pm7);
+		$cellules[$row["id"]] = ($end_t - $start_t) / $resolution + 1; // à vérifier YN le 14/10/18
+		$compteur[$row["id"]] = 0;
 		for ($t = $start_t; $t <= $end_t; $t += $resolution) // à vérifier YN le 14/10/18
 		{
-			$today[$row['0']][$t]["id"]				= $row['4'];
-			$today[$row['0']][$t]["color"]			= $row['5'];
-			$today[$row['0']][$t]["data"]			= "";
-			$today[$row['0']][$t]["who"]			= "";
-			$today[$row['0']][$t]["statut"]			= $row['7'];
-			$today[$row['0']][$t]["moderation"]		= $row['10'];
-			$today[$row['0']][$t]["option_reser"]	= $row['9'];
-			$today[$row['0']][$t]["description"]	= affichage_resa_planning($row['8'], $row['4']);
+			$today[$row["room_id"]][$t]["id"]				= $row["id"];
+			$today[$row["room_id"]][$t]["color"]			= $row["type"];
+			$today[$row["room_id"]][$t]["data"]			    = "";
+			$today[$row["room_id"]][$t]["who"]			    = "";
+			//$today[$row["room_id"]][$t]["statut"]			= $row["statut_entry"];
+			//$today[$row["room_id"]][$t]["moderation"]		= $row["moderate"];
+			//$today[$row["room_id"]][$t]["option_reser"]	= $row["option_reservation"];
+			//$today[$row["room_id"]][$t]["description"]	= affichage_resa_planning($row["description"], $row["id"]);
 		}
-		if ($row['1'] < $am7)
+        $horaires = "";
+        if ($enable_periods != 'y') {
+            $heure_fin = date('H:i',min($pm7,$row["end_time"]));
+            if ($heure_fin == '00:00') {$heure_fin = '24:00';}
+            $horaires = date('H:i', max($am7,$row["start_time"])).get_vocab("to").$heure_fin;
+        }
+		if ($row["start_time"] < $am7)
 		{
-			$today[$row['0']][$am7]["data"] = affichage_lien_resa_planning($row['3'], $row['4']);
+            $today[$row["room_id"]][$am7]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
 			if ($settings->get("display_info_bulle") == 1)
-				$today[$row['0']][$am7]["who"] = get_vocab("reservation au nom de").affiche_nom_prenom_email($row['6'], $row['11'], "nomail");
-			else if ($settings->get("display_info_bulle") == 2)
-				$today[$row['0']][$am7]["who"] = $row['8'];
+				$today[$row["room_id"]][$am7]["who"] = get_vocab("reservation_au_nom_de").affiche_nom_prenom_email($row["beneficiaire"], $row["beneficiaire_ext"], "nomail");
+			else if (($settings->get("display_info_bulle") == 2)&&($row['description'] != ""))
+				$today[$row["room_id"]][$am7]["who"] = $row["description"];
 			else
-				$today[$row['0']][$am7]["who"] = "";
+				$today[$row["room_id"]][$am7]["who"] = get_vocab('voir_resa');
 		}
 		else
 		{
-			$today[$row['0']][$start_t]["data"] = affichage_lien_resa_planning($row['3'], $row['4']);
+            $today[$row["room_id"]][$start_t]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
 			if ($settings->get("display_info_bulle") == 1)
-				$today[$row['0']][$start_t]["who"] = get_vocab("reservation au nom de").affiche_nom_prenom_email($row['6'], $row['11']);
-			else if ($settings->get("display_info_bulle") == 2)
-				$today[$row['0']][$start_t]["who"] = $row['8'];
+				$today[$row["room_id"]][$start_t]["who"] = get_vocab("reservation_au_nom_de").affiche_nom_prenom_email($row["beneficiaire"], $row["beneficiaire_ext"]);
+			else if (($settings->get("display_info_bulle") == 2)&&($row['description'] != ""))
+				$today[$row["room_id"]][$start_t]["who"] = $row["description"];
 			else
-				$today[$row['0']][$start_t]["who"] = "";
+				$today[$row["room_id"]][$start_t]["who"] = get_vocab('voir_resa');
 		}
 	}
 }
 grr_sql_free($res);
 
-// $room_back sert à pallier l'absence de page day_all => si room_back contient 'all', il ne faut pas passer room en paramètre
-$room_back = isset($_GET['room']) ? $_GET['room'] : 'all';
-
 // Détermination des ressources à afficher
 if($room_back != 'all'){
-	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' and id = '".protect_data_sql($room_back)."' ORDER BY order_display, room_name";
+	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book FROM ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($room_back)."' ";
 }
-else $sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' ORDER BY order_display, room_name";
+else $sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' ORDER BY order_display, room_name";
 $ressources = grr_sql_query($sql);
 if (!$ressources)
 	fatal_error(0, grr_sql_error());
-// langue utilisée
-$langue= isset($_SESSION['default_language'])? $_SESSION['default_language']: Settings::get('default_language');
+
+// pour le traitement des modules
+include $racine."/include/hook.class.php";
 // code HTML
+header('Content-Type: text/html; charset=utf-8');
+if (!isset($_COOKIE['open']))
+{
+	header('Set-Cookie: open=true; SameSite=Lax');
+}
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;
 // section <head>
 if ($type_session == "with_session")
-    echo pageHead2(Settings::get("company"),"with_session");
+    echo pageHead2(Settings::get("company"),"with_session"); // voir le lancement de floatthead
 else
     echo pageHead2(Settings::get("company"),"no_session");
 // section <body>
@@ -186,11 +227,11 @@ echo "<body>";
 echo "<header>";
 pageHeader2($day, $month, $year, $type_session);
 echo "</header>";
+echo '<div id="chargement"></div>'.PHP_EOL; // à éliminer ?
 // Debut de la page
 echo '<section>'.PHP_EOL;
-// Affichage du menu
-include("menu_gauche2.php");
-include("chargement.php");
+// Affichage du menu en haut ou à gauche
+include("menuHG.php");
 // planning
 if ($_GET['pview'] != 1){
     echo "<div id='planning2'>";
@@ -214,7 +255,7 @@ if ($settings->get("show_holidays") == "Oui")
 }
 echo '<div class="'.$class.'">'.PHP_EOL;
 if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
-{
+{ // menu de navigation dans les jours avant/après en tête du planning
     echo "<div class='ligne23'>";
     if ($room_back == 'all'){
         echo '<div class="left">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'day.php?year='.$yy.'&amp;month='.$ym.'&amp;day='.$yd.'&amp;area='.$area.'\';"> <span class="glyphicon glyphicon-backward"></span> ',get_vocab("daybefore"),'</button>','</div>',PHP_EOL;
@@ -229,33 +270,18 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 	else{
         echo '<div class="right">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="charger();javascript: location.href=\'day.php?year='.$ty.'&amp;month='.$tm.'&amp;day='.$td.'&amp;area='.$area.'&amp;room='.$room_back.'\';">  '.get_vocab('dayafter').'  <span class="glyphicon glyphicon-forward"></span></button>','</div>',PHP_EOL;
     }
-    echo "</div>";
+    echo "</div>".PHP_EOL;
 }
-echo "<div>";
+echo "<div>".PHP_EOL;
 if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
-{    
-    echo "<div class=\"left\"> "; // afficher ou cacher le menu
+{ // afficher ou cacher le menu
+    echo "<div class=\"left\"> ";
     $mode = Settings::get("menu_gauche");
     $alt = $mode;
     if ($mode == 0) $alt = 1; // il faut bien que le menu puisse s'afficher, par défaut ce sera à gauche sauf choix autre par setting
-    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuGauche($alt)\" title='".get_vocab('show_left_menu')."'><span class=\"glyphicon glyphicon-chevron-right\"></span></button></div> ";
-    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuGauche(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
+    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG($alt)\" title='".get_vocab('show_left_menu')."'><span class=\"glyphicon glyphicon-chevron-right\"></span></button></div> ";
+    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
 	echo "</div>";
-    if ($mode == 1){
-        echo '<script type="text/javascript">
-                document.getElementById("cacher").style.display = "inline";
-                document.getElementById("voir").style.display = "none";
-                document.getElementById("planning2").style.width = "75%"; 
-            </script>
-        ';
-    }
-    if ($mode == 2){
-        echo '<script type="text/javascript">
-                document.getElementById("cacher").style.display = "inline";
-                document.getElementById("voir").style.display = "none";
-            </script>
-        ';
-    }
 }
 echo '<h4>' . ucfirst($this_area_name).' - '.get_vocab("all_areas");
 if ($settings->get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
@@ -290,18 +316,19 @@ else
 $nbcol = 0;
 $rooms = array();
 $a = 0;
-for ($i = 0; ($row = grr_sql_row($ressources, $i)); $i++)
+for ($i = 0; ($row = grr_sql_row_keyed($ressources, $i)); $i++)
 {
-	$id_room[$i] = $row['2'];
+	$id_room[$i] = $row["id"];
 	$nbcol++;
-	if (verif_acces_ressource(getUserName(), $id_room[$i]))
+	if (verif_acces_ressource($user_name, $id_room[$i]))
 	{
-		$room_name[$i] = $row['0'];
-		$statut_room[$id_room[$i]] =  $row['4'];
-		$statut_moderate[$id_room[$i]] =  $row['7'];
-		$acces_fiche_reservation = verif_acces_fiche_reservation(getUserName(), $id_room[$i]);
+		$room_name[$i] = $row["room_name"];
+		$statut_room[$id_room[$i]] =  $row["statut_room"];
+		$statut_moderate[$id_room[$i]] =  $row["moderate"];
+        $who_can_book[$id_room[$i]] = $row["who_can_book"];
+		$acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $id_room[$i]);
 		if ($row['1']  && $_GET['pview'] != 1)
-			$temp = '<br /><span class="small">('.$row['1'].' '.($row['1'] > 1 ? get_vocab("number_max2") : get_vocab("number_max")).')</span>'.PHP_EOL;
+			$temp = '<br /><span class="small">('.$row["capacity"].' '.($row["capacity"] > 1 ? get_vocab("number_max2") : get_vocab("number_max")).')</span>'.PHP_EOL;
 		else
 			$temp = '';
 		if ($statut_room[$id_room[$i]] == "0"  && $_GET['pview'] != 1)
@@ -312,43 +339,42 @@ for ($i = 0; ($row = grr_sql_row($ressources, $i)); $i++)
 		if ($statut_room[$id_room[$i]] == "0")
 			echo 'class="avertissement" ';
 		$a = $a + 1;
-		echo '><a id="afficherBoutonSelection'.$a.'" class="lienPlanning" href="#" onclick="afficherMoisSemaine('.$a.')" style="display:inline;">'.htmlspecialchars($row['0']).'</a>'.PHP_EOL;
-		echo '<a id="cacherBoutonSelection'.$a.'" class="lienPlanning" href="#" onclick="cacherMoisSemaine('.$a.')" style="display:none;">'.htmlspecialchars($row['0']).'</a>'.PHP_EOL;
-		if (htmlspecialchars($row['3']).$temp != '')
+		echo '><a id="afficherBoutonSelection'.$a.'" class="lienPlanning" href="#" onclick="afficherMoisSemaine('.$a.')" style="display:inline;">'.htmlspecialchars($row["room_name"]).'</a>'.PHP_EOL;
+		echo '<a id="cacherBoutonSelection'.$a.'" class="lienPlanning" href="#" onclick="cacherMoisSemaine('.$a.')" style="display:none;">'.htmlspecialchars($row["room_name"]).'</a>'.PHP_EOL;
+		if (htmlspecialchars($row["description"]).$temp != '')
 		{
-			if (htmlspecialchars($row['3']) != '')
+			if (htmlspecialchars($row["description"]) != '')
 				$saut = '<br />';
 			else
 				$saut = '';
-			echo $saut.htmlspecialchars($row['3']).$temp."\n";
+			echo $saut.htmlspecialchars($row["description"]).$temp."\n";
 		}
 		echo '<br />';
-		if (verif_display_fiche_ressource(getUserName(), $id_room[$i]) && $_GET['pview'] != 1)
+		if (verif_display_fiche_ressource($user_name, $id_room[$i]) && $_GET['pview'] != 1)
 			echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$id_room[$i].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'">
 		<span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
-		if (authGetUserLevel(getUserName(),$id_room[$i]) > 2 && $_GET['pview'] != 1)
+		if (authGetUserLevel($user_name,$id_room[$i]) > 2 && $_GET['pview'] != 1)
 			echo '<a href="./admin/admin.php?p=admin_edit_room&room='.$id_room[$i].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a><br/>'.PHP_EOL;
 		affiche_ressource_empruntee($id_room[$i]);
 		echo '<span id="boutonSelection'.$a.'" style="display:none;">'.PHP_EOL;
 		echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab("see_week_for_this_room")).'" onclick="charger();javascript: location.href=\'week.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('week').'"/>'.PHP_EOL;
 		echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab("see_month_for_this_room")).'" onclick="charger();javascript: location.href=\'month.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('month').'"/>'.PHP_EOL;
 		echo '</span>'.PHP_EOL;
-		if (htmlspecialchars($row['3']).$temp != '')
+		if (htmlspecialchars($row["description"]).$temp != '')
 		{
-			if (htmlspecialchars($row['3']) != '')
+			if (htmlspecialchars($row["description"]) != '')
 				$saut = '<br />';
 			else
 				$saut = '';
 		}
-		$rooms[] = $row['2'];
-		$delais_option_reservation[$row['2']] = $row['6'];
+		$rooms[] = $row["id"];
+		$delais_option_reservation[$row["id"]] = $row["delais_option_reservation"];
         echo '</th>'.PHP_EOL;
 	}
 }
 if (count($rooms) == 0)
 {
 	echo '<br /><h1>'.get_vocab("droits_insuffisants_pour_voir_ressources").'</h1><br />'.PHP_EOL;
-	// include "include/trailer.inc.php"; pas besoin d'afficher l'imprimante dans ce cas
 	die();
 }
 echo '</tr>'.PHP_EOL;
@@ -356,8 +382,8 @@ echo "</thead>"; // fin de l'affichage des ressources
 echo "<tbody>";
 $tab_ligne = 3;
 $iii = 0;
-// correctif pour domaine sur créeaux prédéfinis
-if ($enable_periods == 'y'){$pm7++;}
+if ($enable_periods == 'y'){$pm7++;} // correctif pour domaine sur créneaux prédéfinis
+
 for ($t = $am7; $t < $pm7; $t += $resolution)
 {
 	echo '<tr>'.PHP_EOL;
@@ -376,11 +402,12 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 	{
 		echo affiche_heure_creneau($t,$resolution).'</td>'.PHP_EOL;
 	}
-	//while (list($key, $room) = each($rooms)) deprecated in php 7.2.0
     foreach($rooms as $key=>$room)
 	{
-		if (verif_acces_ressource(getUserName(), $room))
+		if (verif_acces_ressource($user_name, $room))
 		{
+            $authLevel = authGetUserLevel($user_name,$room);
+            $user_can_book = $who_can_book[$room] || ($authLevel > 2) || (authBooking($user_name,$room));
 			if (isset($today[$room][$t]["id"]))
 			{
 				$id    = $today[$room][$t]["id"];
@@ -419,13 +446,22 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 				$hour = date("H", $t);
 				$minute = date("i", $t);
 				$date_booking = mktime($hour, $minute, 0, $month, $day, $year);
+                if ($enable_periods == 'y')
+                    $date_booking = mktime(23,59,0,$month,$day,$year);
 				if (est_hors_reservation(mktime(0, 0, 0, $month, $day, $year), $area))
 				{
 					echo '<img src="img_grr/stop.png" alt="'.get_vocab("reservation_impossible").'"  title="'.get_vocab("reservation_impossible").'" width="16" height="16" class="'.$class_image.'" />'.PHP_EOL;
 				}
-				else
+				else // plage libre
 				{
-					if (((authGetUserLevel(getUserName(), -1) > 1) || (auth_visiteur(getUserName(), $room) == 1)) && (UserRoomMaxBooking(getUserName(), $room, 1) != 0) && verif_booking_date(getUserName(), -1, $room, $date_booking, $date_now, $enable_periods) && verif_delais_max_resa_room(getUserName(), $room, $date_booking) && verif_delais_min_resa_room(getUserName(), $room, $date_booking) && (($statut_room[$room] == "1") || (($statut_room[$room] == "0") && (authGetUserLevel(getUserName(),$room) > 2) )) && $_GET['pview'] != 1)
+					if ((($authLevel > 1) || (auth_visiteur($user_name, $room) == 1)) 
+                        && (UserRoomMaxBooking($user_name, $room, 1) != 0) 
+                        && verif_booking_date($user_name, -1, $room, $date_booking, $date_now, $enable_periods) 
+                        && verif_delais_max_resa_room($user_name, $room, $date_booking) 
+                        && verif_delais_min_resa_room($user_name, $room, $date_booking, $enable_periods) 
+                        && (($statut_room[$room] == "1") || (($statut_room[$room] == "0") && ($authLevel > 2) )) 
+                        && $user_can_book
+                        && $_GET['pview'] != 1)
 					{
 						if ($enable_periods == 'y')
 						{
@@ -445,26 +481,14 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 			}
 			else if ($descr != "")
 			{
-				if ((isset($today[$room][$t]["statut"])) && ($today[$room][$t]["statut"] != '-'))
-				{
-					echo '<img src="img_grr/buzy.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("ressource actuellement empruntee").'" width="20" height="20" class="image" />'.PHP_EOL;
-				}
-				if (($delais_option_reservation[$room] > 0) && (isset($today[$room][$t]["option_reser"])) && ($today[$room][$t]["option_reser"] != -1))
-				{
-					echo '<img src="img_grr/small_flag.png" alt="'.get_vocab("reservation_a_confirmer_au_plus_tard_le").'" title="'.get_vocab("reservation_a_confirmer_au_plus_tard_le").' '.time_date_string_jma($today[$room][$t]["option_reser"],$dformat).'" width="20" height="20" class="image" />'.PHP_EOL;
-				}
-				if ((isset($today[$room][$t]["moderation"])) && ($today[$room][$t]["moderation"] == '1'))
-				{
-					echo '<img src="img_grr/flag_moderation.png" alt="'.get_vocab("en_attente_moderation").'" title="'.get_vocab("en_attente_moderation").'" class="image" />'.PHP_EOL;
-				}
-				if (($statut_room[$room] == "1") || (($statut_room[$room] == "0") && (authGetUserLevel(getUserName(), $room) > 2) ))
+                if (($statut_room[$room] == "1") || (($statut_room[$room] == "0") && ($authLevel > 2) ))
 				{
 					if ($acces_fiche_reservation)
 					{
 						if ($settings->get("display_level_view_entry") == 0)
 						{
 							$currentPage = 'day';
-							echo '<a title="'.htmlspecialchars($today[$room][$t]["who"]).'" data-width="675" onclick="request('.$id.','.$day.','.$month.','.$year.',\''.$room_back.'\',\''.$currentPage.'\',readData);" data-rel="popup_name" class="poplight">'.$descr.PHP_EOL;
+							echo '<a title="'.htmlspecialchars($today[$room][$t]["who"]).'" data-width="675" onclick="request('.$id.','.$day.','.$month.','.$year.',\''.$room_back.'\',\''.$currentPage.'\',readData);" data-rel="popup_name" class="poplight lienCellule">'.$descr.PHP_EOL;
 						}
 						else
 						{
@@ -474,37 +498,6 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 					else
 					{
 						echo ' '.$descr;
-					}
-					$sql = "SELECT type_name,start_time,end_time,clef,courrier FROM ".TABLE_PREFIX."_type_area ,".TABLE_PREFIX."_entry  WHERE  ".TABLE_PREFIX."_entry.id= ".$today[$room][$t]["id"]." AND ".TABLE_PREFIX."_entry.type= ".TABLE_PREFIX."_type_area.type_letter";
-					$res = grr_sql_query($sql);
-					for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-					{
-						$type_name  = $row['0'];
-						$start_time = $row['1'];
-						$end_time   = $row['2'];
-						$clef 		= $row['3'];
-						$courrier	= $row['4'];
-						if ($enable_periods != 'y') {
-                            $heure_fin = date('H:i',min($pm7,$end_time));
-                            if ($heure_fin == '00:00') {$heure_fin = '24:00';}
-							echo '<br/>',date('H:i', max($am7,$start_time)),get_vocab("to"),$heure_fin,'<br/>';
-						}
-						if (($type_name != -1)&&(Settings::get("type") == '1'))
-							echo  $type_name;
-						echo '<br>'.PHP_EOL;
-						if ($clef == 1)
-							echo '<img src="img_grr/skey.png" alt="clef">'.PHP_EOL;
-						if (Settings::get('show_courrier') == 'y')
-						{
-							if ($courrier == 1)
-								echo '<img src="img_grr/scourrier.png" alt="courrier">'.PHP_EOL;
-							else
-								echo '<img src="img_grr/hourglass.png" alt="buzy">'.PHP_EOL;
-						}
-					}
-					if ($today[$room][$t]["description"]!= "")
-					{
-						echo '<br /><i>',$today[$room][$t]["description"],'</i>';
 					}
 				}
 				else
@@ -532,9 +525,10 @@ if ($_GET['pview'] != 1)
 	echo '</div>'.PHP_EOL;
 }
 echo '</div>'.PHP_EOL; // fin planning2
-//echo '</div>'.PHP_EOL;
 affiche_pop_up(get_vocab('message_records'), 'user');
-
+unset($row);
+echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
+echo "</section>";
 ?>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -546,16 +540,12 @@ affiche_pop_up(get_vocab('message_records'), 'user');
 			$row.find('a').css('padding-top', height/2 - h2/2);
 
 		});
-	});
-	jQuery(document).ready(function($){
-		$("#popup_name").draggable({containment: "#container"});
+        $("#popup_name").draggable({containment: "#container"});
 		$("#popup_name").resizable();
+        afficheMenuHG(<?php echo $mode; ?>);
+        if ( $(window).scrollTop() == 0 )
+            $("#toTop").hide(1);
 	});
-
 </script>
-<?php
-unset($row);
-echo '<div id="popup_name" class="popup_block"></div>'.PHP_EOL;
-echo "</section>";
-echo "</body></html>";
-?>
+</body>
+</html>

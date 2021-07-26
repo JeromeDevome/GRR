@@ -3,10 +3,10 @@
  * installation/maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-20 19:00$
+ * Dernière modification : $Date: 2021-05-31 18:26$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -17,29 +17,28 @@
  * (at your option) any later version.
  */
 
-include "../include/connect.inc.php";
-include "../include/config.inc.php";
-include "../include/misc.inc.php";
-include "../include/functions.inc.php";
-include "../include/$dbsys.inc.php";
-
 $grr_script_name = "maj.php";
 
-// Settings
+require_once("../personnalisation/connect.inc.php");
+require_once("../include/config.inc.php");
+require_once("../include/misc.inc.php");
+require_once("../include/functions.inc.php");
+require_once("../include/$dbsys.inc.php");
 require_once("../include/settings.class.php");
-//Chargement des valeurs de la table settingS
-if (!Settings::load())
+include("../include/language.inc.php");
+include("./fonctions/maj.php");
+
+//Chargement des valeurs de la table settings
+$settings = new Settings();
+if (!$settings)
 	die("Erreur chargement settings");
 
-// Paramètres langage
-include "../include/language.inc.php";
-include "./fonctions/maj.php";
 
 $valid		= isset($_POST["valid"]) ? $_POST["valid"] : 'no';
 $majscript	= false;
 $force		= false;
 
-// Définitions depuis qu'elle version on met  à jours
+// Définition depuis quelle version on met à jour
 if (isset($_POST["version_old"]))
 {
 	$version_old = $_POST["version_old"];
@@ -86,7 +85,7 @@ if(!$majscript)
 
 if(!$majscript) {
 
-	// Mise à jour de la base de donnée
+	// Mise à jour de la base de données
 	echo "<h3>".get_vocab("maj_bdd")."</h3>";
 
 	// Vérification du numéro de version
@@ -106,12 +105,13 @@ if(!$majscript) {
 	else
 	{
 		echo "<p>".get_vocab("maj_no_update_to_do")."</p>";
+		echo "<p>Forcer MaJ (ATTENTION) <a href=\"maj.php?forcemaj=".$version_old."\">Cliquez ici</a></p>";
 		echo "<p style=\"text-align:center;\"><a href=\"../\">".get_vocab("welcome")."</a></p>";
 	}
 }
 
 
-// On effectu la MaJ
+// On effectue la MaJ
 if (isset($_POST['maj']) || $majscript)
 {
 	$result = execute_maj($version_old, $version_grr);

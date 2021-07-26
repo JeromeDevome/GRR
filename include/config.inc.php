@@ -4,7 +4,7 @@
  * Fichier de configuration de GRR
  * Dernière modification : $Date: 2017-12-16 14:00$
  * @author    JeromeB & Laurent Delineau
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -17,8 +17,8 @@
  
 ### A LIRE ###
 # Il est préférable de pas modifier ce fichier, car celui-ci sera écrasé lors des mises à jours
-# Nous conseillons de creer un fichier dans ce dossier en l'appelant "configperso.inc.php"
-# Dans ce dernier ajouter les variables souhaité avec les valeurs souhaité, vos valeurs écraserons ce de ce fichier
+# Nous conseillons de creer un fichier dans le dossier peronnalisation en l'appelant "configperso.inc.php"
+# Dans ce dernier ajouter les variables souhaité avec les valeurs souhaité, vos valeurs écraserons celles de ce fichier
 ##############
 
 /*
@@ -127,10 +127,11 @@ $upload_Module = 1;
 # Nb de jour maximum que l'on garde les logs de connexions, 0 = aucune limite
 $nbMaxJoursLogConnexion = 365;
 
-# Mot de passe simple
-	# Valeurs  3- azerty  || 4- Vide || 6- 123456  || 7- 1234567 || 8- 12345678 || 9- 000000 || 10- 00000000 
-	$mdpFacile = array("ab4f63f9ac65152575886860dde480a1", "", "e10adc3949ba59abbe56e057f20f883e", "fcea920f7412b5da7be0cf42b8c93759", "25d55ad283aa400af464c76d713c07ad", "670b14728ad9902aecba32e22fa4f6bd", "dd4b21e9ef71e1291183a46b913ae6f2");
+# Nb de jour maximum que l'on garde les logs de connexions, 0 = aucune limite
+$nbMaxJoursLogEmail = 365;
 
+# Algorythme de cryptage des comptes utilisateur, ne pas changer après installation sauf si reset des mots de passes. Défaut : ripemd320
+$algoPwd = 'ripemd320';
 
 ##################################################
 # Cas d'une authentification via config.inc.php  #
@@ -211,9 +212,14 @@ $grrPages = array();
 # Make sure notice errors are not reported
 #error_reporting (E_ALL ^ E_NOTICE);
 
-if(file_exists('../include/configperso.inc.php'))
-	include('../include/configperso.inc.php');
-if(file_exists('./include/configperso.inc.php'))
-	include('./include/configperso.inc.php');
+# Création d'un dossier personnalisation pour mettre tout fichiers importé modifié par les utilisateurs de GRR
+$gcDossierCss = "css";
+$gcDossierImg = "images";
+$gcDossierXml = "xml";
+
+if(file_exists('../personnalisation/configperso.inc.php'))
+	include('../personnalisation/configperso.inc.php');
+if(file_exists('./personnalisation/configperso.inc.php'))
+	include('./personnalisation/configperso.inc.php');
 
 ?>

@@ -5,7 +5,7 @@
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2018-12-16 12:00$
  * @author    JeromeB
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -15,7 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-include_once('include/connect.inc.php');
+include_once('personnalisation/connect.inc.php');
 include_once('include/config.inc.php');
 include_once('include/misc.inc.php');
 include_once('include/functions.inc.php');
@@ -46,7 +46,7 @@ if ($valid == 'yes')
 		$reg_password2 = isset($_POST['reg_password2']) ? $_POST['reg_password2'] : NULL;
 		if (($reg_password_a != '') && ($reg_password1 != ''))
 		{
-			$reg_password_a_c = md5($reg_password_a);
+			$reg_password_a_c = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$reg_password_a);
 			if ($_SESSION['password'] == $reg_password_a_c)
 			{
 				if ($reg_password1 != $reg_password2)
@@ -56,7 +56,7 @@ if ($valid == 'yes')
 				else
 				{
 					VerifyModeDemo();
-					$reg_password1 = md5($reg_password1);
+					$reg_password1 = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$reg_password1);
 					$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='".protect_data_sql($reg_password1)."', changepwd ='0' WHERE login='".getUserName()."'";
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, get_vocab('update_pwd_failed') . grr_sql_error());
@@ -65,7 +65,7 @@ if ($valid == 'yes')
 						$msg = get_vocab('update_pwd_succeed');
 						$_SESSION['password'] = $reg_password1;
 						$_SESSION['changepwd'] = 0;
-						header("Location: ./my_account.php");
+						header("Location: ./compte/compte.php");
 					}
 				}
 			}

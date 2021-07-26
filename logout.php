@@ -5,7 +5,7 @@
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2017-12-16 14:00$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -15,7 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-require_once("include/connect.inc.php");
+require_once("personnalisation/connect.inc.php");
 require_once("include/config.inc.php");
 include "include/misc.inc.php";
 include "include/functions.inc.php";

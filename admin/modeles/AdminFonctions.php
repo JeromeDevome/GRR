@@ -4,7 +4,7 @@
  * Fonctions Général de l'administration
  * Dernière modification : $Date: 2018-11-26 16:00$
  * @author    JeromeB
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -42,7 +42,7 @@ class AdminFonctions
 
 	public static function NombreUtilisateursMDPfacile() // Nombre d'utilisateur avec un mot de passe trop simple
 	{
-		global $mdpFacile;
+		global $mdpFacile, $algoPwd, $hashpwd1;
 
 		// les utilisateurs à identification externe ont un mot de passe vide dans la base GRR, il est inutile de les afficher
 		$sql = "SELECT nom, prenom, login, etat, password FROM ".TABLE_PREFIX."_utilisateurs WHERE source = 'local'";
@@ -54,8 +54,8 @@ class AdminFonctions
 			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 			{
 				// Tableau définit dans config.inc.php : $mdpFacile . On y ajoute les varibales en liason avec l'utilisateur
-				$mdpFacile[] = md5(strtoupper($row[2])); // Mot de passe = login en majuscule
-				$mdpFacile[] = md5(strtolower($row[2])); // Mot de passe = login en minuscule
+				$mdpFacile[] = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").strtoupper($row[2])); // Mot de passe = login en majuscule
+				$mdpFacile[] = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").strtolower($row[2])); // Mot de passe = login en minuscule
 
 				if(in_array($row[4], $mdpFacile))
 					$nb_facile++;
@@ -86,6 +86,13 @@ class AdminFonctions
 			$MessageWarning = "Les dates d'ouverture des réservations seront prochainement fermées.";
 			$NomLien = "Configurer les dates";
 			$lien = "?p=admin_config";
+		}
+
+		if ( (time() - 2592000) > Settings::get("backup_date") ){
+			$type = "warning";
+			$MessageWarning = "La dernière sauvegarde de la BDD date de plus d'un mois !";
+			$NomLien = "Faire une sauvegarde";
+			$lien = "admin_save_mysql.php?flag_connect=yes";
 		}
 
 		return array($type, $MessageWarning, $NomLien, $lien);
@@ -120,7 +127,7 @@ class AdminFonctions
 		global $dformat;
 
 		$listeModeration = array();
-		$sql = "SELECT r.room_name, e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE e.moderate = 1";
+		$sql = "SELECT r.room_name, e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE e.moderate = 1 AND e.supprimer = 0";
 		$resa_mode = grr_sql_query($sql);
 		$nbAModerer = grr_sql_count($resa_mode);
  

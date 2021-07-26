@@ -9,12 +9,12 @@ L'ensemble des fichiers nécessaires à l'installation sont rassemblés dans
 l'archive que vous avez téléchargée.
 Parmi ces fichiers figure le fichier "connect.inc.php". La configuration
 du fichier "connect.inc.php" n'est pas obligatoire si vous optez pour une
-installation automatisée de la base de donnée. En effet, la procédure
+installation automatisée de la base de données. En effet, la procédure
 d'installation vous invitera alors à entrer dans un formulaire vos paramètres
 de connexion.
 
 Dans le cas contraire, vous devez impérativement renseigner ce fichier :
--  $dbHost : le nom du serveur qui héberge votre base de donnée mysql. Si
+-  $dbHost : le nom du serveur qui héberge votre base de données mysql. Si
    c'est le même que celui qui héberge les fichiers php, mettre "localhost".
 -  $dbDb : le nom de votre base mysql.
 -  $dbUser : le nom de l'utilisateur mysql qui a les droits sur la base.
@@ -27,7 +27,7 @@ Pré-requis
 Pour installer et faire fonctionner GRR, vous avez besoin de :
 -> Un serveur web/php et un serveur mysql (éventuellement sur la même
 machine)
--> Nécessité de disposer d'une version de php version supérieure ou égale à 5.4.0 (gestion des variables de type $_SESSION, fonction mysql_real_escape_string(),  ...)
+-> Nécessité de disposer d'une version de php version supérieure ou égale à 7.2.3 (gestion des variables de type $_SESSION, fonction mysql_real_escape_string(),  ...)
 
 ************************************************
 Installation - Etape 1 : Configuration de GRR
@@ -49,15 +49,14 @@ On pourra par exemple créer un répertoire "grr" dans le répertoire
 web du serveur ("htdocs" dans le cas d'Apache).
 
 Modification des droits : les droits d'écriture doivent être attribués
-* au répertoire "/images"       (chargement d'images pour les fiches de présentation des ressources)
-* au fichier "include/connect.inc.php"      (dans le cas d'une installation automatisée)
+* au répertoire "/personnalisation" 
 * au fichier "include/config_ldap.inc.php"  (dans le cas d'une authentification ldap)
 
 ***************************************************
 Installation - Etape 3 : création de la base Mysql
 ***************************************************
 
-Vous avez le choix entre deux types d'installation de la base de donnée Mysql:
+Vous avez le choix entre deux types d'installation de la base de données Mysql:
 
 -  une installation automatisée,
 -  une installation manuelle, réservée aux experts.
@@ -99,8 +98,5 @@ Après l'installation : configuration de GRR en ligne
 ******************************************************
 
 Une fois le système installé, vous pouvez vous connecter à GRR :
--  nom de connexion : 'administrateur' et mot de passe : 'azerty'),
--  Par sécurité, CHANGEZ LE MOT DE PASSE de 'admin' grâce au lien "gérer mon
-compte" dans le bandeau en haut !
--  allez dans la partie "gestion" (lien dans le bandeau en haut)
+-  nom de connexion : 'administrateur' et mot de passe créé lors de l'installation'
 

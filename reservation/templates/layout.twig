@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="Robots" content="noindex" />
+		<title>GRR - {{ settings.company }}</title>
+		<link rel="shortcut icon" href="favicon.ico" />
+		<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui-timepicker-addon.css" >
+		<link rel="stylesheet" type="text/css" href="./themes/default/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="./{{ d.sheetcss }}" />
+		<link rel="stylesheet" href="./bootstrap/AdminLTE/bower_components/font-awesome/css/all.css">
+		{% block css %}{% endblock %}
+	</head>
+
+	<body>
+		<header>
+			<div id="panel">
+				<div class="logo" height="100">
+					{%if d.logo != ''%}<a href="{{ d.pageAccueil |raw }}"><img src="{{ d.logo }}" alt="logo"></a>{%endif%}
+				</div>
+				<div class="accueil">
+					<h2><a href="{{ d.pageAccueil |raw }}">{{ settings.company }}</a></h2>
+					<p>{{ settings.message_accueil |raw }}</p>
+				</div>
+				{%if lienFormaulaireResa == 1 %}
+				<div class="contactformulaire">
+					<input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onclick="javascript:location.href='app.php?p=contactresa{{ d.paramUrl |raw }}'">
+				</div>
+				{%endif%}
+				<div class="administration">
+				{%if d.lienDeconnexion %}
+					{%if d.lienAdmin != ''%}<br><a href='./{{ d.lienAdmin |raw }}'>{{ trad.admin }}</a>{%endif%}
+					{%if d.nbConnecte %}<br>{{ d.nbConnecte |raw }}{%endif%}
+					{%if d.mess_resa %}<br><p class='avertissement'>{{ d.mess_resa }}</p>{%endif%}
+				{%endif%}
+				</div>
+				<div class="configuration" >
+					{%if d.jsHeure %}
+					<div class="clock">
+						<div id="Date">
+							&nbsp;<span id="hours"></span>h<span id="min"></span>
+						</div>
+					</div>
+					{%endif%}
+					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=fr"><img src="./img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>
+					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=de"><img src="./img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>
+					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=en"><img src="./img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>
+					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=it"><img src="./img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>
+					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=es"><img src="./img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>
+					{%if d.lienDeconnexion %}<br /><a href="./compte/compte.php?{{ d.paramUrl |raw }}">{{ d.nomUtilisateur }} - {{ trad.manage_my_account }}</a>{%endif%}
+					{%if d.accesStats %}<br /><a href="./app.php?p=report">{{ trad.report }}</a>{%endif%}
+					{{ d.lienDeconnexion |raw }}
+					{{ d.lienConnexion |raw }}
+				</div>
+			</div>
+			<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>
+		</header>
+		<section>
+			{% block content %}{% endblock %}
+
+			<div id="popup_name" class="popup_block"></div>
+		</section>
+		{% block javascript %}{% endblock %}
+		<script type="text/javascript" src="./js/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="./js/jquery.validate.js"></script>
+		<script type="text/javascript" src="./js/jquery-ui-timepicker-addon.js"></script>
+		<script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="./js/html2canvas.js"></script>
+		<script type="text/javascript" src="./js/menu.js"></script>
+		<script type="text/javascript" src="./js/popup.js" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/functions.js" ></script>
+		<script type="text/javascript" src="./js/selection.js" ></script>
+		{%if d.jsHeure %}
+			<script type="text/javascript" src="./js/{{ d.jsHeure }}"></script>
+		{%endif%}
+	</body>
+</html>

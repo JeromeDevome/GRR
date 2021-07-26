@@ -3,9 +3,9 @@
  * admin_config.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2018-03-30 16:00$
+ * Dernière modification : $Date: 2020-05-07 10:10$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -137,10 +137,17 @@ if (isset($_POST['display_type'])) {
         die();
     }
 }
-// display_beneficicaire
-if (isset($_POST['display_beneficicaire'])) {
-    if (!Settings::set('display_beneficicaire', $_POST['display_beneficicaire'])) {
-        echo "Erreur lors de l'enregistrement de display_beneficicaire !<br />";
+// display_beneficiaire
+if (isset($_POST['display_beneficiaire'])) {
+    if (!Settings::set('display_beneficiaire', $_POST['display_beneficiaire'])) {
+        echo "Erreur lors de l'enregistrement de display_beneficiaire !<br />";
+        die();
+    }
+}
+// display_horaires
+if (isset($_POST['display_horaires'])) {
+    if (!Settings::set('display_horaires', $_POST['display_horaires'])) {
+        echo "Erreur lors de l'enregistrement de display_horaires !<br />";
         die();
     }
 }
@@ -190,6 +197,13 @@ if (isset($_POST['legend'])) {
 if (isset($_POST['imprimante'])) {
     if (!Settings::set('imprimante', $_POST['imprimante'])) {
         echo "Erreur lors de l'enregistrement de imprimante !<br />";
+        die();
+    }
+}
+// Affichage pdf
+if (isset($_POST['pdf'])) {
+    if (!Settings::set('pdf', $_POST['pdf'])) {
+        echo "Erreur lors de l'enregistrement de pdf !<br />";
         die();
     }
 }
@@ -319,6 +333,7 @@ get_vocab_admin('display_mail_destinataire');
 
 // Affichage des réservations dans les vues journées, semaine et mois
 get_vocab_admin('display_planning_resa');
+get_vocab_admin('horaires');
 get_vocab_admin('sum_by_creator');
 get_vocab_admin('namebooker');
 get_vocab_admin('match_descr');
@@ -362,6 +377,7 @@ get_vocab_admin('pview_new_windows1');
 
 get_vocab_admin('legend_msg');
 get_vocab_admin('imprimante_msg');
+get_vocab_admin('affichage_pdf');
 get_vocab_admin('periodicite_msg');
 get_vocab_admin('courrier_msg');
 get_vocab_admin('holidays_msg');

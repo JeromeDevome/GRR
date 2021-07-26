@@ -1,0 +1,230 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+<div id="page-resa" class="col-lg-12 col-md-12 col-xs-12">
+	<div class="container">
+		<form id="frmContact" method="post" action="?p=contactresa">
+			<div id="formContact">
+				<div class="row">
+					<fieldset>
+						<legend><b>Vos coordonnées</b></legend>
+						<div class="col-lg-6 col-md-6 col-xs-12">
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+									<input class="form-control" type="text" id="nom"  size="8" name="nom" placeholder="Votre nom" required />
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+									<input class="form-control" type="text" size="8" id="prenom"  name="prenom" placeholder="Votre prénom" />
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6 col-md-6 col-xs-12">
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
+									<input class="form-control" type="email" id="email" size="8" name="email" placeholder="Votre adresse de courriel" required />
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-addon"><span class="glyphicon glyphicon-earphone"></span></div>
+									<input class="form-control" type="text" size="8" maxlength="14" id="telephone" name="telephone" placeholder="Votre numéro de téléphone" />
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+				<div class="row">
+					<fieldset>
+						<legend><b>Réservation</b></legend>
+						<label for="subject">Sujet :</label>
+						<textarea class="form-control" id="subject" name="sujet" cols="30" rows="4"></textarea><br/>
+						<label>Domaines : </label>
+						<select id="area" name="area" class="form-control" required>
+							<option>SELECTIONNER UN DOMAINE </option>
+							{% for domaine in domaineDispo %}
+								<option onclick="" value="{{domaine.id}}/{{domaine.resolution}}">{{domaine.nom}}</option>
+							{% endfor %}
+						</select>
+
+						<label for="room">Ressources : </label>
+						<select id="room" name="room" class="form-control" required>
+								<option>SELECTIONNER UNE RESSOURCE </option>
+						</select>
+					</fieldset>			
+				</div>
+				<div class="row">	
+					<div class="col-lg-6 col-md-6 col-xs-12">
+						<div class="form-group">
+							<div class="input-group">				
+								<legend><b> Date :</b></legend>
+								{{d.jQuery_DatePicker |raw}}
+								<input type="hidden" disabled="disabled" id="mydate_start">
+								<br /><br />
+								<label for="heure">Heure début :</label>
+								<select name="heure" id="heure">
+									<option value="1">01h</option>
+									<option value="2">02h</option>
+									<option value="3">03h</option>
+									<option value="4">04h</option>
+									<option value="5">05h</option>
+									<option value="6">06h</option>
+									<option value="7">07h</option>
+									<option value="8">08h</option>
+									<option value="9">09h</option>
+									<option value="10">10h</option>
+									<option value="11">11h</option>
+									<option value="12">12h</option>
+									<option value="13">13h</option>
+									<option value="14">14h</option>
+									<option value="15">15h</option>
+									<option value="16">16h</option>
+									<option value="17">17h</option>
+									<option value="18">18h</option>
+									<option value="19">19h</option>
+									<option value="20">20h</option>
+									<option value="21">21h</option>
+									<option value="22">22h</option>
+									<option value="23">23h</option>
+								</select>
+								<select id='debdureemin' name="minutes"></select><!-- class test non défini ?-->
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="input-group">
+							<label for="duree" >Durée en heure :</label>
+							<input type="number" id="duree" size="2" name="duree" value="1" min="0" required />
+							<label for="dureemin"> et </label>
+								<select id="dureemin" name="dureemin">
+									<option> </option>
+									<option> </option>
+								</select>
+							</div>
+							<br/>
+							<br/>
+							<div>
+								<input class="btn btn-primary" type="submit" name="submit" value="Envoyer la demande de réservation">
+								<input class="btn btn-danger" type="button" name="retouraccueil" value="Retour" onClick="javascript:location.href='javascript:history.go(-1)'">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		 </form>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+	<script type="text/javascript" src="./js/jquery-2.1.1.min.js"></script>
+	<script>
+		$(document).ready(function()
+		{
+			var $domaine = $('#area');
+			var $salle = $('#room');
+			$domaine.on('change', function()
+			{	
+				var select = $(this);
+				var values = select.find(":selected").attr("value");
+				var value = values.split('/');
+				var id = value[0] ;
+				var resolution = value[1] ;
+				remplirdureemin(resolution);
+				//~ remplirdebdureemin(resolution);
+				if (id != '')
+				{
+					$salle.empty();
+					jQuery.ajax({
+						type: 'GET',
+						url: 'frmcontactlist.php',
+						data: {
+							id: id
+						},
+						success: function(returnData)
+						{
+							$("#room").html(returnData);
+						},
+						error: function(returnData)
+						{
+							alert('Erreur lors de l execution de la commande AJAX  ');
+						}
+					});
+				}
+			});
+		});
+
+		jQuery(document).ready(function() {
+			jQuery("#formStep").validate({
+			  rules: {
+				"email": {
+					"email": true,
+					"maxlength": 255
+					}}
+				})
+		});
+		jQuery.extend(jQuery.validator.messages, {
+			required: "votre message",
+			remote: "votre message",
+			email: "votre message",
+		});
+
+		function remplirdureemin(res)
+		{ 
+			frmContact.dureemin.options.length = 0;
+			frmContact.debdureemin.options.length = 0;
+			resmin = res/60;
+			nbiteration = 60/resmin;
+			var y= document.getElementById("debdureemin");
+			var x = document.getElementById("dureemin");
+			valeur = 0;
+			for (i=0;i<nbiteration;i++){
+				frmContact.dureemin.options[i] = document.createElement("option");
+				frmContact.debdureemin.options[i] = document.createElement("option");
+				if(i==0){
+					valeur = 00;
+				}else{
+					valeur = valeur + resmin;
+				}
+				frmContact.dureemin.options[i].text = valeur +" min";
+				frmContact.dureemin.options[i].value = valeur;
+				x.add(frmContact.dureemin.options[i]);
+				frmContact.debdureemin.options[i].text = valeur +" min";
+				frmContact.debdureemin.options[i].value = valeur;
+				y.add(frmContact.debdureemin.options[i]);
+			}
+			frmContact.dureemin.options.selectedIndex = 0;
+		}
+
+		$(function() {
+		$.datepicker.setDefaults( $.datepicker.regional['fr'] );
+		$('#mydate_start').datepicker({
+			beforeShow: readSelected, onSelect: updateSelected,
+			showOn: 'both', buttonImageOnly: true, buttonImage: 'img_grr/calendar.png',buttonText: "Choisir la date"});
+			function readSelected()
+			{
+				$('#mydate_start').val($('#start_day').val() + '/' +
+				$('#start_month').val() + '/' + $('#start_year').val());
+				return {};
+			}
+			function updateSelected(date)
+			{
+				$('#start_day').val(date.substring(0, 2));
+				$('#start_month').val(date.substring(3, 5));
+				$('#start_year').val(date.substring(6, 10));
+			}
+		});
+	</script>
+
+{% endblock %}

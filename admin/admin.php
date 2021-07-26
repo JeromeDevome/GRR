@@ -5,7 +5,7 @@
  * Ce script fait partie de l'application GRR.
  * Dernière modification : $Date: 2018-07-21 21:00$
  * @author    JeromeB
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -26,6 +26,7 @@ if(isset($_GET['p'])){
 
 // GRR
 include "../include/admin.inc.php";
+include "../include/mdp_faciles.inc.php";
 include "./modeles/AdminFonctions.php";
 
 $back = '';

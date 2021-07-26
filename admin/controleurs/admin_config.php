@@ -5,7 +5,7 @@
  * Ce script fait partie de l'application GRR.
  * Dernière modification : $Date: 2018-03-30 16:00$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -15,6 +15,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+
+include('../include/import.class.php');
 
 get_vocab_admin("admin_config1");
 get_vocab_admin("admin_config2");
@@ -84,21 +86,22 @@ if (isset($_POST['ok'])) {
 }
 
 $msg = '';
+$dossier = '../personnalisation/'.$gcDossierImg.'/logos/';
+
 if (isset($_POST['ok'])) {
     // Suppression du logo
     if (isset($_POST['sup_img'])) {
-        $dest = '../images/';
         $ok1 = false;
-        if ($f = @fopen("$dest/.test", 'w')) {
+        if ($f = @fopen("$dossier/.test", 'w')) {
             @fputs($f, '<'.'?php $ok1 = true; ?'.'>');
             @fclose($f);
-            include "$dest/.test";
+            include "$dossier/.test";
         }
         if (!$ok1) {
             $msg .= "L\'image n\'a pas pu être supprimée : problème d\'écriture sur le répertoire. Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
             $ok = 'no';
         } else {
-            $nom_picture = '../images/'.Settings::get('logo');
+            $nom_picture = $dossier.Settings::get('logo');
             if (@file_exists($nom_picture)) {
                 unlink($nom_picture);
             }
@@ -108,116 +111,22 @@ if (isset($_POST['ok'])) {
             }
         }
     }
+
     // Enregistrement du logo
-    $doc_file = isset($_FILES['doc_file']) ? $_FILES['doc_file'] : null;
-    /* Test premier, juste pour bloquer les double extensions */
-    if (count(explode('.', $doc_file['name'])) > 2) {
+	if (!empty($_FILES['doc_file']['tmp_name']))
+	{
+		list($nomImage, $resultImport) = Import::Image($dossier, 'logo');
 
-        $msg .= "L\'image n\'a pas pu être enregistrée : les seules extentions autorisées sont gif, png et jpg.\\n";
-        $ok = 'no';
-
-    } elseif (preg_match("`\.([^.]+)$`", $doc_file['name'], $match)) {
-        /* normalement, si on arrive ici l'image n'a qu'une extension */
-
-        $ext = strtolower($match[1]);
-        if ($ext != 'jpg' && $ext != 'png' && $ext != 'gif') {
-            $msg .= "L\'image n\'a pas pu être enregistrée : les seules extentions autorisées sont gif, png et jpg.\\n";
-            $ok = 'no';
-        } else {
-            /* deuxième test passé, l'extension est autorisée */
-
-            /* je fais le 3ème test avec fileinfo */
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $fileType = finfo_file($finfo, $doc_file['tmp_name']);
-
-            /* 4ème test avec gd pour valider que c'est bien une image malgré tout - nécessaire ou parano ? */
-            switch($fileType) {
-                case "image/gif":
-                    /* recreate l'image, supprime les data exif */
-                    $logoRecreated = @imagecreatefromgif ( $doc_file['tmp_name'] );
-                    /* fix pour la transparence */
-                    imageAlphaBlending($logoRecreated, true);
-                    imageSaveAlpha($logoRecreated, true);
-                    $extSafe = "gif";
-                    break;
-                case "image/jpeg":
-                    $logoRecreated = @imagecreatefromjpeg ( $doc_file['tmp_name'] );
-                    $extSafe = "jpg";
-                    break;
-                case "image/png":
-                    $logoRecreated = @imagecreatefrompng ( $doc_file['tmp_name'] );
-                    /* fix pour la transparence */
-                    imageAlphaBlending($logoRecreated, true);
-                    imageSaveAlpha($logoRecreated, true);
-                    $extSafe = "png";
-                    break;
-                default:
-                    $msg .= "L\'image n\'a pas pu être enregistrée : type mime incompatible.\\n";
-                    $ok = 'no';
-                    $extSafe = false;
-                    break;
-            }
-            if (!$logoRecreated || $extSafe === false) {
-                /* la fonction imagecreate a échoué, donc l'image est corrompue ou craftée */
-                $msg .= "L\'image n\'a pas pu être enregistrée : fichier corrompu.\\n";
-                $ok = 'no';
-            } else {
-                /* j'ai une image valide, sans data exif, avec un bon type mime */
-
-                /* je test si la destination est writable */
-                $dest = '../images/';
-                $randName = md5(uniqid(rand(), true));
-
-                $pictureName = $randName.'.'.$extSafe;
-                $picturePath = $dest.$pictureName;
-
-                if (is_writable($dest)) {
-                    /* je copie le logo pour valider avec la fonction move_uploaded_file */
-                    $moveUploadReturn = move_uploaded_file($doc_file['tmp_name'], $picturePath);
-                    if (!$moveUploadReturn) {
-                        $msg .= "L\'image n\'a pas pu être enregistrée : problème de transfert. Le fichier n\'a pas pu être transféré sur le répertoire IMAGES. Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
-                        $ok = 'no';
-                    } else {
-                        /* si c'est bon, je supprime l'image et je la remplace par l'image create avec gd */
-                        $unlinkReturn = unlink($picturePath);
-                        if (!$unlinkReturn) {
-                            $msg .= "Erreur lors de l'enregistrement du logo ! (suppression du fichier temporaire)\\n";
-                            $ok = 'no';
-                        } else {
-                            /* j'ai supprimé le logo copié, je  vais enregistrer l'image à la place */
-                            switch($extSafe) {
-                                case "gif":
-                                    $retourSaveImage = imagegif($logoRecreated, $picturePath);
-                                    break;
-                                case "jpg":
-                                    $retourSaveImage = imagejpeg($logoRecreated, $picturePath);
-                                    break;
-                                case "png":
-                                    $retourSaveImage = imagepng($logoRecreated, $picturePath);
-                                    break;
-                            }
-                            $retourDestroy = imagedestroy($logoRecreated);
-                            if (!$retourSaveImage || !$retourDestroy) {
-                                /* gérer un warning juste ? */
-                                $msg .= " (Erreur de imagedestroy)\\n";
-                            }
-                            if (!Settings::set('logo', $pictureName)) {
-                                $msg .= "Erreur lors de l'enregistrement du logo !\\n";
-                                $ok = 'no';
-                            }
-                        }
-                    }
-
-                } else {
-                    $msg .= "L\'image n\'a pas pu être enregistrée : problème d\'écriture sur le répertoire \"images\". Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
-                    $ok = 'no';
-                }
-            }
-        }
-    } elseif ($doc_file['name'] != '') {
-        $msg .= "L\'image n\'a pas pu être enregistrée : le fichier image sélectionné n'est pas valide !\\n";
-        $ok = 'no';
-    }
+		if($resultImport == ""){
+			if (!Settings::set('logo', $nomImage)) {
+				$msg .= "Erreur lors de l'enregistrement du logo !\\n";
+				$ok = 'no';
+			}
+		} else {
+			$msg .= $resultImport;
+			$ok = 'no';
+		}
+	}
 }
 // nombre de calendriers
 if (isset($_POST['nb_calendar'])) {
@@ -307,7 +216,7 @@ get_vocab_admin('adapter_fichiers_langue_explain');
 
 get_vocab_admin('save');
 
-$nom_picture = '../images/'.Settings::get('logo');
+$nom_picture = $dossier.Settings::get('logo');
 
 if ((Settings::get('logo') != '') && (@file_exists($nom_picture))) {
 	$trad["dLogo"] = $nom_picture;

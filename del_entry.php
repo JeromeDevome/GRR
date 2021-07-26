@@ -5,7 +5,7 @@
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2018-05-14 18:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -16,7 +16,7 @@
  * (at your option) any later version.
  */
 $grr_script_name = "del_entry.php";
-include "include/connect.inc.php";
+include "personnalisation/connect.inc.php";
 include "include/config.inc.php";
 include "include/functions.inc.php";
 include "include/$dbsys.inc.php";

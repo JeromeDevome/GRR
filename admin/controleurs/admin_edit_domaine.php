@@ -4,7 +4,7 @@
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
  * Dernière modification : $Date: 2018-08-14 11:30$
  * @author    JeromeB
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -385,7 +385,8 @@ if ((!empty($id_area)) || (isset($add_area)))
 		if (isset($add_area))
 			$trad['dHidden3'] = "<input type=\"hidden\" name=\"add_area\" value=\"".$add_area."\" />\n";
 
-		// Site
+		// Sites
+        $sites = array();
 		if (Settings::get("module_multisite") == "Oui")
 		{
 

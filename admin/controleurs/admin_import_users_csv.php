@@ -5,7 +5,7 @@
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2017-12-16 14:00$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -304,7 +304,7 @@ else
 	for ($row = 1; $row < $nb_row; $row++)
 	{
 		if ($reg_type_auth[$row] != "ext")
-			$reg_mdp[$row] = md5(unslashes($reg_mdp[$row]));
+			$reg_mdp[$row] = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$reg_mdp[$row]);
 		// On nettoie les windozeries
 		$reg_nom[$row] = protect_data_sql(corriger_caracteres($reg_nom[$row]));
 		$reg_prenom[$row] = protect_data_sql(corriger_caracteres($reg_prenom[$row]));

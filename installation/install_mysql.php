@@ -28,7 +28,7 @@ $loader = new Twig_Loader_Filesystem(__DIR__ . '/templates');
 $twig = new Twig_Environment($loader,['charset']);
 $twig->addExtension(new TwigGRR());
 
-$nom_fic = "../include/connect.inc.php";
+$nom_fic = "../personnalisation/connect.inc.php";
 $etape = isset($_GET["etape"]) ? $_GET["etape"] : NULL;
 $adresse_db = isset($_GET["adresse_db"]) ? $_GET["adresse_db"] : NULL;
 $port_db = isset($_GET["port_db"]) ? $_GET["port_db"] : NULL;
@@ -135,6 +135,7 @@ if ($etape == 4)
 		$support_email = isset($_GET["technical_support_email"]) ? $_GET["technical_support_email"] : 'support_grr@test.fr';
 		$mdp = isset($_GET["mdp1"]) ? md5($_GET["mdp1"]) : 'azerty';
 		$email = isset($_GET["email"]) ? $_GET["email"] : 'testgrr@test.fr';
+		$hash_pwd2 = bin2hex(random_bytes(12));
 
 		$db = mysqli_connect("$adresse_db", "$login_db", "$pass_db", "", "$port_db");
 
@@ -157,6 +158,7 @@ if ($etape == 4)
 				$query = preg_replace("/VariableInstal04/",$support_email,$query);
 				$query = preg_replace("/VariableInstal05/",$mdp,$query);
 				$query = preg_replace("/VariableInstal06/",$email,$query);
+				$query = preg_replace("/VariableInstal07/",$hash_pwd2,$query);
 
 				if ($query != '')
 				{
@@ -184,6 +186,7 @@ if ($etape == 4)
 				}
 				else
 				{
+					$hash_pwd1 = bin2hex(random_bytes(12));
 					$conn = "<"."?php\n";
 					$conn .= "# Les quatre lignes suivantes sont à modifier selon votre configuration\n";
 					$conn .= "# ligne suivante : le nom du serveur qui herberge votre base sql.\n";
@@ -199,8 +202,10 @@ if ($etape == 4)
 					$conn .= "\$table_prefix=\"$table_prefix\";\n";
 					$conn .= "# ligne suivante : Port MySQL laissé par défaut\n";
 					$conn .= "\$dbPort=\"$port_db\";\n";
+					$conn .= "# ligne suivante : permet l'encodage des mdp\n";
+					$conn .= "\$hashpwd1=\"$hash_pwd1\";\n";
 					$conn .= "# ligne suivante : adaptation EnvOLE\n";
-					$conn .= "\$apikey=\"mypassphrase\"\n";
+					$conn .= "\$apikey=\"mypassphrase\";\n";
 					$conn .= "?".">";
 					@fputs($f, $conn);
 					if (!@fclose($f))

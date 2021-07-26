@@ -4,7 +4,7 @@
  * interface de gestion des utilisateurs de l'application GRR
  * Dernière modification : $Date: 2017-12-16 14:00$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -17,7 +17,6 @@
 
 
 $grr_script_name = "admin_user_mdp_facile.php";
-
 
 $msg = '';
 $col = array();
@@ -56,8 +55,8 @@ if ($res)
 
 		// Les mdp facile
 		// Tableau définit dans config.inc.php : $mdpFacile . On y ajoute les varibales en liason avec l'utilisateur
-		$mdpFacile[] = md5(strtoupper($row[3])); // Mot de passe = login en majuscule
-		$mdpFacile[] = md5(strtolower($row[3])); // Mot de passe = login en minuscule
+		$mdpFacile[] = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").strtoupper($row[3])); // Mot de passe = login en majuscule
+		$mdpFacile[] = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").strtolower($row[3])); // Mot de passe = login en minuscule
 
 		if(in_array($row[6], $mdpFacile)){
 

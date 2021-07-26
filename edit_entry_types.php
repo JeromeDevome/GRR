@@ -3,9 +3,9 @@
  * edit_entry_types.php
  * Page "Ajax" utilisée pour générer les types
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-27 14:30$
+ * Dernière modification : $Date: 2020-03-03 23:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -60,8 +60,7 @@ $aff_type = max(authGetUserLevel(getUserName(),-1,"room"),authGetUserLevel(getUs
 $nb_type = 0;
 $type_nom_unique = "??";
 $type_id_unique = "??";
-$display_type = '<table><tr><td class="E"><b>'.get_vocab("type").get_vocab("deux_points").'</b></td></tr>'.PHP_EOL;
-$affiche_mess_asterisque = true;
+$display_type = '<table><tr><td class="E"><b>'.get_vocab("type")." *".get_vocab("deux_points").'</b></td></tr>'.PHP_EOL;
 $display_type .= '<tr><td class="CL">'.PHP_EOL;
 $display_type .= '<select id="type" class="form-control" name="type" size="1" onclick="setdefault(\'type_default\',\'\')">'.PHP_EOL;
 $display_type .= '<option value="0">'.get_vocab("choose").PHP_EOL;
@@ -118,7 +117,7 @@ if (grr_sql_count($res) != 0)
 }
 $display_type .=  '</select>'.PHP_EOL;
 if ($aff_default)
-	$display_type .= '<input type="button" class="btn btn-primary" value="'.get_vocab("definir par defaut").'" onclick="setdefault(\'type_default\',document.getElementById(\'main\').type.options[document.getElementById(\'main\').type.options.selectedIndex].text)" />'.PHP_EOL;
+	$display_type .= '<input type="button" class="btn btn-primary" value="'.get_vocab("definir_par_defaut").'" onclick="setdefault(\'type_default\',document.getElementById(\'main\').type.options[document.getElementById(\'main\').type.options.selectedIndex].text)" />'.PHP_EOL;
 $display_type .= '</td></tr></table>'.PHP_EOL;
 if ($nb_type > 1)
 	echo $display_type;

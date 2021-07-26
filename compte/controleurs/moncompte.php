@@ -3,7 +3,7 @@
  * moncompte.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-02-13 20:40$
+ * Dernière modification : $Date: 2020-02-20 19:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,13 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-include_once('../include/connect.inc.php');
-include_once('../include/config.inc.php');
-include_once('../include/misc.inc.php');
-include_once('../include/functions.inc.php');
-require_once('../include/'.$dbsys.'.inc.php');
-require_once('../include/session.inc.php');
-include_once('../include/settings.class.php');
+
 $grr_script_name = 'moncompte.php';
 if (!Settings::load())
 	die('Erreur chargement settings');
@@ -50,7 +44,7 @@ if ($valid == 'yes')
 		$reg_password2 = isset($_POST['reg_password2']) ? $_POST['reg_password2'] : NULL;
 		if (($reg_password_a != '') && ($reg_password1 != ''))
 		{
-			$reg_password_a_c = md5($reg_password_a);
+			$reg_password_a_c = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$reg_password_a);
 			if ($_SESSION['password'] == $reg_password_a_c)
 			{
 				if ($reg_password1 != $reg_password2)
@@ -58,7 +52,7 @@ if ($valid == 'yes')
 				else
 				{
 					VerifyModeDemo();
-					$reg_password1 = md5($reg_password1);
+					$reg_password1 =  hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$reg_password1);
 					$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='".protect_data_sql($reg_password1)."' WHERE login='".getUserName()."'";
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, get_vocab('update_pwd_failed') . grr_sql_error());
@@ -183,9 +177,9 @@ $use_prototype = 'y';
 
 echo "\n    <!-- Repere ".$grr_script_name." -->\n";
 if (Settings::get("module_multisite") == "Oui")
-	$use_site = 'y';
+	$d['use_site'] = 'y';
 else
-	$use_site = 'n';
+	$d['use_site'] = 'n';
 $sql = "SELECT nom,prenom,statut,email,default_site,default_area,default_room,default_style,default_list_type,default_language,source FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".getUserName()."'";
 $res = grr_sql_query($sql);
 if ($res)
@@ -245,10 +239,11 @@ get_vocab_admin('mail_user');
 get_vocab_admin('statut');
 get_vocab_admin('required');
 
-get_vocab_admin('click_here_to_modify_pwd');
 get_vocab_admin('pwd_msg_warning');
 get_vocab_admin('old_pwd');
 get_vocab_admin('new_pwd1');
+get_vocab_admin('new_pwd2');
+get_vocab_admin('pwd_strength');
 
 get_vocab_admin('default_parameter_values_title');
 get_vocab_admin('explain_area_list_format');
@@ -283,6 +278,7 @@ $d['default_site'] = $default_site;
 $d['default_area'] = $default_area;
 $d['default_css'] = $default_css;
 $d['default_language'] = $default_language;
+$d['default_room'] = $default_room;
 
 	if (IsAllowedToModifyProfil())
 	{
@@ -296,6 +292,7 @@ $d['default_language'] = $default_language;
 	ORDER BY id ASC";
 	$resultat = grr_sql_query($sql);
 
+	$sites = array();
 	for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); $enr++) {
 		$sites[] = array('idsite' => $row[0], 'nomsite' => $row[2]);
 	}

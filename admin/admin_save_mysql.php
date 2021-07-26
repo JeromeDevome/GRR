@@ -1,11 +1,11 @@
 <?php
 /**
  * admin_save_mysql.php
- * Script de sauvegarde de la base de donnée mysql
+ * Script de sauvegarde de la base de données mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2021-05-31 18:26$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -145,8 +145,8 @@ while ($j < count($liste_tables))
 		$schema = $row[1].";";
 		$fd.="$schema\n";
 	}
-	//On ne sauvegarde pas les données de la table ".TABLE_PREFIX."_log
-	if ($donnees && $temp!="".TABLE_PREFIX."_log")
+	//On ne sauvegarde pas les données des tables de logs
+	if ($donnees && $temp!="".TABLE_PREFIX."_log" && $temp!="".TABLE_PREFIX."_log_mail")
 	{
 		// les données de la table
 		$fd.="#\n# Données de $temp\n#\n";
@@ -193,4 +193,6 @@ while ($j < count($liste_tables))
 }
 $fd.="#********* fin du fichier ***********";
 echo $fd;
+
+Settings::set("backup_date", time());
 ?>

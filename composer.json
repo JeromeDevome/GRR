@@ -7,6 +7,9 @@
         }
     ],
     "require": {
-        "twig/twig": "^2.0"
+        "twig/twig": "^2.0",
+        "phpmailer/phpmailer": "^6.3",
+        "tecnickcom/tcpdf": "^6.4",
+        "apereo/phpcas": "^1.3"
     }
 }

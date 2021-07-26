@@ -3,10 +3,10 @@
  * installation/fonctions/maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-20 19:00$
+ * Dernière modification : $Date: 2021-06-29 19:04$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -39,7 +39,7 @@ function traite_requete($requete = "")
 			$retour = "";
 			break;
 			case "1061":
-			// La cléf existe déjà : pas de problème
+			// La clef existe déjà : pas de problème
 			$retour = "";
 			break;
 			case "1062":
@@ -47,7 +47,7 @@ function traite_requete($requete = "")
 			$retour = "<span style=\"color:#FF0000;\">Erreur (<b>non critique</b>) sur la requête : <i>".$requete."</i> (".mysqli_errno($GLOBALS['db_c'])." : ".mysqli_error($GLOBALS['db_c']).")</span><br />\n";
 			break;
 			case "1068":
-			// Des cléfs existent déjà : pas de problème
+			// Des clefs existent déjà : pas de problème
 			$retour = "";
 			break;
 			case "1091":
@@ -709,19 +709,75 @@ function execute_maj($version_old, $version_grr)
 			$result .= $result_inter;
 		$result_inter = '';
 	}
+    if (version_compare($version_old, "3.4.1", '<'))
+    {
+        $result .= formatresult("Mise à jour jusqu'à la version 3.4.1 :","<b>","</b>");
 
+        $result_inter .= traite_requete('ALTER TABLE '.TABLE_PREFIX.'_type_area  ADD `couleur_texte` VARCHAR(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT \'#000000\'  AFTER `disponible`');
+
+        if ($result_inter == '')
+            $result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+        else
+            $result .= $result_inter;
+        $result_inter = '';
+    }
+    if (version_compare($version_old, "3.4.2", '<'))
+    {
+        $result .= formatresult("Mise à jour jusqu'à la version 3.4.2 :","<b>","</b>");
+        
+        $result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET `NAME` = 'nombre_jours_Jours_Cycles' WHERE `NAME` = 'nombre_jours_Jours/Cycles';");
+        $result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET `NAME` = 'jour_debut_Jours_Cycles' WHERE `NAME` = 'jour_debut_Jours/Cycles';");
+        $result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs ADD `changepwd` TINYINT(1) NOT NULL DEFAULT '0' AFTER `password`;");
+        $result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_type_area CHANGE `couleur_texte` `couleurtexte` VARCHAR(10) NOT NULL DEFAULT '#000000' AFTER `couleurhexa`;");
+        $result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_overload ADD `mail_spec` TEXT NOT NULL AFTER `overload_mail`;");
+        $result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_overload DROP PRIMARY KEY, ADD PRIMARY KEY (`id_area`,`fieldname`), ADD UNIQUE KEY `id` (`id`);");
+        $result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_site ADD UNIQUE KEY `name` (`sitename`), ADD UNIQUE KEY `code` (`sitecode`);");
+        $result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_room ADD `booking_range` SMALLINT(6) NOT NULL DEFAULT '-1' AFTER `who_can_see`;");
+        $result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_room ADD `who_can_book` TINYINT(1) NOT NULL DEFAULT '1' AFTER `booking_range`;");
+        $result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_j_userbook_room (`login` varchar(40) NOT NULL, `id_room` int(11) NOT NULL) DEFAULT CHARSET=latin1;");
+
+        if ($result_inter == '')
+            $result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+        else
+            $result .= $result_inter;
+        $result_inter = '';
+    }
+    
+    if (version_compare($version_old, "3.4.3", '<'))
+    {
+        $result .= formatresult("Mise à jour jusqu'à la version 3.4.3 RC0:","<b>","</b>");
+
+        $result_inter .= traite_requete("ALTER TABLE `grr_log` CHANGE `REMOTE_ADDR` `REMOTE_ADDR` VARCHAR(40) NOT NULL DEFAULT ''");
+
+        if ($result_inter == '')
+            $result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+        else
+            $result .= $result_inter;
+        $result_inter = '';
+    }
+    
 	if (version_compare($version_old, "4.0.0", '<')) 
 	{
 		$result .= formatresult("Mise à jour jusqu'à la version 4.0.0 :","<b>","</b>");
+		$hash_pwd2 = bin2hex(random_bytes(12));
 
 		$result_inter .= traite_requete("DELETE FROM ".TABLE_PREFIX."_setting WHERE NAME='versionRC'");
-		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('display_beneficicaire', '0')");
+		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('display_beneficiaire', '0')");
 		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('display_type', '1')");
-		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET `NAME` = nombre_jours_Jours_Cycles WHERE `NAME` = 'nombre_jours_Jours/Cycles';");
-		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET `NAME` = jour_debut_Jours_Cycles WHERE `NAME` = 'jour_debut_Jours/Cycles';");
-		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs ADD `changepwd` TINYINT(1) NOT NULL DEFAULT '0' AFTER `password`;");
-		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_type_area ADD `couleurtexte` VARCHAR(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '#000000' AFTER `couleurhexa`;");
-		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_overload ADD `mail_spec` TEXT NOT NULL AFTER `overload_mail`;");
+		$result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_log_mail (`idlogmail` int(11) NOT NULL AUTO_INCREMENT, `date` int(11) NOT NULL, `de` varchar(255) NOT NULL, `a` varchar(255) NOT NULL, `sujet` varchar(255) NOT NULL, `message` text NOT NULL, PRIMARY KEY (`idlogmail`));");
+		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_room ADD `active_participant` TINYINT(1) NOT NULL DEFAULT '0' AFTER `active_cle`;");
+		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_entry ADD `nbparticipantmax` int(11) NOT NULL DEFAULT '0' AFTER `courrier`;");
+		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_repeat ADD `nbparticipantmax` int(11) NOT NULL DEFAULT '0' AFTER `courrier`;");
+		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_allow_self_signed', 'false')");
+		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_peer_name', 'true')");
+		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_peer', 'true')");
+		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_depth', '3')");
+		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('backup_date', '')");
+		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('hashpwd2', '".$hash_pwd2."')");
+		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE `password` `password` VARCHAR(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
+		$result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_participants (`id_participation` int(11) NOT NULL AUTO_INCREMENT, idresa int(11) NOT NULL, timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, cree_par varchar(200) NOT NULL default '', beneficiaire varchar(200) NOT NULL default '', beneficiaire_ext varchar(200) NOT NULL default '', moderation tinyint(1) NOT NULL default '0', PRIMARY KEY  (id_participation));");
+		$result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_log_resa (idlogresa bigint(20) NOT NULL AUTO_INCREMENT, date int(11) NOT NULL, idresa int(11) NOT NULL, identifiant varchar(100) NOT NULL, action tinyint(3) UNSIGNED NOT NULL, infoscomp text NOT NULL, PRIMARY KEY (`idlogresa`));");
+		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_entry ADD `supprimer` TINYINT(1) NOT NULL DEFAULT '0' AFTER `nbparticipantmax`;");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");

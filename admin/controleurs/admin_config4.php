@@ -5,7 +5,7 @@
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2017-12-16 14:00$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -107,7 +107,9 @@ get_vocab_admin("explain_disable_login");
 get_vocab_admin("disable_login_on");
 get_vocab_admin("disable_login_off");
 
+get_vocab_admin("admin_menu_various");
 get_vocab_admin("redirection_https");
+get_vocab_admin("Activer_log_email");
 get_vocab_admin("YES");
 get_vocab_admin("NO");
 

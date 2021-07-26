@@ -5,7 +5,7 @@
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2017-12-16 14:00$
  * @author    JeromeB & Laurent Delineau
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -22,10 +22,9 @@
 # Les "locales" sont un système permettant de gérer le plus proprement possible les différences de langue et de style
 # des utilisateurs. Vous pouvez connaître les locales installées sur votre système linux avec la commande "locale -a"
 # (les noms semblent peu standardisés, vous aurez des chaînes du genre "fr_FR" ou "fr_FR.ISO8859-1")
-if (function_exists("Settings::get"))
-	$defaultlanguage = Settings::get("default_language");
-else
-	$defaultlanguage = false;
+
+$defaultlanguage = Settings::get("default_language");
+
 if (isset($_SESSION['default_language']))
 {
 	// si l'utilisateur a défini sa propre langue

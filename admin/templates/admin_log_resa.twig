@@ -1,0 +1,109 @@
+{% extends 'layout.twig' %}
+
+{% block css %}
+	<link rel="stylesheet" href="../bootstrap/AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+	<link rel="stylesheet" href="../bootstrap/AdminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+{% endblock %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+
+		<div class="col-md-12">
+
+			<div class="box box-primary">
+				<div class="box-header">
+					<h3 class="box-title">Réservation n° {{resa.id}}</h3></a>
+				</div>
+				<div class="box-body no-padding">
+				  <table class="table table-striped">
+					<tr>
+						<th>{{resa.name}}</th>
+						<th>Crée par {{resa.create_by}}</th>
+					</tr>
+					<tr>
+						<td>
+							<p>{{resa.description}}</p>
+							<p>{{resa.area_name}} / {{resa.room_name}}</p>
+							<p>Début : {{resa.start_time|date('d/m/Y H:i:s')}}</p>
+							<p>Fin : {{resa.end_time|date('d/m/Y H:i:s')}}</p>
+						</td>
+						<td>
+							<p>Beneficiaire : {{resa.beneficiaire}} {{resa.beneficiaire_ext}}</p>
+							{% if resa.active_cle == 'y' %}<p>Clé : {% if resa.clef == '1' %}Empruntée{% else %}Non empruntée{% endif %}</p>{% endif %}
+							<p>Courrier : {{resa.courrier}}</p>
+							{% if resa.active_ressource_empruntee == 'y' %}<p>Statut : {% if resa.statut_entry == '-' %}La ressource est restituée{% elseif resa.statut_entry == 'y' %}Ressource empruntée{% elseif resa.statut_entry == 'e' %}Ressource empruntée et retard{% endif %}</p>{% endif %}
+							<p>Participants max : {{resa.nbparticipantmax}}</p>
+						</td>
+					</tr>
+					<tr>
+						<td>{{trad.Activer_module_multisite}}</td>
+						<td>{{trad.explain_multisite}}</td>
+					</tr>
+				  </table>
+				</div>
+			</div>
+		
+		</div>
+
+
+		<div class="col-md-12">
+
+			<ul class="timeline">
+				{% for log in logsresa %}
+					<!-- Date -->
+					{% if log.date|date('d/m/Y') != dateprecedente %}
+						<li class="time-label">
+							  <span class="bg-aqua">
+								{{ log.date|date('d/m/Y') }}
+							  </span>
+						</li>
+						{% set dateprecedente = log.date|date('d/m/Y') %}
+					{% endif %}
+					<!-- Logs -->
+					<li>
+						{% if log.action == 1 %}
+							<i class="fa fa-plus bg-green"></i>
+						{% elseif log.action == 2 %}
+							<i class="fa fa-edit bg-orange"></i>
+						{% elseif log.action == 3 %}
+							<i class="fa fa-check bg-purple"></i>
+						{% elseif log.action == 4 %}
+							<i class="fa fa-id-badge bg-blue"></i>
+						{% elseif log.action == 5 %}
+							<i class="fa fa-trash bg-red"></i>
+						{% elseif log.action == 6 %}
+							<i class="fa fa-bars bg-orange"></i>
+						{% elseif log.action == 7 %}
+							<i class="fa fa-key bg-orange"></i>
+						{% elseif log.action == 8 %}
+							<i class="fa fa-envelope  bg-orange"></i>
+						{% endif %}
+
+					  <div class="timeline-item">
+						<span class="time"><i class="fa fa-clock-o"></i> {{ log.date|date('H:i:s') }}</span>
+
+						<h3 class="timeline-header"><a href="#">{{ log.identifiant }}</a></h3>
+
+						<div class="timeline-body">
+						  {{ log.infos |raw }}
+						</div>
+					  </div>
+					</li>
+				{% endfor %}
+				<li>
+				  <i class="fa fa-clock bg-gray"></i>
+				</li>
+			</ul>
+
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+	<script src="../bootstrap/AdminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+	<script src="../bootstrap/AdminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+	<script src="../bootstrap/AdminLTE/bower_components/moment/min/moment.min.js"></script>
+	<script src="../bootstrap/AdminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+{% endblock %}

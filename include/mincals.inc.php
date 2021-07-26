@@ -3,9 +3,9 @@
  * mincals.inc.php
  * Fonctions permettant d'afficher le mini calendrier
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-06-12 10:00$
+ * Dernière modification : $Date: 2021-04-20 11:40$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -16,10 +16,7 @@
  * (at your option) any later version.
  */
 
-function minicals($year, $month, $day, $area, $room, $dmy)
-{
-	global $display_day, $vocab;
-	get_planning_area_values($area);
+
 	class Calendar
 	{
 		private $month;
@@ -62,8 +59,8 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 		{
 			global $vocab;
             if (isset($this->room))
-                return "<a onclick=\"charger();\" class=\"calendar\" title=\"".htmlspecialchars(get_vocab("see_day_for_this_room"))."\" href=\"day.php?year=$year&amp;month=$month&amp;day=$day&amp;room=".$this->room."\"";
-            return "<a onclick=\"charger();\" class=\"calendar\" title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"day.php?year=$year&amp;month=$month&amp;day=$day&amp;area=".$this->area."\"";
+                return "<a onclick=\"charger();\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_day_for_this_room"))."\" href=\"day.php?year=$year&amp;month=$month&amp;day=$day&amp;room=".$this->room."\"";
+            return "<a onclick=\"charger();\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"day.php?year=$year&amp;month=$month&amp;day=$day&amp;area=".$this->area."\"";
         }
 /* inutile de faire un test pour finalement faire la même chose YN le 07/03/2018
 			if ($this->dmy == 'day')
@@ -112,7 +109,7 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 					if (($this->dmy == 'day') && ($d == $this->day) && ($this->h))
 						$s .= "<td class=\"week\">";
 					else
-						$s .= "<td class=\"cellcalendar\">";
+						$s .= "<td>";
 					if ($d > 0 && $d <= $daysInMonth)
 					{
 						$link = $this->getDateLink($d, $this->month, $this->year);
@@ -149,10 +146,10 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 				$bg_lign = '';
 				if (($week_today == $week) && ($this->h) && (($this->dmy == 'week_all') || ($this->dmy == 'week')))
 					$bg_lign = " class=\"week\"";
-				$s .= "<tr ".$bg_lign."><td class=\"calendarcol1 lienSemaine\">";
-				$t = "<a onclick=\"charger();\" title=\"".htmlspecialchars(get_vocab("see_week_for_this_area"))."\" href=\"week_all.php?year=$this->year&amp;month=$this->month&amp;day=$temp&amp;area=$this->area\">".sprintf("%02d",$week)."</a>";
+				$s .= "<tr ".$bg_lign."><td class=\"calendarcol1\">";
+				$t = "<a onclick=\"charger();\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_week_for_this_area"))."\" href=\"week_all.php?year=$this->year&amp;month=$this->month&amp;day=$temp&amp;area=$this->area\">".sprintf("%02d",$week)."</a>";
 				if (($this->dmy != 'day') && ($this->dmy != 'week_all') && ($this->dmy != 'month_all') && ($this->dmy != 'month_all2'))
-					$t = "<a onclick=\"charger();\" title=\"".htmlspecialchars(get_vocab("see_week_for_this_room"))."\" href=\"week.php?year=$this->year&amp;month=$this->month&amp;day=$temp&amp;area=$this->area&amp;room=$this->room\">".sprintf("%02d",$week)."</a>";
+					$t = "<a onclick=\"charger();\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_week_for_this_room"))."\" href=\"week.php?year=$this->year&amp;month=$this->month&amp;day=$temp&amp;area=$this->area&amp;room=$this->room\">".sprintf("%02d",$week)."</a>";
 				$s .= $t;
 				$temp = $temp + 7;
 				while ((!checkdate($this->month, $temp, $this->year)) && ($temp > 0))
@@ -187,7 +184,12 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 
 		private function getFirstDays()
 		{
-			global $weekstarts, $display_day;
+			global $weekstarts, $display_day, $nb_display_day;
+            if ($nb_display_day == 0){// aucun jour à afficher ? on force l'affichage
+                for ($i=0;$i<7;$i++){
+                    $display_day[$i] = 1;
+                }
+            }
 			$basetime = mktime(12, 0, 0, 6, 11 + $weekstarts, 2000);
 			for ($i = 0, $s = ""; $i < 7; $i++)
 			{
@@ -195,7 +197,8 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 				$show = $basetime + ($i * 24 * 60 * 60);
 				$fl = ucfirst(utf8_strftime('%a',$show));
 				if ($display_day[$j] == 1)
-					$s .= "<td class=\"calendarcol1\">$fl</td>\n";
+					//$s .= "<td class=\"calendarcol1\">$fl</td>\n";
+                    $s .= "<th>$fl</th>\n";
 				else
 					$s .= "";
 			}
@@ -220,11 +223,10 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 			$first = (strftime("%w",$date) + 7 - $weekstarts) % 7;
 			$monthName = ucfirst(utf8_strftime("%B", $date));
 			if(Settings::get("menu_gauche") == 2){
-				$s .= "\n<div class=\"col-lg-3 col-md-4 col-xs-12\">\n".PHP_EOL;
+				$s .= "\n<div class=\"col-lg-4 col-md-6 col-xs-12\">\n".PHP_EOL;
 			} else{
-				$s .= "\n<div class=\"col-lg-12 col-md-12 col-xs-12\">\n".PHP_EOL;
+				$s .= "\n<div class=\"col-xs-12\">\n".PHP_EOL;
 			}
-			//$s .= "\n<div class=\"col-lg-3 col-md-12 col-xs-12\">\n";
 			$s .= "\n<table class=\"calendar\">\n";
 			$s .= "<caption>";
 			$week = $this->getWeekNumber($date);
@@ -242,9 +244,9 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 			$action = $this->GetAction();
 			$s .= "<br/><button type=\"button\" title=\"".htmlspecialchars(get_vocab("gototoday"))."\" class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='".$action."';\">".get_vocab("gototoday")."</button>";
 			$s .= "</caption>";
-			$s .= "<tr><td class=\"calendarcol1\">".get_vocab("semaine")."</td>\n";
+			$s .= "<thead><tr><td class=\"calendarcol1\">".get_vocab("semaine")."</td>\n";
 			$s .= $this->getFirstDays();
-			$s .= "</tr>\n";
+			$s .= "</tr></thead>\n";
 			$d = 1 - $first;
 			$temp = 1;
 			$s .= $this->DayOfMonth($d, $daysInMonth, $week_today, $week, $temp);
@@ -256,6 +258,10 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 		}
 	}
 
+function minicals($year, $month, $day, $area, $room, $dmy)
+{
+	global $display_day, $vocab;
+	get_planning_area_values($area);
 	$nb_calendar = Settings::get("nb_calendar");
 	if ($nb_calendar >= 1)
 	{

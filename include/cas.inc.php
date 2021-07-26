@@ -3,14 +3,10 @@
  * cas.inc.php
  * script de redirection vers l'authentification CAS
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2021-05-23 18:00$
  * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2008-2008 Laurent Delineau
- * @author    JeromeB & Laurent Delineau & Olivier MOUNIER
- * @author    Laurent Delineau
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
- * @author    Yan Naessens
- * @copyright Copyright 2017 Yan Naessens
+ * @copyright Copyright 2008-201 Team DEVOME - JeromeB
+ * @author    JeromeB & Laurent Delineau & Olivier MOUNIER & Yan Naessens
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -22,7 +18,8 @@
  */
 // Le package phpCAS doit etre stocké dans un sous-répertoire « CAS » du répertoire contenant CAS.php
 // charger le script CAS.php, désormais inclus dans GRR
-include_once('./include/CAS.php');
+include_once('vendor/apereo/phpcas/source/CAS.php');
+//include_once('./include/CAS.php');
 
 // paramètres du serveur SSO
 // désormais les paramètres sont définis en page d'administration admin_config_sso.php
@@ -84,6 +81,5 @@ else
 }
 $login = phpCAS::getUser();
 $user_ext_authentifie = 'cas';
-if (file_exists("./include/config_CAS.inc.php"))
-	include("./include/config_CAS.inc.php");
+
 ?>

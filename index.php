@@ -2,9 +2,9 @@
 /**
  * index.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-04-11 11:00$
+ * Dernière modification : $Date: 2021-01-12 16:09$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -16,8 +16,8 @@
  */
 
 require_once("include/config.inc.php");
-if (file_exists("include/connect.inc.php"))
-	include "include/connect.inc.php";
+if (file_exists("personnalisation/connect.inc.php"))
+	include "personnalisation/connect.inc.php";
 require_once("include/misc.inc.php");
 require_once("include/functions.inc.php");
 require_once("include/settings.class.php");
@@ -29,9 +29,9 @@ if ($dbsys == "mysql")
 	$flag = '';
 	$correct_install = '';
 	$msg = '';
-	if (file_exists("include/connect.inc.php"))
+	if (file_exists("personnalisation/connect.inc.php"))
 	{
-		require_once("include/connect.inc.php");
+		require_once("personnalisation/connect.inc.php");
 		$db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbDb", "$dbPort");
 		if ($db)
 		{
@@ -50,25 +50,25 @@ if ($dbsys == "mysql")
 				}
 				if ($flag == 'yes')
 				{
-					$msg = "<p>La connection au serveur $dbsys est établie mais certaines tables sont absentes de la base $dbDb.</p>";
+					$msg = "<p>La connexion au serveur $dbsys est établie mais certaines tables sont absentes de la base $dbDb.</p>";
 					$correct_install = 'no';
 				}
 			}
 			else
 			{
-				$msg = "La connection au serveur $dbsys est établie mais impossible de sélectionner la base contenant les tables GRR.";
+				$msg = "La connexion au serveur $dbsys est établie mais impossible de sélectionner la base contenant les tables GRR.";
 				$correct_install = 'no';
 			}
 		}
 		else
 		{
-			$msg = "Erreur de connection au serveur $dbsys. Le fichier \"connect.inc.php\" ne contient peut-être pas les bonnes informations de connection.";
+			$msg = "Erreur de connexion au serveur $dbsys. Le fichier \"connect.inc.php\" ne contient peut-être pas les bonnes informations de connexion.";
 			$correct_install = 'no';
 		}
 	}
 	else
 	{
-		$msg = "Le fichier \"connect.inc.php\" contenant les informations de connection est introuvable.";
+		$msg = "Le fichier \"connect.inc.php\" contenant les informations de connexion est introuvable.";
 		$correct_install = 'no';
 	}
 	if ($correct_install == 'no')
@@ -77,7 +77,7 @@ if ($dbsys == "mysql")
 		echo "<h1 class=\"center\">Gestion et Réservation de Ressources</h1>\n";
 		echo "<div style=\"text-align:center;\"><span style=\"color:red;font-weight:bold\">".$msg."</span>\n";
 		echo "<ul><li>Soit vous procédez à une mise à jour vers une nouvelle version de GRR. Dans ce cas, vous devez procéder à une mise à jour de la base de données MySql.<br />";
-		echo "<b><a href='../installation/maj.php'>Mettre à jour la base Mysql</a></b><br /></li>";
+		echo "<b><a href='./installation/maj.php'>Mettre à jour la base Mysql</a></b><br /></li>";
 		echo "<li>Soit l'installation de GRR n'est peut-être pas terminée. Vous pouvez procéder à une installation/réinstallation de la base.<br />";
 		echo "<a href='./installation/install_mysql.php'>Installer la base $dbsys</a></li></ul></div>";
 		?>

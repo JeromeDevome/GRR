@@ -1,0 +1,73 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+	<p>{{ trad.resa_menu_explain }}</p>
+
+	<form class="form-inline" action="compte.php?p=mesreservations" method="POST">
+		<label class="radio-inline"><input type="radio" name="choix" value="0" {% if d.choix == 0 %}checked{% endif %} />{{ trad.resas_toutes }}</label>
+		<label class="radio-inline"><input type="radio" name="choix" value="1" {% if d.choix == 1 %}checked{% endif %} />{{ trad.resas_a_venir }}</label>
+		<input class="btn btn-default" type="submit" value="{{ trad.goto }}" />
+	</form>
+
+	<table class="table-bordered table-condensed">
+		<thead>
+			<th class="col">{{ trad.start_date }}</th>
+			<th class="col">{{ trad.time }}</th>
+			<th class="col">{{ trad.duration }}</th>
+			<th class="col">{{ trad.match_area }}</th>
+			<th class="col">{{ trad.room }}</th>
+			<th class="col">{{ trad.sum_by_descrip }}</th>
+			<th class="col">{{ trad.fulldescription }}</th>
+			<th class="col">{{ trad.type }}</th>
+			<th class="col">{{ trad.lastupdate }}</th>
+			<th class="col">{{ trad.statut }}</th>
+		</thead>
+		<tbody>
+		{% for resa in reservations %}
+			<tr style="color:{{resa.couleur}};{%if resa.supprimer == 1 %}background-color:#D60021;{%endif%}">
+				<td class="col">{{ resa.datedebut }}</td>
+				<td class="col">{{ resa.heuredebut }}</td>
+				<td class="col">{{ resa.duree }}</td>
+				<td class="col" {% if resa.domainedesc %}title="{{ resa.domainedesc }}"{% endif %}>{{ resa.domaine }}</td>
+				<td class="col">{{ resa.ressource }}</td>
+				<td class="col">{{ resa.descriptionc | raw }}</td>
+				<td class="col">{{ resa.descriptionl }}</td>
+				<td class="col">{{ resa.type }}</td>
+				<td class="col">{{ resa.datemaj }}</td>
+				<td class="col">{%if resa.supprimer == 1 %}<i class="fa fa-trash"></i>{%endif%}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+		<footer>
+			<tr>
+				<td colspan="9">
+					<p class="center">
+						{% if d.nbResultat == 1 %}
+							{{ d.nbResultat }} {{ trad.entry_found }}
+						{% elseif d.nbResultat > 1 %}
+							{{ d.nbResultat }} {{ trad.entries_found }}
+						{% else %}
+							{{ trad.nothing_found }}
+						{% endif %}
+					</p>
+				</td>
+			</tr>
+		</footer>
+	</table>
+
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

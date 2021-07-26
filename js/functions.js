@@ -1,9 +1,9 @@
 /*
  * ./js/functions.js
  * fichier Bibliothèque de fonctions Javascript de GRR
- * Dernière modification : $Date: 2018-06-12 10:00$
+ * Dernière modification : $Date: 2021-04-20 14:51$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -110,7 +110,7 @@ function confirmButton(theform,themessage)
  *
  * the_form   string   the form name
  * do_check   boolean  whether to check or to uncheck the element
- * day la valaur de la boîte à cocher ou à décocher
+ * day la valeur de la boîte à cocher ou à décocher
  * return  boolean  always true
  */
  function setCheckboxesGrr(elts, do_check, day)
@@ -161,10 +161,11 @@ function _setCheckboxesGrr(the_form, do_check, day)
 }
 // end of the 'setCheckboxes()' function
 // Les quatre fonctions qui suivent servent à enregistrer un cookie
-// Elles sont utilisées par edit_enty.php pour conserver les informations de la saisie pour
+// Elles sont utilisées par edit_entry.php pour conserver les informations de la saisie pour
 // pouvoir les récupérer lors d'une erreur.
 //Hugo
 // Voir http://www.howtocreate.co.uk/jslibs/script-saveformvalues
+// les erreurs constatées lors de l'utilisation de champs additionnels sont prévisibles : howtocreate déconseille l'utilisation des scripts lorsque le formulaire est calculé par Javascript :-(
 var FS_INCLUDE_NAMES = 0, FS_EXCLUDE_NAMES = 1, FS_INCLUDE_IDS = 2, FS_EXCLUDE_IDS = 3, FS_INCLUDE_CLASSES = 4, FS_EXCLUDE_CLASSES = 5;
 //Hugo - fonction qui récupère les informations des champs input pour les stocker dans un cookie (Voir http://www.howtocreate.co.uk/jslibs/script-saveformvalues)
 function getFormString( formRef, oAndPass, oTypes, oNames )
@@ -265,6 +266,83 @@ function recoverInputs( formRef, oStr, oAndPass, oTypes, oNames )
 		}
 	}
 }
+// alternative
+// récupère les champs d'un formulaire et les transforme en une chaîne qui sera stockée dans un cookie
+function getFormString( formRef)
+{
+     var fields = $(formRef).serializeArray();
+     var valeurs = "";
+     $.each(fields, function(i, field){
+       var valeur = field.value.replace(/%/g,'%p').replace(/,/g,'%c'); // code virgule et pourcent
+       valeurs += field.name + ":" + valeur + ",";
+     });
+     return valeurs;
+}
+// parse la chaîne issue du cookie et attribue les valeurs aux champs du formulaire
+function recoverInputs( formRef, oStr)
+{
+    if (oStr) // vérifie que le paramètre est non NULL
+    {
+        oStr = oStr.split( ',' );
+        var valeurs = "";
+        oStr.forEach(myFunction);
+        function myFunction(a){
+            a = a.split(':');
+            valeurs += a[0] + '::'+ a[1] + '??';
+        }
+     $("#panel").append(valeurs);
+    }
+}
+function recoverInputs( formRef, oStr)
+{
+    if (oStr) // vérifie que le paramètre est non NULL
+    {
+        oStr = oStr.split( ',' );
+        oVal = new Object();
+        var valeurs = "";
+        function f(s){
+            s = s.split(':');
+            oVal[s[0]] = s[1];
+        }
+        oStr.forEach(f);
+        for(var v in oVal){
+            valeurs += v + ':::' + oVal[v] + '<br>'; // remplacer par l'affectation des valeurs aux champs du formulaire document.getElementById("queryString").value = "$thisValue";
+        }
+        for (var x = 0; formRef.elements[x]; x++ )
+		{
+			if (formRef.elements[x].type)
+			{
+                var oE = formRef.elements[x];var oT = oE.type.toLowerCase();var oN = oE.name;
+				try{
+                    if (oT == 'text' || oT == 'textarea' || oT == 'password' || oT == 'datetime' || oT == 'datetime-local' || oT == 'date' || oT == 'month' || oT == 'week' || oT == 'time' || oT == 'number' || oT == 'range' || oT == 'email' || oT == 'url' )
+                    {
+                        oE.value = oVal[oN].replace(/%c/g,',').replace(/%p/g,'%'); // si oVal[oN] n'est pas défini: déclenche une erreur, d'où try
+                    }
+                    else if (oT == 'radio' || oT == 'checkbox')
+                    {
+                        oE.checked = oVal[oN] ? true : false;
+                    }
+                    else if ( oT == 'select-one')
+                    {
+                        oE.selectedIndex = parseInt( oVal[oN]);
+                    }
+                    else if ( oT == 'select-multiple')
+                    {
+                        for (var oO = oE.options, i = 0; oO[i]; i++ )
+                        {
+                            oO[i].selected = oVal[oN] ? true : false;
+                        }
+                    }
+                }
+                catch(err)
+                {
+                    continue;
+                }
+            }
+        }
+        //$("#panel").append(valeurs);
+    }
+}
 function retrieveCookie(cookieName)
 {
 	/* retrieved in the format
@@ -296,7 +374,7 @@ function setCookie(cookieName, cookieValue, lifeTime, path, domain, isSecure)
 	syntax: cookieName=cookieValue[;expires=dataAsString[;path=pathAsString[;domain=domainAsString[;secure]]]]
 	Because of the way that document.cookie behaves, writing this here is equivalent to writing
 	document.cookie = whatIAmWritingNow + "; " + document.cookie; */
-	document.cookie = escape(cookieName) + "=" + escape(cookieValue) + (lifeTime ? ";expires=" + (new Date((new Date()).getTime() + (1000 * lifeTime))).toGMTString() : "") + (path ? ";path=" + path : "") + (domain ? ";domain=" + domain : "") + (isSecure ? ";secure" : "");
+	document.cookie = escape(cookieName) + "=" + escape(cookieValue) + (lifeTime ? ";expires=" + (new Date((new Date()).getTime() + (1000 * lifeTime))).toGMTString() : "") + (path ? ";path=" + path : "") + (domain ? ";domain=" + domain : "") + (isSecure ? ";secure" : "") + "; SameSite=Lax";
 	//check if the cookie has been set/deleted as required
 	if ( lifeTime < 0 )
 	{
@@ -383,6 +461,7 @@ function afficherMoisSemaine(a)
 	document.getElementById('afficherBoutonSelection'+Nb).style.display = "none";
 	document.getElementById('cacherBoutonSelection'+Nb).style.display = "inline";
 	document.getElementById('boutonSelection'+Nb).style.display = "inline";
+    $('.floatthead').floatThead('reflow');
 }
 function cacherMoisSemaine(a)
 {
@@ -390,6 +469,7 @@ function cacherMoisSemaine(a)
 	document.getElementById('cacherBoutonSelection'+Nb).style.display = "none";
 	document.getElementById('afficherBoutonSelection'+Nb).style.display = "inline";
 	document.getElementById('boutonSelection'+Nb).style.display = "none";
+    $('.floatthead').floatThead('reflow');
 }
 
 function charger(){
@@ -411,29 +491,72 @@ function afficherMenuGauche(){
 	document.getElementById("voir").style.display = "none";
 }
 
-function afficheMenuGauche(mode){
-    if (mode == 0) /* menu caché */
+function afficheMenuHG(mode){
+    var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    var menuGw,planningw,realmode;
+    if (w < 992){
+        realmode = 2;
+    }
+    else if (w < 1240){
+        realmode = mode;
+        menuGw = "25%";
+        planningw = "75%";
+    }
+    else {
+        realmode = mode;
+        menuGw = "20%";
+        planningw = "80%";
+    }
+    if (mode == 0) /* menus cachés */
     {
+        document.getElementById("menuHaut").style.display = "none";
         document.getElementById("menuGauche2").style.display = "none";
         document.getElementById("planning2").style.width = "100%";
         document.getElementById("cacher").style.display = "none";
-        document.getElementById("voir").style.display = "inline";
+        document.getElementById("voir").style.display = "inline-block";
+        $('.floatthead').floatThead('reflow');
     }
-    else if (mode == 1) /* menu affiché */
+    else if (mode == 1) /* menu affiché à gauche*/
     {
+        document.getElementById("menuHaut").style.display = "none";
         document.getElementById("menuGauche2").style.display = "inline-block";
-        document.getElementById("planning2").style.width = "75%";
-        document.getElementById("cacher").style.display = "inline";
+        document.getElementById("menuGauche2").style.width = menuGw;
+        document.getElementById("planning2").style.width = planningw;
+        document.getElementById("cacher").style.display = "inline-block";
         document.getElementById("voir").style.display = "none";
+        $('.floatthead').floatThead('reflow');
     }
-    else if (mode == 2) /* menu en haut */
+    else if (mode == 2) /* menu affiché en haut */
     {
-        document.getElementById("menuGauche2").style.display = "inline-block";
-        document.getElementById("menuGauche2").style.maxWidth = "100%";
-        document.getElementById("menuGauche2").style.minWidth = "100%";
+        document.getElementById("menuHaut").style.display = "inline-block";
+        document.getElementById("menuGauche2").style.display = "none";
         document.getElementById("planning2").style.display = "inline-block";
         document.getElementById("planning2").style.width = "100%";
-        document.getElementById("cacher").style.display = "inline";
+        document.getElementById("cacher").style.display = "inline-block";
         document.getElementById("voir").style.display = "none";
+        $('.floatthead').floatThead('reflow');
     }
+}
+/*
+function menuHaut(){
+        var e=$("div#panel").is(":hidden");
+        if(e)
+        {
+            /*$("div#panel").show("slow");
+            document.getElementById("panel").style.display = "inline-block";
+            $('.floatthead').floatThead('reflow');
+        }
+        else 
+        {
+            /* $("div#panel").hide("slow"); 
+            document.getElementById("panel").style.display = "none";
+            $('.floatthead').floatThead('reflow');
+        }
+        setCookie("open",e,365)
+}*/
+/*
+ *Fonction permettant l'ouverture d'un PopUP de la page view entry.php pour création d'un pdf
+ */
+function lienPDF(id) {
+    var myWindow = window.open("app.php?p=pdfgenerator&id="+id+"", "_blank", "width=960");
 }

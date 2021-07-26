@@ -4,7 +4,7 @@
  * fichier de variables diverses
  * Dernière modification : $Date: 2018-07-20 14:00$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -19,14 +19,13 @@
 ################################
 # Development information
 #################################
-$grr_devel_email = "support@devome.com";
-$grr_devel_url = "http://grr.devome.com/";
+$grr_devel_url = "https://grr.devome.com/";
 
 // Numéro de version actuel
 # Format X.X.XRCX | exemples : 4.0.0a (alpha) ou 4.0.0b (beta) 3.4.0RC1 (Realesa Candidate) ou 3.4.0 (version OK)
 $version_grr = "4.0.0a";
 // Version repository (GitHub)
-$versionReposite = "GitHub";
+$versionReposite = "GitHub-Master";
 
 ################################
 # Configuration Requise
@@ -34,14 +33,14 @@ $versionReposite = "GitHub";
 // Version PHP minimum
 $php_mini = "7.0.0";
 // Version PHP maximum testé et validé par : JeromeB
-$php_max_valide = "7.2.9";
+$php_max_valide = "7.3.21";
 // Version PHP maximum qui est sensé fonctionné, si compatible avec toutes les versions à ce jour laisser vide
-$php_maxi = "";
+$php_maxi = "7.3";
 
 // Version MySQL minimum
 $mysql_mini = "5.4.0";
 // Version MySQL maximum testé et validé par : JeromeB
-$mysql_max_valide = "5.7.19";
+$mysql_max_valide = "5.7.31";
 // Version MySQL maximum qui est sensé fonctionné
 $mysql_maxi = "";
 
@@ -54,26 +53,29 @@ $liste_tables = array(
     "_calendrier_feries",
 	"_calendrier_jours_cycle",
 	"_calendrier_vacances",
+	"_correspondance_statut",
 	"_entry",
 	"_entry_moderate",
-	"_type_area",
-	"_j_type_area",
 	"_j_mailuser_room",
+	"_j_site_area",
+	"_j_type_area",
+	"_j_useradmin_area",
+	"_j_useradmin_site",
 	"_j_user_area",
 	"_j_user_room",
 	"_log",
+	"_log_mail",
+	"_log_resa",
+	"_modulesext",
+	"_overload",
+	"_page",
+	"_participants",
 	"_repeat",
 	"_room",
 	"_setting",
-	"_utilisateurs",
-	"_j_useradmin_area",
-	"_overload",
 	"_site",
-	"_j_useradmin_site",
-	"_j_site_area",
-	"_correspondance_statut",
-	"_page",
-	"_modulesext",
+	"_type_area",
+	"_utilisateurs",
 	);
 
 # Liste des feuilles de style
@@ -86,7 +88,8 @@ $liste_themes = array(
 	"bleu",
 	"rouge",
 	"rose",
-	"fluo"
+	"fluo",
+	"perso"
 	);
 
 # Liste des noms des styles
@@ -99,7 +102,8 @@ $liste_name_themes = array(
 	"Bleu Talmont",
 	"Rouge Feu",
 	"Roseline",
-	"Jaune Fluo"
+	"Jaune Fluo",
+	"Personnalisé via l'admin"
 	);
 
 # Liste des langues

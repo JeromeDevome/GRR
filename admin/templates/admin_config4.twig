@@ -60,10 +60,27 @@
 							<input type="radio" name="disable_login" value="no" id="label_2" {% if settings.disable_login == 'no' %} checked {% endif %} /> <label for="label_2">{{ trad.disable_login_off }}</label>
 						</section>
 						<hr>
-						<section id="https">
-							<h4 class="page-header">{{ trad.redirection_https }}</h4>
-							<input type="radio" name="redirection_https" value="yes" id="label_1" {% if settings.redirection_https == 'yes' %} checked {% endif %} /> <label for="label_1">{{ trad.YES }}</label><br>
-							<input type="radio" name="redirection_https" value="no" id="label_2" {% if settings.redirection_https == 'no' %} checked {% endif %} /> <label for="label_2">{{ trad.NO }}</label>
+						<section id="diverssecurite">
+							<h4 class="page-header">{{ trad.admin_menu_various }}</h4>
+							<table class="table table-condensed">
+								<tbody>
+									<tr>
+										<th style="width: 300px"></th>
+										<th style="width: 100px">NON</th>
+										<th>OUI</th>
+									</tr>
+									<tr>
+										<td>{{ trad.redirection_https }}</td>
+										<td><input type="radio" name="redirection_https" value="no" id="label_3a" {% if settings.redirection_https == 'no' %} checked {% endif %} /></td>
+										<td><input type="radio" name="redirection_https" value="yes" id="label_3b" {% if settings.redirection_https == 'yes' %} checked {% endif %} /></td>
+									</tr>
+									<tr>
+										<td>{{ trad.Activer_log_email }}</td>
+										<td><input type="radio" name="log_mail" value="0" id="label_4a" {% if settings.log_mail == '0' %} checked {% endif %} /></td>
+										<td><input type="radio" name="log_mail" value="1" id="label_4b" {% if settings.log_mail == '1' %} checked {% endif %} /></td>
+									</tr>
+								</tbody>
+							</table>
 						</section>
 						<hr>
 						<section id="ipautorise">

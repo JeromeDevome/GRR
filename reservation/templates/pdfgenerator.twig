@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+	</head>
+	<body>
+		<div id = "FrmPDF">
+			<form method="post" class="contact-us" action="?p=pdfgenerator">
+					
+				<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+					<input class="form-control" placeholder="Nom et Prénom du bénéficiaire" name="nom" type="text" value=''>
+				</div>
+				
+				<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-home"></span></span>
+					<input  class="form-control" placeholder="Adresse du bénéficiaire" type="text" name="adresse" value =''>
+				</div>
+
+				<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-home"></span></span>
+					<input  class="form-control" placeholder="Adresse du bénéficiaire ligne 2" type="text" name="adresse2" value =''>
+				</div>
+			
+				<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-home"></span></span>
+					<input class="form-control" placeholder="Ville du bénéficiaire" name="ville" type="text" value =''>
+				</div>
+
+				<div class="input-group">
+				   <span class="input-group-addon"><span class="glyphicon glyphicon-home"></span></span>
+				   <input class="form-control" placeholder="Code postal" name="cp" type="text" value =''>
+				</div>
+
+				<input type="hidden" class="form-control" name="id" value="{{d.id}}" >
+				<input type="hidden" class="form-control" name="cle" value="{{d.cle}}" >
+				<input type="hidden" class="form-control" name="period" value="{{d.period}}" >
+				<input type="hidden" class="form-control" name="orga" value="{{d.organisme}}" >
+				<input type="hidden" class="form-control" name="etat" value="{{settings.company}}" >
+				<input type="hidden" class="form-control" name="date" value="{{d.datedemande}}" required>
+				<input type="hidden" class="form-control" name="salle" value="{{d.salle}}" required>
+				<input type="hidden" class="form-control" name="jour" value="{{d.jour}}" required>
+				<input type="hidden" class="form-control" name="heure" value="{{d.heure}}" required>
+				<input type="hidden" class="form-control" name="finPeriode" value="{{d.rep_end_date}}" required>
+				<input type="hidden" class="form-control" name="jourPeriode" value="{{d.jourPeriode}}" required>
+				<input type="hidden" class="form-control" name="heure2" value="{{d.heure2}}" required>
+				<input type="hidden" class="form-control" name="logo" value="personnalisation/{{d.dossierImg}}/logos/{{settings.logo}}" required>
+				<input type="hidden" class="form-control" name="jour2" value="{{d.jour2}}" required>
+
+				<div class="control-group">
+					<div class="controls">
+						<button type="submit" value="ok" class="btn btn-primary" >Envoyer</button>
+					</div>
+				</div>
+			</form>	
+		</div>
+	</body>
+</html>

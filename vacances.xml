@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<root miseajour="2019/01/29">
+<root miseajour="2020/02/10">
 	<academies>
 		<academie libelle="Aix-Marseille" zone="B">
 			<departement numero="04"/>
@@ -267,7 +267,7 @@
 			<vacances debut="2019/02/16" fin="2019/03/04" libelle="3"/>
 			<vacances debut="2019/04/13" fin="2019/04/29" libelle="4"/>
 			<vacances debut="2019/05/30" fin="2019/06/02" libelle="12"/>
-			<vacances debut="2019/07/06" fin="2019/09/02" libelle="5"/> <!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+			<vacances debut="2019/07/06" fin="2019/09/02" libelle="5"/>
 			<!-- mise à jour le 23/01/2019 -->
 			<!-- Année 2019-2020 -->
 			<vacances debut="2019/10/19" fin="2019/11/04" libelle="1"/>
@@ -275,9 +275,14 @@
 			<vacances debut="2020/02/22" fin="2020/03/09" libelle="3"/>
 			<vacances debut="2020/04/18" fin="2020/05/04" libelle="4"/>
 			<vacances debut="2020/05/21" fin="2020/05/24" libelle="12"/>
-			<vacances debut="2020/07/04" fin="2020/09/01" libelle="5"/> <!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
-
-			
+			<vacances debut="2020/07/04" fin="2020/09/01" libelle="5"/>
+			<!-- Année 2020-2021 -->
+			<vacances debut="2020/10/17" fin="2020/11/02" libelle="1"/>
+			<vacances debut="2020/12/19" fin="2021/01/04" libelle="2"/>
+			<vacances debut="2021/02/06" fin="2021/02/22" libelle="3"/>
+			<vacances debut="2021/04/10" fin="2021/04/26" libelle="4"/>
+			<vacances debut="2021/05/13" fin="2021/05/16" libelle="12"/>
+			<vacances debut="2021/07/06" fin="2021/09/01" libelle="5"/> <!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
 		</zone>
 		<zone libelle="B">
 			<!-- mise à jour le 02/01/2013 -->
@@ -324,7 +329,7 @@
 			<vacances debut="2019/02/09" fin="2019/02/25" libelle="3"/>
 			<vacances debut="2019/04/06" fin="2019/04/23" libelle="4"/>
 			<vacances debut="2019/05/30" fin="2019/06/02" libelle="12"/>
-			<vacances debut="2019/07/06" fin="2019/09/02" libelle="5"/> 			<!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+			<vacances debut="2019/07/06" fin="2019/09/02" libelle="5"/>
 			<!-- mise à jour le 23/01/2019 -->
 			<!-- Année 2019-2020 -->
 			<vacances debut="2019/10/19" fin="2019/11/04" libelle="1"/>
@@ -332,7 +337,14 @@
 			<vacances debut="2020/02/15" fin="2020/03/02" libelle="3"/>
 			<vacances debut="2020/04/11" fin="2020/04/27" libelle="4"/>
 			<vacances debut="2020/05/21" fin="2020/05/24" libelle="12"/>
-			<vacances debut="2020/07/04" fin="2020/09/01" libelle="5"/> <!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+			<vacances debut="2020/07/04" fin="2020/09/01" libelle="5"/>
+			<!-- Année 2020-2021 -->
+			<vacances debut="2020/10/17" fin="2020/11/02" libelle="1"/>
+			<vacances debut="2020/12/19" fin="2021/01/04" libelle="2"/>
+			<vacances debut="2021/02/20" fin="2021/03/08" libelle="3"/>
+			<vacances debut="2021/04/24" fin="2021/05/10" libelle="4"/>
+			<vacances debut="2021/05/13" fin="2021/05/16" libelle="12"/>
+			<vacances debut="2021/07/06" fin="2021/09/01" libelle="5"/> <!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
 		</zone>
 		<zone libelle="ExZoneB2017"> <!-- Exception pour Orleans-Tours, Caen, Nantes, Rouen 2017-18-->
 			<!-- Année 2017-2018 -->
@@ -388,7 +400,7 @@
 			<vacances debut="2019/02/23" fin="2019/03/11" libelle="3"/>
 			<vacances debut="2019/04/20" fin="2019/05/06" libelle="4"/>
 			<vacances debut="2019/05/30" fin="2019/06/02" libelle="12"/>
-			<vacances debut="2019/07/06" fin="2019/09/02" libelle="5"/> 			<!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+			<vacances debut="2019/07/06" fin="2019/09/02" libelle="5"/>
 			<!-- mise à jour le 23/01/2019 -->
 			<!-- Année 2019-2020 -->
 			<vacances debut="2019/10/19" fin="2019/11/04" libelle="1"/>
@@ -396,7 +408,14 @@
 			<vacances debut="2020/02/08" fin="2020/02/24" libelle="3"/>
 			<vacances debut="2020/04/04" fin="2020/04/20" libelle="4"/>
 			<vacances debut="2020/05/21" fin="2020/05/24" libelle="12"/>
-			<vacances debut="2020/07/04" fin="2020/09/01" libelle="5"/> 			<!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+			<vacances debut="2020/07/04" fin="2020/09/01" libelle="5"/>
+			<!-- Année 2020-2021 -->
+			<vacances debut="2020/10/17" fin="2020/11/02" libelle="1"/>
+			<vacances debut="2020/12/19" fin="2021/01/04" libelle="2"/>
+			<vacances debut="2021/02/13" fin="2021/03/01" libelle="3"/>
+			<vacances debut="2021/04/17" fin="2021/05/03" libelle="4"/>
+			<vacances debut="2021/05/13" fin="2021/05/16" libelle="12"/>
+			<vacances debut="2021/07/06" fin="2021/09/01" libelle="5"/> 		<!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
 		</zone>
 		<zone libelle="Corse">
 			<!-- mise à jour le 07/05/2013 -->		
@@ -438,8 +457,14 @@
 			<vacances debut="2019/02/23" fin="2019/03/11" libelle="3"/>
 			<vacances debut="2019/04/20" fin="2019/05/06" libelle="4"/>
 			<vacances debut="2019/05/30" fin="2019/06/02" libelle="12"/>
-			<vacances debut="2019/07/06" fin="2019/09/05" libelle="5"/> <!-- la date de la rentrée 2018 n'est pas encore publiée -->
+			<vacances debut="2019/07/06" fin="2019/09/03" libelle="5"/>
 			<!-- Année 2019-2020 -->
+			<vacances debut="2019/10/19" fin="2019/11/04" libelle="1"/>
+			<vacances debut="2019/12/21" fin="2020/01/06" libelle="2"/>
+			<vacances debut="2020/02/15" fin="2020/03/02" libelle="3"/>
+			<vacances debut="2020/04/18" fin="2020/05/04" libelle="4"/>
+			<vacances debut="2020/07/04" fin="2020/09/02" libelle="5"/> <!-- la date de la rentrée 2020 n'est pas encore publiée -->
+			<!-- Année 2020-2021 -->
 			<!-- non connues -->
 		</zone>
 		<zone libelle="Guadeloupe">
@@ -561,8 +586,16 @@
 			<vacances debut="2019/04/13" fin="2019/04/29" libelle="8"/>
 			<vacances debut="2019/05/21" fin="2019/05/23" libelle="9"/>
 			<vacances debut="2019/05/29" fin="2019/06/03" libelle="31"/>
-			<vacances debut="2019/07/06" fin="2019/09/03" libelle="5"/> <!-- la date de la rentrée 2018 n'est pas encore publiée -->
+			<vacances debut="2019/07/06" fin="2019/09/02" libelle="5"/>
 			<!-- Année 2019-2020 -->
+			<vacances debut="2019/10/19" fin="2019/11/04" libelle="1"/>
+			<vacances debut="2019/12/21" fin="2020/01/06" libelle="2"/>
+			<vacances debut="2020/02/22" fin="2020/03/09" libelle="6"/>
+			<vacances debut="2020/04/04" fin="2020/04/20" libelle="8"/>
+			<vacances debut="2020/05/21" fin="2020/05/23" libelle="9"/>
+			<vacances debut="2020/05/21" fin="2020/05/24" libelle="12"/>
+			<vacances debut="2020/07/04" fin="2020/09/03" libelle="5"/> <!-- la date de la rentrée 2020 n'est pas encore publiée -->
+			<!-- Année 2020-2021 -->
 			<!-- non connues -->
 		</zone>
 		<zone libelle="Guyane">
@@ -617,17 +650,17 @@
 			<!-- Année 2019-2020 -->
 			<vacances debut="2019/10/19" fin="2019/11/04" libelle="1"/>
 			<vacances debut="2019/12/21" fin="2020/01/06" libelle="2"/>
-			<vacances debut="2020/02/19" fin="2020/03/02" libelle="6"/>
-			<vacances debut="2020/04/08" fin="2020/04/20" libelle="8"/>
-			<vacances debut="2020/05/09" fin="2020/05/18" libelle="11"/>
+			<vacances debut="2020/02/16" fin="2020/03/02" libelle="6"/>
+			<vacances debut="2020/04/05" fin="2020/04/20" libelle="8"/>
+			<vacances debut="2020/05/21" fin="2020/05/25" libelle="12"/>
 			<vacances debut="2020/06/09" fin="2020/06/11" libelle="9"/>
 			<vacances debut="2020/07/04" fin="2020/09/01" libelle="5"/>
 			<!-- Année 2020-2021 -->
 			<vacances debut="2020/10/24" fin="2020/11/09" libelle="1"/>
-			<vacances debut="2020/12/19" fin="2020/01/04" libelle="2"/>
+			<vacances debut="2020/12/19" fin="2021/01/04" libelle="2"/>
 			<vacances debut="2021/02/13" fin="2021/03/01" libelle="6"/>
-			<vacances debut="2021/03/31" fin="2021/04/12" libelle="8"/>
-			<vacances debut="2021/05/07" fin="2021/05/17" libelle="11"/>
+			<vacances debut="2021/04/01" fin="2021/04/19" libelle="8"/>
+			<vacances debut="2021/05/09" fin="2021/05/17" libelle="11"/>
 			<vacances debut="2021/06/09" fin="2021/06/11" libelle="9"/>
 			<vacances debut="2021/07/03" fin="2021/09/04" libelle="5"/> <!-- la date de la rentrée 2017 n'est pas encore publiée -->
 		</zone>
@@ -675,7 +708,13 @@
 			<vacances debut="2019/12/19" fin="2020/01/27" libelle="19"/>
 			<vacances debut="2020/03/07" fin="2020/03/23" libelle="17"/>
 			<vacances debut="2020/04/30" fin="2020/05/14" libelle="18"/>
-			<vacances debut="2020/07/04" fin="2020/08/14" libelle="20"/>		<!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+			<vacances debut="2020/07/04" fin="2020/08/17" libelle="20"/>
+			<!-- Année 2020-2021 -->
+			<vacances debut="2020/10/10" fin="2020/10/26" libelle="15"/>
+			<vacances debut="2020/12/19" fin="2021/01/25" libelle="19"/>
+			<vacances debut="2021/03/06" fin="2021/03/22" libelle="17"/>
+			<vacances debut="2021/05/04" fin="2021/05/17" libelle="18"/>
+			<vacances debut="2021/07/07" fin="2021/08/16" libelle="20"/>		<!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
 		</zone>
 		<zone libelle="Mayotte">
 			<!-- mise à jour le 02/01/2013 -->
@@ -730,7 +769,14 @@
 			<vacances debut="2020/04/26" fin="2020/04/28" libelle="9"/>
 			<vacances debut="2020/05/03" fin="2020/05/11" libelle="18"/>
 			<vacances debut="2020/05/21" fin="2020/05/24" libelle="12"/>
-			<vacances debut="2020/07/05" fin="2020/08/20" libelle="20"/>
+			<vacances debut="2020/07/05" fin="2020/08/24" libelle="20"/>
+			<!-- Année 2020-2021 -->
+			<vacances debut="2020/10/11" fin="2020/10/26" libelle="1"/>
+			<vacances debut="2020/12/13" fin="2021/01/11" libelle="2"/>
+			<vacances debut="2021/02/28" fin="2021/03/15" libelle="17"/>
+			<vacances debut="2021/04/26" fin="2021/04/28" libelle="9"/>
+			<vacances debut="2021/05/02" fin="2021/05/17" libelle="18"/>
+			<vacances debut="2021/07/06" fin="2021/08/23" libelle="20"/>
 		</zone>
 		<zone libelle="Calédonie">
 			<!-- Année 2013 -->
@@ -778,11 +824,11 @@
 			<vacances debut="2019/10/11" fin="2019/10/28" libelle="18"/>
 			<vacances debut="2019/12/13" fin="2020/02/17" libelle="19"/>
 			<!-- Année 2020 -->
-			<vacances debut="2020/04/03" fin="2020/04/14" libelle="15"/>
+			<vacances debut="2020/04/03" fin="2020/04/20" libelle="15"/>
 			<vacances debut="2020/06/05" fin="2020/06/22" libelle="16"/>
 			<vacances debut="2020/08/07" fin="2020/08/24" libelle="17"/>
 			<vacances debut="2020/10/09" fin="2020/10/26" libelle="18"/>
-			<vacances debut="2020/12/11" fin="2021/02/15" libelle="19"/> <!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+			<vacances debut="2020/12/18" fin="2021/02/15" libelle="19"/> <!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
 		</zone>
 		<zone libelle="Polynésie">
 			<!-- mise à jour le 04/04/2013 -->
@@ -852,9 +898,18 @@
 			<vacances debut="2020/03/04" fin="2020/03/06" libelle="29"/>
 			<vacances debut="2020/04/09" fin="2020/04/11" libelle="30"/>
 			<vacances debut="2020/03/28" fin="2020/04/14" libelle="8"/>
-			<vacances debut="2020/05/16" fin="2020/05/25" libelle="31"/>
 			<vacances debut="2020/06/28" fin="2020/06/30" libelle="32"/>
-			<vacances debut="2020/07/04" fin="2020/08/14" libelle="20"/><!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
+			<vacances debut="2020/06/27" fin="2020/08/11" libelle="20"/>
+			<!-- Année 2020-2021 -->
+			<vacances debut="2020/09/12" fin="2020/09/21" libelle="25"/>
+			<vacances debut="2020/10/24" fin="2020/11/09" libelle="1"/>
+			<vacances debut="2020/12/12" fin="2021/01/11" libelle="2"/>
+			<vacances debut="2021/02/20" fin="2021/03/01" libelle="26"/>
+			<vacances debut="2021/03/04" fin="2021/03/06" libelle="29"/>
+			<vacances debut="2021/04/01" fin="2021/04/03" libelle="30"/>
+			<vacances debut="2021/04/03" fin="2021/04/19" libelle="8"/>
+			<vacances debut="2021/06/28" fin="2021/06/30" libelle="32"/>
+			<vacances debut="2021/07/03" fin="2021/08/16" libelle="20"/><!-- Date de fin non connue lors de la dernière mise à jour du fichier -->
 
 		</zone>
 		<zone libelle="StPierreMiquelon">
@@ -895,12 +950,22 @@
 			<vacances debut="2018/12/21" fin="2019/01/07" libelle="2"/>
 			<vacances debut="2019/02/15" fin="2019/03/04" libelle="26"/>
 			<vacances debut="2019/04/19" fin="2019/05/06" libelle="4"/>
-			<vacances debut="2019/07/03" fin="2019/09/07" libelle="5"/>	<!-- date de fin non connue -->
-			<!-- mis à jour le 29/01/2019 -->
+			<vacances debut="2019/07/03" fin="2019/09/05" libelle="5"/>
 			<!-- Année 2019-2020 -->
+			<vacances debut="2019/10/25" fin="2019/11/06" libelle="1"/>
+			<vacances debut="2019/12/20" fin="2020/01/06" libelle="2"/>
+			<vacances debut="2020/02/21" fin="2020/03/09" libelle="3"/>
+			<vacances debut="2020/04/17" fin="2020/05/04" libelle="4"/>
+			<vacances debut="2020/05/21" fin="2020/05/24" libelle="12"/>
+			<vacances debut="2020/07/03" fin="2020/09/03" libelle="5"/>
+			<!-- Année 2020-2021 -->
+			<vacances debut="2020/10/21" fin="2020/11/02" libelle="1"/>
+			<vacances debut="2020/12/18" fin="2021/01/04" libelle="2"/>
+			<vacances debut="2021/02/19" fin="2021/03/08" libelle="3"/>
+			<vacances debut="2021/04/23" fin="2021/05/10" libelle="4"/>
+			<vacances debut="2021/05/13" fin="2021/05/17" libelle="12"/>
+			<vacances debut="2021/07/02" fin="2021/09/07" libelle="5"/>	<!-- date de fin non connue -->
 			<!-- non connues -->
-			
-			
 		</zone>
 		<zone libelle="WallisFutuna">
 			<!-- Année 2013 -->

@@ -45,8 +45,9 @@
 						<section id="configsmtp">
 							<h4 class="page-header">{{ trad.Parametres_configuration_envoi_automatique_mails }}</h4>
 							<p>{{ trad.Explications_des_Parametres_configuration_envoi_automatique_mails |raw }}</p>
-							<input type="radio" name="grr_mail_method" value="mail" id="label_3a" {% if trad.dFctMailRestriction == true %} disabled {% elseif settings.grr_mail_method == 'mail' %} checked{% endif %} /> <label for="label_3a">{{ trad.methode_mail }}{% if trad.dFctMailRestriction == true %} - <font color='red'>{{trad.methode_mail_desactive}}</font> {% endif %}</label><br>
-							<input type="radio" name="grr_mail_method" value="smtp" id="label_3b" {% if settings.grr_mail_method == 'smtp' %} checked {% endif %} /> <label for="label_3b">{{ trad.methode_smtp }}</label><br>
+							<input type="radio" name="grr_mail_method" value="bloque" id="label_3a" {% if settings.grr_mail_method == 'bloque' %} checked {% endif %} /> <label for="label_3a">{{ trad.methode_mail_bloque }}</label><br>
+							<input type="radio" name="grr_mail_method" value="mail" id="label_3b" {% if trad.dFctMailRestriction == true %} disabled {% elseif settings.grr_mail_method == 'mail' %} checked{% endif %} /> <label for="label_3b">{{ trad.methode_mail }}{% if trad.dFctMailRestriction == true %} - <font color='red'>{{trad.methode_mail_desactive}}</font> {% endif %}</label><br>
+							<input type="radio" name="grr_mail_method" value="smtp" id="label_3c" {% if settings.grr_mail_method == 'smtp' %} checked {% endif %} /> <label for="label_3c">{{ trad.methode_smtp }}</label><br>
 							<br>
 							<p>Uniquement pour la methode SMTP :</p><br>
 							{{ form.input('grr_mail_smtp', trad.Explications_methode_smtp_1, settings.grr_mail_smtp, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
@@ -57,7 +58,13 @@
 							{{ form.input('smtp_secure', trad.smtp_secure, settings.smtp_secure, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
 							{{ form.input('smtp_port', trad.smtp_port, settings.smtp_port, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}<br>
 							{{ form.input('mail_test', trad.mail_test, '', {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
+							<label>{{ trad.smtp_param_sup }}</label>
 							
+							{{ form.input('smtp_verify_peer', trad.smtp_verify_peer, settings.smtp_verify_peer, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
+							{{ form.input('smtp_verify_depth', trad.smtp_verify_depth, settings.smtp_verify_depth, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
+							{{ form.input('smtp_allow_self_signed', trad.smtp_allow_self_signed, settings.smtp_allow_self_signed, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
+							{{ form.input('smtp_verify_peer_name', trad.smtp_verify_peer_name, settings.smtp_verify_peer_name, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
+
 							<label><input type="checkbox" name="grr_mail_Bcc" value="y"  {% if settings.grr_mail_Bcc == 'y' %} checked {% endif %} /> {{ trad.copie_cachee }}</label>
 							
 						</section>

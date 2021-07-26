@@ -4,7 +4,7 @@
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2017-12-16 14:00$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -14,7 +14,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-include "include/connect.inc.php";
+include "personnalisation/connect.inc.php";
 include "include/config.inc.php";
 include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
@@ -81,7 +81,7 @@ if ($series == 0)
 	$res = grr_sql_query($sql);
 	if (!$res)
 		fatal_error(0, grr_sql_error());
-	if (!(grr_backup($_POST['id'],getUserName(),$_POST['description'])))
+	if (!(grr_add_ligne_moderation($_POST['id'],getUserName(),$_POST['description'])))
 		fatal_error(0, grr_sql_error());
 	$tab_id_moderes = array();
 }
@@ -113,7 +113,7 @@ else
 			$res = grr_sql_query($sql);
 			if (!$res)
 				fatal_error(0, grr_sql_error());
-			if (!(grr_backup($entry_tom,getUserName(),$_POST['description'])))
+			if (!(grr_add_ligne_moderation($entry_tom,getUserName(),$_POST['description'])))
 				fatal_error(0, grr_sql_error());
 			// Backup : on enregistre les infos dans ".TABLE_PREFIX."_entry_moderate
 			// On constitue un tableau des réservations modérées
@@ -129,10 +129,11 @@ if ($_POST['moderate'] != 1)
 	// on efface l'entrée de la base
 	if ($series == 0)
 	{
-		$sql = "DELETE FROM ".TABLE_PREFIX."_entry WHERE id = ".$_POST['id'];
+		$sql = "UPDATE ".TABLE_PREFIX."_entry SET supprimer = 1 WHERE id = ".$_POST['id'];
 		$res = grr_sql_query($sql);
 		if (!$res)
 			fatal_error(0, grr_sql_error());
+		insertLogResa($_POST['id'], 5, "Via modération");
 	}
 	else
 	{
@@ -147,7 +148,10 @@ if ($_POST['moderate'] != 1)
 			$test = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry_moderate WHERE id = '".$entry_tom."' and moderate='3'");
 			// Si oui, on supprime la réservation
 			if ($test > 0)
-				$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_entry WHERE id = '".$entry_tom."'");
+			{
+				$del = grr_sql_query("UPDATE ".TABLE_PREFIX."_entry SET supprimer = 1 WHERE id = '".$entry_tom."'");
+				insertLogResa($entry_tom, 5, "Via modération périodicité");
+			}
 		}
 		// On supprime l'info de périodicité
 		$del_repeat = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_repeat WHERE id='".$repeat_id."'");

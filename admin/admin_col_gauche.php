@@ -4,7 +4,7 @@
  * colonne de gauche des écrans d'administration des sites, des domaines et des ressources de l'application GRR
  * Dernière modification : $Date: 2018-07-22 13:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -98,10 +98,16 @@ function afficheLienNiveau2($nomSection,$image,$liste,$iN2)
 		$liste[] = 'admin_email_manager';
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 		$liste[] = 'admin_view_connexions';
+	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
+		$liste[] = 'admin_view_emails';
+	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
+		$liste[] = 'admin_log_resa_liste';
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 4)
 		$liste[] = 'admin_calend';
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 		$liste[] = 'admin_cgu';
+	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
+		$liste[] = 'admin_couleurs';
 	if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 		$liste[] = 'admin_infos';
 

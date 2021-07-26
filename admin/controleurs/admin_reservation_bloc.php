@@ -5,7 +5,7 @@
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2017-12-16 14:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -175,7 +175,7 @@ if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 										// Par sécurité, on teste quand même s'il reste des conflits
 										$err = mrbsCheckFree($row[0], $starttime, $endtime, 0,0);
 										if (!$err)
-											mrbsCreateSingleEntry($starttime, $endtime, 0, 0, $row[0], getUserName(), $beneficiaire, "", $name, $type_, $description, -1,array(),0,0,'-', 0, 0);
+											mrbsCreateSingleEntry(0,$starttime, $endtime, 0, 0, $row[0], getUserName(), $beneficiaire, "", $name, $type_, $description, -1,array(),0,0,'-', 0, 0,0);
 									}
 								}
 							}

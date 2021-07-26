@@ -4,7 +4,7 @@
  * Prépare l'affichage du planning (day, week, week_all, month, month_all)
  * Dernière modification : $Date: 2018-03-04 10:00$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.

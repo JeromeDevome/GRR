@@ -4,7 +4,7 @@
 The ``format`` filter formats a given string by replacing the placeholders
 (placeholders follows the `sprintf`_ notation):
 
-.. code-block:: jinja
+.. code-block:: twig
 
     {{ "I like %s and %s."|format(foo, "bar") }}
 
@@ -13,4 +13,6 @@ The ``format`` filter formats a given string by replacing the placeholders
 
 .. _`sprintf`: https://secure.php.net/sprintf
 
-.. seealso:: :doc:`replace<replace>`
+.. seealso::
+
+    :doc:`replace<replace>`
