@@ -2,9 +2,9 @@
 /**
  * config.inc.php
  * Fichier de configuration de GRR
- * Dernière modification : $Date: 2019-03-22 15:00$
+ * Dernière modification : $Date: 2021-07-30 11:16$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -120,6 +120,9 @@ $nbMaxJoursLogConnexion = 365;
 
 # paramètre provisoire pour choisir le type de calendrier à utiliser dans le menu gauche des pages plannings minicals (GRR classique): 0 ou JQuery : 1
 $useJQueryCalendar = 0;
+
+# paramètre pour afficher ou non la page des CGU à partir de la page de login (0 = non, 1 = oui)
+$affichePageCgu = 1;
 
 ##################################################
 # Cas d'une authentification via config.inc.php  #
