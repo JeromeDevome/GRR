@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-05-21 16:15$
+ * Dernière modification : $Date: 2021-07-30 18:11$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -240,7 +240,8 @@ $form_vars = array(
   'dur_units'          => 'string',
   'del_entry_in_conflict' => 'string',
   'skip_entry_in_conflict' => 'string',
-  'copier'             => 'string'
+  'copier'             => 'string',
+  'nbparticipantmax'   => 'integer'
 );
 // tableau à compléter autant que nécessaire
 // récupération des valeurs des variables passées en paramètres
@@ -413,6 +414,7 @@ $type_affichage_reser = isset($Room['type_affichage_reser'])? $Room['type_affich
 $delais_option_reservation = isset($Room['delais_option_reservation'])? $Room['delais_option_reservation']: -1;
 $qui_peut_reserver_pour = isset($Room['qui_peut_reserver_pour'])? $Room['qui_peut_reserver_pour']: -1;
 $active_cle = isset($Room['active_cle'])? $Room['active_cle']: -1;
+$active_participant  = isset($Room['active_participant'])? $Room['active_participant']: -1;
 $periodiciteConfig = Settings::get("periodicite");
 //$back = isset($_SERVER['HTTP_REFERER'])? htmlspecialchars( $_SERVER['HTTP_REFERER']): '';
 $longueur_liste_ressources_max = Settings::get("longueur_liste_ressources_max");
@@ -485,6 +487,7 @@ if (isset($id)) // édition d'une réservation existante
 	$jours_c = $row['jours'];
 	$clef = $row['clef'];
 	$courrier = $row['courrier'];
+    $nbparticipantmax = $row['nbparticipantmax'];
 	$modif_option_reservation = 'n';
 
 	if ($entry_type >= 1) // entrée associée à une périodicité
@@ -612,6 +615,7 @@ else // nouvelle réservation
 	$rep_jour      	= 0;
 	$option_reservation = -1;
 	$modif_option_reservation = 'y';
+	$nbparticipantmax = 0;
 }
 
 $Err = getFormVar("Err",'string'); // utilité ?
@@ -932,6 +936,13 @@ echo '</div>',PHP_EOL;
 // champs additionnels
 echo '<div id="div_champs_add">'.PHP_EOL;
 echo '</div>'.PHP_EOL;
+// participants
+if($active_participant > 0){
+	echo '<div class="E">'.PHP_EOL;
+	echo '<label for="nbparticipantmax">'.get_vocab("nb_participant_max").get_vocab("deux_points").'</label>'.PHP_EOL;
+	echo '<input name="nbparticipantmax" type="number" value="'.$nbparticipantmax.'" > '.get_vocab("nb_participant_zero");
+	echo '</div>'.PHP_EOL;
+}
 // clé
 if($active_cle == 'y'){
 	echo '<div class="E">'.PHP_EOL;

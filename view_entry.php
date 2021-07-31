@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 10:52$
+ * Dernière modification : $Date: 2021-07-31 18:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -117,7 +117,8 @@ $sql = "SELECT ".TABLE_PREFIX."_entry.name,
 ".TABLE_PREFIX."_room.active_ressource_empruntee,
 ".TABLE_PREFIX."_entry.clef,
 ".TABLE_PREFIX."_entry.courrier,
-".TABLE_PREFIX."_room.active_cle
+".TABLE_PREFIX."_room.active_cle,
+".TABLE_PREFIX."_entry.nbparticipantmax
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
 WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
 AND ".TABLE_PREFIX."_room.area_id = ".TABLE_PREFIX."_area.id
@@ -187,6 +188,7 @@ $active_ressource_empruntee = htmlspecialchars($row[20]);
 $keys						= $row[21];
 $courrier					= $row[22];
 $active_cle					= $row[23];
+$nbParticipantMax			= $row[24];
 $rep_type 					= 0;
 $verif_display_email 		= verif_display_email(getUserName(), $room_id);
 if ($verif_display_email)
@@ -483,6 +485,65 @@ elseif ($moderate == 3)
         echo '</td>',PHP_EOL,'</tr>',PHP_EOL;;
     }
 }
+
+if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité participants est activée
+	$userParticipe = false;
+	$listeParticipants = "";
+	// Compte nb de participants actuel
+	$resp = grr_sql_query("SELECT beneficiaire, timestamp FROM ".TABLE_PREFIX."_participants WHERE idresa=$id");
+    if (!$resp)
+        fatal_error(0, grr_sql_error());
+	
+	$nbParticipantInscrit = grr_sql_count($resp);
+
+	// Liste des participants
+	if ($nbParticipantInscrit > 0)
+	{
+		foreach($resp as $rowp)
+		{
+			if( $rowp['beneficiaire'] == getUserName())
+				$userParticipe = true;
+
+			$listeParticipants .= "<tr><td>".affiche_nom_prenom_email($rowp['beneficiaire'], "", $option_affiche_nom_prenom_email).
+            "</td><td>".$rowp['timestamp']."</td></tr>";
+		}
+	}
+	grr_sql_free($resp);
+	
+	echo "<tr>";
+        echo "<td>";
+            echo "<h4>".get_vocab("participants").get_vocab("deux_points")."</h4>";
+        echo "</td>";
+        echo "<td>";
+		if(!$userParticipe)
+		{
+			if( ($nbParticipantInscrit < $nbParticipantMax) && (verif_participation_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods)) || (!(verif_participation_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")) )
+			{
+				$room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
+				$message_confirmation = str_replace("'", "\\'", get_vocab("participant_confirm_validation"));
+				echo "<a class=\"btn btn-primary btn-xs\" type=\"button\" href=\"participation_entry.php?id=".$id."&amp;series=0&amp;page=".$page."&amp;room_back=".$room_back." \"  onclick=\"return confirm('$message_confirmation');\" />".get_vocab("participant_validation")."</a>";
+			}
+		} else
+		{
+			if( verif_participation_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods) || (!(verif_participation_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")))
+			{
+				$room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
+				$message_confirmation = str_replace("'", "\\'", get_vocab("participant_confirm_annulation"));
+				echo "<a class=\"btn btn-warning btn-xs\" type=\"button\" href=\"participation_entry.php?id=".$id."&amp;series=0&amp;page=".$page."&amp;room_back=".$room_back." \"  onclick=\"return confirm('$message_confirmation');\" />".get_vocab("participant_annulation")."</a>";
+			}
+		}
+		echo "</td>";
+    echo "</tr>";
+		echo "<tr>";
+        echo "<td>";
+            echo "<b>".get_vocab("participant_inscrit").get_vocab("deux_points")."</b>";
+        echo "</td>";
+		echo "<td>".$nbParticipantInscrit." / ".$nbParticipantMax."</td>";
+    echo "</tr>";
+
+	echo $listeParticipants;
+}
+
 if ((getWritable($beneficiaire, getUserName(), $id)) && verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room(getUserName(), $room_id, $row[10], $enable_periods) && (!$was_del))
 {
     echo "<tr>";

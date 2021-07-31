@@ -2,7 +2,7 @@
 /**
  * misc.inc.php
  * fichier de variables diverses
- * Dernière modification : $Date: 2021-06-29 18:57$
+ * Dernière modification : $Date: 2021-07-31 18:07$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -39,27 +39,28 @@ $liste_tables = array(
     "_calendrier_feries",
 	"_calendrier_jours_cycle",
 	"_calendrier_vacances",
+	"_correspondance_statut",
 	"_entry",
 	"_entry_moderate",
-	"_type_area",
-	"_j_type_area",
 	"_j_mailuser_room",
+	"_j_site_area",
+	"_j_useradmin_area",
+	"_j_useradmin_site",
+    "_j_userbook_room",
 	"_j_user_area",
 	"_j_user_room",
+	"_j_type_area",
 	"_log",
+	"_modulesext",
+	"_overload",
+	"_page",
+	"_participants",
 	"_repeat",
 	"_room",
 	"_setting",
-	"_utilisateurs",
-	"_j_useradmin_area",
-	"_overload",
 	"_site",
-	"_j_useradmin_site",
-	"_j_site_area",
-	"_correspondance_statut",
-	"_page",
-	"_modulesext",
-    "_j_userbook_room"
+	"_type_area",
+	"_utilisateurs"
 	);
 
 # Liste des feuilles de style

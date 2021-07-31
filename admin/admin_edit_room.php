@@ -3,7 +3,7 @@
  * admin_edit_room.php
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 16:15$
+ * Dernière modification : $Date: 2021-07-08 18:17$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -74,6 +74,7 @@ else
 	// toutes les reservations sont considerees comme restituee
 	grr_sql_query("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id = '".protect_data_sql($room)."'");
 }
+$active_participant = isset($_POST["active_participant"]) ? $_POST["active_participant"] : NULL;
 $picture_room = isset($_POST["picture_room"]) ? clean_input($_POST["picture_room"]) : NULL;
 $comment_room = isset($_POST["comment_room"]) ? $_POST["comment_room"] : NULL;
 $show_comment = isset($_POST["show_comment"]) ? "y" : "n";
@@ -238,6 +239,7 @@ if ((!empty($room)) || (isset($area_id)))
 			show_fic_room='".$show_fic_room."',
 			active_ressource_empruntee = '".$active_ressource_empruntee."',
 			active_cle = '".$active_cle."',
+            active_participant = '".$active_participant."',
 			capacity='".protect_data_sql($capacity)."',
 			delais_max_resa_room='".protect_data_sql($delais_max_resa_room)."',
 			delais_min_resa_room='".protect_data_sql($delais_min_resa_room)."',
@@ -271,6 +273,7 @@ if ((!empty($room)) || (isset($area_id)))
 			show_fic_room='".$show_fic_room."',
 			active_ressource_empruntee = '".$active_ressource_empruntee."',
 			active_cle = '".$active_cle."',
+            active_participant = '".$active_participant."',
 			capacity='".protect_data_sql($capacity)."',
 			delais_max_resa_room='".protect_data_sql($delais_max_resa_room)."',
 			delais_min_resa_room='".protect_data_sql($delais_min_resa_room)."',
@@ -457,6 +460,7 @@ if ((!empty($room)) || (isset($area_id)))
 		$row['show_fic_room'] = '';
 		$row['active_ressource_empruntee'] = 'n';
 		$row['active_cle'] = 'n';
+        $row['active_participant'] = 'n';
 		$area_name = grr_sql_query1("select area_name from ".TABLE_PREFIX."_area where id='".$area_id."'");
 		echo "<h2>".get_vocab("match_area").get_vocab('deux_points')." ".$area_name."<br />".get_vocab("addroom")."</h2>\n";
 	}
@@ -718,7 +722,7 @@ if ((!empty($room)) || (isset($area_id)))
 				echo " selected=\"selected\" ";
 			echo ">".get_vocab("tous_les_utilisateurs")."</option>\n
 		</select></td></tr>\n";
-// Activer la fonctionalite "ressource empruntee/restituee"
+// Activer la fonctionnalite "ressource empruntee/restituee"
 		echo "<tr><td>".get_vocab("activer_fonctionalite_ressource_empruntee_restituee")."</td><td><input type=\"checkbox\" name=\"active_ressource_empruntee\" ";
 		if ($row['active_ressource_empruntee'] == "y")
 			echo " checked=\"checked\" ";
@@ -728,6 +732,23 @@ if ((!empty($room)) || (isset($area_id)))
 		if ($row['active_cle'] == "y")
 			echo " checked=\"checked\" ";
 		echo "/></td></tr>\n";
+// Activer la fonctionnalite "ressource empruntee/restituee"
+		echo "<tr><td>".get_vocab("activer_fonctionnalite_participant")."</td><td>";
+		echo '<select class="form-control" name="active_participant">';
+		echo '<option value="0" ';
+        if ($row['active_participant'] == 0)
+            echo 'selected';
+        echo '>'.get_vocab('personne').'</option>';
+		echo '<option value="1" ';
+        if ($row['active_participant'] == 1)
+            echo 'selected';
+        echo '>'.get_vocab('visu_fiche_description1').'</option>';
+        echo '<option value="2" ';
+        if ($row['active_participant'] == 2)
+            echo 'selected';
+        echo '>'.get_vocab('visu_fiche_description2').'</option>';
+        echo '</select>';
+		echo "</td></tr>\n";
 	//
 		echo "</table>\n";
 		Hook::Appel("hookEditRoom1");

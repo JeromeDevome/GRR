@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2021-03-14
+# Last modification : 2021-07-31
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1298,4 +1298,13 @@ $vocab['missing_period'] = 'missing period';
 $vocab['missing_end_period'] = 'missing end period';
 $vocab['booking_room_out'] = "Booking not possible";
 $vocab['duree_max_resa_aera'] = "The requested booking is too long";
+$vocab['activer_fonctionnalite_participant'] = "Who can use the \"participant\" feature";
+$vocab['nb_participant_max'] = "Max number of participants";
+$vocab['nb_participant_zero'] = "(0 = The feature is disabled)";
+$vocab['participants'] = "Participants";
+$vocab['participant_annulation'] = "I cancel my participation";
+$vocab['participant_confirm_annulation'] = "Are you sure you want to withdraw your participation?";
+$vocab['participant_confirm_validation'] = "Are you sure you want to participate?";
+$vocab['participant_inscrit'] = "Registered participants";
+$vocab['participant_validation'] = "I register";
 ?>

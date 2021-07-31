@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2021-05-21
+# Last modification : 2021-07-31
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1001,7 +1001,7 @@ $vocab['msg_clef'] = "Überprüfen, ob der Schlüssel vergeben ist";
 $vocab['status_courrier'] = "Bestätigungsmail";
 $vocab['courrier'] = "E-Mail";
 $vocab['msg_courrier'] = "Überprüfen, ob Bestätigungsmail versandt wurde";
-$vocab['to'] = " ~ ";
+$vocab['to'] = " bis ";
 $vocab['rep_type_7'] = "X Y des Monats";
 $vocab['firstofmonth'] = "1.";
 $vocab['secondofmonth'] = "2.";
@@ -1283,4 +1283,13 @@ $vocab['missing_end_period'] = 'missing end period';
 $vocab['booking_room_out'] = "Booking not possible";
 $vocab['duree_max_resa_aera'] = "The requested booking is too long";
 $vocab['voir_resa'] = "Die Reservierung sehen";
+$vocab['activer_fonctionnalite_participant'] = "Qui peut utiliser la fonctionnalité \"participant\"";
+$vocab['nb_participant_max'] = "Nombre de participants max";
+$vocab['nb_participant_zero'] = "(0 = Ne pas activer l'option)";
+$vocab['participants'] = "Participants";
+$vocab['participant_annulation'] = "J'annule ma participation";
+$vocab['participant_confirm_annulation'] = "Etes vous sûr de vouloir retirer votre participation ?";
+$vocab['participant_confirm_validation'] = "Etes vous sûr de vouloir participer ?";
+$vocab['participant_inscrit'] = "Participants inscrits";
+$vocab['participant_validation'] = "Je m'inscris";
 ?>

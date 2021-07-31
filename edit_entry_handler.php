@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-14 11:28$
+ * Dernière modification : $Date: 2021-07-30 18:32$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -19,10 +19,10 @@
 $grr_script_name = "edit_entry_handler.php";
 include "include/connect.inc.php";
 include "include/config.inc.php";
-include "include/functions.inc.php";
+include "include/misc.inc.php";
 include "include/$dbsys.inc.php";
 include "include/mrbs_sql.inc.php";
-include "include/misc.inc.php";
+include "include/functions.inc.php";
 // Settings
 require_once("./include/settings.class.php");
 //Chargement des valeurs de la table settingS
@@ -119,7 +119,8 @@ $form_vars = array(
   'end_period'         => 'int',
   'dur_units'          => 'string',
   'del_entry_in_conflict' => 'string',
-  'skip_entry_in_conflict' => 'string'
+  'skip_entry_in_conflict' => 'string',
+  'nbparticipantmax'   => 'int'
 );
 // tableau à compléter autant que nécessaire
 // récupération des valeurs des variables passées en paramètres
@@ -680,7 +681,8 @@ try {
 		}
 		if ($rep_type != 0)
 		{                    //print_r($reps);print_r($ignore);die();
-			$id_first_resa = mrbsCreateRepeatingEntrys($start_time, $end_time, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $rep_month_abs1, $rep_month_abs2, $ignore);
+			$id_first_resa = mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $nbparticipantmax, $rep_month_abs1, $rep_month_abs2, $ignore);
+            //mrbsCreateRepeatingEntrys($start_time, $end_time, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $rep_month_abs1, $rep_month_abs2, $ignore);
 			if (Settings::get("automatic_mail") == 'yes')
 			{
 				if (isset($id_first_resa) && ($id_first_resa != 0))
@@ -705,7 +707,8 @@ try {
 				$entry_type = 2;
 			else
 				$entry_type = 0;
-			$new_id = mrbsCreateSingleEntry($start_time, $end_time, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $keys, $courrier);
+			$new_id = mrbsCreateSingleEntry($start_time, $end_time, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $keys, $courrier,$nbparticipantmax);
+            //mrbsCreateSingleEntry($start_time, $end_time, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $keys, $courrier);
 			//$new_id = grr_sql_insert_id();
 			if (Settings::get("automatic_mail") == 'yes')
 			{

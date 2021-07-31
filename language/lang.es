@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2021-03-14
+# Last modification : 2021-07-31
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1283,4 +1283,13 @@ $vocab['missing_period'] = 'paramètre créneau manquant';
 $vocab['missing_end_period'] = 'paramètre créneau de fin manquant';
 $vocab['booking_room_out'] = "Réservation impossible";
 $vocab['duree_max_resa_aera'] = "La réservation demandée est trop longue";
+$vocab['activer_fonctionnalite_participant'] = "Qui peut utiliser la fonctionnalité \"participant\"";
+$vocab['nb_participant_max'] = "Nombre de participants max";
+$vocab['nb_participant_zero'] = "(0 = Ne pas activer l'option)";
+$vocab['participants'] = "Participants";
+$vocab['participant_annulation'] = "J'annule ma participation";
+$vocab['participant_confirm_annulation'] = "Etes vous sûr de vouloir retirer votre participation ?";
+$vocab['participant_confirm_validation'] = "Etes vous sûr de vouloir participer ?";
+$vocab['participant_inscrit'] = "Participants inscrits";
+$vocab['participant_validation'] = "Je m'inscris";
 ?>
