@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-07-31 18:15$
+ * Dernière modification : $Date: 2021-08-01 18:01$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -38,7 +38,8 @@ if (($fin_session == 'y') && (Settings::get("authentification_obli") == 1))
 	header("Location: ./logout.php?auto=1&url=$url");
 	die();
 }
-if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
+$userName = getUserName() ;
+if ((Settings::get("authentification_obli") == 0) && ($userName == ''))
 	$type_session = "no_session";
 else
 	$type_session = "with_session";
@@ -190,12 +191,12 @@ $courrier					= $row[22];
 $active_cle					= $row[23];
 $nbParticipantMax			= $row[24];
 $rep_type 					= 0;
-$verif_display_email 		= verif_display_email(getUserName(), $room_id);
+$verif_display_email 		= verif_display_email($userName, $room_id);
 if ($verif_display_email)
 	$option_affiche_nom_prenom_email = "withmail";
 else
 	$option_affiche_nom_prenom_email = "nomail";
-if (($fin_session == 'n') && (getUserName()!='') && (authGetUserLevel(getUserName(), $room_id) >= 3) && (isset($_GET['commit'])))
+if (($fin_session == 'n') && ($userName!='') && (authGetUserLevel($userName, $room_id) >= 3) && (isset($_GET['commit'])))
 {
 	if (!$was_del)
 	{
@@ -259,12 +260,12 @@ if (!isset($day) || !isset($month) || !isset($year))
 
 if (@file_exists("language/lang_subst_".$area.".".$locale))
 	include "language/lang_subst_".$area.".".$locale;
-if ((authGetUserLevel(getUserName(), -1) < 1) and (Settings::get("authentification_obli") == 1))
+if ((authGetUserLevel($userName, -1) < 1) and (Settings::get("authentification_obli") == 1))
 {
 	showAccessDenied($back);
 	exit();
 }
-if (authUserAccesArea(getUserName(), $area) == 0)
+if (authUserAccesArea($userName, $area) == 0)
 {
 	if (isset($reservation_is_delete))
 		showNoReservation($day, $month, $year, $back);
@@ -341,11 +342,11 @@ echo '	</tr>';
             $affiche_champ = 'y';
         else
         {
-            if (($fin_session != 'n') || (getUserName()==''))
+            if (($fin_session != 'n') || ($userName==''))
                 $affiche_champ = 'n';
             else
             {
-                if ((authGetUserLevel(getUserName(), $room_id) >= 4) || ($beneficiaire == getUserName()))
+                if ((authGetUserLevel($userName, $room_id) >= 4) || ($beneficiaire == $userName))
                     $affiche_champ = 'y';
                 else
                     $affiche_champ = 'n';
@@ -406,7 +407,7 @@ $overload_data = mrbsEntryGetOverloadDesc($id);
 // print_r($overload_data);
 foreach ($overload_data as $fieldname=>$field)
 {
-    if ((($field["affichage"] == 'y') and ($field["valeur"]!=""))||(authGetUserLevel(getUserName(), $room_id) >= 4) || ($beneficiaire == getUserName()))
+    if ((($field["affichage"] == 'y') and ($field["valeur"]!=""))||(authGetUserLevel($userName, $room_id) >= 4) || ($beneficiaire == $userName))
     {
         echo "<tr><td><b>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points")."</b></td>";
         echo "<td>".htmlspecialchars($field["valeur"],ENT_NOQUOTES)."</td></tr>";
@@ -453,7 +454,7 @@ elseif ($moderate == 2)
         fatal_error(0, grr_sql_error());
     $row3 = grr_sql_row($res, 0);
     $nom_modo = $row3[1].' '.$row3[0];
-    if (authGetUserLevel(getUserName(), -1) > 1)
+    if (authGetUserLevel($userName, -1) > 1)
     {
         echo '<tr>',PHP_EOL,'<td><b>'.get_vocab("moderation").get_vocab("deux_points").'</b></td><td><strong>'.get_vocab("moderation_acceptee_par").' '.$nom_modo.'</strong>';
         if ($description != "")
@@ -475,7 +476,7 @@ elseif ($moderate == 3)
         fatal_error(0, grr_sql_error());
     $row5 = grr_sql_row($res, 0);
     $nom_modo = $row5[1].' '.$row5[0];
-    if (authGetUserLevel(getUserName(), -1) > 1)
+    if (authGetUserLevel($userName, -1) > 1)
     {
         echo '<tr><td><b>'.get_vocab("moderation").get_vocab("deux_points").'</b></td>';
         tdcell("avertissement");
@@ -490,7 +491,7 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
 	$userParticipe = false;
 	$listeParticipants = "";
 	// Compte nb de participants actuel
-	$resp = grr_sql_query("SELECT beneficiaire, timestamp FROM ".TABLE_PREFIX."_participants WHERE idresa=$id");
+	$resp = grr_sql_query("SELECT participant FROM ".TABLE_PREFIX."_participants WHERE idresa=$id");
     if (!$resp)
         fatal_error(0, grr_sql_error());
 	
@@ -501,11 +502,11 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
 	{
 		foreach($resp as $rowp)
 		{
-			if( $rowp['beneficiaire'] == getUserName())
+			if( $rowp['participant'] == $userName)
 				$userParticipe = true;
 
-			$listeParticipants .= "<tr><td>".affiche_nom_prenom_email($rowp['beneficiaire'], "", $option_affiche_nom_prenom_email).
-            "</td><td>".$rowp['timestamp']."</td></tr>";
+			$listeParticipants .= "<tr><td>".affiche_nom_prenom_email($rowp['participant'], "", $option_affiche_nom_prenom_email).
+            "</td><td></td></tr>";
 		}
 	}
 	grr_sql_free($resp);
@@ -517,7 +518,7 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
         echo "<td>";
 		if(!$userParticipe)
 		{
-			if( ($nbParticipantInscrit < $nbParticipantMax) && (verif_participation_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods)) || (!(verif_participation_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")) )
+			if( ($nbParticipantInscrit < $nbParticipantMax) && (verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods)) || (!(verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")) )
 			{
 				$room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
 				$message_confirmation = str_replace("'", "\\'", get_vocab("participant_confirm_validation"));
@@ -525,7 +526,7 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
 			}
 		} else
 		{
-			if( verif_participation_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods) || (!(verif_participation_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")))
+			if( verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods) || (!(verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")))
 			{
 				$room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
 				$message_confirmation = str_replace("'", "\\'", get_vocab("participant_confirm_annulation"));
@@ -544,7 +545,7 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
 	echo $listeParticipants;
 }
 
-if ((getWritable($beneficiaire, getUserName(), $id)) && verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room(getUserName(), $room_id, $row[10], $enable_periods) && (!$was_del))
+if ((getWritable($beneficiaire, $userName, $id)) && verif_booking_date($userName, $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room($userName, $room_id, $row[10], $enable_periods) && (!$was_del))
 {
     echo "<tr>";
         echo "<td colspan='2'>";
@@ -636,7 +637,7 @@ if ($repeat_id != 0)
 		echo '<tr><td><b>'.get_vocab("duration").'</b></td><td>'.$duration .' '. $dur_units.'</td></tr>';
 		echo '<tr><td><b>'.get_vocab('rep_end_date').'</b></td><td>'.$rep_end_date.'</td></tr>';
 	}
-	if ((getWritable($beneficiaire, getUserName(), $id)) && verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room(getUserName(), $room_id, $row[10], $enable_periods) && (!$was_del))
+	if ((getWritable($beneficiaire, $userName, $id)) && verif_booking_date($userName, $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room($userName, $room_id, $row[10], $enable_periods) && (!$was_del))
 	{
 		$message_confirmation = str_replace ( "'"  , "\\'"  , get_vocab("confirmdel").get_vocab("deleteseries"));
 		echo '<tr>',PHP_EOL,'<td colspan="2">',PHP_EOL,'<input class="btn btn-primary" type="button" onclick="location.href=\'edit_entry.php?id=',$id,'&amp;edit_type=series&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=',$page,'\'" value="',get_vocab("editseries"),'"></td>',PHP_EOL,'</tr>',PHP_EOL;
@@ -649,7 +650,7 @@ if (!isset($area_id))
 if (!isset($room))
     $room = 1;
 if (Settings::get("pdf") == '1'){
-    if ((authGetUserLevel(getUserName(), $area_id, "area") > 1) || (authGetUserLevel(getUserName(), $room) >= 4))
+    if ((authGetUserLevel($userName, $area_id, "area") > 1) || (authGetUserLevel($userName, $room) >= 4))
        echo '<br><input class="btn btn-primary" onclick="popUpPdf(',$id,')" value="',get_vocab("Generer_pdf"),'" />',PHP_EOL;
 }
 // début du formulaire, n'a lieu d'être affiché que pour un utilisateur autorisé
@@ -658,7 +659,7 @@ if ($fin_session == 'n'){
     echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
     if (isset($_GET['page']))
         echo "<input type=\"hidden\" name=\"page\" value=\"".clean_input($_GET['page'])."\" />\n";
-    if ((getUserName() != '') && (authGetUserLevel(getUserName(), $room_id) >= 3) && ($moderate == 1))
+    if (($userName != '') && (authGetUserLevel($userName, $room_id) >= 3) && ($moderate == 1))
     {
         //echo "<form action=\"view_entry.php\" method=\"get\">\n";
         echo "<input type=\"hidden\" name=\"action_moderate\" value=\"y\" />\n";
@@ -683,7 +684,7 @@ if ($fin_session == 'n'){
     }
     if ($active_ressource_empruntee == 'y')
     {
-        if ((!$was_del) && ($moderate != 1) && (getUserName() != '') && (authGetUserLevel(getUserName(),$room_id) >= 3))
+        if ((!$was_del) && ($moderate != 1) && ($userName != '') && (authGetUserLevel($userName,$room_id) >= 3))
         {
             //echo "<form action=\"view_entry.php\" method=\"get\">";
             echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("reservation_en_cours")."</legend>\n";

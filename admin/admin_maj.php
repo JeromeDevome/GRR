@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-07-01 17:29$
+ * Dernière modification : $Date: 2021-08-01 18:14$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
@@ -925,7 +925,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
 		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_room ADD `active_participant` TINYINT(1) NOT NULL DEFAULT '0' AFTER `active_cle`;");
 		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_entry ADD `nbparticipantmax` int(11) NOT NULL DEFAULT '0' AFTER `courrier`;");
 		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_repeat ADD `nbparticipantmax` int(11) NOT NULL DEFAULT '0' AFTER `courrier`;");
-		$result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_participants (`id_participation` int(11) NOT NULL AUTO_INCREMENT, idresa int(11) NOT NULL, timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, cree_par varchar(200) NOT NULL default '', beneficiaire varchar(200) NOT NULL default '', beneficiaire_ext varchar(200) NOT NULL default '', moderation tinyint(1) NOT NULL default '0', PRIMARY KEY  (id_participation));");
+		$result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_participants (idresa int(11) NOT NULL, participant varchar(200) NOT NULL, PRIMARY KEY  (idresa,participant));");
 
         if ($result_inter == '')
             $result .= formatresult("Ok !","<span style='color:green;'>","</span>");

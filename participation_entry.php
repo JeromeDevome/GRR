@@ -3,7 +3,7 @@
  * participation_entry.php
  * Script de traitement de l'inscription/désincription à une réservation acceptant les participants
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-07-31 18:14$
+ * Dernière modification : $Date: 2021-08-01 18:24$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -83,7 +83,7 @@ if ($info = mrbsGetEntryInfo($id))
 		exit();
 	}
 
-	$res = grr_sql_query("SELECT id_participation FROM ".TABLE_PREFIX."_participants WHERE idresa=$id AND beneficiaire='$user_name'");
+	$res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_participants WHERE idresa=$id AND participant='$user_name'");
     if (!$res)
         fatal_error(0, grr_sql_error());
 
@@ -91,17 +91,17 @@ if ($info = mrbsGetEntryInfo($id))
 		ParticipationAnnulation($id, $user_name);
 	else
 	{
-		$resp = grr_sql_query("SELECT beneficiaire FROM ".TABLE_PREFIX."_participants WHERE idresa=$id");
+		$resp = grr_sql_query("SELECT participant FROM ".TABLE_PREFIX."_participants WHERE idresa=$id");
 		if (!$resp)
 			fatal_error(0, grr_sql_error());
 		
 		$maxParticipant = grr_sql_query1("SELECT nbparticipantmax FROM ".TABLE_PREFIX."_entry WHERE id='".$id."'");
 
 		if (grr_sql_count($resp) < $maxParticipant)
-			ParticipationAjout($id, $user_name, $user_name,'');
+			ParticipationAjout($id, $user_name);
 		else
 		{
-			showAccessDenied($back, 'maxParticipant');
+			showAccessDenied($back);
 			exit();
 		}
 	}

@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2021-07-31 18:14$
+ * Dernière modification : $Date: 2021-08-01 18:11$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1061,28 +1061,26 @@ function grrEntryGetOverloadDesc($id_entry)
 /** ParticipationAjout()
  * paramètres : 
  * $entry_id = id de la réservation
- * $creator  = créateur de la réservation
- * $beneficiaire 
- * $beneficiaire_ext
+ * $participant = le login du participant à ajouter
  * 
- * insère ces renseignements dans la table grr_participants : c'est le beneficiaire qui s'inscrit (?)
+ * insère ces renseignements dans la table grr_participants : c'est l'utilisateur qui s'inscrit (?)
  */
-function ParticipationAjout($entry_id, $creator, $beneficiaire, $beneficiaire_ext)
+function ParticipationAjout($entry_id, $participant)
 {
-	$sql = "INSERT INTO ".TABLE_PREFIX."_participants (idresa, cree_par, beneficiaire, beneficiaire_ext) VALUES (".$entry_id.", '".$creator."', '".protect_data_sql($beneficiaire)."', '".protect_data_sql($beneficiaire_ext)."' )";
+	$sql = "INSERT INTO ".TABLE_PREFIX."_participants (idresa, participant) VALUES (".$entry_id.", '".protect_data_sql($participant)."' )";
 	if (grr_sql_command($sql) < 0)
 		fatal_error(0, "Requete error  = ".$sql);
 }
 /** ParticipationAnnulation()
  * paramètres : 
  * $entry_id = id de la réservation
- * $beneficiaire 
+ * $participant 
  * 
  * supprime l'entrée de la table grr_participants associée au couple paramètre
  */
-function ParticipationAnnulation($entry_id, $beneficiaire)
+function ParticipationAnnulation($entry_id, $participant)
 {
-    $sql = "DELETE FROM ".TABLE_PREFIX."_participants WHERE idresa=$entry_id AND beneficiaire='$beneficiaire'";
+    $sql = "DELETE FROM ".TABLE_PREFIX."_participants WHERE idresa=$entry_id AND participant='$participant'";
 	if (grr_sql_command($sql) < 0)
         fatal_error(0, "Erreur sur la requête ".$sql);
 }
