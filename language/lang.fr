@@ -730,6 +730,7 @@ $vocab['reservation_en_bloc_result2'] = "Des réservations entrant en conflit av
 $vocab['reservation_en_cours'] = "Ressource empruntée.";
 $vocab['reservation_impossible'] = "Réservation impossible";
 $vocab['reservee_au_nom_de'] = "Réservation au nom de ";
+$vocab['reserver'] = "Réserver";
 $vocab['reset'] = "Valeurs par défaut";
 $vocab['resolution_area'] = "Plus petit bloc réservable, en secondes (1800 secondes = 1/2 heure)";
 $vocab['ressource_actuellement_empruntee'] = "La ressource est actuellement empruntée.";

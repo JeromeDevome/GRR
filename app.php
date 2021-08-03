@@ -77,6 +77,7 @@ $AllSettings = Settings::getAll();
 get_vocab_admin("admin");
 get_vocab_admin("manage_my_account");
 get_vocab_admin("report");
+get_vocab_admin("reserver");
 
 // Template Twig
 $loader = new Twig_Loader_Filesystem(__DIR__ . '/reservation/templates');

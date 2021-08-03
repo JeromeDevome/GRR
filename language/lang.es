@@ -730,6 +730,7 @@ $vocab['reservation_en_bloc_result2'] = "Las reservas entrando en conflicto con 
 $vocab['reservation_en_cours'] = "Reserva prestada.";
 $vocab['reservation_impossible'] = "Reserva imposible";
 $vocab['reservee_au_nom_de'] = "Reserva al nombre de";
+$vocab['reserver'] = "Reservar";
 $vocab['reset'] = "Valores por defecto";
 $vocab['resolution_area'] = "El  bloque más pequeño reservable, en segundos (1800 segundos";
 $vocab['ressource_actuellement_empruntee'] = "Recurso actualmente prestado";

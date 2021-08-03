@@ -730,6 +730,7 @@ $vocab['reservation_en_bloc_result2'] = "Zahl der Reservierungen, die im Konflik
 $vocab['reservation_en_cours'] = "Reservierungsvorgang erfolgt gerade.";
 $vocab['reservation_impossible'] = "Reservierung unmöglich";
 $vocab['reservee_au_nom_de'] = "Réservation au nom de "; // A traduire
+$vocab['reserver'] = "Buchen";
 $vocab['reset'] = "Basiswerte";
 $vocab['resolution_area'] = "Kleinstmöglicher zu reservierender Zeitraum, in Sekunden (1800 Sekunden = 1/2 Stunde)";
 $vocab['ressource_actuellement_empruntee'] = "La ressource est actuellement empruntée."; // A traduire

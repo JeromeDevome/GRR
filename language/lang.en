@@ -730,6 +730,7 @@ $vocab['reservation_en_bloc_result2'] = "Number of deleted reservations clashing
 $vocab['reservation_en_cours'] = "Reservation in hand.";
 $vocab['reservation_impossible'] = "Reservation is impossible";
 $vocab['reservee_au_nom_de'] = "Reservation in the name of";
+$vocab['reserver'] = "To book";
 $vocab['reset'] = "Values by default";
 $vocab['resolution_area'] = "Smaller reservable block, in seconds (1800 seconds = 1/2 an hour)";
 $vocab['ressource_actuellement_empruntee'] = " The resource is currently borrowed.";

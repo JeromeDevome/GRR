@@ -730,6 +730,7 @@ $vocab['reservation_en_bloc_result2'] = "Dei prenotazioni che entrano in conflit
 $vocab['reservation_en_cours'] = "Prenotazione in corso d'utilizzo.";
 $vocab['reservation_impossible'] = "Prenotazione impossible";
 $vocab['reservee_au_nom_de'] = "Réservation au nom de "; // A traduire
+$vocab['reserver'] = "Prenotare";
 $vocab['reset'] = "Valori per difetto";
 $vocab['resolution_area'] = "Più piccolo blocco prenotabile, in secondi (1800 secondi = 1/2 ora)";
 $vocab['ressource_actuellement_empruntee'] = "La ressource est actuellement empruntée."; // A traduire
