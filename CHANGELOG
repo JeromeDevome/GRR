@@ -46,6 +46,16 @@ Version 3.4.2
     modification : conformité avec le schéma v4.0
     modification : séparation des date, heure de début et durée dans les rapports
     modification : calcul et présentation des pages planning
+Sous-version 3.4.2a
+    amélioration : internationalisation du formulaire de contact
+    amélioration : paramètre dans config.inc.php pour gérer l'affichage du lien vers la page des CGU depuis la page login.php
+    correctifs : liens manquants, titre planning
+    correctif : retour à la ligne inutile si description vide
+    correctif : rétablissement du pop-up de notification après une réservation
+    correctif : position du choix des ressources en mode arborescence
+    correctif : prise en compte du paramètre d'affichage de la légende des types
+    MAJ fichier de langue allemande
+    modification : si le domaine par défaut choisi par l'utilisateur est rendu inaccessible, page_accueil() renvoie vers le domaine par défaut choisi par l'administrateur
 
 -----
 --
