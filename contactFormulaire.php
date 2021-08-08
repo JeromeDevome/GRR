@@ -3,9 +3,9 @@
  * contactFormulaire.php
  * Formulaire d'envoi de mail demandant une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-12-16 18:00$
+ * Dernière modification : $Date: 2021-08-08 16:58$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -58,55 +58,51 @@ pageHeader2($day, $month, $year, "no_session");
 echo "</header>";
 // Debut de la page
 echo '<section>'.PHP_EOL;
-//echo '<div id="toTop">',PHP_EOL,'<b>',get_vocab("top_of_page"),'</b>',PHP_EOL;
-//echo '</div>',PHP_EOL;
-bouton_retour_haut ();
-?>	
-	<form id="frmContact" method="post" action="traitementcontact.php">
-	<div id="formContact" class="container">
-		<div class="row">
-			<fieldset>
-				<legend><b>Vos coordonnées</b></legend>
-				<div class="col-md-6 col-xs-12">
-					<div class="form-group">
-						<div class="input-group">
-							<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-							<input class="form-control" type="text" id="nom"  size="8" name="nom" placeholder="Votre nom" required />
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="input-group">
-							<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-							<input class="form-control" type="text" size="8" id="prenom"  name="prenom" placeholder="Votre prénom" />
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 col-xs-12">
-					<div class="form-group">
-						<div class="input-group">
-							<span class="input-group-addon">@</span>
-							<input class="form-control" type="email" id="email" size="8" name="email" placeholder="Votre adresse de courriel" required />
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="input-group">
-							<div class="input-group-addon"><span class="glyphicon glyphicon-earphone"></span></div>
-							<input class="form-control" type="text" size="8" maxlength="14" id="telephone" name="telephone" placeholder="Votre numéro de téléphone" />
-						</div>
-					</div>
-				</div>
-            </fieldset>
-        </div>
-		<div class="row">
-            <fieldset>
-				<legend><b>Réservation</b></legend>
-				<div class="col-md-6 col-sm-12">
-				<label for="subject">Sujet :</label>
-				<textarea class="form-control" id="subject" name="sujet" cols="30" rows="4" required></textarea><br/>
-				<label>Domaines : </label>
-				<select id="area" name="area" class="form-control" required>
-					<option selected disabled>SELECTIONNER UN DOMAINE </option>
-					<?php
+bouton_retour_haut();
+echo '	<form id="frmContact" method="post" action="traitementcontact.php">'.PHP_EOL;
+echo '	<div id="formContact" class="container">'.PHP_EOL;
+echo '		<div class="row">'.PHP_EOL;
+echo '			<fieldset>'.PHP_EOL;
+echo '				<legend><b>'.get_vocab('Vos_coordonnees').'</b></legend>'.PHP_EOL;
+echo '				<div class="col-md-6 col-xs-12">'.PHP_EOL;
+echo '					<div class="form-group">'.PHP_EOL;
+echo '						<div class="input-group">'.PHP_EOL;
+echo '							<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>'.PHP_EOL;
+echo '							<input class="form-control" type="text" id="nom"  size="8" name="nom" placeholder="'.get_vocab('Votre_nom').'" required />'.PHP_EOL;
+echo '						</div>'.PHP_EOL;
+ echo '					</div>'.PHP_EOL;
+ echo '					<div class="form-group">'.PHP_EOL;
+ echo '						<div class="input-group">'.PHP_EOL;
+ echo '							<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>'.PHP_EOL;
+ echo '							<input class="form-control" type="text" size="8" id="prenom"  name="prenom" placeholder="'.get_vocab('Votre_prenom').'" />'.PHP_EOL;
+ echo '						</div>'.PHP_EOL;
+ echo '					</div>'.PHP_EOL;
+ echo '				</div>'.PHP_EOL;
+ echo '				<div class="col-md-6 col-xs-12">'.PHP_EOL;
+ echo '					<div class="form-group">'.PHP_EOL;
+ echo '						<div class="input-group">'.PHP_EOL;
+ echo '							<span class="input-group-addon">@</span>'.PHP_EOL;
+ echo '							<input class="form-control" type="email" id="email" size="8" name="email" placeholder="'.get_vocab('Your_email').'" required />'.PHP_EOL;
+ echo '						</div>'.PHP_EOL;
+ echo '					</div>'.PHP_EOL;
+ echo '					<div class="form-group">'.PHP_EOL;
+ echo '						<div class="input-group">'.PHP_EOL;
+ echo '							<div class="input-group-addon"><span class="glyphicon glyphicon-earphone"></span></div>'.PHP_EOL;
+ echo '							<input class="form-control" type="text" size="8" maxlength="14" id="telephone" name="telephone" placeholder="'.get_vocab('YourPhoneNr').'" />'.PHP_EOL;
+ echo '						</div>'.PHP_EOL;
+ echo '					</div>'.PHP_EOL;
+ echo '				</div>'.PHP_EOL;
+ echo '            </fieldset>'.PHP_EOL;
+ echo '        </div>'.PHP_EOL;
+ echo '		<div class="row">'.PHP_EOL;
+ echo '            <fieldset>'.PHP_EOL;
+ echo '				<legend><b>'.get_vocab('entry').'</b></legend>'.PHP_EOL;
+ echo '				<div class="col-md-6 col-sm-12">'.PHP_EOL;
+ echo '				<label for="subject">'.get_vocab('Sujet').get_vocab('deux_points').'</label>'.PHP_EOL;
+ echo '				<textarea class="form-control" id="subject" name="sujet" cols="30" rows="4" required></textarea><br/>'.PHP_EOL;
+ echo '				<label>'.get_vocab('areas').'</label>'.PHP_EOL;
+ echo '				<select id="area" name="area" class="form-control" required>'.PHP_EOL;
+ echo '					<option selected disabled>'.get_vocab('SELECT_AREA').'</option>'.PHP_EOL;
                         // $sql_areaName = "SELECT id, area_name FROM ".TABLE_PREFIX."_area ORDER BY area_name";
 						$sql_areaName = "SELECT id, area_name FROM ".TABLE_PREFIX."_area WHERE access LIKE 'a' ORDER BY area_name";
 						// si on ne veut pas montrer les domaines à accès restreint
@@ -120,35 +116,32 @@ bouton_retour_haut ();
 								echo '<option value="'.$id.'"> '.$area_name.'</option>'.PHP_EOL;
                             }
                         }
-                    ?>
-				</select>
-				<label for="room">Ressources : </label>
-                <select id="room" name="room" class="form-control" required>
-                        <option>SELECTIONNER UNE RESSOURCE </option>
-                </select>
-				</div>
-				<div class="col-md-6 col-sm-12">	
-                <div class="form-group">
-                    <div class="input-group">
-						<br />
-                        <label><b> Date :</b></label>
-						<?php
+echo '				</select>'.PHP_EOL;
+ echo '				<label for="room">'.get_vocab('rooms').get_vocab('deux_points').'</label>'.PHP_EOL;
+ echo '                <select id="room" name="room" class="form-control" required>'.PHP_EOL;
+ echo '                        <option>'.get_vocab('SELECT_ROOM').'</option>'.PHP_EOL;
+ echo '                </select>'.PHP_EOL;
+ echo '				</div>'.PHP_EOL;
+ echo '				<div class="col-md-6 col-sm-12">	'.PHP_EOL;
+ echo '                <div class="form-group">'.PHP_EOL;
+ echo '                    <div class="input-group">'.PHP_EOL;
+ echo '						<br />'.PHP_EOL;
+ echo '                        <label><b>'.get_vocab('Date').get_vocab('deux_points').'</b></label>'.PHP_EOL;
 						jQuery_DatePicker('start');
-						?>
-                        <br />
-                    </div>
-                </div>
-				<div id="intervalle"> </div>
-			</fieldset>
-	        </div>
-        </div>
-    </div>
-    </form>
-</section>
-<footer>
-<div id="toTop"><b><?php echo get_vocab("top_of_page"); ?></b>
-</footer>
-
+echo '                        <br />'.PHP_EOL;
+ echo '                    </div>'.PHP_EOL;
+ echo '                </div>'.PHP_EOL;
+ echo '				<div id="intervalle"> </div>'.PHP_EOL;
+ echo '			</fieldset>'.PHP_EOL;
+ echo '	        </div>'.PHP_EOL;
+ echo '        </div>'.PHP_EOL;
+ echo '    </div>'.PHP_EOL;
+ echo '    </form>'.PHP_EOL;
+ echo '</section>'.PHP_EOL;
+ echo '<footer>'.PHP_EOL;
+ echo '<div id="toTop"><b><?php echo get_vocab("top_of_page"); ?></b>'.PHP_EOL;
+ echo '</footer>'.PHP_EOL;
+?>
 <script>
     $(document).ready(function()
     {

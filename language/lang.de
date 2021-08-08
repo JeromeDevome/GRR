@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2021-07-21
+# Last modification : 2021-08-08
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -739,6 +739,7 @@ $vocab['reservation_en_bloc_result2'] = "<b>Zahl der Reservierungen, die im Konf
 $vocab['reservation_en_cours'] = "Reservierungsvorgang erfolgt gerade.";
 $vocab['reservation_impossible'] = "Reservierung unmöglich";
 $vocab['reservee au nom de'] = "Reservierung im Namen von ";
+$vocab['Reserver'] = "Buchen";
 $vocab['reset'] = "Basiswerte";
 $vocab['resolution_area'] = "Kleinstmöglicher zu reservierender Zeitraum, in Sekunden (1800 Sekunden = 1/2 Stunde)";
 $vocab['ressource actuellement empruntee'] = "La ressource est actuellement empruntée."; // A traduire
@@ -1285,4 +1286,19 @@ $vocab['missing_end_period'] = 'missing end period';
 $vocab['booking_room_out'] = "Booking not possible";
 $vocab['duree_max_resa_aera'] = "Die angeforderte Reservierung ist zu lang";
 $vocab['voir_resa'] = "Reservierung zeigen";
+$vocab['Vos_coordonnees'] = 'Vos coordonnées';
+$vocab['Votre_nom'] = "Votre nom";
+$vocab['Votre_prenom'] = "Votre prénom";
+$vocab['Your_email'] = "Votre adresse de courriel";
+$vocab['YourPhoneNr'] = "Votre numéro de téléphone";
+$vocab['Sujet'] = "Sujet";
+$vocab['SELECT_AREA'] = "SELECTIONNER UN DOMAINE";
+$vocab['SELECT_ROOM'] = "SELECTIONNER UNE RESSOURCE";
+$vocab['Date'] = " Date";
+$vocab['Creneau_initial'] = "Créneau initial";
+$vocab['Nombre_de_creneaux'] = "Nombre de créneaux";
+$vocab['start_time'] = "Heure de début";
+$vocab['duree_heures'] = "Durée en heure";
+$vocab['et'] = "et";
+$vocab['Envoyer_demande'] = "Envoyer la demande de réservation";
 ?>

@@ -3,9 +3,9 @@
  * frmcontactrange.php
  * calcule le code html de la partie intervalle du formulaire de contact
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-06 15:06$
+ * Dernière modification : $Date: 2021-08-08 17:33$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -16,10 +16,17 @@
  * (at your option) any later version.
  */
  
+include "include/config.inc.php";
 include "include/connect.inc.php";
 include "include/mysql.inc.php";
 include "include/misc.inc.php";
 include "include/functions.inc.php";
+require_once("./include/settings.class.php");
+if (!Settings::load())
+	die("Erreur chargement settings");
+require_once("./include/session.inc.php");
+include "./include/resume_session.php";
+include "./include/language.inc.php";
 
 $id = $_GET['id'];
 if ($id != protect_data_sql($id))
@@ -39,7 +46,7 @@ if ($enable_periods)
     $num_periodes = grr_sql_count($sql_periode);
     echo '<div class="form-group">';
     // sélectionner parmi les créneaux
-    echo '<label for="start" >Créneau initial : &nbsp;</label>';
+    echo '<label for="start" >'.get_vocab('Creneau_initial').get_vocab('deux_points').' &nbsp;</label>';
     echo '<select name="start">';
         for ($i = 0; $i < $num_periodes; $i++)
         {
@@ -48,7 +55,7 @@ if ($enable_periods)
         }
     echo '</select>';
     // choisir le nombre de créneaux
-    echo '  <label for="dureemin" >Nombre de créneaux : &nbsp;</label>';
+    echo '  <label for="dureemin" >'.get_vocab('Nombre_de_creneaux').get_vocab('deux_points').'&nbsp;</label>';
     echo '  <input type="number" id="dureemin" size="2" name="dureemin" value="1" min="1" required />';
     echo '</div>';
 }
@@ -58,7 +65,7 @@ else
     $nbiteration = 60/$res_min; // nb iterations sur une heure
     echo '<div class="form-group">';
     echo '    <div class="input-group">';
-    echo '        <label for="heure">Heure début :</label>';
+    echo '        <label for="heure">'.get_vocab('start_time').get_vocab('deux_points').'</label>';
     echo "        <select name=\"heure\" id=\"heure\"> ";
     for ($h = $val[1] ; $h < $val[2]+$val[3]/60-$val[5]/3600 ; $h++)
     {
@@ -79,9 +86,9 @@ else
     echo " </select>";
     echo '    </div>';
     echo '<div class="input-group">';
-    echo '  <label for="duree" >Durée en heure :</label>';
+    echo '  <label for="duree" >'.get_vocab('duree_heures').get_vocab('deux_points').'</label>';
     echo '  <input type="number" id="duree" size="2" name="duree" value="1" min="0" required />';
-    echo '  <label for="dureemin"> et </label>';
+    echo '  <label for="dureemin">&nbsp;'.get_vocab('et').'&nbsp; </label>';
     echo '  <select id="dureemin" name="dureemin">';
     $valeur = 0;
     for ($i=0;$i<$nbiteration;$i++)
@@ -96,7 +103,7 @@ else
 }
 echo "<br /> ";
 echo "<div>";
-echo '<input class="btn btn-primary" type="submit" name="submit" value="Envoyer la demande de réservation">';
-echo '<input class="btn btn-danger" type="button" name="retouraccueil" value="Retour" onClick="javascript:location.href=\'javascript:history.go(-1)\'">';
+echo '<input class="btn btn-primary" type="submit" name="submit" value="'.get_vocab('Envoyer_demande').'">';
+echo '<input class="btn btn-danger" type="button" name="retouraccueil" value="'.get_vocab('back').'" onClick="javascript:location.href=\'javascript:history.go(-1)\'">';
 echo '</div>';
 ?>
