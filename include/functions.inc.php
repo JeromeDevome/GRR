@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-07-31 18:26$
+ * Dernière modification : $Date: 2021-08-07 15:28$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1966,13 +1966,13 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user,
 {
 	global $vocab;
 	$nb_sites_a_afficher = 0;
-	if (strncmp("4.1", grr_sql_version(), 3) < 0)
-	{
+	//if (strncmp("4.1", grr_sql_version(), 3) < 0) // inutile, GRR 3+ nécessite MySQL 5+
+	//{
 		$sql = "SELECT id,sitename
 		FROM ".TABLE_PREFIX."_site
 		WHERE ".TABLE_PREFIX."_site.id IN (SELECT id_site FROM ".TABLE_PREFIX."_j_site_area GROUP BY id_site)
 		ORDER BY id ASC";
-	}
+	/*}
 	else
 	{
 		$sql = "SELECT id, sitename
@@ -1982,7 +1982,7 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user,
 		GROUP BY id_site
 		ORDER BY id ASC
 		";
-	}
+	}*/
 	$res = grr_sql_query($sql); // devrait donner la liste des sites non vides
 	if ($res)
 	{
@@ -2067,7 +2067,8 @@ function make_area_select_html( $link, $current_site, $current_area, $year, $mon
 	{
 		// on a activé les sites
 		if ($current_site != -1)
-			$sql = "SELECT a.id, a.area_name,a.access FROM ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_j_site_area j WHERE a.id=j.id_area and j.id_site=$current_site ORDER BY a.order_display, a.area_name";
+			//$sql = "SELECT a.id, a.area_name,a.access FROM ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_j_site_area j WHERE a.id=j.id_area and j.id_site=$current_site ORDER BY a.order_display, a.area_name";
+			$sql = "SELECT a.id, a.area_name,a.access FROM ".TABLE_PREFIX."_area a JOIN ".TABLE_PREFIX."_j_site_area j ON a.id=j.id_area WHERE j.id_site=$current_site ORDER BY a.order_display, a.area_name";
 		else // $current_site = -1 correspond à un domaine (ou une ressource) inconnu
             return $out_html;
 			//$sql = ""; une requête vide déclenche une erreur non rattrapée
@@ -2134,7 +2135,7 @@ function make_area_select_all_html( $link, $current_site, $current_area, $year, 
 	{
 		// on a activé les sites
 		if ($current_site != -1)
-			$sql = "SELECT a.id, a.area_name,a.access FROM ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_j_site_area j WHERE a.id=j.id_area and j.id_site=$current_site ORDER BY a.order_display, a.area_name";
+			$sql = "SELECT a.id, a.area_name,a.access FROM ".TABLE_PREFIX."_area a JOIN ".TABLE_PREFIX."_j_site_area j ON a.id=j.id_area WHERE j.id_site=$current_site ORDER BY a.order_display, a.area_name";
 		else
             return "";
 			//$sql = "";
@@ -2255,7 +2256,8 @@ function make_site_list_html($link, $current_site, $year, $month, $day,$user)
 	{
 		$sql = "SELECT id,sitename
 		FROM ".TABLE_PREFIX."_site
-		ORDER BY sitename";
+		WHERE ".TABLE_PREFIX."_site.id IN (SELECT id_site FROM ".TABLE_PREFIX."_j_site_area GROUP BY id_site)
+		ORDER BY id ASC";
 		$nb_sites_a_afficher = 0;
 		$res = grr_sql_query($sql);
 		if ($res)
@@ -2338,8 +2340,9 @@ function make_area_list_html($link, $current_site, $current_area, $year, $month,
 		// on a activé les sites
 		if ($current_site != -1)
 			$sql = "SELECT a.id, a.area_name,a.access
-		FROM ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_j_site_area j
-		WHERE a.id=j.id_area and j.id_site=$current_site
+		FROM ".TABLE_PREFIX."_area a JOIN ".TABLE_PREFIX."_j_site_area j
+        ON a.id=j.id_area
+        WHERE j.id_site=$current_site
 		ORDER BY a.order_display, a.area_name";
 		else
 			$sql = "";
@@ -2420,13 +2423,10 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 {
 	global $vocab;
 	$nb_sites_a_afficher = 0;
-	$sql = "SELECT id, sitename
-	FROM ".TABLE_PREFIX."_site
-	left join ".TABLE_PREFIX."_j_site_area on ".TABLE_PREFIX."_site.id = ".TABLE_PREFIX."_j_site_area.id_site
-	WHERE ".TABLE_PREFIX."_j_site_area.id_site is not null
-	GROUP BY id_site
-	ORDER BY id ASC
-	";
+	$sql = "SELECT id,sitename
+		FROM ".TABLE_PREFIX."_site
+		WHERE ".TABLE_PREFIX."_site.id IN (SELECT id_site FROM ".TABLE_PREFIX."_j_site_area GROUP BY id_site)
+		ORDER BY id ASC";
 	$res = grr_sql_query($sql);// devrait donner la liste des sites non vides
 	if ($res)
 	{
@@ -5789,7 +5789,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			$res = grr_sql_query1($sql);
 			if ((( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )&& acces_formulaire_reservation())
 			{
-				echo '<div class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</div>',PHP_EOL;
+				echo '<div class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="'.get_vocab('Reserver').'" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</div>',PHP_EOL;
 			}
 			// Administration
 			if ($type_session == "with_session")

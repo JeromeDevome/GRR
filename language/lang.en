@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2021-07-31
+# Last modification : 2021-08-14
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -753,6 +753,7 @@ $vocab['reservation_en_bloc_result2'] = "<b>	 Number of deleted reservations cla
 $vocab['reservation_en_cours'] = "Reservation in hand.";
 $vocab['reservation_impossible'] = "Reservation is impossible";
 $vocab['reservee au nom de'] = "Reservation in the name of";
+$vocab['Reserver'] = "Book";
 $vocab['reset'] = "Values by default";
 $vocab['resolution_area'] = "Smaller reservable block, in seconds (1800 seconds = 1/2 an hour)";
 $vocab['ressource actuellement empruntee'] = " The resource is currently borrowed.";
@@ -1298,6 +1299,21 @@ $vocab['missing_period'] = 'missing period';
 $vocab['missing_end_period'] = 'missing end period';
 $vocab['booking_room_out'] = "Booking not possible";
 $vocab['duree_max_resa_aera'] = "The requested booking is too long";
+$vocab['Vos_coordonnees'] = 'Your contact details';
+$vocab['Votre_nom'] = "Your last name";
+$vocab['Votre_prenom'] = "Your first name";
+$vocab['Your_email'] = "Your e-mail address";
+$vocab['YourPhoneNr'] = "Your phone number";
+$vocab['Sujet'] = "Subject";
+$vocab['SELECT_AREA'] = "PLEASE SELECT AN AREA";
+$vocab['SELECT_ROOM'] = "PLEASE SELECT A ROOM";
+$vocab['Date'] = " Date";
+$vocab['Creneau_initial'] = "First slot";
+$vocab['Nombre_de_creneaux'] = "Number of slots";
+$vocab['start_time'] = "Start time";
+$vocab['duree_heures'] = "Duration in hours";
+$vocab['et'] = "and";
+$vocab['Envoyer_demande'] = "Send your booking request";
 $vocab['activer_fonctionnalite_participant'] = "Who can use the \"participant\" feature";
 $vocab['nb_participant_max'] = "Max number of participants";
 $vocab['nb_participant_zero'] = "(0 = The feature is disabled)";

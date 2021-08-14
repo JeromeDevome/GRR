@@ -3,9 +3,9 @@
  * language.inc.php
  * Configuration de la langue
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-22 14:50$
+ * Dernière modification : $Date: 2021-08-08 17:52$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -384,24 +384,21 @@ function get_vocab($tag)
 {
 	global $vocab, $charset_html, $unicode_encoding;
 	if (!isset($vocab[$tag]))
-	{
 		return "<b><span style=\"color:#FF0000;\"><i>(".$tag.")</i></span></b>";
-	} else {
+    else {
 		if ($unicode_encoding)
 		{
-			if(Settings::get("trad_".$tag) != ""){
+			if(Settings::get("trad_".$tag) != "")
 				return Settings::get("trad_".$tag);
-			}else{
+            else
 				return iconv($charset_html,"utf-8",$vocab[$tag]);
-			}
 		}
 		else
 		{
-			if(Settings::get("trad_".$tag) != ""){
+			if(Settings::get("trad_".$tag) != "")
 				return Settings::get("trad_".$tag);
-			}else{
+            else
 				return $vocab[$tag];
-			}
 		}
 	}
 }

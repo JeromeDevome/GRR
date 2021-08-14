@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2021-07-31
+# Last modification : 2021-08-14
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -742,6 +742,7 @@ $vocab['reservation_en_bloc_result2'] = "<b>Las reservas entrando en conflicto c
 $vocab['reservation_en_cours'] = "Reserva prestada.";
 $vocab['reservation_impossible'] = "Reserva imposible";
 $vocab['reservee au nom de'] = "Reserva al nombre de";
+$vocab['Reserver'] = "Reservar";
 $vocab['reset'] = "Valores por defecto";
 $vocab['resolution_area'] = "El  bloque más pequeño reservable, en segundos (1800 segundos";
 $vocab['ressource actuellement empruntee'] = "Recurso actualmente prestado";
@@ -1283,13 +1284,28 @@ $vocab['missing_period'] = 'paramètre créneau manquant';
 $vocab['missing_end_period'] = 'paramètre créneau de fin manquant';
 $vocab['booking_room_out'] = "Réservation impossible";
 $vocab['duree_max_resa_aera'] = "La réservation demandée est trop longue";
-$vocab['activer_fonctionnalite_participant'] = "Qui peut utiliser la fonctionnalité \"participant\"";
-$vocab['nb_participant_max'] = "Nombre de participants max";
-$vocab['nb_participant_zero'] = "(0 = Ne pas activer l'option)";
+$vocab['Vos_coordonnees'] = 'Vos coordonnées';
+$vocab['Votre_nom'] = "Votre nom";
+$vocab['Votre_prenom'] = "Votre prénom";
+$vocab['Your_email'] = "Votre adresse de courriel";
+$vocab['YourPhoneNr'] = "Votre numéro de téléphone";
+$vocab['Sujet'] = "Sujet";
+$vocab['SELECT_AREA'] = "SELECTIONNER UN DOMAINE";
+$vocab['SELECT_ROOM'] = "SELECTIONNER UNE RESSOURCE";
+$vocab['Date'] = " Date";
+$vocab['Creneau_initial'] = "Créneau initial";
+$vocab['Nombre_de_creneaux'] = "Nombre de créneaux";
+$vocab['start_time'] = "Heure de début";
+$vocab['duree_heures'] = "Durée en heure";
+$vocab['et'] = "et";
+$vocab['Envoyer_demande'] = "Envoyer la demande de réservation";
+$vocab['activer_fonctionnalite_participant'] = "Who can use the \"participant\" feature";
+$vocab['nb_participant_max'] = "Max number of participants";
+$vocab['nb_participant_zero'] = "(0 = The feature is disabled)";
 $vocab['participants'] = "Participants";
-$vocab['participant_annulation'] = "J'annule ma participation";
-$vocab['participant_confirm_annulation'] = "Etes vous sûr de vouloir retirer votre participation ?";
-$vocab['participant_confirm_validation'] = "Etes vous sûr de vouloir participer ?";
-$vocab['participant_inscrit'] = "Participants inscrits";
-$vocab['participant_validation'] = "Je m'inscris";
+$vocab['participant_annulation'] = "I cancel my participation";
+$vocab['participant_confirm_annulation'] = "Are you sure you want to withdraw your participation?";
+$vocab['participant_confirm_validation'] = "Are you sure you want to participate?";
+$vocab['participant_inscrit'] = "Registered participants";
+$vocab['participant_validation'] = "I register";
 ?>
