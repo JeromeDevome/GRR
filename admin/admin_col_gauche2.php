@@ -3,9 +3,9 @@
  * admin_col_gauche2.php
  * colonne de gauche des écrans d'administration des sites, des domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-02 17:39$
+ * Dernière modification : $Date: 2021-08-15 15:12$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -62,7 +62,7 @@ $titres = [get_vocab("admin_menu_general"),(Settings::get("module_multisite") ==
 $liste[1] = array(); // configuration
 $authUserLevel = authGetUserLevel(getUserName(), -1, 'area'); // niveau d'accès de l'utilisateur connecté
 if ($authUserLevel >= 6)
-			$liste[1] = ['admin_config1.php','admin_couleurs.php','admin_config2.php','admin_config3.php','admin_config4.php','admin_config5.php','admin_config6.php'];
+			$liste[1] = ['admin_config11.php','admin_config12.php','admin_couleurs.php','admin_config2.php','admin_config3.php','admin_config4.php','admin_config5.php','admin_config6.php'];
 $liste[2] = array(); // sites, domaines et ressources
 if (Settings::get("module_multisite") == "Oui")
 		{
