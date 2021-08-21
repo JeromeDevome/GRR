@@ -3,9 +3,9 @@
  * changepwd.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-12-16 12:00$
+ * Dernière modification : $Date: 2021-08-21 16:13$
  * @author    JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -15,14 +15,17 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = 'changepwd.php';
+
 include_once('personnalisation/connect.inc.php');
 include_once('include/config.inc.php');
 include_once('include/misc.inc.php');
-include_once('include/functions.inc.php');
 require_once('include/'.$dbsys.'.inc.php');
+include_once('include/mrbs_sql.inc.php');
+include_once('include/functions.inc.php');
 require_once('include/session.inc.php');
 include_once('include/settings.class.php');
-$grr_script_name = 'changepwd.php';
+
 if (!Settings::load())
 	die('Erreur chargement settings');
 $desactive_VerifNomPrenomUser='y';
@@ -34,7 +37,7 @@ $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
 
-$user_login = isset($_POST['user_login']) ? $_POST['user_login'] : ($user_login = isset($_GET['user_login']) ? $_GET['user_login'] : NULL);
+$user_login = isset($_POST['user_login']) ? $_POST['user_login'] : (isset($_GET['user_login']) ? $_GET['user_login'] : NULL);
 $valid = isset($_POST['valid']) ? $_POST['valid'] : NULL;
 $msg = '';
 if ($valid == 'yes')
@@ -75,8 +78,7 @@ if ($valid == 'yes')
 	}
 }
 
-print_header($type="no_session");
-
+start_page_w_header('','','',$type_session="no_session");
 
 affiche_pop_up($msg,'admin');
 echo ('
