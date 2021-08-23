@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-07-14 19:06$
+ * Dernière modification : $Date: 2021-08-31 09:56$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1310,7 +1310,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 				
                 $user_name = getUserName();
                 $d['mess_resa'] = resaToModerate($user_name);
-				if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1) || ($mess_resa != ''))
+				if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1) || ($d['mess_resa'] != ''))
 				{
 					if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1))
                        $d['lienAdmin'] = 'admin/admin.php?p=admin_accueil&'.$paramUrl;
