@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue française
 # GRR: Traduction By JeromeB & Laurent Delineau & Yan Naessens
-# Last modification : 2021-06-04
+# Last modification : 2021-08-23
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accepter la réservation";
@@ -906,7 +906,7 @@ $vocab['users_connected'] = "Utilisateurs actuellement connectés";
 $vocab['user_admin_area_list'] = "Liste des personnes autorisées à gérer le domaine ci-contre (hormis les administrateurs) :";
 $vocab['user_admin_site_list'] = "Liste des personnes autorisées à gérer le site ci-contre (hormis les administrateurs généraux)";
 $vocab['user_area_list'] = "Liste des personnes ayant accès à ce domaine (hormis les administrateurs) :";
-$vocab['user_change_pwd_connexion'] = "L'utilisateur doit changer sont mot de passe à la prochaine connexion";
+$vocab['user_change_pwd_connexion'] = "L'utilisateur doit changer son mot de passe à la prochaine connexion";
 $vocab['user_change_pwd_interdit'] = "Vous n'êtes pas autorisé à changer votre mot de passe !";
 $vocab['user_change_pwd_obligatoire'] = "Vous devez changer votre mot de passe";
 $vocab['user_list'] = "Liste des personnes autorisées à gérer la/les ressource(s) ci-contre (hormis les administrateurs) :";
