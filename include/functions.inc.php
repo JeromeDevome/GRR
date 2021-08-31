@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-08-08 15:57$
+ * Dernière modification : $Date: 2021-08-31 12:24$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1955,7 +1955,7 @@ function round_t_up($t, $resolution, $am7)
 }
 
 /**
- * Menu gauche affichage des sites via select
+ * Menu affichage des sites via select
  *
  * @param string $link
  * @param string $current_site
@@ -1969,89 +1969,77 @@ function round_t_up($t, $resolution, $am7)
 function make_site_select_html($link, $current_site, $year, $month, $day, $user, $pos="G")
 {
 	global $vocab;
-	$nb_sites_a_afficher = 0;
-	if (strncmp("4.1", grr_sql_version(), 3) < 0)
+	if (Settings::get("module_multisite") == "Oui")
 	{
 		$sql = "SELECT id,sitename
 		FROM ".TABLE_PREFIX."_site
-		WHERE ".TABLE_PREFIX."_site.id IN (SELECT id_site FROM ".TABLE_PREFIX."_j_site_area GROUP BY id_site)
-		ORDER BY id ASC";
-	}
-	else
-	{
-		$sql = "SELECT id, sitename
-		FROM ".TABLE_PREFIX."_site
-		left join ".TABLE_PREFIX."_j_site_area on ".TABLE_PREFIX."_site.id = ".TABLE_PREFIX."_j_site_area.id_site
-		WHERE ".TABLE_PREFIX."_j_site_area.id_site is not null
-		GROUP BY id_site
-		ORDER BY id ASC
-		";
-	}
-	$res = grr_sql_query($sql); // devrait donner la liste des sites non vides
-	if ($res)
-	{
-        $out = array();
-		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+		ORDER BY sitename";
+		$sites = grr_sql_query($sql);
+		if ($sites)
 		{
-			// Pour chaque site, on détermine le premier domaine disponible
-			$sql = "SELECT id_area
-			FROM ".TABLE_PREFIX."_j_site_area
-			WHERE ".TABLE_PREFIX."_j_site_area.id_site='".$row[0]."'";
-			$res2 = grr_sql_query($sql);
-			$default_area = -1;
-			if ($res2 && grr_sql_count($res2) > 0)
+            $Sites = array();
+			foreach($sites as $site)
 			{
-				for ($j = 0; ($row2 = grr_sql_row($res2, $j)); $j++)
+				// Pour chaque site, on détermine s'il y a des domaines visibles par l'utilisateur
+				$sql = "SELECT id_area
+				FROM ".TABLE_PREFIX."_j_site_area
+				WHERE ".TABLE_PREFIX."_j_site_area.id_site='".$site['id']."'";
+				$areas = grr_sql_query($sql);
+				if ($areas && grr_sql_count($areas) > 0)
 				{
-					if (authUserAccesArea($user,$row2[0]) == 1)
+					foreach($areas as $area)
 					{
-						// on a trouvé un domaine autorisé
-						$default_area = $row2[0];
-						break; // On arrête la boucle
+						if (authUserAccesArea($user,$area['id_area']) == 1) // on a trouvé un domaine autorisé
+						{
+							$Sites[] = $site;
+							break;	// On arrête la boucle
+						}
 					}
 				}
-			}
-			// On libère le résultat $res2
-			grr_sql_free($res2);
-			if ($default_area != -1)
-			{
-				// on affiche le site uniquement si au moins un domaine est visible par l'utilisateur
-				$nb_sites_a_afficher++;
-				$selected = ($row[0] == $current_site) ? 'selected="selected"' : '';
-				$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$default_area;
-				$out[] = '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
-			}
-		}
-	}
-	if ($nb_sites_a_afficher > 1)
-	{
-        $out_html = '<b><i>'.get_vocab('sites').get_vocab('deux_points').'</i></b><form id="site_'.$pos.'" action="'.$_SERVER['PHP_SELF'].'"><div>';
-        $out_html .= '<select class="form-control" name="site" onchange="site_go_'.$pos.'()">';
-        foreach($out as $row){
-            $out_html .= $row;
+				// On libère la réponse
+				grr_sql_free($areas);
+            } // $Sites contient les (id,sitename) des sites contenant au moins un domaine accessible par $user
+            $nb_sites_a_afficher = count($Sites);
         }
-		$out_html .= "</select>".PHP_EOL;
-		$out_html .= "</div>".PHP_EOL;
-		$out_html .= "<script type=\"text/javascript\">".PHP_EOL;
-		$out_html .= "function site_go_".$pos."(n)".PHP_EOL;
-		$out_html .= "{".PHP_EOL;
-		$out_html .= "box = document.getElementById(\"site_".$pos."\").site;".PHP_EOL;
-		$out_html .= "destination = box.options[box.selectedIndex].value;".PHP_EOL;
-		$out_html .= "if (destination) location.href = destination;".PHP_EOL;
-		$out_html .= "}".PHP_EOL;
-		$out_html .= "</script>".PHP_EOL;
-		$out_html .= "<noscript>".PHP_EOL;
-		$out_html .= "<div>".PHP_EOL;
-		$out_html .= "<input type=\"submit\" value=\"Change\" />".PHP_EOL;
-		$out_html .= "</div>".PHP_EOL;
-		$out_html .= "</noscript>".PHP_EOL;
-		$out_html .= "</form>".PHP_EOL;
-		return $out_html;
+        if ($nb_sites_a_afficher >0)
+        {
+            $out = array();
+            foreach($Sites as $site){
+                $selected = ($site['id'] == $current_site) ? 'selected="selected"' : '';
+				$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$site['id'];
+				$out[] = '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($site['sitename']).'</option>'.PHP_EOL;
+            }
+            $out_html = '<b><i>'.get_vocab('sites').get_vocab('deux_points').'</i></b><form id="site_'.$pos.'" action="'.$_SERVER['PHP_SELF'].'"><div>';
+            $out_html .= '<select class="form-control" name="site" onchange="site_go_'.$pos.'()">';
+            foreach($out as $row){
+                $out_html .= $row;
+            }
+            $out_html .= "</select>".PHP_EOL;
+            $out_html .= "</div>".PHP_EOL;
+            $out_html .= "<script type=\"text/javascript\">".PHP_EOL;
+            $out_html .= "function site_go_".$pos."(n)".PHP_EOL;
+            $out_html .= "{".PHP_EOL;
+            $out_html .= "box = document.getElementById(\"site_".$pos."\").site;".PHP_EOL;
+            $out_html .= "destination = box.options[box.selectedIndex].value;".PHP_EOL;
+            $out_html .= "if (destination) location.href = destination;".PHP_EOL;
+            $out_html .= "}".PHP_EOL;
+            $out_html .= "</script>".PHP_EOL;
+            $out_html .= "<noscript>".PHP_EOL;
+            $out_html .= "<div>".PHP_EOL;
+            $out_html .= "<input type=\"submit\" value=\"Change\" />".PHP_EOL;
+            $out_html .= "</div>".PHP_EOL;
+            $out_html .= "</noscript>".PHP_EOL;
+            $out_html .= "</form>".PHP_EOL;
+            return $out_html;
+        }
+		else
+			return '';
 	}
+    else 
+        return '';
 }
-
 /**
- * Menu gauche affichage des area via select
+ * Menu affichage des area via select
  *
  * @param string $link
  * @param string $current_site
@@ -2254,59 +2242,55 @@ function make_room_select_html($link, $current_area, $current_room, $year, $mont
 function make_site_list_html($link, $current_site, $year, $month, $day,$user)
 {
 	global $vocab;
-	// On affiche le site
 	if (Settings::get("module_multisite") == "Oui")
 	{
 		$sql = "SELECT id,sitename
 		FROM ".TABLE_PREFIX."_site
 		ORDER BY sitename";
-		$nb_sites_a_afficher = 0;
-		$res = grr_sql_query($sql);
-		if ($res)
+		$sites = grr_sql_query($sql);
+		if ($sites)
 		{
-            $out = array();
-			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+            $Sites = array();
+			foreach($sites as $site)
 			{
 				// Pour chaque site, on détermine s'il y a des domaines visibles par l'utilisateur
 				$sql = "SELECT id_area
 				FROM ".TABLE_PREFIX."_j_site_area
-				WHERE ".TABLE_PREFIX."_j_site_area.id_site='".$row[0]."'";
-				$res2 = grr_sql_query($sql);
-				$au_moins_un_domaine = false;
-				if ($res2 && grr_sql_count($res2) > 0)
+				WHERE ".TABLE_PREFIX."_j_site_area.id_site='".$site['id']."'";
+				$areas = grr_sql_query($sql);
+				if ($areas && grr_sql_count($areas) > 0)
 				{
-					for ($j = 0; ($row2 = grr_sql_row($res2, $j)); $j++)
+					foreach($areas as $area)
 					{
-						if (authUserAccesArea($user,$row2[0]) == 1)
+						if (authUserAccesArea($user,$area['id_area']) == 1) // on a trouvé un domaine autorisé
 						{
-							// on a trouvé un domaine autorisé
-							$au_moins_un_domaine = true;
+							$Sites[] = $site;
 							break;	// On arrête la boucle
 						}
 					}
 				}
-				// On libère la ressource2
-				grr_sql_free($res2);
-				if ($au_moins_un_domaine)
-				{
-					// on affiche le site uniquement si au moins un domaine est visible par l'utilisateur
-					$nb_sites_a_afficher++;
-					if ($row[0] == $current_site)
-					{
-						$out[] = '
-						<b><a id="liste_select"   href="'.$link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$row[0].'" title="'.$row[1].'">&gt; '.htmlspecialchars($row[1]).'</a></b>
-						<br />'."\n";
-					}
-					else
-					{
-						$out[] = '
-						<a id="liste"  href="'.$link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$row[0].'" title="'.$row[1].'">'.htmlspecialchars($row[1]).'</a>
-						<br />'."\n";
-					}
-				}
-			}
-		}
-		if ($nb_sites_a_afficher > 1){
+				// On libère la réponse
+				grr_sql_free($areas);
+            } // $Sites contient les (id,sitename) des sites contenant au moins un domaine accessible par $user
+            $nb_sites_a_afficher = count($Sites);
+        }
+        if ($nb_sites_a_afficher >0)
+        {
+            $out = array();
+            foreach($Sites as $site){
+                if ($site['id'] == $current_site)
+                {
+                    $out[] = '
+                    <b><a id="liste_select"   href="'.$link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$site['id'].'" title="'.$site['sitename'].'">&gt; '.htmlspecialchars($site['sitename']).'</a></b>
+                    <br />'."\n";
+                }
+                else
+                {
+                    $out[] = '
+                    <a id="liste"  href="'.$link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$site['id'].'" title="'.$site['sitename'].'">'.htmlspecialchars($site['sitename']).'</a>
+                    <br />'."\n";
+                }
+            }
             $out_html = '<b><i><span class="bground">'.get_vocab('sites').get_vocab('deux_points').'</span></i></b><br />';
             foreach($out as $row){
                 $out_html .= $row;
@@ -2316,6 +2300,8 @@ function make_site_list_html($link, $current_site, $year, $month, $day,$user)
 		else
 			return '';
 	}
+    else 
+        return '';
 }
 /**
  * Affichage des area sous la forme d'une liste
@@ -2422,78 +2408,78 @@ function make_room_list_html($link,$current_area, $current_room, $year, $month, 
 function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 {
 	global $vocab;
-	$nb_sites_a_afficher = 0;
-	$sql = "SELECT id, sitename
-	FROM ".TABLE_PREFIX."_site
-	left join ".TABLE_PREFIX."_j_site_area on ".TABLE_PREFIX."_site.id = ".TABLE_PREFIX."_j_site_area.id_site
-	WHERE ".TABLE_PREFIX."_j_site_area.id_site is not null
-	GROUP BY id_site
-	ORDER BY id ASC
-	";
-	$res = grr_sql_query($sql);// devrait donner la liste des sites non vides
-	if ($res)
+	if (Settings::get("module_multisite") == "Oui")
 	{
-        $out = array();
-		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+		$sql = "SELECT id,sitename
+		FROM ".TABLE_PREFIX."_site
+		ORDER BY sitename";
+		$sites = grr_sql_query($sql);
+		if ($sites)
 		{
-			$sql = "SELECT id_area FROM ".TABLE_PREFIX."_j_site_area WHERE ".TABLE_PREFIX."_j_site_area.id_site='".$row[0]."'";
-			$res2 = grr_sql_query($sql);
-			$default_area = -1;
-			if ($res2 && grr_sql_count($res2) > 0)
+            $Sites = array();
+			foreach($sites as $site)
 			{
-				for ($j = 0; ($row2 = grr_sql_row($res2, $j)); $j++)
+				// Pour chaque site, on détermine s'il y a des domaines visibles par l'utilisateur
+				$sql = "SELECT id_area
+				FROM ".TABLE_PREFIX."_j_site_area
+				WHERE ".TABLE_PREFIX."_j_site_area.id_site='".$site['id']."'";
+				$areas = grr_sql_query($sql);
+				if ($areas && grr_sql_count($areas) > 0)
 				{
-					if (authUserAccesArea($user,$row2[0]) == 1)
+					foreach($areas as $area)
 					{
-						$default_area = $row2[0];
-						break; // un domaine est accessible, on sort de la boucle
+						if (authUserAccesArea($user,$area['id_area']) == 1) // on a trouvé un domaine autorisé
+						{
+							$Sites[] = $site;
+							break;	// On arrête la boucle
+						}
 					}
 				}
-			}
-			grr_sql_free($res2);
-			if ($default_area != -1)
-			{
-				$nb_sites_a_afficher++;
-				$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$default_area;
-				//$out_html .="\n";
-			}
-			else
-				$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day;
-			if ($current_site != null)
-			{
-				if ($current_site == $row[0])
-					$out[] = "<input id=\"item_select\" type=\"button\" class=\"btn btn-primary btn-lg btn-block item_select\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])."\" onclick=\"location.href='$link2';charger();\" />".PHP_EOL;
-				else
-					$out[] = "<input type=\"button\" class=\"btn btn-default btn-lg btn-block item\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])." \" onclick=\"location.href='$link2';charger();\" />".PHP_EOL;
-			}
-			else
-				$out[] = "<input type=\"button\" class=\"btn btn-default btn-lg btn-block item\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])." \" onclick=\"location.href='$link2';charger();\" /><br />".PHP_EOL;
-		}
-	}
-	if ($nb_sites_a_afficher > 1)// s'il y a au moins deux sites à afficher, on affiche une liste de boutons, sinon rien.
-	{
-        $out_html = '<br />'.PHP_EOL.'<div class="panel panel-default">'.PHP_EOL.'<div class="panel-heading">'.get_vocab('sites').get_vocab('deux_points').'</div>'.PHP_EOL.'<div class="panel-body">'.PHP_EOL.'<form class="ressource" id="site_001" action="'.$_SERVER['PHP_SELF'].'">';
-        foreach($out as $row){
-            $out_html .= $row;
+				// On libère la réponse
+				grr_sql_free($areas);
+            } // $Sites contient les (id,sitename) des sites contenant au moins un domaine accessible par $user
+            $nb_sites_a_afficher = count($Sites);
         }
-		$out_html .= '</form>'.PHP_EOL;
-		$out_html .= '</div></div>'.PHP_EOL;
-		$out_html .= '<script type="text/javascript">'.PHP_EOL;
-		$out_html .= 'function site_go()'.PHP_EOL;
-		$out_html .= '{'.PHP_EOL;
-		$out_html .= 'box = document.getElementById("site_001").site;'.PHP_EOL;
-		$out_html .= 'destination = box.options[box.selectedIndex].value;'.PHP_EOL;
-		$out_html .= 'if (destination) location.href = destination;'.PHP_EOL;
-		$out_html .= '}'.PHP_EOL;
-		$out_html .= '</script>'.PHP_EOL;
-		$out_html .= '<noscript>'.PHP_EOL;
-		$out_html .= '<div>'.PHP_EOL;
-		$out_html .= '<input type="submit" value="change" />'.PHP_EOL;
-		$out_html .= '</div>'.PHP_EOL;
-		$out_html .= '</noscript>'.PHP_EOL;
-		return $out_html;
+        if ($nb_sites_a_afficher >0)
+        {
+            $out = array();
+            foreach($Sites as $site){
+                $link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$site['id'];
+                if ($site['id'] == $current_site)
+                {
+                    $out[] = "<input id=\"item_select\" type=\"button\" class=\"btn btn-primary btn-lg btn-block item_select\" name=\"".$site['id']."\" value=\"".htmlspecialchars($site['sitename'])."\" onclick=\"location.href='$link2';charger();\" />".PHP_EOL;
+                }
+                else
+                {
+                    $out[] = "<input type=\"button\" class=\"btn btn-default btn-lg btn-block item\" name=\"".$site['id']."\" value=\"".htmlspecialchars($site['sitename'])." \" onclick=\"location.href='$link2';charger();\" />".PHP_EOL;
+                }
+            }
+            $out_html = '<br />'.PHP_EOL.'<div class="panel panel-default">'.PHP_EOL.'<div class="panel-heading">'.get_vocab('sites').get_vocab('deux_points').'</div>'.PHP_EOL.'<div class="panel-body">'.PHP_EOL.'<form class="ressource" id="site_001" action="'.$_SERVER['PHP_SELF'].'">';
+            foreach($out as $row){
+                $out_html .= $row;
+            }
+            $out_html .= '</form>'.PHP_EOL;
+            $out_html .= '</div></div>'.PHP_EOL;
+            $out_html .= '<script type="text/javascript">'.PHP_EOL;
+            $out_html .= 'function site_go()'.PHP_EOL;
+            $out_html .= '{'.PHP_EOL;
+            $out_html .= 'box = document.getElementById("site_001").site;'.PHP_EOL;
+            $out_html .= 'destination = box.options[box.selectedIndex].value;'.PHP_EOL;
+            $out_html .= 'if (destination) location.href = destination;'.PHP_EOL;
+            $out_html .= '}'.PHP_EOL;
+            $out_html .= '</script>'.PHP_EOL;
+            $out_html .= '<noscript>'.PHP_EOL;
+            $out_html .= '<div>'.PHP_EOL;
+            $out_html .= '<input type="submit" value="change" />'.PHP_EOL;
+            $out_html .= '</div>'.PHP_EOL;
+            $out_html .= '</noscript>'.PHP_EOL;
+            return $out_html;
+        }
+		else
+			return '';
 	}
-    else return "";
+    else 
+        return '';
 }
 /**
  * Affichage des area sous la forme d'une liste de boutons
