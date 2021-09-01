@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2021-08-14
+# Last modification : 2021-09-01
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -334,7 +334,7 @@ $vocab['display_all_user.php'] = "Display: all users";
 $vocab['display_full_description0'] = "the full description doesn't display";
 $vocab['display_full_description1'] = "the full description displays";
 $vocab['display_full_description_msg'] = "Display of the full description of the reservation in the views days, week, and month.";
-$vocab['display_info_bulle_msg'] = "Display of the tooltips of the reservations in the views days, week, and month.";
+$vocab['display_info_bulle_msg'] = "Display and content of tooltips when hovering over schedule cells";
 $vocab['display_level_email_msg1'] = "Display of e-mail adresses in the detailed reservation forms";
 $vocab['display_level_email_msg2'] = "Depending on cases (below), user's e-mail adresses appear as links \"mailto\" on users names and firstnames.<br />
 Indicate below who has access to this information.";
@@ -995,7 +995,8 @@ $vocab['display_menu_4'] = "The menu displays at the top";
 $vocab['display_level_view_entry']= "Display of reservations in popup form" ;
 $vocab['display_level_view_entry_0']= "Popup displays." ;
 $vocab['display_level_view_entry_1']= "Page displays." ;
-$vocab['display_planning_resa'] = "Display informations about reservations in views day, week or month";
+$vocab['display_planning_resa'] = "Informations displayed about reservations in planning cells";
+$vocab['display_planning_resa_msg'] = "If no information is chosen, the reservation number will be displayed.";
 $vocab['display_mail_etat_destinataire'] = "Display the contact form (not stable)";
 $vocab['display_mail_etat_destinataire_1'] = "Select if the contact form will be displayed by default";
 $vocab['display_mail_etat_destinataire_2'] = "The contact form is disabled";
@@ -1325,4 +1326,7 @@ $vocab['participant_confirm_annulation'] = "Are you sure you want to withdraw yo
 $vocab['participant_confirm_validation'] = "Are you sure you want to participate?";
 $vocab['participant_inscrit'] = "Registered participants";
 $vocab['participant_validation'] = "I register";
+$vocab['periodicite_msg1'] = "Check to allow periodicity";
+$vocab['affichages_divers'] = "Miscellaneous displays";
+$vocab['affichages_divers_explain'] = "Check to activate the options";
 ?>

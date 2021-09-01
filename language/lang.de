@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2021-08-14
+# Last modification : 2021-09-01
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -327,7 +327,7 @@ $vocab['display_all_user.php'] = "Zeigen: alle Benutzer";
 $vocab['display_full_description0'] = "die komplette Beschreibung wird nicht angezeigt";
 $vocab['display_full_description1'] = "die komplette Beschreibung wird angezeigt";
 $vocab['display_full_description_msg'] = "Anzeige der kompletten Beschreibung der Reservierungen in wöchentlichen und monatlichen Überblicken.";
-$vocab['display_info_bulle_msg'] = "Anzeige der \"Sprechblasen\" für Reservierungen, in täglichen, wöchentlichen und monatlichen Überblicken";
+$vocab['display_info_bulle_msg'] = "Anzeige und Inhalt von \"Tooltips\" beim Bewegen der Maus über Zeitplanzellen";
 $vocab['display_level_email_msg1'] = "Affichage des liens email dans les fiches détaillées de réservation"; // A traduire
 $vocab['display_level_email_msg2'] = "Dans les fiches détaillées de réservation, des \"liens email\" permettent de contacter par email les auteurs de la réservation.<br />
 Indiquez ci-dessous qui bénéficie de cette fonctionnalité."; // A traduire
@@ -993,7 +993,8 @@ $vocab['display_mail_etat_destinataire_4'] = "Kontaktformular für Reservierungs
 $vocab['display_level_view_entry']= "Anzeige der Buchungen in Popup-Form" ;
 $vocab['display_level_view_entry_0']= "Popup displays." ;
 $vocab['display_level_view_entry_1']= "Page displays." ;
-$vocab['display_planning_resa'] = "Affichage des réservations dans les vues journées, semaine et mois";  // A traduire
+$vocab['display_planning_resa'] = "Inhalt der Zeitplanzellen";
+$vocab['display_planning_resa_msg'] = "Wenn keine Informationen ausgewählt werden, wird die Reservierungsnummer angezeigt.";
 
 $vocab['Generer_pdf'] = "PDF erzeugen";
 $vocab['semaine'] = "KW";
@@ -1312,4 +1313,7 @@ $vocab['participant_confirm_annulation'] = "Etes vous sûr de vouloir retirer vo
 $vocab['participant_confirm_validation'] = "Etes vous sûr de vouloir participer ?";
 $vocab['participant_inscrit'] = "Participants inscrits";
 $vocab['participant_validation'] = "Je m'inscris";
+$vocab['periodicite_msg1'] = "Cocher pour activer la périodicité";
+$vocab['affichages_divers'] = "Affichages divers";
+$vocab['affichages_divers_explain'] = "Cocher pour activer les options";
 ?>

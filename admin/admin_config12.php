@@ -3,7 +3,7 @@
  * admin_config12.php
  * Interface permettant à l'administrateur la configuration de certains paramètres d'affichage
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2021-08-22 16:20$
+ * Dernière modification : $Date: 2021-09-01 18:50$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -29,6 +29,33 @@ $day   = date("d");
 $month = date("m");
 $year  = date("Y");
 check_access(6, $back);
+// fonctions locales
+function encode_tableau($a,$modele){
+    // suppose que l'on a un tableau $a dont les entrées sont parmi les éléments de $modele
+    // rend une chaine de {V,F} correspondant à la présence/absence de l'entrée dans le tableau $a
+    $out='';
+    foreach ($modele as $i){
+        if (isset($a[$i]))
+            $out .= 'V';
+        else $out .= 'F';
+    }
+    return $out;
+}
+function decode_options($a,$modele){
+    // suppose que l'on a une chaîne $a de {V,F} de longueur égale à celle du $modele
+    // renvoie un tableau de booléens True, False indexé par les valeurs du modèle
+    $choix = array();
+    $l = count($modele);
+    for($i=0; $i<$l; $i++){
+        $choix[$modele[$i]] = ($a[$i] == 'V')? TRUE: FALSE;
+    }
+    return $choix;
+}
+// types de plannings
+$plan=array('day','week','week_all','month','month_all','month_all2','year','year_all');
+// options d'affichage
+$opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants');
+
 // enregistrement des données du formulaire
 // Type d'affichage des listes des domaines et des ressources
 if (isset($_POST['area_list_format'])) {
@@ -73,13 +100,6 @@ if (isset($_POST['default_language'])) {
     }
     unset($_SESSION['default_language']);
 }
-// display_info_bulle
-if (isset($_POST['display_info_bulle'])) {
-    if (!Settings::set('display_info_bulle', $_POST['display_info_bulle'])) {
-        echo $vocab['save_err']." display_info_bulle !<br />";
-        die();
-    }
-}
 // menu_gauche
 if (isset($_POST['menu_gauche'])) {
     if (!Settings::set('menu_gauche', $_POST['menu_gauche'])) {
@@ -104,34 +124,6 @@ if (isset($_POST['mail_destinataire'])) {
 if (isset($_POST['nb_max_resa_form'])){
     if (!Settings::set('nb_max_resa_form', clean_input($_POST['nb_max_resa_form']))) {
         echo $vocab['save_err']." nb_max_resa_form !<br />";
-        die();
-    }
-}
-// display_beneficiaire
-if (isset($_POST['display_beneficiaire'])) {
-    if (!Settings::set('display_beneficiaire', $_POST['display_beneficiaire'])) {
-        echo $vocab["save_err"]." display_beneficiaire !<br />";
-        die();
-    }
-}
-// display_short_description
-if (isset($_POST['display_short_description'])) {
-    if (!Settings::set('display_short_description', $_POST['display_short_description'])) {
-        echo $vocab['save_err']." display_short_description !<br />";
-        die();
-    }
-}
-// display_full_description
-if (isset($_POST['display_full_description'])) {
-    if (!Settings::set('display_full_description', $_POST['display_full_description'])) {
-        echo $vocab['save_err']." display_full_description !<br />";
-        die();
-    }
-}
-// display_type
-if (isset($_POST['display_type'])) {
-    if (!Settings::set('display_type', $_POST['display_type'])) {
-        echo $vocab["save_err"]." display_type !<br />";
         die();
     }
 }
@@ -174,6 +166,36 @@ if (isset($_POST['pview_new_windows'])) {
 // pour le traitement des checkboxes
 if (!empty($_POST)) // évite d'effacer les enregistrements lors du deuxième passage
 {
+    // display_info_bulle
+    $display_info_bulle = 1;
+    if (isset($_POST['display_info_bulle']))
+        $display_info_bulle = 0;
+    if (!Settings::set('display_info_bulle', $display_info_bulle)) {
+        echo $vocab['save_err']." display_info_bulle !<br />";
+        die();
+    }
+    // contenu des cellules
+    foreach ($plan as $p){
+        $name = 'cell_'.$p;
+        if (isset($_POST[$name])){
+            $choix = encode_tableau($_POST[$name],$opt);
+            if (!Settings::set($name, $choix)) {
+                echo $vocab['save_err'].' '.$name." !<br />";
+                die();
+            }
+        }
+    }
+    // info-bulles
+    foreach ($plan as $p){
+        $name = 'popup_'.$p;
+        if (isset($_POST[$name])){
+            $choix = encode_tableau($_POST[$name],$opt);
+            if (!Settings::set($name, $choix)) {
+                echo $vocab['save_err'].' '.$name." !<br />";
+                die();
+            }
+        }
+    }
     // Option peridodicite
     $option_periodicite = 'n';
     if (isset($_POST['periodicite']))
@@ -307,6 +329,18 @@ foreach ($libelle as $key => $value) {
     }
 }
 sort($acad);
+// contenu des cellules
+$choix = array('cell_day' => array ( 'horaires' => 1));
+$choix = array();
+foreach ($plan as $p){
+    $name = 'cell_'.$p;
+    if (Settings::get($name) != NULL)
+        $choix[$name] = decode_options(Settings::get($name),$opt);
+    $name = 'popup_'.$p;
+    if (Settings::get($name) != NULL)
+        $choix[$name] = decode_options(Settings::get($name),$opt);
+}
+
 // début du code html
 // haut de page et début de section
 start_page_w_header('', '', '', $type = 'with_session');
@@ -434,21 +468,21 @@ echo '<p>'.get_vocab('display_mail_etat_destinataire_1').'</p>'.PHP_EOL;
 echo '<div class="form-inline">'.PHP_EOL;
 echo '<input type="radio" id="dmed0" name="mail_etat_destinataire" value="0" ';
 if (Settings::get('mail_etat_destinataire') == '0') {
-    echo ' checked="checked" ';
+    echo 'checked';
 }
 echo ' />'.PHP_EOL;
 echo '<label for="dmed0">'.get_vocab('display_mail_etat_destinataire_2').'</label>'.PHP_EOL;
 echo '<br />'.PHP_EOL;
 echo '<input type="radio" id="dmed1" name="mail_etat_destinataire" value="1" ';
 if (Settings::get('mail_etat_destinataire') == '1') {
-    echo ' checked="checked" ';
+    echo 'checked';
 }
 echo ' />'.PHP_EOL;
 echo '<label for="dmed1">'.get_vocab('display_mail_etat_destinataire_3').'</label>'.PHP_EOL;
 echo '<br />'.PHP_EOL;
 echo '<input type="radio" id="dmed2" name="mail_etat_destinataire" value="2" ';
 if (Settings::get('mail_etat_destinataire') == '2') {
-    echo ' checked="checked" ';
+    echo 'checked';
 }
 echo ' />'.PHP_EOL;
 echo '<label for="dmed2">'.get_vocab('display_mail_etat_destinataire_4').'</label>'.PHP_EOL;
@@ -492,91 +526,70 @@ echo '</div>'.PHP_EOL;
 #
 # Affichage du contenu des "info-bulles" des réservations, dans les vues journées, semaine et mois.
 # display_info_bulle = 0 : pas d'info-bulle.
-# display_info_bulle = 1 : affichage des noms et prénoms du bénéficiaire de la réservation.
-# display_info_bulle = 2 : affichage de la description complète de la réservation.
+# display_info_bulle = 1 : affichage des info-bulles
 echo '<hr />'.PHP_EOL;
 echo '<h3>'.get_vocab('display_info_bulle_msg').'</h3>'.PHP_EOL;
-echo '<table>'.PHP_EOL;
-echo '<tr>'.PHP_EOL;
-echo '<td>'.get_vocab('info_bulle0').'</td>'.PHP_EOL;
-echo '<td>'.PHP_EOL;
-echo '<input type="radio" name="display_info_bulle" value="0" ';
+echo '<div>'.PHP_EOL;
+echo '<input type="checkbox" id="display_info_bulle" name="display_info_bulle" value="0" ';
 if (Settings::get('display_info_bulle') == '0') {
     echo 'checked';
 }
 echo ' />'.PHP_EOL;
-echo '</td>'.PHP_EOL;
-echo '</tr>'.PHP_EOL;
-echo '<tr>'.PHP_EOL;
-echo '<td>'.get_vocab('info_bulle1').'</td>'.PHP_EOL;
-echo '<td>'.PHP_EOL;
-echo '<input type="radio" name="display_info_bulle" value="1" ';
-if (Settings::get('display_info_bulle') == '1') {
-    echo 'checked';
+echo '<label for="display_info_bulle">'.get_vocab('info_bulle0').'</label>'.PHP_EOL;
+echo '<br />';
+echo '</div>'.PHP_EOL;
+// contenu des info-bulles
+echo '<div id="contenu_popup">'.PHP_EOL;
+echo '<table class="table">'.PHP_EOL;
+echo '    <thead>'.PHP_EOL;
+echo '    <tr>'.PHP_EOL;
+echo '      <th>'.'options \\ planning'.'</th>';
+foreach($plan as $t){
+    echo '<th>'.$t.'</th>';
+}    
+echo '    </tr>'.PHP_EOL;
+echo '  </thead>'.PHP_EOL;
+echo '  <tbody>'.PHP_EOL;
+foreach($opt as $op){
+    echo '<tr>';
+    echo '<td>'.$op.'</td>';
+    foreach($plan as $t){
+        $name = 'popup_'.$t;
+        $check = (isset($choix[$name][$op]) && $choix[$name][$op])? 'checked': '';
+        echo '<td><input type="checkbox" name="popup_'.$t.'['.$op.']" value="'.$op.'" '.$check.'/></td>';
+    }
+    echo '</tr>';
 }
-echo ' />'.PHP_EOL;
-echo '</td>'.PHP_EOL;
-echo '</tr>'.PHP_EOL;
-echo '<tr>'.PHP_EOL;
-echo '<td>'.get_vocab('info_bulle2').'</td>'.PHP_EOL;
-echo '<td>'.PHP_EOL;
-echo '<input type="radio" name="display_info_bulle" value="2" ';
-if (Settings::get('display_info_bulle') == '2') {
-    echo 'checked';
-}
-echo ' />'.PHP_EOL;
-echo '</td>'.PHP_EOL;
-echo '</tr>'.PHP_EOL;
+echo '  </tbody>'.PHP_EOL;
 echo '</table>'.PHP_EOL;
+echo '</div>'.PHP_EOL;
 // contenu des cellules
-echo '<section id="display_planning_resa">';
+echo '<div id="contenu_cellules">'.PHP_EOL;
 echo '<h3>'.get_vocab('display_planning_resa').'</h3>';
-echo '	<table class="table table-condensed">';
-echo '		<thead><tr>';
-echo '				<th style="width: 200px"></th>';
-echo '				<th style="width: 150px">'.get_vocab('dontDisplay').'</th>';
-echo '				<th>'.get_vocab('Display').'</th>';
-echo '		</tr></thead>';
-echo '		<tbody>';
-echo '			<tr>';
-echo '				<td>'.get_vocab('sum_by_creator').'</td>';
-echo '				<td><input type="radio" name="display_beneficiaire" value="0"';
-if (Settings::get('display_beneficiaire') == '0') echo 'checked';
-echo '				 /></td>';
-echo '				<td><input type="radio" name="display_beneficiaire" value="1"';
-if (Settings::get('display_beneficiaire') == '1') echo 'checked';
-echo '				 /></td>';
-echo '			</tr>';
-echo '			<tr>';
-echo '				<td>'.get_vocab('namebooker').'</td>';
-echo '				<td><input type="radio" name="display_short_description" value="0"';
-if (Settings::get('display_short_description') == '0') echo 'checked';
-echo '				/></td>';
-echo '				<td><input type="radio" name="display_short_description" value="1"';
-if (Settings::get('display_short_description') == '1') echo 'checked';
-echo ' 				/></td>';
-echo '			</tr>';
-echo '			<tr>';
-echo '				<td>'.get_vocab('match_descr').'</td>';
-echo '				<td><input type="radio" name="display_full_description" value="0"';
-if (Settings::get('display_full_description') == '0') echo 'checked';
-echo '				/></td>';
-echo '				<td><input type="radio" name="display_full_description" value="1"';
-if (Settings::get('display_full_description') == '1') echo 'checked';
-echo '				/></td>';
-echo '			</tr>';
-echo '			<tr>';
-echo '				<td>'.get_vocab('type').'</td>';
-echo '				<td><input type="radio" name="display_type" value="0"';
-if (Settings::get('display_type') == '0') echo'checked';
-echo ' 				/></td>';
-echo '				<td><input type="radio" name="display_type" value="1"';
-if (Settings::get('display_type') == '1') echo 'checked';
-echo '				/></td>';
-echo '			</tr>';
-echo '		</tbody>';
-echo '	</table>';
-echo '</section>';
+echo '<p><em>'.get_vocab('display_planning_resa_msg').'</em></p>';
+echo '<table class="table">'.PHP_EOL;
+echo '    <thead>'.PHP_EOL;
+echo '    <tr>'.PHP_EOL;
+echo '      <th>'.'options \\ planning'.'</th>';
+foreach($plan as $t){
+    echo '<th>'.$t.'</th>';
+}    
+echo '    </tr>'.PHP_EOL;
+echo '  </thead>'.PHP_EOL;
+echo '  <tbody>'.PHP_EOL;
+foreach($opt as $op){
+    echo '<tr>';
+    echo '<td>'.$op.'</td>';
+    foreach($plan as $t){
+        $name = 'cell_'.$t;
+        $check = (isset($choix[$name][$op]) && $choix[$name][$op])? 'checked': '';
+        echo '<td><input type="checkbox" name=" cell_'.$t.'['.$op.']" value="'.$op.'" '.$check.'/></td>';
+    }
+    echo '</tr>';
+}
+echo '  </tbody>'.PHP_EOL;
+echo '</table>'.PHP_EOL;
+echo '</div>'.PHP_EOL;
 
 ###########################################################
 # Affichage des  adresses email dans la fiche de réservation
@@ -892,6 +905,13 @@ echo '</form>';
 </script>
 <script type="text/javascript">
   $(document).ready(function(){
+    if ($('#display_info_bulle').is(':checked'))
+        $('#contenu_popup').hide();
+    else 
+        $('#contenu_popup').show();
+    $('#display_info_bulle').click(function(){
+      $('#contenu_popup').toggle();
+    });
     if ($('#show_holidays').is(':checked'))
         $('#vacances_scolaires').show();
     else 

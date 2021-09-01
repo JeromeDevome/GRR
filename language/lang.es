@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2021-08-14
+# Last modification : 2021-09-01
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -327,9 +327,9 @@ $vocab['display_full_description0'] = "la descripción completa no se muestra";
 $vocab['display_full_description1'] = "la descripción completa se muestra";
 $vocab['display_full_description_msg'] = "Visualisación de la descripción completa de la reserva en las vistas jornadas, semana y mes.
 ";
-$vocab['display_info_bulle_msg'] = "Visualisación de las \"info-BURBUJAS\" de las reservas en las vistas jornadas, semana y mes. ";
-$vocab['display_level_email_msg1'] = "Visualisación de las direcciones mail en las fichas detalladas de reserva"; // A traduire
-$vocab['display_level_email_msg2'] = "Según los casos (más abajo), las direcciones mail de usuarios aparecen bajo la forma de enlaces \"mailto\" sobre los apellidos y nombres de los usuarios. Indique más abajo quién tiene acceso a esta información."; // A traduire
+$vocab['display_info_bulle_msg'] = "Visualización y contenido de \"info-BURBUJAS\" al pasar el cursor sobre las celdas de programación";
+$vocab['display_level_email_msg1'] = "Visualisación de las direcciones mail en las fichas detalladas de reserva";
+$vocab['display_level_email_msg2'] = "Según los casos (más abajo), las direcciones mail de usuarios aparecen bajo la forma de enlaces \"mailto\" sobre los apellidos y nombres de los usuarios. Indique más abajo quién tiene acceso a esta información.";
 
 $vocab['display_short_description0'] = "la breve descripción no se muestra";
 $vocab['display_short_description1'] = "la breve descripción se muestra";
@@ -990,7 +990,8 @@ $vocab['display_mail_etat_destinataire_4'] = "Le formulaire de contact réservat
 $vocab['display_level_view_entry']= "Visualización de reservas en forma de popup" ;
 $vocab['display_level_view_entry_0']= "Popup aparece." ;
 $vocab['display_level_view_entry_1']= "Aparece la página." ;
-$vocab['display_planning_resa'] = "Affichage des réservations dans les vues journées, semaine et mois";  // A traduire
+$vocab['display_planning_resa'] = "Contenido de las celdas de programación";
+$vocab['display_planning_resa_msg'] = "Si no se elige información, se mostrará el número de reserva.";
 $vocab['Generer_pdf'] = "Générer un PDF"; // A traduire
 $vocab['semaine'] = "sem";
 
@@ -1310,4 +1311,7 @@ $vocab['participant_confirm_annulation'] = "Are you sure you want to withdraw yo
 $vocab['participant_confirm_validation'] = "Are you sure you want to participate?";
 $vocab['participant_inscrit'] = "Registered participants";
 $vocab['participant_validation'] = "I register";
+$vocab['periodicite_msg1'] = "Cocher pour activer la périodicité";
+$vocab['affichages_divers'] = "Affichages divers";
+$vocab['affichages_divers_explain'] = "Cocher pour activer les options";
 ?>

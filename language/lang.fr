@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2021-08-15
+# Last modification : 2021-09-01
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -53,7 +53,7 @@ $vocab['admin_clean_accounts_desc'] = "L'action ci-dessous permet de <b>nettoyer
 $vocab['admin_cgu.php'] = "CGU";
 $vocab['admin_config.php'] = "Configuration générale";
 $vocab['admin_config1.php'] = "Contenu / Apparence";
-$vocab['admin_config11.php'] = "Présentation";
+$vocab['admin_config11.php'] = "Accueil";
 $vocab['admin_config12.php'] = "Affichages";
 $vocab['admin_config2.php'] = "Accès et droits";
 $vocab['admin_config3.php'] = "Interactivité";
@@ -332,14 +332,15 @@ $vocab['display_all_user.php'] = "tous les utilisateurs";
 $vocab['display_full_description0'] = "la description complète ne s'affiche pas";
 $vocab['display_full_description1'] = "la description complète s'affiche";
 $vocab['display_full_description_msg'] = "Affichage de la description complète de la réservation dans les vues journées, semaine et mois.";
-$vocab['display_info_bulle_msg'] = "Affichage des \"info-bulles\" des réservations, dans les vues journées, semaine et mois";
+$vocab['display_info_bulle_msg'] = "Affichage et contenu des \"info-bulles\" au survol des cellules des plannings";
 $vocab['display_level_email_msg1'] = "Affichage des liens email dans les fiches détaillées de réservation";
 $vocab['display_level_email_msg2'] = "Dans les fiches détaillées de réservation, des \"liens email\" permettent de contacter par email les auteurs de la réservation.<br />
 Indiquez ci-dessous qui bénéficie de cette fonctionnalité.";
 $vocab['display_level_view_entry']= "Affichage des informations des réservations sous forme de page ou de popup";
 $vocab['display_level_view_entry_0']= "Affichage sous forme de  popup.";
 $vocab['display_level_view_entry_1']= "Affichage sous forme de page.";
-$vocab['display_planning_resa'] = "Affichage des informations sur les réservations dans les vues journées, semaine et mois";
+$vocab['display_planning_resa'] = "Contenu des cellules des plannings";
+$vocab['display_planning_resa_msg'] = "Si aucune information n'est choisie, le numéro de la réservation sera affiché.";
 $vocab['display_short_description0'] = "la brève description ne s'affiche pas";
 $vocab['display_short_description1'] = "la brève description s'affiche";
 $vocab['display_short_description_msg'] = "Affichage de la brève description de la réservation dans les vues journées, semaine et mois.";
@@ -1328,4 +1329,6 @@ $vocab['participant_confirm_annulation'] = "Etes vous sûr de vouloir retirer vo
 $vocab['participant_confirm_validation'] = "Etes vous sûr de vouloir participer ?";
 $vocab['participant_inscrit'] = "Participants inscrits";
 $vocab['participant_validation'] = "Je m'inscris";
-?>
+$vocab['periodicite_msg1'] = "Cocher pour activer la périodicité";
+$vocab['affichages_divers'] = "Affichages divers";
+$vocab['affichages_divers_explain'] = "Cocher pour activer les options";

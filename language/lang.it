@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2021-08-14
+# Last modification : 2021-09-01
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -327,7 +327,7 @@ $vocab['display_all_user.php'] = "Pubblicare: tutti gli utenti";
 $vocab['display_full_description0'] = "la description complète ne s'affiche pas"; // A traduire
 $vocab['display_full_description1'] = "la description complète s'affiche"; // A traduire
 $vocab['display_full_description_msg'] = "Affichage de la description complète de la réservation dans les vues journées, semaine et mois."; // A traduire
-$vocab['display_info_bulle_msg'] = "Affichage des \"info-bulles\" des réservations, dans les vues journées, semaine et mois"; // A traduire
+$vocab['display_info_bulle_msg'] = "Visualizzazione e contenuto di \"descrizioni comandi\" quando si passa con il mouse sulle celle di pianificazione";
 $vocab['display_level_email_msg1'] = "Affichage des liens email dans les fiches détaillées de réservation"; // A traduire
 $vocab['display_level_email_msg2'] = "Dans les fiches détaillées de réservation, des \"liens email\" permettent de contacter par email les auteurs de la réservation.<br />
 Indiquez ci-dessous qui bénéficie de cette fonctionnalité."; // A traduire
@@ -987,7 +987,8 @@ $vocab['display_mail_etat_destinataire_4'] = "Le formulaire de contact réservat
 $vocab['display_level_view_entry']= "Visualizzazione delle riserve in forma popup" ;
 $vocab['display_level_view_entry_0']= "Popup displays." ;
 $vocab['display_level_view_entry_1']= "Page displays." ;
-$vocab['display_planning_resa'] = "Affichage des réservations dans les vues journées, semaine et mois";  // A traduire
+$vocab['display_planning_resa'] = "Contenuto delle celle di pianificazione";
+$vocab['display_planning_resa_msg'] = "Se non viene scelta alcuna informazione, verrà visualizzato il numero di prenotazione.";
 $vocab['Generer_pdf'] = "Générer un PDF"; // A traduire
 $vocab['semaine'] = "set";
 
@@ -1307,4 +1308,7 @@ $vocab['participant_confirm_annulation'] = "Etes vous sûr de vouloir retirer vo
 $vocab['participant_confirm_validation'] = "Etes vous sûr de vouloir participer ?";
 $vocab['participant_inscrit'] = "Participants inscrits";
 $vocab['participant_validation'] = "Je m'inscris";
+$vocab['periodicite_msg1'] = "Cocher pour activer la périodicité";
+$vocab['affichages_divers'] = "Affichages divers";
+$vocab['affichages_divers_explain'] = "Cocher pour activer les options";
 ?>
