@@ -3,7 +3,7 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-06-30 15:23$
+ * Dernière modification : $Date: 2021-09-03 12:17$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -120,6 +120,10 @@ if (grr_sql_count($ressources) == 0)
 	echo "<h1>".get_vocab("no_rooms_for_area")."</h1>";
 	die();
 }
+// options pour l'affichage
+$opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants');
+$options = decode_options(Settings::get('cell_month_all2'),$opt);
+$options_popup = decode_options(Settings::get('popup_month_all2'),$opt);
 // calcul du contenu du planning2
 $month_start = mktime(0, 0, 0, $month, 1, $year);
 $weekday_start = (date("w", $month_start) - $weekstarts + 7) % 7;
@@ -192,7 +196,7 @@ else
 				if ($debug_flag)
 					echo "<br />DEBUG: Entry $row[2] day $day_num\n";
 				$d[$day_num]["id"][] = $row["id"];
-				$d[$day_num]["lien"][] = lien_compact($row);
+				//$d[$day_num]["lien"][] = lien_compact($row);
 				$d[$day_num]["room"][] = $row["room_name"] ;
 				$d[$day_num]["color"][] = $row["type"];
 				$midnight_tonight = $midnight + 86400;
@@ -263,7 +267,9 @@ else
 						break;
 					}
 				}
-				$d[$day_num]["data"][] = titre_compact($overloadFieldList, $row, $horaires);
+				//$d[$day_num]["data"][] = titre_compact($overloadFieldList, $row, $horaires);
+                $d[$day_num]["data"][] = contenu_popup($options_popup, 1, $row, $horaires);
+                $d[$day_num]["lien"][] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
                 if ($row[1] <= $midnight_tonight)
 					break;
 				$day_num++;

@@ -3,7 +3,7 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservations de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-05-02 18:59 $
+ * Dernière modification : $Date: 2021-09-03 16:20 $
  * @author    Yan Naessens, Laurent Delineau 
  * @copyright Copyright 2003-2021 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -175,6 +175,10 @@ $month_start = mktime(0, 0, 0, $from_month, 1, $from_year);
 $month_end = mktime(23, 59, 59, $to_month, 1, $to_year);
 $days_in_to_month = date("t", $month_end);
 $month_end = mktime(23,59,59,$to_month,$days_in_to_month,$to_year);
+// options pour l'affichage
+$opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants');
+$options = decode_options(Settings::get('cell_year_all'),$opt);
+$options_popup = decode_options(Settings::get('popup_year_all'),$opt);
 // construit la liste des ressources et domaines
 if ($site == -1) 
 {   // cas 1 : le multisite n'est pas activé $site devrait être à -1
@@ -355,8 +359,6 @@ else
                                 while ($t < $end_t)
                                 {
                                     $d[$day_num][$month_num][$year_num]["id"][] = $row["id"];
-                                    // Info-bulle
-                                    $d[$day_num][$month_num][$year_num]["lien"][] = lien_compact($row);
                                     $d[$day_num][$month_num][$year_num]["room"][]=$row["room_name"] ;
                                     $d[$day_num][$month_num][$year_num]["color"][] = $row["type"];
                                     $midnight_tonight = $midnight + 86400; // potentiellement problématique avec les jours de changement d'heure YN 
@@ -433,7 +435,11 @@ else
                                             break;
                                         }
                                     }
-                                    $d[$day_num][$month_num][$year_num]["data"][] = titre_compact($overloadFieldList, $row, $horaires);
+                                    //$d[$day_num][$month_num][$year_num]["lien"][] = lien_compact($row);
+                                    $d[$day_num][$month_num][$year_num]["lien"][] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
+                                    // Info-bulle
+                                    //$d[$day_num][$month_num][$year_num]["data"][] = titre_compact($overloadFieldList, $row, $horaires);
+                                    $d[$day_num][$month_num][$year_num]["data"][] = contenu_popup($options_popup, 1, $row, $horaires);
                                     //Only if end time > midnight does the loop continue for the next day.
                                     if ($end_t <= $midnight_tonight)
                                         break;

@@ -1,9 +1,9 @@
 <?php
 /**
  * month.php
- * Interface d'accueil avec affichage par mois
+ * Interface d'accueil avec affichage par mois pour une ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-05-01 14:31$
+ * Dernière modification : $Date: 2021-09-03 11:51$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -138,7 +138,10 @@ $user_name = getUserName();
 $authGetUserLevel = authGetUserLevel($user_name,$room);
 // si la ressource est restreinte, l'utilisateur peut-il réserver ?
 $user_can_book = $who_can_book || ($authGetUserLevel > 2) || (authBooking($user_name,$room));
-
+// options pour l'affichage
+$opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants');
+$options = decode_options(Settings::get('cell_month'),$opt);
+$options_popup = decode_options(Settings::get('popup_month'),$opt);
 // calcul du contenu du planning
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
 $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc
@@ -257,7 +260,9 @@ else
 					break;
 				}
 			}
-            $d[$day_num]["resa"][] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
+            //$d[$day_num]["resa"][] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
+            $d[$day_num]["resa"][] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
+            $d[$day_num]["popup"][] = contenu_popup($options_popup, 1, $row, $horaires);
 
 			//Seulement si l'heure de fin est après minuit, on continue le jour prochain.
 			if ($row[1] <= $midnight_tonight)
@@ -435,11 +440,11 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                         {
                             $currentPage = 'month';
                             $id = $d[$cday]["id"][$i];
-                            echo '<a title="'.get_vocab('voir_resa').'" data-width="675" onclick="request(',$id,',',$cday,',',$month,',',$year.','.$room.',\''.$currentPage,'\',readData);" data-rel="popup_name" class="poplight lienCellule">';
+                            echo '<a title="'.$d[$cday]["popup"][$i].'" data-width="675" onclick="request(',$id,',',$cday,',',$month,',',$year.','.$room.',\''.$currentPage,'\',readData);" data-rel="popup_name" class="poplight lienCellule">';
                         }
                         else
                         {
-                            echo '<a class="lienCellule" title="'.get_vocab('voir_resa').'" href="view_entry.php?id=',$d[$cday]["id"][$i],'&amp;day=',$cday,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=month">';
+                            echo '<a class="lienCellule" title="'.$d[$cday]["popup"][$i].'" href="view_entry.php?id=',$d[$cday]["id"][$i],'&amp;day=',$cday,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=month">';
                         }
                     }
                     echo $d[$cday]["resa"][$i],'<br/>';

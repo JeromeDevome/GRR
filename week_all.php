@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-07-01 10:05$
+ * Dernière modification : $Date: 2021-09-03 11:43$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -127,6 +127,10 @@ if (grr_sql_count($ressources) == 0)
 	die();
 }
 grr_sql_free($ressources);
+// options pour l'affichage
+$opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants');
+$options = decode_options(Settings::get('cell_week_all'),$opt);
+$options_popup = decode_options(Settings::get('popup_week_all'),$opt);
 // calcul du contenu du planning
 if ($enable_periods == 'y')
 {
@@ -332,7 +336,9 @@ else
 						break;
 					}
 				}
-				$d[$day_num]["resa"][] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
+				//$d[$day_num]["resa"][] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
+                $d[$day_num]["resa"][] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
+                $d[$day_num]["popup"][] = contenu_popup($options_popup, 1, $row, $horaires);
 				if ($row[1] <= $midnight_tonight)
 					break;
 				$t = $midnight = $midnight_tonight;
@@ -545,9 +551,10 @@ foreach($ressources as $row)
 							if ($acces_fiche_reservation)
 							{
 								if (Settings::get("display_level_view_entry") == 0)
-									echo '<a title="'.get_vocab('voir_resa').'" data-width="675" onclick="request('.$d[$cday]["id"][$i].','.$cday.','.$cmonth.','.$cyear.',\'all\',\'week_all\',readData);" data-rel="popup_name" class="poplight" style = "border-bottom:1px solid #FFF">'.PHP_EOL;
+									//echo '<a title="'.get_vocab('voir_resa').'" data-width="675" onclick="request('.$d[$cday]["id"][$i].','.$cday.','.$cmonth.','.$cyear.',\'all\',\'week_all\',readData);" data-rel="popup_name" class="poplight" style = "border-bottom:1px solid #FFF">'.PHP_EOL;
+                                    echo '<a title="'.$d[$cday]["popup"][$i].'" data-width="675" onclick="request('.$d[$cday]["id"][$i].','.$cday.','.$cmonth.','.$cyear.',\'all\',\'week_all\',readData);" data-rel="popup_name" class="poplight" style = "border-bottom:1px solid #FFF">'.PHP_EOL;
 								else
-									echo '<a class="lienCellule" style = "border-bottom:1px solid #FFF" title="'.get_vocab('voir_resa').'" href="view_entry.php?id='.$d[$cday]["id"][$i].'&amp;page=week_all&amp;day='.$cday.'&amp;month='.$cmonth.'&amp;year='.$cyear.'&amp;" >'.PHP_EOL;
+									echo '<a class="lienCellule" style = "border-bottom:1px solid #FFF" title="'.$d[$cday]["popup"][$i].'" href="view_entry.php?id='.$d[$cday]["id"][$i].'&amp;page=week_all&amp;day='.$cday.'&amp;month='.$cmonth.'&amp;year='.$cyear.'&amp;" >'.PHP_EOL;
 							}
 
 								echo '<table class="pleine center">'.PHP_EOL;

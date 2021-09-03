@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-04-20 17:40$
+ * Dernière modification : $Date: 2021-09-02 16:18$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -79,6 +79,10 @@ VerifNomPrenomUser($type_session);
 $langue= isset($_SESSION['default_language'])? $_SESSION['default_language']: Settings::get('default_language');
 // $room_back sert à pallier l'absence de page day_all => si room_back contient 'all', il ne faut pas passer room en paramètre
 $room_back = isset($_GET['room']) ? intval($_GET['room']) : 'all';
+// options pour l'affichage
+$opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants');
+$options = decode_options(Settings::get('cell_day'),$opt);
+$options_popup = decode_options(Settings::get('popup_day'),$opt);
 // calcul des données à afficher
 $date_now = time();
 $ind = 1;
@@ -175,23 +179,27 @@ else
         }
 		if ($row["start_time"] < $am7)
 		{
-            $today[$row["room_id"]][$am7]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
+            //$today[$row["room_id"]][$am7]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
+            $today[$row["room_id"]][$am7]["data"] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
 			if ($settings->get("display_info_bulle") == 1)
-				$today[$row["room_id"]][$am7]["who"] = get_vocab("reservation_au_nom_de").affiche_nom_prenom_email($row["beneficiaire"], $row["beneficiaire_ext"], "nomail");
+                $today[$row["room_id"]][$am7]["who"] = contenu_popup($options_popup, 1, $row, $horaires);
+			/*	$today[$row["room_id"]][$am7]["who"] = get_vocab("reservation_au_nom_de").affiche_nom_prenom_email($row["beneficiaire"], $row["beneficiaire_ext"], "nomail");
 			else if (($settings->get("display_info_bulle") == 2)&&($row['description'] != ""))
 				$today[$row["room_id"]][$am7]["who"] = $row["description"];
 			else
-				$today[$row["room_id"]][$am7]["who"] = get_vocab('voir_resa');
+				$today[$row["room_id"]][$am7]["who"] = get_vocab('voir_resa');*/
 		}
 		else
 		{
-            $today[$row["room_id"]][$start_t]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
-			if ($settings->get("display_info_bulle") == 1)
-				$today[$row["room_id"]][$start_t]["who"] = get_vocab("reservation_au_nom_de").affiche_nom_prenom_email($row["beneficiaire"], $row["beneficiaire_ext"]);
+            //$today[$row["room_id"]][$start_t]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
+			$today[$row["room_id"]][$start_t]["data"] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
+            if ($settings->get("display_info_bulle") == 1)
+                $today[$row["room_id"]][$start_t]["who"] = contenu_popup($options_popup, 1, $row, $horaires);
+			/*	$today[$row["room_id"]][$start_t]["who"] = get_vocab("reservation_au_nom_de").affiche_nom_prenom_email($row["beneficiaire"], $row["beneficiaire_ext"]);
 			else if (($settings->get("display_info_bulle") == 2)&&($row['description'] != ""))
 				$today[$row["room_id"]][$start_t]["who"] = $row["description"];
 			else
-				$today[$row["room_id"]][$start_t]["who"] = get_vocab('voir_resa');
+				$today[$row["room_id"]][$start_t]["who"] = get_vocab('voir_resa');*/
 		}
 	}
 }
@@ -205,7 +213,6 @@ else $sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_
 $ressources = grr_sql_query($sql);
 if (!$ressources)
 	fatal_error(0, grr_sql_error());
-
 // pour le traitement des modules
 include $racine."/include/hook.class.php";
 // code HTML
@@ -440,7 +447,7 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 				$compteur[$id] = 1;
 			}
 			else
-				tdcell ($c);
+				tdcell($c);
 			if ((!isset($id)) || (est_hors_reservation(mktime(0, 0, 0, $month, $day, $year), $area)))
 			{
 				$hour = date("H", $t);
@@ -479,7 +486,7 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 				}
 				echo '</td>'.PHP_EOL;
 			}
-			else if ($descr != "")
+			else //if ($descr != "")
 			{
                 if (($statut_room[$room] == "1") || (($statut_room[$room] == "0") && ($authLevel > 2) ))
 				{

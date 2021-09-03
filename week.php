@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-06-11 09:53$
+ * Dernière modification : $Date: 2021-09-02 16:37$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -176,6 +176,10 @@ $user_can_book = $who_can_book || ($authGetUserLevel > 2) || (authBooking($user_
 $acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $room);
 // Teste si l'utilisateur a la possibilité d'effectuer une réservation, compte tenu des limitations éventuelles de la ressource et du nombre de réservations déjà effectuées.
 $UserRoomMaxBooking	= UserRoomMaxBooking($user_name, $room, 1);
+// options pour l'affichage
+$opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants');
+$options = decode_options(Settings::get('cell_week'),$opt);
+$options_popup = decode_options(Settings::get('popup_week'),$opt);
 // calcul des cellules du planning
 $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
@@ -304,14 +308,16 @@ else
                         if (($heure_fin == '00:00') && ((date('w',$d[$weekday][$slot]["horaireFin"]) - $weekday) != 1)) 
                             {$heure_fin = '24:00';}
                         $horaires = date('H:i',$d[$weekday][$slot]["horaireDebut"]).get_vocab("to"). $heure_fin."";
-                        $d[$weekday][$slot]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
+                        //$d[$weekday][$slot]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
+                        $d[$weekday][$slot]["data"] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
                         $d[$weekday][$slot]["id"] = $row["id"];
                         if (Settings::get("display_info_bulle") == 1)
-                            $d[$weekday][$slot]["who"] = get_vocab("reservee au nom de").affiche_nom_prenom_email($row["beneficiaire"],$row["beneficiaire_ext"],"nomail");
+                            $d[$weekday][$slot]["who"] = contenu_popup($options_popup, 1, $row, $horaires);
+                        /*    $d[$weekday][$slot]["who"] = get_vocab("reservee au nom de").affiche_nom_prenom_email($row["beneficiaire"],$row["beneficiaire_ext"],"nomail");
                         else if (Settings::get("display_info_bulle") == 2)
                             $d[$weekday][$slot]["who"] = $row["description"];
                         else
-                            $d[$weekday][$slot]["who"] = "";
+                            $d[$weekday][$slot]["who"] = "";*/
                     }
                 }
                 $t += $this_area_resolution;
@@ -376,14 +382,16 @@ else
                     {
                         $prev_weekday = $weekday;
                         $horaires = "";
-                        $d[$weekday][$slot]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
+                        // $d[$weekday][$slot]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
+                        $d[$weekday][$slot]["data"] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
                         $d[$weekday][$slot]["id"] = $row["id"];
                         if (Settings::get("display_info_bulle") == 1)
-                            $d[$weekday][$slot]["who"] = get_vocab("reservee au nom de").affiche_nom_prenom_email($row["beneficiaire"],$row["beneficiaire_ext"],"nomail");
+                            $d[$weekday][$slot]["who"] = contenu_popup($options_popup, 1, $row, $horaires);
+                        /*    $d[$weekday][$slot]["who"] = get_vocab("reservee au nom de").affiche_nom_prenom_email($row["beneficiaire"],$row["beneficiaire_ext"],"nomail");
                         else if (Settings::get("display_info_bulle") == 2)
                             $d[$weekday][$slot]["who"] = $row["description"];
                         else
-                            $d[$weekday][$slot]["who"] = "";
+                            $d[$weekday][$slot]["who"] = "";*/
                     }
                 }
                 $t += 60; 

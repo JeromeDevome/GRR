@@ -41,16 +41,6 @@ function encode_tableau($a,$modele){
     }
     return $out;
 }
-function decode_options($a,$modele){
-    // suppose que l'on a une chaîne $a de {V,F} de longueur égale à celle du $modele
-    // renvoie un tableau de booléens True, False indexé par les valeurs du modèle
-    $choix = array();
-    $l = count($modele);
-    for($i=0; $i<$l; $i++){
-        $choix[$modele[$i]] = ($a[$i] == 'V')? TRUE: FALSE;
-    }
-    return $choix;
-}
 // types de plannings
 $plan=array('day','week','week_all','month','month_all','month_all2','year','year_all');
 // options d'affichage
