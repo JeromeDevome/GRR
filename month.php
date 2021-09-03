@@ -3,7 +3,7 @@
  * month.php
  * Interface d'accueil avec affichage par mois
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-06-04 11:32$
+ * Dernière modification : $Date: 2021-09-03 11:14$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -337,7 +337,7 @@ echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.$this_room_name.' '.$
 if (verif_display_fiche_ressource($user_name, $room) && $_GET['pview'] != 1)
 	echo '<a href="javascript:centrerpopup(\'view_room.php?id_room=',$room,'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="',get_vocab("fiche_ressource"),'"><span class="glyphcolor glyphicon glyphicon-search"></span></a>';
 if ($authGetUserLevel > 2 && $_GET['pview'] != 1)
-	echo "<a href=\"./admin/admin_edit_room.php?room=$room\" title='".get_vocab('editroom')."'><span class=\"glyphcolor glyphicon glyphicon-cog\"></span></a>";
+	echo "<a href=\"./admin/admin.php?p=admin_edit_room&room=$room\" title='".get_vocab('editroom')."'><span class=\"glyphcolor glyphicon glyphicon-cog\"></span></a>";
 affiche_ressource_empruntee($room);
 if ($this_statut_room == "0")
 	echo '<br><span class="texte_ress_tempo_indispo">',get_vocab("ressource_temporairement_indisponible"),'</span>';

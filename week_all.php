@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage du planning des réservations d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-07-01 13:59$
+ * Dernière modification : $Date: 2021-09-03 11:14$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -501,7 +501,7 @@ foreach($ressources as $row)
 			echo '<span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
 		}
 		if (authGetUserLevel($user_name,$row['id']) > 2 && $_GET['pview'] != 1)
-			echo '<a href="./admin/admin_edit_room.php?room='.$row['id'].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a>'.PHP_EOL;
+			echo '<a href="./admin/admin.php?p=admin_edit_room&room='.$row['id'].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a>'.PHP_EOL;
 		affiche_ressource_empruntee($row['id']);
 		echo '</td>'.PHP_EOL;
 		$li++;
