@@ -3,7 +3,7 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservations de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-03 16:20 $
+ * Dernière modification : $Date: 2021-09-04 15:44 $
  * @author    Yan Naessens, Laurent Delineau 
  * @copyright Copyright 2003-2021 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -309,7 +309,7 @@ else
                     //Used below: localized "all day" text but with non-breaking spaces:
                     $all_day = preg_replace("/ /", " ", get_vocab("all_day"));
                     //Get all meetings for this month in the room that we care about
-                    $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc
+                    $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
                     FROM (".TABLE_PREFIX."_entry INNER JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) 
                       INNER JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
                     WHERE (start_time <= ".$end_month." AND end_time > ".$begin_month." AND ".TABLE_PREFIX."_entry.room_id=".$room_id.")
@@ -332,6 +332,9 @@ else
                         $row[14]: courrier
                         $row[15]: type_name
                         $row[16]: overload fields description
+                        $row[17]: room_id
+                        $row[18]: create_by
+                        $row[19]: nbparticipantmax
                     */
 					//Build an array of information about each day in the month.
                     //The information is stored as:

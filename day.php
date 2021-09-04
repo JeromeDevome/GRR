@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-02 16:18$
+ * Dernière modification : $Date: 2021-09-04 15:38$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -114,7 +114,7 @@ $am7 = mktime($morningstarts, 0, 0, $month, $day, $year);
 $pm7 = mktime($eveningends, $eveningends_minutes, 0, $month, $day, $year);
 $this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id='".protect_data_sql($area)."'"); // nom du domaine
 // les réservations associées à notre recherche, ce jour dans ce domaine
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
 WHERE
 ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id AND ".TABLE_PREFIX."_area.id = ".TABLE_PREFIX."_room.area_id";
@@ -144,6 +144,8 @@ ORDER BY start_time";
 	$row[15]: Type_name
     $row[16]: overload fields description
     $row[17]: room_id
+    $row[18]: create_by
+    $row[19]: nbparticipantmax
 */
 $res = grr_sql_query($sql);
 if (!$res)
@@ -166,10 +168,6 @@ else
 			$today[$row["room_id"]][$t]["color"]			= $row["type"];
 			$today[$row["room_id"]][$t]["data"]			= "";
 			$today[$row["room_id"]][$t]["who"]			= "";
-			//$today[$row["room_id"]][$t]["statut"]			= $row["statut_entry"];
-			//$today[$row["room_id"]][$t]["moderation"]		= $row["moderate"];
-			//$today[$row["room_id"]][$t]["option_reser"]	= $row["option_reservation"];
-			//$today[$row["room_id"]][$t]["description"]	= affichage_resa_planning($row["description"], $row["id"]);
 		}
         $horaires = "";
         if ($enable_periods != 'y') {

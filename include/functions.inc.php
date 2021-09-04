@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-09-03 12:01$
+ * Dernière modification : $Date: 2021-09-04 15:35$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -318,14 +318,15 @@ function contenu_cellule($options, $ofl, $vue, $resa, $heures)
 	// Description Complète
 	if (($options["description"]) && ($resa[8] != ""))
 		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES)."<br>";
-/*    modifier le contenu de $resa pour pouvoir afficher les options suivantes
     // créateur
-	if (($options["create_by"]) && ($resa[] != ""))
-		$affichage .= htmlspecialchars($resa[],ENT_NOQUOTES)."<br>";
+	if (($options["create_by"]) && ($resa[18] != ""))
+		$affichage .= htmlspecialchars($resa[18],ENT_NOQUOTES)."<br>";
     // nombre de participants
-    if (($options["participants"]) && ($resa[] != ""))
-		$affichage .= htmlspecialchars($resa[],ENT_NOQUOTES)."<br>";
-    */
+    if (($options["participants"]) && ($resa[19] != 0)){
+        $inscrits = grr_sql_query1("SELECT COUNT(`participant`) FROM `grr_participants` WHERE `idresa` = ".$resa[2]);
+        if ($inscrits >= 0)
+            $affichage .= get_vocab('participant_inscrit').get_vocab('deux_points').$inscrits." / ".htmlspecialchars($resa[19],ENT_NOQUOTES)."<br>";
+    }
 	// Champs Additionnels
     // la ressource associée à la réservation :
     $room = $resa[5];
@@ -339,23 +340,18 @@ function contenu_cellule($options, $ofl, $vue, $resa, $heures)
     // cas où aucune option n'est activée : afficher le numéro de la réservation
 	if ($affichage == '')
 		$affichage .= get_vocab("entryid").$resa[2]."<br>";
-
 	// Emprunte
 	if($resa[7] != "-")
 		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
-
 	// Option réservation
 	if($resa[10] > 0)
 		$affichage .=  " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le").time_date_string_jma($resa[9],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> ";
-
 	// Modération
 	if($resa[11] == 1)
 		$affichage .= " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
-
 	// Clef
 	if($resa[13] == 1)
 		$affichage .= " <img src=\"img_grr/skey.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Clef\"> ";
-	
 	// Courrier
 	if (Settings::get('show_courrier') == 'y')
 	{
@@ -399,14 +395,15 @@ function contenu_popup($options, $vue, $resa, $heures)
 	// Description Complète
 	if (($options["description"]) && ($resa[8] != ""))
 		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES)."\n";
-/*    modifier le contenu de $resa pour pouvoir afficher les options suivantes
     // créateur
-	if (($options["create_by"]) && ($resa[] != ""))
-		$affichage .= htmlspecialchars($resa[],ENT_NOQUOTES)."\n";
+	if (($options["create_by"]) && ($resa[18] != ""))
+		$affichage .= htmlspecialchars($resa[18],ENT_NOQUOTES)."\n";
     // nombre de participants
-    if (($options["participants"]) && ($resa[] != ""))
-		$affichage .= htmlspecialchars($resa[],ENT_NOQUOTES)."\n";
-    */
+    if (($options["participants"]) && ($resa[19] != 0)){
+        $inscrits = grr_sql_query1("SELECT COUNT(`participant`) FROM `grr_participants` WHERE `idresa` = ".$resa[2]);
+        if ($inscrits >= 0)
+            $affichage .= get_vocab('participant_inscrit').get_vocab('deux_points').$inscrits." / ".htmlspecialchars($resa[19],ENT_NOQUOTES)."\n";
+    }
     // cas où aucune option n'est activée : afficher le texte "voir les détails"
 	if ($affichage == '')
 		$affichage .= get_vocab("voir_details");
