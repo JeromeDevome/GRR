@@ -137,3 +137,20 @@ INSERT INTO grr_setting VALUES ('cas_port', '');
 INSERT INTO grr_setting VALUES ('cas_racine', '');
 INSERT INTO grr_setting VALUES ('cas_serveur', '');
 INSERT INTO grr_setting VALUES ('remplissage_description_complete', '0');
+INSERT INTO grr_setting (`NAME`, `VALUE`) VALUES
+('cell_day', 'FVVVVFV'),
+('cell_month', 'VVVFFFV'),
+('cell_month_all', 'VVVFFFV'),
+('cell_month_all2', 'VFFFFFF'),
+('cell_week', 'FVVVVFV'),
+('cell_week_all', 'VVVFFFV'),
+('cell_year', 'VFFFFFF'),
+('cell_year_all', 'VFFFFFF'),
+('popup_day', 'VVFFFVV'),
+('popup_month', 'VVVVVFV'),
+('popup_month_all', 'VVVVVFV'),
+('popup_month_all2', 'VVVVVFV'),
+('popup_week', 'VFFFVFF'),
+('popup_week_all', 'VVVVVFV'),
+('popup_year', 'VVVVVFV'),
+('popup_year_all', 'VVVVVFV');
