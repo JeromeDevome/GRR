@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-04-20 17:40$
+ * Dernière modification : $Date: 2021-09-09 10:36$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -119,7 +119,7 @@ if (isset($room))
 else 
     $sql .= " AND ".TABLE_PREFIX."_room.area_id = '".$area."' ";
 $sql .= " AND ".TABLE_PREFIX."_type_area.type_letter = ".TABLE_PREFIX."_entry.type 
-AND start_time < ".($pm7+$resolution)." AND end_time > ".$am7." 
+AND start_time < ".($pm7+$resolution)." AND end_time > $am7 AND supprimer = 0 
 ORDER BY start_time";
 /* contenu de la réponse si succès :
     $row[0] : start_time

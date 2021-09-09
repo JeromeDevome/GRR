@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage du planning des réservations d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-03 11:14$
+ * Dernière modification : $Date: 2021-09-09 10:43$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -183,7 +183,8 @@ where
 ".TABLE_PREFIX."_area.id = '".$area."' and
 ".TABLE_PREFIX."_type_area.type_letter = ".TABLE_PREFIX."_entry.type AND
 start_time <= $date_end AND
-end_time > $date_start
+end_time > $date_start AND
+supprimer = 0 
 ORDER by start_time, end_time, ".TABLE_PREFIX."_entry.id";
 /* contenu de la réponse si succès :
     $row[0] : start_time

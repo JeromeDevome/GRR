@@ -3,7 +3,7 @@
  * month.php
  * Interface d'accueil avec affichage par mois
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-03 11:14$
+ * Dernière modification : $Date: 2021-09-09 10:40$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -149,7 +149,8 @@ where
 ".TABLE_PREFIX."_area.id = ".TABLE_PREFIX."_room.area_id and
 ".TABLE_PREFIX."_type_area.type_letter = ".TABLE_PREFIX."_entry.type AND
 start_time <= $month_end AND
-end_time > $month_start
+end_time > $month_start AND
+supprimer = 0 
 ORDER by start_time, end_time";
 /* contenu de la réponse si succès :
     $row[0] : start_time

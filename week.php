@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-06-11 10:04$
+ * Dernière modification : $Date: 2021-09-09 10:44$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -185,7 +185,8 @@ WHERE
 ".TABLE_PREFIX."_room.id = '".$room."' AND
 ".TABLE_PREFIX."_type_area.type_letter = ".TABLE_PREFIX."_entry.type AND
 start_time <= $week_end AND
-end_time > $week_start
+end_time > $week_start AND
+".TABLE_PREFIX."_entry.supprimer = 0 
 ORDER by start_time";
 /* contenu de la réponse si succès :
     $row[0] : start_time
