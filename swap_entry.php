@@ -3,9 +3,9 @@
  * swap_entry.php
  * Interface d'échange d'une réservation avec une autre, à choisir
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-05-28 10:30$
+ * Dernière modification : $Date: 2021-09-12 10:44$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -33,7 +33,12 @@ if (!grr_resumeSession())
 	header("Location: ./logout.php?auto=1&url=$url");
 	die();
 };
-include "include/language.inc.php";
+if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
+	$type_session = "no_session";
+else
+	$type_session = "with_session";
+//include "./include/language.inc.php";
+require_once "./include/language.inc.php";
 $series = isset($_GET["series"]) ? $_GET["series"] : NULL;
 if (isset($series))
 	settype($series,"integer");
@@ -48,25 +53,54 @@ else {
 	die();    
 }
 // début de code html, commun à tous les cas
-begin_page("Echange de réservations", "with_session");
-print_header('', '', '', 'with_session');
+// pour le traitement des modules
+if (@file_exists('./admin_access_area.php')){
+    $adm = 1;
+    $racine = "../";
+    $racineAd = "./";
+}
+else{
+    $adm = 0;
+    $racine = "./";
+    $racineAd = "./admin/";
+}
+include $racine."/include/hook.class.php";
+// code HTML
+header('Content-Type: text/html; charset=utf-8');
+/*if (!isset($_COOKIE['open']))
+{
+	setcookie("open", "true", time()+3600, "", "", false, false);
+}*/
+if (!isset($_COOKIE['open']))
+{
+	header('Set-Cookie: open=true; SameSite=Lax');
+}
+echo '<!DOCTYPE html>'.PHP_EOL;
+echo '<html lang="fr">'.PHP_EOL;
+// section <head>
+if ($type_session == "with_session")
+    echo pageHead2(get_vocab('swap_entry'),"with_session");
+else
+    echo pageHead2(get_vocab('swap_entry'),"no_session");
+// section <body>
+echo "<body>";
+// Menu du haut = section <header>
+echo "<header>";
+pageHeader2('', '', '', $type_session);
+echo "</header>";
+// Debut de la page
+echo '<section>'.PHP_EOL;
 
 if (isset($_GET['id_alt'])){ // cas où tout est décidé
     if (isset($_GET['choix'])){
-        //print_r($_GET);
-        //echo "prêt à l'échange";
-        //echo $_GET["ret_page"];
-        // ici échanger
         $sql1 = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id=".$id;
         $res1 = grr_sql_query($sql1);
         if ($res1){
             $data1 = grr_sql_row($res1,0);
-            //print_r($data1);
             $sql2 = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id=".$_GET['id_alt'];
             $res2 = grr_sql_query($sql2);
             if ($res2){
                 $data2 = grr_sql_row($res2,0);
-                //print_r($data2);
                 $sql3 = " UPDATE ".TABLE_PREFIX."_entry SET ";
             /*    $sql3 .= "entry_type = '".$data1[3]."', ";
                 $sql3 .= "repeat_id = '".$data1[4]."', "; */
@@ -107,7 +141,6 @@ if (isset($_GET['id_alt'])){ // cas où tout est décidé
                     $sql4 .= "WHERE id = ".$data1[0]; 
                     $res4 = grr_sql_query($sql4);
                     if ($res4){
-                        // echo "échange réalisé";
                         echo '<script type="text/javascript">';
                         echo 'alert("Echange effectué correctement");';
                         echo 'document.location.href="'.$_GET['ret_page'].'"';
@@ -124,16 +157,15 @@ if (isset($_GET['id_alt'])){ // cas où tout est décidé
     else { // on demande confirmation
         $info = mrbsGetEntryInfo($id);
         $info_alt = mrbsGetEntryInfo($_GET['id_alt']);
-        echo "<p><strong> Etes-vous sûr de vouloir échanger la réservation </strong></p>";
-        //print_r($info);
-        echo "<table class='table-bordered'>";
+        echo "<p><strong>".get_vocab('swap_entry_confirm')."</strong></p>";
+        echo "<table class='table table-bordered'>";
             echo "<tr>";
-                echo "<th>Description</th>";
-                echo "<th>Début</th>";
-                echo "<th>Fin</th>";
-                echo "<th>Ressource</th>";
-                echo "<th>Bénéficiaire</th>";
-                echo "<th>Type</th>";
+                echo "<th>".get_vocab('description')."</th>";
+                echo "<th>".get_vocab('date')."</th>";
+                echo "<th>".get_vocab('fin_reservation')."</th>";
+                echo "<th>".get_vocab('room')."</th>";
+                echo "<th>".get_vocab('sum_by_creator')."</th>";
+                echo "<th>".get_vocab('type')."</th>";
             echo "</tr>";
             echo "<tr style='text-align:center;'>";
                 echo "<td>".$info['description']."</td>";
@@ -144,16 +176,15 @@ if (isset($_GET['id_alt'])){ // cas où tout est décidé
                 echo "<td>".libelle($info['type'])."</td>";
             echo "</tr>";
         echo "</table>";
-        echo "<p><strong> avec la réservation </strong></p>";
-        // print_r($info_alt);
-        echo "<table class='table-bordered'>";
+        echo "<p><strong>".get_vocab('swap_entry_confirm1')."</strong></p>";
+        echo "<table class='table table-bordered'>";
             echo "<tr>";
-                echo "<th>Description</th>";
-                echo "<th>Début</th>";
-                echo "<th>Fin</th>";
-                echo "<th>Ressource</th>";
-                echo "<th>Bénéficiaire</th>";
-                echo "<th>Type</th>";
+                echo "<th>".get_vocab('description')."</th>";
+                echo "<th>".get_vocab('date')."</th>";
+                echo "<th>".get_vocab('fin_reservation')."</th>";
+                echo "<th>".get_vocab('room')."</th>";
+                echo "<th>".get_vocab('sum_by_creator')."</th>";
+                echo "<th>".get_vocab('type')."</th>";
             echo "</tr>";
             echo "<tr style='text-align:center;'>";
                 echo "<td>".$info_alt['description']."</td>";
@@ -164,10 +195,6 @@ if (isset($_GET['id_alt'])){ // cas où tout est décidé
                 echo "<td>".libelle($info_alt['type'])."</td>";
             echo "</tr>";
         echo "</table>";
-        echo "</p>";
-        // $link = "./swap_entry.php?id=".$id."&id_alt=".$_GET['id_alt']."&choix&ret_page=".$_GET['ret_page']; // ret_page ne passe pas à la suite => passer les détails ?
-        // echo "<p style='text-align:center;'>";
-        // echo "<input class='btn btn-primary' value='Valider' onclick='window.location.href=\"".$link."\"'/>";
         echo '<form method="GET" action="swap_entry.php" >';
         echo "<p style='text-align:center;'>";
         echo "<input type='hidden' name='ret_page' value='".$_GET['ret_page']."' />";
@@ -178,21 +205,19 @@ if (isset($_GET['id_alt'])){ // cas où tout est décidé
         echo "<input type='button' class='btn btn-danger' value='".get_vocab("cancel")."' onclick='window.location.href=\" ".$_GET['ret_page']."\"'/>";
         echo "</p>";
         echo "</form>";
-        // echo "</p>";
+        end_page();
     }
 }
 else { // on connaît $id de la réservation à échanger, on va en chercher une autre pour l'échange
-    $back = "";
+    $back = page_accueil();
     if ($info = mrbsGetEntryInfo($id))
     {
+        $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : page_accueil() ;
         $day   = strftime("%d", $info["start_time"]);
         $month = strftime("%m", $info["start_time"]);
         $year  = strftime("%Y", $info["start_time"]);
         $area  = mrbsGetRoomArea($info["room_id"]);
         // on commence par vérifier les droits d'accès
-        // $back = "";
-        if (isset($_SERVER['HTTP_REFERER']))
-            $back = htmlspecialchars($_SERVER['HTTP_REFERER']);
         if (authGetUserLevel(getUserName(), -1) < 1)
         {
             showAccessDenied($back);
@@ -226,36 +251,29 @@ else { // on connaît $id de la réservation à échanger, on va en chercher une
         if ((!strpos($page,"all"))&&($room_back != 'all')){
             $ret_page .= "&amp;room=".$room_back;
         }
-        // echo $ret_page;
         // recherche les réservations qui ont les mêmes heures de début et de fin
         $sql = "SELECT id FROM ".TABLE_PREFIX."_entry WHERE (start_time = '".$info['start_time']."' AND end_time = '".$info['end_time']."' AND id != '".$id."')";
         $reps = grr_sql_query($sql);
         if (!$reps){grr_sql_error($reps);}
-        // print_r($info);
-        // libelle($info['type']);
-        // echo $dformat."<hr />";
-        // echo grr_sql_count($reps);
-        echo "Dans le tableau ci-dessous, cochez la ligne correspondant à la réservation que vous voulez échanger avec la réservation courante<br/>";
-        echo "puis Validez, ou Annulez pour revenir au planning.<br/>";
-        // echo $ret_page;
+        echo '<p>'.get_vocab('swap_entry_choose').'</p>'.PHP_EOL;
         echo '<form method="GET" action="swap_entry.php" >';
         echo "<p style='text-align:center;'>";
         echo "<input type='hidden' name='ret_page' value='".$ret_page."' />";
         echo "<input type='hidden' name='id' value='".$id."' />";
-        echo "<input class='btn btn-primary' type='submit' value='Valider' />";
+        echo "<input class='btn btn-primary' type='submit' value='".get_vocab('OK')."' />";
         echo "<input type='button' class='btn btn-danger' value='".get_vocab("cancel")."' onclick='window.location.href=\" ".$ret_page."\"'/>";
         echo "</p>"; 
         // tableau donnant la réservation à échanger et celles avec lesquelles échanger
-        echo "<table class='table-bordered'>";
+        echo "<table class='table table-bordered'>";
             echo "<thead>";
                 echo "<tr>";
-                    echo "<th>Choisir</th>"; // colonne pour les choix
-                    echo "<th>Description</th>";
-                    echo "<th>Début</th>";
-                    echo "<th>Fin</th>";
-                    echo "<th>Ressource</th>";
-                    echo "<th>Bénéficiaire</th>";
-                    echo "<th>Type</th>";
+                    echo "<th>".get_vocab('Choose')."</th>"; // colonne pour les choix
+                    echo "<th>".get_vocab('description')."</th>";
+                    echo "<th>".get_vocab('date')."</th>";
+                    echo "<th>".get_vocab('fin_reservation')."</th>";
+                    echo "<th>".get_vocab('room')."</th>";
+                    echo "<th>".get_vocab('sum_by_creator')."</th>";
+                    echo "<th>".get_vocab('type')."</th>";
                 echo "</tr>";
                 echo "<tr>";
                     echo "<th><span class='glyphicon glyphicon-arrow-down'></span></th>"; // colonne pour les choix
@@ -267,7 +285,6 @@ else { // on connaît $id de la réservation à échanger, on va en chercher une
                     echo "<th>".libelle($info['type'])."</th>";
                 echo "</tr>";
             echo "</thead>";
-           // echo "<form method='GET' action='swap_entry.php' >"; // le formulaire sera traité si une valeur est entrée
             echo "<tbody>";
             // on parcourt les résultats de la requête
                 $i = 0; 
@@ -289,11 +306,11 @@ else { // on connaît $id de la réservation à échanger, on va en chercher une
                     }
                 }
             echo "</tbody>";
-            echo "</form>";
-        echo "</table>";           
+            echo "</table>";
+        echo "</form>";
         // bas de page
-        echo "</body>";
-        echo "</html>";
+        display_mail_msg();
+        end_page();
     }
     else 
         showAccessDenied(page_accueil()); // l'utilisateur ne peut accéder à cette réservation... on le renvoie vers la page d'accueil
@@ -306,15 +323,19 @@ function libelle($type){ // rend la description du type_lettre de réservation
     }
     else 
         print(grr_sql_error($res));
+    grr_sql_free($res);
 }
 function roomDesc($id_room){ // rend nom + description à partir de l'identifiant de la ressource
     $sql = "SELECT room_name,description FROM ".TABLE_PREFIX."_room WHERE id = '".$id_room."' ";
     $res = grr_sql_query($sql);
     if ($res){
         $data = grr_sql_row($res,0);
-        return $data[0]." ".$data[1];
+        $desc = $data[0];
+        if ($data[1]!=''){$desc .= ' ('.$data[1].')';}
+        return $desc;
     }
     else 
         print(grr_sql_error($res));
+    grr_sql_free($res);
 }
 ?>

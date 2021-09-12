@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue française
 # GRR: Traduction By JeromeB & Laurent Delineau & Yan Naessens
-# Last modification : 2021-08-23
+# Last modification : 2021-09-12
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accepter la réservation";
@@ -839,6 +839,11 @@ $vocab['supprimer_logo'] = "Supprimer le logo actuel";
 $vocab['supprimer_site'] = "Supprimer un site";
 $vocab['sure'] = "Etes-vous certain ?";
 $vocab['swapentry'] = "Echanger deux réservations";
+$vocab['swap_entry'] = "Echanger deux réservations";
+$vocab['swap_entry_confirm'] = " Etes-vous sûr de vouloir échanger la réservation ";
+$vocab['swap_entry_confirm1'] = " avec la réservation ";
+$vocab['swap_entry_choose'] = "Dans le tableau ci-dessous, cochez la ligne correspondant à la réservation que vous voulez échanger avec la réservation courante<br />puis Validez, ou Annulez pour revenir au planning.<br />";
+$vocab['Choose'] = "Choisir";
 $vocab['synchro_base_locale'] = "Mise à jour de la base locale";
 $vocab['system'] = "Système d'exploitation : ";
 $vocab['tables_liaison'] = "Tables de liaison";
