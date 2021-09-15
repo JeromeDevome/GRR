@@ -3,9 +3,9 @@
  * admin_col_gauche2.php
  * colonne de gauche des écrans d'administration des sites, des domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-02 17:39$
+ * Dernière modification : $Date: 2021-09-15 17:05$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -89,7 +89,7 @@ if (Settings::get("module_multisite") == "Oui")
 if ($authUserLevel >= 6) $liste[4][] = 'admin_right_admin.php';
 if ($authUserLevel >= 4) $liste[4][] = 'admin_access_area.php';
 // ressources restreintes
-$test = grr_sql_query1("SELECT COUNT(*) FROM ".TABLE_PREFIX."_j_userbook_room");
+$test = grr_sql_query1("SELECT COUNT(`who_can_book`) FROM ".TABLE_PREFIX."_room WHERE `who_can_book` = 0 ");
 if (($test >0) && ($authUserLevel >= 4)) $liste[4][] = 'admin_book_room.php';
 if ($authUserLevel >= 4) $liste[4][] = 'admin_right.php' ;
 if ((Settings::get("ldap_statut") != "") || (Settings::get("sso_statut") != "") || (Settings::get("imap_statut") != ""))
