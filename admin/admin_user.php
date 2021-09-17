@@ -3,7 +3,7 @@
  * admin_user.php
  * interface de gestion des utilisateurs de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:34$
+ * Dernière modification : $Date: 2021-09-17 10:14$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -224,7 +224,7 @@ if ((isset($_GET['action_del'])) and ($_GET['js_confirmed'] == 1))
 			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_mailuser_room WHERE login='$temp'");
 			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE login='$temp'");
 			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE login='$temp'");
-            grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_userbook_room WHERE login='".$user_login."'");
+            grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_userbook_room WHERE login='$temp'");
 			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='$temp'");
 			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='$temp'");
 			$msg=get_vocab("del_user_succeed");
