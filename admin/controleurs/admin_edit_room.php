@@ -1,10 +1,10 @@
 <?php
 /**
  * admin_edit_room.php
- * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
- * Dernière modification : $Date: 2020-05-03 18:37$
+ * Script de création/modification des ressources de l'application GRR
+ * Dernière modification : $Date: 2021-09-19 16:01$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -371,8 +371,9 @@ $trad['dDroitsDomaine'] = authGetUserLevel(getUserName(),$area_id,"area");
 $trad['dDroitsRessource'] = authGetUserLevel(getUserName(),$room);
 $trad['dIdDomaine'] = $area_id;
 
-// Domaine
+// Domaines
 $trad['dEnablePeriods'] = grr_sql_query1("select enable_periods from ".TABLE_PREFIX."_area where id='".$area_id."'");
+$domaines = array();
 
 if (((authGetUserLevel(getUserName(),$area_id,"area") >=4 ) || (authGetUserLevel(getUserName(),$room) >= 4)) && ($trad['dEnablePeriods'] == 'n'))
 {
@@ -393,7 +394,6 @@ if (((authGetUserLevel(getUserName(),$area_id,"area") >=4 ) || (authGetUserLevel
 	ORDER BY a.area_name ASC";
 	$res = grr_sql_query($sql);
 	$nb_area = grr_sql_count($res);
-
 	for ($enr = 0; ($row1 = grr_sql_row($res, $enr)); $enr++)
 		$domaines[] = array('id' => $row1[0], 'nom' => $row1[1]);
 
