@@ -1,6 +1,6 @@
 Bugs connus sur la version de GitHub :
  - des problèmes se produisent parfois lorsqu'on veut faire une modification/copie de réservation avec un changement de domaine
- - l'entrée des couleurs des types doit se faire dans l'ordre texte PUIS fond si on veut prendre une couleur prédéfinie
+ - l'entrée des couleurs des types doit se faire dans l'ordre texte PUIS fond si on veut prendre une couleur prédéfinie -> résolu
 
 Tâches prévues :
  - authentification liée à Joomla!
