@@ -3,7 +3,7 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-04-18 19:05$
+ * Dernière modification : $Date: 2021-09-08 17:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -135,7 +135,8 @@ function reporton(&$row, $dformat)
 	if ($res_beneficiaire)
 	{
 		$row_user = grr_sql_row($res_beneficiaire, 0);
-		$aff_beneficiaire = htmlspecialchars($row_user[0]) ." ". htmlspecialchars($row_user[1]);
+        if ($row_user)
+            $aff_beneficiaire = htmlspecialchars($row_user[0]) ." ". htmlspecialchars($row_user[1]);
 	}
 	if ($aff_beneficiaire == " ")
 	{
