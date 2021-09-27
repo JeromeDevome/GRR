@@ -3,7 +3,7 @@
  * admin_type_modify.php
  * interface de création/modification des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:35$
+ * Dernière modification : $Date: 2021-09-19 14:24$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -27,13 +27,12 @@ $id_type = isset($_GET["id_type"]) ? $_GET["id_type"] : 0;
 $type_name = isset($_GET["type_name"]) ? $_GET["type_name"] : NULL;
 $order_display = isset($_GET["order_display"]) ? $_GET["order_display"] : NULL;
 $type_letter = isset($_GET["type_letter"]) ? $_GET["type_letter"] : NULL;
-//$couleur = isset($_GET["couleur"]) ? $_GET["couleur"] : NULL;
 $couleur_hexa = isset($_GET["couleurhexa"]) ? valid_color($_GET["couleurhexa"]) : NULL;
 $disponible = isset($_GET["disponible"]) ? $_GET["disponible"] : NULL;
 $couleurtexte = isset($_GET["couleurtexte"]) ? valid_color($_GET["couleurtexte"]) : "#000000";
 $msg = '';
 
-// Couleurs par défaut
+// Couleurs prédéfinies
 $tab_couleur[1] = "#F49AC2"; # mauve pâle
 $tab_couleur[2] = "#99CCCC"; # bleu
 $tab_couleur[3] = "#FF9999"; # rose pâle
@@ -64,7 +63,7 @@ $tab_couleur[27] = "#AA5050"; # bordeaux
 $tab_couleur[28] = "#FFBB20"; # pêche
 
 
-if (isset($_GET["change_room_and_back"]))
+if (isset($_GET["change_type_and_back"]))
 {
     $_GET['change_type'] = "yes";
     $_GET['change_done'] = "yes";
@@ -95,15 +94,15 @@ if (isset($_GET['change_type']))
             type_name='".protect_data_sql($type_name)."',
             order_display =";
             if (is_numeric($order_display))
-                $sql= $sql .intval($order_display).",";
+                $sql.=intval($order_display).",";
             else
-                $sql= $sql ."0,";
-            $sql = $sql . 'type_letter="'.protect_data_sql($type_letter).'",';
-            $sql = $sql . 'couleur=\'1\',';
-            $sql = $sql . 'couleurhexa="'.protect_data_sql($couleur_hexa).'",';
-            $sql = $sql . 'disponible="'.protect_data_sql($disponible).'",';
-            $sql .= 'couleurtexte="'.protect_data_sql($couleurtexte).'"';
-            $sql = $sql . " WHERE id=$id_type";
+                $sql.=" 0,";
+            $sql.='type_letter="'.protect_data_sql($type_letter).'",';
+            $sql.='couleur=\'1\',';
+            $sql.='couleurhexa="'.protect_data_sql($couleur_hexa).'",';
+            $sql.='disponible="'.protect_data_sql($disponible).'",';
+            $sql.='couleurtexte="'.protect_data_sql($couleurtexte).'"';
+            $sql.=" WHERE id=$id_type";
             if (grr_sql_command($sql) < 0)
             {
                 fatal_error(0, get_vocab('update_type_failed') . grr_sql_error());
@@ -125,30 +124,31 @@ if (isset($_GET['change_type']))
             type_name='".protect_data_sql($type_name)."',
             order_display =";
             if (is_numeric($order_display))
-                $sql= $sql .intval($order_display).",";
+                $sql.=intval($order_display).",";
             else
-                $sql= $sql ."0,";
-            $sql = $sql . 'type_letter="'.protect_data_sql($type_letter).'",';
-            $sql = $sql . 'couleur=\'1\',';
-            $sql = $sql . 'couleurhexa="'.protect_data_sql($couleur_hexa).'",';
-            $sql .= 'couleurtexte="'.protect_data_sql($couleurtexte).'"';
+                $sql.=" 0,";
+            $sql.='type_letter="'.protect_data_sql($type_letter).'",';
+            $sql.='couleur=\'1\',';
+            $sql.='couleurhexa="'.protect_data_sql($couleur_hexa).'",';
+            $sql.='disponible="'.protect_data_sql($disponible).'",';
+            $sql.='couleurtexte="'.protect_data_sql($couleurtexte).'"';
             if (grr_sql_command($sql) < 0)
             {
-                fatal_error(1, "<p>" . grr_sql_error());
+                fatal_error(1, "<p>" . grr_sql_error().$sql);
                 $ok = 'no';
             }
             else
                 $msg = get_vocab("message_records");
         }
-
     }
 }
 // enregistrement des couleurs dans la feuille de style
+/* n'est plus utilisé
 if ((isset($_GET['change_type'])) && (!isset($ok)))
 {
     try {
         $fich=fopen("../themes/default/css/types.css","w+"); // première écriture
-        fwrite($fich,"/* fichier de style reprenant les paramètres des types de réservation */");
+        fwrite($fich,"/* fichier de style reprenant les paramètres des types de réservation *//*");
         fclose($fich);
         $sql = "SELECT type_letter,couleurhexa,couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE 1";
         $res = grr_sql_query($sql);
@@ -167,7 +167,7 @@ td.type".$row[0]." a.lienCellule{color:".$row[2]." !important;}
         $ok = 'no';
         die();
     }
-}
+}*/
 // Si pas de problème, retour à la page d'accueil après enregistrement
 if ((isset($_GET['change_done'])) && (!isset($ok)))
 {
@@ -175,11 +175,7 @@ if ((isset($_GET['change_done'])) && (!isset($ok)))
     Header("Location: "."admin_type.php?msg=".$msg);
     exit();
 }
-// code HTML
-start_page_w_header("", "", "", $type="with_session");
-include "admin_col_gauche2.php";
-echo "<div class=\"col-md-9 col-sm-8 col-xs-12\">";
-affiche_pop_up($msg,"admin");
+// les attributs du type à modifier
 if ((isset($id_type)) && ($id_type > 0))
 {
     $res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_type_area WHERE id=$id_type");
@@ -188,6 +184,23 @@ if ((isset($id_type)) && ($id_type > 0))
     $row = grr_sql_row_keyed($res, 0);
     grr_sql_free($res);
     $change_type = 'modif';
+}
+// type_letter déjà attribués
+$res = grr_sql_query("SELECT type_letter FROM ".TABLE_PREFIX."_type_area ");
+$types_predef = array();
+if ($res)
+    foreach($res as $t){
+        if (($change_type == 'modif')&&($t['type_letter'] != $row['type_letter']))
+            $types_predef[] = $t['type_letter'];
+    }
+
+// code HTML
+start_page_w_header("", "", "", $type="with_session");
+include "admin_col_gauche2.php";
+echo "<div class=\"col-md-9 col-sm-8 col-xs-12\">";
+affiche_pop_up($msg,"admin");
+if ((isset($id_type)) && ($id_type > 0))
+{
     echo "<h2>".get_vocab("admin_type_modify_modify.php")."</h2>";
 }
 else
@@ -218,10 +231,12 @@ echo "<table class='table-bordered'>\n";
     $letter = "A";
     for ($i = 1; $i <= 256; $i++) // limitation arbitraire, lié à tdcell()
     {
-        echo "<option value='".$letter."' ";
-        if ($row['type_letter'] == $letter)
-            echo " selected=\"selected\"";
-        echo ">".$letter."</option>\n";
+        if (!in_array($letter,$types_predef)){
+            echo "<option value='".$letter."' ";
+            if ($row['type_letter'] == $letter)
+                echo " selected ";
+            echo ">".$letter."</option>\n";
+        }
         $letter++;
     }
     echo "</select>";
@@ -234,15 +249,15 @@ echo "<table class='table-bordered'>\n";
     echo "<td>"."<select name=\"disponible\" size=\"1\">\n";
     echo "<option value = '2' ";
     if ($row['disponible']=='2')
-        echo " selected=\"selected\"";
+        echo " selected ";
     echo ">".get_vocab("all")."</option>\n";
     echo "<option value = '3' ";
     if ($row['disponible']=='3')
-        echo " selected=\"selected\"";
+        echo " selected ";
     echo ">".get_vocab("gestionnaires_et_administrateurs")."</option>\n";
     echo "<option value = '5' ";
     if ($row['disponible']=='5')
-        echo " selected=\"selected\"";
+        echo " selected ";
     echo ">".get_vocab("only_administrators")."</option>\n";
     echo "</select>";
     echo "</td></tr>";
@@ -260,19 +275,9 @@ echo "<table class='table-bordered'>\n";
     echo "<td>".get_vocab("type_color_fond").get_vocab("deux_points")."</td>\n";
     echo "<td><input name=\"couleurhexa\" id=\"bgcolor\" value='".clean_input($row['couleurhexa'])."'>";
     echo "</tr>";
-    /*    echo "<tr>\n";
-    echo "<td>".get_vocab("type_color_text").get_vocab("deux_points")."</td>\n";
-    echo "<td><input name=\"couleur_texte\" type=\"hidden\" id=\"fgcolor\" value='".$row['couleur_texte']."'>";
-    echo "<button id=\"fgcolor-button\" class=\"jscolor {valueElement: '".$row['couleur_texte']."'}\">Choisir la couleur</button></td>";
-    echo "</tr>";
-    echo "<tr>\n";
-    echo "<td>".get_vocab("type_color_hexa").get_vocab("deux_points")."</td>\n";
-    echo "<td><input name=\"couleurhexa\" type=\"hidden\" id=\"bgcolor\" value='".$row['couleurhexa']."'>";
-    echo "<button id=\"bgcolor-button\" class=\"jscolor {valueElement: 'bgcolor'}\">Choisir la couleur</button></td>";
-    echo "</tr>"; */
     echo "</table>\n";
     echo "<p>".get_vocab("type_color_predefinie").get_vocab("deux_points")."</p>";
-    echo "<table class='table table-bordered'><tr>\n";
+    echo "<table class='table table-bordered' id='couleurs_predefinies'><tr>\n";
     $nct = 0;
     foreach ($tab_couleur as $key=>$value)
     {
@@ -281,14 +286,14 @@ echo "<table class='table-bordered'>\n";
             $nct = 1;
             echo "</tr><tr>";
         }
-        echo "<td  style=\"background-color:".$tab_couleur[$key].";\"><input type=\"radio\" name=\"couleur\" value=\"".$tab_couleur[$key]."\" class=\"target\" /></td>";
+        echo "<td  style=\"background-color:".$value.";\"><input type=\"radio\" name=\"couleur\" value=\"".$value."\" class=\"target\" /></td>";
     }
     echo "</tr></table>\n";
     echo "<br />";
     echo "<div class='center'>\n";
     echo "<input type=\"submit\" name=\"change_type\"  value=\"".get_vocab("save")."\" />";
     echo "<input type=\"submit\" name=\"change_done\" value=\"".get_vocab("back")."\" />";
-    echo "<input type=\"submit\" name=\"change_room_and_back\" value=\"".get_vocab("save_and_back")."\" />";
+    echo "<input type=\"submit\" name=\"change_type_and_back\" value=\"".get_vocab("save_and_back")."\" />";
     echo "</div>";
 echo '</form>';
 echo '</div>';
@@ -296,8 +301,8 @@ echo '</div>';
 <script>
 $( ".target" ).change(function() {
     var laCouleur = $('input[name=couleur]:checked').val();
-    var textColor = document.getElementsByName('couleurtexte')[0].value;
-    document.getElementsByName('couleurhexa')[0].value = laCouleur;
+    var textColor = document.getElementById('fgcolor').value;
+    document.getElementById('bgcolor').value = laCouleur;
     document.getElementById('test').style.backgroundColor=laCouleur;
     document.getElementById('test').style.color=textColor;
     document.getElementById('bgcolor').style.backgroundColor=laCouleur;
@@ -316,30 +321,45 @@ var options = {
 var pickers = {};
 
 pickers.bgcolor = new jscolor('bgcolor', options);
-pickers.bgcolor.onFineChange = "update('bgcolor')";
+pickers.bgcolor.onFineChange = "updateBG()";
 pickers.bgcolor.fromString('<?php echo $row["couleurhexa"]; ?>');
 
 pickers.fgcolor = new jscolor('fgcolor', options);
-pickers.fgcolor.onFineChange = "update('fgcolor')";
+pickers.fgcolor.onFineChange = "updateFG()";
 pickers.fgcolor.fromString('<?php echo $row["couleurtexte"]; ?>');
 
-function update (id) {
-    document.getElementsByName('couleurhexa')[0].value = 
+function updateBG() {
+    document.getElementById('bgcolor').value = 
     document.getElementById('test').style.backgroundColor =
         pickers.bgcolor.toHEXString();
-    document.getElementsByName('couleurtexte')[0].value = 
+    var couleur = document.getElementById('couleurs_predefinies');
+    if (couleur){
+        var tab = new Array();
+        tab = couleur.getElementsByTagName('input');
+        for (i=0; i<tab.length; i++){
+            if (tab[i].type == 'radio')
+                tab[i].checked = false;
+        }
+    }
+}
+function updateFG() {
+    document.getElementById('fgcolor').value = 
     document.getElementById('test').style.color =
     document.getElementById('test').style.borderColor =
         pickers.fgcolor.toHEXString();
+    var laCouleur = $('input[name=couleur]:checked').val();
+    if (laCouleur)
+    {
+        document.getElementById('bgcolor').value = laCouleur;
+        document.getElementById('test').style.backgroundColor=laCouleur;
+    }
+    else 
+    {
+        document.getElementById('bgcolor').value = 
+        document.getElementById('test').style.backgroundColor =
+            pickers.bgcolor.toHEXString();
+    }
 }
-/*
-function setString (id, str) {
-    pickers[id].fromString(str);
-    update(id);
-}
-*/
-update('bgcolor');
-update('fgcolor');
 </script>
 </section>
 </body>
