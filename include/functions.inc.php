@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-09-04 16:40$
+ * Dernière modification : $Date: 2021-09-27 13:58$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -917,6 +917,10 @@ function page_accueil($param = 'no')
 		$defaultarea = Settings::get("default_area");
 	else
 		$defaultarea = get_default_area($defaultsite);
+    // on vérifie que le domaine est accessible à l'utilisateur connecté
+    $user = getUserName();
+    if (($user != '')&&(!authUserAccesArea($user,$defaultarea)))
+        $defaultarea = get_default_area($defaultsite);
 	// Calcul de $page_accueil
 	if ($defaultarea == - 1)
 		$page_accueil = 'day.php?noarea=';
@@ -1181,7 +1185,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 
 			if ( ( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )
 			{
-				echo '<td class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="Réserver" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</td>',PHP_EOL;
+				echo '<td class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="'.get_vocab('Reserver').'" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</td>',PHP_EOL;
 			}
 			// Administration
 			if ($type_session == "with_session")
@@ -2173,9 +2177,8 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user,
     else 
         return '';
 }
-
 /**
- * Menu gauche affichage des area via select
+ * Menu affichage des area via select
  *
  * @param string $link
  * @param string $current_site
@@ -2195,8 +2198,7 @@ function make_area_select_html( $link, $current_site, $current_area, $year, $mon
 	{
 		// on a activé les sites
 		if ($current_site != -1)
-			//$sql = "SELECT a.id, a.area_name,a.access FROM ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_j_site_area j WHERE a.id=j.id_area and j.id_site=$current_site ORDER BY a.order_display, a.area_name";
-			$sql = "SELECT a.id, a.area_name,a.access FROM ".TABLE_PREFIX."_area a JOIN ".TABLE_PREFIX."_j_site_area j ON a.id=j.id_area WHERE j.id_site=$current_site ORDER BY a.order_display, a.area_name";
+			$sql = "SELECT a.id, a.area_name,a.access FROM ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_j_site_area j WHERE a.id=j.id_area and j.id_site=$current_site ORDER BY a.order_display, a.area_name";
 		else // $current_site = -1 correspond à un domaine (ou une ressource) inconnu
             return $out_html;
 			//$sql = ""; une requête vide déclenche une erreur non rattrapée
@@ -2533,7 +2535,6 @@ function make_room_list_html($link,$current_area, $current_room, $year, $month, 
     grr_sql_free($res);
     return $out_html;
 }
-
 /*
  * Affichage des sites sous la forme d'une liste de boutons
  *
