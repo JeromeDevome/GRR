@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-04-19 15:52$
+ * Dernière modification : $Date: 2021-09-27 10:53$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -61,38 +61,32 @@ include "include/language.inc.php";
 
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : page_accueil() ;
 // echo $back;
-if (isset($_GET["action_moderate"])){
-    // ici on a l'id de la réservation, on peut donc construire un lien de retour complet, à la bonne date et avec la ressource précise
-    /* $page = $_GET["page"];
-    $sql = grr_sql_query("SELECT start_time,room_id FROM ".TABLE_PREFIX."_entry WHERE id ='".$id."'");
-    $res = grr_sql_row($sql,0); // en principe on ne devrait avoir qu'une réponse ici
-    print_r($res);
-    exit;*/
-    if (strstr ($back, 'view_entry.php'))
+// ici on a l'id de la réservation, on peut donc construire un lien de retour complet, à la bonne date et avec la ressource précise
+if (strstr ($back, 'view_entry.php'))
+{
+    $sql = "SELECT start_time, room_id FROM ".TABLE_PREFIX."_entry WHERE id=". $id;
+    $res = grr_sql_query($sql);
+    if (!$res)
+        fatal_error(0, grr_sql_error());
+    if (grr_sql_count($res) >= 1)
     {
-        $sql = "SELECT start_time, room_id FROM ".TABLE_PREFIX."_entry WHERE id=". $id;
-        $res = grr_sql_query($sql);
-        if (!$res)
-            fatal_error(0, grr_sql_error());
-        if (grr_sql_count($res) >= 1)
-        {
-            $row1 = grr_sql_row($res, 0);
-            $year = date ('Y', $row1['0']);
-            $month = date ('m', $row1['0']);
-            $day = date ('d', $row1['0']);
-            $page = (isset($_GET['page']))? clean_input($_GET['page']) : "day";
-            $back = $page.'.php?year='.$year.'&month='.$month.'&day='.$day;
-            if (($page == "week_all") || ($page == "month_all") || ($page == "month_all2") || ($page == "day"))
-                $back .= "&area=".mrbsGetRoomArea($row1['1']);
-            if (($page == "week") || ($page == "month"))
-                $back .= "&room=".$row1['1'];
-        }
-        else
-            $back = $page.".php";
-        grr_sql_free($res);
+        $row1 = grr_sql_row($res, 0);
+        $year = date ('Y', $row1['0']);
+        $month = date ('m', $row1['0']);
+        $day = date ('d', $row1['0']);
+        $page = (isset($_GET['page']))? clean_input($_GET['page']) : "day";
+        $back = $page.'.php?year='.$year.'&month='.$month.'&day='.$day;
+        if (($page == "week_all") || ($page == "month_all") || ($page == "month_all2") || ($page == "day") || ($page == "year") || ($page == "year_all"))
+            $back .= "&area=".mrbsGetRoomArea($row1['1']);
+        if (($page == "week") || ($page == "month"))
+            $back .= "&room=".$row1['1'];
     }
+    else
+        $back = $page.".php";
+    grr_sql_free($res);
+}
+if (isset($_GET["action_moderate"])){
 	moderate_entry_do($id,$_GET["moderate"], $_GET["description"]);
-//  echo $back;
 	header("Location: ".$back);
     die();
 }
@@ -296,27 +290,6 @@ else
 	$tab_benef = donne_nom_email($beneficiaire_ext);
 	$mail_exist = $tab_benef["email"];
 }
-if (strstr ($back, 'view_entry.php'))
-{
-	$sql = "SELECT start_time, room_id FROM ".TABLE_PREFIX."_entry WHERE id=". $id;
-	$res = grr_sql_query($sql);
-	if (!$res)
-		fatal_error(0, grr_sql_error());
-	if (grr_sql_count($res) >= 1)
-	{
-		$row1 = grr_sql_row($res, 0);
-		$year = date ('Y', $row1['0']);
-		$month = date ('m', $row1['0']);
-		$day = date ('d', $row1['0']);
-		$back = $page.'.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day;
-		if ((isset($_GET["page"])) && (($_GET["page"] == "day") || ($_GET["page"] == "week_all") || ($_GET["page"] == "month_all") || ($_GET["page"] == "year_all") || ($_GET["page"] == "year")))
-			$back .= "&amp;area=".mrbsGetRoomArea($row1['1']);
-		if ((isset($_GET["page"])) && (($_GET["page"] == "week") || ($_GET["page"] == "month")))
-			$back .= "&amp;room=".$row1['1'];
-	}
-	else
-		$back = "";
-}
 $mode = isset($_GET['mode'])? $_GET['mode'] : NULL;
 if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')) // haut de page si mode page
 {
@@ -327,39 +300,11 @@ if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')) // ha
 		echo '<div><a href="',$back,'">',get_vocab("returnprev"),'</a></div>',PHP_EOL;
 }
 echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('entry').get_vocab('deux_points').affichage_lien_resa_planning($breve_description, $id).'</legend>'."\n";
-//echo '<table class="table-noborder">';
 echo '<table>';
 echo '	<tr>';
 echo '		<td><b>'.get_vocab("description").'</b></td>';
 echo '		<td>'.nl2br($description).'</td>';
 echo '	</tr>';
-// la portion de code qui suit ne semble rien produire, et les champs additionnels sont repris plus bas YN le 05/10/18
-/* if (!$was_del)
-{
-    $overload_data = mrbsEntryGetOverloadDesc($id);
-    foreach ($overload_data as $fieldname=>$fielddata)
-    {
-        if ($fielddata["confidentiel"] == 'n')
-            $affiche_champ = 'y';
-        else
-        {
-            if (($fin_session != 'n') || ($userName==''))
-                $affiche_champ = 'n';
-            else
-            {
-                if ((authGetUserLevel($userName, $room_id) >= 4) || ($beneficiaire == $userName))
-                    $affiche_champ = 'y';
-                else
-                    $affiche_champ = 'n';
-                if ($affiche_champ == 'y')
-                {
-                    echo "<tr><td><b>".bbcode(htmlspecialchars($fieldname).get_vocab("deux_points"), '')."</b></td>\n";
-                    echo "<td>".bbcode(htmlspecialchars($fielddata["valeur"]), '')."</td></tr>\n";
-                }
-            }
-        }
-    }
-}*/
 echo '	<tr>';
 echo '		<td><b>'.get_vocab("room"),get_vocab("deux_points").'</b></td>';
 echo '		<td>'.nl2br($area_name . " - " . $room_name).'</td>';
@@ -405,11 +350,15 @@ echo '		<td>'.$updated.'</td>';
 echo '	</tr>';
 // Les champs add :
 $overload_data = mrbsEntryGetOverloadDesc($id);
-// print_r($overload_data);
+/* les champs additionnels s'affichent dans la description si
+    (le champ est affiché sur les plannings ou le champ n'est pas confidentiel) et (la valeur est non vide)
+    ou (l'utilisateur est administrateur du domaine ou le bénéficiaire ou le créateur de la réservation)
+*/
 foreach ($overload_data as $fieldname=>$field)
 {
     if (((($field["affichage"] == 'y')||($field['confidentiel'] == 'n')) && ($field["valeur"]!=""))
-        ||((($fin_session == 'n')&&($userName != ''))&&(authGetUserLevel($userName, $room_id) >= 4) || ($beneficiaire == $userName)))
+        ||((($fin_session == 'n')&&($userName != ''))&&(authGetUserLevel($userName, $room_id) >= 4) 
+            || ($beneficiaire == $userName)||($create_by == $userName)))
     {
         echo "<tr><td><b>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points")."</b></td>";
         echo "<td>".htmlspecialchars($field["valeur"],ENT_NOQUOTES)."</td></tr>";
