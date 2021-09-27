@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-08-30 18:32$
+ * Dernière modification : $Date: 2021-09-27 14:07$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -627,12 +627,11 @@ else{
     toTimeString($duration, $dur_units, true); // durée convertie en clair
 }
 if (!getWritable($beneficiaire, $user_name,$id))
-    {
-        start_page_w_header('','','','with_session');
-        echo "ligne 632";
-        showAccessDenied($page_ret);
-        exit;
-    }
+{
+    start_page_w_header('','','','with_session');
+    showAccessDenied($page_ret);
+    exit;
+}
 $nb_areas = 0;
 $sql = "SELECT id, area_name FROM ".TABLE_PREFIX."_area";
 $res = grr_sql_query($sql);
