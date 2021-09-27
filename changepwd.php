@@ -3,9 +3,9 @@
  * changepwd.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-02-28 10:10$
+ * Dernière modification : $Date: 2021-08-21 15:51$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -20,8 +20,9 @@ $grr_script_name = 'changepwd.php';
 include_once('include/connect.inc.php');
 include_once('include/config.inc.php');
 include_once('include/misc.inc.php');
-include_once('include/functions.inc.php');
 require_once('include/'.$dbsys.'.inc.php');
+include_once('include/mrbs_sql.inc.php');
+include_once('include/functions.inc.php');
 require_once('include/session.inc.php');
 include_once('include/settings.class.php');
 
@@ -77,7 +78,6 @@ if ($valid == 'yes')
 	}
 }
 
-//print_header($type="no_session");
 start_page_w_header('','','',$type_session="no_session");
 
 affiche_pop_up($msg,'admin');
