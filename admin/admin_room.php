@@ -3,7 +3,7 @@
  * admin_room.php
  * Interface d'accueil de Gestion des domaines et ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:42$
+ * Dernière modification : $Date: 2021-09-17 10:35 $
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -127,9 +127,6 @@ if (Settings::get("module_multisite") == "Oui")
                             }
                         // -->
                         </script>
-                        <noscript>
-                            <div><input type="submit" value="change" /></div>
-                        </noscript>
                 </form>
             </td>
         </tr>

@@ -4923,9 +4923,8 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
  			grr_sql_command("INSERT INTO grr_correspondance_statut(code_fonction,libelle_fonction,statut_grr) VALUES ('$codefonction', '$libellefonction', '$_statut')");
  			return $_statut;
  		}
-		//Le code fonction n'est pas défini, alors on retourne le statut par défaut.
- 	}
- 	else
+	}
+ 	else //Le code fonction n'est pas défini, alors on retourne le statut par défaut.
  		return $_statut;
  }
 

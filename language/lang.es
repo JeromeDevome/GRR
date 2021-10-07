@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2021-08-08
+# Last modification : 2021-09-12
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -301,7 +301,6 @@ $vocab['delais_min_resa_room_2'] = "<b>Tiempo en minutos</b> por debajo del cual
 $vocab['delarea'] = "Debe suprimir todos los recursos de este campo antes de poder suprimirlo";
 $vocab['delete'] = "Suprimir";
 $vocab['deleteentry'] = "Suprimir una reserva";
-$vocab['swap_entry'] = "Swap two entries"; // À traduire
 $vocab['deletefollowing'] = "Usted va a suprimir las reservas siguientes";
 $vocab['deleteseries'] = "Suprimir una periodicidad";
 $vocab['delete_booking'] = " suprimió la reserva de ";
@@ -1072,6 +1071,7 @@ $vocab['user_can_book'] = "can book the restricted rooms:";
 $vocab['cycle_cplt'] = "Check to select all the days in the cycle";
 $vocab['nb_max_resa_form'] = "Max. number of pending reservations via contact form (-1 if no restriction) :";
 $vocab['skip_entry_in_conflict'] = "Make new reservations except those in conflict";
+$vocab['swap_entry'] = "Swap two entries"; // À traduire
 $vocab['swap_entry_confirm'] = " Etes-vous sûr de vouloir échanger la réservation ";
 $vocab['swap_entry_confirm1'] = " avec la réservation ";
 $vocab['swap_entry_choose'] = "Dans le tableau ci-dessous, cochez la ligne correspondant à la réservation que vous voulez échanger avec la réservation courante<br />puis Validez, ou Annulez pour revenir au planning.<br />";

@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2021-08-08
+# Last modification : 2021-09-12
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -309,7 +309,6 @@ $vocab['delais_min_resa_room_2'] = "<b>Time in minutes </b> below which the user
 $vocab['delarea'] = "You have to delete all the resources of this area before being able to delete it";
 $vocab['delete'] = "Delete";
 $vocab['deleteentry'] = "Delete a reservation";
-$vocab['swap_entry'] = "Swap two reservations";
 $vocab['deletefollowing'] = "You are going to delete the following reservations";
 $vocab['deleteseries'] = "Delete a periodicity";
 $vocab['delete_booking'] = " has deleted the reservation of ";
@@ -1087,6 +1086,7 @@ $vocab['user_can_book'] = "can book the restricted rooms:";
 $vocab['cycle_cplt'] = "Check to select all the days in the cycle";
 $vocab['nb_max_resa_form'] = "Max. number of pending reservations via contact form (-1 if no restriction) :";
 $vocab['skip_entry_in_conflict'] = "Make new reservations except those in conflict";
+$vocab['swap_entry'] = "Swap two reservations";
 $vocab['swap_entry_confirm'] = " You are about to swap entry ";
 $vocab['swap_entry_confirm1'] = " with entry ";
 $vocab['swap_entry_choose'] = "In the table below, check the line corresponding to the entry that you want to swap with the current entry<br />then Validate, or Cancel to go back to planning.<br />";

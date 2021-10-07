@@ -1,7 +1,7 @@
 <?php
 /**
  * page.php
- * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
+ * Script chargeant les pages enregistrées (CGU)
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2018-02-10 20:00$
  * @author    JeromeB
@@ -15,6 +15,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = 'page.php';
+
 include_once('include/connect.inc.php');
 include_once('include/config.inc.php');
 include_once('include/misc.inc.php');
@@ -23,7 +25,6 @@ require_once('include/'.$dbsys.'.inc.php');
 require_once('include/session.inc.php');
 include_once('include/settings.class.php');
 include_once('include/pages.class.php');
-$grr_script_name = 'page.php';
 
 if (!Settings::load())
 	die('Erreur chargement settings');

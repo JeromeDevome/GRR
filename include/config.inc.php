@@ -17,7 +17,7 @@
 
 /*
 Problème de sessions qui expirent prématurément :
-Chez certains prestataire qui utilisent des serveurs en clustering, il arrive que les sessions expirent aléatoirement.
+Chez certains prestataires qui utilisent des serveurs en clustering, il arrive que les sessions expirent aléatoirement.
 Une solution consiste à enregistrer les sessions PHP dans un autre répertoire que le répertoire par défaut.
 Pour cela, il suffit de décommenter la ligne suivante (en supprimant le premier caractère #)
 et en indiquant à la place de "le_chemin_de_stockage_de_la_session", l'emplacement du nouveau dossier de stockage des sessions.
@@ -61,7 +61,7 @@ date_default_timezone_set('Europe/Paris');
 
 # Changement d'heure été<->hiver
 # $correct_heure_ete_hiver = 1 => GRR prend en compte les changements d'heure
-# $correct_heure_ete_hiver = 0 => GRR ne prend en compte les changements d'heure
+# $correct_heure_ete_hiver = 0 => GRR ne prend pas en compte les changements d'heure
 # Par défaut ($correct_heure_ete_hiver non définie) GRR prend en compte les changements d'heure.
  $correct_heure_ete_hiver = 1;
 
@@ -115,7 +115,7 @@ $recherche_MAJ = 1;
 #Possibilité d'upload de module || 0: non ; 1: oui - Defaut 1
 $upload_Module = 1;
 
-# Nb de jour maximum que l'on garde les logs de connexions, 0 = aucune limite
+# Nb de jour maximum de rétention des logs de connexions, 0 = aucune limite
 $nbMaxJoursLogConnexion = 365;
 
 # paramètre provisoire pour choisir le type de calendrier à utiliser dans le menu gauche des pages plannings minicals (GRR classique): 0 ou JQuery : 1

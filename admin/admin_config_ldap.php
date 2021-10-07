@@ -553,20 +553,20 @@ else if ($etape == 0)
 
                     $test_chemin = 'failed';
                     if ($ldap_filter == "")
-                        returnmsg('danger',get_vocab('testConnChemAnn').get_vocab('deux_points'), $failed, get_vocab('testConnChemAnnErr1'));
+                        returnmsg('danger',get_vocab('testConnAnnuaire').get_vocab('deux_points'), $failed, get_vocab('testConnAnnuaireErr1'));
                     else
-                        returnmsg('danger',get_vocab('testConnChemAnn').get_vocab('deux_points'), $failed, get_vocab('testConnChemAnnErr1bis'));
+                        returnmsg('danger',get_vocab('testConnAnnuaire').get_vocab('deux_points'), $failed, get_vocab('testConnAnnuaireErr1bis'));
                 }
                 else if ($result == "error_2")
                 {
                     $test_chemin = 'failed';
                     if ($ldap_filter == "")
-                        returnmsg('danger',get_vocab('testConnChemAnn').get_vocab('deux_points'), $failed, get_vocab('testConnChemAnnErr2'));
+                        returnmsg('danger',get_vocab('testConnAnnuaire').get_vocab('deux_points'), $failed, get_vocab('testConnAnnuaireErr2'));
                     else
-                        returnmsg('danger',get_vocab('testConnChemAnn').get_vocab('deux_points'), $failed, get_vocab('testConnChemAnnErr2bis'));
+                        returnmsg('danger',get_vocab('testConnAnnuaire').get_vocab('deux_points'), $failed, get_vocab('testConnAnnuaireErr2bis'));
                 }
                 else
-                    returnmsg('success',get_vocab('testConnChemAnn').get_vocab('deux_points'), $ok, '');
+                    returnmsg('success',get_vocab('testConnAnnuaire').get_vocab('deux_points'), $ok, '');
             }
         }
     }

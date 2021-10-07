@@ -3,9 +3,9 @@
  * contact.php
  * Formulaire d'envoi de mail
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-07-09 18:40$
+ * Dernière modification : $Date: 2021-08-31 16:18$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -108,7 +108,7 @@ switch ($action)
 	require_once 'phpmailer/PHPMailerAutoload.php';
 	require_once 'include/mail.class.php';
 
-	$destinataire = Settings::get("webmaster_email");
+	// $destinataire = Settings::get("webmaster_email");
 	Email::Envois($destinataire, $sujet, $message, $email_reponse, '', '');
 
 	echo "<p style=\"text-align: center\">Votre message a été envoyé !</p>";

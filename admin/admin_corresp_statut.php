@@ -3,7 +3,7 @@
  * admin_corresp_statut.php
  * interface de gestion de la correspondance entre profil LDAP et statut GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:51$
+ * Dernière modification : $Date: 2021-09-08 10:43$
  * @author    Laurent Delineau & JeromeB & Christian Daviau & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -76,7 +76,10 @@ if ((isset($_GET['action_del'])) && ($_GET['js_confirmed'] == 1) && ($_GET['acti
 	else
 		$msg = get_vocab("message_records");
 }
-
+// données à afficher
+$sql = "SELECT code_fonction, libelle_fonction, statut_grr, id FROM  ".TABLE_PREFIX."_correspondance_statut";
+$res = grr_sql_query($sql);
+$nb_lignes = grr_sql_count($res);
 //print the page header
 start_page_w_header("", "", "", $type="with_session");
 // Affichage de la colonne de gauche
@@ -87,9 +90,6 @@ echo "<h2>".get_vocab('admin_corresp_statut.php')."</h2>";
 echo get_vocab('admin_corresp_statut_desc');
 echo "<br />\n";
 echo "<br />\n";
-$sql = "SELECT code_fonction, libelle_fonction, statut_grr, id FROM  ".TABLE_PREFIX."_correspondance_statut";
-$res = grr_sql_query($sql);
-$nb_lignes = grr_sql_count($res);
 if ($nb_lignes == 0)
 {
 	// Si aucune ligne à afficher
@@ -99,7 +99,7 @@ if ($nb_lignes == 0)
 else
 {
 	// S'il y a des lignes à afficher
-	// Affichage du tableau
+	// Affichage du tableau des correspondances existantes
 	echo "<table border=\"1\" cellpadding=\"3\" style=\"text-align:center;vertical-align:middle;\"><tr>\n";
 	echo "<td><b>".get_vocab("code_fonction")."</b></td>\n";
 	echo "<td><b>".get_vocab("libelle_fonction")."</b></td>\n";
@@ -131,6 +131,7 @@ else
 	}
 	echo "</table>";
 }
+grr_sql_free($res);
 echo "<br /><hr /><br /><div class='center'><b>".get_vocab("ajout_correspondance_profil_statut")."</b>\n";
 echo "<br /><form action=\"admin_corresp_statut.php?action_add=yes\" method=\"post\"><div>\n";
 echo get_vocab("code_fonction").get_vocab("deux_points")."<input name=\"codefonc\" type=\"text\" size=\"6\" /><br />";

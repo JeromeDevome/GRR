@@ -56,6 +56,18 @@ Sous-version 3.4.2a
     correctif : prise en compte du paramètre d'affichage de la légende des types
     MAJ fichier de langue allemande
     modification : si le domaine par défaut choisi par l'utilisateur est rendu inaccessible, page_accueil() renvoie vers le domaine par défaut choisi par l'administrateur
+Sous-version 3.4.2b
+    amélioration : prise en compte des sélections de fond dans admin_type_modify
+    correctif : chargement de fonctions manquantes dans changepwd
+    correctif : droits d'accès mal gérés dans edit_entry
+    correctif : erreur de type si bénéficiaire extérieur dans report
+    correctif : recherche de ressources à réservation restreinte dans le menu des pages admin
+    correctif : nom de variable dans admin_user
+    mise à jour : fichier des vacances scolaires (France)
+    modification : calcul des sélecteurs de site (devrait n'afficher que les sites dont un domaine est accessible à l'utilisateur)
+    modification : sélecteur de site (calcul des utilisateurs administrateurs potentiels)
+    modification : visibilité des champs additionnels dans la page de description d'une réservation
+
 
 -----
 --

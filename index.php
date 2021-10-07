@@ -412,13 +412,13 @@ else if ((Settings::get('sso_statut') == 'http_visiteur') || (Settings::get('sso
 	if (isset($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_USER']))
 	{
 		$login = clean_input($_SERVER['PHP_AUTH_USER']);
-		// Pour les versions plus anciennes de PHP < 4.1.0 (en fait inutile ici car GRR exige PHP > 4.3.1
 	}
+    // Pour les versions plus anciennes de PHP < 4.1.0 (en fait inutile ici car GRR exige PHP > 4.3.1
 	else if (isset($HTTP_SERVER_VARS['PHP_AUTH_USER']) && !empty($HTTP_SERVER_VARS['PHP_AUTH_USER']))
 	{
 		$login = clean_input($HTTP_SERVER_VARS['PHP_AUTH_USER']);
-		// L'utilisateur est authentifié mais $_SERVER['PHP_AUTH_USER'] est vide, on tente de récupérer le login dans $_SERVER['REMOTE_USER']
 	}
+    // L'utilisateur est authentifié mais $_SERVER['PHP_AUTH_USER'] est vide, on tente de récupérer le login dans $_SERVER['REMOTE_USER']
 	else if (isset($_SERVER['REMOTE_USER']) && !empty($_SERVER['REMOTE_USER']))
 	{
 		// Cas ou PHP est en mode cgi
@@ -445,8 +445,8 @@ else if ((Settings::get('sso_statut') == 'http_visiteur') || (Settings::get('sso
 			// Cas normal
 			$login = clean_input($_SERVER['REMOTE_USER']);
 		}
-		// Cas de PHP4 en mode CGI sur IIS
 	}
+    // Cas de PHP4 en mode CGI sur IIS
 	else if (isset($_SERVER['HTTP_AUTHORIZATION']) && !empty($_SERVER['HTTP_AUTHORIZATION']))
 		list($login, $pw) = explode(':', base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], 6)));
 	else

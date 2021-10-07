@@ -1,7 +1,7 @@
 <?php
 /**
  * admin_right.php
- * Interface de gestion des droits de gestion des utilisateurs
+ * Interface de gestion des droits de gestion des ressources par les utilisateurs sélectionnés
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2021-03-13 11:43$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
