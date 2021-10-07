@@ -19,10 +19,10 @@
 $grr_script_name = "edit_entry_handler.php";
 include "personnalisation/connect.inc.php";
 include "include/config.inc.php";
-include "include/functions.inc.php";
+include "include/misc.inc.php";
 include "include/$dbsys.inc.php";
 include "include/mrbs_sql.inc.php";
-include "include/misc.inc.php";
+include "include/functions.inc.php";
 // Settings
 require_once("./include/settings.class.php");
 //Chargement des valeurs de la table settingS
@@ -240,7 +240,7 @@ if ($type_affichage_reser == 0)
 		$hour = 12;
 		$minute = $period;
 		$max_periods = count($periods_name);
-		if ( $dur_units == "periods" && ($minute + $duration) > $max_periods)
+		if ( $dur_units == "periods" && (((int)$minute + (int)$duration) > $max_periods))
 			$duration = (24 * 60 * floor($duration / $max_periods)) + ($duration % $max_periods);
 	}
 	$units = 1.0;

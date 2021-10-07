@@ -3,7 +3,7 @@
  * admin.inc.php
  *
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-01-20 10:20$
+ * Dernière modification : $Date: 2021-10-06 19:17$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -23,10 +23,11 @@ if (@file_exists('../personnalisation/connect.inc.php')){
 }
 
 include "config.inc.php";
+include "$dbsys.inc.php";
 include "mrbs_sql.inc.php";
 include "misc.inc.php";
 include "functions.inc.php";
-include "$dbsys.inc.php";
+
 
 // Settings
 require_once("settings.class.php");
