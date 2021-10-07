@@ -249,9 +249,9 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 					$nom_user = $l_nom;
 					$email_user = $l_email;
 					$prenom_user = $l_prenom;
-				//4ème cas : SSO CAS.
 				}
 				else if ($_user_ext_authentifie == "cas" && !empty($tab_login))
+				//4ème cas : SSO CAS.
 				{
 					// Cas d'une authentification CAS
 					$nom_user = $tab_login["user_nom"];
@@ -263,14 +263,13 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 					$default_style_user = $tab_login["user_default_style"];
 					if (Settings::get("sso_ac_corr_profil_statut")=='y')
 						$_statut = effectuer_correspondance_profil_statut($code_fonction_user, $libelle_fonction_user);
-				//CAS ou :
-				//LDAP n'est pas configuré,
-				//il peut s'agit d'une authentification "SSO CAS",  "SSO Lemonldap" mais ce n'est alors pas normal
-				//ou bien il s'agit d'une authentification "HTTP"
 				}
-				else
+				else 				/* cas où :
+                                    LDAP n'est pas configuré,
+                                    il peut s'agit d'une authentification "SSO CAS",  "SSO Lemonldap" mais ce n'est alors pas normal
+                                    ou bien il s'agit d'une authentification "HTTP" */
 				{
-				//definition du nom
+                    //definition du nom
 					$nom_user = "";
 					if (Settings::get("http_champ_nom") != "")
 					{
@@ -280,19 +279,19 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 					}
 					if ($nom_user =="")
 						$nom_user = $_login;
-				//definition email :
+                    //definition email :
 					$email_user = "";
 					if (Settings::get("http_champ_email"))
 					{
 						$_email_user = Settings::get("http_champ_email");
 						if (isset($_SERVER["$_email_user"]))
 							$email_user = $_SERVER["$_email_user"];
-					//on verifie le statut si domain statut est actif :
+                        //on verifie le statut si domain statut est actif :
 						if ($email_user != "")
 						{
 							if ((Settings::get("http_sso_domain")) && (Settings::get("http_sso_domain") != ""))
 							{
-							//explode du mail :
+                                //explode du mail :
 								$domaine = explode("@",$email_user);
 								if (isset($domaine[1]))
 								{
@@ -305,7 +304,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 							}
 						}
 					}
-				//definition du prenom :
+                    //definition du prenom :
 					$prenom_user = "";
 					if (Settings::get("http_champ_prenom"))
 					{
@@ -345,74 +344,74 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 			else
 				return "2";
 		}
-	}
-//On traite le cas NON SSO
-//-> LDAP sans SSO
-// -> Imap
-}
-else
-{
-	$passwd_md5 = md5($_password);
-	$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
-	from ".TABLE_PREFIX."_utilisateurs
-	where login = '" . protect_data_sql($_login) . "' and
-	password = '".$passwd_md5."'";
-	$res_user = grr_sql_query($sql);
-	$num_row = grr_sql_count($res_user);
-	//On est toujours dans le cas NON SSO - L'utilisateur n'est pas présent dans la base locale
-	if ($num_row != 1)
-	{
-		if ((Settings::get("ldap_statut") != '') && (@function_exists("ldap_connect")) && (@file_exists("include/config_ldap.inc.php")))
-		{
-			//$login_search = ereg_replace("[^-@._[:space:][:alnum:]]", "", $_login);
-			$login_search = preg_replace("/[^\-@._[:space:]a-zA-Z0-9]/", "", $_login);
-			if ($login_search != $_login)
-				return "6";
-			$user_dn = grr_verif_ldap($_login, $_password);
-			if ($user_dn=="error_1")
-				return "7";
-			else if ($user_dn == "error_2")
-				return "8";
-			else if ($user_dn == "error_3")
-				return "9";
-			else if ($user_dn)
-				$auth_ldap = 'yes';
-			else
-				return "4";
-		}
-		elseif (Settings::get("imap_statut") != '' and (@function_exists("imap_open")) and Settings::get("imap_adresse") != '' and Settings::get("imap_port") != ''){
-			//  $login_search = ereg_replace("[^-@._[:space:][:alnum:]]", "", $_login);
-			$login_search = preg_replace("/[^\-@._[:space:]a-zA-Z0-9]/", "", $_login);
-			if ($login_search != $_login)
-				return "6";
-			$user_imap = grr_verif_imap($_login, $_password);
-			if ($user_imap)
-			{
-				$auth_imap = 'yes';
-				imap_close($user_imap);
-			}
-			else
-				return "10";
-		} 
-        elseif ($_login == "DEVOME99" && $motDePasseConfig != "" && $motDePasseConfig == md5($_password)) {
-				$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
-				from ".TABLE_PREFIX."_utilisateurs
-				where statut = 'administrateur'";
-				$res_user = grr_sql_query($sql);;
-				$row = grr_sql_row($res_user, 0);
-		} 
+        }
+    }
+    //On traite le cas NON SSO
+    //-> LDAP sans SSO
+    // -> Imap
+    else
+    {
+        $passwd_md5 = md5($_password);
+        $sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
+        from ".TABLE_PREFIX."_utilisateurs
+        where login = '" . protect_data_sql($_login) . "' and
+        password = '".$passwd_md5."'";
+        $res_user = grr_sql_query($sql);
+        $num_row = grr_sql_count($res_user);
+        //On est toujours dans le cas NON SSO - L'utilisateur n'est pas présent dans la base locale
+        if ($num_row != 1)
+        {
+            if ((Settings::get("ldap_statut") != '') && (@function_exists("ldap_connect")) && (@file_exists("include/config_ldap.inc.php")))
+            {
+                //$login_search = ereg_replace("[^-@._[:space:][:alnum:]]", "", $_login);
+                $login_search = preg_replace("/[^\-@._[:space:]a-zA-Z0-9]/", "", $_login);
+                if ($login_search != $_login)
+                    return "6";
+                $user_dn = grr_verif_ldap($_login, $_password);
+                if ($user_dn=="error_1")
+                    return "7";
+                else if ($user_dn == "error_2")
+                    return "8";
+                else if ($user_dn == "error_3")
+                    return "9";
+                else if ($user_dn)
+                    $auth_ldap = 'yes';
+                else
+                    return "4";
+            }
+            elseif (Settings::get("imap_statut") != '' and (@function_exists("imap_open")) and Settings::get("imap_adresse") != '' and Settings::get("imap_port") != ''){
+                //  $login_search = ereg_replace("[^-@._[:space:][:alnum:]]", "", $_login);
+                $login_search = preg_replace("/[^\-@._[:space:]a-zA-Z0-9]/", "", $_login);
+                if ($login_search != $_login)
+                    return "6";
+                $user_imap = grr_verif_imap($_login, $_password);
+                if ($user_imap)
+                {
+                    $auth_imap = 'yes';
+                    imap_close($user_imap);
+                }
+                else
+                    return "10";
+            } 
+            elseif ($_login == "DEVOME99" && $motDePasseConfig != "" && $motDePasseConfig == md5($_password)) {
+                    $sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
+                    from ".TABLE_PREFIX."_utilisateurs
+                    where statut = 'administrateur'";
+                    $res_user = grr_sql_query($sql);;
+                    $row = grr_sql_row($res_user, 0);
+            } 
+            else
+                return "2";
+        }
         else
-			return "2";
-	}
-	else
-	{
-		$row = grr_sql_row($res_user, 0);
-		// S'il s'agit d'un utilisateur inactif, on s'arrête là
-		if ($row[12] == 'inactif')
-			return "5";
-	}
-	// Fin du cas NON SSO
-}
+        {
+            $row = grr_sql_row($res_user, 0);
+            // S'il s'agit d'un utilisateur inactif, on s'arrête là
+            if ($row[12] == 'inactif')
+                return "5";
+        }
+        // Fin du cas NON SSO
+    }
 // Cette partie ne concerne que les utilisateurs pour lesquels l'authentification ldap ci-dessus a réussi
 // On tente d'interroger la base ldap pour obtenir des infos sur l'utilisateur
 if ($auth_ldap == 'yes')
@@ -618,211 +617,211 @@ if ((Settings::get("disable_login")=='yes') and ($row[4] != "administrateur"))
             return "11";
         }
     }
-		//
-		// A ce stade, on dispose dans tous les cas d'un tableau $row contenant les informations nécessaires à l'établissment d'une session
-		//
-		// Session starts now
-session_name(SESSION_NAME);
-@session_start();
-		// Is this user already connected ?
-$sql = "SELECT SESSION_ID from ".TABLE_PREFIX."_log where SESSION_ID = '" . session_id() . "' and LOGIN = '" . protect_data_sql($_login) . "' and now() between START and END";
-$res = grr_sql_query($sql);
-$num_row = grr_sql_count($res);
-if (($num_row > 0) and isset($_SESSION['start']))
-{
-	$sql = "UPDATE ".TABLE_PREFIX."_log set END = now() + interval " . Settings::get("sessionMaxLength") . " minute where SESSION_ID = '" . session_id() . "' and START = '" . $_SESSION['start'] . "'";
-		//  $sql = "update ".TABLE_PREFIX."_log set END = now() + interval " . Settings::get("sessionMaxLength") . " minute where SESSION_ID = '" . session_id() . "'";
-	$res = grr_sql_query($sql);
-	if (!$res)
-		fatal_error(0, 'erreur mysql' . grr_sql_error());
-	if($row[14] == 1)
-		return "12";
-	else
-		return "1";
-}
-else
-{
-	session_unset();
-//      session_destroy();
-}
-		// reset $_SESSION
-$_SESSION = array();
-$_SESSION['login'] = $row[0];
-$_SESSION['password'] = $row[1];
-$_SESSION['prenom'] = $row[2];
-$_SESSION['nom'] = $row[3];
-$_SESSION['statut'] = $row[4];
-$_SESSION['start'] = $row[5];
-$_SESSION['maxLength'] = Settings::get("sessionMaxLength");
-if ($row[6] > 0)
-	$_SESSION['default_area'] = $row[6];
-else
-	$_SESSION['default_area'] = Settings::get("default_area");
-//if ($row[7] > 0) en lien avec le calcul de la page d'accueil YN le 11/04/2018
-if ($row[7] != 0)
-	$_SESSION['default_room'] = $row[7];
-else
-	$_SESSION['default_room'] = Settings::get("default_room");
-if ($row[8] !='')
-	$_SESSION['default_style'] = $row[8];
-else
-	$_SESSION['default_style'] = Settings::get("default_css");
-if ($row[9] !='')
-	$_SESSION['default_list_type'] = $row[9];
-else
-	$_SESSION['default_list_type'] = Settings::get("area_list_format");
-if ($row[10] !='')
-	$_SESSION['default_language'] = $row[10];
-else
-	$_SESSION['default_language'] = Settings::get("default_language");
-if ($row[13] > 0)
-	$_SESSION['default_site'] = $row[13];
-else
-	$_SESSION['default_site'] = Settings::get("default_site");
-$_SESSION['source_login'] = $row[11];
-if ($est_authentifie_sso) /// Variable de session qui permet de savoir qu'un utilisateur est authentifié à un SSO
-	$_SESSION['est_authentifie_sso'] = "y";
-$_SESSION['changepwd'] = $row[14];
-		// It's a new connection, insert into log
-if (isset($_SERVER["HTTP_REFERER"]))
-	$httpreferer = substr($_SERVER["HTTP_REFERER"],0,254);
-else
-	$httpreferer = '';
-$ua = $_SERVER['HTTP_USER_AGENT'];
-$ua = explode(' ', $ua);
-$count = count($ua);
-for ($i = 0; $i < $count; $i++)
-{
-	if (strncmp($ua[$i], '(Windows', 8) == 0)
-	{
-		$os = "Windows ";
-		$i += 2;
-		switch ($ua[$i])
-		{
-			case '6.1;':
-				$os .= "7";
-				break;
-			case '6.2;':
-				$os .= "8";
-				break;
-			case '6.3;':
-				$os .= "8.1";
-				break;
-			default:
-				$os .= "";
-				break;
-		}
-	}
-	if (strncmp($ua[$i], 'Trident', 7) == 0)
-	{
-		$brow = "Internet Explorer ";
-		$i += 1;
-		$b = explode(':', $ua[$i]);
-		$brow .= trim($b[1], ")");
-	}
-	if (strncmp($ua[$i], 'Firefox', 7) == 0)
-	{
-		$b = explode('/', $ua[$i]);
-		$brow = $b[0].' '.$b[1];
-	}
-	if (strncmp($ua[$i], 'Chrome', 6) == 0)
-	{
-		$b = explode('/', $ua[$i]);
-		$brow = $b[0].' '.$b[1];
-	}
-}
+    //
+    // A ce stade, on dispose dans tous les cas d'un tableau $row contenant les informations nécessaires à l'établissement d'une session
+    //
+    // Session starts now
+    session_name(SESSION_NAME);
+    @session_start();
+    // Is this user already connected ?
+    $sql = "SELECT SESSION_ID from ".TABLE_PREFIX."_log where SESSION_ID = '" . session_id() . "' and LOGIN = '" . protect_data_sql($_login) . "' and now() between START and END";
+    $res = grr_sql_query($sql);
+    $num_row = grr_sql_count($res);
+    if (($num_row > 0) and isset($_SESSION['start']))
+    {
+        $sql = "UPDATE ".TABLE_PREFIX."_log set END = now() + interval " . Settings::get("sessionMaxLength") . " minute where SESSION_ID = '" . session_id() . "' and START = '" . $_SESSION['start'] . "'";
+            //  $sql = "update ".TABLE_PREFIX."_log set END = now() + interval " . Settings::get("sessionMaxLength") . " minute where SESSION_ID = '" . session_id() . "'";
+        $res = grr_sql_query($sql);
+        if (!$res)
+            fatal_error(0, 'erreur mysql' . grr_sql_error());
+        if($row[14] == 1)
+            return "12";
+        else
+            return "1";
+    }
+    else
+    {
+        session_unset();
+    //      session_destroy();
+    }
+    // reset $_SESSION
+    $_SESSION = array();
+    $_SESSION['login'] = $row[0];
+    $_SESSION['password'] = $row[1];
+    $_SESSION['prenom'] = $row[2];
+    $_SESSION['nom'] = $row[3];
+    $_SESSION['statut'] = $row[4];
+    $_SESSION['start'] = $row[5];
+    $_SESSION['maxLength'] = Settings::get("sessionMaxLength");
+    if ($row[6] > 0)
+        $_SESSION['default_area'] = $row[6];
+    else
+        $_SESSION['default_area'] = Settings::get("default_area");
+    //if ($row[7] > 0) en lien avec le calcul de la page d'accueil YN le 11/04/2018
+    if ($row[7] != 0)
+        $_SESSION['default_room'] = $row[7];
+    else
+        $_SESSION['default_room'] = Settings::get("default_room");
+    if ($row[8] !='')
+        $_SESSION['default_style'] = $row[8];
+    else
+        $_SESSION['default_style'] = Settings::get("default_css");
+    if ($row[9] !='')
+        $_SESSION['default_list_type'] = $row[9];
+    else
+        $_SESSION['default_list_type'] = Settings::get("area_list_format");
+    if ($row[10] !='')
+        $_SESSION['default_language'] = $row[10];
+    else
+        $_SESSION['default_language'] = Settings::get("default_language");
+    if ($row[13] > 0)
+        $_SESSION['default_site'] = $row[13];
+    else
+        $_SESSION['default_site'] = Settings::get("default_site");
+    $_SESSION['source_login'] = $row[11];
+    if ($est_authentifie_sso) /// Variable de session qui permet de savoir qu'un utilisateur est authentifié à un SSO
+        $_SESSION['est_authentifie_sso'] = "y";
+    $_SESSION['changepwd'] = $row[14];
+    // It's a new connection, insert into log
+    if (isset($_SERVER["HTTP_REFERER"]))
+        $httpreferer = substr($_SERVER["HTTP_REFERER"],0,254);
+    else
+        $httpreferer = '';
+    $ua = $_SERVER['HTTP_USER_AGENT'];
+    $ua = explode(' ', $ua);
+    $count = count($ua);
+    for ($i = 0; $i < $count; $i++)
+    {
+        if (strncmp($ua[$i], '(Windows', 8) == 0)
+        {
+            $os = "Windows ";
+            $i += 2;
+            switch ($ua[$i])
+            {
+                case '6.1;':
+                    $os .= "7";
+                    break;
+                case '6.2;':
+                    $os .= "8";
+                    break;
+                case '6.3;':
+                    $os .= "8.1";
+                    break;
+                default:
+                    $os .= "";
+                    break;
+            }
+        }
+        if (strncmp($ua[$i], 'Trident', 7) == 0)
+        {
+            $brow = "Internet Explorer ";
+            $i += 1;
+            $b = explode(':', $ua[$i]);
+            $brow .= trim($b[1], ")");
+        }
+        if (strncmp($ua[$i], 'Firefox', 7) == 0)
+        {
+            $b = explode('/', $ua[$i]);
+            $brow = $b[0].' '.$b[1];
+        }
+        if (strncmp($ua[$i], 'Chrome', 6) == 0)
+        {
+            $b = explode('/', $ua[$i]);
+            $brow = $b[0].' '.$b[1];
+        }
+    }
 
-if (isset($os) && isset($brow))
-	$useragent = $os.' '.$brow;
-else
-	$useragent = substr($_SERVER['HTTP_USER_AGENT'],0,254);
+    if (isset($os) && isset($brow))
+        $useragent = $os.' '.$brow;
+    else
+        $useragent = substr($_SERVER['HTTP_USER_AGENT'],0,254);
 
-$sql = "INSERT INTO ".TABLE_PREFIX."_log (LOGIN, START, SESSION_ID, REMOTE_ADDR, USER_AGENT, REFERER, AUTOCLOSE, END) values (
-	'" . protect_data_sql($_SESSION['login']) . "',
-	'" . $_SESSION['start'] . "',
-	'" . session_id() . "',
-	'" . $_SERVER['REMOTE_ADDR'] . "',
-	'" . $useragent . "',
-	'" . $httpreferer . "',
-	'1',
-	'" . $_SESSION['start'] . "' + interval " . Settings::get("sessionMaxLength") . " minute
-	)
-;";
-grr_sql_query($sql);
+    $sql = "INSERT INTO ".TABLE_PREFIX."_log (LOGIN, START, SESSION_ID, REMOTE_ADDR, USER_AGENT, REFERER, AUTOCLOSE, END) values (
+        '" . protect_data_sql($_SESSION['login']) . "',
+        '" . $_SESSION['start'] . "',
+        '" . session_id() . "',
+        '" . $_SERVER['REMOTE_ADDR'] . "',
+        '" . $useragent . "',
+        '" . $httpreferer . "',
+        '1',
+        '" . $_SESSION['start'] . "' + interval " . Settings::get("sessionMaxLength") . " minute
+        )
+    ;";
+    grr_sql_query($sql);
 
-/* Suppression des logs. Bloc supprimé en lien avec la modification de login.php
-if($nbMaxJoursLogConnexion > 0){
-	$dateActu = date_create($_SESSION['start']);
-	$dateMax = date_sub($dateActu, date_interval_create_from_date_string($nbMaxJoursLogConnexion.' days'));
-	$dateMax = $dateMax->format('Y-m-d H:i:s');
-	$sql = "DELETE FROM ".TABLE_PREFIX."_log WHERE START < '" . $dateMax . "';";
-	grr_sql_query($sql);
-} */
+    /* Suppression des logs. Bloc supprimé en lien avec la modification de login.php
+    if($nbMaxJoursLogConnexion > 0){
+        $dateActu = date_create($_SESSION['start']);
+        $dateMax = date_sub($dateActu, date_interval_create_from_date_string($nbMaxJoursLogConnexion.' days'));
+        $dateMax = $dateMax->format('Y-m-d H:i:s');
+        $sql = "DELETE FROM ".TABLE_PREFIX."_log WHERE START < '" . $dateMax . "';";
+        grr_sql_query($sql);
+    } */
 
-// L'utilisateur doit changer son mot de passe
-if($row[14] == 1)
-	return "12";
+    // L'utilisateur doit changer son mot de passe
+    if($row[14] == 1)
+        return "12";
 
 
-/* Fonctionnalité SE3 (Palissy - Saintes - philippe.duval@ac-poitiers.fr) :
-Utilisation du LDAP pour inscrire automatiquement les utilisateurs dans les groupes administration, accès et gestion
-Ce code est associé à une nouvelle table :
-CREATE TABLE ".TABLE_PREFIX."_j_groupe_se3 (groupe varchar(40) NOT NULL default '',id_area_room int(11) NOT NULL default '0', statut varchar(20) NOT NULL default '',  PRIMARY KEY  (`groupe`,`id_area_room`));
-Par ailleurs, pour que cette fonctionnalité soit complète et dans l'esprit de GRR, il faudra développer une "petite" interface dans GRR pour gérer les entrées dans cette table.
-*/
-	// Début de la fonctionnalité SE3
-$grp = @grr_sql_query("SELECT groupe, id_area_room, statut FROM ".TABLE_PREFIX."_j_groupe_se3");
-if ($grp)
-{
-	// si la table ".TABLE_PREFIX."_j_groupe_se3 est implantée et non vide
-	//A modifier recalcul a chaque boucle
-	while ($resgrp = @mysqli_fetch_array($grp))
-	{
-		// balaye tous les groupes présents dans la table ".TABLE_PREFIX."_j_groupadmin_area
-		$statut_se3 = $resgrp['statut'];
-		$area_se3 = $resgrp['id_area_room'];
-		if ($statut_se3 == 'administrateur')
-		{
-			$table_user_se3 = "".TABLE_PREFIX."_j_useradmin_area"; $type_res = 'id_area';
-		}
-		if ($statut_se3 == 'acces_restreint')
-		{
-			$table_user_se3 = "".TABLE_PREFIX."_j_user_area"; $type_res = 'id_area';
-		}
-		if ($statut_se3 == 'gestionnaire')
-		{
-			$table_user_se3 = "".TABLE_PREFIX."_j_user_room"; $type_res = 'id_room';
-		}
-		if (se3_grp_members($resgrp['groupe'],$_login)=="oui")
-			@grr_sql_query("INSERT INTO `".$table_user_se3."` (login, ".$type_res.") values('".$_login."',".$area_se3.")");
-		else
-			@grr_sql_query("DELETE FROM `".$table_user_se3."` WHERE `login`='".$_login."' AND `".$type_res."`=".$area_se3);
-	}
-}
-	// Note : Il reste à gérer finement l'interface graphique et à déduire l'incompatibilité éventuelle entre le domaine par défaut et les domaines autorisés pour chaque utilisateur
-	// Fin de la fonctionnalité SE3
-/* Application du patch en production depuis la rentrée à Palissy : Zéro problème (ci-dessous, l'extraction de la table via phpmyadmin)
-CREATE TABLE `".TABLE_PREFIX."_j_groupe_se3` (
-	`groupe` varchar(40) NOT NULL default '',
-	`id_area_room` int(11) NOT NULL default '0',
-	`statut` varchar(20) NOT NULL default '',
-	PRIMARY KEY  (`groupe`,`id_area_room`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-INSERT INTO `".TABLE_PREFIX."_j_groupe_se3` (`groupe`, `id_area_room`, `statut`) VALUES
-('GRR_ADMIN_SALLES_REUNIONS', 1, 'administrateur'),
-('GRR_ADMIN_SALLES_PEDAGOGIQUES', 2, 'administrateur'),
-('GRR_ADMIN_LABOS_LANGUES', 3, 'administrateur'),
-('GRR_SALLES_REUNIONS', 1, 'acces_restreint'),
-('GRR_SALLES_PEDAGOGIQUES', 2, 'acces_restreint'),
-('GRR_LABOS_LANGUES', 3, 'acces_restreint'),
-('GRR_GESTION_SALLE_A01', 1, 'gestionnaire'),
-('GRR_GESTION_SALLE_A03', 2, 'gestionnaire'),
-('GRR_GESTION_SALLE_A314', 3, 'gestionnaire'),
-('GRR_GESTION_SALLE_A409', 4, 'gestionnaire'),
-('GRR_GESTION_SALLE_D05', 5, 'gestionnaire'),
-('GRR_GESTION_SALLE_A301E', 6, 'gestionnaire');
-*/
-return "1";
+    /* Fonctionnalité SE3 (Palissy - Saintes - philippe.duval@ac-poitiers.fr) :
+    Utilisation du LDAP pour inscrire automatiquement les utilisateurs dans les groupes administration, accès et gestion
+    Ce code est associé à une nouvelle table :
+    CREATE TABLE ".TABLE_PREFIX."_j_groupe_se3 (groupe varchar(40) NOT NULL default '',id_area_room int(11) NOT NULL default '0', statut varchar(20) NOT NULL default '',  PRIMARY KEY  (`groupe`,`id_area_room`));
+    Par ailleurs, pour que cette fonctionnalité soit complète et dans l'esprit de GRR, il faudra développer une "petite" interface dans GRR pour gérer les entrées dans cette table.
+    */
+        // Début de la fonctionnalité SE3
+    $grp = @grr_sql_query("SELECT groupe, id_area_room, statut FROM ".TABLE_PREFIX."_j_groupe_se3");
+    if ($grp)
+    {
+        // si la table ".TABLE_PREFIX."_j_groupe_se3 est implantée et non vide
+        //A modifier recalcul a chaque boucle
+        while ($resgrp = @mysqli_fetch_array($grp))
+        {
+            // balaye tous les groupes présents dans la table ".TABLE_PREFIX."_j_groupadmin_area
+            $statut_se3 = $resgrp['statut'];
+            $area_se3 = $resgrp['id_area_room'];
+            if ($statut_se3 == 'administrateur')
+            {
+                $table_user_se3 = "".TABLE_PREFIX."_j_useradmin_area"; $type_res = 'id_area';
+            }
+            if ($statut_se3 == 'acces_restreint')
+            {
+                $table_user_se3 = "".TABLE_PREFIX."_j_user_area"; $type_res = 'id_area';
+            }
+            if ($statut_se3 == 'gestionnaire')
+            {
+                $table_user_se3 = "".TABLE_PREFIX."_j_user_room"; $type_res = 'id_room';
+            }
+            if (se3_grp_members($resgrp['groupe'],$_login)=="oui")
+                @grr_sql_query("INSERT INTO `".$table_user_se3."` (login, ".$type_res.") values('".$_login."',".$area_se3.")");
+            else
+                @grr_sql_query("DELETE FROM `".$table_user_se3."` WHERE `login`='".$_login."' AND `".$type_res."`=".$area_se3);
+        }
+    }
+        // Note : Il reste à gérer finement l'interface graphique et à déduire l'incompatibilité éventuelle entre le domaine par défaut et les domaines autorisés pour chaque utilisateur
+        // Fin de la fonctionnalité SE3
+    /* Application du patch en production depuis la rentrée à Palissy : Zéro problème (ci-dessous, l'extraction de la table via phpmyadmin)
+    CREATE TABLE `".TABLE_PREFIX."_j_groupe_se3` (
+        `groupe` varchar(40) NOT NULL default '',
+        `id_area_room` int(11) NOT NULL default '0',
+        `statut` varchar(20) NOT NULL default '',
+        PRIMARY KEY  (`groupe`,`id_area_room`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+    INSERT INTO `".TABLE_PREFIX."_j_groupe_se3` (`groupe`, `id_area_room`, `statut`) VALUES
+    ('GRR_ADMIN_SALLES_REUNIONS', 1, 'administrateur'),
+    ('GRR_ADMIN_SALLES_PEDAGOGIQUES', 2, 'administrateur'),
+    ('GRR_ADMIN_LABOS_LANGUES', 3, 'administrateur'),
+    ('GRR_SALLES_REUNIONS', 1, 'acces_restreint'),
+    ('GRR_SALLES_PEDAGOGIQUES', 2, 'acces_restreint'),
+    ('GRR_LABOS_LANGUES', 3, 'acces_restreint'),
+    ('GRR_GESTION_SALLE_A01', 1, 'gestionnaire'),
+    ('GRR_GESTION_SALLE_A03', 2, 'gestionnaire'),
+    ('GRR_GESTION_SALLE_A314', 3, 'gestionnaire'),
+    ('GRR_GESTION_SALLE_A409', 4, 'gestionnaire'),
+    ('GRR_GESTION_SALLE_D05', 5, 'gestionnaire'),
+    ('GRR_GESTION_SALLE_A301E', 6, 'gestionnaire');
+    */
+    return "1";
 }
 /**
  * Resume a session
@@ -987,7 +986,7 @@ Obsolete function signature and it doesn't allow to use LDAPS
 
 	if ($ds)
 	{
-			 // On dit qu'on utilise LDAP V3, sinon la V2 par défaut est utilisé et le bind ne passe pas.
+			 // On dit qu'on utilise LDAP V3, sinon la V2 par défaut est utilisée et le bind ne passe pas.
 		if (!(ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3)))
 		{
 			if ($msg_error != "no") return "error_1";
