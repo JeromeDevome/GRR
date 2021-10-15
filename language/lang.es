@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2021-09-12
+# Last modification : 2021-10-15
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -155,6 +155,7 @@ $vocab['all_day'] = "Jornada completa";
 $vocab['all_day2'] = "==========";
 $vocab['all_rooms'] = "Todos los recursos";
 $vocab['all_rooms_of_area'] = "Para todos los recursos del campo";
+$vocab['alphanumeric'] = "Valeur alphanumérique";// A traduire
 $vocab['areas'] = "Campos : ";
 $vocab['attention_mail_automatique_désactive'] = "CUIDADO: se desactiva el envío de mails automáticos. Para activarlo, dirijase en el panel de configuración general.";
 $vocab['aucun autilisateur'] = "Ningún usuario dispone de privilegios";

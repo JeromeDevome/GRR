@@ -3,7 +3,7 @@
  * admin_overload.php
  * Interface de création/modification des champs additionnels.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:45$
+ * Dernière modification : $Date: 2021-10-15 18:03$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -210,14 +210,14 @@ $html .= "<td class='CC'>".get_vocab("champ_obligatoire")."</td>\n";
 $html .= "<td class='CC'><span class='small'>".get_vocab("affiche_dans_les_vues")."</span></td>\n";
 $html .= "<td class='CC'><span class='small'>".get_vocab("affiche_dans_les_mails")."</span></td>\n";
 $html .= "<td class='CC'>".get_vocab("champ_confidentiel")."</td>\n";
-$html .= "<td class='CC'><span class='small'>".get_vocab("envoy_mail_specifique")."*(1)(2)</span></td>\n";
+$html .= "<td class='CC'><span class='small'>".get_vocab("envoy_mail_specifique")."(1)(2)</span></td>\n";
 $html .= "<td class='CC'></td></tr></thead>\n";
 $html .= "\n<tbody><tr><td>";
 $html .= "<select name=\"id_area\" size=\"1\">";
 foreach ($userdomain as $key=>$value)
     $html .= "<option value=\"$key\">".$userdomain[$key]."</option>\n";
 $html .= "</select></td>\n";
-$html .= "<td><input type=\"text\" name=\"fieldname\" size=\"20\" /></td>\n";
+$html .= "<td><input type=\"text\" name=\"fieldname\" size=\"20\" pattern=\"[A-Za-z0-9]+\" title=\"".get_vocab('alphanumeric')."\" required /></td>\n";
 $html .= "<td><select name=\"fieldtype\" size=\"1\">\n
 <option value=\"text\">".get_vocab("type_text")."</option>\n
 <option value=\"numeric\">".get_vocab("type_numeric")."</option>\n

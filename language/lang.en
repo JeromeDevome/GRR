@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2021-09-12
+# Last modification : 2021-10-15
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -163,6 +163,7 @@ $vocab['all_day'] = "Full day";
 $vocab['all_day2'] = "==========";
 $vocab['all_rooms'] = "All resources";
 $vocab['all_rooms_of_area'] = "For all the resources of the area";
+$vocab['alphanumeric'] = "Alphanumeric value";
 $vocab['areas'] = "Areas: ";
 $vocab['attention_mail_automatique_désactive'] = "CAUTION: the sending of automatic mails is currently disabled. To activate it, go in the general control panel.";
 $vocab['aucun autilisateur'] = "No user has some privileges";

@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2021-09-12
+# Last modification : 2021-10-15
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -158,6 +158,7 @@ $vocab['all_day'] = "Giorno intero";
 $vocab['all_day2'] = "==========";
 $vocab['all_rooms'] = "Tutte le risorse";
 $vocab['all_rooms_of_area'] = "Pour toutes les ressources du domaine"; // A traduire
+$vocab['alphanumeric'] = "Valeur alphanumérique"; // A traduire
 $vocab['areas'] = "Categoria : ";
 $vocab['attention_mail_automatique_désactive'] = "ATTENZIONE: la spedizione di mails automazioni è attualmente disattivata. Per attivarlo, appuntamento nel pannello di configurazione generale.";
 $vocab['aucun autilisateur'] = "Nessuno utente dispone di privilegi";
