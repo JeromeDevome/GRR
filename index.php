@@ -2,9 +2,9 @@
 /**
  * index.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-27 15:17$
+ * Dernière modification : $Date: 2021-10-15 15:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -89,6 +89,7 @@ if ($dbsys == "mysql")
     }
 }
 require_once("./include/$dbsys.inc.php");
+include "./include/mrbs_sql.inc.php";
 require_once("./include/session.inc.php");
 //Settings
 require_once("./include/settings.class.php");
