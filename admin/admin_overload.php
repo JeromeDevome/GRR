@@ -3,7 +3,7 @@
  * admin_overload.php
  * Interface de création/modification des champs additionnels.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-10-15 18:03$
+ * Dernière modification : $Date: 2021-10-16 13:39$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -217,7 +217,7 @@ $html .= "<select name=\"id_area\" size=\"1\">";
 foreach ($userdomain as $key=>$value)
     $html .= "<option value=\"$key\">".$userdomain[$key]."</option>\n";
 $html .= "</select></td>\n";
-$html .= "<td><input type=\"text\" name=\"fieldname\" size=\"20\" pattern=\"[A-Za-z0-9]+\" title=\"".get_vocab('alphanumeric')."\" required /></td>\n";
+$html .= "<td><input type=\"text\" name=\"fieldname\" size=\"20\" pattern=\"[A-z0-9À-ž][A-z0-9À-ž ]*\" title=\"".get_vocab('alphanumeric')."\" required /></td>\n";
 $html .= "<td><select name=\"fieldtype\" size=\"1\">\n
 <option value=\"text\">".get_vocab("type_text")."</option>\n
 <option value=\"numeric\">".get_vocab("type_numeric")."</option>\n
