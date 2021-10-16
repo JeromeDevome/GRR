@@ -3,7 +3,7 @@
  * admin_overload.php
  * Interface de création/modification des champs additionnels.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-10-16 13:39$
+ * Dernière modification : $Date: 2021-10-16 13:47$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -338,31 +338,6 @@ echo "<h2>".get_vocab("admin_overload.php")."</h2>\n";
 echo $html;
 if ($ferme_table)
     echo "</table>";
-echo "<div class='tooltip' id='tooltip_affichage' style=\"display:none;\">\n";
-echo get_vocab("affiche_dans_les_vues");
-echo "</div>\n";
-echo "<div class='tooltip' id='tooltip_overload_mail' style=\"display:none;\">\n";
-echo get_vocab("affiche_dans_les_mails");
-echo "</div>\n";
-echo "<div class='tooltip' id='tooltip_obligatoire' style=\"display:none;\">\n";
-echo get_vocab("champ_obligatoire");
-echo "</div>\n";
-echo "<div class='tooltip' id='tooltip_confidentiel' style=\"display:none;\">\n";
-echo get_vocab("champ_confidentiel");
-echo "</div>\n";
-echo "<script type=\"text/javascript\">\n";
-echo "var my_tooltip_aff = new Tooltip('affichage', 'tooltip_affichage');\n";
-echo "var my_tooltip_aff = new Tooltip('overload_mail', 'tooltip_overload_mail');\n";
-echo "var my_tooltip_obli = new Tooltip('obligatoire', 'tooltip_obligatoire');\n";
-echo "var my_tooltip_obli = new Tooltip('confidentiel', 'tooltip_confidentiel');\n";
-for ($i = 1; $i <= $ind_div; $i++)
-{
-    echo "var my_tooltip_aff = new Tooltip('affichage_".$i."', 'tooltip_affichage');\n";
-    echo "var my_tooltip_aff = new Tooltip('overload_mail_".$i."', 'tooltip_overload_mail');\n";
-    echo "var my_tooltip_obli = new Tooltip('obligatoire_".$i."', 'tooltip_obligatoire');\n";
-    echo "var my_tooltip_obli = new Tooltip('confidentiel_".$i."', 'tooltip_confidentiel');\n";
-}
-echo "</script>\n";
 echo "</div>";
 end_page();
 ?>
