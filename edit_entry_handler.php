@@ -665,6 +665,7 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 				}
 			}
 		}
+		$id = 0; // JeromeB : Réinit l'id de réservation sinon en cas de double re ssource celle-ci passe en modif
 	}
 	if (isset($id) && ($id != 0))
 	{
