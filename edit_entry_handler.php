@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-14 11:28$
+ * Dernière modification : $Date: 2021-10-22 16:28$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -557,7 +557,7 @@ try {
         }
     }
     if (isset($id) && ($id != 0)){
-        if (!getWritable($beneficiaire, $user, $id)){
+        if (!getWritable($user, $id)){
             $err_type = "accessdenied";
             $err_msg = get_vocab("norights");
             throw new Exception('erreur');

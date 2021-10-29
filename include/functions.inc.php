@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-08-31 12:24$
+ * Dernière modification : $Date: 2021-10-24 11:53$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -3063,60 +3063,79 @@ function getUserName()
 	else
 		return '';
 }
-function getWritable($beneficiaire, $user, $id)
+/** function getWritable($user, $id)
+* paramètres :
+* - $user : l'utilisateur connecté
+* - $id : l'identifiant de la réservation
+* retourne 0 ou 1, 1 lorsque la réservation est modifiable par $user, 0 sinon
+*/
+function getWritable($user, $id)
 {
-	$id_room = grr_sql_query1("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id='".protect_data_sql($id)."'");
-		// Modifications permises si l'utilisateur a les droits suffisants
-	if (Settings::get("allow_gestionnaire_modify_del") == 0)
+    if (Settings::get("allow_gestionnaire_modify_del") == 0)
 		$temp = 3;
 	else
 		$temp = 2;
-	if (authGetUserLevel($user,$id_room) > $temp)
-		return 1;
-	//if ($beneficiaire == "") $beneficiaire = $user;
-	// Dans le cas d'un bénéficiaire extérieur, $beneficiaire est vide. On fait comme si $user était le bénéficiaire
-	$dont_allow_modify = grr_sql_query1("select dont_allow_modify from ".TABLE_PREFIX."_room WHERE id = '".$id_room."'");
-    $who_can_book = grr_sql_query1("SELECT who_can_book FROM ".TABLE_PREFIX."_room WHERE id = '".$id_room."'");
-    $user_can_book = $who_can_book || authBooking($user,$id_room);
-	$owner = strtolower(grr_sql_query1("SELECT create_by FROM ".TABLE_PREFIX."_entry WHERE id='".protect_data_sql($id)."'"));
-	$beneficiaire = strtolower($beneficiaire);
-	$user = strtolower($user);
-	//Il reste à étudier le cas d'un utilisateur sans droits particuliers. quatre cas possibles :
-	//Cas 1 : l'utilisateur (U) n'est ni le créateur (C) ni le bénéficiaire (B)
-	//	R1 -> on retourne 0
-	//Cas 2 : U=B et et U<>C  ou ...
-	//Cas 3 : U=B et et U=C
-	//	R2 -> on retourne 0 si personne hormis les gestionnaires et les administrateurs ne peut modifier ou supprimer ses propres réservations.
-	//	R3 -> on retourne 1 sinon
-	//Cas 4 : U=C et U<>B
-	//	R4 -> on retourne 0 si personne hormis les gestionnaires et les administrateurs ne peut modifier ou supprimer ses propres réservations.
-	//	-> sinon
-	//		R5 -> on retourne 1 si l'utilisateur U peut réserver la ressource pour B
-	//		R6 -> on retourne 0 sinon (si on permettait à U d'éditer la résa, il ne pourrait de toute façon pas la modifier)
-	if (($user != $beneficiaire) && ($user != $owner))
-		return 0;
-	else if ($user == $beneficiaire)
-	{
-		if ($dont_allow_modify == 'y')
-			return 0;
-		else
-			return $user_can_book;//1;
-	}
-	else if ($user == $owner)
-	{
-		if ($dont_allow_modify == 'y')
-			return 0;
-		else
-		{
-			$qui_peut_reserver_pour = grr_sql_query1("SELECT qui_peut_reserver_pour FROM ".TABLE_PREFIX."_room WHERE id='".$id_room."'");
-			if (authGetUserLevel($user, $id_room) >= $qui_peut_reserver_pour)
-				return $user_can_book;//1;
-			else
-				return 0;
-		}
-	}
-	return 0;
+    $sql = "SELECT room_id, create_by, beneficiaire, dont_allow_modify, who_can_book, qui_peut_reserver_pour 
+            FROM ".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_room ON room_id = ".TABLE_PREFIX."_room.id
+            WHERE ".TABLE_PREFIX."_entry.id ='".protect_data_sql($id)."'";
+            // ex : SELECT room_id, create_by, beneficiaire, dont_allow_modify, who_can_book, qui_peut_reserver_pour FROM grr_entry JOIN grr_room ON room_id = grr_room.id WHERE grr_entry.id = 323 
+    $res = grr_sql_query($sql);
+    //print($sql);
+    //print_r($res);
+    if (!$res)
+        fatal_error(0, grr_sql_error());
+    elseif (grr_sql_count($res) == 0) // réservation inconnue
+        fatal_error(1, get_vocab('invalid_entry_id'));
+    else {
+        $data = grr_sql_row_keyed($res,0);
+        grr_sql_free($res);
+        //print_r($data);
+        if (authGetUserLevel($user,$data['room_id']) > $temp)
+            return 1; // Modifications permises si l'utilisateur a les droits suffisants
+        else {
+            $user_can_book = $data['who_can_book'] || authBooking($user,$data['room_id']);
+            //var_dump($user_can_book);
+            $createur = strtolower($data['create_by']);
+            $beneficiaire = strtolower($data['beneficiaire']);
+            $utilisateur = strtolower($user);
+            /* echo $utilisateur,"  ",$beneficiaire,"  ",$createur;
+            Dans l'étude du cas d'un utilisateur sans droits particuliers, quatre possibilités :
+            Cas 1 : l'utilisateur (U) n'est ni le créateur (C) ni le bénéficiaire (B)
+            	R1 -> on retourne 0
+            Cas 2 : U=B et U<>C  ou ...
+            Cas 3 : U=B et U=C
+            	R2 -> on retourne 0 si personne hormis les gestionnaires et les administrateurs ne peut modifier ou supprimer ses propres réservations.
+            	R3 -> on retourne $user_can_book selon les droits de l'utilisateur sur la ressource
+            Cas 4 : U=C et U<>B
+            	R4 -> on retourne 0 si personne hormis les gestionnaires et les administrateurs ne peut modifier ou supprimer ses propres réservations.
+            	-> sinon
+            		R5 -> on retourne $user_can_book selon les droits de l'utilisateur U sur la ressource et s'il peut réserver la ressource pour B
+            		R6 -> on retourne 0 sinon (si on permettait à U d'éditer la résa, il ne pourrait de toute façon pas la modifier)*/
+             if (($utilisateur != $beneficiaire) && ($utilisateur != $createur)) // cas 1
+                return 0;
+            elseif ($utilisateur == $beneficiaire) // cas 2 et 3
+            {
+                if ($data['dont_allow_modify'] == 'y')
+                    return 0;
+                else 
+                    return $user_can_book;
+            }
+            elseif ($utilisateur == $createur) // cas 4
+            {
+                if ($data['dont_allow_modify'] == 'y')
+                    return 0;
+                else
+                {
+                    if (authGetUserLevel($user, $data['room_id']) >= $data['qui_peut_reserver_pour'])
+                        return $user_can_book;
+                    else
+                        return 0;
+                }
+            }
+        }
+    }
 }
+
 //auth_visiteur($user,$id_room)
 //Determine si un visiteur peut réserver une ressource
 //$user - l'identifiant de l'utilisateur

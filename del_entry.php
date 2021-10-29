@@ -3,7 +3,7 @@
  * del_entry.php
  * Interface de suppression d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:24$
+ * Dernière modification : $Date: 2021-10-22 11:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -58,7 +58,8 @@ if ($info = mrbsGetEntryInfo($id))
 		showAccessDenied($back);
 		exit();
 	}
-	if (!getWritable($info["beneficiaire"], getUserName(), $id))
+	//if (!getWritable($info["beneficiaire"], getUserName(), $id))
+    if (!getWritable(getUserName(), $id))
 	{
 		showAccessDenied($back);
 		exit;
