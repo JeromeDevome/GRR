@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2021-09-12
+# Last modification : 2021-10-24
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -767,7 +767,7 @@ $vocab['reset'] = "Valeurs par défaut";
 $vocab['resolution_area'] = "Plus petit bloc réservable, en secondes (1800 secondes = 1/2 heure)";
 $vocab['ressource actuellement empruntee'] = "La ressource est actuellement empruntée.";
 $vocab['ressource empruntee non restituée'] = "Sauf erreur, la ressource suivante que vous avez empruntée n'a pas été restituée. S'il s'agit d'une erreur, veuillez ne pas tenir compte de ce courrier.";
-$vocab['ressource_temporairement_indisponible'] = "Réservations à venir";
+$vocab['ressource_temporairement_indisponible'] = "Temporairement indisponible";
 $vocab['Restauration_de_la_base_GRR'] = "Restauration de la base GRR";
 $vocab['Restaurer_la_sauvegarde'] = "Restaurer la sauvegarde";
 $vocab['restricted'] = "restreint";
