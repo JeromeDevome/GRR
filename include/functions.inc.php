@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-10-24 11:53$
+ * Dernière modification : $Date: 2021-10-31 11:38$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -892,7 +892,7 @@ function begin_page($title, $page = "with_session")
 			//echo '<script type="text/javascript" src="../js/tooltip.js"></script>'.PHP_EOL;
 		if (!isset($_SESSION['selection']))
 			$a .= '<script type="text/javascript" src="../js/selection.js" ></script>'.PHP_EOL;
-		if (@file_exists('js/'.$clock_file))
+		if (@file_exists('../js/'.$clock_file))
 			$a .= '<script type="text/javascript" src="../js/'.$clock_file.'"></script>'.PHP_EOL;
 		if (substr(phpversion(), 0, 1) == 3)
 			$a .= get_vocab('not_php3');
@@ -5585,7 +5585,7 @@ function pageHead2($title, $page = "with_session")
 			//echo '<script type="text/javascript" src="../js/tooltip.js"></script>'.PHP_EOL;
 		//if (!isset($_SESSION['selection']))
 			// $a .= '<script type="text/javascript" src="../js/selection.js" ></script>'.PHP_EOL;
-		if (@file_exists('js/'.$clock_file))
+		if (@file_exists('../js/'.$clock_file))
 			$a .= '<script type="text/javascript" src="../js/'.$clock_file.'"></script>'.PHP_EOL;
         $a .= '<script type="text/javascript" src="../js/jscolor.js"></script>';
 		if (substr(phpversion(), 0, 1) == 3)
@@ -5655,8 +5655,10 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 {
 	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name, $racine, $racineAd;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2;
+    $parametres_url = '';
+    if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
         $parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
-        
+
 	Hook::Appel("hookHeader2");
 	// Si nous ne sommes pas dans un format imprimable
 	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
@@ -5681,7 +5683,6 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			$search_str = "";
 		if (!(isset($desactive_bandeau_sup) && ($desactive_bandeau_sup == 1) && ($type_session != 'with_session')))
 		{
-
 			// HOOK
 			Hook::Appel("hookHeader1");
 
@@ -5744,7 +5745,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			//if ($type_session != "with_session")
 			//	echo '<script>selection()</script>'.PHP_EOL;
 			echo '<div class="configuration" >'.PHP_EOL;
-			if (@file_exists('js/'.$clock_file))
+			if (@file_exists($racine.'js/'.$clock_file))
 			{
 				echo '<div class="clock">'.PHP_EOL;
 				echo '<div id="Date">'.PHP_EOL;
@@ -5755,15 +5756,13 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			}
 			$_SESSION['chemin_retour'] = '';
 			if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
-			{
-				//$parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
 				$_SESSION['chemin_retour'] = traite_grr_url($grr_script_name)."?". $_SERVER['QUERY_STRING'];
-				echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="Français" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="Deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Español" title="Español" width="20" height="13" class="image" /></a>'.PHP_EOL;
-			}
+            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="Français" width="20" height="13" class="image" /></a>'.PHP_EOL;
+            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="Deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
+            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
+            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
+            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Español" title="Español" width="20" height="13" class="image" /></a>'.PHP_EOL;
+
 			if ($type_session == 'no_session')
 			{
 				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
