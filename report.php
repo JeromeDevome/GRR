@@ -3,7 +3,7 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-08 17:30$
+ * Dernière modification : $Date: 2021-09-26 17:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -155,7 +155,8 @@ function reporton(&$row, $dformat)
 	foreach ($overload_data as $fieldid=>$fielddata) // Pour chaque champ additionnel de la réservation
 	{
 		// if ($fielddata["confidentiel"] == 'n') filtrage trop strict
-        if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
+        //if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
+        if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel(getUserName(),$row[11],'area') > 3))
         {
 			$keyTab = array_search($fieldid, $tablOverload);
 			$AddReservation[$keyTab] = $fielddata["valeur"];
@@ -197,7 +198,7 @@ function accumulate(&$row, &$count, &$hours, $report_start, $report_end, &$room_
 		// [4]   Description,(HTML) -> e.description
 		// [5]   Type -> e.type
 		// [6]   réservé par (nom ou IP), (HTML) -> e.beneficiaire
-		// [12]  les champs additionnele -> e.overload_desc
+		// [12]  les champs additionnels -> e.overload_desc
 		$breve_description = htmlspecialchars($temp);
 		//$row[8] : Area , $row[9]:Room
 		$room = htmlspecialchars($row[8]) .$vocab["deux_points"]. "<br />" . htmlspecialchars($row[9]);
@@ -485,7 +486,8 @@ if (($summarize != 4) && ($summarize != 5))
 			foreach ($overload_fields as $fieldid=>$fielddata)
             {
                 // if ($overload_fields[$fieldname]["confidentiel"] != 'y') filtrage trop strict
-                if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
+                // if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
+                if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel(getUserName(),-1) > 3))
                 {
                     echo "<option value='addon_".$fieldid."' ";
                     if (isset($champ[$k]) && ($champ[$k] == "addon_".$fieldid))
@@ -550,7 +552,8 @@ if (($summarize != 4) && ($summarize != 5))
         foreach ($overload_fields as $fieldid=>$fielddata)
         {
             // if ($overload_fields[$fieldname]["confidentiel"] != 'y') filtrage trop strict
-            if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
+            // if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
+            if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel(getUserName(),-1,'area') > 3))
             {
                 echo "<option value='".$fieldid."' ";
                 if ($_GET["sumby"] == $fieldid)
@@ -663,7 +666,8 @@ if (isset($_GET["is_posted"]))
                     foreach ($overload_fields as $fieldid=>$fielddata)
                     {
                         // if ($overload_fields[$fieldname]["confidentiel"] != 'y') filtrage trop strict
-                        if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
+                        // if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
+                        if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel(getUserName(),-1,'area') > 3))
                         {
                             if ($champ[$k] == "addon_".$fieldid)
                                 $sql .=  grr_sql_syntax_caseless_contains_overload("e.overload_desc", $texte[$k], $fieldid, $type_recherche[$k]);
@@ -810,7 +814,8 @@ if (isset($_GET["is_posted"]))
                 foreach ($overload_fields as $fieldid=>$fielddata)
                 {
                     //if ($overload_fields[$fieldname]["confidentiel"] != 'y') // filtrage trop strict
-                    if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
+                    //if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
+                    if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel(getUserName(),-1,'area') > 3))
                     {
                         echo "<td>".$fielddata["name"]."</td>";
                         $tablOverload[$i] = $fieldid;
@@ -874,7 +879,8 @@ if (isset($_GET["is_posted"]))
                     foreach ($overload_fields as $fieldid=>$fielddata)
                     {
                         // if ($overload_fields[$fieldname]["confidentiel"] != 'y') // filtrage trop strict
-                        if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
+                        //if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
+                        if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel(getUserName(),-1,'area') > 3))
                         {
                             echo $fielddata["name"].";";
                             $tablOverload[$i] = $fieldid;
@@ -935,7 +941,8 @@ if (isset($_GET["is_posted"]))
                     foreach ($overload_data as $fieldid=>$fielddata) // Pour chaque champ additionnel de la réservation
                     {
                         // if ($fielddata["confidentiel"] == 'n')  filtrage trop strict
-                        if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
+                        //if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
+                        if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel(getUserName(),-1,'area') > 3))
                         {
                             $keyTab = array_search($fieldid, $tablOverload);
                             $AddReservation[$keyTab] = $fielddata["valeur"];
