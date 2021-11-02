@@ -3,7 +3,7 @@
  * menuHG.php
  * Menus haut et gauche calendrier & domaines & ressource & légende
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-04-24 17:49$
+ * Dernière modification : $Date: 2021-08-22 10:41$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -82,9 +82,11 @@ if ($_GET['pview'] != 1) // en mode prévisualisation de page imprimable, on n'a
     echo "<div id ='calendriersH' class='col-lg-8 col-md-6 col-xs-12'>";
     minicals($year, $month, $day, $area, $room, $pageActuel);
     echo "</div>";
-    echo "<div id ='legendeH' class='col-lg-2 col-md-3 col-xs-12'>";
-    show_colour_key($area);
-    echo "</div>";
+    if (Settings::get('legend') == '0'){
+        echo "<div id ='legendeH' class='col-lg-2 col-md-3 col-xs-12'>";
+        show_colour_key($area);
+        echo "</div>";
+    }
     echo "</div>";
     // le menu gauche
     echo "<div id='menuGauche2'>";
@@ -94,9 +96,11 @@ if ($_GET['pview'] != 1) // en mode prévisualisation de page imprimable, on n'a
     echo "<div id ='resource_selectorG'>";
     echo $selecteursG;
     echo "</div>";
-    echo "<div id ='legendeG'>";
-    show_colour_key($area);
-    echo "</div>";
+    if (Settings::get('legend') == '0'){
+        echo "<div id ='legendeG'>";
+        show_colour_key($area);
+        echo "</div>";
+    }
     echo "</div>";
 }
 // à associer à un script JS gérant l'affichage du menu haut/gauche selon les paramètres et le contexte
