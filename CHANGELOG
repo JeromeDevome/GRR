@@ -55,6 +55,28 @@ Version 3.4.2
     modification : conformité avec le schéma v4.0
     modification : séparation des date, heure de début et durée dans les rapports
     modification : calcul et présentation des pages planning
+Sous-version 3.4.2a
+    amélioration : internationalisation du formulaire de contact
+    amélioration : paramètre dans config.inc.php pour gérer l'affichage du lien vers la page des CGU depuis la page login.php
+    correctifs : liens manquants, titre planning
+    correctif : retour à la ligne inutile si description vide
+    correctif : rétablissement du pop-up de notification après une réservation
+    correctif : position du choix des ressources en mode arborescence
+    correctif : prise en compte du paramètre d'affichage de la légende des types
+    MAJ fichier de langue allemande
+    modification : si le domaine par défaut choisi par l'utilisateur est rendu inaccessible, page_accueil() renvoie vers le domaine par défaut choisi par l'administrateur
+Sous-version 3.4.2b
+    amélioration : prise en compte des sélections de fond dans admin_type_modify
+    correctif : chargement de fonctions manquantes dans changepwd
+    correctif : droits d'accès mal gérés dans edit_entry
+    correctif : erreur de type si bénéficiaire extérieur dans report
+    correctif : recherche de ressources à réservation restreinte dans le menu des pages admin
+    correctif : nom de variable dans admin_user
+    mise à jour : fichier des vacances scolaires (France)
+    modification : calcul des sélecteurs de site (devrait n'afficher que les sites dont un domaine est accessible à l'utilisateur)
+    modification : sélecteur de site (calcul des utilisateurs administrateurs potentiels)
+    modification : visibilité des champs additionnels dans la page de description d'une réservation
+
 
 -----
 --

@@ -95,6 +95,8 @@ exemple "grr")
 -  Exécuter le  fichier tables.my.sql dans cette base
 (toujours avec phpMyAdmin par exemple)
 
+Remarque : le fichier tables.my.sql est codé au format ISO. Si votre serveur est configuré pour accepter le format UTF-8, il convient de convertir tables.my.sql au format UTF-8 (sans BOM) avant de lancer la procédure d'installation.
+
 
 ******************************************************
 Après l'installation : configuration de GRR en ligne

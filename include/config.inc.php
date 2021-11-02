@@ -2,9 +2,9 @@
 /**
  * config.inc.php
  * Fichier de configuration de GRR
- * Dernière modification : $Date: 2019-03-22 15:00$
+ * Dernière modification : $Date: 2021-07-30 11:16$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -17,7 +17,7 @@
 
 /*
 Problème de sessions qui expirent prématurément :
-Chez certains prestataire qui utilisent des serveurs en clustering, il arrive que les sessions expirent aléatoirement.
+Chez certains prestataires qui utilisent des serveurs en clustering, il arrive que les sessions expirent aléatoirement.
 Une solution consiste à enregistrer les sessions PHP dans un autre répertoire que le répertoire par défaut.
 Pour cela, il suffit de décommenter la ligne suivante (en supprimant le premier caractère #)
 et en indiquant à la place de "le_chemin_de_stockage_de_la_session", l'emplacement du nouveau dossier de stockage des sessions.
@@ -61,7 +61,7 @@ date_default_timezone_set('Europe/Paris');
 
 # Changement d'heure été<->hiver
 # $correct_heure_ete_hiver = 1 => GRR prend en compte les changements d'heure
-# $correct_heure_ete_hiver = 0 => GRR ne prend en compte les changements d'heure
+# $correct_heure_ete_hiver = 0 => GRR ne prend pas en compte les changements d'heure
 # Par défaut ($correct_heure_ete_hiver non définie) GRR prend en compte les changements d'heure.
  $correct_heure_ete_hiver = 1;
 
@@ -76,7 +76,7 @@ date_default_timezone_set('Europe/Paris');
 # Mais si un navigateur est amené à se connecter au cours de la même session, à deux sites GRR différents,
 # ces deux sites GRR doivent avoir des noms de session différents.
 # Dans ce cas, il vous faudra changer la valeur GRR ci-dessous par une autre valeur.
- define('SESSION_NAME', "GRR342");
+ define('SESSION_NAME', "GRR343");
 
 # Nombre maximum (+1) de réservations autorisés lors d'une réservation avec périodicité
  $max_rep_entrys = 365 + 1;
@@ -115,11 +115,14 @@ $recherche_MAJ = 1;
 #Possibilité d'upload de module || 0: non ; 1: oui - Defaut 1
 $upload_Module = 1;
 
-# Nb de jour maximum que l'on garde les logs de connexions, 0 = aucune limite
+# Nb de jour maximum de rétention des logs de connexions, 0 = aucune limite
 $nbMaxJoursLogConnexion = 365;
 
 # paramètre provisoire pour choisir le type de calendrier à utiliser dans le menu gauche des pages plannings minicals (GRR classique): 0 ou JQuery : 1
 $useJQueryCalendar = 0;
+
+# paramètre pour afficher ou non la page des CGU à partir de la page de login (0 = non, 1 = oui)
+$affichePageCgu = 1;
 
 ##################################################
 # Cas d'une authentification via config.inc.php  #
