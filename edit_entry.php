@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-27 14:07$
+ * Dernière modification : $Date: 2021-10-22 16:24$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -445,13 +445,12 @@ $etype = 0;
 
 if (isset($id)) // édition d'une réservation existante
 {
-    /*if (!getWritable($beneficiaire, $user_name,$id))
+    if (!getWritable($user_name,$id))
     {
         start_page_w_header('','','','with_session');
-        echo "ligne 451";
         showAccessDenied($page_ret);
         exit;
-    }*/
+    }
 	//$sql = "SELECT name, beneficiaire, description, start_time, end_time, type, room_id, entry_type, repeat_id, option_reservation, jours, create_by, beneficiaire_ext, statut_entry, clef, courrier FROM ".TABLE_PREFIX."_entry WHERE id=$id";
 	$sql = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id=$id";
     $res = grr_sql_query($sql);
@@ -618,7 +617,7 @@ else // nouvelle réservation
 	$modif_option_reservation = 'y';
 	$nbparticipantmax = 0;
 }
-
+// fin nouvelle réservation
 $Err = getFormVar("Err",'string'); // utilité ?
 if ($enable_periods == 'y')
 	toPeriodString($start_min, $duration, $dur_units);
@@ -626,12 +625,12 @@ else{
     $duree_sec = $duration; // durée en secondes
     toTimeString($duration, $dur_units, true); // durée convertie en clair
 }
-if (!getWritable($beneficiaire, $user_name,$id))
+/*if (!getWritable($user_name,$id))
 {
     start_page_w_header('','','','with_session');
     showAccessDenied($page_ret);
     exit;
-}
+}*/
 $nb_areas = 0;
 $sql = "SELECT id, area_name FROM ".TABLE_PREFIX."_area";
 $res = grr_sql_query($sql);

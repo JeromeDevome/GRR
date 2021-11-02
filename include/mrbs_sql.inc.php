@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2021-08-01 18:11$
+ * Dernière modification : $Date: 2021-11-02 14:37$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -161,7 +161,7 @@ function mrbsDelEntry($user, $id, $series, $all)
 	$removed = 0;
 	foreach($res as $row)
 	{
-		if (!getWritable($row['beneficiaire'], $user, $id))
+		if (!getWritable($user, $id))
 			continue;
 		if (!verif_booking_date($user, $row['id'], $id_room, "", $date_now, $enable_periods, ""))
 			continue;
@@ -172,6 +172,7 @@ function mrbsDelEntry($user, $id, $series, $all)
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE id=" . $row['id']);
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_participants WHERE idresa=" . $row['id']);
 	}
+	grr_sql_free($res);
 	if ($repeat_id > 0 &&
 		grr_sql_query1("SELECT count(*) FROM ".TABLE_PREFIX."_entry WHERE repeat_id='".protect_data_sql($repeat_id)."'") == 0)
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_repeat WHERE id='".$repeat_id."'");

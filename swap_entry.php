@@ -3,7 +3,7 @@
  * swap_entry.php
  * Interface d'échange d'une réservation avec une autre, à choisir
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 10:55$
+ * Dernière modification : $Date: 2021-10-22 16:32$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -223,7 +223,7 @@ else { // on connaît $id de la réservation à échanger, on va en chercher une
             showAccessDenied($back);
             exit();
         }
-        if (!getWritable($info["beneficiaire"], getUserName(), $id))
+        if (!getWritable(getUserName(), $id))
         {
             showAccessDenied($back);
             exit;
