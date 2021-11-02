@@ -146,7 +146,7 @@ if (Settings::get("show_holidays") == 'Oui'){ // on n'affiche ce choix que si le
 echo "<tr>\n<td></td><td><span class='small'><a href='admin_calend_ignore.php' onclick=\"setCheckboxesGrr('formulaire', false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span></td>\n";
 echo "</tr>\n";
 echo "</table>\n";
-//echo "<form action=\"admin_calend_ignore.php\" method=\"post\" id=\"formulaire\">\n";
+
 echo "<table>\n";
 $n = Settings::get("begin_bookings");
 $end_bookings = Settings::get("end_bookings");

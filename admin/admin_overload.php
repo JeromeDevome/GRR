@@ -3,7 +3,7 @@
  * admin_overload.php
  * Interface de création/modification des champs additionnels.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:45$
+ * Dernière modification : $Date: 2021-10-16 13:47$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -210,14 +210,14 @@ $html .= "<td class='CC'>".get_vocab("champ_obligatoire")."</td>\n";
 $html .= "<td class='CC'><span class='small'>".get_vocab("affiche_dans_les_vues")."</span></td>\n";
 $html .= "<td class='CC'><span class='small'>".get_vocab("affiche_dans_les_mails")."</span></td>\n";
 $html .= "<td class='CC'>".get_vocab("champ_confidentiel")."</td>\n";
-$html .= "<td class='CC'><span class='small'>".get_vocab("envoy_mail_specifique")."*(1)(2)</span></td>\n";
+$html .= "<td class='CC'><span class='small'>".get_vocab("envoy_mail_specifique")."(1)(2)</span></td>\n";
 $html .= "<td class='CC'></td></tr></thead>\n";
 $html .= "\n<tbody><tr><td>";
 $html .= "<select name=\"id_area\" size=\"1\">";
 foreach ($userdomain as $key=>$value)
     $html .= "<option value=\"$key\">".$userdomain[$key]."</option>\n";
 $html .= "</select></td>\n";
-$html .= "<td><input type=\"text\" name=\"fieldname\" size=\"20\" /></td>\n";
+$html .= "<td><input type=\"text\" name=\"fieldname\" size=\"20\" pattern=\"[A-z0-9À-ž][A-z0-9À-ž ]*\" title=\"".get_vocab('alphanumeric')."\" required /></td>\n";
 $html .= "<td><select name=\"fieldtype\" size=\"1\">\n
 <option value=\"text\">".get_vocab("type_text")."</option>\n
 <option value=\"numeric\">".get_vocab("type_numeric")."</option>\n
@@ -338,31 +338,6 @@ echo "<h2>".get_vocab("admin_overload.php")."</h2>\n";
 echo $html;
 if ($ferme_table)
     echo "</table>";
-echo "<div class='tooltip' id='tooltip_affichage' style=\"display:none;\">\n";
-echo get_vocab("affiche_dans_les_vues");
-echo "</div>\n";
-echo "<div class='tooltip' id='tooltip_overload_mail' style=\"display:none;\">\n";
-echo get_vocab("affiche_dans_les_mails");
-echo "</div>\n";
-echo "<div class='tooltip' id='tooltip_obligatoire' style=\"display:none;\">\n";
-echo get_vocab("champ_obligatoire");
-echo "</div>\n";
-echo "<div class='tooltip' id='tooltip_confidentiel' style=\"display:none;\">\n";
-echo get_vocab("champ_confidentiel");
-echo "</div>\n";
-echo "<script type=\"text/javascript\">\n";
-echo "var my_tooltip_aff = new Tooltip('affichage', 'tooltip_affichage');\n";
-echo "var my_tooltip_aff = new Tooltip('overload_mail', 'tooltip_overload_mail');\n";
-echo "var my_tooltip_obli = new Tooltip('obligatoire', 'tooltip_obligatoire');\n";
-echo "var my_tooltip_obli = new Tooltip('confidentiel', 'tooltip_confidentiel');\n";
-for ($i = 1; $i <= $ind_div; $i++)
-{
-    echo "var my_tooltip_aff = new Tooltip('affichage_".$i."', 'tooltip_affichage');\n";
-    echo "var my_tooltip_aff = new Tooltip('overload_mail_".$i."', 'tooltip_overload_mail');\n";
-    echo "var my_tooltip_obli = new Tooltip('obligatoire_".$i."', 'tooltip_obligatoire');\n";
-    echo "var my_tooltip_obli = new Tooltip('confidentiel_".$i."', 'tooltip_confidentiel');\n";
-}
-echo "</script>\n";
 echo "</div>";
 end_page();
 ?>
