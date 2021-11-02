@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2021-09-01
+# Last modification : 2021-10-24
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -158,6 +158,7 @@ $vocab['all_day'] = "Toute la journée";
 $vocab['all_day2'] = "==========";
 $vocab['all_rooms'] = "Toutes les ressources";
 $vocab['all_rooms_of_area'] = "Pour toutes les ressources du domaine";
+$vocab['alphanumeric'] = "Valeur alphanumérique";
 $vocab['any_area'] = "Tous les domaines";
 $vocab['areas'] = "Domaines :";
 $vocab['attention_mail_automatique_désactive'] = "ATTENTION : l'envoi de mails automatiques est actuellement désactivé. Pour l'activer, rendez-vous dans le panneau de configuration générale.";
@@ -309,7 +310,6 @@ $vocab['delais_min_resa_room_2'] = "<b>Temps en minutes</b> en-deçà duquel l'u
 $vocab['delarea'] = "Vous devez supprimer toutes les ressources de ce domaine avant de pouvoir le supprimer.";
 $vocab['delete'] = "Supprimer";
 $vocab['deleteentry'] = "Effacer cette réservation";
-$vocab['swap_entry'] = "Echanger deux réservations";
 $vocab['deletefollowing'] = "Vous allez supprimer les réservations suivantes";
 $vocab['deleteseries'] = "Effacer la périodicité (et toutes les réservations associées)";
 $vocab['delete_booking'] = " a supprimé la réservation de ";
@@ -770,7 +770,7 @@ $vocab['reset'] = "Valeurs par défaut";
 $vocab['resolution_area'] = "Plus petit bloc réservable, en secondes (1800 secondes = 1/2 heure)";
 $vocab['ressource actuellement empruntee'] = "La ressource est actuellement empruntée.";
 $vocab['ressource empruntee non restituée'] = "Sauf erreur, la ressource suivante que vous avez empruntée n'a pas été restituée. S'il s'agit d'une erreur, veuillez ne pas tenir compte de ce courrier.";
-$vocab['ressource_temporairement_indisponible'] = "Réservations à venir";
+$vocab['ressource_temporairement_indisponible'] = "Temporairement indisponible";
 $vocab['Restauration_de_la_base_GRR'] = "Restauration de la base GRR";
 $vocab['Restaurer_la_sauvegarde'] = "Restaurer la sauvegarde";
 $vocab['restricted'] = "restreint";
@@ -1093,6 +1093,7 @@ $vocab['user_can_book'] = "peut réserver les ressources restreintes :";
 $vocab['cycle_cplt'] = "Sélectionner tous les jours du cycle";
 $vocab['nb_max_resa_form'] = "Nombre maximum de réservations par formulaire en attente (-1 si pas de restriction) :";
 $vocab['skip_entry_in_conflict'] = "Poser les nouvelles réservations sauf celle(s) en conflit";
+$vocab['swap_entry'] = "Echanger deux réservations";
 $vocab['swap_entry_confirm'] = " Etes-vous sûr de vouloir échanger la réservation ";
 $vocab['swap_entry_confirm1'] = " avec la réservation ";
 $vocab['swap_entry_choose'] = "Dans le tableau ci-dessous, cochez la ligne correspondant à la réservation que vous voulez échanger avec la réservation courante<br />puis Validez, ou Annulez pour revenir au planning.<br />";

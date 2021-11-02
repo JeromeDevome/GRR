@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2021-09-01
+# Last modification : 2021-10-15
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -157,6 +157,7 @@ $vocab['all_day'] = "Jornada completa";
 $vocab['all_day2'] = "==========";
 $vocab['all_rooms'] = "Todos los recursos";
 $vocab['all_rooms_of_area'] = "Para todos los recursos del campo";
+$vocab['alphanumeric'] = "Valeur alphanumérique";// A traduire
 $vocab['areas'] = "Campos : ";
 $vocab['attention_mail_automatique_désactive'] = "CUIDADO: se desactiva el envío de mails automáticos. Para activarlo, dirijase en el panel de configuración general.";
 $vocab['aucun autilisateur'] = "Ningún usuario dispone de privilegios";
@@ -303,7 +304,6 @@ $vocab['delais_min_resa_room_2'] = "<b>Tiempo en minutos</b> por debajo del cual
 $vocab['delarea'] = "Debe suprimir todos los recursos de este campo antes de poder suprimirlo";
 $vocab['delete'] = "Suprimir";
 $vocab['deleteentry'] = "Suprimir una reserva";
-$vocab['swap_entry'] = "Swap two entries"; // À traduire
 $vocab['deletefollowing'] = "Usted va a suprimir las reservas siguientes";
 $vocab['deleteseries'] = "Suprimir una periodicidad";
 $vocab['delete_booking'] = " suprimió la reserva de ";
@@ -327,9 +327,9 @@ $vocab['display_full_description0'] = "la descripción completa no se muestra";
 $vocab['display_full_description1'] = "la descripción completa se muestra";
 $vocab['display_full_description_msg'] = "Visualisación de la descripción completa de la reserva en las vistas jornadas, semana y mes.
 ";
-$vocab['display_info_bulle_msg'] = "Visualización y contenido de \"info-BURBUJAS\" al pasar el cursor sobre las celdas de programación";
-$vocab['display_level_email_msg1'] = "Visualisación de las direcciones mail en las fichas detalladas de reserva";
-$vocab['display_level_email_msg2'] = "Según los casos (más abajo), las direcciones mail de usuarios aparecen bajo la forma de enlaces \"mailto\" sobre los apellidos y nombres de los usuarios. Indique más abajo quién tiene acceso a esta información.";
+$vocab['display_info_bulle_msg'] = "Visualisación de las \"info-BURBUJAS\" de las reservas en las vistas jornadas, semana y mes. ";
+$vocab['display_level_email_msg1'] = "Visualisación de las direcciones mail en las fichas detalladas de reserva"; // A traduire
+$vocab['display_level_email_msg2'] = "Según los casos (más abajo), las direcciones mail de usuarios aparecen bajo la forma de enlaces \"mailto\" sobre los apellidos y nombres de los usuarios. Indique más abajo quién tiene acceso a esta información."; // A traduire
 
 $vocab['display_short_description0'] = "la breve descripción no se muestra";
 $vocab['display_short_description1'] = "la breve descripción se muestra";
@@ -1075,6 +1075,7 @@ $vocab['user_can_book'] = "can book the restricted rooms:";
 $vocab['cycle_cplt'] = "Check to select all the days in the cycle";
 $vocab['nb_max_resa_form'] = "Max. number of pending reservations via contact form (-1 if no restriction) :";
 $vocab['skip_entry_in_conflict'] = "Make new reservations except those in conflict";
+$vocab['swap_entry'] = "Swap two entries"; // À traduire
 $vocab['swap_entry_confirm'] = " Etes-vous sûr de vouloir échanger la réservation ";
 $vocab['swap_entry_confirm1'] = " avec la réservation ";
 $vocab['swap_entry_choose'] = "Dans le tableau ci-dessous, cochez la ligne correspondant à la réservation que vous voulez échanger avec la réservation courante<br />puis Validez, ou Annulez pour revenir au planning.<br />";
