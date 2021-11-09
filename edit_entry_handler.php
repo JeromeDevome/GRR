@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-10-22 16:28$
+ * Dernière modification : $Date: 2021-11-09 17:44$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -369,6 +369,8 @@ try {
         throw new Exception('erreur');
     }
     // ici on doit avoir start_time et end_time validés
+    $end_hour = date("H",$end_time);
+    $end_minute = date("i",$end_time);
     $keys = (isset($keys) && ($keys == 'y'))? 1 : 0;
     $courrier = (isset($courrier) &&($courrier == 'y'))? 1 : 0;
     $duration = str_replace(",", ".", "$duration ");
@@ -388,7 +390,7 @@ try {
             $rep_enddate = Settings::get("end_bookings");
     }
     else
-        $rep_type = 0; // ce n'est pas une série
+        $rep_type = 0; // ce n'est pas une série ou les paramètres sont incomplets
 
     if (!isset($rep_day))
         $rep_day = array();
@@ -679,7 +681,7 @@ try {
 			$send_mail_moderate = 0;
 		}
 		if ($rep_type != 0)
-		{                    //print_r($reps);print_r($ignore);die();
+		{                   // print_r($reps);print_r($ignore);die();
 			$id_first_resa = mrbsCreateRepeatingEntrys($start_time, $end_time, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $rep_month_abs1, $rep_month_abs2, $ignore);
 			if (Settings::get("automatic_mail") == 'yes')
 			{

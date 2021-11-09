@@ -67,7 +67,12 @@ Sous-version 3.4.2b
     modification : calcul des sélecteurs de site (devrait n'afficher que les sites dont un domaine est accessible à l'utilisateur)
     modification : sélecteur de site (calcul des utilisateurs administrateurs potentiels)
     modification : visibilité des champs additionnels dans la page de description d'une réservation
-
+Sous-version 3.4.2c
+    amélioration : possibilité, en cas de conflit entre réservations sur une périodicité, de poser les réservations sauf celles en conflit
+    amélioration : les noms des champs additionnels doivent être alphanumériques, les caractères diacritiques sont acceptés
+    correctifs de code divers
+    correctif : code du bandeau haut de page (l'heure et les drapeaux devraient s'afficher dans tous les cas)
+    modification : code de la fonction getWritable (transparent pour l'utilisateur)
 
 -----
 --

@@ -3,7 +3,7 @@
  * login.php
  * interface de connexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-07 18:40$
+ * Dernière modification : $Date: 2021-11-09 17:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -136,7 +136,7 @@ if ((Settings::get("Url_cacher_page_login") != "") && ((!isset($sso_super_admin)
 // echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("company"),"no_session");
 header('Content-Type: text/html; charset=utf-8');
 echo '<!DOCTYPE html>'.PHP_EOL.'<html lang="fr">';
-echo pageHead2("GRR (Gestion et Réservation de Ressources) ","no_session");
+echo pageHead2(get_vocab("mrbs").get_vocab("deux_points").Settings::get("company"),"no_session");
 echo '<body>';
 echo '<div class="center">';
 $nom_picture = "./images/".Settings::get("logo");
