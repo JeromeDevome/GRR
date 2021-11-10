@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2021-10-15
+# Last modification : 2021-11-03
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -122,6 +122,7 @@ $vocab['admin_type_explications'] = "Cuando se crea un nuevo tipo de reservas, e
 $vocab['admin_type_modify_create.php'] = "Añadido de un nuevo tipo de reserva ";
 $vocab['admin_type_modify_modify.php'] = "Modificación  de un tipo de reserva ";
 $vocab['admin_user.php'] = "Usuarios";
+$vocab['admin_user1'] = "General user rights"; // A traduire
 $vocab['admin_user_modify_create.php'] = "Añadido de un nuevo usuario";
 $vocab['admin_user_modify_modify.php'] = "Modificación de un usuario existente";
 $vocab['admin_user_mdp_facile'] = "Utilisateurs avec un mot de passe facile"; // A traduire

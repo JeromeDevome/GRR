@@ -3,7 +3,7 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-10-29 17:50$
+ * Dernière modification : $Date: 2021-11-09 17:41$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -195,7 +195,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 						$prenom_user = $tab_login["fullname"];
 					}
 				}
-				//CAS d'un LDAP avec SSO CAS ou avec SSO Lemonldap
+				//3ème cas : LDAP avec SSO CAS ou avec SSO Lemonldap
 				//on tente de récupérer des infos dans l'annuaire avant d'importer le profil dans GRR
 				else if ((Settings::get("ldap_statut") != '') && (@function_exists("ldap_connect")) && (@file_exists("include/config_ldap.inc.php")) && ($_user_ext_authentifie == 'cas'))
 				{

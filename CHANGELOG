@@ -1,11 +1,9 @@
 Bugs connus sur la version de GitHub :
  - des problèmes se produisent parfois lorsqu'on veut faire une modification/copie de réservation avec un changement de domaine
- - l'entrée des couleurs des types doit se faire dans l'ordre texte PUIS fond si on veut prendre une couleur prédéfinie -> résolu
 
 Tâches prévues :
  - modularisation de l'authentification
  - gestion des champs additionnels sur plusieurs domaines
- - fonctionnalité "participants"
  - filtrage des accès par iP élargi à ipv6
 
 -----
@@ -13,7 +11,10 @@ Tâches prévues :
 -----
 
 Version 3.4.3 RC0 (en cours de développement : pour l'installation, partez de zéro, restaurez éventuellement vos anciennes données, forcez éventuellement la mise à jour de la BDD)
-	- modification du champ REMOTE_ADDR de la table grr_log afin d'accepter les connexions depuis ipv6
+    ajout : fonctionnalité "participants"
+    correctif : l'entrée des couleurs des types par couleur prédéfinie peut se faire avant ou après le choix de la couleur du texte
+	modification : champ REMOTE_ADDR de la table grr_log afin d'accepter les connexions depuis ipv6
+
 -----
 --
 -----
@@ -76,7 +77,12 @@ Sous-version 3.4.2b
     modification : calcul des sélecteurs de site (devrait n'afficher que les sites dont un domaine est accessible à l'utilisateur)
     modification : sélecteur de site (calcul des utilisateurs administrateurs potentiels)
     modification : visibilité des champs additionnels dans la page de description d'une réservation
-
+Sous-version 3.4.2c
+    amélioration : possibilité, en cas de conflit entre réservations sur une périodicité, de poser les réservations sauf celles en conflit
+    amélioration : les noms des champs additionnels doivent être alphanumériques, les caractères diacritiques sont acceptés
+    correctifs de code divers
+    correctif : code du bandeau haut de page (l'heure et les drapeaux devraient s'afficher dans tous les cas)
+    modification : code de la fonction getWritable (transparent pour l'utilisateur)
 
 -----
 --
