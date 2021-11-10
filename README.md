@@ -2,14 +2,12 @@ GRR
 version 3.4.3 RC0, a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7
 ===================
 
-= branche de développement pour GRR 3, qui a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7.
-
 Pour une installation en production, veuillez installer la version 3.4.2.
 Si vous avez besoin des dernières modifications apportées au code de GRR, vous pouvez utiliser cette version avec les précautions d'usage (faire des sauvegardes régulières, tester les nouveautés progressivement).
 
 **Requiert :**
 
-PHP : >= 5.6 && <= 7.2, compatibilité vraisemblable avec PHP 7.3 ; nécessite au moins les modules php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml (*)
+PHP : >= 5.6 && <= 7.4, nécessite au moins les modules php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml (*)
 MySQL: > 5.4 && <= 5.6, compatibilité vraisemblable avec MySQL 5.7
 
 Site: https://grr.devome.com/

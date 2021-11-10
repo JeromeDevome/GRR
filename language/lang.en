@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2021-10-15
+# Last modification : 2021-11-03
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -130,6 +130,7 @@ $vocab['admin_type_explications'] = "By default, during the creation of a new ty
 $vocab['admin_type_modify_create.php'] = "Adding a new type of reservation";
 $vocab['admin_type_modify_modify.php'] = "Modification of a type of reservation";
 $vocab['admin_user.php'] = "Users";
+$vocab['admin_user1'] = "General user rights";
 $vocab['admin_user_modify_create.php'] = "Adding a new user";
 $vocab['admin_user_modify_modify.php'] = "Modifying an existing user";
 $vocab['admin_user_mdp_facile'] = "Users with a too easy password";
