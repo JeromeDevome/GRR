@@ -3,9 +3,9 @@
  * language.inc.php
  * Configuration de la langue
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2021-11-12 17:07$
  * @author    JeromeB & Laurent Delineau
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -408,30 +408,19 @@ function get_vocab($tag)
 function get_vocab_admin($tag)
 {
 	global $vocab, $charset_html, $unicode_encoding, $trad;
-	if (!isset($vocab[$tag]))
-	{
+	if (!isset($vocab[$tag])) {
 		$trad[$tag] = "(".$tag.")";
-	} else {
-		if ($unicode_encoding)
-		{
-			if(Settings::get("trad_".$tag) != ""){
-				//return Settings::get("trad_".$tag);
-				$trad[$tag] = Settings::get("trad_".$tag);
-			}else{
-				//return iconv($charset_html,"utf-8",$vocab[$tag]);
-				$trad[$tag] = iconv($charset_html,"utf-8",$vocab[$tag]);
+	} 
+    else {
+        if(Settings::get("trad_".$tag) != ""){
+            $trad[$tag] = Settings::get("trad_".$tag);
 			}
-		}
-		else
-		{
-			if(Settings::get("trad_".$tag) != ""){
-				//return Settings::get("trad_".$tag);
-				$trad[$tag] = Settings::get("trad_".$tag);
-			}else{
-				//return $vocab[$tag];
-				$trad[$tag] = $vocab[$tag];
-			}
-		}
+        else {
+            if ($unicode_encoding)
+                $trad[$tag] = iconv($charset_html,"utf-8",$vocab[$tag]);
+            else
+                $trad[$tag] = $vocab[$tag];
+        }
 	}
 }
 

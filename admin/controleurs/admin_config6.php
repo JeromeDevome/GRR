@@ -3,9 +3,9 @@
  * admin_config.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2020-05-07 10:10$
+ * Dernière modification : $Date: 2021-11-12 18:32$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -441,7 +441,7 @@ while ($i < count($liste_language)) {
 
 // Choix de la zone de vacances scolaires (France), uniquement si l'affichage des vacances et fériés est activé
 if (Settings::get('show_holidays') == 'Oui'){
-	$trad['dOptionVavances'] = "";
+	$trad['dOptionVacances'] = "";
     $vacances = simplexml_load_file('../vacances.xml');
     $libelle = $vacances->academies->children();
     $acad = array();
@@ -453,11 +453,11 @@ if (Settings::get('show_holidays') == 'Oui'){
     sort($acad);
 
     foreach ($acad as $key => $value) {
-        $trad['dOptionVavances'] .= '<option value="'.$value.'"';
+        $trad['dOptionVacances'] .= '<option value="'.$value.'"';
         if (Settings::get('holidays_zone') == $value) {
-            $trad['dOptionVavances'] .= ' selected';
+            $trad['dOptionVacances'] .= ' selected';
         }
-        $trad['dOptionVavances'] .= '>'.$value.'</option>'.PHP_EOL;
+        $trad['dOptionVacances'] .= '>'.$value.'</option>'.PHP_EOL;
     }
 
 }

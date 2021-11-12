@@ -151,7 +151,7 @@
 
 					<section id="liensemail">
 						<h4 class="page-header">{{ trad.display_level_email_msg1 }}</h4>
-						<p>{{ trad.display_level_email_msg2 }}</p>
+						<p>{{ trad.display_level_email_msg2 |raw}}</p>
 						<input type="radio" name="display_level_email" value="0" id="label_6a" {% if settings.display_level_email == '0' %} checked {% endif %} /> <label for="label_6a">{{ trad.visu_fiche_description0 }}</label><br>
 						<input type="radio" name="display_level_email" value="1" id="label_6b" {% if settings.display_level_email == '1' %} checked {% endif %} /> <label for="label_6b">{{ trad.visu_fiche_description1 }}</label><br>
 						<input type="radio" name="display_level_email" value="2" id="label_6c" {% if settings.display_level_email == '2' %} checked {% endif %} /> <label for="label_6c">{{ trad.visu_fiche_description2 }}</label><br>
@@ -234,7 +234,7 @@
 									<td>
 										<select class="form-control" name="holidays_zone">
 											<option>{{ trad.holidays_zone_msg }}</option>
-											{{ trad.dOptionVavances | raw }}
+											{{ trad.dOptionVacances | raw }}
 										</select>
 									</td>
 								</tr>
