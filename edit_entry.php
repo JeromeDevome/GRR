@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-10-22 16:24$
+ * Dernière modification : $Date: 2021-11-10 10:51$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -55,6 +55,7 @@ function pageHead($title,$locale) // $locale est la langue utilisée
     echo '<head>
     <meta charset="UTF-8">
 	<title>'.$title.'</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css" />';
 //    <link rel="stylesheet" href="./js/flatpickr/flatpickr.min.css">
 //    <link rel="stylesheet" href="./js/flatpickr/airbnb.css">
