@@ -3,7 +3,7 @@
  * admin_edit_room.php
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-07-08 18:17$
+ * Dernière modification : $Date: 2021-11-17 11:29$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -608,7 +608,7 @@ if ((!empty($room)) || (isset($area_id)))
     echo get_vocab("deux_points")."<br />";
     if (Settings::get("use_fckeditor") == 1)
     {
-        echo "<textarea class=\"ckeditor\" id=\"editor1\" name=\"comment_room\" rows=\"8\" cols=\"120\">\n";
+        echo "<textarea id=\"editor1\" name=\"comment_room\" rows=\"8\" cols=\"120\">\n".PHP_EOL;
         echo clean_input($row['comment_room']);
         echo "</textarea>\n";
             ?>
