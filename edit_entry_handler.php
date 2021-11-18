@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-11-10 10:12$
+ * Dernière modification : $Date: 2021-11-18 16:55$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -620,7 +620,10 @@ try {
     }
 // pas de conflit, pas d'erreur, on peut envisager de poser les réservations...
 // quelques vérifications supplémentaires
-// reprendre ligne 658 sqq
+    // reste-t-il qqch à réserver ?
+    if (empty($reps)){
+        throw new Exception('serie_vide');
+    }
     $compt_room = 0;
 	foreach ($rooms as $room_id) // vérification des quotas
 	{
@@ -683,7 +686,8 @@ try {
 		}
 		if ($rep_type != 0)
 		{                    //print_r($reps);print_r($ignore);die();
-			$id_first_resa = mrbsCreateRepeatingEntrys($start_time, $end_time, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $nbparticipantmax, $rep_month_abs1, $rep_month_abs2, $ignore);
+			$id_first_resa = grrCreateRepeatingEntrys($start_time, $end_time, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $nbparticipantmax, $rep_month_abs1, $rep_month_abs2, $reps);
+            //$id_first_resa = mrbsCreateRepeatingEntrys($start_time, $end_time, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $nbparticipantmax, $rep_month_abs1, $rep_month_abs2, $ignore);
             //mrbsCreateRepeatingEntrys($start_time, $end_time, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $rep_month_abs1, $rep_month_abs2, $ignore);
 			if (Settings::get("automatic_mail") == 'yes')
 			{
@@ -762,7 +766,7 @@ try {
 }// fin try
 catch (Exception $e){
     $ex = $e->getMessage();
-    // dans les deux cas, calcul des hidden inputs
+    // dans tous les cas, calcul des hidden inputs
     $hiddenInputs = ""; // chaîne des hidden inputs 
     foreach($form_vars as $var=>$var_type){
         if ($var_type == "array"){
@@ -825,6 +829,19 @@ catch (Exception $e){
             }
             echo '</center><br />';
         }
+        echo '<form action="./edit_entry.php" method="GET">'; // retour à la page d'édition
+        echo $hiddenInputs;
+        echo "<input class='btn btn-primary' type='submit' value='".get_vocab('returnprev')."' />";
+        echo '</form>';
+        // bouton pour abandonner
+        echo '<form action="'.$page_ret.'">';
+        echo '<input class="btn btn-warning" type="submit" value="'.get_vocab('cancel').'" />';
+        echo '</form>';
+    }
+    elseif($ex == 'serie_vide'){
+        start_page_w_header();
+        echo "<h2>" . get_vocab("sched_conflict") . "</h2>";
+        echo '<p>'.get_vocab('all_entries_in_conflict').'</p>'.PHP_EOL;
         echo '<form action="./edit_entry.php" method="GET">'; // retour à la page d'édition
         echo $hiddenInputs;
         echo "<input class='btn btn-primary' type='submit' value='".get_vocab('returnprev')."' />";

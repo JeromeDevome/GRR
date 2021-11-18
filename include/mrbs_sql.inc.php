@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2021-11-02 14:37$
+ * Dernière modification : $Date: 2021-11-18 16:33$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -726,6 +726,68 @@ function mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate
 		}
 	}
 	return $id_first_resa;//$ent;
+}
+/** grrCreateRepeatingEntrys()
+ *
+ * Creates a repeat entry in grr_repeat + all the repeating entrys in grr_entry
+ *
+ * Parameters :
+ * $starttime   - Start time of entry
+ * $endtime     - End time of entry
+ * $rep_type    - The repeat type
+ * $rep_enddate - When the repeating ends
+ * $rep_opt     - Any options associated with the entry
+ * $room_id     - Room ID
+ * $creator
+ * $beneficiaire       - beneficiaire
+ * $beneficiaire_ext - bénéficiaire extérieur
+ * $name        - Name
+ * $type        - Type (Internal/External)
+ * $description - Description
+ * $rep_num_weeks
+ * $option_reservation
+ * $overload_data
+ * $moderate
+ * $rep_jour_c  - Le jour cycle d'une réservation, si aucun 0
+ * $courrier
+ * $nbparticipantmax
+ * $rep_month_abs1, $rep_month_abs2 - X, Y dans le mode "X Y du mois"
+ * $serie       - tableau non vide des start_time des entrées de la périodicité à définir, 
+ *                issu de mrbsGetRepeatEntryList() éventuellement filtré pour traiter les chevauchements
+ *
+ * Returns:
+ *   0        - An error occured while inserting the entry
+ *   non-zero - The entry's ID
+ */
+function grrCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate, $rep_opt, $room_id, $creator, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation,$overload_data, $moderate, $rep_jour_c, $courrier, $nbparticipantmax=0, $rep_month_abs1, $rep_month_abs2, $serie)
+{
+	global $max_rep_entrys;
+	$area = mrbsGetRoomArea($room_id);
+	if ($rep_type == '7')
+	{
+		$rep_num_weeks = $rep_month_abs1;
+		$rep_opt = $rep_month_abs2;
+	}
+    $count_serie = count($serie);
+	if ($count_serie > $max_rep_entrys) // tentative de réserver trop de créneaux
+		return 0;
+	$ent = mrbsCreateRepeatEntry($starttime, $endtime, $rep_type, $rep_enddate, $rep_opt, $room_id, $creator, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks,$overload_data, $rep_jour_c, $courrier, $nbparticipantmax); // agit sur grr_repeat
+	if ($ent) // entrée créée avec succès dans grr_repeat
+	{
+		$diff = $endtime - $starttime;
+		for($i = 0; $i < $count_serie; $i++)
+		{
+			mrbsCreateSingleEntry($serie[$i], $serie[$i] + $diff, 1, $ent, $room_id, $creator, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation,$overload_data, $moderate, $rep_jour_c,"-", 0, $courrier, $nbparticipantmax);
+			$id_new_resa = grr_sql_insert_id();
+				// s'il s'agit d'une modification d'une ressource déjà modérée et acceptée : on met à jour les infos dans la table grr_entry_moderate
+			if ($moderate == 2)
+				moderate_entry_do($id_new_resa,1,"","no");
+				// On récupère l'id de la première réservation de la série et qui sera utilisé pour l'envoi d'un mail
+			if ($i == 0)
+				$id_first_resa = $id_new_resa;
+		}
+	}
+	return $id_first_resa;
 }
 /* mrbsGetEntryInfo()
  *

@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2021-10-24
+# Last modification : 2021-11-18
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -157,6 +157,7 @@ $vocab['all_areas'] = "Toutes les réservations";
 $vocab['all_but_visitors'] = "Tous (sauf visiteurs)";
 $vocab['all_day'] = "Toute la journée";
 $vocab['all_day2'] = "==========";
+$vocab['all_entries_in_conflict'] = "Toutes les demandes sont en collision : aucune réservation n'est possible";
 $vocab['all_rooms'] = "Toutes les ressources";
 $vocab['all_rooms_of_area'] = "Pour toutes les ressources du domaine";
 $vocab['alphanumeric'] = "Valeur alphanumérique";

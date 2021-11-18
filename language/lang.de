@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2021-11-12
+# Last modification : 2021-11-18
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -159,6 +159,7 @@ $vocab['all_areas'] = "Alle Reservierungen";
 $vocab['all_but_visitors'] = "Alle (ausser Besucher)";
 $vocab['all_day'] = "Den ganzen Tag";
 $vocab['all_day2'] = "==========";
+$vocab['all_entries_in_conflict'] = "All requests are in conflict: no booking is possible";
 $vocab['all_rooms'] = "Alle Ressourcen";
 $vocab['all_rooms_of_area'] = "Für alle Ressourcen im Bereich";
 $vocab['alphanumeric'] = "Alphanumeric value"; // À traduire
