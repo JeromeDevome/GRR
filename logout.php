@@ -3,9 +3,9 @@
  * logout.php
  * script de deconnexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-27 15:12$
+ * Dernière modification : $Date: 2021-11-19 15:49$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -15,11 +15,12 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-require_once("include/connect.inc.php");
-require_once("include/config.inc.php");
+include "include/connect.inc.php";
+include "include/config.inc.php";
 include "include/misc.inc.php";
+include "include/$dbsys.inc.php";
+include "include/mrbs_sql.inc.php";
 include "include/functions.inc.php";
-require_once("include/$dbsys.inc.php");
 // Settings
 require_once("./include/settings.class.php");
 //Chargement des valeurs de la table settingS
@@ -65,18 +66,15 @@ if (isset($_GET['redirect_page_accueil']) && ($_GET['redirect_page_accueil'] == 
 header('Content-Type: text/html; charset=utf-8');
 echo '<!DOCTYPE html>'.PHP_EOL.'<html lang="fr">';
 echo pageHead2(get_vocab("mrbs"),"no_session");
-?>
-<body>
-<div class="center">
-	<h1>
-		<?php
-		if (!$_GET['auto'])
-			echo (get_vocab("msg_logout1")."<br/>");
-		else
-			echo (get_vocab("msg_logout2")."<br/>");
-		?>
-	</h1>
-    <a href="login.php"><?php echo (get_vocab("msg_logout3")."<br/>"); ?></a>
-</div>
+echo "<body>".PHP_EOL;
+echo '<div class="center">'.PHP_EOL;
+echo '<h1>';
+if (!$_GET['auto'])
+	echo (get_vocab("msg_logout1")."<br/>");
+else
+	echo (get_vocab("msg_logout2")."<br/>");
+echo '</h1>'.PHP_EOL;
+echo '<a href="login.php">'.get_vocab("msg_logout3").'</a>'.PHP_EOL;
+echo '</div>
 </body>
-</html>
+</html>';

@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2021-11-18
+# Last modification : 2021-11-19
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -468,6 +468,15 @@ $vocab['Image de la ressource'] = "Imagen del recurso ";
 $vocab['importation_impossible'] = "La identificación es correcta pero la importación del perfil es imposible. Por favor señale este problema al administrador GRR";
 $vocab['in'] = "de :";
 $vocab['include'] = "Presentación de los resultados";
+$vocab['index_msg1'] = "La connexion au serveur $dbsys est établie mais certaines tables sont absentes de la base $dbDb.";
+$vocab['index_msg2'] = "La connexion au serveur $dbsys est établie mais impossible de sélectionner la base contenant les tables GRR.";
+$vocab['index_msg3'] = "Erreur de connexion au serveur $dbsys. Le fichier \"connect.inc.php\" ne contient peut-être pas les bonnes informations de connexion.";
+$vocab['index_msg4'] = "Le fichier \"connect.inc.php\" contenant les informations de connexion est introuvable.";
+$vocab['index_msg5'] = "Soit vous procédez à une mise à jour vers une nouvelle version de GRR. Dans ce cas, vous devez procéder à une mise à jour de la base de données MySql.";
+$vocab['index_msg6'] = "Mettre à jour la base Mysql";
+$vocab['index_msg7'] = "Soit l'installation de GRR n'est peut-être pas terminée. Vous pouvez procéder à une installation/réinstallation de la base.";
+$vocab['index_msg8'] = "Installer la base $dbsys";
+$vocab['index_msg9'] = "Cause inconnue.";
 $vocab['info_bulle0'] = "No hay info-burbujas";
 $vocab['info_bulle1'] = "Visualisación de los apellidos y nombres del beneficiario de la reserva";
 $vocab['info_bulle2'] = "Visualisación de la descripción completa de la reserva";

@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2021-11-18
+# Last modification : 2021-11-19
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -468,6 +468,15 @@ $vocab['Image de la ressource'] = "Bilddatei der Ressource";
 $vocab['importation_impossible'] = "Sie sind korrekt identifiziert aber es ist unmöglich, Ihr Profil zu laden. Bitte melden Sie dieses Problem dem GRR-Administrator";
 $vocab['in'] = "von:";
 $vocab['include'] = "Suchvorstellung";
+$vocab ['index_msg1'] = "The connection to the $dbsys server is established but some tables are missing from the $dbDb database.";
+$vocab ['index_msg2'] = "The connection to the $dbsys server is established but it is impossible to select the database containing the GRR tables.";
+$vocab ['index_msg3'] = "Error connecting to the server $dbsys. The file \"connect.inc.php\" may not contain the correct connection information.";
+$vocab ['index_msg4'] = "The file \"connect.inc.php\" containing the connection information could not be found.";
+$vocab ['index_msg5'] = "Either you update to a new version of GRR. In this case, you must update the MySql database.";
+$vocab ['index_msg6'] = "Update the Mysql database";
+$vocab ['index_msg7'] = "Either the installation of GRR is perhaps not finished. You can proceed to an installation/reinstallation of the database.";
+$vocab ['index_msg8'] = "Install the $dbsys database";
+$vocab ['index_msg9'] = "Unknown cause.";
 $vocab['info_bulle0'] = "kein Sprechblase";
 $vocab['info_bulle1'] = "Anzeige der Namen und Vornamen der Reservierungsautor";
 $vocab['info_bulle2'] = "Affichage de la description complète de la réservation";
