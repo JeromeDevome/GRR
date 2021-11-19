@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-11-17 11:52$
+ * Dernière modification : $Date: 2021-11-19 16:00$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
@@ -928,7 +928,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
         $result_inter .= traite_requete("ALTER TABLE `".TABLE_PREFIX."_type_area` DROP `couleur_texte`;");
 		$result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_participants (idresa int(11) NOT NULL, participant varchar(200) NOT NULL, PRIMARY KEY  (idresa,participant));");
         $result_inter .= traite_requete("INSERT INTO grr_setting (`NAME`, `VALUE`) VALUES ('cell_day', 'FVVVVFV'),('cell_month', 'VVVFFFV'),('cell_month_all', 'VVVFFFV'),('cell_month_all2', 'VFFFFFF'),('cell_week', 'FVVVVFV'),('cell_week_all', 'VVVFFFV'),('cell_year', 'VFFFFFF'),('cell_year_all', 'VFFFFFF'),('popup_day', 'VVFFFVV'),('popup_month', 'VVVVVFV'),('popup_month_all', 'VVVVVFV'),('popup_month_all2', 'VVVVVFV'),('popup_week', 'VFFFVFF'),('popup_week_all', 'VVVVVFV'),('popup_year', 'VVVVVFV'),('popup_year_all', 'VVVVVFV');");
-        $result_inter .= traite_requete("ALTER TABLE `".TABLE_PREFIX."_room` CHANGE `delais_min_resa_room` `delais_min_resa_room` MEDIUMINT NOT NULL DEFAULT '0' ";
+        $result_inter .= traite_requete("ALTER TABLE `".TABLE_PREFIX."_room` CHANGE `delais_min_resa_room` `delais_min_resa_room` MEDIUMINT NOT NULL DEFAULT '0' ;");
 
         if ($result_inter == '')
             $result .= formatresult("Ok !","<span style='color:green;'>","</span>");
