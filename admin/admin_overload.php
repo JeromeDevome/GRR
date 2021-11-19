@@ -3,7 +3,7 @@
  * admin_overload.php
  * Interface de création/modification des champs additionnels.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-10-16 13:47$
+ * Dernière modification : $Date: 2021-11-19 11:34$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -217,7 +217,7 @@ $html .= "<select name=\"id_area\" size=\"1\">";
 foreach ($userdomain as $key=>$value)
     $html .= "<option value=\"$key\">".$userdomain[$key]."</option>\n";
 $html .= "</select></td>\n";
-$html .= "<td><input type=\"text\" name=\"fieldname\" size=\"20\" pattern=\"[A-z0-9À-ž][A-z0-9À-ž ]*\" title=\"".get_vocab('alphanumeric')."\" required /></td>\n";
+$html .= "<td><input type=\"text\" name=\"fieldname\" size=\"20\" pattern=\"[A-z0-9À-ž][A-z0-9À-ž ]*\" data-toggle=\"tooltip\" title=\"".get_vocab('alphanumeric')."\" required /></td>\n";
 $html .= "<td><select name=\"fieldtype\" size=\"1\">\n
 <option value=\"text\">".get_vocab("type_text")."</option>\n
 <option value=\"numeric\">".get_vocab("type_numeric")."</option>\n
@@ -225,19 +225,19 @@ $html .= "<td><select name=\"fieldtype\" size=\"1\">\n
 <option value=\"list\">".get_vocab("type_list")."</option>\n
 </select></td>\n";
 $html .= "<td class='CC'> ";
-$html .= "<input type=\"checkbox\" id=\"obligatoire\" name=\"obligatoire\" title=\"".get_vocab("champ_obligatoire")."\" value=\"y\" />\n";
+$html .= "<input type=\"checkbox\" id=\"obligatoire\" name=\"obligatoire\" value=\"y\" />\n";
 $html .= "<input type=\"hidden\" name=\"action\" value=\"add\" /></td>\n";
 $html .= "<td class='CC'> ";
-$html .= "<input type=\"checkbox\" id=\"affichage\" name=\"affichage\" title=\"\" value=\"n\" />\n";
+$html .= "<input type=\"checkbox\" id=\"affichage\" name=\"affichage\" value=\"n\" />\n";
 $html .= "</td>\n";
 $html .= "<td class='CC'> ";
-$html .= "<input type=\"checkbox\" id=\"overload_mail\" name=\"overload_mail\" title=\"\" value=\"n\" />\n";
+$html .= "<input type=\"checkbox\" id=\"overload_mail\" name=\"overload_mail\" value=\"n\" />\n";
 $html .= "<input type=\"hidden\" name=\"action\" value=\"add\" /></td>\n";
 $html .= "<td class='CC'> ";
-$html .= "<input type=\"checkbox\" id=\"confidentiel\" name=\"confidentiel\" title=\"".get_vocab("champ_confidentiel")."\" value=\"y\" />\n";
+$html .= "<input type=\"checkbox\" id=\"confidentiel\" name=\"confidentiel\" value=\"y\" />\n";
 $html .= "<input type=\"hidden\" name=\"action\" value=\"add\" /></td>\n";
 $html .= "<td><input type=\"text\" name=\"mail_spec\" size=\"20\" /></td>\n";
-$html .= "<td><button name=\"submit\" title=\"".get_vocab('add')."\"><span class='glyphicon glyphicon-plus'></span></button></td>\n";
+$html .= "<td><button name=\"submit\" data-toggle=\"tooltip\" title=\"".get_vocab('add')."\"><span class='glyphicon glyphicon-plus'></span></button></td>\n";
 $html .= "</tr></tbody></table></form>\n"; // fin de la table "ajouter"
 $html .= "<p class='small'>(1)".get_vocab("cas_fonctionnalite_mail_actif")."<br />";
 $html .= "(2)".get_vocab("envois_mail_spec_exp")."</p>";
@@ -301,19 +301,19 @@ foreach ($userdomain as $key=>$value)
             }
             $html .= "</td>\n";
             $ind_div++;
-            $html .= "<td class='CC'><input type=\"checkbox\" id=\"obligatoire_".$ind_div."\" name=\"obligatoire\" title=\"".get_vocab("champ_obligatoire")."\" value=\"y\" ";
+            $html .= "<td class='CC'><input type=\"checkbox\" id=\"obligatoire_".$ind_div."\" name=\"obligatoire\" data-toggle=\"tooltip\" title=\"".get_vocab("champ_obligatoire")."\" value=\"y\" ";
             if ($row[3] =="y")
                 $html .= " checked=\"checked\" ";
             $html .= "/></td>\n";
-            $html .= "<td class='CC'><input type=\"checkbox\" id=\"affichage_".$ind_div."\" name=\"affichage\" title=\"".get_vocab("affiche_dans_les_vues")."\" value=\"y\" ";
+            $html .= "<td class='CC'><input type=\"checkbox\" id=\"affichage_".$ind_div."\" name=\"affichage\" data-toggle=\"tooltip\" title=\"".get_vocab("affiche_dans_les_vues")."\" value=\"y\" ";
             if ($row[5] =="y")
                 $html .= " checked=\"checked\" ";
             $html .= "/></td>\n";
-            $html .= "<td class='CC'><input type=\"checkbox\" id=\"overload_mail_".$ind_div."\" name=\"overload_mail\" title=\"".get_vocab("affiche_dans_les_mails")."\" value=\"y\" ";
+            $html .= "<td class='CC'><input type=\"checkbox\" id=\"overload_mail_".$ind_div."\" name=\"overload_mail\" data-toggle=\"tooltip\" title=\"".get_vocab("affiche_dans_les_mails")."\" value=\"y\" ";
             if ($row[6] =="y")
                 $html .= " checked=\"checked\" ";
             $html .= "/></td>\n";
-            $html .= "<td class='CC'><input type=\"checkbox\" id=\"confidentiel_".$ind_div."\" name=\"confidentiel\" title=\"".get_vocab("champ_confidentiel")."\" value=\"y\" ";
+            $html .= "<td class='CC'><input type=\"checkbox\" id=\"confidentiel_".$ind_div."\" name=\"confidentiel\" data-toggle=\"tooltip\" title=\"".get_vocab("champ_confidentiel")."\" value=\"y\" ";
             if ($row[7] =="y")
                 $html .= " checked=\"checked\" ";
             $html .= "/></td>\n";
@@ -321,10 +321,10 @@ foreach ($userdomain as $key=>$value)
             $html .= "<td class='CC'>\n";
             $html .= "<div><input type=\"hidden\" name=\"id_overload\" value=\"$row[0]\" />\n";
             $html .= "<input type=\"hidden\" name=\"action\" value=\"change\" />\n";
-            $html .= "<button title=\"".get_vocab('change')."\"><span class='glyphicon glyphicon-edit'></span></button>";
+            $html .= "<button data-toggle=\"tooltip\" title=\"".get_vocab('change')."\"><span class='glyphicon glyphicon-edit'></span></button>";
             $html .= "</div></form>\n";
             $html .= "<form method=\"post\" action=\"admin_overload.php\">\n";
-            $html .= "<div><button title=\"".get_vocab('del')."\" onclick=\"return confirmlink(this, '".addslashes(get_vocab("avertissement_suppression_champ_additionnel"))."', '".get_vocab("confirm_del")."')\"><span class='glyphicon glyphicon-trash'></span></button>\n";
+            $html .= "<div><button data-toggle=\"tooltip\" title=\"".get_vocab('del')."\" onclick=\"return confirmlink(this, '".addslashes(get_vocab("avertissement_suppression_champ_additionnel"))."', '".get_vocab("confirm_del")."')\"><span class='glyphicon glyphicon-trash'></span></button>\n";
             $html .= "<input type=\"hidden\" name=\"id_overload\" value=\"$row[0]\" />\n";
             $html .= "<input type=\"hidden\" name=\"action\" value=\"delete\" />\n";
             $html .= "</div></form></td></tr>\n";
@@ -333,11 +333,16 @@ foreach ($userdomain as $key=>$value)
 // code HTML
 start_page_w_header("", "", "", $type = "with_session");
 include "admin_col_gauche2.php";
-echo '<div class="col-md-9 col-sm-8 col-xs-12">';
+echo '<div class="col-sm-9 col-xs-12">';
 echo "<h2>".get_vocab("admin_overload.php")."</h2>\n";        
 echo $html;
 if ($ferme_table)
     echo "</table>";
 echo "</div>";
+echo "<script>
+$(document).ready(function(){
+  $('[data-toggle=\"tooltip\"]').tooltip();
+});
+</script>";
 end_page();
 ?>
