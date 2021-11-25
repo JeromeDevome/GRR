@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-11-19 15:28$
+ * Dernière modification : $Date: 2021-11-25 15:45$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5870,7 +5870,7 @@ function pageHead2($title, $page = "with_session")
 }
 
 /*
-** Fonction qui affiche le header
+** Fonction qui affiche le header = bandeau du haut de page
 */
 function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_session', $adm=0)
 {
@@ -5887,18 +5887,23 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 		// If we dont know the right date then make it up
 		if (!isset($day) || !isset($month) || !isset($year) || ($day == '') || ($month == '') || ($year == ''))
 		{
-			$date_now = time();
-			if ($date_now < Settings::get("begin_bookings"))
-				$date_ = Settings::get("begin_bookings");
-			else if ($date_now > Settings::get("end_bookings"))
-				$date_ = Settings::get("end_bookings");
-			else
-				$date_ = $date_now;
+			$date_ = time();
 			$day   = date("d",$date_);
 			$month = date("m",$date_);
 			$year  = date("Y",$date_);
 		}
-		if (!(isset($search_str)))
+        // On fabrique une date valide pour la réservation si ce n'est pas le cas
+        $date_ = mktime(0, 0, 0, $month, $day, $year);
+        if ($date_ < Settings::get("begin_bookings"))
+            $date_ = Settings::get("begin_bookings");
+        else if ($date_ > Settings::get("end_bookings"))
+            $date_ = Settings::get("end_bookings");
+        $day   = date("d",$date_);
+        $month = date("m",$date_);
+        $year  = date("Y",$date_);
+
+        echo '<div id="panel">'.PHP_EOL;
+        if (!(isset($search_str)))
 			$search_str = get_vocab("search_for");
 		if (empty($search_str))
 			$search_str = "";
@@ -5906,7 +5911,6 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 		{
 			// HOOK
 			Hook::Appel("hookHeader1");
-
 			// Génération XML
 			$generationXML = 1;
 			if ((Settings::get("export_xml_actif") == "Oui") && ($adm == 0)){
@@ -5915,17 +5919,6 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			if ((Settings::get("export_xml_plus_actif") == "Oui") && ($adm == 0)){
 				include $racine."include/generationxmlplus.php";
 			}
-
-			// On fabrique une date valide pour la réservation si ce n'est pas le cas
-			$date_ = mktime(0, 0, 0, $month, $day, $year);
-			if ($date_ < Settings::get("begin_bookings"))
-				$date_ = Settings::get("begin_bookings");
-			else if ($date_ > Settings::get("end_bookings"))
-				$date_ = Settings::get("end_bookings");
-			$day   = date("d",$date_);
-			$month = date("m",$date_);
-			$year  = date("Y",$date_);
-			echo '<div id="panel">'.PHP_EOL;
 			//Logo
 			$nom_picture = $racine."images/".Settings::get("logo");
 			if ((Settings::get("logo") != '') && (@file_exists($nom_picture)))
@@ -5983,16 +5976,16 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
             echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
             echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
             echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Español" title="Español" width="20" height="13" class="image" /></a>'.PHP_EOL;
-
+            $url = urlencode(traite_grr_url($grr_script_name).'?'.$parametres_url);
 			if ($type_session == 'no_session')
 			{
 				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
 				{
 					echo '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>'.PHP_EOL;
-					echo '<br /> <small><i><a href="login.php">'.get_vocab("connect_local").'</a></i></small>'.PHP_EOL;
+					echo '<br /> <small><i><a href="login.php?url='.$url.'">'.get_vocab("connect_local").'</a></i></small>'.PHP_EOL;
 				}
 				else {
-					echo '<br /> <a href="login.php">'.get_vocab("connect").'</a>'.PHP_EOL;
+					echo '<br /> <a href="login.php?url='.$url.'">'.get_vocab("connect").'</a>'.PHP_EOL;
 				}
 			}
 			else

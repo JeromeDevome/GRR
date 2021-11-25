@@ -3,7 +3,7 @@
  * login.php
  * interface de connexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-02-11 12:15$
+ * Dernière modification : $Date: 2021-11-25 15:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -44,8 +44,6 @@ if (isset($_POST['login']) && isset($_POST['password']))
 	$result = grr_opensession($_POST['login'], unslashes($_POST['password']));
 	// On écrit les données de session et ferme la session
 	session_write_close();
-    //echo $result;
-    //die();
 	if ($result=="2")
 	{
 		$message = get_vocab("echec_connexion_GRR");
@@ -117,7 +115,7 @@ if (isset($_POST['login']) && isset($_POST['password']))
         nettoieLogConnexion($nbMaxJoursLogConnexion);
 		if (isset($_POST['url']))
 		{
-			$url=rawurldecode($_POST['url']);
+			$url=urldecode($_POST['url']);
 			header("Location: ".$url);
 			die();
 		}
@@ -133,7 +131,7 @@ MajMysqlModeDemo();
 //si on a interdit l'acces a la page login
 if ((Settings::get("Url_cacher_page_login") != "") && ((!isset($sso_super_admin)) || ($sso_super_admin == false)) && (!isset($_GET["local"])))
 	header("Location: ./index.php");
-// echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("company"),"no_session");
+// code html
 header('Content-Type: text/html; charset=utf-8');
 echo '<!DOCTYPE html>'.PHP_EOL.'<html lang="fr">';
 echo pageHead2(get_vocab("mrbs").get_vocab("deux_points").Settings::get("company"),"no_session");
@@ -197,8 +195,8 @@ echo '	</tr>';
 echo '</table>';
 if (isset($_GET['url']))
 {
-    $url = rawurlencode($_GET['url']);
-    echo "<input type=\"hidden\" name=\"url\" value=\"".$url."\" />\n";
+    // $url = rawurlencode($_GET['url']); c'est trop tard, le passage par GET fait éclater les paramètres
+    echo "<input type=\"hidden\" name=\"url\" value=\"".$_GET['url']."\" />\n";
 }
 echo '<input type="submit" name="submit" value="'.get_vocab("OK").'" style="font-variant: small-caps;" />';
 echo '</fieldset>';
