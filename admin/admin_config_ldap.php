@@ -3,7 +3,7 @@
  * admin_config_ldap.php
  * Interface permettant la configuration de l'accès à un annuaire LDAP
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:54$
+ * Dernière modification : $Date: 2021-11-26 11:13$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -577,9 +577,9 @@ else if ($etape == 0)
         echo "<li>".encode_message_utf8(get_vocab('LDAPadresse'))." <b>: ".$ldap_adresse."</b></li>";
         echo "<li>".encode_message_utf8(get_vocab('portUtilise').get_vocab('deux_points'))." <b>".$ldap_port."</b></li>";
         if ($test_chemin == 'failed')
-            echo "<li><div class=\"alert alert-danger\" role=\"alert\">".encode_message_utf8(get_vocab(ldapPath).get_vocab('deux_points'))."<b> ".$ldap_base."</b></div></li>";
+            echo "<li><div class=\"alert alert-danger\" role=\"alert\">".encode_message_utf8(get_vocab('ldapPath').get_vocab('deux_points'))."<b> ".$ldap_base."</b></div></li>";
         else
-            echo "<li>".encode_message_utf8(get_vocab(ldapPath).get_vocab('deux_points'))."<b> ".$ldap_base."</b></li>";
+            echo "<li>".encode_message_utf8(get_vocab('ldapPath').get_vocab('deux_points'))."<b> ".$ldap_base."</b></li>";
         if ($ldap_filter!="")
             $ldap_filter_text = $ldap_filter;
         else
