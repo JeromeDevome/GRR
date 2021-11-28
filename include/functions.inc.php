@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-10-31 11:38$
+ * Dernière modification : $Date: 2021-11-19 15:28$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -6261,7 +6261,14 @@ function grrGetOverloadDescArray($ofl,$od)
     }
     return $overload_array;
 }
-
+// récupère les variables passées par GET ou POST ou bien par COOKIE, et leur affecte le type indiqué (int ou string)
+// rend NULL si la valeur recherchée n'est pas référencée
+function getFormVar($nom,$type=''){
+    $valeur = isset($_GET[$nom])? $_GET[$nom] : (isset($_POST[$nom])? $_POST[$nom] : (isset($_COOKIE['nom'])? $_COOKIE['nom'] : NULL));
+    if ((isset($valeur)) && ($type !=''))
+        settype($valeur,$type);
+    return $valeur;
+}
 // Les lignes suivantes permettent la compatibilité de GRR avec la variable register_global à off
 unset($day);
 if (isset($_GET["day"]))

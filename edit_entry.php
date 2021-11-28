@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-11-10 10:51$
+ * Dernière modification : $Date: 2021-11-19 15:26$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -83,14 +83,7 @@ function pageHead($title,$locale) // $locale est la langue utilisée
         <script src="./js/functions.js"></script>'; 
     echo '</head>';
 }
-// récupère les variables passées par GET ou POST ou bien par COOKIE, et leur affecte le type indiqué (int ou string)
-// rend NULL si la valeur recherchée n'est pas référencée
-function getFormVar($nom,$type=''){
-    $valeur = isset($_GET[$nom])? $_GET[$nom] : (isset($_POST[$nom])? $_POST[$nom] : (isset($_COOKIE['nom'])? $_COOKIE['nom'] : NULL));
-    if ((isset($valeur)) && ($type !=''))
-        settype($valeur,$type);
-    return $valeur;
-}
+
 function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
     $qui_peut_reserver_pour  = grr_sql_query1("SELECT qui_peut_reserver_pour FROM ".TABLE_PREFIX."_room WHERE id='".$id_room."'");
     $flag_qui_peut_reserver_pour = (authGetUserLevel($id_user, $id_room, "room") >= $qui_peut_reserver_pour); // accès à la ressource
