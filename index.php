@@ -2,7 +2,7 @@
 /**
  * index.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-10-15 15:15$
+ * Dernière modification : $Date: 2021-11-19 17:05$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -53,36 +53,40 @@ if ($dbsys == "mysql")
 				}
 				if ($flag == 'yes')
 				{
-					$msg = "<p>La connexion au serveur $dbsys est établie mais certaines tables sont absentes de la base $dbDb.</p>";
+					//$msg = "<p>La connexion au serveur $dbsys est établie mais certaines tables sont absentes de la base $dbDb.</p>";
+                    $msg = "<p>".get_vocab('index_msg1')."</p>";
 					$correct_install = 'no';
 				}
 			}
 			else
 			{
-				$msg = "La connexion au serveur $dbsys est établie mais impossible de sélectionner la base contenant les tables GRR.";
-				$correct_install = 'no';
+				//$msg = "La connexion au serveur $dbsys est établie mais impossible de sélectionner la base contenant les tables GRR.";
+				$msg = "<p>".get_vocab('index_msg2')."</p>";
+                $correct_install = 'no';
 			}
 		}
 		else
 		{
-			$msg = "Erreur de connexion au serveur $dbsys. Le fichier \"connect.inc.php\" ne contient peut-être pas les bonnes informations de connexion.";
-			$correct_install = 'no';
+			//$msg = "Erreur de connexion au serveur $dbsys. Le fichier \"connect.inc.php\" ne contient peut-être pas les bonnes informations de connexion.";
+			$msg = "<p>".get_vocab('index_msg3')."</p>";
+            $correct_install = 'no';
 		}
 	}
 	else
 	{
-		$msg = "Le fichier \"connect.inc.php\" contenant les informations de connexion est introuvable.";
-		$correct_install = 'no';
+		//$msg = "Le fichier \"connect.inc.php\" contenant les informations de connexion est introuvable.";
+		$msg = "<p>".get_vocab('index_msg4')."</p>";
+        $correct_install = 'no';
 	}
 	if ($correct_install == 'no')
 	{
         echo begin_page("GRR (Gestion et Réservation de Ressources) ", "no_session");
 		echo "<h1 class=\"center\">Gestion et Réservation de Ressources</h1>\n";
 		echo "<div style=\"text-align:center;\"><span style=\"color:red;font-weight:bold\">".$msg."</span>\n";
-		echo "<ul><li>Soit vous procédez à une mise à jour vers une nouvelle version de GRR. Dans ce cas, vous devez procéder à une mise à jour de la base de données MySql.<br />";
-		echo "<b><a href='./admin/admin_maj.php'>Mettre à jour la base Mysql</a></b><br /></li>";
-		echo "<li>Soit l'installation de GRR n'est peut-être pas terminée. Vous pouvez procéder à une installation/réinstallation de la base.<br />";
-		echo "<a href='./installation/install_mysql.php'>Installer la base $dbsys</a></li></ul></div>";
+		echo "<ul><li>".get_vocab('index_msg5')."<br />";
+		echo "<b><a href='./admin/admin_maj.php'>".get_vocab('index_msg6')."</a></b><br /></li>";
+		echo "<li>".get_vocab('index_msg7')."<br />";
+		echo "<a href='./installation/install_mysql.php'>".get_vocab('index_msg8')."</a></li></ul></div>";
 		echo "</body>";
         echo "</html>";
         die();
@@ -149,7 +153,7 @@ if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statu
 	else if ($result != "1")
 	{
 		$message = get_vocab("echec_connexion_GRR");
-		$message .= "<br />Cause inconnue.";
+		$message .= "<br />".get_vocab('index_msg9');
 	}
 
 	if ($message != '')
@@ -202,7 +206,7 @@ else if ((Settings::get('sso_statut') == 'lemon_visiteur') || (Settings::get('ss
 	else if ($result != "1")
 	{
 		$message = get_vocab("echec_connexion_GRR");
-		$message .= "<br />Cause inconnue.";
+		$message .= "<br />".get_vocab('index_msg9');
 	}
 	if ($message != '')
 	{
@@ -279,13 +283,13 @@ else if (Settings::get('sso_statut') == 'lcs')
 	}
 	else
 	{
-		// L'utilisateur n'a pas été identifié'
+		// L'utilisateur n'a pas été identifié
 		if (Settings::get("authentification_obli") == 1)
 		{
 			// authentification obligatoire, l'utilisateur est renvoyé vers une page de connexion
 			require_once("include/session.inc.php");
 			grr_closeSession($_GET['auto']);
-			header("Location:".LCS_PAGE_AUTHENTIF);
+			header("Location: ".LCS_PAGE_AUTHENTIF);
 		}
 		else
 			header("Location: ".htmlspecialchars_decode(page_accueil())."");
@@ -383,7 +387,7 @@ if ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_sta
 	else if ($result != "1")
 	{
 		$message = get_vocab("echec_connexion_GRR");
-		$message .= "<br />Cause inconnue.";
+		$message .= "<br />".get_vocab('index_msg9');
 	}
 	if ($message != '')
 	{
@@ -400,7 +404,7 @@ else if ((Settings::get('sso_statut') == 'http_visiteur') || (Settings::get('sso
 	// header('WWW-Authenticate: Basic realm="..."'); et header('HTTP/1.0 401 Unauthorized');
 	// Mais ces fonctions ne sont disponibles que si PHP est exécuté comme module Apache,
 	// et non pas sous la forme d'un CGI.
-	// Si PHP est en mode cgi il faut utiliser une réecriture de l'url vie le module rewrite de apache :
+	// Si PHP est en mode cgi il faut utiliser une réecriture de l'url via le module rewrite de apache :
 	// Vous devez créer un fichier .htaccess ayant comme contenu
 	//  <IfModule mod_rewrite.c>
 	//  RewriteEngine on
@@ -422,8 +426,7 @@ else if ((Settings::get('sso_statut') == 'http_visiteur') || (Settings::get('sso
     // L'utilisateur est authentifié mais $_SERVER['PHP_AUTH_USER'] est vide, on tente de récupérer le login dans $_SERVER['REMOTE_USER']
 	else if (isset($_SERVER['REMOTE_USER']) && !empty($_SERVER['REMOTE_USER']))
 	{
-		// Cas ou PHP est en mode cgi
-		if (preg_match('/Basic+(.*)$/i', $_SERVER['REMOTE_USER'], $matches))
+		if (preg_match('/Basic+(.*)$/i', $_SERVER['REMOTE_USER'], $matches)) // Cas ou PHP est en mode cgi
 		{
 			// Si PHP est en mode cgi il faut utiliser une réecriture de l'url vie le module rewrite de apache :
 			// Vous devez créer un fichier .htaccess ayant comme contenu
@@ -441,9 +444,8 @@ else if ((Settings::get('sso_statut') == 'http_visiteur') || (Settings::get('sso
 			$login = strip_tags($identifiers_tab[0]);
 			// le mot de passe peut être récupéré dans strip_tags($identifiers_tab[1]) mais on n'en a pas besoin ici
 		}
-		else
+		else // Cas normal
 		{
-			// Cas normal
 			$login = clean_input($_SERVER['REMOTE_USER']);
 		}
 	}
@@ -487,7 +489,7 @@ else if ((Settings::get('sso_statut') == 'http_visiteur') || (Settings::get('sso
 	else if ($result != "1")
 	{
 		$message = get_vocab("echec_connexion_GRR");
-		$message .= "<br />Cause inconnue.";
+		$message .= "<br />".get_vocab('index_msg9');
 	}
 
 	if ($message != '')
@@ -547,7 +549,7 @@ else if (Settings::get('sso_statut') == 'joomla')
     else if ($result != "1")
 	{
 		$message = get_vocab("echec_connexion_GRR");
-		$message .= "<br />Cause inconnue.";
+		$message .= "<br />".get_vocab('index_msg9');
 	}
 	if ($message != '')
 	{
@@ -572,6 +574,7 @@ else if (Settings::get('sso_statut') == 'joomla')
         die();
     }
 }
+// authentification sur base locale (si la connexion est obligatoire)
 else
 {
 	if (Settings::get("authentification_obli") == 1)

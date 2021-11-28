@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2021-10-24
+# Last modification : 2021-11-19
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -76,7 +76,8 @@ $vocab['admin_import_users_csv1'] = "Le fichier à importer comporte une premiè
 $vocab['admin_import_users_csv10'] = "L'importation a échoué ! Veuillez vérifier le format du fichier csv.";
 $vocab['admin_import_users_csv11'] = "Aucun fichier n'a été sélectionné !";
 $vocab['admin_import_users_csv12'] = "L'utilisateur a été créé !";
-$vocab['admin_import_users_csv2'] = "<br />Le fichier d'importation doit être au format csv (séparateur : point-virgule)<br />Le fichier doit contenir les différents champs suivants :<br />--> <b>Identifiant</b> : l'identifiant de l'utilisateur<br />--> <b>Nom</b><br />--> <b>Prénom</b><br />--> <b>Mot de passe</b><br />--> <b>Adresse email</b><br />--> <b>Type d'utilisateur : quatre valeurs autorisées : \"visiteur\", \"utilisateur\", \"administrateur\", \"gestionnaire_utilisateur\"</b><br />--> <b>Statut : deux valeurs autorisées : \"actif\" ou \"inactif\"</b><br />--> <b>Type d'authentification : deux valeurs autorisées : \"local\" ou \"ext\"</b><br />--> <b>Changement de mot de passe à la prochaine connexion : deux valeurs autorisées : \"0\" = non ou \"1\" = oui</b><br />";
+$vocab['admin_import_users_csv2'] = "<br />Le fichier d'importation doit être au format csv (séparateur : point-virgule).<br />
+Les champs Nom ou Prénom peuvent comporter des accents, le fichier doit être encodé au format UTF-8.<br />Le fichier doit contenir les différents champs suivants :<br />--> <b>Identifiant</b> : l'identifiant de l'utilisateur<br />--> <b>Nom</b><br />--> <b>Prénom</b><br />--> <b>Mot de passe</b><br />--> <b>Adresse email</b><br />--> <b>Type d'utilisateur : quatre valeurs autorisées : \"visiteur\", \"utilisateur\", \"administrateur\", \"gestionnaire_utilisateur\"</b><br />--> <b>Statut : deux valeurs autorisées : \"actif\" ou \"inactif\"</b><br />--> <b>Type d'authentification : deux valeurs autorisées : \"local\" ou \"ext\"</b><br />--> <b>Changement de mot de passe à la prochaine connexion : deux valeurs autorisées : \"0\" = non ou \"1\" = oui</b><br />";
 $vocab['admin_import_users_csv3'] = "<br /><b>QUELQUES PRECISIONS :</b><br /><br /><b>Identifiant</b><br />40 caractères maximum. Il peut s'agir de n'importe quelle suite de caractères et/ou de chiffres sans espace. Le caractère _ est également autorisé. Si ce format n'est pas respecté, la suite de caractère ??? Apparaît à la place de l'identifiant. Les identifiants qui apparaissent en rouge correspondent à des noms d'utilisateurs déjà existants dans la base GRR. Les données existantes seront alors écrasées par les données présentes dans le fichier importé !<br /><br /><b>Nom</b><br />Nom de l'utilisateur. 30 caractères maximum. Il peut s'agir de n'importe quelle suite de caractères et/ou de chiffres avec éventuellement des espaces et apostrophes.<br /><br /><b>Prénom</b><br />Prénom de l'utilisateur. Même remarque que pour le nom. Les noms et prénoms qui apparaissent en bleu correspondent à des utilisateurs existant dans la base GRR et portant les mêmes noms et prénoms.<br /><br /><b>Mot de passe</b><br />Laisser vide dans le cas où le type d'authentification est \"ext\". Sinon, ".$pass_leng." caractères minimum et 30 caractères maximum.<br /><br /><b>Adresse Email</b><br />100 caractères maximum. Mettre le symbole \"-\" si pas d'adresse Email<br /><br /><b>Type d'authentification</b><br />Mettre \"local\" dans le cas général et \"ext\" s'il s'agit d'un utilisateur se connectant par l'intermédiaire d'un annuaire ldap, ou d'un système d'authentification (CAS, LCS, LemonLdap, ...)<br /><br />";
 $vocab['admin_import_users_csv4'] = "Impossible d'ouvrir le fichier CSV";
 $vocab['admin_import_users_csv5'] = "Première phase de l'importation : ";
@@ -156,6 +157,7 @@ $vocab['all_areas'] = "Toutes les réservations";
 $vocab['all_but_visitors'] = "Tous (sauf visiteurs)";
 $vocab['all_day'] = "Toute la journée";
 $vocab['all_day2'] = "==========";
+$vocab['all_entries_in_conflict'] = "Toutes les demandes sont en collision : aucune réservation n'est possible";
 $vocab['all_rooms'] = "Toutes les ressources";
 $vocab['all_rooms_of_area'] = "Pour toutes les ressources du domaine";
 $vocab['alphanumeric'] = "Valeur alphanumérique";
@@ -477,6 +479,15 @@ $vocab['Image de la ressource'] = "Image de la ressource ";
 $vocab['importation_impossible'] = "Identification correcte mais l'importation du profil est impossible. Veuillez signaler ce problème à l'administrateur GRR";
 $vocab['in'] = "de :";
 $vocab['include'] = "Présentation des résultats";
+$vocab['index_msg1'] = "La connexion au serveur $dbsys est établie mais certaines tables sont absentes de la base $dbDb.";
+$vocab['index_msg2'] = "La connexion au serveur $dbsys est établie mais impossible de sélectionner la base contenant les tables GRR.";
+$vocab['index_msg3'] = "Erreur de connexion au serveur $dbsys. Le fichier \"connect.inc.php\" ne contient peut-être pas les bonnes informations de connexion.";
+$vocab['index_msg4'] = "Le fichier \"connect.inc.php\" contenant les informations de connexion est introuvable.";
+$vocab['index_msg5'] = "Soit vous procédez à une mise à jour vers une nouvelle version de GRR. Dans ce cas, vous devez procéder à une mise à jour de la base de données MySql.";
+$vocab['index_msg6'] = "Mettre à jour la base Mysql";
+$vocab['index_msg7'] = "Soit l'installation de GRR n'est peut-être pas terminée. Vous pouvez procéder à une installation/réinstallation de la base.";
+$vocab['index_msg8'] = "Installer la base $dbsys";
+$vocab['index_msg9'] = "Cause inconnue.";
 $vocab['info_bulle0'] = "Pas d'info-bulle";
 $vocab['info_bulle1'] = "Affichage des noms et prénoms du bénéficiaire de la réservation";
 $vocab['info_bulle2'] = "Affichage de la description complète de la réservation";

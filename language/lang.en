@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2021-11-03
+# Last modification : 2021-11-19
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -84,7 +84,7 @@ $vocab['admin_import_users_csv1'] = "The file to be imported includes a heading 
 $vocab['admin_import_users_csv10'] = "Importing process has failed!";
 $vocab['admin_import_users_csv11'] = "No file selected!";
 $vocab['admin_import_users_csv12'] = "User created!";
-$vocab['admin_import_users_csv2'] = "<p>Imported file is to be in CSV format (delimiter: semicolon)<br />File is to contain the following fields:<br />--> <B>Login</B>: login-name<br />--> <B>Name</B><br />--> <B>First name</B><br />--> <B>Password</B><br />--> <B>Email address</B> (optional)<br />--> <B>User type: four authorized values: visiteur (visitor), utilisateur (user), administrateur (administrator), gestionnaire_utilisateur (user administrator)</B><br />--> <B>Status: two authorized values: \"active\" ou \"inactive\"</B><br />--> <B>Type of authentification : two authorized values: \"local\" ou \"ext\"</B><br />--> <b>Password change at next connection: two authorized values: \"0\" = no or \"1\" = yes</b><br />";
+$vocab['admin_import_users_csv2'] = "<p>Imported file is to be in CSV format (delimiter: semicolon)<br />The Last Name or First Name fields can include accents, the file must be encoded in UTF-8 format.<br />File is to contain the following fields:<br />--> <B>Login</B>: login-name<br />--> <B>Name</B><br />--> <B>First name</B><br />--> <B>Password</B><br />--> <B>Email address</B> (optional)<br />--> <B>User type: four authorized values: visiteur (visitor), utilisateur (user), administrateur (administrator), gestionnaire_utilisateur (user administrator)</B><br />--> <B>Status: two authorized values: \"active\" ou \"inactive\"</B><br />--> <B>Type of authentification : two authorized values: \"local\" ou \"ext\"</B><br />--> <b>Password change at next connection: two authorized values: \"0\" = no or \"1\" = yes</b><br />";
 $vocab['admin_import_users_csv3'] = "<p><b>SOME PRECISIONS:</b><br /><br /><b>Login-name</b><br />20 characters maximum. They can be any series of characters and/or figures without space. The character _ is also authorized. In case this format has not been respected, the following series of characters ??? appears instead of login-name. Login-names appearing in red correspond to login-names which already exist on GRR database. Existing data will then be crashed by the data which are on the imported file!<br /><br /><b>Name</b><br />User's name. 30 characters maximum. They can be any series of characters and/or figures with spaces and apostrophes.<br /><br /><b>First name</b><br />User's first name. It works in the same way as the name. Names and first names appearing in blue correspond to users who already exist in GRR database and bear the same names and first names.<br /><br /><b>Password</b><br />Leave some space if the kind of authentification is \"ext\".".$pass_leng." characters minimum and 30 characters maximum.<br /><br /><b>Email address</b><br />100 characters maximum.<br /><br /><b>Type of authentification</b><br />Put \"local\" in the general case and \"ext\" if it is about a user connecting through a ldap directory, or about a system of authentification (CAS, LCS, LemonLdap, ...)<br /><br /></p>";
 $vocab['admin_import_users_csv4'] = "File CSV can't be opened";
 $vocab['admin_import_users_csv5'] = "First phase of importation: ";
@@ -164,6 +164,7 @@ $vocab['all_areas'] = "All reservations";
 $vocab['all_but_visitors'] = "All (except visitors)";
 $vocab['all_day'] = "Full day";
 $vocab['all_day2'] = "==========";
+$vocab['all_entries_in_conflict'] = "All requests are in conflict: no booking is possible";
 $vocab['all_rooms'] = "All resources";
 $vocab['all_rooms_of_area'] = "For all the resources of the area";
 $vocab['alphanumeric'] = "Alphanumeric value";
@@ -423,7 +424,7 @@ $vocab['explain_automatic_mail1'] = "When a user <b>reserves a resource, </b>, <
 $vocab['explain_automatic_mail2'] = "Besides, when a user <b>reserves a resource</b>, <b>modifies</b> or <b>deletes</b> a reservation, some users may be informed by e-mail. For each resource, you can select one or several users who will be informed of the change:";
 $vocab['explain_automatic_mail3'] = " When a user <b>reserves a resource</b>, <b>modifies </b> or <b>deletes </b> a reservation in the name of another user, the latter (if the field e-mail was filled in) is automatically warned by e-mail.";
 $vocab['explain_backup'] = "Creation of a complete backup file of GRR database.In case of a problem on GRR database, use a tool such as PHPMYADMIN to restore database.";
-$vocab['explain_champs recherche'] = "In the case of HTTP authentication, it is possible to attempt to retrieve the names, first names and email addresses of the users using the information contained in the \ $ _ SERVER table and transmitted by the authentication system. <br /> <br /> For example, if \ $ _ SERVER [\"sn \"] contains the name of the user, indicate \"sn \" in the first field below. Likewise indicate \"givenName \" in the second line if \$ _ SERVER [\"givenName \"] contains the first name and indicate \"mail \" in the third line if \ $ _ SERVER [\"mail \"] contains the mail.";
+$vocab['explain_champs recherche'] = "In the case of HTTP authentication, it is possible to attempt to retrieve the names, first names and email addresses of the users using the information contained in the \ $_ SERVER table and transmitted by the authentication system. <br /> <br /> For example, if \ $_ SERVER [\"sn \"] contains the name of the user, indicate \"sn \" in the first field below. Likewise indicate \"givenName \" in the second line if \$_ SERVER [\"givenName \"] contains the first name and indicate \"mail \" in the third line if \ $_ SERVER [\"mail \"] contains the mail.";
 $vocab['explain_css'] = "Select style/theme";
 $vocab['explain_default_area_and_room'] = "Area and resource by default";
 $vocab['explain_default_area_and_room_and_site'] = "Site, area and resource by default";
@@ -481,8 +482,16 @@ $vocab['Image de la ressource'] = "Image of the resource";
 $vocab['importation_impossible'] = " Correct identification but the importation of the ldap profile is impossible. Please, contatc the GRR administrator";
 $vocab['in'] = "in:";
 $vocab['include'] = "Results display";
+$vocab ['index_msg1'] = "The connection to the $dbsys server is established but some tables are missing from the $dbDb database.";
+$vocab ['index_msg2'] = "The connection to the $dbsys server is established but it is impossible to select the database containing the GRR tables.";
+$vocab ['index_msg3'] = "Error connecting to the server $dbsys. The file \"connect.inc.php\" may not contain the correct connection information.";
+$vocab ['index_msg4'] = "The file \"connect.inc.php\" containing the connection information could not be found.";
+$vocab ['index_msg5'] = "Either you update to a new version of GRR. In this case, you must update the MySql database.";
+$vocab ['index_msg6'] = "Update the Mysql database";
+$vocab ['index_msg7'] = "Either the installation of GRR is perhaps not finished. You can proceed to an installation/reinstallation of the database.";
+$vocab ['index_msg8'] = "Install the $dbsys database";
+$vocab ['index_msg9'] = "Unknown cause.";
 $vocab['info_bulle0'] = "No tooltips";
-$vocab['item_area_list_format'] = "Display in the form of buttons";
 $vocab['info_bulle1'] = "Display of names and first names of the beneficiary of the reservation";
 $vocab['info_bulle2'] = "Display of the full description of the reservation";
 $vocab['intitule_creneau'] = "Title of the time slot n°";
@@ -493,6 +502,7 @@ $vocab['ip_adress'] = "IP address";
 $vocab['ip_adr_explain'] = "<b>Notice : </b><br />If client's address IP is identical at this address, this field becomes the field by default.<br />That supposes in addition that:<br />1) the administrator did not define a field by default in the page of general configuration,<br />2) the user did not define a field by default in its account's management page";
 $vocab['imprimante_msg'] = "Printer display";
 $vocab['is_not_numeric'] = "A number is required.";
+$vocab['item_area_list_format'] = "Display in the form of buttons";
 $vocab['javascript_info_admin_disabled0'] = "Activate the javascript messages";
 $vocab['javascript_info_admin_disabled1'] = "Deactivate the javascript messages";
 $vocab['javascript_info_admin_disabled_msg'] = "Display of confirmation pop-up windows in the administration menu";
