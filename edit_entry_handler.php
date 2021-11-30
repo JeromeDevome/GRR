@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-11-30 10:27$
+ * Dernière modification : $Date: 2021-11-30 11:52$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -612,7 +612,7 @@ try {
 // pas de conflit, pas d'erreur, on peut envisager de poser les réservations...
 // quelques vérifications supplémentaires
     // reste-t-il qqch à réserver ?
-    if (empty($reps)){
+    if ($rep_type != 0 && empty($reps)){
         throw new Exception('serie_vide');
     }
     $compt_room = 0;

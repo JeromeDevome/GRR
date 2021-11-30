@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-11-19 15:26$
+ * Dernière modification : $Date: 2021-11-30 12:19$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -351,7 +351,7 @@ if (!isset($day) || !isset($month) || !isset($year))
 }
 
 // l'utilisateur est-il autorisé à être ici ?
-if (isset($id)){
+if (isset($id)){ // edition d'une réservation
 	if ($info = mrbsGetEntryInfo($id)){
 		$room = $info["room_id"];
         $area = mrbsGetRoomArea($room);
@@ -360,6 +360,12 @@ if (isset($id)){
 		$area = -1;
 		$room = -1;
 	}
+}
+elseif(isset($room)){ // récupéré dans le formulaire
+    $area = mrbsGetRoomArea($room);
+}
+elseif(isset($areas)){ // récupéré dans le formulaire
+    $room = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_room WHERE area_id='".$areas."' ORDER BY order_display,room_name");
 }
 else{
 	Definition_ressource_domaine_site(); // rend éventuellement $room -> NULL ce qui pose problème ensuite
@@ -597,6 +603,7 @@ else // nouvelle réservation
 		$end_hour  = date("H",$fin);
 		$end_min = date("i",$fin);
 	}
+    $etype          = isset($type)? $type : 0;
 	$type        	= "";
 	$room_id     	= $room;
 	$id				= 0;
@@ -842,7 +849,6 @@ else
 $res = grr_sql_query($sql);
 if ($res)
 {
-	//for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
     foreach($res as $row)
 	{
 		if (authUserAccesArea($user_name,$row['id']) == 1)
