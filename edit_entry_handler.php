@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-11-18 16:55$
+ * Dernière modification : $Date: 2021-11-30 10:27$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -46,15 +46,6 @@ include "include/language.inc.php";
 // on devrait arriver sur cette page depuis edit_entry ou edit_entry_handler, 
 // il faudrait vérifier la page d'appel en pensant au timeout qui renvoie vers login.php
 
-// fonctions locales
-// récupère les variables passées par GET ou POST ou bien par COOKIE, et leur affecte le type indiqué (int ou string)
-// rend NULL si la valeur recherchée n'est pas référencée
-function getFormVar($nom,$type=''){
-    $valeur = isset($_GET[$nom])? $_GET[$nom] : (isset($_POST[$nom])? $_POST[$nom] : (isset($_COOKIE['nom'])? $_COOKIE['nom'] : NULL));
-    if ((isset($valeur)) && ($type !=''))
-        settype($valeur,$type);
-    return $valeur;
-}
 // les variables attendues et leur type
 $form_vars = array(
   'create_by'          => 'string',
