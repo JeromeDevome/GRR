@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2021-10-22 16:15$
+ * Dernière modification : $Date: 2021-12-08 17:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -161,7 +161,7 @@ function mrbsDelEntry($user, $id, $series, $all)
 	$removed = 0;
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-		if (!getWritable($user, $id))
+		if (!getWritable($user, $row[1]))
 			continue;
 		if (!verif_booking_date($user, $row[1], $id_room, "", $date_now, $enable_periods, ""))
 			continue;
