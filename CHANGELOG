@@ -73,7 +73,10 @@ Sous-version 3.4.2c
     correctifs de code divers
     correctif : code du bandeau haut de page (l'heure et les drapeaux devraient s'afficher dans tous les cas)
     modification : code de la fonction getWritable (transparent pour l'utilisateur)
-
+Sous-version 3.4.2d
+    correctifs : syntaxe et icône manquantes
+    correctif : la suppression des séries s'arrêtait au jour sélectionné
+    
 -----
 --
 -----
