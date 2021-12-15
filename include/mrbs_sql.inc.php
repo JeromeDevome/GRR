@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2021-11-18 16:33$
+ * Dernière modification : $Date: 2021-12-08 17:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -161,7 +161,7 @@ function mrbsDelEntry($user, $id, $series, $all)
 	$removed = 0;
 	foreach($res as $row)
 	{
-		if (!getWritable($user, $id))
+		if (!getWritable($user, $row['id']))
 			continue;
 		if (!verif_booking_date($user, $row['id'], $id_room, "", $date_now, $enable_periods, ""))
 			continue;
@@ -415,6 +415,11 @@ function grrExtractValueFromOverloadDesc($chaine,$id)
  * $overload_data - liste indexée des champs additionnels
  * $moderate
  * $rep_jour_c - Le jour cycle d'une réservation, si aucun 0
+ * $statut_entry
+ * $keys
+ * $courrier
+ * @param integer $entry_type
+ * @param integer $repeat_id
  * @param string $statut_entry
  * @param integer $keys
  * $courrier
