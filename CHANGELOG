@@ -4,7 +4,6 @@ Bugs connus sur la version de GitHub :
 Tâches prévues :
  - modularisation de l'authentification
  - gestion des champs additionnels sur plusieurs domaines
- - filtrage des accès par iP élargi à ipv6
 
 -----
 --
@@ -14,11 +13,16 @@ Version 3.4.3 RC0
     ajout : fonctionnalité "participants"
     correctif : l'entrée des couleurs des types par couleur prédéfinie peut se faire avant ou après le choix de la couleur du texte
 	modification : champ REMOTE_ADDR de la table grr_log afin d'accepter les connexions depuis ipv6
-Version 3.4.3 RC1 (en cours de développement : pour l'installation, partez de zéro, restaurez éventuellement vos anciennes données, forcez éventuellement la mise à jour de la BDD)
+Version 3.4.3 RC1 
     amélioration : info-bulles avec tooltip bootstrap dans admin_overload.php
     correctifs : syntaxe
     correctif : gestion des conflits entre réservations
     modification : type du champ delais_min_resa_room afin de pouvoir bloquer une ressource au moins un mois à l'avance
+Version 3.4.3 RC2 (en cours de développement : pour l'installation, partez de zéro, restaurez éventuellement vos anciennes données, forcez éventuellement la mise à jour de la BDD)
+    amélioration : filtrage des adresses iPv6 par un filtre au format CIDR
+    correctifs : syntaxe
+    correctif : la suppression d'une série s'arrêtait au jour sélectionné
+    correctifs : gestion des conflits
     
 -----
 --
