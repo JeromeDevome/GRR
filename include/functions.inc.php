@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-09-07 18:10$
+ * Dernière modification : $Date: 2021-12-21 17:19$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -2995,7 +2995,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		require_once '../vendor/phpmailer/phpmailer/src/PHPMailer.php';
 		require_once '../vendor/phpmailer/phpmailer/src/SMTP.php';
 		require_once '../vendor/phpmailer/phpmailer/src/Exception.php';
-		require_once '../vendor/phpmailer/include/mail.class.php';
+		require_once '../include/mail.class.php';
 	}
 
 	$sql = "SELECT ".TABLE_PREFIX."_entry.name,
