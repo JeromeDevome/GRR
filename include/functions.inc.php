@@ -3298,15 +3298,14 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	}
 
 	if ($action == 7){
-		$mail_admin = find_user_room($room_id);
+		// Raison admin : 1:Gestionnaire de la ressource; 2:Admin du domaine; 3:Admin site; 4:Admins
+		list($mail_admin, $raison_admin) = find_active_user_room($room_id);
 		$destinataire = "";
 		if (count($mail_admin) > 0)
 		{
 			foreach ($mail_admin as $value){
 				$destinataire .= $value.";";
 			}
-
-		//	Email::Envois($destinataire, $sujet, $message, $repondre, '', '');  semble incomplet YN le 21/02/2020
 		}
 
 		$sujet7 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
@@ -3316,11 +3315,17 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$message7 .= $vocab["ressource_empruntee_non_restituée"]."\n";
 		$message7 .= $room_name." (".$area_name.")";
 		$message7 .= "\n".$reservation;
-		$message7 = html_entity_decode($message7);
-		$destinataire7 = $beneficiaire_email.";". $destinataire_spec;
+		
+		$destinataire7 = $beneficiaire_email;
 		$repondre7 = Settings::get("webmaster_email");
         if ($expediteur ==''){$expediteur = $repondre7;}
-		Email::Envois($destinataire7, $sujet7, $message7, $expediteur, '', '', $repondre7);
+
+		$messageRaison = "\n".$vocab["mail_raison_".$raison_admin];
+		$message7h = html_entity_decode($message7.$messageRaison);
+		Email::Envois($destinataire7, $sujet7, $message7h, $expediteur, '', '', $repondre7);
+		$messageRaison = "\n".$vocab["mail_raison_5"];
+		$message7h = html_entity_decode($message7.$messageRaison);
+		Email::Envois($destinataire_spec, $sujet7, $message7h, $expediteur, '', '', $repondre7);
 	}
 	if ($action == 4)
 	{
@@ -3331,7 +3336,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	}
 	if ($action == 5)
 	{
-		$mail_admin = find_active_user_room ($room_id);
+		list($mail_admin, $raison_admin)  = find_active_user_room ($room_id);
 		$destinataire = "";
 		if (count($mail_admin) > 0){
 
@@ -3348,6 +3353,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 			$message5 .= "\n\n".$vocab['created_by'].affiche_nom_prenom_email($user_login,"","formail");
 			$message5 .= "\n".$vocab['room'].$vocab['deux_points'].$room_name." (".$area_name.") \n";
             $message5 .= "\n".affichage_champ_add_mails($id_entry)."\n";
+			$message5 .= "\n".$vocab["mail_raison_".$raison_admin];
 			$message5 = html_entity_decode($message5);
 			$repondre5 = Settings::get("webmaster_email");
             if ($expediteur ==''){$expediteur = $repondre5;}
@@ -4685,73 +4691,10 @@ function resa_est_hors_reservation2($start_time,$end_time,$area)
 		return true;
 	return false;
 }
-// trouve les utilisateurs gestionnaires de ressource
-function find_user_room ($id_room)
-{
-	$emails = array ();
-	$sql = "select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_user_room
-	where ".TABLE_PREFIX."_utilisateurs.login = ".TABLE_PREFIX."_j_user_room.login and id_room='".$id_room."'";
-	$res = grr_sql_query($sql);
-	if ($res)
-	{
-		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-		{
-			if (validate_email($row[0]))
-				$emails[] = $row[0];
-		}
-	}
-	// Si la table des emails des gestionnaires de la ressource est vide, on avertit les administrateurs du domaine
-	if (count($emails) == 0)
-	{
-		$id_area = mrbsGetAreaIdFromRoomId($id_room);
-		$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_useradmin_area
-			where ".TABLE_PREFIX."_utilisateurs.login = ".TABLE_PREFIX."_j_useradmin_area.login and ".TABLE_PREFIX."_j_useradmin_area.id_area='".$id_area."'");
-		if ($sql_admin)
-		{
-			for ($i = 0; ($row = grr_sql_row($sql_admin, $i)); $i++)
-			{
-				if (validate_email($row[0]))
-					$emails[] = $row[0];
-			}
-		}
-	}
-	// Si la table des emails des administrateurs du domaines est vide, on avertit les administrateurs des sites
-	if (Settings::get("module_multisite") == "Oui")
-	{
-		if (count($emails) == 0)
-		{
-			$id_area = mrbsGetAreaIdFromRoomId($id_room);
-			$id_site = mrbsGetAreaSite($id_area);
-			$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_useradmin_site
-				where ".TABLE_PREFIX."_utilisateurs.login = ".TABLE_PREFIX."_j_useradmin_site.login and ".TABLE_PREFIX."_j_useradmin_site.id_site='".$id_site."'");
-			if ($sql_admin)
-			{
-				for ($i = 0; ($row = grr_sql_row($sql_admin, $i)); $i++)
-				{
-					if (validate_email($row[0]))
-						$emails[] = $row[0];
-				}
-			}
-		}
-	}
-	// Si la table des emails des administrateurs des sites est vide, on avertit les administrateurs généraux
-	if (count($emails) == 0)
-	{
-		$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs where statut = 'administrateur'");
-		if ($sql_admin)
-		{
-			for ($i = 0; ($row = grr_sql_row($sql_admin, $i)); $i++)
-			{
-				if (validate_email($row[0]))
-					$emails[] = $row[0];
-			}
-		}
-	}
-	return $emails;
-}
 // trouve les utilisateurs actifs gestionnaires de ressource
 function find_active_user_room ($id_room)
 {
+	// Raison : 1:Gestionnaire de la ressource; 2:Admin du domaine; 3:Admin site; 4:Admins
 	$emails = array ();
 	$sql = "select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_user_room
 	where ".TABLE_PREFIX."_utilisateurs.etat = 'actif' AND 
@@ -4763,7 +4706,10 @@ function find_active_user_room ($id_room)
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
 			if (validate_email($row[0]))
+			{
 				$emails[] = $row[0];
+				$raison = 1;
+			}
 		}
 	}
 	// Si la table des emails des gestionnaires de la ressource est vide, on avertit les administrateurs du domaine
@@ -4778,7 +4724,10 @@ function find_active_user_room ($id_room)
 			for ($i = 0; ($row = grr_sql_row($sql_admin, $i)); $i++)
 			{
 				if (validate_email($row[0]))
+				{
 					$emails[] = $row[0];
+					$raison = 2;
+				}
 			}
 		}
 	}
@@ -4797,7 +4746,10 @@ function find_active_user_room ($id_room)
 				for ($i = 0; ($row = grr_sql_row($sql_admin, $i)); $i++)
 				{
 					if (validate_email($row[0]))
+					{
 						$emails[] = $row[0];
+						$raison = 3;
+					}
 				}
 			}
 		}
@@ -4811,11 +4763,14 @@ function find_active_user_room ($id_room)
 			for ($i = 0; ($row = grr_sql_row($sql_admin, $i)); $i++)
 			{
 				if (validate_email($row[0]))
+				{
 					$emails[] = $row[0];
+					$raison = 4;
+				}
 			}
 		}
 	}
-	return $emails;
+	return array($emails,$raison);
 }
 /** validate_email ($email)
  * Détermine si l'adresse mail en paramètre est syntaxiquement valable
