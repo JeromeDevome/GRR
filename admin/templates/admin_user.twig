@@ -40,7 +40,7 @@
 											<a href="?p=admin_user_modify&user_login={{utilisateur.1}}&display={{ trad.dDisplay }}" class="btn btn-info btn-md"><i class="icon fa fa-edit"></i></a> 
 										{% endif %}
 										{% if utilisateur.7 == 1 %}
-											<button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#modal-warning" data-texte="{{trad.confirm_del}} :" data-idsup="{{ utilisateur.1 }}"><i class="icon fa fa-trash"></i></button>
+											<button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#modalWarningSupUser" data-idsup="{{ utilisateur.1 }}"><i class="icon fa fa-trash"></i></button>
 										{% endif %}
 									</td>
 								</tr>
@@ -81,7 +81,7 @@
 		</div>
 	</div>	
 
-	<div class="modal modal-danger fade" id="modal-warning">
+	<div class="modal modal-danger fade" id="modalWarningSupUser">
 		<form action="?p=admin_user">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -91,7 +91,7 @@
                 <h4 class="modal-title">{{trad.confirm_del}}</h4>
               </div>
               <div class="modal-body">
-				<span id="modal-texte"></span> <span id="modal-idsup"></span> 
+				{{trad.confirm_del}} : <span class="modalidsup" id="modalidsup"></span> 
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">{{trad.cancel}}</button>
@@ -107,37 +107,25 @@
 	<script src="../bootstrap/AdminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 	<script src="../bootstrap/AdminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 	<script>
-		// data-* attributes to scan when populating modal values
-		var ATTRIBUTES = ['texte', 'idsup'];
-
-		$('[data-toggle="modal"]').on('click', function (e) {
-		  // convert target (e.g. the button) to jquery object
-		  var $target = $(e.target);
-		  // modal targeted by the button
-		  var modalSelector = $target.data('target');
-
-		  // iterate over each possible data-* attribute
-		  ATTRIBUTES.forEach(function (attributeName) {
-			// retrieve the dom element corresponding to current attribute
-			var $modalAttribute = $(modalSelector + ' #modal-' + attributeName);
-			var dataValue = $target.data(attributeName);
-			// if the attribute value is empty, $target.data() will return undefined.
-			// In JS boolean expressions return operands and are not coerced into
-			// booleans. That way is dataValue is undefined, the left part of the following
-			// Boolean expression evaluate to false and the empty string will be returned
-			$modalAttribute.text(dataValue || '');
-		  });
-		});
+		// Modal
+		$('#modalWarningSupUser').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget) // Button that triggered the modal
+			var idasup = button.data('idsup') // Extract info from data-* attributes
+		    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+		    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+		    var modal = $(this)
+		    modal.find('.modalidsup').text(idasup)
+		})
 
 		$(function(){
 			$('form').submit(function(e) {
 			  e.preventDefault()
 			  var $form = $(this)
-			  var v=document.getElementById('modal-idsup').innerHTML
+			  var v=document.getElementById('modalidsup').innerHTML
 			  $.post($form.attr('action'), $form.serialize())
 			  .done(function(data) {
 				$('#html').html(data);
-				$('#modal-warning').modal('hide');
+				$('#modalWarningSupUser').modal('hide');
 				document.location.href='?p=admin_user&user_del='+v+'&action_del=yes&js_confirmed=1';
 			  })
 			  .fail(function() {
@@ -146,6 +134,7 @@
 			})
 		})
 
+		// Table
 		$(function () {
 			$('#tableuser').DataTable()({
 			  'paging'      : true,
