@@ -133,6 +133,15 @@ $nbMaxJoursLogEmail = 365;
 # Algorythme de cryptage des comptes utilisateur, ne pas changer après installation sauf si reset des mots de passes. Défaut : ripemd320
 $algoPwd = 'ripemd320';
 
+##############################
+# ANTI-FLOOD - ENVOIS DE MAIL #
+##############################
+
+#init nb mail
+$gNbMail = 0;
+#nb de mail max par chargement de page || -1 aucune limite, 0 blocage d'envois de mail, > 0 Nb max de mails - Defaut 30
+$gMaxMail = 30;
+
 ##################################################
 # Cas d'une authentification via config.inc.php  #
 ##################################################
