@@ -737,9 +737,9 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
 		area = areasObj[areasObj.selectedIndex].value
         roomsObj = eval("formObj.elements['rooms[]']");
         room = roomsObj[roomsObj.selectedIndex].value;
-        insertBeneficiaires(area,room,<?php echo json_encode(getUserName())?>);
-        insertChampsAdd(area,<?php echo $id;?>,room);
-        insertTypes(area,room);
+        //insertBeneficiaires(area,room,<?php echo json_encode(getUserName())?>);
+        //insertChampsAdd(area,<?php echo $id;?>,room);
+        //insertTypes(area,room);
         
     }
 </script>
