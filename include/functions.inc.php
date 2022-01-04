@@ -2032,7 +2032,7 @@ function get_default_site()
 {
     $user = getUserName();
     if ($user != ''){
-        $id_site = grr_sql_query1("SELECT default_site FROM ".TABLE_PREFIX."_utilisateurs WHERE login =".$user);
+        $id_site = grr_sql_query1("SELECT default_site FROM ".TABLE_PREFIX."_utilisateurs WHERE login ='".$user."'");
         if ($id_site > 0){return $id_site;}
     }
     // ici l'utilisateur n'est pas reconnu ou il n'a pas de site par défaut : on passe aux informations de la table settings
