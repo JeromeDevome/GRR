@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2021-12-21 17:19$
+ * Dernière modification : $Date: 2022-01-04 11:40$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -711,15 +711,14 @@ function plages_libre_semaine_ressource($id_room, $month_week, $day_week, $year_
 	{
 		$t_end = $t + $resolution;
 		$query = "SELECT end_time FROM ".TABLE_PREFIX."_entry WHERE room_id='".$id_room."' AND start_time <= ".$t." AND end_time >= ".$t_end." ";
-		$test = grr_sql_query1($query);
-		if ($test == -1)
-		{
+		$end_time = grr_sql_query1($query);
+		if ($end_time == -1){
 			$plage_libre = true;
 			break;
-		} else{
-			$t += $test;
+		} 
+        else{
+			$t = $end_time; // avance à la fin de la réservation trouvée
 		}
-		
 	}
 	return $plage_libre ;
 }
