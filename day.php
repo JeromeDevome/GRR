@@ -3,9 +3,9 @@
  * day.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-09 10:36$
+ * Dernière modification : $Date: 2022-01-04 18:16$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -205,7 +205,13 @@ else $sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_
 $ressources = grr_sql_query($sql);
 if (!$ressources)
 	fatal_error(0, grr_sql_error());
-
+// Contrôle si il y a une ressource dans le domaine
+if (grr_sql_count($ressources) == 0)
+{
+    start_page_w_header($day,$month,$year,$type_session);
+	echo "<h1>".get_vocab("no_rooms_for_area")."</h1>";
+	die();
+}
 // pour le traitement des modules
 include $racine."/include/hook.class.php";
 // code HTML

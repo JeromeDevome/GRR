@@ -3,9 +3,9 @@
  * month_all.php
  * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-09 10:39$
+ * Dernière modification : $Date: 2022-01-04 18:14$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -122,6 +122,7 @@ if (!$ressources)
 // Contrôle si il y a une ressource dans le domaine
 if (grr_sql_count($ressources) == 0)
 {
+    start_page_w_header($day,$month,$year,$type_session);
 	echo "<h1>".get_vocab("no_rooms_for_area")."</h1>";
 	die();
 }
