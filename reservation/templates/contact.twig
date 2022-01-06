@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+	</head>
+	<body>
+		<div id="container">
+			<h1>{{trad.Envoi_d_un_courriel}}</h1>
+			{% if d.action == 'envoi' %}
+				<p style="text-align: center">{{d.resultat}}</p>
+			{% else %}
+			<form method="post" class="contact-us" id="doc" action="?p=contact">
+
+				{% if d.UserNomPrenomEmail %}
+				<p>{{trad.Message_poste_par}}{{trad.deux_points}}<b>{{d.UserNomPrenomEmail}}</b></p>
+				{% endif %}
+
+				<p>{{trad.webmaster_name}}{{trad.deux_points}}<b>{{settings.webmaster_name}}</b></p>
+				<p>{{trad.company}}{{trad.deux_points}}<b>{{settings.company}}</b></p>
+
+				<input type="hidden" name="action" value="envoi" />
+				<input type="hidden" name="cible" value="{{d.cible}}" />
+				<input type="hidden" name="type_cible" value="{{d.type_cible}}" />
+
+				<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span> {{trad.Email_pour_la_reponse}}</span>
+					<input class="form-control" type="email" name="email_reponse" value="{{d.MailReponse}}" required>
+				</div>
+				<br>
+				<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-header"></span> {{trad.Objet_du_message}}</span>
+					<input class="form-control" name="objet_message" type="text" value="" required>
+				</div>
+				<br>
+				<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-align-left"></span></span>
+					<textarea class="form-control" name="objet_message" placeholder="Votre message" cols="50" rows="5" value="" required></textarea>
+				</div>
+				<br>
+				<p style="text-align:center;">
+					<input type="submit" value="{{trad.submit}}" class="btn btn-primary" />
+				</p>
+
+			</form>
+			{% endif %}
+		</div>
+
+	</body>
+</html>
