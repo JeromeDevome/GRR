@@ -3,9 +3,9 @@
  * month_all.php
  * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-04 15:59$
+ * Dernière modification : $Date: 2022-01-11 16:02$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -21,10 +21,10 @@ $grr_script_name = "month_all.php";
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
-include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
-include "include/mincals.inc.php";
 include "include/mrbs_sql.inc.php";
+include "include/functions.inc.php";
+include "include/mincals.inc.php";
 require_once("./include/settings.class.php");
 $settings = new Settings();
 if (!$settings)
@@ -120,11 +120,11 @@ if (!$ressources)
 	fatal_error(0, grr_sql_error());
 
 // Contrôle si il y a une ressource dans le domaine
-if (grr_sql_count($ressources) == 0)
+/*if (grr_sql_count($ressources) == 0)
 {
 	echo "<h1>".get_vocab("no_rooms_for_area")."</h1>";
 	die();
-}
+}*/
 grr_sql_free($ressources);
 // options pour l'affichage
 $opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants');
@@ -372,6 +372,11 @@ echo "</caption>";
 			echo '</span>'.PHP_EOL;
 		}
 	}
+// domaine vide ?
+if (grr_sql_count($ressources) == 0){
+    echo "<tbody><tr><td><strong>".get_vocab("no_rooms_for_area")."</strong></td></tr></tbody>";
+}
+else{
 	// Début affichage première ligne (intitulé des jours)
 	echo '<thead>',PHP_EOL;
 	for ($weekcol = 0; $weekcol < 7; $weekcol++)
@@ -504,6 +509,7 @@ echo "</caption>";
         echo "</tr>";
 	}
     echo "</tbody>";
+}
 	echo '</table>',PHP_EOL;
 //Fermeture DIV Planning2
 echo " </div>";
