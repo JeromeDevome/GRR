@@ -3,9 +3,9 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-04 15:56$
+ * Dernière modification : $Date: 2022-01-11 15:48$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -22,10 +22,10 @@ $grr_script_name = "month_all2.php";
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
-include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
-include "include/mincals.inc.php";
 include "include/mrbs_sql.inc.php";
+include "include/functions.inc.php";
+include "include/mincals.inc.php";
 require_once("./include/settings.class.php");
 $settings = new Settings();
 if (!$settings)
@@ -114,12 +114,12 @@ $ressources = grr_sql_query($sql);
 if (!$ressources)
 	fatal_error(0, grr_sql_error());
 // Contrôle s'il y a une ressource dans le domaine
-if (grr_sql_count($ressources) == 0)
+/*if (grr_sql_count($ressources) == 0)
 {
     start_page_w_header($day,$month,$year,$type_session);
 	echo "<h1>".get_vocab("no_rooms_for_area")."</h1>";
 	die();
-}
+}*/
 // options pour l'affichage
 $opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants');
 $options = decode_options(Settings::get('cell_month_all2'),$opt);
@@ -415,97 +415,102 @@ echo $html_jours;
 echo "</tr></tfoot>";
 // corps du planning
 echo "<tbody>";
-$li = 0;
-for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement d'une ressource sur le mois
-{
-	$verif_acces_ressource = verif_acces_ressource($user_name, $row["id"]);
-	if ($verif_acces_ressource)
-	{
-		$acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $row["id"]);
-        $authGetUserLevel = authGetUserLevel($user_name, $row["id"]);
-        // si la ressource est restreinte, l'utilisateur peut-il réserver ?
-        $user_can_book = $row["who_can_book"] || ($authGetUserLevel > 2) || (authBooking($user_name,$row['id']));
-		echo "<tr><th >" .htmlspecialchars($row["room_name"]) ."</th>\n";
-		$li++;
-		for ($k = 1; $k <= $days_in_month; $k++)
-		{
-            $t2 = mktime(0, 0, 0,$month, $k, $year);
-			$cday = date("j", $t2);
-			$cweek = date("w", $t2);
-			if ($display_day[$cweek] == 1)
-			{
-				echo "<td > ";
-				if (est_hors_reservation(mktime(0, 0, 0, $month, $cday, $year), $area))
-				{
-					echo "<div class=\"empty_cell\">";
-					echo "<img src=\"img_grr/stop.png\" alt=\"".get_vocab("reservation_impossible")."\"  title=\"".get_vocab("reservation_impossible")."\" width=\"16\" height=\"16\" class=\"".$class_image."\"  /></div>\n";
-				}
-				else
-				{
-					if (isset($d[$cday]["id"][0])) // il y a une réservation au moins à afficher
-					{
-                        echo "<table class='pleine table-bordered'>";
-						$n = count($d[$cday]["id"]);
-						for ($i = 0; $i < $n; $i++)
-						{
-							if ($i == 11 && $n > 12)
-							{
-								echo " ...\n";
-								break;
-							}
-							for ($i = 0; $i < $n; $i++)
-							{
-								if ($d[$cday]["room"][$i] == $row["room_name"])
-								{
-                                    echo "<tr>";
-									tdcell($d[$cday]["color"][$i]);
-                                    echo "<span class=\"small_planning\">";
-									if ($acces_fiche_reservation)
-									{
-										if (Settings::get("display_level_view_entry") == 0)
-										{
-											$currentPage = 'month_all2';
-											$id =   $d[$cday]["id"][$i];
-											echo "<a title=\"".htmlspecialchars($d[$cday]["data"][$i])."\" data-width=\"675\" onclick=\"request($id,$cday,$month,$year,'all','$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight lienCellule\">" .$d[$cday]["lien"][$i]."</a>";
-										}
-										else
-										{
-											echo "<a class=\"lienCellule\" title=\"".htmlspecialchars($d[$cday]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday]["id"][$i]."&amp;page=month_all2\">"
-											.$d[$cday]["lien"][$i]. "</a>";
-										}
-									}
-									else
-										echo $d[$cday]["lien"][$i];
-                                    echo "</span></td></tr>";
-								}
-							}
-						}
-                        echo '</table>';
+if (grr_sql_count($ressources) == 0){
+	echo "<tr><td><strong>".get_vocab("no_rooms_for_area")."</strong></td></tr>";
+}
+else{
+    $li = 0;
+    for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement d'une ressource sur le mois
+    {
+        $verif_acces_ressource = verif_acces_ressource($user_name, $row["id"]);
+        if ($verif_acces_ressource)
+        {
+            $acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $row["id"]);
+            $authGetUserLevel = authGetUserLevel($user_name, $row["id"]);
+            // si la ressource est restreinte, l'utilisateur peut-il réserver ?
+            $user_can_book = $row["who_can_book"] || ($authGetUserLevel > 2) || (authBooking($user_name,$row['id']));
+            echo "<tr><th >" .htmlspecialchars($row["room_name"]) ."</th>\n";
+            $li++;
+            for ($k = 1; $k <= $days_in_month; $k++)
+            {
+                $t2 = mktime(0, 0, 0,$month, $k, $year);
+                $cday = date("j", $t2);
+                $cweek = date("w", $t2);
+                if ($display_day[$cweek] == 1)
+                {
+                    echo "<td > ";
+                    if (est_hors_reservation(mktime(0, 0, 0, $month, $cday, $year), $area))
+                    {
+                        echo "<div class=\"empty_cell\">";
+                        echo "<img src=\"img_grr/stop.png\" alt=\"".get_vocab("reservation_impossible")."\"  title=\"".get_vocab("reservation_impossible")."\" width=\"16\" height=\"16\" class=\"".$class_image."\"  /></div>\n";
                     }
-                    // la ressource est-elle accessible en réservation ? on affiche le lien vers edit_entry
-                    $date_booking = mktime(23,59,0,$month,$k,$year) ; // le jour courant à presque minuit
-                    $hour =  date("H",$date_now); // l'heure courante, par défaut
-                    if ((($authGetUserLevel > 1) || (auth_visiteur($user_name, $row["id"]) == 1)) 
-                        && (UserRoomMaxBooking($user_name, $row["id"], 1) != 0) 
-                        && verif_booking_date($user_name, -1, $row["id"], $date_booking, $date_now, $enable_periods) 
-                        && verif_delais_max_resa_room($user_name, $row["id"], $date_booking) 
-                        && verif_delais_min_resa_room($user_name, $row["id"], $date_booking, $enable_periods) 
-                        && plages_libre_semaine_ressource($row["id"], $month, $cday, $year) 
-                        && (($row["statut_room"] == "1") || (($row["statut_room"] == "0") && (authGetUserLevel($user_name,$row["id"]) > 2) )) 
-                        && $user_can_book
-                        && $_GET['pview'] != 1){
-						if ($enable_periods == 'y')
-							echo '<a href="edit_entry.php?room=',$row["id"],'&amp;period=&amp;year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;page=month_all2" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;
-						else
-							echo '<a href="edit_entry.php?room=',$row["id"],'&amp;hour=',$hour,'&amp;minute=0&amp;year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;page=month_all2" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;;
-					}
-				}
-				echo "</td>\n";
-			}
-		}
-		echo "</tr>";
-	}
-}// fin  du traitement de la ressource
+                    else
+                    {
+                        if (isset($d[$cday]["id"][0])) // il y a une réservation au moins à afficher
+                        {
+                            echo "<table class='pleine table-bordered'>";
+                            $n = count($d[$cday]["id"]);
+                            for ($i = 0; $i < $n; $i++)
+                            {
+                                if ($i == 11 && $n > 12)
+                                {
+                                    echo " ...\n";
+                                    break;
+                                }
+                                for ($i = 0; $i < $n; $i++)
+                                {
+                                    if ($d[$cday]["room"][$i] == $row["room_name"])
+                                    {
+                                        echo "<tr>";
+                                        tdcell($d[$cday]["color"][$i]);
+                                        echo "<span class=\"small_planning\">";
+                                        if ($acces_fiche_reservation)
+                                        {
+                                            if (Settings::get("display_level_view_entry") == 0)
+                                            {
+                                                $currentPage = 'month_all2';
+                                                $id =   $d[$cday]["id"][$i];
+                                                echo "<a title=\"".htmlspecialchars($d[$cday]["data"][$i])."\" data-width=\"675\" onclick=\"request($id,$cday,$month,$year,'all','$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight lienCellule\">" .$d[$cday]["lien"][$i]."</a>";
+                                            }
+                                            else
+                                            {
+                                                echo "<a class=\"lienCellule\" title=\"".htmlspecialchars($d[$cday]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday]["id"][$i]."&amp;page=month_all2\">"
+                                                .$d[$cday]["lien"][$i]. "</a>";
+                                            }
+                                        }
+                                        else
+                                            echo $d[$cday]["lien"][$i];
+                                        echo "</span></td></tr>";
+                                    }
+                                }
+                            }
+                            echo '</table>';
+                        }
+                        // la ressource est-elle accessible en réservation ? on affiche le lien vers edit_entry
+                        $date_booking = mktime(23,59,0,$month,$k,$year) ; // le jour courant à presque minuit
+                        $hour =  date("H",$date_now); // l'heure courante, par défaut
+                        if ((($authGetUserLevel > 1) || (auth_visiteur($user_name, $row["id"]) == 1)) 
+                            && (UserRoomMaxBooking($user_name, $row["id"], 1) != 0) 
+                            && verif_booking_date($user_name, -1, $row["id"], $date_booking, $date_now, $enable_periods) 
+                            && verif_delais_max_resa_room($user_name, $row["id"], $date_booking) 
+                            && verif_delais_min_resa_room($user_name, $row["id"], $date_booking, $enable_periods) 
+                            && plages_libre_semaine_ressource($row["id"], $month, $cday, $year) 
+                            && (($row["statut_room"] == "1") || (($row["statut_room"] == "0") && (authGetUserLevel($user_name,$row["id"]) > 2) )) 
+                            && $user_can_book
+                            && $_GET['pview'] != 1){
+                            if ($enable_periods == 'y')
+                                echo '<a href="edit_entry.php?room=',$row["id"],'&amp;period=&amp;year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;page=month_all2" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;
+                            else
+                                echo '<a href="edit_entry.php?room=',$row["id"],'&amp;hour=',$hour,'&amp;minute=0&amp;year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;page=month_all2" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;;
+                        }
+                    }
+                    echo "</td>\n";
+                }
+            }
+            echo "</tr>";
+        }
+    }// fin  du traitement de la ressource
+}
 grr_sql_free($ressources);
 echo "</tbody>";
 echo "</table>";
