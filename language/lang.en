@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2021-11-19
+# Last modification : 2022-01-04
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -424,7 +424,7 @@ $vocab['explain_automatic_mail1'] = "When a user <b>reserves a resource, </b>, <
 $vocab['explain_automatic_mail2'] = "Besides, when a user <b>reserves a resource</b>, <b>modifies</b> or <b>deletes</b> a reservation, some users may be informed by e-mail. For each resource, you can select one or several users who will be informed of the change:";
 $vocab['explain_automatic_mail3'] = " When a user <b>reserves a resource</b>, <b>modifies </b> or <b>deletes </b> a reservation in the name of another user, the latter (if the field e-mail was filled in) is automatically warned by e-mail.";
 $vocab['explain_backup'] = "Creation of a complete backup file of GRR database.In case of a problem on GRR database, use a tool such as PHPMYADMIN to restore database.";
-$vocab['explain_champs recherche'] = "In the case of HTTP authentication, it is possible to attempt to retrieve the names, first names and email addresses of the users using the information contained in the \ $_ SERVER table and transmitted by the authentication system. <br /> <br /> For example, if \ $_ SERVER [\"sn \"] contains the name of the user, indicate \"sn \" in the first field below. Likewise indicate \"givenName \" in the second line if \$_ SERVER [\"givenName \"] contains the first name and indicate \"mail \" in the third line if \ $_ SERVER [\"mail \"] contains the mail.";
+$vocab['explain_champs recherche'] = "In the case of HTTP authentication, it is possible to attempt to retrieve the names, first names and email addresses of the users using the information contained in the \$_SERVER table and transmitted by the authentication system. <br /> <br /> For example, if \$_SERVER [\"sn \"] contains the name of the user, indicate \"sn \" in the first field below. Likewise indicate \"givenName \" in the second line if \$_SERVER [\"givenName \"] contains the first name and indicate \"mail \" in the third line if \$_SERVER [\"mail \"] contains the mail.";
 $vocab['explain_css'] = "Select style/theme";
 $vocab['explain_default_area_and_room'] = "Area and resource by default";
 $vocab['explain_default_area_and_room_and_site'] = "Site, area and resource by default";
