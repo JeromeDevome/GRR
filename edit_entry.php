@@ -3,9 +3,9 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-11-30 12:19$
+ * Dernière modification : $Date: 2022-01-12 11:54$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -875,7 +875,8 @@ $sql .= " ORDER BY order_display,room_name";
 $res = grr_sql_query($sql);
 $len = grr_sql_count($res);
 //sélection des ressources (rooms[]) dans le domaine (area)
-echo "<select class='form-control' name=\"rooms[]\" size=\"".min($longueur_liste_ressources_max,$len)."\" multiple=\"multiple\" onchange=\"changeRoom(this.form) ;\">";
+//echo "<select class='form-control' name=\"rooms[]\" size=\"".min($longueur_liste_ressources_max,$len)."\" multiple=\"multiple\" onchange=\"changeRoom(this.form) ;\">";
+echo "<select class='form-control' name=\"rooms[]\" size=\"".min($longueur_liste_ressources_max,$len)."\" multiple=\"multiple\" >";
 if ($res)
 {
 	//for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
@@ -947,6 +948,9 @@ if($active_participant > 0){
 	echo '<label for="nbparticipantmax">'.get_vocab("nb_participant_max").get_vocab("deux_points").'</label>'.PHP_EOL;
 	echo '<input name="nbparticipantmax" type="number" value="'.$nbparticipantmax.'" > '.get_vocab("nb_participant_zero");
 	echo '</div>'.PHP_EOL;
+}
+else{
+    echo '<input name="nbparticipantmax" type="hidden" value=0 />';
 }
 // clé
 if($active_cle == 'y'){
