@@ -3,9 +3,9 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-04 15:47$
+ * Dernière modification : $Date: 2022-01-11 15:33$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -447,77 +447,82 @@ while ($month_indice < $month_end)
 	$sql = "SELECT room_name, capacity, id, description FROM ".TABLE_PREFIX."_room WHERE area_id=$area ORDER BY order_display,room_name";
 	$res = grr_sql_query($sql);
 	$li = 0;
-	for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++)
-	{
-   			// calcul de l'accès à la ressource en fonction du niveau de l'utilisateur
-		$verif_acces_ressource = verif_acces_ressource($user_name, $row[2]);
-		if ($verif_acces_ressource) // on n'affiche que les ressources accessibles
-		{
-				// Calcul du niveau d'accès aux fiches de réservation détaillées des ressources
-			$acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $row[2]);
-			echo "<tr><th>";
-			echo htmlspecialchars($row[0]) ."</th>\n";
-			$li++;
-			for ($k = 1; $k <= $days_in_month; $k++)
-			{
-                $t2 = mktime(0, 0, 0,$month_num, $k, $year_num);
-				$cday = date("j", $t2);
-				$cweek = date("w", $t2);
-				if ($display_day[$cweek] == 1) // Début condition "on n'affiche pas tous les jours de la semaine"
-				{
-					echo "<td> \n";
-					if (est_hors_reservation(mktime(0,0,0,$month_num,$cday,$year_num),$area))
-					{
-						echo "<div class=\"empty_cell\">";
-						echo "<img src=\"img_grr/stop.png\" alt=\"".get_vocab("reservation_impossible")."\"  title=\"".get_vocab("reservation_impossible")."\" width=\"16\" height=\"16\" class=\"".$class_image."\"  /></div>";
-					}
-						//Anything to display for this day?
-					elseif (isset($d[$cday][$cmonth][$cyear]["id"][0]))
-					{
-						$n = count($d[$cday][$cmonth][$cyear]["id"]);
-							//If there are 12 or fewer, show them, else show 11 and "...".
-						for ($i = 0; $i < $n; $i++)
-						{
-							if ($i == 11 && $n > 12)
-							{
-								echo " ...\n";
-								break;
-							}
-							for ($i = 0; $i < $n; $i++)
-							{
-								if ($d[$cday][$cmonth][$cyear]["room"][$i] == $row[0]) // test peu fiable car c'est l'id qui est unique YN le 26/02/2018
-								{
-										//if ($i > 0 && $i % 2 == 0) echo "<br />"; else echo " ";
-									echo "\n<table class='pleine table-bordered' ><tr>\n";
-									tdcell($d[$cday][$cmonth][$cyear]["color"][$i]);
-									if ($acces_fiche_reservation)
-									{
-										if (Settings::get("display_level_view_entry") == 0)
-										{
-											$currentPage = 'year';
-											$id =   $d[$cday][$cmonth][$cyear]["id"][$i];
-											echo "<a title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" data-width=\"675\" onclick=\"request($id,$cday,$cmonth,$cyear,'all','$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight lienCellule\">" .$d[$cday][$cmonth][$cyear]["lien"][$i]."</a>";
-										}
-										else
-										{
-											echo "<a class=\"lienCellule\" title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday][$cmonth][$cyear]["id"][$i]."&amp;page=year\">"
-											.$d[$cday][$cmonth][$cyear]["lien"][$i]. "</a>";
-										}
-									}
-									else
-										echo $d[$cday][$cmonth][$cyear]["lien"][$i];
-									echo "\n</td></tr></table>\n";
-								}
-							}
-						}
-					}
-					echo "</td>\n";
-				} // fin condition "on n'affiche pas tous les jours de la semaine"
-			} // fin boucle jours
-			echo "</tr>\n";
-		} // fin ressources accessibles
-	} // fin boucle ressources
-	echo "</table>\n";
+    $domaine_vide = (grr_sql_count($res) == 0);
+    if ($domaine_vide)
+        echo "<tbody><tr><td><strong>".get_vocab("no_rooms_for_area")."</strong></td></tr></tbody>";
+    else {
+        for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++)
+        {
+            // calcul de l'accès à la ressource en fonction du niveau de l'utilisateur
+            $verif_acces_ressource = verif_acces_ressource($user_name, $row[2]);
+            if ($verif_acces_ressource) // on n'affiche que les ressources accessibles
+            {
+                    // Calcul du niveau d'accès aux fiches de réservation détaillées des ressources
+                $acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $row[2]);
+                echo "<tr><th>";
+                echo htmlspecialchars($row[0]) ."</th>\n";
+                $li++;
+                for ($k = 1; $k <= $days_in_month; $k++)
+                {
+                    $t2 = mktime(0, 0, 0,$month_num, $k, $year_num);
+                    $cday = date("j", $t2);
+                    $cweek = date("w", $t2);
+                    if ($display_day[$cweek] == 1) // Début condition "on n'affiche pas tous les jours de la semaine"
+                    {
+                        echo "<td> \n";
+                        if (est_hors_reservation(mktime(0,0,0,$month_num,$cday,$year_num),$area))
+                        {
+                            echo "<div class=\"empty_cell\">";
+                            echo "<img src=\"img_grr/stop.png\" alt=\"".get_vocab("reservation_impossible")."\"  title=\"".get_vocab("reservation_impossible")."\" width=\"16\" height=\"16\" class=\"".$class_image."\"  /></div>";
+                        }
+                            //Anything to display for this day?
+                        elseif (isset($d[$cday][$cmonth][$cyear]["id"][0]))
+                        {
+                            $n = count($d[$cday][$cmonth][$cyear]["id"]);
+                                //If there are 12 or fewer, show them, else show 11 and "...".
+                            for ($i = 0; $i < $n; $i++)
+                            {
+                                if ($i == 11 && $n > 12)
+                                {
+                                    echo " ...\n";
+                                    break;
+                                }
+                                for ($i = 0; $i < $n; $i++)
+                                {
+                                    if ($d[$cday][$cmonth][$cyear]["room"][$i] == $row[0]) // test peu fiable car c'est l'id qui est unique YN le 26/02/2018
+                                    {
+                                            //if ($i > 0 && $i % 2 == 0) echo "<br />"; else echo " ";
+                                        echo "\n<table class='pleine table-bordered' ><tr>\n";
+                                        tdcell($d[$cday][$cmonth][$cyear]["color"][$i]);
+                                        if ($acces_fiche_reservation)
+                                        {
+                                            if (Settings::get("display_level_view_entry") == 0)
+                                            {
+                                                $currentPage = 'year';
+                                                $id =   $d[$cday][$cmonth][$cyear]["id"][$i];
+                                                echo "<a title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" data-width=\"675\" onclick=\"request($id,$cday,$cmonth,$cyear,'all','$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight lienCellule\">" .$d[$cday][$cmonth][$cyear]["lien"][$i]."</a>";
+                                            }
+                                            else
+                                            {
+                                                echo "<a class=\"lienCellule\" title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday][$cmonth][$cyear]["id"][$i]."&amp;page=year\">"
+                                                .$d[$cday][$cmonth][$cyear]["lien"][$i]. "</a>";
+                                            }
+                                        }
+                                        else
+                                            echo $d[$cday][$cmonth][$cyear]["lien"][$i];
+                                        echo "\n</td></tr></table>\n";
+                                    }
+                                }
+                            }
+                        }
+                        echo "</td>\n";
+                    } // fin condition "on n'affiche pas tous les jours de la semaine"
+                } // fin boucle jours
+                echo "</tr>\n";
+            } // fin ressources accessibles
+        } // fin boucle ressources
+	}
+    echo "</table>\n";
     grr_sql_free($res);
 	$month_indice = mktime(0, 0, 0, $month_num + 1, 1, $year_num);
 } // Fin de la boucle sur les mois
