@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-11 16:11$
+ * Dernière modification : $Date: 2022-01-12 12:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -21,10 +21,10 @@ $grr_script_name = "week_all.php";
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
-include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
-include "include/mincals.inc.php";
 include "include/mrbs_sql.inc.php";
+include "include/functions.inc.php";
+include "include/mincals.inc.php";
 require_once("./include/settings.class.php");
 $settings = new Settings();
 if (!$settings)
@@ -49,9 +49,9 @@ else
 	$class_image = "image";
 // initialisation des paramètres de temps
 $date_now = time();
-$day = (isset($_GET['day']) && is_numeric($_GET['day']))? $_GET['day'] : date("d"); 
-$month = (isset($_GET['month']) && is_numeric($_GET['month']))? $_GET['month'] : date("m");
-$year = (isset($_GET['year']) && is_numeric($_GET['year']))? $_GET['year'] : date("Y");
+$day = isset($_GET['day']) ? intval($_GET['day']) : date("d");
+$month = isset($_GET['month']) ? intval($_GET['month']) : date("m");
+$year = isset($_GET['year']) ? intval($_GET['year']) : date("Y");
 // définition de variables globales
 global $racine, $racineAd, $desactive_VerifNomPrenomUser;
 
@@ -59,7 +59,8 @@ global $racine, $racineAd, $desactive_VerifNomPrenomUser;
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES): page_accueil();
 
 // Type de session
-if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
+$user_name = getUserName();
+if ((Settings::get("authentification_obli") == 0) && ($user_name == ''))
 	$type_session = "no_session";
 else
 	$type_session = "with_session";
@@ -93,7 +94,6 @@ if (check_begin_end_bookings($day, $month, $year))
 	exit();
 }
 // Calcule les droits de l'utilisateur, si les droits sont insuffisants, l'utilisateur est averti.
-$user_name = getUserName();
 $authGetUserLevel = authGetUserLevel($user_name, -1);
 if ((($authGetUserLevel < 1) && (Settings::get("authentification_obli") == 1)) || authUserAccesArea($user_name, $area) == 0)
 {
