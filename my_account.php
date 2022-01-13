@@ -3,7 +3,7 @@
  * my_account.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-02-23 09:15$
+ * Dernière modification : $Date: 2021-12-15 11:38$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -20,8 +20,9 @@ $grr_script_name = 'my_account.php';
 include_once('include/connect.inc.php');
 include_once('include/config.inc.php');
 include_once('include/misc.inc.php');
-include_once('include/functions.inc.php');
 require_once('include/'.$dbsys.'.inc.php');
+include_once('include/mrbs_sql.inc.php');
+include_once('include/functions.inc.php');
 require_once('include/session.inc.php');
 include_once('include/settings.class.php');
 
