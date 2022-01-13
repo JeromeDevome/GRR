@@ -3,7 +3,7 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-26 17:30$
+ * Dernière modification : $Date: 2021-12-16 12:02$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -585,7 +585,7 @@ if (isset($_GET["is_posted"]))
             echo '<p style="text-align:center;">
             <a href="./report.php'. '?' . htmlspecialchars($_SERVER['QUERY_STRING']) . '&amp;pview=1" ';
             if (Settings::get("pview_new_windows") == 1)
-                echo ' target="_blank" rel="noopener noreferer"';
+                echo ' target="_blank" rel="noopener noreferrer"';
             echo ' title="'.get_vocab('ppreview').'"><span class="glyphicon glyphicon-print"></span></a>
             </p>';
         }
