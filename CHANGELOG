@@ -18,11 +18,16 @@ Version 3.4.3 RC1
     correctifs : syntaxe
     correctif : gestion des conflits entre réservations
     modification : type du champ delais_min_resa_room afin de pouvoir bloquer une ressource au moins un mois à l'avance
-Version 3.4.3 RC2 (en cours de développement : pour l'installation, partez de zéro, restaurez éventuellement vos anciennes données, forcez éventuellement la mise à jour de la BDD)
+Version 3.4.3 RC2 
     amélioration : filtrage des adresses iPv6 par un filtre au format CIDR
     correctifs : syntaxe
     correctif : la suppression d'une série s'arrêtait au jour sélectionné
     correctifs : gestion des conflits
+Version 3.4.3 RC3 (en cours de développement : pour l'installation, partez de zéro, restaurez éventuellement vos anciennes données, forcez éventuellement la mise à jour de la BDD)
+    correctifs : syntaxe
+    modification : prise en compte des heures de début et de fin dans le sélecteur (page de réservation)
+    modification : rétablissement du fichier .gitignore
+    modification : mise en page et message si domaine vide ou dont les ressources sont inaccessibles
     
 -----
 --
