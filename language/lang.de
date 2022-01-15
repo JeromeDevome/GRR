@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2021-11-19
+# Last modification : 2022-01-15
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -543,6 +543,10 @@ $vocab['logs_number'] = "Anzahl der zur Zeit vorhandenen Eintagungenen im Verbin
 $vocab['longueur_liste_ressources'] = "Hauteur maximale de la liste déroulante des ressources"; // A traduire
 $vocab['mail_admin_off'] = "Nicht per E-Mail verständigen";
 $vocab['mail_admin_on'] = "Die Benutzer per E-Mail verständigen";
+$vocab['mail_demandeur'] = "Email du demandeur";
+$vocab['mail_not_sent'] = "Votre message n'a pas pu être envoyé !";
+$vocab['mail_sending_impossible'] = "L'envoi de messages est impossible car l'adresse email du destinataire n'a pas été renseignée.";
+$vocab['mail_sent'] = "Votre message a été envoyé !";
 $vocab['mail_user'] = "E-Mail";
 $vocab['mail_user_list'] = "Liste der per E-Mail benachrichtigten Benutzer:";
 $vocab['prefixe'] = "Préfixe";  // A traduire
@@ -635,6 +639,7 @@ $vocab['noareas'] = "Kein Bereich";
 $vocab['nobody'] = "(keine)";
 $vocab['nobookings'] = "Für dieses Datum ist keine Reservierung möglich!";
 $vocab['nom beneficiaire'] = "Nom du bénéficiaire"; // A traduire
+$vocab['nom_complet_demandeur'] = "Nom et prénom du demandeur";
 $vocab['nom emprunteur'] = "Nom de l'emprunteur"; // A traduire
 $vocab['nombre_de_creneaux'] = "Zahl von Abständen";
 $vocab['nombre_jours_Jours_Cycles'] = "Nombre de jours dans un cycle"; // A traduire
@@ -670,7 +675,7 @@ $vocab['number_max'] = " Person max.";
 $vocab['number_max2'] = " Personen max.";
 $vocab['num_version'] = "Seriennummer: <b>GRR</b>";
 $vocab['num_version_title'] = "Seriennummer von GRR";
-$vocab['Objet du message'] = "Betreff der Nachricht (erforderlich)";
+$vocab['Objet du message'] = "Betreff der Nachricht";
 $vocab['of'] = " auf ";
 $vocab['OK'] = "Bestätigen";
 $vocab['older_date_log'] = "Zur Zeit enthält das Logbuch einen chronologischen Überblick seit dem ";
@@ -962,6 +967,7 @@ $vocab['visu_fiche_description5'] = "Anmeldung und \"Hauptadministrator\" Status
 $vocab['visu_fiche_description6'] = "Il faut obligatoirement être connecté et être administrateur général"; // A traduire
 $vocab['visu_fiche_description_msg'] = "Zugriff zum Beschreibungsblatt einer Ressource";
 $vocab['voir_details'] = "Einzelheiten sehen";
+$vocab['Votre_message'] = "Votre message";
 $vocab['warning_exist'] = "Der Benutzer, den Sie hinzufügen wollten, steht bereits auf der Liste!";
 $vocab['warning_message_backup'] = "Wenn eine Nachricht des Typs \"Maximum execution time exceeded\" einige Momente nach dem Starten des Sicherungsprogramm erscheint, bedeutet dies das Fehlschlagen der Sicherung!";
 $vocab['warning_message_mail'] = "Bestimmte Beherberger deaktivieren das automatische Versenden von E-Mails von ihrem Server aus. In diesem Fall arbeitet die folgende Funktion nicht.";

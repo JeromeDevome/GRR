@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2022-01-04
+# Last modification : 2022-01-15
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -557,6 +557,10 @@ $vocab['logs_number'] = "Number of entries currently present in the connection r
 $vocab['longueur_liste_ressources'] = "Maximal height of the pop-up list of the resources";
 $vocab['mail_admin_off'] = "Not inform users by email";
 $vocab['mail_admin_on'] = "Inform users by email";
+$vocab['mail_demandeur'] = "Applicant email";
+$vocab['mail_not_sent'] = "Your message could not be sent !";
+$vocab['mail_sending_impossible'] = "Sending messages is impossible because the recipient's email address has not been entered.";
+$vocab['mail_sent'] = "Your message has been sent !";
 $vocab['mail_user'] = "Email";
 $vocab['mail_user_list'] = "List of users to be informed by email:";
 $vocab['prefixe'] = "Prefix"; 
@@ -649,6 +653,7 @@ $vocab['noareas'] = "No area";
 $vocab['nobody'] = "(none)";
 $vocab['nobookings'] = "No reservation available for this date!";
 $vocab['nom beneficiaire'] = "Name of the beneficiary";
+$vocab['nom_complet_demandeur'] = "Surname and first name of the applicant";
 $vocab['nom emprunteur'] = "Name of the borrower";
 $vocab['nombre_de_creneaux'] = "Number of time slots";
 $vocab['nombre_jours_Jours_Cycles'] = "Number of days in a cycle";
@@ -684,7 +689,7 @@ $vocab['number_max'] = " person max.";
 $vocab['number_max2'] = " people max.";
 $vocab['num_version'] = "Version number: <b>GRR</b>";
 $vocab['num_version_title'] = "GRR version number";
-$vocab['Objet du message'] = "Message subject (compulsory)"; 
+$vocab['Objet du message'] = "Message subject"; 
 $vocab['of'] = " on ";
 $vocab['OK'] = "Validate";
 $vocab['older_date_log'] = "Record currently contains the history of connections since ";
@@ -976,6 +981,7 @@ $vocab['visu_fiche_description5'] = "It is necessary to be connected and to be a
 $vocab['visu_fiche_description6'] = "It is necessary to be connected and to be a general administrator";
 $vocab['visu_fiche_description_msg'] = "Who has access to the description form of a resource?";
 $vocab['voir_details'] = "View details";
+$vocab['Votre_message'] = "Your message";
 $vocab['warning_exist'] = "The user you have tried to add is already on the list!";
 $vocab['warning_message_backup'] = "If a message like \"Maximum execution time exceeded\" appears a few moments after starting saving, this means that saving has failed!";
 $vocab['warning_message_mail'] = "Some hosts disable the sending of automatic mails from their servers. In such case the following funtionality will not operate.";

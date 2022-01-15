@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2021-11-19
+# Last modification : 2022-01-15
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -558,6 +558,10 @@ $vocab['logs_number'] = "Nombre d'entrées actuellement présentes dans le journ
 $vocab['longueur_liste_ressources'] = "Hauteur maximale de la liste déroulante des ressources";
 $vocab['mail_admin_off'] = "Ne pas activer l'envoi automatique de mails";
 $vocab['mail_admin_on'] = "Activer l'envoi automatique de mails";
+$vocab['mail_demandeur'] = "Email du demandeur";
+$vocab['mail_not_sent'] = "Votre message n'a pas pu être envoyé !";
+$vocab['mail_sending_impossible'] = "L'envoi de messages est impossible car l'adresse email du destinataire n'a pas été renseignée.";
+$vocab['mail_sent'] = "Votre message a été envoyé !";
 $vocab['mail_user'] = "Email";
 $vocab['mail_user_list'] = "Liste des utilisateurs prévenus par mail :";
 $vocab['prefixe'] = "Préfixe";
@@ -653,6 +657,7 @@ $vocab['noareas'] = "Pas de domaine";
 $vocab['nobody'] = "(aucun)";
 $vocab['nobookings'] = "Pas de réservation possible pour la date :";
 $vocab['nom beneficiaire'] = "Nom du bénéficiaire";
+$vocab['nom_complet_demandeur'] = "Nom et prénom du demandeur";
 $vocab['nom emprunteur'] = "Nom de l'emprunteur";
 $vocab['nombre_de_creneaux'] = "Nombre de créneaux";
 $vocab['nombre_jours_Jours_Cycles'] = "Nombre de jours dans un cycle";
@@ -689,7 +694,7 @@ $vocab['number_max2'] = " personnes max.";
 $vocab['num_version'] = "Numéro de version GRR fichier : ";
 $vocab['num_versionbdd'] = "Numéro de version GRR BDD : ";
 $vocab['num_version_title'] = "Informations";
-$vocab['Objet du message'] = "Objet du message (obligatoire)";
+$vocab['Objet du message'] = "Objet du message";
 $vocab['of'] = " sur ";
 $vocab['OK'] = "Valider";
 $vocab['older_date_log'] = "Actuellement, le journal contient l'historique des connexions depuis le ";
@@ -990,6 +995,7 @@ $vocab['visu_fiche_description5'] = "Il faut obligatoirement être connecté et 
 $vocab['visu_fiche_description6'] = "Il faut obligatoirement être connecté et être administrateur général";
 $vocab['visu_fiche_description_msg'] = "Qui a accès à la fiche de description d'une ressource ?";
 $vocab['voir_details'] = "Voir les détails";
+$vocab['Votre_message'] = "Votre message";
 $vocab['warning_exist'] = "L'utilisateur que vous avez tenté d'ajouter appartient déjà à la liste !";
 $vocab['warning_explain'] = "Avertissement/précisions concernant la réservation de cette ressource : le message ci-dessous s'affichera dans différentes vues concernant cette ressource.";
 $vocab['warning_message_backup'] = "Si un message du type \"Maximum execution time exceeded\" apparaît quelques instants après avoir lancé la sauvegarde, cela signifie que la sauvegarde a échoué !";

@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2021-11-19
+# Last modification : 2022-01-15
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -542,6 +542,10 @@ $vocab['logs_number'] = "Numero di entrate attualmente presenti nel giornale di 
 $vocab['longueur_liste_ressources'] = "Hauteur maximale de la liste déroulante des ressources"; // A traduire
 $vocab['mail_admin_off'] = "Non prevenire per mail";
 $vocab['mail_admin_on'] = "Prevenire per mail gli utenti";
+$vocab['mail_demandeur'] = "Email du demandeur";
+$vocab['mail_not_sent'] = "Votre message n'a pas pu être envoyé !";
+$vocab['mail_sending_impossible'] = "L'envoi de messages est impossible car l'adresse email du destinataire n'a pas été renseignée.";
+$vocab['mail_sent'] = "Votre message a été envoyé !";
 $vocab['mail_user'] = "Email";
 $vocab['mail_user_list'] = "Elenco degli utenti prevenuti da mail: ";
 $vocab['prefixe'] = "Préfixe";  // A traduire
@@ -634,6 +638,7 @@ $vocab['noareas'] = "Non un settore";
 $vocab['nobody'] = "(nessuno)";
 $vocab['nobookings'] = "Non una prenotazione possibile per questa data!";
 $vocab['nom beneficiaire'] = "Nom du bénéficiaire"; // A traduire
+$vocab['nom_complet_demandeur'] = "Nom et prénom du demandeur";
 $vocab['nom emprunteur'] = "Nom de l'emprunteur"; // A traduire
 $vocab['nombre_de_creneaux'] = "Numero di interstizi";
 $vocab['nombre_jours_Jours_Cycles'] = "Nombre de jours dans un cycle"; // A traduire
@@ -669,7 +674,7 @@ $vocab['number_max'] = " persona max.";
 $vocab['number_max2'] = " persone max.";
 $vocab['num_version'] = "Numero di versione: <b>GRR</b>";
 $vocab['num_version_title'] = "Numero di versione di GRR";
-$vocab['Objet du message'] = "Objet du message (obligatoire)"; // A traduire
+$vocab['Objet du message'] = "Objet du message"; // A traduire
 $vocab['of'] = " su ";
 $vocab['OK'] = "Convalidare";
 $vocab['older_date_log'] = "Attualmente, il giornale contiene la cronistoria dei collegamenti da allora ";
@@ -962,6 +967,7 @@ $vocab['visu_fiche_description5'] = "Il faut obligatoirement être connecté et 
 $vocab['visu_fiche_description6'] = "Il faut obligatoirement être connecté et être administrateur général"; // A traduire
 $vocab['visu_fiche_description_msg'] = "Qui a accès à la fiche de description d'une ressource ?"; // A traduire
 $vocab['voir_details'] = "Vedere i dettagli";
+$vocab['Votre_message'] = "Votre message";
 $vocab['warning_exist'] = "L'utente che avete tentato di aggiungere appartiene già all'elenco!";
 $vocab['warning_message_backup'] = "Se un messaggio del tipo \"Maximum execution time exceeded \" appare alcuni momenti dopo avere lanciato la salvaguardia, ciò significa che la salvaguardia è fallita!";
 $vocab['warning_message_mail'] = "Alcuni hébergeurs disattivano la spedizione automatica di mails dai loro server. In questo caso, la funzionalità seguente non funzionerà.";

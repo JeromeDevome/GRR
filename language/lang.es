@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2021-11-19
+# Last modification : 2022-01-15
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -544,6 +544,10 @@ $vocab['logs_number'] = "Nombre de entradas actualmente presentes en el diario d
 $vocab['longueur_liste_ressources'] = "Altura máxima de la lista desplegable de los recursos";
 $vocab['mail_admin_off'] = "No prevenir por mail";
 $vocab['mail_admin_on'] = "Activar el envío automático de correos electrónicos";
+$vocab['mail_demandeur'] = "Email du demandeur";
+$vocab['mail_not_sent'] = "Votre message n'a pas pu être envoyé !";
+$vocab['mail_sending_impossible'] = "L'envoi de messages est impossible car l'adresse email du destinataire n'a pas été renseignée.";
+$vocab['mail_sent'] = "Votre message a été envoyé !";
 $vocab['mail_user'] = "Email";
 $vocab['mail_user_list'] = "Lista de los usuarios avisados por mail :";
 $vocab['prefixe'] = "Préfixe";  // A traduire
@@ -637,6 +641,7 @@ $vocab['noareas'] = "No hay campo";
 $vocab['nobody'] = "(ninguno)";
 $vocab['nobookings'] = "No hay reserva posible para esta fecha:";
 $vocab['nom beneficiaire'] = "Nombre del beneficiario";
+$vocab['nom_complet_demandeur'] = "Nom et prénom du demandeur";
 $vocab['nom emprunteur'] = "Nombre del prestatario";
 $vocab['nombre_de_creneaux'] = "Número de huecos horarios";
 $vocab['nombre_jours_Jours_Cycles'] = "Número de días en un ciclo";
@@ -672,7 +677,7 @@ $vocab['number_max'] = " persona max.";
 $vocab['number_max2'] = " personas max.";
 $vocab['num_version'] = "Número de versión: <b>GRR</b>";
 $vocab['num_version_title'] = "Número de versión de GRR";
-$vocab['Objet du message'] = "Objet du message (obligatoire)"; // A traduire
+$vocab['Objet du message'] = "Objet du message"; // A traduire
 $vocab['of'] = " sobre ";
 $vocab['OK'] = "Validar";
 $vocab['older_date_log'] = "Actualmente, el diario contiene los antecedentes de las conexiones desde el ";
@@ -965,6 +970,7 @@ $vocab['visu_fiche_description5'] = "Hay que estar obligatoriamente conectado y 
 $vocab['visu_fiche_description6'] = "Hay que estar obligatoriamente conectado y ser administrador general";
 $vocab['visu_fiche_description_msg'] = "¿Quién tiene acceso a la ficha de descripción del recurso?";
 $vocab['voir_details'] = "Ver los detalles";
+$vocab['Votre_message'] = "Votre message";
 $vocab['warning_exist'] = "¡El usuario que intentó añadir ya pertenece a la lista!";
 $vocab['warning_message_backup'] = "¡Si un mensaje del tipo \"Maximum execution time exceeded\" aparece unos momentos después de haber iniciado la copia de seguridad, eso significa que la creación de la copia de seguridad falló!";
 $vocab['warning_message_mail'] = "Algunos alojamientos desactivan el envío automático de mails desde sus servidores. En este caso, la funcionalidad siguiente no funcionará.";
