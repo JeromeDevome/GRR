@@ -92,15 +92,6 @@ $time = mktime(0, 0, 0, $month, $day, $year);
 // $time_old = $time;
 if (($weekday = (date("w", $time) - $weekstarts + 7) % 7) > 0)
     $time = mktime(0,0,0,$month,$day-$weekday,$year); // recule de $weekday jours, php corrigera en fonction du changement d'heure
-/*	$time -= $weekday * 86400; // recule de $weekday jours, puis corrige en fonction du changement d'heure
-if (!isset($correct_heure_ete_hiver) or ($correct_heure_ete_hiver == 1))
-{
-	if ((heure_ete_hiver("ete",$year,0) <= $time_old) && (heure_ete_hiver("ete",$year,0) >= $time) && ($time_old != $time) && (date("H", $time) == 23))
-		$decal = 3600;
-	else
-		$decal = 0;
-	$time += $decal;
-}*/
 
 $day_week   = date("d", $time); // premier jour de la semaine
 $month_week = date("m", $time);
@@ -233,7 +224,7 @@ else
     $overloadFieldList = mrbsOverloadGetFieldslist($area);
 	// Pour toutes les réservations
 	for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
-    //foreach($res as $row) incompatible avec la fonction affichage_resa_planning_complet
+    //foreach($res as $row) incompatible avec la fonction contenu_cellule
 	{
 		if ($debug_flag)
 			echo '<br />DEBUG: result $i, id $row[4], starts $row["start_time"] (".affiche_date($row["start_time"])."), ends $row["end_time"] (".affiche_date($row["end_time"]).")\n';
@@ -696,7 +687,14 @@ $semaine_changement_heure_hiver = 'no';
 						echo "<img src=\"img_grr/stop.png\" alt=\"".get_vocab("reservation_impossible")."\"  title=\"".get_vocab("reservation_impossible")."\" width=\"16\" height=\"16\" class=\"".$class_image."\"  />";
 					else
 					{
-						if ((($authGetUserLevel > 1) || ($auth_visiteur == 1)) && ($UserRoomMaxBooking != 0) && verif_booking_date($user_name, -1, $room, $date_booking, $date_now, $enable_periods) && verif_delais_max_resa_room($user_name, $room, $date_booking) && verif_delais_min_resa_room($user_name, $room, $date_booking, $enable_periods) && (($this_statut_room == "1") || (($this_statut_room == "0") && ($authGetUserLevel > 2))) && $user_can_book && $_GET['pview'] != 1)
+						if ((($authGetUserLevel > 1) || ($auth_visiteur == 1)) 
+                        && ($UserRoomMaxBooking != 0) 
+                        && verif_booking_date($user_name, -1, $room, $date_booking, $date_now, $enable_periods) 
+                        && verif_delais_max_resa_room($user_name, $room, $date_booking) 
+                        && verif_delais_min_resa_room($user_name, $room, $date_booking, $enable_periods) 
+                        && (($this_statut_room == "1") || (($this_statut_room == "0") && ($authGetUserLevel > 2))) 
+                        && $user_can_book 
+                        && $_GET['pview'] != 1)
 						{
 							if ($enable_periods == 'y')
 							{

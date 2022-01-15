@@ -144,15 +144,6 @@ $time = mktime(0, 0, 0, $month, $day, $year);
 // $time_old = $time;
 if (($weekday = (date("w", $time) - $weekstarts + 7) % 7) > 0)
     $time = mktime(0,0,0,$month,$day-$weekday,$year); // recule de $weekday jours, php corrigera en fonction du changement d'heure
-/*	$time -= $weekday * 86400; // recule de $weekday jours, puis corrige en fonction du changement d'heure
-if (!isset($correct_heure_ete_hiver) or ($correct_heure_ete_hiver == 1))
-{
-	if ((heure_ete_hiver("ete",$year,0) <= $time_old) && (heure_ete_hiver("ete",$year,0) >= $time) && ($time_old != $time) && (date("H", $time) == 23))
-		$decal = 3600;
-	else
-		$decal = 0;
-	$time += $decal;
-}*/
 
 $day_week   = date("d", $time);
 $month_week = date("m", $time);
