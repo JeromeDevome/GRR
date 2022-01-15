@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-01-03 17:07$
+ * Dernière modification : $Date: 2022-01-14 18:19$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -652,23 +652,17 @@ function resaToModerate($user)
     }
     return $resas;
 }
-/*
-Teste s'il reste ou non des plages libres sur une journée donnée pour un domaine donné.
-Arguments :
-$id_room : identifiant de la ressource
-$month_week : mois
-$day_week : jour
-$year_week : année
-Renvoie vrai s'il reste des plages non réservées sur la journée
-Renvoie faux dans le cas contraire
+/** fonction plages_libre_semaine_ressource($id_room, $month_week, $day_week, $year_week)
+ * Teste s'il reste ou non des plages libres sur une journée donnée pour une ressource donnée.
+ * Arguments :
+ *  integer $id_room : identifiant de la ressource
+ *  integer $month_week : mois
+ *  integer $day_week : jour
+ *  integer $year_week : année
+ * Renvoie un booléen :
+ *  vrai s'il reste des plages non réservées sur la journée
+ *  faux dans le cas contraire
 */
-/**
- * @param integer $id_room
- * @param integer $month_week
- * @param integer $day_week
- * @param integer $year_week
- * @return boolean
- */
 function plages_libre_semaine_ressource($id_room, $month_week, $day_week, $year_week)
 {
 	global $morningstarts, $eveningends, $eveningends_minutes, $resolution, $enable_periods;
@@ -681,14 +675,15 @@ function plages_libre_semaine_ressource($id_room, $month_week, $day_week, $year_
 	while ($t < $date_end)
 	{
 		$t_end = $t + $resolution;
-		$query = "SELECT id FROM ".TABLE_PREFIX."_entry WHERE room_id='".$id_room."' AND start_time <= ".$t." AND end_time >= ".$t_end." ";
-		$test = grr_sql_query1($query);
-		if ($test == -1)
-		{
+		$query = "SELECT end_time FROM ".TABLE_PREFIX."_entry WHERE room_id='".$id_room."' AND start_time <= ".$t." AND end_time >= ".$t_end." ";
+		$end_time = grr_sql_query1($query);
+		if ($end_time == -1){
 			$plage_libre = true;
 			break;
+		} 
+        else{
+			$t = $end_time; // avance à la fin de la réservation trouvée
 		}
-		$t += $resolution;
 	}
 	return $plage_libre ;
 }
