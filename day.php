@@ -164,7 +164,8 @@ else
     $cellules = array();
     $compteur = array();
     $today = array();
-	foreach($res as $row)
+	for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
+    //foreach($res as $row) incompatible avec la fonction contenu_cellule
 	{
 		$start_t = max(round_t_down($row["start_time"], $resolution, $am7), $am7);
 		$end_t = min(round_t_up($row["end_time"], $resolution, $am7) - $resolution, $pm7);
