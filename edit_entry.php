@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-12 11:54$
+ * Dernière modification : $Date: 2022-01-17 18:41$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -292,8 +292,21 @@ if (!isset($page_ret) || ($page_ret == ''))
             $page_ret = $page.'.php?month='.$month.'&amp;day='.$day.'&amp;year='.$year;
             if (isset($room))
                 $page_ret .= '&amp;room='.$room;
+            elseif ((!strpos($page,"all"))&&($room_back != 'all'))
+                $page_ret .= "&amp;room=".$room_back;
             elseif (isset($area))
                 $page_ret .= '&amp;area='.$area;
+            elseif (($room_back !='')&&($room_back != 'all')){
+                $area = mrbsGetRoomArea($room_back);
+                $page_ret .= '&amp;area='.$area;
+            }
+            elseif (($room_back == 'all')&&(isset($id))){
+                $room = grr_sql_query1("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id=".$id."");
+                if ($room != -1){
+                    $area = mrbsGetRoomArea($room);
+                    $page_ret .= '&amp;area='.$area;
+                }
+            }
         }
         else 
             $page_ret = page_accueil();

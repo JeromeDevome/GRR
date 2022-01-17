@@ -3,9 +3,9 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-11-09 11:35$
+ * Dernière modification : $Date: 2022-01-17 18:23$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -62,18 +62,21 @@ include "include/language.inc.php";
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : page_accueil() ;
 // echo $back;
 // ici on a l'id de la réservation, on peut donc construire un lien de retour complet, à la bonne date et avec la ressource précise
+$sql = "SELECT start_time, room_id FROM ".TABLE_PREFIX."_entry WHERE id=". $id;
+$res = grr_sql_query($sql);
+if (!$res)
+    fatal_error(0, grr_sql_error());
+if (grr_sql_count($res) >= 1)
+{
+    $row1 = grr_sql_row($res, 0);
+    $year = date ('Y', $row1['0']);
+    $month = date ('m', $row1['0']);
+    $day = date ('d', $row1['0']);
+}
+grr_sql_free($res);
 if (strstr ($back, 'view_entry.php'))
 {
-    $sql = "SELECT start_time, room_id FROM ".TABLE_PREFIX."_entry WHERE id=". $id;
-    $res = grr_sql_query($sql);
-    if (!$res)
-        fatal_error(0, grr_sql_error());
-    if (grr_sql_count($res) >= 1)
-    {
-        $row1 = grr_sql_row($res, 0);
-        $year = date ('Y', $row1['0']);
-        $month = date ('m', $row1['0']);
-        $day = date ('d', $row1['0']);
+    if (isset($year)&&isset($month)&&isset($day)){
         $page = (isset($_GET['page']))? clean_input($_GET['page']) : "day";
         $back = $page.'.php?year='.$year.'&month='.$month.'&day='.$day;
         if (($page == "week_all") || ($page == "month_all") || ($page == "month_all2") || ($page == "day") || ($page == "year") || ($page == "year_all"))
@@ -83,7 +86,6 @@ if (strstr ($back, 'view_entry.php'))
     }
     else
         $back = $page.".php";
-    grr_sql_free($res);
 }
 if (isset($_GET["action_moderate"])){
 	moderate_entry_do($id,$_GET["moderate"], $_GET["description"]);

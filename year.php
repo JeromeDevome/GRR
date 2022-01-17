@@ -3,7 +3,7 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-17 10:43$
+ * Dernière modification : $Date: 2022-01-17 17:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -34,26 +34,26 @@ include "include/language.inc.php";
 // Construction des identifiants du domaine $area, du site $site
 global $area, $site;
 // echo "paramètres ".$_GET['site']." ".$_GET['area'];
-if (isset($_GET['area']))
-{
-    $area = mysqli_real_escape_string($GLOBALS['db_c'], $_GET['area']);
-    settype($area, "integer");
+if (isset($_GET['room'])){
+    $area = mrbsGetRoomArea(intval($_GET['room']));
     $site = mrbsGetAreaSite($area);
+}
+elseif (isset($_GET['area']))
+{
+    $area = intval($_GET['area']);
+    $site = mrbsGetAreaSite($area);
+}
+elseif (isset($_GET["site"]))
+{
+    $site = intval($_GET["site"]);
+    $area = get_default_area($site);
 }
 else
 {
-    if (isset($_GET["site"]))
-    {
-        $site = mysqli_real_escape_string($GLOBALS['db_c'], $_GET["site"]);
-        settype($site, "integer");
-        $area = get_default_area($site);
-    }
-    else
-    {
-        $site = get_default_site();
-        $area = get_default_area($site);
-    }
+    $site = get_default_site();
+    $area = get_default_area($site);
 }
+
 // On affiche le lien "format imprimable" en bas de la page
 $affiche_pview = '1';
 if (!isset($_GET['pview']))
@@ -64,10 +64,10 @@ if ($_GET['pview'] == 1)
 	$class_image = "print_image";
 else
 	$class_image = "image";
-$from_month = isset($_GET["from_month"]) ? $_GET["from_month"] : NULL;
-$from_year = isset($_GET["from_year"]) ? $_GET["from_year"] : NULL;
-$to_month = isset($_GET["to_month"]) ? $_GET["to_month"] : NULL;
-$to_year = isset($_GET["to_year"]) ? $_GET["to_year"] : NULL;
+$from_month = isset($_GET["from_month"]) ? intval($_GET["from_month"]) : (isset($_GET['month'])? intval($_GET['month']) : NULL);
+$from_year = isset($_GET["from_year"]) ? intval($_GET["from_year"]) : (isset($_GET['year'])? intval($_GET['year']) : NULL);
+$to_month = isset($_GET["to_month"]) ? intval($_GET["to_month"]) : (isset($_GET['month'])? intval($_GET['month']) : NULL);
+$to_year = isset($_GET["to_year"]) ? intval($_GET["to_year"]) : (isset($_GET['year'])? intval($_GET['year']) : NULL);
 $day = 1;
 $date_now = time();
 //Default parameters:
