@@ -3,7 +3,7 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-11 15:48$
+ * Dernière modification : $Date: 2022-01-17 10:36$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -181,14 +181,15 @@ if (!$res)
 else
 {
     $overloadFieldList = mrbsOverloadGetFieldslist($area);
-	for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
+	//for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
+    foreach($res as $row)
 	{
 		if ($row["type_name"] <> (Settings::get('exclude_type_in_views_all')))   // Nom du type
 		{
 			if ($debug_flag)
-				echo "<br />DEBUG: result $i, id $row[2], starts $row[0], ends $row[1]\n";
-			$t = max((int)$row[0], $month_start);
-			$end_t = min((int)$row[1], $month_end);
+				echo "<br />DEBUG: result $i, id ".$row['id'].", starts ".$row['start_time'].", ends ".$row['end_time']."\n";
+			$t = max((int)$row['start_time'], $month_start);
+			$end_t = min((int)$row['end_time'], $month_end);
 			$day_num = date("j", $t);
 			if ($enable_periods == 'y')
 				$midnight = mktime(12,0,0,$month,$day_num,$year);
@@ -197,7 +198,7 @@ else
 			while ($t < $end_t)
 			{
 				if ($debug_flag)
-					echo "<br />DEBUG: Entry $row[2] day $day_num\n";
+					echo "<br />DEBUG: Entry ".$row['id']." day $day_num\n";
 				$d[$day_num]["id"][] = $row["id"];
 				//$d[$day_num]["lien"][] = lien_compact($row);
 				$d[$day_num]["room"][] = $row["room_name"] ;
@@ -205,9 +206,9 @@ else
 				$midnight_tonight = $midnight + 86400;
 				if ($enable_periods == 'y')
 				{
-					$start_str = preg_replace("/ /", " ", period_time_string($row[0]));
-					$end_str   = preg_replace("/ /", " ", period_time_string($row[1], -1));
-					switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
+					$start_str = preg_replace("/ /", " ", period_time_string($row['start_time']));
+					$end_str   = preg_replace("/ /", " ", period_time_string($row['end_time'], -1));
+					switch (cmp3($row['start_time'], $midnight) . cmp3($row['end_time'], $midnight_tonight))
 					{
 						case "> < ":
 						case "= < ":
@@ -241,17 +242,17 @@ else
 				}
 				else
 				{
-					switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
+					switch (cmp3($row['start_time'], $midnight) . cmp3($row['end_time'], $midnight_tonight))
 					{
 						case "> < ":
 						case "= < ":
-						$horaires = date(hour_min_format(), $row[0]) . get_vocab("to") . date(hour_min_format(), $row[1]);
+						$horaires = date(hour_min_format(), $row['start_time']) . get_vocab("to") . date(hour_min_format(), $row['end_time']);
 						break;
 						case "> = ":
-						$horaires = date(hour_min_format(), $row[0]) . get_vocab("to")."24:00";
+						$horaires = date(hour_min_format(), $row['start_time']) . get_vocab("to")."24:00";
 						break;
 						case "> > ":
-						$horaires = date(hour_min_format(), $row[0]) . get_vocab("to")."==>";
+						$horaires = date(hour_min_format(), $row['start_time']) . get_vocab("to")."==>";
 						break;
 						case "= = ":
 						$horaires = $all_day;
@@ -260,7 +261,7 @@ else
 						$horaires = $all_day . "==>";
 						break;
 						case "< < ":
-						$horaires = "<==".get_vocab("to") . date(hour_min_format(), $row[1]);
+						$horaires = "<==".get_vocab("to") . date(hour_min_format(), $row['end_time']);
 						break;
 						case "< = ":
 						$horaires = "<==" . $all_day;
@@ -270,10 +271,9 @@ else
 						break;
 					}
 				}
-				//$d[$day_num]["data"][] = titre_compact($overloadFieldList, $row, $horaires);
                 $d[$day_num]["data"][] = contenu_popup($options_popup, 1, $row, $horaires);
                 $d[$day_num]["lien"][] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
-                if ($row[1] <= $midnight_tonight)
+                if ($row['end_time'] <= $midnight_tonight)
 					break;
 				$day_num++;
 				$t = $midnight = $midnight_tonight;

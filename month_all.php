@@ -3,7 +3,7 @@
  * month_all.php
  * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-11 16:02$
+ * Dernière modification : $Date: 2022-01-17 10:28$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -189,14 +189,15 @@ else  //Build an array of information about each day in the month.
     $overloadFieldList = mrbsOverloadGetFieldslist($area);
     $verif_acces_ressource = array();
     $acces_fiche_reservation = array();
-	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+	//for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
+    foreach($res as $row)
 	{
-		if ($row['15'] <> (Settings::get('exclude_type_in_views_all')))
+		if ($row['type_name'] <> (Settings::get('exclude_type_in_views_all')))
         {
-            $verif_acces_ressource[$row[5]] = verif_acces_ressource($user_name, $row[5]);
-            $acces_fiche_reservation[$row[5]] = verif_acces_fiche_reservation($user_name, $row[5]);
-            $t = max((int)$row[0], $month_start);
-            $end_t = min((int)$row[1], $month_end);
+            $verif_acces_ressource[$row['room_name']] = verif_acces_ressource($user_name, $row['room_name']);
+            $acces_fiche_reservation[$row['room_name']] = verif_acces_fiche_reservation($user_name, $row['room_name']);
+            $t = max((int)$row['start_time'], $month_start);
+            $end_t = min((int)$row['end_time'], $month_end);
             $day_num = date("j", $t);
             if ($enable_periods == 'y')
                 $midnight = mktime(12, 0, 0, $month, $day_num, $year);
@@ -204,10 +205,10 @@ else  //Build an array of information about each day in the month.
                 $midnight = mktime(0, 0, 0, $month, $day_num, $year);
             while ($t < $end_t)
             {
-                $d[$day_num]["id"][] = $row[2];
-                $d[$day_num]["id_room"][] = $row[5];
-                $d[$day_num]["room"][] = $row[5] ;
-                $d[$day_num]["color"][] = $row[6];
+                $d[$day_num]["id"][] = $row['id'];
+                $d[$day_num]["id_room"][] = $row['room_name'];
+                $d[$day_num]["room"][] = $row['room_name'] ;
+                $d[$day_num]["color"][] = $row['type'];
                 $midnight_tonight = $midnight + 86400;
             //Describe the start and end time, accounting for "all day"
             //and for entries starting before/ending after today.
@@ -217,11 +218,11 @@ else  //Build an array of information about each day in the month.
             //will incorrectly line break after a -.
                 if ($enable_periods == 'y')
                 {
-                    $start_str = preg_replace("/ /", " ", period_time_string($row[0]));
-                    $end_str   = preg_replace("/ /", " ", period_time_string($row[1], -1));
+                    $start_str = preg_replace("/ /", " ", period_time_string($row['start_time']));
+                    $end_str   = preg_replace("/ /", " ", period_time_string($row['end_time'], -1));
                 // Debug
-                //echo affiche_date($row[0])." ".affiche_date($midnight)." ".affiche_date($row[1])." ".affiche_date($midnight_tonight)."<br />";
-                    switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
+                //echo affiche_date($row['start_time'])." ".affiche_date($midnight)." ".affiche_date($row['end_time'])." ".affiche_date($midnight_tonight)."<br />";
+                    switch (cmp3($row['start_time'], $midnight) . cmp3($row['end_time'], $midnight_tonight))
                     {
                         case "> < ":         //Starts after midnight, ends before midnight
                         case "= < ":         //Starts at midnight, ends before midnight
@@ -255,17 +256,17 @@ else  //Build an array of information about each day in the month.
                 }
                 else
                 {
-                    switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
+                    switch (cmp3($row['start_time'], $midnight) . cmp3($row['end_time'], $midnight_tonight))
                     {
                         case "> < ":         //Starts after midnight, ends before midnight
                         case "= < ":         //Starts at midnight, ends before midnight
-                        $horaires = date(hour_min_format(), $row[0]) . get_vocab("to") . date(hour_min_format(), $row[1]);
+                        $horaires = date(hour_min_format(), $row['start_time']) . get_vocab("to") . date(hour_min_format(), $row['end_time']);
                         break;
                         case "> = ":         //Starts after midnight, ends at midnight
-                        $horaires = date(hour_min_format(), $row[0]) . get_vocab("to")."24:00";
+                        $horaires = date(hour_min_format(), $row['start_time']) . get_vocab("to")."24:00";
                         break;
                         case "> > ":         //Starts after midnight, continues tomorrow
-                        $horaires = date(hour_min_format(), $row[0]) . get_vocab("to")."&gt;";
+                        $horaires = date(hour_min_format(), $row['start_time']) . get_vocab("to")."&gt;";
                         break;
                         case "= = ":         //Starts at midnight, ends at midnight
                         $horaires = $all_day;
@@ -274,7 +275,7 @@ else  //Build an array of information about each day in the month.
                         $horaires = $all_day . "&gt;";
                         break;
                         case "< < ":         //Starts before today, ends before midnight
-                        $horaires = "&lt;".get_vocab("to") . date(hour_min_format(), $row[1]);
+                        $horaires = "&lt;".get_vocab("to") . date(hour_min_format(), $row['end_time']);
                         break;
                         case "< = ":         //Starts before today, ends at midnight
                         $horaires = "&lt;" . $all_day;
@@ -284,11 +285,10 @@ else  //Build an array of information about each day in the month.
                         break;
                     }
                 }
-                //$d[$day_num]["resa"][] = affichage_resa_planning_complet($overloadFieldList, 2, $row, $horaires);
                 $d[$day_num]["resa"][] = contenu_cellule($options, $overloadFieldList, 2, $row, $horaires);
                 $d[$day_num]["popup"][] = contenu_popup($options_popup, 2, $row, $horaires);
                 //Only if end time > midnight does the loop continue for the next day.
-                if ($row[1] <= $midnight_tonight)
+                if ($row['end_time'] <= $midnight_tonight)
                     break;
                 $day_num++;
                 $t = $midnight = $midnight_tonight;

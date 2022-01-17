@@ -289,7 +289,7 @@ function decode_options($a,$modele){
 *     $opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants')
 *  $ofl = overload fields list, ne dépend que du domaine, donc est constant dans la boucle d'affichage
 *  $vue = 1 pour une ressource / 2 vue multiple ressource
-*  $resa : tableau issu de la requête SQL sélectionnant les informations relatives à la réservation
+*  $resa : tableau associatif issu de la requête SQL sélectionnant les informations relatives à la réservation
 *  $heures : plage horaire calculée dans le script $page
 */
 function contenu_cellule($options, $ofl, $vue, $resa, $heures)
@@ -298,13 +298,13 @@ function contenu_cellule($options, $ofl, $vue, $resa, $heures)
 	$affichage = "";
 	// Ressource seulement dans les vues globales
 	if($vue == 2)
-		$affichage .= $resa[5]."<br>";
+		$affichage .= $resa['room_name']."<br>";
 	// Heures ou créneaux + symboles <== ==>
 	if (($heures != "") && ($options['horaires']))
         $affichage .= $heures."<br>";
 	// Bénéficiaire
 	if ($options['beneficiaire'])
-		$affichage .= affiche_nom_prenom_email($resa[4], $resa[12], "nomail")."<br>";
+		$affichage .= affiche_nom_prenom_email($resa['beneficiaire'], $resa['beneficiaire_ext'], "nomail")."<br>";
 	// Type
 	if ($options["type"])
 	{
@@ -313,25 +313,25 @@ function contenu_cellule($options, $ofl, $vue, $resa, $heures)
 			$affichage .= $typeResa."<br>";
 	}
 	// Brève description ou le numéro de la réservation
-	if (($options["short_desc"]) && ($resa[3] != ""))
-		$affichage .= htmlspecialchars($resa[3],ENT_NOQUOTES)."<br>";
+	if (($options["short_desc"]) && ($resa['name'] != ""))
+		$affichage .= htmlspecialchars($resa['name'],ENT_NOQUOTES)."<br>";
 	// Description Complète
-	if (($options["description"]) && ($resa[8] != ""))
-		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES)."<br>";
+	if (($options["description"]) && ($resa['description'] != ""))
+		$affichage .= htmlspecialchars($resa['description'],ENT_NOQUOTES)."<br>";
     // créateur
-	if (($options["create_by"]) && ($resa[18] != ""))
-		$affichage .= htmlspecialchars($resa[18],ENT_NOQUOTES)."<br>";
+	if (($options["create_by"]) && ($resa['create_by'] != ""))
+		$affichage .= htmlspecialchars($resa['create_by'],ENT_NOQUOTES)."<br>";
     // nombre de participants
-    if (($options["participants"]) && ($resa[19] != 0)){
-        $inscrits = grr_sql_query1("SELECT COUNT(`participant`) FROM `grr_participants` WHERE `idresa` = ".$resa[2]);
+    if (($options["participants"]) && ($resa['nbparticipantmax'] != 0)){
+        $inscrits = grr_sql_query1("SELECT COUNT(`participant`) FROM `grr_participants` WHERE `idresa` = ".$resa['id']);
         if ($inscrits >= 0)
-            $affichage .= get_vocab('participant_inscrit').get_vocab('deux_points').$inscrits." / ".htmlspecialchars($resa[19],ENT_NOQUOTES)."<br>";
+            $affichage .= get_vocab('participant_inscrit').get_vocab('deux_points').$inscrits." / ".htmlspecialchars($resa['nbparticipantmax'],ENT_NOQUOTES)."<br>";
     }
 	// Champs Additionnels
     // la ressource associée à la réservation :
-    $room = $resa[5];
+    $room = $resa['room_name'];
 	// Les champs add :
-	$overload_data = grrGetOverloadDescArray($ofl, $resa[16]);
+	$overload_data = grrGetOverloadDescArray($ofl, $resa['overload_desc']);
 	foreach ($overload_data as $fieldname=>$field)
 	{
 		if (( (authGetUserLevel(getUserName(), $room) >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "")
@@ -339,23 +339,23 @@ function contenu_cellule($options, $ofl, $vue, $resa, $heures)
 	}
     // cas où aucune option n'est activée : afficher le numéro de la réservation
 	if ($affichage == '')
-		$affichage .= get_vocab("entryid").$resa[2]."<br>";
+		$affichage .= get_vocab("entryid").$resa['id']."<br>";
 	// Emprunte
-	if($resa[7] != "-")
+	if($resa['statut_entry'] != "-")
 		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
 	// Option réservation
-	if($resa[10] > 0)
-		$affichage .=  " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le").time_date_string_jma($resa[9],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> ";
+	if($resa['delais_option_reservation'] > 0)
+		$affichage .=  " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le").time_date_string_jma($resa['option_reservation'],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> ";
 	// Modération
-	if($resa[11] == 1)
+	if($resa['moderate'] == 1)
 		$affichage .= " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
 	// Clef
-	if($resa[13] == 1)
+	if($resa['clef'] == 1)
 		$affichage .= " <img src=\"img_grr/skey.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Clef\"> ";
 	// Courrier
 	if (Settings::get('show_courrier') == 'y')
 	{
-		if($resa[14] == 1)
+		if($resa['courrier'] == 1)
 			$affichage .= " <img src=\"img_grr/scourrier.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Courrier\"> ";
 		else
 			$affichage .= " <img src=\"img_grr/hourglass.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Buzy\"> ";
@@ -381,28 +381,28 @@ function contenu_popup($options, $vue, $resa, $heures)
         $affichage .= $heures."\n";
 	// Bénéficiaire
 	if ($options['beneficiaire'])
-		$affichage .= affiche_nom_prenom_email($resa[4], $resa[12], "nomail")."\n";
+		$affichage .= affiche_nom_prenom_email($resa['beneficiaire'], $resa['beneficiaire_ext'], "nomail")."\n";
 	// Type
 	if ($options["type"])
 	{
-        $typeResa = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area JOIN ".TABLE_PREFIX."_entry ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter WHERE ".TABLE_PREFIX."_entry.id = '".$resa[2]."';");
+        $typeResa = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area JOIN ".TABLE_PREFIX."_entry ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter WHERE ".TABLE_PREFIX."_entry.id = '".$resa['id']."';");
 		if ($typeResa != -1)
 			$affichage .= $typeResa."\n";
 	}
 	// Brève description
-	if (($options["short_desc"]) && ($resa[3] != ""))
-		$affichage .= htmlspecialchars($resa[3],ENT_NOQUOTES)."\n";
+	if (($options["short_desc"]) && ($resa['name'] != ""))
+		$affichage .= htmlspecialchars($resa['name'],ENT_NOQUOTES)."\n";
 	// Description Complète
-	if (($options["description"]) && ($resa[8] != ""))
-		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES)."\n";
+	if (($options["description"]) && ($resa['description'] != ""))
+		$affichage .= htmlspecialchars($resa['description'],ENT_NOQUOTES)."\n";
     // créateur
-	if (($options["create_by"]) && ($resa[18] != ""))
-		$affichage .= htmlspecialchars($resa[18],ENT_NOQUOTES)."\n";
+	if (($options["create_by"]) && ($resa['create_by'] != ""))
+		$affichage .= htmlspecialchars($resa['create_by'],ENT_NOQUOTES)."\n";
     // nombre de participants
-    if (($options["participants"]) && ($resa[19] != 0)){
-        $inscrits = grr_sql_query1("SELECT COUNT(`participant`) FROM `grr_participants` WHERE `idresa` = ".$resa[2]);
+    if (($options["participants"]) && ($resa['nbparticipantmax'] != 0)){
+        $inscrits = grr_sql_query1("SELECT COUNT(`participant`) FROM `grr_participants` WHERE `idresa` = ".$resa['id']);
         if ($inscrits >= 0)
-            $affichage .= get_vocab('participant_inscrit').get_vocab('deux_points').$inscrits." / ".htmlspecialchars($resa[19],ENT_NOQUOTES)."\n";
+            $affichage .= get_vocab('participant_inscrit').get_vocab('deux_points').$inscrits." / ".htmlspecialchars($resa['nbparticipantmax'],ENT_NOQUOTES)."\n";
     }
     // cas où aucune option n'est activée : afficher le texte "voir les détails"
 	if ($affichage == '')

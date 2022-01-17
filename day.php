@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-13 11:27$
+ * Dernière modification : $Date: 2022-01-17 10:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -164,8 +164,8 @@ else
     $cellules = array();
     $compteur = array();
     $today = array();
-	for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
-    //foreach($res as $row) incompatible avec la fonction contenu_cellule
+	//for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
+    foreach($res as $row) 
 	{
 		$start_t = max(round_t_down($row["start_time"], $resolution, $am7), $am7);
 		$end_t = min(round_t_up($row["end_time"], $resolution, $am7) - $resolution, $pm7);

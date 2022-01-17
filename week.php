@@ -3,9 +3,9 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-04 15:53$
+ * Dernière modification : $Date: 2022-01-17 10:05$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -223,8 +223,8 @@ else
 {
     $overloadFieldList = mrbsOverloadGetFieldslist($area);
 	// Pour toutes les réservations
-	for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
-    //foreach($res as $row) incompatible avec la fonction contenu_cellule
+	//for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
+    foreach($res as $row) 
 	{
 		if ($debug_flag)
 			echo '<br />DEBUG: result $i, id $row[4], starts $row["start_time"] (".affiche_date($row["start_time"])."), ends $row["end_time"] (".affiche_date($row["end_time"]).")\n';

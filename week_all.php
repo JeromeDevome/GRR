@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-12 12:15$
+ * Dernière modification : $Date: 2022-01-17 10:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -196,7 +196,7 @@ ORDER by start_time, end_time, ".TABLE_PREFIX."_entry.id";
     $row[12]: beneficiaire_ext
     $row[13]: clef
     $row[14]: courrier
-	$row[15]: Type_name
+	$row[15]: type_name
     $row[16]: overload fields description
     $row[17]: room id
     $row[18]: create_by
@@ -208,12 +208,13 @@ if (!$res2)
 else
 {
     $overloadFieldList = mrbsOverloadGetFieldslist($area);
-	for ($i = 0; ($row = grr_sql_row($res2, $i)); $i++)
+	//for ($i = 0; ($row = grr_sql_row_keyed($res2, $i)); $i++)
+    foreach($res2 as $row)
 	{
-		if ($row[15] <> (Settings::get('exclude_type_in_views_all')))          // Nom du type à exclure  
+		if ($row['type_name'] <> (Settings::get('exclude_type_in_views_all')))          // Nom du type à exclure  
 		{
-			$t = max((int)$row['0'], $date_start);
-			$end_t = min((int)$row['1'], $date_end);
+			$t = max((int)$row['start_time'], $date_start);
+			$end_t = min((int)$row['end_time'], $date_end);
 			$day_num = date("j", $t);
 			$month_num = date("m", $t);
 			$year_num = date("Y", $t);
@@ -223,37 +224,9 @@ else
 				$midnight = mktime(0, 0, 0, $month_num, $day_num, $year_num);
 			while ($t <= $end_t)
 			{
-				$d[$day_num]["id"][] = $row['2'];
-				/*if (Settings::get("display_info_bulle") == 1)
-					$d[$day_num]["who"][] = get_vocab("reservee au nom de").affiche_nom_prenom_email($row['4'], $row['12'], "nomail");
-				else if (Settings::get("display_info_bulle") == 2)
-					$d[$day_num]["who"][] = $row['8'];
-				else
-					$d[$day_num]["who"][] = "";*/
-				//$d[$day_num]["who1"][] = affichage_lien_resa_planning($row['3'], $row['2']);
-				$d[$day_num]["id_room"][]=$row['17'] ;
-				$d[$day_num]["color"][]=$row['6'];
-				//$d[$day_num]["res"][] = $row['7'];
-				//$descro = affichage_resa_planning($row['8'], $row['2']);
-				//$clef = $row[13];
-				//$courrier = $row[14];
-				/*if ($clef == 1 || $courrier == 1)
-					$descro .= '<br />'.PHP_EOL;*/
-				/*if ($clef == 1)
-					$descro .= '<img src="img_grr/skey.png" alt="clef">'.PHP_EOL;*/
-				/*if (Settings::get('show_courrier') == 'y')
-				{
-					if ($courrier == 1)
-						$descro .= '<img src="img_grr/scourrier.png" alt="courrier">'.PHP_EOL;
-					else
-						$descro .= '<br /><img src="img_grr/hourglass.png" alt="buzy">'.PHP_EOL;
-				}*/
-				//$d[$day_num]["description"][] = $descro;
-				/*if ($row['10'] > 0)
-					$d[$day_num]["option_reser"][] = $row['9'];
-				else
-					$d[$day_num]["option_reser"][] = -1;*/
-				//$d[$day_num]["moderation"][] = $row['11'];
+				$d[$day_num]["id"][] = $row['id'];
+				$d[$day_num]["id_room"][]=$row['room_id'] ;
+				$d[$day_num]["color"][]=$row['type'];
 				$midnight_tonight = $midnight + 86400;
 				if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
 				{
@@ -264,9 +237,9 @@ else
 				}
 				if ($enable_periods == 'y')
 				{
-					$start_str = preg_replace("/ /", " ", period_time_string($row['0']));
-					$end_str   = preg_replace("/ /", " ", period_time_string($row['1'], -1));
-					switch (cmp3($row['0'], $midnight) . cmp3($row['1'], $midnight_tonight))
+					$start_str = preg_replace("/ /", " ", period_time_string($row['start_time']));
+					$end_str   = preg_replace("/ /", " ", period_time_string($row['end_time'], -1));
+					switch (cmp3($row['start_time'], $midnight) . cmp3($row['end_time'], $midnight_tonight))
 					{
 						case "> < ":
 						case "= < ":
@@ -300,17 +273,17 @@ else
 				}
 				else
 				{
-					switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
+					switch (cmp3($row['start_time'], $midnight) . cmp3($row['end_time'], $midnight_tonight))
 					{
 						case "> < ":
 						case "= < ":
-						$horaires = date(hour_min_format(), $row[0]) . get_vocab("to") . date(hour_min_format(), $row[1]);
+						$horaires = date(hour_min_format(), $row['start_time']) . get_vocab("to") . date(hour_min_format(), $row['end_time']);
 						break;
 						case "> = ":
-						$horaires = date(hour_min_format(), $row[0]) . get_vocab("to")."24:00";
+						$horaires = date(hour_min_format(), $row['start_time']) . get_vocab("to")."24:00";
 						break;
 						case "> > ":
-						$horaires = date(hour_min_format(), $row[0]) . get_vocab("to")."==>";
+						$horaires = date(hour_min_format(), $row['start_time']) . get_vocab("to")."==>";
 						break;
 						case "= = ":
 						$horaires = $all_day;
@@ -319,7 +292,7 @@ else
 						$horaires = $all_day . "==>";
 						break;
 						case "< < ":
-						$horaires = "<==".get_vocab("to") . date(hour_min_format(), $row[1]);
+						$horaires = "<==".get_vocab("to") . date(hour_min_format(), $row['end_time']);
 						break;
 						case "< = ":
 						$horaires = "<==" . $all_day;
@@ -329,10 +302,9 @@ else
 						break;
 					}
 				}
-				//$d[$day_num]["resa"][] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
                 $d[$day_num]["resa"][] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
                 $d[$day_num]["popup"][] = contenu_popup($options_popup, 1, $row, $horaires);
-				if ($row[1] <= $midnight_tonight)
+				if ($row['end_time'] <= $midnight_tonight)
 					break;
 				$t = $midnight = $midnight_tonight;
 				$day_num = date("j", $t);
