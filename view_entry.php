@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-17 18:23$
+ * Dernière modification : $Date: 2022-01-19 11:41$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -500,7 +500,9 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
 	echo $listeParticipants;
 }
 
-if ((getWritable($userName, $id)) && verif_booking_date($userName, $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room($userName, $room_id, $row[10], $enable_periods) && (!$was_del))
+$can_book = verif_booking_date($userName, $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room($userName, $room_id, $row[10], $enable_periods) && getWritable($userName, $id);
+$can_copy = verif_acces_ressource($userName, $room_id);
+if (($can_book || $can_copy) && (!$was_del))
 {
     echo "<tr>";
         echo "<td colspan='2'>";
@@ -510,10 +512,13 @@ if ((getWritable($userName, $id)) && verif_booking_date($userName, $id, $room_id
     echo "<tr>";
         echo "<td colspan='2'>";
             $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
-            echo "<input class=\"btn btn-primary\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("editentry")."\"/>";
-            echo "<input class=\"btn btn-info\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back&amp;copier'\" value=\"".get_vocab("copyentry")."\"/>";
-            echo "<input class=\"btn btn-warning\" type=\"button\" onclick=\"location.href='swap_entry.php?id=$id&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("swapentry")."\"/>";
-            if ($can_delete_or_create == "y")
+            if ($can_book)
+                echo "<input class=\"btn btn-primary\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("editentry")."\"/>";
+            if ($can_copy)
+                echo "<input class=\"btn btn-info\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back&amp;copier=copier'\" value=\"".get_vocab("copyentry")."\"/>";
+            if ($can_book)
+                echo "<input class=\"btn btn-warning\" type=\"button\" onclick=\"location.href='swap_entry.php?id=$id&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("swapentry")."\"/>";
+            if (($can_delete_or_create == "y")&& $can_book)
             {
                 $message_confirmation = str_replace("'", "\\'", get_vocab("confirmdel").get_vocab("deleteentry"));
                // $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
@@ -617,11 +622,7 @@ if ($fin_session == 'n'){
         echo "<input type=\"hidden\" name=\"page\" value=\"".clean_input($_GET['page'])."\" />\n";
     if (($userName != '') && (authGetUserLevel($userName, $room_id) >= 3) && ($moderate == 1))
     {
-        //echo "<form action=\"view_entry.php\" method=\"get\">\n";
         echo "<input type=\"hidden\" name=\"action_moderate\" value=\"y\" />\n";
-        //echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
-        /*if (isset($_GET['page']))
-            echo "<input type=\"hidden\" name=\"page\" value=\"".$_GET['page']."\" />\n";*/
         echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("moderate_entry")."</legend>\n";
         echo "<p>";
         echo "<input type=\"radio\" name=\"moderate\" value=\"1\" checked=\"checked\" />".get_vocab("accepter_resa");
@@ -635,14 +636,12 @@ if ($fin_session == 'n'){
         echo "<label for=\"description\">".get_vocab("justifier_decision_moderation").get_vocab("deux_points")."</label>\n";
         echo "<textarea class=\"form-control\" name=\"description\" id=\"description\" cols=\"40\" rows=\"3\"></textarea>";
         echo "</p>";
-        //echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"commit\" value=\"".get_vocab("save")."\" /></div>\n";
         echo "</fieldset>\n";
     }
     if ($active_ressource_empruntee == 'y')
     {
         if ((!$was_del) && ($moderate != 1) && ($userName != '') && (authGetUserLevel($userName,$room_id) >= 3))
         {
-            //echo "<form action=\"view_entry.php\" method=\"get\">";
             echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("reservation_en_cours")."</legend>\n";
             echo "<span class=\"larger\">".get_vocab("signaler_reservation_en_cours")."</span>".get_vocab("deux_points");
             echo "<br />".get_vocab("explications_signaler_reservation_en_cours");
@@ -674,23 +673,11 @@ if ($fin_session == 'n'){
                 echo " />".get_vocab("envoyer maintenant mail retard");
                 echo "<input type=\"hidden\" name=\"mail_exist\" value=\"".$mail_exist."\" />";
             }
-         /*   if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
-                echo "<br /><i>(".get_vocab("necessite fonction mail automatique").")</i>"; en doublon ? YN */ 
-            //echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=\"".get_vocab("save")."\" /></div>";
             echo "</fieldset>\n";
-          /*  echo "<div><input type=\"hidden\" name=\"day\" value=\"".$day."\" />";
-            echo "<input type=\"hidden\" name=\"month\" value=\"".$month."\" />";
-            echo "<input type=\"hidden\" name=\"year\" value=\"".$year."\" />";
-            echo "<input type=\"hidden\" name=\"page\" value=\"".$page."\" />";
-            echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />";
-            echo "<input type=\"hidden\" name=\"back\" value=\"".$back."\" /></div>"; */
-            //echo "</form>";
         }
     }
     if (isset($keys) && isset($courrier))
     {
-        //echo '<form action="view_entry.php" method="get">',PHP_EOL;
-        // echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("reservation_en_cours")."</legend>\n";
         echo "<fieldset>\n";
         if ($active_cle == 'y'){
             echo "<span class=\"larger\">".get_vocab("status_clef").get_vocab("deux_points")."</span>";
@@ -708,15 +695,7 @@ if ($fin_session == 'n'){
                 echo " checked ";
             echo " /> ".get_vocab("msg_courrier");
         }
-        //echo "<br /><br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=\"".get_vocab("save")."\" /></div></fieldset>\n";
         echo "</fieldset>";
-       /* echo '<div><input type="hidden" name="day" value="',$day,'" />',PHP_EOL;
-        echo '<input type="hidden" name="month" value="',$month,'" />',PHP_EOL;
-        echo '<input type="hidden" name="year" value="',$year,'" />',PHP_EOL;
-        echo '<input type="hidden" name="page" value="',$page,'" />',PHP_EOL;
-        echo '<input type="hidden" name="id" value="',$id,'" />',PHP_EOL;
-        echo '<input type="hidden" name="back" value="',$back,'" /></div>',PHP_EOL; */
-        //echo '</form>',PHP_EOL;
     }
     echo '<input type="hidden" name="day" value="',$day,'" />',PHP_EOL;
     echo '<input type="hidden" name="month" value="',$month,'" />',PHP_EOL;
@@ -727,7 +706,6 @@ if ($fin_session == 'n'){
     echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"commit\" value=\"".get_vocab("save")."\" /></div>\n";
     echo '</form>',PHP_EOL;
 } // fin du formulaire
-//include_once('include/trailer.inc.php');
 if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')) // si mode page, on ferme le container
 {
 	echo '</div>',PHP_EOL;

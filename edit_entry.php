@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-17 18:41$
+ * Dernière modification : $Date: 2022-01-19 11:41$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -263,7 +263,7 @@ grr_sql_free($res);
 //$overloadFields = mrbsOverloadGetFieldslist();
 //print_r($overloadFields);
 // vérification
-
+/*
 echo "<br>vérification<br>";
 foreach($form_vars as $var => $var_type)
 {
@@ -272,13 +272,13 @@ foreach($form_vars as $var => $var_type)
 }
 echo "<br>Champs additionnels<br>";
 print_r($overloadFields);
-
+*/
 //die();
 // traitement des données
-// URL de retour. À faire avant l'ouverture de session.
-// En effet, nous pourrions passer par edit_entry plus d'une fois, par exemple si nous devons nous reconnecter par timeout. 
-// Nous devons toujours conserver la page d'appel d'origine afin qu'une fois que nous avons quitté edit_entry_handler, nous puissions revenir à la page d'appel (plutôt que d'aller à la vue par défaut). 
-// Si c'est la première fois, alors $_SERVER['HTTP_REFERER'] contient l'appelant d'origine. Si c'est la deuxième fois, nous l'aurons stocké dans $page_ret.
+/* URL de retour. À faire avant l'ouverture de session.
+ En effet, nous pourrions passer par edit_entry plus d'une fois, par exemple si nous devons nous reconnecter par timeout. 
+ Nous devons toujours conserver la page d'appel d'origine afin qu'une fois que nous avons quitté edit_entry_handler, nous puissions revenir à la page d'appel (plutôt que d'aller à la vue par défaut). 
+ Si c'est la première fois, alors $_SERVER['HTTP_REFERER'] contient l'appelant d'origine. Si c'est la deuxième fois, nous l'aurons stocké dans $page_ret.*/
 if (!isset($page_ret) || ($page_ret == ''))
 {
     $referer = isset($_SERVER['HTTP_REFERER']) ? htmlspecialchars($_SERVER['HTTP_REFERER']) : '';
@@ -458,7 +458,7 @@ $etype = 0;
 
 if (isset($id)) // édition d'une réservation existante
 {
-    if (!getWritable($user_name,$id))
+    if (!getWritable($user_name,$id) && ($copier == ''))
     {
         start_page_w_header('','','','with_session');
         showAccessDenied($page_ret);
