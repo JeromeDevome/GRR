@@ -35,7 +35,7 @@ if (!grr_resumeSession())
 	die();
 };
 include_once('include/language.inc.php');
-$msg='';
+$msg=getFormVar('message');
 if (Settings::get("module_multisite") == "Oui")
 	$use_site = 'y';
 else
@@ -677,7 +677,7 @@ else {
               <div class="form-group">
                 <label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd1">'.get_vocab('new_pwd1').get_vocab('deux_points').'</label>
                 <div class="col-md-3 col-sm-4 col-xs-6">
-                <input id="pwd1" class="form-control" id="pwd1" type="password" name="reg_password1" size="20" 
+                <input id="pwd1" class="form-control" type="password" name="reg_password1" size="20" 
                 onkeyup="runPassword(this.value, \'pwd1\');" required /></div>
               </div>
               <div class="form-group">

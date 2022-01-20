@@ -3,9 +3,9 @@
  * changepwd.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-08-21 15:51$
+ * Dernière modification : $Date: 2022-01-20 18:35$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -40,7 +40,7 @@ if (isset($_SERVER['HTTP_REFERER']))
 $user_login = isset($_POST['user_login']) ? $_POST['user_login'] : ($user_login = isset($_GET['user_login']) ? $_GET['user_login'] : NULL);
 $valid = isset($_POST['valid']) ? $_POST['valid'] : NULL;
 $msg = '';
-if ($valid == 'yes')
+if ($valid == 'pwd')
 {
 	if (IsAllowedToModifyMdp() || $_SESSION['changepwd'] == 1)
 	{
@@ -68,7 +68,7 @@ if ($valid == 'yes')
 						$msg = get_vocab('update_pwd_succeed');
 						$_SESSION['password'] = $reg_password1;
 						$_SESSION['changepwd'] = 0;
-						header("Location: ./my_account.php");
+						header("Location: ./my_account.php?message=$msg");
 					}
 				}
 			}
@@ -81,40 +81,41 @@ if ($valid == 'yes')
 start_page_w_header('','','',$type_session="no_session");
 
 affiche_pop_up($msg,'admin');
-echo ('
-	<div class="container">
-	<form action="changepwd.php" method="post">
-		<input type="hidden" name="valid" value="yes" />
-		<table>');
-
-		echo '<tr><td><b>'.get_vocab('login').get_vocab('deux_points').'</b>';
-		echo getUserName().'</td></tr>';
-
-	if (IsAllowedToModifyMdp() || $_SESSION['changepwd'] == 1)
-	{
-		if($_SESSION['changepwd'] == 1)
-			echo "<h3><span class='avertissement'>".get_vocab('user_change_pwd_obligatoire')."</span></h3>";
-		echo '
-			<tr>
-				<td>
-				
-					<br />
-					<p>'.get_vocab('pwd_msg_warning').'</p>'.get_vocab('old_pwd').get_vocab('deux_points').'
-					<input type="password" name="reg_password_a" size="20" required />
-					<br />'.get_vocab('new_pwd1').get_vocab('deux_points').'
-					<input type="password" name="reg_password1" size="20" required />
-					<br />'.get_vocab('new_pwd1').get_vocab('deux_points').'
-					<input type="password" name="reg_password2" size="20" required />
-				</td>
-			</tr>
-		</table>
-		<hr />';
-		echo '<input class="btn btn-primary" type="submit" value="'.get_vocab('save').'" />';
-	}
-
-	echo '</form>
-		</div> 
-		</section>
+echo '<div class="container">';
+echo "<h3><span class='avertissement'>".get_vocab('user_change_pwd_obligatoire')."</span></h3>";
+echo '<script type="text/javascript" src="./js/pwd_strength.js"></script>';
+echo '  <p>'.get_vocab('pwd_msg_warning').'</p>
+        <form class="form-horizontal" id="form_pwd" action="changepwd.php" method="post">
+          <div class="form-group">
+            <label class="control-label col-md-4 col-sm-6 col-xs-8" for="opwd">'.get_vocab('old_pwd').get_vocab('deux_points').'</label>
+            <div class="col-md-3 col-sm-4 col-xs-6">
+            <input class="form-control" id="opwd" type="password" name="reg_password_a" size="20" required /></div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd1">'.get_vocab('new_pwd1').get_vocab('deux_points').'</label>
+            <div class="col-md-3 col-sm-4 col-xs-6">
+            <input id="pwd1" class="form-control" type="password" name="reg_password1" size="20" 
+            onkeyup="runPassword(this.value, \'pwd1\');" required /></div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 col-sm-6 col-xs-8"><p class="text-right">'.get_vocab('pwd_strength').get_vocab('deux_points').'</p></div>
+            <div class="col-md-3 col-sm-4 col-xs-6">
+              <div id="pwd1_text" style="font-size: 11px;"></div>
+              <div id="pwd1_bar" style="font-size: 1px; height: 3px; width: 0px; border: 1px solid white;"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd2">'.get_vocab('new_pwd2').get_vocab('deux_points').'</label>
+            <div class="col-md-3 col-sm-4 col-xs-6">
+            <input class="form-control" id="pwd2" type="password" name="reg_password2" size="20" required /></div>
+          </div>';
+echo '<div id="fixe">
+        <input type="hidden" name="valid" value="pwd" />
+        <input class="btn btn-primary" type="submit" value="'.get_vocab('save').'" />
+      </div>';
+echo "  </form>
+     </div>";
+echo '	</section>
 	</body>
 </html>';
 ?>
