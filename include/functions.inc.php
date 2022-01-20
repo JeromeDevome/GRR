@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-01-14 18:19$
+ * Dernière modification : $Date: 2022-01-20 15:18$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5322,10 +5322,10 @@ $(\'.clockpicker\').clockpicker({
 }
 function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaultsec,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format=0)
 {
-    $minTime = $morningstarts.":00";
+    $minTime = str_pad($morningstarts, 2, 0, STR_PAD_LEFT).":00";
     //$eveningends_minutes = str_pad($eveningends_minutes, 2, 0, STR_PAD_LEFT);
     //$maxTime = $eveningends.":".$eveningends_minutes;
-    $end_time = mktime($eveningends,$eveningends_minutes,0,0,0,0);
+    $end_time = mktime($eveningends,$eveningends_minutes,0,0,0,0)-$resolution;
     $maxTime = date("H:i",$end_time);
 	if (isset ($_GET['id']))
 	{
@@ -5380,8 +5380,8 @@ function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaults
 	}
     $timeFormat = ($twentyfourhour_format)? "H:i" : "h:i a";
 	echo '<label for="'.$typeTime.'">'.get_vocab('time').get_vocab('deux_points').'</label>
-    <div class="input-group timepicker">
-	<input id="'.$typeTime.'" name="'.$typeTime.'" type="text" class="form-control time" value="'.$hour.':'.$minute. '" >
+    <div class="input-group timepicker">';
+	echo '<input id="'.$typeTime.'" name="'.$typeTime.'" type="text" class="form-control time" value="'.$hour.':'.$minute. '" >
     <span class="input-group-addon btn" id="'.$typeTime.'clock'.'">
         <span class="glyphicon glyphicon-time" ></span>
     </span>
