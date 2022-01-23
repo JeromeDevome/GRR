@@ -3,9 +3,9 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-11-30 11:52$
+ * Dernière modification : $Date: 2022-01-23 15:44$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -704,34 +704,66 @@ try {
 				$entry_type = 2;
 			else
 				$entry_type = 0;
-			$new_id = mrbsCreateSingleEntry($start_time, $end_time, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $keys, $courrier,$nbparticipantmax);
-            //mrbsCreateSingleEntry($start_time, $end_time, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $keys, $courrier);
-			//$new_id = grr_sql_insert_id();
-			if (Settings::get("automatic_mail") == 'yes')
-			{
-				if (isset($new_id) && ($new_id != 0))
-				{
-					if ($send_mail_moderate)
-						$message_error = send_mail($new_id,5,$dformat);
-					else
-						$message_error = send_mail($new_id,2,$dformat, array(), $oldRessource);
-				}
-				else // ici $new_id n'est pas défini ou nul, i.e. la réservation n'est pas posée => message à modifier ?
-				{/*
-					if ($send_mail_moderate)
-						$message_error = send_mail($new_id,5,$dformat);
-					else
-						$message_error = send_mail($new_id,1,$dformat);*/
-				}
-			}
+            if (isset($id) && ($id != 0)){ // mise à jour d'une réservation isolée
+                $overload_desc = grrOverloadArray2OverloadDesc($overload_data, "", $room_id);
+                $data = array('start_time'=>$start_time, 
+                'end_time'=>$end_time, 
+                'entry_type'=>$entry_type, 
+                'repeat_id'=>$repeat_id, 
+                'room_id'=>$room_id, 
+                'create_by'=>$create_by, 
+                'beneficiaire'=>$beneficiaire, 
+                'beneficiaire_ext'=>$beneficiaire_ext, 
+                'name'=>$name, 
+                'type'=>$type, 
+                'description'=>$description, 
+                'statut_entry'=>$statut_entry, 
+                'option_reservation'=>$option_reservation,
+                'overload_desc'=>$overload_desc, 
+                'moderate'=>$entry_moderate, 
+                'jours'=>$rep_jour_c, 
+                'clef'=>$keys, 
+                'courrier'=>$courrier, 
+                'nbparticipantmax'=>$nbparticipantmax);
+                $res = grrUpdateSingleEntry($data,$id);
+                if (!$res){
+                    echo "échec lors de la mise à jour";
+                    die();
+                }
+                else {
+                    $message = "mise à jour effecutée";
+                }
+            }
+			else { // création d'une nouvelle réservation
+                $new_id = mrbsCreateSingleEntry($start_time, $end_time, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $keys, $courrier,$nbparticipantmax);
+                //mrbsCreateSingleEntry($start_time, $end_time, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $keys, $courrier);
+                //$new_id = grr_sql_insert_id();
+                if (Settings::get("automatic_mail") == 'yes')
+                {
+                    if (isset($new_id) && ($new_id != 0))
+                    {
+                        if ($send_mail_moderate)
+                            $message_error = send_mail($new_id,5,$dformat);
+                        else
+                            $message_error = send_mail($new_id,2,$dformat, array(), $oldRessource);
+                    }
+                    else // ici $new_id n'est pas défini ou nul, i.e. la réservation n'est pas posée => message à modifier ?
+                    {/*
+                        if ($send_mail_moderate)
+                            $message_error = send_mail($new_id,5,$dformat);
+                        else
+                            $message_error = send_mail($new_id,1,$dformat);*/
+                    }
+                }
+            }
 		}
 	}
 	if (isset($id) && ($id != 0)) // quand on fait une modification, on commence par effacer la réservation ou la série existante
 	{
 		if ($rep_type != 0)
-			mrbsDelEntry($user, $id, "series", 1);
-		else
-			mrbsDelEntry($user, $id, NULL, 1);
+			mrbsDelEntry($user, $id, "series", 1); // provisoirement
+		//else
+		//	mrbsDelEntry($user, $id, NULL, 1);
 	}
     // déverrouille la table
     grr_sql_mutex_unlock("".TABLE_PREFIX."_entry");

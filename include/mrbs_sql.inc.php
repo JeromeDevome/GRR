@@ -2,9 +2,9 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2021-12-08 17:00$
+ * Dernière modification : $Date: 2022-01-23 15:41$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -295,7 +295,7 @@ function mrbsEntryGetOverloadDesc($id_entry)
 	}
 	if ( $room_id >0 )
 	{
-		$area_id = mrbsGetAreaIdFromRoomId($room_id);
+		$area_id = mrbsGetRoomArea($room_id);
 		// Avec l'id_area on récupère la liste des champs additionnels dans ".TABLE_PREFIX."_overload.
 		$fieldslist = mrbsOverloadGetFieldslist($area_id);
 		foreach ($fieldslist as $field=>$fieldtype)
@@ -396,6 +396,28 @@ function grrExtractValueFromOverloadDesc($chaine,$id)
 		$data = "";
 	return $data;
 }
+/** grrOverloadArray2OverloadDesc()
+* paramètres : 
+*   (array) $data = un tableau associatif des champs additionnels nom => valeur
+*   $area_id = l'id du domaine
+*   $room_id = l'id de la ressource
+* renvoie une chaîne formatée décrivant les champs additionnels
+*/
+function grrOverloadArray2OverloadDesc($data, $area_id="", $room_id=0){
+    $overload_data_string = "";
+	$overload_fields_list = mrbsOverloadGetFieldslist(0,$room_id);
+	foreach ($overload_fields_list as $field=>$fieldtype)
+	{
+		$id_field = $overload_fields_list[$field]["id"];
+		if (array_key_exists($id_field,$data))
+		{
+			$begin_string = "@".$id_field."@";
+			$end_string = "@/".$id_field."@";
+			$overload_data_string .= $begin_string.urlencode($data[$id_field]).$end_string;
+		}
+	}
+    return $overload_data_string;
+}
 /** mrbsCreateSingleEntry()
  *
  * Create a single (non-repeating) entry in the database
@@ -482,7 +504,7 @@ function mrbsCreateSingleEntry($starttime, $endtime, $entry_type, $repeat_id, $r
 function mrbsCreateRepeatEntry($starttime, $endtime, $rep_type, $rep_enddate, $rep_opt, $room_id, $creator, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks,$overload_data, $rep_jour_c, $courrier, $nbparticipantmax=0)
 {
 	$overload_data_string = "";
-	$area_id = mrbsGetAreaIdFromRoomId($room_id);
+	$area_id = mrbsGetRoomArea($room_id);
 	$overload_fields_list = mrbsOverloadGetFieldslist($area_id);
 	foreach ($overload_fields_list as $field=>$fieldtype)
 	{
@@ -794,6 +816,34 @@ function grrCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate,
 	}
 	return $id_first_resa;
 }
+/** grrUpdateSingleEntry()
+ * paramètres : 
+ *  (array) $data = tableau associatif contenant les données à modifier dans la réservation, les index suivent le schéma de la table grr_entry
+ *  $id = identifiant de la réservation à modifier
+ * renvoie : TRUE | FALSE selon le succès de l'opération de mise à jour
+*/
+function grrUpdateSingleEntry($data, $id){
+    $sql = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id = ".protect_data_sql($id);
+    $res = grr_sql_query($sql);
+    if (!$res || (grr_sql_count($res)==0)){
+        return FALSE; // erreur de lecture ou pas de résultat ($id incorrect ou réservation supprimée)
+    }
+    else{
+        $old_data = grr_sql_row_keyed($res, 0);
+        grr_sql_free($res);
+        $sql = "UPDATE ".TABLE_PREFIX."_entry SET ";
+        foreach($old_data as $key => $val){
+            if (isset($data[$key])&&($data[$key] != $old_data[$key]))
+                $sql.= "$key = '".protect_data_sql($data[$key])."', ";
+        }
+        $sql = rtrim($sql,", ");
+        $sql .= " WHERE ".TABLE_PREFIX."_entry.id = ".protect_data_sql($id);
+        //echo $sql;
+        $res = grr_sql_command($sql);
+        //echo "   ".$res;
+        return($res == 1);
+    }
+}
 /* mrbsGetEntryInfo()
  *
  * Get the booking's entrys
@@ -1044,7 +1094,7 @@ function grrEntryGetOverloadDesc($id_entry)
 	}
 	if ( $room_id >0 )
 	{
-		$area_id = mrbsGetAreaIdFromRoomId($room_id);
+		$area_id = mrbsGetRoomArea($room_id);
 		// Avec l'id_area on récupère la liste des champs additionnels dans ".TABLE_PREFIX."_overload.
 		$fieldslist = grrOverloadGetFieldslist($area_id);
 		foreach ($fieldslist as $fieldid=>$fielddata)
