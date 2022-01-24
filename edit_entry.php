@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-23 11:39$
+ * Dernière modification : $Date: 2022-01-20 15:18$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -688,7 +688,7 @@ if (Settings::get("remplissage_description_complete") == '1') {$D .= " *";}
 $D .= get_vocab("deux_points");
 $E = htmlspecialchars ( $description );
 $date_debut = get_vocab("date").get_vocab("deux_points");
-$area_id = mrbsGetRoomArea($room_id);
+$area_id = mrbsGetAreaIdFromRoomId($room_id);
 $moderate = isset($Room['moderate'])? $Room['moderate']: -1;
 //echo "<br>domaine : ".$area_id;
 //echo "<br>titre : ".$titre;

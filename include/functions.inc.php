@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-01-23 11:42$
+ * Dernière modification : $Date: 2022-01-20 15:18$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4041,7 +4041,7 @@ function verif_heure_debut_fin($start_time,$end_time,$area)
  	{
  		if (Settings::get("allow_user_delete_after_begin") == 1)
  		{
- 			$id_area = mrbsGetRoomArea($id_room);
+ 			$id_area = mrbsGetAreaIdFromRoomId($id_room);
  			$resolution_area = grr_sql_query1("select resolution_area from ".TABLE_PREFIX."_area WHERE id = '".$id_area."'");
  			if ($date_booking > $date_now - $resolution_area)
  				return true;
@@ -4522,7 +4522,7 @@ function find_user_room ($id_room)
 	// Si la table des emails des gestionnaires de la ressource est vide, on avertit les administrateurs du domaine
 	if (count($emails) == 0)
 	{
-		$id_area = mrbsGetRoomArea($id_room);
+		$id_area = mrbsGetAreaIdFromRoomId($id_room);
 		$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_useradmin_area
 			where ".TABLE_PREFIX."_utilisateurs.login = ".TABLE_PREFIX."_j_useradmin_area.login and ".TABLE_PREFIX."_j_useradmin_area.id_area='".$id_area."'");
 		if ($sql_admin)
@@ -4539,7 +4539,7 @@ function find_user_room ($id_room)
 	{
 		if (count($emails) == 0)
 		{
-			$id_area = mrbsGetRoomArea($id_room);
+			$id_area = mrbsGetAreaIdFromRoomId($id_room);
 			$id_site = mrbsGetAreaSite($id_area);
 			$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_useradmin_site
 				where ".TABLE_PREFIX."_utilisateurs.login = ".TABLE_PREFIX."_j_useradmin_site.login and ".TABLE_PREFIX."_j_useradmin_site.id_site='".$id_site."'");
@@ -4588,7 +4588,7 @@ function find_active_user_room ($id_room)
 	// Si la table des emails des gestionnaires de la ressource est vide, on avertit les administrateurs du domaine
 	if (count($emails) == 0)
 	{
-		$id_area = mrbsGetRoomArea($id_room);
+		$id_area = mrbsGetAreaIdFromRoomId($id_room);
 		$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_useradmin_area
 			where ".TABLE_PREFIX."_utilisateurs.etat = 'actif' AND
 			".TABLE_PREFIX."_utilisateurs.login = ".TABLE_PREFIX."_j_useradmin_area.login and ".TABLE_PREFIX."_j_useradmin_area.id_area='".$id_area."'");
@@ -4606,7 +4606,7 @@ function find_active_user_room ($id_room)
 	{
 		if (count($emails) == 0)
 		{
-			$id_area = mrbsGetRoomArea($id_room);
+			$id_area = mrbsGetAreaIdFromRoomId($id_room);
 			$id_site = mrbsGetAreaSite($id_area);
 			$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_useradmin_site
 				where ".TABLE_PREFIX."_utilisateurs.etat = 'actif' AND
