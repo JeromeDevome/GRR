@@ -168,6 +168,7 @@ $vocab['all_entries_in_conflict'] = "All requests are in conflict: no booking is
 $vocab['all_rooms'] = "Tutte le risorse";
 $vocab['all_rooms_of_area'] = "Pour toutes les ressources du domaine"; // A traduire
 $vocab['alphanumeric'] = "Valeur alphanumérique"; // A traduire
+$vocab['alterseries'] = "Modifier une série de réservations à laquelle des participants sont inscrits va annuler les inscriptions !";
 $vocab['areas'] = "Categoria : ";
 $vocab['attention_mail_automatique_désactive'] = "ATTENZIONE: la spedizione di mails automazioni è attualmente disattivata. Per attivarlo, appuntamento nel pannello di configurazione generale.";
 $vocab['aucun autilisateur'] = "Nessuno utente dispone di privilegi";

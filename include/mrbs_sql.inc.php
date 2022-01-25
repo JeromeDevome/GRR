@@ -2,9 +2,9 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2021-12-08 17:00$
+ * Dernière modification : $Date: 2022-01-25 12:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -1151,5 +1151,16 @@ function ParticipationAnnulation($entry_id, $participant)
     $sql = "DELETE FROM ".TABLE_PREFIX."_participants WHERE idresa=$entry_id AND participant='$participant'";
 	if (grr_sql_command($sql) < 0)
         fatal_error(0, "Erreur sur la requête ".$sql);
+}
+/** updateParticipants($old_id, $new_id)
+* transfère les participants à la réservation $old_id vers la réservation $new_id
+* renvoie TRUE|FALSE selon la réussite de l'opération
+*/
+function updateParticipants($old_id, $new_id)
+{
+    $nb = grr_sql_query1("SELECT COUNT(*) FROM ".TABLE_PREFIX."_participants WHERE idresa=".$old_id.";");
+    $sql = "UPDATE " .TABLE_PREFIX."_participants SET idresa=".$new_id." WHERE idresa=".$old_id;
+    $res = grr_sql_command($sql);
+    return($res == $nb);
 }
 ?>

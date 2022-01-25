@@ -166,6 +166,7 @@ $vocab['all_entries_in_conflict'] = "Toutes les demandes sont en collision : auc
 $vocab['all_rooms'] = "Toutes les ressources";
 $vocab['all_rooms_of_area'] = "Pour toutes les ressources du domaine";
 $vocab['alphanumeric'] = "Valeur alphanumérique";
+$vocab['alterseries'] = "Modifier une série de réservations à laquelle des participants sont inscrits va annuler les inscriptions !";
 $vocab['any_area'] = "Tous les domaines";
 $vocab['areas'] = "Domaines :";
 $vocab['attention_mail_automatique_désactive'] = "ATTENTION : l'envoi de mails automatiques est actuellement désactivé. Pour l'activer, rendez-vous dans le panneau de configuration générale.";
