@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2022-01-15
+# Last modification : 2022-01-25
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -124,6 +124,11 @@ $vocab['admin_type.php'] = "Tipi di prenotazione";
 $vocab['admin_type_explications'] = "Per difetto, all'epoca della creazione di un nuovo tipo di prenotazioni, questo è comune a tutti i campi. Potete specificare poi, per ogni campo, i tipi validi o no.";
 $vocab['admin_type_modify_create.php'] = "Aggiunta di un nuovo tipo di prenotazione";
 $vocab['admin_type_modify_modify.php'] = "Modifica di un tipo di prenotazione";
+$vocab['admin_type_msg1'] = "Suppression impossible : des réservations ont été enregistrées avec ce type.";
+$vocab['admin_type_msg2'] = "ATTENTION : votre table des types de réservation n'est pas à jour !";
+$vocab['admin_type_msg3'] = "Un ou plusieurs types sont actuellement utilisés dans les réservations	mais ne figurent pas dans la table des types. Cela risque d'engendrer des messages d'erreur. ";
+$vocab['admin_type_msg4'] = "Il s'agit du ou des types suivants : ";
+$vocab['admin_type_msg5'] = "Vous devez donc définir ci-dessus, le ou les types manquants.";
 $vocab['admin_user.php'] = "Utenti";
 $vocab['admin_user1'] = "General user rights"; // A traduire
 $vocab['admin_user_modify_create.php'] = "Aggiunta di un nuovo utente";

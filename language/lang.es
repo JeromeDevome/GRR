@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2022-01-15
+# Last modification : 2022-01-25
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -120,7 +120,12 @@ $vocab['admin_site_explications'] = "Un sitio corresponde a la localización geo
 $vocab['admin_type.php'] = "Tipos de reserva ";
 $vocab['admin_type_explications'] = "Cuando se crea un nuevo tipo de reservas, este està común a todos los campos por defecto. Puede entonces especificar, para cada campo, los tipos válidos o no.";
 $vocab['admin_type_modify_create.php'] = "Añadido de un nuevo tipo de reserva ";
-$vocab['admin_type_modify_modify.php'] = "Modificación  de un tipo de reserva ";
+$vocab['admin_type_modify_modify.php'] = "Modificación de un tipo de reserva ";
+$vocab['admin_type_msg1'] = "Suppression impossible : des réservations ont été enregistrées avec ce type.";
+$vocab['admin_type_msg2'] = "ATTENTION : votre table des types de réservation n'est pas à jour !";
+$vocab['admin_type_msg3'] = "Un ou plusieurs types sont actuellement utilisés dans les réservations	mais ne figurent pas dans la table des types. Cela risque d'engendrer des messages d'erreur. ";
+$vocab['admin_type_msg4'] = "Il s'agit du ou des types suivants : ";
+$vocab['admin_type_msg5'] = "Vous devez donc définir ci-dessus, le ou les types manquants.";
 $vocab['admin_user.php'] = "Usuarios";
 $vocab['admin_user1'] = "General user rights"; // A traduire
 $vocab['admin_user_modify_create.php'] = "Añadido de un nuevo usuario";

@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2022-01-15
+# Last modification : 2022-01-25
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -122,6 +122,11 @@ $vocab['admin_type.php'] = "Types de réservation";
 $vocab['admin_type_explications'] = "Par défaut, lors de la création d'un nouveau type de réservations, celui-ci est commun à tous les domaines. Vous pouvez ensuite spécifier, pour chaque domaine, les types valides ou non.";
 $vocab['admin_type_modify_create.php'] = "Ajout d'un nouveau type de réservation";
 $vocab['admin_type_modify_modify.php'] = "Modification d'un type de réservation";
+$vocab['admin_type_msg1'] = "Suppression impossible : des réservations ont été enregistrées avec ce type.";
+$vocab['admin_type_msg2'] = "ATTENTION : votre table des types de réservation n'est pas à jour !";
+$vocab['admin_type_msg3'] = "Un ou plusieurs types sont actuellement utilisés dans les réservations	mais ne figurent pas dans la table des types. Cela risque d'engendrer des messages d'erreur. ";
+$vocab['admin_type_msg4'] = "Il s'agit du ou des types suivants : ";
+$vocab['admin_type_msg5'] = "Vous devez donc définir ci-dessus, le ou les types manquants.";
 $vocab['admin_user.php'] = "Utilisateurs";
 $vocab['admin_user1'] = "Droits généraux des utilisateurs";
 $vocab['admin_user_modify_create.php'] = "Ajout d'un nouvel utilisateur";
