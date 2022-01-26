@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue anglaise
 # GRR: Translations provided by: JeromeB & Patricia Gaubert-Dubois et Yan Naessens
-# Last modification : 2021-09-12
+# Last modification : 2022-01-26
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accept the reservation ";
@@ -514,11 +514,11 @@ $vocab['mail_a'] = "A"; // A traduire
 $vocab['mail_admin_off'] = "Not inform users by email";
 $vocab['mail_de'] = "De";  // A traduire
 $vocab['mail_message'] = "Message"; // A traduire
-$vocab['mail_raison_1'] = "Vous recevez ce mail car vous êtes le gestionnaire de la ressource."; // A traduire
-$vocab['mail_raison_2'] = "Vous recevez ce mail car vous êtes administrateur du domaine et aucun gestionnaire de ressource n'ai définit avec une adresse mail."; // A traduire
-$vocab['mail_raison_3'] = "Vous recevez ce mail car vous êtes administrateur du site et aucun gestionnaire de ressource ou de domaine n'ai définit avec une adresse mail."; // A traduire
-$vocab['mail_raison_4'] = "Vous recevez ce mail car vous êtes administrateur et aucun gestionnaire n'ai définit avec une adresse mail."; // A traduire
-$vocab['mail_raison_5'] = "Vous recevez ce mail car votre adresse est renseignée dans un champ additionnel."; // A traduire
+$vocab['mail_raison_1'] = "You are receiving this email because you are the resource manager.";
+$vocab['mail_raison_2'] = "You are receiving this email because you are the domain administrator and no resource manager is defined with an email address.";
+$vocab['mail_raison_3'] = "You are receiving this email because you are the site administrator and no resource or domain manager is defined with an email address.";
+$vocab['mail_raison_4'] = "You are receiving this email because you are an administrator and no manager is defined with an email address.";
+$vocab['mail_raison_5'] = "You are receiving this email because your address is entered in an overload field.";
 $vocab['mail_sujet'] = "Subject";
 $vocab['mail_test'] = "Email test";
 $vocab['mail_user'] = "Email";

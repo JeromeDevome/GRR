@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML Codage de certains caractères particuliers : &#x00DF; -> "double s" allemand http://www.unicode.org/charts/PDF/U0080.pdf
 # GRR : fichier de langue allemande
 # GRR: Traduction by: JeromeB & Karsten Schinkel & Jean-Yves Migeon
-# Last modification : 2022-01-04
+# Last modification : 2022-01-26
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Reservierung akzeptieren";
@@ -515,9 +515,9 @@ $vocab['mail_admin_off'] = "Nicht per E-Mail verständigen";
 $vocab['mail_de'] = "De"; // A traduire
 $vocab['mail_message'] = "Message"; // A traduire
 $vocab['mail_raison_1'] = "Vous recevez ce mail car vous êtes le gestionnaire de la ressource."; // A traduire
-$vocab['mail_raison_2'] = "Vous recevez ce mail car vous êtes administrateur du domaine et aucun gestionnaire de ressource n'ai définit avec une adresse mail."; // A traduire
-$vocab['mail_raison_3'] = "Vous recevez ce mail car vous êtes administrateur du site et aucun gestionnaire de ressource ou de domaine n'ai définit avec une adresse mail."; // A traduire
-$vocab['mail_raison_4'] = "Vous recevez ce mail car vous êtes administrateur et aucun gestionnaire n'ai définit avec une adresse mail."; // A traduire
+$vocab['mail_raison_2'] = "Vous recevez ce mail car vous êtes administrateur du domaine et aucun gestionnaire de ressource n'est défini avec une adresse mail."; // A traduire
+$vocab['mail_raison_3'] = "Vous recevez ce mail car vous êtes administrateur du site et aucun gestionnaire de ressource ou de domaine n'est défini avec une adresse mail."; // A traduire
+$vocab['mail_raison_4'] = "Vous recevez ce mail car vous êtes administrateur et aucun gestionnaire n'est défini avec une adresse mail."; // A traduire
 $vocab['mail_raison_5'] = "Vous recevez ce mail car votre adresse est renseignée dans un champ additionnel."; // A traduire
 $vocab['mail_sujet'] = "Sujet"; // A traduire
 $vocab['mail_test'] = "Email de test"; // A traduire

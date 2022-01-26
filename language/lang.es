@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR : fichier de langue espagnole
 # GRR: Traduction By JeromeB
-# Last modification : 2022-01-04
+# Last modification : 2022-01-26
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Aceptar la reserva";
@@ -515,9 +515,9 @@ $vocab['mail_admin_off'] = "No prevenir por mail";
 $vocab['mail_de'] = "From";
 $vocab['mail_message'] = "Message";
 $vocab['mail_raison_1'] = "Vous recevez ce mail car vous êtes le gestionnaire de la ressource."; // A traduire
-$vocab['mail_raison_2'] = "Vous recevez ce mail car vous êtes administrateur du domaine et aucun gestionnaire de ressource n'ai définit avec une adresse mail."; // A traduire
-$vocab['mail_raison_3'] = "Vous recevez ce mail car vous êtes administrateur du site et aucun gestionnaire de ressource ou de domaine n'ai définit avec une adresse mail."; // A traduire
-$vocab['mail_raison_4'] = "Vous recevez ce mail car vous êtes administrateur et aucun gestionnaire n'ai définit avec une adresse mail."; // A traduire
+$vocab['mail_raison_2'] = "Vous recevez ce mail car vous êtes administrateur du domaine et aucun gestionnaire de ressource n'est défini avec une adresse mail."; // A traduire
+$vocab['mail_raison_3'] = "Vous recevez ce mail car vous êtes administrateur du site et aucun gestionnaire de ressource ou de domaine n'est défini avec une adresse mail."; // A traduire
+$vocab['mail_raison_4'] = "Vous recevez ce mail car vous êtes administrateur et aucun gestionnaire n'est défini avec une adresse mail."; // A traduire
 $vocab['mail_raison_5'] = "Vous recevez ce mail car votre adresse est renseignée dans un champ additionnel."; // A traduire
 $vocab['mail_sujet'] = "Subject";
 $vocab['mail_test'] = "Email de test"; // A traduire
