@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-01-04 11:40$
+ * Dernière modification : $Date: 2022-01-26 11:40$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -681,23 +681,17 @@ function resaToModerate($user)
     }
     return $resas;
 }
-/*
-Teste s'il reste ou non des plages libres sur une journée donnée pour un domaine donné.
-Arguments :
-$id_room : identifiant de la ressource
-$month_week : mois
-$day_week : jour
-$year_week : année
-Renvoie vrai s'il reste des plages non réservées sur la journée
-Renvoie faux dans le cas contraire
+/** fonction plages_libre_semaine_ressource($id_room, $month_week, $day_week, $year_week)
+ * Teste s'il reste ou non des plages libres sur une journée donnée pour une ressource donnée.
+ * Arguments :
+ *  integer $id_room : identifiant de la ressource
+ *  integer $month_week : mois
+ *  integer $day_week : jour
+ *  integer $year_week : année
+ * Renvoie un booléen :
+ *  vrai s'il reste des plages non réservées sur la journée
+ *  faux dans le cas contraire
 */
-/**
- * @param integer $id_room
- * @param integer $month_week
- * @param integer $day_week
- * @param integer $year_week
- * @return boolean
- */
 function plages_libre_semaine_ressource($id_room, $month_week, $day_week, $year_week)
 {
 	global $morningstarts, $eveningends, $eveningends_minutes, $resolution, $enable_periods;
@@ -6094,7 +6088,9 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 {
 	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name, $racine, $racineAd;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $gcDossierImg;
-        $parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
+
+    if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
+        $parametres_url = htmlspecialchars($_SERVER['QUERY_STRING']);
         
 	Hook::Appel("hookHeader2");
 	// Si nous ne sommes pas dans un format imprimable
@@ -6169,14 +6165,14 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 				{
 					echo '<div class="administration">'.PHP_EOL;
 					if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1))
-                        echo "<br><a href='./admin/admin.php?p=admin_accueil&day={$day}&amp;month={$month}&amp;year={$year}'>".get_vocab('admin')."</a>".PHP_EOL;
+                        echo "<br><a href='{$racineAd}admin.php?p=admin_accueil&amp;day={$day}&amp;month={$month}&amp;year={$year}'>".get_vocab('admin')."</a>".PHP_EOL;
 					if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 					{
 						echo '<br />'.PHP_EOL;
 						how_many_connected();
                         echo "<br />";
 					}
-                    echo "<p class='avertissement'>".$mess_resa."</p>";
+                    echo "<p class='avertissement'><a href='{$racineAd}admin.php?p=admin_accueil' class='avertissement'>".$mess_resa."</a></p>".PHP_EOL;
 					echo '</div>'.PHP_EOL;
 				}
 			}
@@ -6195,13 +6191,12 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			$_SESSION['chemin_retour'] = '';
 			if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
 			{
-				$parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
 				$_SESSION['chemin_retour'] = traite_grr_url($grr_script_name)."?". $_SERVER['QUERY_STRING'];
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>'.PHP_EOL;
 			}
 			if ($type_session == 'no_session')
 			{
