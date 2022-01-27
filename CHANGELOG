@@ -76,6 +76,9 @@ Sous-version 3.4.2c
 Sous-version 3.4.2d
     correctifs : syntaxe et icône manquantes
     correctif : la suppression des séries s'arrêtait au jour sélectionné
+Sous-version 3.4.2e
+    modification : prise en compte des heures de début et de fin dans le sélecteur (page de réservation)
+    modification : calcul des plages libres
     
 -----
 --

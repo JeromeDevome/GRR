@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2021-10-15
+# Last modification : 2022-01-04
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -340,7 +340,7 @@ $vocab['dlrapportcsv'] = "Teletrasmettere la CSV della relazione";
 $vocab['dlresumecsv'] = "Teletrasmettere la CSV del riassunto";
 $vocab['domaines_de_type_incompatibles'] = "<b>Osservazione : </b> Unica la prenotazione di giornate intere è possibile perché le risorse selezionate appartengono ai campi di tipo differente.";
 $vocab['dont_allow_modify'] = "Non permettere agli utenti, eccetto i gestori e gli amministratori, di modificare o di sopprimere le loro proprie prenotazioni.";
-$vocab['droits_insuffisants_pour_voir_ressources'] = "Vous n'avez pas les droits suffisants pour accéder aux ressource de ce domaine."; // A traduire
+$vocab['droits_insuffisants_pour_voir_ressources'] = "Vous n'avez pas les droits suffisants pour accéder aux ressources de ce domaine."; // A traduire
 $vocab['duplicate_field'] = "A field with the same name already exists in the area";// À traduire
 $vocab['duplique_domaine'] = "Dupliquer le domaine"; // A traduire
 $vocab['duplique_ressource'] = "Dupliquer la ressource"; // A traduire

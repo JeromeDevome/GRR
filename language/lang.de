@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2021-10-15
+# Last modification : 2022-01-04
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -341,7 +341,7 @@ $vocab['dlrapportcsv'] = " Reservierungsdetails als Tabelle (CSV) herunterladen 
 $vocab['dlresumecsv'] = " Zusammenfassung als Tabelle (CSV) herunterladen ";
 $vocab['domaines_de_type_incompatibles'] = "<b>Bemerkung</b> : Nur die Reservierung von ganzen Tagen ist möglich, da die ausgewählten Ressourcen zu Domänen von verschiedener Art gehören.";
 $vocab['dont_allow_modify'] = "den Benutzern (ausser Verwalter und Administratoren) ihren eigenen Reservierungen ändern oder löschen verboten";
-$vocab['droits_insuffisants_pour_voir_ressources'] = "Vous n'avez pas les droits suffisants pour accéder aux ressource de ce domaine."; // A traduire
+$vocab['droits_insuffisants_pour_voir_ressources'] = "Vous n'avez pas les droits suffisants pour accéder aux ressources de ce domaine."; // A traduire
 $vocab['duplicate_field'] = "A field with the same name already exists in the area";// À traduire
 $vocab['duplique_domaine'] = "Bereich duplizieren";
 $vocab['duplique_ressource'] = "Ressource duplizieren";
