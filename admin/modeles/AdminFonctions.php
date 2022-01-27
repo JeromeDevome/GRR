@@ -2,9 +2,9 @@
 /**
  * AdminFonctions.php
  * Fonctions Général de l'administration
- * Dernière modification : $Date: 2018-11-26 16:00$
- * @author    JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2022-01-27 15:24$
+ * @author    JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -121,27 +121,42 @@ class AdminFonctions
 		return $logsConnexion;
 	}
 
-
-	public static function ReservationsAModerer() // Liste des réservations à modérer
-	{
-		global $dformat;
-
-		$listeModeration = array();
-		$sql = "SELECT r.room_name, e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE e.moderate = 1 AND e.supprimer = 0";
-		$resa_mode = grr_sql_query($sql);
-		$nbAModerer = grr_sql_count($resa_mode);
- 
-		if ($resa_mode)
-		{
-			for ($i = 0; ($row = grr_sql_row($resa_mode, $i)); $i++)
-			{
-				$listeModeration[] = array('ressource' => $row[0], 'debut' => time_date_string($row[1], $dformat) );
-			}
-		}
-
-		return array($nbAModerer, $listeModeration);
-	}
-
+    /**
+     * Fonction : resaToModerate($user) 
+     * Description : si c'est un admin ou un gestionnaire de ressource qui est connecté, retourne un tableau contenant, pour chaque réservation à modérer, [id,room_id,start_time]
+    */
+    public static function ReservationsAModerer($user)
+    {   
+        global $dformat;
+        $listeModeration = array();
+        if (authGetUserLevel($user,-1) > 5) // admin général
+        {
+            $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE e.moderate = 1 AND e.supprimer = 0";
+        }
+        elseif (isset($_GET['id_site']) && (authGetUserLevel($user,$_GET['id_site'],'site') > 4)) // admin du site
+        {
+            $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = ".protect_data_sql($_GET['id_site'])." AND e.moderate = 1 AND e.supprimer = 0)";
+        }
+        elseif (isset($_GET['area']) && (authGetUserLevel($user,$_GET['area'],'area') > 3)) // admin du domaine
+        {
+            $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id WHERE (a.id = ".protect_data_sql($_GET['area'])." AND e.moderate = 1 AND e.supprimer = 0)";
+        }
+        elseif (isset($_GET['room']) && (authGetUserLevel($user,$_GET['room'],'room') > 2)) // gestionnaire de la ressource
+        {
+            $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE (e.room_id = ".protect_data_sql($_GET['room'])." AND e.moderate = 1  AND e.supprimer = 0 ) ";
+        }
+        $res = grr_sql_query($sql);
+        $nbAModerer = grr_sql_count($res);
+        if ($res)
+        {
+            foreach($res as $row) 
+            {
+                $link = "../view_entry.php?id=".$row['id']."&mode=page";
+                $listeModeration[] = array('ressource' => $row['room_name'], 'debut' => time_date_string($row['start_time'], $dformat), 'lien' => $link );
+            }
+        }
+        return array($nbAModerer, $listeModeration);
+    }
 
 }
 

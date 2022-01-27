@@ -3,9 +3,9 @@
  * admin_accueil
  * Interface d'accueil de l'administration des domaines et des ressources
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2022-01-27 15:10$
+ * @author    JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -43,7 +43,7 @@ get_vocab_admin("begining_of_session");
 $trad['dDernieresConnexions'] = AdminFonctions::DernieresConnexion(5);
 
 // Widget réservations à modérer
-list($trad['dNombreModeration'], $trad['dListeModeration'])  = AdminFonctions::ReservationsAModerer(5);
+list($trad['dNombreModeration'], $trad['dListeModeration'])  = AdminFonctions::ReservationsAModerer(getUserName());
 
 
 ?>
