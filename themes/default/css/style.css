@@ -113,6 +113,7 @@ th.jour_sem{width:10%;background-color:gray;color:white;}
 .dropdown .actif{background-color: #2C6CA3;border-color: #2E6DA4; color: #FFF;}
 /* edit_entry */
 #choix_beneficiaire > #menu4{display:none;}
+#form_participant{display:none;}
 
 @media only screen and (max-width:800px) { 
 	.accueil {

@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2022-01-25
+# Last modification : 2022-01-30
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -691,6 +691,10 @@ $vocab['only_administrators'] = "Nur Administratoren";
 $vocab['only_letters_and_numbers'] = "Der Benutzername darf nur aus Buchstaben und Ziffern bestehen!";
 $vocab['order_display'] = "Anzeigeordnung";
 $vocab['Parametres_configuration_envoi_automatique_mails'] = "Paramètres de configuration de l'envoi automatique des mails"; // A traduire
+$vocab['participant_list'] = "List of participants";
+$vocab['participant_list_hide'] = "Hide the list";
+$vocab['participant_register_form'] = "Register participants";
+$vocab['participant_register_form_hide'] = "Close the form";
 $vocab['pas de privileges'] = "Keine Rechte";
 $vocab['Pas_image_disponible'] = "Bilddatei nicht verfügbar";
 $vocab['passwd_error'] = "Fehler bei der Passworteingabe: Beginnen Sie von neuem!";

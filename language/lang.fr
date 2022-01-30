@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2022-01-25
+# Last modification : 2022-01-30
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -710,6 +710,10 @@ $vocab['only_administrators'] = "Seulement les administrateurs";
 $vocab['only_letters_and_numbers'] = "L'identifiant de l'utilisateur doit être constitué uniquement de lettres et de chiffres !";
 $vocab['order_display'] = "Ordre d'affichage";
 $vocab['Parametres_configuration_envoi_automatique_mails'] = "Paramètres de configuration de l'envoi automatique des mails";
+$vocab['participant_list'] = "Liste des participants";
+$vocab['participant_list_hide'] = "Masquer la liste";
+$vocab['participant_register_form'] = "Inscrire des participants";
+$vocab['participant_register_form_hide'] = "Fermer le formulaire";
 $vocab['pas de privileges'] = "Pas de privilèges";
 $vocab['Pas_image_disponible'] = "Pas d'image disponible";
 $vocab['passwd_error'] = "Erreur lors de la saisie du mot de passe, veuillez recommencer !";

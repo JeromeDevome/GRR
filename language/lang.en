@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2022-01-25
+# Last modification : 2022-01-30
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -705,6 +705,10 @@ $vocab['only_administrators'] = "Only administrators";
 $vocab['only_letters_and_numbers'] = "Login-name is to consist of letters and numbers only!";
 $vocab['order_display'] = "Display order";
 $vocab['Parametres_configuration_envoi_automatique_mails'] = "Parameters of configuration of the sending of automatic e-mails";
+$vocab['participant_list'] = "List of participants";
+$vocab['participant_list_hide'] = "Hide the list";
+$vocab['participant_register_form'] = "Register participants";
+$vocab['participant_register_form_hide'] = "Close the form";
 $vocab['pas de privileges'] = "No privileges";
 $vocab['Pas_image_disponible'] = "No image available";
 $vocab['passwd_error'] = "An error occurred when entering password, please do it again!";

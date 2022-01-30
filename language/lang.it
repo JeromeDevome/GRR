@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2022-01-25
+# Last modification : 2022-01-30
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -690,6 +690,10 @@ $vocab['only_administrators'] = "Solamente gli amministratori";
 $vocab['only_letters_and_numbers'] = "L'identificatore dell'utente deve essere costituito soltanto da lettere e da cifre!";
 $vocab['order_display'] = "Ordine di visualizzazione";
 $vocab['Parametres_configuration_envoi_automatique_mails'] = "Paramètres de configuration de l'envoi automatique des mails"; // A traduire
+$vocab['participant_list'] = "Liste des participants"; // A traduire
+$vocab['participant_list_hide'] = "Masquer la liste"; // A traduire
+$vocab['participant_register_form'] = "Inscrire des participants"; // A traduire
+$vocab['participant_register_form_hide'] = "Fermer le formulaire"; // A traduire
 $vocab['pas de privileges'] = "No privilegi";
 $vocab['Pas_image_disponible'] = "Non un'immagine disponibile";
 $vocab['passwd_error'] = "Errore in occasione della battitura dello password, volete ricominciare!";

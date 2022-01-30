@@ -5893,7 +5893,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2;
     $parametres_url = '';
     if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
-        $parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
+        $parametres_url = htmlspecialchars($_SERVER['QUERY_STRING']);
 
 	Hook::Appel("hookHeader2");
 	// Si nous ne sommes pas dans un format imprimable
@@ -5986,11 +5986,11 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			$_SESSION['chemin_retour'] = '';
 			if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
 				$_SESSION['chemin_retour'] = traite_grr_url($grr_script_name)."?". $_SERVER['QUERY_STRING'];
-            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="Français" width="20" height="13" class="image" /></a>'.PHP_EOL;
-            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="Deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
-            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
-            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
-            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Español" title="Español" width="20" height="13" class="image" /></a>'.PHP_EOL;
+            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="Français" width="20" height="13" class="image" /></a>'.PHP_EOL;
+            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="Deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
+            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
+            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
+            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Español" title="Español" width="20" height="13" class="image" /></a>'.PHP_EOL;
             $url = urlencode(traite_grr_url($grr_script_name).'?'.$parametres_url);
 			if ($type_session == 'no_session')
 			{
