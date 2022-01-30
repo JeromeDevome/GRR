@@ -774,6 +774,7 @@ function execute_maj($version_old, $version_grr)
 		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_depth', '3')");
 		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('backup_date', '')");
 		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('hashpwd2', '".$hash_pwd2."')");
+		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('mail_user_destinataire', 'y')");
 		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE `password` `password` VARCHAR(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
 		$result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_participants (`id_participation` int(11) NOT NULL AUTO_INCREMENT, idresa int(11) NOT NULL, timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, cree_par varchar(200) NOT NULL default '', beneficiaire varchar(200) NOT NULL default '', beneficiaire_ext varchar(200) NOT NULL default '', moderation tinyint(1) NOT NULL default '0', PRIMARY KEY  (id_participation));");
 		$result_inter .= traite_requete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_log_resa (idlogresa bigint(20) NOT NULL AUTO_INCREMENT, date int(11) NOT NULL, idresa int(11) NOT NULL, identifiant varchar(100) NOT NULL, action tinyint(3) UNSIGNED NOT NULL, infoscomp text NOT NULL, PRIMARY KEY (`idlogresa`));");

@@ -522,6 +522,7 @@ $vocab['mail_raison_5'] = "Vous recevez ce mail car votre adresse est renseigné
 $vocab['mail_sujet'] = "Subject";
 $vocab['mail_test'] = "Email de test"; // A traduire
 $vocab['mail_user'] = "Email";
+$vocab['mail_user_destinataire'] = "Envoyer une copie à l'utilisateur"; // Traduire
 $vocab['mail_user_list'] = "Lista de los usuarios avisados por mail :";
 $vocab['maj_base_locale'] = "Limpieza de la base local";
 $vocab['maj_bdd'] = "Actualización de la base de datos";

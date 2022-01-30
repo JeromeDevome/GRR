@@ -121,7 +121,8 @@ if(isset($_POST['nom'])){
 	$destinataire = Settings::get("mail_destinataire");
 
 	Email::Envois($destinataire, $sujet, $mail_corps, $_POST['email'], '', '');
-	Email::Envois($_POST['email'], $sujet, $mail_corps, $_POST['email'], '', '');
+	if(Settings::get("mail_user_destinataire"))
+		Email::Envois($_POST['email'], $sujet, $mail_corps, $_POST['email'], '', '');
 
 	header('Location: week_all.php');
 }

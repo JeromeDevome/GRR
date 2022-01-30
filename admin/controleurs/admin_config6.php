@@ -235,6 +235,17 @@ if (isset($_POST['mail_etat_destinataire'])) {
         die();
     }
 }
+
+if (isset($_POST['mail_user_destinataire']))
+	$mail_user_destinataire = "y";
+else
+	$mail_user_destinataire = "n";
+if (!Settings::set("mail_user_destinataire", $mail_user_destinataire))
+{
+	echo "Erreur lors de l'enregistrement de mail_user_destinataire !<br />";
+	die();
+}
+
 // gestion_lien_aide
 if (isset($_POST['gestion_lien_aide'])) {
     if (($_POST['gestion_lien_aide'] == 'perso') && (trim($_POST['lien_aide']) == '')) {
@@ -330,6 +341,7 @@ get_vocab_admin('display_mail_etat_destinataire_2');
 get_vocab_admin('display_mail_etat_destinataire_3');
 get_vocab_admin('display_mail_etat_destinataire_4');
 get_vocab_admin('display_mail_destinataire');
+get_vocab_admin('mail_user_destinataire');
 
 // Affichage des réservations dans les vues journées, semaine et mois
 get_vocab_admin('display_planning_resa');

@@ -522,6 +522,7 @@ $vocab['mail_raison_5'] = "You are receiving this email because your address is 
 $vocab['mail_sujet'] = "Subject";
 $vocab['mail_test'] = "Email test";
 $vocab['mail_user'] = "Email";
+$vocab['mail_user_destinataire'] = "Envoyer une copie à l'utilisateur"; // Traduire
 $vocab['mail_user_list'] = "List of users to be informed by email:";
 $vocab['maj_base_locale'] = "Cleaning of the local base";
 $vocab['maj_bdd'] = "Update of database";
