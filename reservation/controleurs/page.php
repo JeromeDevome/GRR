@@ -15,13 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-include_once('personnalisation/connect.inc.php');
-include_once('include/config.inc.php');
-include_once('include/misc.inc.php');
-include_once('include/functions.inc.php');
-require_once('include/'.$dbsys.'.inc.php');
-require_once('include/session.inc.php');
-include_once('include/settings.class.php');
+
 include_once('include/pages.class.php');
 $grr_script_name = 'page.php';
 
@@ -32,11 +26,10 @@ if (!Pages::load())
 if (!isset($_GET['page']))
 	die('Erreur choix de la page');
 
-/* if (!grr_resumeSession())
-{
-	header('Location: logout.php?auto=1&url=$url');
-	die();
-}; */
+$ctnPage = $_GET['page'];
 
-echo Pages::get('CGU');
+$d['CtnPage'] = Pages::get($ctnPage);
+
+
+echo $twig->render('page.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
 ?>
