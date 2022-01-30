@@ -131,7 +131,7 @@
 		</div>
 
 		<!-- Réservations à modérer -->
-		<div class="col-md-3 col-sm-6 col-xs-12">
+		<div class="col-md-6 col-sm-12 col-xs-12">
 			<div class="box box-info">
 				<div class="box-header">
 					<h3 class="box-title">{{ trad.dNombreModeration }} réservation(s) à modérer</h3>
@@ -139,12 +139,23 @@
 				<!-- /.box-header -->
 				<div class="box-body no-padding">
 					<table class="table table-condensed">
+						<thead>
+							<tr>
+								<th>{{ trad.room }}</th>
+								<th>{{ trad.start_date }}</th>
+								<th>{{ trad.created_by }}</th>
+								<th>{{ trad.nom_beneficiaire }}</th>
+								<th></th>
+							</tr>
+						</thead>
 						<tbody>
 							{% for resaMode in trad.dListeModeration %}
 								<tr>
 									<td>{{ resaMode.ressource }}</td>
 									<td>{{ resaMode.debut }}</td>
-                                    <td><a href='{{ resaMode.lien }}'><span class='glyphicon glyphicon-new-window'></span></a></td>
+									<td>{{ resaMode.createur }}</td>
+									<td>{{ resaMode.beneficiaire }}</td>
+									<td><a href='{{ resaMode.lien }}'><span class='glyphicon glyphicon-new-window'></span></a></td>
 								</tr>
 							{% endfor %}
 						</tbody>
