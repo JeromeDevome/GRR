@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-01-20 15:18$
+ * Dernière modification : $Date: 2022-01-31 12:12$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4504,6 +4504,55 @@ function resa_est_hors_reservation2($start_time,$end_time,$area)
 		return true;
 	return false;
 }
+/* ajuster_plage($start_time, $end_time, $area)
+* paramètres :
+*   $start_time, $end_time : timestamp du jour à 00:00
+*   $area : id du domaine
+* lorsque $start_time ou $end_time sont sur un jour hors calendrier ou un jour non affiché pour le domaine $area, la fonction renvoie une plage restreinte qui commence et finit sur un jour acceptable, si possible, sinon renvoie (NULL, NULL)
+*/
+function ajuster_plage($start_time, $end_time, $area){
+    // S'agit-il d'une journée qui n'est pas affichée pour le domaine considéré ?
+	$sql = "SELECT display_days FROM ".TABLE_PREFIX."_area WHERE id = '".protect_data_sql($area)."'";
+	$display_days = grr_sql_query1($sql);
+    // jours hors réservation dans la plage
+    $res = grr_sql_query("SELECT DAY FROM ".TABLE_PREFIX."_calendar WHERE DAY >= $start_time AND DAY <= $end_time ");
+    if (!$res)
+        fatal_error(1, grr_sql_error());
+    else{ 
+        $jours_exclus = array();
+        foreach($res as $row){
+            $jours_exclus[] = $row['DAY'];
+        }
+        $encore = TRUE;
+        while(($start_time <= $end_time)&& $encore){
+            $start_date = getdate($start_time);
+            $end_date = getdate($end_time);
+            if(in_array($start_time,$jours_exclus)){//le jour de départ est hors réservation
+                $start_time = mktime($start_date['hours'],$start_date['minutes'],$start_date['seconds'],$start_date['mon'],$start_date['mday']+1,$start_date['year']); //avance d'un jour
+            }
+            elseif(in_array($end_time,$jours_exclus)){//le jour de fin est hors réservation
+                $end_time = mktime($end_date['hours'],$end_date['minutes'],$end_date['seconds'],$end_date['mon'],$end_date['mday']-1,$end_date['year']); //recule d'un jour
+            }
+            elseif(substr($display_days, $start_date['wday'], 1) == 'n'){//le jour de départ est désactivé sur le domaine
+                $start_time = mktime($start_date['hours'],$start_date['minutes'],$start_date['seconds'],$start_date['mon'],$start_date['mday']+1,$start_date['year']); //avance d'un jour
+            }
+            elseif(substr($display_days, $end_date['wday'], 1) == 'n'){//le jour de fin est désactivé sur le domaine
+                $end_time = mktime($end_date['hours'],$end_date['minutes'],$end_date['seconds'],$end_date['mon'],$end_date['mday']-1,$end_date['year']); //recule d'un jour
+            }
+            else{// les 4 tests sont passés
+                $encore = FALSE;
+            }
+        }
+        // vérifier que $start_time <= $end_time
+        if($start_time <= $end_time){
+            return [$start_time,$end_time];
+        }
+        else{
+            return [NULL, NULL];
+        }
+    }
+}
+
 // trouve les utilisateurs gestionnaires de ressource
 function find_user_room ($id_room)
 {
