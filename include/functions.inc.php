@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-01-26 11:40$
+ * Dernière modification : $Date: 2022-02-01 12:09$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -6172,7 +6172,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 						how_many_connected();
                         echo "<br />";
 					}
-                    echo "<p class='avertissement'><a href='{$racineAd}admin.php?p=admin_accueil' class='avertissement'>".$mess_resa."</a></p>".PHP_EOL;
+                    echo "<p class='avertissement'><a href='{$racineAd}admin.php?p=admin_accueil&amp;".$parametres_url."' class='avertissement'>".$mess_resa."</a></p>".PHP_EOL;
 					echo '</div>'.PHP_EOL;
 				}
 			}

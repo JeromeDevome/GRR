@@ -2,7 +2,7 @@
 /**
  * AdminFonctions.php
  * Fonctions Général de l'administration
- * Dernière modification : $Date: 2022-01-27 15:24$
+ * Dernière modification : $Date: 2022-02-01 11:54$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -122,13 +122,14 @@ class AdminFonctions
 	}
 
     /**
-     * Fonction : resaToModerate($user) 
-     * Description : si c'est un admin ou un gestionnaire de ressource qui est connecté, retourne un tableau contenant, pour chaque réservation à modérer, [id,room_id,start_time]
+     * Fonction : ReservationsAModerer($user) 
+     * Description : si c'est un admin ou un gestionnaire de ressource qui est connecté, retourne un tableau contenant le nombre de réservations à modérer et un sous-tableau contenant, pour chaque réservation à modérer, [id,room_id,start_time,create_by,beneficiaire]
     */
     public static function ReservationsAModerer($user)
     {   
         global $dformat;
         $listeModeration = array();
+        $sql = "";
         if (authGetUserLevel($user,-1) > 5) // admin général
         {
             $sql = "SELECT e.id,r.room_name,e.start_time,create_by,beneficiaire FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE e.moderate = 1 AND e.supprimer = 0";
@@ -145,16 +146,18 @@ class AdminFonctions
         {
             $sql = "SELECT e.id,r.room_name,e.start_time,create_by,beneficiaire FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE (e.room_id = ".protect_data_sql($_GET['room'])." AND e.moderate = 1  AND e.supprimer = 0 ) ";
         }
-        $res = grr_sql_query($sql);
-        $nbAModerer = grr_sql_count($res);
-        if ($res)
-        {
-            foreach($res as $row) 
+        if ($sql != ""){
+            $res = grr_sql_query($sql);
+            if ($res)
             {
-                $link = "../view_entry.php?id=".$row['id']."&mode=page";
-                $listeModeration[] = array('ressource' => $row['room_name'], 'debut' => time_date_string($row['start_time'], $dformat), 'createur' => $row['create_by'], 'beneficiaire' => $row['beneficiaire'], 'lien' => $link );
+                foreach($res as $row) 
+                {
+                    $link = "../view_entry.php?id=".$row['id']."&mode=page";
+                    $listeModeration[] = array('ressource' => $row['room_name'], 'debut' => time_date_string($row['start_time'], $dformat), 'createur' => $row['create_by'], 'beneficiaire' => $row['beneficiaire'], 'lien' => $link );
+                }
             }
         }
+        $nbAModerer = count($listeModeration);
         return array($nbAModerer, $listeModeration);
     }
 
