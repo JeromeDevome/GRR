@@ -2,9 +2,9 @@
 /**
  * index.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-10-15 15:15$
+ * Dernière modification : $Date: 2022-02-04 09:59$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -41,7 +41,7 @@ if ($dbsys == "mysql")
 			if (mysqli_select_db($db, "$dbDb"))
 			{
 				// Premier test
-				@mysqli_query("SET NAMES utf8");
+				@mysqli_query($db, "SET NAMES utf8");
 
 				$j = '0';
 				while ($j < count($liste_tables))
