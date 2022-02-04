@@ -2,7 +2,7 @@
 /**
  * index.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-13 12:26$
+ * Dernière modification : $Date: 2022-02-04 17:54$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -25,6 +25,7 @@ require_once("./include/misc.inc.php");
 require_once("./include/functions.inc.php");
 require_once("./include/settings.class.php");
 // Paramètres langage
+$dbDb = (isset($dbDb))? $dbDb :'';
 include "./include/language.inc.php";
 // Dans le cas d'une base mysql, on teste la bonne installation de la base et on propose une installation automatisée.
 if ($dbsys == "mysql")
@@ -34,7 +35,7 @@ if ($dbsys == "mysql")
 	$msg = '';
 	if (file_exists("./include/connect.inc.php"))
 	{
-		require_once("include/connect.inc.php");
+		require_once("./include/connect.inc.php");
 		$db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbDb", "$dbPort");
 		if ($db)
 		{
