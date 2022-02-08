@@ -3,9 +3,9 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-11-10 10:51$
+ * Dernière modification : $Date: 2022-02-08 10:26$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -281,10 +281,10 @@ print_r($overloadFields);
 */
 //die();
 // traitement des données
-// URL de retour. À faire avant l'ouverture de session.
-// En effet, nous pourrions passer par edit_entry plus d'une fois, par exemple si nous devons nous reconnecter par timeout. 
-// Nous devons toujours conserver la page d'appel d'origine afin qu'une fois que nous avons quitté edit_entry_handler, nous puissions revenir à la page d'appel (plutôt que d'aller à la vue par défaut). 
-// Si c'est la première fois, alors $_SERVER['HTTP_REFERER'] contient l'appelant d'origine. Si c'est la deuxième fois, nous l'aurons stocké dans $page_ret.
+/* URL de retour. À faire avant l'ouverture de session.
+ En effet, nous pourrions passer par edit_entry plus d'une fois, par exemple si nous devons nous reconnecter par timeout. 
+ Nous devons toujours conserver la page d'appel d'origine afin qu'une fois que nous avons quitté edit_entry_handler, nous puissions revenir à la page d'appel (plutôt que d'aller à la vue par défaut). 
+ Si c'est la première fois, alors $_SERVER['HTTP_REFERER'] contient l'appelant d'origine. Si c'est la deuxième fois, nous l'aurons stocké dans $page_ret.*/
 if (!isset($page_ret) || ($page_ret == ''))
 {
     $referer = isset($_SERVER['HTTP_REFERER']) ? htmlspecialchars($_SERVER['HTTP_REFERER']) : '';
@@ -298,8 +298,21 @@ if (!isset($page_ret) || ($page_ret == ''))
             $page_ret = $page.'.php?month='.$month.'&amp;day='.$day.'&amp;year='.$year;
             if (isset($room))
                 $page_ret .= '&amp;room='.$room;
+            elseif ((!strpos($page,"all"))&&($room_back != 'all'))
+                $page_ret .= "&amp;room=".$room_back;
             elseif (isset($area))
                 $page_ret .= '&amp;area='.$area;
+            elseif (($room_back !='')&&($room_back != 'all')){
+                $area = mrbsGetRoomArea($room_back);
+                $page_ret .= '&amp;area='.$area;
+            }
+            elseif (($room_back == 'all')&&(isset($id))){
+                $room = grr_sql_query1("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id=".$id."");
+                if ($room != -1){
+                    $area = mrbsGetRoomArea($room);
+                    $page_ret .= '&amp;area='.$area;
+                }
+            }
         }
         else 
             $page_ret = page_accueil();
@@ -357,7 +370,7 @@ if (!isset($day) || !isset($month) || !isset($year))
 }
 
 // l'utilisateur est-il autorisé à être ici ?
-if (isset($id)){
+if (isset($id)){ // edition d'une réservation
 	if ($info = mrbsGetEntryInfo($id)){
 		$room = $info["room_id"];
         $area = mrbsGetRoomArea($room);
@@ -366,6 +379,12 @@ if (isset($id)){
 		$area = -1;
 		$room = -1;
 	}
+}
+elseif(isset($room)){ // récupéré dans le formulaire
+    $area = mrbsGetRoomArea($room);
+}
+elseif(isset($areas)){ // récupéré dans le formulaire
+    $room = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_room WHERE area_id='".$areas."' ORDER BY order_display,room_name");
 }
 else{
 	Definition_ressource_domaine_site(); // rend éventuellement $room -> NULL ce qui pose problème ensuite
@@ -444,7 +463,7 @@ $etype = 0;
 
 if (isset($id)) // édition d'une réservation existante
 {
-    if (!getWritable($user_name,$id))
+    if (!getWritable($user_name,$id) && ($copier == ''))
     {
         start_page_w_header('','','','with_session');
         showAccessDenied($page_ret);
@@ -601,6 +620,7 @@ else // nouvelle réservation
 		$end_hour  = date("H",$fin);
 		$end_min = date("i",$fin);
 	}
+    $etype          = isset($type)? $type : 0;
 	$type        	= "";
 	$room_id     	= $room;
 	$id				= 0;
@@ -791,7 +811,13 @@ if ($type_affichage_reser == 0) // sélection de la durée
 
 	// l'heure de fin du jour est définie par eveningends et eveningends_minutes
 	// on suppose les données vérifiées : eveningends:eveningends_minutes <= 24:00
-	$af_fin_jour = $eveningends." H ".substr("0".$eveningends_minutes,-2,2);
+    $af_fin_hr = substr("0".$eveningends,-2,2);
+    $af_fin_min = substr("0".$eveningends_minutes,-2,2);
+    if ($af_fin_min =='60'){
+        $af_fin_hr++;
+        $af_fin_min = '00';
+    }
+	$af_fin_jour = $af_fin_hr." H ".$af_fin_min;
 	echo '<b>
           <input name="all_day" type="checkbox" value="yes" />'.get_vocab("all_day");
 	if ($enable_periods != 'y')
@@ -845,7 +871,6 @@ else
 $res = grr_sql_query($sql);
 if ($res)
 {
-	//for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
     foreach($res as $row)
 	{
 		if (authUserAccesArea($user_name,$row['id']) == 1)
@@ -872,7 +897,8 @@ $sql .= " ORDER BY order_display,room_name";
 $res = grr_sql_query($sql);
 $len = grr_sql_count($res);
 //sélection des ressources (rooms[]) dans le domaine (area)
-echo "<select class='form-control' name=\"rooms[]\" size=\"".min($longueur_liste_ressources_max,$len)."\" multiple=\"multiple\" onchange=\"changeRoom(this.form) ;\">";
+//echo "<select class='form-control' name=\"rooms[]\" size=\"".min($longueur_liste_ressources_max,$len)."\" multiple=\"multiple\" onchange=\"changeRoom(this.form) ;\">";
+echo "<select class='form-control' name=\"rooms[]\" size=\"".min($longueur_liste_ressources_max,$len)."\" multiple=\"multiple\" >";
 if ($res)
 {
 	//for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
