@@ -415,6 +415,11 @@ function grrExtractValueFromOverloadDesc($chaine,$id)
  * $overload_data - liste indexée des champs additionnels
  * $moderate
  * $rep_jour_c - Le jour cycle d'une réservation, si aucun 0
+ * $statut_entry
+ * $keys
+ * $courrier
+ * @param integer $entry_type
+ * @param integer $repeat_id
  * @param string $statut_entry
  * @param integer $keys
  * $courrier
@@ -1146,5 +1151,16 @@ function ParticipationAnnulation($entry_id, $participant)
     $sql = "DELETE FROM ".TABLE_PREFIX."_participants WHERE idresa=$entry_id AND participant='$participant'";
 	if (grr_sql_command($sql) < 0)
         fatal_error(0, "Erreur sur la requête ".$sql);
+}
+/** updateParticipants($old_id, $new_id)
+* transfère les participants à la réservation $old_id vers la réservation $new_id
+* renvoie TRUE|FALSE selon la réussite de l'opération
+*/
+function updateParticipants($old_id, $new_id)
+{
+    $nb = grr_sql_query1("SELECT COUNT(*) FROM ".TABLE_PREFIX."_participants WHERE idresa=".$old_id.";");
+    $sql = "UPDATE " .TABLE_PREFIX."_participants SET idresa=".$new_id." WHERE idresa=".$old_id;
+    $res = grr_sql_command($sql);
+    return($res == $nb);
 }
 ?>

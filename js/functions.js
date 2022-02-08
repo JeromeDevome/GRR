@@ -1,9 +1,9 @@
 /*
  * ./js/functions.js
  * fichier Bibliothèque de fonctions Javascript de GRR
- * Dernière modification : $Date: 2021-04-20 14:51$
+ * Dernière modification : $Date: 2022-01-30 14:51$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -545,4 +545,14 @@ function menuHaut(){
  */
 function popUpPdf(id) {
     var myWindow = window.open("pdfgenerator.php?id="+id+"", "_blank", "width=960");
+}
+/*
+ * Fonction faisant basculer l'affichage d'un div de display:inline-block à display:none
+ */
+function toggle_visibility(id) {
+   var e = document.getElementById(id);
+   if(e.style.display == 'none')
+      e.style.display = 'inline-block';
+   else
+      e.style.display = 'none';
 }

@@ -3,9 +3,9 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservations de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-04 15:44 $
+ * Dernière modification : $Date: 2022-01-17 17:31 $
  * @author    Yan Naessens, Laurent Delineau 
- * @copyright Copyright 2003-2021 Yan Naessens, Laurent Delineau
+ * @copyright Copyright 2003-2022 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -79,10 +79,10 @@ if ($_GET['pview'] == 1)
 	$class_image = "print_image";
 else
 	$class_image = "image";
-$from_month = isset($_GET["from_month"]) ? intval($_GET["from_month"]) : NULL;
-$from_year = isset($_GET["from_year"]) ? intval($_GET["from_year"]) : NULL;
-$to_month = isset($_GET["to_month"]) ? intval($_GET["to_month"]) : NULL;
-$to_year = isset($_GET["to_year"]) ? intval($_GET["to_year"]) : NULL;
+$from_month = isset($_GET["from_month"]) ? intval($_GET["from_month"]) : (isset($_GET['month'])? intval($_GET['month']) : NULL);
+$from_year = isset($_GET["from_year"]) ? intval($_GET["from_year"]) : (isset($_GET['year'])? intval($_GET['year']) : NULL);
+$to_month = isset($_GET["to_month"]) ? intval($_GET["to_month"]) : (isset($_GET['month'])? intval($_GET['month']) : NULL);
+$to_year = isset($_GET["to_year"]) ? intval($_GET["to_year"]) : (isset($_GET['year'])? intval($_GET['year']) : NULL);
 $day = 1;
 $date_now = time();
 //Default parameters:
@@ -133,7 +133,7 @@ if ((Settings::get("authentification_obli") == 0) && ($user_name == ''))
 else
 	$type_session = "with_session";
 
-$back = 'year.php';
+$back = 'year.php?year='.$from_year.'&amp;month='.$from_month.'&amp;day='.$day;
 if (check_begin_end_bookings($day, $from_month, $from_year))
 {
     start_page_w_header($day, $from_month, $from_year, $type_session);
@@ -346,7 +346,8 @@ else
                         echo grr_sql_error();
                     else
                     { // les données sont bien recueillies
-                        for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
+                        //for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
+                        foreach($res as $row)
                         {
 							if ($row["type_name"] <> (Settings::get('exclude_type_in_views_all')))          // Nom du type à exclure  
                             {  //Fill in data for each day during the month that this meeting ($row) covers. 
@@ -375,7 +376,7 @@ else
                                     {
                                         $start_str = preg_replace("/ /", " ", period_time_string($row["start_time"]));
                                         $end_str   = preg_replace("/ /", " ", period_time_string($row["end_time"], -1));
-                                        switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
+                                        switch (cmp3($row['start_time'], $midnight) . cmp3($row['end_time'], $midnight_tonight))
                                         {
                                             case "> < ":
                                             case "= < ":
@@ -409,17 +410,17 @@ else
                                     }
                                     else
                                     {
-                                        switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
+                                        switch (cmp3($row['start_time'], $midnight) . cmp3($row['end_time'], $midnight_tonight))
                                         {
                                             case "> < ":
                                             case "= < ":
-                                            $horaires = date(hour_min_format(), $row[0]) . "~" . date(hour_min_format(), $row[1]);
+                                            $horaires = date(hour_min_format(), $row['start_time']) . "~" . date(hour_min_format(), $row['end_time']);
                                             break;
                                             case "> = ":
-                                            $horaires = date(hour_min_format(), $row[0]) . "~24:00";
+                                            $horaires = date(hour_min_format(), $row['start_time']) . "~24:00";
                                             break;
                                             case "> > ":
-                                            $horaires = date(hour_min_format(), $row[0]) . "~==>";
+                                            $horaires = date(hour_min_format(), $row['start_time']) . "~==>";
                                             break;
                                             case "= = ":
                                             $horaires = $all_day;
@@ -428,7 +429,7 @@ else
                                             $horaires = $all_day . "==>";
                                             break;
                                             case "< < ":
-                                            $horaires = "<==~" . date(hour_min_format(), $row[1]);
+                                            $horaires = "<==~" . date(hour_min_format(), $row['end_time']);
                                             break;
                                             case "< = ":
                                             $horaires = "<==" . $all_day;
@@ -438,10 +439,8 @@ else
                                             break;
                                         }
                                     }
-                                    //$d[$day_num][$month_num][$year_num]["lien"][] = lien_compact($row);
                                     $d[$day_num][$month_num][$year_num]["lien"][] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
                                     // Info-bulle
-                                    //$d[$day_num][$month_num][$year_num]["data"][] = titre_compact($overloadFieldList, $row, $horaires);
                                     $d[$day_num][$month_num][$year_num]["data"][] = contenu_popup($options_popup, 1, $row, $horaires);
                                     //Only if end time > midnight does the loop continue for the next day.
                                     if ($end_t <= $midnight_tonight)

@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-01-14 18:18$
+ * Dernière modification : $Date: 2022-01-31 12:12$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -289,7 +289,7 @@ function decode_options($a,$modele){
 *     $opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants')
 *  $ofl = overload fields list, ne dépend que du domaine, donc est constant dans la boucle d'affichage
 *  $vue = 1 pour une ressource / 2 vue multiple ressource
-*  $resa : tableau issu de la requête SQL sélectionnant les informations relatives à la réservation
+*  $resa : tableau associatif issu de la requête SQL sélectionnant les informations relatives à la réservation
 *  $heures : plage horaire calculée dans le script $page
 */
 function contenu_cellule($options, $ofl, $vue, $resa, $heures)
@@ -298,13 +298,13 @@ function contenu_cellule($options, $ofl, $vue, $resa, $heures)
 	$affichage = "";
 	// Ressource seulement dans les vues globales
 	if($vue == 2)
-		$affichage .= $resa[5]."<br>";
+		$affichage .= $resa['room_name']."<br>";
 	// Heures ou créneaux + symboles <== ==>
 	if (($heures != "") && ($options['horaires']))
         $affichage .= $heures."<br>";
 	// Bénéficiaire
 	if ($options['beneficiaire'])
-		$affichage .= affiche_nom_prenom_email($resa[4], $resa[12], "nomail")."<br>";
+		$affichage .= affiche_nom_prenom_email($resa['beneficiaire'], $resa['beneficiaire_ext'], "nomail")."<br>";
 	// Type
 	if ($options["type"])
 	{
@@ -313,25 +313,25 @@ function contenu_cellule($options, $ofl, $vue, $resa, $heures)
 			$affichage .= $typeResa."<br>";
 	}
 	// Brève description ou le numéro de la réservation
-	if (($options["short_desc"]) && ($resa[3] != ""))
-		$affichage .= htmlspecialchars($resa[3],ENT_NOQUOTES)."<br>";
+	if (($options["short_desc"]) && ($resa['name'] != ""))
+		$affichage .= htmlspecialchars($resa['name'],ENT_NOQUOTES)."<br>";
 	// Description Complète
-	if (($options["description"]) && ($resa[8] != ""))
-		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES)."<br>";
+	if (($options["description"]) && ($resa['description'] != ""))
+		$affichage .= htmlspecialchars($resa['description'],ENT_NOQUOTES)."<br>";
     // créateur
-	if (($options["create_by"]) && ($resa[18] != ""))
-		$affichage .= htmlspecialchars($resa[18],ENT_NOQUOTES)."<br>";
+	if (($options["create_by"]) && ($resa['create_by'] != ""))
+		$affichage .= htmlspecialchars($resa['create_by'],ENT_NOQUOTES)."<br>";
     // nombre de participants
-    if (($options["participants"]) && ($resa[19] != 0)){
-        $inscrits = grr_sql_query1("SELECT COUNT(`participant`) FROM `grr_participants` WHERE `idresa` = ".$resa[2]);
+    if (($options["participants"]) && ($resa['nbparticipantmax'] != 0)){
+        $inscrits = grr_sql_query1("SELECT COUNT(`participant`) FROM `grr_participants` WHERE `idresa` = ".$resa['id']);
         if ($inscrits >= 0)
-            $affichage .= get_vocab('participant_inscrit').get_vocab('deux_points').$inscrits." / ".htmlspecialchars($resa[19],ENT_NOQUOTES)."<br>";
+            $affichage .= get_vocab('participant_inscrit').get_vocab('deux_points').$inscrits." / ".htmlspecialchars($resa['nbparticipantmax'],ENT_NOQUOTES)."<br>";
     }
 	// Champs Additionnels
     // la ressource associée à la réservation :
-    $room = $resa[5];
+    $room = $resa['room_name'];
 	// Les champs add :
-	$overload_data = grrGetOverloadDescArray($ofl, $resa[16]);
+	$overload_data = grrGetOverloadDescArray($ofl, $resa['overload_desc']);
 	foreach ($overload_data as $fieldname=>$field)
 	{
 		if (( (authGetUserLevel(getUserName(), $room) >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "")
@@ -339,23 +339,23 @@ function contenu_cellule($options, $ofl, $vue, $resa, $heures)
 	}
     // cas où aucune option n'est activée : afficher le numéro de la réservation
 	if ($affichage == '')
-		$affichage .= get_vocab("entryid").$resa[2]."<br>";
+		$affichage .= get_vocab("entryid").$resa['id']."<br>";
 	// Emprunte
-	if($resa[7] != "-")
+	if($resa['statut_entry'] != "-")
 		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
 	// Option réservation
-	if($resa[10] > 0)
-		$affichage .=  " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le").time_date_string_jma($resa[9],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> ";
+	if($resa['delais_option_reservation'] > 0)
+		$affichage .=  " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le").time_date_string_jma($resa['option_reservation'],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> ";
 	// Modération
-	if($resa[11] == 1)
+	if($resa['moderate'] == 1)
 		$affichage .= " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
 	// Clef
-	if($resa[13] == 1)
+	if($resa['clef'] == 1)
 		$affichage .= " <img src=\"img_grr/skey.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Clef\"> ";
 	// Courrier
 	if (Settings::get('show_courrier') == 'y')
 	{
-		if($resa[14] == 1)
+		if($resa['courrier'] == 1)
 			$affichage .= " <img src=\"img_grr/scourrier.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Courrier\"> ";
 		else
 			$affichage .= " <img src=\"img_grr/hourglass.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Buzy\"> ";
@@ -381,28 +381,28 @@ function contenu_popup($options, $vue, $resa, $heures)
         $affichage .= $heures."\n";
 	// Bénéficiaire
 	if ($options['beneficiaire'])
-		$affichage .= affiche_nom_prenom_email($resa[4], $resa[12], "nomail")."\n";
+		$affichage .= affiche_nom_prenom_email($resa['beneficiaire'], $resa['beneficiaire_ext'], "nomail")."\n";
 	// Type
 	if ($options["type"])
 	{
-        $typeResa = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area JOIN ".TABLE_PREFIX."_entry ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter WHERE ".TABLE_PREFIX."_entry.id = '".$resa[2]."';");
+        $typeResa = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area JOIN ".TABLE_PREFIX."_entry ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter WHERE ".TABLE_PREFIX."_entry.id = '".$resa['id']."';");
 		if ($typeResa != -1)
 			$affichage .= $typeResa."\n";
 	}
 	// Brève description
-	if (($options["short_desc"]) && ($resa[3] != ""))
-		$affichage .= htmlspecialchars($resa[3],ENT_NOQUOTES)."\n";
+	if (($options["short_desc"]) && ($resa['name'] != ""))
+		$affichage .= htmlspecialchars($resa['name'],ENT_NOQUOTES)."\n";
 	// Description Complète
-	if (($options["description"]) && ($resa[8] != ""))
-		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES)."\n";
+	if (($options["description"]) && ($resa['description'] != ""))
+		$affichage .= htmlspecialchars($resa['description'],ENT_NOQUOTES)."\n";
     // créateur
-	if (($options["create_by"]) && ($resa[18] != ""))
-		$affichage .= htmlspecialchars($resa[18],ENT_NOQUOTES)."\n";
+	if (($options["create_by"]) && ($resa['create_by'] != ""))
+		$affichage .= htmlspecialchars($resa['create_by'],ENT_NOQUOTES)."\n";
     // nombre de participants
-    if (($options["participants"]) && ($resa[19] != 0)){
-        $inscrits = grr_sql_query1("SELECT COUNT(`participant`) FROM `grr_participants` WHERE `idresa` = ".$resa[2]);
+    if (($options["participants"]) && ($resa['nbparticipantmax'] != 0)){
+        $inscrits = grr_sql_query1("SELECT COUNT(`participant`) FROM `grr_participants` WHERE `idresa` = ".$resa['id']);
         if ($inscrits >= 0)
-            $affichage .= get_vocab('participant_inscrit').get_vocab('deux_points').$inscrits." / ".htmlspecialchars($resa[19],ENT_NOQUOTES)."\n";
+            $affichage .= get_vocab('participant_inscrit').get_vocab('deux_points').$inscrits." / ".htmlspecialchars($resa['nbparticipantmax'],ENT_NOQUOTES)."\n";
     }
     // cas où aucune option n'est activée : afficher le texte "voir les détails"
 	if ($affichage == '')
@@ -1729,7 +1729,6 @@ function compare_ip_adr($ip1, $ips2)
 	}
 	return $ipCorrespondante;
 }
-
 //Retourne le domaine par défaut; Utilisé si aucun domaine n'a été défini.
 function get_default_area($id_site = -1)
 {
@@ -4506,6 +4505,55 @@ function resa_est_hors_reservation2($start_time,$end_time,$area)
 		return true;
 	return false;
 }
+/* ajuster_plage($start_time, $end_time, $area)
+* paramètres :
+*   $start_time, $end_time : timestamp du jour à 00:00
+*   $area : id du domaine
+* lorsque $start_time ou $end_time sont sur un jour hors calendrier ou un jour non affiché pour le domaine $area, la fonction renvoie une plage restreinte qui commence et finit sur un jour acceptable, si possible, sinon renvoie (NULL, NULL)
+*/
+function ajuster_plage($start_time, $end_time, $area){
+    // S'agit-il d'une journée qui n'est pas affichée pour le domaine considéré ?
+	$sql = "SELECT display_days FROM ".TABLE_PREFIX."_area WHERE id = '".protect_data_sql($area)."'";
+	$display_days = grr_sql_query1($sql);
+    // jours hors réservation dans la plage
+    $res = grr_sql_query("SELECT DAY FROM ".TABLE_PREFIX."_calendar WHERE DAY >= $start_time AND DAY <= $end_time ");
+    if (!$res)
+        fatal_error(1, grr_sql_error());
+    else{ 
+        $jours_exclus = array();
+        foreach($res as $row){
+            $jours_exclus[] = $row['DAY'];
+        }
+        $encore = TRUE;
+        while(($start_time <= $end_time)&& $encore){
+            $start_date = getdate($start_time);
+            $end_date = getdate($end_time);
+            if(in_array($start_time,$jours_exclus)){//le jour de départ est hors réservation
+                $start_time = mktime($start_date['hours'],$start_date['minutes'],$start_date['seconds'],$start_date['mon'],$start_date['mday']+1,$start_date['year']); //avance d'un jour
+            }
+            elseif(in_array($end_time,$jours_exclus)){//le jour de fin est hors réservation
+                $end_time = mktime($end_date['hours'],$end_date['minutes'],$end_date['seconds'],$end_date['mon'],$end_date['mday']-1,$end_date['year']); //recule d'un jour
+            }
+            elseif(substr($display_days, $start_date['wday'], 1) == 'n'){//le jour de départ est désactivé sur le domaine
+                $start_time = mktime($start_date['hours'],$start_date['minutes'],$start_date['seconds'],$start_date['mon'],$start_date['mday']+1,$start_date['year']); //avance d'un jour
+            }
+            elseif(substr($display_days, $end_date['wday'], 1) == 'n'){//le jour de fin est désactivé sur le domaine
+                $end_time = mktime($end_date['hours'],$end_date['minutes'],$end_date['seconds'],$end_date['mon'],$end_date['mday']-1,$end_date['year']); //recule d'un jour
+            }
+            else{// les 4 tests sont passés
+                $encore = FALSE;
+            }
+        }
+        // vérifier que $start_time <= $end_time
+        if($start_time <= $end_time){
+            return [$start_time,$end_time];
+        }
+        else{
+            return [NULL, NULL];
+        }
+    }
+}
+
 // trouve les utilisateurs gestionnaires de ressource
 function find_user_room ($id_room)
 {
@@ -5324,10 +5372,10 @@ $(\'.clockpicker\').clockpicker({
 }
 function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaultsec,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format=0)
 {
-    $minTime = $morningstarts.":00";
+    $minTime = str_pad($morningstarts, 2, 0, STR_PAD_LEFT).":00";
     //$eveningends_minutes = str_pad($eveningends_minutes, 2, 0, STR_PAD_LEFT);
     //$maxTime = $eveningends.":".$eveningends_minutes;
-    $end_time = mktime($eveningends,$eveningends_minutes,0,0,0,0);
+    $end_time = mktime($eveningends,$eveningends_minutes,0,0,0,0)-$resolution;
     $maxTime = date("H:i",$end_time);
 	if (isset ($_GET['id']))
 	{
@@ -5382,8 +5430,8 @@ function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaults
 	}
     $timeFormat = ($twentyfourhour_format)? "H:i" : "h:i a";
 	echo '<label for="'.$typeTime.'">'.get_vocab('time').get_vocab('deux_points').'</label>
-    <div class="input-group timepicker">
-	<input id="'.$typeTime.'" name="'.$typeTime.'" type="text" class="form-control time" value="'.$hour.':'.$minute. '" >
+    <div class="input-group timepicker">';
+	echo '<input id="'.$typeTime.'" name="'.$typeTime.'" type="text" class="form-control time" value="'.$hour.':'.$minute. '" >
     <span class="input-group-addon btn" id="'.$typeTime.'clock'.'">
         <span class="glyphicon glyphicon-time" ></span>
     </span>
@@ -5887,7 +5935,7 @@ function pageHead2($title, $page = "with_session")
 }
 
 /*
-** Fonction qui affiche le header
+** Fonction qui affiche le header = bandeau du haut de page
 */
 function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_session', $adm=0)
 {
@@ -5895,7 +5943,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2;
     $parametres_url = '';
     if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
-        $parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
+        $parametres_url = htmlspecialchars($_SERVER['QUERY_STRING']);
 
 	Hook::Appel("hookHeader2");
 	// Si nous ne sommes pas dans un format imprimable
@@ -5904,18 +5952,23 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 		// If we dont know the right date then make it up
 		if (!isset($day) || !isset($month) || !isset($year) || ($day == '') || ($month == '') || ($year == ''))
 		{
-			$date_now = time();
-			if ($date_now < Settings::get("begin_bookings"))
-				$date_ = Settings::get("begin_bookings");
-			else if ($date_now > Settings::get("end_bookings"))
-				$date_ = Settings::get("end_bookings");
-			else
-				$date_ = $date_now;
+			$date_ = time();
 			$day   = date("d",$date_);
 			$month = date("m",$date_);
 			$year  = date("Y",$date_);
 		}
-		if (!(isset($search_str)))
+        // On fabrique une date valide pour la réservation si ce n'est pas le cas
+        $date_ = mktime(0, 0, 0, $month, $day, $year);
+        if ($date_ < Settings::get("begin_bookings"))
+            $date_ = Settings::get("begin_bookings");
+        else if ($date_ > Settings::get("end_bookings"))
+            $date_ = Settings::get("end_bookings");
+        $day   = date("d",$date_);
+        $month = date("m",$date_);
+        $year  = date("Y",$date_);
+
+        echo '<div id="panel">'.PHP_EOL;
+        if (!(isset($search_str)))
 			$search_str = get_vocab("search_for");
 		if (empty($search_str))
 			$search_str = "";
@@ -5923,7 +5976,6 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 		{
 			// HOOK
 			Hook::Appel("hookHeader1");
-
 			// Génération XML
 			$generationXML = 1;
 			if ((Settings::get("export_xml_actif") == "Oui") && ($adm == 0)){
@@ -5932,17 +5984,6 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			if ((Settings::get("export_xml_plus_actif") == "Oui") && ($adm == 0)){
 				include $racine."include/generationxmlplus.php";
 			}
-
-			// On fabrique une date valide pour la réservation si ce n'est pas le cas
-			$date_ = mktime(0, 0, 0, $month, $day, $year);
-			if ($date_ < Settings::get("begin_bookings"))
-				$date_ = Settings::get("begin_bookings");
-			else if ($date_ > Settings::get("end_bookings"))
-				$date_ = Settings::get("end_bookings");
-			$day   = date("d",$date_);
-			$month = date("m",$date_);
-			$year  = date("Y",$date_);
-			echo '<div id="panel">'.PHP_EOL;
 			//Logo
 			$nom_picture = $racine."images/".Settings::get("logo");
 			if ((Settings::get("logo") != '') && (@file_exists($nom_picture)))
@@ -5995,21 +6036,21 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			$_SESSION['chemin_retour'] = '';
 			if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
 				$_SESSION['chemin_retour'] = traite_grr_url($grr_script_name)."?". $_SERVER['QUERY_STRING'];
-            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="Français" width="20" height="13" class="image" /></a>'.PHP_EOL;
-            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="Deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
-            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
-            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
-            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Español" title="Español" width="20" height="13" class="image" /></a>'.PHP_EOL;
-
+            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="Français" width="20" height="13" class="image" /></a>'.PHP_EOL;
+            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="Deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
+            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
+            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
+            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Español" title="Español" width="20" height="13" class="image" /></a>'.PHP_EOL;
+            $url = urlencode(traite_grr_url($grr_script_name).'?'.$parametres_url);
 			if ($type_session == 'no_session')
 			{
 				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
 				{
 					echo '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>'.PHP_EOL;
-					echo '<br /> <small><i><a href="login.php">'.get_vocab("connect_local").'</a></i></small>'.PHP_EOL;
+					echo '<br /> <small><i><a href="login.php?url='.$url.'">'.get_vocab("connect_local").'</a></i></small>'.PHP_EOL;
 				}
 				else {
-					echo '<br /> <a href="login.php">'.get_vocab("connect").'</a>'.PHP_EOL;
+					echo '<br /> <a href="login.php?url='.$url.'">'.get_vocab("connect").'</a>'.PHP_EOL;
 				}
 			}
 			else

@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2022-01-04
+# Last modification : 2022-01-30
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -129,6 +129,11 @@ $vocab['admin_type.php'] = "Types of reservations";
 $vocab['admin_type_explications'] = "By default, during the creation of a new type of reservations, this one is common for all the areas. You can then specify, for each area, the valid types or not.";
 $vocab['admin_type_modify_create.php'] = "Adding a new type of reservation";
 $vocab['admin_type_modify_modify.php'] = "Modification of a type of reservation";
+$vocab['admin_type_msg1'] = "Cannot delete: bookings have been recorded with this type.";
+$vocab['admin_type_msg2'] = "WARNING: your booking type table is not up to date!";
+$vocab['admin_type_msg3'] = "One or more types are currently used in bookings but do not appear in the type table. This may generate error messages. ";
+$vocab['admin_type_msg4'] = "It is the following type(s): ";
+$vocab['admin_type_msg5'] = "You must therefore define the missing type(s) above.";
 $vocab['admin_user.php'] = "Users";
 $vocab['admin_user1'] = "General user rights";
 $vocab['admin_user_modify_create.php'] = "Adding a new user";
@@ -168,6 +173,7 @@ $vocab['all_entries_in_conflict'] = "All requests are in conflict: no booking is
 $vocab['all_rooms'] = "All resources";
 $vocab['all_rooms_of_area'] = "For all the resources of the area";
 $vocab['alphanumeric'] = "Alphanumeric value";
+$vocab['alterseries'] = "Modifying a series of bookings to which participants are registered will cancel the registrations!";
 $vocab['areas'] = "Areas: ";
 $vocab['attention_mail_automatique_désactive'] = "CAUTION: the sending of automatic mails is currently disabled. To activate it, go in the general control panel.";
 $vocab['aucun autilisateur'] = "No user has some privileges";
@@ -557,6 +563,10 @@ $vocab['logs_number'] = "Number of entries currently present in the connection r
 $vocab['longueur_liste_ressources'] = "Maximal height of the pop-up list of the resources";
 $vocab['mail_admin_off'] = "Not inform users by email";
 $vocab['mail_admin_on'] = "Inform users by email";
+$vocab['mail_demandeur'] = "Applicant email";
+$vocab['mail_not_sent'] = "Your message could not be sent !";
+$vocab['mail_sending_impossible'] = "Sending messages is impossible because the recipient's email address has not been entered.";
+$vocab['mail_sent'] = "Your message has been sent !";
 $vocab['mail_user'] = "Email";
 $vocab['mail_user_list'] = "List of users to be informed by email:";
 $vocab['prefixe'] = "Prefix"; 
@@ -649,6 +659,7 @@ $vocab['noareas'] = "No area";
 $vocab['nobody'] = "(none)";
 $vocab['nobookings'] = "No reservation available for this date!";
 $vocab['nom beneficiaire'] = "Name of the beneficiary";
+$vocab['nom_complet_demandeur'] = "Surname and first name of the applicant";
 $vocab['nom emprunteur'] = "Name of the borrower";
 $vocab['nombre_de_creneaux'] = "Number of time slots";
 $vocab['nombre_jours_Jours_Cycles'] = "Number of days in a cycle";
@@ -684,7 +695,7 @@ $vocab['number_max'] = " person max.";
 $vocab['number_max2'] = " people max.";
 $vocab['num_version'] = "Version number: <b>GRR</b>";
 $vocab['num_version_title'] = "GRR version number";
-$vocab['Objet du message'] = "Message subject (compulsory)"; 
+$vocab['Objet du message'] = "Message subject"; 
 $vocab['of'] = " on ";
 $vocab['OK'] = "Validate";
 $vocab['older_date_log'] = "Record currently contains the history of connections since ";
@@ -694,6 +705,10 @@ $vocab['only_administrators'] = "Only administrators";
 $vocab['only_letters_and_numbers'] = "Login-name is to consist of letters and numbers only!";
 $vocab['order_display'] = "Display order";
 $vocab['Parametres_configuration_envoi_automatique_mails'] = "Parameters of configuration of the sending of automatic e-mails";
+$vocab['participant_list'] = "List of participants";
+$vocab['participant_list_hide'] = "Hide the list";
+$vocab['participant_register_form'] = "Register participants";
+$vocab['participant_register_form_hide'] = "Close the form";
 $vocab['pas de privileges'] = "No privileges";
 $vocab['Pas_image_disponible'] = "No image available";
 $vocab['passwd_error'] = "An error occurred when entering password, please do it again!";
@@ -976,6 +991,7 @@ $vocab['visu_fiche_description5'] = "It is necessary to be connected and to be a
 $vocab['visu_fiche_description6'] = "It is necessary to be connected and to be a general administrator";
 $vocab['visu_fiche_description_msg'] = "Who has access to the description form of a resource?";
 $vocab['voir_details'] = "View details";
+$vocab['Votre_message'] = "Your message";
 $vocab['warning_exist'] = "The user you have tried to add is already on the list!";
 $vocab['warning_message_backup'] = "If a message like \"Maximum execution time exceeded\" appears a few moments after starting saving, this means that saving has failed!";
 $vocab['warning_message_mail'] = "Some hosts disable the sending of automatic mails from their servers. In such case the following funtionality will not operate.";

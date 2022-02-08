@@ -608,7 +608,7 @@ if ((!empty($room)) || (isset($area_id)))
     echo get_vocab("deux_points")."<br />";
     if (Settings::get("use_fckeditor") == 1)
     {
-        echo "<textarea id=\"editor1\" name=\"comment_room\" rows=\"8\" cols=\"120\">\n";
+        echo "<textarea id=\"editor1\" name=\"comment_room\" rows=\"8\" cols=\"120\">\n".PHP_EOL;
         echo clean_input($row['comment_room']);
         echo "</textarea>\n";
             ?>

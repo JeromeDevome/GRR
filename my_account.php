@@ -35,7 +35,7 @@ if (!grr_resumeSession())
 	die();
 };
 include_once('include/language.inc.php');
-$msg='';
+$msg=getFormVar('message');
 if (Settings::get("module_multisite") == "Oui")
 	$use_site = 'y';
 else

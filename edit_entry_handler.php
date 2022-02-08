@@ -3,9 +3,9 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-11-30 11:52$
+ * Dernière modification : $Date: 2022-01-25 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -643,8 +643,9 @@ try {
 				$compt_room += 1;
 		}
 	}
-	foreach ($rooms as $room_id) // modération
+	foreach ($rooms as $room_id) 
 	{
+        // modération
 		$moderate = grr_sql_query1("SELECT moderate FROM ".TABLE_PREFIX."_room WHERE id = '".$room_id."'");
 		if ($moderate == 1)
 		{
@@ -726,12 +727,15 @@ try {
 			}
 		}
 	}
-	if (isset($id) && ($id != 0)) // quand on fait une modification, on commence par effacer la réservation ou la série existante
+	if (isset($id) && ($id != 0)) // quand on fait une modification, on efface la réservation ou la série existante
 	{
 		if ($rep_type != 0)
-			mrbsDelEntry($user, $id, "series", 1);
-		else
-			mrbsDelEntry($user, $id, NULL, 1);
+			mrbsDelEntry($user, $id, "series", 1); // et alors les inscriptions sont perdues
+		else{
+            if (isset($new_id) && ($new_id != 0))
+                updateParticipants($id,$new_id);// réinscrire les participants avant d'effacer
+            mrbsDelEntry($user, $id, NULL, 1);
+        }
 	}
     // déverrouille la table
     grr_sql_mutex_unlock("".TABLE_PREFIX."_entry");

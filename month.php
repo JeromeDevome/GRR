@@ -3,9 +3,9 @@
  * month.php
  * Interface d'accueil avec affichage par mois pour une ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-04 16:03$
+ * Dernière modification : $Date: 2022-01-17 10:21$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -182,10 +182,11 @@ if (!$res)
 else
 {
     $overloadFieldList = mrbsOverloadGetFieldslist($area);
-	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++) // foreach ne peut être utilisé à cause de affichage_resa_planning_complet
+	//for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++) 
+    foreach($res as $row)
 	{
-		$t = max((int)$row[0], $month_start);
-		$end_t = min((int)$row[1], $month_end);
+		$t = max((int)$row['start_time'], $month_start);
+		$end_t = min((int)$row['end_time'], $month_end);
 		$day_num = date("j", $t);
 		if ($enable_periods == 'y')
 			$midnight = mktime(12,0,0,$month,$day_num,$year);
@@ -193,14 +194,14 @@ else
 			$midnight = mktime(0, 0, 0, $month, $day_num, $year);
 		while ($t < $end_t)
 		{
-			$d[$day_num]["id"][] = $row[2];
-			$d[$day_num]["color"][] = $row[6];
+			$d[$day_num]["id"][] = $row['id'];
+			$d[$day_num]["color"][] = $row['type'];
 			$midnight_tonight = $midnight + 86400;
 			if ($enable_periods == 'y')
 			{
-				$start_str = preg_replace("/ /", " ", period_time_string($row[0]));
-				$end_str   = preg_replace("/ /", " ", period_time_string($row[1], -1));
-				switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
+				$start_str = preg_replace("/ /", " ", period_time_string($row['start_time']));
+				$end_str   = preg_replace("/ /", " ", period_time_string($row['end_time'], -1));
+				switch (cmp3($row['start_time'], $midnight) . cmp3($row['end_time'], $midnight_tonight))
 				{
 					case "> < ":
 					case "= < ":
@@ -234,17 +235,17 @@ else
 			}
 			else
 			{
-				switch (cmp3($row[0], $midnight) . cmp3($row[1], $midnight_tonight))
+				switch (cmp3($row['start_time'], $midnight) . cmp3($row['end_time'], $midnight_tonight))
 				{
 					case "> < ":
 					case "= < ":
-					$horaires = date(hour_min_format(), $row[0]) . get_vocab("to") . date(hour_min_format(), $row[1]);
+					$horaires = date(hour_min_format(), $row['start_time']) . get_vocab("to") . date(hour_min_format(), $row['end_time']);
 					break;
 					case "> = ":
-					$horaires = date(hour_min_format(), $row[0]) . get_vocab("to")."24:00";
+					$horaires = date(hour_min_format(), $row['start_time']) . get_vocab("to")."24:00";
 					break;
 					case "> > ":
-					$horaires = date(hour_min_format(), $row[0]) . get_vocab("to")."==>";
+					$horaires = date(hour_min_format(), $row['start_time']) . get_vocab("to")."==>";
 					break;
 					case "= = ":
 					$horaires = $all_day;
@@ -253,7 +254,7 @@ else
 					$horaires = $all_day . "==>";
 					break;
 					case "< < ":
-					$horaires = "<==".get_vocab("to") . date(hour_min_format(), $row[1]);
+					$horaires = "<==".get_vocab("to") . date(hour_min_format(), $row['end_time']);
 					break;
 					case "< = ":
 					$horaires = "<==" . $all_day;
@@ -263,12 +264,11 @@ else
 					break;
 				}
 			}
-            //$d[$day_num]["resa"][] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
             $d[$day_num]["resa"][] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
             $d[$day_num]["popup"][] = contenu_popup($options_popup, 1, $row, $horaires);
 
 			//Seulement si l'heure de fin est après minuit, on continue le jour prochain.
-			if ($row[1] <= $midnight_tonight)
+			if ($row['end_time'] <= $midnight_tonight)
 				break;
 			$day_num++;
 			$t = $midnight = $midnight_tonight;

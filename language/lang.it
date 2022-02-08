@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2021-11-19
+# Last modification : 2022-01-30
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -124,6 +124,11 @@ $vocab['admin_type.php'] = "Tipi di prenotazione";
 $vocab['admin_type_explications'] = "Per difetto, all'epoca della creazione di un nuovo tipo di prenotazioni, questo è comune a tutti i campi. Potete specificare poi, per ogni campo, i tipi validi o no.";
 $vocab['admin_type_modify_create.php'] = "Aggiunta di un nuovo tipo di prenotazione";
 $vocab['admin_type_modify_modify.php'] = "Modifica di un tipo di prenotazione";
+$vocab['admin_type_msg1'] = "Suppression impossible : des réservations ont été enregistrées avec ce type.";
+$vocab['admin_type_msg2'] = "ATTENTION : votre table des types de réservation n'est pas à jour !";
+$vocab['admin_type_msg3'] = "Un ou plusieurs types sont actuellement utilisés dans les réservations	mais ne figurent pas dans la table des types. Cela risque d'engendrer des messages d'erreur. ";
+$vocab['admin_type_msg4'] = "Il s'agit du ou des types suivants : ";
+$vocab['admin_type_msg5'] = "Vous devez donc définir ci-dessus, le ou les types manquants.";
 $vocab['admin_user.php'] = "Utenti";
 $vocab['admin_user1'] = "General user rights"; // A traduire
 $vocab['admin_user_modify_create.php'] = "Aggiunta di un nuovo utente";
@@ -159,9 +164,11 @@ $vocab['all_areas'] = "Tutte le prenotazioni";
 $vocab['all_but_visitors'] = "Tutti, salvo visitatori,";
 $vocab['all_day'] = "Giorno intero";
 $vocab['all_day2'] = "==========";
+$vocab['all_entries_in_conflict'] = "All requests are in conflict: no booking is possible";
 $vocab['all_rooms'] = "Tutte le risorse";
 $vocab['all_rooms_of_area'] = "Pour toutes les ressources du domaine"; // A traduire
 $vocab['alphanumeric'] = "Valeur alphanumérique"; // A traduire
+$vocab['alterseries'] = "Modifier une série de réservations à laquelle des participants sont inscrits va annuler les inscriptions !";
 $vocab['areas'] = "Categoria : ";
 $vocab['attention_mail_automatique_désactive'] = "ATTENZIONE: la spedizione di mails automazioni è attualmente disattivata. Per attivarlo, appuntamento nel pannello di configurazione generale.";
 $vocab['aucun autilisateur'] = "Nessuno utente dispone di privilegi";
@@ -541,6 +548,10 @@ $vocab['logs_number'] = "Numero di entrate attualmente presenti nel giornale di 
 $vocab['longueur_liste_ressources'] = "Hauteur maximale de la liste déroulante des ressources"; // A traduire
 $vocab['mail_admin_off'] = "Non prevenire per mail";
 $vocab['mail_admin_on'] = "Prevenire per mail gli utenti";
+$vocab['mail_demandeur'] = "Email du demandeur";
+$vocab['mail_not_sent'] = "Votre message n'a pas pu être envoyé !";
+$vocab['mail_sending_impossible'] = "L'envoi de messages est impossible car l'adresse email du destinataire n'a pas été renseignée.";
+$vocab['mail_sent'] = "Votre message a été envoyé !";
 $vocab['mail_user'] = "Email";
 $vocab['mail_user_list'] = "Elenco degli utenti prevenuti da mail: ";
 $vocab['prefixe'] = "Préfixe";  // A traduire
@@ -633,6 +644,7 @@ $vocab['noareas'] = "Non un settore";
 $vocab['nobody'] = "(nessuno)";
 $vocab['nobookings'] = "Non una prenotazione possibile per questa data!";
 $vocab['nom beneficiaire'] = "Nom du bénéficiaire"; // A traduire
+$vocab['nom_complet_demandeur'] = "Nom et prénom du demandeur";
 $vocab['nom emprunteur'] = "Nom de l'emprunteur"; // A traduire
 $vocab['nombre_de_creneaux'] = "Numero di interstizi";
 $vocab['nombre_jours_Jours_Cycles'] = "Nombre de jours dans un cycle"; // A traduire
@@ -668,7 +680,7 @@ $vocab['number_max'] = " persona max.";
 $vocab['number_max2'] = " persone max.";
 $vocab['num_version'] = "Numero di versione: <b>GRR</b>";
 $vocab['num_version_title'] = "Numero di versione di GRR";
-$vocab['Objet du message'] = "Objet du message (obligatoire)"; // A traduire
+$vocab['Objet du message'] = "Objet du message"; // A traduire
 $vocab['of'] = " su ";
 $vocab['OK'] = "Convalidare";
 $vocab['older_date_log'] = "Attualmente, il giornale contiene la cronistoria dei collegamenti da allora ";
@@ -678,6 +690,10 @@ $vocab['only_administrators'] = "Solamente gli amministratori";
 $vocab['only_letters_and_numbers'] = "L'identificatore dell'utente deve essere costituito soltanto da lettere e da cifre!";
 $vocab['order_display'] = "Ordine di visualizzazione";
 $vocab['Parametres_configuration_envoi_automatique_mails'] = "Paramètres de configuration de l'envoi automatique des mails"; // A traduire
+$vocab['participant_list'] = "Liste des participants"; // A traduire
+$vocab['participant_list_hide'] = "Masquer la liste"; // A traduire
+$vocab['participant_register_form'] = "Inscrire des participants"; // A traduire
+$vocab['participant_register_form_hide'] = "Fermer le formulaire"; // A traduire
 $vocab['pas de privileges'] = "No privilegi";
 $vocab['Pas_image_disponible'] = "Non un'immagine disponibile";
 $vocab['passwd_error'] = "Errore in occasione della battitura dello password, volete ricominciare!";
@@ -961,6 +977,7 @@ $vocab['visu_fiche_description5'] = "Il faut obligatoirement être connecté et 
 $vocab['visu_fiche_description6'] = "Il faut obligatoirement être connecté et être administrateur général"; // A traduire
 $vocab['visu_fiche_description_msg'] = "Qui a accès à la fiche de description d'une ressource ?"; // A traduire
 $vocab['voir_details'] = "Vedere i dettagli";
+$vocab['Votre_message'] = "Votre message";
 $vocab['warning_exist'] = "L'utente che avete tentato di aggiungere appartiene già all'elenco!";
 $vocab['warning_message_backup'] = "Se un messaggio del tipo \"Maximum execution time exceeded \" appare alcuni momenti dopo avere lanciato la salvaguardia, ciò significa che la salvaguardia è fallita!";
 $vocab['warning_message_mail'] = "Alcuni hébergeurs disattivano la spedizione automatica di mails dai loro server. In questo caso, la funzionalità seguente non funzionerà.";
