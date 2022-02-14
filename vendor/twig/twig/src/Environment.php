@@ -38,11 +38,11 @@ use Twig\TokenParser\TokenParserInterface;
  */
 class Environment
 {
-    public const VERSION = '2.14.8';
-    public const VERSION_ID = 21408;
+    public const VERSION = '2.14.11';
+    public const VERSION_ID = 21411;
     public const MAJOR_VERSION = 2;
     public const MINOR_VERSION = 14;
-    public const RELEASE_VERSION = 8;
+    public const RELEASE_VERSION = 11;
     public const EXTRA_VERSION = '';
 
     private $charset;
@@ -298,7 +298,7 @@ class Environment
     {
         $key = $this->getLoader()->getCacheKey($name).$this->optionsHash;
 
-        return $this->templateClassPrefix.hash('sha256', $key).(null === $index ? '' : '___'.$index);
+        return $this->templateClassPrefix.hash(\PHP_VERSION_ID < 80100 ? 'sha256' : 'xxh128', $key).(null === $index ? '' : '___'.$index);
     }
 
     /**
@@ -445,7 +445,7 @@ class Environment
      */
     public function createTemplate($template, string $name = null)
     {
-        $hash = hash('sha256', $template, false);
+        $hash = hash(\PHP_VERSION_ID < 80100 ? 'sha256' : 'xxh128', $template, false);
         if (null !== $name) {
             $name = sprintf('%s (string template %s)', $name, $hash);
         } else {
@@ -501,6 +501,7 @@ class Environment
             $names = [$names];
         }
 
+        $count = \count($names);
         foreach ($names as $name) {
             if ($name instanceof Template) {
                 return $name;
@@ -509,13 +510,11 @@ class Environment
                 return $name;
             }
 
-            try {
-                return $this->loadTemplate($name);
-            } catch (LoaderError $e) {
-                if (1 === \count($names)) {
-                    throw $e;
-                }
+            if (1 !== $count && !$this->getLoader()->exists($name)) {
+                continue;
             }
+
+            return $this->loadTemplate($name);
         }
 
         throw new LoaderError(sprintf('Unable to find one of the following templates: "%s".', implode('", "', $names)));

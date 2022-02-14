@@ -73,39 +73,48 @@ private static $installed = array (
     ),
     'symfony/polyfill-ctype' => 
     array (
-      'pretty_version' => 'v1.23.0',
-      'version' => '1.23.0.0',
+      'pretty_version' => 'v1.24.0',
+      'version' => '1.24.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '46cd95797e9df938fdd2b03693b5fca5e64b01ce',
+      'reference' => '30885182c981ab175d4d034db0f6f469898070ab',
     ),
     'symfony/polyfill-mbstring' => 
     array (
-      'pretty_version' => 'v1.23.1',
-      'version' => '1.23.1.0',
+      'pretty_version' => 'v1.24.0',
+      'version' => '1.24.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9174a3d80210dca8daa7f31fec659150bbeabfc6',
+      'reference' => '0abb51d2f102e00a4eefcf46ba7fec406d245825',
+    ),
+    'symfony/polyfill-php72' => 
+    array (
+      'pretty_version' => 'v1.24.0',
+      'version' => '1.24.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '9a142215a36a3888e30d0a9eeea9766764e96976',
     ),
     'tecnickcom/tcpdf' => 
     array (
-      'pretty_version' => '6.4.2',
-      'version' => '6.4.2.0',
+      'pretty_version' => '6.4.4',
+      'version' => '6.4.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '172540dcbfdf8dc983bc2fe78feff48ff7ec1c76',
+      'reference' => '42cd0f9786af7e5db4fcedaa66f717b0d0032320',
     ),
     'twig/twig' => 
     array (
-      'pretty_version' => 'v2.14.8',
-      'version' => '2.14.8.0',
+      'pretty_version' => 'v2.14.11',
+      'version' => '2.14.11.0',
       'aliases' => 
       array (
       ),
-      'reference' => '06b450a2326aa879faa2061ff72fe1588b3ab043',
+      'reference' => '66baa66f29ee30e487e05f1679903e36eb01d727',
     ),
   ),
 );

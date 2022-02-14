@@ -1,3 +1,18 @@
+# 2.14.11 (2022-02-04)
+
+ * Fix a security issue when in a sandbox: the `sort` filter must require a Closure for the `arrow` parameter
+
+# 2.14.10 (2022-01-03)
+
+ * Allow more null arguments when Twig expects a string (for better 8.1 support)
+
+# 2.14.9 (2022-01-03)
+
+* Allow null when Twig expects a string (for better 8.1 support)
+* Add support for PHP 7.1 back
+* Make some performance optimizations
+* Allow Symfony translation contract v3+
+
 # 2.14.8 (2021-11-25)
 
  * Bump minimum supported Symfony component versions

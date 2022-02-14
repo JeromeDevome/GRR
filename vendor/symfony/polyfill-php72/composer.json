@@ -1,8 +1,8 @@
 {
-    "name": "symfony/polyfill-mbstring",
+    "name": "symfony/polyfill-php72",
     "type": "library",
-    "description": "Symfony polyfill for the Mbstring extension",
-    "keywords": ["polyfill", "shim", "compatibility", "portable", "mbstring"],
+    "description": "Symfony polyfill backporting some PHP 7.2+ features to lower PHP versions",
+    "keywords": ["polyfill", "shim", "compatibility", "portable"],
     "homepage": "https://symfony.com",
     "license": "MIT",
     "authors": [
@@ -18,15 +18,9 @@
     "require": {
         "php": ">=7.1"
     },
-    "provide": {
-        "ext-mbstring": "*"
-    },
     "autoload": {
-        "psr-4": { "Symfony\\Polyfill\\Mbstring\\": "" },
+        "psr-4": { "Symfony\\Polyfill\\Php72\\": "" },
         "files": [ "bootstrap.php" ]
-    },
-    "suggest": {
-        "ext-mbstring": "For best performance"
     },
     "minimum-stability": "dev",
     "extra": {
