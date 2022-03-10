@@ -3,7 +3,7 @@
  * month.php
  * Interface d'accueil avec affichage par mois pour une ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-17 10:21$
+ * Dernière modification : $Date: 2022-02-08 15:13$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -60,7 +60,8 @@ global $racine, $racineAd, $desactive_VerifNomPrenomUser;
 // Lien de retour
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : page_accueil() ;
 // Type de session
-if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
+$user_name = getUserName();
+if ((Settings::get("authentification_obli") == 0) && ($user_name == ''))
 	$type_session = "no_session";
 else
 	$type_session = "with_session";
@@ -134,7 +135,6 @@ $i = mktime(0, 0, 0,$month + 1, 1, $year);
 $ty = date("Y", $i);
 $tm = date("n", $i);
 
-$user_name = getUserName();
 $authGetUserLevel = authGetUserLevel($user_name,$room);
 // si la ressource est restreinte, l'utilisateur peut-il réserver ?
 $user_can_book = $who_can_book || ($authGetUserLevel > 2) || (authBooking($user_name,$room));
@@ -182,7 +182,6 @@ if (!$res)
 else
 {
     $overloadFieldList = mrbsOverloadGetFieldslist($area);
-	//for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++) 
     foreach($res as $row)
 	{
 		$t = max((int)$row['start_time'], $month_start);
@@ -509,17 +508,9 @@ echo "</section>";
 ?>
 <script type="text/javascript">
 	$(document).ready(function(){
-		/*$('table.table-bordered td').each(function(){
-			var $row = $(this);
-			var height = $row.height();
-			var h2 = $row.find('a').height();
-			$row.find('a').css('min-height', height);
-			$row.find('a').css('padding-top', height/2 - h2/2);
-
-		});*/
+        afficheMenuHG(<?php echo $mode; ?>);
         $("#popup_name").draggable({containment: "#container"});
 		$("#popup_name").resizable();
-        afficheMenuHG(<?php echo $mode; ?>);
         if ( $(window).scrollTop() == 0 )
             $("#toTop").hide(1);
 	});

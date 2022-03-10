@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-02-04 17:54$
+ * Dernière modification : $Date: 2022-02-08 12:01$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -164,7 +164,6 @@ else
     $cellules = array();
     $compteur = array();
     $today = array();
-	//for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
     foreach($res as $row) 
 	{
 		$start_t = max(round_t_down($row["start_time"], $resolution, $am7), $am7);
@@ -186,27 +185,15 @@ else
         }
 		if ($row["start_time"] < $am7)
 		{
-            //$today[$row["room_id"]][$am7]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
             $today[$row["room_id"]][$am7]["data"] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
 			if ($settings->get("display_info_bulle") == 1)
                 $today[$row["room_id"]][$am7]["who"] = contenu_popup($options_popup, 1, $row, $horaires);
-			/*	$today[$row["room_id"]][$am7]["who"] = get_vocab("reservation_au_nom_de").affiche_nom_prenom_email($row["beneficiaire"], $row["beneficiaire_ext"], "nomail");
-			else if (($settings->get("display_info_bulle") == 2)&&($row['description'] != ""))
-				$today[$row["room_id"]][$am7]["who"] = $row["description"];
-			else
-				$today[$row["room_id"]][$am7]["who"] = get_vocab('voir_resa');*/
 		}
 		else
 		{
-            //$today[$row["room_id"]][$start_t]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
 			$today[$row["room_id"]][$start_t]["data"] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
             if ($settings->get("display_info_bulle") == 1)
                 $today[$row["room_id"]][$start_t]["who"] = contenu_popup($options_popup, 1, $row, $horaires);
-			/*	$today[$row["room_id"]][$start_t]["who"] = get_vocab("reservation_au_nom_de").affiche_nom_prenom_email($row["beneficiaire"], $row["beneficiaire_ext"]);
-			else if (($settings->get("display_info_bulle") == 2)&&($row['description'] != ""))
-				$today[$row["room_id"]][$start_t]["who"] = $row["description"];
-			else
-				$today[$row["room_id"]][$start_t]["who"] = get_vocab('voir_resa');*/
 		}
 	}
 }

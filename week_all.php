@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-17 10:15$
+ * Dernière modification : $Date: 2022-02-08 12:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -119,13 +119,6 @@ $ressources = grr_sql_query($sql);
 if (!$ressources)
 	fatal_error(0, grr_sql_error());
 
-// Contrôle si il y a une ressource dans le domaine
-/*if (grr_sql_count($ressources) == 0)
-{
-    start_page_w_header($day,$month,$year,$type_session);
-	echo "<h1>".get_vocab("no_rooms_for_area")."</h1>";
-	die();
-}*/
 grr_sql_free($ressources);
 // options pour l'affichage
 $opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants');
@@ -141,7 +134,6 @@ if ($enable_periods == 'y')
 	$eveningends_minutes = count($periods_name)-1;
 }
 $time = mktime(0, 0, 0, $month, $day, $year);
-// $time_old = $time;
 if (($weekday = (date("w", $time) - $weekstarts + 7) % 7) > 0)
     $time = mktime(0,0,0,$month,$day-$weekday,$year); // recule de $weekday jours, php corrigera en fonction du changement d'heure
 
@@ -208,7 +200,6 @@ if (!$res2)
 else
 {
     $overloadFieldList = mrbsOverloadGetFieldslist($area);
-	//for ($i = 0; ($row = grr_sql_row_keyed($res2, $i)); $i++)
     foreach($res2 as $row)
 	{
 		if ($row['type_name'] <> (Settings::get('exclude_type_in_views_all')))          // Nom du type à exclure  
@@ -521,7 +512,6 @@ else{
                                 if ($acces_fiche_reservation)
                                 {
                                     if (Settings::get("display_level_view_entry") == 0)
-                                        //echo '<a title="'.get_vocab('voir_resa').'" data-width="675" onclick="request('.$d[$cday]["id"][$i].','.$cday.','.$cmonth.','.$cyear.',\'all\',\'week_all\',readData);" data-rel="popup_name" class="poplight" style = "border-bottom:1px solid #FFF">'.PHP_EOL;
                                         echo '<a title="'.$d[$cday]["popup"][$i].'" data-width="675" onclick="request('.$d[$cday]["id"][$i].','.$cday.','.$cmonth.','.$cyear.',\'all\',\'week_all\',readData);" data-rel="popup_name" class="poplight" style = "border-bottom:1px solid #FFF">'.PHP_EOL;
                                     else
                                         echo '<a class="lienCellule" style = "border-bottom:1px solid #FFF" title="'.$d[$cday]["popup"][$i].'" href="view_entry.php?id='.$d[$cday]["id"][$i].'&amp;page=week_all&amp;day='.$cday.'&amp;month='.$cmonth.'&amp;year='.$cyear.'&amp;" >'.PHP_EOL;

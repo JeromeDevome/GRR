@@ -3,7 +3,7 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-17 18:50$
+ * Dernière modification : $Date: 2022-02-08 14:53$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -113,13 +113,7 @@ $sql = "SELECT * FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY o
 $ressources = grr_sql_query($sql);
 if (!$ressources)
 	fatal_error(0, grr_sql_error());
-// Contrôle s'il y a une ressource dans le domaine
-/*if (grr_sql_count($ressources) == 0)
-{
-    start_page_w_header($day,$month,$year,$type_session);
-	echo "<h1>".get_vocab("no_rooms_for_area")."</h1>";
-	die();
-}*/
+
 // options pour l'affichage
 $opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants');
 $options = decode_options(Settings::get('cell_month_all2'),$opt);
@@ -181,7 +175,6 @@ if (!$res)
 else
 {
     $overloadFieldList = mrbsOverloadGetFieldslist($area);
-	//for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
     foreach($res as $row)
 	{
 		if ($row["type_name"] <> (Settings::get('exclude_type_in_views_all')))   // Nom du type
@@ -200,7 +193,6 @@ else
 				if ($debug_flag)
 					echo "<br />DEBUG: Entry ".$row['id']." day $day_num\n";
 				$d[$day_num]["id"][] = $row["id"];
-				//$d[$day_num]["lien"][] = lien_compact($row);
 				$d[$day_num]["room"][] = $row["room_name"] ;
 				$d[$day_num]["color"][] = $row["type"];
 				$midnight_tonight = $midnight + 86400;

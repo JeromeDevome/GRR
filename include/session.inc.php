@@ -3,9 +3,9 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-11-09 17:41$
+ * Dernière modification : $Date: 2022-02-19 14:54$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -682,7 +682,6 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     if ($est_authentifie_sso) /// Variable de session qui permet de savoir qu'un utilisateur est authentifié à un SSO
         $_SESSION['est_authentifie_sso'] = "y";
     $_SESSION['changepwd'] = $row[14];
-    // It's a new connection, insert into log
     if (isset($_SERVER["HTTP_REFERER"]))
         $httpreferer = substr($_SERVER["HTTP_REFERER"],0,254);
     else
@@ -735,7 +734,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
         $useragent = $os.' '.$brow;
     else
         $useragent = substr($_SERVER['HTTP_USER_AGENT'],0,254);
-
+    // It's a new connection, insert into log
     $sql = "INSERT INTO ".TABLE_PREFIX."_log (LOGIN, START, SESSION_ID, REMOTE_ADDR, USER_AGENT, REFERER, AUTOCLOSE, END) values (
         '" . protect_data_sql($_SESSION['login']) . "',
         '" . $_SESSION['start'] . "',
