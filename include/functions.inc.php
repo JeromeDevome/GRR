@@ -1443,7 +1443,11 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			{
 				
                 $user_name = getUserName();
-                $d['mess_resa'] = resaToModerate($user_name);
+				$resaAModerer = resaToModerate($user_name);
+                $nbResaAModerer = count($resaAModerer);
+                $d['mess_resa'] = '';
+                if ($nbResaAModerer > 1){$d['mess_resa'] = $nbResaAModerer.get_vocab('resasToModerate');}
+                if ($nbResaAModerer == 1){$d['mess_resa'] = $nbResaAModerer.get_vocab('resaToModerate');}
 				if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1) || ($d['mess_resa'] != ''))
 				{
 					if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1))
