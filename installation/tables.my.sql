@@ -156,3 +156,5 @@ INSERT INTO grr_setting VALUES ('visu_fiche_description', '0');
 INSERT INTO grr_setting VALUES ('webmaster_name', 'Webmestre de GRR');
 INSERT INTO grr_setting VALUES ('webmaster_email', 'VariableInstal03');
 INSERT INTO grr_setting VALUES ('mail_user_destinataire', 'y');
+INSERT INTO grr_setting VALUES ('horaireconnexionde', '');
+INSERT INTO grr_setting VALUES ('horaireconnexiona', '');

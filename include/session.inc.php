@@ -566,6 +566,23 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
             return "11";
         }
     }
+
+	// Si on à des heures de connexions autorisés
+	if ((Settings::get("horaireconnexionde")!='') and (Settings::get("horaireconnexiona")!='') and  ($row[4] != "administrateur")){
+		
+		$dateActu	= new DateTime('NOW');
+		$dateDe		= new DateTime(Settings::get("horaireconnexionde"));
+		$dateA		= new DateTime(Settings::get("horaireconnexiona"));
+
+		$heureActu = $dateActu->format('H:i');
+		$heureDe = $dateDe->format('H:i');
+		$heureA = $dateA->format('H:i');
+
+		if($heureActu < $heureDe || $heureActu > $heureA){
+			return "13";
+		}
+	}
+	
 	//
 	// A ce stade, on dispose dans tous les cas d'un tableau $row contenant les informations nécessaires à l'établissement d'une session
 	//
@@ -807,6 +824,24 @@ function grr_resumeSession()
 		return (false);
 	if ((Settings::get("disable_login")=='yes') and ($_SESSION['statut'] != "administrateur"))
 		return (false);
+	
+	// Si on à des heures de connexions autorisés
+	if ((Settings::get("horaireconnexionde")!='') and (Settings::get("horaireconnexiona")!='') and  ($_SESSION['statut'] != "administrateur")){
+		
+		$dateActu	= new DateTime('NOW');
+		$dateDe		= new DateTime(Settings::get("horaireconnexionde"));
+		$dateA		= new DateTime(Settings::get("horaireconnexiona"));
+
+		$heureActu = $dateActu->format('H:i');
+		$heureDe = $dateDe->format('H:i');
+		$heureA = $dateA->format('H:i');
+
+		if($heureActu < $heureDe || $heureActu > $heureA){
+			return (false);
+		}
+	}
+	
+	
 		// To be removed
 		// Validating session data
 	$sql = "SELECT password = '" . $_SESSION['password'] . "' PASSWORD, login = '" . protect_data_sql($_SESSION['login']) . "' LOGIN, statut = '" . $_SESSION['statut'] . "' STATUT

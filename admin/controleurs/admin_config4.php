@@ -55,6 +55,17 @@ if (isset($_GET['ip_autorise']))
 	if (!Settings::set("ip_autorise", $_GET['ip_autorise']))
 		echo "Erreur lors de l'enregistrement de ip_autorise !<br />";
 }
+// Heure de connexion
+if (isset($_GET['horaireconnexionde']))
+{
+	if (!Settings::set("horaireconnexionde", $_GET['horaireconnexionde']))
+		echo "Erreur lors de l'enregistrement de horaireconnexionde !<br />";
+}
+if (isset($_GET['horaireconnexiona']))
+{
+	if (!Settings::set("horaireconnexiona", $_GET['horaireconnexiona']))
+		echo "Erreur lors de l'enregistrement de horaireconnexiona !<br />";
+}
 // Max session length
 if (isset($_GET['sessionMaxLength']))
 {
@@ -115,6 +126,9 @@ get_vocab_admin("NO");
 
 get_vocab_admin("title_ip_autorise");
 get_vocab_admin("explain_ip_autorise");
+
+get_vocab_admin("title_horaire_autorise");
+get_vocab_admin("explain_horaire_autorise");
 
 get_vocab_admin("title_session_max_length");
 get_vocab_admin("session_max_length");

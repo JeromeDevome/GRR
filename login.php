@@ -124,12 +124,16 @@ if (isset($_POST['login']) && isset($_POST['password']))
 	}
 	else if ($result == "11")
 	{
-		$message = get_vocab("echec_connexion_GRR");
-		$message .= "<br />". get_vocab("connexion_a_grr_ip");
+
 	}
 	else if ($result == "12")
 	{
 		header("Location: ./changepwd.php");
+	}
+	else if ($result == "13")
+	{
+		$message = get_vocab("echec_connexion_GRR");
+		$message .= "<br />". get_vocab("echec_authentification_horaire")." ".Settings::get("horaireconnexionde")." - ".Settings::get("horaireconnexiona");
 	}
 	else // la session est ouverte
 	{

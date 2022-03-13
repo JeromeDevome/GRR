@@ -88,6 +88,14 @@
 							<p>{{ trad.explain_ip_autorise }}</p>
 							{{ form.input('ip_autorise', '', settings.ip_autorise, {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
 						</section>
+						<section id="ipautorise">
+							<h4 class="page-header">{{ trad.title_horaire_autorise }}</h4>
+							<p>{{ trad.explain_horaire_autorise }}</p>
+							<div class="col-sm-12">
+							{{ form.input('horaireconnexionde', 'De', settings.horaireconnexionde, {classGroup: 'col-sm-6', classLabel: 'col-sm-2', classInput: 'col-sm-4 control-label', type: 'time'}) }}
+							{{ form.input('horaireconnexiona', 'A', settings.horaireconnexiona, {classGroup: 'col-sm-6', classLabel: 'col-sm-2', classInput: 'col-sm-4 control-label', type: 'time'}) }}
+							</div>
+						</section>
 						<hr>
 						<section id="dureesession">
 							<h4 class="page-header">{{ trad.title_session_max_length }}</h4>

@@ -351,6 +351,18 @@ if (isset($_GET['precedent']))
 		echo '<span id="lienPrecedent">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="charger();javascript:history.back();">Précedent</button>',PHP_EOL,'</span>',PHP_EOL;
 	}
 }
+
+		$dateActu	= new DateTime('NOW');
+		$dateDe		= new DateTime(Settings::get("horaireconnexionde"));
+		$dateA		= new DateTime(Settings::get("horaireconnexiona"));
+		
+		
+		 echo $heureActu = $dateActu->format('H:i');
+		echo $heureDe = $dateDe->format('H:i');
+		echo $heureA = $dateA->format('H:i');
+		
+
+
 if ($this_room_show_comment == "y" && $_GET['pview'] != 1 && ($this_room_comment != "") && ($this_room_comment != -1))
 	echo '<div style="text-align:center;">',$this_room_comment,'</div>',PHP_EOL;
 echo "</div>";

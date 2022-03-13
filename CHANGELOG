@@ -23,6 +23,7 @@ Version en cours de développement sur GitHUB (4.0.0)
 [Ajout] Synchronisation de la langue avec tout les utilisateurs
 [Ajout] Synchronisation du thème avec tout les utilisateurs
 [Ajout] Fonctionnalité de participation
+[Ajout] Restriction des connexions par horaire
 [Correction] Déconnexion utilisateur lorsque une connexion externe est activée
 [Modification] Administration : passage sous twig
 [Modification] Administration : Theme AdminLTE
