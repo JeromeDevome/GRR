@@ -31,12 +31,12 @@
     ),
     'phpmailer/phpmailer' => 
     array (
-      'pretty_version' => 'v6.5.3',
-      'version' => '6.5.3.0',
+      'pretty_version' => 'v6.6.0',
+      'version' => '6.6.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'baeb7cde6b60b1286912690ab0693c7789a31e71',
+      'reference' => 'e43bac82edc26ca04b36143a48bde1c051cfd5b1',
     ),
     'psr/log' => 
     array (
@@ -49,8 +49,8 @@
     ),
     'symfony/polyfill-ctype' => 
     array (
-      'pretty_version' => 'v1.24.0',
-      'version' => '1.24.0.0',
+      'pretty_version' => 'v1.25.0',
+      'version' => '1.25.0.0',
       'aliases' => 
       array (
       ),
@@ -58,8 +58,8 @@
     ),
     'symfony/polyfill-mbstring' => 
     array (
-      'pretty_version' => 'v1.24.0',
-      'version' => '1.24.0.0',
+      'pretty_version' => 'v1.25.0',
+      'version' => '1.25.0.0',
       'aliases' => 
       array (
       ),
@@ -67,8 +67,8 @@
     ),
     'symfony/polyfill-php72' => 
     array (
-      'pretty_version' => 'v1.24.0',
-      'version' => '1.24.0.0',
+      'pretty_version' => 'v1.25.0',
+      'version' => '1.25.0.0',
       'aliases' => 
       array (
       ),
