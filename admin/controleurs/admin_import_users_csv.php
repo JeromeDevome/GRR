@@ -3,9 +3,9 @@
  * admin_import_user_csv.php
  * script d'importation d'utilisateurs à partir d'un fichier CSV
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2022-03-17 14:14$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -307,7 +307,7 @@ else
 			$reg_mdp[$row] = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$reg_mdp[$row]);
 		// On nettoie les windozeries
 		$reg_nom[$row] = protect_data_sql(corriger_caracteres($reg_nom[$row]));
-		$reg_prenom[$row] = protect_data_sql(corriger_caracteres($reg_prenom[$row]));
+		$reg_prenom[$row] = protect_data_sql(html_entity_decode($reg_prenom[$row]));
 		$reg_email[$row] = protect_data_sql(corriger_caracteres($reg_email[$row]));
 		$reg_changer_pwd[$row] = protect_data_sql(corriger_caracteres($reg_changer_pwd[$row]));
 		$test_login = grr_sql_count(grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$reg_login[$row]'"));
