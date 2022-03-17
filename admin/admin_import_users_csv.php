@@ -27,7 +27,6 @@ if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName()
 }
 // début de page avec menu haut
 start_page_w_header("", "", "", $type="with_session");
-print_r($_POST);
 // Affichage de la colonne de gauche
 include "admin_col_gauche2.php";
 // affichage de la colonne de droite
