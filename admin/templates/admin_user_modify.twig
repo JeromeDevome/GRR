@@ -27,8 +27,8 @@
 							<label class="col-sm-4" for="type_authentification">{{ trad.authentification }}</label>
 							<div class="col-sm-8">
 								<select name="type_authentification" id="select_auth_mode" onchange="display_password_fields(this.id);" class="form-control">
-									<option value="locale" {% if utilisateur.disponible == 'local' %} selected {% endif %}>{{ trad.authentification_base_locale }}</option>
-									<option value="externe" {% if utilisateur.disponible == 'ext' %} selected {% endif %}>{{ trad.authentification_base_externe }}</option>
+									<option value="locale" {% if utilisateur.source == 'local' %} selected {% endif %}>{{ trad.authentification_base_locale }}</option>
+									<option value="externe" {% if utilisateur.source == 'ext' %} selected {% endif %}>{{ trad.authentification_base_externe }}</option>
 								</select>
 							</div>
 						</div>
