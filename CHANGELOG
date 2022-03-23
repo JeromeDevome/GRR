@@ -25,6 +25,15 @@ Version 3.4.3
     modification : prise en compte des heures de début et de fin dans le sélecteur (page de réservation)
     modification : rétablissement du fichier .gitignore
     modification : mise en page et message si domaine vide ou dont les ressources sont inaccessibles
+Sous-version 3.4.3a
+    ajout : possibilité d'inscrire un tiers participant
+    ajout : fonction ajustant une plage à des jours réservables
+    amélioration : accès au bouton (copier) découplé de (modifier/effacer/échanger) pour pouvoir reprendre les données d'une réservation passée
+    amélioration : indicateur de complexité du mot de passe
+    amélioration : réinscription des participants lors de la modification d'UNE réservation
+    amélioration : accès des gestionnaires de ressources à la page d'administration pour accéder à la liste des réservations à modérer
+    correctif : bug affichage dans week.php et nettoyage du code
+    correctif : les accents circonflexes étaient perdus
 
 -----
 --
