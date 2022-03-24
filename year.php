@@ -3,7 +3,7 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-17 17:50$
+ * Dernière modification : $Date: 2022-02-08 14:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -33,7 +33,7 @@ include "include/language.inc.php";
 
 // Construction des identifiants du domaine $area, du site $site
 global $area, $site;
-// echo "paramètres ".$_GET['site']." ".$_GET['area'];
+
 if (isset($_GET['room'])){
     $area = mrbsGetRoomArea(intval($_GET['room']));
     $site = mrbsGetAreaSite($area);
@@ -226,7 +226,6 @@ if (!$res)
 else
 {
     $overloadFieldList = mrbsOverloadGetFieldslist($area);
-	//for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
     foreach($res as $row)
 	{
 		if ($row["type_name"] <> (Settings::get('exclude_type_in_views_all')))   // Nom du type exclu
@@ -391,8 +390,7 @@ if ($_GET['pview'] != 1)
         echo "</div>";
     echo "</div>";
 }
-//echo "<div class=\"titre_planning\"><h4>".ucfirst($this_area_name)." - ".get_vocab("all_areas")."</h4></div>\n";
-// à revoir ?
+
 echo "<div class=\"col-xs-12 center\"><h4>".ucfirst($this_area_name)." - ".get_vocab("all_areas")."</h4></div>\n";
 // Boucle sur les mois
 $month_indice =  $month_start;
@@ -489,7 +487,6 @@ while ($month_indice < $month_end)
                                 {
                                     if ($d[$cday][$cmonth][$cyear]["room"][$i] == $row[0]) // test peu fiable car c'est l'id qui est unique YN le 26/02/2018
                                     {
-                                            //if ($i > 0 && $i % 2 == 0) echo "<br />"; else echo " ";
                                         echo "\n<table class='pleine table-bordered' ><tr>\n";
                                         tdcell($d[$cday][$cmonth][$cyear]["color"][$i]);
                                         if ($acces_fiche_reservation)

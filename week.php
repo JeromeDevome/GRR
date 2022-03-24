@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-17 10:05$
+ * Dernière modification : $Date: 2022-03-10 19:06$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -223,7 +223,6 @@ else
 {
     $overloadFieldList = mrbsOverloadGetFieldslist($area);
 	// Pour toutes les réservations
-	//for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
     foreach($res as $row) 
 	{
 		if ($debug_flag)
@@ -297,21 +296,14 @@ else
                     if ($prev_weekday != $weekday)
                     {
                         $prev_weekday = $weekday;
-                        //$d[$weekday][$slot]["data"] = affichage_lien_resa_planning($row[3],$row[4]);
                         $heure_fin = date('H:i',$d[$weekday][$slot]["horaireFin"]);
                         if (($heure_fin == '00:00') && ((date('w',$d[$weekday][$slot]["horaireFin"]) - $weekday) != 1)) 
                             {$heure_fin = '24:00';}
                         $horaires = date('H:i',$d[$weekday][$slot]["horaireDebut"]).get_vocab("to"). $heure_fin."";
-                        //$d[$weekday][$slot]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
                         $d[$weekday][$slot]["data"] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
                         $d[$weekday][$slot]["id"] = $row["id"];
                         if (Settings::get("display_info_bulle") == 1)
                             $d[$weekday][$slot]["who"] = contenu_popup($options_popup, 1, $row, $horaires);
-                        /*    $d[$weekday][$slot]["who"] = get_vocab("reservee au nom de").affiche_nom_prenom_email($row["beneficiaire"],$row["beneficiaire_ext"],"nomail");
-                        else if (Settings::get("display_info_bulle") == 2)
-                            $d[$weekday][$slot]["who"] = $row["description"];
-                        else
-                            $d[$weekday][$slot]["who"] = "";*/
                     }
                 }
                 $t += $this_area_resolution;
@@ -376,16 +368,10 @@ else
                     {
                         $prev_weekday = $weekday;
                         $horaires = "";
-                        // $d[$weekday][$slot]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
                         $d[$weekday][$slot]["data"] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
                         $d[$weekday][$slot]["id"] = $row["id"];
                         if (Settings::get("display_info_bulle") == 1)
                             $d[$weekday][$slot]["who"] = contenu_popup($options_popup, 1, $row, $horaires);
-                        /*    $d[$weekday][$slot]["who"] = get_vocab("reservee au nom de").affiche_nom_prenom_email($row["beneficiaire"],$row["beneficiaire_ext"],"nomail");
-                        else if (Settings::get("display_info_bulle") == 2)
-                            $d[$weekday][$slot]["who"] = $row["description"];
-                        else
-                            $d[$weekday][$slot]["who"] = "";*/
                     }
                 }
                 $t += 60; 
@@ -531,7 +517,7 @@ $num_week_day = $weekstarts;
 $k = $day_week;
 $i = $time;
 
-for ($t = $week_start; $t < $week_end; $t += 86400)
+for ($t = $week_start; $t <= $week_end; $t += 86400)
 {
 	$num_day = strftime("%d", $t);
 	$month_actuel = strftime("%m", $t);

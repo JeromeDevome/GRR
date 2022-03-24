@@ -3,7 +3,7 @@
  * month_all.php
  * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-17 10:28$
+ * Dernière modification : $Date: 2022-02-08 14:57$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -115,17 +115,10 @@ if (Settings::get("verif_reservation_auto") == 0)
 // Selection des ressources
 $sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display, room_name";
 $ressources = grr_sql_query($sql);
-
 if (!$ressources)
 	fatal_error(0, grr_sql_error());
-
-// Contrôle si il y a une ressource dans le domaine
-/*if (grr_sql_count($ressources) == 0)
-{
-	echo "<h1>".get_vocab("no_rooms_for_area")."</h1>";
-	die();
-}*/
 grr_sql_free($ressources);
+
 // options pour l'affichage
 $opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants');
 $options = decode_options(Settings::get('cell_month_all'),$opt);
@@ -189,7 +182,6 @@ else  //Build an array of information about each day in the month.
     $overloadFieldList = mrbsOverloadGetFieldslist($area);
     $verif_acces_ressource = array();
     $acces_fiche_reservation = array();
-	//for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
     foreach($res as $row)
 	{
 		if ($row['type_name'] <> (Settings::get('exclude_type_in_views_all')))
@@ -220,8 +212,6 @@ else  //Build an array of information about each day in the month.
                 {
                     $start_str = preg_replace("/ /", " ", period_time_string($row['start_time']));
                     $end_str   = preg_replace("/ /", " ", period_time_string($row['end_time'], -1));
-                // Debug
-                //echo affiche_date($row['start_time'])." ".affiche_date($midnight)." ".affiche_date($row['end_time'])." ".affiche_date($midnight_tonight)."<br />";
                     switch (cmp3($row['start_time'], $midnight) . cmp3($row['end_time'], $midnight_tonight))
                     {
                         case "> < ":         //Starts after midnight, ends before midnight
@@ -526,17 +516,9 @@ echo "</section>";
 ?>
 <script type="text/javascript">
 	$(document).ready(function(){
-		/*$('table.table-bordered td').each(function(){
-			var $row = $(this);
-			var height = $row.height();
-			var h2 = $row.find('a').height();
-			$row.find('a').css('min-height', height);
-			$row.find('a').css('padding-top', height/2 - h2/2);
-
-		});*/
+        afficheMenuHG(<?php echo $mode; ?>);
         $("#popup_name").draggable({containment: "#container"});
 		$("#popup_name").resizable();
-        afficheMenuHG(<?php echo $mode; ?>);
         if ( $(window).scrollTop() == 0 )
             $("#toTop").hide(1);
 	});
