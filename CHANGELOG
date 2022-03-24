@@ -1,19 +1,40 @@
 Bugs connus sur la version de GitHub :
  - des problèmes se produisent parfois lorsqu'on veut faire une modification/copie de réservation avec un changement de domaine
+ - si la fin de journée dépasse 24:00, utiliser la définition de la réservation par la durée et non par la date de fin
 
 Tâches prévues :
  - modularisation de l'authentification
  - gestion des champs additionnels sur plusieurs domaines
- - filtrage des accès par iP élargi à ipv6
 
 -----
 --
 -----
 
-Version 3.4.3 RC0 (en cours de développement : pour l'installation, partez de zéro, restaurez éventuellement vos anciennes données, forcez éventuellement la mise à jour de la BDD)
-    ajout : fonctionnalité "participants"
+Version 3.4.3
+    ajout : fonctionnalité "participants": permet à un utilisateur autorisé d'ouvrir les inscriptions à un événement et aux utilisateurs connectés de s'inscrire
+    amélioration : info-bulles avec tooltip bootstrap dans admin_overload.php
+    amélioration : filtrage des adresses iPv6 par un filtre au format CIDR
     correctif : l'entrée des couleurs des types par couleur prédéfinie peut se faire avant ou après le choix de la couleur du texte
+    correctif : la suppression d'une série s'arrêtait au jour sélectionné
+    correctif : prise en compte des options désélectionnées dans la page de gestion des affichages
+    correctifs : syntaxe
+    correctifs : gestion des conflits
+    correctifs : notamment pour compatibilité php8
+    correctifs : liens de navigation en cas d'édition d'une réservation existante
 	modification : champ REMOTE_ADDR de la table grr_log afin d'accepter les connexions depuis ipv6
+    modification : type du champ delais_min_resa_room afin de pouvoir bloquer une ressource au moins un mois à l'avance
+    modification : prise en compte des heures de début et de fin dans le sélecteur (page de réservation)
+    modification : rétablissement du fichier .gitignore
+    modification : mise en page et message si domaine vide ou dont les ressources sont inaccessibles
+Sous-version 3.4.3a
+    ajout : possibilité d'inscrire un tiers participant
+    ajout : fonction ajustant une plage à des jours réservables
+    amélioration : accès au bouton (copier) découplé de (modifier/effacer/échanger) pour pouvoir reprendre les données d'une réservation passée
+    amélioration : indicateur de complexité du mot de passe
+    amélioration : réinscription des participants lors de la modification d'UNE réservation
+    amélioration : accès des gestionnaires de ressources à la page d'administration pour accéder à la liste des réservations à modérer
+    correctif : bug affichage dans week.php et nettoyage du code
+    correctif : les accents circonflexes étaient perdus
 
 -----
 --

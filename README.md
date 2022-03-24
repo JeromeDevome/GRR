@@ -1,8 +1,8 @@
 GRR
-version 3.4.3 RC0, a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7
+version 3, a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7
 ===================
 
-Pour une installation en production, veuillez installer la version 3.4.2.
+Pour une installation en production, veuillez installer la version 3.4.3a
 Si vous avez besoin des dernières modifications apportées au code de GRR, vous pouvez utiliser cette version avec les précautions d'usage (faire des sauvegardes régulières, tester les nouveautés progressivement).
 
 **Requiert :**
