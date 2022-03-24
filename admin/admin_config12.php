@@ -3,9 +3,9 @@
  * admin_config12.php
  * Interface permettant à l'administrateur la configuration de certains paramètres d'affichage
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2021-09-01 18:50$
+ * Dernière modification : $Date: 2022-02-02 10:58$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -174,6 +174,12 @@ if (!empty($_POST)) // évite d'effacer les enregistrements lors du deuxième pa
                 die();
             }
         }
+        else{ // tout est décoché
+            if(!Settings::set($name, 'FFFFFFF')){
+                echo $vocab['save_err'].' '.$name.' !<br />';
+                die();
+            }
+        }
     }
     // info-bulles
     foreach ($plan as $p){
@@ -182,6 +188,12 @@ if (!empty($_POST)) // évite d'effacer les enregistrements lors du deuxième pa
             $choix = encode_tableau($_POST[$name],$opt);
             if (!Settings::set($name, $choix)) {
                 echo $vocab['save_err'].' '.$name." !<br />";
+                die();
+            }
+        }
+        else{ // tout est décoché
+            if(!Settings::set($name, 'FFFFFFF')){
+                echo $vocab['save_err'].' '.$name.' !<br />';
                 die();
             }
         }
@@ -335,6 +347,7 @@ foreach ($plan as $p){
 // haut de page et début de section
 start_page_w_header('', '', '', $type = 'with_session');
 affiche_pop_up($msg, 'admin');
+
 // Affichage de la colonne de gauche
 include 'admin_col_gauche2.php';
 //echo "<p>".get_vocab('mess_avertissement_config')."</p>";

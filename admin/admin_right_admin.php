@@ -261,7 +261,7 @@ echo '<input type="hidden" name="id_area" value="'.$id_area.'" />';
 echo '<input type="submit" value="Enregistrer" />';
 echo '</form>';
 echo '</div>';
-// selection pour ajout en masse !-->
+// selection pour ajout en masse
 $nb_users = count($selus);
 if ($nb_users > 0)
 {

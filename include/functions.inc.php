@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-01-31 12:12$
+ * Dernière modification : $Date: 2022-02-02 11:28$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -308,7 +308,7 @@ function contenu_cellule($options, $ofl, $vue, $resa, $heures)
 	// Type
 	if ($options["type"])
 	{
-        $typeResa = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area JOIN ".TABLE_PREFIX."_entry ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter WHERE ".TABLE_PREFIX."_entry.id = '".$resa[2]."';");
+        $typeResa = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area JOIN ".TABLE_PREFIX."_entry ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter WHERE ".TABLE_PREFIX."_entry.id = '".$resa['id']."';");
 		if ($typeResa != -1)
 			$affichage .= $typeResa."<br>";
 	}
@@ -3665,8 +3665,7 @@ function authBooking($user,$room){
  	global $correct_diff_time_local_serveur, $can_delete_or_create;
  	$can_delete_or_create = "y";
 	// On teste si l'utilisateur est administrateur
- 	$sql = "SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".protect_data_sql($user)."'";
- 	$statut_user = grr_sql_query1($sql);
+ 	$statut_user = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".protect_data_sql($user)."'");
  	if ($statut_user == 'administrateur')
  		return true;
 	// A-t-on le droit d'agir dans le passé ?
@@ -3719,8 +3718,8 @@ function authBooking($user,$room){
  	{
  		if (Settings::get("allow_user_delete_after_begin") == 1)
  		{
- 			$id_area = grr_sql_query1("select area_id from ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($id_room)."'");
- 			$resolution_area = grr_sql_query1("select resolution_area from ".TABLE_PREFIX."_area WHERE id = '".$id_area."'");
+ 			//$id_area = grr_sql_query1("select area_id from ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($id_room)."'");
+ 			$resolution_area = grr_sql_query1("SELECT a.resolution_area FROM ".TABLE_PREFIX."_area a JOIN ".TABLE_PREFIX."_room r ON r.area_id = a.id WHERE r.id = '".protect_data_sql($id_room)."'");
  			if ($date_booking > $date_now - $resolution_area)
  				return true;
  			return false;
@@ -3773,6 +3772,22 @@ function authBooking($user,$room){
  		return false;
  	return true;
  }
+/* function minTime2Book($user, $id_room, $date_now)
+ * paramètres :
+ *  $user : id de l'utilisateur
+ *  $id_room : id de la ressource (c'est elle qui possède un attribut limitant quand elle est réservable)
+ *  $date_now : timestamp donnant la date courante
+ * renvoie un timestamp indiquant à partir de quand la ressource est réservable (tester $date_booking > minTime2Book(...) )
+*/
+function minTime2Book($user, $id_room, $date_now){
+    if (authGetUserLevel($user,$id_room) >= 3)
+        return 0;
+    $delais_max_resa_room = grr_sql_query1("SELECT delais_max_resa_room FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($id_room)."'");
+	if ($delais_max_resa_room == -1)
+        return 0;
+    else 
+        return ($date_now + $delais_max_resa_room * 86400 + 1 );
+}
 // function verif_access_search : vérifier l'accès à l'outil de recherche
 // $user : le login de l'utilisateur
 // $id_room : l'id de la ressource.
