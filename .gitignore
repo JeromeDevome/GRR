@@ -43,7 +43,6 @@ Temporary Items
 .apdisk
 
 # config files for GRR
-include/cas.inc.php
 include/config.inc.php
 include/config_CAS.inc.php
 include/config_imap.inc.php
