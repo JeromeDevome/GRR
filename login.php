@@ -3,9 +3,9 @@
  * login.php
  * interface de connexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-12-16 12:02$
+ * Dernière modification : $Date: 2022-03-30 11:05$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -157,7 +157,7 @@ if ((isset($message)) && (Settings::get("disable_login")) != 'yes')
     echo("<p><span class='avertissement'>" . $message . "</span></p>");
 if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
 {
-    echo "<p><span style=\"font-size:1.4em\"><a href=\"./index.php\">".get_vocab("authentification_CAS")."</a></span></p>";
+    echo "<p><span style=\"font-size:1.4em\"><a href=\"./index.php?force_authentification\">".get_vocab("authentification_CAS")."</a></span></p>";
 }
 elseif ((Settings::get('sso_statut') == 'lemon_visiteur') || (Settings::get('sso_statut') == 'lemon_utilisateur'))
 {
