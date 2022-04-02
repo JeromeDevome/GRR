@@ -1,6 +1,13 @@
+# 2.14.12 (2022-03-25)
+
+ * Fix custom escapers when using multiple Twig environments
+ * Do not reuse internally generated variable names during parsing
+
 # 2.14.11 (2022-02-04)
 
  * Fix a security issue when in a sandbox: the `sort` filter must require a Closure for the `arrow` parameter
+ * Fix deprecation notice on `round`
+ * Fix call to deprecated `convertToHtml` method
 
 # 2.14.10 (2022-01-03)
 

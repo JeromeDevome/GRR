@@ -109,12 +109,12 @@ private static $installed = array (
     ),
     'twig/twig' => 
     array (
-      'pretty_version' => 'v2.14.11',
-      'version' => '2.14.11.0',
+      'pretty_version' => 'v2.14.12',
+      'version' => '2.14.12.0',
       'aliases' => 
       array (
       ),
-      'reference' => '66baa66f29ee30e487e05f1679903e36eb01d727',
+      'reference' => '19c898bda30c5edea573bbb9ee1235d8cf6956ed',
     ),
   ),
 );
