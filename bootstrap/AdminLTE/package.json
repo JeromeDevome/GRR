@@ -48,7 +48,7 @@
     "jquery": "^3.5.0",
     "jquery-knob": "^1.2.11",
     "jquery-sparkline": "^2.4",
-    "jquery-ui": "^1.12.1",
+    "jquery-ui": "^1.13.0",
     "jvectormap": "^1.2.2",
     "moment": "^2.24",
     "morris.js": "^0.5",
