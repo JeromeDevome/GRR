@@ -27,9 +27,9 @@ html #fade,html .popup_block{position:absolute;background-color:white;}
 #chargement{left:35%;top:322px;position:absolute;display:none;z-index:10}
 #chargement p{padding:0;background-color:gray}
 #chargement img{border:2px solid #000}
-td.CC{vertical-align:middle;text-align:center;}
+span.CC,td.CC{vertical-align:middle;text-align:center;}
 td.CR{vertical-align:middle;text-align:right}
-td.CL{vertical-align:middle;text-align:left}
+span.CL,td.CL{vertical-align:middle;text-align:left}
 td.BR{vertical-align:baseline;text-align:right}
 td.BL{vertical-align:baseline;text-align:left}
 td.TR{vertical-align:top;text-align:right}
@@ -114,6 +114,25 @@ th.jour_sem{width:10%;background-color:gray;color:white;}
 /* edit_entry */
 #choix_beneficiaire > #menu4{display:none;}
 #form_participant{display:none;}
+/* admin_overload : table de formulaire */
+DIV.table 
+{
+    display:table;
+}
+FORM.tr, DIV.tr
+{
+    display:table-row;
+}
+SPAN.td
+{
+    display:table-cell;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(221, 221, 221);
+    border-collapse: collapse;
+    border-spacing: 0;
+    
+}
 
 @media only screen and (max-width:800px) { 
 	.accueil {

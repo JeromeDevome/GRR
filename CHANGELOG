@@ -10,6 +10,13 @@ Tâches prévues :
 --
 -----
 
+Version 3.4.4
+    modification : le champ participant de la table grr_participants passe à varchar(150) par compatibilité avec les BDD codées en UTF8mb4
+
+-----
+--
+-----
+
 Version 3.4.3
     ajout : fonctionnalité "participants": permet à un utilisateur autorisé d'ouvrir les inscriptions à un événement et aux utilisateurs connectés de s'inscrire
     amélioration : info-bulles avec tooltip bootstrap dans admin_overload.php
