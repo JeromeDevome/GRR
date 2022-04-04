@@ -3,7 +3,7 @@
  * login.php
  * interface de connexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-03-30 11:05$
+ * Dernière modification : $Date: 2022-04-04 10:06$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -158,28 +158,33 @@ if ((isset($message)) && (Settings::get("disable_login")) != 'yes')
 if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
 {
     echo "<p><span style=\"font-size:1.4em\"><a href=\"./index.php?force_authentification\">".get_vocab("authentification_CAS")."</a></span></p>";
+    echo "<p><b>".get_vocab("authentification_locale")."</b></p>";
 }
 elseif ((Settings::get('sso_statut') == 'lemon_visiteur') || (Settings::get('sso_statut') == 'lemon_utilisateur'))
 {
     echo "<p><span style=\"font-size:1.4em\"><a href=\"./index.php\">".get_vocab("authentification_lemon")."</a></span></p>";
+    echo "<p><b>".get_vocab("authentification_locale")."</b></p>";
 }
 elseif (Settings::get('sso_statut') == 'lcs')
 {
     echo "<p><span style=\"font-size:1.4em\"><a href=\"".LCS_PAGE_AUTHENTIF."\">".get_vocab("authentification_lcs")."</a></span></p>";
+    echo "<p><b>".get_vocab("authentification_locale")."</b></p>";
 }
 elseif ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_statut') == 'lasso_utilisateur'))
 {
     echo "<p><span style=\"font-size:1.4em\"><a href=\"./index.php\">".get_vocab("authentification_lasso")."</a></span></p>";
+    echo "<p><b>".get_vocab("authentification_locale")."</b></p>";
 }
 elseif ((Settings::get('sso_statut') == 'http_visiteur') || (Settings::get('sso_statut') == 'http_utilisateur'))
 {
     echo "<p><span style=\"font-size:1.4em\"><a href=\"./index.php\">".get_vocab("authentification_http")."</a></span></p>";
+    echo "<p><b>".get_vocab("authentification_locale")."</b></p>";
 }
 elseif (Settings::get('sso_statut') == 'joomla')
 {
     echo "<p><span style=\"font-size:1.4em\"><a href=\"./index.php\">".get_vocab("authentification_joomla")."</a></span></p>";
+    echo "<p><b>".get_vocab("authentification_locale")."</b></p>";
 }
-echo "<p><b>".get_vocab("authentification_locale")."</b></p>";
 echo '<fieldset style="padding-top: 8px; padding-bottom: 8px; width: 40%; margin-left: auto; margin-right: auto;">';
 echo '<legend class="fontcolor3" style="font-variant: small-caps;">'.get_vocab("identification").'</legend>';
 echo '<p>'.get_vocab("mentions_legal_connexion").'</p>';
