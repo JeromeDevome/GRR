@@ -24,3 +24,28 @@
 		</div>
 	</div>
 {% endmacro %}
+
+{% macro colorpicker2(name, label, value = null, options = []) %}
+	<div class="form-group {{ options.classGroup }} {{ name }}">
+		<label class="{{ options.classLabel }}" for="{{ name }}">{{ label }}</label>
+		<div class="input-group my-colorpicker2 colorpicker-element {{ options.classInput }}" id="{{ name }}">
+			<input type="text" class="form-control" id="{{ name }}" name="{{ name }}" value="{{ value }}">
+			<div class="input-group-append">
+				<span class="input-group-text"><i class="fas fa-square" id="square{{ name }}"></i></span>
+			  </div>
+		</div>
+	</div>
+<!-- 
+	<div class="form-group">
+		<label>Color picker with addon:</label>
+
+		<div class="input-group my-colorpicker2 colorpicker-element" data-colorpicker-id="2">
+		  <input type="text" class="form-control" data-original-title="" title="">
+
+		  <div class="input-group-append">
+			<span class="input-group-text"><i class="fas fa-square"></i></span>
+		  </div>
+		</div>
+		/.input group 
+	  </div>-->
+{% endmacro %}

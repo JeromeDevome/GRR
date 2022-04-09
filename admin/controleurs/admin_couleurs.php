@@ -51,6 +51,8 @@ get_vocab_admin('cancel');
 get_vocab_admin('default');
 get_vocab_admin('save');
 
+get_vocab_admin('message_records');
+
 /* initialisations */
 // Liste des couleurs paramétrées
 $champs_couleur=array('header_bgcolor' => '--header-bgcolor'
@@ -171,7 +173,8 @@ elseif ((isset($_POST['record'])) && (!isset($ok))) // Enregistrement des donné
     // Si pas de problème, message de confirmation
     $_SESSION['displ_msg'] = 'yes';
     if ($msg == '') {
-        $msg = get_vocab('message_records');
+        $d['enregistrement'] = 1;
+       // $msg = get_vocab('message_records');
     }
 }
 
@@ -216,11 +219,8 @@ $hexa['focus_btn_primary_bgcolor'] = (isset($AllSettings['sp_focus_btn_primary_b
 $hexa['focus_btn_primary_bordcolor'] = (isset($AllSettings['sp_focus_btn_primary_bordcolor']))? valid_color($AllSettings['sp_focus_btn_primary_bordcolor']) : $default_color_tab["focus_btn_primary_bordcolor"];
 
 
+//affiche_pop_up($msg,"admin");
 
-affiche_pop_up($msg,"admin");
-
-
-
-echo $twig->render('admin_couleurs.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'hexa' => $hexa));
+echo $twig->render('admin_couleurs.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'd' => $d, 'hexa' => $hexa));
 
 ?>

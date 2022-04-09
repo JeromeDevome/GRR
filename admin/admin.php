@@ -46,6 +46,7 @@ get_vocab_admin("manage_my_account");
 get_vocab_admin("display_add_user");
 get_vocab_admin('admin_view_connexions');
 
+$d = array();
 $trad['dNomAffichage'] = $nomAffichage;
 $trad['dLienRetour'] = $lienRetour;
 $trad['dLienCompte'] = $lienCompte;
