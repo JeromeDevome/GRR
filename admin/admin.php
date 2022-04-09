@@ -39,6 +39,7 @@ if ((authGetUserLevel(getUserName(), -1, 'area') < 4) && (authGetUserLevel(getUs
 }
 print_header_admin("", "", "", $type="with_session");
 
+get_vocab_admin('admin');
 get_vocab_admin('grr_version');
 get_vocab_admin('retour_planning');
 get_vocab_admin("manage_my_account");
