@@ -50,7 +50,7 @@
     "jquery-sparkline": "^2.4",
     "jquery-ui": "^1.13.0",
     "jvectormap": "^1.2.2",
-    "moment": "^2.24",
+    "moment": "^2.29",
     "morris.js": "^0.5",
     "pace": "0.0.4",
     "raphael": "^2.2.7",
