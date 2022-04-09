@@ -1,0 +1,50 @@
+{
+    "name": "datatables.net-searchpanes-bs4",
+    "description": "SearchPanes for DataTables with styling for [Bootstrap4](https://getbootstrap.com/docs/4.6/getting-started/introduction/)",
+    "main": "js/searchPanes.bootstrap4.js",
+    "style": "css/searchPanes.bootstrap4.css",
+    "types": "./types/searchPanes.bootstrap4.d.ts",
+    "version": "1.4.0",
+    "files": [
+        "css/**/*.css",
+        "js/**/*.js"
+    ],
+    "keywords": [
+        "SearchPanes",
+        "search",
+        "filtering",
+        "Bootstrap",
+        "Bootstrap4",
+        "Datatables",
+        "jQuery",
+        "table",
+        "filter",
+        "sort"
+    ],
+    "dependencies": {
+        "datatables.net-searchpanes": ">=1.3.0",
+        "datatables.net-bs4": ">=1.10.25",
+        "jquery": ">=1.7"
+    },
+    "moduleType": [
+        "globals",
+        "amd",
+        "node"
+    ],
+    "ignore": [
+        "composer.json",
+        "datatables.json",
+        "package.json"
+    ],
+    "author": {
+        "name": "SpryMedia Ltd",
+        "url": "http://datatables.net"
+    },
+    "homepage": "https://datatables.net",
+    "bugs": "https://datatables.net/forums",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DataTables/Dist-DataTables-SearchPanes-Bootstrap4.git"
+    }
+}

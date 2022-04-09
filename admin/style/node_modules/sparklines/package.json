@@ -1,0 +1,27 @@
+{
+  "name": "sparklines",
+  "version": "1.3.0",
+  "description": "Tiny project for drawing sparklines in your webapp",
+  "main": "source/sparkline.js",
+  "module": "source/sparkline.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node demo/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/mariusGundersen/sparkline.git"
+  },
+  "keywords": [
+    "sparkline",
+    "sparklines"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mariusGundersen/sparkline/issues"
+  },
+  "devDependencies": {
+    "express": "^4.9.5"
+  }
+}

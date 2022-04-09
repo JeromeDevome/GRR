@@ -93,7 +93,7 @@
 									<input type="hidden" name="p" value="admin_overload" />
 									<input type="hidden" name="id_overload" value="{{champAdd.id}}" />
 									<input type="hidden" name="action" value="delete" />
-									<td><button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#modal-danger" data-texte="{{trad.confirm_del}}" data-idsup="{{ champAdd.id }}"><i class="icon fa fa-trash"></i></button></td>
+									<td><button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#modal-warning" data-texte="{{trad.confirm_del}} : {{champAdd.nom}}" data-idsup="{{ champAdd.id }}"><i class="icon fa fa-trash"></i></button></td>
 									
 								</form>	
 							</tr>
@@ -107,62 +107,52 @@
 	</div>
 
 	<!-- popup modal -->
-	<div class="modal modal-danger fade" id="modal-danger">
-		<form id="supChampAdd" action="?p=admin_overload">
+	<div class="modal fade" id="modal-warning" style="display: none;" aria-hidden="true">
+		<form action="?p=admin_overload" id="formmodal">
 		  <div class="modal-dialog">
-			<div class="modal-content">
+			<div class="modal-content bg-warning">
 			  <div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				  <span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title">{{trad.confirm_del}}</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">×</span>
+				</button>
 			  </div>
 			  <div class="modal-body">
-				<span id="modal-texte"></span><span id="modal-idsup" class="hidden"></span> 
+				<span class="modaltexte" id="modaltexte"></span><span class="modalidsup" id="modalidsup" hidden></span>
 			  </div>
-			  <div class="modal-footer">
-				<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">{{trad.cancel}}</button>
-				<button type="submit" id="liensup" class="btn btn-outline">{{trad.delete}}</button>
+			  <div class="modal-footer justify-content-between">
+				  <button type="button" class="btn btn-outline-dark" data-dismiss="modal">{{trad.NO}}</button>
+				  <button type="submit" id="liensup" class="btn btn-outline-dark">{{trad.YES}}</button>
 			  </div>
-			</div>
-		 </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
 		</form>
-	</div>
-
+	  </div><!-- /.modal -->
 {% endblock %}
 
 {% block javascript %}
 	<script>
-		// data-* attributes to scan when populating modal values
-		var ATTRIBUTES = ['texte', 'idsup'];
-
-		$('[data-toggle="modal"]').on('click', function (e) {
-		  // convert target (e.g. the button) to jquery object
-		  var $target = $(e.target);
-		  // modal targeted by the button
-		  var modalSelector = $target.data('target');
-
-		  // iterate over each possible data-* attribute
-		  ATTRIBUTES.forEach(function (attributeName) {
-			// retrieve the dom element corresponding to current attribute
-			var $modalAttribute = $(modalSelector + ' #modal-' + attributeName);
-			var dataValue = $target.data(attributeName);
-			// if the attribute value is empty, $target.data() will return undefined.
-			// In JS boolean expressions return operands and are not coerced into
-			// booleans. That way is dataValue is undefined, the left part of the following
-			// Boolean expression evaluate to false and the empty string will be returned
-			$modalAttribute.text(dataValue || '');
-		  });
-		});
+		// Modal
+		$('#modal-warning').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget) // Button that triggered the modal
+			var idasup = button.data('idsup')// Extract info from data-* attributes
+			var texte = button.data('texte')
+		    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+		    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+		    var modal = $(this)
+		    modal.find('.modalidsup').text(idasup)
+			modal.find('.modaltexte').text(texte)
+		})
 
 		$(function(){
-			$('#supChampAdd').submit(function(e) {
+			$('#formmodal').submit(function(e) {
 			  e.preventDefault()
 			  var $form = $(this)
-			  var v=document.getElementById('modal-idsup').innerHTML
+			  var v=document.getElementById('modalidsup').innerHTML
 			  $.post($form.attr('action'), $form.serialize())
 			  .done(function(data) {
 				$('#html').html(data);
-				$('#modal-danger').modal('hide');
+				$('#modal-warning').modal('hide');
 				//document.location.href='?p=admin_overload&action=delete&id_overload='+v+';
 				document.getElementById("supChampAdd"+v).submit(); 
 			  })

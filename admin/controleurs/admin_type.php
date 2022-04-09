@@ -35,6 +35,9 @@ get_vocab_admin("confirm_del");
 get_vocab_admin("cancel");
 get_vocab_admin("delete");
 
+get_vocab_admin("YES");
+get_vocab_admin("NO");
+
 get_vocab_admin("type_resa_manquant_msg");
 get_vocab_admin("type_resa_manquant_titre");
 

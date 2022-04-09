@@ -21,7 +21,7 @@ function afficheLienNiveau1($lien, $image, $niveau = 1)
 	global $twig, $page, $menuAdminT;
 
 	if($page == $lien){
-		$classActive = "class=active";
+		$classActive = " active";
 	} else{
 		$classActive = "";
 	}

@@ -1,0 +1,99 @@
+{
+  "name": "bs-stepper",
+  "version": "1.7.0",
+  "description": "A stepper for Bootstrap 4",
+  "author": "Johann-S <johann.servoire@gmail.com>",
+  "main": "dist/js/bs-stepper.js",
+  "types": "bs-stepper.d.ts",
+  "bugs": {
+    "url": "https://github.com/Johann-S/bs-stepper/issues"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "scripts": {
+    "browserstack": "cross-env browser=true karma start tests/karma.conf.js",
+    "build": "npm run build-js && npm run build-css",
+    "build-js": "rollup -c && rollup -c --environment PROD",
+    "build-css": "postcss src/css/bs-stepper.css -m --use autoprefixer -d dist/css && npm run css-minify",
+    "css-minify": "cleancss --level 1 --format breaksWith=lf --source-map --source-map-inline-sources --output dist/css/bs-stepper.min.css dist/css/bs-stepper.css",
+    "dev": "rollup --environment DEV -c -w",
+    "test:unit:dev": "cross-env dev=true karma start tests/karma.conf.js",
+    "test:unit": "karma start tests/karma.conf.js",
+    "test": "npm run standard && npm run css-lint && npm run test:unit && npm run build",
+    "standard": "standard src/js/*.js",
+    "css-lint": "stylelint src/css/bs-stepper.css",
+    "deploy": "gh-pages -d docs",
+    "docs-build": "shx mkdir -p docs/dist/ && shx cp -r dist/css/ docs/dist/ && shx cp -r dist/js/ docs/dist/",
+    "docs-serve": "http-server docs/ -c-1 -o",
+    "changelog": "standard-version -a",
+    "coveralls": "shx cat tests/dist/coverage/lcov.info | coveralls"
+  },
+  "files": [
+    "dist/js/*.{js,map}",
+    "dist/css/*.{css,map}",
+    "bs-stepper.d.ts",
+    "CHANGELOG.md"
+  ],
+  "keywords": [
+    "bootstrap",
+    "bootstrap 4",
+    "vanillajs",
+    "react",
+    "angular",
+    "stepper"
+  ],
+  "homepage": "https://github.com/Johann-S/bs-stepper",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Johann-S/bs-stepper.git"
+  },
+  "contributors": [
+    "Martijn Cuppens <martijn.cuppens@gmail.com>",
+    "Lausselloic <loic.laussel@orange.com>",
+    "XhmikosR <xhmikosr@gmail.com>"
+  ],
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "autoprefixer": "^9.6.1",
+    "bootstrap": "^4.3.1",
+    "clean-css-cli": "^4.3.0",
+    "coveralls": "^3.0.5",
+    "cross-env": "^5.2.0",
+    "gh-pages": "^2.0.1",
+    "http-server": "^0.11.1",
+    "ip": "^1.1.5",
+    "jasmine-core": "^3.4.0",
+    "karma": "^4.2.0",
+    "karma-browserstack-launcher": "^1.5.1",
+    "karma-chrome-launcher": "^3.0.0",
+    "karma-coverage-istanbul-reporter": "^2.0.6",
+    "karma-jasmine": "^2.0.1",
+    "karma-jasmine-html-reporter": "^1.4.2",
+    "karma-rollup-preprocessor": "^7.0.2",
+    "postcss-cli": "^6.1.3",
+    "rollup": "^1.17.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-istanbul": "^2.0.1",
+    "rollup-plugin-terser": "^5.1.1",
+    "shx": "^0.3.2",
+    "standard": "^13.1.0",
+    "standard-version": "^6.0.1",
+    "stylelint": "^10.1.0",
+    "stylelint-config-twbs-bootstrap": "^0.4.0"
+  },
+  "standard": {
+    "ignore": [
+      "dist/js/*.js"
+    ]
+  },
+  "standard-version": {
+    "scripts": {
+      "postbump": "node scripts/bump-css.js && npm run build",
+      "precommit": "node scripts/restore-css.js"
+    }
+  }
+}

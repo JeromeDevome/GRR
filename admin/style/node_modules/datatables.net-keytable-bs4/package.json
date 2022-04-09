@@ -1,0 +1,51 @@
+{
+    "name": "datatables.net-keytable-bs4",
+    "description": "KeyTable for DataTables with styling for [Bootstrap4](https://getbootstrap.com/docs/4.6/getting-started/introduction/)",
+    "main": "js/keyTable.bootstrap4.js",
+    "style": "css/keyTable.bootstrap4.css",
+    "types": "./types/keyTable.bootstrap4.d.ts",
+    "version": "2.6.4",
+    "files": [
+        "css/**/*.css",
+        "js/**/*.js"
+    ],
+    "keywords": [
+        "KeyTable",
+        "Excel",
+        "keyboard",
+        "Spreadsheet",
+        "Bootstrap",
+        "Bootstrap4",
+        "Datatables",
+        "jQuery",
+        "table",
+        "filter",
+        "sort"
+    ],
+    "dependencies": {
+        "datatables.net-keytable": ">=2.6.2",
+        "datatables.net-bs4": ">=1.10.25",
+        "jquery": ">=1.7"
+    },
+    "moduleType": [
+        "globals",
+        "amd",
+        "node"
+    ],
+    "ignore": [
+        "composer.json",
+        "datatables.json",
+        "package.json"
+    ],
+    "author": {
+        "name": "SpryMedia Ltd",
+        "url": "http://datatables.net"
+    },
+    "homepage": "https://datatables.net",
+    "bugs": "https://datatables.net/forums",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DataTables/Dist-DataTables-KeyTable-Bootstrap4.git"
+    }
+}

@@ -16,12 +16,11 @@
 	</div>
 {% endmacro %}
 
-{% macro colorpicker2(name, label, value = null, options = []) %}
+{% macro colorpicker1(name, label, value = null, options = []) %}
 	<div class="form-group {{ options.classGroup }}">
 		<label class="{{ options.classLabel }}" for="{{ name }}">{{ label }}</label>
-		<div class="input-group my-colorpicker2 {{ options.classInput }}">
-			<input type="text" class="form-control" id="{{ name }}" name="{{ name }}" value="{{ value }}">
-			<div class="input-group-addon"><i></i></div>
+		<div class="input-group my-colorpicker1 {{ options.classInput }}">
+			<input type="text" class="form-control my-colorpicker1 colorpicker-element"  data-colorpicker-id="1" data-original-title="" id="{{ name }}" name="{{ name }}" value="{{ value }}">
 		</div>
 	</div>
 {% endmacro %}

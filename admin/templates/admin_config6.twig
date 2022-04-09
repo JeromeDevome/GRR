@@ -8,306 +8,322 @@
 
 {% block content %}
 	<div class="row">
-        <div class="col-xs-12">
-			<div class="nav-tabs-custom">
-				<ul class="nav nav-tabs">
-					<li><a href="?p=admin_config">{{ trad.admin_config1 }}</a></li>
-					<li class="active"><a href="?p=admin_config6">{{ trad.admin_config6 }}</a></li>
-					<li><a href="?p=admin_config2">{{ trad.admin_config2 }}</a></li>
-					<li><a href="?p=admin_config3">{{ trad.admin_config3 }}</a></li>
-					<li><a href="?p=admin_config4">{{ trad.admin_config4 }}</a></li>
-					<li><a href="?p=admin_config5">{{ trad.admin_config5 }}</a></li>
-				</ul>
-            <div class="tab-content">
-              <!-- Font Awesome Icons -->
-              <div class="tab-pane active" id="fa-icons">
-				<form action="?p=admin_config6" id="nom_formulaire" method="post">
-					<input type="hidden" name="p" value="admin_config6" />
-					<section id="paramdefaut">
-						<h4 class="page-header">{{ trad.default_parameter_values_title }}</h4>
-						<p>{{ trad.explain_default_parameter }}</p>
-						<h5><b>{{ trad.explain_area_list_format }} :</b></h5>
-						<input type="radio" name="area_list_format" value="list" id="label_1a" {% if settings.area_list_format == 'list' %} checked {% endif %} /> <label for="label_1a">{{ trad.liste_area_list_format }}</label><br>
-						<input type="radio" name="area_list_format" value="select" id="label_1b" {% if settings.area_list_format == 'select' %} checked {% endif %} /> <label for="label_1b">{{ trad.select_area_list_format }}</label><br>
-						<input type="radio" name="area_list_format" value="item" id="label_1c" {% if settings.area_list_format == 'item' %} checked {% endif %} /> <label for="label_1c">{{ trad.item_area_list_format }}</label><br>
+        <div class="col-12 col-sm-12">
+            <div class="card card-primary card-outline card-tabs">
+              <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-home-tab" href="?p=admin_config">{{ trad.admin_config1 }}</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" id="custom-tabs-three-profile-tab" href="?p=admin_config6">{{ trad.admin_config6 }}</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-messages-tab" href="?p=admin_config2">{{ trad.admin_config2 }}</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-settings-tab" href="?p=admin_config3">{{ trad.admin_config3 }}</a>
+                  </li>
+				  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-settings-tab" href="?p=admin_config4">{{ trad.admin_config4 }}</a>
+                  </li>
+				  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-settings-tab" href="?p=admin_config5" >{{ trad.admin_config5 }}</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-body">
+				  <div class="tab-pane active" id="fa-icons">
+					<form action="?p=admin_config6" id="nom_formulaire" method="post">
+						<input type="hidden" name="p" value="admin_config6" />
+						<section id="paramdefaut">
+							<h4 class="page-header">{{ trad.default_parameter_values_title }}</h4>
+							<p>{{ trad.explain_default_parameter }}</p>
+							<h5><b>{{ trad.explain_area_list_format }} :</b></h5>
+							<input type="radio" name="area_list_format" value="list" id="label_1a" {% if settings.area_list_format == 'list' %} checked {% endif %} /> <label for="label_1a">{{ trad.liste_area_list_format }}</label><br>
+							<input type="radio" name="area_list_format" value="select" id="label_1b" {% if settings.area_list_format == 'select' %} checked {% endif %} /> <label for="label_1b">{{ trad.select_area_list_format }}</label><br>
+							<input type="radio" name="area_list_format" value="item" id="label_1c" {% if settings.area_list_format == 'item' %} checked {% endif %} /> <label for="label_1c">{{ trad.item_area_list_format }}</label><br>
 
-						<hr>
+							<hr>
 
-						<h5><b>{{ trad.explain_default_area_and_room }} :</b></h5>
+							<h5><b>{{ trad.explain_default_area_and_room }} :</b></h5>
 
-						{% if settings.module_multisite == 'Oui' %}
+							{% if settings.module_multisite == 'Oui' %}
+								<div class="form-group col-sm-12">
+									<label class="col-sm-6" for="default_css">{{ trad.default_site }}</label>
+									<div class="col-sm-6">
+										<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
+											<option value="-1">{{ trad.choose_a_site }}</option>
+											{{ trad.dOptionSite | raw }}
+										</select>
+									</div>
+								</div>
+							{% else %}
+								<input type="hidden" id="id_site" name="id_site" value="-1" />
+							{% endif %}
+							<div id="div_liste_domaines"></div>
+							<div id="div_liste_ressources"></div>
+							<!--<input class="form-control" type="hidden" id="id_area" name="id_area" value="{{ settings.default_area }}" />-->
+
+							<hr>
 							<div class="form-group col-sm-12">
-								<label class="col-sm-6" for="default_css">{{ trad.default_site }}</label>
-								<div class="col-sm-6">
-									<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
-										<option value="-1">{{ trad.choose_a_site }}</option>
-										{{ trad.dOptionSite | raw }}
+								<label class="col-sm-6" for="default_css">{{ trad.explain_css }}</label>
+								<div class="col-sm-5">
+									<select class="form-control" name="default_css">
+										{{ trad.dOptionTheme | raw }}
 									</select>
 								</div>
+								<div class="col-sm-1"><button type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#modal-warning" data-texte="Confirmer la synchronisation du thème avec tout les utilisateurs ?" data-idsynchro="1"><i class="icon fa fa-sync"></i></button></div>
 							</div>
-						{% else %}
-							<input type="hidden" id="id_site" name="id_site" value="-1" />
-						{% endif %}
-						<div id="div_liste_domaines"></div>
-						<div id="div_liste_ressources"></div>
-						<!--<input class="form-control" type="hidden" id="id_area" name="id_area" value="{{ settings.default_area }}" />-->
+							<hr>
+							<div class="form-group col-sm-12">
+								<label class="col-sm-6" for="default_language">{{ trad.choose_language }}</label>
+								<div class="col-sm-5">
+									<select class="form-control" name="default_language">
+										{{ trad.dOptionLangue | raw }}
+									</select>
+								</div>
+								<div class="col-sm-1"><button type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#modal-warning" data-texte="Confirmer la synchronisation de la langue avec tout les utilisateurs ?" data-idsynchro="2"><i class="icon fa fa-sync"></i></button></div>
+							</div>
+						</section>
 
 						<hr>
-						<div class="form-group col-sm-12">
-							<label class="col-sm-6" for="default_css">{{ trad.explain_css }}</label>
-							<div class="col-sm-5">
-								<select class="form-control" name="default_css">
-									{{ trad.dOptionTheme | raw }}
-								</select>
-							</div>
-							<div class="col-sm-1"><button type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#modal-warning" data-texte="Confirmer la synchronisation du thème avec tout les utilisateurs ?" data-idsup="1"><i class="icon fa fa-sync"></i></button>
-						</div>
+
+						<section id="infobulle">
+							<h4 class="page-header">{{ trad.display_info_bulle_msg }}</h4>
+							<input type="radio" name="display_info_bulle" value="0" id="label_2a" {% if settings.display_info_bulle == '0' %} checked {% endif %} /> <label for="label_2a">{{ trad.info_bulle0 }}</label><br>
+							<input type="radio" name="display_info_bulle" value="1" id="label_2b" {% if settings.display_info_bulle == '1' %} checked {% endif %} /> <label for="label_2b">{{ trad.info_bulle1 }}</label><br>
+							<input type="radio" name="display_info_bulle" value="2" id="label_2c" {% if settings.display_info_bulle == '2' %} checked {% endif %} /> <label for="label_2c">{{ trad.info_bulle2 }}</label><br>
+						</section>
+
 						<hr>
-						<div class="form-group col-sm-12">
-							<label class="col-sm-6" for="default_language">{{ trad.choose_language }}</label>
-							<div class="col-sm-5">
-								<select class="form-control" name="default_language">
-									{{ trad.dOptionLangue | raw }}
-								</select>
-							</div>
-							<div class="col-sm-1"><button type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#modal-warning" data-texte="Confirmer la synchronisation de la langue avec tout les utilisateurs ?" data-idsup="2"><i class="icon fa fa-sync"></i></button>
+
+						<section id="menugauche">
+							<h4 class="page-header">{{ trad.display_menu }}</h4>
+							<p>{{ trad.display_menu_1 }}</p>
+							<input type="radio" name="menu_gauche" value="0" id="label_3a" {% if settings.menu_gauche == '0' %} checked {% endif %} /> <label for="label_3a">{{ trad.display_menu_2 }}</label><br>
+							<input type="radio" name="menu_gauche" value="1" id="label_3b" {% if settings.menu_gauche == '1' %} checked {% endif %} /> <label for="label_3b">{{ trad.display_menu_3 }}</label><br>
+							<input type="radio" name="menu_gauche" value="2" id="label_3c" {% if settings.menu_gauche == '2' %} checked {% endif %} /> <label for="label_3c">{{ trad.display_menu_4 }}</label><br>
+						</section>
+
+						<hr>
+
+						<section id="formulairecontact">
+							<h4 class="page-header">{{ trad.display_mail_etat_destinataire }}</h4>
+							<p>{{ trad.display_mail_etat_destinataire_1 }}</p>
+							<input type="radio" name="mail_etat_destinataire" value="0" id="label_0a" {% if settings.mail_etat_destinataire == '0' %} checked {% endif %} /> <label for="label_0a">{{ trad.display_mail_etat_destinataire_2 }}</label><br>
+							<input type="radio" name="mail_etat_destinataire" value="1" id="label_0b" {% if settings.mail_etat_destinataire == '1' %} checked {% endif %} /> <label for="label_0b">{{ trad.display_mail_etat_destinataire_3 }}</label><br>
+							<input type="radio" name="mail_etat_destinataire" value="2" id="label_0c" {% if settings.mail_etat_destinataire == '2' %} checked {% endif %} /> <label for="label_0c">{{ trad.display_mail_etat_destinataire_4 }}</label><br>
+							{{ form.input('mail_destinataire', trad.display_mail_destinataire, settings.mail_destinataire, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+							<input type="checkbox" name="mail_user_destinataire" value="y" id="label_0z" {% if settings.mail_user_destinataire == 'y' %} checked {% endif %} /> <label for="label_0z">{{ trad.mail_user_destinataire }}</label><br>
+							<br>
+						</section>
+
+						<hr>
+
+						<section id="display_planning_resa">
+							<h4 class="page-header">{{ trad.display_planning_resa }}</h4>
+
+							<table class="table table-condensed">
+								<tbody>
+									<tr>
+										<th style="width: 200px"></th>
+										<th style="width: 150px">Ne pas afficher</th>
+										<th>Afficher</th>
+									</tr>
+									<tr>
+										<td>{{ trad.sum_by_creator }}</td>
+										<td><input type="radio" name="display_beneficiaire" value="0" id="label_4a" {% if settings.display_beneficiaire == '0' %} checked {% endif %} /></td>
+										<td><input type="radio" name="display_beneficiaire" value="1" id="label_4b" {% if settings.display_beneficiaire == '1' %} checked {% endif %} /></td>
+									</tr>
+									<tr>
+										<td>{{ trad.horaires }}</td>
+										<td><input type="radio" name="display_horaires" value="0" id="label_4a" {% if settings.display_horaires == '0' %} checked {% endif %} /></td>
+										<td><input type="radio" name="display_horaires" value="1" id="label_4b" {% if settings.display_horaires == '1' %} checked {% endif %} /></td>
+									</tr>
+									<tr>
+										<td>{{ trad.namebooker }}</td>
+										<td><input type="radio" name="display_short_description" value="0" id="label_4a" {% if settings.display_short_description == '0' %} checked {% endif %} /></td>
+										<td><input type="radio" name="display_short_description" value="1" id="label_4b" {% if settings.display_short_description == '1' %} checked {% endif %} /></td>
+									</tr>
+									<tr>
+										<td>{{ trad.match_descr }}</td>
+										<td><input type="radio" name="display_full_description" value="0" id="label_5a" {% if settings.display_full_description == '0' %} checked {% endif %} /></td>
+										<td><input type="radio" name="display_full_description" value="1" id="label_5b" {% if settings.display_full_description == '1' %} checked {% endif %} /></td>
+									</tr>
+									<tr>
+										<td>{{ trad.type }}</td>
+										<td><input type="radio" name="display_type" value="0" id="label_4a" {% if settings.display_type == '0' %} checked {% endif %} /></td>
+										<td><input type="radio" name="display_type" value="1" id="label_4b" {% if settings.display_type == '1' %} checked {% endif %} /></td>
+									</tr>
+								</tbody>
+							</table>
+
+						</section>
+
+						<hr>
+
+						<section id="liensemail">
+							<h4 class="page-header">{{ trad.display_level_email_msg1 }}</h4>
+							<p>{{ trad.display_level_email_msg2 |raw}}</p>
+							<input type="radio" name="display_level_email" value="0" id="label_6a" {% if settings.display_level_email == '0' %} checked {% endif %} /> <label for="label_6a">{{ trad.visu_fiche_description0 }}</label><br>
+							<input type="radio" name="display_level_email" value="1" id="label_6b" {% if settings.display_level_email == '1' %} checked {% endif %} /> <label for="label_6b">{{ trad.visu_fiche_description1 }}</label><br>
+							<input type="radio" name="display_level_email" value="2" id="label_6c" {% if settings.display_level_email == '2' %} checked {% endif %} /> <label for="label_6c">{{ trad.visu_fiche_description2 }}</label><br>
+							<input type="radio" name="display_level_email" value="3" id="label_6d" {% if settings.display_level_email == '3' %} checked {% endif %} /> <label for="label_6d">{{ trad.visu_fiche_description3 }}</label><br>
+							<input type="radio" name="display_level_email" value="4" id="label_6e" {% if settings.display_level_email == '4' %} checked {% endif %} /> <label for="label_6e">{{ trad.visu_fiche_description4 }}</label><br>
+							{% if settings.module_multisite == 'Oui' %}
+								<input type="radio" name="display_level_email" value="5" id="label_6f" {% if settings.display_level_email == '5' %} checked {% endif %} /> <label for="label_6f">{{ trad.visu_fiche_description5 }}</label><br>
+							{% endif %}
+							<input type="radio" name="display_level_email" value="6" id="label_6g" {% if settings.display_level_email == '6' %} checked {% endif %} /> <label for="label_6g">{{ trad.visu_fiche_description6 }}</label><br>
+						</section>
+
+						<hr>
+
+						<section id="popup">
+							<h4 class="page-header">{{ trad.display_level_view_entry }}</h4>
+							<input type="radio" name="display_level_view_entry" value="0" id="label_7a" {% if settings.display_level_view_entry == '0' %} checked {% endif %} /> <label for="label_7a">{{ trad.display_level_view_entry_0 }}</label><br>
+							<input type="radio" name="display_level_view_entry" value="1" id="label_7b" {% if settings.display_level_view_entry == '1' %} checked {% endif %} /> <label for="label_7b">{{ trad.display_level_view_entry_1 }}</label><br>
+						</section>
+
+						<hr>
+
+						<section id="remplissagedescriptionbreve">
+							<h4 class="page-header">{{ trad.remplissage_description_breve_msg }}</h4>
+							<input type="radio" name="remplissage_description_breve" value="0" id="label_8a" {% if settings.remplissage_description_breve == '0' %} checked {% endif %} /> <label for="label_8a">{{ trad.remplissage_description_breve0 }}</label><br>
+							<input type="radio" name="remplissage_description_breve" value="1" id="label_8b" {% if settings.remplissage_description_breve == '1' %} checked {% endif %} /> <label for="label_8b">{{ trad.remplissage_description_breve1 }}</label><br>
+							<input type="radio" name="remplissage_description_breve" value="2" id="label_8c" {% if settings.remplissage_description_breve == '2' %} checked {% endif %} /> <label for="label_8c">{{ trad.remplissage_description_breve2 }}</label><br>
+						</section>
+
+						<hr>
+
+						<section id="remplissagedescripcomplete">
+							<h4 class="page-header">{{ trad.remplissage_description_complete_msg }}</h4>
+							<input type="radio" name="remplissage_description_complete" value="0" id="label_9a" {% if settings.remplissage_description_complete == '0' %} checked {% endif %} /> <label for="label_9a">{{ trad.remplissage_description_complete0 }}</label><br>
+							<input type="radio" name="remplissage_description_complete" value="1" id="label_9b" {% if settings.remplissage_description_complete == '1' %} checked {% endif %} /> <label for="label_9b">{{ trad.remplissage_description_complete1 }}</label><br>
+						</section>
+
+						<hr>
+
+						<section id="ouvertureimpression">
+							<h4 class="page-header">{{ trad.pview_new_windows_msg }}</h4>
+							<input type="radio" name="pview_new_windows" value="0" id="label_10a" {% if settings.pview_new_windows == '0' %} checked {% endif %} /> <label for="label_10a">{{ trad.pview_new_windows0 }}</label><br>
+							<input type="radio" name="pview_new_windows" value="1" id="label_10b" {% if settings.pview_new_windows == '1' %} checked {% endif %} /> <label for="label_10b">{{ trad.pview_new_windows1 }}</label><br>
+						</section>
+
+						<hr>
+
+						<section id="ouvertureimpression">
+							<h4 class="page-header">Affichage plannings divers</h4>
+
+							<table class="table table-condensed">
+								<tbody>
+									<tr>
+										<th style="width: 300px"></th>
+										<th style="width: 50px">Afficher</th>
+										<th>Ne pas afficher</th>
+										<th></th>
+									</tr>
+									<tr>
+										<td>{{ trad.legend_msg }}</td>
+										<td><input type="radio" name="legend" value="0" id="label_11a" {% if settings.legend == '0' %} checked {% endif %} /></td>
+										<td><input type="radio" name="legend" value="1" id="label_11b" {% if settings.legend == '1' %} checked {% endif %} /></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>{{ trad.imprimante_msg }}</td>
+										<td><input type="radio" name="imprimante" value="0" id="label_12a" {% if settings.imprimante == '0' %} checked {% endif %} /></td>
+										<td><input type="radio" name="imprimante" value="1" id="label_12b" {% if settings.imprimante == '1' %} checked {% endif %} /></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>{{ trad.affichage_pdf }}</td>
+										<td><input type="radio" name="pdf" value="1" id="label_14a" {% if settings.pdf == '1' %} checked {% endif %} /></td>
+										<td><input type="radio" name="pdf" value="0" id="label_14b" {% if settings.pdf == '0' %} checked {% endif %} /></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>{{ trad.holidays_msg }}</td>
+										<td><input type="radio" name="show_holidays" value="Oui" id="label_13a" {% if settings.show_holidays == 'Oui' %} checked {% endif %} /></td>
+										<td><input type="radio" name="show_holidays" value="Non" id="label_13b" {% if settings.show_holidays == 'Non' %} checked {% endif %} /></td>
+										<td>
+											<select class="form-control" name="holidays_zone">
+												<option>{{ trad.holidays_zone_msg }}</option>
+												{{ trad.dOptionVacances | raw }}
+											</select>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+						</section>
+
+						<hr>
+
+						<section id="periodicite">
+							<h4 class="page-header">{{ trad.periodicite_msg }}</h4>
+							<input type="radio" name="periodicite" value="y" id="label_1a" {% if settings.periodicite == 'y' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
+							<input type="radio" name="periodicite" value="n" id="label_1b" {% if settings.periodicite == 'n' %} checked {% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
+						</section>
+
+						<hr>
+
+						<section id="courrier">
+							<h4 class="page-header">{{ trad.courrier_msg }}</h4>
+							<input type="radio" name="show_courrier" value="y" id="label_1a" {% if settings.show_courrier == 'y' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
+							<input type="radio" name="show_courrier" value="n" id="label_1b" {% if settings.show_courrier == 'n' %} checked {% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
+						</section>
+
+						<hr>
+
+						<section id="default_report_days_msg">
+							<h4 class="page-header">{{ trad.default_report_days_msg }}</h4>
+							{{ form.input('default_report_days', trad.default_report_days_explain, settings.default_report_days, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+							<br>
+						</section>
+
+						<hr>
+
+						<section id="formulaire_reservation">
+							<h4 class="page-header">{{ trad.formulaire_reservation }}</h4>
+							{{ form.input('longueur_liste_ressources_max', trad.longueur_liste_ressources, settings.longueur_liste_ressources_max, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+							<br>
+						</section>
+
+						<div style="text-align:center;">
+							<input class="btn btn-primary" type="submit" name="ok" value="{{ trad.save }}" />
 						</div>
-					</section>
+					</form>
+				  </div><!-- /.tab-pan -->
+			  </div><!-- /.card-body -->
 
-					<hr>
+			</div><!-- /.card-primary -->
+		</div><!-- /.col -->
+	</div><!-- /.row -->
 
-					<section id="infobulle">
-						<h4 class="page-header">{{ trad.display_info_bulle_msg }}</h4>
-						<input type="radio" name="display_info_bulle" value="0" id="label_2a" {% if settings.display_info_bulle == '0' %} checked {% endif %} /> <label for="label_2a">{{ trad.info_bulle0 }}</label><br>
-						<input type="radio" name="display_info_bulle" value="1" id="label_2b" {% if settings.display_info_bulle == '1' %} checked {% endif %} /> <label for="label_2b">{{ trad.info_bulle1 }}</label><br>
-						<input type="radio" name="display_info_bulle" value="2" id="label_2c" {% if settings.display_info_bulle == '2' %} checked {% endif %} /> <label for="label_2c">{{ trad.info_bulle2 }}</label><br>
-					</section>
 
-					<hr>
 
-					<section id="menugauche">
-						<h4 class="page-header">{{ trad.display_menu }}</h4>
-						<p>{{ trad.display_menu_1 }}</p>
-						<input type="radio" name="menu_gauche" value="0" id="label_3a" {% if settings.menu_gauche == '0' %} checked {% endif %} /> <label for="label_3a">{{ trad.display_menu_2 }}</label><br>
-						<input type="radio" name="menu_gauche" value="1" id="label_3b" {% if settings.menu_gauche == '1' %} checked {% endif %} /> <label for="label_3b">{{ trad.display_menu_3 }}</label><br>
-						<input type="radio" name="menu_gauche" value="2" id="label_3c" {% if settings.menu_gauche == '2' %} checked {% endif %} /> <label for="label_3c">{{ trad.display_menu_4 }}</label><br>
-					</section>
-
-					<hr>
-
-					<section id="formulairecontact">
-						<h4 class="page-header">{{ trad.display_mail_etat_destinataire }}</h4>
-						<p>{{ trad.display_mail_etat_destinataire_1 }}</p>
-						<input type="radio" name="mail_etat_destinataire" value="0" id="label_0a" {% if settings.mail_etat_destinataire == '0' %} checked {% endif %} /> <label for="label_0a">{{ trad.display_mail_etat_destinataire_2 }}</label><br>
-						<input type="radio" name="mail_etat_destinataire" value="1" id="label_0b" {% if settings.mail_etat_destinataire == '1' %} checked {% endif %} /> <label for="label_0b">{{ trad.display_mail_etat_destinataire_3 }}</label><br>
-						<input type="radio" name="mail_etat_destinataire" value="2" id="label_0c" {% if settings.mail_etat_destinataire == '2' %} checked {% endif %} /> <label for="label_0c">{{ trad.display_mail_etat_destinataire_4 }}</label><br>
-						{{ form.input('mail_destinataire', trad.display_mail_destinataire, settings.mail_destinataire, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-						<input type="checkbox" name="mail_user_destinataire" value="y" id="label_0z" {% if settings.mail_user_destinataire == 'y' %} checked {% endif %} /> <label for="label_0z">{{ trad.mail_user_destinataire }}</label><br>
-						<br>
-					</section>
-
-					<hr>
-
-					<section id="display_planning_resa">
-						<h4 class="page-header">{{ trad.display_planning_resa }}</h4>
-
-						<table class="table table-condensed">
-							<tbody>
-								<tr>
-									<th style="width: 200px"></th>
-									<th style="width: 150px">Ne pas afficher</th>
-									<th>Afficher</th>
-								</tr>
-								<tr>
-									<td>{{ trad.sum_by_creator }}</td>
-									<td><input type="radio" name="display_beneficiaire" value="0" id="label_4a" {% if settings.display_beneficiaire == '0' %} checked {% endif %} /></td>
-									<td><input type="radio" name="display_beneficiaire" value="1" id="label_4b" {% if settings.display_beneficiaire == '1' %} checked {% endif %} /></td>
-								</tr>
-								<tr>
-									<td>{{ trad.horaires }}</td>
-									<td><input type="radio" name="display_horaires" value="0" id="label_4a" {% if settings.display_horaires == '0' %} checked {% endif %} /></td>
-									<td><input type="radio" name="display_horaires" value="1" id="label_4b" {% if settings.display_horaires == '1' %} checked {% endif %} /></td>
-								</tr>
-								<tr>
-									<td>{{ trad.namebooker }}</td>
-									<td><input type="radio" name="display_short_description" value="0" id="label_4a" {% if settings.display_short_description == '0' %} checked {% endif %} /></td>
-									<td><input type="radio" name="display_short_description" value="1" id="label_4b" {% if settings.display_short_description == '1' %} checked {% endif %} /></td>
-								</tr>
-								<tr>
-									<td>{{ trad.match_descr }}</td>
-									<td><input type="radio" name="display_full_description" value="0" id="label_5a" {% if settings.display_full_description == '0' %} checked {% endif %} /></td>
-									<td><input type="radio" name="display_full_description" value="1" id="label_5b" {% if settings.display_full_description == '1' %} checked {% endif %} /></td>
-								</tr>
-								<tr>
-									<td>{{ trad.type }}</td>
-									<td><input type="radio" name="display_type" value="0" id="label_4a" {% if settings.display_type == '0' %} checked {% endif %} /></td>
-									<td><input type="radio" name="display_type" value="1" id="label_4b" {% if settings.display_type == '1' %} checked {% endif %} /></td>
-								</tr>
-							</tbody>
-						</table>
-
-					</section>
-
-					<hr>
-
-					<section id="liensemail">
-						<h4 class="page-header">{{ trad.display_level_email_msg1 }}</h4>
-						<p>{{ trad.display_level_email_msg2 |raw}}</p>
-						<input type="radio" name="display_level_email" value="0" id="label_6a" {% if settings.display_level_email == '0' %} checked {% endif %} /> <label for="label_6a">{{ trad.visu_fiche_description0 }}</label><br>
-						<input type="radio" name="display_level_email" value="1" id="label_6b" {% if settings.display_level_email == '1' %} checked {% endif %} /> <label for="label_6b">{{ trad.visu_fiche_description1 }}</label><br>
-						<input type="radio" name="display_level_email" value="2" id="label_6c" {% if settings.display_level_email == '2' %} checked {% endif %} /> <label for="label_6c">{{ trad.visu_fiche_description2 }}</label><br>
-						<input type="radio" name="display_level_email" value="3" id="label_6d" {% if settings.display_level_email == '3' %} checked {% endif %} /> <label for="label_6d">{{ trad.visu_fiche_description3 }}</label><br>
-						<input type="radio" name="display_level_email" value="4" id="label_6e" {% if settings.display_level_email == '4' %} checked {% endif %} /> <label for="label_6e">{{ trad.visu_fiche_description4 }}</label><br>
-						{% if settings.module_multisite == 'Oui' %}
-							<input type="radio" name="display_level_email" value="5" id="label_6f" {% if settings.display_level_email == '5' %} checked {% endif %} /> <label for="label_6f">{{ trad.visu_fiche_description5 }}</label><br>
-						{% endif %}
-						<input type="radio" name="display_level_email" value="6" id="label_6g" {% if settings.display_level_email == '6' %} checked {% endif %} /> <label for="label_6g">{{ trad.visu_fiche_description6 }}</label><br>
-					</section>
-
-					<hr>
-
-					<section id="popup">
-						<h4 class="page-header">{{ trad.display_level_view_entry }}</h4>
-						<input type="radio" name="display_level_view_entry" value="0" id="label_7a" {% if settings.display_level_view_entry == '0' %} checked {% endif %} /> <label for="label_7a">{{ trad.display_level_view_entry_0 }}</label><br>
-						<input type="radio" name="display_level_view_entry" value="1" id="label_7b" {% if settings.display_level_view_entry == '1' %} checked {% endif %} /> <label for="label_7b">{{ trad.display_level_view_entry_1 }}</label><br>
-					</section>
-
-					<hr>
-
-					<section id="remplissagedescriptionbreve">
-						<h4 class="page-header">{{ trad.remplissage_description_breve_msg }}</h4>
-						<input type="radio" name="remplissage_description_breve" value="0" id="label_8a" {% if settings.remplissage_description_breve == '0' %} checked {% endif %} /> <label for="label_8a">{{ trad.remplissage_description_breve0 }}</label><br>
-						<input type="radio" name="remplissage_description_breve" value="1" id="label_8b" {% if settings.remplissage_description_breve == '1' %} checked {% endif %} /> <label for="label_8b">{{ trad.remplissage_description_breve1 }}</label><br>
-						<input type="radio" name="remplissage_description_breve" value="2" id="label_8c" {% if settings.remplissage_description_breve == '2' %} checked {% endif %} /> <label for="label_8c">{{ trad.remplissage_description_breve2 }}</label><br>
-					</section>
-
-					<hr>
-
-					<section id="remplissagedescripcomplete">
-						<h4 class="page-header">{{ trad.remplissage_description_complete_msg }}</h4>
-						<input type="radio" name="remplissage_description_complete" value="0" id="label_9a" {% if settings.remplissage_description_complete == '0' %} checked {% endif %} /> <label for="label_9a">{{ trad.remplissage_description_complete0 }}</label><br>
-						<input type="radio" name="remplissage_description_complete" value="1" id="label_9b" {% if settings.remplissage_description_complete == '1' %} checked {% endif %} /> <label for="label_9b">{{ trad.remplissage_description_complete1 }}</label><br>
-					</section>
-
-					<hr>
-
-					<section id="ouvertureimpression">
-						<h4 class="page-header">{{ trad.pview_new_windows_msg }}</h4>
-						<input type="radio" name="pview_new_windows" value="0" id="label_10a" {% if settings.pview_new_windows == '0' %} checked {% endif %} /> <label for="label_10a">{{ trad.pview_new_windows0 }}</label><br>
-						<input type="radio" name="pview_new_windows" value="1" id="label_10b" {% if settings.pview_new_windows == '1' %} checked {% endif %} /> <label for="label_10b">{{ trad.pview_new_windows1 }}</label><br>
-					</section>
-
-					<hr>
-
-					<section id="ouvertureimpression">
-						<h4 class="page-header">Affichage plannings divers</h4>
-
-						<table class="table table-condensed">
-							<tbody>
-								<tr>
-									<th style="width: 300px"></th>
-									<th style="width: 50px">Afficher</th>
-									<th>Ne pas afficher</th>
-									<th></th>
-								</tr>
-								<tr>
-									<td>{{ trad.legend_msg }}</td>
-									<td><input type="radio" name="legend" value="0" id="label_11a" {% if settings.legend == '0' %} checked {% endif %} /></td>
-									<td><input type="radio" name="legend" value="1" id="label_11b" {% if settings.legend == '1' %} checked {% endif %} /></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>{{ trad.imprimante_msg }}</td>
-									<td><input type="radio" name="imprimante" value="0" id="label_12a" {% if settings.imprimante == '0' %} checked {% endif %} /></td>
-									<td><input type="radio" name="imprimante" value="1" id="label_12b" {% if settings.imprimante == '1' %} checked {% endif %} /></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>{{ trad.affichage_pdf }}</td>
-									<td><input type="radio" name="pdf" value="1" id="label_14a" {% if settings.pdf == '1' %} checked {% endif %} /></td>
-									<td><input type="radio" name="pdf" value="0" id="label_14b" {% if settings.pdf == '0' %} checked {% endif %} /></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>{{ trad.holidays_msg }}</td>
-									<td><input type="radio" name="show_holidays" value="Oui" id="label_13a" {% if settings.show_holidays == 'Oui' %} checked {% endif %} /></td>
-									<td><input type="radio" name="show_holidays" value="Non" id="label_13b" {% if settings.show_holidays == 'Non' %} checked {% endif %} /></td>
-									<td>
-										<select class="form-control" name="holidays_zone">
-											<option>{{ trad.holidays_zone_msg }}</option>
-											{{ trad.dOptionVacances | raw }}
-										</select>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-
-					</section>
-
-					<hr>
-
-					<section id="periodicite">
-						<h4 class="page-header">{{ trad.periodicite_msg }}</h4>
-						<input type="radio" name="periodicite" value="y" id="label_1a" {% if settings.periodicite == 'y' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
-						<input type="radio" name="periodicite" value="n" id="label_1b" {% if settings.periodicite == 'n' %} checked {% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
-					</section>
-
-					<hr>
-
-					<section id="courrier">
-						<h4 class="page-header">{{ trad.courrier_msg }}</h4>
-						<input type="radio" name="show_courrier" value="y" id="label_1a" {% if settings.show_courrier == 'y' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
-						<input type="radio" name="show_courrier" value="n" id="label_1b" {% if settings.show_courrier == 'n' %} checked {% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
-					</section>
-
-					<hr>
-
-					<section id="default_report_days_msg">
-						<h4 class="page-header">{{ trad.default_report_days_msg }}</h4>
-						{{ form.input('default_report_days', trad.default_report_days_explain, settings.default_report_days, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
-						<br>
-					</section>
-
-					<hr>
-
-					<section id="formulaire_reservation">
-						<h4 class="page-header">{{ trad.formulaire_reservation }}</h4>
-						{{ form.input('longueur_liste_ressources_max', trad.longueur_liste_ressources, settings.longueur_liste_ressources_max, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
-						<br>
-					</section>
-
-					<div style="text-align:center;">
-						<input class="btn btn-primary" type="submit" name="ok" value="{{ trad.save }}" />
-					</div>
-				</form>
+	<div class="modal fade" id="modal-warning" style="display: none;" aria-hidden="true">
+	  <form action="?p=admin_config6">
+        <div class="modal-dialog">
+          <div class="modal-content bg-warning">
+            <div class="modal-header">
+              <h4 class="modal-title">Synchronisation</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
             </div>
-            <!-- /.tab-content -->
-          </div>
-          <!-- /.nav-tabs-custom -->
-        </div>
-        <!-- /.col -->
-      </div>
-
-    <div class="modal modal-warning fade" id="modal-warning">
-		<form action="?p=admin_config6">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Synchronisation</h4>
-              </div>
-              <div class="modal-body">
-				<span id="modal-texte"></span><span id="modal-idsup" class="hidden"></span> 
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">{{trad.NO}}</button>
-				<button type="submit" id="liensup" class="btn btn-outline">{{trad.YES}}</button>
-              </div>
+            <div class="modal-body">
+              <span class="modaltexte" id="modaltexte"></span><span class="modalidsync" id="modalidsync" hidden></span>
             </div>
-          </div>
-		</form>
-    </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">{{trad.NO}}</button>
+				<button type="submit" id="liensup" class="btn btn-outline-dark">{{trad.YES}}</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+	  </form>
+    </div><!-- /.modal -->
+
 
 {% endblock %}
 
@@ -355,45 +371,34 @@
 		modifier_liste_domaines();
 		modifier_liste_ressources(1);
 
-		// MODAL
-		// data-* attributes to scan when populating modal values
-		var ATTRIBUTES = ['texte', 'idsup'];
-
-		$('[data-toggle="modal"]').on('click', function (e) {
-		  // convert target (e.g. the button) to jquery object
-		  var $target = $(e.target);
-		  // modal targeted by the button
-		  var modalSelector = $target.data('target');
-
-		  // iterate over each possible data-* attribute
-		  ATTRIBUTES.forEach(function (attributeName) {
-			// retrieve the dom element corresponding to current attribute
-			var $modalAttribute = $(modalSelector + ' #modal-' + attributeName);
-			var dataValue = $target.data(attributeName);
-			// if the attribute value is empty, $target.data() will return undefined.
-			// In JS boolean expressions return operands and are not coerced into
-			// booleans. That way is dataValue is undefined, the left part of the following
-			// Boolean expression evaluate to false and the empty string will be returned
-			$modalAttribute.text(dataValue || '');
-		  });
-		});
-
-	  $(function(){
-		$('form').submit(function(e) {
-		  e.preventDefault()
-		  var $form = $(this)
-		  var v=document.getElementById('modal-idsup').innerHTML
-		  $.post($form.attr('action'), $form.serialize())
-		  .done(function(data) {
-			$('#html').html(data);
-			$('#modal-warning').modal('hide');
-			document.location.href='?p=admin_config6&sync='+v;
-		  })
-		  .fail(function() {
-			alert('Une erreur est survenue : GRRJS')
-		  })
+		// Modal
+		$('#modal-warning').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget) // Button that triggered the modal
+			var idsynchro = button.data('idsynchro')// Extract info from data-* attributes
+			var texte = button.data('texte')
+		    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+		    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+		    var modal = $(this)
+		    modal.find('.modalidsync').text(idsynchro)
+			modal.find('.modaltexte').text(texte)
 		})
-	  })
+
+		$(function(){
+			$('form').submit(function(e) {
+			  e.preventDefault()
+			  var $form = $(this)
+			  var v=document.getElementById('modalidsync').innerHTML
+			  $.post($form.attr('action'), $form.serialize())
+			  .done(function(data) {
+				$('#html').html(data);
+				$('#modal-warning').modal('hide');
+				document.location.href='?p=admin_config6&sync='+v;
+			  })
+			  .fail(function() {
+				alert('Une erreur est survenue : GRRJS')
+			  })
+			})
+		})
 
 	</script>
 

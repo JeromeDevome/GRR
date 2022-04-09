@@ -225,6 +225,9 @@ get_vocab_admin('confirm_del');
 get_vocab_admin('delete');
 get_vocab_admin('cancel');
 
+get_vocab_admin("YES");
+get_vocab_admin("NO");
+
 get_vocab_admin("envois_mail_spec_exp");
 get_vocab_admin("cas_fonctionnalite_mail_actif");
 

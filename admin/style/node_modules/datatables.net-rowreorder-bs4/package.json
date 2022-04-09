@@ -1,0 +1,49 @@
+{
+    "name": "datatables.net-rowreorder-bs4",
+    "description": "RowReorder for DataTables with styling for [Bootstrap4](https://getbootstrap.com/docs/4.6/getting-started/introduction/)",
+    "main": "js/rowReorder.bootstrap4.js",
+    "style": "css/rowReorder.bootstrap4.css",
+    "types": "./types/rowReorder.bootstrap4.d.ts",
+    "version": "1.2.8",
+    "files": [
+        "css/**/*.css",
+        "js/**/*.js"
+    ],
+    "keywords": [
+        "RowReorder",
+        "Row Reordering",
+        "Bootstrap",
+        "Bootstrap4",
+        "Datatables",
+        "jQuery",
+        "table",
+        "filter",
+        "sort"
+    ],
+    "dependencies": {
+        "jquery": ">=1.7",
+        "datatables.net-bs4": "^1.10.15",
+        "datatables.net-rowreorder": "1.2.8"
+    },
+    "moduleType": [
+        "globals",
+        "amd",
+        "node"
+    ],
+    "ignore": [
+        "composer.json",
+        "datatables.json",
+        "package.json"
+    ],
+    "author": {
+        "name": "SpryMedia Ltd",
+        "url": "http://datatables.net"
+    },
+    "homepage": "https://datatables.net",
+    "bugs": "https://datatables.net/forums",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DataTables/Dist-DataTables-RowReorder-Bootstrap4.git"
+    }
+}

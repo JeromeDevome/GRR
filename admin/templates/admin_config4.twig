@@ -8,18 +8,32 @@
 
 {% block content %}
 	<div class="row">
-        <div class="col-xs-12">
-			<div class="nav-tabs-custom">
-				<ul class="nav nav-tabs">
-					<li><a href="?p=admin_config">{{ trad.admin_config1 }}</a></li>
-					<li><a href="?p=admin_config6">{{ trad.admin_config6 }}</a></li>
-					<li><a href="?p=admin_config2">{{ trad.admin_config2 }}</a></li>
-					<li><a href="?p=admin_config3">{{ trad.admin_config3 }}</a></li>
-					<li class="active"><a href="?p=admin_config4">{{ trad.admin_config4 }}</a></li>
-					<li><a href="?p=admin_config5">{{ trad.admin_config5 }}</a></li>
-				</ul>
-            <div class="tab-content">
-				<div class="tab-pane active" id="fa-icons">
+        <div class="col-12 col-sm-12">
+            <div class="card card-primary card-outline card-tabs">
+              <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-home-tab" href="?p=admin_config">{{ trad.admin_config1 }}</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-profile-tab" href="?p=admin_config6">{{ trad.admin_config6 }}</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-messages-tab" href="?p=admin_config2">{{ trad.admin_config2 }}</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-settings-tab" href="?p=admin_config3">{{ trad.admin_config3 }}</a>
+                  </li>
+				  <li class="nav-item">
+                    <a class="nav-link active" id="custom-tabs-three-settings-tab" href="?p=admin_config4">{{ trad.admin_config4 }}</a>
+                  </li>
+				  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-settings-tab" href="?p=admin_config5" >{{ trad.admin_config5 }}</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-body">
+				  <div class="tab-pane active" id="fa-icons">
 					{% if trad.dDbSys == "mysql" %}
 						<section id="sauvegarde">
 							<form action="admin_save_mysql.php" method="get">
@@ -117,14 +131,12 @@
 						<br>
 						<div style="text-align:center;"><input class="btn btn-primary" type="submit" name="ok" value="{{ trad.save }}" /></div>
 					</form>
-				</div>
-            </div>
-            <!-- /.tab-content -->
-          </div>
-          <!-- /.nav-tabs-custom -->
-        </div>
-        <!-- /.col -->
-      </div>
+				  </div><!-- /.tab-pan -->
+			  </div><!-- /.card-body -->
+
+			</div><!-- /.card-primary -->
+		</div><!-- /.col -->
+	</div><!-- /.row --
 
 {% endblock %}
 

@@ -1,7 +1,9 @@
 {% extends 'layout.twig' %}
 
 {% block css %}
-	<link rel="stylesheet" href="../bootstrap/AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 {% endblock %}
 
 {% import 'messagesysteme.twig' as msgSyst %}
@@ -16,7 +18,7 @@
 				</div>
 				<!-- /.box-header -->
 				<div class="box-body">
-				  <table id="tableuser" class="table table-bordered table-striped">
+					<table id="tableuser" class="table table-bordered table-striped">
 						<thead>
 							<tr>
 								<th><a href="?p=admin_user&order_by=login&display={{ trad.dDisplay }}">{{trad.login_name}}</a></th>
@@ -81,21 +83,22 @@
 		</div>
 	</div>	
 
-	<div class="modal modal-danger fade" id="modalWarningSupUser">
+	<div class="modal fade" id="modalWarningSupUser" tyle="display: none;" aria-hidden="true">
 		<form action="?p=admin_user">
           <div class="modal-dialog">
-            <div class="modal-content">
+			<div class="modal-content bg-warning">
               <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">{{trad.confirm_del}}</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				  </button>
               </div>
               <div class="modal-body">
 				{{trad.confirm_del}} : <span class="modalidsup" id="modalidsup"></span> 
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">{{trad.cancel}}</button>
-				<button type="submit" id="liensup" class="btn btn-outline">{{trad.delete}}</button>
+              <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">{{trad.cancel}}</button>
+				<button type="submit" id="liensup" class="btn btn-outline-dark">{{trad.delete}}</button>
               </div>
             </div>
           </div>
@@ -104,8 +107,18 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../bootstrap/AdminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-	<script src="../bootstrap/AdminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/jszip/jszip.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/pdfmake/pdfmake.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/pdfmake/vfs_fonts.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 	<script>
 		// Modal
 		$('#modalWarningSupUser').on('show.bs.modal', function (event) {
@@ -135,15 +148,9 @@
 		})
 
 		// Table
-		$(function () {
-			$('#tableuser').DataTable()({
-			  'paging'      : true,
-			  'lengthChange': false,
-			  'searching'   : true,
-			  'ordering'    : true,
-			  'info'        : true,
-			  'autoWidth'   : false
-			})
-		})
+		$("#tableuser").DataTable({
+     		 "responsive": true, "lengthChange": false, "autoWidth": false,
+     		 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    	}).buttons().container().appendTo('#tableuser_wrapper .col-md-6:eq(0)')
 	</script>
 {% endblock %}

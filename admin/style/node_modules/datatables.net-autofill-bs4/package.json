@@ -1,0 +1,49 @@
+{
+    "name": "datatables.net-autofill-bs4",
+    "description": "AutoFill for DataTables with styling for [Bootstrap4](https://getbootstrap.com/docs/4.6/getting-started/introduction/)",
+    "main": "js/autoFill.bootstrap4.js",
+    "style": "css/autoFill.bootstrap4.css",
+    "types": "./types/autoFill.bootstrap4.d.ts",
+    "version": "2.3.9",
+    "files": [
+        "css/**/*.css",
+        "js/**/*.js"
+    ],
+    "keywords": [
+        "AutoFill",
+        "Excel",
+        "Bootstrap",
+        "Bootstrap4",
+        "Datatables",
+        "jQuery",
+        "table",
+        "filter",
+        "sort"
+    ],
+    "dependencies": {
+        "datatables.net-autofill": ">=2.3.7",
+        "datatables.net-bs4": ">=1.10.25",
+        "jquery": ">=1.7"
+    },
+    "moduleType": [
+        "globals",
+        "amd",
+        "node"
+    ],
+    "ignore": [
+        "composer.json",
+        "datatables.json",
+        "package.json"
+    ],
+    "author": {
+        "name": "SpryMedia Ltd",
+        "url": "http://datatables.net"
+    },
+    "homepage": "https://datatables.net",
+    "bugs": "https://datatables.net/forums",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DataTables/Dist-DataTables-AutoFill-Bootstrap4.git"
+    }
+}

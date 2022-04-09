@@ -4,7 +4,7 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
-	<link rel="stylesheet" href="../bootstrap/AdminLTE/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
 {% endblock %}
 
 {% block content %}
@@ -55,8 +55,8 @@
 						</div>
 					</div>
 
-					{{ form.colorpicker2('couleurhexa', trad.type_color_fond, type.couleurhexa, {classLabel: 'col-sm-4', classInput: 'col-sm-7'}) }}
-					{{ form.colorpicker2('couleurtexte', trad.type_color_texte, type.couleurtexte, {classLabel: 'col-sm-4', classInput: 'col-sm-7'}) }}
+					{{ form.colorpicker1('couleurhexa', trad.type_color_fond, type.couleurhexa, {classLabel: 'col-sm-4', classInput: 'col-sm-8'}) }}
+					{{ form.colorpicker1('couleurtexte', trad.type_color_texte, type.couleurtexte, {classLabel: 'col-sm-4', classInput: 'col-sm-8'}) }}
 				</div>
 
 				<!-- /.box-body -->
@@ -75,20 +75,11 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../bootstrap/AdminLTE/bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
 	<script>
 		$(function () {
-			$('.my-colorpicker2').colorpicker()
+			//Colorpicker
+			$('.my-colorpicker1').colorpicker()
 		})
-
-		$( ".target" ).change(function() {
-			var laCouleur = $('input[name=couleur]:checked').val();
-			document.getElementsByName('couleurhexa')[0].value = laCouleur;
-			document.getElementsByName('visucouleurhexa')[0].style.backgroundColor=laCouleur;
-		});
-		function visuCouleurHexaPerso(laCouleur) {
-			var laCouleur = document.getElementsByName('couleurhexa')[0].value;
-			document.getElementsByName('visucouleurhexa')[0].style.backgroundColor=laCouleur;
-		}
 	</script>
 {% endblock %}
