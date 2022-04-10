@@ -132,8 +132,7 @@ if (isset($_POST['ok'])) {
 if (isset($_POST['nb_calendar'])) {
     settype($_POST['nb_calendar'], 'integer');
     if (!Settings::set('nb_calendar', $_POST['nb_calendar'])) {
-        echo "Erreur lors de l'enregistrement de nb_calendar !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de nb_calendar !<br />";
     }
 }
 
@@ -174,10 +173,10 @@ if (!Settings::load()) {
 if (isset($_POST['ok'])) {
     $_SESSION['displ_msg'] = 'yes';
     if ($msg == '') {
-        $msg = get_vocab('message_records');
+        $d['enregistrement'] = 1;
+    } else{
+        $d['enregistrement'] = $msg;
     }
-    Header('Location: ?p=admin_config&msg='.$msg);
-    exit();
 }
 if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes')) {
     $msg = $_GET['msg'];
@@ -185,7 +184,6 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
     $msg = '';
 }
 
-affiche_pop_up($msg, 'admin');
 
 // Config générale
 //****************
@@ -215,6 +213,7 @@ get_vocab_admin('adapter_fichiers_langue');
 get_vocab_admin('adapter_fichiers_langue_explain');
 
 get_vocab_admin('save');
+get_vocab_admin('message_records');
 
 $nom_picture = $dossier.Settings::get('logo');
 
@@ -233,4 +232,6 @@ $eyear	= strftime('%Y', Settings::get('end_bookings'));
 
 $trad["dBegin_bookings"] = $bday."/".$bmonth."/".$byear;
 $trad["dEnd_bookings"] = $eday."/".$emonth."/".$eyear;
+
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'd' => $d));
 ?>

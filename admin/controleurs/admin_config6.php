@@ -407,6 +407,7 @@ get_vocab_admin('longueur_liste_ressources');
 get_vocab_admin('YES');
 get_vocab_admin('NO');
 get_vocab_admin('save');
+get_vocab_admin('message_records');
 
 
 // Liste des sites
@@ -474,6 +475,6 @@ if (Settings::get('show_holidays') == 'Oui'){
 
 }
 
-affiche_pop_up($msg, 'admin');
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'd' => $d));
 
 ?>

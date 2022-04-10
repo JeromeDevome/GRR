@@ -4,7 +4,9 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
-	<link rel="stylesheet" href="../bootstrap/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs4.min.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
 {% endblock %}
 
 {% block content %}
@@ -107,7 +109,7 @@
 						<section id="message">
 							<h4 class="page-header">{{ trad.message_perso }}</h4>
 							<p>{{ trad.message_perso_explain }}</p>
-							<textarea class="ckeditor" id="editor1" name="message_accueil" rows="10" cols="80">
+							<textarea id="summernote" name="message_accueil" rows="10" cols="80">
 								{{ settings.message_accueil }}
 							</textarea>
 						</section>
@@ -131,11 +133,17 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../bootstrap/AdminLTE/bower_components/moment/min/moment.min.js"></script>
-	<script src="../bootstrap/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
-	<script src="../bootstrap/AdminLTE/bower_components/ckeditor/ckeditor.js"></script>
+	<!-- date-range-picker -->
+	<script src="../vendor/almasaeed2010/adminlte/plugins/moment/moment.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs4.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
 	<script>
 		$(function () {
+			// Summernote
+			$('#summernote').summernote()
+			
+			// Plage de réservation
 			$('#reservation').daterangepicker({
 			 "locale": {
 					"format": "DD/MM/YYYY",
@@ -170,26 +178,16 @@
 					],
 					"firstDay": 1
 				}
-			}); 
+			});
 
-			// Replace the <textarea id="editor1"> with a CKEditor
-			//CKEDITOR.replace('editor1');
-					//<![CDATA[
-		CKEDITOR.replace( 'editor1',
-		{
-			toolbar :
-			[
-			['Source'],
-			['Cut','Copy','Paste','PasteText','PasteFromWord', 'SpellChecker', 'Scayt'],
-			['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-			['Bold','Italic','Underline','Strike','-','Subscript','Superscript','-','TextColor','BGColor'],
-			['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
-			['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-			['Link','Unlink','Anchor'],
-			['Image','Table','HorizontalRule','SpecialChar','PageBreak'],
-			]
-		});
-		//]]>
+			{%if d.enregistrement%}
+				{%if d.enregistrement == 1 %}
+					toastr.success("{{trad.message_records}}")
+				{% else %}
+					toastr.warning("{{d.enregistrement|raw}}")
+				{%endif%}
+			{%endif%}
+
 		}); 
 	</script>
 {% endblock %}

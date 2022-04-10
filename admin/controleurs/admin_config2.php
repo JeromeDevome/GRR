@@ -170,5 +170,6 @@ get_vocab_admin("only_administrators");
 get_vocab_admin("max_booking");
 
 get_vocab_admin("save");
+get_vocab_admin('message_records');
 
 ?>

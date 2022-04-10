@@ -280,6 +280,7 @@ get_vocab_admin("verif_reservation_auto2");
 get_vocab_admin("verif_reservation_auto3");
 
 get_vocab_admin("save");
+get_vocab_admin('message_records');
 
 $trad['dFctMailRestriction'] = $fonction_mail_restrictions;
 

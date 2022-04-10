@@ -142,6 +142,7 @@ get_vocab_admin("Url_de_deconnexion_explain");
 get_vocab_admin("Url_de_deconnexion_explain2");
 
 get_vocab_admin("save");
+get_vocab_admin('message_records');
 
 
 ?>
