@@ -67,8 +67,6 @@ include('controleurs/'.$page.'.php');
 
 if($page === 'admin_accueil'){
 	echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings));
-} elseif($page === 'admin_config5'){ // Modules
-	echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'modulesext' => $modulesext));
 } elseif($page === 'admin_change_date_bookings' || $page === 'admin_open_mysql'){ // Config Général => Contenu (Modification Dates) && Config Général => Sécurité (Restauration sauvegarde)
 	echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings));
 } elseif($page === 'admin_type'){
