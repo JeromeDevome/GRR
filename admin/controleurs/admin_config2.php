@@ -23,6 +23,8 @@ get_vocab_admin("admin_config4");
 get_vocab_admin("admin_config5");
 get_vocab_admin("admin_config6");
 
+$msg = "";
+
 // Nombre maximum de réservation (tous domaines confondus)
 if (isset($_GET['UserAllRoomsMaxBooking']))
 {
@@ -32,64 +34,44 @@ if (isset($_GET['UserAllRoomsMaxBooking']))
     if ($_GET['UserAllRoomsMaxBooking']<-1)
         $_GET['UserAllRoomsMaxBooking'] = -1;
     if (!Settings::set("UserAllRoomsMaxBooking", $_GET['UserAllRoomsMaxBooking']))
-    {
-        echo "Erreur lors de l'enregistrement de UserAllRoomsMaxBooking !<br />";
-        die();
-    }
+        $msg .= "Erreur lors de l'enregistrement de UserAllRoomsMaxBooking !<br />";
 }
 // Type d'accès
 if (isset($_GET['authentification_obli']))
 {
     if (!Settings::set("authentification_obli", $_GET['authentification_obli']))
-    {
-        echo "Erreur lors de l'enregistrement de authentification_obli !<br />";
-        die();
-    }
+        $msg .= "Erreur lors de l'enregistrement de authentification_obli !<br />";
 }
 // Visualisation de la fiche de description d'une ressource.
 if (isset($_GET['visu_fiche_description']))
 {
     if (!Settings::set("visu_fiche_description", $_GET['visu_fiche_description']))
-    {
-        echo "Erreur lors de l'enregistrement de visu_fiche_description !<br />";
-        die();
-    }
+        $msg .= "Erreur lors de l'enregistrement de visu_fiche_description !<br />";
 }
 // Accès fiche de réservation d'une ressource.
 if (isset($_GET['acces_fiche_reservation']))
 {
     if (!Settings::set("acces_fiche_reservation", $_GET['acces_fiche_reservation']))
-    {
-        echo "Erreur lors de l'enregistrement de acces_fiche_reservation !<br />";
-        die();
-    }
+        $msg .= "Erreur lors de l'enregistrement de acces_fiche_reservation !<br />";
 }
 // Accès à l'outil de recherche/rapport/stat
 if (isset($_GET['allow_search_level']))
 {
     if (!Settings::set("allow_search_level", $_GET['allow_search_level']))
-    {
-        echo "Erreur lors de l'enregistrement de allow_search_level !<br />";
-        die();
-    }
+        $msg .= "Erreur lors de l'enregistrement de allow_search_level !<br />";
+
 }
 // allow_user_delete_after_begin
 if (isset($_GET['allow_user_delete_after_begin']))
 {
     if (!Settings::set("allow_user_delete_after_begin", $_GET['allow_user_delete_after_begin']))
-    {
-        echo "Erreur lors de l'enregistrement de allow_user_delete_after_begin !<br />";
-        die();
-    }
+        $msg .= "Erreur lors de l'enregistrement de allow_user_delete_after_begin !<br />";
 }
 // allow_gestionnaire_modify_del
 if (isset($_GET['allow_gestionnaire_modify_del']))
 {
     if (!Settings::set("allow_gestionnaire_modify_del", $_GET['allow_gestionnaire_modify_del']))
-    {
-        echo "Erreur lors de l'enregistrement de allow_gestionnaire_modify_del !<br />";
-        die();
-    }
+        $msg .= "Erreur lors de l'enregistrement de allow_gestionnaire_modify_del !<br />";
 }
 
 // Enregistrement de allow_users_modify_profil
@@ -97,37 +79,35 @@ if (isset($_GET['allow_gestionnaire_modify_del']))
 if ((isset($_GET['allow_users_modify_profil'])) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
 {
 	if (!Settings::set("allow_users_modify_profil", $_GET['allow_users_modify_profil']))
-		$msg = get_vocab("message_records_error");
-	else
-		$msg = get_vocab("message_records");
+		$msg .= get_vocab("message_records_error");
 }
 // Enregistrement de allow_users_modify_email
 // Un gestionnaire d'utilisateurs ne peut pas Autoriser ou non la modification par un utilisateur de ses informations personnelles
 if ((isset($_GET['allow_users_modify_email'])) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
 {
 	if (!Settings::set("allow_users_modify_email", $_GET['allow_users_modify_email']))
-		$msg = get_vocab("message_records_error");
-	else
-		$msg = get_vocab("message_records");
+		$msg .= get_vocab("message_records_error");;
 }
 // Enregistrement de allow_users_modify_mdp
 // Un gestionnaire d'utilisateurs ne peut pas Autoriser ou non la modification par un utilisateur de son mot de passe
 if ((isset($_GET['allow_users_modify_mdp'])) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
 {
 	if (!Settings::set("allow_users_modify_mdp", $_GET['allow_users_modify_mdp']))
-		$msg = get_vocab("message_records_error");
-	else
-		$msg = get_vocab("message_records");
+		$msg .= get_vocab("message_records_error");
 }
 
 
 if (!Settings::load())
     die("Erreur chargement settings");
 
-if (isset($_GET['ok']))
-{
-    $msg = get_vocab("message_records");
-	affiche_pop_up($msg,"admin");
+// Si pas de problème, message de confirmation
+if (isset($_GET['ok'])) {
+    $_SESSION['displ_msg'] = 'yes';
+    if ($msg == '') {
+        $d['enregistrement'] = 1;
+    } else{
+        $d['enregistrement'] = $msg;
+    }
 }
 
 $AllSettings = Settings::getAll();
@@ -172,4 +152,5 @@ get_vocab_admin("max_booking");
 get_vocab_admin("save");
 get_vocab_admin('message_records');
 
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'd' => $d));
 ?>
