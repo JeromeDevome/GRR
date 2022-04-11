@@ -3,9 +3,9 @@
  * admin_config.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2021-11-12 18:32$
+ * Dernière modification : $Date: 2022-04-11 17:59$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -31,208 +31,181 @@ if (isset($_GET['sync'])) {
 		if (grr_sql_command($sql) < 0)
 			fatal_error(0, grr_sql_error());
 		else
-			$msg .= "Synchronisation terminée !<br />";
+            $d['enregistrement'] = "Synchronisation terminée !<br />";
     } elseif ($_GET['sync'] == 2) {
 		$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET default_language='".Settings::get('default_language')."'";
 		if (grr_sql_command($sql) < 0)
 			fatal_error(0, grr_sql_error());
 		else
-			$msg .= "Synchronisation terminée !<br />";
+            $d['enregistrement'] = "Synchronisation terminée !<br />";
 	}
 }
 
 
 if (isset($_POST['show_courrier'])) {
     if (!Settings::set('show_courrier', $_POST['show_courrier'])) {
-        echo "Erreur lors de l'enregistrement de show_courrier !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de show_courrier !<br />";
+
     }
 }
 if (isset($_POST['show_holidays'])) {
     if (!Settings::set('show_holidays', $_POST['show_holidays'])) {
-        echo "Erreur lors de l'enregistrement de show_holidays !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de show_holidays !<br />";
     }
 }
 if (isset($_POST['holidays_zone'])) {
     if (!Settings::set('holidays_zone', $_POST['holidays_zone'])) {
-        echo "Erreur lors de l'enregistrement de holidays_zone !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de holidays_zone !<br />";
     }
 }
 // Style/thème
 if (isset($_POST['default_css'])) {
     if (!Settings::set('default_css', $_POST['default_css'])) {
-        echo "Erreur lors de l'enregistrement de default_css !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de default_css !<br />";
     }
 }
 // langage
 if (isset($_POST['default_language'])) {
     if (!Settings::set('default_language', $_POST['default_language'])) {
-        echo "Erreur lors de l'enregistrement de default_language !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de default_language !<br />";
     }
     unset($_SESSION['default_language']);
 }
 // Type d'affichage des listes des domaines et des ressources
 if (isset($_POST['area_list_format'])) {
     if (!Settings::set('area_list_format', $_POST['area_list_format'])) {
-        echo "Erreur lors de l'enregistrement de area_list_format !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de area_list_format !<br />";
     }
 }
 // site par défaut
 if (isset($_POST['id_site'])) {
     if (!Settings::set('default_site', $_POST['id_site'])) {
-        echo "Erreur lors de l'enregistrement de default_site !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de default_site !<br />";
     }
 }
 // domaine par défaut
 if (isset($_POST['id_area'])) {
     if (!Settings::set('default_area', $_POST['id_area'])) {
-        echo "Erreur lors de l'enregistrement de default_area !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de default_area !<br />";
     }
 }
 if (isset($_POST['id_room'])) {
     if (!Settings::set('default_room', $_POST['id_room'])) {
-        echo "Erreur lors de l'enregistrement de default_room !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de default_room !<br />";
     }
 }
 // Affichage de l'adresse email
 if (isset($_POST['display_level_email'])) {
     if (!Settings::set('display_level_email', $_POST['display_level_email'])) {
-        echo "Erreur lors de l'enregistrement de display_level_email !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de display_level_email !<br />";
     }
 }
 /*-----MAJ Loïs THOMAS  --> Affichage de la page view_entry pour les réservations  -----*/
 if (isset($_POST['display_level_view_entry'])) {
     if (!Settings::set('display_level_view_entry', $_POST['display_level_view_entry'])) {
-        echo "Erreur lors de l'enregistrement de display_level_view_entry !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de display_level_view_entry !<br />";
     }
 }
 // display_info_bulle
 if (isset($_POST['display_info_bulle'])) {
     if (!Settings::set('display_info_bulle', $_POST['display_info_bulle'])) {
-        echo "Erreur lors de l'enregistrement de display_info_bulle !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de display_info_bulle !<br />";
     }
 }
 // menu_gauche
 if (isset($_POST['menu_gauche'])) {
     if (!Settings::set('menu_gauche', $_POST['menu_gauche'])) {
-        echo "Erreur lors de l'enregistrement de menu_gauche !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de menu_gauche !<br />";
     }
 }
 // display_type
 if (isset($_POST['display_type'])) {
     if (!Settings::set('display_type', $_POST['display_type'])) {
-        echo "Erreur lors de l'enregistrement de display_type !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de display_type !<br />";
     }
 }
 // display_beneficiaire
 if (isset($_POST['display_beneficiaire'])) {
     if (!Settings::set('display_beneficiaire', $_POST['display_beneficiaire'])) {
-        echo "Erreur lors de l'enregistrement de display_beneficiaire !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de display_beneficiaire !<br />";
     }
 }
 // display_horaires
 if (isset($_POST['display_horaires'])) {
     if (!Settings::set('display_horaires', $_POST['display_horaires'])) {
-        echo "Erreur lors de l'enregistrement de display_horaires !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de display_horaires !<br />";
     }
 }
 // display_full_description
 if (isset($_POST['display_full_description'])) {
     if (!Settings::set('display_full_description', $_POST['display_full_description'])) {
-        echo "Erreur lors de l'enregistrement de display_full_description !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de display_full_description !<br />";
     }
 }
 // display_short_description
 if (isset($_POST['display_short_description'])) {
     if (!Settings::set('display_short_description', $_POST['display_short_description'])) {
-        echo "Erreur lors de l'enregistrement de display_short_description !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de display_short_description !<br />";
     }
 }
 // remplissage de la description brève
 if (isset($_POST['remplissage_description_breve'])) {
     if (!Settings::set('remplissage_description_breve', $_POST['remplissage_description_breve'])) {
-        echo "Erreur lors de l'enregistrement de remplissage_description_breve !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de remplissage_description_breve !<br />";
     }
 }
 // remplissage de la description complète
 if (isset($_POST['remplissage_description_complete'])) {
     if (!Settings::set('remplissage_description_complete', $_POST['remplissage_description_complete'])) {
-        echo "Erreur lors de l'enregistrement de remplissage_description_complete !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de remplissage_description_complete !<br />";
     }
 }
 // pview_new_windows
 if (isset($_POST['pview_new_windows'])) {
     if (!Settings::set('pview_new_windows', $_POST['pview_new_windows'])) {
-        echo "Erreur lors de l'enregistrement de pview_new_windows !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de pview_new_windows !<br />";
     }
 }
 /*-----MAJ Loïs THOMAS  -->Affichage ou non de la legende -----*/
 if (isset($_POST['legend'])) {
     if (!Settings::set('legend', $_POST['legend'])) {
-        echo "Erreur lors de l'enregistrement de legend !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de legend !<br />";
     }
 }
 // Affichage imprimante
 if (isset($_POST['imprimante'])) {
     if (!Settings::set('imprimante', $_POST['imprimante'])) {
-        echo "Erreur lors de l'enregistrement de imprimante !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de imprimante !<br />";
     }
 }
 // Affichage pdf
 if (isset($_POST['pdf'])) {
     if (!Settings::set('pdf', $_POST['pdf'])) {
-        echo "Erreur lors de l'enregistrement de pdf !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de pdf !<br />";
     }
 }
 // Option peridodicite
 if (isset($_POST['periodicite'])) {
     if (!Settings::set('periodicite', $_POST['periodicite'])) {
-        echo "Erreur lors de l'enregistrement de periodicite !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de periodicite !<br />";
     }
 }
 /*-----MAJ David VOUE 22/01/2014-->Affichage ou non du formulaire de contact et adresse mail du destinataire -----*/
 if (isset($_POST['mail_destinataire'])) {
     if (!Settings::set('mail_destinataire', $_POST['mail_destinataire'])) {
-        echo "Erreur lors de l'enregistrement de mail_destinataire !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de mail_destinataire !<br />";
     }
 }
 
 if (isset($_POST['allow_pdf'])) {
     if (!Settings::set('allow_pdf', $_POST['allow_pdf'])) {
-        echo "Erreur lors de l'enregistrement de allow_pdf !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de allow_pdf !<br />";
     }
 }
 
 if (isset($_POST['mail_etat_destinataire'])) {
     if (!Settings::set('mail_etat_destinataire', $_POST['mail_etat_destinataire'])) {
-        echo "Erreur lors de l'enregistrement de mail_etat_destinataire !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de mail_etat_destinataire !<br />";
     }
 }
 
@@ -242,8 +215,7 @@ else
 	$mail_user_destinataire = "n";
 if (!Settings::set("mail_user_destinataire", $mail_user_destinataire))
 {
-	echo "Erreur lors de l'enregistrement de mail_user_destinataire !<br />";
-	die();
+	$msg .= "Erreur lors de l'enregistrement de mail_user_destinataire !<br />";
 }
 
 // gestion_lien_aide
@@ -254,12 +226,10 @@ if (isset($_POST['gestion_lien_aide'])) {
         $_POST['lien_aide'] = '';
     }
     if (!Settings::set('lien_aide', $_POST['lien_aide'])) {
-        echo "Erreur lors de l'enregistrement de lien_aide !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de lien_aide !<br />";
     }
     if (!Settings::set('gestion_lien_aide', $_POST['gestion_lien_aide'])) {
-        echo "Erreur lors de l'enregistrement de gestion_lien_aide !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de gestion_lien_aide !<br />";
     }
 }
 # Lors de l'édition d'un rapport, valeur par défaut en nombre de jours
@@ -270,8 +240,7 @@ if (isset($_POST['default_report_days'])) {
         $_POST['default_report_days'] = 0;
     }
     if (!Settings::set('default_report_days', $_POST['default_report_days'])) {
-        echo "Erreur lors de l'enregistrement de default_report_days !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de default_report_days !<br />";
     }
 }
 if (isset($_POST['longueur_liste_ressources_max'])) {
@@ -280,8 +249,7 @@ if (isset($_POST['longueur_liste_ressources_max'])) {
         $_POST['longueur_liste_ressources_max'] = 1;
     }
     if (!Settings::set('longueur_liste_ressources_max', $_POST['longueur_liste_ressources_max'])) {
-        echo "Erreur lors de l'enregistrement de longueur_liste_ressources_max !<br />";
-        die();
+        $msg .= "Erreur lors de l'enregistrement de longueur_liste_ressources_max !<br />";
     }
 }
 //echo $_POST['default_area']."<br />";
@@ -293,10 +261,10 @@ if (!Settings::load()) {
 if (isset($_POST['ok'])) {
     $_SESSION['displ_msg'] = 'yes';
     if ($msg == '') {
-        $msg = get_vocab('message_records');
+        $d['enregistrement'] = 1;
+    } else{
+        $d['enregistrement'] = $msg;
     }
-    Header('Location: ?p=admin_config6&msg='.$msg);
-    exit();
 }
 if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes')) {
     $msg = $_GET['msg'];

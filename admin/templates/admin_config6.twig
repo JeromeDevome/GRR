@@ -4,6 +4,7 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
 {% endblock %}
 
 {% block content %}
@@ -303,7 +304,7 @@
 
 
 	<div class="modal fade" id="modal-warning" style="display: none;" aria-hidden="true">
-	  <form action="?p=admin_config6">
+	  <form action="?p=admin_config6" id="formmodal">
         <div class="modal-dialog">
           <div class="modal-content bg-warning">
             <div class="modal-header">
@@ -328,6 +329,7 @@
 {% endblock %}
 
 {% block javascript %}
+	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
 	<script type="text/javascript">
 		function modifier_liste_domaines(){
 			$.ajax({
@@ -384,7 +386,7 @@
 		})
 
 		$(function(){
-			$('form').submit(function(e) {
+			$('#formmodal').submit(function(e) {
 			  e.preventDefault()
 			  var $form = $(this)
 			  var v=document.getElementById('modalidsync').innerHTML
@@ -398,6 +400,14 @@
 				alert('Une erreur est survenue : GRRJS')
 			  })
 			})
+
+			{%if d.enregistrement%}
+				{%if d.enregistrement == 1 %}
+					toastr.success("{{trad.message_records}}")
+				{% else %}
+					toastr.warning("{{d.enregistrement|raw}}")
+				{%endif%}
+			{%endif%}
 		})
 
 	</script>
