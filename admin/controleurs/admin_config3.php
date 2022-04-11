@@ -29,142 +29,91 @@ $msg = "";
 if (isset($_GET['automatic_mail']))
 {
 	if (!Settings::set("automatic_mail", $_GET['automatic_mail']))
-	{
-		echo "Erreur lors de l'enregistrement de automatic_mail !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de automatic_mail !<br />";
 }
 //envoyer_email_avec_formulaire
 if (isset($_GET['envoyer_email_avec_formulaire']))
 {
 	if (!Settings::set("envoyer_email_avec_formulaire", $_GET['envoyer_email_avec_formulaire']))
-	{
-		echo "Erreur lors de l'enregistrement de envoyer_email_avec_formulaire !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de envoyer_email_avec_formulaire !<br />";
 }
 // javascript_info_disabled
 if (isset($_GET['javascript_info_disabled']))
 {
 	if (!Settings::set("javascript_info_disabled", $_GET['javascript_info_disabled']))
-	{
-		echo "Erreur lors de l'enregistrement de javascript_info_disabled !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de javascript_info_disabled !<br />";
 }
 // javascript_info_admin_disabled
 if (isset($_GET['javascript_info_admin_disabled']))
 {
 	if (!Settings::set("javascript_info_admin_disabled", $_GET['javascript_info_admin_disabled']))
-	{
-		echo "Erreur lors de l'enregistrement de javascript_info_admin_disabled !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de javascript_info_admin_disabled !<br />";
 }
 if (isset($_GET['grr_mail_method']))
 {
 	if (!Settings::set("grr_mail_method", $_GET['grr_mail_method']))
-	{
-		echo "Erreur lors de l'enregistrement de grr_mail_method !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de grr_mail_method !<br />";
 }
 if (isset($_GET['grr_mail_smtp']))
 {
 	if (!Settings::set("grr_mail_smtp", $_GET['grr_mail_smtp']))
-	{
-		echo "Erreur lors de l'enregistrement de grr_mail_smtp !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de grr_mail_smtp !<br />";
 }
 if (isset($_GET['grr_mail_Username']))
 {
 	if (!Settings::set("grr_mail_Username", $_GET['grr_mail_Username']))
-	{
-		echo "Erreur lors de l'enregistrement de grr_mail_Username !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de grr_mail_Username !<br />";
 }
 if (isset($_GET['grr_mail_Password']))
 {
 	if (!Settings::set("grr_mail_Password", $_GET['grr_mail_Password']))
-	{
-		echo "Erreur lors de l'enregistrement de grr_mail_Password !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de grr_mail_Password !<br />";
 }
 
 if (isset($_GET['grr_mail_from']))
 {
 	if (!Settings::set("grr_mail_from", $_GET['grr_mail_from']))
-	{
-		echo "Erreur lors de l'enregistrement de grr_mail_from !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de grr_mail_from !<br />";
 }
 if (isset($_GET['grr_mail_fromname']))
 {
 	if (!Settings::set("grr_mail_fromname", $_GET['grr_mail_fromname']))
-	{
-		echo "Erreur lors de l'enregistrement de grr_mail_fromname !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de grr_mail_fromname !<br />";
 }
 if (isset($_GET['smtp_secure']))
 {
 	if (!Settings::set("smtp_secure", $_GET['smtp_secure']))
-	{
-		echo "Erreur lors de l'enregistrement de smtp_secure !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de smtp_secure !<br />";
 }
 if (isset($_GET['smtp_port']))
 {
 	if (!Settings::set("smtp_port", $_GET['smtp_port']))
-	{
-		echo "Erreur lors de l'enregistrement de smtp_port !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de smtp_port !<br />";
 }
 if (isset($_GET['smtp_allow_self_signed']))
 {
 	if (!Settings::set("smtp_allow_self_signed", $_GET['smtp_allow_self_signed']))
-	{
-		echo "Erreur lors de l'enregistrement de smtp_allow_self_signed !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de smtp_allow_self_signed !<br />";
 }
 if (isset($_GET['smtp_cafile']))
 {
 	if (!Settings::set("smtp_cafile", $_GET['smtp_cafile']))
-	{
-		echo "Erreur lors de l'enregistrement de smtp_cafile !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de smtp_cafile !<br />";
 }
 if (isset($_GET['smtp_verify_peer_name']))
 {
 	if (!Settings::set("smtp_verify_peer_name", $_GET['smtp_verify_peer_name']))
-	{
-		echo "Erreur lors de l'enregistrement de smtp_verify_peer_name !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de smtp_verify_peer_name !<br />";
 }
 if (isset($_GET['smtp_verify_peer']))
 {
 	if (!Settings::set("smtp_verify_peer", $_GET['smtp_verify_peer']))
-	{
-		echo "Erreur lors de l'enregistrement de smtp_verify_peer !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de smtp_verify_peer !<br />";
 }
 if (isset($_GET['smtp_verify_depth']))
 {
 	if (!Settings::set("smtp_verify_depth", $_GET['smtp_verify_depth']))
-	{
-		echo "Erreur lors de l'enregistrement de smtp_verify_depth !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de smtp_verify_depth !<br />";
 }
 
 // Si Email test renseigné on y envois un mail
@@ -183,19 +132,14 @@ if (isset($_GET['ok']))
 	else
 		$grr_mail_Bcc = "n";
 	if (!Settings::set("grr_mail_Bcc", $grr_mail_Bcc))
-	{
-		echo "Erreur lors de l'enregistrement de grr_mail_Bcc !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de grr_mail_Bcc !<br />";
 }
 
 if (isset($_GET['verif_reservation_auto']))
 {
 	if (!Settings::set("verif_reservation_auto", $_GET['verif_reservation_auto']))
-	{
-		echo "Erreur lors de l'enregistrement de verif_reservation_auto !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de verif_reservation_auto !<br />";
+
 	if ($_GET['verif_reservation_auto'] == 0)
 	{
 		$_GET['motdepasse_verif_auto_grr'] = "";
@@ -208,27 +152,27 @@ if (isset($_GET['motdepasse_verif_auto_grr']))
 	if (($_GET['verif_reservation_auto'] == 1) && ($_GET['motdepasse_verif_auto_grr'] == ""))
 		$msg .= "l'exécution du script verif_auto_grr.php requiert un mot de passe !\\n";
 	if (!Settings::set("motdepasse_verif_auto_grr", $_GET['motdepasse_verif_auto_grr']))
-	{
-		echo "Erreur lors de l'enregistrement de motdepasse_verif_auto_grr !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de motdepasse_verif_auto_grr !<br />";
+
 }
 if (isset($_GET['chemin_complet_grr']))
 {
 	if (!Settings::set("chemin_complet_grr", $_GET['chemin_complet_grr']))
-	{
-		echo "Erreur lors de l'enregistrement de chemin_complet_grr !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de chemin_complet_grr !<br />";
 }
 if (!Settings::load())
 	die("Erreur chargement settings");
 
-if (isset($_GET['ok']))
-{
-	$msg = get_vocab("message_records");
-	affiche_pop_up($msg,"admin");
+// Si pas de problème, message de confirmation
+if (isset($_GET['ok'])) {
+    $_SESSION['displ_msg'] = 'yes';
+    if ($msg == '') {
+        $d['enregistrement'] = 1;
+    } else{
+        $d['enregistrement'] = $msg;
+    }
 }
+
 
 // Affichage
 
@@ -284,6 +228,6 @@ get_vocab_admin('message_records');
 
 $trad['dFctMailRestriction'] = $fonction_mail_restrictions;
 
-echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings));
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'd' => $d));
 
 ?>

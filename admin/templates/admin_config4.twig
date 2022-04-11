@@ -4,6 +4,7 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
 {% endblock %}
 
 {% block content %}
@@ -136,9 +137,21 @@
 
 			</div><!-- /.card-primary -->
 		</div><!-- /.col -->
-	</div><!-- /.row --
+	</div><!-- /.row -->
 
 {% endblock %}
 
 {% block javascript %}
+	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
+	<script>
+		$(function () {
+			{%if d.enregistrement%}
+				{%if d.enregistrement == 1 %}
+					toastr.success("{{trad.message_records}}")
+				{% else %}
+					toastr.warning("{{d.enregistrement|raw}}")
+				{%endif%}
+			{%endif%}
+		}); 
+	</script>
 {% endblock %}

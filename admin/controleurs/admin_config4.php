@@ -23,48 +23,44 @@ get_vocab_admin("admin_config4");
 get_vocab_admin("admin_config5");
 get_vocab_admin("admin_config6");
 
+$msg = "";
+
 if (isset($_GET['motdepasse_backup']))
 {
 	if (!Settings::set("motdepasse_backup", $_GET['motdepasse_backup']))
-	{
-		echo "Erreur lors de l'enregistrement de motdepasse_backup !<br />";
-		die();
-	}
+		$msg = "Erreur lors de l'enregistrement de motdepasse_backup !<br />";
 }
 if (isset($_GET['disable_login']))
 {
 	if (!Settings::set("disable_login", $_GET['disable_login']))
-	{
-		echo "Erreur lors de l'enregistrement de disable_login !<br />";
-		die();
-	}
+		$msg .= "Erreur lors de l'enregistrement de disable_login !<br />";
 }
 if (isset($_GET['url_disconnect']))
 {
 	if (!Settings::set("url_disconnect", $_GET['url_disconnect']))
-		echo "Erreur lors de l'enregistrement de url_disconnect ! <br />";
+		$msg .= "Erreur lors de l'enregistrement de url_disconnect ! <br />";
 }
 if (isset($_GET['redirection_https']))
 {
 	if (!Settings::set("redirection_https", $_GET['redirection_https']))
-		echo "Erreur lors de l'enregistrement de redirection_https ! <br />";
+		$msg .= "Erreur lors de l'enregistrement de redirection_https ! <br />";
 }
 // Restriction iP
 if (isset($_GET['ip_autorise']))
 {
 	if (!Settings::set("ip_autorise", $_GET['ip_autorise']))
-		echo "Erreur lors de l'enregistrement de ip_autorise !<br />";
+		$msg .= "Erreur lors de l'enregistrement de ip_autorise !<br />";
 }
 // Heure de connexion
 if (isset($_GET['horaireconnexionde']))
 {
 	if (!Settings::set("horaireconnexionde", $_GET['horaireconnexionde']))
-		echo "Erreur lors de l'enregistrement de horaireconnexionde !<br />";
+		$msg .= "Erreur lors de l'enregistrement de horaireconnexionde !<br />";
 }
 if (isset($_GET['horaireconnexiona']))
 {
 	if (!Settings::set("horaireconnexiona", $_GET['horaireconnexiona']))
-		echo "Erreur lors de l'enregistrement de horaireconnexiona !<br />";
+		$msg .= "Erreur lors de l'enregistrement de horaireconnexiona !<br />";
 }
 // Max session length
 if (isset($_GET['sessionMaxLength']))
@@ -73,7 +69,7 @@ if (isset($_GET['sessionMaxLength']))
 	if ($_GET['sessionMaxLength'] < 1)
 		$_GET['sessionMaxLength'] = 30;
 	if (!Settings::set("sessionMaxLength", $_GET['sessionMaxLength']))
-		echo "Erreur lors de l'enregistrement de sessionMaxLength !<br />";
+		$msg .= "Erreur lors de l'enregistrement de sessionMaxLength !<br />";
 }
 // pass_leng
 if (isset($_GET['pass_leng']))
@@ -82,15 +78,19 @@ if (isset($_GET['pass_leng']))
 	if ($_GET['pass_leng'] < 1)
 		$_GET['pass_leng'] = 1;
 	if (!Settings::set("pass_leng", $_GET['pass_leng']))
-		echo "Erreur lors de l'enregistrement de pass_leng !<br />";
+		$msg .= "Erreur lors de l'enregistrement de pass_leng !<br />";
 }
 if (!Settings::load())
 	die("Erreur chargement settings");
 
-if (isset($_GET['ok']))
-{
-	$msg = get_vocab("message_records");
-	affiche_pop_up($msg,"admin");
+// Si pas de problème, message de confirmation
+if (isset($_GET['ok'])) {
+    $_SESSION['displ_msg'] = 'yes';
+    if ($msg == '') {
+        $d['enregistrement'] = 1;
+    } else{
+        $d['enregistrement'] = $msg;
+    }
 }
 
 // Affichage
@@ -144,5 +144,6 @@ get_vocab_admin("Url_de_deconnexion_explain2");
 get_vocab_admin("save");
 get_vocab_admin('message_records');
 
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'd' => $d));
 
 ?>
