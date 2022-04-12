@@ -54,7 +54,7 @@
 									<p>En cas de perte de donnée ou de problème sur la base GRR, cette fonction vous permet de la retrouver dans l'état antérieur lors d'une sauvegarde. Vous devez sélectionner un fichier créé à l'aide de la fonction Lancer une sauvegarde.</p>
 									<p><i>Attention! Restaurer la base vous fera perdre toutes les données qu'elle contient actuellement. De plus, tous les utilisateurs présentement connectés, ainsi que vous-mêmes, serez déconnectés. Alors, il est conseillé de créer d'abord une sauvegarde et de vous assurer que vous êtes le seul connecté.</i></p>
 									<br><input type="file" name="sql_file" size="30" /><br>
-									<input class="btn btn-primary" type="submit" value="{{ trad.Restaurer_la_sauvegarde }}" />
+									<input class="btn btn-danger" type="submit" value="{{ trad.Restaurer_la_sauvegarde }}" />
 								</form>
 							</section>
 						{% endif %}
