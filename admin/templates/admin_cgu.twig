@@ -4,6 +4,8 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs4.min.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
 {% endblock %}
 
 {% block content %}
@@ -18,7 +20,7 @@
 					<section id="message">
 						<h4 class="page-header">{{ trad.cgu_titre }}</h4>
 						<p>{{ trad.cgu_grr }}</p>
-						<textarea id="editor1" name="CGU" rows="60" cols="80">{{ pages.CGU }}</textarea>
+						<textarea id="summernote" name="CGU" rows="60" cols="80">{{ pages.CGU }}</textarea>
 					</section>
 
 					<div style="text-align:center;">
@@ -36,27 +38,21 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../bootstrap/AdminLTE/bower_components/ckeditor/ckeditor.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs4.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
 	<script>
 		$(function () {
-			// Replace the <textarea id="editor1"> with a CKEditor
-			//CKEDITOR.replace('editor1');
-			//<![CDATA[
-			CKEDITOR.replace( 'editor1',
-			{
-				toolbar :
-				[
-				['Source'],
-				['Cut','Copy','Paste','PasteText','PasteFromWord', 'SpellChecker', 'Scayt'],
-				['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-				['Bold','Italic','Underline','Strike','-','Subscript','Superscript','-','TextColor','BGColor'],
-				['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
-				['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-				['Link','Unlink','Anchor'],
-				['Image','Table','HorizontalRule','SpecialChar','PageBreak'],
-				]
-			});
-			//]]>
+			// Summernote
+			$('#summernote').summernote()
+
+			{%if d.enregistrement%}
+				{%if d.enregistrement == 1 %}
+					toastr.success("{{trad.message_records}}")
+				{% else %}
+					toastr.warning("{{d.enregistrement|raw}}")
+				{%endif%}
+			{%endif%}
+
 		}); 
 	</script>
 {% endblock %}

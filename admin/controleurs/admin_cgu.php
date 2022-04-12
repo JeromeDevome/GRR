@@ -24,26 +24,24 @@ check_access(6, $back);
 if (!Pages::load()) {
     die('Erreur chargement pages');
 }
-
+$msg = "";
 /* Enregistrement de la page */
 if (isset($_POST['CGU'])) {
 	VerifyModeDemo();
-    if (!Pages::set("CGU", $_POST['CGU'])) {
-        echo "Erreur lors de l'enregistrement de CGU !<br />";
-        die();
-    }
+    if (!Pages::set("CGU", $_POST['CGU']))
+        $msg = "Erreur lors de l'enregistrement de CGU !<br />";
 }
 /**/
-$msg = '';
+
 
 // Si pas de problème, message de confirmation
 if (isset($_POST['ok'])) {
     $_SESSION['displ_msg'] = 'yes';
     if ($msg == '') {
-        $msg = get_vocab('message_records');
+        $d['enregistrement'] = 1;
+    } else{
+        $d['enregistrement'] = $msg;
     }
-    Header('Location: ?p=admin_cgu&msg='.$msg);
-    exit();
 }
 if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes')) {
     $msg = $_GET['msg'];
@@ -51,13 +49,16 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
     $msg = '';
 }
 
-affiche_pop_up($msg, 'admin');
+//affiche_pop_up($msg, 'admin');
 
 
 get_vocab_admin('cgu_titre');
 get_vocab_admin('cgu_grr');
 get_vocab_admin('save');
+get_vocab_admin('message_records');
 
 $pages = Pages::getAll();
+
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'pages' => $pages));
 
 ?>
