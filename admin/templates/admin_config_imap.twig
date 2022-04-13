@@ -47,7 +47,7 @@
 
 							<h3>Statut par défaut des utilisateurs importés:</h3>
 							
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<input type="radio" name="imap_statut" value="visiteur" id="label_1a" {% if settings.imap_statut == 'visiteur' %}checked{% endif %} /> <label for="label_1a">{{ trad.statut_visitor }}</label><br>
 								<input type="radio" name="imap_statut" value="utilisateur" id="label_1b" {% if settings.imap_statut == 'utilisateur' %}checked{% endif %} /> <label for="label_1b">{{ trad.statut_user }}</label><br>
 								<input type="radio" name="imap_statut" value="no_imap" id="label_1c" {% if settings.imap_statut == 'no_imap' %}checked{% endif %} /> <label for="label_1c">Désactiver l'authentification IMAP/POP</label><br>
@@ -61,7 +61,7 @@
 							{{ form.input('imap_adresse', 'Adresse Serveur IMAP/POP', settings.imap_adresse, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
 							{{ form.input('imap_port', 'Numero de port', settings.imap_port, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
 
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-6" for="imap_type">IMAP ou POP</label>
 								<div class="col-sm-6">
 									<select class="form-control" name="imap_type">
@@ -71,7 +71,7 @@
 								</div>
 							</div>
 
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-6" for="imap_ssl">SSL</label>
 								<div class="col-sm-6">
 									<select class="form-control" name="imap_ssl">
@@ -81,7 +81,7 @@
 								</div>
 							</div>
 
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-6" for="imap_cert">Certificat</label>
 								<div class="col-sm-6">
 									<select class="form-control" name="imap_cert">
@@ -92,7 +92,7 @@
 								</div>
 							</div>
 
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-6" for="imap_tls">TLS</label>
 								<div class="col-sm-6">
 									<select class="form-control" name="imap_tls">

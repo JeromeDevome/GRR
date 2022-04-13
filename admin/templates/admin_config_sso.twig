@@ -20,7 +20,7 @@
 
 								<input type="hidden" name="p" value="admin_config_sso" />
 
-								<div class="form-group col-sm-12">
+								<div class="form-group row col-sm-12">
 									<input type="radio" name="sso_statut" value="no_sso" id="label_1a" {% if settings.sso_statut == '' %}checked{% endif %} /> <label for="label_1a">{{ trad.Ne_pas_activer_Service_sso }}</label><br>
 								</div>
 
@@ -38,13 +38,13 @@
 
 									<h2>{{ trad.autres_parametres_sso }}</h2>
 								
-									<div class="form-group col-sm-12">
+									<div class="form-group row col-sm-12">
 										<label class="col-sm-8" for="cacher_lien_deconnecter">{{ trad.sso_actif_cacher_lien_deconnecter }}</label>
 										<div class="col-sm-4">
 											<input type="checkbox" name="cacher_lien_deconnecter" value="y" {% if settings.cacher_lien_deconnecter == 'y' %} checked {% endif %}>
 										</div>
 									</div>
-									<div class="form-group col-sm-12">
+									<div class="form-group row col-sm-12">
 										<label class="col-sm-8" for="sso_actif_cacher_lien_deconnecter">{{ trad.sso_IsNotAllowedModify }}</label>
 										<div class="col-sm-4">
 											<input type="checkbox" name="sso_actif_cacher_lien_deconnecter" value="y" {% if settings.sso_actif_cacher_lien_deconnecter == 'y' %} checked {% endif %}>
@@ -63,20 +63,20 @@
 
 								<h3>{{ trad.Statut_par_defaut_utilisateurs_importes }}</h3>
 								<p>{{ trad.choix_statut_CAS_SSO }}</p>
-								<div class="form-group col-sm-12">
+								<div class="form-group row col-sm-12">
 									<input type="radio" name="sso_statut" value="cas_visiteur" id="label_1b" {% if settings.sso_statut == 'cas_visiteur' %}checked{% endif %} /> <label for="label_1b">{{ trad.statut_visitor }}</label><br>
 									<input type="radio" name="sso_statut" value="cas_utilisateur" id="label_1c" {% if settings.sso_statut == 'cas_utilisateur' %}checked{% endif %} /> <label for="label_1c">{{ trad.statut_user }}</label><br>
 								</div>
 
 								<p>{{ trad.sso_redirection_accueil_grr_text1 }}</p>
-								<div class="form-group col-sm-12">
+								<div class="form-group row col-sm-12">
 									<label class="col-sm-11" for="sso_redirection_accueil_grr">{{ trad.sso_redirection_accueil_grr_text2 }}</label>
 									<div class="col-sm-1">
 										<input type="checkbox" name="sso_redirection_accueil_grr" value="y" {% if settings.sso_redirection_accueil_grr == 'y' %} checked {% endif %}>
 									</div>
 								</div>
 								<p>{{ trad.sso_active_correspondance_profil_statut_text }}</p>
-								<div class="form-group col-sm-12">
+								<div class="form-group row col-sm-12">
 									<label class="col-sm-11" for="sso_active_correspondance_profil_statut">{{ trad.sso_active_correspondance_profil_statut }}</label>
 									<div class="col-sm-1">
 										<input type="checkbox" name="sso_active_correspondance_profil_statut" value="y" {% if settings.sso_ac_corr_profil_statut == 'y' %} checked {% endif %}>
@@ -92,7 +92,7 @@
 
 								<h3>{{ trad.Statut_par_defaut_utilisateurs_importes }}</h3>
 								<p>{{ trad.choix_statut_lemon_SSO }}</p>
-								<div class="form-group col-sm-12">
+								<div class="form-group row col-sm-12">
 									<input type="radio" name="sso_statut" value="lemon_visiteur" id="label_1d" {% if settings.sso_statut == 'lemon_visiteur' %}checked{% endif %} /> <label for="label_1d">{{ trad.statut_visitor }}</label><br>
 									<input type="radio" name="sso_statut" value="lemon_utilisateur" id="label_1e" {% if settings.sso_statut == 'lemon_utilisateur' %}checked{% endif %} /> <label for="label_1e">{{ trad.statut_user }}</label><br>
 								</div>
@@ -106,7 +106,7 @@
 
 								<h3>{{ trad.Statut_par_defaut_utilisateurs_importes }}</h3>
 								<p>{{ trad.choix_statut_lasso_SSO }}</p>
-								<div class="form-group col-sm-12">
+								<div class="form-group row col-sm-12">
 									<input type="radio" name="sso_statut" value="lasso_visiteur" id="label_1g" {% if settings.sso_statut == 'lasso_visiteur' %}checked{% endif %} /> <label for="label_1g">{{ trad.statut_visitor }}</label><br>
 									<input type="radio" name="sso_statut" value="lemon_utilisateur" id="label_1h" {% if settings.sso_statut == 'lasso_utilisateur' %}checked{% endif %} /> <label for="label_1h">{{ trad.statut_user }}</label><br>
 								</div>
@@ -120,7 +120,7 @@
 
 								<h3>{{ trad.Statut_par_defaut_utilisateurs_importes }}</h3>
 								<p>{{ trad.choix_statut_http_SSO }}</p>
-								<div class="form-group col-sm-12">
+								<div class="form-group row col-sm-12">
 									<input type="radio" name="sso_statut" value="http_visiteur" id="label_1i" {% if settings.sso_statut == 'http_visiteur' %}checked{% endif %} /> <label for="label_1i">{{ trad.statut_visitor }}</label><br>
 									<input type="radio" name="sso_statut" value="http_utilisateur" id="label_1j" {% if settings.sso_statut == 'http_utilisateur' %}checked{% endif %} /> <label for="label_1i">{{ trad.statut_user }}</label><br>
 								</div>
@@ -137,7 +137,7 @@
 								{{ form.input('http_sso_domain', trad.http_domaine_particulier, settings.http_sso_domain, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
 
 								<p>{{ trad.statut }}</p>
-								<div class="form-group col-sm-12">
+								<div class="form-group row col-sm-12">
 									<input type="radio" name="http_sso_statut_domain" value="visiteur" id="label_2a" {% if settings.sso_statut == 'visiteur' %}checked{% endif %} /> <label for="label_2a">{{ trad.statut_visitor }}</label><br>
 									<input type="radio" name="http_sso_statut_domain" value="utilisateur" id="label_2b" {% if settings.sso_statut == 'utilisateur' %}checked{% endif %} /> <label for="label_2b">{{ trad.statut_user }}</label><br>
 								</div>

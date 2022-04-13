@@ -45,21 +45,21 @@
 									<h3>L'authentification LDAP est activée.</h3>
 									<h3>{{ trad.Statut_par_defaut_utilisateurs_importes }}</h3>
 									
-									<div class="form-group col-sm-12">
+									<div class="form-group row col-sm-12">
 										<p>Choisissez le statut qui sera attribué aux personnes présentes dans l'annuaire LDAP lorsqu'elles se connectent pour la première fois. Vous pourrez par la suite modifier cette valeur pour chaque utilisateur.</p>
 										<input type="radio" name="ldap_statut" value="visiteur" id="label_1a" {% if settings.ldap_statut == 'visiteur' %}checked{% endif %} /> <label for="label_1a">{{ trad.statut_visitor }}</label><br>
 										<input type="radio" name="ldap_statut" value="utilisateur" id="label_1b" {% if settings.ldap_statut == 'utilisateur' %}checked{% endif %} /> <label for="label_1b">{{ trad.statut_user }}</label><br>
 										<input type="radio" name="ldap_statut" value="no_ldap" id="label_1c" {% if settings.ldap_statut == '' %}checked{% endif %} /> <label for="label_1c">Désactiver l'authentification LDAP</label><br>
 									</div>
 
-									<div class="form-group col-sm-12">
+									<div class="form-group row col-sm-12">
 										<label class="col-sm-8" for="ConvertLdapUtf8toIso">Les données (noms, prénom...) sont stockées en UTF-8 dans l'annuaire (configuration par défaut)</label>
 										<div class="col-sm-4">
 											<input type="checkbox" name="ConvertLdapUtf8toIso" value="y" {% if settings.ConvertLdapUtf8toIso == 'y' %} checked {% endif %}>
 										</div>
 									</div>
 								
-									<div class="form-group col-sm-12">
+									<div class="form-group row col-sm-12">
 										<label class="col-sm-8" for="ActiveModeDiagnostic">Activer le mode "diagnostic" en cas d'erreur de connexion, les messages renvoyés par GRR sont plus explicites. De cette façon, il peut être plus facile de déterminer la cause du problème.</label>
 										<div class="col-sm-4">
 											<input type="checkbox" name="ActiveModeDiagnostic" value="y" {% if settings.ActiveModeDiagnostic == 'y' %} checked {% endif %}>

@@ -38,7 +38,7 @@
 						{{ form.input('pwd_ldap', trad.pwd, trad.dPwdLDAP, {classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'password'}) }}
 						<p>Remarque : des problèmes liés à un mot de passe contenant un ou plusieurs caractères accentués ont déjà été constatés.</p>
 
-						<div class="form-group col-sm-12">
+						<div class="form-group row col-sm-12">
 							<p>Utiliser TLS :</p>
 							<input type="radio" name="use_tls" value="y" id="label_1a" {% if trad.dUseTLS == 'y' %}checked{% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
 							<input type="radio" name="use_tls" value="n" id="label_1b" {% if trad.dUseTLS == 'n' %}checked{% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>

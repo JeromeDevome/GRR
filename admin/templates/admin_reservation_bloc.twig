@@ -67,7 +67,7 @@
 							<input type="hidden" name="type_resa" value="{{ trad.dTypeResa }}" />
 
 							{% if trad.dTypeResa == 'resa' %}
-								<div class="form-group col-sm-12">
+								<div class="form-group row col-sm-12">
 									<label class="col-sm-4" for="beneficiaire">{{ trad.reservation_au_nom_de }}</label>
 									<div class="col-sm-8">
 									<select name="beneficiaire" class="form-control" required>
@@ -84,7 +84,7 @@
 
 							{% endif %}
 
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-4" for="rooms">{{ trad.rooms }}</label>
 								<div class="col-sm-8">
 								<select name="rooms[]" class="form-control" multiple required>
@@ -96,7 +96,7 @@
 							</div>
 
 							{% if trad.dTypeResa == 'resa' %}
-								<div class="form-group col-sm-12">
+								<div class="form-group row col-sm-12">
 									<label class="col-sm-4" for="type_">{{ trad.type }}</label>
 									<div class="col-sm-8">
 									<select name="type_" class="form-control" required>

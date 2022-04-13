@@ -88,7 +88,7 @@
 						{{ form.input('reg_password', trad.pwd_toot_short, '', {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'password'}) }}
 						{{ form.input('reg_password2', trad.confirm_pwd, '', {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'password'}) }}
 
-						<div class="form-group col-sm-12">
+						<div class="form-group row col-sm-12">
 							<label class="col-sm-4" for="cacher_lien_deconnecter">{{ trad.user_change_pwd_connexion }}</label>
 							<div class="col-sm-8">
 								<input type="checkbox" name="reg_changepwd" value="1" {% if utilisateur.changepwd == '1' %} checked {% endif %}>

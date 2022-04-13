@@ -44,14 +44,14 @@
 							{{ form.textarea('message_home_page', trad.message_home_page, settings.message_home_page, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
 							{{ form.input('company', trad.company, settings.company, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
 							{{ form.input('grr_url', trad.grr_url, settings.grr_url, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-11" for="use_grr_url">{{ trad.grr_url_explain }}</label>
 								<div class="col-sm-1">
 									<input type="checkbox" name="use_grr_url" value="y" {% if settings.use_grr_url == y %} checked {% endif %}>
 								</div>
 							</div>
 							{{ form.input('webmaster_name', trad.webmaster_name, settings.webmaster_name, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<br><p>{{ trad.plusieurs_adresses_separees_points_virgules }}</p>
 							</div>
 							{{ form.input('webmaster_email', trad.webmaster_email, settings.webmaster_email, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
@@ -62,14 +62,14 @@
 						<section id="logo">
 							<h4 class="page-header">{{ trad.logo_msg }}</h4>
 							<p>{{ trad.choisir_image_logo }}</p>
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-4" for="doc_file">{{ trad.select_fichier }}</label>
 								<div class="col-sm-8">
 									<input type="file" name="doc_file" />
 								</div>
 							</div>
 							{% if trad.dLogo %}
-								<div class="form-group col-sm-12">
+								<div class="form-group row col-sm-12">
 									<img src="{{ trad.dLogo }}" alt="logo" title="{{ trad.dLogo }}"/>
 									<div class="col-sm-8">
 										{{ trad.supprimer_logo }} <input type="checkbox" name="sup_img" />
@@ -80,7 +80,7 @@
 							<hr>
 						<section id="calendries">
 							<h4 class="page-header">{{ trad.affichage_calendriers }}</h4>
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-4" for="nb_calendar">{{ trad.affichage_calendriers_msg }}</label>
 								<div class="col-sm-8">
 									<select class="form-control" name="nb_calendar">
@@ -94,7 +94,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-4" for="plageresa">{{ trad.title_begin_end_bookings }}</label>
 								<div class="input-group col-sm-8">
 									<div class="input-group-addon">

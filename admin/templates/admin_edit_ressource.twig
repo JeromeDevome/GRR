@@ -4,6 +4,7 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs4.min.css">
 {% endblock %}
 
 {% block content %}
@@ -15,7 +16,7 @@
 				</div>
 				
 				<div class="box-body no-padding">
-					<form enctype="multipart/form-data" action="?p=admin_edit_room" method="post">
+					<form enctype="multipart/form-data" class="form-horizontal" action="?p=admin_edit_room" method="post">
 						<input type="hidden" name="p" value="admin_edit_domaine" />
 						{{ trad.dHidden1 |raw }}
 						{{ trad.dHidden2 |raw }}
@@ -33,7 +34,7 @@
 							{{ form.input('description', trad.description, ressource.description, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label'}) }}
 
 							{% if trad.dDroitsDomaine  >= 4 and trad.dDroitsRessource  >= 4 and trad.dEnablePeriods == 'n' %}
-								<div class="form-group col-sm-12">
+								<div class="form-group row col-sm-12">
 									<label class="col-sm-8" for="area_id">{{ trad.match_area }}</label>
 									<div class="col-sm-4">
 										<select class="form-control" name="area_id">
@@ -50,7 +51,7 @@
 
 							{{ form.input('area_order', trad.order_display, ressource.order_display, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
 						
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-8" for="who_can_see">{{ trad.qui_peut_voir_ressource }}</label>
 								<div class="col-sm-4">
 									<select class="form-control" name="who_can_see">
@@ -67,14 +68,14 @@
 								</div>
 							</div>
 
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-8" for="statut_room">{{ trad.declarer_ressource_indisponible }} {{ trad.explain_max_booking }}</label>
 								<div class="col-sm-4">
 									<input type="checkbox" name="statut_room" {% if ressource.statut_room == 0 %} checked {% endif %}>
 								</div>
 							</div>
 
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-8" for="show_fic_room">{{ trad.montrer_fiche_presentation_ressource }}</label>
 								<div class="col-sm-4">
 									<input type="checkbox" name="show_fic_room" {% if ressource.show_fic_room == 'y' %} checked {% endif %}>
@@ -82,21 +83,21 @@
 								</div>
 							</div>
 
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-8" for="doc_file">{{ trad.choisir_image_ressource }}</label>
 								<div class="col-sm-4">
 									<input type="file" name="doc_file" />
 								</div>
 							</div>
 
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-8" for="sup_img">{{ trad.supprimer_image_ressource }}</label>
 								<div class="col-sm-4">
 									<input type="checkbox" name="sup_img" {% if trad.dLienImg is not defined %} disabled {% endif %}>
 								</div>
 							</div>
 
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-8" for="show_comment">{{ trad.Afficher_description_complete_dans_titre_plannings }}</label>
 								<div class="col-sm-4">
 									<input type="checkbox" name="show_comment" {% if ressource.show_comment == 'y' %} checked {% endif %}>
@@ -104,7 +105,7 @@
 							</div>
 
 							<p>{{ trad.description_complete }} :</p>
-							<textarea id="editor1" name="comment_room" rows="10" cols="80">
+							<textarea id="summernote" name="comment_room" rows="10" cols="80">
 								{{ ressource.comment_room }}
 							</textarea>
 
@@ -138,28 +139,28 @@
 
 							{{ form.input('delais_option_reservation', trad.msg_option_de_reservation, ressource.delais_option_reservation, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
 
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-8" for="moderate">{{ trad.msg_moderation_reservation }}</label>
 								<div class="col-sm-4">
 									<input type="checkbox" name="moderate" {% if ressource.moderate == 1 %} checked {% endif %}>
 								</div>
 							</div>
 
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-8" for="allow_action_in_past">{{ trad.allow_action_in_past }} {{ trad.allow_action_in_past_explain }}</label>
 								<div class="col-sm-4">
 									<input type="checkbox" name="allow_action_in_past" value="y" {% if ressource.allow_action_in_past == 'y' %} checked {% endif %}>
 								</div>
 							</div>
 
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-8" for="dont_allow_modify">{{ trad.dont_allow_modify }}</label>
 								<div class="col-sm-4">
 									<input type="checkbox" name="dont_allow_modify" value="y" {% if ressource.dont_allow_modify == 'y' %} checked {% endif %}>
 								</div>
 							</div>
 
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-8" for="qui_peut_reserver_pour">{{ trad.qui_peut_reserver_pour_autre_utilisateur }}</label>
 								<div class="col-sm-4">
 									<select class="form-control" name="qui_peut_reserver_pour">
@@ -171,21 +172,21 @@
 								</div>
 							</div>
 
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-8" for="active_ressource_empruntee">{{ trad.activer_fonctionalite_ressource_empruntee_restituee }}</label>
 								<div class="col-sm-4">
 									<input type="checkbox" name="active_ressource_empruntee" value="y" {% if ressource.active_ressource_empruntee == 'y' %} checked {% endif %}>
 								</div>
 							</div>
 
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-8" for="active_cle">{{ trad.activer_fonctionalite_gestion_cle }}</label>
 								<div class="col-sm-4">
 									<input type="checkbox" name="active_cle" value="y" {% if ressource.active_cle == 'y' %} checked {% endif %}>
 								</div>
 							</div>
 
-							<div class="form-group col-sm-12">
+							<div class="form-group row col-sm-12">
 								<label class="col-sm-8" for="active_participant">{{ trad.activer_fonctionalite_participant }}</label>
 								<div class="col-sm-4">
 									<select class="form-control" name="active_participant">
@@ -221,27 +222,11 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../bootstrap/AdminLTE/bower_components/ckeditor/ckeditor.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs4.min.js"></script>
 	<script>
 		$(function () {
-			// Replace the <textarea id="editor1"> with a CKEditor
-			//CKEDITOR.replace('editor1');
-			//<![CDATA[
-			CKEDITOR.replace( 'editor1',
-			{
-				toolbar :
-				[
-				['Source'],
-				['Cut','Copy','Paste','PasteText','PasteFromWord', 'SpellChecker', 'Scayt'],
-				['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-				['Bold','Italic','Underline','Strike','-','Subscript','Superscript','-','TextColor','BGColor'],
-				['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
-				['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-				['Link','Unlink','Anchor'],
-				['Image','Table','HorizontalRule','SpecialChar','PageBreak'],
-				]
-			});
-			//]]>
-		});
+			// Summernote
+			$('#summernote').summernote()
+		}); 
 	</script>
 {% endblock %}

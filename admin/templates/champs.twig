@@ -1,5 +1,5 @@
 {% macro input(name, label, value = null, options = []) %}
-	<div class="form-group {{ options.classGroup }}">
+	<div class="form-group row row {{ options.classGroup }}">
 		<label class="{{ options.classLabel }}" for="{{ name }}">{{ label }} {% if options.require == 1 %}*{% endif %}</label>
 		<div class="{{ options.classInput }}">
 			<input class="form-control" type="{{ options.type ?: 'text' }}" id="{{ name }}" name="{{ name }}" value="{{ value }}" {% if options.require == 1 %}required{% endif %} {% if options.disabled == 1 %}disabled{% endif %}>
@@ -8,7 +8,7 @@
 {% endmacro %}
 
 {% macro textarea(name, label, value = null, options = []) %}
-	<div class="form-group {{ options.classGroup }}">
+	<div class="form-group row {{ options.classGroup }}">
 		<label class="{{ options.classLabel }}" for="{{ name }}">{{ label }}</label>
 		<div class="{{ options.classInput }}">
 			<textarea class="form-control" type="text" id="{{ name }}" name="{{ name }}" value="">{{ value }}</textarea>
@@ -17,7 +17,7 @@
 {% endmacro %}
 
 {% macro colorpicker1(name, label, value = null, options = []) %}
-	<div class="form-group {{ options.classGroup }}">
+	<div class="form-group row {{ options.classGroup }}">
 		<label class="{{ options.classLabel }}" for="{{ name }}">{{ label }}</label>
 		<div class="input-group my-colorpicker1 {{ options.classInput }}">
 			<input type="text" class="form-control my-colorpicker1 colorpicker-element"  data-colorpicker-id="1" data-original-title="" id="{{ name }}" name="{{ name }}" value="{{ value }}">
@@ -26,7 +26,7 @@
 {% endmacro %}
 
 {% macro colorpicker2(name, label, value = null, options = []) %}
-	<div class="form-group {{ options.classGroup }} {{ name }}">
+	<div class="form-group row {{ options.classGroup }} {{ name }}">
 		<label class="{{ options.classLabel }}" for="{{ name }}">{{ label }}</label>
 		<div class="input-group my-colorpicker2 colorpicker-element {{ options.classInput }}" id="{{ name }}">
 			<input type="text" class="form-control" id="{{ name }}" name="{{ name }}" value="{{ value }}">
