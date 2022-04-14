@@ -1,8 +1,6 @@
 {% extends 'layout.twig' %}
 
-{% block css %}
-	<link rel="stylesheet" href="../bootstrap/AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
-	<link rel="stylesheet" href="../bootstrap/AdminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+{% block css %}>
 {% endblock %}
 
 {% import 'messagesysteme.twig' as msgSyst %}
@@ -50,19 +48,19 @@
 
 		<div class="col-md-12">
 
-			<ul class="timeline">
+			<div class="timeline">
 				{% for log in logsresa %}
 					<!-- Date -->
 					{% if log.date|date('d/m/Y') != dateprecedente %}
-						<li class="time-label">
-							  <span class="bg-aqua">
+						<div class="time-label">
+							  <span class="bg-info">
 								{{ log.date|date('d/m/Y') }}
 							  </span>
-						</li>
+							</div>
 						{% set dateprecedente = log.date|date('d/m/Y') %}
 					{% endif %}
 					<!-- Logs -->
-					<li>
+					<div class="timeline-item">
 						{% if log.action == 1 %}
 							<i class="fa fa-plus bg-green"></i>
 						{% elseif log.action == 2 %}
@@ -90,20 +88,16 @@
 						  {{ log.infos |raw }}
 						</div>
 					  </div>
-					</li>
+					</div>
 				{% endfor %}
-				<li>
-				  <i class="fa fa-clock bg-gray"></i>
-				</li>
-			</ul>
+				<div>
+				  <i class="fas fa-clock bg-gray"></i>
+				</div>
+			</div>
 
 		</div>
 	</div>
 {% endblock %}
 
 {% block javascript %}
-	<script src="../bootstrap/AdminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-	<script src="../bootstrap/AdminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-	<script src="../bootstrap/AdminLTE/bower_components/moment/min/moment.min.js"></script>
-	<script src="../bootstrap/AdminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 {% endblock %}

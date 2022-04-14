@@ -24,7 +24,7 @@ check_access(6, $back);
 if (isset($_POST['cleanlog']))
 {
 	
-	$dateMax = strtotime( $_POST['cleanlog'] );
+	$dateMax = strtotime( str_replace('/', '-', $_POST['cleanlog']) );
 	$sql = "DELETE FROM ".TABLE_PREFIX."_log_resa WHERE date < '".$dateMax."' and date < now()";
 	$res = grr_sql_query($sql);
 }
