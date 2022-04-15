@@ -74,11 +74,11 @@
        
 		{% for lien in liensMenu %}
 			{% if lien.niveau == 2 %}
-				<li class="nav-item">
+				<li class="nav-item {{lien.classLi}}">
 				
-					<a href="#" class="nav-link {{lien.classLi}}">
+					<a href="#" class="nav-link {{lien.classA}}">
 						<i class="{{lien.image}}"></i>
-						<span>{{lien.nom}}</span>
+						<p>{{lien.nom}}</p>
 						<span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
 					</a>
 					<ul class="nav nav-treeview">
@@ -96,7 +96,7 @@
 			{% else %}
 				<li class="nav-item">
 					<a href="{{lien.lien}}" class="nav-link {{lien.classLi}}">
-						<i class="{{lien.image}}"></i> <span>{{lien.nom}}</span> <span class="pull-right-container"></span>
+						<i class="{{lien.image}}"></i> <p>{{lien.nom}}</p>
 					</a>
 				</li>
 			{% endif %}
