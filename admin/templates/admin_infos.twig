@@ -2,18 +2,24 @@
 
 {% import 'messagesysteme.twig' as msgSyst %}
 
+{% block css %}
+{% endblock %}
+
 {% block content %}
 	<div class="row">
 		<div class="col-md-12">
 
-			<div class="nav-tabs-custom">
-				<ul class="nav nav-tabs">
-					<li class="active"><a href="#grr" data-toggle="tab">Infos GRR</a></li>
-					<li><a href="#serveur" data-toggle="tab">Serveur</a></li>
-					<li><a href="#infosphp" data-toggle="tab">Infos PHP</a></li>
-					<li><a href="#fichierconfig" data-toggle="tab">Fichier configuration</a></li>
+            <div class="card card-primary card-outline card-tabs">
+				<div class="card-header p-0 pt-1 border-bottom-0">
+				  <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+					<li class="nav-item"><a class="nav-link active" href="#grr" data-toggle="tab">Infos GRR</a></li>
+					<li class="nav-item"><a class="nav-link" href="#serveur" data-toggle="tab">Serveur</a></li>
+					<li class="nav-item"><a class="nav-link" href="#infosphp" data-toggle="tab">Infos PHP</a></li>
+					<li class="nav-item"><a class="nav-link" href="#fichierconfig" data-toggle="tab">Fichier configuration</a></li>
 					<li class="pull-right"><button type="button" id="copy" class="btn btn-info pull-right btn-block btn-sm">Copier infos pour aide</button></li>
-				</ul>
+				  </ul>
+				</div>
+				<div class="card-body">
 				<div class="tab-content">
 					<!-- GRR -->
 					<div class="tab-pane active" id="grr">
@@ -40,24 +46,24 @@ Timezone : {{ trad.dTimezone }}</textarea></li>
 					<!-- Serveur -->
 					<div class="tab-pane" id="serveur">
 						<ul class="list-group list-group-unbordered">
-							<li class="list-group-item"><p class="col-sm-6">{{ trad.system }}</p><b>{{ trad.dSystem }}</b></li>
-							<li class="list-group-item"><p class="col-sm-6">Version PHP</p><b><small class="label pull-left {{ trad.dCouleurVersionPHP }}">{{ trad.dVersionPHP }}</small>&nbsp;</b></li>
-							<li class="list-group-item"><p class="col-sm-6">{{ trad.database }}</p><b>{{ trad.dDatabase }}</b></li>
-							<li class="list-group-item"><p class="col-sm-6">Version BDD</p><b><small class="label pull-left {{ trad.dCouleurVersionMySQL }}">{{ trad.dVersionBDD }}</small>&nbsp;</b></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">{{ trad.system }}</p><b>{{ trad.dSystem }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Version PHP</p><b><small class="label pull-left {{ trad.dCouleurVersionPHP }}">{{ trad.dVersionPHP }}</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">{{ trad.database }}</p><b>{{ trad.dDatabase }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Version BDD</p><b><small class="label pull-left {{ trad.dCouleurVersionMySQL }}">{{ trad.dVersionBDD }}</small>&nbsp;</b></div></li>
 
-							<li class="list-group-item"><b class="col-sm-12">Dossiers : </b><br></li>
-							<li class="list-group-item"><p class="col-sm-6">Existence dossier "installation"</p><b><small class="label pull-left {% if trad.dDossierInstallation == 1 %}bg-orange{% else %}bg-green{% endif %}">{% if trad.dDossierInstallation == 1 %}Existant - Nous recommandons de le supprimer{% else %}Innexistant{% endif %}</small>&nbsp;</b></li>
-							<li class="list-group-item"><p class="col-sm-6">Droits dossier "personnalisation/images/logos"</p><b><small class="label pull-left {% if trad.dDossierImgLogosEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></li>
-							<li class="list-group-item"><p class="col-sm-6">Droits dossier "personnalisation/images/ressources"</p><b><small class="label pull-left {% if trad.dDossierImgRessourcesEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></li>
-							<li class="list-group-item"><p class="col-sm-6">Droits dossier "export"</p><b><small class="label pull-left {% if trad.dDossierExportEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></li>
-							<li class="list-group-item"><p class="col-sm-6">Droits dossier "temp"</p><b><small class="label pull-left {% if trad.dDossierTempEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></li>
-							<li class="list-group-item"><p class="col-sm-6">Droits dossier "personnalisation/modules"</p><b><small class="label pull-left {% if trad.dDossierModulesEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></li>
+							<li class="list-group-item"><b class="col-sm-12">Dossiers : </b></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Existence dossier "installation"</p><b><small class="label pull-left {% if trad.dDossierInstallation == 1 %}bg-orange{% else %}bg-green{% endif %}">{% if trad.dDossierInstallation == 1 %}Existant - Nous recommandons de le supprimer{% else %}Innexistant{% endif %}</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Droits dossier "personnalisation/images/logos"</p><b><small class="label pull-left {% if trad.dDossierImgLogosEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Droits dossier "personnalisation/images/ressources"</p><b><small class="label pull-left {% if trad.dDossierImgRessourcesEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Droits dossier "export"</p><b><small class="label pull-left {% if trad.dDossierExportEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Droits dossier "temp"</p><b><small class="label pull-left {% if trad.dDossierTempEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Droits dossier "personnalisation/modules"</p><b><small class="label pull-left {% if trad.dDossierModulesEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
 
-							<li class="list-group-item"><b class="col-sm-12">Temps : </b><br></li>
-							<li class="list-group-item"><p class="col-sm-6">Time</p><b>{{ trad.dTime }}</b></li>
-							<li class="list-group-item"><p class="col-sm-6">Date du serveur (Jour-Mois-Annee)</p><b>{{ trad.dDate }}</b></li>
-							<li class="list-group-item"><p class="col-sm-6">Heure du serveur</p><b>{{ trad.dHeure }}</b></li>
-							<li class="list-group-item"><p class="col-sm-6">Timezone (date_default_timezone_set)</p><b>{{ trad.dTimezone }}</b></li>
+							<li class="list-group-item"><b class="col-sm-12">Temps : </b></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Time</p><b>{{ trad.dTime }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Date du serveur (Jour-Mois-Annee)</p><b>{{ trad.dDate }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Heure du serveur</p><b>{{ trad.dHeure }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Timezone (date_default_timezone_set)</p><b>{{ trad.dTimezone }}</b></div></li>
 						</ul>
 					</div>
 
@@ -74,6 +80,7 @@ Timezone : {{ trad.dTimezone }}</textarea></li>
 							{{ trad.dInfosConfigVar |raw }}
 						</ul>
 					</div>
+				</div>
 				</div>
 			</div>
 		</div>
