@@ -24,11 +24,11 @@
 					<!-- GRR -->
 					<div class="tab-pane active" id="grr">
 						<ul class="list-group list-group-unbordered">
-							<li class="list-group-item"><p class="col-sm-6">{{ trad.num_version }}</p><b>{{ trad.dNum_version }}</b></li>
-							<li class="list-group-item"><p class="col-sm-6">{{ trad.num_versionbdd }}</p><b>{{ trad.dNum_versionbdd }}</b></li>
-							<li class="list-group-item"><p class="col-sm-6">{{ trad.prefixe }}</p><b>{{ trad.dPrefixe }}</b></li>
-							<li class="list-group-item"><p class="col-sm-6">{{ trad.maj_bdd }}</p><b>{{ trad.dMaj_bdd |raw }} </b></li>
-							<li class="list-group-item"><p class="col-sm-6">{{ trad.maj_recherche_grr }}</p><b>{{ trad.dMaj_SiteGRR |raw }}&nbsp;</b></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">{{ trad.num_version }}</p><b>{{ trad.dNum_version }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">{{ trad.num_versionbdd }}</p><b>{{ trad.dNum_versionbdd }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">{{ trad.prefixe }}</p><b>{{ trad.dPrefixe }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">{{ trad.maj_bdd }}</p><b>{{ trad.dMaj_bdd |raw }} </b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">{{ trad.maj_recherche_grr }}</p><b>{{ trad.dMaj_SiteGRR |raw }}&nbsp;</b></div></li>
 							<li class="list-group-item"><p class="col-sm-6"><b>Infos support </b><i>(A fournir pour toute demande d'aide)</i> :</p><textarea id="to-copy" rows="8" cols="40">
 {{ trad.num_version }} : {{ trad.dNum_version }}
 {{ trad.num_versionbdd }} : {{ trad.dNum_versionbdd }}
@@ -47,17 +47,17 @@ Timezone : {{ trad.dTimezone }}</textarea></li>
 					<div class="tab-pane" id="serveur">
 						<ul class="list-group list-group-unbordered">
 							<li class="list-group-item"><div class="row"><p class="col-sm-6">{{ trad.system }}</p><b>{{ trad.dSystem }}</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col-sm-6">Version PHP</p><b><small class="label pull-left {{ trad.dCouleurVersionPHP }}">{{ trad.dVersionPHP }}</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Version PHP</p><b><small class="badge pull-left {{ trad.dCouleurVersionPHP }}">{{ trad.dVersionPHP }}</small>&nbsp;</b></div></li>
 							<li class="list-group-item"><div class="row"><p class="col-sm-6">{{ trad.database }}</p><b>{{ trad.dDatabase }}</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col-sm-6">Version BDD</p><b><small class="label pull-left {{ trad.dCouleurVersionMySQL }}">{{ trad.dVersionBDD }}</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Version BDD</p><b><small class="badge pull-left {{ trad.dCouleurVersionMySQL }}">{{ trad.dVersionBDD }}</small>&nbsp;</b></div></li>
 
 							<li class="list-group-item"><b class="col-sm-12">Dossiers : </b></li>
-							<li class="list-group-item"><div class="row"><p class="col-sm-6">Existence dossier "installation"</p><b><small class="label pull-left {% if trad.dDossierInstallation == 1 %}bg-orange{% else %}bg-green{% endif %}">{% if trad.dDossierInstallation == 1 %}Existant - Nous recommandons de le supprimer{% else %}Innexistant{% endif %}</small>&nbsp;</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col-sm-6">Droits dossier "personnalisation/images/logos"</p><b><small class="label pull-left {% if trad.dDossierImgLogosEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col-sm-6">Droits dossier "personnalisation/images/ressources"</p><b><small class="label pull-left {% if trad.dDossierImgRessourcesEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col-sm-6">Droits dossier "export"</p><b><small class="label pull-left {% if trad.dDossierExportEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col-sm-6">Droits dossier "temp"</p><b><small class="label pull-left {% if trad.dDossierTempEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col-sm-6">Droits dossier "personnalisation/modules"</p><b><small class="label pull-left {% if trad.dDossierModulesEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Existence dossier "installation"</p><b><small class="badge pull-left {% if trad.dDossierInstallation == 1 %}bg-orange{% else %}bg-green{% endif %}">{% if trad.dDossierInstallation == 1 %}Existant - Nous recommandons de le supprimer{% else %}Innexistant{% endif %}</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Droits dossier "personnalisation/images/logos"</p><b><small class="badge pull-left {% if trad.dDossierImgLogosEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Droits dossier "personnalisation/images/ressources"</p><b><small class="badge pull-left {% if trad.dDossierImgRessourcesEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Droits dossier "export"</p><b><small class="badge pull-left {% if trad.dDossierExportEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Droits dossier "temp"</p><b><small class="badge pull-left {% if trad.dDossierTempEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col-sm-6">Droits dossier "personnalisation/modules"</p><b><small class="badge pull-left {% if trad.dDossierModulesEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
 
 							<li class="list-group-item"><b class="col-sm-12">Temps : </b></li>
 							<li class="list-group-item"><div class="row"><p class="col-sm-6">Time</p><b>{{ trad.dTime }}</b></div></li>
@@ -93,9 +93,9 @@ Timezone : {{ trad.dTimezone }}</textarea></li>
 		var toCopy  = document.getElementById( 'to-copy' ),
 		btnCopy = document.getElementById( 'copy' );
 		btnCopy.addEventListener( 'click', function(){
-		toCopy.select();
-		document.execCommand( 'copy' );
-		return false;
+			toCopy.select();
+			document.execCommand( 'copy' );
+			return false;
 		} );
 	</script>
 {% endblock %}
