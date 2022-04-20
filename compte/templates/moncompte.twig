@@ -8,7 +8,7 @@
 
 {% block content %}
 
-<div class="container">
+<div>
 	<form id="param_account" action="compte.php?moncompte" method="post">
 
 		<table>
@@ -37,7 +37,7 @@
 		<hr>
 
 		{% if modificationMDP == false %}
-			<div class="container">
+			<div>
 				<p>{{ trad.pwd_msg_warning }}</p>
 
 				<div class="form-group">
