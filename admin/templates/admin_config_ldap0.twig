@@ -22,7 +22,9 @@
 			{% if trad.dMesgTitreConfigActuel %}
 				{{ msgSyst.messageInfo(trad.dMesgTitreConfigActuel, trad.dMesgConfActuel) }}
 			{% endif %}
-
+			{% if trad.dConfigImpossible == 1 %}
+				<div class="callout callout-danger">{{ trad.dMesgSysteme }}</div>
+			{% endif %}
 			{% if trad.dConfigImpossible == 0 %}
 
 				<div class="box">
