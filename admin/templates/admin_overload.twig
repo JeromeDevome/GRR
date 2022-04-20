@@ -5,10 +5,7 @@
 {% block content %}
 	<div class="row">
 		<div class="col-md-12">
-
-			{% if listeManquant %}
-				{{ msgSyst.messageAlerte(trad.type_resa_manquant_titre, trad.type_resa_manquant_msg ~ listeManquant) }}
-			{% endif %}
+        <div style="overflow:auto;">
 
 			<div class="box">
 				<div class="box-header">
@@ -28,7 +25,7 @@
 							<th>{{trad.affiche_dans_les_vues}}</th>
 							<th>{{trad.affiche_dans_les_mails}}</th>
 							<th>{{trad.champ_confidentiel}}</th>
-							<th><span class="small">{{trad.envoy_mail_specifique}}*(1)(2)</span></th>
+							<th>{{trad.envoy_mail_specifique}}*(1)(2)</th>
 							<th colspan="2">{{trad.action}}</th>
 						</tr>
 
@@ -104,6 +101,7 @@
 				</div>
 			</div>
 		</div>
+        </div>
 	</div>
 
 	<!-- popup modal -->
