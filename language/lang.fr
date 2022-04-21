@@ -1,7 +1,7 @@
 <?php
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue française
-# Last modification : 2022-03-17
+# Last modification : 2022-04-21
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accepter la réservation";
@@ -901,6 +901,7 @@ $vocab['type_order'] = "Ordre d'affichage";
 $vocab['type_par_defaut'] = "Type sélectionné par défaut lors d'une nouvelle réservation";
 $vocab['type_resa_manquant_msg'] = "Un ou plusieurs types sont actuellement utilisés dans les réservations mais ne figurent pas dans la tables des types. Cela risque d'engendrer des messages d'erreur. Vous devez donc définir ci-dessous, le ou les types manquants. Il s'agit du ou des types suivants : ";
 $vocab['type_resa_manquant_titre'] = "ATTENTION : votre table des types de réservation n'est pas à jour !";
+$vocab['type_resa_vide_msg'] = "Au moins une réservation a un type non renseigné. Vous devriez vérifier et corriger votre table de réservations.";
 $vocab['type_text'] = "Une ligne (texte)";
 $vocab['type_valide_domaine'] = "Type valide pour le domaine";
 $vocab['uncheck_all_'] = "Tout décocher";

@@ -3,9 +3,9 @@
  * admin_type.php
  * Interface de gestion des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-22 14:00$
+ * Dernière modification : $Date: 2022-04-21 14:34$
  * @author    JeromeB & Laurent Delineau
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -40,6 +40,7 @@ get_vocab_admin("NO");
 
 get_vocab_admin("type_resa_manquant_msg");
 get_vocab_admin("type_resa_manquant_titre");
+get_vocab_admin("type_resa_vide_msg");
 
 $trad['TitrePage'] = $trad['admin_type'];
 $trad['SousTitrePage'] = 'Administration';

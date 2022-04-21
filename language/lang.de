@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML Codage de certains caractères particuliers : &#x00DF; -> "double s" allemand http://www.unicode.org/charts/PDF/U0080.pdf
 # GRR : fichier de langue allemande
 # GRR: Traduction by: JeromeB & Karsten Schinkel & Jean-Yves Migeon
-# Last modification : 2022-03-17
+# Last modification : 2022-04-21
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Reservierung akzeptieren";
@@ -902,6 +902,7 @@ $vocab['type_order'] = "Reihenfolge der Darstellung";
 $vocab['type_par_defaut'] = "ausgewählte Standardtart für eine neue Reservierung";
 $vocab['type_resa_manquant_msg'] = "Un ou plusieurs types sont actuellement utilisés dans les réservations mais ne figurent pas dans la tables des types. Cela risque d'engendrer des messages d'erreur. Vous devez donc définir ci-dessous, le ou les types manquants. Il s'agit du ou des types suivants : "; // A traduire
 $vocab['type_resa_manquant_titre'] = "ATTENTION : votre table des types de réservation n'est pas à jour !"; // A traduire
+$vocab['type_resa_vide_msg'] = "Mindestens eine Reservierung hat einen nicht angegebenen Typ. Sie sollten Ihre Reservierungstabelle überprüfen und korrigieren.";
 $vocab['type_text'] = "Eine Linie (Text)"; // A traduire
 $vocab['type_valide_domaine'] = "Gültigkeit für den Bereich";
 $vocab['uncheck_all_'] = "Alle Markierungen aufheben";

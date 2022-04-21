@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR : fichier de langue espagnole
 # GRR: Traduction By JeromeB
-# Last modification : 2022-03-17
+# Last modification : 2022-04-21
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Aceptar la reserva";
@@ -902,6 +902,7 @@ $vocab['type_order'] = "Orden de visualisación";
 $vocab['type_par_defaut'] = "Tipo seleccionado por defecto durante una nueva reserva";
 $vocab['type_resa_manquant_msg'] = "Un ou plusieurs types sont actuellement utilisés dans les réservations mais ne figurent pas dans la tables des types. Cela risque d'engendrer des messages d'erreur. Vous devez donc définir ci-dessous, le ou les types manquants. Il s'agit du ou des types suivants : "; // A traduire
 $vocab['type_resa_manquant_titre'] = "ATTENTION : votre table des types de réservation n'est pas à jour !"; // A traduire
+$vocab['type_resa_vide_msg'] = "Al menos una reserva tiene un tipo no especificado. Debe verificar y corregir su tabla de reservas.";
 $vocab['type_text'] = "una línea (text)"; // A traduire
 $vocab['type_valide_domaine'] = "Tipo válido para el campo";
 $vocab['uncheck_all_'] = "Quitar todas las cruces";
