@@ -155,9 +155,21 @@ if ($res)
 	}
 	if ($liste != "")
 	{
-		echo "<br /><table border=\"1\" cellpadding=\"5\"><tr><td><p><font color=\"red\"><b>".get_vocab('admin_type_msg2')."</b></font></p>";
+        echo "<div class='alert alert-danger'><b>";
+        echo "<p>".get_vocab('admin_type_msg2')."</p>";
+        echo "<p>".get_vocab('admin_type_msg3')."</p>";
+        if($liste != ' '){
+            echo "<p>".get_vocab('admin_type_msg4').$liste."</p>";
+            echo "<p>".get_vocab('admin_type_msg5')."</p>";
+        }
+        else{
+            echo "<p>".get_vocab('admin_type_msg6')."</p>";
+            echo "<p>".get_vocab('admin_type_msg7')."</p>";
+        }
+        echo "</b></div>";
+		/*echo "<br /><table border=\"1\" cellpadding=\"5\"><tr><td><p><font color=\"red\"><b>".get_vocab('admin_type_msg2')."</b></font></p>";
 		echo "<p>".get_vocab('admin_type_msg3')."<b>".get_vocab('admin_type_msg4').$liste."</b>";
-		echo "<br /><br />".get_vocab('admin_type_msg5')."</p></td></tr></table>";
+		echo "<br /><br />".get_vocab('admin_type_msg5')."</p></td></tr></table>";*/
 	}
 }
 // fin de l'affichage de la colonne de droite et de la page

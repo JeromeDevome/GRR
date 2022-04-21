@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2022-01-30
+# Last modification : 2022-04-20
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -126,6 +126,8 @@ $vocab['admin_type_msg2'] = "ATTENTION : votre table des types de réservation n
 $vocab['admin_type_msg3'] = "Un ou plusieurs types sont actuellement utilisés dans les réservations	mais ne figurent pas dans la table des types. Cela risque d'engendrer des messages d'erreur. ";
 $vocab['admin_type_msg4'] = "Il s'agit du ou des types suivants : ";
 $vocab['admin_type_msg5'] = "Vous devez donc définir ci-dessus, le ou les types manquants.";
+$vocab['admin_type_msg6'] = "Al menos una reserva tiene un tipo no especificado.";
+$vocab['admin_type_msg7'] = "Debe verificar y corregir su tabla de reservas.";
 $vocab['admin_user.php'] = "Usuarios";
 $vocab['admin_user1'] = "General user rights"; // A traduire
 $vocab['admin_user_modify_create.php'] = "Añadido de un nuevo usuario";
