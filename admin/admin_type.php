@@ -3,7 +3,7 @@
  * admin_type.php
  * Interface de gestion des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-25 10:11$
+ * Dernière modification : $Date: 2022-04-22 18:44$
  * @author    JeromeB & Laurent Delineau & Yan Naessens & J.-P. Gay
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -167,9 +167,6 @@ if ($res)
             echo "<p>".get_vocab('admin_type_msg7')."</p>";
         }
         echo "</b></div>";
-		/*echo "<br /><table border=\"1\" cellpadding=\"5\"><tr><td><p><font color=\"red\"><b>".get_vocab('admin_type_msg2')."</b></font></p>";
-		echo "<p>".get_vocab('admin_type_msg3')."<b>".get_vocab('admin_type_msg4').$liste."</b>";
-		echo "<br /><br />".get_vocab('admin_type_msg5')."</p></td></tr></table>";*/
 	}
 }
 // fin de l'affichage de la colonne de droite et de la page

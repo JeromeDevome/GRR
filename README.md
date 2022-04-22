@@ -8,6 +8,7 @@ Si vous avez besoin des dernières modifications apportées au code de GRR, vous
 **Requiert :**
 
 PHP : >= 5.6 && <= 7.4, nécessite au moins les modules php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml (*)
+compatibilité avec php8 en cours d'évaluation
 MySQL: > 5.4 && <= 5.6, compatibilité vraisemblable avec MySQL 5.7
 
 Site: https://grr.devome.com/

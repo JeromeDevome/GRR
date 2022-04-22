@@ -53,9 +53,6 @@ $mdp1 = clean_input($mdp1);
 $mdp2 = clean_input($mdp2);
 $email = clean_input($email);
 
-// Pour cette page uniquement, on désactive l'UTF8 et on impose l'ISO-8859-1
-$unicode_encoding = 1;
-$charset_html = "ISO-8859-1";
 function begin_html()
 {
 	echo '<div style="margin-left:15%;margin-right:15%;"><table><tr><td>';
@@ -116,7 +113,7 @@ if (@file_exists($nom_fic))
                 $test2 = 0;
 			if (($test2 != 0) && ($test1 != 'no'))
 			{
-				echo begin_page("Installation de GRR");
+				echo begin_simple_page("Installation de GRR");
 				begin_html();
                 if ($etape == 6)// vérifier que les personnalisations ont bien été prises en compte et lancer GRR
                 {
@@ -208,7 +205,7 @@ if (@file_exists($nom_fic))
 			{
 				if ($etape == 5)
 				{
-					echo begin_page("Installation de GRR");
+					echo begin_simple_page("Installation de GRR");
 					begin_html();
 					if ($test1 == 'no')
 					{
@@ -226,7 +223,7 @@ if (@file_exists($nom_fic))
 }
 if ($etape == 4)
 {
-	echo begin_page("Installation de GRR");
+	echo begin_simple_page("Installation de GRR");
 	begin_html();
 	echo "<br /><h2>Quatrième étape : Création des tables de la base</h2>";
 	$db = mysqli_connect("$adresse_db", "$login_db", "$pass_db", "", "$port_db");
@@ -247,6 +244,7 @@ if ($etape == 4)
         {
             $fd = fopen("tables.my.sql", "r");
             $result_ok = 'yes';
+            mysqli_set_charset( $db, 'utf8mb4');
             while (!feof($fd))
             {
                 $query = fgets($fd, 5000);
@@ -323,7 +321,7 @@ if ($etape == 4)
 }
 else if ($etape == 3)
 {
-	echo begin_page("Installation de GRR");
+	echo begin_simple_page("Installation de GRR");
 	begin_html();
 	echo "<br /><h2>Troisième étape : Choix de votre base</h2>\n";
 	echo "<form action='install_mysql.php' method='POST'><div>\n";
@@ -392,7 +390,7 @@ else if ($etape == 3)
 }
 else if ($etape == 2)
 {
-	echo begin_page("Installation de GRR");
+	echo begin_simple_page("Installation de GRR");
 	begin_html();
 	echo "<br /><h2>Deuxième étape : Essai de connexion au serveur $dbsys</h2>\n";
 	//echo "<!--";
@@ -426,7 +424,7 @@ else if ($etape == 2)
 }
 else if ($etape == 1)
 {
-	echo begin_page("Installation de GRR");
+	echo begin_simple_page("Installation de GRR");
 	begin_html();
 	echo "<br /><h2>Première étape : la connexion $dbsys</h2>";
 	echo "<p>Vous devez avoir en votre possession les codes de connexion au serveur $dbsys. Si ce n'est pas le cas, contactez votre hébergeur ou bien l'administrateur technique du serveur sur lequel vous voulez implanter GRR.</p>";
@@ -472,7 +470,7 @@ else if (!$etape)
 	}
 	if ($erreur != '')
 	{
-		echo begin_page("Installation de GRR");
+		echo begin_simple_page("Installation de GRR");
 		begin_html();
 		echo "<h2>Installation de la base $dbsys : problème de droits d'accès</h2>";
 		echo $erreur;

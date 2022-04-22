@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-02-02 11:28$
+ * Dernière modification : $Date: 2022-04-22 18:48$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -936,6 +936,32 @@ function page_accueil($param = 'no')
 		$page_accueil .= '&amp;';
 	return $page_accueil ;
 }
+/* function begin_simple_page()
+ * page simplifiée pour les initialisations */
+function begin_simple_page($title)
+{
+    if (@file_exists('admin_accueil.php') || @file_exists('install_mysql.php'))
+        $root = "../";
+    else
+        $root = "./";
+    header('Content-Type: text/html; charset=utf-8');
+	$a = '<!DOCTYPE html>'.PHP_EOL;
+	$a .= '<html lang="fr">'.PHP_EOL;
+	$a .= '<head>'.PHP_EOL;
+	$a .= '<meta charset="utf-8">'.PHP_EOL;
+	$a .= '<meta http-equiv="X-UA-Compatible" content="IE=edge">'.PHP_EOL;
+	$a .= '<meta name="viewport" content="width=device-width, initial-scale=1">'.PHP_EOL;
+	$a .= '<meta name="Robots" content="noindex" />'.PHP_EOL;
+	$a .= '<title>'.$title.'</title>'.PHP_EOL;
+    $a .= '<link rel="shortcut icon" href="'.$root.'favicon.ico" />'.PHP_EOL;
+    $a .= '<link rel="stylesheet" type="text/css" href="'.$root.'bootstrap/css/bootstrap.min.css" />'.PHP_EOL; // les outils css de bootstrap
+    $a .= '<link rel="stylesheet" type="text/css" href="'.$root.'themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
+    if (substr(phpversion(), 0, 1) == 3)
+        $a .= get_vocab('not_php3');
+	$a .= '</head>'.PHP_EOL;
+	$a .= '<body>'.PHP_EOL;
+	return $a;
+}
 
 function begin_page($title, $page = "with_session")
 {
@@ -1681,6 +1707,7 @@ function fatal_error($need_header, $message, $show_form_data = true)
 	end_page();
 	exit;
 }
+
 /** function iptobin($ip)
  * paramètre : une adresse iP v4 ou v6 supposée valable
  * rend : une chaîne de 0 ou 1 codant l'adresse sur 32 ou 128 digits 
