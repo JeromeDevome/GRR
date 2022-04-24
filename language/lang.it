@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2022-04-20
+# Last modification : 2022-04-24
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -131,6 +131,7 @@ $vocab['admin_type_msg4'] = "Il s'agit du ou des types suivants : ";
 $vocab['admin_type_msg5'] = "Vous devez donc définir ci-dessus, le ou les types manquants.";
 $vocab['admin_type_msg6'] = "Almeno una prenotazione ha un tipo non specificato.";
 $vocab['admin_type_msg7'] = "Dovresti controllare e correggere la tabella delle prenotazioni.";
+$vocab['admin_type_msg8'] = "Correggere la prenotazione n.";
 $vocab['admin_user.php'] = "Utenti";
 $vocab['admin_user1'] = "General user rights"; // A traduire
 $vocab['admin_user_modify_create.php'] = "Aggiunta di un nuovo utente";

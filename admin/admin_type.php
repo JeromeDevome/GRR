@@ -3,7 +3,7 @@
  * admin_type.php
  * Interface de gestion des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-04-22 18:44$
+ * Dernière modification : $Date: 2022-04-24 18:04$
  * @author    JeromeB & Laurent Delineau & Yan Naessens & J.-P. Gay
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -146,25 +146,34 @@ if ($nb_lignes > 0)
 $res = grr_sql_query("SELECT DISTINCT type FROM ".TABLE_PREFIX."_entry ORDER BY type");
 if ($res)
 {
-	$liste = "";
+	$liste = array();
 	foreach($res as $row)
 	{
 		$test = grr_sql_query1("SELECT type_letter FROM ".TABLE_PREFIX."_type_area where type_letter='".$row['type']."'");
 		if ($test == -1)
-			$liste .= $row['type']." ";
+			$liste[] = $row['type'];
 	}
-	if ($liste != "")
+	if (!empty($liste))
 	{
         echo "<div class='alert alert-danger'><b>";
         echo "<p>".get_vocab('admin_type_msg2')."</p>";
         echo "<p>".get_vocab('admin_type_msg3')."</p>";
-        if($liste != ' '){
+        if(in_array('',$liste)){
+            echo "<p>".get_vocab('admin_type_msg6')."</p>";
+            echo "<p>".get_vocab('admin_type_msg7')."</p>";
+        }
+        if(count($liste)>1){
             echo "<p>".get_vocab('admin_type_msg4').$liste."</p>";
             echo "<p>".get_vocab('admin_type_msg5')."</p>";
         }
-        else{
-            echo "<p>".get_vocab('admin_type_msg6')."</p>";
-            echo "<p>".get_vocab('admin_type_msg7')."</p>";
+        foreach($liste as $type){
+            $sql = "SELECT id FROM ".TABLE_PREFIX."_entry WHERE type='$type'";
+            $resa = grr_sql_query($sql);
+            if($resa){
+                foreach($resa as $no){
+                    echo "<a href='../edit_entry.php?id=".$no['id']."'>".get_vocab('admin_type_msg8').$no['id']."</a><br/>";
+                }
+            }
         }
         echo "</b></div>";
 	}
