@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-04-22 15:49$
+ * Dernière modification : $Date: 2022-04-24 10:40$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
@@ -1157,18 +1157,26 @@ if ($version_grr > "1.9.1")
     if ($res)
     {
         $liste = "";
-        for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+        foreach($res as $row)
         {
-            $test = grr_sql_query1("SELECT type_letter FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$row[0]."'");
-            if ($test == -1) $liste .= $row[0]." ";
+            $test = grr_sql_query1("SELECT type_letter FROM ".TABLE_PREFIX."_type_area where type_letter='".$row['type']."'");
+            if ($test == -1)
+                $liste .= $row['type']." ";
         }
         if ($liste != "")
         {
-            echo encode_message_utf8("<table class='table-bordered'><tr><td><p><span class='avertissement'><b>ATTENTION : votre table des types de réservation n'est pas à jour :</b></span></p>");
-            echo encode_message_utf8("<p>Depuis la version 1.9.2, les types de réservation ne sont plus définis dans le fichier config.inc.php
-                mais directement en ligne. Un ou plusieurs types sont actuellement utilisés dans les réservations
-                mais ne figurent pas dans la tables des types. Cela risque d'engendrer des messages d'erreur. <b>Il s'agit du ou des types suivants : ".$liste."</b>");
-            echo encode_message_utf8("<br /><br />Vous devez donc définir dans <a href= './admin_type.php'>l'interface de gestion des types</a>, le ou les types manquants, en vous aidant éventuellement des informations figurant dans votre ancien fichier config.inc.php.</p></td></tr></table>");
+            echo "<div class='alert alert-danger'><b>";
+            echo "<p>".get_vocab('admin_type_msg2')."</p>";
+            echo "<p>".get_vocab('admin_type_msg3')."</p>";
+            if($liste != ' '){
+                echo "<p>".get_vocab('admin_type_msg4').$liste."</p>";
+                echo "<p>".get_vocab('admin_type_msg5')."</p>";
+            }
+            else{
+                echo "<p>".get_vocab('admin_type_msg6')."</p>";
+                echo "<p>".get_vocab('admin_type_msg7')."</p>";
+            }
+            echo "</b></div>";
         }
     }
 }
