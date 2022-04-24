@@ -55,7 +55,7 @@ else
 	header("Location: ./login.php");
 	die();
 }	
-print_r($_GET);
+// print_r($_GET);
 // Paramètres langage
 include "include/language.inc.php";
 

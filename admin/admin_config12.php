@@ -3,7 +3,7 @@
  * admin_config12.php
  * Interface permettant à l'administrateur la configuration de certains paramètres d'affichage
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2022-02-02 10:58$
+ * Dernière modification : $Date: 2022-04-24 11:24$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -393,7 +393,8 @@ else
     echo('<h4>'.get_vocab('explain_default_area_and_room').'</h4>');
 // sélecteur de site
 if ($use_site) {
-    echo '<div class="form-group col-xs-12">'.PHP_EOL;
+    echo '<div id="div_liste_sites" class="col-xs-12">'.PHP_EOL;
+    echo '<div class="form-group">'.PHP_EOL;
     echo '<label for="id_site" class="control-label col-md-3 col-sm-3 col-xs-4">'.get_vocab('default_site').get_vocab('deux_points').'</label>'.PHP_EOL;
     echo '<div class="col-md-4 col-sm-6 col-xs-8">'.PHP_EOL;
     echo '<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">'.PHP_EOL;
@@ -407,6 +408,7 @@ if ($use_site) {
         echo '</option>'."\n";
     }
     echo '</select>'.PHP_EOL;
+    echo '</div>'.PHP_EOL;
     echo '</div>'.PHP_EOL;
     echo '</div>'.PHP_EOL;
 } 
