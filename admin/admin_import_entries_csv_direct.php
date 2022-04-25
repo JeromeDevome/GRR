@@ -3,9 +3,9 @@
  * admin_import_entries_csv_direct.php
  * Importe un fichier de réservations au format csv comprenant les champs : date du jour, heure de début, heure de fin, ressource, description et type
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-07-25 19:15$
+ * Dernière modification : $Date: 2022-04-25 10:14$
  * @author    JeromeB & Yan Naessens & Denis Monasse & Laurent Delineau
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -43,11 +43,11 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
         {
         // Initialisation du descriptif d'erreur
         $erreur = '';
-        
         // détermination du type de réservation
-        $type_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_type_area WHERE type_name='".$type."'");
-        // voir pour traiter les erreurs ?
-        
+        $type_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$type."'");
+        if($type_id == -1){
+            $erreur .= 'Type inconnu';
+        }
         // on convertit la date en année, mois, jour
         $year = substr($date,0,4);settype($year,"integer");
         $month = substr($date,5,2);settype($month,"integer");
@@ -57,20 +57,20 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
         $starttime = mktime($heure_deb, $minute_deb, 0, $month, $day, $year);
         // vérification du starttime 
         if($starttime < Settings::get("begin_bookings"))
-            $erreur = 'Créneau hors limites';
+            $erreur .= 'Créneau hors limites';
         // détermination de endtime
         settype($heure_fin,"integer");settype($minute_fin,"integer");
         $endtime = mktime($heure_fin,$minute_fin,0,$month,$day,$year);
         // vérification de endtime
         if($endtime > Settings::get("end_bookings")){
-            $erreur = 'Créneau hors limites';
+            $erreur .= 'Créneau hors limites';
         }
         if ($endtime <= $starttime)
-            $erreur = 'Erreur début/fin';
+            $erreur .= 'Erreur début/fin';
         // On récupère la valeur de $area
         $area = mrbsGetRoomArea($room_id); 
         if(($room_id<=0) || ($area<=0)) 
-            $erreur="Erreur de salle";
+            $erreur .= "Erreur de salle";
         
         if ($erreur != ''){// il y a une erreur, on sort
             return array(FALSE,$erreur);
@@ -146,7 +146,7 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
 */
 function lit_csv_data(){
     global $long_max;
-    // on commence par charger le fichier CSV dans une table provisoire grr_csv pour profiter des tris MySQL
+    // on commence par charger le fichier CSV dans une table provisoire grr_csv2 pour profiter des tris MySQL
     // crée la table csv2 si elle n'existe pas, la nettoie si elle existe
     $sql  = "CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."_csv2` (";
     $sql .= "`id` int(11) NOT NULL AUTO_INCREMENT,";
@@ -199,7 +199,7 @@ function lit_csv_data(){
          // et on insère dans la base de données
          $sql_query="INSERT INTO ".TABLE_PREFIX."_csv2 (`id`, `date`, `heure_deb`, `minute_deb`, `heure_fin`, `minute_fin`, `ressource`, `description`, `type`)";
          $sql_query.=" VALUES ('DEFAULT' , '".$date."' , '".$heure_deb."' , '".$minute_deb."' , '".$heure_fin."' , '".$minute_fin."' , '".$ressource."' , '".$description."' , '".$type."');";
-         // echo $sql_query."</br>";
+         echo $sql_query."</br>";
          if(!grr_sql_query($sql_query)) 
              $erreurs[] = $nb_lignes." (".$sql_query.")";
          $donnees[] = "<p class='text-success'>".$date." ".$heure_deb."h".$minute_deb." - ".$heure_fin."h".$minute_fin." => ".$ressource." : ".$description." ; ".$type."</p>";
@@ -217,7 +217,18 @@ function ecrit_csv_data(){
     $res=grr_sql_query($sql_query);
     if ($res) { // on a des données à traiter
         $i = 0; $erreur=""; $n=0; $info='';
-        while($row = grr_sql_row($res, $i)){
+        foreach($res as $row){
+            $room_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_room WHERE room_name LIKE'".$row['ressource']."'");
+            list($succes,$message)=ajoute_reservation($room_id,$row['date'],$row['heure_deb'],$row['minute_deb'],$row['heure_fin'],$row['minute_fin'],$row['description'],$row['type']);
+            if(!$succes){ 
+                $erreur .= $message." ".$row['date']."; ".$row['heure_deb']."h".$row['minute_deb']." -> ".$row['heure_fin']."h".$row['minute_fin']."; ".$row['ressource']."; ".$row['description']."; ".$row['type']."</br>";
+            }
+            else {
+                $info .= $message;
+                $n++;
+            }
+        }
+        /*while($row = grr_sql_row($res, $i)){
             $date=$row[0]; 
             $heure_deb=$row[1]; $minute_deb=$row[2];
             $heure_fin=$row[3]; $minute_fin=$row[4];
@@ -232,7 +243,7 @@ function ecrit_csv_data(){
                 $info .= $message;
                 $n++;
             }
-        }
+        }*/
         return [$info,$erreur,$n];
     }
     else 
@@ -287,7 +298,7 @@ else
     echo '<input type="submit" value="Lancer une sauvegarde" />';
     echo '</form>';
     echo '<hr />';
-    echo '<p>Télécharger un fichier CSV au format suivant:</p>';
+    echo '<p>Télécharger un fichier CSV codé en UTF-8 au format suivant:</p>';
     echo '<code>date du jour; heure de début; heure de fin; ressource; description; type</code>';
     echo '<p>par exemple</p>';
     echo '<code>2001-01-01;12h00;14h00;Salle 1;Test;A</code>';
