@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-03-10 19:06$
+ * Dernière modification : $Date: 2022-04-25 11:37$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -105,7 +105,7 @@ $pm7 = mktime($eveningends, $eveningends_minutes, 0, $month, $day_week, $year_we
 $week_midnight = mktime(0, 0, 0, $month_week, $day_week, $year_week);
 $week_start = $am7;
 $week_end = mktime($eveningends, $eveningends_minutes, 0, $month_week, $day_week + 6, $year_week);
-
+// echo date('c',$week_end);
 $sql= "SELECT area_name, resolution_area FROM ".TABLE_PREFIX."_area WHERE id=$area";
 $res = grr_sql_query($sql);
 if ($res){
@@ -517,10 +517,10 @@ $num_week_day = $weekstarts;
 $k = $day_week;
 $i = $time;
 
-for ($t = $week_start; $t <= $week_end; $t += 86400)
+for ($t = $week_start; $t < $week_end; $t += 86400)
 {
-	$num_day = strftime("%d", $t);
-	$month_actuel = strftime("%m", $t);
+	$num_day = date("j", $t);
+	$month_actuel = date("n", $t);
 	$year_actuel  = date("Y",$t);
 	$tt = mktime(0, 0, 0, $month_actuel, $num_day,$year_actuel);
 	$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$i'");
@@ -548,7 +548,7 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
     }
     if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
     {
-        $num_day = strftime("%d", $t);
+        $num_day = date("d", $t);
         if (heure_ete_hiver("hiver", $year, 0) == mktime(0, 0, 0, $month, $num_day, $year))
             $t += 3600;
         if ((date("H",$t) == "13") || (date("H",$t) == "02"))
