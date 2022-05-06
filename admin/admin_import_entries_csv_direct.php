@@ -3,7 +3,7 @@
  * admin_import_entries_csv_direct.php
  * Importe un fichier de réservations au format csv comprenant les champs : date du jour, heure de début, heure de fin, ressource, description et type
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-04-25 10:14$
+ * Dernière modification : $Date: 2022-05-05 11:02$
  * @author    JeromeB & Yan Naessens & Denis Monasse & Laurent Delineau
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -160,7 +160,7 @@ function lit_csv_data(){
     $sql .= "`type` tinytext ,";
     $sql .= "PRIMARY KEY (`id`),";
     $sql .= "KEY `id` (`id`)";
-    $sql .= ") ENGINE=MyISAM DEFAULT CHARSET=latin1";
+    $sql .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci";
     if(!grr_sql_query($sql)){
         echo "Erreur dans la création de la table CSV";
         die();

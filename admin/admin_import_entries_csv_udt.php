@@ -3,9 +3,9 @@
  * admin_import_entries_csv_udt.php
  * Importe un fichier de réservations au format csv 
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:48$
+ * Dernière modification : $Date: 2022-05-05 11:05$
  * @author    JeromeB & Yan Naessens & Denis Monasse & Laurent Delineau
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -70,7 +70,7 @@ $long_max = 8000;
     $sql .= "`aire` tinytext NOT NULL,";
     $sql .= "PRIMARY KEY (`id`),";
     $sql .= "KEY `id` (`id`)";
-    $sql .= ") ENGINE=MyISAM DEFAULT CHARSET=latin1";
+    $sql .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci";
     if(!grr_sql_query($sql)){
         echo "Erreur dans la création de la table CSV";
         die();
