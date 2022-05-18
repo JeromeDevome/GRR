@@ -352,15 +352,6 @@ if (isset($_GET['precedent']))
 	}
 }
 
-		$dateActu	= new DateTime('NOW');
-		$dateDe		= new DateTime(Settings::get("horaireconnexionde"));
-		$dateA		= new DateTime(Settings::get("horaireconnexiona"));
-		
-		
-		 echo $heureActu = $dateActu->format('H:i');
-		echo $heureDe = $dateDe->format('H:i');
-		echo $heureA = $dateA->format('H:i');
-		
 
 
 if ($this_room_show_comment == "y" && $_GET['pview'] != 1 && ($this_room_comment != "") && ($this_room_comment != -1))
