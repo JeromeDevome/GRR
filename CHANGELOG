@@ -34,6 +34,11 @@ Sous-version 3.4.3a
     amélioration : accès des gestionnaires de ressources à la page d'administration pour accéder à la liste des réservations à modérer
     correctif : bug affichage dans week.php et nettoyage du code
     correctif : les accents circonflexes étaient perdus
+Sous-version 3.4.3b
+    correctif : redirection vers la page d'authentification CAS
+    correctif : message en cas de création d'une nouvelle réservation
+    correctif : le message de connexion alternative s'affichait même quand le SSO était désactivé
+    mise à jour : fichier des vacances scolaires (France)
 
 -----
 --

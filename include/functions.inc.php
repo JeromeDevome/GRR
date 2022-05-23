@@ -3036,7 +3036,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	$reservation .= "-----\n";
 
 	$message .= $reservation;
-	$message .= $vocab["msg_no_email"].Settings::get("webmaster_email");;
+	$message .= $vocab["msg_no_email"].Settings::get("webmaster_email");
 	$message = html_entity_decode($message);
 	$sql = "SELECT u.email FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_mailuser_room j WHERE (j.id_room='".protect_data_sql($room_id)."' AND u.login=j.login and u.etat='actif') ORDER BY u.nom, u.prenom";
 	$res = grr_sql_query($sql);
