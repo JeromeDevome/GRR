@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-01-31 12:12$
+ * Dernière modification : $Date: 2022-05-23 16:04$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5373,9 +5373,9 @@ $(\'.clockpicker\').clockpicker({
 function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaultsec,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format=0)
 {
     $minTime = str_pad($morningstarts, 2, 0, STR_PAD_LEFT).":00";
-    //$eveningends_minutes = str_pad($eveningends_minutes, 2, 0, STR_PAD_LEFT);
-    //$maxTime = $eveningends.":".$eveningends_minutes;
-    $end_time = mktime($eveningends,$eveningends_minutes,0,0,0,0)-$resolution;
+    $end_time = mktime($eveningends,$eveningends_minutes,0,0,0,0);
+    if($typeTime == "start_")
+        $end_time -= $resolution;
     $maxTime = date("H:i",$end_time);
 	if (isset ($_GET['id']))
 	{
