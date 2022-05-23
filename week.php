@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-03-10 19:06$
+ * Dernière modification : $Date: 2022-05-23 19:06$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -221,12 +221,13 @@ if (!$res)
 	echo grr_sql_error();
 else
 {
+    $d = array();
     $overloadFieldList = mrbsOverloadGetFieldslist($area);
 	// Pour toutes les réservations
     foreach($res as $row) 
 	{
 		if ($debug_flag)
-			echo '<br />DEBUG: result $i, id $row[4], starts $row["start_time"] (".affiche_date($row["start_time"])."), ends $row["end_time"] (".affiche_date($row["end_time"]).")\n';
+			echo '<br />DEBUG: result '.$row['id'].', id '.$row["beneficiaire"].', starts '.$row["start_time"].' ('.affiche_date($row["start_time"]).'), ends '.$row["end_time"].' ('.affiche_date($row["end_time"]).')\n';
 		$month_debut = date("m",$row["start_time"]);
 		$day_debut = date("d",$row["start_time"]);
 		$year_debut = date("Y",$row["start_time"]); 
@@ -498,7 +499,7 @@ if ($debug_flag)
 	        foreach($w_v as $t_k=>$t_v)
 			{
 	            foreach($t_v as $k_k=>$k_v)
-                    echo "$d[$w_k][$t_k][$k_k] =", $k_v ,"<br/>";
+                    echo "d[$w_k][$t_k][$k_k] =", $k_v ,"<br/>";
 			}
 		}
 	}
