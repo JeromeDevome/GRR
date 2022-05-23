@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-05-23 17:32$
+ * Dernière modification : $Date: 2022-05-23 18:18$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -142,7 +142,7 @@ if($enable_periods == 'y'){// récupérer les noms des créneaux
 }
 
 $this_area_name = $this_area['area_name'];
-$this_area_resolution = $this_area['resolution_area'];
+$this_area_resolution = ($this_area['enable_periods'] == 'n')? $this_area['resolution_area']:60;
 
 $this_room_name = (isset($this_room['room_name']))? $this_room['room_name']:"";
 $this_room_max = (isset($this_room['capacity']))? $this_room['capacity']:0;
@@ -644,9 +644,9 @@ for ($slot = $first_slot; $slot <= $last_slot; $slot++)
         tdcell("cell_hours2");
     if ($enable_periods=='y')
     {
-        $time_t = date("i", $t);
-        $time_t_stripped = preg_replace( "/^0/", "", $time_t );
-        echo $periods_name[$time_t_stripped] . "</td>\n";
+       /* $time_t = date("i", $t);
+        $time_t_stripped = preg_replace( "/^0/", "", $time_t );*/
+        echo $periods_name[$slot] . "</td>\n";
     }
     else
         echo affiche_heure_creneau($t,$this_area_resolution)."</td>\n";
@@ -748,8 +748,12 @@ for ($slot = $first_slot; $slot <= $last_slot; $slot++)
                     {
                         if ($enable_periods == 'y')
                         {
-                            echo "<a href=\"edit_entry.php?room=$room"
+                            /*echo "<a href=\"edit_entry.php?room=$room"
                             . "&amp;period=$time_t_stripped&amp;year=$wyear&amp;month=$wmonth"
+                            . "&amp;day=$wday&amp;page=week\" title=\"".get_vocab("cliquez_pour_effectuer_une_reservation")."\"><span class=\"glyphicon glyphicon-plus\"></span>";
+                            echo "</a>";*/
+                            echo "<a href=\"edit_entry.php?room=$room"
+                            . "&amp;period=$slot&amp;year=$wyear&amp;month=$wmonth"
                             . "&amp;day=$wday&amp;page=week\" title=\"".get_vocab("cliquez_pour_effectuer_une_reservation")."\"><span class=\"glyphicon glyphicon-plus\"></span>";
                             echo "</a>";
                         }
