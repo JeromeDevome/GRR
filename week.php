@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-05-21 19:18$
+ * Dernière modification : $Date: 2022-05-23 17:32$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -248,16 +248,16 @@ else
     foreach($res as $row) 
 	{
 		if ($debug_flag)
-			echo "<br />DEBUG: result ".$i.", id ".$row['beneficiaire'].", starts ".$row['start_time']." (".affiche_date($row['start_time'])."), ends ".$row['end_time']." (".affiche_date($row['end_time']).")\n";
+			echo "<br />DEBUG: result ".$row['id'].", id ".$row['beneficiaire'].", starts ".$row['start_time']." (".affiche_date($row['start_time'])."), ends ".$row['end_time']." (".affiche_date($row['end_time']).")\n";
 		$month_debut = date("m",$row["start_time"]);
 		$day_debut = date("d",$row["start_time"]);
 		$year_debut = date("Y",$row["start_time"]); 
         $debut_jour = mktime($morningstarts,0,0,$month_debut,$day_debut,$year_debut);
-		$t = max(round_t_down($row["start_time"], $resolution, $debut_jour), $week_start); // instant de départ de la tranche de résa
+		$t = max(round_t_down($row["start_time"], $this_area_resolution, $debut_jour), $week_start); // instant de départ de la tranche de résa
         $month_current = date("m",$t);
 		$day_current = date("d",$t);
 		$year_current = date("Y",$t);
-		$end_t = min(round_t_up($row["end_time"],$resolution, $debut_jour), $week_end+$this_area_resolution); // instant de fin de la tranche de résa
+		$end_t = min(round_t_up($row["end_time"],$this_area_resolution, $debut_jour), $week_end+$this_area_resolution); // instant de fin de la tranche de résa
 		$weekday = (date("w", $t) + 7 - $weekstarts) % 7;
 		$prev_weekday = -1;
 		$firstday = date("d", $t);
@@ -810,7 +810,7 @@ for ($slot = $first_slot; $slot <= $last_slot; $slot++)
         $time_t = date("i", $t);
         $time_t_stripped = preg_replace( "/^0/", "", $time_t);
     }
-    $t += $resolution;
+    $t += $this_area_resolution;
     echo "</tr>".PHP_EOL;
 }
 echo '</tbody></table>',PHP_EOL;
