@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-04-22 18:48$
+ * Dernière modification : $Date: 2022-05-23 16:25$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -3062,7 +3062,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	$reservation .= "-----\n";
 
 	$message .= $reservation;
-	$message .= $vocab["msg_no_email"].Settings::get("webmaster_email");;
+	$message .= $vocab["msg_no_email"].Settings::get("webmaster_email");
 	$message = html_entity_decode($message);
 	$sql = "SELECT u.email FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_mailuser_room j WHERE (j.id_room='".protect_data_sql($room_id)."' AND u.login=j.login and u.etat='actif') ORDER BY u.nom, u.prenom";
 	$res = grr_sql_query($sql);
@@ -3706,7 +3706,7 @@ function authBooking($user,$room){
 	// Dans ce cas, on prend comme temps présent le jour même à minuit.
 	// Cela signifie qu'il est possible de modifier/réserver/supprimer tout au long d'une journée
 	// même si l'heure est passée.
-	// Cela demande donc à être améliorer en introduisant pour chaque créneau une heure limite de réservation.
+	// Cela demande donc à être amélioré en introduisant pour chaque créneau une heure limite de réservation.
  	if ($enable_periods == "y")
  	{
  		$month = date("m",$date_now);
@@ -3729,7 +3729,7 @@ function authBooking($user,$room){
  		else
  		{
 			// dans le cas où le créneau est entamé, on teste si l'utilisateur a le droit de supprimer la réservation
-			// Si oui, on transmet la variable $only_modify = true avant que la fonction de retourne true.
+			// Si oui, on transmet la variable $only_modify = true avant que la fonction de retourne true.???
  			if (Settings::get("allow_user_delete_after_begin") == 2)
  			{
  				$date_debut = grr_sql_query1("SELECT start_time FROM ".TABLE_PREFIX."_entry WHERE id = '".protect_data_sql($id)."'");
@@ -3781,7 +3781,7 @@ function authBooking($user,$room){
  }
 // function verif_delais_max_resa_room($user, $id_room, $date_booking)
 // $user : le login de l'utilisateur
-// $id_room : l'id de la ressource. Si -1, il s'agit d'une nouvelle ressoure
+// $id_room : l'id de la ressource. Si -1, il s'agit d'une nouvelle ressource
 // $date_booking : la date de la réservation (n'est utile que si $id=-1)
 // $date_now : la date actuelle
  function verif_delais_max_resa_room($user, $id_room, $date_booking)
@@ -3799,22 +3799,6 @@ function authBooking($user,$room){
  		return false;
  	return true;
  }
-/* function minTime2Book($user, $id_room, $date_now)
- * paramètres :
- *  $user : id de l'utilisateur
- *  $id_room : id de la ressource (c'est elle qui possède un attribut limitant quand elle est réservable)
- *  $date_now : timestamp donnant la date courante
- * renvoie un timestamp indiquant à partir de quand la ressource est réservable (tester $date_booking > minTime2Book(...) )
-*/
-function minTime2Book($user, $id_room, $date_now){
-    if (authGetUserLevel($user,$id_room) >= 3)
-        return 0;
-    $delais_max_resa_room = grr_sql_query1("SELECT delais_max_resa_room FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($id_room)."'");
-	if ($delais_max_resa_room == -1)
-        return 0;
-    else 
-        return ($date_now + $delais_max_resa_room * 86400 + 1 );
-}
 // function verif_access_search : vérifier l'accès à l'outil de recherche
 // $user : le login de l'utilisateur
 // $id_room : l'id de la ressource.
@@ -5414,10 +5398,12 @@ $(\'.clockpicker\').clockpicker({
 function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaultsec,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format=0)
 {
     $minTime = str_pad($morningstarts, 2, 0, STR_PAD_LEFT).":00";
-    //$eveningends_minutes = str_pad($eveningends_minutes, 2, 0, STR_PAD_LEFT);
-    //$maxTime = $eveningends.":".$eveningends_minutes;
-    $end_time = mktime($eveningends,$eveningends_minutes,0,0,0,0)-$resolution;
+    $end_time = mktime($eveningends,$eveningends_minutes,0,0,0,0);
+    if($typeTime == "start_")
+        $end_time -= $resolution;
     $maxTime = date("H:i",$end_time);
+    if($maxTime == "00:00")
+        $maxTime = "24:00";
 	if (isset ($_GET['id']))
 	{
 		if (isset($start_hour) && isset($start_min))
