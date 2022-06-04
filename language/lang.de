@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2022-01-30
+# Last modification : 2022-06-04
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -13,7 +13,7 @@ $vocab['accepter_resa_serie'] = "Reservierung und alle anderen Reservierungen, d
 $vocab['access'] = "Beschränkter Zugang";
 $vocab['accessdenied'] = "Zugang verweigert";
 $vocab['accessdeniedtoomanybooking'] = "Zugang verweigert: Ihre Reservierungsanfrage ist zurückgewiesen worden, weil Sie das zulässige Reservierungsmaximum überschritten haben!";
-$vocab['acces_fiche_reservation_msg'] = "Zugang zum detaillierten Beschreibungsblatt einer Ressource"; 
+$vocab['acces_fiche_reservation_msg'] = "Wer hat Zugriff auf die Buchungsdetails einer Ressource?";
 $vocab['action'] = "Action"; // A traduire
 $vocab['activer_fonctionalite_ressource_empruntee_restituee'] = "Activer la fonctionnalité \"ressource empruntée/restituée\""; // A traduire
 $vocab['activer_fonctionalite_gestion_cle'] = "\"Schlüsselverwaltung\" aktivieren"; // A traduire

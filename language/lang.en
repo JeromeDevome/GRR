@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2022-01-30
+# Last modification : 2022-06-04
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -11,7 +11,7 @@ $vocab['accepter_resa_serie'] = "Accept the reservation and all reservations bou
 $vocab['access'] = "Restricted access";
 $vocab['accessdenied'] = "Access denied";
 $vocab['accessdeniedtoomanybooking'] = "Access denied: Your reservation request has been rejected as it would be above the number of authorized reservations!";
-$vocab['acces_fiche_reservation_msg'] = "Who has access to the detailed reservation form of a resource?";
+$vocab['acces_fiche_reservation_msg'] = "Who has access to a resource's booking details?";
 $vocab['action'] = "Action";
 $vocab['activer_fonctionalite_ressource_empruntee_restituee'] = "Activate the functionality \"borrowed / restored resource\"";
 $vocab['activer_fonctionalite_gestion_cle'] = "Activate the functionality \"keys management\"";
