@@ -6,124 +6,127 @@
   <title>GRR Installation</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="../bootstrap/AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="../bootstrap/AdminLTE/bower_components/font-awesome/css/all.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="../bootstrap/AdminLTE/dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="../bootstrap/AdminLTE/dist/css/skins/_all-skins.min.css">
+  <link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/fontawesome-free/css/all.min.css">
 
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
-  <!-- Google Font -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-  
   {% block css %}{% endblock %}
+  
+  <link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/dist/css/adminlte.min.css">
 
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
-  <header class="main-header">
-    <!-- Logo -->
-    <a href="admin.php" class="logo">
-      <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini">GRR</span>
-      <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>GRR Installation</b></span>
+  <!-- Preloader -->
+  <div class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__shake" src="../img_grr/totem_grr.png" alt="GRR-Logo" height="146" width="95">
+  </div>
+
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto"> 
+      <li class="nav-item">
+        <a class="nav-link" href="../index.php">
+         Retour
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+          <i class="fas fa-expand-arrows-alt"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+  
+  
+
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="admin.php?p=admin_accueil" class="brand-link">
+      <span class="brand-text font-weight-light">GRR - Installation</span>
     </a>
-    <!-- Header Navbar: style can be found in header.less -->
-    <nav class="navbar navbar-static-top">
-      <!-- Sidebar toggle button-->
-      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-        <i class="fas fa-bars"></i><span class="sr-only">Toggle navigation</span>
-      </a>
-
-      <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">
-		  <li>
-			<a href="../index.php" target="_blank">
-				<i class="fa fa-book"></i> <span class="hidden-xs">RETOUR</span>
-            </a>
-		  </li>
-        </ul>
-      </div>
-    </nav>
-  </header>
-
-  <aside class="main-sidebar">
     <section class="sidebar">
-      <ul class="sidebar-menu" data-widget="tree">
-		
-		<li {% if d.etape == 0 %}class="active"{% endif %}>
-			<a href="#">
-				{% if d.etape == 0 %}<i class="fas fa-arrow-right"></i>{% elseif d.etape > 0 %}<font color="green"><i class="fas fa-check-circle"></i></font>{% else %}<i class="fas fa-check-circle"></i>{% endif %}
-				<span>Prérequis</span> <span class="pull-right-container"></span>
-			</a>
-		</li>
-		<li {% if d.etape == 1 %}class="active"{% endif %}>
-			<a href="#">
-				{% if d.etape == 1 %}<i class="fas fa-arrow-right"></i>{% elseif d.etape > 1 %}<font color="green"><i class="fas fa-check-circle"></i></font>{% else %}<i class="fas fa-check-circle"></i>{% endif %}
-				<span>Etape 1</span> <span class="pull-right-container"></span>
-			</a>
-		</li>
-		<li {% if d.etape == 2 %}class="active"{% endif %}>
-			<a href="#">
-				{% if d.etape == 2 %}<i class="fas fa-arrow-right"></i>{% elseif d.etape > 2 %}<font color="green"><i class="fas fa-check-circle"></i></font>{% else %}<i class="fas fa-check-circle"></i>{% endif %}
-				<span>Etape 2</span> <span class="pull-right-container"></span>
-			</a>
-		</li>
-		<li {% if d.etape == 3 %}class="active"{% endif %}>
-			<a href="#">
-				{% if d.etape == 3 %}<i class="fas fa-arrow-right"></i>{% elseif d.etape > 3 %}<font color="green"><i class="fas fa-check-circle"></i></font>{% else %}<i class="fas fa-check-circle"></i>{% endif %}
-				<span>Etape 3</span> <span class="pull-right-container"></span>
-			</a>
-		</li>
-		<li {% if d.etape == 4 %}class="active"{% endif %}>
-			<a href="#">
-				{% if d.etape == 4 %}<i class="fas fa-arrow-right"></i>{% elseif d.etape > 4 %}<font color="green"><i class="fas fa-check-circle"></i></font>{% else %}<i class="fas fa-check-circle"></i>{% endif %}
-				<span>Etape 4</span> <span class="pull-right-container"></span>
-			</a>
-		</li>
-		<li {% if d.etape == 5 %}class="active"{% endif %}>
-			<a href="#">
-				{% if d.etape == 5 %}<i class="fas fa-arrow-right"></i>{% elseif d.etape > 5 %}<font color="green"><i class="fas fa-check-circle"></i></font>{% else %}<i class="fas fa-check-circle"></i>{% endif %}
-				<span>Etape 5</span> <span class="pull-right-container"></span>
-			</a>
-		</li>
+	 <nav class="mt-2">
+     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+  		<li {% if d.etape == 0 %}class="active"{% endif %}>
+        <a href="#">
+          {% if d.etape == 0 %}<i class="fas fa-arrow-right"></i>{% elseif d.etape > 0 %}<font color="green"><i class="fas fa-check-circle"></i></font>{% else %}<i class="fas fa-check-circle"></i>{% endif %}
+          <span>Prérequis</span> <span class="pull-right-container"></span>
+        </a>
+      </li>
+      <li {% if d.etape == 1 %}class="active"{% endif %}>
+        <a href="#">
+          {% if d.etape == 1 %}<i class="fas fa-arrow-right"></i>{% elseif d.etape > 1 %}<font color="green"><i class="fas fa-check-circle"></i></font>{% else %}<i class="fas fa-check-circle"></i>{% endif %}
+          <span>Etape 1</span> <span class="pull-right-container"></span>
+        </a>
+      </li>
+      <li {% if d.etape == 2 %}class="active"{% endif %}>
+        <a href="#">
+          {% if d.etape == 2 %}<i class="fas fa-arrow-right"></i>{% elseif d.etape > 2 %}<font color="green"><i class="fas fa-check-circle"></i></font>{% else %}<i class="fas fa-check-circle"></i>{% endif %}
+          <span>Etape 2</span> <span class="pull-right-container"></span>
+        </a>
+      </li>
+      <li {% if d.etape == 3 %}class="active"{% endif %}>
+        <a href="#">
+          {% if d.etape == 3 %}<i class="fas fa-arrow-right"></i>{% elseif d.etape > 3 %}<font color="green"><i class="fas fa-check-circle"></i></font>{% else %}<i class="fas fa-check-circle"></i>{% endif %}
+          <span>Etape 3</span> <span class="pull-right-container"></span>
+        </a>
+      </li>
+      <li {% if d.etape == 4 %}class="active"{% endif %}>
+        <a href="#">
+          {% if d.etape == 4 %}<i class="fas fa-arrow-right"></i>{% elseif d.etape > 4 %}<font color="green"><i class="fas fa-check-circle"></i></font>{% else %}<i class="fas fa-check-circle"></i>{% endif %}
+          <span>Etape 4</span> <span class="pull-right-container"></span>
+        </a>
+      </li>
+      <li {% if d.etape == 5 %}class="active"{% endif %}>
+        <a href="#">
+          {% if d.etape == 5 %}<i class="fas fa-arrow-right"></i>{% elseif d.etape > 5 %}<font color="green"><i class="fas fa-check-circle"></i></font>{% else %}<i class="fas fa-check-circle"></i>{% endif %}
+          <span>Etape 5</span> <span class="pull-right-container"></span>
+        </a>
+      </li>
 
       </ul>
+	  </nav>
     </section>
   </aside>
  
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
-    </section>
+   <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">{{ trad.TitrePage }}
+        <small>{{ trad.SousTitrePage }}</small>
+      </h1>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+ 
+
 
     <section class="content">
+	<div class="container-fluid h-100">
 
 		{% block content %}{% endblock %}
 
+  </div>
     </section>
   </div>
 
 
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <div class="pull-right hidden-xs">
-      <b>{{ trad.grr_version }}</b> {{ settings.version }}
-    </div>
-    <strong>GRR : Gestion et Réservations de Ressources - <a href="https://devome.com/">DEVOME</a>.</strong>
+    <strong>GRR : Gestion et de Réservations de Ressources - <a href="https://devome.com/">DEVOME</a> - <b>{{ trad.grr_version }}</b> {{ settings.version }}</strong>
   </footer>
 
   <!-- Control Sidebar -->
@@ -173,23 +176,16 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery 3 -->
-<script src="../bootstrap/AdminLTE/bower_components/jquery/dist/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="../bootstrap/AdminLTE/bower_components/jquery-ui/jquery-ui.min.js"></script>
+ 
+ <!-- jQuery -->
+<script src="../vendor/almasaeed2010/adminlte/plugins/jquery/jquery.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
-  $.widget.bridge('uibutton', $.ui.button);
+  $.widget.bridge('uibutton', $.ui.button)
 </script>
-<!-- Bootstrap 3.3.7 -->
-<script src="../bootstrap/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- Slimscroll -->
-<script src="../bootstrap/AdminLTE/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="../bootstrap/AdminLTE/bower_components/fastclick/lib/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="../bootstrap/AdminLTE/dist/js/adminlte.min.js"></script>
-<script src="../bootstrap/AdminLTE/dist/js/demo.js"></script>
+<script src="../vendor/almasaeed2010/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../vendor/almasaeed2010/adminlte/dist/js/adminlte.js"></script>
+
 
 {% block javascript %}{% endblock %}
 </body>
