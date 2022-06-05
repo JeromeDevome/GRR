@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '740acb843a237d77ecd91a060d91237a90036eb0',
+    'reference' => '591703af11f6ccbd33ec205f682e74866682462d',
     'name' => 'devome/twig',
   ),
   'versions' => 
@@ -22,12 +22,12 @@
     ),
     'apereo/phpcas' => 
     array (
-      'pretty_version' => '1.4.0',
-      'version' => '1.4.0.0',
+      'pretty_version' => '1.5.0',
+      'version' => '1.5.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'ea27d122c4c7114006b33d15668c90f1904d53df',
+      'reference' => 'd6f5797fb568726f34c8e48741776d81e4a2646b',
     ),
     'devome/twig' => 
     array (
@@ -36,7 +36,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '740acb843a237d77ecd91a060d91237a90036eb0',
+      'reference' => '591703af11f6ccbd33ec205f682e74866682462d',
     ),
     'phpmailer/phpmailer' => 
     array (
@@ -58,30 +58,30 @@
     ),
     'symfony/polyfill-ctype' => 
     array (
-      'pretty_version' => 'v1.25.0',
-      'version' => '1.25.0.0',
+      'pretty_version' => 'v1.26.0',
+      'version' => '1.26.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '30885182c981ab175d4d034db0f6f469898070ab',
+      'reference' => '6fd1b9a79f6e3cf65f9e679b23af304cd9e010d4',
     ),
     'symfony/polyfill-mbstring' => 
     array (
-      'pretty_version' => 'v1.25.0',
-      'version' => '1.25.0.0',
+      'pretty_version' => 'v1.26.0',
+      'version' => '1.26.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '0abb51d2f102e00a4eefcf46ba7fec406d245825',
+      'reference' => '9344f9cb97f3b19424af1a21a3b0e75b0a7d8d7e',
     ),
     'symfony/polyfill-php72' => 
     array (
-      'pretty_version' => 'v1.25.0',
-      'version' => '1.25.0.0',
+      'pretty_version' => 'v1.26.0',
+      'version' => '1.26.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9a142215a36a3888e30d0a9eeea9766764e96976',
+      'reference' => 'bf44a9fd41feaac72b074de600314a93e2ae78e2',
     ),
     'tecnickcom/tcpdf' => 
     array (
@@ -94,12 +94,12 @@
     ),
     'twig/twig' => 
     array (
-      'pretty_version' => 'v2.14.12',
-      'version' => '2.14.12.0',
+      'pretty_version' => 'v2.15.1',
+      'version' => '2.15.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '19c898bda30c5edea573bbb9ee1235d8cf6956ed',
+      'reference' => '3b7cedb2f736899a7dbd0ba3d6da335a015f5cc4',
     ),
   ),
 );

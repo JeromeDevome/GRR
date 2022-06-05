@@ -38,11 +38,11 @@ use Twig\TokenParser\TokenParserInterface;
  */
 class Environment
 {
-    public const VERSION = '2.14.12';
-    public const VERSION_ID = 21412;
+    public const VERSION = '2.15.1';
+    public const VERSION_ID = 21501;
     public const MAJOR_VERSION = 2;
-    public const MINOR_VERSION = 14;
-    public const RELEASE_VERSION = 12;
+    public const MINOR_VERSION = 15;
+    public const RELEASE_VERSION = 1;
     public const EXTRA_VERSION = '';
 
     private $charset;
@@ -264,7 +264,7 @@ class Environment
     {
         if (\is_string($cache)) {
             $this->originalCache = $cache;
-            $this->cache = new FilesystemCache($cache);
+            $this->cache = new FilesystemCache($cache, $this->autoReload ? FilesystemCache::FORCE_BYTECODE_INVALIDATION : 0);
         } elseif (false === $cache) {
             $this->originalCache = $cache;
             $this->cache = new NullCache();
