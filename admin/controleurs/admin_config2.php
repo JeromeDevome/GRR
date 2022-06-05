@@ -96,6 +96,15 @@ if ((isset($_GET['allow_users_modify_mdp'])) && (authGetUserLevel(getUserName(),
 		$msg .= get_vocab("message_records_error");
 }
 
+// Enregistrement de mail_user_obligatoire
+// Un gestionnaire d'utilisateurs ne peut pas modifier ce paramètre
+$mailUserObligatoire= isset($_GET["mail_user_obligatoire"]) ? "y" : "n";
+if (isset($_GET['ok']) && authGetUserLevel(getUserName(), -1, 'user') !=  1)
+{
+	if (!Settings::set("mail_user_obligatoire", $mailUserObligatoire))
+		$msg .= get_vocab("message_records_error");
+}
+
 
 if (!Settings::load())
     die("Erreur chargement settings");
@@ -143,6 +152,7 @@ get_vocab_admin("allow_gestionnaire_modify_del1");
 get_vocab_admin("modification_parametres_personnels");
 get_vocab_admin("modification_parametre_email");
 get_vocab_admin("modification_mdp");
+get_vocab_admin("mail_user_obligatoire");
 get_vocab_admin("all");
 get_vocab_admin("all_but_visitors");
 get_vocab_admin("only_administrators");

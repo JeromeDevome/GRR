@@ -526,6 +526,7 @@ $vocab['mail_test'] = "Email test";
 $vocab['mail_user'] = "Email";
 $vocab['mail_user_destinataire'] = "Envoyer une copie à l'utilisateur"; // Traduire
 $vocab['mail_user_list'] = "List of users to be informed by email:";
+$vocab['mail_user_obligatoire'] = "L'adresse mail est obligatoire dans le compte utilisateur"; // Traduire
 $vocab['maj_base_locale'] = "Cleaning of the local base";
 $vocab['maj_bdd'] = "Update of database";
 $vocab['maj_bdd_not_update'] = "CAUTION:your database does not seem to have been updated.";

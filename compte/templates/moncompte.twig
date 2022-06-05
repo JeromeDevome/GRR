@@ -20,13 +20,13 @@
 				<tr><td><b>{{ trad.last_name }}</b></td><td>{{ d.user_nom }}</td></tr>
 				<tr><td><b>{{ trad.first_name }}</b></td><td>{{ d.user_prenom }}</td></tr>
 			{% else %}
-				<tr><td><b>{{ trad.last_name }}*</b></td><td><input class="form-control" type="text" name="reg_nom" value="{{ d.user_nom }}" size="30"></td></tr>
-				<tr><td><b>{{ trad.first_name }}*</b></td><td><input class="form-control" type="text" name="reg_prenom" value="{{ d.user_prenom }}" size="30"></td></tr>
+				<tr><td><b>{{ trad.last_name }}*</b></td><td><input class="form-control" type="text" name="reg_nom" value="{{ d.user_nom }}" size="30" required></td></tr>
+				<tr><td><b>{{ trad.first_name }}*</b></td><td><input class="form-control" type="text" name="reg_prenom" value="{{ d.user_prenom }}" size="30" required></td></tr>
 			{% endif %}
 			{% if modificationMail == true %}
-				<tr><td><b>{{ trad.mail_user }}</b></td><td>{{ d.user_email }}</td></tr>
+				<tr><td><b>{{ trad.mail_user }}{% if settings.mail_user_obligatoire == 'y'%}*{%endif%}</b></td><td>{{ d.user_email }}</td></tr>
 			{% else %}
-				<tr><td><b>{{ trad.mail_user }}</b></td><td><input class="form-control" type="text" name="reg_email" value="{{ d.user_email }}" size="30"></td></tr>
+				<tr><td><b>{{ trad.mail_user }}{% if settings.mail_user_obligatoire == 'y'%}*{%endif%}</b></td><td><input class="form-control" type="email" name="reg_email" value="{{ d.user_email }}" size="30"{% if settings.mail_user_obligatoire == 'y'%}required{%endif%}></td></tr>
 			{% endif %}
 			<tr><td><b>{{ trad.statut }}</b></td><td>{{ d.text_user_statut }}</td></tr>
 		</table>

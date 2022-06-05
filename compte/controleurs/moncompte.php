@@ -111,9 +111,13 @@ if ($valid == 'yes')
 		}
 		if (IsAllowedToModifyEmail())
 		{
-			if ($flag_virgule == 'y')
-				$sql .= ",";
-			$sql .= "email = '" . protect_data_sql($reg_email)."'";
+			if(Settings::get('mail_user_obligatoire') != "y" || (Settings::get('mail_user_obligatoire') == "y" && $reg_email != "")){
+				if ($flag_virgule == 'y')
+					$sql .= ",";
+				$sql .= "email = '" . protect_data_sql($reg_email)."'";
+			} else{
+				$msg = get_vocab('mail_user_obligatoire');
+			}
 		}
 		$sql .= "WHERE login='".getUserName()."'";
 		if ((IsAllowedToModifyProfil()) || (IsAllowedToModifyEmail()))
