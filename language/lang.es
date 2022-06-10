@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2022-06-04
+# Last modification : 2022-06-10
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -411,7 +411,7 @@ $vocab['execution automatique backup'] = "Exécution automatique de la sauvegard
 $vocab['execution automatique backup explications'] = "Une sauvegarde automatique peut être déclenchée par l'exécution du script « admin_save_mysql.php », par exemple en programmant son exécution à l'aide d'une tâche « cron ».
 <br />
 Pour activer cette fonctionnalité, vous devez définir ci-dessous un mot de passe.
-<br />Par exemple, si le mot de passe est jamesbond007, l'URL du type : <b>http://mon-site.fr/grr/admin_save_mysql.php?mdp=jamesbond007</b> déclenchera la sauvegarde.
+<br />Par exemple, si le mot de passe est jamesbond007, l'URL du type : <b>http://mon-site.fr/grr/admin/admin_save_mysql.php?mdp=jamesbond007</b> déclenchera la sauvegarde.
 <br /><b>Il est fortement conseillé de choisir un mot de passe complexe avec lettres, chiffres et caractères spéciaux !</b>"; // A traduire
 $vocab['execution_automatique_backup_mdp'] = "Mot de passe utilisé pour l'exécution du script « admin_save_mysql.php »"; // A traduire
 $vocab['explain_area_list_format'] = "Tipo de visualización de las listas de los campos y recursos ";

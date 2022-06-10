@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2022-06-04
+# Last modification : 2022-06-10
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -421,7 +421,7 @@ $vocab['execution automatique backup'] = "Automatic backup execution";
 $vocab['execution automatique backup explications'] = "An automatic backup can be triggered by executing the \"admin_save_mysql.php\" script, for example by scheduling its execution using a \"cron\" job.
 <br />
 To enable this feature, you need to set a password below.
-<br /> For example, if the password is jamesbond007, the URL of the type: <b> http://mon-site.fr/grr/admin_save_mysql.php?mdp=jamesbond007 </b> will trigger the backup .
+<br /> For example, if the password is jamesbond007, the URL of the type: <b> http://mon-site.fr/grr/admin/admin_save_mysql.php?mdp=jamesbond007 </b> will trigger the backup .
 <br /> <b> It is strongly recommended to choose a complex password with letters, numbers and special characters! </b>";
 $vocab['execution automatique backup mdp'] = "Password used to run the script « admin_save_mysql.php »";
 $vocab['explain_area_list_format'] = "Type of display for lists of areas and resources";
