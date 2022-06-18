@@ -34,6 +34,13 @@ if (!grr_resumeSession())
 	header('Location: logout.php?auto=1&url='.$grr_script_name);
 	die();
 };
+/*if (authGetUserLevel(getUserName(), -1) < 2)
+{
+	echo '<script>
+        window.history.back();
+    </script> ';
+	die();
+};*/
 include_once('include/language.inc.php');
 $msg=getFormVar('message');
 if (Settings::get("module_multisite") == "Oui")
