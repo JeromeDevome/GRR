@@ -3,7 +3,7 @@
  * month.php
  * Interface d'accueil avec affichage par mois pour une ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-05-06 11:11$
+ * Dernière modification : $Date: 2022-06-17 10:09$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -455,7 +455,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                             echo '<a class="lienCellule" title="'.$d[$cday]["popup"][$i].'" href="view_entry.php?id=',$d[$cday]["id"][$i],'&amp;day=',$cday,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=month">';
                         }
                     }
-                    echo $d[$cday]["resa"][$i],'<br/>';
+                    echo $d[$cday]["resa"][$i];
                     if ($acces_fiche_reservation)
                         echo '</a>',PHP_EOL;
                     echo '</span>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL,'</table>',PHP_EOL;
