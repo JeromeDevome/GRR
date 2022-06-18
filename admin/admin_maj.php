@@ -940,12 +940,6 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
     {
         $result .= formatResult("Mise à jour jusqu'à la version 3.5.0 RC0:","<b>","</b>");
         include "./ISO_to_UTF8.inc.php";
-        
-        /*$result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_participants` CHANGE `participant` `participant` VARCHAR(150) NOT NULL;");
-        if ($result_inter == '')
-            $result .= formatResult("Ok !","<span style='color:green;'>","</span>");
-        else
-            $result .= $result_inter;*/
         $result_inter = '';
     }
     // Vérification du format des champs additionnels
