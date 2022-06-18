@@ -3,9 +3,9 @@
  * admin_config_calend3.php
  * interface permettant la configuration des jours-cycles (étape 3)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-05-21 14:35$
+ * Dernière modification : $Date: 2022-06-18 11:37$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -24,7 +24,7 @@ function cal3($month, $year)
     $s = "";
     $daysInMonth = getDaysInMonth($month, $year);
     $date = mktime(12, 0, 0, $month, 1, $year);
-    $first = (strftime("%w",$date) + 7 - $weekstarts) % 7;
+    $first = (date("w",$date) + 7 - $weekstarts) % 7;
     $monthName = utf8_strftime("%B",$date);
     $s .= "<table class=\"calendar2 table-bordered\" >\n";
     $s .= "<tr>\n";
@@ -179,8 +179,8 @@ if (!isset($_GET['pview']))
 	$n = Settings::get("begin_bookings");
 	$end_bookings = Settings::get("end_bookings");
 	$debligne = 1;
-	$month = strftime("%m", Settings::get("begin_bookings"));
-	$year = strftime("%Y", Settings::get("begin_bookings"));
+	$month = date("m", Settings::get("begin_bookings"));
+	$year = date("Y", Settings::get("begin_bookings"));
 	$inc = 0;
 	while ($n <= $end_bookings)
 	{

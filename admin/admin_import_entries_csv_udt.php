@@ -3,7 +3,7 @@
  * admin_import_entries_csv_udt.php
  * Importe un fichier de réservations au format csv 
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-05-05 11:05$
+ * Dernière modification : $Date: 2022-06-18 11:57$
  * @author    JeromeB & Yan Naessens & Denis Monasse & Laurent Delineau
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -266,8 +266,8 @@ function entre_reservation($room_id,$jour_semaine,$name,$description,
 		settype($end_year,"integer");
 		settype($end_minute,"integer");
 		settype($end_hour,"integer");
-		$minyear = strftime("%Y", Settings::get('begin_bookings'));
-		$maxyear = strftime("%Y", Settings::get("end_bookings"));
+		$minyear = date("Y", Settings::get('begin_bookings'));
+		$maxyear = date("Y", Settings::get("end_bookings"));
 		if ($end_day < 1) $end_day = 1;
 		if ($end_day > 31) $end_day = 31;
 		if ($end_month < 1) $end_month = 1;

@@ -3,9 +3,9 @@
  * admin_view_connexions.php
  * Interface de gestion des connexions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:30$
+ * Dernière modification : $Date: 2022-06-17 10:24$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -50,11 +50,11 @@ echo '	</ul>';
 echo '</div>';
 echo '<hr />';
 if (!isset($_POST['histYear']))
-	$_POST['histYear'] = strftime("%Y");
+	$_POST['histYear'] = date("Y");
 if (!isset($_POST['histMonth']))
-	$_POST['histMonth'] = strftime("%m");
+	$_POST['histMonth'] = date("m");
 if (!isset($_POST['histDay']))
-	$_POST['histDay'] = strftime("%d");
+	$_POST['histDay'] = date("d");
 echo '<form action="admin_view_connexions.php" method="post">';
 echo '<fieldset>';
 echo '<legend style="font-variant: small-caps;">'.get_vocab("start_history").'</legend>';
@@ -149,11 +149,11 @@ $jour =  substr($row[0],8,2);
 echo "<p>".get_vocab("logs_number")."<b>".$logs_number."</b><br />";
 echo get_vocab("older_date_log")."<b>".$jour."/".$mois."/".$annee."</b></p>";
 if (!isset($_POST['cleanYear']))
-	$_POST['cleanYear'] = strftime("%Y");
+	$_POST['cleanYear'] = date("Y");
 if (!isset($_POST['cleanMonth']))
-	$_POST['cleanMonth'] = strftime("%m");
+	$_POST['cleanMonth'] = date("m");
 if (!isset($_POST['cleanDay']))
-	$_POST['cleanDay'] = strftime("%d");
+	$_POST['cleanDay'] = date("d");
 echo' <div title="Nettoyage du journal" >';
 echo '<p>'.get_vocab("erase_log").'</p>';
 echo '<form action="admin_view_connexions.php" method="post">';

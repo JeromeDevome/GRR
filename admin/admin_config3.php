@@ -273,7 +273,7 @@ echo "\n<br />".get_vocab('pwd').get_vocab('deux_points');
 echo "\n<input type = \"password\" name=\"grr_mail_Password\" value =\"".Settings::get('grr_mail_Password')."\" />";
 // @ expediteur:
 echo "\n<br />".get_vocab('Email_expediteur_messages_automatiques').get_vocab('deux_points');
-if (trim(Settings::get('grr_mail_from')) == "")
+if ((Settings::get('grr_mail_from') == NULL)||(trim(Settings::get('grr_mail_from')) == ""))
 	$grr_mail_from = "noreply@mon.site.fr";
 else
 	$grr_mail_from = Settings::get('grr_mail_from');

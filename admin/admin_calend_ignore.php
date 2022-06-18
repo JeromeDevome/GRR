@@ -3,9 +3,9 @@
  * admin_calend_ignore.php
  * Interface permettant la la réservation en bloc de journées entières
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13  12:06$
+ * Dernière modification : $Date: 2022-06-18  11:13$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -38,8 +38,8 @@ if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 	$result = 0;
 	$end_bookings = Settings::get("end_bookings");
 	$n = Settings::get("begin_bookings");
-	$month = strftime("%m", Settings::get("begin_bookings"));
-	$year = strftime("%Y", Settings::get("begin_bookings"));
+	$month = date("m", Settings::get("begin_bookings"));
+	$year = date("Y", Settings::get("begin_bookings"));
 	$day = 1;
 	while ($n <= $end_bookings)
 	{
@@ -151,8 +151,8 @@ echo "<table>\n";
 $n = Settings::get("begin_bookings");
 $end_bookings = Settings::get("end_bookings");
 $debligne = 1;
-$month = utf8_encode(strftime("%m", Settings::get("begin_bookings")));
-$year = strftime("%Y", Settings::get("begin_bookings"));
+$month = date("m", Settings::get("begin_bookings"));
+$year = date("Y", Settings::get("begin_bookings"));
 $inc = 0;
 while ($n <= $end_bookings)
 {

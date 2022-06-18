@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-20 15:18$
+ * Dernière modification : $Date: 2022-06-16 16:18$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -243,7 +243,7 @@ foreach($form_vars as $var => $var_type)
 {
     if ($var_type != "array"){
         $$var = getFormVar($var, $var_type);
-        if ($var_type == "string"){$$var = trim($$var);}
+        if (($var_type == "string")&&($$var !== NULL)){$$var = trim($$var);}
     }
     else{ // traitement d'un tableau
         $$var = getFormVar($var,'');
@@ -481,16 +481,16 @@ if (isset($id)) // édition d'une réservation existante
 	$create_by = $row['create_by'];
 	$description = $row['description'];
 	$statut_entry = $row['statut_entry'];
-	$day = strftime('%d', $row['start_time']);
-	$month = strftime('%m', $row['start_time']);
-	$year = strftime('%Y', $row['start_time']);
-	$start_hour = strftime('%H', $row['start_time']);
-	$start_min = strftime('%M', $row['start_time']);
-	$end_day = strftime('%d', $row['end_time']);
-	$end_month = strftime('%m', $row['end_time']);
-	$end_year = strftime('%Y', $row['end_time']);
-	$end_hour = strftime('%H', $row['end_time']);
-	$end_min  = strftime('%M', $row['end_time']);
+	$day = date('d', $row['start_time']);
+	$month = date('m', $row['start_time']);
+	$year = date('Y', $row['start_time']);
+	$start_hour = date('H', $row['start_time']);
+	$start_min = date('i', $row['start_time']);
+	$end_day = date('d', $row['end_time']);
+	$end_month = date('m', $row['end_time']);
+	$end_year = date('Y', $row['end_time']);
+	$end_hour = date('H', $row['end_time']);
+	$end_min  = date('i', $row['end_time']);
 	$duration = $row['end_time']-$row['start_time'];
 	$etype = $row['type'];
 	$room_id = $row['room_id'];
@@ -524,20 +524,20 @@ if (isset($id)) // édition d'une réservation existante
 		}
 		if ($edit_type == "series")
 		{
-			$day   = strftime('%d', $row[1]);
-			$month = strftime('%m', $row[1]);
-			$year  = strftime('%Y', $row[1]);
-			$start_hour  = strftime('%H', $row[1]);
-			$start_min   = strftime('%M', $row[1]);
+			$day   = date('d', $row[1]);
+			$month = date('m', $row[1]);
+			$year  = date('Y', $row[1]);
+			$start_hour  = date('H', $row[1]);
+			$start_min   = date('i', $row[1]);
 			$duration    = $row[5]-$row[1];
 			//$end_day   = strftime('%d', $row[5]);
 			//$end_month = strftime('%m', $row[5]);
 			//$end_year  = strftime('%Y', $row[5]);
 			//$end_hour  = strftime('%H', $row[5]);
 			//$end_min   = strftime('%M', $row[5]);
-			$rep_end_day   = strftime('%d', $row[2]);
-			$rep_end_month = strftime('%m', $row[2]);
-			$rep_end_year  = strftime('%Y', $row[2]);
+			$rep_end_day   = date('d', $row[2]);
+			$rep_end_month = date('m', $row[2]);
+			$rep_end_year  = date('Y', $row[2]);
 			$type = $row[6];
 			$name = $row[7];
 			$beneficiaire = $row[8];
@@ -557,7 +557,7 @@ if (isset($id)) // édition d'une réservation existante
 		}
 		else
 		{
-			$rep_end_date = utf8_encode(strftime($dformat,$row[2]));
+			$rep_end_date = utf8_strftime($dformat,$row[2]);
 			$rep_opt      = $row[3];
 			$start_time = $row[1];
 			$end_time = $row[5];

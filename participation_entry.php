@@ -3,9 +3,9 @@
  * participation_entry.php
  * Script de traitement de l'inscription/désincription à une réservation acceptant les participants
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-08-01 18:24$
+ * Dernière modification : $Date: 2022-06-18 12:04$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -43,9 +43,9 @@ else
 }
 if ($info = mrbsGetEntryInfo($id))
 {
-	$day   = strftime("%d", $info["start_time"]);
-	$month = strftime("%m", $info["start_time"]);
-	$year  = strftime("%Y", $info["start_time"]);
+	$day   = date("d", $info["start_time"]);
+	$month = date("m", $info["start_time"]);
+	$year  = date("Y", $info["start_time"]);
 	$area  = mrbsGetRoomArea($info["room_id"]);
 	$back = isset($_SERVER['HTTP_REFERER'])? htmlspecialchars($_SERVER['HTTP_REFERER']): page_accueil();
 	$user_name = getUserName();

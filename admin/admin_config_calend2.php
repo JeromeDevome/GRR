@@ -3,9 +3,9 @@
  * admin_config_calend2.php
  * interface permettant la configuration des jours-cycles (étape 2)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:57$
+ * Dernière modification : $Date: 2022-06-18 11:31$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -28,8 +28,8 @@ if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 	//$result = 0; // ce $result n'est pas utilisé ?
 	$end_bookings = Settings::get("end_bookings");
 	$n = Settings::get("begin_bookings");
-	$month = strftime("%m", Settings::get("begin_bookings"));
-	$year = strftime("%Y", Settings::get("begin_bookings"));
+	$month = date("m", Settings::get("begin_bookings"));
+	$year = date("Y", Settings::get("begin_bookings"));
 	$day = 1;
 	// Pour aller chercher le Jour cycle qui débutera le premier cycle de jours
 	$m = Settings::get("jour_debut_Jours_Cycles");
@@ -99,8 +99,8 @@ echo "<table>\n";
 $n = Settings::get("begin_bookings");
 $end_bookings = Settings::get("end_bookings");
 $debligne = 1;
-$month = strftime("%m", Settings::get("begin_bookings"));
-$year = strftime("%Y", Settings::get("begin_bookings"));
+$month = date("m", Settings::get("begin_bookings"));
+$year = date("Y", Settings::get("begin_bookings"));
 $inc = 0;
 while ($n <= $end_bookings)
 {

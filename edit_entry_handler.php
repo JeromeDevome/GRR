@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-03-30 16:50$
+ * Dernière modification : $Date: 2022-06-18 12:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -323,8 +323,8 @@ try {
         }
         else
         {
-            $minyear = strftime("%Y", Settings::get("begin_bookings"));
-            $maxyear = strftime("%Y", Settings::get("end_bookings"));
+            $minyear = date("Y", Settings::get("begin_bookings"));
+            $maxyear = date("Y", Settings::get("end_bookings"));
             if ($end_day < 1)
                 $end_day = 1;
             if ($end_day > 31)

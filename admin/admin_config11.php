@@ -391,9 +391,9 @@ echo '</div>'.PHP_EOL;
 echo '<hr /><h3>'.get_vocab('title_begin_end_bookings')."</h3>\n";
 echo '<div class="form-group col-xs-12">'.PHP_EOL;
 $typeDate = 'begin_';
-$bday = strftime('%d', Settings::get('begin_bookings'));
-$bmonth = strftime('%m', Settings::get('begin_bookings'));
-$byear = strftime('%Y', Settings::get('begin_bookings'));
+$bday = date('d', Settings::get('begin_bookings'));
+$bmonth = date('m', Settings::get('begin_bookings'));
+$byear = date('Y', Settings::get('begin_bookings'));
 
 echo '<label class="col-sm-6 col-xs-12" for="mydate_begin_">'.get_vocab('begin_bookings').'</label>'.PHP_EOL;
 echo '<div class="col-sm-6 col-xs-12 form-inline">'.PHP_EOL;
@@ -425,9 +425,9 @@ echo '<p><em>'.get_vocab('begin_bookings_explain').'</em></p>'.PHP_EOL;
 
 echo '<div class="form-group col-xs-12">'.PHP_EOL;
 $typeDate = 'end_';
-$eday = strftime('%d', Settings::get('end_bookings'));
-$emonth = strftime('%m', Settings::get('end_bookings'));
-$eyear = strftime('%Y', Settings::get('end_bookings'));
+$eday = date('d', Settings::get('end_bookings'));
+$emonth = date('m', Settings::get('end_bookings'));
+$eyear = date('Y', Settings::get('end_bookings'));
 
 echo '<label class="col-sm-6 col-xs-12" for="mydate_end_">'.get_vocab('end_bookings').'</label>'.PHP_EOL;
 echo '<div class="col-sm-6 col-xs-12 form-inline">'.PHP_EOL;

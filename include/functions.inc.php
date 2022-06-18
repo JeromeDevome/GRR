@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-05-23 16:25$
+ * Dernière modification : $Date: 2022-06-18 12:04$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -84,7 +84,7 @@ function cal($month, $year, $type)
 	$s = "";
 	$daysInMonth = getDaysInMonth($month, $year);
 	$date = mktime(12, 0, 0, $month, 1, $year);
-	$first = (strftime("%w",$date) + 7 - $weekstarts) % 7;
+	$first = (date("w",$date) + 7 - $weekstarts) % 7;
 	$monthName = ucfirst(utf8_strftime("%B", $date));
 
 	$s .= '<table class="table calendar2">'.PHP_EOL;
@@ -1658,10 +1658,10 @@ function genDateSelectorForm($prefix, $day, $month, $year, $option)
 	}
 	$selector_data .=  "</select>";
 	$selector_data .=  "<select class='test' name=\"${prefix}year\" id=\"${prefix}year\">\n";
-	$min = strftime("%Y", Settings::get("begin_bookings"));
+	$min = date("Y", Settings::get("begin_bookings"));
 	if ($option == "more_years")
 		$min = date("Y") - $nb_year_calendar;
-	$max = strftime("%Y", Settings::get("end_bookings"));
+	$max = date("Y", Settings::get("end_bookings"));
 	if ($option == "more_years")
 		$max = date("Y") + $nb_year_calendar;
 	for($i = $min; $i <= $max; $i++)
@@ -1833,7 +1833,7 @@ function get_default_site()
 {
     $user = getUserName();
     if ($user != ''){
-        $id_site = grr_sql_query1("SELECT default_site FROM ".TABLE_PREFIX."_utilisateurs WHERE login =".$user);
+        $id_site = grr_sql_query1("SELECT default_site FROM ".TABLE_PREFIX."_utilisateurs WHERE login ='".$user."'");
         if ($id_site > 0){return $id_site;}
     }
     // ici l'utilisateur n'est pas reconnu ou il n'a pas de site par défaut : on passe aux informations de la table settings
@@ -1869,7 +1869,7 @@ function get_default_room(){
  */
 function day_name($daynumber)
 {
-	return utf8_encode(strftime("%A", mktime(0, 0, 0, 1, 2 + $daynumber, 2000)));
+	return utf8_strftime("%A", mktime(0, 0, 0, 1, 2 + $daynumber, 2000));
 }
 
 function affiche_heure_creneau($t,$resolution)
@@ -2826,7 +2826,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	$area_name    				= removeMailUnicode(htmlspecialchars($row[4]));
 	$room_id      				= $row[6];
 	$repeat_id    				= $row[7];
-	$date_avis    				= strftime("%Y/%m/%d", $row[10]);
+	$date_avis    				= utf8_strftime("%Y/%m/%d", $row[10]);
 	$delais_option_reservation 	= $row[13];
 	$option_reservation 		= $row[14];
 	$moderate 					= $row[15];
@@ -2866,7 +2866,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		{
 			$row2 = grr_sql_row($res, 0);
 			$rep_type     = $row2[0];
-			$rep_end_date = strftime($dformat,$row2[1]);
+			$rep_end_date = utf8_strftime($dformat,$row2[1]);
 			$rep_opt      = $row2[2];
 			$rep_num_weeks = $row2[3];
 		}
@@ -4259,7 +4259,7 @@ function describe_span($starts, $ends, $dformat)
 		$ampm = date("a",$starts);
 		$timeformat = "%I:%M$ampm";
 	}
-	$start_time = strftime($timeformat, $starts);
+	$start_time = utf8_strftime($timeformat, $starts);
 	$duration = $ends - $starts;
 	toTimeString($duration, $dur_units);
 	return array($start_date, $start_time ,$duration, $dur_units);
@@ -5304,8 +5304,8 @@ function jQuery_DatePicker($typeDate){
 				$year = $end_year;
 			}
         }
- 	$mindate = strftime("%d/%m/%Y",Settings::get('begin_bookings'));
-    $maxdate = strftime("%d/%m/%Y",Settings::get('end_bookings'));
+ 	$mindate = utf8_strftime("%d/%m/%Y",Settings::get('begin_bookings'));
+    $maxdate = utf8_strftime("%d/%m/%Y",Settings::get('end_bookings'));
     genDateSelector("".$typeDate."_", "$day", "$month", "$year","");
  	echo '<input type="hidden" disabled="disabled" id="mydate_' .$typeDate. '">'.PHP_EOL;
  	echo '<script type="text/javascript">'.PHP_EOL;
@@ -6240,9 +6240,11 @@ function generationToken()
 * pour réduire le risque XSS
 */
 function clean_input($data){
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
+    if ($data != NULL){
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+    }
     return $data;
 }
 
@@ -6347,9 +6349,9 @@ function grrGetOverloadDescArray($ofl,$od)
     return $overload_array;
 }
 // récupère les variables passées par GET ou POST ou bien par COOKIE, et leur affecte le type indiqué (int ou string)
-// rend NULL si la valeur recherchée n'est pas référencée
-function getFormVar($nom,$type=''){
-    $valeur = isset($_GET[$nom])? $_GET[$nom] : (isset($_POST[$nom])? $_POST[$nom] : (isset($_COOKIE['nom'])? $_COOKIE['nom'] : NULL));
+// rend $default si la valeur recherchée n'est pas référencée
+function getFormVar($nom,$type='',$default=NULL){
+    $valeur = isset($_GET[$nom])? $_GET[$nom] : (isset($_POST[$nom])? $_POST[$nom] : (isset($_COOKIE['nom'])? $_COOKIE['nom'] : $default));
     if ((isset($valeur)) && ($type !=''))
         settype($valeur,$type);
     return $valeur;

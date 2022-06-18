@@ -3,9 +3,9 @@
  * install_mysql.php
  * Interface d'installation de GRR pour un environnement mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-18 12:40$
+ * Dernière modification : $Date: 2022-06-10 11:16$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -15,31 +15,31 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "install_mysql.php";
 
 require_once("../include/config.inc.php");
 require_once("../include/misc.inc.php");
 require_once("../include/functions.inc.php");
 
 $nom_fic = "../include/connect.inc.php";
-$etape = isset($_POST['etape'])? $_POST['etape'] : (isset($_GET["etape"]) ? $_GET["etape"] : NULL);
-$adresse_db = isset($_POST["adresse_db"]) ? $_POST["adresse_db"] : "localhost";
-$port_db = isset($_POST["port_db"]) ? $_POST["port_db"] : 3306;
-$login_db = isset($_POST["login_db"]) ? $_POST["login_db"] : NULL;
-$pass_db = isset($_POST["pass_db"]) ? $_POST["pass_db"] : NULL;
-$choix_db = isset($_POST["choix_db"]) ? $_POST["choix_db"] : NULL;
-$table_new = isset($_POST["table_new"]) ? $_POST["table_new"] : NULL;
-$table_prefix = isset($_POST["table_prefix"]) ? $_POST["table_prefix"] : NULL;
-$company = isset($_POST['company'])? $_POST['company'] : "Nom de l'établissement";
-$grr_url = isset($_POST['grr_url'])? $_POST['grr_url'] : NULL;
-$webmaster_email = isset($_POST['webmaster_email'])? $_POST['webmaster_email'] : "webmaster@grr.test";
-$technical_support_email = isset($_POST['technical_support_email'])? $_POST['technical_support_email'] : "techsupport@grr.test";
-$mdp1 = isset($_POST['mdp1'])? $_POST['mdp1'] : NULL;
-$mdp2 = isset($_POST['mdp2'])? $_POST['mdp2'] : NULL;
-$email = isset($_POST['email'])? $_POST['email'] : "administrateur@grr.test";
-// nettoyage des données entrées dans le formulaire
-$etape = clean_input($etape);
+// récupération des données du formulaire
+$etape = getFormVar("etape","int",1);
+$adresse_db = getFormVar("adresse_db","string","localhost");
+$port_db = getFormVar("port_db","int",3306);
+$login_db = getFormVar("login_db","string","");
+$pass_db = getFormVar("pass_db","string","");
+$choix_db = getFormVar("choix_db","string","");
+$table_new = getFormVar("table_new","string","");
+$table_prefix = getFormVar("table_prefix","string","");
+$company = getFormVar('company',"string","Nom de l'établissement");
+$grr_url = getFormVar('grr_url',"string","");
+$webmaster_email = getFormVar('webmaster_email',"string","webmaster@grr.test");
+$technical_support_email = getFormVar('technical_support_email',"string","techsupport@grr.test");
+$mdp1 = getFormVar('mdp1',"string","");
+$mdp2 = getFormVar('mdp2',"string","");
+$email = getFormVar('email',"string","administrateur@grr.test");
+// nettoyage des chaînes dans le formulaire
 $adresse_db = clean_input($adresse_db);
-$port_db = clean_input($port_db);
 $login_db = clean_input($login_db);
 $pass_db = clean_input($pass_db);
 $choix_db = clean_input($choix_db);
@@ -74,17 +74,18 @@ function mysqli_result($res, $row, $field = 0)
 
 if (@file_exists($nom_fic))
 {
+	require_once($nom_fic);
 	/* fix prefix missing */
 	if ( $table_prefix != NULL ) {
 		$table_prefix_from_user = $table_prefix;
 	} else {
 		$table_prefix_from_user = false;
 	}
-	require_once($nom_fic);
 	if ( empty($table_prefix) &&  $table_prefix_from_user !== false) {
 		$table_prefix = $table_prefix_from_user;
 	}
-	$db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbDb", "$dbPort");
+    // vérification des tables
+	$db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbDb", $dbPort);
 	if ($db)
 	{
 		if (mysqli_select_db($db, "$dbDb"))

@@ -3,9 +3,9 @@
  * mincals.inc.php
  * Fonctions permettant d'afficher le mini calendrier
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-04-20 11:40$
+ * Dernière modification : $Date: 2022-06-11 18:03$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -220,7 +220,7 @@
 			$s = "";
 			$daysInMonth = $this->getDaysInMonth($this->month, $this->year);
 			$date = mktime(12, 0, 0, $this->month, 1, $this->year);
-			$first = (strftime("%w",$date) + 7 - $weekstarts) % 7;
+			$first = (date("w",$date) + 7 - $weekstarts) % 7;
 			$monthName = ucfirst(utf8_strftime("%B", $date));
 			if(Settings::get("menu_gauche") == 2){
 				$s .= "\n<div class=\"col-lg-4 col-md-6 col-xs-12\">\n".PHP_EOL;
