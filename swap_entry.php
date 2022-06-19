@@ -3,9 +3,9 @@
  * swap_entry.php
  * Interface d'échange d'une réservation avec une autre, à choisir
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-12 10:44$
+ * Dernière modification : $Date: 2022-06-19 15:59$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -213,9 +213,9 @@ else { // on connaît $id de la réservation à échanger, on va en chercher une
     if ($info = mrbsGetEntryInfo($id))
     {
         $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : page_accueil() ;
-        $day   = strftime("%d", $info["start_time"]);
-        $month = strftime("%m", $info["start_time"]);
-        $year  = strftime("%Y", $info["start_time"]);
+        $day   = date('d', $info["start_time"]);
+        $month = date('m', $info["start_time"]);
+        $year  = date('Y', $info["start_time"]);
         $area  = mrbsGetRoomArea($info["room_id"]);
         // on commence par vérifier les droits d'accès
         if (authGetUserLevel(getUserName(), -1) < 1)

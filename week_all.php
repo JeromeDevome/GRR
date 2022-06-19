@@ -3,9 +3,9 @@
  * week_all.php
  * Permet l'affichage du planning des réservations d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-09 10:43$
+ * Dernière modification : $Date: 2022-06-19 16:01$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -428,10 +428,10 @@ $num_week_day = $weekstarts;
 
 for ($weekcol = 0; $weekcol < 7; $weekcol++)
 {
-	$num_day = strftime("%d", $t);
-	$temp_month = utf8_encode(strftime("%m", $t));
+	$num_day = date('d', $t);
+	$temp_month = utf8_encode(date('m', $t));
 	$temp_month2 = utf8_strftime("%b", $t);
-	$temp_year = strftime("%Y", $t);
+	$temp_year = date('Y', $t);
 	$tt = mktime(0, 0, 0, $temp_month, $num_day, $temp_year);
 	$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE day='$t'");
 	$t += 86400;
@@ -512,14 +512,14 @@ foreach($ressources as $row)
 		for ($k = 0; $k <= 6; $k++)
 		{
 			$cday = date("j", $t2);
-			$cmonth = strftime("%m", $t2);
-			$cyear = strftime("%Y", $t2);
+			$cmonth = date('m', $t2);
+			$cyear = date('Y', $t2);
 			$t2 += 86400;
 			if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
 			{
-				$temp_day = strftime("%d", $t2);
-				$temp_month = strftime("%m", $t2);
-				$temp_year = strftime("%Y", $t2);
+				$temp_day = date('d', $t2);
+				$temp_month = date('m', $t2);
+				$temp_year = date('Y', $t2);
 				if (heure_ete_hiver("hiver", $temp_year,0) == mktime(0, 0, 0, $temp_month, $temp_day, $temp_year))
 					$t2 += 3600;
 				if (date("H", $t2) == "01")

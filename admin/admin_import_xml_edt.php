@@ -3,9 +3,9 @@
  * admin_import_xml_edt.php
  * Importe un fichier de réservations au format xml issu du logiciel EDT Index Education
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2022-06-19 15:47$
  * @author    JeromeB & Yan Naessens & Laurent Delineau
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -170,23 +170,23 @@ echo '<table class="table_adm">';
                         $jour_semaine = $joursemaine[substr(strtolower($tab_cours[$i]['enfant']['jour']),0,3)]; 
                         $name = $tab_cours[$i]['enfant']['classe'].' - '.$tab_cours[$i]['enfant']['mat_libelle']; // nettoyer le code classe pour les groupes complexes 
                         $description = $tab_cours[$i]['enfant']['prof_nom'].' '.$tab_cours[$i]['enfant']['prof_prenom'];
-                     /*   $day = strftime("%d", Settings::get('begin_bookings')); // provisoirement
-                        $month = strftime("%m", Settings::get('begin_bookings'));
-                        $year = strftime("%Y", Settings::get('begin_bookings')); */
+                     /*   $day = date('d', Settings::get('begin_bookings')); // provisoirement
+                        $month = date('m', Settings::get('begin_bookings'));
+                        $year = date('Y', Settings::get('begin_bookings')); */
                         $h_deb = $tab_cours[$i]['enfant']['h.debut'];
                         $pos_h = strpos($h_deb,'h');
                         $hour = intval(substr($h_deb,0,$pos_h));
                         $minute = intval(substr($h_deb,$pos_h+1,5));
-                     /*   $end_day = strftime("%d", Settings::get('begin_bookings')); // provisoirement
-                        $end_month = strftime("%m", Settings::get('begin_bookings'));
-                        $end_year = strftime("%Y", Settings::get('begin_bookings')); */
+                     /*   $end_day = date('d', Settings::get('begin_bookings')); // provisoirement
+                        $end_month = date('m', Settings::get('begin_bookings'));
+                        $end_year = date('Y', Settings::get('begin_bookings')); */
                         $duree = $tab_cours[$i]['enfant']['duree'];
                         $pos_h = strpos($duree,'h');
                         $end_hour = $hour + intval(substr($duree,0,$pos_h));
                         $end_minute = $minute + intval(substr($duree,$pos_h+1,5));
-                      /*  $rep_end_day = strftime("%d", Settings::get('end_bookings')); // provisoirement
-                        $rep_end_month = strftime("%m", Settings::get('end_bookings'));
-                        $rep_end_year = strftime("%Y", Settings::get('end_bookings')); */
+                      /*  $rep_end_day = date('d', Settings::get('end_bookings')); // provisoirement
+                        $rep_end_month = date('m', Settings::get('end_bookings'));
+                        $rep_end_year = date('Y', Settings::get('end_bookings')); */
                         if ($tab_cours[$i]['enfant']['frequence'] == 'H'){ $rep_semaine = 0;}
                         elseif ($tab_cours[$i]['enfant']['frequence'] == 'Q1') {$rep_semaine = 1;}
                         else {$rep_semaine = 2;}
@@ -258,8 +258,8 @@ function entre_reservation($room_id,$jour_semaine,$name,$description,
 		settype($end_year,"integer");
 		settype($end_minute,"integer");
 		settype($end_hour,"integer");
-		$minyear = strftime("%Y", Settings::get('begin_bookings'));
-		$maxyear = strftime("%Y", Settings::get("end_bookings"));
+		$minyear = date('Y', Settings::get('begin_bookings'));
+		$maxyear = date('Y', Settings::get("end_bookings"));
 		if ($end_day < 1) $end_day = 1;
 		if ($end_day > 31) $end_day = 31;
 		if ($end_month < 1) $end_month = 1;

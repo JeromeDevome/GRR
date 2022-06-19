@@ -3,9 +3,9 @@
  * admin_reservation_bloc.php
  * interface permettant la la réservation en bloc de journées entières
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2022-06-19 15:48$
+ * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -118,8 +118,8 @@ if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 				{
 					get_planning_area_values($area_id);
 					$n = Settings::get("begin_bookings");
-					$month = strftime("%m", Settings::get("begin_bookings"));
-					$year = strftime("%Y", Settings::get("begin_bookings"));
+					$month = date('m', Settings::get("begin_bookings"));
+					$year = date('Y', Settings::get("begin_bookings"));
 					$day = 1;
 
 					while ($n <= $end_bookings)
@@ -263,8 +263,8 @@ if ($etape == 3)
 	$n = Settings::get("begin_bookings");
 	$end_bookings = Settings::get("end_bookings");
 	$debligne = 1;
-	$month = strftime("%m", Settings::get("begin_bookings"));
-	$year = strftime("%Y", Settings::get("begin_bookings"));
+	$month = date('m', Settings::get("begin_bookings"));
+	$year = date('Y', Settings::get("begin_bookings"));
 	$inc = 0;
 	$trad['dCalendrier'] = "";
 

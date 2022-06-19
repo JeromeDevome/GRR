@@ -22,7 +22,7 @@
 $grr_devel_url = "https://grr.devome.com/";
 
 // Numéro de version actuel
-# Format X.X.XRCX | exemples : 4.0.0a (alpha) ou 4.0.0b (beta) 3.4.0RC1 (Realesa Candidate) ou 3.4.0 (version OK)
+# Format X.X.XRCX | exemples : 4.0.0a (alpha) ou 4.0.0b (beta) 3.4.0RC1 (Release Candidate) ou 3.4.0 (version OK)
 $version_grr = "4.0.0a";
 // Version repository (GitHub)
 $versionReposite = "GitHub-Master";

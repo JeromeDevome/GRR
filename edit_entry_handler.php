@@ -3,9 +3,9 @@
  * edit_entry_handler.php
  * Permet de vérifier la validité de l'édition ou de la création d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-28 11:30$
+ * Dernière modification : $Date: 2022-06-19 15:52$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -334,8 +334,8 @@ else
 		settype($end_year, "integer");
 		settype($end_minute, "integer");
 		settype($end_hour, "integer");
-		$minyear = strftime("%Y", Settings::get("begin_bookings"));
-		$maxyear = strftime("%Y", Settings::get("end_bookings"));
+		$minyear = date('Y', Settings::get("begin_bookings"));
+		$maxyear = date('Y', Settings::get("end_bookings"));
 		if ($end_day < 1)
 			$end_day = 1;
 		if ($end_day > 31)

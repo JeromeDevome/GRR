@@ -3,9 +3,9 @@
  * menuHG.php
  * Menus haut et gauche calendrier & domaines & ressource & légende
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-04-24 17:49$
+ * Dernière modification : $Date: 2022-06-19 15:54$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -67,13 +67,13 @@ if ($_GET['pview'] != 1) // en mode prévisualisation de page imprimable, on n'a
         $selecteursH = $selecteurs;
     }
 	//récupération des valeurs 
-	$bday = strftime('%d', Settings::get('begin_bookings'));
-    $bmonth = strftime('%m', Settings::get('begin_bookings'));
-	$byear = strftime('%Y', Settings::get('begin_bookings'));
+	$bday = date('d', Settings::get('begin_bookings'));
+    $bmonth = date('m', Settings::get('begin_bookings'));
+	$byear = date('Y', Settings::get('begin_bookings'));
 	
-	$eday = strftime('%d', Settings::get('end_bookings'));
-    $emonth = strftime('%m', Settings::get('end_bookings'));
-	$eyear = strftime('%Y', Settings::get('end_bookings'));
+	$eday = date('d', Settings::get('end_bookings'));
+    $emonth = date('m', Settings::get('end_bookings'));
+	$eyear = date('Y', Settings::get('end_bookings'));
     // le menu haut
     echo "<div id ='menuHaut' class='row'>";
     echo "<div id ='resource_selectorH' class='col-lg-2 col-md-3 col-xs-12'>";

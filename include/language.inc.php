@@ -3,9 +3,9 @@
  * language.inc.php
  * Configuration de la langue
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-11-12 17:07$
- * @author    JeromeB & Laurent Delineau
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2022-06-19 09:53$
+ * @author    JeromeB & Laurent Delineau & Yan Naessens
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -22,9 +22,10 @@
 # Les "locales" sont un système permettant de gérer le plus proprement possible les différences de langue et de style
 # des utilisateurs. Vous pouvez connaître les locales installées sur votre système linux avec la commande "locale -a"
 # (les noms semblent peu standardisés, vous aurez des chaînes du genre "fr_FR" ou "fr_FR.ISO8859-1")
-
-$defaultlanguage = Settings::get("default_language");
-
+if (function_exists("Settings::get"))
+	$defaultlanguage = Settings::get("default_language");
+else
+	$defaultlanguage = false;
 if (isset($_SESSION['default_language']))
 {
 	// si l'utilisateur a défini sa propre langue
@@ -40,7 +41,10 @@ else
 	// sinon, on fixe la valeur à "fr"
 	$locale = 'fr';
 }
-// $pass_leng est utilisé dans les fichiers langue, d'où la ligne ci-dessous
+//
+// variables utilisées dans les fichiers de langue, d'où les lignes ci-dessous
+//
+$dbDb = (isset($dbDb))? $dbDb : '';
 $pass_leng = "";
 if (isset($fichier_mysql_inc_est_present))
 	$pass_leng = grr_sql_query1("select VALUE from ".TABLE_PREFIX."_setting where NAME = 'pass_leng'");
@@ -64,12 +68,12 @@ elseif (@file_exists("../language/lang_subst." . $locale))
 if (isset($_GET['area']))
 {
 // Si l'id du domaine est passé en paramètre, on le récupère
-	$subst_id_area = $_GET['area'];
+	$subst_id_area = clean_input($_GET['area']);
 }
 else if (isset($_GET['room']))
 {
 // sinon, on essaye avec l'id de la ressource
-	$subst_id_area = mrbsGetRoomArea($_GET['room']);
+	$subst_id_area = mrbsGetRoomArea(clean_input($_GET['room']));
 }
 if (isset($subst_id_area))
 {
@@ -82,7 +86,8 @@ if (isset($subst_id_area))
 $clock_file = "clock_".$locale.".js";
 // Sélection du fichier d'aide.
 $faqfilelang = "_".$locale;
-//Format de la date : 0 pour afficher des dates sous la forme "Jul 10", 1 pour afficher des dates sous la forme "10 Jul"
+//Format de la date : 'en' pour afficher des dates sous la forme "Jul 10", sinon sous la forme "10 Jul"
+//Pourrait être amélioré pour 'de', 'es' et 'it'
 if ($locale == 'en')
 {
 	$dateformat = 'en';
@@ -102,9 +107,8 @@ switch ($dateformat)
 }
 
 /**
- * @param str $string
+ * @param string $str
  */
- 
 function test_utf8($str)
 {
  // astuce pour entrer dans un test booléen ^^
@@ -112,20 +116,55 @@ function test_utf8($str)
   if (is_array($str)) {
      $str = implode('', $str);
      // retourne FALSE si aucun caractere n'appartient au jeu utf8
-     return !((ord($str[0]) != 239) && (ord($str[1]) != 187) && (ord($str[2]) !=
- 191));
+     return !((ord($str[0]) != 239) && (ord($str[1]) != 187) && (ord($str[2]) != 191));
     }
     else {
         // retourne TRUE
-        // si la chaine decoder et encoder est egale a elle meme
+        // si la chaine decodée et encodée est égale à elle-même
         return (utf8_encode(utf8_decode($str)) == $str);
     }    
 }
 
+# This maps a Windows locale to the charset it uses, which are
+# all Windows code pages
+$winlocale_codepage_map = array
+(
+	'chs' => 'CP936',
+	'cht' => 'CP950',
+	'csy' => 'CP1250',
+	'dan' => 'CP1252',
+	'dea' => 'CP1252',
+	'des' => 'CP1252',
+	'deu' => 'CP1252',
+	'ell' => 'CP1253',
+	'ena' => 'CP1252',
+	'enc' => 'CP1252',
+	'eng' => 'CP1252',
+	'enz' => 'CP1252',
+	'esm' => 'CP1252',
+	'esp' => 'CP1252',
+	'fin' => 'CP1252',
+	'fra' => 'CP1252',
+	'frb' => 'CP1252',
+	'frc' => 'CP1252',
+	'frs' => 'CP1252',
+	'ita' => 'CP1252',
+	'its' => 'CP1252',
+	'jpn' => 'CP932',
+	'kor' => 'CP949',
+	'nlb' => 'CP1252',
+	'nld' => 'CP1252',
+	'norwegian' => 'CP1252',
+	'ptb' => 'CP1252',
+	'ptg' => 'CP1252',
+	'plk' => 'CP1250',
+	'sve' => 'CP1252',
+	'usa' => 'CP1252'
+	);
+
 /**
  * @param string $string
  */
- 
 function utf8_convert($string)
 {
 	global $windows_locale, $unicode_encoding, $winlocale_codepage_map;
@@ -144,14 +183,161 @@ function utf8_convert($string)
 		return $string;
 	}
 }
-/**
- * @return string
- */
-function utf8_strftime($format, $time)
+/* function date_formatter_strftime(string $format, $time): string
+ * utilise strftime() pour formatter le timestamp $time selon $format 
+ * rend une chaîne UTF-8
+*/
+function date_formatter_strftime(string $format, $time): string
 {
-	$result = strftime($format, $time);
-	return utf8_convert($result);
+    $time = (int) $time;
+    $result = strftime($format, $time);
+    $result = utf8_convert($result);
+    return $result;
 }
+/* function strftime2intlPattern(string $format, string $locale) : string
+ * convertit un caractère de formatage pour strftime() en motif équivalent pour IntlDateFormatter
+ * limité aux motifs utilisés dans GRR : %a, %A, %b, %B, %c, %d, %H, %I, %m, %M, %T, %w, %y, %Y
+*/
+function strftime2intlPattern(string $format, string $locale) : string
+{
+  $map = array(
+    // Day
+    'a' => 'ccc',
+    'A' => 'cccc',
+    'd' => 'dd',
+    'w' => 'w',
+    // Month
+    'b' => 'LLL',
+    'B' => 'LLLL',
+    'm' => 'LL',
+    // Year
+    'y' => 'yy',
+    'Y' => 'y',
+    // Time
+    'H' => 'HH',
+    'I' => 'hh',
+    'M' => 'mm',
+    'T' => 'HH:mm:ss',
+  );
+// premier cas : un équivalent est donné par le tableau
+    if (isset($map[$format])){
+        return $map[$format];
+    }
+// cas de 'c'
+    if($format == 'c'){
+        $date_type = IntlDateFormatter::MEDIUM;
+        $time_type = IntlDateFormatter::LONG;
+        $formatter = new IntlDateFormatter(
+            $locale,
+            $date_type,
+            $time_type
+        );
+        return $formatter->getPattern();
+    }
+    // cas non traité
+    throw new \Exception("Le format '%$format' n'est pas traité ");
+}
+/* function strftime2intlFormat(string $format, string $locale) : string
+ * convertit un format pour strftime() en format pour IntlDateFormatter
+*/
+function strftime2intlFormat(string $format, string $locale) : string
+{
+  if (!isset($format) || ($format === ''))
+  {
+    return $format;
+  }
+  // éclate la chaîne contenant éventuellement des caractères multioctets en un tableau
+  $chars = preg_split('//u', $format, -1, PREG_SPLIT_NO_EMPTY);
+  $char = current($chars);
+  $text = '';
+  $result = '';
+    // itère la fonction précédente sur le tableau
+  do
+  {
+    if ($char == '%')
+    {
+      if (false === ($next_char = next($chars)))
+      {
+        trigger_error("Syntaxe de '$format' incorrecte ", E_USER_NOTICE);
+      }
+      elseif (in_array($next_char, array('n', 't', '%'))) // caractères à échapper
+      {
+        switch ($next_char)
+        {
+          case 'n':
+            $text_char = "\n";
+            break;
+          case 't':
+            $text_char = "\t";
+            break;
+          case '%':
+            $text_char = '%';
+            break;
+        }
+        $text .= $text_char;
+      }
+      else // c'est un caractère de formatage
+      {
+        // s'il y a un caractère de texte alors on l'insère
+        if ($text !== '')
+        {
+          $result .= "'$text'";
+          $text = '';
+        }
+        // puis on insère le motif équivalent
+        $result .= strftime2intlPattern($next_char, $locale);
+      }
+    }
+    else
+    {
+      $text .= ($char == "'") ? "''" : $char;  // échapper les 'single quotes'
+    }
+  } while (false !== ($char = next($chars)));
+
+  // Add any remaining text
+  if ($text !== '')
+  {
+    $result .= "'$text'";
+  }
+  return $result;
+}
+/* function date_formatter_intl(string $format, $time, $locale) : string
+ * formate le timestamp $time en une chaîne UTF-8 
+ * utilise IntlDateFormatter, $format doit être un format valide pour IntlDateFormatter
+*/
+function date_formatter_intl(string $format, $time, $locale) : string
+{
+    $pattern = strftime2intlFormat($format, $locale);
+    $formatter = new IntlDateFormatter(
+        $locale,
+        IntlDateFormatter::FULL,
+        IntlDateFormatter::FULL,
+        null,
+        null,
+        $pattern
+    );
+    return $formatter->format($time);
+}
+/* function utf8_strftime(string $format, $time) : string
+ * formate un timestamp selon le format, dépendant éventuellement de la locale en cours sur le serveur
+ * $time peut être un entier ou un flottant
+ * la chaîne rendue est au format UTF-8
+*/
+function utf8_strftime(string $format, $time) : string
+{
+    global $locale;
+  // strftime() is deprecated from PHP 8.1
+  // si IntlDateFormatter est installé, on l'utilise. Sinon, une erreur E_DEPRECATED sera déclenchée : adapter ERROR_REPORTING en conséquence
+  if (class_exists('IntlDateFormatter'))
+  {
+    return date_formatter_intl($format, $time, $locale);
+  }
+  else
+  {
+    return date_formatter_strftime($format, $time);
+  }
+}
+
 # A map is needed to convert from the HTTP language specifier to a
 # locale specifier for Windows
 $lang_map_windows = array
@@ -220,42 +406,6 @@ $lang_map_windows = array
 	'zh-hk' => 'cht',
 	'zh-sg' => 'cht',
 	'zh-zh' => 'chinese',
-	);
-# This maps a Windows locale to the charset it uses, which are
-# all Windows code pages
-$winlocale_codepage_map = array
-(
-	'chs' => 'CP936',
-	'cht' => 'CP950',
-	'csy' => 'CP1250',
-	'dan' => 'CP1252',
-	'dea' => 'CP1252',
-	'des' => 'CP1252',
-	'deu' => 'CP1252',
-	'ell' => 'CP1253',
-	'ena' => 'CP1252',
-	'enc' => 'CP1252',
-	'eng' => 'CP1252',
-	'enz' => 'CP1252',
-	'esm' => 'CP1252',
-	'esp' => 'CP1252',
-	'fin' => 'CP1252',
-	'fra' => 'CP1252',
-	'frb' => 'CP1252',
-	'frc' => 'CP1252',
-	'frs' => 'CP1252',
-	'ita' => 'CP1252',
-	'its' => 'CP1252',
-	'jpn' => 'CP932',
-	'kor' => 'CP949',
-	'nlb' => 'CP1252',
-	'nld' => 'CP1252',
-	'norwegian' => 'CP1252',
-	'ptb' => 'CP1252',
-	'ptg' => 'CP1252',
-	'plk' => 'CP1250',
-	'sve' => 'CP1252',
-	'usa' => 'CP1252'
 	);
 // Cas particulier de la langue française
 // Si la langue française est choisie et que setlocale(LC_TIME,'fr') renvoie false
@@ -383,24 +533,21 @@ function get_vocab($tag)
 {
 	global $vocab, $charset_html, $unicode_encoding;
 	if (!isset($vocab[$tag]))
-	{
-		return "(".$tag.")";
-	} else {
+		return "<b><span style=\"color:#FF0000;\"><i>(".$tag.")</i></span></b>";
+    else {
 		if ($unicode_encoding)
 		{
-			if(Settings::get("trad_".$tag) != ""){
+			if(Settings::get("trad_".$tag) != "")
 				return Settings::get("trad_".$tag);
-			}else{
+            else
 				return iconv($charset_html,"utf-8",$vocab[$tag]);
-			}
 		}
 		else
 		{
-			if(Settings::get("trad_".$tag) != ""){
+			if(Settings::get("trad_".$tag) != "")
 				return Settings::get("trad_".$tag);
-			}else{
+            else
 				return $vocab[$tag];
-			}
 		}
 	}
 }

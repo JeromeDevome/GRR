@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-02-01 12:09$
+ * Dernière modification : $Date: 2022-06-19 15:53$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -84,7 +84,7 @@ function cal($month, $year, $type)
 	$s = "";
 	$daysInMonth = getDaysInMonth($month, $year);
 	$date = mktime(12, 0, 0, $month, 1, $year);
-	$first = (strftime("%w",$date) + 7 - $weekstarts) % 7;
+	$first = (date('w',$date) + 7 - $weekstarts) % 7;
 	$monthName = ucfirst(utf8_strftime("%B", $date));
 
 	$s .= '<table class="table calendar2">'.PHP_EOL;
@@ -1047,7 +1047,7 @@ function begin_page($title, $page = "with_session")
 	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />'.PHP_EOL;
 	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.css" />'.PHP_EOL;
 	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
-	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/mod_bootstrap.css" />'.PHP_EOL;
+	//$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/mod_bootstrap.css" />'.PHP_EOL;
 
 	if (isset($use_select2))
 	{
@@ -1866,10 +1866,10 @@ function genDateSelectorForm($prefix, $day, $month, $year, $option)
 	}
 	$selector_data .=  "</select>";
 	$selector_data .=  "<select class='test' name=\"${prefix}year\" id=\"${prefix}year\">\n";
-	$min = strftime("%Y", Settings::get("begin_bookings"));
+	$min = date('Y', Settings::get("begin_bookings"));
 	if ($option == "more_years")
 		$min = date("Y") - $nb_year_calendar;
-	$max = strftime("%Y", Settings::get("end_bookings"));
+	$max = date('Y', Settings::get("end_bookings"));
 	if ($option == "more_years")
 		$max = date("Y") + $nb_year_calendar;
 	for($i = $min; $i <= $max; $i++)
@@ -2066,7 +2066,7 @@ function get_default_room(){
  */
 function day_name($daynumber)
 {
-	return utf8_encode(strftime("%A", mktime(0, 0, 0, 1, 2 + $daynumber, 2000)));
+	return utf8_strftime("%A", mktime(0, 0, 0, 1, 2 + $daynumber, 2000));
 }
 
 function affiche_heure_creneau($t,$resolution)
@@ -4470,7 +4470,7 @@ function describe_span($starts, $ends, $dformat)
 		$ampm = date("a",$starts);
 		$timeformat = "%I:%M$ampm";
 	}
-	$start_time = strftime($timeformat, $starts);
+	$start_time = utf8_strftime($timeformat, $starts);
 	$duration = $ends - $starts;
 	toTimeString($duration, $dur_units);
 	return array($start_date, $start_time ,$duration, $dur_units);

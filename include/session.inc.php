@@ -3,9 +3,9 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-10-20 14:30$
+ * Dernière modification : $Date: 2022-06-19 14:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -35,7 +35,7 @@ if (!$settings)
  */
 function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_login = array(), $tab_groups = array())
 {
-	global $motDePasseConfig, $algoPwd, $hashpwd1;
+	global $motDePasseConfig, $algoPwd, $hashpwd1, $version_grr;
 	// Initialisation de $auth_ldap
 	$auth_ldap = 'no';
 	// Initialisation de $auth_imap

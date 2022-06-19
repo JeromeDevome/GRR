@@ -3,8 +3,8 @@
  * participation_entry.php
  * Interface de suppression d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-01-07 16:00$
- * @author    JeromeB
+ * Dernière modification : $Date: 2022-06-19 16:00$
+ * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -46,9 +46,9 @@ else
 	die();
 if ($info = mrbsGetEntryInfo($id))
 {
-	$day   = strftime("%d", $info["start_time"]);
-	$month = strftime("%m", $info["start_time"]);
-	$year  = strftime("%Y", $info["start_time"]);
+	$day   = date('d', $info["start_time"]);
+	$month = date('m', $info["start_time"]);
+	$year  = date('Y', $info["start_time"]);
 	$area  = mrbsGetRoomArea($info["room_id"]);
 	$back = "";
 	if (isset($_SERVER['HTTP_REFERER']))

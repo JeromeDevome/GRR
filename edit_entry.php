@@ -3,9 +3,9 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-27 15:40$
+ * Dernière modification : $Date: 2022-06-19 15:51$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -141,16 +141,16 @@ if (isset($id)) // édition d'une réservation existante
 	$create_by = $row[11];
 	$description = $row[2];
 	$statut_entry = $row[13];
-	$start_day = strftime('%d', $row[3]);
-	$start_month = strftime('%m', $row[3]);
-	$start_year = strftime('%Y', $row[3]);
-	$start_hour = strftime('%H', $row[3]);
-	$start_min = strftime('%M', $row[3]);
-	$end_day = strftime('%d', $row[4]);
-	$end_month = strftime('%m', $row[4]);
-	$end_year = strftime('%Y', $row[4]);
-	$end_hour = strftime('%H', $row[4]);
-	$end_min  = strftime('%M', $row[4]);
+	$start_day = date('d', $row[3]);
+	$start_month = date('m', $row[3]);
+	$start_year = date('Y', $row[3]);
+	$start_hour = date('H', $row[3]);
+	$start_min = date('i', $row[3]);
+	$end_day = date('d', $row[4]);
+	$end_month = date('m', $row[4]);
+	$end_year = date('Y', $row[4]);
+	$end_hour = date('H', $row[4]);
+	$end_min  = date('i', $row[4]);
 	$duration = $row[4]-$row[3];
 	$etype = $row[5];
 	$room_id = $row[6];
@@ -184,20 +184,20 @@ if (isset($id)) // édition d'une réservation existante
 		}
 		if ($edit_type == "series")
 		{
-			$start_day   = (int)strftime('%d', $row[1]);
-			$start_month = (int)strftime('%m', $row[1]);
-			$start_year  = (int)strftime('%Y', $row[1]);
+			$start_day   = (int)date('d', $row[1]);
+			$start_month = (int)date('m', $row[1]);
+			$start_year  = (int)date('Y', $row[1]);
 			$start_hour  = (int)strftime('%H', $row[1]);
 			$start_min   = (int)strftime('%M', $row[1]);
 			$duration    = $row[5]-$row[1];
-			$end_day   = (int)strftime('%d', $row[5]);
-			$end_month = (int)strftime('%m', $row[5]);
-			$end_year  = (int)strftime('%Y', $row[5]);
+			$end_day   = (int)date('d', $row[5]);
+			$end_month = (int)date('m', $row[5]);
+			$end_year  = (int)date('Y', $row[5]);
 			$end_hour  = (int)strftime('%H', $row[5]);
 			$end_min   = (int)strftime('%M', $row[5]);
-			$rep_end_day   = (int)strftime('%d', $row[2]);
-			$rep_end_month = (int)strftime('%m', $row[2]);
-			$rep_end_year  = (int)strftime('%Y', $row[2]);
+			$rep_end_day   = (int)date('d', $row[2]);
+			$rep_end_month = (int)date('m', $row[2]);
+			$rep_end_year  = (int)date('Y', $row[2]);
 			$type = $row[6];
 			$breve_description = $row[7];
 			$beneficiaire = $row[8];

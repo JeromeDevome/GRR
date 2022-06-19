@@ -3,9 +3,9 @@
  * admin_log_resa_liste.php
  * Interface de gestion des connexions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-01-30 21:00$
- * @author    JeromeB
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2022-06-19 15:47$
+ * @author    JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -66,8 +66,12 @@ $res = grr_sql_query($sql);
 
 if($res) {
 	$trad['dNombreLog'] = grr_sql_count($res);
-	$row = grr_sql_row($res, 0);
-	$trad['dDatePlusAncienne'] = date("d-m-Y", $row[0]);
+    if ($trad['dNombreLog']>0){
+        $row = grr_sql_row($res, 0);
+        $trad['dDatePlusAncienne'] = date("d-m-Y", $row[0]);
+    }
+	else 
+        $trad['dDatePlusAncienne'] = "-";
 } else{
 	$trad['dNombreLog'] = 0;
 	$trad['dDatePlusAncienne'] = "-";

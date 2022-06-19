@@ -2,9 +2,9 @@
 /* 
  * setdate.php
  * Definis la date à afficher
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Laurent Delineau
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2022-06-19 16:00$
+ * @author    JeromeB & Laurent Delineau & Yan Naessens
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -34,8 +34,8 @@ else
 	settype($month, "integer");
 	settype($day, "integer");
 	settype($year, "integer");
-	$minyear = strftime("%Y", Settings::get("begin_bookings"));
-	$maxyear = strftime("%Y", Settings::get("end_bookings"));
+	$minyear = date('Y', Settings::get("begin_bookings"));
+	$maxyear = date('Y', Settings::get("end_bookings"));
 	if ($day < 1)
 		$day = 1;
 	if ($day > 31)

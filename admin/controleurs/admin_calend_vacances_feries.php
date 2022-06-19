@@ -3,9 +3,9 @@
  * admin_calend_vacances_feries.php
  * Interface permettant la définiton des jours fériés ou de vacances
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-18 22:00$
+ * Dernière modification : $Date: 2022-06-19 15:44$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -55,8 +55,8 @@ if (Settings::get("show_holidays") == 'Oui' && isset($_POST['define_holidays']))
 			$result = 0;
 			$end_bookings = Settings::get("end_bookings");
 			$begin_bookings = Settings::get("begin_bookings");
-			$month = strftime("%m", $begin_bookings );
-			$year = strftime("%Y", $begin_bookings );
+			$month = date('m', $begin_bookings );
+			$year = date('Y', $begin_bookings );
 			$day = 1;
 			$n = $begin_bookings;
 			while ($n <= $end_bookings)
@@ -84,9 +84,9 @@ if (Settings::get("show_holidays") == 'Oui' && isset($_POST['define_holidays']))
 		}
 		$begin_bookings = Settings::get("begin_bookings");
 		$end_bookings = Settings::get("end_bookings");
-		$month = utf8_encode(strftime("%m", $begin_bookings));
-		$year = strftime("%Y", $begin_bookings);
-		$yearFin = strftime("%Y", $end_bookings);
+		$month = utf8_encode(date('m', $begin_bookings));
+		$year = date('Y', $begin_bookings);
+		$yearFin = date('Y', $end_bookings);
 		$i = $year;
 		$trad['dCocheFeries'] = "";
 		while ($i <= $yearFin)
@@ -162,8 +162,8 @@ if (Settings::get("show_holidays") == 'Oui' && isset($_POST['define_holidays']))
 			$result = 0;
 			$end_bookings = Settings::get("end_bookings");
 			$begin_bookings = Settings::get("begin_bookings");
-			$month = strftime("%m", $begin_bookings);
-			$year = strftime("%Y", $begin_bookings);
+			$month = date('m', $begin_bookings);
+			$year = date('Y', $begin_bookings);
 			$day = 1;
 			$n = $begin_bookings;
 			while ($n <= $end_bookings)
@@ -192,9 +192,9 @@ if (Settings::get("show_holidays") == 'Oui' && isset($_POST['define_holidays']))
 		}
 		$begin_bookings = Settings::get("begin_bookings");
 		$end_bookings = Settings::get("end_bookings");
-		$month = utf8_encode(strftime("%m", $begin_bookings));
-		$year = strftime("%Y", $begin_bookings);
-		$yearFin = strftime("%Y", $end_bookings);
+		$month = utf8_encode(date('m', $begin_bookings));
+		$year = date('Y', $begin_bookings);
+		$yearFin = date('Y', $end_bookings);
 		$i = $year;
 		$trad['dCocheVacances'] = "";
 		$zone = Settings::get("holidays_zone"); // en principe la zone est définie, au moins par défaut à A
@@ -215,9 +215,9 @@ if (Settings::get("show_holidays") == 'Oui' && isset($_POST['define_holidays']))
 						while ($t < $t_fin){ // la date du fichier est celle de la reprise des cours
 							if (($t >= $begin_bookings) && ($t <= $end_bookings)) {
 								$schoolHoliday[] = $t ; }
-							$jour = strftime("%d",$t);
-							$mois = strftime("%m",$t);
-							$annee = strftime("%y",$t);
+							$jour = date('d',$t);
+							$mois = date('m',$t);
+							$annee = date('Y',$t);
 							$t = mktime(0,0,0,$mois,$jour+1,$annee);
 						}
 					}

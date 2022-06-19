@@ -3,9 +3,9 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-09 10:44$
+ * Dernière modification : $Date: 2022-06-19 16:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -529,8 +529,8 @@ $i = $time;
 
 for ($t = $week_start; $t < $week_end; $t += 86400)
 {
-	$num_day = strftime("%d", $t);
-	$month_actuel = strftime("%m", $t);
+	$num_day = date('d', $t);
+	$month_actuel = date('m', $t);
 	$year_actuel  = date("Y",$t);
 	$tt = mktime(0, 0, 0, $month_actuel, $num_day,$year_actuel);
 	$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$i'");
@@ -558,7 +558,7 @@ for ($t = $week_start; $t < $week_end; $t += 86400)
     }
     if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
     {
-        $num_day = strftime("%d", $t);
+        $num_day = date('d', $t);
         if (heure_ete_hiver("hiver", $year, 0) == mktime(0, 0, 0, $month, $num_day, $year))
             $t += 3600;
         if ((date("H",$t) == "13") || (date("H",$t) == "02"))

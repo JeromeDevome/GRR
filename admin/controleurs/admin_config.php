@@ -3,9 +3,9 @@
  * admin_config.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2018-03-30 16:00$
+ * Dernière modification : $Date: 2022-06-19 15:45$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -222,13 +222,13 @@ if ((Settings::get('logo') != '') && (@file_exists($nom_picture))) {
 }
 
 // Début et fin des réservations
-$bday	= strftime('%d', Settings::get('begin_bookings'));
-$bmonth	= strftime('%m', Settings::get('begin_bookings'));
-$byear	= strftime('%Y', Settings::get('begin_bookings'));
+$bday	= date('d', Settings::get('begin_bookings'));
+$bmonth	= date('m', Settings::get('begin_bookings'));
+$byear	= date('Y', Settings::get('begin_bookings'));
 
-$eday	= strftime('%d', Settings::get('end_bookings'));
-$emonth	= strftime('%m', Settings::get('end_bookings'));
-$eyear	= strftime('%Y', Settings::get('end_bookings'));
+$eday	= date('d', Settings::get('end_bookings'));
+$emonth	= date('m', Settings::get('end_bookings'));
+$eyear	= date('Y', Settings::get('end_bookings'));
 
 $trad["dBegin_bookings"] = $bday."/".$bmonth."/".$byear;
 $trad["dEnd_bookings"] = $eday."/".$emonth."/".$eyear;

@@ -3,9 +3,9 @@
  * admin_config_calend3.php
  * Interface permettant la la réservation en bloc de journées entières
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2022-06-19 15:43$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -27,7 +27,7 @@ function cal3($month, $year)
     $s = "";
     $daysInMonth = getDaysInMonth($month, $year);
     $date = mktime(12, 0, 0, $month, 1, $year);
-    $first = (strftime("%w",$date) + 7 - $weekstarts) % 7;
+    $first = (date('w',$date) + 7 - $weekstarts) % 7;
     $monthName = utf8_strftime("%B",$date);
 	
     $s .= "<table class=\"calendar2\" border=\"1\" cellspacing=\"2\">\n";
@@ -153,8 +153,8 @@ get_vocab_admin("save");
 	$n = Settings::get("begin_bookings");
 	$end_bookings = Settings::get("end_bookings");
 	$debligne = 1;
-	$month = strftime("%m", Settings::get("begin_bookings"));
-	$year = strftime("%Y", Settings::get("begin_bookings"));
+	$month = date('m', Settings::get("begin_bookings"));
+	$year = date('Y', Settings::get("begin_bookings"));
 	$inc = 0;
 	$trad['dCalendrier'] = "";
 
