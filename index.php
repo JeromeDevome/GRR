@@ -2,7 +2,7 @@
 /**
  * index.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-04-22 18:49$
+ * Dernière modification : $Date: 2022-06-24 10:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -35,6 +35,7 @@ if ($dbsys == "mysql")
 	if (file_exists("./include/connect.inc.php"))
 	{
 		require_once("include/connect.inc.php");
+        mysqli_report(MYSQLI_REPORT_OFF); // comportement par défaut sur php<8.1
 		$db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbDb", "$dbPort");
 		if ($db)
 		{
