@@ -2,9 +2,9 @@
 /**
  * mysql.inc.php
  * Bibliothèque de fonctions pour le support mysql
- * Dernière modification : $Date: 2018-04-11 10:00$
+ * Dernière modification : $Date: 2022-06-26 12:00$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -25,6 +25,8 @@ if (!$GLOBALS['db_c'] || !mysqli_select_db ($GLOBALS['db_c'], $dbDb))
 	exit;
 }
 mysqli_query($GLOBALS['db_c'], "SET NAMES UTF8");
+mysqli_report(MYSQLI_REPORT_OFF); // comportement par défaut sur php<8.1
+
 /**
  * @param integer $row
  */

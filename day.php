@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-04 18:16$
+ * Dernière modification : $Date: 2022-06-26 15:26$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -181,7 +181,7 @@ else
 			else if (($settings->get("display_info_bulle") == 2)&&($row['description'] != ""))
 				$today[$row["room_id"]][$am7]["who"] = $row["description"];
 			else
-				$today[$row["room_id"]][$am7]["who"] = get_vocab('voir_resa');
+				$today[$row["room_id"]][$am7]["who"] = get_vocab('voir_details');
 		}
 		else
 		{
@@ -191,7 +191,7 @@ else
 			else if (($settings->get("display_info_bulle") == 2)&&($row['description'] != ""))
 				$today[$row["room_id"]][$start_t]["who"] = $row["description"];
 			else
-				$today[$row["room_id"]][$start_t]["who"] = get_vocab('voir_resa');
+				$today[$row["room_id"]][$start_t]["who"] = get_vocab('voir_details');
 		}
 	}
 }

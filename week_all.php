@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage du planning des réservations d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-19 16:01$
+ * Dernière modification : $Date: 2022-06-26 15:28$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -546,9 +546,9 @@ foreach($ressources as $row)
 							if ($acces_fiche_reservation)
 							{
 								if (Settings::get("display_level_view_entry") == 0)
-									echo '<a title="'.get_vocab('voir_resa').'" data-width="675" onclick="request('.$d[$cday]["id"][$i].','.$cday.','.$cmonth.','.$cyear.',\'all\',\'week_all\',readData);" data-rel="popup_name" class="poplight" style = "border-bottom:1px solid #FFF">'.PHP_EOL;
+									echo '<a title="'.get_vocab('voir_details').'" data-width="675" onclick="request('.$d[$cday]["id"][$i].','.$cday.','.$cmonth.','.$cyear.',\'all\',\'week_all\',readData);" data-rel="popup_name" class="poplight" style = "border-bottom:1px solid #FFF">'.PHP_EOL;
 								else
-									echo '<a class="lienCellule" style = "border-bottom:1px solid #FFF" title="'.get_vocab('voir_resa').'" href="view_entry.php?id='.$d[$cday]["id"][$i].'&amp;page=week_all&amp;day='.$cday.'&amp;month='.$cmonth.'&amp;year='.$cyear.'&amp;" >'.PHP_EOL;
+									echo '<a class="lienCellule" style = "border-bottom:1px solid #FFF" title="'.get_vocab('voir_details').'" href="view_entry.php?id='.$d[$cday]["id"][$i].'&amp;page=week_all&amp;day='.$cday.'&amp;month='.$cmonth.'&amp;year='.$cyear.'&amp;" >'.PHP_EOL;
 							}
 
 								echo '<table class="pleine center">'.PHP_EOL;

@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-06-19 15:53$
+ * Dernière modification : $Date: 2022-06-26 15:28$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5370,8 +5370,8 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
 				$year = $end_year;
 			}
         }
- 	$mindate = strftime("%d/%m/%Y",Settings::get('begin_bookings'));
-    $maxdate = strftime("%d/%m/%Y",Settings::get('end_bookings'));
+ 	$mindate = utf8_strftime("%d/%m/%Y",Settings::get('begin_bookings'));
+    $maxdate = utf8_strftime("%d/%m/%Y",Settings::get('end_bookings'));
     genDateSelector("".$typeDate."_", "$day", "$month", "$year","");
  	echo '<input type="hidden" disabled="disabled" id="mydate_' .$typeDate. '">'.PHP_EOL;
  	echo '<script>'.PHP_EOL;

@@ -3,7 +3,7 @@
  * month_all.php
  * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-04 18:14$
+ * Dernière modification : $Date: 2022-06-26 15:27$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -454,11 +454,11 @@ echo "</caption>";
 								{
 									$currentPage = 'month_all';
 									$id =   $d[$cday]["id"][$i];
-									echo '<a title="',get_vocab('voir_resa'),'" data-width="675" onclick="request(',$id,',',$cday,',',$month,',',$year.',\'all\',\''.$currentPage,'\',readData);" data-rel="popup_name" class="poplight lienCellule">',PHP_EOL;
+									echo '<a title="',get_vocab('voir_details'),'" data-width="675" onclick="request(',$id,',',$cday,',',$month,',',$year.',\'all\',\''.$currentPage,'\',readData);" data-rel="popup_name" class="poplight lienCellule">',PHP_EOL;
 								}
 								else
 								{
-									echo '<a class="lienCellule" title="',get_vocab('voir_resa'),'" href="view_entry.php?id=',$d[$cday]["id"][$i],'&amp;day=',$cday,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=month_all">',PHP_EOL;
+									echo '<a class="lienCellule" title="',get_vocab('voir_details'),'" href="view_entry.php?id=',$d[$cday]["id"][$i],'&amp;day=',$cday,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=month_all">',PHP_EOL;
 								}
 							}
                             echo $d[$cday]["resa"][$i];

@@ -3,9 +3,9 @@
  * month.php
  * Interface d'accueil avec affichage par mois
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-09 10:40$
+ * Dernière modification : $Date: 2022-06-26 15:27$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -439,11 +439,11 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                         {
                             $currentPage = 'month';
                             $id = $d[$cday]["id"][$i];
-                            echo '<a title="'.get_vocab('voir_resa').'" data-width="675" onclick="request(',$id,',',$cday,',',$month,',',$year.','.$room.',\''.$currentPage,'\',readData);" data-rel="popup_name" class="poplight lienCellule">';
+                            echo '<a title="'.get_vocab('voir_details').'" data-width="675" onclick="request(',$id,',',$cday,',',$month,',',$year.','.$room.',\''.$currentPage,'\',readData);" data-rel="popup_name" class="poplight lienCellule">';
                         }
                         else
                         {
-                            echo '<a class="lienCellule" title="'.get_vocab('voir_resa').'" href="view_entry.php?id=',$d[$cday]["id"][$i],'&amp;day=',$cday,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=month">';
+                            echo '<a class="lienCellule" title="'.get_vocab('voir_details').'" href="view_entry.php?id=',$d[$cday]["id"][$i],'&amp;day=',$cday,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=month">';
                         }
                     }
                     echo $d[$cday]["resa"][$i];
