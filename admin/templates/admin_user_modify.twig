@@ -50,9 +50,9 @@
 					{{ form.input('reg_prenom', trad.first_name, utilisateur.prenom, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
 					{{ form.input('reg_email', trad.mail_user, utilisateur.email, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'email'}) }}
 
-					<div class="form-group">
+					<div class="form-group row">
 						<label class="col-sm-4" for="reg_statut">{{ trad.statut }}</label>
-						<div class="col-sm-8">
+						<div class="input-group col-sm-8">
 							<select name="reg_statut" id="select_auth_mode" class="form-control" size="1">
 								<option value="visiteur" {% if utilisateur.statut == 'visiteur' %} selected {% endif %}>{{ trad.statut_visitor }}</option>
 								<option value="utilisateur" {% if utilisateur.statut == 'utilisateur' %} selected {% endif %}>{{ trad.statut_user }}</option>
@@ -65,9 +65,9 @@
 					</div>
 
 					{% if trad.dEstPasLuiMeme == 1 %}
-						<div class="form-group">
+						<div class="form-group row">
 							<label class="col-sm-4" for="reg_etat">{{ trad.activ_no_activ }}</label>
-							<div class="col-sm-8">
+							<div class="input-group col-sm-8">
 								<select name="reg_etat" id="reg_etat" class="form-control">
 									<option value="actif" {% if utilisateur.etat == 'actif' %} selected {% endif %}>{{ trad.activ_user }}</option>
 									<option value="inactif" {% if utilisateur.etat == 'inactif' %} selected {% endif %}>{{ trad.no_activ_user }}</option>
