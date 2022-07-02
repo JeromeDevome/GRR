@@ -79,8 +79,8 @@ if (isset($id))
 else
 	Definition_ressource_domaine_site();
 $room_back = (isset($_GET['room_back']))? $_GET['room_back']: ((isset($_GET['room']))? $_GET['room'] :'all') ;
-if (@file_exists("language/lang_subst_".$area.".".$locale))
-	include "language/lang_subst_".$area.".".$locale;
+if (@file_exists("../personnalisation/langue/lang_subst_".$area."_".$locale.".php"))
+	include "../personnalisation/langue/lang_subst_".$area."_".$locale.".php";
 get_planning_area_values($area);
 // $affiche_mess_asterisque = false;
 $type_affichage_reser = grr_sql_query1("SELECT type_affichage_reser FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");

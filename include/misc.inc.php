@@ -108,11 +108,11 @@ $liste_name_themes = array(
 
 # Liste des langues
 $liste_language = array(
-	"fr",
-	"de",
-	"en",
-	"it",
-	"es"
+	"fr-fr",
+	"de-de",
+	"en-gb",
+	"it-it",
+	"es-es"
 	);
 
 # Liste des noms des langues

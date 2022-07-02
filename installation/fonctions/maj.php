@@ -783,6 +783,17 @@ function execute_maj($version_old, $version_grr)
 		$result_inter .= traite_requete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('horaireconnexiona', '')");
 		$result_inter .= traite_requete("CREATE TABLE ".TABLE_PREFIX."_groupes (`idgroupes` int(11) NOT NULL AUTO_INCREMENT, `nom` varchar(120) NOT NULL, description text NOT NULL, `archive` tinyint(1) NOT NULL DEFAULT '0', PRIMARY KEY (`idgroupes`));");
 		$result_inter .= traite_requete("CREATE TABLE ".TABLE_PREFIX."_utilisateurs_groupes (`idutilisateursgroupes` bigint(20) NOT NULL AUTO_INCREMENT, `login` varchar(40) NOT NULL, `idgroupes` int(11) NOT NULL, PRIMARY KEY (`idutilisateursgroupes`), UNIQUE KEY `idutilisateurs` (`login`,`idgroupes`));");
+		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = 'fr-fr' WHERE NAME = 'default_language' AND VALUE = 'fr';");
+		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = 'en-gb' WHERE NAME = 'default_language' AND VALUE = 'en';");
+		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = 'es-es' WHERE NAME = 'default_language' AND VALUE = 'es';");
+		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = 'it-it' WHERE NAME = 'default_language' AND VALUE = 'it';");
+		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = 'de-de' WHERE NAME = 'default_language' AND VALUE = 'de';");
+		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_utilisateurs SET default_language = 'fr-fr' WHERE default_language = 'fr';");
+		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_utilisateurs SET default_language = 'en-gb' WHERE default_language = 'en';");
+		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_utilisateurs SET default_language = 'es-es' WHERE default_language = 'es';");
+		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_utilisateurs SET default_language = 'it-it' WHERE default_language = 'it';");
+		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_utilisateurs SET default_language = 'de-de' WHERE default_language = 'de';");
+		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE `default_language` `default_language` CHAR(8);");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");

@@ -39,7 +39,7 @@ else if ($defaultlanguage)
 else
 {
 	// sinon, on fixe la valeur à "fr"
-	$locale = 'fr';
+	$locale = 'fr-fr';
 }
 //
 // variables utilisées dans les fichiers de langue, d'où les lignes ci-dessous
@@ -49,21 +49,23 @@ $pass_leng = "";
 if (isset($fichier_mysql_inc_est_present))
 	$pass_leng = grr_sql_query1("select VALUE from ".TABLE_PREFIX."_setting where NAME = 'pass_leng'");
 // Fichier de traduction
-if (@file_exists("language/lang." . $locale))
-	$lang_file = "language/lang." . $locale;
-elseif (@file_exists("../language/lang." . $locale))
-	$lang_file = "../language/lang." . $locale;
+if (@file_exists("langue/".$locale.".php"))
+	$lang_file = "langue/" . $locale.".php";
+elseif (@file_exists("../langue/".$locale.".php"))
+	$lang_file = "../langue/".$locale.".php";
+elseif (@file_exists("../langue/fr-fr.php"))
+	$lang_file = "../langue/fr-fr.php";
 else
-	$lang_file = "language/lang.fr";
+	$lang_file = "langue/fr-fr.php";
 // Dans le cas où le script verif_auto_grr.php est utilisé en tâche cron, il faut ici, donner le chemin complet.
 if (defined("CHEMIN_COMPLET_GRR"))
 	chdir(CHEMIN_COMPLET_GRR);
 include $lang_file;
 // Fichiers de personnalisation de langue
-if (@file_exists("language/lang_subst." . $locale))
-	include "language/lang_subst." . $locale;
-elseif (@file_exists("../language/lang_subst." . $locale))
-	include "../language/lang_subst." . $locale;
+if (@file_exists("../personnalisation/langue/lang_subst." . $locale.".php"))
+	include "../personnalisation/langue/lang_subst." . $locale.".php";
+elseif (@file_exists("../personnalisation/langue/lang_subst." . $locale.".php"))
+	include "../../personnalisation/langue/lang_subst." . $locale.".php";
 // Fichiers de personnalisation de langue par domaine
 if (isset($_GET['area']))
 {
@@ -77,10 +79,8 @@ else if (isset($_GET['room']))
 }
 if (isset($subst_id_area))
 {
-	if (@file_exists("language/lang_subst_".$subst_id_area.".".$locale))
-		include "language/lang_subst_".$subst_id_area.".".$locale;
-	elseif (@file_exists("../language/lang_subst_".$subst_id_area.".".$locale))
-			include "../language/lang_subst_".$subst_id_area.".".$locale;
+	if (@file_exists("../personnalisation/langue/lang_subst_".$subst_id_area."_".$locale.".php"))
+		include "../personnalisation/langue/lang_subst_".$subst_id_area."_".$locale.".php";
 }
 // Pour l'affichage de la pendule javascript
 $clock_file = "clock_".$locale.".js";

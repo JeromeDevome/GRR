@@ -133,7 +133,7 @@ if ($valid == "yes")
 					default_room = '-1',
 					default_style = '',
 					default_list_type = 'item',
-					default_language = 'fr',";
+					default_language = 'fr-fr',";
 					if ($reg_type_authentification=="locale")
 						$sql .= "source='local'";
 					else

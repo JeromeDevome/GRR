@@ -258,8 +258,8 @@ if (!isset($day) || !isset($month) || !isset($year))
 	$year  = date("Y");
 }
 
-if (@file_exists("language/lang_subst_".$area.".".$locale))
-	include "language/lang_subst_".$area.".".$locale;
+if (@file_exists("../personnalisation/langue/lang_subst_".$area."_".$locale.".php"))
+	include "../personnalisation/langue/lang_subst_".$area."_".$locale.".php";
 if ((authGetUserLevel(getUserName(), -1) < 1) and (Settings::get("authentification_obli") == 1))
 {
 	showAccessDenied($back);
