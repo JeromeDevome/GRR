@@ -89,6 +89,8 @@ if (authGetUserLevel(getUserName(), -1, 'area') >= 4)
 // Utilisateurs
 if ((authGetUserLevel(getUserName(), -1, 'area') >= 6) || (authGetUserLevel(getUserName(), -1, 'user') == 1))
 	$liste[] = 'admin_user';
+if ((authGetUserLevel(getUserName(), -1, 'area') >= 6) || (authGetUserLevel(getUserName(), -1, 'user') == 1))
+	$liste[] = 'admin_groupe';
 if ((Settings::get("module_multisite") == "Oui") && (authGetUserLevel(getUserName(), -1, 'area') >= 6))
 	$liste[] = 'admin_admin_site';
 if (authGetUserLevel(getUserName(), -1, 'area') >= 6)

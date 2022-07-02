@@ -4,6 +4,7 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
 {% endblock %}
 
 {% block content %}
@@ -78,6 +79,7 @@
 						<input type="hidden" name="reg_etat" value="{{ utilisateur.etat }}" />
 					{% endif %}
 
+
 					{% if utilisateur.source == 'local' or utilisateur.reg_login ==  '' %}
 						{% if utilisateur.reg_login !=  '' %}
 							<div class="form-group">
@@ -95,6 +97,21 @@
 							</div>
 						</div>
 					{% endif %}
+
+
+
+					<div class="form-group">
+						<label>{{ trad.groupes }}</label>
+						<select name="groupes[]" id="groupes" class="duallistbox" multiple="multiple">
+							{% for groupe in groupesajoutable %}
+								<option value="{{ groupe.idgroupes }}">{{ groupe.nom }}</option>
+							{% endfor %}
+							{% for groupe in groupespresent %}
+								<option value="{{ groupe.idgroupes }}" selected>{{ groupe.nom }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<!-- /.form-group -->
 
 				</div>
 
@@ -140,7 +157,10 @@
 {% endblock %}
 
 {% block javascript %}
+	<script src="../vendor/almasaeed2010/adminlte/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 	<script type='text/javascript'>
+		$('.duallistbox').bootstrapDualListbox()
+
 		function display_password_fields(id){
 			if ($('#'+id).val()=='locale')
 			{

@@ -1,0 +1,63 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+         <div class="box box-success">
+            <div class="box-header">
+              <h3 class="box-title">{%if groupe.id != 0 %} {{ trad.groupe_modifier }}{%else%}{{ trad.groupe_add }}{%endif%}</h3>
+            </div>
+			<form class="form-horizontal" method="GET">
+				<input type="hidden" name ="p" value="admin_groupe_edit" />
+				<input type="hidden" name ="display" value="{{ trad.dDisplay }}" />
+				<input type="hidden" name="valid" value="yes" />
+				<input type="hidden" name ="idgroupe" value="{{groupe.idgroupes}}" />
+
+				<div class="box-body">
+					<p>{{ trad.required }}</p>
+
+					{{ form.input('reg_nom', trad.name, groupe.nom, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
+					{{ form.textarea('reg_description', trad.description, groupe.description, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+					<div class="custom-control custom-checkbox">
+						<input class="custom-control-input custom-control-input-danger" type="checkbox" id="reg_archive" name="reg_archive" {%if groupe.archive == 1 %}checked{%endif%}>
+						<label for="reg_archive" class="custom-control-label">{{ trad.archiver }}</label>
+					  </div>
+				</div>
+				<br>
+
+				<!-- /.box-body -->
+				<div class="box-footer">
+					<a href="?p=admin_groupe" class="btn btn-default btn-md">{{ trad.back }}</a>
+					<input type="submit" name="save" value="{{ trad.save }}" class="btn btn-success btn-md pull-right" />
+				</div>
+			</form>
+          </div>
+          <!-- /.box -->
+		</div>
+	</div>
+
+
+{% endblock %}
+
+{% block javascript %}
+	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
+	<script>
+		$(function () {
+			{%if d.enregistrement == 1 %}
+				toastr.success("{{trad.message_records}}")
+			{%elseif d.enregistrement == 2 %}
+				toastr.error("{{trad.groupe_exist}}")
+			{%elseif d.enregistrement == 3 %}
+				toastr.error("{{trad.please_enter_name}}")
+			{%endif%}
+		}); 
+	</script>
+{% endblock %}

@@ -61,6 +61,7 @@ if ($valid == "yes")
 	$reg_etat = isset($_GET["reg_etat"]) ? $_GET["reg_etat"] : NULL;
 	$reg_source = isset($_GET["reg_source"]) ? $_GET["reg_source"] : NULL;
 	$reg_type_authentification = isset($_GET["type_authentification"]) ? $_GET["type_authentification"] : "locale";
+	$groupes_select = isset($_GET["groupes"]) ? $_GET["groupes"] : NULL;
 	if ($reg_type_authentification != "locale")
 		$reg_password = "";
 	if (($reg_nom == '') || ($reg_prenom == ''))
@@ -146,6 +147,24 @@ if ($valid == "yes")
 						$msg = get_vocab("msg_login_created");
 					}
 					$user_login = $new_login;
+
+					// Groupes
+					$sql = "DELETE FROM ".TABLE_PREFIX."_utilisateurs_groupes WHERE login='$new_login'";
+					if (grr_sql_command($sql) < 0)
+						fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
+
+					if(isset($groupes_select) && !empty($groupes_select)){
+						foreach ($groupes_select as $valeur)
+						{
+							if ($valeur != '')
+							{
+								$sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs_groupes SET login= '$new_login', idgroupes = '$valeur'";
+								if (grr_sql_command($sql) < 0)
+									fatal_error(1, "<p>" . grr_sql_error());
+							}
+						}
+					}
+					//Fin des groupes
 				}
 			}
 //
@@ -217,7 +236,7 @@ if ($valid == "yes")
 				{
 					$msg = get_vocab("message_records");
 				}
-			// Cas où on a déclaré un utilisateur inactif, on le supprime dans les tables ".TABLE_PREFIX."_j_user_area,  ".TABLE_PREFIX."_j_mailuser_room
+				// Cas où on a déclaré un utilisateur inactif, on le supprime dans les tables ".TABLE_PREFIX."_j_user_area,  ".TABLE_PREFIX."_j_mailuser_room
 				if ($reg_etat != 'actif')
 				{
 					$sql = "DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE login='$user_login'";
@@ -233,7 +252,7 @@ if ($valid == "yes")
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
 				}
-			// Cas où on a déclaré un utilisateur visiteur, on le supprime dans les tables ".TABLE_PREFIX."_j_user_area, ".TABLE_PREFIX."_j_mailuser_room et ".TABLE_PREFIX."_j_user_room
+				// Cas où on a déclaré un utilisateur visiteur, on le supprime dans les tables ".TABLE_PREFIX."_j_user_area, ".TABLE_PREFIX."_j_mailuser_room et ".TABLE_PREFIX."_j_user_room
 				if ($reg_statut == 'visiteur')
 				{
 					$sql = "DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE login='$user_login'";
@@ -267,6 +286,24 @@ if ($valid == "yes")
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
 				}
+				// Groupes
+				$sql = "DELETE FROM ".TABLE_PREFIX."_utilisateurs_groupes WHERE login='$user_login'";
+				if (grr_sql_command($sql) < 0)
+					fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
+
+				if(isset($groupes_select) && !empty($groupes_select)){
+					foreach ($groupes_select as $valeur)
+					{
+						if ($valeur != '')
+						{
+							$sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs_groupes SET login= '$user_login', idgroupes = '$valeur'";
+							if (grr_sql_command($sql) < 0)
+								fatal_error(1, "<p>" . grr_sql_error());
+						}
+					}
+				}
+				//Fin des groupes
+
 			}
 		}
 		else
@@ -357,6 +394,7 @@ get_vocab_admin("champ_vide_mot_de_passe_inchange");
 get_vocab_admin("pwd_toot_short");
 get_vocab_admin("confirm_pwd");
 get_vocab_admin("user_change_pwd_connexion");
+get_vocab_admin("groupes");
 
 get_vocab_admin("back");
 get_vocab_admin("save");
@@ -364,6 +402,33 @@ get_vocab_admin("save");
 get_vocab_admin("liste_privileges");
 
 $utilisateur['reg_login'] = $user_login;
+
+
+/* Groupes */
+$groupesajoutable = array();
+$groupespresent = array();
+
+$sql = "SELECT idgroupes, nom, archive FROM ".TABLE_PREFIX."_groupes ORDER BY nom ASC";
+$res = grr_sql_query($sql);
+if ($res)
+{
+	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+	{
+		$req_ug = "SELECT idutilisateursgroupes FROM ".TABLE_PREFIX."_utilisateurs_groupes WHERE login = '".$user_login."' AND idgroupes = '".$row[0]."'";
+		$req_ug = grr_sql_query($req_ug);
+		if (grr_sql_count($req_ug) > 0) // Il est dans le groupe
+		{
+			$groupespresent[] = array('idgroupes' => $row[0], 'nom' => $row[1] );
+		}
+		else
+		{
+			if( $row[2] == 0)
+				$groupesajoutable[] = array('idgroupes' => $row[0], 'nom' => $row[1] );
+		}
+
+	}
+}
+
 
 /* Test des privilèges*/
 	
@@ -483,5 +548,5 @@ $utilisateur['reg_login'] = $user_login;
 		}
 	}
 
-echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateur' => $utilisateur));
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateur' => $utilisateur, 'groupesajoutable' => $groupesajoutable, 'groupespresent' => $groupespresent));
 ?>

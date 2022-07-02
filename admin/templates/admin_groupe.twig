@@ -1,0 +1,138 @@
+{% extends 'layout.twig' %}
+
+{% block css %}
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+{% endblock %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-9">
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{trad.admin_user}}</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+					<table id="tableuser" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>{{trad.name}}</th>
+								<th>{{trad.description}}</th>
+								<th>{{trad.statut}}</th>
+								<th>{{trad.action}}</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for groupe in groupes %}
+								<tr>
+									<td>{{groupe.1}}</td>
+									<td>{{groupe.2}}</td>
+									<td>{{groupe.3|raw}}</td>
+									<td>
+										<a href="?p=admin_groupe_edit&idgroupe={{groupe.0}}" class="btn btn-info btn-md"><i class="icon fa fa-edit"></i></a> 
+										<button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#modalWarningSupUser" data-idsup="{{ groupe.0 }}"><i class="icon fa fa-trash"></i></button>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+						<thead>
+							<tr>
+								<th>{{trad.name}}</th>
+								<th>{{trad.description}}</th>
+								<th>{{trad.statut}}</th>
+								<th>{{trad.action}}</th>
+							</tr>
+						</thead>
+				  </table>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="col-md-3">
+
+			<div class="box">
+				<!-- /.box-header -->
+				<div class="box-body no-padding">
+					<a href="?p=admin_groupe_edit" class="btn btn-primary btn-block">{{ trad.groupe_add }}</a>
+				</div>
+			</div>
+		</div>
+	</div>	
+
+	<div class="modal fade" id="modalWarningSupUser" tyle="display: none;" aria-hidden="true">
+		<form action="?p=admin_groupe">
+          <div class="modal-dialog">
+			<div class="modal-content bg-warning">
+              <div class="modal-header">
+                <h4 class="modal-title">{{trad.confirm_del}}</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				  </button>
+              </div>
+              <div class="modal-body">
+				{{trad.confirm_del}} : <span class="modalidsup" id="modalidsup"></span> 
+              </div>
+              <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">{{trad.cancel}}</button>
+				<button type="submit" id="liensup" class="btn btn-outline-dark">{{trad.delete}}</button>
+              </div>
+            </div>
+          </div>
+		  </form>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/jszip/jszip.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/pdfmake/pdfmake.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/pdfmake/vfs_fonts.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+	<script>
+		// Modal
+		$('#modalWarningSupUser').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget) // Button that triggered the modal
+			var idasup = button.data('idsup') // Extract info from data-* attributes
+		    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+		    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+		    var modal = $(this)
+		    modal.find('.modalidsup').text(idasup)
+		})
+
+		$(function(){
+			$('form').submit(function(e) {
+			  e.preventDefault()
+			  var $form = $(this)
+			  var v=document.getElementById('modalidsup').innerHTML
+			  $.post($form.attr('action'), $form.serialize())
+			  .done(function(data) {
+				$('#html').html(data);
+				$('#modalWarningSupUser').modal('hide');
+				document.location.href='?p=admin_groupe&groupe_del='+v+'&action_del=yes&js_confirmed=1';
+			  })
+			  .fail(function() {
+				alert('Une erreur est survenue : GRRJS')
+			  })
+			})
+		})
+
+		// Table
+		$("#tableuser").DataTable({
+     		 "responsive": true, "lengthChange": false, "autoWidth": false,
+     		 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    	}).buttons().container().appendTo('#tableuser_wrapper .col-md-6:eq(0)')
+	</script>
+{% endblock %}
