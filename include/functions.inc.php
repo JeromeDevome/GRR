@@ -725,7 +725,7 @@ function plages_libre_semaine_ressource($id_room, $month_week, $day_week, $year_
 */
  function se3_grp_members ($grp, $uid)
  {
- 	include "config_ldap.inc.php";
+ 	include "../personnalisation/config_ldap.inc.php";
  	$est_membre="non";
 	// LDAP attributs
  	$members_attr = array (

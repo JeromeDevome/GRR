@@ -161,7 +161,7 @@ if (isset($_POST['reg_ldap_statut']))
 		}
 		// Le cas "error_3" n'est pas analusé car on accepte les  cas où il y a plusieurs entrées dans l'annuaire à l'issus de la recherche
 		$erreur = '';
-		$nom_fic = "../include/config_ldap.inc.php";
+		$nom_fic = "../personnalisation/config_ldap.inc.php";
 		if (@file_exists($nom_fic))
 		{
 			unlink($nom_fic);
@@ -326,8 +326,8 @@ if (isset($_POST['reg_ldap_statut']))
 			$ldap_port = $_POST["ldap_port"];
 			$ldap_login = $_POST["ldap_login"];
 		}
-		else if (@file_exists("../include/config_ldap.inc.php"))
-			include("../include/config_ldap.inc.php");
+		else if (@file_exists("../personnalisation/config_ldap.inc.php"))
+			include("../personnalisation/config_ldap.inc.php");
 
 		if ((!(isset($ldap_adresse))) || ($ldap_adresse == ""))
 			$ldap_adresse = 'localhost';
@@ -363,10 +363,10 @@ if (isset($_POST['reg_ldap_statut']))
 		{
 			$trad['dValid'] = $valid;
 
-			if (@file_exists("../include/config_ldap.inc.php"))
+			if (@file_exists("../personnalisation/config_ldap.inc.php"))
 			{
 				$test_chemin = '';
-				include("../include/config_ldap.inc.php");
+				include("../personnalisation/config_ldap.inc.php");
 				if (($ldap_adresse != '') && ($ldap_port != ''))
 				{
 					$ok = "OK";
@@ -436,7 +436,7 @@ if (isset($_POST['reg_ldap_statut']))
 				}
 			}
 
-			if (@file_exists("../include/config_ldap.inc.php"))
+			if (@file_exists("../personnalisation/config_ldap.inc.php"))
 			{
 				$trad['dFichierCongLDAP'] = 1;
 				$trad['dMesgTitreConfigActuel'] = "Configuration actuelle";
