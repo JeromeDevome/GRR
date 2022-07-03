@@ -102,6 +102,7 @@
 											<th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">{{trad.type}}</th>
 											<th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">{{trad.match_login}}</th>
 											<th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">{{trad.lastupdate}}</th>
+											<th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">{{trad.moderation}}</th>
 											{% for champadd in champsaddresume %}
 												<th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">{{champadd.nom}}</th>
 											{% endfor %}
@@ -119,6 +120,12 @@
 												<td>{{resa.type}}</td>
 												<td>{{resa.beneficiaire}}</td>
 												<td>{{resa.datemaj}}</td>
+												<td>
+													{% if resa.moderate == 1 %}
+														{{trad.en_attente_moderation}}
+													{% endif %}
+												</td>
+
 												{% for champaddval in resa.champaddvaleur %}
 													<td>{{champaddval.val}}</td>
 												{% endfor %}
@@ -136,6 +143,7 @@
 											<th rowspan="1" colspan="1">{{trad.type}}</th>
 											<th rowspan="1" colspan="1">{{trad.match_login}}</th>
 											<th rowspan="1" colspan="1">{{trad.lastupdate}}</th>
+											<th rowspan="1" colspan="1">{{trad.moderation}}</th>
 											{% for champadd in champsaddresume %}
 												<th rowspan="1" colspan="1">{{champadd.nom}}</th>
 											{% endfor %}

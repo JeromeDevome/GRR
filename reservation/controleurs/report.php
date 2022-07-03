@@ -137,6 +137,8 @@ get_vocab_admin("summarize_by");
 get_vocab_admin("summarize_by_precisions");
 get_vocab_admin("sum_by_creator");
 get_vocab_admin("sum_by_descrip");
+get_vocab_admin("moderation");
+get_vocab_admin("en_attente_moderation");
 get_vocab_admin("type");
 get_vocab_admin("submit");
 
@@ -272,12 +274,13 @@ if (isset($_GET["is_posted"]))
     //  15  [14]  type de réservation -> t.type_name
 	//  16  [15]  bénéficiaire extérieur -> e.beneficiaire_ext
 	//  17  [16]  résa supprimer -> e.supprimer
+	//  18  [17]  moderation -> e.moderate
     // Tableau des ressources invisibles pour l'utilisateur
     $sql = "SELECT distinct e.id, e.start_time, e.end_time, e.name, e.description, "
     . "e.type, e.beneficiaire, "
     .  grr_sql_syntax_timestamp_to_unix("e.timestamp")
     . ", a.area_name, r.room_name, r.description, a.id, e.overload_desc, r.order_display, t.type_name"
-	. ", e.beneficiaire_ext, e.supprimer"
+	. ", e.beneficiaire_ext, e.supprimer, e.moderate"
     . " FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_room r, ".TABLE_PREFIX."_type_area t";
 	// Si l'utilisateur n'est pas administrateur, seuls les domaines auxquels il a accès sont pris en compte
     if (authGetUserLevel(getUserName(),-1) < 6)

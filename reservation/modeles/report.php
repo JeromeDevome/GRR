@@ -95,7 +95,7 @@ function reporton(&$row, $dformat)
 
 	unset($tablOverload);
 	
-	$gListeReservations[] = array('idresa' => $row[0], 'datedebut' => $start_date, 'heuredebut' => $start_time, 'duree' => $duration, 'domaine' => $domaine, 'domainedesc' => $domainedesc, 'ressource' => $ressource, 'beneficiaire' => $aff_beneficiaire, 'descriptionc' => $descriC, 'descriptionl' => $descriL, 'type' => $type, 'datemaj' => $dateMAJ, 'supprimer' => $row[16], 'champaddvaleur' => $champAddValeur);
+	$gListeReservations[] = array('idresa' => $row[0], 'datedebut' => $start_date, 'heuredebut' => $start_time, 'duree' => $duration, 'domaine' => $domaine, 'domainedesc' => $domainedesc, 'ressource' => $ressource, 'beneficiaire' => $aff_beneficiaire, 'descriptionc' => $descriC, 'descriptionl' => $descriL, 'type' => $type, 'datemaj' => $dateMAJ, 'supprimer' => $row[16], 'moderate' => $row[17], 'champaddvaleur' => $champAddValeur);
 
 }
 
