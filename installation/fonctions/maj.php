@@ -795,6 +795,8 @@ function execute_maj($version_old, $version_grr)
 		$result_inter .= traite_requete("UPDATE ".TABLE_PREFIX."_utilisateurs SET default_language = 'de-de' WHERE default_language = 'de';");
 		$result_inter .= traite_requete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE `default_language` `default_language` CHAR(8);");
 
+		include "./ISO_to_UTF8.inc.php";
+
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
 		else

@@ -38,10 +38,6 @@ $choix_db = isset($_GET["choix_db"]) ? $_GET["choix_db"] : NULL;
 $table_new = isset($_GET["table_new"]) ? $_GET["table_new"] : NULL;
 $table_prefix = isset($_GET["table_prefix"]) ? $_GET["table_prefix"] : NULL;
 
-// Pour cette page uniquement, on désactive l'UTF8 et on impose l'ISO-8859-1
-$unicode_encoding = 1;
-$charset_html = "ISO-8859-1";
-
 $d['dbsys']			= $dbsys;
 $d['nom_fic']		= $nom_fic;
 $d['adresse_db']	= $adresse_db;
@@ -144,6 +140,7 @@ if ($etape == 4)
 			$d['etape'] = 4;
 
 			$fd = fopen("tables.my.sql", "r");
+			mysqli_set_charset( $db, 'utf8mb4');
 			$result_ok = 'yes';
 			while (!feof($fd))
 			{
