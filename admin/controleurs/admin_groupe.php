@@ -3,8 +3,8 @@
  * admin_groupe.php
  * interface de gestion des utilisateurs de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-05-18 22:00$
- * @author    Laurent Delineau & JeromeB
+ * Dernière modification : $Date: 2022-07-13 16:10$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -69,30 +69,30 @@ if (authGetUserLevel(getUserName(),-1) >= 6)
 
 
 // Affichage du tableau
-
+$groupes = array();
+$i = 0;
 $sql = "SELECT idgroupes, nom, description, archive FROM ".TABLE_PREFIX."_groupes ORDER BY nom ASC";
 $res = grr_sql_query($sql);
 if ($res)
 {
-	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+	foreach($res as $row)
 	{
-		$nom = htmlspecialchars($row[1]);
-		$description = htmlspecialchars($row[2]);
+		$nom = htmlspecialchars($row['nom']);
+		$description = htmlspecialchars($row['description']);
 		// Id groupe
-		$col[$i][0] = $row[0];
+		$groupes[$i][0] = $row['idgroupes'];
 		// Nom
-		$col[$i][1] = $nom;
+		$groupes[$i][1] = $nom;
 		// Description
-		$col[$i][2] = htmlspecialchars($row[2]);
-
+		$groupes[$i][2] = $description;
 		// Affichage du statut
-		if ($row[3] == 1)
-			$col[$i][3] = "<span class=\"text-red\">".get_vocab("archiver")."</span>";
-
+		if ($row['archive'] == 1)
+			$groupes[$i][3] = "<span class=\"text-red\">".get_vocab("archiver")."</span>";
+        $i++;
 	}
 }
 
 affiche_pop_up($msg,"admin");
 
-echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'groupes' => $col));
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'groupes' => $groupes));
 ?>
