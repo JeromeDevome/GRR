@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-06-18 12:04$
+ * Dernière modification : $Date: 2022-07-22 09:17$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1630,7 +1630,7 @@ function genDateSelectorForm($prefix, $day, $month, $year, $option)
 	if ($month == 0)
 		$month = date("m");
 	if ($year == 0)
-		$year = date("y");
+		$year = date("Y");
 	if ($day != "")
 	{
 		$selector_data .= "<select class='test' name=\"${prefix}day\" id=\"${prefix}day\">\n";
