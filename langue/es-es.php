@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR : fichier de langue espagnole
 # GRR: Traduction By JeromeB
-# Last modification : 2022-04-21
+# Last modification : 2022-07-22
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Aceptar la reserva";
@@ -943,9 +943,9 @@ $vocab['utilisateurs_gestionnaires_ressource'] = "Los usuarios siguientes son ge
 $vocab['utilisateurs_mail_automatique'] = "Se advierte a los usuarios siguientes por email:";
 $vocab['utilisateur_inconnu'] = "Utilisateur inconnu (identifiant : "; // A traduire
 $vocab['utilisateur_smtp'] = "Usuario SMTP";
-$vocab['vacances_feries'] = "Calendrier des vacances et fériés"; // A traduire
-$vocab['vacances_feries_description'] = "Les journées cochées seront mis en évidence sur le planning si l'option \"Afficher les Vacances scolaire et les jours fériés\" est à OUI."; // A traduire
-$vocab['vacances_feries_FR'] = "Cocher les fériés français"; // A traduire
+$vocab['vacances_feries_description'] = "Les journées cochées seront mises en évidence sur le planning si l'option \"Afficher les Vacances scolaires et les jours fériés\" est à OUI.";
+$vocab['vacances_feries_FR'] = "Cocher les jours fériés français";
+$vocab['vacances_FR'] = "Cocher les jours de vacances scolaires de la zone ";
 $vocab['valide_au_moins_une_des_conditions_suivantes'] = "Válida por lo menos una de las condiciones siguientes";
 $vocab['valide_toutes_les_conditions_suivantes'] = "Válidas todas las condiciones siguientes";
 $vocab['verif_reservation_auto0'] = "La tarea automática está activada una vez por día en el momento de la conexión del primer usuario";

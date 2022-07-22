@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML Codage de certains caractères particuliers : &#x00DF; -> "double s" allemand http://www.unicode.org/charts/PDF/U0080.pdf
 # GRR : fichier de langue allemande
 # GRR: Traduction by: JeromeB & Karsten Schinkel & Jean-Yves Migeon
-# Last modification : 2022-04-21
+# Last modification : 2022-07-22
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Reservierung akzeptieren";
@@ -943,11 +943,11 @@ $vocab['utilisateurs_gestionnaires_ressource'] = "Die folgenden Benutzer sind Ve
 $vocab['utilisateurs_mail_automatique'] = "Die folgenden Benutzer werden per mail benachrichtigt:";
 $vocab['utilisateur_inconnu'] = "Utilisateur inconnu (identifiant : "; // A traduire
 $vocab['utilisateur_smtp'] = "utilisateur_smtp"; // A traduire
+$vocab['vacances_feries_description'] = "Les journées cochées seront mises en évidence sur le planning si l'option \"Afficher les Vacances scolaires et les jours fériés\" est à OUI.";
+$vocab['vacances_feries_FR'] = "Cocher les jours fériés français";
+$vocab['vacances_FR'] = "Cocher les jours de vacances scolaires de la zone ";
 $vocab['valide_au_moins_une_des_conditions_suivantes'] = "bestätigt wenigstens eine dieser folgenden Voraussetzungen";
 $vocab['valide_toutes_les_conditions_suivantes'] = "bestätigt folgende Voraussetzungen";
-$vocab['vancances_feries'] = "Calendrier des vacances et fériés"; // A traduire
-$vocab['vancances_feries_description'] = "Les journées cochées seront mis en évidence sur le planning si l'option \"Afficher les Vacances scolaire et les jours fériés\" est à OUI."; // A traduire
-$vocab['vancances_feries_FR'] = "Cocher les fériés français"; // A traduire
 $vocab['verif_reservation_auto0'] = "La tâche automatique est déclenchée une fois par jour lors de la connexion du premier utilisateur"; // A traduire
 $vocab['verif_reservation_auto1'] = "La tâche automatique est déclenchée par l'exécution du script « verif_auto_grr.php ». (nécessite la possibilité de programmer l'exécution automatique et périodique du script verif_auto_grr.php)"; // A traduire
 $vocab['verif_reservation_auto2'] = "Mot de passe utilisé pour l'exécution du script verif_auto_grr.php (uniquement si vous avez choisi la 2ème option)"; // A traduire

@@ -3,7 +3,7 @@
  * language.inc.php
  * Configuration de la langue
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-19 09:53$
+ * Dernière modification : $Date: 2022-07-22 12:23$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -64,7 +64,7 @@ include $lang_file;
 // Fichiers de personnalisation de langue
 if (@file_exists("../personnalisation/langue/lang_subst." . $locale.".php"))
 	include "../personnalisation/langue/lang_subst." . $locale.".php";
-elseif (@file_exists("../personnalisation/langue/lang_subst." . $locale.".php"))
+elseif (@file_exists("../../personnalisation/langue/lang_subst." . $locale.".php"))
 	include "../../personnalisation/langue/lang_subst." . $locale.".php";
 // Fichiers de personnalisation de langue par domaine
 if (isset($_GET['area']))
@@ -410,6 +410,8 @@ $lang_map_windows = array
 // Cas particulier de la langue française
 // Si la langue française est choisie et que setlocale(LC_TIME,'fr') renvoie false
 // On essaye d'autres possibilités
+//echo $locale;
+//die();
 $ok = 'no';
 if ($locale == 'fr')
 {
