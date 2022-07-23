@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-07-22 16:32$
+ * Dernière modification : $Date: 2022-07-23 15:22$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -112,10 +112,12 @@ function cal($month, $year, $type)
 				$s .= $d;
 				if($type == 1)
 					$day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendar WHERE day='$temp'");
-				elseif ($type == 2)
+				elseif($type == 2)
                     $day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendrier_feries WHERE day='$temp'");
-                else
+                elseif($type == 3)
 					$day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendrier_vacances WHERE day='$temp'");
+                else
+                    $day = -1;
 				$s .= '<br><input type="checkbox" name="'.$temp.'" value="'.$nameday.'" ';
 				if (!($day < 0))
 					$s .= 'checked="checked" ';

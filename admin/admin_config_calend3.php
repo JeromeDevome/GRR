@@ -3,7 +3,7 @@
  * admin_config_calend3.php
  * interface permettant la configuration des jours-cycles (étape 3)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-18 11:37$
+ * Dernière modification : $Date: 2022-07-23 15:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -124,12 +124,12 @@ if (!isset($_GET['pview']))
 	{
 		$jour_cycle = grr_sql_query1("select Jours from ".TABLE_PREFIX."_calendrier_jours_cycle  WHERE DAY = ".$_GET['date']."");
 		echo "<fieldset style=\"padding-top: 8px; padding-bottom: 8px; width: 80%; margin-left: auto; margin-right: auto;\">\n";
-		echo "<legend>".get_vocab('Journee du')." ".affiche_date($_GET['date'])."</legend>\n";
+		echo "<legend>".get_vocab('Journee_du')." ".affiche_date($_GET['date'])."</legend>\n";
 		echo "<form id=\"main\" method=\"get\" action=\"admin_calend_jour_cycle.php\">\n";
 		echo "<div><input type='radio' name='selection' value='0'";
 		if (intval($jour_cycle) == -1)
 			echo " checked=\"checked\"";
-		echo " />".get_vocab('Cette journee ne correspond pas a un jour cycle')."<br />\n";
+		echo " />&nbsp;".get_vocab('Cette_journee_ne_correspond_pas_a_un_jour_cycle')."<br />\n";
 		echo "<input type='radio' name='selection' value='1'";
 		if (intval($jour_cycle) > 0)
 			echo " checked=\"checked\"";
@@ -148,7 +148,7 @@ if (!isset($_GET['pview']))
 		echo "<input type='radio' name='selection' value='2'";
 		if (intval($jour_cycle) == 0)
 			echo " checked=\"checked\"";
-		echo " />".get_vocab('Nommer_journee_par_le_titre_suivant').get_vocab('deux_points');
+		echo " />&nbsp;".get_vocab('Nommer_journee_par_le_titre_suivant').get_vocab('deux_points');
 		echo "<input type=\"text\" name=\"titre\" onfocus=\"check(2)\"";
 		if (!intval($jour_cycle) > 0)
 			echo " value=\"".$jour_cycle."\"";
