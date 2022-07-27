@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-11 18:11$
+ * Dernière modification : $Date: 2022-07-22 09:17$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -488,13 +488,13 @@ else{
             {
                 $cday = date("j", $t2);
                 $cmonth = date("m", $t2);
-                $cyear = date("y", $t2);
+                $cyear = date("Y", $t2);
                 $t2 += 86400;
                 if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
                 {
                     $temp_day = date("j", $t2);
                     $temp_month = date("m", $t2);
-                    $temp_year = date("y", $t2);
+                    $temp_year = date("Y", $t2);
                     if (heure_ete_hiver("hiver", $temp_year,0) == mktime(0, 0, 0, $temp_month, $temp_day, $temp_year))
                         $t2 += 3600;
                     if (date("H", $t2) == "01")
