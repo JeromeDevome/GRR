@@ -3,7 +3,7 @@
  * admin_accueil
  * Interface d'accueil de l'administration des domaines et des ressources
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-02-01 18:28$
+ * Dernière modification : $Date: 2022-07-22 18:42$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -41,7 +41,7 @@ start_page_w_header("", "", "", $type="with_session"); // affiche le header et l
 include "admin_col_gauche2.php";
 // "colonne de droite"
 // titre 
-echo'    <div class="col-md-3 col-sm-4 col-xs-12">';
+echo'    <div class="col-md-5 col-sm-7 col-xs-12">';
 echo'        <div class="center">';
 echo'            <br /><br />';
 echo'            <p style="font-size:20pt">';
@@ -55,16 +55,20 @@ echo '<a href="admin_save_mysql.php?flag_connect=yes" class="btn btn-default">'.
 // réservations à modérer
 if ($nbAModerer > 0)
 { 
-    echo '<table class="table table-condensed">';
+    echo '<table class="table table-condensed table-bordered">';
     echo '<caption>'.$nbAModerer;
     if ($nbAModerer == 1){echo get_vocab('resaToModerate');}
     else {echo get_vocab('resasToModerate');}
     echo '</caption>';
+    echo '<thead>';
+    echo '<tr><th>'.get_vocab('room').'</th><th>'.get_vocab('start_of_the_booking').'</th><th>'.get_vocab('sum_by_creator').'</th><th></th>';
+    echo '</thead>';
     echo '<tbody>';
     foreach($listeModeration as $no => $resa)
     {
         echo "<tr><td>".$resa['room']."</td>";
         echo "<td>".time_date_string($resa['start_time'], $dformat)."</td>";
+        echo "<td>".$resa['beneficiaire']."</td>";
         echo "<td><a href='".$racine."view_entry.php?id=".$resa['id']."&mode=page'><span class='glyphicon glyphicon-new-window'></span></a></td></tr>";
     }
     echo "</tbody>";

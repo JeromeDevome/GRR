@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-06-18 12:04$
+ * Dernière modification : $Date: 2022-07-23 15:22$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -112,10 +112,12 @@ function cal($month, $year, $type)
 				$s .= $d;
 				if($type == 1)
 					$day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendar WHERE day='$temp'");
-				elseif ($type == 2)
+				elseif($type == 2)
                     $day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendrier_feries WHERE day='$temp'");
-                else
+                elseif($type == 3)
 					$day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendrier_vacances WHERE day='$temp'");
+                else
+                    $day = -1;
 				$s .= '<br><input type="checkbox" name="'.$temp.'" value="'.$nameday.'" ';
 				if (!($day < 0))
 					$s .= 'checked="checked" ';
@@ -616,38 +618,46 @@ function how_many_connected()
 }
 /**
  * Fonction : resaToModerate($user) 
- * Description : si c'est un admin ou un gestionnaire de ressource qui est connecté, retourne un tableau contenant, pour chaque réservation à modérer, [id,room_id,start_time]
+ * Description : si c'est un admin ou un gestionnaire de ressource qui est connecté, retourne un tableau contenant, pour chaque réservation à modérer, [id,room_id,start_time,beneficiaire]
 */
 function resaToModerate($user)
 {   
     $resas = array();
     $res = false;
+    $sql = "SELECT e.id,r.room_name,e.start_time,e.beneficiaire,e.beneficiaire_ext FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id ";
     if (authGetUserLevel($user,-1) > 5) // admin général
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE e.moderate = 1";
+        $sql.= " WHERE e.moderate = 1";
         $res = grr_sql_query($sql);
     }
     elseif (isset($_GET['id_site']) && (authGetUserLevel($user,$_GET['id_site'],'site') > 4)) // admin du site
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = ".$_GET['id_site']." AND e.moderate = 1)";
+        $sql .= " JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = ".$_GET['id_site']." AND e.moderate = 1)";
         $res = grr_sql_query($sql);
     }
     elseif (isset($_GET['area']) && (authGetUserLevel($user,$_GET['area'],'area') > 3)) // admin du domaine
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id WHERE (a.id = ".$_GET['area']." AND e.moderate = 1)";
+        $sql .= " JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id WHERE (a.id = ".$_GET['area']." AND e.moderate = 1)";
         $res = grr_sql_query($sql);
     }
     elseif (isset($_GET['room']) && (authGetUserLevel($user,$_GET['room'],'room') > 2)) // gestionnaire de la ressource
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE (e.moderate = 1 AND e.room_id = ".$_GET['room'].") ";
+        $sql .= " WHERE (e.moderate = 1 AND e.room_id = ".$_GET['room'].") ";
         $res = grr_sql_query($sql);
     }
     if ($res)
     {
-        $i = 0; 
-        while (($a = grr_sql_row($res, $i++))) 
-        {
-            $resas[$i] = array('id' => $a[0],'room' => $a[1],'start_time' => $a[2]);
+        foreach($res as $row){
+            if($row['beneficiaire']==""){
+                $beneficiaire_ext = $row['beneficiaire_ext'];
+                if(strstr($beneficiaire_ext,'|')){
+                    $s = split('|',$beneficiaire_ext);
+                    $beneficiaire = $s[0];
+                }
+            }
+            else 
+                $beneficiaire = $row['beneficiaire'];
+            $resas[] = array('id' => $row['id'], 'room' => $row['room_name'], 'start_time' => $row['start_time'], 'beneficiaire' => $row['beneficiaire']);
         }
     }
     return $resas;
@@ -1630,7 +1640,7 @@ function genDateSelectorForm($prefix, $day, $month, $year, $option)
 	if ($month == 0)
 		$month = date("m");
 	if ($year == 0)
-		$year = date("y");
+		$year = date("Y");
 	if ($day != "")
 	{
 		$selector_data .= "<select class='test' name=\"${prefix}day\" id=\"${prefix}day\">\n";
