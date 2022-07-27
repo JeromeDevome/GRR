@@ -7,8 +7,9 @@ Installation - Etape 0 : téléchargement de l'archive
 
 L'ensemble des fichiers nécessaires à l'installation sont rassemblés dans
 l'archive que vous avez téléchargée.
-Parmi ces fichiers figure le fichier "connect.inc.php". La configuration
-du fichier "connect.inc.php" n'est pas obligatoire si vous optez pour une
+Parmi ces fichiers figure le fichier "connect.inc.php.ori". 
+Faites-en une copie ou renommez-le en "connect.inc.php". 
+La configuration du fichier "connect.inc.php" n'est pas obligatoire si vous optez pour une
 installation automatisée de la base de donnée. En effet, la procédure
 d'installation vous invitera alors à entrer dans un formulaire vos paramètres
 de connexion.

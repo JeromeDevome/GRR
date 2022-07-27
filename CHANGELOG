@@ -1,6 +1,5 @@
 Bugs connus sur la version de GitHub :
  - des problèmes se produisent parfois lorsqu'on veut faire une modification/copie de réservation avec un changement de domaine
- - si la fin de journée dépasse 24:00, utiliser la définition de la réservation par la durée et non par la date de fin
 
 Tâches prévues :
  - modularisation de l'authentification
@@ -11,9 +10,18 @@ Tâches prévues :
 -----
 
 Version 3.5.0 RC0
+    correctifs de code divers
+    amélioration : test de cohérence des types
+    amélioration : lien pour corriger les réservations en défaut de type
+    amélioration : rejet des réservations sans type ou de type inconnu
+    MAJ vacances scolaires France
     modification : le champ participant de la table grr_participants passe à varchar(189) par compatibilité avec les BDD codées en UTF8mb4
     modification : les bases de données sont codées en utf8mb4, la procédure de conversion des données est automatisée
-
+    modification pour accélération du calcul et de l'affichage de la page
+    modifications pour compatibilité php 8.1
+Version 3.5.0 RC1
+    modification : le niveau d'erreur de mysqli est ramené à MYSQLI_REPORT_OFF comme dans les versions de php < 8.1
+    
 -----
 --
 -----
