@@ -3,9 +3,9 @@
  * admin_open_mysql.php
  * script de restauration d'une sauvegarde
  * ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-21 11:30$
+ * Dernière modification : $Date: 2022-06-26 16:03$
  * @author    JeromeB & Laurent Delineau & Sylvain Payeur & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -44,7 +44,7 @@ if($restaureBBD == 1){
 		$ok = @copy($sql_file['tmp_name'],$file_name);
 		$file = fopen($file_name, "r") or exit("Unable to open file!");
 		$line = fgets($file);
-		var_dump($line);
+		// var_dump($line);
 		if (!stristr($line,'#**************** BASE DE DONNEES'))
 		{
 			fclose($file);
