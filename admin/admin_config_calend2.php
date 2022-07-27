@@ -3,7 +3,7 @@
  * admin_config_calend2.php
  * interface permettant la configuration des jours-cycles (étape 2)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-18 11:31$
+ * Dernière modification : $Date: 2022-07-23 15:22$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -112,7 +112,7 @@ while ($n <= $end_bookings)
 	}
 	$inc++;
 	echo "<td>\n";
-	echo cal($month, $year, 1);
+	echo cal($month, $year, 0);
 	echo "</td>";
 	if ($inc == 3)
 	{
