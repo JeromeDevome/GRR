@@ -149,7 +149,7 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
         echo '<div class="form-group col-sm-6">'.PHP_EOL;
         echo '    <div class="input-group">'.PHP_EOL;
         echo '      <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>'.PHP_EOL;
-        echo '      <input class="form-control" type="text" name="benef_ext_nom" value="'.$benef_ext_nom.'" placeholder="'.get_vocab("nom beneficiaire").'" required onchange="check_4()">'.PHP_EOL;
+        echo '      <input class="form-control" type="text" name="benef_ext_nom" value="'.$benef_ext_nom.'" placeholder="'.get_vocab("nom_beneficiaire").'" required onchange="check_4()">'.PHP_EOL;
         echo '    </div>'.PHP_EOL;
         echo '  </div>'.PHP_EOL;
         if (Settings::get("automatic_mail") == 'yes')
@@ -1361,7 +1361,7 @@ function validate_and_submit (){
         if ((document.forms["main"].beneficiaire.options[0].selected) &&(document.forms["main"].benef_ext_nom.value == ""))
         //if ((document.forms["main"].beneficiaire.value == "") &&(document.forms["main"].benef_ext_nom.value == ""))
         {
-            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("you_have_not_entered").get_vocab("deux_points").lcfirst(get_vocab("nom beneficiaire")) ?></div>');
+            $("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><?php echo get_vocab("you_have_not_entered").get_vocab("deux_points").lcfirst(get_vocab("nom_beneficiaire")) ?></div>');
             err = 1;
         }
     }

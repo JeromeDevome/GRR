@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2022-06-10
+# Last modification : 2022-07-23
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -224,7 +224,7 @@ $vocab['capacity'] = "Maximum number of people allowed in the room (0 if it is n
 $vocab['capacity_2'] = "Capacity: ";
 $vocab['CAS_SSO_explain'] = "If you have a <b>CAS</b> environment (Central Authentification Service), you can activate the consideration of this service with <b>GRR</b> below. Consult the GRR instructions to know more.";
 $vocab['causes_possibles'] = "Possibles causes:";
-$vocab['Cette journee ne correspond pas a un jour cycle'] = "This day doesn't correspond to a cycle day";
+$vocab['Cette_journee_ne_correspond_pas_a_un_jour_cycle'] = "This day doesn't correspond to a cycle day";
 $vocab['cgu'] = "T&Cs";
 $vocab['cgu_titre'] = "T&Cs : Terms of Use";
 $vocab['cgu_grr'] = "You can modify the CGU page. You are responsible for the content. <br> For legal information from GRR: <ul> <li> Neither GRR nor the developers are responsible for the content </li> <li> GRR is Open Source software under the GPL license </ li> <li> No data is retrieved from your GRR by the editor </li> <li> User passwords are encrypted </li> <li> User personal information is limited to name, first name and email address </li> </ul>";
@@ -661,7 +661,7 @@ $vocab['noarea'] = "Select an area first.";
 $vocab['noareas'] = "No area";
 $vocab['nobody'] = "(none)";
 $vocab['nobookings'] = "No reservation available for this date!";
-$vocab['nom beneficiaire'] = "Name of the beneficiary";
+$vocab['nom_beneficiaire'] = "Name of the beneficiary";
 $vocab['nom_complet_demandeur'] = "Surname and first name of the applicant";
 $vocab['nom emprunteur'] = "Name of the borrower";
 $vocab['nombre_de_creneaux'] = "Number of time slots";
