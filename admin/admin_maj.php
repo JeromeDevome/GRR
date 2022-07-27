@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-04-24 10:40$
+ * Dernière modification : $Date: 2022-06-24 10:00$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
@@ -20,6 +20,7 @@ $grr_script_name = "admin_maj.php";
 
 if (file_exists('../include/connect.inc.php')){
     include "../include/connect.inc.php";
+    mysqli_report(MYSQLI_REPORT_OFF); // comportement par défaut sur php<8.1
     if (!isset($dbHost) || !isset($dbUser) || !isset($dbPass) || !isset($dbDb) || !isset($dbPort)){
         header("Location: ../installation/install_mysql.php");
         die("Fichier connect.inc.php incomplet. Veuillez reprendre l'installation !");
