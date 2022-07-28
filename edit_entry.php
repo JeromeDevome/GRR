@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-16 16:18$
+ * Dernière modification : $Date: 2022-07-28 18:48$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -235,7 +235,9 @@ $form_vars = array(
   'del_entry_in_conflict' => 'string',
   'skip_entry_in_conflict' => 'string',
   'copier'             => 'string',
-  'nbparticipantmax'   => 'integer'
+  'nbparticipantmax'   => 'int',
+  'vacances'           => 'int', // 0: ts les jours, 1: jours de vacances scolaires, 2: jours hors vacances
+  'feries'             => 'int'  // 0: ts les jours, 1: jours fériés, 2: jours ouvrés
 );
 // tableau à compléter autant que nécessaire
 // récupération des valeurs des variables passées en paramètres
@@ -1112,6 +1114,42 @@ if($periodiciteConfig == 'y')
 		echo "<div class=\"F\"><b>".get_vocab("rep_end_date")."</b>".PHP_EOL;
 		jQuery_DatePicker('rep_end');
         echo '</div>'.PHP_EOL;
+        echo '<div class="F">'.PHP_EOL;
+        echo '<p><b>'.get_vocab('select_specific_days').'</b></p>';
+        // sélection jours de vacances
+        // filtrer si les vacances sont activées
+        echo '<div>'.PHP_EOL;
+        echo '<label for="vacances">'.get_vocab("School_holidays").'</label><br />';
+        echo '<input type="radio" name="vacances" value="0"';
+        if((!isset($vacances))||($vacances == 0))
+            echo " checked ";
+        echo '/>'.get_vocab("any_day")."<br />".PHP_EOL;
+        echo '<input type="radio" name="vacances" value="1"';
+        if(isset($vacances)&&($vacances == 1))
+            echo " checked ";
+        echo '/>'.get_vocab("school_holidays")."<br />".PHP_EOL;
+        echo '<input type="radio" name="vacances" value="2"';
+        if(isset($vacances)&&($vacances == 2))
+            echo " checked ";
+        echo '/>'.get_vocab("skip_school_holidays")."<br />".PHP_EOL;
+        echo '</div>'.PHP_EOL;
+		// sélection jours fériés
+        echo '<div>'.PHP_EOL;
+        echo '<label for="feries">'.get_vocab("Holidays").'</label><br />';
+        echo '<input type="radio" name="feries" value="0"';
+        if((!isset($feries))||($feries == 0))
+            echo " checked ";
+        echo '/>'.get_vocab("any_day")."<br />".PHP_EOL;
+        echo '<input type="radio" name="feries" value="1"';
+        if(isset($feries)&&($feries == 1))
+            echo " checked ";
+        echo '/>'.get_vocab("holidays")."<br />".PHP_EOL;
+        echo '<input type="radio" name="feries" value="2"';
+        if(isset($feries)&&($feries == 2))
+            echo " checked ";
+        echo '/>'.get_vocab("skip_holidays")."<br />".PHP_EOL;
+        echo '</div>'.PHP_EOL;
+        echo '</div>'.PHP_EOL; // fin bloc jours particuliers
 		echo "</div>\n"; // fin menu1
 	}
 	else

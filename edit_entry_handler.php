@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-18 12:00$
+ * Dernière modification : $Date: 2022-07-28 18:05$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -111,7 +111,9 @@ $form_vars = array(
   'dur_units'          => 'string',
   'del_entry_in_conflict' => 'string',
   'skip_entry_in_conflict' => 'string',
-  'nbparticipantmax'   => 'int'
+  'nbparticipantmax'   => 'int',
+  'vacances'           => 'int', // 0: ts les jours, 1: jours de vacances scolaires, 2: jours hors vacances
+  'feries'             => 'int'  // 0: ts les jours, 1: jours fériés, 2: jours ouvrés
 );
 // tableau à compléter autant que nécessaire
 // récupération des valeurs des variables passées en paramètres
@@ -393,7 +395,7 @@ try {
             $rep_opt .= empty($rep_day[$i])? "0" : "1";
     }
     if ($rep_type != 0)
-        $reps = mrbsGetRepeatEntryList($start_time, isset($rep_enddate)? $rep_enddate : 0, $rep_type, $rep_opt, $max_rep_entrys, $rep_num_weeks, $rep_jour_c, $area, $rep_month_abs1, $rep_month_abs2);
+        $reps = mrbsGetRepeatEntryList($start_time, isset($rep_enddate)? $rep_enddate : 0, $rep_type, $rep_opt, $max_rep_entrys, $rep_num_weeks, $rep_jour_c, $area, $rep_month_abs1, $rep_month_abs2, array($vacances,$feries));
     $create_by = isset($create_by)? clean_input($create_by) : $user;
     if (isset($room_back) && ($room_back != 'all'))
         $room_back = ''; // room_back c'est NULL, '' ou 'all'
