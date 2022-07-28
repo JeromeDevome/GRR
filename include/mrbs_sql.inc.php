@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2022-05-30 18:15$
+ * Dernière modification : $Date: 2022-07-28 18:18$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -558,7 +558,7 @@ function get_day_of_month($time, $rep_month_abs1, $rep_month_abs2)
  *   empty     - The entry does not repeat
  *   an array  - This is a list of start times of each of the repeat entrys
  */
-function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr, $rep_num_weeks, $rep_jour_c, $area, $rep_month_abs1, $rep_month_abs2)
+function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr, $rep_num_weeks, $rep_jour_c, $area, $rep_month_abs1, $rep_month_abs2, $type_jour=array(0,0))
 {
 	$sec   = date("s", $time);
 	$min   = date("i", $time);
@@ -583,7 +583,8 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
 		if ($time > $enddate)
 			break;
 		$time2 = mktime(0, 0, 0, $month, $day, $year);
-		if ($valide && !(est_hors_reservation($time2,$area)))
+        $jour_valide = jourValide($time2,$type_jour);
+		if ($valide && $jour_valide && !(est_hors_reservation($time2,$area)))
 		{
 			$entrys_return[$k] = $time;
 			$k++;
@@ -1162,5 +1163,21 @@ function updateParticipants($old_id, $new_id)
     $sql = "UPDATE " .TABLE_PREFIX."_participants SET idresa=".$new_id." WHERE idresa=".$old_id;
     $res = grr_sql_command($sql);
     return($res == $nb);
+}
+/** jourValide($time,$type_jour)
+* valide une date vis à vis des critères jour de vacances scolaires/jour férié
+* paramètres:
+* $time : timestamp du jour à OO:OO
+* $type_jour : tableau de deux entiers (x,y) entre 0 et 2 ; 0 = ts les jours, 1 = jour férié ou de vacance, 2 = jour ouvré ou hors vacances
+* renvoie TRUE|FALSE selon que les deux critères sont satisfaits
+*/ 
+function jourValide($time,$type_jour)
+{
+    list($vacance,$ferie) = $type_jour;
+    $jour_vacance = grr_sql_query1("SELECT * FROM ".TABLE_PREFIX."_calendrier_vacances WHERE DAY = $time");
+    $jour_ferie = grr_sql_query1("SELECT * FROM ".TABLE_PREFIX."_calendrier_feries WHERE DAY = $time");
+    $testV = ($vacance == 0)||(($vacance == 1)&&($jour_vacance > 0))||(($vacance == 2)&&($jour_vacance < 0));
+    $testF = ($ferie == 0)||(($ferie == 1)&&($jour_ferie > 0))||(($ferie == 2)&&($jour_ferie < 0));
+    return($testV && $testF);
 }
 ?>
