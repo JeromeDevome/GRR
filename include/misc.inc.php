@@ -2,7 +2,7 @@
 /**
  * misc.inc.php
  * fichier de variables diverses
- * Dernière modification : $Date: 2022-07-15 15:00$
+ * Dernière modification : $Date: 2022-08-02 18:09$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -27,7 +27,7 @@ $version_grr = "3.5.0";
 // Utilisez cette variable pour des versions qui corrigent la la version finale sans toucher à la base.
 $sous_version_grr = ""; // a, b, c, ...
 // Numéro de la release candidate (doit être strictement inférieure à 9). Laisser vide s'il s'agit de la version stable.
-$version_grr_RC = "1";
+$version_grr_RC = "2";
 // Version repository (GitHub)
 $versionReposite = "";
 
