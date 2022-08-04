@@ -62,7 +62,7 @@ else
 }
 
 $active_participant = isset($_POST["active_participant"]) ? $_POST["active_participant"] : NULL;
-$picture_room = isset($_POST["picture_room"]) ? $_POST["picture_room"] : NULL;
+$picture_room = isset($_POST["picture_room"]) ? $_POST["picture_room"] : '';
 $comment_room = isset($_POST["comment_room"]) ? $_POST["comment_room"] : NULL;
 $show_comment = isset($_POST["show_comment"]) ? "y" : "n";
 $change_done = isset($_POST["change_done"]) ? $_POST["change_done"] : NULL;
