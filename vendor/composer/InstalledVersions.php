@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '2fb83ffd074aa4d844ac5e58a83cb9c7ff51bbb6',
+    'reference' => 'a8b168072a9e30cf519224208ac06149f5d84b46',
     'name' => 'devome/twig',
   ),
   'versions' => 
@@ -60,7 +60,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '2fb83ffd074aa4d844ac5e58a83cb9c7ff51bbb6',
+      'reference' => 'a8b168072a9e30cf519224208ac06149f5d84b46',
     ),
     'phpmailer/phpmailer' => 
     array (
