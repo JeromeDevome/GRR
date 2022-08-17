@@ -74,97 +74,100 @@ if ($valid == "yes")
 		//
 		// actions si un nouvel utilisateur a été défini
 		//
-		$test_login = preg_replace("/([A-Za-z0-9_@. -])/","",$new_login);
-		if ((isset($new_login)) && ($new_login != '') && ($test_login == ""))
+		
+		if ((isset($new_login)) && ($new_login != '') )
 		{
-			// un gestionnaire d'utilisateurs ne peut pas créer un administrateur général ou un gestionnaire d'utilisateurs
-			$test_statut = TRUE;
-			if (authGetUserLevel(getUserName(),-1) < 6)
-			{
-				if (($reg_statut == "administrateur") || ($reg_statut == "gestionnaire_utilisateur"))
-					$test_statut = FALSE;
-			}
-			$new_login = strtoupper($new_login);
-			if ($reg_password !='')
-				$reg_password_c = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$reg_password);
-			else
-			{
-				if ($reg_type_authentification != "locale")
-					$reg_password_c = '';
+			$test_login = preg_replace("/([A-Za-z0-9_@. -])/","",$new_login);
+			if($test_login == ""){
+				// un gestionnaire d'utilisateurs ne peut pas créer un administrateur général ou un gestionnaire d'utilisateurs
+				$test_statut = TRUE;
+				if (authGetUserLevel(getUserName(),-1) < 6)
+				{
+					if (($reg_statut == "administrateur") || ($reg_statut == "gestionnaire_utilisateur"))
+						$test_statut = FALSE;
+				}
+				$new_login = strtoupper($new_login);
+				if ($reg_password !='')
+					$reg_password_c = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$reg_password);
 				else
+				{
+					if ($reg_type_authentification != "locale")
+						$reg_password_c = '';
+					else
+					{
+						$msg = get_vocab("passwd_error");
+						$retry = 'yes';
+					}
+				}
+				if (!($test_statut))
+				{
+					$msg = get_vocab("erreur_choix_statut");
+					$retry = 'yes';
+				}
+				else if ((($reg_password != $reg_password2) || (strlen($reg_password) < $pass_leng)) && ($reg_type_authentification == "locale"))
 				{
 					$msg = get_vocab("passwd_error");
 					$retry = 'yes';
 				}
-			}
-			if (!($test_statut))
-			{
-				$msg = get_vocab("erreur_choix_statut");
-				$retry = 'yes';
-			}
-			else if ((($reg_password != $reg_password2) || (strlen($reg_password) < $pass_leng)) && ($reg_type_authentification == "locale"))
-			{
-				$msg = get_vocab("passwd_error");
-				$retry = 'yes';
-			}
-			else
-			{
-				$sql = "SELECT * FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$new_login."'";
-				$res = grr_sql_query($sql);
-				$nombreligne = grr_sql_count ($res);
-				if ($nombreligne != 0)
-				{
-					$msg = get_vocab("error_exist_login");
-					$retry = 'yes';
-				}
 				else
 				{
-					$sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET
-					nom='".protect_data_sql($reg_nom)."',
-					prenom='".protect_data_sql($reg_prenom)."',
-					login='".protect_data_sql($new_login)."',
-					password='".protect_data_sql($reg_password_c)."',
-					changepwd='".protect_data_sql($reg_changepwd)."',
-					statut='".protect_data_sql($reg_statut)."',
-					email='".protect_data_sql($reg_email)."',
-					etat='".protect_data_sql($reg_etat)."',
-					default_site = '-1',
-					default_area = '-1',
-					default_room = '-1',
-					default_style = '',
-					default_list_type = 'item',
-					default_language = 'fr-fr',";
-					if ($reg_type_authentification=="locale")
-						$sql .= "source='local'";
-					else
-						$sql .= "source='ext'";
-					if (grr_sql_command($sql) < 0)
+					$sql = "SELECT * FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$new_login."'";
+					$res = grr_sql_query($sql);
+					$nombreligne = grr_sql_count ($res);
+					if ($nombreligne != 0)
 					{
-						fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
+						$msg = get_vocab("error_exist_login");
+						$retry = 'yes';
 					}
 					else
 					{
-						$msg = get_vocab("msg_login_created");
-					}
-					$user_login = $new_login;
-
-					// Groupes
-					$sql = "DELETE FROM ".TABLE_PREFIX."_utilisateurs_groupes WHERE login='$new_login'";
-					if (grr_sql_command($sql) < 0)
-						fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
-
-					if(isset($groupes_select) && !empty($groupes_select)){
-						foreach ($groupes_select as $valeur)
+						$sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET
+						nom='".protect_data_sql($reg_nom)."',
+						prenom='".protect_data_sql($reg_prenom)."',
+						login='".protect_data_sql($new_login)."',
+						password='".protect_data_sql($reg_password_c)."',
+						changepwd='".protect_data_sql($reg_changepwd)."',
+						statut='".protect_data_sql($reg_statut)."',
+						email='".protect_data_sql($reg_email)."',
+						etat='".protect_data_sql($reg_etat)."',
+						default_site = '-1',
+						default_area = '-1',
+						default_room = '-1',
+						default_style = '',
+						default_list_type = 'item',
+						default_language = 'fr-fr',";
+						if ($reg_type_authentification=="locale")
+							$sql .= "source='local'";
+						else
+							$sql .= "source='ext'";
+						if (grr_sql_command($sql) < 0)
 						{
-							if ($valeur != '')
+							fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
+						}
+						else
+						{
+							$msg = get_vocab("msg_login_created");
+						}
+						$user_login = $new_login;
+
+						// Groupes
+						$sql = "DELETE FROM ".TABLE_PREFIX."_utilisateurs_groupes WHERE login='$new_login'";
+						if (grr_sql_command($sql) < 0)
+							fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
+
+						if(isset($groupes_select) && !empty($groupes_select)){
+							foreach ($groupes_select as $valeur)
 							{
-								$sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs_groupes SET login= '$new_login', idgroupes = '$valeur'";
-								if (grr_sql_command($sql) < 0)
-									fatal_error(1, "<p>" . grr_sql_error());
+								if ($valeur != '')
+								{
+									$sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs_groupes SET login= '$new_login', idgroupes = '$valeur'";
+									if (grr_sql_command($sql) < 0)
+										fatal_error(1, "<p>" . grr_sql_error());
+								}
 							}
 						}
+						//Fin des groupes
 					}
-					//Fin des groupes
 				}
 			}
 //
