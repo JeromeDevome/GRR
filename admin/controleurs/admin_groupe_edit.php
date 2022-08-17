@@ -25,7 +25,7 @@ if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName()
 	exit();
 }
 
-$idgroupe = isset($_GET["idgroupe"]) ? $_GET["idgroupe"] : 0;
+$idgroupe = isset($_GET["idgroupe"]) && $_GET["idgroupe"] != '' ? $_GET["idgroupe"] : 0;
 $valid = isset($_GET["valid"]) ? $_GET["valid"] : NULL;
 
 $user_nom = '';
@@ -42,7 +42,7 @@ if ($valid == "yes")
 	VerifyModeDemo();
 	$reg_nom = isset($_GET["reg_nom"]) ? $_GET["reg_nom"] : NULL;
 	$reg_description = isset($_GET["reg_description"]) ? $_GET["reg_description"] : NULL;
-	$reg_archive= isset($_GET["reg_archive"]) ? $_GET["reg_archive"] : "on";
+	$reg_archive= isset($_GET["reg_archive"]) ? $_GET["reg_archive"] : "off";
 
 	if($reg_archive == "on")
 		$archive = 1;
