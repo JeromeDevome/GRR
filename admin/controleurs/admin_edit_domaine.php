@@ -263,7 +263,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 					}
 				}
 			}
-			$msg = get_vocab("message_records");
+			//$msg = get_vocab("message_records");
 		}
 	}
 	if ($access=='a')
@@ -286,7 +286,22 @@ if ((!empty($id_area)) || (isset($add_area)))
 		exit();
 	}
 
-	affiche_pop_up($msg,"admin");
+	// Si pas de problème, message de confirmation
+	if (isset($_POST['area_name'])) {
+		$_SESSION['displ_msg'] = 'yes';
+		if ($msg == '') {
+			$d['enregistrement'] = 1;
+		} else{
+			$d['enregistrement'] = $msg;
+		}
+	}
+	if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes')) {
+		$msg = $_GET['msg'];
+	} else {
+		$msg = '';
+	}
+
+	//affiche_pop_up($msg,"admin");
 
 	if (isset($id_area))
 	{
@@ -374,6 +389,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 	get_vocab_admin('back');
 	get_vocab_admin('save');
 	get_vocab_admin('save_and_back');
+	get_vocab_admin('message_records');
 
 	$trad['dIdSite'] = $id_site;
 	$trad['dIpClient'] = OPTION_IP_ADR;
@@ -445,5 +461,5 @@ if ((!empty($id_area)) || (isset($add_area)))
 			//Hook::Appel("hookEditArea1");
 		}
 
-	echo $twig->render('admin_edit_domaine.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'domaine' => $domaine, 'sites' => $sites, 'JoursSemaine' => $JoursSemaine));
+	echo $twig->render('admin_edit_domaine.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'domaine' => $domaine, 'sites' => $sites, 'JoursSemaine' => $JoursSemaine));
 ?>
