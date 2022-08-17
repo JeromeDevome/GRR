@@ -49,7 +49,7 @@
 
 					{{ form.input('reg_nom', trad.last_name, utilisateur.nom, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
 					{{ form.input('reg_prenom', trad.first_name, utilisateur.prenom, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
-					{{ form.input('reg_email', trad.mail_user, utilisateur.email, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'email'}) }}
+					{{ form.input('reg_email', trad.mail_user, utilisateur.email, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'email', autocomplete:'off'}) }}
 
 					<div class="form-group row">
 						<label class="col-sm-4" for="reg_statut">{{ trad.statut }}</label>
@@ -87,7 +87,7 @@
 							</div>
 						{% endif %}
 
-						{{ form.input('reg_password', trad.pwd_toot_short, '', {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'password'}) }}
+						{{ form.input('reg_password', trad.pwd_toot_short, '', {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'password', autocomplete:'new-password'}) }}
 						{{ form.input('reg_password2', trad.confirm_pwd, '', {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'password'}) }}
 
 						<div class="form-group row col-sm-12">
