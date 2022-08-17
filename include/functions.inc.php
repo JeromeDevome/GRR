@@ -3038,7 +3038,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	$area_name    				= removeMailUnicode(htmlspecialchars($row[4]));
 	$room_id      				= $row[6];
 	$repeat_id    				= $row[7];
-	$date_avis    				= strftime("%Y/%m/%d", $row[10]);
+	$date_avis    				= date('Y/m/d', $row[10]); //strftime("%Y/%m/%d", $row[10]);
 	$delais_option_reservation 	= $row[13];
 	$option_reservation 		= $row[14];
 	$moderate 					= $row[15];
@@ -3078,7 +3078,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		{
 			$row2 = grr_sql_row($res, 0);
 			$rep_type     = $row2[0];
-			$rep_end_date = strftime($dformat,$row2[1]);
+			$rep_end_date = date($dformat, $row2[1]); //strftime($dformat,$row2[1]);
 			$rep_opt      = $row2[2];
 			$rep_num_weeks = $row2[3];
 		}
