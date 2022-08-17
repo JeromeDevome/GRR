@@ -367,7 +367,7 @@ if ((Settings::get("sso_statut") != "") || (Settings::get("ldap_statut") != '') 
 if (authGetUserLevel(getUserName(),-1) >= 6)
 	$trad['dEstAdministrateur'] = 1;
 
-if (strtolower(getUserName()) != strtolower($user_login))
+if (isset($user_login) && strtolower(getUserName()) != strtolower($user_login))
 	$trad['dEstPasLuiMeme'] = 1;
 
 $trad['dDisplay'] = $display;
