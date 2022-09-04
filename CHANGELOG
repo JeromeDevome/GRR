@@ -9,8 +9,10 @@ Tâches prévues :
 --
 -----
 
-Version 3.5.0 RC0
-    correctifs de code divers
+Version 3.5.0
+    correctifs divers : code et vocabulaire
+    ajout : affichage du bénéficiaire dans le tableau des réservations à modérer
+    ajout : possibilité de sélectionner ou exclure les jours de vacances scolaires ou fériés dans les réservations périodiques
     amélioration : test de cohérence des types
     amélioration : lien pour corriger les réservations en défaut de type
     amélioration : rejet des réservations sans type ou de type inconnu
@@ -19,12 +21,7 @@ Version 3.5.0 RC0
     modification : les bases de données sont codées en utf8mb4, la procédure de conversion des données est automatisée
     modification pour accélération du calcul et de l'affichage de la page
     modifications pour compatibilité php 8.1
-Version 3.5.0 RC1
     modification : le niveau d'erreur de mysqli est ramené à MYSQLI_REPORT_OFF comme dans les versions de php < 8.1
-Version 3.5.0 RC1
-    ajout : affichage du bénéficiaire dans le tableau des réservations à modérer
-    ajout : possibilité de sélectionner ou exclure les jours de vacances scolaires ou fériés dans les réservations périodiques
-    correctifs divers : code et vocabulaire
     
 -----
 --
