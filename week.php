@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-05-23 18:18$
+ * Dernière modification : $Date: 2022-09-05 17:58$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -119,7 +119,6 @@ $month_week = date("m", $time);
 $year_week  = date("Y", $time);
 
 //Récupération des données concernant l'affichage du planning du domaine
-//get_planning_area_values($area);
 $morningstarts = $this_area['morningstarts_area'];
 $eveningends = $this_area['eveningends_area'];
 $eveningends_minutes = $this_area['eveningends_minutes_area'];
@@ -128,6 +127,20 @@ $pm7 = mktime($eveningends, $eveningends_minutes, 0, $month, $day_week, $year_we
 $week_midnight = mktime(0, 0, 0, $month_week, $day_week, $year_week);
 $week_start = $am7;
 $week_end = mktime($eveningends, $eveningends_minutes, 0, $month_week, $day_week + 6, $year_week);
+// les jours à afficher
+$display_day = array();
+$display_days = $this_area['display_days'];
+$nb_display_day = 0;
+for ($i = 0; $i < 7; $i++)
+{
+    if (substr($display_days,$i,1) == 'y')
+    {
+        $display_day[$i] = 1;
+        $nb_display_day++;
+    }
+    else
+        $display_day[$i] = 0;
+}
 $enable_periods = $this_area['enable_periods'];
 if($enable_periods == 'y'){// récupérer les noms des créneaux
     $sql = "SELECT * FROM ".TABLE_PREFIX."_area_periodes WHERE id_area=$area ";
