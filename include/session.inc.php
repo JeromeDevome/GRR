@@ -3,7 +3,7 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-02-19 14:54$
+ * Dernière modification : $Date: 2022-09-12 10:14$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -380,8 +380,9 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 else
                     return "4";
             }
-            elseif (Settings::get("imap_statut") != '' and (@function_exists("imap_open")) and Settings::get("imap_adresse") != '' and Settings::get("imap_port") != ''){
+            //elseif (Settings::get("imap_statut") != '' and (@function_exists("imap_open")) and Settings::get("imap_adresse") != '' and Settings::get("imap_port") != ''){
                 //  $login_search = ereg_replace("[^-@._[:space:][:alnum:]]", "", $_login);
+            elseif (Settings::get("imap_statut") != '' and (@function_exists("imap_open")) ){
                 $login_search = preg_replace("/[^\-@._[:space:]a-zA-Z0-9]/", "", $_login);
                 if ($login_search != $_login)
                     return "6";
