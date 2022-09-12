@@ -3,7 +3,7 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservations de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-05-06 11:35 $
+ * Dernière modification : $Date: 2022-09-12 12:13 $
  * @author    Yan Naessens, Laurent Delineau 
  * @copyright Copyright 2003-2022 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -580,6 +580,16 @@ if ($_GET['pview'] != 1)
 
         echo "</form>";
     echo "</div>";
+}
+// lien "précédent" pour les plannings imprimables dans la même fenêtre
+if (isset($_GET['precedent']))
+{
+	if ($_GET['pview'] == 1 && $_GET['precedent'] == 1)
+	{
+		echo '<span id="lienPrecedent">'.PHP_EOL;
+		echo '<button class="btn btn-default btn-xs" onclick="charger();javascript:history.back();">Précedent</button>'.PHP_EOL;
+		echo '</span>'.PHP_EOL;
+	}
 }
 echo '<div class="titre_planning"><h4>'.ucfirst($nom_site)." - ".get_vocab("all_areas").'</h4></div>';
 // affichage des données mensuelles

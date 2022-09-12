@@ -3,7 +3,7 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-05-06 11:24$
+ * Dernière modification : $Date: 2022-09-12 12:14$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -397,7 +397,16 @@ if ($_GET['pview'] != 1)
         echo "</div>";
     echo "</div>";
 }
-
+// lien "précédent" pour les plannings imprimables dans la même fenêtre
+if (isset($_GET['precedent']))
+{
+	if ($_GET['pview'] == 1 && $_GET['precedent'] == 1)
+	{
+		echo '<span id="lienPrecedent">'.PHP_EOL;
+		echo '<button class="btn btn-default btn-xs" onclick="charger();javascript:history.back();">Précedent</button>'.PHP_EOL;
+		echo '</span>'.PHP_EOL;
+	}
+}
 echo "<div class=\"col-xs-12 center\"><h4>".ucfirst($this_area_name)." - ".get_vocab("all_areas")."</h4></div>\n";
 // Boucle sur les mois
 $month_indice =  $month_start;

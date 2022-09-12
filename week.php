@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-09-05 17:58$
+ * Dernière modification : $Date: 2022-09-12 11:52$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -496,6 +496,16 @@ echo '<div id="chargement"></div>'.PHP_EOL; // à éliminer ?
 echo "<section>".PHP_EOL;
 // Affichage du menu en haut ou à gauche
 include("menuHG.php");
+// lien "précédent" pour les plannings imprimables dans la même fenêtre
+if (isset($_GET['precedent']))
+{
+	if ($_GET['pview'] == 1 && $_GET['precedent'] == 1)
+	{
+		echo '<span id="lienPrecedent">'.PHP_EOL;
+		echo '<button class="btn btn-default btn-xs" onclick="charger();javascript:history.back();">Précedent</button>'.PHP_EOL;
+		echo '</span>'.PHP_EOL;
+	}
+}
 // affichage du planning
 // Début du tableau affichant le planning
 if ($_GET['pview'] != 1){

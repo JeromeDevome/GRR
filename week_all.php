@@ -340,7 +340,7 @@ echo '<div id="chargement"></div>'.PHP_EOL; // à éliminer ?
 echo "<section>".PHP_EOL;
 // Affichage du menu en haut ou à gauche
 include("menuHG.php");
-// lien "précédent"??
+// lien "précédent" pour les plannings imprimables dans la même fenêtre
 if (isset($_GET['precedent']))
 {
 	if ($_GET['pview'] == 1 && $_GET['precedent'] == 1)
