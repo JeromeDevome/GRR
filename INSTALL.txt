@@ -118,6 +118,7 @@ Téléchargez sur votre serveur les scripts de la nouvelle version de GRR.
 Recopiez les fichiers de configuration (/include/config.inc.php, /include/connect.inc.php et - éventuellement - /include/config_ldap.inc.php).
 Vérifiez les droits en écriture sur les fichiers et le dossier indiqués à l'étape 2.
 Connectez-vous à GRR avec un compte administrateur. Si vous avez fait une montée de version, GRR demandera une mise à jour de la base de données. Faites-la puis connectez-vous. Vous devriez avoir de nouveau GRR opérationnel.
+Dans le cas où l'affichage vous semble anormal, un vidage des caches du navigateur corrige en général les défauts.
 
 Pour mettre à jour depuis GRR 1.9.7e ou antérieur, voici les étapes recommandées :
 - faire une sauvegarde depuis GRR197
