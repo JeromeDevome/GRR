@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-07-23 15:22$
+ * Dernière modification : $Date: 2022-09-13 11:39$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -651,7 +651,7 @@ function resaToModerate($user)
             if($row['beneficiaire']==""){
                 $beneficiaire_ext = $row['beneficiaire_ext'];
                 if(strstr($beneficiaire_ext,'|')){
-                    $s = split('|',$beneficiaire_ext);
+                    $s = explode('|',$beneficiaire_ext); // adaptation php8.1
                     $beneficiaire = $s[0];
                 }
             }
