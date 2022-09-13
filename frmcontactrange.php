@@ -3,9 +3,9 @@
  * frmcontactrange.php
  * calcule le code html de la partie intervalle du formulaire de contact
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-06 15:06$
+ * Dernière modification : $Date: 2022-08-19 11:36$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -95,6 +95,21 @@ else
     
 }
 echo "<br /> ";
+
+echo '<div id="formulaire_captcha">'.PHP_EOL;
+echo '<p><img id="captcha" src="./captcha.php" border="1" alt="CAPTCHA">'.PHP_EOL;
+echo "<small><a href=\"#\" onclick=\"
+                        document.getElementById('captcha').src = './captcha.php?' + Math.random();
+                        document.getElementById('captcha_code_input').value = '';
+                        return false;
+                        \">";
+echo 'Renouveler le code captcha'.'</a></small></p>'.PHP_EOL;
+echo '<p>
+        <input id="captcha_code_input" type="text" name="captcha" size="5" maxlength="5" /> 
+          <small>'.PHP_EOL;
+echo 'Entrer le code captcha dans la fenêtre ci-contre'.'</small>
+                </p>
+                </div>'.PHP_EOL;
 echo "<div>";
 echo '<input class="btn btn-primary" type="submit" name="submit" value="Envoyer la demande de réservation">';
 echo '<input class="btn btn-danger" type="button" name="retouraccueil" value="Retour" onClick="javascript:location.href=\'javascript:history.go(-1)\'">';
