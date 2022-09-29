@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-07-28 18:05$
+ * Dernière modification : $Date: 2022-09-13 10:57$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -121,7 +121,7 @@ foreach($form_vars as $var => $var_type)
 {
     if ($var_type != "array"){
         $$var = getFormVar($var, $var_type);
-        if ($var_type == "string"){$$var = trim($$var);}
+        if ($var_type == "string" && $$var != ''){$$var = trim($$var);}
     }
     else{ // traitement d'un tableau
         $$var = getFormVar($var,'');

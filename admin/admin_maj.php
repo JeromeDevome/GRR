@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-24 10:00$
+ * Dernière modification : $Date: 2022-08-25 10:42$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
@@ -937,18 +937,27 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
             $result .= $result_inter;
         $result_inter = '';
     }
+    // conversion de la valeur par défaut des champs START et END de la table grr_log (ne devrait être utile que pour des bases converties depuis d'anciennes versions)
+    if($version_old < "3.5.0"){
+        $result .= formatResult("Mise à jour de la table grr_log:","<b>","</b>");
+        $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_log` CHANGE `START` `START` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00';");
+        $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_log` CHANGE `END` `END` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00';");
+        
+        if ($result_inter == '')
+            $result .= formatResult("Ok !","<span style='color:green;'>","</span>");
+        else
+            $result .= $result_inter;
+        $result_inter = '';
+    }
+
     if ($version_old < "3.5.0.0")
     {
         $result .= formatResult("Mise à jour jusqu'à la version 3.5.0 RC0:","<b>","</b>");
         include "./ISO_to_UTF8.inc.php";
-        
-        /*$result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_participants` CHANGE `participant` `participant` VARCHAR(150) NOT NULL;");
-        if ($result_inter == '')
-            $result .= formatResult("Ok !","<span style='color:green;'>","</span>");
-        else
-            $result .= $result_inter;*/
+
         $result_inter = '';
     }
+    
     // Vérification du format des champs additionnels
     // Avant version 1.9.4, les champs add étaient stockés sous la forme <id_champ>champ_encode_en_base_64</id_champ>
     // A partir de la version 1.9.4, les champs add. sont stockés sous la forme @id_champ@url_encode(champ)@/id_champ@

@@ -3,9 +3,9 @@
  * contactFormulaire.php
  * Formulaire d'envoi de mail demandant une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-12-16 18:00$
+ * Dernière modification : $Date: 2022-08-19 11:20$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -58,8 +58,6 @@ pageHeader2($day, $month, $year, "no_session");
 echo "</header>";
 // Debut de la page
 echo '<section>'.PHP_EOL;
-//echo '<div id="toTop">',PHP_EOL,'<b>',get_vocab("top_of_page"),'</b>',PHP_EOL;
-//echo '</div>',PHP_EOL;
 bouton_retour_haut ();
 ?>	
 	<form id="frmContact" method="post" action="traitementcontact.php">
@@ -139,14 +137,14 @@ bouton_retour_haut ();
                     </div>
                 </div>
 				<div id="intervalle"> </div>
-			</fieldset>
 	        </div>
+			</fieldset>
         </div>
     </div>
     </form>
 </section>
 <footer>
-<div id="toTop"><b><?php echo get_vocab("top_of_page"); ?></b>
+<div id="toTop"><b><?php echo get_vocab("top_of_page"); ?></b></div>
 </footer>
 
 <script>

@@ -76,7 +76,7 @@ date_default_timezone_set('Europe/Paris');
 # Mais si un navigateur est amené à se connecter au cours de la même session, à deux sites GRR différents,
 # ces deux sites GRR doivent avoir des noms de session différents.
 # Dans ce cas, il vous faudra changer la valeur GRR ci-dessous par une autre valeur.
- define('SESSION_NAME', "GRRdev");
+ define('SESSION_NAME', "GRR350");
 
 # Nombre maximum (+1) de réservations autorisés lors d'une réservation avec périodicité
  $max_rep_entrys = 365 + 1;

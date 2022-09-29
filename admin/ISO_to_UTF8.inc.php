@@ -81,8 +81,6 @@ else {
     $ok = TRUE;
     foreach ($donneesTable as $table) {
         $result.="Passage de $table en ".SET_DEST." en cours. ";
-    	//$querytable = mysqli_query($GLOBALS['db_c'], 'ALTER TABLE '.$table.' CONVERT TO CHARACTER SET '.SET_DEST);
-        //$querytable = mysqli_query($GLOBALS['db_c'], 'ALTER TABLE '.$table.' CHARACTER SET '.SET_DEST);
         $result_inter.= traiteRequete('ALTER TABLE '.$table.' CONVERT TO CHARACTER SET '.SET_DEST);
         $result_inter.= traiteRequete('ALTER TABLE '.$table.' CHARACTER SET '.SET_DEST);
         if ($result_inter == '')
