@@ -3,7 +3,7 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-10 11:57$
+ * Dernière modification : $Date: 2022-09-30 18:52$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -351,17 +351,18 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     //-> LDAP sans SSO
     // -> Imap
     else
-    {
-        $passwd_md5 = md5($_password);
+    {   // utilisateur déjà enregistré ?
+        $sql = "SELECT UPPER(login) login FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".strtoupper(protect_data_sql($_login))."';";
+        /* $passwd_md5 = md5($_password); // à changer
         $sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
         from ".TABLE_PREFIX."_utilisateurs
         where login = '" . protect_data_sql($_login) . "' and
-        password = '".$passwd_md5."'";
+        password = '".$passwd_md5."'";*/
         $res_user = grr_sql_query($sql);
         $num_row = grr_sql_count($res_user);
-        //On est toujours dans le cas NON SSO - L'utilisateur n'est pas présent dans la base locale
+        grr_sql_free($res_user);
         if ($num_row != 1)
-        {
+        {   // L'utilisateur n'est pas présent dans la base locale ou il existe un doublon
             if ((Settings::get("ldap_statut") != '') && (@function_exists("ldap_connect")) && (@file_exists("include/config_ldap.inc.php")))
             {
                 //$login_search = ereg_replace("[^-@._[:space:][:alnum:]]", "", $_login);
@@ -404,12 +405,20 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
             else
                 return "2";
         }
-        else
-        {
-            $row = grr_sql_row($res_user, 0);
+        else // l'utilisateur est présent dans la base locale
+        {   // est-il authentifié ?
+            $sql = "SELECT * FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".strtoupper(protect_data_sql($_login))."';";
+            $res_user = grr_sql_query($sql);
+            $row = grr_sql_row_keyed($res_user, 0);
             // S'il s'agit d'un utilisateur inactif, on s'arrête là
             if ($row[12] == 'inactif')
                 return "5";
+            else // on vérifie enfin le mot de passe et on le met éventuellement à jour
+            {
+                $est_auth = checkPassword($_password,$row['password'],$row['login']);
+                if(!$est_auth)
+                    return "2";
+            }
         }
     }// Fin du cas NON SSO
     // Cette partie ne concerne que les utilisateurs pour lesquels l'authentification ldap ci-dessus a réussi
@@ -646,42 +655,42 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     }
     // reset $_SESSION
     $_SESSION = array();
-    $_SESSION['login'] = $row[0];
-    $_SESSION['password'] = $row[1];
-    $_SESSION['prenom'] = $row[2];
-    $_SESSION['nom'] = $row[3];
-    $_SESSION['statut'] = $row[4];
-    $_SESSION['start'] = $row[5];
+    $_SESSION['login'] = $row['login'];
+    $_SESSION['password'] = $row['password'];
+    $_SESSION['prenom'] = $row['prenom'];
+    $_SESSION['nom'] = $row['nom'];
+    $_SESSION['statut'] = $row['statut'];
+    $_SESSION['start'] = date("Y-m-d H:i:s");
     $_SESSION['maxLength'] = Settings::get("sessionMaxLength");
-    if ($row[6] > 0)
-        $_SESSION['default_area'] = $row[6];
+    if ($row['default_area'] > 0)
+        $_SESSION['default_area'] = $row['default_area'];
     else
         $_SESSION['default_area'] = Settings::get("default_area");
-    //if ($row[7] > 0) en lien avec le calcul de la page d'accueil YN le 11/04/2018
-    if ($row[7] != 0)
-        $_SESSION['default_room'] = $row[7];
+    //if ($row['default_room'] > 0) en lien avec le calcul de la page d'accueil YN le 11/04/2018
+    if ($row['default_room'] != 0)
+        $_SESSION['default_room'] = $row['default_room'];
     else
         $_SESSION['default_room'] = Settings::get("default_room");
-    if ($row[8] !='')
-        $_SESSION['default_style'] = $row[8];
+    if ($row['default_style'] !='')
+        $_SESSION['default_style'] = $row['default_style'];
     else
         $_SESSION['default_style'] = Settings::get("default_css");
-    if ($row[9] !='')
-        $_SESSION['default_list_type'] = $row[9];
+    if ($row['default_list_type'] !='')
+        $_SESSION['default_list_type'] = $row['default_list_type'];
     else
         $_SESSION['default_list_type'] = Settings::get("area_list_format");
-    if ($row[10] !='')
-        $_SESSION['default_language'] = $row[10];
+    if ($row['default_language'] !='')
+        $_SESSION['default_language'] = $row['default_language'];
     else
         $_SESSION['default_language'] = Settings::get("default_language");
-    if ($row[13] > 0)
-        $_SESSION['default_site'] = $row[13];
+    if ($row['default_site'] > 0)
+        $_SESSION['default_site'] = $row['default_site'];
     else
         $_SESSION['default_site'] = Settings::get("default_site");
-    $_SESSION['source_login'] = $row[11];
+    $_SESSION['source_login'] = $row['source'];
     if ($est_authentifie_sso) /// Variable de session qui permet de savoir qu'un utilisateur est authentifié à un SSO
         $_SESSION['est_authentifie_sso'] = "y";
-    $_SESSION['changepwd'] = $row[14];
+    $_SESSION['changepwd'] = $row['changepwd'];
     if (isset($_SERVER["HTTP_REFERER"]))
         $httpreferer = substr($_SERVER["HTTP_REFERER"],0,254);
     else

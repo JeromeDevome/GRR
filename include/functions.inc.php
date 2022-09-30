@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-09-13 11:39$
+ * Dernière modification : $Date: 2022-09-30 18:42$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -135,8 +135,48 @@ function cal($month, $year, $type)
 	return $s;
 }
 
+/** function checkPassword($pwd, $pwd_hash, $login)
+* vérifie que le mot de passe fourni $pwd correspond au $pwd_hash issu de la BDD pour l'utilisateur associé au $login
+* si le mot de passe n'a pas été enregistré par la fonction password_hash, mais est valide pour md5, alors la fonction le convertit au passage et l'enregistre au nouveau format
+* renvoie TRUE si le mot de passe est valable, FALSE sinon ; déclenche une erreur si l'enregistrement du nouveau mot de passe échoue
+*/
+function checkPassword($pwd, $pwd_hash, $login){
+    $result = false;
+    $do_rehash = false;
+    /* si $pwd_hash commence par '$' il est censé être issu de password_hash */
+    if (substr($pwd_hash, 0, 1) == '$')
+    {
+        if (password_verify($pwd, $pwd_hash))
+        { // c'est un mot de passe codé par password_hash, voyons s'il faut le mettre à jour
+            $result = true;
+            if (password_needs_rehash($pwd_hash, PASSWORD_DEFAULT))
+            {
+                $do_rehash = true;
+            }
+        }
+    }
+    /* sinon $pwd_hash est censé être issu de MD5 */
+    else
+    {
+        if (md5($pwd) == $pwd_hash)
+        {
+            $result = true;
+            $do_rehash = true;
+        }
+    }
+    if ($do_rehash)
+    {
+        $pwd_hash = password_hash($pwd, PASSWORD_DEFAULT);
+        $sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password = '$pwd_hash' WHERE login = '".strtoupper($login)."';";
+        if (grr_sql_command($sql) < 0)
+			fatal_error(0, "<p>".$sql."<br>" . grr_sql_error());
+    }
+
+    return $result;
+}
+
 /**
- * Fonction de verification d'access
+ * Fonction de vérification d'accès
  * @param int $level
  */
 function check_access($level, $back)
@@ -1449,7 +1489,7 @@ function IsAllowedToModifyMdp() {
 // Transforme $dur en une durée exprimée en années, semaines, jours, heures, minutes et secondes
 // OU en durée numérique exprimée dans l'une des unités de façon fixe, pour l'édition des
 // réservations par durée.
-// $dur : durée sous forme d'une chaine de caractère quandd $edition=false, sinon, durée en valeur numérique.
+// $dur : durée sous forme d'une chaine de caractère quand $edition=false, sinon, durée en valeur numérique.
 // $units : variable conservée uniquement pour compatibilité avec la fonction toTimeString originale
 //          si $edition=false, sinon, contient l'unité utilisée pour $dur
 // $edition : Valeur par défaut : false. Indique si le retour est pour affichage ou pour modifier la durée.
