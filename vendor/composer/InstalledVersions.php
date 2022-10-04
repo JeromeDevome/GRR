@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '01bb37f5c5f6641a53aec41f864fef55cf887b87',
+    'reference' => 'e429f25676f1905c53cc6ee615f69ac16046752d',
     'name' => 'devome/twig',
   ),
   'versions' => 
@@ -60,16 +60,16 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '01bb37f5c5f6641a53aec41f864fef55cf887b87',
+      'reference' => 'e429f25676f1905c53cc6ee615f69ac16046752d',
     ),
     'phpmailer/phpmailer' => 
     array (
-      'pretty_version' => 'v6.6.3',
-      'version' => '6.6.3.0',
+      'pretty_version' => 'v6.6.4',
+      'version' => '6.6.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9400f305a898f194caff5521f64e5dfa926626f3',
+      'reference' => 'a94fdebaea6bd17f51be0c2373ab80d3d681269b',
     ),
     'psr/log' => 
     array (
@@ -118,12 +118,12 @@ private static $installed = array (
     ),
     'twig/twig' => 
     array (
-      'pretty_version' => 'v2.15.2',
-      'version' => '2.15.2.0',
+      'pretty_version' => 'v2.15.3',
+      'version' => '2.15.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => '3e43405a9a8b578809426339cc3780e16fba0c52',
+      'reference' => 'ab402673db8746cb3a4c46f3869d6253699f614a',
     ),
   ),
 );

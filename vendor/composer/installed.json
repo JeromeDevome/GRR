@@ -119,17 +119,17 @@
         },
         {
             "name": "phpmailer/phpmailer",
-            "version": "v6.6.3",
-            "version_normalized": "6.6.3.0",
+            "version": "v6.6.4",
+            "version_normalized": "6.6.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "9400f305a898f194caff5521f64e5dfa926626f3"
+                "reference": "a94fdebaea6bd17f51be0c2373ab80d3d681269b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/9400f305a898f194caff5521f64e5dfa926626f3",
-                "reference": "9400f305a898f194caff5521f64e5dfa926626f3",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/a94fdebaea6bd17f51be0c2373ab80d3d681269b",
+                "reference": "a94fdebaea6bd17f51be0c2373ab80d3d681269b",
                 "shasum": ""
             },
             "require": {
@@ -156,7 +156,7 @@
                 "stevenmaguire/oauth2-microsoft": "Needed for Microsoft XOAUTH2 authentication",
                 "symfony/polyfill-mbstring": "To support UTF-8 if the Mbstring PHP extension is not enabled (^1.2)"
             },
-            "time": "2022-06-20T09:21:02+00:00",
+            "time": "2022-08-22T09:22:00+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -188,7 +188,7 @@
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
             "support": {
                 "issues": "https://github.com/PHPMailer/PHPMailer/issues",
-                "source": "https://github.com/PHPMailer/PHPMailer/tree/v6.6.3"
+                "source": "https://github.com/PHPMailer/PHPMailer/tree/v6.6.4"
             },
             "funding": [
                 {
@@ -578,17 +578,17 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.15.2",
-            "version_normalized": "2.15.2.0",
+            "version": "v2.15.3",
+            "version_normalized": "2.15.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "3e43405a9a8b578809426339cc3780e16fba0c52"
+                "reference": "ab402673db8746cb3a4c46f3869d6253699f614a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3e43405a9a8b578809426339cc3780e16fba0c52",
-                "reference": "3e43405a9a8b578809426339cc3780e16fba0c52",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/ab402673db8746cb3a4c46f3869d6253699f614a",
+                "reference": "ab402673db8746cb3a4c46f3869d6253699f614a",
                 "shasum": ""
             },
             "require": {
@@ -601,7 +601,7 @@
                 "psr/container": "^1.0",
                 "symfony/phpunit-bridge": "^4.4.9|^5.0.9|^6.0"
             },
-            "time": "2022-08-12T06:43:37+00:00",
+            "time": "2022-09-28T08:40:08+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -645,7 +645,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v2.15.2"
+                "source": "https://github.com/twigphp/Twig/tree/v2.15.3"
             },
             "funding": [
                 {
