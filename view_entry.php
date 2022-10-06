@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-30 15:42$
+ * Dernière modification : $Date: 2022-10-06 11:34$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -196,9 +196,12 @@ else
 	$option_affiche_nom_prenom_email = "nomail";
 $msg='';
 // traitement du formulaire d'inscription d'un autre participant
-if (isset($_GET["reg_participant"]))
+if(isset($_GET["reg_part"]))
 {
-    $reg_participant = $_GET['reg_participant']; // tester s'il est possible d'inscrire tout ce monde !
+    $reg_participant = array();
+    if(isset($_GET["reg_participant"]))
+        $reg_participant = $_GET['reg_participant'];
+    // tester s'il est possible d'inscrire tout ce monde !
     $reg_users = array(); // participants déjà inscrits
     $resp = grr_sql_query("SELECT participant FROM ".TABLE_PREFIX."_participants WHERE idresa=$id");
     if (!$resp)
@@ -560,6 +563,7 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
         echo '</select>';
         echo '<input type="hidden" name="id" value="'.$id.'" >';
         echo '<input type="hidden" name="mode" value="page" >';
+        echo '<input type="hidden" name="reg_part" value="valid">';
         echo '<input type="submit" value="Enregistrer" onclick="selectionner_liste(this.form.reg_participant);" />';
         echo '</form>';
         echo "</div>".PHP_EOL;
