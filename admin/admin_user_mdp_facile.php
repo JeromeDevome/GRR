@@ -2,9 +2,9 @@
 /**
  * admin_user_mdp_facile.php
  * interface de gestion des utilisateurs de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:34$
+ * Dernière modification : $Date: 2022-10-07 15:54$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -26,6 +26,14 @@ if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName()
 {
 	showAccessDenied($back);
 	exit();
+}
+// liste de base des mots de passe faciles
+$liste_mdp = array("azerty", "", "123456", "1234567", "12345678", "0123456789", "000000", "00000000", "admin","azertyui","azertyuiop","grr","administrateur","administrator");
+$mdpFacile = array();
+
+foreach ($liste_mdp as $value) {
+    $mdpFacile[] = password_hash($value, PASSWORD_DEFAULT);
+	$mdpFacile[] = md5($value);
 }
 // code HTML
 start_page_w_header("", "", "", $type="with_session");
@@ -58,11 +66,16 @@ if ($res)
 {
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-		// Les mdp facile
-		// Valeurs 1- Mot de passe = login en majuscule || 2- Mot de passe = login en minuscule || 3- azerty  || 4- Vide || 6- 123456  || 7- 1234567 || 8- 12345678 || 9- 000000 || 10- 00000000 
-		$mdpFacile = array(md5(strtoupper($row[3])), md5(strtolower($row[3])), "ab4f63f9ac65152575886860dde480a1", "", "e10adc3949ba59abbe56e057f20f883e", "fcea920f7412b5da7be0cf42b8c93759", "25d55ad283aa400af464c76d713c07ad", "670b14728ad9902aecba32e22fa4f6bd", "dd4b21e9ef71e1291183a46b913ae6f2");
-
-		if(in_array($row[6], $mdpFacile)){
+		// on ajoute à $mdpFacile : login, login en majuscule, login en minuscule
+        $mdpPerso = array();
+        $mdpPerso[] = md5($row[3]);
+		$mdpPerso[] = md5(strtoupper($row[3]));
+        $mdpPerso[] = md5(strtolower($row[3]));
+        $mdpPerso[] = password_hash($row[3],PASSWORD_DEFAULT);
+		$mdpPerso[] = password_hash(strtoupper($row[3]),PASSWORD_DEFAULT);
+        $mdpPerso[] = password_hash(strtolower($row[3]),PASSWORD_DEFAULT);
+        
+		if(in_array($row[6], $mdpFacile + $mdpPerso)){
 			$user_nom = htmlspecialchars($row[0]);
 			$user_prenom = htmlspecialchars($row[1]);
 			$user_statut = $row[2];

@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2022-07-28
+# Last modification : 2022-10-07
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -142,7 +142,7 @@ $vocab['admin_user1'] = "General user rights";
 $vocab['admin_user_modify_create.php'] = "Adding a new user";
 $vocab['admin_user_modify_modify.php'] = "Modifying an existing user";
 $vocab['admin_user_mdp_facile'] = "Users with a too easy password";
-$vocab['admin_user_mdp_facile_description'] = "Is considered as a too easy password : id, azerty, an empty password, 123456, 12345678, 000000, 00000000. Yet some other passwords are easy : it is yours to advise the users."; 
+$vocab['admin_user_mdp_facile_description'] = "We consider as simple password: identifier in password, azerty, empty, 123456, 12345678, 0123456789, 000000, 00000000, admin, azertyui, azertyuiop, grr, administrator, administrator. However other passwords are simple; it's up to you to advise users.";
 $vocab['admin_view_connexions.php'] = "Connection monitoring";
 $vocab['advanced_search'] = "Advanced search";
 $vocab['affichage_calendriers'] = "Display of calendars";

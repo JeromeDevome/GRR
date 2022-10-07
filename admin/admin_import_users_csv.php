@@ -3,7 +3,7 @@
  * admin_import_user_csv.php
  * script d'importation d'utilisateurs à partir d'un fichier CSV
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-03-17 14:08$
+ * Dernière modification : $Date: 2022-10-07 15:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -348,7 +348,7 @@ else
     for ($row = 1; $row < $nb_row; $row++)
     {
         if ($reg_type_auth[$row] != "ext")
-            $reg_mdp[$row] = md5(unslashes($reg_mdp[$row]));
+            $reg_mdp[$row] = password_hash(unslashes($reg_mdp[$row]), PASSWORD_DEFAULT);
         // On nettoie les windozeries
         $reg_nom[$row] = protect_data_sql(corriger_caracteres($reg_nom[$row]));
         $reg_prenom[$row] = protect_data_sql(html_entity_decode($reg_prenom[$row]));

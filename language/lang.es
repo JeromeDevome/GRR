@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2022-07-28
+# Last modification : 2022-10-07
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -134,7 +134,7 @@ $vocab['admin_user1'] = "General user rights"; // A traduire
 $vocab['admin_user_modify_create.php'] = "Añadido de un nuevo usuario";
 $vocab['admin_user_modify_modify.php'] = "Modificación de un usuario existente";
 $vocab['admin_user_mdp_facile'] = "Utilisateurs avec un mot de passe facile"; // A traduire
-$vocab['admin_user_mdp_facile_description'] = "Nous considérons comme mot de passe simple: identifiant en mot de passe, azerty, vide, 123456, 12345678, 000000, 00000000. Cependant d'autre mot de passe sont simple à vous de sensibiliser les utilisateurs."; // A traduire
+$vocab['admin_user_mdp_facile_description'] = "Nous considérons comme mot de passe simple: identifiant en mot de passe, azerty, vide, 123456, 12345678,  0123456789, 000000, 00000000, admin, azertyui, azertyuiop, grr, administrateur, administrator. Cependant d'autres mots de passe sont simples ; à vous de sensibiliser les utilisateurs."; // A traduire
 $vocab['admin_view_connexions.php'] = "Control de las conexiones";
 $vocab['advanced_search'] = "Búsqueda avanzada";
 $vocab['affichage_calendriers'] = "Presentación de los calendarios";

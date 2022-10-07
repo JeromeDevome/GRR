@@ -3,9 +3,9 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:35$
+ * Dernière modification : $Date: 2022-10-07 16:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -89,7 +89,7 @@ if ($valid == "yes")
             }
             $new_login = strtoupper($new_login);
             if ($reg_password !='')
-                $reg_password_c = md5($reg_password);
+                $reg_password_c = password_hash($reg_password,PASSWORD_DEFAULT);
             else
             {
                 if ($reg_type_authentification != "locale")
@@ -186,7 +186,7 @@ if ($valid == "yes")
                 }
                 else
                 {
-                    $reg_password_c = md5($reg_password);
+                    $reg_password_c = password_hash($reg_password,PASSWORD_DEFAULT);
                     if (($reg_password != $reg_password2) || (strlen($reg_password) < $pass_leng))
                     {
                         $msg = get_vocab("passwd_error");
