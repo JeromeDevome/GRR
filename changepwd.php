@@ -3,7 +3,7 @@
  * changepwd.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-20 18:35$
+ * Dernière modification : $Date: 2022-10-08 09:58$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -49,8 +49,9 @@ if ($valid == 'pwd')
 		$reg_password2 = isset($_POST['reg_password2']) ? $_POST['reg_password2'] : NULL;
 		if (($reg_password_a != '') && ($reg_password1 != ''))
 		{
-			$reg_password_a_c = md5($reg_password_a);
-			if ($_SESSION['password'] == $reg_password_a_c)
+            $test_md5 = $_SESSION['password'] == md5($reg_password_a);
+            $test_hash = password_verify($reg_password_a, $_SESSION['password']);
+			if ($test_md5 || $test_hash)
 			{
 				if ($reg_password1 != $reg_password2)
 					$msg = get_vocab('wrong_pwd2');
@@ -59,7 +60,7 @@ if ($valid == 'pwd')
 				else
 				{
 					VerifyModeDemo();
-					$reg_password1 = md5($reg_password1);
+					$reg_password1 = password_hash($reg_password1, PASSWORD_DEFAULT);
 					$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='".protect_data_sql($reg_password1)."', changepwd ='0' WHERE login='".getUserName()."'";
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, get_vocab('update_pwd_failed') . grr_sql_error());

@@ -3,9 +3,9 @@
  * my_account.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-12-15 11:38$
+ * Dernière modification : $Date: 2022-10-08 10:21$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -187,15 +187,16 @@ if (($valid == 'pwd')&& IsAllowedToModifyMdp())
     $reg_password2 = isset($_POST['reg_password2']) ? $_POST['reg_password2'] : NULL;
     if (($reg_password_a != '') && ($reg_password1 != ''))
     {
-        $reg_password_a_c = md5($reg_password_a);
-        if ($_SESSION['password'] == $reg_password_a_c)
+        $test_md5 = $_SESSION['password'] == md5($reg_password_a);
+        $test_hash = password_verify($reg_password_a, $_SESSION['password']);
+        if ($test_md5 || $test_hash)
         {
             if ($reg_password1 != $reg_password2)
                 $msg = get_vocab('wrong_pwd2');
             else
             {
                 VerifyModeDemo();
-                $reg_password1 = md5($reg_password1);
+                $reg_password1 = password_hash($reg_password1, PASSWORD_DEFAULT);
                 $sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='".protect_data_sql($reg_password1)."' WHERE login='".getUserName()."'";
                 if (grr_sql_command($sql) < 0)
                     fatal_error(0, get_vocab('update_pwd_failed') . grr_sql_error());
