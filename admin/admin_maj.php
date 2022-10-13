@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-09-29 19:10$
+ * Dernière modification : $Date: 2022-10-13 17:48$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
@@ -958,6 +958,22 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
         $result .= formatResult("Mise à jour jusqu'à la version 3.5.1:","<b>","</b>");
 
         $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_utilisateurs` CHANGE `password` `password` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' ;");
+        // modification des champs login, create_by et beneficiaire en varchar(190) pour compatibilité avec certains SSO
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_mailuser_room CHANGE login login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_user_area CHANGE login login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_user_room CHANGE login login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_userbook_room CHANGE login login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_useradmin_area CHANGE login login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_log CHANGE LOGIN LOGIN varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry CHANGE create_by create_by varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry CHANGE beneficiaire beneficiaire varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_repeat CHANGE create_by create_by varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_repeat CHANGE beneficiaire beneficiaire varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE login login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry_moderate CHANGE login_moderateur login_moderateur varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry_moderate CHANGE create_by create_by varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry_moderate CHANGE beneficiaire beneficiaire varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_useradmin_site CHANGE login login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
 
         if ($result_inter == '')
             $result .= formatResult("Ok !","<span style='color:green;'>","</span>");
