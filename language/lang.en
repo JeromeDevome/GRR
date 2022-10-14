@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2022-10-07
+# Last modification : 2022-10-14
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -969,6 +969,7 @@ $vocab['utilisateurs_ayant_privileges_sur_site'] = "List of the users having pri
 $vocab['utilisateurs gestionnaires ressource'] = "The following users are the managers of this resource:";
 $vocab['utilisateurs mail automatique'] = "The following users are warned the by e-mail:";
 $vocab['utilisateur_inconnu'] = "Unknown user (identifier : ";
+$vocab['utilisateur_inconnu_droits_insuffisants'] = "Unknown user or insufficient rights";
 $vocab['utilisateur_rendu_inactif'] = "Warning: the user selected above is a user made inactive by the administrator.";
 $vocab['utilisateur_simple_visiteur'] = "Warning: the user selected above is a user with the status of \"visitor \".";
 $vocab['utilisateur_supprime'] = "Please note: the currently registered beneficiary is a user who has been deleted from the user base. ";

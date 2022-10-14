@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-10-13 17:48$
+ * Dernière modification : $Date: 2022-10-14 10:50$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
@@ -120,17 +120,24 @@ if (isset($_POST['submit']))
     if (isset($_POST['login']) && isset($_POST['password']))
     {
         // Test pour tenir compte du changement de nom de la table ".TABLE_PREFIX."_utilisateurs lors du passage à la version 1.8
-        $num_version = grr_sql_query1("select NAME from ".TABLE_PREFIX."_setting WHERE NAME='version'");
+        $num_version = grr_sql_query1("SELECT NAME FROM ".TABLE_PREFIX."_setting WHERE NAME='version'");
         if ($num_version != -1)
-            $sql = "select upper(login) login, password, prenom, nom, statut from ".TABLE_PREFIX."_utilisateurs where login = '" . $_POST['login'] . "' and password = md5('" . $_POST['password'] . "') and etat != 'inactif' and statut='administrateur' ";
+            $prefixe = TABLE_PREFIX."_";
         else
-            $sql = "select upper(login) login, password, prenom, nom, statut from utilisateurs where login = '" . $_POST['login'] . "' and password = md5('" . $_POST['password'] . "') and etat != 'inactif' and statut='administrateur' ";
+            $prefixe = '';
+        $sql = "SELECT upper(login) login, password, prenom, nom, statut FROM ".$prefixe."utilisateurs WHERE login = '" . clean_input($_POST['login']) . "' AND etat != 'inactif' AND statut='administrateur' ";
         $res_user = grr_sql_query($sql);
         $num_row = grr_sql_count($res_user);
-        if ($num_row == 1)
-            $valid = 'yes';
+        if ($num_row == 1){
+            $user_data = grr_sql_row_keyed($res_user,0);
+            $validation = checkPassword(clean_input($_POST['password']),$user_data['password'],$user_data['login']);
+            if($validation)
+                $valid = 'yes';
+            else
+                $message = get_vocab('wrong_pwd');
+        }
         else
-            $message = get_vocab("wrong_pwd");
+            $message = get_vocab("utilisateur_inconnu_droits_insuffisants");
     }
 }
 

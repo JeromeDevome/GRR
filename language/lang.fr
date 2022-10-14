@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2022-10-07
+# Last modification : 2022-10-14
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -986,6 +986,7 @@ $vocab['utilisateurs_reservant'] = "La ressource est restreinte. Les utilisateur
 $vocab['utilisateur_simple_visiteur'] = "Attention : l'utilisateur sélectionné ci-dessus est un utilisateur ayant le statut de \"visiteur\".";
 $vocab['utilisateur_supprime'] = "Attention : le bénéficiaire actuellement enregistré est un utilisateur ayant été supprimé de la base des utilisateurs. ";
 $vocab['utilisateur_doublon'] ="Plusieurs utilisateurs ont le même identifiant que l'utilisateur ci-dessus. Signalez ce problème à l'administrateur.";
+$vocab['utilisateur_inconnu_droits_insuffisants'] = "Utilisateur inconnu ou droits insuffisants";
 $vocab['Valide au moins une des conditions suivantes'] = "Valide au moins une des conditions suivantes";
 $vocab['valide toutes les conditions suivantes'] = "Valide toutes les conditions suivantes";
 $vocab['valid_time_of_day'] = "une heure valide.";
