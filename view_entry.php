@@ -1,9 +1,9 @@
 <?php
 /**
- * view_entry.php
+ * view_entry.php modifié pour sélection des participants par select2
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-10-06 11:34$
+ * Dernière modification : $Date: 2022-10-17 18:13$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -27,6 +27,57 @@ require_once('include/settings.class.php');
 if (!Settings::load())
 	die("Erreur chargement settings");
 require_once("./include/session.inc.php");
+// fonction locale
+function pageHead($title,$locale) // $locale est la langue utilisée
+{
+    if (isset($_SESSION['default_style']))
+        $sheetcss = 'themes/'.$_SESSION['default_style'].'/css';
+    else {
+        if (Settings::get("default_css"))
+        $sheetcss = 'themes/'.Settings::get("default_css").'/css'; // thème global par défaut
+    else
+        $sheetcss = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini
+    }
+    if (isset($_GET['default_language']))
+    {
+        $_SESSION['default_language'] = clean_input($_GET['default_language']);
+        if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
+            header("Location: ".$_SESSION['chemin_retour']);
+        else
+            header("Location: ".traite_grr_url());
+        die();
+    }
+    echo '<head>
+    <meta charset="UTF-8">
+	<title>'.$title.'</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css" />';
+//    <link rel="stylesheet" href="./js/flatpickr/flatpickr.min.css">
+//    <link rel="stylesheet" href="./js/flatpickr/airbnb.css">
+    echo '<link rel="stylesheet" href="./js/select2/css/select2.min.css" />
+    <link rel="stylesheet" href="./bootstrap/css/select2-bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery.timepicker.min.css" >
+    <link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />';
+    echo '
+        <script src="./js/jquery-3.4.1.min.js"></script>
+        <script src="./js/jquery-ui.min.js"></script>
+        <script src="./js/jquery-ui-i18n.min.js"></script>
+        <script src="./js/jquery.validate.js"></script>
+        <script src="./js/jquery-ui-timepicker-addon.js"></script>
+        <script src="./bootstrap/js/bootstrap.min.js"></script>
+        <script src="./js/popup.js" charset="utf-8"></script>
+        <script src="./js/jquery.timepicker.min.js"></script>
+        <script src="./js/bootstrap-clockpicker.js"></script>
+        <script src="./js/bootstrap-multiselect.js"></script>
+        <script src="./js/clock_'.$locale.'.js"></script>
+        <script src="./js/select2/js/select2.min.js"></script>
+        <script src="./js/select2/js/i18n/'.$locale.'.js"></script>
+        <script src="./js/bandeau.js"></script>
+        <script src="./js/functions.js"></script>'; 
+    echo '</head>';
+}
 
 $page = verif_page();
 
@@ -367,8 +418,33 @@ else
 $mode = isset($_GET['mode'])? $_GET['mode'] : NULL;
 if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')) // haut de page si mode page
 {
+    // pour le traitement des modules
+include_once "./include/hook.class.php";
+// début du code html
     $racineAd = "./admin/";
-	start_page_w_header($day, $month, $year, $type_session);
+	//start_page_w_header($day, $month, $year, $type_session);
+    header('Content-Type: text/html; charset=utf-8');
+if (!isset($_COOKIE['open']))
+{
+	header('Set-Cookie: open=true; SameSite=Lax');
+}
+echo '<!DOCTYPE html>'.PHP_EOL;
+echo '<html lang="'.$locale.'">'.PHP_EOL;
+// section <head>
+//echo pageHead2(Settings::get("company"),$type_session="with_session");
+pageHead(Settings::get("company"),$locale);
+// section <body>
+echo "<body>";
+//echo $C;
+//print_r($data);
+// Menu du haut = section <header>
+echo "<header>";
+if($userName !='')
+    pageHeader2($day, $month, $year, $type_session="with_session");
+else 
+    pageHeader2($day, $month, $year, $type_session="no_session");
+echo "</header>";
+
 	echo '<div class="container">';
 	if ($back != "")
 		echo '<div><a href="',$back,'">',get_vocab("returnprev"),'</a></div>',PHP_EOL;
@@ -549,7 +625,7 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
         echo '<div id="form_participant" style="display:none">';
         echo '<h3>'.get_vocab("add_multiple_user_to_list").get_vocab("deux_points").'</h3>';
         echo '<form action="view_entry.php" method="GET">';
-        echo '<select name="agent" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.agent,this.form.elements[\'reg_participant[]\'])">';
+        echo '<select name="agent" size="8" style="width:200px;" class ="select2" ondblclick="Deplacer(this.form.agent,this.form.elements[\'reg_participant[]\'])">';
         foreach($av_users as $u){
             echo "<option value='".$u."'>".affiche_nom_prenom_email($u,"no_mail")."</option>";
         }
@@ -774,5 +850,11 @@ if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')) // si
 {
 	echo '</div>',PHP_EOL;
 }
-end_page();
+?>
+<script>
+    $(document).ready(function() {
+        $(".select2").select2();
+	});
+</script>
+<?php end_page();
 ?>
