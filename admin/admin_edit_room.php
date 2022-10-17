@@ -3,9 +3,9 @@
  * admin_edit_room.php
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-11-17 11:29$
+ * Dernière modification : $Date: 2022-10-17 09:58$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -1086,16 +1086,16 @@ if ((!empty($id_area)) || (isset($add_area)))
 		// Site
 		if (Settings::get("module_multisite") == "Oui")
 		{
-	  	// Affiche une liste deroulante des sites;
+	  	// Affiche une liste deroulante des sites administrables
 			if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 				$sql = "SELECT id,sitecode,sitename
-			FROM ".TABLE_PREFIX."_site
-			ORDER BY sitename ASC";
+                        FROM ".TABLE_PREFIX."_site
+                        ORDER BY sitename ASC";
 			else
 				$sql = "SELECT id,sitecode,sitename
-			FROM ".TABLE_PREFIX."_site s,  ".TABLE_PREFIX."_j_useradmin_site u
-			WHERE s.id=u.id_site and u.login='".getUserName()."'
-			ORDER BY s.sitename ASC";
+                        FROM ".TABLE_PREFIX."_site s,  ".TABLE_PREFIX."_j_useradmin_site u
+                        WHERE s.id=u.id_site and u.login='".getUserName()."'
+                        ORDER BY s.sitename ASC";
 			$res = grr_sql_query($sql);
 			$nb_site = grr_sql_count($res);
 			echo "<tr><td>".get_vocab('site').get_vocab('deux_points')."</td>\n";
@@ -1114,12 +1114,18 @@ if ((!empty($id_area)) || (isset($add_area)))
 				grr_sql_free($res);
 				echo "</select></td></tr>";
 			}
-			else
+			elseif($nb_site == 1)
 			{
-				// un seul site
+				// un seul site accessible
 				$row1 = grr_sql_row($res, 0);
-				echo "<td>".$row1[2]."<input type=\"hidden\" name=\"id_site\" value=\"".$id_site."\" /></td></tr>\n";
+                echo "<td>".$row1[2]."<input type=\"hidden\" name=\"id_site\" value=\"".$id_site."\" /></td></tr>\n";
 			}
+            else
+            {
+                $site_name = grr_sql_query1("SELECT sitename FROM ".TABLE_PREFIX."_site WHERE id=$id_site ");
+                echo "<td>".$site_name."</td></tr>\n";
+            }
+                
 		}
 		// Adresse IP client :
 		if (OPTION_IP_ADR == 1)
