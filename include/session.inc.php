@@ -3,7 +3,7 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-10 11:57$
+ * Dernière modification : $Date: 2022-09-12 10:14$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -380,8 +380,9 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 else
                     return "4";
             }
-            elseif (Settings::get("imap_statut") != '' and (@function_exists("imap_open")) and Settings::get("imap_adresse") != '' and Settings::get("imap_port") != ''){
+            //elseif (Settings::get("imap_statut") != '' and (@function_exists("imap_open")) and Settings::get("imap_adresse") != '' and Settings::get("imap_port") != ''){
                 //  $login_search = ereg_replace("[^-@._[:space:][:alnum:]]", "", $_login);
+            elseif (Settings::get("imap_statut") != '' and (@function_exists("imap_open")) ){
                 $login_search = preg_replace("/[^\-@._[:space:]a-zA-Z0-9]/", "", $_login);
                 if ($login_search != $_login)
                     return "6";
@@ -758,7 +759,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     CREATE TABLE ".TABLE_PREFIX."_j_groupe_se3 (groupe varchar(40) NOT NULL default '',id_area_room int(11) NOT NULL default '0', statut varchar(20) NOT NULL default '',  PRIMARY KEY  (`groupe`,`id_area_room`));
     Par ailleurs, pour que cette fonctionnalité soit complète et dans l'esprit de GRR, il faudra développer une "petite" interface dans GRR pour gérer les entrées dans cette table.
     */
-        /* Début de la fonctionnalité SE3
+        // Début de la fonctionnalité SE3
     $grp = @grr_sql_query("SELECT groupe, id_area_room, statut FROM ".TABLE_PREFIX."_j_groupe_se3");
     if ($grp)
     {
@@ -788,7 +789,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
         }
     }
         // Note : Il reste à gérer finement l'interface graphique et à déduire l'incompatibilité éventuelle entre le domaine par défaut et les domaines autorisés pour chaque utilisateur
-        // Fin de la fonctionnalité SE3 */
+        // Fin de la fonctionnalité SE3
     /* Application du patch en production depuis la rentrée à Palissy : Zéro problème (ci-dessous, l'extraction de la table via phpmyadmin)
     CREATE TABLE `".TABLE_PREFIX."_j_groupe_se3` (
         `groupe` varchar(40) NOT NULL default '',
