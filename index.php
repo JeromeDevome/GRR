@@ -39,6 +39,7 @@ if ($dbsys == "mysql")
 			{
 				// Premier test
 				@mysqli_query($db, "SET NAMES utf8");
+				mysqli_report(MYSQLI_REPORT_OFF);
 
 				$j = '0';
 				while ($j < count($liste_tables))
