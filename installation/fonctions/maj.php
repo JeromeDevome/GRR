@@ -747,7 +747,7 @@ function execute_maj($version_old, $version_grr)
     {
         $result .= formatresult("Mise à jour jusqu'à la version 3.4.3 RC0:","<b>","</b>");
 
-        $result_inter .= traiteRequete("ALTER TABLE `grr_log` CHANGE `REMOTE_ADDR` `REMOTE_ADDR` VARCHAR(40) NOT NULL DEFAULT ''");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_log CHANGE `REMOTE_ADDR` `REMOTE_ADDR` VARCHAR(40) NOT NULL DEFAULT ''");
         $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD `active_participant` TINYINT(1) NOT NULL DEFAULT '0' AFTER `active_cle`;");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry ADD `nbparticipantmax` int(11) NOT NULL DEFAULT '0' AFTER `courrier`;");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_repeat ADD `nbparticipantmax` int(11) NOT NULL DEFAULT '0' AFTER `courrier`;");
