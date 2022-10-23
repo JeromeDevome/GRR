@@ -123,6 +123,10 @@
 												<td>
 													{% if resa.moderate == 1 %}
 														{{trad.en_attente_moderation}}
+													{% elseif resa.moderate == 2 %}
+														{{trad.moderation_acceptee}}
+													{% elseif resa.moderate == 3 %}
+														{{trad.moderation_refusee}}
 													{% endif %}
 												</td>
 

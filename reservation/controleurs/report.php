@@ -139,6 +139,8 @@ get_vocab_admin("sum_by_creator");
 get_vocab_admin("sum_by_descrip");
 get_vocab_admin("moderation");
 get_vocab_admin("en_attente_moderation");
+get_vocab_admin("moderation_acceptee");
+get_vocab_admin("moderation_refusee");
 get_vocab_admin("type");
 get_vocab_admin("submit");
 
