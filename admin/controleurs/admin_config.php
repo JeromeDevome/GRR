@@ -233,5 +233,5 @@ $eyear	= date('Y', Settings::get('end_bookings'));
 $trad["dBegin_bookings"] = $bday."/".$bmonth."/".$byear;
 $trad["dEnd_bookings"] = $eday."/".$emonth."/".$eyear;
 
-echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'd' => $d));
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 ?>

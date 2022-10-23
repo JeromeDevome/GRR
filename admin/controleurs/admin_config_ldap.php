@@ -229,7 +229,7 @@ if (isset($_POST['reg_ldap_statut']))
 			echo "</div></form>";
 		}*/
 
-		echo $twig->render('admin_config_ldap3.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings));
+		echo $twig->render('admin_config_ldap3.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 	}
 	else if ($etape == 2)
 	{
@@ -316,7 +316,7 @@ if (isset($_POST['reg_ldap_statut']))
 				$trad['dUseTLS']	= 'y';
 		}
 
-		echo $twig->render('admin_config_ldap2.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings));
+		echo $twig->render('admin_config_ldap2.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 	}
 	else if ($etape == 1)
 	{
@@ -349,7 +349,7 @@ if (isset($_POST['reg_ldap_statut']))
 			$trad['dBaseLDAP']		= $ldap_base;
 		//TODO: Ajouter les informations pour les groupes
 
-		echo $twig->render('admin_config_ldap1.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings));
+		echo $twig->render('admin_config_ldap1.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 	}
 	else if ($etape == 0)
 	{
@@ -478,7 +478,7 @@ if (isset($_POST['reg_ldap_statut']))
 			}
 		}
 
-		echo $twig->render('admin_config_ldap0.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings));
+		echo $twig->render('admin_config_ldap0.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 	}
 
 ?>

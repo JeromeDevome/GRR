@@ -153,5 +153,5 @@ foreach ($config_variables as $config){
 }
 unset($config);
 
-	echo $twig->render('admin_infos.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'infosPHP' => $phpinfo));
+	echo $twig->render('admin_infos.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'infosPHP' => $phpinfo));
 ?>

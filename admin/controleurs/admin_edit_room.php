@@ -403,5 +403,5 @@ if (((authGetUserLevel(getUserName(),$area_id,"area") >=4 ) || (authGetUserLevel
 
 //Hook::Appel("hookEditRoom1");
 
-echo $twig->render('admin_edit_ressource.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'ressource' => $row, 'domaines' => $domaines));
+echo $twig->render('admin_edit_ressource.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'ressource' => $row, 'domaines' => $domaines));
 ?>

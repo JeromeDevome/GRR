@@ -78,5 +78,5 @@ get_vocab_admin('navigator');
 get_vocab_admin('referer');
 
 
-	echo $twig->render('mesconnexions.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'connexions' => $connexions));
+	echo $twig->render('mesconnexions.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'connexions' => $connexions));
 ?>

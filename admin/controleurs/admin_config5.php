@@ -273,6 +273,6 @@ unset($iter);
 // Formulaire import module
 $trad['dUpload_Module'] = $upload_Module;
 
-echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'd' => $d, 'modulesext' => $modulesext));
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'modulesext' => $modulesext));
 
 ?>

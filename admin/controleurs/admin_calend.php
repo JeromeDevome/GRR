@@ -28,6 +28,6 @@ if(authGetUserLevel(getUserName(),-1,'area') < 5)
 get_vocab_admin('admin_calendar_title');
 
 
-echo $twig->render('admin_calend.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings));
+echo $twig->render('admin_calend.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 
 ?>

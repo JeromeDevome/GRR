@@ -551,5 +551,5 @@ if ($res)
 		}
 	}
 
-echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateur' => $utilisateur, 'groupesajoutable' => $groupesajoutable, 'groupespresent' => $groupespresent));
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateur' => $utilisateur, 'groupesajoutable' => $groupesajoutable, 'groupespresent' => $groupespresent));
 ?>

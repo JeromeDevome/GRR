@@ -137,5 +137,5 @@ if ($type == "area")
 	}
 }
 	$var = array(); // Variables libre
-	echo $twig->render('confirmation.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'var' => $var));
+	echo $twig->render('confirmation.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'var' => $var));
 ?>

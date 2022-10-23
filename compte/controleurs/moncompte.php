@@ -316,5 +316,5 @@ $d['default_room'] = $default_room;
 	}
 
 
-	echo $twig->render('moncompte.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'sites' => $sites, 'themes' => $themes, 'langues' => $langues));
+	echo $twig->render('moncompte.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'sites' => $sites, 'themes' => $themes, 'langues' => $langues));
 ?>

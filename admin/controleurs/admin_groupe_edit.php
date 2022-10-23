@@ -144,5 +144,5 @@ get_vocab_admin("message_records");
 get_vocab_admin("back");
 get_vocab_admin("save");
 
-echo $twig->render('admin_groupe_edit.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'd' => $d, 'groupe' => $groupe));
+echo $twig->render('admin_groupe_edit.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'groupe' => $groupe));
 ?>

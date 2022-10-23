@@ -118,5 +118,5 @@ if($res) {
 
 $trad['dTitreDateLog'] = get_vocab("log").$trad['dDatePlusAncienne'];
 
-echo $twig->render('admin_view_connexions.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateursconnecte' => $utilisateurConnecte, 'logsconnexion' => $logsConnexion ));
+echo $twig->render('admin_view_connexions.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateursconnecte' => $utilisateurConnecte, 'logsconnexion' => $logsConnexion ));
 ?>

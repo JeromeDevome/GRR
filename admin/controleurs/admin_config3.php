@@ -228,6 +228,6 @@ get_vocab_admin('message_records');
 
 $trad['dFctMailRestriction'] = $fonction_mail_restrictions;
 
-echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'd' => $d));
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 
 ?>

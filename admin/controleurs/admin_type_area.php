@@ -121,5 +121,5 @@ if ($res && $nb_lignes > 0)
 }
 
 
-echo $twig->render('admin_type_area.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'types' => $types));
+echo $twig->render('admin_type_area.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'types' => $types));
 ?>

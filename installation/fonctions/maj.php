@@ -20,8 +20,12 @@
 function formatresult($echo,$dbt,$fin) {
 	global $majscript;
 
-	if($majscript) echo $echo."\n";
-	else echo $dbt.$echo.$fin."</br>";
+	if($majscript)
+		$formatresultat =  $echo."\n";
+	else
+		$formatresultat = $dbt.$echo.$fin."</br>";
+
+	return $formatresultat;
 }
 
 function traiteRequete($requete = "")
@@ -62,7 +66,7 @@ function traiteRequete($requete = "")
 	return $retour;
 }
 
-function execute_maj($version_old, $version_grr)
+function execute_maj3($version_old, $version_grr)
 {
 	
 	$result = '';
@@ -764,55 +768,7 @@ function execute_maj($version_old, $version_grr)
         $result .= formatResult("Mise à jour jusqu'à la version 3.5.0 RC0:","<b>","</b>");
         include "./fonctions/ISO_to_UTF8.inc.php";
         $result_inter = '';
-    }    
-	if (version_compare($version_old, "4.0.0", '<')) 
-	{
-		$result .= formatresult("Mise à jour jusqu'à la version 4.0.0 :","<b>","</b>");
-		$hash_pwd2 = bin2hex(random_bytes(12));
-
-		$result_inter .= traiteRequete("DELETE FROM ".TABLE_PREFIX."_setting WHERE NAME='versionRC'");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('display_beneficiaire', '0')");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('display_type', '1')");
-		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_log_mail (`idlogmail` int(11) NOT NULL AUTO_INCREMENT, `date` int(11) NOT NULL, `de` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, `a` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, `sujet` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, `message` text NOT NULL, PRIMARY KEY (`idlogmail`));");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_allow_self_signed', 'false')");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_peer_name', 'true')");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_peer', 'true')");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_depth', '3')");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('backup_date', '')");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('hashpwd2', '".$hash_pwd2."')");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('mail_user_destinataire', 'y')");
-		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE `password` `password` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';");
-        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants ADD `id_participation` INT(11) NOT NULL AUTO_INCREMENT FIRST, ADD UNIQUE `UNIQUE` (`id_participation`)"); 
-        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants CHANGE `participant` `beneficiaire` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL"); 
-        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants ADD `timestamp` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `idresa`, ADD `cree_par` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `timestamp`");
-        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants ADD `beneficiaire_ext` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `beneficiaire`, ADD `moderation` TINYINT(1) NOT NULL DEFAULT '0' AFTER `beneficiaire_ext`");
-		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_log_resa (idlogresa bigint(20) NOT NULL AUTO_INCREMENT, date int(11) NOT NULL, idresa int(11) NOT NULL, identifiant varchar(100) NOT NULL, action tinyint(3) UNSIGNED NOT NULL, infoscomp text NOT NULL, PRIMARY KEY (`idlogresa`));");
-		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry ADD `supprimer` TINYINT(1) NOT NULL DEFAULT '0' AFTER `nbparticipantmax`;");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('horaireconnexionde', '')");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('horaireconnexiona', '')");
-		$result_inter .= traiteRequete("CREATE TABLE ".TABLE_PREFIX."_groupes (`idgroupes` int(11) NOT NULL AUTO_INCREMENT, `nom` VARCHAR(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, description text NOT NULL, `archive` tinyint(1) NOT NULL DEFAULT '0', PRIMARY KEY (`idgroupes`));");
-		$result_inter .= traiteRequete("CREATE TABLE ".TABLE_PREFIX."_utilisateurs_groupes (`idutilisateursgroupes` bigint(20) NOT NULL AUTO_INCREMENT, `login` VARCHAR(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, `idgroupes` int(11) NOT NULL, PRIMARY KEY (`idutilisateursgroupes`), UNIQUE KEY `idutilisateurs` (`login`,`idgroupes`));");
-		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE `default_language` `default_language` CHAR(8);");
-		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = 'fr-fr' WHERE NAME = 'default_language' AND VALUE = 'fr';");
-		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = 'en-gb' WHERE NAME = 'default_language' AND VALUE = 'en';");
-		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = 'es-es' WHERE NAME = 'default_language' AND VALUE = 'es';");
-		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = 'it-it' WHERE NAME = 'default_language' AND VALUE = 'it';");
-		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = 'de-de' WHERE NAME = 'default_language' AND VALUE = 'de';");
-		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_utilisateurs SET default_language = 'fr-fr' WHERE default_language = 'fr';");
-		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_utilisateurs SET default_language = 'en-gb' WHERE default_language = 'en';");
-		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_utilisateurs SET default_language = 'es-es' WHERE default_language = 'es';");
-		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_utilisateurs SET default_language = 'it-it' WHERE default_language = 'it';");
-		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_utilisateurs SET default_language = 'de-de' WHERE default_language = 'de';");
-		
-
-		//include "./ISO_to_UTF8.inc.php";
-
-		if ($result_inter == '')
-			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
-		else
-			$result .= $result_inter;
-		$result_inter = '';
-	}
+    }
 
 	// Vérification du format des champs additionnels
 	// Avant version 1.9.4, les champs add étaient stockés sous la forme <id_champ>champ_encode_en_base_64</id_champ>
@@ -869,6 +825,75 @@ function execute_maj($version_old, $version_grr)
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('version', '".$version_grr."');");
 	else
 		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE='".$version_grr."' WHERE NAME='version';");
+
+	$result .= $result_inter;
+
+	return $result;
+}
+
+function execute_maj4($version_old_bdd, $version_grr_bdd)
+{
+	$result = '';
+	$result_inter = '';
+
+	// On commence la mise à jour 
+	if ($version_old_bdd < 4001) // Version GRR 4.0.0 Béta
+	{
+		$result .= formatresult("Mise à jour jusqu'à la version 4.0.0 :","<b>","</b>");
+		$hash_pwd2 = bin2hex(random_bytes(12));
+
+		$result_inter .= traiteRequete("DELETE FROM ".TABLE_PREFIX."_setting WHERE NAME='versionRC'");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('display_beneficiaire', '0')");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('display_type', '1')");
+		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_log_mail (`idlogmail` int(11) NOT NULL AUTO_INCREMENT, `date` int(11) NOT NULL, `de` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, `a` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, `sujet` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, `message` text NOT NULL, PRIMARY KEY (`idlogmail`));");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_allow_self_signed', 'false')");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_peer_name', 'true')");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_peer', 'true')");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_depth', '3')");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('backup_date', '')");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('hashpwd2', '".$hash_pwd2."')");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('mail_user_destinataire', 'y')");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE `password` `password` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants ADD `id_participation` INT(11) NOT NULL AUTO_INCREMENT FIRST, ADD UNIQUE `UNIQUE` (`id_participation`)"); 
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants CHANGE `participant` `beneficiaire` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL"); 
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants ADD `timestamp` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `idresa`, ADD `cree_par` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `timestamp`");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants ADD `beneficiaire_ext` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `beneficiaire`, ADD `moderation` TINYINT(1) NOT NULL DEFAULT '0' AFTER `beneficiaire_ext`");
+		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_log_resa (idlogresa bigint(20) NOT NULL AUTO_INCREMENT, date int(11) NOT NULL, idresa int(11) NOT NULL, identifiant varchar(100) NOT NULL, action tinyint(3) UNSIGNED NOT NULL, infoscomp text NOT NULL, PRIMARY KEY (`idlogresa`));");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry ADD `supprimer` TINYINT(1) NOT NULL DEFAULT '0' AFTER `nbparticipantmax`;");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('horaireconnexionde', '')");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('horaireconnexiona', '')");
+		$result_inter .= traiteRequete("CREATE TABLE ".TABLE_PREFIX."_groupes (`idgroupes` int(11) NOT NULL AUTO_INCREMENT, `nom` VARCHAR(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, description text NOT NULL, `archive` tinyint(1) NOT NULL DEFAULT '0', PRIMARY KEY (`idgroupes`));");
+		$result_inter .= traiteRequete("CREATE TABLE ".TABLE_PREFIX."_utilisateurs_groupes (`idutilisateursgroupes` bigint(20) NOT NULL AUTO_INCREMENT, `login` VARCHAR(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, `idgroupes` int(11) NOT NULL, PRIMARY KEY (`idutilisateursgroupes`), UNIQUE KEY `idutilisateurs` (`login`,`idgroupes`));");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE `default_language` `default_language` CHAR(8);");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = 'fr-fr' WHERE NAME = 'default_language' AND VALUE = 'fr';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = 'en-gb' WHERE NAME = 'default_language' AND VALUE = 'en';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = 'es-es' WHERE NAME = 'default_language' AND VALUE = 'es';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = 'it-it' WHERE NAME = 'default_language' AND VALUE = 'it';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = 'de-de' WHERE NAME = 'default_language' AND VALUE = 'de';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_utilisateurs SET default_language = 'fr-fr' WHERE default_language = 'fr';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_utilisateurs SET default_language = 'en-gb' WHERE default_language = 'en';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_utilisateurs SET default_language = 'es-es' WHERE default_language = 'es';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_utilisateurs SET default_language = 'it-it' WHERE default_language = 'it';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_utilisateurs SET default_language = 'de-de' WHERE default_language = 'de';");
+		
+
+		//include "./ISO_to_UTF8.inc.php";
+
+		if ($result_inter == '')
+			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+		else
+			$result .= $result_inter;
+		$result_inter = '';
+	}
+
+	// Mise à jour du numéro de version
+	$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='version'");
+	if ($req == -1)
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('version', '".$version_grr_bdd."');");
+	else
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE='".$version_grr_bdd."' WHERE NAME='version';");
+
+
 
 	$result .= $result_inter;
 

@@ -59,6 +59,6 @@ get_vocab_admin('message_records');
 
 $pages = Pages::getAll();
 
-echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'pages' => $pages));
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'pages' => $pages));
 
 ?>

@@ -123,7 +123,7 @@ function create_site($id_site)
 		read_sites();
 	}
 
-	echo $twig->render('admin_site_modif.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings));
+	echo $twig->render('admin_site_modif.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 }
 
 
@@ -164,7 +164,7 @@ function read_sites()
 			$trad['dMesgSysteme'] = 'Une erreur est survenue pendant la préparation de la requète de lecture des sites.';
 	}
 
-	echo $twig->render('admin_site.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'sites' => $sites));
+	echo $twig->render('admin_site.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'sites' => $sites));
 }
 
 
@@ -272,7 +272,7 @@ function update_site($id)
 		read_sites();
 	}
 
-	echo $twig->render('admin_site_modif.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'site' => $site));
+	echo $twig->render('admin_site_modif.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'site' => $site));
 }
 
 

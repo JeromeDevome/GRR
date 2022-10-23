@@ -266,5 +266,5 @@ else
 	}
 }
 
-	echo $twig->render('admin_import_users_elycee.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateursaimporter' => $utilisateursaimporter));
+	echo $twig->render('admin_import_users_elycee.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateursaimporter' => $utilisateursaimporter));
 ?>

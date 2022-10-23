@@ -149,5 +149,5 @@ if ($inc < 3)
 	$trad['dCalendrier'] .= "</tr>";
 }
 
-echo $twig->render('admin_calend_jour_cycle2.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'jourssemaines' => $jourssemaines));
+echo $twig->render('admin_calend_jour_cycle2.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'jourssemaines' => $jourssemaines));
 ?>

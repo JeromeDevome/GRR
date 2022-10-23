@@ -183,5 +183,5 @@ get_vocab_admin("statut");
 
 get_vocab_admin("save");
 
-	echo $twig->render('admin_config_sso.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings));
+	echo $twig->render('admin_config_sso.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 ?>

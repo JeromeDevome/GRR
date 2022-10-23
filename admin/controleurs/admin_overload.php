@@ -251,5 +251,5 @@ get_vocab_admin("cas_fonctionnalite_mail_actif");
 			}
 		}
 
-	echo $twig->render('admin_overload.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'domaines' => $domaines, 'champsAdd' => $champsAdd));
+	echo $twig->render('admin_overload.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'domaines' => $domaines, 'champsAdd' => $champsAdd));
 ?>

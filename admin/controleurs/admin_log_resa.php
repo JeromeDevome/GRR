@@ -88,5 +88,5 @@ if ($res)
 
 
 
-echo $twig->render('admin_log_resa.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings,  'resa' => $resa, 'logsresa' => $logsResa ));
+echo $twig->render('admin_log_resa.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings,  'resa' => $resa, 'logsresa' => $logsResa ));
 ?>

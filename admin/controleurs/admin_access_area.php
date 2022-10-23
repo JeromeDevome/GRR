@@ -177,5 +177,5 @@ if ($id_area != -1)
 
 }
 
-	echo $twig->render('admin_access_area.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'domaines' => $domaines, 'utilisateursexep' => $utilisateursExep, 'utilisateursajoutable' => $utilisateursAjoutable));
+	echo $twig->render('admin_access_area.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'domaines' => $domaines, 'utilisateursexep' => $utilisateursExep, 'utilisateursajoutable' => $utilisateursAjoutable));
 ?>

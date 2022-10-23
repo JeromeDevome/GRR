@@ -224,5 +224,5 @@ if (grr_sql_count($res) != 0)
 	} // Fin CAS 2
 }
 
-echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'sites' => $sites, 'domaines' => $domaines, 'ressources' => $ressources));
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'sites' => $sites, 'domaines' => $domaines, 'ressources' => $ressources));
 ?>

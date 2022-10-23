@@ -851,10 +851,10 @@ function  grr_add_ligne_moderation($id_entry, $login_moderateur, $motivation_mod
 
 function verif_version()
 {
-	global $version_grr;
-	$_version_grr = $version_grr;
-	$version_old = Settings::get("version");
-	if ($version_old == '' || version_compare($_version_grr, $version_old, '>'))
+	global $version_bdd;
+	$version_bdd_fichier = $version_bdd;
+	$version_bdd_base = Settings::get("version");
+	if (strpos($version_bdd_base,".") || $version_bdd_base == '' || $version_bdd_fichier > $version_bdd_base) // strpos . pour ancienne numérotation
 		return true;
 	else
 		return false;

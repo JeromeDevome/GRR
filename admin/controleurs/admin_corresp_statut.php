@@ -116,5 +116,5 @@ else
 // Affichage d'un pop-up
 affiche_pop_up($msg,"admin");
 
-echo $twig->render('admin_corresp_statut.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'identifiantsldap' => $identifiantsLDAP));
+echo $twig->render('admin_corresp_statut.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'identifiantsldap' => $identifiantsLDAP));
 ?>

@@ -71,5 +71,5 @@ get_vocab_admin('entries_found');
 get_vocab_admin('nothing_found');
 
 
-	echo $twig->render('mesreservations.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'reservations' => $gListeReservations));
+	echo $twig->render('mesreservations.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'reservations' => $gListeReservations));
 ?>

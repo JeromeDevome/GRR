@@ -272,5 +272,5 @@ if (Settings::get("show_holidays") == 'Oui' && isset($_POST['define_holidays']))
 	}
 }
 
-	echo $twig->render('admin_calend_vacances_feries.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings));
+	echo $twig->render('admin_calend_vacances_feries.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 ?>

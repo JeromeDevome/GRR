@@ -300,5 +300,5 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
 	return array(true, $txtRetour);
 }
 
-echo $twig->render('admin_import_entries_csv_direct.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings));
+echo $twig->render('admin_import_entries_csv_direct.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 ?>

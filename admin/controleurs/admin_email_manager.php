@@ -202,5 +202,5 @@ else
 
 }
 
-	echo $twig->render('admin_email_manager.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'domaines' => $domaines, 'ressources' => $ressources, 'utilisateurs' => $utilisateurs, 'utilisateursnotifier' => $utilisateursNotifier));
+	echo $twig->render('admin_email_manager.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'domaines' => $domaines, 'ressources' => $ressources, 'utilisateurs' => $utilisateurs, 'utilisateursnotifier' => $utilisateursNotifier));
 ?>

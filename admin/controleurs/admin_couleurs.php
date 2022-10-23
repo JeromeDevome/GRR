@@ -221,6 +221,6 @@ $hexa['focus_btn_primary_bordcolor'] = (isset($AllSettings['sp_focus_btn_primary
 
 //affiche_pop_up($msg,"admin");
 
-echo $twig->render('admin_couleurs.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'd' => $d, 'hexa' => $hexa));
+echo $twig->render('admin_couleurs.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'hexa' => $hexa));
 
 ?>

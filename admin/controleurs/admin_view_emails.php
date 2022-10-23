@@ -78,5 +78,5 @@ if($res) {
 
 $trad['dTitreDateLog'] = get_vocab("log_mail").$trad['dDatePlusAncienne'];
 
-echo $twig->render('admin_view_emails.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'logsmail' => $logsMail ));
+echo $twig->render('admin_view_emails.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'logsmail' => $logsMail ));
 ?>

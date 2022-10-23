@@ -72,5 +72,5 @@ get_vocab_admin('admin_purge_accounts_confirm4');
 		}
 	}
 
-	echo $twig->render('admin_purge_accounts.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings));
+	echo $twig->render('admin_purge_accounts.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 ?>

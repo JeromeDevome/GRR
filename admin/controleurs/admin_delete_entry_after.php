@@ -60,5 +60,5 @@ $year  = date("Y"); //par défaut on propose la date du jour
 $trad['dDate'] = genDateSelectorForm('beg_', $day, $month, $year, 'more_years');
 
 
-echo $twig->render('admin_delete_entry_after.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'domaines' => $domaines));
+echo $twig->render('admin_delete_entry_after.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'domaines' => $domaines));
 ?>

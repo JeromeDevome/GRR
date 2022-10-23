@@ -405,5 +405,5 @@ else if (!$etape)
 
 }
 
-echo $twig->render('admin_reservation_bloc.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'settings' => $AllSettings, 'domaines' => $domaines, 'ressources' => $ressources, 'beneficiaires' => $beneficiaires, 'types' => $types, 'jourssemaines' => $jourssemaines, 'periodes' => $periodes));
+echo $twig->render('admin_reservation_bloc.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'domaines' => $domaines, 'ressources' => $ressources, 'beneficiaires' => $beneficiaires, 'types' => $types, 'jourssemaines' => $jourssemaines, 'periodes' => $periodes));
 ?>

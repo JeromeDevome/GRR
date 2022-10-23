@@ -461,5 +461,5 @@ if ((!empty($id_area)) || (isset($add_area)))
 			//Hook::Appel("hookEditArea1");
 		}
 
-	echo $twig->render('admin_edit_domaine.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'domaine' => $domaine, 'sites' => $sites, 'JoursSemaine' => $JoursSemaine));
+	echo $twig->render('admin_edit_domaine.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'domaine' => $domaine, 'sites' => $sites, 'JoursSemaine' => $JoursSemaine));
 ?>

@@ -39,31 +39,24 @@ $majscript	= false;
 $force		= false;
 
 // Définition depuis quelle version on met à jour
-if (isset($_POST["version_old"]))
+if (isset($_POST["version_depart"])) // Etape 2
 {
-	$version_old = $_POST["version_old"];
+	$version_depart = $_POST["version_depart"];
 }
-elseif (isset($_GET["forcemaj"]) && $forcer_MAJ == 1)
+elseif (isset($_GET["forcemaj"]) && $forcer_MAJ == 1) // On force la MaJ en passant le numéro de la version de dépar en paramètre  
 {
-	$version_old	= $_GET["forcemaj"];
+	$version_depart	= $_GET["forcemaj"];
 	$force			= true;
 }
-else
+else // On prend la dernière version installé
 {
-	$version_old = Settings::get("version");
-	//$version_old_RC = Settings::get("versionRC");
-
-	// Calcul du numéro de version actuel de la base qui sert aux test de comparaison et de la chaine à afficher
-	//if ($version_old_RC == "")
-	//	$version_old_RC = 9;
-
-	//$version_old .= ".".$version_old_RC;
+	$version_depart = Settings::get("version");
 }
 
-if ($version_old == "")
-	$version_old = "1.3";
-//
+if ($version_depart == "")
+	$version_depart = "1.3";
 
+// Formulaire avant MaJ
 if(!$majscript)
 {
 	echo '<!doctype html>';
@@ -80,10 +73,6 @@ if(!$majscript)
 	echo '<title>GRR</title>';
 	echo '</head>';
 	echo '<body>';
-}
-
-
-if(!$majscript) {
 
 	// Mise à jour de la base de données
 	echo "<h3>".get_vocab("maj_bdd")."</h3>";
@@ -93,19 +82,19 @@ if(!$majscript) {
 	{
 		echo "<form action=\"maj.php\" method=\"post\">";
 		echo "<p><span style=\"color:red;\"><b>".get_vocab("maj_bdd_not_update");
-		echo " ".get_vocab("maj_version_bdd").$version_old;
+		echo " ".get_vocab("maj_version_bdd").$version_depart;
 		echo "</b></span><br />";
-		echo get_vocab("maj_do_update")."<b>".$version_grr."</b></p>";
+		echo get_vocab("maj_do_update")."<b>".$version_bdd."</b></p>";
 		echo "<input type=\"submit\" value=\"".get_vocab("maj_submit_update")."\" />";
 		echo "<input type=\"hidden\" name=\"maj\" value=\"yes\" />";
-		echo "<input type=\"hidden\" name=\"version_old\" value=\"$version_old\" />";
+		echo "<input type=\"hidden\" name=\"version_depart\" value=\"$version_depart\" />";
 		echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" />";
 		echo "</form>";
 	}
 	else
 	{
 		echo "<p>".get_vocab("maj_no_update_to_do")."</p>";
-		echo "<p>Forcer MaJ (ATTENTION) <a href=\"maj.php?forcemaj=".$version_old."\">Cliquez ici</a></p>";
+		echo "<p>Forcer MaJ (ATTENTION) <a href=\"maj.php?forcemaj=".$version_depart."\">Cliquez ici</a></p>";
 		echo "<p style=\"text-align:center;\"><a href=\"../\">".get_vocab("welcome")."</a></p>";
 	}
 }
@@ -114,14 +103,25 @@ if(!$majscript) {
 // On effectue la MaJ
 if (isset($_POST['maj']) || $majscript)
 {
-	$result = execute_maj($version_old, $version_grr);
-
 	//Re-Chargement des valeurs de la table settings
 	if (!Settings::load())
 		die("Erreur chargement settings");
 
-	echo "<h2>".encode_message_utf8("Résultat de la mise à jour")."</h2>";
-	echo encode_message_utf8($result);
+
+	if (strpos($version_depart,".")){
+
+		$result = execute_maj3($version_depart, $version_grr);
+
+		echo "<h2>".encode_message_utf8("Résultat de la mise à jour < GRR 4")."</h2>";
+		echo "<h3>".$version_depart." => 3.5.0</h3>";
+		echo encode_message_utf8($result);
+		$version_depart = 4000;
+	}
+	
+	echo "<h2>".encode_message_utf8("Résultat de la mise à jour GRR 4 et +")."</h2>";
+	echo "<h3>".$version_depart." => ".$version_bdd."</h3>";
+	$result2 = execute_maj4($version_depart, $version_bdd);
+	echo encode_message_utf8($result2);
 }
 
 
