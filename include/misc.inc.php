@@ -27,8 +27,8 @@ $version_grr = "4.0.0b";
 # Version BDD, deux premirs chiffres = version majeur, les deux suivant la version, évolution de GRR, les 3 derniers une incrémentation à chaque changement
 # Ex 0402003 : Version 4.2.X 3eme modification sur la branche 4.2.X
 $version_bdd = "0400001";
-// Version repository (GitHub)
-$versionReposite = "Release-v4.0.0-beta.1";
+// Version repository (GitHub) GitHub-Master / Release-v4.0.0-beta.1
+$versionReposite = "GitHub-Master";
 
 ################################
 # Configuration Requise
