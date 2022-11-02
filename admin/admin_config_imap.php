@@ -3,9 +3,9 @@
  * admin_config_imap.php
  * Interface permettant l'activation de la configuration de l'authentification pop/imap  
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:55$
+ * Dernière modification : $Date: 2022-09-12 10:12$
  * @author    Laurent Delineau & JeromeB & Gilles Martin & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -36,6 +36,7 @@ $imap['login']=isset($_POST["imap_login"]) ? $_POST["imap_login"]:""; //utile ? 
 $imap['password']=isset($_POST["imap_password"]) ? $_POST["imap_password"]:""; //utile ? YN le 19/03/2020
 foreach ($imap as $key => $value){
     $imap[$key] = clean_input($value);
+    eval('$imap_'.$key.'=$imap[$key];');
 }
 
 if (isset($_POST['imap_statut']))
