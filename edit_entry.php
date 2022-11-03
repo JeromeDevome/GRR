@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-07-28 18:48$
+ * Dernière modification : $Date: 2022-11-03 11:05$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -108,7 +108,7 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
             //print_r($tab_benef);
         }
         $bnf = array(); // tableau des bénéficiaires autorisés (login,nom,prénom)
-        $sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (etat!='inactif' and statut!='visiteur' ) OR (login='".$id_user."') ORDER BY nom, prenom";
+        $sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (etat!='inactif' and statut!='visiteur' ) OR (login='".$id_user."') ORDER BY nom, prenom"; // login = $id_user superflu ?
         $res = grr_sql_query($sql);
         if ($res){
             for ($i = 0; ($row = grr_sql_row($res, $i)); $i++) {$bnf[$i] = $row;}
@@ -131,10 +131,9 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
         $test = grr_sql_query1("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".$id_user."'");
         if (($test == -1) && ($id_user != ''))
         {
-            $option .= '<option value="-1" selected="selected" >'.get_vocab("utilisateur_inconnu").$id_user.')</option>'.PHP_EOL;
+            $option .= '<option value="-1" selected="selected" >'.get_vocab("utilisateur_inconnu").$id_user.'</option>'.PHP_EOL;
         }
         echo '<div id="choix_beneficiaire" class="row">'.PHP_EOL;
-        //echo '<label for="beneficiaire" >'.ucfirst(trim(get_vocab("reservation_au_nom_de"))).get_vocab("deux_points").'</label>'.PHP_EOL;
         echo '<div class="col-sm-9">'.PHP_EOL;
 		echo '<label for="beneficiaire" >'.ucfirst(trim(get_vocab("reservation_au_nom_de"))).get_vocab("deux_points").'</label><br />'.PHP_EOL;
         echo '<select class="select2" name="beneficiaire" id="beneficiaire" onchange="check_4();">'.$option.'</select>'.PHP_EOL;
@@ -167,6 +166,126 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
     {
         echo '<input type="hidden" name="beneficiaire" value="'.$id_user.'" />'.PHP_EOL;
     }
+}
+
+function divTypes($id_user,$room,$area,$type=""){
+    $qui_peut_reserver_pour = grr_sql_query1("SELECT qui_peut_reserver_pour FROM grr_room WHERE id='".$room."'");
+    $aff_default = ((authGetUserLevel($id_user,-1,"room") >= $qui_peut_reserver_pour) || (authGetUserLevel($id_user,$area,"area") >= $qui_peut_reserver_pour));
+    $aff_type = max(authGetUserLevel($id_user,-1,"room"),authGetUserLevel($id_user,$area,"area"));
+    // Avant d'afficher la liste déroulante des types, on stocke dans $display_type et on teste le nombre de types à afficher
+    // Si ne nombre est égal à 1, on ne laisse pas le choix
+    $nb_type = 0;
+    $type_nom_unique = "??";
+    $type_id_unique = "??";
+    $display_type = '<div class="E form-inline">'.PHP_EOL;
+    $display_type .= '<div class="form-group"><label for="type" class="control-label">'.get_vocab("type")." *".get_vocab("deux_points").'</label>'.PHP_EOL;
+    $display_type .= '<select id="type" class="form-control" name="type" size="1" onclick="setdefault(\'type_default\',\'\')">'.PHP_EOL;
+    $display_type .= '<option value="0">'.get_vocab("choose").PHP_EOL;
+
+    $sql = "SELECT DISTINCT t.type_name, t.type_letter, t.id, t.order_display FROM ".TABLE_PREFIX."_type_area t
+    LEFT JOIN ".TABLE_PREFIX."_j_type_area j ON j.id_type=t.id
+    WHERE (j.id_area IS NULL OR j.id_area != '".$area."') AND (t.disponible<='".$aff_type."')
+    ORDER BY t.order_display";
+    $res = grr_sql_query($sql);
+
+    if (!$res)
+        fatal_error(0, grr_sql_error());
+    else
+    {
+        if (grr_sql_count($res) != 0){
+            foreach($res as $row) // t.type_name, t.type_letter, t.id, t.order_display
+            {
+                $id_type_par_defaut = grr_sql_query1("SELECT id_type_par_defaut FROM ".TABLE_PREFIX."_area WHERE id = '".$area."'");
+                // La requête sql précédente laisse passer les cas où un type est non valide
+                // dans le domaine concerné ET au moins dans un autre domaine, d'où le test suivant
+                $test = grr_sql_query1("SELECT id_type FROM ".TABLE_PREFIX."_j_type_area WHERE id_type = '".$row['id']."' AND id_area='".$area."'");
+                if ($test == -1)
+                {
+                    $nb_type ++;
+                    $type_nom_unique = $row['type_name'];
+                    $type_id_unique = $row['type_letter'];
+                    $display_type .= '<option value="'.$row['type_letter'].'" ';
+                    
+                    if ($type != "") // Modification d'une réservation
+                    {
+                        if ($type == $row['type_letter'])
+                            $display_type .=  ' selected="selected"';
+                    }
+                    else // Nouvelle réservation
+                    {
+                        //Récupère le cookie par defaut
+                        if ($aff_default && isset($_COOKIE['type_default'])){
+                            $cookie = $_COOKIE['type_default'];
+                        } 
+                        else{
+                            $cookie = "";
+                        }
+                        if ((!$cookie && ($id_type_par_defaut == $row['id'])) || ($cookie && $cookie == $row['type_name']))
+                            $display_type .=  ' selected="selected"';
+                    }
+                    $display_type .=  ' >'.$row['type_name'].'</option>'.PHP_EOL;
+                }
+            }
+        }
+    }
+
+    $display_type .=  '</select></div>'.PHP_EOL;
+    if ($aff_default)
+        $display_type .= '<input type="button" class="btn btn-primary" value="'.get_vocab("definir par defaut").'" onclick="setdefault(\'type_default\',document.getElementById(\'main\').type.options[document.getElementById(\'main\').type.options.selectedIndex].text)" />'.PHP_EOL;
+    $display_type .= '</div>'.PHP_EOL;
+    if($nb_type <= 1)
+        $display_type = '<div class="E"><b>'.get_vocab("type").get_vocab("deux_points").htmlentities($type_nom_unique).'</b>'.PHP_EOL.'<input name="type" type="hidden" value="'.$type_id_unique.'" /></div>'.PHP_EOL;
+    
+    echo $display_type;
+}
+
+function divChampsAdd($id_resa=0,$id_area=-1,$id_room=-1,$overloadFields=array()){
+    // on récupère les données de la réservation si il y en a
+    if ($id_resa != 0)
+        $overload_data = mrbsEntryGetOverloadDesc($id_resa);
+    $overload_fields = mrbsOverloadGetFieldslist($id_area);
+    
+    $display = '<div id="div_champs_add">'.PHP_EOL;
+    // Boucle sur les champs additionnels de l'area
+    foreach ($overload_fields as $fieldname=>$fieldtype)
+    {
+        if ($overload_fields[$fieldname]["obligatoire"] == "y")
+            $flag_obli = " *" ;
+        else
+            $flag_obli = "";
+        $display .= "<div id=\"id_".$id_area."_".$overload_fields[$fieldname]["id"]."\" class='form-group'>";
+        $display .= "<label for='addon_".$overload_fields[$fieldname]["id"]."'>".removeMailUnicode($fieldname).$flag_obli."</label>\n";
+        if (isset($overload_data[$fieldname]["valeur"]))
+            $data = $overload_data[$fieldname]["valeur"];
+        elseif (isset($overloadFields[$overload_fields[$fieldname]["id"]]))
+            $data = $overloadFields[$overload_fields[$fieldname]["id"]];
+        else
+            $data = "";
+        if ($overload_fields[$fieldname]["type"] == "textarea" )
+            $display .= "<div class=\"col-xs-12\"><textarea class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\">".htmlspecialchars($data,ENT_SUBSTITUTE)."</textarea></div>\n";
+        else if ($overload_fields[$fieldname]["type"] == "text" )
+            $display .= "<input class=\"form-control\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" />";
+        else if ($overload_fields[$fieldname]["type"] == "numeric" )
+            $display .= "<input class=\"form-control\" size=\"20\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" />\n";
+        else
+        {
+            $display .= "<div class=\"col-xs-12\"><select class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" size=\"1\">\n";
+            if ($overload_fields[$fieldname]["obligatoire"] == 'y')
+                $display .= '<option value="">'.get_vocab('choose').'</option>';
+            foreach ($overload_fields[$fieldname]["list"] as $value)
+            {
+                $display .= "<option ";
+                if (htmlspecialchars($data) == trim($value,"&") || ($data == "" && $value[0]=="&"))
+                    $display .= " selected=\"selected\"";
+                $display .= ">".trim($value,"&")."</option>\n";
+            }
+            $display .= "</select></div>\n";
+        }
+        $display .= "</div>\n";
+    }
+    
+    $display .= '</div>'.PHP_EOL;
+    echo $display;
 }
 
 // les variables attendues et leur type
@@ -365,7 +484,6 @@ if (!isset($day) || !isset($month) || !isset($year))
 	$year  = date("Y");
 }
 
-// l'utilisateur est-il autorisé à être ici ?
 if (isset($id)){ // edition d'une réservation
 	if ($info = mrbsGetEntryInfo($id)){
 		$room = $info["room_id"];
@@ -391,6 +509,8 @@ else{
         $room = $room_id; // à voir
     }
 }
+
+// l'utilisateur est-il autorisé à être ici ?
 if (((authGetUserLevel($user_name,-1) < 2) && (auth_visiteur($user_name,$room) == 0))||(authUserAccesArea($user_name, $area) == 0))
 {
     start_page_w_header('','','','with_session');
@@ -958,11 +1078,13 @@ if (($delais_option_reservation > 0) && (($modif_option_reservation == 'y') || (
 }
 
 // types
-echo '<div id="div_types">',PHP_EOL;
-echo '</div>',PHP_EOL;
+//echo '<div id="div_types">',PHP_EOL;
+//echo '</div>',PHP_EOL;
+divTypes($user_name,$room,$area_id,$etype);
 // champs additionnels
-echo '<div id="div_champs_add">'.PHP_EOL;
-echo '</div>'.PHP_EOL;
+//echo '<div id="div_champs_add">'.PHP_EOL;
+//echo '</div>'.PHP_EOL;
+divChampsAdd($id,$area,$room,$overloadFields);
 // participants
 if($active_participant > 0){
 	echo '<div class="E">'.PHP_EOL;
@@ -1574,9 +1696,10 @@ function changeRoom(formObj)
 			$('.multiselect').multiselect();
 		});
 		$(document).ready(function() {
-            insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode($user_name);?>,<?php echo $id?>);
-            insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>,<?php echo json_encode($overloadFields);?>);
-            insertTypes(<?php echo $area?>,<?php echo $room?>);
+            // insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode($user_name);?>,<?php echo $id?>);
+            $("#beneficiaire").select2();
+            //insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>,<?php echo json_encode($overloadFields);?>);
+            //insertTypes(<?php echo $area?>,<?php echo $room?>);
             //check_4();
 		});
 		document.getElementById('main').name.focus();

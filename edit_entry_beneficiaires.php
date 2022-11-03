@@ -3,7 +3,7 @@
  * edit_entry_beneficiaires.php
  * Page "Ajax" utilisée dans edit_entry.php, calcule les data pour le sélecteur #beneficiaire
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-04-11 19:20$
+ * Dernière modification : $Date: 2022-11-03 10:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -17,7 +17,7 @@
  */
 include_once "include/admin.inc.php";
 // vérifications de sécurité : page accessible si utilisateur connecté et usager
-if ((authGetUserLevel(getUserName(),-1) < 2))
+if ((authGetUserLevel(getUserName(),-1) < 2))//||(!isAjax()))
 {
 	showAccessDenied("");
 	exit();
@@ -67,6 +67,7 @@ if ($flag_qui_peut_reserver_pour ) // on crée la liste des options pour le sél
             else $bnf[] = array('id'=>$row['login'],'text'=>$row['nom'].' '.$row['prenom']);
         }
     }
+    grr_sql_free($res);
 }
 else
 {
@@ -77,6 +78,7 @@ else
         $row = grr_sql_row($res,0);
         $benef = $row[0]." ".$row[1];
     }
+    grr_sql_free($res);
     $benef = ($benef != " ")? $benef : get_vocab('utilisateur_inconnu').$id_user.')';
     $bnf[] = array('id'=>$id_user,'text'=>$benef,'disabled'=>TRUE,'selected'=>TRUE);
 }

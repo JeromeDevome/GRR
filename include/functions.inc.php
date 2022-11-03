@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-09-30 18:42$
+ * Dernière modification : $Date: 2022-10-27 18:34$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4368,6 +4368,11 @@ function get_planning_area_values($id_area)
 		exit;
 	}
 	$row_ = grr_sql_row($res, 0);
+    if (!is_array($row_))
+    {
+		include "trailer.inc.php";
+		exit;
+    }
 	$nb_display_day = 0;
 	for ($i = 0; $i < 7; $i++)
 	{
@@ -6406,6 +6411,14 @@ function getFormVar($nom,$type='',$default=NULL){
         settype($valeur,$type);
     return $valeur;
 }
+
+// Teste si la requête est un appel par AJAX
+function isAjax()
+{
+  return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+          (utf8_strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'));
+}
+
 // Les lignes suivantes permettent la compatibilité de GRR avec la variable register_global à off
 unset($day);
 if (isset($_GET["day"]))
