@@ -3,7 +3,7 @@
  * admin_import_entries_csv_direct.php
  * Importe un fichier de réservations au format csv comprenant les champs : date du jour, heure de début, heure de fin, ressource, description et type
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-05-05 11:02$
+ * Dernière modification : $Date: 2022-10-18 15:24$
  * @author    JeromeB & Yan Naessens & Denis Monasse & Laurent Delineau
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -128,7 +128,7 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
            else {
                $room_name = grr_sql_query1("SELECT room_name FROM ".TABLE_PREFIX."_room WHERE id =".$room_id);
                $message = "Réservation ".$ecriture." posée ";
-               $message .= date('c',$starttime)." ".date('c',$endtime)." ".$room_name." ".$description." ".$type."</br>";
+               $message .= date('c',$starttime)." -> ".date('c',$endtime)." ; ".$room_name." ; ".$description." ; ".$type."</br>";
                return array(true,$message);
            }
            grr_sql_mutex_unlock("".TABLE_PREFIX."_entry");
@@ -199,7 +199,6 @@ function lit_csv_data(){
          // et on insère dans la base de données
          $sql_query="INSERT INTO ".TABLE_PREFIX."_csv2 (`id`, `date`, `heure_deb`, `minute_deb`, `heure_fin`, `minute_fin`, `ressource`, `description`, `type`)";
          $sql_query.=" VALUES ('DEFAULT' , '".$date."' , '".$heure_deb."' , '".$minute_deb."' , '".$heure_fin."' , '".$minute_fin."' , '".$ressource."' , '".$description."' , '".$type."');";
-         echo $sql_query."</br>";
          if(!grr_sql_query($sql_query)) 
              $erreurs[] = $nb_lignes." (".$sql_query.")";
          $donnees[] = "<p class='text-success'>".$date." ".$heure_deb."h".$minute_deb." - ".$heure_fin."h".$minute_fin." => ".$ressource." : ".$description." ; ".$type."</p>";
@@ -213,7 +212,7 @@ function lit_csv_data(){
 */
 function ecrit_csv_data(){
     // on récupère les données : date, heure de début, minute de début, heure de fin, minute de fin, ressource, description, type
-    $sql_query="SELECT date,heure_deb,minute_deb,heure_fin,minute_fin,ressource,description,type FROM ".TABLE_PREFIX."_csv2 ";
+    $sql_query="SELECT * FROM ".TABLE_PREFIX."_csv2 ";
     $res=grr_sql_query($sql_query);
     if ($res) { // on a des données à traiter
         $i = 0; $erreur=""; $n=0; $info='';
@@ -228,22 +227,6 @@ function ecrit_csv_data(){
                 $n++;
             }
         }
-        /*while($row = grr_sql_row($res, $i)){
-            $date=$row[0]; 
-            $heure_deb=$row[1]; $minute_deb=$row[2];
-            $heure_fin=$row[3]; $minute_fin=$row[4];
-            $ressource=$row[5]; $description=$row[6]; $type=$row[7];
-            $i++;
-            $room_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_room WHERE room_name LIKE'".$ressource."'");
-            list($succes,$message) = ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$minute_fin,$description,$type);
-            if(!$succes){ 
-                $erreur .= $message." ".$row[0]."; ".$row[1]."h".$row[2]." -> ".$row[3]."h".$row[4]."; ".$row[5]."; ".$row[6]."; ".$row[7]."</br>";
-            }
-            else {
-                $info .= $message;
-                $n++;
-            }
-        }*/
         return [$info,$erreur,$n];
     }
     else 
@@ -280,12 +263,12 @@ elseif(isset($_POST['continue'])){
     echo "<h2>Deuxième étape de l'importation : enregistrement des réservations</h2>";
     $temps_debut=time();
     list($info,$erreurs,$nb_resas) = ecrit_csv_data();
-    echo "<p>Importation de ".$nb_resas." réservations terminée au bout de ".(time()-$temps_debut)." secondes</p>";
+    echo "<p class='alert alert-info'>Importation de ".$nb_resas." réservations terminée au bout de ".(time()-$temps_debut)." secondes</p>";
     if ($nb_resas != 0){
         echo $info;
     }
     if ($erreurs!=''){
-        echo "Des réservations n'ont pas pu être posées, veuillez consulter la liste ci-après :<br />";
+        echo "<br /><p class='alert alert-warning'>Des réservations n'ont pas pu être posées, veuillez consulter la liste ci-après :</p>";
         echo $erreurs;
     }
 }
@@ -304,7 +287,7 @@ else
     echo '<code>2001-01-01;12h00;14h00;Salle 1;Test;A</code>';
     echo '<p>Le temps d\'importation est en général limité par le serveur à quelques minutes par fichier. 
             Pour éviter une erreur de type "timeout" qui conduirait à une importation incomplète, 
-            scindez votre fichier en fichiers plus petits que vous importerez successivement
+            scindez votre fichier en fichiers plus petits que vous importerez successivement.
         </p>';
     echo '<hr />';
     
