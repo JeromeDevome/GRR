@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-11-03 11:05$
+ * Dernière modification : $Date: 2022-11-03 12:24$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -600,7 +600,7 @@ if (isset($id)) // édition d'une réservation existante
 	$beneficiaire = $row['beneficiaire'];
 	$beneficiaire_ext = $row['beneficiaire_ext'];
 	$tab_benef = donne_nom_email($beneficiaire_ext);
-	$create_by = $row['create_by'];
+	$create_by = ($copier == 'copier')? $user_name : $row['create_by'];
 	$description = $row['description'];
 	$statut_entry = $row['statut_entry'];
 	$day = date('d', $row['start_time']);
