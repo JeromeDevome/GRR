@@ -3,7 +3,7 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservations de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-09-12 12:13 $
+ * Dernière modification : $Date: 2022-11-07 18:25 $
  * @author    Yan Naessens, Laurent Delineau 
  * @copyright Copyright 2003-2022 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -179,6 +179,12 @@ $month_end = mktime(23,59,59,$to_month,$days_in_to_month,$to_year);
 $opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants');
 $options = decode_options(Settings::get('cell_year_all'),$opt);
 $options_popup = decode_options(Settings::get('popup_year_all'),$opt);
+// un type à exclure ?
+$type_exclu = Settings::get('exclude_type_in_views_all'); // nom du type exclu
+$sql = "SELECT type_letter FROM ".TABLE_PREFIX."_type_area WHERE ".TABLE_PREFIX."_type_area.type_name = '".$type_exclu."' ";
+$res = grr_sql_query1($sql);
+$typeExclu = ($res != -1)? $res :NULL; // lettre identifiant le type exclu
+grr_sql_free($res);
 // construit la liste des ressources et domaines
 if ($site == -1) 
 {   // cas 1 : le multisite n'est pas activé $site devrait être à -1
@@ -314,9 +320,8 @@ else
                       INNER JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
                     WHERE (start_time <= ".$end_month." AND end_time > ".$begin_month." AND ".TABLE_PREFIX."_entry.room_id=".$room_id.")
                     ORDER by ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time ";*/
-                    $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
-                    FROM ((".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_type_area.type_letter = ".TABLE_PREFIX."_entry.type)
-                    JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id) 
+                    $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
+                    FROM (".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id) 
                     WHERE ".TABLE_PREFIX."_entry.room_id = $room_id 
                     AND start_time <= $end_month AND end_time > $begin_month 
                     ORDER BY ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time";
@@ -336,7 +341,7 @@ else
                         $row[12]: beneficiaire_ext
                         $row[13]: clef
                         $row[14]: courrier
-                        $row[15]: type_name
+                        $row[15]: type_name , supprimé le 07/11/22
                         $row[16]: overload fields description
                         $row[17]: room_id
                         $row[18]: create_by
@@ -354,7 +359,7 @@ else
                     { // les données sont bien recueillies
                         foreach($res as $row)
                         {
-							if ($row["type_name"] <> (Settings::get('exclude_type_in_views_all')))          // Nom du type à exclure  
+							if ($row["type"] <> $typeExclu)          // identifiant du type à exclure  
                             {  //Fill in data for each day during the month that this meeting ($row) covers. 
                                 $t = max((int)$row["start_time"], $begin_month);
                                 $end_t = min((int)$row["end_time"], $end_month);

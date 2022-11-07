@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-07-22 09:17$
+ * Dernière modification : $Date: 2022-11-07 18:18$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -162,20 +162,15 @@ $ty = date("Y", $i);
 $tm = date("m", $i);
 $td = date("d", $i);
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
+// un type à exclure ?
+$type_exclu = Settings::get('exclude_type_in_views_all'); // nom du type exclu
+$sql = "SELECT type_letter FROM ".TABLE_PREFIX."_type_area WHERE ".TABLE_PREFIX."_type_area.type_name = '".$type_exclu."' ";
+$res = grr_sql_query1($sql);
+$typeExclu = ($res != -1)? $res :NULL; // lettre identifiant le type exclu
+grr_sql_free($res);
 // les réservations du domaine sur la semaine 
-/*$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc, ".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
-FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
-where
-".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id and
-".TABLE_PREFIX."_area.id = ".TABLE_PREFIX."_room.area_id and
-".TABLE_PREFIX."_area.id = '".$area."' and
-".TABLE_PREFIX."_type_area.type_letter = ".TABLE_PREFIX."_entry.type AND
-start_time <= $date_end AND
-end_time > $date_start
-ORDER by start_time, end_time, ".TABLE_PREFIX."_entry.id";*/
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
-FROM (((".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_type_area.type_letter = ".TABLE_PREFIX."_entry.type)
-JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id)
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
+FROM ((".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id)
 JOIN ".TABLE_PREFIX."_area ON ".TABLE_PREFIX."_area.id = ".TABLE_PREFIX."_room.area_id) 
 WHERE ".TABLE_PREFIX."_area.id = $area 
 AND start_time <= $date_end AND end_time > $date_start 
@@ -197,7 +192,7 @@ ORDER BY start_time";
     $row[12]: beneficiaire_ext
     $row[13]: clef
     $row[14]: courrier
-	$row[15]: type_name
+	$row[15]: type_name , supprimé le 07/11/22
     $row[16]: overload fields description
     $row[17]: room id
     $row[18]: create_by
@@ -211,7 +206,7 @@ else
     $overloadFieldList = mrbsOverloadGetFieldslist($area);
     foreach($res2 as $row)
 	{
-		if ($row['type_name'] <> (Settings::get('exclude_type_in_views_all')))          // Nom du type à exclure  
+		if ($row['type'] <> $typeExclu)          // identifiant du type à exclure  
 		{
 			$t = max((int)$row['start_time'], $date_start);
 			$end_t = min((int)$row['end_time'], $date_end);

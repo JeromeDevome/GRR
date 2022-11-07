@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-09-12 11:52$
+ * Dernière modification : $Date: 2022-11-07 17:58$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -208,9 +208,8 @@ $opt = array('horaires','beneficiaire','short_desc','description','create_by','t
 $options = decode_options(Settings::get('cell_week'),$opt);
 $options_popup = decode_options(Settings::get('popup_week'),$opt);
 // calcul des cellules du planning
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
-FROM ((".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_type_area.type_letter = ".TABLE_PREFIX."_entry.type)
-JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id) 
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
+FROM (".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id) 
 WHERE ".TABLE_PREFIX."_entry.room_id = ".$room."
 AND start_time <= $week_end AND end_time > $week_start
 ORDER BY start_time";
@@ -230,7 +229,7 @@ ORDER BY start_time";
     $row[12]: beneficiaire_ext
     $row[13]: clef
     $row[14]: courrier
-	$row[15]: Type_name
+	$row[15]: Type_name , supprimé le 07/11/22
     $row[16]: overload fields description
     $row[17]: room_id
     $row[18]: create_by
@@ -750,7 +749,7 @@ for ($slot = $first_slot; $slot <= $last_slot; $slot++)
         }
         if (($insere_case == 'n') && ($display_day[$num_week_day] == 1))
         {
-            if (!isset($d[$weekday][$slot - $decale_slot * $nb_case]["color"])) // pas de réservation sur ce slot
+            if (!isset($d[$weekday][$slot - $decale_slot * $nb_case]["id"])) // pas de réservation sur ce slot
             {
                 $date_booking = mktime($hour, $minute, 0, $wmonth, $wday, $wyear);
                 if ($enable_periods == 'y')
