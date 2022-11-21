@@ -208,6 +208,8 @@ if (grr_sql_count($res) < 1)
 	if (!$res_backup)
 		fatal_error(0, grr_sql_error());
 	$row = grr_sql_row($res_backup, 0);
+    if(!is_array($row))
+        fatal_error(0,"pas de réservation sauvegardée");
 	grr_sql_free($res_backup);
 }
 else
@@ -620,12 +622,14 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
     // selon les droits qui_peut_reserver_pour, affichage d'un bloc permettant l'inscription d'un tiers à l'événement
     if (verif_qui_peut_reserver_pour($room_id, $userName, '-1'))
     {
-        echo "<button type='button' class='btn btn-primary btn-sm' id='btn_participe' onclick=\"toggle_visibility('form_participant');toggle_visibility('btn_participe');toggle_visibility('btn_close_participe');\">".get_vocab('participant_register_form').'</button>';
+        // echo "<button type='button' class='btn btn-primary btn-sm' id='btn_participe' onclick=\"toggle_visibility('form_participant');toggle_visibility('btn_participe');toggle_visibility('btn_close_participe');$('#avail_users').select2({dropdownParent: $('#popup_name')}); \">".get_vocab('participant_register_form').'</button>'; 
+        // provoque une erreur en mode pop-up, inutile en mode page... voir si inclure select2 dans la page planning arrange le pb
+        echo "<button type='button' class='btn btn-primary btn-sm' id='btn_participe' onclick=\"toggle_visibility('form_participant');toggle_visibility('btn_participe');toggle_visibility('btn_close_participe'); \">".get_vocab('participant_register_form').'</button>';
         echo "<button type='button' class='btn btn-primary btn-sm' id='btn_close_participe' style='display:none' onclick=\"toggle_visibility('form_participant');toggle_visibility('btn_participe');toggle_visibility('btn_close_participe'); \">".get_vocab('participant_register_form_hide')."</button>";
         echo '<div id="form_participant" style="display:none">';
         echo '<h3>'.get_vocab("add_multiple_user_to_list").get_vocab("deux_points").'</h3>';
         echo '<form action="view_entry.php" method="GET">';
-        echo '<select name="agent" size="8" style="width:200px;" class ="select2" ondblclick="Deplacer(this.form.agent,this.form.elements[\'reg_participant[]\'])">';
+        echo '<select id="avail_users" name="agent" size="8" style="width:200px;" class ="select2" multiple ondblclick="Deplacer(this.form.agent,this.form.elements[\'reg_participant[]\'])">';
         foreach($av_users as $u){
             echo "<option value='".$u."'>".affiche_nom_prenom_email($u,"no_mail")."</option>";
         }
@@ -855,6 +859,9 @@ if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')) // si
     $(document).ready(function() {
         $(".select2").select2();
 	});
+    $('#avail_users').select2({
+        dropdownParent: $('#popup_name')
+    });
 </script>
 <?php end_page();
 ?>

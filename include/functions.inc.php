@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-11-07 11:32$
+ * Dernière modification : $Date: 2022-11-21 11:05$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -137,7 +137,7 @@ function cal($month, $year, $type)
 
 /** function checkPassword($pwd, $pwd_hash, $login)
 * vérifie que le mot de passe fourni $pwd correspond au $pwd_hash issu de la BDD pour l'utilisateur associé au $login
-* si le mot de passe n'a pas été enregistré par la fonction password_hash, mais est valide pour md5, alors la fonction le convertit au passage et l'enregistre au nouveau format
+* si le mot de passe n'a pas été enregistré par la fonction password_hash, mais est valide pour md5, alors, si la base est en version 3.5.1+, la fonction le convertit au passage et l'enregistre au nouveau format
 * renvoie TRUE si le mot de passe est valable, FALSE sinon ; déclenche une erreur si l'enregistrement du nouveau mot de passe échoue
 */
 function checkPassword($pwd, $pwd_hash, $login){
@@ -161,7 +161,10 @@ function checkPassword($pwd, $pwd_hash, $login){
         if (md5($pwd) == $pwd_hash)
         {
             $result = true;
-            $do_rehash = true;
+            // si la base est 3.5.1+, on mettra à jour le mot de passe
+            $ver = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='version';");
+            if("3.5.1" <= $ver) 
+                $do_rehash = true;
         }
     }
     if ($do_rehash)

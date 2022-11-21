@@ -1,6 +1,6 @@
 <?php
 /**
- * admin_config1.php
+ * admin_cgu.php
  * Interface permettant à l'administrateur de renseigner la page des conditions générales d'utilisation
  * Ce script fait partie de l'application GRR.
  * Dernière modification : $Date: 2021-03-13 12:04$

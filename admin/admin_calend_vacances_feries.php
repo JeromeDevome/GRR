@@ -3,7 +3,7 @@
  * admin_calend_vacances_feries.php
  * Interface permettant la définiton des jours fériés ou de vacances
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-18 11:25$
+ * Dernière modification : $Date: 2022-11-20 11:24$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -32,7 +32,7 @@ echo "\n<p>".get_vocab("vacances_feries_description")."</p>";
 // premier test : l'affichage des vacances et fériés est-il activé ?
 if ((Settings::get("show_holidays") == 'Non')||(Settings::get("show_holidays") == '')){
     echo "<p>Il faut activer l'affichage des vacances et jours fériés pour continuer...</p>";
-    echo '<p><a href="admin_config.php" >Cliquer ici pour activer l\'affichage des vacances et jours fériés</a>';
+    echo '<p><a href="admin_config12.php" >Cliquer ici pour activer l\'affichage des vacances et jours fériés</a>';
 }
 // deuxième test : le choix entre vacances et fériés est-il fait ?
 else if (!isset($_POST['define_holidays'])){
