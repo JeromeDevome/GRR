@@ -3,7 +3,7 @@
  * edit_entry_types.php
  * Page "Ajax" utilisée pour générer les types
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-12-01 11:00$
+ * Dernière modification : $Date: 2022-12-14 15:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -53,7 +53,7 @@ if (authUserAccesArea($user_name, $area) == 0)
 //header("Content-Type: text/html;charset=utf-8");
 //header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 // Type de réservation
-$qui_peut_reserver_pour = grr_sql_query1("SELECT qui_peut_reserver_pour FROM grr_room WHERE id='".$room."'");
+$qui_peut_reserver_pour = grr_sql_query1("SELECT qui_peut_reserver_pour FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $aff_default = ((authGetUserLevel($user_name,-1,"room") >= $qui_peut_reserver_pour) || (authGetUserLevel($user_name,$area,"area") >= $qui_peut_reserver_pour));
 $aff_type = max(authGetUserLevel($user_name,-1,"room"),authGetUserLevel($user_name,$area,"area"));
 // Avant d'afficher la liste déroulante des types, on stocke dans $display_type et on teste le nombre de types à afficher
