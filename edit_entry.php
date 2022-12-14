@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-11-03 12:24$
+ * Dernière modification : $Date: 2022-12-14 15:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -169,7 +169,7 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
 }
 
 function divTypes($id_user,$room,$area,$type=""){
-    $qui_peut_reserver_pour = grr_sql_query1("SELECT qui_peut_reserver_pour FROM grr_room WHERE id='".$room."'");
+    $qui_peut_reserver_pour = grr_sql_query1("SELECT qui_peut_reserver_pour FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
     $aff_default = ((authGetUserLevel($id_user,-1,"room") >= $qui_peut_reserver_pour) || (authGetUserLevel($id_user,$area,"area") >= $qui_peut_reserver_pour));
     $aff_type = max(authGetUserLevel($id_user,-1,"room"),authGetUserLevel($id_user,$area,"area"));
     // Avant d'afficher la liste déroulante des types, on stocke dans $display_type et on teste le nombre de types à afficher
