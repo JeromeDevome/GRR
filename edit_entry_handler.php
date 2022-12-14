@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-09-13 10:57$
+ * Dernière modification : $Date: 2022-12-14 17:34$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -299,6 +299,7 @@ try {
         {
             $resolution = 60;
             $start_hour = 12;
+            $start_minute = $period;
             $end_hour = 12;
             if (isset($end_period))
                 $end_minute = $end_period + 1;
