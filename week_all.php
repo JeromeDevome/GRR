@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-02-08 12:15$
+ * Dernière modification : $Date: 2022-12-15 15:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -416,9 +416,7 @@ for ($weekcol = 0; $weekcol < 7; $weekcol++)
 				$class .= 'vacance ';
 			}
 		}
-		echo '<th class="jour_sem ';
-        if ($class != '') echo $class;
-        echo '">'.PHP_EOL;
+		echo '<th class="jour_sem '.$class.'">'.PHP_EOL;
         echo '<a href="day.php?year='.$temp_year.'&amp;month='.$temp_month.'&amp;day='.$num_day.'&amp;area='.$area.'" title="'.$title.'">'  . day_name(($weekcol + $weekstarts) % 7) . ' '.$num_day.' '.$temp_month2.'</a>'.PHP_EOL;
 		if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
 		{

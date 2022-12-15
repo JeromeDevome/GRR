@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-05-23 19:06$
+ * Dernière modification : $Date: 2022-12-15 15:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -508,16 +508,62 @@ if ($debug_flag)
 } 
 
 echo "<thead>";
-echo "<tr><td class=\"cell_hours\" style=\"width:8%;\">";
+echo "<tr><th class=\"jour_sem\" style=\"width:8%;\">";
 if ($enable_periods == 'y')
 	echo get_vocab("period");
 else
 	echo get_vocab("time");
-echo "</td>";
+echo "</th>";
 $num_week_day = $weekstarts;
-$k = $day_week;
-$i = $time;
-
+//$k = $day_week;
+$t = $time;
+// patch pour les semaines commençant le dimanche, dysfonctionne si la semaine commence le mardi
+for ($weekcol = 0; $weekcol < 7; $weekcol++)
+{
+	$num_day = strftime("%d", $t);
+	$temp_month = utf8_encode(strftime("%m", $t));
+	$temp_month2 = utf8_strftime("%b", $t);
+	$temp_year = strftime("%Y", $t);
+	$tt = mktime(0, 0, 0, $temp_month, $num_day, $temp_year);
+	$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE day='$t'");
+	$t += 86400;
+	if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
+	{
+		if (heure_ete_hiver("hiver",$temp_year,0) == mktime(0, 0, 0, $temp_month, $num_day, $temp_year))
+			$t += 3600;
+		if (date("H", $t) == "01")
+			$t -= 3600;
+	}
+	if ($display_day[$num_week_day] == 1)
+	{
+		$class = "";
+		$title = "";
+		if ($settings->get("show_holidays") == "Oui")
+		{   
+			if (isHoliday($tt)){
+				$class .= 'ferie ';
+			}
+			elseif (isSchoolHoliday($tt)){
+				$class .= 'vacance ';
+			}
+		}
+		echo '<th class="jour_sem '.$class.'">'.PHP_EOL;
+        echo '<a href="day.php?year='.$temp_year.'&amp;month='.$temp_month.'&amp;day='.$num_day.'&amp;area='.$area.'" title="'.$title.'">'  . day_name(($weekcol + $weekstarts) % 7) . ' '.$num_day.' '.$temp_month2.'</a>'.PHP_EOL;
+		if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
+		{
+			if (intval($jour_cycle) > 0)
+				echo "<br />".get_vocab("rep_type_6")." ".$jour_cycle;
+			else
+				echo "<br />".$jour_cycle;
+		}
+		echo '</th>'.PHP_EOL;
+	}
+	$num_week_day++;
+	$num_week_day = $num_week_day % 7;
+}
+echo '</tr>'.PHP_EOL;
+echo '</thead>'.PHP_EOL;
+/*
 for ($t = $week_start; $t <= $week_end; $t += 86400)
 {
 	$num_day = strftime("%d", $t);
@@ -556,11 +602,12 @@ for ($t = $week_start; $t <= $week_end; $t += 86400)
             $t -= 3600;
     }
     $i += 86400;
-    $k++;
+  //  $k++;
     $num_week_day++;
     $num_week_day = $num_week_day % 7;
 }
 echo "</tr></thead>"; // fin d'affichage de la ligne des jours
+*/
 echo "<tbody>";
 $t = $am7;
 $nb_case = 0;
