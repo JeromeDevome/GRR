@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-11-07 17:58$
+ * Dernière modification : $Date: 2022-12-15 16:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -56,7 +56,7 @@ $year = (isset($_GET['year']))? $_GET['year'] : date("Y");
 // le paramètre $room est obligatoire
 if (!isset($room) || ($room == 0)){
     $msg = get_vocab('choose_a_room');
-    if ($area == 0) $area = 1;
+    if (!isset($area)||($area == 0)) $area = 1;
     $lien = "week_all.php?area=".$area."&day=".$day."&month=".$month."&year=".$year;
     echo "<script type='text/javascript'>
         alert('$msg');
@@ -74,21 +74,22 @@ global $racine, $racineAd, $desactive_VerifNomPrenomUser;
 // Lien de retour
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES): page_accueil();
 
-$user_name = getUserName();
 // Type de session
+$user_name = getUserName();
 if ((Settings::get("authentification_obli") == 0) && ($user_name == ''))
 	$type_session = "no_session";
 else
 	$type_session = "with_session";
-// autres initialisations
-$adm = 0;
-$racine = "./";
-$racineAd = "./admin/";
 
 if (!($desactive_VerifNomPrenomUser))
     $desactive_VerifNomPrenomUser = 'n';
 // On vérifie que les noms et prénoms ne sont pas vides
 VerifNomPrenomUser($type_session);
+
+// autres initialisations
+$adm = 0;
+$racine = "./";
+$racineAd = "./admin/";
 
 $debug_flag = FALSE;
 // les données de la ressource
@@ -111,6 +112,7 @@ else
 grr_sql_free($res);
 // le début de la semaine 
 $time = mktime(0, 0, 0, $month, $day, $year);
+$weekstarts = $this_area['weekstarts_area'];
 if (($weekday = (date("w", $time) - $weekstarts + 7) % 7) > 0)
     $time = mktime(0,0,0,$month,$day-$weekday,$year); // recule de $weekday jours, php corrigera en fonction du changement d'heure
 
@@ -596,57 +598,57 @@ if ($debug_flag)
 } 
 
 echo "<thead>";
-echo "<tr><td class=\"cell_hours\" style=\"width:8%;\">";
+echo "<tr><th class=\"jour_sem\" style=\"width:8%;\">";
 if ($enable_periods == 'y')
 	echo get_vocab("period");
 else
 	echo get_vocab("time");
-echo "</td>";
-$num_week_day = $weekstarts;
-$k = $day_week;
-$i = $time;
+echo "</th>";
 
-for ($t = $week_start; $t < $week_end; $t += 86400)
+$num_week_day = $weekstarts;
+$t = $time;
+// patch pour les semaines commençant un autre jour que lundi
+for ($weekcol = 0; $weekcol < 7; $weekcol++)
 {
 	$num_day = date("j", $t);
 	$month_actuel = date("n", $t);
-	$year_actuel  = date("Y",$t);
-	$tt = mktime(0, 0, 0, $month_actuel, $num_day,$year_actuel);
-	$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$i'");
+	$year_actuel = date("Y", $t);
+	$tt = mktime(0, 0, 0, $month_actuel, $num_day, $year_actuel);
+	$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE day='$t'");
+	$t += 86400;
+	if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
+	{
+		if (heure_ete_hiver("hiver",$year_actuel,0) == mktime(0, 0, 0, $month_actuel, $num_day, $year_actuel))
+			$t += 3600;
+		if (date("H", $t) == "01")
+			$t -= 3600;
+	}
 	if ($display_day[$num_week_day] == 1)
 	{
-		$class = "cell_hours";
+		$class = "";
 		$title = "";
-        if ($settings->get("show_holidays") == "Oui")
-        {   
-            if (isHoliday($tt)){
-                $class .= ' ferie';
-            }
-            elseif (isSchoolHoliday($tt)){
-                $class .= ' vacance';
-            }
-        }
-        echo "<th class = \"".$class."\" style=\"width:13%;\">";
-        echo "<a onclick=\"charger()\" title=\"".$title.htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"day.php?year=$year_actuel&amp;month=$month_actuel&amp;day=$num_day&amp;area=$area\">". utf8_strftime($dformat, $t)."</a>";
+		if ($settings->get("show_holidays") == "Oui")
+		{   
+			if (isHoliday($tt)){
+				$class .= 'ferie ';
+			}
+			elseif (isSchoolHoliday($tt)){
+				$class .= 'vacance ';
+			}
+		}
+		echo '<th class="jour_sem '.$class.'">'.PHP_EOL;
+        echo "<a title=\"".$title.htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"day.php?year=$year_actuel&amp;month=$month_actuel&amp;day=$num_day&amp;area=$area\">". utf8_strftime($dformat, $tt)."</a>";
 		if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
+		{
 			if (intval($jour_cycle) > 0)
 				echo "<br />".get_vocab("rep_type_6")." ".$jour_cycle;
 			else
 				echo "<br />".$jour_cycle;
-		echo "</th>\n";
-    }
-    if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
-    {
-        $num_day = date("d", $t);
-        if (heure_ete_hiver("hiver", $year, 0) == mktime(0, 0, 0, $month, $num_day, $year))
-            $t += 3600;
-        if ((date("H",$t) == "13") || (date("H",$t) == "02"))
-            $t -= 3600;
-    }
-    $i += 86400;
-    $k++;
-    $num_week_day++;
-    $num_week_day = $num_week_day % 7;
+		}
+		echo '</th>'.PHP_EOL;
+	}
+	$num_week_day++;
+	$num_week_day = $num_week_day % 7;
 }
 echo "</tr></thead>"; // fin d'affichage de la ligne des jours
 echo "<tbody>";
