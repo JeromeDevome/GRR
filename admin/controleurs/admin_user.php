@@ -95,6 +95,7 @@ get_vocab_admin("confirm_del");
 
 
 get_vocab_admin("login_name");
+get_vocab_admin("mail_user");
 get_vocab_admin("names");
 get_vocab_admin("privileges");
 get_vocab_admin("statut");
@@ -113,7 +114,7 @@ $display == 'tous';
 
 // Affichage du tableau
 
-$sql = "SELECT nom, prenom, statut, login, etat, source FROM ".TABLE_PREFIX."_utilisateurs ORDER BY $order_by";
+$sql = "SELECT nom, prenom, statut, login, etat, source, email FROM ".TABLE_PREFIX."_utilisateurs ORDER BY nom,prenom";
 $res = grr_sql_query($sql);
 if ($res)
 {
@@ -125,6 +126,7 @@ if ($res)
 		$user_login = $row[3];
 		$user_etat[$i] = $row[4];
 		$user_source = $row[5];
+		$user_mail = $row[6];
 		//if (($user_etat[$i] == 'actif') && (($display == 'tous') || ($display == 'actifs')))
 		//	$affiche = 'yes';
 		//else if (($user_etat[$i] != 'actif') && (($display == 'tous') || ($display == 'inactifs')))
@@ -215,7 +217,10 @@ if ($res)
 			else
 				$col[$i][7] = 1;
 				//echo "<a href='admin_user.php?user_del=".urlencode($col[$i][1])."&amp;action_del=yes&amp;display=$display' onclick='return confirmlink(this, \"$user_login\", \"$themessage\")'>".get_vocab("delete")."</a>";
-		//}
+
+			// Affichage email
+			$col[$i][9] = $user_mail;
+			//}
 	}
 }
 
