@@ -10,7 +10,7 @@
 
 {% block content %}
 	<div class="row">
-		<div class="col-md-9">
+		<div class="col-md-10">
 
 			<div class="box">
 				<div class="box-header">
@@ -21,11 +21,12 @@
 					<table id="tableuser" class="table table-bordered table-striped">
 						<thead>
 							<tr>
-								<th><a href="?p=admin_user&order_by=login&display={{ trad.dDisplay }}">{{trad.login_name}}</a></th>
-								<th><a href="?p=admin_user&order_by=nom,prenom&display={{ trad.dDisplay }}">{{trad.names}}</a></th>
+								<th>{{trad.login_name}}</th>
+								<th>{{trad.names}}</th>
 								<th>{{trad.privileges}}</th>
-								<th><a href="?p=admin_user&order_by=source,nom,prenom&display={{ trad.dDisplay }}">{{trad.statut}}</a></th>
-								<th><a href="?p=admin_user&order_by=statut,nom,prenom={{ trad.dDisplay }}">{{trad.authentification}}</a></th>
+								<th>{{trad.statut}}</th>
+								<th>{{trad.activ_user}}</th>
+								<th>{{trad.authentification}}</th>
 								<th>{{trad.action}}</th>
 							</tr>
 						</thead>
@@ -35,14 +36,15 @@
 									<td>{{utilisateur.1}}</td>
 									<td>{{utilisateur.2}}</td>
 									<td>{{utilisateur.3 |raw}}</td>
-									<td>{{utilisateur.4 |raw}}<br>{{ utilisateur.6 }}</td>
-									<td>{{utilisateur.5 }}</td>
+									<td>{{utilisateur.4 |raw}}</td>
+									<td>{{utilisateur.6}}</td>
+									<td>{{utilisateur.5}}</td>
 									<td>
 										{% if utilisateur.8 == 1 %}
-											<a href="?p=admin_user_modify&user_login={{utilisateur.1}}&display={{ trad.dDisplay }}" class="btn btn-info btn-md"><i class="icon fa fa-edit"></i></a> 
+											<a href="?p=admin_user_modify&user_login={{utilisateur.1}}&display={{ trad.dDisplay }}" class="btn btn-info btn-xs"><i class="icon fa fa-edit"></i></a> 
 										{% endif %}
 										{% if utilisateur.7 == 1 %}
-											<button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#modalWarningSupUser" data-idsup="{{ utilisateur.1 }}"><i class="icon fa fa-trash"></i></button>
+											<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalWarningSupUser" data-idsup="{{ utilisateur.1 }}"><i class="icon fa fa-trash"></i></button>
 										{% endif %}
 									</td>
 								</tr>
@@ -54,6 +56,7 @@
 								<th>{{trad.names}}</th>
 								<th>{{trad.privileges}}</th>
 								<th>{{trad.statut}}</th>
+								<th>{{trad.activ_user}}</th>
 								<th>{{trad.authentification}}</th>
 								<th>{{trad.action}}</th>
 							</tr>
@@ -64,7 +67,7 @@
 		</div>
 
 
-		<div class="col-md-3">
+		<div class="col-md-2">
 
 			<div class="box">
 				<!-- /.box-header -->

@@ -20,7 +20,7 @@
 $grr_script_name = "admin_user.php";
 
 $display = isset($_GET["display"]) ? $_GET["display"] : NULL;
-$order_by = isset($_GET["order_by"]) ? $_GET["order_by"] : NULL;
+//$order_by = isset($_GET["order_by"]) ? $_GET["order_by"] : NULL;
 $msg = '';
 
 if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1,'user') != 1))
@@ -73,10 +73,10 @@ if (empty($display))
 {
 	$display = 'actifs';
 }
-if (empty($order_by))
+/* if (empty($order_by))
 {
 	$order_by = 'nom,prenom';
-}
+} */
 
 $trad['dDisplay'] = $display;
 
@@ -98,6 +98,7 @@ get_vocab_admin("login_name");
 get_vocab_admin("names");
 get_vocab_admin("privileges");
 get_vocab_admin("statut");
+get_vocab_admin("activ_user");
 get_vocab_admin("authentification");
 get_vocab_admin("action");
 
