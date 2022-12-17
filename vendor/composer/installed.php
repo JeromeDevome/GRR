@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'c5180d569e61d7ff48df68420db5053143dd818a',
+    'reference' => '4f3f571eff3386a99e5cc42695be525661bc2c77',
     'name' => 'devome/twig',
   ),
   'versions' => 
@@ -22,12 +22,12 @@
     ),
     'apereo/phpcas' => 
     array (
-      'pretty_version' => '1.5.0',
-      'version' => '1.5.0.0',
+      'pretty_version' => '1.6.0',
+      'version' => '1.6.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'd6f5797fb568726f34c8e48741776d81e4a2646b',
+      'reference' => 'f817c72a961484afef95ac64a9257c8e31f063b9',
     ),
     'devome/twig' => 
     array (
@@ -36,16 +36,16 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'c5180d569e61d7ff48df68420db5053143dd818a',
+      'reference' => '4f3f571eff3386a99e5cc42695be525661bc2c77',
     ),
     'phpmailer/phpmailer' => 
     array (
-      'pretty_version' => 'v6.6.5',
-      'version' => '6.6.5.0',
+      'pretty_version' => 'v6.7.1',
+      'version' => '6.7.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '8b6386d7417526d1ea4da9edb70b8352f7543627',
+      'reference' => '49cd7ea3d2563f028d7811f06864a53b1f15ff55',
     ),
     'psr/log' => 
     array (
@@ -58,39 +58,39 @@
     ),
     'symfony/polyfill-ctype' => 
     array (
-      'pretty_version' => 'v1.26.0',
-      'version' => '1.26.0.0',
+      'pretty_version' => 'v1.27.0',
+      'version' => '1.27.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '6fd1b9a79f6e3cf65f9e679b23af304cd9e010d4',
+      'reference' => '5bbc823adecdae860bb64756d639ecfec17b050a',
     ),
     'symfony/polyfill-mbstring' => 
     array (
-      'pretty_version' => 'v1.26.0',
-      'version' => '1.26.0.0',
+      'pretty_version' => 'v1.27.0',
+      'version' => '1.27.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9344f9cb97f3b19424af1a21a3b0e75b0a7d8d7e',
+      'reference' => '8ad114f6b39e2c98a8b0e3bd907732c207c2b534',
     ),
     'symfony/polyfill-php72' => 
     array (
-      'pretty_version' => 'v1.26.0',
-      'version' => '1.26.0.0',
+      'pretty_version' => 'v1.27.0',
+      'version' => '1.27.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'bf44a9fd41feaac72b074de600314a93e2ae78e2',
+      'reference' => '869329b1e9894268a8a61dabb69153029b7a8c97',
     ),
     'tecnickcom/tcpdf' => 
     array (
-      'pretty_version' => '6.5.0',
-      'version' => '6.5.0.0',
+      'pretty_version' => '6.6.1',
+      'version' => '6.6.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'cc54c1503685e618b23922f53635f46e87653662',
+      'reference' => 'a336b531f6f6b5487fca0caf034a671d4e60df5c',
     ),
     'twig/twig' => 
     array (

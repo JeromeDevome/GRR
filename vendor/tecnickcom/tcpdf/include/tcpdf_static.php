@@ -55,7 +55,7 @@ class TCPDF_STATIC {
 	 * Current TCPDF version.
 	 * @private static
 	 */
-	private static $tcpdf_version = '6.5.0';
+	private static $tcpdf_version = '6.6.0';
 
 	/**
 	 * String alias for total number of pages.
@@ -126,39 +126,6 @@ class TCPDF_STATIC {
 	 */
 	public static function getTCPDFProducer() {
 		return "\x54\x43\x50\x44\x46\x20".self::getTCPDFVersion()."\x20\x28\x68\x74\x74\x70\x3a\x2f\x2f\x77\x77\x77\x2e\x74\x63\x70\x64\x66\x2e\x6f\x72\x67\x29";
-	}
-
-	/**
-	 * Sets the current active configuration setting of magic_quotes_runtime (if the set_magic_quotes_runtime function exist)
-	 * @param boolean $mqr FALSE for off, TRUE for on.
-	 * @since 4.6.025 (2009-08-17)
-	 * @public static
-	 */
-	public static function set_mqr($mqr) {
-		if (!defined('PHP_VERSION_ID')) {
-			$version = PHP_VERSION;
-			define('PHP_VERSION_ID', (($version[0] * 10000) + ($version[2] * 100) + $version[4]));
-		}
-		if (PHP_VERSION_ID < 50300) {
-			@set_magic_quotes_runtime($mqr);
-		}
-	}
-
-	/**
-	 * Gets the current active configuration setting of magic_quotes_runtime (if the get_magic_quotes_runtime function exist)
-	 * @return int Returns 0 if magic quotes runtime is off or get_magic_quotes_runtime doesn't exist, 1 otherwise.
-	 * @since 4.6.025 (2009-08-17)
-	 * @public static
-	 */
-	public static function get_mqr() {
-		if (!defined('PHP_VERSION_ID')) {
-			$version = PHP_VERSION;
-			define('PHP_VERSION_ID', (($version[0] * 10000) + ($version[2] * 100) + $version[4]));
-		}
-		if (PHP_VERSION_ID < 50300) {
-			return @get_magic_quotes_runtime();
-		}
-		return 0;
 	}
 
 	/**
@@ -852,9 +819,7 @@ class TCPDF_STATIC {
 		if (isset($prop['charLimit'])) {
 			$opt['maxlen'] = intval($prop['charLimit']);
 		}
-		if (!isset($ff)) {
-			$ff = 0; // default value
-		}
+		$ff = 0;
 		// readonly: The read-only characteristic of a field. If a field is read-only, the user can see the field but cannot change it.
 		if (isset($prop['readonly']) AND ($prop['readonly'] == 'true')) {
 			$ff += 1 << 0;

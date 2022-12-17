@@ -8,8 +8,8 @@ class ComposerStaticInit0040f82be54654d33854a41fc4560ac1
 {
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -113,6 +113,10 @@ class ComposerStaticInit0040f82be54654d33854a41fc4560ac1
         'CAS_Request_Exception' => __DIR__ . '/..' . '/apereo/phpcas/source/CAS/Request/Exception.php',
         'CAS_Request_MultiRequestInterface' => __DIR__ . '/..' . '/apereo/phpcas/source/CAS/Request/MultiRequestInterface.php',
         'CAS_Request_RequestInterface' => __DIR__ . '/..' . '/apereo/phpcas/source/CAS/Request/RequestInterface.php',
+        'CAS_ServiceBaseUrl_AllowedListDiscovery' => __DIR__ . '/..' . '/apereo/phpcas/source/CAS/ServiceBaseUrl/AllowedListDiscovery.php',
+        'CAS_ServiceBaseUrl_Base' => __DIR__ . '/..' . '/apereo/phpcas/source/CAS/ServiceBaseUrl/Base.php',
+        'CAS_ServiceBaseUrl_Interface' => __DIR__ . '/..' . '/apereo/phpcas/source/CAS/ServiceBaseUrl/Interface.php',
+        'CAS_ServiceBaseUrl_Static' => __DIR__ . '/..' . '/apereo/phpcas/source/CAS/ServiceBaseUrl/Static.php',
         'CAS_Session_PhpSession' => __DIR__ . '/..' . '/apereo/phpcas/source/CAS/Session/PhpSession.php',
         'CAS_TypeMismatchException' => __DIR__ . '/..' . '/apereo/phpcas/source/CAS/TypeMismatchException.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
