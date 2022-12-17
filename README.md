@@ -47,11 +47,9 @@ Pour une installation simplifiée, décompressez simplement cette archive sur un
 Mise à jour
 -------------
 
-La version 4 est en cours de développement il est déconseillé de mettre à jour vos sites en production.
-
 Vous devez faire une mise à jour classique en suivant la procédure habituelle ( https://site.devome.com/fr/grr/telechargement/category/2-informations-documentations?download=2:mise-a-jour-de-votre-grr) . Attention PHP 7 minimum !
 
-En plus de la mise à jour classique, veuillez rendre accessible le dossier "personnalisation" en écriture. C'est désormais dans ce dossier que vos personnalisations seront sauvegardées.
+En plus de la mise à jour classique, veuillez rendre accessible le dossier "personnalisation" en écriture. C'est désormais dans ce dossier unique que vos personnalisations seront sauvegardées.
 
 - Editer votre fichier connect.inc.php et ajouter la ligne suivante en y mettant 12 caractères alphanumériques
 	$hashpwd1="ici vos 12 caractères";
