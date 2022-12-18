@@ -59,10 +59,9 @@ if ($valid == "yes")
 	$reg_statut = isset($_GET["reg_statut"]) ? $_GET["reg_statut"] : NULL;
 	$reg_email = isset($_GET["reg_email"]) ? $_GET["reg_email"] : NULL;
 	$reg_etat = isset($_GET["reg_etat"]) ? $_GET["reg_etat"] : NULL;
-	$reg_source = isset($_GET["reg_source"]) ? $_GET["reg_source"] : NULL;
-	$reg_type_authentification = isset($_GET["type_authentification"]) ? $_GET["type_authentification"] : "locale";
+	$reg_source = isset($_GET["reg_source"]) ? $_GET["reg_source"] : "local";
 	$groupes_select = isset($_GET["groupes"]) ? $_GET["groupes"] : NULL;
-	if ($reg_type_authentification != "locale")
+	if ($reg_source != "local")
 		$reg_password = "";
 	if (($reg_nom == '') || ($reg_prenom == ''))
 	{
@@ -91,7 +90,7 @@ if ($valid == "yes")
 					$reg_password_c = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$reg_password);
 				else
 				{
-					if ($reg_type_authentification != "locale")
+					if ($reg_source != "local")
 						$reg_password_c = '';
 					else
 					{
@@ -104,7 +103,7 @@ if ($valid == "yes")
 					$msg = get_vocab("erreur_choix_statut");
 					$retry = 'yes';
 				}
-				else if ((($reg_password != $reg_password2) || (strlen($reg_password) < $pass_leng)) && ($reg_type_authentification == "locale"))
+				else if ((($reg_password != $reg_password2) || (strlen($reg_password) < $pass_leng)) && ($reg_source == "local"))
 				{
 					$msg = get_vocab("passwd_error");
 					$retry = 'yes';
@@ -136,7 +135,7 @@ if ($valid == "yes")
 						default_style = '',
 						default_list_type = 'item',
 						default_language = 'fr-fr',";
-						if ($reg_type_authentification=="locale")
+						if ($reg_source=="local")
 							$sql .= "source='local'";
 						else
 							$sql .= "source='ext'";
@@ -190,7 +189,7 @@ if ($valid == "yes")
 				$msg = get_vocab("erreur_choix_statut");
 				$retry = 'yes';
 			}
-			else if ($reg_type_authentification == "locale")
+			else if ($reg_source == "local")
 			{
 				// On demande un changement de la source ext->local
 				if (($reg_password == '') && ($reg_password2 == ''))
@@ -221,7 +220,7 @@ if ($valid == "yes")
 				statut='".protect_data_sql($reg_statut)."',
 				changepwd='".protect_data_sql($reg_changepwd)."',
 				email='".protect_data_sql($reg_email)."',";
-				if ($reg_type_authentification=="locale")
+				if ($reg_source=="local")
 				{
 					$sql .= "source='local',";
 					if ($reg_password_c!='')
@@ -392,6 +391,10 @@ get_vocab_admin("statut_administrator");
 get_vocab_admin("activ_no_activ");
 get_vocab_admin("activ_user");
 get_vocab_admin("no_activ_user");
+
+get_vocab_admin("authentification");
+get_vocab_admin("authentification_base_locale");
+get_vocab_admin("authentification_base_externe");
 
 get_vocab_admin("champ_vide_mot_de_passe_inchange");
 get_vocab_admin("pwd_toot_short");

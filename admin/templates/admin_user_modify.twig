@@ -51,6 +51,7 @@
 					{{ form.input('reg_prenom', trad.first_name, utilisateur.prenom, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
 					{{ form.input('reg_email', trad.mail_user, utilisateur.email, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'email', autocomplete:'off'}) }}
 
+					<!-- Statut: Visiteur, usager... -->
 					<div class="form-group row">
 						<label class="col-sm-4" for="reg_statut">{{ trad.statut }}</label>
 						<div class="input-group col-sm-8">
@@ -65,6 +66,7 @@
 						</div>
 					</div>
 
+					<!-- Etat : Actif/Inactif -->
 					{% if trad.dEstPasLuiMeme == 1 %}
 						<div class="form-group row">
 							<label class="col-sm-4" for="reg_etat">{{ trad.activ_no_activ }}</label>
@@ -79,8 +81,19 @@
 						<input type="hidden" name="reg_etat" value="{{ utilisateur.etat }}" />
 					{% endif %}
 
+					<!-- Type d'authentification: Local/Externe -->
+					<div class="form-group row">
+						<label class="col-sm-4" for="reg_source">{{ trad.authentification }}</label>
+						<div class="input-group col-sm-8">
+							<select name="reg_source" id="reg_source" class="form-control" onchange="AffichageBlocMDP();">
+								<option value="local" {% if utilisateur.source == 'local' %} selected {% endif %}>{{ trad.authentification_base_locale }}</option>
+								<option value="ext" {% if utilisateur.source == 'ext' %} selected {% endif %}>{{ trad.authentification_base_externe }}</option>
+							</select>
+						</div>
+					</div>
 
-					{% if utilisateur.source == 'local' or utilisateur.reg_login ==  '' %}
+					<!-- Changement de mot de passe, n'ai affiché que pour l'auth. locale -->
+					<div id="password">
 						{% if utilisateur.reg_login !=  '' %}
 							<div class="form-group">
 								<label class="col-sm-12" for="reg_statut">{{ trad.champ_vide_mot_de_passe_inchange }}</label>
@@ -96,10 +109,9 @@
 								<input type="checkbox" name="reg_changepwd" value="1" {% if utilisateur.changepwd == '1' %} checked {% endif %}>
 							</div>
 						</div>
-					{% endif %}
+					</div>
 
-
-
+					<!-- Gestion des groupes -->
 					<div class="form-group">
 						<label>{{ trad.groupes }}</label>
 						<select name="groupes[]" id="groupes" class="duallistbox" multiple="multiple">
@@ -159,6 +171,11 @@
 {% block javascript %}
 	<script src="../vendor/almasaeed2010/adminlte/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 	<script type='text/javascript'>
+		
+		$(function(){
+			AffichageBlocMDP()
+		})
+
 		$('.duallistbox').bootstrapDualListbox()
 
 		function display_password_fields(id){
@@ -169,6 +186,20 @@
 			else
 			{
 				$('#password_fields').hide();
+			}
+		}
+
+		function AffichageBlocMDP(){
+			var regSource = document.getElementById("reg_source");
+			var typeAuth = regSource.options[regSource.selectedIndex].value;
+
+			if(typeAuth == "local")
+			{
+				password.style.visibility='visible';
+			} 
+			else 
+			{
+				password.style.visibility='hidden';
 			}
 		}
 	</script>
