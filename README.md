@@ -6,6 +6,7 @@ version 3, a vocation à rester compatible avec php5 pour les serveurs non encor
 
 PHP : >= 5.6 && <= 8.1, nécessite au moins les modules php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml (*)
 si vous utilisez php 8.1, il faut soit inclure le module php-intl, soit désactiver les messages E_DEPRECATED
+
 MySQL: > 5.4 && <= 5.6, compatibilité vraisemblable avec MySQL 5.7
 
 Site: https://grr.devome.com/
