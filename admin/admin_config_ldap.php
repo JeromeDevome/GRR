@@ -3,9 +3,9 @@
  * admin_config_ldap.php
  * Interface permettant la configuration de l'accès à un annuaire LDAP
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-11-26 11:13$
+ * Dernière modification : $Date: 2022-12-26 10:04$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -553,20 +553,20 @@ else if ($etape == 0)
 
                     $test_chemin = 'failed';
                     if ($ldap_filter == "")
-                        returnmsg('danger',get_vocab('testConnChemAnn').get_vocab('deux_points'), $failed, get_vocab('testConnChemAnnErr1'));
+                        returnmsg('danger',get_vocab('testRechChemAnn').get_vocab('deux_points'), $failed, get_vocab('testConnChemAnnErr1'));
                     else
-                        returnmsg('danger',get_vocab('testConnChemAnn').get_vocab('deux_points'), $failed, get_vocab('testConnChemAnnErr1bis'));
+                        returnmsg('danger',get_vocab('testRechChemAnn').get_vocab('deux_points'), $failed, get_vocab('testConnChemAnnErr1bis'));
                 }
                 else if ($result == "error_2")
                 {
                     $test_chemin = 'failed';
                     if ($ldap_filter == "")
-                        returnmsg('danger',get_vocab('testConnChemAnn').get_vocab('deux_points'), $failed, get_vocab('testConnChemAnnErr2'));
+                        returnmsg('danger',get_vocab('testRechChemAnn').get_vocab('deux_points'), $failed, get_vocab('testConnChemAnnErr2'));
                     else
-                        returnmsg('danger',get_vocab('testConnChemAnn').get_vocab('deux_points'), $failed, get_vocab('testConnChemAnnErr2bis'));
+                        returnmsg('danger',get_vocab('testRechChemAnn').get_vocab('deux_points'), $failed, get_vocab('testConnChemAnnErr2bis'));
                 }
                 else
-                    returnmsg('success',get_vocab('testConnChemAnn').get_vocab('deux_points'), $ok, '');
+                    returnmsg('success',get_vocab('testRechChemAnn').get_vocab('deux_points'), $ok, '');
             }
         }
     }

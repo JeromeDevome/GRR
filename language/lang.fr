@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2022-10-14
+# Last modification : 2022-12-26
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1297,12 +1297,12 @@ $vocab['LDAPstatutExpl'] = " Activez l'authentification LDAP en choisissant le s
             dans l'annuaire LDAP lorsqu'elles se connectent pour la première fois.
             Vous pourrez par la suite modifier cette valeur pour chaque utilisateur.";
 $vocab["Echec"] = "Echec";
-$vocab['testConnAnnuaire'] = "Test de connexion à l\'annuaire";
+$vocab['testConnAnnuaire'] = "Test de connexion à l'annuaire";
 $vocab['LDAPV3impossible'] = "Impossible d\'utiliser la norme LDAP V3";
 $vocab['TLSimpossible'] = "Impossible d\'utiliser TLS";
-$vocab['connOK_idKO'] = "Connexion établie mais l\'identification auprès du serveur a échoué";
+$vocab['connOK_idKO'] = "Connexion établie mais l'identification auprès du serveur a échoué";
 $vocab['connKO'] = "Impossible d\'établir la connexion";
-$vocab['testRechChemAnn'] = "Test de recherche sur l\'annuaire avec le chemin spécifié";
+$vocab['testRechChemAnn'] = "Test de recherche sur l'annuaire avec le chemin spécifié";
 $vocab['testConnChemAnnErr1'] = "<b>Problème</b> : Le chemin que vous avez choisi <b>ne semble pas valide</b>.";
 $vocab['testConnChemAnnErr1bis'] = "<b>Problème</b> : Le chemin et/ou le filtre additionnel que vous avez choisi <b>ne semblent pas valides</b>.";
 $vocab['testConnChemAnnErr2'] = "<b>Problème</b> : Le chemin que vous avez choisi semble valide mais la recherche sur ce chemin ne renvoie aucun résultat.";
