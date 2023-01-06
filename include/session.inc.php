@@ -3,9 +3,9 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-09-30 18:52$
+ * Dernière modification : $Date: 2023-01-06 14:52$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -160,7 +160,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 			if (grr_sql_command($sql) < 0)
 				fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
 		// on récupère les données de l'utilisateur dans $row
-			$row = grr_sql_row($res_user,0);
+			$row = grr_sql_row_keyed($res_user,0);
 		}
 		else
 		{
@@ -341,7 +341,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 $res_user = grr_sql_query($sql);
                 $num_row = grr_sql_count($res_user);
                 if ($num_row == 1)
-                    $row = grr_sql_row($res_user,0);
+                    $row = grr_sql_row_keyed($res_user,0);
                 else
                     return "2";
             }
@@ -401,7 +401,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                     from ".TABLE_PREFIX."_utilisateurs
                     where statut = 'administrateur'";
                     $res_user = grr_sql_query($sql);;
-                    $row = grr_sql_row($res_user, 0);
+                    $row = grr_sql_row_keyed($res_user, 0);
             } 
             else
                 return "2";
@@ -412,7 +412,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
             $res_user = grr_sql_query($sql);
             $row = grr_sql_row_keyed($res_user, 0);
             // S'il s'agit d'un utilisateur inactif, on s'arrête là
-            if ($row[12] == 'inactif')
+            if ($row['etat'] == 'inactif')
                 return "5";
             else // on vérifie enfin le mot de passe et on le met éventuellement à jour
             {
@@ -506,7 +506,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
             // on récupère les données de l'utilisateur dans $row
             $res_user = grr_sql_query($sql);
-            $row = grr_sql_row($res_user,0);
+            $row = grr_sql_row_keyed($res_user,0);
         }
         else
         {
@@ -544,7 +544,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 if ($num_row == 1)
                 {
                 // on récupère les données de l'utilisateur dans $row
-                    $row = grr_sql_row($res_user,0);
+                    $row = grr_sql_row_keyed($res_user,0);
                 }
                 else
                     return "2";
@@ -565,7 +565,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
         {
             // un utilisateur imap ayant le meme login existe deja
             // on recupere les donnees de l'utilisateur dans $row
-            $row = grr_sql_row($res_user,0);
+            $row = grr_sql_row_keyed($res_user,0);
         }
         else
         {
@@ -610,7 +610,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 if ($num_row == 1)
                 {
                     // on récupère les données de l'utilisateur dans $row
-                    $row = grr_sql_row($res_user,0);
+                    $row = grr_sql_row_keyed($res_user,0);
                 }
                 else
                     return "2";
@@ -618,10 +618,10 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
         }
     }
 	// On teste si la connexion est active ou non
-    if ((Settings::get("disable_login")=='yes') and ($row[4] != "administrateur"))
+    if ((Settings::get("disable_login")=='yes') and ($row['statut'] != "administrateur"))
         return "2";
     // On teste si l'ip est autorisé
-    if ((Settings::get("ip_autorise") != '') and ($row[4] != "administrateur")){
+    if ((Settings::get("ip_autorise") != '') and ($row['statut'] != "administrateur")){
         $resultIP = compare_ip_adr($_SERVER["REMOTE_ADDR"], Settings::get("ip_autorise"));
         if ($resultIP == false){
             return "11";
@@ -644,7 +644,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
         $res = grr_sql_query($sql);
         if (!$res)
             fatal_error(0, 'erreur mysql' . grr_sql_error());
-        if($row[14] == 1)
+        if($row['changepwd'] == 1)
             return "12";
         else
             return "1";
@@ -759,7 +759,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     grr_sql_query($sql);
 
     // L'utilisateur doit changer son mot de passe
-    if($row[14] == 1)
+    if($row['changepwd'] == 1)
         return "12";
 
     /* Fonctionnalité SE3 (Palissy - Saintes - philippe.duval@ac-poitiers.fr) :
@@ -857,7 +857,7 @@ function grr_resumeSession()
 	$sql = "SELECT password = '" . $_SESSION['password'] . "' PASSWORD, login = '" . protect_data_sql($_SESSION['login']) . "' LOGIN, statut = '" . $_SESSION['statut'] . "' STATUT
 	from ".TABLE_PREFIX."_utilisateurs where login = '" . protect_data_sql($_SESSION['login']) . "'";
 	$res = grr_sql_query($sql);
-	$row = grr_sql_row($res, 0);
+	$row = grr_sql_row_keyed($res, 0);
 		// Checking for a timeout
 	$sql2 = "SELECT now() > END TIMEOUT from ".TABLE_PREFIX."_log where SESSION_ID = '" . session_id() . "' and START = '" . $_SESSION['start'] . "'";
 	if ($row[0] != "1" || $row[1] != "1" || $row[2] != "1")
