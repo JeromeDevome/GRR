@@ -29,6 +29,13 @@ Sous-version 3.5.0a
     correctif : affichage en mode prévisualisation, page week
     correctifs : adaptation php8.1
     modification : lien "Précédent" dans les pages imprimables dans la même fenêtre
+Sous-version 3.5.0b
+    correctif : mise à jour de la table grr_log (utile pour la conversion d'anciennes bases de données)
+    correctif : authentification imap
+    correctif : préfixe de table
+    correctif : plage de créneaux définie par début et fin
+    correctif : ligne des jours dans le cas où la semaine ne commence pas un lundi
+    modification (vocabulaire): expression moins ambiguë
     
 -----
 --
