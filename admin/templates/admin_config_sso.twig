@@ -10,7 +10,7 @@
 
 				<div class="box">
 					<div class="box-header">
-						<h3 class="box-title">{{ trad.admin_config_sso }}</h3>
+						<h3 class="box-title"></h3>
 					</div>
 					<!-- /.box-header -->
 					
@@ -20,141 +20,188 @@
 
 								<input type="hidden" name="p" value="admin_config_sso" />
 
-								<div class="form-group row col-sm-12">
-									<input type="radio" name="sso_statut" value="no_sso" id="label_1a" {% if settings.sso_statut == '' %}checked{% endif %} /> <label for="label_1a">{{ trad.Ne_pas_activer_Service_sso }}</label><br>
-								</div>
+								<!-- Configuration général du SSO-->
+								<div class="card card-danger">
+									<div class="card-header">
+										<h3 class="card-title">{{ trad.admin_config_sso }}</h3>
+									</div>
+									
+									<div class="card-body">
+										<div class="form-group row col-sm-12">
+											<input type="radio" name="sso_statut" value="no_sso" id="label_1a" {% if settings.sso_statut == '' %}checked{% endif %} /> <label for="label_1a">{{ trad.Ne_pas_activer_Service_sso }}</label><br>
+										</div>
+		
+										{{ form.input('cas_serveur', trad.cas_serveur, settings.cas_serveur, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('cas_port', trad.cas_port, settings.cas_port, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('cas_racine', trad.cas_racine, settings.cas_racine, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+		
+										<p>{{ trad.cas_proxy_explain }}</p>
+										{{ form.input('cas_proxy_server', trad.cas_proxy_server, settings.cas_proxy_server, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('cas_proxy_port', trad.cas_proxy_port, settings.cas_proxy_port, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+									
+										<div class="form-group row col-sm-12">
+											<label class="col-sm-3" for="environnement_sso">{{ trad.cas_version }}</label>
+											<div class="col-sm-9">
+												<select class="form-control" name="environnement_sso" id="environnement_sso" onchange="afficherEnvironnement(this);">
+													<option value="0" {% if settings.sso_statut == 'no_sso' or settings.sso_statut == '' %} selected {% endif %}></option>
+													<option value="card-cas" {% if settings.sso_statut == 'cas_visiteur' or settings.sso_statut == 'cas_utilisateur' %} selected {% endif %}>{{ trad.config_cas_title }}</option>
+													<option value="card-lemonldap" {% if settings.sso_statut == 'lemon_visiteur' or settings.sso_statut == 'lemon_utilisateur' %} selected {% endif %}>{{ trad.config_lemon_title }}</option>
+													<option value="card-lasso" {% if settings.sso_statut == 'lasso_visiteur' or settings.sso_statut == 'lasso_utilisateur' %} selected {% endif %}>{{ trad.config_lasso_title }}</option>
+													<option value="card-http" {% if settings.sso_statut == 'http_visiteur' or settings.sso_statut == 'http_utilisateur' %} selected {% endif %}>{{ trad.config_http_title }}</option>
+												</select>
+											</div>
+										</div>
 
-								{{ form.input('cas_serveur', trad.cas_serveur, settings.cas_serveur, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-								{{ form.input('cas_port', trad.cas_port, settings.cas_port, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-								{{ form.input('cas_racine', trad.cas_racine, settings.cas_racine, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-
-								<p>{{ trad.cas_proxy_explain }}</p>
-								{{ form.input('cas_proxy_server', trad.cas_proxy_server, settings.cas_proxy_server, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-								{{ form.input('cas_proxy_port', trad.cas_proxy_port, settings.cas_proxy_port, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-
-								<br><hr>
-
-								{% if settings.sso_statut != '' %}
-
-									<h2>{{ trad.autres_parametres_sso }}</h2>
-								
-									<div class="form-group row col-sm-12">
-										<label class="col-sm-8" for="cacher_lien_deconnecter">{{ trad.sso_actif_cacher_lien_deconnecter }}</label>
-										<div class="col-sm-4">
-											<input type="checkbox" name="cacher_lien_deconnecter" value="y" {% if settings.cacher_lien_deconnecter == 'y' %} checked {% endif %}>
+										{% if settings.sso_statut != '' %}
+										<br><hr>
+										<div id="autre_param_sso">
+											<h3>{{ trad.autres_parametres_sso }}</h3>
+										
+											<div class="form-group row col-sm-12">
+												<label class="col-sm-8" for="cacher_lien_deconnecter">{{ trad.sso_actif_cacher_lien_deconnecter }}</label>
+												<div class="col-sm-4">
+													<input type="checkbox" name="cacher_lien_deconnecter" value="y" {% if settings.cacher_lien_deconnecter == 'y' %} checked {% endif %}>
+												</div>
+											</div>
+											<div class="form-group row col-sm-12">
+												<label class="col-sm-8" for="sso_actif_cacher_lien_deconnecter">{{ trad.sso_IsNotAllowedModify }}</label>
+												<div class="col-sm-4">
+													<input type="checkbox" name="sso_actif_cacher_lien_deconnecter" value="y" {% if settings.sso_actif_cacher_lien_deconnecter == 'y' %} checked {% endif %}>
+												</div>
+											</div>
+											{{ form.input('Url_portail_sso', trad.Url_portail_sso_explain, settings.Url_portail_sso, {classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label'}) }}
+											{% endif %}
 										</div>
 									</div>
-									<div class="form-group row col-sm-12">
-										<label class="col-sm-8" for="sso_actif_cacher_lien_deconnecter">{{ trad.sso_IsNotAllowedModify }}</label>
-										<div class="col-sm-4">
-											<input type="checkbox" name="sso_actif_cacher_lien_deconnecter" value="y" {% if settings.sso_actif_cacher_lien_deconnecter == 'y' %} checked {% endif %}>
+								</div>
+
+
+								<!-- Cas du CAS -->
+								<div class="card card-warning" id="card-cas" style="display: none;">
+									<div class="card-header">
+										<h3 class="card-title">{{ trad.config_cas_title }}</h3>
+									</div>
+									
+									<div class="card-body">
+										<input type="hidden" name="valid" value="1" />
+										<p>{{ trad.CAS_SSO_explain }}</p>
+		
+										<div class="form-group row col-sm-12">
+											<label class="col-sm-6" for="cas_version">{{ trad.cas_version }}</label>
+											<div class="col-sm-6">
+												<select class="form-control" name="cas_version">
+													<option value="CAS_VERSION_1_0" {% if settings.cas_version == 'CAS_VERSION_1_0' %} selected {% endif %}>CAS_VERSION_1_0</option>
+													<option value="CAS_VERSION_2_0" {% if settings.cas_version == 'CAS_VERSION_2_0' %} selected {% endif %}>CAS_VERSION_2_0</option>
+													<option value="CAS_VERSION_3_0" {% if settings.cas_version == 'CAS_VERSION_3_0' %} selected {% endif %}>CAS_VERSION_3_0</option>
+												</select>
+											</div>
+										</div>
+		
+										<hr>
+										<h4>{{ trad.Statut_par_defaut_utilisateurs_importes }}</h4>
+										<p>{{ trad.choix_statut_CAS_SSO }}</p>
+										<div class="form-group row col-sm-12">
+											<input type="radio" name="sso_statut" value="cas_visiteur" id="label_1b" {% if settings.sso_statut == 'cas_visiteur' %}checked{% endif %} /> <label for="label_1b">{{ trad.statut_visitor }}</label><br>
+											<input type="radio" name="sso_statut" value="cas_utilisateur" id="label_1c" {% if settings.sso_statut == 'cas_utilisateur' %}checked{% endif %} /> <label for="label_1c">{{ trad.statut_user }}</label><br>
+										</div>
+										<hr>
+		
+										<p>{{ trad.sso_redirection_accueil_grr_text1 }}</p>
+										<div class="form-group row col-sm-12">
+											<label class="col-sm-11" for="sso_redirection_accueil_grr">{{ trad.sso_redirection_accueil_grr_text2 }}</label>
+											<div class="col-sm-1">
+												<input type="checkbox" name="sso_redirection_accueil_grr" value="y" {% if settings.sso_redirection_accueil_grr == 'y' %} checked {% endif %}>
+											</div>
+										</div>
+										<p>{{ trad.sso_active_correspondance_profil_statut_text }}</p>
+										<div class="form-group row col-sm-12">
+											<label class="col-sm-11" for="sso_active_correspondance_profil_statut">{{ trad.sso_active_correspondance_profil_statut }}</label>
+											<div class="col-sm-1">
+												<input type="checkbox" name="sso_active_correspondance_profil_statut" value="y" {% if settings.sso_ac_corr_profil_statut == 'y' %} checked {% endif %}>
+											</div>
+										</div>	
+									</div>
+								</div>
+
+
+								<!-- Cas du Lemonldap -->
+								<div class="card card-warning" id="card-lemonldap" style="display: none;">
+									<div class="card-header">
+										<h3 class="card-title">{{ trad.config_lemon_title }}</h3>
+									</div>
+									
+									<div class="card-body">
+										<input type="hidden" name="valid" value="1" />
+										<p>{{ trad.lemon_SSO_explain }}</p>
+		
+										<h4>{{ trad.Statut_par_defaut_utilisateurs_importes }}</h4>
+										<p>{{ trad.choix_statut_lemon_SSO }}</p>
+										<div class="form-group row col-sm-12">
+											<input type="radio" name="sso_statut" value="lemon_visiteur" id="label_1d" {% if settings.sso_statut == 'lemon_visiteur' %}checked{% endif %} /> <label for="label_1d">{{ trad.statut_visitor }}</label><br>
+											<input type="radio" name="sso_statut" value="lemon_utilisateur" id="label_1e" {% if settings.sso_statut == 'lemon_utilisateur' %}checked{% endif %} /> <label for="label_1e">{{ trad.statut_user }}</label><br>
 										</div>
 									</div>
-									{{ form.input('Url_portail_sso', trad.Url_portail_sso_explain, settings.Url_portail_sso, {classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label'}) }}
-
-									<br><hr>
-								{% endif %}
+								</div>
 
 
-								<h2>{{ trad.config_cas_title }}</h2>
+								<!-- Cas du Lasso -->
+								<div class="card card-warning" id="card-lasso" style="display: none;">
+									<div class="card-header">
+										<h3 class="card-title">{{ trad.config_lasso_title }}</h3>
+									</div>
+									
+									<div class="card-body">
+										<input type="hidden" name="valid" value="1" />
+										<p>{{ trad.lasso_SSO_explain }}</p>
 
-								<input type="hidden" name="valid" value="1" />
-								<p>{{ trad.CAS_SSO_explain }}</p>
-
-								<div class="form-group row col-sm-12">
-									<label class="col-sm-6" for="cas_version">{{ trad.cas_version }}</label>
-									<div class="col-sm-6">
-										<select class="form-control" name="cas_version">
-											<option value="CAS_VERSION_1_0" {% if settings.cas_version == 'CAS_VERSION_1_0' %} selected {% endif %}>CAS_VERSION_1_0</option>
-											<option value="CAS_VERSION_2_0" {% if settings.cas_version == 'CAS_VERSION_2_0' %} selected {% endif %}>CAS_VERSION_2_0</option>
-											<option value="CAS_VERSION_3_0" {% if settings.cas_version == 'CAS_VERSION_3_0' %} selected {% endif %}>CAS_VERSION_3_0</option>
-										</select>
+										<h4>{{ trad.Statut_par_defaut_utilisateurs_importes }}</h4>
+										<p>{{ trad.choix_statut_lasso_SSO }}</p>
+										<div class="form-group row col-sm-12">
+											<input type="radio" name="sso_statut" value="lasso_visiteur" id="label_1g" {% if settings.sso_statut == 'lasso_visiteur' %}checked{% endif %} /> <label for="label_1g">{{ trad.statut_visitor }}</label><br>
+											<input type="radio" name="sso_statut" value="lemon_utilisateur" id="label_1h" {% if settings.sso_statut == 'lasso_utilisateur' %}checked{% endif %} /> <label for="label_1h">{{ trad.statut_user }}</label><br>
+										</div>
 									</div>
 								</div>
 
 
-								<h3>{{ trad.Statut_par_defaut_utilisateurs_importes }}</h3>
-								<p>{{ trad.choix_statut_CAS_SSO }}</p>
-								<div class="form-group row col-sm-12">
-									<input type="radio" name="sso_statut" value="cas_visiteur" id="label_1b" {% if settings.sso_statut == 'cas_visiteur' %}checked{% endif %} /> <label for="label_1b">{{ trad.statut_visitor }}</label><br>
-									<input type="radio" name="sso_statut" value="cas_utilisateur" id="label_1c" {% if settings.sso_statut == 'cas_utilisateur' %}checked{% endif %} /> <label for="label_1c">{{ trad.statut_user }}</label><br>
-								</div>
+								<!-- Cas du HTTP -->
+								<div class="card card-warning" id="card-http" style="display: none;">
+									<div class="card-header">
+										<h3 class="card-title">{{ trad.config_http_title }}</h3>
+									</div>
+									
+									<div class="card-body">
+										<input type="hidden" name="valid" value="1" />
+										<p>{{ trad.http_SSO_explain }}</p>
 
-								<p>{{ trad.sso_redirection_accueil_grr_text1 }}</p>
-								<div class="form-group row col-sm-12">
-									<label class="col-sm-11" for="sso_redirection_accueil_grr">{{ trad.sso_redirection_accueil_grr_text2 }}</label>
-									<div class="col-sm-1">
-										<input type="checkbox" name="sso_redirection_accueil_grr" value="y" {% if settings.sso_redirection_accueil_grr == 'y' %} checked {% endif %}>
+										<hr>
+										<h4>{{ trad.Statut_par_defaut_utilisateurs_importes }}</h4>
+										<p>{{ trad.choix_statut_http_SSO }}</p>
+										<div class="form-group row col-sm-12">
+											<input type="radio" name="sso_statut" value="http_visiteur" id="label_1i" {% if settings.sso_statut == 'http_visiteur' %}checked{% endif %} /> <label for="label_1i">{{ trad.statut_visitor }}</label><br>
+											<input type="radio" name="sso_statut" value="http_utilisateur" id="label_1j" {% if settings.sso_statut == 'http_utilisateur' %}checked{% endif %} /> <label for="label_1i">{{ trad.statut_user }}</label><br>
+										</div>
+
+										<p>{{ trad.explain_champs_recherche |raw }}</p>
+
+										{{ form.input('http_champ_nom', trad.name, settings.http_champ_nom, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('http_champ_prenom', trad.first_name, settings.http_champ_prenom, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('http_champ_email', trad.mail_user, settings.http_champ_email, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+										
+										<hr>
+										<h4>{{ trad.Statut_pour_domaine_particulier }}</h4>
+										<p>{{ trad.http_explain_statut_domaine }}</p>
+
+										{{ form.input('http_sso_domain', trad.http_domaine_particulier, settings.http_sso_domain, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+
+										<p>{{ trad.statut }}</p>
+										<div class="form-group row col-sm-12">
+											<input type="radio" name="http_sso_statut_domain" value="visiteur" id="label_2a" {% if settings.sso_statut == 'visiteur' %}checked{% endif %} /> <label for="label_2a">{{ trad.statut_visitor }}</label><br>
+											<input type="radio" name="http_sso_statut_domain" value="utilisateur" id="label_2b" {% if settings.sso_statut == 'utilisateur' %}checked{% endif %} /> <label for="label_2b">{{ trad.statut_user }}</label><br>
+										</div>
 									</div>
 								</div>
-								<p>{{ trad.sso_active_correspondance_profil_statut_text }}</p>
-								<div class="form-group row col-sm-12">
-									<label class="col-sm-11" for="sso_active_correspondance_profil_statut">{{ trad.sso_active_correspondance_profil_statut }}</label>
-									<div class="col-sm-1">
-										<input type="checkbox" name="sso_active_correspondance_profil_statut" value="y" {% if settings.sso_ac_corr_profil_statut == 'y' %} checked {% endif %}>
-									</div>
-								</div>	
 
-								<br><hr>
-
-								<h2>{{ trad.config_lemon_title }}</h2>
-
-								<input type="hidden" name="valid" value="1" />
-								<p>{{ trad.lemon_SSO_explain }}</p>
-
-								<h3>{{ trad.Statut_par_defaut_utilisateurs_importes }}</h3>
-								<p>{{ trad.choix_statut_lemon_SSO }}</p>
-								<div class="form-group row col-sm-12">
-									<input type="radio" name="sso_statut" value="lemon_visiteur" id="label_1d" {% if settings.sso_statut == 'lemon_visiteur' %}checked{% endif %} /> <label for="label_1d">{{ trad.statut_visitor }}</label><br>
-									<input type="radio" name="sso_statut" value="lemon_utilisateur" id="label_1e" {% if settings.sso_statut == 'lemon_utilisateur' %}checked{% endif %} /> <label for="label_1e">{{ trad.statut_user }}</label><br>
-								</div>
-
-								<br><hr>
-
-								<h2>{{ trad.config_lasso_title }}</h2>
-
-								<input type="hidden" name="valid" value="1" />
-								<p>{{ trad.lasso_SSO_explain }}</p>
-
-								<h3>{{ trad.Statut_par_defaut_utilisateurs_importes }}</h3>
-								<p>{{ trad.choix_statut_lasso_SSO }}</p>
-								<div class="form-group row col-sm-12">
-									<input type="radio" name="sso_statut" value="lasso_visiteur" id="label_1g" {% if settings.sso_statut == 'lasso_visiteur' %}checked{% endif %} /> <label for="label_1g">{{ trad.statut_visitor }}</label><br>
-									<input type="radio" name="sso_statut" value="lemon_utilisateur" id="label_1h" {% if settings.sso_statut == 'lasso_utilisateur' %}checked{% endif %} /> <label for="label_1h">{{ trad.statut_user }}</label><br>
-								</div>
-
-								<br><hr>
-
-								<h2>{{ trad.config_http_title }}</h2>
-
-								<input type="hidden" name="valid" value="1" />
-								<p>{{ trad.http_SSO_explain }}</p>
-
-								<h3>{{ trad.Statut_par_defaut_utilisateurs_importes }}</h3>
-								<p>{{ trad.choix_statut_http_SSO }}</p>
-								<div class="form-group row col-sm-12">
-									<input type="radio" name="sso_statut" value="http_visiteur" id="label_1i" {% if settings.sso_statut == 'http_visiteur' %}checked{% endif %} /> <label for="label_1i">{{ trad.statut_visitor }}</label><br>
-									<input type="radio" name="sso_statut" value="http_utilisateur" id="label_1j" {% if settings.sso_statut == 'http_utilisateur' %}checked{% endif %} /> <label for="label_1i">{{ trad.statut_user }}</label><br>
-								</div>
-
-								<p>{{ trad.explain_champs_recherche |raw }}</p>
-
-								{{ form.input('http_champ_nom', trad.name, settings.http_champ_nom, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-								{{ form.input('http_champ_prenom', trad.first_name, settings.http_champ_prenom, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-								{{ form.input('http_champ_email', trad.mail_user, settings.http_champ_email, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-
-								<h3>{{ trad.Statut_pour_domaine_particulier }}</h3>
-								<p>{{ trad.http_explain_statut_domaine }}</p>
-
-								{{ form.input('http_sso_domain', trad.http_domaine_particulier, settings.http_sso_domain, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-
-								<p>{{ trad.statut }}</p>
-								<div class="form-group row col-sm-12">
-									<input type="radio" name="http_sso_statut_domain" value="visiteur" id="label_2a" {% if settings.sso_statut == 'visiteur' %}checked{% endif %} /> <label for="label_2a">{{ trad.statut_visitor }}</label><br>
-									<input type="radio" name="http_sso_statut_domain" value="utilisateur" id="label_2b" {% if settings.sso_statut == 'utilisateur' %}checked{% endif %} /> <label for="label_2b">{{ trad.statut_user }}</label><br>
-								</div>
-
-								<br><hr>
 
 								<div style="text-align:center;">
 									<input type="submit" name="Valider" value="{{ trad.save }}" class="btn btn-success btn-md" />
@@ -171,4 +218,16 @@
 {% endblock %}
 
 {% block javascript %}
+<script>
+	afficherEnvironnement(document.getElementById('environnement_sso'));
+
+	function afficherEnvironnement(element){
+		document.getElementById('card-cas').style.display = "none";
+		document.getElementById('card-lemonldap').style.display = "none";
+		document.getElementById('card-lasso').style.display = "none";
+		document.getElementById('card-http').style.display = "none";
+
+		document.getElementById(element.value).style.display = "block";
+	}
+</script>
 {% endblock %}
