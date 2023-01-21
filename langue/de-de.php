@@ -204,6 +204,7 @@ $vocab['cas_proxy_server'] = "Proxy server IP address";
 $vocab['cas_racine'] = "Racine"; // A traduire
 $vocab['cas_serveur'] = "Serveur CAS"; // A traduire
 $vocab['CAS_SSO_explain'] = "Falls Sie ein CAS (Central Authentication Service) System benutzen, können Sie seine Berücksichtigung durch GRR hier unten einstellen. Siehe Bedienungsanleitung für umfangreichere Informationen.";
+$vocab['cas_version'] = "Version du CAS"; // A traduire
 $vocab['causes_possibles'] = "Mögliche Gründe:";
 $vocab['Cette_journee_ne_correspond_pas_a_un_jour_cycle'] = "Cette journée ne correspond pas à un jour cycle"; // A traduire
 $vocab['cgu'] = "CGU"; // A traduire

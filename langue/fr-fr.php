@@ -203,6 +203,7 @@ $vocab['cas_proxy_server'] = "Adresse IP du serveur proxy";
 $vocab['cas_racine'] = "Racine";
 $vocab['cas_serveur'] = "Serveur CAS";
 $vocab['CAS_SSO_explain'] = "Si vous disposez d'un environnement CAS (Central Authentification Service), vous pouvez activer la prise en compte de ce service par GRR ci-dessous. Reportez-vous à la documentation de GRR pour en savoir plus.";
+$vocab['cas_version'] = "Version du CAS";
 $vocab['causes_possibles'] = "Causes possibles :";
 $vocab['Cette_journee_ne_correspond_pas_a_un_jour_cycle'] = "Cette journée ne correspond pas à un jour cycle";
 $vocab['cgu'] = "CGU";

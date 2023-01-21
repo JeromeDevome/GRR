@@ -42,6 +42,8 @@ if (isset($_POST['valid']))
 		echo "Erreur lors de l'enregistrement de cas_proxy_server !<br />";
     if (!Settings::set("cas_proxy_port", $_POST['cas_proxy_port']))
 		echo "Erreur lors de l'enregistrement de cas_proxy_port !<br />";
+	if (!Settings::set("cas_version", $_POST['cas_version']))
+		echo "Erreur lors de l'enregistrement de cas_version !<br />";
 	
 	if (!isset($_POST['cacher_lien_deconnecter']))
 		$cacher_lien_deconnecter = "n";
@@ -152,6 +154,7 @@ get_vocab_admin("Url_portail_sso_explain");
 
 get_vocab_admin("config_cas_title");
 get_vocab_admin("CAS_SSO_explain");
+get_vocab_admin("cas_version");
 get_vocab_admin("Statut_par_defaut_utilisateurs_importes");
 get_vocab_admin("choix_statut_CAS_SSO");
 get_vocab_admin("statut_visitor");

@@ -204,6 +204,7 @@ $vocab['cas_proxy_server'] = "Proxy server IP address";
 $vocab['cas_racine'] = "Root";
 $vocab['cas_serveur'] = "CAS server";
 $vocab['CAS_SSO_explain'] = "If you have a CAS environment (Central Authentification Service), you can activate the consideration of this service with GRR below. Consult the GRR instructions to know more.";
+$vocab['cas_version'] = "CAS version";
 $vocab['causes_possibles'] = "Possibles causes:";
 $vocab['Cette_journee_ne_correspond_pas_a_un_jour_cycle'] = "This day doesn't correspond to a cycle day";
 $vocab['cgu'] = "ToU";

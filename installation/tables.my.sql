@@ -161,3 +161,4 @@ INSERT INTO grr_setting VALUES ('webmaster_email', 'VariableInstal03');
 INSERT INTO grr_setting VALUES ('mail_user_destinataire', 'y');
 INSERT INTO grr_setting VALUES ('horaireconnexionde', '');
 INSERT INTO grr_setting VALUES ('horaireconnexiona', '');
+INSERT INTO grr_setting VALUES ('cas_version', 'CAS_VERSION_2_0');

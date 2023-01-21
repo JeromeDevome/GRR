@@ -27,14 +27,26 @@ $serveurSSO = Settings::get("cas_serveur");
 $serveurSSOPort = intval(Settings::get("cas_port"));
 $serveurSSORacine = Settings::get("cas_racine");
 
+// Version du cas
+$cas_version = Settings::get("cas_version");
+if($cas_version == ""){ // Si rien on prend V2 (valeur défaut GRR <= v4.0.0 grr)
+	$cas_version = "CAS_VERSION_2_0";
+}
+
 // paramètres du proxy (si GRR doit passer par un proxy pour accéder au serveur SSO)
 $cas_proxy_server = Settings::get("cas_proxy_server"); //adresse IP du serveur proxy
 $cas_proxy_port = Settings::get("cas_proxy_port"); // port utilisé par le protocole CAS, doit être autorisé sur le proxy
 
+$client_service_name = Settings::get("grr_url");
+
 /* declare le script comme un client CAS
  Si le dernier argument est à true, cela donne la possibilité à phpCAS d'ouvrir une session php.
 */
- phpCAS::client(CAS_VERSION_2_0,$serveurSSO,$serveurSSOPort,$serveurSSORacine,true);
+if($cas_version == "CAS_VERSION_1_0"){
+	phpCAS::client($cas_version,$serveurSSO,$serveurSSOPort,$serveurSSORacine,true);
+} else{
+	phpCAS::client($cas_version,$serveurSSO,$serveurSSOPort,$serveurSSORacine,$client_service_name,true);
+}
  phpCAS::setLang(PHPCAS_LANG_FRENCH);
 
 //            phpCAS::setCasServerCACert();

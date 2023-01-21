@@ -61,6 +61,18 @@
 								<input type="hidden" name="valid" value="1" />
 								<p>{{ trad.CAS_SSO_explain }}</p>
 
+								<div class="form-group row col-sm-12">
+									<label class="col-sm-6" for="cas_version">{{ trad.cas_version }}</label>
+									<div class="col-sm-6">
+										<select class="form-control" name="cas_version">
+											<option value="CAS_VERSION_1_0" {% if settings.cas_version == 'CAS_VERSION_1_0' %} selected {% endif %}>CAS_VERSION_1_0</option>
+											<option value="CAS_VERSION_2_0" {% if settings.cas_version == 'CAS_VERSION_2_0' %} selected {% endif %}>CAS_VERSION_2_0</option>
+											<option value="CAS_VERSION_3_0" {% if settings.cas_version == 'CAS_VERSION_3_0' %} selected {% endif %}>CAS_VERSION_3_0</option>
+										</select>
+									</div>
+								</div>
+
+
 								<h3>{{ trad.Statut_par_defaut_utilisateurs_importes }}</h3>
 								<p>{{ trad.choix_statut_CAS_SSO }}</p>
 								<div class="form-group row col-sm-12">
