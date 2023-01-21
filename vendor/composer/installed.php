@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '4f3f571eff3386a99e5cc42695be525661bc2c77',
+    'reference' => 'a8e52ca36981ce6688129fe9923009045772c940',
     'name' => 'devome/twig',
   ),
   'versions' => 
@@ -36,7 +36,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '4f3f571eff3386a99e5cc42695be525661bc2c77',
+      'reference' => 'a8e52ca36981ce6688129fe9923009045772c940',
     ),
     'phpmailer/phpmailer' => 
     array (
@@ -85,21 +85,21 @@
     ),
     'tecnickcom/tcpdf' => 
     array (
-      'pretty_version' => '6.6.1',
-      'version' => '6.6.1.0',
+      'pretty_version' => '6.6.2',
+      'version' => '6.6.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'a336b531f6f6b5487fca0caf034a671d4e60df5c',
+      'reference' => 'e3cffc9bcbc76e89e167e9eb0bbda0cab7518459',
     ),
     'twig/twig' => 
     array (
-      'pretty_version' => 'v2.15.3',
-      'version' => '2.15.3.0',
+      'pretty_version' => 'v2.15.4',
+      'version' => '2.15.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'ab402673db8746cb3a4c46f3869d6253699f614a',
+      'reference' => '3e059001d6d597dd50ea7c74dd2464b4adea48d3',
     ),
   ),
 );

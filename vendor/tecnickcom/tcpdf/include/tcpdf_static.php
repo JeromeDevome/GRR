@@ -55,7 +55,7 @@ class TCPDF_STATIC {
 	 * Current TCPDF version.
 	 * @private static
 	 */
-	private static $tcpdf_version = '6.6.0';
+	private static $tcpdf_version = '6.6.2';
 
 	/**
 	 * String alias for total number of pages.
@@ -286,7 +286,7 @@ class TCPDF_STATIC {
 	 */
 	public static function _escapeXML($str) {
 		$replaceTable = array("\0" => '', '&' => '&amp;', '<' => '&lt;', '>' => '&gt;');
-		$str = strtr($str, $replaceTable);
+		$str = strtr($str === null ? '' : $str, $replaceTable);
 		return $str;
 	}
 
@@ -1776,7 +1776,11 @@ class TCPDF_STATIC {
 		$flags = $flags === null ? 0 : $flags;
 		// the bug only happens on PHP 5.2 when using the u modifier
 		if ((strpos($modifiers, 'u') === FALSE) OR (count(preg_split('//u', "\n\t", -1, PREG_SPLIT_NO_EMPTY)) == 2)) {
-			return preg_split($pattern.$modifiers, $subject, $limit, $flags);
+			$ret = preg_split($pattern.$modifiers, $subject, $limit, $flags);
+			if ($ret === false) {
+				return array();
+			}
+			return $ret;
 		}
 		// preg_split is bugged - try alternative solution
 		$ret = array();
