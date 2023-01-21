@@ -18,7 +18,7 @@
  */
 // Le package phpCAS doit etre stocké dans un sous-répertoire « CAS » du répertoire contenant CAS.php
 // charger le script CAS.php, désormais inclus dans GRR
-include_once('vendor/apereo/phpcas/source/CAS.php');
+include_once('vendor/autoload.php');
 //include_once('./include/CAS.php');
 
 // paramètres du serveur SSO
