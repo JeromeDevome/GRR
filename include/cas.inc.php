@@ -42,10 +42,14 @@ $client_service_name = Settings::get("grr_url");
 /* declare le script comme un client CAS
  Si le dernier argument est à true, cela donne la possibilité à phpCAS d'ouvrir une session php.
 */
-if($cas_version == "CAS_VERSION_1_0"){
-	phpCAS::client($cas_version,$serveurSSO,$serveurSSOPort,$serveurSSORacine,true);
+if( phpCAS::getVersion() < '1.6.0' ){
+	phpCAS::client( constant( $cas_version ), $serveurSSO, $serveurSSOPort, $serveurSSORacine, true );
 } else{
-	phpCAS::client($cas_version,$serveurSSO,$serveurSSOPort,$serveurSSORacine,$client_service_name,true);
+	$parseUrl       = parse_url( $client_service_name );
+	$domain_service = $parseUrl['scheme'].'://'.$parseUrl['host'];
+	if ( isset( $parseUrl['port'] ) )
+		$domain_service .= ':'.$parseUrl['port'];
+		phpCAS::client( constant( $cas_version ), $serveurSSO, $serveurSSOPort, $serveurSSORacine, $domain_service, true );
 }
  phpCAS::setLang(PHPCAS_LANG_FRENCH);
 
