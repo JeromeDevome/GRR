@@ -49,7 +49,7 @@ if( phpCAS::getVersion() < '1.6.0' ){
 	$domain_service = $parseUrl['scheme'].'://'.$parseUrl['host'];
 	if ( isset( $parseUrl['port'] ) )
 		$domain_service .= ':'.$parseUrl['port'];
-		phpCAS::client( constant( $cas_version ), $serveurSSO, $serveurSSOPort, $serveurSSORacine, $domain_service, true );
+	phpCAS::client( constant( $cas_version ), $serveurSSO, $serveurSSOPort, $serveurSSORacine, $domain_service, true );
 }
  phpCAS::setLang(PHPCAS_LANG_FRENCH);
 
