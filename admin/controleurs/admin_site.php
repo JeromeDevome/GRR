@@ -40,7 +40,7 @@ function count_sites()
 
 function create_site($id_site)
 {
-	global $twig, $menuAdminT, $menuAdminTN2, $trad, $AllSettings;
+	global $twig, $menuAdminT, $menuAdminTN2, $d, $trad, $AllSettings;
 
 	$trad['dAction'] = 'create';
 
@@ -129,7 +129,7 @@ function create_site($id_site)
 
 function read_sites()
 {
-	global $twig, $menuAdminT, $menuAdminTN2, $trad, $AllSettings;
+	global $twig, $menuAdminT, $menuAdminTN2, $d, $trad, $AllSettings;
 
 	$sites = array();
 	get_vocab_admin('admin_site');
