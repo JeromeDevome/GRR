@@ -352,7 +352,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     // -> Imap
     else
     {   // utilisateur déjà enregistré ?
-        $sql = "SELECT UPPER(login) login FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".strtoupper(protect_data_sql($_login))."';";
+        $sql = "SELECT UPPER(login) login FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".strtoupper(protect_data_sql($_login))."' AND source = 'local';";
         /* $passwd_md5 = md5($_password); // à changer
         $sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
         from ".TABLE_PREFIX."_utilisateurs
@@ -768,58 +768,60 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     CREATE TABLE ".TABLE_PREFIX."_j_groupe_se3 (groupe varchar(40) NOT NULL default '',id_area_room int(11) NOT NULL default '0', statut varchar(20) NOT NULL default '',  PRIMARY KEY  (`groupe`,`id_area_room`));
     Par ailleurs, pour que cette fonctionnalité soit complète et dans l'esprit de GRR, il faudra développer une "petite" interface dans GRR pour gérer les entrées dans cette table.
     */
+	if(Settings::get("se3_liste_groupes_autorises") != "" ) {
         // Début de la fonctionnalité SE3
-    $grp = @grr_sql_query("SELECT groupe, id_area_room, statut FROM ".TABLE_PREFIX."_j_groupe_se3");
-    if ($grp)
-    {
-        // si la table ".TABLE_PREFIX."_j_groupe_se3 est implantée et non vide
-        //A modifier recalcul a chaque boucle
-        while ($resgrp = @mysqli_fetch_array($grp))
-        {
-            // balaye tous les groupes présents dans la table ".TABLE_PREFIX."_j_groupadmin_area
-            $statut_se3 = $resgrp['statut'];
-            $area_se3 = $resgrp['id_area_room'];
-            if ($statut_se3 == 'administrateur')
-            {
-                $table_user_se3 = "".TABLE_PREFIX."_j_useradmin_area"; $type_res = 'id_area';
-            }
-            if ($statut_se3 == 'acces_restreint')
-            {
-                $table_user_se3 = "".TABLE_PREFIX."_j_user_area"; $type_res = 'id_area';
-            }
-            if ($statut_se3 == 'gestionnaire')
-            {
-                $table_user_se3 = "".TABLE_PREFIX."_j_user_room"; $type_res = 'id_room';
-            }
-            if (se3_grp_members($resgrp['groupe'],$_login)=="oui")
-                @grr_sql_query("INSERT INTO `".$table_user_se3."` (login, ".$type_res.") values('".$_login."',".$area_se3.")");
-            else
-                @grr_sql_query("DELETE FROM `".$table_user_se3."` WHERE `login`='".$_login."' AND `".$type_res."`=".$area_se3);
-        }
-    }
+		$grp = @grr_sql_query("SELECT groupe, id_area_room, statut FROM ".TABLE_PREFIX."_j_groupe_se3");
+		if ($grp)
+		{
+			// si la table ".TABLE_PREFIX."_j_groupe_se3 est implantée et non vide
+			//A modifier recalcul a chaque boucle
+			while ($resgrp = @mysqli_fetch_array($grp))
+			{
+				// balaye tous les groupes présents dans la table ".TABLE_PREFIX."_j_groupadmin_area
+				$statut_se3 = $resgrp['statut'];
+				$area_se3 = $resgrp['id_area_room'];
+				if ($statut_se3 == 'administrateur')
+				{
+					$table_user_se3 = "".TABLE_PREFIX."_j_useradmin_area"; $type_res = 'id_area';
+				}
+				if ($statut_se3 == 'acces_restreint')
+				{
+					$table_user_se3 = "".TABLE_PREFIX."_j_user_area"; $type_res = 'id_area';
+				}
+				if ($statut_se3 == 'gestionnaire')
+				{
+					$table_user_se3 = "".TABLE_PREFIX."_j_user_room"; $type_res = 'id_room';
+				}
+				if (se3_grp_members($resgrp['groupe'],$_login)=="oui")
+					@grr_sql_query("INSERT INTO `".$table_user_se3."` (login, ".$type_res.") values('".$_login."',".$area_se3.")");
+				else
+					@grr_sql_query("DELETE FROM `".$table_user_se3."` WHERE `login`='".$_login."' AND `".$type_res."`=".$area_se3);
+			}
+		}
         // Note : Il reste à gérer finement l'interface graphique et à déduire l'incompatibilité éventuelle entre le domaine par défaut et les domaines autorisés pour chaque utilisateur
         // Fin de la fonctionnalité SE3
-    /* Application du patch en production depuis la rentrée à Palissy : Zéro problème (ci-dessous, l'extraction de la table via phpmyadmin)
-    CREATE TABLE `".TABLE_PREFIX."_j_groupe_se3` (
-        `groupe` varchar(40) NOT NULL default '',
-        `id_area_room` int(11) NOT NULL default '0',
-        `statut` varchar(20) NOT NULL default '',
-        PRIMARY KEY  (`groupe`,`id_area_room`)
-    ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-    INSERT INTO `".TABLE_PREFIX."_j_groupe_se3` (`groupe`, `id_area_room`, `statut`) VALUES
-    ('GRR_ADMIN_SALLES_REUNIONS', 1, 'administrateur'),
-    ('GRR_ADMIN_SALLES_PEDAGOGIQUES', 2, 'administrateur'),
-    ('GRR_ADMIN_LABOS_LANGUES', 3, 'administrateur'),
-    ('GRR_SALLES_REUNIONS', 1, 'acces_restreint'),
-    ('GRR_SALLES_PEDAGOGIQUES', 2, 'acces_restreint'),
-    ('GRR_LABOS_LANGUES', 3, 'acces_restreint'),
-    ('GRR_GESTION_SALLE_A01', 1, 'gestionnaire'),
-    ('GRR_GESTION_SALLE_A03', 2, 'gestionnaire'),
-    ('GRR_GESTION_SALLE_A314', 3, 'gestionnaire'),
-    ('GRR_GESTION_SALLE_A409', 4, 'gestionnaire'),
-    ('GRR_GESTION_SALLE_D05', 5, 'gestionnaire'),
-    ('GRR_GESTION_SALLE_A301E', 6, 'gestionnaire');
-    */
+		/* Application du patch en production depuis la rentrée à Palissy : Zéro problème (ci-dessous, l'extraction de la table via phpmyadmin)
+		CREATE TABLE `".TABLE_PREFIX."_j_groupe_se3` (
+			`groupe` varchar(40) NOT NULL default '',
+			`id_area_room` int(11) NOT NULL default '0',
+			`statut` varchar(20) NOT NULL default '',
+			PRIMARY KEY  (`groupe`,`id_area_room`)
+		) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+		INSERT INTO `".TABLE_PREFIX."_j_groupe_se3` (`groupe`, `id_area_room`, `statut`) VALUES
+		('GRR_ADMIN_SALLES_REUNIONS', 1, 'administrateur'),
+		('GRR_ADMIN_SALLES_PEDAGOGIQUES', 2, 'administrateur'),
+		('GRR_ADMIN_LABOS_LANGUES', 3, 'administrateur'),
+		('GRR_SALLES_REUNIONS', 1, 'acces_restreint'),
+		('GRR_SALLES_PEDAGOGIQUES', 2, 'acces_restreint'),
+		('GRR_LABOS_LANGUES', 3, 'acces_restreint'),
+		('GRR_GESTION_SALLE_A01', 1, 'gestionnaire'),
+		('GRR_GESTION_SALLE_A03', 2, 'gestionnaire'),
+		('GRR_GESTION_SALLE_A314', 3, 'gestionnaire'),
+		('GRR_GESTION_SALLE_A409', 4, 'gestionnaire'),
+		('GRR_GESTION_SALLE_D05', 5, 'gestionnaire'),
+		('GRR_GESTION_SALLE_A301E', 6, 'gestionnaire');
+		*/
+	}
     return "1";
 }
 /**
