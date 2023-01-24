@@ -812,6 +812,7 @@ $vocab['ssmenuadm_actif'] = "Active submenu item";
 $vocab['sso_actif_cacher_lien_deconnecter'] = "You have activated the management of an SSO. Check the box if you want the link \"Sign out\" in the upper banner does not appear for authenticated people in GRR by SSO.";
 $vocab['sso_active_correspondance_profil_statut'] = "View the LDAP correspondence interface <--> Status in GRR.";
 $vocab['sso_active_correspondance_profil_statut_text'] = "You can also activate below the display in the left menu of an option allowing the mapping of a user profile defined by an LDAP attribute (its function) with the status in GRR. You will then also need to configure your CAS server and GRR's config_CAS.inc.php file (See documentation).";
+$vocab['sso_environnement'] = "SSO environment";
 $vocab['sso_IsNotAllowedModify'] = "External users cannot change their name, first name and email in GRR.";
 $vocab['sso_redirection_accueil_grr_text1'] = "If you have activated the case service into account, you have the possibility, by checking the box below, to redirect an unauthenticated user to the GRR home page rather than to the case of authentication.";
 $vocab['sso_redirection_accueil_grr_text2'] = "Redirect an unauthenticized User Case to the GRR home page.";

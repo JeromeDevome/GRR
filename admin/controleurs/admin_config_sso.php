@@ -145,6 +145,7 @@ get_vocab_admin("cas_racine");
 get_vocab_admin("cas_proxy_explain");
 get_vocab_admin("cas_proxy_server");
 get_vocab_admin("cas_proxy_port");
+get_vocab_admin("sso_environnement");
 
 get_vocab_admin("autres_parametres_sso");
 get_vocab_admin("sso_actif_cacher_lien_deconnecter");
