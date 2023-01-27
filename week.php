@@ -3,9 +3,9 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-12-15 17:45$
+ * Dernière modification : $Date: 2023-01-27 13:53$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -754,7 +754,7 @@ for ($slot = $first_slot; $slot <= $last_slot; $slot++)
         }
         if (($insere_case == 'n') && ($display_day[$num_week_day] == 1))
         {
-            if (!isset($d[$weekday][$slot - $decale_slot * $nb_case]["id"])) // pas de réservation sur ce slot
+            if (!isset($d[$weekday][$slot - $decale_slot * $nb_case]["color"])) // pas de réservation sur ce slot
             {
                 $date_booking = mktime($hour, $minute, 0, $wmonth, $wday, $wyear);
                 if ($enable_periods == 'y')
