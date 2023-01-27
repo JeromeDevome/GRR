@@ -9,13 +9,19 @@ Tâches prévues :
 --
 -----
 
-Version 3.5.1 Release Candidate RC0 : à utiliser avec précaution
+Version 3.5.1 Release Candidate RC1 : à utiliser avec précaution
     correctif : mise en cohérence de la collation entre mise à jour et initialisation
     correctif : changement simultané des valeurs par défaut lors d'une mise à jour
     correctif : supprime une erreur SQL dans admin_edit_room.php
     correctif : mise à jour de la table grr_log (utile pour la conversion d'anciennes bases de données)
     correctif : authentification imap (issue #204 Github)
     correctif : les réservations sans type ou de type inconnu ne s'affichaient pas
+    correctif : code pour l'utilisation d'un préfixe dans les tables
+    correctif : ligne des jours si la semaine ne commence pas lundi
+    correctif : plage de créneaux définie par début et fin
+    correctif : vocabulaire
+    correctif : indexation des champs
+    correctif : authentification des utilisateurs par SSO et LDAP
     modification : cryptage des mots de passe par password_hash(), et modifications associées de la base de données et des initialisations
     modification : champ login, create_by et beneficiaire en varchar(190) pour compatibilité avec certains SSO
     modification : choix des participants par select2
