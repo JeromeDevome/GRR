@@ -87,7 +87,7 @@ if ($valid == "yes")
 				}
 				$new_login = strtoupper($new_login);
 				if ($reg_password !='')
-					$reg_password_c = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$reg_password);
+					$reg_password_c = password_hash($reg_password,PASSWORD_DEFAULT);
 				else
 				{
 					if ($reg_source != "local")
@@ -205,7 +205,7 @@ if ($valid == "yes")
 				}
 				else
 				{
-					$reg_password_c = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$reg_password);
+					$reg_password_c =  password_hash($reg_password,PASSWORD_DEFAULT);
 					if (($reg_password != $reg_password2) || (strlen($reg_password) < $pass_leng))
 					{
 						$msg = get_vocab("passwd_error");

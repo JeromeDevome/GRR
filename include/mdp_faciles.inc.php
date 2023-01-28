@@ -19,7 +19,7 @@ $liste_mdp = array("azerty", "", "123456", "1234567", "12345678", "0123456789", 
 $mdpFacile = array();
 
 foreach ($liste_mdp as &$value) {
-    $mdpFacile[] = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$value);
+    $mdpFacile[] = password_hash($value, PASSWORD_DEFAULT);
 	$mdpFacile[] = md5($value);
 }
 

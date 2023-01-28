@@ -55,10 +55,15 @@ if ($res)
 
 		// Les mdp facile
 		// Tableau définit dans config.inc.php : $mdpFacile . On y ajoute les varibales en liason avec l'utilisateur
-		$mdpFacile[] = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").strtoupper($row[3])); // Mot de passe = login en majuscule
-		$mdpFacile[] = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").strtolower($row[3])); // Mot de passe = login en minuscule
-
-		if(in_array($row[6], $mdpFacile)){
+		// on ajoute à $mdpFacile : login, login en majuscule, login en minuscule
+        $mdpPerso = array();
+        $mdpPerso[] = md5($row[3]);
+		$mdpPerso[] = md5(strtoupper($row[3]));
+        $mdpPerso[] = md5(strtolower($row[3]));
+        $mdpPerso[] = password_hash($row[3],PASSWORD_DEFAULT);
+		$mdpPerso[] = password_hash(strtoupper($row[3]),PASSWORD_DEFAULT);
+        $mdpPerso[] = password_hash(strtolower($row[3]),PASSWORD_DEFAULT);
+		if(in_array($row[6], $mdpFacile+ $mdpPerso)){
 
 			$user_nom = htmlspecialchars($row[0]);
 			$user_prenom = htmlspecialchars($row[1]);

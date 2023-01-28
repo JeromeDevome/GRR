@@ -42,10 +42,10 @@ class AdminFonctions
 
 	public static function NombreUtilisateursMDPfacile() // Nombre d'utilisateur avec un mot de passe trop simple
 	{
-		global $mdpFacile, $algoPwd, $hashpwd1;
+		global $mdpFacile;
 
 		// les utilisateurs à identification externe ont un mot de passe vide dans la base GRR, il est inutile de les afficher
-		$sql = "SELECT nom, prenom, login, etat, password FROM ".TABLE_PREFIX."_utilisateurs WHERE source = 'local'";
+/*		$sql = "SELECT nom, prenom, login, etat, password FROM ".TABLE_PREFIX."_utilisateurs WHERE source = 'local'";
 		$res = grr_sql_query($sql);
 
 		if ($res)
@@ -54,15 +54,20 @@ class AdminFonctions
 			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 			{
 				// Tableau définit dans config.inc.php : $mdpFacile . On y ajoute les varibales en liason avec l'utilisateur
-				$mdpFacile[] = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").strtoupper($row[2])); // Mot de passe = login en majuscule
-				$mdpFacile[] = hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").strtolower($row[2])); // Mot de passe = login en minuscule
+				$mdpFacile[] = md5($row[2]);
+				$mdpFacile[] = md5(strtoupper($row[2]));
+				$mdpFacile[] = md5(strtolower($row[2]));
+				$mdpFacile[] = password_hash($row[2],PASSWORD_DEFAULT);
+				$mdpFacile[] = password_hash(strtoupper($row[2]),PASSWORD_DEFAULT);
+				$mdpFacile[] = password_hash(strtolower($row[2]),PASSWORD_DEFAULT);
 
 				if(in_array($row[4], $mdpFacile))
 					$nb_facile++;
 			}
 		}
 
-		return $nb_facile;
+		return $nb_facile;*/
+		return "Indisponible";
 	}
 
 
