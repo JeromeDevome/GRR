@@ -880,7 +880,6 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_peer', 'true')");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_depth', '3')");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('backup_date', '')");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('hashpwd2', '".$hash_pwd2."')");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('mail_user_destinataire', 'y')");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('cas_version', 'CAS_VERSION_2_0')");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE `password` `password` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';");

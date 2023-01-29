@@ -109,7 +109,6 @@ INSERT INTO grr_setting VALUES ('grr_mail_Password', '');
 INSERT INTO grr_setting VALUES ('grr_mail_smtp', '');
 INSERT INTO grr_setting VALUES ('grr_mail_Username', '');
 INSERT INTO grr_setting VALUES ('grr_url', 'VariableInstal02');
-INSERT INTO grr_setting VALUES ('hashpwd2', 'VariableInstal07');
 INSERT INTO grr_setting VALUES ('imprimante', '1');
 INSERT INTO grr_setting VALUES ('ip_autorise', '');
 INSERT INTO grr_setting VALUES ('javascript_info_admin_disabled', '0');

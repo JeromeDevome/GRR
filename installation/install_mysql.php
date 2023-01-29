@@ -199,8 +199,6 @@ if ($etape == 4)
 					$conn .= "\$table_prefix=\"$table_prefix\";\n";
 					$conn .= "# ligne suivante : Port MySQL laissé par défaut\n";
 					$conn .= "\$dbPort=\"$port_db\";\n";
-					$conn .= "# ligne suivante : permet l'encodage des mdp\n";
-					$conn .= "\$hashpwd1=\"$hash_pwd1\";\n";
 					$conn .= "# ligne suivante : adaptation EnvOLE\n";
 					$conn .= "\$apikey=\"mypassphrase\";\n";
 					$conn .= "?".">";
