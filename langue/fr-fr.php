@@ -811,6 +811,7 @@ $vocab['ssmenuadm_actif'] = "Item de sous-menu actif";
 $vocab['sso_actif_cacher_lien_deconnecter'] = "Vous avez activé la prise en charge d'un SSO. Cochez la case ci-contre si vous souhaitez que le lien \"Se déconnecter\" dans le bandeau supérieur n'apparaisse pas pour les personnes authentifiées à GRR par SSO.";
 $vocab['sso_active_correspondance_profil_statut'] = "Afficher l'interface de mise en correspondance ldap <--> statut dans GRR.";
 $vocab['sso_active_correspondance_profil_statut_text'] = "Vous pouvez également activer ci-dessous l'affichage dans le menu de gauche d'une option permettant la mise en correspondance d'un profil utilisateur défini par un attribut LDAP (sa fonction) avec le statut dans GRR. Vous devrez alors également configurer votre serveur CAS et le fichier config_CAS.inc.php de GRR (Voir la documentation).";
+$vocab['sso_environnement'] = "Environnement SSO";
 $vocab['sso_IsNotAllowedModify'] = "Les utilisateurs externes ne peuvent pas modifier leur nom, prénom et email dans GRR.";
 $vocab['sso_redirection_accueil_grr_text1'] = "Si vous avez activez la prise en compte du service CAS, vous avez la possibilité, en cochant la case ci-dessous, de rediriger un utilisateur non authentifié vers la page d'accueil de GRR plutôt que vers le portail d'authentification CAS.";
 $vocab['sso_redirection_accueil_grr_text2'] = "Rediriger un utilisateur non authentifié CAS vers la page d'accueil de GRR.";

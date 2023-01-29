@@ -40,7 +40,7 @@
 										{{ form.input('cas_proxy_port', trad.cas_proxy_port, settings.cas_proxy_port, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
 									
 										<div class="form-group row col-sm-12">
-											<label class="col-sm-3" for="environnement_sso">{{ trad.cas_version }}</label>
+											<label class="col-sm-3" for="environnement_sso">{{ trad.sso_environnement }}</label>
 											<div class="col-sm-9">
 												<select class="form-control" name="environnement_sso" id="environnement_sso" onchange="afficherEnvironnement(this);">
 													<option value="0" {% if settings.sso_statut == 'no_sso' or settings.sso_statut == '' %} selected {% endif %}></option>
