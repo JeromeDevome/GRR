@@ -82,8 +82,8 @@
 										<td>{{ module.nom }}</td>
 										<td>{{ module.description }}</td>
 										<td>{{ module.version }}</td>
-										<td>{{ module.auteur }}</td>
-										<td>{{ module.copyright }}</td>
+										<td>{{ module.auteur|raw }}</td>
+										<td>{{ module.copyright|raw }}</td>
 										<td>
 											{% if module.activation != "" %}
 												<a href="?p=admin_config5&activation={{ module.lienActivation }}">{{ module.activation }}</a>

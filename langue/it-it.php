@@ -954,6 +954,7 @@ $vocab['verif_reservation_auto0'] = "La tâche automatique est déclenchée une 
 $vocab['verif_reservation_auto1'] = "La tâche automatique est déclenchée par l'exécution du script « verif_auto_grr.php ». (nécessite la possibilité de programmer l'exécution automatique et périodique du script verif_auto_grr.php)"; // A traduire
 $vocab['verif_reservation_auto2'] = "Mot de passe utilisé pour l'exécution du script verif_auto_grr.php (uniquement si vous avez choisi la 2ème option)"; // A traduire
 $vocab['verif_reservation_auto3'] = "Chemin complet du dossier d'installation de GRR (uniquement si vous avez choisi la 2ème option et si vous utilisez le script verif_auto_grr.php en tache cron)"; // A traduire
+$vocab['version'] = "Versione";
 $vocab['via_fichier'] = "Via un fichier";// A traduire
 $vocab['view'] = "Vedere";
 $vocab['viewday'] = "Vedere il giorno";

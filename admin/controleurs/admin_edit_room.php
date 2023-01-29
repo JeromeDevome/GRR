@@ -400,8 +400,9 @@ if (((authGetUserLevel(getUserName(),$area_id,"area") >=4 ) || (authGetUserLevel
 	grr_sql_free($res);
 }
 
-
-//Hook::Appel("hookEditRoom1");
+// Hook pour module externe
+$resulHook = Hook::Appel("hookEditRoom1");
+$d['hookEditRoom1'] = $resulHook['hookEditRoom1'];
 
 echo $twig->render('admin_edit_ressource.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'ressource' => $row, 'domaines' => $domaines));
 ?>

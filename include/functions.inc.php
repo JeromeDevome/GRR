@@ -1237,7 +1237,9 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 	else
 		echo begin_page(Settings::get("company"),"no_session");
 
-	Hook::Appel("hookHeader2");
+	$resulHook = Hook::Appel("hookHeader2");
+	echo $resulHook['hookHeader2'];
+
 	// Si nous ne sommes pas dans un format imprimable
 	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 	{
@@ -1263,16 +1265,8 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 		{
 
 			// HOOK
-			Hook::Appel("hookHeader1");
-
-			// Génération XML
-			/*$generationXML = 1;
-			if ((Settings::get("export_xml_actif") == "Oui") && ($adm == 0)){
-				include "{$racine}/include/generationxml.php";
-			}
-			if ((Settings::get("export_xml_plus_actif") == "Oui") && ($adm == 0)){
-				include "{$racine}/include/generationxmlplus.php";
-			}*/
+			$resulHook = Hook::Appel("hookHeader1");
+			echo $resulHook['hookHeader1'];
 
 			// On fabrique une date valide pour la réservation si ce n'est pas le cas
 			$date_ = mktime(0, 0, 0, $month, $day, $year);
@@ -1430,7 +1424,9 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 	else
 		echo begin_page_twig(Settings::get("company"),"no_session");
 
-	Hook::Appel("hookHeader2");
+	$resulHook = Hook::Appel("hookHeader2");
+	$d['hookHeader1'] = $resulHook['hookHeader2'];
+
 	// Si nous ne sommes pas dans un format imprimable
 	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 	{
@@ -1456,7 +1452,8 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 		{
 
 			// HOOK
-			Hook::Appel("hookHeader1");
+			$resulHook = Hook::Appel("hookHeader1");
+			$d['hookHeader1'] = $resulHook['hookHeader1'];
 
 			// On fabrique une date valide pour la réservation si ce n'est pas le cas
 			$date_ = mktime(0, 0, 0, $month, $day, $year);
@@ -6148,7 +6145,8 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
     if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
         $parametres_url = htmlspecialchars($_SERVER['QUERY_STRING']);
         
-	Hook::Appel("hookHeader2");
+	$resulHook = Hook::Appel("hookHeader2");
+	echo $resulHook['hookHeader2'];
 	// Si nous ne sommes pas dans un format imprimable
 	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 	{
@@ -6174,16 +6172,8 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 		{
 
 			// HOOK
-			Hook::Appel("hookHeader1");
-
-			// Génération XML
-			$generationXML = 1;
-			if ((Settings::get("export_xml_actif") == "Oui") && ($adm == 0)){
-				include "{$racine}/include/generationxml.php";
-			}
-			if ((Settings::get("export_xml_plus_actif") == "Oui") && ($adm == 0)){
-				include "{$racine}/include/generationxmlplus.php";
-			}
+			$resulHook = Hook::Appel("hookHeader1");
+			echo $resulHook['hookHeader1'];
 
 			// On fabrique une date valide pour la réservation si ce n'est pas le cas
 			$date_ = mktime(0, 0, 0, $month, $day, $year);

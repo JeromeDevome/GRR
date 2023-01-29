@@ -122,7 +122,7 @@ if (isset($_POST['ok']) && $upload_Module == 1) {
     // Enregistrement du logo
     //$_FILES['doc_file'] = isset($_FILES['doc_file']) ? $_FILES['doc_file'] : null;
     /* Test premier, juste pour bloquer les double extensions */
-	if($_FILES['file']['error'] > 0) {
+	if($_FILES['doc_file']['error'] > 0) {
         exit('Erreur n°'.$_FILES['file']['error']);
     }
     if (count(explode('.', $_FILES['doc_file']['name'])) > 2) {
@@ -206,6 +206,7 @@ get_vocab_admin("explain_multisite");
 get_vocab_admin("Activer_module_multisite");
 
 get_vocab_admin("Module_Ext_Import_Description");
+get_vocab_admin("version");
 
 
 // Jour de Cycle

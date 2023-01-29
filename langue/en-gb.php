@@ -954,6 +954,7 @@ $vocab['verif_reservation_auto0'] = "The automatic task is activated once a day 
 $vocab['verif_reservation_auto1'] = "The automatic task is activated by the execution of the script « verif_auto_grr.php ». (needs the possibility of programming the automatic and periodic execution of the script script verif_auto_grr.php)";
 $vocab['verif_reservation_auto2'] = "Used password for the execution of the script verif_auto_grr.php (only if you chose the second option)";
 $vocab['verif_reservation_auto3'] = "Complete path of the GRR installation folder (Only if you have chosen the 2nd option and if you use the script verif_auto_grr.php in task cron)";
+$vocab['version'] = "Version";
 $vocab['via_fichier'] = "With a file";
 $vocab['view'] = "View";
 $vocab['viewday'] = "View day";
