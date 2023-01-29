@@ -24,7 +24,7 @@ Chat/Discord : https://discord.com/channels/484639573243068417/
 
 **Requiert :**
 
-PHP : >= 7.2.5 && <= 7.3; nécessite au moins les modules php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml (*)
+PHP : >= 7.2.5 && <= 8.1; nécessite au moins les modules php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml (*)
 
 MySQL: >= 5.4 && <= 5.7
 
