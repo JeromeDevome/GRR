@@ -3,9 +3,9 @@
  * admin_view_connexions.php
  * Interface de gestion des connexions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-17 11:30$
+ * Dernière modification : $Date: 2023-01-31 19:06$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.

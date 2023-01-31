@@ -3,7 +3,7 @@
  * installation/fonctions/maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-01-24 09:13$
+ * Dernière modification : $Date: 2023-01-31 19:11$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB

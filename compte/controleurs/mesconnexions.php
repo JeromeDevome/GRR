@@ -3,9 +3,9 @@
  * mesconnexions.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-14-20 17:20$
- * @author    JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2023-01-31 19:08$
+ * @author    JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.

@@ -3,9 +3,9 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-19 14:30$
+ * Dernière modification : $Date: 2023-01-31 19:10$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -857,7 +857,7 @@ function grr_resumeSession()
 	
 		// To be removed
 		// Validating session data
-	$sql = "SELECT password = '" . $_SESSION['password'] . "' PASSWORD, login = '" . protect_data_sql($_SESSION['login']) . "' LOGIN, statut = '" . $_SESSION['statut'] . "' STATUT
+	$sql = "SELECT password = '" . $_SESSION['password'] . "' PASSWORD, login = '" . protect_data_sql($_SESSION['login']) . "' login, statut = '" . $_SESSION['statut'] . "' STATUT
 	from ".TABLE_PREFIX."_utilisateurs where login = '" . protect_data_sql($_SESSION['login']) . "'";
 	$res = grr_sql_query($sql);
 	$row = grr_sql_row_keyed($res, 0);

@@ -2,9 +2,9 @@
 /**
  * AdminFonctions.php
  * Fonctions Général de l'administration
- * Dernière modification : $Date: 2022-02-01 11:54$
+ * Dernière modification : $Date: 2023-01-31 19:07$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
