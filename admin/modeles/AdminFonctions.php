@@ -2,7 +2,7 @@
 /**
  * AdminFonctions.php
  * Fonctions Général de l'administration
- * Dernière modification : $Date: 2023-01-31 19:07$
+ * Dernière modification : $Date: 2023-02-01 16:59$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -40,34 +40,35 @@ class AdminFonctions
 	}
 
 
-	public static function NombreUtilisateursMDPfacile() // Nombre d'utilisateur avec un mot de passe trop simple
+	public static function NombreUtilisateursMDPfacile() // Nombre d'utilisateurs avec un mot de passe trop simple
 	{
 		global $mdpFacile;
-
-		// les utilisateurs à identification externe ont un mot de passe vide dans la base GRR, il est inutile de les afficher
-/*		$sql = "SELECT nom, prenom, login, etat, password FROM ".TABLE_PREFIX."_utilisateurs WHERE source = 'local'";
-		$res = grr_sql_query($sql);
-
-		if ($res)
-		{
-			$nb_facile = 0;
-			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-			{
-				// Tableau définit dans config.inc.php : $mdpFacile . On y ajoute les varibales en liason avec l'utilisateur
-				$mdpFacile[] = md5($row[2]);
-				$mdpFacile[] = md5(strtoupper($row[2]));
-				$mdpFacile[] = md5(strtolower($row[2]));
-				$mdpFacile[] = password_hash($row[2],PASSWORD_DEFAULT);
-				$mdpFacile[] = password_hash(strtoupper($row[2]),PASSWORD_DEFAULT);
-				$mdpFacile[] = password_hash(strtolower($row[2]),PASSWORD_DEFAULT);
-
-				if(in_array($row[4], $mdpFacile))
-					$nb_facile++;
-			}
-		}
-
-		return $nb_facile;*/
-		return "Indisponible";
+        $nb_facile = 0;
+        // les utilisateurs à identification externe ont un mot de passe vide dans la base GRR, il est inutile de les compter
+        $sql = "SELECT nom, prenom, statut, login, etat, source, password FROM ".TABLE_PREFIX."_utilisateurs WHERE source = 'local'";
+        $res = grr_sql_query($sql);
+        if ($res)
+        {
+            foreach($res as $row)
+            {
+                // Les mdp faciles
+                // Tableau défini dans include/mdp_faciles.inc.php : $mdpFacile . On y ajoute les variables en liaison avec l'utilisateur
+                // on adjoint à $mdpFacile : login, login en majuscule, login en minuscule
+                $mdpPerso = array();
+                $mdpPerso[] = $row['login'];
+                $mdpPerso[] = strtoupper($row['login']);
+                $mdpPerso[] = strtolower($row['login']);
+                $mdpFaciles = $mdpFacile+ $mdpPerso;
+                foreach($mdpFaciles as $mdp)
+                {
+                    if(checkPassword($mdp, $row['password'], $row['login'], FALSE))// c'est un mot de passe facile
+                    {
+                        $nb_facile++;
+                    }
+                }
+            }
+        }
+        return $nb_facile;
 	}
 
 
