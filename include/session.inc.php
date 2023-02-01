@@ -3,9 +3,9 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-09-12 10:14$
+ * Dernière modification : $Date: 2023-02-01 17:14$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -759,37 +759,39 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     CREATE TABLE ".TABLE_PREFIX."_j_groupe_se3 (groupe varchar(40) NOT NULL default '',id_area_room int(11) NOT NULL default '0', statut varchar(20) NOT NULL default '',  PRIMARY KEY  (`groupe`,`id_area_room`));
     Par ailleurs, pour que cette fonctionnalité soit complète et dans l'esprit de GRR, il faudra développer une "petite" interface dans GRR pour gérer les entrées dans cette table.
     */
+	if(Settings::get("se3_liste_groupes_autorises") != "" ) {
         // Début de la fonctionnalité SE3
-    $grp = @grr_sql_query("SELECT groupe, id_area_room, statut FROM ".TABLE_PREFIX."_j_groupe_se3");
-    if ($grp)
-    {
-        // si la table ".TABLE_PREFIX."_j_groupe_se3 est implantée et non vide
-        //A modifier recalcul a chaque boucle
-        while ($resgrp = @mysqli_fetch_array($grp))
+        $grp = @grr_sql_query("SELECT groupe, id_area_room, statut FROM ".TABLE_PREFIX."_j_groupe_se3");
+        if ($grp)
         {
-            // balaye tous les groupes présents dans la table ".TABLE_PREFIX."_j_groupadmin_area
-            $statut_se3 = $resgrp['statut'];
-            $area_se3 = $resgrp['id_area_room'];
-            if ($statut_se3 == 'administrateur')
+            // si la table ".TABLE_PREFIX."_j_groupe_se3 est implantée et non vide
+            //A modifier recalcul a chaque boucle
+            while ($resgrp = @mysqli_fetch_array($grp))
             {
-                $table_user_se3 = "".TABLE_PREFIX."_j_useradmin_area"; $type_res = 'id_area';
+                // balaye tous les groupes présents dans la table ".TABLE_PREFIX."_j_groupadmin_area
+                $statut_se3 = $resgrp['statut'];
+                $area_se3 = $resgrp['id_area_room'];
+                if ($statut_se3 == 'administrateur')
+                {
+                    $table_user_se3 = "".TABLE_PREFIX."_j_useradmin_area"; $type_res = 'id_area';
+                }
+                if ($statut_se3 == 'acces_restreint')
+                {
+                    $table_user_se3 = "".TABLE_PREFIX."_j_user_area"; $type_res = 'id_area';
+                }
+                if ($statut_se3 == 'gestionnaire')
+                {
+                    $table_user_se3 = "".TABLE_PREFIX."_j_user_room"; $type_res = 'id_room';
+                }
+                if (se3_grp_members($resgrp['groupe'],$_login)=="oui")
+                    @grr_sql_query("INSERT INTO `".$table_user_se3."` (login, ".$type_res.") values('".$_login."',".$area_se3.")");
+                else
+                    @grr_sql_query("DELETE FROM `".$table_user_se3."` WHERE `login`='".$_login."' AND `".$type_res."`=".$area_se3);
             }
-            if ($statut_se3 == 'acces_restreint')
-            {
-                $table_user_se3 = "".TABLE_PREFIX."_j_user_area"; $type_res = 'id_area';
-            }
-            if ($statut_se3 == 'gestionnaire')
-            {
-                $table_user_se3 = "".TABLE_PREFIX."_j_user_room"; $type_res = 'id_room';
-            }
-            if (se3_grp_members($resgrp['groupe'],$_login)=="oui")
-                @grr_sql_query("INSERT INTO `".$table_user_se3."` (login, ".$type_res.") values('".$_login."',".$area_se3.")");
-            else
-                @grr_sql_query("DELETE FROM `".$table_user_se3."` WHERE `login`='".$_login."' AND `".$type_res."`=".$area_se3);
         }
+            // Note : Il reste à gérer finement l'interface graphique et à déduire l'incompatibilité éventuelle entre le domaine par défaut et les domaines autorisés pour chaque utilisateur
+            // Fin de la fonctionnalité SE3
     }
-        // Note : Il reste à gérer finement l'interface graphique et à déduire l'incompatibilité éventuelle entre le domaine par défaut et les domaines autorisés pour chaque utilisateur
-        // Fin de la fonctionnalité SE3
     /* Application du patch en production depuis la rentrée à Palissy : Zéro problème (ci-dessous, l'extraction de la table via phpmyadmin)
     CREATE TABLE `".TABLE_PREFIX."_j_groupe_se3` (
         `groupe` varchar(40) NOT NULL default '',
