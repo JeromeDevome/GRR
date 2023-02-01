@@ -2,9 +2,9 @@
 /**
  * admin_user_mdp_facile.php
  * interface de gestion des utilisateurs de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2023-02-01 10:01$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -50,62 +50,49 @@ $sql = "SELECT nom, prenom, statut, login, etat, source, password FROM ".TABLE_P
 $res = grr_sql_query($sql);
 if ($res)
 {
-	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+	foreach($res as $row)
 	{
-
-		// Les mdp facile
-		// Tableau définit dans config.inc.php : $mdpFacile . On y ajoute les varibales en liason avec l'utilisateur
-		// on ajoute à $mdpFacile : login, login en majuscule, login en minuscule
+		// Les mdp faciles
+		// Tableau défini dans include/mdp_faciles.inc.php : $mdpFacile . On y ajoute les variables en liaison avec l'utilisateur
+		// on adjoint à $mdpFacile : login, login en majuscule, login en minuscule
         $mdpPerso = array();
-        $mdpPerso[] = md5($row[3]);
-		$mdpPerso[] = md5(strtoupper($row[3]));
-        $mdpPerso[] = md5(strtolower($row[3]));
-        $mdpPerso[] = password_hash($row[3],PASSWORD_DEFAULT);
-		$mdpPerso[] = password_hash(strtoupper($row[3]),PASSWORD_DEFAULT);
-        $mdpPerso[] = password_hash(strtolower($row[3]),PASSWORD_DEFAULT);
-		if(in_array($row[6], $mdpFacile+ $mdpPerso)){
-
-			$user_nom = htmlspecialchars($row[0]);
-			$user_prenom = htmlspecialchars($row[1]);
-			$user_statut = $row[2];
-			$user_login = $row[3];
-			$user_etat[$i] = $row[4];
-			$user_source = $row[5];
-			if (($user_etat[$i] == 'actif') && (($display == 'tous') || ($display == 'actifs')))
-				$affiche = 'yes';
-			else if (($user_etat[$i] != 'actif') && (($display == 'tous') || ($display == 'inactifs')))
-				$affiche = 'yes';
-			else
-				$affiche = 'no';
-			if ($affiche == 'yes')
-			{
-			// Affichage des login, noms et prénoms
-				$col[$i][1] = $user_login;
-				$col[$i][2] = "$user_nom $user_prenom";
-			// Affichage du statut
-				if ($user_statut == "administrateur")
-				{
-					$col[$i][4] = get_vocab("statut_administrator");
-				}
-				if ($user_statut == "visiteur")
-				{
-					$col[$i][4] = get_vocab("statut_visitor");
-				}
-				if ($user_statut == "utilisateur")
-				{
-					$col[$i][4] = get_vocab("statut_user");
-				}
-				if ($user_statut == "gestionnaire_utilisateur")
-				{
-					$col[$i][4] = get_vocab("statut_user_administrator");
-				}
-				if ($user_etat[$i] == 'actif')
-					$col[$i][6] = 'Actif';
-				else
-					$col[$i][6] = 'Inactif';
-			}
-
-		}
+        $mdpPerso[] = $row['login'];
+        $mdpPerso[] = strtoupper($row['login']);
+        $mdpPerso[] = strtolower($row['login']);
+        $mdpFaciles = $mdpFacile+ $mdpPerso;
+        foreach($mdpFaciles as $mdp)
+        {
+            if(checkPassword($mdp, $row['password'], $row['login'], FALSE))// c'est un mot de passe facile
+            {
+                $affiche = ($display == 'tous');
+                $affiche = $affiche || (($display == 'actifs')&&($row['etat'] == 'actif')) || (($display == 'inactifs')&&($row['etat'] != 'actif'));
+                if($affiche)
+                {
+                    $data = array();
+                    $data[1]=$row['login'];
+                    $data[2]=htmlspecialchars($row['nom'])." ".htmlspecialchars($row['prenom']);
+                    // Affichage du statut
+                    if ($row['statut'] == "administrateur")
+                    {
+                        $data[4] = get_vocab("statut_administrator");
+                    }
+                    if ($row['statut'] == "visiteur")
+                    {
+                        $data[4] = get_vocab("statut_visitor");
+                    }
+                    if ($row['statut'] == "utilisateur")
+                    {
+                        $data[4] = get_vocab("statut_user");
+                    }
+                    if ($row['statut'] == "gestionnaire_utilisateur")
+                    {
+                        $data[4] = get_vocab("statut_user_administrator");
+                    }
+                    $data[6] = ($row['etat'] == 'actif')? "Actif": "Inactif";
+                    $col[] = $data;
+                }
+            }
+        }
 	}
 }
 

@@ -1,10 +1,10 @@
 <?php
 /**
- * mdp_faciles.php
+ * mdp_faciles.inc.php
  * Fonctions Général de l'administration
- * Dernière modification : $Date: 2020-09-13 16:00$
- * @author    JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2023-02-01 10:00$
+ * @author    JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -15,7 +15,7 @@
  * (at your option) any later version.
  */
 
-$liste_mdp = array("azerty", "", "123456", "1234567", "12345678", "0123456789", "000000", "00000000", "admin","azertyui","azertyuiop","grr","administrateur","administrator");
+/*$liste_mdp = array("azerty", "", "123456", "1234567", "12345678", "0123456789", "000000", "00000000", "admin","azertyui","azertyuiop","grr","administrateur","administrator");
 $mdpFacile = array();
 
 foreach ($liste_mdp as &$value) {
@@ -23,6 +23,7 @@ foreach ($liste_mdp as &$value) {
 	$mdpFacile[] = md5($value);
 }
 
-unset($value);
-
+unset($value);*/
+// le hachage d'un mot de passe donné n'est pas constant, il faut utiliser password_verify() pour "décoder", donc laisser le tableau des mots de passe faciles en clair
+$mdpFacile = array("azerty", "", "123456", "1234567", "12345678", "0123456789", "000000", "00000000", "admin","azertyui","azertyuiop","grr","administrateur","administrator");
 ?>

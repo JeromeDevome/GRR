@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-07-22 09:28$
+ * Dernière modification : $Date: 2023-02-01 09:28$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -133,12 +133,13 @@ function cal($month, $year, $type)
 	return $s;
 }
 
-/** function checkPassword($pwd, $pwd_hash, $login)
+/** function checkPassword($pwd, $pwd_hash, $login, $test_rehash)
 * vérifie que le mot de passe fourni $pwd correspond au $pwd_hash issu de la BDD pour l'utilisateur associé au $login
-* si le mot de passe n'a pas été enregistré par la fonction password_hash, mais est valide pour md5, alors, si la base est en version 3.5.1+, la fonction le convertit au passage et l'enregistre au nouveau format
+* $test_rehash indique s'il faut tester que le mot de passe haché doit être mis à jour
+* si le mot de passe n'a pas été enregistré par la fonction password_hash, mais est valide pour md5 ou l'algo de v4.0.0, alors, si la base est en version 3.5.1+, la fonction le convertit au passage et l'enregistre au nouveau format
 * renvoie TRUE si le mot de passe est valable, FALSE sinon ; déclenche une erreur si l'enregistrement du nouveau mot de passe échoue
 */
-function checkPassword($pwd, $pwd_hash, $login){
+function checkPassword($pwd, $pwd_hash, $login, $test_rehash = TRUE){
 	global $algoPwd, $hashpwd1;
 
     $result = false;
@@ -150,13 +151,13 @@ function checkPassword($pwd, $pwd_hash, $login){
         if (password_verify($pwd, $pwd_hash))
         { // c'est un mot de passe codé par password_hash, voyons s'il faut le mettre à jour
             $result = true;
-            if (password_needs_rehash($pwd_hash, PASSWORD_DEFAULT))
+            if ($test_rehash &&(password_needs_rehash($pwd_hash, PASSWORD_DEFAULT)))
             {
                 $do_rehash = true;
             }
         }
     }
-    /* sinon $pwd_hash est censé être issu de MD5 */
+    /* sinon $pwd_hash est censé être issu de MD5 ou de l'algorithme de la v4.0.0 */
     else
     {
         if (md5($pwd) == $pwd_hash)
@@ -165,12 +166,12 @@ function checkPassword($pwd, $pwd_hash, $login){
             // si la base est 3.5.1+, on mettra à jour le mot de passe
             $ver = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='version';");
             if("3.5.1" <= $ver) 
-                $do_rehash = true;
+                $do_rehash = $test_rehash;
         }
 		elseif(hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$pwd) == $pwd_hash) 	// Controle de l'algo V4.0.0
 		{
 			$result = true;
-            $do_rehash = true;
+            $do_rehash = $test_rehash;
 		}
 
     }
