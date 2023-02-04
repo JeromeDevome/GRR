@@ -127,7 +127,7 @@ $upload_Module = 1;
 # Nb de jour maximum que l'on garde les logs de connexions, 0 = aucune limite
 $nbMaxJoursLogConnexion = 365;
 
-# Nb de jour maximum que l'on garde les logs de connexions, 0 = aucune limite
+# Nb de jour maximum que l'on garde les logs des mails envoyés, 0 = aucune limite
 $nbMaxJoursLogEmail = 365;
 
 # Algorythme de cryptage des comptes utilisateur, ne pas changer après installation sauf si reset des mots de passes. Défaut : ripemd320
