@@ -165,7 +165,7 @@ function checkPassword($pwd, $pwd_hash, $login, $test_rehash = TRUE){
             $result = true;
             // si la base est 3.5.1+, on mettra à jour le mot de passe
             $ver = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='version';");
-            if("3.5.1" <= $ver) 
+            if($ver >= "0400000")
                 $do_rehash = $test_rehash;
         }
 		elseif(hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$pwd) == $pwd_hash) 	// Controle de l'algo V4.0.0
