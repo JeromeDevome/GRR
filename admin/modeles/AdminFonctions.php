@@ -74,34 +74,27 @@ class AdminFonctions
 
 	public static function Warning() // Alerte
 	{
+        global $versionReposite, $version_grr;
 
-		$type = "";
-		$MessageWarning = "";
-		$NomLien = "";
-		$lien = "";
+        $alerteTDB = array();
+
+        if ( stristr($version_grr, 'a') || stristr($version_grr, 'b') || stristr($version_grr, 'RC') || stristr($versionReposite, 'github') || stristr($versionReposite, 'alpha')|| stristr($versionReposite, 'beta') || stristr($versionReposite, 'RC') ){
+            $alerteTDB[] = array('type' =>"danger", 'MessageWarning' => "Version de développement, ne pas utiliser en production !", 'NomLien' => "Trouver une autre version", 'lien' => "https://github.com/JeromeDevome/GRR/releases");
+		}
 
 		if ( time() < Settings::get("begin_bookings") || time() > Settings::get("end_bookings"))
 		{
-			$type = "danger";
-			$MessageWarning = "Les dates d'ouverture des réservations sont actuellements fermées !";
-			$NomLien = "Configurer les dates";
-			$lien = "?p=admin_config";
+            $alerteTDB[] = array('type' =>"danger", 'MessageWarning' => "Les dates d'ouverture des réservations sont actuellements fermées !", 'NomLien' => "Configurer les dates", 'lien' => "?p=admin_config");
 		} elseif( (time() + 2592000) < Settings::get("begin_bookings") || (time() + 2592000) > Settings::get("end_bookings"))
 		{
-			$type = "warning";
-			$MessageWarning = "Les dates d'ouverture des réservations seront prochainement fermées.";
-			$NomLien = "Configurer les dates";
-			$lien = "?p=admin_config";
+            $alerteTDB[] = array('type' =>"warning", 'MessageWarning' => "Les dates d'ouverture des réservations seront prochainement fermées.", 'NomLien' => "Configurer les dates", 'lien' => "?p=admin_config");
 		}
 
 		if ( (time() - 2592000) > Settings::get("backup_date") ){
-			$type = "warning";
-			$MessageWarning = "La dernière sauvegarde de la BDD date de plus d'un mois !";
-			$NomLien = "Faire une sauvegarde";
-			$lien = "admin_save_mysql.php?flag_connect=yes";
+            $alerteTDB[] = array('type' =>"warning", 'MessageWarning' => "La dernière sauvegarde de la BDD date de plus d'un mois !", 'NomLien' => "Faire une sauvegarde", 'lien' => "admin_save_mysql.php?flag_connect=yes");
 		}
 
-		return array($type, $MessageWarning, $NomLien, $lien);
+		return $alerteTDB;
 	}
 
 

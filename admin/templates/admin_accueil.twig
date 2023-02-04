@@ -4,178 +4,154 @@
 
 {% block content %}
 
-
-	<div class="row">
-
-		<!-- Nombre d'utilisateur connecté -->
-		<div class="col-md-3 col-sm-6 col-xs-12">
-			<div class="info-box">
-				<span class="info-box-icon bg-green"><i class="fas fa-users"></i></span>
-
-				<div class="info-box-content">
-					<span class="info-box-text">{{ trad.users_connected }}</span>
-					<span class="info-box-number"><a href="?p=admin_view_connexions">{{ trad.dNombreConnecte }} / {{ trad.dNombreUtilisateur }}</a></span>
-				</div>
-				<!-- /.info-box-content -->
-			</div>
-			<!-- /.info-box -->
-		</div>
-
-		<!-- Nombre d'utilisateur avec un mot de passe facile -->
-		<div class="col-md-3 col-sm-6 col-xs-12">
-			<div class="info-box">
-				<span class="info-box-icon bg-orange"><i class="fas fa-user-shield "></i></span>
-
-				<div class="info-box-content">
-					<span class="info-box-text">{{ trad.admin_user_mdp_facile }}</span>
-					<span class="info-box-number"><a href="?p=admin_user_mdp_facile">{{ trad.dNombreMDPFacile }}</a></span>
-				</div>
-				<!-- /.info-box-content -->
-			</div>
-			<!-- /.info-box -->
-		</div>
-
-		<div class="col-md-3 col-sm-6 col-xs-12">
-
-			{% if trad.dTypeWarning == "" %}
-				<div class="info-box bg-aqua">
-					<span class="info-box-icon"><i class="fas fa-info"></i></span>
-
-					<div class="info-box-content">
-						<p>Aucune anomalie</p>
-					</div>
-					<!-- /.info-box-content -->
-				</div>
-				<!-- /.info-box -->
-			{% elseif trad.dTypeWarning == "danger" %}
-				<div class="info-box bg-red">
-					<span class="info-box-icon"><i class="fas fa-exclamation-triangle"></i></span>
-
-					<div class="info-box-content">
-						<p>{{ trad.dMessageWarning }}</p>
-
-						<div class="progress">
-							<div class="progress-bar" style="width: 100%"></div>
-						</div>
-						<span class="progress-description">
-							<a href="{{ trad.dLienWarning }}">{{ trad.dTexteLienWarning }}</a>
-						</span>
-					</div>
-					<!-- /.info-box-content -->
-				</div>
-				<!-- /.info-box -->
-			{% else %}
-				<div class="info-box bg-orange">
-					<span class="info-box-icon"><i class="fas fa-exclamation-triangle"></i></span>
-
-					<div class="info-box-content">
-						<p>{{ trad.dMessageWarning }}</p>
-
-						<div class="progress">
-							<div class="progress-bar" style="width: 100%"></div>
-						</div>
-						<span class="progress-description">
-							<a href="{{ trad.dLienWarning }}">{{ trad.dTexteLienWarning }}</a>
-						</span>
-					</div>
-					<!-- /.info-box-content -->
-				</div>
-				<!-- /.info-box -->
-			{% endif %}
-
-		</div>
-		
-		<div class="col-md-3 col-sm-6 col-xs-12">
-			{% if trad.dLevel >=6 %}
-				<a  href="admin_save_mysql.php?flag_connect=yes" class="btn btn-app">
-					<i class="fa fa-save"></i> Backup
-				</a>
-			{% endif %}
-		</div>
-
-	</div>
-
 <div class="row">
+	<div class="col-md-9">
+		<div class="row">
 
-		<!-- Nombre d'utilisateur connecté -->
-		<div class="col-md-3 col-sm-6 col-xs-12">
-			<div class="box box-success">
-				<div class="box-header">
-					<h3 class="box-title">Les dernières connexions</h3>
+			<!-- Nombre d'utilisateur connecté -->
+			<div class="col-md-4 col-sm-12 col-xs-12">
+				<div class="info-box">
+					<span class="info-box-icon bg-green"><i class="fas fa-users"></i></span>
+
+					<div class="info-box-content">
+						<span class="info-box-text">{{ trad.users_connected }}</span>
+						<span class="info-box-number"><a href="?p=admin_view_connexions">{{ trad.dNombreConnecte }} / {{ trad.dNombreUtilisateur }}</a></span>
+					</div>
+					<!-- /.info-box-content -->
 				</div>
-				<!-- /.box-header -->
-				<div class="box-body no-padding">
-					<table class="table table-condensed">
-						<tbody>
-							<tr>
-								<th style="width: 10px">#</th>
-								<th>{{ trad.login_name }}</th>
-								<th>{{ trad.begining_of_session }}</th>
-							</tr>
-							{% for log in trad.dDernieresConnexions %}
-								<tr {% if log.clos == 0 %}class="success"{% endif %}>
-									{% if log.clos == 0 %}
-										<td><span class="badge bg-green">O</span></td>
-									{% else %}
-										<td><span class="badge bg-red">O</span></td>
-									{% endif %}
-									<td>{{ log.login }}</td>
-									<td>{{ log.debut }}</td>
+				<!-- /.info-box -->
+			</div>
+
+			<!-- Nombre d'utilisateur avec un mot de passe facile -->
+			<div class="col-md-4 col-sm-6 col-xs-12">
+				<div class="info-box">
+					<span class="info-box-icon bg-orange"><i class="fas fa-user-shield "></i></span>
+
+					<div class="info-box-content">
+						<span class="info-box-text">{{ trad.admin_user_mdp_facile }}</span>
+						<span class="info-box-number"><a href="?p=admin_user_mdp_facile">{{ trad.dNombreMDPFacile }}</a></span>
+					</div>
+				</div>
+				<!-- /.info-box -->
+			</div>
+
+			<!-- Actions rapide -->
+			<div class="col-md-4 col-sm-6 col-xs-12">
+				{% if trad.dLevel >=6 %}
+					<a  href="admin_save_mysql.php?flag_connect=yes" class="btn btn-app">
+						<i class="fa fa-save"></i> Backup
+					</a>
+				{% endif %}
+			</div>
+
+		</div>
+
+		<div class="row">
+
+			<!-- Nombre d'utilisateur connecté -->
+			<div class="col-md-6 col-sm-12 col-xs-12">
+				<div class="box box-success">
+					<div class="box-header">
+						<h3 class="box-title">Les dernières connexions</h3>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body no-padding">
+						<table class="table table-condensed">
+							<tbody>
+								<tr>
+									<th style="width: 10px">#</th>
+									<th>{{ trad.login_name }}</th>
+									<th>{{ trad.begining_of_session }}</th>
 								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
+								{% for log in trad.dDernieresConnexions %}
+									<tr {% if log.clos == 0 %}class="success"{% endif %}>
+										{% if log.clos == 0 %}
+											<td><span class="badge bg-green">O</span></td>
+										{% else %}
+											<td><span class="badge bg-red">O</span></td>
+										{% endif %}
+										<td>{{ log.login }}</td>
+										<td>{{ log.debut }}</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- /.box-body -->
 				</div>
-				<!-- /.box-body -->
+			</div>
+
+			<!-- Réservations à modérer -->
+			<div class="col-md-6 col-sm-12 col-xs-12">
+				<div class="box box-info">
+					<div class="box-header">
+						<h3 class="box-title">{{ trad.dNombreModeration }} réservation(s) à modérer</h3>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body no-padding">
+						<table class="table table-condensed">
+							<thead>
+								<tr>
+									<th>{{ trad.room }}</th>
+									<th>{{ trad.start_date }}</th>
+									<th>{{ trad.created_by }}</th>
+									<th>{{ trad.nom_beneficiaire }}</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for resaMode in trad.dListeModeration %}
+									<tr>
+										<td>{{ resaMode.ressource }}</td>
+										<td>{{ resaMode.debut }}</td>
+										<td>{{ resaMode.createur }}</td>
+										<td>{{ resaMode.beneficiaire }}</td>
+										<td><a href='{{ resaMode.lien }}'><span class='glyphicon glyphicon-new-window'></span></a></td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- /.box-body -->
+				</div>
 			</div>
 		</div>
 
-		<!-- Réservations à modérer -->
-		<div class="col-md-6 col-sm-12 col-xs-12">
-			<div class="box box-info">
-				<div class="box-header">
-					<h3 class="box-title">{{ trad.dNombreModeration }} réservation(s) à modérer</h3>
-				</div>
-				<!-- /.box-header -->
-				<div class="box-body no-padding">
-					<table class="table table-condensed">
-						<thead>
-							<tr>
-								<th>{{ trad.room }}</th>
-								<th>{{ trad.start_date }}</th>
-								<th>{{ trad.created_by }}</th>
-								<th>{{ trad.nom_beneficiaire }}</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for resaMode in trad.dListeModeration %}
-								<tr>
-									<td>{{ resaMode.ressource }}</td>
-									<td>{{ resaMode.debut }}</td>
-									<td>{{ resaMode.createur }}</td>
-									<td>{{ resaMode.beneficiaire }}</td>
-									<td><a href='{{ resaMode.lien }}'><span class='glyphicon glyphicon-new-window'></span></a></td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
-				<!-- /.box-body -->
+	</div>
+	<div class="col-md-3">
+		<div class="row">
+			<!-- Anomalies -->
+			<div class="col-md12">
+
+				{% for alerte in d.alerteTDB %}
+					<div class="info-box bg-{{ alerte.type }}">
+						<span class="info-box-icon"><i class="fas fa-exclamation-triangle"></i></span>
+
+						<div class="info-box-content">
+							<p>{{ alerte.MessageWarning }}</p>
+
+							<div class="progress">
+								<div class="progress-bar" style="width: 100%"></div>
+							</div>
+							<span class="progress-description">
+								<a href="{{ alerte.lien }}">{{ alerte.NomLien }}</a>
+							</span>
+						</div>
+					</div>
+				{% endfor %}
+
+				{% if d.alerteTDB == "" %}
+					<div class="info-box bg-aqua">
+						<span class="info-box-icon"><i class="fas fa-info"></i></span>
+
+						<div class="info-box-content">
+							<p>Aucune anomalie</p>
+						</div>
+					</div>
+				{% endif %}
+
 			</div>
 		</div>
 	</div>
-
-	<table>
-		<tr>
-			<td>
-				<img src="../img_grr/totem_grr.png" alt="Logo GRR"/>
-			</td>
-			<td align="center" >
-				<p style="font-size:40pt">
-					<i>GRR !</i>
-				</p>
-			</td>
-		</tr>
-	</table>
+</div>
 {% endblock %}
