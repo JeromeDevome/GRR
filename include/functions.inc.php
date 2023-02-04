@@ -140,7 +140,7 @@ function cal($month, $year, $type)
 * renvoie TRUE si le mot de passe est valable, FALSE sinon ; déclenche une erreur si l'enregistrement du nouveau mot de passe échoue
 */
 function checkPassword($pwd, $pwd_hash, $login, $test_rehash = TRUE){
-	global $algoPwd, $hashpwd1;
+	global $algoPwd;
 
     $result = false;
     $do_rehash = false;
@@ -168,7 +168,7 @@ function checkPassword($pwd, $pwd_hash, $login, $test_rehash = TRUE){
             if($ver >= "0400000")
                 $do_rehash = $test_rehash;
         }
-		elseif(hash($algoPwd, $hashpwd1.Settings::get("hashpwd2").$pwd) == $pwd_hash) 	// Controle de l'algo V4.0.0
+		elseif(hash($algoPwd, Settings::get("hashpwd2").$pwd) == $pwd_hash) 	// Controle de l'algo V4.0.0
 		{
 			$result = true;
             $do_rehash = $test_rehash;

@@ -35,7 +35,7 @@ if (!$settings)
  */
 function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_login = array(), $tab_groups = array())
 {
-	global $motDePasseConfig, $algoPwd, $hashpwd1;
+	global $motDePasseConfig;
 	// Initialisation de $auth_ldap
 	$auth_ldap = 'no';
 	// Initialisation de $auth_imap
