@@ -155,7 +155,6 @@ if ($etape == 4)
 				$query = preg_replace("/VariableInstal04/",$support_email,$query);
 				$query = preg_replace("/VariableInstal05/",$mdp,$query);
 				$query = preg_replace("/VariableInstal06/",$email,$query);
-				$query = preg_replace("/VariableInstal07/",$hash_pwd2,$query);
 
 				if ($query != '')
 				{
