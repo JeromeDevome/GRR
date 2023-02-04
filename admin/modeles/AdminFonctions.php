@@ -74,7 +74,7 @@ class AdminFonctions
 
 	public static function Warning() // Alerte
 	{
-        global $versionReposite, $version_grr;
+        global $versionReposite, $version_grr, $warningBackup;
 
         $alerteTDB = array();
 
@@ -90,7 +90,7 @@ class AdminFonctions
             $alerteTDB[] = array('type' =>"warning", 'MessageWarning' => "Les dates d'ouverture des réservations seront prochainement fermées.", 'NomLien' => "Configurer les dates", 'lien' => "?p=admin_config");
 		}
 
-		if ( (time() - 2592000) > Settings::get("backup_date") ){
+		if ( $warningBackup == 1  && (time() - 2592000) > Settings::get("backup_date") ){
             $alerteTDB[] = array('type' =>"warning", 'MessageWarning' => "La dernière sauvegarde de la BDD date de plus d'un mois !", 'NomLien' => "Faire une sauvegarde", 'lien' => "admin_save_mysql.php?flag_connect=yes");
 		}
 

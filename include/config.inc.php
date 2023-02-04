@@ -133,6 +133,9 @@ $nbMaxJoursLogEmail = 365;
 # Algorythme de cryptage des comptes utilisateur, ne pas changer après installation sauf si reset des mots de passes. Défaut : ripemd320
 $algoPwd = 'ripemd320';
 
+# Alerte dans l'administration si backup > 30jours, nous déconseillons de le désactiver sauf si les sauvegardes sont effectués via un autre moyen
+$warningBackup = 1;
+
 ##############################
 # ANTI-FLOOD - ENVOIS DE MAIL #
 ##############################
