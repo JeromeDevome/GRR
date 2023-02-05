@@ -38,7 +38,7 @@ $php_mini = "7.2.5";
 // Version PHP maximum testé et validé par : JeromeB
 $php_max_valide = "8.1.9";
 // Version PHP maximum qui est sensé fonctionné, si compatible avec toutes les versions à ce jour laisser vide
-$php_maxi = "8.1.11";
+$php_maxi = "8.1.15";
 
 // Version MySQL minimum
 $mysql_mini = "5.4.0";
