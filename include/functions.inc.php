@@ -146,35 +146,29 @@ function checkPassword($pwd, $pwd_hash, $login, $test_rehash = TRUE){
     $do_rehash = false;
 
     /* si $pwd_hash commence par '$' il est censé être issu de password_hash */
-    if (substr($pwd_hash, 0, 1) == '$')
-    {
-        if (password_verify($pwd, $pwd_hash))
-        { // c'est un mot de passe codé par password_hash, voyons s'il faut le mettre à jour
-            $result = true;
-            if ($test_rehash &&(password_needs_rehash($pwd_hash, PASSWORD_DEFAULT)))
-            {
-                $do_rehash = true;
-            }
+    if (password_verify($pwd, $pwd_hash))
+    { // c'est un mot de passe codé par password_hash, voyons s'il faut le mettre à jour
+        $result = true;
+        if ($test_rehash &&(password_needs_rehash($pwd_hash, PASSWORD_DEFAULT)))
+    	{
+            $do_rehash = true;
         }
     }
     /* sinon $pwd_hash est censé être issu de MD5 ou de l'algorithme de la v4.0.0 */
-    else
+    elseif (md5($pwd) == $pwd_hash)
     {
-        if (md5($pwd) == $pwd_hash)
-        {
-            $result = true;
-            // si la base est 3.5.1+, on mettra à jour le mot de passe
-            $ver = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='version';");
-            if($ver >= "0400000")
-                $do_rehash = $test_rehash;
-        }
-		elseif(hash($algoPwd, Settings::get("hashpwd2").$pwd) == $pwd_hash) 	// Controle de l'algo V4.0.0
-		{
+        $result = true;
+        // si la base est 3.5.1+, on mettra à jour le mot de passe
+        $ver = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='version';");
+        if($ver >= "0400000")
+        	$do_rehash = $test_rehash;
+    }
+	elseif(hash($algoPwd, Settings::get("hashpwd2").$pwd) == $pwd_hash) 	// Controle de l'algo V4.0.0
+	{
 			$result = true;
             $do_rehash = $test_rehash;
-		}
+	}
 
-    }
     if ($do_rehash)
     {
         $pwd_hash = password_hash($pwd, PASSWORD_DEFAULT);

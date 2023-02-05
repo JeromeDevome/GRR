@@ -131,7 +131,7 @@ if ($etape == 4)
 		$support_email = isset($_GET["technical_support_email"]) ? $_GET["technical_support_email"] : 'support_grr@test.fr';
 		$mdp = isset($_GET["mdp1"]) ? md5($_GET["mdp1"]) : 'azerty';
 		$email = isset($_GET["email"]) ? $_GET["email"] : 'testgrr@test.fr';
-		$hash_pwd2 = bin2hex(random_bytes(12));
+
 
 		$db = mysqli_connect("$adresse_db", "$login_db", "$pass_db", "", "$port_db");
 
