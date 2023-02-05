@@ -116,21 +116,30 @@ $trad['dTimezone'] = date_default_timezone_get();
 // Recherche mise à jour sur serveur GRR
 if($recherche_MAJ == 1)
 {
-	$fichier = fopen($grr_devel_url.'versiongrr.txt',"rb");
 
-	if ($fichier === FALSE) {
+	$url = "https://api.github.com/repos/JeromeDevome/GRR/releases/latest";
+	$opts = [
+			'http' => [
+					'method' => 'GET',
+					'header' => [
+							'User-Agent: PHP'
+					]
+			]
+	];
+	
+	$ctx = stream_context_create($opts);
+	$json = @file_get_contents( $url, 0, $ctx );
+	
+	$myObj = json_decode($json);
+
+	if($json === FALSE) {
 		$trad['dMaj_SiteGRR'] = "<span class=\"label label-info\">".get_vocab("maj_impossible_rechercher")."</span>". get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a>";
 	} else{
-		
-		$derniereVersion = '';
 
-		while (!feof($fichier)) {
-			$derniereVersion .= fread($fichier, 8192);
-		}
-		fclose($fichier);
+		$derniereVersion = substr($myObj->tag_name,1);
 
 		if (version_compare($version_grr, $derniereVersion, '<')) {
-			$trad['dMaj_SiteGRR'] = "<span class=\"label label-warning\">".get_vocab("maj_dispo")."</span>";
+			$trad['dMaj_SiteGRR'] = "<span class=\"label label-warning\">".get_vocab("maj_dispo")." : ".$myObj->tag_name." - ".$myObj->published_at."</span>";
 		} else{
 			$trad['dMaj_SiteGRR'] = "<span class=\"label label-success\">".get_vocab("maj_dispo_aucune")."</span>";
 		}
