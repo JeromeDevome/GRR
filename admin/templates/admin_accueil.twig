@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="row">
-	<div class="col-md-9">
+	<div class="col-xs12">
 		<div class="row">
 
 			<!-- Nombre d'utilisateur connecté -->
@@ -45,7 +45,39 @@
 			</div>
 
 		</div>
+		<div class="row">
+			<!-- Anomalies -->
+			<div class="col-md12">
 
+				{% for alerte in d.alerteTDB %}
+					<div class="info-box bg-{{ alerte.type }}">
+						<span class="info-box-icon"><i class="fas fa-exclamation-triangle"></i></span>
+
+						<div class="info-box-content">
+							<p>{{ alerte.MessageWarning }}</p>
+
+							<div class="progress">
+								<div class="progress-bar" style="width: 100%"></div>
+							</div>
+							<span class="progress-description">
+								<a href="{{ alerte.lien }}">{{ alerte.NomLien }}</a>
+							</span>
+						</div>
+					</div>
+				{% endfor %}
+
+				{% if d.alerteTDB == "" %}
+					<div class="info-box bg-aqua">
+						<span class="info-box-icon"><i class="fas fa-info"></i></span>
+
+						<div class="info-box-content">
+							<p>Aucune anomalie</p>
+						</div>
+					</div>
+				{% endif %}
+
+			</div>
+		</div>
 		<div class="row">
 
 			<!-- Nombre d'utilisateur connecté -->
@@ -106,7 +138,7 @@
 										<td>{{ resaMode.debut }}</td>
 										<td>{{ resaMode.createur }}</td>
 										<td>{{ resaMode.beneficiaire }}</td>
-										<td><a href='{{ resaMode.lien }}'><span class='glyphicon glyphicon-new-window'></span></a></td>
+										<td><a href='{{ resaMode.lien }}'><span class='fa fa-eye'></span></a></td>
 									</tr>
 								{% endfor %}
 							</tbody>
@@ -117,41 +149,6 @@
 			</div>
 		</div>
 
-	</div>
-	<div class="col-md-3">
-		<div class="row">
-			<!-- Anomalies -->
-			<div class="col-md12">
-
-				{% for alerte in d.alerteTDB %}
-					<div class="info-box bg-{{ alerte.type }}">
-						<span class="info-box-icon"><i class="fas fa-exclamation-triangle"></i></span>
-
-						<div class="info-box-content">
-							<p>{{ alerte.MessageWarning }}</p>
-
-							<div class="progress">
-								<div class="progress-bar" style="width: 100%"></div>
-							</div>
-							<span class="progress-description">
-								<a href="{{ alerte.lien }}">{{ alerte.NomLien }}</a>
-							</span>
-						</div>
-					</div>
-				{% endfor %}
-
-				{% if d.alerteTDB == "" %}
-					<div class="info-box bg-aqua">
-						<span class="info-box-icon"><i class="fas fa-info"></i></span>
-
-						<div class="info-box-content">
-							<p>Aucune anomalie</p>
-						</div>
-					</div>
-				{% endif %}
-
-			</div>
-		</div>
 	</div>
 </div>
 {% endblock %}
