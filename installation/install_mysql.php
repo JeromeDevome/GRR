@@ -129,7 +129,8 @@ if ($etape == 4)
 		$grr_url = isset($_GET["grr_url"]) ? $_GET["grr_url"] : 'https://mygrr.net/';
 		$webmaster_email = isset($_GET["webmaster_email"]) ? $_GET["webmaster_email"] : 'webmaster_grr@test.fr';
 		$support_email = isset($_GET["technical_support_email"]) ? $_GET["technical_support_email"] : 'support_grr@test.fr';
-		$mdp = isset($_GET["mdp1"]) ? md5($_GET["mdp1"]) : 'azerty';
+		$mdp = isset($_GET["mdp1"]) ? $_GET["mdp1"] : 'azerty';
+		$mdp = password_hash($mdp, PASSWORD_DEFAULT);
 		$email = isset($_GET["email"]) ? $_GET["email"] : 'testgrr@test.fr';
 
 
@@ -153,7 +154,7 @@ if ($etape == 4)
 				$query = preg_replace("/VariableInstal02/",$grr_url,$query);
 				$query = preg_replace("/VariableInstal03/",$webmaster_email,$query);
 				$query = preg_replace("/VariableInstal04/",$support_email,$query);
-				$query = preg_replace("/VariableInstal05/",$mdp,$query);
+				$query = str_replace("VariableInstal05",$mdp,$query); //* preg_replace ne fonctionne pas le hash à cause des $
 				$query = preg_replace("/VariableInstal06/",$email,$query);
 
 				if ($query != '')
