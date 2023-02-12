@@ -39,7 +39,7 @@ $version_old = Settings::get("version");
 
 /* GRR */
 get_vocab_admin("num_version");
-$trad['dNum_version'] = $version_grr." ".$versionReposite;
+$trad['dNum_version'] = $version_grr." - ".$versionReposite;
 get_vocab_admin("num_versionbdd");
 $trad['dNum_versionbdd'] = $version_old;
 get_vocab_admin("prefixe");
