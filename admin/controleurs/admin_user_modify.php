@@ -58,11 +58,13 @@ if ($valid == "yes")
 	$reg_changepwd = isset($_GET["reg_changepwd"]) ? $_GET["reg_changepwd"] : 0;
 	$reg_statut = isset($_GET["reg_statut"]) ? $_GET["reg_statut"] : NULL;
 	$reg_email = isset($_GET["reg_email"]) ? $_GET["reg_email"] : NULL;
-	$reg_etat = isset($_GET["reg_etat"]) ? $_GET["reg_etat"] : NULL;
+	$reg_etat = isset($_GET["reg_etat"]) ? $_GET["reg_etat"] : "actif";
 	$reg_source = isset($_GET["reg_source"]) ? $_GET["reg_source"] : "local";
 	$groupes_select = isset($_GET["groupes"]) ? $_GET["groupes"] : NULL;
 	if ($reg_source != "local")
 		$reg_password = "";
+	if ($reg_etat == "")
+		$reg_etat = "actif";
 	if (($reg_nom == '') || ($reg_prenom == ''))
 	{
 		$msg = get_vocab("please_enter_name");
