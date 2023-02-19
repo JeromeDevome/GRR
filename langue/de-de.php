@@ -710,6 +710,7 @@ $vocab['remplissage_description_breve2'] = "La rubrique \"brève description\" c
 $vocab['remplissage_description_breve_msg'] = "Remplissage de la rubrique \"brève description\" dans le formulaire réservation"; // A traduire
 $vocab['remplissage_description_complete0'] = "Le remplissage de la rubrique \"description complète\" est facultatif"; // A traduire
 $vocab['remplissage_description_complete1'] = "Le remplissage de la rubrique \"description complète\" est obligatoire"; // A traduire
+$vocab['remplissage_description_complete2'] = "La rubrique \"description complète\" est masquée"; // A traduire
 $vocab['remplissage_description_complete_msg'] = "Remplissage de la rubrique \"description complète\" dans le formulaire réservation"; // A traduire
 $vocab['repeat_id'] = "Periode Nr ";
 $vocab['report'] = "Suche & Bericht";

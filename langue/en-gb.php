@@ -710,6 +710,7 @@ $vocab['remplissage_description_breve2'] = "The field \"short description\" cont
 $vocab['remplissage_description_breve_msg'] = "The filling of the field \"short description\" in the reservation form";
 $vocab['remplissage_description_complete0'] = "The filling of the field \"full description\" is optional";
 $vocab['remplissage_description_complete1'] = "The filling of the field \"full description\" is obligatory";
+$vocab['remplissage_description_complete2'] = "The field \"full complète\" is hidden";
 $vocab['remplissage_description_complete_msg'] = "The filling of the field \"full description\" in the reservation form";
 $vocab['repeat_id'] = "periodicity No. ";
 $vocab['report'] = "Search & Report";

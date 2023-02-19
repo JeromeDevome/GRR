@@ -199,6 +199,7 @@
 
 						<section id="remplissagedescripcomplete">
 							<h4 class="page-header">{{ trad.remplissage_description_complete_msg }}</h4>
+							<input type="radio" name="remplissage_description_complete" value="2" id="label_9c" {% if settings.remplissage_description_complete == '2' %} checked {% endif %} /> <label for="label_9c">{{ trad.remplissage_description_complete2 }}</label><br>
 							<input type="radio" name="remplissage_description_complete" value="0" id="label_9a" {% if settings.remplissage_description_complete == '0' %} checked {% endif %} /> <label for="label_9a">{{ trad.remplissage_description_complete0 }}</label><br>
 							<input type="radio" name="remplissage_description_complete" value="1" id="label_9b" {% if settings.remplissage_description_complete == '1' %} checked {% endif %} /> <label for="label_9b">{{ trad.remplissage_description_complete1 }}</label><br>
 						</section>

@@ -350,6 +350,7 @@ get_vocab_admin('remplissage_description_breve2');
 get_vocab_admin('remplissage_description_complete_msg');
 get_vocab_admin('remplissage_description_complete0');
 get_vocab_admin('remplissage_description_complete1');
+get_vocab_admin('remplissage_description_complete2');
 
 get_vocab_admin('pview_new_windows_msg');
 get_vocab_admin('pview_new_windows0');
