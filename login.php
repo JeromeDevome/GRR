@@ -3,9 +3,9 @@
  * login.php
  * interface de connexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-10-10 10:20$
+ * Dernière modification : $Date: 2023-02-20 17:59$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -190,8 +190,8 @@ echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("compan
 			echo("<p><span class='avertissement'>" . $message . "</span></p>");
 		if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
 		{
-			echo "<p><span style=\"font-size:1.4em\"><a href=\"./index.php\">".get_vocab("authentification_CAS")."</a></span></p>";
-			echo "<p><b>".get_vocab("authentification_locale")."</b></p>";
+			echo "<p><span style=\"font-size:1.4em\"><a href=\"./index.php?force_authentification\">".get_vocab("authentification_CAS")."</a></span></p>";
+            echo "<p><b>".get_vocab("authentification_locale")."</b></p>";
 		}
 		if ((Settings::get('sso_statut') == 'lemon_visiteur') || (Settings::get('sso_statut') == 'lemon_utilisateur'))
 		{
