@@ -36,6 +36,11 @@ Sous-version 3.5.0b
     correctif : plage de créneaux définie par début et fin
     correctif : ligne des jours dans le cas où la semaine ne commence pas un lundi
     modification (vocabulaire): expression moins ambiguë
+Sous-version 3.5.0c
+    correctif : tolérance aux erreurs si se3 non activé
+    correctif : php 5.6 ne supporte pas le typage
+    mise à jour : nom de session et dates de début/fin
+    modification : style orienté objet
     
 -----
 --
