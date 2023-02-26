@@ -550,6 +550,7 @@ $vocab['match_area'] = "Domaine";
 $vocab['match_descr'] = "Description complète ";
 $vocab['match_login'] = "Bénéficiaire (identifiant)";
 $vocab['max_booking'] = "Nombre max. de réservations par utilisateur (-1 si pas de restriction)";
+$vocab['mdp_taille'] = "La longueur du mot de passe doit-être égale ou sépérieure à ";
 $vocab['mentions_legal_connexion'] = "En vous connectant vous acceptez les CGU et la création d'un cookie pour l'identification.";
 $vocab['menuG'] = "Menu gauche (page planning)";
 $vocab['message_home_page'] = "Message d'avertissement de la page de connexion";

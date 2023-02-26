@@ -551,6 +551,7 @@ $vocab['match_area'] = "Area";
 $vocab['match_descr'] = "Full description";
 $vocab['match_login'] = "Creator (login)";
 $vocab['max_booking'] = "Max.number of reservations authorized for each user (-1 if no restriction)";
+$vocab['mdp_taille'] = "The length of the password must be equal to or sepius at ";
 $vocab['mentions_legal_connexion'] = "By logging in, you accept ToU and the creation of a cookie for identification.";
 $vocab['menuG'] = "Left menu(page planning)";
 $vocab['message_home_page'] = "Warning message of connecting page";

@@ -551,6 +551,7 @@ $vocab['match_area'] = "Ámbito :";
 $vocab['match_descr'] = "Descripción completa";
 $vocab['match_login'] = "Beneficiario (identificador)";
 $vocab['max_booking'] = "Nombre máx. de reservas por usuario (-1 si no hay restricción)";
+$vocab['mdp_taille'] = "La longitud de la contraseña debe ser igual o superior a "; // A traduire
 $vocab['mentions_legal_connexion'] = "En vous connectant vous acceptez les CGU et la création d'un cookie pour l'identification."; // A traduire
 $vocab['menuG'] = "Menu gauche (page planning)";// A traduire
 $vocab['message_home_page'] = "Mensaje de advertencia de la página de conexión";
