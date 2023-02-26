@@ -108,6 +108,7 @@ if (isset($_GET['ok']) && authGetUserLevel(getUserName(), -1, 'user') !=  1)
 
 if (!Settings::load())
     die("Erreur chargement settings");
+ $AllSettings = Settings::getAll();
 
 // Si pas de problème, message de confirmation
 if (isset($_GET['ok'])) {

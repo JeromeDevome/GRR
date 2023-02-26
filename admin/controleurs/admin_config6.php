@@ -257,6 +257,8 @@ if (isset($_POST['longueur_liste_ressources_max'])) {
 if (!Settings::load()) {
     die('Erreur chargement settings');
 }
+$AllSettings = Settings::getAll();
+
 // Si pas de problème, message de confirmation
 if (isset($_POST['ok'])) {
     $_SESSION['displ_msg'] = 'yes';

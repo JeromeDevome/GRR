@@ -169,6 +169,8 @@ if (isset($_POST['plageresa'])) {
 if (!Settings::load()) {
     die('Erreur chargement settings');
 }
+$AllSettings = Settings::getAll();
+
 // Si pas de problème, message de confirmation
 if (isset($_POST['ok'])) {
     $_SESSION['displ_msg'] = 'yes';
