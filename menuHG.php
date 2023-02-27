@@ -67,13 +67,13 @@ if ($_GET['pview'] != 1) // en mode prévisualisation de page imprimable, on n'a
         $selecteursH = $selecteurs;
     }
 	//récupération des valeurs 
-	$bday = date('d', Settings::get('begin_bookings'));
-    $bmonth = date('m', Settings::get('begin_bookings'));
-	$byear = date('Y', Settings::get('begin_bookings'));
+	$bday = date('%d', Settings::get('begin_bookings'));
+    $bmonth = date('%m', Settings::get('begin_bookings'));
+	$byear = date('%Y', Settings::get('begin_bookings'));
 	
-	$eday = date('d', Settings::get('end_bookings'));
-    $emonth = date('m', Settings::get('end_bookings'));
-	$eyear = date('Y', Settings::get('end_bookings'));
+	$eday = date('%d', Settings::get('end_bookings'));
+    $emonth = date('%m', Settings::get('end_bookings'));
+	$eyear = date('%Y', Settings::get('end_bookings'));
     // le menu haut
     echo "<div id ='menuHaut' class='row'>";
     echo "<div id ='resource_selectorH' class='col-lg-2 col-md-3 col-xs-12'>";
@@ -82,20 +82,26 @@ if ($_GET['pview'] != 1) // en mode prévisualisation de page imprimable, on n'a
     echo "<div id ='calendriersH' class='col-lg-8 col-md-6 col-xs-12'>";
     minicals($year, $month, $day, $area, $room, $pageActuel);
     echo "</div>";
-    echo "<div id ='legendeH' class='col-lg-2 col-md-3 col-xs-12'>";
-    show_colour_key($area);
-    echo "</div>";
+    if (Settings::get('legend') == '0'){
+        echo "<div id ='legendeH' class='col-lg-2 col-md-3 col-xs-12'>";
+        show_colour_key($area);
+        echo "</div>";
+    }
     echo "</div>";
     // le menu gauche
     echo "<div id='menuGauche2'>";
     echo "<div id ='calendriersG'>";
     minicals($year, $month, $day, $area, $room, $pageActuel);
     echo "</div>";
+    echo "<div class='col-lg-12 col-md-12 col-xs-12'>";
     echo "<div id ='resource_selectorG'>";
     echo $selecteursG;
     echo "</div>";
-    echo "<div id ='legendeG'>";
-    show_colour_key($area);
+    if (Settings::get('legend') == '0'){
+        echo "<div id ='legendeG'>";
+        show_colour_key($area);
+        echo "</div>";
+    }
     echo "</div>";
     echo "</div>";
 }
