@@ -139,10 +139,11 @@ if(isset($_GET['theme']) && $_GET['theme'] == 'defaut') // Reset CSS
 {
 	foreach($champs_couleur as $code_js => $code_css)
 	{
-		Settings::delette("sp_".$code_js);	
+		Settings::delette("sp_".$code_js);
     }
 	if(file_exists("../personnalisation/".$gcDossierCss."/perso.css"))
 		unlink("../personnalisation/".$gcDossierCss."/perso.css");
+    Settings::set("sp_time", time());
 }
 elseif ((isset($_POST['record'])) && (!isset($ok))) // Enregistrement des données si enregistrement
 {
@@ -163,6 +164,7 @@ elseif ((isset($_POST['record'])) && (!isset($ok))) // Enregistrement des donné
         fwrite($fich,"}
 ");
         fclose($fich);
+        Settings::set("sp_time", time());
     }
     catch (Exception $e) {
         echo 'Exception reçue : ',  $e->getMessage(), "\n";

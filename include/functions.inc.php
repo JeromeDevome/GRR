@@ -1103,7 +1103,7 @@ function begin_page($title, $page = "with_session")
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/'.$sheetcss.'/css/style.css" />'.PHP_EOL; // le style couleurs prédéfinis
 		if($sheetcss == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
-			$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css\" />".PHP_EOL; // style perso via admin
+			$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css?".Settings::get("sp_time")."\" />".PHP_EOL; // style perso via admin
 	
 	$a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
@@ -1143,7 +1143,7 @@ function begin_page_twig($title, $page = "with_session")
 	{
 		if (isset($_SESSION['default_style']))
 			if($_SESSION['default_style'] == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
-				$d['sheetcss'] = 'personnalisation/'.$gcDossierCss.'/perso.css';
+				$d['sheetcssperso'] = 'personnalisation/'.$gcDossierCss.'/perso.css?'.Settings::get("sp_time");
 			else
 				$d['sheetcss'] = 'themes/'.$_SESSION['default_style'].'/css/style.css';
 
@@ -1165,7 +1165,7 @@ function begin_page_twig($title, $page = "with_session")
 			if (Settings::get("default_css") == "perso")
 				$d['sheetcss'] =  'personnalisation/'.$gcDossierCss.'/perso.css';
 			else
-				$d['sheetcss'] = 'themes/'.Settings::get("default_css").'/css/style.css';
+				$d['sheetcss'] = 'themes/'.Settings::get("default_css").'/css/style.css?'.Settings::get("sp_time");
 		else
 			$d['sheetcss'] = 'themes/default/css/style.css';
 		if (isset($_GET['default_language']))
@@ -6088,7 +6088,7 @@ function pageHead2($title, $page = "with_session")
 	
 	$a .= '<link rel="stylesheet" type="text/css" href="themes/'.$sheetcss.'/css/style.css" />'.PHP_EOL; // le style couleurs prédéfinis
 	if($sheetcss == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
-		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css\" />".PHP_EOL; // style perso via admin
+		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css?".Settings::get("sp_time")."\" />".PHP_EOL; // style perso via admin
 		
 	$a .= $types;
     $a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
