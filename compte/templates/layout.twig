@@ -29,7 +29,7 @@
 				</div>
 				<div class="administration">
 					{%if d.lienAdmin != ''%}<br><a href='../{{ d.lienAdmin |raw }}'>{{ trad.admin }}</a>{%endif%}
-					{%if d.nbConnecte %}<br>{{ d.nbConnecte |raw }}{%endif%}
+					{%if d.nbConnecte %}<br><a href="../admin/admin.php?p=admin_view_connexions">{{ d.nbConnecte }}</a>{%endif%}
 					{%if d.mess_resa %}<br><p class='avertissement'>{{ d.mess_resa }}</p>{%endif%}
 				</div>
 				<div class="configuration" >

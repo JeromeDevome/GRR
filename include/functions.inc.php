@@ -676,16 +676,10 @@ function nb_connecte()
 		$nb_connect = grr_sql_count($res);
 		grr_sql_free($res);
 
-		if (@file_exists('./admin_access_area.php')){
-			$racineAd = "./";
-		}else{
-			$racineAd = "./admin/";
-		}
-
 		if ($nb_connect == 1)
-			$lien = "<a href='{$racineAd}admin.php?p=admin_view_connexions'>".$nb_connect.get_vocab("one_connected")."</a>";
+			$lien = $nb_connect.get_vocab("one_connected");
 		else
-			$lien = "<a href='{$racineAd}admin.php?p=admin_view_connexions'>".$nb_connect.get_vocab("several_connected")."</a>";
+			$lien = $nb_connect.get_vocab("several_connected");
 	}
 
 	return $lien;
