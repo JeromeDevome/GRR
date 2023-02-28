@@ -1135,57 +1135,6 @@ function begin_page($title, $page = "with_session")
 	return $a;
 }
 
-function begin_page_twig($title, $page = "with_session")
-{
-	global $d, $gcDossierCss;
-
-	if ($page == "with_session")
-	{
-		if (isset($_SESSION['default_style']))
-			if($_SESSION['default_style'] == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
-				$d['sheetcssperso'] = 'personnalisation/'.$gcDossierCss.'/perso.css?'.Settings::get("sp_time");
-			else
-				$d['sheetcss'] = 'themes/'.$_SESSION['default_style'].'/css/style.css';
-
-		else
-			$d['sheetcss'] = 'themes/default/css/style.css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
-		if (isset($_GET['default_language']))
-		{
-			$_SESSION['default_language'] = $_GET['default_language'];
-			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
-				header("Location: ".$_SESSION['chemin_retour']);
-			else
-				header("Location: ".traite_grr_url());
-			die();
-		}
-	}
-	else
-	{
-		if (Settings::get("default_css"))
-			if (Settings::get("default_css") == "perso")
-				$d['sheetcss'] =  'personnalisation/'.$gcDossierCss.'/perso.css';
-			else
-				$d['sheetcss'] = 'themes/'.Settings::get("default_css").'/css/style.css?'.Settings::get("sp_time");
-		else
-			$d['sheetcss'] = 'themes/default/css/style.css';
-		if (isset($_GET['default_language']))
-		{
-			$_SESSION['default_language'] = $_GET['default_language'];
-			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
-				header("Location: ".$_SESSION['chemin_retour']);
-			else
-				header("Location: ".traite_grr_url());
-			die();
-		}
-	}
-	//global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin;
-	//header('Content-Type: text/html; charset=utf-8');
-	if (!isset($_COOKIE['open']))
-	{
-		setcookie("open", "true", time()+3600);
-	}
-
-}
 
 /*
 ** Fonction qui affiche le header
@@ -1387,30 +1336,70 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 function print_header_twig($day = '', $month = '', $year = '', $type_session = 'with_session')
 {
 	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
-	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $d, $gcDossierImg ;
+	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $d, $gcDossierImg, $gcDossierCss ;
 	
 	if(isset($_SESSION['changepwd']) && $_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
 		header("Location: ./changepwd.php");
 	}
 
-	if (@file_exists('./compte.php')){
-        $adm = 1;
-        $racine = "../";
-        $racineAd = "./";
-	}else{
-		$adm = 0;
-		$racine = "./";
-		$racineAd = "./compte/";
-	}
+	if (@file_exists('app.php'))
+        $racine = "./";
+	else
+		$racine = "../";
+
 
 	if (!($desactive_VerifNomPrenomUser))
 		$desactive_VerifNomPrenomUser = 'n';
 	// On vérifie que les noms et prénoms ne sont pas vides
 	VerifNomPrenomUser($type_session);
+
 	if ($type_session == "with_session")
-		echo begin_page_twig(Settings::get("company"),"with_session");
+	{
+		if (isset($_SESSION['default_style']))
+		{
+			if($_SESSION['default_style'] == "perso" && file_exists($racine."personnalisation/".$gcDossierCss."/perso.css"))
+				$d['sheetcssperso'] = "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$racine."personnalisation/".$gcDossierCss."/perso.css?".Settings::get("sp_time")."\" />";
+
+			$d['sheetcss'] = 'themes/'.$_SESSION['default_style'].'/css/style.css';
+		}
+		else
+			$d['sheetcss'] = 'themes/default/css/style.css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
+		if (isset($_GET['default_language']))
+		{
+			$_SESSION['default_language'] = $_GET['default_language'];
+			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
+				header("Location: ".$_SESSION['chemin_retour']);
+			else
+				header("Location: ".traite_grr_url());
+			die();
+		}
+	}
 	else
-		echo begin_page_twig(Settings::get("company"),"no_session");
+	{
+		if (Settings::get("default_css"))
+		{
+			if (Settings::get("default_css") == "perso" && file_exists($racine."personnalisation/".$gcDossierCss."/perso.css"))
+				$d['sheetcssperso'] = "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$racine."personnalisation/".$gcDossierCss."/perso.css?".Settings::get("sp_time")."\" />";
+
+			$d['sheetcss'] = 'themes/'.Settings::get("default_css").'/css/style.css?'.Settings::get("sp_time");
+		}
+		else
+			$d['sheetcss'] = 'themes/default/css/style.css';
+		if (isset($_GET['default_language']))
+		{
+			$_SESSION['default_language'] = $_GET['default_language'];
+			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
+				header("Location: ".$_SESSION['chemin_retour']);
+			else
+				header("Location: ".traite_grr_url());
+			die();
+		}
+	}
+
+	if (!isset($_COOKIE['open']))
+	{
+		setcookie("open", "true", time()+3600);
+	}
 
 	$resulHook = Hook::Appel("hookHeader2");
 	$d['hookHeader1'] = $resulHook['hookHeader2'];
@@ -6183,7 +6172,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			//Mail réservation
 			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
 			$res = grr_sql_query1($sql);
-			if ((( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )&& acces_formulaire_reservation())
+			if ((( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )/*&& acces_formulaire_reservation()*/)
 			{
 				echo '<div class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="'.get_vocab('reserver').'" onClick="javascript:location.href=\'app.php?p=contactresa&day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</div>',PHP_EOL;
 			}
