@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'a8e52ca36981ce6688129fe9923009045772c940',
+    'reference' => '87926b1e0807f77f15ea3f8ffcfe55586efe0286',
     'name' => 'devome/twig',
   ),
   'versions' => 
@@ -22,12 +22,12 @@
     ),
     'apereo/phpcas' => 
     array (
-      'pretty_version' => '1.6.0',
-      'version' => '1.6.0.0',
+      'pretty_version' => '1.6.1',
+      'version' => '1.6.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'f817c72a961484afef95ac64a9257c8e31f063b9',
+      'reference' => 'c129708154852656aabb13d8606cd5b12dbbabac',
     ),
     'devome/twig' => 
     array (
@@ -36,7 +36,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'a8e52ca36981ce6688129fe9923009045772c940',
+      'reference' => '87926b1e0807f77f15ea3f8ffcfe55586efe0286',
     ),
     'phpmailer/phpmailer' => 
     array (
