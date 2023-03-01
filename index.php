@@ -2,7 +2,7 @@
 /**
  * index.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-02-25 18:28$
+ * Dernière modification : $Date: 2023-03-01 10:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -416,16 +416,17 @@ else if ((Settings::get('sso_statut') == 'http_visiteur') || (Settings::get('sso
 	// mais crypté :
 	// on obtient le login et le password sous la forme : user:password
 	// Cas le plus courant :
-	if (isset($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_USER']))
+	//if (isset($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_USER']))
+    if (isset($_SERVER['HTTP_AUTH_USER']) && !empty($_SERVER['HTTP_AUTH_USER'])) //modification demandée par un utilisateur pour Lemon-LDAP
 	{
-		$login = clean_input($_SERVER['PHP_AUTH_USER']);
+		$login = clean_input($_SERVER['HTTP_AUTH_USER']);
 	}
     // Pour les versions plus anciennes de PHP < 4.1.0 (en fait inutile ici car GRR exige PHP > 4.3.1
-	else if (isset($HTTP_SERVER_VARS['PHP_AUTH_USER']) && !empty($HTTP_SERVER_VARS['PHP_AUTH_USER']))
+	else if (isset($HTTP_SERVER_VARS['HTTP_AUTH_USER']) && !empty($HTTP_SERVER_VARS['HTTP_AUTH_USER']))
 	{
-		$login = clean_input($HTTP_SERVER_VARS['PHP_AUTH_USER']);
+		$login = clean_input($HTTP_SERVER_VARS['HTTP_AUTH_USER']);
 	}
-    // L'utilisateur est authentifié mais $_SERVER['PHP_AUTH_USER'] est vide, on tente de récupérer le login dans $_SERVER['REMOTE_USER']
+    // L'utilisateur est authentifié mais $_SERVER['HTTP_AUTH_USER'] est vide, on tente de récupérer le login dans $_SERVER['REMOTE_USER']
 	else if (isset($_SERVER['REMOTE_USER']) && !empty($_SERVER['REMOTE_USER']))
 	{
 		if (preg_match('/Basic+(.*)$/i', $_SERVER['REMOTE_USER'], $matches)) // Cas ou PHP est en mode cgi
