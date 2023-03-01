@@ -9,7 +9,8 @@ Tâches prévues :
 --
 -----
 
-Version 3.5.1 Release Candidate RC1 : à utiliser avec précaution
+Version 3.5.1 Release Candidate RC2 : à utiliser avec précaution
+    amélioration : passage des paramètres par POST dans admin_user_modify.php
     correctif : mise en cohérence de la collation entre mise à jour et initialisation
     correctif : changement simultané des valeurs par défaut lors d'une mise à jour
     correctif : supprime une erreur SQL dans admin_edit_room.php
@@ -27,6 +28,7 @@ Version 3.5.1 Release Candidate RC1 : à utiliser avec précaution
     modification : choix des participants par select2
     modification : tentative de pallier les lenteurs AJAX dans la page d'édition des réservations
     modification : prise en compte du créateur en cas de copie d'une réservation existante
+    modification : index.php pour authentification par Lemon-LDAP
     
 -----
 --
