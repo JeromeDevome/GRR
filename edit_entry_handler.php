@@ -3,9 +3,9 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-12-14 17:34$
+ * Dernière modification : $Date: 2023-03-17 18:28$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -770,7 +770,7 @@ catch (Exception $e){
         if ($var_type == "array"){
             foreach($$var as $value){
                 if(isset($value)){
-                    $hiddenInputs .= "<input type='hidden' name='${var}[]' value='".$value."' >";
+                    $hiddenInputs .= "<input type='hidden' name='{$var}[]' value='".$value."' >";
                 }
             }
         }

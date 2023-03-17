@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-11-21 11:05$
+ * Dernière modification : $Date: 2023-03-17 18:29$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -1690,7 +1690,7 @@ function genDateSelectorForm($prefix, $day, $month, $year, $option)
 		$year = date("Y");
 	if ($day != "")
 	{
-		$selector_data .= "<select class='test' name=\"${prefix}day\" id=\"${prefix}day\">\n";
+		$selector_data .= "<select class='test' name=\"{$prefix}day\" id=\"{$prefix}day\">\n";
 		for ($i = 1; $i <= 31; $i++)
 		{
 			if ($i < 10)
@@ -1700,7 +1700,7 @@ function genDateSelectorForm($prefix, $day, $month, $year, $option)
 		}
 		$selector_data .= "</select>";
 	}
-	$selector_data .= "<select class='test' name=\"${prefix}month\" id=\"${prefix}month\">\n";
+	$selector_data .= "<select class='test' name=\"{$prefix}month\" id=\"{$prefix}month\">\n";
 	for ($i = 1; $i <= 12; $i++)
 	{
 		$m = utf8_strftime("%b", mktime(0, 0, 0, $i, 1, $year));
@@ -1714,7 +1714,7 @@ function genDateSelectorForm($prefix, $day, $month, $year, $option)
 		}
 	}
 	$selector_data .=  "</select>";
-	$selector_data .=  "<select class='test' name=\"${prefix}year\" id=\"${prefix}year\">\n";
+	$selector_data .=  "<select class='test' name=\"{$prefix}year\" id=\"{$prefix}year\">\n";
 	$min = date("Y", Settings::get("begin_bookings"));
 	if ($option == "more_years")
 		$min = date("Y") - $nb_year_calendar;
