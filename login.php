@@ -236,6 +236,7 @@ echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("compan
 		document.getElementById('login').focus();
 	</script>
 	<?php
+	echo "<p>";
 	if (Settings::get("webmaster_email") != "")
 	{
 		$lien = affiche_lien_contact("contact_administrateur","identifiant:non","seulement_si_email");
