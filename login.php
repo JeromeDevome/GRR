@@ -210,7 +210,7 @@ echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("compan
 		}
 		?>
 		<fieldset style="padding-top: 8px; padding-bottom: 8px; width: 40%; margin-left: auto; margin-right: auto;">
-			<legend class="fontcolor3" style="font-variant: small-caps;"><?php echo get_vocab("identification"); ?></legend>
+			<legend style="font-variant: small-caps;"><?php echo get_vocab("identification"); ?></legend>
 			<?php echo "<p>".get_vocab("mentions_legal_connexion")."</p>"; ?>
 			<table style="width: 100%; border: 0;" cellpadding="5" cellspacing="0">
 				<tr>
