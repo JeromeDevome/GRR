@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '87926b1e0807f77f15ea3f8ffcfe55586efe0286',
+    'reference' => 'b781e792e119e46959dde4bf87f42c0e59d92e1b',
     'name' => 'devome/twig',
   ),
   'versions' => 
@@ -60,16 +60,16 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '87926b1e0807f77f15ea3f8ffcfe55586efe0286',
+      'reference' => 'b781e792e119e46959dde4bf87f42c0e59d92e1b',
     ),
     'phpmailer/phpmailer' => 
     array (
-      'pretty_version' => 'v6.7.1',
-      'version' => '6.7.1.0',
+      'pretty_version' => 'v6.8.0',
+      'version' => '6.8.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '49cd7ea3d2563f028d7811f06864a53b1f15ff55',
+      'reference' => 'df16b615e371d81fb79e506277faea67a1be18f1',
     ),
     'psr/log' => 
     array (
