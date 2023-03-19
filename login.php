@@ -240,9 +240,9 @@ echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("compan
 	{
 		$lien = affiche_lien_contact("contact_administrateur","identifiant:non","seulement_si_email");
 		if ($lien != "")
-			echo "<p>[".$lien."]</p>";
+			echo "[".$lien."] ";
 	}
-	echo "<p>[<a href='app.php?p=page&page=CGU' target='_blank'>".get_vocab("cgu")."</a>]</p>";
+	echo "[<a href='app.php?p=page&page=CGU' target='_blank'>".get_vocab("cgu")."</a>]</p>";
 	echo "<a href=\"javascript:history.back()\">".get_vocab("previous")." - <b>".Settings::get("company")."</b></a>";
 	?>
 	<br />
