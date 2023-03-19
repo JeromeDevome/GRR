@@ -1,36 +1,107 @@
-Bugs connus sur la version de GitHub :
- - affichage défectueux du menu en position haute dans la page month_all2 
- - des problèmes se produisent lorsqu'on veut faire une modification/copie de réservation  avec un changement de domaine
+Version en cours de développement sur GitHUB (4.0.3)
 
-Tâches prévues :
- - interface de personnalisation des couleurs
- 
+[Ajout] Contrôle version PHP @JeromeB
+[Modification] Mise à jours de traductions @JeromeB
+[Modification] Couleur titre "Identification" page login selon la couleur du thème @JeromeB
+[Modification] Alignement des liens (Contact, CGU) dans la page login @JeromeB
+[Modification] Mise à jour de phpmailer 6.8.0  @JeromeB
+
+
 -----
 --
 -----
-Version en cours de développement sur GitHUB (4.0.0)
+Version 4.0.2 - 02/03/2023 Généré par @JeromeB
 
-[Ajout] Contrôle version PHP
-[Ajout] Contrôle version MySQL
-[Ajout] Administration : Lien vers la documentation
-[Ajout] Possibilité de créer son fichier config qui ne sera pas écrasé par les mises à jours
-[Ajout] Infos PHP dans les informations du serveur
-[Ajout] Visualisation des variables du fichier config.inc.php dans les informations du serveur
-[Ajout] Champs additionnel dans les exports
-[Ajout] Changement de mot passe à la prochaine connexion
-[Ajout] Possibilité lors de l'importation des utilisateurs par csv de demander de changer de mot de passe
-[Ajout] Personnalisations de la couleur du texte par type de réservation
-[Ajout] Synchronisation de la langue avec tout les utilisateurs
-[Ajout] Synchronisation du thème avec tout les utilisateurs
-[Ajout] Fonctionnalité de participation
-[Ajout] Restriction des connexions par horaire
-[Correction] Déconnexion utilisateur lorsque une connexion externe est activée
-[Modification] Administration : passage sous twig
-[Modification] Administration : Theme AdminLTE
-[Modification] Compatibilité PHP 7.2
-[Modification] Déconnexion de l'utilisateur de puis l'administration sans le changement de mot de passe
-[Modification] Séparation de la date, heure début de réservation et la durée dans les exports
+[Ajout] Interrogation LDAP après authentification Apache @ynaessens (proposition de @ericlemeur)
+[Ajout] Regénération du cache navigateur à chaque modification su style perso @JeromeB
+[Ajout] Contrôle de la taille du mot de passe lors de modification par l'utilisateur @JeromeB
+[Ajout] Possibilité de masquer le champ description complète dans le formulaire de réservation @JeromeB
+[Ajout] Hash du mot de passe admin à l'installation @JeromeB
+[Ajout] Possibilité de désactiver le warning backup de l'administration via le fichier config @JeromeB
+[Ajout] Fonction anomalie, affichage de toute les anomalies dans l'administration @JeromeB
+[Correction] Style perso (Pb v4.0.0) @JeromeB
+[Correction] Correction du lien de nombre de connecté (Pb v4.0.0) @JeromeB
+[Correction] Connexion LDAP (Pb v4.0.0) @JeromeB
+[Correction] Menu haut ou gauche; Reprise correction de la 3.5 @ynaessens + correction légende @JeromeB
+[Correction] Raffraichissement après modification des données dans la congiguration Générales (Pb v4.0.0) @JeromeB
+[Correction] Redirection vers serveur CAS @ynaessens
+[Correction] Statut actif par défaut à la cration d'un compte (Pb v4.0.0) @JeromeB
+[Correction] Nombre d'utilisateur avec un mot de passe facile (Pb v4.0.1) @ynaessens
+[Modification] Contrôle de la version GRR via l'api GitHub @JeromeB
+[Modification] Upgrade phpcas 1.6.0 => 1.6.1 @JeromeB
+[Modification] Upgrade jszip @JeromeB
+[Modification] Upgrade dépendance JS @JeromeB
+[Modification] Mise à jours de traductions @JeromeB & @Apollon1977
+[Modification] Connexion mysql orienté objet @ynaessens
+[Modification] Date d'ouverture pour les réservations après une nouvelle installation
+[Modification] Remplacement de l'outil md5 par la fonc hash @JeromeB
+[Modification] Amélioration compatibilité PHP 8.2 (Compatibilité partielle) @JeromeB
+[Modification] Contrôle du hash à la connexion  @JeromeB
 
+-----
+--
+-----
+Version 4.0.1 - 29/01/2023 Généré par @JeromeB
+
+[Ajout] Adresse mail dans la liste des utilisateurs @JeromeB
+[Ajout] Passage d'un utilisateur externe en local et inverse @JeromeB
+[Ajout] Authentification CAS SSO possibilité de choisir la version du cas dans l'administration @JeromeB
+[Correction] Authentification CAS SSO @Aurely9n & @JeromeB
+[Modification] Système de hash du mot de passe @ynaessens & @JeromeB
+[Modification] Modules Externes @JeromeB
+[Modification] Amélioration de l'affichage de la liste des utilisateurs @JeromeB
+[Modification] Mise à jour tcpdf 6.6.1 => 6.6.2 @JeromeB
+[Modification] Mise à jour twig v2.15.3 => v2.15.4 @JeromeB
+[Modification] Refonte graphique de la page authentification SSO @JeromeB
+[Modification] Taille champs login @ynaessens
+
+-----
+--
+-----
+Version 4.0.0 - 17/12/2022 Généré par @JeromeB
+
+[Ajout] Contrôle version PHP @JeromeB
+[Ajout] Contrôle version MySQL @JeromeB
+[Ajout] Administration : Lien vers la documentation @JeromeB
+[Ajout] Possibilité de créer son fichier config qui ne sera pas écrasé par les mises à jours @JeromeB
+[Ajout] Infos PHP dans les informations du serveur @JeromeB
+[Ajout] Visualisation des variables du fichier config.inc.php dans les informations du serveur @JeromeB
+[Ajout] Champs additionnel dans les exports @JeromeB
+[Ajout] Changement de mot passe à la prochaine connexion @JeromeB
+[Ajout] Possibilité lors de l'importation des utilisateurs par csv de demander de changer de mot de passe @JeromeB
+[Ajout] Personnalisations de la couleur du texte par type de réservation @JeromeB & @ynaessens
+[Ajout] Synchronisation de la langue avec tout les utilisateurs @JeromeB
+[Ajout] Synchronisation du thème avec tout les utilisateurs @JeromeB
+[Ajout] Fonctionnalité de participation @JeromeB
+[Ajout] Restriction des connexions par horaire @JeromeB
+[Ajout] Enregistrement de la personnalisation des couleurs @JeromeB
+[Ajout] Historisation des réservations et des modifications @JeromeB
+[Ajout] Historisation des mails envoyés @JeromeB
+[Ajout] Destinataire mail spécifique par champ additionnel @JeromeB
+[Ajout] Variables dans config pour désactiver la fonction mail @JeromeB
+[Ajout] Limitation d'envois de mail par action @JeromeB
+[Correction] Déconnexion utilisateur lorsque une connexion externe est activée @JeromeB
+[Correction] Nombreuses corrections par @ynaessens
+[Modification] Lors d'une nouvelle installation, par défaut il faut obligatoirement être connecté pour accéder au planning @JeromeB 
+[Modification] Administration : passage sous twig @JeromeB
+[Modification] Administration : Theme AdminLTE @JeromeB
+[Modification] Mon  compte : passage sous twig @JeromeB
+[Modification] Recherche & stat : passage sous twig + export via tableau @JeromeB
+[Modification] Compatibilité PHP 8.1 @JeromeB & @ynaessens
+[Modification] Déconnexion de l'utilisateur de puis l'administration sans le changement de mot de passe @JeromeB
+[Modification] Séparation de la date, heure début de réservation et la durée dans les exports @JeromeB
+[Modification] Passgae des dépendances CAS, Phpmailer sous composer @JeromeB
+[Modification] Séparation de la date, heure début de réservation et la durée dans les exports  @JeromeB
+[Modification] Mise à jour des vacances scolaires @ynaessens
+[Modification] Mise à jours de traductions @JeromeB & @ynaessens
+[Modification] Emplacement des personnalisations (images, configs, trad...) @JeromeB
+[Modification] Installation : Refonte graphique
+De nombreuse autre modifications ont eu lieu mais ne sont pas renseignée dans ce changelog.
+
+
+-----
+--
+-----
 Version en cours de développement sur GitHUB (3.4.1) // Numéro de version à confirmer
     [ajout] Echange de deux réservations
     [ajout] Page year_all affichant les réservations sur plusieurs mois et plusieurs domaines (à utiliser avec prudence s'il y a beaucoup de réservations ou de ressources)
