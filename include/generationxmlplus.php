@@ -3,7 +3,7 @@
  * generationxmlplus.php
  *
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-09-13 14:02$
+ * Dernière modification : $Date: 2023-03-20 11:55$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -15,7 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-$grr_script_name = "generationxmlplus.php";
+// $grr_script_name = "generationxmlplus.php"; à commenter pour éviter la surcharge 
 
 $temp = time();
 $result = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_entry WHERE end_time > '{$temp}';");
