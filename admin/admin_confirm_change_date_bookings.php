@@ -1,12 +1,11 @@
-
 <?php
 /**
  * admin_confirm_change_date_bookings.php
  * interface de confirmation des changements de date de début et de fin de réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2023-03-20 15:21$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -16,12 +15,11 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = "admin_confirm_change_date_bookings.php";
 
 include "../include/admin.inc.php";
-$grr_script_name = "admin_confirm_change_date_bookings.php";
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 unset($display);
 $display = isset($_GET["display"]) ? $_GET["display"] : NULL;
 $day   = date("d");
@@ -48,13 +46,14 @@ if (isset($_GET['valid']) && ($_GET['valid'] == "yes"))
 		$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE (start_time > ".Settings::get('end_bookings').")");
 		$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_calendar WHERE DAY > ".Settings::get("end_bookings"));
 	}
-	header("Location: ./admin_config.php");
+	header("Location: ./admin_config1.php");
 
 }
 else if (isset($_GET['valid']) && ($_GET['valid'] == "no"))
-	header("Location: ./admin_config.php");
+	header("Location: ./admin_config1.php");
 # print the page header
-print_header("", "", "", $type="with_session");
+start_page_w_header("", "", "", $type="with_session");
+echo "<div class='container'>";
 echo "<h2>".get_vocab('admin_confirm_change_date_bookings.php')."</h2>";
 echo "<p>".get_vocab("msg_del_bookings")."</p>";
 ?>
@@ -73,5 +72,7 @@ echo "<p>".get_vocab("msg_del_bookings")."</p>";
 		<input type="hidden" name="valid" value="no" />
 	</div>
 </form>
+</div>
+</section>
 </body>
 </html>
