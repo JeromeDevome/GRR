@@ -961,14 +961,9 @@ function protect_data_sql($_value)
 	//if (get_magic_quotes_gpc())
 	if (function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc())
 		$_value = stripslashes($_value);
-	if (!is_numeric($_value))
-	{
-		/*if (isset($use_function_mysql_real_escape_string) && ($use_function_mysql_real_escape_string==0))
-			$_value = mysqli_real_escape_string($GLOBALS['db_c'], $_value);
-		else */
-        // pourquoi un test, puisque l'action est la même ? YN le 30/03/2018
-			$_value = mysqli_real_escape_string($GLOBALS['db_c'], $_value);
-	}
+	if (!is_numeric($_value) && $_value != null)
+		$_value = mysqli_real_escape_string($GLOBALS['db_c'], $_value);
+
 	return $_value;
 }
 

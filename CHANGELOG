@@ -1,6 +1,7 @@
 Version en cours de développement sur GitHUB (4.0.3)
 
 [Ajout] Contrôle version PHP @JeromeB
+[Correction] protect_data_sql cas d'une valeur à null @JeromeB
 [Modification] Mise à jours de traductions @JeromeB
 [Modification] Couleur titre "Identification" page login selon la couleur du thème @JeromeB
 [Modification] Alignement des liens (Contact, CGU) dans la page login @JeromeB
@@ -69,6 +70,7 @@ Version 4.0.0 - 17/12/2022 Généré par @JeromeB
 [Ajout] Champs additionnel dans les exports @JeromeB
 [Ajout] Changement de mot passe à la prochaine connexion @JeromeB
 [Ajout] Possibilité lors de l'importation des utilisateurs par csv de demander de changer de mot de passe @JeromeB
+[Ajout] Groupes d'utilisateur @JeromeB
 [Ajout] Personnalisations de la couleur du texte par type de réservation @JeromeB & @ynaessens
 [Ajout] Synchronisation de la langue avec tout les utilisateurs @JeromeB
 [Ajout] Synchronisation du thème avec tout les utilisateurs @JeromeB
