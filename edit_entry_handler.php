@@ -627,6 +627,7 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 						$message_error = send_mail($id_first_resa, 1, $dformat);
 				}
 			}
+			mrbsDelEntry(getUserName(), $id, "series", 1);
 		}
 		else
 		{
@@ -671,8 +672,6 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 	{
 		if ($rep_type != 0)
 			mrbsDelEntry(getUserName(), $id, "series", 1);
-	//	else
-	//		mrbsDelEntry(getUserName(), $id, NULL, 1);
 	}
 	grr_sql_mutex_unlock("".TABLE_PREFIX."_entry");
 	$area = mrbsGetRoomArea($room_id);
