@@ -3,9 +3,9 @@
  * admin_import_entries_csv_udt.php
  * Importe un fichier de réservations au format csv 
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-18 11:57$
+ * Dernière modification : $Date: 2023-03-22 15:36$
  * @author    JeromeB & Yan Naessens & Denis Monasse & Laurent Delineau
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -20,7 +20,7 @@ $grr_script_name = "admin_import_entries_csv_udt.php";
 include "../include/admin.inc.php";
 
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
-$_SESSION['chemin_retour'] = "admin_config.php";
+$_SESSION['chemin_retour'] = "admin_accueil.php";
 
 if (!Settings::load()) {
     die('Erreur chargement settings');

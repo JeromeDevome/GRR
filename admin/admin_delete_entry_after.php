@@ -3,9 +3,9 @@
  * admin_delete_entry_after.php
  * Interface permettant à l'administrateur de supprimer des réservations après une date donnée
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:51$
+ * Dernière modification : $Date: 2023-03-23 15:34$
  * @author    JeromeB & Yan Naessens & Denis Monasse
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -21,7 +21,7 @@ $grr_script_name = "admin_delete_entry_after.php";
 include "../include/admin.inc.php";
 
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
-$_SESSION['chemin_retour'] = "admin_config.php";
+$_SESSION['chemin_retour'] = "admin_accueil.php";
 
 if (!Settings::load()) {
     die(get_vocab('error_settings_load'));
