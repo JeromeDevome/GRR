@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2022-10-14
+# Last modification : 2023-03-23
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1010,6 +1010,9 @@ $vocab['visu_fiche_description6'] = "Il faut obligatoirement être connecté et 
 $vocab['visu_fiche_description_msg'] = "Qui a accès à la fiche de description d'une ressource ?";
 $vocab['voir_details'] = "Voir les détails";
 $vocab['Votre_message'] = "Votre message";
+$vocab['Vous_avez_modifie'] = "Vous avez modifié ";
+$vocab['Vous_avez_reserve'] = "Vous avez réservé ";
+$vocab['Vous_avez_supprime'] = "Vous avez supprimé ";
 $vocab['warning_exist'] = "L'utilisateur que vous avez tenté d'ajouter appartient déjà à la liste !";
 $vocab['warning_explain'] = "Avertissement/précisions concernant la réservation de cette ressource : le message ci-dessous s'affichera dans différentes vues concernant cette ressource.";
 $vocab['warning_message_backup'] = "Si un message du type \"Maximum execution time exceeded\" apparaît quelques instants après avoir lancé la sauvegarde, cela signifie que la sauvegarde a échoué !";

@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2022-11-07 11:32$
+ * Dernière modification : $Date: 2023-03-23 17:52$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -137,7 +137,7 @@ function cal($month, $year, $type)
 
 /** function checkPassword($pwd, $pwd_hash, $login)
 * vérifie que le mot de passe fourni $pwd correspond au $pwd_hash issu de la BDD pour l'utilisateur associé au $login
-* si le mot de passe n'a pas été enregistré par la fonction password_hash, mais est valide pour md5, alors la fonction le convertit au passage et l'enregistre au nouveau format
+* si le mot de passe n'a pas été enregistré par la fonction password_hash, mais est valide pour md5, alors, si la base est en version 3.5.1+, la fonction le convertit au passage et l'enregistre au nouveau format
 * renvoie TRUE si le mot de passe est valable, FALSE sinon ; déclenche une erreur si l'enregistrement du nouveau mot de passe échoue
 */
 function checkPassword($pwd, $pwd_hash, $login){
@@ -161,7 +161,10 @@ function checkPassword($pwd, $pwd_hash, $login){
         if (md5($pwd) == $pwd_hash)
         {
             $result = true;
-            $do_rehash = true;
+            // si la base est 3.5.1+, on mettra à jour le mot de passe
+            $ver = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='version';");
+            if("3.5.1" <= $ver) 
+                $do_rehash = true;
         }
     }
     if ($do_rehash)
@@ -2839,7 +2842,17 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		require_once '../include/mail.class.php';
 	}
 
-	$sql = "SELECT ".TABLE_PREFIX."_entry.name,
+	$sql = "SELECT e.name, e.description, e.beneficiaire, r.room_name, a.area_name, e.type,
+	e.room_id, e.repeat_id, 
+	" . grr_sql_syntax_timestamp_to_unix("e.timestamp") . ",
+	(e.end_time - e.start_time),
+	e.start_time, e.end_time, r.area_id, r.delais_option_reservation, e.option_reservation,
+	e.moderate, e.beneficiaire_ext, e.jours, e.clef, e.courrier
+    FROM (".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id)
+     JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id 
+    WHERE e.id = '".protect_data_sql($id_entry)."'
+    ";
+	/*$sql = "SELECT ".TABLE_PREFIX."_entry.name,
 	".TABLE_PREFIX."_entry.description,
 	".TABLE_PREFIX."_entry.beneficiaire,
 	".TABLE_PREFIX."_room.room_name,
@@ -2859,11 +2872,11 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	".TABLE_PREFIX."_entry.jours,
 	".TABLE_PREFIX."_entry.clef,
 	".TABLE_PREFIX."_entry.courrier
-	FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
+    FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
 	WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
 	AND ".TABLE_PREFIX."_room.area_id = ".TABLE_PREFIX."_area.id
 	AND ".TABLE_PREFIX."_entry.id='".protect_data_sql($id_entry)."'
-	";
+	";*/
 	$res = grr_sql_query($sql);
 	if (!$res)
 		fatal_error(0, grr_sql_error());
@@ -2897,12 +2910,13 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	if($oldRessource != '' && $oldRessource != $room_id)
 	{
 		$sql = "SELECT room_name FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($oldRessource)."'";
-		$oldRess = grr_sql_query($sql);
+		/*$oldRess = grr_sql_query($sql);
 		if (!$oldRess)
 			fatal_error(0, grr_sql_error());
 		$rowOld = grr_sql_row($oldRess, 0);
 		grr_sql_free($oldRess);
-		$nomAncienneSalle = $rowOld[0];
+		$nomAncienneSalle = $rowOld[0];*/
+        $nomAncienneSalle = grr_sql_query1($sql);
 	}
 	else
 		$nomAncienneSalle = "";
@@ -2958,7 +2972,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
     // Nom d'expéditeur (si != adresse de réponse, cas des serveurs SMTP refusant le relai)
     $expediteur = '';
     if (Settings::get('grr_mail_sender'))
-            {$expediteur = Settings::get('grr_mail_from');}
+        {$expediteur = Settings::get('grr_mail_from');}
 	//Nom de l'établissement et mention "mail automatique"
 	$message = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
 	// Url de GRR
@@ -3230,15 +3244,22 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$sujet2 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
 		$message2 = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
 		$message2 .= traite_grr_url("","y")."\n\n";
-		$message2 .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
+        if(strtolower($user_login) != strtolower($beneficiaire))
+            $message2 .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
 		if ($action == 1){
 			$sujet2 .= $vocab["subject_mail_creation"];
-			$message2 .= $vocab["creation_booking_for_you"];
+            if(strtolower($user_login) != strtolower($beneficiaire))
+                $message2 .= $vocab["creation_booking_for_you"];
+            else
+                $message2 .= get_vocab('Vous avez_reserve');
 			$message2 .= $vocab["the_room"].$room_name." (".$area_name.").";
 		}
 		elseif ($action == 2){
 			$sujet2 .= $vocab["subject_mail_modify"];
-			$message2 .= $vocab["modify_booking"];
+            if(strtolower($user_login) != strtolower($beneficiaire))
+                $message2 .= $vocab["modify_booking"];
+            else
+                $message2 .= get_vocab('Vous avez_modifie');
 			if ($room_id != $oldRessource)
 				$message2 .= $vocab["the_room"]." ".$nomAncienneSalle." => ".$room_name." (".$area_name.") \n";
 			else
@@ -3247,7 +3268,10 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		}
 		else{
 			$sujet2 .= $vocab["subject_mail_delete"];
-			$message2 .= $vocab["delete_booking"];
+            if(strtolower($user_login) != strtolower($beneficiaire))
+                $message2 .= $vocab["delete_booking"];
+            else
+                $message2 .= get_vocab('Vous avez_supprime');
 			$message2 .= $vocab["the_room"].$room_name." (".$area_name.") \n";
 			$message2 .= $vocab["created_by_you"];
 		}
@@ -3897,7 +3921,7 @@ function verif_display_email($user, $id_room)
 		return false;
 }
 /* function verif_acces_ressource : vérifier l'accès à la ressource
- *$user : le login de l'utilisateur
+ * $user : le login de l'utilisateur
  * $id_room : l'id de la ressource.
  */
 function verif_acces_ressource($user, $id_room)

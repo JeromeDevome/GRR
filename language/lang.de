@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2022-10-14
+# Last modification : 2023-03-23
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -981,7 +981,10 @@ $vocab['visu_fiche_description5'] = "Anmeldung und \"Hauptadministrator\" Status
 $vocab['visu_fiche_description6'] = "Il faut obligatoirement être connecté et être administrateur général"; // A traduire
 $vocab['visu_fiche_description_msg'] = "Zugriff zum Beschreibungsblatt einer Ressource";
 $vocab['voir_details'] = "Einzelheiten sehen";
-$vocab['Votre_message'] = "Votre message";
+$vocab['Votre_message'] = "Votre message";// À traduire
+$vocab['Vous_avez_modifie'] = "Sie haben geändert";
+$vocab['Vous_avez_reserve'] = "Sie haben reserviert";
+$vocab['Vous_avez_supprime'] = "Sie haben gelöscht";
 $vocab['warning_exist'] = "Der Benutzer, den Sie hinzufügen wollten, steht bereits auf der Liste!";
 $vocab['warning_message_backup'] = "Wenn eine Nachricht des Typs \"Maximum execution time exceeded\" einige Momente nach dem Starten des Sicherungsprogramm erscheint, bedeutet dies das Fehlschlagen der Sicherung!";
 $vocab['warning_message_mail'] = "Bestimmte Beherberger deaktivieren das automatische Versenden von E-Mails von ihrem Server aus. In diesem Fall arbeitet die folgende Funktion nicht.";

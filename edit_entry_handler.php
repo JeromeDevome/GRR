@@ -3,9 +3,9 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-09-13 10:57$
+ * Dernière modification : $Date: 2023-03-23 16:57$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -685,12 +685,13 @@ try {
 			{
                 if (isset($id_first_resa) && ($id_first_resa != 0))
                 {
-                    if ($send_mail_moderate)
-						$message_error = send_mail($id_first_resa, 5, $dformat);
                     if (isset($id) && ($id != 0)) // modification d'une résa existante
                         $message_error = send_mail($id_first_resa, 2, $dformat, array(), $oldRessource);
                     else // création
-                        $message_error = send_mail($id_first_resa, 1, $dformat, array(), $oldRessource);
+                        if ($send_mail_moderate)
+                            $message_error = send_mail($id_first_resa, 5, $dformat); // à modérer
+                        else
+                            $message_error = send_mail($id_first_resa, 1, $dformat, array(), $oldRessource);
                 }
 				else // ici $id_first_resa n'est pas défini ou nul, i.e. la série de réservations n'est pas posée => message à modifier ?
 				{/*
@@ -712,12 +713,13 @@ try {
 			{
                 if (isset($new_id) && ($new_id != 0))
                 {
-                    if ($send_mail_moderate)
-						$message_error = send_mail($new_id,5,$dformat);
                     if (isset($id) && ($id != 0)) // modification
                         $message_error = send_mail($new_id,2,$dformat, array(), $oldRessource);
                     else // création
-                        $message_error = send_mail($new_id,1,$dformat, array(), $oldRessource);
+                        if ($send_mail_moderate)
+                            $message_error = send_mail($new_id,5,$dformat);
+                        else
+                            $message_error = send_mail($new_id,1,$dformat, array(), $oldRessource);
                 }
 				else // ici $new_id n'est pas défini ou nul, i.e. la réservation n'est pas posée => message à modifier ?
 				{/*
