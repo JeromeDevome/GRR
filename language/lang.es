@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2022-10-14
+# Last modification : 2023-03-23
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -985,6 +985,9 @@ $vocab['visu_fiche_description6'] = "Hay que estar obligatoriamente conectado y 
 $vocab['visu_fiche_description_msg'] = "¿Quién tiene acceso a la ficha de descripción del recurso?";
 $vocab['voir_details'] = "Ver los detalles";
 $vocab['Votre_message'] = "Votre message";
+$vocab['Vous_avez_modifie'] = "Has modificado ";
+$vocab['Vous_avez_reserve'] = "Has reservado";
+$vocab['Vous_avez_supprime'] = "Has borrado ";
 $vocab['warning_exist'] = "¡El usuario que intentó añadir ya pertenece a la lista!";
 $vocab['warning_message_backup'] = "¡Si un mensaje del tipo \"Maximum execution time exceeded\" aparece unos momentos después de haber iniciado la copia de seguridad, eso significa que la creación de la copia de seguridad falló!";
 $vocab['warning_message_mail'] = "Algunos alojamientos desactivan el envío automático de mails desde sus servidores. En este caso, la funcionalidad siguiente no funcionará.";

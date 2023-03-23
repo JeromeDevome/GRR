@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2022-10-14
+# Last modification : 2023-03-23
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -981,7 +981,10 @@ $vocab['visu_fiche_description5'] = "Il faut obligatoirement être connecté et 
 $vocab['visu_fiche_description6'] = "Il faut obligatoirement être connecté et être administrateur général"; // A traduire
 $vocab['visu_fiche_description_msg'] = "Qui a accès à la fiche de description d'une ressource ?"; // A traduire
 $vocab['voir_details'] = "Vedere i dettagli";
-$vocab['Votre_message'] = "Votre message";
+$vocab['Votre_message'] = "Votre message";// À traduire
+$vocab['Vous_avez_modifie'] = "Hai modificato ";
+$vocab['Vous_avez_reserve'] = "Hai prenotato";
+$vocab['Vous_avez_supprime'] = "Hai eliminato ";
 $vocab['warning_exist'] = "L'utente che avete tentato di aggiungere appartiene già all'elenco!";
 $vocab['warning_message_backup'] = "Se un messaggio del tipo \"Maximum execution time exceeded \" appare alcuni momenti dopo avere lanciato la salvaguardia, ciò significa che la salvaguardia è fallita!";
 $vocab['warning_message_mail'] = "Alcuni hébergeurs disattivano la spedizione automatica di mails dai loro server. In questo caso, la funzionalità seguente non funzionerà.";

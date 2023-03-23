@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2022-10-14
+# Last modification : 2023-03-23
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -996,6 +996,9 @@ $vocab['visu_fiche_description6'] = "It is necessary to be connected and to be a
 $vocab['visu_fiche_description_msg'] = "Who has access to the description form of a resource?";
 $vocab['voir_details'] = "View details";
 $vocab['Votre_message'] = "Your message";
+$vocab['Vous_avez_modifie'] = "You have modified";
+$vocab['Vous_avez_reserve'] = "You have reserved";
+$vocab['Vous_avez_supprime'] = "You have deleted";
 $vocab['warning_exist'] = "The user you have tried to add is already on the list!";
 $vocab['warning_message_backup'] = "If a message like \"Maximum execution time exceeded\" appears a few moments after starting saving, this means that saving has failed!";
 $vocab['warning_message_mail'] = "Some hosts disable the sending of automatic mails from their servers. In such case the following funtionality will not operate.";
