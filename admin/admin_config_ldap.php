@@ -3,9 +3,9 @@
  * admin_config_ldap.php
  * Interface permettant la configuration de l'accès à un annuaire LDAP
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-11-26 11:13$
+ * Dernière modification : $Date: 2023-03-24 18:52$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -189,6 +189,7 @@ else
 }
 if ($etape == 3)
 {
+    echo '<div class="col-sm-9 col-xs-12">';
     echo "<h2>".get_vocab('titreLdap')."</h2>\n";
     echo "<h2>".encode_message_utf8(get_vocab('enregistrerConfig'))."</h2>\n";
     if (!$base_ldap)
@@ -283,9 +284,11 @@ if ($etape == 3)
         echo "<div class=\"center\"><input type=\"submit\" name=\"Valider\" value=\"".get_vocab('Terminer')."\" /></div>\n";
         echo "</div></form>";
     }
+    echo '</div>';// fin bloc de droite
 }
 else if ($etape == 2)
 {
+    echo '<div class="col-sm-9 col-xs-12">';
     echo "<h2>".get_vocab('titreLdap')."</h2>\n";
     echo "<h2>".encode_message_utf8(get_vocab('ldapConnexion'))."</h2>\n";
     // Connexion à l'annuaire
@@ -381,6 +384,7 @@ else if ($etape == 2)
         echo "<input type=\"submit\" name=\"valider\" value=\"".encode_message_utf8(get_vocab('pagePrecedente'))."\" />\n";
         echo "</div></form>\n";
     }
+    echo '</div>';// fin bloc de droite
 }
 else if ($etape == 1)
 {
@@ -392,6 +396,7 @@ else if ($etape == 1)
     }
     else if (@file_exists("../include/config_ldap.inc.php"))
         include("../include/config_ldap.inc.php");
+    echo '<div class="col-sm-9 col-xs-12">';
     echo encode_message_utf8("<h2>".get_vocab('titreLdap')."</h2>\n");
     echo "<h2>".encode_message_utf8(get_vocab('ldapConnInfo'))."</h2>\n";
     echo "<form action=\"admin_config_ldap.php\" method=\"post\">\n";
@@ -433,7 +438,7 @@ else if ($etape == 1)
 
     echo "<div style=\"text-align:center;\"><input type=\"submit\" value=\"".get_vocab('next')."\" /></div>";
     echo "</form>";
-
+    echo '</div>';
 }
 else if ($etape == 0)
 {
@@ -444,6 +449,7 @@ else if ($etape == 0)
         echo encode_message_utf8("<p class=\"avertissement\">".get_vocab('LDAPinactive')."<br />".get_vocab('LDAPimpossible')."</p></div></section></body></html>");
         die();
     }
+    echo '<div class="col-sm-9 col-xs-12">';
     echo encode_message_utf8("<h2>".get_vocab('titreLdap')."</h2>\n");
     echo "<p>".encode_message_utf8(get_vocab('LDAPpossible'))."</p>";
     echo "<form action=\"admin_config_ldap.php\" method=\"post\">\n";
@@ -611,6 +617,7 @@ else if ($etape == 0)
     echo "<div><input type=\"hidden\" name=\"etape\" value=\"1\" />\n";
     echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" /></div>\n";
     echo "<div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" value=\"".get_vocab('configureLdap')."\" /></div></form>\n";
+    echo '</div>';
 }
 if ($valid == 'no') echo "</div>";
 end_page();
