@@ -3,9 +3,9 @@
  * admin_edit_room.php
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-11-17 11:31$
+ * Dernière modification : $Date: 2023-03-25 18:55$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -53,6 +53,12 @@ $who_can_book  = isset($_POST["who_can_book"]) ? intval(clean_input($_POST["who_
 $max_booking = isset($_POST["max_booking"]) ? intval(clean_input($_POST["max_booking"])) : NULL;
 if ($max_booking<-1)
 	$max_booking = -1;
+$max_booking1 = isset($_POST["max_booking1"]) ? intval(clean_input($_POST["max_booking1"])) : NULL;
+if ($max_booking1<-1)
+	$max_booking1 = -1;
+$max_booking2 = isset($_POST["max_booking2"]) ? intval(clean_input($_POST["max_booking2"])) : NULL;
+if ($max_booking2<-1)
+	$max_booking2 = -1;
 $booking_range = isset($_POST["booking_range"]) ? intval(clean_input($_POST["booking_range"])) : NULL;
 if ($booking_range<-1)
 	$booking_range = -1;
@@ -824,6 +830,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 				$access='r';
 			else
 				$access='a';
+            $max_booking = ($_POST['enable_periods'] == 'n')? $max_booking1 : $max_booking2;
 			if ((isset($id_area)) && !((isset($action) && ($action == "duplique_area"))))
 			{
 				// s'il y a changement de type de creneaux, on efface les reservations du domaines
@@ -1006,7 +1013,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 		}
 	</script>
 	<?php
-	echo "<div class=\"col-md-9 col-sm-8 col-xs-12\">";
+	echo "<div class=\"col-sm-9 col-xs-12\">";
 	if (isset($id_area))
 	{
         $id_area = intval($id_area);
@@ -1210,7 +1217,11 @@ if ((!empty($id_area)) || (isset($add_area)))
 				$nb_jour = -1;
 			echo "</td></tr>\n<tr><td>".get_vocab("duree_max_resa_area2").get_vocab("deux_points");
 			echo "\n</td><td><input class=\"form-control\" type=\"text\" name=\"duree_max_resa_area2\" size=\"5\" value=\"".$nb_jour."\" /></td></tr>\n";
-			echo "</table>";
+            // Nombre max de reservation par domaine
+			echo "<tr><td>".get_vocab("max_booking")." -  ".get_vocab("all_rooms_of_area").get_vocab("deux_points");
+			echo "</td><td><input class=\"form-control\" type=\"text\" name=\"max_booking2\" value=\"".clean_input($row['max_booking'])."\" /></td>\n";
+			echo "</tr>";
+			echo "</table>"; // fin menu2
 			// Cas ou les creneaux de reservations sont bases sur le temps
 			if ($row["enable_periods"] == 'n')
 				echo "<table id=\"menu1\" class='table table-bordered'>";
@@ -1278,9 +1289,9 @@ if ((!empty($id_area)) || (isset($add_area)))
 			echo "</td>\n<td><input class=\"form-control\" type=\"text\" name=\"duree_max_resa_area1\" size=\"5\" value=\"".clean_input($row["duree_max_resa_area"])."\" /></td></tr>\n";
 			// Nombre max de reservation par domaine
 			echo "<tr><td>".get_vocab("max_booking")." -  ".get_vocab("all_rooms_of_area").get_vocab("deux_points");
-			echo "</td><td><input class=\"form-control\" type=\"text\" name=\"max_booking\" value=\"".clean_input($row['max_booking'])."\" /></td>\n";
-			echo "</tr></table>";
-			Hook::Appel("hookEditArea1");
+			echo "</td><td><input class=\"form-control\" type=\"text\" name=\"max_booking1\" value=\"".clean_input($row['max_booking'])."\" /></td>\n";
+			echo "</tr></table>"; // fin menu1
+			Hook::Appel("hookEditArea1"); //??
 			echo "<div class=\"center\">\n";
 			echo "<input class=\"btn btn-primary\" type=\"submit\" name=\"change_area\" value=\"".get_vocab("save")."\" />\n";
 			echo "<input class=\"btn btn-primary\" type=\"submit\" name=\"change_done\" value=\"".get_vocab("back")."\" />\n";
