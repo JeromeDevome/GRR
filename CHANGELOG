@@ -1,6 +1,6 @@
 Version en cours de développement sur GitHUB (4.0.3)
 
-[Ajout] Contrôle version PHP @JeromeB
+[Ajout] Peronnalisation de la couleur des liens @JeromeB
 [Correction] protect_data_sql cas d'une valeur à null @JeromeB
 [Correction] Suppression (en affichage) des réservations périodique après modification de la série (Pb v4.0.0) @JeromeB
 [Modification] Mise à jours de traductions @JeromeB

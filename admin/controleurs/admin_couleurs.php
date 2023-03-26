@@ -26,6 +26,7 @@ get_vocab_admin('admin_couleurs_explications');
 
 get_vocab_admin('page_header');
 get_vocab_admin('menuG');
+get_vocab_admin('link');
 get_vocab_admin('cal_titre');
 get_vocab_admin('cal_jours');
 get_vocab_admin('cal_sem');
@@ -60,6 +61,7 @@ $champs_couleur=array('header_bgcolor' => '--header-bgcolor'
 ,'header_hover' => '--header-hover'
 ,'menuG_bgcolor' => '--menuG-bgcolor'
 ,'menuG_color' => '--menuG-color'
+,'lien_classique' => '--lien-classique'
 ,'cal_titrecolor' => '--cal-titrecolor'
 ,'cal_titrebgcolor' => '--cal-titrebgcolor'
 ,'cal_joursbgcolor' => '--cal-joursbgcolor'
@@ -101,6 +103,7 @@ $default_color_tab=array('header_bgcolor' => '#FFF'
 ,'header_hover' => '#23527C'
 ,'menuG_bgcolor' => '#FFF'
 ,'menuG_color' => '#333'
+,'lien_classique' => '#337ab7'
 ,'cal_titrecolor' => '#333'
 ,'cal_titrebgcolor' => '#FFF'
 ,'cal_joursbgcolor' => '#FFF'
@@ -188,6 +191,7 @@ $hexa['header_bgcolor'] = (isset($AllSettings['sp_header_bgcolor']))? valid_colo
 $hexa['header_hover'] = (isset($AllSettings['sp_header_hover']))? valid_color($AllSettings['sp_header_hover']) : $default_color_tab["header_hover"];
 $hexa['menuG_color'] = (isset($AllSettings['sp_menuG_color']))? valid_color($AllSettings['sp_menuG_color']) : $default_color_tab["menuG_color"];
 $hexa['menuG_bgcolor'] = (isset($AllSettings['sp_menuG_bgcolor']))? valid_color($AllSettings['sp_menuG_bgcolor']) : $default_color_tab["menuG_bgcolor"];
+$hexa['lien_classique'] = (isset($AllSettings['sp_lien_classique']))? valid_color($AllSettings['sp_lien_classique']) : $default_color_tab["lien_classique"];
 $hexa['cal_titrecolor'] = (isset($AllSettings['sp_cal_titrecolor']))? valid_color($AllSettings['sp_cal_titrecolor']) : $default_color_tab["cal_titrecolor"];
 $hexa['cal_titrebgcolor'] = (isset($AllSettings['sp_cal_titrebgcolor']))? valid_color($AllSettings['sp_cal_titrebgcolor']) : $default_color_tab["cal_titrebgcolor"];
 $hexa['cal_jourscolor'] = (isset($AllSettings['sp_cal_jourscolor']))? valid_color($AllSettings['sp_cal_jourscolor']) : $default_color_tab["cal_jourscolor"];
