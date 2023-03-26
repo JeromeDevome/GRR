@@ -748,7 +748,7 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
                 echo "</form>";
             }
         }
-        if (isset($keys) && isset($courrier))
+        if (($userName != '') && (authGetUserLevel($userName, $room_id) >= 3) && (isset($keys) && isset($courrier)))
         {
             echo '<form action="validation.php" method="get">',PHP_EOL;
             echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("reservation_en_cours")."</legend>\n";

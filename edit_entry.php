@@ -782,7 +782,7 @@ if($active_participant > 0){
 	echo '</td></tr>'.PHP_EOL;
 }
 
-if($active_cle == 'y'){
+if($active_cle == 'y' && authGetUserLevel(getUserName(), $room_id) >= 3){
 	echo '<tr><td class="E"><br>'.PHP_EOL;
 	echo '<b>'.get_vocab("status_clef").get_vocab("deux_points").'</b>'.PHP_EOL;
 	echo '</td></tr>'.PHP_EOL;
@@ -794,7 +794,7 @@ if($active_cle == 'y'){
 	echo '</td></tr>'.PHP_EOL;
 }
 
-if (Settings::get("show_courrier") == 'y'){ // proposition scoubinaire le 12/03/2018
+if (Settings::get("show_courrier") == 'y' && authGetUserLevel(getUserName(), $room_id) >= 3){ // proposition scoubinaire le 12/03/2018
 echo '<tr><td class="E"><br>'.PHP_EOL;
 echo '<b>'.get_vocab("status_courrier").get_vocab("deux_points").'</b>'.PHP_EOL;
 echo '</td></tr>'.PHP_EOL;
