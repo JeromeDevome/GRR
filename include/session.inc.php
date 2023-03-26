@@ -3,7 +3,7 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-17 10:14$
+ * Dernière modification : $Date: 2023-03-26 16:25$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -494,9 +494,10 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
             // Lire les infos sur l'utilisateur depuis LDAP
             $user_info = grr_getinfo_ldap($user_dn,$_login,$_password);
             // Update GRR database
-            $user_info[0] = utf8_encode($user_info[0]);
+            /*$user_info[0] = utf8_encode($user_info[0]);
             $user_info[1] = utf8_encode($user_info[1]);
-            $user_info[2] = utf8_encode($user_info[2]);
+            $user_info[2] = utf8_encode($user_info[2]);*/
+            // devrait être inutile puisque LDAP devrait répondre en UTF-8
             $sql2 = "UPDATE ".TABLE_PREFIX."_utilisateurs SET
             nom='".protect_data_sql($user_info[0])."',
             prenom='".protect_data_sql($user_info[1])."',
@@ -519,9 +520,10 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 return "3";
             else
             {
-                $user_info[0] = utf8_encode($user_info[0]);
+                /*$user_info[0] = utf8_encode($user_info[0]);
                 $user_info[1] = utf8_encode($user_info[1]);
-                $user_info[2] = utf8_encode($user_info[2]);
+                $user_info[2] = utf8_encode($user_info[2]);*/
+                // devrait être inutile pusique LDAP devrait répondre en UTF-8
                 // On insère le nouvel utilisateur
                 $sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET
                 nom='".protect_data_sql($user_info[0])."',
