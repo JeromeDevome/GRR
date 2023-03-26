@@ -257,8 +257,8 @@ if (!$res)
 	echo grr_sql_error();
 else
 {
-    $overloadFieldList = mrbsOverloadGetFieldslist($area);
     $d = array();
+    $overloadFieldList = mrbsOverloadGetFieldslist($area);
 	// Pour toutes les réservations
     foreach($res as $row) 
 	{
