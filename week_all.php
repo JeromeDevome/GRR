@@ -3,9 +3,9 @@
  * week_all.php
  * Permet l'affichage du planning des réservations d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-26 15:28$
+ * Dernière modification : $Date: 2023-03-26 16:31$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -429,7 +429,7 @@ $num_week_day = $weekstarts;
 for ($weekcol = 0; $weekcol < 7; $weekcol++)
 {
 	$num_day = date('d', $t);
-	$temp_month = utf8_encode(date('m', $t));
+	$temp_month = date('m', $t);
 	$temp_month2 = utf8_strftime("%b", $t);
 	$temp_year = date('Y', $t);
 	$tt = mktime(0, 0, 0, $temp_month, $num_day, $temp_year);

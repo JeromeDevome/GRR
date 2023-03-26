@@ -3,9 +3,9 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-19 15:51$
+ * Dernière modification : $Date: 2023-03-26 16:16$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -187,14 +187,14 @@ if (isset($id)) // édition d'une réservation existante
 			$start_day   = (int)date('d', $row[1]);
 			$start_month = (int)date('m', $row[1]);
 			$start_year  = (int)date('Y', $row[1]);
-			$start_hour  = (int)strftime('%H', $row[1]);
-			$start_min   = (int)strftime('%M', $row[1]);
+			$start_hour  = (int)date('H', $row[1]);
+			$start_min   = (int)date('i', $row[1]);
 			$duration    = $row[5]-$row[1];
 			$end_day   = (int)date('d', $row[5]);
 			$end_month = (int)date('m', $row[5]);
 			$end_year  = (int)date('Y', $row[5]);
-			$end_hour  = (int)strftime('%H', $row[5]);
-			$end_min   = (int)strftime('%M', $row[5]);
+			$end_hour  = (int)date('H', $row[5]);
+			$end_min   = (int)date('i', $row[5]);
 			$rep_end_day   = (int)date('d', $row[2]);
 			$rep_end_month = (int)date('m', $row[2]);
 			$rep_end_year  = (int)date('Y', $row[2]);
@@ -217,7 +217,7 @@ if (isset($id)) // édition d'une réservation existante
 		}
 		else
 		{
-			$rep_end_date = utf8_encode(strftime($dformat,$row[2]));
+			$rep_end_date = utf8_strftime($dformat,$row[2]);
 			$rep_opt      = $row[3];
 			$start_time = $row[1];
 			$end_time = $row[5];

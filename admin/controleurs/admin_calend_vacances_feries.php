@@ -3,9 +3,9 @@
  * admin_calend_vacances_feries.php
  * Interface permettant la définiton des jours fériés ou de vacances
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-19 15:44$
+ * Dernière modification : $Date: 2023-03-26 16:38$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -84,7 +84,7 @@ if (Settings::get("show_holidays") == 'Oui' && isset($_POST['define_holidays']))
 		}
 		$begin_bookings = Settings::get("begin_bookings");
 		$end_bookings = Settings::get("end_bookings");
-		$month = utf8_encode(date('m', $begin_bookings));
+		$month = date('m', $begin_bookings);
 		$year = date('Y', $begin_bookings);
 		$yearFin = date('Y', $end_bookings);
 		$i = $year;
@@ -192,7 +192,7 @@ if (Settings::get("show_holidays") == 'Oui' && isset($_POST['define_holidays']))
 		}
 		$begin_bookings = Settings::get("begin_bookings");
 		$end_bookings = Settings::get("end_bookings");
-		$month = utf8_encode(date('m', $begin_bookings));
+		$month = date('m', $begin_bookings);
 		$year = date('Y', $begin_bookings);
 		$yearFin = date('Y', $end_bookings);
 		$i = $year;
