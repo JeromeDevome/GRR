@@ -39,6 +39,21 @@ Sous-version 3.4.3b
     correctif : message en cas de création d'une nouvelle réservation
     correctif : le message de connexion alternative s'affichait même quand le SSO était désactivé
     mise à jour : fichier des vacances scolaires (France)
+Sous-version 3.4.3c
+    amélioration : rejet des réservations sans type ou de type inconnu
+    correctif : authentification imap (issue #204 Github)
+    correctif : affichage en mode debug
+    correctif : indice inconnu
+    correctif : plage de créneaux définie par début et fin
+    correctif : préfixe de table
+    correctif : ligne des jours pour une semaine ne commençant pas un lundi
+    correctif : URL incorrecte
+    correctif : saut de ligne inutile
+    correctif : champ manquant dans le formulaire pour un domaine à créneaux prédéfinis
+    correctif : mise en page
+    modification : expression moins ambiguë
+    modification : calcul de l'heure de fin dans jQuery_TimePicker2
+    modification : style orienté objet
 
 -----
 --
