@@ -3,9 +3,9 @@
  * pdfgenerator.php
  * Générer les PDF
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-05-22 17:30$
+ * Dernière modification : $Date: 2023-03-26 15:51$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -78,15 +78,15 @@ else
 		$d['dossierImg'] = $gcDossierImg;
 		$d['organisme'] = $row[10];
 		$d['salle'] = $row2[0];
-		$d['datedemande'] = utf8_encode(strftime('%A %d %B %Y' ,strtotime($row[6])));
-		$d['jour'] = utf8_encode(strftime('%A %d %B %Y' ,$row[1]));
-		$d['heure'] = strftime('%H:%M' ,$row[1]);
-		$d['heure2'] = strftime('%H:%M' ,$row[2]);
-		$d['jour2'] = utf8_encode(strftime('%A %d %B %Y' ,$row[2]));
+		$d['datedemande'] = utf8_strftime('%A %d %B %Y' ,strtotime($row[6]));
+		$d['jour'] = utf8_strftime('%A %d %B %Y' ,$row[1]);
+		$d['heure'] = utf8_strftime('%H:%M' ,$row[1]);
+		$d['heure2'] = utf8_strftime('%H:%M' ,$row[2]);
+		$d['jour2'] = utf8_strftime('%A %d %B %Y' ,$row[2]);
 
 		if ($row[4]!=0){
 			$d['period'] = 1;
-			$d['jourPeriode'] = utf8_encode(strftime('%A' ,$row6[1]));
+			$d['jourPeriode'] = utf8_strftime('%A' ,$row6[1]);
 			
 		}else{
 			$d['period'] = 0;
