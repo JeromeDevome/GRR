@@ -893,6 +893,7 @@ $vocab['title_mail_modify'] = "Una prenotazione su GRR è stata modificata :\n";
 $vocab['title_session_max_length'] = "Durata di una sessione";
 $vocab['titre_config_Jours_Cycles'] = "Configuration des \"jours cycles\""; // A traduire
 $vocab['too_may_entrys'] = "Le opzioni scelte creeranno troppe prenotazioni.<br />Choisissez des options différentes !";
+$vocab['top_of_page'] = "^ Top of page"; // À traduire
 $vocab['total'] = "Totale";
 $vocab['tous_les_utilisateurs'] = "tous les utilisateurs"; // A traduire
 $vocab['traite_moderation'] = " ha trattato la domanda di prenotazione di ";

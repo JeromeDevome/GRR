@@ -896,6 +896,7 @@ $vocab['title_mail_modify'] = "Se modificó una reserva en GRR :\n";
 $vocab['title_session_max_length'] = "Duración máxima de una sesión";
 $vocab['titre_config_Jours_Cycles'] = "Configuración de los \"días ciclos\"";
 $vocab['too_may_entrys'] = "Las opciones elegidas crearán demasiadas reservacs.<br />¡Elija opciones diferentes!";
+$vocab['top_of_page'] = "^ Top of page"; // À traduire
 $vocab['total'] = "Total";
 $vocab['tous_les_utilisateurs'] = "todos los usuarios";
 $vocab['traite_moderation'] = "trató la petición de reserva de";
