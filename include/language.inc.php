@@ -3,7 +3,7 @@
  * language.inc.php
  * Configuration de la langue
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-02-18 18:25$
+ * Dernière modification : $Date: 2023-03-19 11:51$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -109,8 +109,13 @@ switch ($dateformat)
 /**
  * @param string $str
  */
-function test_utf8($str)
-{
+function test_utf8($str){
+    if (is_null($str))
+        return TRUE;
+    else 
+        return mb_check_encoding($str, "UTF-8");
+}
+/*{
  // astuce pour entrer dans un test booléen ^^
  // (si c'est un tableau... ce qui est forcement vrai)
   if (is_array($str)) {
@@ -123,7 +128,7 @@ function test_utf8($str)
         // si la chaine decodée et encodée est égale à elle-même
         return (utf8_encode(utf8_decode($str)) == $str);
     }    
-}
+}*/
 
 # This maps a Windows locale to the charset it uses, which are
 # all Windows code pages
