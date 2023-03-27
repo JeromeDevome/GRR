@@ -170,7 +170,7 @@ function read_sites()
 
 function update_site($id)
 {
-	global $twig, $menuAdminT, $menuAdminTN2, $trad, $AllSettings;
+	global $twig, $menuAdminT, $menuAdminTN2, $d, $trad, $AllSettings;
 
 	if ((isset($_POST['back']) || isset($_GET['back'])))
 	{
