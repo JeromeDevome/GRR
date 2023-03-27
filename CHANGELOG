@@ -5,6 +5,9 @@ Version en cours de développement sur GitHUB (4.0.3)
 [Correction] protect_data_sql cas d'une valeur à null @JeromeB
 [Correction] Suppression (en affichage) des réservations périodique après modification de la série (Pb v4.0.0) @JeromeB
 [Correction] Permission gestion des clés @JeromeB
+[Correction] Suppression d'un administrateur de site (Pb v4.0.0) @JeromeB
+[Correction] Syntaxe + liens @ynaessens
+[Modification] Amélioration compatibilité PHP 8.2 (Compatibilité partielle) @ynaessens
 [Modification] Mise à jours de traductions @JeromeB
 [Modification] Couleur titre "Identification" page login selon la couleur du thème @JeromeB
 [Modification] Alignement des liens (Contact, CGU) dans la page login @JeromeB
