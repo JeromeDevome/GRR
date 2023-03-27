@@ -32,19 +32,51 @@ if (Settings::get("module_multisite") != "Oui")
 }
 
 $reg_admin_login = isset($_GET["reg_admin_login"]) ? $_GET["reg_admin_login"] : NULL;
+$reg_multi_admin_login = isset($_POST["reg_multi_admin_login"]) ? $_POST["reg_multi_admin_login"] : NULL;
+$test_user =  isset($_POST["reg_multi_admin_login"]) ? "multi" : (isset($_GET["reg_admin_login"]) ? "simple" : NULL);
 $action = isset($_GET["action"]) ? $_GET["action"] : NULL;
 $msg = '';
 
-if ($reg_admin_login)
+// Si la table j_user_area est vide, il faut modifier la requête
+$test_grr_j_user_area = grr_sql_count(grr_sql_query("SELECT * from ".TABLE_PREFIX."_j_user_area"));
+
+if ($test_user == "multi")
 {
-	$res = grr_sql_query1("select login from ".TABLE_PREFIX."_j_useradmin_site where (login = '$reg_admin_login' and id_site = '$id_site')");
-	if ($res == -1)
+	foreach ($reg_multi_admin_login as $valeur)
 	{
-		$sql = "insert into ".TABLE_PREFIX."_j_useradmin_site (login, id_site) values ('$reg_admin_login',$id_site)";
-		if (grr_sql_command($sql) < 0)
-			fatal_error(1, "<p>" . grr_sql_error());
-		else
-			$msg = get_vocab("add_user_succeed");
+	// On commence par vérifier que l'utilisateur n'est pas déjà présent dans cette liste.
+		if ($id_site != -1)
+		{
+			$sql = "select login from ".TABLE_PREFIX."_j_useradmin_site where (login = '$valeur' and id_site = '$id_site')";
+			$res = grr_sql_query($sql);
+			$test = grr_sql_count($res);
+			if ($test == 0)
+			{
+				if ($valeur != '')
+				{
+					$sql = "insert into ".TABLE_PREFIX."_j_useradmin_site (login, id_site) values ('$valeur',$id_site)";
+					if (grr_sql_command($sql) < 0)
+						fatal_error(1, "<p>" . grr_sql_error());
+					else
+						$msg= get_vocab("add_multi_user_succeed");
+				}
+			}
+		}
+	}
+}
+elseif($test_user == "simple")
+{
+	if ($reg_admin_login)
+	{
+		$res = grr_sql_query1("select login from ".TABLE_PREFIX."_j_useradmin_site where (login = '$reg_admin_login' and id_site = '$id_site')");
+		if ($res == -1)
+		{
+			$sql = "insert into ".TABLE_PREFIX."_j_useradmin_site (login, id_site) values ('$reg_admin_login',$id_site)";
+			if (grr_sql_command($sql) < 0)
+				fatal_error(1, "<p>" . grr_sql_error());
+			else
+				$msg = get_vocab("add_user_succeed");
+		}
 	}
 }
 
@@ -111,6 +143,7 @@ $is_admin = 'yes';
 
 	$sql = "SELECT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE  (etat!='inactif' and (statut='utilisateur' or statut='gestionnaire_utilisateur')) order by nom, prenom";
 	$res = grr_sql_query($sql);
+	$d['nbUserAjoutable'] = grr_sql_count($res);
 	if ($res)
 		for ($i = 0; ($row3 = grr_sql_row($res, $i)); $i++)
 			$utilisateursAjoutable[] = array('login' => $row3[0], 'nom' => $row3[1], 'prenom' => $row3[2]);

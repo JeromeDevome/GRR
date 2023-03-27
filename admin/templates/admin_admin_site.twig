@@ -61,10 +61,11 @@
 							</div>
 						</form>
 
-						{% if trad.dNbUserAjoutable > 0 %}
+						{% if d.nbUserAjoutable > 0 %}
 
 							<form action="?p=admin_admin_site" method="post">
-								<input type="hidden" name="id_area" value="{{ d.idSite }}" />
+								<input type="hidden" name="p" value="admin_admin_site" />
+								<input type="hidden" name="id_site" value="{{ d.idSite }}" />
 								<div class="form-group">
 									<label class="col-sm-3" for="reg_admin_login">{{ trad.add_multiple_user_to_list }}</label>
 									<div class="col-sm-9">
@@ -122,7 +123,7 @@
 			destination = box.options[box.selectedIndex].value;
 			if (destination) location.href = "?p=admin_admin_site&id_site="+destination;
 		}
-/*
+
 		function Deplacer(liste1, liste2)
 		{
 			while (liste1.options.selectedIndex >= 0)
@@ -151,6 +152,6 @@
 			}
 		}
 
-		vider_liste(document.getElementById('reg_multi_admin_login'));*/
+		vider_liste(document.getElementById('reg_multi_admin_login'));
 	</script>
 {% endblock %}
