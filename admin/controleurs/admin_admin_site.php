@@ -72,7 +72,7 @@ get_vocab_admin('admin');
 
 get_vocab_admin('add');
 
-$trad['dIdSite'] = $id_site;
+$d['idSite'] = $id_site;
 
 // Affichage d'un pop-up
 affiche_pop_up($msg,"admin");

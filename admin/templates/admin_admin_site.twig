@@ -28,7 +28,7 @@
 								<select name="id_site" class="form-control" onchange="site_go()">
 									<option value="-1">{{ trad.select }}</option>
 									{% for site in sites %}
-										<option value="{{ site.id }}" {% if site.id == trad.dIdSite %} selected {% endif %}>{{ site.nom }}</option>
+										<option value="{{ site.id }}" {% if site.id == d.idSite %} selected {% endif %}>{{ site.nom }}</option>
 									{% endfor %}
 								</select>
 							</div>
@@ -38,11 +38,11 @@
 
 					<hr>
 
-					{% if trad.dIdSite > 0 %}
+					{% if d.idSite > 0 %}
 
 						<form action="?p=admin_admin_site" method="get">
 							<input type="hidden" name="p" value="admin_admin_site" />
-							<input type="hidden" name="id_site" value="{{ trad.dIdSite }}" />
+							<input type="hidden" name="id_site" value="{{ d.idSite }}" />
 
 							<div class="form-group">
 								<label class="col-sm-3" for="reg_admin_login">{{ trad.add_user_to_list }}</label>
@@ -64,7 +64,7 @@
 						{% if trad.dNbUserAjoutable > 0 %}
 
 							<form action="?p=admin_admin_site" method="post">
-								<input type="hidden" name="id_area" value="{{ trad.dIdSite }}" />
+								<input type="hidden" name="id_area" value="{{ d.idSite }}" />
 								<div class="form-group">
 									<label class="col-sm-3" for="reg_admin_login">{{ trad.add_multiple_user_to_list }}</label>
 									<div class="col-sm-9">
@@ -101,7 +101,7 @@
 									<td>{{ useradmin.login }}</td>
 									<td>{{ useradmin.nom }}</td>
 									<td>{{ useradmin.prenom }}</td>
-									<td><a href="?p=admin_admin_site&action=del_admin&login_admin={{ useradmin.login }}&id_area={{ trad.dIdDomaine }}"><i class="fa fa-trash"></i></a></td>
+									<td><a href="?p=admin_admin_site&action=del_admin&login_admin={{ useradmin.login }}&id_site={{ d.idSite }}"><i class="fa fa-trash"></i></a></td>
 								</tr>
 							{% endfor %}
 						</table>
