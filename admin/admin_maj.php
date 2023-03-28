@@ -3,10 +3,10 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-12-14 15:17$
+ * Dernière modification : $Date: 2023-03-28 10:34$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -941,6 +941,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
     if($version_old < "3.5.0"){
         $result .= formatResult("Mise à jour de la table grr_log:","<b>","</b>");
         $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_log` CHANGE `START` `START` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00', CHANGE `END` `END` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00';");
+        $result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET `ConvertLdapUtf8toIso` = 'n' WHERE ConvertLdapUtf8toIso = 'y';");
         if ($result_inter == '')
             $result .= formatResult("Ok !","<span style='color:green;'>","</span>");
         else

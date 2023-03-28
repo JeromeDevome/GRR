@@ -3,7 +3,7 @@
  * admin_config_ldap.php
  * Interface permettant la configuration de l'accès à un annuaire LDAP
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-26 09:21$
+ * Dernière modification : $Date: 2023-03-28 17:04$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -71,13 +71,13 @@ if (isset($_POST['reg_ldap_statut']))
 	}
 	if (isset($_POST['Valider1']))
 	{
-		if (!isset($_POST['ConvertLdapUtf8toIso']))
+	/*	if (!isset($_POST['ConvertLdapUtf8toIso']))
 			$ConvertLdapUtf8toIso = "n";
 		else
 			$ConvertLdapUtf8toIso = "y";
 		if (!Settings::set("ConvertLdapUtf8toIso", $ConvertLdapUtf8toIso))
 			echo $vocab['save_err']." ConvertLdapUtf8toIso !<br />";
-		$grrSettings['ConvertLdapUtf8toIso'] = $ConvertLdapUtf8toIso;
+		$grrSettings['ConvertLdapUtf8toIso'] = $ConvertLdapUtf8toIso;*/
 		if (!isset($_POST['ActiveModeDiagnostic']))
 			$ActiveModeDiagnostic = "n";
 		else
@@ -472,12 +472,12 @@ else if ($etape == 0)
         echo get_vocab('Ou_bien')."<br />";
         echo "<input type=\"radio\" name=\"ldap_statut\" value=\"no_ldap\" />".encode_message_utf8(get_vocab('desactiverLDAPauth'))."<br />";
         echo "<br />";
-        echo "<input type=\"checkbox\" name=\"ConvertLdapUtf8toIso\" value=\"y\" ";
+      /*  echo "<input type=\"checkbox\" name=\"ConvertLdapUtf8toIso\" value=\"y\" ";
         if (Settings::get("ConvertLdapUtf8toIso") == "y")
             echo " checked=\"checked\"";
         echo " />";
         echo encode_message_utf8(get_vocab('UTF8storage'));
-        echo "<br />";
+        echo "<br />";*/
         echo "<input type=\"checkbox\" name=\"ActiveModeDiagnostic\" value=\"y\" ";
         if (Settings::get("ActiveModeDiagnostic") == "y")
             echo " checked=\"checked\"";
