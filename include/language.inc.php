@@ -84,11 +84,10 @@ if (isset($subst_id_area))
 }
 // Pour l'affichage de la pendule javascript
 $clock_file = "clock_".$locale.".js";
-// Sélection du fichier d'aide.
-$faqfilelang = "_".$locale;
-//Format de la date : 'en' pour afficher des dates sous la forme "Jul 10", sinon sous la forme "10 Jul"
+
+//Format de la date : 'en-gb' pour afficher des dates sous la forme "Jul 10", sinon sous la forme "10 Jul"
 //Pourrait être amélioré pour 'de', 'es' et 'it'
-if ($locale == 'en')
+if ($locale == 'en-gb')
 {
 	$dateformat = 'en';
 }
@@ -413,7 +412,7 @@ $lang_map_windows = array
 //echo $locale;
 //die();
 $ok = 'no';
-if ($locale == 'fr')
+if ($locale == 'fr-fr')
 {
 	$server_os = get_server_os();
 		// Si le serveur est sous windows
@@ -461,7 +460,7 @@ if ($locale == 'fr')
 	}
 }
 // Les autres langues que le français
-if ($locale != 'fr')
+if ($locale != 'fr-fr')
 {
 	$server_os = get_server_os();
 		// Si le serveur est sous windows
@@ -478,7 +477,7 @@ if ($locale != 'fr')
 				// Si la locale sous la forme de deux lettre (de, en, ...) n'est pas reconue par le serveur,
 				// on tente de la mettre sous la forme de_DE, etc...
 				// cas perticulier de l'anglais :
-		if ($locale == 'en')
+		if ($locale == 'en-gb')
 			$locale = "en_US";
 				// Autre cas :
 		if (strlen($locale) == 2)
