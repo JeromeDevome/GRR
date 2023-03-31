@@ -1,4 +1,9 @@
-Version en cours de développement sur GitHUB (4.0.3)
+Version en cours de développement sur GitHUB (4.X.X)
+
+-----
+--
+-----
+Version 4.0.3 - 31/03/2023 Généré par @JeromeB
 
 [Ajout] Peronnalisation de la couleur des liens @JeromeB
 [Ajout] Ajout multiple administrateur de ste @JeromeB
@@ -7,6 +12,7 @@ Version en cours de développement sur GitHUB (4.0.3)
 [Correction] Permission gestion des clés @JeromeB
 [Correction] Suppression d'un administrateur de site (Pb v4.0.0) @JeromeB
 [Correction] Syntaxe + liens @ynaessens
+[Correction] Langue du calendrier (Pb v4.0.0) @JeromeB & @sdelcroix
 [Modification] Amélioration compatibilité PHP 8.2 (Compatibilité partielle) @ynaessens
 [Modification] Mise à jours de traductions @JeromeB
 [Modification] Couleur titre "Identification" page login selon la couleur du thème @JeromeB

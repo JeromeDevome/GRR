@@ -28,7 +28,7 @@ $version_grr = "4.0.3";
 # Ex 0402003 : Version 4.2.X 3eme modification sur la branche 4.2.X
 $version_bdd = "0400001";
 // Version repository (GitHub) GitHub-Master / Release-v4.0.0-beta.1 / Release-v4.0.0-RC.1 / Release-v4.0.0
-$versionReposite = "GitHub-Master";
+$versionReposite = "Release-v4.0.3";
 
 ################################
 # Configuration Requise
@@ -36,9 +36,9 @@ $versionReposite = "GitHub-Master";
 // Version PHP minimum
 $php_mini = "7.2.5";
 // Version PHP maximum testé et validé par : JeromeB
-$php_max_valide = "8.1.9";
+$php_max_valide = "8.1.17";
 // Version PHP maximum qui est sensé fonctionné, si compatible avec toutes les versions à ce jour laisser vide
-$php_maxi = "8.1.15";
+$php_maxi = "8.1.17";
 
 // Version MySQL minimum
 $mysql_mini = "5.4.0";
