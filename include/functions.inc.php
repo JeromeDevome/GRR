@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-03-23 18:41$
+ * Dernière modification : $Date: 2023-03-31 13:54$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1055,12 +1055,8 @@ function begin_page($title, $page = "with_session")
 			die();
 		}
 	}
-	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin;
+	global $vocab, $clock_file, $use_select2, $use_admin;
 	header('Content-Type: text/html; charset=utf-8');
-	/*if (!isset($_COOKIE['open']))
-	{
-		setcookie("open", "true", time()+3600, "", "", false, false);
-	}*/
     if (!isset($_COOKIE['open']))
     {
         header('Set-Cookie: open=true; SameSite=Lax');
@@ -5922,7 +5918,7 @@ function pageHead2($title, $page = "with_session")
 			die();
 		}
 	}
-	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin;
+	global $vocab, $clock_file, $use_select2, $use_admin;
     // récupération des couleurs des types
     $types = '';
     $sql = "SELECT type_letter,couleurhexa,couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE 1";
@@ -6225,10 +6221,6 @@ function start_page_w_header($day = '', $month = '', $year = '', $type_session =
     include $racine."/include/hook.class.php";
     // code HTML
     header('Content-Type: text/html; charset=utf-8'); // en liaison avec la modification de pageHead2
-    /*if (!isset($_COOKIE['open']))
-	{
-		setcookie("open", "true", time()+3600, "", "", false, false);
-	}*/
     if (!isset($_COOKIE['open']))
     {
         header('Set-Cookie: open=true; SameSite=Lax');
@@ -6269,10 +6261,6 @@ function start_page_wo_header($titre, $type_session = 'with_session')
     include $racine."/include/hook.class.php";
     // code HTML
     header('Content-Type: text/html; charset=utf-8');
-    /*if (!isset($_COOKIE['open']))
-	{
-		setcookie("open", "true", time()+3600, "", "", false, false);
-	}*/
     if (!isset($_COOKIE['open']))
     {
         header('Set-Cookie: open=true; SameSite=Lax');

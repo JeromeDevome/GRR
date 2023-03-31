@@ -3,9 +3,9 @@
  * edit_entry_champs_add.php
  * Page "Ajax" utilisée pour générer les champs additionnels dans la page de réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-02-16 11:52$
+ * Dernière modification : $Date: 2023-03-31 11:52$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -61,10 +61,7 @@ if (authUserAccesArea(getUserName(), $area) == 0)
 // Champs additionnels : on récupère les données de la réservation si il y en a
 if ($id != 0)
 	$overload_data = mrbsEntryGetOverloadDesc($id);
-if ($unicode_encoding)
-	header("Content-Type: text/html;charset=utf-8");
-else
-	header("Content-Type: text/html;charset=".$charset_html);
+header("Content-Type: text/html;charset=utf-8");
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 // Boucle sur les champs additionnels de l'area
 $overload_fields = mrbsOverloadGetFieldslist($area);
