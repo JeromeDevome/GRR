@@ -3357,19 +3357,23 @@ function getWritable($user, $id)
             	-> sinon
             		R5 -> on retourne $user_can_book selon les droits de l'utilisateur U sur la ressource et s'il peut réserver la ressource pour B
             		R6 -> on retourne 0 sinon (si on permettait à U d'éditer la résa, il ne pourrait de toute façon pas la modifier)*/
-             if (($utilisateur != $beneficiaire) && ($utilisateur != $createur)) // cas 1
+            if (($utilisateur != $beneficiaire) && ($utilisateur != $createur)) // cas 1
                 return 0;
             elseif ($utilisateur == $beneficiaire) // cas 2 et 3
             {
-                if ($data['dont_allow_modify'] == 'y')
-                    return 0;
+                if (authGetUserLevel($user, $data['room_id']) > 2) 
+                    return 1; // un gestionnaire de ressource peut toujours modifier ses propres réservations
+                elseif ($data['dont_allow_modify'] == 'y')
+                    return 0; // un simple utilisateur ne peut pas modifier ses propres réservations
                 else 
                     return $user_can_book;
             }
             elseif ($utilisateur == $createur) // cas 4
             {
-                if ($data['dont_allow_modify'] == 'y')
-                    return 0;
+                if (authGetUserLevel($user, $data['room_id']) > 2) 
+                    return 1; // un gestionnaire de ressource peut toujours modifier ses propres réservations
+                elseif ($data['dont_allow_modify'] == 'y')
+                    return 0; // un simple utilisateur ne peut pas modifier ses propres réservations
                 else
                 {
                     if (authGetUserLevel($user, $data['room_id']) >= $data['qui_peut_reserver_pour'])
