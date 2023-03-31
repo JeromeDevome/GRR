@@ -3965,7 +3965,7 @@ function no_book_rooms($user){
         elseif (!$room['who_can_book']){ // ressource restreinte
             $sql = "SELECT login FROM ".TABLE_PREFIX."_j_userbook_room j WHERE j.login = '".$user."' AND j.id_room = '".$room['id']."'";
             $login = grr_sql_query1($sql);
-            if (($login != $user) && ($auth_level < 3)){ // un gestionnaire de ressource peut toujours accéder !
+            if ((strtoupper($login) != strtoupper($user)) && ($auth_level < 3)){ // un gestionnaire de ressource peut toujours accéder !
                 $rooms_no_book[] = $room['id'];
             }
         }
