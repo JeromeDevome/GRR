@@ -108,7 +108,7 @@ INSERT INTO grr_setting VALUES ('grr_mail_smtp', '');
 INSERT INTO grr_setting VALUES ('grr_mail_Bcc', 'n');
 INSERT INTO grr_setting VALUES ('grr_mail_Username', '');
 INSERT INTO grr_setting VALUES ('verif_reservation_auto', '0');
-INSERT INTO grr_setting VALUES ('ConvertLdapUtf8toIso', 'y');
+INSERT INTO grr_setting VALUES ('ConvertLdapUtf8toIso', 'n');
 INSERT INTO grr_setting VALUES ('ActiveModeDiagnostic', 'n');
 INSERT INTO grr_setting VALUES ('ldap_champ_recherche', 'uid');
 INSERT INTO grr_setting VALUES ('ldap_champ_nom', 'sn');
