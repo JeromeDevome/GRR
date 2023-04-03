@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-03-31 13:54$
+ * Dernière modification : $Date: 2023-04-03 16:17$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -915,21 +915,14 @@ function corriger_caracteres($texte)
 }
 
 // Traite les données avant insertion dans une requête SQL
+// mise à jour pour les versions de php 5.6+
 function protect_data_sql($_value)
 {
-	global $use_function_mysql_real_escape_string;
-	//if (get_magic_quotes_gpc())
-	if (function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc())
-		$_value = stripslashes($_value);
-	if (!is_numeric($_value))
-	{
-		/*if (isset($use_function_mysql_real_escape_string) && ($use_function_mysql_real_escape_string==0))
-			$_value = mysqli_real_escape_string($GLOBALS['db_c'], $_value);
-		else */
-        // pourquoi un test, puisque l'action est la même ? YN le 30/03/2018
-			$_value = mysqli_real_escape_string($GLOBALS['db_c'], $_value);
-	}
-	return $_value;
+	if ($_value != NULL){
+        $_value = stripslashes($_value);
+        $_value = mysqli_real_escape_string($GLOBALS['db_c'], $_value);
+    }
+    return $_value;
 }
 
 // Traite les données envoyées par la methode GET|POST de la variable $_GET|POST["page"], renvoie "day" si la page n'est pas définie
