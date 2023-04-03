@@ -29,7 +29,7 @@ Pré-requis
 Pour installer et faire fonctionner GRR, vous avez besoin de :
 -> Un serveur web/php et un serveur mysql (éventuellement sur la même
 machine)
--> Nécessité de disposer d'une version de php version supérieure ou égale à 5.6.0 (gestion des variables de type $_SESSION, fonction mysql_real_escape_string(),  ...)
+-> Nécessité de disposer d'une version de php version supérieure ou égale à 5.6.0 (gestion des variables de type $_SESSION, fonction mysql_real_escape_string(),  ...) jusqu'à 8.1.x
 -> Les bases de données étant codées au format utf_mb4, la version minimale de MySQL est 5.5.3 et MariaDB 10.x
 
 ************************************************
@@ -121,6 +121,8 @@ Téléchargez sur votre serveur les scripts de la nouvelle version de GRR.
 Recopiez les fichiers de configuration (/include/config.inc.php, /include/connect.inc.php et - éventuellement - /include/config_ldap.inc.php) et le fichier de style des types de réservation (/themes/default/css/types.css).
 Vérifiez les droits en écriture sur les fichiers et le dossier indiqués à l'étape 2.
 Connectez-vous à GRR avec un compte administrateur. Si vous avez fait une montée de version, GRR demandera une mise à jour de la base de données. Faites-la puis connectez-vous. Vous devriez avoir de nouveau GRR opérationnel.
+Dans le cas où l'affichage vous semble anormal, un vidage des caches du navigateur corrige en général les défauts.
+
 
 Pour mettre à jour depuis GRR 1.9.7e ou antérieur, voici les étapes recommandées :
 - faire une sauvegarde depuis GRR197

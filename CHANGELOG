@@ -41,6 +41,15 @@ Sous-version 3.5.0c
     correctif : php 5.6 ne supporte pas le typage
     mise à jour : nom de session et dates de début/fin
     modification : style orienté objet
+Sous-version 3.5.0d
+    ajout : interrogation LDAP après authentification Apache
+    correctifs divers : code et vocabulaire
+    correctif : mise en page, formulaire incomplet
+    correctif : prise en compte du droit d'édition d'un gestionnaire de ressource
+    correctif : cas d'un utilisateur LDAP avec login non majuscule
+    mise à jour : précision sur les versions de MySQL/MariaDB requises
+    modification : suppression de l'appel à $_SERVER[]
+    modification : suppression des codages inutiles, LDAP, la base et les pages étant toutes en UTF-8
     
 -----
 --
