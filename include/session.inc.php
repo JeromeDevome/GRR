@@ -3,7 +3,7 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-26 16:34$
+ * Dernière modification : $Date: 2023-04-03 11:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -192,12 +192,13 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                             }
                         }
                    		// Convertir depuis UTF-8 (jeu de caracteres par defaut)
-                        if ((function_exists("utf8_decode")) && (Settings::get("ConvertLdapUtf8toIso") == "y"))
+                        /*if ((function_exists("utf8_decode")) && (Settings::get("ConvertLdapUtf8toIso") == "y"))
                         {
                             $l_email = utf8_decode($l_email);
                             $l_nom = utf8_decode($l_nom);
                             $l_prenom = utf8_decode($l_prenom);
-                        }
+                        }*/
+                        // conversion inutile, la base étant en utf8mb4
                     }
                     $nom_user = $l_nom;
                     $email_user = $l_email;
@@ -1196,12 +1197,13 @@ function grr_getinfo_ldap($_dn, $_login, $_password)
         }
     }
     // Convertir depuis UTF-8 (jeu de caracteres par defaut)
-    if ((function_exists("utf8_decode")) and (Settings::get("ConvertLdapUtf8toIso") == "y"))
+    /*if ((function_exists("utf8_decode")) and (Settings::get("ConvertLdapUtf8toIso") == "y"))
     {
             $l_email = utf8_decode($l_email);
             $l_nom = utf8_decode($l_nom);
             $l_prenom = utf8_decode($l_prenom);
-    }
+    }*/
+    // conversion inutile, la base étant en utf8mb4
     // Return infos
     return array($l_nom, $l_prenom, $l_email);
 }

@@ -84,7 +84,7 @@ INSERT INTO grr_setting VALUES ('cas_port', '');
 INSERT INTO grr_setting VALUES ('cas_racine', '');
 INSERT INTO grr_setting VALUES ('cas_serveur', '');
 INSERT INTO grr_setting VALUES ('company', 'VariableInstal01');
-INSERT INTO grr_setting VALUES ('ConvertLdapUtf8toIso', 'y');
+INSERT INTO grr_setting VALUES ('ConvertLdapUtf8toIso', 'n');
 INSERT INTO grr_setting VALUES ('default_css', 'default');
 INSERT INTO grr_setting VALUES ('default_language', 'fr-fr');
 INSERT INTO grr_setting VALUES ('default_report_days', '30');
