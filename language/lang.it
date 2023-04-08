@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2023-03-23
+# Last modification : 2023-04-08
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -472,7 +472,7 @@ $vocab['http_domaine_particulier'] = "Nom de domaine"; // A traduire
 $vocab['http_explain_statut_domaine'] = "Si vous avez renseigné le champ \"Email\" ci-dessus, vous pouvez préciser ci-dessous un nom de domaine (exemple \"mon-domaine.fr\" et un statut. les nouveaux utilisateurs dont l'adresse email appartient au domaine ci-dessous (exemple \"f.dupont@mon-domaine.fr\") se verront attribuer le statut précisé ci-dessous."; // A traduire
 $vocab['http_SSO_explain'] = "Se autenticate i vostri utenti via HTTP, potete attivare sotto la presa in conto del sistema di autenticazione per GRR. Riportatevi alla documentazione di GRR per sapere ne più.";
 $vocab['identification'] = "Identificazione";
-$vocab['Image de la ressource'] = "Immagine della risorsa ";
+$vocab['Image_de_la_ressource'] = "Immagine della risorsa ";
 $vocab['importation_impossible'] = "Identificazione corretta ma l'importazione del profilo è impossibile. Segnalare questo problema all'amministratore GRR";
 $vocab['in'] = "di:";
 $vocab['include'] = "Presentazione dei risultati";

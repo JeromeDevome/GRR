@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2023-03-23
+# Last modification : 2023-04-08
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -473,7 +473,7 @@ $vocab['http_domaine_particulier'] = "Nom de domaine"; // A traduire
 $vocab['http_explain_statut_domaine'] = "Si vous avez renseigné le champ \"Email\" ci-dessus, vous pouvez préciser ci-dessous un nom de domaine (exemple \"mon-domaine.fr\" et un statut. les nouveaux utilisateurs dont l'adresse email appartient au domaine ci-dessous (exemple \"f.dupont@mon-domaine.fr\") se verront attribuer le statut précisé ci-dessous."; // A traduire
 $vocab['http_SSO_explain'] = "Si autentifica a su usuarios vía HTTP, usted puede acelerar más abajo la consideración del sistema de autentificación por GRR. Remitase a la documentación de GRR para saber más.";
 $vocab['identification'] = "Identificación";
-$vocab['Image de la ressource'] = "Imagen del recurso ";
+$vocab['Image_de_la_ressource'] = "Imagen del recurso ";
 $vocab['importation_impossible'] = "La identificación es correcta pero la importación del perfil es imposible. Por favor señale este problema al administrador GRR";
 $vocab['in'] = "de :";
 $vocab['include'] = "Presentación de los resultados";
