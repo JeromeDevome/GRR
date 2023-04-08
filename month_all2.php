@@ -3,9 +3,9 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-11-07 18:32$
+ * Dernière modification : $Date: 2023-04-08 18:06$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -428,7 +428,17 @@ else{
             $authGetUserLevel = authGetUserLevel($user_name, $row["id"]);
             // si la ressource est restreinte, l'utilisateur peut-il réserver ?
             $user_can_book = $row["who_can_book"] || ($authGetUserLevel > 2) || (authBooking($user_name,$row['id']));
-            echo "<tr><th >" .htmlspecialchars($row["room_name"]) ."</th>\n";
+            echo "<tr><th >" .htmlspecialchars($row["room_name"]);
+            if (verif_display_fiche_ressource($user_name, $row['id']) && $_GET['pview'] != 1)
+            {
+                echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$row['id'].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'">'.PHP_EOL;
+                echo '<span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
+            }
+            if (authGetUserLevel($user_name,$row['id']) > 2 && $_GET['pview'] != 1)
+                echo '<a href="./admin/admin_edit_room.php?room='.$row['id'].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a>'.PHP_EOL;
+            if ($row['show_comment'] == "y" && $_GET['pview'] != 1 && ($row['comment_room'] != "") && ($row['comment_room'] != -1))
+                echo '<div class="center">',$row['comment_room'],'</div>',PHP_EOL;
+            echo "</th>\n";
             $li++;
             for ($k = 1; $k <= $days_in_month; $k++)
             {

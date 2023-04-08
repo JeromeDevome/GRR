@@ -3,9 +3,9 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-11-07 18:18$
+ * Dernière modification : $Date: 2023-04-08 17:58$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -113,7 +113,7 @@ if (Settings::get("verif_reservation_auto") == 0)
 }
 
 // Selection des ressources
-$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display, room_name";
+$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book, comment_room, show_comment FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display, room_name";
 $ressources = grr_sql_query($sql);
 
 if (!$ressources)
@@ -474,6 +474,8 @@ else{
             if (authGetUserLevel($user_name,$row['id']) > 2 && $_GET['pview'] != 1)
                 echo '<a href="./admin/admin_edit_room.php?room='.$row['id'].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a>'.PHP_EOL;
             affiche_ressource_empruntee($row['id']);
+            if ($row['show_comment'] == "y" && $_GET['pview'] != 1 && ($row['comment_room'] != "") && ($row['comment_room'] != -1))
+                echo '<div class="center">',$row['comment_room'],'</div>',PHP_EOL;
             echo '</td>'.PHP_EOL;
             $li++;
             $t = $time;

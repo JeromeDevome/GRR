@@ -3,9 +3,9 @@
  * day.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-11-07 17:18$
+ * Dernière modification : $Date: 2023-04-08 17:35$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -209,9 +209,10 @@ grr_sql_free($res);
 
 // Détermination des ressources à afficher
 if($room_back != 'all'){
-	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book FROM ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($room_back)."' ";
+	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book, comment_room, show_comment FROM ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($room_back)."' ";
 }
-else $sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' ORDER BY order_display, room_name";
+else 
+    $sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book, comment_room, show_comment FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' ORDER BY order_display, room_name";
 $ressources = grr_sql_query($sql);
 if (!$ressources)
 	fatal_error(0, grr_sql_error());
@@ -351,6 +352,8 @@ else{
             $statut_room[$id_room[$i]] =  $row["statut_room"];
             $statut_moderate[$id_room[$i]] =  $row["moderate"];
             $who_can_book[$id_room[$i]] = $row["who_can_book"];
+            $this_room_comment = (isset($row['comment_room']))? $row['comment_room']:'';
+            $this_room_show_comment = (isset($row['show_comment']))? $row['show_comment']:'n';
             $acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $id_room[$i]);
             if ($row['1']  && $_GET['pview'] != 1)
                 $temp = '<br /><span class="small">('.$row["capacity"].' '.($row["capacity"] > 1 ? get_vocab("number_max2") : get_vocab("number_max")).')</span>'.PHP_EOL;
@@ -377,22 +380,16 @@ else{
             }
             echo '<br />';
             if (verif_display_fiche_ressource($user_name, $id_room[$i]) && $_GET['pview'] != 1)
-                echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$id_room[$i].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'">
-            <span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
+                echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$id_room[$i].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'"><span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
             if (authGetUserLevel($user_name,$id_room[$i]) > 2 && $_GET['pview'] != 1)
                 echo '<a href="./admin/admin_edit_room.php?room='.$id_room[$i].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a><br/>'.PHP_EOL;
             affiche_ressource_empruntee($id_room[$i]);
+            if ($this_room_show_comment == "y" && $_GET['pview'] != 1 && ($this_room_comment != "") && ($this_room_comment != -1))
+                echo '<div class="center">',$this_room_comment,'</div>',PHP_EOL;
             echo '<span id="boutonSelection'.$a.'" style="display:none;">'.PHP_EOL;
             echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab("see_week_for_this_room")).'" onclick="charger();javascript: location.href=\'week.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('week').'"/>'.PHP_EOL;
             echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab("see_month_for_this_room")).'" onclick="charger();javascript: location.href=\'month.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('month').'"/>'.PHP_EOL;
             echo '</span>'.PHP_EOL;
-            if (htmlspecialchars($row["description"]).$temp != '')
-            {
-                if (htmlspecialchars($row["description"]) != '')
-                    $saut = '<br />';
-                else
-                    $saut = '';
-            }
             $rooms[] = $row["id"];
             $delais_option_reservation[$row["id"]] = $row["delais_option_reservation"];
             echo '</th>'.PHP_EOL;

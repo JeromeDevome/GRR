@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-01-27 13:53$
+ * Dernière modification : $Date: 2023-04-08 16:09$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -560,11 +560,6 @@ if ($this_moderate_room == "1" && $_GET['pview'] != 1)
 {
 	echo '<br><span class="texte_ress_moderee">',get_vocab("reservations_moderees"),'</span>',PHP_EOL;
 }
-if ($this_room_show_comment == "y" && $_GET['pview'] != 1 && ($this_room_comment != "") && ($this_room_comment != -1))
-{
-	echo '<span style="text-align:center;">',$this_room_comment,'</span>',PHP_EOL;
-}
-
 echo '<h4 class="titre">'.ucfirst($this_area_name).' - '.$this_room_name.' '.$this_room_name_des;
 if ($this_room_max  && $_GET['pview'] != 1)
 	echo '('.$this_room_max.' '.($this_room_max > 1 ? get_vocab("number_max2") : get_vocab("number_max")).')'.PHP_EOL;
@@ -575,6 +570,10 @@ if (isset($_GET['precedent']))
 	if ($_GET['pview'] != 1 AND $_GET['precedent'] == 1){
 		echo '<span id="lienPrecedent">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="charger();javascript:history.back();">'.get_vocab('previous').'</button>',PHP_EOL,'</span>',PHP_EOL;
 	}
+}
+if ($this_room_show_comment == "y" && $_GET['pview'] != 1 && ($this_room_comment != "") && ($this_room_comment != -1))
+{
+	echo '<div class="center">',$this_room_comment,'</div>',PHP_EOL;
 }
 echo '</div>'.PHP_EOL;
 echo "</caption>";
