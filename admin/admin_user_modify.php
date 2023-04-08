@@ -3,7 +3,7 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-01 10:37$
+ * Dernière modification : $Date: 2023-04-07 10:37$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -38,7 +38,7 @@ if (isset($_GET["user_login"]) && (authGetUserLevel(getUserName(),-1,'user') == 
 $msg = '';
 unset($user_login);
 $user_login = getFormVar("user_login","string");//isset($_GET["user_login"]) ? $_GET["user_login"] : NULL;
-$test_login = preg_replace("/([A-Za-z0-9_@. -])/","",$user_login);
+$test_login = ($user_login != NULL)? preg_replace("/([A-Za-z0-9_@. -])/","",$user_login):$user_login;
 if ($test_login != ""){
     $user_login = "";
     $msg = 'login incorrect';} // le login passé en paramètre est non valide, on le vide et on modifie le message
@@ -81,7 +81,7 @@ if ($valid == "yes")
     }
     else 
     {   // actions si un nouvel utilisateur a été défini
-        $test_login = preg_replace("/([A-Za-z0-9_@. -])/","",$new_login);
+        $test_login = ($new_login != NULL)? preg_replace("/([A-Za-z0-9_@. -])/","",$new_login):$new_login;
         if ((isset($new_login)) && ($new_login != '') && ($test_login == ""))
         {
             // un gestionnaire d'utilisateurs ne peut pas créer un administrateur général ou un gestionnaire d'utilisateurs
@@ -532,7 +532,7 @@ echo '<div>';
         echo ">".get_vocab("statut_administrator")."</option>\n";
     }
     echo "</select></td>\n";
-    if (strtolower(getUserName()) != strtolower($user_login))
+    if (is_null($user_login)||(strtolower(getUserName()) != strtolower($user_login)))
     {
         echo "<td>".get_vocab("activ_no_activ").get_vocab("deux_points")."</td>";
         echo "<td><select name=\"reg_etat\" size=\"1\">\n";
