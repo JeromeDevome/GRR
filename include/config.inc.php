@@ -223,7 +223,6 @@ $grrPages = array();
 
 # Make sure notice errors are not reported
 #error_reporting (E_ALL ^ E_NOTICE);
-error_reporting (E_ALL);
 
 # Création d'un dossier personnalisation pour mettre tout fichiers importé modifié par les utilisateurs de GRR
 $gcDossierCss = "css";
