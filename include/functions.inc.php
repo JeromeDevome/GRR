@@ -745,7 +745,7 @@ function plages_libre_semaine_ressource($id_room, $month_week, $day_week, $year_
 	while ($t < $date_end)
 	{
 		$t_end = $t + $resolution;
-		$query = "SELECT end_time FROM ".TABLE_PREFIX."_entry WHERE room_id='".$id_room."' AND start_time <= ".$t." AND end_time >= ".$t_end." ";
+		$query = "SELECT end_time FROM ".TABLE_PREFIX."_entry WHERE room_id='".$id_room."' AND start_time <= ".$t." AND end_time >= ".$t_end." AND supprimer = 0 ";
 		$end_time = grr_sql_query1($query);
 		if ($end_time == -1){
 			$plage_libre = true;
