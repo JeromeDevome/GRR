@@ -97,6 +97,6 @@ else
 $login = phpCAS::getUser();
 $user_ext_authentifie = 'cas';
 
-if (file_exists("./include/config_CAS.inc.php"))
-	include("./include/config_CAS.inc.php");
+if (file_exists("./personnalisation/config_CAS.inc.php"))
+	include("./personnalisation/config_CAS.inc.php");
 ?>
