@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR : fichier de langue espagnole
 # GRR: Traduction By JeromeB
-# Last modification : 2022-07-22
+# Last modification : 2023-03-19
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Aceptar la reserva";
@@ -51,7 +51,7 @@ $vocab['admin_calend_ignore'] = "Calendario fuera de reservación ";
 $vocab['admin_calend_ignore_feries'] = "Cocher tous les jours fériés "; // A traduire
 $vocab['admin_calend_ignore_vacances'] = "Cocher tous les jours de vacances "; // A traduire
 $vocab['admin_calend_jour_cycle1'] = "Calendario de los \"días ciclo\"";
-$vocab['admin_calend_vacances_feries'] = "Vacaciones y vacaciones";
+$vocab['admin_calend_vacances_feries'] = "Vacaciones y festivos";
 $vocab['admin_cgu'] = "CGU"; // A traduire
 $vocab['admin_clean_accounts_desc'] = "L'action ci-dessous permet de nettoyer toutes les tables de liaison des comptes utilisateurs. Il s'agit d'une opération de maintenance, normalement inutile et  sans conséquence sur le fonctionnement de GRR. <b>Par précaution, faites une sauvegarde de la base de données au  préalable</b>"; // A traduire
 $vocab['admin_config'] = "Configuración general";

@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-03-22 11:25$
+ * Dernière modification : $Date: 2023-04-03 11:05$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4198,7 +4198,7 @@ function no_book_rooms($user){
         elseif (!$room['who_can_book']){ // ressource restreinte
             $sql = "SELECT login FROM ".TABLE_PREFIX."_j_userbook_room j WHERE j.login = '".$user."' AND j.id_room = '".$room['id']."'";
             $login = grr_sql_query1($sql);
-            if (($login != $user) && ($auth_level < 3)){ // un gestionnaire de ressource peut toujours accéder !
+            if ((strtoupper($login) != strtoupper($user)) && ($auth_level < 3)){ // un gestionnaire de ressource peut toujours accéder !
                 $rooms_no_book[] = $room['id'];
             }
         }
