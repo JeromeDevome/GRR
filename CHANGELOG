@@ -1,4 +1,9 @@
 Version en cours de développement sur GitHUB (4.X.X)
+[Correction] Calcul des droits pour un gestionnaire de ressource @ynaessens
+[Correction] Récupération des attributs issus d'un serveur CAS @ynaessens
+[Correction] Possiblité de réserver depuis la page week après avoir supprimé une réservation sur toute la journée @JeromeB
+[Modification] Sélecteur de date passage en Bootstap @JeromeB
+[Modification] Nettoyage fonction UTF8 @ynaessens
 
 -----
 --
