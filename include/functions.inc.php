@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-04-03 16:17$
+ * Dernière modification : $Date: 2023-04-17 16:29$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -3240,7 +3240,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
             if(strtolower($user_login) != strtolower($beneficiaire))
                 $message2 .= $vocab["creation_booking_for_you"];
             else
-                $message2 .= get_vocab('Vous avez_reserve');
+                $message2 .= get_vocab('Vous_avez_reserve');
 			$message2 .= $vocab["the_room"].$room_name." (".$area_name.").";
 		}
 		elseif ($action == 2){
@@ -3734,7 +3734,7 @@ function UserRoomMaxBookingRange($user, $id_room, $number, $start_time)
         room_id = '".protect_data_sql($id_room)."'
         AND beneficiaire = '".protect_data_sql($user)."'
         AND end_time > '".$now."'
-        AND start_time > '".min_int."')");
+        AND start_time > '".$min_int."')");
         $nb_bookings += $number;
         if ($nb_bookings > $max_booking_per_room)
             return 0;
