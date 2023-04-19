@@ -806,6 +806,7 @@ function grr_resumeSession()
 {
 		// Resuming session
 	@session_name(SESSION_NAME); // palliatif aux changements introduits dans php 7.2
+	@session_set_cookie_params(['secure' => true, 'httponly' => true]);
 	@session_start();
 
 		// La session est-elle expirée
@@ -884,7 +885,7 @@ function grr_closeSession(&$_auto)
 	$_SESSION = array();
 		// Détruit le cookie sur le navigateur
 	$CookieInfo = session_get_cookie_params();
-	@setcookie(session_name(), '', 1, $CookieInfo['path']);
+	@setcookie(session_name(), '', 1, $CookieInfo['path'], true, true);
 		// On détruit la session
 	session_destroy();
 }
