@@ -749,7 +749,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 		return "12";
 
 
-	/* Fonctionnalité SE3 (Palissy - Saintes - philippe.duval@ac-poitiers.fr) :
+	/* Fonctionnalité SE3
 	Utilisation du LDAP pour inscrire automatiquement les utilisateurs dans les groupes administration, accès et gestion
 	Ce code est associé à une nouvelle table :
 	CREATE TABLE ".TABLE_PREFIX."_j_groupe_se3 (groupe varchar(40) NOT NULL default '',id_area_room int(11) NOT NULL default '0', statut varchar(20) NOT NULL default '',  PRIMARY KEY  (`groupe`,`id_area_room`));
@@ -787,27 +787,6 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 		}
 		// Note : Il reste à gérer finement l'interface graphique et à déduire l'incompatibilité éventuelle entre le domaine par défaut et les domaines autorisés pour chaque utilisateur
 		// Fin de la fonctionnalité SE3
-	/* Application du patch en production depuis la rentrée à Palissy : Zéro problème (ci-dessous, l'extraction de la table via phpmyadmin)
-	CREATE TABLE `".TABLE_PREFIX."_j_groupe_se3` (
-		`groupe` varchar(40) NOT NULL default '',
-		`id_area_room` int(11) NOT NULL default '0',
-		`statut` varchar(20) NOT NULL default '',
-		PRIMARY KEY  (`groupe`,`id_area_room`)
-	) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-	INSERT INTO `".TABLE_PREFIX."_j_groupe_se3` (`groupe`, `id_area_room`, `statut`) VALUES
-	('GRR_ADMIN_SALLES_REUNIONS', 1, 'administrateur'),
-	('GRR_ADMIN_SALLES_PEDAGOGIQUES', 2, 'administrateur'),
-	('GRR_ADMIN_LABOS_LANGUES', 3, 'administrateur'),
-	('GRR_SALLES_REUNIONS', 1, 'acces_restreint'),
-	('GRR_SALLES_PEDAGOGIQUES', 2, 'acces_restreint'),
-	('GRR_LABOS_LANGUES', 3, 'acces_restreint'),
-	('GRR_GESTION_SALLE_A01', 1, 'gestionnaire'),
-	('GRR_GESTION_SALLE_A03', 2, 'gestionnaire'),
-	('GRR_GESTION_SALLE_A314', 3, 'gestionnaire'),
-	('GRR_GESTION_SALLE_A409', 4, 'gestionnaire'),
-	('GRR_GESTION_SALLE_D05', 5, 'gestionnaire'),
-	('GRR_GESTION_SALLE_A301E', 6, 'gestionnaire');
-	*/
 	}
 	return "1";
 }
