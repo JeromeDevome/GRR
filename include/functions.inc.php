@@ -697,19 +697,19 @@ function resaToModerate($user)
         $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE e.moderate = 1";
         $res = grr_sql_query($sql);
     }
-    elseif (isset($_GET['id_site']) && (authGetUserLevel($user,$_GET['id_site'],'site') > 4)) // admin du site
+    elseif (isset($_GET['id_site']) && (authGetUserLevel($user,intval($_GET['id_site']),'site') > 4)) // admin du site
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = ".$_GET['id_site']." AND e.moderate = 1)";
+        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = ".intval($_GET['id_site'])." AND e.moderate = 1)";
         $res = grr_sql_query($sql);
     }
-    elseif (isset($_GET['area']) && (authGetUserLevel($user,$_GET['area'],'area') > 3)) // admin du domaine
+    elseif (isset($_GET['area']) && (authGetUserLevel($user,intval($_GET['area']),'area') > 3)) // admin du domaine
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id WHERE (a.id = ".$_GET['area']." AND e.moderate = 1)";
+        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id WHERE (a.id = ".intval($_GET['area'])." AND e.moderate = 1)";
         $res = grr_sql_query($sql);
     }
-    elseif (isset($_GET['room']) && (authGetUserLevel($user,$_GET['room'],'room') > 2)) // gestionnaire de la ressource
+    elseif (isset($_GET['room']) && (authGetUserLevel($user,intval($_GET['room']),'room') > 2)) // gestionnaire de la ressource
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE (e.moderate = 1 AND e.room_id = ".$_GET['room'].") ";
+        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE (e.moderate = 1 AND e.room_id = ".intval($_GET['room']).") ";
         $res = grr_sql_query($sql);
     }
     if ($res)
@@ -1036,7 +1036,7 @@ function begin_page($title, $page = "with_session")
 			$sheetcss = "default"; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
 		if (isset($_GET['default_language']))
 		{
-			$_SESSION['default_language'] = clean_input($_GET['default_language']);
+			$_SESSION['default_language'] = alphanum(clean_input($_GET['default_language']));
 			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 				header("Location: ".$_SESSION['chemin_retour']);
 			else
@@ -1052,7 +1052,7 @@ function begin_page($title, $page = "with_session")
 			$sheetcss = "default";
 		if (isset($_GET['default_language']))
 		{
-			$_SESSION['default_language'] = clean_input($_GET['default_language']);
+			$_SESSION['default_language'] = alphanum(clean_input($_GET['default_language']));
 			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 				header("Location: ".$_SESSION['chemin_retour']);
 			else
@@ -1068,7 +1068,7 @@ function begin_page($title, $page = "with_session")
 	}*/
     if (!isset($_COOKIE['open']))
     {
-        header('Set-Cookie: open=true; SameSite=Lax');
+        header('Set-Cookie: open=true; SameSite=Lax;');
     }
 	$a = '<!DOCTYPE html>'.PHP_EOL;
 	$a .= '<html lang="fr">'.PHP_EOL;
@@ -1100,7 +1100,7 @@ function begin_page($title, $page = "with_session")
 		if($sheetcss == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
 			$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css?".Settings::get("sp_time")."\" />".PHP_EOL; // style perso via admin
 	
-	$a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/jquery.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
@@ -1360,7 +1360,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			$d['sheetcss'] = 'themes/default/css/style.css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
 		if (isset($_GET['default_language']))
 		{
-			$_SESSION['default_language'] = $_GET['default_language'];
+			$_SESSION['default_language'] = alphanum($_GET['default_language']);
 			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 				header("Location: ".$_SESSION['chemin_retour']);
 			else
@@ -1381,7 +1381,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			$d['sheetcss'] = 'themes/default/css/style.css';
 		if (isset($_GET['default_language']))
 		{
-			$_SESSION['default_language'] = $_GET['default_language'];
+			$_SESSION['default_language'] = alphanum($_GET['default_language']);
 			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 				header("Location: ".$_SESSION['chemin_retour']);
 			else
@@ -1392,7 +1392,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 
 	if (!isset($_COOKIE['open']))
 	{
-		setcookie("open", "true", time()+3600);
+		setcookie("open", "true", time()+3600, "", "", true, false);
 	}
 
 	$resulHook = Hook::Appel("hookHeader2");
@@ -6009,7 +6009,7 @@ function pageHead2($title, $page = "with_session")
         }
 		if (isset($_GET['default_language']))
 		{
-			$_SESSION['default_language'] = clean_input($_GET['default_language']);
+			$_SESSION['default_language'] = alphanum(clean_input($_GET['default_language']));
 			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 				header("Location: ".$_SESSION['chemin_retour']);
 			else
@@ -6025,7 +6025,7 @@ function pageHead2($title, $page = "with_session")
 			$sheetcss = 'default';
 		if (isset($_GET['default_language']))
 		{
-			$_SESSION['default_language'] = clean_input($_GET['default_language']);
+			$_SESSION['default_language'] = alphanum(clean_input($_GET['default_language']));
 			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 				header("Location: ".$_SESSION['chemin_retour']);
 			else
@@ -6298,7 +6298,7 @@ function start_page_w_header($day = '', $month = '', $year = '', $type_session =
 	}*/
     if (!isset($_COOKIE['open']))
     {
-        header('Set-Cookie: open=true; SameSite=Lax');
+        header('Set-Cookie: open=true; SameSite=Lax; Secure=true;');
     }
     echo '<!DOCTYPE html>'.PHP_EOL;
     echo '<html lang="fr">'.PHP_EOL;
@@ -6342,7 +6342,7 @@ function start_page_wo_header($titre, $type_session = 'with_session')
 	}*/
     if (!isset($_COOKIE['open']))
     {
-        header('Set-Cookie: open=true; SameSite=Lax');
+        header('Set-Cookie: open=true; SameSite=Lax; Secure=true;');
     }
     echo '<!DOCTYPE html>'.PHP_EOL;
     echo '<html lang="fr">'.PHP_EOL;
@@ -6390,6 +6390,15 @@ function clean_input($data){
     $data = htmlspecialchars($data);
     return $data;
 }
+
+/* fonction alphanum
+* pour réduire les vulnérabilités
+*/
+function alphanum($data){
+    $data = preg_replace('/[^A-Za-z0-9\-_]/', '', $data);
+    return $data;
+}
+
 // Génération d'un Token aléatoire
 function generationToken()
 {

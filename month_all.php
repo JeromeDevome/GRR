@@ -295,7 +295,7 @@ include $racine."/include/hook.class.php";
 header('Content-Type: text/html; charset=utf-8');
 if (!isset($_COOKIE['open']))
 {
-	header('Set-Cookie: open=true; SameSite=Lax; HttpOnly=true; Secure=true;');
+	header('Set-Cookie: open=true; SameSite=Lax; Secure=true;');
 }
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;
