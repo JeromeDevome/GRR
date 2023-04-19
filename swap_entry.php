@@ -3,7 +3,7 @@
  * swap_entry.php
  * Interface d'échange d'une réservation avec une autre, à choisir
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-04-18 17:52$
+ * Dernière modification : $Date: 2023-04-19 11:19$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -33,21 +33,18 @@ if (!grr_resumeSession())
 	header("Location: ./logout.php?auto=1&url=$url");
 	die();
 };
-if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
+$current_user = getUserName();
+if ((Settings::get("authentification_obli") == 0) && ($current_user == ''))
 	$type_session = "no_session";
 else
 	$type_session = "with_session";
-$current_user = getUserName();
 require_once "./include/language.inc.php";
 $series = isset($_GET["series"]) ? $_GET["series"] : NULL;
 if (isset($series))
-	settype($series,"integer");
+	$series = intval($series);
 $page = verif_page();
 if (isset($_GET["id"]))
-{
-	$id = $_GET["id"];
-	settype($id,"integer");
-}
+	$id = intval($_GET["id"]);
 else {
     header("Location: ./day.php");
 	die();    
@@ -62,7 +59,7 @@ function libelle($type){ // rend la description du type_lettre de réservation
         print(grr_sql_error($res));
     grr_sql_free($res);
 }
-function roomDesc($id_room){ // rend nom + description à partir de l'identifiant de la ressource
+function roomDesc($id_room){ // rend nom (description) à partir de l'identifiant de la ressource
     $sql = "SELECT room_name,description FROM ".TABLE_PREFIX."_room WHERE id = '".$id_room."' ";
     $res = grr_sql_query($sql);
     if ($res){
@@ -90,7 +87,7 @@ if (isset($_GET['id_alt'])){ // les paramètres sont connus
             /*    $sql3 .= "entry_type = '".$data1[3]."', ";
                 $sql3 .= "repeat_id = '".$data1[4]."', "; */
                 $sql3 .= "room_id = '".$data1[5]."' ";//"', ";
-            /*    $sql3 .= "create_by = '".getUserName()."', ";
+            /*    $sql3 .= "create_by = '".$current_user."', ";
                 $sql3 .= "beneficiaire_ext = '".$data1[8]."', ";
                 $sql3 .= "beneficiaire = '".$data1[9]."', ";
                 $sql3 .= "name = '".$data1[10]."', ";
@@ -110,7 +107,7 @@ if (isset($_GET['id_alt'])){ // les paramètres sont connus
             /*        $sql4 .= "entry_type = '".$data2[3]."', ";
                     $sql4 .= "repeat_id = '".$data2[4]."', "; */
                     $sql4 .= "room_id = '".$data2[5]."' ";//"', ";
-            /*        $sql4 .= "create_by = '".getUserName()."', ";
+            /*        $sql4 .= "create_by = '".$current_user."', ";
                     $sql4 .= "beneficiaire_ext = '".$data2[8]."', ";
                     $sql4 .= "beneficiaire = '".$data2[9]."', ";
                     $sql4 .= "name = '".$data2[10]."', ";
@@ -126,15 +123,11 @@ if (isset($_GET['id_alt'])){ // les paramètres sont connus
                     $sql4 .= "WHERE id = ".$data1[0]; 
                     $res4 = grr_sql_query($sql4);
                     if ($res4){
-                        $etape = 3; // échange réussi, envoyer un mail ; afficher un pop-up
-/*                        echo '<script type="text/javascript">';
-                        echo 'alert("Echange effectué correctement");';
-                        echo 'document.location.href="'.$_GET['ret_page'].'"';
-                        echo '</script>';*/
-                        // faut-il envoyer un mail automatique ?
-                        if (Settings::get("automatic_mail") == 'yes')
-                            $_SESSION['session_message_error'] = send_mail($id,3,$dformat);
-                        //die();
+                        $etape = 3; // échange réussi, envoyer un mail si programmé
+                        if (Settings::get("automatic_mail") == 'yes'){
+                            $_SESSION['session_message_error'] = send_mail($data1[0],2,$dformat,array(),$data1[5]);
+                            $_SESSION['session_message_error'] = send_mail($data2[0],2,$dformat,array(),$data2[5]);
+                        }
                     }
                 }
             }
@@ -159,17 +152,17 @@ else { // on connaît $id de la réservation à échanger, on va en chercher une
         $year  = date("Y", $info["start_time"]);
         $area  = mrbsGetRoomArea($info["room_id"]);
         // on commence par vérifier les droits d'accès
-        if (authGetUserLevel(getUserName(), -1) < 1)
+        if (authGetUserLevel($current_user, -1) < 1)
         {
             showAccessDenied($back);
             exit();
         }
-        if (!getWritable(getUserName(), $id))
+        if (!getWritable($current_user, $id))
         {
             showAccessDenied($back);
             exit;
         }
-        if (authUserAccesArea(getUserName(), $area) == 0)
+        if (authUserAccesArea($current_user, $area) == 0)
         {
             showAccessDenied($back);
             exit();
@@ -178,7 +171,7 @@ else { // on connaît $id de la réservation à échanger, on va en chercher une
         $room_id = $info["room_id"];
         $date_now = time();
         get_planning_area_values($area);
-        if ((!(verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods))) || ((verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")))
+        if ((!(verif_booking_date($current_user, $id, $room_id, -1, $date_now, $enable_periods))) || ((verif_booking_date($current_user, $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")))
         {
             showAccessDenied($back);
             exit();
@@ -222,10 +215,7 @@ if (!isset($_COOKIE['open']))
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;
 // section <head>
-if ($type_session == "with_session")
-    echo pageHead2(get_vocab('swap_entry'),"with_session");
-else
-    echo pageHead2(get_vocab('swap_entry'),"no_session");
+echo pageHead2(get_vocab('swap_entry'),$type_session);
 // section <body>
 echo "<body>";
 // Menu du haut = section <header>
