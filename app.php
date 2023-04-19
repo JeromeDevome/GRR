@@ -19,16 +19,17 @@
 require './vendor/autoload.php';
 require './include/twiggrr.class.php';
 
+//GRR
+require "./include/functions.inc.php";
+
 $page = 'login';
 if(isset($_GET['p'])){
-	$page = $_GET['p'];
+	$page = alphanum($_GET['p']);
 }
 
-// GRR
 include "./personnalisation/connect.inc.php";
 include "./include/config.inc.php";
 include "./include/misc.inc.php";
-include "./include/functions.inc.php";
 include "./include/$dbsys.inc.php";
 include "./include/mincals.inc.php"; // JeromeB :Pas besoin partout le laisser ici ? 
 include "./include/mrbs_sql.inc.php";
@@ -63,9 +64,9 @@ else
 
 print_header_twig("", "", "", $userConnecte);
 
-$day = isset($_POST['day']) ? $_POST['day'] : (isset($_GET['day']) ? $_GET['day'] : date('d'));
-$month = isset($_POST['month']) ? $_POST['month'] : (isset($_GET['month']) ? $_GET['month'] : date('m'));
-$year = isset($_POST['year']) ? $_POST['year'] : (isset($_GET['year']) ? $_GET['year'] : date('Y'));
+$day = isset($_POST['day']) ? $_POST['day'] : (isset($_GET['day']) ? intval($_GET['day']) : date('d'));
+$month = isset($_POST['month']) ? $_POST['month'] : (isset($_GET['month']) ? intval($_GET['month']) : date('m'));
+$year = isset($_POST['year']) ? $_POST['year'] : (isset($_GET['year']) ? intval($_GET['year']) : date('Y'));
 
 $d['dDay'] = $day;
 $d['dMonth'] = $month;

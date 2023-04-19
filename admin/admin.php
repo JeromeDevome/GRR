@@ -16,15 +16,20 @@
  * (at your option) any later version.
  */
 
+$administration = true;
+
 require '../vendor/autoload.php';
 require '../include/twiggrr.class.php';
 
+// GRR
+require "../include/functions.inc.php";
+
 $page = 'admin_accueil';
 if(isset($_GET['p'])){
-	$page = $_GET['p'];
+	$page = alphanum($_GET['p']);
 }
 
-// GRR
+
 include "../include/admin.inc.php";
 include "../include/mdp_faciles.inc.php";
 include "../include/hook.class.php";

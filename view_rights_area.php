@@ -37,7 +37,7 @@ if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
 	$type_session = "no_session";
 else
 	$type_session = "with_session";
-$area_id = isset($_GET["area_id"]) ? $_GET["area_id"] : NULL;
+$area_id = isset($_GET["area_id"]) ? intval($_GET["area_id"]) : NULL;
 if (isset($area_id))
 	settype($area_id,"integer");
 if (authGetUserLevel(getUserName(),$area_id,"area") < 4)

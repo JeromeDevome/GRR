@@ -169,11 +169,11 @@
 		{
 			$action = "day.php?year=".date('Y',time())."&amp;month=".date('m',time())."&amp;day=".date('d',time());
 			if (isset($_GET['area']) && $_GET['area'] != null)
-				$action .= "&amp;area=".$_GET['area'] ;
+				$action .= "&amp;area=".intval($_GET['area']) ;
 			if (isset($_GET['room']) && $_GET['room'] != null)
-				$action .= "&amp;room=".$_GET['room'] ;
+				$action .= "&amp;room=".intval($_GET['room']) ;
 			if (isset($_GET['id_site']) && $_GET['id_site'] != null)
-				$action .= "&amp;site=".$_GET['id_site'] ;
+				$action .= "&amp;site=".intval($_GET['id_site']) ;
 			return $action;
 		}
 

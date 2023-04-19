@@ -32,10 +32,10 @@ paramètres attendus, passés par la méthode GET :
 $tab_benef = array();
 $tab_benef["nom"] = "";
 $tab_benef["email"] = "";
-$area = isset($_GET["area"])? $_GET["area"]: -1;
-$room = isset($_GET["room"])? $_GET["room"]: -1;
-$user = isset($_GET["user"])? $_GET["user"]: getUserName();
-$id = isset($_GET["id"])? $_GET["id"]: 0;
+$area = isset($_GET["area"])? intval($_GET["area"]): -1;
+$room = isset($_GET["room"])? intval($_GET["room"]): -1;
+$user = isset($_GET["user"])? intval($_GET["user"]): getUserName();
+$id = isset($_GET["id"])? intval($_GET["id"]): 0;
 $qui_peut_reserver_pour  = grr_sql_query1("SELECT qui_peut_reserver_pour FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $flag_qui_peut_reserver_pour = (authGetUserLevel($user, $room, "room") >= $qui_peut_reserver_pour); // accès à la ressource
 $flag_qui_peut_reserver_pour = $flag_qui_peut_reserver_pour || (authGetUserLevel($user, $area, "area") >= $qui_peut_reserver_pour); // accès au domaine

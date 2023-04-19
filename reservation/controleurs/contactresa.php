@@ -107,7 +107,7 @@ if(isset($_POST['nom'])){
 	$mail_corps  .= "Téléphone : ".$_POST['telephone']. "<br/><br/>";
 	$mail_corps  .= "<b> Sujet de la réservation :".$_POST['sujet']. "</b><br/><br/>";
 
-	$id = $_POST['area'] ;
+	$id = intval($_POST['area']);
 	$sql_areaName = "SELECT area_name FROM ".TABLE_PREFIX."_area where id = \"$id\" ";
 	$res_areaName = grr_sql_query1($sql_areaName);
 	$mail_corps  .= "Domaines : ".$res_areaName. "<br/> ";

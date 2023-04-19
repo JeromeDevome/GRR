@@ -21,7 +21,7 @@ require '../include/twiggrr.class.php';
 
 $page = 'moncompte';
 if(isset($_GET['p'])){
-	$page = $_GET['p'];
+	$page = alphanum($_GET['p']);
 }
 
 // GRR
@@ -43,9 +43,9 @@ if (isset($_SERVER['HTTP_REFERER']))
 
 print_header_twig("", "", "", $type="with_session");
 
-$day = isset($_POST['day']) ? $_POST['day'] : (isset($_GET['day']) ? $_GET['day'] : date('d'));
-$month = isset($_POST['month']) ? $_POST['month'] : (isset($_GET['month']) ? $_GET['month'] : date('m'));
-$year = isset($_POST['year']) ? $_POST['year'] : (isset($_GET['year']) ? $_GET['year'] : date('Y'));
+$day = isset($_POST['day']) ? $_POST['day'] : (isset($_GET['day']) ? intval($_GET['day']) : date('d'));
+$month = isset($_POST['month']) ? $_POST['month'] : (isset($_GET['month']) ? intval($_GET['month']) : date('m'));
+$year = isset($_POST['year']) ? $_POST['year'] : (isset($_GET['year']) ? intval($_GET['year']) : date('Y'));
 
 $d['dDay'] = $day;
 $d['dMonth'] = $month;

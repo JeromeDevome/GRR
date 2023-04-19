@@ -26,7 +26,8 @@ include "config.inc.php";
 include "$dbsys.inc.php";
 include "mrbs_sql.inc.php";
 include "misc.inc.php";
-include "functions.inc.php";
+if($administration != true)
+	include "functions.inc.php";
 
 
 // Settings
