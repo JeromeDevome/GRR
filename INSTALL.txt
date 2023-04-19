@@ -7,7 +7,7 @@ Installation - Etape 0 : téléchargement de l'archive
 
 L'ensemble des fichiers nécessaires à l'installation sont rassemblés dans
 l'archive que vous avez téléchargée.
-Parmi ces fichiers figure le fichier "connect.inc.php". La configuration
+Parmi ces fichiers figure le fichier "./personnalisation/connect.inc.php". La configuration
 du fichier "connect.inc.php" n'est pas obligatoire si vous optez pour une
 installation automatisée de la base de données. En effet, la procédure
 d'installation vous invitera alors à entrer dans un formulaire vos paramètres
@@ -27,13 +27,13 @@ Pré-requis
 Pour installer et faire fonctionner GRR, vous avez besoin de :
 -> Un serveur web/php et un serveur mysql (éventuellement sur la même
 machine)
--> Nécessité de disposer d'une version de php version supérieure ou égale à 7.2.3 (gestion des variables de type $_SESSION, fonction mysql_real_escape_string(),  ...)
+-> Nécessité de disposer d'une version de php version supérieure ou égale à 7.2.5 (moteur de templates Twig, gestion des variables de type $_SESSION, fonction mysql_real_escape_string(),  ...)
 
 ************************************************
 Installation - Etape 1 : Configuration de GRR
 ************************************************
 Bien qu'un grand nombre de paramètres de GRR soient modifiables directement dans l'interface web de GRR,
-le fichier "/personnalisation/config.inc.php" contient quelques paramètres à configurer avant de transférer les fichiers vers le serveur web. Toutes les indications à la configuration de ce fichier sont disponibles dans la documentation ainsi que dans le fichier lui-même.
+le fichier "./include/config.inc.php" contient quelques paramètres à configurer avant de transférer les fichiers vers le serveur web. Toutes les indications pour la configuration de ce fichier sont disponibles dans la documentation ainsi que dans le fichier lui-même.
 
 ************************************************
 Installation - Etape 2 : transfert des fichiers

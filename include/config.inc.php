@@ -2,9 +2,9 @@
 /**
  * config.inc.php
  * Fichier de configuration de GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2023-04-19 17:59$
  * @author    JeromeB & Laurent Delineau
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -18,12 +18,12 @@
 ### A LIRE ###
 # Il est préférable de pas modifier ce fichier, car celui-ci sera écrasé lors des mises à jours
 # Nous conseillons de creer un fichier dans le dossier peronnalisation en l'appelant "configperso.inc.php"
-# Dans ce dernier ajouter les variables souhaité avec les valeurs souhaité, vos valeurs écraserons celles de ce fichier
+# Dans ce dernier ajouter les variables souhaitées avec les valeurs souhaitées, vos valeurs écraseront celles de ce fichier
 ##############
 
 /*
 Problème de sessions qui expirent prématurément :
-Chez certains prestataire qui utilisent des serveurs en clustering, il arrive que les sessions expirent aléatoirement.
+Chez certains prestataires qui utilisent des serveurs en clustering, il arrive que les sessions expirent aléatoirement.
 Une solution consiste à enregistrer les sessions PHP dans un autre répertoire que le répertoire par défaut.
 Pour cela, il suffit de décommenter la ligne suivante (en supprimant le premier caractère #)
 et en indiquant à la place de "le_chemin_de_stockage_de_la_session", l'emplacement du nouveau dossier de stockage des sessions.
@@ -130,7 +130,7 @@ $nbMaxJoursLogConnexion = 365;
 # Nb de jour maximum que l'on garde les logs des mails envoyés, 0 = aucune limite
 $nbMaxJoursLogEmail = 365;
 
-# Algorythme de cryptage des comptes utilisateur, ne pas changer après installation sauf si reset des mots de passes. Défaut : ripemd320
+# Algorithme de cryptage des comptes utilisateur, ne pas changer après installation sauf si reset des mots de passes. Défaut : ripemd320
 $algoPwd = 'ripemd320';
 
 # Alerte dans l'administration si backup > 30jours, nous déconseillons de le désactiver sauf si les sauvegardes sont effectués via un autre moyen
@@ -231,7 +231,4 @@ $gcDossierXml = "xml";
 
 if(file_exists('../personnalisation/configperso.inc.php'))
 	include('../personnalisation/configperso.inc.php');
-if(file_exists('./personnalisation/configperso.inc.php'))
-	include('./personnalisation/configperso.inc.php');
-
 ?>
