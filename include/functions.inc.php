@@ -1105,7 +1105,6 @@ function begin_page($title, $page = "with_session")
 	$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/html2canvas.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/popup.js" charset="utf-8"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/functions.js" ></script>'.PHP_EOL;
@@ -6075,18 +6074,16 @@ function pageHead2($title, $page = "with_session")
 		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css?".Settings::get("sp_time")."\" />".PHP_EOL; // style perso via admin
 		
 	$a .= $types;
-    $a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
+    $a .= '<script type="text/javascript" src="js/jquery.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/html2canvas.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;
     $a .= '<script type="text/javascript" src="js/jquery.floatThead.min.js"></script>'.PHP_EOL;
     $a .= '<script type="text/javascript" src="js/planning2Thead.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/popup.js" charset="utf-8"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/functions.js" ></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/drag.js" ></script>'.PHP_EOL;
 	if (isset($use_select2))
 	{
 		$a .= '<script type="text/javascript" src="js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
