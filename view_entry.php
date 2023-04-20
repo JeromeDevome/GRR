@@ -208,6 +208,8 @@ if (grr_sql_count($res) < 1)
 	if (!$res_backup)
 		fatal_error(0, grr_sql_error());
 	$row = grr_sql_row($res_backup, 0);
+    if(!is_array($row))
+        fatal_error(0,"pas de réservation sauvegardée");
 	grr_sql_free($res_backup);
 }
 else
@@ -419,35 +421,35 @@ $mode = isset($_GET['mode'])? $_GET['mode'] : NULL;
 if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')) // haut de page si mode page
 {
     // pour le traitement des modules
-include_once "./include/hook.class.php";
-// début du code html
-    $racineAd = "./admin/";
-	//start_page_w_header($day, $month, $year, $type_session);
-    header('Content-Type: text/html; charset=utf-8');
-if (!isset($_COOKIE['open']))
-{
-	header('Set-Cookie: open=true; SameSite=Lax');
-}
-echo '<!DOCTYPE html>'.PHP_EOL;
-echo '<html lang="'.$locale.'">'.PHP_EOL;
-// section <head>
-//echo pageHead2(Settings::get("company"),$type_session="with_session");
-pageHead(Settings::get("company"),$locale);
-// section <body>
-echo "<body>";
-//echo $C;
-//print_r($data);
-// Menu du haut = section <header>
-echo "<header>";
-if($userName !='')
-    pageHeader2($day, $month, $year, $type_session="with_session");
-else 
-    pageHeader2($day, $month, $year, $type_session="no_session");
-echo "</header>";
+    include_once "./include/hook.class.php";
+    // début du code html
+        $racineAd = "./admin/";
+        //start_page_w_header($day, $month, $year, $type_session);
+        header('Content-Type: text/html; charset=utf-8');
+    if (!isset($_COOKIE['open']))
+    {
+        header('Set-Cookie: open=true; SameSite=Lax');
+    }
+    echo '<!DOCTYPE html>'.PHP_EOL;
+    echo '<html lang="'.$locale.'">'.PHP_EOL;
+    // section <head>
+    //echo pageHead2(Settings::get("company"),$type_session="with_session");
+    pageHead(Settings::get("company"),$locale);
+    // section <body>
+    echo "<body>";
+    //echo $C;
+    //print_r($data);
+    // Menu du haut = section <header>
+    echo "<header>";
+    if($userName !='')
+        pageHeader2($day, $month, $year, $type_session="with_session");
+    else 
+        pageHeader2($day, $month, $year, $type_session="no_session");
+    echo "</header>";
 
-	echo '<div class="container">';
-	if ($back != "")
-		echo '<div><a href="',$back,'">',get_vocab("returnprev"),'</a></div>',PHP_EOL;
+        echo '<div class="container">';
+        if ($back != "")
+            echo '<div><a href="',$back,'">',get_vocab("returnprev"),'</a></div>',PHP_EOL;
 }
 // Affichage d'un pop-up
 affiche_pop_up($msg,"admin");
@@ -620,12 +622,14 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
     // selon les droits qui_peut_reserver_pour, affichage d'un bloc permettant l'inscription d'un tiers à l'événement
     if (verif_qui_peut_reserver_pour($room_id, $userName, '-1'))
     {
-        echo "<button type='button' class='btn btn-primary btn-sm' id='btn_participe' onclick=\"toggle_visibility('form_participant');toggle_visibility('btn_participe');toggle_visibility('btn_close_participe');\">".get_vocab('participant_register_form').'</button>';
+        // echo "<button type='button' class='btn btn-primary btn-sm' id='btn_participe' onclick=\"toggle_visibility('form_participant');toggle_visibility('btn_participe');toggle_visibility('btn_close_participe');$('#avail_users').select2({dropdownParent: $('#popup_name')}); \">".get_vocab('participant_register_form').'</button>'; 
+        // provoque une erreur en mode pop-up, inutile en mode page... voir si inclure select2 dans la page planning arrange le pb
+        echo "<button type='button' class='btn btn-primary btn-sm' id='btn_participe' onclick=\"toggle_visibility('form_participant');toggle_visibility('btn_participe');toggle_visibility('btn_close_participe'); \">".get_vocab('participant_register_form').'</button>';
         echo "<button type='button' class='btn btn-primary btn-sm' id='btn_close_participe' style='display:none' onclick=\"toggle_visibility('form_participant');toggle_visibility('btn_participe');toggle_visibility('btn_close_participe'); \">".get_vocab('participant_register_form_hide')."</button>";
         echo '<div id="form_participant" style="display:none">';
         echo '<h3>'.get_vocab("add_multiple_user_to_list").get_vocab("deux_points").'</h3>';
         echo '<form action="view_entry.php" method="GET">';
-        echo '<select name="agent" size="8" style="width:200px;" class ="select2" ondblclick="Deplacer(this.form.agent,this.form.elements[\'reg_participant[]\'])">';
+        echo '<select id="avail_users" name="agent" size="8" style="width:200px;" class ="select2" multiple ondblclick="Deplacer(this.form.agent,this.form.elements[\'reg_participant[]\'])">';
         foreach($av_users as $u){
             echo "<option value='".$u."'>".affiche_nom_prenom_email($u,"no_mail")."</option>";
         }
@@ -653,20 +657,20 @@ $can_copy = verif_acces_ressource($userName, $room_id);
 if (($can_book || $can_copy) && (!$was_del))
 {
     echo "<div>";
-            $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
-            if ($can_book)
-                echo "<input class=\"btn btn-primary\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("editentry")."\"/>";
-            if ($can_copy)
-                echo "<input class=\"btn btn-info\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back&amp;copier=copier'\" value=\"".get_vocab("copyentry")."\"/>";
-            if ($can_book)
-                echo "<input class=\"btn btn-warning\" type=\"button\" onclick=\"location.href='swap_entry.php?id=$id&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("swapentry")."\"/>";
-            if (($can_delete_or_create == "y")&& $can_book)
-            {
-                $message_confirmation = str_replace("'", "\\'", get_vocab("confirmdel").get_vocab("deleteentry"));
-               // $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
-            echo '<a class="btn btn-danger" type="button" href="del_entry.php?id='.$id.'&amp;series=0&amp;page='.$page.'&amp;room_back='.$room_back.' "  onclick="return confirm(\''.$message_confirmation.'\');">'.get_vocab("deleteentry").'</a>';
-            }
-        echo "</div>",PHP_EOL;
+        $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
+        if ($can_book)
+            echo "<input class=\"btn btn-primary\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("editentry")."\"/>";
+        if ($can_copy)
+            echo "<input class=\"btn btn-info\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back&amp;copier=copier'\" value=\"".get_vocab("copyentry")."\"/>";
+        if ($can_book)
+            echo "<input class=\"btn btn-warning\" type=\"button\" onclick=\"location.href='swap_entry.php?id=$id&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("swapentry")."\"/>";
+        if (($can_delete_or_create == "y")&& $can_book)
+        {
+            $message_confirmation = str_replace("'", "\\'", get_vocab("confirmdel").get_vocab("deleteentry"));
+           // $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
+        echo '<a class="btn btn-danger" type="button" href="del_entry.php?id='.$id.'&amp;series=0&amp;page='.$page.'&amp;room_back='.$room_back.' "  onclick="return confirm(\''.$message_confirmation.'\');">'.get_vocab("deleteentry").'</a>';
+        }
+    echo "</div>",PHP_EOL;
 }
 echo '</fieldset>',PHP_EOL;
 if ($repeat_id != 0)
@@ -855,6 +859,9 @@ if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')) // si
     $(document).ready(function() {
         $(".select2").select2();
 	});
+    $('#avail_users').select2({
+        dropdownParent: $('#popup_name')
+    });
 </script>
 <?php end_page();
 ?>

@@ -15,45 +15,25 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-$grr_script_name = "admin_save_mysql.php";
 
-// initialisations
-include(dirname(__FILE__).'/../include/connect.inc.php');
-include(dirname(__FILE__)."/../include/config.inc.php");
-include(dirname(__FILE__)."/../include/misc.inc.php");
-include(dirname(__FILE__)."/../include/functions.inc.php");
-include(dirname(__FILE__)."/../include/mysql.inc.php"); // remplace $dbsys par mysql, puisque c'est le seul système de BDD compatible avec GRR !
-include(dirname(__FILE__)."/../include/settings.class.php");
-if (!Settings::load())
-    die("Erreur chargement settings");
-// mot de passe attendu par le script de sauvegarde : si vide, c'est qu'aucun mot de passe n'est requis
-$mdp_attendu = Settings::get('motdepasse_backup');
-// mot de passe donné
-if(isset($_GET['mdp']))
-    $mdp_donne = $_GET['mdp'];
-elseif(isset($argv[1]))
-    $mdp_donne = $argv[1];
-else $mdp_donne = '';
-// peut_on lancer le script ?
-    
+$grr_script_name = "admin_save_mysql.php";
 if ((!isset($_GET['mdp'])) && (!isset($argv[1])) && (!isset($_GET['flag_connect'])))
 {
 	echo "Il manque des arguments pour executer ce script. Reportez-vous a la documentation.";
 	die();
-   
 }
 if ((!isset($_GET['mdp'])) && isset($argv[1]))
 	$_GET['mdp'] = $argv[1];
 if (isset($_GET['mdp']))
 {
-	/* include(dirname(__FILE__).'/../include/connect.inc.php');
+	include(dirname(__FILE__).'/../include/connect.inc.php');
 	include(dirname(__FILE__)."/../include/config.inc.php");
 	include(dirname(__FILE__)."/../include/misc.inc.php");
 	include(dirname(__FILE__)."/../include/functions.inc.php");
 	include(dirname(__FILE__)."/../include/mysql.inc.php"); // remplace $dbsys par mysql, puisque c'est le seul système de BDD compatible avec GRR !
 	include(dirname(__FILE__)."/../include/settings.class.php");
 	if (!Settings::load())
-		die("Erreur chargement settings"); */
+		die("Erreur chargement settings");
 
 	if ((($_GET['mdp'] != Settings::get("motdepasse_backup")) || (Settings::get("motdepasse_backup")== '' )))
 	{

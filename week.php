@@ -3,9 +3,9 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-12-15 16:10$
+ * Dernière modification : $Date: 2023-04-08 16:09$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -256,8 +256,8 @@ if (!$res)
 	echo grr_sql_error();
 else
 {
-    $overloadFieldList = mrbsOverloadGetFieldslist($area);
     $d = array();
+    $overloadFieldList = mrbsOverloadGetFieldslist($area);
 	// Pour toutes les réservations
     foreach($res as $row) 
 	{
@@ -560,11 +560,6 @@ if ($this_moderate_room == "1" && $_GET['pview'] != 1)
 {
 	echo '<br><span class="texte_ress_moderee">',get_vocab("reservations_moderees"),'</span>',PHP_EOL;
 }
-if ($this_room_show_comment == "y" && $_GET['pview'] != 1 && ($this_room_comment != "") && ($this_room_comment != -1))
-{
-	echo '<span style="text-align:center;">',$this_room_comment,'</span>',PHP_EOL;
-}
-
 echo '<h4 class="titre">'.ucfirst($this_area_name).' - '.$this_room_name.' '.$this_room_name_des;
 if ($this_room_max  && $_GET['pview'] != 1)
 	echo '('.$this_room_max.' '.($this_room_max > 1 ? get_vocab("number_max2") : get_vocab("number_max")).')'.PHP_EOL;
@@ -575,6 +570,10 @@ if (isset($_GET['precedent']))
 	if ($_GET['pview'] != 1 AND $_GET['precedent'] == 1){
 		echo '<span id="lienPrecedent">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="charger();javascript:history.back();">'.get_vocab('previous').'</button>',PHP_EOL,'</span>',PHP_EOL;
 	}
+}
+if ($this_room_show_comment == "y" && $_GET['pview'] != 1 && ($this_room_comment != "") && ($this_room_comment != -1))
+{
+	echo '<div class="center">',$this_room_comment,'</div>',PHP_EOL;
 }
 echo '</div>'.PHP_EOL;
 echo "</caption>";
@@ -606,38 +605,31 @@ else
 echo "</th>";
 
 $num_week_day = $weekstarts;
-$t = $time;
-// patch pour les semaines commençant un autre jour que lundi
-for ($weekcol = 0; $weekcol < 7; $weekcol++)
+$k = $day_week;
+$i = $time;
+
+for ($t = $week_start; $t < $week_end; $t += 86400)
 {
 	$num_day = date("j", $t);
 	$month_actuel = date("n", $t);
-	$year_actuel = date("Y", $t);
-	$tt = mktime(0, 0, 0, $month_actuel, $num_day, $year_actuel);
-	$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE day='$t'");
-	$t += 86400;
-	if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
-	{
-		if (heure_ete_hiver("hiver",$year_actuel,0) == mktime(0, 0, 0, $month_actuel, $num_day, $year_actuel))
-			$t += 3600;
-		if (date("H", $t) == "01")
-			$t -= 3600;
-	}
+	$year_actuel  = date("Y",$t);
+	$tt = mktime(0, 0, 0, $month_actuel, $num_day,$year_actuel);
+	$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$i'");
 	if ($display_day[$num_week_day] == 1)
 	{
-		$class = "";
+		$class = "jour_sem";
 		$title = "";
-		if ($settings->get("show_holidays") == "Oui")
-		{   
-			if (isHoliday($tt)){
-				$class .= 'ferie ';
-			}
-			elseif (isSchoolHoliday($tt)){
-				$class .= 'vacance ';
-			}
-		}
-		echo '<th class="jour_sem '.$class.'">'.PHP_EOL;
-        echo "<a title=\"".$title.htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"day.php?year=$year_actuel&amp;month=$month_actuel&amp;day=$num_day&amp;area=$area\">". utf8_strftime($dformat, $tt)."</a>";
+        if ($settings->get("show_holidays") == "Oui")
+        {   
+            if (isHoliday($tt)){
+                $class .= ' ferie';
+            }
+            elseif (isSchoolHoliday($tt)){
+                $class .= ' vacance';
+            }
+        }
+        echo "<th class = \"".$class."\" style=\"width:13%;\">";
+        echo "<a title=\"".$title.htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"day.php?year=$year_actuel&amp;month=$month_actuel&amp;day=$num_day&amp;area=$area\">". utf8_strftime($dformat, $t)."</a>";
 		if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
 		{
 			if (intval($jour_cycle) > 0)
@@ -645,10 +637,20 @@ for ($weekcol = 0; $weekcol < 7; $weekcol++)
 			else
 				echo "<br />".$jour_cycle;
 		}
-		echo '</th>'.PHP_EOL;
-	}
-	$num_week_day++;
-	$num_week_day = $num_week_day % 7;
+		echo "</th>\n";
+    }
+    if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
+    {
+        $num_day = date("d", $t);
+        if (heure_ete_hiver("hiver", $year, 0) == mktime(0, 0, 0, $month, $num_day, $year))
+            $t += 3600;
+        if ((date("H",$t) == "13") || (date("H",$t) == "02"))
+            $t -= 3600;
+    }
+    $i += 86400;
+    $k++;
+    $num_week_day++;
+    $num_week_day = $num_week_day % 7;
 }
 echo "</tr></thead>"; // fin d'affichage de la ligne des jours
 echo "<tbody>";
@@ -751,7 +753,7 @@ for ($slot = $first_slot; $slot <= $last_slot; $slot++)
         }
         if (($insere_case == 'n') && ($display_day[$num_week_day] == 1))
         {
-            if (!isset($d[$weekday][$slot - $decale_slot * $nb_case]["id"])) // pas de réservation sur ce slot
+            if (!isset($d[$weekday][$slot - $decale_slot * $nb_case]["color"])) // pas de réservation sur ce slot
             {
                 $date_booking = mktime($hour, $minute, 0, $wmonth, $wday, $wyear);
                 if ($enable_periods == 'y')

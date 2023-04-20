@@ -3,10 +3,10 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-10-14 14:35$
+ * Dernière modification : $Date: 2023-03-28 10:34$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -935,7 +935,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_repeat ADD `nbparticipantmax` int(11) NOT NULL DEFAULT '0' AFTER `courrier`;");
         $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_type_area` DROP `couleur_texte`;");
 		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_participants (idresa int(11) NOT NULL, participant varchar(200) NOT NULL, PRIMARY KEY  (idresa,participant));");
-        $result_inter .= traiteRequete("INSERT INTO grr_setting (`NAME`, `VALUE`) VALUES ('cell_day', 'FVVVVFV'),('cell_month', 'VVVFFFV'),('cell_month_all', 'VVVFFFV'),('cell_month_all2', 'VFFFFFF'),('cell_week', 'FVVVVFV'),('cell_week_all', 'VVVFFFV'),('cell_year', 'VFFFFFF'),('cell_year_all', 'VFFFFFF'),('popup_day', 'VVFFFVV'),('popup_month', 'VVVVVFV'),('popup_month_all', 'VVVVVFV'),('popup_month_all2', 'VVVVVFV'),('popup_week', 'VFFFVFF'),('popup_week_all', 'VVVVVFV'),('popup_year', 'VVVVVFV'),('popup_year_all', 'VVVVVFV');");
+        $result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('cell_day', 'FVVVVFV'),('cell_month', 'VVVFFFV'),('cell_month_all', 'VVVFFFV'),('cell_month_all2', 'VFFFFFF'),('cell_week', 'FVVVVFV'),('cell_week_all', 'VVVFFFV'),('cell_year', 'VFFFFFF'),('cell_year_all', 'VFFFFFF'),('popup_day', 'VVFFFVV'),('popup_month', 'VVVVVFV'),('popup_month_all', 'VVVVVFV'),('popup_month_all2', 'VVVVVFV'),('popup_week', 'VFFFVFF'),('popup_week_all', 'VVVVVFV'),('popup_year', 'VVVVVFV'),('popup_year_all', 'VVVVVFV');");
         $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_room` CHANGE `delais_min_resa_room` `delais_min_resa_room` MEDIUMINT NOT NULL DEFAULT '0' ;");
 
         if ($result_inter == '')
@@ -952,7 +952,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
         // conversion de la valeur par défaut des champs START et END de la table grr_log (ne devrait être utile que pour des bases converties depuis d'anciennes versions)
         $result .= formatResult("Mise à jour de la table grr_log:","<b>","</b>");
         $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_log` CHANGE `START` `START` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00', CHANGE `END` `END` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00';");
-        
+        $result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET `ConvertLdapUtf8toIso` = 'n' WHERE ConvertLdapUtf8toIso = 'y';");
         if ($result_inter == '')
             $result .= formatResult("Ok !","<span style='color:green;'>","</span>");
         else

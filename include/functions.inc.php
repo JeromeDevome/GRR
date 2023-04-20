@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-03-23 17:52$
+ * Dernière modification : $Date: 2023-04-17 16:29$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -915,21 +915,14 @@ function corriger_caracteres($texte)
 }
 
 // Traite les données avant insertion dans une requête SQL
+// mise à jour pour les versions de php 5.6+
 function protect_data_sql($_value)
 {
-	global $use_function_mysql_real_escape_string;
-	//if (get_magic_quotes_gpc())
-	if (function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc())
-		$_value = stripslashes($_value);
-	if (!is_numeric($_value))
-	{
-		/*if (isset($use_function_mysql_real_escape_string) && ($use_function_mysql_real_escape_string==0))
-			$_value = mysqli_real_escape_string($GLOBALS['db_c'], $_value);
-		else */
-        // pourquoi un test, puisque l'action est la même ? YN le 30/03/2018
-			$_value = mysqli_real_escape_string($GLOBALS['db_c'], $_value);
-	}
-	return $_value;
+	if ($_value != NULL){
+        $_value = stripslashes($_value);
+        $_value = mysqli_real_escape_string($GLOBALS['db_c'], $_value);
+    }
+    return $_value;
 }
 
 // Traite les données envoyées par la methode GET|POST de la variable $_GET|POST["page"], renvoie "day" si la page n'est pas définie
@@ -1055,12 +1048,8 @@ function begin_page($title, $page = "with_session")
 			die();
 		}
 	}
-	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin;
+	global $vocab, $clock_file, $use_select2, $use_admin;
 	header('Content-Type: text/html; charset=utf-8');
-	/*if (!isset($_COOKIE['open']))
-	{
-		setcookie("open", "true", time()+3600, "", "", false, false);
-	}*/
     if (!isset($_COOKIE['open']))
     {
         header('Set-Cookie: open=true; SameSite=Lax');
@@ -1690,7 +1679,7 @@ function genDateSelectorForm($prefix, $day, $month, $year, $option)
 		$year = date("Y");
 	if ($day != "")
 	{
-		$selector_data .= "<select class='test' name=\"${prefix}day\" id=\"${prefix}day\">\n";
+		$selector_data .= "<select class='test' name=\"{$prefix}day\" id=\"{$prefix}day\">\n";
 		for ($i = 1; $i <= 31; $i++)
 		{
 			if ($i < 10)
@@ -1700,7 +1689,7 @@ function genDateSelectorForm($prefix, $day, $month, $year, $option)
 		}
 		$selector_data .= "</select>";
 	}
-	$selector_data .= "<select class='test' name=\"${prefix}month\" id=\"${prefix}month\">\n";
+	$selector_data .= "<select class='test' name=\"{$prefix}month\" id=\"{$prefix}month\">\n";
 	for ($i = 1; $i <= 12; $i++)
 	{
 		$m = utf8_strftime("%b", mktime(0, 0, 0, $i, 1, $year));
@@ -1714,7 +1703,7 @@ function genDateSelectorForm($prefix, $day, $month, $year, $option)
 		}
 	}
 	$selector_data .=  "</select>";
-	$selector_data .=  "<select class='test' name=\"${prefix}year\" id=\"${prefix}year\">\n";
+	$selector_data .=  "<select class='test' name=\"{$prefix}year\" id=\"{$prefix}year\">\n";
 	$min = date("Y", Settings::get("begin_bookings"));
 	if ($option == "more_years")
 		$min = date("Y") - $nb_year_calendar;
@@ -3251,7 +3240,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
             if(strtolower($user_login) != strtolower($beneficiaire))
                 $message2 .= $vocab["creation_booking_for_you"];
             else
-                $message2 .= get_vocab('Vous avez_reserve');
+                $message2 .= get_vocab('Vous_avez_reserve');
 			$message2 .= $vocab["the_room"].$room_name." (".$area_name.").";
 		}
 		elseif ($action == 2){
@@ -3361,19 +3350,23 @@ function getWritable($user, $id)
             	-> sinon
             		R5 -> on retourne $user_can_book selon les droits de l'utilisateur U sur la ressource et s'il peut réserver la ressource pour B
             		R6 -> on retourne 0 sinon (si on permettait à U d'éditer la résa, il ne pourrait de toute façon pas la modifier)*/
-             if (($utilisateur != $beneficiaire) && ($utilisateur != $createur)) // cas 1
+            if (($utilisateur != $beneficiaire) && ($utilisateur != $createur)) // cas 1
                 return 0;
             elseif ($utilisateur == $beneficiaire) // cas 2 et 3
             {
-                if ($data['dont_allow_modify'] == 'y')
-                    return 0;
+                if (authGetUserLevel($user, $data['room_id']) > 2) 
+                    return 1; // un gestionnaire de ressource peut toujours modifier ses propres réservations
+                elseif ($data['dont_allow_modify'] == 'y')
+                    return 0; // un simple utilisateur ne peut pas modifier ses propres réservations
                 else 
                     return $user_can_book;
             }
             elseif ($utilisateur == $createur) // cas 4
             {
-                if ($data['dont_allow_modify'] == 'y')
-                    return 0;
+                if (authGetUserLevel($user, $data['room_id']) > 2) 
+                    return 1; // un gestionnaire de ressource peut toujours modifier ses propres réservations
+                elseif ($data['dont_allow_modify'] == 'y')
+                    return 0; // un simple utilisateur ne peut pas modifier ses propres réservations
                 else
                 {
                     if (authGetUserLevel($user, $data['room_id']) >= $data['qui_peut_reserver_pour'])
@@ -3741,7 +3734,7 @@ function UserRoomMaxBookingRange($user, $id_room, $number, $start_time)
         room_id = '".protect_data_sql($id_room)."'
         AND beneficiaire = '".protect_data_sql($user)."'
         AND end_time > '".$now."'
-        AND start_time > '".min_int."')");
+        AND start_time > '".$min_int."')");
         $nb_bookings += $number;
         if ($nb_bookings > $max_booking_per_room)
             return 0;
@@ -3965,7 +3958,7 @@ function no_book_rooms($user){
         elseif (!$room['who_can_book']){ // ressource restreinte
             $sql = "SELECT login FROM ".TABLE_PREFIX."_j_userbook_room j WHERE j.login = '".$user."' AND j.id_room = '".$room['id']."'";
             $login = grr_sql_query1($sql);
-            if (($login != $user) && ($auth_level < 3)){ // un gestionnaire de ressource peut toujours accéder !
+            if ((strtoupper($login) != strtoupper($user)) && ($auth_level < 3)){ // un gestionnaire de ressource peut toujours accéder !
                 $rooms_no_book[] = $room['id'];
             }
         }
@@ -5922,7 +5915,7 @@ function pageHead2($title, $page = "with_session")
 			die();
 		}
 	}
-	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin;
+	global $vocab, $clock_file, $use_select2, $use_admin;
     // récupération des couleurs des types
     $types = '';
     $sql = "SELECT type_letter,couleurhexa,couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE 1";
@@ -6225,10 +6218,6 @@ function start_page_w_header($day = '', $month = '', $year = '', $type_session =
     include $racine."/include/hook.class.php";
     // code HTML
     header('Content-Type: text/html; charset=utf-8'); // en liaison avec la modification de pageHead2
-    /*if (!isset($_COOKIE['open']))
-	{
-		setcookie("open", "true", time()+3600, "", "", false, false);
-	}*/
     if (!isset($_COOKIE['open']))
     {
         header('Set-Cookie: open=true; SameSite=Lax');
@@ -6269,10 +6258,6 @@ function start_page_wo_header($titre, $type_session = 'with_session')
     include $racine."/include/hook.class.php";
     // code HTML
     header('Content-Type: text/html; charset=utf-8');
-    /*if (!isset($_COOKIE['open']))
-	{
-		setcookie("open", "true", time()+3600, "", "", false, false);
-	}*/
     if (!isset($_COOKIE['open']))
     {
         header('Set-Cookie: open=true; SameSite=Lax');

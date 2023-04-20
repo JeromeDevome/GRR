@@ -1,12 +1,11 @@
-
 <?php
 /**
  * admin_confirm_change_date_bookings.php
  * interface de confirmation des changements de date de début et de fin de réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:52$
+ * Dernière modification : $Date: 2023-03-20 15:21$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.

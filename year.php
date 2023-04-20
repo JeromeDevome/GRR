@@ -3,9 +3,9 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-11-07 18:14$
+ * Dernière modification : $Date: 2023-04-08 18:14$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -449,14 +449,14 @@ while ($month_indice < $month_end)
 	}
 	echo "</tr></thead>";
 	// Fin affichage de la première ligne
-	$sql = "SELECT room_name, capacity, id, description FROM ".TABLE_PREFIX."_room WHERE area_id=$area ORDER BY order_display,room_name";
+	$sql = "SELECT room_name, capacity, id, description, comment_room, show_comment FROM ".TABLE_PREFIX."_room WHERE area_id=$area ORDER BY order_display,room_name";
 	$res = grr_sql_query($sql);
 	$li = 0;
     $domaine_vide = (grr_sql_count($res) == 0);
     if ($domaine_vide)
         echo "<tbody><tr><td><strong>".get_vocab("no_rooms_for_area")."</strong></td></tr></tbody>";
     else {
-        for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++)
+        for ($ir = 0; ($row = grr_sql_row_keyed($res, $ir)); $ir++)
         {
             // calcul de l'accès à la ressource en fonction du niveau de l'utilisateur
             $verif_acces_ressource = verif_acces_ressource($user_name, $row[2]);
@@ -464,8 +464,17 @@ while ($month_indice < $month_end)
             {
                     // Calcul du niveau d'accès aux fiches de réservation détaillées des ressources
                 $acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $row[2]);
-                echo "<tr><th>";
-                echo htmlspecialchars($row[0]) ."</th>\n";
+                echo "<tr><th>".htmlspecialchars($row[0]);
+                if (verif_display_fiche_ressource($user_name, $row['id']) && $_GET['pview'] != 1)
+                {
+                    echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$row['id'].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'">'.PHP_EOL;
+                    echo '<span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
+                }
+                if (authGetUserLevel($user_name,$row['id']) > 2 && $_GET['pview'] != 1)
+                    echo '<a href="./admin/admin_edit_room.php?room='.$row['id'].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a>'.PHP_EOL;
+                if ($row['show_comment'] == "y" && $_GET['pview'] != 1 && ($row['comment_room'] != "") && ($row['comment_room'] != -1))
+                    echo '<div class="center">',$row['comment_room'],'</div>',PHP_EOL;
+                echo  "</th>\n";
                 $li++;
                 for ($k = 1; $k <= $days_in_month; $k++)
                 {

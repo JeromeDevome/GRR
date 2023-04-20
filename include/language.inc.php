@@ -3,9 +3,9 @@
  * language.inc.php
  * Configuration de la langue
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-11 17:50$
+ * Dernière modification : $Date: 2023-03-19 11:51$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -109,8 +109,13 @@ switch ($dateformat)
 /**
  * @param string $str
  */
-function test_utf8($str)
-{
+function test_utf8($str){
+    if (is_null($str))
+        return TRUE;
+    else 
+        return mb_check_encoding($str, "UTF-8");
+}
+/*{
  // astuce pour entrer dans un test booléen ^^
  // (si c'est un tableau... ce qui est forcement vrai)
   if (is_array($str)) {
@@ -123,7 +128,7 @@ function test_utf8($str)
         // si la chaine decodée et encodée est égale à elle-même
         return (utf8_encode(utf8_decode($str)) == $str);
     }    
-}
+}*/
 
 # This maps a Windows locale to the charset it uses, which are
 # all Windows code pages
@@ -187,7 +192,7 @@ function utf8_convert($string)
  * utilise strftime() pour formatter le timestamp $time selon $format 
  * rend une chaîne UTF-8
 */
-function date_formatter_strftime(string $format, $time): string
+function date_formatter_strftime($format, $time)
 {
     $time = (int) $time;
     $result = strftime($format, $time);
@@ -198,7 +203,7 @@ function date_formatter_strftime(string $format, $time): string
  * convertit un caractère de formatage pour strftime() en motif équivalent pour IntlDateFormatter
  * limité aux motifs utilisés dans GRR : %a, %A, %b, %B, %c, %d, %H, %I, %m, %M, %T, %w, %y, %Y
 */
-function strftime2intlPattern(string $format, string $locale) : string
+function strftime2intlPattern($format, $locale)
 {
   $map = array(
     // Day
@@ -240,7 +245,7 @@ function strftime2intlPattern(string $format, string $locale) : string
 /* function strftime2intlFormat(string $format, string $locale) : string
  * convertit un format pour strftime() en format pour IntlDateFormatter
 */
-function strftime2intlFormat(string $format, string $locale) : string
+function strftime2intlFormat($format, $locale)
 {
   if (!isset($format) || ($format === ''))
   {
@@ -305,7 +310,7 @@ function strftime2intlFormat(string $format, string $locale) : string
  * formate le timestamp $time en une chaîne UTF-8 
  * utilise IntlDateFormatter, $format doit être un format valide pour IntlDateFormatter
 */
-function date_formatter_intl(string $format, $time, $locale) : string
+function date_formatter_intl($format, $time, $locale)
 {
     $pattern = strftime2intlFormat($format, $locale);
     $formatter = new IntlDateFormatter(
@@ -323,7 +328,7 @@ function date_formatter_intl(string $format, $time, $locale) : string
  * $time peut être un entier ou un flottant
  * la chaîne rendue est au format UTF-8
 */
-function utf8_strftime(string $format, $time) : string
+function utf8_strftime($format, $time)
 {
     global $locale;
   // strftime() is deprecated from PHP 8.1

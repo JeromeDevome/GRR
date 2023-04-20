@@ -3,9 +3,9 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-09-30 18:52$
+ * Dernière modification : $Date: 2023-03-28 10:28$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -160,7 +160,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 			if (grr_sql_command($sql) < 0)
 				fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
 		// on récupère les données de l'utilisateur dans $row
-			$row = grr_sql_row($res_user,0);
+			$row = grr_sql_row_keyed($res_user,0);
 		}
 		else
 		{
@@ -195,9 +195,9 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 						$prenom_user = $tab_login["fullname"];
 					}
 				}
-				//3ème cas : LDAP avec SSO CAS ou avec SSO Lemonldap
+				//3ème cas : LDAP avec SSO CAS ou avec SSO Lemonldap ou avec authentification Apache
 				//on tente de récupérer des infos dans l'annuaire avant d'importer le profil dans GRR
-				else if ((Settings::get("ldap_statut") != '') && (@function_exists("ldap_connect")) && (@file_exists("include/config_ldap.inc.php")) && ($_user_ext_authentifie == 'cas'))
+				else if ((Settings::get("ldap_statut") != '') && (@function_exists("ldap_connect")) && (@file_exists("include/config_ldap.inc.php")) && ($_user_ext_authentifie == 'cas' || $_user_ext_authentifie == 'apache'))
 				{
 				// On initialise au cas où on ne réussit pas à récupérer les infos dans l'annuaire.
 					$l_nom = $_login;
@@ -237,13 +237,6 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 										$l_email='';
 								}
 							}
-						}
-					// Convertir depuis UTF-8 (jeu de caracteres par defaut)
-						if ((function_exists("utf8_decode")) && (Settings::get("ConvertLdapUtf8toIso") == "y"))
-						{
-							$l_email = utf8_decode($l_email);
-							$l_nom = utf8_decode($l_nom);
-							$l_prenom = utf8_decode($l_prenom);
 						}
 					}
 					$nom_user = $l_nom;
@@ -341,7 +334,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 $res_user = grr_sql_query($sql);
                 $num_row = grr_sql_count($res_user);
                 if ($num_row == 1)
-                    $row = grr_sql_row($res_user,0);
+                    $row = grr_sql_row_keyed($res_user,0);
                 else
                     return "2";
             }
@@ -352,7 +345,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     // -> Imap
     else
     {   // utilisateur déjà enregistré ?
-        $sql = "SELECT UPPER(login) login FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".strtoupper(protect_data_sql($_login))."';";
+        $sql = "SELECT UPPER(login) login FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".strtoupper(protect_data_sql($_login))."' AND source = 'local';";
         /* $passwd_md5 = md5($_password); // à changer
         $sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
         from ".TABLE_PREFIX."_utilisateurs
@@ -401,7 +394,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                     from ".TABLE_PREFIX."_utilisateurs
                     where statut = 'administrateur'";
                     $res_user = grr_sql_query($sql);;
-                    $row = grr_sql_row($res_user, 0);
+                    $row = grr_sql_row_keyed($res_user, 0);
             } 
             else
                 return "2";
@@ -412,7 +405,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
             $res_user = grr_sql_query($sql);
             $row = grr_sql_row_keyed($res_user, 0);
             // S'il s'agit d'un utilisateur inactif, on s'arrête là
-            if ($row[12] == 'inactif')
+            if ($row['etat'] == 'inactif')
                 return "5";
             else // on vérifie enfin le mot de passe et on le met éventuellement à jour
             {
@@ -494,9 +487,10 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
             // Lire les infos sur l'utilisateur depuis LDAP
             $user_info = grr_getinfo_ldap($user_dn,$_login,$_password);
             // Update GRR database
-            $user_info[0] = utf8_encode($user_info[0]);
+            /*$user_info[0] = utf8_encode($user_info[0]);
             $user_info[1] = utf8_encode($user_info[1]);
-            $user_info[2] = utf8_encode($user_info[2]);
+            $user_info[2] = utf8_encode($user_info[2]);*/
+            // devrait être inutile puisque LDAP devrait répondre en UTF-8
             $sql2 = "UPDATE ".TABLE_PREFIX."_utilisateurs SET
             nom='".protect_data_sql($user_info[0])."',
             prenom='".protect_data_sql($user_info[1])."',
@@ -506,7 +500,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
             // on récupère les données de l'utilisateur dans $row
             $res_user = grr_sql_query($sql);
-            $row = grr_sql_row($res_user,0);
+            $row = grr_sql_row_keyed($res_user,0);
         }
         else
         {
@@ -519,9 +513,10 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 return "3";
             else
             {
-                $user_info[0] = utf8_encode($user_info[0]);
+                /*$user_info[0] = utf8_encode($user_info[0]);
                 $user_info[1] = utf8_encode($user_info[1]);
-                $user_info[2] = utf8_encode($user_info[2]);
+                $user_info[2] = utf8_encode($user_info[2]);*/
+                // devrait être inutile pusique LDAP devrait répondre en UTF-8
                 // On insère le nouvel utilisateur
                 $sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET
                 nom='".protect_data_sql($user_info[0])."',
@@ -544,7 +539,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 if ($num_row == 1)
                 {
                 // on récupère les données de l'utilisateur dans $row
-                    $row = grr_sql_row($res_user,0);
+                    $row = grr_sql_row_keyed($res_user,0);
                 }
                 else
                     return "2";
@@ -565,7 +560,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
         {
             // un utilisateur imap ayant le meme login existe deja
             // on recupere les donnees de l'utilisateur dans $row
-            $row = grr_sql_row($res_user,0);
+            $row = grr_sql_row_keyed($res_user,0);
         }
         else
         {
@@ -610,7 +605,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 if ($num_row == 1)
                 {
                     // on récupère les données de l'utilisateur dans $row
-                    $row = grr_sql_row($res_user,0);
+                    $row = grr_sql_row_keyed($res_user,0);
                 }
                 else
                     return "2";
@@ -618,10 +613,10 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
         }
     }
 	// On teste si la connexion est active ou non
-    if ((Settings::get("disable_login")=='yes') and ($row[4] != "administrateur"))
+    if ((Settings::get("disable_login")=='yes') and ($row['statut'] != "administrateur"))
         return "2";
     // On teste si l'ip est autorisé
-    if ((Settings::get("ip_autorise") != '') and ($row[4] != "administrateur")){
+    if ((Settings::get("ip_autorise") != '') and ($row['statut'] != "administrateur")){
         $resultIP = compare_ip_adr($_SERVER["REMOTE_ADDR"], Settings::get("ip_autorise"));
         if ($resultIP == false){
             return "11";
@@ -644,7 +639,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
         $res = grr_sql_query($sql);
         if (!$res)
             fatal_error(0, 'erreur mysql' . grr_sql_error());
-        if($row[14] == 1)
+        if($row['changepwd'] == 1)
             return "12";
         else
             return "1";
@@ -759,7 +754,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     grr_sql_query($sql);
 
     // L'utilisateur doit changer son mot de passe
-    if($row[14] == 1)
+    if($row['changepwd'] == 1)
         return "12";
 
     /* Fonctionnalité SE3 (Palissy - Saintes - philippe.duval@ac-poitiers.fr) :
@@ -768,58 +763,60 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     CREATE TABLE ".TABLE_PREFIX."_j_groupe_se3 (groupe varchar(40) NOT NULL default '',id_area_room int(11) NOT NULL default '0', statut varchar(20) NOT NULL default '',  PRIMARY KEY  (`groupe`,`id_area_room`));
     Par ailleurs, pour que cette fonctionnalité soit complète et dans l'esprit de GRR, il faudra développer une "petite" interface dans GRR pour gérer les entrées dans cette table.
     */
+	if(Settings::get("se3_liste_groupes_autorises") != "" ) {
         // Début de la fonctionnalité SE3
-    $grp = @grr_sql_query("SELECT groupe, id_area_room, statut FROM ".TABLE_PREFIX."_j_groupe_se3");
-    if ($grp)
-    {
-        // si la table ".TABLE_PREFIX."_j_groupe_se3 est implantée et non vide
-        //A modifier recalcul a chaque boucle
-        while ($resgrp = @mysqli_fetch_array($grp))
-        {
-            // balaye tous les groupes présents dans la table ".TABLE_PREFIX."_j_groupadmin_area
-            $statut_se3 = $resgrp['statut'];
-            $area_se3 = $resgrp['id_area_room'];
-            if ($statut_se3 == 'administrateur')
-            {
-                $table_user_se3 = "".TABLE_PREFIX."_j_useradmin_area"; $type_res = 'id_area';
-            }
-            if ($statut_se3 == 'acces_restreint')
-            {
-                $table_user_se3 = "".TABLE_PREFIX."_j_user_area"; $type_res = 'id_area';
-            }
-            if ($statut_se3 == 'gestionnaire')
-            {
-                $table_user_se3 = "".TABLE_PREFIX."_j_user_room"; $type_res = 'id_room';
-            }
-            if (se3_grp_members($resgrp['groupe'],$_login)=="oui")
-                @grr_sql_query("INSERT INTO `".$table_user_se3."` (login, ".$type_res.") values('".$_login."',".$area_se3.")");
-            else
-                @grr_sql_query("DELETE FROM `".$table_user_se3."` WHERE `login`='".$_login."' AND `".$type_res."`=".$area_se3);
-        }
-    }
+		$grp = @grr_sql_query("SELECT groupe, id_area_room, statut FROM ".TABLE_PREFIX."_j_groupe_se3");
+		if ($grp)
+		{
+			// si la table ".TABLE_PREFIX."_j_groupe_se3 est implantée et non vide
+			//A modifier recalcul a chaque boucle
+			while ($resgrp = @mysqli_fetch_array($grp))
+			{
+				// balaye tous les groupes présents dans la table ".TABLE_PREFIX."_j_groupadmin_area
+				$statut_se3 = $resgrp['statut'];
+				$area_se3 = $resgrp['id_area_room'];
+				if ($statut_se3 == 'administrateur')
+				{
+					$table_user_se3 = "".TABLE_PREFIX."_j_useradmin_area"; $type_res = 'id_area';
+				}
+				if ($statut_se3 == 'acces_restreint')
+				{
+					$table_user_se3 = "".TABLE_PREFIX."_j_user_area"; $type_res = 'id_area';
+				}
+				if ($statut_se3 == 'gestionnaire')
+				{
+					$table_user_se3 = "".TABLE_PREFIX."_j_user_room"; $type_res = 'id_room';
+				}
+				if (se3_grp_members($resgrp['groupe'],$_login)=="oui")
+					@grr_sql_query("INSERT INTO `".$table_user_se3."` (login, ".$type_res.") values('".$_login."',".$area_se3.")");
+				else
+					@grr_sql_query("DELETE FROM `".$table_user_se3."` WHERE `login`='".$_login."' AND `".$type_res."`=".$area_se3);
+			}
+		}
         // Note : Il reste à gérer finement l'interface graphique et à déduire l'incompatibilité éventuelle entre le domaine par défaut et les domaines autorisés pour chaque utilisateur
         // Fin de la fonctionnalité SE3
-    /* Application du patch en production depuis la rentrée à Palissy : Zéro problème (ci-dessous, l'extraction de la table via phpmyadmin)
-    CREATE TABLE `".TABLE_PREFIX."_j_groupe_se3` (
-        `groupe` varchar(40) NOT NULL default '',
-        `id_area_room` int(11) NOT NULL default '0',
-        `statut` varchar(20) NOT NULL default '',
-        PRIMARY KEY  (`groupe`,`id_area_room`)
-    ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-    INSERT INTO `".TABLE_PREFIX."_j_groupe_se3` (`groupe`, `id_area_room`, `statut`) VALUES
-    ('GRR_ADMIN_SALLES_REUNIONS', 1, 'administrateur'),
-    ('GRR_ADMIN_SALLES_PEDAGOGIQUES', 2, 'administrateur'),
-    ('GRR_ADMIN_LABOS_LANGUES', 3, 'administrateur'),
-    ('GRR_SALLES_REUNIONS', 1, 'acces_restreint'),
-    ('GRR_SALLES_PEDAGOGIQUES', 2, 'acces_restreint'),
-    ('GRR_LABOS_LANGUES', 3, 'acces_restreint'),
-    ('GRR_GESTION_SALLE_A01', 1, 'gestionnaire'),
-    ('GRR_GESTION_SALLE_A03', 2, 'gestionnaire'),
-    ('GRR_GESTION_SALLE_A314', 3, 'gestionnaire'),
-    ('GRR_GESTION_SALLE_A409', 4, 'gestionnaire'),
-    ('GRR_GESTION_SALLE_D05', 5, 'gestionnaire'),
-    ('GRR_GESTION_SALLE_A301E', 6, 'gestionnaire');
-    */
+		/* Application du patch en production depuis la rentrée à Palissy : Zéro problème (ci-dessous, l'extraction de la table via phpmyadmin)
+		CREATE TABLE `".TABLE_PREFIX."_j_groupe_se3` (
+			`groupe` varchar(40) NOT NULL default '',
+			`id_area_room` int(11) NOT NULL default '0',
+			`statut` varchar(20) NOT NULL default '',
+			PRIMARY KEY  (`groupe`,`id_area_room`)
+		) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+		INSERT INTO `".TABLE_PREFIX."_j_groupe_se3` (`groupe`, `id_area_room`, `statut`) VALUES
+		('GRR_ADMIN_SALLES_REUNIONS', 1, 'administrateur'),
+		('GRR_ADMIN_SALLES_PEDAGOGIQUES', 2, 'administrateur'),
+		('GRR_ADMIN_LABOS_LANGUES', 3, 'administrateur'),
+		('GRR_SALLES_REUNIONS', 1, 'acces_restreint'),
+		('GRR_SALLES_PEDAGOGIQUES', 2, 'acces_restreint'),
+		('GRR_LABOS_LANGUES', 3, 'acces_restreint'),
+		('GRR_GESTION_SALLE_A01', 1, 'gestionnaire'),
+		('GRR_GESTION_SALLE_A03', 2, 'gestionnaire'),
+		('GRR_GESTION_SALLE_A314', 3, 'gestionnaire'),
+		('GRR_GESTION_SALLE_A409', 4, 'gestionnaire'),
+		('GRR_GESTION_SALLE_D05', 5, 'gestionnaire'),
+		('GRR_GESTION_SALLE_A301E', 6, 'gestionnaire');
+		*/
+	}
     return "1";
 }
 /**
@@ -857,7 +854,7 @@ function grr_resumeSession()
 	$sql = "SELECT password = '" . $_SESSION['password'] . "' PASSWORD, login = '" . protect_data_sql($_SESSION['login']) . "' LOGIN, statut = '" . $_SESSION['statut'] . "' STATUT
 	from ".TABLE_PREFIX."_utilisateurs where login = '" . protect_data_sql($_SESSION['login']) . "'";
 	$res = grr_sql_query($sql);
-	$row = grr_sql_row($res, 0);
+	$row = grr_sql_row_keyed($res, 0);
 		// Checking for a timeout
 	$sql2 = "SELECT now() > END TIMEOUT from ".TABLE_PREFIX."_log where SESSION_ID = '" . session_id() . "' and START = '" . $_SESSION['start'] . "'";
 	if ($row[0] != "1" || $row[1] != "1" || $row[2] != "1")
@@ -1204,13 +1201,6 @@ function grr_getinfo_ldap($_dn, $_login, $_password)
             $l_prenom = (isset($val[strtolower(Settings::get("ldap_champ_prenom"))][0]))? ucfirst($val[strtolower(Settings::get("ldap_champ_prenom"))][0]) : "Prénom à préciser";
             $l_email = (isset($val[strtolower(Settings::get("ldap_champ_email"))][0])) ? $val[strtolower(Settings::get("ldap_champ_email"))][0] : '';
         }
-    }
-    // Convertir depuis UTF-8 (jeu de caracteres par defaut)
-    if ((function_exists("utf8_decode")) and (Settings::get("ConvertLdapUtf8toIso") == "y"))
-    {
-            $l_email = utf8_decode($l_email);
-            $l_nom = utf8_decode($l_nom);
-            $l_prenom = utf8_decode($l_prenom);
     }
     // Return infos
     return array($l_nom, $l_prenom, $l_email);

@@ -3,9 +3,9 @@
  * view_room.php
  * Fiche ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-20 11:15$
+ * Dernière modification : $Date: 2023-04-08 17:48$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -110,9 +110,9 @@ $nom_picture = '';
 if ($row['picture_room'] != '') $nom_picture = "./images/".clean_input($row['picture_room']);
 echo "<div class='center'><b>";
 if (@file_exists($nom_picture) && $nom_picture)
-	echo get_vocab("Image de la ressource").": </b><br /><img src=\"".$nom_picture."\" alt=\"logo\" />";
+	echo get_vocab("Image_de_la_ressource").": </b><br /><img src=\"".$nom_picture."\" alt=\"logo\" />";
 else
-	echo get_vocab("Pas image disponible")."</b>";
+	echo get_vocab("Pas_image_disponible")."</b>";
 echo "</div>";
 end_page();
 //include "include/trailer.inc.php";

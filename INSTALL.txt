@@ -54,7 +54,6 @@ Modification des droits : les droits d'écriture doivent être attribués (à l'
 * au répertoire "/images"       (chargement d'images pour les fiches de présentation des ressources)
 * au fichier "include/connect.inc.php"      (dans le cas d'une installation automatisée)
 * au fichier "include/config_ldap.inc.php"  (dans le cas d'une authentification ldap)
-* au fichier "themes/default/css/types.css"  (pour la gestion des couleurs selon le type de réservation)
 
 ***************************************************
 Installation - Etape 3 : création de la base Mysql
@@ -86,7 +85,7 @@ Dans l'archive figure le fichier tables.my.sql à exécuter sur le serveur mysql
 contient l'ensemble des tables mysql ainsi que les données minimales pour
 que ça fonctionne.
 
--  Sur le seveur mysql :
+-  Sur le serveur mysql :
 * créez une base mysql (avec phpMyAdmin par exemple) en lui donnant un nom (par
 exemple "grr")
 * créez un utilisateur de cette base,
@@ -117,7 +116,7 @@ Procédure de mise à jour (depuis GRR 1.9.7e, voir plus bas)
 Il n'y a pas de procédure de mise à jour automatique de l'ensemble logiciel GRR.
 Par sécurité, avant de mettre les scripts à jour, faites une sauvegarde de la base de données, puis de l'ensemble de l'arborescence de GRR.
 Téléchargez sur votre serveur les scripts de la nouvelle version de GRR.
-Recopiez les fichiers de configuration (/include/config.inc.php, /include/connect.inc.php et - éventuellement - /include/config_ldap.inc.php) et le fichier de style des types de réservation (/themes/default/css/types.css).
+Recopiez les fichiers de configuration (/include/config.inc.php, /include/connect.inc.php et - éventuellement - /include/config_ldap.inc.php).
 Vérifiez les droits en écriture sur les fichiers et le dossier indiqués à l'étape 2.
 Connectez-vous à GRR avec un compte administrateur. Si vous avez fait une montée de version, GRR demandera une mise à jour de la base de données. Faites-la puis connectez-vous. Vous devriez avoir de nouveau GRR opérationnel.
 
@@ -126,8 +125,8 @@ Pour mettre à jour depuis GRR 1.9.7e ou antérieur, voici les étapes recommand
 - éventuellement vider la table de connexions (grr_log)
 - refaire une sauvegarde depuis GRR 1.9.7e
 - déplacer les scripts de GRR197 à titre de sauvegarde
-- installer les scripts de GRR 3.5.0 dans un dossier vide
-- initialiser GRR 3.5.0
+- installer les scripts de GRR 3.5.1 dans un dossier vide
+- initialiser GRR 3.5.1
 - convertir le fichier de sauvegarde GRR197 à l'encodage UTF-8 (sans BOM) pour convertir les accents
 - restaurer la sauvegarde faite avec GRR 1.9.7e
 - connectez-vous avec un compte administrateur et faites la mise à jour de montée de version.

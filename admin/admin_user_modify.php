@@ -3,9 +3,9 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-10-07 16:20$
+ * Dernière modification : $Date: 2023-04-07 10:37$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -37,12 +37,12 @@ if (isset($_GET["user_login"]) && (authGetUserLevel(getUserName(),-1,'user') == 
 }
 $msg = '';
 unset($user_login);
-$user_login = isset($_GET["user_login"]) ? $_GET["user_login"] : NULL;
-$test_login = preg_replace("/([A-Za-z0-9_@. -])/","",$user_login);
+$user_login = getFormVar("user_login","string");//isset($_GET["user_login"]) ? $_GET["user_login"] : NULL;
+$test_login = ($user_login != NULL)? preg_replace("/([A-Za-z0-9_@. -])/","",$user_login):$user_login;
 if ($test_login != ""){
     $user_login = "";
     $msg = 'login incorrect';} // le login passé en paramètre est non valide, on le vide et on modifie le message
-$valid = isset($_GET["valid"]) ? $_GET["valid"] : NULL;
+$valid = getFormVar("valid");//isset($_GET["valid"]) ? $_GET["valid"] : NULL;
 $msg = '';
 $utilisateur = array();
 $utilisateur['nom'] = '';
@@ -57,17 +57,21 @@ if ($valid == "yes")
 {
     // Restriction dans le cas d'une démo
     VerifyModeDemo();
-    $reg_nom = isset($_GET["reg_nom"]) ? $_GET["reg_nom"] : NULL;
-    $reg_prenom = isset($_GET["reg_prenom"]) ? $_GET["reg_prenom"] : NULL;
-    $new_login = isset($_GET["new_login"]) ? $_GET["new_login"] : NULL;
-    $reg_password = isset($_GET["reg_password"]) ? unslashes($_GET["reg_password"]) : NULL;
-    $reg_password2 = isset($_GET["reg_password2"]) ? unslashes($_GET["reg_password2"]) : NULL;
-    $reg_changepwd = isset($_GET["reg_changepwd"]) ? $_GET["reg_changepwd"] : 0;
-    $reg_statut = isset($_GET["reg_statut"]) ? $_GET["reg_statut"] : NULL;
-    $reg_email = isset($_GET["reg_email"]) ? $_GET["reg_email"] : NULL;
-    $reg_etat = isset($_GET["reg_etat"]) ? $_GET["reg_etat"] : NULL;
-    $reg_source = isset($_GET["reg_source"]) ? $_GET["reg_source"] : NULL;
-    $reg_type_authentification = isset($_GET["type_authentification"]) ? $_GET["type_authentification"] : "locale";
+    $reg_nom = getFormVar("reg_nom","string");//isset($_GET["reg_nom"]) ? $_GET["reg_nom"] : NULL;
+    $reg_prenom = getFormVar("reg_prenom","string");//isset($_GET["reg_prenom"]) ? $_GET["reg_prenom"] : NULL;
+    $new_login = getFormVar("new_login","string");//isset($_GET["new_login"]) ? $_GET["new_login"] : NULL;
+    $reg_password = getFormVar("reg_password");//isset($_GET["reg_password"]) ? unslashes($_GET["reg_password"]) : NULL;
+    if (isset($reg_password)) 
+        $reg_password = unslashes($reg_password);
+    $reg_password2 = getFormVar("reg_password2","string");//isset($_GET["reg_password2"]) ? unslashes($_GET["reg_password2"]) : NULL;
+    if (isset($reg_password2)) 
+        $reg_password = unslashes($reg_password2);
+    $reg_changepwd = getFormVar("reg_changepwd","string",0);//isset($_GET["reg_changepwd"]) ? $_GET["reg_changepwd"] : 0;
+    $reg_statut = getFormVar("reg_statut","string");//isset($_GET["reg_statut"]) ? $_GET["reg_statut"] : NULL;
+    $reg_email = getFormVar("reg_email","string");//isset($_GET["reg_email"]) ? $_GET["reg_email"] : NULL;
+    $reg_etat = getFormVar("reg_etat","string");//isset($_GET["reg_etat"]) ? $_GET["reg_etat"] : NULL;
+    $reg_source = getFormVar("reg_source","string");//isset($_GET["reg_source"]) ? $_GET["reg_source"] : NULL;
+    $reg_type_authentification = getFormVar("type_authentification","string","locale");//isset($_GET["type_authentification"]) ? $_GET["type_authentification"] : "locale";
     if ($reg_type_authentification != "locale")
         $reg_password = "";
     if (($reg_nom == '') || ($reg_prenom == ''))
@@ -77,7 +81,7 @@ if ($valid == "yes")
     }
     else 
     {   // actions si un nouvel utilisateur a été défini
-        $test_login = preg_replace("/([A-Za-z0-9_@. -])/","",$new_login);
+        $test_login = ($new_login != NULL)? preg_replace("/([A-Za-z0-9_@. -])/","",$new_login):$new_login;
         if ((isset($new_login)) && ($new_login != '') && ($test_login == ""))
         {
             // un gestionnaire d'utilisateurs ne peut pas créer un administrateur général ou un gestionnaire d'utilisateurs
@@ -433,20 +437,6 @@ $use_prototype = 'y';
 start_page_w_header("", "", "", $type="with_session");
 // colonne gauche
 include "admin_col_gauche2.php";
-?>
-<script type='text/javascript'>
-    function display_password_fields(id){
-        if ($('#'+id).val()=='locale')
-        {
-            $('#password_fields').show();
-        }
-        else
-        {
-            $('#password_fields').hide();
-        }
-    }
-</script>
-<?php
 // Affichage d'un pop-up
 affiche_pop_up($msg,"admin");
 // colonne de droite
@@ -468,7 +458,10 @@ echo '<a href="admin_user.php?display='.$display.'" type="button" class="btn btn
 echo '<br /><br />';
 echo '<div class="avertissement"><b>'.get_vocab("required").'</b></div>';
 echo '</p>';
-echo '<form action="admin_user_modify.php?display='.$display.'" method="get"><div>';
+//echo '<form action="admin_user_modify.php?display='.$display.'" method="get"><div>';
+echo '<form action="admin_user_modify.php" method="POST">';
+echo '<input type="hidden" name="display" value="$display" />';
+echo '<div>';
     if ((Settings::get("sso_statut") != "") || (Settings::get("ldap_statut") != '') || (Settings::get("imap_statut") != ''))
     {
         echo get_vocab("authentification").get_vocab("deux_points");
@@ -539,7 +532,7 @@ echo '<form action="admin_user_modify.php?display='.$display.'" method="get"><di
         echo ">".get_vocab("statut_administrator")."</option>\n";
     }
     echo "</select></td>\n";
-    if (strtolower(getUserName()) != strtolower($user_login))
+    if (is_null($user_login)||(strtolower(getUserName()) != strtolower($user_login)))
     {
         echo "<td>".get_vocab("activ_no_activ").get_vocab("deux_points")."</td>";
         echo "<td><select name=\"reg_etat\" size=\"1\">\n";
@@ -582,5 +575,18 @@ echo '<form action="admin_user_modify.php?display='.$display.'" method="get"><di
     }
     // affichage des privilèges
     echo $html_privileges;
-echo "</div></section></body></html>";
+echo "</div></section></body>";
 ?>
+<script type='text/javascript'>
+    function display_password_fields(id){
+        if ($('#'+id).val()=='locale')
+        {
+            $('#password_fields').show();
+        }
+        else
+        {
+            $('#password_fields').hide();
+        }
+    }
+</script>
+</html>

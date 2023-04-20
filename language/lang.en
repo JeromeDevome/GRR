@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2023-03-23
+# Last modification : 2023-04-08
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -278,8 +278,8 @@ $vocab['confirmer reservation'] = "Tick the box to confirm the reservation";
 $vocab['confirm_del'] = "Confirm deleting";
 $vocab['confirm_pwd'] = "Password (to be confirmed)";
 $vocab['conflict'] = "The new reservation is incompatible with the following reservation(s):";
-$vocab['connect'] = "Connect";
-$vocab['connect_local'] = "Connect locally";
+$vocab['connect'] = "Log in";
+$vocab['connect_local'] = "Log in locally";
 $vocab['connexion_a_grr_non_autorisee'] = "You're not allowed to have access to this application";
 $vocab['connexion_a_grr_ip'] = "Unauthorized IP."; 
 $vocab['contient'] = "contains";
@@ -336,8 +336,8 @@ $vocab['description complete2'] = " You can use HTML markers";
 $vocab['deux_points'] = ": ";
 $vocab['disable_login_off'] = "Activate connections";
 $vocab['disable_login_on'] = "Disable connections";
-$vocab['disconnect'] = "Disconnect";
-$vocab['disconnect2'] = "Disconnect";
+$vocab['disconnect'] = "Log off";
+$vocab['disconnect2'] = "Log off";
 $vocab['display_add_site'] = "Add a site";
 $vocab['display_add_type'] = "Add a type of reservation";
 $vocab['display_add_user'] = "Add a user";
@@ -487,7 +487,7 @@ $vocab['http_domaine_particulier'] = "Domain name";
 $vocab['http_explain_statut_domaine'] = "If you have filled in the \"Email \" field above, you can specify a domain name below (example \"my-domain.fr \") and a status. New users whose email address belongs to the domain below (example \"f.dupont@mon-domaine.fr \") will be assigned the status specified below.";
 $vocab['http_SSO_explain'] = "In case you want to identify your users and visitors through an HTTP authentication method, enable this function for GRR below. Please report to the documentation in case you need further details.";
 $vocab['identification'] = "Identification";
-$vocab['Image de la ressource'] = "Image of the resource";
+$vocab['Image_de_la_ressource'] = "Image of the resource";
 $vocab['importation_impossible'] = " Correct identification but the importation of the ldap profile is impossible. Please, contatc the GRR administrator";
 $vocab['in'] = "in:";
 $vocab['include'] = "Results display";

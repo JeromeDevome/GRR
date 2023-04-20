@@ -3,9 +3,9 @@
  * month.php
  * Interface d'accueil avec affichage par mois pour une ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-11-07 17:32$
+ * Dernière modification : $Date: 2023-04-08 16:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -363,7 +363,7 @@ if (isset($_GET['precedent']))
 	}
 }
 if ($this_room_show_comment == "y" && $_GET['pview'] != 1 && ($this_room_comment != "") && ($this_room_comment != -1))
-	echo '<div style="text-align:center;">',$this_room_comment,'</div>',PHP_EOL;
+	echo '<div class="center">',$this_room_comment,'</div>',PHP_EOL;
 echo "</div>";
 echo "</caption>";
 echo "<thead><tr>";

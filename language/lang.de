@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2023-03-23
+# Last modification : 2023-04-08
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -473,7 +473,7 @@ $vocab['http_domaine_particulier'] = "Nom de domaine"; // A traduire
 $vocab['http_explain_statut_domaine'] = "Si vous avez renseigné le champ \"Email\" ci-dessus, vous pouvez préciser ci-dessous un nom de domaine (exemple \"mon-domaine.fr\" et un statut. les nouveaux utilisateurs dont l'adresse email appartient au domaine ci-dessous (exemple \"f.dupont@mon-domaine.fr\") se verront attribuer le statut précisé ci-dessous."; // A traduire
 $vocab['http_SSO_explain'] = "Falls Sie Ihren Besucher und Benutzer durch eine HTTP Authentifizierung Methode identifizieren wollen, bitte wählen Sie die HTTP Methode unten, damit es GRR benutzen kann. Siehe Bedienungsanleitung für umfangreichere Informationen.";
 $vocab['identification'] = "Anmeldung";
-$vocab['Image de la ressource'] = "Bilddatei der Ressource";
+$vocab['Image_de_la_ressource'] = "Bilddatei der Ressource";
 $vocab['importation_impossible'] = "Sie sind korrekt identifiziert aber es ist unmöglich, Ihr Profil zu laden. Bitte melden Sie dieses Problem dem GRR-Administrator";
 $vocab['in'] = "von:";
 $vocab['include'] = "Suchvorstellung";
