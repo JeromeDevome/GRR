@@ -3248,7 +3248,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
             if(strtolower($user_login) != strtolower($beneficiaire))
                 $message2 .= $vocab["modify_booking"];
             else
-                $message2 .= get_vocab('Vous avez_modifie');
+                $message2 .= get_vocab('Vous_avez_modifie');
 			if ($room_id != $oldRessource)
 				$message2 .= $vocab["the_room"]." ".$nomAncienneSalle." => ".$room_name." (".$area_name.") \n";
 			else

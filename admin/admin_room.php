@@ -3,7 +3,7 @@
  * admin_room.php
  * Interface d'accueil de Gestion des domaines et ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-20 18:26 $
+ * Dernière modification : $Date: 2023-04-20 11:20 $
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -123,7 +123,7 @@ if (Settings::get("module_multisite") == "Oui")
                             {
                                 box = document.getElementById("liste_site").id_site;
                                 // destination = "'.$_SERVER['PHP_SELF'].'"+"?id_site="+box.options[box.selectedIndex].value;
-                                destination = "'.traite_grr_url().'admin/admin_room.php?id_site="+box.options[box.selectedIndex].value;
+                                destination = "'.traite_grr_url($grr_script_name).'?id_site="+box.options[box.selectedIndex].value;
                                 location.href = destination;
                             }
                         // -->

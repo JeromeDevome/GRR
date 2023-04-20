@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-28 10:34$
+ * Dernière modification : $Date: 2023-04-20 18:27$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -959,7 +959,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
             $result .= $result_inter;
         $result_inter = '';
     }
-    if($version_old < "3.5.1.0")
+    if($version_old < "3.5.1")
     {   
         $result .= formatResult("Mise à jour jusqu'à la version 3.5.1:","<b>","</b>");
 
