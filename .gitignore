@@ -64,3 +64,13 @@ images/62c70fd595a268755e579d5cfd7c0487.png
 personnalisation/images/logos/.test
 images/.test
 personnalisation/connect.inc.php
+personnalisation/css/perso.css
+personnalisation/css/perso.css
+vendor/gregwar/captcha/demo/demo.php
+vendor/gregwar/captcha/demo/fingerprint.php
+vendor/gregwar/captcha/demo/form.php
+vendor/gregwar/captcha/demo/index.php
+vendor/gregwar/captcha/demo/inline.php
+vendor/gregwar/captcha/demo/ocr.php
+vendor/gregwar/captcha/demo/output.php
+vendor/gregwar/captcha/demo/session.php
