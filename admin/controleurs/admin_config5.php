@@ -22,6 +22,7 @@ get_vocab_admin("admin_config3");
 get_vocab_admin("admin_config4");
 get_vocab_admin("admin_config5");
 get_vocab_admin("admin_config6");
+get_vocab_admin("admin_config7");
 
 if (!Settings::load())
 	die("Erreur chargement settings");

@@ -24,6 +24,7 @@ get_vocab_admin("admin_config3");
 get_vocab_admin("admin_config4");
 get_vocab_admin("admin_config5");
 get_vocab_admin("admin_config6");
+get_vocab_admin("admin_config7");
 
 if (isset($_POST['title_home_page'])) {
     if (!Settings::set('title_home_page', $_POST['title_home_page'])) {

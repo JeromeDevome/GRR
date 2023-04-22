@@ -22,6 +22,7 @@ get_vocab_admin("admin_config3");
 get_vocab_admin("admin_config4");
 get_vocab_admin("admin_config5");
 get_vocab_admin("admin_config6");
+get_vocab_admin("admin_config7");
 
 $msg = '';
 
@@ -41,13 +42,6 @@ if (isset($_GET['sync'])) {
 	}
 }
 
-
-if (isset($_POST['show_courrier'])) {
-    if (!Settings::set('show_courrier', $_POST['show_courrier'])) {
-        $msg .= "Erreur lors de l'enregistrement de show_courrier !<br />";
-
-    }
-}
 if (isset($_POST['show_holidays'])) {
     if (!Settings::set('show_holidays', $_POST['show_holidays'])) {
         $msg .= "Erreur lors de l'enregistrement de show_holidays !<br />";
@@ -190,12 +184,6 @@ if (isset($_POST['periodicite'])) {
         $msg .= "Erreur lors de l'enregistrement de periodicite !<br />";
     }
 }
-/*-----MAJ David VOUE 22/01/2014-->Affichage ou non du formulaire de contact et adresse mail du destinataire -----*/
-if (isset($_POST['mail_destinataire'])) {
-    if (!Settings::set('mail_destinataire', $_POST['mail_destinataire'])) {
-        $msg .= "Erreur lors de l'enregistrement de mail_destinataire !<br />";
-    }
-}
 
 if (isset($_POST['allow_pdf'])) {
     if (!Settings::set('allow_pdf', $_POST['allow_pdf'])) {
@@ -203,20 +191,6 @@ if (isset($_POST['allow_pdf'])) {
     }
 }
 
-if (isset($_POST['mail_etat_destinataire'])) {
-    if (!Settings::set('mail_etat_destinataire', $_POST['mail_etat_destinataire'])) {
-        $msg .= "Erreur lors de l'enregistrement de mail_etat_destinataire !<br />";
-    }
-}
-
-if (isset($_POST['mail_user_destinataire']))
-	$mail_user_destinataire = "y";
-else
-	$mail_user_destinataire = "n";
-if (!Settings::set("mail_user_destinataire", $mail_user_destinataire))
-{
-	$msg .= "Erreur lors de l'enregistrement de mail_user_destinataire !<br />";
-}
 
 // gestion_lien_aide
 if (isset($_POST['gestion_lien_aide'])) {
@@ -361,8 +335,6 @@ get_vocab_admin('pview_new_windows1');
 get_vocab_admin('legend_msg');
 get_vocab_admin('imprimante_msg');
 get_vocab_admin('affichage_pdf');
-get_vocab_admin('periodicite_msg');
-get_vocab_admin('courrier_msg');
 get_vocab_admin('holidays_msg');
 
 get_vocab_admin('holidays_zone_msg');

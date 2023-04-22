@@ -26,6 +26,9 @@
                     <a class="nav-link" id="custom-tabs-three-settings-tab" href="?p=admin_config3">{{ trad.admin_config3 }}</a>
                   </li>
 				  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-profile-tab" href="?p=admin_config7">{{ trad.admin_config7 }}</a>
+                  </li>
+				  <li class="nav-item">
                     <a class="nav-link" id="custom-tabs-three-settings-tab" href="?p=admin_config4">{{ trad.admin_config4 }}</a>
                   </li>
 				  <li class="nav-item">
@@ -257,22 +260,6 @@
 								</tbody>
 							</table>
 
-						</section>
-
-						<hr>
-
-						<section id="periodicite">
-							<h4 class="page-header">{{ trad.periodicite_msg }}</h4>
-							<input type="radio" name="periodicite" value="y" id="label_1a" {% if settings.periodicite == 'y' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
-							<input type="radio" name="periodicite" value="n" id="label_1b" {% if settings.periodicite == 'n' %} checked {% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
-						</section>
-
-						<hr>
-
-						<section id="courrier">
-							<h4 class="page-header">{{ trad.courrier_msg }}</h4>
-							<input type="radio" name="show_courrier" value="y" id="label_1a" {% if settings.show_courrier == 'y' %} checked {% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
-							<input type="radio" name="show_courrier" value="n" id="label_1b" {% if settings.show_courrier == 'n' %} checked {% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
 						</section>
 
 						<hr>

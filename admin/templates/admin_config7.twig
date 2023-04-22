@@ -1,0 +1,133 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+        <div class="col-12 col-sm-12">
+            <div class="card card-primary card-outline card-tabs">
+              <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-home-tab" href="?p=admin_config">{{ trad.admin_config1 }}</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-profile-tab" href="?p=admin_config6">{{ trad.admin_config6 }}</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-messages-tab" href="?p=admin_config2">{{ trad.admin_config2 }}</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-settings-tab" href="?p=admin_config3">{{ trad.admin_config3 }}</a>
+                  </li>
+				  <li class="nav-item">
+                    <a class="nav-link active" id="custom-tabs-three-profile-tab" href="?p=admin_config7">{{ trad.admin_config7 }}</a>
+                  </li>
+				  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-settings-tab" href="?p=admin_config4">{{ trad.admin_config4 }}</a>
+                  </li>
+				  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-settings-tab" href="?p=admin_config5" >{{ trad.admin_config5 }}</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-body">
+				  <div class="tab-pane active" id="fa-icons">
+					<form action="?p=admin_config7" id="nom_formulaire" method="post">
+						<input type="hidden" name="p" value="admin_config7" />
+
+
+						<div class="card-body">
+							<div class="row">
+								<div class="col-5 col-sm-3">
+									<div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
+										<a class="nav-link active" id="vert-tabs-divers-tab" data-toggle="pill" href="#vert-tabs-divers" role="tab" aria-controls="vert-tabs-divers" aria-selected="true">Divers</a>
+										<a class="nav-link" id="vert-tabs-formresa-tab" data-toggle="pill" href="#vert-tabs-formresa" role="tab" aria-controls="vert-tabs-formresa" aria-selected="true">{{ trad.display_mail_etat_destinataire }}</a>
+									</div>
+								</div>
+								<div class="col-7 col-sm-9">
+									<div class="tab-content" id="vert-tabs-tabContent">
+
+										<!-- Divers -->
+										<div class="tab-pane text-left fade active show" id="vert-tabs-divers" role="tabpanel" aria-labelledby="vert-tabs-divers-tab">
+
+											<!-- Périodicité -->
+											<div class="form-group row row col-sm-12">
+												<label class="col-sm-6" for="periodicite">{{ trad.periodicite_msg }}</label>
+												<div class="col-sm-6 control-label">
+													<input type="checkbox" name="periodicite" {% if settings.periodicite == 'y' %}checked{% endif %} data-bootstrap-switch>
+												</div>
+											</div>
+
+											<hr>
+
+											<!-- Gestion par courrier -->
+											<div class="form-group row row col-sm-12">
+												<label class="col-sm-6" for="show_courrier">{{ trad.courrier_msg }}</label>
+												<div class="col-sm-6 control-label">
+													<input type="checkbox" name="show_courrier" {% if settings.show_courrier == 'y' %}checked{% endif %} data-bootstrap-switch>
+												</div>
+											</div>
+
+											<hr>
+										</div>
+
+										<!-- Formulaire de contact réservation -->
+										<div class="tab-pane fade" id="vert-tabs-formresa" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
+											<h4 class="page-header">{{ trad.display_mail_etat_destinataire }} </h4>
+											<p>{{ trad.display_mail_etat_destinataire_1 }}</p>
+											<input type="radio" name="mail_etat_destinataire" value="0" id="label_0a" {% if settings.mail_etat_destinataire == '0' %} checked {% endif %} /> <label for="label_0a">{{ trad.display_mail_etat_destinataire_2 }}</label><br>
+											<input type="radio" name="mail_etat_destinataire" value="1" id="label_0b" {% if settings.mail_etat_destinataire == '1' %} checked {% endif %} /> <label for="label_0b">{{ trad.display_mail_etat_destinataire_3 }}</label><br>
+											<input type="radio" name="mail_etat_destinataire" value="2" id="label_0c" {% if settings.mail_etat_destinataire == '2' %} checked {% endif %} /> <label for="label_0c">{{ trad.display_mail_etat_destinataire_4 }}</label><br>
+											{{ form.input('mail_destinataire', trad.display_mail_destinataire, settings.mail_destinataire, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+											<input type="checkbox" name="mail_user_destinataire" value="y" id="label_0z" {% if settings.mail_user_destinataire == 'y' %} checked {% endif %} /> <label for="label_0z">{{ trad.mail_user_destinataire }}</label><br>
+										</div>
+
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<hr>
+
+						<div style="text-align:center;">
+							<input class="btn btn-primary" type="submit" name="ok" value="{{ trad.save }}" />
+						</div>
+					</form>
+				  </div><!-- /.tab-pan -->
+			  </div><!-- /.card-body -->
+
+			</div><!-- /.card-primary -->
+		</div><!-- /.col -->
+	</div><!-- /.row -->
+{% endblock %}
+
+{% block javascript %}
+	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+	<script type="text/javascript">
+
+		$(function(){
+
+			$("input[data-bootstrap-switch]").each(function(){
+   			  $(this).bootstrapSwitch('state', $(this).prop('checked'));
+  			})
+
+			{%if d.enregistrement%}
+				{%if d.enregistrement == 1 %}
+					toastr.success("{{trad.message_records}}")
+				{% else %}
+					toastr.warning("{{d.enregistrement|raw}}")
+				{%endif%}
+			{%endif%}
+		})
+
+	</script>
+
+{% endblock %}

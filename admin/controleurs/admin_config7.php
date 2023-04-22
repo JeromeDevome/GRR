@@ -1,0 +1,109 @@
+<?php
+/**
+ * admin_config.php
+ * Interface permettant à l'administrateur la configuration de certains paramètres généraux
+ * Ce script fait partie de l'application GRR.
+ * Dernière modification : $Date: 2022-04-11 17:59$
+ * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
+ * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @link      http://www.gnu.org/licenses/licenses.html
+ *
+ * This file is part of GRR.
+ *
+ * GRR is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+
+get_vocab_admin("admin_config1");
+get_vocab_admin("admin_config2");
+get_vocab_admin("admin_config3");
+get_vocab_admin("admin_config4");
+get_vocab_admin("admin_config5");
+get_vocab_admin("admin_config6");
+get_vocab_admin("admin_config7");
+
+$msg = '';
+
+
+if (isset($_POST['p'])) { // On a validé le formulaire
+   
+
+// Périodicité
+    if(isset($_POST['periodicite']) && $_POST['periodicite'] = 'on')
+        $fonctionPeriodite = 'y';
+    else
+        $fonctionPeriodite = 'n';
+
+   if (!Settings::set('periodicite', $fonctionPeriodite))
+        $msg .= "Erreur lors de l'enregistrement de periodicite !<br />";
+
+// Gestion courrier
+    if(isset($_POST['show_courrier']) && $_POST['show_courrier'] = 'on')
+        $fonctionCourrier = 'y';
+    else
+        $fonctionCourrier = 'n';
+
+    if (!Settings::set('show_courrier', $fonctionCourrier))
+        $msg .= "Erreur lors de l'enregistrement de show_courrier !<br />";
+
+// Formulaire de contact pour réservation 
+    if (isset($_POST['mail_destinataire'])) {
+        if (!Settings::set('mail_destinataire', $_POST['mail_destinataire']))
+            $msg .= "Erreur lors de l'enregistrement de mail_destinataire !<br />";
+    }
+
+    if (isset($_POST['mail_etat_destinataire'])) {
+        if (!Settings::set('mail_etat_destinataire', $_POST['mail_etat_destinataire']))
+            $msg .= "Erreur lors de l'enregistrement de mail_etat_destinataire !<br />";
+    }
+
+    if (isset($_POST['mail_user_destinataire']))
+        $mail_user_destinataire = "y";
+    else
+        $mail_user_destinataire = "n";
+    if (!Settings::set("mail_user_destinataire", $mail_user_destinataire))
+        $msg .= "Erreur lors de l'enregistrement de mail_user_destinataire !<br />";
+
+if (!Settings::load()) {
+    die('Erreur chargement settings');
+}
+$AllSettings = Settings::getAll();
+
+// Si pas de problème, message de confirmation
+if (isset($_POST['ok'])) {
+    $_SESSION['displ_msg'] = 'yes';
+    if ($msg == '') {
+        $d['enregistrement'] = 1;
+    } else{
+        $d['enregistrement'] = $msg;
+    }
+}
+if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes')) {
+    $msg = $_GET['msg'];
+} else {
+    $msg = '';
+}
+
+get_vocab_admin('periodicite_msg');
+get_vocab_admin('courrier_msg');
+
+get_vocab_admin('display_mail_etat_destinataire');
+get_vocab_admin('display_mail_etat_destinataire_1');
+get_vocab_admin('display_mail_etat_destinataire_2');
+get_vocab_admin('display_mail_etat_destinataire_3');
+get_vocab_admin('display_mail_etat_destinataire_4');
+get_vocab_admin('display_mail_destinataire');
+get_vocab_admin('mail_user_destinataire');
+get_vocab_admin('captcha_utiliser');
+
+get_vocab_admin('YES');
+get_vocab_admin('NO');
+get_vocab_admin('save');
+get_vocab_admin('message_records');
+
+
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
+
+?>
