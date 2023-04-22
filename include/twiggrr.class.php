@@ -1,6 +1,8 @@
 <?php
 
-class TwigGRR extends Twig_Extension {
+use Twig\Extension\AbstractExtension;
+
+class TwigGRR extends AbstractExtension {
 
 
 /*	public function getFilters(){

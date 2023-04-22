@@ -81,8 +81,8 @@ get_vocab_admin("report");
 get_vocab_admin("reserver");
 
 // Template Twig
-$loader = new Twig_Loader_Filesystem(__DIR__ . '/reservation/templates');
-$twig = new Twig_Environment($loader,['charset']);
+$loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/reservation/templates');
+$twig = new \Twig\Environment($loader,['charset']);
 $twig->addExtension(new TwigGRR());
 
 include('./reservation/controleurs/'.$page.'.php');

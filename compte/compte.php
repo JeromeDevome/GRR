@@ -62,8 +62,8 @@ get_vocab_admin('admin_view_connexions');
 $AllSettings = Settings::getAll();
 
 // Template Twig
-$loader = new Twig_Loader_Filesystem(__DIR__ . '/templates');
-$twig = new Twig_Environment($loader,['charset']);
+$loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
+$twig = new \Twig\Environment($loader,['charset']);
 $twig->addExtension(new TwigGRR());
 
 // Menu GRR
