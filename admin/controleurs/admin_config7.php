@@ -48,6 +48,15 @@ if (isset($_POST['p'])) { // On a validé le formulaire
     if (!Settings::set('show_courrier', $fonctionCourrier))
         $msg .= "Erreur lors de l'enregistrement de show_courrier !<br />";
 
+// Echange de réservation
+    if(isset($_POST['fct_echange_resa']) && $_POST['fct_echange_resa'] = 'on')
+         $fonctionEchangeResa = 'y';
+    else
+        $fonctionEchangeResa = 'n';
+
+    if (!Settings::set('fct_echange_resa', $fonctionEchangeResa))
+    $msg .= "Erreur lors de l'enregistrement de fct_echange_resa !<br />";
+
 // Formulaire de contact pour réservation 
     if (isset($_POST['mail_destinataire'])) {
         if (!Settings::set('mail_destinataire', $_POST['mail_destinataire']))
@@ -88,6 +97,7 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
 
 get_vocab_admin('periodicite_msg');
 get_vocab_admin('courrier_msg');
+get_vocab_admin('swapentry');
 
 get_vocab_admin('display_mail_etat_destinataire');
 get_vocab_admin('display_mail_etat_destinataire_1');

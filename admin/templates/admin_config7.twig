@@ -75,6 +75,14 @@
 											</div>
 
 											<hr>
+
+											<!-- Fonction échange réservation -->
+											<div class="form-group row row col-sm-12">
+												<label class="col-sm-6" for="fct_echange_resa">{{ trad.swapentry }}</label>
+												<div class="col-sm-6 control-label">
+													<input type="checkbox" name="fct_echange_resa" {% if settings.fct_echange_resa == 'y' %}checked{% endif %} data-bootstrap-switch>
+												</div>
+											</div>
 										</div>
 
 										<!-- Formulaire de contact réservation -->

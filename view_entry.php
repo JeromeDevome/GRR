@@ -522,7 +522,8 @@ if ((getWritable($beneficiaire, $userName, $id)) && verif_booking_date($userName
             $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
             echo "<input class=\"btn btn-primary\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("editentry")."\"/>";
             echo "<input class=\"btn btn-info\" type=\"button\" onclick=\"location.href='edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back&amp;copier'\" value=\"".get_vocab("copyentry")."\"/>";
-            echo "<input class=\"btn btn-warning\" type=\"button\" onclick=\"location.href='swap_entry.php?id=$id&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("swapentry")."\"/>";
+            if(Settings::get('fct_echange_resa') != 'n')
+				echo "<input class=\"btn btn-warning\" type=\"button\" onclick=\"location.href='swap_entry.php?id=$id&amp;page=$page&amp;room_back=$room_back'\" value=\"".get_vocab("swapentry")."\"/>";
             if ($can_delete_or_create == "y")
             {
                 $message_confirmation = str_replace("'", "\\'", get_vocab("confirmdel").get_vocab("deleteentry"));
@@ -621,95 +622,95 @@ if (Settings::get("pdf") == '1'){
 }
 // début du formulaire, n'a lieu d'être affiché que pour un utilisateur autorisé
 if ($fin_session == 'n'){
-echo "<form action=\"view_entry.php\" method=\"get\">\n";
-echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
-if (isset($_GET['page']))
-	echo "<input type=\"hidden\" name=\"page\" value=\"".clean_input($_GET['page'])."\" />\n";
-if (($userName != '') && (authGetUserLevel($userName, $room_id) >= 3) && ($moderate == 1))
-{
-    echo "<input type=\"hidden\" name=\"action_moderate\" value=\"y\" />\n";
-    echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("moderate_entry")."</legend>\n";
-    echo "<p>";
-    echo "<input type=\"radio\" name=\"moderate\" value=\"1\" checked=\"checked\" />".get_vocab("accepter_resa");
-    echo "<br /><input type=\"radio\" name=\"moderate\" value=\"0\" />".get_vocab("refuser_resa");
-    if ($repeat_id)
-    {
-        echo "<br /><input type=\"radio\" name=\"moderate\" value=\"S1\" />".get_vocab("accepter_resa_serie");
-        echo "<br /><input type=\"radio\" name=\"moderate\" value=\"S0\" />".get_vocab("refuser_resa_serie");
-    }
-    echo "</p><p>";
-    echo "<label for=\"description\">".get_vocab("justifier_decision_moderation").get_vocab("deux_points")."</label>\n";
-    echo "<textarea class=\"form-control\" name=\"description\" id=\"description\" cols=\"40\" rows=\"3\"></textarea>";
-    echo "</p>";
-    echo "</fieldset>\n";
-}
-if ($active_ressource_empruntee == 'y')
-{
-    if ((!$was_del) && ($moderate != 1) && ($userName != '') && (authGetUserLevel($userName,$room_id) >= 3))
-    {
-        echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("reservation_en_cours")."</legend>\n";
-        echo "<span class=\"larger\">".get_vocab("signaler_reservation_en_cours")."</span>".get_vocab("deux_points");
-        echo "<br />".get_vocab("explications_signaler_reservation_en_cours");
-        affiche_ressource_empruntee($room_id, "texte");
-        echo "<br /><input type=\"radio\" name=\"statut_id\" value=\"-\" ";
-        if ($statut_id == '-')
-        {
-            if (!affiche_ressource_empruntee($room_id,"autre") == 'yes')
-                echo " checked=\"checked\" ";
-        }
-        echo " />".get_vocab("signaler_reservation_en_cours_option_0");
-        echo "<br /><br /><input type=\"radio\" name=\"statut_id\" value=\"y\" ";
-        if ($statut_id == 'y')
-            echo " checked=\"checked\" ";
-        echo " />".get_vocab("signaler_reservation_en_cours_option_1");
-        echo "<br /><br /><input type=\"radio\" name=\"statut_id\" value=\"e\" ";
-        if ($statut_id == 'e')
-            echo " checked=\"checked\" ";
-        if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
-            echo " disabled ";
-        echo " />".get_vocab("signaler_reservation_en_cours_option_2");
-        if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
-            echo "<br /><i>(".get_vocab("necessite_fonction_mail_automatique").")</i>";
-        if (Settings::get("automatic_mail") == 'yes')
-        {
-            echo "<br /><br /><input type=\"checkbox\" name=\"envoyer_mail\" value=\"y\" ";
-            if ($mail_exist == "")
-                echo " disabled ";
-            echo " />".get_vocab("envoyer_maintenant_mail_retard");
-            echo "<input type=\"hidden\" name=\"mail_exist\" value=\"".$mail_exist."\" />";
-        }
+	echo "<form action=\"view_entry.php\" method=\"get\">\n";
+	echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
+	if (isset($_GET['page']))
+		echo "<input type=\"hidden\" name=\"page\" value=\"".clean_input($_GET['page'])."\" />\n";
+	if (($userName != '') && (authGetUserLevel($userName, $room_id) >= 3) && ($moderate == 1))
+	{
+		echo "<input type=\"hidden\" name=\"action_moderate\" value=\"y\" />\n";
+		echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("moderate_entry")."</legend>\n";
+		echo "<p>";
+		echo "<input type=\"radio\" name=\"moderate\" value=\"1\" checked=\"checked\" />".get_vocab("accepter_resa");
+		echo "<br /><input type=\"radio\" name=\"moderate\" value=\"0\" />".get_vocab("refuser_resa");
+		if ($repeat_id)
+		{
+			echo "<br /><input type=\"radio\" name=\"moderate\" value=\"S1\" />".get_vocab("accepter_resa_serie");
+			echo "<br /><input type=\"radio\" name=\"moderate\" value=\"S0\" />".get_vocab("refuser_resa_serie");
+		}
+		echo "</p><p>";
+		echo "<label for=\"description\">".get_vocab("justifier_decision_moderation").get_vocab("deux_points")."</label>\n";
+		echo "<textarea class=\"form-control\" name=\"description\" id=\"description\" cols=\"40\" rows=\"3\"></textarea>";
+		echo "</p>";
 		echo "</fieldset>\n";
-    }
-}
-if (isset($keys) && isset($courrier))
-{
-    echo "<fieldset>\n";
-    if ($active_cle == 'y'){
-        echo "<span class=\"larger\">".get_vocab("status_clef").get_vocab("deux_points")."</span>";
-        echo "<br /><input type=\"checkbox\" name=\"clef\" value=\"y\" ";
-        if ($keys == 1)
-            echo " checked ";
-        echo " /> ".get_vocab("msg_clef");
-    }
-    
-    if (Settings::get('show_courrier') == 'y')
-    {
-        echo "<br /><span class=\"larger\">".get_vocab("status_courrier").get_vocab("deux_points")."</span>";
-        echo "<br /><input type=\"checkbox\" name=\"courrier\" value=\"y\" ";
-        if ($courrier == 1)
-            echo " checked ";
-        echo " /> ".get_vocab("msg_courrier");
-    }
-    echo "</fieldset>";
-}
-echo '<div><input type="hidden" name="day" value="',$day,'" />',PHP_EOL;
-echo '<input type="hidden" name="month" value="',$month,'" />',PHP_EOL;
-echo '<input type="hidden" name="year" value="',$year,'" />',PHP_EOL;
-echo '<input type="hidden" name="page" value="',$page,'" />',PHP_EOL;
-echo '<input type="hidden" name="id" value="',$id,'" />',PHP_EOL;
-echo '<input type="hidden" name="back" value="',$back,'" /></div>',PHP_EOL;
-echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"commit\" value=\"".get_vocab("save")."\" /></div>\n";
-echo '</form>',PHP_EOL;
+	}
+	if ($active_ressource_empruntee == 'y')
+	{
+		if ((!$was_del) && ($moderate != 1) && ($userName != '') && (authGetUserLevel($userName,$room_id) >= 3))
+		{
+			echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("reservation_en_cours")."</legend>\n";
+			echo "<span class=\"larger\">".get_vocab("signaler_reservation_en_cours")."</span>".get_vocab("deux_points");
+			echo "<br />".get_vocab("explications_signaler_reservation_en_cours");
+			affiche_ressource_empruntee($room_id, "texte");
+			echo "<br /><input type=\"radio\" name=\"statut_id\" value=\"-\" ";
+			if ($statut_id == '-')
+			{
+				if (!affiche_ressource_empruntee($room_id,"autre") == 'yes')
+					echo " checked=\"checked\" ";
+			}
+			echo " />".get_vocab("signaler_reservation_en_cours_option_0");
+			echo "<br /><br /><input type=\"radio\" name=\"statut_id\" value=\"y\" ";
+			if ($statut_id == 'y')
+				echo " checked=\"checked\" ";
+			echo " />".get_vocab("signaler_reservation_en_cours_option_1");
+			echo "<br /><br /><input type=\"radio\" name=\"statut_id\" value=\"e\" ";
+			if ($statut_id == 'e')
+				echo " checked=\"checked\" ";
+			if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
+				echo " disabled ";
+			echo " />".get_vocab("signaler_reservation_en_cours_option_2");
+			if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
+				echo "<br /><i>(".get_vocab("necessite_fonction_mail_automatique").")</i>";
+			if (Settings::get("automatic_mail") == 'yes')
+			{
+				echo "<br /><br /><input type=\"checkbox\" name=\"envoyer_mail\" value=\"y\" ";
+				if ($mail_exist == "")
+					echo " disabled ";
+				echo " />".get_vocab("envoyer_maintenant_mail_retard");
+				echo "<input type=\"hidden\" name=\"mail_exist\" value=\"".$mail_exist."\" />";
+			}
+			echo "</fieldset>\n";
+		}
+	}
+	if (($userName != '') && (authGetUserLevel($userName, $room_id) >= 3) && isset($keys) && isset($courrier))
+	{
+		echo "<fieldset>\n";
+		if ($active_cle == 'y'){
+			echo "<span class=\"larger\">".get_vocab("status_clef").get_vocab("deux_points")."</span>";
+			echo "<br /><input type=\"checkbox\" name=\"clef\" value=\"y\" ";
+			if ($keys == 1)
+				echo " checked ";
+			echo " /> ".get_vocab("msg_clef");
+		}
+		
+		if (Settings::get('show_courrier') == 'y')
+		{
+			echo "<br /><span class=\"larger\">".get_vocab("status_courrier").get_vocab("deux_points")."</span>";
+			echo "<br /><input type=\"checkbox\" name=\"courrier\" value=\"y\" ";
+			if ($courrier == 1)
+				echo " checked ";
+			echo " /> ".get_vocab("msg_courrier");
+		}
+		echo "</fieldset>";
+	}
+	echo '<div><input type="hidden" name="day" value="',$day,'" />',PHP_EOL;
+	echo '<input type="hidden" name="month" value="',$month,'" />',PHP_EOL;
+	echo '<input type="hidden" name="year" value="',$year,'" />',PHP_EOL;
+	echo '<input type="hidden" name="page" value="',$page,'" />',PHP_EOL;
+	echo '<input type="hidden" name="id" value="',$id,'" />',PHP_EOL;
+	echo '<input type="hidden" name="back" value="',$back,'" /></div>',PHP_EOL;
+	echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"commit\" value=\"".get_vocab("save")."\" /></div>\n";
+	echo '</form>',PHP_EOL;
 } // fin du formulaire
 if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')) // si mode page, on ferme le container
 {
