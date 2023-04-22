@@ -89,6 +89,8 @@ if (authGetUserLevel(getUserName(), -1, 'area') >= 4)
 // Utilisateurs
 if ((authGetUserLevel(getUserName(), -1, 'area') >= 6) || (authGetUserLevel(getUserName(), -1, 'user') == 1))
 	$liste[] = 'admin_user';
+if ( ((authGetUserLevel(getUserName(), -1, 'area') >= 6) || (authGetUserLevel(getUserName(), -1, 'user') == 1)) && (Settings::get('fct_crea_cpt') == 'y'))
+	$liste[] = 'admin_user_demandes';
 if ((authGetUserLevel(getUserName(), -1, 'area') >= 6) || (authGetUserLevel(getUserName(), -1, 'user') == 1))
 	$liste[] = 'admin_groupe';
 if ((Settings::get("module_multisite") == "Oui") && (authGetUserLevel(getUserName(), -1, 'area') >= 6))
@@ -101,6 +103,10 @@ if (authGetUserLevel(getUserName(), -1, 'area') >= 4)
 	$liste[] = 'admin_right';
 if ( (Settings::get("sso_ac_corr_profil_statut") == 'y') && (authGetUserLevel(getUserName(), -1, 'area') >= 5) )
 	$liste[] = 'admin_corresp_statut';
+foreach ($menuAdminComplNiv2User as list($droit, $lien, $icone)) {
+	if(authGetUserLevel(getUserName(), -1, 'area') >= $droit)
+		$liste[] = $lien;
+}
 
 afficheLienNiveau2("admin_menu_user", "fa fa-users",$liste,$iN2++);
 
@@ -123,9 +129,12 @@ if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 	$liste[] = 'admin_couleurs';
 if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 	$liste[] = 'admin_infos';
+foreach ($menuAdminComplNiv2Divers as list($droit, $lien, $icone)) {
+	if(authGetUserLevel(getUserName(), -1, 'area') >= $droit)
+		$liste[] = $lien;
+}
 
 afficheLienNiveau2("admin_menu_various", "fa fa-database",$liste,$iN2++);
-
 
 // Connexion externe
 $liste = array();
@@ -135,6 +144,17 @@ if ( (authGetUserLevel(getUserName(), -1, 'area') >= 6) && ((!isset($sso_restric
 	$liste[] = 'admin_config_sso';
 if ( (authGetUserLevel(getUserName(), -1, 'area') >= 6) && ((!isset($sso_restrictions)) || ($imap_restrictions == false)) )
 	$liste[] = 'admin_config_imap';
+foreach ($menuAdminComplNiv2Connexions as list($droit, $lien, $icone)) {
+	if(authGetUserLevel(getUserName(), -1, 'area') >= $droit)
+		$liste[] = $lien;
+}
 
 afficheLienNiveau2("admin_menu_connexion_externe", "fa fa-sign-out-alt",$liste,$iN2++);
+
+// Autre lien niveau 1
+foreach ($menuAdminComplNiv1 as list($droit, $lien, $icone)) {
+	if(authGetUserLevel(getUserName(), -1, 'area') >= $droit)
+		afficheLienNiveau1($lien, $icone, 1);
+}
+
 ?>

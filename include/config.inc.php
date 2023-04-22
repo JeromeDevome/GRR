@@ -16,8 +16,8 @@
  */
  
 ### A LIRE ###
-# Il est préférable de pas modifier ce fichier, car celui-ci sera écrasé lors des mises à jours
-# Nous conseillons de creer un fichier dans le dossier peronnalisation en l'appelant "configperso.inc.php"
+//! Il est préférable de pas modifier ce fichier, car celui-ci sera écrasé lors des mises à jours
+//! Nous conseillons de creer un fichier dans le dossier peronnalisation en l'appelant "configperso.inc.php"
 # Dans ce dernier ajouter les variables souhaitées avec les valeurs souhaitées, vos valeurs écraseront celles de ce fichier
 ##############
 
@@ -228,6 +228,26 @@ $grrPages = array();
 $gcDossierCss = "css";
 $gcDossierImg = "images";
 $gcDossierXml = "xml";
+
+################################
+# Liens personnalisé admin
+#################################
+
+# Permet d'ajouter des liens dans le menu admin
+# Niveau des droits, lien, icone
+/*
+Exemple :
+$menuAdminComplNiv1 = [
+    [4, "admin_type", "fa fa-tags"],
+	[6, "admin_overload", "fa fa-cogs"],
+];
+*/
+
+$menuAdminComplNiv1 = [];
+$menuAdminComplNiv2User = [];
+$menuAdminComplNiv2Divers = [];
+$menuAdminComplNiv2Connexions = [];
+
 
 if(file_exists('../personnalisation/configperso.inc.php'))
 	include('../personnalisation/configperso.inc.php');

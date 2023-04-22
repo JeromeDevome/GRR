@@ -74,3 +74,5 @@ vendor/gregwar/captcha/demo/inline.php
 vendor/gregwar/captcha/demo/ocr.php
 vendor/gregwar/captcha/demo/output.php
 vendor/gregwar/captcha/demo/session.php
+personnalisation/langue/lang_subst.fr-fr.php
+personnalisation/configperso.inc.php
