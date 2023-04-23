@@ -24,7 +24,6 @@ $message = "";
 
 /*  */
 use Gregwar\Captcha\PhraseBuilder;
-@session_start();
 
 if(isset($_POST['nom'])){ 
 
@@ -53,6 +52,18 @@ if(isset($_POST['nom'])){
 		$message .= "Aucune année choisie <br/>";
 	if (empty($_POST['duree']))
 		$message .= "Aucune durée choisie <br/>";
+	if(Settings::get("mail_contact_resa_captcha") == 'y')
+	{
+		// Checking that the posted captcha match the captcha stored in the session
+		if (isset($_SESSION['phrase']) && PhraseBuilder::comparePhrases($_SESSION['phrase'], $_POST['captcha'])) {
+			// Le captcha est bon
+		} else {
+			$message .= $vocab["captcha_incorrect"]."<br/>";
+		}
+		// The captcha can't be used twice
+		unset($_SESSION['phrase']);
+	}
+
 	foreach ($_POST as $index => $valeur)
 		$index = stripslashes(trim($valeur));
 
@@ -117,4 +128,4 @@ $d['jQuery_DatePicker'] = jQuery_DatePickerTwig('start');
 
 
 echo $twig->render('contactresa.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'domaineDispo' => $domaineDispo));
-?>	
+?>

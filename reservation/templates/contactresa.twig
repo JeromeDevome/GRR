@@ -119,6 +119,13 @@
 									<option> </option>
 								</select>
 							</div>
+
+							{% if settings.mail_contact_resa_captcha == 'y' %}
+								<br/>
+								<img src="./include/captcha.inc.php" />
+								<input type="text" name="captcha" required />
+							{% endif %}
+
 							<br/>
 							<br/>
 							<div>

@@ -74,6 +74,14 @@ if (isset($_POST['p'])) { // On a validé le formulaire
         $mail_user_destinataire = "n";
     if (!Settings::set("mail_user_destinataire", $mail_user_destinataire))
         $msg .= "Erreur lors de l'enregistrement de mail_user_destinataire !<br />";
+
+    if (isset($_POST['mail_contact_resa_captcha']))
+        $mail_contact_resa_captcha = "y";
+    else
+        $mail_contact_resa_captcha = "n";
+    if (!Settings::set("mail_contact_resa_captcha", $mail_contact_resa_captcha))
+        $msg .= "Erreur lors de l'enregistrement de mail_contact_resa_captcha !<br />";
+
 }
 if (!Settings::load()) {
     die('Erreur chargement settings');
