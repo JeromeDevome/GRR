@@ -10,6 +10,14 @@
 
 <div id="page-resa" class="col-lg-12 col-md-12 col-xs-12">
 	<div class="container">
+
+		{%if d.msgErreur %}
+			<br>{{ msgSyst.messageDanger("", d.msgErreur) }}
+		{% endif %}
+		{%if d.msgOk %}
+			<br>{{ msgSyst.messageSuccess("", d.msgOk) }}
+		{% endif %}
+
 		<form id="frmContact" method="post" action="?p=contactresa">
 			<div id="formContact">
 				<div class="row">
@@ -25,7 +33,7 @@
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-									<input class="form-control" type="text" size="8" id="prenom"  name="prenom" placeholder="Votre prénom" />
+									<input class="form-control" type="text" size="8" id="prenom"  name="prenom" placeholder="Votre prénom" required />
 								</div>
 							</div>
 						</div>
@@ -49,7 +57,7 @@
 					<fieldset>
 						<legend><b>Réservation</b></legend>
 						<label for="subject">Sujet :</label>
-						<textarea class="form-control" id="subject" name="sujet" cols="30" rows="4"></textarea><br/>
+						<textarea class="form-control" id="sujet" name="sujet" cols="30" rows="4"></textarea><br/>
 						<label>Domaines : </label>
 						<select id="area" name="area" class="form-control" required>
 							<option>SELECTIONNER UN DOMAINE </option>

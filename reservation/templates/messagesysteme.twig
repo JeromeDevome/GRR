@@ -1,7 +1,7 @@
 {% macro messageAlerte(titre, message) %}
 	<div class="alert alert-warning  alert-dismissible">
 		<h4><i class="icon fa fa-warning"></i> {{ titre }}</h4>
-		{{ message }}
+		{{ message |raw }}
 	</div>
 {% endmacro %}
 
@@ -15,13 +15,13 @@
 {% macro messageDanger(titre, message) %}
 	<div class="alert alert-danger  alert-dismissible">
 		<h4><i class="icon fa fa-danger"></i> {{ titre }}</h4>
-		{{ message }}
+		{{ message |raw }}
 	</div>
 {% endmacro %}
 
 {% macro messageSuccess(titre, message) %}
 	<div class="alert alert-success  alert-dismissible">
 		<h4><i class="icon fa fa-check"></i> {{ titre }}</h4>
-		{{ message }}
+		{{ message |raw }}
 	</div>
 {% endmacro %}
