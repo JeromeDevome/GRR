@@ -1,11 +1,11 @@
 <?php
 /**
- * admin_config.php
- * Interface permettant à l'administrateur la configuration de certains paramètres généraux
+ * admin_config7.php
+ * Interface permettant à l'administrateur la configuration de certaines fonctionnalités
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2022-04-11 17:59$
+ * Dernière modification : $Date: 2023-04-23 11:39$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -74,7 +74,7 @@ if (isset($_POST['p'])) { // On a validé le formulaire
         $mail_user_destinataire = "n";
     if (!Settings::set("mail_user_destinataire", $mail_user_destinataire))
         $msg .= "Erreur lors de l'enregistrement de mail_user_destinataire !<br />";
-
+}
 if (!Settings::load()) {
     die('Erreur chargement settings');
 }
