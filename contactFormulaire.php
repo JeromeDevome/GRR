@@ -1,11 +1,11 @@
 <?php
 /**
- * contactFormulaire.php
+ * contactFormulaire.php patché pour accès sans afficher le planning
  * Formulaire d'envoi de mail demandant une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-08-19 11:20$
+ * Dernière modification : $Date: 2023-04-28 11:56$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -28,7 +28,7 @@ require_once("./include/settings.class.php");
 if (!Settings::load())
 	die("Erreur chargement settings");
 require_once("./include/session.inc.php");
-include "./include/resume_session.php";
+//include "./include/resume_session.php";
 include "./include/language.inc.php";
 
 // pour le traitement des modules

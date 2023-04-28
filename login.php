@@ -1,11 +1,11 @@
 <?php
 /**
- * login.php
+ * login.php patché pour afichage du formulaire de demande de réservation
  * interface de connexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-04-04 10:31$
+ * Dernière modification : $Date: 2023-04-28 11:57$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -202,6 +202,13 @@ if (isset($_GET['url']))
 echo '<input type="submit" name="submit" value="'.get_vocab("OK").'" style="font-variant: small-caps;" />';
 echo '</fieldset>';
 echo '</form>';
+//Mail de demande de réservation
+$day = date("d");
+$month = date("m");
+$year = date("Y");
+echo '<p class="center">';
+echo '<input class="btn btn-default" type="submit" rel="popup_name" value="'.'Envoyer une demande de réservation'.'" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" />',PHP_EOL;
+echo '</p>';
 if (Settings::get("webmaster_email") != "")
 {
     $lien = affiche_lien_contact("contact_administrateur","identifiant:non","seulement_si_email");
