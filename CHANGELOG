@@ -1,9 +1,23 @@
-Version en cours de développement sur GitHUB (4.X.X)
+Version en cours de développement sur GitHUB (4.1.0)
+[Ajout] Accès a une journée directement via le selecteur de date @JeromeB
+[Ajout] Administration : Nouvelle section, Fonctionnalités @JeromeB
+[Ajout] Possibilité d'ajouté des liens dans l'admin via le fichier configperso @JeromeB
+[Ajout] Possibilité de désactiver l'échange de réservation @JeromeB
+[Ajout] Captcha pour le formulaire de contact pour les réservations @JeromeB
 [Correction] Calcul des droits pour un gestionnaire de ressource @ynaessens
 [Correction] Récupération des attributs issus d'un serveur CAS @ynaessens
 [Correction] Possiblité de réserver depuis la page week après avoir supprimé une réservation sur toute la journée @JeromeB
+[Correction] Echange de réservation @ynaessens
+[Correction] Formulaire de contact pour réservation @JeromeB
+[Correction] Erreur JS dans l'administration @JeromeB
 [Modification] Sélecteur de date passage en Bootstap @JeromeB
 [Modification] Nettoyage fonction UTF8 @ynaessens
+[Modification] Passage à Jquery3 @JeromeB
+[Modification] Sécurisation de variables @JeromeB
+[Modification] Sécurisation de la session @JeromeB
+[Modification] Mise à jour des librairies JS @JeromeB
+[Modification] Passage de twig 2 à 3 @JeromeB 
+[Supression] Librairies non utilisées @JeromeB
 
 -----
 --
