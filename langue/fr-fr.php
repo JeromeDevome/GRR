@@ -781,6 +781,7 @@ $vocab['see_week_for_this_room'] = "Voir les réservations de la semaine pour ce
 $vocab['select'] = "(Sélectionnez)";
 $vocab['select_all'] = "(toutes)";
 $vocab['select_area_list_format'] = "Affichage sous la forme d'une liste déroulante";
+$vocab['select_date_directe'] = "Sélection de date directe";
 $vocab['select_fichier'] = "Sélectionner un fichier";
 $vocab['semaine'] = "Sem";
 $vocab['sen_a_mail'] = "Envoyer un mail";

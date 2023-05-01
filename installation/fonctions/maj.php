@@ -869,7 +869,6 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 	if ($version_old_bdd < 4001) // Version GRR 4.0.0 Béta
 	{
 		$result .= formatresult("Mise à jour jusqu'à la version 4.0.0 :","<b>","</b>");
-		$hash_pwd2 = bin2hex(random_bytes(12));
 
 		$result_inter .= traiteRequete("DELETE FROM ".TABLE_PREFIX."_setting WHERE NAME='versionRC'");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('display_beneficiaire', '0')");
@@ -907,6 +906,20 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		
 
 		//include "./ISO_to_UTF8.inc.php";
+
+		if ($result_inter == '')
+			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+		else
+			$result .= $result_inter;
+		$result_inter = '';
+	}
+
+	// On commence la mise à jour 
+	if ($version_old_bdd < 4002) // Version GRR 4.0.4 ??
+	{
+		$result .= formatresult("Mise à jour jusqu'à la version 4.0.4 :","<b>","</b>");
+
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('select_date_directe', 'y')");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");

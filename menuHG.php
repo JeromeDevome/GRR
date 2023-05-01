@@ -88,20 +88,35 @@ if ($_GET['pview'] != 1) // en mode prévisualisation de page imprimable, on n'a
         echo "</div>";
     }
     echo "</div>";
-    // le menu gauche
+     // le menu gauche
     echo "<div id='menuGauche2'>";
-    echo "<div id ='calendriersG'>";
-    minicals($year, $month, $day, $area, $room, $pageActuel);
-    echo "</div>";
-    echo "<div class='col-lg-12 col-md-12 col-xs-12'>";
-    echo "<div id ='resource_selectorG'>";
-    echo $selecteursG;
-    echo "</div>";
-    if (Settings::get('legend') == '0'){
-        echo "<div id ='legendeG'>";
-        show_colour_key($area);
+        // Selection date
+        if(Settings::get('select_date_directe') == 'y'){
+            echo "<form method='GET' action='day.php'><center>";
+            jQuery_DatePicker('');
+            echo "<input type='hidden' name='area' value='$area'>";
+            echo "<button class='btn btn-default btn-sm' type='submit'>
+            <span class='glyphicon glyphicon-chevron-right'></span>
+            </button>";
+            echo "</center></form>";
+        }
+
+        // Mini calendrier(s)
+        echo "<div id ='calendriersG'>";
+        minicals($year, $month, $day, $area, $room, $pageActuel);
         echo "</div>";
-    }
+        // Sites, domaine et ressources
+        echo "<div class='col-lg-12 col-md-12 col-xs-12'>";
+        echo "<div id ='resource_selectorG'>";
+        echo $selecteursG;
+        echo "</div>";
+        // Légende
+        if (Settings::get('legend') == '0'){
+            echo "<div id ='legendeG'>";
+            show_colour_key($area);
+            echo "</div>";
+        }
+        //
     echo "</div>";
     echo "</div>";
 }

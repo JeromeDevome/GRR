@@ -782,6 +782,7 @@ $vocab['see_week_for_this_room'] = "View week reservations for this resource";
 $vocab['select'] = "(Select)";
 $vocab['select_all'] = "(all)";
 $vocab['select_area_list_format'] = "Display as a scrolling list";
+$vocab['select_date_directe'] = "Direct date selection";
 $vocab['select_fichier'] = "Select file";
 $vocab['semaine'] = "Wk";
 $vocab['sen_a_mail'] = "Send an e-mail";

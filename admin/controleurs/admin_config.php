@@ -128,7 +128,19 @@ if (isset($_POST['ok'])) {
 			$ok = 'no';
 		}
 	}
+
+
+    // Selection date directe
+    if(isset($_POST['select_date_directe']) && $_POST['select_date_directe'] = 'on')
+        $selectDateDirecte = 'y';
+    else
+        $selectDateDirecte = 'n';
+
+    if (!Settings::set('select_date_directe', $selectDateDirecte))
+        $msg .= "Erreur lors de l'enregistrement de select_date_directe !<br />";
+
 }
+
 // nombre de calendriers
 if (isset($_POST['nb_calendar'])) {
     settype($_POST['nb_calendar'], 'integer');
@@ -205,6 +217,7 @@ get_vocab_admin('logo_msg');
 get_vocab_admin('choisir_image_logo');
 get_vocab_admin('select_fichier');
 get_vocab_admin('supprimer_logo');
+get_vocab_admin('select_date_directe');
 get_vocab_admin('affichage_calendriers');
 get_vocab_admin('affichage_calendriers_msg');
 get_vocab_admin('title_begin_end_bookings');

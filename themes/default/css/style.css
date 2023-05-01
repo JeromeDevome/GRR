@@ -145,8 +145,19 @@ th.jour_sem{width:10%;background-color:gray;color:white;}
 }
 div.ui-datepicker{
  font-size:110%;
- z-index: 3 !important;
+ z-index: 2000 !important;
 }
 .ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {
     margin-left: 30%;
+}
+
+
+.ui-datepicker-prev span {
+    background-image: url('../../../img_grr/flechegauche.png') !important;
+        background-position: 0px 0px !important;
+}
+
+.ui-datepicker-next span {
+    background-image: url('../../../img_grr/flechedroite.png') !important;
+        background-position: 0px 0px !important;
 }

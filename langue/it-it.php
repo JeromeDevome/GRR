@@ -782,6 +782,7 @@ $vocab['see_week_for_this_room'] = "Vedere le prenotazioni della settimana per q
 $vocab['select'] = "(Scegliete)";
 $vocab['select_all'] = "(tutte)";
 $vocab['select_area_list_format'] = "Visualizzazione sotto forma d'elenco che svolge";
+$vocab['select_date_directe'] = "Selezione diretta della data";
 $vocab['select_fichier'] = "Sélectionner un fichier"; // A traduire
 $vocab['semaine'] = "set";
 $vocab['sen_a_mail'] = "Inviare un mail";
