@@ -866,7 +866,7 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 	$result_inter = '';
 
 	// On commence la mise à jour 
-	if ($version_old_bdd < 4001) // Version GRR 4.0.0 Béta
+	if (intval($version_old_bdd) < 400001) // Version GRR 4.0.0 Béta
 	{
 		$result .= formatresult("Mise à jour jusqu'à la version 4.0.0 :","<b>","</b>");
 
@@ -915,9 +915,10 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 	}
 
 	// On commence la mise à jour 
-	if ($version_old_bdd < 4002) // Version GRR 4.0.4 ??
+	if (intval($version_old_bdd) < 400002) // Version GRR 4.1.0 >= RC1
 	{
-		$result .= formatresult("Mise à jour jusqu'à la version 4.0.4 :","<b>","</b>");
+		
+		$result .= formatresult("Mise à jour jusqu'à la version 4.1.0 :","<b>","</b>");
 
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('select_date_directe', 'y')");
 
