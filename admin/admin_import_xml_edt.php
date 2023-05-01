@@ -155,7 +155,7 @@ echo '<table class="table_adm">';
                         //echo $cours;
                         //echo("<p><b>Structure</b><br />");
                     foreach($cours->attributes() as $key => $value) {
-                        echo(" Cours $key -&gt;".$value."<br />");
+                        echo(" Cours ".protect_data_sql($key)." -&gt;".protect_data_sql($value)."<br />");
                         $i++;
                         $tab_cours[$i]=array();
                         $tab_cours[$i]['attribut'][$key]=$value;
