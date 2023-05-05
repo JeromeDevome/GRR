@@ -1,15 +1,18 @@
-/*! KeyTable 2.8.2
+/*! KeyTable 2.9.0
  * © SpryMedia Ltd - datatables.net/license
  */
 
-import $ from 'jquery';
+import jQuery from 'jquery';
 import DataTable from 'datatables.net';
+
+// Allow reassignment of the $ variable
+let $ = jQuery;
 
 
 /**
  * @summary     KeyTable
  * @description Spreadsheet like keyboard navigation for DataTables
- * @version     2.8.2
+ * @version     2.9.0
  * @file        dataTables.keyTable.js
  * @author      SpryMedia Ltd
  * @contact     datatables.net
@@ -656,8 +659,8 @@ $.extend( KeyTable.prototype, {
 	 */
 	_emitEvent: function ( name, args )
 	{
-		this.s.dt.iterator( 'table', function ( ctx, i ) {
-			$(ctx.nTable).triggerHandler( name, args );
+		return this.s.dt.iterator( 'table', function ( ctx, i ) {
+			return $(ctx.nTable).triggerHandler( name, args );
 		} );
 	},
 
@@ -749,6 +752,12 @@ $.extend( KeyTable.prototype, {
 		// not have been rendered (therefore can't use `:eq()` selector).
 		var cells = dt.cells( null, column, {search: 'applied', order: 'applied'} ).flatten();
 		var cell = dt.cell( cells[ row ] );
+
+		// Prefocus check - this event allows a focus action to be disallowed. 
+		var preFocus = this._emitEvent( 'key-prefocus', [ this.s.dt, cell, originalEvent || null ] );
+		if (preFocus.indexOf(false) !== -1) {
+			return;
+		}
 
 		if ( lastFocus ) {
 			// Don't trigger a refocus on the same cell
@@ -997,8 +1006,8 @@ $.extend( KeyTable.prototype, {
 			offset.top += parseInt( cell.closest('table').css('top'), 10 );
 		}
 
-		// Top correction
-		if ( offset.top < scrollTop ) {
+		// Top correction (partially in view)
+		if ( offset.top < scrollTop && offset.top + height > scrollTop - 5 ) {
 			scroller.scrollTop( offset.top );
 		}
 
@@ -1007,8 +1016,13 @@ $.extend( KeyTable.prototype, {
 			scroller.scrollLeft( offset.left );
 		}
 
-		// Bottom correction
-		if ( offset.top + height > scrollTop + containerHeight && height < containerHeight ) {
+		// Bottom correction plus in view correction. Note that the magic 5 is to allow
+		// for the edge just passing the bottom of the view
+		if (
+			offset.top + height > scrollTop + containerHeight &&
+			offset.top < scrollTop + containerHeight + 5 &&
+			height < containerHeight
+		) {
 			scroller.scrollTop( offset.top + height - containerHeight );
 		}
 
@@ -1271,7 +1285,7 @@ KeyTable.defaults = {
 
 
 
-KeyTable.version = "2.8.2";
+KeyTable.version = "2.9.0";
 
 
 $.fn.dataTable.KeyTable = KeyTable;

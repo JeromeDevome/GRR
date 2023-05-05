@@ -1,5 +1,5 @@
 /*!
-* sweetalert2 v11.7.3
+* sweetalert2 v11.7.5
 * Released under the MIT License.
 */
 (function (global, factory) {
@@ -2289,15 +2289,31 @@
       input.disabled = disabled;
     }
   }
+
+  /**
+   * Enable all the buttons
+   */
   function enableButtons() {
     setButtonsDisabled(this, ['confirmButton', 'denyButton', 'cancelButton'], false);
   }
+
+  /**
+   * Disable all the buttons
+   */
   function disableButtons() {
     setButtonsDisabled(this, ['confirmButton', 'denyButton', 'cancelButton'], true);
   }
+
+  /**
+   * Enable the input field
+   */
   function enableInput() {
     setInputDisabled(this.getInput(), false);
   }
+
+  /**
+   * Disable the input field
+   */
   function disableInput() {
     setInputDisabled(this.getInput(), true);
   }
@@ -3170,7 +3186,8 @@
    * const {value: firstName} = await TextPrompt('What is your first name?')
    * const {value: lastName} = await TextPrompt('What is your last name?')
    *
-   * @param mixinParams
+   * @param {SweetAlertOptions} mixinParams
+   * @returns {SweetAlert2}
    */
   function mixin(mixinParams) {
     class MixinSwal extends this {
@@ -3178,6 +3195,7 @@
         return super._main(params, Object.assign({}, mixinParams, priorityMixinParams));
       }
     }
+    // @ts-ignore
     return MixinSwal;
   }
 
@@ -4012,7 +4030,7 @@
     };
   });
   SweetAlert.DismissReason = DismissReason;
-  SweetAlert.version = '11.7.3';
+  SweetAlert.version = '11.7.5';
 
   const Swal = SweetAlert;
   // @ts-ignore
