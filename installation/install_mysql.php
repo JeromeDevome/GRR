@@ -24,8 +24,8 @@ require '../vendor/autoload.php';
 require '../include/twiggrr.class.php';
 
 // Template Twig
-$loader = new Twig_Loader_Filesystem(__DIR__ . '/templates');
-$twig = new Twig_Environment($loader,['charset']);
+$loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
+$twig = new \Twig\Environment($loader,['charset']);
 $twig->addExtension(new TwigGRR());
 
 $nom_fic = "../personnalisation/connect.inc.php";
