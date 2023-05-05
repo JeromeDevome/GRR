@@ -142,7 +142,7 @@ grr_sql_free($res);
 
 //Pour vérifier si la plage de fin arrive sur un créneau ou non.
 $minutesFinCreneaux = array();
-for($h=0; $h<3600; $h+=$this_area_resolution) {
+for($h=0; $h<7200; $h+=$this_area_resolution) {
 	$minutesFinCreneaux[] = date('i', $h);
 }
 
