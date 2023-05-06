@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2023-04-08
+# Last modification : 2023-05-06
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -632,7 +632,7 @@ $vocab['motif'] = "Reason";
 $vocab['mrbs'] = "GRR (Gestion et Reservation de Ressources - Management and Reservation of Resources) ";
 $vocab['msg_del_bookings'] = "Caution, the changes in reservation start and end dates that you have made are going to trigger definite deleting of reservations already made outside the new authorized dates!<br /><br />Are you sure you want to go on?";
 $vocab['msg_explain_log'] = "Dates displayed in red represent users automatically disconnected after a too long delay of inactivity.<br />Lines displayed in green represent users currently connected.";
-$vocab['msg_login1'] = "<b>GRR</b> is under GPL licence, adapted from <a href='http://mrbs.sourceforge.net'>MRBS</a>.<br />To obtain information about <b>GRR</b>, go to the site: ";
+$vocab['msg_login1'] = "<b>GRR</b> is licensed under the GPL, adapted from <a href='http://mrbs.sourceforge.net'>MRBS</a>.<br />To obtain information about <b>GRR</b>, go to the site: ";
 $vocab['msg_login3'] = "The site is momentarily inaccessible. We apologize for any inconvenience!";
 $vocab['msg_login_created'] = "You have created a new user. By default,this user is considered active.";
 $vocab['msg_login_created_error'] = "A problem has occurred when creating a new user! Please contact technical support!";
@@ -1114,8 +1114,9 @@ $vocab['resa'] = "My bookings";
 $vocab['resa_menu_explain'] = "List of bookings for which you are the beneficiary.";
 $vocab['resas_a_venir'] = "upcoming bookings.";
 $vocab['resas_toutes'] = "all bookings, ";
-$vocab['booking_range'] = "Scope (in days) of the restriction in max. reservations per user (-1 if no restriction)";
-$vocab['msg_booking_range'] = "For each user, reservations for this resource are limited on a range of ";
+$vocab['booking_range'] = "Scope (in days) of the restriction in the maximum number of reservations per user";
+$vocab['max_booking_on_range'] = "Max. reservations per user over the number of days defined below (-1 if no restriction)";
+$vocab['msg_booking_range'] = "For each user, reservations for this resource are limited to on a range of ";
 $vocab['admin_book_room.php'] = "Access to book a restricted room";
 $vocab["no_userbook_room"] = "No user can book this room";
 $vocab["user_book_room_list"] = "Users authorized to book this room";

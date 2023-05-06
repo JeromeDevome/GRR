@@ -3,7 +3,7 @@
  * view_room.php
  * Fiche ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-04-08 17:48$
+ * Dernière modification : $Date: 2023-05-06 18:03$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -96,12 +96,16 @@ if ($row["capacity"] != '0')
 	echo "<h3>".get_vocab("capacity_2")."</h3>\n";
 	echo "<p>".clean_input($row["capacity"])."</p>\n";
 }
+// Limitation sur la ressource
 if ($row["max_booking"] != "-1")
 	echo "<p>".get_vocab("msg_max_booking").get_vocab("deux_points").clean_input($row["max_booking"])."</p>";
 // Limitation par domaine
 $max_booking_per_area = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_area WHERE id = '".protect_data_sql($id_area)."'");
 if ($max_booking_per_area >= 0)
 	echo "<p>".get_vocab("msg_max_booking_area").get_vocab("deux_points").$max_booking_per_area."</p>";
+// Limitation sur un intervalle
+if ($row["max_booking_on_range"] != "-1")
+	echo "<p>".get_vocab("msg_booking_range").get_vocab("deux_points").clean_input($row["max_booking_on_range"]).get_vocab('of').clean_input($row["booking_range"]).get_vocab('days')."</p>";
 if ($row["delais_max_resa_room"] != "-1")
 	echo "<p>".get_vocab("delais_max_resa_room_2")." <b>".clean_input($row["delais_max_resa_room"])."</b></p>";
 if ($row["delais_min_resa_room"] != "0")
@@ -115,5 +119,4 @@ else
 	echo get_vocab("Pas_image_disponible")."</b>";
 echo "</div>";
 end_page();
-//include "include/trailer.inc.php";
 ?>

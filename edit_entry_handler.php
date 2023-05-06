@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-23 18:40$
+ * Dernière modification : $Date: 2023-05-05 19:01$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -135,8 +135,8 @@ foreach($form_vars as $var => $var_type)
 {
     echo $var.' -> ';print_r($$var);
     echo '<br/>';
-}*/
-//die();
+}
+die();*/
 // traitement des données
 // données communes
 $err_type = ''; // contient la partie du message dans le <h2>
@@ -407,8 +407,10 @@ try {
    // echo $page;
     $page = verif_page();
   //  echo $page;
-    $referer = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'],ENT_QUOTES) :'';
+    // page de retour vers un planning en cas d'abandon
+    $page_ret = (isset($page_ret))? $page_ret : page_accueil();
     // $_SERVER['HTTP_REFERER'] ne contient pas les informations correctes s'il y a eu changement de ressource/domaine lors de l'édition de la réservation : il vaut mieux calculer la page précédente et peut-être plus tôt
+    $referer = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'],ENT_QUOTES) :'';
     $referer = explode('?',$referer);
     if (!$referer[0])
     {
@@ -418,8 +420,6 @@ try {
         $back = $referer[0]; 
     // les autres paramètres devraient être dans les hiddenInputs
     // print_r($back);
-    // page de retour vers un planning en cas d'abandon
-    $page_ret = (isset($page_ret))? $page_ret : page_accueil();
     // les ressources
     foreach ($rooms as $key=>$room_id){
         $rooms[$key] = intval($room_id);
@@ -618,33 +618,85 @@ try {
     if ($rep_type != 0 && empty($reps)){
         throw new Exception('serie_vide');
     }
+    // vérification des quotas
     $compt_room = 0;
-	foreach ($rooms as $room_id) // vérification des quotas
+	foreach ($rooms as $room_id) 
 	{
-		if (isset($id) and ($id != 0))
-			$compt = 0; // modification : le nombre de réservations est inchangé
-		else
-			$compt = 1; // création
-		if ($rep_type != 0 && !empty($reps))
-		{
-            if (UserRoomMaxBookingRange($user, $room_id, count($reps) - 1 + $compt + $compt_room,$start_time) == 0)
-			{
-				showAccessDeniedMaxBookings($start_day, $start_month, $start_year, $room_id, $back);
-				exit();
-			}
-			else
-				$compt_room += 1;
-		}
-		else
-		{
-            if (UserRoomMaxBookingRange($user, $room_id, $compt + $compt_room,$start_time) == 0)
-			{
-				showAccessDeniedMaxBookings($start_day, $start_month, $start_year, $room_id, $back);
-				exit();
-			}
-			else
-				$compt_room += 1;
-		}
+        $sql = "SELECT max_booking_on_range, r.max_booking as max_booking_per_room, a.max_booking as max_booking_per_area
+                FROM ".TABLE_PREFIX."_room r JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id
+                WHERE r.id = '".protect_data_sql($room_id)."';";
+        $res = grr_sql_query($sql);
+        if(!$res)
+            grr_sql_error();
+        $quota = grr_sql_row_keyed($res,0); // array(max_booking_on_range => ,max_booking_per_room => ,max_booking_per_area => )
+        $quota['max_booking'] = Settings::get('UserAllRoomsMaxBooking');
+        grr_sql_free($res);
+        // l'utilisateur est-il soumis aux quotas ?
+        $level = authGetUserLevel($user,$room_id);
+        if($level < 3){     // les gestionnaires ne sont pas limités par les quotas
+            // existe-t-il un quota ?
+            // quotas globaux
+            if (!isset($id) || ($id = 0)){  // nouvelle réservation
+                $compt = 1;
+            }
+            else{       // modification d'une réservation existante
+                $compt = 0;
+            }
+            if(($quota['max_booking'] != -1)||($quota['max_booking_per_area'] != -1)||($quota['max_booking_per_room'] != -1)){ // il existe un quota global
+                $nombre = ($rep_type != 0 && !empty($reps))? count($reps) - 1 + $compt + $compt_room : $compt + $compt_room ;
+                if($quota['max_booking'] >= 0) // vérification du quota global
+                {
+                    $nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry WHERE (beneficiaire = '".protect_data_sql($user)."' and end_time > '$date_now')");
+                    $nb_bookings += $nombre;
+                    if ($nb_bookings > $quota['max_booking']){
+                        $err_type = "accessdeniedtoomanybooking";
+                        $err_msg = get_vocab("msg_max_booking_all").get_vocab("deux_points").$quota['max_booking'];
+                        throw new Exception('overquota');
+                    }
+                }
+                if($quota['max_booking_per_area'] >= 0) // vérification du quota sur le domaine
+                {
+                    $nb_bookings = grr_sql_query1("SELECT count(e.id) FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_room r WHERE (e.room_id=r.id and r.area_id='".$area."' and e.beneficiaire = '".protect_data_sql($user)."' and e.end_time > '$date_now')");
+                    $nb_bookings += $nombre;
+                    if ($nb_bookings > $quota['max_booking_per_area']){
+                        $err_type = "accessdeniedtoomanybooking";
+                        $err_msg = get_vocab("msg_max_booking_area").get_vocab("deux_points").$quota['max_booking_per_area'];
+                        throw new Exception('overquota');
+                    }
+                }
+                if($quota['max_booking_per_room'] >= 0) // vérification du quota sur la ressource
+                {
+                    $nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry WHERE (room_id = '".protect_data_sql($room_id)."' and beneficiaire = '".protect_data_sql($user)."' and end_time > '$date_now')");
+                    $nb_bookings += $nombre;
+                    if ($nb_bookings > $quota['max_booking_per_room']){
+                        $err_type = "accessdeniedtoomanybooking";
+                        $err_msg = get_vocab("msg_max_booking").get_vocab("deux_points").$quota['max_booking_per_room'];
+                        throw new Exception('overquota');
+                    }
+                }
+            }
+            if($quota['max_booking_on_range'] != -1){ // il existe un quota sur un intervalle de temps
+                $id_ignoree = ($compt == 1)? $id : 0;
+                $booking_range = grr_sql_query1("SELECT booking_range FROM ".TABLE_PREFIX."_room WHERE id = $room_id ;");
+                if ($rep_type != 0 && !empty($reps)){ // série de réservations
+                    foreach($reps as $start_time){
+                        $end_time = $start_time + $diff;
+                        if(!grrCheckRangeQuota($user,$room_id,$start_time,$end_time,$booking_range,$quota['max_booking_on_range'],$id_ignoree,$reps)){
+                            $err_type = "accessdeniedtoomanybooking";
+                            $err_msg = get_vocab("msg_max_booking").get_vocab('deux_points').$quota['max_booking_on_range'].get_vocab('of').$booking_range." ".get_vocab('days');
+                            throw new Exception('overquota');
+                        }
+                    }
+                }
+                else{ // réservation unique
+                    if(!grrCheckRangeQuota($user,$room_id,$start_time,$end_time,$booking_range,$quota['max_booking_on_range'],$id_ignoree,array())){
+                        $err_type = "accessdeniedtoomanybooking";
+                        $err_msg = get_vocab("msg_max_booking").get_vocab('deux_points').$quota['max_booking_on_range'].get_vocab('of').$booking_range." ".get_vocab('days');
+                        throw new Exception('overquota');
+                    }
+                }
+            }
+        }
 	}
 	foreach ($rooms as $room_id) 
 	{
@@ -780,7 +832,7 @@ catch (Exception $e){
             $hiddenInputs .= "<input type='hidden' name='".$var."' value='".$$var."' >";
         }
     }
-    if (isset($overload_fields_list)){ // devrait être superflu
+    if(isset($overload_fields_list)){ // devrait être superflu
         foreach ($overload_fields_list as $overfield=>$fieldtype){
             $id_field = $overload_fields_list[$overfield]["id"];
             $fieldname = "addon_".$id_field;
@@ -790,7 +842,7 @@ catch (Exception $e){
             }
         }
     }
-    if ($ex == 'erreur'){
+    if($ex == 'erreur'){
         start_page_w_header();
         echo '<form method="post" action="edit_entry.php">';// ramène à la page d'édition
         echo $hiddenInputs;
@@ -802,7 +854,7 @@ catch (Exception $e){
         echo "<input class='btn btn-primary' type='submit' value='".get_vocab('returnprev')."' />";
         echo '</form>';
     }
-    elseif ($ex == 'conflit'){
+    elseif($ex == 'conflit'){
         start_page_w_header();
         echo "<h2>" . get_vocab("sched_conflict") . "</h2>";
             if (!isset($hide_title))
@@ -844,6 +896,22 @@ catch (Exception $e){
         echo '<p>'.get_vocab('all_entries_in_conflict').'</p>'.PHP_EOL;
         echo '<form action="./edit_entry.php" method="GET">'; // retour à la page d'édition
         echo $hiddenInputs;
+        echo "<input class='btn btn-primary' type='submit' value='".get_vocab('returnprev')."' />";
+        echo '</form>';
+        // bouton pour abandonner
+        echo '<form action="'.$page_ret.'">';
+        echo '<input class="btn btn-warning" type="submit" value="'.get_vocab('cancel').'" />';
+        echo '</form>';
+    }
+    elseif($ex == 'overquota'){
+        start_page_w_header();
+        echo '<form method="post" action="edit_entry.php">';// ramène à la page d'édition
+        echo $hiddenInputs;
+        echo "<input type='hidden' name='Err' value='yes' >";
+        echo '<h2>'.get_vocab($err_type).'</h2>';
+        if ($err_msg != ''){
+            echo '<p>'.$err_msg.'</p>';
+        }
         echo "<input class='btn btn-primary' type='submit' value='".get_vocab('returnprev')."' />";
         echo '</form>';
         // bouton pour abandonner

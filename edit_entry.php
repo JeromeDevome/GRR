@@ -571,8 +571,7 @@ else
 //die();
 if (UserRoomMaxBooking($user_name, $room, $compt) == 0)
 {
-    echo "<br> user : ".$user_name." room: ".$room." compt : ".$compt;
-    start_page_w_header('','','','with_session');
+    //echo "<br> user : ".$user_name." room: ".$room." compt : ".$compt;
 	showAccessDeniedMaxBookings($day, $month, $year, $room, $page_ret);
 	exit();
 }
