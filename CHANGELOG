@@ -22,7 +22,7 @@ Version 4.1.0 RC1 - 06/05/2023 Généré par @JeromeB
 [Modification] Sécurisation de la session @JeromeB
 [Modification] Mise à jour des librairies JS @JeromeB
 [Modification] Passage de twig 2 à 3 @JeromeB 
-[Supression] Librairies non utilisées @JeromeB
+[Suppression] Librairies non utilisées @JeromeB
 
 -----
 --
