@@ -25,8 +25,7 @@ Pré-requis
 ***********
 
 Pour installer et faire fonctionner GRR, vous avez besoin de :
--> Un serveur web/php et un serveur mysql (éventuellement sur la même
-machine)
+-> Un serveur web/php et un serveur mysql (éventuellement sur la même machine). Pour des raisons de sécurité il est déconseiller d'activer la directive allow_url_include.
 -> Nécessité de disposer d'une version de php version supérieure ou égale à 7.2.5 (moteur de templates Twig, gestion des variables de type $_SESSION, fonction mysql_real_escape_string(),  ...)
 
 ************************************************
@@ -99,4 +98,6 @@ Après l'installation : configuration de GRR en ligne
 
 Une fois le système installé, vous pouvez vous connecter à GRR :
 -  nom de connexion : 'administrateur' et mot de passe créé lors de l'installation'
+
+Il est fortement conseilleé de verrifier régulièrement si des mises à jour GRR sont disponibles et de les appliquer pour des raisons de sécurités.
 

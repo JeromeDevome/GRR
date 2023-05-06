@@ -1,137 +1,137 @@
 -----
 --
 -----
-Version 4.1.0 RC1 - 06/05/2023 Généré par @JeromeB
+Version 4.1.0 RC1 - 06/05/2023 Généré par @JeromeDevome
 
-[Ajout] Accès a une journée directement via le sélecteur de date @JeromeB
-[Ajout] Administration : Nouvelle section, Fonctionnalités @JeromeB
-[Ajout] Possibilité d'ajouté des liens dans l'admin via le fichier configperso @JeromeB
-[Ajout] Possibilité de désactiver l'échange de réservation @JeromeB
-[Ajout] Captcha pour le formulaire de contact pour les réservations @JeromeB
+[Ajout] Accès a une journée directement via le sélecteur de date @JeromeDevome
+[Ajout] Administration : Nouvelle section, Fonctionnalités @JeromeDevome
+[Ajout] Possibilité d'ajouté des liens dans l'admin via le fichier configperso @JeromeDevome
+[Ajout] Possibilité de désactiver l'échange de réservation @JeromeDevome
+[Ajout] Captcha pour le formulaire de contact pour les réservations @JeromeDevome
 [Correction] Calcul des droits pour un gestionnaire de ressource @ynaessens
 [Correction] Récupération des attributs issus d'un serveur CAS @ynaessens
-[Correction] Affichage des réservations week sur créneau 1h30 @JeromeB
-[Correction] Possibilité de réserver depuis la page week après avoir supprimé une réservation sur toute la journée @JeromeB
+[Correction] Affichage des réservations week sur créneau 1h30 @JeromeDevome
+[Correction] Possibilité de réserver depuis la page week après avoir supprimé une réservation sur toute la journée @JeromeDevome
 [Correction] Échange de réservation @ynaessens
-[Correction] Formulaire de contact pour réservation @JeromeB
-[Correction] Erreur JS dans l'administration @JeromeB
-[Modification] Sélecteur de date passage en Bootstap @JeromeB
+[Correction] Formulaire de contact pour réservation @JeromeDevome
+[Correction] Erreur JS dans l'administration @JeromeDevome
+[Modification] Sélecteur de date passage en Bootstap @JeromeDevome
 [Modification] Nettoyage fonction UTF8 @ynaessens
-[Modification] Passage à Jquery3 @JeromeB
-[Modification] Sécurisation de variables @JeromeB
-[Modification] Sécurisation de la session @JeromeB
-[Modification] Mise à jour des librairies JS @JeromeB
-[Modification] Passage de twig 2 à 3 @JeromeB 
-[Suppression] Librairies non utilisées @JeromeB
+[Modification] Passage à Jquery3 @JeromeDevome
+[Modification] Sécurisation de variables @JeromeDevome
+[Modification] Sécurisation de la session @JeromeDevome
+[Modification] Mise à jour des librairies JS @JeromeDevome
+[Modification] Passage de twig 2 à 3 @JeromeDevome 
+[Suppression] Librairies non utilisées @JeromeDevome
 
 -----
 --
 -----
-Version 4.0.3 - 31/03/2023 Généré par @JeromeB
+Version 4.0.3 - 31/03/2023 Généré par @JeromeDevome
 
-[Ajout] Peronnalisation de la couleur des liens @JeromeB
-[Ajout] Ajout multiple administrateur de ste @JeromeB
-[Correction] protect_data_sql cas d'une valeur à null @JeromeB
-[Correction] Suppression (en affichage) des réservations périodique après modification de la série (Pb v4.0.0) @JeromeB
-[Correction] Permission gestion des clés @JeromeB
-[Correction] Suppression d'un administrateur de site (Pb v4.0.0) @JeromeB
+[Ajout] Peronnalisation de la couleur des liens @JeromeDevome
+[Ajout] Ajout multiple administrateur de ste @JeromeDevome
+[Correction] protect_data_sql cas d'une valeur à null @JeromeDevome
+[Correction] Suppression (en affichage) des réservations périodique après modification de la série (Pb v4.0.0) @JeromeDevome
+[Correction] Permission gestion des clés @JeromeDevome
+[Correction] Suppression d'un administrateur de site (Pb v4.0.0) @JeromeDevome
 [Correction] Syntaxe + liens @ynaessens
-[Correction] Langue du calendrier (Pb v4.0.0) @JeromeB & @sdelcroix
+[Correction] Langue du calendrier (Pb v4.0.0) @JeromeDevome & @sdelcroix
 [Modification] Amélioration compatibilité PHP 8.2 (Compatibilité partielle) @ynaessens
-[Modification] Mise à jours de traductions @JeromeB
-[Modification] Couleur titre "Identification" page login selon la couleur du thème @JeromeB
-[Modification] Alignement des liens (Contact, CGU) dans la page login @JeromeB
-[Modification] Mise à jour de phpmailer 6.8.0  @JeromeB
+[Modification] Mise à jours de traductions @JeromeDevome
+[Modification] Couleur titre "Identification" page login selon la couleur du thème @JeromeDevome
+[Modification] Alignement des liens (Contact, CGU) dans la page login @JeromeDevome
+[Modification] Mise à jour de phpmailer 6.8.0  @JeromeDevome
 
 -----
 --
 -----
-Version 4.0.2 - 02/03/2023 Généré par @JeromeB
+Version 4.0.2 - 02/03/2023 Généré par @JeromeDevome
 
 [Ajout] Interrogation LDAP après authentification Apache @ynaessens (proposition de @ericlemeur)
-[Ajout] Regénération du cache navigateur à chaque modification su style perso @JeromeB
-[Ajout] Contrôle de la taille du mot de passe lors de modification par l'utilisateur @JeromeB
-[Ajout] Possibilité de masquer le champ description complète dans le formulaire de réservation @JeromeB
-[Ajout] Hash du mot de passe admin à l'installation @JeromeB
-[Ajout] Possibilité de désactiver le warning backup de l'administration via le fichier config @JeromeB
-[Ajout] Fonction anomalie, affichage de toute les anomalies dans l'administration @JeromeB
-[Correction] Style perso (Pb v4.0.0) @JeromeB
-[Correction] Correction du lien de nombre de connecté (Pb v4.0.0) @JeromeB
-[Correction] Connexion LDAP (Pb v4.0.0) @JeromeB
-[Correction] Menu haut ou gauche; Reprise correction de la 3.5 @ynaessens + correction légende @JeromeB
-[Correction] Raffraichissement après modification des données dans la congiguration Générales (Pb v4.0.0) @JeromeB
+[Ajout] Regénération du cache navigateur à chaque modification su style perso @JeromeDevome
+[Ajout] Contrôle de la taille du mot de passe lors de modification par l'utilisateur @JeromeDevome
+[Ajout] Possibilité de masquer le champ description complète dans le formulaire de réservation @JeromeDevome
+[Ajout] Hash du mot de passe admin à l'installation @JeromeDevome
+[Ajout] Possibilité de désactiver le warning backup de l'administration via le fichier config @JeromeDevome
+[Ajout] Fonction anomalie, affichage de toute les anomalies dans l'administration @JeromeDevome
+[Correction] Style perso (Pb v4.0.0) @JeromeDevome
+[Correction] Correction du lien de nombre de connecté (Pb v4.0.0) @JeromeDevome
+[Correction] Connexion LDAP (Pb v4.0.0) @JeromeDevome
+[Correction] Menu haut ou gauche; Reprise correction de la 3.5 @ynaessens + correction légende @JeromeDevome
+[Correction] Raffraichissement après modification des données dans la congiguration Générales (Pb v4.0.0) @JeromeDevome
 [Correction] Redirection vers serveur CAS @ynaessens
-[Correction] Statut actif par défaut à la cration d'un compte (Pb v4.0.0) @JeromeB
+[Correction] Statut actif par défaut à la cration d'un compte (Pb v4.0.0) @JeromeDevome
 [Correction] Nombre d'utilisateur avec un mot de passe facile (Pb v4.0.1) @ynaessens
-[Modification] Contrôle de la version GRR via l'api GitHub @JeromeB
-[Modification] Upgrade phpcas 1.6.0 => 1.6.1 @JeromeB
-[Modification] Upgrade jszip @JeromeB
-[Modification] Upgrade dépendance JS @JeromeB
-[Modification] Mise à jours de traductions @JeromeB & @Apollon1977
+[Modification] Contrôle de la version GRR via l'api GitHub @JeromeDevome
+[Modification] Upgrade phpcas 1.6.0 => 1.6.1 @JeromeDevome
+[Modification] Upgrade jszip @JeromeDevome
+[Modification] Upgrade dépendance JS @JeromeDevome
+[Modification] Mise à jours de traductions @JeromeDevome & @Apollon1977
 [Modification] Connexion mysql orienté objet @ynaessens
 [Modification] Date d'ouverture pour les réservations après une nouvelle installation
-[Modification] Remplacement de l'outil md5 par la fonc hash @JeromeB
-[Modification] Amélioration compatibilité PHP 8.2 (Compatibilité partielle) @JeromeB
-[Modification] Contrôle du hash à la connexion  @JeromeB
+[Modification] Remplacement de l'outil md5 par la fonc hash @JeromeDevome
+[Modification] Amélioration compatibilité PHP 8.2 (Compatibilité partielle) @JeromeDevome
+[Modification] Contrôle du hash à la connexion  @JeromeDevome
 
 -----
 --
 -----
-Version 4.0.1 - 29/01/2023 Généré par @JeromeB
+Version 4.0.1 - 29/01/2023 Généré par @JeromeDevome
 
-[Ajout] Adresse mail dans la liste des utilisateurs @JeromeB
-[Ajout] Passage d'un utilisateur externe en local et inverse @JeromeB
-[Ajout] Authentification CAS SSO possibilité de choisir la version du cas dans l'administration @JeromeB
-[Correction] Authentification CAS SSO @Aurely9n & @JeromeB
-[Modification] Système de hash du mot de passe @ynaessens & @JeromeB
-[Modification] Modules Externes @JeromeB
-[Modification] Amélioration de l'affichage de la liste des utilisateurs @JeromeB
-[Modification] Mise à jour tcpdf 6.6.1 => 6.6.2 @JeromeB
-[Modification] Mise à jour twig v2.15.3 => v2.15.4 @JeromeB
-[Modification] Refonte graphique de la page authentification SSO @JeromeB
+[Ajout] Adresse mail dans la liste des utilisateurs @JeromeDevome
+[Ajout] Passage d'un utilisateur externe en local et inverse @JeromeDevome
+[Ajout] Authentification CAS SSO possibilité de choisir la version du cas dans l'administration @JeromeDevome
+[Correction] Authentification CAS SSO @Aurely9n & @JeromeDevome
+[Modification] Système de hash du mot de passe @ynaessens & @JeromeDevome
+[Modification] Modules Externes @JeromeDevome
+[Modification] Amélioration de l'affichage de la liste des utilisateurs @JeromeDevome
+[Modification] Mise à jour tcpdf 6.6.1 => 6.6.2 @JeromeDevome
+[Modification] Mise à jour twig v2.15.3 => v2.15.4 @JeromeDevome
+[Modification] Refonte graphique de la page authentification SSO @JeromeDevome
 [Modification] Taille champs login @ynaessens
 
 -----
 --
 -----
-Version 4.0.0 - 17/12/2022 Généré par @JeromeB
+Version 4.0.0 - 17/12/2022 Généré par @JeromeDevome
 
-[Ajout] Contrôle version PHP @JeromeB
-[Ajout] Contrôle version MySQL @JeromeB
-[Ajout] Administration : Lien vers la documentation @JeromeB
-[Ajout] Possibilité de créer son fichier config qui ne sera pas écrasé par les mises à jours @JeromeB
-[Ajout] Infos PHP dans les informations du serveur @JeromeB
-[Ajout] Visualisation des variables du fichier config.inc.php dans les informations du serveur @JeromeB
-[Ajout] Champs additionnel dans les exports @JeromeB
-[Ajout] Changement de mot passe à la prochaine connexion @JeromeB
-[Ajout] Possibilité lors de l'importation des utilisateurs par csv de demander de changer de mot de passe @JeromeB
-[Ajout] Groupes d'utilisateur @JeromeB
-[Ajout] Personnalisations de la couleur du texte par type de réservation @JeromeB & @ynaessens
-[Ajout] Synchronisation de la langue avec tout les utilisateurs @JeromeB
-[Ajout] Synchronisation du thème avec tout les utilisateurs @JeromeB
-[Ajout] Fonctionnalité de participation @JeromeB
-[Ajout] Restriction des connexions par horaire @JeromeB
-[Ajout] Enregistrement de la personnalisation des couleurs @JeromeB
-[Ajout] Historisation des réservations et des modifications @JeromeB
-[Ajout] Historisation des mails envoyés @JeromeB
-[Ajout] Destinataire mail spécifique par champ additionnel @JeromeB
-[Ajout] Variables dans config pour désactiver la fonction mail @JeromeB
-[Ajout] Limitation d'envois de mail par action @JeromeB
-[Correction] Déconnexion utilisateur lorsque une connexion externe est activée @JeromeB
+[Ajout] Contrôle version PHP @JeromeDevome
+[Ajout] Contrôle version MySQL @JeromeDevome
+[Ajout] Administration : Lien vers la documentation @JeromeDevome
+[Ajout] Possibilité de créer son fichier config qui ne sera pas écrasé par les mises à jours @JeromeDevome
+[Ajout] Infos PHP dans les informations du serveur @JeromeDevome
+[Ajout] Visualisation des variables du fichier config.inc.php dans les informations du serveur @JeromeDevome
+[Ajout] Champs additionnel dans les exports @JeromeDevome
+[Ajout] Changement de mot passe à la prochaine connexion @JeromeDevome
+[Ajout] Possibilité lors de l'importation des utilisateurs par csv de demander de changer de mot de passe @JeromeDevome
+[Ajout] Groupes d'utilisateur @JeromeDevome
+[Ajout] Personnalisations de la couleur du texte par type de réservation @JeromeDevome & @ynaessens
+[Ajout] Synchronisation de la langue avec tout les utilisateurs @JeromeDevome
+[Ajout] Synchronisation du thème avec tout les utilisateurs @JeromeDevome
+[Ajout] Fonctionnalité de participation @JeromeDevome
+[Ajout] Restriction des connexions par horaire @JeromeDevome
+[Ajout] Enregistrement de la personnalisation des couleurs @JeromeDevome
+[Ajout] Historisation des réservations et des modifications @JeromeDevome
+[Ajout] Historisation des mails envoyés @JeromeDevome
+[Ajout] Destinataire mail spécifique par champ additionnel @JeromeDevome
+[Ajout] Variables dans config pour désactiver la fonction mail @JeromeDevome
+[Ajout] Limitation d'envois de mail par action @JeromeDevome
+[Correction] Déconnexion utilisateur lorsque une connexion externe est activée @JeromeDevome
 [Correction] Nombreuses corrections par @ynaessens
-[Modification] Lors d'une nouvelle installation, par défaut il faut obligatoirement être connecté pour accéder au planning @JeromeB 
-[Modification] Administration : passage sous twig @JeromeB
-[Modification] Administration : Theme AdminLTE @JeromeB
-[Modification] Mon  compte : passage sous twig @JeromeB
-[Modification] Recherche & stat : passage sous twig + export via tableau @JeromeB
-[Modification] Compatibilité PHP 8.1 @JeromeB & @ynaessens
-[Modification] Déconnexion de l'utilisateur de puis l'administration sans le changement de mot de passe @JeromeB
-[Modification] Séparation de la date, heure début de réservation et la durée dans les exports @JeromeB
-[Modification] Passgae des dépendances CAS, Phpmailer sous composer @JeromeB
-[Modification] Séparation de la date, heure début de réservation et la durée dans les exports  @JeromeB
+[Modification] Lors d'une nouvelle installation, par défaut il faut obligatoirement être connecté pour accéder au planning @JeromeDevome 
+[Modification] Administration : passage sous twig @JeromeDevome
+[Modification] Administration : Theme AdminLTE @JeromeDevome
+[Modification] Mon  compte : passage sous twig @JeromeDevome
+[Modification] Recherche & stat : passage sous twig + export via tableau @JeromeDevome
+[Modification] Compatibilité PHP 8.1 @JeromeDevome & @ynaessens
+[Modification] Déconnexion de l'utilisateur de puis l'administration sans le changement de mot de passe @JeromeDevome
+[Modification] Séparation de la date, heure début de réservation et la durée dans les exports @JeromeDevome
+[Modification] Passgae des dépendances CAS, Phpmailer sous composer @JeromeDevome
+[Modification] Séparation de la date, heure début de réservation et la durée dans les exports  @JeromeDevome
 [Modification] Mise à jour des vacances scolaires @ynaessens
-[Modification] Mise à jours de traductions @JeromeB & @ynaessens
-[Modification] Emplacement des personnalisations (images, configs, trad...) @JeromeB
+[Modification] Mise à jours de traductions @JeromeDevome & @ynaessens
+[Modification] Emplacement des personnalisations (images, configs, trad...) @JeromeDevome
 [Modification] Installation : Refonte graphique
 De nombreuse autre modifications ont eu lieu mais ne sont pas renseignée dans ce changelog.
 
