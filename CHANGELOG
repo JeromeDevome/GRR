@@ -1,4 +1,8 @@
-Version en cours de développement sur GitHUB (4.1.0)
+-----
+--
+-----
+Version 4.1.0 RC1 - 06/05/2023 Généré par @JeromeB
+
 [Ajout] Accès a une journée directement via le selecteur de date @JeromeB
 [Ajout] Administration : Nouvelle section, Fonctionnalités @JeromeB
 [Ajout] Possibilité d'ajouté des liens dans l'admin via le fichier configperso @JeromeB
@@ -6,6 +10,7 @@ Version en cours de développement sur GitHUB (4.1.0)
 [Ajout] Captcha pour le formulaire de contact pour les réservations @JeromeB
 [Correction] Calcul des droits pour un gestionnaire de ressource @ynaessens
 [Correction] Récupération des attributs issus d'un serveur CAS @ynaessens
+[Correction] Affichage des réservations week sur crénau 1h30 @JeromeB
 [Correction] Possiblité de réserver depuis la page week après avoir supprimé une réservation sur toute la journée @JeromeB
 [Correction] Echange de réservation @ynaessens
 [Correction] Formulaire de contact pour réservation @JeromeB
