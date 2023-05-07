@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2023-05-06
+# Last modification : 2023-05-07
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1012,16 +1012,18 @@ $vocab['wrong_pwd3'] = "Vous devez mettre un mot de passe différent de l'actuel
 $vocab['years'] = "año(s)";
 $vocab['YES'] = "SI";
 $vocab['you_have_not_entered'] = "No introdujo los datos ";
-$vocab['display_menu'] = "Visualización de la barra de menú de la izquierda "; // A traduire
-$vocab['display_menu_1'] = "Elija si la barra de menú de la izquierda (calendario, artículos y bienes) se debe mostrar de forma predeterminada"; // A traduire
-$vocab['display_menu_2'] = "Barra de menú de la izquierda no muestra"; // A traduire
-$vocab['display_menu_3'] = "Barra de menú aparece Izquierda"; // A traduire
+$vocab['display_menu'] = "Visualización de la barra de menú de la izquierda ";
+$vocab['display_menu_1'] = "Elija si la barra de menú de la izquierda (calendario, artículos y bienes) se debe mostrar de forma predeterminada"; 
+$vocab['display_menu_2'] = "Barra de menú de la izquierda no muestra";
+$vocab['display_menu_3'] = "Barra de menú aparece Izquierda";
 $vocab['display_menu_4'] = "Le menu s'affiche en haut"; // A traduire
-$vocab['display_mail_etat_destinataire'] = "Affichage du formulaire de contact pour réservation";  // A traduire
-$vocab['display_mail_etat_destinataire_1'] = "Choisir si le formulaire de contact pour les demandes de réservations est disponible aux visiteurs."; // A traduire
-$vocab['display_mail_etat_destinataire_2'] = "Le formulaire de contact réservation est désactivé"; // A traduire
-$vocab['display_mail_etat_destinataire_3'] = "Le formulaire de contact réservation est activé pour les personnes non connectées et pour le statut visiteur"; // A traduire
-$vocab['display_mail_etat_destinataire_4'] = "Le formulaire de contact réservation est activé pour le statut visiteur (connectés)"; // A traduire
+$vocab['display_mail_etat_destinataire'] = "Mostrar el formulario de contacto de reservas";
+$vocab['display_mail_etat_destinataire_1'] = "Seleccione si el formulario de contacto se mostrará por defecto";
+$vocab['display_mail_etat_destinataire_2'] = "El formulario de contacto de reservas está deshabilitado";
+$vocab['display_mail_etat_destinataire_3'] = "El formulario de contacto de reservas está habilitado para visitantes y personas no conectadas";
+$vocab['display_mail_etat_destinataire_4'] = "El formulario de contacto de reservas está habilitado para visitantes conectados";
+$vocab['display_mail_etat_destinataire_5'] = "El formulario de contacto de reservas está habilitado y accesible desde la página de inicio de sesión";
+$vocab['display_mail_destinataire'] = "Dirección de correo electrónico del destinatario :";
 $vocab['display_level_view_entry']= "Visualización de reservas en forma de popup" ;
 $vocab['display_level_view_entry_0']= "Popup aparece." ;
 $vocab['display_level_view_entry_1']= "Aparece la página." ;

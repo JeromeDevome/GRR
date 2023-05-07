@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2023-05-06
+# Last modification : 2023-05-07
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1049,6 +1049,7 @@ $vocab['display_mail_etat_destinataire_1'] = "Choisir si le formulaire de contac
 $vocab['display_mail_etat_destinataire_2'] = "Le formulaire de contact réservation est désactivé";
 $vocab['display_mail_etat_destinataire_3'] = "Le formulaire de contact réservation est activé pour les personnes non connectées et pour le statut visiteur";
 $vocab['display_mail_etat_destinataire_4'] = "Le formulaire de contact réservation est activé pour le statut visiteur (connectés)";
+$vocab['display_mail_etat_destinataire_5'] = "Le formulaire de contact réservation est activé  et accessible depuis la page de connexion";
 $vocab['display_mail_destinataire'] = "Adresse mail du destinataire :";
 $vocab['top_of_page'] = "^ Haut de la page";
 $vocab['nomR'] = "Nom";

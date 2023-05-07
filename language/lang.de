@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2023-05-06
+# Last modification : 2023-05-07
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1014,16 +1014,18 @@ $vocab['you_have_not_entered'] = "Sie haben Folgendes nicht eingegeben ";
 //MAJ Hugo FORESTIER - Ajout de vocabs
 //19/05/2013
 $vocab['display_menu'] = "Anzeige und Position der Menüleiste";
-$vocab['display_menu_1'] = "Wählen sie, ob und wie die Menüleiste (Kalender, Bereiche und Ressourcen) standardmäßig angezeigt werden soll"; // A traduire
+$vocab['display_menu_1'] = "Wählen sie, ob und wie die Menüleiste (Kalender, Bereiche und Ressourcen) standardmäßig angezeigt werden soll";
 $vocab['display_menu_2'] = "Menüleiste nicht anzeigen";
 $vocab['display_menu_3'] = "Menüleiste links anzeigen";
 $vocab['display_menu_4'] = "Menüleiste oben anzeigen";
 
-$vocab['display_mail_etat_destinataire'] = "Affichage du formulaire de contact pour réservation";  // A traduire
-$vocab['display_mail_etat_destinataire_1'] = "Wählen Sie, ob das Kontaktformular zur Anfrage von Reservierungen für Besucher verfügbar ist.";
-$vocab['display_mail_etat_destinataire_2'] = "Kontaktformular für Reservierungsanfragen deaktivieren";
-$vocab['display_mail_etat_destinataire_3'] = "Kontaktformular für Reservierungsanfragen für nicht angemeldete Personen und Besucher aktivieren";
-$vocab['display_mail_etat_destinataire_4'] = "Kontaktformular für Reservierungsanfragen für angemeldete Besucher aktivieren";
+$vocab['display_mail_etat_destinataire'] = "Zeige das Buchungskontaktformular";
+$vocab['display_mail_etat_destinataire_1'] = "Wählen Sie aus, ob das Kontaktformular standardmäßig angezeigt werden soll";
+$vocab['display_mail_etat_destinataire_2'] = "Das Buchungskontaktformular ist deaktiviert";
+$vocab['display_mail_etat_destinataire_3'] = "Das Buchungskontaktformular ist für Besucher und nicht verbundene Personen aktiviert";
+$vocab['display_mail_etat_destinataire_4'] = "Das Buchungskontaktformular ist für verbundene Besucher aktiviert";
+$vocab['display_mail_etat_destinataire_5'] = "Das Buchungskontaktformular ist aktiviert und von der Anmeldeseite aus zugänglich";
+$vocab['display_mail_destinataire'] = "E-Mail-Adresse des Empfängers:";
 
 $vocab['display_level_view_entry']= "Anzeige der Buchungen in Popup-Form" ;
 $vocab['display_level_view_entry_0']= "Popup displays." ;

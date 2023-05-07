@@ -1,9 +1,9 @@
 <?php
 /**
- * login.php patché pour afichage du formulaire de demande de réservation
+ * login.php
  * interface de connexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-04-28 11:57$
+ * Dernière modification : $Date: 2023-05-07 10:47$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -203,12 +203,14 @@ echo '<input type="submit" name="submit" value="'.get_vocab("OK").'" style="font
 echo '</fieldset>';
 echo '</form>';
 //Mail de demande de réservation
-$day = date("d");
-$month = date("m");
-$year = date("Y");
-echo '<p class="center">';
-echo '<input class="btn btn-default" type="submit" rel="popup_name" value="'.'Envoyer une demande de réservation'.'" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" />',PHP_EOL;
-echo '</p>';
+if (Settings::get('mail_etat_destinataire') == 3){
+    $day = date("d");
+    $month = date("m");
+    $year = date("Y");
+    echo '<p class="center">';
+    echo '<input class="btn btn-default" type="submit" rel="popup_name" value="'.'Envoyer une demande de réservation'.'" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" />',PHP_EOL;
+    echo '</p>';
+}
 if (Settings::get("webmaster_email") != "")
 {
     $lien = affiche_lien_contact("contact_administrateur","identifiant:non","seulement_si_email");

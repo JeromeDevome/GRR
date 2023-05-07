@@ -3,7 +3,7 @@
  * admin_config12.php
  * Interface permettant à l'administrateur la configuration de certains paramètres d'affichage
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2022-04-24 11:24$
+ * Dernière modification : $Date: 2022-05-07 11:15$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -467,6 +467,7 @@ echo '</div>'.PHP_EOL;
 #mail_etat_destinataire = 0 //Le formulaire de contact est désactivé (0 par défaut)
 #mail_etat_destinataire = 1 //Le formulaire de contact est activé
 #mail_etat_destinataire = 2 //Le formulaire de contact est activé uniquement pour les visiteurs connectés
+#mail_etat_destinataire = 3 //Le formulaire de contact est activé et accessible depuis la page de login
 echo '<hr />'.PHP_EOL;
 echo '<h3>'.get_vocab('display_mail_etat_destinataire').'</h3>'.PHP_EOL;
 echo '<p>'.get_vocab('display_mail_etat_destinataire_1').'</p>'.PHP_EOL;
@@ -484,6 +485,13 @@ if (Settings::get('mail_etat_destinataire') == '1') {
 }
 echo ' />'.PHP_EOL;
 echo '<label for="dmed1">'.get_vocab('display_mail_etat_destinataire_3').'</label>'.PHP_EOL;
+echo '<br />'.PHP_EOL;
+echo '<input type="radio" id="dmed3" name="mail_etat_destinataire" value="3" ';
+if (Settings::get('mail_etat_destinataire') == '3') {
+    echo 'checked';
+}
+echo ' />'.PHP_EOL;
+echo '<label for="dmed3">'.get_vocab('display_mail_etat_destinataire_5').'</label>'.PHP_EOL;
 echo '<br />'.PHP_EOL;
 echo '<input type="radio" id="dmed2" name="mail_etat_destinataire" value="2" ';
 if (Settings::get('mail_etat_destinataire') == '2') {
@@ -665,18 +673,19 @@ echo '<label for="dle6">'.get_vocab('visu_fiche_description6').'</label>'.PHP_EO
 echo '<br />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 #Affichage de view_entry sous forme de page ou de popup
+$dlve = intval(Settings::get('display_level_view_entry'));
 echo '<hr />'.PHP_EOL;
 echo '<h3>'.get_vocab('display_level_view_entry').'</h3>'.PHP_EOL;
 echo '<div>'.PHP_EOL;
 echo '<input type="radio" id="dlve0" name="display_level_view_entry" value="0" ';
-if (Settings::get('display_level_view_entry') == '0') {
+if ($dlve == 0) {
     echo 'checked';
 }
 echo ' />'.PHP_EOL;
 echo '<label for="dlve0">'.get_vocab('display_level_view_entry_0').'</label>'.PHP_EOL;
 echo '<br />'.PHP_EOL;
 echo '<input type="radio" id="dlve1" name="display_level_view_entry" value="1" ';
-if (Settings::get('display_level_view_entry') == '1') {
+if ($dlve == 1) {
     echo 'checked';
 }
 echo ' />'.PHP_EOL;

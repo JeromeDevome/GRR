@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2023-05-06
+# Last modification : 2023-05-07
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1032,11 +1032,12 @@ $vocab['display_level_view_entry_0']= "Popup displays." ;
 $vocab['display_level_view_entry_1']= "Page displays." ;
 $vocab['display_planning_resa'] = "Informations displayed about reservations in planning cells";
 $vocab['display_planning_resa_msg'] = "If no information is chosen, the reservation number will be displayed.";
-$vocab['display_mail_etat_destinataire'] = "Display the contact form (not stable)";
+$vocab['display_mail_etat_destinataire'] = "Display the booking contact form";
 $vocab['display_mail_etat_destinataire_1'] = "Select if the contact form will be displayed by default";
-$vocab['display_mail_etat_destinataire_2'] = "The contact form is disabled";
-$vocab['display_mail_etat_destinataire_3'] = "The contact form is enabled for visitors and unconnected persons"; 
-$vocab['display_mail_etat_destinataire_4'] = "The contact form is enabled for connected visitors"; 
+$vocab['display_mail_etat_destinataire_2'] = "The booking contact form is disabled";
+$vocab['display_mail_etat_destinataire_3'] = "The booking contact form is enabled for visitors and unconnected persons"; 
+$vocab['display_mail_etat_destinataire_4'] = "The booking contact form is enabled for connected visitors"; 
+$vocab['display_mail_etat_destinataire_5'] = "The booking contact form is enabled and accessible from the login page";
 $vocab['display_mail_destinataire'] = "Email address of recipient:";
 $vocab['display_file'] = "Allow sending files";
 $vocab['display_file1'] = "Permit linking files ";
