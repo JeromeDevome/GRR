@@ -3,9 +3,9 @@
  * admin_config11.php
  * Interface permettant à l'administrateur la configuration de paramètres généraux présentant le site GRR
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2021-08-16 10:28$
+ * Dernière modification : $Date: 2023-05-13 18:26$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -407,15 +407,15 @@ echo 'beforeShow: readSelected, onSelect: updateSelected,'.PHP_EOL;
 echo 'showOn: \'both\', buttonImageOnly: true, buttonImage: \'../img_grr/calendar.png\',buttonText: "Choisir la date"});'.PHP_EOL;
 echo 'function readSelected()'.PHP_EOL;
 echo '{'.PHP_EOL;
-echo '$(\'#mydate_'.$typeDate.'\').val($(\'#'.$typeDate.'_day\').val() + \'/\' +'.PHP_EOL;
-echo '$(\'#'.$typeDate.'_month\').val() + \'/\' + $(\'#'.$typeDate.'_year\').val());'.PHP_EOL;
+echo '$(\'#mydate_'.$typeDate.'\').val($(\'#'.$typeDate.'day\').val() + \'/\' +'.PHP_EOL;
+echo '$(\'#'.$typeDate.'month\').val() + \'/\' + $(\'#'.$typeDate.'year\').val());'.PHP_EOL;
 echo 'return {};'.PHP_EOL;
 echo '}'.PHP_EOL;
 echo 'function updateSelected(date)'.PHP_EOL;
 echo '{'.PHP_EOL;
-echo '$(\'#'.$typeDate.'_day\').val(date.substring(0, 2));'.PHP_EOL;
-echo '$(\'#'.$typeDate.'_month\').val(date.substring(3, 5));'.PHP_EOL;
-echo '$(\'#'.$typeDate.'_year\').val(date.substring(6, 10));'.PHP_EOL;
+echo '$(\'#'.$typeDate.'day\').val(date.substring(0, 2));'.PHP_EOL;
+echo '$(\'#'.$typeDate.'month\').val(date.substring(3, 5));'.PHP_EOL;
+echo '$(\'#'.$typeDate.'year\').val(date.substring(6, 10));'.PHP_EOL;
 echo '}'.PHP_EOL;
 echo '});'.PHP_EOL;
 echo '</script>'.PHP_EOL;
@@ -441,15 +441,15 @@ echo 'beforeShow: readSelected, onSelect: updateSelected,'.PHP_EOL;
 echo 'showOn: \'both\', buttonImageOnly: true, buttonImage: \'../img_grr/calendar.png\',buttonText: "Choisir la date"});'.PHP_EOL;
 echo 'function readSelected()'.PHP_EOL;
 echo '{'.PHP_EOL;
-echo '$(\'#mydate_'.$typeDate.'\').val($(\'#'.$typeDate.'_day\').val() + \'/\' +'.PHP_EOL;
-echo '$(\'#'.$typeDate.'_month\').val() + \'/\' + $(\'#'.$typeDate.'_year\').val());'.PHP_EOL;
+echo '$(\'#mydate_'.$typeDate.'\').val($(\'#'.$typeDate.'day\').val() + \'/\' +'.PHP_EOL;
+echo '$(\'#'.$typeDate.'month\').val() + \'/\' + $(\'#'.$typeDate.'year\').val());'.PHP_EOL;
 echo 'return {};'.PHP_EOL;
 echo '}'.PHP_EOL;
 echo 'function updateSelected(date)'.PHP_EOL;
 echo '{'.PHP_EOL;
-echo '$(\'#'.$typeDate.'_day\').val(date.substring(0, 2));'.PHP_EOL;
-echo '$(\'#'.$typeDate.'_month\').val(date.substring(3, 5));'.PHP_EOL;
-echo '$(\'#'.$typeDate.'_year\').val(date.substring(6, 10));'.PHP_EOL;
+echo '$(\'#'.$typeDate.'day\').val(date.substring(0, 2));'.PHP_EOL;
+echo '$(\'#'.$typeDate.'month\').val(date.substring(3, 5));'.PHP_EOL;
+echo '$(\'#'.$typeDate.'year\').val(date.substring(6, 10));'.PHP_EOL;
 echo '}'.PHP_EOL;
 echo '});'.PHP_EOL;
 echo '</script>'.PHP_EOL;
