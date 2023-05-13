@@ -165,7 +165,7 @@ SPAN.td
 }
 div.ui-datepicker{
  font-size:110%;
- z-index: 3 !important;
+ z-index: 2000 !important;
 }
 .ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {
     margin-left: 30%;

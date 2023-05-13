@@ -3,9 +3,9 @@
  * menuHG.php
  * Menus haut et gauche calendrier & domaines & ressource & légende
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-11 18:00$
+ * Dernière modification : $Date: 2023-05-13 16:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -90,6 +90,8 @@ if ($_GET['pview'] != 1) // en mode prévisualisation de page imprimable, on n'a
     echo "</div>";
     // le menu gauche
     echo "<div id='menuGauche2'>";
+    if(Settings::get('select_date_directe') == 'y')
+        include "./include/dateselector.inc.php";
     echo "<div id ='calendriersG'>";
     minicals($year, $month, $day, $area, $room, $pageActuel);
     echo "</div>";

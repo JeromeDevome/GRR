@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2023-05-07
+# Last modification : 2023-05-13
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -815,6 +815,7 @@ $vocab['see_day_for_this_room'] = "View day reservations for this resource";
 $vocab['select'] = "(Select)";
 $vocab['select_all'] = "(all)";
 $vocab['select_area_list_format'] = "Display as a scrolling list";
+$vocab['select_date_directe'] = "Show a direct date picker";
 $vocab['sen_a_mail'] = "Send an e-mail";
 $vocab['session_max_length'] = "Maximum duration of inactivity (in minute):";
 $vocab['several_connected'] = " connected people";

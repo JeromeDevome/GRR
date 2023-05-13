@@ -3,9 +3,9 @@
  * admin_config12.php
  * Interface permettant à l'administrateur la configuration de certains paramètres d'affichage
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2022-05-07 11:15$
+ * Dernière modification : $Date: 2023-05-13 16:21$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -206,6 +206,15 @@ if (!empty($_POST)) // évite d'effacer les enregistrements lors du deuxième pa
         echo $vocab['save_err']." periodicite !<br />";
         die();
     }
+    // Selecteur de date direct
+    $select_date_directe = 'n';
+    if(isset($_POST['select_date_directe']))
+        $select_date_directe = 'y';
+    if (!Settings::set('select_date_directe', $select_date_directe)){
+        echo $vocab['save_err']." select_date_directe !<br />";
+        die();
+    }
+}
     /*-----MAJ Loïs THOMAS  -->Affichage ou non de la legende -----*/
     $affiche_legende = 1; // i.e. ne pas afficher
     if (isset($_POST['legend'])) 
@@ -246,7 +255,6 @@ if (!empty($_POST)) // évite d'effacer les enregistrements lors du deuxième pa
         echo $vocab['save_err']." show_holidays !<br />";
         die();
     }
-}
 // zone de vacances scolaires
 if (isset($_POST['holidays_zone'])) {
     if (!Settings::set('holidays_zone', $_POST['holidays_zone'])) {
@@ -771,6 +779,17 @@ echo '</div>'.PHP_EOL;
 echo '<hr />'.PHP_EOL;
 echo '<h3>'.get_vocab('affichages_divers').'</h3>'.PHP_EOL;
 echo '<p>'.get_vocab('affichages_divers_explain').'</p>'.PHP_EOL;
+# Afficher un sélecteur de date direct avec calendrier JQuery-datepicker
+echo '<div>'.PHP_EOL;
+echo "<input type='checkbox' name='select_date_directe' value='y' ";
+if (Settings::get('select_date_directe') == 'y') {
+    echo 'checked';
+}
+echo ' />'.PHP_EOL;
+echo '<label for="select_date_directe">'.get_vocab('select_date_directe').'</label>'.PHP_EOL;
+echo '<br />';
+echo '</div>'.PHP_EOL;
+echo '<hr />'.PHP_EOL;
 # Afficher la legende en couleur dans le menu gauche
 echo '<div>'.PHP_EOL;
 echo "<input type='checkbox' name='legend' value='0' ";
