@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-04-08 17:35$
+ * Dernière modification : $Date: 2023-05-14 16:02$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -216,9 +216,17 @@ else
 $ressources = grr_sql_query($sql);
 if (!$ressources)
 	fatal_error(0, grr_sql_error());
-// vérification de l'existence de ressources à afficher
+
 $alerte = '';
-if (grr_sql_count($ressources) == 0){
+// vérifie si la date est dans la période réservable
+if (check_begin_end_bookings($day, $month, $year))
+{
+    $date = utf8_strftime($dformat,mktime(12,0,0,$month,$day,$year));
+    $alerte = 	'<h2>'.get_vocab("nobookings").' '.$date.'</h2>';
+    $alerte .= '<p>'.get_vocab("begin_bookings").'<b>'.affiche_date(Settings::get("begin_bookings")).'</b></p>';
+	$alerte .= '<p>'.get_vocab("end_bookings").'<b>'.affiche_date(Settings::get("end_bookings")).'</b></p>';
+}
+elseif (grr_sql_count($ressources) == 0){ // vérification de l'existence de ressources à afficher
     $alerte = get_vocab("no_rooms_for_area");
 }
 else{
