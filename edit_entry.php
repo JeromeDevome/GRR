@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-26 16:16$
+ * Dernière modification : $Date: 2023-05-15 11:12$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -812,7 +812,7 @@ echo '</td></tr>'.PHP_EOL;
 echo '<tr><td class="CL">'.PHP_EOL;
 
 echo '<div class="form-group">'.PHP_EOL;
-jQuery_DatePicker('start');
+jQuery_DatePicker('start_');
 
 if ($enable_periods == 'y')
 {
@@ -923,7 +923,7 @@ else // sélection de l'heure ou du créneau de fin
 	echo '<tr><td class="CL" >'.PHP_EOL;
 
 	echo '<div class="form-group">'.PHP_EOL;
-	jQuery_DatePicker('end');
+	jQuery_DatePicker('end_');
 
 	if ($enable_periods=='y')
 	{
@@ -1185,7 +1185,7 @@ if($periodiciteConfig == 'y'){
 		echo "</td></tr>";
 		echo "<tr><td class=\"F\"><b>".get_vocab("rep_end_date")."</b></td></tr>\n";
 		echo "<tr><td class=\"CL\">";
-		jQuery_DatePicker('rep_end');
+		jQuery_DatePicker('rep_end_');
 		echo "</td></tr></table>\n";
 		echo "<table style=\"display:none\" id=\"menu2\" width=\"100%\">\n";
 		echo "<tr><td class=\"F\"><b>".get_vocab("rep_rep_day")."</b></td></tr>\n";

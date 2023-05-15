@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-04-03 11:05$
+ * Dernière modification : $Date: 2023-05-15 11:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5333,63 +5333,67 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
  	else
  		return $_statut;
  }
+/* function jQuery_DatePicker($typeDate)
+ * fonction qui rend un sélecteur de date couplé à un calendrier jQuery-DatePicker
+ * définit trois input : $typeDate.'day', $typeDate.'month', $typeDate.'year'
+ * /!\ changement de spécification : le préfixe $typeDate doit comporter un éventuel '_'
+*/
+function jQuery_DatePicker($typeDate){
 
-	function jQuery_DatePicker($typeDate){
+    if (@file_exists('../personnalisation/connect.inc.php')){
+        $racine = "../";
+    } else{
+        $racine = "./";
+    }
 
-		if (@file_exists('../personnalisation/connect.inc.php')){
-			$racine = "../";
-		} else{
-			$racine = "./";
-		}
-
-		if ($typeDate == 'rep_end' && isset($_GET['id'])){
-			$res = grr_sql_query("SELECT repeat_id FROM ".TABLE_PREFIX."_entry WHERE id=".$_GET['id'].";");
-			if (!$res){
-				fatal_error(0, grr_sql_error());
-			}
-			$repeat_id = implode('', grr_sql_row($res, 0));
-			$res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks, start_time, end_time FROM ".TABLE_PREFIX."_repeat WHERE id=$repeat_id");
-			if (!$res){
-				fatal_error(0, grr_sql_error());
-			}
-			if (grr_sql_count($res) == 1){
-				$row6 = grr_sql_row($res, 0);
-				$date = date_parse(date("Y-m-d H:i:s",$row6[1]));
-				$day = $date['day'];
-				$month = $date['month'];
-				$year = $date['year'];
-			}
-            else{
-				$day = (isset ($_GET['day'])) ? clean_input($_GET['day']) : date("d");
-				$month = (isset ($_GET['month']))? clean_input($_GET['month']) : date("m");
-				$year = (isset ($_GET['year']))? clean_input($_GET['year']) : date("Y");
-			}
-		}
-        else{
-			global $start_day, $start_month, $start_year, $end_day, $end_month, $end_year;
-
-			$day = (isset ($_GET['day'])) ? clean_input($_GET['day']) : date("d");
-			if (isset($start_day) && $typeDate=='start'){
-				$day = $start_day;
-			} 
-            elseif (isset($end_day) && $typeDate=='end'){
-				$day = $end_day;
-			}
-            $month = (isset ($_GET['month']))? clean_input($_GET['month']) : date("m");
-			if (isset($start_month) && $typeDate=='start'){
-				$month = $start_month;
-			} 
-            elseif (isset($end_month) && $typeDate=='end'){
-				$month = $end_month;
-			}
-            $year = (isset ($_GET['year']))? clean_input($_GET['year']) : date("Y");
-			if (isset($start_year) && $typeDate=='start'){
-				$year = $start_year;
-			} 
-            elseif (isset($end_year) && $typeDate=='end'){
-				$year = $end_year;
-			}
+    if ($typeDate == 'rep_end_' && isset($_GET['id'])){
+        $res = grr_sql_query("SELECT repeat_id FROM ".TABLE_PREFIX."_entry WHERE id=".$_GET['id'].";");
+        if (!$res){
+            fatal_error(0, grr_sql_error());
         }
+        $repeat_id = implode('', grr_sql_row($res, 0));
+        $res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks, start_time, end_time FROM ".TABLE_PREFIX."_repeat WHERE id=$repeat_id");
+        if (!$res){
+            fatal_error(0, grr_sql_error());
+        }
+        if (grr_sql_count($res) == 1){
+            $row6 = grr_sql_row($res, 0);
+            $date = date_parse(date("Y-m-d H:i:s",$row6[1]));
+            $day = $date['day'];
+            $month = $date['month'];
+            $year = $date['year'];
+        }
+        else{
+            $day = (isset ($_GET['day'])) ? clean_input($_GET['day']) : date("d");
+            $month = (isset ($_GET['month']))? clean_input($_GET['month']) : date("m");
+            $year = (isset ($_GET['year']))? clean_input($_GET['year']) : date("Y");
+        }
+    }
+    else{
+        global $start_day, $start_month, $start_year, $end_day, $end_month, $end_year;
+
+        $day = (isset ($_GET['day'])) ? clean_input($_GET['day']) : date("d");
+        if (isset($start_day) && $typeDate=='start_'){
+            $day = $start_day;
+        } 
+        elseif (isset($end_day) && $typeDate=='end_'){
+            $day = $end_day;
+        }
+        $month = (isset ($_GET['month']))? clean_input($_GET['month']) : date("m");
+        if (isset($start_month) && $typeDate=='start_'){
+            $month = $start_month;
+        } 
+        elseif (isset($end_month) && $typeDate=='end_'){
+            $month = $end_month;
+        }
+        $year = (isset ($_GET['year']))? clean_input($_GET['year']) : date("Y");
+        if (isset($start_year) && $typeDate=='start_'){
+            $year = $start_year;
+        } 
+        elseif (isset($end_year) && $typeDate=='end_'){
+            $year = $end_year;
+        }
+    }
  	$mindate = utf8_strftime("%d/%m/%Y",Settings::get('begin_bookings'));
     $maxdate = utf8_strftime("%d/%m/%Y",Settings::get('end_bookings'));
     genDateSelector("".$typeDate, "$day", "$month", "$year","");
@@ -5400,20 +5404,20 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
  		echo '	$(\'#mydate_' .$typeDate. '\').datepicker({'.PHP_EOL;
  			echo '		beforeShow: readSelected, onSelect: updateSelected,'.PHP_EOL;
  			echo '		showOn: \'both\', buttonImageOnly: true, buttonImage: \'img_grr/calendar.png\',buttonText: "Choisir la date"});'.PHP_EOL;
-echo '		function readSelected()'.PHP_EOL;
-echo '		{'.PHP_EOL;
-echo '			$(\'#mydate_' .$typeDate. '\').val($(\'#' .$typeDate. 'day\').val() + \'/\' +'.PHP_EOL;
+    echo '		function readSelected()'.PHP_EOL;
+    echo '		{'.PHP_EOL;
+    echo '			$(\'#mydate_' .$typeDate. '\').val($(\'#' .$typeDate. 'day\').val() + \'/\' +'.PHP_EOL;
 	echo '			$(\'#' .$typeDate. 'month\').val() + \'/\' + $(\'#' .$typeDate. 'year\').val());'.PHP_EOL;
-echo '			return {};'.PHP_EOL;
-echo '		}'.PHP_EOL;
-echo '		function updateSelected(date)'.PHP_EOL;
-echo '		{'.PHP_EOL;
-echo '			$(\'#' .$typeDate. 'day\').val(date.substring(0, 2));'.PHP_EOL;
-echo '			$(\'#' .$typeDate. 'month\').val(date.substring(3, 5));'.PHP_EOL;
-echo '			$(\'#' .$typeDate. 'year\').val(date.substring(6, 10));'.PHP_EOL;
-echo '		}'.PHP_EOL;
-echo '	});'.PHP_EOL;
-echo '</script>'.PHP_EOL;
+    echo '			return {};'.PHP_EOL;
+    echo '		}'.PHP_EOL;
+    echo '		function updateSelected(date)'.PHP_EOL;
+    echo '		{'.PHP_EOL;
+    echo '			$(\'#' .$typeDate. 'day\').val(date.substring(0, 2));'.PHP_EOL;
+    echo '			$(\'#' .$typeDate. 'month\').val(date.substring(3, 5));'.PHP_EOL;
+    echo '			$(\'#' .$typeDate. 'year\').val(date.substring(6, 10));'.PHP_EOL;
+    echo '		}'.PHP_EOL;
+    echo '	});'.PHP_EOL;
+    echo '</script>'.PHP_EOL;
 }
 
 function jQuery_DatePickerTwig($typeDate){
