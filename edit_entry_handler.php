@@ -642,27 +642,23 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 			{
 				$id = grr_sql_insert_id();
 				insertLogResa($id, 1, 'Création via calendrier');
-			}
-			else
-			{
-				insertLogResa($id, 2, $differenceAvAp);
-			}
-				
-			if (Settings::get("automatic_mail") == 'yes')
-			{
-				if (isset($id) && ($id != 0))
-				{
-					if ($send_mail_moderate)
-						$message_error = send_mail($id,5,$dformat);
-					else
-						$message_error = send_mail($id,2,$dformat, array(), $oldRessource);
-				}
-				else
+				if (Settings::get("automatic_mail") == 'yes')
 				{
 					if ($send_mail_moderate)
 						$message_error = send_mail($id,5,$dformat);
 					else
 						$message_error = send_mail($id,1,$dformat);
+				}
+			}
+			else
+			{
+				insertLogResa($id, 2, $differenceAvAp);
+				if (Settings::get("automatic_mail") == 'yes')
+				{
+					if ($send_mail_moderate)
+						$message_error = send_mail($id,5,$dformat);
+					else
+						$message_error = send_mail($id,2,$dformat, array(), $oldRessource);
 				}
 			}
 		}
