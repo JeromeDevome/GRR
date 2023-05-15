@@ -1,9 +1,9 @@
 <?php
 /**
- * contactFormulaire.php patché pour accès sans afficher le planning
+ * contactFormulaire.php
  * Formulaire d'envoi de mail demandant une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-04-28 11:56$
+ * Dernière modification : $Date: 2023-05-15 10:24$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -131,7 +131,7 @@ bouton_retour_haut ();
 						<br />
                         <label><b> Date :</b></label>
 						<?php
-						jQuery_DatePicker('start');
+						jQuery_DatePicker('start_');
 						?>
                         <br />
                     </div>
