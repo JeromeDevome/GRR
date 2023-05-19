@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-04-20 18:27$
+ * Dernière modification : $Date: 2023-04-23 09:47$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -944,7 +944,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
             $result .= $result_inter;
         $result_inter = '';
     }
-    if ($version_old < "3.5.0.0")
+    if ($version_old < "3.5.0.9")
     {
         $result .= formatResult("Mise à jour jusqu'à la version 3.5.0 :","<b>","</b>");
         include "./ISO_to_UTF8.inc.php";
@@ -952,14 +952,14 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
         // conversion de la valeur par défaut des champs START et END de la table grr_log (ne devrait être utile que pour des bases converties depuis d'anciennes versions)
         $result .= formatResult("Mise à jour de la table grr_log:","<b>","</b>");
         $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_log` CHANGE `START` `START` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00', CHANGE `END` `END` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00';");
-        $result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET `ConvertLdapUtf8toIso` = 'n' WHERE ConvertLdapUtf8toIso = 'y';");
+        $result_inter .= traiteRequete("UPDATE `".TABLE_PREFIX."_setting` SET `VALUE` = 'n' WHERE `grr_setting`.`NAME` = 'ConvertLdapUtf8toIso';");
         if ($result_inter == '')
             $result .= formatResult("Ok !","<span style='color:green;'>","</span>");
         else
             $result .= $result_inter;
         $result_inter = '';
     }
-    if($version_old < "3.5.1")
+    if($version_old < "3.5.1.9")
     {   
         $result .= formatResult("Mise à jour jusqu'à la version 3.5.1:","<b>","</b>");
 
