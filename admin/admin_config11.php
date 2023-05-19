@@ -3,9 +3,9 @@
  * admin_config11.php
  * Interface permettant à l'administrateur la configuration de paramètres généraux présentant le site GRR
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2021-08-16 10:28$
+ * Dernière modification : $Date: 2023-05-19 14:25$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -390,7 +390,7 @@ echo '</div>'.PHP_EOL;
 //
 echo '<hr /><h3>'.get_vocab('title_begin_end_bookings')."</h3>\n";
 echo '<div class="form-group col-xs-12">'.PHP_EOL;
-$typeDate = 'begin_';
+
 $bday = date('d', Settings::get('begin_bookings'));
 $bmonth = date('m', Settings::get('begin_bookings'));
 $byear = date('Y', Settings::get('begin_bookings'));
@@ -398,24 +398,24 @@ $byear = date('Y', Settings::get('begin_bookings'));
 echo '<label class="col-sm-6 col-xs-12" for="mydate_begin_">'.get_vocab('begin_bookings').'</label>'.PHP_EOL;
 echo '<div class="col-sm-6 col-xs-12 form-inline">'.PHP_EOL;
 genDateSelector('begin_', $bday, $bmonth, $byear, 'more_years');
-echo '<input type="hidden" disabled="disabled" id="mydate_'.$typeDate.'">'.PHP_EOL;
+echo '<input type="hidden" disabled="disabled" id="mydate_begin_">'.PHP_EOL;
 echo '<script>'.PHP_EOL;
 echo '$(function() {'.PHP_EOL;
 echo '$.datepicker.setDefaults( $.datepicker.regional[\'fr\'] );'.PHP_EOL;
-echo '$(\'#mydate_'.$typeDate.'\').datepicker({'.PHP_EOL;
+echo '$(\'#mydate_begin_\').datepicker({'.PHP_EOL;
 echo 'beforeShow: readSelected, onSelect: updateSelected,'.PHP_EOL;
 echo 'showOn: \'both\', buttonImageOnly: true, buttonImage: \'../img_grr/calendar.png\',buttonText: "Choisir la date"});'.PHP_EOL;
 echo 'function readSelected()'.PHP_EOL;
 echo '{'.PHP_EOL;
-echo '$(\'#mydate_'.$typeDate.'\').val($(\'#'.$typeDate.'_day\').val() + \'/\' +'.PHP_EOL;
-echo '$(\'#'.$typeDate.'_month\').val() + \'/\' + $(\'#'.$typeDate.'_year\').val());'.PHP_EOL;
+echo '$(\'#mydate_begin_\').val($(\'#begin_day\').val() + \'/\' +'.PHP_EOL;
+echo '$(\'#begin_month\').val() + \'/\' + $(\'#begin_year\').val());'.PHP_EOL;
 echo 'return {};'.PHP_EOL;
 echo '}'.PHP_EOL;
 echo 'function updateSelected(date)'.PHP_EOL;
 echo '{'.PHP_EOL;
-echo '$(\'#'.$typeDate.'_day\').val(date.substring(0, 2));'.PHP_EOL;
-echo '$(\'#'.$typeDate.'_month\').val(date.substring(3, 5));'.PHP_EOL;
-echo '$(\'#'.$typeDate.'_year\').val(date.substring(6, 10));'.PHP_EOL;
+echo '$(\'#begin_day\').val(date.substring(0, 2));'.PHP_EOL;
+echo '$(\'#begin_month\').val(date.substring(3, 5));'.PHP_EOL;
+echo '$(\'#begin_year\').val(date.substring(6, 10));'.PHP_EOL;
 echo '}'.PHP_EOL;
 echo '});'.PHP_EOL;
 echo '</script>'.PHP_EOL;
@@ -424,7 +424,7 @@ echo '</div>'.PHP_EOL;
 echo '<p><em>'.get_vocab('begin_bookings_explain').'</em></p>'.PHP_EOL;
 
 echo '<div class="form-group col-xs-12">'.PHP_EOL;
-$typeDate = 'end_';
+
 $eday = date('d', Settings::get('end_bookings'));
 $emonth = date('m', Settings::get('end_bookings'));
 $eyear = date('Y', Settings::get('end_bookings'));
@@ -432,24 +432,24 @@ $eyear = date('Y', Settings::get('end_bookings'));
 echo '<label class="col-sm-6 col-xs-12" for="mydate_end_">'.get_vocab('end_bookings').'</label>'.PHP_EOL;
 echo '<div class="col-sm-6 col-xs-12 form-inline">'.PHP_EOL;
 genDateSelector('end_', $eday, $emonth, $eyear, 'more_years');
-echo '<input type="hidden" disabled="disabled" id="mydate_'.$typeDate.'">'.PHP_EOL;
+echo '<input type="hidden" disabled="disabled" id="mydate_end_">'.PHP_EOL;
 echo '<script>'.PHP_EOL;
 echo '$(function() {'.PHP_EOL;
 echo '$.datepicker.setDefaults( $.datepicker.regional[\'fr\'] );'.PHP_EOL;
-echo '$(\'#mydate_'.$typeDate.'\').datepicker({'.PHP_EOL;
+echo '$(\'#mydate_end_\').datepicker({'.PHP_EOL;
 echo 'beforeShow: readSelected, onSelect: updateSelected,'.PHP_EOL;
 echo 'showOn: \'both\', buttonImageOnly: true, buttonImage: \'../img_grr/calendar.png\',buttonText: "Choisir la date"});'.PHP_EOL;
 echo 'function readSelected()'.PHP_EOL;
 echo '{'.PHP_EOL;
-echo '$(\'#mydate_'.$typeDate.'\').val($(\'#'.$typeDate.'_day\').val() + \'/\' +'.PHP_EOL;
-echo '$(\'#'.$typeDate.'_month\').val() + \'/\' + $(\'#'.$typeDate.'_year\').val());'.PHP_EOL;
+echo '$(\'#mydate_end_\').val($(\'#end_day\').val() + \'/\' +'.PHP_EOL;
+echo '$(\'#end_month\').val() + \'/\' + $(\'#end_year\').val());'.PHP_EOL;
 echo 'return {};'.PHP_EOL;
 echo '}'.PHP_EOL;
 echo 'function updateSelected(date)'.PHP_EOL;
 echo '{'.PHP_EOL;
-echo '$(\'#'.$typeDate.'_day\').val(date.substring(0, 2));'.PHP_EOL;
-echo '$(\'#'.$typeDate.'_month\').val(date.substring(3, 5));'.PHP_EOL;
-echo '$(\'#'.$typeDate.'_year\').val(date.substring(6, 10));'.PHP_EOL;
+echo '$(\'#end_day\').val(date.substring(0, 2));'.PHP_EOL;
+echo '$(\'#end_month\').val(date.substring(3, 5));'.PHP_EOL;
+echo '$(\'#end_year\').val(date.substring(6, 10));'.PHP_EOL;
 echo '}'.PHP_EOL;
 echo '});'.PHP_EOL;
 echo '</script>'.PHP_EOL;
