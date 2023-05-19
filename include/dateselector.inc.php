@@ -3,7 +3,7 @@
  * dateselector.inc.php
  * Portion de code affichant un sélecteur de date à accès direct, couplé à un calendrier JQuery-datepicker
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-05-13 15:49$
+ * Dernière modification : $Date: 2023-05-15 10:25$
  * @author    Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -55,7 +55,7 @@
 </script>
 <?php
 echo '<form id="myform" action="" method="get" onsubmit="return onsubmitForm();"><div class="panel panel-default center ">';
-jQuery_DatePicker(""); // mettre au point la visibilité par rapport à l'entête du planning, pages day, week et month_all2
+jQuery_DatePicker("");
 echo '<p>';
 if ((isset($area)) and ($area > 0))
     echo "<input type=\"hidden\" id=\"area_\" name=\"area\" value=\"$area\" />";
