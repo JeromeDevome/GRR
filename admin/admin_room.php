@@ -122,8 +122,7 @@ if (Settings::get("module_multisite") == "Oui")
                             function site_go()
                             {
                                 box = document.getElementById("liste_site").id_site;
-                                // destination = "'.$_SERVER['PHP_SELF'].'"+"?id_site="+box.options[box.selectedIndex].value;
-                                destination = "'.traite_grr_url($grr_script_name).'?id_site="+box.options[box.selectedIndex].value;
+                                destination = "'.traite_grr_url('/admin/admin_room.php').'?id_site="+box.options[box.selectedIndex].value;
                                 location.href = destination;
                             }
                         // -->
