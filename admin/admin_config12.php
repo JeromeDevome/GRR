@@ -45,7 +45,7 @@ function encode_tableau($a,$modele){
 $plan=array('day','week','week_all','month','month_all','month_all2','year','year_all');
 // options d'affichage
 $opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants');
-
+//print_r($_POST);die();
 // enregistrement des données du formulaire
 // Type d'affichage des listes des domaines et des ressources
 if (isset($_POST['area_list_format'])) {
