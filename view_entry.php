@@ -3,9 +3,9 @@
  * view_entry.php modifié pour sélection des participants par select2
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-10-17 18:13$
+ * Dernière modification : $Date: 2023-05-20 15:32$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -61,7 +61,7 @@ function pageHead($title,$locale) // $locale est la langue utilisée
     <link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />
     <link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />';
     echo '
-        <script src="./js/jquery-3.4.1.min.js"></script>
+        <script src="./js/jquery-3.7.0.min.js"></script>
         <script src="./js/jquery-ui.min.js"></script>
         <script src="./js/jquery-ui-i18n.min.js"></script>
         <script src="./js/jquery.validate.js"></script>

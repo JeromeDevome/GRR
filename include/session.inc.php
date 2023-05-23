@@ -978,7 +978,7 @@ function grr_connect_ldap($l_adresse,$l_port,$l_login,$l_pwd, $use_tls, $msg_err
 Obsolete function signature and it doesn't allow to use LDAPS
 //      $ds = @ldap_connect($l_adresse, $l_port);
 */
-      $ds = @ldap_connect($l_adresse);
+    $ds = @ldap_connect($l_adresse);
 
 	if ($ds)
 	{

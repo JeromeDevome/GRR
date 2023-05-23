@@ -75,9 +75,6 @@ $adm = 0;
 $racine = "./";
 $racineAd = "./admin/";
 
-//Récupération des données concernant l'affichage du planning du domaine
-get_planning_area_values($area);
-
 // Dans le cas d'une selection invalide
 if ($area <= 0)
 {
@@ -86,6 +83,9 @@ if ($area <= 0)
 	echo '<a href="./admin/admin_accueil.php">'.get_vocab("admin").'</a>'.PHP_EOL.'</body>'.PHP_EOL.'</html>';
 	exit();
 }
+//Récupération des données concernant l'affichage du planning du domaine
+get_planning_area_values($area);
+
 // vérifie si la date est dans la période réservable
 if (check_begin_end_bookings($day, $month, $year))
 {

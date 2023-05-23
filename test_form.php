@@ -60,6 +60,7 @@ for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 include "include/formcreate.class.php";
 $form = new Form();
 var_dump($_POST);
+// eonasdan a déménagé, ce qui suit n'est plus fonctionnel
 ?>
 <!DOCTYPE html>
 <html>
@@ -67,7 +68,7 @@ var_dump($_POST);
 	<title>test form</title>
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/master/build/css/bootstrap-datetimepicker.min.css" />
-	<script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="//code.jquery.com/jquery-3.7.0.min.js"></script>
 </head>
 <body>
 	<div class="container">

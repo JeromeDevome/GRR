@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-05-15 10:32$
+ * Dernière modification : $Date: 2023-05-23 11:23$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -40,7 +40,7 @@ function isSchoolHoliday($now)
 	$val = ($test != -1);
 	return $val;
 }
-// fonction de calcul des jours fériés (France)
+// fonction de calcul des jours fériés (France, au sens de l'article L 3133-1 du code du travail)
 function setHolidays($year = null)
 {
 	if ($year === null)
@@ -803,10 +803,7 @@ $login_moderateur : identifiant du modérateur
 $motivation_moderation : texte facultatif
 Insère dans la table ".TABLE_PREFIX."_entry_moderate les valeurs de ".TABLE_PREFIX."_entry dont l'identifiant est $id_entry
 */
-/**
- * @param string $motivation_moderation
- */
-function  grr_backup($id_entry, $login_moderateur, $motivation_moderation)
+function grr_backup($id_entry, $login_moderateur, $motivation_moderation)
 {
 	$sql = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id='".$id_entry."'";
 	$res = grr_sql_query($sql);
@@ -860,12 +857,16 @@ function verif_version()
 		return false;
 }
 
-function affiche_version()
-{
-	global $version_grr, $version_grr_RC, $sous_version_grr;
-	return "GRR ".Settings::get("version");
+// Affiche le numéro de version de GRR selon les cas sous la forme "GRR x.x.x_RCx" ou "GRR x.x.x
+function affiche_version() {
+    global $version_grr, $version_grr_RC, $sous_version_grr;
+    if (Settings::get("versionRC")!="")
+        return "GRR ".Settings::get("version")."_RC".Settings::get("versionRC").$sous_version_grr;
+    else
+        return "GRR ".Settings::get("version").$sous_version_grr;
 }
 
+// affiche une date au format jj/mm/aaaa
 function affiche_date($x)
 {
 	$j = date("d", $x);
@@ -890,7 +891,7 @@ function heure_ete_hiver($type, $annee, $heure)
 	// 31-10-$annee
 	while (date("D", $debut ) != 'Sun')
 		$debut = mktime($heure, 0, 0, date("m", $debut), date("d", $debut) - 1, date("Y", $debut));
-	//On retire 1 jour par rapport à la date examinée
+	//On retire 1 jour par rapport à la date examinée jusqu'à tomber sur dimanche
 	return $debut;
 }
 
@@ -1006,7 +1007,7 @@ function begin_simple_page($title)
     $a .= '<link rel="shortcut icon" href="'.$root.'favicon.ico" />'.PHP_EOL;
     $a .= '<link rel="stylesheet" type="text/css" href="'.$root.'bootstrap/css/bootstrap.min.css" />'.PHP_EOL; // les outils css de bootstrap
     $a .= '<link rel="stylesheet" type="text/css" href="'.$root.'themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
-    if (substr(phpversion(), 0, 1) == 3)
+    if (substr(phpversion(), 0, 3) < "5.6")
         $a .= get_vocab('not_php3');
 	$a .= '</head>'.PHP_EOL;
 	$a .= '<body>'.PHP_EOL;
@@ -1019,7 +1020,6 @@ function begin_page($title, $page = "with_session")
 	{
 		if (isset($_SESSION['default_style']))
 			$sheetcss = 'themes/'.$_SESSION['default_style'].'/css';
-
 		else
 			$sheetcss = 'themes/default/css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
 		if (isset($_GET['default_language']))
@@ -1078,7 +1078,7 @@ function begin_page($title, $page = "with_session")
         $a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
 		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 			$a .= '<link rel="stylesheet" type="text/css" href="../themes/print/css/style.css" />'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/jquery-3.7.0.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jquery-ui.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jquery.validate.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
@@ -1122,7 +1122,7 @@ function begin_page($title, $page = "with_session")
 			$a .= '<link rel="stylesheet" type="text/css" href="include/admin_grr.css" />'.PHP_EOL;
 		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 			$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/jquery-3.7.0.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jquery-ui-i18n.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
@@ -1147,7 +1147,7 @@ function begin_page($title, $page = "with_session")
 			$a .= '<script type="text/javascript" src="js/selection.js" ></script>'.PHP_EOL;
 		if (@file_exists('js/'.$clock_file))
 			$a .= '<script type="text/javascript" src="js/'.$clock_file.'"></script>'.PHP_EOL;
-		if (substr(phpversion(), 0, 1) == 3)
+		if (substr(phpversion(), 0, 3) < "5.6")
 			$a .= get_vocab('not_php3');
 	}
 
@@ -1157,7 +1157,7 @@ function begin_page($title, $page = "with_session")
 }
 
 /*
-** Fonction qui affiche le header
+** Fonction qui affiche le header (= bandeau du haut de page)
 */
 function print_header($day = '', $month = '', $year = '', $type_session = 'with_session')
 {
@@ -1354,60 +1354,6 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 	}
 }
 
-function print_header_admin($day = '', $month = '', $year = '', $type_session = 'with_session')
-{
-	global $vocab, $search_str, $grrSettings, $desactive_VerifNomPrenomUser, $grr_script_name;
-	global $use_admin, $id_site, $use_select2, $lienRetour, $lienCompte, $nomAffichage;
-
-	// Si nous ne sommes pas dans un format imprimable
-	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
-	{
-		// If we dont know the right date then make it up
-		if (!isset($day) || !isset($month) || !isset($year) || ($day == '') || ($month == '') || ($year == ''))
-		{
-			$date_now = time();
-			if ($date_now < Settings::get("begin_bookings"))
-				$date_ = Settings::get("begin_bookings");
-			else if ($date_now > Settings::get("end_bookings"))
-				$date_ = Settings::get("end_bookings");
-			else
-				$date_ = $date_now;
-			$day   = date("d",$date_);
-			$month = date("m",$date_);
-			$year  = date("Y",$date_);
-		}
-		if (!(isset($search_str)))
-			$search_str = get_vocab("search_for");
-		if (empty($search_str))
-			$search_str = "";
-		if (!(isset($desactive_bandeau_sup) && ($desactive_bandeau_sup == 1) && ($type_session != 'with_session')))
-		{
-
-			$nomAffichage =  htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']);
-
-			// On fabrique une date valide pour la réservation si ce n'est pas le cas
-			$date_ = mktime(0, 0, 0, $month, $day, $year);
-			if ($date_ < Settings::get("begin_bookings"))
-				$date_ = Settings::get("begin_bookings");
-			else if ($date_ > Settings::get("end_bookings"))
-				$date_ = Settings::get("end_bookings");
-			$day   = date("d",$date_);
-			$month = date("m",$date_);
-			$year  = date("Y",$date_);
-
-			// Liens
-			$lienRetour = '../'.page_accueil('yes').'day='.$day.'&year='.$year.'&month='.$month;
-			$lienCompte = '../my_account.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month;
-
-			//Mail réservation
-			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
-			$res = grr_sql_query1($sql);
-			grr_sql_free($res);
-
-		}
-	}
-}
-
 /**
  * @param string $type
  */
@@ -1425,8 +1371,8 @@ function VerifNomPrenomUser($type)
 		}
 	}
 }
-//Vérifie si utilisateur autorisé à changer ses noms et prénoms et mail
-//Renvoie true (peut changer ses noms et prénoms et email) ou false (ne peut pas)
+//Vérifie si un utilisateur identifié par SSO est autorisé à changer ses nom, prénom et mail
+//Renvoie true (peut changer ses nom, prénom et email) ou false (ne peut pas)
 function sso_IsAllowedModify()
 {
 	if (Settings::get("sso_IsNotAllowedModify")=="y")
@@ -1440,8 +1386,8 @@ function sso_IsAllowedModify()
 	else
 		return true;
 }
-//Vérifie que l'utilisateur est autorisé à changer ses noms et prénoms
-//Renvoie true (peut changer ses noms et prénoms) ou false (ne peut pas)
+//Vérifie que l'utilisateur est autorisé à changer ses nom et prénom
+//Renvoie true (peut changer ses nom et prénom) ou false (ne peut pas)
 function IsAllowedToModifyProfil()
 {
 	if (!(sso_IsAllowedModify()))
@@ -1874,7 +1820,6 @@ function get_default_area($id_site = -1)
 /* fonction get_default_site
     renvoie id_site du site par défaut de l'utilisateur, sinon celui de la table setting, sinon celui de plus petit id dans la table site
 */
-
 function get_default_site()
 {
     $user = getUserName();
@@ -1891,8 +1836,8 @@ function get_default_site()
         return($id_site);
     }
 }
-// fonction get_default_room
-/*  renvoie id_room de la ressource par défaut de l'utilisateur, sinon celle de la table setting, sinon celle de plus petit indice dans la table room 
+/* fonction get_default_room
+ * renvoie id_room de la ressource par défaut de l'utilisateur, sinon celle de la table setting, sinon celle de plus petit indice dans la table room 
 */
 function get_default_room(){
     $user = getUserName();
@@ -2015,23 +1960,12 @@ function time_date_string_jma($t,$dformat)
 {
 	return utf8_strftime($dformat, $t);
 }
-/*
-ancien code. Je ne vois pas l'intérêt du test YN le 25/09/19
-{
-	global $twentyfourhour_format;
-	//his bit's necessary, because it seems %p in strftime format
-	//strings doesn't work
-	if ($twentyfourhour_format)
-		return utf8_strftime($dformat, $t);
-	else
-		return utf8_strftime($dformat, $t);
-}*/
 
 // Renvoie une balise span avec un style background-color correspondant au type de  la réservation
 function span_bgground($colclass)
 {
-	global $tab_couleur;
-	static $ecolors;
+	// global $tab_couleur;
+	// static $ecolors;
 	$res = grr_sql_query("SELECT couleurhexa, couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
 	$row = grr_sql_row($res, 0);
 	echo '<span style="background-color: '.$row[0].'; background-image: none; background-repeat: repeat; background-attachment: scroll;color: '.$row[1].';">'.PHP_EOL;
@@ -2044,13 +1978,10 @@ function tdcell($colclass, $width = '')
 		$temp = ' style="width:'.$width.'%;" ';
 	else
 		$temp = "";
-	global $tab_couleur;
-	static $ecolors;
+	// global $tab_couleur;
+	// static $ecolors;
 	if (($colclass >= "A") && ($colclass <= "Z"))
 	{
-		/*$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-        $couleur_texte = grr_sql_query1("SELECT couleur_texte FROM".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-		echo '<td style="background-color:'.$couleurhexa.'; color:'.$couleur_texte.';" '.$temp.'>'.PHP_EOL;*/
         echo '<td class="type'.$colclass.'"'.$temp.'>';
 	}
 	else
@@ -2065,8 +1996,6 @@ function tdcell_rowspan($colclass, $step)
 		$step = 1;
 	if (($colclass >= "A") && ($colclass <= "Z"))
 	{
-		/*$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-		echo '<td rowspan="'.$step.'" style="background-color:'.$couleurhexa.';">'.PHP_EOL;*/
         echo '<td class="type'.$colclass.'" rowspan="'.$step.'">';
 	}
 	else
@@ -2271,7 +2200,7 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user,
 function make_area_select_html( $link, $current_site, $current_area, $year, $month, $day, $user, $pos="G")
 {
 	global $vocab;
-    $out_html = "";//$link. $current_site. $current_area. $year. $month. $day. $user.'<br />'.PHP_EOL;
+    $out_html = "";
 	if (Settings::get("module_multisite") == "Oui")
 	{
 		// on a activé les sites
@@ -2279,7 +2208,6 @@ function make_area_select_html( $link, $current_site, $current_area, $year, $mon
 			$sql = "SELECT a.id, a.area_name,a.access FROM ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_j_site_area j WHERE a.id=j.id_area and j.id_site=$current_site ORDER BY a.order_display, a.area_name";
 		else // $current_site = -1 correspond à un domaine (ou une ressource) inconnu
             return $out_html;
-			//$sql = ""; une requête vide déclenche une erreur non rattrapée
 	}
 	else
 		$sql = "SELECT id, area_name,access FROM ".TABLE_PREFIX."_area ORDER BY order_display, area_name";
@@ -2346,7 +2274,6 @@ function make_area_select_all_html( $link, $current_site, $current_area, $year, 
 			$sql = "SELECT a.id, a.area_name,a.access FROM ".TABLE_PREFIX."_area a JOIN ".TABLE_PREFIX."_j_site_area j ON a.id=j.id_area WHERE j.id_site=$current_site ORDER BY a.order_display, a.area_name";
 		else
             return "";
-			//$sql = "";
 	}
 	else
 		$sql = "SELECT id, area_name,access FROM ".TABLE_PREFIX."_area ORDER BY order_display, area_name";
@@ -2841,31 +2768,6 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
      JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id 
     WHERE e.id = '".protect_data_sql($id_entry)."'
     ";
-	/*$sql = "SELECT ".TABLE_PREFIX."_entry.name,
-	".TABLE_PREFIX."_entry.description,
-	".TABLE_PREFIX."_entry.beneficiaire,
-	".TABLE_PREFIX."_room.room_name,
-	".TABLE_PREFIX."_area.area_name,
-	".TABLE_PREFIX."_entry.type,
-	".TABLE_PREFIX."_entry.room_id,
-	".TABLE_PREFIX."_entry.repeat_id,
-	" . grr_sql_syntax_timestamp_to_unix("".TABLE_PREFIX."_entry.timestamp") . ",
-	(".TABLE_PREFIX."_entry.end_time - ".TABLE_PREFIX."_entry.start_time),
-	".TABLE_PREFIX."_entry.start_time,
-	".TABLE_PREFIX."_entry.end_time,
-	".TABLE_PREFIX."_room.area_id,
-	".TABLE_PREFIX."_room.delais_option_reservation,
-	".TABLE_PREFIX."_entry.option_reservation,
-	".TABLE_PREFIX."_entry.moderate,
-	".TABLE_PREFIX."_entry.beneficiaire_ext,
-	".TABLE_PREFIX."_entry.jours,
-	".TABLE_PREFIX."_entry.clef,
-	".TABLE_PREFIX."_entry.courrier
-    FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
-	WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
-	AND ".TABLE_PREFIX."_room.area_id = ".TABLE_PREFIX."_area.id
-	AND ".TABLE_PREFIX."_entry.id='".protect_data_sql($id_entry)."'
-	";*/
 	$res = grr_sql_query($sql);
 	if (!$res)
 		fatal_error(0, grr_sql_error());
@@ -2899,12 +2801,6 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	if($oldRessource != '' && $oldRessource != $room_id)
 	{
 		$sql = "SELECT room_name FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($oldRessource)."'";
-		/*$oldRess = grr_sql_query($sql);
-		if (!$oldRess)
-			fatal_error(0, grr_sql_error());
-		$rowOld = grr_sql_row($oldRess, 0);
-		grr_sql_free($oldRess);
-		$nomAncienneSalle = $rowOld[0];*/
         $nomAncienneSalle = grr_sql_query1($sql);
 	}
 	else
@@ -3149,8 +3045,6 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 			foreach ($mail_admin as $value){
 				$destinataire .= $value.";";
 			}
-
-		//	Email::Envois($destinataire, $sujet, $message, $repondre, '', '');  semble incomplet YN le 21/02/2020
 		}
 
 		$sujet7 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
@@ -3317,10 +3211,7 @@ function getWritable($user, $id)
     $sql = "SELECT room_id, create_by, beneficiaire, dont_allow_modify, who_can_book, qui_peut_reserver_pour 
             FROM ".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_room ON room_id = ".TABLE_PREFIX."_room.id
             WHERE ".TABLE_PREFIX."_entry.id ='".protect_data_sql($id)."'";
-            // ex : SELECT room_id, create_by, beneficiaire, dont_allow_modify, who_can_book, qui_peut_reserver_pour FROM grr_entry JOIN grr_room ON room_id = grr_room.id WHERE grr_entry.id = 323 
     $res = grr_sql_query($sql);
-    //print($sql);
-    //print_r($res);
     if (!$res)
         fatal_error(0, grr_sql_error());
     elseif (grr_sql_count($res) == 0) // réservation inconnue
@@ -3328,17 +3219,14 @@ function getWritable($user, $id)
     else {
         $data = grr_sql_row_keyed($res,0);
         grr_sql_free($res);
-        //print_r($data);
         if (authGetUserLevel($user,$data['room_id']) > $temp)
             return 1; // Modifications permises si l'utilisateur a les droits suffisants
         else {
             $user_can_book = $data['who_can_book'] || authBooking($user,$data['room_id']);
-            //var_dump($user_can_book);
             $createur = strtolower($data['create_by']);
             $beneficiaire = strtolower($data['beneficiaire']);
             $utilisateur = strtolower($user);
-            /* echo $utilisateur,"  ",$beneficiaire,"  ",$createur;
-            Dans l'étude du cas d'un utilisateur sans droits particuliers, quatre possibilités :
+            /* Dans l'étude du cas d'un utilisateur sans droits particuliers, quatre possibilités :
             Cas 1 : l'utilisateur (U) n'est ni le créateur (C) ni le bénéficiaire (B)
             	R1 -> on retourne 0
             Cas 2 : U=B et U<>C  ou ...
@@ -3383,7 +3271,7 @@ function getWritable($user, $id)
 //Determine si un visiteur peut réserver une ressource
 //$user - l'identifiant de l'utilisateur
 //$id_room -   l'identifiant de la ressource
-//Retourne le niveau d'accès de l'utilisateur//
+//Retourne 0 (accès refusé) ou 1 (accès autorisé)
 function auth_visiteur($user,$id_room)
 {
 	global $id_room_autorise;
@@ -3402,13 +3290,18 @@ function auth_visiteur($user,$id_room)
 	}
 	return 0;
 }
-//authGetUserLevel($user,$id,$type)
-//Determine le niveau d'accès de l'utilisateur
-//$user - l'identifiant de l'utilisateur
-//$id -   l'identifiant de la ressource ou du domaine
-// $type - argument optionnel : 'room' (par défaut) si $id désigne une ressource et 'area' si $id désigne un domaine.
-////Retourne le niveau d'accès de l'utilisateur
-// 0 NC / 1 Visiteur / 2 Utilisateur / 3 gestionnaire de ressource / 4 administrateur de domaine / 5 administrateur de site / 6 Admin général
+/*authGetUserLevel($user,$id,$type)
+ * Determine le niveau d'accès de l'utilisateur
+ * $user - l'identifiant de l'utilisateur
+ * $id -   l'identifiant de la ressource ou du domaine
+ * $type - argument optionnel : 
+ *  'room' (par défaut) si $id désigne une ressource, 
+ *  'area' si $id désigne un domaine, 
+ *  'site' si $id désigne un site,
+ *  'user' si on cherche un gestionnaire d'utilisateurs.
+ * Retourne le niveau d'accès de l'utilisateur :
+ *  0 NC / 1 Visiteur / 2 Utilisateur / 3 gestionnaire de ressource / 4 administrateur de domaine / 5 administrateur de site / 6 Admin général
+*/
 function authGetUserLevel($user, $id, $type = 'room')
 {
 	//user level '0': User not logged in, or User value is NULL (getUserName()='')
@@ -3421,19 +3314,16 @@ function authGetUserLevel($user, $id, $type = 'room')
 	//user level '0': User not defined in database
 	if (!$res || $nbraw == 0)
 		return 0;
+    //user level '0': Same User defined multiple time in database !!!
+    if ($nbraw > 1)
+        return 0;
 	// On vient lire le résultat de la requète
 	$status = grr_sql_row($res,$nbraw-1);
+    /*
 	//user level '0': Same User defined multiple time in database !!!
 	if ($status === 0)
 		return 0;
-	// Teste si le type concerne la gestion des utilisateurs
-	if ($type === 'user')
-	{
-		if (strtolower($status[0]) == 'gestionnaire_utilisateur')
-			return 1;
-		else
-			return 0;
-	}
+*/
 	switch (strtolower($status[0]))
 	{
 		case 'visiteur':
@@ -3442,6 +3332,14 @@ function authGetUserLevel($user, $id, $type = 'room')
 		return 6;
 		default:
 		break;
+	}
+	// Teste si le type concerne la gestion des utilisateurs
+	if ($type === 'user')
+	{
+		if (strtolower($status[0]) == 'gestionnaire_utilisateur')
+			return 1;
+		else
+			return 0;
 	}
 	if ((strtolower($status[0]) == 'utilisateur') || (strtolower($status[0]) == 'gestionnaire_utilisateur'))
 	{
@@ -4044,18 +3942,13 @@ function verif_delais_min_resa_room($user, $id_room, $date_booking, $enable_peri
             $limite['hours'] = 0;
             $limite['minutes'] = 0;
         }
-        //echo "day_limite".$limite['mday']."<br/>";
-        //echo "date_booking".strftime("%c",$date_booking)."<br/>";
         $day_limite = $limite['mday'];
         if (($limite['mday'] != $day)&&(Settings::get('delai_ouvert') == 1)){// jour différent et test pour jours ouvrés ?
             $cur_day = mktime(0,0,0,$month,$day,$year);
             while ($cur_day < $date_booking){
-                //echo "jour".strftime("%c",$cur_day)."<br/>";
-                //echo "limit".strftime('%c',$date_limite)."<br/>";
                 if (est_hors_reservation($cur_day,$area)){// teste si le jour est hors réservation et dans ce cas allonge le délai
                     $day_limite++;
                     $date_limite = mktime($limite['hours'],$limite['minutes'],0,$limite['mon'],$day_limite,$limite['year']);
-                    //echo "testé<br/>";
                 }
                 $day ++;
                 $cur_day = mktime(0,0,0,$month,$day,$year);
@@ -4147,9 +4040,9 @@ function verif_heure_debut_fin($start_time,$end_time,$area)
  	if ((isset($correct_diff_time_local_serveur)) && ($correct_diff_time_local_serveur!=0))
  		$date_now -= 3600 * $correct_diff_time_local_serveur;
 	// Créneaux basés sur les intitulés
-	// Dans ce cas, on prend comme temps présent le jour même à minuit.
+	// Dans ce cas, on prend comme temps présent le jour même à minuit (ou 00:00 ? YN le 23/05/23)
 	// Cela signifie qu'il est possible de modifier/réserver/supprimer tout au long d'une journée
-	// même si l'heure est passée.
+	// même si l'heure est passée. (à voir, YN le 23/05/23)
 	// Cela pourrait être amélioré en introduisant pour chaque créneau une heure limite de réservation.
  	if ($enable_periods == "y")
  	{
@@ -4347,7 +4240,7 @@ function showAccessDeniedMaxBookings($day, $month, $year, $id_room, $back, $cas 
 </body>
 </html>';
 }
-/* fonction qui rend TRUE lorsque la date proposée est en dehors de la période réservable
+/* fonction qui rend -1 (interprétable comme TRUE) lorsque la date proposée est en dehors de la période réservable
 */
 function check_begin_end_bookings($day, $month, $year)
 {
@@ -4355,6 +4248,9 @@ function check_begin_end_bookings($day, $month, $year)
 	if (($date < Settings::get("begin_bookings")) || ($date > Settings::get("end_bookings")))
 		return -1;
 }
+/* fonction qui affiche un message approprié lorsque la date proposée n'est pas dans l'intervalle ouvert
+ * mais ne fait pas la vérification préalable
+*/
 function showNoBookings($day, $month, $year, $back)
 {
 	global $vocab;
@@ -4416,46 +4312,9 @@ function describe_span($starts, $ends, $dformat)
 	toTimeString($duration, $dur_units);
 	return array($start_date, $start_time ,$duration, $dur_units);
 }
-# Convert a start period and end period to a plain language description.
-# This is similar but different from the way it is done in view_entry.
-/*function describe_period_span($starts, $ends)
-{
-	global $enable_periods, $periods_name, $vocab, $duration;
-	list($start_period, $start_date) =  period_date_string($starts);
-	list( , $end_date) =  period_date_string($ends, -1);
-	$duration = $ends - $starts;
-	toPeriodString($start_period, $duration, $dur_units);
-	if ($duration > 1)
-	{
-		list( , $start_date) =  period_date_string($starts);
-		list( , $end_date) =  period_date_string($ends, -1);
-		$temp = $start_date . " ==> " . $end_date;
-	}
-	else
-	{
-		$temp = $start_date . " - " . $duration . " " . $dur_units;
-	}
-	return $temp;
-}
-#Convertit l'heure de début et de fin en période.
-function describe_span($starts, $ends, $dformat)
-{
-	global $vocab, $twentyfourhour_format;
-	$start_date = utf8_strftime($dformat, $starts);
-	if ($twentyfourhour_format)
-		$timeformat = "%T";
-	else
-	{
-		$ampm = date("a",$starts);
-		$timeformat = "%I:%M$ampm";
-	}
-	$start_time = strftime($timeformat, $starts);
-	$duration = $ends - $starts;
-	if ($start_time == "00:00:00" && $duration == 60 * 60 * 24)
-		return $start_date . " - " . get_vocab("all_day");
-	toTimeString($duration, $dur_units);
-	return $start_date . " " . $start_time . " - " . $duration . " " . $dur_units;
-}*/
+/* fonction get_planning_area_values($id_area)
+ * modifie les variables globales $resolution, $morningstarts, $eveningends, $eveningends_minutes, $weekstarts, $twentyfourhour_format, $enable_periods, $periods_name, $display_day, $nb_display_day avec les valeurs associées au domaine d'id $id_area
+*/
 function get_planning_area_values($id_area)
 {
 	global $resolution, $morningstarts, $eveningends, $eveningends_minutes, $weekstarts, $twentyfourhour_format, $enable_periods, $periods_name, $display_day, $nb_display_day;
@@ -4589,9 +4448,9 @@ function verify_confirm_reservation()
 		}
 	}
 }
-// Cette fonction vérifie une fois par jour si les réservations devant être rendus ne sont pas
+// Cette fonction vérifie une fois par jour si les réservations devant être rendues ne sont pas
 // en retard
-// Si oui, les utilisateurs concernées recoivent un mail automatique pour leur notifier.
+// Si oui, les utilisateurs concernés reçoivent un mail automatique pour les avertir.
 function verify_retard_reservation()
 {
 	global $dformat;
@@ -4736,8 +4595,8 @@ function ajuster_plage($start_time, $end_time, $area){
     }
 }
 
-// trouve les utilisateurs gestionnaires de ressource
-function find_user_room ($id_room)
+// trouve les mails des utilisateurs gestionnaires de ressource
+function find_user_room($id_room)
 {
 	$emails = array ();
 	$sql = "select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_user_room
@@ -4766,7 +4625,7 @@ function find_user_room ($id_room)
 			}
 		}
 	}
-	// Si la table des emails des administrateurs du domaines est vide, on avertit les administrateurs des sites
+	// Si la table des emails des administrateurs du domaine est vide, on avertit les administrateurs des sites
 	if (Settings::get("module_multisite") == "Oui")
 	{
 		if (count($emails) == 0)
@@ -4800,7 +4659,7 @@ function find_user_room ($id_room)
 	}
 	return $emails;
 }
-// trouve les utilisateurs actifs gestionnaires de ressource
+// trouve les mails des utilisateurs actifs gestionnaires de ressource
 function find_active_user_room ($id_room)
 {
 	$emails = array ();
@@ -4903,7 +4762,7 @@ function grrDelOverloadFromEntries($id_field)
 		fatal_error(0, get_vocab('error_room') . $id_area . get_vocab('not_found'));
 	for ($i = 0; ($row = grr_sql_row($call_rooms, $i)); $i++)
 	{
-		// On cherche toutes les resas de cette resources
+		// On cherche toutes les resas de cette ressource
 		$call_resa = grr_sql_query("SELECT id, overload_desc FROM ".TABLE_PREFIX."_entry WHERE room_id ='".$row[0]."'");
 		if (! $call_resa)
 			fatal_error(0, get_vocab('invalid_entry_id'));
@@ -4921,7 +4780,7 @@ function grrDelOverloadFromEntries($id_field)
 				grr_sql_command("UPDATE ".TABLE_PREFIX."_entry SET overload_desc = '".$new_chaine."' WHERE id = '".$row2[0]."'");
 			}
 		}
-		// On cherche toutes les resas de cette ressource
+		// On cherche toutes les séquences de réservations de cette ressource
 		$call_resa = grr_sql_query("SELECT id, overload_desc FROM ".TABLE_PREFIX."_repeat WHERE room_id ='".$row[0]."'");
 		if (!$call_resa)
 			fatal_error(0, get_vocab('invalid_entry_id'));
@@ -4989,30 +4848,6 @@ function affichage_lien_resa_planning($breve_description, $id_resa)
 	return bbCode(htmlspecialchars($affichage,ENT_NOQUOTES),'titre');
 }
 /*
-Construit les informations à afficher sur les plannings
-*/
-function affichage_resa_planning($_description, $id_resa)
-{
-	$affichage = "";
-	if (Settings::get("display_full_description") == 1)
-		$affichage = htmlspecialchars($_description,ENT_NOQUOTES);
-    // la ressource associée à la réservation :
-    $res = mrbsGetEntryInfo($id_resa);
-    $room = (!$res) ? -1 : $res["room_id"]; 
-	// Les champs add :
-	$overload_data = mrbsEntryGetOverloadDesc($id_resa);
-	foreach ($overload_data as $fieldname=>$field)
-	{
-		if (((authGetUserLevel(getUserName(), $room) >= 4) ||($field["affichage"] == 'y')) and ($field["valeur"]!=""))
-		{
-			if ($affichage != "")
-				$affichage .= "<br />";
-			$affichage .= htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($field["valeur"],ENT_NOQUOTES|ENT_SUBSTITUTE);
-		}
-	}
-	return $affichage;
-}
-/*
 Construit les informations à ajouter dans les mails automatiques
 */
 function affichage_champ_add_mails($id_resa)
@@ -5024,178 +4859,6 @@ function affichage_champ_add_mails($id_resa)
 	{
 		if (($field["overload_mail"] == 'y') && ($field["valeur"] != ""))
 			$affichage .= bbcode(htmlspecialchars($fieldname).get_vocab("deux_points").htmlspecialchars($field["valeur"]),'nobbcode')."\n";
-	}
-	return $affichage;
-}
-/*
-Construit les informations à afficher sur les plannings week_all, month ou month_all
-$vue = 1 pour une ressource / 2 vue multiple ressource
-$ofl = overload fields list, ne dépend que du domaine, donc est constant dans la boucle d'affichage
-*/
-function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
-{
-	global $dformat;
-
-	$affichage = "";
-
-	// Heures ou créneaux + symboles <== ==>
-	if ($heures != "")
-        $affichage .= $heures."<br>";
-
-	// Ressource seulement dans les vues globales
-	if($vue == 2)
-		$affichage .= $resa[5]."<br>";
-
-	// Bénéficiaire
-	if (Settings::get("display_beneficiaire") == 1)
-		$affichage .= affiche_nom_prenom_email($resa[4], $resa[12], "nomail")."<br>";
-
-	// Type
-	if (Settings::get("display_type") == 1)
-	{
-        $typeResa = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area JOIN ".TABLE_PREFIX."_entry ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter WHERE ".TABLE_PREFIX."_entry.id = '".$resa[2]."';");
-		if ($typeResa != -1)
-			$affichage .= $typeResa."<br>";
-	}
-
-	// Brève description ou le numéro de la réservation
-	if ((Settings::get("display_short_description") == 1) && ($resa[3] != ""))
-		$affichage .= htmlspecialchars($resa[3],ENT_NOQUOTES)."<br>";
-	else
-		$affichage .= get_vocab("entryid").$resa[2]."<br>";
-
-	// Description Complète
-	if ((Settings::get("display_full_description") == 1) && ($resa[8] != ""))
-		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES)."<br>";
-
-	// Champs Additionnels
-    // la ressource associée à la réservation :
-	//$res = mrbsGetEntryInfo($resa[2]);
-	//$room = (!$res) ? -1 : $res["room_id"]; 
-    $room = $resa[5];
-	// Les champs add :
-	$overload_data = grrGetOverloadDescArray($ofl, $resa[16]);//mrbsEntryGetOverloadDesc($resa[2]);
-	foreach ($overload_data as $fieldname=>$field)
-	{
-		if (( (authGetUserLevel(getUserName(), $room) >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "")
-			$affichage .= "<i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($field["valeur"],ENT_NOQUOTES|ENT_SUBSTITUTE)."</i><br />";
-	}
-
-	// Emprunte
-	if($resa[7] != "-")
-		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
-
-	// Option réservation
-	if($resa[10] > 0)
-		$affichage .=  " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le").time_date_string_jma($resa[9],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> ";
-
-	// Modération
-	if($resa[11] == 1)
-		$affichage .= " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
-
-	// Clef
-	if($resa[13] == 1)
-		$affichage .= " <img src=\"img_grr/skey.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Clef\"> ";
-	
-	// Courrier
-	if (Settings::get('show_courrier') == 'y')
-	{
-		if($resa[14] == 1)
-			$affichage .= " <img src=\"img_grr/scourrier.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Courrier\"> ";
-		else
-			$affichage .= " <img src=\"img_grr/hourglass.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Buzy\"> ";
-	}
-
-	return $affichage;
-}
-/*
-Construit les informations à afficher en pop-up sur les plannings month_all2, year ou year_all
-$ofl = overload fields list, ne dépend que du domaine, donc est constant dans la boucle d'affichage
-*/
-function titre_compact($ofl, $resa, $heures)
-{
-	global $dformat;
-
-	$affichage = "";
-
-	// Heures ou créneaux + symboles <== ==>
-	$affichage .= $heures;
-
-	// Bénéficiaire
-	if (Settings::get("display_beneficiaire") == 1)
-		$affichage .= "\n".affiche_nom_prenom_email($resa[4], $resa[12], "nomail");
-
-	// Type
-	if (Settings::get("display_type") == 1)
-	{
-        $typeResa = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area JOIN ".TABLE_PREFIX."_entry ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter WHERE ".TABLE_PREFIX."_entry.id = '".$resa[2]."';");
-		if ($typeResa != -1)
-			$affichage .= "\n".$typeResa;
-	}
-
-	// Brève description ou le numéro de la réservation
-	if ((Settings::get("display_short_description") == 1) && ($resa[3] != ""))
-		$affichage .= "\n".htmlspecialchars($resa[3],ENT_NOQUOTES);
-	else
-		$affichage .= "\n".get_vocab("entryid").$resa[2];
-
-	// Description Complète
-	if (Settings::get("display_full_description") == 1)
-		$affichage .= "\n".htmlspecialchars($resa[8],ENT_NOQUOTES);
-
-	// Champs Additionnels
-    // la ressource associée à la réservation :
-    $room = $resa[5];
-	// Les champs add :
-	$overload_data = grrGetOverloadDescArray($ofl, $resa[16]);//mrbsEntryGetOverloadDesc($resa[2]);
-	foreach ($overload_data as $fieldname=>$field)
-	{
-		if (( (authGetUserLevel(getUserName(), $room) >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "")
-			$affichage .= "\n".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($field["valeur"],ENT_NOQUOTES|ENT_SUBSTITUTE);
-	}
-
-	return $affichage;
-}
-/*
-Construit les informations à afficher dans la cellule du planning month_all2, year ou year_all :
-description abrégée, statut, option, modération
-*/
-function lien_compact($resa)
-{
-    global $dformat;
-	$affichage = "";
-	// Bénéficiaire
-	if (Settings::get("display_beneficiaire") == 1)
-		$affichage .= affiche_nom_prenom_email($resa[4], $resa[12], "nomail");
-	// Brève description ou le numéro de la réservation
-	if ((Settings::get("display_short_description") == 1) && ($resa[3] != ""))
-		$affichage .= htmlspecialchars($resa[3],ENT_NOQUOTES);
-	else
-		$affichage .= get_vocab("entryid").$resa[2];
-	// Description Complète
-	if (Settings::get("display_full_description") == 1)
-		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES);
-    // on coupe aux quatre premiers caractères
-    $affichage = substr($affichage,0,4)."<br />";
-	// Emprunte
-	if($resa[7] != "-")
-		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
-	// Option réservation
-	if($resa[10] > 0)
-		$affichage .=  " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le").time_date_string_jma($resa[9],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> ";
-	// Modération
-	if($resa[11] == 1)
-		$affichage .= " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
-	// Clef
-	if($resa[13] == 1)
-		$affichage .= " <img src=\"img_grr/skey.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Clef\"> ";
-	// Courrier
-	if (Settings::get('show_courrier') == 'y')
-	{
-		if($resa[14] == 1)
-			$affichage .= " <img src=\"img_grr/scourrier.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Courrier\"> ";
-		else
-			$affichage .= " <img src=\"img_grr/hourglass.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Buzy\"> ";
 	}
 	return $affichage;
 }
@@ -5302,8 +4965,6 @@ $type = nomail -> on affiche les prénom et nom sans le mail.
 $type = withmail -> on affiche un lien avec le mail sur les prénom et nom.
 $type = formail -> on formate en utf8 pour l'envoi par mail (utilisé dans l'envoi de mails automatiques)
 $type = onlymail -> on affiche uniquement le mail (utilisé dans l'envoi de mails automatiques)
-*/
-/**
  * @return string
  */
 function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "nomail")
@@ -5348,26 +5009,22 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
 			return "";
 	}
 	else
-	{
-		// cas d'un bénéficiaire extérieur
+	{// cas d'un bénéficiaire extérieur
 		// On récupère le tableau des nom et emails
 		$tab_benef = donne_nom_email($_beneficiaire_ext);
-		// Cas où en envoie uniquement le mail
 		if ($type == "onlymail")
-		{
+		{// Cas où en envoie uniquement le mail
 			$chaine = $tab_benef["email"];
-			// Cas où en envoie les noms, prénoms et mail
 		}
 		else if (($type == "withmail") && ($tab_benef["email"] != ""))
-		{
+		{// Cas où en envoie les noms, prénoms et mail
             if (validate_email($tab_benef['email']))
                 $chaine = '<a href="mailto:'.$tab_benef['email'].'">'.$tab_benef['nom'].'</a>';
             else
 				$chaine = $tab_benef["nom"];
 		}
 		else
-		{
-		// Cas où en envoie les noms, prénoms sans le mail
+		{// Cas où en envoie les noms, prénoms sans le mail
 			$chaine = $tab_benef["nom"];
 		}
 		return $chaine;
@@ -5497,65 +5154,6 @@ echo '		}'.PHP_EOL;
 echo '</script>'.PHP_EOL;
 }
 
-function jQuery_TimePicker($typeTime, $start_hour, $start_min,$dureepardefaultsec)
-{
-	if (isset ($_GET['id']))
-	{
-		if (isset($start_hour) && isset($start_min))
-		{
-			$hour = $start_hour;
-			$minute = $start_min;
-		}
-		else
-		{
-			$hour = date("h");
-			$minute = date("m");
-		}
-	}
-	else
-	{
-		$hour = (isset ($_GET['hour']))? clean_input($_GET['hour']) : date("h");
-		$minute = (isset ($_GET['minute']))? clean_input($_GET['minute']) : date("m");
-			
-		if ($typeTime == 'end_'){
-            $dureepardefautmin = $dureepardefaultsec/60;
-            if ($dureepardefautmin == 60){
-                $ajout = 1;
-                $hour = $_GET['hour'] + $ajout;
-                $minute ="00";
-            }
-            elseif ($dureepardefautmin < 60){
-                $hour = $_GET['hour'];
-                $minute =$dureepardefautmin;
-            }
-            elseif ($dureepardefautmin > 60){
-                $dureepardefautheure = $dureepardefautmin/60;
-            //	if (($dureepardefautheure % 60)!=0){
-        //		$hour = $_GET['hour']+ $dureepardefautheure;
-                $hour = ($_GET['hour']+ $dureepardefautheure)%24; // Modulo 24
-                $hour = str_pad($hour, 2, 0, STR_PAD_LEFT); // Affichage heure sur 2 digits 
-                $minute = ($_GET['minute'] == 30)? 30 : "00";
-        //		}
-            }
-        }
-	}
-	if ($minute == 0)
-		$minute = '00';
-	// MAJ
-	echo '<div class="input-group clockpicker">
-	<input name="' .$typeTime. '" type="text" class="form-control" value="' .$hour. ':' .$minute. '">
-	<span class="input-group-addon">
-		<span class="glyphicon glyphicon-time"></span>
-	</span>
-</div>';
-echo '<script type="text/javascript">
-$(\'.clockpicker\').clockpicker({
-	align: \'left\',
-	placement: \'top\',
-	donetext: \'Valider\'
-});
-</script>';
-}
 function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaultsec,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format=0)
 {
     $minTime = str_pad($morningstarts, 2, 0, STR_PAD_LEFT).":00";
@@ -5640,22 +5238,8 @@ function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaults
         </script>';
 }
 
-function spinner ($duration)
-{
-	echo "<input class=\"form-control\" name=\"duration\" value=\"" .$duration. "\" id=\"spinner\" />";
-	echo "<script type=\"text/javascript\" src=\"js/jquery.mousewheel.js\"></script>";
-	echo "<script>$(function() {
-		$('#spinner').spinner({
-			min: 1,
-			page: 10,
-		});});
-</script>";
-}
 /** supprimerReservationsUtilisateursEXT()
- *
  * Supprime les réservations des membres qui proviennent d'une source "EXT"
- *
- *
  * Returns:
  *   0        - An error occured
  *   non-zero - The entries were deleted
@@ -5873,9 +5457,7 @@ function supprimerReservationsUtilisateursEXT($avec_resa,$avec_privileges)
 	}
 }
 /** NettoyerTablesJointure()
- *
  * Supprime les lignes inutiles dans les tables de liaison
- *
  */
 function NettoyerTablesJointure()
 {
@@ -6038,7 +5620,7 @@ function pageHead2($title, $page = "with_session")
         $a .= $types;
 		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 			$a .= '<link rel="stylesheet" type="text/css" href="../themes/print/css/style.css" />'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/jquery-3.7.0.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jquery-ui.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jquery.validate.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
@@ -6086,7 +5668,7 @@ function pageHead2($title, $page = "with_session")
 			$a .= '<link rel="stylesheet" type="text/css" href="include/admin_grr.css" />'.PHP_EOL;
 		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 			$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/jquery-3.7.0.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
         $a .= '<script type="text/javascript" src="js/jquery-ui-i18n.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
@@ -6209,8 +5791,6 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 					echo '</div>'.PHP_EOL;
 				}
 			}
-			//if ($type_session != "with_session")
-			//	echo '<script>selection()</script>'.PHP_EOL;
 			echo '<div class="configuration" >'.PHP_EOL;
 			if (@file_exists($racine.'js/'.$clock_file))
 			{
@@ -6501,15 +6081,15 @@ function grrGetOverloadDescArray($ofl,$od)
     }
     return $overload_array;
 }
-// récupère les variables passées par GET ou POST ou bien par COOKIE, et leur affecte le type indiqué (int ou string)
-// rend $default si la valeur recherchée n'est pas référencée
+/* récupère les variables passées par GET ou POST ou bien par COOKIE, et leur affecte le type indiqué (int ou string)
+ * rend $default si la valeur recherchée n'est pas référencée
+*/
 function getFormVar($nom,$type='',$default=NULL){
     $valeur = isset($_GET[$nom])? $_GET[$nom] : (isset($_POST[$nom])? $_POST[$nom] : (isset($_COOKIE['nom'])? $_COOKIE['nom'] : $default));
     if ((isset($valeur)) && ($type !=''))
         settype($valeur,$type);
     return $valeur;
 }
-
 // Teste si la requête est un appel par AJAX
 function isAjax()
 {
