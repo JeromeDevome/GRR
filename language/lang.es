@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2023-05-13
+# Last modification : 2023-05-22
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -666,7 +666,7 @@ $vocab['norights'] = "Usted no tiene los derechos suficientes para efectuar esta
 $vocab['norooms'] = "Ningún recurso se creó para este ámbito.";
 $vocab['nothing_found'] = "Se encontró ninguna reserva.";
 $vocab['not_found'] = " no encontrada";
-$vocab['not_php3'] = "<H1> CUIDADO: Esta aplicación puede funcionar mal con PHP3</H1>";
+$vocab['not_php3'] = "<H1>ADVERTENCIA: ¡Esta aplicación puede no funcionar correctamente con una versión de php anterior a la 5.6!</H1>";
 $vocab['nouveau_jour_cycle'] = "\"día ciclo\" N°";
 $vocab['no_activ_user'] = "No activo";
 $vocab['no_admin'] = "¡Actualmente nadie, excepto los administradores, está autorizado a gestionar el recurso al lado!";

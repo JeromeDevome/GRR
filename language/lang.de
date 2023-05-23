@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2023-05-13
+# Last modification : 2023-05-22
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -664,7 +664,7 @@ $vocab['norights'] = "Sie haben nicht genügend Rechte, um diese Operation auszu
 $vocab['norooms'] = "Keine Ressource ist für diesen Bereich erstellt worden.";
 $vocab['nothing_found'] = "Keine Reservierung konnte gefunden werden.";
 $vocab['not_found'] = " nicht gefunden";
-$vocab['not_php3'] = "<H1>ACHTUNG: Diese Anwendung kann mit PHP3 eventuell nicht korrekt funktionieren</H1>";
+$vocab['not_php3'] = "<H1>ACHTUNG: Diese Anwendung funktioniert möglicherweise nicht korrekt mit einer PHP-Version älter als 5.6!</H1>";
 $vocab['nouveau_jour_cycle'] = "\"jour cycle\" N° "; // A traduire
 $vocab['no_activ_user'] = "Nicht aktiv";
 $vocab['no_admin'] = "Zur Zeit hat niemand au&#x00DF;er den Administratoren das Recht, die hier aufgeführte Ressource zu verwalten!";

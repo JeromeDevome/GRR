@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2023-05-13
+# Last modification : 2023-05-22
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -663,7 +663,7 @@ $vocab['norights'] = "Non avete i diritti sufficienti per effettuare quest'opera
 $vocab['norooms'] = "Nessuna risorsa è creata per questo settore.";
 $vocab['nothing_found'] = "Nessuna prenotazione è stata trovata.";
 $vocab['not_found'] = " non trovata";
-$vocab['not_php3'] = "<H1>ATTENZIONE : Quest'applicazione può non funzionare correttamente con PHP3</H1>";
+$vocab['not_php3'] = "<H1>ATTENZIONE: Questa applicazione potrebbe non funzionare correttamente con una versione di php precedente alla 5.6!</H1>";
 $vocab['nouveau_jour_cycle'] = "\"jour cycle\" N° "; // A traduire
 $vocab['no_activ_user'] = "Non attivo";
 $vocab['no_admin'] = "Attualmente nessuno, eccetto gli amministratori, non è autorizzato a gestire la risorsa qui di fronte!";
