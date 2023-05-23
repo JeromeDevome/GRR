@@ -3,7 +3,7 @@
  * admin_edit_room.php
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-05-06 17:52$
+ * Dernière modification : $Date: 2023-05-23 11:50$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -256,7 +256,7 @@ if ((!empty($room)) || (isset($area_id)))
 			type_affichage_reser='".protect_data_sql($type_affichage_reser)."',
 			max_booking='".protect_data_sql($max_booking)."',
             booking_range='".protect_data_sql($booking_range)."',
-            max_booking_on_range='"protect_data_sql($max_booking_on_range)."',
+            max_booking_on_range='".protect_data_sql($max_booking_on_range)."',
 			moderate='".$moderate."',
 			statut_room='".$statut_room."'
 			WHERE id=$room";
@@ -291,7 +291,7 @@ if ((!empty($room)) || (isset($area_id)))
 			type_affichage_reser='".protect_data_sql($type_affichage_reser)."',
 			max_booking='".protect_data_sql($max_booking)."',
             booking_range='".protect_data_sql($booking_range)."',
-            max_booking_on_range='"protect_data_sql($max_booking_on_range)."',
+            max_booking_on_range='".protect_data_sql($max_booking_on_range)."',
 			moderate='".$moderate."',
 			statut_room='".$statut_room."'";
 			if (grr_sql_command($sql) < 0)
