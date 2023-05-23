@@ -3,7 +3,7 @@
  * admin_config12.php
  * Interface permettant à l'administrateur la configuration de certains paramètres d'affichage
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2023-05-13 16:21$
+ * Dernière modification : $Date: 2023-05-20 15:05$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -45,7 +45,7 @@ function encode_tableau($a,$modele){
 $plan=array('day','week','week_all','month','month_all','month_all2','year','year_all');
 // options d'affichage
 $opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants');
-//print_r($_POST);die();
+
 // enregistrement des données du formulaire
 // Type d'affichage des listes des domaines et des ressources
 if (isset($_POST['area_list_format'])) {
@@ -214,7 +214,6 @@ if (!empty($_POST)) // évite d'effacer les enregistrements lors du deuxième pa
         echo $vocab['save_err']." select_date_directe !<br />";
         die();
     }
-}
     /*-----MAJ Loïs THOMAS  -->Affichage ou non de la legende -----*/
     $affiche_legende = 1; // i.e. ne pas afficher
     if (isset($_POST['legend'])) 
@@ -255,6 +254,7 @@ if (!empty($_POST)) // évite d'effacer les enregistrements lors du deuxième pa
         echo $vocab['save_err']." show_holidays !<br />";
         die();
     }
+}
 // zone de vacances scolaires
 if (isset($_POST['holidays_zone'])) {
     if (!Settings::set('holidays_zone', $_POST['holidays_zone'])) {
