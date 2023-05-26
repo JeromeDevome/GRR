@@ -3,7 +3,7 @@
  * month.php
  * Interface d'accueil avec affichage par mois pour une ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-04-08 16:10$
+ * Dernière modification : $Date: 2023-05-26 09:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -95,6 +95,13 @@ if (!isset($room)){
     echo "</p>";
     die();
 }
+// vérifie si la date est dans la période réservable
+if (check_begin_end_bookings($day, $month, $year))
+{
+    start_page_w_header($day,$month,$year,$type_session);
+	showNoBookings($day, $month, $year, $back);
+	exit();
+}
 //Heure de début du mois, cela ne sert à rien de reprendre les valeurs morningstarts/eveningends
 $month_start = mktime(0, 0, 0, $month, 1, $year);
 //Dans quel colonne l'affichage commence: 0 veut dire $weekstarts
@@ -144,16 +151,6 @@ $options = decode_options(Settings::get('cell_month'),$opt);
 $options_popup = decode_options(Settings::get('popup_month'),$opt);
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
 // calcul du contenu du planning
-/*$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
-FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
-where
-".TABLE_PREFIX."_entry.room_id = '".$room."' and
-".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id and
-".TABLE_PREFIX."_area.id = ".TABLE_PREFIX."_room.area_id and
-".TABLE_PREFIX."_type_area.type_letter = ".TABLE_PREFIX."_entry.type AND
-start_time <= $month_end AND
-end_time > $month_start
-ORDER by start_time, end_time";*/
 $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
 FROM (".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id) 
 WHERE ".TABLE_PREFIX."_entry.room_id = ".$room."

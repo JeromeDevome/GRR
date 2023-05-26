@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-04-08 16:09$
+ * Dernière modification : $Date: 2023-05-26 09:29$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -85,7 +85,13 @@ if (!($desactive_VerifNomPrenomUser))
     $desactive_VerifNomPrenomUser = 'n';
 // On vérifie que les noms et prénoms ne sont pas vides
 VerifNomPrenomUser($type_session);
-
+// vérifie si la date est dans la période réservable
+if (check_begin_end_bookings($day, $month, $year))
+{
+    start_page_w_header($day,$month,$year,$type_session);
+	showNoBookings($day, $month, $year, $back);
+	exit();
+}
 // autres initialisations
 $adm = 0;
 $racine = "./";
