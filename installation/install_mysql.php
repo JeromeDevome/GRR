@@ -3,9 +3,9 @@
  * install_mysql.php
  * Interface d'installation de GRR pour un environnement mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-10 11:16$
+ * Dernière modification : $Date: 2023-05-26 10:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -394,15 +394,15 @@ else if ($etape == 2)
 	echo begin_simple_page("Installation de GRR");
 	begin_html();
 	echo "<br /><h2>Deuxième étape : Essai de connexion au serveur $dbsys</h2>\n";
-	//echo "<!--";
-	$db = mysqli_connect($adresse_db,$login_db,$pass_db,"",$port_db);
-	$db_connect = mysqli_errno($db);
+	mysqli_report(MYSQLI_REPORT_OFF);
+	$db = @mysqli_connect($adresse_db,$login_db,$pass_db,"",$port_db);
+	$db_connect = mysqli_connect_errno();
 	if (($db_connect != "0") && (!$db))
 	{
 		if ($adresse_db == "localhost")
 			$adresse_db = "";
-		$db = mysqli_connect($adresse_db,$login_db,$pass_db,"",$port_db);
-		$db_connect = mysqli_errno($db);
+		$db = @mysqli_connect($adresse_db,$login_db,$pass_db,"",$port_db);
+		$db_connect = mysqli_connect_errno();
 	}
 	if (($db_connect=="0") && $db)
 	{
