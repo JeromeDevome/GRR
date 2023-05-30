@@ -123,7 +123,7 @@ if (@file_exists($nom_fic))
 if ($etape == 4)
 {
 
-	if(isset($_GET['mdp1']) && isset($_GET['mdp2']) && strlen($_GET['mdp1']) > 7 && $_GET['mdp1'] == $_GET['mdp2']){
+	if(isset($_GET['mdp1']) && isset($_GET['mdp2']) && strlen($_GET['mdp1']) > 7 && $_GET['mdp1'] == $_GET['mdp2'] && $_GET['mdp1'] != $_GET['email'] && $_GET['mdp1'] != $_GET['webmaster_email'] && $_GET['mdp1'] != $_GET['technical_support_email']){
 
 		$company = isset($_GET["company"]) ? $_GET["company"] : 'Nom du GRR';
 		$grr_url = isset($_GET["grr_url"]) ? $_GET["grr_url"] : 'https://mygrr.net/';
