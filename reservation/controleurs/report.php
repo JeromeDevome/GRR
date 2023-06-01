@@ -3,9 +3,9 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-18 19:00$
+ * Dernière modification : $Date: 2023-06-01 18:05$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2019 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.htmlselectType
  *
  * This file is part of GRR.
@@ -148,6 +148,7 @@ get_vocab_admin("ppreview");
 get_vocab_admin("nothing_found");
 get_vocab_admin("entry_found");
 get_vocab_admin("entries_found");
+get_vocab_admin("date");
 get_vocab_admin("time");
 get_vocab_admin("duration");
 get_vocab_admin("lastupdate");
@@ -224,7 +225,7 @@ while ($k < $nb_ligne)
 // [4]   Descrition,(HTML) -> e.description
 // [5]   Type -> e.type
 // [6]   réservé par (nom ou IP), (HTML) -> e.beneficiaire
-// [12]  les champs additionnele -> e.overload_desc
+// [12]  les champs additionnels -> e.overload_desc
 
 // On récupère les infos sur le champ add pour le résumé par...
 $champsAddResume = array();
