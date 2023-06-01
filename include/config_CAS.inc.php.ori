@@ -41,7 +41,7 @@ function getAttribute($key)
 /*
  Récupération des différents attributs de l'annuaire LDAP envoyés par le serveur CAS
  Explication de la première ligne :
- phpCAS::getAttribute('user_nom_ldap') est la variable envoyé par CAS
+ phpCAS::getAttribute('user_nom_ldap') est la variable envoyée par CAS
  La fonction recuperer_nom() permet de traiter cette variable pour récupérer la valeur utilisée dans GRR
  Le résultat est alors stocké dans $user_nom
 
