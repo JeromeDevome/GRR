@@ -3,9 +3,9 @@
  * admin_config_ldap.php
  * Interface permettant la configuration de l'accès à un annuaire LDAP
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2023-06-07 16:25$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -186,7 +186,7 @@ if (isset($_POST['reg_ldap_statut']))
 			$conn = "<"."?php\n";
 			$conn .= "# Les quatre lignes suivantes sont à modifier selon votre configuration\n";
 			$conn .= "# ligne suivante : l'adresse de l'annuaire LDAP.\n";
-			$conn .= "# Si c'est le même que celui qui heberge les scripts, mettre \"localhost\"\n";
+			$conn .= "# Si c'est le même que celui qui heberge les scripts, mettre \"ldap://localhost\"\n";
 			$conn .= "\$ldap_adresse='".$adresse."';\n";
 			$conn .= "# ligne suivante : le port utilisé\n";
 			$conn .= "\$ldap_port='".$port."';\n";
@@ -330,7 +330,7 @@ if (isset($_POST['reg_ldap_statut']))
 			include("../personnalisation/config_ldap.inc.php");
 
 		if ((!(isset($ldap_adresse))) || ($ldap_adresse == ""))
-			$ldap_adresse = 'localhost';
+			$ldap_adresse = 'ldap://localhost';
 		if ((!(isset($ldap_port))) || ($ldap_port == ""))
 			$ldap_port = 389;
 		if (!(isset($ldap_login)))

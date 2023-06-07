@@ -29,8 +29,8 @@
 
 						<h3>Informations de connexion à l'annuaire LDAP</h3>
 
-						{{ form.input('adresse', 'Adresse de l\'annuaire. Laissez «localhost» si l\'annuaire est installé sur la même machine que GRR. Sinon, indiquez l\'adresse du serveur.', trad.dAdresseLDAP, {classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', require:1}) }}
-						{{ form.input('port', 'Numéro de port de LDAP. Dans le doute, laissez la valeur par défaut : 389 (3268 pour serveur de catalogues global AD)', trad.dPortLDAP, {classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number', require:1}) }}
+						{{ form.input('adresse', 'Adresse de l\'annuaire. Laissez «ldap://localhost» si l\'annuaire est installé sur la même machine que GRR. Sinon, indiquez l\'adresse du serveur. Utilisez le protocole ldaps:// si c\'est votre cas.', trad.dAdresseLDAP, {classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', require:1}) }}
+						{{ form.input('port', 'Numéro de port de LDAP. Dans le doute, laissez la valeur par défaut : 389 (3268 pour serveur de catalogues global AD, 636 pour ldaps (LDAP over SSH))', trad.dPortLDAP, {classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number', require:1}) }}
 
 						<p>Si le serveur LDAP n'accepte pas d'accès anonyme, veuillez préciser un identifiant (par exemple « cn=jean, o=lycée, c=fr »). Laissez les champs suivants vides pour un accès anonyme.</p>
 
