@@ -16,15 +16,19 @@
  * (at your option) any later version.
  */
 
+$moncompte = true;
+
 require '../vendor/autoload.php';
 require '../include/twiggrr.class.php';
+
+#GRR
+require "../include/functions.inc.php";
 
 $page = 'moncompte';
 if(isset($_GET['p'])){
 	$page = alphanum($_GET['p']);
 }
 
-// GRR
 include "../include/admin.inc.php";
 require_once('../include/session.inc.php');
 include_once('../include/settings.class.php');
@@ -71,7 +75,18 @@ $menuAdminT = array();
 $menuAdminTN2 = array();
 //include "admin_col_gauche.php";
 
-include('controleurs/'.$page.'.php');
+// Sécurité
+$listeFichiers = array();
+$dossierLister = new DirectoryIterator("controleurs/");
+foreach ($dossierLister as $fileinfo) {
+	if($fileinfo->isFile() && $fileinfo->getExtension() == "php") {
+		$listeFichiers[] = $fileinfo->getFilename();
+	}
+}
 
+if(in_array($page.".php",$listeFichiers))
+	include('controleurs/'.$page.'.php');
+else
+	include('controleurs/index.php');
 
 ?>

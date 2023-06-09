@@ -85,7 +85,20 @@ $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/reservation/templates');
 $twig = new \Twig\Environment($loader,['charset']);
 $twig->addExtension(new TwigGRR());
 
-include('./reservation/controleurs/'.$page.'.php');
+
+// Sécurité
+$listeFichiers = array();
+$dossierLister = new DirectoryIterator("./reservation/controleurs/");
+foreach ($dossierLister as $fileinfo) {
+	if($fileinfo->isFile() && $fileinfo->getExtension() == "php") {
+		$listeFichiers[] = $fileinfo->getFilename();
+	}
+}
+
+if(in_array($page.".php",$listeFichiers))
+	include('./reservation/controleurs/'.$page.'.php');
+else
+	include('./reservation/controleurs/index.php');
 
 
 ?>

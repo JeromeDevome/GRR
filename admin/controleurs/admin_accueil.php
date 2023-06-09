@@ -49,5 +49,5 @@ get_vocab_admin("created_by");
 get_vocab_admin("nom_beneficiaire");
 list($trad['dNombreModeration'], $trad['dListeModeration'])  = AdminFonctions::ReservationsAModerer(getUserName());
 
-
+echo $twig->render('admin_accueil.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 ?>

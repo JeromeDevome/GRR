@@ -26,7 +26,7 @@ include "config.inc.php";
 include "$dbsys.inc.php";
 include "mrbs_sql.inc.php";
 include "misc.inc.php";
-if(!isset($administration) || $administration != true)
+if( (!isset($administration) || $administration != true) && (!isset($moncompte) || $moncompte != true))
 	include "functions.inc.php";
 
 
