@@ -155,7 +155,7 @@ echo '<table class="table_adm">';
                         //echo $cours;
                         //echo("<p><b>Structure</b><br />");
                     foreach($cours->attributes() as $key => $value) {
-                        echo(" Cours ".protect_data_sql($key)." -&gt;".protect_data_sql($value)."<br />");
+                        echo(" Cours ".clean_input($key)." -&gt;".clean_input($value)."<br />");
                         $i++;
                         $tab_cours[$i]=array();
                         $tab_cours[$i]['attribut'][$key]=$value;
@@ -166,7 +166,7 @@ echo '<table class="table_adm">';
                         }
                                 //print_r($tab_cours[$i]);
                         $salle = $tab_cours[$i]['enfant']['salle']; // traiter le cas d'une salle vide ?
-                        $room_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_room WHERE room_name='".$salle."'");
+                        $room_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_room WHERE room_name='".protect_data_sql($salle)."'");
                         $jour_semaine = $joursemaine[substr(strtolower($tab_cours[$i]['enfant']['jour']),0,3)]; 
                         $name = $tab_cours[$i]['enfant']['classe'].' - '.$tab_cours[$i]['enfant']['mat_libelle']; // nettoyer le code classe pour les groupes complexes 
                         $description = $tab_cours[$i]['enfant']['prof_nom'].' '.$tab_cours[$i]['enfant']['prof_prenom'];
