@@ -1,9 +1,9 @@
 <?php
 /**
- * edit_entry.php
+ * edit_entry.php patché pour la prise en compte de la fonctionnalité "ressource empruntée"
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-05-20 15:56$
+ * Dernière modification : $Date: 2023-06-13 15:51$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1116,6 +1116,17 @@ if (Settings::get("show_courrier") == 'y'){ // proposition scoubinaire le 12/03/
     echo ' > '.get_vocab("msg_courrier");
     echo '</div>'.PHP_EOL;
 }
+// ressource empruntée
+if(($Room['active_ressource_empruntee'] == 'y')&& (authGetUserLevel($user_name,$room_id) >= 3)){
+	echo '<div class="E">'.PHP_EOL;
+	echo '<label for="statut_entry">'.get_vocab("signaler_reservation_en_cours").get_vocab("deux_points").PHP_EOL;
+	echo '</label>'.PHP_EOL;
+	echo '<input name="statut_entry" type="checkbox" value="y" ';
+	if (isset($statut_entry) && $statut_entry == "y")
+		echo 'checked';
+	echo ' > '.get_vocab("msg_ressource_empruntee");
+	echo '</div>'.PHP_EOL;
+}
 
 echo '<div class="bg-info">',PHP_EOL;
 echo '<p><b>'.get_vocab("required").'</b></p></div>'.PHP_EOL;
@@ -1338,9 +1349,9 @@ echo '<input type="hidden" name="edit_type" value="'.$edit_type.'" />';
 echo '<input type="hidden" name="page" value="'.$page.'" />';
 echo '<input type="hidden" name="room_back" value="'.$room_back.'" />';
 echo '<input type="hidden" name="page_ret" value="'.$page_ret.'" />';
-if (!isset($statut_entry) || ($statut_entry == ""))
-	$statut_entry = "-";
-echo '<input type="hidden" name="statut_entry" value="'.$statut_entry.'" />'.PHP_EOL;
+//if (!isset($statut_entry) || ($statut_entry == ""))
+//	$statut_entry = "-";
+//echo '<input type="hidden" name="statut_entry" value="'.$statut_entry.'" />'.PHP_EOL;
 echo '<input type="hidden" name="create_by" value="'.$create_by.'" />'.PHP_EOL;
 if (($id!=0)&&(!isset($_GET["copier"])))
     echo '<input type="hidden" name="id" value="'.$id.'" />'.PHP_EOL;

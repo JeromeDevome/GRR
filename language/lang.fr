@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2023-05-22
+# Last modification : 2023-06-13
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -649,6 +649,7 @@ $vocab['msg_max_booking_area'] = "Le nombre maximum de réservations de ce domai
 $vocab['msg_moderation_reservation'] = "<b>Modérer les réservations de cette ressource</b><br />Une réservation n'est effective qu'après validation par un administrateur du domaine ou un gestionnaire de la ressource.";
 $vocab['msg_no_email'] = "Si vous ne souhaitez plus recevoir ces messages automatiques, écrivez en ce sens au gestionnaire de Grr : ";
 $vocab['msg_option_de_reservation'] = "<b>Poser des réservations \"sous réserve\"</b> : indiquer une valeur différente de 0 pour activer cette fonctionnalité.<br />La valeur ci-contre désigne le nombre maximal de jours dont dispose le réservant pour confirmer une réservation.";
+$vocab['msg_ressource_empruntee'] = "Cocher si la ressource est empruntée";
 $vocab['msg_type_created'] = "Vous venez de créer un nouveau type de réservation.";
 $vocab['my_data'] = "Mes données";
 $vocab['name'] = "Nom";

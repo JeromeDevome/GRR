@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2023-05-22
+# Last modification : 2023-06-13
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -633,6 +633,7 @@ $vocab['msg_moderation_reservation'] = "<b>Moderar las reservas de este recurso<
 $vocab['msg_no_email'] = "Si usted no desea recibir estos mensajes automáticos, escriba al gestor de Grr : ";
 $vocab['msg_option_de_reservation'] = "<b>Poner reservas \"sin garantía\"</b> : Indicar un valor diferente de 0 para activar esta funcionalidad.
 <br />El valor al lado representa el número máximo de días del que dispone él que reserva para confirmar una reserva.";
+$vocab['msg_ressource_empruntee'] = "Comprobar si el recurso es prestado";
 $vocab['msg_type_created'] = "Acaba de crear un nuevo tipo de reserva";
 $vocab['name'] = "Apellido";
 $vocab['namebooker'] = "Breve descripción :";

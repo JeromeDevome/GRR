@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2023-05-22
+# Last modification : 2023-06-13
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -630,6 +630,7 @@ $vocab['msg_max_booking_area'] = "Le nombre maximum de réservations de ce domai
 $vocab['msg_moderation_reservation'] = "<b>Moderare le prenotazioni di questa risorsa </b><br /> Una prenotazione è effettiva solamente dopo convalida per un amministratore del campo o un gestore della risorsa.";
 $vocab['msg_no_email'] = "Se non desiderate ricevere più questi messaggi automatici, scrivete in questo senso all'amministratore di Grr : ";
 $vocab['msg_option_de_reservation'] = "<b>Porre delle prenotazioni \"sotto riserva \" </b>: indicare un valore differente di 0 per attivare questa funzionalità.<br /> Il valore designa di fronte il numero massimale di giorni di cui dispongo riservandolo per confermare una prenotazione.";
+$vocab['msg_ressource_empruntee'] = "Controlla se la risorsa è presa in prestito";
 $vocab['msg_type_created'] = "Ha appena creato un nuovo tipo di prenotazione.";
 $vocab['name'] = "Nome";
 $vocab['namebooker'] = "Breve descrizione";

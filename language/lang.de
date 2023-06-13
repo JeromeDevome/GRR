@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2023-05-22
+# Last modification : 2023-06-13
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -631,6 +631,7 @@ $vocab['msg_max_booking_area'] = "Le nombre maximum de réservations de ce domai
 $vocab['msg_moderation_reservation'] = "<b>Die Reservierungen dieser Ressource moderieren</b><br />Eine Reservierung tritt nur nach ihrer Bestätigung durch einen Administrator oder Ressourceverwalter in Kraft.";
 $vocab['msg_no_email'] = "Wenn sie diese automatische Nachricht nicht mehr erhalten wollen, wenden Sie sich bitte an Ihren GRR-Systemverwalter: ";
 $vocab['msg_option_de_reservation'] = "<b>\"Ohne Gewähr\" reservieren</b> : tippen Sie einen Wert anders als 0 ein, um diese Funktionalität zu aktivieren.<br />Der eingetippte Wert entspricht die maximale Anzahl von Tagen, wo ein Benutzer seine Reservierung bestätigen muss.";
+$vocab['msg_ressource_empruntee'] = "Überprüfen, ob die Ressource ausgeliehen ist";
 $vocab['msg_type_created'] = "Sie haben eine neue Reservierungsart geschaffen.";
 $vocab['name'] = "Name";
 $vocab['namebooker'] = "Kurzbeschreibung";

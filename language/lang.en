@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2023-05-22
+# Last modification : 2023-06-13
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -645,6 +645,7 @@ $vocab['msg_max_booking_area'] = "For each user, this area cannot be reserved mo
 $vocab['msg_moderation_reservation'] = "<b>Moderate the reservations of this resource</b><br />A reservation is effective only after the validation by an area administrator or a manager of the ressource .";
 $vocab['msg_no_email'] = "If you no longer wish to get these automatic mails, write to GRR manager: ";
 $vocab['msg_option_de_reservation'] = "<b>Reservations \"to be confirmed\"</b>: indicate a different value from 0 to activate this feature.<br /> The value opposite indicates the maximal number of days a user gets to confirm a reservation";
+$vocab['msg_ressource_empruntee'] = "Check if the resource is borrowed";
 $vocab['msg_type_created'] = "You've just create a new type of reservation";
 $vocab['name'] = "Name";
 $vocab['namebooker'] = "Short description";
