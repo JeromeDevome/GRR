@@ -32,7 +32,7 @@ $trad['dNombreUtilisateur'] = AdminFonctions::NombreUtilisateurs();
 
 // Widget mot de passe facile
 get_vocab_admin("admin_user_mdp_facile");
-$trad['dNombreMDPFacile'] = AdminFonctions::NombreUtilisateursMDPfacile();
+$trad['dNombreMDPFacile'] = "N/A"; //AdminFonctions::NombreUtilisateursMDPfacile();
 
 // WARNING
 $d['alerteTDB'] = AdminFonctions::Warning();
