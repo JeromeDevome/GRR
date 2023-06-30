@@ -8,6 +8,7 @@ Version 4.1.0 RC1 - 06/05/2023 Généré par @JeromeDevome
 [Ajout] Possibilité d'ajouté des liens dans l'admin via le fichier configperso @JeromeDevome
 [Ajout] Possibilité de désactiver l'échange de réservation @JeromeDevome
 [Ajout] Captcha pour le formulaire de contact pour les réservations @JeromeDevome
+[Ajout] Interdire l'adresse mail comme mot de passe lors de l'installation @gregouzdev
 [Correction] Calcul des droits pour un gestionnaire de ressource @ynaessens
 [Correction] Récupération des attributs issus d'un serveur CAS @ynaessens
 [Correction] Affichage des réservations week sur créneau 1h30 @JeromeDevome
