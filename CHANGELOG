@@ -14,7 +14,8 @@ Version 4.1.0 RC1 - 06/05/2023 Généré par @JeromeDevome
 [Correction] Possibilité de réserver depuis la page week après avoir supprimé une réservation sur toute la journée @JeromeDevome
 [Correction] Échange de réservation @ynaessens
 [Correction] Formulaire de contact pour réservation @JeromeDevome
-[Correction] Erreur JS dans l'administration @JeromeDevome
+[Correction] Erreur JS dans l'administration (Pb v4.0.0) @JeromeDevome
+[Correction] Correction champ SSO modification des informations (Pb v4.0.0) @ynaessens
 [Modification] Sélecteur de date passage en Bootstap @JeromeDevome
 [Modification] Nettoyage fonction UTF8 @ynaessens
 [Modification] Passage à Jquery3 @JeromeDevome
@@ -22,7 +23,9 @@ Version 4.1.0 RC1 - 06/05/2023 Généré par @JeromeDevome
 [Modification] Sécurisation de la session @JeromeDevome
 [Modification] Mise à jour des librairies JS @JeromeDevome
 [Modification] Passage de twig 2 à 3 @JeromeDevome 
+[Modification]Mise à jour librairie PHP @JeromeDevome
 [Suppression] Librairies non utilisées @JeromeDevome
+[Suppression] [Temporaire] Tableau de bord contrôle des mots de passes faciles - Problème timeout, avec un grand nombre d'utilisateur @JeromeDevome
 
 -----
 --
