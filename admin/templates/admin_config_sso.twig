@@ -60,13 +60,13 @@
 											<div class="form-group row col-sm-12">
 												<label class="col-sm-8" for="cacher_lien_deconnecter">{{ trad.sso_actif_cacher_lien_deconnecter }}</label>
 												<div class="col-sm-4">
-													<input type="checkbox" name="cacher_lien_deconnecter" value="y" {% if settings.cacher_lien_deconnecter == 'y' %} checked {% endif %}>
+													<input type="checkbox" name="cacher_lien_deconnecter" id="cacher_lien_deconnecter" value="y" {% if settings.cacher_lien_deconnecter == 'y' %} checked {% endif %}>
 												</div>
 											</div>
 											<div class="form-group row col-sm-12">
-												<label class="col-sm-8" for="sso_actif_cacher_lien_deconnecter">{{ trad.sso_IsNotAllowedModify }}</label>
+												<label class="col-sm-8" for="sso_IsNotAllowedModify">{{ trad.sso_IsNotAllowedModify }}</label>
 												<div class="col-sm-4">
-													<input type="checkbox" name="sso_actif_cacher_lien_deconnecter" value="y" {% if settings.sso_actif_cacher_lien_deconnecter == 'y' %} checked {% endif %}>
+													<input type="checkbox" name="sso_IsNotAllowedModify" id="sso_IsNotAllowedModify" value="y" {% if settings.sso_IsNotAllowedModify == 'y' %} checked {% endif %}>
 												</div>
 											</div>
 											{{ form.input('Url_portail_sso', trad.Url_portail_sso_explain, settings.Url_portail_sso, {classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label'}) }}
@@ -89,7 +89,7 @@
 										<div class="form-group row col-sm-12">
 											<label class="col-sm-6" for="cas_version">{{ trad.cas_version }}</label>
 											<div class="col-sm-6">
-												<select class="form-control" name="cas_version">
+												<select class="form-control" name="cas_version" id="cas_version">
 													<option value="CAS_VERSION_1_0" {% if settings.cas_version == 'CAS_VERSION_1_0' %} selected {% endif %}>CAS_VERSION_1_0</option>
 													<option value="CAS_VERSION_2_0" {% if settings.cas_version == 'CAS_VERSION_2_0' %} selected {% endif %}>CAS_VERSION_2_0</option>
 													<option value="CAS_VERSION_3_0" {% if settings.cas_version == 'CAS_VERSION_3_0' %} selected {% endif %}>CAS_VERSION_3_0</option>
@@ -111,14 +111,14 @@
 										<div class="form-group row col-sm-12">
 											<label class="col-sm-11" for="sso_redirection_accueil_grr">{{ trad.sso_redirection_accueil_grr_text2 }}</label>
 											<div class="col-sm-1">
-												<input type="checkbox" name="sso_redirection_accueil_grr" value="y" {% if settings.sso_redirection_accueil_grr == 'y' %} checked {% endif %}>
+												<input type="checkbox" name="sso_redirection_accueil_grr" id="sso_redirection_accueil_grr" value="y" {% if settings.sso_redirection_accueil_grr == 'y' %} checked {% endif %}>
 											</div>
 										</div>
 										<p>{{ trad.sso_active_correspondance_profil_statut_text }}</p>
 										<div class="form-group row col-sm-12">
 											<label class="col-sm-11" for="sso_active_correspondance_profil_statut">{{ trad.sso_active_correspondance_profil_statut }}</label>
 											<div class="col-sm-1">
-												<input type="checkbox" name="sso_active_correspondance_profil_statut" value="y" {% if settings.sso_ac_corr_profil_statut == 'y' %} checked {% endif %}>
+												<input type="checkbox" name="sso_active_correspondance_profil_statut" id="sso_active_correspondance_profil_statut" value="y" {% if settings.sso_ac_corr_profil_statut == 'y' %} checked {% endif %}>
 											</div>
 										</div>	
 									</div>
