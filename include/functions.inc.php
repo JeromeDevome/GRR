@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-05-15 11:15$
+ * Dernière modification : $Date: 2023-07-11 15:47$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1602,7 +1602,7 @@ function VerifNomPrenomUser($type)
 		$test = grr_sql_query1("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE (login = '".getUserName()."' AND (nom='' or prenom = ''))");
 		if ($test != -1)
 		{
-			header("Location:my_account.php");
+			header("Location: /compte/compte.php");
 			die();
 		}
 	}
@@ -6403,13 +6403,8 @@ function clean_input($data){
 * pour réduire les vulnérabilités
 */
 function alphanum($data){
-
-	$data = trim($data);
-	$data = stripslashes($data);
-	$data = htmlentities($data);
-	$data = preg_replace('/[^A-Za-z0-9\-_]/', '', $data);
-
-	return $data;
+    $data = preg_replace('/[^A-Za-z0-9\-_]/', '', $data);
+    return $data;
 }
 
 // Génération d'un Token aléatoire

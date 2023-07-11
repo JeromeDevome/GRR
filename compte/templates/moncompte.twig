@@ -16,27 +16,27 @@
 				<h2 class="avertissement">{{ trad.nom_prenom_valides }}</h2>
 			{% endif %}
 			<tr><td><b>{{ trad.login }}</b></td><td>{{ d.identifiant }}</td></tr>
-			{% if modificationNom == true %}
+			{% if d.modificationNom %}
+                <tr><td><b>{{ trad.last_name }}*</b></td><td><input class="form-control" type="text" name="reg_nom" value="{{ d.user_nom }}" size="30" required></td></tr>
+				<tr><td><b>{{ trad.first_name }}*</b></td><td><input class="form-control" type="text" name="reg_prenom" value="{{ d.user_prenom }}" size="30" required></td></tr>
+			{% else %}
 				<tr><td><b>{{ trad.last_name }}</b></td><td>{{ d.user_nom }}</td></tr>
 				<tr><td><b>{{ trad.first_name }}</b></td><td>{{ d.user_prenom }}</td></tr>
-			{% else %}
-				<tr><td><b>{{ trad.last_name }}*</b></td><td><input class="form-control" type="text" name="reg_nom" value="{{ d.user_nom }}" size="30" required></td></tr>
-				<tr><td><b>{{ trad.first_name }}*</b></td><td><input class="form-control" type="text" name="reg_prenom" value="{{ d.user_prenom }}" size="30" required></td></tr>
 			{% endif %}
-			{% if modificationMail == true %}
-				<tr><td><b>{{ trad.mail_user }}{% if settings.mail_user_obligatoire == 'y'%}*{%endif%}</b></td><td>{{ d.user_email }}</td></tr>
-			{% else %}
+			{% if d.modificationMail %}
 				<tr><td><b>{{ trad.mail_user }}{% if settings.mail_user_obligatoire == 'y'%}*{%endif%}</b></td><td><input class="form-control" type="email" name="reg_email" value="{{ d.user_email }}" size="30"{% if settings.mail_user_obligatoire == 'y'%}required{%endif%}></td></tr>
+			{% else %}
+				<tr><td><b>{{ trad.mail_user }}{% if settings.mail_user_obligatoire == 'y'%}*{%endif%}</b></td><td>{{ d.user_email }}</td></tr>
 			{% endif %}
 			<tr><td><b>{{ trad.statut }}</b></td><td>{{ d.text_user_statut }}</td></tr>
 		</table>
-		{% if modificationNom == false %}
+		{% if d.modificationNom %}
 			<p>{{ trad.required }}</p>
 		{% endif %}
 
 		<hr>
 
-		{% if modificationMDP == false %}
+		{% if d.modificationMDP %}
 			<div>
 				<p>{{ trad.pwd_msg_warning }}</p>
 
