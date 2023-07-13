@@ -5,11 +5,11 @@
 {% block content %}
 
 <div class="row">
-	<div class="col-xs12">
+	<div class="col col-xs12">
 		<div class="row">
 
 			<!-- Nombre d'utilisateur connecté -->
-			<div class="col-md-4 col-sm-12 col-xs-12">
+			<div class="col col-md-4 col-sm-12 col-xs-12">
 				<div class="info-box">
 					<span class="info-box-icon bg-green"><i class="fas fa-users"></i></span>
 
@@ -23,7 +23,7 @@
 			</div>
 
 			<!-- Nombre d'utilisateur avec un mot de passe facile -->
-			<div class="col-md-4 col-sm-6 col-xs-12">
+			<div class="col col-md-4 col-sm-6 col-xs-12">
 				<div class="info-box">
 					<span class="info-box-icon bg-orange"><i class="fas fa-user-shield "></i></span>
 
@@ -36,7 +36,7 @@
 			</div>
 
 			<!-- Actions rapide -->
-			<div class="col-md-4 col-sm-6 col-xs-12">
+			<div class="col col-md-4 col-sm-6 col-xs-12">
 				{% if trad.dLevel >=6 %}
 					<a  href="admin_save_mysql.php?flag_connect=yes" class="btn btn-app">
 						<i class="fa fa-save"></i> Backup
@@ -47,7 +47,7 @@
 		</div>
 		<div class="row">
 			<!-- Anomalies -->
-			<div class="col-md12">
+			<div class="col col-md12">
 
 				{% for alerte in d.alerteTDB %}
 					<div class="info-box bg-{{ alerte.type }}">
@@ -81,72 +81,90 @@
 		<div class="row">
 
 			<!-- Nombre d'utilisateur connecté -->
-			<div class="col-md-6 col-sm-12 col-xs-12">
-				<div class="box box-success">
-					<div class="box-header">
-						<h3 class="box-title">Les dernières connexions</h3>
-					</div>
+			<div class="col col-md-6 col-sm-12 col-xs-12">
 					<!-- /.box-header -->
-					<div class="box-body no-padding">
-						<table class="table table-condensed">
-							<tbody>
-								<tr>
-									<th style="width: 10px">#</th>
-									<th>{{ trad.login_name }}</th>
-									<th>{{ trad.begining_of_session }}</th>
-								</tr>
-								{% for log in trad.dDernieresConnexions %}
-									<tr {% if log.clos == 0 %}class="success"{% endif %}>
-										{% if log.clos == 0 %}
-											<td><span class="badge bg-green">O</span></td>
-										{% else %}
-											<td><span class="badge bg-red">O</span></td>
-										{% endif %}
-										<td>{{ log.login }}</td>
-										<td>{{ log.debut }}</td>
-									</tr>
-								{% endfor %}
-							</tbody>
-						</table>
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title">
+							<i class="fas fa-columns mr-1"></i>
+							Dernières connexions
+							</h3>
+						</div><!-- /.card-header -->
+						<div class="card-body">
+							<div class="tab-content p-0">
+								<table class="table table-condensed">
+									<tbody>
+										<tr>
+											<th style="width: 10px">#</th>
+											<th>{{ trad.login_name }}</th>
+											<th>{{ trad.begining_of_session }}</th>
+										</tr>
+										{% for log in trad.dDernieresConnexions %}
+											<tr {% if log.clos == 0 %}class="success"{% endif %}>
+												{% if log.clos == 0 %}
+													<td><span class="badge bg-green">O</span></td>
+												{% else %}
+													<td><span class="badge bg-red">O</span></td>
+												{% endif %}
+												<td>{{ log.login }}</td>
+												<td>{{ log.debut }}</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div><!-- /.card-body -->
 					</div>
-					<!-- /.box-body -->
-				</div>
 			</div>
 
 			<!-- Réservations à modérer -->
-			<div class="col-md-6 col-sm-12 col-xs-12">
-				<div class="box box-info">
-					<div class="box-header">
-						<h3 class="box-title">{{ trad.dNombreModeration }} réservation(s) à modérer</h3>
-					</div>
-					<!-- /.box-header -->
-					<div class="box-body no-padding">
-						<table class="table table-condensed">
-							<thead>
-								<tr>
-									<th>{{ trad.room }}</th>
-									<th>{{ trad.start_date }}</th>
-									<th>{{ trad.created_by }}</th>
-									<th>{{ trad.nom_beneficiaire }}</th>
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for resaMode in trad.dListeModeration %}
-									<tr>
-										<td>{{ resaMode.ressource }}</td>
-										<td>{{ resaMode.debut }}</td>
-										<td>{{ resaMode.createur }}</td>
-										<td>{{ resaMode.beneficiaire }}</td>
-										<td><a href='{{ resaMode.lien }}'><span class='fa fa-eye'></span></a></td>
-									</tr>
-								{% endfor %}
-							</tbody>
-						</table>
-					</div>
-					<!-- /.box-body -->
+			<div class="col col-md-6 col-sm-12 col-xs-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">
+						<i class="fas fa-th mr-1"></i>
+						{{ trad.dNombreModeration }} réservation(s) à modérer
+						</h3>
+					</div><!-- /.card-header -->
+					<div class="card-body">
+						<div class="tab-content p-0">
+								<table class="table table-condensed">
+									<thead>
+										<tr>
+											<th>{{ trad.room }}</th>
+											<th>{{ trad.start_date }}</th>
+											<th>{{ trad.created_by }}</th>
+											<th>{{ trad.nom_beneficiaire }}</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for resaMode in trad.dListeModeration %}
+											<tr>
+												<td>{{ resaMode.ressource }}</td>
+												<td>{{ resaMode.debut }}</td>
+												<td>{{ resaMode.createur }}</td>
+												<td>{{ resaMode.beneficiaire }}</td>
+												<td><a href='{{ resaMode.lien }}'><span class='fa fa-eye'></span></a></td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+						</div>
+					</div><!-- /.card-body -->
 				</div>
 			</div>
+
+
+
+
+
+
+
+
+
+
+
 		</div>
 
 	</div>
