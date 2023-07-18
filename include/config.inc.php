@@ -251,4 +251,6 @@ $menuAdminComplNiv2Connexions = [];
 
 if(file_exists('../personnalisation/configperso.inc.php'))
 	include('../personnalisation/configperso.inc.php');
+elseif(file_exists('personnalisation/configperso.inc.php'))
+	include('personnalisation/configperso.inc.php');
 ?>
