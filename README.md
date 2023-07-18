@@ -24,8 +24,7 @@ Chat/Discord : https://discord.com/channels/484639573243068417/
 
 **Requiert :**
 
-PHP : >= 7.2.5 && <= 8.1; nécessite au moins les modules php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml (*)
-si vous utilisez php 8.1, il faut soit inclure le module php-intl, soit désactiver les messages E_DEPRECATED
+PHP : >= 7.2.5 && <= 8.1; nécessite au moins les modules php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml, php-intl (*)
 MySQL: >= 5.4 && <= 5.7
 
 
@@ -51,8 +50,9 @@ Vous devez faire une mise à jour classique en suivant la procédure habituelle 
 
 En plus de la mise à jour classique, veuillez rendre accessible le dossier "personnalisation" en écriture. C'est désormais dans ce dossier unique que vos personnalisations seront sauvegardées.
 
-- Editer votre fichier connect.inc.php et ajouter la ligne suivante en y mettant 12 caractères alphanumériques
-- Déplacer votre fichier connect.inc.php dans personnalisation
+Depuis la version 4.1 le packet php-intl est obligatoire.
+
+- Déplacer votre fichier connect.inc.php dans le dossier "personnalisation"
 - Si vous possédez des modules vous devez les déplacer dans le dossier "personnalisation/modules"
 - Désormais vos variables personnalisées dans "config.inc.php" doivent être dans "/personnalisation/configperso.inc.php" (fichier à créer vous-même, cela empèchera les prochaines mises à jour d'écraser vos modifications)
 
