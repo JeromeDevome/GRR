@@ -95,6 +95,7 @@ if (isset($_SERVER['HTTP_REFERER']))
 $longueur_liste_ressources_max = Settings::get("longueur_liste_ressources_max");
 if ($longueur_liste_ressources_max == '')
 	$longueur_liste_ressources_max = 20;
+$user_name = getUserName();
 if (check_begin_end_bookings($day, $month, $year))
 {
 	/* if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
@@ -345,7 +346,7 @@ echo "</header>";
 echo '<section>'.PHP_EOL;
 ?>
 <script type="text/javascript" >
-function insertBeneficiaires(area_,room_,user_){
+function insertBeneficiaires(area_,room_,user_,id_){
 	jQuery.ajax({
 		type: 'GET',
 		url: 'edit_entry_beneficiaire.php',
@@ -353,6 +354,7 @@ function insertBeneficiaires(area_,room_,user_){
 			area: area_,
 			room: room_,
             user: user_,
+			id: id_
 		},
 		success: function(returnData)
 		{
@@ -726,7 +728,7 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
 		}
         roomsObj = eval( "formObj.elements['rooms[]']" );
         room = roomsObj[roomsObj.selectedIndex].value;
-        insertBeneficiaires(area,room,<?php echo json_encode(getUserName())?>);
+		insertBeneficiaires(area,room,<?php echo json_encode($user_name).','.$id;?>);
         insertChampsAdd(area,<?php echo $id;?>,room);
         insertTypes(area,room);
         //insertProfilBeneficiaire();
@@ -737,7 +739,7 @@ echo '<form class="form-inline" id="main" action="edit_entry_handler.php" method
 		area = areasObj[areasObj.selectedIndex].value
         roomsObj = eval("formObj.elements['rooms[]']");
         room = roomsObj[roomsObj.selectedIndex].value;
-        //insertBeneficiaires(area,room,<?php echo json_encode(getUserName())?>);
+        //insertBeneficiaires(area,room,<?php echo json_encode($user_name).','.$id;?>);
         //insertChampsAdd(area,<?php echo $id;?>,room);
         //insertTypes(area,room);
         
@@ -1064,7 +1066,7 @@ echo '<tr>',PHP_EOL,'<td>',PHP_EOL,'<div id="div_types">',PHP_EOL;
 echo '</div>',PHP_EOL,'</td>',PHP_EOL,'</tr>',PHP_EOL;
 ?>
 <script type="text/javascript" >
-    insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode(getUserName());?>);
+    insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode($user_name);?>,<?php echo $id?>);
 	insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>);
 	insertTypes(<?php echo $area?>,<?php echo $room?>);
 	// insertProfilBeneficiaire();
@@ -1296,7 +1298,7 @@ if($periodiciteConfig == 'y'){
 		</div>
 	</form>
 	<script type="text/javascript">
-		insertBeneficiaires(<?php echo $area;?>,<?php echo $room;?>,<?php echo json_encode(getUserName());?>);
+		insertBeneficiaires(<?php echo $area;?>,<?php echo $room;?>,<?php echo json_encode($user_name);?>,<?php echo $id;?>);
 		insertChampsAdd(<?php echo $area; ?>,<?php echo $id; ?>,<?php echo $room; ?>);
 		insertTypes(<?php echo $area; ?>,<?php echo $room; ?>)
 	</script>

@@ -42,6 +42,11 @@ $flag_qui_peut_reserver_pour = $flag_qui_peut_reserver_pour || (authGetUserLevel
 $flag_qui_peut_reserver_pour = $flag_qui_peut_reserver_pour && (($id == 0) || (authGetUserLevel($user, $room) > 2) ); // création d'une nouvelle réservation ou usager 
 if ($flag_qui_peut_reserver_pour ) // on crée les sélecteurs à afficher 
 {
+	$benef = "";
+    if ($id == 0 && isset($_COOKIE['beneficiaire_default']))
+		$benef = $_COOKIE['beneficiaire_default'];
+    elseif ($id != 0) 
+        $benef = grr_sql_query1("SELECT beneficiaire FROM ".TABLE_PREFIX."_entry WHERE id='".$id."' ");
 	echo '<tr>'.PHP_EOL;
 	echo '<td class="E">'.PHP_EOL;
 	echo '<b>'.ucfirst(trim(get_vocab("reservation_au_nom_de"))).get_vocab("deux_points").'</b>'.PHP_EOL;
@@ -60,11 +65,7 @@ if ($flag_qui_peut_reserver_pour ) // on crée les sélecteurs à afficher
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
 			echo '<option value="'.$row[0].'" ';
-			if ($id == 0 && isset($_COOKIE['beneficiaire_default']))
-				$cookie = $_COOKIE['beneficiaire_default'];
-			else
-				$cookie = "";
-			if ((!$cookie && strtolower($user) == strtolower($row[0])) || ($cookie && $cookie == $row[0]))
+			if ((!$benef && strtolower($user) == strtolower($row[0])) || ($benef && $benef == $row[0]))
 			{
 				echo ' selected="selected" ';
 			}
