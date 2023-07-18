@@ -6403,8 +6403,12 @@ function clean_input($data){
 * pour réduire les vulnérabilités
 */
 function alphanum($data){
-    $data = preg_replace('/[^A-Za-z0-9\-_]/', '', $data);
-    return $data;
+	$data = trim($data);
+	$data = stripslashes($data);
+	$data = htmlentities($data);
+	$data = preg_replace('/[^A-Za-z0-9\-_]/', '', $data);
+
+	return $data;
 }
 
 // Génération d'un Token aléatoire
