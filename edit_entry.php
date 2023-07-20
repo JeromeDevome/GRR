@@ -3,9 +3,9 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-12-14 15:20$
+ * Dernière modification : $Date: 2023-05-14 16:41$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -869,7 +869,7 @@ echo '</div>'.PHP_EOL;
 // date et heure de début
 echo '<div class="E form-inline"><b>'.$date_debut.'</b>'.PHP_EOL;
 echo '<div class="form-group">'.PHP_EOL;
-jQuery_DatePicker('start');
+jQuery_DatePicker('start_');
 
 if ($enable_periods == 'y')
 {
@@ -948,7 +948,7 @@ else // sélection de l'heure ou du créneau de fin
 	echo '<div class="E form-inline"><b>'.get_vocab("fin_reservation").get_vocab("deux_points").'</b>'.PHP_EOL;
 	
 	echo '<div class="form-group">'.PHP_EOL;
-	jQuery_DatePicker('end');
+	jQuery_DatePicker('end_');
 
 	if ($enable_periods=='y')
 	{
@@ -1234,7 +1234,7 @@ if($periodiciteConfig == 'y')
             }
         }
 		echo "<div class=\"F\"><b>".get_vocab("rep_end_date")."</b>".PHP_EOL;
-		jQuery_DatePicker('rep_end');
+		jQuery_DatePicker('rep_end_');
         echo '</div>'.PHP_EOL;
         echo '<div class="F">'.PHP_EOL;
         echo '<p><b>'.get_vocab('select_specific_days').'</b></p>';

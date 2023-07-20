@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-04-17 16:29$
+ * Dernière modification : $Date: 2023-05-15 10:32$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5323,7 +5323,11 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
  	else //Le code fonction n'est pas défini, alors on retourne le statut par défaut.
  		return $_statut;
  }
-
+/* function jQuery_DatePicker($typeDate)
+ * fonction qui rend un sélecteur de date couplé à un calendrier jQuery-DatePicker
+ * définit trois input : $typeDate.'day', $typeDate.'month', $typeDate.'year'
+ * /!\ changement de spécification : le préfixe $typeDate doit comporter un éventuel '_'
+*/
 function jQuery_DatePicker($typeDate){
     global $locale;
 		if (@file_exists('../include/connect.inc.php')){
@@ -5332,7 +5336,7 @@ function jQuery_DatePicker($typeDate){
 			$racine = "./";
 		}
 
-		if ($typeDate == 'rep_end' && isset($_GET['id'])){
+		if ($typeDate == 'rep_end_' && isset($_GET['id'])){
 			$res = grr_sql_query("SELECT repeat_id FROM ".TABLE_PREFIX."_entry WHERE id=".$_GET['id'].";");
 			if (!$res){
 				fatal_error(0, grr_sql_error());
@@ -5359,24 +5363,24 @@ function jQuery_DatePicker($typeDate){
 			global $start_day, $start_month, $start_year, $end_day, $end_month, $end_year;
 
 			$day = (isset ($_GET['day'])) ? clean_input($_GET['day']) : date("d");
-			if (isset($start_day) && $typeDate=='start'){
+			if (isset($start_day) && $typeDate=='start_'){
 				$day = $start_day;
 			} 
-            elseif (isset($end_day) && $typeDate=='end'){
+            elseif (isset($end_day) && $typeDate=='end_'){
 				$day = $end_day;
 			}
             $month = (isset ($_GET['month']))? clean_input($_GET['month']) : date("m");
-			if (isset($start_month) && $typeDate=='start'){
+			if (isset($start_month) && $typeDate=='start_'){
 				$month = $start_month;
 			} 
-            elseif (isset($end_month) && $typeDate=='end'){
+            elseif (isset($end_month) && $typeDate=='end_'){
 				$month = $end_month;
 			}
             $year = (isset ($_GET['year']))? clean_input($_GET['year']) : date("Y");
-			if (isset($start_year) && $typeDate=='start'){
+			if (isset($start_year) && $typeDate=='start_'){
 				$year = $start_year;
 			} 
-            elseif (isset($end_year) && $typeDate=='end'){
+            elseif (isset($end_year) && $typeDate=='end_'){
 				$year = $end_year;
 			}
         }
