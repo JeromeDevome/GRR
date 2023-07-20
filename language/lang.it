@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2023-04-08
+# Last modification : 2023-05-22
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -294,7 +294,7 @@ $vocab['database'] = "Database: ";
 $vocab['date'] = "Début de la réservation";
 $vocab['dayafter'] = "Andare al giorno seguente";
 $vocab['daybefore'] = "Andare al giorno precedente";
-$vocab['days'] = "giorno(i)";
+$vocab['days'] = "giorno/i";
 $vocab['debut_Jours_Cycles'] = "Numéro du jour débutant le premier cycle de jours"; // A traduire
 $vocab['declarer_ressource_indisponible'] = "Dichiarare questa risorsa temporaneamente inalienabile. Le prenotazioni sono allora impossibili.";
 $vocab['deconnect_changing_pwd'] = "Staccare cambiando el password";
@@ -617,7 +617,7 @@ $vocab['motif'] = "Motivo";
 $vocab['mrbs'] = "GRR : Gestion et Réservation de Ressources (gestione e prenotazione di risorse)";
 $vocab['msg_del_bookings'] = "Attenzione, i cambiamenti delle date d'inizio e di fine delle prenotazioni che avete effettuato comporterà la soppressione definitiva delle prenotazioni già effettuate oltre alle nuove date autorizzate! <br /><br />Essete sicuri di volere continuare?";
 $vocab['msg_explain_log'] = "Le date che appaiono in rosse segnano gli utenti staccati automaticamente dopo troppo un lungo termine d'inattività. Le linee che appaiono in verde segnano gli utenti attualmente collegati.";
-$vocab['msg_login1'] = "<b>GRR</b> è sotto licenza GPL, adattato da <a href='http://mrbs.sourceforge.net'>MRBS</a>.<br />Per ogni informazione che riguarda <b>GRR</b>, andare sul sito : ";
+$vocab['msg_login1'] = "<b>GRR</b> è concesso in licenza con GPL, adattato da <a href='http://mrbs.sourceforge.net'>MRBS</a>.<br />Per ogni informazione che riguarda <b>GRR</b>, andare sul sito : ";
 $vocab['msg_login3'] = "Il sito è temporaneamente inaccessibile. Scusateci di questa perturbazione! !";
 $vocab['msg_login_created'] = "Avete appena creato un nuovo utente. Per difetto, quest'utente è considerato come attivo.";
 $vocab['msg_login_created_error'] = "Un problema si è verificato in occasione della creazione di un nuovo utente! Volete contattare l'appoggio tecnico.";
@@ -663,7 +663,7 @@ $vocab['norights'] = "Non avete i diritti sufficienti per effettuare quest'opera
 $vocab['norooms'] = "Nessuna risorsa è creata per questo settore.";
 $vocab['nothing_found'] = "Nessuna prenotazione è stata trovata.";
 $vocab['not_found'] = " non trovata";
-$vocab['not_php3'] = "<H1>ATTENZIONE : Quest'applicazione può non funzionare correttamente con PHP3</H1>";
+$vocab['not_php3'] = "<H1>ATTENZIONE: Questa applicazione potrebbe non funzionare correttamente con una versione di php precedente alla 5.6!</H1>";
 $vocab['nouveau_jour_cycle'] = "\"jour cycle\" N° "; // A traduire
 $vocab['no_activ_user'] = "Non attivo";
 $vocab['no_admin'] = "Attualmente nessuno, eccetto gli amministratori, non è autorizzato a gestire la risorsa qui di fronte!";

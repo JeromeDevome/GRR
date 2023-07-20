@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2023-04-08
+# Last modification : 2023-05-22
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -619,7 +619,7 @@ $vocab['motif'] = "Motivo";
 $vocab['mrbs'] = "GRR (Gestión y Reserva de Recursos) ";
 $vocab['msg_del_bookings'] = "¡Cuidado, los cambios de las fechas de comienzo y de fin de las reservas que efectuó van a ocasionar la supresión definitiva de las reservas ya efectuadas fuera de las nuevas fechas autorizadas!<br /><br />¿Está seguro de querer continuar?";
 $vocab['msg_explain_log'] = "Las fechas que aparecen en rojo señalan a los usuarios desconectados automáticamente después de un largo plazo de inactividad.<br />Las líneas que aparecen en verde señalan a los usuarios actualmente conectados.";
-$vocab['msg_login1'] = "<b>GRR</b> es bajo licencia GPL, adaptada de <a href='http://mrbs.sourceforge.net'> MRBS</a>.<br />Para cualquier información relativa a <b>GRR</b>, ir a este sitio : ";
+$vocab['msg_login1'] = "<b>GRR</b> tiene licencia bajo la GPL, adaptada de <a href='http://mrbs.sourceforge.net'> MRBS</a>.<br />Para cualquier información relativa a <b>GRR</b>, ir a este sitio : ";
 $vocab['msg_login3'] = "El sitio es momentaneamente inaccesible. ¡Le pedimos disculpas por las molestias!";
 $vocab['msg_login_created'] = "Acabe usted de crear un nuevo usuario. Por defecto, este usuario es considerado como activo.";
 $vocab['msg_login_created_error'] = "¡Ocurrió un problema en el momento de la creación de un nuevo usuario! Por favor contacte el soporte técnico.";
@@ -666,7 +666,7 @@ $vocab['norights'] = "Usted no tiene los derechos suficientes para efectuar esta
 $vocab['norooms'] = "Ningún recurso se creó para este ámbito.";
 $vocab['nothing_found'] = "Se encontró ninguna reserva.";
 $vocab['not_found'] = " no encontrada";
-$vocab['not_php3'] = "<H1> CUIDADO: Esta aplicación puede funcionar mal con PHP3</H1>";
+$vocab['not_php3'] = "<H1>ADVERTENCIA: ¡Esta aplicación puede no funcionar correctamente con una versión de php anterior a la 5.6!</H1>";
 $vocab['nouveau_jour_cycle'] = "\"día ciclo\" N°";
 $vocab['no_activ_user'] = "No activo";
 $vocab['no_admin'] = "¡Actualmente nadie, excepto los administradores, está autorizado a gestionar el recurso al lado!";
