@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-05-14 16:41$
+ * Dernière modification : $Date: 2023-05-20 15:56$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -66,7 +66,7 @@ function pageHead($title,$locale) // $locale est la langue utilisée
     <link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />
     <link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />';
     echo '
-        <script src="./js/jquery-3.4.1.min.js"></script>
+        <script src="./js/jquery-3.7.0.min.js"></script>
         <script src="./js/jquery-ui.min.js"></script>
         <script src="./js/jquery-ui-i18n.min.js"></script>
         <script src="./js/jquery.validate.js"></script>
