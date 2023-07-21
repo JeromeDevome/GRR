@@ -29,6 +29,7 @@ paramètres attendus, passés par la méthode GET :
  user : l'utilisateur connecté
  id : l'identifiant de la réservation (pour modification)
 */
+$tab_benefext = array();
 $tab_benef = array();
 $tab_benef["nom"] = "";
 $tab_benef["email"] = "";
@@ -44,9 +45,25 @@ if ($flag_qui_peut_reserver_pour ) // on crée les sélecteurs à afficher
 {
 	$benef = "";
     if ($id == 0 && isset($_COOKIE['beneficiaire_default']))
+	{
 		$benef = $_COOKIE['beneficiaire_default'];
-    elseif ($id != 0) 
-        $benef = grr_sql_query1("SELECT beneficiaire FROM ".TABLE_PREFIX."_entry WHERE id='".$id."' ");
+	}
+	elseif ( $id != 0 )
+	{  
+		$benefs = grr_sql_query( "SELECT beneficiaire, beneficiaire_ext FROM ".TABLE_PREFIX."_entry WHERE id=$id" );  
+		$benefs = grr_sql_row( $benefs, 0 );  
+		grr_sql_free( $benefs );  
+		if ( $benefs[0] != '' )  
+			$benef = $benefs[0];  
+		if ( $benefs[1] != '' )
+		{
+			$tab_benefext = explode('|',$benefs[1]);
+			$tab_benef['nom'] = $tab_benefext[0];
+			$tab_benef['email'] = $tab_benefext[1];
+
+			$benef = $tab_benef['nom'];
+		}
+	}
 	echo '<tr>'.PHP_EOL;
 	echo '<td class="E">'.PHP_EOL;
 	echo '<b>'.ucfirst(trim(get_vocab("reservation_au_nom_de"))).get_vocab("deux_points").'</b>'.PHP_EOL;
