@@ -18,6 +18,21 @@ div.dtfc-right-top-blocker {
   background-color: white;
 }
 
+html.dark table.dataTable thead tr > .dtfc-fixed-left,
+html.dark table.dataTable thead tr > .dtfc-fixed-right,
+html.dark table.dataTable tfoot tr > .dtfc-fixed-left,
+html.dark table.dataTable tfoot tr > .dtfc-fixed-right {
+  background-color: var(--dt-html-background);
+}
+html.dark table.dataTable tbody tr > .dtfc-fixed-left,
+html.dark table.dataTable tbody tr > .dtfc-fixed-right {
+  background-color: var(--dt-html-background);
+}
+html.dark div.dtfc-left-top-blocker,
+html.dark div.dtfc-right-top-blocker {
+  background-color: var(--dt-html-background);
+}
+
 div.dtfc-right-top-blocker,
 div.dtfc-left-top-blocker {
   margin-top: 6px;

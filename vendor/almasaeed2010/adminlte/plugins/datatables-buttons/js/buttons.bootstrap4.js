@@ -1,5 +1,5 @@
 /*! Bootstrap integration for DataTables' Buttons
- * ©2016 SpryMedia Ltd - datatables.net/license
+ * © SpryMedia Ltd - datatables.net/license
  */
 
 (function( factory ){
@@ -22,7 +22,7 @@
 			}
 		};
 
-		if (typeof window !== 'undefined') {
+		if (typeof window === 'undefined') {
 			module.exports = function (root, $) {
 				if ( ! root ) {
 					// CommonJS environments without a window global must pass a
@@ -53,50 +53,61 @@ var DataTable = $.fn.dataTable;
 
 
 
-$.extend( true, DataTable.Buttons.defaults, {
+$.extend(true, DataTable.Buttons.defaults, {
 	dom: {
 		container: {
 			className: 'dt-buttons btn-group flex-wrap'
 		},
 		button: {
-			className: 'btn btn-secondary'
+			className: 'btn btn-secondary',
+			active: 'active'
 		},
 		collection: {
-			tag: 'div',
-			className: 'dropdown-menu',
+			action: {
+				dropHtml: ''
+			},
+			container: {
+				tag: 'div',
+				className: 'dropdown-menu dt-button-collection'
+			},
 			closeButton: false,
 			button: {
 				tag: 'a',
 				className: 'dt-button dropdown-item',
-				active: 'active',
-				disabled: 'disabled'
+				active: 'dt-button-active',
+				disabled: 'disabled',
+				spacer: {
+					className: 'dropdown-divider',
+					tag: 'hr'
+				}
 			}
 		},
-		splitWrapper: {
-			tag: 'div',
-			className: 'dt-btn-split-wrapper btn-group',
-			closeButton: false,
-		},
-		splitDropdown: {
-			tag: 'button',
-			text: '',
-			className: 'btn btn-secondary dt-btn-split-drop dropdown-toggle dropdown-toggle-split',
-			closeButton: false,
-			align: 'split-left',
-			splitAlignClass: 'dt-button-split-left'
-		},
-		splitDropdownButton: {
-			tag: 'button',
-			className: 'dt-btn-split-drop-button btn btn-secondary',
-			closeButton: false
-		} 
+		split: {
+			action: {
+				tag: 'a',
+				className: 'btn btn-secondary dt-button-split-drop-button',
+				closeButton: false
+			},
+			dropdown: {
+				tag: 'button',
+				dropHtml: '',
+				className:
+					'btn btn-secondary dt-button-split-drop dropdown-toggle dropdown-toggle-split',
+				closeButton: false,
+				align: 'split-left',
+				splitAlignClass: 'dt-button-split-left'
+			},
+			wrapper: {
+				tag: 'div',
+				className: 'dt-button-split btn-group',
+				closeButton: false
+			}
+		}
 	},
-	buttonCreated: function ( config, button ) {
-		return config.buttons ?
-			$('<div class="btn-group"/>').append(button) :
-			button;
+	buttonCreated: function (config, button) {
+		return config.buttons ? $('<div class="btn-group"/>').append(button) : button;
 	}
-} );
+});
 
 DataTable.ext.buttons.collection.className += ' dropdown-toggle';
 DataTable.ext.buttons.collection.rightAlignClassName = 'dropdown-menu-right';

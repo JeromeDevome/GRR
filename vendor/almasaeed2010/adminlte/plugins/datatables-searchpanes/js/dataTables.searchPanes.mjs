@@ -1,9 +1,12 @@
-/*! SearchPanes 2.1.2
+/*! SearchPanes 2.2.0
  * © SpryMedia Ltd - datatables.net/license
  */
 
-import $ from 'jquery';
+import jQuery from 'jquery';
 import DataTable from 'datatables.net';
+
+// Allow reassignment of the $ variable
+let $ = jQuery;
 
 (function () {
     'use strict';
@@ -95,7 +98,7 @@ import DataTable from 'datatables.net';
                     .addClass(this.s.customPaneSettings && this.s.customPaneSettings.className
                     ? this.s.customPaneSettings.className
                     : ''),
-                countButton: $$5('<button type="button"></button>')
+                countButton: $$5('<button type="button"><span></span></button>')
                     .addClass(this.classes.paneButton)
                     .addClass(this.classes.countButton),
                 dtP: $$5('<table><thead><tr><th>' +
@@ -103,12 +106,12 @@ import DataTable from 'datatables.net';
                         ? $$5(this.s.dt.column(this.s.index).header()).text()
                         : this.s.customPaneSettings.header || 'Custom Pane') + '</th><th/></tr></thead></table>'),
                 lower: $$5('<div/>').addClass(this.classes.subRow2).addClass(this.classes.narrowButton),
-                nameButton: $$5('<button type="button"></button>')
+                nameButton: $$5('<button type="button"><span></span></button>')
                     .addClass(this.classes.paneButton)
                     .addClass(this.classes.nameButton),
-                panesContainer: panesContainer,
+                panesContainer: $$5(panesContainer),
                 searchBox: $$5('<input/>').addClass(this.classes.paneInputButton).addClass(this.classes.search),
-                searchButton: $$5('<button type = "button"/>')
+                searchButton: $$5('<button type="button"><span></span></button>')
                     .addClass(this.classes.searchIcon)
                     .addClass(this.classes.paneButton),
                 searchCont: $$5('<div/>').addClass(this.classes.searchCont),
@@ -2869,7 +2872,7 @@ import DataTable from 'datatables.net';
                 this.dom.clearAll.removeClass(this.classes.disabledButton).removeAttr('disabled');
             }
         };
-        SearchPanes.version = '2.1.2';
+        SearchPanes.version = '2.2.0';
         SearchPanes.classes = {
             clear: 'dtsp-clear',
             clearAll: 'dtsp-clearAll',
@@ -3245,7 +3248,7 @@ import DataTable from 'datatables.net';
         return SearchPanesST;
     }(SearchPanes));
 
-    /*! SearchPanes 2.1.2
+    /*! SearchPanes 2.2.0
      * © SpryMedia Ltd - datatables.net/license
      */
     setJQuery$4($);

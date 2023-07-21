@@ -3,9 +3,8 @@ div.dt-button-collection {
   z-index: 2002 !important;
 }
 div.dt-button-collection div.dtsb-searchBuilder {
-  width: 99% !important;
-  padding-left: 10px !important;
-  padding-right: 10px !important;
+  padding-left: 1em !important;
+  padding-right: 1em !important;
 }
 
 div.dt-button-collection.dtb-collection-closeable div.dtsb-titleRow {
@@ -80,7 +79,7 @@ div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria input.dtsb-input {
   margin-right: 0.8em;
   min-width: 5em;
   max-width: 20em;
-  background-color: rgba(200, 200, 200, 0.3);
+  color: inherit;
 }
 div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria select.dtsb-dropDown option.dtsb-notItalic,
 div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria input.dtsb-input option.dtsb-notItalic {
@@ -98,6 +97,11 @@ div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria div.dtsb-inputCont span.
 }
 div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria div.dtsb-inputCont input.dtsb-value {
   width: 33%;
+}
+div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria div.dtsb-inputCont select,
+div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria div.dtsb-inputCont input {
+  height: 100%;
+  box-sizing: border-box;
 }
 div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria div.dtsb-buttonContainer {
   margin-left: auto;

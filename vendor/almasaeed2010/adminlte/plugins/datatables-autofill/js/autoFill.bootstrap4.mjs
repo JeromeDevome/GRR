@@ -2,9 +2,12 @@
  * ©2015 SpryMedia Ltd - datatables.net/license
  */
 
-import $ from 'jquery';
+import jQuery from 'jquery';
 import DataTable from 'datatables.net-bs4';
 import AutoFill from 'datatables.net-autofill';
+
+// Allow reassignment of the $ variable
+let $ = jQuery;
 
 
 DataTable.AutoFill.classes.btn = 'btn btn-primary';

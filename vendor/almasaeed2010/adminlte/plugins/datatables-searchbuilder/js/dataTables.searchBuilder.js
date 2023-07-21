@@ -1,4 +1,4 @@
-/*! SearchBuilder 1.4.2
+/*! SearchBuilder 1.5.0
  * ©SpryMedia Ltd - datatables.net/license/mit
  */
 
@@ -18,7 +18,7 @@
 			}
 		};
 
-		if (typeof window !== 'undefined') {
+		if (typeof window === 'undefined') {
 			module.exports = function (root, $) {
 				if ( ! root ) {
 					// CommonJS environments without a window global must pass a
@@ -1264,13 +1264,15 @@ var DataTable = $.fn.dataTable;
         Criteria.initDate = function (that, fn, preDefined) {
             if (preDefined === void 0) { preDefined = null; }
             var searchDelay = that.s.dt.settings()[0].searchDelay;
+            var i18n = that.s.dt.i18n('datetime', {});
             // Declare date element using DataTables dateTime plugin
             var el = $$3('<input/>')
                 .addClass(Criteria.classes.value)
                 .addClass(Criteria.classes.input)
                 .dtDateTime({
                 attachTo: 'input',
-                format: that.s.dateFormat ? that.s.dateFormat : undefined
+                format: that.s.dateFormat ? that.s.dateFormat : undefined,
+                i18n: i18n
             })
                 .on('change.dtsb', that._throttle(function () {
                 return fn(that, this);
@@ -1305,6 +1307,7 @@ var DataTable = $.fn.dataTable;
             var _this = this;
             if (preDefined === void 0) { preDefined = null; }
             var searchDelay = that.s.dt.settings()[0].searchDelay;
+            var i18n = that.s.dt.i18n('datetime', {});
             // Declare all of the date elements that are required using DataTables dateTime plugin
             var els = [
                 $$3('<input/>')
@@ -1312,7 +1315,8 @@ var DataTable = $.fn.dataTable;
                     .addClass(Criteria.classes.input)
                     .dtDateTime({
                     attachTo: 'input',
-                    format: that.s.dateFormat ? that.s.dateFormat : undefined
+                    format: that.s.dateFormat ? that.s.dateFormat : undefined,
+                    i18n: i18n
                 })
                     .on('change.dtsb', searchDelay !== null ?
                     that.s.dt.settings()[0].oApi._fnThrottle(function () {
@@ -1335,7 +1339,8 @@ var DataTable = $.fn.dataTable;
                     .addClass(Criteria.classes.input)
                     .dtDateTime({
                     attachTo: 'input',
-                    format: that.s.dateFormat ? that.s.dateFormat : undefined
+                    format: that.s.dateFormat ? that.s.dateFormat : undefined,
+                    i18n: i18n
                 })
                     .on('change.dtsb', searchDelay !== null ?
                     that.s.dt.settings()[0].oApi._fnThrottle(function () {
@@ -3574,6 +3579,7 @@ var DataTable = $.fn.dataTable;
                 var count = _this.s.topGroup.count();
                 _this._updateTitle(count);
                 _this._filterChanged(count);
+                _this._checkClear();
             });
             this.s.dt.on('postEdit.dtsb postCreate.dtsb postRemove.dtsb', function () {
                 _this.s.topGroup.redrawContents();
@@ -3597,7 +3603,7 @@ var DataTable = $.fn.dataTable;
                 _this.dom.clearAll.remove();
             });
         };
-        SearchBuilder.version = '1.4.2';
+        SearchBuilder.version = '1.5.0';
         SearchBuilder.classes = {
             button: 'dtsb-button',
             clearAll: 'dtsb-clearAll',
@@ -3703,7 +3709,7 @@ var DataTable = $.fn.dataTable;
         return SearchBuilder;
     }());
 
-    /*! SearchBuilder 1.4.2
+    /*! SearchBuilder 1.5.0
      * ©SpryMedia Ltd - datatables.net/license/mit
      */
     setJQuery($);

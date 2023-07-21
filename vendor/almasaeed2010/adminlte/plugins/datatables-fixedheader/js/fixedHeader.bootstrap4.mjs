@@ -2,9 +2,12 @@
  * © SpryMedia Ltd - datatables.net/license
  */
 
-import $ from 'jquery';
+import jQuery from 'jquery';
 import DataTable from 'datatables.net-bs4';
 import FixedHeader from 'datatables.net-fixedheader';
+
+// Allow reassignment of the $ variable
+let $ = jQuery;
 
 
 

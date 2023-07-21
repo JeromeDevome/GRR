@@ -1,15 +1,18 @@
-/*! AutoFill 2.5.3
+/*! AutoFill 2.6.0
  * ©2008-2023 SpryMedia Ltd - datatables.net/license
  */
 
-import $ from 'jquery';
+import jQuery from 'jquery';
 import DataTable from 'datatables.net';
+
+// Allow reassignment of the $ variable
+let $ = jQuery;
 
 
 /**
  * @summary     AutoFill
  * @description Add Excel like click and drag auto-fill options to DataTables
- * @version     2.5.3
+ * @version     2.6.0
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @copyright   SpryMedia Ltd.
  *
@@ -79,7 +82,7 @@ var AutoFill = function( dt, opts )
 	 * @namespace Common and useful DOM elements for the class instance
 	 */
 	this.dom = {
-		closeButton: $('<div class="dtaf-popover-close">x</div>'),
+		closeButton: $('<div class="dtaf-popover-close">&times;</div>'),
 
 		/** @type {jQuery} AutoFill handle */
 		handle: $('<div class="dt-autofill-handle"/>'),
@@ -100,7 +103,10 @@ var AutoFill = function( dt, opts )
 		background: $('<div class="dt-autofill-background"/>'),
 
 		/** @type {jQuery} Fill type chooser */
-		list: $('<div class="dt-autofill-list">'+this.s.dt.i18n('autoFill.info', '')+'<ul/></div>'),
+		list: $('<div class="dt-autofill-list">'+this.s.dt.i18n('autoFill.info', '')+'</div>')
+			.attr('aria-modal', true)
+			.attr('role', 'dialog')
+			.append('<div class="dt-autofill-list-items"></div>'),
 
 		/** @type {jQuery} DataTables scrolling container */
 		dtScroll: null,
@@ -298,21 +304,17 @@ $.extend( AutoFill.prototype, {
 			var result = actions[ available[0] ].execute( dt, cells );
 			this._update( result, cells );
 		}
-		else if ( available.length > 1 ) {
+		else if ( available.length > 1 || this.c.alwaysAsk ) {
 			// Multiple actions available - ask the end user what they want to do
-			var list = this.dom.list.children('ul').empty();
+			var list = this.dom.list.children('div.dt-autofill-list-items').empty();
 
 			// Add a cancel option
 			available.push( 'cancel' );
 
 			$.each( available, function ( i, name ) {
-				list.append( $('<li/>')
-					.append(
-						'<div class="dt-autofill-question">'+
-							actions[ name ].option( dt, cells )+
-						'<div>'
-					)
-					.append( $('<div class="dt-autofill-button">' ).append( $('<button class="'+AutoFill.classes.btn+'">'+dt.i18n('autoFill.button', '&gt;')+'</button>')))
+				list.append( $('<button/>')
+					.html(actions[ name ].option( dt, cells ))
+					.append( $('<span class="dt-autofill-button"/>').html(dt.i18n('autoFill.button', '&gt;')))
 					.on( 'click', function () {
 						var result = actions[ name ].execute(
 							dt, cells, $(this).closest('li')
@@ -1123,7 +1125,7 @@ AutoFill.actions = {
  * @static
  * @type      String
  */
-AutoFill.version = '2.5.3';
+AutoFill.version = '2.6.0';
 
 
 /**

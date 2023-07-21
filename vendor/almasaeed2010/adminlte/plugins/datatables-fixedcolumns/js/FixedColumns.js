@@ -9,7 +9,7 @@ var FixedColumns = /** @class */ (function () {
         var _this = this;
         // Check that the required version of DataTables is included
         if (!dataTable || !dataTable.versionCheck || !dataTable.versionCheck('1.10.0')) {
-            throw new Error('StateRestore requires DataTables 1.10 or newer');
+            throw new Error('FixedColumns requires DataTables 1.10 or newer');
         }
         var table = new dataTable.Api(settings);
         this.classes = $.extend(true, {}, FixedColumns.classes);
@@ -65,44 +65,39 @@ var FixedColumns = /** @class */ (function () {
             this._setKeyTableListener();
         }
         else {
-            table.one('init.dt', function () {
+            table.one('init.dt.dtfc', function () {
                 // Fixed Columns Initialisation
                 _this._addStyles();
                 _this._setKeyTableListener();
             });
         }
-        table.on('column-sizing.dt', function () { return _this._addStyles(); });
+        table.on('column-sizing.dt.dtfc', function () { return _this._addStyles(); });
         // Make class available through dt object
         table.settings()[0]._fixedColumns = this;
+        table.on('destroy', function () { return _this._destroy(); });
         return this;
     }
-    /**
-     * Getter/Setter for the `fixedColumns.left` property
-     *
-     * @param newVal Optional. If present this will be the new value for the number of left fixed columns
-     * @returns The number of left fixed columns
-     */
     FixedColumns.prototype.left = function (newVal) {
         // If the value is to change
         if (newVal !== undefined) {
-            // Set the new values and redraw the columns
-            this.c.left = newVal;
-            this._addStyles();
+            if (newVal >= 0 && newVal <= this.s.dt.columns().count()) {
+                // Set the new values and redraw the columns
+                this.c.left = newVal;
+                this._addStyles();
+            }
+            return this;
         }
         return this.c.left;
     };
-    /**
-     * Getter/Setter for the `fixedColumns.left` property
-     *
-     * @param newVal Optional. If present this will be the new value for the number of right fixed columns
-     * @returns The number of right fixed columns
-     */
     FixedColumns.prototype.right = function (newVal) {
         // If the value is to change
         if (newVal !== undefined) {
-            // Set the new values and redraw the columns
-            this.c.right = newVal;
-            this._addStyles();
+            if (newVal >= 0 && newVal <= this.s.dt.columns().count()) {
+                // Set the new values and redraw the columns
+                this.c.right = newVal;
+                this._addStyles();
+            }
+            return this;
         }
         return this.c.right;
     };
@@ -342,6 +337,16 @@ var FixedColumns = /** @class */ (function () {
         }
     };
     /**
+     * Clean up
+     */
+    FixedColumns.prototype._destroy = function () {
+        this.s.dt.off('.dtfc');
+        this.dom.leftBottomBlocker.remove();
+        this.dom.leftTopBlocker.remove();
+        this.dom.rightBottomBlocker.remove();
+        this.dom.rightTopBlocker.remove();
+    };
+    /**
      * Gets the correct CSS for the cell, header or footer based on options provided
      *
      * @param header Whether this cell is a header or a footer
@@ -405,7 +410,7 @@ var FixedColumns = /** @class */ (function () {
     };
     FixedColumns.prototype._setKeyTableListener = function () {
         var _this = this;
-        this.s.dt.on('key-focus', function (e, dt, cell) {
+        this.s.dt.on('key-focus.dt.dtfc', function (e, dt, cell) {
             var cellPos = $(cell.node()).offset();
             var scroll = $($(_this.s.dt.table().node()).closest('div.dataTables_scrollBody'));
             // If there are fixed columns to the left
@@ -439,13 +444,13 @@ var FixedColumns = /** @class */ (function () {
         });
         // Whenever a draw occurs there is potential for the data to have changed and therefore also the column widths
         // Therefore it is necessary to recalculate the values for the fixed columns
-        this.s.dt.on('draw', function () {
+        this.s.dt.on('draw.dt.dtfc', function () {
             _this._addStyles();
         });
-        this.s.dt.on('column-reorder', function () {
+        this.s.dt.on('column-reorder.dt.dtfc', function () {
             _this._addStyles();
         });
-        this.s.dt.on('column-visibility', function (e, settings, column, state, recalc) {
+        this.s.dt.on('column-visibility.dt.dtfc', function (e, settings, column, state, recalc) {
             if (recalc && !settings.bDestroying) {
                 setTimeout(function () {
                     _this._addStyles();
@@ -453,7 +458,7 @@ var FixedColumns = /** @class */ (function () {
             }
         });
     };
-    FixedColumns.version = '4.2.2';
+    FixedColumns.version = '4.3.0';
     FixedColumns.classes = {
         fixedLeft: 'dtfc-fixed-left',
         fixedRight: 'dtfc-fixed-right',
