@@ -77,7 +77,7 @@
 										{{ trad.dOptionTheme | raw }}
 									</select>
 								</div>
-								<div class="col-sm-1"><button type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#modal-warning" data-texte="Confirmer la synchronisation du thème avec tout les utilisateurs ?" data-idsynchro="1"><i class="icon fa fa-sync"></i></button></div>
+								<div class="col-sm-1"><button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="Confirmer la synchronisation du thème avec tout les utilisateurs ?" data-idsynchro="1"><i class="icon fa fa-sync"></i></button></div>
 							</div>
 							<hr>
 							<div class="form-group row col-sm-12">
@@ -87,7 +87,7 @@
 										{{ trad.dOptionLangue | raw }}
 									</select>
 								</div>
-								<div class="col-sm-1"><button type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#modal-warning" data-texte="Confirmer la synchronisation de la langue avec tout les utilisateurs ?" data-idsynchro="2"><i class="icon fa fa-sync"></i></button></div>
+								<div class="col-sm-1"><button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="Confirmer la synchronisation de la langue avec tout les utilisateurs ?" data-idsynchro="2"><i class="icon fa fa-sync"></i></button></div>
 							</div>
 						</section>
 
@@ -297,7 +297,7 @@
           <div class="modal-content bg-warning">
             <div class="modal-header">
               <h4 class="modal-title">Synchronisation</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">×</span>
               </button>
             </div>
@@ -305,7 +305,7 @@
               <span class="modaltexte" id="modaltexte"></span><span class="modalidsync" id="modalidsync" hidden></span>
             </div>
             <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">{{trad.NO}}</button>
+                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">{{trad.NO}}</button>
 				<button type="submit" id="liensup" class="btn btn-outline-dark">{{trad.YES}}</button>
             </div>
           </div><!-- /.modal-content -->
