@@ -87,6 +87,7 @@ $type_affichage_reser = grr_sql_query1("SELECT type_affichage_reser FROM ".TABLE
 $delais_option_reservation  = grr_sql_query1("SELECT delais_option_reservation FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $qui_peut_reserver_pour  = grr_sql_query1("SELECT qui_peut_reserver_pour FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $active_cle  = grr_sql_query1("SELECT active_cle FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
+$active_ressource_empruntee = grr_sql_query1("SELECT active_ressource_empruntee FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $active_participant  = grr_sql_query1("SELECT active_participant FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $periodiciteConfig = Settings::get("periodicite");
 $back = '';
@@ -785,27 +786,30 @@ if($active_participant > 0){
 }
 
 if($active_cle == 'y' && authGetUserLevel(getUserName(), $room_id) >= 3){
-	echo '<tr><td class="E"><br>'.PHP_EOL;
-	echo '<b>'.get_vocab("status_clef").get_vocab("deux_points").'</b>'.PHP_EOL;
-	echo '</td></tr>'.PHP_EOL;
-	echo '<tr><td class="CL">'.PHP_EOL;
+	echo '<tr><td class="CL"><br>'.PHP_EOL;
 	echo '<input name="keys" type="checkbox" value="y" ';
 	if (isset($clef) && $clef == 1)
 		echo 'checked';
-	echo ' > '.get_vocab("msg_clef");
-	echo '</td></tr>'.PHP_EOL;
+	echo ' ><b> '.get_vocab("msg_clef");
+	echo '</b><br><br></td></tr>'.PHP_EOL;
 }
 
 if (Settings::get("show_courrier") == 'y' && authGetUserLevel(getUserName(), $room_id) >= 3){ // proposition scoubinaire le 12/03/2018
-echo '<tr><td class="E"><br>'.PHP_EOL;
-echo '<b>'.get_vocab("status_courrier").get_vocab("deux_points").'</b>'.PHP_EOL;
-echo '</td></tr>'.PHP_EOL;
 echo '<tr><td class="CL">'.PHP_EOL;
 echo '<input name="courrier" type="checkbox" value="y" ';
 if (isset($courrier) && $courrier == 1)
 	echo 'checked';
-echo ' > '.get_vocab("msg_courrier");
-echo '</td></tr>'.PHP_EOL;
+echo ' ><b> '.get_vocab("msg_courrier");
+echo '</b><br><br></td></tr>'.PHP_EOL;
+}
+// ressource empruntée
+if(($active_ressource_empruntee == 'y')&& (authGetUserLevel($user_name,$room_id) >= 3)){
+	echo '<tr><td class="CL">'.PHP_EOL;
+	echo '<input name="statut_entry" type="checkbox" value="y" ';
+	if (isset($statut_entry) && $statut_entry == "y")
+		echo 'checked';
+	echo ' ><b> '.get_vocab("signaler_reservation_en_cours");
+	echo '</b><br><br></td></tr>'.PHP_EOL;
 }
 
 echo '<tr><td class="E">'.PHP_EOL;
@@ -1284,9 +1288,9 @@ if($periodiciteConfig == 'y'){
 		<input type="hidden" name="room_back" value="<?php echo $room_back?>" />
 		<input type="hidden" name="page_ret" value="<?php echo $ret_page?>" />
 <?php
-		if (!isset($statut_entry))
-			$statut_entry = "-";
-		echo '<input type="hidden" name="statut_entry" value="'.$statut_entry.'" />'.PHP_EOL;
+	//	if (!isset($statut_entry))
+	//		$statut_entry = "-";
+	//	echo '<input type="hidden" name="statut_entry" value="'.$statut_entry.'" />'.PHP_EOL;
 		echo '<input type="hidden" name="create_by" value="'.$create_by.'" />'.PHP_EOL;
 		if ($id!=0)
 			if (isset($_GET["copier"]))
