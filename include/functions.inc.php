@@ -5286,10 +5286,7 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
 			$email = explode('@',$tab_benef["email"]);
 			$person = $email[0];
 			if (isset($email[1]))
-			{
-				$domain = $email[1];
-				$chaine = "<script type=\"text/javascript\">encode_adresse('".$person."','".$domain."','".AddSlashes($tab_benef["nom"])."',1);</script>";
-			}
+				$chaine = "<a href=\"mailto:".$tab_benef["email"]."\">".$tab_benef["nom"]."</a>";
 			else
 				$chaine = $tab_benef["nom"];
 		}
