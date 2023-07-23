@@ -3,12 +3,12 @@
 -----
 Version 4.1.1 - 23/07/2023 Généré par @JeromeDevome
 
-[Ajout] Option "ressourc emprunté" directement dans la création de réservation
+[Ajout] Option "ressource emprunté" directement dans la création de réservation @JeromeDevome @ynaessens
 [Correction] Conservation en édition "Réservation au nom de " @JeromeDevome 
 [Correction] Lien mon compte @ynaessens
-[Correction] Prise en compte du fichier configperso @JeromeDevome 
-[Correction] Popup de confirmation dans l'administration
-[Correction] Affichage du bénéficiaire extérieur dans la vue réservation
+[Correction] Prise en compte du fichier configperso @JeromeDevome
+[Correction] Popup de confirmation dans l'administration @JeromeDevome
+[Correction] Affichage du bénéficiaire extérieur dans la vue réservation @JeromeDevome @Aurely9n 
 [Modification] Tableau de bord de l'administration @Larsene
 [Modification] Mise à jour des libraires JS @JeromeDevome 
 
