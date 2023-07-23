@@ -28,7 +28,7 @@ $version_grr = "4.1.1";
 # Ex 0402003 : Version 4.2.X 3eme modification sur la branche 4.2.X
 $version_bdd = "0400002";
 // Version repository (GitHub) GitHub-Master / Release-v4.0.0-beta.1 / Release-v4.0.0-RC.1 / Release-v4.0.0
-$versionReposite = "GitHub-Master";
+$versionReposite = "Release-v4.1.1";
 
 ################################
 # Configuration Requise
