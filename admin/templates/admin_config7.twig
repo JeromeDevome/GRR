@@ -9,7 +9,7 @@
 
 {% block content %}
 	<div class="row">
-        <div class="col-12 col-sm-12">
+        <div class="col col-12 col-sm-12">
             <div class="card card-primary card-outline card-tabs">
               <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
@@ -44,13 +44,13 @@
 
 						<div class="card-body">
 							<div class="row">
-								<div class="col-5 col-sm-3">
+								<div class="col col-5 col-sm-3">
 									<div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
 										<a class="nav-link active" id="vert-tabs-divers-tab" data-toggle="pill" href="#vert-tabs-divers" role="tab" aria-controls="vert-tabs-divers" aria-selected="true">Divers</a>
 										<a class="nav-link" id="vert-tabs-formresa-tab" data-toggle="pill" href="#vert-tabs-formresa" role="tab" aria-controls="vert-tabs-formresa" aria-selected="true">{{ trad.display_mail_etat_destinataire }}</a>
 									</div>
 								</div>
-								<div class="col-7 col-sm-9">
+								<div class="col col-7 col-sm-9">
 									<div class="tab-content" id="vert-tabs-tabContent">
 
 										<!-- Divers -->
@@ -58,8 +58,8 @@
 
 											<!-- Périodicité -->
 											<div class="form-group row row col-sm-12">
-												<label class="col-sm-6" for="periodicite">{{ trad.periodicite_msg }}</label>
-												<div class="col-sm-6 control-label">
+												<label class="col col-sm-6" for="periodicite">{{ trad.periodicite_msg }}</label>
+												<div class="col col-sm-6 control-label">
 													<input type="checkbox" name="periodicite" {% if settings.periodicite == 'y' %}checked{% endif %} data-bootstrap-switch>
 												</div>
 											</div>
@@ -68,8 +68,8 @@
 
 											<!-- Gestion par courrier -->
 											<div class="form-group row row col-sm-12">
-												<label class="col-sm-6" for="show_courrier">{{ trad.courrier_msg }}</label>
-												<div class="col-sm-6 control-label">
+												<label class="col col-sm-6" for="show_courrier">{{ trad.courrier_msg }}</label>
+												<div class="col col-sm-6 control-label">
 													<input type="checkbox" name="show_courrier" {% if settings.show_courrier == 'y' %}checked{% endif %} data-bootstrap-switch>
 												</div>
 											</div>
@@ -78,8 +78,8 @@
 
 											<!-- Fonction échange réservation -->
 											<div class="form-group row row col-sm-12">
-												<label class="col-sm-6" for="fct_echange_resa">{{ trad.swapentry }}</label>
-												<div class="col-sm-6 control-label">
+												<label class="col col-sm-6" for="fct_echange_resa">{{ trad.swapentry }}</label>
+												<div class="col col-sm-6 control-label">
 													<input type="checkbox" name="fct_echange_resa" {% if settings.fct_echange_resa == 'y' %}checked{% endif %} data-bootstrap-switch>
 												</div>
 											</div>

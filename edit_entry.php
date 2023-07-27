@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-05-15 11:12$
+ * Dernière modification : $Date: 2023-07-27 16:12$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -752,7 +752,7 @@ echo '<input type="hidden" name="oldRessource" value="'.$room_id.'">'.PHP_EOL;
 echo '<div id="error"></div>';
 //echo '<table class="table-bordered EditEntryTable"><tr>'.PHP_EOL;
 echo '<div class="row2">';
-echo '<div class="col-sm-6 col-xs-12">';
+echo '<div class="col col-sm-6 col-xs-12">';
 //echo '<td style="width:50%; vertical-align:top; padding-left:15px; padding-top:5px; padding-bottom:5px;">'.PHP_EOL;
 
 echo '<table>'.PHP_EOL;
@@ -868,7 +868,7 @@ if ($type_affichage_reser == 0) // sélection de la durée
     echo '<div>'.PHP_EOL;
 	// spinner($duration);
     echo '<input class="form-control" id="duree" name="duration" type="number" value="'.$duration.'" min="1">'; 
-    // echo '<div class="col-xs-3">'.PHP_EOL;
+    // echo '<div class="col col-xs-3">'.PHP_EOL;
 	echo '<select class="form-control" name="dur_units">'.PHP_EOL;
     // echo '<select class="form-control" name="dur_units" size="0.5">'.PHP_EOL;
     // echo '<select name="dur_units" >'.PHP_EOL;
@@ -973,7 +973,7 @@ if (($delais_option_reservation > 0) && (($modif_option_reservation == 'y') || (
 	$day   = date("d");
 	$month = date("m");
 	$year  = date("Y");
-	echo '<tr><td class="E"><br><div class="col-xs-12"><div class="alert alert-danger" role="alert"><b>'.get_vocab("reservation_a_confirmer_au_plus_tard_le").'</div>'.PHP_EOL;
+	echo '<tr><td class="E"><br><div class="col col-xs-12"><div class="alert alert-danger" role="alert"><b>'.get_vocab("reservation_a_confirmer_au_plus_tard_le").'</div>'.PHP_EOL;
 	if ($modif_option_reservation == 'y')
 	{
 		echo '<select class="form-control" name="option_reservation" size="1">'.PHP_EOL;

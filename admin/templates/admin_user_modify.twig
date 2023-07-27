@@ -9,7 +9,7 @@
 
 {% block content %}
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col col-md-12">
 
          <div class="box box-success">
             <div class="box-header">
@@ -25,8 +25,8 @@
 
 					{% if trad.dConnexionExterne == 1 %}
 						<div class="form-group">
-							<label class="col-sm-4" for="type_authentification">{{ trad.authentification }}</label>
-							<div class="col-sm-8">
+							<label class="col col-sm-4" for="type_authentification">{{ trad.authentification }}</label>
+							<div class="col col-sm-8">
 								<select name="type_authentification" id="select_auth_mode" onchange="display_password_fields(this.id);" class="form-control">
 									<option value="locale" {% if utilisateur.source == 'local' %} selected {% endif %}>{{ trad.authentification_base_locale }}</option>
 									<option value="externe" {% if utilisateur.source == 'ext' %} selected {% endif %}>{{ trad.authentification_base_externe }}</option>
@@ -37,8 +37,8 @@
 
 					{% if utilisateur.reg_login !=  '' %}
 						<div class="form-group">
-							<label class="col-sm-4" for="login">{{ trad.login }}</label>
-							<div class="col-sm-8">
+							<label class="col col-sm-4" for="login">{{ trad.login }}</label>
+							<div class="col col-sm-8">
 								{{ utilisateur.reg_login }}
 							</div>
 						</div>
@@ -53,7 +53,7 @@
 
 					<!-- Statut: Visiteur, usager... -->
 					<div class="form-group row">
-						<label class="col-sm-4" for="reg_statut">{{ trad.statut }}</label>
+						<label class="col col-sm-4" for="reg_statut">{{ trad.statut }}</label>
 						<div class="input-group col-sm-8">
 							<select name="reg_statut" id="select_auth_mode" class="form-control" size="1">
 								<option value="visiteur" {% if utilisateur.statut == 'visiteur' %} selected {% endif %}>{{ trad.statut_visitor }}</option>
@@ -69,7 +69,7 @@
 					<!-- Etat : Actif/Inactif -->
 					{% if trad.dEstPasLuiMeme == 1 %}
 						<div class="form-group row">
-							<label class="col-sm-4" for="reg_etat">{{ trad.activ_no_activ }}</label>
+							<label class="col col-sm-4" for="reg_etat">{{ trad.activ_no_activ }}</label>
 							<div class="input-group col-sm-8">
 								<select name="reg_etat" id="reg_etat" class="form-control">
 									<option value="actif" {% if utilisateur.etat == 'actif' %} selected {% endif %}>{{ trad.activ_user }}</option>
@@ -83,7 +83,7 @@
 
 					<!-- Type d'authentification: Local/Externe -->
 					<div class="form-group row">
-						<label class="col-sm-4" for="reg_source">{{ trad.authentification }}</label>
+						<label class="col col-sm-4" for="reg_source">{{ trad.authentification }}</label>
 						<div class="input-group col-sm-8">
 							<select name="reg_source" id="reg_source" class="form-control" onchange="AffichageBlocMDP();">
 								<option value="local" {% if utilisateur.source == 'local' %} selected {% endif %}>{{ trad.authentification_base_locale }}</option>
@@ -96,7 +96,7 @@
 					<div id="password">
 						{% if utilisateur.reg_login !=  '' %}
 							<div class="form-group">
-								<label class="col-sm-12" for="reg_statut">{{ trad.champ_vide_mot_de_passe_inchange }}</label>
+								<label class="col col-sm-12" for="reg_statut">{{ trad.champ_vide_mot_de_passe_inchange }}</label>
 							</div>
 						{% endif %}
 
@@ -104,8 +104,8 @@
 						{{ form.input('reg_password2', trad.confirm_pwd, '', {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'password'}) }}
 
 						<div class="form-group row col-sm-12">
-							<label class="col-sm-4" for="cacher_lien_deconnecter">{{ trad.user_change_pwd_connexion }}</label>
-							<div class="col-sm-8">
+							<label class="col col-sm-4" for="cacher_lien_deconnecter">{{ trad.user_change_pwd_connexion }}</label>
+							<div class="col col-sm-8">
 								<input type="checkbox" name="reg_changepwd" value="1" {% if utilisateur.changepwd == '1' %} checked {% endif %}>
 							</div>
 						</div>

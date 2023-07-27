@@ -8,7 +8,7 @@
 {% block content %}
 	<div class="row">
 
-		<div class="col-md-12">
+		<div class="col col-md-12">
 
 			<div class="box">
 				<div class="box-header">
@@ -68,8 +68,8 @@
 
 							{% if trad.dTypeResa == 'resa' %}
 								<div class="form-group row col-sm-12">
-									<label class="col-sm-4" for="beneficiaire">{{ trad.reservation_au_nom_de }}</label>
-									<div class="col-sm-8">
+									<label class="col col-sm-4" for="beneficiaire">{{ trad.reservation_au_nom_de }}</label>
+									<div class="col col-sm-8">
 									<select name="beneficiaire" class="form-control" required>
 										{% for beneficiaire in beneficiaires %}
 											<option value="{{ beneficiaire.id }}" {% if beneficiaire.select == 1 %}selected{% endif %}>{{ beneficiaire.nom }} {{ beneficiaire.prenom }}</option>
@@ -85,8 +85,8 @@
 							{% endif %}
 
 							<div class="form-group row col-sm-12">
-								<label class="col-sm-4" for="rooms">{{ trad.rooms }}</label>
-								<div class="col-sm-8">
+								<label class="col col-sm-4" for="rooms">{{ trad.rooms }}</label>
+								<div class="col col-sm-8">
 								<select name="rooms[]" class="form-control" multiple required>
 									{% for ressource in ressources %}
 										<option value="{{ ressource.id }}">{{ ressource.nom }}</option>
@@ -97,8 +97,8 @@
 
 							{% if trad.dTypeResa == 'resa' %}
 								<div class="form-group row col-sm-12">
-									<label class="col-sm-4" for="type_">{{ trad.type }}</label>
-									<div class="col-sm-8">
+									<label class="col col-sm-4" for="type_">{{ trad.type }}</label>
+									<div class="col col-sm-8">
 									<select name="type_" class="form-control" required>
 										{% for type in types %}
 											<option value="0">{{ trad.choose }}</option>
@@ -126,7 +126,7 @@
 						<form action="?p=admin_reservation_bloc" method="post" id="formulaire">
 
 							<div class="row">
-								<div class="col-md-8">
+								<div class="col col-md-8">
 									<table cellpadding="3" width="100%" border="0">
 										{% for jour in jourssemaines  %}
 											<tr>
@@ -141,7 +141,7 @@
 								</div>
 
 								<!-- Partie selection horaire -->
-								<div class="col-md-4">
+								<div class="col col-md-4">
 									<p><b>{{ trad.date }} {{ trad.deux_points }}</b></p>
 
 									{% if trad.dPeriode == 'y' %}

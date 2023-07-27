@@ -5,7 +5,7 @@
 
 {% block content %}
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col col-md-12">
 
 			{% if trad.dCompatibiliteServeur %}
 				<div class="callout callout-danger">{{ trad.dCompatibiliteServeur }}</div>
@@ -18,11 +18,11 @@
 					<!-- /.box-header -->
 
 					<div class="box-body no-padding">
-						<div class="col-md-4">
+						<div class="col col-md-4">
 							* IMAP, port par défaut : 143<br />* IMAP sécurisé, port par défaut 993<br />* POP3, port par défaut 110<br />* POP3 sécurisé, port par défaut<br/>
 						</div>
 
-						<div class="col-md-8">
+						<div class="col col-md-8">
 							<ul>
 								<li><b>SSL</b> : utilise Secure Socket Layer pour crypter la session</li>
 								<li><b>TLS</b> : force l'utilisation de start-TLS pour crypter la session et rejète les connexions aux serveurs qui ne le supporte pas.</li>
@@ -62,8 +62,8 @@
 							{{ form.input('imap_port', 'Numero de port', settings.imap_port, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
 
 							<div class="form-group row col-sm-12">
-								<label class="col-sm-6" for="imap_type">IMAP ou POP</label>
-								<div class="col-sm-6">
+								<label class="col col-sm-6" for="imap_type">IMAP ou POP</label>
+								<div class="col col-sm-6">
 									<select class="form-control" name="imap_type">
 										<option value="/imap" {% if settings.imap_type == '/imap' %} selected {% endif %}>IMAP</option>
 										<option value="/pop3" {% if settings.imap_type == '/pop3' %} selected {% endif %}>POP</option>
@@ -72,8 +72,8 @@
 							</div>
 
 							<div class="form-group row col-sm-12">
-								<label class="col-sm-6" for="imap_ssl">SSL</label>
-								<div class="col-sm-6">
+								<label class="col col-sm-6" for="imap_ssl">SSL</label>
+								<div class="col col-sm-6">
 									<select class="form-control" name="imap_ssl">
 										<option value="" {% if settings.imap_ssl == '' %} selected {% endif %}>Ne pas utiliser SSL</option>
 										<option value="/ssl" {% if settings.imap_ssl == '/ssl' %} selected {% endif %}>Utiliser SSL</option>
@@ -82,8 +82,8 @@
 							</div>
 
 							<div class="form-group row col-sm-12">
-								<label class="col-sm-6" for="imap_cert">Certificat</label>
-								<div class="col-sm-6">
+								<label class="col col-sm-6" for="imap_cert">Certificat</label>
+								<div class="col col-sm-6">
 									<select class="form-control" name="imap_cert">
 										<option value="" {% if settings.imap_cert == '' %} selected {% endif %}>(non précisé)</option>
 										<option value="/novalidate-cert" {% if settings.imap_cert == '/novalidate-cert' %} selected {% endif %}>NO-VALIDATE-CERT</option>
@@ -93,8 +93,8 @@
 							</div>
 
 							<div class="form-group row col-sm-12">
-								<label class="col-sm-6" for="imap_tls">TLS</label>
-								<div class="col-sm-6">
+								<label class="col col-sm-6" for="imap_tls">TLS</label>
+								<div class="col col-sm-6">
 									<select class="form-control" name="imap_tls">
 										<option value="" {% if settings.imap_tls == '' %} selected {% endif %}>(non précisé)</option>
 										<option value="/tls" {% if settings.imap_tls == '/tls' %} selected {% endif %}>TLS</option>
