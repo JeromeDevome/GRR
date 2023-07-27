@@ -5043,7 +5043,7 @@ function jQuery_DatePicker($typeDate){
         }
  	$mindate = utf8_strftime("%d/%m/%Y",Settings::get('begin_bookings'));
     $maxdate = utf8_strftime("%d/%m/%Y",Settings::get('end_bookings'));
-    genDateSelector("".$typeDate."_", "$day", "$month", "$year","");
+    genDateSelector("".$typeDate, "$day", "$month", "$year","");
  	echo '<input type="hidden" disabled="disabled" id="mydate_' .$typeDate. '">'.PHP_EOL;
  	echo '<script type="text/javascript">'.PHP_EOL;
  	//echo '	$(function() {'.PHP_EOL;
