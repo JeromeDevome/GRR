@@ -92,7 +92,7 @@ class Import {
             else
             {
 				if (!is_dir($dest))
-					mkdir($dest);
+					mkdir($dest, 0777, true);
   
 				/* je teste si la destination est writable */
                 $ok1 = is_writable($dest);
