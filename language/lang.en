@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2023-05-22
+# Last modification : 2023-07-27
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -222,6 +222,8 @@ $vocab['calendrier_jours/cycles'] = "Calendar \"cycle days\"";
 $vocab['cancel'] = "Cancel";
 $vocab['capacity'] = "Maximum number of people allowed in the room (0 if it is not a room)";
 $vocab['capacity_2'] = "Capacity: ";
+$vocab['cas_logout'] = "If you have activated the taking into account of the CAS service, by giving below a redirection address, the logout of GRR disconnects from the CAS portal (Single-Sign-Out).";
+$vocab['cas_logout2'] = "Redirection address after Single-Sign-Out logout:";
 $vocab['CAS_SSO_explain'] = "If you have a <b>CAS</b> environment (Central Authentification Service), you can activate the consideration of this service with <b>GRR</b> below. Consult the GRR instructions to know more.";
 $vocab['causes_possibles'] = "Possibles causes:";
 $vocab['Cette_journee_ne_correspond_pas_a_un_jour_cycle'] = "This day doesn't correspond to a cycle day";

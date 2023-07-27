@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2023-05-22
+# Last modification : 2023-07-27
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -214,6 +214,8 @@ $vocab['calendrier_jours/cycles'] = "Calendario \"días ciclos\"";
 $vocab['cancel'] = "Anular";
 $vocab['capacity'] = "Número máximo de personas autorizadas en la sala (0 si no se trata de una sala)";
 $vocab['capacity_2'] = "Capacidad : ";
+$vocab['cas_logout'] = "Si ha activado la toma en cuenta del servicio CAS, dando a continuación una dirección de redirección, la desconexión de GRR desconecta del portal CAS (Single-Sign-Out).";
+$vocab['cas_logout2'] = "Dirección de redirección después del cierre de sesión único:";
 $vocab['CAS_SSO_explain'] = "Si usted dispone de un entorno <b>CAS</b> (Central Authentification Service), puede activar la toma en cuenta de este servicio por <B>GRR</B> más abajo. Diríjase a la documentación de GRR para saber más.";
 $vocab['causes_possibles'] = "Causas posibles:";
 $vocab['Cette_journee_ne_correspond_pas_a_un_jour_cycle'] = "Este día no corresponde a un día ciclo";
@@ -827,7 +829,7 @@ $vocab['sso_actif_cacher_lien_deconnecter'] = "Vous avez activé la prise en cha
 $vocab['sso_active_correspondance_profil_statut'] = "Afficher l'interface de mise en correspondance ldap <--> statut dans GRR."; // A traduire
 $vocab['sso_active_correspondance_profil_statut_text'] = "Vous pouvez également activer ci-dessous l'affichage dans le menu de gauche d'une option permettant la mise en correspondance d'un profil utilisateur défini par un attribut LDAP (sa fonction) avec le statut dans GRR. Vous devrez alors également configurer votre serveur CAS et le fichier config_CAS.inc.php de GRR (Voir la documentation)."; // A traduire
 $vocab['sso_IsNotAllowedModify'] = "Les utilisateurs externes ne peuvent pas modifier leur nom, prénom et email dans GRR."; // A traduire
-$vocab['sso_redirection_accueil_grr_text1'] = "Si vous avez activez la prise en compte du service CAS, vous avez la possibilité, en cochant la case ci-dessous, de rediriger un utilisateur non authentifié vers la page d'accueil de GRR plutôt que vers le portail d'authentification CAS."; // A traduire
+$vocab['sso_redirection_accueil_grr_text1'] = "Si vous avez activé la prise en compte du service CAS, vous avez la possibilité, en cochant la case ci-dessous, de rediriger un utilisateur non authentifié vers la page d'accueil de GRR plutôt que vers le portail d'authentification CAS."; // A traduire
 $vocab['sso_redirection_accueil_grr_text2'] = "Rediriger un utilisateur non authentifié CAS vers la page d'accueil de GRR."; // A traduire
 $vocab['start_date'] = "Fecha de inicio :";
 $vocab['start_history'] = "Inicio de la reseña histórica";
