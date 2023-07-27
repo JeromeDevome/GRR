@@ -3,9 +3,9 @@
  * admin_type.php
  * Interface de gestion des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-04-24 18:04$
+ * Dernière modification : $Date: 2023-07-27 16:32$
  * @author    JeromeB & Laurent Delineau & Yan Naessens & J.-P. Gay
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -70,10 +70,10 @@ echo '<form action="./admin_type.php" method="get">'.PHP_EOL;
 echo '<div>'.PHP_EOL;
 echo '<p>'.get_vocab('exclude_type_in_views_all').'</p>'.PHP_EOL; 
 echo '<div>'.PHP_EOL;
-echo '<div class="col-sm-6 col-xs-12">'.PHP_EOL;
+echo '<div class="col col-sm-6 col-xs-12">'.PHP_EOL;
 echo '<input class="form-control" type="text" id="exclude_type_in_views_all" name="exclude_type_in_views_all" value="'.Settings::get('exclude_type_in_views_all').'" size="30">'.PHP_EOL;
 echo '</div>'.PHP_EOL;
-echo '<div class="col-sm-6 col-xs-12">'.PHP_EOL;
+echo '<div class="col col-sm-6 col-xs-12">'.PHP_EOL;
 echo '<input class="btn btn-primary" type="submit" name="ok" value="'.get_vocab('save').'" style="font-variant: small-caps;"/>'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '</div>'.PHP_EOL;

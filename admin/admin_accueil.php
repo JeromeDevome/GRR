@@ -3,9 +3,9 @@
  * admin_accueil
  * Interface d'accueil de l'administration des domaines et des ressources
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-07-22 18:42$
+ * Dernière modification : $Date: 2023-07-27 16:26$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -41,7 +41,7 @@ start_page_w_header("", "", "", $type="with_session"); // affiche le header et l
 include "admin_col_gauche2.php";
 // "colonne de droite"
 // titre 
-echo'    <div class="col-md-5 col-sm-7 col-xs-12">';
+echo'    <div class="col col-md-5 col-sm-7 col-xs-12">';
 echo'        <div class="center">';
 echo'            <br /><br />';
 echo'            <p style="font-size:20pt">';
@@ -76,7 +76,7 @@ if ($nbAModerer > 0)
 }
 echo'        </div>    </div>';
 // totem
-echo'    <div class="col-md-3 col-sm-4 col-xs-12">';
+echo'    <div class="col col-md-3 col-sm-4 col-xs-12">';
 echo'        <img src="../img_grr/totem_grr.png" alt="GRR !" class="image" />';
 echo'    </div>';
 end_page();

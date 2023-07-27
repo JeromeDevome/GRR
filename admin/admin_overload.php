@@ -3,9 +3,9 @@
  * admin_overload.php
  * Interface de création/modification des champs additionnels.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-04-03 18:17$
+ * Dernière modification : $Date: 2023-07-27 16:32$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -214,7 +214,7 @@ foreach ($userdomain as $key=>$value)
 // code HTML
 start_page_w_header("", "", "", $type = "with_session");
 include "admin_col_gauche2.php";
-echo '<div class="col-sm-9 col-xs-12">';
+echo '<div class="col col-sm-9 col-xs-12">';
 echo "<h2>".get_vocab("admin_overload.php")."</h2>\n";
 echo get_vocab("explication_champs_additionnels")."\n";
 echo "<form method=\"post\" action=\"admin_overload.php\" >\n";

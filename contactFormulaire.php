@@ -3,9 +3,9 @@
  * contactFormulaire.php
  * Formulaire d'envoi de mail demandant une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-05-15 10:24$
+ * Dernière modification : $Date: 2023-07-27 16:33$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -65,7 +65,7 @@ bouton_retour_haut ();
 		<div class="row">
 			<fieldset>
 				<legend><b>Vos coordonnées</b></legend>
-				<div class="col-md-6 col-xs-12">
+				<div class="col col-md-6 col-xs-12">
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
@@ -79,7 +79,7 @@ bouton_retour_haut ();
 						</div>
 					</div>
 				</div>
-				<div class="col-md-6 col-xs-12">
+				<div class="col col-md-6 col-xs-12">
 					<div class="form-group">
 						<div class="input-group">
 							<span class="input-group-addon">@</span>
@@ -98,7 +98,7 @@ bouton_retour_haut ();
 		<div class="row">
             <fieldset>
 				<legend><b>Réservation</b></legend>
-				<div class="col-md-6 col-sm-12">
+				<div class="col col-md-6 col-sm-12">
 				<label for="subject">Sujet :</label>
 				<textarea class="form-control" id="subject" name="sujet" cols="30" rows="4" required></textarea><br/>
 				<label>Domaines : </label>
@@ -125,7 +125,7 @@ bouton_retour_haut ();
                         <option>SELECTIONNER UNE RESSOURCE </option>
                 </select>
 				</div>
-				<div class="col-md-6 col-sm-12">	
+				<div class="col col-md-6 col-sm-12">	
                 <div class="form-group">
                     <div class="input-group">
 						<br />

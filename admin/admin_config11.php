@@ -3,7 +3,7 @@
  * admin_config11.php
  * Interface permettant à l'administrateur la configuration de paramètres généraux présentant le site GRR
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2023-05-19 14:25$
+ * Dernière modification : $Date: 2023-07-27 16:28$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -299,7 +299,7 @@ start_page_w_header('', '', '', $type = 'with_session');
 affiche_pop_up($msg, 'admin');
 // Affichage de la colonne de gauche
 include 'admin_col_gauche2.php';
-echo '<div class="col-md-9 col-sm-8 col-xs-12">';
+echo '<div class="col col-md-9 col-sm-8 col-xs-12">';
 echo "<h2>".get_vocab('admin_config11.php')."</h2>";
 //
 // Config générale
@@ -308,32 +308,32 @@ echo "<h2>".get_vocab('admin_config11.php')."</h2>";
 echo '<form enctype="multipart/form-data" action="./admin_config11.php" id="mainForm" method="post" >'.PHP_EOL;
 echo '<h3>'.get_vocab('miscellaneous').'</h3>'.PHP_EOL;
 echo '<div class="form-group col-xs-12">'.PHP_EOL;
-echo '<label class="col-sm-4 col-xs-12" for="title_home_page">'.get_vocab('title_home_page').'</label>'.PHP_EOL;
-echo '<div class="col-sm-8 col-xs-12 control-label">'.PHP_EOL;
+echo '<label class="col col-sm-4 col-xs-12" for="title_home_page">'.get_vocab('title_home_page').'</label>'.PHP_EOL;
+echo '<div class="col col-sm-8 col-xs-12 control-label">'.PHP_EOL;
 echo '<input class="form-control" type="text" name="title_home_page" id="title_home_page" size="40" value="'.Settings::get('title_home_page').'" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '<div class="form-group col-xs-12">'.PHP_EOL;
-echo '<label class="col-sm-4 col-xs-12" for="message_home_page">'.get_vocab('message_home_page').'</label>'.PHP_EOL;
-echo '<div class="col-sm-8 col-xs-12 control-label">'.PHP_EOL;
+echo '<label class="col col-sm-4 col-xs-12" for="message_home_page">'.get_vocab('message_home_page').'</label>'.PHP_EOL;
+echo '<div class="col col-sm-8 col-xs-12 control-label">'.PHP_EOL;
 echo '<textarea class="form-control" name="message_home_page" id="message_home_page" size="40" value="">'.PHP_EOL;
 echo Settings::get('message_home_page');
 echo '</textarea>';
 echo '</div>'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '<div class="form-group col-xs-12">'.PHP_EOL;
-echo '<label class="col-sm-4 col-xs-12" for="company">'.get_vocab('company').'</label>'.PHP_EOL;
-echo '<div class="col-sm-8 col-xs-12 control-label">'.PHP_EOL;
+echo '<label class="col col-sm-4 col-xs-12" for="company">'.get_vocab('company').'</label>'.PHP_EOL;
+echo '<div class="col col-sm-8 col-xs-12 control-label">'.PHP_EOL;
 echo '<input class="form-control" type="text" name="company" id="company" size="40" value="'.Settings::get('company').'" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '<div class="form-group col-xs-12">'.PHP_EOL;
-echo '<label class="col-sm-4 col-xs-12" for="grr_url">'.get_vocab('grr_url').'</label>'.PHP_EOL;
-echo '<div class="col-sm-8 col-xs-12 control-label">'.PHP_EOL;
+echo '<label class="col col-sm-4 col-xs-12" for="grr_url">'.get_vocab('grr_url').'</label>'.PHP_EOL;
+echo '<div class="col col-sm-8 col-xs-12 control-label">'.PHP_EOL;
 echo '<input class="form-control" type="text" name="grr_url" id="grr_url" size="40" value="'.Settings::get('grr_url').'" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '</div>'.PHP_EOL;
-echo '<div class="col-xs-12">'.PHP_EOL;
+echo '<div class="col col-xs-12">'.PHP_EOL;
 echo '<p><input type="checkbox" name="use_grr_url" value="y" ';
 if (Settings::get('use_grr_url') == 'y') 
     echo ' checked="checked" ';
@@ -341,21 +341,21 @@ echo ' />'.PHP_EOL;
 echo '<em>'.get_vocab('grr_url_explain').'</em></p>'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '<div class="form-group col-xs-12">'.PHP_EOL;
-echo '<label class="col-sm-4 col-xs-12" for="webmaster_name">'.get_vocab('webmaster_name').'</label>'.PHP_EOL;
-echo '<div class="col-sm-8 col-xs-12 control-label">'.PHP_EOL;
+echo '<label class="col col-sm-4 col-xs-12" for="webmaster_name">'.get_vocab('webmaster_name').'</label>'.PHP_EOL;
+echo '<div class="col col-sm-8 col-xs-12 control-label">'.PHP_EOL;
 echo '<input class="form-control" type="text" name="webmaster_name" id="webmaster_name" size="40" value="'.Settings::get('webmaster_name').'" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '<div class="form-group col-xs-12">'.PHP_EOL;
-echo '<label class="col-sm-4 col-xs-12" for="webmaster_email">'.get_vocab('webmaster_email').'</label>'.PHP_EOL;
-echo '<div class="col-sm-8 col-xs-12 control-label">'.PHP_EOL;
+echo '<label class="col col-sm-4 col-xs-12" for="webmaster_email">'.get_vocab('webmaster_email').'</label>'.PHP_EOL;
+echo '<div class="col col-sm-8 col-xs-12 control-label">'.PHP_EOL;
 echo '<input class="form-control" type="email" name="webmaster_email" id="webmaster_email" size="40" value="'.Settings::get('webmaster_email').'" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '<p><em>'.get_vocab('plusieurs_adresses_separees_points_virgules').'</em></p>'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '<div class="form-group col-xs-12">'.PHP_EOL;
-echo '<label class="col-sm-4 col-xs-12" for="technical_support_email">'.get_vocab('technical_support_email').'</label>'.PHP_EOL;
-echo '<div class="col-sm-8 col-xs-12 control-label">'.PHP_EOL;
+echo '<label class="col col-sm-4 col-xs-12" for="technical_support_email">'.get_vocab('technical_support_email').'</label>'.PHP_EOL;
+echo '<div class="col col-sm-8 col-xs-12 control-label">'.PHP_EOL;
 echo '<input class="form-control" type="email" name="technical_support_email" id="technical_support_email" size="40" value="'.Settings::get('technical_support_email').'" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '<p><em>'.get_vocab('plusieurs_adresses_separees_points_virgules').'</em></p>'.PHP_EOL;
@@ -364,8 +364,8 @@ echo '</div>'.PHP_EOL;
 echo '<h3>'.get_vocab('logo_msg').'</h3>'.PHP_EOL;
 echo '<p>'.get_vocab('choisir_image_logo').'</p>'.PHP_EOL;
 echo '<div class="form-group col-xs-12">'.PHP_EOL;
-echo '<label class="col-sm-4 col-xs-12" for="doc_file">'.get_vocab('select_fichier').'</label>'.PHP_EOL;
-echo '<div class="col-sm-8 col-xs-12">'.PHP_EOL;
+echo '<label class="col col-sm-4 col-xs-12" for="doc_file">'.get_vocab('select_fichier').'</label>'.PHP_EOL;
+echo '<div class="col col-sm-8 col-xs-12">'.PHP_EOL;
 echo '<input type="file" name="doc_file" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '</div>'.PHP_EOL;
@@ -380,8 +380,8 @@ echo '</div>'.PHP_EOL;
 // nb de calendriers
 echo '<h3>'.get_vocab('affichage_calendriers').'</h3>'.PHP_EOL;
 echo '<div class="form-group col-xs-12">'.PHP_EOL;
-echo '<label class="col-sm-8 col-xs-12" for="nb_calendar">'.get_vocab('affichage_calendriers_msg').get_vocab('deux_points').'</label>'.PHP_EOL;
-echo '<div class="col-sm-4 col-xs-12">'.PHP_EOL;
+echo '<label class="col col-sm-8 col-xs-12" for="nb_calendar">'.get_vocab('affichage_calendriers_msg').get_vocab('deux_points').'</label>'.PHP_EOL;
+echo '<div class="col col-sm-4 col-xs-12">'.PHP_EOL;
 echo '<input type="number" name="nb_calendar" value="'.Settings::get('nb_calendar').'" min="1" max="5" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '</div>'.PHP_EOL;
@@ -395,8 +395,8 @@ $bday = date('d', Settings::get('begin_bookings'));
 $bmonth = date('m', Settings::get('begin_bookings'));
 $byear = date('Y', Settings::get('begin_bookings'));
 
-echo '<label class="col-sm-6 col-xs-12" for="mydate_begin_">'.get_vocab('begin_bookings').'</label>'.PHP_EOL;
-echo '<div class="col-sm-6 col-xs-12 form-inline">'.PHP_EOL;
+echo '<label class="col col-sm-6 col-xs-12" for="mydate_begin_">'.get_vocab('begin_bookings').'</label>'.PHP_EOL;
+echo '<div class="col col-sm-6 col-xs-12 form-inline">'.PHP_EOL;
 genDateSelector('begin_', $bday, $bmonth, $byear, 'more_years');
 echo '<input type="hidden" disabled="disabled" id="mydate_begin_">'.PHP_EOL;
 echo '<script>'.PHP_EOL;
@@ -429,8 +429,8 @@ $eday = date('d', Settings::get('end_bookings'));
 $emonth = date('m', Settings::get('end_bookings'));
 $eyear = date('Y', Settings::get('end_bookings'));
 
-echo '<label class="col-sm-6 col-xs-12" for="mydate_end_">'.get_vocab('end_bookings').'</label>'.PHP_EOL;
-echo '<div class="col-sm-6 col-xs-12 form-inline">'.PHP_EOL;
+echo '<label class="col col-sm-6 col-xs-12" for="mydate_end_">'.get_vocab('end_bookings').'</label>'.PHP_EOL;
+echo '<div class="col col-sm-6 col-xs-12 form-inline">'.PHP_EOL;
 genDateSelector('end_', $eday, $emonth, $eyear, 'more_years');
 echo '<input type="hidden" disabled="disabled" id="mydate_end_">'.PHP_EOL;
 echo '<script>'.PHP_EOL;
