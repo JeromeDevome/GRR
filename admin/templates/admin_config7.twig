@@ -46,8 +46,9 @@
 							<div class="row">
 								<div class="col-5 col-sm-3">
 									<div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
-										<a class="nav-link active" id="vert-tabs-divers-tab" data-toggle="pill" href="#vert-tabs-divers" role="tab" aria-controls="vert-tabs-divers" aria-selected="true">Divers</a>
-										<a class="nav-link" id="vert-tabs-formresa-tab" data-toggle="pill" href="#vert-tabs-formresa" role="tab" aria-controls="vert-tabs-formresa" aria-selected="true">{{ trad.display_mail_etat_destinataire }}</a>
+										<a class="nav-link active" id="vert-tabs-divers-tab" data-bs-toggle="pill" href="#vert-tabs-divers" role="tab" aria-controls="vert-tabs-divers" aria-selected="true">Divers</a>
+										<a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-formresa" role="tab" aria-controls="vert-tabs-formresa" aria-selected="true">{{ trad.display_mail_etat_destinataire }}</a>
+										<a class="nav-link" id="vert-tabs-creacompte-tab" data-bs-toggle="pill" href="#vert-tabs-creacompte" role="tab" aria-controls="vert-tabs-creacompte" aria-selected="false">Demande de crétion de compte</a>
 									</div>
 								</div>
 								<div class="col-7 col-sm-9">
@@ -97,6 +98,48 @@
 											<input type="checkbox" name="mail_contact_resa_captcha" value="y" id="label_0y" {% if settings.mail_contact_resa_captcha == 'y' %} checked {% endif %} /> <label for="label_0z">{{ trad.captcha_utiliser }}</label><br>
 										</div>
 
+										<!-- Demandes de création de compte -->
+										<div class="tab-pane fade" id="vert-tabs-creacompte" role="tabpanel" aria-labelledby="vert-tabs-creacompte-tab">
+											<div class="form-group row row col-sm-12">
+												<label class="col-sm-6" for="fct_crea_cpt"><h4 class="page-header">Demande de création de compte</h4></label>
+												<div class="col-sm-6 control-label">
+													<input type="checkbox" name="fct_crea_cpt" {% if settings.fct_crea_cpt == 'y' %}checked{% endif %} data-bootstrap-switch>
+												</div>
+											</div>
+
+											<p>Permettre aux personnes non connecté de demander la création d'un compte. L'utilisateur devrat renseigner son nom, prénom, email et mot de passe, une fois. Le gestionnaire d'utilisateur ou l'administrateur pourrat valider ou non la demande en lui assignant un identifiant et un statut.</p>
+						
+											<p class="text-danger"><b>Avertissement :</b> Il est conseiller d'activer l'envois de mail, dans le cas contraire l'utilisateur ne pourrat rececevoir son identifiant.</p>
+
+											<div class="form-group row row col-sm-12">
+												<label class="col-sm-6" for="fct_creation_compte_identifiant"><p>Par défaut l'identifiant est sous le format :</p></label>
+												<div class="col-sm-6 control-label">
+													<select class="form-control" name="fct_crea_cpt_login">
+														<option value="1" {% if settings.fct_crea_cpt_login == '1' %} selected {% endif %}>NOM</option>
+														<option value="2" {% if settings.fct_crea_cpt_login == '2' %} selected {% endif %}>NOM.PRENOM</option>
+														<option value="3" {% if settings.fct_crea_cpt_login == '3' %} selected {% endif %}>NOMPRENOM</option>
+														<option value="4" {% if settings.fct_crea_cpt_login == '4' %} selected {% endif %}>PRENOM</option>
+														<option value="5" {% if settings.fct_crea_cpt_login == '5' %} selected {% endif %}>P.NOM</option>
+														<option value="6" {% if settings.fct_crea_cpt_login == '6' %} selected {% endif %}>PNOM</option>
+														<option value="7" {% if settings.fct_crea_cpt_login == '7' %} selected {% endif %}>PR.NOM</option>
+														<option value="8" {% if settings.fct_crea_cpt_login == '8' %} selected {% endif %}>PRENOM.NOM</option>
+														<option value="9" {% if settings.fct_crea_cpt_login == '9' %} selected {% endif %}>PRENOMNOM</option>
+													</select>
+												</div>
+											</div>
+
+
+											<div class="form-group row row col-sm-12">
+												<label class="col-sm-6" for="fct_creation_compte_statut"><p>Statut par défaut :</p></label>
+												<div class="col-sm-6 control-label">
+													<select class="form-control" name="fct_crea_cpt_statut">
+														<option value="1" {% if settings.fct_crea_cpt_statut == '1' %} selected {% endif %}>Visiteur</option>
+														<option value="2" {% if settings.fct_crea_cpt_statut == '2' %} selected {% endif %}>Usager</option>
+													</select>
+												</div>
+											</div>
+
+										</div><!---->
 
 									</div>
 								</div>

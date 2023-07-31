@@ -236,6 +236,11 @@ echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("compan
 		document.getElementById('login').focus();
 	</script>
 	<?php
+	if (Settings::get("fct_crea_cpt") != "")
+	{
+		echo "<h4><a href='app.php?p=creationcompte'>".get_vocab("crea_compte_inscrivez")."</a></h4><br><br>";
+	}
+
 	echo "<p>";
 	if (Settings::get("webmaster_email") != "")
 	{
