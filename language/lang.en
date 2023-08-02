@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2023-07-27
+# Last modification : 2023-08-02
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -200,6 +200,7 @@ $vocab['cas_racine'] = "Root";
 $vocab['cas_proxy_explain'] = "If GRR has to go through a proxy server to access CAS server, it may be necessary to complete the next fields";
 $vocab['cas_proxy_server'] = "Proxy server IP address";
 $vocab['cas_proxy_port'] = "Proxy port";
+$vocab['cas_version'] = "CAS protocol version";
 $vocab['autor_contact'] = "Contact author";
 $vocab['autres_parametres_sso'] = "Miscellaneous parameters"; 
 $vocab['avertissement_change_type'] = "CAUTION: both types of configuration of time slots are incompatible: a change of the type of time slots leads to, after validation, a deletion of all the reservations of this area.";

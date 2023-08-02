@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2023-07-27
+# Last modification : 2023-08-02
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -195,6 +195,7 @@ $vocab['cas_racine'] = "Racine"; // A traduire
 $vocab['cas_proxy_explain'] = "If GRR has to go through a proxy server to access CAS server, it may be necessary to complete the next fields";
 $vocab['cas_proxy_server'] = "IP-Addresse des Proxy-Servers";
 $vocab['cas_proxy_port'] = "Proxy Port";
+$vocab['cas_version'] = "CAS-Protokollversion";
 $vocab['autor_contact'] = "Wenden Sie sich an den Autor";
 $vocab['autres parametres sso'] = "Verschieden Einstellungen";
 $vocab['avertissement_change_type'] = "ACHTUNG: die zwei Konfigurationsarten der Reservierungsabstände sind nicht miteinander vereinbar: die Änderung der Konfigurationsarten wird, nach der Bestätigung, die Gesamtheit der Reservierungen dieses Bereiches löschen.";

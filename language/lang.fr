@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2023-07-27
+# Last modification : 2023-08-02
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -196,6 +196,7 @@ $vocab['cas_racine'] = "Racine";
 $vocab['cas_proxy_explain'] = "Si le serveur hébergeant GRR est derrière un proxy, il peut être nécessaire de renseigner les valeurs suivantes : ";
 $vocab['cas_proxy_server'] = "Adresse IP du serveur proxy";
 $vocab['cas_proxy_port'] = "Port";
+$vocab['cas_version'] = "Version du protocole CAS";
 $vocab['autor_contact'] = "Contacter l'auteur";
 $vocab['autres_parametres_sso'] = "Paramètres divers";
 $vocab['avertissement_change_type'] = "ATTENTION : les deux types de configuration des créneaux sont incompatibles entre eux : un changement du type de créneaux entraîne donc, après validation, un effacement de toutes les réservations de ce domaine.";

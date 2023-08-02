@@ -3,7 +3,7 @@
  * admin_config_sso.php
  * Interface permettant l'activation de la prise en compte d'un environnement SSO
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-07-27 11:53$
+ * Dernière modification : $Date: 2023-08-02 18:08$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -30,7 +30,7 @@ if (authGetUserLevel(getUserName(), -1) < 6)
 	showAccessDenied($back);
 	exit();
 }
-if (isset($_POST['valid']))
+if (isset($_POST['valid'])) // enregistrement des données entrées
 {
 	VerifyModeDemo();
 	
@@ -44,6 +44,8 @@ if (isset($_POST['valid']))
 		echo "Erreur lors de l'enregistrement de cas_proxy_server !<br />";
     if (!Settings::set("cas_proxy_port", $_POST['cas_proxy_port']))
 		echo "Erreur lors de l'enregistrement de cas_proxy_port !<br />";
+    if (!Settings::set("cas_version", $_POST['cas_version']))
+		echo "Erreur lors de l'enregistrement de cas_version !<br />";
 	
 	if (!isset($_POST['cacher_lien_deconnecter']))
 		$cacher_lien_deconnecter = "n";
@@ -146,6 +148,9 @@ if (isset($_POST['valid']))
 	if (!Settings::set("cas_logout", $cas_logout))
 		echo "Erreur lors de l'enregistrement de cas_logout !<br />";
 }
+// récupération des données enregistrées
+$CAS = array('CAS_VERSION_1_0','CAS_VERSION_2_0','CAS_VERSION_3_0','SAML_VERSION_1_1'); // protocoles admissibles
+$cas_version = Settings::get('cas_version');
 
 if (authGetUserLevel(getUserName(), -1) < 6)
 {
@@ -211,6 +216,19 @@ echo "</div><hr />\n";
 echo "<h2>".get_vocab("config_cas_title")."</h2>\n";
 echo "<div>\n<input type=\"hidden\" name=\"valid\" value=\"1\" /></div>\n";
 echo "<p>".get_vocab("CAS_SSO_explain")."</p>\n";
+echo '<div class="form-group row col-xs-12">'.PHP_EOL;
+echo '<label class="col col-sm-6 col-xs-12" for="cas_version">'.get_vocab('cas_version').'</label>'.PHP_EOL;
+echo '<div class="col col-sm-6 col-xs12">'.PHP_EOL;
+echo '<select class="form-control" name="cas_version" id="cas_version">';
+foreach($CAS as $cas){
+    echo '<option value="'.$cas.'" ';
+    if($cas == $cas_version)
+        echo "selected";
+    echo '>'.$cas.'</option>';
+}
+echo '</select>'.PHP_EOL;
+echo '</div>
+</div>';
 echo "<h3>".get_vocab("Statut_par_defaut_utilisateurs_importes")."</h3>\n";
 echo "<div>".get_vocab("choix_statut_CAS_SSO")."<br />\n";
 echo "<input type=\"radio\" name=\"sso_statut\" value=\"cas_visiteur\" ";

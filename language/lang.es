@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2023-07-27
+# Last modification : 2023-08-02
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -191,7 +191,8 @@ $vocab['cas_port'] = "Port"; // A traduire
 $vocab['cas_racine'] = "Racine"; // A traduire
 $vocab['cas_proxy_explain'] = "If GRR has to go through a proxy server to access CAS server, it may be necessary to complete the next fields";
 $vocab['cas_proxy_server'] = "Proxy server IP address";
-$vocab['cas_proxy_port'] = "Proxy port"; 
+$vocab['cas_proxy_port'] = "Proxy port";
+$vocab['cas_version'] = "Versión del protocolo CAS";
 $vocab['autor_contact'] = "Contactar al autor";
 $vocab['autres_parametres_sso'] = "Paramètres divers"; // A traduire
 $vocab['avertissement_change_type'] = "CUIDADO: los dos tipos de configuración de los huecos horarios están incompatibles entre sí: un cambio del tipo de huecos horarios genera entonces, después de validar, un borrado de todas las reservas de este campo.";
