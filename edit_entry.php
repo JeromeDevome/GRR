@@ -134,11 +134,11 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
             $option .= '<option value="-1" selected="selected" >'.get_vocab("utilisateur_inconnu").$id_user.'</option>'.PHP_EOL;
         }
         echo '<div id="choix_beneficiaire" class="row">'.PHP_EOL;
-        echo '<div class="col-sm-9">'.PHP_EOL;
+        echo '<div class="col col-sm-9">'.PHP_EOL;
 		echo '<label for="beneficiaire" >'.ucfirst(trim(get_vocab("reservation_au_nom_de"))).get_vocab("deux_points").'</label><br />'.PHP_EOL;
         echo '<select class="select2" name="beneficiaire" id="beneficiaire" onchange="check_4();">'.$option.'</select>'.PHP_EOL;
         echo '</div>';
-        echo '<div class="col-sm-3">'.PHP_EOL;
+        echo '<div class="col col-sm-3">'.PHP_EOL;
         echo '<br /><input type="button" id="bnfdef" class="btn btn-primary" value="'.get_vocab("definir par defaut").'" onclick="setdefault(\'beneficiaire_default\',document.getElementById(\'main\').beneficiaire.options[document.getElementById(\'main\').beneficiaire.options.selectedIndex].value)" />'.PHP_EOL;
         echo '</div></div>'.PHP_EOL;
         echo '<div id="menu4" class="form-inline" ';
@@ -852,7 +852,7 @@ echo '<input type="hidden" name="oldRessource" value="'.$room_id.'">'.PHP_EOL; /
 echo '<div id="error"></div>';
 
 echo '<div class="row2">';
-echo '<div class="col-sm-6 col-xs-12">';
+echo '<div class="col col-sm-6 col-xs-12">';
 // bloc choix du bénéficiaire
 //echo '<div id="choix_beneficiaire"></div>';
 divBeneficiaire($id,$user_name,$room,$area_id);
@@ -1038,7 +1038,7 @@ if (($delais_option_reservation > 0) && (($modif_option_reservation == 'y') || (
 	$day   = date("d");
 	$month = date("m");
 	$year  = date("Y");
-	echo '<div class="E"><br><div class="col-xs-12"><div class="alert alert-danger" role="alert"><b>'.get_vocab("reservation_a_confirmer_au_plus_tard_le").'</div>'.PHP_EOL;
+	echo '<div class="E"><br><div class="col col-xs-12"><div class="alert alert-danger" role="alert"><b>'.get_vocab("reservation_a_confirmer_au_plus_tard_le").'</div>'.PHP_EOL;
 	if ($modif_option_reservation == 'y')
 	{
 		echo '<select class="form-control" name="option_reservation" size="1">'.PHP_EOL;
