@@ -3,14 +3,14 @@
  * cas.inc.php
  * script de redirection vers l'authentification CAS
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2023-08-02 22:00$
  * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
  * @copyright Copyright 2008-2008 Laurent Delineau
  * @author    JeromeB & Laurent Delineau & Olivier MOUNIER
  * @author    Laurent Delineau
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @author    Yan Naessens
- * @copyright Copyright 2017 Yan Naessens
+ * @copyright Copyright 2023 Yan Naessens
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -34,10 +34,13 @@ $serveurSSORacine = Settings::get("cas_racine");
 $cas_proxy_server = Settings::get("cas_proxy_server"); //adresse IP du serveur proxy
 $cas_proxy_port = Settings::get("cas_proxy_port"); // port utilisé par le protocole CAS, doit être autorisé sur le proxy
 
+// protocole CAS
+$cas_version = (isset(Settings::get('cas_version')))? Settings::get('cas_version') : 'CAS_VERSION_2_0';
+
 /* declare le script comme un client CAS
  Si le dernier argument est à true, cela donne la possibilité à phpCAS d'ouvrir une session php.
 */
- phpCAS::client(CAS_VERSION_2_0,$serveurSSO,$serveurSSOPort,$serveurSSORacine,true);
+ phpCAS::client($cas_version,$serveurSSO,$serveurSSOPort,$serveurSSORacine,true);
  phpCAS::setLang(PHPCAS_LANG_FRENCH);
 
 //            phpCAS::setCasServerCACert();
