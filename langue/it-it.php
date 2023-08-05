@@ -90,6 +90,7 @@ $vocab['admin_import_users_csv9'] = "I simboli ??? significano che il campo in q
 $vocab['admin_import_users_fichier'] = "Importer un fichier utilisateurs";
 $vocab['admin_infos'] = "GRR e informazioni sul server";
 $vocab['admin_log_resa_liste'] = "Registri di prenotazione";
+$vocab['admin_mails'] = "Personalizzazione della posta elettronica";
 $vocab['admin_maj'] = "Numero di versione ed aggiornamento";
 $vocab['admin_menu_connexion_externe'] = "Connessioni esterne";
 $vocab['admin_menu_user'] = "Utenti ed accessi";

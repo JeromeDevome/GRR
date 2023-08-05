@@ -5,7 +5,7 @@
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2018-02-10 20:00$
  * @author    JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -26,9 +26,18 @@ if (!Pages::load())
 if (!isset($_GET['page']))
 	die('Erreur choix de la page');
 
-$ctnPage = $_GET['page'];
+$nomPage = $_GET['page'];
 
-$d['CtnPage'] = Pages::get($ctnPage);
+
+$infosPage = Pages::get($nomPage);
+
+if($infosPage[2]){
+	$d['CtnPage'] = "Impossible d'y accèder.";
+} else{
+	//$infosPage = Pages::get($nomPage);
+	$d['TitrePage'] = $infosPage[0];
+	$d['CtnPage'] =  $infosPage[1];
+}
 
 
 echo $twig->render('page.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
