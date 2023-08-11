@@ -18,6 +18,9 @@
 
 $grr_script_name = "pdfgenerator.php";
 
+// Connexion obligatoire
+ControleSession();
+
 if ("POST" == $_SERVER['REQUEST_METHOD']) 
 {
 	$orga = $_POST['orga'];
