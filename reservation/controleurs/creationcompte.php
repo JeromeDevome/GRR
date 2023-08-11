@@ -19,6 +19,9 @@ $grr_script_name = "creationcompte.php";
 
 $d['caractMini'] = $pass_leng." caractères minimum"; // $pass_leng est définit dans language.inc.php
 
+/*  */
+use Gregwar\Captcha\PhraseBuilder;
+
 if(isset($_POST["nom"])){
 
 	/// Init des variables
@@ -43,6 +46,19 @@ if(isset($_POST["nom"])){
 		$msg_erreurIncomplet .= "Votre adresse email<br/>";
 	if (empty($reg_mdp1) || empty($reg_mdp2))
 		$msg_erreurIncomplet .= "Le mot de passe<br/>";
+
+	if(Settings::get("fct_crea_cpt_captcha") == 'y')
+	{
+		// Checking that the posted captcha match the captcha stored in the session
+		if (isset($_SESSION['phrase']) && PhraseBuilder::comparePhrases($_SESSION['phrase'], $_POST['captcha'])) {
+			// Le captcha est bon
+		} else {
+			$d['msgErreur'] .= $vocab["captcha_incorrect"]."<br/>";
+			$erreur = true;
+		}
+		// The captcha can't be used twice
+		unset($_SESSION['phrase']);
+	}
 
 	if($msg_erreurIncomplet != ""){
 		$erreur = true;

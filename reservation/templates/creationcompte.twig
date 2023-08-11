@@ -97,6 +97,14 @@
 					<textarea class="form-control" id="commentaire" name="commentaire" cols="30" rows="4"></textarea><br/>
 				</div>
 
+				{% if settings.fct_crea_cpt_captcha == 'y' %}
+				<div class="row">
+					<img src="./include/captcha.inc.php" />
+					<input type="text" name="captcha" required />
+					<br><br>
+				</div>
+				{% endif %}
+
 				<!-- Boutons -->
 				<div class="row">	
 					<div class="col-lg-6 col-md-6 col-xs-12">

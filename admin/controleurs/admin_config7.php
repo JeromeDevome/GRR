@@ -97,6 +97,12 @@ if (isset($_POST['p'])) { // On a validé le formulaire
     if (!Settings::set('fct_crea_cpt_statut', $_POST['fct_crea_cpt_statut']))
         $msg .= "Erreur lors de l'enregistrement de fct_crea_cpt_statut !<br />";
 
+    if (isset($_POST['fct_crea_cpt_captcha']))
+        $fct_crea_cpt_captcha = "y";
+    else
+        $fct_crea_cpt_captcha = "n";
+    if (!Settings::set("fct_crea_cpt_captcha", $fct_crea_cpt_captcha))
+        $msg .= "Erreur lors de l'enregistrement de fct_crea_cpt_captcha !<br />";       
 }
 
 

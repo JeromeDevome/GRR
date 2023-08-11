@@ -48,7 +48,7 @@
 									<div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
 										<a class="nav-link active" id="vert-tabs-divers-tab" data-bs-toggle="pill" href="#vert-tabs-divers" role="tab" aria-controls="vert-tabs-divers" aria-selected="true">Divers</a>
 										<a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-formresa" role="tab" aria-controls="vert-tabs-formresa" aria-selected="true">{{ trad.display_mail_etat_destinataire }}</a>
-										<a class="nav-link" id="vert-tabs-creacompte-tab" data-bs-toggle="pill" href="#vert-tabs-creacompte" role="tab" aria-controls="vert-tabs-creacompte" aria-selected="false">Demande de crétion de compte</a>
+										<a class="nav-link" id="vert-tabs-creacompte-tab" data-bs-toggle="pill" href="#vert-tabs-creacompte" role="tab" aria-controls="vert-tabs-creacompte" aria-selected="false">Demande de création de compte</a>
 									</div>
 								</div>
 								<div class="col-7 col-sm-9">
@@ -138,6 +138,7 @@
 													</select>
 												</div>
 											</div>
+											<input type="checkbox" name="fct_crea_cpt_captcha" value="y" id="label_3y" {% if settings.fct_crea_cpt_captcha == 'y' %} checked {% endif %} /> <label for="label_0z">{{ trad.captcha_utiliser }}</label><br>
 
 										</div><!---->
 
