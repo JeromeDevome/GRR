@@ -142,7 +142,7 @@ if(isset($_POST["nom"])){
 				foreach ($tab_destinataire as $value){
 					$destinataire .= $value.";";
 				}
-				Email::Envois($destinataire, $sujet, $message, $mail_corps, '', '', $expediteur);
+				Email::Envois($destinataire, $sujet, $mail_corps, '', '', $expediteur);
 			} 
 		}
 
