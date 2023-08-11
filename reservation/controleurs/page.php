@@ -19,15 +19,14 @@
 include_once('include/pages.class.php');
 $grr_script_name = 'page.php';
 
+$nomPage = alphanum($_GET['page']);
+
 if (!Settings::load())
 	die('Erreur chargement settings');
 if (!Pages::load())
 	die('Erreur chargement pages');
-if (!isset($_GET['page']))
+if (!isset($nomPage))
 	die('Erreur choix de la page');
-
-$nomPage = $_GET['page'];
-
 
 $infosPage = Pages::get($nomPage);
 
