@@ -192,25 +192,25 @@ if ($res)
 		$user_datedemande = $row[6];
 
 		if($structureLogin == 1)
-			$loginPredefinis = strtoupper(RemplacerAccents($user_nom));
+			$loginPredefinis = strtoupper(remplacer_accents($user_nom));
 		elseif($structureLogin == 2)
-			$loginPredefinis = strtoupper(RemplacerAccents($user_nom.".".$user_prenom));
+			$loginPredefinis = strtoupper(remplacer_accents($user_nom.".".$user_prenom));
 		elseif($structureLogin == 3)
-			$loginPredefinis = strtoupper(RemplacerAccents($user_nom."".$user_prenom));
+			$loginPredefinis = strtoupper(remplacer_accents($user_nom."".$user_prenom));
 		elseif($structureLogin == 4)
-			$loginPredefinis = strtoupper(RemplacerAccents($user_prenom));
+			$loginPredefinis = strtoupper(remplacer_accents($user_prenom));
 		elseif($structureLogin == 5)
-			$loginPredefinis = strtoupper(RemplacerAccents($user_prenom[0].".".$user_nom));
+			$loginPredefinis = strtoupper(remplacer_accents($user_prenom[0].".".$user_nom));
 		elseif($structureLogin == 6)
-			$loginPredefinis = strtoupper(RemplacerAccents($user_prenom[0].".".$user_nom));
+			$loginPredefinis = strtoupper(remplacer_accents($user_prenom[0].".".$user_nom));
 		elseif($structureLogin == 7)
-			$loginPredefinis = strtoupper(RemplacerAccents(substr($user_prenom, 0, 2).".".$user_nom));
+			$loginPredefinis = strtoupper(remplacer_accents(substr($user_prenom, 0, 2).".".$user_nom));
 		elseif($structureLogin == 8)
-			$loginPredefinis = strtoupper(RemplacerAccents($user_prenom.".".$user_nom));
+			$loginPredefinis = strtoupper(remplacer_accents($user_prenom.".".$user_nom));
 		elseif($structureLogin == 9)
-			$loginPredefinis = strtoupper(RemplacerAccents($user_prenom."".$user_nom));
+			$loginPredefinis = strtoupper(remplacer_accents($user_prenom."".$user_nom));
 		else
-			$loginPredefinis = strtoupper(RemplacerAccents($user_nom.".".$user_prenom));
+			$loginPredefinis = strtoupper(remplacer_accents($user_nom.".".$user_prenom));
 
 		$col[$i][0] = $row[0];
 		$col[$i][1] = $loginPredefinis;
