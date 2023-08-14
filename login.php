@@ -248,7 +248,7 @@ echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("compan
 		if ($lien != "")
 			echo "[".$lien."] ";
 	}
-	echo "[<a href='app.php?p=page&page=CGU' target='_blank'>".get_vocab("cgu")."</a>]</p>";
+	echo "[<a href='app.php?p=page&page=cgu' target='_blank'>".get_vocab("cgu")."</a>]</p>";
 	echo "<a href=\"javascript:history.back()\">".get_vocab("previous")." - <b>".Settings::get("company")."</b></a>";
 	?>
 	<br />
