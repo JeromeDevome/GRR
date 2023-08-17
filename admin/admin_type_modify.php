@@ -3,9 +3,9 @@
  * admin_type_modify.php
  * interface de création/modification des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-19 14:24$
+ * Dernière modification : $Date: 2023-08-13 16:03$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -185,6 +185,7 @@ if ((isset($id_type)) && ($id_type > 0))
     grr_sql_free($res);
     $change_type = 'modif';
 }
+else $change_type = "";
 // type_letter déjà attribués
 $res = grr_sql_query("SELECT type_letter FROM ".TABLE_PREFIX."_type_area ");
 $types_predef = array();
