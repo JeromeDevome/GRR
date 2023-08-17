@@ -3,7 +3,7 @@
  * admin_edit_room.php
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-08-17 11:23$
+ * Dernière modification : $Date: 2023-08-17 17:32$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -38,7 +38,7 @@ $area_name = isset($_POST["area_name"]) ? clean_input($_POST["area_name"]) : NUL
 $access = isset($_POST["access"]) ? $_POST["access"] : NULL;
 $ip_adr = isset($_POST["ip_adr"]) ? clean_input($_POST["ip_adr"]) : NULL;
 $room_name = isset($_POST["room_name"]) ? protect_data_sql($_POST["room_name"]) : NULL;
-$description = isset($_POST["description"]) ? clean_input($_POST["description"]) : NULL;
+$description = isset($_POST["description"]) ? protect_data_sql($_POST["description"]) : NULL;
 $capacity = isset($_POST["capacity"]) ? clean_input($_POST["capacity"]) : NULL;
 $duree_max_resa_area1  = isset($_POST["duree_max_resa_area1"]) ? clean_input($_POST["duree_max_resa_area1"]) : NULL;
 $duree_max_resa_area2  = isset($_POST["duree_max_resa_area2"]) ? clean_input($_POST["duree_max_resa_area2"]) : NULL;
