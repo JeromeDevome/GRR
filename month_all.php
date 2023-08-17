@@ -3,9 +3,9 @@
  * month_all.php
  * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-11-07 18:28$
+ * Dernière modification : $Date: 2023-08-17 10:12$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -193,8 +193,8 @@ else  //Build an array of information about each day in the month.
 	{
 		if ($row['type'] <> $typeExclu)
         {
-            $verif_acces_ressource[$row['room_name']] = verif_acces_ressource($user_name, $row['room_name']);
-            $acces_fiche_reservation[$row['room_name']] = verif_acces_fiche_reservation($user_name, $row['room_name']);
+            $verif_acces_ressource[$row['room_id']] = verif_acces_ressource($user_name, $row['room_id']);
+            $acces_fiche_reservation[$row['room_id']] = verif_acces_fiche_reservation($user_name, $row['room_id']);
             $t = max((int)$row['start_time'], $month_start);
             $end_t = min((int)$row['end_time'], $month_end);
             $day_num = date("j", $t);
@@ -205,7 +205,7 @@ else  //Build an array of information about each day in the month.
             while ($t < $end_t)
             {
                 $d[$day_num]["id"][] = $row['id'];
-                $d[$day_num]["id_room"][] = $row['room_name'];
+                $d[$day_num]["id_room"][] = $row['room_id'];
                 $d[$day_num]["room"][] = $row['room_name'] ;
                 $d[$day_num]["color"][] = $row['type'];
                 $midnight_tonight = $midnight + 86400;
