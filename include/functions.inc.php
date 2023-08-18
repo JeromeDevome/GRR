@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-05-23 11:23$
+ * Dernière modification : $Date: 2023-08-18 12:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -3668,6 +3668,9 @@ function authBooking($user,$room){
  	$allow_action_in_past = grr_sql_query1("SELECT allow_action_in_past FROM ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($id_room)."'");
  	if ($allow_action_in_past == 'y')
  		return true;
+    // $user est-il gestionnaire de la ressource avec le droit de modification universel
+    if((Settings::get('allow_gestionnaire_modify_del'))&&(authGetUserLevel($user,$id_room)>2))
+        return TRUE;
 	// Correction de l'avance en nombre d'heure du serveur sur les postes clients
  	if ((isset($correct_diff_time_local_serveur)) && ($correct_diff_time_local_serveur!=0))
  		$date_now -= 3600 * $correct_diff_time_local_serveur;
