@@ -2,9 +2,10 @@
 /**
  * admin_overload.php
  * Interface de création/modification des champs additionnels.
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2023-08-24 10:25$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @author    Eric Lemeur pour les champs addiionnels de type checkbox
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -144,8 +145,9 @@ if ($action == "change")
 		$fieldlist = $_POST["fieldlist"];
 	else
 		$fieldlist = "";
-	if ($fieldtype != "list")
-		$fieldlist = "";
+	// ELM - Gestion des champs aditionnels multivalués (lignes 147 - 149)
+    if (!in_array($fieldtype, array("list","checkbox")))
+        $fieldlist = "";
 	if (isset($_POST["obligatoire"]))
 		$obligatoire = "y";
 	else
@@ -216,6 +218,8 @@ get_vocab_admin("action");
 
 get_vocab_admin("type_text");
 get_vocab_admin("type_numeric");
+// ELM - Gestion des champs aditionnels multivalués (lignes 222 - 223)
+get_vocab_admin("type_checkbox");
 get_vocab_admin("type_area");
 get_vocab_admin("type_list");
 get_vocab_admin("Liste_des_champs");

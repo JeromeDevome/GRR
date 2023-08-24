@@ -3,9 +3,10 @@
  * edit_entry_champs_add.php
  * Page "Ajax" utilisée pour générer les champs additionnels dans la page de réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-10-27 17:30$
+ * Dernière modification : $Date: 2023-08-24 10:20$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @author    Eric Lemeur pour les champs additionnels de type checkbox
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -82,6 +83,17 @@ foreach ($overload_fields as $fieldname=>$fieldtype)
 		echo "<tr><td><div class=\"col-xs-12\"><input class=\"form-control\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" /></div></td></tr>\n";
 	else if ($overload_fields[$fieldname]["type"] == "numeric" )
 		echo "<tr><td><div class=\"col-xs-12\"><input class=\"form-control\" size=\"20\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" /></div></td></tr>\n";
+    // ELM - Gestion des champs aditionnels multivalués (lignes 86 - 95)
+	else if ($overload_fields[$fieldname]["type"] == "checkbox" ) {
+		echo "<tr><td><div class=\"col-xs-12\">\n";
+		foreach ($overload_fields[$fieldname]["list"] as $value) {
+			$valeurs = explode("|", $data);
+			echo "<input type=\"checkbox\" name=\"addon_".$overload_fields[$fieldname]["id"]."[]\" value=\"".trim($value,"&")."\" ";
+			if (in_array(trim($value,"&"), $valeurs) or (empty($valeurs)=="" and $value[0]=="&")) echo " checked=\"checked\"";
+			echo ">\n<label>".(trim($value,"&"))."</label>\n";
+		}
+		echo "</td></tr></div>\n";
+	}
 	else
 	{
 		echo "<tr><td><div class=\"col-xs-12\"><select class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" size=\"1\">\n";

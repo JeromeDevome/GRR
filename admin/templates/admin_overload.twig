@@ -45,6 +45,7 @@
 									<select name="fieldtype" size="1">
 										<option value="text">{{ trad.type_text }}</option>
 										<option value="numeric">{{ trad.type_numeric }}</option>
+										<option value="checkbox">{{ trad.type_checkbox }}</option>
 										<option value="textarea">{{ trad.type_area }}</option>
 										<option value="list">{{ trad.type_list }}</option>
 									</select>
@@ -71,10 +72,11 @@
 										<select name="fieldtype" size="1">
 											<option value="text" {% if champAdd.type == 'text' %} selected {% endif %}>{{ trad.type_text }}</option>
 											<option value="numeric" {% if champAdd.type == 'numeric' %} selected {% endif %}>{{ trad.type_numeric }}</option>
+											<option value="checkbox" {% if champAdd.type == 'checkbox' %} selected {% endif %}>{{ trad.type_checkbox }}</option>
 											<option value="textarea" {% if champAdd.type == 'textarea' %} selected {% endif %}>{{ trad.type_area }}</option>
 											<option value="list" {% if champAdd.type == 'list' %} selected {% endif %}>{{ trad.type_list }}</option>
 										</select>
-										{% if champAdd.type == 'list' %}
+										{% if champAdd.type == 'list' or champAdd.type == 'checkbox' %}
 											<br>{{ trad.Liste_des_champs |raw }}<br>
 											<input type="text" name="fieldlist" value="{{ champAdd.liste }}" size="50" />
 										{% endif %}

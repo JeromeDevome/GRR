@@ -912,6 +912,7 @@ $vocab['type_list'] = "Liste";
 $vocab['type_name'] = "Nom du type";
 $vocab['type_num'] = "Identifiant";
 $vocab['type_numeric'] = "Une ligne (numérique)";
+$vocab['type_checkbox'] = "Cases à cocher";
 $vocab['type_order'] = "Ordre d'affichage";
 $vocab['type_par_defaut'] = "Type sélectionné par défaut lors d'une nouvelle réservation";
 $vocab['type_resa_manquant_msg'] = "Un ou plusieurs types sont actuellement utilisés dans les réservations mais ne figurent pas dans la tables des types. Cela risque d'engendrer des messages d'erreur. Vous devez donc définir ci-dessous, le ou les types manquants. Il s'agit du ou des types suivants : ";
