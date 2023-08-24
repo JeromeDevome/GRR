@@ -39,6 +39,24 @@ Version 3.5.1
     modification : suppression de l'appel à $_SERVER[] dans admin_room.php
     modification : suppression des codages inutiles, LDAP, la base et les pages étant toutes en UTF-8
     modification : fonction protect_data_sql
+Sous-version 3.5.1a
+    ajout : choix du protocole CAS
+    ajout : possibilité de définir des champs additionnels multivalués (de type checkbox)
+    amélioration : rejet des dates hors période de réservation dans les plannings
+    amélioration : traitement des erreurs de connexion au serveur MySQL lors de l'installation
+    amélioration : activation du Single-Sign-Out lors d'une authentification phpCAS
+    correctif : sélecteur de date
+    correctif : lien dans admin_room.php
+    correctif : numéro de version dans admin_maj.php
+    correctif : codage du texte
+    correctif : ouverture de session
+    correctif : message compatibilité php
+    correctif : nettoyage du code et conséquences de la MAJ de JQuery
+    mise à jour : JQuery en version 3.7.0
+    mise à jour : jQuery-UI en v1.13.2
+    mise à jour : vacances.xml
+    modification : spécification de la fonction jQuery_DatePicker
+
     
 -----
 --

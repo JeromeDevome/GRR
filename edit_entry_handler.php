@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-23 18:40$
+ * Dernière modification : $Date: 2023-08-24 14:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -182,7 +182,7 @@ try {
     {
         $id_field = $overload_fields_list[$overfield]["id"];
         $fieldname = "addon_".$id_field;
-        $$fieldname = getFormVar($fieldname,'string'); 
+        $$fieldname = getFormVar($fieldname); 
         if (($overload_fields_list[$overfield]["type"] == "numeric") && 
             (isset($$fieldname) && ($$fieldname != '') && (!preg_match("`^[0-9]*\.{0,1}[0-9]*$`",$$fieldname))))
         {

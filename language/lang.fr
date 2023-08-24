@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2023-08-02
+# Last modification : 2023-08-24
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -942,6 +942,7 @@ $vocab['type_list'] = "Liste";
 $vocab['type_name'] = "Nom du type";
 $vocab['type_num'] = "Identifiant";
 $vocab['type_numeric'] = "Une ligne (numérique)";
+$vocab['type_checkbox'] = "Cases à cocher";
 $vocab['type_order'] = "Ordre d'affichage";
 $vocab['type_par_defaut'] = "Type sélectionné par défaut<br />lors d'une nouvelle réservation";
 $vocab['type_text'] = "Une ligne (texte)";

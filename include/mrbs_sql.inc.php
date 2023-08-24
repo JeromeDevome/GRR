@@ -2,9 +2,10 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2022-07-28 18:18$
+ * Dernière modification : $Date: 2023-08-24 11:44$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @author    Eric Lemeur pour les champs additionnels de type checkbox
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -440,6 +441,11 @@ function mrbsCreateSingleEntry($starttime, $endtime, $entry_type, $repeat_id, $r
 		{
 			$begin_string = "@".$id_field."@";
 			$end_string = "@/".$id_field."@";
+            // ELM - Gestion des champ additionnels multivalués
+            if (is_array($overload_data[$id_field])) {
+                $valeurs = implode("|", $overload_data[$id_field]);
+                $overload_data[$id_field] = $valeurs;
+            }
 			$overload_data_string .= $begin_string.urlencode($overload_data[$id_field]).$end_string;
 		}
 	}
@@ -491,6 +497,11 @@ function mrbsCreateRepeatEntry($starttime, $endtime, $rep_type, $rep_enddate, $r
 		{
 			$begin_string = "@".$id_field."@";
 			$end_string = "@/".$id_field."@";
+            // ELM - Gestion des champ additionnels multivalués
+            if (is_array($overload_data[$id_field])) {
+                $valeurs = implode("|", $overload_data[$id_field]);
+                $overload_data[$id_field] = $valeurs;
+            }
 			$overload_data_string .= $begin_string.urlencode($overload_data[$id_field]).$end_string;
 		}
 	}

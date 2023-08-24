@@ -3,8 +3,9 @@
  * admin_overload.php
  * Interface de création/modification des champs additionnels.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-07-27 16:32$
+ * Dernière modification : $Date: 2023-08-24 11:17$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
+ * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -133,7 +134,7 @@ elseif ($action == "change")
         $fieldname = $_POST["fieldname"];
     else
         $fieldname = "";
-    if (isset($_POST["fieldtype"]))
+    if ((isset($_POST["fieldtype"]))&&(in_array($_POST['fieldtype'],array("text","numeric","textarea","list","checkbox"))))
         $fieldtype = $_POST["fieldtype"];
     else
         $fieldtype = "";
@@ -141,7 +142,8 @@ elseif ($action == "change")
         $fieldlist = $_POST["fieldlist"];
     else
         $fieldlist = "";
-    if ($fieldtype != "list")
+    // ELM - Gestion des champs additionnels multivalués
+    if (!in_array($fieldtype, array("list","checkbox")))
         $fieldlist = "";
     if (isset($_POST["obligatoire"]))
         $obligatoire = "y";
@@ -239,6 +241,7 @@ echo "<span class='td'><input type=\"text\" name=\"fieldname\" size=\"20\" patte
 echo "<span class='td CC'><select name=\"fieldtype\" size=\"1\">\n
 <option value=\"text\">".get_vocab("type_text")."</option>\n
 <option value=\"numeric\">".get_vocab("type_numeric")."</option>\n
+<option value=\"checkbox\">".get_vocab("type_checkbox")."</option>\n
 <option value=\"textarea\">".get_vocab("type_area")."</option>\n
 <option value=\"list\">".get_vocab("type_list")."</option>\n
 </select></span>\n";
@@ -289,6 +292,10 @@ if(!empty($ovlfdata)){ // il existe des champs additionnels déjà définis
         if ($row['fieldtype'] =="text")
             echo  " selected=\"selected\"";
         echo  " >".get_vocab("type_text")."</option>\n";
+        echo '<option value="checkbox" ';
+        if ($row['fieldtype'] == 'checkbox')
+            echo "selected";
+        echo ' >'.get_vocab('type_checkbox').'</option>\n';
         echo  "<option value=\"list\" ";
         if ($row['fieldtype'] =="list")
             echo  " selected=\"selected\"";
@@ -298,7 +305,7 @@ if(!empty($ovlfdata)){ // il existe des champs additionnels déjà définis
             echo  " selected=\"selected\"";
         echo  " >".get_vocab("type_numeric")."</option>\n";
         echo  "</select>";
-        if ($row['fieldtype'] == "list") {
+        if (($row['fieldtype'] == "list")||($row['fieldtype'] == 'checkbox')) {
             echo  "<div><br />".get_vocab("Liste_des_champs").get_vocab("deux_points")."<br />";
                 echo  "<input type=\"text\" name=\"fieldlist\" value=\"".htmlspecialchars($row['fieldlist'])."\" size=\"35\" /></div>";
         }

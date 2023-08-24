@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-08-18 12:15$
+ * Dernière modification : $Date: 2023-08-24 11:53$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -379,10 +379,13 @@ function contenu_cellule($options, $ofl, $vue, $resa, $heures)
     $room = $resa['room_name'];
 	// Les champs add :
 	$overload_data = grrGetOverloadDescArray($ofl, $resa['overload_desc']);
-	foreach ($overload_data as $fieldname=>$field)
+    foreach ($overload_data as $fieldname=>$field)
 	{
-		if (( (authGetUserLevel(getUserName(), $room) >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "")
-			$affichage .= "<i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($field["valeur"],ENT_NOQUOTES|ENT_SUBSTITUTE)."</i><br />";
+		if (( (authGetUserLevel(getUserName(), $room) >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "") {
+			// ELM - Gestion des champs aditionnels multivalués (lignes 384 - 392)
+			$valeur = str_replace("|", ", ", $field["valeur"]);
+			$affichage .= "<i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($valeur,ENT_NOQUOTES|ENT_SUBSTITUTE)."</i><br />";
+		}
 	}
     // cas où aucune option n'est activée : afficher le numéro de la réservation
 	if ($affichage == '')

@@ -3,8 +3,9 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-05-20 15:56$
+ * Dernière modification : $Date: 2023-08-24 11:58$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
+ * @author 	  Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -262,14 +263,25 @@ function divChampsAdd($id_resa=0,$id_area=-1,$id_room=-1,$overloadFields=array()
         else
             $data = "";
         if ($overload_fields[$fieldname]["type"] == "textarea" )
-            $display .= "<div class=\"col-xs-12\"><textarea class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\">".htmlspecialchars($data,ENT_SUBSTITUTE)."</textarea></div>\n";
+            $display .= "<div class=\"col col-xs-12\"><textarea class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\">".htmlspecialchars($data,ENT_SUBSTITUTE)."</textarea></div>\n";
         else if ($overload_fields[$fieldname]["type"] == "text" )
             $display .= "<input class=\"form-control\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" />";
         else if ($overload_fields[$fieldname]["type"] == "numeric" )
             $display .= "<input class=\"form-control\" size=\"20\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" />\n";
+        else if ($overload_fields[$fieldname]["type"] == "checkbox" ) { // ELM - Gestion des champs aditionnels multivalués
+            $display .= "<div class=\"col col-xs-12\">\n";
+            foreach ($overload_fields[$fieldname]["list"] as $value) {
+                $valeurs = explode("|", $data);
+                $display .= "<input type=\"checkbox\" name=\"addon_".$overload_fields[$fieldname]["id"]."[]\" value=\"".trim($value,"&")."\" ";
+                if (in_array(trim($value,"&"), $valeurs) or (empty($valeurs)=="" and $value[0]=="&")) 
+                    $display .= " checked=\"checked\"";
+                $display .= ">\n<label>".(trim($value,"&"))."</label>\n";
+            }
+            $display .= "</div>\n";
+        }
         else
         {
-            $display .= "<div class=\"col-xs-12\"><select class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" size=\"1\">\n";
+            $display .= "<div class=\"col col-xs-12\"><select class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" size=\"1\">\n";
             if ($overload_fields[$fieldname]["obligatoire"] == 'y')
                 $display .= '<option value="">'.get_vocab('choose').'</option>';
             foreach ($overload_fields[$fieldname]["list"] as $value)
@@ -1552,10 +1564,20 @@ function validate_and_submit (){
         {
             if ($overload_fields[$fieldname]["obligatoire"] == 'y')
             {
-                if ($overload_fields[$fieldname]["type"] != "list")
+                // ELM - Gestion des champs aditionnels multivalués (lignes 578 - 591)
+                if (!in_array($overload_fields[$fieldname]["type"], array("list", "checkbox")))
                 {
                     echo "if ((document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) && (document.forms[\"main\"].addon_".$overload_fields[$fieldname]["id"].".value == \"\")) {\n";
                 }
+				else if ($overload_fields[$fieldname]["type"] == "checkbox")
+				{
+                  echo "if (document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) {\n";
+                  echo "var elem = document.getElementsByName('addon_".$overload_fields[$fieldname]["id"]."[]') \n";
+                  echo "var coche = false; \n";
+                  echo "for (i = 0; i < elem.length; ++i) {\n";
+                  echo "if (elem[i].checked){\ncoche=true;\nbreak;\n};\n}\n}";
+                  echo "if (coche == false) {\n";
+				}
                 else
                 {
                     echo "if ((document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) && (document.forms[\"main\"].addon_".$overload_fields[$fieldname]["id"].".options[0].selected == true)) {\n";

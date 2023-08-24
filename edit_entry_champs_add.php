@@ -3,8 +3,9 @@
  * edit_entry_champs_add.php
  * Page "Ajax" utilisée pour générer les champs additionnels dans la page de réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-31 11:52$
+ * Dernière modification : $Date: 2023-08-24 12:08$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
+ * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -80,14 +81,25 @@ foreach ($overload_fields as $fieldname=>$fieldtype)
 	else
 		$data = "";
 	if ($overload_fields[$fieldname]["type"] == "textarea" )
-		echo "<div class=\"col-xs-12\"><textarea class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\">".htmlspecialchars($data,ENT_SUBSTITUTE)."</textarea></div>\n";
+		echo "<div class=\"col col-xs-12\"><textarea class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\">".htmlspecialchars($data,ENT_SUBSTITUTE)."</textarea></div>\n";
 	else if ($overload_fields[$fieldname]["type"] == "text" )
 		echo "<input class=\"form-control\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" />";
 	else if ($overload_fields[$fieldname]["type"] == "numeric" )
 		echo "<input class=\"form-control\" size=\"20\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" />\n";
+        // ELM - Gestion des champs aditionnels multivalués
+	else if ($overload_fields[$fieldname]["type"] == "checkbox" ) {
+		echo "<tr><td><div class=\"col col-xs-12\">\n";
+		foreach ($overload_fields[$fieldname]["list"] as $value) {
+			$valeurs = explode("|", $data);
+			echo "<input type=\"checkbox\" name=\"addon_".$overload_fields[$fieldname]["id"]."[]\" value=\"".trim($value,"&")."\" ";
+			if (in_array(trim($value,"&"), $valeurs) or (empty($valeurs)=="" and $value[0]=="&")) echo " checked=\"checked\"";
+			echo ">\n<label>".(trim($value,"&"))."</label>\n";
+		}
+		echo "</td></tr></div>\n";
+	}
 	else
 	{
-		echo "<div class=\"col-xs-12\"><select class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" size=\"1\">\n";
+		echo "<div class=\"col col-xs-12\"><select class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" size=\"1\">\n";
 		if ($overload_fields[$fieldname]["obligatoire"] == 'y')
 			echo '<option value="">'.get_vocab('choose').'</option>';
 		foreach ($overload_fields[$fieldname]["list"] as $value)
