@@ -5289,7 +5289,10 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
 			$email = explode('@',$tab_benef["email"]);
 			$person = $email[0];
 			if (isset($email[1]))
-				$chaine = "<a href=\"mailto:".$tab_benef["email"]."\">".$tab_benef["nom"]."</a>";
+			{
+				$domain = $email[1];
+				$chaine = "<script type=\"text/javascript\">encode_adresse('".$person."','".$domain."','".AddSlashes($tab_benef["nom"])."',1);</script>";
+			}
 			else
 				$chaine = $tab_benef["nom"];
 		}
@@ -6395,7 +6398,7 @@ function display_mail_msg()
 function clean_input($data){
     $data = trim($data);
     $data = stripslashes($data);
-    $data = htmlspecialchars($data);
+    $data = htmlentities($data,ENT_QUOTES|ENT_SUBSTITUTE|ENT_HTML5,"UTF-8");
     return $data;
 }
 
