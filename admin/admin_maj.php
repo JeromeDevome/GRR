@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-04-23 09:47$
+ * Dernière modification : $Date: 2023-08-26 11:10$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -42,9 +42,6 @@ if (!Settings::load())
     die("Erreur chargement settings");
 // Session related functions
 require_once("../include/session.inc.php");
-// Paramètres langage
-include "../include/language.inc.php";
-
 
 function formatResult($echo,$dbt,$fin) {
     global $majscript;
@@ -221,6 +218,9 @@ if ((authGetUserLevel(getUserName(),-1) < 6) && ($valid != 'yes') && $connexionA
     showAccessDenied($back);
     exit();
 }
+
+// Paramètres langage
+include "../include/language.inc.php";
 
 if ($valid == 'no')
 {
@@ -1104,13 +1104,36 @@ if(!$majscript) {
 	echo "Time : " .time()."\n";
 	echo "Date du serveur (Jour-Mois-Annee) : " .date('d-m-Y').". Heure : ".date("H:i")."\n";
 	echo "Timezone (date_default_timezone_set) : ".date_default_timezone_get()."\n";
-
 	echo "</textarea>";
 	echo "<hr><h3>".get_vocab("maj_recherche_grr")."</h3>";
 }
 
-// Recherche mise à jour sur serveur GRR
-if($recherche_MAJ == 1)
+// Recherche mise à jour sur dépôt Github JeromeDevome/GRR/
+if($recherche_MAJ == 1){
+$url = "https://api.github.com/repos/JeromeDevome/GRR/releases/latest";
+$opts = [
+        'http' => [
+                'method' => 'GET',
+                'header' => [
+                        'User-Agent: PHP'
+                ]
+        ]
+];
+
+$ctx = stream_context_create($opts);
+
+$json = @file_get_contents( $url, 0, $ctx );
+if($json != FALSE){
+    $tag_desc = json_decode($json);
+    $tag_name = $tag_desc->tag_name;
+    $tag_pub = $tag_desc->published_at;
+    $pos = strpos($tag_pub,'T');
+    $tag_date = substr($tag_pub,0,$pos);
+    echo get_vocab('derniere_version_publiee').get_vocab('deux_points').$tag_name.get_vocab('le').$tag_date."<br>";
+    echo "<a href='https://github.com/JeromeDevome/GRR/releases' >".get_vocab('depot_grr_officiel')."</a><br/>";
+}
+}
+/*if($recherche_MAJ == 1)
 {
     $fichier = $grr_devel_url.'versiongrr.xml';
     
@@ -1151,9 +1174,10 @@ if($recherche_MAJ == 1)
 } 
 elseif(!$majscript) {
     "<p>".get_vocab("maj_impossible_rechercher")."</p>\n";
-}
+}*/
 if(!$majscript) {
-    echo "<p>".get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a></p>\n";
+    //echo "<p>".get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a></p>\n";
+    echo "<p>"."Le site web de GRR :"."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a></p>\n";
     echo "<hr />\n";
 
     // Mise à jour de la base de donnée

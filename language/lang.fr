@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2023-08-24
+# Last modification : 2023-08-25
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -19,7 +19,7 @@ $vocab['Activer_module_multisite'] = "Activer la fonctionnalité \"multisite\"";
 $vocab['Activer_export_xml'] = "Activer la fonctionnalité \"Export XML\"";
 $vocab['Activer_export_plus_xml'] = "Activer la fonctionnalité \"Export XML +\"";
 $vocab['active_lcs'] = "Activez la prise en compte du service SSO de LCS";
-$vocab['activ_no_activ'] = "Etat";
+$vocab['activ_no_activ'] = "État";
 $vocab['activ_user'] = "Actif";
 $vocab['adapter_fichiers_langue'] = "Adapter les fichiers de langue";
 $vocab['adapter_fichiers_langue_explain'] = "GRR utilise des fichiers de langue pour l'affichage. Vous avez la possibilité de substituer vos propres textes aux libellés officiels. Consulter l'aide pour en savoir plus.";
@@ -330,6 +330,8 @@ $vocab['delete_booking'] = " a supprimé la réservation de ";
 $vocab['delete_up_to'] = "Effacer jusqu'au";
 $vocab['del_entry_in_conflict'] = "Supprimer la (les) réservation(s) ci-dessus afin de valider la nouvelle réservation";
 $vocab['del_user_succeed'] = "Un utilisateur a été supprimé de la liste.";
+$vocab['depot_grr_officiel'] = "Dépôt GRR Officiel sur Github";
+$vocab['derniere_version_publiee'] = "Dernière version publiée";
 $vocab['description'] = "Description :";
 $vocab['description_complete'] = "Description complète (visible dans la fiche de présentation)";
 $vocab['description complete2'] = " Vous pouvez utiliser des balises HTML";
@@ -538,6 +540,7 @@ $vocab['lcs_SSO_explain_3'] = "Dans le champ ci-dessous, vous pouvez préciser l
 $vocab['ldap_chemin_invalide'] = "La recherche dans l'annuaire n'a pas abouti (problème de filtre ou de chemin d'accès). Contactez l'administrateur pour signaler le problème.";
 $vocab['ldap_doublon_identifiant'] = "La recherche dans l'annuaire avec l'identifiant que vous avez utilisé a renvoyé plusieurs résultats. Contactez l'administrateur pour signaler le problème.";
 $vocab['ldap_recherche_identifiant_aucun_resultats'] = "La recherche dans l'annuaire avec l'identifiant que vous avez utilisé n'a renvoyé aucun résultat. Contactez l'administrateur pour signaler le problème.";
+$vocab['le'] = " le ";
 $vocab['legend_msg'] = "Affichage de la légende";
 $vocab['param'] = "Mes paramètres";
 $vocab['periodicite_msg'] = "Autoriser la périodicité dans les réservations";

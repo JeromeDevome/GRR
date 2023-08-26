@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2023-08-24
+# Last modification : 2023-08-26
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -324,6 +324,8 @@ $vocab['delete_booking'] = " suprimió la reserva de ";
 $vocab['delete_up_to'] = "Borrar hasta el";
 $vocab['del_entry_in_conflict'] = "Suprimir la(s) reserva(s) anteriores con el fin de validar la nueva reserva.";
 $vocab['del_user_succeed'] = "Un usuario fue suprimido de la lista.";
+$vocab['depot_grr_officiel'] = "Repositorio GRR Officiel en Github";
+$vocab['derniere_version_publiee'] = "Última versión lanzada";
 $vocab['description'] = "Descripción :";
 $vocab['description_complete'] = "Descripción completa (visible en la ficha de presentación)";
 $vocab['description complete2'] = " Usted puede utilizar balizas HTML";
@@ -527,6 +529,7 @@ $vocab['lcs_SSO_explain_3'] = "En el campo más abajo, puede precisar la lista d
 $vocab['ldap_chemin_invalide'] = "La búsqueda en el anuario no acabó (problema de filtro o de encaminador). Póngase en contacto con el administrador para señalar el problema.";
 $vocab['ldap_doublon_identifiant'] = "La búsqueda en el anuario con el identificador que usó devolvió varios resultados. Póngase en contacto con el administrador para señalar el problema.";
 $vocab['ldap_recherche_identifiant_aucun_resultats'] = "La búsqueda en el anuario con el identificador que usó devolvió ningún resultado. Póngase en contacto con el administrador para señalar el problema.";
+$vocab['le'] = " el ";
 $vocab['legend_msg'] = "Muestra la leyenda";
 $vocab['periodicite_msg'] = "Autoriser la périodicité dans les réservations"; // A traduire
 $vocab['lemon_SSO_explain'] = "Si usted tiene a su disposición un contexto Lemonldap, Usted puede activar la consideración de este servicio por GRR a continuación. Diríjase a la documentación de GRR para mayor información.";
@@ -687,7 +690,8 @@ $vocab['no_site'] = "Ningún sitio ha sido seleccionado.";
 $vocab['no_user_area'] = "!Actualmente nadie, excepto los administradores, tiene acceso a este campo!";
 $vocab['number_max'] = " persona max.";
 $vocab['number_max2'] = " personas max.";
-$vocab['num_version'] = "Número de versión: <b>GRR</b>";
+$vocab['num_version'] = "Número de versión de GRR (archivo):";
+$vocab['num_versionbdd'] = "Número de versión de GRR (base de datos):";
 $vocab['num_version_title'] = "Número de versión de GRR";
 $vocab['Objet du message'] = "Objet du message"; // A traduire
 $vocab['of'] = " sobre ";

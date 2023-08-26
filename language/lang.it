@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2023-08-24
+# Last modification : 2023-08-26
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -326,6 +326,8 @@ $vocab['delete_booking'] = " ha eliminato la prenotazione di ";
 $vocab['delete_up_to'] = "Cancellare a ";
 $vocab['del_entry_in_conflict'] = "Eliminare la (le) prenotazione(i) quì sopra allo scopo di convalidare la nuova prenotazione.";
 $vocab['del_user_succeed'] = "Un utente è stato eliminato dell'elenco.";
+$vocab['depot_grr_officiel'] = "Repository GRR Officiel su Github";
+$vocab['derniere_version_publiee'] = "Ultima versione pubblicata";
 $vocab['description'] = "Descrizione :";
 $vocab['description complete'] = "Descrizione completa (visibile nella scheda di presentazione)";
 $vocab['description complete2'] = " Potete utilizzare segnali HTML";
@@ -526,6 +528,7 @@ $vocab['lcs_SSO_explain_3'] = "Dans le champ ci-dessous, vous pouvez préciser l
 $vocab['ldap_chemin_invalide'] = "La recherche dans l'annuaire n'a pas abouti (problème de filtre ou de chemin d'accès). Contactez l'administrateur pour signaler le problème."; // A traduire
 $vocab['ldap_doublon_identifiant'] = "La recherche dans l'annuaire avec l'identifiant que vous avez utilisé a renvoyé plusieurs résultats. Contactez l'administrateur pour signaler le problème."; // A traduire
 $vocab['ldap_recherche_identifiant_aucun_resultats'] = "La recherche dans l'annuaire avec l'identifiant que vous avez utilisé n'a renvoyé aucun résultat. Contactez l'administrateur pour signaler le problème."; // A traduire
+$vocab['le'] = ' il ';
 $vocab['legend_msg'] = "Visualizzare la legenda";
 $vocab['periodicite_msg'] = "Autoriser la périodicité dans les réservations"; // A traduire
 $vocab['lemon_SSO_explain'] = "Se disporte di un ambiente <b>Lemonldap</b>, potete attivare la presa in considerazione di questo servizio con <B>GRR</B> sotto. Rinviate andò documentazione di GRR per sapere più.";
@@ -684,7 +687,8 @@ $vocab['no_site'] = "Aucun site n'a été sélectionné."; // A traduire
 $vocab['no_user_area'] = "Attualmente nessuno, eccetto gli amministratori, non ha accesso a questo settore!";
 $vocab['number_max'] = " persona max.";
 $vocab['number_max2'] = " persone max.";
-$vocab['num_version'] = "Numero di versione: <b>GRR</b>";
+$vocab['num_version'] = "Numero di versione di GRR (file):";
+$vocab['num_versionbdd'] = "Numero di versione di GRR (database):";
 $vocab['num_version_title'] = "Numero di versione di GRR";
 $vocab['Objet du message'] = "Objet du message"; // A traduire
 $vocab['of'] = " su ";

@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2023-08-24
+# Last modification : 2023-08-26
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -333,6 +333,8 @@ $vocab['delete_booking'] = " has deleted the reservation of ";
 $vocab['delete_up_to'] = "Delete until";
 $vocab['del_entry_in_conflict'] = "Delete the reservation(s) above in order to confirm the new reservation.";
 $vocab['del_user_succeed'] = "A user has been deleted from the list.";
+$vocab['depot_grr_officiel'] = "GRR Officiel Github repository";
+$vocab['derniere_version_publiee'] = "Latest released version";
 $vocab['description'] = "Description:";
 $vocab['description_complete'] = "Full description (visible in the presentation card)";
 $vocab['description complete2'] = " You can use HTML markers";
@@ -541,6 +543,7 @@ $vocab['lcs_SSO_explain_3'] = "	 In the field below, you can specify the list of
 $vocab['ldap_chemin_invalide'] = " The research in the directory did not succeed (problem of filter or path). Contact the administrator to point the problem.";
 $vocab['ldap_doublon_identifiant'] = "The research in the directory with this username sent back several results. Contact the administrator to point the problem.";
 $vocab['ldap_recherche_identifiant_aucun_resultats'] = "The research in the directory with this username didn't sent back any results. Contact the administrator to point the problem.";
+$vocab['le'] = " on ";
 $vocab['legend_msg'] = "Display the legend";
 $vocab['periodicite_msg'] = "Allow periodicity in reservations";
 $vocab['lemon_SSO_explain'] = "If you have a <b>Lemonldap</b> environment, you can activate below the consideration of this service by <b>GRR</b>. Refer to the documentation of GRR to know more about it.";
@@ -699,7 +702,8 @@ $vocab['no_site'] = "No website selected.";
 $vocab['no_user_area'] = "Nobody -except administrators- is currently authorized to access this area!";
 $vocab['number_max'] = " person max.";
 $vocab['number_max2'] = " people max.";
-$vocab['num_version'] = "Version number: <b>GRR</b>";
+$vocab['num_version'] = "GRR file version number: ";
+$vocab['num_versionbdd'] = "GRR DB Version number: ";
 $vocab['num_version_title'] = "GRR version number";
 $vocab['Objet du message'] = "Message subject"; 
 $vocab['of'] = " on ";
