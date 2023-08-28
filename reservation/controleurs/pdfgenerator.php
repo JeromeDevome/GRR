@@ -89,7 +89,7 @@ else
 
 		if ($row[4]!=0){
 			$d['period'] = 1;
-			$d['jourPeriode'] = utf8_strftime('%A' ,$row6[1]);
+			$d['jourPeriode'] = utf8_strftime('%A' ,$row6[4]);
 			
 		}else{
 			$d['period'] = 0;
