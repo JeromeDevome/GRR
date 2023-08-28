@@ -110,6 +110,21 @@ foreach($liste_language as $langue)
             $msg = "Erreur lors de l'enregistrement de mails_retardrestitution2_".$langue." !<br />";
     }
 
+    if (isset($_POST['mails_demandecompte_'.$langue])) {
+        if (!Pages::set("mails_demandecompte_".$langue, $_POST['mails_demandecompte_titre_'.$langue], $_POST['mails_demandecompte_'.$langue]))
+            $msg = "Erreur lors de l'enregistrement de mails_demandecompte_".$langue." !<br />";
+    }
+
+    if (isset($_POST['mails_demandecompte2_'.$langue])) {
+        if (!Pages::set("mails_demandecompte2_".$langue, $_POST['mails_demandecompte2_titre_'.$langue], $_POST['mails_demandecompte2_'.$langue]))
+            $msg = "Erreur lors de l'enregistrement de mails_demandecompte2_".$langue." !<br />";
+    }
+
+    if (isset($_POST['mails_demandecompte3_'.$langue])) {
+        if (!Pages::set("mails_demandecompte3_".$langue, $_POST['mails_demandecompte3_titre_'.$langue], $_POST['mails_demandecompte3_'.$langue]))
+            $msg = "Erreur lors de l'enregistrement de mails_demandecompte3_".$langue." !<br />";
+    }
+
 }
 /**/
 
@@ -129,8 +144,30 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
     $msg = '';
 }
 
-get_vocab_admin('cgu_titre');
-get_vocab_admin('cgu_grr');
+get_vocab_admin('langue_de-de');
+get_vocab_admin('langue_en-gb');
+get_vocab_admin('langue_es-es');
+get_vocab_admin('langue_fr-fr');
+get_vocab_admin('langue_it-it');
+
+get_vocab_admin('mail_type_adm_test');
+get_vocab_admin('mail_type_compte_demande');
+get_vocab_admin('mail_type_resa_creation');
+get_vocab_admin('mail_type_resa_moderation');
+get_vocab_admin('mail_type_resa_modif');
+get_vocab_admin('mail_type_resa_sup');
+get_vocab_admin('mail_type_resa_retard');
+get_vocab_admin('mail_type_resa_resultat');
+
+get_vocab_admin('mail_desc_admin_test');
+get_vocab_admin('mail_desc_dest_adm');
+get_vocab_admin('mail_desc_dest_gestionnaire');
+get_vocab_admin('mail_desc_dest_beneficiaire');
+get_vocab_admin('mail_desc_dest_supauto');
+get_vocab_admin('mail_desc_compte_creation');
+get_vocab_admin('mail_desc_compte_decision1');
+get_vocab_admin('mail_desc_compte_decision2');
+
 get_vocab_admin('save');
 get_vocab_admin('message_records');
 

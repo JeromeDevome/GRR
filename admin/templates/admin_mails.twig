@@ -17,22 +17,25 @@
             <!-- Onglets pour les différents mails -->
             <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="custom-tabs-three-mailtest-tab" data-bs-toggle="pill" href="#custom-tabs-three-mailtest" role="tab" aria-controls="custom-tabs-three-mailtest" aria-selected="true">Test</a>
+                <a class="nav-link active" id="custom-tabs-three-mailtest-tab" data-bs-toggle="pill" href="#custom-tabs-three-mailtest" role="tab" aria-controls="custom-tabs-three-mailtest" aria-selected="true">{{trad.mail_type_adm_test}}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="custom-tabs-three-resacreation-tab" data-bs-toggle="pill" href="#custom-tabs-three-resacreation" role="tab" aria-controls="custom-tabs-three-resacreation" aria-selected="false">Création réservation</a>
+                <a class="nav-link" id="custom-tabs-three-resacreation-tab" data-bs-toggle="pill" href="#custom-tabs-three-resacreation" role="tab" aria-controls="custom-tabs-three-resacreation" aria-selected="false">{{trad.mail_type_resa_creation}}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="custom-tabs-three-resamodification-tab" data-bs-toggle="pill" href="#custom-tabs-three-resamodification" role="tab" aria-controls="custom-tabs-three-resamodification" aria-selected="false">Modification réservation</a>
+                <a class="nav-link" id="custom-tabs-three-resamodification-tab" data-bs-toggle="pill" href="#custom-tabs-three-resamodification" role="tab" aria-controls="custom-tabs-three-resamodification" aria-selected="false">{{trad.mail_type_resa_moderation}}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="custom-tabs-three-resasuppression-tab" data-bs-toggle="pill" href="#custom-tabs-three-resasuppression" role="tab" aria-controls="custom-tabs-three-resasuppression" aria-selected="false">Suppression réservation</a>
+                <a class="nav-link" id="custom-tabs-three-resasuppression-tab" data-bs-toggle="pill" href="#custom-tabs-three-resasuppression" role="tab" aria-controls="custom-tabs-three-resasuppression" aria-selected="false">{{trad.mail_type_resa_sup}}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="custom-tabs-three-resamoderation-tab" data-bs-toggle="pill" href="#custom-tabs-three-resamoderation" role="tab" aria-controls="custom-tabs-three-resamoderation" aria-selected="false">Réservation & modération</a>
+                <a class="nav-link" id="custom-tabs-three-resamoderation-tab" data-bs-toggle="pill" href="#custom-tabs-three-resamoderation" role="tab" aria-controls="custom-tabs-three-resamoderation" aria-selected="false">{{trad.mail_type_resa_moderation}}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="custom-tabs-three-retardrestitution-tab" data-bs-toggle="pill" href="#custom-tabs-three-retardrestitution" role="tab" aria-controls="custom-tabs-three-retardrestitution" aria-selected="false">Retard</a>
+                <a class="nav-link" id="custom-tabs-three-retardrestitution-tab" data-bs-toggle="pill" href="#custom-tabs-three-retardrestitution" role="tab" aria-controls="custom-tabs-three-retardrestitution" aria-selected="false">{{trad.mail_type_resa_retard}}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="custom-tabs-three-demandecompte-tab" data-bs-toggle="pill" href="#custom-tabs-three-demandecompte" role="tab" aria-controls="custom-tabs-three-demandecompte" aria-selected="false">{{trad.mail_type_compte_demande}}</a>
               </li>
             </ul>
           </div>
@@ -46,7 +49,7 @@
                     <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
                       {% for langue in liste_language %}
                         {% set namform = 'mails_test_'~ langue %}
-                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{langue}}</a>
+                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{trad['langue_'~ langue]}} ({{langue}})</a>
                       {% endfor %}
                     </div>
                   </div>
@@ -57,10 +60,9 @@
                         {% set titreform = 'mails_test_titre_'~ langue %}
                         {% set namform = 'mails_test_'~ langue %}
                           <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
-                            {{langue}}
+                            <p>{{trad.mail_desc_admin_test}}</p>
                             {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
                             <textarea id="{{namform}}" name="{{namform}}" rows="60" cols="80">{{ pages[namform][1] }}</textarea>
-                            <p>%nomdusite%; %nometablissement% </p>
                           </div>
                       {% endfor %}
                     </div>
@@ -75,7 +77,7 @@
                     <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
                       {% for langue in liste_language %}
                         {% set namform = 'mails_resacreation_'~ langue %}
-                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{langue}}</a>
+                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{trad['langue_'~ langue]}} ({{langue}})</a>
                       {% endfor %}
                     </div>
                   </div>
@@ -88,11 +90,11 @@
                         {% set namform = 'mails_resacreation_'~ langue %}
                         {% set namform2 = 'mails_resacreation2_'~ langue %}
                          <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
-                            {{langue}}
-                            <p>Mail pour les personnes notifiés via l'administration et/ou un champ additionnel</p>
+                            <p>{{trad.mail_desc_dest_adm}}</p>
                             {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
                             <textarea id="{{namform}}" name="{{namform}}" rows="60" cols="80">{{ pages[namform][1] }}</textarea>
-                            <p>Mail au bénéficiaire</p>
+                           
+                            <p>{{trad.mail_desc_dest_beneficiaire}}</p>
                             {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
                             <textarea id="{{namform2}}" name="{{namform2}}" rows="60" cols="80">{{ pages[namform2][1] }}</textarea>
                           </div>
@@ -109,7 +111,7 @@
                     <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
                       {% for langue in liste_language %}
                         {% set namform = 'mails_resamodification_'~ langue %}
-                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{langue}}</a>
+                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{trad['langue_'~ langue]}} ({{langue}})</a>
                       {% endfor %}
                     </div>
                   </div>
@@ -122,11 +124,11 @@
                         {% set namform = 'mails_resamodification_'~ langue %}
                         {% set namform2 = 'mails_resamodification2_'~ langue %}
                         <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
-                          {{langue}}
-                          <p>Mail pour les personnes notifiés via l'administration et/ou un champ additionnel</p>
+                          <p>{{trad.mail_desc_dest_adm}}</p>
                           {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
                           <textarea id="{{namform}}" name="{{namform}}" rows="60" cols="80">{{ pages[namform][1] }}</textarea>
-                          <p>Mail au bénéficiaire</p>
+                          
+                          <p>{{trad.mail_desc_dest_beneficiaire}}</p>
                           {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
                           <textarea id="{{namform2}}" name="{{namform2}}" rows="60" cols="80">{{ pages[namform2][1] }}</textarea>
                         </div>
@@ -143,7 +145,7 @@
                     <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
                       {% for langue in liste_language %}
                         {% set namform = 'mails_resasuppression_'~ langue %}
-                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{langue}}</a>
+                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{trad['langue_'~ langue]}} ({{langue}})</a>
                       {% endfor %}
                     </div>
                   </div>
@@ -158,14 +160,15 @@
                         {% set namform2 = 'mails_resasuppression2_'~ langue %}
                         {% set namform3 = 'mails_resasuppression3_'~ langue %}
                         <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
-                          {{langue}}
-                          <p>Mail pour les personnes notifiés via l'administration et/ou un champ additionnel</p>
+                          <p>{{trad.mail_desc_dest_adm}}</p>
                           {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
                           <textarea id="{{namform}}" name="{{namform}}" rows="60" cols="80">{{ pages[namform][1] }}</textarea>
-                          <p>Mail au bénéficiaire</p>
+                          
+                          <p>{{trad.mail_desc_dest_beneficiaire}}</p>
                           {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
                           <textarea id="{{namform2}}" name="{{namform2}}" rows="60" cols="80">{{ pages[namform2][1] }}</textarea>
-                          <p>Mail de supression automatique le beneficiaire et les personnes notifiés via l'administration et/ou un champ additionnel</p>
+                          
+                          <p>{{trad.mail_desc_dest_supauto}}</p>
                           {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
                           <textarea id="{{namform3}}" name="{{namform3}}" rows="60" cols="80">{{ pages[namform3][1] }}</textarea>
                         </div>
@@ -182,7 +185,7 @@
                     <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
                       {% for langue in liste_language %}
                         {% set namform = 'mails_resamoderation_'~ langue %}
-                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{langue}}</a>
+                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{trad['langue_'~ langue]}} ({{langue}})</a>
                       {% endfor %}
                     </div>
                   </div>
@@ -203,25 +206,40 @@
                         {% set namform5 = 'mails_resamoderation5_'~ langue %}
                         {% set namform6 = 'mails_resamoderation6_'~ langue %}
                         <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
-                          {{langue}}
-                          <p>Mail pour les personnes notifiés via l'administration et/ou un champ additionnel</p>
+
+                          <!-- Création de la réservation à modérer -->
+                          <h2>{{trad.mail_type_resa_creation}}</h2>
+
+                          <p>{{trad.mail_desc_dest_adm}}</p>
                           {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
                           <textarea id="{{namform}}" name="{{namform}}" rows="60" cols="80">{{ pages[namform][1] }}</textarea>
-                          <p>Mail résultat de la modération pour le bénéficiaire et les personnes notifiés via l'administration et/ou un champ additionnel</p>
-                          {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          <textarea id="{{namform2}}" name="{{namform2}}" rows="60" cols="80">{{ pages[namform2][1] }}</textarea>
-                          <p>Mail au bénéficiaire</p>
+
+                          <p>{{trad.mail_desc_dest_beneficiaire}}</p>
                           {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
                           <textarea id="{{namform3}}" name="{{namform3}}" rows="60" cols="80">{{ pages[namform3][1] }}</textarea>
-                          <p>Mail au bénéficiaire, résultat</p>
+
+                          <!-- Résultat de la réservation à modérer -->
+                          <h2>{{trad.mail_type_resa_resultat}}</h2>
+
+                          <p>{{trad.mail_desc_dest_adm}}</p>
+                          {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                          <textarea id="{{namform2}}" name="{{namform2}}" rows="60" cols="80">{{ pages[namform2][1] }}</textarea>
+
+                          <p>{{trad.mail_desc_dest_beneficiaire}}</p>
                           {{ form.input(titreform4, "", pages[namform4][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
                           <textarea id="{{namform4}}" name="{{namform4}}" rows="60" cols="80">{{ pages[namform4][1] }}</textarea>
-                          <p>Mail au gestionnaire de la ressource, suite à la supression de la réservation</p>
-                          {{ form.input(titreform5, "", pages[namform5][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          <textarea id="{{namform5}}" name="{{namform5}}" rows="60" cols="80">{{ pages[namform5][1] }}</textarea>
-                          <p>Mail résultat au gestionnaire de la ressource</p>
+
+                          <p>{{trad.mail_desc_dest_gestionnaire}}</p>
                           {{ form.input(titreform6, "", pages[namform6][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
                           <textarea id="{{namform6}}" name="{{namform6}}" rows="60" cols="80">{{ pages[namform6][1] }}</textarea>
+
+                          <!-- Supression de la réservation à modérer -->
+                          <h2>{{trad.mail_type_resa_sup}}</h2>
+
+                          <p>{{trad.mail_desc_dest_gestionnaire}}</p>
+                          {{ form.input(titreform5, "", pages[namform5][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                          <textarea id="{{namform5}}" name="{{namform5}}" rows="60" cols="80">{{ pages[namform5][1] }}</textarea>
+
                         </div>
                       {% endfor %}
                     </div>
@@ -236,7 +254,7 @@
                     <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
                       {% for langue in liste_language %}
                         {% set namform = 'mails_retardrestitution_'~ langue %}
-                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{langue}}</a>
+                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{trad['langue_'~ langue]}} ({{langue}})</a>
                       {% endfor %}
                     </div>
                   </div>
@@ -249,13 +267,53 @@
                         {% set namform = 'mails_retardrestitution_'~ langue %}
                         {% set namform2 = 'mails_retardrestitution2_'~ langue %}
                         <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
-                          {{langue}}
-                          <p>Mail pour les personnes notifiés via l'administration et/ou un champ additionnel</p>
+                          <p>{{trad.mail_desc_dest_adm}}</p>
                           {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
                           <textarea id="{{namform}}" name="{{namform}}" rows="60" cols="80">{{ pages[namform][1] }}</textarea>
-                          <p>Mail au bénéficiaire</p>
-                          {{ form.input(titreform2, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+
+                          <p>{{trad.mail_desc_dest_beneficiaire}}</p>
+                          {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
                           <textarea id="{{namform2}}" name="{{namform2}}" rows="60" cols="80">{{ pages[namform2][1] }}</textarea>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Demande de compte -->
+              <div class="tab-pane fade" id="custom-tabs-three-demandecompte" role="tabpanel" aria-labelledby="custom-tabs-three-demandecompte-tab">
+                <div class="row">
+                  <!-- Onglets des langues -->
+                  <div class="col-2 col-sm-2">
+                    <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
+                      {% for langue in liste_language %}
+                        {% set namform = 'mails_demandecompte_'~ langue %}
+                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{trad['langue_'~ langue]}} ({{langue}})</a>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <!-- Contenu des onglets -->
+                  <div class="col-10 col-sm-10">
+                    <div class="tab-content" id="vert-tabs-tabContent">
+                      {% for langue in liste_language %}
+                        {% set titreform = 'mails_demandecompte_titre_'~ langue %}
+                        {% set titreform2 = 'mails_demandecompte2_titre_'~ langue %}
+                        {% set titreform3 = 'mails_demandecompte3_titre_'~ langue %}
+                        {% set namform = 'mails_demandecompte_'~ langue %}
+                        {% set namform2 = 'mails_demandecompte2_'~ langue %}
+                        {% set namform3 = 'mails_demandecompte3_'~ langue %}
+                        <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
+                          <p>{{trad.mail_desc_compte_creation}}</p>
+                          {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                          <textarea id="{{namform}}" name="{{namform}}" rows="60" cols="80">{{ pages[namform][1] }}</textarea>
+
+                          <p>{{trad.mail_desc_compte_decision1}}</p>
+                          {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                          <textarea id="{{namform2}}" name="{{namform2}}" rows="60" cols="80">{{ pages[namform2][1] }}</textarea>
+
+                          <p>{{trad.mail_desc_compte_decision2}}</p>
+                          {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                          <textarea id="{{namform3}}" name="{{namform3}}" rows="60" cols="80">{{ pages[namform3][1] }}</textarea>
                         </div>
                       {% endfor %}
                     </div>
@@ -299,6 +357,9 @@
         $('#mails_resamoderation6_{{langue}}').summernote()
         $('#mails_retardrestitution_{{langue}}').summernote()
         $('#mails_retardrestitution2_{{langue}}').summernote()
+        $('#mails_demandecompte_{{langue}}').summernote()
+        $('#mails_demandecompte2_{{langue}}').summernote()
+        $('#mails_demandecompte3_{{langue}}').summernote()
       {% endfor %}
 
 			{%if d.enregistrement%}

@@ -16,8 +16,12 @@
  * (at your option) any later version.
  */
 
+include_once('../include/pages.class.php');
 
 $grr_script_name = "admin_user_demandes.php";
+
+if (!Pages::load())
+	die('Erreur chargement pages');
 
 $choix = isset($_GET["choix"]) ? intval($_GET["choix"]) : NULL;
 $idemande = isset($_GET["iddemande"]) ? intval($_GET["iddemande"]) : NULL;
@@ -54,14 +58,18 @@ if (isset($choix) && $choix > 0)
 
 		$expediteur = Settings::get("webmaster_email");
 
-		$mail_entete  = "MIME-Version: 1.0\r\n";
-		$mail_entete .= "From: GRR "
-		."<{$expediteur}>\r\n";
-		$mail_entete .= 'Reply-To: '.$expediteur."\r\n";
-		$mail_entete .= 'Content-Type: text/plain; charset="iso-8859-1"';
-		$mail_entete .= "\r\nContent-Transfer-Encoding: 8bit\r\n";
-		$mail_entete .= 'X-Mailer:PHP/' . phpversion()."\r\n";
-		
+		//Infos générales
+		$codes = [
+			'%nomdusite%' => Settings::get('title_home_page'),
+			'%nometablissement%' => Settings::get('company'),
+			'%urlgrr%' =>  traite_grr_url("","y"),
+			'%webmasteremail%' => Settings::get("webmaster_email"),
+			'%formnom%' => $demande['nom'],
+			'%formprenom%' => $demande['prenom'],
+			'%formemail%' => $demande['email'],
+			'%formtelephone%' => $demande['telephone'],
+			'%formcommentaire%' => $demande['commentaire']
+		];
 
 		if($choix == 1) // Acceptation de la demande
 		{
@@ -99,29 +107,24 @@ if (isset($choix) && $choix > 0)
 					$erreur = true;
 				}
 
-				$sujet ="Demande de création de compte ".$demande['nom']." ".$demande['prenom'];
-		
-				$mail_corps  = "<html><head></head><body>Votre demande création de compte sur ".traite_grr_url("","y")." a été acceptée.<br/>";
-				$mail_corps  .= "Vous pouvez désormais vous connecter avec votre identifiant ci-dessous.<br/>";
-				$mail_corps  .= "Identifiant : ".$getLogin. "<br/>";
-				$mail_corps  .= "Mot de passe : Celui que vous avez renseignez lors de votre demande.<br/><br/>";
-				$mail_corps  .= "\n</body></html>";
+				$codes['%identifiant%'] = $getLogin;
 		
 				// Mail au demandeur
-				Email::Envois($demande['email'], $sujet, $mail_corps, $expediteur, '', '');
+				$templateMail1 = Pages::get('mails_demandecompte2_'.$locale);
+				$sujetEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[0]);
+				$msgEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[1]);
+				Email::Envois($demande['email'], $sujetEncode1, $msgEncode1, $expediteur, '', '');
 
 			}
 
 		}
 		elseif($choix == 2)
 		{
-			$sujet ="Demande de création de compte ".$demande['nom']." ".$demande['prenom'];
-		
-			$mail_corps  = "<html><head></head><body>Votre demande création de compte sur ".traite_grr_url("","y")." a été refusée.<br/>";
-			$mail_corps  .= "\n</body></html>";
-	
 			// Mail au demandeur
-			Email::Envois($demande['email'], $sujet, $mail_corps, $expediteur, '', '');
+			$templateMail2 = Pages::get('mails_demandecompte3_'.$locale);
+			$sujetEncode2 = str_replace(array_keys($codes), $codes, $templateMail2[0]);
+			$msgEncode2 = str_replace(array_keys($codes), $codes, $templateMail2[1]);
+			Email::Envois($demande['email'], $sujetEncode2, $msgEncode2, $expediteur, '', '');
 		}
 
 		// Dans tout les cas on met à jour le choix sauf si il y a eu une erreur

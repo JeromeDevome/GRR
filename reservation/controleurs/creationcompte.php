@@ -15,7 +15,14 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+
+include_once('include/pages.class.php');
+
 $grr_script_name = "creationcompte.php";
+
+if (!Pages::load())
+	die('Erreur chargement pages');
+
 
 $d['caractMini'] = $pass_leng." caractères minimum"; // $pass_leng est définit dans language.inc.php
 
@@ -102,26 +109,26 @@ if(isset($_POST["nom"])){
 		require_once 'vendor/phpmailer/phpmailer/src/Exception.php';
 		require_once 'include/mail.class.php';
 
-		$mail_entete  = "MIME-Version: 1.0\r\n";
-		$mail_entete .= "From: {$_POST['nom']} "
-		."<{$_POST['email']}>\r\n";
-		$mail_entete .= 'Reply-To: '.$_POST['email']."\r\n";
-		$mail_entete .= 'Content-Type: text/plain; charset="iso-8859-1"';
-		$mail_entete .= "\r\nContent-Transfer-Encoding: 8bit\r\n";
-		$mail_entete .= 'X-Mailer:PHP/' . phpversion()."\r\n";
 
-		$sujet ="Demande de création de compte ".$_POST['nom']. " ".$_POST['prenom'];
+		//Infos générales
+		$codes = [
+			'%nomdusite%' => Settings::get('title_home_page'),
+			'%nometablissement%' => Settings::get('company'),
+			'%urlgrr%' =>  traite_grr_url("","y"),
+			'%webmasteremail%' => Settings::get("webmaster_email"),
+			'%formnom%' => $reg_nom,
+			'%formprenom%' => $reg_prenom,
+			'%formemail%' => $reg_email,
+			'%formtelephone%' => $reg_telephone,
+			'%formcommentaire%' => $reg_commentaire
+		];
 
-		$mail_corps  = "<html><head></head><body>Demande de création de compte pour :" .$_POST['prenom']." " .$_POST['nom'] . "<br/>";
-		$mail_corps  .= "Site : ".traite_grr_url("","y")."<br/>";
-		$mail_corps  .= "Email : ".$_POST['email']. "<br/>";
-		$mail_corps  .= "Téléphone : ".$_POST['telephone']. "<br/><br/>";
-		$mail_corps  .= "<b> Commentaire :".$_POST['commentaire']. "</b><br/><br/>";
-		$mail_corps  .= "\n</body></html>";
-
+		$templateMail1 = Pages::get('mails_demandecompte_'.$locale);
+		$sujetEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[0]);
+		$msgEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[1]);
 
 		// Mail au demandeur
-		Email::Envois($_POST['email'], $sujet, $mail_corps, $_POST['email'], '', '');
+		Email::Envois($_POST['email'], $sujetEncode1, $msgEncode1, $_POST['email'], '', '');
 
 		// Mail au gestionnaire user si il y en a
 		$sql = "SELECT email FROM ".TABLE_PREFIX."_utilisateurs WHERE statut ='gestionnaire_utilisateur'";
@@ -139,7 +146,7 @@ if(isset($_POST["nom"])){
 			foreach ($tab_destinataire as $value){
 				$destinataire .= $value.";";
 			}
-			Email::Envois($destinataire, $sujet, $mail_corps, $expediteur, '', '', $expediteur);
+			Email::Envois($destinataire, $sujetEncode1, $msgEncode1, $expediteur, '', '', $expediteur);
 		} 
 		else // si pas de gestionnaire d'utilisateur, aux admins
 		{
@@ -158,7 +165,7 @@ if(isset($_POST["nom"])){
 				foreach ($tab_destinataire as $value){
 					$destinataire .= $value.";";
 				}
-				Email::Envois($destinataire, $sujet, $mail_corps, '', '', $expediteur);
+				Email::Envois($destinataire, $sujetEncode1, $msgEncode1, '', '', $expediteur);
 			} 
 		}
 
