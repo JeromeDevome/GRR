@@ -934,7 +934,7 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		
 		$result .= formatresult("Mise à jour jusqu'à la version 4.2.0 :","<b>","</b>");
 
-		$result_inter .= traiteRequete("CREATE TABLE ".TABLE_PREFIX."_utilisateurs_demandes (`idutilisateursdemandes` bigint(20) NOT NULL AUTO_INCREMENT, `nom` varchar(30) NOT NULL, `prenom` varchar(30) NOT NULL, `email` varchar(100) NOT NULL, `telephone` varchar(20) NOT NULL, `mdp` varchar(184) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, `commentaire` text NOT NULL, `datedemande` date NOT NULL, `etat` tinyint(1) NOT NULL DEFAULT 0, `gestionnaire` varchar(40) NOT NULL DEFAULT '', `datechoix` date DEFAULT NULL)  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+		$result_inter .= traiteRequete("CREATE TABLE ".TABLE_PREFIX."_utilisateurs_demandes (`idutilisateursdemandes` bigint(20) NOT NULL AUTO_INCREMENT, `nom` varchar(30) NOT NULL, `prenom` varchar(30) NOT NULL, `email` varchar(100) NOT NULL, `telephone` varchar(20) NOT NULL, `mdp` varchar(184) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, `commentaire` text NOT NULL, `datedemande` date NOT NULL, `etat` tinyint(1) NOT NULL DEFAULT 0, `gestionnaire` varchar(40) NOT NULL DEFAULT '', `datechoix` date DEFAULT NULL, PRIMARY KEY (`idutilisateursdemandes`))  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
 		
 
 		$ctncgu = grr_sql_query1("SELECT valeur FROM ".TABLE_PREFIX."_page WHERE nom='CGU'");

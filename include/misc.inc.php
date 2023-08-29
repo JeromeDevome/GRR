@@ -59,6 +59,7 @@ $liste_tables = array(
 	"_correspondance_statut",
 	"_entry",
 	"_entry_moderate",
+	"_groupes",
 	"_j_mailuser_room",
 	"_j_site_area",
 	"_j_type_area",
@@ -79,6 +80,8 @@ $liste_tables = array(
 	"_site",
 	"_type_area",
 	"_utilisateurs",
+	"_utilisateurs_demandes",
+	"_utilisateurs_groupes",
 	);
 
 # Liste des feuilles de style
