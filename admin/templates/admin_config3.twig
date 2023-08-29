@@ -9,7 +9,7 @@
 
 {% block content %}
 	<div class="row">
-        <div class="col col-12 col-sm-12">
+        <div class="col col-sm-12">
             <div class="card card-primary card-outline card-tabs">
               <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
@@ -67,21 +67,43 @@
 							<input type="radio" name="grr_mail_method" value="smtp" id="label_3c" {% if settings.grr_mail_method == 'smtp' %} checked {% endif %} /> <label for="label_3c">{{ trad.methode_smtp }}</label><br>
 							<br>
 							<p>Uniquement pour la methode SMTP :</p><br>
-							{{ form.input('grr_mail_smtp', trad.Explications_methode_smtp_1, settings.grr_mail_smtp, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
-							{{ form.input('grr_mail_Username', trad.utilisateur_smtp, settings.grr_mail_Username, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
-							{{ form.input('grr_mail_Password', trad.pwd, settings.grr_mail_Password, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'password'}) }}<br>
-							{{ form.input('grr_mail_from', trad.Email_expediteur_messages_automatiques, settings.grr_mail_from, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
-							{{ form.input('grr_mail_fromname', trad.Nom_expediteur_messages_automatiques, settings.grr_mail_fromname, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
-							{{ form.input('smtp_secure', trad.smtp_secure, settings.smtp_secure, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
-							{{ form.input('smtp_port', trad.smtp_port, settings.smtp_port, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}<br>
-							{{ form.input('mail_test', trad.mail_test, '', {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
-							<label>{{ trad.smtp_param_sup }}</label>
-							
-							{{ form.input('smtp_verify_peer', trad.smtp_verify_peer, settings.smtp_verify_peer, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
-							{{ form.input('smtp_verify_depth', trad.smtp_verify_depth, settings.smtp_verify_depth, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
-							{{ form.input('smtp_allow_self_signed', trad.smtp_allow_self_signed, settings.smtp_allow_self_signed, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
-							{{ form.input('smtp_verify_peer_name', trad.smtp_verify_peer_name, settings.smtp_verify_peer_name, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}<br>
-
+							{{ form.input('grr_mail_smtp', trad.Explications_methode_smtp_1, settings.grr_mail_smtp, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
+							{{ form.input('grr_mail_Username', trad.utilisateur_smtp, settings.grr_mail_Username, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
+							{{ form.input('grr_mail_Password', trad.pwd, settings.grr_mail_Password, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label', type: 'password'}) }}<br>
+							{{ form.input('grr_mail_from', trad.Email_expediteur_messages_automatiques, settings.grr_mail_from, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
+							{{ form.input('grr_mail_fromname', trad.Nom_expediteur_messages_automatiques, settings.grr_mail_fromname, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
+							{{ form.input('smtp_secure', trad.smtp_secure, settings.smtp_secure, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
+							{{ form.input('smtp_port', trad.smtp_port, settings.smtp_port, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label', type: 'number'}) }}<br>
+							{{ form.input('mail_test', trad.mail_test, '', {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
+							<h5>{{ trad.smtp_param_sup }}</h5>
+							<div class="form-group row col col-sm-12">
+								<label class="col col-sm-6" for="smtp_verify_peer">{{ trad.smtp_verify_peer }}</label>
+									<div class="col col-sm-6">
+										<select class="form-control" id="smtp_verify_peer" name="smtp_verify_peer">
+											<option value="1" {% if settings.smtp_verify_peer == '1' %} selected {% endif %}>True</option>
+											<option value="0" {% if settings.smtp_verify_peer == '0' %} selected {% endif %}>False</option>
+										</select>
+									</div>
+							</div>
+							{{ form.input('smtp_verify_depth', trad.smtp_verify_depth, settings.smtp_verify_depth, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
+							<div class="form-group row col col-sm-12">
+								<label class="col col-sm-6" for="smtp_allow_self_signed">{{ trad.smtp_allow_self_signed }}</label>
+									<div class="col col-sm-6">
+										<select class="form-control" id="smtp_allow_self_signed" name="smtp_allow_self_signed">
+											<option value="1" {% if settings.smtp_allow_self_signed == '1' %} selected {% endif %}>True</option>
+											<option value="0" {% if settings.smtp_allow_self_signed == '0' %} selected {% endif %}>False</option>
+										</select>
+									</div>
+							</div>
+							<div class="form-group row col col-sm-12">
+								<label class="col col-sm-6" for="smtp_verify_peer_name">{{ trad.smtp_verify_peer_name }}</label>
+									<div class="col col-sm-6">
+										<select class="form-control" id="smtp_verify_peer_name" name="smtp_verify_peer_name">
+											<option value="1" {% if settings.smtp_verify_peer_name == '1' %} selected {% endif %}>True</option>
+											<option value="0" {% if settings.smtp_verify_peer_name == '0' %} selected {% endif %}>False</option>
+										</select>
+									</div>
+							</div>
 							<label><input type="checkbox" name="grr_mail_Bcc" value="y"  {% if settings.grr_mail_Bcc == 'y' %} checked {% endif %} /> {{ trad.copie_cachee }}</label>
 							
 						</section>
@@ -110,8 +132,8 @@
 							<input type="radio" name="verif_reservation_auto" value="0" id="label_6a" {% if settings.verif_reservation_auto == '0' %} checked {% endif %} /> <label for="label_6a">{{ trad.verif_reservation_auto0 }}</label><br>
 							<input type="radio" name="verif_reservation_auto" value="1" id="label_6b" {% if settings.verif_reservation_auto == '1' %} checked {% endif %} /> <label for="label_6b">{{ trad.verif_reservation_auto1 }}</label><br>
 							<br>
-							{{ form.input('motdepasse_verif_auto_grr', trad.verif_reservation_auto2, settings.motdepasse_verif_auto_grr, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'password'}) }}
-							{{ form.input('chemin_complet_grr', trad.verif_reservation_auto3, settings.chemin_complet_grr, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label'}) }}
+							{{ form.input('motdepasse_verif_auto_grr', trad.verif_reservation_auto2, settings.motdepasse_verif_auto_grr, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-8', classInput: 'col col-sm-4 control-label', type: 'password'}) }}
+							{{ form.input('chemin_complet_grr', trad.verif_reservation_auto3, settings.chemin_complet_grr, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-8', classInput: 'col col-sm-4 control-label'}) }}
 						</section>
 
 
