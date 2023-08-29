@@ -1,6 +1,28 @@
 -----
 --
 -----
+Version 4.2.0 BETA - 29/08/2023 Généré par @JeromeDevome
+!!! VERSION BETA NE PAS UTILISER EN PRODUCTION !!!
+[Ajout] Création de compte utilisateur via un système de demande @JeromeDevome
+[Ajout] Personnalisations des mails via l'administration @JeromeDevome
+[Ajout] Personnalistion du titre des CGU @JeromeDevome
+[Ajout] Champs additionnels de type checkbox @ynaessens & eric.lemeur (Forum)
+[Correction] Accès aux pages sans connexion @JeromeDevome
+[Correction] Sécurisation cookies @JeromeDevome
+[Correction] Jour périodicité dans les PDF @JeromeDevome
+[Correction] Correction des choix des langues @JeromeDevome
+[Correction] Amélioration de la mise à jour de 3.5.1 vers 4.1.1 @ynaessens
+[Correction] Sécurisation de l'envois des mails @ynaessens & eric.lemeur (Forum)
+[Correction] Style administration @ynaessens
+[Correction] Création sous dossier réccursive @JeromeDevome
+[Modification] Amélioration traduction italien @JeromeDevome
+[Modification] Upgrade dépendances PHP @JeromeDevome
+[Modification] Mise à jour : vacances.xml @ynaessens
+
+
+-----
+--
+-----
 Version 4.1.1 - 23/07/2023 Généré par @JeromeDevome
 
 [Ajout] Option "ressource emprunté" directement dans la création de réservation @JeromeDevome @ynaessens
