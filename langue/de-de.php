@@ -937,6 +937,7 @@ $vocab['type_list'] = "Liste";
 $vocab['type_name'] = "Name";
 $vocab['type_num'] = "Kennzeichen";
 $vocab['type_numeric'] = "Une ligne (numérique)"; // A traduire
+$vocab['type_checkbox'] = "Kontrollkästchen";
 $vocab['type_order'] = "Reihenfolge der Darstellung";
 $vocab['type_par_defaut'] = "ausgewählte Standardtart für eine neue Reservierung";
 $vocab['type_resa_manquant_msg'] = "Un ou plusieurs types sont actuellement utilisés dans les réservations mais ne figurent pas dans la tables des types. Cela risque d'engendrer des messages d'erreur. Vous devez donc définir ci-dessous, le ou les types manquants. Il s'agit du ou des types suivants : "; // A traduire

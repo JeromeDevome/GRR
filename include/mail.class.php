@@ -3,9 +3,9 @@
  * include/mail.class.php
  * fichier de définition d'une classe de traitement des e-mails
  * fait partie de l'application GRR
- * Dernière modification : $Date: 2018-02-23 18:00$
+ * Dernière modification : $Date: 2023-08-29 17:50$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & NaldDev
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -32,7 +32,7 @@ class Email{
 				$password			= Settings::get('grr_mail_Password');
 				$smtpsecure			= Settings::get('smtp_secure');
 				$port				= Settings::get('smtp_port');
-				$ass				= Settings::get('smtp_port');
+				$ass				= Settings::get('smtp_allow_self_signed');
 				$verify_peer_name	= Settings::get('smtp_verify_peer_name');
 				$verify_peer		= Settings::get('smtp_verify_peer');
 				$verify_depth		= Settings::get('smtp_verify_depth');
@@ -70,10 +70,10 @@ class Email{
 				
 				$mail->SMTPOptions = array(
 					'ssl' => [
-						'verify_peer' => $verify_peer,
-						'allow_self_signed' => $ass,
-						'verify_depth' => $verify_depth,
-						'verify_peer_name' => $verify_peer_name,
+						'verify_peer' => boolval($verify_peer),
+						'allow_self_signed' => boolval($ass),
+						'verify_depth' => intval($verify_depth),
+						'verify_peer_name' => boolval($verify_peer_name),
 					],
 				);
 

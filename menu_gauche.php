@@ -23,9 +23,9 @@ if ($_GET['pview'] != 1)
 	if ( $file== 'month_all2.php' or Settings::get("menu_gauche") == 0){
 		echo '<div id="menuGaucheMonthAll2">';
 	} elseif ( Settings::get("menu_gauche") == 2){
-		echo '<div class="col-lg-12 col-md-12 col-xs-12">';
+		echo '<div class="col col-lg-12 col-md-12 col-xs-12">';
 	} else{
-		echo '<div class="col-lg-3 col-md-12 col-xs-12">';
+		echo '<div class="col col-lg-3 col-md-12 col-xs-12">';
 	}
 	echo '<div id="menuGauche">';
 

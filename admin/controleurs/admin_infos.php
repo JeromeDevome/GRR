@@ -158,7 +158,7 @@ foreach ($config_variables as $config){
 	} elseif(is_bool($$config) && $$config == false){
 		$$config = "false";
 	}
-	$trad['dInfosConfigVar'] .= "<li class=\"list-group-item\"><div class=\"row\"><p class=\"col-sm-6\">".$config."</p><b>".$$config."&nbsp;</b></div></li>"; // $$ Normal
+	$trad['dInfosConfigVar'] .= "<li class=\"list-group-item\"><div class=\"row\"><p class=\col col-sm-6\">".$config."</p><b>".$$config."&nbsp;</b></div></li>"; // $$ Normal
 }
 unset($config);
 

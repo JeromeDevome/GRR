@@ -3,9 +3,9 @@
  * admin_import_xml_edt.php
  * Importe un fichier de réservations au format xml issu du logiciel EDT Index Education
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-19 15:47$
+ * Dernière modification : $Date: 2023-07-27 15:40$
  * @author    JeromeB & Yan Naessens & Laurent Delineau
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -108,7 +108,7 @@ echo '<table class="table_adm">';
                     $day   = date("d");
                     $month = date("m");
                     $year  = date("Y"); //par défaut on propose la date du jour
-                    echo '<div class="col-xs-12">'.PHP_EOL;
+                    echo '<div class="col col-xs-12">'.PHP_EOL;
                     echo '<div class="form-inline">'.PHP_EOL;
                     genDateSelector('beg_', $day, $month, $year, 'more_years');
                     echo '<input type="hidden" disabled="disabled" id="mydate_'.$typeDate.'">'.PHP_EOL;
@@ -123,7 +123,7 @@ echo '<table class="table_adm">';
                     $day   = date("d");
                     $month = date("m");
                     $year  = date("Y"); //par défaut on propose la date du jour
-                    echo '<div class="col-xs-12">'.PHP_EOL;
+                    echo '<div class="col col-xs-12">'.PHP_EOL;
                     echo '<div class="form-inline">'.PHP_EOL;
                     genDateSelector('end_', $day, $month, $year, 'more_years');
                     echo '<input type="hidden" disabled="disabled" id="mydate_'.$typeDate.'">'.PHP_EOL;

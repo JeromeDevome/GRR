@@ -9,7 +9,7 @@
 
 {% block content %}
 	<div class="row">
-        <div class="col-xs-12">
+        <div class="col col-xs-12">
             <div class="box">
 				<div class="box-header">
 					<h3 class="box-title">{{ trad.editarea }}</h3>
@@ -28,15 +28,15 @@
 							{{ form.input('area_name', trad.name, domaine.area_name, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
 							{{ form.input('area_order', trad.order_display, domaine.order_display, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type: 'number'}) }}
 							<div class="form-group row col-sm-12">
-								<label class="col-sm-4" for="access">{{ trad.access }}</label>
-								<div class="col-sm-8">
+								<label class="col col-sm-4" for="access">{{ trad.access }}</label>
+								<div class="col col-sm-8">
 									<input type="checkbox" name="access" value="y" {% if domaine.access == 'r' %} checked {% endif %}>
 								</div>
 							</div>
 							{% if settings.module_multisite == 'Oui' %}
 								<div class="form-group row col-sm-12">
-									<label class="col-sm-4" for="id_site">{{ trad.site }}</label>
-									<div class="col-sm-8">
+									<label class="col col-sm-4" for="id_site">{{ trad.site }}</label>
+									<div class="col col-sm-8">
 										<select class="form-control" name="id_site">
 											<option value="-1">{{ trad.choose_a_site }}</option>
 											{% for site in sites %}
@@ -57,8 +57,8 @@
 						<section id="affichageplanning">
 							<h4 class="page-header">{{ trad.configuration_plages_horaires }}</h4>
 							<div class="form-group row col-sm-12">
-								<label class="col-sm-4" for="weekstarts_area">{{ trad.weekstarts_area }}</label>
-								<div class="col-sm-8">
+								<label class="col col-sm-4" for="weekstarts_area">{{ trad.weekstarts_area }}</label>
+								<div class="col col-sm-8">
 									<select class="form-control" name="weekstarts_area">
 										{% for jour in JoursSemaine %}
 											<option value="{{ jour.num }}" {% if domaine.weekstarts_area ==  jour.num %} selected {% endif %}>{{ jour.nom }}</option>
@@ -67,8 +67,8 @@
 								</div>
 							</div>
 							<div class="form-group row col-sm-12">
-								<label class="col-sm-4" for="display_day">{{ trad.cocher_jours_a_afficher |raw }}</label>
-								<div class="col-sm-8">
+								<label class="col col-sm-4" for="display_day">{{ trad.cocher_jours_a_afficher |raw }}</label>
+								<div class="col col-sm-8">
 									{% for jour in JoursSemaine %}
 										<input name="display_day[{{ jour.num }}]" type="checkbox" {% if domaine.display_days|slice(jour.num, 1) ==  'y' %} checked {% endif %}> {{ jour.nom }}<br>
 									{% endfor %}
@@ -88,8 +88,8 @@
 							<!-- CAS 1 Basé sur le temps -->
 							<div {% if domaine.enable_periods == 'y' %} style="display:none;" {% endif %} id="menu1">
 								<div class="form-group row col-sm-12">
-									<label class="col-sm-8" for="morningstarts_area">{{ trad.morningstarts_area }}</label>
-									<div class="col-sm-4">
+									<label class="col col-sm-8" for="morningstarts_area">{{ trad.morningstarts_area }}</label>
+									<div class="col col-sm-4">
 										<select class="form-control" name="morningstarts_area">
 											<option value="0" {% if domaine.morningstarts_area == 0 %} selected {% endif %}>0</option>
 											<option value="1" {% if domaine.morningstarts_area == 1 %} selected {% endif %}>1</option>
@@ -119,8 +119,8 @@
 									</div>
 								</div>
 								<div class="form-group row col-sm-12">
-									<label class="col-sm-8" for="eveningends_area">{{ trad.eveningends_area }}</label>
-									<div class="col-sm-4">
+									<label class="col col-sm-8" for="eveningends_area">{{ trad.eveningends_area }}</label>
+									<div class="col col-sm-4">
 										<select class="form-control" name="eveningends_area">
 											<option value="0" {% if domaine.eveningends_area == 0 %} selected {% endif %}>0</option>
 											<option value="1" {% if domaine.eveningends_area == 1 %} selected {% endif %}>1</option>
@@ -153,8 +153,8 @@
 								{{ form.input('resolution_area', trad.resolution_area, domaine.resolution_area, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
 								{{ form.input('duree_par_defaut_reservation_area', trad.duree_par_defaut_reservation_area, domaine.duree_par_defaut_reservation_area, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
 								<div class="form-groupcol-sm-12">
-									<label class="col-sm-8" for="number_periodes">{{ trad.twentyfourhour_format_area }}</label>
-									<div class="col-sm-4">
+									<label class="col col-sm-8" for="number_periodes">{{ trad.twentyfourhour_format_area }}</label>
+									<div class="col col-sm-4">
 										<input type="radio" name="twentyfourhour_format_area" value="0" id="label_2a" {% if domaine.twentyfourhour_format_area == '0' %} checked {% endif %} /> <label for="label_2a">{{ trad.twentyfourhour_format_12 }}</label><br>
 										<input type="radio" name="twentyfourhour_format_area" value="1" id="label_2b" {% if domaine.twentyfourhour_format_area == '1' %} checked {% endif %} /> <label for="label_2b">{{ trad.twentyfourhour_format_24 }}</label><br>
 									</div>
@@ -166,8 +166,8 @@
 							<!-- CAS 2 Basé sur les intitulés -->
 							<div {% if domaine.enable_periods == 'n' %} style="display:none;" {% endif %} id="menu2">
 								<div class="form-groupcol-sm-12">
-									<label class="col-sm-8" for="number_periodes">{{ trad.nombre_de_creneaux }}</label>
-									<div class="col-sm-4">
+									<label class="col col-sm-8" for="number_periodes">{{ trad.nombre_de_creneaux }}</label>
+									<div class="col col-sm-4">
 										<input class="form-control" type="number" id="number_periodes" name="number_periodes" onkeypress="if (event.keyCode==13) return aff_creneaux()" value="{{ trad.dNumberPeriodes }}">
 										<a href="#Per" onclick="javascript:return(aff_creneaux())">{{ trad.goto }}</a>
 									</div>

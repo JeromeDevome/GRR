@@ -9,7 +9,7 @@
 
 {% block content %}
 	<div class="row">
-        <div class="col-12 col-sm-12">
+        <div class="col col-12 col-sm-12">
             <div class="card card-primary card-outline card-tabs">
               <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
@@ -105,8 +105,8 @@
 							<h4 class="page-header">Modification du profil utilisateur</h4>
 
 							<div class="form-group row col-sm-12">
-								<label class="col-sm-6" for="default_css">{{ trad.modification_parametres_personnels }}</label>
-								<div class="col-sm-6">
+								<label class="col col-sm-6" for="default_css">{{ trad.modification_parametres_personnels }}</label>
+								<div class="col col-sm-6">
 									<select class="form-control" name="allow_users_modify_profil">
 										<option value="1" {% if settings.allow_users_modify_profil == '1' %} selected {% endif %}>{{ trad.all }}</option>
 										<option value="2" {% if settings.allow_users_modify_profil == '2' %} selected {% endif %}>{{ trad.all_but_visitors }}</option>
@@ -116,8 +116,8 @@
 							</div>
 
 							<div class="form-group row col-sm-12">
-								<label class="col-sm-6" for="default_css">{{ trad.modification_parametre_email }}</label>
-								<div class="col-sm-6">
+								<label class="col col-sm-6" for="default_css">{{ trad.modification_parametre_email }}</label>
+								<div class="col col-sm-6">
 									<select class="form-control" name="allow_users_modify_email">
 										<option value="1" {% if settings.allow_users_modify_email == '1' %} selected {% endif %}>{{ trad.all }}</option>
 										<option value="2" {% if settings.allow_users_modify_email == '2' %} selected {% endif %}>{{ trad.all_but_visitors }}</option>
@@ -127,8 +127,8 @@
 							</div>
 
 							<div class="form-group row col-sm-12">
-								<label class="col-sm-6" for="default_css">{{ trad.modification_mdp }}</label>
-								<div class="col-sm-6">
+								<label class="col col-sm-6" for="default_css">{{ trad.modification_mdp }}</label>
+								<div class="col col-sm-6">
 									<select class="form-control" name="allow_users_modify_mdp">
 										<option value="1" {% if settings.allow_users_modify_mdp == '1' %} selected {% endif %}>{{ trad.all }}</option>
 										<option value="2" {% if settings.allow_users_modify_mdp == '2' %} selected {% endif %}>{{ trad.all_but_visitors }}</option>

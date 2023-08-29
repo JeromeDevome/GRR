@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-07-11 15:47$
+ * Dernière modification : $Date: 2023-08-24 10:27$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5053,8 +5053,11 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 	$overload_data = grrGetOverloadDescArray($ofl, $resa[16]);//mrbsEntryGetOverloadDesc($resa[2]);
 	foreach ($overload_data as $fieldname=>$field)
 	{
-		if (( (authGetUserLevel(getUserName(), $room) >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "")
-			$affichage .= "<i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($field["valeur"],ENT_NOQUOTES|ENT_SUBSTITUTE)."</i><br />";
+		if (( (authGetUserLevel(getUserName(), $room) >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "") {
+			// ELM - Gestion des champs aditionnels multivalués (lignes 384 - 392)
+			$valeur = str_replace("|", ",", $field["valeur"]);
+			$affichage .= "<i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($valeur,ENT_NOQUOTES|ENT_SUBSTITUTE)."</i><br />";
+		}
 	}
 
 	// Emprunte
@@ -5339,7 +5342,10 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
 			$email = explode('@',$tab_benef["email"]);
 			$person = $email[0];
 			if (isset($email[1]))
-				$chaine = "<a href=\"mailto:".$tab_benef["email"]."\">".$tab_benef["nom"]."</a>";
+			{
+				$domain = $email[1];
+				$chaine = "<script type=\"text/javascript\">encode_adresse('".$person."','".$domain."','".AddSlashes($tab_benef["nom"])."',1);</script>";
+			}
 			else
 				$chaine = $tab_benef["nom"];
 		}
@@ -6445,7 +6451,7 @@ function display_mail_msg()
 function clean_input($data){
     $data = trim($data);
     $data = stripslashes($data);
-    $data = htmlspecialchars($data);
+    $data = htmlentities($data,ENT_QUOTES|ENT_SUBSTITUTE|ENT_HTML5,"UTF-8");
     return $data;
 }
 

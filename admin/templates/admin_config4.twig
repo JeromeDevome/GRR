@@ -9,7 +9,7 @@
 
 {% block content %}
 	<div class="row">
-        <div class="col-12 col-sm-12">
+        <div class="col col-12 col-sm-12">
             <div class="card card-primary card-outline card-tabs">
               <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
@@ -109,7 +109,7 @@
 						<section id="ipautorise">
 							<h4 class="page-header">{{ trad.title_horaire_autorise }}</h4>
 							<p>{{ trad.explain_horaire_autorise }}</p>
-							<div class="col-sm-12">
+							<div class="col col-sm-12">
 							{{ form.input('horaireconnexionde', 'De', settings.horaireconnexionde, {classGroup: 'col-sm-6', classLabel: 'col-sm-2', classInput: 'col-sm-4 control-label', type: 'time'}) }}
 							{{ form.input('horaireconnexiona', 'A', settings.horaireconnexiona, {classGroup: 'col-sm-6', classLabel: 'col-sm-2', classInput: 'col-sm-4 control-label', type: 'time'}) }}
 							</div>

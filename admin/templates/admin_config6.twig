@@ -9,7 +9,7 @@
 
 {% block content %}
 	<div class="row">
-        <div class="col-12 col-sm-12">
+        <div class="col col-12 col-sm-12">
             <div class="card card-primary card-outline card-tabs">
               <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
@@ -54,8 +54,8 @@
 
 							{% if settings.module_multisite == 'Oui' %}
 								<div class="form-group row col-sm-12">
-									<label class="col-sm-6" for="default_css">{{ trad.default_site }}</label>
-									<div class="col-sm-6">
+									<label class="col col-sm-6" for="default_css">{{ trad.default_site }}</label>
+									<div class="col col-sm-6">
 										<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
 											<option value="-1">{{ trad.choose_a_site }}</option>
 											{{ trad.dOptionSite | raw }}
@@ -71,23 +71,23 @@
 
 							<hr>
 							<div class="form-group row col-sm-12">
-								<label class="col-sm-6" for="default_css">{{ trad.explain_css }}</label>
-								<div class="col-sm-5">
+								<label class="col col-sm-6" for="default_css">{{ trad.explain_css }}</label>
+								<div class="col col-sm-5">
 									<select class="form-control" name="default_css">
 										{{ trad.dOptionTheme | raw }}
 									</select>
 								</div>
-								<div class="col-sm-1"><button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="Confirmer la synchronisation du thème avec tout les utilisateurs ?" data-idsynchro="1"><i class="icon fa fa-sync"></i></button></div>
+								<div class="col col-sm-1"><button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="Confirmer la synchronisation du thème avec tout les utilisateurs ?" data-idsynchro="1"><i class="icon fa fa-sync"></i></button></div>
 							</div>
 							<hr>
 							<div class="form-group row col-sm-12">
-								<label class="col-sm-6" for="default_language">{{ trad.choose_language }}</label>
-								<div class="col-sm-5">
+								<label class="col col-sm-6" for="default_language">{{ trad.choose_language }}</label>
+								<div class="col col-sm-5">
 									<select class="form-control" name="default_language">
 										{{ trad.dOptionLangue | raw }}
 									</select>
 								</div>
-								<div class="col-sm-1"><button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="Confirmer la synchronisation de la langue avec tout les utilisateurs ?" data-idsynchro="2"><i class="icon fa fa-sync"></i></button></div>
+								<div class="col col-sm-1"><button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="Confirmer la synchronisation de la langue avec tout les utilisateurs ?" data-idsynchro="2"><i class="icon fa fa-sync"></i></button></div>
 							</div>
 						</section>
 

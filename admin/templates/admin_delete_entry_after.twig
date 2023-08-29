@@ -9,7 +9,7 @@
 {% block content %}
 
 	<div class="row">
-        <div class="col-xs-12">
+        <div class="col col-xs-12">
 
 			{% if trad.dMessageSup != '' %}
 				{{ msgSyst.messageInfo('', trad.dMessageSup) }}
@@ -34,12 +34,12 @@
 						<p>Sélectionnez les domaines concernés par la suppression :</p>
 
 						{% for domaine in domaines %}
-							<div class="col-sm-12"><input type="checkbox" name="area{{ domaine.i }}" value="{{ domaine.id }}"  /> {{ domaine.nom }}</div>
+							<div class="col col-sm-12"><input type="checkbox" name="area{{ domaine.i }}" value="{{ domaine.id }}"  /> {{ domaine.nom }}</div>
 						{% endfor %}
 
 						<div class="form-group row col-sm-12">
-							<label class="col-sm-4" for="access">Jour de début de la suppression</label>
-							<div class="col-sm-8">{{ trad.dDate |raw }}</div>
+							<label class="col col-sm-4" for="access">Jour de début de la suppression</label>
+							<div class="col col-sm-8">{{ trad.dDate |raw }}</div>
 						</div>				
 
 						<div style="text-align:center;">

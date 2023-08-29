@@ -936,6 +936,7 @@ $vocab['type_list'] = "List";
 $vocab['type_name'] = "Name of type";
 $vocab['type_num'] = "Username";
 $vocab['type_numeric'] = "One row line (numeric)";
+$vocab['type_checkbox'] = "Checkboxes";
 $vocab['type_order'] = "Display order";
 $vocab['type_par_defaut'] = "Selected type by default during a new reservation";
 $vocab['type_resa_manquant_msg'] = "One or more types are currently used in reservations but do not appear in the table. This may cause error messages. You must therefore define below, the missing type. This is the following type : ";

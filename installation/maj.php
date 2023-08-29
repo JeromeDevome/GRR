@@ -3,10 +3,10 @@
  * installation/maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-05-31 18:26$
+ * Dernière modification : $Date: 2023-08-24 16:45$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -43,12 +43,12 @@ if (isset($_POST["version_depart"])) // Etape 2
 {
 	$version_depart = $_POST["version_depart"];
 }
-elseif (isset($_GET["forcemaj"]) && $forcer_MAJ == 1) // On force la MaJ en passant le numéro de la version de dépar en paramètre  
+elseif (isset($_GET["forcemaj"]) && $forcer_MAJ == 1) // On force la MaJ en passant le numéro de la version de départ en paramètre  
 {
 	$version_depart	= $_GET["forcemaj"];
 	$force			= true;
 }
-else // On prend la dernière version installé
+else // On prend la dernière version installée
 {
 	$version_depart = Settings::get("version");
 }
@@ -67,7 +67,7 @@ if(!$majscript)
 		echo "utf-8";
 	else
 		echo $charset_html;
-
+    echo '>';
 	echo '<link rel="stylesheet" href="../themes/default/css/style.css" type="text/css">';
 	echo '<link rel="shortcut icon" href="favicon.ico">';
 	echo '<title>GRR</title>';
@@ -87,7 +87,7 @@ if(!$majscript)
 		echo get_vocab("maj_do_update")."<b>".$version_bdd."</b></p>";
 		echo "<input type=\"submit\" value=\"".get_vocab("maj_submit_update")."\" />";
 		echo "<input type=\"hidden\" name=\"maj\" value=\"yes\" />";
-		echo "<input type=\"hidden\" name=\"version_depart\" value=\"$version_depart\" />";
+//		echo "<input type=\"hidden\" name=\"version_depart\" value=\"$version_depart\" />";
 		echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" />";
 		echo "</form>";
 	}
@@ -113,7 +113,7 @@ if (isset($_POST['maj']) || $majscript)
 		$result = execute_maj3($version_depart, $version_grr);
 
 		echo "<h2>".encode_message_utf8("Résultat de la mise à jour < GRR 4")."</h2>";
-		echo "<h3>".$version_depart." => 3.5.0</h3>";
+		echo "<h3>".$version_depart." => 3.5.1</h3>";
 		echo encode_message_utf8($result);
 		$version_depart = 4000;
 	}
@@ -122,6 +122,7 @@ if (isset($_POST['maj']) || $majscript)
 	echo "<h3>".$version_depart." => ".$version_bdd."</h3>";
 	$result2 = execute_maj4($version_depart, $version_bdd);
 	echo encode_message_utf8($result2);
+    // echo "<p style=\"text-align:center;\"><a href=\"../\">".get_vocab("welcome")."</a></p>";
 }
 
 

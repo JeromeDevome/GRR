@@ -4,7 +4,7 @@
 
 {% block content %}
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col col-md-12">
 
 			{% if trad.dMessage %}
 				{{ msgSyst.messageInfo(trad.admin_email_manager, trad.dMessage) }}
@@ -23,8 +23,8 @@
 					<form id="area" action="?p=admin_right" method="post">
 
 						<div class="form-group">
-							<label class="col-sm-3" for="area">{{ trad.areas }}</label>
-							<div class="col-sm-9">
+							<label class="col col-sm-3" for="area">{{ trad.areas }}</label>
+							<div class="col col-sm-9">
 								<select name="area" class="form-control" onchange="area_go()">
 									<option value="-1">{{ trad.select }}</option>
 									{% for domaine in domaines %}
@@ -39,8 +39,8 @@
 					<form id="room" action="?p=admin_right" method="post">
 
 						<div class="form-group">
-							<label class="col-sm-3" for="room">{{ trad.rooms }}</label>
-							<div class="col-sm-9">
+							<label class="col col-sm-3" for="room">{{ trad.rooms }}</label>
+							<div class="col col-sm-9">
 								<select name="room" class="form-control" onchange="room_go()">
 									<option value="-1">{{ trad.select_all }}</option>
 									{% for ressource in ressources %}
@@ -62,8 +62,8 @@
 							<input type="hidden" name="room" value="{{ trad.dIdRessource }}" />
 
 							<div class="form-group">
-								<label class="col-sm-3" for="reg_admin_login">{{ trad.add_user_to_list }}</label>
-								<div class="col-sm-9">
+								<label class="col col-sm-3" for="reg_admin_login">{{ trad.add_user_to_list }}</label>
+								<div class="col col-sm-9">
 									<select name="reg_admin_login" class="form-control">
 										<option value="">{{ trad.select }}</option>
 										{% for user in utilisateursajoutable %}
@@ -85,8 +85,8 @@
 								<input type="hidden" name="id_area" value="{{ trad.dIdDomaine }}" />
 								<input type="hidden" name="room" value="{{ trad.dIdRessource }}" />
 								<div class="form-group">
-									<label class="col-sm-3" for="reg_admin_login">{{ trad.add_multiple_user_to_list }}</label>
-									<div class="col-sm-9">
+									<label class="col col-sm-3" for="reg_admin_login">{{ trad.add_multiple_user_to_list }}</label>
+									<div class="col col-sm-9">
 										<select name="agent" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.agent,this.form.elements['reg_multi_admin_login[]'])">
 											{% for user in utilisateursajoutable %}
 												<option value="{{ user.login }}">{{ user.nom }} {{ user.prenom }}</option>

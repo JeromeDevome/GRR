@@ -3,7 +3,7 @@
  * installation/fonctions/maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-01-31 19:11$
+ * Dernière modification : $Date: 2023-08-24 16:43$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -763,13 +763,13 @@ function execute_maj3($version_old, $version_grr)
             $result .= $result_inter;
         $result_inter = '';
     }
-    if ($version_old < "3.5.0.0")
+    if ($version_old < "3.5.0.9")
     {
         $result .= formatResult("Mise à jour jusqu'à la version 3.5.0 RC0:","<b>","</b>");
         include "./fonctions/ISO_to_UTF8.inc.php";
         $result_inter = '';
     }
-    if($version_old < "3.5.1.0")
+    if($version_old < "3.5.1.9")
     {   
         $result .= formatResult("Mise à jour jusqu'à la version 3.5.1:","<b>","</b>");
 
@@ -804,7 +804,7 @@ function execute_maj3($version_old, $version_grr)
 	// A partir de la version 1.9.4, les champs add. sont stockés sous la forme @id_champ@url_encode(champ)@/id_champ@
 	if (($version_old < "1.9.4") && (Settings::get("maj194_champs_additionnels") != 1) && isset($_POST['maj']))
 	{
-	// On constuite un tableau des id des ".TABLE_PREFIX."_overload:
+	// On construit un tableau des id des ".TABLE_PREFIX."_overload:
 		$sql_overload = grr_sql_query("SELECT id FROM ".TABLE_PREFIX."_overload");
 		for ($i = 0; ($row = grr_sql_row($sql_overload, $i)); $i++)
 			$tab_id_overload[] = $row[0];
@@ -880,7 +880,7 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_depth', '3')");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('backup_date', '')");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('mail_user_destinataire', 'y')");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('cas_version', 'CAS_VERSION_2_0')");
+		$result_inter .= traiteRequete("INSERT IGNORE INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('cas_version', 'CAS_VERSION_2_0')");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE `password` `password` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';");
         $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants ADD `id_participation` INT(11) NOT NULL AUTO_INCREMENT FIRST, ADD UNIQUE `UNIQUE` (`id_participation`)"); 
         $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants CHANGE `participant` `beneficiaire` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL"); 
@@ -890,8 +890,8 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry ADD `supprimer` TINYINT(1) NOT NULL DEFAULT '0' AFTER `nbparticipantmax`;");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('horaireconnexionde', '')");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('horaireconnexiona', '')");
-		$result_inter .= traiteRequete("CREATE TABLE ".TABLE_PREFIX."_groupes (`idgroupes` int(11) NOT NULL AUTO_INCREMENT, `nom` VARCHAR(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, description text NOT NULL, `archive` tinyint(1) NOT NULL DEFAULT '0', PRIMARY KEY (`idgroupes`));");
-		$result_inter .= traiteRequete("CREATE TABLE ".TABLE_PREFIX."_utilisateurs_groupes (`idutilisateursgroupes` bigint(20) NOT NULL AUTO_INCREMENT, `login` VARCHAR(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, `idgroupes` int(11) NOT NULL, PRIMARY KEY (`idutilisateursgroupes`), UNIQUE KEY `idutilisateurs` (`login`,`idgroupes`));");
+		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_groupes (`idgroupes` int(11) NOT NULL AUTO_INCREMENT, `nom` VARCHAR(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, description text NOT NULL, `archive` tinyint(1) NOT NULL DEFAULT '0', PRIMARY KEY (`idgroupes`));");
+		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_utilisateurs_groupes (`idutilisateursgroupes` bigint(20) NOT NULL AUTO_INCREMENT, `login` VARCHAR(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, `idgroupes` int(11) NOT NULL, PRIMARY KEY (`idutilisateursgroupes`), UNIQUE KEY `idutilisateurs` (`login`,`idgroupes`));");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE `default_language` `default_language` CHAR(8);");
 		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = 'fr-fr' WHERE NAME = 'default_language' AND VALUE = 'fr';");
 		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE = 'en-gb' WHERE NAME = 'default_language' AND VALUE = 'en';");

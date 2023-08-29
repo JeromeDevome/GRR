@@ -936,6 +936,7 @@ $vocab['type_list'] = "Liste"; // A traduire
 $vocab['type_name'] = "Nome del tipo";
 $vocab['type_num'] = "Identificando";
 $vocab['type_numeric'] = "Une ligne (numérique)"; // A traduire
+$vocab['type_checkbox'] = "Casella di controllo";
 $vocab['type_order'] = "Ordine di affissione";
 $vocab['type_par_defaut'] = "Tipo selezionato da difetto all'epoca di una nuova prenotazione";
 $vocab['type_resa_manquant_msg'] = "Un ou plusieurs types sont actuellement utilisés dans les réservations mais ne figurent pas dans la tables des types. Cela risque d'engendrer des messages d'erreur. Vous devez donc définir ci-dessous, le ou les types manquants. Il s'agit du ou des types suivants : ";// A traduire

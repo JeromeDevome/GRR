@@ -3,9 +3,10 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-27 13:25$
+ * Dernière modification : $Date: 2023-08-24 10:23$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @author    Eric Lemeur pour les champs additionnels de type checkbox
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -381,7 +382,15 @@ foreach ($overload_data as $fieldname=>$field)
             || ($beneficiaire == $userName)||($create_by == $userName)))
     {
         echo "<tr><td><b>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points")."</b></td>";
-        echo "<td>".htmlspecialchars($field["valeur"],ENT_NOQUOTES)."</td></tr>";
+        // ELM - Gestion des champs aditionnels multivalués (lignes 384 - 392)
+		$valeurs = explode('|', $field["valeur"]);
+		if (count($valeurs) > 1) {
+			$valeurs = implode(" - ", $valeurs);
+		}
+		else {
+			$valeurs = $field["valeur"];
+		}
+        echo "<td>".htmlspecialchars($valeurs,ENT_NOQUOTES)."</td></tr>";
     }
 }
 // Gestion des clefs :

@@ -4,7 +4,7 @@
 
 {% block content %}
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col col-md-12">
 
 			<div class="box">
 				<div class="box-header">
@@ -15,8 +15,8 @@
 
 					{% if trad.dNbSite > 1 %}
 						<div class="form-group">
-							<label class="col-sm-3" for="site">{{ trad.sites }}</label>
-							<div class="col-sm-9">
+							<label class="col col-sm-3" for="site">{{ trad.sites }}</label>
+							<div class="col col-sm-9">
 								<form id="liste_site" action="admin.php?p=admin_room">
 									<select name="id_site" class="form-control" onchange="site_go()">
 										<option value="-1">{{ trad.choose_a_site }}</option>
@@ -29,15 +29,15 @@
 						</div>
 					{% else %}
 						<div class="form-group">
-							<label class="col-sm-12" for="site">{{ trad.site }} : {{ trad.dNomSite }}</label>
+							<label class="col col-sm-12" for="site">{{ trad.site }} : {{ trad.dNomSite }}</label>
 						</div>
 					{% endif %}
 
 					{% if settings.module_multisite != 'Oui' or (settings.module_multisite == 'Oui' and trad.dIdSite > 0) %}
 						<table class="table table-bordered">
 							<tr>
-								<th class="col-sm-6">{{ trad.areas }}</th>
-								<th class="col-sm-6">{{ trad.rooms }} {{ trad.dRessourceDe }}</th>
+								<th class="col col-sm-6">{{ trad.areas }}</th>
+								<th class="col col-sm-6">{{ trad.rooms }} {{ trad.dRessourceDe }}</th>
 							</tr>
 							<tr>
 								<td>{{ trad.dAjoutDomaine |raw }}</td>

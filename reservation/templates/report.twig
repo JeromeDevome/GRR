@@ -9,7 +9,7 @@
 
 {% block content %}
 
-<div id="page-resa" class="col-lg-12 col-md-12 col-xs-12">
+<div id="page-resa" class="col col-lg-12 col-md-12 col-xs-12">
 
 	<h1 class="center">{{ trad.search_report_stats }}</h1>
 
@@ -17,17 +17,17 @@
 		<input type="hidden" name="p" value="report">
 		<input type="hidden" name="is_posted" value="y">
 
-		<div class="col-lg-4 col-md-4 col-xs-12">{{ trad.report_start }}{{ trad.deux_points }}</div>
-		<div class="col-lg-8 col-md-8 col-xs-12">{{ d.jQuery_DatePickerDebut |raw }}</div>
+		<div class="col col-lg-4 col-md-4 col-xs-12">{{ trad.report_start }}{{ trad.deux_points }}</div>
+		<div class="col col-lg-8 col-md-8 col-xs-12">{{ d.jQuery_DatePickerDebut |raw }}</div>
 
-		<div class="col-lg-4 col-md-4 col-xs-12">{{ trad.report_end }}{{ trad.deux_points }}</div>
-		<div class="col-lg-8 col-md-8 col-xs-12">{{ d.jQuery_DatePickerFin |raw }}</div>
+		<div class="col col-lg-4 col-md-4 col-xs-12">{{ trad.report_end }}{{ trad.deux_points }}</div>
+		<div class="col col-lg-8 col-md-8 col-xs-12">{{ d.jQuery_DatePickerFin |raw }}</div>
 
-		<div class="col-lg-12 col-md-12 col-xs-12"><input type="radio" name="condition_et_ou" value="AND" {{ d.checkedAND }}> {{ trad.valide_toutes_les_conditions_suivantes }}</div>
-		<div class="col-lg-12 col-md-12 col-xs-12"><input type="radio" name="condition_et_ou" value="OR" {{ d.checkedOR }}> {{ trad.valide_au_moins_une_des_conditions_suivantes }}</div>
+		<div class="col col-lg-12 col-md-12 col-xs-12"><input type="radio" name="condition_et_ou" value="AND" {{ d.checkedAND }}> {{ trad.valide_toutes_les_conditions_suivantes }}</div>
+		<div class="col col-lg-12 col-md-12 col-xs-12"><input type="radio" name="condition_et_ou" value="OR" {{ d.checkedOR }}> {{ trad.valide_au_moins_une_des_conditions_suivantes }}</div>
 
 		{% for condition in conditions %}
-			<div class="col-lg-12 col-md-12 col-xs-12">
+			<div class="col col-lg-12 col-md-12 col-xs-12">
 				<div class="form-inline">
 					<div class="form-group">
 						<select class="form-control" name="champ[]" size="1">
@@ -56,12 +56,12 @@
 		{% endfor %}
 
 		<p>{{ trad.include }}{{ trad.deux_points }}</p>
-		<div class="col-lg-12 col-md-12 col-xs-12"><input type="radio" name="summarize" value="1" {% if d.summarize == 1 %}checked{%endif%}> {{ trad.report_only }}</div>
-		<div class="col-lg-12 col-md-12 col-xs-12"><input type="radio" name="summarize" value="2" {% if d.summarize == 2 %}checked{%endif%}> {{ trad.summary_only }}</div>
-		<div class="col-lg-12 col-md-12 col-xs-12"><input type="radio" name="summarize" value="3" {% if d.summarize == 3 %}checked{%endif%}> {{ trad.report_and_summary }}</div>
+		<div class="col col-lg-12 col-md-12 col-xs-12"><input type="radio" name="summarize" value="1" {% if d.summarize == 1 %}checked{%endif%}> {{ trad.report_only }}</div>
+		<div class="col col-lg-12 col-md-12 col-xs-12"><input type="radio" name="summarize" value="2" {% if d.summarize == 2 %}checked{%endif%}> {{ trad.summary_only }}</div>
+		<div class="col col-lg-12 col-md-12 col-xs-12"><input type="radio" name="summarize" value="3" {% if d.summarize == 3 %}checked{%endif%}> {{ trad.report_and_summary }}</div>
 
-		<div class="col-lg-4 col-md-4 col-xs-12">{{ trad.summarize_by }} {{ trad.summarize_by_precisions }}{{ trad.deux_points }}</div>
-		<div class="col-lg-8 col-md-8 col-xs-12">
+		<div class="col col-lg-4 col-md-4 col-xs-12">{{ trad.summarize_by }} {{ trad.summarize_by_precisions }}{{ trad.deux_points }}</div>
+		<div class="col col-lg-8 col-md-8 col-xs-12">
 			<select class="form-control" name="sumby" size="1">
 				<option value="6" {%if d.sumby == "6" %}selected{%endif%}>{{ trad.sum_by_creator }}</option>
 				<option value="3" {%if d.sumby == "3" %}selected{%endif%}>{{ trad.sum_by_descrip }}</option>
@@ -77,7 +77,7 @@
 	</form>
 
 	{%if d.resultat == 1 %}
-		<div class="col-xs-12">
+		<div class="col col-xs-12">
 
 			<hr>
 			{%if d.nbResultat == 0 %}
@@ -89,7 +89,7 @@
 					<div id="example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
 
 						<div class="row">
-							<div class="col-sm-12">
+							<div class="col col-sm-12">
 								<table id="example" class="table table-striped table-bordered dataTable" style="width: 100%;" role="grid" aria-describedby="example_info">
 									<thead>
 										<tr role="row">
@@ -160,8 +160,8 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-sm-5"><div class="dataTables_info" id="example_info" role="status" aria-live="polite"></div></div>
-							<div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers" id="example_paginate"><ul class="pagination"></ul></div></div>
+							<div class="col col-sm-5"><div class="dataTables_info" id="example_info" role="status" aria-live="polite"></div></div>
+							<div class="col col-sm-7"><div class="dataTables_paginate paging_simple_numbers" id="example_paginate"><ul class="pagination"></ul></div></div>
 						</div>
 					</div>
 				{% endif %}
@@ -170,7 +170,7 @@
 					<div id="resume_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
 
 						<div class="row">
-							<div class="col-sm-12">
+							<div class="col col-sm-12">
 								<table id="resume" class="table table-striped table-bordered dataTable" style="width: 100%;" role="grid" aria-describedby="example_info">
 									<thead>
 										<tr role="row">
@@ -192,8 +192,8 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-sm-5"><div class="dataTables_info" id="resume_info" role="status" aria-live="polite"></div></div>
-							<div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers" id="resume_paginate"><ul class="pagination"></ul></div></div>
+							<div class="col col-sm-5"><div class="dataTables_info" id="resume_info" role="status" aria-live="polite"></div></div>
+							<div class="col col-sm-7"><div class="dataTables_paginate paging_simple_numbers" id="resume_paginate"><ul class="pagination"></ul></div></div>
 						</div>
 					</div>
 				{% endif %}
