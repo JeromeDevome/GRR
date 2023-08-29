@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2023-08-26
+# Last modification : 2023-08-29
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -714,7 +714,7 @@ $vocab['pass_leng_explain'] = "Longitud mínima de la contraseña";
 $vocab['period'] = "Hueco horario";
 $vocab['periodicite_associe'] = "Esta reserva está liada a una periodicidad";
 $vocab['periods'] = "Hueco(s) horario(s)";
-$vocab['personne'] = "persona";
+$vocab['personne'] = "nadie";
 $vocab['personne exterieure'] = "(persona exterior)";
 $vocab['please_contact'] = "Contactar ";
 $vocab['please_enter_name'] = "¡Por favor introduzca un apellido y un nombre para el usuario!";
@@ -1013,6 +1013,7 @@ $vocab['weeks'] = "semana(s)";
 $vocab['weekstarts_area'] = "Inicio de la semana";
 $vocab['welcome'] = "Recepción";
 $vocab['welcome_to'] = "Bienvenida ";
+$vocab['who_can_book_explain'] = "Si la casilla está marcada, sólo los usuarios autorizados pueden reservar este recurso.";
 $vocab['wrong_old_pwd'] = "¡La antigua contraseña no es correcta!";
 $vocab['wrong_pwd'] = "Identificador o contraseña incorrecta";
 $vocab['wrong_pwd2'] = "¡Error en la introducción de la contraseña, por favor vuelva a empezar!";

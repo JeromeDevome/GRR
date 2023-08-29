@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2023-08-26
+# Last modification : 2023-08-29
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -329,8 +329,8 @@ $vocab['del_user_succeed'] = "Un utente è stato eliminato dell'elenco.";
 $vocab['depot_grr_officiel'] = "Repository GRR Officiel su Github";
 $vocab['derniere_version_publiee'] = "Ultima versione pubblicata";
 $vocab['description'] = "Descrizione :";
-$vocab['description complete'] = "Descrizione completa (visibile nella scheda di presentazione)";
-$vocab['description complete2'] = " Potete utilizzare segnali HTML";
+$vocab['description_complete'] = "Descrizione completa (visibile nella scheda di presentazione)";
+$vocab['description_complete2'] = " Potete utilizzare segnali HTML";
 $vocab['deux_points'] = " : ";
 $vocab['disable_login_off'] = "Attivare i collegamenti";
 $vocab['disable_login_on'] = "Disattivare i collegamenti";
@@ -711,7 +711,7 @@ $vocab['pass_leng_explain'] = "Longueur minimale du mot de passe"; // A traduire
 $vocab['period'] = "Interstizio";
 $vocab['periodicite_associe'] = "Cette réservation est attachée à une périodicité"; // A traduire
 $vocab['periods'] = "Interstizi";
-$vocab['personne'] = "personne"; // A traduire
+$vocab['personne'] = "nessuno";
 $vocab['personne exterieure'] = "(personne extérieure)"; // A traduire
 $vocab['please_contact'] = "Contattate ";
 $vocab['please_enter_name'] = "Volete entrare un nome ed un nome per l'utente!";
@@ -1010,6 +1010,7 @@ $vocab['weeks'] = "settimana(e)";
 $vocab['weekstarts_area'] = "Inizio della settimana";
 $vocab['welcome'] = "Accoglienza";
 $vocab['welcome_to'] = "Benvenuto ";
+$vocab['who_can_book_explain'] = "Se la casella è selezionata, solo gli utenti autorizzati potranno prenotare questa risorsa.";
 $vocab['wrong_old_pwd'] = "La vecchia password non è corretta!";
 $vocab['wrong_pwd'] = "Identificatore o password sbagliato";
 $vocab['wrong_pwd2'] = "Errore in occasione della battitura dello password, volete ricominciare!";

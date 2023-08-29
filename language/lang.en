@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2023-08-26
+# Last modification : 2023-08-29
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -726,7 +726,7 @@ $vocab['pass_leng_explain'] = "Minimal length of the password";
 $vocab['period'] = "Time slot";
 $vocab['periodicite_associe'] = "This reservation is linked to a periodicity";
 $vocab['periods'] = "time slot(s)";
-$vocab['personne'] = "person";
+$vocab['personne'] = "nobody";
 $vocab['personne exterieure'] = "(external person)";
 $vocab['please_contact'] = "Contact ";
 $vocab['please_enter_name'] = "Please enter user's name and first name!";
@@ -1023,6 +1023,7 @@ $vocab['weeks'] = "week (s)";
 $vocab['weekstarts_area'] = "Beginning of the week";
 $vocab['welcome'] = "Homepage";
 $vocab['welcome_to'] = "Welcome ";
+$vocab['who_can_book_explain'] = "If the box is checked, only authorized users can reserve this resource.";
 $vocab['wrong_old_pwd'] = "Former password is not correct!";
 $vocab['wrong_pwd'] = "Incorrect login-name or password";
 $vocab['wrong_pwd2'] = "An error occurred when entering password, please do it again!";
