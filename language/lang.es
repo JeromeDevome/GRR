@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2023-08-29
+# Last modification : 2023-08-31
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -228,7 +228,7 @@ $vocab['champ_confidentiel'] = "Campo confidencial";
 $vocab['champ_obligatoire'] = "Relleno obligatorio";
 $vocab['champ_vide_mot_de_passe_inchange'] = "Si vous laissez les champs ci-dessous vides, le mot de passe ne sera pas changé."; // A traduire
 $vocab['change'] = "Modificar";
-$vocab['changer statut lorsque ressource restituee'] = "Cuando el recurso habrá sido restituido, vayase a la dirección siguiente para cambiar el estatuto de la reserva";
+$vocab['changer_statut_lorsque_ressource_restituee'] = "Cuando el recurso habrá sido restituido, vayase a la dirección siguiente para cambiar el estatuto de la reserva";
 $vocab['change_pwd'] = "Cambiar la contraseña";
 $vocab['change_view'] = "Cambiar el modo de visualización";
 $vocab['check_all_the'] = "Marcar todos los ";
@@ -657,7 +657,7 @@ $vocab['nobody'] = "(ninguno)";
 $vocab['nobookings'] = "No hay reserva posible para esta fecha:";
 $vocab['nom_beneficiaire'] = "Nombre del beneficiario";
 $vocab['nom_complet_demandeur'] = "Nom et prénom du demandeur";
-$vocab['nom emprunteur'] = "Nombre del prestatario";
+$vocab['nom_emprunteur'] = "Nombre del prestatario";
 $vocab['nombre_de_creneaux'] = "Número de huecos horarios";
 $vocab['nombre_jours_Jours_Cycles'] = "Número de días en un ciclo";
 $vocab['Nommer_journee_par_le_titre_suivant'] = "Nombrar el día con el título siguiente (debe empezar con una letra)";
@@ -784,7 +784,7 @@ $vocab['Reserver'] = "Reservar";
 $vocab['reset'] = "Valores por defecto";
 $vocab['resolution_area'] = "El  bloque más pequeño reservable, en segundos (1800 segundos";
 $vocab['ressource actuellement empruntee'] = "Recurso actualmente prestado";
-$vocab['ressource empruntee non restituée'] = "Salvo error, el recurso siguiente que pidió prestado no ha sido restituido. Si se trata de un error, por favor no tenga en cuenta este correo.";
+$vocab['ressource_empruntee_non_restituee'] = "Salvo error, el recurso siguiente que pidió prestado no ha sido restituido. Si se trata de un error, por favor no tenga en cuenta este correo.";
 $vocab['ressource_temporairement_indisponible'] = "Temporalmente indisponible";
 $vocab['Restauration_de_la_base_GRR'] = "Restauración de la base GRR";
 $vocab['Restaurer_la_sauvegarde'] = "Restaurar la copia de seguridad. ";

@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2023-08-29
+# Last modification : 2023-08-31
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -236,7 +236,7 @@ $vocab['champ_confidentiel'] = "Confidential area";
 $vocab['champ_obligatoire'] = "Compulsory filling";
 $vocab['champ_vide_mot_de_passe_inchange'] = "If the fields below are left empty, the password will remain unchanged."; 
 $vocab['change'] = "Change";
-$vocab['changer statut lorsque ressource restituee'] = "When the resource will be restored, go to the following address to change the reservation status.";
+$vocab['changer_statut_lorsque_ressource_restituee'] = "When the resource will be restored, go to the following address to change the reservation status.";
 $vocab['change_pwd'] = "Change password";
 $vocab['change_view'] = "Change the display mode ";
 $vocab['check_all_the'] = "Click to select all ";
@@ -669,7 +669,7 @@ $vocab['nobody'] = "(none)";
 $vocab['nobookings'] = "No reservation available for this date!";
 $vocab['nom_beneficiaire'] = "Name of the beneficiary";
 $vocab['nom_complet_demandeur'] = "Surname and first name of the applicant";
-$vocab['nom emprunteur'] = "Name of the borrower";
+$vocab['nom_emprunteur'] = "Name of the borrower";
 $vocab['nombre_de_creneaux'] = "Number of time slots";
 $vocab['nombre_jours_Jours_Cycles'] = "Number of days in a cycle";
 $vocab['Nommer_journee_par_le_titre_suivant'] = "Call the day with the following title (must start with a letter)";
@@ -796,7 +796,7 @@ $vocab['Reserver'] = "Book";
 $vocab['reset'] = "Values by default";
 $vocab['resolution_area'] = "Smaller reservable block, in seconds (1800 seconds = 1/2 an hour)";
 $vocab['ressource actuellement empruntee'] = " The resource is currently borrowed.";
-$vocab['ressource empruntee non restituée'] = " Errors excepted, the following resource you borrowed was not restored. If it is an error, please not take this mail into account.";
+$vocab['ressource_empruntee_non_restituee'] = " Errors excepted, the following resource you borrowed was not restored. If it is an error, please not take this mail into account.";
 $vocab['ressource_temporairement_indisponible'] = "Temporarily unavailable";
 $vocab['Restauration_de_la_base_GRR'] = "Restauration of GRR base ";
 $vocab['Restaurer_la_sauvegarde'] = " Restore the saving";

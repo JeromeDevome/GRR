@@ -382,7 +382,7 @@ function contenu_cellule($options, $ofl, $vue, $resa, $heures)
     foreach ($overload_data as $fieldname=>$field)
 	{
 		if (( (authGetUserLevel(getUserName(), $room) >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "") {
-			// ELM - Gestion des champs aditionnels multivalués (lignes 384 - 392)
+			// ELM - Gestion des champs additionnels multivalués
 			$valeur = str_replace("|", ", ", $field["valeur"]);
 			$affichage .= "<i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($valeur,ENT_NOQUOTES|ENT_SUBSTITUTE)."</i><br />";
 		}
@@ -538,7 +538,7 @@ function affiche_ressource_empruntee($id_room, $type = "logo")
 				$beneficiaire_ext = grr_sql_query1("SELECT beneficiaire_ext FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
 				echo '<br /><b><span class="avertissement">'.PHP_EOL;
 				echo '<img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("ressource actuellement empruntee").'" width="30" height="30" class="image" />'.PHP_EOL;
-				echo get_vocab("ressource actuellement empruntee").' '.get_vocab("nom emprunteur").get_vocab("deux_points").affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"withmail");
+				echo get_vocab("ressource actuellement empruntee").' '.get_vocab("nom_emprunteur").get_vocab("deux_points").affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"withmail");
 				echo '<a href="view_entry.php?id='.$id_resa.'&amp;mode=page">'.get_vocab("entryid").$id_resa.'</a>'.PHP_EOL.'</span></b>'.PHP_EOL;
 			}
 			else
@@ -2955,11 +2955,11 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 
 		$message .= $vocab["message_mail_retard"].$vocab["deux_points"]." \n";
 		$message .= $room_name." (".$area_name.") \n";
-		$message .= $vocab["nom emprunteur"].$vocab["deux_points"];
+		$message .= $vocab["nom_emprunteur"].$vocab["deux_points"];
 		$message .= affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
 		if ($beneficiaire_email != "")
 			$message .= $vocab["un email envoye"].$beneficiaire_email." \n";
-		$message .= "\n".$vocab["changer statut lorsque ressource restituee"].$vocab["deux_points"];
+		$message .= "\n".$vocab["changer_statut_lorsque_ressource_restituee"].$vocab["deux_points"];
 		$message .= "\n".traite_grr_url("","y")."view_entry.php?id=".$id_entry." \n";
 
 		$repondre = Settings::get("webmaster_email");
@@ -3054,7 +3054,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$sujet7 .= $vocab["subject_mail_retard"];
 		$message7 = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
 		$message7 .= traite_grr_url("","y")."\n\n";
-		$message7 .= $vocab["ressource empruntee non restituée"]."\n";
+		$message7 .= $vocab["ressource_empruntee_non_restituee"]."\n";
 		$message7 .= $room_name." (".$area_name.")";
 		$message7 .= "\n".$reservation;
 		$message7 = html_entity_decode($message7);
@@ -3157,7 +3157,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
             if(strtolower($user_login) != strtolower($beneficiaire))
                 $message2 .= $vocab["delete_booking"];
             else
-                $message2 .= get_vocab('Vous avez_supprime');
+                $message2 .= get_vocab('Vous_avez_supprime');
 			$message2 .= $vocab["the_room"].$room_name." (".$area_name.") \n";
 			$message2 .= $vocab["created_by_you"];
 		}

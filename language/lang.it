@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2023-08-29
+# Last modification : 2023-08-31
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -231,7 +231,7 @@ $vocab['champ_confidentiel'] = "Champ confidentiel"; // A traduire
 $vocab['champ_obligatoire'] = "Riempimento obbligatorio";
 $vocab['champ_vide_mot_de_passe_inchange'] = "Si vous laissez les champs ci-dessous vides, le mot de passe ne sera pas changé."; // A traduire
 $vocab['change'] = "Modificare";
-$vocab['changer statut lorsque ressource restituee'] = "Lorsque la ressource aura été restituée, rendez-vous à l'adresse suivante pour changer le statut de la réservation"; // A traduire
+$vocab['changer_statut_lorsque_ressource_restituee'] = "Lorsque la ressource aura été restituée, rendez-vous à l'adresse suivante pour changer le statut de la réservation"; // A traduire
 $vocab['change_pwd'] = "Cambiare el password";
 $vocab['change_view'] = "Cambiare il modo di visualizzazione";
 $vocab['check_all_the'] = "Intaccare tutti ";
@@ -654,7 +654,7 @@ $vocab['nobody'] = "(nessuno)";
 $vocab['nobookings'] = "Non una prenotazione possibile per questa data!";
 $vocab['nom_beneficiaire'] = "Nom du bénéficiaire"; // A traduire
 $vocab['nom_complet_demandeur'] = "Nom et prénom du demandeur";
-$vocab['nom emprunteur'] = "Nom de l'emprunteur"; // A traduire
+$vocab['nom_emprunteur'] = "Nom de l'emprunteur"; // A traduire
 $vocab['nombre_de_creneaux'] = "Numero di interstizi";
 $vocab['nombre_jours_Jours_Cycles'] = "Nombre de jours dans un cycle"; // A traduire
 $vocab['Nommer_journee_par_le_titre_suivant'] = "Nommer la journée par le titre suivant (doit débuter par une lettre)"; // A traduire
@@ -781,7 +781,7 @@ $vocab['Reserver'] = "Prenotare";
 $vocab['reset'] = "Valori per difetto";
 $vocab['resolution_area'] = "Più piccolo blocco prenotabile, in secondi (1800 secondi = 1/2 ora)";
 $vocab['ressource actuellement empruntee'] = "La ressource est actuellement empruntée."; // A traduire
-$vocab['ressource empruntee non restituée'] = "Sauf erreur, la ressource suivante que vous avez empruntée n'a pas été restituée. S'il s'agit d'une erreur, veuillez ne pas tenir compte de ce courrier."; // A traduire
+$vocab['ressource_empruntee_non_restituee'] = "Sauf erreur, la ressource suivante que vous avez empruntée n'a pas été restituée. S'il s'agit d'une erreur, veuillez ne pas tenir compte de ce courrier."; // A traduire
 $vocab['ressource_temporairement_indisponible'] = "Temporaneamente inalienabile";
 $vocab['Restauration_de_la_base_GRR'] = "Restauration de la base GRR"; // A traduire
 $vocab['Restaurer_la_sauvegarde'] = "Restaurer la sauvegarde"; // A traduire

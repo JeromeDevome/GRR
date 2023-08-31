@@ -1564,7 +1564,7 @@ function validate_and_submit (){
         {
             if ($overload_fields[$fieldname]["obligatoire"] == 'y')
             {
-                // ELM - Gestion des champs aditionnels multivalués (lignes 578 - 591)
+                // ELM - Gestion des champs additionnels multivalués
                 if (!in_array($overload_fields[$fieldname]["type"], array("list", "checkbox")))
                 {
                     echo "if ((document.getElementById('id_".$idtmp."_".$overload_fields[$fieldname]["id"]."')) && (document.forms[\"main\"].addon_".$overload_fields[$fieldname]["id"].".value == \"\")) {\n";
