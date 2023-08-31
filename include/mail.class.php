@@ -3,9 +3,9 @@
  * include/mail.class.php
  * fichier de définition d'une classe de traitement des e-mails
  * fait partie de l'application GRR
- * Dernière modification : $Date: 2021-04-10 19:05$
+ * Dernière modification : $Date: 2023-08-31 12:18$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -31,7 +31,7 @@ class Email{
 			$port		= Settings::get('smtp_port');
 
 			//encodage du sujet pour affichage des accents 1/3, YN sur proposition de podz sur le forum
-			$sujet = mb_encode_mimeheader($sujet);
+			$sujet = mb_encode_mimeheader(html_entity_decode($sujet));
 
 			$mail = new PHPMailer;
 			$mail->CharSet = 'UTF-8';
@@ -95,7 +95,7 @@ class Email{
 		else
 		{	
             if ($RE == '') $RE = $DE;
-			$sujet = mb_encode_mimeheader($sujet);
+			$sujet = mb_encode_mimeheader(html_entity_decode($sujet));
 			$headers = "From: {$DE}" . "\r\n" .
 			"Reply-To: {$RE}" . "\r\n" .
 			//encodage du sujet pour affichage des accents 2/3
