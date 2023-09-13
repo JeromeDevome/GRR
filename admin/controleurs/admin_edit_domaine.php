@@ -2,9 +2,9 @@
 /**
  * admin_edit_domaine.php
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
- * Dernière modification : $Date: 2018-08-14 11:30$
- * @author    JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2023-09-13 14:16$
+ * @author    JeromeB, Yan Naessens
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -67,8 +67,18 @@ if (!isset($retour_page))
 // modification d'une resource : admin ou gestionnaire
 if (authGetUserLevel(getUserName(),-1) < 6)
 {
-
-	if (isset($id_area))
+    if (isset($id_site)){
+        $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_site WHERE id='".$id_site."'");
+        if ($test == -1){
+            showAccessDenied($back);
+            exit();
+        }
+        elseif(authGetUserLevel(getUserName(),$id_site,'site')<5){
+            showAccessDenied($back);
+            exit();
+        }
+    }
+    elseif (isset($id_area))
 	{
 		// On verifie que le domaine $area existe
 		$test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_area WHERE id='".$id_area."'");
@@ -84,7 +94,6 @@ if (authGetUserLevel(getUserName(),-1) < 6)
 			exit();
 		}
 	}
-
 }
 $msg ='';
 
