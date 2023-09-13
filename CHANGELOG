@@ -52,11 +52,14 @@ Sous-version 3.5.1a
     correctif : ouverture de session
     correctif : message compatibilité php
     correctif : nettoyage du code et conséquences de la MAJ de JQuery
+    correctif : prise en compte des apostrophes dans le sujet d'un mail automatique
+    correctifs : vocabulaire
     mise à jour : JQuery en version 3.7.0
     mise à jour : jQuery-UI en v1.13.2
     mise à jour : vacances.xml
+    mise à jour : Readme.md et Doc
     modification : spécification de la fonction jQuery_DatePicker
-
+    modification : recherche de la dernière version sur le dépôt Github
     
 -----
 --
