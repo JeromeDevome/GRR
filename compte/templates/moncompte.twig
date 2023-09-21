@@ -43,7 +43,7 @@
 				<div class="form-group">
 					<label class="control-label col-md-4 col-sm-6 col-xs-8" for="opwd">{{ trad.old_pwd }}</label>
 					<div class="col col-md-8 col-sm-6 col-xs-6">
-					<input class="form-control" for="opwd" type="password" name="reg_password_a" size="20"  /></div>
+					<input class="form-control" id="opwd" type="password" name="reg_password_a" size="20"  /></div>
 				</div>
 				<div class="form-group">
 					<label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd1">{{ trad.new_pwd1 }}</label>
@@ -61,7 +61,7 @@
 				<div class="form-group">
 					<label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd2">{{ trad.new_pwd2 }}</label>
 					<div class="col col-md-8 col-sm-4 col-xs-6">
-					<input class="form-control" for="pwd2" type="password" name="reg_password2" size="20"  /></div>
+					<input class="form-control" id="pwd2" type="password" name="reg_password2" size="20"  /></div>
 				</div>
 			</div>
 		{% else %}
@@ -162,7 +162,7 @@
 			</div>
 		
 	</form>
-	<form id="reset" action="my_account.php" method="post">
+	<form id="reset" action="compte.php" method="post">
 
 			<div>
 				<input type="hidden" name="valid" value="reset" />
