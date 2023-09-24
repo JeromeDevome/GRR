@@ -1284,10 +1284,13 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			}
 			if ($type_session == 'no_session')
 			{
+				$resulHook = Hook::Appel("hookLienConnexion2");
 				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
 				{
 					echo '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>'.PHP_EOL;
 					echo '<br /> <small><i><a href="login.php">'.get_vocab("connect_local").'</a></i></small>'.PHP_EOL;
+				} elseif($resulHook['hookLienConnexion2'] != ""){
+					echo $resulHook['hookLienConnexion2'];	
 				}
 				else {
 					echo '<br /> <a href="login.php">'.get_vocab("connect").'</a>'.PHP_EOL;
@@ -1505,10 +1508,14 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 				$d['urlLangue'] = traite_grr_url($grr_script_name);			}
 			if ($type_session == 'no_session')
 			{
+				$resulHook = Hook::Appel("hookLienConnexion2");
 				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
 				{
 					$d['lienConnexion'] =  '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>';
 					$d['lienConnexion'] .=  '<br /> <small><i><a href="login.php">'.get_vocab("connect_local").'</a></i></small>';
+				} elseif($resulHook['hookLienConnexion2'] != "")
+				{
+					$d['lienConnexion'] = $resulHook['hookLienConnexion2'];
 				}
 				else {
 					$d['lienConnexion'] = '<br /> <a href="login.php">'.get_vocab("connect").'</a>';
@@ -6280,12 +6287,14 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			}
 			if ($type_session == 'no_session')
 			{
+				$resulHook = Hook::Appel("hookLienConnexion2");
 				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
 				{
 					echo '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>'.PHP_EOL;
 					echo '<br /> <small><i><a href="login.php">'.get_vocab("connect_local").'</a></i></small>'.PHP_EOL;
-				}
-				else {
+				} elseif($resulHook['hookLienConnexion2'] != ""){
+					echo $resulHook['hookLienConnexion2'];	
+				}else{
 					echo '<br /> <a href="login.php">'.get_vocab("connect").'</a>'.PHP_EOL;
 				}
 			}

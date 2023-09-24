@@ -241,23 +241,33 @@ foreach ($iter as $fileinfo) {
 				include '../personnalisation/modules/'.$iter.'/infos.php';
 				if($module_nom != "") {
 
-					$sql = "SELECT `nom`, `actif` FROM ".TABLE_PREFIX."_modulesext WHERE `nom` = '".$iter."';";
-					$res = grr_sql_query($sql);
-					if ($res)
+					if(isset($module_administrable) && $module_administrable == false)
 					{
-						$lienActivation = "admin_config.php?page_config=6&activation=".$iter;
-						$nb = grr_sql_count($res);
-						if($nb > 0){
-							$row = grr_sql_row($res, 0);
-							
-							if($row[1] == 0)
-								$activation = "Activer";
-							else
-								$activation = "Désactiver";
-						} else{
-							$activation = "Installer";
+						$lienActivation = "";
+						$activation = "";
+
+					}
+					else
+					{
+						$sql = "SELECT `nom`, `actif` FROM ".TABLE_PREFIX."_modulesext WHERE `nom` = '".$iter."';";
+						$res = grr_sql_query($sql);
+						if ($res)
+						{
+							$lienActivation = "admin_config.php?page_config=6&activation=".$iter;
+							$nb = grr_sql_count($res);
+							if($nb > 0){
+								$row = grr_sql_row($res, 0);
+								
+								if($row[1] == 0)
+									$activation = "Activer";
+								else
+									$activation = "Désactiver";
+							} else{
+								$activation = "Installer";
+							}
 						}
 					}
+
 					$modulesext[] = array('nom' => $module_nom." (".$iter.")", 'description' => $module_description, 'version' => $module_version, 'auteur' => $module_autheur, 'copyright' => $module_copyright, 'activation' => $activation, 'lienActivation' => $lienActivation);
 
 				} else{
