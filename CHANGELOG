@@ -1,12 +1,14 @@
 -----
 --
 -----
-Version 4.2.0 BETA - 29/08/2023 Généré par @JeromeDevome
-!!! VERSION BETA NE PAS UTILISER EN PRODUCTION !!!
+Version 4.2.0 RC1 - 25/09/2023 Généré par @JeromeDevome
+!!! VERSION RC NE PAS UTILISER EN PRODUCTION !!!
 [Ajout] Création de compte utilisateur via un système de demande @JeromeDevome
 [Ajout] Personnalisations des mails via l'administration @JeromeDevome
 [Ajout] Personnalistion du titre des CGU @JeromeDevome
 [Ajout] Champs additionnels de type checkbox @ynaessens & eric.lemeur (Forum)
+[Ajout] Hooks pour les modules @JeromeDevome
+[Ajout] Module ext. : Possibilité de bloqué en actif via config.inc.php
 [Correction] Accès aux pages sans connexion @JeromeDevome
 [Correction] Sécurisation cookies @JeromeDevome
 [Correction] Jour périodicité dans les PDF @JeromeDevome
@@ -15,9 +17,13 @@ Version 4.2.0 BETA - 29/08/2023 Généré par @JeromeDevome
 [Correction] Sécurisation de l'envois des mails @ynaessens & eric.lemeur (Forum)
 [Correction] Style administration @ynaessens
 [Correction] Création sous dossier réccursive @JeromeDevome
+[Correction] Accès aux administrateurs de site @ynaessens
+[Correction] Accès aux administrateurs de domaine @ynaessens
+[Correction] Lien da&ns mon compte @ynaessens
 [Modification] Amélioration traduction italien @JeromeDevome
 [Modification] Upgrade dépendances PHP @JeromeDevome
 [Modification] Mise à jour : vacances.xml @ynaessens
+[Modification] Tri par chronologie des dates dans les stats @JeromeDevome
 
 
 -----
