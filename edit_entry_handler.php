@@ -307,9 +307,10 @@ else
 	}
 	else {
 		$fin = array();
-		$fin = explode(':', clean_input($_GET["end_"]));
-		$_GET["end_hour"] = $fin[0];
-		$_GET["end_minute"] = $fin[1];
+		$fin = explode(":", $_GET["end_"]);
+
+		$_GET["end_hour"] = clean_input($fin[0]);
+		$_GET["end_minute"] = clean_input($fin[1]);
 	}
 
 	if (!isset($_GET["end_day"]) || !isset($_GET["end_month"]) || !isset($_GET["end_year"]) || !isset($_GET["end_hour"]) || !isset($_GET["end_minute"]) )

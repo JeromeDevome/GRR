@@ -400,6 +400,7 @@ $vocab['error_delais_min_resa_room'] = "Vous n'êtes pas autorisé à réserver 
 $vocab['error_duree_max_resa_area'] = "Vous n'êtes pas autorisé à réserver cette ressource aussi longtemps, veuillez réduire la durée de réservation ou contacter l'administrateur.<br /><br /><i>Durée maximale de la réservation : </i>";
 $vocab['error_exist_login'] = "*** Attention ! Un utilisateur ayant le même login existe déjà. Enregistrement impossible ! ***";
 $vocab['error_heure_debut_fin'] = "Attention, réservation impossible : l'heure de début ou l'heure de fin de réservation est en dehors des créneaux autorisés.";
+$vocab['error_end_date'] = "Erreur dans la date de fin de réservation";
 $vocab['error_qui_peut_reserver_pour'] = "Attention, réservation impossible : Vous tentez de réserver une ressource au nom d'une autre personne alors que vous n'avez pas les droits suffisants.";
 $vocab['error_room'] = "Erreur : ressource ";
 $vocab['est_prevenu_par_mail'] = "Cet utilisateur est averti automatiquement par mail pour le(s) ressource(s) suivante(s).";

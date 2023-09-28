@@ -399,6 +399,7 @@ $vocab['error_date_confirm_reservation'] = "You have to choose a confirmation da
 $vocab['error_delais_max_resa_room'] = "You're not allowed to reserve this resource so long in advance.";
 $vocab['error_delais_min_resa_room'] = "You're not allowed to reserve this resource or to make this modification: the minimal time of reservation of this resource is exceeded.";
 $vocab['error_duree_max_resa_area'] = "You're not allowed to reserve this resource so long, please reduce the reservation time or contact the administrator.<br /><br /><i>Maximal duration of the reservation: </i>";
+$vocab['error_end_date'] = "Error in the end date of reservation";
 $vocab['error_exist_login'] = "*** Caution! A user with the same login-name is already on the list. Registration is impossible! ***";
 $vocab['error_heure_debut_fin'] = "Caution! Impossible to reserve: beginning or ending time is out of the authorized range."; 
 $vocab['error_qui_peut_reserver_pour'] = "Caution, this reservation is impossible: You try to reserve a resource with an other person's name while you don't have the adequate rights.";

@@ -399,6 +399,7 @@ $vocab['error_date_confirm_reservation'] = "Sie müssen ein Bestätigungsdatum f
 $vocab['error_delais_max_resa_room'] = "Sie sind nicht berechtigt, diese Ressource so lange im Voraus zu reservieren.";
 $vocab['error_delais_min_resa_room'] = "Sie sind nicht berechtigt diese Ressource zu reservieren oder diese Änderung vorzunehmen: die Mindestreservierungsfrist für diese Ressource ist überschritten.";
 $vocab['error_duree_max_resa_area'] = "Vous n'êtes pas autorisé à réserver cette ressource aussi longtemps, veuillez réduire la durée de réservation ou contacter l'administrateur.<br /><br /><i>Durée maximale de la réservation : </i>"; // A traduire
+$vocab['error_end_date'] = "Fehler im Enddatum Ihrer Reservierung";
 $vocab['error_exist_login'] = "*** Achtung! Es gibt bereits einen Benutzer mit demselben Benutzernamen (login). Speichern unmöglich! ***";
 $vocab['error_heure_debut_fin'] = "Attention, réservation impossible : l'heure de début ou l'heure de fin de réservation est en dehors des créneaux autorisés."; // A traduire
 $vocab['error_qui_peut_reserver_pour'] = "Attention, réservation impossible : Vous tentez de réserver une ressource au nom d'une autre personne alors que vous n'avez pas les droits suffisants."; // A traduire
