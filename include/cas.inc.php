@@ -3,7 +3,7 @@
  * cas.inc.php
  * script de redirection vers l'authentification CAS
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-08-02 22:00$
+ * Dernière modification : $Date: 2023-10-02 10:19$
  * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
  * @copyright Copyright 2008-2008 Laurent Delineau
  * @author    JeromeB & Laurent Delineau & Olivier MOUNIER
@@ -35,7 +35,7 @@ $cas_proxy_server = Settings::get("cas_proxy_server"); //adresse IP du serveur p
 $cas_proxy_port = Settings::get("cas_proxy_port"); // port utilisé par le protocole CAS, doit être autorisé sur le proxy
 
 // protocole CAS
-$cas_version = (isset(Settings::get('cas_version')))? Settings::get('cas_version') : 'CAS_VERSION_2_0';
+$cas_version = (NULL != Settings::get('cas_version'))? Settings::get('cas_version') : 'CAS_VERSION_2_0';
 
 /* declare le script comme un client CAS
  Si le dernier argument est à true, cela donne la possibilité à phpCAS d'ouvrir une session php.
