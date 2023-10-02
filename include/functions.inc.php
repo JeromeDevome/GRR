@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-08-24 11:53$
+ * Dernière modification : $Date: 2023-10-02 10:59$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5065,15 +5065,15 @@ function jQuery_DatePicker($typeDate){
             echo '});'.PHP_EOL;
 echo '		function readSelected()'.PHP_EOL;
 echo '		{'.PHP_EOL;
-echo '			$(\'#mydate_' .$typeDate. '\').val($(\'#' .$typeDate. '_day\').val() + \'/\' +'.PHP_EOL;
-	echo '			$(\'#' .$typeDate. '_month\').val() + \'/\' + $(\'#' .$typeDate. '_year\').val());'.PHP_EOL;
+echo '			$(\'#mydate_' .$typeDate. '\').val($(\'#' .$typeDate. 'day\').val() + \'/\' +'.PHP_EOL;
+	echo '			$(\'#' .$typeDate. 'month\').val() + \'/\' + $(\'#' .$typeDate. 'year\').val());'.PHP_EOL;
 echo '			return {};'.PHP_EOL;
 echo '		}'.PHP_EOL;
 echo '		function updateSelected(date)'.PHP_EOL;
 echo '		{'.PHP_EOL;
-echo '			$(\'#' .$typeDate. '_day\').val(date.substring(0, 2));'.PHP_EOL;
-echo '			$(\'#' .$typeDate. '_month\').val(date.substring(3, 5));'.PHP_EOL;
-echo '			$(\'#' .$typeDate. '_year\').val(date.substring(6, 10));'.PHP_EOL;
+echo '			$(\'#' .$typeDate. 'day\').val(date.substring(0, 2));'.PHP_EOL;
+echo '			$(\'#' .$typeDate. 'month\').val(date.substring(3, 5));'.PHP_EOL;
+echo '			$(\'#' .$typeDate. 'year\').val(date.substring(6, 10));'.PHP_EOL;
 echo '		}'.PHP_EOL;
 //echo '	});'.PHP_EOL;
 echo '</script>'.PHP_EOL;
