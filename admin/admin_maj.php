@@ -42,6 +42,8 @@ if (!Settings::load())
     die("Erreur chargement settings");
 // Session related functions
 require_once("../include/session.inc.php");
+// Paramètres langage
+include "../include/language.inc.php";
 
 function formatResult($echo,$dbt,$fin) {
     global $majscript;
@@ -218,9 +220,6 @@ if ((authGetUserLevel(getUserName(),-1) < 6) && ($valid != 'yes') && $connexionA
     showAccessDenied($back);
     exit();
 }
-
-// Paramètres langage
-include "../include/language.inc.php";
 
 if ($valid == 'no')
 {
