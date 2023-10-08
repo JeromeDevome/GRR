@@ -1411,7 +1411,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 	}
 
 	$resulHook = Hook::Appel("hookHeader2");
-	$d['hookHeader1'] = $resulHook['hookHeader2'];
+	$d['hookHeader2'] = $resulHook['hookHeader2'];
 
 	// Si nous ne sommes pas dans un format imprimable
 	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
