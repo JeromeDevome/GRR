@@ -42,7 +42,10 @@ class Hook{
 
 		foreach ($modulesActifs as &$nomModule)
 		{
-			include(dirname(__FILE__).'/../personnalisation/modules/'.$nomModule.'/controleur.php');
+			if(file_exists('../personnalisation/modules/'.$nomModule.'/controleur.php'))
+				include('../personnalisation/modules/'.$nomModule.'/controleur.php');
+			elseif(file_exists('./personnalisation/modules/'.$nomModule.'/controleur.php'))
+				include('./personnalisation/modules/'.$nomModule.'/controleur.php');
 		}
 
 		return $CtnHook;
