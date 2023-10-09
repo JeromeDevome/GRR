@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-08-24 10:27$
+ * Dernière modification : $Date: 2023-10-09 18:27$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -3473,7 +3473,7 @@ function getUserName()
 	else
 		return '';
 }
-function getWritable($beneficiaire, $user, $id)
+function getWritable($user, $id)
 {
 	$id_room = grr_sql_query1("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id='".protect_data_sql($id)."'");
 		// Modifications permises si l'utilisateur a les droits suffisants
@@ -3489,7 +3489,7 @@ function getWritable($beneficiaire, $user, $id)
     $who_can_book = grr_sql_query1("SELECT who_can_book FROM ".TABLE_PREFIX."_room WHERE id = '".$id_room."'");
     $user_can_book = $who_can_book || authBooking($user,$id_room);
 	$owner = strtolower(grr_sql_query1("SELECT create_by FROM ".TABLE_PREFIX."_entry WHERE id='".protect_data_sql($id)."'"));
-	$beneficiaire = strtolower($beneficiaire);
+	$beneficiaire = strtolower(grr_sql_query1("SELECT beneficiaire FROM ".TABLE_PREFIX."_entry WHERE id='".protect_data_sql($id)."'"));
 	$user = strtolower($user);
 	//Il reste à étudier le cas d'un utilisateur sans droits particuliers. quatre cas possibles :
 	//Cas 1 : l'utilisateur (U) n'est ni le créateur (C) ni le bénéficiaire (B)
@@ -6520,7 +6520,15 @@ function grrGetOverloadDescArray($ofl,$od)
     }
     return $overload_array;
 }
-
+/* récupère les variables passées par GET ou POST ou bien par COOKIE, et leur affecte le type indiqué (int ou string)
+ * rend $default si la valeur recherchée n'est pas référencée
+*/
+function getFormVar($nom,$type='',$default=NULL){
+    $valeur = isset($_GET[$nom])? $_GET[$nom] : (isset($_POST[$nom])? $_POST[$nom] : (isset($_COOKIE['nom'])? $_COOKIE['nom'] : $default));
+    if ((isset($valeur)) && ($type !=''))
+        settype($valeur,$type);
+    return $valeur;
+}
 // Les lignes suivantes permettent la compatibilité de GRR avec la variable register_global à off
 unset($day);
 if (isset($_GET["day"]))
