@@ -454,7 +454,7 @@ foreach ( $rooms as $room_id )
 				$error_delais_min_resa_room = 'yes';
 			if (!(verif_date_option_reservation($option_reservation, $reps[$i])))
 				$error_date_option_reservation = 'yes';
-			if (!(verif_qui_peut_reserver_pour($room_id, getUserName(), $beneficiaire)))
+			if (!(verif_qui_peut_reserver_pour($room_id, getUserName(), html_entity_decode($beneficiaire,ENT_QUOTES|ENT_SUBSTITUTE|ENT_HTML5,"UTF-8"))))
 				$error_qui_peut_reserver_pour = 'yes';
 			if (!(verif_heure_debut_fin($reps[$i], $reps[$i]+$diff, $area)))
 				$error_heure_debut_fin = 'yes';
@@ -483,7 +483,7 @@ foreach ( $rooms as $room_id )
 			$error_delais_min_resa_room = 'yes';
 		if (!(verif_date_option_reservation($option_reservation, $starttime)))
 			$error_date_option_reservation = 'yes';
-		if (!(verif_qui_peut_reserver_pour($room_id, getUserName(), $beneficiaire)))
+		if (!(verif_qui_peut_reserver_pour($room_id, getUserName(), html_entity_decode($beneficiaire,ENT_QUOTES|ENT_SUBSTITUTE|ENT_HTML5,"UTF-8"))))
 			$error_qui_peut_reserver_pour = 'yes';
 		if (!(verif_heure_debut_fin($starttime, $endtime, $area)))
 			$error_heure_debut_fin = 'yes';
