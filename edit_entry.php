@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-08-24 11:58$
+ * Dernière modification : $Date: 2023-10-09 12:34$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author 	  Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -255,7 +255,10 @@ function divChampsAdd($id_resa=0,$id_area=-1,$id_room=-1,$overloadFields=array()
         else
             $flag_obli = "";
         $display .= "<div id=\"id_".$id_area."_".$overload_fields[$fieldname]["id"]."\" class='form-group'>";
-        $display .= "<label for='addon_".$overload_fields[$fieldname]["id"]."'>".removeMailUnicode($fieldname).$flag_obli."</label>\n";
+        if ($overload_fields[$fieldname]["type"] == "checkbox" )
+            $display .= "<p><b>".removeMailUnicode($fieldname).$flag_obli."</b></p>".PHP_EOL;
+        else
+            $display .= "<label for='addon_".$overload_fields[$fieldname]["id"]."'>".removeMailUnicode($fieldname).$flag_obli."</label>\n";
         if (isset($overload_data[$fieldname]["valeur"]))
             $data = $overload_data[$fieldname]["valeur"];
         elseif (isset($overloadFields[$overload_fields[$fieldname]["id"]]))
@@ -263,19 +266,19 @@ function divChampsAdd($id_resa=0,$id_area=-1,$id_room=-1,$overloadFields=array()
         else
             $data = "";
         if ($overload_fields[$fieldname]["type"] == "textarea" )
-            $display .= "<div class=\"col col-xs-12\"><textarea class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\">".htmlspecialchars($data,ENT_SUBSTITUTE)."</textarea></div>\n";
+            $display .= "<div class=\"col col-xs-12\"><textarea class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" id=\"addon_".$overload_fields[$fieldname]["id"]."\">".htmlspecialchars($data,ENT_SUBSTITUTE)."</textarea></div>\n";
         else if ($overload_fields[$fieldname]["type"] == "text" )
-            $display .= "<input class=\"form-control\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" />";
+            $display .= "<input class=\"form-control\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" id=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" />";
         else if ($overload_fields[$fieldname]["type"] == "numeric" )
-            $display .= "<input class=\"form-control\" size=\"20\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" />\n";
+            $display .= "<input class=\"form-control\" size=\"20\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" id=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" />\n";
         else if ($overload_fields[$fieldname]["type"] == "checkbox" ) { // ELM - Gestion des champs aditionnels multivalués
             $display .= "<div class=\"col col-xs-12\">\n";
             foreach ($overload_fields[$fieldname]["list"] as $value) {
                 $valeurs = explode("|", $data);
-                $display .= "<input type=\"checkbox\" name=\"addon_".$overload_fields[$fieldname]["id"]."[]\" value=\"".trim($value,"&")."\" ";
+                $display .= "<label><input type=\"checkbox\" name=\"addon_".$overload_fields[$fieldname]["id"]."[]\" value=\"".trim($value,"&")."\" ";
                 if (in_array(trim($value,"&"), $valeurs) or (empty($valeurs)=="" and $value[0]=="&")) 
                     $display .= " checked=\"checked\"";
-                $display .= ">\n<label>".(trim($value,"&"))."</label>\n";
+                $display .= ">\n".(trim($value,"&"))."</label>\n";
             }
             $display .= "</div>\n";
         }
@@ -871,12 +874,12 @@ divBeneficiaire($id,$user_name,$room,$area_id);
 // description brève
 echo '<div>'.PHP_EOL;
 echo '<label for="name">'.$Booker.'</label>'.PHP_EOL;
-echo '<input id="name" class="form-control" name="name" maxlength="80" size="60" value="'.$C.'" />'.PHP_EOL;
+echo '<input class="form-control" id="name" name="name" maxlength="80" size="60" autocomplete="off" value="'.$C.'" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 // description complète
 echo '<div>'.PHP_EOL;
 echo '<label for="description">'.$D.'</label>'.PHP_EOL;
-echo '<textarea name="description" class="form-control" rows="4">'.$E.'</textarea>'.PHP_EOL;
+echo '<textarea id="description" name="description" class="form-control" rows="4">'.$E.'</textarea>'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 // date et heure de début
 echo '<div class="E form-inline"><b>'.$date_debut.'</b>'.PHP_EOL;
@@ -912,7 +915,7 @@ if ($type_affichage_reser == 0) // sélection de la durée
 {
 	echo '<div class="E form-inline">'.PHP_EOL;
     echo '<label for="duration">'.get_vocab("duration").'</label>'.PHP_EOL;
-	echo '<input class="form-control" id="duree" name="duration" type="number" value="'.$duration.'" min="1">'; 
+	echo '<input class="form-control" id="duration" name="duration" type="number" value="'.$duration.'" min="1">'; 
     echo '<select class="form-control" name="dur_units">'.PHP_EOL;
     if ($enable_periods == 'y')
 		$units = array("periods", "days");
@@ -1029,7 +1032,7 @@ $res = grr_sql_query($sql);
 $len = grr_sql_count($res);
 //sélection des ressources (rooms[]) dans le domaine (area)
 //echo "<select class='form-control' name=\"rooms[]\" size=\"".min($longueur_liste_ressources_max,$len)."\" multiple=\"multiple\" onchange=\"changeRoom(this.form) ;\">";
-echo "<select class='form-control' name=\"rooms[]\" size=\"".min($longueur_liste_ressources_max,$len)."\" multiple=\"multiple\" >";
+echo "<select class='form-control' id=\"rooms[]\" name=\"rooms[]\" size=\"".min($longueur_liste_ressources_max,$len)."\" multiple=\"multiple\" >";
 if ($res)
 {
 	//for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
@@ -1123,7 +1126,7 @@ if (Settings::get("show_courrier") == 'y'){ // proposition scoubinaire le 12/03/
     echo '<div class="E">'.PHP_EOL;
     echo '<label for="courrier">'.get_vocab("status_courrier").get_vocab("deux_points").PHP_EOL;
     echo '</label>'.PHP_EOL;
-    echo '<input name="courrier" type="checkbox" value="y" ';
+    echo '<input id="courrier" name="courrier" type="checkbox" value="y" ';
     if (isset($courrier) && $courrier == 1)
         echo 'checked';
     echo ' > '.get_vocab("msg_courrier");
@@ -1253,35 +1256,35 @@ if($periodiciteConfig == 'y')
         // sélection jours de vacances
         // filtrer si les vacances sont activées
         echo '<div>'.PHP_EOL;
-        echo '<label for="vacances">'.get_vocab("School_holidays").'</label><br />';
-        echo '<input type="radio" name="vacances" value="0"';
+        echo '<p><b>'.get_vocab("School_holidays").'</b></p>';
+        echo '<label><input type="radio" name="vacances" value="0"';
         if((!isset($vacances))||($vacances == 0))
             echo " checked ";
-        echo '/>'.get_vocab("any_day")."<br />".PHP_EOL;
-        echo '<input type="radio" name="vacances" value="1"';
+        echo '/>'.get_vocab("any_day")."</label><br />".PHP_EOL;
+        echo '<label><input type="radio" name="vacances" value="1"';
         if(isset($vacances)&&($vacances == 1))
             echo " checked ";
-        echo '/>'.get_vocab("school_holidays")."<br />".PHP_EOL;
-        echo '<input type="radio" name="vacances" value="2"';
+        echo '/>'.get_vocab("school_holidays")."</label><br />".PHP_EOL;
+        echo '<label><input type="radio" name="vacances" value="2"';
         if(isset($vacances)&&($vacances == 2))
             echo " checked ";
-        echo '/>'.get_vocab("skip_school_holidays")."<br />".PHP_EOL;
+        echo '/>'.get_vocab("skip_school_holidays")."</label><br />".PHP_EOL;
         echo '</div>'.PHP_EOL;
 		// sélection jours fériés
         echo '<div>'.PHP_EOL;
-        echo '<label for="feries">'.get_vocab("Holidays").'</label><br />';
-        echo '<input type="radio" name="feries" value="0"';
+        echo '<p><b>'.get_vocab("Holidays").'</label></b></p>';
+        echo '<label><input type="radio" name="feries" value="0"';
         if((!isset($feries))||($feries == 0))
             echo " checked ";
-        echo '/>'.get_vocab("any_day")."<br />".PHP_EOL;
-        echo '<input type="radio" name="feries" value="1"';
+        echo '/>'.get_vocab("any_day")."</label><br />".PHP_EOL;
+        echo '<label><input type="radio" name="feries" value="1"';
         if(isset($feries)&&($feries == 1))
             echo " checked ";
-        echo '/>'.get_vocab("holidays")."<br />".PHP_EOL;
-        echo '<input type="radio" name="feries" value="2"';
+        echo '/>'.get_vocab("holidays")."</label><br />".PHP_EOL;
+        echo '<label><input type="radio" name="feries" value="2"';
         if(isset($feries)&&($feries == 2))
             echo " checked ";
-        echo '/>'.get_vocab("skip_holidays")."<br />".PHP_EOL;
+        echo '/>'.get_vocab("skip_holidays")."</label><br />".PHP_EOL;
         echo '</div>'.PHP_EOL;
         echo '</div>'.PHP_EOL; // fin bloc jours particuliers
 		echo "</div>\n"; // fin menu1
