@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-10-09 12:34$
+ * Dernière modification : $Date: 2023-10-10 16:58$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author 	  Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -1115,7 +1115,7 @@ if($active_cle == 'y'){
 	echo '<div class="E">'.PHP_EOL;
 	echo '<label for="keys">'.get_vocab("status_clef").get_vocab("deux_points").PHP_EOL;
 	echo '</label>'.PHP_EOL;
-	echo '<input name="keys" type="checkbox" value="y" ';
+	echo '<input id="keys" name="keys" type="checkbox" value="y" ';
 	if (isset($clef) && $clef == 1)
 		echo 'checked';
 	echo ' > '.get_vocab("msg_clef");

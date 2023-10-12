@@ -198,7 +198,7 @@ if (!empty($_POST)) // évite d'effacer les enregistrements lors du deuxième pa
             }
         }
     }
-    // Option peridodicite
+    // Option periodicite
     $option_periodicite = 'n';
     if (isset($_POST['periodicite']))
         $option_periodicite = 'y';
@@ -425,7 +425,7 @@ echo '</div>'.PHP_EOL;
  * Liste des ressources
  */
 echo '<div id="div_liste_ressources" class="col col-xs-12">'.PHP_EOL;
-echo '<input class="form-control" type="hidden" id="id_area" name="id_area" value="'.Settings::get('default_area').'" />'.PHP_EOL;
+//echo '<input class="form-control" type="hidden" id="id_area" name="id_area" value="'.Settings::get('default_area').'" />'.PHP_EOL;
 // Ici, on insère la liste des ressouces avec de l'ajax !
 echo '</div>'.PHP_EOL;
 //
@@ -434,7 +434,7 @@ echo '</div>'.PHP_EOL;
 echo '<h4>'.get_vocab('explain_css').'</h4>'.PHP_EOL;
 echo '<div class="form-group col-xs-12" >'.PHP_EOL;
 echo '<label for="default_css" class="control-label col-sm-4 col-xs-12">'.get_vocab('choose_css').'</label>'.PHP_EOL;
-echo '<div class="col col-sm-4 col-xs-12"><select class="form-control" name="default_css">'.PHP_EOL;
+echo '<div class="col col-sm-4 col-xs-12"><select class="form-control" name="default_css" id="default_css">'.PHP_EOL;
 $i = 0;
 while ($i < count($liste_themes)) {
     echo "<option value='".$liste_themes[$i]."'";
@@ -452,7 +452,7 @@ echo '</div>'.PHP_EOL;
 echo '<h4>'.get_vocab('choose_language').'</h4>'.PHP_EOL;
 echo '<div class="form-group col-xs-12" >'.PHP_EOL;
 echo '<label for="default_language" class="control-label col-sm-4 col-xs-12">'.get_vocab('choose_css').'</label>'.PHP_EOL;
-echo '<div class="col col-sm-4 col-xs-12"><select class="form-control" name="default_language">'.PHP_EOL;
+echo '<div class="col col-sm-4 col-xs-12"><select class="form-control" name="default_language" id="default_language">'.PHP_EOL;
 $i = 0;
 while ($i < count($liste_language)) {
     echo "<option value='".$liste_language[$i]."'";
@@ -496,7 +496,7 @@ echo '<label for="mail_destinataire">'.get_vocab('display_mail_destinataire').'<
 echo '<input class="form-control" type="text" id="mail_destinataire" name="mail_destinataire" value="'.Settings::get('mail_destinataire').'" size="30">'.PHP_EOL;
 echo '<br />'.PHP_EOL;
 echo '<label for="nb_max_resa_form">'.get_vocab('nb_max_resa_form').'</label>'.PHP_EOL;
-echo '<input type="number" name="nb_max_resa_form" value="'.Settings::get('nb_max_resa_form').'" size="5" min="-1" />'.PHP_EOL;
+echo '<input type="number" name="nb_max_resa_form" id="nb_max_resa_form" value="'.Settings::get('nb_max_resa_form').'" size="5" min="-1" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 #Choix  de l'affichage du bouton "afficher le menu de gauche ou non"
 #SQL : menu_gauche==1  //le bouton s'affiche par default
@@ -751,7 +751,7 @@ echo '</div>'.PHP_EOL;
 echo '<hr />'.PHP_EOL;
 echo '<h3>'.get_vocab('periodicite_msg').'</h3>'.PHP_EOL;
 echo '<div>'.PHP_EOL;
-echo "<input type='checkbox' name='periodicite' value='y' ";
+echo "<input type='checkbox' name='periodicite' id='periodicite' value='y' ";
 if (Settings::get('periodicite') == 'y') {
     echo 'checked';
 }
@@ -764,7 +764,7 @@ echo '<h3>'.get_vocab('affichages_divers').'</h3>'.PHP_EOL;
 echo '<p>'.get_vocab('affichages_divers_explain').'</p>'.PHP_EOL;
 # Afficher la legende en couleur dans le menu gauche
 echo '<div>'.PHP_EOL;
-echo "<input type='checkbox' name='legend' value='0' ";
+echo "<input type='checkbox' id='legend' name='legend' value='0' ";
 if (Settings::get('legend') == '0') {
     echo 'checked';
 }
@@ -775,7 +775,7 @@ echo '</div>'.PHP_EOL;
 echo '<hr />'.PHP_EOL;
 # Afficher l'imprimante
 echo '<div>'.PHP_EOL;
-echo '<input type="checkbox" name="imprimante" value="0" ';
+echo '<input type="checkbox" name="imprimante" id="imprimante" value="0" ';
 if (Settings::get('imprimante') == '0') {
     echo 'checked';
 }
@@ -786,7 +786,7 @@ echo '</div>'.PHP_EOL;
 echo '<hr />'.PHP_EOL;
 # Affichage pdf 
 echo '<div>'.PHP_EOL;
-echo '<input type="checkbox" name="pdf" value="1" ';
+echo '<input type="checkbox" name="pdf" id="pdf" value="1" ';
 if (Settings::get('pdf') == '1') {
     echo 'checked';
 }
@@ -797,7 +797,7 @@ echo '</div>'.PHP_EOL;
 echo '<hr />'.PHP_EOL;
 # Afficher courrier de validation
 echo '<div>'.PHP_EOL;
-echo '<input type="checkbox" name="show_courrier" value="y" ';
+echo '<input type="checkbox" name="show_courrier" id="show_courrier" value="y" ';
 if (Settings::get('show_courrier') == 'y') {
     echo 'checked';
 }

@@ -3,7 +3,7 @@
  * admin_overload.php
  * Interface de création/modification des champs additionnels.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-08-24 11:17$
+ * Dernière modification : $Date: 2023-10-12 17:07$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -229,7 +229,7 @@ echo "<span class='td CC'>".get_vocab("champ_obligatoire")."</span>\n";
 echo "<span class='td CC'><span class='small'>".get_vocab("affiche_dans_les_vues")."</span></span>\n";
 echo "<span class='td CC'><span class='small'>".get_vocab("affiche_dans_les_mails")."</span></span>\n";
 echo "<span class='td CC'>".get_vocab("champ_confidentiel")."</span>\n";
-echo "<span class='td CC'><span class='small'>".get_vocab("envoy_mail_specifique")."(1)(2)</span></span>\n";
+echo "<span class='td CC'><span class='small'>".get_vocab("envoie_mail_specifique")."(1)(2)</span></span>\n";
 echo "<span class='td CC'></span></div>\n";
 echo "\n<div class='tr'>";
 echo "\n<span class='td'>";
@@ -260,7 +260,7 @@ echo "<span class='td CC'><input type=\"text\" name=\"mail_spec\" size=\"20\" />
 echo "<span class='td CC'><button type=\"submit\" data-toggle=\"tooltip\" title=\"".get_vocab('add')."\" name=\"add\" ><span class='glyphicon glyphicon-plus'></span></button></span>\n";
 echo "</div></div></form>\n"; // fin de la table "ajouter"
 echo "<p class='small'>(1)".get_vocab("cas_fonctionnalite_mail_actif")."<br />";
-echo "(2)".get_vocab("envois_mail_spec_exp")."</p>";
+echo "(2)".get_vocab("envoie_mail_spec_exp")."</p>";
 
 if(!empty($ovlfdata)){ // il existe des champs additionnels déjà définis
     echo '<div class="table">';
@@ -273,7 +273,7 @@ if(!empty($ovlfdata)){ // il existe des champs additionnels déjà définis
         <span class='td CC'><span class='small'>".get_vocab("affiche_dans_les_vues")."</span></span>
         <span class='td CC'><span class='small'>".get_vocab("affiche_dans_les_mails")."</span></span>
         <span class='td CC'>".get_vocab("champ_confidentiel")."</span>
-        <span class='td CC'><span class='small'>".get_vocab("envoy_mail_specifique")."</span></span>
+        <span class='td CC'><span class='small'>".get_vocab("envoie_mail_specifique")."</span></span>
         <span class='td CC'>Actions</span>";
     echo '</div>';
     // corps du formulaire

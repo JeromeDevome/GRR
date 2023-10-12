@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2023-08-31
+# Last modification : 2023-10-12
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -315,6 +315,7 @@ $vocab['default_room_month_all'] = "Toutes les ressources (affichage 'mois')";
 $vocab['default_room_month_all_bis'] = "Toutes les ressources (affichage 'mois' bis)";
 $vocab['default_room_week_all'] = "Toutes les ressources (affichage 'semaine')";
 $vocab['default_site'] = "Site par défaut";
+$vocab['Definir'] = "Définir";
 $vocab['definir par defaut'] = "Définir par défaut";
 $vocab['del'] = "Effacer";
 $vocab['delais_max_resa_room'] = "Nombre maximal de jours au-delà duquel l'utilisateur ne peut pas réserver ou modifier une réservation (-1 si pas de restriction).<br /><b>Exemple</b> : une valeur égale à 30 signifie qu'un utilisateur ne peut réserver une ressource que 30 jours à l'avance au maximum.<br /><i>Cette limitation ne touche pas les gestionnaires de la ressource ainsi que les administrateurs du domaine.</i>";
@@ -400,8 +401,8 @@ $vocab['entry'] = "Réservation";
 $vocab['entryid'] = "Réservation n° ";
 $vocab['entry_found'] = "réservation trouvée";
 $vocab['Envoi d_un courriel'] = "Envoi d'un courriel";
-$vocab['envois_mail_spec_exp'] = "Dans le cas où le champ est rempli ou différent de zéro, envoie un mail au destinataire spécifié.";
-$vocab['envoy_mail_specifique'] = "Envoie un mail spécifique";
+$vocab['envoie_mail_spec_exp'] = "Dans le cas où le champ est rempli ou différent de zéro, envoie un mail au destinataire spécifié.";
+$vocab['envoie_mail_specifique'] = "Envoie un mail spécifique";
 $vocab['envoyer maintenant mail retard'] = "Envoyer immédiatement un mail de notification de retard (non restitution dans les délais)";
 $vocab['envoyer_email_avec_formulaire_non'] = "<b>Utiliser les balises \"mailto\"</b> : dans ce cas, un clic sur un \"lien email\" ouvre le logiciel de courrier par défaut de la machine du client et prépare un nouveau message en complétant automatiquement le champ des destinataires (à noter que bien que les adresses email apparaissent en clair dans GRR, un mécanisme d'encodage permet d'éviter que celles-ci ne soient récupérées par les robots-spameurs).";
 $vocab['envoyer_email_avec_formulaire_oui'] = "<b>Utiliser le formulaire d'envoi de mails</b> : dans ce cas, un clic sur un \"lien email\" affiche un formulaire qui permet d'envoyer un mail au(x) destinataire(s), sans divulguer leur adresse email.";
@@ -549,6 +550,8 @@ $vocab['les_administrateurs_restreints'] = "uniquement les administrateurs restr
 $vocab['les_gestionnaires_de_la_ressource'] = "les gestionnaires de la ressource";
 $vocab['les_journees_cochees_sont_ignorees'] = "Les journées cochées correspondent à des journées pendant lesquelles il n'est pas possible de réserver.<br />En ce qui concerne les réservations avec périodicité, ces journées sont ignorées lors de la validation de la réservation.<br /><br /><b>Attention </b> : si des réservations ont déjà été enregistrées sur les journées cochées, celles-ci seront <b>automatiquement et irrémédiablement supprimées</b>. De plus, les personnes concernées par les suppressions ne seront pas prévenues par email.";
 $vocab['les_journees_cochees_sont_valides'] = "Les journées cochées correspondent à des journées selon lesquelles nous voulons créer un calendrier de \"jours cycles\" selon les paramètres suivants (modifiables dans le premier onglet de cette page)";
+$vocab['les_jours_feries'] = " les jours fériés";
+$vocab['les_vacances'] = " les vacances";
 $vocab['admin_calend_vacances_feries.php'] = "Calendrier des vacances et jours fériés";
 $vocab['vacances_feries_description'] = "Les journées cochées seront mises en évidence sur le planning si l'option \"Afficher les Vacances scolaires et les jours fériés\" est à OUI.";
 $vocab['vacances_feries_FR'] = "Cocher les jours fériés français";
@@ -1079,6 +1082,7 @@ $vocab['fouthofmonth'] = "4eme";
 $vocab['fiveofmonth'] = "5eme";
 $vocab['lastofmonth'] = "dernier";
 $vocab['ofmonth'] = "du mois.";
+$vocab['holidays'] = " les jours fériés";
 $vocab['holidays_msg'] = "Afficher les vacances scolaires et les jours fériés";
 $vocab['holidays_zone_msg'] = "Choix de la zone de vacances scolaires (France)";
 $vocab['courrier_msg'] = "Afficher la gestion des salles par courrier";

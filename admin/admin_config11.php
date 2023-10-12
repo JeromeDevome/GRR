@@ -3,7 +3,7 @@
  * admin_config11.php
  * Interface permettant à l'administrateur la configuration de paramètres généraux présentant le site GRR
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2023-07-27 16:28$
+ * Dernière modification : $Date: 2023-10-10 17:23$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -366,7 +366,7 @@ echo '<p>'.get_vocab('choisir_image_logo').'</p>'.PHP_EOL;
 echo '<div class="form-group col-xs-12">'.PHP_EOL;
 echo '<label class="col col-sm-4 col-xs-12" for="doc_file">'.get_vocab('select_fichier').'</label>'.PHP_EOL;
 echo '<div class="col col-sm-8 col-xs-12">'.PHP_EOL;
-echo '<input type="file" name="doc_file" />'.PHP_EOL;
+echo '<input type="file" id="doc_file" name="doc_file" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '<div>'.PHP_EOL;
@@ -382,7 +382,7 @@ echo '<h3>'.get_vocab('affichage_calendriers').'</h3>'.PHP_EOL;
 echo '<div class="form-group col-xs-12">'.PHP_EOL;
 echo '<label class="col col-sm-8 col-xs-12" for="nb_calendar">'.get_vocab('affichage_calendriers_msg').get_vocab('deux_points').'</label>'.PHP_EOL;
 echo '<div class="col col-sm-4 col-xs-12">'.PHP_EOL;
-echo '<input type="number" name="nb_calendar" value="'.Settings::get('nb_calendar').'" min="1" max="5" />'.PHP_EOL;
+echo '<input type="number" id="nb_calendar" name="nb_calendar" value="'.Settings::get('nb_calendar').'" min="1" max="5" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 //
@@ -395,7 +395,7 @@ $bday = date('d', Settings::get('begin_bookings'));
 $bmonth = date('m', Settings::get('begin_bookings'));
 $byear = date('Y', Settings::get('begin_bookings'));
 
-echo '<label class="col col-sm-6 col-xs-12" for="mydate_begin_">'.get_vocab('begin_bookings').'</label>'.PHP_EOL;
+echo '<div class="col col-sm-6 col-xs-12"><b>'.get_vocab('begin_bookings').'</b></div>'.PHP_EOL;
 echo '<div class="col col-sm-6 col-xs-12 form-inline">'.PHP_EOL;
 genDateSelector('begin_', $bday, $bmonth, $byear, 'more_years');
 echo '<input type="hidden" disabled="disabled" id="mydate_begin_">'.PHP_EOL;
@@ -429,7 +429,7 @@ $eday = date('d', Settings::get('end_bookings'));
 $emonth = date('m', Settings::get('end_bookings'));
 $eyear = date('Y', Settings::get('end_bookings'));
 
-echo '<label class="col col-sm-6 col-xs-12" for="mydate_end_">'.get_vocab('end_bookings').'</label>'.PHP_EOL;
+echo '<div class="col col-sm-6 col-xs-12"><b>'.get_vocab('end_bookings').'</b></div>'.PHP_EOL;
 echo '<div class="col col-sm-6 col-xs-12 form-inline">'.PHP_EOL;
 genDateSelector('end_', $eday, $emonth, $eyear, 'more_years');
 echo '<input type="hidden" disabled="disabled" id="mydate_end_">'.PHP_EOL;
