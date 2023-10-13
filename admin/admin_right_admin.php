@@ -3,9 +3,9 @@
  * admin_right_admin.php
  * Interface de gestion des droits d'administration des domaines par les utilisateurs sélectionnés
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-18 11:15$
+ * Dernière modification : $Date: 2023-10-13 10:39$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -159,9 +159,9 @@ if ($multisite){
     if ($nb_site > 1)
     {
         echo '<div >
-        <label for="liste_site">'.get_vocab('sites').'</label>
-        <form id="liste_site" name="liste_site" action="./admin_right_admin.php">
-             <select name="id_site" onchange="site_go()">
+        <form action="./admin_right_admin.php">
+        <label for="liste_site">'.get_vocab('sites').get_vocab('deux_points').'</label>
+             <select id="liste_site" name="id_site" onchange="site_go()">
                <option value="-1">'.get_vocab('choose_a_site').'</option>'."\n";
                 foreach($sites as $s)
                 {
@@ -199,9 +199,9 @@ if ($multisite){
 }
 // sélecteur de domaine (en mode multisite, si le site est choisi)
 if (!empty($areas)){
+    echo '<form action="./admin_right_admin.php">';
     echo "<label for='area'>".get_vocab("areas")."&nbsp;</label>";
-    echo '<form id="area" name="area" action="./admin_right_admin.php">';
-    echo "<select name=\"area\" onchange=\"area_go()\">\n";
+    echo "<select id='area' name=\"area\" onchange=\"area_go()\">\n";
     echo "<option value=\"admin_right_admin.php?id_area=-1\">".get_vocab('select')."</option>\n";
     foreach($areas as $a){
         $selected = ($a['id'] == $id_area) ? " selected " : "";

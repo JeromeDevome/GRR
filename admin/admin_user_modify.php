@@ -3,7 +3,7 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-04-07 10:37$
+ * Dernière modification : $Date: 2023-10-13 10:16$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -458,7 +458,7 @@ echo '<a href="admin_user.php?display='.$display.'" type="button" class="btn btn
 echo '<br /><br />';
 echo '<div class="avertissement"><b>'.get_vocab("required").'</b></div>';
 echo '</p>';
-//echo '<form action="admin_user_modify.php?display='.$display.'" method="get"><div>';
+
 echo '<form action="admin_user_modify.php" method="POST">';
 echo '<input type="hidden" name="display" value="$display" />';
 echo '<div>';
@@ -492,7 +492,7 @@ echo '<div>';
         echo htmlspecialchars($utilisateur['nom']);
     echo "\" /></td>\n";
     echo "<td>".get_vocab("first_name")." *".get_vocab("deux_points")."</td>\n<td><input type=\"text\" name=\"reg_prenom\" size=\"20\" value=\"";
-    if ($utilisateur['nom'])
+    if ($utilisateur['prenom'])
         echo htmlspecialchars($utilisateur['prenom']);
     echo "\" /></td>\n";
     echo "<td></td><td></td>";
@@ -559,7 +559,7 @@ echo '<div>';
     echo "<br />".get_vocab("pwd_toot_short")." *".get_vocab("deux_points")."<input type=\"password\" name=\"reg_password\" size=\"20\" />\n";
     echo "<br />".get_vocab("confirm_pwd")." *".get_vocab("deux_points")."<input type=\"password\" name=\"reg_password2\" size=\"20\" />\n";
     echo '<br /><label for="reg_changepwd">'.get_vocab("user_change_pwd_connexion").'</label>
-                                <input type="checkbox" name="reg_changepwd" value="1"';
+                                <input type="checkbox" id="reg_changepwd" name="reg_changepwd" value="1"';
                                 if ($_SESSION['changepwd'] == 1) echo 'checked = "checked"';
                             echo '/>
           </div>';

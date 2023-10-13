@@ -3,9 +3,9 @@
  * admin_import_xml_edt.php
  * Importe un fichier de réservations au format xml issu du logiciel EDT Index Education
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-18 11:58$
+ * Dernière modification : $Date: 2023-10-13 11:17$
  * @author    JeromeB & Yan Naessens & Laurent Delineau
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -20,7 +20,7 @@ $grr_script_name = "admin_import_xml_edt.php";
 include "../include/admin.inc.php";
 
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
-$_SESSION['chemin_retour'] = "admin_config.php";
+$_SESSION['chemin_retour'] = "admin_accueil.php";
 
 if (!Settings::load()) {
     die('Erreur chargement settings');

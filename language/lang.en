@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2023-10-12
+# Last modification : 2023-10-13
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -838,8 +838,8 @@ $vocab['signaler_reservation_en_cours'] = "Indicate that the ressource is in han
 $vocab['signaler_reservation_en_cours_option_0'] = "The resource has been restored. <br /><i><b>(Select this option too if you don't use this functionality)</b></i>";
 $vocab['signaler_reservation_en_cours_option_1'] = "Indicate that the resource is borrowed within the framework of this reservation.";
 $vocab['signaler_reservation_en_cours_option_2'] = "Indicate that the resource is borrowed within the framework of this reservation and send daily an e-mail notifying the delay.";
-$vocab['site'] = "Website";
-$vocab['sites'] = "Websites";
+$vocab['site'] = "site";
+$vocab['sites'] = "Sites";
 $vocab['site_adresse_ligne1'] = "Address";
 $vocab['site_adresse_ligne2'] = "Address";
 $vocab['site_adresse_ligne3'] = "Address";
