@@ -694,22 +694,22 @@ function resaToModerate($user)
     $res = false;
     if (authGetUserLevel($user,-1) > 5) // admin général
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE e.moderate = 1";
+        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE e.moderate = 1 AND e.supprimer = 0 ";
         $res = grr_sql_query($sql);
     }
     elseif (isset($_GET['id_site']) && (authGetUserLevel($user,intval($_GET['id_site']),'site') > 4)) // admin du site
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = ".intval($_GET['id_site'])." AND e.moderate = 1)";
+        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = ".intval($_GET['id_site'])." AND e.moderate = 1  AND e.supprimer = 0)";
         $res = grr_sql_query($sql);
     }
     elseif (isset($_GET['area']) && (authGetUserLevel($user,intval($_GET['area']),'area') > 3)) // admin du domaine
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id WHERE (a.id = ".intval($_GET['area'])." AND e.moderate = 1)";
+        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id WHERE (a.id = ".intval($_GET['area'])." AND e.moderate = 1 AND e.supprimer = 0)";
         $res = grr_sql_query($sql);
     }
     elseif (isset($_GET['room']) && (authGetUserLevel($user,intval($_GET['room']),'room') > 2)) // gestionnaire de la ressource
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE (e.moderate = 1 AND e.room_id = ".intval($_GET['room']).") ";
+        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE (e.moderate = 1 AND e.supprimer = 0 AND e.room_id = ".intval($_GET['room']).") ";
         $res = grr_sql_query($sql);
     }
     if ($res)
