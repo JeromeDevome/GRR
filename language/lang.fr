@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2023-10-12
+# Last modification : 2023-10-14
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -227,7 +227,7 @@ $vocab['causes_possibles'] = "Causes possibles :";
 $vocab['Cette_journee_ne_correspond_pas_a_un_jour_cycle'] = "Cette journée ne correspond pas à un jour cycle";
 $vocab['cgu'] = "CGU";
 $vocab['cgu_titre'] = "CGU : Conditions Générales d'Utilisation";
-$vocab['cgu_grr'] = "Vous pouvez modifier la page CGU. Vous êtes responsable du contenu.<br>Pour informations légales de GRR :<ul><li>Ni GRR, ni les développeurs ne sont responsables du contenu</li><li>GRR est un logiciel Open Source sous la licence GPL</li><li>Aucune donnée n'est récupérée de votre GRR par l'éditeur</li><li>Les mots de passe des utilisateurs sont cryptés</li><li>Les informations personnelles des utilisateurs sont limitées au nom, prénom et adresse email, consultables dans la page \"Gérer mon compte\"</li></ul>";
+$vocab['cgu_grr'] = "Vous pouvez modifier la page CGU. Vous êtes responsable du contenu.<br>Pour informations légales de GRR :<ul><li>Ni GRR, ni les développeurs ne sont responsables du contenu</li><li>GRR est un logiciel Open Source sous la licence GPL</li><li>Aucune donnée n'est récupérée de votre GRR par l'éditeur</li><li>Les mots de passe des utilisateurs sont cryptés</li><li>Les informations personnelles des utilisateurs sont limitées aux nom, prénom et adresse email, consultables dans la page \"Gérer mon compte\"</li></ul>";
 $vocab['champs_non_remplis'] = "Tous les champs n'ont pas été remplis.";
 $vocab['champ_confidentiel'] = "Champ confidentiel";
 $vocab['champ_obligatoire'] = "Remplissage obligatoire";
@@ -335,7 +335,7 @@ $vocab['depot_grr_officiel'] = "Dépôt GRR Officiel sur Github";
 $vocab['derniere_version_publiee'] = "Dernière version publiée";
 $vocab['description'] = "Description :";
 $vocab['description_complete'] = "Description complète (visible dans la fiche de présentation)";
-$vocab['description complete2'] = " Vous pouvez utiliser des balises HTML";
+$vocab['description_complete2'] = " Vous pouvez utiliser des balises HTML";
 $vocab['deux_points'] = " : ";
 $vocab['disable_login_off'] = "Activer les connexions";
 $vocab['disable_login_on'] = "Désactiver les connexions";

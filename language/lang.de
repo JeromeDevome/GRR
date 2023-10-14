@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2023-10-12
+# Last modification : 2023-10-14
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -229,7 +229,7 @@ $vocab['causes_possibles'] = "Mögliche Gründe:";
 $vocab['Cette_journee_ne_correspond_pas_a_un_jour_cycle'] = "Cette journée ne correspond pas à un jour cycle"; // A traduire
 $vocab['cgu'] = "Nutzungsbedingungen"; 
 $vocab['cgu_titre'] = "Nutzungsbedingungen";
-$vocab['cgu_grr'] = "Vous pouvez modifier la page CGU. Vous êtes responsable du contenu.<br>Pour informations légales de GRR :<ul><li>Ni GRR, ni les developpeur sont responsables du contenu</li><li>GRR est un logiciel Open Source sous la licence GPL</li><li>Aucune donnée n'est récupéré de votre GRR par l'éditeur</li><li>Les mots de passe des utilisateurs sont cryptés</li><li>Les informations personnels des utilisateurs sont limités au nom, prénom et adresse email</li></ul>"; // A traduire
+$vocab['cgu_grr'] = "Sie können die Seite „Allgemeine Geschäftsbedingungen“ ändern. Für den Inhalt sind Sie verantwortlich.<br>Rechtliche Hinweise von GRR: <ul><li>Weder GRR noch die Entwickler sind für den Inhalt verantwortlich</li><li>GRR ist Open-Source-Software unter der GPL-Lizenz</ li><li>Vom Herausgeber werden keine Daten von Ihrem GRR abgerufen</li><li>Benutzerkennwörter werden verschlüsselt</li><li>Die persönlichen Daten des Benutzers beschränken sich auf Name, Vorname und E-Mail-Adresse, die auf der Website verfügbar sind Seite „Mein Konto verwalten“</li></ul>";
 $vocab['champs_non_remplis'] = "Es wurden nicht alle Felder ausgefüllt.";
 $vocab['champ_confidentiel'] = "vertrauliches Feld"; 
 $vocab['champ_obligatoire'] = "erforderliches Feld";

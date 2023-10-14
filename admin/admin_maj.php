@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-08-26 11:10$
+ * Dernière modification : $Date: 2023-10-14 11:51$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -40,10 +40,6 @@ require_once("../include/settings.class.php");
 //Chargement des valeurs de la table settingS
 if (!Settings::load())
     die("Erreur chargement settings");
-// Session related functions
-require_once("../include/session.inc.php");
-// Paramètres langage
-include "../include/language.inc.php";
 
 function formatResult($echo,$dbt,$fin) {
     global $majscript;
@@ -109,6 +105,15 @@ if (defined('STDIN')&&isset($argv[1])&&$argv[1]==$apikey) {
 
     // On valide dans une execution script
     $valid = 'yes';
+}
+
+// si pas en mode script, vérifier que la session est ouverte
+if(!$majscript){
+    // Session related functions
+    require_once("../include/session.inc.php");
+    require_once("../include/resume_session.php");
+    // Paramètres langage
+    include "../include/language.inc.php";
 }
 
 if (isset($_GET["force_maj"]))

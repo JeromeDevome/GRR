@@ -3,9 +3,9 @@
  * admin_cgu.php
  * Interface permettant à l'administrateur de renseigner la page des conditions générales d'utilisation
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2021-03-13 12:04$
+ * Dernière modification : $Date: 2023-10-14 12:08$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -66,7 +66,7 @@ if (Settings::get('use_fckeditor') == 1) {
     echo '<script type="text/javascript" src="../js/ckeditor/ckeditor.js"></script>'.PHP_EOL;
 }
 if (Pages::get('use_fckeditor') != 1) {
-    echo ' '.get_vocab('description complete2');
+    echo ' '.get_vocab('description_complete2');
 }
 if (Settings::get('use_fckeditor') == 1) {
     echo '<textarea class="ckeditor" id="editor1" name="CGU" rows="20" cols="120">'.PHP_EOL;

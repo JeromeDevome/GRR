@@ -3,7 +3,7 @@
  * admin_config_ldap.php
  * Interface permettant la configuration de l'accès à un annuaire LDAP
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-07-27 16:29$
+ * Dernière modification : $Date: 2023-10-14 12:08$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -502,7 +502,7 @@ else if ($etape == 0)
         echo "<td><input class=\"form-control\" type=\"text\" name=\"ldap_champ_email\" value=\"".htmlentities( Settings::get("ldap_champ_email"))."\" size=\"20\" /></td>";
         echo "</tr></table>";
         echo "<br /><br />".encode_message_utf8(get_vocab('ldapSE3Expl'));
-        echo "<br />\n<input class=\"form-control\" type=\"text\" name=\"se3_liste_groupes_autorises\" value=\"".htmlentities( Settings::get("se3_liste_groupes_autorises"))."\" size=\"50\" />\n";
+        echo "<br />\n<input class=\"form-control\" type=\"text\" name=\"se3_liste_groupes_autorises\" value=\"".clean_input( Settings::get("se3_liste_groupes_autorises"))."\" size=\"50\" />\n";
         echo "</div>\n";
         echo "<div class=\"center\">\n<input class=\"btn btn-primary\" type=\"submit\" name=\"Valider1\" value=\"".get_vocab('OK')."\" />\n</div>\n";
     }

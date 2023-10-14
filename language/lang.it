@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2023-10-12
+# Last modification : 2023-10-14
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -229,7 +229,7 @@ $vocab['causes_possibles'] = "Cause possibili :";
 $vocab['Cette_journee_ne_correspond_pas_a_un_jour_cycle'] = "Cette journée ne correspond pas à un jour cycle"; // A traduire
 $vocab['cgu'] = "CGU"; // A traduire
 $vocab['cgu_titre'] = "CGU : Condition Générale d'Utilisation"; // A traduire
-$vocab['cgu_grr'] = "Vous pouvez modifier la page CGU. Vous êtes responsable du contenu.<br>Pour informations légales de GRR :<ul><li>Ni GRR, ni les developpeur sont responsables du contenu</li><li>GRR est un logiciel Open Source sous la licence GPL</li><li>Aucune donnée n'est récupéré de votre GRR par l'éditeur</li><li>Les mots de passe des utilisateurs sont cryptés</li><li>Les informations personnels des utilisateurs sont limités au nom, prénom et adresse email</li></ul>"; // A traduire
+$vocab['cgu_grr'] = "È possibile modificare la pagina CGU. Sei responsabile del contenuto.<br>Per informazioni legali da GRR: <ul><li>Né GRR né gli sviluppatori sono responsabili per il contenuto</li><li>GRR è un software Open Source con licenza GPL</ / li><li>Nessun dato viene recuperato dal tuo GRR dall'editore</li><li>Le password degli utenti sono crittografate</li><li>Le informazioni personali dell'utente sono limitate a nome, cognome e indirizzo email, disponibili sul sito Pagina \"Mio conto\"</li></ul>.";
 $vocab['champs_non_remplis'] = "Tous les champs n'ont pas été remplis."; // A traduire
 $vocab['champ_confidentiel'] = "Champ confidentiel"; // A traduire
 $vocab['champ_obligatoire'] = "Riempimento obbligatorio";

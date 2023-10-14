@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2023-10-12
+# Last modification : 2023-10-14
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -226,7 +226,7 @@ $vocab['causes_possibles'] = "Causas posibles:";
 $vocab['Cette_journee_ne_correspond_pas_a_un_jour_cycle'] = "Este día no corresponde a un día ciclo";
 $vocab['cgu'] = "CGU"; // A traduire
 $vocab['cgu_titre'] = "CGU : Condition Générale d'Utilisation"; // A traduire
-$vocab['cgu_grr'] = "Vous pouvez modifier la page CGU. Vous êtes responsable du contenu.<br>Pour informations légales de GRR :<ul><li>Ni GRR, ni les developpeur sont responsables du contenu</li><li>GRR est un logiciel Open Source sous la licence GPL</li><li>Aucune donnée n'est récupéré de votre GRR par l'éditeur</li><li>Les mots de passe des utilisateurs sont cryptés</li><li>Les informations personnels des utilisateurs sont limités au nom, prénom et adresse email</li></ul>"; // A traduire
+$vocab['cgu_grr'] = "Puede modificar la página Términos y condiciones. Usted es responsable del contenido.<br>Para información legal de GRR: <ul><li>Ni GRR ni los desarrolladores son responsables del contenido</li><li>GRR es software de código abierto bajo licencia GPL</li><li>El editor no recupera datos de su GRR</li><li>Las contraseñas de usuario están cifradas</li><li>La información personal del usuario se limita al nombre, nombre de pila y dirección de correo electrónico, disponibles en la página \"Administrar mi cuenta\"</li></ul>";
 $vocab['champs_non_remplis'] = "Tous les champs n'ont pas été remplis."; // A traduire
 $vocab['champ_confidentiel'] = "Campo confidencial";
 $vocab['champ_obligatoire'] = "Relleno obligatorio";
@@ -333,7 +333,7 @@ $vocab['depot_grr_officiel'] = "Repositorio GRR Officiel en Github";
 $vocab['derniere_version_publiee'] = "Última versión lanzada";
 $vocab['description'] = "Descripción :";
 $vocab['description_complete'] = "Descripción completa (visible en la ficha de presentación)";
-$vocab['description complete2'] = " Usted puede utilizar balizas HTML";
+$vocab['description_complete2'] = " Usted puede utilizar balizas HTML";
 $vocab['deux_points'] = " : ";
 $vocab['disable_login_off'] = "Activar las conexiones";
 $vocab['disable_login_on'] = "Desactivar las conexiones";

@@ -3,7 +3,7 @@
  * admin_config11.php
  * Interface permettant à l'administrateur la configuration de paramètres généraux présentant le site GRR
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2023-10-10 17:23$
+ * Dernière modification : $Date: 2023-10-14 12:08$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -463,7 +463,7 @@ if (Settings::get('use_fckeditor') == 1) {
 echo '<h3>'.get_vocab('message_perso').'</h3>'.PHP_EOL;
 echo '<p>'.get_vocab('message_perso_explain').PHP_EOL;
 if (Settings::get('use_fckeditor') != 1) {
-    echo ' '.get_vocab('description complete2');
+    echo ' '.get_vocab('description_complete2');
 }
 if (Settings::get('use_fckeditor') == 1) {
     echo '<textarea id="editor1" name="message_accueil" rows="8" cols="120">'.PHP_EOL;

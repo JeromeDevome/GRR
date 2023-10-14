@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2023-10-13
+# Last modification : 2023-10-14
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -339,7 +339,7 @@ $vocab['depot_grr_officiel'] = "GRR Officiel Github repository";
 $vocab['derniere_version_publiee'] = "Latest released version";
 $vocab['description'] = "Description:";
 $vocab['description_complete'] = "Full description (visible in the presentation card)";
-$vocab['description complete2'] = " You can use HTML markers";
+$vocab['description_complete2'] = " You can use HTML markers";
 $vocab['deux_points'] = ": ";
 $vocab['disable_login_off'] = "Activate connections";
 $vocab['disable_login_on'] = "Disable connections";
