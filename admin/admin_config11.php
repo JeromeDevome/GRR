@@ -3,7 +3,7 @@
  * admin_config11.php
  * Interface permettant à l'administrateur la configuration de paramètres généraux présentant le site GRR
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2023-10-14 12:08$
+ * Dernière modification : $Date: 2023-10-14 15:14$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -71,13 +71,15 @@ if (isset($_POST['webmaster_name'])) {
     }
 }
 if (isset($_POST['webmaster_email'])) {
-    if (!Settings::set('webmaster_email', $_POST['webmaster_email'])) {
+    $emails = filter_multi_emails($_POST['webmaster_email']);
+    if (!Settings::set('webmaster_email', $emails)) {
         echo $vocab['save_err']." webmaster_email !<br />";
         die();
     }
 }
 if (isset($_POST['technical_support_email'])) {
-    if (!Settings::set('technical_support_email', $_POST['technical_support_email'])) {
+    $emails = filter_multi_emails($_POST['technical_support_email']);
+    if (!Settings::set('technical_support_email', $emails)) {
         echo $vocab['save_err']." technical_support_email !<br />";
         die();
     }
@@ -349,14 +351,14 @@ echo '</div>'.PHP_EOL;
 echo '<div class="form-group col-xs-12">'.PHP_EOL;
 echo '<label class="col col-sm-4 col-xs-12" for="webmaster_email">'.get_vocab('webmaster_email').'</label>'.PHP_EOL;
 echo '<div class="col col-sm-8 col-xs-12 control-label">'.PHP_EOL;
-echo '<input class="form-control" type="email" name="webmaster_email" id="webmaster_email" size="40" value="'.Settings::get('webmaster_email').'" />'.PHP_EOL;
+echo '<input class="form-control" type="text" name="webmaster_email" id="webmaster_email" size="40" value="'.Settings::get('webmaster_email').'" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '<p><em>'.get_vocab('plusieurs_adresses_separees_points_virgules').'</em></p>'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '<div class="form-group col-xs-12">'.PHP_EOL;
 echo '<label class="col col-sm-4 col-xs-12" for="technical_support_email">'.get_vocab('technical_support_email').'</label>'.PHP_EOL;
 echo '<div class="col col-sm-8 col-xs-12 control-label">'.PHP_EOL;
-echo '<input class="form-control" type="email" name="technical_support_email" id="technical_support_email" size="40" value="'.Settings::get('technical_support_email').'" />'.PHP_EOL;
+echo '<input class="form-control" type="text" name="technical_support_email" id="technical_support_email" size="40" value="'.Settings::get('technical_support_email').'" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 echo '<p><em>'.get_vocab('plusieurs_adresses_separees_points_virgules').'</em></p>'.PHP_EOL;
 echo '</div>'.PHP_EOL;

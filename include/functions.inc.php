@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-10-02 10:59$
+ * Dernière modification : $Date: 2023-10-14 15:14$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4669,6 +4669,19 @@ function validate_email ($email)
         $regex2 = '/^' . $atom . '+' . '(\.' . $atom . '+)*' . '@' . 'localhost/i';
         return preg_match($regex2, $email);
     }
+}
+/** filter_multi_emails($email_sequence)
+ * extrait de la suite $email_sequence les adresses mail valables et les range dans une suite séparée par des ;
+*/
+function filter_multi_emails($es){
+    $ea = explode(';',$es);
+    $out = "";
+    foreach($ea as $addr){
+        if (validate_email($addr))
+            $out.=$addr.";";
+    }
+    $out = rtrim($out,";");
+    return $out;
 }
 /** grrDelOverloadFromEntries()
  * Supprime les données du champ $id_field de toutes les réservations
