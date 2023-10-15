@@ -6460,7 +6460,7 @@ function display_mail_msg()
 function clean_input($data){
     $data = trim($data);
     $data = stripslashes($data);
-    $data = htmlentities($data,ENT_QUOTES|ENT_SUBSTITUTE|ENT_HTML5,"UTF-8");
+	$data = htmlspecialchars($data);
     return $data;
 }
 
