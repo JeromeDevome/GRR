@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-10-09 18:27$
+ * Dernière modification : $Date: 2023-10-17 10:53$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -6398,7 +6398,7 @@ function display_mail_msg()
 function clean_input($data){
     $data = trim($data);
     $data = stripslashes($data);
-    $data = htmlentities($data,ENT_QUOTES|ENT_SUBSTITUTE|ENT_HTML5,"UTF-8");
+    $data = htmlspecialchars($data);
     return $data;
 }
 
