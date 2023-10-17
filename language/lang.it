@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2023-10-14
+# Last modification : 2023-10-17
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -409,7 +409,7 @@ $vocab['error_chevauchement'] = "Attenzione, prenotazione impossibile,: gli inte
 $vocab['error_date_confirm_reservation'] = "dovete scegliere una data di conferma inferiore alla data di inizio di prenotazione.";
 $vocab['error_delais_max_resa_room'] = "Non siete autorizzati a riservare questa risorsa così a lungo in anticipo.";
 $vocab['error_delais_min_resa_room'] = "Non siete autorizzati a riservare questa risorsa o effettuare questa modifica: i tempo minimo di prenotazione di questa risorsa è superato.";
-$vocab['error_end_date'] = "Erreur dans la date de fin de réservation"; // A traduire
+$vocab['error_end_date'] = "Errore nella data di fine della prenotazione";
 $vocab['error_begin_end_date'] = "Erreur dans la date de début ou de fin de réservation"; // A traduire
 $vocab['error_duree_max_resa_area'] = "Vous n'êtes pas autorisé à réserver cette ressource aussi longtemps, veuillez réduire la durée de réservation ou contacter l'administrateur.<br /><br /><i>Durée maximale de la réservation : </i>"; // A traduire
 $vocab['error_exist_login'] = "*** Attenzione! Un utente avente lo stesso login esiste già. Registrazione impossibile! ***";

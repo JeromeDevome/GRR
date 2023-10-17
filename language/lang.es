@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2023-10-14
+# Last modification : 2023-10-17
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -410,7 +410,7 @@ $vocab['error_date_confirm_reservation'] = "Debe elegir una fecha de confirmaci�
 $vocab['error_delais_max_resa_room'] = "No se les autorizó a reservar este recurso con tanta anticipación.";
 $vocab['error_delais_min_resa_room'] = "No se les autorizó a reservar este recurso o a efectuar esta modificación : el plazo mínimo de reserva de este recurso pasó.";
 $vocab['error_duree_max_resa_area'] = "No está autorizado a reservar este recurso con tanta anticipación, por favor reduzca la duración de reserva o contactar el administrador.<br /><br /><i>Duración máxima de la reserva: </i>";
-$vocab['error_end_date'] = "Erreur dans la date de fin de réservation"; // A traduire
+$vocab['error_end_date'] = "Error en la fecha de finalización de la reserva";
 $vocab['error_begin_end_date'] = "Erreur dans la date de début ou de fin de réservation"; // A traduire
 $vocab['error_exist_login'] = "***¡Cuidado! Ya existe un usuario que usa la misma clave de acceso . ¡Registro imposible! ***";
 $vocab['error_heure_debut_fin'] = "Attention, réservation impossible : l'heure de début ou l'heure de fin de réservation est en dehors des créneaux autorisés."; // A traduire

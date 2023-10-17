@@ -3,7 +3,7 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-10-13 10:16$
+ * Dernière modification : $Date: 2023-10-17 18:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -414,7 +414,7 @@ if ((isset($user_login)) && ($user_login != ''))
     $res_room = grr_sql_query($req_room);
     if ($res_room && grr_sql_count($res_room)>0){
         $html_privileges .= "<h3>".get_vocab('user_can_book')."</h3><ul>";
-        while($room = mysqli_fetch_array($res_room)){
+        foreach($res_room as $room){
             $html_privileges .= "<li>".$room['room_name']." (".$room['id'].") </li>";
         }
         $html_privileges .= "</ul>";

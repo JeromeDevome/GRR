@@ -3,9 +3,9 @@
  * view_rights_room.php
  * Liste des privilèges d'une ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-02 11:31$
+ * Dernière modification : $Date: 2023-10-17 18:19$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -135,7 +135,7 @@ if ($row['who_can_book'] == 0){// la ressource est à accès restreint
     $res = grr_sql_query($req);
     $can_book = '';
     if ($res){
-        while($user = mysqli_fetch_array($res)){
+        foreach($res as $user){
             $can_book .= $user['nom']." ".$user['prenom']." (".$user['login'].")<br />";
         }
     }
