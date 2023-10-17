@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2023-08-24 10:30$
+ * Dernière modification : $Date: 2023-10-17 16:39$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -161,7 +161,7 @@ function mrbsDelEntry($user, $id, $series, $all)
 	$removed = 0;
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-		if (!getWritable($row[0], $user, $id))
+		if (!getWritable($user, $id))
 			continue;
 		if (!verif_booking_date($user, $row[1], $id_room, "", $date_now, $enable_periods, ""))
 			continue;
@@ -412,7 +412,7 @@ function grrExtractValueFromOverloadDesc($chaine,$id)
  * $name        - Name
  * $type        - Type (Internal/External)
  * $description - Description
- *$rep_jour_c - Le jour cycle d'une réservation, si aucun 0
+ * $rep_jour_c - Le jour cycle d'une réservation, si aucun 0
  *
  * Returns:
  *   0        - An error occured while inserting the entry
@@ -743,7 +743,7 @@ function mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate
 function mrbsGetEntryInfo($id)
 {
 	$sql = "SELECT start_time, end_time, entry_type, repeat_id, room_id,
-	timestamp, beneficiaire, name, type, description
+	timestamp, beneficiaire, name, type, description, moderate
 	FROM ".TABLE_PREFIX."_entry
 	WHERE id = '".$id."'";
 	$res = grr_sql_query($sql);
@@ -765,6 +765,7 @@ function mrbsGetEntryInfo($id)
 		$ret["name"]        = $row[7];
 		$ret["type"]        = $row[8];
 		$ret["description"] = $row[9];
+        $ret['moderate']    = $row[10];
 	}
 	grr_sql_free($res);
 	return $ret;
