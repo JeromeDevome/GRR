@@ -1,9 +1,9 @@
 <?php
 /**
  * admin_edit_room.php
- * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
+ * Interface de creation/modification des domaines et ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-08-17 17:32$
+ * Dernière modification : $Date: 2023-10-18 10:28$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -291,7 +291,7 @@ if ((!empty($room)) || (isset($area_id)))
 			statut_room='".$statut_room."'";
 			if (grr_sql_command($sql) < 0)
 				fatal_error(1, "<p>" . grr_sql_error());
-			$room = mysqli_insert_id($GLOBALS['db_c']);
+			$room = grr_sql_insert_id();
 		}
 		#Si room_name est vide on le change maintenant que l'on a l'id room
 		if ($room_name == '')

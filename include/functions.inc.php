@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-10-14 15:14$
+ * Dernière modification : $Date: 2023-10-18 11:26$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -3283,7 +3283,7 @@ function auth_visiteur($user,$id_room)
 	$res = grr_sql_query("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login ='".protect_data_sql($user)."'");
 	if (!$res || grr_sql_count($res) == 0)
 		return 0;
-	$status = mysqli_fetch_row($res);
+	$status = grr_sql_row($res,0);
 	if (strtolower($status[0]) == 'visiteur')
 	{
 		if ((in_array($id_room,$id_room_autorise)) && ($id_room_autorise != ""))
@@ -3855,7 +3855,7 @@ function no_book_rooms($user){
     $rooms = grr_sql_query($sql);
     if (!$rooms)
         fatal_error(0,grr_sql_error());
-    while($room = mysqli_fetch_array($rooms)){
+    foreach($rooms as $room){
         $auth_level = authGetUserLevel($user,$room['id']);
         if ($auth_level < $room['who_can_see'])
             $rooms_no_book[] = $room['id'];

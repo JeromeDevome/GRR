@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-10-14 11:51$
+ * Dernière modification : $Date: 2023-10-18 11:54$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -32,8 +32,8 @@ else {
 }
 include "../include/config.inc.php";
 include "../include/misc.inc.php";
-include "../include/functions.inc.php";
 include "../include/$dbsys.inc.php";
+include "../include/functions.inc.php";
 
 // Settings
 require_once("../include/settings.class.php");

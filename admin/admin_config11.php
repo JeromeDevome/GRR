@@ -3,7 +3,7 @@
  * admin_config11.php
  * Interface permettant à l'administrateur la configuration de paramètres généraux présentant le site GRR
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2023-10-14 15:14$
+ * Dernière modification : $Date: 2023-10-18 11:48$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -239,8 +239,8 @@ if (isset($_POST['begin_day']) && isset($_POST['begin_month']) && isset($_POST['
         $begin_day--;
     }
     $begin_bookings = mktime(0, 0, 0, $begin_month, $begin_day, $begin_year);
-    $test_del1 = mysqli_num_rows(mysqli_query($GLOBALS['db_c'], 'SELECT * FROM '.TABLE_PREFIX."_entry WHERE (end_time < '$begin_bookings' )"));
-    $test_del2 = mysqli_num_rows(mysqli_query($GLOBALS['db_c'], 'SELECT * FROM '.TABLE_PREFIX."_repeat WHERE (end_date < '$begin_bookings')"));
+    $test_del1 = grr_sql_count(grr_sql_query('SELECT * FROM '.TABLE_PREFIX."_entry WHERE (end_time < '$begin_bookings' )"));
+    $test_del2 = grr_sql_count(grr_sql_query('SELECT * FROM '.TABLE_PREFIX."_repeat WHERE (end_date < '$begin_bookings' )"));
     if (($test_del1 != 0) || ($test_del2 != 0)) {
         $demande_confirmation = 'yes';
     } else {
@@ -260,8 +260,8 @@ if (isset($_POST['begin_day']) && isset($_POST['begin_month']) && isset($_POST['
         if ($end_bookings < $begin_bookings) {
             $end_bookings = $begin_bookings;
         }
-        $test_del1 = mysqli_num_rows(mysqli_query($GLOBALS['db_c'], 'SELECT * FROM '.TABLE_PREFIX."_entry WHERE (start_time > '$end_bookings' )"));
-        $test_del2 = mysqli_num_rows(mysqli_query($GLOBALS['db_c'], 'SELECT * FROM '.TABLE_PREFIX."_repeat WHERE (start_time > '$end_bookings')"));
+        $test_del1 = grr_sql_count(grr_sql_query('SELECT * FROM '.TABLE_PREFIX."_entry WHERE (start_time > '$end_bookings')"));
+        $test_del2 = grr_sql_count(grr_sql_query('SELECT * FROM '.TABLE_PREFIX."_repeat WHERE (start_time > '$end_bookings')"));
         if (($test_del1 != 0) || ($test_del2 != 0)) {
             $demande_confirmation = 'yes';
         } else {

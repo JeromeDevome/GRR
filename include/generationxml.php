@@ -3,9 +3,9 @@
  * generationxml.php
  *
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-22 15:30$
+ * Dernière modification : $Date: 2023-10-18 11:06$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -22,11 +22,10 @@ $result = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_entry WHERE end_time > '
 $export = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"; 
 $export="<RESERVATIONS>";
 
-while($row = mysqli_fetch_array($result)){
-
-
-	$beneficiaire = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".protect_data_sql($row['beneficiaire'])."';");
-	$beneficiaire = mysqli_fetch_array($beneficiaire);
+foreach($result as $row){
+    if($row['beneficiaire'] != ''){
+        $beneficiaire = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".protect_data_sql($row['beneficiaire'])."';");
+        $beneficiaire = grr_sql_row_keyed($beneficiaire,0);
 
 		$export.="<RESERVATION>";
 
@@ -43,7 +42,7 @@ while($row = mysqli_fetch_array($result)){
 			$export.="<DEPART>{$depart}</DEPART>";
 
 		$export.="</RESERVATION>";
-	
+	}
 }
 $export.="</RESERVATIONS>";
 

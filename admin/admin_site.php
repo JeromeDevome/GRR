@@ -3,9 +3,9 @@
  * admin_site.php
  * Interface d'accueil de Gestion des sites de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:38$
+ * Dernière modification : $Date: 2023-10-18 10:43$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -141,8 +141,6 @@ function create_site($id_site)
                     echo '<div class="avertissement">'.get_vocab('duplicate_sitecode_name').'</div>';
                 }
             }
-            else 
-                mysqli_insert_id($GLOBALS['db_c']);
 		}
 		// On affiche le tableau des sites
 		read_sites();
@@ -304,8 +302,6 @@ function update_site($id)
                     echo '<div class="avertissement">'.get_vocab('duplicate_sitecode_name').'</div>';
                 }
             }
-            else 
-                mysqli_insert_id($GLOBALS['db_c']);
         }
         // On affiche le tableau des sites
         read_sites();

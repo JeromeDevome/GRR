@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2023-08-24 11:44$
+ * Dernière modification : $Date: 2023-10-18 11:17$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -644,10 +644,10 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
 			$tableFinale = array();
 			$sql = "SELECT * FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY >= '".$time2."' AND DAY <= '".$enddate."'";
             if (isset($rep_jours_c) && ($rep_jours_c != -1)) $sql.= " AND Jours = '".$rep_jour_c."'";
-			$result = mysqli_query($GLOBALS['db_c'], $sql);
+			$result = grr_sql_query($sql);
             if ($result){
                 $kk = 0;
-                while ($table = mysqli_fetch_array($result))
+                foreach($result as $table)
                 {
                     $day   = date("d", $table['DAY']);
                     $month = date("m", $table['DAY']);
