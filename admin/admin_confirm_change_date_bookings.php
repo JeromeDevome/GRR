@@ -3,7 +3,7 @@
  * admin_confirm_change_date_bookings.php
  * interface de confirmation des changements de date de début et de fin de réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-20 15:21$
+ * Dernière modification : $Date: 2023-10-14 14:36$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -46,11 +46,11 @@ if (isset($_GET['valid']) && ($_GET['valid'] == "yes"))
 		$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE (start_time > ".Settings::get('end_bookings').")");
 		$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_calendar WHERE DAY > ".Settings::get("end_bookings"));
 	}
-	header("Location: ./admin_config1.php");
+	header("Location: ./admin_config11.php");
 
 }
 else if (isset($_GET['valid']) && ($_GET['valid'] == "no"))
-	header("Location: ./admin_config1.php");
+	header("Location: ./admin_config11.php");
 # print the page header
 start_page_w_header("", "", "", $type="with_session");
 echo "<div class='container'>";

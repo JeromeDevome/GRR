@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-04-23 11:39$
+ * Dernière modification : $Date: 2023-10-18 11:54$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -32,19 +32,14 @@ else {
 }
 include "../include/config.inc.php";
 include "../include/misc.inc.php";
-include "../include/functions.inc.php";
 include "../include/$dbsys.inc.php";
+include "../include/functions.inc.php";
 
 // Settings
 require_once("../include/settings.class.php");
 //Chargement des valeurs de la table settingS
 if (!Settings::load())
     die("Erreur chargement settings");
-// Session related functions
-require_once("../include/session.inc.php");
-// Paramètres langage
-include "../include/language.inc.php";
-
 
 function formatResult($echo,$dbt,$fin) {
     global $majscript;
@@ -110,6 +105,15 @@ if (defined('STDIN')&&isset($argv[1])&&$argv[1]==$apikey) {
 
     // On valide dans une execution script
     $valid = 'yes';
+}
+
+// si pas en mode script, vérifier que la session est ouverte
+if(!$majscript){
+    // Session related functions
+    require_once("../include/session.inc.php");
+    require_once("../include/resume_session.php");
+    // Paramètres langage
+    include "../include/language.inc.php";
 }
 
 if (isset($_GET["force_maj"]))
@@ -952,7 +956,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
         // conversion de la valeur par défaut des champs START et END de la table grr_log (ne devrait être utile que pour des bases converties depuis d'anciennes versions)
         $result .= formatResult("Mise à jour de la table grr_log:","<b>","</b>");
         $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_log` CHANGE `START` `START` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00', CHANGE `END` `END` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00';");
-        $result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET `ConvertLdapUtf8toIso` = 'n' WHERE ConvertLdapUtf8toIso = 'y';");
+        $result_inter .= traiteRequete("UPDATE `".TABLE_PREFIX."_setting` SET `VALUE` = 'n' WHERE `grr_setting`.`NAME` = 'ConvertLdapUtf8toIso';");
         if ($result_inter == '')
             $result .= formatResult("Ok !","<span style='color:green;'>","</span>");
         else
@@ -1114,13 +1118,36 @@ if(!$majscript) {
 	echo "Time : " .time()."\n";
 	echo "Date du serveur (Jour-Mois-Annee) : " .date('d-m-Y').". Heure : ".date("H:i")."\n";
 	echo "Timezone (date_default_timezone_set) : ".date_default_timezone_get()."\n";
-
 	echo "</textarea>";
 	echo "<hr><h3>".get_vocab("maj_recherche_grr")."</h3>";
 }
 
-// Recherche mise à jour sur serveur GRR
-if($recherche_MAJ == 1)
+// Recherche mise à jour sur dépôt Github JeromeDevome/GRR/
+if($recherche_MAJ == 1){
+$url = "https://api.github.com/repos/JeromeDevome/GRR/releases/latest";
+$opts = [
+        'http' => [
+                'method' => 'GET',
+                'header' => [
+                        'User-Agent: PHP'
+                ]
+        ]
+];
+
+$ctx = stream_context_create($opts);
+
+$json = @file_get_contents( $url, 0, $ctx );
+if($json != FALSE){
+    $tag_desc = json_decode($json);
+    $tag_name = $tag_desc->tag_name;
+    $tag_pub = $tag_desc->published_at;
+    $pos = strpos($tag_pub,'T');
+    $tag_date = substr($tag_pub,0,$pos);
+    echo get_vocab('derniere_version_publiee').get_vocab('deux_points').$tag_name.get_vocab('le').$tag_date."<br>";
+    echo "<a href='https://github.com/JeromeDevome/GRR/releases' >".get_vocab('depot_grr_officiel')."</a><br/>";
+}
+}
+/*if($recherche_MAJ == 1)
 {
     $fichier = $grr_devel_url.'versiongrr.xml';
     
@@ -1161,9 +1188,10 @@ if($recherche_MAJ == 1)
 } 
 elseif(!$majscript) {
     "<p>".get_vocab("maj_impossible_rechercher")."</p>\n";
-}
+}*/
 if(!$majscript) {
-    echo "<p>".get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a></p>\n";
+    //echo "<p>".get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a></p>\n";
+    echo "<p>"."Le site web de GRR :"."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a></p>\n";
     echo "<hr />\n";
 
     // Mise à jour de la base de donnée

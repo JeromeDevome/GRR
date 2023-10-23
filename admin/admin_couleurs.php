@@ -3,9 +3,9 @@
  * admin_couleurs.php
  * Interface permettant à l'administrateur la personnalisation de certaines couleurs
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2020-04-29 12:00$
+ * Dernière modification : $Date: 2023-10-12 16:28$
  * @author    Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -235,14 +235,14 @@ echo '<p>'.get_vocab('admin_couleurs_explications').'</p>';
 echo "<form action='./admin_couleurs.php' method='post'>";
 // page_header
 echo '<p><b><span id="testPageHeader" class="larger">'.get_vocab('page_header').'</span></b>
-        <label for="header_text">'.get_vocab('text').'</label>
+        <label for="headerfg">'.get_vocab('text').'</label>
         <input name="header_text" id="headerfg" value="'.$c['header_text'].'" size="7">
 
-        <label for="header_bgcolor">'.get_vocab('bgcolor').'</label>
+        <label for="headerbg">'.get_vocab('bgcolor').'</label>
         <input name="header_bgcolor" id="headerbg" value="'.$c['header_bgcolor'].'" size="7">
     ';
 echo '&nbsp;<b><span id="testPageHeaderHover" class="larger">'.get_vocab('page_header_hover').'</span></b>
-        <label for="header_hover">'.get_vocab('hover_text').'</label>
+        <label for="headerho">'.get_vocab('hover_text').'</label>
         <input name="header_hover" id="headerho" value="'.$c['header_hover'].'" size="7">
     ';
 echo '</p>';

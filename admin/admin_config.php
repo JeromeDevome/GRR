@@ -3,9 +3,9 @@
  * admin_config.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 12:02$
+ * Dernière modification : $Date: 2023-10-13 11:18$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -26,7 +26,7 @@ $year  = date("Y");
 check_access(6, $back);
 $page_config = isset($_GET["page_config"]) ? $_GET["page_config"] : '1';
 if ($page_config == 1)
-	include "./admin_config1.php";
+	include "./admin_config11.php";
 else if ($page_config == 2)
 	include "./admin_config2.php";
 else if ($page_config == 3)

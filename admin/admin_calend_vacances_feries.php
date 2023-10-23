@@ -3,7 +3,7 @@
  * admin_calend_vacances_feries.php
  * Interface permettant la définiton des jours fériés ou de vacances
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-23 15:33$
+ * Dernière modification : $Date: 2023-10-12 18:43$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -39,15 +39,15 @@ else if (!isset($_POST['define_holidays'])){
     # bascule entre vacances et jours fériés
     echo '<form action="admin_calend_vacances_feries.php" method="POST" name="bascule">';
     echo '<div>'.PHP_EOL;
-    echo '<p>'.'<input type="submit" value="Définir">'.'&nbsp;';
+    echo '<p>'.'<input type="submit" value="'.get_vocab('Definir').'">'.'&nbsp;';
     echo "<input type='radio' name='define_holidays' value='F' ";
     if ((!isset($_POST['define_holidays']))||($_POST['define_holidays']=='Oui')){
         echo 'checked="checked"';
     }
     echo " />".PHP_EOL;
-    echo " les jours fériés".'&nbsp;'.PHP_EOL;
+    echo get_vocab("les_jours_feries").'&nbsp;'.PHP_EOL;
     echo "<input type='radio' name='define_holidays' value='V' />".PHP_EOL;
-    echo " les vacances"."&nbsp;".PHP_EOL;
+    echo get_vocab("les_vacances")."&nbsp;".PHP_EOL;
     echo "</p></div>";
     echo '</form>';
     }

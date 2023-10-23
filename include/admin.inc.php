@@ -3,9 +3,9 @@
  * admin.inc.php
  *
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2023-10-18 16:23$
  * @author    JeromeB & Laurent Delineau
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -24,10 +24,10 @@ if (@file_exists('../include/connect.inc.php')){
 
 include $racine."include/connect.inc.php";
 include $racine."include/config.inc.php";
-include $racine."include/mrbs_sql.inc.php";
 include $racine."include/misc.inc.php";
-include $racine."include/functions.inc.php";
 include $racine."include/$dbsys.inc.php";
+include $racine."include/mrbs_sql.inc.php";
+include $racine."include/functions.inc.php";
 
 // Settings
 require_once($racine."include/settings.class.php");
