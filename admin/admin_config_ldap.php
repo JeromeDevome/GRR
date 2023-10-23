@@ -3,7 +3,7 @@
  * admin_config_ldap.php
  * Interface permettant la configuration de l'accès à un annuaire LDAP
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-28 17:04$
+ * Dernière modification : $Date: 2023-10-14 12:08$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -189,7 +189,7 @@ else
 }
 if ($etape == 3)
 {
-    echo '<div class="col-sm-9 col-xs-12">';
+    echo '<div class="col col-sm-9 col-xs-12">';
     echo "<h2>".get_vocab('titreLdap')."</h2>\n";
     echo "<h2>".encode_message_utf8(get_vocab('enregistrerConfig'))."</h2>\n";
     if (!$base_ldap)
@@ -288,7 +288,7 @@ if ($etape == 3)
 }
 else if ($etape == 2)
 {
-    echo '<div class="col-sm-9 col-xs-12">';
+    echo '<div class="col col-sm-9 col-xs-12">';
     echo "<h2>".get_vocab('titreLdap')."</h2>\n";
     echo "<h2>".encode_message_utf8(get_vocab('ldapConnexion'))."</h2>\n";
     // Connexion à l'annuaire
@@ -396,7 +396,7 @@ else if ($etape == 1)
     }
     else if (@file_exists("../include/config_ldap.inc.php"))
         include("../include/config_ldap.inc.php");
-    echo '<div class="col-sm-9 col-xs-12">';
+    echo '<div class="col col-sm-9 col-xs-12">';
     echo encode_message_utf8("<h2>".get_vocab('titreLdap')."</h2>\n");
     echo "<h2>".encode_message_utf8(get_vocab('ldapConnInfo'))."</h2>\n";
     echo "<form action=\"admin_config_ldap.php\" method=\"post\">\n";
@@ -449,7 +449,7 @@ else if ($etape == 0)
         echo encode_message_utf8("<p class=\"avertissement\">".get_vocab('LDAPinactive')."<br />".get_vocab('LDAPimpossible')."</p></div></section></body></html>");
         die();
     }
-    echo '<div class="col-sm-9 col-xs-12">';
+    echo '<div class="col col-sm-9 col-xs-12">';
     echo encode_message_utf8("<h2>".get_vocab('titreLdap')."</h2>\n");
     echo "<p>".encode_message_utf8(get_vocab('LDAPpossible'))."</p>";
     echo "<form action=\"admin_config_ldap.php\" method=\"post\">\n";
@@ -502,7 +502,7 @@ else if ($etape == 0)
         echo "<td><input class=\"form-control\" type=\"text\" name=\"ldap_champ_email\" value=\"".htmlentities( Settings::get("ldap_champ_email"))."\" size=\"20\" /></td>";
         echo "</tr></table>";
         echo "<br /><br />".encode_message_utf8(get_vocab('ldapSE3Expl'));
-        echo "<br />\n<input class=\"form-control\" type=\"text\" name=\"se3_liste_groupes_autorises\" value=\"".htmlentities( Settings::get("se3_liste_groupes_autorises"))."\" size=\"50\" />\n";
+        echo "<br />\n<input class=\"form-control\" type=\"text\" name=\"se3_liste_groupes_autorises\" value=\"".clean_input( Settings::get("se3_liste_groupes_autorises"))."\" size=\"50\" />\n";
         echo "</div>\n";
         echo "<div class=\"center\">\n<input class=\"btn btn-primary\" type=\"submit\" name=\"Valider1\" value=\"".get_vocab('OK')."\" />\n</div>\n";
     }

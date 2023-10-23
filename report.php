@@ -3,9 +3,9 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-12-16 12:02$
+ * Dernière modification : $Date: 2023-07-27 16:25$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -413,7 +413,7 @@ $overload_fields = grrOverloadGetFieldslist("");
 if (($summarize != 4) && ($summarize != 5))
 {
     start_page_w_header($day, $month, $year, $type="with_session");
-	echo '<div class="col-xs-12"><h1 class="center">'.get_vocab("search report stats").'</h1>';
+	echo '<div class="col col-xs-12"><h1 class="center">'.get_vocab("search report stats").'</h1>';
 	echo '	<form method="get" action="report.php">';
 	// Si format imprimable ($_GET['pview'] = 1), on n'affiche pas le formulaire
 	if ($_GET['pview'] != 1)
@@ -421,7 +421,7 @@ if (($summarize != 4) && ($summarize != 5))
 		echo '<table>';
 		echo '<tr><td class="CR">'.get_vocab("report_start").get_vocab("deux_points").'</td>';
 		echo '<td class="CL">';
-		echo '<div class="col-xs-12">';
+		echo '<div class="col col-xs-12">';
         echo '  <div class="form-inline">';
 		genDateSelector("From_", $From_day, $From_month, $From_year,"");
 		echo '  </div>';
@@ -429,7 +429,7 @@ if (($summarize != 4) && ($summarize != 5))
 		echo '</td></tr>';
 		echo '<tr><td class="CR">'.get_vocab("report_end").get_vocab("deux_points").'</td>';
 		echo '<td class="CL">';
-		echo '<div class="col-xs-12">';
+		echo '<div class="col col-xs-12">';
 		echo '  <div class="form-inline">';
         genDateSelector("To_", $To_day, $To_month, $To_year,"");
 		echo '	</div>';
@@ -454,7 +454,7 @@ if (($summarize != 4) && ($summarize != 5))
 		$k = 0;
 		while ($k < $nb_ligne)
 		{
-			echo '<tr><td></td><td><div class="col-xs-12">'.PHP_EOL;
+			echo '<tr><td></td><td><div class="col col-xs-12">'.PHP_EOL;
 			echo '<div class="form-inline">'.PHP_EOL;
 			echo "<div class=\"form-group\"><select class=\"form-control\" name=\"champ[]\" size=\"1\">\n";
 			echo "<option value=''>".get_vocab("choose")."</option>\n";

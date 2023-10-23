@@ -3,9 +3,9 @@
  * admin_col_gauche2.php
  * colonne de gauche des écrans d'administration des sites, des domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-15 17:05$
+ * Dernière modification : $Date: 2023-07-27 16:27$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -119,7 +119,7 @@ if (Settings::get("sso_ac_corr_profil_statut") == 'y') {
     if ($authUserLevel >= 5) $liste[7][] = 'admin_corresp_statut.php';
 }
 // Affichage de la colonne de gauche
-echo '<div class="col-sm-3 col-xs-12">';
+echo '<div class="col col-sm-3 col-xs-12">';
 echo '<div class="panel-group" id="accordeon">';
 // affichage des sous-menus calculés
     $k = 1;

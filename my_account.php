@@ -3,9 +3,9 @@
  * my_account.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-10-08 10:21$
+ * Dernière modification : $Date: 2023-07-27 16:35$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -237,12 +237,12 @@ function menu_moi($user){
 	$html .= '<form class="form-horizontal" id="form_moi" action="my_account.php" method="post">';
     $html .= '<div class="form-group">';
     $html .= '<label class="control-label col-md-2 col-sm-3 col-xs-4" for="login">'.get_vocab('login').get_vocab('deux_points').'</label>';
-    $html .= '<div class="col-md-4 col-sm-6 col-xs-8">';
+    $html .= '<div class="col col-md-4 col-sm-6 col-xs-8">';
     $html .= '<input class="form-control" id="login" type="text" name="login" value="'.getUserName().'" size="30" disabled/>';
     $html .= '</div></div>';
     $html .= '<div class="form-group">';
     $html .= '<label class="control-label col-md-2 col-sm-3 col-xs-4" for="nom">'.get_vocab('last_name').get_vocab('deux_points').'*</label>';
-    $html .= '<div class="col-md-4 col-sm-6 col-xs-8">';
+    $html .= '<div class="col col-md-4 col-sm-6 col-xs-8">';
     $html .= '<input class="form-control" id="nom" type="text" name="reg_nom" value="';
     if ($user['nom'])
         $html .= htmlspecialchars($user['nom']);
@@ -253,7 +253,7 @@ function menu_moi($user){
     $html .= '</div>';
     $html .= '<div class="form-group">';
     $html .= '<label class="control-label col-md-2 col-sm-3 col-xs-4" for="prenom">'.get_vocab('first_name').get_vocab('deux_points').'*</label>';
-    $html .= '<div class="col-md-4 col-sm-6 col-xs-8">';
+    $html .= '<div class="col col-md-4 col-sm-6 col-xs-8">';
     $html .= '<input class="form-control" id="prenom" type="text" name="reg_prenom" value="';
     if ($user['prenom'])
         $html .= htmlspecialchars($user['prenom']);
@@ -264,7 +264,7 @@ function menu_moi($user){
     $html .= '</div>';
     $html .= '<div class="form-group">';
     $html .= '<label class="control-label col-md-2 col-sm-3 col-xs-4" for="email">'.get_vocab('mail_user').get_vocab('deux_points').'</label>';
-    $html .= '<div class="col-md-4 col-sm-6 col-xs-8">';
+    $html .= '<div class="col col-md-4 col-sm-6 col-xs-8">';
     $html .= '<input class="form-control" id="email" type="text" name="reg_email" value="';
     if ($user['email'])
         $html .= htmlspecialchars($user['email']);
@@ -285,7 +285,7 @@ function menu_moi($user){
 		$text_user_statut = $user['statut'];
     $html .= '<div class="form-group">';
     $html .= '<label class="control-label col-md-2 col-sm-3 col-xs-4" for="statut">'.get_vocab('statut').get_vocab('deux_points').'</label>';
-    $html .= '<div class="col-md-4 col-sm-6 col-xs-8">';
+    $html .= '<div class="col col-md-4 col-sm-6 col-xs-8">';
     $html .= '<input class="form-control" id="statut" type="text" name="reg_statut" value="'.$text_user_statut.'"';
     $html .= ' disabled size="30" /></div>';
     $html .= '</div>';
@@ -573,7 +573,7 @@ echo $divs['param'];
 		$resultat = grr_sql_query($sql);
 		echo '<div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-4" for="id_site">'.get_vocab('default_site').get_vocab('deux_points').'</label>
-				<div class="col-md-4 col-sm-6 col-xs-8">
+				<div class="col col-md-4 col-sm-6 col-xs-8">
                 <select class="form-control" id="id_site" name="id_site" for="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
 						<option value="-1">'.get_vocab('choose_a_site').'</option>'."\n";
 						for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); $enr++)
@@ -609,7 +609,7 @@ echo $divs['param'];
 	echo '<h4>'.get_vocab('explain_css').'</h4>';
 	echo '<div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-4" for="css">'.get_vocab('choose_css').'</label>
-				<div class="col-md-4 col-sm-6 col-xs-8">
+				<div class="col col-md-4 col-sm-6 col-xs-8">
 					<select class="form-control" name="default_css" id="css">'."\n";
 						$i = 0;
 						while ($i < count($liste_themes))
@@ -629,7 +629,7 @@ echo $divs['param'];
 	echo '      <h4>'.get_vocab('choose_language').'</h4>';
 	echo '<div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-4" for="lang">'.get_vocab('choose_css').'</label>
-            <div class="col-md-4 col-sm-6 col-xs-8">
+            <div class="col col-md-4 col-sm-6 col-xs-8">
                     <select class="form-control" name="default_language" id="lang">'."\n";
                         $i = 0;
                         while ($i < count($liste_language))
@@ -679,25 +679,25 @@ else {
             <form class="form-horizontal" id="form_pwd" action="my_account.php" method="post">
               <div class="form-group">
                 <label class="control-label col-md-4 col-sm-6 col-xs-8" for="opwd">'.get_vocab('old_pwd').get_vocab('deux_points').'</label>
-                <div class="col-md-3 col-sm-4 col-xs-6">
+                <div class="col col-md-3 col-sm-4 col-xs-6">
                 <input class="form-control" id="opwd" type="password" name="reg_password_a" size="20" required /></div>
               </div>
               <div class="form-group">
                 <label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd1">'.get_vocab('new_pwd1').get_vocab('deux_points').'</label>
-                <div class="col-md-3 col-sm-4 col-xs-6">
+                <div class="col col-md-3 col-sm-4 col-xs-6">
                 <input id="pwd1" class="form-control" type="password" name="reg_password1" size="20" 
                 onkeyup="runPassword(this.value, \'pwd1\');" required /></div>
               </div>
               <div class="form-group">
-                <div class="col-md-4 col-sm-6 col-xs-8"><p class="text-right">'.get_vocab('pwd_strength').get_vocab('deux_points').'</p></div>
-                <div class="col-md-3 col-sm-4 col-xs-6">
+                <div class="col col-md-4 col-sm-6 col-xs-8"><p class="text-right">'.get_vocab('pwd_strength').get_vocab('deux_points').'</p></div>
+                <div class="col col-md-3 col-sm-4 col-xs-6">
                   <div id="pwd1_text" style="font-size: 11px;"></div>
                   <div id="pwd1_bar" style="font-size: 1px; height: 3px; width: 0px; border: 1px solid white;"></div>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd2">'.get_vocab('new_pwd2').get_vocab('deux_points').'</label>
-                <div class="col-md-3 col-sm-4 col-xs-6">
+                <div class="col col-md-3 col-sm-4 col-xs-6">
                 <input class="form-control" id="pwd2" type="password" name="reg_password2" size="20" required /></div>
               </div>';
 	echo '<div id="fixe">

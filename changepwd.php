@@ -3,9 +3,9 @@
  * changepwd.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-10-08 09:58$
+ * Dernière modification : $Date: 2023-07-27 16:33$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -89,25 +89,25 @@ echo '  <p>'.get_vocab('pwd_msg_warning').'</p>
         <form class="form-horizontal" id="form_pwd" action="changepwd.php" method="post">
           <div class="form-group">
             <label class="control-label col-md-4 col-sm-6 col-xs-8" for="opwd">'.get_vocab('old_pwd').get_vocab('deux_points').'</label>
-            <div class="col-md-3 col-sm-4 col-xs-6">
+            <div class="col col-md-3 col-sm-4 col-xs-6">
             <input class="form-control" id="opwd" type="password" name="reg_password_a" size="20" required /></div>
           </div>
           <div class="form-group">
             <label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd1">'.get_vocab('new_pwd1').get_vocab('deux_points').'</label>
-            <div class="col-md-3 col-sm-4 col-xs-6">
+            <div class="col col-md-3 col-sm-4 col-xs-6">
             <input id="pwd1" class="form-control" type="password" name="reg_password1" size="20" 
             onkeyup="runPassword(this.value, \'pwd1\');" required /></div>
           </div>
           <div class="form-group">
-            <div class="col-md-4 col-sm-6 col-xs-8"><p class="text-right">'.get_vocab('pwd_strength').get_vocab('deux_points').'</p></div>
-            <div class="col-md-3 col-sm-4 col-xs-6">
+            <div class="col col-md-4 col-sm-6 col-xs-8"><p class="text-right">'.get_vocab('pwd_strength').get_vocab('deux_points').'</p></div>
+            <div class="col col-md-3 col-sm-4 col-xs-6">
               <div id="pwd1_text" style="font-size: 11px;"></div>
               <div id="pwd1_bar" style="font-size: 1px; height: 3px; width: 0px; border: 1px solid white;"></div>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd2">'.get_vocab('new_pwd2').get_vocab('deux_points').'</label>
-            <div class="col-md-3 col-sm-4 col-xs-6">
+            <div class="col col-md-3 col-sm-4 col-xs-6">
             <input class="form-control" id="pwd2" type="password" name="reg_password2" size="20" required /></div>
           </div>';
 echo '<div id="fixe">

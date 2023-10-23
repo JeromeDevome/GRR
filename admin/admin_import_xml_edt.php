@@ -3,7 +3,7 @@
  * admin_import_xml_edt.php
  * Importe un fichier de réservations au format xml issu du logiciel EDT Index Education
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-23 15:36$
+ * Dernière modification : $Date: 2023-10-13 11:17$
  * @author    JeromeB & Yan Naessens & Laurent Delineau
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -183,7 +183,7 @@ else { // les tests sont passés, on réserve
 }
 
 // fin du code de la colonne de droite
-// fermeture des balises ouvertes 
+// fermeture des balises ouvertes dans admin_col_gauche.php
 echo '</div></section></body></html>'; 
 
 function entre_reservation($room_id,$jour_semaine,$name,$description,

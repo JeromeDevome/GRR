@@ -3,9 +3,9 @@
  * admin_config4.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (sécurité, connexions)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-06-05 14:59$
+ * Dernière modification : $Date: 2023-07-27 16:28$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -84,7 +84,7 @@ if (isset($_GET['ok']))
 }
 // Affichage de la colonne de gauche
 include "admin_col_gauche2.php";
-echo '<div class="col-md-9 col-sm-8 col-xs-12">';
+echo '<div class="col col-md-9 col-sm-8 col-xs-12">';
 echo "<h2>".get_vocab('admin_config4.php')."</h2>";
 //
 // dans le cas de mysql, on propose une sauvegarde et l'ouverture de la base

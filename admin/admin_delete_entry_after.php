@@ -3,7 +3,7 @@
  * admin_delete_entry_after.php
  * Interface permettant à l'administrateur de supprimer des réservations après une date donnée
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-23 15:34$
+ * Dernière modification : $Date: 2023-10-23 17:22$
  * @author    JeromeB & Yan Naessens & Denis Monasse
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -83,7 +83,7 @@ if(isset($_POST['delete'])) {
     $day   = date("d");
     $month = date("m");
     $year  = date("Y"); //par défaut on propose la date du jour
-    echo '<div class="col-xs-12">'.PHP_EOL;
+    echo '<div class="col col-xs-12">'.PHP_EOL;
     echo '<div class="form-inline">'.PHP_EOL;
     genDateSelector('beg_', $day, $month, $year, 'more_years');
     echo '<input type="hidden" disabled="disabled" id="mydate_'.$typeDate.'">'.PHP_EOL;

@@ -3,9 +3,9 @@
  * admin_config3.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (interactivité)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 12:00$
+ * Dernière modification : $Date: 2023-07-27 16:27$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -208,7 +208,7 @@ if (isset($_POST['ok']))
 // Affichage de la colonne de gauche
 include "admin_col_gauche2.php";
 // colonne de droite
-echo '<div class="col-sm-9 col-xs-12">';
+echo '<div class="col col-sm-9 col-xs-12">';
 echo "<h2>".get_vocab('admin_config3.php')."</h2>";
 echo "<form action=\"./admin_config3.php\"  method=\"POST\" >\n";
 //

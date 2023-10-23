@@ -3,7 +3,7 @@
  * admin_import_entries_csv_udt.php
  * Importe un fichier de réservations au format csv 
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-22 15:36$
+ * Dernière modification : $Date: 2023-10-13 11:03$
  * @author    JeromeB & Yan Naessens & Denis Monasse & Laurent Delineau
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -203,17 +203,17 @@ $long_max = 8000;
         </p>";
     echo '<hr />';
     echo '<form enctype="multipart/form-data" action="./admin_import_entries_csv_udt.php" id="nom_formulaire" method="post">'.PHP_EOL;
-    echo '<label for="import">Fichier CSV</label>';
+    echo '<p><b>Fichier CSV</b>';
     echo '<input type="file" name="csv" />';
-    echo '<input type="hidden" name="import" id="import" value="1" />'.PHP_EOL;
-    echo '<p><br /><label for="mydate_beg_">Jour de début d\'importation : &nbsp;</label>';
+    echo '<input type="hidden" name="import" id="import" value="1" /></p>'.PHP_EOL;
+    echo '<p><br /><b>Jour de début d\'importation : &nbsp;</b>';
     $day   = date("d");
     $month = date("m");
     $year  = date("Y"); //par défaut on propose la date du jour
     genDateSelector('beg_', $day, $month, $year, 'more_years');
     echo '<input type="hidden" disabled="disabled" id="mydate_beg_">'.PHP_EOL;
     echo '</p>';
-    echo "<p><label for='mydate_end_'>Jour de fin d'importation : &nbsp;</label>";
+    echo "<p><b>Jour de fin d'importation : &nbsp;</b>";
             $day   = date("d");
             $month = date("m");
             $year  = date("Y"); //par défaut on propose la date du jour

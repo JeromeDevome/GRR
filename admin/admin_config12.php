@@ -3,7 +3,7 @@
  * admin_config12.php
  * Interface permettant à l'administrateur la configuration de certains paramètres d'affichage
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2023-05-20 15:05$
+ * Dernière modification : $Date: 2023-07-27 16:29$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -198,7 +198,7 @@ if (!empty($_POST)) // évite d'effacer les enregistrements lors du deuxième pa
             }
         }
     }
-    // Option peridodicite
+    // Option periodicite
     $option_periodicite = 'n';
     if (isset($_POST['periodicite']))
         $option_periodicite = 'y';
@@ -359,7 +359,7 @@ affiche_pop_up($msg, 'admin');
 // Affichage de la colonne de gauche
 include 'admin_col_gauche2.php';
 //echo "<p>".get_vocab('mess_avertissement_config')."</p>";
-echo '<div class="col-md-9 col-sm-8 col-xs-12">'; // colonne de droite
+echo '<div class="col col-md-9 col-sm-8 col-xs-12">'; // colonne de droite
 echo "<h2>".get_vocab('admin_config12.php')."</h2>";
 echo '<form action="./admin_config12.php" id="mainForm" method="post" >'.PHP_EOL;
 //
@@ -401,10 +401,10 @@ else
     echo('<h4>'.get_vocab('explain_default_area_and_room').'</h4>');
 // sélecteur de site
 if ($use_site) {
-    echo '<div id="div_liste_sites" class="col-xs-12">'.PHP_EOL;
+    echo '<div id="div_liste_sites" class="col col-xs-12">'.PHP_EOL;
     echo '<div class="form-group">'.PHP_EOL;
     echo '<label for="id_site" class="control-label col-md-3 col-sm-3 col-xs-4">'.get_vocab('default_site').get_vocab('deux_points').'</label>'.PHP_EOL;
-    echo '<div class="col-md-4 col-sm-6 col-xs-8">'.PHP_EOL;
+    echo '<div class="col col-md-4 col-sm-6 col-xs-8">'.PHP_EOL;
     echo '<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">'.PHP_EOL;
     echo '<option value="-1">'.get_vocab('choose_a_site').'</option>'.PHP_EOL;
     foreach ($Sites as $row) {
@@ -426,14 +426,14 @@ else {
 /*
  * Liste des domaines
  */
-echo '<div id="div_liste_domaines" class="col-xs-12">'.PHP_EOL;
+echo '<div id="div_liste_domaines" class="col col-xs-12">'.PHP_EOL;
 // Ici, on insère la liste des domaines avec de l'ajax !
 echo '</div>'.PHP_EOL;
 /*
  * Liste des ressources
  */
-echo '<div id="div_liste_ressources" class="col-xs-12">'.PHP_EOL;
-echo '<input class="form-control" type="hidden" id="id_area" name="id_area" value="'.Settings::get('default_area').'" />'.PHP_EOL;
+echo '<div id="div_liste_ressources" class="col col-xs-12">'.PHP_EOL;
+//echo '<input class="form-control" type="hidden" id="id_area" name="id_area" value="'.Settings::get('default_area').'" />'.PHP_EOL;
 // Ici, on insère la liste des ressouces avec de l'ajax !
 echo '</div>'.PHP_EOL;
 //
@@ -442,7 +442,7 @@ echo '</div>'.PHP_EOL;
 echo '<h4>'.get_vocab('explain_css').'</h4>'.PHP_EOL;
 echo '<div class="form-group col-xs-12" >'.PHP_EOL;
 echo '<label for="default_css" class="control-label col-sm-4 col-xs-12">'.get_vocab('choose_css').'</label>'.PHP_EOL;
-echo '<div class="col-sm-4 col-xs-12"><select class="form-control" name="default_css">'.PHP_EOL;
+echo '<div class="col col-sm-4 col-xs-12"><select class="form-control" name="default_css" id="default_css">'.PHP_EOL;
 $i = 0;
 while ($i < count($liste_themes)) {
     echo "<option value='".$liste_themes[$i]."'";
@@ -460,7 +460,7 @@ echo '</div>'.PHP_EOL;
 echo '<h4>'.get_vocab('choose_language').'</h4>'.PHP_EOL;
 echo '<div class="form-group col-xs-12" >'.PHP_EOL;
 echo '<label for="default_language" class="control-label col-sm-4 col-xs-12">'.get_vocab('choose_css').'</label>'.PHP_EOL;
-echo '<div class="col-sm-4 col-xs-12"><select class="form-control" name="default_language">'.PHP_EOL;
+echo '<div class="col col-sm-4 col-xs-12"><select class="form-control" name="default_language" id="default_language">'.PHP_EOL;
 $i = 0;
 while ($i < count($liste_language)) {
     echo "<option value='".$liste_language[$i]."'";
@@ -512,7 +512,7 @@ echo '<label for="mail_destinataire">'.get_vocab('display_mail_destinataire').'<
 echo '<input class="form-control" type="text" id="mail_destinataire" name="mail_destinataire" value="'.Settings::get('mail_destinataire').'" size="30">'.PHP_EOL;
 echo '<br />'.PHP_EOL;
 echo '<label for="nb_max_resa_form">'.get_vocab('nb_max_resa_form').'</label>'.PHP_EOL;
-echo '<input type="number" name="nb_max_resa_form" value="'.Settings::get('nb_max_resa_form').'" size="5" min="-1" />'.PHP_EOL;
+echo '<input type="number" name="nb_max_resa_form" id="nb_max_resa_form" value="'.Settings::get('nb_max_resa_form').'" size="5" min="-1" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 #Choix  de l'affichage du bouton "afficher le menu de gauche ou non"
 #SQL : menu_gauche==1  //le bouton s'affiche par default
@@ -768,7 +768,7 @@ echo '</div>'.PHP_EOL;
 echo '<hr />'.PHP_EOL;
 echo '<h3>'.get_vocab('periodicite_msg').'</h3>'.PHP_EOL;
 echo '<div>'.PHP_EOL;
-echo "<input type='checkbox' name='periodicite' value='y' ";
+echo "<input type='checkbox' name='periodicite' id='periodicite' value='y' ";
 if (Settings::get('periodicite') == 'y') {
     echo 'checked';
 }
@@ -792,7 +792,7 @@ echo '</div>'.PHP_EOL;
 echo '<hr />'.PHP_EOL;
 # Afficher la legende en couleur dans le menu gauche
 echo '<div>'.PHP_EOL;
-echo "<input type='checkbox' name='legend' value='0' ";
+echo "<input type='checkbox' id='legend' name='legend' value='0' ";
 if (Settings::get('legend') == '0') {
     echo 'checked';
 }
@@ -803,7 +803,7 @@ echo '</div>'.PHP_EOL;
 echo '<hr />'.PHP_EOL;
 # Afficher l'imprimante
 echo '<div>'.PHP_EOL;
-echo '<input type="checkbox" name="imprimante" value="0" ';
+echo '<input type="checkbox" name="imprimante" id="imprimante" value="0" ';
 if (Settings::get('imprimante') == '0') {
     echo 'checked';
 }
@@ -814,7 +814,7 @@ echo '</div>'.PHP_EOL;
 echo '<hr />'.PHP_EOL;
 # Affichage pdf 
 echo '<div>'.PHP_EOL;
-echo '<input type="checkbox" name="pdf" value="1" ';
+echo '<input type="checkbox" name="pdf" id="pdf" value="1" ';
 if (Settings::get('pdf') == '1') {
     echo 'checked';
 }
@@ -825,7 +825,7 @@ echo '</div>'.PHP_EOL;
 echo '<hr />'.PHP_EOL;
 # Afficher courrier de validation
 echo '<div>'.PHP_EOL;
-echo '<input type="checkbox" name="show_courrier" value="y" ';
+echo '<input type="checkbox" name="show_courrier" id="show_courrier" value="y" ';
 if (Settings::get('show_courrier') == 'y') {
     echo 'checked';
 }
