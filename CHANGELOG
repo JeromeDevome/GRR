@@ -60,6 +60,10 @@ Sous-version 3.5.1a
     mise à jour : Readme.md et Doc
     modification : spécification de la fonction jQuery_DatePicker
     modification : recherche de la dernière version sur le dépôt Github
+Sous-version 3.5.1b
+    correctifs : syntaxe bootstrap, html et php
+    correctif : acceptation de plusieurs adresses mail pour le support technique et le webmestre
+    modification : suppression d'appels directs à mysqli
     
 -----
 --
