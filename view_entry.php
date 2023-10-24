@@ -3,8 +3,9 @@
  * view_entry.php modifié pour sélection des participants par select2
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-05-20 15:32$
+ * Dernière modification : $Date: 2023-08-24 11:41$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
+ * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -515,7 +516,15 @@ foreach ($overload_data as $fieldname=>$field)
             || ($beneficiaire == $userName)||($create_by == $userName)))
     {
         echo "<tr><td><b>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points")."</b></td>";
-        echo "<td>".htmlspecialchars($field["valeur"],ENT_NOQUOTES)."</td></tr>";
+                // ELM - Gestion des champs additionnels multivalués
+		$valeurs = explode('|', $field["valeur"]);
+		if (count($valeurs) > 1) {
+			$valeurs = implode(" - ", $valeurs);
+		}
+		else {
+			$valeurs = $field["valeur"];
+		}
+        echo "<td>".htmlspecialchars($valeurs,ENT_NOQUOTES)."</td></tr>";
     }
 }
 // Gestion des clefs :

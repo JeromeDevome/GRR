@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-05-05 19:01$
+ * Dernière modification : $Date: 2023-08-24 14:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -135,8 +135,8 @@ foreach($form_vars as $var => $var_type)
 {
     echo $var.' -> ';print_r($$var);
     echo '<br/>';
-}
-die();*/
+}*/
+//die();
 // traitement des données
 // données communes
 $err_type = ''; // contient la partie du message dans le <h2>
@@ -407,10 +407,8 @@ try {
    // echo $page;
     $page = verif_page();
   //  echo $page;
-    // page de retour vers un planning en cas d'abandon
-    $page_ret = (isset($page_ret))? $page_ret : page_accueil();
-    // $_SERVER['HTTP_REFERER'] ne contient pas les informations correctes s'il y a eu changement de ressource/domaine lors de l'édition de la réservation : il vaut mieux calculer la page précédente et peut-être plus tôt
     $referer = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'],ENT_QUOTES) :'';
+    // $_SERVER['HTTP_REFERER'] ne contient pas les informations correctes s'il y a eu changement de ressource/domaine lors de l'édition de la réservation : il vaut mieux calculer la page précédente et peut-être plus tôt
     $referer = explode('?',$referer);
     if (!$referer[0])
     {
@@ -420,6 +418,8 @@ try {
         $back = $referer[0]; 
     // les autres paramètres devraient être dans les hiddenInputs
     // print_r($back);
+    // page de retour vers un planning en cas d'abandon
+    $page_ret = (isset($page_ret))? $page_ret : page_accueil();
     // les ressources
     foreach ($rooms as $key=>$room_id){
         $rooms[$key] = intval($room_id);

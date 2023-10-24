@@ -3,8 +3,9 @@
  * edit_entry_champs_add.php
  * Page "Ajax" utilisée pour générer les champs additionnels dans la page de réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-31 11:52$
+ * Dernière modification : $Date: 2023-10-09 17:23$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
+ * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -63,42 +64,60 @@ if ($id != 0)
 	$overload_data = mrbsEntryGetOverloadDesc($id);
 header("Content-Type: text/html;charset=utf-8");
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-// Boucle sur les champs additionnels de l'area
+
 $overload_fields = mrbsOverloadGetFieldslist($area);
+$display = "";
+// Boucle sur les champs additionnels de l'area
 foreach ($overload_fields as $fieldname=>$fieldtype)
 {
-	if ($overload_fields[$fieldname]["obligatoire"] == "y")
-		$flag_obli = " *" ;
-	else
-		$flag_obli = "";
-	echo "<div id=\"id_".$area."_".$overload_fields[$fieldname]["id"]."\" class='form-group'>";
-	echo "<label for='addon_".$overload_fields[$fieldname]["id"]."'>".removeMailUnicode($fieldname).$flag_obli."</label>\n";
-	if (isset($overload_data[$fieldname]["valeur"]))
-		$data = $overload_data[$fieldname]["valeur"];
+    if ($overload_fields[$fieldname]["obligatoire"] == "y")
+        $flag_obli = " *" ;
+    else
+        $flag_obli = "";
+    $display .= "<div id=\"id_".$area."_".$overload_fields[$fieldname]["id"]."\" class='form-group'>";
+    if ($overload_fields[$fieldname]["type"] == "checkbox" )
+        $display .= "<p><b>".removeMailUnicode($fieldname).$flag_obli."</b></p>".PHP_EOL;
+    else
+        $display .= "<label for='addon_".$overload_fields[$fieldname]["id"]."'>".removeMailUnicode($fieldname).$flag_obli."</label>\n";
+    if (isset($overload_data[$fieldname]["valeur"]))
+        $data = $overload_data[$fieldname]["valeur"];
     elseif (isset($overloadFields[$overload_fields[$fieldname]["id"]]))
         $data = $overloadFields[$overload_fields[$fieldname]["id"]];
-	else
-		$data = "";
-	if ($overload_fields[$fieldname]["type"] == "textarea" )
-		echo "<div class=\"col-xs-12\"><textarea class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\">".htmlspecialchars($data,ENT_SUBSTITUTE)."</textarea></div>\n";
-	else if ($overload_fields[$fieldname]["type"] == "text" )
-		echo "<input class=\"form-control\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" />";
-	else if ($overload_fields[$fieldname]["type"] == "numeric" )
-		echo "<input class=\"form-control\" size=\"20\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" />\n";
-	else
-	{
-		echo "<div class=\"col-xs-12\"><select class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" size=\"1\">\n";
-		if ($overload_fields[$fieldname]["obligatoire"] == 'y')
-			echo '<option value="">'.get_vocab('choose').'</option>';
-		foreach ($overload_fields[$fieldname]["list"] as $value)
-		{
-			echo "<option ";
-			if (htmlspecialchars($data) == trim($value,"&") || ($data == "" && $value[0]=="&"))
-				echo " selected=\"selected\"";
-			echo ">".trim($value,"&")."</option>\n";
-		}
-		echo "</select></div>\n";
-	}
-	echo "</div>\n";
+    else
+        $data = "";
+    if ($overload_fields[$fieldname]["type"] == "textarea" )
+        $display .= "<div class=\"col col-xs-12\"><textarea class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" id=\"addon_".$overload_fields[$fieldname]["id"]."\">".htmlspecialchars($data,ENT_SUBSTITUTE)."</textarea></div>\n";
+    else if ($overload_fields[$fieldname]["type"] == "text" )
+        $display .= "<input class=\"form-control\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" id=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" />";
+    else if ($overload_fields[$fieldname]["type"] == "numeric" )
+        $display .= "<input class=\"form-control\" size=\"20\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" id=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" />\n";
+    else if ($overload_fields[$fieldname]["type"] == "checkbox" ) { // ELM - Gestion des champs aditionnels multivalués
+        $display .= "<div class=\"col col-xs-12\">\n";
+        foreach ($overload_fields[$fieldname]["list"] as $value) {
+            $valeurs = explode("|", $data);
+            $display .= "<label><input type=\"checkbox\" name=\"addon_".$overload_fields[$fieldname]["id"]."[]\" value=\"".trim($value,"&")."\" ";
+            if (in_array(trim($value,"&"), $valeurs) or (empty($valeurs)=="" and $value[0]=="&")) 
+                $display .= " checked=\"checked\"";
+            $display .= ">\n".(trim($value,"&"))."</label>\n";
+        }
+        $display .= "</div>\n";
+    }
+    else
+    {
+        $display .= "<div class=\"col col-xs-12\"><select class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" size=\"1\">\n";
+        if ($overload_fields[$fieldname]["obligatoire"] == 'y')
+            $display .= '<option value="">'.get_vocab('choose').'</option>';
+        foreach ($overload_fields[$fieldname]["list"] as $value)
+        {
+            $display .= "<option ";
+            if (htmlspecialchars($data) == trim($value,"&") || ($data == "" && $value[0]=="&"))
+                $display .= " selected=\"selected\"";
+            $display .= ">".trim($value,"&")."</option>\n";
+        }
+        $display .= "</select></div>\n";
+    }
+    $display .= "</div>\n";
 }
+echo $display;
+
 ?>

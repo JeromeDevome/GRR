@@ -2,9 +2,10 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2022-07-28 18:18$
+ * Dernière modification : $Date: 2023-10-18 11:17$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @author    Eric Lemeur pour les champs additionnels de type checkbox
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -440,6 +441,11 @@ function mrbsCreateSingleEntry($starttime, $endtime, $entry_type, $repeat_id, $r
 		{
 			$begin_string = "@".$id_field."@";
 			$end_string = "@/".$id_field."@";
+            // ELM - Gestion des champ additionnels multivalués
+            if (is_array($overload_data[$id_field])) {
+                $valeurs = implode("|", $overload_data[$id_field]);
+                $overload_data[$id_field] = $valeurs;
+            }
 			$overload_data_string .= $begin_string.urlencode($overload_data[$id_field]).$end_string;
 		}
 	}
@@ -491,6 +497,11 @@ function mrbsCreateRepeatEntry($starttime, $endtime, $rep_type, $rep_enddate, $r
 		{
 			$begin_string = "@".$id_field."@";
 			$end_string = "@/".$id_field."@";
+            // ELM - Gestion des champ additionnels multivalués
+            if (is_array($overload_data[$id_field])) {
+                $valeurs = implode("|", $overload_data[$id_field]);
+                $overload_data[$id_field] = $valeurs;
+            }
 			$overload_data_string .= $begin_string.urlencode($overload_data[$id_field]).$end_string;
 		}
 	}
@@ -633,10 +644,10 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
 			$tableFinale = array();
 			$sql = "SELECT * FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY >= '".$time2."' AND DAY <= '".$enddate."'";
             if (isset($rep_jours_c) && ($rep_jours_c != -1)) $sql.= " AND Jours = '".$rep_jour_c."'";
-			$result = mysqli_query($GLOBALS['db_c'], $sql);
+			$result = grr_sql_query($sql);
             if ($result){
                 $kk = 0;
-                while ($table = mysqli_fetch_array($result))
+                foreach($result as $table)
                 {
                     $day   = date("d", $table['DAY']);
                     $month = date("m", $table['DAY']);
