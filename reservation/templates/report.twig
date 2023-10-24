@@ -35,7 +35,8 @@
 							<option value="area" {%if condition.selectCritere == "area" %}selected{%endif%}>{{ trad.match_area }}</option>
 							<option value="room" {%if condition.selectCritere == "room" %}selected{%endif%}>{{ trad.room }}</option>
 							<option value="type" {%if condition.selectCritere == "type" %}selected{%endif%}>{{ trad.type }}</option>
-							<option value="name" {%if condition.selectCritere == "name" %}selected{%endif%}>{{ trad.match_descr }}</option>
+							<option value="name" {%if condition.selectCritere == "name" %}selected{%endif%}>{{ trad.namebooker }}</option>
+                            <option value="descr" {%if condition.selectCritere == "descr" %}selected{%endif%}>{{ trad.match_descr }}</option>
 							<option value="login" {%if condition.selectCritere == "login" %}selected{%endif%}>{{ trad.match_login }}</option>
 							{% for champadd in condition.champAdd %}
 								<option value="addon_{{champadd.id}}" {%if champadd.select == 1 %}selected{%endif%}>{{champadd.nom}}</option>

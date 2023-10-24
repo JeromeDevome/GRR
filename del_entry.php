@@ -3,9 +3,9 @@
  * del_entry.php
  * Interface de suppression d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-19 15:50$
+ * Dernière modification : $Date: 2023-10-17 16:34$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -39,26 +39,26 @@ if (isset($series))
 $page = verif_page();
 if (isset($_GET["id"]))
 {
-	$id = $_GET["id"];
+	$id = clean_input($_GET["id"]);
 	settype($id,"integer");
 }
-else
+else{
+	header("Location: ./login.php");
 	die();
+}
 if ($info = mrbsGetEntryInfo($id))
 {
-	$day   = date('d', $info["start_time"]);
-	$month = date('m', $info["start_time"]);
-	$year  = date('Y', $info["start_time"]);
+	$day   = date("d", $info["start_time"]);
+	$month = date("m", $info["start_time"]);
+	$year  = date("Y", $info["start_time"]);
 	$area  = mrbsGetRoomArea($info["room_id"]);
-	$back = "";
-	if (isset($_SERVER['HTTP_REFERER']))
-		$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
+	$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : page_accueil() ;
 	if (authGetUserLevel(getUserName(), -1) < 1)
 	{
 		showAccessDenied($back);
 		exit();
 	}
-	if (!getWritable($info["beneficiaire"], getUserName(), $id))
+    if (!getWritable(getUserName(), $id))
 	{
 		showAccessDenied($back);
 		exit;
@@ -70,7 +70,12 @@ if ($info = mrbsGetEntryInfo($id))
 	}
 	if (Settings::get("automatic_mail") == 'yes')
 		$_SESSION['session_message_error'] = send_mail($id,3,$dformat);
-	$room_id = grr_sql_query1("SELECT ".TABLE_PREFIX."_entry.room_id FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id AND ".TABLE_PREFIX."_entry.id='".$id."'");
+    // traitement des réservations modérées : envoie un mail au modérateur
+    if ($info['moderate'] != 0){ // cette réservation est à modérer ou a été modérée
+        $_SESSION['session_message_error'] .= send_mail($id,3,$dformat);
+    }
+    display_mail_msg();
+	$room_id = grr_sql_query1("SELECT ".TABLE_PREFIX."_entry.room_id FROM ".TABLE_PREFIX."_entry WHERE ".TABLE_PREFIX."_entry.id='".$id."'");
 	$date_now = time();
 	get_planning_area_values($area);
 	if ((!(verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods))) || ((verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")))
@@ -81,7 +86,7 @@ if ($info = mrbsGetEntryInfo($id))
 	$result = mrbsDelEntry(getUserName(), $id, $series, 1);
 	if ($result)
 	{
-        $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $info['room_id'];
+        $room_back = isset($_GET['room_back']) ? clean_input($_GET['room_back']) : $info['room_id'];
 		$_SESSION['displ_msg'] = 'yes';
         $ress = '';
         if ($room_back != 'all')  {$ress = "&room=".$room_back;}

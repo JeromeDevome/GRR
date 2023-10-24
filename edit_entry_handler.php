@@ -3,9 +3,9 @@
  * edit_entry_handler.php
  * Permet de vérifier la validité de l'édition ou de la création d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-19 15:52$
+ * Dernière modification : $Date: 2023-10-17 17:21$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -540,7 +540,7 @@ if (empty($err) && ($error_booking_in_past == 'no') && ($error_duree_max_resa_ar
 		$area = mrbsGetRoomArea($room_id);
 		if (isset($id) && ($id != 0))
 		{
-			if (!getWritable($beneficiaire, getUserName(), $id))
+			if (!getWritable(getUserName(), $id))
 			{
 				showAccessDenied($back);
 				exit;
