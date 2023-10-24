@@ -1,11 +1,11 @@
 <?php
 /**
  * admin_config5.php
- * Interface permettant à l'administrateur la configuration des paramètres pour le module Jours Cycles
+ * Interface permettant à l'administrateur la configuration des modules internes : Multisite, Jours Cycles, Export XML, Ckeditor
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:58$
+ * Dernière modification : $Date: 2023-10-18 10:17$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -52,7 +52,7 @@ if (isset($_GET['module_multisite']))
 				SET sitecode='1', sitename='site par defaut'";
 				if (grr_sql_command($sql) < 0)
 					fatal_error(0,'<p>'.grr_sql_error().'</p>');
-				$id_site = mysqli_insert_id($GLOBALS['db_c']);
+				$id_site = grr_sql_insert_id();
 			}
 						// On affecte tous les domaines à un site.
 			$sql = "SELECT id FROM ".TABLE_PREFIX."_area";

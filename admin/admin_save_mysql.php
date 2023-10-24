@@ -3,9 +3,9 @@
  * admin_save_mysql.php
  * Script de sauvegarde de la base de donnée mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:39$
+ * Dernière modification : $Date: 2023-10-18 14:06$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -29,8 +29,8 @@ if (isset($_GET['mdp']))
 	include(dirname(__FILE__).'/../include/connect.inc.php');
 	include(dirname(__FILE__)."/../include/config.inc.php");
 	include(dirname(__FILE__)."/../include/misc.inc.php");
-	include(dirname(__FILE__)."/../include/functions.inc.php");
 	include(dirname(__FILE__)."/../include/mysql.inc.php"); // remplace $dbsys par mysql, puisque c'est le seul système de BDD compatible avec GRR !
+	include(dirname(__FILE__)."/../include/functions.inc.php");
 	include(dirname(__FILE__)."/../include/settings.class.php");
 	if (!Settings::load())
 		die("Erreur chargement settings");
@@ -59,9 +59,9 @@ else
 	}
 }
 
-function php_version()
+/*function php_version()
 {
-	preg_match('`([0-9]{1,2}).([0-9]{1,2})`', phpversion(), $match);
+	preg_match('`([0-9]{1,2}).([0-9]{1,2}).([0-9]{1,2})`', phpversion(), $match);
 	if (isset($match) && !empty($match[1]))
 	{
 		if (!isset($match[2]))
@@ -70,22 +70,22 @@ function php_version()
 	if (!isset($match[3]))
 		$match[3] = 0;
 	return $match[1] . "." . $match[2] . "." . $match[3];
-}
+}*/
 
 function mysql_version()
 {
-	$result = mysqli_query($GLOBALS['db_c'], 'SELECT VERSION() AS version');
-	if ($result != FALSE && mysqli_num_rows($result) > 0)
+	$result = grr_sql_query('SELECT VERSION() AS version');
+	if ($result != FALSE && grr_sql_count($result) > 0)
 	{
-		$row = mysqli_fetch_array($result);
+		$row = grr_sql_row_keyed($result,0);
 		$match = explode('.', $row['version']);
 	}
 	else
 	{
-		$result = mysqli_query($GLOBALS['db_c'], 'SHOW VARIABLES LIKE \'version\'');
-		if ($result != FALSE && mysqli_num_rows($result) > 0)
+		$result = grr_sql_query('SHOW VARIABLES LIKE \'version\'');
+		if ($result != FALSE && grr_sql_count($result) > 0)
 		{
-			$row = mysqli_fetch_row($result);
+			$row = grr_sql_row_keyed($result,0);
 			$match = explode('.', $row[1]);
 		}
 	}
@@ -121,7 +121,7 @@ $fd = '';
 $fd .= "#**************** BASE DE DONNEES ".$dbDb." ****************"."\n".date("\#\ \L\\e\ \:\ d\ m\ Y\ \a\ H\h\ i")."\n";
 if (isset($_SERVER['SERVER_NAME']))
 	$fd .= "# Serveur : ".$_SERVER['SERVER_NAME']."\n";
-$fd .= "# Version PHP : " . php_version()."\n";
+$fd .= "# Version PHP : " . phpversion()."\n";
 $fd .= "# Version mySQL : " . mysql_version()."\n";
 $fd .= "# Version GRR : " . affiche_version()."\n";
 if (isset($_SERVER['REMOTE_ADDR']))
@@ -138,11 +138,11 @@ while ($j < count($liste_tables))
 		$fd .= "DROP TABLE IF EXISTS `$temp`;\n";
 		// requete de creation de la table
 		$query = "SHOW CREATE TABLE $temp";
-		$resCreate = mysqli_query($GLOBALS['db_c'], $query);
+		$resCreate = grr_sql_query($query);
         if (!$resCreate)
             $fd.="Problème à la création de $temp !\n";
 		else {
-            $row = mysqli_fetch_array($resCreate);
+            $row = grr_sql_row($resCreate,0);
             $schema = $row[1].";";
             $fd.="$schema\n";
         }
@@ -153,13 +153,13 @@ while ($j < count($liste_tables))
 		// les données de la table
 		$fd.="#\n# Données de $temp\n#\n";
 		$query = "SELECT * FROM $temp";
-		$resData = mysqli_query($GLOBALS['db_c'], $query);
+		$resData = grr_sql_query($query);
 		//peut survenir avec la corruption d'une table, on prévient
 		if (!$resData)
 			$fd.="Problème avec les données de $temp, corruption possible !\n";
 		else
 		{
-			if (mysqli_num_rows($resData) > 0)
+			if (grr_sql_count($resData) > 0)
 			{
 				$sFieldnames = "";
 				$num_fields = mysqli_field_count($GLOBALS['db_c']);

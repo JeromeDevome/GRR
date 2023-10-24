@@ -2,9 +2,9 @@
 /**
  * mysql.inc.php
  * Bibliothèque de fonctions pour le support mysql
- * Dernière modification : $Date: 2020-03-27 10:40$
+ * Dernière modification : $Date: 2023-10-23 15:26$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -14,7 +14,19 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-
+// connexion à la base
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+try {
+    if (empty($db_nopersist))
+        $GLOBALS['db_c'] = new mysqli('p:'.$dbHost, $dbUser, $dbPass, $dbDb, $dbPort);
+    else
+        $GLOBALS['db_c'] = new mysqli($dbHost, $dbUser, $dbPass, $dbDb, $dbPort);
+    $GLOBALS['db_c']->set_charset("utf8mb4");
+} catch(Exception $e) {
+  error_log($e->getMessage());
+  exit('Error connecting to database');
+}
+/*
 if (empty($db_nopersist))
 	$GLOBALS['db_c'] = @mysqli_connect('p:'.$dbHost, $dbUser, $dbPass, $dbDb, $dbPort);
 else
@@ -24,7 +36,7 @@ if (!$GLOBALS['db_c'] || !mysqli_select_db ($GLOBALS['db_c'], $dbDb))
 	echo "\n<p>Database connection failure</p>\n";
 	exit;
 }
-@mysqli_query($GLOBALS['db_c'], "SET NAMES UTF8");
+@mysqli_query($GLOBALS['db_c'], "SET NAMES UTF8");*/
 /**
  * @param integer $row
  */
@@ -42,44 +54,88 @@ function grr_sql_free($r)
 	if (is_object($r) && $r instanceof mysqli_result && is_resource($r))
 		mysqli_free_result($r);
 }
-// Execute a non-SELECT SQL command (insert/update/delete).
-// Returns the number of tuples affected if OK (a number >= 0).
-// Returns -1 on error; use grr_sql_error to get the error message.
-/*function grr_sql_command ($sql)
+/* Execute a non-SELECT SQL command (insert/update/delete).
+ * Returns the number of tuples affected if OK (a number >= 0).
+ * Returns -1 on error; use grr_sql_error to get the error message.
+ * Parameters : 
+ * $sql : a prepared SQL command with $types as types and $params as parameters OR a non-prepared SQL command if $types == $params == NULL
+*/
+function grr_sql_command($sql, $types=NULL, $params=NULL)
 {
-	mysqli_query($GLOBALS['db_c'], $sql) or die(mysqli_error($GLOBALS['db_c'])." Q=".$sql);
-		return mysqli_affected_rows($GLOBALS['db_c']);
-}*/
-// retour à l'ancienne définition, voir les effets de bord !
-function grr_sql_command ($sql)
-{
-    if (mysqli_query($GLOBALS['db_c'],$sql)) return mysqli_affected_rows($GLOBALS['db_c']);
-    return -1;
+    try{
+        if(($types == NULL)&&($params == NULL)){
+            $res = $GLOBALS['db_c']->query($sql);
+        }
+        elseif(($types != NULL)&&($params != NULL)){
+            $stmt = $GLOBALS['db_c']->prepare($sql);
+            $stmt->bind_param($types, ...$params);
+            $stmt->execute();
+            $stmt->close();
+        }
+        else 
+            return -1;  // pourra être amélioré avec php8.2+ où $types peut être omis
+    } catch(Exception $e) {
+        error_log($e -> getMessage());
+        return -1;
+    }
+    return mysqli_affected_rows($GLOBALS['db_c']);
 }
 
-// Execute an SQL query which should return a single non-negative number value.
-// This is a lightweight alternative to grr_sql_query, good for use with count(*)
-// and similar queries. It returns -1 on error or if the query did not return
-// exactly one value, so error checking is somewhat limited.
-// It also returns -1 if the query returns a single NULL value, such as from
-// a MIN or MAX aggregate function applied over no rows.
-function grr_sql_query1 ($sql)
+/* Execute an SQL query which should return a single non-negative number value.
+ * This is a lightweight alternative to grr_sql_query, good for use with count(*)
+ * and similar queries. It returns -1 on error or if the query did not return
+ * exactly one value, so error checking is somewhat limited.
+ * It also returns -1 if the query returns a single NULL value, such as from
+ * a MIN or MAX aggregate function applied over no rows.
+ * Parameters : 
+ * $sql : a prepared SQL command with $types as types and $params as parameters OR a non-prepared SQL command if $types == $params == NULL
+ */
+function grr_sql_query1($sql, $types = NULL, $params = NULL)
 {
-	$r = mysqli_query($GLOBALS['db_c'], $sql);
-	if (!$r)
-		return -1;
-	if (mysqli_num_rows($r) != 1 || mysqli_field_count($GLOBALS['db_c']) != 1 || ($result_ = mysqli_result($r, 0, 0)) == "")
-		$result_ = -1;
-	mysqli_free_result($r);
-	return $result_;
+    try{
+        if(($types == NULL)&&($params == NULL)){
+            $res = mysqli_query($GLOBALS['db_c'], $sql);
+        }
+        elseif(($types != NULL)&&($params != NULL)){
+            $stmt = $GLOBALS['db_c']->prepare($sql);
+            $stmt->bind_param($types, ...$params);
+            $stmt->execute();
+            $res = $stmt->get_result();
+            $stmt->close();
+        }
+    } catch(Exception $e) {
+        error_log($e -> getMessage());
+        return -1;
+    }
+    if(($res->num_rows != 1)||($res->field_count != 1)||(($r = $res->fetch_row()[0]) == ""))
+        $r = -1;
+    mysqli_free_result($res);
+    return($r);
 }
-// Execute an SQL query. Returns a database-dependent result handle,
-// which should be passed back to grr_sql_row or grr_sql_row_keyed to get the results.
-// Returns 0 on error; use grr_sql_error to get the error message.
-function grr_sql_query($sql)
+/* Execute an SQL query. Returns a database-dependent result handle,
+ * which should be passed back to grr_sql_row or grr_sql_row_keyed to get the results.
+ * Returns 0 on error; use grr_sql_error to get the error message.
+ * Parameters : 
+ * $sql : a prepared SQL command with $types as types and $params as parameters OR a non-prepared SQL command if $types == $params == NULL
+*/
+function grr_sql_query($sql, $types = NULL, $params = NULL)
 {
-	$r = mysqli_query($GLOBALS['db_c'], $sql);
-	return $r;
+    try{
+        if(($types == NULL)&&($params == NULL)){
+            $res = mysqli_query($GLOBALS['db_c'], $sql);
+        }
+        elseif(($types != NULL)&&($params != NULL)){
+            $stmt = $GLOBALS['db_c']->prepare($sql);
+            $stmt->bind_param($types, ...$params);
+            $stmt->execute();
+            $res = $stmt->get_result();
+            $stmt->close();
+        }
+    } catch(Exception $e) {
+        error_log($e -> getMessage());
+        return -1;
+    }
+    return($res);
 }
 //retourne la version de mysql
 function grr_sql_version()

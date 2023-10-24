@@ -3,9 +3,9 @@
  * frmcontactlist.php
  * calcule la liste des ressources visibles dans un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-09-30 18:00$
+ * Dernière modification : $Date: 2023-10-17 18:41$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -25,7 +25,7 @@ $id = $_GET['id'];
 if ($id != protect_data_sql($id))
     die('Donnée incorrecte');
 $res = grr_sql_query("SELECT room_name,id FROM ".TABLE_PREFIX."_room WHERE area_id = '".protect_data_sql($id)."' ORDER BY room_name");
-$nbresult = mysqli_num_rows($res);
+$nbresult = grr_sql_count($res);
 $user_name = getUserName();
 if ($nbresult != 0)
 {

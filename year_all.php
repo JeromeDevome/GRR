@@ -3,9 +3,9 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservations de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-11-07 18:25 $
+ * Dernière modification : $Date: 2023-10-17 18:14 $
  * @author    Yan Naessens, Laurent Delineau 
- * @copyright Copyright 2003-2022 Yan Naessens, Laurent Delineau
+ * @copyright Copyright 2003-2023 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -50,7 +50,7 @@ global $area, $site;
 // echo "paramètres ".$_GET['site']." ".$_GET['area'];
 if (isset($_GET['area']))
 	{
-        $area = mysqli_real_escape_string($GLOBALS['db_c'], $_GET['area']);
+        $area = clean_input($_GET['area']);
         settype($area, "integer");
         $site = mrbsGetAreaSite($area);
     }
@@ -59,7 +59,7 @@ if (isset($_GET['area']))
         $area = NULL;
         if (isset($_GET["site"]))
         {
-            $site = mysqli_real_escape_string($GLOBALS['db_c'], $_GET["site"]);
+            $site = clean_input($_GET["site"]);
             settype($site, "integer");
             $area = get_default_area($site);
         }

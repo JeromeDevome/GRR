@@ -3,7 +3,7 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-28 10:28$
+ * Dernière modification : $Date: 2023-10-17 18:26$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -89,7 +89,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 			if ($temoin_grp_ok != 'oui')
 				return "5";
 		}
-		$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site
+		$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
 		from ".TABLE_PREFIX."_utilisateurs
 		where login = '" . protect_data_sql($_login) . "' and ";
 		if ($_user_ext_authentifie != 'lasso')
@@ -128,7 +128,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 					$req = grr_sql_query("SELECT nom, prenom, email from ".TABLE_PREFIX."_utilisateurs where login ='".protect_data_sql($_login)."'");
                     if (!$req)
                         fatal_error(0, "erreur de lecture dans la base de données".grr_sql_error());
-					$res = mysqli_fetch_array($req);
+					$res = grr_sql_row_keyed($req,0);
 					$nom_en_base = $res[0];
 					$prenom_en_base = $res[1];
 					$email_en_base = $res[2];
@@ -145,7 +145,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 						//Comme les données de la base on été changés, on doit remettre à jour la variable $row,
 						//Pour que les données mises en sessions soient les bonnes
 						//on récupère les données de l'utilisateur
-						$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site
+						$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
 						FROM ".TABLE_PREFIX."_utilisateurs
 						WHERE login = '" . protect_data_sql($_login) . "' and
 						source = 'ext' and
@@ -626,7 +626,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     // A ce stade, on dispose dans tous les cas d'un tableau $row contenant les informations nécessaires à l'établissement d'une session
     //
     // Session starts now
-    session_name(SESSION_NAME);
+    @session_name(SESSION_NAME);
     @session_start();
     // Is this user already connected ?
     $sql = "SELECT SESSION_ID from ".TABLE_PREFIX."_log where SESSION_ID = '" . session_id() . "' and LOGIN = '" . protect_data_sql($_login) . "' and now() between START and END";
@@ -770,7 +770,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 		{
 			// si la table ".TABLE_PREFIX."_j_groupe_se3 est implantée et non vide
 			//A modifier recalcul a chaque boucle
-			while ($resgrp = @mysqli_fetch_array($grp))
+			foreach($grp as $resgrp)
 			{
 				// balaye tous les groupes présents dans la table ".TABLE_PREFIX."_j_groupadmin_area
 				$statut_se3 = $resgrp['statut'];
@@ -900,7 +900,7 @@ function grr_resumeSession()
 function grr_closeSession(&$_auto)
 {
 	settype($_auto,"integer");
-	session_name(SESSION_NAME);
+	@session_name(SESSION_NAME);
 	@session_start();
 		// Sometimes 'start' may not exist, because the session was previously closed by another window
 		// It's not necessary to ".TABLE_PREFIX."_log this, then
