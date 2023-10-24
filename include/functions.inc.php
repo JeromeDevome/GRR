@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-05-23 11:23$
+ * Dernière modification : $Date: 2023-10-18 11:26$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -379,10 +379,13 @@ function contenu_cellule($options, $ofl, $vue, $resa, $heures)
     $room = $resa['room_name'];
 	// Les champs add :
 	$overload_data = grrGetOverloadDescArray($ofl, $resa['overload_desc']);
-	foreach ($overload_data as $fieldname=>$field)
+    foreach ($overload_data as $fieldname=>$field)
 	{
-		if (( (authGetUserLevel(getUserName(), $room) >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "")
-			$affichage .= "<i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($field["valeur"],ENT_NOQUOTES|ENT_SUBSTITUTE)."</i><br />";
+		if (( (authGetUserLevel(getUserName(), $room) >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "") {
+			// ELM - Gestion des champs additionnels multivalués
+			$valeur = str_replace("|", ", ", $field["valeur"]);
+			$affichage .= "<i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($valeur,ENT_NOQUOTES|ENT_SUBSTITUTE)."</i><br />";
+		}
 	}
     // cas où aucune option n'est activée : afficher le numéro de la réservation
 	if ($affichage == '')
@@ -535,7 +538,7 @@ function affiche_ressource_empruntee($id_room, $type = "logo")
 				$beneficiaire_ext = grr_sql_query1("SELECT beneficiaire_ext FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
 				echo '<br /><b><span class="avertissement">'.PHP_EOL;
 				echo '<img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("ressource actuellement empruntee").'" width="30" height="30" class="image" />'.PHP_EOL;
-				echo get_vocab("ressource actuellement empruntee").' '.get_vocab("nom emprunteur").get_vocab("deux_points").affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"withmail");
+				echo get_vocab("ressource actuellement empruntee").' '.get_vocab("nom_emprunteur").get_vocab("deux_points").affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"withmail");
 				echo '<a href="view_entry.php?id='.$id_resa.'&amp;mode=page">'.get_vocab("entryid").$id_resa.'</a>'.PHP_EOL.'</span></b>'.PHP_EOL;
 			}
 			else
@@ -2952,11 +2955,11 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 
 		$message .= $vocab["message_mail_retard"].$vocab["deux_points"]." \n";
 		$message .= $room_name." (".$area_name.") \n";
-		$message .= $vocab["nom emprunteur"].$vocab["deux_points"];
+		$message .= $vocab["nom_emprunteur"].$vocab["deux_points"];
 		$message .= affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
 		if ($beneficiaire_email != "")
 			$message .= $vocab["un email envoye"].$beneficiaire_email." \n";
-		$message .= "\n".$vocab["changer statut lorsque ressource restituee"].$vocab["deux_points"];
+		$message .= "\n".$vocab["changer_statut_lorsque_ressource_restituee"].$vocab["deux_points"];
 		$message .= "\n".traite_grr_url("","y")."view_entry.php?id=".$id_entry." \n";
 
 		$repondre = Settings::get("webmaster_email");
@@ -3051,7 +3054,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$sujet7 .= $vocab["subject_mail_retard"];
 		$message7 = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
 		$message7 .= traite_grr_url("","y")."\n\n";
-		$message7 .= $vocab["ressource empruntee non restituée"]."\n";
+		$message7 .= $vocab["ressource_empruntee_non_restituee"]."\n";
 		$message7 .= $room_name." (".$area_name.")";
 		$message7 .= "\n".$reservation;
 		$message7 = html_entity_decode($message7);
@@ -3142,7 +3145,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
             if(strtolower($user_login) != strtolower($beneficiaire))
                 $message2 .= $vocab["modify_booking"];
             else
-                $message2 .= get_vocab('Vous avez_modifie');
+                $message2 .= get_vocab('Vous_avez_modifie');
 			if ($room_id != $oldRessource)
 				$message2 .= $vocab["the_room"]." ".$nomAncienneSalle." => ".$room_name." (".$area_name.") \n";
 			else
@@ -3154,7 +3157,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
             if(strtolower($user_login) != strtolower($beneficiaire))
                 $message2 .= $vocab["delete_booking"];
             else
-                $message2 .= get_vocab('Vous avez_supprime');
+                $message2 .= get_vocab('Vous_avez_supprime');
 			$message2 .= $vocab["the_room"].$room_name." (".$area_name.") \n";
 			$message2 .= $vocab["created_by_you"];
 		}
@@ -3280,7 +3283,7 @@ function auth_visiteur($user,$id_room)
 	$res = grr_sql_query("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login ='".protect_data_sql($user)."'");
 	if (!$res || grr_sql_count($res) == 0)
 		return 0;
-	$status = mysqli_fetch_row($res);
+	$status = grr_sql_row($res,0);
 	if (strtolower($status[0]) == 'visiteur')
 	{
 		if ((in_array($id_room,$id_room_autorise)) && ($id_room_autorise != ""))
@@ -3555,17 +3558,10 @@ function UserRoomMaxBooking($user, $id_room, $number)
 	// A ce stade, il s'agit d'un utilisateur et il n'y a pas eu de dépassement, ni pour l'ensemble des domaines, ni pour le domaine, ni pour la ressource
 	return 1;
 }
-/* function UserRoomMaxBookingRange
-* Cette fonction teste si l'utilisateur $user a la possibilité d'effectuer une réservation, compte tenu
-* des limitations éventuelles de la ressource $id_room et du nombre $number de réservations à effectuer, sans que le quota défini sur les intervalles [$t - $range, $t] où $t - $range <= $start_time <= $t  dépasse la limite.
-* rend la valeur 
-* 0 si la réservation est possible (0 = FALSE = pas de restriction)
-* 1 si c'est un problème de droits
-* 2 si c'est un dépassement de quota sur l'ensemble des ressources
-* 3 si c'est un dépassement de quota sur l'ensemble des ressources du domaine
-* 4 si c'est un dépassement de quota sur la ressource
-* 5 si c'est un dépassement de quota sur l'intervalle de temps défini pour la ressource
-*/
+// function UserRoomMaxBookingRange
+// Cette fonction teste si l'utilisateur $user a la possibilité d'effectuer une réservation, compte tenu
+// des limitations éventuelles de la ressource $id_room et du nombre $number de réservations à effectuer, sans que le quota défini sur l'intervalle [$start_time - $range, $start_time] dépasse la limite.
+//
 function UserRoomMaxBookingRange($user, $id_room, $number, $start_time)
 {
 	global $enable_periods,$id_room_autorise;
@@ -3718,6 +3714,9 @@ function authBooking($user,$room){
  	$allow_action_in_past = grr_sql_query1("SELECT allow_action_in_past FROM ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($id_room)."'");
  	if ($allow_action_in_past == 'y')
  		return true;
+    // $user est-il gestionnaire de la ressource avec le droit de modification universel
+    if((Settings::get('allow_gestionnaire_modify_del'))&&(authGetUserLevel($user,$id_room)>2))
+        return TRUE;
 	// Correction de l'avance en nombre d'heure du serveur sur les postes clients
  	if ((isset($correct_diff_time_local_serveur)) && ($correct_diff_time_local_serveur!=0))
  		$date_now -= 3600 * $correct_diff_time_local_serveur;
@@ -3899,7 +3898,7 @@ function no_book_rooms($user){
     $rooms = grr_sql_query($sql);
     if (!$rooms)
         fatal_error(0,grr_sql_error());
-    while($room = mysqli_fetch_array($rooms)){
+    foreach($rooms as $room){
         $auth_level = authGetUserLevel($user,$room['id']);
         if ($auth_level < $room['who_can_see'])
             $rooms_no_book[] = $room['id'];
@@ -4744,6 +4743,19 @@ function validate_email ($email)
         $regex2 = '/^' . $atom . '+' . '(\.' . $atom . '+)*' . '@' . 'localhost/i';
         return preg_match($regex2, $email);
     }
+}
+/** filter_multi_emails($email_sequence)
+ * extrait de la suite $email_sequence les adresses mail valables et les range dans une suite séparée par des ;
+*/
+function filter_multi_emails($es){
+    $ea = explode(';',$es);
+    $out = "";
+    foreach($ea as $addr){
+        if (validate_email($addr))
+            $out.=$addr.";";
+    }
+    $out = rtrim($out,";");
+    return $out;
 }
 /** grrDelOverloadFromEntries()
  * Supprime les données du champ $id_field de toutes les réservations

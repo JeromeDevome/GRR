@@ -128,6 +128,6 @@ Pour mettre à jour depuis GRR 1.9.7e ou antérieur, voici les étapes recommand
 - installer les scripts de GRR 3.5.1 dans un dossier vide
 - initialiser GRR 3.5.1
 - convertir le fichier de sauvegarde GRR197 à l'encodage UTF-8 (sans BOM) pour convertir les accents
-- restaurer la sauvegarde faite avec GRR 1.9.7e
+- restaurer dans GRR 3.5.1 la sauvegarde faite avec GRR 1.9.7e
 - connectez-vous avec un compte administrateur et faites la mise à jour de montée de version.
 Vous devriez avoir de nouveau GRR opérationnel.
