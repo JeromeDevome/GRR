@@ -3,9 +3,9 @@
  * logout.php
  * script de deconnexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-11-19 15:49$
+ * Dernière modification : $Date: 2023-07-27 11:53$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -42,6 +42,16 @@ if ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_sta
 		lassospkit_soap_logout();
 		lassospkit_clean();
 	}
+}
+// déconnexion du portail CAS-SSO
+elseif((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
+{
+	require_once('include/cas.inc.php');
+	grr_closeSession($_GET['auto']);
+	if( strlen(Settings::get('cas_logout')) > 0 )
+		phpCAS::logoutWithUrl(Settings::get('cas_logout'));
+	else
+		phpCAS::logout();
 }
 grr_closeSession($_GET['auto']);
 if (isset($_GET['url']))

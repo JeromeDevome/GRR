@@ -3,9 +3,9 @@
  * admin_config_sso.php
  * Interface permettant l'activation de la prise en compte d'un environnement SSO
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:53$
+ * Dernière modification : $Date: 2023-08-02 18:08$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -30,7 +30,7 @@ if (authGetUserLevel(getUserName(), -1) < 6)
 	showAccessDenied($back);
 	exit();
 }
-if (isset($_POST['valid']))
+if (isset($_POST['valid'])) // enregistrement des données entrées
 {
 	VerifyModeDemo();
 	
@@ -44,6 +44,8 @@ if (isset($_POST['valid']))
 		echo "Erreur lors de l'enregistrement de cas_proxy_server !<br />";
     if (!Settings::set("cas_proxy_port", $_POST['cas_proxy_port']))
 		echo "Erreur lors de l'enregistrement de cas_proxy_port !<br />";
+    if (!Settings::set("cas_version", $_POST['cas_version']))
+		echo "Erreur lors de l'enregistrement de cas_version !<br />";
 	
 	if (!isset($_POST['cacher_lien_deconnecter']))
 		$cacher_lien_deconnecter = "n";
@@ -134,9 +136,23 @@ if (isset($_POST['valid']))
 	}
 	if (!Settings::set("sso_redirection_accueil_grr", $sso_redirection_accueil_grr))
 		echo "Erreur lors de l'enregistrement de sso_redirection_accueil_grr !<br />";
+    if (($_POST['sso_statut'] != "cas_visiteur") && ($_POST['sso_statut'] != "cas_utilisateur"))
+		$cas_logout = "";
+	else
+	{
+		if (!isset($_POST['cas_logout']))
+			$cas_logout = "";
+		else
+            $cas_logout = clean_input($_POST['cas_logout']);
+	}
+	if (!Settings::set("cas_logout", $cas_logout))
+		echo "Erreur lors de l'enregistrement de cas_logout !<br />";
 }
+// récupération des données enregistrées
+$CAS = array('CAS_VERSION_1_0','CAS_VERSION_2_0','CAS_VERSION_3_0','SAML_VERSION_1_1'); // protocoles admissibles
+$cas_version = Settings::get('cas_version');
 
-if ((authGetUserLevel(getUserName(), -1) < 6) && ($valid != 'yes'))
+if (authGetUserLevel(getUserName(), -1) < 6)
 {
 	showAccessDenied($back);
 	exit();
@@ -200,6 +216,19 @@ echo "</div><hr />\n";
 echo "<h2>".get_vocab("config_cas_title")."</h2>\n";
 echo "<div>\n<input type=\"hidden\" name=\"valid\" value=\"1\" /></div>\n";
 echo "<p>".get_vocab("CAS_SSO_explain")."</p>\n";
+echo '<div class="form-group row col-xs-12">'.PHP_EOL;
+echo '<label class="col col-sm-6 col-xs-12" for="cas_version">'.get_vocab('cas_version').'</label>'.PHP_EOL;
+echo '<div class="col col-sm-6 col-xs12">'.PHP_EOL;
+echo '<select class="form-control" name="cas_version" id="cas_version">';
+foreach($CAS as $cas){
+    echo '<option value="'.$cas.'" ';
+    if($cas == $cas_version)
+        echo "selected";
+    echo '>'.$cas.'</option>';
+}
+echo '</select>'.PHP_EOL;
+echo '</div>
+</div>';
 echo "<h3>".get_vocab("Statut_par_defaut_utilisateurs_importes")."</h3>\n";
 echo "<div>".get_vocab("choix_statut_CAS_SSO")."<br />\n";
 echo "<input type=\"radio\" name=\"sso_statut\" value=\"cas_visiteur\" ";
@@ -210,13 +239,18 @@ echo "<input type=\"radio\" name=\"sso_statut\" value=\"cas_utilisateur\" ";
 if (Settings::get("sso_statut") == 'cas_utilisateur')
 	echo " checked=\"checked\" ";
 echo "/>".get_vocab("statut_user")."<br />\n";
-// Forcer authentification ou rediriger vers la page d'accuil de GRR
+// Forcer authentification ou rediriger vers la page d'accueil de GRR
 echo "<br />".get_vocab("sso_redirection_accueil_grr_text1");
 echo "<br /><input type=\"checkbox\" name=\"sso_redirection_accueil_grr\" value=\"y\" ";
 if (Settings::get("sso_redirection_accueil_grr") == "y")
 	echo " checked=\"checked\"";
 echo " />";
 echo get_vocab("sso_redirection_accueil_grr_text2");
+// Activation du SSO en logout : la déconnexion de GRR déconnecte du portail CAS (Single-Sign-Out)
+echo "<br /><br />".get_vocab("cas_logout")."<br />".PHP_EOL;
+echo get_vocab('cas_logout2');
+$cas_logout = Settings::get("cas_logout");
+echo "<input type=\"text\" name=\"cas_logout\" size=\"40\" value =\"$cas_logout\"/>\n";
 // Afficher l'interface de mise en correspondance ldap <--> statut dans GRR.
 echo "<br /><br />".get_vocab("sso_active_correspondance_profil_statut_text");
 echo "<br /><input type=\"checkbox\" name=\"sso_active_correspondance_profil_statut\" value=\"y\" ";
