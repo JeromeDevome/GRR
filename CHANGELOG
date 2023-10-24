@@ -1,11 +1,21 @@
 -----
 --
 -----
+Version 4.2.1 - En developpement
+
+[Correction] Calcul de la page edit_entry @ynaessens
+[Correction] Droits à modifier pour le bénéficiaire @ynaessens
+[Correction] Champs de recherche par brève description manquant (Pb v4.0.0) @ynaessens
+
+
+-----
+--
+-----
 Version 4.2.0 - 24/10/2023 Généré par @JeromeDevome
 
 [Ajout] Création de compte utilisateur via un système de demande @JeromeDevome
 [Ajout] Personnalisations des mails via l'administration @JeromeDevome
-[Ajout] Personnalistion du titre des CGU @JeromeDevome
+[Ajout] Personnalisation du titre des CGU @JeromeDevome
 [Ajout] Champs additionnels de type checkbox @ynaessens & eric.lemeur (Forum)
 [Ajout] Hooks pour les modules @JeromeDevome
 [Ajout] Module ext. : Possibilité de bloquer en actif via config.inc.php
@@ -14,7 +24,7 @@ Version 4.2.0 - 24/10/2023 Généré par @JeromeDevome
 [Correction] Jour périodicité dans les PDF @JeromeDevome
 [Correction] Correction des choix des langues @JeromeDevome
 [Correction] Amélioration de la mise à jour de 3.5.1 vers 4.1.1 @ynaessens
-[Correction] Sécurisation de l'envois des mails @ynaessens & eric.lemeur (Forum)
+[Correction] Sécurisation de l'envoi des mails @ynaessens & eric.lemeur (Forum)
 [Correction] Style administration @ynaessens
 [Correction] Création sous dossier récursive (Pb v4.0.0) @JeromeDevome
 [Correction] Accès aux administrateurs de site (Pb v4.0.0) @ynaessens
