@@ -1,8 +1,8 @@
 <?php
 /*
  * config_CAS.inc.php.ori
- * Ce fichier permet de configurer la récupération dans GRR d'attributs LDAP des utilisateurs envoyés par le serveur CAS Lire attentivement la documentation avant de modifier ce fichier
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Ce fichier permet de configurer la rÃ©cupÃ©ration dans GRR d'attributs LDAP des utilisateurs envoyÃ©s par le serveur CAS Lire attentivement la documentation avant de modifier ce fichier
+ * DerniÃ¨re modification : $Date: 2017-12-16 14:00$
  * @author    JeromeB & Laurent Delineau
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -17,8 +17,8 @@
 
 /*
 On ne peut pas invoquer directement la fonction "phpCAS::getAttribute()"
-car elle n'est pas implémentée dans "CAS/CAS.php"
-Dans cette bibliothèque, il n'y a que "phpCAS::getAttributes()" qui soit définie, contrairement à ce qui se passe avec "CAS/CAS/client.php".
+car elle n'est pas implÃ©mentÃ©e dans "CAS/CAS.php"
+Dans cette bibliothÃ¨que, il n'y a que "phpCAS::getAttributes()" qui soit dÃ©finie, contrairement Ã  ce qui se passe avec "CAS/CAS/client.php".
 */
 function getAttribute($key)
 {
@@ -39,14 +39,14 @@ function getAttribute($key)
 }
 
 /*
- Récupération des différents attributs de l'annuaire LDAP envoyés par le serveur CAS
- Explication de la première ligne :
- phpCAS::getAttribute('user_nom_ldap') est la variable envoyé par CAS
- La fonction recuperer_nom() permet de traiter cette variable pour récupérer la valeur utilisée dans GRR
- Le résultat est alors stocké dans $user_nom
+ RÃ©cupÃ©ration des diffÃ©rents attributs de l'annuaire LDAP envoyÃ©s par le serveur CAS
+ Explication de la premiÃ¨re ligne :
+ phpCAS::getAttribute('user_nom_ldap') est la variable envoyÃ©e par CAS
+ La fonction recuperer_nom() permet de traiter cette variable pour rÃ©cupÃ©rer la valeur utilisÃ©e dans GRR
+ Le rÃ©sultat est alors stockÃ© dans $user_nom
 
- Il en va de même des autres variables ci-dessous
- Vous pouvez personnaliser les fonctions de traitements des attributs LDAP envoyés par le serveur CAS
+ Il en va de mÃªme des autres variables ci-dessous
+ Vous pouvez personnaliser les fonctions de traitements des attributs LDAP envoyÃ©s par le serveur CAS
  en modifiant le code des fonctions ci-dessous.
 */
  $user_nom = recuperer_nom(phpCAS::getAttribute('user_nom_ldap'));
@@ -58,25 +58,25 @@ function getAttribute($key)
  $user_default_style = "argent";
 
 /*
- Fonction permettant de récupérer le nom dans le champ LDAP $user_nom
+ Fonction permettant de rÃ©cupÃ©rer le nom dans le champ LDAP $user_nom
 */
  function recuperer_nom($user_nom)
  {
-  # Le cas échéant, remplacez la ligne suivante par le code PHP adéquat, correspondant à votre annuaire LDAP
+  # Le cas Ã©chÃ©ant, remplacez la ligne suivante par le code PHP adÃ©quat, correspondant Ã  votre annuaire LDAP
  	return $user_nom;
  }
 
 /*
- Fonction permettant de récupérer le prénom dans le champ LDAP $user_prenom
+ Fonction permettant de rÃ©cupÃ©rer le prÃ©nom dans le champ LDAP $user_prenom
 */
  function recuperer_prenom($user_prenom)
  {
-//Le cas échéant, remplacez la ligne suivante par le code PHP adéquat, correspondant à votre annuaire LDAP
+//Le cas Ã©chÃ©ant, remplacez la ligne suivante par le code PHP adÃ©quat, correspondant Ã  votre annuaire LDAP
  	return $user_prenom;
  }
 
 /*
- Fonction permettant de récupérer la langue à partir de l'attribut $user_language de l'annuaire LDAP
+ Fonction permettant de rÃ©cupÃ©rer la langue Ã  partir de l'attribut $user_language de l'annuaire LDAP
  Exemple (Cas de l'ENT Esco-Portail) :
  -------------------------------------
  function recuperer_language($user_language) {
@@ -104,15 +104,15 @@ function getAttribute($key)
 */
  function recuperer_language($user_language)
  {
-//Le cas échéant, remplacez la ligne suivante par le code PHP adéquat, correspondant à votre annuaire LDAP (voir exemple ci-dessous)
+//Le cas Ã©chÃ©ant, remplacez la ligne suivante par le code PHP adÃ©quat, correspondant Ã  votre annuaire LDAP (voir exemple ci-dessous)
  	return $user_language;
  }
 
 /*
- Fonction permettant de récupérer le code de la fonction dans le champ LDAP $user_code_fonction
+ Fonction permettant de rÃ©cupÃ©rer le code de la fonction dans le champ LDAP $user_code_fonction
  Exemple (Cas de l'ENT Esco-Portail) :
  -------------------------------------
- Récupération du code de la fonction dans le champ LDAP multivalué ENTPersonFonctions
+ RÃ©cupÃ©ration du code de la fonction dans le champ LDAP multivaluÃ© ENTPersonFonctions
 
  function recuperer_code_fonction($user_code_fonction) {
 	$tab = explode ("$", $user_code_fonction);
@@ -121,16 +121,16 @@ function getAttribute($key)
 */
  function recuperer_code_fonction($user_code_fonction)
  {
-//Le cas échéant, remplacez la ligne suivante par le code PHP adéquat, correspondant à votre annuaire LDAP (voir exemple ci-dessous)
+//Le cas Ã©chÃ©ant, remplacez la ligne suivante par le code PHP adÃ©quat, correspondant Ã  votre annuaire LDAP (voir exemple ci-dessous)
  	return $user_code_fonction;
  }
 
 
 /*
- Fonction permettant de récupérer le libellé de la fonction dans le champ LDAP $user_libelle_fonction
+ Fonction permettant de rÃ©cupÃ©rer le libellÃ© de la fonction dans le champ LDAP $user_libelle_fonction
  Exemple (Cas de l'ENT Esco-Portail) :
  -------------------------------------
- Récupération du libellé de la fonction dans le champ LDAP multivalué ENTPersonFonctions
+ RÃ©cupÃ©ration du libellÃ© de la fonction dans le champ LDAP multivaluÃ© ENTPersonFonctions
 
  function recuperer_libelle_fonction($user_libelle_fonction) {
 	$tab = explode ("$", $user_libelle_fonction);
@@ -140,16 +140,16 @@ function getAttribute($key)
 
  function recuperer_libelle_fonction($user_libelle_fonction)
  {
-//Le cas échéant, remplacez la ligne suivante par le code PHP adéquat, correspondant à votre annuaire LDAP (voir exemple ci-dessous)
+//Le cas Ã©chÃ©ant, remplacez la ligne suivante par le code PHP adÃ©quat, correspondant Ã  votre annuaire LDAP (voir exemple ci-dessous)
  	return $user_libelle_fonction;
  }
 
 /*
- Fonction permettant de récupérer le mail dans le champ LDAP $user_mail
+ Fonction permettant de rÃ©cupÃ©rer le mail dans le champ LDAP $user_mail
 */
  function recuperer_mail($user_mail)
  {
-//Le cas échéant, remplacez la ligne suivante par le code PHP adéquat, correspondant à votre annuaire LDAP
+//Le cas Ã©chÃ©ant, remplacez la ligne suivante par le code PHP adÃ©quat, correspondant Ã  votre annuaire LDAP
  	return $user_mail;
  }
  ?>

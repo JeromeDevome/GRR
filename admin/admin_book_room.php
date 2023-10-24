@@ -3,9 +3,9 @@
  * admin_book_room.php
  * Interface de gestion des accès restreints aux ressources restreintes
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-05-02 13:40$
+ * Dernière modification : $Date: 2023-10-13 10:46$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -125,9 +125,9 @@ affiche_pop_up($msg,"admin");
 # première étape : choisir parmi les ressources restreintes
 $this_room_name = "";
 $out_html = '';
-$out_html .= "\n<form id=\"room\" action=\"admin_book_room.php\" method=\"post\">\n";
-$out_html .= "<label>".get_vocab('rooms')."</label>";
-$out_html .= "<select name=\"room\" onchange=\"room_go()\">";
+$out_html .= "\n<form action=\"admin_book_room.php\" method=\"post\">\n";
+$out_html .= "<label for='room'>".get_vocab('rooms').get_vocab('deux_points')."</label>";
+$out_html .= "<select id='room' name=\"room\" onchange=\"room_go()\">";
 $out_html .= "\n<option value=\"admin_book_room.php?id_room=-1\">".get_vocab('select')."</option>";
 $sql = "select id, room_name from ".TABLE_PREFIX."_room where who_can_book =0 order by room_name";
 $res = grr_sql_query($sql);
