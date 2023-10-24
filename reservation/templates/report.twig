@@ -116,13 +116,13 @@
 												<td title="{{resa.domainedesc}}">{{resa.domaine}}</td>
 												<td>{{resa.ressource}}</td>
 												<td><a href="view_entry.php?id={{resa.idresa}}">{{resa.descriptionc}}</a></td>
-												<td>{{resa.datedebut}}</td>
+												<td data-order="{{resa.datedebutts}}">{{resa.datedebut}}</td>
                                                 <td>{{resa.heuredebut}}</td>
 												<td>{{resa.duree}}</td>
 												<td>{{resa.descriptionl}}</td>
 												<td>{{resa.type}}</td>
 												<td>{{resa.beneficiaire}}</td>
-												<td>{{resa.datemaj}}</td>
+												<td data-order="{{resa.datemajts}}">{{resa.datemaj}}</td>
 												<td>
 													{% if resa.moderate == 1 %}
 														{{trad.en_attente_moderation}}

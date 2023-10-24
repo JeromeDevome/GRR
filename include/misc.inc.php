@@ -23,10 +23,10 @@ $grr_devel_url = "https://grr.devome.com/";
 
 // Numéro de version actuel
 # Format X.X.XRCX | exemples : 4.0.0a (alpha) ou 4.0.0b (beta) 3.4.0RC1 (Release Candidate) ou 3.4.0 (version OK)
-$version_grr = "4.1.1";
+$version_grr = "4.2.0";
 # Version BDD, deux premirs chiffres = version majeur, les deux suivant la version, évolution de GRR, les 3 derniers une incrémentation à chaque changement
-# Ex 0402003 : Version 4.2.X 3eme modification sur la branche 4.2.X
-$version_bdd = "0400002";
+# Ex 0400003 : 3eme modification sur la branche 4.X.X
+$version_bdd = "0400003";
 // Version repository (GitHub) GitHub-Master / Release-v4.0.0-beta.1 / Release-v4.0.0-RC.1 / Release-v4.0.0
 $versionReposite = "GitHub-Master";
 
@@ -38,12 +38,12 @@ $php_mini = "7.2.5";
 // Version PHP maximum testé et validé par : JeromeB
 $php_max_valide = "8.1.17";
 // Version PHP maximum qui est sensé fonctionné, si compatible avec toutes les versions à ce jour laisser vide
-$php_maxi = "8.1.17";
+$php_maxi = "8.1.24";
 
 // Version MySQL minimum
 $mysql_mini = "5.4.0";
 // Version MySQL maximum testé et validé par : JeromeB
-$mysql_max_valide = "5.7.39";
+$mysql_max_valide = "5.7.43";
 // Version MySQL maximum qui est sensé fonctionné
 $mysql_maxi = "";
 
@@ -59,6 +59,7 @@ $liste_tables = array(
 	"_correspondance_statut",
 	"_entry",
 	"_entry_moderate",
+	"_groupes",
 	"_j_mailuser_room",
 	"_j_site_area",
 	"_j_type_area",
@@ -79,6 +80,8 @@ $liste_tables = array(
 	"_site",
 	"_type_area",
 	"_utilisateurs",
+	"_utilisateurs_demandes",
+	"_utilisateurs_groupes",
 	);
 
 # Liste des feuilles de style

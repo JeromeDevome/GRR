@@ -120,11 +120,20 @@ if (isset($_GET['smtp_verify_depth']))
 // Si Email test renseigné on y envois un mail
 if (isset($_GET['mail_test']) && !empty($_GET['mail_test']))
 {
+	require_once '../include/pages.class.php';
 	require_once '../include/mail.class.php';
 	require_once '../vendor/phpmailer/phpmailer/src/PHPMailer.php';
 	require_once '../vendor/phpmailer/phpmailer/src/SMTP.php';
 	require_once '../vendor/phpmailer/phpmailer/src/Exception.php';
-	Email::Envois($_GET['mail_test'], 'Votre GRR', "Ceci est un test depuis l'administration de votre GRR.<br>Le mail est arrivé à destination.", Settings::get('grr_mail_from'), '', '');
+	if (!Pages::load())
+		die('Erreur chargement pages');
+	
+	$templateMail = Pages::get('mails_test_'.$locale);
+	$codes = ['%nomdusite%' => Settings::get('title_home_page'), '%nometablissement%' => Settings::get('company'),'%urlgrr%' =>  traite_grr_url("","y")];
+	$sujetMail = str_replace(array_keys($codes), $codes, $templateMail[0]);
+	$txtMail = str_replace(array_keys($codes), $codes, $templateMail[1]);
+	
+	Email::Envois($_GET['mail_test'], $sujetMail, $txtMail, Settings::get('grr_mail_from'), '', '');
 }
 if (isset($_GET['ok']))
 {

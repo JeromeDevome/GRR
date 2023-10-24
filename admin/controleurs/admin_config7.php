@@ -82,7 +82,31 @@ if (isset($_POST['p'])) { // On a validé le formulaire
     if (!Settings::set("mail_contact_resa_captcha", $mail_contact_resa_captcha))
         $msg .= "Erreur lors de l'enregistrement de mail_contact_resa_captcha !<br />";
 
+// Demande de création de compte
+    if(isset($_POST['fct_crea_cpt']) && $_POST['fct_crea_cpt'] = 'on')
+        $fonctionCreaCompte = 'y';
+    else
+        $fonctionCreaCompte = 'n';
+    
+    if (!Settings::set('fct_crea_cpt', $fonctionCreaCompte))
+        $msg .= "Erreur lors de l'enregistrement de fct_crea_cpt !<br />";
+
+    if (!Settings::set('fct_crea_cpt_login', $_POST['fct_crea_cpt_login']))
+        $msg .= "Erreur lors de l'enregistrement de fct_crea_cpt_login !<br />";
+
+    if (!Settings::set('fct_crea_cpt_statut', $_POST['fct_crea_cpt_statut']))
+        $msg .= "Erreur lors de l'enregistrement de fct_crea_cpt_statut !<br />";
+
+    if (isset($_POST['fct_crea_cpt_captcha']))
+        $fct_crea_cpt_captcha = "y";
+    else
+        $fct_crea_cpt_captcha = "n";
+    if (!Settings::set("fct_crea_cpt_captcha", $fct_crea_cpt_captcha))
+        $msg .= "Erreur lors de l'enregistrement de fct_crea_cpt_captcha !<br />";       
 }
+
+
+
 if (!Settings::load()) {
     die('Erreur chargement settings');
 }

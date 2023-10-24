@@ -1,0 +1,162 @@
+{% extends 'layout.twig' %}
+
+{% block css %}
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/datatables-select/css/select.bootstrap4.min.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
+{% endblock %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{trad.admin_user}}</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+					<table id="tableuser" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th></th>
+								<th>{{trad.login_name}}</th>
+								<th>{{trad.names}}</th>
+								<th>{{trad.names}}</th>
+								<th>{{trad.mail_user}}</th>
+								<th>Téléphone</th>
+								<th>Commentaire</th>
+								<th>Date</th>
+								<th>Statut</th>
+								<th>{{trad.action}}</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for utilisateur in utilisateurs %}
+								<tr>
+									<form action="?p=admin_user_demandes" id="validedemande" method="get">
+										<input type="hidden" name="p" value="admin_user_demandes" />
+										<input type="hidden" name="iddemande" value="{{utilisateur.0}}" />
+										<input type="hidden" name="choix" value="1" />
+										<td></td>
+										<td><input type="test" name="login" value="{{utilisateur.1}}" required></td>
+										<td>{{utilisateur.2}}</td>
+										<td>{{utilisateur.3}}</td>
+										<td>{{utilisateur.4}}</td>
+										<td>{{utilisateur.5}}</td>
+										<td>{{utilisateur.6}}</td>
+										<td>{{utilisateur.7}}</td>
+										<td>
+											<select name="statut">
+												<option value="visiteur" {% if settings.fct_crea_cpt_statut == '1' %} selected {% endif %}>Visiteur</option>
+												<option value="utilisateur" {% if settings.fct_crea_cpt_statut == '2' %} selected {% endif %}>Utilisateur</option>
+											</select>
+										</td>
+										<td>
+											<button type="submit" class="btn btn-success btn-xs"><i class="icon fa fa-check"></i></button>
+											<a href="?p=admin_user_demandes&iddemande={{utilisateur.0}}&choix=2" class="btn btn-danger btn-xs"><i class="icon fa fa-trash"></i></a> 
+										</td>
+									</form>
+								</tr>
+							{% endfor %}
+						</tbody>
+				  </table>
+				</div>
+			</div>
+		</div>
+	</div>	
+
+	<div class="modal fade" id="modalWarningSupUser" tyle="display: none;" aria-hidden="true">
+		<form action="?p=admin_user">
+          <div class="modal-dialog">
+			<div class="modal-content bg-warning">
+              <div class="modal-header">
+                <h4 class="modal-title">{{trad.confirm_del}}</h4>
+				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				  </button>
+              </div>
+              <div class="modal-body">
+				{{trad.confirm_del}} : <span class="modalidsup" id="modalidsup"></span> 
+              </div>
+              <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">{{trad.cancel}}</button>
+				<button type="submit" id="liensup" class="btn btn-outline-dark">{{trad.delete}}</button>
+              </div>
+            </div>
+          </div>
+		  </form>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-select/js/dataTables.select.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/jszip/jszip.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/pdfmake/pdfmake.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/pdfmake/vfs_fonts.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
+	<script>
+		// Modal
+		$('#modalWarningSupUser').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget) // Button that triggered the modal
+			var idasup = button.data('idsup') // Extract info from data-* attributes
+		    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+		    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+		    var modal = $(this)
+		    modal.find('.modalidsup').text(idasup)
+		})
+
+		$(function(){
+			$(function () {
+				{% if d.enregistrement %}
+					{%if d.enregistrement == 1 %}
+						toastr.success("{{trad.message_records}}")
+					{% else %}
+						toastr.warning("{{d.enregistrement|raw}}")
+					{%endif%}
+				{%endif%}
+			});
+		})
+
+		$(document).ready(function() {
+		    $('#tableuser').DataTable( {
+		        columnDefs: [
+					{
+			            orderable: false,
+			            className: 'select-checkbox',
+			            targets:   0,
+						checkboxes: {
+							'selectRow': true
+						}
+			        }],
+		        select: {
+		            style:    'multi',
+		            selector: 'td:first-child'
+		        },
+		        order: [[ 1, 'asc' ]],
+				"responsive": true, "lengthChange": false, "autoWidth": false,
+		        buttons: [
+                    'copy',
+                    'excel',
+                    'csv',
+                    'pdf',
+                    'print',
+					'colvis'
+	    		]
+		    } ).buttons().container().appendTo('#tableuser_wrapper .col-md-6:eq(0)');
+		} );
+	</script>
+{% endblock %}

@@ -694,22 +694,22 @@ function resaToModerate($user)
     $res = false;
     if (authGetUserLevel($user,-1) > 5) // admin général
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE e.moderate = 1";
+        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE e.moderate = 1 AND e.supprimer = 0 ";
         $res = grr_sql_query($sql);
     }
     elseif (isset($_GET['id_site']) && (authGetUserLevel($user,intval($_GET['id_site']),'site') > 4)) // admin du site
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = ".intval($_GET['id_site'])." AND e.moderate = 1)";
+        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = ".intval($_GET['id_site'])." AND e.moderate = 1  AND e.supprimer = 0)";
         $res = grr_sql_query($sql);
     }
     elseif (isset($_GET['area']) && (authGetUserLevel($user,intval($_GET['area']),'area') > 3)) // admin du domaine
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id WHERE (a.id = ".intval($_GET['area'])." AND e.moderate = 1)";
+        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id WHERE (a.id = ".intval($_GET['area'])." AND e.moderate = 1 AND e.supprimer = 0)";
         $res = grr_sql_query($sql);
     }
     elseif (isset($_GET['room']) && (authGetUserLevel($user,intval($_GET['room']),'room') > 2)) // gestionnaire de la ressource
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE (e.moderate = 1 AND e.room_id = ".intval($_GET['room']).") ";
+        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE (e.moderate = 1 AND e.supprimer = 0 AND e.room_id = ".intval($_GET['room']).") ";
         $res = grr_sql_query($sql);
     }
     if ($res)
@@ -952,6 +952,18 @@ function corriger_caracteres($texte)
 	// 145,146,180 = simple quote ; 147,148 = double quote ; 150,151 = tiret long
 	$texte = strtr($texte, chr(145).chr(146).chr(180).chr(147).chr(148).chr(150).chr(151), "'''".'""--');
 	return $texte;
+}
+
+// Fonction supprimer accents d'une chaine
+function remplacer_accents($texte)
+{
+	$search  = array('À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'à', 'á', 'â', 'ã', 'ä', 'å', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ð', 'ò', 'ó', 'ô', 'õ', 'ö', 'ù', 'ú', 'û', 'ü', 'ý', 'ÿ');
+	//Préférez str_replace à strtr car strtr travaille directement sur les octets, ce qui pose problème en UTF-8
+	$replace = array('A', 'A', 'A', 'A', 'A', 'A', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'Y', 'a', 'a', 'a', 'a', 'a', 'a', 'c', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'y', 'y');
+
+	$chaineSansAccent = str_replace($search, $replace, $texte);
+	
+	return $chaineSansAccent;
 }
 
 // Traite les données avant insertion dans une requête SQL
@@ -1264,18 +1276,21 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			{
 				$parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
 				$_SESSION['chemin_retour'] = traite_grr_url($grr_script_name)."?". $_SERVER['QUERY_STRING'];
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=fr-fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=de-de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=en-gb"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=it-it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=es-es"><img src="'.$racine.'img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>'.PHP_EOL;
 			}
 			if ($type_session == 'no_session')
 			{
+				$resulHook = Hook::Appel("hookLienConnexion2");
 				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
 				{
 					echo '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>'.PHP_EOL;
 					echo '<br /> <small><i><a href="login.php">'.get_vocab("connect_local").'</a></i></small>'.PHP_EOL;
+				} elseif($resulHook['hookLienConnexion2'] != ""){
+					echo $resulHook['hookLienConnexion2'];	
 				}
 				else {
 					echo '<br /> <a href="login.php">'.get_vocab("connect").'</a>'.PHP_EOL;
@@ -1396,7 +1411,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 	}
 
 	$resulHook = Hook::Appel("hookHeader2");
-	$d['hookHeader1'] = $resulHook['hookHeader2'];
+	$d['hookHeader2'] = $resulHook['hookHeader2'];
 
 	// Si nous ne sommes pas dans un format imprimable
 	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
@@ -1493,10 +1508,14 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 				$d['urlLangue'] = traite_grr_url($grr_script_name);			}
 			if ($type_session == 'no_session')
 			{
+				$resulHook = Hook::Appel("hookLienConnexion2");
 				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
 				{
 					$d['lienConnexion'] =  '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>';
 					$d['lienConnexion'] .=  '<br /> <small><i><a href="login.php">'.get_vocab("connect_local").'</a></i></small>';
+				} elseif($resulHook['hookLienConnexion2'] != "")
+				{
+					$d['lienConnexion'] = $resulHook['hookLienConnexion2'];
 				}
 				else {
 					$d['lienConnexion'] = '<br /> <a href="login.php">'.get_vocab("connect").'</a>';
@@ -3016,6 +3035,10 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		require_once '../vendor/phpmailer/phpmailer/src/Exception.php';
 		require_once '../include/mail.class.php';
 	}
+	require_once 'include/pages.class.php';
+
+	if (!Pages::load())
+		die('Erreur chargement pages');
 
 	$sql = "SELECT ".TABLE_PREFIX."_entry.name,
 	".TABLE_PREFIX."_entry.description,
@@ -3136,59 +3159,251 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
     // Nom d'expéditeur (si != adresse de réponse, cas des serveurs SMTP refusant le relai)
     $expediteur = '';
     if (Settings::get('grr_mail_sender'))
-            {$expediteur = Settings::get('grr_mail_from');}
-	//Nom de l'établissement et mention "mail automatique"
-	$message = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
-	// Url de GRR
-	$message .= traite_grr_url("","y")."\n\n";
-	$sujet = $vocab["subject_mail1"].$room_name." - ".$date_avis;
+        $expediteur = Settings::get('grr_mail_from');
+
+	//Infos générales
+	$codes = [
+		'%nomdusite%' => Settings::get('title_home_page'),
+		'%nometablissement%' => Settings::get('company'),
+		'%urlgrr%' =>  traite_grr_url("","y"),
+		'%webmasteremail%' => Settings::get("webmaster_email"),
+		'%logincompletuser%' => affiche_nom_prenom_email($user_login,"","formail"),
+		'%logincompletbeneficiaire%' => affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail"),
+		'%domaine%' => $area_name,
+		'%ressource%' => $room_name,
+	];
+
+	// Infos sur la réservation	
+	$codes['%resadatedebut%'] = $start_date;
+	$codes['%resaduree%'] = $duration." ".$dur_units;
+	if (trim($breve_description) != "")
+		$codes['%resanom%'] = $vocab["namebooker"]." ".$vocab["deux_points"]." ".$breve_description;
+	else
+		$codes['%resanom%'] = $vocab["entryid"].$room_id."\n";
+	if ($description !='')
+		$codes['%resadescription%'] = $vocab["description"]." ".$description."\n";
+	else
+		$codes['%resadescription%'] = "";
+	if ($moderate == 1)
+		$codes['%enattentemoderation%'] = " (".$vocab['en_attente_moderation'].")";
+	else
+		$codes['%enattentemoderation%'] = "";
+
+	// Champs additionnels
+	$codes['%resachampsadditionnels%'] =  affichage_champ_add_mails($id_entry);
+	$destinataire_spec = envois_spec_champ_add_mails($id_entry);
+
+	// Type de réservation
+	$temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$row[5]."'");
+	if ($temp == -1)
+		$codes['%resatype%'] = "?".$row[5]."?";
+	else
+		$codes['%resatype%'] = removeMailUnicode($temp);
+
+	// Infos périodicités
+	if ($rep_type != 0)
+	{
+		$resaPeriodique = $vocab["rep_type"]." ".$affiche_period."\n";
+		if ($rep_type == 2)
+		{
+			$opt = "";
+			for ($i = 0; $i < 7; $i++)
+			{
+				$daynum = ($i + $weekstarts) % 7;
+				if ($rep_opt[$daynum])
+					$opt .= day_name($daynum) . " ";
+			}
+			if ($opt)
+				$resaPeriodique .= $vocab["rep_rep_day"]." ".$opt."\n";
+		}
+		if ($rep_type == 6)
+		{
+			if (Settings::get("jours_cycles_actif") == "Oui")
+				$resaPeriodique .= $vocab["rep_type_6"].preg_replace("/ /", " ",$vocab["deux_points"]).ucfirst(substr($vocab["rep_type_6"],0,1)).$jours_cycle."\n";
+		}
+		$resaPeriodique .= $vocab["rep_end_date"]." ".$rep_end_date."\n";
+		$codes['%resaperiodique%'] = $resaPeriodique;
+	} else
+		$codes['%resaperiodique%'] = "";
+
+	if (($delais_option_reservation > 0) && ($option_reservation != -1))
+		$codes['%resaconfirmation%'] = "*** ".$vocab["reservation_a_confirmer_au_plus_tard_le"]." ".time_date_string_jma($option_reservation,$dformat)." ***\n";
+	else
+		$codes['%resaconfirmation%'] = "";
+
+/*
+(1)
+Pour les utilisateurs :
+	- qui sont renseigné manuellement dans l'administration
+	- les utilisateurs notifié via les champs additionnels
+*/
+	$sujet1 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
 
 	if ($action == 1){ // Création
-		$sujet .= $vocab["subject_mail_creation"];
-		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
-		$message .= $vocab["creation_booking"];
-		$message .= $vocab["the_room"].$room_name." (".$area_name.") \n";
+		//$sujet1 .= $vocab["subject_mail_creation"];
 		$repondre = $user_email;
+		$templateSujet1 = Pages::get('mails_resacreation_'.$locale);
+		$templateMail1 = Pages::get('mails_resacreation_'.$locale);
 	}
 	elseif ($action == 2){ // Modification
-		$sujet .= $vocab["subject_mail_modify"];
-		if ($moderate == 1)
-			$sujet .= " (".$vocab["en_attente_moderation"].")";
-		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
-		$message .= $vocab["modify_booking"];
-		if ($room_name != $oldRessource)
-			$message .= $vocab["the_room"]." ".$oldRessource." => ".$room_name." (".$area_name.") \n";
-		else
-			$message .= $vocab["the_room"].$room_name." (".$area_name.") \n";
-		$message .= $vocab["reservee_au_nom_de"];
-		$message .= $vocab["the_user"].affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
+		//$sujet1 .= $vocab["subject_mail_modify"];
+		//if ($moderate == 1)
+		//	$sujet1 .= " (".$vocab["en_attente_moderation"].")";
 		$repondre = $user_email;
+		if ($room_name != $oldRessource)
+			$codes['%ressource%'] .= $oldRessource." => ".$room_name;
+		$templateSujet1 = Pages::get('mails_resamodification_'.$locale);
+		$templateMail1 = Pages::get('mails_resamodification_'.$locale);
 	}
 	elseif ($action == 3){ // Suppression
-		$sujet .= $vocab["subject_mail_delete"];
-		if ($moderate == 1)
-			$sujet .= " (".$vocab["en_attente_moderation"].")";
-		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
-		$message .= $vocab["delete_booking"];
-		$message .= $vocab["the_room"].$room_name." (".$area_name.") \n";
-		$message .= $vocab["reservee_au_nom_de"];
-		$message .= $vocab["the_user"].affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
+		//$sujet1 .= $vocab["subject_mail_delete"];
+		//if ($moderate == 1)
+		//	$sujet1 .= " (".$vocab["en_attente_moderation"].")";
 		$repondre = $user_email;
+		$templateSujet1 = Pages::get('mails_resasuppression_'.$locale);
+		$templateMail1 = Pages::get('mails_resasuppression_'.$locale);
 	}
 	elseif ($action == 4){ // Suppression automatique
-		$sujet .= $vocab["subject_mail_delete"];
-		$message .= $vocab["suppression_automatique"];
-		$message .= $vocab["the_room"].$room_name." (".$area_name.") \n";
+		//$sujet1 .= $vocab["subject_mail_delete"];
 		$repondre = $user_email;
+		$templateMail1 = Pages::get('mails_resasuppression3_'.$locale);
 	}
 	elseif ($action == 5){ // Réservation en attente de modération
-		$sujet .= $vocab["subject_mail_moderation"];
-		$message .= $vocab["reservation_en_attente_de_moderation"];
-		$message .= $vocab["the_room"].$room_name." (".$area_name.") \n";
+		//$sujet1 .= $vocab["subject_mail_moderation"];
 		$repondre = Settings::get("webmaster_email");
+		$templateMail1 = Pages::get('mails_resamoderation_'.$locale);
 	}
 	elseif ($action == 6){ // Résultat d'une décision de modération
-		$sujet .= $vocab["subject_mail_decision_moderation"];
+		//$sujet1 .= $vocab["subject_mail_decision_moderation"];
+		$repondre = $user_email;
+		$resmoderate = grr_sql_query("SELECT moderate, motivation_moderation FROM ".TABLE_PREFIX."_entry_moderate WHERE id ='".protect_data_sql($id_entry)."'");
+		if (!$resmoderate)
+			fatal_error(0, grr_sql_error());
+		if (grr_sql_count($resmoderate) < 1)
+			fatal_error(0, get_vocab('invalid_entry_id'));
+		$rowModerate = grr_sql_row($resmoderate, 0);
+		grr_sql_free($resmoderate);
+		$moderate_decision = $rowModerate[0];
+		$moderate_description = $rowModerate[1];
+
+		if ($moderate_decision == 2)
+			$codes['%decisionmoderation%'] .= $vocab["moderation_acceptee"];
+		else if ($moderate_decision == 3)
+			$codes['%decisionmoderation%'] .= $vocab["moderation_refusee"];
+
+		if ($moderate_description != "")
+			$codes['%decisionmotif%'] .= $vocab["motif"].$vocab["deux_points"]."<br>".$moderate_description;
+		else
+			$codes['%decisionmotif%'] .= "";
+
+		if (count($tab_id_moderes) == 0 )
+			$codes['%urldetail%'] .= "\n".traite_grr_url("","y")."view_entry.php?id=".$id_entry;
+		else
+		{
+			foreach ($tab_id_moderes as $id_moderes)
+				$codes['%urldetail%'] .=  "\n".traite_grr_url("","y")."view_entry.php?id=".$id_moderes;
+		}
+		$templateMail1 = Pages::get('mails_resamoderation2_'.$locale);
+	}
+	elseif ($action == 7){ // Notification d'un retard dans la restitution d'une ressource
+		//$sujet1 .= $vocab["subject_mail_retard"];
+
+		if ($beneficiaire_email != "")
+			$codes['%maildestinataire%'] .= $vocab["un_email_envoye"].$beneficiaire_email;
+		else
+			$codes['%maildestinataire%'] .= "";
+
+		$codes['%urldetail%'] .= "\n".traite_grr_url("","y")."view_entry.php?id=".$id_entry;
+		$repondre = Settings::get("webmaster_email");
+		$templateMail1 = Pages::get('mails_retardrestitution_'.$locale);
+	}
+
+
+	$sql = "SELECT u.email FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_mailuser_room j WHERE (j.id_room='".protect_data_sql($room_id)."' AND u.login=j.login and u.etat='actif') ORDER BY u.nom, u.prenom";
+	$res = grr_sql_query($sql);
+	$nombre = grr_sql_count($res);
+	$destinataire = "";
+	if ($nombre > 0)
+	{
+		$tab_destinataire = array();
+		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+		{
+			if ($row[0] != "")
+				$tab_destinataire[] = $row[0];
+		}
+		foreach ($tab_destinataire as $value){
+			$destinataire .= $value.";";
+		}
+	}
+	$destinataire = $destinataire . $destinataire_spec;
+    
+	if ($expediteur =='')
+		$expediteur = $repondre;
+
+	if($destinataire != "")
+	{
+		$codes['%raisonmail%'] = $vocab['mail_raison_5'];
+		$sujetEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[0]);
+		$msgEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[1]);
+		Email::Envois($destinataire, $sujetEncode1, $msgEncode1, $expediteur, '', '', $repondre);
+	}
+
+
+/*
+(2)
+Pour le benificiare de la ressource
+*/
+
+	$envoi2 = false;
+	$destinataire2 = $beneficiaire_email;
+	$codes['%raisonmail%'] = $vocab['mail_raison_6'];
+
+	// Cas d'une création, modification ou suppression d'un message par un utilisateur différent du bénéficiaire :
+	// On envoie un message au bénéficiaire de la réservation pour l'avertir d'une modif ou d'une suppression
+	if ((($action == 1) || ($action == 2) || ($action == 3)) && ((strtolower($user_login) != strtolower($beneficiaire)) || (Settings::get('send_always_mail_to_creator') == '1')) && ($beneficiaire_email != '') && ($beneficiaire_actif == 'actif'))
+	{
+		$repondre2 = $user_email;
+        if ($expediteur =='')
+			$expediteur = $repondre2;
+
+		if ($action == 1){ // Création
+			$templateMail2 = Pages::get('mails_resacreation2_'.$locale);
+		}
+		elseif ($action == 2){ // Modification
+			if ($room_id != $oldRessource)
+				$codes['%ressource%'] =  $nomAncienneSalle." => ".$room_name;
+
+			$templateMail2 = Pages::get('mails_resamodification2_'.$locale);
+
+		}
+		else{ // Suppression
+			$templateMail2 = Pages::get('mails_resasuppression2_'.$locale);
+		}
+		$envoi2 = true;
+	}
+	elseif (($action == 4) && ($beneficiaire_email != '') && ($beneficiaire_actif == 'actif')) // Supression automatique
+	{
+		// Sujet
+		$repondre2 = Settings::get("webmaster_email");
+		if ($expediteur =='')
+			$expediteur = $repondre2;
+
+		$templateMail2 = Pages::get('mails_resasuppression3_'.$locale);
+		$envoi2 = true;
+	}
+	elseif (($action == 5) && ($beneficiaire_email != '') && ($beneficiaire_actif == 'actif')) // Réservation en attente de modération, mail pour le beneficiaire
+	{
+		$repondre2 = Settings::get("webmaster_email");
+        if ($expediteur =='')
+			$expediteur = $repondre2;
+		$templateMail2 = Pages::get('mails_resamoderation3_'.$locale);
+		$envoi2 = true;
+	}
+	elseif (($action == 6) && ($beneficiaire_email != '') && ($beneficiaire_actif=='actif')) // Résultat d'une décision de modération
+	{
+		$repondre2 = $user_email;
+        if ($expediteur =='')
+			$expediteur = $repondre2;
 
 		$resmoderate = grr_sql_query("SELECT moderate, motivation_moderation FROM ".TABLE_PREFIX."_entry_moderate WHERE id ='".protect_data_sql($id_entry)."'");
 		if (!$resmoderate)
@@ -3200,265 +3415,110 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$moderate_decision = $rowModerate[0];
 		$moderate_description = $rowModerate[1];
 
-		$message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
-		$message .= $vocab["traite_moderation"];
-		$message .= $vocab["the_room"].$room_name." (".$area_name.") \n";
-		$message .= $vocab["reservee_au_nom_de"];
-		$message .= $vocab["the_user"].affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
 		if ($moderate_decision == 2)
-			$message .= "\n".$vocab["moderation_acceptee"];
+			$codes['%decisionmoderation%'] .= $vocab["moderation_acceptee"];
 		else if ($moderate_decision == 3)
-			$message .= "\n".$vocab["moderation_refusee"];
+			$codes['%decisionmoderation%'] .= $vocab["moderation_refusee"];
+
 		if ($moderate_description != "")
-		{
-			$message .= "\n".$vocab["motif"].$vocab["deux_points"];
-			$message .= $moderate_description." \n----";
-		}
-		$message .= "\n".$vocab["voir_details"].$vocab["deux_points"]."\n";
+			$codes['%decisionmotif%'] .= $vocab["motif"].$vocab["deux_points"]."<br>".$moderate_description;
+		else
+			$codes['%decisionmotif%'] .= "";
+
 		if (count($tab_id_moderes) == 0 )
-			$message .= "\n".traite_grr_url("","y")."view_entry.php?id=".$id_entry;
+			$codes['%urldetail%'] .= traite_grr_url("","y")."view_entry.php?id=".$id_entry;
 		else
 		{
 			foreach ($tab_id_moderes as $id_moderes)
-				$message .= "\n".traite_grr_url("","y")."view_entry.php?id=".$id_moderes;
+				$codes['%urldetail%'] .=  traite_grr_url("","y")."view_entry.php?id=".$id_moderes;
 		}
-		$message .= "\n\n".$vocab["rappel_de_la_demande"].$vocab["deux_points"]."\n";
 
-		$repondre = $user_email;
+		$templateMail2 = Pages::get('mails_resamoderation4_'.$locale);
+		$envoi2 = true;
 	}
-	elseif ($action == 7){ // Notification d'un retard dans la restitution d'une ressource
-		$sujet .= $vocab["subject_mail_retard"];
-
-		$message .= $vocab["message_mail_retard"].$vocab["deux_points"]." \n";
-		$message .= $room_name." (".$area_name.") \n";
-		$message .= $vocab["nom_emprunteur"].$vocab["deux_points"];
-		$message .= affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
-		if ($beneficiaire_email != "")
-			$message .= $vocab["un_email_envoye"].$beneficiaire_email." \n";
-		$message .= "\n".$vocab["changer statut lorsque ressource restituee"].$vocab["deux_points"];
-		$message .= "\n".traite_grr_url("","y")."view_entry.php?id=".$id_entry." \n";
-
-		$repondre = Settings::get("webmaster_email");
-	}
-	//
-	// Infos sur la réservation
-	//		
-	$destinataire_spec = '';
-	$reservation = '';
-	$reservation .= $vocab["start_of_the_booking"]." ".$start_date."\n";
-	$reservation .= $vocab["duration"]." ".$duration." ".$dur_units."\n";
-	if (trim($breve_description) != "")
-		$reservation .= $vocab["namebooker"].preg_replace("/ /", " ",$vocab["deux_points"])." ".$breve_description."\n";
-	else
-		$reservation .= $vocab["entryid"].$room_id."\n";
-	if ($description !='')
-		$reservation .= $vocab["description"]." ".$description."\n";
-	// Champs additionnels
-	$reservation .= affichage_champ_add_mails($id_entry);
-	$destinataire_spec .= envois_spec_champ_add_mails($id_entry);
-	// Type de réservation
-	$temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$row[5]."'");
-	if ($temp == -1)
-		$temp = "?".$row[5]."?";
-	else
-		$temp = removeMailUnicode($temp);
-
-	$reservation .= $vocab["type"].preg_replace("/ /", " ",$vocab["deux_points"])." ".$temp."\n";
-
-	if ($rep_type != 0)
-		$reservation .= $vocab["rep_type"]." ".$affiche_period."\n";
-	if ($rep_type != 0)
+	elseif ( ($action == 7) && ($beneficiaire_email != '') )// Notification d'un retard dans la restitution d'une ressource
 	{
-		if ($rep_type == 2)
-		{
-			$opt = "";
-			for ($i = 0; $i < 7; $i++)
-			{
-				$daynum = ($i + $weekstarts) % 7;
-				if ($rep_opt[$daynum])
-					$opt .= day_name($daynum) . " ";
-			}
-			if ($opt)
-				$reservation .= $vocab["rep_rep_day"]." ".$opt."\n";
-		}
-		if ($rep_type == 6)
-		{
-			if (Settings::get("jours_cycles_actif") == "Oui")
-				$reservation .= $vocab["rep_type_6"].preg_replace("/ /", " ",$vocab["deux_points"]).ucfirst(substr($vocab["rep_type_6"],0,1)).$jours_cycle."\n";
-		}
-		$reservation .= $vocab["rep_end_date"]." ".$rep_end_date."\n";
+		$repondre2 = Settings::get("webmaster_email");
+        if ($expediteur =='')
+			$expediteur = $repondre2;
+
+		$templateMail2 = Pages::get('mails_retardrestitution2_'.$locale);
+		$envoi2 = true;
 	}
-	if (($delais_option_reservation > 0) && ($option_reservation != -1))
-		$reservation .= "*** ".$vocab["reservation_a_confirmer_au_plus_tard_le"]." ".time_date_string_jma($option_reservation,$dformat)." ***\n";
 
-	$reservation .= "-----\n";
-
-	$message .= $reservation;
-	$message .= $vocab["msg_no_email"].Settings::get("webmaster_email");;
-	$message = html_entity_decode($message);
-	$sql = "SELECT u.email FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_mailuser_room j WHERE (j.id_room='".protect_data_sql($room_id)."' AND u.login=j.login and u.etat='actif') ORDER BY u.nom, u.prenom";
-	$res = grr_sql_query($sql);
-	$nombre = grr_sql_count($res);
-	if ($nombre > 0)
+	if($envoi2 == true)
 	{
-		$destinataire = "";
-		$tab_destinataire = array();
-		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-		{
-			if ($row[0] != "")
-				$tab_destinataire[] = $row[0];
-		}
-		foreach ($tab_destinataire as $value){
-			$destinataire .= $value.";";
-		}
-		$destinataire = $destinataire .";". $destinataire_spec;
-        if ($expediteur ==''){$expediteur = $repondre;}
-		Email::Envois($destinataire, $sujet, $message, $expediteur, '', '', $repondre);
+		$sujetEncode2 = str_replace(array_keys($codes), $codes, $templateMail2[0]);
+		$msgEncode2 = str_replace(array_keys($codes), $codes, $templateMail2[1]);
+		Email::Envois($destinataire2, $sujetEncode2, $msgEncode2, $expediteur, '', '', $repondre2);
 	}
 
-	if ($action == 7){
-		// Raison admin : 1:Gestionnaire de la ressource; 2:Admin du domaine; 3:Admin site; 4:Admins
-		list($mail_admin, $raison_admin) = find_active_user_room($room_id);
-		$destinataire = "";
-		if (count($mail_admin) > 0)
-		{
-			foreach ($mail_admin as $value){
-				$destinataire .= $value.";";
-			}
-		}
+/*
+(3)
+Mail pour le gestionnaire, ou l'admin
+*/
+	$envoi3 = false;
 
-		$sujet7 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
-		$sujet7 .= $vocab["subject_mail_retard"];
-		$message7 = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
-		$message7 .= traite_grr_url("","y")."\n\n";
-		$message7 .= $vocab["ressource_empruntee_non_restituée"]."\n";
-		$message7 .= $room_name." (".$area_name.")";
-		$message7 .= "\n".$reservation;
-		
-		$destinataire7 = $beneficiaire_email;
-		$repondre7 = Settings::get("webmaster_email");
-        if ($expediteur ==''){$expediteur = $repondre7;}
-
-		$messageRaison = "\n".$vocab["mail_raison_".$raison_admin];
-		$message7h = html_entity_decode($message7.$messageRaison);
-		Email::Envois($destinataire7, $sujet7, $message7h, $expediteur, '', '', $repondre7);
-		$messageRaison = "\n".$vocab["mail_raison_5"];
-		$message7h = html_entity_decode($message7.$messageRaison);
-		Email::Envois($destinataire_spec, $sujet7, $message7h, $expediteur, '', '', $repondre7);
-	}
-	if ($action == 4)
+	// Liste des destinataire
+	// Raison admin : 1:Gestionnaire de la ressource; 2:Admin du domaine; 3:Admin site; 4:Admins
+	list($mail_admin, $raison_admin) = find_active_user_room($room_id);
+	$codes['%raisonmail%'] = $vocab["mail_raison_".$raison_admin];
+	$destinataire3 = "";
+	if (count($mail_admin) > 0)
 	{
-		$destinataire4 = $beneficiaire_email;
-		$repondre4 = Settings::get("webmaster_email");
-		if ($expediteur ==''){$expediteur = $repondre;}
-		Email::Envois($destinataire4, $sujet, $message, $expediteur, '', '', $repondre4);
-	}
-	if ($action == 5)
-	{
-		list($mail_admin, $raison_admin)  = find_active_user_room ($room_id);
-		$destinataire = "";
-		if (count($mail_admin) > 0){
-
-			foreach ($mail_admin as $value){
-				$destinataire .= $value.";";
-			}
-		
-			$sujet5 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
-			$sujet5 .= $vocab["subject_mail_moderation"];
-			$message5 = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
-			$message5 .= traite_grr_url("","y")."\n\n";
-			$message5 .= $vocab["subject_a_moderer"];
-			$message5 .= "\n".traite_grr_url("","y")."validation.php?id=".$id_entry;
-			$message5 .= "\n\n".$vocab['created_by'].affiche_nom_prenom_email($user_login,"","formail");
-			$message5 .= "\n".$vocab['room'].$vocab['deux_points'].$room_name." (".$area_name.") \n";
-            $message5 .= "\n".affichage_champ_add_mails($id_entry)."\n";
-			$message5 .= "\n".$vocab["mail_raison_".$raison_admin];
-			$message5 = html_entity_decode($message5);
-			$repondre5 = Settings::get("webmaster_email");
-            if ($expediteur ==''){$expediteur = $repondre5;}
-            Email::Envois($destinataire, $sujet5, $message5, $expediteur, '', '', $repondre5);
+		foreach ($mail_admin as $value){
+			$destinataire3 .= $value.";";
 		}
-
-	}
-	if (($action == 5) && ($beneficiaire_email != '') && ($beneficiaire_actif == 'actif'))
-	{
-		$sujet5 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
-		$sujet5 .= $vocab["subject_mail_moderation"];
-		$message5 = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
-		$message5 .= traite_grr_url("","y")."\n\n";
-		$message5 .= $vocab["texte_en_attente_de_moderation"];
-		$message5 .= "\n".$vocab["rappel_de_la_demande"].$vocab["deux_points"];
-		$message5 .= "\n".$vocab["the_room"].$room_name." (".$area_name.")";
-		$message5 .= "\n".$reservation;
-		$message5 = html_entity_decode($message5);
-		$destinataire5 = $beneficiaire_email;
-		$repondre5 = Settings::get("webmaster_email");
-        if ($expediteur ==''){$expediteur = $repondre5;}
-		Email::Envois($destinataire5, $sujet5, $message5, $expediteur, '', '', $repondre5);
-	}
-	if (($action == 6) && ($beneficiaire_email != '') && ($beneficiaire_actif=='actif'))
-	{
-		$sujet6 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
-		$sujet6 .= $vocab["subject_mail_decision_moderation"];
-		$message6 = $message;
-		$destinataire6 = $beneficiaire_email;
-		$repondre6 = $user_email;
-        if ($expediteur ==''){$expediteur = $repondre6;}
-		Email::Envois($destinataire6, $sujet6, $message6, $expediteur, '', '', $repondre6);
 	}
 
-	// Cas d'une création, modification ou suppression d'un message par un utilisateur différent du bénéficiaire :
-	// On envoie un message au bénéficiaire de la réservation pour l'avertir d'une modif ou d'une suppression
-	if ((($action == 1) || ($action == 2) || ($action == 3)) && ((strtolower($user_login) != strtolower($beneficiaire)) || (Settings::get('send_always_mail_to_creator') == '1')) && ($beneficiaire_email != '') && ($beneficiaire_actif == 'actif'))
-	{
-		$sujet2 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
-		$message2 = removeMailUnicode(Settings::get("company"))." - ".$vocab["title_mail"];
-		$message2 .= traite_grr_url("","y")."\n\n";
-		$message2 .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
-		if ($action == 1){
-			$sujet2 .= $vocab["subject_mail_creation"];
-			$message2 .= $vocab["creation_booking_for_you"];
-			$message2 .= $vocab["the_room"].$room_name." (".$area_name.").";
-		}
-		elseif ($action == 2){
-			$sujet2 .= $vocab["subject_mail_modify"];
-			$message2 .= $vocab["modify_booking"];
-			if ($room_id != $oldRessource)
-				$message2 .= $vocab["the_room"]." ".$nomAncienneSalle." => ".$room_name." (".$area_name.") \n";
-			else
-				$message2 .= $vocab["the_room"].$room_name." (".$area_name.") \n";
-			$message2 .= $vocab["created_by_you"];
-		}
-		else{
-			$sujet2 .= $vocab["subject_mail_delete"];
-			$message2 .= $vocab["delete_booking"];
-			$message2 .= $vocab["the_room"].$room_name." (".$area_name.") \n";
-			$message2 .= $vocab["created_by_you"];
-		}
-		$message2 .= "\n".$reservation;
-		$message2 = html_entity_decode($message2);
-		$destinataire2 = $beneficiaire_email.";".$destinataire_spec;
-		$repondre2 = $user_email;
-        if ($expediteur ==''){$expediteur = $repondre2;}
-		Email::Envois($destinataire2, $sujet2, $message2, $expediteur, '', '', $repondre2);
-	}
     // Cas d'une réservation modérée : le bénéficiaire peut éventuellement la supprimer, mais on prévient le modérateur
-    if (($action == 3)&&($moderate >0)){
-        $sql = "SELECT email FROM ".TABLE_PREFIX."_utilisateurs u JOIN ".TABLE_PREFIX."_entry_moderate e ON e.login_moderateur = u.login 
-        WHERE e.id = ".$id_entry." ";
-        $mail_modo = grr_sql_query1($sql);
-        if (($mail_modo != -1)&&($mail_modo != '')){// on a le mail du modérateur
-            $sujet2 .= $vocab["subject_mail_delete"];
-			$message2 .= $vocab["delete_booking"];
-			$message2 .= $vocab["the_room"].$room_name." (".$area_name.") \n";
-			$message2 .= "\n".$reservation;
-            $message2 = html_entity_decode($message2);
-            $destinataire2 = $mail_modo;
-            $repondre2 = $user_email;
-            if (!isset($expediteur)||($expediteur =='')){$expediteur = $repondre2;}
-            Email::Envois($destinataire2, $sujet2, $message2, $expediteur, '', '', $repondre2);
-        }
+    if ( ($action == 3) && ($moderate >0) && (count($mail_admin) > 0) ){
+		//$sujet3 = $vocab["subject_mail1"].$room_name." - ".$date_avis.$vocab["subject_mail_delete"];
+		$repondre3 = $user_email;
+		if (!isset($expediteur)||($expediteur ==''))
+			$expediteur = $repondre3;
+		
+		$templateMail3 = Pages::get('mails_resamoderation5_'.$locale);
+		$envoi3 = true;
     }
+	elseif ( ($action == 5) && (count($mail_admin) > 0) )// Réservation en attente de modération, mail pour le modérateur
+	{
+		//$sujet3 = $vocab["subject_mail1"].$room_name." - ".$date_avis.$vocab["subject_mail_moderation"];
+		$codes['%urldetail%'] .= traite_grr_url("","y")."validation.php?id=".$id_entry;
+		$repondre3 = Settings::get("webmaster_email");
+		if ($expediteur =='')
+			$expediteur = $repondre3;
+		
+		$templateMail3 = Pages::get('mails_resamoderation6_'.$locale);
+		$envoi3 = true;
+	}
+	elseif ( ($action == 7) && (count($mail_admin) > 0) ) // Notification d'un retard dans la restitution d'une ressource
+	{
+		//! Attention champ identique aux 1er cas
+		//$sujet3 = $vocab["subject_mail1"].$room_name." - ".$date_avis.$vocab["subject_mail_retard"];
+		$repondre3 = Settings::get("webmaster_email");
+        if ($expediteur =='')
+			$expediteur = $repondre3;
+
+		if ($beneficiaire_email != "")
+			$codes['%maildestinataire%'] .= $vocab["un_email_envoye"].$beneficiaire_email;
+		else
+			$codes['%maildestinataire%'] .= "";
+
+		$codes['%urldetail%'] .= traite_grr_url("","y")."view_entry.php?id=".$id_entry;
+
+		$templateMail3 = Pages::get('mails_retardrestitution_'.$locale);
+
+		$envoi3 = true;
+	}
+
+	if($envoi3 == true)
+	{
+		$sujetEncode3 = str_replace(array_keys($codes), $codes, $templateMail3[0]);
+		$msgEncode3 = str_replace(array_keys($codes), $codes, $templateMail3[1]);
+		Email::Envois($destinataire3, $sujetEncode3, $msgEncode3, $expediteur, '', '', $repondre3);
+	}
+
 
 	return $message_erreur;
 } // Fin fonction send_mail
@@ -6219,20 +6279,22 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
 			{
 				$_SESSION['chemin_retour'] = traite_grr_url($grr_script_name)."?". $_SERVER['QUERY_STRING'];
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=fr-fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=de-de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=en-gb"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=it-it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=es-es"><img src="'.$racine.'img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>'.PHP_EOL;
 			}
 			if ($type_session == 'no_session')
 			{
+				$resulHook = Hook::Appel("hookLienConnexion2");
 				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
 				{
 					echo '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>'.PHP_EOL;
 					echo '<br /> <small><i><a href="login.php">'.get_vocab("connect_local").'</a></i></small>'.PHP_EOL;
-				}
-				else {
+				} elseif($resulHook['hookLienConnexion2'] != ""){
+					echo $resulHook['hookLienConnexion2'];	
+				}else{
 					echo '<br /> <a href="login.php">'.get_vocab("connect").'</a>'.PHP_EOL;
 				}
 			}
@@ -6398,7 +6460,7 @@ function display_mail_msg()
 function clean_input($data){
     $data = trim($data);
     $data = stripslashes($data);
-    $data = htmlspecialchars($data);
+	$data = htmlspecialchars($data);
     return $data;
 }
 

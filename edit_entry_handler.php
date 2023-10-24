@@ -307,9 +307,10 @@ else
 	}
 	else {
 		$fin = array();
-		$fin = explode(':', clean_input($_GET["end_"]));
-		$_GET["end_hour"] = $fin[0];
-		$_GET["end_minute"] = $fin[1];
+		$fin = explode(":", $_GET["end_"]);
+
+		$_GET["end_hour"] = clean_input($fin[0]);
+		$_GET["end_minute"] = clean_input($fin[1]);
 	}
 
 	if (!isset($_GET["end_day"]) || !isset($_GET["end_month"]) || !isset($_GET["end_year"]) || !isset($_GET["end_hour"]) || !isset($_GET["end_minute"]) )
@@ -453,7 +454,7 @@ foreach ( $rooms as $room_id )
 				$error_delais_min_resa_room = 'yes';
 			if (!(verif_date_option_reservation($option_reservation, $reps[$i])))
 				$error_date_option_reservation = 'yes';
-			if (!(verif_qui_peut_reserver_pour($room_id, getUserName(), $beneficiaire)))
+			if (!(verif_qui_peut_reserver_pour($room_id, getUserName(), html_entity_decode($beneficiaire,ENT_QUOTES|ENT_SUBSTITUTE|ENT_HTML5,"UTF-8"))))
 				$error_qui_peut_reserver_pour = 'yes';
 			if (!(verif_heure_debut_fin($reps[$i], $reps[$i]+$diff, $area)))
 				$error_heure_debut_fin = 'yes';
@@ -482,7 +483,7 @@ foreach ( $rooms as $room_id )
 			$error_delais_min_resa_room = 'yes';
 		if (!(verif_date_option_reservation($option_reservation, $starttime)))
 			$error_date_option_reservation = 'yes';
-		if (!(verif_qui_peut_reserver_pour($room_id, getUserName(), $beneficiaire)))
+		if (!(verif_qui_peut_reserver_pour($room_id, getUserName(), html_entity_decode($beneficiaire,ENT_QUOTES|ENT_SUBSTITUTE|ENT_HTML5,"UTF-8"))))
 			$error_qui_peut_reserver_pour = 'yes';
 		if (!(verif_heure_debut_fin($starttime, $endtime, $area)))
 			$error_heure_debut_fin = 'yes';

@@ -58,6 +58,7 @@ return array(
     'CAS_ServiceBaseUrl_Static' => $vendorDir . '/apereo/phpcas/source/CAS/ServiceBaseUrl/Static.php',
     'CAS_Session_PhpSession' => $vendorDir . '/apereo/phpcas/source/CAS/Session/PhpSession.php',
     'CAS_TypeMismatchException' => $vendorDir . '/apereo/phpcas/source/CAS/TypeMismatchException.php',
+    'CURLStringFile' => $vendorDir . '/symfony/polyfill-php81/Resources/stubs/CURLStringFile.php',
     'Collator' => $vendorDir . '/symfony/polyfill-intl-icu/Resources/stubs/Collator.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Datamatrix' => $vendorDir . '/tecnickcom/tcpdf/include/barcodes/datamatrix.php',

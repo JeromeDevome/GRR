@@ -17,6 +17,9 @@
  */
 $grr_script_name = "report.php";
 
+// Connexion obligatoire
+ControleSession();
+
 include "./reservation/modeles/report.php";
 
 

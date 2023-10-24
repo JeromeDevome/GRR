@@ -30,6 +30,8 @@ include "include/language.inc.php";
 // Session related functions
 require_once("./include/session.inc.php");
 
+include "./include/hook.class.php";
+
 if(Settings::get("redirection_https") == "yes"){
 	if(!isset($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on")
 	{
@@ -208,6 +210,10 @@ echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("compan
 			echo "<p><span style=\"font-size:1.4em\"><a href=\"./index.php\">".get_vocab("authentification_http")."</a></span></p>";
 			echo "<p><b>".get_vocab("authentification_locale")."</b></p>";
 		}
+		
+		// HOOK
+		$resulHook = Hook::Appel("hookLienConnexion1");
+		echo $resulHook['hookLienConnexion1'];
 		?>
 		<fieldset style="padding-top: 8px; padding-bottom: 8px; width: 40%; margin-left: auto; margin-right: auto;">
 			<legend style="font-variant: small-caps;"><?php echo get_vocab("identification"); ?></legend>
@@ -236,6 +242,11 @@ echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("compan
 		document.getElementById('login').focus();
 	</script>
 	<?php
+	if (Settings::get("fct_crea_cpt") != "")
+	{
+		echo "<h4><a href='app.php?p=creationcompte'>".get_vocab("crea_compte_inscrivez")."</a></h4><br><br>";
+	}
+
 	echo "<p>";
 	if (Settings::get("webmaster_email") != "")
 	{
@@ -243,7 +254,7 @@ echo begin_page(get_vocab("mrbs").get_vocab("deux_points").Settings::get("compan
 		if ($lien != "")
 			echo "[".$lien."] ";
 	}
-	echo "[<a href='app.php?p=page&page=CGU' target='_blank'>".get_vocab("cgu")."</a>]</p>";
+	echo "[<a href='app.php?p=page&page=cgu' target='_blank'>".get_vocab("cgu")."</a>]</p>";
 	echo "<a href=\"javascript:history.back()\">".get_vocab("previous")." - <b>".Settings::get("company")."</b></a>";
 	?>
 	<br />

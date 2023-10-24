@@ -5,7 +5,7 @@
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2018-02-10 20:00$
  * @author    JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -19,16 +19,24 @@
 include_once('include/pages.class.php');
 $grr_script_name = 'page.php';
 
+$nomPage = alphanum($_GET['page']);
+
 if (!Settings::load())
 	die('Erreur chargement settings');
 if (!Pages::load())
 	die('Erreur chargement pages');
-if (!isset($_GET['page']))
+if (!isset($nomPage))
 	die('Erreur choix de la page');
 
-$ctnPage = $_GET['page'];
+$infosPage = Pages::get($nomPage);
 
-$d['CtnPage'] = Pages::get($ctnPage);
+if($infosPage[2]){
+	$d['CtnPage'] = "Impossible d'y accèder.";
+} else{
+	//$infosPage = Pages::get($nomPage);
+	$d['TitrePage'] = $infosPage[0];
+	$d['CtnPage'] =  $infosPage[1];
+}
 
 
 echo $twig->render('page.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));

@@ -191,6 +191,7 @@
         <xsd:attribute name="logging" type="xsd:boolean" />
         <xsd:attribute name="formatter" type="xsd:string" />
         <xsd:attribute name="cache-dir" type="xsd:string" />
+        <xsd:attribute name="default-path" type="xsd:string" />
     </xsd:complexType>
 
     <xsd:complexType name="pseudo_localization">
@@ -301,6 +302,7 @@
         <xsd:attribute name="default-redis-provider" type="xsd:string" />
         <xsd:attribute name="default-memcached-provider" type="xsd:string" />
         <xsd:attribute name="default-pdo-provider" type="xsd:string" />
+        <xsd:attribute name="default-doctrine-dbal-provider" type="xsd:string" />
         <xsd:attribute name="prefix-seed" type="xsd:string" />
     </xsd:complexType>
 
@@ -398,8 +400,6 @@
 
     <xsd:simpleType name="marking_store_type">
         <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="multiple_state" />
-            <xsd:enumeration value="single_state" />
             <xsd:enumeration value="method" />
         </xsd:restriction>
     </xsd:simpleType>

@@ -28,7 +28,7 @@ $msg = "";
 /* Enregistrement de la page */
 if (isset($_POST['CGU'])) {
 	VerifyModeDemo();
-    if (!Pages::set("CGU", $_POST['CGU']))
+    if (!Pages::set("CGU", $_POST['titre'], $_POST['CGU']))
         $msg = "Erreur lors de l'enregistrement de CGU !<br />";
 }
 /**/
@@ -48,7 +48,6 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
 } else {
     $msg = '';
 }
-
 //affiche_pop_up($msg, 'admin');
 
 

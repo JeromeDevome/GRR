@@ -28,9 +28,9 @@ class Pages {
 	{
 		$test = grr_sql_query1("SELECT nom FROM ".TABLE_PREFIX."_page WHERE nom = 'CGU'");
 		if ($test != -1)
-			$sql = "SELECT `nom`, `valeur` FROM ".TABLE_PREFIX."_page";
+			$sql = "SELECT `nom`, `titre`, `valeur`, `systeme` FROM ".TABLE_PREFIX."_page";
 		else
-			$sql = "SELECT `nom`, `valeur` FROM page";
+			$sql = "SELECT `nom`, `titre`, `valeur`, `systeme` FROM page";
 		$res = grr_sql_query($sql);
 		if (!$res)
 			return false;
@@ -39,10 +39,13 @@ class Pages {
 		else
 		{
 			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-				self::$grrPages[$row[0]] = $row[1];
+			{
+				self::$grrPages[$row[0]] = array($row[1],$row[2],$row[3]);
+			}
 			return true;
 		}
 	}
+
 
 	static function get($_name)
 	{
@@ -54,11 +57,11 @@ class Pages {
 	static function getAll()
 	{
 		$AllPages = array();
-		$sql_query="SELECT `nom`, `valeur` FROM ".TABLE_PREFIX."_page ";
+		$sql_query="SELECT `nom`, `titre`, `valeur`, `systeme` FROM ".TABLE_PREFIX."_page ";
 		$res=grr_sql_query($sql_query);
 		$i = 0;
 		while($row = grr_sql_row($res, $i)){
-			$AllPages[$row[0]] = $row[1];
+			$AllPages[$row[0]] = array($row[1],$row[2],$row[3]);
 			$i++;
 		}
 		
@@ -66,18 +69,18 @@ class Pages {
 	}
 
 
-	static function set($_name, $_value)
+	static function set($_name, $titre, $_value)
 	{
 		if (isset(self::$grrPages[$_name]))
 		{
-			$sql = "UPDATE ".TABLE_PREFIX."_page set valeur = '" . protect_data_sql($_value) . "' where nom = '" . protect_data_sql($_name) . "'";
+			$sql = "UPDATE ".TABLE_PREFIX."_page set titre = '".protect_data_sql($titre)."', valeur = '" . protect_data_sql($_value) . "' where nom = '" . protect_data_sql($_name) . "'";
 			$res = grr_sql_query($sql);
 			if (!$res)
 				return false;
 		}
 		else
 		{
-			$sql = "INSERT INTO ".TABLE_PREFIX."_page set nom = '" . protect_data_sql($_name) . "', valeur = '" . protect_data_sql($_value) . "'";
+			$sql = "INSERT INTO ".TABLE_PREFIX."_page set nom = '" . protect_data_sql($_name) . "', titre = '".protect_data_sql($titre)."', valeur = '" . protect_data_sql($_value) . "'";
 			$res = grr_sql_query($sql);
 			if (!$res)
 				return (false);

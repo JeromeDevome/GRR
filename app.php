@@ -38,19 +38,20 @@ require_once("./include/settings.class.php");
 if (!Settings::load())
 	die("Erreur chargement settings");
 require_once("./include/session.inc.php");
-include "./include/resume_session.php";
 include "./include/language.inc.php";
+
+grr_resumeSession();
 
 // pour le traitement des modules
 include "./include/hook.class.php";
 
-$trad= array();
-
-/*
+$trad = array();
 $back = '';
+
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-if ((authGetUserLevel(getUserName(), -1, 'area') < 4) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+	
+/*if ((authGetUserLevel(getUserName(), -1, 'area') < 4) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
 {
 	showAccessDenied($back);
 	exit();
