@@ -1,4 +1,4 @@
-/*! RowGroup 1.4.0
+/*! RowGroup 1.4.1
  * © SpryMedia Ltd - datatables.net/license
  */
 
@@ -52,7 +52,7 @@ var DataTable = $.fn.dataTable;
 /**
  * @summary     RowGroup
  * @description RowGrouping for DataTables
- * @version     1.4.0
+ * @version     1.4.1
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     datatables.net
  * @copyright   SpryMedia Ltd.
@@ -182,7 +182,7 @@ $.extend(RowGroup.prototype, {
 	 */
 	_adjustColspan: function () {
 		$('tr.' + this.c.className, this.s.dt.table().body())
-			.find('td:visible')
+			.find('th:visible, td:visible')
 			.attr('colspan', this._colspan());
 	},
 
@@ -416,7 +416,7 @@ RowGroup.defaults = {
 	}
 };
 
-RowGroup.version = '1.4.0';
+RowGroup.version = '1.4.1';
 
 $.fn.dataTable.RowGroup = RowGroup;
 $.fn.DataTable.RowGroup = RowGroup;
