@@ -55,8 +55,9 @@
 						</div>
 					</div>
 
-					{{ form.colorpicker1('couleurhexa', trad.type_color_fond, type.couleurhexa, {classLabel: 'col-sm-4', classInput: 'col-sm-8'}) }}
-					{{ form.colorpicker1('couleurtexte', trad.type_color_texte, type.couleurtexte, {classLabel: 'col-sm-4', classInput: 'col-sm-8'}) }}
+					{{ form.colorpicker2('couleurhexa', trad.type_color_fond, type.couleurhexa, {classLabel: 'col-sm-4', classInput: 'col-sm-3'}) }}
+					{{ form.colorpicker2('couleurtexte', trad.type_color_texte, type.couleurtexte, {classLabel: 'col-sm-4', classInput: 'col-sm-3'}) }}
+
 				</div>
 
 				<!-- /.box-body -->
@@ -75,4 +76,14 @@
 {% endblock %}
 
 {% block javascript %}
+<script>
+	function updatecolor(idchamp) {
+		var input_color = document.getElementById('square'+idchamp).value;
+		document.getElementById(idchamp).value = input_color;
+	}
+	function updatecolorpicker(idchamp) {
+		var input_color = document.getElementById(idchamp).value;
+		document.getElementById('square'+idchamp).value = input_color;
+	}
+</script>
 {% endblock %}
