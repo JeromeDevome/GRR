@@ -110,20 +110,24 @@ if (Settings::get("show_holidays") == 'Oui'){ // on n'affiche ce choix que si le
     $req = "SELECT * FROM ".TABLE_PREFIX."_calendrier_feries";
     $ans = grr_sql_query($req);
     $feries = array();
-    foreach($ans as $val){$feries[] = $val['DAY'];}
-    $trad['dCocheferies'] = "";
+    foreach($ans as $val){
+		$feries[] = $val['DAY'];
+	}
+    $d['Cocheferies'] = "";
     foreach ($feries as &$value) {
-        $trad['dCocheferies'] .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
+        $d['Cocheferies'] .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
     }
     unset($feries);
     // définir les vacances
     $req = "SELECT * FROM ".TABLE_PREFIX."_calendrier_vacances";
     $ans = grr_sql_query($req);
     $vacances = array();
-    foreach($ans as $val){$vacances[] = $val['DAY'];}
-    $trad['dCocheVacances'] = "";
+    foreach($ans as $val){
+		$vacances[] = $val['DAY'];
+	}
+    $d['CocheVacances'] = "";
     foreach ($vacances as &$value) {
-        $trad['dCocheVacances'] .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
+        $d['CocheVacances'] .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
     }
     unset($vacances);
 }
