@@ -30,6 +30,7 @@ get_vocab_admin("disponible_pour");
 get_vocab_admin("type_color_actuel");
 get_vocab_admin("type_color_fond");
 get_vocab_admin("type_color_texte");
+get_vocab_admin("previsualisation");
 
 get_vocab_admin("save");
 get_vocab_admin("back");
