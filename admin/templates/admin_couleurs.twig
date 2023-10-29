@@ -112,28 +112,24 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../vendor/almasaeed2010/adminlte/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
 	<!-- Toastr -->
 	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
 	<script>
+		function updatecolor(idchamp) {
+			var input_color = document.getElementById('square'+idchamp).value;
+			document.getElementById(idchamp).value = input_color;
+		}
+		function updatecolorpicker(idchamp) {
+			var input_color = document.getElementById(idchamp).value;
+			console.log(input_color);
+			document.getElementById('square'+idchamp).value = input_color;
+		}
 		$(function () {
-			$('.my-colorpicker2').colorpicker()
-			
-			// Actualise les coueleurs au chargement de la page
-			$(".form-horizontal input[type='text']").each(function () {
-				var idchamp = $(this).attr('id');
-				$('#square'+idchamp).css('color', $(this).val());
-			});
-
 			{%if d.enregistrement == 1 %}
       			toastr.success("{{trad.message_records}}")
 			{%endif%}
 		})
 
-		$('.my-colorpicker2').on('colorpickerChange', function(event) {
-			var idchamp = $(this).attr('id');
-			$('#square'+idchamp).css('color', event.color.toString());
-    	})
 
 	</script>
 {% endblock %}
