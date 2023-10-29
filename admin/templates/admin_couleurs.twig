@@ -121,7 +121,6 @@
 		}
 		function updatecolorpicker(idchamp) {
 			var input_color = document.getElementById(idchamp).value;
-			console.log(input_color);
 			document.getElementById('square'+idchamp).value = input_color;
 		}
 		$(function () {
@@ -129,7 +128,5 @@
       			toastr.success("{{trad.message_records}}")
 			{%endif%}
 		})
-
-
 	</script>
 {% endblock %}
