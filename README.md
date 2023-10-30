@@ -24,7 +24,7 @@ Chat/Discord : https://discord.com/channels/484639573243068417/
 
 **Requiert :**
 
-PHP : >= 7.2.5 && <= 8.1; nécessite au moins les modules php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml, php-intl (*)
+PHP : >= 7.2.5 && <= 8.1; nécessite au moins les modules php-fileinfo, php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml, php-intl (*)
 MySQL: >= 5.4 && <= 5.7
 
 
@@ -68,7 +68,7 @@ Enfin, **GRR** est livré en l'état sans aucune garantie. Les auteurs de cet ou
 Remarques concernant la sécurité
 -------------------
 
-La sécurisation de **GRR** est dépendante de celle du serveur. Nous vous recommandons d'utiliser un serveur Apache ou Nginx sous Linux, en utilisant le protocole **https** (transferts de données cryptées), et en veillant à toujours utiliser les dernières versions des logiciels impliqués (notamment **Apache/Nginx** et **PHP**) et de bien sûr de **GRR**.
+La sécurisation de **GRR** est dépendante de celle du serveur. Nous vous recommandons d'utiliser un serveur Apache ou Nginx sous Linux, en utilisant le protocole **https** (transferts de données cryptées), et en veillant à toujours utiliser les dernières versions des logiciels impliqués (notamment **Apache/Nginx** et **PHP**).
 
 L'EQUIPE DE DEVELOPPEMENT DE GRR NE SAURAIT EN AUCUN CAS ETRE TENUE POUR RESPONSABLE EN CAS D'INTRUSION EXTERIEURE LIEE A UNE FAIBLESSE DE GRR OU DE SON SUPPORT SERVEUR.
 
