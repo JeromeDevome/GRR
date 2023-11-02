@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue anglaise
 # GRR: Translations provided by: JeromeB & Patricia Gaubert-Dubois et Yan Naessens
-# Last modification : 2022-10-17
+# Last modification : 2022-11-02
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accept the reservation ";
@@ -152,6 +152,7 @@ $vocab['all_but_visitors'] = "All (except visitors)";
 $vocab['all_day'] = "Full day";
 $vocab['all_day2'] = "==========";
 $vocab['all_rooms'] = "All resources";
+$vocab['alterseries'] = "Modifying a series of bookings to which participants are registered will cancel the registrations!";
 $vocab['any_area'] = "All the domains";
 $vocab['archiver'] = "Archive";
 $vocab['areas'] = "Areas: ";

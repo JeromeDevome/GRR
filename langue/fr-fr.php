@@ -1,7 +1,7 @@
 <?php
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue française
-# Last modification : 2022-04-21
+# Last modification : 2022-11-02
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accepter la réservation";
@@ -151,6 +151,7 @@ $vocab['all_but_visitors'] = "Tous (sauf visiteurs)";
 $vocab['all_day'] = "Toute la journée";
 $vocab['all_day2'] = "==========";
 $vocab['all_rooms'] = "Toutes les ressources";
+$vocab['alterseries'] = "Modifier une série de réservations à laquelle des participants sont inscrits va annuler les inscriptions !";
 $vocab['any_area'] = "Tous les domaines";
 $vocab['archiver'] = "Archiver";
 $vocab['areas'] = "Domaines :";
