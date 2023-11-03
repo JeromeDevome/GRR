@@ -1,9 +1,9 @@
 <?php
 /**
  * changepwd.php
- * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
+ * Interface permettant à l'utilisateur de gérer son mot de passe dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-07-27 16:33$
+ * Dernière modification : $Date: 2023-11-03 10:39$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -37,16 +37,16 @@ $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
 
-$user_login = isset($_POST['user_login']) ? $_POST['user_login'] : ($user_login = isset($_GET['user_login']) ? $_GET['user_login'] : NULL);
+$user_login = getFormVar('user_login','string');
 $valid = isset($_POST['valid']) ? $_POST['valid'] : NULL;
 $msg = '';
 if ($valid == 'pwd')
 {
 	if (IsAllowedToModifyMdp() || $_SESSION['changepwd'] == 1)
 	{
-		$reg_password_a = isset($_POST['reg_password_a']) ? $_POST['reg_password_a'] : NULL;
-		$reg_password1 = isset($_POST['reg_password1']) ? $_POST['reg_password1'] : NULL;
-		$reg_password2 = isset($_POST['reg_password2']) ? $_POST['reg_password2'] : NULL;
+		$reg_password_a = getFormVar('reg_password_a','string');
+		$reg_password1 = getFormVar('reg_password1','string');
+		$reg_password2 = getFormVar('reg_password2','string');
 		if (($reg_password_a != '') && ($reg_password1 != ''))
 		{
             $test_md5 = $_SESSION['password'] == md5($reg_password_a);
@@ -61,8 +61,10 @@ if ($valid == 'pwd')
 				{
 					VerifyModeDemo();
 					$reg_password1 = password_hash($reg_password1, PASSWORD_DEFAULT);
-					$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='".protect_data_sql($reg_password1)."', changepwd ='0' WHERE login='".getUserName()."'";
-					if (grr_sql_command($sql) < 0)
+					$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password= ? , changepwd ='0' WHERE login= ? ";
+                    $types = 'ss';
+                    $params = array(protect_data_sql($reg_password1),getUserName());
+					if (grr_sql_command($sql, $types, $params) < 0)
 						fatal_error(0, get_vocab('update_pwd_failed') . grr_sql_error());
 					else
 					{

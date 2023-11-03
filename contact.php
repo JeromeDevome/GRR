@@ -3,9 +3,9 @@
  * contact.php
  * Formulaire d'envoi de mail
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-01-14 18:59$
+ * Dernière modification : $Date: 2023-11-03 11:02$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -43,12 +43,12 @@ if (($fin_session == 'y') && (Settings::get("authentification_obli") == 1))
 $type_session = "no_session";
 $user_name = getUserName();
 // traitement des données
-$cible = isset($_POST["cible"]) ? $_POST["cible"] : (isset($_GET["cible"]) ? $_GET["cible"] : '');
+$cible = getFormVar('cible','string','');
 $cible = htmlentities($cible, ENT_QUOTES);
-$type_cible = isset($_POST["type_cible"]) ? $_POST["type_cible"] : (isset($_GET["type_cible"]) ? $_GET["type_cible"] : '');
+$type_cible = getFormVar("type_cible","string");
 if ($type_cible != 'identifiant:non')
 	$type_cible = '';
-$action = isset($_POST["action"]) ? $_POST["action"] : '';
+$action = getFormVar("action",'string','');
 $corps_message = isset($_POST["corps_message"]) ? clean_input($_POST["corps_message"]) : '';
 $email_reponse = isset($_POST["email_reponse"]) ? clean_input($_POST["email_reponse"]) : '';
 if (!validate_email($email_reponse))
@@ -74,7 +74,10 @@ if($action == "envoi")
 	}
 	else
 	{
-		$destinataire = grr_sql_query1("SELECT email FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".protect_data_sql($cible)."'");
+        $sql = "SELECT email FROM ".TABLE_PREFIX."_utilisateurs WHERE login = ? ";
+        $types = 's';
+        $params = array(protect_data_sql($cible));
+		$destinataire = grr_sql_query1($sql, $types, $params);
 		if ($destinataire == -1)
 			$destinataire = "";
 	}
@@ -88,7 +91,10 @@ if($action == "envoi")
         if (($fin_session == 'n') && ($user_name!=''))
         {
             $message .= get_vocab('nom_complet_demandeur').get_vocab('deux_points').affiche_nom_prenom_email($user_name,"","nomail")."\n";
-            $user_email = grr_sql_query1("select email from ".TABLE_PREFIX."_utilisateurs where login='".$user_name."'");
+            $sql = "SELECT email FROM ".TABLE_PREFIX."_utilisateurs where login= ? ";
+            $types = 's';
+            $params = array($user_name);
+            $user_email = grr_sql_query1($sql, $types, $params);
             if (($user_email != "") && ($user_email != -1))
                 $message .= get_vocab('mail_demandeur').get_vocab('deux_points').$user_email."\n";
             $message .= $vocab["statut"].preg_replace("/ /", " ",$vocab["deux_points"]).$_SESSION['statut']."\n";
@@ -113,8 +119,13 @@ if($action == "envoi")
     }
 }
 // formulaire
-//header('Content-Type: text/html; charset=utf-8');
-//echo begin_page(Settings::get("company"));
+if (($fin_session == 'n') && ($user_name!=''))
+{
+    $sql = "SELECT email FROM ".TABLE_PREFIX."_utilisateurs WHERE login= ? ";
+    $types = 's';
+    $params = array($user_name);
+    $user_email = grr_sql_query1($sql, $types, $params);
+}
 echo '<!DOCTYPE html>
 <html lang="fr">
 	<head>
@@ -148,7 +159,6 @@ else {
         echo 'value="'.$email_reponse.'" ';
     else if (($fin_session == 'n') && ($user_name!=''))
     {
-        $user_email = grr_sql_query1("SELECT email FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".$user_name."'");
         if (($user_email != "") && ($user_email != -1))
             echo 'value="'.$user_email.'" ';
     }

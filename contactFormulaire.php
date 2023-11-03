@@ -3,7 +3,7 @@
  * contactFormulaire.php
  * Formulaire d'envoi de mail demandant une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-07-27 16:33$
+ * Dernière modification : $Date: 2023-11-03 11:52$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -19,10 +19,10 @@ $grr_script_name = "contactFormulaire.php";
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
-include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
-include "include/mincals.inc.php";
 include "include/mrbs_sql.inc.php";
+include "include/functions.inc.php";
+include "include/mincals.inc.php";
 
 require_once("./include/settings.class.php");
 if (!Settings::load())
@@ -39,6 +39,16 @@ if (!acces_formulaire_reservation()){
     showAccessDenied(page_accueil());
     die();
 }
+// domaines accessibles
+$sql = "SELECT id, area_name FROM ".TABLE_PREFIX."_area WHERE access LIKE 'a' ORDER BY area_name";
+// si on ne veut pas montrer les domaines à accès restreint
+$res = grr_sql_query($sql);
+$Domaines = array();
+foreach($res as $row)
+{
+    if (authUserAccesArea(getUserName(),$row['id']) == 1)
+        $Domaines[] = $row;
+}
 // code HTML
 header('Content-Type: text/html; charset=utf-8');
 if (!isset($_COOKIE['open']))
@@ -54,7 +64,7 @@ echo pageHead2(Settings::get("company"),"no_session");
 echo "<body>";
 // Menu du haut = section <header>
 echo "<header>";
-pageHeader2($day, $month, $year, "no_session");
+pageHeader2('', '', '', "no_session");
 echo "</header>";
 // Debut de la page
 echo '<section>'.PHP_EOL;
@@ -104,19 +114,9 @@ bouton_retour_haut ();
 				<label>Domaines : </label>
 				<select id="area" name="area" class="form-control" required>
 					<option selected disabled>SELECTIONNER UN DOMAINE </option>
-					<?php
-                        // $sql_areaName = "SELECT id, area_name FROM ".TABLE_PREFIX."_area ORDER BY area_name";
-						$sql_areaName = "SELECT id, area_name FROM ".TABLE_PREFIX."_area WHERE access LIKE 'a' ORDER BY area_name";
-						// si on ne veut pas montrer les domaines à accès restreint
-                        $res_areaName = grr_sql_query($sql_areaName);
-                        for ($i = 0; ($row_areaName = grr_sql_row($res_areaName, $i)); $i++)
-                        {
-                            if (authUserAccesArea(getUserName(),$row_areaName[0]) == 1)
-                            {
-                                $id = $row_areaName[0];
-                                $area_name = $row_areaName[1];
-								echo '<option value="'.$id.'"> '.$area_name.'</option>'.PHP_EOL;
-                            }
+					<?php 
+                        foreach($Domaines as $row){
+                            echo '<option value="'.$row['id'].'"> '.$row['area_name'].'</option>'.PHP_EOL;
                         }
                     ?>
 				</select>
