@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-05-14 16:02$
+ * Dernière modification : $Date: 2023-11-07 12:24$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -122,16 +122,7 @@ $am7 = mktime($morningstarts, 0, 0, $month, $day, $year);
 $pm7 = mktime($eveningends, $eveningends_minutes, 0, $month, $day, $year);
 $this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id='".protect_data_sql($area)."'"); // nom du domaine
 // les réservations associées à notre recherche, ce jour dans cette ressource ou ce domaine
-/*$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
-FROM ((".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_type_area.type_letter = ".TABLE_PREFIX."_entry.type)
-JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id) 
-WHERE ";
-if (isset($room)) 
-    $sql .= TABLE_PREFIX."_room.id = ".$room." ";
-else 
-    $sql .= TABLE_PREFIX."_room.area_id = ".$area." ";
-$sql .= " AND start_time < ".($pm7+$resolution)." AND end_time > ".$am7."
-ORDER BY start_time";*/
+// les paramètres $room, $area, $pm7, $resolution et $am7 ayant été calculés ou mis au format entier, ils devraient être sûrs
 $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
 FROM (".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id) 
 WHERE ";
@@ -222,7 +213,7 @@ $alerte = '';
 if (check_begin_end_bookings($day, $month, $year))
 {
     $date = utf8_strftime($dformat,mktime(12,0,0,$month,$day,$year));
-    $alerte = 	'<h2>'.get_vocab("nobookings").' '.$date.'</h2>';
+    $alerte = '<h2>'.get_vocab("nobookings").' '.$date.'</h2>';
     $alerte .= '<p>'.get_vocab("begin_bookings").'<b>'.affiche_date(Settings::get("begin_bookings")).'</b></p>';
 	$alerte .= '<p>'.get_vocab("end_bookings").'<b>'.affiche_date(Settings::get("end_bookings")).'</b></p>';
 }
@@ -314,7 +305,7 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
     echo "</div>";
 }
 echo '<h4>' . ucfirst($this_area_name).' - '.get_vocab("all_areas");
-if ($settings->get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
+if ($settings->get("jours_cycles_actif") == "Oui" && intval($jour_cycle) > -1)
 {
     if (intval($jour_cycle) > 0)
         echo ' - '.get_vocab("rep_type_6")." ".$jour_cycle;
@@ -548,7 +539,7 @@ else{
 }
 echo '</table>'.PHP_EOL;
 
-grr_sql_free($res);
+grr_sql_free($ressources);
 if ($_GET['pview'] != 1)
 {
 	echo '<div id="toTop">'.PHP_EOL;

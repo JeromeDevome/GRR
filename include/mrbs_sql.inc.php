@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2023-10-18 11:17$
+ * Dernière modification : $Date: 2023-11-07 12:17$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -849,14 +849,14 @@ function mrbsGetRoomArea($id)
 	$id = grr_sql_query1("SELECT area_id FROM ".TABLE_PREFIX."_room WHERE (id = '".$id."')");
 	if ($id <= 0)
 		return 0;
-	return $id;
+	return intval($id);
 }
 function mrbsGetAreaSite($id)
 {
 	if (Settings::get("module_multisite") == "Oui")
 	{
 		$id = grr_sql_query1("SELECT id_site FROM ".TABLE_PREFIX."_j_site_area WHERE (id_area = '".$id."')");
-		return $id;
+		return intval($id);
 	}
 	else
 		return -1;

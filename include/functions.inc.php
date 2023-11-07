@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-10-18 11:26$
+ * Dernière modification : $Date: 2023-11-07 12:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1767,7 +1767,7 @@ function get_default_area($id_site = -1)
 			{
 				if (compare_ip_adr($_SERVER['REMOTE_ADDR'],$row[0]))
 				{
-					return $row[1];
+					return intval($row[1]);
 				}
 			}
 		}
@@ -1796,7 +1796,7 @@ function get_default_area($id_site = -1)
 	{
 		$row = grr_sql_row($res, 0);
 		grr_sql_free($res);
-		return $row[0];
+		return intval($row[0]);
 	}
 	else
 	{
@@ -1814,7 +1814,7 @@ function get_default_area($id_site = -1)
 		{
 			$row = grr_sql_row($res, 0);
 			grr_sql_free($res);
-			return $row[0];
+			return intval($row[0]);
 		}
 		else
 			return -1;
@@ -1828,15 +1828,15 @@ function get_default_site()
     $user = getUserName();
     if ($user != ''){
         $id_site = grr_sql_query1("SELECT default_site FROM ".TABLE_PREFIX."_utilisateurs WHERE login ='".$user."'");
-        if ($id_site > 0){return $id_site;}
+        if ($id_site > 0){return intval($id_site);}
     }
     // ici l'utilisateur n'est pas reconnu ou il n'a pas de site par défaut : on passe aux informations de la table settings
     $id_site = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME ='default_site' ");
     $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_site WHERE id = ".$id_site);
-    if ($test >0){return $id_site;}
+    if ($test >0){return intval($id_site);}
     else { // il n'y a pas de site par défaut dans la table setting, on prend le premier site
         $id_site = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_site ");
-        return($id_site);
+        return intval($id_site);
     }
 }
 /* fonction get_default_room
@@ -4349,29 +4349,26 @@ function get_planning_area_values($id_area)
 		$resolution = 60;
 		$morningstarts = 12;
 		$eveningends = 12;
-		$sql_periode = grr_sql_query("SELECT nom_periode FROM ".TABLE_PREFIX."_area_periodes where id_area='".$id_area."'");
+		$sql_periode = grr_sql_query("SELECT nom_periode FROM ".TABLE_PREFIX."_area_periodes where id_area='".protect_data_sql($id_area)."'");
 		$eveningends_minutes = grr_sql_count($sql_periode) - 1;
-		$i = 0;
-		while ($i <= $eveningends_minutes)
-		{
-			$periods_name[$i] = grr_sql_query1("SELECT nom_periode FROM ".TABLE_PREFIX."_area_periodes where id_area='".$id_area."' and num_periode= '".$i."'");
-			$i++;
-		}
+        for($i=0;$i <= $eveningends_minutes;$i++){
+            $periods_name[$i] = grr_sql_query1("SELECT nom_periode FROM ".TABLE_PREFIX."_area_periodes where id_area='".protect_data_sql($id_area)."' and num_periode= '".$i."'");
+        }
 		$enable_periods = "y";
-		$weekstarts = $row_[5];
-		$twentyfourhour_format = $row_[6];
+		$weekstarts = intval($row_[5]);
+		$twentyfourhour_format = intval($row_[6]);
 	}
 	else		// Créneaux basés sur le temps
 	{
 		if ($row_[0] != 'y')
 		{
-			$resolution = $row_[1];
-			$morningstarts = $row_[2];
-			$eveningends = $row_[3];
-			$eveningends_minutes = $row_[4];
+			$resolution = intval($row_[1]);
+			$morningstarts = intval($row_[2]);
+			$eveningends = intval($row_[3]);
+			$eveningends_minutes = intval($row_[4]);
 			$enable_periods = "n";
-			$weekstarts = $row_[5];
-			$twentyfourhour_format = $row_[6];
+			$weekstarts = intval($row_[5]);
+			$twentyfourhour_format = intval($row_[6]);
 		}
 	}
 }
