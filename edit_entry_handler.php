@@ -182,7 +182,7 @@ try {
     {
         $id_field = $overload_fields_list[$overfield]["id"];
         $fieldname = "addon_".$id_field;
-        $$fieldname = getFormVar($fieldname,'string'); 
+        $$fieldname = getFormVar($fieldname); 
         if (($overload_fields_list[$overfield]["type"] == "numeric") && 
             (isset($$fieldname) && ($$fieldname != '') && (!preg_match("`^[0-9]*\.{0,1}[0-9]*$`",$$fieldname))))
         {

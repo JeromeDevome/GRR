@@ -69,14 +69,12 @@ if ($dbsys == "mysql")
 		}
 		else
 		{
-			//$msg = "Erreur de connexion au serveur $dbsys. Le fichier \"connect.inc.php\" ne contient peut-être pas les bonnes informations de connexion.";
 			$msg = "<p>".get_vocab('index_msg3')."</p>";
             $correct_install = 'no';
 		}
 	}
 	else
 	{
-		//$msg = "Le fichier \"connect.inc.php\" contenant les informations de connexion est introuvable.";
 		$msg = "<p>".get_vocab('index_msg4')."</p>";
         $correct_install = 'no';
 	}

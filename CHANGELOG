@@ -9,6 +9,18 @@ Tâches prévues :
 --
 -----
 
+Version 3.5.2RC0 : version en cours de développement, à utiliser en production avec prudence
+    ajout : afficher le formulaire de demande de réservation même si la connexion est obligatoire
+    ajout : possibilité d'afficher le formulaire de contact pour réservation dans la page de login
+    ajout : possibilité d'afficher un sélecteur de date direct dans le menu gauche
+    ajout : possibilité pour un gestionnaire de ressource de déclarer la ressource empruntée depuis la page de réservation
+    amélioration : fonctionnalité de limitation des réservations sur un intervalle de temps
+    amélioration : utilisation de requêtes SQL préparées
+
+-----
+--
+-----
+
 Version 3.5.1 
     ajout : interrogation LDAP après authentification Apache
     amélioration : passage des paramètres par POST dans admin_user_modify.php
@@ -60,6 +72,10 @@ Sous-version 3.5.1a
     mise à jour : Readme.md et Doc
     modification : spécification de la fonction jQuery_DatePicker
     modification : recherche de la dernière version sur le dépôt Github
+Sous-version 3.5.1b
+    correctifs : syntaxe bootstrap, html et php
+    correctif : acceptation de plusieurs adresses mail pour le support technique et le webmestre
+    modification : suppression d'appels directs à mysqli
     
 -----
 --
