@@ -3287,17 +3287,17 @@ Pour les utilisateurs :
 		$moderate_description = $rowModerate[1];
 
 		if ($moderate_decision == 2)
-			$codes['%decisionmoderation%'] .= $vocab["moderation_acceptee"];
+			$codes['%decisionmoderation%'] = $vocab["moderation_acceptee"];
 		else if ($moderate_decision == 3)
-			$codes['%decisionmoderation%'] .= $vocab["moderation_refusee"];
+			$codes['%decisionmoderation%'] = $vocab["moderation_refusee"];
 
 		if ($moderate_description != "")
-			$codes['%decisionmotif%'] .= $vocab["motif"].$vocab["deux_points"]."<br>".$moderate_description;
+			$codes['%decisionmotif%'] = $vocab["motif"].$vocab["deux_points"]."<br>".$moderate_description;
 		else
-			$codes['%decisionmotif%'] .= "";
+			$codes['%decisionmotif%'] = "";
 
 		if (count($tab_id_moderes) == 0 )
-			$codes['%urldetail%'] .= "\n".traite_grr_url("","y")."view_entry.php?id=".$id_entry;
+			$codes['%urldetail%'] = "\n".traite_grr_url("","y")."view_entry.php?id=".$id_entry;
 		else
 		{
 			foreach ($tab_id_moderes as $id_moderes)
