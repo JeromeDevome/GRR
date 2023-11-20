@@ -78,11 +78,11 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
      */
     private static $freshCache = [];
 
-    public const VERSION = '5.4.29';
-    public const VERSION_ID = 50429;
+    public const VERSION = '5.4.31';
+    public const VERSION_ID = 50431;
     public const MAJOR_VERSION = 5;
     public const MINOR_VERSION = 4;
-    public const RELEASE_VERSION = 29;
+    public const RELEASE_VERSION = 31;
     public const EXTRA_VERSION = '';
 
     public const END_OF_MAINTENANCE = '11/2024';
@@ -467,7 +467,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
         try {
             is_dir($buildDir) ?: mkdir($buildDir, 0777, true);
 
-            if ($lock = fopen($cachePath.'.lock', 'w')) {
+            if ($lock = fopen($cachePath.'.lock', 'w+')) {
                 if (!flock($lock, \LOCK_EX | \LOCK_NB, $wouldBlock) && !flock($lock, $wouldBlock ? \LOCK_SH : \LOCK_EX)) {
                     fclose($lock);
                     $lock = null;
@@ -778,7 +778,9 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
             $this->startTime = microtime(true);
         }
         if ($this->debug && !isset($_ENV['SHELL_VERBOSITY']) && !isset($_SERVER['SHELL_VERBOSITY'])) {
-            putenv('SHELL_VERBOSITY=3');
+            if (\function_exists('putenv')) {
+                putenv('SHELL_VERBOSITY=3');
+            }
             $_ENV['SHELL_VERBOSITY'] = 3;
             $_SERVER['SHELL_VERBOSITY'] = 3;
         }

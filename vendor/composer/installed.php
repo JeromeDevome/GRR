@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '7534c1faeb5770a6ae6ba4dcb5bee4b1b707f732',
+    'reference' => 'c3638a533d440b2d2a5268053943d20b2411fb81',
     'name' => 'devome/twig',
   ),
   'versions' => 
@@ -36,7 +36,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '7534c1faeb5770a6ae6ba4dcb5bee4b1b707f732',
+      'reference' => 'c3638a533d440b2d2a5268053943d20b2411fb81',
     ),
     'gregwar/captcha' => 
     array (
@@ -138,12 +138,12 @@
     ),
     'symfony/cache' => 
     array (
-      'pretty_version' => 'v5.4.29',
-      'version' => '5.4.29.0',
+      'pretty_version' => 'v5.4.31',
+      'version' => '5.4.31.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'e29c5a97bc2d81269973c3e1d7ceb9d48b4d5151',
+      'reference' => '9c0a3a5d0718e51ff81e0605be38fe1acbee9eeb',
     ),
     'symfony/cache-contracts' => 
     array (
@@ -163,21 +163,21 @@
     ),
     'symfony/config' => 
     array (
-      'pretty_version' => 'v5.4.26',
-      'version' => '5.4.26.0',
+      'pretty_version' => 'v5.4.31',
+      'version' => '5.4.31.0',
       'aliases' => 
       array (
       ),
-      'reference' => '8109892f27beed9252bd1f1c1880aeb4ad842650',
+      'reference' => 'dd5ea39de228813aba0c23c3a4153da2a4cf3cd9',
     ),
     'symfony/dependency-injection' => 
     array (
-      'pretty_version' => 'v5.4.29',
-      'version' => '5.4.29.0',
+      'pretty_version' => 'v5.4.31',
+      'version' => '5.4.31.0',
       'aliases' => 
       array (
       ),
-      'reference' => '338638ed8c9d5c7fcb136a73f5c7043465ae2f05',
+      'reference' => 'eb1bcafa54e00ed218e1b733b8b6ad1c9ff83d20',
     ),
     'symfony/deprecation-contracts' => 
     array (
@@ -242,39 +242,39 @@
     ),
     'symfony/form' => 
     array (
-      'pretty_version' => 'v5.4.29',
-      'version' => '5.4.29.0',
+      'pretty_version' => 'v5.4.31',
+      'version' => '5.4.31.0',
       'aliases' => 
       array (
       ),
-      'reference' => '57baf5a73a68c24dfe12d0d93bec119ec71acb48',
+      'reference' => '48d26192c14f4f11802718a8d37bd757bae22c68',
     ),
     'symfony/framework-bundle' => 
     array (
-      'pretty_version' => 'v5.4.29',
-      'version' => '5.4.29.0',
+      'pretty_version' => 'v5.4.31',
+      'version' => '5.4.31.0',
       'aliases' => 
       array (
       ),
-      'reference' => '63e4ad1386fd4f31a005d751cd4dc016f9f2346e',
+      'reference' => '4eeac66c8b0f2793324e94cfc6ac1c8bc5b92960',
     ),
     'symfony/http-foundation' => 
     array (
-      'pretty_version' => 'v5.4.28',
-      'version' => '5.4.28.0',
+      'pretty_version' => 'v5.4.31',
+      'version' => '5.4.31.0',
       'aliases' => 
       array (
       ),
-      'reference' => '365992c83a836dfe635f1e903ccca43ee03d3dd2',
+      'reference' => 'f84fd4fd8311a541ceb2ae3f257841d002450a90',
     ),
     'symfony/http-kernel' => 
     array (
-      'pretty_version' => 'v5.4.29',
-      'version' => '5.4.29.0',
+      'pretty_version' => 'v5.4.31',
+      'version' => '5.4.31.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'f53265fc6bd2a7f3a4ed4e443b76e750348ac3f7',
+      'reference' => 'd2fad58d32a7b4864d205a7289602a27ce75018c',
     ),
     'symfony/options-resolver' => 
     array (
@@ -402,21 +402,21 @@
     ),
     'symfony/string' => 
     array (
-      'pretty_version' => 'v5.4.29',
-      'version' => '5.4.29.0',
+      'pretty_version' => 'v5.4.31',
+      'version' => '5.4.31.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'e41bdc93def20eaf3bfc1537c4e0a2b0680a152d',
+      'reference' => '2765096c03f39ddf54f6af532166e42aaa05b24b',
     ),
     'symfony/translation' => 
     array (
-      'pretty_version' => 'v5.4.24',
-      'version' => '5.4.24.0',
+      'pretty_version' => 'v5.4.31',
+      'version' => '5.4.31.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'de237e59c5833422342be67402d487fbf50334ff',
+      'reference' => 'ba72f72fceddf36f00bd495966b5873f2d17ad8f',
     ),
     'symfony/translation-contracts' => 
     array (
