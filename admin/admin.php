@@ -17,6 +17,7 @@
  */
 
 $administration = true;
+$niveauDossier = 2;
 
 require '../vendor/autoload.php';
 require '../include/twiggrr.class.php';

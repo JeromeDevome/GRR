@@ -16,6 +16,8 @@
  * (at your option) any later version.
  */
 
+ $niveauDossier = 1;
+
 require './vendor/autoload.php';
 require './include/twiggrr.class.php';
 
