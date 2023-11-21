@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-10-10 16:58$
+ * Dernière modification : $Date: 2023-11-21 08:54$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author 	  Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -1251,42 +1251,44 @@ if($periodiciteConfig == 'y')
 		echo "<div class=\"F\"><b>".get_vocab("rep_end_date")."</b>".PHP_EOL;
 		jQuery_DatePicker('rep_end_');
         echo '</div>'.PHP_EOL;
-        echo '<div class="F">'.PHP_EOL;
-        echo '<p><b>'.get_vocab('select_specific_days').'</b></p>';
-        // sélection jours de vacances
-        // filtrer si les vacances sont activées
-        echo '<div>'.PHP_EOL;
-        echo '<p><b>'.get_vocab("School_holidays").'</b></p>';
-        echo '<label><input type="radio" name="vacances" value="0"';
-        if((!isset($vacances))||($vacances == 0))
-            echo " checked ";
-        echo '/>'.get_vocab("any_day")."</label><br />".PHP_EOL;
-        echo '<label><input type="radio" name="vacances" value="1"';
-        if(isset($vacances)&&($vacances == 1))
-            echo " checked ";
-        echo '/>'.get_vocab("school_holidays")."</label><br />".PHP_EOL;
-        echo '<label><input type="radio" name="vacances" value="2"';
-        if(isset($vacances)&&($vacances == 2))
-            echo " checked ";
-        echo '/>'.get_vocab("skip_school_holidays")."</label><br />".PHP_EOL;
-        echo '</div>'.PHP_EOL;
-		// sélection jours fériés
-        echo '<div>'.PHP_EOL;
-        echo '<p><b>'.get_vocab("Holidays").'</label></b></p>';
-        echo '<label><input type="radio" name="feries" value="0"';
-        if((!isset($feries))||($feries == 0))
-            echo " checked ";
-        echo '/>'.get_vocab("any_day")."</label><br />".PHP_EOL;
-        echo '<label><input type="radio" name="feries" value="1"';
-        if(isset($feries)&&($feries == 1))
-            echo " checked ";
-        echo '/>'.get_vocab("holidays")."</label><br />".PHP_EOL;
-        echo '<label><input type="radio" name="feries" value="2"';
-        if(isset($feries)&&($feries == 2))
-            echo " checked ";
-        echo '/>'.get_vocab("skip_holidays")."</label><br />".PHP_EOL;
-        echo '</div>'.PHP_EOL;
-        echo '</div>'.PHP_EOL; // fin bloc jours particuliers
+        if (Settings::get("show_holidays") == 'Oui'){ // on n'affiche ce choix que si les jours fériés et les vacances sont définis
+            echo '<div class="F">'.PHP_EOL;
+            echo '<br /><p><b>'.get_vocab('select_specific_days').'</b></p>';
+            // sélection jours de vacances
+            // filtrer si les vacances sont activées
+            echo '<div>'.PHP_EOL;
+            echo '<p><b>'.get_vocab("School_holidays").'</b></p>';
+            echo '<label><input type="radio" name="vacances" value="0"';
+            if((!isset($vacances))||($vacances == 0))
+                echo " checked ";
+            echo '/>'.get_vocab("any_day")."</label><br />".PHP_EOL;
+            echo '<label><input type="radio" name="vacances" value="1"';
+            if(isset($vacances)&&($vacances == 1))
+                echo " checked ";
+            echo '/>'.get_vocab("school_holidays")."</label><br />".PHP_EOL;
+            echo '<label><input type="radio" name="vacances" value="2"';
+            if(isset($vacances)&&($vacances == 2))
+                echo " checked ";
+            echo '/>'.get_vocab("skip_school_holidays")."</label><br />".PHP_EOL;
+            echo '</div>'.PHP_EOL;
+            // sélection jours fériés
+            echo '<div>'.PHP_EOL;
+            echo '<p><b>'.get_vocab("Holidays").'</label></b></p>';
+            echo '<label><input type="radio" name="feries" value="0"';
+            if((!isset($feries))||($feries == 0))
+                echo " checked ";
+            echo '/>'.get_vocab("any_day")."</label><br />".PHP_EOL;
+            echo '<label><input type="radio" name="feries" value="1"';
+            if(isset($feries)&&($feries == 1))
+                echo " checked ";
+            echo '/>'.get_vocab("holidays")."</label><br />".PHP_EOL;
+            echo '<label><input type="radio" name="feries" value="2"';
+            if(isset($feries)&&($feries == 2))
+                echo " checked ";
+            echo '/>'.get_vocab("skip_holidays")."</label><br />".PHP_EOL;
+            echo '</div>'.PHP_EOL;
+            echo '</div>'.PHP_EOL; // fin bloc jours particuliers
+        }
 		echo "</div>\n"; // fin menu1
 	}
 	else
