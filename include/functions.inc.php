@@ -546,6 +546,34 @@ function affiche_ressource_empruntee($id_room, $type = "logo")
 		}
 	}
 }
+function html_ressource_empruntee($id_room, $type = "logo")
+{
+	$active_ressource_empruntee = grr_sql_query1("SELECT active_ressource_empruntee FROM ".TABLE_PREFIX."_room WHERE id = '".$id_room."'");
+    $html = "";
+	if ($active_ressource_empruntee == 'y')
+	{
+		$id_resa = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
+		if ($id_resa != -1)
+		{
+			if ($type == "logo")
+				$html = '<a href="view_entry.php?id='.$id_resa.'"><img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("reservation_en_cours").'" width="30" height="30" class="image" /></a>'.PHP_EOL;
+			else if ($type == "texte")
+			{
+				$beneficiaire = grr_sql_query1("SELECT beneficiaire FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
+				$beneficiaire_ext = grr_sql_query1("SELECT beneficiaire_ext FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
+				$html = '<br /><b><span class="avertissement">'.PHP_EOL;
+				$html .= '<img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("ressource actuellement empruntee").'" width="30" height="30" class="image" />'.PHP_EOL;
+				$html .= get_vocab("ressource actuellement empruntee").' '.get_vocab("nom_emprunteur").get_vocab("deux_points").affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"withmail");
+				$html .= '<a href="view_entry.php?id='.$id_resa.'&amp;mode=page">'.get_vocab("entryid").$id_resa.'</a>'.PHP_EOL.'</span></b>'.PHP_EOL;
+			}
+			else
+				$html = "yes";
+		}
+	}
+    else 
+        $html = "";
+    return $html;
+}
 
 /**
  * @param string $type
@@ -1294,11 +1322,11 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			{
 				$parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
 				$_SESSION['chemin_retour'] = traite_grr_url($grr_script_name)."?". $_SERVER['QUERY_STRING'];
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
+				echo '<a onclick="" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>'.PHP_EOL;
 			}
 			if ($type_session == 'no_session')
 			{
@@ -2499,9 +2527,9 @@ function make_area_list_html($link, $current_site, $current_area, $year, $month,
 			{
 				if ($row[0] == $current_area)
 				{
-					$out_html .= "<a id=\"liste_select\" onclick=\"charger();\" href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\">&gt; ".htmlspecialchars($row[1])."</a></b><br />\n";
+					$out_html .= "<a id=\"liste_select\" onclick=\"\" href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\">&gt; ".htmlspecialchars($row[1])."</a></b><br />\n";
 				} else {
-					$out_html .= "<a id=\"liste\" onclick=\"charger();\" href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\"> ".htmlspecialchars($row[1])."</a><br />\n";
+					$out_html .= "<a id=\"liste\" onclick=\"\" href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\"> ".htmlspecialchars($row[1])."</a><br />\n";
 				}
 			}
 		}
@@ -2536,7 +2564,7 @@ function make_room_list_html($link,$current_area, $current_room, $year, $month, 
 				if ($row[0] == $current_room)
 					$out_html .= "<span id=\"liste_select\">&gt; ".htmlspecialchars($row[1])."</span><br />\n";
 				else
-					$out_html .= "<a id=\"liste\" onclick=\"charger();\" href=\"".$link.".php?year=$year&amp;month=$month&amp;day=$day&amp;&amp;room=$row[0]\">".htmlspecialchars($row[1]). "</a><br />\n";
+					$out_html .= "<a id=\"liste\" onclick=\"\" href=\"".$link.".php?year=$year&amp;month=$month&amp;day=$day&amp;&amp;room=$row[0]\">".htmlspecialchars($row[1]). "</a><br />\n";
 			}
 		}
 	}
@@ -2595,11 +2623,11 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
                 $link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$site['id'];
                 if ($site['id'] == $current_site)
                 {
-                    $out[] = "<input id=\"item_select\" type=\"button\" class=\"btn btn-primary btn-lg btn-block item_select\" name=\"".$site['id']."\" value=\"".htmlspecialchars($site['sitename'])."\" onclick=\"location.href='$link2';charger();\" />".PHP_EOL;
+                    $out[] = "<input id=\"item_select\" type=\"button\" class=\"btn btn-primary btn-lg btn-block item_select\" name=\"".$site['id']."\" value=\"".htmlspecialchars($site['sitename'])."\" onclick=\"location.href='$link2';\" />".PHP_EOL;
                 }
                 else
                 {
-                    $out[] = "<input type=\"button\" class=\"btn btn-default btn-lg btn-block item\" name=\"".$site['id']."\" value=\"".htmlspecialchars($site['sitename'])." \" onclick=\"location.href='$link2';charger();\" />".PHP_EOL;
+                    $out[] = "<input type=\"button\" class=\"btn btn-default btn-lg btn-block item\" name=\"".$site['id']."\" value=\"".htmlspecialchars($site['sitename'])." \" onclick=\"location.href='$link2';\" />".PHP_EOL;
                 }
             }
             $out_html = '<br />'.PHP_EOL.'<div class="panel panel-default">'.PHP_EOL.'<div class="panel-heading">'.get_vocab('sites').get_vocab('deux_points').'</div>'.PHP_EOL.'<div class="panel-body">'.PHP_EOL.'<form class="ressource" id="site_001" action="'.$_SERVER['PHP_SELF'].'">';
@@ -2672,12 +2700,12 @@ function make_area_item_html( $link, $current_site, $current_area, $year, $month
 				if ($current_area != null)
 				{
 					if ($current_area == $row[0]) /* Couleur du domaine selectionné*/
-						$out_html .= '<input class="btn btn-primary btn-lg btn-block item_select" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\' ;charger();"/>'.PHP_EOL;
+						$out_html .= '<input class="btn btn-primary btn-lg btn-block item_select" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\' ;"/>'.PHP_EOL;
 					else
-						$out_html .= '<input class="btn btn-default btn-lg btn-block item " name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\' ;charger();"/>'.PHP_EOL;
+						$out_html .= '<input class="btn btn-default btn-lg btn-block item " name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\' ;"/>'.PHP_EOL;
 				}
 				else
-					$out_html .= '<input class="btn btn-default btn-lg btn-block item" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\' ;charger();"/>'.PHP_EOL;
+					$out_html .= '<input class="btn btn-default btn-lg btn-block item" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\' ;"/>'.PHP_EOL;
 			}
 		}
 	}
@@ -2716,19 +2744,19 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
 				if (!isset($_GET['room']))
 				{
 					if (isset($all_ressource) && $all_ressource == 0)
-						$out_html .= /*'<div class="panel-body">'.PHP_EOL.*/'<input id="item_select" class="btn btn-primary btn-lg btn-block item_select" name="all_room" value="'.get_vocab("all_rooms").'" onclick="location.href=\''.$link_all_room.'\' ;charger();"/>'.PHP_EOL;
-					$out_html .= '<input class="btn btn-default btn-lg btn-block item" type="button" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\' ;charger();"/>'.PHP_EOL;
+						$out_html .= /*'<div class="panel-body">'.PHP_EOL.*/'<input id="item_select" class="btn btn-primary btn-lg btn-block item_select" name="all_room" value="'.get_vocab("all_rooms").'" onclick="location.href=\''.$link_all_room.'\' ;"/>'.PHP_EOL;
+					$out_html .= '<input class="btn btn-default btn-lg btn-block item" type="button" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\' ;"/>'.PHP_EOL;
 					$all_ressource = 1;
 				}
 				else //changed (Ajout de type = " button pr gerer saut de ligne " 
 				{
 					if (isset($all_ressource) && $all_ressource == 0)
-						$out_html .= '<input class="btn btn-default btn-lg btn-block item" type="button" name="all_room" value="'.get_vocab("all_rooms").'" onclick="location.href=\''.$link_all_room.'\' ;charger();"/>'.PHP_EOL;
+						$out_html .= '<input class="btn btn-default btn-lg btn-block item" type="button" name="all_room" value="'.get_vocab("all_rooms").'" onclick="location.href=\''.$link_all_room.'\' ;"/>'.PHP_EOL;
 					$all_ressource = 1;
 					if ($current_room == $row[0])
-						$out_html .= '<input class="btn btn-primary btn-lg btn-block item_select" type="button" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\';charger();"/>'.PHP_EOL;
+						$out_html .= '<input class="btn btn-primary btn-lg btn-block item_select" type="button" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\';"/>'.PHP_EOL;
 					else
-						$out_html .= '<input class="btn btn-default btn-lg btn-block item" type="button" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\' ;charger();"/>'.PHP_EOL;
+						$out_html .= '<input class="btn btn-default btn-lg btn-block item" type="button" name="'.$row[0].'" value="'.htmlspecialchars($row[1]).'" onclick="location.href=\''.$link2.'\' ;"/>'.PHP_EOL;
 				}
 			}
 		}

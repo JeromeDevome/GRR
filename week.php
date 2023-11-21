@@ -509,7 +509,7 @@ if (isset($_GET['precedent']))
 	if ($_GET['pview'] == 1 && $_GET['precedent'] == 1)
 	{
 		echo '<span id="lienPrecedent">'.PHP_EOL;
-		echo '<button class="btn btn-default btn-xs" onclick="charger();javascript:history.back();">Précedent</button>'.PHP_EOL;
+		echo '<button class="btn btn-default btn-xs" onclick="javascript:history.back();">Précedent</button>'.PHP_EOL;
 		echo '</span>'.PHP_EOL;
 	}
 }
@@ -530,11 +530,11 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 	echo "\n
 	<div class='ligne23'>
 		<div class=\"left\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='week.php?year=$yy&amp;month=$ym&amp;day=$yd&amp;room=$room';\"><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("weekbefore")." </button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='week.php?year=$yy&amp;month=$ym&amp;day=$yd&amp;room=$room';\"><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("weekbefore")." </button>
 		</div>";
 		include "./include/trailer.inc.php";
 		echo "<div class=\"right\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='week.php?year=$ty&amp;month=$tm&amp;day=$td&amp;room=$room';\">".get_vocab('weekafter')." <span class=\"glyphicon glyphicon-forward\"></span></button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='week.php?year=$ty&amp;month=$tm&amp;day=$td&amp;room=$room';\">".get_vocab('weekafter')." <span class=\"glyphicon glyphicon-forward\"></span></button>
 		</div>
 	</div>";
 }
@@ -574,7 +574,7 @@ echo '<br>'.get_vocab("week").get_vocab("deux_points").utf8_strftime($dformat, $
 if (isset($_GET['precedent']))
 {
 	if ($_GET['pview'] != 1 AND $_GET['precedent'] == 1){
-		echo '<span id="lienPrecedent">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="charger();javascript:history.back();">'.get_vocab('previous').'</button>',PHP_EOL,'</span>',PHP_EOL;
+		echo '<span id="lienPrecedent">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="javascript:history.back();">'.get_vocab('previous').'</button>',PHP_EOL,'</span>',PHP_EOL;
 	}
 }
 if ($this_room_show_comment == "y" && $_GET['pview'] != 1 && ($this_room_comment != "") && ($this_room_comment != -1))

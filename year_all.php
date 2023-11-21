@@ -592,7 +592,7 @@ if (isset($_GET['precedent']))
 	if ($_GET['pview'] == 1 && $_GET['precedent'] == 1)
 	{
 		echo '<span id="lienPrecedent">'.PHP_EOL;
-		echo '<button class="btn btn-default btn-xs" onclick="charger();javascript:history.back();">Précedent</button>'.PHP_EOL;
+		echo '<button class="btn btn-default btn-xs" onclick="javascript:history.back();">Précedent</button>'.PHP_EOL;
 		echo '</span>'.PHP_EOL;
 	}
 }
