@@ -54,12 +54,25 @@
 								<tr>
 								  <td>{{trad.Activer_module_jours_cycles}}</td>
 								  <td>{{trad.explication_debut_Jours_Cycles}}</td>
-								  <td><a href="?p=admin_config5&jours_cycles=a">{{ trad.dActiveJourCycle }}</a></td>
+								  <td>
+									<div class="form-group">
+										<div class="custom-control custom-switch">
+										  <input type="checkbox" class="custom-control-input" id="module_jours_cycles" onclick='window.location.assign("?p=admin_config5&jours_cycles=a")' {% if d.dActiveJourCycle == 1 %} checked {% endif %} > 
+										  <label class="custom-control-label" for="module_jours_cycles"></label>
+										</div>
+									</div>
 								</tr>
 								<tr>
 								  <td>{{trad.Activer_module_multisite}}</td>
 								  <td>{{trad.explain_multisite}}</td>
-								  <td><a href="?p=admin_config5&module_multisite=a">{{ trad.dActiveMultiSite }}</a></td>
+								  <td>
+									<div class="form-group">
+										<div class="custom-control custom-switch">
+										  <input type="checkbox" class="custom-control-input" id="module_multisite" onclick='window.location.assign("?p=admin_config5&module_multisite=a")' {% if d.dActiveMultiSite == 1 %} checked {% endif %} > 
+										  <label class="custom-control-label" for="module_multisite"></label>
+										</div>
+									</div>
+								  </td>
 								</tr>
 							  </table>
 							</div>
@@ -82,14 +95,21 @@
 								</tr>
 								{% for module in modulesext %}
 									<tr>
-										<td>{{ module.nom }}</td>
+										<td>{{ module.nom }} ({{ module.dossier }})</td>
 										<td>{{ module.description }}</td>
 										<td>{{ module.version }}</td>
 										<td>{{ module.auteur|raw }}</td>
 										<td>{{ module.copyright|raw }}</td>
 										<td>
-											{% if module.activation != "" %}
-												<a href="?p=admin_config5&activation={{ module.lienActivation }}">{{ module.activation }}</a>
+											{% if module.activation == 1 %}<!-- Lien d'installation -->
+												<a href="?p=admin_config5&activation={{ module.lienActivation }}">Installer</a>
+											{% elseif module.activation == 2 or module.activation == 3 %} <!-- Activation / désactivation -->
+											<div class="form-group">
+												<div class="custom-control custom-switch">
+												  <input type="checkbox" class="custom-control-input" id="{{ module.dossier }}" onclick='window.location.assign("?p=admin_config5&activation={{ module.lienActivation }}")' {% if module.activation == 3 %} checked {% endif %} > 
+												  <label class="custom-control-label" for="{{ module.dossier }}"></label>
+												</div>
+											  </div>
 											{% endif %}
 										</td>
 									</tr>
@@ -128,6 +148,7 @@
 	<script src="../bootstrap/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 	<script src="../bootstrap/AdminLTE/bower_components/ckeditor/ckeditor.js"></script>
 	<script>
+
 		$(function () {
 			$('#reservation').daterangepicker({
 			 "locale": {
