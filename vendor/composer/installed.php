@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'c3638a533d440b2d2a5268053943d20b2411fb81',
+    'reference' => '4e0927927a2f3e27d541fc4ccf4d27499207e60d',
     'name' => 'devome/twig',
   ),
   'versions' => 
@@ -36,7 +36,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'c3638a533d440b2d2a5268053943d20b2411fb81',
+      'reference' => '4e0927927a2f3e27d541fc4ccf4d27499207e60d',
     ),
     'gregwar/captcha' => 
     array (
@@ -58,12 +58,12 @@
     ),
     'phpmailer/phpmailer' => 
     array (
-      'pretty_version' => 'v6.8.1',
-      'version' => '6.8.1.0',
+      'pretty_version' => 'v6.9.1',
+      'version' => '6.9.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'e88da8d679acc3824ff231fdc553565b802ac016',
+      'reference' => '039de174cd9c17a8389754d3b877a2ed22743e18',
     ),
     'psr/cache' => 
     array (
@@ -463,12 +463,12 @@
     ),
     'twig/twig' => 
     array (
-      'pretty_version' => 'v3.7.1',
-      'version' => '3.7.1.0',
+      'pretty_version' => 'v3.8.0',
+      'version' => '3.8.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'a0ce373a0ca3bf6c64b9e3e2124aca502ba39554',
+      'reference' => '9d15f0ac07f44dc4217883ec6ae02fd555c6f71d',
     ),
   ),
 );
