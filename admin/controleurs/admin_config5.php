@@ -212,16 +212,16 @@ get_vocab_admin("version");
 
 // Jour de Cycle
 if (Settings::get("jours_cycles_actif") == "Oui")
-	$trad['dActiveJourCycle'] = "Désactiver";
+	$d['dActiveJourCycle'] = 1;
 else
-	$trad['dActiveJourCycle'] = "Activer";
+	$d['dActiveJourCycle'] = 0;
 
 
 // Multisite
 if (Settings::get("module_multisite") == "Oui")
-	$trad['dActiveMultiSite'] = "Désactiver";
+	$d['dActiveMultiSite'] = 1;
 else
-	$trad['dActiveMultiSite'] = "Activer";
+	$d['dActiveMultiSite'] = 0;
 
 // Listes des modules Ext
 $ligne = "";
@@ -236,43 +236,44 @@ foreach ($iter as $fileinfo) {
 
 	} else {
 		if($iter != "." && $iter != ".." && $iter != ""){
-			if(is_file('../personnalisation/modules/'.$iter.'/infos.php')){
+			$dossier = "".$iter;
+			if(is_file('../personnalisation/modules/'.$dossier.'/infos.php')){
 				$module_nom = "";
-				include '../personnalisation/modules/'.$iter.'/infos.php';
+				include '../personnalisation/modules/'.$dossier.'/infos.php';
 				if($module_nom != "") {
 
 					if(isset($module_administrable) && $module_administrable == false)
 					{
 						$lienActivation = "";
-						$activation = "";
+						$activation = 0; // Non administrable
 
 					}
 					else
 					{
-						$sql = "SELECT `nom`, `actif` FROM ".TABLE_PREFIX."_modulesext WHERE `nom` = '".$iter."';";
+						$sql = "SELECT `nom`, `actif` FROM ".TABLE_PREFIX."_modulesext WHERE `nom` = '".$dossier."';";
 						$res = grr_sql_query($sql);
 						if ($res)
 						{
-							$lienActivation = "admin_config.php?page_config=6&activation=".$iter;
+							$lienActivation = "admin_config.php?page_config=6&activation=".$dossier;
 							$nb = grr_sql_count($res);
 							if($nb > 0){
 								$row = grr_sql_row($res, 0);
 								
 								if($row[1] == 0)
-									$activation = "Activer";
+									$activation = 2; // Activer
 								else
-									$activation = "Désactiver";
+									$activation = 3; // Désactiver
 							} else{
-								$activation = "Installer";
+								$activation = 1; // Installer
 							}
 						}
 					}
 
-					$modulesext[] = array('nom' => $module_nom." (".$iter.")", 'description' => $module_description, 'version' => $module_version, 'auteur' => $module_autheur, 'copyright' => $module_copyright, 'activation' => $activation, 'lienActivation' => $lienActivation);
+					$modulesext[] = array('nom' => $module_nom, 'dossier' => $dossier, 'description' => $module_description, 'version' => $module_version, 'auteur' => $module_autheur, 'copyright' => $module_copyright, 'activation' => $activation, 'lienActivation' => $lienActivation);
 
 				} else{
-					$modulesext[] = array('nom' => $iter, 'description' => "Impossible de lire le fichier", 'version' => "", 'auteur' => "", 'copyright' => "", 'activation' => "");
-					$activation = "Impossible";
+					$modulesext[] = array('nom' => '', 'dossier' => $dossier, 'description' => "Impossible de lire le fichier", 'version' => "", 'auteur' => "", 'copyright' => "", 'activation' => "");
+					$activation = 4; // Impossible
 					$lienActivation = "#";
 				}
 			}

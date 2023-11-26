@@ -1147,14 +1147,14 @@ function begin_page($title, $page = "with_session")
 */
 function print_header($day = '', $month = '', $year = '', $type_session = 'with_session')
 {
-	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
+	global $niveauDossier, $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $gcDossierImg;
 	
 	if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
 		header("Location: ./changepwd.php");
 	}
 
-	if (@file_exists('./admin_access_area.php')){
+	if ($niveauDossier == 2){
 		$adm = 1;
 		$racine = "../";
 		$racineAd = "./";
@@ -1344,14 +1344,14 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 
 function print_header_twig($day = '', $month = '', $year = '', $type_session = 'with_session')
 {
-	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
+	global $niveauDossier, $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $d, $gcDossierImg, $gcDossierCss ;
 	
 	if(isset($_SESSION['changepwd']) && $_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
 		header("Location: ./changepwd.php");
 	}
 
-	if (@file_exists('app.php'))
+	if ($niveauDossier == 1)
         $racine = "./";
 	else
 		$racine = "../";
@@ -3287,17 +3287,17 @@ Pour les utilisateurs :
 		$moderate_description = $rowModerate[1];
 
 		if ($moderate_decision == 2)
-			$codes['%decisionmoderation%'] .= $vocab["moderation_acceptee"];
+			$codes['%decisionmoderation%'] = $vocab["moderation_acceptee"];
 		else if ($moderate_decision == 3)
-			$codes['%decisionmoderation%'] .= $vocab["moderation_refusee"];
+			$codes['%decisionmoderation%'] = $vocab["moderation_refusee"];
 
 		if ($moderate_description != "")
-			$codes['%decisionmotif%'] .= $vocab["motif"].$vocab["deux_points"]."<br>".$moderate_description;
+			$codes['%decisionmotif%'] = $vocab["motif"].$vocab["deux_points"]."<br>".$moderate_description;
 		else
-			$codes['%decisionmotif%'] .= "";
+			$codes['%decisionmotif%'] = "";
 
 		if (count($tab_id_moderes) == 0 )
-			$codes['%urldetail%'] .= "\n".traite_grr_url("","y")."view_entry.php?id=".$id_entry;
+			$codes['%urldetail%'] = "\n".traite_grr_url("","y")."view_entry.php?id=".$id_entry;
 		else
 		{
 			foreach ($tab_id_moderes as $id_moderes)
@@ -6180,7 +6180,7 @@ function pageHead2($title, $page = "with_session")
 */
 function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_session', $adm=0)
 {
-	global $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name, $racine, $racineAd;
+	global $niveauDossier, $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name, $racine, $racineAd;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $gcDossierImg;
 
     if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))

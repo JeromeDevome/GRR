@@ -716,6 +716,7 @@ $vocab['ppreview'] = "Druckbares Format";
 $vocab['prefixe'] = "Préfixe";  // A traduire
 $vocab['previous'] = "die vorherige";
 $vocab['previous_year'] = "Vorjahr";
+$vocab['previsualisation'] = "Vorschau";
 $vocab['privileges'] = "Rechte";
 $vocab['pview_new_windows0'] = "Die Seiten nicht in einem neuen Browserfenster öffnen";
 $vocab['pview_new_windows1'] = "Die Seiten in einem neuen Browserfenster öffnen";

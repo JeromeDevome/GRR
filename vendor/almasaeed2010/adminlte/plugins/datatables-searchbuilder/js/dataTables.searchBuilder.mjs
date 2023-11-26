@@ -1,4 +1,4 @@
-/*! SearchBuilder 1.5.0
+/*! SearchBuilder 1.6.0
  * ©SpryMedia Ltd - datatables.net/license/mit
  */
 
@@ -32,11 +32,12 @@ let $ = jQuery;
      * The Criteria class is used within SearchBuilder to represent a search criteria
      */
     var Criteria = /** @class */ (function () {
-        function Criteria(table, opts, topGroup, index, depth, serverData) {
+        function Criteria(table, opts, topGroup, index, depth, serverData, liveSearch) {
             var _this = this;
             if (index === void 0) { index = 0; }
             if (depth === void 0) { depth = 1; }
             if (serverData === void 0) { serverData = undefined; }
+            if (liveSearch === void 0) { liveSearch = false; }
             // Check that the required version of DataTables is included
             if (!dataTable$3 || !dataTable$3.versionCheck || !dataTable$3.versionCheck('1.10.0')) {
                 throw new Error('SearchPane requires DataTables 1.10 or newer');
@@ -56,6 +57,7 @@ let $ = jQuery;
                 dt: table,
                 filled: false,
                 index: index,
+                liveSearch: liveSearch,
                 origData: undefined,
                 preventRedraw: false,
                 serverData: serverData,
@@ -147,6 +149,16 @@ let $ = jQuery;
                 .replace(/&lt;/g, '<')
                 .replace(/&gt;/g, '>')
                 .replace(/&quot;/g, '"');
+        };
+        /**
+         * Redraw the DataTable with the current search parameters
+         */
+        Criteria.prototype.doSearch = function () {
+            // Only do the search if live search is disabled, otherwise the search
+            // is triggered by the button at the top level group.
+            if (this.c.liveSearch) {
+                this.s.dt.draw();
+            }
         };
         /**
          * Parses formatted numbers down to a form where they can be compared
@@ -371,7 +383,7 @@ let $ = jQuery;
                         $$3(this).prop('selected', true);
                         data_1.removeClass(italic_1);
                         foundData = true;
-                        dataIdx = $$3(this).val();
+                        dataIdx = parseInt($$3(this).val(), 10);
                     }
                     else {
                         $$3(this).removeProp('selected');
@@ -453,7 +465,7 @@ let $ = jQuery;
                         // remove it from the search and trigger a new search
                         if (_this.s.filled) {
                             _this.s.filled = false;
-                            _this.s.dt.draw();
+                            _this.doSearch();
                             _this.setListeners();
                         }
                         _this.s.dt.state.save();
@@ -494,13 +506,13 @@ let $ = jQuery;
                             // it from the search and trigger a new search
                             if (_this.s.filled && val !== undefined && _this.dom.inputCont.has(val[0]).length !== 0) {
                                 _this.s.filled = false;
-                                _this.s.dt.draw();
+                                _this.doSearch();
                                 _this.setListeners();
                             }
                         }
                         if (_this.dom.value.length === 0 ||
                             _this.dom.value.length === 1 && _this.dom.value[0] === undefined) {
-                            _this.s.dt.draw();
+                            _this.doSearch();
                         }
                     }
                     else {
@@ -888,7 +900,7 @@ let $ = jQuery;
                 // If using SSP we want to restrict the amount of server calls that take place
                 //  and this will already have taken place
                 if (!this.s.dt.page.info().serverSide) {
-                    this.s.dt.draw();
+                    this.doSearch();
                 }
                 this.setListeners();
             }
@@ -1410,7 +1422,7 @@ let $ = jQuery;
                     !(that.s.dt.settings()[0].oInit.search !== undefined &&
                         that.s.dt.settings()[0].oInit.search["return"]) ||
                     code === 13) {
-                    that.s.dt.draw();
+                    that.doSearch();
                 }
                 return;
             }
@@ -1454,7 +1466,7 @@ let $ = jQuery;
                     that.s.dt.settings()[0].oInit.search["return"]) ||
                 code === 13) {
                 // Trigger a search
-                that.s.dt.draw();
+                that.doSearch();
             }
             // Refocus the element and set the correct cursor position
             if (idx !== null) {
@@ -2382,6 +2394,7 @@ let $ = jQuery;
                 logicOr: 'Or',
                 right: '>',
                 rightTitle: 'Indent criteria',
+                search: 'Search',
                 title: {
                     0: 'Custom Search Builder',
                     _: 'Custom Search Builder (%d)'
@@ -2455,7 +2468,12 @@ let $ = jQuery;
                     .addClass(this.classes.button)
                     .attr('type', 'button'),
                 logicContainer: $$2('<div/>')
-                    .addClass(this.classes.logicContainer)
+                    .addClass(this.classes.logicContainer),
+                search: $$2('<button/>')
+                    .addClass(this.classes.search)
+                    .addClass(this.classes.button)
+                    .attr('type', 'button')
+                    .css('display', 'none')
             };
             // A reference to the top level group is maintained throughout any subgroups and criteria that may be created
             if (this.s.topGroup === undefined) {
@@ -2471,6 +2489,7 @@ let $ = jQuery;
             // Turn off listeners
             this.dom.add.off('.dtsb');
             this.dom.logic.off('.dtsb');
+            this.dom.search.off('.dtsb');
             // Trigger event for groups at a higher level to pick up on
             this.dom.container
                 .trigger('dtsb-destroy')
@@ -2554,7 +2573,8 @@ let $ = jQuery;
             this.dom.container.children().detach();
             this.dom.container
                 .append(this.dom.logicContainer)
-                .append(this.dom.add);
+                .append(this.dom.add)
+                .append(this.dom.search);
             // Sort the criteria by index so that they appear in the correct order
             this.s.criteria.sort(function (a, b) {
                 if (a.criteria.s.index < b.criteria.s.index) {
@@ -2641,10 +2661,14 @@ let $ = jQuery;
                     // Set criteria left margin
                     this.dom.container.css('margin-left', 0);
                 }
+                this.dom.search.css('display', 'none');
                 return;
             }
             this.dom.clear.height('0px');
             this.dom.logicContainer.append(this.dom.clear);
+            if (!this.s.isChild) {
+                this.dom.search.css('display', 'inline-block');
+            }
             // Prepend logic button
             this.dom.container.prepend(this.dom.logicContainer);
             for (var _i = 0, _a = this.s.criteria; _i < _a.length; _i++) {
@@ -2692,6 +2716,9 @@ let $ = jQuery;
                 _this.s.dt.state.save();
                 return false;
             });
+            this.dom.search.on('click.dtsb', function () {
+                _this.s.dt.draw();
+            });
             for (var _i = 0, _a = this.s.criteria; _i < _a.length; _i++) {
                 var crit = _a[_i];
                 crit.criteria.setListeners();
@@ -2707,7 +2734,7 @@ let $ = jQuery;
         Group.prototype.addCriteria = function (crit) {
             if (crit === void 0) { crit = null; }
             var index = crit === null ? this.s.criteria.length : crit.s.index;
-            var criteria = new Criteria(this.s.dt, this.s.opts, this.s.topGroup, index, this.s.depth, this.s.serverData);
+            var criteria = new Criteria(this.s.dt, this.s.opts, this.s.topGroup, index, this.s.depth, this.s.serverData, this.c.liveSearch);
             // If a Criteria has been passed in then set the values to continue that
             if (crit !== null) {
                 criteria.c = crit.c;
@@ -3032,6 +3059,7 @@ let $ = jQuery;
         Group.prototype._setup = function () {
             this.setListeners();
             this.dom.add.html(this.s.dt.i18n('searchBuilder.add', this.c.i18n.add));
+            this.dom.search.html(this.s.dt.i18n('searchBuilder.search', this.c.i18n.search));
             this.dom.logic.children().first().html(this.c.logic === 'OR'
                 ? this.s.dt.i18n('searchBuilder.logicOr', this.c.i18n.logicOr)
                 : this.s.dt.i18n('searchBuilder.logicAnd', this.c.i18n.logicAnd));
@@ -3045,7 +3073,9 @@ let $ = jQuery;
             if (this.s.isChild) {
                 this.dom.container.append(this.dom.logicContainer);
             }
-            this.dom.container.append(this.dom.add);
+            this.dom.container
+                .append(this.dom.add)
+                .append(this.dom.search);
         };
         /**
          * Sets the listener for the logic button
@@ -3085,7 +3115,8 @@ let $ = jQuery;
             group: 'dtsb-group',
             inputButton: 'dtsb-iptbtn',
             logic: 'dtsb-logic',
-            logicContainer: 'dtsb-logicContainer'
+            logicContainer: 'dtsb-logicContainer',
+            search: 'dtsb-search'
         };
         Group.defaults = {
             columns: true,
@@ -3104,6 +3135,7 @@ let $ = jQuery;
             enterSearch: false,
             filterChanged: undefined,
             greyscale: false,
+            liveSearch: true,
             i18n: {
                 add: 'Add Condition',
                 button: {
@@ -3121,6 +3153,7 @@ let $ = jQuery;
                 logicOr: 'Or',
                 right: '>',
                 rightTitle: 'Indent criteria',
+                search: 'Search',
                 title: {
                     0: 'Custom Search Builder',
                     _: 'Custom Search Builder (%d)'
@@ -3563,7 +3596,7 @@ let $ = jQuery;
                 _this.dom.clearAll.remove();
             });
         };
-        SearchBuilder.version = '1.5.0';
+        SearchBuilder.version = '1.6.0';
         SearchBuilder.classes = {
             button: 'dtsb-button',
             clearAll: 'dtsb-clearAll',
@@ -3589,6 +3622,7 @@ let $ = jQuery;
             enterSearch: false,
             filterChanged: undefined,
             greyscale: false,
+            liveSearch: true,
             i18n: {
                 add: 'Add Condition',
                 button: {
@@ -3652,6 +3686,7 @@ let $ = jQuery;
                 logicOr: 'Or',
                 right: '>',
                 rightTitle: 'Indent criteria',
+                search: 'Search',
                 title: {
                     0: 'Custom Search Builder',
                     _: 'Custom Search Builder (%d)'
@@ -3669,7 +3704,7 @@ let $ = jQuery;
         return SearchBuilder;
     }());
 
-    /*! SearchBuilder 1.5.0
+    /*! SearchBuilder 1.6.0
      * ©SpryMedia Ltd - datatables.net/license/mit
      */
     setJQuery($);

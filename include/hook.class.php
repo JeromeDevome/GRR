@@ -21,26 +21,30 @@ class Hook{
 	public static function Actifs(){
 		global $modulesActifs;
 
+		$modulesActifs2 = array();
+		$modulesActifs2 = $modulesActifs;
+
 		$sql = "SELECT `nom` FROM ".TABLE_PREFIX."_modulesext WHERE `actif` = 1;";
 		$res = grr_sql_query($sql);
 		if ($res)
 		{
 			for ($i = 0; ($row=grr_sql_row($res,$i));$i++)
 			{
-				$modulesActifs[] = $row[0];
+				$modulesActifs2[] = $row[0];
 			}
 		}
 
+		return $modulesActifs2;
 	}
 	
 	public static function Appel($identifiant_hook){
-		global $modulesActifs;
+		global $niveauDossier;
 
 		$CtnHook[$identifiant_hook] = "";
 
-		Hook::Actifs();
+		$modulesActifs2 = Hook::Actifs();
 
-		foreach ($modulesActifs as &$nomModule)
+		foreach ($modulesActifs2 as &$nomModule)
 		{
 			if(file_exists('../personnalisation/modules/'.$nomModule.'/controleur.php'))
 				include('../personnalisation/modules/'.$nomModule.'/controleur.php');

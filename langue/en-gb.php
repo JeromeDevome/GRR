@@ -715,6 +715,7 @@ $vocab['ppreview'] = "Printable version";
 $vocab['prefixe'] = "Prefix"; 
 $vocab['previous'] = "Previous";
 $vocab['previous_year'] = "Previous year";
+$vocab['previsualisation'] = "Preview";
 $vocab['privileges'] = "privileges";
 $vocab['pview_new_windows0'] = "Do not open pages in a new window of the browser";
 $vocab['pview_new_windows1'] = "Open pages in a new window of the browser";

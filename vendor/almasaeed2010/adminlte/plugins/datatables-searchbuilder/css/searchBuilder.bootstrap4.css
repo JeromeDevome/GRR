@@ -35,14 +35,14 @@ div.dtsb-searchBuilder div.dtsb-titleRow {
 }
 div.dtsb-searchBuilder div.dtsb-titleRow div.dtsb-title {
   display: inline-block;
-  padding-top: 6px;
+  padding-top: 14px;
 }
 div.dtsb-searchBuilder div.dtsb-titleRow div.dtsb-title:empty {
   display: inline;
 }
 div.dtsb-searchBuilder div.dtsb-titleRow button.dtsb-clearAll {
   float: right;
-  margin-bottom: 0.333em;
+  margin-bottom: 0.8em;
 }
 div.dtsb-searchBuilder div.dtsb-vertical .dtsb-value, div.dtsb-searchBuilder div.dtsb-vertical .dtsb-data, div.dtsb-searchBuilder div.dtsb-vertical .dtsb-condition {
   display: block;
@@ -51,6 +51,9 @@ div.dtsb-searchBuilder div.dtsb-group {
   position: relative;
   clear: both;
   margin-bottom: 0.8em;
+}
+div.dtsb-searchBuilder div.dtsb-group button.dtsb-search {
+  float: right;
 }
 div.dtsb-searchBuilder div.dtsb-group button.dtsb-clearGroup {
   margin: 2px;
