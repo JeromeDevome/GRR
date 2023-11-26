@@ -129,4 +129,24 @@ if ($area_access == 'r')
 }
 if ($a_privileges == 'n')
 	echo "<p>".get_vocab("aucun_autilisateur").".</p>";
+
+// Si la ressource est restreinte, on affiche les utilisateurs ayant le droit de réserver
+if ($row['who_can_book'] == 0){// la ressource est à accès restreint
+    $req = "SELECT u.login, u.nom, u.prenom  FROM ".TABLE_PREFIX."_utilisateurs u left join ".TABLE_PREFIX."_j_userbook_room j on u.login=j.login WHERE j.id_room = '".$row['id']."' order by u.nom, u.prenom";
+    $res = grr_sql_query($req);
+    $can_book = '';
+    if ($res){
+        foreach($res as $user){
+            $can_book .= $user['nom']." ".$user['prenom']." (".$user['login'].")<br />";
+        }
+    }
+    grr_sql_free($res);
+    if ($can_book != ''){
+        echo "\n<h3><b>".get_vocab('utilisateurs_reservant')."</b></h3>\n";
+        echo "<p>".$can_book."</p>";
+    }
+    else echo "<p>".get_vocab('aucun_utilisateur_reservant')."</p>";
+}
+
+
 include "include/trailer.inc.php";

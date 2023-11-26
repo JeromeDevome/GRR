@@ -40,6 +40,7 @@ function delete_user($login)
 	grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_room      WHERE login='$login'");
 	grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='$login'");
 	grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='$login'");
+  grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_userbook_room  WHERE login='$login'");
       }
 
       // Fin de la session

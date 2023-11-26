@@ -38,6 +38,7 @@ $allow_action_in_past  = isset($_POST["allow_action_in_past"]) ? $_POST["allow_a
 $dont_allow_modify  = isset($_POST["dont_allow_modify"]) ? $_POST["dont_allow_modify"] : NULL;
 $qui_peut_reserver_pour  = isset($_POST["qui_peut_reserver_pour"]) ? $_POST["qui_peut_reserver_pour"] : NULL;
 $who_can_see  = isset($_POST["who_can_see"]) ? $_POST["who_can_see"] : NULL;
+$who_can_book  = isset($_POST["who_can_book"]) ? intval(clean_input($_POST["who_can_book"])) : 1;
 $max_booking = isset($_POST["max_booking"]) ? $_POST["max_booking"] : NULL;
 settype($max_booking, "integer");
 if ($max_booking<-1)
@@ -163,6 +164,7 @@ if (isset($change_room))
 		dont_allow_modify='".$dont_allow_modify."',
 		qui_peut_reserver_pour = '".$qui_peut_reserver_pour."',
 		who_can_see = '".$who_can_see."',
+		who_can_book = '".$who_can_book."',
 		order_display='".protect_data_sql($area_order)."',
 		type_affichage_reser='".$type_affichage_reser."',
 		max_booking='".$max_booking."',
@@ -195,6 +197,7 @@ if (isset($change_room))
 		dont_allow_modify='".$dont_allow_modify."',
 		qui_peut_reserver_pour = '".$qui_peut_reserver_pour."',
 		who_can_see = '".$who_can_see."',
+		who_can_book = '".$who_can_book."',
 		order_display='".protect_data_sql($area_order)."',
 		type_affichage_reser='".$type_affichage_reser."',
 		max_booking='".$max_booking."',
@@ -303,6 +306,7 @@ else
 	$row["dont_allow_modify"] = 'n';
 	$row["qui_peut_reserver_pour"] = 6;
 	$row["who_can_see"] = 0;
+	$row["who_can_book"] = 1;
 	$row["order_display"]  = 0;
 	$row["type_affichage_reser"]  = 0;
 	$row["max_booking"] = -1;
@@ -326,6 +330,7 @@ if (isset($retour_page))
 if ($row["id"] != '')
 	$trad['dHidden3'] = "<input type=\"hidden\" name=\"room\" value=\"".$row["id"]."\" />\n";
 
+get_vocab_admin("access");
 get_vocab_admin("miscellaneous");
 get_vocab_admin("name");
 get_vocab_admin("description");
@@ -372,6 +377,7 @@ get_vocab_admin("activer_fonctionalite_gestion_cle");
 get_vocab_admin("activer_fonctionalite_participant");
 get_vocab_admin("visu_fiche_description1");
 get_vocab_admin("visu_fiche_description2");
+get_vocab_admin("who_can_book_explain");
 
 get_vocab_admin("back");
 get_vocab_admin("save");

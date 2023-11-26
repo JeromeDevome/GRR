@@ -76,6 +76,13 @@
 							</div>
 
 							<div class="form-group row col-sm-12">
+								<label class="col col-sm-8" for="who_can_book">{{ trad.access }}. {{ trad.who_can_book_explain }}</label>
+								<div class="col col-sm-4">
+									<input type="checkbox" name="who_can_book" {% if ressource.who_can_book == 0 %} checked {% endif %}>
+								</div>
+							</div>
+
+							<div class="form-group row col-sm-12">
 								<label class="col col-sm-8" for="show_fic_room">{{ trad.montrer_fiche_presentation_ressource }}</label>
 								<div class="col col-sm-4">
 									<input type="checkbox" name="show_fic_room" {% if ressource.show_fic_room == 'y' %} checked {% endif %}>

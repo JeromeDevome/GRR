@@ -455,7 +455,7 @@ if ($res)
 					if ($test_admin_site >= 1)
 					{
 						$a_privileges = 'y';
-						$trad['dAdministrateurSite'] = "<li>".get_vocab("site")." ".$row_site[1].get_vocab("deux_points")." ".get_vocab("administrateur_du_site")."</li>";
+						$d['AdministrateurSite'] = "<li>".get_vocab("site")." ".$row_site[1].get_vocab("deux_points")." ".get_vocab("administrateur_du_site")."</li>";
 					}
 				}
 			}
@@ -543,16 +543,31 @@ if ($res)
 					}
 					$dAdministrateurDomaine .= "</ul>";
 					
-					$trad['dAdministrateurDomaine'] = $dAdministrateurDomaine;
+					$d['AdministrateurDomaine'] = $dAdministrateurDomaine;
 				}
 			}
 		}
+
+		// peut réserver une ressource restreinte ?
+		$req_room = "SELECT r.id, r.room_name FROM ".TABLE_PREFIX."_room r JOIN ".TABLE_PREFIX."_j_userbook_room j ON j.id_room = r.id WHERE j.login = '".$user_login."'";
+		$res_room = grr_sql_query($req_room);
+		if ($res_room && grr_sql_count($res_room)>0){
+			$ressoureceRestreinte = "<h3>".get_vocab('user_can_book')."</h3><ul>";
+			while($room = mysqli_fetch_array($res_room)){
+				$ressoureceRestreinte .= "<li>".$room['room_name']." (".$room['id'].") </li>";
+			}
+			$ressoureceRestreinte .= "</ul>";
+			$a_privileges = 'y';
+			$d['ressoureceRestreinte'] = $ressoureceRestreinte;
+		}
+		grr_sql_free($res_room);
+
 		if ($a_privileges == 'n')
 		{
 			if ($utilisateur['statut'] == 'administrateur')
-				$trad['dAdministrateurOuRien'] = "<li>".get_vocab("administrateur_general")."</li>";
+				$d['AdministrateurOuRien'] = "<li>".get_vocab("administrateur_general")."</li>";
 			else
-				$trad['dAdministrateurOuRien'] = "<li>".get_vocab("pas_de_privileges")."</li>";
+				$d['AdministrateurOuRien'] = "<li>".get_vocab("pas_de_privileges")."</li>";
 		}
 	}
 

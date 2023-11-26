@@ -193,8 +193,15 @@ else { // on connaît $id de la réservation à échanger, on va en chercher une
         // on parcourt les résultats de la requête
         foreach($reps as $a){
             $info_alt = mrbsGetEntryInfo($a['id']);
-            if (verif_acces_ressource($current_user,$info_alt['room_id']) && verif_acces_fiche_reservation($current_user,$info_alt['room_id']) && UserRoomMaxBooking($current_user,$info_alt['room_id'],1)) // si l'utilisateur peut accéder à la ressource et la modifier, on la garde
+            $who_can_book = grr_sql_query1("SELECT who_can_book FROM ".TABLE_PREFIX."_room WHERE id='".$info_alt['room_id']."' ");
+            $user_can_book = $who_can_book || (authBooking($current_user,$info_alt['room_id']));
+            if (verif_acces_ressource($current_user,$info_alt['room_id']) 
+                && verif_acces_fiche_reservation($current_user,$info_alt['room_id']) 
+                && $user_can_book
+                && UserRoomMaxBooking($current_user,$info_alt['room_id'],1)){ // si l'utilisateur peut accéder à la ressource et la modifier, on l'affiche
+
                 $resa_access[$a['id']] = $info_alt;
+                }
         }
         $etape = 1;
     }

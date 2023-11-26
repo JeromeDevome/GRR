@@ -50,6 +50,7 @@ if ($type == "room")
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE room_id=$room");
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_mailuser_room  WHERE id_room=$room");
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE id_room=$room");
+		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_userbook_room WHERE id_room=$room");
 		//Now take out the room itself
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_room WHERE id=$room");
 

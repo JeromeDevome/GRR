@@ -99,6 +99,9 @@ if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 	$liste[] = 'admin_right_admin';
 if (authGetUserLevel(getUserName(), -1, 'area') >= 4)
 	$liste[] = 'admin_access_area';
+$test = grr_sql_query1("SELECT COUNT(`who_can_book`) FROM ".TABLE_PREFIX."_room WHERE `who_can_book` = 0 ");
+if (authGetUserLevel(getUserName(), -1, 'area') >= 4)
+	$liste[] = 'admin_book_room';
 if (authGetUserLevel(getUserName(), -1, 'area') >= 4)
 	$liste[] = 'admin_right';
 if ( (Settings::get("sso_ac_corr_profil_statut") == 'y') && (authGetUserLevel(getUserName(), -1, 'area') >= 5) )

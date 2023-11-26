@@ -60,6 +60,7 @@ if ((isset($_GET['action_del'])) and (isset($_GET['js_confirmed'])) and ($_GET['
 			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_mailuser_room WHERE login='$temp'");
 			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE login='$temp'");
 			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE login='$temp'");
+			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_userbook_room WHERE login='".$temp."'");
 			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='$temp'");
 			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='$temp'");
 			$msg=get_vocab("del_user_succeed");

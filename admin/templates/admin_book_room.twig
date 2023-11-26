@@ -1,0 +1,164 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs4.min.css">
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+        <div class="col col-xs-12">
+            <div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{ trad.admin_book_room }}</h3>
+				</div>
+				
+				<div class="box-body no-padding">
+	
+                        <!-- Première étape : choisir parmi les ressources restreintes -->
+
+						<div class="form-group">
+							<label class="col col-sm-3" for="room">{{ trad.rooms }}{{ trad.deux_points }}</label>
+							<div class="col col-sm-9">
+								<select id="room" name="room" class="form-control" onchange="room_go()">
+									<option value="?p=admin_book_room&id_room=-1">{{ trad.select }}</option>
+									{% for ressource in ressources %}
+                                        <option value="?p=admin_book_room&id_room={{ ressource.0 }}" {% if d.id_room == ressource.0 %}selected{% endif %}>{{ ressource.1 }}</option>
+                                     {% endfor %}
+								</select>
+							</div>
+						</div>
+
+                        <hr>
+
+                        <!-- Deuxième étape : la ressource étant choisie, afficher les utilisateurs autorisés à réserver et le formulaire de mise à jour de la liste -->
+                        {% if d.id_room != -1 %}
+                            <!-- Un par un -->
+                            <form action="?p=admin_book_room" method="post">
+                                <input type="hidden" name="id_room" value="{{d.id_room}}" />
+                                
+                                <div class="form-group">
+                                    <label class="col col-sm-3" for="reg_admin_login">{{ trad.add_user_to_list }}</label>
+                                    <div class="col col-sm-9">
+                                        <select size="1" name="reg_user_login" class="form-control">
+                                            <option value="">{{ trad.nobody }}</option>
+                                            {% for userA in userAjout %}
+                                                <option value="{{userA.0}}">{{userA.1}} {{userA.2}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div style="text-align:center;">
+                                    <input class="btn btn-primary" type="submit" value="{{ trad.add }}" />
+                                </div>
+                            </form>
+
+
+                            <!-- Multiple -->
+							<form action="?p=admin_book_room" method="post">
+								<input type="hidden" name="p" value="admin_book_room" />
+								<input type="hidden" name="id_room" value="{{d.id_room}}" />
+								<div class="form-group">
+									<label class="col col-sm-3" for="reg_admin_login">{{ trad.add_multiple_user_to_list }}</label>
+									<div class="col col-sm-9">
+										<select name="agent" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.agent,this.form.elements['reg_multi_user_login[]'])">
+											{% for userA in userAjout %}
+												<option value="{{ userA.0 }}">{{ userA.1 }} {{ userA.2 }}</option>
+											{% endfor %}
+										</select>
+										<button type="button" class="btn btn-danger" onclick="Deplacer(this.form.elements['reg_multi_user_login[]'],this.form.agent)"/><i class="fa fa-arrow-circle-left"></i></button>
+										<button type="button" class="btn btn-success" onclick="Deplacer(this.form.agent,this.form.elements['reg_multi_user_login[]'])"/><i class="fa fa-arrow-circle-right"></i></button>
+										<select name="reg_multi_user_login[]" id="reg_multi_user_login" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.elements['reg_multi_user_login[]'],this.form.agent)">
+										</select>
+									</div>
+								</div>
+
+								<div style="text-align:center;">
+									<input class="btn btn-primary" type="submit" value="{{ trad.add }}" onclick="selectionner_liste(this.form.reg_multi_user_login);" />
+								</div>
+							</form>
+
+                        {% else %}
+                            <h3>{{d.NoRoomRestriction}}</h3>
+                        {% endif %}
+
+
+                        <!-- Utilisateur ayant les accès -->
+                        {% if d.nombre == 0 %}
+                            <h3>{{ trad.no_userbook_room }}</h3>
+                        {% else %}
+                            <h3>{{ trad.user_book_room_list }}</h3>
+
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>{{ trad.login }}</th>
+                                    <th>{{ trad.last_name }}</th>
+                                    <th>{{ trad.first_name }}</th>
+                                    <th>{{ trad.action }}</th>
+                                </tr>
+                                {% for user in userAcces %}
+                                    <tr>
+                                        <td>{{ user.0 }}</td>
+                                        <td>{{ user.1 }}</td>
+                                        <td>{{ user.2 }}</td>
+                                        <td><a href="?p=admin_book_room&action=del_user&amp;login_user={{ user.0 }}&amp;id_room={{ d.id_room }}"><i class="fa fa-trash"></i></a></td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% endif %}
+				</div>
+            </div>
+		</div>
+        <!-- /.col -->
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+	<script type="text/javascript">
+		function room_go()
+		{
+			box = document.getElementById('room');
+			destination = box.options[box.selectedIndex].value;
+			if (destination) location.href = destination;
+		}
+
+
+		function Deplacer(liste1, liste2)
+		{
+			while (liste1.options.selectedIndex >= 0)
+			{
+				opt = new Option(liste1.options[liste1.options.selectedIndex].text,liste1.options[liste1.options.selectedIndex].value);
+				liste2.options[liste2.options.length] = opt;
+				liste1.options[liste1.options.selectedIndex] = null;
+			}
+		}
+		
+		function vider_liste(IdListe)
+		{
+			var l = IdListe.options.length;
+			for (var i = 0; i < l; i++)
+			{
+				IdListe.options[i] = null;
+			}
+		}
+
+		function selectionner_liste(IdListe)
+		{
+			var l = IdListe.options.length;
+			for(var i = 0; i < l; i++)
+			{
+				IdListe.options[i].selected = true;
+			}
+		}
+
+		vider_liste(document.getElementById('reg_multi_user_login'));
+
+	</script>
+	<noscript>
+		<div><input type="submit" value="Change" /></div>
+	</noscript>
+{% endblock %}

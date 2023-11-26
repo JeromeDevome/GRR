@@ -78,7 +78,10 @@ if ($info = mrbsGetEntryInfo($id))
 	$room_id = grr_sql_query1("SELECT ".TABLE_PREFIX."_entry.room_id FROM ".TABLE_PREFIX."_entry WHERE ".TABLE_PREFIX."_entry.id='".$id."'");
 	$date_now = time();
 	get_planning_area_values($area);
-	if ((!(verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods))) || ((verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")))
+	$who_can_book = grr_sql_query1("SELECT who_can_book FROM ".TABLE_PREFIX."_room WHERE id='".$room_id."' ");
+    $user_can_book = $who_can_book || (authBooking($current_user,$info_alt['room_id']));
+
+	if ((!(verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods))) || ((verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")) && $user_can_book)
 	{
 		showAccessDenied($back);
 		exit();

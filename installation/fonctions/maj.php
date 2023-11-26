@@ -1051,6 +1051,25 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 	}
 
 
+	if (intval($version_old_bdd) < 400004) // Version GRR 4.3.0
+	{
+		
+		$result .= formatresult("Mise à jour jusqu'à la version 4.3.0 :","<b>","</b>");
+
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD `who_can_book` TINYINT(1) NOT NULL DEFAULT '1' AFTER `booking_range`;");
+		$result_inter .= traiteRequete("CREATE TABLE ".TABLE_PREFIX."_j_userbook_room (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_room int(11) NOT NULL default '0', PRIMARY KEY  (login,id_room) )");
+
+		if ($result_inter == '')
+			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+		else
+			$result .= $result_inter;
+		$result_inter = '';
+	}
+
+	
+	
+
+
 	
 
 	// Mise à jour du numéro de version
