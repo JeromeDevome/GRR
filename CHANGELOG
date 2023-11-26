@@ -1,11 +1,18 @@
 -----
 --
 -----
-Version 4.2.1 - En developpement
+Version 4.2.1 - 26/11/2023 Généré par @JeromeDevome
 
+[Ajout] Prévisualisation des couleurs dans l'administration des types de réservations @JeromeDevome
 [Correction] Calcul de la page edit_entry @ynaessens
 [Correction] Droits à modifier pour le bénéficiaire @ynaessens
 [Correction] Champs de recherche par brève description manquant (Pb v4.0.0) @ynaessens
+[Correction] Pipette de couleur pour les champs hexadécimal @JeromeDevome
+[Correction] Sauvegarde via une tâche CRON (Pb v4.0.0) @JeromeDevome
+[Correction] Module appelé plusieurs fois sur un même Hook @JeromeDevome
+[Modification] Lien d'activation des modules remplacer par une checkbox @JeromeDevome
+[Modification] Mise à jour des libraires JS @JeromeDevome
+[Modification] Mise à jour des libraires PHP @JeromeDevome
 
 
 -----
