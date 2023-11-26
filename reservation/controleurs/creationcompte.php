@@ -20,6 +20,7 @@ include_once('include/pages.class.php');
 
 $grr_script_name = "creationcompte.php";
 
+
 if (!Pages::load())
 	die('Erreur chargement pages');
 
@@ -29,7 +30,7 @@ $d['caractMini'] = $pass_leng." caractères minimum"; // $pass_leng est définit
 /*  */
 use Gregwar\Captcha\PhraseBuilder;
 
-if(isset($_POST["nom"])){
+if( Settings::get("fct_crea_cpt") == "y" && isset($_POST["nom"])){
 
 	/// Init des variables
 	$reg_nom = isset($_POST["nom"]) ? $_POST["nom"] : NULL;
@@ -178,6 +179,8 @@ if(isset($_POST["nom"])){
 	}
 }
 
-
-echo $twig->render('creationcompte.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
+if( Settings::get("fct_crea_cpt") == "y")
+	echo $twig->render('creationcompte.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
+else
+	echo "<h3>Erreur : Fonction non active</h3>"
 ?>	
