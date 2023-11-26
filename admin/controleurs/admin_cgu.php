@@ -24,11 +24,13 @@ check_access(6, $back);
 if (!Pages::load()) {
     die('Erreur chargement pages');
 }
+
 $msg = "";
+
 /* Enregistrement de la page */
 if (isset($_POST['CGU'])) {
 	VerifyModeDemo();
-    if (!Pages::set("CGU", $_POST['titre'], $_POST['CGU']))
+    if (!Pages::set("cgu", $_POST['titre'], $_POST['CGU']))
         $msg = "Erreur lors de l'enregistrement de CGU !<br />";
 }
 /**/

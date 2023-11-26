@@ -80,7 +80,7 @@ class Pages {
 		}
 		else
 		{
-			$sql = "INSERT INTO ".TABLE_PREFIX."_page set nom = '" . protect_data_sql($_name) . "', titre = '".protect_data_sql($titre)."', valeur = '" . protect_data_sql($_value) . "'";
+			$sql = "INSERT INTO ".TABLE_PREFIX."_page set nom = '" . protect_data_sql($_name) . "', titre = '".protect_data_sql($titre)."', valeur = '" . protect_data_sql($_value) . "', systeme  = '0'  " ;
 			$res = grr_sql_query($sql);
 			if (!$res)
 				return (false);
