@@ -4,6 +4,7 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs4.min.css">
 	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
 {% endblock %}
 
@@ -96,6 +97,11 @@
 											{{ form.input('mail_destinataire', trad.display_mail_destinataire, settings.mail_destinataire, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
 											<input type="checkbox" name="mail_user_destinataire" value="y" id="label_0z" {% if settings.mail_user_destinataire == 'y' %} checked {% endif %} /> <label for="label_0z">{{ trad.mail_user_destinataire }}</label><br>
 											<input type="checkbox" name="mail_contact_resa_captcha" value="y" id="label_0y" {% if settings.mail_contact_resa_captcha == 'y' %} checked {% endif %} /> <label for="label_0z">{{ trad.captcha_utiliser }}</label><br>
+											<br><br>
+											<h5>Texte avant le formulaire :</h5>
+											<br>
+											<textarea id="summernote" name="textecontactresa" rows="100" cols="80">{{ d.contactresa[1] }}</textarea>
+										
 										</div>
 
 										<!-- Demandes de création de compte -->
@@ -162,11 +168,14 @@
 {% endblock %}
 
 {% block javascript %}
+	<script src="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs4.min.js"></script>
 	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
 	<script src="../vendor/almasaeed2010/adminlte/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
 	<script type="text/javascript">
 
 		$(function(){
+			// Summernote
+			$('#summernote').summernote()
 
 			$("input[data-bootstrap-switch]").each(function(){
    			  $(this).bootstrapSwitch('state', $(this).prop('checked'));

@@ -16,6 +16,9 @@
  * (at your option) any later version.
  */
 
+require_once("../include/pages.class.php");
+
+
 get_vocab_admin("admin_config1");
 get_vocab_admin("admin_config2");
 get_vocab_admin("admin_config3");
@@ -26,6 +29,10 @@ get_vocab_admin("admin_config7");
 
 $msg = '';
 
+
+if (!Pages::load()) {
+    die('Erreur chargement pages');
+}
 
 if (isset($_POST['p'])) { // On a validé le formulaire
    
@@ -105,12 +112,22 @@ if (isset($_POST['p'])) { // On a validé le formulaire
         $msg .= "Erreur lors de l'enregistrement de fct_crea_cpt_captcha !<br />";       
 }
 
-
+/* Page formaulaire contactresa */
+if (isset($_POST['textecontactresa'])) {
+	VerifyModeDemo();
+    if (!Pages::set("contactresa", "contactresa", $_POST['textecontactresa']))
+        $msg .= "Erreur lors de l'enregistrement du texte contactresa !<br />";
+}
 
 if (!Settings::load()) {
     die('Erreur chargement settings');
 }
 $AllSettings = Settings::getAll();
+
+if (!Pages::load()) {
+    die('Erreur chargement pages');
+}
+$d['contactresa'] = Pages::get('contactresa');
 
 // Si pas de problème, message de confirmation
 if (isset($_POST['ok'])) {
@@ -126,6 +143,8 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
 } else {
     $msg = '';
 }
+
+
 
 get_vocab_admin('periodicite_msg');
 get_vocab_admin('courrier_msg');

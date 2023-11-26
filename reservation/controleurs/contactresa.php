@@ -18,9 +18,19 @@
 
 $grr_script_name = "contactresa.php";
 
+include_once('include/pages.class.php');
+
 $msg_erreur = "Erreur. Les champs suivants doivent être obligatoirement
 remplis :<br/><br/>";
 $message = "";
+
+
+if (!Pages::load())
+	die('Erreur chargement pages');
+
+	$infosPage = Pages::get("contactresa");
+	$d['TitrePage'] = $infosPage[0];
+	$d['CtnPage'] =  $infosPage[1];
 
 /*  */
 use Gregwar\Captcha\PhraseBuilder;
