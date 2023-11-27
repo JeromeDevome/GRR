@@ -3,7 +3,7 @@
  * installation/fonctions/maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-08-24 16:43$
+ * Dernière modification : $Date: 2023-11-27 14:59$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -749,8 +749,22 @@ function execute_maj3($version_old, $version_grr)
     
     if (version_compare($version_old, "3.4.3", '<'))
     {
+        // conversion de la valeur par défaut des champs START et END de la table grr_log (ne devrait être utile que pour des bases converties depuis d'anciennes versions)
+        $result .= formatResult("Mise à jour de la table grr_log:","<b>","</b>");
+        $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_log` CHANGE `START` `START` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00', CHANGE `END` `END` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00';");
+        if ($result_inter == '')
+            $result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+        else
+            $result .= $result_inter;
+        // valeur par défaut du TIMESTAMP dans grr_entry_moderate (ne devrait être utile que pour des bases converties depuis d'anciennes versions)
+        $result .= formatResult("Mise à jour de la table grr_entry_moderate:","<b>","</b>");
+        $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_entry_moderate` CHANGE `TIMESTAMP` `TIMESTAMP` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;");
+        if ($result_inter == '')
+            $result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+        else
+            $result .= $result_inter;
+        
         $result .= formatresult("Mise à jour jusqu'à la version 3.4.3 RC0:","<b>","</b>");
-
         $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_log CHANGE `REMOTE_ADDR` `REMOTE_ADDR` VARCHAR(40) NOT NULL DEFAULT ''");
         $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD `active_participant` TINYINT(1) NOT NULL DEFAULT '0' AFTER `active_cle`;");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry ADD `nbparticipantmax` int(11) NOT NULL DEFAULT '0' AFTER `courrier`;");
