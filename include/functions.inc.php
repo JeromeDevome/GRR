@@ -4773,6 +4773,8 @@ function resa_est_hors_reservation2($start_time,$end_time,$area)
 // trouve les utilisateurs actifs gestionnaires de ressource
 function find_active_user_room ($id_room)
 {
+	$raison = 0;
+
 	// Raison : 1:Gestionnaire de la ressource; 2:Admin du domaine; 3:Admin site; 4:Admins
 	$emails = array ();
 	$sql = "select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_user_room
@@ -5193,7 +5195,7 @@ function envois_spec_champ_add_mails($id_resa)
 	$destinataire = "";
 	// Les champs add :
 	$overload_data = mrbsEntryGetOverloadDesc($id_resa);
-	foreach ($overload_data as $fieldname=>$field)
+	foreach ($overload_data as $field)
 	{
 		if (isset($field["mail_spec"]) && ($field["mail_spec"] != '') && ($field["valeur"] != "") && ($field["valeur"] != 0))
 			$destinataire .= htmlspecialchars($field["mail_spec"]).";";
