@@ -371,6 +371,8 @@ function mrbsEntryGetOverloadDesc($id_entry)
 			$overload_array[$field]["overload_mail"] = grr_sql_query1("SELECT overload_mail FROM ".TABLE_PREFIX."_overload WHERE id = '".$fieldslist[$field]["id"]."'");
 			$overload_array[$field]["obligatoire"] = grr_sql_query1("SELECT obligatoire FROM ".TABLE_PREFIX."_overload WHERE id = '".$fieldslist[$field]["id"]."'");
 			$overload_array[$field]["confidentiel"] = grr_sql_query1("SELECT confidentiel FROM ".TABLE_PREFIX."_overload WHERE id = '".$fieldslist[$field]["id"]."'");
+			$overload_array[$field]["mail_spec"] = grr_sql_query1("SELECT mail_spec FROM ".TABLE_PREFIX."_overload WHERE id = '".$fieldslist[$field]["id"]."'");
+
 		}
 		return $overload_array;
 	}
