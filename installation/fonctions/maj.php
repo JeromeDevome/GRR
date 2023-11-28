@@ -3,7 +3,7 @@
  * installation/fonctions/maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-11-27 14:59$
+ * Dernière modification : $Date: 2023-11-28 11:11$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -1063,7 +1063,6 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 			$result .= $result_inter;
 		$result_inter = '';
 	}
-
 
 	
 
