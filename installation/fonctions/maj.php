@@ -3,7 +3,7 @@
  * installation/fonctions/maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-11-27 14:59$
+ * Dernière modification : $Date: 2023-11-28 11:11$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -1072,7 +1072,7 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page VALUES ('contactresa', 'contactresa', '', 0);");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD `who_can_book` TINYINT(1) NOT NULL DEFAULT '1' AFTER `booking_range`;");
-		$result_inter .= traiteRequete("CREATE TABLE ".TABLE_PREFIX."_j_userbook_room (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_room int(11) NOT NULL default '0', PRIMARY KEY  (login,id_room) )");
+		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_j_userbook_room (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_room int(11) NOT NULL default '0', PRIMARY KEY  (login,id_room) )");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
