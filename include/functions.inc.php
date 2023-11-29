@@ -6024,6 +6024,15 @@ if (!function_exists('htmlspecialchars_decode'))
 }
 
 /*
+* valideDate : Retourne true ou false selon si le format de la date est bon ou non
+*/
+function valideDate($date, $format = 'Y-m-d H:i:s')
+{
+	$d = DateTime::createFromFormat($format, $date);
+	return $d && $d->format($format) == $date;
+}
+
+/*
 * @param integer $delai : nombre de jours de rétention des logs de connexion
 * nettoieLogConnexion efface les entrées de la table _log antérieures au jour courant moins le délai
 */
