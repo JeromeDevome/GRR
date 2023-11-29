@@ -76,3 +76,4 @@ vendor/gregwar/captcha/demo/output.php
 vendor/gregwar/captcha/demo/session.php
 personnalisation/langue/lang_subst.fr-fr.php
 personnalisation/configperso.inc.php
+personnalisation/css/perso.css
