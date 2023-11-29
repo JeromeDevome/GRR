@@ -462,8 +462,6 @@ if (!grr_resumeSession())
 $user_name = getUserName(); // ici on devrait avoir un identifiant
 // Paramètres langage
 include "include/language.inc.php";
-$ISO_lang_code = array("fr-fr" => "fr","en-gb" => "en", "es-es" => "es", "it-it" => "it", "de-de" => "de");
-$clock_file = 'clock_'.$ISO_lang_code[$locale].'.js';
 
 if (isset($period))
 	$end_period = $period;
@@ -841,10 +839,10 @@ if (!isset($_COOKIE['open']))
 	header('Set-Cookie: open=true; SameSite=Lax');
 }
 echo '<!DOCTYPE html>'.PHP_EOL;
-echo '<html lang="'.$ISO_lang_code[$locale].'">'.PHP_EOL;
+echo '<html lang="'.$locale.'">'.PHP_EOL;
 // section <head>
 //echo pageHead2(Settings::get("company"),$type_session="with_session");
-pageHead(Settings::get("company"),$ISO_lang_code[$locale]);
+pageHead(Settings::get("company"),$locale);
 // section <body>
 echo "<body>";
 //echo $C;
