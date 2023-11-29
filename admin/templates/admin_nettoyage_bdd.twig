@@ -1,0 +1,183 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col col-md-12">
+		<div class="callout callout-danger">Attention: les actions réalisées sur cette page sont irréversibles ! <a href="?p=admin.php?p=admin_config4">Sauvegarde</a>{{trad.admin_type_explications}}</div>
+
+         <div class="box box-success">
+            <div class="box-header">
+              <h3 class="box-title">{{ trad.admin_type_titre }}</h3>
+            </div>
+
+				<div class="box-body">
+
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                            <div class="card card-info">
+                                <div class="card-header">
+                                  <h3 class="card-title">Informations sur la BDD</h3>
+                                </div>
+                                <div class="card-body">
+                                    <table>
+                                        <tr><th>Nom de la table</th><th>Nombre d'enregistrement</th></tr>
+                                        {% for table in listeTables %}
+                                            <tr><td>{{table.0}}</td><td>{{table.1}}</td></tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                                <div class="card-footer">
+                                    <a class="btn btn-success btn-md" href="?p=admin_config4">Sauvegarder</a>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+
+
+                            <div class="card card-warning">
+                                <div class="card-header">
+                                  <h3 class="card-title">Actions</h3>
+                                </div>
+                                <div class="card-body">
+                                    <a class="btn btn-outline-warning btn-block btn-flat" href="?p=admin_config4"><i class="fa fa-check"></i> Valider toute les réservations en attente de modération</a>
+    
+                                      
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+
+
+                        </div> <!-- Colonne gauche -->
+
+                        <div class="col-sm-6">
+<form class="form-horizontal" method="post">
+                            <div class="card card-danger">
+                                
+                                    <input type="hidden" name ="p" value="admin_nettoyage_bdd">
+                                    <input type="hidden" name ="numform" value="1">
+
+                                    <div class="card-header">
+                                    <h3 class="card-title">Supprimer avant une date</h3>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                            </div>
+                                            <input type="text" name="1cleanlog" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric">
+                                        </div>
+
+                                        <div class="custom-control custom-checkbox" >
+                                            <input class="custom-control-input custom-control-input-warning" type="checkbox" id="1logconnexion" name="1logconnexion">
+                                            <label for="1logconnexion" class="custom-control-label">Logs de connexions</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input custom-control-input-warning" type="checkbox" id="1logmail" name="1logmail">
+                                            <label for="1logmail" class="custom-control-label">Suivis des mails</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input custom-control-input-warning" type="checkbox" id="1logresa" name="1logresa">
+                                            <label for="1logresa" class="custom-control-label">Suivis des réservations</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input custom-control-input-danger" type="checkbox" id="1resa" name="1resa">
+                                            <label for="1resa" class="custom-control-label">Réservations</label>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="card-footer">
+                                        <input type="submit" name="supprimer" value="Supprimer" class="btn btn-danger btn-md" />
+                                    </div>
+                                
+                            </div>
+</form>
+ <form class="form-horizontal" method="post">
+                                <div class="card card-danger">
+
+                               
+                                    <input type="hidden" name ="p" value="admin_nettoyage_bdd">
+                                    <input type="hidden" name ="numform" value="2">
+
+                                        
+                                    <div class="card-header">
+                                    <h3 class="card-title">Supprimer l'ensemble :</h3>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="custom-control custom-checkbox" >
+                                            <input class="custom-control-input custom-control-input-warning" type="checkbox" id="2logconnexion" name="2logconnexion">
+                                            <label for="2logconnexion" class="custom-control-label">Logs de connexions</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input custom-control-input-warning" type="checkbox" id="2logmail" name="2logmail">
+                                            <label for="2logmail" class="custom-control-label">Suivis des mails</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input custom-control-input-warning" type="checkbox" id="2logresa" name="2logresa">
+                                            <label for="2logresa" class="custom-control-label">Suivis des réservations</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input custom-control-input-warning" type="checkbox" id="2vacances" name="2vacances">
+                                            <label for="2vacances" class="custom-control-label">Calendrier vacances</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input custom-control-input-warning" type="checkbox" id="2feries" name="2feries">
+                                            <label for="2feries" class="custom-control-label">Calendrier jours fériés</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input custom-control-input-warning" type="checkbox" id="2horsreservation" name="2horsreservation">
+                                            <label for="2horsreservation" class="custom-control-label">Calendrier hors réservation</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input custom-control-input-danger" type="checkbox" id="2resasup" name="2resasup">
+                                            <label for="2resasup" class="custom-control-label">Réservations supprimés</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input custom-control-input-danger" type="checkbox" id="2resa" name="2resa">
+                                            <label for="2resa" class="custom-control-label">Réservations & logs de réservations</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input custom-control-input-danger" type="checkbox" id="2uservisiteur" name="2uservisiteur">
+                                            <label for="2uservisiteur" class="custom-control-label">Utilisateurs visiteur</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input custom-control-input-danger" type="checkbox" id="2userusager" name="2userusager">
+                                            <label for="2userusager" class="custom-control-label">Utilisateurs usager</label>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="card-footer">
+                                        <input type="submit" name="supprimer" value="Supprimer" class="btn btn-danger btn-md" />
+                                    </div>
+
+                               
+                            </div> 
+                        </form>
+                        </div> <!-- Colonne droite -->
+				</div>
+
+			</form>
+          </div>
+          <!-- /.box -->
+		</div>
+	</div>
+
+
+{% endblock %}
+
+{% block javascript %}
+<script src="../vendor/almasaeed2010/adminlte/plugins/inputmask/jquery.inputmask.min.js"></script>
+<script>
+    $(function(){
+        $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+        $('[data-mask]').inputmask()
+    })
+</script>
+{% endblock %}

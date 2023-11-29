@@ -134,6 +134,8 @@ if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 	$liste[] = 'admin_couleurs';
 if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 	$liste[] = 'admin_infos';
+if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
+	$liste[] = 'admin_nettoyage_bdd';
 foreach ($menuAdminComplNiv2Divers as list($droit, $lien, $icone)) {
 	if(authGetUserLevel(getUserName(), -1, 'area') >= $droit)
 		$liste[] = $lien;
