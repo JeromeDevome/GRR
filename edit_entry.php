@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-10-09 12:34$
+ * Dernière modification : $Date: 2023-11-29 19:11$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author 	  Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -462,7 +462,9 @@ if (!grr_resumeSession())
 $user_name = getUserName(); // ici on devrait avoir un identifiant
 // Paramètres langage
 include "include/language.inc.php";
-//echo $locale;
+$ISO_lang_code = array("fr-fr" => "fr","en-gb" => "en", "es-es" => "es", "it-it" => "it", "de-de" => "de");
+$clock_file = 'clock_'.$ISO_lang_code[$locale].'.js';
+
 if (isset($period))
 	$end_period = $period;
 if (!isset($edit_type))
@@ -839,10 +841,10 @@ if (!isset($_COOKIE['open']))
 	header('Set-Cookie: open=true; SameSite=Lax');
 }
 echo '<!DOCTYPE html>'.PHP_EOL;
-echo '<html lang="'.$locale.'">'.PHP_EOL;
+echo '<html lang="'.$ISO_lang_code[$locale].'">'.PHP_EOL;
 // section <head>
 //echo pageHead2(Settings::get("company"),$type_session="with_session");
-pageHead(Settings::get("company"),$locale);
+pageHead(Settings::get("company"),$ISO_lang_code[$locale]);
 // section <body>
 echo "<body>";
 //echo $C;
