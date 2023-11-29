@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-10-09 12:34$
+ * Dernière modification : $Date: 2023-11-29 19:11$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author 	  Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
@@ -80,7 +80,7 @@ function pageHead($title,$locale) // $locale est la langue utilisée
         <script src="./js/clock_'.$locale.'.js"></script>
         <script src="./js/select2.min.js"></script>
         <script src="./js/select2_locale_fr.js"></script>
-        <script src="./js/bandeau.js"></script>
+        <script src="./js/menu.js"></script>
         <script src="./js/functions.js"></script>'; 
     echo '</head>';
 }
@@ -157,7 +157,7 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
             echo '<div class="form-group col-sm-6">'.PHP_EOL;
             echo '    <div class="input-group">'.PHP_EOL;
             echo '      <div class="input-group-addon"><span class="glyphicon glyphicon-envelope" ></span></div>'.PHP_EOL;
-            echo '      <input class="form-control" type="email" name="benef_ext_email" value="'.$benef_ext_email.'" placeholder="'.get_vocab("email beneficiaire").'">'.PHP_EOL;
+            echo '      <input class="form-control" type="email" name="benef_ext_email" value="'.$benef_ext_email.'" placeholder="'.get_vocab("email_beneficiaire").'">'.PHP_EOL;
             echo '    </div>'.PHP_EOL;
             echo '</div>'.PHP_EOL;
         }
@@ -462,7 +462,9 @@ if (!grr_resumeSession())
 $user_name = getUserName(); // ici on devrait avoir un identifiant
 // Paramètres langage
 include "include/language.inc.php";
-//echo $locale;
+$ISO_lang_code = array("fr-fr" => "fr","en-gb" => "en", "es-es" => "es", "it-it" => "it", "de-de" => "de");
+$clock_file = 'clock_'.$ISO_lang_code[$locale].'.js';
+
 if (isset($period))
 	$end_period = $period;
 if (!isset($edit_type))
@@ -839,10 +841,10 @@ if (!isset($_COOKIE['open']))
 	header('Set-Cookie: open=true; SameSite=Lax');
 }
 echo '<!DOCTYPE html>'.PHP_EOL;
-echo '<html lang="'.$locale.'">'.PHP_EOL;
+echo '<html lang="'.$ISO_lang_code[$locale].'">'.PHP_EOL;
 // section <head>
 //echo pageHead2(Settings::get("company"),$type_session="with_session");
-pageHead(Settings::get("company"),$locale);
+pageHead(Settings::get("company"),$ISO_lang_code[$locale]);
 // section <body>
 echo "<body>";
 //echo $C;
