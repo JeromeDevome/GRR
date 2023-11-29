@@ -80,7 +80,7 @@ function pageHead($title,$locale) // $locale est la langue utilisée
         <script src="./js/clock_'.$locale.'.js"></script>
         <script src="./js/select2.min.js"></script>
         <script src="./js/select2_locale_fr.js"></script>
-        <script src="./js/bandeau.js"></script>
+        <script src="./js/menu.js"></script>
         <script src="./js/functions.js"></script>'; 
     echo '</head>';
 }
@@ -157,7 +157,7 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
             echo '<div class="form-group col-sm-6">'.PHP_EOL;
             echo '    <div class="input-group">'.PHP_EOL;
             echo '      <div class="input-group-addon"><span class="glyphicon glyphicon-envelope" ></span></div>'.PHP_EOL;
-            echo '      <input class="form-control" type="email" name="benef_ext_email" value="'.$benef_ext_email.'" placeholder="'.get_vocab("email beneficiaire").'">'.PHP_EOL;
+            echo '      <input class="form-control" type="email" name="benef_ext_email" value="'.$benef_ext_email.'" placeholder="'.get_vocab("email_beneficiaire").'">'.PHP_EOL;
             echo '    </div>'.PHP_EOL;
             echo '</div>'.PHP_EOL;
         }
