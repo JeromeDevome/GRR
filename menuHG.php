@@ -79,6 +79,15 @@ if ($_GET['pview'] != 1) // en mode prévisualisation de page imprimable, on n'a
     echo "<div id ='resource_selectorH' class='col-lg-2 col-md-3 col-xs-12'>";
     echo $selecteursH;
     echo "</div>";
+    if(Settings::get('select_date_directe') == 'y'){
+        echo "<form method='GET' action='day.php' style='text-align: left;'>";
+        jQuery_DatePicker('');
+        echo "<input type='hidden' name='area' value='$area'>";
+        echo "<button class='btn btn-default btn-sm' type='submit'>
+        <span class='glyphicon glyphicon-chevron-right'></span>
+        </button>";
+        echo "</form>";
+    }
     echo "<div id ='calendriersH' class='col-lg-8 col-md-6 col-xs-12'>";
     minicals($year, $month, $day, $area, $room, $pageActuel);
     echo "</div>";
