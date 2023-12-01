@@ -1142,7 +1142,7 @@ echo "<div class='col-sm-6 col-xs-12 form-inline'>";
 //$sql = "SELECT id FROM ".TABLE_PREFIX."_area;";
 //$res = grr_sql_query($sql);
 echo '<!-- ************* Periodic edition ***************** -->',PHP_EOL;
-$weeklist = array("unused","every week","week 1/2","week 1/3","week 1/4","week 1/5");
+$weeklist = array("unused","every_week","week_1_of_2","week_1_of_3","week_1_of_4","week_1_of_5");
 $monthlist = array("firstofmonth","secondofmonth","thirdofmonth","fouthofmonth","fiveofmonth","lastofmonth");
 if($periodiciteConfig == 'y')
 {
@@ -1171,7 +1171,7 @@ if($periodiciteConfig == 'y')
                 if ($i == '2') // semaine
 				{
 					echo '&nbsp;</label><select class="form-control" name="rep_num_weeks" size="1" onfocus="check_2()" onclick="check_2()">',PHP_EOL;
-					echo '<option value="1" >',get_vocab("every week"),'</option>',PHP_EOL;
+					echo '<option value="1" >',get_vocab("every_week"),'</option>',PHP_EOL;
 					for ($weekit = 2; $weekit < 6; $weekit++)
 					{
 						echo '<option value="',$weekit,'"';
