@@ -169,7 +169,8 @@ $sql = "SELECT ".TABLE_PREFIX."_entry.name,
 ".TABLE_PREFIX."_entry.clef,
 ".TABLE_PREFIX."_entry.courrier,
 ".TABLE_PREFIX."_room.active_cle,
-".TABLE_PREFIX."_entry.nbparticipantmax
+".TABLE_PREFIX."_entry.nbparticipantmax,
+".TABLE_PREFIX."_room.active_participant
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
 WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
 AND ".TABLE_PREFIX."_room.area_id = ".TABLE_PREFIX."_area.id
@@ -242,6 +243,7 @@ $keys						= $row[21];
 $courrier					= $row[22];
 $active_cle					= $row[23];
 $nbParticipantMax			= $row[24];
+$quiPeutParticiper          = $row[25];
 $rep_type 					= 0;
 $verif_display_email 		= verif_display_email($userName, $room_id);
 if ($verif_display_email)
@@ -257,22 +259,22 @@ if(isset($_GET["reg_part"]))
         $reg_participant = $_GET['reg_participant'];
     // tester s'il est possible d'inscrire tout ce monde !
     $reg_users = array(); // participants déjà inscrits
-    $resp = grr_sql_query("SELECT participant FROM ".TABLE_PREFIX."_participants WHERE idresa=$id");
+    $resp = grr_sql_query("SELECT beneficiaire FROM ".TABLE_PREFIX."_participants WHERE idresa=$id");
     if (!$resp)
         fatal_error(0, "<p>".grr_sql_error());
     foreach($resp as $rowp)
-        $reg_users[] = $rowp['participant'];
+        $reg_users[] = $rowp['beneficiaire'];
     if(count($reg_participant)<=$nbParticipantMax){
         $ex_users = array_diff($reg_users, $reg_participant); // à désincrire
         foreach($ex_users as $u){
-            $sql = "DELETE FROM ".TABLE_PREFIX."_participants WHERE idresa='$id' AND participant='$u' ";
+            $sql = "DELETE FROM ".TABLE_PREFIX."_participants WHERE idresa='$id' AND beneficiaire='$u' ";
             if(grr_sql_command($sql) < 0)
                 fatal_error(1, $sql."<p>" . grr_sql_error());
         }
         $new_users = array_diff($reg_participant, $reg_users); // à inscrire, ne sont pas inscrits
         foreach ($new_users as $user)
         {
-            $sql = "INSERT INTO ".TABLE_PREFIX."_participants (idresa, participant) values ('$id','$user')";
+            $sql = "INSERT INTO ".TABLE_PREFIX."_participants (idresa, beneficiaire) values ('$id','$user')";
             if (grr_sql_command($sql) < 0)
                 fatal_error(1, "<p>" . grr_sql_error());
             else
@@ -290,7 +292,7 @@ if($nbParticipantMax > 0){
     $listeParticipants = "";
 	$reg_users = array(); // peut-être différent du précédent si un formulaire a été traité
 	// Compte nb de participants actuel
-	$resp = grr_sql_query("SELECT participant FROM ".TABLE_PREFIX."_participants WHERE idresa=$id");
+	$resp = grr_sql_query("SELECT beneficiaire FROM ".TABLE_PREFIX."_participants WHERE idresa=$id");
     if (!$resp)
         fatal_error(0, grr_sql_error());
 	$nbParticipantInscrit = grr_sql_count($resp);
@@ -299,10 +301,10 @@ if($nbParticipantMax > 0){
 	{
 		foreach($resp as $rowp)
 		{
-			if( $rowp['participant'] == $userName)
+			if( $rowp['beneficiaire'] == $userName)
 				$userParticipe = true;
-			$listeParticipants .= affiche_nom_prenom_email($rowp['participant'], "", $option_affiche_nom_prenom_email)."<br />";
-            $reg_users[] = $rowp['participant'];
+			$listeParticipants .= affiche_nom_prenom_email($rowp['beneficiaire'], "", $option_affiche_nom_prenom_email)."<br />";
+            $reg_users[] = $rowp['beneficiaire'];
 		}
 	}
 	grr_sql_free($resp);
@@ -606,7 +608,7 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
     echo "<h4>".get_vocab("participants").get_vocab("deux_points")."</h4>";
     if(!$userParticipe)
     {
-        if( ($nbParticipantInscrit < $nbParticipantMax) && (verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods)) || (!(verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")) )
+        if( ($nbParticipantInscrit < $nbParticipantMax) && (verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods)) || !(verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods)) && (authGetUserLevel($userName, $room_id) >= $quiPeutParticiper) )
         {
             $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
             $message_confirmation = str_replace("'", "\\'", get_vocab("participant_confirm_validation"));
@@ -614,7 +616,7 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
         }
     } 
     else{
-        if( verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods) || (!(verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")))
+        if( verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods) || !(verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods)) && (authGetUserLevel($userName, $room_id) >= $quiPeutParticiper) )
         {
             $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
             $message_confirmation = str_replace("'", "\\'", get_vocab("participant_confirm_annulation"));

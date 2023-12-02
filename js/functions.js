@@ -560,3 +560,14 @@ function menuHaut(){
 function lienPDF(id) {
     var myWindow = window.open("app.php?p=pdfgenerator&id="+id+"", "_blank", "width=960");
 }
+/*
+ * Fonction faisant basculer l'affichage d'un div de display:inline-block à display:none
+ */
+function toggle_visibility(id) {
+	var e = document.getElementById(id);
+	if(e.style.display == 'none')
+	   e.style.display = 'inline-block';
+	else
+	   e.style.display = 'none';
+ }
+ 
