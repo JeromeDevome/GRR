@@ -369,7 +369,7 @@ function contenu_cellule($options, $ofl, $vue, $resa, $heures)
 		$affichage .= htmlspecialchars($resa[18],ENT_NOQUOTES)."<br>";
     // nombre de participants
     if (($options["participants"]) && ($resa[19] != 0)){
-        $inscrits = grr_sql_query1("SELECT COUNT(`participant`) FROM `grr_participants` WHERE `idresa` = ".$resa[2]);
+        $inscrits = grr_sql_query1("SELECT COUNT(`beneficiaire`) FROM ".TABLE_PREFIX."_participants WHERE idresa = ".$resa[2]);
         if ($inscrits >= 0)
             $affichage .= get_vocab('participant_inscrit').get_vocab('deux_points').$inscrits." / ".htmlspecialchars($resa[19],ENT_NOQUOTES)."<br>";
     }
@@ -446,7 +446,7 @@ function contenu_popup($options, $vue, $resa, $heures)
 		$affichage .= htmlspecialchars($resa[18],ENT_NOQUOTES)."\n";
     // nombre de participants
     if (($options["participants"]) && ($resa[19] != 0)){
-        $inscrits = grr_sql_query1("SELECT COUNT(`participant`) FROM `grr_participants` WHERE `idresa` = ".$resa[2]);
+		$inscrits = grr_sql_query1("SELECT COUNT(`beneficiaire`) FROM ".TABLE_PREFIX."_participants WHERE idresa = ".$resa[2]);
         if ($inscrits >= 0)
             $affichage .= get_vocab('participant_inscrit').get_vocab('deux_points').$inscrits." / ".htmlspecialchars($resa[19],ENT_NOQUOTES)."\n";
     }
