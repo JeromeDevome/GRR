@@ -323,8 +323,11 @@ if (isset($_GET["is_posted"]))
 					$sql .=  grr_sql_syntax_caseless_contains("e.name", $texte[$k], $type_recherche[$k]);
 				if ($champ[$k] == "descr")
 					$sql .=  grr_sql_syntax_caseless_contains("e.description", $texte[$k], $type_recherche[$k]);
-				if ($champ[$k] == "login")
-					$sql .=  grr_sql_syntax_caseless_contains("e.beneficiaire", $texte[$k], $type_recherche[$k]);
+				if ($champ[$k] == "login"){
+					$sql .=  grr_sql_syntax_caseless_contains("e.beneficiaire", $texte[$k], $type_recherche[$k]);  
+					$sql .= ' OR ';  
+					$sql .=  grr_sql_syntax_caseless_contains("e.beneficiaire_ext", $texte[$k], $type_recherche[$k]);  
+				} 
 				$overload_fields = mrbsOverloadGetFieldslist("");
 				foreach ($overload_fields as $fieldname=>$fieldtype)
 				{
