@@ -823,7 +823,7 @@ if ($fin_session == 'n'){
                 echo "<br /><br /><input type=\"checkbox\" name=\"envoyer_mail\" value=\"y\" ";
                 if ($mail_exist == "")
                     echo " disabled ";
-                echo " />".get_vocab("envoyer maintenant mail retard");
+                echo " />".get_vocab("envoyer_maintenant_mail_retard");
                 echo "<input type=\"hidden\" name=\"mail_exist\" value=\"".$mail_exist."\" />";
             }
             echo "</fieldset>\n";
