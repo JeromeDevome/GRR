@@ -1,6 +1,24 @@
 -----
 --
 -----
+Version 4.2.2 - 03/12/2023 Généré par @JeromeDevome
+
+[Ajout] Sélection date directe dans le bandeau du haut - 89c56b5c - @JeromeDevome, @shalut
+[Correction] Désactivation demande création de compte (Pb 4.2.0) - 78f667ca - @JeromeDevome
+[Correction] Enregistrement page CGU (Pb 4.2.0) - edf48d0d - @JeromeDevome
+[Correction] Maj version 3.4.3 - fcd3681b - @ynaessens
+[Correction] Email spécifique dans les champs additionnel - 3fe39a01 - @JeromeDevome
+[Correction] Lien JS dans l'édition d'entrée (Pb 4.2.1) - ba5d161c - @JeromeDevome, @Aurely9n, @ynaessens
+[Correction] Divers erreur de vocab - ba5d161c 9f963c5b 5cbfc40a - @JeromeDevome
+[Correction] Date et heure dans le bandeau - ba5d161c - @JeromeDevome
+[Correction] Fonction participation - 6497f9ad -  @JeromeDevome
+[Modification] Affichage du bénéficiare ext. dans Recherche & Stat - fbd9796b - @JeromeDevome, @Aurely9n
+[Modification] Mise à jour des dépendances PHP - 62e045d9 - @JeromeDevome
+
+
+-----
+--
+-----
 Version 4.2.1 - 26/11/2023 Généré par @JeromeDevome
 
 [Ajout] Prévisualisation des couleurs dans l'administration des types de réservations @JeromeDevome
