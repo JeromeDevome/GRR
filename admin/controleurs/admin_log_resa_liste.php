@@ -3,7 +3,7 @@
  * admin_log_resa_liste.php
  * Interface de gestion des connexions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-19 15:47$
+ * Dernière modification : $Date: 2023-12-03 17:48$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -49,7 +49,7 @@ if ($res)
 {
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-		$logsMail[] = array('idresa' => $row[0], 'debut' => date("d-m-Y H:i:s", $row[1]), 'fin' => date("d-m-Y H:i:s", $row[2]), 'titre' => $row[3], 'sup' => $row[4]);
+		$logsMail[] = array('idresa' => $row[0], 'debut' => date("d-m-Y H:i:s", $row[1]), 'fin' => date("d-m-Y H:i:s", $row[2]), 'debutts' => $row[1], 'fints' => $row[2], 'titre' => $row[3], 'sup' => $row[4]);
 	}
 }
 
