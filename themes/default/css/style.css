@@ -100,6 +100,7 @@ td.cell_month_o{background-color:#ccc}
 .jour td, .mois td{vertical-align:top;}
 th.cell_hours{background-color:gray;color:white;}
 th.jour_sem{width:10%;background-color:gray;color:white;}
+th.avertissement{background-color:#ff8585 !important;text-align:center;}
 .jour_sem a{color:white;}
 .jour_sem a:hover, .cell_hours a:hover, .ferie a:hover, .vacance a:hover{color:#999;}
 .vacance, .vacance a{background-color:rgb(46,204,113) !important;color:black !important;}
