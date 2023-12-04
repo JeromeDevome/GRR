@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2023-10-23
+# Last modification : 2023-12-04
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1007,7 +1007,7 @@ $vocab['viewday'] = "View day";
 $vocab['viewmonth'] = "View month";
 $vocab['viewweek'] = "View week";
 $vocab['viewyear'] = "Several months";
-$vocab['visu_fiche_description0'] = "Whoever going on webthe site even not connected";
+$vocab['visu_fiche_description0'] = "Whoever going on the website even not connected";
 $vocab['visu_fiche_description1'] = "It is necessary to be connected, even like a simple visitor.";
 $vocab['visu_fiche_description2'] = "It is necessary to be connected and to have a \"user\" status";
 $vocab['visu_fiche_description3'] = "It is necessary to be connected and to be at least the manager of one resource";
