@@ -80,7 +80,7 @@ if ($_GET['type'] == "domaine")
 	if (($id_site!=-1) || ($use_site=='n')){
 		$resultat = grr_sql_query($sql);
 	}
-	$display_liste = '<table border="0"><tr><td>'.get_vocab('default_area').'</td><td><select class="form-control" id="id_area" name="id_area" onchange="modifier_liste_ressources(1)"><option value="-1">'.get_vocab('choose_an_area').'</option>'."\n";
+	$display_liste = '<div class="form-group row col-sm-12"><label class="col col-sm-6" for="id_area">'.get_vocab('default_area').'</label><div class="col col-sm-5"><select class="form-control" id="id_area" name="id_area" onchange="modifier_liste_ressources(1)"><option value="-1">'.get_vocab('choose_an_area').'</option>'."\n";
 	if (($id_site!=-1) || ($use_site=='n')){
 
 		for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); $enr++)
@@ -97,10 +97,8 @@ if ($_GET['type'] == "domaine")
 			}
 		}
 	}
-	$display_liste .= '            </select>';
+	$display_liste .= '            </select></div></div>';
 	$id_area = 5;
-	$display_liste .=  '</td>
-</tr></table>'."\n";
 }
 if ($_GET['type'] == "ressource")
 {
@@ -114,7 +112,7 @@ if ($_GET['type'] == "ressource")
 	if ($_GET['action'] == 2)
 	{
 	//on vide la liste des ressources
-		$display_liste = '<table border="0"><tr><td>'.get_vocab('default_room').'</td><td><select class="form-control" name="id_room"><option value="-1">'.get_vocab('default_room_all').'</option></select></td></tr></table>'."\n";
+		$display_liste = '<div class="form-group row col-sm-12"><label class="col col-sm-6" for="id_room">'.get_vocab('default_room').'</label><div class="col col-sm-5"><select class="form-control" name="id_room"><option value="-1">'.get_vocab('default_room_all').'</option></select></div></div>'."\n";
 	}
 	else
 	{
@@ -136,7 +134,7 @@ if ($_GET['type'] == "ressource")
 		}
 		$sql .= " ORDER BY order_display,room_name";
 		$resultat = grr_sql_query($sql);
-		$display_liste = '<table border="0"><tr><td>'.get_vocab('default_room').'</td><td><select class="form-control" name="id_room"><option value="-1"';
+		$display_liste = '<div class="form-group row col-sm-12"><label class="col col-sm-6" for="id_room">'.get_vocab('default_room').'</label><div class="col col-sm-5"><select class="form-control" name="id_room"><option value="-1"';
 		if ($default_room == -1)
 			$display_liste .= ' selected="selected" ';
 		$display_liste .= ' >'.get_vocab('default_room_all').'</option>'."\n".
@@ -160,7 +158,7 @@ if ($_GET['type'] == "ressource")
 			$display_liste .= '>'.htmlspecialchars($row[1]).' '.get_vocab('display_week');
 			$display_liste .= '</option>'."\n";
 		}
-		$display_liste .= '</select></td></tr></table>'."\n";
+		$display_liste .= '</select></div></div>'."\n";
 	}
 }
 if ($unicode_encoding)
