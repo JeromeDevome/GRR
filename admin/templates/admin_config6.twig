@@ -43,15 +43,22 @@
 						<section id="paramdefaut">
 							<h4 class="page-header">{{ trad.default_parameter_values_title }}</h4>
 							<p>{{ trad.explain_default_parameter }}</p>
-							<h5><b>{{ trad.explain_area_list_format }} :</b></h5>
-							<input type="radio" name="area_list_format" value="list" id="label_1a" {% if settings.area_list_format == 'list' %} checked {% endif %} /> <label for="label_1a">{{ trad.liste_area_list_format }}</label><br>
-							<input type="radio" name="area_list_format" value="select" id="label_1b" {% if settings.area_list_format == 'select' %} checked {% endif %} /> <label for="label_1b">{{ trad.select_area_list_format }}</label><br>
-							<input type="radio" name="area_list_format" value="item" id="label_1c" {% if settings.area_list_format == 'item' %} checked {% endif %} /> <label for="label_1c">{{ trad.item_area_list_format }}</label><br>
+
+							<!-- Type d'affichage des ressources -->
+							<div class="form-group row col-sm-12">
+								<label class="col col-sm-6" for="area_list_format">{{ trad.explain_area_list_format }}</label>
+								<div class="col col-sm-5">
+									<select class="form-control" name="area_list_format">
+										<option value="list" {% if settings.area_list_format == 'list' %} selected {% endif %}>{{ trad.liste_area_list_format }}</option>
+										<option value="select" {% if settings.area_list_format == 'select' %} selected {% endif %}>{{ trad.select_area_list_format }}</option>
+										<option value="item" {% if settings.area_list_format == 'item' %} selected {% endif %}>{{ trad.item_area_list_format }}</option>
+									</select>
+								</div>
+								<div class="col col-sm-1"><button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="Confirmer la synchronisation du type d'affichage avec tout les utilisateurs ?" data-idsynchro="3"><i class="icon fa fa-sync"></i></button></div>
+							</div>
 
 							<hr>
-
-							<h5><b>{{ trad.explain_default_area_and_room }} :</b></h5>
-
+							<!-- Site / Domaine et ressource par défaut -->
 							{% if settings.module_multisite == 'Oui' %}
 								<div class="form-group row col-sm-12">
 									<label class="col col-sm-6" for="default_css">{{ trad.default_site }}</label>
@@ -67,9 +74,9 @@
 							{% endif %}
 							<div id="div_liste_domaines"></div>
 							<div id="div_liste_ressources"></div>
-							<!--<input class="form-control" type="hidden" id="id_area" name="id_area" value="{{ settings.default_area }}" />-->
 
 							<hr>
+							<!-- Style -->
 							<div class="form-group row col-sm-12">
 								<label class="col col-sm-6" for="default_css">{{ trad.explain_css }}</label>
 								<div class="col col-sm-5">
@@ -80,6 +87,7 @@
 								<div class="col col-sm-1"><button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="Confirmer la synchronisation du thème avec tout les utilisateurs ?" data-idsynchro="1"><i class="icon fa fa-sync"></i></button></div>
 							</div>
 							<hr>
+							<!--Langue  -->
 							<div class="form-group row col-sm-12">
 								<label class="col col-sm-6" for="default_language">{{ trad.choose_language }}</label>
 								<div class="col col-sm-5">
