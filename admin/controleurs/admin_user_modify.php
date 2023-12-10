@@ -439,6 +439,7 @@ if ($res)
 
 
 /* Test des privilèges*/
+$dAdministrateurDomaine = "";
 	
 	if ((isset($user_login)) && ($user_login != ''))
 	{
@@ -518,7 +519,7 @@ if ($res)
 				if (($is_admin == 'y') || ($is_restreint == 'y') || ($is_gestionnaire != '') || ($is_mail != ''))
 				{
 					$a_privileges = 'y';
-					$dAdministrateurDomaine = "<li>".get_vocab("match_area")." ".$row_area[1];
+					$dAdministrateurDomaine .= "<li>".get_vocab("match_area")." ".$row_area[1];
 					if ($row_area[2] == 'r')
 						$dAdministrateurDomaine .= " (".$vocab["restricted"].")";
 
