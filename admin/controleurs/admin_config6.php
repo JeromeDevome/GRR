@@ -39,7 +39,13 @@ if (isset($_GET['sync'])) {
 			fatal_error(0, grr_sql_error());
 		else
             $d['enregistrement'] = "Synchronisation terminée !<br />";
-	}
+    } elseif ($_GET['sync'] == 3) {
+        $sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET default_list_type='".Settings::get('area_list_format')."'";
+        if (grr_sql_command($sql) < 0)
+            fatal_error(0, grr_sql_error());
+        else
+            $d['enregistrement'] = "Synchronisation terminée !<br />";
+    }
 }
 
 if (isset($_POST['show_holidays'])) {
