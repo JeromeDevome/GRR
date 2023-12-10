@@ -23,6 +23,7 @@ check_access(6, $back);
 
 $dateMax = isset($_POST["1cleanlog"]) ? $_POST["1cleanlog"] : NULL;
 $numForm = isset($_POST["numform"]) ? intval(clean_input($_POST["numform"])) : 0;
+$numAction = isset($_POST["numaction"]) ? intval(clean_input($_POST["numaction"])) : 0;
 
 $logconnexion1 = isset($_POST["1logconnexion"]) ? (($_POST["1logconnexion"])) : NULL;
 $logmail1 = isset($_POST["1logmail"]) ? (($_POST["1logmail"])) : NULL;
@@ -41,10 +42,9 @@ $uservisiteur2 = isset($_POST["2uservisiteur"]) ? (($_POST["2uservisiteur"])) : 
 $userusager2 = isset($_POST["2userusager"]) ? (($_POST["2userusager"])) : NULL;
 
 $msg = "";
+$trad = $vocab;
+
 /* Enregistrement de la page */
-
-
-/**/
 
 
 // Si pas de problème, message de confirmation
@@ -131,8 +131,8 @@ elseif ($numForm == 2) {
         {
             for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
             {
-                $del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_entry WHERE end_time = ".$row[0]);
-                $del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE id ".$row[0]);
+                $del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_entry WHERE id = ".$row[0]);
+                $del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE id = ".$row[0]);
                 $del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_log_resa WHERE idresa = ".$row[0]);
                 if($row[1] != 0)
                     $del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_repeat WHERE id = ".$row[1]);
@@ -160,6 +160,7 @@ elseif ($numForm == 2) {
                 grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE login='$row[0]'");
                 grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='$row[0]'");
                 grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='$row[0]'");
+                grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_userbook_room WHERE login='$row[0]'");
             }
         }
     }
@@ -177,10 +178,15 @@ elseif ($numForm == 2) {
                 grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE login='$row[0]'");
                 grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='$row[0]'");
                 grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='$row[0]'");
+                grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_userbook_room WHERE login='$row[0]'");
             }
         }
     }
 
+}
+
+if ($numAction == 1) {
+    grr_sql_query("UPDATE ".TABLE_PREFIX."_entry SET moderate = 2 WHERE moderate = 1");
 }
 
 $j = 0;
@@ -194,8 +200,6 @@ while ($j < count($liste_tables))
 }
 
 
-get_vocab_admin('save');
-get_vocab_admin('message_records');
 
 
 

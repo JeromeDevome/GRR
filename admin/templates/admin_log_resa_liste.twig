@@ -41,41 +41,6 @@
 				</div>
 			</div>
 
-
-			<div class="box box-danger">
-				<div class="box-header">
-					<h3 class="box-title">{{trad.cleaning_log}}</h3>
-				</div>
-				<!-- /.box-header -->
-				<div class="box-body">
-					<p>{{ trad.logs_number }} <b>{{ trad.dNombreLog }}</b></p>
-					<p>{{ trad.older_date_log }} <b>{{ trad.dDatePlusAncienne }}</b></p>
-					<br>
-					<p><b>{{ trad.erase_log }}</b></p>
-
-					<form action="?p=admin_log_resa_liste" method="post">
-
-						<div class="form-group row">
-							<label>{{ trad.delete_up_to }} :</label>
-
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-								</div>
-								<input type="text" name="cleanlog" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric">
-							</div>
-							<!-- /.input group -->
-
-						</div>
-              
-						<div style="text-align:center;">
-							<input class="btn btn-danger" type="submit" value="{{ trad.del }}" />
-						</div>
-					</form>
-				</div>
-			</div>
-
-
 		</div>
 	</div>
 {% endblock %}
@@ -93,13 +58,7 @@
 	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-	<script src="../vendor/almasaeed2010/adminlte/plugins/inputmask/jquery.inputmask.min.js"></script>
 	<script>
-		$(function(){
-			$('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-			$('[data-mask]').inputmask()
-		})
-
 		// Table
 		$("#tablelog").DataTable({
      		 "responsive": true, "lengthChange": false, "autoWidth": false,

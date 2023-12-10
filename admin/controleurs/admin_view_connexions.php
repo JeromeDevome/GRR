@@ -20,13 +20,6 @@ $grr_script_name = "admin_view_connexions.php";
 
 check_access(6, $back);
 
-// Action : Suppression des logs
-if (isset($_POST['cleanlog']))
-{
-	$dateMax = date( 'Y-m-d', strtotime( $_POST['cleanlog'] ) );
-	$sql = "DELETE FROM ".TABLE_PREFIX."_log WHERE START < '".$dateMax."' and END < now()";
-	$res = grr_sql_query($sql);
-}
 
 // Action : Déconnecter un utilisateur
 if (isset($_GET['user_login']))
@@ -93,30 +86,23 @@ if ($res)
 	}
 }
 
-// Afficher : Sup logs
-get_vocab_admin("cleaning_log");
-get_vocab_admin("logs_number");
-get_vocab_admin("older_date_log");
-get_vocab_admin("erase_log");
-get_vocab_admin("delete_up_to");
-get_vocab_admin("del");
 
 $sql = "select START from ".TABLE_PREFIX."_log order by END";
 $res = grr_sql_query($sql);
 
 if($res) {
-	$trad['dNombreLog'] = grr_sql_count($res);
+	$d['NombreLog'] = grr_sql_count($res);
 	$row = grr_sql_row($res, 0);
 	$annee = substr($row[0],0,4);
 	$mois =  substr($row[0],5,2);
 	$jour =  substr($row[0],8,2);
-	$trad['dDatePlusAncienne'] = $jour."/".$mois."/".$annee;
+	$d['DatePlusAncienne'] = $jour."/".$mois."/".$annee;
 } else{
-	$trad['dNombreLog'] = 0;
-	$trad['dDatePlusAncienne'] = "-";
+	$d['NombreLog'] = 0;
+	$d['DatePlusAncienne'] = "-";
 }
 
-$trad['dTitreDateLog'] = get_vocab("log").$trad['dDatePlusAncienne'];
+$d['TitreDateLog'] = get_vocab("log").$d['DatePlusAncienne'];
 
 echo $twig->render('admin_view_connexions.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateursconnecte' => $utilisateurConnecte, 'logsconnexion' => $logsConnexion ));
 ?>

@@ -20,15 +20,6 @@ $grr_script_name = "admin_view_emails.php";
 
 check_access(6, $back);
 
-// Action : Suppression des logs
-if (isset($_POST['cleanlog']))
-{
-	
-	$dateMax = strtotime( $_POST['cleanlog'] );
-	$sql = "DELETE FROM ".TABLE_PREFIX."_log_mail WHERE date < '".$dateMax."' and date < now()";
-	$res = grr_sql_query($sql);
-}
-
 get_vocab_admin('admin_view_emails');
 
 // Afficher : Logs
@@ -53,30 +44,23 @@ if ($res)
 	}
 }
 
-// Afficher : Sup logs
-get_vocab_admin("cleaning_log");
-get_vocab_admin("logs_number");
-get_vocab_admin("older_date_log");
-get_vocab_admin("erase_log");
-get_vocab_admin("delete_up_to");
-get_vocab_admin("del");
 
 $sql = "select date from ".TABLE_PREFIX."_log_mail order by date";
 $res = grr_sql_query($sql);
 if($res) {
-	$trad['dNombreLog'] = grr_sql_count($res);
-    if ($trad['dNombreLog']>0){
+	$d['NombreLog'] = grr_sql_count($res);
+    if ($d['NombreLog']>0){
         $row = grr_sql_row($res, 0);
-        $trad['dDatePlusAncienne'] = date("d-m-Y", $row[0]);
+        $d['DatePlusAncienne'] = date("d-m-Y", $row[0]);
     }
 	else 
-        $trad['dDatePlusAncienne'] = "-";
+        $d['DatePlusAncienne'] = "-";
 } else{
-	$trad['dNombreLog'] = 0;
-	$trad['dDatePlusAncienne'] = "-";
+	$d['NombreLog'] = 0;
+	$d['DatePlusAncienne'] = "-";
 }
 
-$trad['dTitreDateLog'] = get_vocab("log_mail").$trad['dDatePlusAncienne'];
+$d['TitreDateLog'] = get_vocab("log_mail").$d['DatePlusAncienne'];
 
 echo $twig->render('admin_view_emails.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'logsmail' => $logsMail ));
 ?>
