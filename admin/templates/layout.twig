@@ -38,18 +38,18 @@
         <a href="admin.php?p=admin_accueil" class="nav-link">{{ trad.admin }}</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{ trad.dLienCompte |raw }}" class="nav-link">{{ trad.manage_my_account }}</a>
+        <a href="{{ d.lienCompte |raw }}" class="nav-link">{{ trad.manage_my_account }}</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{ trad.dLienRetour }}" class="nav-link">{{ trad.retour_planning }}</a>
+        <a href="{{ d.lienRetour }}" class="nav-link">{{ trad.retour_planning }}</a>
       </li>
     </ul>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto"> 
       <li class="nav-item">
-        <a class="nav-link" href="{{ trad.dLienCompte |raw }}">
-          {{ trad.dNomAffichage }}
+        <a class="nav-link" href="{{ d.lienCompte |raw }}">
+          {{ d.nomAffichage }}
         </a>
       </li>
       <li class="nav-item">

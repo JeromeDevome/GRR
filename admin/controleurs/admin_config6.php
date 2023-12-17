@@ -262,10 +262,10 @@ get_vocab_admin('select_area_list_format');
 get_vocab_admin('item_area_list_format');
 
 if (Settings::get('module_multisite') == 'Oui') {
-	$trad['dUse_site'] = 'y';
+	$d['use_site'] = 'y';
 	$trad['explain_default_area_and_room'] = get_vocab('explain_default_area_and_room_and_site');
 } else {
-	$trad['dUse_site'] = 'n';
+	$d['use_site'] = 'n';
 	get_vocab_admin('explain_default_area_and_room');
 }
 
@@ -366,44 +366,44 @@ if (Settings::get('module_multisite') == 'Oui') {
 	ORDER BY id ASC';
     $resultat = grr_sql_query($sql);
 
-	$trad['dOptionSite'] = "";
+	$d['optionSite'] = "";
     for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); ++$enr) {
-		$trad['dOptionSite'] .= '<option value="'.$row[0].'"';
+		$trdad['optionSite'] .= '<option value="'.$row[0].'"';
         if (Settings::get('default_site') == $row[0]) {
-            $trad['dOptionSite'] .= ' selected="selected" ';
+            $d['optionSite'] .= ' selected="selected" ';
         }
-        $trad['dOptionSite'] .= '>'.htmlspecialchars($row[2]);
-        $trad['dOptionSite'] .= '</option>'."\n";
+        $d['optionSite'] .= '>'.htmlspecialchars($row[2]);
+        $d['optionSite'] .= '</option>'."\n";
     }
 }
 
 // Choix de la feuille de style
 $i = 0;
-$trad['dOptionTheme'] = "";
+$d['optionTheme'] = "";
 while ($i < count($liste_themes)) {
-	$trad['dOptionTheme'] .= "<option value='".$liste_themes[$i]."'";
+	$d['optionTheme'] .= "<option value='".$liste_themes[$i]."'";
 	if (Settings::get('default_css') == $liste_themes[$i]) {
-		$trad['dOptionTheme'] .= ' selected="selected"';
+		$d['optionTheme'] .= ' selected="selected"';
 	}
-	$trad['dOptionTheme'] .= ' >'.encode_message_utf8($liste_name_themes[$i]).'</option>';
+	$d['optionTheme'] .= ' >'.encode_message_utf8($liste_name_themes[$i]).'</option>';
 	++$i;
 }
 
 // Choix de la langue
 $i = 0;
-$trad['dOptionLangue'] = "";
+$d['optionLangue'] = "";
 while ($i < count($liste_language)) {
-    $trad['dOptionLangue'] .= "<option value='".$liste_language[$i]."'";
+    $d['optionLangue'] .= "<option value='".$liste_language[$i]."'";
     if (Settings::get('default_language') == $liste_language[$i]) {
-        $trad['dOptionLangue'] .= ' selected="selected"';
+        $d['optionLangue'] .= ' selected="selected"';
     }
-    $trad['dOptionLangue'] .= ' >'.encode_message_utf8($liste_name_language[$i]).'</option>'.PHP_EOL;
+    $d['optionLangue'] .= ' >'.encode_message_utf8($liste_name_language[$i]).'</option>'.PHP_EOL;
     ++$i;
 }
 
 // Choix de la zone de vacances scolaires (France), uniquement si l'affichage des vacances et fériés est activé
 if (Settings::get('show_holidays') == 'Oui'){
-	$trad['dOptionVacances'] = "";
+	$d['optionVacances'] = "";
     $vacances = simplexml_load_file('../vacances.xml');
     $libelle = $vacances->academies->children();
     $acad = array();
@@ -415,11 +415,11 @@ if (Settings::get('show_holidays') == 'Oui'){
     sort($acad);
 
     foreach ($acad as $key => $value) {
-        $trad['dOptionVacances'] .= '<option value="'.$value.'"';
+        $d['optionVacances'] .= '<option value="'.$value.'"';
         if (Settings::get('holidays_zone') == $value) {
-            $trad['dOptionVacances'] .= ' selected';
+            $d['optionVacances'] .= ' selected';
         }
-        $trad['dOptionVacances'] .= '>'.$value.'</option>'.PHP_EOL;
+        $d['optionVacances'] .= '>'.$value.'</option>'.PHP_EOL;
     }
 
 }

@@ -65,7 +65,7 @@
 									<div class="col col-sm-6">
 										<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
 											<option value="-1">{{ trad.choose_a_site }}</option>
-											{{ trad.dOptionSite | raw }}
+											{{ trad.optionSite | raw }}
 										</select>
 									</div>
 								</div>
@@ -81,7 +81,7 @@
 								<label class="col col-sm-6" for="default_css">{{ trad.explain_css }}</label>
 								<div class="col col-sm-5">
 									<select class="form-control" name="default_css">
-										{{ trad.dOptionTheme | raw }}
+										{{ d.optionTheme | raw }}
 									</select>
 								</div>
 								<div class="col col-sm-1"><button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="Confirmer la synchronisation du thème avec tout les utilisateurs ?" data-idsynchro="1"><i class="icon fa fa-sync"></i></button></div>
@@ -92,7 +92,7 @@
 								<label class="col col-sm-6" for="default_language">{{ trad.choose_language }}</label>
 								<div class="col col-sm-5">
 									<select class="form-control" name="default_language">
-										{{ trad.dOptionLangue | raw }}
+										{{ d.optionLangue | raw }}
 									</select>
 								</div>
 								<div class="col col-sm-1"><button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="Confirmer la synchronisation de la langue avec tout les utilisateurs ?" data-idsynchro="2"><i class="icon fa fa-sync"></i></button></div>
@@ -261,7 +261,7 @@
 										<td>
 											<select class="form-control" name="holidays_zone">
 												<option>{{ trad.holidays_zone_msg }}</option>
-												{{ trad.dOptionVacances | raw }}
+												{{ d.otionVacances | raw }}
 											</select>
 										</td>
 									</tr>
@@ -335,8 +335,8 @@
 				data: {
 					id_site: $('#id_site').val(),
 					default_area : '{{ settings.default_area }}',
-					session_login:'{{ trad.dNomUtilisateur }}',
-					use_site:'{{ trad.dUse_site }}',
+					session_login:'{{ d.nomUtilisateur }}',
+					use_site:'{{ d.use_site }}',
 					type:'domaine',
 				},
 				success: function(returnData){

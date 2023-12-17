@@ -55,10 +55,10 @@ get_vocab_admin('admin_view_connexions');
 
 $d = array();
 $d['version'] = $version_grr;
-$trad['dNomAffichage'] = $nomAffichage;
-$trad['dLienRetour'] = $lienRetour;
-$trad['dLienCompte'] = $lienCompte;
-$trad['dNomUtilisateur'] = getUserName();
+$d['nomAffichage'] = $nomAffichage;
+$d['lienRetour'] = $lienRetour;
+$d['lienCompte'] = $lienCompte;
+$d['nomUtilisateur'] = getUserName();
 $AllSettings = Settings::getAll();
 
 // Template Twig

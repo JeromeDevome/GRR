@@ -17,13 +17,13 @@
             </div>
 			<form class="form-horizontal" method="GET">
 				<input type="hidden" name ="p" value="admin_user_modify" />
-				<input type="hidden" name ="display" value="{{ trad.dDisplay }}" />
+				<input type="hidden" name ="display" value="{{ d.display }}" />
 				<input type="hidden" name="valid" value="yes" />
 
 				<div class="box-body">
 					<p>{{ trad.required }}</p>
 
-					{% if trad.dConnexionExterne == 1 %}
+					{% if d.connexionExterne == 1 %}
 						<div class="form-group">
 							<label class="col col-sm-4" for="type_authentification">{{ trad.authentification }}</label>
 							<div class="col col-sm-8">
@@ -58,7 +58,7 @@
 							<select name="reg_statut" id="select_auth_mode" class="form-control" size="1">
 								<option value="visiteur" {% if utilisateur.statut == 'visiteur' %} selected {% endif %}>{{ trad.statut_visitor }}</option>
 								<option value="utilisateur" {% if utilisateur.statut == 'utilisateur' %} selected {% endif %}>{{ trad.statut_user }}</option>
-								{% if trad.dEstAdministrateur ==  1 %}
+								{% if d.estAdministrateur ==  1 %}
 									<option value="gestionnaire_utilisateur" {% if utilisateur.statut == 'gestionnaire_utilisateur' %} selected {% endif %}>{{ trad.statut_user_administrator }}</option>
 									<option value="administrateur" {% if utilisateur.statut == 'administrateur' %} selected {% endif %}>{{ trad.statut_administrator }}</option>
 								{% endif %}

@@ -109,7 +109,7 @@ get_vocab_admin("cancel");
 get_vocab_admin("delete");
 
 if (authGetUserLevel(getUserName(),-1) >= 6)
-	$trad['dEstAdministrateur'] = 1;
+	$d['estAdministrateur'] = 1;
 
 $display == 'tous';
 

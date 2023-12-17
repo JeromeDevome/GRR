@@ -72,7 +72,7 @@
 					<a href="?p=admin_import_users_elycee" class="btn btn-primary btn-block">Depuis elycée</a>
 					<h4>{{ trad.admin_menu_various }} :</h4>
 					<a href="?p=admin_user_mdp_facile" class="btn btn-primary btn-block">{{ trad.admin_user_mdp_facile }}</a>
-					{% if (settings.ldap_statut != '' or settings.sso_statut != '' or settings.imap_statut != '') and trad.dEstAdministrateur ==  1 %}
+					{% if (settings.ldap_statut != '' or settings.sso_statut != '' or settings.imap_statut != '') and d.estAdministrateur ==  1 %}
 						<a href="?p=admin_purge_accounts" class="btn btn-primary btn-block">{{ trad.admin_purge_accounts }}</a>
 					{% endif %}
 				</div>

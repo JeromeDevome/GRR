@@ -18,6 +18,8 @@
 
 $grr_script_name = "admin_user_modify.php";
 
+$trad = $vocab;
+
 if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
 {
 	showAccessDenied($back);
@@ -366,48 +368,16 @@ else
 	$trad['admin_user_modify_modify'] = get_vocab('admin_user_modify_create');
 
 if ((Settings::get("sso_statut") != "") || (Settings::get("ldap_statut") != '') || (Settings::get("imap_statut") != ''))
-	$trad['dConnexionExterne'] = 1;
+	$d['connexionExterne'] = 1;
 
 if (authGetUserLevel(getUserName(),-1) >= 6)
-	$trad['dEstAdministrateur'] = 1;
+	$d['estAdministrateur'] = 1;
 
 if (isset($user_login) && strtolower(getUserName()) != strtolower($user_login))
-	$trad['dEstPasLuiMeme'] = 1;
+	$d['estPasLuiMeme'] = 1;
 
-$trad['dDisplay'] = $display;
+$d['display'] = $display;
 
-get_vocab_admin("required");
-get_vocab_admin("authentification");
-get_vocab_admin("authentification_base_locale");
-get_vocab_admin("authentification_base_externe");
-get_vocab_admin("login");
-get_vocab_admin("last_name");
-get_vocab_admin("first_name");
-get_vocab_admin("mail_user");
-get_vocab_admin("statut");
-get_vocab_admin("statut_visitor");
-get_vocab_admin("statut_user");
-get_vocab_admin("statut_user_administrator");
-get_vocab_admin("statut_administrator");
-
-get_vocab_admin("activ_no_activ");
-get_vocab_admin("activ_user");
-get_vocab_admin("no_activ_user");
-
-get_vocab_admin("authentification");
-get_vocab_admin("authentification_base_locale");
-get_vocab_admin("authentification_base_externe");
-
-get_vocab_admin("champ_vide_mot_de_passe_inchange");
-get_vocab_admin("pwd_toot_short");
-get_vocab_admin("confirm_pwd");
-get_vocab_admin("user_change_pwd_connexion");
-get_vocab_admin("groupes");
-
-get_vocab_admin("back");
-get_vocab_admin("save");
-
-get_vocab_admin("liste_privileges");
 
 $utilisateur['reg_login'] = $user_login;
 
