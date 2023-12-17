@@ -4,6 +4,7 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
+<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
 	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
 {% endblock %}
 
@@ -170,6 +171,7 @@
 {% endblock %}
 
 {% block javascript %}
+	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
 	<script src="../vendor/almasaeed2010/adminlte/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 	<script type='text/javascript'>
 		
@@ -203,5 +205,13 @@
 				password.style.visibility='hidden';
 			}
 		}
+
+		{%if d.enregistrement%}
+			{%if d.enregistrement == 1 %}
+				toastr.success("{{trad.message_records}}")
+			{% else %}
+				toastr.warning("{{d.enregistrement|raw}}")
+			{%endif%}
+		{%endif%}
 	</script>
 {% endblock %}

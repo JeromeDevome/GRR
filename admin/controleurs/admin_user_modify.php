@@ -238,10 +238,7 @@ if ($valid == "yes")
 				{
 					fatal_error(0, get_vocab("message_records_error") . grr_sql_error());
 				}
-				else
-				{
-					$msg = get_vocab("message_records");
-				}
+
 				// Cas où on a déclaré un utilisateur inactif, on le supprime dans les tables ".TABLE_PREFIX."_j_user_area,  ".TABLE_PREFIX."_j_mailuser_room
 				if ($reg_etat != 'actif')
 				{
@@ -327,6 +324,24 @@ if ($valid == "yes")
 		$user_etat = $reg_etat;
 	}
 }
+
+
+// Si pas de problème, message de confirmation
+if (isset($_GET['valid'])) {
+    $_SESSION['displ_msg'] = 'yes';
+    if ($msg == '') {
+        $d['enregistrement'] = 1;
+    } else{
+        $d['enregistrement'] = $msg;
+    }
+}
+if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes')) {
+    $msg = $_GET['msg'];
+} else {
+    $msg = '';
+}
+
+
 // On appelle les informations de l'utilisateur pour les afficher :
 if (isset($user_login) && ($user_login != ''))
 {
