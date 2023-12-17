@@ -37,7 +37,11 @@
 							{% for utilisateur in utilisateurs %}
 								<tr>
 									<td></td>
-									<td>{{utilisateur.1}}</td>
+									{% if utilisateur.8 == 1 %}
+										<td><a href="?p=admin_user_modify&user_login={{utilisateur.1}}&display={{ d.display }}">{{utilisateur.1}}</a></td>
+									{% else %}
+										<td>{{utilisateur.1}}</td>
+									{% endif %}
 									<td>{{utilisateur.2}}</td>
 									<td>{{utilisateur.9}}</td>
 									<td>{{utilisateur.3 |raw}}</td>
@@ -46,7 +50,7 @@
 									<td>{{utilisateur.5}}</td>
 									<td>
 										{% if utilisateur.8 == 1 %}
-											<a href="?p=admin_user_modify&user_login={{utilisateur.1}}&display={{ trad.dDisplay }}" class="btn btn-info btn-xs"><i class="icon fa fa-edit"></i></a> 
+											<a href="?p=admin_user_modify&user_login={{utilisateur.1}}&display={{ d.display }}" class="btn btn-info btn-xs"><i class="icon fa fa-edit"></i></a> 
 										{% endif %}
 										{% if utilisateur.7 == 1 %}
 											<button type="button" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#modalWarningSupUser" data-idsup="{{ utilisateur.1 }}"><i class="icon fa fa-trash"></i></button>

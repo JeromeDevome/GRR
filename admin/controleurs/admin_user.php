@@ -79,7 +79,7 @@ if (empty($display))
 	$order_by = 'nom,prenom';
 } */
 
-$trad['dDisplay'] = $display;
+$d['display'] = $display;
 
 get_vocab_admin('admin_user');
 get_vocab_admin("display_add_user");
