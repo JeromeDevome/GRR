@@ -112,6 +112,59 @@
 						</div>
 					</div>
 
+					{% if utilisateur.reg_login !=  '' %}
+						<hr>
+
+						<!-- Format liste des domaines / ressources -->
+						<div class="form-group row col-sm-12">
+							<label class="col col-sm-6" for="area_list_format">{{ trad.explain_area_list_format }}</label>
+							<div class="col col-sm-6">
+								<select class="form-control" name="area_list_format">
+									<option value="list" {% if utilisateur.default_list_type == 'list' %} selected {% endif %}>{{ trad.liste_area_list_format }}</option>
+									<option value="select" {% if utilisateur.default_list_type == 'select' %} selected {% endif %}>{{ trad.select_area_list_format }}</option>
+									<option value="item" {% if utilisateur.default_list_type == 'item' %} selected {% endif %}>{{ trad.item_area_list_format }}</option>
+								</select>
+							</div>					
+						</div>
+
+						<!-- Site / Domaine et ressource par défaut -->
+						{% if settings.module_multisite == 'Oui' %}
+							<div class="form-group row col-sm-12">
+								<label class="col col-sm-6" for="default_css">{{ trad.default_site }}</label>
+								<div class="col col-sm-6">
+									<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
+										<option value="-1">{{ trad.choose_a_site }}</option>
+										{{ trad.optionSite | raw }}
+									</select>
+								</div>
+							</div>
+						{% else %}
+							<input type="hidden" id="id_site" name="id_site" value="-1" />
+						{% endif %}
+						<div id="div_liste_domaines"></div>
+						<div id="div_liste_ressources"></div>
+
+						<!-- Style -->
+						<div class="form-group row col-sm-12">
+							<label class="col col-sm-6" for="default_css">{{ trad.explain_css }}</label>
+							<div class="col col-sm-6">
+								<select class="form-control" name="default_css">
+									{{ d.optionTheme | raw }}
+								</select>
+							</div>
+						</div>
+
+						<!--Langue  -->
+						<div class="form-group row col-sm-12">
+							<label class="col col-sm-6" for="default_language">{{ trad.choose_language }}</label>
+							<div class="col col-sm-6">
+								<select class="form-control" name="default_language">
+									{{ d.optionLangue | raw }}
+								</select>
+							</div>
+						</div>
+					{% endif %}
+
 					<!-- Gestion des groupes -->
 					<div class="form-group">
 						<label>{{ trad.groupes }}</label>
@@ -174,6 +227,47 @@
 	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
 	<script src="../vendor/almasaeed2010/adminlte/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 	<script type='text/javascript'>
+		function modifier_liste_domaines(){
+			$.ajax({
+				url: "../compte/my_account_modif_listes.php",
+				type: "get",
+				dataType: "html",
+				data: {
+					id_site: $('#id_site').val(),
+					default_area : '{{ utilisateur.default_area }}',
+					session_login:'{{ d.nomUtilisateur }}',
+					use_site:'{{ d.use_site }}',
+					type:'domaine',
+				},
+				success: function(returnData){
+					$("#div_liste_domaines").html(returnData);
+				},
+				error: function(e){
+					alert(e);
+				}
+			});
+		}
+		function modifier_liste_ressources(action){
+			$.ajax({
+				url: "../compte/my_account_modif_listes.php",
+				type: "get",
+				dataType: "html",
+				data: {
+					id_area:$('id_area').serialize(true),
+					default_room : '{{ utilisateur.default_room }}',
+					type:'ressource',
+					action:+action,
+				},
+				success: function(returnData){
+					$("#div_liste_ressources").html(returnData);
+				},
+				error: function(e){
+					alert(e);
+				}
+			});
+		}
+		modifier_liste_domaines();
+		modifier_liste_ressources(1);
 		
 		$(function(){
 			AffichageBlocMDP()

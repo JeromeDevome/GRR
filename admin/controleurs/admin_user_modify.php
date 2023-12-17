@@ -48,6 +48,13 @@ $user_source = 'local';
 $user_etat = '';
 $display = "";
 $retry = '';
+
+if (Settings::get('module_multisite') == 'Oui') {
+	$d['use_site'] = 'y';
+} else {
+	$d['use_site'] = 'n';
+}
+
 if ($valid == "yes")
 {
 	// Restriction dans le cas d'une démo
@@ -62,6 +69,12 @@ if ($valid == "yes")
 	$reg_email = isset($_GET["reg_email"]) ? $_GET["reg_email"] : NULL;
 	$reg_etat = isset($_GET["reg_etat"]) ? $_GET["reg_etat"] : "actif";
 	$reg_source = isset($_GET["reg_source"]) ? $_GET["reg_source"] : "local";
+	$reg_site = isset($_GET["id_site"]) ? $_GET["id_site"] : -1;
+	$reg_area = isset($_GET["id_area"]) ? $_GET["id_area"] : -1;
+	$reg_room = isset($_GET["id_room"]) ? $_GET["id_room"] : -1;
+	$reg_style = isset($_GET["default_css"]) ? $_GET["default_css"] : "default";
+	$reg_list = isset($_GET["area_list_format"]) ? $_GET["area_list_format"] : "item";
+	$reg_langue = isset($_GET["default_language"]) ? $_GET["default_language"] : "fr-fr";
 	$groupes_select = isset($_GET["groupes"]) ? $_GET["groupes"] : NULL;
 	if ($reg_source != "local")
 		$reg_password = "";
@@ -232,8 +245,15 @@ if ($valid == "yes")
 				}
 				else
 					$sql .= "source='ext',password='',";
-				$sql .= "etat='".protect_data_sql($reg_etat)."'
+				$sql .= "etat='".protect_data_sql($reg_etat)."',
+				default_site='".protect_data_sql($reg_site)."',
+				default_area='".protect_data_sql($reg_area)."',
+				default_room='".protect_data_sql($reg_room)."',
+				default_style='".protect_data_sql($reg_style)."',
+				default_list_type='".protect_data_sql($reg_list)."',
+				default_language='".protect_data_sql($reg_langue)."' 
 				WHERE login='".protect_data_sql($user_login)."'";
+
 				if (grr_sql_command($sql) < 0)
 				{
 					fatal_error(0, get_vocab("message_records_error") . grr_sql_error());
@@ -345,27 +365,54 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
 // On appelle les informations de l'utilisateur pour les afficher :
 if (isset($user_login) && ($user_login != ''))
 {
-	$res = grr_sql_query("SELECT nom, prenom, statut, etat, email, source, changepwd FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$user_login'");
+	$res = grr_sql_query("SELECT nom, prenom, statut, etat, email, source, changepwd, default_site, default_area, default_room, default_style, default_list_type, default_language FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$user_login'");
 	if (!$res)
 		fatal_error(0, get_vocab('message_records_error'));
 	$utilisateur = grr_sql_row_keyed($res, 0);
 	grr_sql_free($res);
-/*	if ($res)
-	{
-		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-		{
-			$user_nom = $row[0])
-			$user_prenom = htmlspecialchars($row[1]);
-			$user_statut = $row[2];
-			$user_etat = $row[3];
-			$user_mail = htmlspecialchars($row[4]);
-			$user_source = $row[5];
-			if ($user_source == "local")
-				$flag_is_local = "y";
-			else
-				$flag_is_local = "n";
+
+	// Liste des sites
+	if (Settings::get('module_multisite') == 'Oui') {
+		$sql = 'SELECT id,sitecode,sitename
+		FROM '.TABLE_PREFIX.'_site
+		ORDER BY id ASC';
+		$resultat = grr_sql_query($sql);
+
+		$d['optionSite'] = "";
+		for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); ++$enr) {
+			$trdad['optionSite'] .= '<option value="'.$row[0].'"';
+			if ($utilisateur['default_site'] == $row[0]) {
+				$d['optionSite'] .= ' selected="selected" ';
+			}
+			$d['optionSite'] .= '>'.htmlspecialchars($row[2]);
+			$d['optionSite'] .= '</option>'."\n";
 		}
-	}*/
+	}
+
+	// Choix de la feuille de style
+	$i = 0;
+	$d['optionTheme'] = "";
+	while ($i < count($liste_themes)) {
+		$d['optionTheme'] .= "<option value='".$liste_themes[$i]."'";
+		if ($utilisateur['default_style'] == $liste_themes[$i]) {
+			$d['optionTheme'] .= ' selected="selected"';
+		}
+		$d['optionTheme'] .= ' >'.encode_message_utf8($liste_name_themes[$i]).'</option>';
+		++$i;
+	}
+
+	// Choix de la langue
+	$i = 0;
+	$d['optionLangue'] = "";
+	while ($i < count($liste_language)) {
+		$d['optionLangue'] .= "<option value='".$liste_language[$i]."'";
+		if ($utilisateur['default_language'] == $liste_language[$i]) {
+			$d['optionLangue'] .= ' selected="selected"';
+		}
+		$d['optionLangue'] .= ' >'.encode_message_utf8($liste_name_language[$i]).'</option>'.PHP_EOL;
+		++$i;
+	}
+
 }
 if ((authGetUserLevel(getUserName(), -1) < 1) && (Settings::get("authentification_obli") == 1))
 {
