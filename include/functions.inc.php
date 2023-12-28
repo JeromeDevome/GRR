@@ -6148,7 +6148,7 @@ function pageHead2($title, $page = "with_session")
 	$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;
     $a .= '<script type="text/javascript" src="js/jquery.floatThead.min.js"></script>'.PHP_EOL;
-    $a .= '<script type="text/javascript" src="js/planning2Thead.js"></script>'.PHP_EOL;
+    //$a .= '<script type="text/javascript" src="js/planning2Thead.js"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/popup.js" charset="utf-8"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/functions.js" ></script>'.PHP_EOL;
 	if (isset($use_select2))
