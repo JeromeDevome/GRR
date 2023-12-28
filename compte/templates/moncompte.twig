@@ -77,57 +77,61 @@
 		<table>
 			<tr>
 				<td>{{ trad.liste_area_list_format }}</td>
-				<td><input type="radio" name="area_item_format" value="list" {%if d.default_list_type == 'list' %}checked{% endif %} /></td>
+				<td><input type="radio" name="area_item_format" value="list" {%if d.default_list_type == 'list' %}checked{% endif %} {% if d.levelUser < settings.allow_users_modify_affichage %}disabled{% endif %} /></td>
 			</tr>
 			<tr>
 				<td>{{ trad.select_area_list_format }}</td>
-				<td><input type="radio" name="area_item_format" value="select" {%if d.default_list_type == 'select' %}checked{% endif %} /></td>
+				<td><input type="radio" name="area_item_format" value="select" {%if d.default_list_type == 'select' %}checked{% endif %} {% if d.levelUser < settings.allow_users_modify_affichage %}disabled{% endif %} /></td>
 			</tr>
 			<tr>
 				<td>{{ trad.item_area_list_format }}</td>
-				<td><input type="radio" name="area_item_format" value="item" {%if d.default_list_type == 'item' %}checked{% endif %} /></td>
+				<td><input type="radio" name="area_item_format" value="item" {%if d.default_list_type == 'item' %}checked{% endif %} {% if d.levelUser < settings.allow_users_modify_affichage %}disabled{% endif %} /></td>
 			</tr>
 		</table>
 
-		{% if settings.module_multisite == 'Oui' %}
 
-		<h4>{{ trad.explain_default_area_and_room_and_site }}</h4>
+		{% if d.levelUser < settings.allow_users_modify_domaine %}
 
-		<table>
-			<tr>
-				<td>{{ trad.default_site }}</td>
-				<td>
-					<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
-						<option value="-1">{{ trad.choose_a_site }}</option>
-						{% for site in sites %}
-							<option value="{{ site.idsite }}" {% if site.idsite == d.default_site %} selected {% endif %}>{{ site.nomsite }}</option>
-						{% endfor %}
-					</select>
-				</td>
-			</tr>
-	
 		{% else %}
-			<h4>{{ trad.explain_default_area_and_room }}</h4>
-			<input type="hidden" id="id_site" name="id_site" value="-1" />
+			{% if settings.module_multisite == 'Oui' %}
+			<h4>{{ trad.explain_default_area_and_room_and_site }}</h4>
 
 			<table>
+				<tr>
+					<td>{{ trad.default_site }}</td>
+					<td>
+						<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
+							<option value="-1">{{ trad.choose_a_site }}</option>
+							{% for site in sites %}
+								<option value="{{ site.idsite }}" {% if site.idsite == d.default_site %} selected {% endif %}>{{ site.nomsite }}</option>
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+		
+			{% else %}
+				<h4>{{ trad.explain_default_area_and_room }}</h4>
+				<input type="hidden" id="id_site" name="id_site" value="-1" />
+
+				<table>
+			{% endif %}
+
+				<tr>
+					<td colspan="2"><div id="div_liste_domaines"></div></td>
+				</tr>
+				<tr>
+					<td colspan="2"><div id="div_liste_ressources"><input type="hidden" id="id_area" name="id_area" value="{{ d.default_area }}" /></div></td>
+				</tr>
+
+			</table>
 		{% endif %}
-
-			<tr>
-				<td colspan="2"><div id="div_liste_domaines"></div></td>
-			</tr>
-			<tr>
-				<td colspan="2"><div id="div_liste_ressources"><input type="hidden" id="id_area" name="id_area" value="{{ d.default_area }}" /></div></td>
-			</tr>
-
-		</table>
 
 		<h4>{{ trad.explain_css }}</h4>
 		<table>
 			<tr>
 				<td>{{ trad.choose_css }}</td>
 				<td>
-					<select class="form-control" name="default_css">
+					<select class="form-control" name="default_css" {% if d.levelUser < settings.allow_users_modify_theme %}disabled{% endif %}>
 						<option value="">Choix Admin</option>
 						{% for theme in themes %}
 							<option value="{{ theme.idtheme }}" {% if theme.idtheme == d.default_css %} selected {% endif %}>{{ theme.nomtheme }}</option>
@@ -142,7 +146,7 @@
 			<tr>
 				<td>{{ trad.choose_css }}</td>
 				<td>
-					<select class="form-control" name="default_language">
+					<select class="form-control" name="default_language" {% if d.levelUser < settings.allow_users_modify_langue %}disabled{% endif %}>
 						<option value="">Choix Admin</option>
 						{% for langue in langues %}
 							<option value="{{ langue.idlangue }}" {% if langue.idlangue == d.default_language %} selected {% endif %}>{{ langue.nomlangue }}</option>
@@ -228,8 +232,5 @@
 				}
 			});
 		}
-
-		modifier_liste_domaines();
-		modifier_liste_ressources(1);
 	</script>
 {% endblock %}

@@ -35,6 +35,9 @@ if (isset($_SERVER['HTTP_REFERER']))
 $user_login = isset($_POST['user_login']) ? $_POST['user_login'] : ($user_login = isset($_GET['user_login']) ? $_GET['user_login'] : NULL);
 $valid = isset($_POST['valid']) ? $_POST['valid'] : NULL;
 $msg = '';
+
+$trad = $vocab;
+
 if ($valid == 'yes')
 {
 	if (IsAllowedToModifyMdp())
@@ -141,14 +144,20 @@ if (($valid == 'yes') || ($valid=='reset'))
 	$default_style = isset($_POST['default_css']) ? $_POST['default_css'] : NULL;
 	$default_list_type = isset($_POST['area_item_format']) ? $_POST['area_item_format'] : NULL;
 	$default_language = isset($_POST['default_language']) ? $_POST['default_language'] : NULL;
-	$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs
-	SET default_site = '".protect_data_sql($default_site)."',
-	default_area = '".protect_data_sql($default_area)."',
-	default_room = '".protect_data_sql($default_room)."',
-	default_style = '". protect_data_sql($default_style)."',
-	default_list_type = '".protect_data_sql($default_list_type)."',
-	default_language = '".protect_data_sql($default_language)."'
-	WHERE login='".getUserName()."'";
+	$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET ";
+	if (authGetUserLevel(getUserName(),-1) >= Settings::get("allow_users_modify_domaine")){
+		$sql .= "default_site = '".protect_data_sql($default_site)."', ";
+		$sql .= "default_area = '".protect_data_sql($default_area)."', ";
+		$sql .= "default_room = '".protect_data_sql($default_room)."', ";
+	}
+	if (authGetUserLevel(getUserName(),-1) >= Settings::get("allow_users_modify_theme"))
+		$sql .= "default_style = '". protect_data_sql($default_style)."', ";
+	if (authGetUserLevel(getUserName(),-1) >= Settings::get("allow_users_modify_affichage"))
+		$sql .= "default_list_type = '".protect_data_sql($default_list_type)."', ";
+	if (authGetUserLevel(getUserName(),-1) >= Settings::get("allow_users_modify_langue"))
+		$sql .= "default_language = '".protect_data_sql($default_language)."', ";
+	$sql .= "login='".getUserName()."'";
+	$sql .= "WHERE login='".getUserName()."'";
 	if (grr_sql_command($sql) < 0)
 		fatal_error(0, get_vocab('message_records_error').grr_sql_error());
 	else
@@ -237,39 +246,7 @@ else if ($user_statut == "administrateur")
 else
 	$text_user_statut = $user_statut;
 
-get_vocab('nom_prenom_valides');
-get_vocab_admin('login');
-get_vocab_admin('last_name');
-get_vocab_admin('first_name');
-get_vocab_admin('mail_user');
-get_vocab_admin('statut');
-get_vocab_admin('required');
 
-get_vocab_admin('pwd_msg_warning');
-get_vocab_admin('old_pwd');
-get_vocab_admin('new_pwd1');
-get_vocab_admin('new_pwd2');
-get_vocab_admin('pwd_strength');
-
-get_vocab_admin('default_parameter_values_title');
-get_vocab_admin('explain_area_list_format');
-
-get_vocab_admin('liste_area_list_format');
-get_vocab_admin('select_area_list_format');
-get_vocab_admin('item_area_list_format');
-
-get_vocab_admin('explain_default_area_and_room_and_site');
-get_vocab_admin('default_site');
-get_vocab_admin('choose_a_site');
-get_vocab_admin('explain_default_area_and_room');
-
-get_vocab_admin('explain_css');
-get_vocab_admin('choose_css');
-
-get_vocab_admin('choose_language');;
-
-get_vocab_admin('save');;
-get_vocab_admin('reset');;
 
 $d['identifiant'] = getUserName();
 $d['modificationNom'] = IsAllowedToModifyProfil();

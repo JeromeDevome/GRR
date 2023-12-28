@@ -16,13 +16,7 @@
  * (at your option) any later version.
  */
 
-get_vocab_admin("admin_config1");
-get_vocab_admin("admin_config2");
-get_vocab_admin("admin_config3");
-get_vocab_admin("admin_config4");
-get_vocab_admin("admin_config5");
-get_vocab_admin("admin_config6");
-get_vocab_admin("admin_config7");
+$trad = $vocab;
 
 $msg = "";
 
@@ -96,6 +90,34 @@ if ((isset($_GET['allow_users_modify_mdp'])) && (authGetUserLevel(getUserName(),
 	if (!Settings::set("allow_users_modify_mdp", $_GET['allow_users_modify_mdp']))
 		$msg .= get_vocab("message_records_error");
 }
+// Enregistrement de allow_users_modify_affichage
+// Un gestionnaire d'utilisateurs ne peut pas Autoriser ou non la modification par un utilisateur de son affichage par défaut
+if ((isset($_GET['allow_users_modify_affichage'])) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+{
+	if (!Settings::set("allow_users_modify_affichage", $_GET['allow_users_modify_affichage']))
+		$msg .= get_vocab("message_records_error");
+}
+// Enregistrement de allow_users_modify_domaine
+// Un gestionnaire d'utilisateurs ne peut pas Autoriser ou non la modification par un utilisateur de son domaine par defaut
+if ((isset($_GET['allow_users_modify_domaine'])) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+{
+	if (!Settings::set("allow_users_modify_domaine", $_GET['allow_users_modify_domaine']))
+		$msg .= get_vocab("message_records_error");
+}
+// Enregistrement de allow_users_modify_theme
+// Un gestionnaire d'utilisateurs ne peut pas Autoriser ou non la modification par un utilisateur de son theme
+if ((isset($_GET['allow_users_modify_theme'])) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+{
+	if (!Settings::set("allow_users_modify_theme", $_GET['allow_users_modify_theme']))
+		$msg .= get_vocab("message_records_error");
+}
+// Enregistrement de allow_users_modify_langue
+// Un gestionnaire d'utilisateurs ne peut pas Autoriser ou non la modification par un utilisateur de sa langue
+if ((isset($_GET['allow_users_modify_langue'])) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+{
+	if (!Settings::set("allow_users_modify_langue", $_GET['allow_users_modify_langue']))
+		$msg .= get_vocab("message_records_error");
+}
 
 // Enregistrement de mail_user_obligatoire
 // Un gestionnaire d'utilisateurs ne peut pas modifier ce paramètre
@@ -122,47 +144,6 @@ if (isset($_GET['ok'])) {
 }
 
 $AllSettings = Settings::getAll();
-
-get_vocab_admin("authentification_obli_msg");
-get_vocab_admin("authentification_obli0");
-get_vocab_admin("authentification_obli1");
-
-get_vocab_admin("visu_fiche_description_msg");
-get_vocab_admin("visu_fiche_description0");
-get_vocab_admin("visu_fiche_description1");
-get_vocab_admin("visu_fiche_description2");
-get_vocab_admin("visu_fiche_description3");
-get_vocab_admin("visu_fiche_description4");
-get_vocab_admin("visu_fiche_description5");
-get_vocab_admin("visu_fiche_description6");
-
-get_vocab_admin("acces_fiche_reservation_msg");
-
-get_vocab_admin("allow_search_level_msg");
-get_vocab_admin("allow_search_level0");
-get_vocab_admin("allow_search_level1");
-get_vocab_admin("allow_search_level2");
-get_vocab_admin("allow_search_level5");
-
-get_vocab_admin("allow_user_delete_after_beginning_msg");
-get_vocab_admin("allow_user_delete_after_beginning0");
-get_vocab_admin("allow_user_delete_after_beginning1");
-get_vocab_admin("allow_user_delete_after_beginning2");
-get_vocab_admin("allow_gestionnaire_modify_del0");
-get_vocab_admin("allow_gestionnaire_modify_del1");
-
-get_vocab_admin("modification_parametres_personnels");
-get_vocab_admin("modification_parametre_email");
-get_vocab_admin("modification_mdp");
-get_vocab_admin("mail_user_obligatoire");
-get_vocab_admin("all");
-get_vocab_admin("all_but_visitors");
-get_vocab_admin("only_administrators");
-
-get_vocab_admin("max_booking");
-
-get_vocab_admin("save");
-get_vocab_admin('message_records');
 
 echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 ?>
