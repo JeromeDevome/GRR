@@ -1129,7 +1129,10 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 			$del = traiteRequete("DELETE FROM ".TABLE_PREFIX."_setting where NAME='display_type'");
 		}
 
-
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('allow_users_modify_affichage', '2');");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('allow_users_modify_domaine', '2');");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('allow_users_modify_theme', '2');");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('allow_users_modify_langue', '2');");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
