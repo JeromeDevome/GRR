@@ -1074,6 +1074,63 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD `who_can_book` TINYINT(1) NOT NULL DEFAULT '1' AFTER `booking_range`;");
 		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_j_userbook_room (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_room int(11) NOT NULL default '0', PRIMARY KEY  (login,id_room) )");
 
+		$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='display_beneficiaire'");
+		if (($req != -1) && (($req != "")))
+		{
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_beneficiaire_nc', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_beneficiaire_vi', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_beneficiaire_us', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_beneficiaire_gr', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_beneficiaire_ad', '".$req."');");
+			$del = traiteRequete("DELETE FROM ".TABLE_PREFIX."_setting where NAME='display_beneficiaire'");
+		}
+
+		$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='display_horaires'");
+		if (($req != -1) && (($req != "")))
+		{
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_horaires_nc', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_horaires_vi', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_horaires_us', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_horaires_gr', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_horaires_ad', '".$req."');");
+			$del = traiteRequete("DELETE FROM ".TABLE_PREFIX."_setting where NAME='display_horaires'");
+		}
+
+		$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='display_short_description'");
+		if (($req != -1) && (($req != "")))
+		{
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_short_description_nc', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_short_description_vi', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_short_description_us', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_short_description_gr', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_short_description_ad', '".$req."');");
+			$del = traiteRequete("DELETE FROM ".TABLE_PREFIX."_setting where NAME='display_short_description'");
+		}
+
+		$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='display_full_description'");
+		if (($req != -1) && (($req != "")))
+		{
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_full_description_nc', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_full_description_vi', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_full_description_us', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_full_description_gr', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_full_description_ad', '".$req."');");
+			$del = traiteRequete("DELETE FROM ".TABLE_PREFIX."_setting where NAME='display_full_description'");
+		}
+
+		$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='display_type'");
+		if (($req != -1) && (($req != "")))
+		{
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_type_nc', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_type_vi', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_type_us', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_type_gr', '".$req."');");
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('display_type_ad', '".$req."');");
+			$del = traiteRequete("DELETE FROM ".TABLE_PREFIX."_setting where NAME='display_type'");
+		}
+
+
+
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
 		else

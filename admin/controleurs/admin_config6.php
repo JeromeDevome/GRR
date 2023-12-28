@@ -16,13 +16,8 @@
  * (at your option) any later version.
  */
 
-get_vocab_admin("admin_config1");
-get_vocab_admin("admin_config2");
-get_vocab_admin("admin_config3");
-get_vocab_admin("admin_config4");
-get_vocab_admin("admin_config5");
-get_vocab_admin("admin_config6");
-get_vocab_admin("admin_config7");
+
+$trad = $vocab;
 
 $msg = '';
 
@@ -107,11 +102,11 @@ if (isset($_POST['display_level_view_entry'])) {
     }
 }
 // display_info_bulle
-if (isset($_POST['display_info_bulle'])) {
+/*if (isset($_POST['display_info_bulle'])) {
     if (!Settings::set('display_info_bulle', $_POST['display_info_bulle'])) {
         $msg .= "Erreur lors de l'enregistrement de display_info_bulle !<br />";
     }
-}
+}*/
 // menu_gauche
 if (isset($_POST['menu_gauche'])) {
     if (!Settings::set('menu_gauche', $_POST['menu_gauche'])) {
@@ -119,33 +114,133 @@ if (isset($_POST['menu_gauche'])) {
     }
 }
 // display_type
-if (isset($_POST['display_type'])) {
-    if (!Settings::set('display_type', $_POST['display_type'])) {
-        $msg .= "Erreur lors de l'enregistrement de display_type !<br />";
+if (isset($_POST['display_type_nc'])) {
+    if (!Settings::set('display_type_nc', $_POST['display_type_nc'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_type_nc !<br />";
+    }
+}
+if (isset($_POST['display_type_vi'])) {
+    if (!Settings::set('display_type_vi', $_POST['display_type_vi'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_type_vi !<br />";
+    }
+}
+if (isset($_POST['display_type_us'])) {
+    if (!Settings::set('display_type_us', $_POST['display_type_us'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_type_us !<br />";
+    }
+}
+if (isset($_POST['display_type_gr'])) {
+    if (!Settings::set('display_type_gr', $_POST['display_type_gr'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_type_gr !<br />";
+    }
+}
+if (isset($_POST['display_type_ad'])) {
+    if (!Settings::set('display_type_ad', $_POST['display_type_ad'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_type_ad !<br />";
     }
 }
 // display_beneficiaire
-if (isset($_POST['display_beneficiaire'])) {
-    if (!Settings::set('display_beneficiaire', $_POST['display_beneficiaire'])) {
-        $msg .= "Erreur lors de l'enregistrement de display_beneficiaire !<br />";
+if (isset($_POST['display_beneficiaire_nc'])) {
+    if (!Settings::set('display_beneficiaire_nc', $_POST['display_beneficiaire_nc'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_beneficiaire_nc !<br />";
+    }
+}
+if (isset($_POST['display_beneficiaire_vi'])) {
+    if (!Settings::set('display_beneficiaire_vi', $_POST['display_beneficiaire_vi'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_beneficiaire_vi !<br />";
+    }
+}
+if (isset($_POST['display_beneficiaire_us'])) {
+    if (!Settings::set('display_beneficiaire_us', $_POST['display_beneficiaire_us'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_beneficiaire_us !<br />";
+    }
+}
+if (isset($_POST['display_beneficiaire_gr'])) {
+    if (!Settings::set('display_beneficiaire_gr', $_POST['display_beneficiaire_gr'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_beneficiaire_gr !<br />";
+    }
+}
+if (isset($_POST['display_beneficiaire_ad'])) {
+    if (!Settings::set('display_beneficiaire_ad', $_POST['display_beneficiaire_ad'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_beneficiaire_ad !<br />";
     }
 }
 // display_horaires
-if (isset($_POST['display_horaires'])) {
-    if (!Settings::set('display_horaires', $_POST['display_horaires'])) {
-        $msg .= "Erreur lors de l'enregistrement de display_horaires !<br />";
+if (isset($_POST['display_horaires_nc'])) {
+    if (!Settings::set('display_horaires_nc', $_POST['display_horaires_nc'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_horaires_nc !<br />";
+    }
+}
+if (isset($_POST['display_horaires_vi'])) {
+    if (!Settings::set('display_horaires_vi', $_POST['display_horaires_vi'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_horaires_vi !<br />";
+    }
+}
+if (isset($_POST['display_horaires_us'])) {
+    if (!Settings::set('display_horaires_us', $_POST['display_horaires_us'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_horaires_us !<br />";
+    }
+}
+if (isset($_POST['display_horaires_gr'])) {
+    if (!Settings::set('display_horaires_gr', $_POST['display_horaires_gr'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_horaires_gr !<br />";
+    }
+}
+if (isset($_POST['display_horaires_ad'])) {
+    if (!Settings::set('display_horaires_ad', $_POST['display_horaires_ad'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_horaires_gr !<br />";
     }
 }
 // display_full_description
-if (isset($_POST['display_full_description'])) {
-    if (!Settings::set('display_full_description', $_POST['display_full_description'])) {
-        $msg .= "Erreur lors de l'enregistrement de display_full_description !<br />";
+if (isset($_POST['display_full_description_nc'])) {
+    if (!Settings::set('display_full_description_nc', $_POST['display_full_description_nc'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_full_description_nc !<br />";
+    }
+}
+if (isset($_POST['display_full_description_vi'])) {
+    if (!Settings::set('display_full_description_vi', $_POST['display_full_description_vi'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_full_description_vi !<br />";
+    }
+}
+if (isset($_POST['display_full_description_us'])) {
+    if (!Settings::set('display_full_description_us', $_POST['display_full_description_us'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_full_description_us !<br />";
+    }
+}
+if (isset($_POST['display_full_description_gr'])) {
+    if (!Settings::set('display_full_description_gr', $_POST['display_full_description_gr'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_full_description_gr !<br />";
+    }
+}
+if (isset($_POST['display_full_description_ad'])) {
+    if (!Settings::set('display_full_description_ad', $_POST['display_full_description_ad'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_full_description_ad !<br />";
     }
 }
 // display_short_description
-if (isset($_POST['display_short_description'])) {
-    if (!Settings::set('display_short_description', $_POST['display_short_description'])) {
-        $msg .= "Erreur lors de l'enregistrement de display_short_description !<br />";
+if (isset($_POST['display_short_description_nc'])) {
+    if (!Settings::set('display_short_description_nc', $_POST['display_short_description_nc'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_short_description_nc !<br />";
+    }
+}
+if (isset($_POST['display_short_description_vi'])) {
+    if (!Settings::set('display_short_description_vi', $_POST['display_short_description_vi'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_short_description_vi !<br />";
+    }
+}
+if (isset($_POST['display_short_description_us'])) {
+    if (!Settings::set('display_short_description_us', $_POST['display_short_description_us'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_short_description_us !<br />";
+    }
+}
+if (isset($_POST['display_short_description_gr'])) {
+    if (!Settings::set('display_short_description_gr', $_POST['display_short_description_gr'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_short_description_gr !<br />";
+    }
+}
+if (isset($_POST['display_short_description_ad'])) {
+    if (!Settings::set('display_short_description_ad', $_POST['display_short_description_ad'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_short_description_ad !<br />";
     }
 }
 // remplissage de la description brève
@@ -254,12 +349,6 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
     $msg = '';
 }
 
-get_vocab_admin('default_parameter_values_title');
-get_vocab_admin('explain_default_parameter');
-get_vocab_admin('explain_area_list_format');
-get_vocab_admin('liste_area_list_format');
-get_vocab_admin('select_area_list_format');
-get_vocab_admin('item_area_list_format');
 
 if (Settings::get('module_multisite') == 'Oui') {
 	$d['use_site'] = 'y';
@@ -268,95 +357,6 @@ if (Settings::get('module_multisite') == 'Oui') {
 	$d['use_site'] = 'n';
 	get_vocab_admin('explain_default_area_and_room');
 }
-
-get_vocab_admin('explain_css');
-get_vocab_admin('choose_language');
-get_vocab_admin('default_site');
-get_vocab_admin('choose_a_site');
-
-get_vocab_admin('display_info_bulle_msg');
-get_vocab_admin('info_bulle0');
-get_vocab_admin('info_bulle1');
-get_vocab_admin('info_bulle2');
-
-get_vocab_admin('display_menu');
-get_vocab_admin('display_menu_1');
-get_vocab_admin('display_menu_2');
-get_vocab_admin('display_menu_3');
-get_vocab_admin('display_menu_4');
-
-get_vocab_admin('display_mail_etat_destinataire');
-get_vocab_admin('display_mail_etat_destinataire_1');
-get_vocab_admin('display_mail_etat_destinataire_2');
-get_vocab_admin('display_mail_etat_destinataire_3');
-get_vocab_admin('display_mail_etat_destinataire_4');
-get_vocab_admin('display_mail_destinataire');
-get_vocab_admin('mail_user_destinataire');
-
-// Affichage des réservations dans les vues journées, semaine et mois
-get_vocab_admin('display_planning_resa');
-get_vocab_admin('horaires');
-get_vocab_admin('sum_by_creator');
-get_vocab_admin('namebooker');
-get_vocab_admin('match_descr');
-get_vocab_admin('type');
-
-/*
-get_vocab_admin('display_short_description_msg');
-get_vocab_admin('display_short_description0');
-get_vocab_admin('display_short_description1');
-
-get_vocab_admin('display_full_description_msg');
-get_vocab_admin('display_full_description0');
-get_vocab_admin('display_full_description1');
-*/
-get_vocab_admin('display_level_email_msg1');
-get_vocab_admin('display_level_email_msg2');
-get_vocab_admin('visu_fiche_description0');
-get_vocab_admin('visu_fiche_description1');
-get_vocab_admin('visu_fiche_description2');
-get_vocab_admin('visu_fiche_description3');
-get_vocab_admin('visu_fiche_description4');
-get_vocab_admin('visu_fiche_description5');
-get_vocab_admin('visu_fiche_description6');
-
-get_vocab_admin('display_level_view_entry');
-get_vocab_admin('display_level_view_entry_0');
-get_vocab_admin('display_level_view_entry_1');
-
-get_vocab_admin('remplissage_description_breve_msg');
-get_vocab_admin('remplissage_description_breve0');
-get_vocab_admin('remplissage_description_breve1');
-get_vocab_admin('remplissage_description_breve2');
-
-get_vocab_admin('remplissage_description_complete_msg');
-get_vocab_admin('remplissage_description_complete0');
-get_vocab_admin('remplissage_description_complete1');
-get_vocab_admin('remplissage_description_complete2');
-
-get_vocab_admin('pview_new_windows_msg');
-get_vocab_admin('pview_new_windows0');
-get_vocab_admin('pview_new_windows1');
-
-get_vocab_admin('legend_msg');
-get_vocab_admin('imprimante_msg');
-get_vocab_admin('affichage_pdf');
-get_vocab_admin('holidays_msg');
-
-get_vocab_admin('holidays_zone_msg');
-get_vocab_admin('holidays_zone_msg');
-get_vocab_admin('holidays_zone_msg');
-
-get_vocab_admin('default_report_days_msg');
-get_vocab_admin('default_report_days_explain');
-
-get_vocab_admin('formulaire_reservation');
-get_vocab_admin('longueur_liste_ressources');
-
-get_vocab_admin('YES');
-get_vocab_admin('NO');
-get_vocab_admin('save');
-get_vocab_admin('message_records');
 
 
 // Liste des sites

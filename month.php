@@ -259,6 +259,7 @@ else
 				}
 			}
             $d[$day_num]["resa"][] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
+            $d[$day_num]["infobulle"][] = affichage_resa_info_bulle($overloadFieldList, 1, $row, $horaires);
 
 			//Seulement si l'heure de fin est après minuit, on continue le jour prochain.
 			if ($row[1] <= $midnight_tonight)
@@ -439,11 +440,11 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                         {
                             $currentPage = 'month';
                             $id = $d[$cday]["id"][$i];
-                            echo '<a title="'.get_vocab('voir_details').'" data-width="675" onclick="request(',$id,',',$cday,',',$month,',',$year.','.$room.',\''.$currentPage,'\',readData);" data-rel="popup_name" class="poplight lienCellule">';
+                            echo '<a title="'.$d[$cday]["infobulle"][$i].'" data-width="675" onclick="request(',$id,',',$cday,',',$month,',',$year.','.$room.',\''.$currentPage,'\',readData);" data-rel="popup_name" class="poplight lienCellule">';
                         }
                         else
                         {
-                            echo '<a class="lienCellule" title="'.get_vocab('voir_details').'" href="view_entry.php?id=',$d[$cday]["id"][$i],'&amp;day=',$cday,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=month">';
+                            echo '<a class="lienCellule" title="'.$d[$cday]["infobulle"][$i].'" href="view_entry.php?id=',$d[$cday]["id"][$i],'&amp;day=',$cday,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=month">';
                         }
                     }
                     echo $d[$cday]["resa"][$i];

@@ -100,7 +100,7 @@
 						</section>
 
 						<hr>
-
+<!--
 						<section id="infobulle">
 							<h4 class="page-header">{{ trad.display_info_bulle_msg }}</h4>
 							<input type="radio" name="display_info_bulle" value="0" id="label_2a" {% if settings.display_info_bulle == '0' %} checked {% endif %} /> <label for="label_2a">{{ trad.info_bulle0 }}</label><br>
@@ -109,7 +109,7 @@
 						</section>
 
 						<hr>
-
+-->
 						<section id="menugauche">
 							<h4 class="page-header">{{ trad.display_menu }}</h4>
 							<p>{{ trad.display_menu_1 }}</p>
@@ -139,34 +139,202 @@
 							<table class="table table-condensed">
 								<tbody>
 									<tr>
-										<th style="width: 200px"></th>
-										<th style="width: 150px">Ne pas afficher</th>
-										<th>Afficher</th>
+										<th style="width: 150px"></th>
+										<th style="width: 100px">Non connecté</th>
+										<th style="width: 100px">Visiteur</th>
+										<th style="width: 100px">Usager</th>
+										<th style="width: 100px">Gestionnaire de ressource</th>
+										<th style="width: 100px">Administrateur</th>
 									</tr>
 									<tr>
-										<td>{{ trad.sum_by_creator }}</td>
-										<td><input type="radio" name="display_beneficiaire" value="0" id="label_4a" {% if settings.display_beneficiaire == '0' %} checked {% endif %} /></td>
-										<td><input type="radio" name="display_beneficiaire" value="1" id="label_4b" {% if settings.display_beneficiaire == '1' %} checked {% endif %} /></td>
+										<th>{{ trad.sum_by_creator }}</th>
+										<td>
+											<select class="form-control" name="display_beneficiaire_nc">
+												<option value="0" {% if settings.display_beneficiaire_nc == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_beneficiaire_nc == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_beneficiaire_nc == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_beneficiaire_vi">
+												<option value="0" {% if settings.display_beneficiaire_vi == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_beneficiaire_vi == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_beneficiaire_vi == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_beneficiaire_us">
+												<option value="0" {% if settings.display_beneficiaire_us == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_beneficiaire_us == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_beneficiaire_us == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_beneficiaire_gr">
+												<option value="0" {% if settings.display_beneficiaire_gr == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_beneficiaire_gr == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_beneficiaire_gr == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_beneficiaire_ad">
+												<option value="0" {% if settings.display_beneficiaire_ad == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_beneficiaire_ad == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_beneficiaire_ad == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
 									</tr>
 									<tr>
-										<td>{{ trad.horaires }}</td>
-										<td><input type="radio" name="display_horaires" value="0" id="label_4a" {% if settings.display_horaires == '0' %} checked {% endif %} /></td>
-										<td><input type="radio" name="display_horaires" value="1" id="label_4b" {% if settings.display_horaires == '1' %} checked {% endif %} /></td>
+										<th>{{ trad.horaires }}</th>
+										<td>
+											<select class="form-control" name="display_horaires_nc">
+												<option value="0" {% if settings.display_horaires_nc == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_horaires_nc == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_horaires_nc == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_horaires_vi">
+												<option value="0" {% if settings.display_horaires_vi == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_horaires_vi == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_horaires_vi == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_horaires_us">
+												<!--<option value="0" {% if settings.display_horaires_us == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>-->
+												<option value="1" {% if settings.display_horaires_us == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_horaires_us == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_horaires_gr">
+												<!--<option value="0" {% if settings.display_horaires_gr == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>-->
+												<option value="1" {% if settings.display_horaires_gr == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_horaires_gr == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_horaires_ad">
+												<!--<option value="0" {% if settings.display_horaires_ad == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>-->
+												<option value="1" {% if settings.display_horaires_ad == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_horaires_ad == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
 									</tr>
 									<tr>
-										<td>{{ trad.namebooker }}</td>
-										<td><input type="radio" name="display_short_description" value="0" id="label_4a" {% if settings.display_short_description == '0' %} checked {% endif %} /></td>
-										<td><input type="radio" name="display_short_description" value="1" id="label_4b" {% if settings.display_short_description == '1' %} checked {% endif %} /></td>
+										<th>{{ trad.namebooker }}</th>
+										<td>
+											<select class="form-control" name="display_short_description_nc">
+												<option value="0" {% if settings.display_short_description_nc == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_short_description_nc == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_short_description_nc == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_short_description_vi">
+												<option value="0" {% if settings.display_short_description_vi == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_short_description_vi == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_short_description_vi == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_short_description_us">
+												<option value="0" {% if settings.display_short_description_us == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_short_description_us == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_short_description_us == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_short_description_gr">
+												<option value="0" {% if settings.display_short_description_gr == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_short_description_gr == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_short_description_gr == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_short_description_ad">
+												<option value="0" {% if settings.display_short_description_ad == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_short_description_ad == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_short_description_ad == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
 									</tr>
 									<tr>
-										<td>{{ trad.match_descr }}</td>
-										<td><input type="radio" name="display_full_description" value="0" id="label_5a" {% if settings.display_full_description == '0' %} checked {% endif %} /></td>
-										<td><input type="radio" name="display_full_description" value="1" id="label_5b" {% if settings.display_full_description == '1' %} checked {% endif %} /></td>
+										<th>{{ trad.match_descr }}</th>
+										<td>
+											<select class="form-control" name="display_full_description_nc">
+												<option value="0" {% if settings.display_full_description_nc == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_full_description_nc == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_full_description_nc == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_full_description_vi">
+												<option value="0" {% if settings.display_full_description_vi == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_full_description_vi == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_full_description_vi == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_full_description_us">
+												<option value="0" {% if settings.display_full_description_us == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_full_description_us == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_full_description_us == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_full_description_gr">
+												<option value="0" {% if settings.display_full_description_gr == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_full_description_gr == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_full_description_gr == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_full_description_ad">
+												<option value="0" {% if settings.display_full_description_ad == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_full_description_ad == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_full_description_ad == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
 									</tr>
 									<tr>
-										<td>{{ trad.type }}</td>
-										<td><input type="radio" name="display_type" value="0" id="label_4a" {% if settings.display_type == '0' %} checked {% endif %} /></td>
-										<td><input type="radio" name="display_type" value="1" id="label_4b" {% if settings.display_type == '1' %} checked {% endif %} /></td>
+										<th>{{ trad.type }}</th>
+										<td>
+											<select class="form-control" name="display_type_nc">
+												<option value="0" {% if settings.display_type_nc == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_type_nc == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_type_nc == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_type_vi">
+												<option value="0" {% if settings.display_type_vi == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_type_vi == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_type_vi == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_type_us">
+												<option value="0" {% if settings.display_type_us == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_type_us == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_type_us == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_type_gr">
+												<option value="0" {% if settings.display_type_gr == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_type_gr == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_type_gr == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_type_ad">
+												<option value="0" {% if settings.display_type_ad == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_type_ad == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_type_ad == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
 									</tr>
 								</tbody>
 							</table>

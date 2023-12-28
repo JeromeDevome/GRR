@@ -228,13 +228,6 @@ else
 			while ($t <= $end_t)
 			{
 				$d[$day_num]["id"][] = $row['2'];
-				/*if (Settings::get("display_info_bulle") == 1)
-					$d[$day_num]["who"][] = get_vocab("reservee au nom de").affiche_nom_prenom_email($row['4'], $row['12'], "nomail");
-				else if (Settings::get("display_info_bulle") == 2)
-					$d[$day_num]["who"][] = $row['8'];
-				else
-					$d[$day_num]["who"][] = "";*/
-				//$d[$day_num]["who1"][] = affichage_lien_resa_planning($row['3'], $row['2']);
 				$d[$day_num]["id_room"][]=$row['17'] ;
 				$d[$day_num]["color"][]=$row['6'];
 				//$d[$day_num]["res"][] = $row['7'];
@@ -334,6 +327,7 @@ else
 					}
 				}
 				$d[$day_num]["resa"][] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
+				$d[$day_num]["infobulle"][] = affichage_resa_info_bulle($overloadFieldList, 1, $row, $horaires);
 				if ($row[1] <= $midnight_tonight)
 					break;
 				$t = $midnight = $midnight_tonight;
@@ -546,9 +540,9 @@ foreach($ressources as $row)
 							if ($acces_fiche_reservation)
 							{
 								if (Settings::get("display_level_view_entry") == 0)
-									echo '<a title="'.get_vocab('voir_details').'" data-width="675" onclick="request('.$d[$cday]["id"][$i].','.$cday.','.$cmonth.','.$cyear.',\'all\',\'week_all\',readData);" data-rel="popup_name" class="poplight" style = "border-bottom:1px solid #FFF">'.PHP_EOL;
+									echo '<a title="'.$d[$cday]["infobulle"][$i].'" data-width="675" onclick="request('.$d[$cday]["id"][$i].','.$cday.','.$cmonth.','.$cyear.',\'all\',\'week_all\',readData);" data-rel="popup_name" class="poplight" style = "border-bottom:1px solid #FFF">'.PHP_EOL;
 								else
-									echo '<a class="lienCellule" style = "border-bottom:1px solid #FFF" title="'.get_vocab('voir_details').'" href="view_entry.php?id='.$d[$cday]["id"][$i].'&amp;page=week_all&amp;day='.$cday.'&amp;month='.$cmonth.'&amp;year='.$cyear.'&amp;" >'.PHP_EOL;
+									echo '<a class="lienCellule" style = "border-bottom:1px solid #FFF" title="'.$d[$cday]["infobulle"][$i].'" href="view_entry.php?id='.$d[$cday]["id"][$i].'&amp;page=week_all&amp;day='.$cday.'&amp;month='.$cmonth.'&amp;year='.$cyear.'&amp;" >'.PHP_EOL;
 							}
 
 								echo '<table class="pleine center">'.PHP_EOL;

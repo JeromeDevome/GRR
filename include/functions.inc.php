@@ -4899,9 +4899,16 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 	global $dformat;
 
 	$affichage = "";
+	$room = $resa[5];
 
 	// Heures ou créneaux + symboles <== ==>
-	if ($heures != "")
+	if( (authGetUserLevel(getUserName(), $room) == 0 && Settings::get("display_horaires_nc") == 1) || 
+		(authGetUserLevel(getUserName(), $room) == 1 && Settings::get("display_horaires_vi") == 1) ||
+		(authGetUserLevel(getUserName(), $room) == 2 && Settings::get("display_horaires_us") == 1) || 
+		(authGetUserLevel(getUserName(), $room) == 3 && Settings::get("display_horaires_gr") == 1) || 
+		(authGetUserLevel(getUserName(), $room) >= 4 && Settings::get("display_horaires_ad") == 1) &&
+		$heures != ""
+ 	)
         $affichage .= $heures."<br>";
 
 	// Ressource seulement dans les vues globales
@@ -4909,11 +4916,23 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 		$affichage .= $resa[5]."<br>";
 
 	// Bénéficiaire
-	if (Settings::get("display_beneficiaire") == 1)
+	if( (authGetUserLevel(getUserName(), $room) == 0 && Settings::get("display_beneficiaire_nc") == 1) || 
+		(authGetUserLevel(getUserName(), $room) == 1 && Settings::get("display_beneficiaire_vi") == 1) ||
+		(authGetUserLevel(getUserName(), $room) == 2 && Settings::get("display_beneficiaire_us") == 1) || 
+		(authGetUserLevel(getUserName(), $room) == 3 && Settings::get("display_beneficiaire_gr") == 1) || 
+		(authGetUserLevel(getUserName(), $room) >= 4 && Settings::get("display_beneficiaire_ad") == 1)  
+	  )
+	{
 		$affichage .= affiche_nom_prenom_email($resa[4], $resa[12], "nomail")."<br>";
+	}
 
 	// Type
-	if (Settings::get("display_type") == 1)
+	if( (authGetUserLevel(getUserName(), $room) == 0 && Settings::get("display_type_nc") == 1) || 
+		(authGetUserLevel(getUserName(), $room) == 1 && Settings::get("display_type_vi") == 1) ||
+		(authGetUserLevel(getUserName(), $room) == 2 && Settings::get("display_type_us") == 1) || 
+		(authGetUserLevel(getUserName(), $room) == 3 && Settings::get("display_type_gr") == 1) || 
+		(authGetUserLevel(getUserName(), $room) >= 4 && Settings::get("display_type_ad") == 1)  
+	  )
 	{
         $typeResa = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area JOIN ".TABLE_PREFIX."_entry ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter WHERE ".TABLE_PREFIX."_entry.id = '".$resa[2]."';");
 		if ($typeResa != -1)
@@ -4921,20 +4940,32 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 	}
 
 	// Brève description ou le numéro de la réservation
-	if ((Settings::get("display_short_description") == 1) && ($resa[3] != ""))
+	if( (authGetUserLevel(getUserName(), $room) == 0 && Settings::get("display_short_description_nc") == 1) || 
+		(authGetUserLevel(getUserName(), $room) == 1 && Settings::get("display_short_description_vi") == 1) ||
+		(authGetUserLevel(getUserName(), $room) == 2 && Settings::get("display_short_description_us") == 1) || 
+		(authGetUserLevel(getUserName(), $room) == 3 && Settings::get("display_short_description_gr") == 1) || 
+		(authGetUserLevel(getUserName(), $room) >= 4 && Settings::get("display_short_description_ad") == 1) &&
+		$resa[3] != ""
+	  )
 		$affichage .= htmlspecialchars($resa[3],ENT_NOQUOTES)."<br>";
 	else
 		$affichage .= get_vocab("entryid").$resa[2]."<br>";
 
 	// Description Complète
-	if ((Settings::get("display_full_description") == 1) && ($resa[8] != ""))
+	if( (authGetUserLevel(getUserName(), $room) == 0 && Settings::get("display_full_description_nc") == 1) || 
+		(authGetUserLevel(getUserName(), $room) == 1 && Settings::get("display_full_description_vi") == 1) ||
+		(authGetUserLevel(getUserName(), $room) == 2 && Settings::get("display_full_description_us") == 1) || 
+		(authGetUserLevel(getUserName(), $room) == 3 && Settings::get("display_full_description_gr") == 1) || 
+		(authGetUserLevel(getUserName(), $room) >= 4 && Settings::get("display_full_description_ad") == 1) &&
+		$resa[8] != ""
+	  )
 		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES)."<br>";
 
 	// Champs Additionnels
     // la ressource associée à la réservation :
 	//$res = mrbsGetEntryInfo($resa[2]);
 	//$room = (!$res) ? -1 : $res["room_id"]; 
-    $room = $resa[5];
+   
 	// Les champs add :
 	$overload_data = grrGetOverloadDescArray($ofl, $resa[16]);//mrbsEntryGetOverloadDesc($resa[2]);
 	foreach ($overload_data as $fieldname=>$field)
@@ -4970,6 +5001,98 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 		else
 			$affichage .= " <img src=\"img_grr/hourglass.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Buzy\"> ";
 	}
+
+	return $affichage;
+}
+/*
+Construit les informations à afficher sur les plannings week_all, month ou month_all
+$vue = 1 pour une ressource / 2 vue multiple ressource
+$ofl = overload fields list, ne dépend que du domaine, donc est constant dans la boucle d'affichage
+*/
+function affichage_resa_info_bulle($ofl, $vue, $resa, $heures)
+{
+
+	$affichage = "";
+	$room = $resa[5];
+
+	// Heures ou créneaux + symboles <== ==>
+	if( (authGetUserLevel(getUserName(), $room) == 0 && Settings::get("display_horaires_nc") == 2) || 
+		(authGetUserLevel(getUserName(), $room) == 1 && Settings::get("display_horaires_vi") == 2) ||
+		(authGetUserLevel(getUserName(), $room) == 2 && Settings::get("display_horaires_us") == 2) || 
+		(authGetUserLevel(getUserName(), $room) == 3 && Settings::get("display_horaires_gr") == 2) || 
+		(authGetUserLevel(getUserName(), $room) >= 4 && Settings::get("display_horaires_ad") == 2) &&
+		$heures != ""
+ 	)
+        $affichage .= $heures."\n";
+
+	// Ressource seulement dans les vues globales
+	if($vue == 2)
+		$affichage .= $resa[5]."\n";
+
+	// Bénéficiaire
+	if( (authGetUserLevel(getUserName(), $room) == 0 && Settings::get("display_beneficiaire_nc") == 2) || 
+		(authGetUserLevel(getUserName(), $room) == 1 && Settings::get("display_beneficiaire_vi") == 2) ||
+		(authGetUserLevel(getUserName(), $room) == 2 && Settings::get("display_beneficiaire_us") == 2) || 
+		(authGetUserLevel(getUserName(), $room) == 3 && Settings::get("display_beneficiaire_gr") == 2) || 
+		(authGetUserLevel(getUserName(), $room) >= 4 && Settings::get("display_beneficiaire_ad") == 2)  
+	  )
+	{
+		$affichage .= affiche_nom_prenom_email($resa[4], $resa[12], "nomail")."\n";
+	}
+
+	// Type
+	if( (authGetUserLevel(getUserName(), $room) == 0 && Settings::get("display_type_nc") == 2) || 
+		(authGetUserLevel(getUserName(), $room) == 1 && Settings::get("display_type_vi") == 2) ||
+		(authGetUserLevel(getUserName(), $room) == 2 && Settings::get("display_type_us") == 2) || 
+		(authGetUserLevel(getUserName(), $room) == 3 && Settings::get("display_type_gr") == 2) || 
+		(authGetUserLevel(getUserName(), $room) >= 4 && Settings::get("display_type_ad") == 2)  
+	  )
+	{
+        $typeResa = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area JOIN ".TABLE_PREFIX."_entry ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter WHERE ".TABLE_PREFIX."_entry.id = '".$resa[2]."';");
+		if ($typeResa != -1)
+			$affichage .= $typeResa."\n";
+	}
+
+	// Brève description ou le numéro de la réservation
+	if( (authGetUserLevel(getUserName(), $room) == 0 && Settings::get("display_short_description_nc") == 2) || 
+		(authGetUserLevel(getUserName(), $room) == 1 && Settings::get("display_short_description_vi") == 2) ||
+		(authGetUserLevel(getUserName(), $room) == 2 && Settings::get("display_short_description_us") == 2) || 
+		(authGetUserLevel(getUserName(), $room) == 3 && Settings::get("display_short_description_gr") == 2) || 
+		(authGetUserLevel(getUserName(), $room) >= 4 && Settings::get("display_short_description_ad") == 2) &&
+		$resa[3] != ""
+	  )
+		$affichage .= htmlspecialchars($resa[3],ENT_NOQUOTES)."\n";
+	else
+		$affichage .= get_vocab("entryid").$resa[2]."\n";
+
+	// Description Complète
+	if( (authGetUserLevel(getUserName(), $room) == 0 && Settings::get("display_full_description_nc") == 2) || 
+		(authGetUserLevel(getUserName(), $room) == 1 && Settings::get("display_full_description_vi") == 2) ||
+		(authGetUserLevel(getUserName(), $room) == 2 && Settings::get("display_full_description_us") == 2) || 
+		(authGetUserLevel(getUserName(), $room) == 3 && Settings::get("display_full_description_gr") == 2) || 
+		(authGetUserLevel(getUserName(), $room) >= 4 && Settings::get("display_full_description_ad") == 2) &&
+		$resa[8] != ""
+	  )
+		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES)."\n";
+
+	// Champs Additionnels
+    // la ressource associée à la réservation :
+	//$res = mrbsGetEntryInfo($resa[2]);
+	//$room = (!$res) ? -1 : $res["room_id"]; 
+   
+	// Les champs add :
+	$overload_data = grrGetOverloadDescArray($ofl, $resa[16]);//mrbsEntryGetOverloadDesc($resa[2]);
+	foreach ($overload_data as $fieldname=>$field)
+	{
+		if (( (authGetUserLevel(getUserName(), $room) >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "") {
+			// ELM - Gestion des champs aditionnels multivalués (lignes 384 - 392)
+			$valeur = str_replace("|", ",", $field["valeur"]);
+			$affichage .= "<i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($valeur,ENT_NOQUOTES|ENT_SUBSTITUTE)."</i>\n";
+		}
+	}
+
+	if($affichage == "")
+		$affichage = get_vocab('voir_details');
 
 	return $affichage;
 }

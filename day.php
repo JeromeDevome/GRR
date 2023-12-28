@@ -176,22 +176,13 @@ else
 		if ($row["start_time"] < $am7)
 		{
             $today[$row["room_id"]][$am7]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
-			if ($settings->get("display_info_bulle") == 1)
-				$today[$row["room_id"]][$am7]["who"] = get_vocab("reservation_au_nom_de").affiche_nom_prenom_email($row["beneficiaire"], $row["beneficiaire_ext"], "nomail");
-			else if (($settings->get("display_info_bulle") == 2)&&($row['description'] != ""))
-				$today[$row["room_id"]][$am7]["who"] = $row["description"];
-			else
-				$today[$row["room_id"]][$am7]["who"] = get_vocab('voir_details');
+			$today[$row["room_id"]][$am7]["who"] = affichage_resa_info_bulle($overloadFieldList, 1, $row, $horaires);
 		}
 		else
 		{
             $today[$row["room_id"]][$start_t]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
-			if ($settings->get("display_info_bulle") == 1)
-				$today[$row["room_id"]][$start_t]["who"] = get_vocab("reservation_au_nom_de").affiche_nom_prenom_email($row["beneficiaire"], $row["beneficiaire_ext"]);
-			else if (($settings->get("display_info_bulle") == 2)&&($row['description'] != ""))
-				$today[$row["room_id"]][$start_t]["who"] = $row["description"];
-			else
-				$today[$row["room_id"]][$start_t]["who"] = get_vocab('voir_details');
+			$today[$row["room_id"]][$start_t]["who"] = affichage_resa_info_bulle($overloadFieldList, 1, $row, $horaires);
+
 		}
 	}
 }

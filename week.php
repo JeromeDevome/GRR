@@ -307,12 +307,7 @@ else
                         $horaires = date('H:i',$d[$weekday][$slot]["horaireDebut"]).get_vocab("to"). $heure_fin."";
                         $d[$weekday][$slot]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
                         $d[$weekday][$slot]["id"] = $row["id"];
-                        if (Settings::get("display_info_bulle") == 1)
-                            $d[$weekday][$slot]["who"] = get_vocab("reservee au nom de").affiche_nom_prenom_email($row["beneficiaire"],$row["beneficiaire_ext"],"nomail");
-                        else if (Settings::get("display_info_bulle") == 2)
-                            $d[$weekday][$slot]["who"] = $row["description"];
-                        else
-                            $d[$weekday][$slot]["who"] = "";
+						$d[$weekday][$slot]["who"] = affichage_resa_info_bulle($overloadFieldList, 1, $row, $horaires);
                     }
                 }
                 $t += $this_area_resolution;
@@ -379,12 +374,7 @@ else
                         $horaires = "";
                         $d[$weekday][$slot]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
                         $d[$weekday][$slot]["id"] = $row["id"];
-                        if (Settings::get("display_info_bulle") == 1)
-                            $d[$weekday][$slot]["who"] = get_vocab("reservee au nom de").affiche_nom_prenom_email($row["beneficiaire"],$row["beneficiaire_ext"],"nomail");
-                        else if (Settings::get("display_info_bulle") == 2)
-                            $d[$weekday][$slot]["who"] = $row["description"];
-                        else
-                            $d[$weekday][$slot]["who"] = "";
+						$d[$weekday][$slot]["who"] = affichage_resa_info_bulle($overloadFieldList, 1, $row, $horaires);
                     }
                 }
                 $t += 60; 

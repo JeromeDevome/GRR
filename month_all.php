@@ -279,6 +279,7 @@ else  //Build an array of information about each day in the month.
                     }
                 }
                 $d[$day_num]["resa"][] = affichage_resa_planning_complet($overloadFieldList, 2, $row, $horaires);
+				$d[$day_num]["infobulle"][] = affichage_resa_info_bulle($overloadFieldList, 1, $row, $horaires);
                 //Only if end time > midnight does the loop continue for the next day.
                 if ($row[1] <= $midnight_tonight)
                     break;
@@ -454,11 +455,11 @@ echo "</caption>";
 								{
 									$currentPage = 'month_all';
 									$id =   $d[$cday]["id"][$i];
-									echo '<a title="',get_vocab('voir_details'),'" data-width="675" onclick="request(',$id,',',$cday,',',$month,',',$year.',\'all\',\''.$currentPage,'\',readData);" data-rel="popup_name" class="poplight lienCellule">',PHP_EOL;
+									echo '<a title="',$d[$cday]["infobulle"][$i],'" data-width="675" onclick="request(',$id,',',$cday,',',$month,',',$year.',\'all\',\''.$currentPage,'\',readData);" data-rel="popup_name" class="poplight lienCellule">',PHP_EOL;
 								}
 								else
 								{
-									echo '<a class="lienCellule" title="',get_vocab('voir_details'),'" href="view_entry.php?id=',$d[$cday]["id"][$i],'&amp;day=',$cday,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=month_all">',PHP_EOL;
+									echo '<a class="lienCellule" title="',$d[$cday]["infobulle"][$i],'" href="view_entry.php?id=',$d[$cday]["id"][$i],'&amp;day=',$cday,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=month_all">',PHP_EOL;
 								}
 							}
                             echo $d[$cday]["resa"][$i];
