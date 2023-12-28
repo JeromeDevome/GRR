@@ -45,6 +45,20 @@ if (isset($_GET['sync'])) {
             fatal_error(0, grr_sql_error());
         else
             $d['enregistrement'] = "Synchronisation terminée !<br />";
+    } elseif ($_GET['sync'] == 4) {
+        $sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET default_site='".Settings::get('default_site')."'";
+        if (grr_sql_command($sql) < 0)
+            fatal_error(0, grr_sql_error());
+        else
+            $sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET default_area='".Settings::get('default_area')."'";
+            if (grr_sql_command($sql) < 0)
+                fatal_error(0, grr_sql_error());
+            else
+                $sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET default_room='".Settings::get('default_room')."'";
+                if (grr_sql_command($sql) < 0)
+                    fatal_error(0, grr_sql_error());
+                else
+                    $d['enregistrement'] = "Synchronisation terminée !<br />";
     }
 }
 
