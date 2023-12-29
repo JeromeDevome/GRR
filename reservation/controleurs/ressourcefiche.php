@@ -18,8 +18,6 @@
 
 $grr_script_name = "ressourcefiche.php";
 
-include_once('include/pages.class.php');
-
 $trad = $vocab;
 
 $id_room = isset($_GET["id_room"]) ? $_GET["id_room"] : NULL;
@@ -38,7 +36,6 @@ if (((authGetUserLevel(getUserName(),-1) < 1) && (Settings::get("authentificatio
 	showAccessDenied('');
 	exit();
 }
-
 
 $res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_room WHERE id=$id_room");
 if (!$res)
