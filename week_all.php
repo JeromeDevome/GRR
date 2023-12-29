@@ -492,7 +492,7 @@ foreach($ressources as $row)
 			echo '<span class="texte_ress_tempo_indispo">'.get_vocab("ressource_temporairement_indisponible").'</span><br />'.PHP_EOL;
 		if (verif_display_fiche_ressource($user_name, $row['id']) && $_GET['pview'] != 1)
 		{
-			echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$row['id'].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'">'.PHP_EOL;
+			echo '<a href="javascript:centrerpopup(\'app.php?p=ressourcefiche&id_room='.$row['id'].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'">'.PHP_EOL;
 			echo '<span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
 		}
 		if (authGetUserLevel($user_name,$row['id']) > 2 && $_GET['pview'] != 1)

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<title>{{trad.mrbs}}{{trad.deux_points}}{{settings.company}}</title>
+		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+	</head>
+	<body>
+		<div id="container">
+
+			<h3 style="text-align:center;">{{trad.room}}{{trad.deux_points}} {{ressource.room_name}}</h3>
+			<h3 style="text-align:center;">({{d.area_name}} {% if d.area_access == "r" %} - {{trad.access}}{% endif %})</h3>
+
+			{% if ressource.statut_room == 0 %}
+				<h2 style="text-align:center;"><span class="avertissement">{{trad.ressource_temporairement_indisponible}}</span></h2>
+			{% endif %}
+
+			{% if d.visuDescription == 1 %}
+				<h3>{{trad.description}}</h3>
+				<p>{{ressource.description}}</p>
+			{% endif %}
+
+			{% if d.visuDescriptionComplete == 1 %}
+				<h3>{{trad.match_descr}}</h3>
+				<p>{{ressource.comment_room | raw}}</p>
+			{% endif %}
+
+			{% if ressource.capacity > 0 %}
+				<h3>{{trad.capacity_2}} {{ressource.capacity}}</h3>
+			{% endif %}
+
+			{% if ressource.max_booking != -1 %}
+				<p>{{trad.msg_max_booking}}{{trad.deux_points}} {{ressource.max_booking}}</p>
+			{% endif %}
+
+			{% if d.max_booking_per_area >= 0 %}
+				<p>{{trad.msg_max_booking_area}}{{trad.deux_points}} {{d.max_booking_per_area}}</p>
+			{% endif %}
+
+			{% if ressource.delais_max_resa_room != -1 %}
+				<p>{{trad.delais_max_resa_room_2 | raw}} <b>{{ressource.delais_max_resa_room}}</b></p>
+			{% endif %}
+
+			{% if ressource.delais_min_resa_room != 0 %}
+				<p>{{trad.delais_min_resa_room_2 | raw}} <b>{{ressource.delais_min_resa_room}}</b></p>
+			{% endif %}
+
+			<div style="text-align:center; margin-top:30px">
+					{% if d.lienImage %}
+						<b>{{trad.Image_de_la_ressource}}{{trad.deux_points}}</b><br>
+						<img src="{{d.lienImage}}" alt="Image Ressource" />
+					{% else %}
+						<b>{{trad.Pas_image_disponible}}</b>
+					{% endif %}
+			</div>
+		</div>
+
+	</body>
+</html>

@@ -453,7 +453,7 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 }
 if (verif_display_fiche_ressource($user_name, $room) && $_GET['pview'] != 1)
 {
-	echo '<a href="javascript:centrerpopup(\'view_room.php?id_room=',$room,'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="',
+	echo '<a href="javascript:centrerpopup(\'app.php?p=ressourcefiche&id_room=',$room,'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="',
 	get_vocab("fiche_ressource"),'"><span class="glyphcolor glyphalign glyphicon glyphicon-search"></span></a>',PHP_EOL;
 }
 if ($authGetUserLevel > 2 && $_GET['pview'] != 1)
