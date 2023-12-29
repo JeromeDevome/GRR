@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<title>{{trad.mrbs}}{{trad.deux_points}}{{settings.company}}</title>
+		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+	</head>
+	<body>
+		<div id="container">
+
+			<h3 style="text-align:center;">{{trad.match_area}}{{trad.deux_points}} {{domaine.area_name}} {% if domaine.access == "r" %} (<span class="avertissement">{{trad.access}}</span>){% endif %}</h3>
+
+			<h2>{{trad.utilisateurs_ayant_privileges_sur_domaine}}</h2>
+
+			{% if admindomaine or accesdomaine %}
+				{% if admindomaine %}
+					<!-- Utilisateurs : administrateur du domaine -->
+					<h3>{{trad.utilisateurs_administrateurs_domaine}}</h3>
+					<ul>
+					{% for adminD in admindomaine %}
+						<li>{{adminD.nom}} {{adminD.prenom}} ({{adminD.login}}) {% if adminD.etat == "inactif" %} - <i>{{trad.no_activ_user}}</i> {% endif %}</li>
+					{% endfor %}
+					</ul>
+				{% endif %}
+
+				{% if accesdomaine %}
+					<!-- Utilisateurs : ayant accès au domaine restreint-->
+					<h3>{{trad.utilisateurs_acces_restreint_domaine}}</h3>
+					<ul>
+					{% for accesD in accesdomaine %}
+						<li>{{accesD.nom}} {{accesD.prenom}} ({{accesD.login}}) {% if accesD.etat == "inactif" %} - <i>{{trad.no_activ_user}}</i> {% endif %}</li>
+					{% endfor %}
+					</ul>
+				{% endif %}
+			{% else %}
+				<p>{{trad.aucun_autilisateur}}</p>
+			{% endif %}
+		</div>
+
+	</body>
+</html>

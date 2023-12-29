@@ -58,7 +58,7 @@
 														<td><a href="?p=admin_room_del&id_site={{ trad.dIdSite }}&type=area&id_area={{ domaine.id }}"><span class="fa fa-trash"></a></td>
 													{% endif %}
 													<td><a href="?p=admin_type_area&id_area={{ domaine.id }}"><span class="fa fa-tags"></a></td>
-													<td><a href="javascript:centrerpopup('../view_rights_area.php?area_id={{ domaine.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fas fa-user-shield"></a></td>
+													<td><a href="javascript:centrerpopup('../app.php?p=vuedroitsdomaine&area_id={{ domaine.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fas fa-user-shield"></a></td>
 												</tr>
 											{% endfor %}
 										</table>
@@ -104,7 +104,7 @@
 														<td><a href="?p=admin_room_del&id_site={{ trad.dIdSite }}&type=area&id_area={{ domaine.id }}"><span class="fa fa-trash"></a></td>
 													{% endif %}
 													<td><a href="?p=admin_type_area&id_area={{ domaine.id }}"><span class="fa fa-tags"></a></td>
-													<td><a href="javascript:centrerpopup('../view_rights_area.php?area_id={{ domaine.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fas fa-user-shield"></a></td>
+													<td><a href="javascript:centrerpopup('../app.php?p=vuedroitsdomaine&area_id={{ domaine.id }}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{ trad.privileges }}"><span class="fas fa-user-shield"></a></td>
 												</tr>
 											</table>
 										</td>
