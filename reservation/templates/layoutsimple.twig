@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="Robots" content="noindex" />
+		<title>GRR - {{ settings.company }}</title>
+		<link rel="shortcut icon" href="favicon.ico" />
+		<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="./themes/default/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="./{{ d.sheetcss }}" />
+		{{ d.sheetcssperso|raw }}
+		{% block css %}{% endblock %}
+	</head>
+
+	<body>
+		{% block content %}{% endblock %}
+
+		{% block javascript %}{% endblock %}
+	</body>
+</html>
