@@ -42,7 +42,8 @@ if (!Settings::load())
 require_once("./include/session.inc.php");
 include "./include/language.inc.php";
 
-grr_resumeSession();
+if($page != "deconnexion")
+	grr_resumeSession();
 
 // pour le traitement des modules
 include "./include/hook.class.php";

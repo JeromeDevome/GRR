@@ -1179,9 +1179,9 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 				{
 					$disconnect_link = true;
 					if (Settings::get("authentification_obli") == 1)
-						echo '<br /> <a href="'.$racine.'logout.php?auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+						echo '<br /> <a href="'.$racine.'app.php?p=deconnexion&auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
 					else
-						echo '<br /> <a href="'.$racine.'logout.php?auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+						echo '<br /> <a href="'.$racine.'app.php?p=deconnexion&auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
 				}
 				if ((Settings::get("Url_portail_sso") != '') && (isset($_SESSION['est_authentifie_sso'])))
 				{
@@ -1402,9 +1402,9 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 				{
 					$disconnect_link = true;
 					if (Settings::get("authentification_obli") == 1)
-						$d['lienDeconnexion'] = '<br /> <a href="'.$racine.'logout.php?auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+						$d['lienDeconnexion'] = '<br /> <a href="'.$racine.'app.php?p=deconnexion&auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
 					else
-						$d['lienDeconnexion'] = '<br /> <a href="'.$racine.'logout.php?auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+						$d['lienDeconnexion'] = '<br /> <a href="'.$racine.'app.php?p=deconnexion&auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
 				}
 				if ((Settings::get("Url_portail_sso") != '') && (isset($_SESSION['est_authentifie_sso'])))
 				{
@@ -6324,9 +6324,9 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 				{
 					$disconnect_link = true;
 					if (Settings::get("authentification_obli") == 1)
-						echo '<br /> <a href="'.$racine.'logout.php?auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+						echo '<br /> <a href="'.$racine.'app.php?p=deconnexion&auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
 					else
-						echo '<br /> <a href="'.$racine.'logout.php?auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+						echo '<br /> <a href="'.$racine.'app.php?p=deconnexion&auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
 				}
 				if ((Settings::get("Url_portail_sso") != '') && (isset($_SESSION['est_authentifie_sso'])))
 				{

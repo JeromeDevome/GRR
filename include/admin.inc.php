@@ -39,7 +39,7 @@ if (!Settings::load())
 require_once("session.inc.php");
 // Resume session
 if (!grr_resumeSession()) {
-	header("Location: ../logout.php?auto=1&url=$url");
+	header("Location: ../app.php?p=deconnexion&auto=1&url=$url");
 	die();
 };
 // Paramètres langage

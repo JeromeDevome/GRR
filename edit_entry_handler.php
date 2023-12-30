@@ -37,7 +37,7 @@ require_once("./include/session.inc.php");
 // Resume session
 if (!grr_resumeSession())
 {
-	header("Location: ./logout.php?auto=1&url=$url"); // $url sort de session.inc.php
+	header("Location: ./app.php?p=deconnexion&auto=1&url=$url"); // $url sort de session.inc.php
 	die();
 }
 $user = getUserName(); // ici on devrait avoir un identifiant

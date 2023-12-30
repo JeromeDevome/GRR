@@ -35,7 +35,7 @@ if (!grr_resumeSession())
 	$fin_session = 'y';
 if (($fin_session == 'y') && (Settings::get("authentification_obli") == 1))
 {
-	header("Location: ./logout.php?auto=1&url=$url");
+	header("Location: ./app.php?p=deconnexion&auto=1&url=$url");
 	die();
 }
 if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))

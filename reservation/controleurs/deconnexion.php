@@ -1,11 +1,11 @@
 <?php
 /**
- * logout.php
+ * deconnexion.php
  * script de deconnexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2023-12-30 11:10$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -15,19 +15,13 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-require_once("personnalisation/connect.inc.php");
-require_once("include/config.inc.php");
-include "include/misc.inc.php";
-include "include/functions.inc.php";
-require_once("include/$dbsys.inc.php");
-// Settings
-require_once("./include/settings.class.php");
-//Chargement des valeurs de la table settingS
-if (!Settings::load())
-	die("Erreur chargement settings");
-// Paramètres langage
-include "include/language.inc.php";
-require_once("./include/session.inc.php");
+
+$trad = $vocab;
+
+$auto = isset($_GET["auto"]) ? $_GET["auto"] : 0;
+if (isset($auto))
+	settype($auto,"integer");
+
 if ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_statut') == 'lasso_utilisateur'))
 {
 	require_once(SPKITLASSO.'/lassospkit_public_api.inc.php');
@@ -42,7 +36,7 @@ if ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_sta
 		lassospkit_clean();
 	}
 }
-grr_closeSession($_GET['auto']);
+grr_closeSession($auto);
 if (isset($_GET['url']))
 {
 	$url = rawurlencode($_GET['url']);
@@ -61,18 +55,11 @@ if (isset($_GET['redirect_page_accueil']) && ($_GET['redirect_page_accueil'] == 
 	header("Location: ./".htmlspecialchars_decode(page_accueil())."");
 	exit;
 }
-echo begin_page(get_vocab("mrbs"),"no_session");
+
+if (!$auto)
+    $d['msgLogout'] = get_vocab("msg_logout1");
+else
+    $d['msgLogout'] = get_vocab("msg_logout2");
+
+echo $twig->render('deconnexion.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
 ?>
-<div class="center">
-	<h1>
-		<?php
-		if (!$_GET['auto'])
-			echo (get_vocab("msg_logout1")."<br/>");
-		else
-			echo (get_vocab("msg_logout2")."<br/>");
-		?>
-	</h1><a href="login.php"><?php echo (get_vocab("msg_logout3")."<br/>"); ?></a>
-</p>
-</div>
-</body>
-</html>

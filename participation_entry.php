@@ -29,7 +29,7 @@ if (!Settings::load())
 require_once("./include/session.inc.php");
 if (!grr_resumeSession())
 {
-	header("Location: ./logout.php?auto=1&url=$url");
+	header("Location: ./app.php?p=deconnexion&auto=1&url=$url");
 	die();
 };
 include "include/language.inc.php";

@@ -23,7 +23,7 @@ if (!Settings::load())
 $desactive_VerifNomPrenomUser='y';
 if (!grr_resumeSession())
 {
-	header('Location: logout.php?auto=1&url=$url');
+	header('Location: app.php?p=deconnexion&auto=1&url=$url');
 	die();
 };
 
