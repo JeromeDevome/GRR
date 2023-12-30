@@ -1,11 +1,12 @@
-<!DOCTYPE html>
-<html lang="fr">
-	<head>
-		<meta charset="utf-8">
-		<title>{{trad.mrbs}}{{trad.deux_points}}{{settings.company}}</title>
-		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
-	</head>
-	<body>
+{% extends 'layoutsimple.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
 		<div id="container">
 
 			<h3 style="text-align:center;">{{trad.room}}{{trad.deux_points}} {{ressource.room_name}}</h3>
@@ -72,6 +73,7 @@
                 {% endif %}
             {% endif %}
 		</div>
+{% endblock %}
 
-	</body>
-</html>
+{% block javascript %}
+{% endblock %}

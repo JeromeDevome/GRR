@@ -1,11 +1,12 @@
-<!DOCTYPE html>
-<html lang="fr">
-	<head>
-		<meta charset="utf-8">
-		<title>{{trad.mrbs}}{{trad.deux_points}}{{settings.company}}</title>
-		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
-	</head>
-	<body>
+{% extends 'layoutsimple.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
 		<div id="container">
 
 			<h3 style="text-align:center;">{{trad.match_area}}{{trad.deux_points}} {{domaine.area_name}} {% if domaine.access == "r" %} (<span class="avertissement">{{trad.access}}</span>){% endif %}</h3>
@@ -36,6 +37,7 @@
 				<p>{{trad.aucun_autilisateur}}</p>
 			{% endif %}
 		</div>
+{% endblock %}
 
-	</body>
-</html>
+{% block javascript %}
+{% endblock %}
