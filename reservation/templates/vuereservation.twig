@@ -1,0 +1,308 @@
+{% extends d.modePage == 1 
+    ? 'layout.twig' 
+    : 'layoutsimple.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+    {% if d.modePage == 1 %}
+    <div class="container">
+        {% if d.back != "" %}
+            <div><a href="{{d.back|raw}}">{{trad.returnprev}}</a></div>
+        {% endif %}
+    {% endif %}
+
+    <fieldset>
+        <legend style="font-size:12pt;font-weight:bold">{{trad.entry}}{{trad.deux_points}} {{resa.breveDescription}}</legend>
+        <table>
+            <tr>
+                <th>{{trad.description}}{{trad.deux_points}}</th>
+                <td>{{resa.description}}</td>
+            </tr>
+            <tr>
+                <th>{{trad.room}}{{trad.deux_points}}</th>
+                <td>{{resa.domaine}} - {{resa.ressource}}</td>
+            </tr>
+            <tr>
+                <th>{{trad.start_date}}{{trad.deux_points}}</th>
+                <td>{{resa.datedepart}}</td>
+            </tr>
+            <tr>
+                <th>{{trad.duration}}{{trad.deux_points}}</th>
+                <td>{{resa.duree}} {{resa.dureeunite}}</td>
+            </tr>
+            <tr>
+                <th>{{trad.end_date}}</th>
+                <td>{{resa.datefin}}</td>
+            </tr>
+            <tr>
+                <th>{{trad.type}}{{trad.deux_points}}</th>
+                <td>{{resa.type}}</td>
+            </tr>
+            {% if resa.beneficiaire %}
+            <tr>
+                <th>{{trad.reservation_au_nom_de}}{{trad.deux_points}}</th>
+                <td>{{resa.beneficiaire|raw}}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>{{trad.created_by}}{{trad.deux_points}}</th>
+                <td>
+                    {{resa.createur|raw}} 
+                    {% if resa.emprunte %}
+                      <span class="avertissement">({{trad.reservation_en_cours}}) <img src="img_grr/buzy_big.png" align=middle alt="{{trad.ressource_actuellement_empruntee}}" title="{{trad.ressource_actuellement_empruntee}}" border="0" width="30" height="30" class="print_image" /></span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{{trad.lastupdate}}{{trad.deux_points}}</th>
+                <td>{{resa.derniereMAJ}}</td>
+            </tr>
+            {% for champC in champscomp %}
+            <tr>
+                <th>{{champC.nom}}{{trad.deux_points}}</th>
+                <td>{{champC.valeur}}</td>
+            </tr>
+            {% endfor %}
+            {% if resa.clef == 1 %}
+            <tr>
+                <th>{{trad.clef}}{{trad.deux_points}}</th>
+                <td><img src="img_grr/key.png" alt="clef"></td>
+            </tr>
+            {% endif %}
+
+            {% if resa.courrier == 1 %}
+            <tr>
+                <th>{{trad.courrier}}{{trad.deux_points}}</th>
+                <td><img src="img_grr/courrier.png" alt="courrier"></td>
+            </tr>
+            {% endif %}
+
+            {% if resa.delaisOption %}
+            <tr>
+                <th colspan="2"><div class="alert alert-danger" role="alert">{{trad.reservation_a_confirmer_au_plus_tard_le}} {{resa.delaisOption}}</div></th>
+            </tr>
+            {% endif %}
+
+           
+            {% if resa.moderation == 1 %}
+            <tr>
+                <th>{{trad.moderation}}{{trad.deux_points}}</th>
+                <td class="avertissement">{{trad.en_attente_moderation}}</td>
+            </tr>
+            {% endif %}
+
+            {% if d.levelUser > 1 %}
+                {% if resa.moderation == 2 %}
+                <tr>
+                    <th>{{trad.moderation}}{{trad.deux_points}}</th>
+                    <td>
+                        <strong>{{trad.moderation_acceptee_par}} {{resa.nomModo}}</strong>
+                        {% if resa.commentaireModo %}
+                            <br>({{resa.commentaireModo}})
+                        {% endif %}
+                    </td>
+                </tr>
+                {% elseif resa.moderation == 3 %}
+                <tr>
+                    <th>{{trad.moderation}}{{trad.deux_points}}</th>
+                    <td>
+                        <strong>{{trad.moderation_refusee}} {{resa.nomModo}}</strong>
+                        {% if resa.commentaireModo %}
+                            <br>({{resa.commentaireModo}})
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endif %}
+            {% endif %}
+        </table>
+
+        {% if resa.nbParticipantMax > 0 %}
+            <div>
+                <h4>{{trad.participants}}{{trad.deux_points}}</h4>
+                {% if d.participationValidation == 1 %}
+                    <a class="btn btn-primary btn-xs" type="button" href="participation_entry.php?id={{resa.id}}&amp;series=0&amp;page={{d.page}}&amp;room_back={{d.room_back}}" onclick="return confirm('{{trad.participant_confirm_validation}}');" />{{trad.participant_validation}}</a>
+                {% elseif d.participationAnnulation == 1 %}
+                    <a class="btn btn-primary btn-xs" type="button" href="participation_entry.php?id={{resa.id}}&amp;series=0&amp;page={{d.page}}&amp;room_back={{d.room_back}}" onclick="return confirm('{{trad.participant_confirm_annulation}}');" />{{trad.participant_annulation}}</a>
+                {% endif %}
+            </div>
+            <div>
+                <p><b>{{trad.participant_inscrit}}{{trad.deux_points}}</b> {{resa.nbParticipantInscrit}}/{{resa.nbParticipantMax}}</p>
+                <button type='button' class='btn btn-primary btn-sm' id='btn_liste_participe' onclick="toggle_visibility('liste_participants');toggle_visibility('btn_liste_participe');toggle_visibility('btn_close_liste');">{{trad.participant_list}}</button>
+                <button type='button' class='btn btn-primary btn-sm' id='btn_close_liste' style='display:none' onclick="toggle_visibility('liste_participants');toggle_visibility('btn_liste_participe');toggle_visibility('btn_close_liste');">{{trad.participant_list_hide}}</button>
+                <p id='liste_participants' style='display:none'>{{resa.listeParticipants|raw}}</p>
+
+                {% if d.quiPeutReserverPour == 1 %}
+                    <button type='button' class='btn btn-primary btn-sm' id='btn_participe' onclick="toggle_visibility('form_participant');toggle_visibility('btn_participe');toggle_visibility('btn_close_participe');">{{trad.participant_register_form}}</button>
+                    <button type='button' class='btn btn-primary btn-sm' id='btn_close_participe' style='display:none' onclick="toggle_visibility('form_participant');toggle_visibility('btn_participe');toggle_visibility('btn_close_participe');">{{trad.participant_register_form_hide}}</button>";
+                    <div id="form_participant" style="display:none">';
+                    <h3>{{trad.add_multiple_user_to_list}}{{trad.deux_points}}</h3>';
+                    <form action="app.php" method="GET">';
+                    <select id="avail_users" name="agent" size="8" style="width:200px;" class ="select2" multiple ondblclick="Deplacer(this.form.agent,this.form.elements['reg_participant[]'])">
+                        {% for u in participantsDisponible %}
+                            <option value="{{u.login}}">{{u.nomPrenom}}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="button" value="&lt;&lt;" onclick="Deplacer(this.form.elements['reg_participant[]'],this.form.agent)"/>
+                    <input type="button" value="&gt;&gt;" onclick="Deplacer(this.form.agent,this.form.elements['reg_participant[]'])"/>
+                    <select name="reg_participant[]" id="reg_participant" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.elements['reg_participant[]'],this.form.agent)">
+                        {% for u in participantsEnregistrer %}
+                            <option value="{{u.login}}">{{u.nomPrenom}}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="hidden" name="p" value="vuereservation" >
+                    <input type="hidden" name="id" value="{{resa.id}}" >
+                    <input type="hidden" name="mode" value="page" >
+                    <input type="hidden" name="reg_part" value="valid">
+                    <input type="submit" value="Enregistrer" onclick="selectionner_liste(this.form.reg_participant);" />
+                    </form>
+                    </div>
+                    <p><hr></p>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if d.accesBoutons == 1 %}
+            <div>
+                {% if d.lienModifier %}
+                    <input class="btn btn-primary" type="button" onclick="location.href='{{d.lienModifier|raw}}'" value="{{trad.editentry}}"/>
+                {% endif %}
+                {% if d.lienCopier %}
+                    <input class="btn btn-info" type="button" onclick="location.href='{{d.lienCopier|raw}}'" value="{{trad.copyentry}}"/>
+                {% endif %}
+                {% if d.lienEchanger %}
+                    <input class="btn btn-warning" type="button" onclick="location.href='{{d.lienEchanger|raw}}'" value="{{trad.swapentry}}"/>
+                {% endif %}
+                {% if d.lienSupprimer %}
+                    <a class="btn btn-danger" type="button" href="{{d.lienSupprimer|raw}}'" onclick="return confirm('{{trad.confirmdel}}{{trad.deleteentry}}');">{{trad.deleteentry}}</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </fieldset>
+
+    {% if resa.idRepetition != 0 %}
+    <fieldset>
+        <legend style="font-weight:bold">{{trad.periodicite_associe}}</legend>
+        <table>
+            <tr>
+                <th>{{trad.rep_type}}</th>
+                <td>{{resa.typePeriode}}</td>
+            </tr>
+            {% if d.repDay %}
+            <tr>
+                <th>{{d.repDay}}</th>
+                <td>{{resa.opt}}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>{{trad.date}}{{trad.deux_points}}</th>
+                <td>{{resa.debutPeriode}}</td>
+            </tr>
+            <tr>
+                <th>{{trad.duration}}{{trad.deux_points}}</th>
+                <td>{{resa.dureePeriode}} {{resa.dureeUnitePeriode}}</td>
+            </tr>
+            <tr>
+                <th>{{trad.rep_end_date}}</th>
+                <td>{{resa.finPeriode}}</td>
+            </tr>
+            {% if d.lienPeriodeModifier %}
+            <tr>
+                <td colspan="2">
+                    <a class="btn btn-primary" type="button" href="{{d.lienPeriodeModifier|raw}}" onclick="return confirm('{{trad.confirmdel}}{{trad.alterseries}}');">{{trad.editseries}}</a>
+                </td>
+            </tr>
+            {% endif %}
+            {% if d.lienPeriodeSupprimer %}
+            <tr>
+                <td colspan="2">
+                    <a class="btn btn-danger" type="button" href="{{d.lienPeriodeSupprimer|raw}}" onclick="return confirm('{{trad.confirmdel}}{{trad.deleteseries}}');">{{trad.deleteseries}}</a>
+                </td>
+            </tr>
+            {% endif %}
+        </table>
+    </fieldset>
+    {% endif %}
+
+    {% if d.lienPDF %}
+        <br><input class="btn btn-primary" onclick="lienPDF('{{resa.id}}')" value="{{trad.Generer_pdf}}" />
+    {% endif %}
+
+    {% if d.fin_session == 'n' %}
+        <form action="app.php" method="get">
+            <input type="hidden" name="p" value="vuereservation" />
+            <input type="hidden" name="id" value="{{resa.id}}" />
+            <input type="hidden" name="page" value="{{d.page}}" />
+
+            {% if d.choixModeration %}
+                <input type="hidden" name="action_moderate" value="y" />
+                <fieldset>
+                    <legend style="font-weight:bold">{{trad.moderate_entry}}</legend>
+                    <p>
+                        <input type="radio" name="moderate" value="1" checked="checked" />{{trad.accepter_resa}}
+                        <br /><input type="radio" name="moderate" value="0" />{{trad.refuser_resa}}
+                        {% if resa.idRepetition %}
+                        <br /><input type="radio" name="moderate" value="S1" />{{trad.accepter_resa_serie}}
+                        <br /><input type="radio" name="moderate" value="S0" />{{trad.refuser_resa_serie}}
+                        {% endif %}
+                    </p>
+                    <p>
+                        <label for="description">{{trad.justifier_decision_moderation}}{{trad.deux_points}}</label>
+                        <textarea class="form-control" name="description" id="description" cols="40" rows="3"></textarea>
+                    </p>
+                </fieldset>
+            {% endif %}
+            {% if d.choixEmprunter %}
+                <fieldset>
+                    <legend style="font-weight:bold">{{trad.reservation_en_cours}}</legend>
+                    <span class="larger">{{trad.signaler_reservation_en_cours}}{{trad.deux_points}}</span>
+                    <br>{{trad.explications_signaler_reservation_en_cours}}
+                    {{d.ressourceEmpruntee|raw}}
+                    <br><input type="radio" name="statut_id" value="-" {% if resa.idStatut == "-" %}{% if d.ressourceEmprunteeYes !="yes" %}checked="checked"{% endif %}{% endif %} />{{trad.signaler_reservation_en_cours_option_0}}
+                    <br><br><input type="radio" name="statut_id" value="y" {% if resa.idStatut == "y" %}checked="checked"{% endif %} />{{trad.signaler_reservation_en_cours_option_1}}
+                    <br><br><input type="radio" name="statut_id" value="e" {% if resa.idStatut == "e" %}checked="checked"{% endif %} {% if settings.automatic_mail != "yes" or d.mailBeneficiaire == "" %}checked="checked"{% endif %} />{{trad.signaler_reservation_en_cours_option_2}}
+
+                    {% if settings.automatic_mail != "yes" or d.mailBeneficiaire == "" %}
+                        <br><i>({{trad.necessite_fonction_mail_automatique}})</i>
+                    {% endif %}
+                    {% if settings.automatic_mail == "yes" %}
+                        <br><br><input type="checkbox" name="envoyer_mail" value="y" {% if d.mailBeneficiaire == "" %}disabled{% endif %} />{{ trad.envoyer_maintenant_mail_retard }}
+                        <input type="hidden" name="mail_exist" value="{{d.mailBeneficiaire}}" />
+                    {% endif %}
+                </fieldset>
+            {% endif %}
+            {% if d.clefCourrier == 1 %}
+                <fieldset>
+                    {% if resa.ressourceClef == "y" %}
+                        <br><span class="larger">{{trad.status_clef}}{{trad.deux_points}}</span>
+                        <br><input type="checkbox" name="clef" value="y" {% if resa.clef == 1 %}checked{% endif %} /> {{trad.msg_clef}}
+                    {% endif %}
+
+                    {% if settings.show_courrier == "y" %}
+                        <br><span class="larger">{{trad.status_courrier}}{{trad.deux_points}}</span>
+                        <br><input type="checkbox" name="courrier" value="y" {% if resa.courrier == 1 %}checked{% endif %} /> {{trad.msg_courrier}}
+                    {% endif %}
+                </fieldset>
+            {% endif %}
+
+            <input type="hidden" name="day" value="{{d.day}}" />
+            <input type="hidden" name="month" value="{{d.month}}" />
+            <input type="hidden" name="year" value="{{d.year}}" />
+            <input type="hidden" name="back" value="{{d.back}}" />
+            <br /><div style="text-align:center;"><input class="btn btn-primary" type="submit" name="commit" value="{{trad.save}}" /></div>
+        </form>
+    {% endif %}
+
+    {% if d.modePage == 1 %}
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

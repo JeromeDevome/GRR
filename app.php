@@ -76,6 +76,7 @@ $d['dDay'] = $day;
 $d['dMonth'] = $month;
 $d['dYear'] = $year;
 
+$d['levelUser'] = authGetUserLevel(getUserName(),-1);
 $d['accesStats'] = verif_access_search(getUserName());
 $AllSettings = Settings::getAll();
 

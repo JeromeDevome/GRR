@@ -158,7 +158,7 @@ if ($_POST['moderate'] != 1)
 		$dupdate_repeat = grr_sql_query("UPDATE ".TABLE_PREFIX."_entry set repeat_id = '0' WHERE repeat_id='".$repeat_id."'");
 	}
 }
-$back = 'view_entry.php?id='.$_POST['id'].'&page='.$_POST['page'];
+$back = 'app.php?p=vuereservation&id='.$_POST['id'].'&page='.$_POST['page'];
 // recuperation
 header ('Location: '.$back);
 exit();

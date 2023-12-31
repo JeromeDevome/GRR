@@ -720,7 +720,7 @@ $semaine_changement_heure_hiver = 'no';
 									echo "<a title=\"".htmlspecialchars($d[$weekday][$slot - $decale_slot * $nb_case]["who"])."\"  data-width=\"675\" onclick=\"request($id,$wday,$wmonth,$wyear,$room,'$currentPage',readData);\" data-rel=\"popup_name\" class=\"poplight lienCellule\">" ;
 								}
 								else
-									echo "<a class=\"lienCellule\" title=\"".htmlspecialchars($d[$weekday][$slot-$decale_slot*$nb_case]["who"])."\"  href=\"view_entry.php?id=" . $d[$weekday][$slot - $decale_slot * $nb_case]["id"]."&amp;day=$wday&amp;month=$wmonth&amp;year=$wyear&amp;page=week\">";
+									echo "<a class=\"lienCellule\" title=\"".htmlspecialchars($d[$weekday][$slot-$decale_slot*$nb_case]["who"])."\"  href=\"app.php?p=vuereservation&id=" . $d[$weekday][$slot - $decale_slot * $nb_case]["id"]."&amp;day=$wday&amp;month=$wmonth&amp;year=$wyear&amp;page=week\">";
 							}
 							echo $d[$weekday][$slot - $decale_slot * $nb_case]["data"]."";
 							if ($acces_fiche_reservation)

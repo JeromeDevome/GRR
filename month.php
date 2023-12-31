@@ -444,7 +444,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                         }
                         else
                         {
-                            echo '<a class="lienCellule" title="'.$d[$cday]["infobulle"][$i].'" href="view_entry.php?id=',$d[$cday]["id"][$i],'&amp;day=',$cday,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=month">';
+                            echo '<a class="lienCellule" title="'.$d[$cday]["infobulle"][$i].'" href="app.php?p=vuereservation&id=',$d[$cday]["id"][$i],'&amp;day=',$cday,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=month">';
                         }
                     }
                     echo $d[$cday]["resa"][$i];

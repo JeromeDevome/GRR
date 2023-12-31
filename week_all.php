@@ -542,7 +542,7 @@ foreach($ressources as $row)
 								if (Settings::get("display_level_view_entry") == 0)
 									echo '<a title="'.$d[$cday]["infobulle"][$i].'" data-width="675" onclick="request('.$d[$cday]["id"][$i].','.$cday.','.$cmonth.','.$cyear.',\'all\',\'week_all\',readData);" data-rel="popup_name" class="poplight" style = "border-bottom:1px solid #FFF">'.PHP_EOL;
 								else
-									echo '<a class="lienCellule" style = "border-bottom:1px solid #FFF" title="'.$d[$cday]["infobulle"][$i].'" href="view_entry.php?id='.$d[$cday]["id"][$i].'&amp;page=week_all&amp;day='.$cday.'&amp;month='.$cmonth.'&amp;year='.$cyear.'&amp;" >'.PHP_EOL;
+									echo '<a class="lienCellule" style = "border-bottom:1px solid #FFF" title="'.$d[$cday]["infobulle"][$i].'" href="app.php?p=vuereservation&id='.$d[$cday]["id"][$i].'&amp;page=week_all&amp;day='.$cday.'&amp;month='.$cmonth.'&amp;year='.$cyear.'&amp;" >'.PHP_EOL;
 							}
 
 								echo '<table class="pleine center">'.PHP_EOL;

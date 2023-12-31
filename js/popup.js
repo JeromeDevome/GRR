@@ -79,7 +79,7 @@ function request(id,day,month,year,roomBack,currentPage,callback)
 		if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
 			callback(xhr.responseText);
 	};
-	xhr.open("GET","view_entry.php?id="+Id+"&day="+Day+"&month="+Month+"&year="+Year+"&page="+Page+"&room_back="+RoomBack+"", true);
+	xhr.open("GET","app.php?p=vuereservation&id="+Id+"&day="+Day+"&month="+Month+"&year="+Year+"&page="+Page+"&room_back="+RoomBack+"", true);
 	xhr.send(null);
 }
 function readData(sData)

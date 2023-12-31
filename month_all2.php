@@ -461,7 +461,7 @@ for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement
 										}
 										else
 										{
-											echo "<a class=\"lienCellule\" title=\"".htmlspecialchars($d[$cday]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday]["id"][$i]."&amp;page=month_all2\">"
+											echo "<a class=\"lienCellule\" title=\"".htmlspecialchars($d[$cday]["data"][$i])."\" href=\"app.php?p=vuereservation&id=" . $d[$cday]["id"][$i]."&amp;page=month_all2\">"
 											.$d[$cday]["lien"][$i]. "</a>";
 										}
 									}

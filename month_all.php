@@ -459,7 +459,7 @@ echo "</caption>";
 								}
 								else
 								{
-									echo '<a class="lienCellule" title="',$d[$cday]["infobulle"][$i],'" href="view_entry.php?id=',$d[$cday]["id"][$i],'&amp;day=',$cday,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=month_all">',PHP_EOL;
+									echo '<a class="lienCellule" title="',$d[$cday]["infobulle"][$i],'" href="app.php?p=vuereservation&id=',$d[$cday]["id"][$i],'&amp;day=',$cday,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=month_all">',PHP_EOL;
 								}
 							}
                             echo $d[$cday]["resa"][$i];

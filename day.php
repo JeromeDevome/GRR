@@ -489,7 +489,7 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 						}
 						else
 						{
-							echo '<a class="lienCellule" title="',htmlspecialchars($today[$room][$t]["who"]),'" href="view_entry.php?id=',$id,'&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=day&amp;room_back=',$room_back,' ">',$descr;
+							echo '<a class="lienCellule" title="',htmlspecialchars($today[$room][$t]["who"]),'" href="app.php?p=vuereservation&id=',$id,'&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=day&amp;room_back=',$room_back,' ">',$descr;
 						}
 					}
 					else

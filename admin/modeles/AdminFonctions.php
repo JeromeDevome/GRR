@@ -151,7 +151,7 @@ class AdminFonctions
             {
                 foreach($res as $row) 
                 {
-                    $link = "../view_entry.php?id=".$row['id']."&mode=page";
+                    $link = "../app.php?p=vuereservation&id=".$row['id']."&mode=page";
                     $listeModeration[] = array('ressource' => $row['room_name'], 'debut' => time_date_string($row['start_time'], $dformat), 'createur' => $row['create_by'], 'beneficiaire' => $row['beneficiaire'], 'lien' => $link );
                 }
             }

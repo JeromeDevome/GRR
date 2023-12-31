@@ -492,7 +492,7 @@ while ($month_indice < $month_end)
 										}
 										else
 										{
-											echo "<a class=\"lienCellule\" title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" href=\"view_entry.php?id=" . $d[$cday][$cmonth][$cyear]["id"][$i]."&amp;page=year\">"
+											echo "<a class=\"lienCellule\" title=\"".htmlspecialchars($d[$cday][$cmonth][$cyear]["data"][$i])."\" href=\"app.php?p=vuereservation&id=" . $d[$cday][$cmonth][$cyear]["id"][$i]."&amp;page=year\">"
 											.$d[$cday][$cmonth][$cyear]["lien"][$i]. "</a>";
 										}
 									}

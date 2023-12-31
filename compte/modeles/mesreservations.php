@@ -84,7 +84,7 @@ class MesReservations
 
 		// Breve description (title), avec un lien
 		$descriC = affichage_lien_resa_planning($row[3],$row[0]);
-		$descriC = "<a href=\"../view_entry.php?id=$row[0]&amp;mode=page\">". $descriC . "</a>";
+		$descriC = "<a href=\"../app.php?p=vuereservation&id=$row[0]&amp;mode=page\">". $descriC . "</a>";
 
 		//Description complète
 		if ($row[4] != "")

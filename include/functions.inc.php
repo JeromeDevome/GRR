@@ -398,7 +398,7 @@ function affiche_ressource_empruntee($id_room, $type = "logo")
 		if ($id_resa != -1)
 		{
 			if ($type == "logo")
-				echo '<a href="view_entry.php?id='.$id_resa.'"><img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource_actuellement_empruntee").'" title="'.get_vocab("reservation_en_cours").'" width="30" height="30" class="image" /></a>'.PHP_EOL;
+				echo '<a href="app.php?p=vuereservation&id='.$id_resa.'"><img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource_actuellement_empruntee").'" title="'.get_vocab("reservation_en_cours").'" width="30" height="30" class="image" /></a>'.PHP_EOL;
 			else if ($type == "texte")
 			{
 				$beneficiaire = grr_sql_query1("SELECT beneficiaire FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
@@ -406,12 +406,45 @@ function affiche_ressource_empruntee($id_room, $type = "logo")
 				echo '<br /><b><span class="avertissement">'.PHP_EOL;
 				echo '<img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource_actuellement_empruntee").'" title="'.get_vocab("ressource_actuellement_empruntee").'" width="30" height="30" class="image" />'.PHP_EOL;
 				echo get_vocab("ressource_actuellement_empruntee").' '.get_vocab("nom_emprunteur").get_vocab("deux_points").affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"withmail");
-				echo '<a href="view_entry.php?id='.$id_resa.'&amp;mode=page">'.get_vocab("entryid").$id_resa.'</a>'.PHP_EOL.'</span></b>'.PHP_EOL;
+				echo '<a href="vapp.php?p=vuereservation&id='.$id_resa.'&amp;mode=page">'.get_vocab("entryid").$id_resa.'</a>'.PHP_EOL.'</span></b>'.PHP_EOL;
 			}
 			else
 				return "yes";
 		}
 	}
+}
+
+/**
+ *function affiche_ressource_empruntee_twig
+ *- $id_room : identifiant de la ressource
+ *- Si la ressource est empruntée, affiche une icône avec un lien vers la réservation pour laquelle la ressource est empruntée.
+ * @param string $id_room
+ * @return string
+ */
+function affiche_ressource_empruntee_twig($id_room, $type = "logo")
+{
+	$active_ressource_empruntee = grr_sql_query1("SELECT active_ressource_empruntee FROM ".TABLE_PREFIX."_room WHERE id = '".$id_room."'");
+	if ($active_ressource_empruntee == 'y')
+	{
+		$id_resa = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
+		if ($id_resa != -1)
+		{
+			if ($type == "logo")
+				$valeur = '<a href="app.php?p=vuereservation&id='.$id_resa.'"><img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource_actuellement_empruntee").'" title="'.get_vocab("reservation_en_cours").'" width="30" height="30" class="image" /></a>'.PHP_EOL;
+			else if ($type == "texte")
+			{
+				$beneficiaire = grr_sql_query1("SELECT beneficiaire FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
+				$beneficiaire_ext = grr_sql_query1("SELECT beneficiaire_ext FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
+				$valeur = '<br /><b><span class="avertissement">'.PHP_EOL;
+				$valeur .= '<img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource_actuellement_empruntee").'" title="'.get_vocab("ressource_actuellement_empruntee").'" width="30" height="30" class="image" />'.PHP_EOL;
+				$valeur .= get_vocab("ressource_actuellement_empruntee").' '.get_vocab("nom_emprunteur").get_vocab("deux_points").affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"withmail");
+				$valeur .= '<a href="app.php?p=vuereservation&id='.$id_resa.'&amp;mode=page">'.get_vocab("entryid").$id_resa.'</a>'.PHP_EOL.'</span></b>'.PHP_EOL;
+			}
+			else
+				$valeur = "yes";
+		}
+	}
+	return $valeur;
 }
 
 /**
@@ -3165,11 +3198,11 @@ Pour les utilisateurs :
 			$codes['%decisionmotif%'] = "";
 
 		if (count($tab_id_moderes) == 0 )
-			$codes['%urldetail%'] = "\n".traite_grr_url("","y")."view_entry.php?id=".$id_entry;
+			$codes['%urldetail%'] = "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
 		else
 		{
 			foreach ($tab_id_moderes as $id_moderes)
-				$codes['%urldetail%'] .=  "\n".traite_grr_url("","y")."view_entry.php?id=".$id_moderes;
+				$codes['%urldetail%'] .=  "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_moderes;
 		}
 		$templateMail1 = Pages::get('mails_resamoderation2_'.$locale);
 	}
@@ -3181,7 +3214,7 @@ Pour les utilisateurs :
 		else
 			$codes['%maildestinataire%'] .= "";
 
-		$codes['%urldetail%'] .= "\n".traite_grr_url("","y")."view_entry.php?id=".$id_entry;
+		$codes['%urldetail%'] .= "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
 		$repondre = Settings::get("webmaster_email");
 		$templateMail1 = Pages::get('mails_retardrestitution_'.$locale);
 	}
@@ -3293,11 +3326,11 @@ Pour le benificiare de la ressource
 			$codes['%decisionmotif%'] .= "";
 
 		if (count($tab_id_moderes) == 0 )
-			$codes['%urldetail%'] .= traite_grr_url("","y")."view_entry.php?id=".$id_entry;
+			$codes['%urldetail%'] .= traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
 		else
 		{
 			foreach ($tab_id_moderes as $id_moderes)
-				$codes['%urldetail%'] .=  traite_grr_url("","y")."view_entry.php?id=".$id_moderes;
+				$codes['%urldetail%'] .=  traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_moderes;
 		}
 
 		$templateMail2 = Pages::get('mails_resamoderation4_'.$locale);
@@ -3372,7 +3405,7 @@ Mail pour le gestionnaire, ou l'admin
 		else
 			$codes['%maildestinataire%'] .= "";
 
-		$codes['%urldetail%'] .= traite_grr_url("","y")."view_entry.php?id=".$id_entry;
+		$codes['%urldetail%'] .= traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
 
 		$templateMail3 = Pages::get('mails_retardrestitution_'.$locale);
 
