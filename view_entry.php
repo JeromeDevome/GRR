@@ -819,7 +819,7 @@ if ($fin_session == 'n'){
                 echo " disabled ";
             echo " />".get_vocab("signaler_reservation_en_cours_option_2");
             if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
-                echo "<br /><i>(".get_vocab("necessite fonction mail automatique").")</i>";
+                echo "<br /><i>(".get_vocab("necessite_fonction_mail_automatique").")</i>";
             if (Settings::get("automatic_mail") == 'yes')
             {
                 echo "<br /><br /><input type=\"checkbox\" name=\"envoyer_mail\" value=\"y\" ";
