@@ -24,7 +24,7 @@
 				<tr><td><b>{{ trad.first_name }}</b></td><td>{{ d.user_prenom }}</td></tr>
 			{% endif %}
 			{% if d.modificationMail %}
-				<tr><td><b>{{ trad.mail_user }}{% if settings.mail_user_obligatoire == 'y'%}*{%endif%}</b></td><td><input class="form-control" type="email" name="reg_email" value="{{ d.user_email }}" size="30"{% if settings.mail_user_obligatoire == 'y'%}required{%endif%}></td></tr>
+				<tr><td><b>{{ trad.mail_user }}{% if settings.mail_user_obligatoire == 'y'%}*{%endif%}</b></td><td><input class="form-control" type="email" name="reg_email" value="{{ d.user_email }}" size="30"{% if settings.mail_user_obligatoire == 'y'%} required{%endif%}></td></tr>
 			{% else %}
 				<tr><td><b>{{ trad.mail_user }}{% if settings.mail_user_obligatoire == 'y'%}*{%endif%}</b></td><td>{{ d.user_email }}</td></tr>
 			{% endif %}
@@ -164,20 +164,19 @@
 	</form>
 	<form id="reset" action="compte.php" method="post">
 
-			<div>
-				<input type="hidden" name="valid" value="reset" />
-				<input type="hidden" name="day" value="{{ d.dDay }}" />
-				<input type="hidden" name="month" value="{{ d.dMonth }}" />
-				<input type="hidden" name="year" value="{{ d.dYear }}" />
-				<input type="hidden" name="id_site" value="-1" />
-				<input type="hidden" name="id_area" value="-1" />
-				<input type="hidden" name="id_room" value="-1" />
-				<input type="hidden" name="default_css" value="" />
-				<input type="hidden" name="area_item_format" value="item" />
-				<input type="hidden" name="default_language" value="" />
-				<input class="btn btn-primary" type="submit" value="{{ trad.reset }}" />
-			</div>
-		</div>	
+		<div>
+			<input type="hidden" name="valid" value="reset" />
+			<input type="hidden" name="day" value="{{ d.dDay }}" />
+			<input type="hidden" name="month" value="{{ d.dMonth }}" />
+			<input type="hidden" name="year" value="{{ d.dYear }}" />
+			<input type="hidden" name="id_site" value="-1" />
+			<input type="hidden" name="id_area" value="-1" />
+			<input type="hidden" name="id_room" value="-1" />
+			<input type="hidden" name="default_css" value="" />
+			<input type="hidden" name="area_item_format" value="item" />
+			<input type="hidden" name="default_language" value="" />
+			<input class="btn btn-primary" type="submit" value="{{ trad.reset }}" />
+		</div>
 	</form>
 </div>
 
