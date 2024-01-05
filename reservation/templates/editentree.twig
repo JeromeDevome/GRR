@@ -4,7 +4,7 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css">
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css?v={{d.versionGRR}}">
 {% endblock %}
 
 {% block content %}
@@ -245,7 +245,7 @@
 {% endblock %}
 
 {% block javascript %}
-<script type="text/javascript" src="js/bootstrap-clockpicker.js"></script>
+<script type="text/javascript" src="js/bootstrap-clockpicker.js?v={{d.versionGRR}}"></script>
 <script type="text/javascript" >
 
 	$(function() {

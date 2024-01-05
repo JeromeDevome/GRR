@@ -36,6 +36,7 @@ if (!Settings::load())
 // fonctions locales
 function pageHead($title,$locale) // $locale est la langue utilisée
 {
+    global $version_grr;
     if (isset($_SESSION['default_style']))
         $sheetcss = 'themes/'.$_SESSION['default_style'].'/css';
     else {
@@ -57,31 +58,31 @@ function pageHead($title,$locale) // $locale est la langue utilisée
     <meta charset="UTF-8">
 	<title>'.$title.'</title>
     <link rel="shortcut icon" href="./favicon.ico" />
-	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css" />';
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css?v='.$version_grr.'" type="text/css" />';
 //    <link rel="stylesheet" href="./js/flatpickr/flatpickr.min.css">
 //    <link rel="stylesheet" href="./js/flatpickr/airbnb.css">
-    echo '<link rel="stylesheet" href="./bootstrap/css/select2.css" />
-    <link rel="stylesheet" href="./bootstrap/css/select2-bootstrap.css" />
-	<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui.css" />
-	<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui-timepicker-addon.css" >
-    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css">
-    <link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />
-    <link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />';
+    echo '<link rel="stylesheet" href="./bootstrap/css/select2.css?v='.$version_grr.'" />
+    <link rel="stylesheet" href="./bootstrap/css/select2-bootstrap.css?v='.$version_grr.'" />
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui.css?v='.$version_grr.'" />
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui-timepicker-addon.css?v='.$version_grr.'" >
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css?v='.$version_grr.'">
+    <link rel="stylesheet" type="text/css" href="themes/default/css/style.css?v='.$version_grr.'" />
+    <link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css?v='.$version_grr.'" />';
     echo '
-        <script src="./js/jquery.min.js"></script>
-        <script src="./js/jquery-ui.min.js"></script>
-        <script src="./js/jquery.validate.js"></script>
-        <script src="./js/jquery-ui-timepicker-addon.js"></script>
-        <script src="./bootstrap/js/bootstrap.min.js"></script>
-        <script src="./js/popup.js" charset="utf-8"></script>
-        <script src="./js/jquery.timepicker.min.js"></script>
-        <script src="./js/bootstrap-clockpicker.js"></script>
-        <script src="./js/bootstrap-multiselect.js"></script>
-        <script src="./js/clock_'.$locale.'.js"></script>
-        <script src="./js/select2.min.js"></script>
-        <script src="./js/select2_locale_fr.js"></script>
-        <script src="./js/menu.js"></script>
-        <script src="./js/functions.js"></script>'; 
+        <script src="./js/jquery.min.js?v='.$version_grr.'"></script>
+        <script src="./js/jquery-ui.min.js?v='.$version_grr.'"></script>
+        <script src="./js/jquery.validate.js?v='.$version_grr.'"></script>
+        <script src="./js/jquery-ui-timepicker-addon.js?v='.$version_grr.'"></script>
+        <script src="./bootstrap/js/bootstrap.min.js?v='.$version_grr.'"></script>
+        <script src="./js/popup.js?v='.$version_grr.'" charset="utf-8"></script>
+        <script src="./js/jquery.timepicker.min.js?v='.$version_grr.'"></script>
+        <script src="./js/bootstrap-clockpicker.js?v='.$version_grr.'"></script>
+        <script src="./js/bootstrap-multiselect.js?v='.$version_grr.'"></script>
+        <script src="./js/clock_'.$locale.'.js?v='.$version_grr.'"></script>
+        <script src="./js/select2.min.js?v='.$version_grr.'"></script>
+        <script src="./js/select2_locale_fr.js?v='.$version_grr.'"></script>
+        <script src="./js/menu.js?v='.$version_grr.'"></script>
+        <script src="./js/functions.js?v='.$version_grr.'"></script>'; 
     echo '</head>';
 }
 

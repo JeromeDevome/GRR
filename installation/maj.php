@@ -68,7 +68,7 @@ if(!$majscript)
 	else
 		echo $charset_html;
     echo '>';
-	echo '<link rel="stylesheet" href="../themes/default/css/style.css" type="text/css">';
+	echo '<link rel="stylesheet" href="../themes/default/css/style.css?v='.$version_grr.'" type="text/css">';
 	echo '<link rel="shortcut icon" href="favicon.ico">';
 	echo '<title>GRR</title>';
 	echo '</head>';

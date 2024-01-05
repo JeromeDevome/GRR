@@ -80,6 +80,8 @@ $d['levelUser'] = authGetUserLevel(getUserName(),-1);
 $d['accesStats'] = verif_access_search(getUserName());
 $AllSettings = Settings::getAll();
 
+$d['versionGRR'] = $version_grr;
+
 get_vocab_admin("admin");
 get_vocab_admin("manage_my_account");
 get_vocab_admin("report");
