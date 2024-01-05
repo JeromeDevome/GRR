@@ -114,6 +114,10 @@ th.jour_sem{width:10%;background-color:gray;color:white;}
 /* edit_entry */
 #choix_beneficiaire > #menu4{display:none;}
 
+a[href]:after {
+	content: "";
+}
+
 @media only screen and (max-width:800px) { 
 	.accueil {
 		display:none;
