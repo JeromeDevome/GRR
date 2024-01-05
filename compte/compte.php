@@ -57,6 +57,8 @@ $d['dMonth'] = $month;
 $d['dYear'] = $year;
 
 $d['accesStats'] = verif_access_search(getUserName());
+$d['levelUser'] = authGetUserLevel(getUserName(),-1);
+$d['versionGRR'] = $version_grr;
 
 get_vocab_admin('admin');
 get_vocab_admin('manage_my_account');

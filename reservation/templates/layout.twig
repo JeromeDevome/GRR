@@ -7,10 +7,10 @@
 		<meta name="Robots" content="noindex" />
 		<title>GRR - {{ settings.company }}</title>
 		<link rel="shortcut icon" href="favicon.ico" />
-		<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css" />
-		<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui.css" />
-		<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui-timepicker-addon.css" >
-		<link rel="stylesheet" type="text/css" href="./themes/default/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css?v={{d.versionGRR}}" />
+		<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui.css?v={{d.versionGRR}}" />
+		<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui-timepicker-addon.css?v={{d.versionGRR}}" >
+		<link rel="stylesheet" type="text/css" href="./themes/default/css/style.css?v={{d.versionGRR}}" />
 		<link rel="stylesheet" type="text/css" href="./{{ d.sheetcss }}" />
 		{{ d.sheetcssperso|raw }}
 		{% block css %}{% endblock %}
@@ -65,18 +65,18 @@
 			<div id="popup_name" class="popup_block"></div>
 		</section>
 		
-		<script type="text/javascript" src="./js/jquery.min.js"></script>
-		<script type="text/javascript" src="./js/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="./js/jquery.validate.js"></script>
-		<script type="text/javascript" src="./js/jquery-ui-timepicker-addon.js"></script>
-		<script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="./js/menu.js"></script>
-		<script type="text/javascript" src="./js/popup.js" charset="utf-8"></script>
-		<script type="text/javascript" src="./js/functions.js" ></script>
-		<script type="text/javascript" src="./js/selection.js" ></script>
+		<script type="text/javascript" src="./js/jquery.min.js?v={{d.versionGRR}}"></script>
+		<script type="text/javascript" src="./js/jquery-ui.min.js?v={{d.versionGRR}}"></script>
+		<script type="text/javascript" src="./js/jquery.validate.js?v={{d.versionGRR}}"></script>
+		<script type="text/javascript" src="./js/jquery-ui-timepicker-addon.js?v={{d.versionGRR}}"></script>
+		<script type="text/javascript" src="./bootstrap/js/bootstrap.min.js?v={{d.versionGRR}}"></script>
+		<script type="text/javascript" src="./js/menu.js?v={{d.versionGRR}}"></script>
+		<script type="text/javascript" src="./js/popup.js?v={{d.versionGRR}}" charset="utf-8"></script>
+		<script type="text/javascript" src="./js/functions.js?v={{d.versionGRR}}" ></script>
+		<script type="text/javascript" src="./js/selection.js?v={{d.versionGRR}}" ></script>
 		{% block javascript %}{% endblock %}
 		{%if d.jsHeure %}
-			<script type="text/javascript" src="./js/{{ d.jsHeure }}"></script>
+			<script type="text/javascript" src="./js/{{ d.jsHeure }}?v={{d.versionGRR}}"></script>
 		{%endif%}
 	</body>
 </html>

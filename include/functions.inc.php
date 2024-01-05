@@ -1072,7 +1072,7 @@ function begin_page($title, $page = "with_session")
 			die();
 		}
 	}
-	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $gcDossierCss;
+	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $gcDossierCss, $version_grr;
 	header('Content-Type: text/html; charset=utf-8');
 	/*if (!isset($_COOKIE['open']))
 	{
@@ -1092,34 +1092,34 @@ function begin_page($title, $page = "with_session")
 	$a .= '<title>'.$title.'</title>'.PHP_EOL;
 	$a .= '<link rel="shortcut icon" href="./favicon.ico" />'.PHP_EOL;
 
-	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />'.PHP_EOL;
-	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.css" />'.PHP_EOL;
-	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
+	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css?v='.$version_grr.'" />'.PHP_EOL;
+	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.css?v='.$version_grr.'" />'.PHP_EOL;
+	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css?v='.$version_grr.'" >'.PHP_EOL;
 	//$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/mod_bootstrap.css" />'.PHP_EOL;
 
 	if (isset($use_select2))
 	{
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2-bootstrap.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-multiselect.css">'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2.css?v='.$version_grr.'" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2-bootstrap.css?v='.$version_grr.'" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-multiselect.css?v='.$version_grr.'">'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css?v='.$version_grr.'">'.PHP_EOL;
 	}
-	$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
+	$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css?v='.$version_grr.'" />'.PHP_EOL; // le style par défaut
 	
 	if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
-		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="themes/'.$sheetcss.'/css/style.css" />'.PHP_EOL; // le style couleurs prédéfinis
+		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css?v='.$version_grr.'" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="themes/'.$sheetcss.'/css/style.css?v='.$version_grr.'" />'.PHP_EOL; // le style couleurs prédéfinis
 		if($sheetcss == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
 			$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css?".Settings::get("sp_time")."\" />".PHP_EOL; // style perso via admin
 	
-	$a .= '<script type="text/javascript" src="js/jquery.min.js"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/popup.js" charset="utf-8"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/functions.js" ></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/jquery.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/jquery-ui.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/jquery.validate.js?v='.$version_grr.'"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js?v='.$version_grr.'"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/menu.js?v='.$version_grr.'"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/popup.js?v='.$version_grr.'" charset="utf-8"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/functions.js?v='.$version_grr.'" ></script>'.PHP_EOL;
 	if (isset($use_select2))
 	{
 		$a .= '<script type="text/javascript" src="js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
@@ -1128,11 +1128,11 @@ function begin_page($title, $page = "with_session")
 		$a .= '<script type="text/javascript" src="js/select2_locale_fr.js"></script>'.PHP_EOL;
 	}
 	if (isset($use_tooltip_js))
-		echo '<script type="text/javascript" src="js/tooltip.min.js"></script>'.PHP_EOL;
+		echo '<script type="text/javascript" src="js/tooltip.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
 	if (!isset($_SESSION['selection']))
-		$a .= '<script type="text/javascript" src="js/selection.js" ></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/selection.js?v='.$version_grr.'" ></script>'.PHP_EOL;
 	if (@file_exists('js/'.$clock_file))
-		$a .= '<script type="text/javascript" src="js/'.$clock_file.'"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/'.$clock_file.'?v='.$version_grr.'"></script>'.PHP_EOL;
 	if (substr(phpversion(), 0, 1) < 7)
 		$a .= get_vocab('not_php');
 
@@ -1340,7 +1340,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 function print_header_twig($day = '', $month = '', $year = '', $type_session = 'with_session')
 {
 	global $niveauDossier, $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
-	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $d, $gcDossierImg, $gcDossierCss ;
+	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $d, $gcDossierImg, $gcDossierCss, $version_grr;
 	
 	if(isset($_SESSION['changepwd']) && $_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
 		header("Location: ./changepwd.php");
@@ -1364,10 +1364,10 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			if($_SESSION['default_style'] == "perso" && file_exists($racine."personnalisation/".$gcDossierCss."/perso.css"))
 				$d['sheetcssperso'] = "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$racine."personnalisation/".$gcDossierCss."/perso.css?".Settings::get("sp_time")."\" />";
 
-			$d['sheetcss'] = 'themes/'.$_SESSION['default_style'].'/css/style.css';
+			$d['sheetcss'] = 'themes/'.$_SESSION['default_style'].'/css/style.css?v='.$version_grr;
 		}
 		else
-			$d['sheetcss'] = 'themes/default/css/style.css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
+			$d['sheetcss'] = 'themes/default/css/style.css?v='.$version_grr; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
 		if (isset($_GET['default_language']))
 		{
 			$_SESSION['default_language'] = alphanum($_GET['default_language']);
@@ -1388,7 +1388,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			$d['sheetcss'] = 'themes/'.Settings::get("default_css").'/css/style.css?'.Settings::get("sp_time");
 		}
 		else
-			$d['sheetcss'] = 'themes/default/css/style.css';
+			$d['sheetcss'] = 'themes/default/css/style.css?v='.$version_grr.'';
 		if (isset($_GET['default_language']))
 		{
 			$_SESSION['default_language'] = alphanum($_GET['default_language']);
@@ -6100,7 +6100,7 @@ function pageHead2($title, $page = "with_session")
 			die();
 		}
 	}
-	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin, $gcDossierCss;
+	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin, $gcDossierCss, $version_grr;
     // récupération des couleurs des types
     $types = '';
     $sql = "SELECT type_letter,couleurhexa,couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE 1";
@@ -6121,49 +6121,49 @@ function pageHead2($title, $page = "with_session")
 	$a .= '<meta name="Robots" content="noindex" />'.PHP_EOL;
 	$a .= '<title>'.$title.'</title>'.PHP_EOL;
 	$a .= '<link rel="shortcut icon" href="./favicon.ico" />'.PHP_EOL;
-	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />'.PHP_EOL;
+	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css?v='.$version_grr.'" />'.PHP_EOL;
 	if (isset($use_select2))
 	{
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2-bootstrap.css" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-multiselect.css">'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2.css?v='.$version_grr.'" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2-bootstrap.css?v='.$version_grr.'" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-multiselect.css?v='.$version_grr.'">'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css?v='.$version_grr.'">'.PHP_EOL;
 	}
-	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.css" />'.PHP_EOL;
-	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
-	$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
+	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.css?v='.$version_grr.'" />'.PHP_EOL;
+	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css?v='.$version_grr.'" >'.PHP_EOL;
+	$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css?v='.$version_grr.'" />'.PHP_EOL; // le style par défaut
 	
 	if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
-		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
+		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css?v='.$version_grr.'" />'.PHP_EOL;
 	
-	$a .= '<link rel="stylesheet" type="text/css" href="themes/'.$sheetcss.'/css/style.css" />'.PHP_EOL; // le style couleurs prédéfinis
-	if($sheetcss == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
+	$a .= '<link rel="stylesheet" type="text/css" href="themes/'.$sheetcss.'/css/style.css?v='.$version_grr.'" />'.PHP_EOL; // le style couleurs prédéfinis
+	if($sheetcss == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css?v='.$version_grr.'"))
 		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css?".Settings::get("sp_time")."\" />".PHP_EOL; // style perso via admin
 		
 	$a .= $types;
-    $a .= '<script type="text/javascript" src="js/jquery.min.js"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/menu.js"></script>'.PHP_EOL;
-    $a .= '<script type="text/javascript" src="js/jquery.floatThead.min.js"></script>'.PHP_EOL;
+    $a .= '<script type="text/javascript" src="js/jquery.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/jquery-ui.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/jquery.validate.js?v='.$version_grr.'"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js?v='.$version_grr.'"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/menu.js?v='.$version_grr.'"></script>'.PHP_EOL;
+    $a .= '<script type="text/javascript" src="js/jquery.floatThead.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
     //$a .= '<script type="text/javascript" src="js/planning2Thead.js"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/popup.js" charset="utf-8"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/functions.js" ></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/popup.js?v='.$version_grr.'" charset="utf-8"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/functions.js?v='.$version_grr.'" ></script>'.PHP_EOL;
 	if (isset($use_select2))
 	{
-		$a .= '<script type="text/javascript" src="js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/bootstrap-multiselect.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/select2.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/select2_locale_fr.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/bootstrap-clockpicker.js?v='.$version_grr.'"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/bootstrap-multiselect.js?v='.$version_grr.'"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/select2.js?v='.$version_grr.'"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/select2_locale_fr.js?v='.$version_grr.'"></script>'.PHP_EOL;
 	}
 	if (isset($use_tooltip_js))
-		echo '<script type="text/javascript" src="./include/tooltip.js"></script>'.PHP_EOL;
+		echo '<script type="text/javascript" src="./include/tooltip.js?v='.$version_grr.'"></script>'.PHP_EOL;
 	if (!isset($_SESSION['selection']))
-		$a .= '<script type="text/javascript" src="js/selection.js" ></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/selection.js?v='.$version_grr.'" ></script>'.PHP_EOL;
 	if (@file_exists('js/'.$clock_file))
-		$a .= '<script type="text/javascript" src="js/'.$clock_file.'"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/'.$clock_file.'?v='.$version_grr.'"></script>'.PHP_EOL;
 	if (substr(phpversion(), 0, 1) < 7)
 		$a .= get_vocab('not_php');
 
