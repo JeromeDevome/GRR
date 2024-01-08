@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-10-18 11:26$
+ * Dernière modification : $Date: 2024-01-08 09:17$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -306,9 +306,10 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 		}
 		else
 		{
-            if (validate_email($_email))
+            $email_seq = filter_multi_emails($_email);
+            if ($email_seq != "")
             {
-                $affichage = '<a href="mailto:'.$_email.'">'.$_identite.'</a>';
+                $affichage = '<a href="mailto:'.$email_seq.'">'.$_identite.'</a>';
             }
             else 
                 if ($option_affichage == "afficher_toujours")
@@ -4585,7 +4586,7 @@ function find_user_room($id_room)
 	return $emails;
 }
 // trouve les mails des utilisateurs actifs gestionnaires de ressource
-function find_active_user_room ($id_room)
+function find_active_user_room($id_room)
 {
 	$emails = array ();
 	$sql = "select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_user_room
