@@ -1848,21 +1848,23 @@ class FrameworkExtension extends Extension
             $container->getDefinition('serializer.name_converter.metadata_aware')->setArgument(1, new Reference($config['name_converter']));
         }
 
+        $defaultContext = $config['default_context'] ?? [];
+
+        if ($defaultContext) {
+            $container->setParameter('serializer.default_context', $defaultContext);
+        }
+
         if (isset($config['circular_reference_handler']) && $config['circular_reference_handler']) {
             $arguments = $container->getDefinition('serializer.normalizer.object')->getArguments();
-            $context = ($arguments[6] ?? []) + ['circular_reference_handler' => new Reference($config['circular_reference_handler'])];
+            $context = ($arguments[6] ?? $defaultContext) + ['circular_reference_handler' => new Reference($config['circular_reference_handler'])];
             $container->getDefinition('serializer.normalizer.object')->setArgument(5, null);
             $container->getDefinition('serializer.normalizer.object')->setArgument(6, $context);
         }
 
         if ($config['max_depth_handler'] ?? false) {
-            $defaultContext = $container->getDefinition('serializer.normalizer.object')->getArgument(6);
-            $defaultContext += ['max_depth_handler' => new Reference($config['max_depth_handler'])];
-            $container->getDefinition('serializer.normalizer.object')->replaceArgument(6, $defaultContext);
-        }
-
-        if (isset($config['default_context']) && $config['default_context']) {
-            $container->setParameter('serializer.default_context', $config['default_context']);
+            $arguments = $container->getDefinition('serializer.normalizer.object')->getArguments();
+            $context = ($arguments[6] ?? $defaultContext) + ['max_depth_handler' => new Reference($config['max_depth_handler'])];
+            $container->getDefinition('serializer.normalizer.object')->setArgument(6, $context);
         }
     }
 
@@ -2592,7 +2594,9 @@ class FrameworkExtension extends Extension
 
         if (ContainerBuilder::willBeAvailable('symfony/mercure-notifier', MercureTransportFactory::class, $parentPackages, true) && ContainerBuilder::willBeAvailable('symfony/mercure-bundle', MercureBundle::class, $parentPackages, true) && \in_array(MercureBundle::class, $container->getParameter('kernel.bundles'), true)) {
             $container->getDefinition($classToServices[MercureTransportFactory::class])
-                ->replaceArgument('$registry', new Reference(HubRegistry::class));
+                ->replaceArgument('$registry', new Reference(HubRegistry::class))
+                ->replaceArgument('$client', new Reference('http_client', ContainerBuilder::NULL_ON_INVALID_REFERENCE))
+                ->replaceArgument('$dispatcher', new Reference('event_dispatcher', ContainerBuilder::NULL_ON_INVALID_REFERENCE));
         } elseif (ContainerBuilder::willBeAvailable('symfony/mercure-notifier', MercureTransportFactory::class, $parentPackages, true)) {
             $container->removeDefinition($classToServices[MercureTransportFactory::class]);
         }
@@ -2600,13 +2604,17 @@ class FrameworkExtension extends Extension
         if (ContainerBuilder::willBeAvailable('symfony/fake-chat-notifier', FakeChatTransportFactory::class, ['symfony/framework-bundle', 'symfony/notifier', 'symfony/mailer'], true)) {
             $container->getDefinition($classToServices[FakeChatTransportFactory::class])
                 ->replaceArgument('$mailer', new Reference('mailer'))
-                ->replaceArgument('$logger', new Reference('logger'));
+                ->replaceArgument('$logger', new Reference('logger'))
+                ->replaceArgument('$client', new Reference('http_client', ContainerBuilder::NULL_ON_INVALID_REFERENCE))
+                ->replaceArgument('$dispatcher', new Reference('event_dispatcher', ContainerBuilder::NULL_ON_INVALID_REFERENCE));
         }
 
         if (ContainerBuilder::willBeAvailable('symfony/fake-sms-notifier', FakeSmsTransportFactory::class, ['symfony/framework-bundle', 'symfony/notifier', 'symfony/mailer'], true)) {
             $container->getDefinition($classToServices[FakeSmsTransportFactory::class])
                 ->replaceArgument('$mailer', new Reference('mailer'))
-                ->replaceArgument('$logger', new Reference('logger'));
+                ->replaceArgument('$logger', new Reference('logger'))
+                ->replaceArgument('$client', new Reference('http_client', ContainerBuilder::NULL_ON_INVALID_REFERENCE))
+                ->replaceArgument('$dispatcher', new Reference('event_dispatcher', ContainerBuilder::NULL_ON_INVALID_REFERENCE));
         }
 
         if (isset($config['admin_recipients'])) {
