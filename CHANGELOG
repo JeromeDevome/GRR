@@ -2,7 +2,37 @@
 --
 -----
 Version 4.3.0 - En cours de développement
-[Ajout] Réservation restreinte @ynaessens & @JeromeDevome
+[Ajout] Réservation restreinte - d065d1fa - @ynaessens & @JeromeDevome
+[Ajout] Infos à afficher dans les plannings par rôle d'utilisateur - 202be69e - @JeromeDevome
+[Ajout] Nettoyage de la BDD - a15d2572 - @JeromeDevome
+[Ajout] Interdiction changement de valeur dans le compte (style, langue...) - 02d34b31 - @JeromeDevome
+[Modification] Nettoyage de code - e2e67217 de926731 3bc17e68 - @JeromeDevome
+[Modification] Passage fiche ressource sous twig - 82bb50ab- @JeromeDevome
+[Modification] Passage droits domaine  sous twig - 9c29111a - @JeromeDevome
+[Modification] Passage droits ressource sous twig - be83feec - @JeromeDevome
+[Modification] Passage déconnexion sous twig - 5ad51f89 - @JeromeDevome
+[Modification] Passage vue réservation ressource sous twig - 4cbcb487 - @JeromeDevome
+
+
+-----
+--
+-----
+Version 4.2.3 - 13/01/2024 Généré par @JeromeDevome
+
+[Ajout] Modification utilisateur via admin : Paramétrage langue, style, domaine par défaut - 04806794 - JeromeDevome
+[Ajout] Lien pour modifier l'utilisateur dans le login - 568f381d - @JeromeDevome
+[Ajout] Synchonisation du type d'affichage avec tout les utilisateurs - 86a9747e - @JeromeDevome
+[Ajout] Synchonisations site, domaine et ressource par défaut - f51ff7f7 - @JeromeDevome
+[Ajout] Gestion du cache selon version de GRR - 44fc5b43 - @JeromeDevome
+[Correction] Tris sur date des logs de reservations - 6e83a272 - @JeromeDevome
+[Correction] Privilège complet de l'utilisateur dans l'admin - edb54722 - @JeromeDevome
+[Correction] Temporaire affichage table avec bandeau supérieur - 0b4a751b - @JeromeDevome
+[Correction] Traduction - c15b602b & 1a9580e7 - @JeromeDevome
+[Correction] Impression des liens - ceeaf143 - @JeromeDevome
+[Correction] Balises dans mon compte - df2017d9 - @JeromeDevome
+[Modification] Amélioration de l'affichage domaine par défaut - e451fe6f - @JeromeDevome
+[Modification] Modification de l'utilisateur, affichage de validation par toast - 640b3a75 - @JeromeDevome
+[Modification] Upgrade Symfony - 641782f8 - @JeromeDevome
 
 
 -----
