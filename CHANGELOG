@@ -1,6 +1,23 @@
 -----
 --
 -----
+Version 4.2.3 - 13/01/2024 Généré par @JeromeDevome
+
+[Ajout] Modification utilisateur via admin : Paramétrage langue, style, domaine par défaut - 04806794 - JeromeDevome
+[Ajout] Lien pour modifier l'utilisateur dans le login - 568f381d - @JeromeDevome
+[Ajout] Synchonisation du type d'affichage avec tout les utilisateurs - 86a9747e - @JeromeDevome
+[Ajout] Synchonisations site, domaine et ressource par défaut - f51ff7f7 - @JeromeDevome
+[Correction] Tris sur date des logs de reservations - 6e83a272 - @JeromeDevome
+[Correction] Privilège complet de l'utilisateur dans l'admin - edb54722 - @JeromeDevome
+[Correction] Temporaire affichage table avec bandeau supérieur - 0b4a751b - @JeromeDevome
+[Correction] Traduction - c15b602b & 1a9580e7 - @JeromeDevome
+[Modification] Amélioration de l'affichage domaine par défaut - e451fe6f - @JeromeDevome
+[Modification] Modification de l'utilisateur, affichage de validation par toast - 640b3a75 - @JeromeDevome
+
+
+-----
+--
+-----
 Version 4.2.2 - 03/12/2023 Généré par @JeromeDevome
 
 [Ajout] Sélection date directe dans le bandeau du haut - 89c56b5c - @JeromeDevome, @shalut
