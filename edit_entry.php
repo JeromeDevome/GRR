@@ -119,9 +119,9 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
         grr_sql_free($res);
         $option = "";
         if (!isset($benef_ext_nom))
-            $option .= '<option value="" >'.get_vocab("personne exterieure").'</option>'.PHP_EOL;
+            $option .= '<option value="" >'.get_vocab("personne_exterieure").'</option>'.PHP_EOL;
         else
-            $option .= '<option value="" selected="selected">'.get_vocab("personne exterieure").'</option>'.PHP_EOL;
+            $option .= '<option value="" selected="selected">'.get_vocab("personne_exterieure").'</option>'.PHP_EOL;
         foreach ($bnf as $b){
             $option .= '<option value="'.$b[0].'" ';
             if (((!$benef && !$benef_ext_nom) && strtolower($id_user) == strtolower($b[0])) || ($benef && $benef == $b[0]))
