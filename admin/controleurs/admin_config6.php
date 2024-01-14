@@ -1,11 +1,11 @@
 <?php
 /**
- * admin_config.php
+ * admin_config6.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2022-04-11 17:59$
+ * Dernière modification : $Date: 2024-01-14 19:40$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -382,7 +382,7 @@ if (Settings::get('module_multisite') == 'Oui') {
 
 	$d['optionSite'] = "";
     for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); ++$enr) {
-		$trdad['optionSite'] .= '<option value="'.$row[0].'"';
+		$d['optionSite'] .= '<option value="'.$row[0].'"';
         if (Settings::get('default_site') == $row[0]) {
             $d['optionSite'] .= ' selected="selected" ';
         }
