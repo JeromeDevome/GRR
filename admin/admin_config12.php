@@ -3,9 +3,9 @@
  * admin_config12.php
  * Interface permettant à l'administrateur la configuration de certains paramètres d'affichage
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2023-07-27 16:29$
+ * Dernière modification : $Date: 2024-01-09 15:13$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -781,7 +781,7 @@ echo '<h3>'.get_vocab('affichages_divers').'</h3>'.PHP_EOL;
 echo '<p>'.get_vocab('affichages_divers_explain').'</p>'.PHP_EOL;
 # Afficher un sélecteur de date direct avec calendrier JQuery-datepicker
 echo '<div>'.PHP_EOL;
-echo "<input type='checkbox' name='select_date_directe' value='y' ";
+echo "<input type='checkbox' name='select_date_directe' id='select_date_directe' value='y' ";
 if (Settings::get('select_date_directe') == 'y') {
     echo 'checked';
 }
