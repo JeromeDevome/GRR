@@ -30,12 +30,16 @@ class Email{
 				$smtp1				= Settings::get('grr_mail_smtp');
 				$username			= Settings::get('grr_mail_Username');
 				$password			= Settings::get('grr_mail_Password');
+				$mailDe				= Settings::get('grr_mail_from');
 				$smtpsecure			= Settings::get('smtp_secure');
 				$port				= Settings::get('smtp_port');
 				$ass				= Settings::get('smtp_allow_self_signed');
 				$verify_peer_name	= Settings::get('smtp_verify_peer_name');
 				$verify_peer		= Settings::get('smtp_verify_peer');
 				$verify_depth		= Settings::get('smtp_verify_depth');
+
+				if(!empty($mailDe))
+					$DE = $mailDe;
 
 				$mail = new PHPMailer\PHPMailer\PHPMailer;
 				$mail->CharSet = 'UTF-8';
