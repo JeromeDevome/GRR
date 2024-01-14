@@ -2,9 +2,9 @@
 /**
  * trailer.inc.php
  * script de bas de page html
- * Dernière modification : $Date: 2018-07-14 17:00$
+ * Dernière modification : $Date: 2024-01-14 21:35$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -30,7 +30,7 @@ if ((!isset($_GET['pview']) || ($_GET['pview'] != 1)) && (isset($affiche_pview) 
 	}
 	else
 	{
-		$s = "<button type=\"button\" class=\"btn btn-default btn-xs\" onclick=\"charger();";
+		$s = "<button type=\"button\" class=\"btn btn-default btn-xs\" onclick=\"";
 		$s .= "   javascript:location.href=";
 		$s .= "'".traite_grr_url($grr_script_name)."?";
 		if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
