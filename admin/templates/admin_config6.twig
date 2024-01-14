@@ -121,19 +121,6 @@
 
 						<hr>
 
-						<section id="formulairecontact">
-							<h4 class="page-header">{{ trad.display_mail_etat_destinataire }}</h4>
-							<p>{{ trad.display_mail_etat_destinataire_1 }}</p>
-							<input type="radio" name="mail_etat_destinataire" value="0" id="label_0a" {% if settings.mail_etat_destinataire == '0' %} checked {% endif %} /> <label for="label_0a">{{ trad.display_mail_etat_destinataire_2 }}</label><br>
-							<input type="radio" name="mail_etat_destinataire" value="1" id="label_0b" {% if settings.mail_etat_destinataire == '1' %} checked {% endif %} /> <label for="label_0b">{{ trad.display_mail_etat_destinataire_3 }}</label><br>
-							<input type="radio" name="mail_etat_destinataire" value="2" id="label_0c" {% if settings.mail_etat_destinataire == '2' %} checked {% endif %} /> <label for="label_0c">{{ trad.display_mail_etat_destinataire_4 }}</label><br>
-							{{ form.input('mail_destinataire', trad.display_mail_destinataire, settings.mail_destinataire, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-							<input type="checkbox" name="mail_user_destinataire" value="y" id="label_0z" {% if settings.mail_user_destinataire == 'y' %} checked {% endif %} /> <label for="label_0z">{{ trad.mail_user_destinataire }}</label><br>
-							<br>
-						</section>
-
-						<hr>
-
 						<section id="display_planning_resa">
 							<h4 class="page-header">{{ trad.display_planning_resa }}</h4>
 
