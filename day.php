@@ -189,10 +189,10 @@ else
 grr_sql_free($res);
 
 // Détermination des ressources à afficher
-if($room_back != 'all'){
-	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book FROM ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($room_back)."' ";
-}
-else $sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' ORDER BY order_display, room_name";
+if($room_back != 'all')
+	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book, show_comment, comment_room FROM ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($room_back)."' ";
+else
+	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book, show_comment, comment_room FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' ORDER BY order_display, room_name";
 $ressources = grr_sql_query($sql);
 if (!$ressources)
 	fatal_error(0, grr_sql_error());
@@ -321,8 +321,10 @@ for ($i = 0; ($row = grr_sql_row_keyed($ressources, $i)); $i++)
 	{
 		$room_name[$i] = $row["room_name"];
 		$statut_room[$id_room[$i]] =  $row["statut_room"];
-		$statut_moderate[$id_room[$i]] =  $row["moderate"];
+		$statut_moderate[$id_room[$i]] = $row["moderate"];
         $who_can_book[$id_room[$i]] = $row["who_can_book"];
+		$room_comment[$id_room[$i]] = $row["comment_room"];
+		$show_comment[$id_room[$i]] = $row["show_comment"];
 		$acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $id_room[$i]);
 		if ($row['1']  && $_GET['pview'] != 1)
 			$temp = '<br /><span class="small">('.$row["capacity"].' '.($row["capacity"] > 1 ? get_vocab("number_max2") : get_vocab("number_max")).')</span>'.PHP_EOL;
@@ -332,6 +334,8 @@ for ($i = 0; ($row = grr_sql_row_keyed($ressources, $i)); $i++)
 			$temp .= '<br /><span class="texte_ress_tempo_indispo">'.get_vocab("ressource_temporairement_indisponible").'</span>'.PHP_EOL;
 		if ($statut_moderate[$id_room[$i]] == "1"  && $_GET['pview'] != 1)
 			$temp .= '<br /><span class="texte_ress_moderee">'.get_vocab("reservations_moderees").'</span>'.PHP_EOL;
+		if ($show_comment[$id_room[$i]] =="y" && $room_comment[$id_room[$i]] != ""  && $_GET['pview'] != 1)
+			$temp .= '<br />'.$room_comment[$id_room[$i]].PHP_EOL;
 		echo '<th style="width:'.$room_column_width.'%;" ';
 		if ($statut_room[$id_room[$i]] == "0")
 			echo 'class="avertissement" ';
