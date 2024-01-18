@@ -28,13 +28,14 @@ $message = "";
 if (!Pages::load())
 	die('Erreur chargement pages');
 
-	$infosPage = Pages::get("contactresa");
-	$d['TitrePage'] = $infosPage[0];
-	$d['CtnPage'] =  $infosPage[1];
+$infosPage = Pages::get("contactresa");
+$d['TitrePage'] = $infosPage[0];
+$d['CtnPage'] =  $infosPage[1];
 
 /*  */
 use Gregwar\Captcha\PhraseBuilder;
 
+// Traitement du formulaire
 if(isset($_POST['nom'])){ 
 
 	require_once 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
@@ -120,6 +121,17 @@ if(isset($_POST['nom'])){
 	}
 }
 
+
+if($userConnecte == "with_session"){
+	$sql_user = "SELECT nom,prenom,email FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".getUserName()."'";
+	$sql_user = grr_sql_query($sql_user);
+
+	$sql_user = grr_sql_row( $sql_user, 0 );  
+	grr_sql_free( $sql_user );
+	$d['prenomConnecte'] = $sql_user[0];
+	$d['nomConnecte'] = $sql_user[1];
+	$d['emailConnecte'] = $sql_user[2];
+}
 
 $domaineDispo = array();
 

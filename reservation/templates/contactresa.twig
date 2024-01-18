@@ -29,13 +29,13 @@
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-									<input class="form-control" type="text" id="nom"  size="8" name="nom" placeholder="Votre nom" required />
+									<input class="form-control" type="text" id="nom"  size="8" name="nom" placeholder="Votre nom" value="{{d.nomConnecte}}" required />
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-									<input class="form-control" type="text" size="8" id="prenom"  name="prenom" placeholder="Votre prénom" required />
+									<input class="form-control" type="text" size="8" id="prenom"  name="prenom" placeholder="Votre prénom" value="{{d.prenomConnecte}}" required />
 								</div>
 							</div>
 						</div>
@@ -43,7 +43,7 @@
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
-									<input class="form-control" type="email" id="email" size="8" name="email" placeholder="Votre adresse de courriel" required />
+									<input class="form-control" type="email" id="email" size="8" name="email" placeholder="Votre adresse de courriel" value="{{d.emailConnecte}}" required />
 								</div>
 							</div>
 							<div class="form-group">
