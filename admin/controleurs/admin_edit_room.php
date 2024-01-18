@@ -149,7 +149,7 @@ if (isset($change_room))
 		description='".protect_data_sql($description)."', ";
 		if ($picture_room != '')
 			$sql .= "picture_room='".protect_data_sql($picture_room)."', ";
-		$sql .= "comment_room='".protect_data_sql(corriger_caracteres($comment_room))."',
+		$sql .= "comment_room='".protect_data_sql($comment_room)."',
 		show_comment='".$show_comment."',
 		area_id='".$area_id."',
 		show_fic_room='".$show_fic_room."',
