@@ -579,7 +579,7 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
 			echo '</td>',PHP_EOL,'</tr>',PHP_EOL;;
 		}
 	}
-	if ((getWritable($beneficiaire, getUserName(), $id)) && verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room(getUserName(), $room_id, $row[10]) && (!$was_del))
+	if ((getWritable($userName, $id)) && verif_booking_date($userName, $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room($userName, $room_id, $row[10], $enable_periods) && (!$was_del))
 	{
         echo "<tr>";
 			echo '<td colspan="2">';
@@ -652,17 +652,17 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
                         echo '<tr>',PHP_EOL,'<td><b>',get_vocab("rep_rep_day"),'</b></td>',PHP_EOL,'<td>',$opt,'</td>',PHP_EOL,'</tr>',PHP_EOL;
                     else
                         echo '<tr>',PHP_EOL,'<td><b>',get_vocab("rep_rep_days"),'</b></td>',PHP_EOL,'<td>',$opt,'</td>',PHP_EOL,'</tr>',PHP_EOL;
-                }
-                if ($rep_type == 6)
-                {
-                    if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
-                        echo '<tr>',PHP_EOL,'<td><b>',get_vocab("rep_rep_day"),'</b></td>',PHP_EOL,'<td>',get_vocab('jour_cycle'),' ',$jour_cycle,'</td>',PHP_EOL,'</tr>',PHP_EOL;
-                }
-
-                echo '<tr><td><b>'.get_vocab("date").get_vocab("deux_points").'</b></td><td>'.$start_date.'</td></tr>';
-                echo '<tr><td><b>'.get_vocab("duration").'</b></td><td>'.$duration .' '. $dur_units.'</td></tr>';
-                echo '<tr><td><b>'.get_vocab('rep_end_date').'</b></td><td>'.$rep_end_date.'</td></tr>';
             }
+			if ($rep_type == 6)
+			{
+				if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
+					echo '<tr>',PHP_EOL,'<td><b>',get_vocab("rep_rep_day"),'</b></td>',PHP_EOL,'<td>',get_vocab('jour_cycle'),' ',$jour_cycle,'</td>',PHP_EOL,'</tr>',PHP_EOL;
+			}
+
+			echo '<tr><td><b>'.get_vocab("date").get_vocab("deux_points").'</b></td><td>'.$start_date.'</td></tr>';
+			echo '<tr><td><b>'.get_vocab("duration").'</b></td><td>'.$duration .' '. $dur_units.'</td></tr>';
+			echo '<tr><td><b>'.get_vocab('rep_end_date').'</b></td><td>'.$rep_end_date.'</td></tr>';
+        }
             if ((getWritable($beneficiaire, getUserName(), $id)) && verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room(getUserName(), $room_id, $row[10]) && (!$was_del))
             {
                 $message_confirmation = str_replace ( "'"  , "\\'"  , get_vocab("confirmdel").get_vocab("deleteseries"));
@@ -670,7 +670,7 @@ echo '<fieldset><legend style="font-size:12pt;font-weight:bold">'.get_vocab('ent
                 echo '<tr>',PHP_EOL,'<td colspan="2">',PHP_EOL,'<a class="btn btn-danger" type="button" href="del_entry.php?id=',$id,'&amp;series=1&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=',$page,'" onclick="return confirm(\'',$message_confirmation,'\');">',get_vocab("deleteseries"),'</a></td>',PHP_EOL,'</tr>',PHP_EOL;
             }
             echo '</table>',PHP_EOL,'</fieldset>',PHP_EOL;
-        }
+    }
         if (!isset($area_id))
             $area_id = 1;
         if (!isset($room))
