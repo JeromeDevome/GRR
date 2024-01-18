@@ -380,7 +380,7 @@ if (isset($user_login) && ($user_login != ''))
 
 		$d['optionSite'] = "";
 		for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); ++$enr) {
-			$trdad['optionSite'] .= '<option value="'.$row[0].'"';
+			$d['optionSite'] .= '<option value="'.$row[0].'"';
 			if ($utilisateur['default_site'] == $row[0]) {
 				$d['optionSite'] .= ' selected="selected" ';
 			}
