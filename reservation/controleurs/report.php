@@ -122,6 +122,7 @@ get_vocab_admin("report_end");
 get_vocab_admin("valide_toutes_les_conditions_suivantes");
 get_vocab_admin("valide_au_moins_une_des_conditions_suivantes");
 get_vocab_admin("choose");
+get_vocab_admin("site");
 get_vocab_admin("match_area");
 get_vocab_admin("room");
 get_vocab_admin("type");
@@ -179,6 +180,8 @@ $overload_fields = mrbsOverloadGetFieldslist("");
 while ($k < $nb_ligne)
 {
 	$selectCritere = "";
+	if (isset($champ[$k]) && ($champ[$k] == "site"))
+		$selectCritere = "site";
 	if (isset($champ[$k]) && ($champ[$k] == "area"))
 		$selectCritere = "area";
 	if (isset($champ[$k]) && ($champ[$k] == "room"))
@@ -286,8 +289,13 @@ if (isset($_GET["is_posted"]))
     . "e.type, e.beneficiaire, "
     .  grr_sql_syntax_timestamp_to_unix("e.timestamp")
     . ", a.area_name, r.room_name, r.description, a.id, e.overload_desc, r.order_display, t.type_name"
-	. ", e.beneficiaire_ext, e.supprimer, e.moderate"
-    . " FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_room r, ".TABLE_PREFIX."_type_area t";
+	. ", e.beneficiaire_ext, e.supprimer, e.moderate";
+	if (Settings::get("module_multisite") == 'Oui')
+		$sql .= ", s.sitename";
+	$sql .= " FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_room r, ".TABLE_PREFIX."_type_area t";
+	if (Settings::get("module_multisite") == 'Oui')
+		$sql .= ", ".TABLE_PREFIX."_site s, ".TABLE_PREFIX."_j_site_area sa";
+
 	// Si l'utilisateur n'est pas administrateur, seuls les domaines auxquels il a accès sont pris en compte
     if (authGetUserLevel(getUserName(),-1) < 6)
         if ($test_grr_j_user_area != 0)
@@ -313,6 +321,8 @@ if (isset($_GET["is_posted"]))
 		$sql .= " AND (";
 			while ($k < count($texte))
 			{
+				if ($champ[$k] == "site")
+					$sql .=  grr_sql_syntax_caseless_contains("s.sitename", $texte[$k], $type_recherche[$k]);
 				if ($champ[$k] == "area")
 					$sql .=  grr_sql_syntax_caseless_contains("a.area_name", $texte[$k], $type_recherche[$k]);
 				if ($champ[$k] == "room")
@@ -345,6 +355,9 @@ if (isset($_GET["is_posted"]))
 	$sql .= ")";
 	}
 	$sql .= " AND  t.type_letter = e.type ";
+	if (Settings::get("module_multisite") == 'Oui')
+		$sql .= " AND  sa.id_area = a.id AND s.id = sa.id_site ";
+
 //	if ( $sortby == "a" )
 			//Trié par: Area, room, debut, date/heure.
 		$sql .= " ORDER BY 9,r.order_display,10,t.type_name,2";
@@ -364,6 +377,7 @@ if (isset($_GET["is_posted"]))
 			//Trié par: brève description, Area, room, debut, date/heure.
 		$sql .= " ORDER BY e.name,9,r.order_display,10,2";*/
 		// echo $sql." <br /><br />"; // en test
+// echo $sql;
 	$res = grr_sql_query($sql);
 	if (!$res)
 		fatal_error(0, grr_sql_error());
