@@ -32,6 +32,9 @@
 					<div class="form-group">
 						<select class="form-control" name="champ[]" size="1">
 							<option value="" {%if condition.selectCritere == "" %}selected{%endif%}>{{ trad.choose }}</option>
+							{% if settings.module_multisite == "Oui" %}
+							<option value="site" {%if condition.selectCritere == "site" %}selected{%endif%}>{{ trad.site }}</option>
+							{% endif %}
 							<option value="area" {%if condition.selectCritere == "area" %}selected{%endif%}>{{ trad.match_area }}</option>
 							<option value="room" {%if condition.selectCritere == "room" %}selected{%endif%}>{{ trad.room }}</option>
 							<option value="type" {%if condition.selectCritere == "type" %}selected{%endif%}>{{ trad.type }}</option>
@@ -94,6 +97,9 @@
 								<table id="example" class="table table-striped table-bordered dataTable" style="width: 100%;" role="grid" aria-describedby="example_info">
 									<thead>
 										<tr role="row">
+											{% if settings.module_multisite == "Oui" %}
+												<th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">{{trad.site}}</th>
+											{% endif %}
 											<th class="sorting sorting_desc" tabindex="0" aria-controls="example" rowspan="1" colspan="1">{{trad.match_area}}</th>
 											<th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">{{trad.room}}</th>
 											<th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1">{{trad.namebooker}}</th>
@@ -113,6 +119,9 @@
 									<tbody>
 										{% for resa in listeresa %}
 											<tr class="odd">
+												{% if settings.module_multisite == "Oui" %}
+													<td>{{resa.site}}</td>
+												{% endif %}
 												<td title="{{resa.domainedesc}}">{{resa.domaine}}</td>
 												<td>{{resa.ressource}}</td>
 												<td><a href="view_entry.php?id={{resa.idresa}}">{{resa.descriptionc}}</a></td>
@@ -141,6 +150,9 @@
 									</tbody>
 									<tfoot>
 										<tr>
+											{% if settings.module_multisite == "Oui" %}
+											<th rowspan="1" colspan="1">{{trad.site}}</th>
+											{% endif %}
 											<th rowspan="1" colspan="1">{{trad.match_area}}</th>
 											<th rowspan="1" colspan="1">{{trad.room}}</th>
 											<th rowspan="1" colspan="1">{{trad.namebooker}}</th>
