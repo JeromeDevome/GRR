@@ -29,6 +29,10 @@ function reporton(&$row, $dformat)
 	// Breve description (title), avec un lien
 	$descriC = affichage_lien_resa_planning($row[3],$row[0]);
 
+	$site = "";
+	if (Settings::get("module_multisite") == 'Oui')
+		$site = $row[18];
+
 	//Affichage de l'heure et de la durée de réservation
 	if ($enable_periods == 'y')
 		list($start_date, $start_time ,$duration, $dur_units) =  describe_period_span($row[1], $row[2]);
@@ -95,7 +99,7 @@ function reporton(&$row, $dformat)
 
 	unset($tablOverload);
 	
-	$gListeReservations[] = array('idresa' => $row[0], 'datedebutts' => $row[1], 'datedebut' => $start_date, 'heuredebut' => $start_time, 'duree' => $duration, 'domaine' => $domaine, 'domainedesc' => $domainedesc, 'ressource' => $ressource, 'beneficiaire' => $aff_beneficiaire, 'descriptionc' => $descriC, 'descriptionl' => $descriL, 'type' => $type, 'datemajts' => $row[7], 'datemaj' => $dateMAJ, 'supprimer' => $row[16], 'moderate' => $row[17], 'champaddvaleur' => $champAddValeur);
+	$gListeReservations[] = array('idresa' => $row[0], 'datedebutts' => $row[1], 'datedebut' => $start_date, 'heuredebut' => $start_time, 'duree' => $duration, 'site' => $site,'domaine' => $domaine, 'domainedesc' => $domainedesc, 'ressource' => $ressource, 'beneficiaire' => $aff_beneficiaire, 'descriptionc' => $descriC, 'descriptionl' => $descriL, 'type' => $type, 'datemajts' => $row[7], 'datemaj' => $dateMAJ, 'supprimer' => $row[16], 'moderate' => $row[17], 'champaddvaleur' => $champAddValeur);
 
 }
 
