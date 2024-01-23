@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-01-14 19:21$
+ * Dernière modification : $Date: 2024-01-23 12:14$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author 	  Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
@@ -634,7 +634,7 @@ if (isset($id)) // édition d'une réservation existante
         $flag_periodicite = TRUE;
 		$sql = "SELECT rep_type, start_time, end_date, rep_opt, rep_num_weeks, end_time, type, name, beneficiaire, description
 		FROM ".TABLE_PREFIX."_repeat WHERE id=? ";
-		$res = grr_sql_query($sql,"i",[$id]);
+		$res = grr_sql_query($sql,"i",[$rep_id]);
 		if (!$res)
 			fatal_error(1, grr_sql_error());
 		if (grr_sql_count($res) != 1)
