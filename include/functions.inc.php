@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2024-01-08 09:17$
+ * Dernière modification : $Date: 2024-01-24 11:31$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -3323,130 +3323,128 @@ function authGetUserLevel($user, $id, $type = 'room')
         return 0;
 	// On vient lire le résultat de la requète
 	$status = grr_sql_row($res,$nbraw-1);
-    /*
-	//user level '0': Same User defined multiple time in database !!!
-	if ($status === 0)
-		return 0;
-*/
-	switch (strtolower($status[0]))
-	{
-		case 'visiteur':
-		return 1;
-		case 'administrateur':
-		return 6;
-		default:
-		break;
-	}
-	// Teste si le type concerne la gestion des utilisateurs
+    $statut = strtolower($status[0]);
+    // Teste si le type concerne la gestion des utilisateurs
 	if ($type === 'user')
 	{
-		if (strtolower($status[0]) == 'gestionnaire_utilisateur')
+		if ($statut == 'gestionnaire_utilisateur')
 			return 1;
 		else
 			return 0;
 	}
-	if ((strtolower($status[0]) == 'utilisateur') || (strtolower($status[0]) == 'gestionnaire_utilisateur'))
-	{
-		if ($type == 'room')
-		{
-			// On regarde si l'utilisateur est administrateur du site auquel la ressource $id appartient
-			// calcul de l'id du domaine
-			$id_area = grr_sql_query1("SELECT area_id FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($id)."'");
-			// calcul de l'id du site
-			$id_site = grr_sql_query1("SELECT id_site FROM ".TABLE_PREFIX."_j_site_area  WHERE id_area='".protect_data_sql($id_area)."'");
-			if (Settings::get("module_multisite") == "Oui")
-			{
-				$res3 = grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site j WHERE j.id_site='".protect_data_sql($id_site)."' AND j.login='".protect_data_sql($user)."'");
-				if (grr_sql_count($res3) > 0)
-				{
-					grr_sql_free($res3);
-					return 5;
-				}
-			}
-			// On regarde si l'utilisateur est administrateur du domaine auquel la ressource $id appartient
-			$res3 = grr_sql_query("SELECT u.login
-				FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_area j
-				WHERE (u.login=j.login AND j.id_area='".protect_data_sql($id_area)."' AND u.login='".protect_data_sql($user)."')");
-			if (grr_sql_count($res3) > 0)
-				return 4;
-			// On regarde si l'utilisateur est gestionnaire des réservations pour une ressource
-			$str_res2 = "SELECT *
-			FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_user_room j
-			WHERE u.login=j.login and u.login='".protect_data_sql($user)."' ";
-			if ($id!=-1)
-				$str_res2.="AND j.id_room='".protect_data_sql($id)."'";
-			$res2 = grr_sql_query($str_res2);
-			if (grr_sql_count($res2) > 0)
-				return 3;
-			// Sinon il s'agit d'un simple utilisateur
-			return 2;
-		}
-		// On regarde si l'utilisateur est administrateur d'un domaine
-		if ($type == 'area')
-		{
-			if ($id == '-1')
-			{
-				if (Settings::get("module_multisite") == "Oui")
-				{
-				//On regarde si l'utilisateur est administrateur d'un site quelconque
-					$res2 = grr_sql_query("SELECT u.login
-						FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_site j
-						WHERE (u.login=j.login and u.login='".protect_data_sql($user)."')");
-					if (grr_sql_count($res2) > 0)
-						return 5;
-				}
-				//On regarde si l'utilisateur est administrateur d'un domaine quelconque
-				$res2 = grr_sql_query("SELECT u.login
-					FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_area j
-					WHERE (u.login=j.login and u.login='".protect_data_sql($user)."')");
-				if (grr_sql_count($res2) > 0)
-					return 4;
-			}
-			else
-			{
-				if (Settings::get("module_multisite") == "Oui")
-				{
-				// On regarde si l'utilisateur est administrateur du site auquel le domaine $id appartient
-					$id_site = grr_sql_query1("SELECT id_site FROM ".TABLE_PREFIX."_j_site_area  WHERE id_area='".protect_data_sql($id)."'");
-					$res3 = grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site j WHERE j.id_site='".protect_data_sql($id_site)."' AND j.login='".protect_data_sql($user)."'");
-					if (grr_sql_count($res3) > 0)
-						return 5;
-				}
-				//On regarde si l'utilisateur est administrateur du domaine dont l'id est $id
-				$res3 = grr_sql_query("SELECT u.login
-					FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_area j
-					WHERE (u.login=j.login and j.id_area='".protect_data_sql($id)."' and u.login='".protect_data_sql($user)."')");
-				if (grr_sql_count($res3) > 0)
-					return 4;
-			}
-			// Sinon il s'agit d'un simple utilisateur
-			return 2;
-		}
-		// On regarde si l'utilisateur est administrateur d'un site
-		if (($type == 'site') and (Settings::get("module_multisite") == "Oui"))
-		{
-			if ($id == '-1')
-			{
-				//On regarde si l'utilisateur est administrateur d'un site quelconque
-				$res2 = grr_sql_query("SELECT u.login
-					FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_site j
-					WHERE (u.login=j.login and u.login='".protect_data_sql($user)."')");
-				if (grr_sql_count($res2) > 0)
-					return 5;
-			}
-			else
-			{
-				//On regarde si l'utilisateur est administrateur du site dont l'id est $id
-				$res3 = grr_sql_query("SELECT u.login
-					FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_site j
-					WHERE (u.login=j.login and j.id_site='".protect_data_sql($id)."' and u.login='".protect_data_sql($user)."')");
-				if (grr_sql_count($res3) > 0)
-					return 5;
-			}
-			// Sinon il s'agit d'un simple utilisateur
-			return 2;
-		}
-	}
+    else { // ressource, domaine ou site
+        switch ($statut)
+        {
+            case 'visiteur':
+            return 1;
+            case 'administrateur':
+            return 6;
+            default:
+            break;
+        }
+        if (($statut == 'utilisateur') || ($statut == 'gestionnaire_utilisateur'))
+        {
+            if ($type == 'room')
+            {
+                // On regarde si l'utilisateur est administrateur du site auquel la ressource $id appartient
+                // calcul de l'id du domaine
+                $id_area = grr_sql_query1("SELECT area_id FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($id)."'");
+                // calcul de l'id du site
+                $id_site = grr_sql_query1("SELECT id_site FROM ".TABLE_PREFIX."_j_site_area  WHERE id_area='".protect_data_sql($id_area)."'");
+                if (Settings::get("module_multisite") == "Oui")
+                {
+                    $res3 = grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site j WHERE j.id_site='".protect_data_sql($id_site)."' AND j.login='".protect_data_sql($user)."'");
+                    if (grr_sql_count($res3) > 0)
+                    {
+                        grr_sql_free($res3);
+                        return 5;
+                    }
+                }
+                // On regarde si l'utilisateur est administrateur du domaine auquel la ressource $id appartient
+                $res3 = grr_sql_query("SELECT u.login
+                    FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_area j
+                    WHERE (u.login=j.login AND j.id_area='".protect_data_sql($id_area)."' AND u.login='".protect_data_sql($user)."')");
+                if (grr_sql_count($res3) > 0)
+                    return 4;
+                // On regarde si l'utilisateur est gestionnaire des réservations pour une ressource
+                $str_res2 = "SELECT *
+                FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_user_room j
+                WHERE u.login=j.login and u.login='".protect_data_sql($user)."' ";
+                if ($id!=-1)
+                    $str_res2.="AND j.id_room='".protect_data_sql($id)."'";
+                $res2 = grr_sql_query($str_res2);
+                if (grr_sql_count($res2) > 0)
+                    return 3;
+                // Sinon il s'agit d'un simple utilisateur
+                return 2;
+            }
+            // On regarde si l'utilisateur est administrateur d'un domaine
+            if ($type == 'area')
+            {
+                if ($id == '-1')
+                {
+                    if (Settings::get("module_multisite") == "Oui")
+                    {
+                    //On regarde si l'utilisateur est administrateur d'un site quelconque
+                        $res2 = grr_sql_query("SELECT u.login
+                            FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_site j
+                            WHERE (u.login=j.login and u.login='".protect_data_sql($user)."')");
+                        if (grr_sql_count($res2) > 0)
+                            return 5;
+                    }
+                    //On regarde si l'utilisateur est administrateur d'un domaine quelconque
+                    $res2 = grr_sql_query("SELECT u.login
+                        FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_area j
+                        WHERE (u.login=j.login and u.login='".protect_data_sql($user)."')");
+                    if (grr_sql_count($res2) > 0)
+                        return 4;
+                }
+                else
+                {
+                    if (Settings::get("module_multisite") == "Oui")
+                    {
+                    // On regarde si l'utilisateur est administrateur du site auquel le domaine $id appartient
+                        $id_site = grr_sql_query1("SELECT id_site FROM ".TABLE_PREFIX."_j_site_area  WHERE id_area='".protect_data_sql($id)."'");
+                        $res3 = grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site j WHERE j.id_site='".protect_data_sql($id_site)."' AND j.login='".protect_data_sql($user)."'");
+                        if (grr_sql_count($res3) > 0)
+                            return 5;
+                    }
+                    //On regarde si l'utilisateur est administrateur du domaine dont l'id est $id
+                    $res3 = grr_sql_query("SELECT u.login
+                        FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_area j
+                        WHERE (u.login=j.login and j.id_area='".protect_data_sql($id)."' and u.login='".protect_data_sql($user)."')");
+                    if (grr_sql_count($res3) > 0)
+                        return 4;
+                }
+                // Sinon il s'agit d'un simple utilisateur
+                return 2;
+            }
+            // On regarde si l'utilisateur est administrateur d'un site
+            if (($type == 'site') and (Settings::get("module_multisite") == "Oui"))
+            {
+                if ($id == '-1')
+                {
+                    //On regarde si l'utilisateur est administrateur d'un site quelconque
+                    $res2 = grr_sql_query("SELECT u.login
+                        FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_site j
+                        WHERE (u.login=j.login and u.login='".protect_data_sql($user)."')");
+                    if (grr_sql_count($res2) > 0)
+                        return 5;
+                }
+                else
+                {
+                    //On regarde si l'utilisateur est administrateur du site dont l'id est $id
+                    $res3 = grr_sql_query("SELECT u.login
+                        FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_site j
+                        WHERE (u.login=j.login and j.id_site='".protect_data_sql($id)."' and u.login='".protect_data_sql($user)."')");
+                    if (grr_sql_count($res3) > 0)
+                        return 5;
+                }
+                // Sinon il s'agit d'un simple utilisateur
+                return 2;
+            }
+        }
+    }
 }
 /* authUserAccesArea($user,$id)
  *
