@@ -73,7 +73,7 @@ genre : http://www.monsite.fr/grr
 Vous n'avez plus qu'à cliquer sur le lien vous proposant d'installer la base
 et à suivre la procédure. Pour ce type d'installation, le fichier connect.inc.php
 doit être autorisé en écriture (la modification des attributs de ce fichier est possible
-avec la plupart des logiciel de transfert FTP).
+avec la plupart des logiciels de transfert FTP).
 
 
 * Installation manuelle :
