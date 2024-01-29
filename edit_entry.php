@@ -3,10 +3,10 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-11-21 08:54$
+ * Dernière modification : $Date: 2024-01-29 11:38$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author 	  Eric Lemeur pour les champs additionnels de type checkbox
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -274,9 +274,9 @@ function divChampsAdd($id_resa=0,$id_area=-1,$id_room=-1,$overloadFields=array()
         else if ($overload_fields[$fieldname]["type"] == "checkbox" ) { // ELM - Gestion des champs aditionnels multivalués
             $display .= "<div class=\"col col-xs-12\">\n";
             foreach ($overload_fields[$fieldname]["list"] as $value) {
-                $valeurs = explode("|", $data);
+                $valeurs = (is_array($data))? $data : explode("|", $data);
                 $display .= "<label><input type=\"checkbox\" name=\"addon_".$overload_fields[$fieldname]["id"]."[]\" value=\"".trim($value,"&")."\" ";
-                if (in_array(trim($value,"&"), $valeurs) or (empty($valeurs)=="" and $value[0]=="&")) 
+                if (in_array(trim($value,"&"), $valeurs) or (empty($valeurs) and $value[0]=="&")) 
                     $display .= " checked=\"checked\"";
                 $display .= ">\n".(trim($value,"&"))."</label>\n";
             }
@@ -284,7 +284,7 @@ function divChampsAdd($id_resa=0,$id_area=-1,$id_room=-1,$overloadFields=array()
         }
         else
         {
-            $display .= "<div class=\"col col-xs-12\"><select class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" size=\"1\">\n";
+            $display .= "<div class=\"col col-xs-12\"><select class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" id=\"addon_".$overload_fields[$fieldname]["id"]."\" size=\"1\">\n";
             if ($overload_fields[$fieldname]["obligatoire"] == 'y')
                 $display .= '<option value="">'.get_vocab('choose').'</option>';
             foreach ($overload_fields[$fieldname]["list"] as $value)
@@ -724,10 +724,11 @@ else // nouvelle réservation
 		$duration = $duree_par_defaut_reservation_area ;
 	}
 	$edit_type = "series";
-	if (Settings::get("remplissage_description_breve") == '2')
-		$name = $_SESSION['prenom']." ".$_SESSION['nom'];
-	else
-		$name = "";
+    if(!isset($name))
+        if (Settings::get("remplissage_description_breve") == '2')
+            $name = $_SESSION['prenom']." ".$_SESSION['nom'];
+        else
+            $name = "";
 	$beneficiaire   = $user_name;
 	/*$tab_benef["nom"] = "";
 	$tab_benef["email"] = "";*/
@@ -874,7 +875,7 @@ divBeneficiaire($id,$user_name,$room,$area_id);
 // description brève
 echo '<div>'.PHP_EOL;
 echo '<label for="name">'.$Booker.'</label>'.PHP_EOL;
-echo '<input class="form-control" id="name" name="name" maxlength="80" size="60" autocomplete="off" value="'.$C.'" />'.PHP_EOL;
+echo '<input class="form-control" id="name" name="name" maxlength="80" size="60" value="'.$C.'" autocomplete="off" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 // description complète
 echo '<div>'.PHP_EOL;

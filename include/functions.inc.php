@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2024-01-24 11:31$
+ * Dernière modification : $Date: 2024-01-29 11:31$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -6023,7 +6023,7 @@ function grrGetOverloadDescArray($ofl,$od)
 */
 function getFormVar($nom,$type='',$default=NULL){
     $valeur = isset($_GET[$nom])? $_GET[$nom] : (isset($_POST[$nom])? $_POST[$nom] : (isset($_COOKIE['nom'])? $_COOKIE['nom'] : $default));
-    if ((isset($valeur)) && ($type !=''))
+    if ((isset($valeur)) && (($type =='int')||($type == 'string')))
         settype($valeur,$type);
     return $valeur;
 }
