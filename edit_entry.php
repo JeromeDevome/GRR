@@ -109,7 +109,7 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
             //print_r($tab_benef);
         }
         $bnf = array(); // tableau des bénéficiaires autorisés (login,nom,prénom)
-        $sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (etat!='inactif' and statut!='visiteur' ) OR (login=? ) ORDER BY nom, prenom";
+        $sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (etat!='inactif') OR (login=? ) ORDER BY nom, prenom";
         $res = grr_sql_query($sql,"s",[$id_user]);
         if ($res){
             for ($i = 0; ($row = grr_sql_row($res, $i)); $i++) {$bnf[$i] = $row;}
@@ -599,6 +599,7 @@ if (isset($id)) // édition d'une réservation existante
 	if (grr_sql_count($res) != 1)
 		fatal_error(1, get_vocab('entryid') . $id . get_vocab('not_found'));
 	$row = grr_sql_row_keyed($res, 0);
+    $data = array_merge(array(), $row);
 	grr_sql_free($res);
 	$name = $row['name'];
 	$beneficiaire = $row['beneficiaire'];

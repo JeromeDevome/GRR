@@ -3,10 +3,10 @@
  * edit_entry_champs_add.php
  * Page "Ajax" utilisée pour générer les champs additionnels dans la page de réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-10-09 17:23$
+ * Dernière modification : $Date: 2024-01-30 16:48$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -24,24 +24,18 @@ $room : l'identifiant de la ressource
 */
 // Initialisation
 if (isset($_GET["id"]))
-{
-	$id = $_GET["id"];
-	settype($id,"integer");
-}
+	$id = intval($_GET["id"]);
 else
 	die();
 if (isset($_GET['area']))
-{
-	$area = $_GET['area'];
-	settype($area,"integer");
-}
+	$area = intval($_GET['area']);
 else
 	die();
 if (isset($_GET['room']))
 {
 	$room = $_GET['room'];
 	if ($room != "")
-		settype($room,"integer");
+		$room = intval($room);
 }
 else
 	die();
@@ -49,12 +43,13 @@ if (isset($_GET['overloadFields']))
     $overloadFields = $_GET['overloadFields'];
 else 
     $overloadFields = array();
-if ((authGetUserLevel(getUserName(), -1) < 2) && (auth_visiteur(getUserName(), $room) == 0))
+$id_user = getUserName();
+if ((authGetUserLevel($id_user, -1) < 2) && (auth_visiteur($id_user, $room) == 0))
 {
 	showAccessDenied("");
 	exit();
 }
-if (authUserAccesArea(getUserName(), $area) == 0)
+if (authUserAccesArea($id_user, $area) == 0)
 {
 	showAccessDenied("");
 	exit();

@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-11-07 12:15$
+ * Dernière modification : $Date: 2024-01-14 21:40$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -3918,7 +3918,8 @@ function verif_acces_ressource($user, $id_room)
 	}
 }
 /* function no_book_rooms($user)
-détermine les ressources (rooms) dans lesquelles $user ne peut pas réserver (droits insuffisants ou ressource restreinte)
+* détermine les ressources (rooms) dans lesquelles $user ne peut pas réserver (droits insuffisants ou ressource restreinte)
+* renvoie un tableau des indices des ressources inaccessibles
 */
 function no_book_rooms($user){
     $rooms_no_book = array();
@@ -6123,7 +6124,7 @@ function grrGetOverloadDescArray($ofl,$od)
 */
 function getFormVar($nom,$type='',$default=NULL){
     $valeur = isset($_GET[$nom])? $_GET[$nom] : (isset($_POST[$nom])? $_POST[$nom] : (isset($_COOKIE['nom'])? $_COOKIE['nom'] : $default));
-    if ((isset($valeur)) && ($type !=''))
+    if ((isset($valeur)) && (($type =='int')||($type =='string')))
         settype($valeur,$type);
     return $valeur;
 }
