@@ -3,9 +3,9 @@
  * edit_entry_beneficiaire.php
  * Page "Ajax" utilisée dans edit_entry.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-05-15 14:17$
+ * Dernière modification : $Date: 2024-01-30 18:22$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -75,7 +75,7 @@ if ($flag_qui_peut_reserver_pour ) // on crée les sélecteurs à afficher
     //echo "Choix du bénéficiaire";
 	echo '<select size="1" class="form-control" name="beneficiaire" id="beneficiaire" onchange="setdefault(\'beneficiaire_default\',\'\');check_4();">'.PHP_EOL;
 	echo '<option value="" >'.get_vocab("personne_exterieure").'</option>'.PHP_EOL;
-	$sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (etat!='inactif' and statut!='visiteur' ) OR (login='".$user."') ORDER BY nom, prenom";
+	$sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (etat!='inactif') OR (login='".$user."') ORDER BY nom, prenom";
 	$res = grr_sql_query($sql);
 	if ($res)
 	{
