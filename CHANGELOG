@@ -17,9 +17,25 @@ Version 4.3.0 - En cours de développement
 -----
 --
 -----
+Version 4.2.4 - 30/01/2024  Généré par @JeromeDevome
+
+[Ajout] Affichage de la description complète de la ressource dans la page days (selon configuration) - 63c729ea - @JeromeDevome
+[Ajout] Recherche & Stats : filtre par site (Dans le cas ou le multi-site est activé) - 4719961b - @JeromeDevome
+[Ajout] Formulaire de contact de réservation prés remplis pour les visiteurs connecté (nom, prénom, email) - 97b85558 - @JeromeDevome
+[Ajout] Inclusion des visiteurs dans la liste des bénéficiaires le cas où la fonctionnalité réserver pour autrui est activée - 43596515 - @ynaessens
+[Correction] Variable vocab - 2047367a & fdc54a69 & 191b898a - @JeromeDevome, @ynaessens
+[Correction] Prise en compte de l'adresse d'envois pour le serveur SMTP - e176bfc6 - @JeromeDevome
+[Correction] Variable site par défaut (problème 4.2.3) - 6fa510d4 & 37b64328 - @JeromeDevome
+[Correction] Caractères accentué dans la description complète d'une ressource - d059b70c - @JeromeDevome
+[Correction] Affichage du formulaire de modération, via lien email - 68bc28ac - @JeromeDevome
+[Suppression] Nettoyage de code dans l'administration - @JeromeDevome
+
+-----
+--
+-----
 Version 4.2.3 - 13/01/2024 Généré par @JeromeDevome
 
-[Ajout] Modification utilisateur via admin : Paramétrage langue, style, domaine par défaut - 04806794 - JeromeDevome
+[Ajout] Modification utilisateur via admin : Paramétrage langue, style, domaine par défaut - 04806794 - @JeromeDevome
 [Ajout] Lien pour modifier l'utilisateur dans le login - 568f381d - @JeromeDevome
 [Ajout] Synchonisation du type d'affichage avec tout les utilisateurs - 86a9747e - @JeromeDevome
 [Ajout] Synchonisations site, domaine et ressource par défaut - f51ff7f7 - @JeromeDevome
