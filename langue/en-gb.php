@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue anglaise
 # GRR: Translations provided by: JeromeB & Patricia Gaubert-Dubois et Yan Naessens
-# Last modification : 2022-11-02
+# Last modification : 2023-12-05
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accept the reservation ";
@@ -1023,7 +1023,7 @@ $vocab['view'] = "View";
 $vocab['viewday'] = "View day";
 $vocab['viewmonth'] = "View month";
 $vocab['viewweek'] = "View week";
-$vocab['visu_fiche_description0'] = "Whoever going on webthe site even not connected";
+$vocab['visu_fiche_description0'] = "Whoever going on the website even not connected";
 $vocab['visu_fiche_description1'] = "It is necessary to be connected, even like a simple visitor.";
 $vocab['visu_fiche_description2'] = "It is necessary to be connected and to have a \"user\" status";
 $vocab['visu_fiche_description3'] = "It is necessary to be connected and to be at least the manager of one resource";
