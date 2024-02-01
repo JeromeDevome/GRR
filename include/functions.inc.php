@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2024-01-14 21:40$
+ * Dernière modification : $Date: 2024-02-01 18:02$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -306,9 +306,10 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 		}
 		else
 		{
-            if (validate_email($_email))
+            $email_seq = filter_multi_emails($_email);
+            if ($email_seq != "")
             {
-                $affichage = '<a href="mailto:'.$_email.'">'.$_identite.'</a>';
+                $affichage = '<a href="mailto:'.$email_seq.'">'.$_identite.'</a>';
             }
             else 
                 if ($option_affichage == "afficher_toujours")
