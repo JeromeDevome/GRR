@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2024-02-01 18:08$
+ * Dernière modification : $Date: 2024-02-01 18:23$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4684,7 +4684,7 @@ function find_user_room($id_room)
 	return $emails;
 }
 // trouve les mails des utilisateurs actifs gestionnaires de ressource
-function find_active_user_room ($id_room)
+function find_active_user_room($id_room)
 {
 	$emails = array ();
 	$sql = "select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_user_room

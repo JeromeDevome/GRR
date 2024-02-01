@@ -3,9 +3,9 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-08-24 14:50$
+ * Dernière modification : $Date: 2024-01-29 11:31$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -130,7 +130,7 @@ foreach($form_vars as $var => $var_type)
 }
 // traiter aussi les champs additionnels (addon_x)!
 // vérification
-/*echo "<br>vérification<br>";
+/* echo "<br>vérification<br>";
 foreach($form_vars as $var => $var_type)
 {
     echo $var.' -> ';print_r($$var);
@@ -836,9 +836,16 @@ catch (Exception $e){
         foreach ($overload_fields_list as $overfield=>$fieldtype){
             $id_field = $overload_fields_list[$overfield]["id"];
             $fieldname = "addon_".$id_field;
-            $$fieldname = getFormVar($fieldname,'string');
+            $type_field = $overload_fields_list[$overfield]["type"];
+            $$fieldname = getFormVar($fieldname);
             if ($$fieldname != NULL){
-                $hiddenInputs .= "<input type='hidden' name='".$fieldname."' value='".$$fieldname."' >";
+                if($type_field == "checkbox"){
+                    foreach ($$fieldname as $value) {
+                        $hiddenInputs .= "<input type=\"hidden\" name=\"addon_".$id_field."[]\" value=\"".$value."\" >";
+                    }
+                }
+                else
+                    $hiddenInputs .= "<input type='hidden' name='".$fieldname."' value='".$$fieldname."' >";
             }
         }
     }
