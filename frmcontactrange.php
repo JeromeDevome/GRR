@@ -3,9 +3,9 @@
  * frmcontactrange.php
  * calcule le code html de la partie intervalle du formulaire de contact
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-08-19 11:36$
+ * Dernière modification : $Date: 2024-02-02 18:39$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -25,31 +25,28 @@ $id = $_GET['id'];
 if ($id != protect_data_sql($id))
     die('Donnée incorrecte');
 $query = "SELECT access,morningstarts_area,eveningends_area,eveningends_minutes_area,enable_periods,resolution_area FROM ".TABLE_PREFIX."_area
-    WHERE id = '".protect_data_sql($id)."' ";
-// echo $query."<br />";
-$res = grr_sql_query($query);
+    WHERE id = ? ";
+$res = grr_sql_query($query,"i",[$id]);
 $val= grr_sql_row($res,0);
-// print_r($val);
 $enable_periods = $val[4]=='y';
 if ($enable_periods)
 {
     // echo 'mode créneaux';
     // déterminer la liste des créneaux
-    $sql_periode = grr_sql_query("SELECT num_periode, nom_periode FROM ".TABLE_PREFIX."_area_periodes where id_area='".$id."' order by num_periode");
+    $sql_periode = grr_sql_query("SELECT num_periode, nom_periode FROM ".TABLE_PREFIX."_area_periodes where id_area=? order by num_periode","i",[$id]);
     $num_periodes = grr_sql_count($sql_periode);
     echo '<div class="form-group">';
     // sélectionner parmi les créneaux
-    echo '<label for="start" >Créneau initial : &nbsp;</label>';
+    echo '<label>Créneau initial : &nbsp;';
     echo '<select name="start">';
-        for ($i = 0; $i < $num_periodes; $i++)
+        foreach($sql_periode as $val)
         {
-            $val = grr_sql_row($sql_periode,$i);
-            echo '<option value="'.$val[0].'">'.$val[1].'</option>';
+            echo '<option value="'.$val['num_periode'].'">'.$val['nom_periode'].'</option>';
         }
-    echo '</select>';
+    echo '</select></label>';
     // choisir le nombre de créneaux
-    echo '  <label for="dureemin" >Nombre de créneaux : &nbsp;</label>';
-    echo '  <input type="number" id="dureemin" size="2" name="dureemin" value="1" min="1" required />';
+    echo '  <label>Nombre de créneaux : &nbsp;';
+    echo '  <input type="number" id="dureemin" size="2" name="dureemin" value="1" min="1" required /></label>';
     echo '</div>';
 }
 else 

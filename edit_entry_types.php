@@ -3,9 +3,9 @@
  * edit_entry_types.php
  * Page "Ajax" utilisée pour générer les types
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-12-01 11:00$
+ * Dernière modification : $Date: 2024-02-02 16:54$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -23,17 +23,14 @@ else
 	$type = "";
 // paramètres $area et $room requis
 if (isset($_GET['area']))
-{
-	$area = $_GET['area'];
-	settype($area,"integer");
-}
+	$area = intval($_GET['area']);
 else
 	die();
 if (isset($_GET['room']))
 {
 	$room = $_GET['room'];
 	if ($room != "")
-		settype($room,"integer");
+		$room = intval($room);
 }
 else
 	die();
@@ -68,38 +65,35 @@ $display_type .= '<option value="0">'.get_vocab("choose").PHP_EOL;
 
 $sql = "SELECT DISTINCT t.type_name, t.type_letter, t.id, t.order_display FROM ".TABLE_PREFIX."_type_area t
 LEFT JOIN ".TABLE_PREFIX."_j_type_area j ON j.id_type=t.id
-WHERE (j.id_area IS NULL OR j.id_area != '".$area."') AND (t.disponible<='".$aff_type."')
+WHERE (j.id_area IS NULL OR j.id_area != ?) AND (t.disponible<=?)
 ORDER BY t.order_display";
-$res = grr_sql_query($sql);
+$res = grr_sql_query($sql,"ii",[$area,$aff_type]);
 
 if (!$res)
 	fatal_error(0, grr_sql_error());
 else
 {
     if (grr_sql_count($res) != 0){
-        $row = grr_sql_row($res, 0); // t.type_name, t.type_letter, t.id, t.order_display
-        for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+        foreach($res as $row) // t.type_name, t.type_letter, t.id, t.order_display
         {
-            $id_type_par_defaut = grr_sql_query1("SELECT id_type_par_defaut FROM ".TABLE_PREFIX."_area WHERE id = '".$area."'");
+            $id_type_par_defaut = grr_sql_query1("SELECT id_type_par_defaut FROM ".TABLE_PREFIX."_area WHERE id = ?","i",[$area]);
             // La requête sql précédente laisse passer les cas où un type est non valide
             // dans le domaine concerné ET au moins dans un autre domaine, d'où le test suivant
-            $test = grr_sql_query1("SELECT id_type FROM ".TABLE_PREFIX."_j_type_area WHERE id_type = '".$row[2]."' AND id_area='".$area."'");
+            $test = grr_sql_query1("SELECT id_type FROM ".TABLE_PREFIX."_j_type_area WHERE id_type = ? AND id_area= ? ","ii",[$row['id'],$area]);
             if ($test == -1)
             {
                 $nb_type ++;
-                $type_nom_unique = $row[0];
-                $type_id_unique = $row[1];
-                $display_type .= '<option value="'.$row[1].'" ';
+                $type_nom_unique = $row['type_name'];
+                $type_id_unique = $row['type_letter'];
+                $display_type .= '<option value="'.$row['type_letter'].'" ';
                 
-                // Modification d'une réservation
-                if ($type != "")
+                if ($type != "") // Modification d'une réservation
                 {
-                    if ($type == $row[1])
+                    if ($type == $row['type_letter'])
                         $display_type .=  ' selected="selected"';
                 }
-                else
+                else // Nouvelle réservation
                 {
-                    // Nouvelle réservation
                     //Récupère le cookie par defaut
                     if ($aff_default && isset($_COOKIE['type_default'])){
                         $cookie = $_COOKIE['type_default'];
@@ -107,15 +101,13 @@ else
                     else{
                         $cookie = "";
                     }
-                    if ((!$cookie && ($id_type_par_defaut == $row[2])) || ($cookie && $cookie == $row[0]))
+                    if ((!$cookie && ($id_type_par_defaut == $row['id'])) || ($cookie && $cookie == $row['type_name']))
                         $display_type .=  ' selected="selected"';
                 }
-                $display_type .=  ' >'.$row[0].'</option>'.PHP_EOL;
+                $display_type .=  ' >'.$row['type_name'].'</option>'.PHP_EOL;
             }
         }
-
     }
-
 }
 
 $display_type .=  '</select></div>'.PHP_EOL;

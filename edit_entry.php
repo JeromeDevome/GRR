@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-02 15:58$
+ * Dernière modification : $Date: 2024-02-02 16:58$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author 	  Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
@@ -240,7 +240,6 @@ function divTypes($id_user,$room,$area,$type=""){
 }
 
 function divChampsAdd($id_resa=0,$id_area=-1,$id_room=-1,$overloadFields=array()){
-    echo $id_resa." ".$id_area." ".$id_room."<br/>"; print_r($overloadFields);
     // on récupère les données de la réservation si il y en a
     if ($id_resa != 0)
         $overload_data = mrbsEntryGetOverloadDesc($id_resa);

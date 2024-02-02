@@ -3,9 +3,9 @@
  * frmcontactlist.php
  * calcule la liste des ressources visibles dans un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-10-17 18:41$
+ * Dernière modification : $Date: 2024-02-02 18:01$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -24,18 +24,17 @@ include "include/functions.inc.php";
 $id = $_GET['id'];
 if ($id != protect_data_sql($id))
     die('Donnée incorrecte');
-$res = grr_sql_query("SELECT room_name,id FROM ".TABLE_PREFIX."_room WHERE area_id = '".protect_data_sql($id)."' ORDER BY room_name");
+$res = grr_sql_query("SELECT room_name,id FROM ".TABLE_PREFIX."_room WHERE area_id = ? ORDER BY room_name","i",[$id]);
 $nbresult = grr_sql_count($res);
 $user_name = getUserName();
 if ($nbresult != 0)
 {
     $a = "";
-	for ($t = 0; ($row_roomName = grr_sql_row($res, $t)); $t++)
+	foreach($res as $row)
 	{
-        $id_room = $row_roomName[1];
+        $id_room = $row['id'];
         if (verif_acces_ressource($user_name,$id_room)){
-            $room_name = $row_roomName[0];
-            $a .= " <option value =\"$id_room\">$room_name</option>";
+            $a .= " <option value =\"$id_room\">".$row['room_name']."</option>";
         }
 	}
     if ($a != "")

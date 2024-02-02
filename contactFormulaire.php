@@ -3,9 +3,9 @@
  * contactFormulaire.php
  * Formulaire d'envoi de mail demandant une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-11-03 11:52$
+ * Dernière modification : $Date: 2024-02-02 18:33$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -93,7 +93,7 @@ bouton_retour_haut ();
 					<div class="form-group">
 						<div class="input-group">
 							<span class="input-group-addon">@</span>
-							<input class="form-control" type="email" id="email" size="8" name="email" placeholder="Votre adresse de courriel" required />
+							<input class="form-control" type="email" id="email" size="8" name="email" placeholder="Votre adresse de courriel" autocomplete='email' required />
 						</div>
 					</div>
 					<div class="form-group">
@@ -111,7 +111,7 @@ bouton_retour_haut ();
 				<div class="col col-md-6 col-sm-12">
 				<label for="subject">Sujet :</label>
 				<textarea class="form-control" id="subject" name="sujet" cols="30" rows="4" required></textarea><br/>
-				<label>Domaines : </label>
+				<label>Domaines : 
 				<select id="area" name="area" class="form-control" required>
 					<option selected disabled>SELECTIONNER UN DOMAINE </option>
 					<?php 
@@ -119,20 +119,21 @@ bouton_retour_haut ();
                             echo '<option value="'.$row['id'].'"> '.$row['area_name'].'</option>'.PHP_EOL;
                         }
                     ?>
-				</select>
-				<label for="room">Ressources : </label>
+				</select></label>
+				<label for="room">Ressources : 
                 <select id="room" name="room" class="form-control" required>
                         <option>SELECTIONNER UNE RESSOURCE </option>
-                </select>
+                </select></label>
 				</div>
 				<div class="col col-md-6 col-sm-12">	
                 <div class="form-group">
                     <div class="input-group">
 						<br />
-                        <label><b> Date :</b></label>
+                        <label><b> Date :</b>
 						<?php
 						jQuery_DatePicker('start_');
 						?>
+                        </label>
                         <br />
                     </div>
                 </div>
