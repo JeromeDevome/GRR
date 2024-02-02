@@ -3,10 +3,10 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-10-18 11:54$
+ * Dernière modification : $Date: 2024-02-02 16:31$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -747,6 +747,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry ADD `clef` INT(2) NOT NULL DEFAULT '0' AFTER `jours`;");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry ADD `courrier` INT(2) NOT NULL DEFAULT '0' AFTER `clef`;");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_repeat ADD `courrier` INT(2) NOT NULL DEFAULT '0' AFTER `jours`;");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('menu_gauche', '1')");
 		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_utilisateurs SET `default_style` = 'default';");
 		if ($result_inter == '')
 			$result .= "<span style=\"color:green;\">Ok !</span><br />";
@@ -803,7 +804,6 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
 
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('smtp_secure', '')");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('smtp_port', '25')");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('menu_gauche', '1')");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD active_cle CHAR( 1 ) NOT NULL DEFAULT 'y' AFTER active_ressource_empruntee");
 
 		if ($result_inter == '')
