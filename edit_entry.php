@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-01-29 11:38$
+ * Dernière modification : $Date: 2024-02-02 16:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author 	  Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
@@ -276,7 +276,7 @@ function divChampsAdd($id_resa=0,$id_area=-1,$id_room=-1,$overloadFields=array()
             foreach ($overload_fields[$fieldname]["list"] as $value) {
                 $valeurs = (is_array($data))? $data : explode("|", $data);
                 $display .= "<label><input type=\"checkbox\" name=\"addon_".$overload_fields[$fieldname]["id"]."[]\" value=\"".trim($value,"&")."\" ";
-                if (in_array(trim($value,"&"), $valeurs) or (empty($valeurs) and $value[0]=="&")) 
+                if (in_array(trim($value,"&"), $valeurs) || ($id_resa == 0 && empty($data) && $value[0]=="&"))
                     $display .= " checked=\"checked\"";
                 $display .= ">\n".(trim($value,"&"))."</label>\n";
             }
