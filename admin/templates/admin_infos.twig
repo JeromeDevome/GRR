@@ -48,6 +48,13 @@ Timezone : {{ trad.dTimezone }}</textarea></li>
 						<ul class="list-group list-group-unbordered">
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.system }}</p><b>{{ trad.dSystem }}</b></div></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Version PHP</p><b><small class="badge pull-left {{ trad.dCouleurVersionPHP }}">{{ trad.dVersionPHP }}</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">PHP fileinfo</p><b><small class="badge pull-left {% if d.phpfileinfo %}bg-green{% else %}bg-red{% endif %}">{% if d.phpfileinfo %}Oui{% else %}Non{% endif %}</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">PHP gd</p><b><small class="badge pull-left {% if d.phpgd %}bg-green{% else %}bg-red{% endif %}">{% if d.phpgd %}Oui{% else %}Non{% endif %}</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">PHP mbstring</p><b><small class="badge pull-left {% if d.phpmbstring %}bg-green{% else %}bg-red{% endif %}">{% if d.phpmbstring %}Oui{% else %}Non{% endif %}</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">PHP mysqli</p><b><small class="badge pull-left {% if d.phpmysqli %}bg-green{% else %}bg-red{% endif %}">{% if d.phpmysqli %}Oui{% else %}Non{% endif %}</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">PHP mysqlnd</p><b><small class="badge pull-left {% if d.mysqlnd %}bg-green{% else %}bg-red{% endif %}">{% if d.mysqlnd %}Oui{% else %}Non{% endif %}</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">PHP xml</p><b><small class="badge pull-left {% if d.phpxml %}bg-green{% else %}bg-red{% endif %}">{% if d.phpxml %}Oui{% else %}Non{% endif %}</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">PHP intl</p><b><small class="badge pull-left {% if d.phpintl %}bg-green{% else %}bg-red{% endif %}">{% if d.phpintl %}Oui{% else %}Non{% endif %}</small>&nbsp;</b></div></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.database }}</p><b>{{ trad.dDatabase }}</b></div></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Version BDD</p><b><small class="badge pull-left {{ trad.dCouleurVersionMySQL }}">{{ trad.dVersionBDD }}</small>&nbsp;</b></div></li>
 
