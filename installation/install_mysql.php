@@ -323,6 +323,60 @@ else if ($etape == 0)
 {
 	$d['etape'] = 0;
 
+	$d['phpserveur'] = phpversion();
+	$d['phpmini'] = $php_mini;
+	$d['phpmaxi'] = $php_maxi;
+	$d['phpmaxitest'] = $php_max_valide;
+
+	if (version_compare(phpversion(), $php_mini, '<')) { // Version inférieur 
+		$d['checkPHP'] = "bg-red";
+		$d['commentairePHP'] = "Votre version PHP est inférieur au prérequis";
+	} elseif (version_compare(phpversion(), $php_max_valide, '<=')) { // Testé et validé c'est vert !
+		$d['checkPHP'] = "bg-green";
+	} elseif ($php_maxi == "" && version_compare(phpversion(), $php_max_valide, '>')) { // On dépasse la limite mais c'est pas testé
+		$d['checkPHP'] = "bg-orange";
+		$d['commentairePHP'] = "Votre version PHP semble être correcte mais n'a pas était validé.";
+	} elseif ($php_maxi != "" && version_compare(phpversion(), $php_maxi, '<=')) {
+		$d['checkPHP'] = "bg-orange";
+		$d['commentairePHP'] = "Votre version PHP semble être correcte mais n'a pas était validé.";
+	} elseif ($php_maxi != "" && version_compare(phpversion(), $php_maxi, '>')) {
+		$d['checkPHP'] = "bg-red";
+		$d['commentairePHP'] = "GRR n'est pas encore compatible avec cette version de PHP.";
+	}
+	
+	$d['mysqlmini'] = $mysql_mini;
+	$d['mysqlmaxi'] = $mysql_maxi;
+	$d['mysqltest'] = $mysql_max_valide;
+
+	$d['phpfileinfo'] = extension_loaded("fileinfo");
+	$d['phpmbstring'] = extension_loaded("mbstring");
+	$d['phpmysqli'] = extension_loaded("mysqli");
+	$d['phpmysqlnd'] = extension_loaded("mysqlnd");
+	$d['phpxml'] = extension_loaded("xml");
+	$d['phpintl'] = extension_loaded("intl");
+	$d['phpgd'] = extension_loaded("gd");
+
+
+/*	
+	$d['mysqlserveur'] = grr_sql_version();
+
+	if (version_compare(grr_sql_version(), $mysql_mini, '<')) {
+		$d['checkMySQL'] = "bg-red";
+		$d['commentaireMySQL'] = "Votre version MySQL est inférieur au prérequis";
+	 } elseif (version_compare(grr_sql_version(), $mysql_max_valide, '<=')) {
+		$d['checkMySQL'] = "bg-green";
+	 } elseif ($mysql_maxi == "" && version_compare(grr_sql_version(), $mysql_max_valide, '>')) {
+		$d['checkMySQL'] = "bg-orange";
+		$d['commentaireMySQL'] = "Votre version MySQL semble être correcte mais n'a pas était validé.";
+	 } elseif ($mysql_maxi != "" && version_compare(grr_sql_version(), $mysql_maxi, '<=')) {
+		$d['checkMySQL'] = "bg-orange";
+		$d['commentaireMySQL'] = "Votre version MySQL semble être correcte mais n'a pas était validé.";
+	 } elseif ($mysql_maxi != "" && version_compare(grr_sql_version(), $mysql_maxi, '>')) {
+		$d['checkMySQL'] = "bg-red";
+		$d['commentaireMySQL'] = "GRR n'est pas encore compatible avec cette version de MySQL.";
+	 }
+*/
+
 	echo $twig->render('installation.twig', array('d' => $d));
 }
 else if (!$etape)

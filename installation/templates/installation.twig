@@ -20,11 +20,77 @@
 				</div>
 
 				<div class="box-body">
-					<p>Avant de commencer vérifier la compatibilié de votre version apache et sql avec GRR.</p>
+					<p>Avant de commencer vérifier la compatibilié de votre version PHP et SQL avec GRR.</p>
 					<p>Vous devez avoir en votre possession les codes de connexion au serveur {{ d.dbsys }}.</p>
 					<p>Vous devez prendre connaissance de la licence GRR et en installant ce logiciel vous l'acceptez.</p>
 					<p>Ni DEVOME ni les développeurs ne sont responsables de vos données.</p>
 				</div>
+
+				<hr>
+
+				<div class="box-body">
+					<table class="table table-striped">
+						<tr>
+							<th>Librairie</th>
+							<th>Statut</th>
+							<th>Commentaire</th>
+						</tr>
+						<tr>
+							<td>PHP >= {{ d.phpmini }}
+								{% if d.phpmaxi %}
+									et <= {{ d.phpmaxi }}
+								{% endif %}
+							</td>
+							<td><span class="badge {{ d.checkPHP }}">{{ d.phpserveur }}</span></td>
+							<td>{{d.commentairePHP}}</td>
+						</tr>
+						<tr>
+							<td>MySQL >= {{ d.mysqlmini }}
+								{% if d.mysqlmaxi %}
+									et <= {{ d.mysqlmaxi }}
+								{% endif %}
+							</td>
+							<td>-</td>
+							<td>A contrôler manuellement</td>
+						</tr>
+						<tr>
+							<td>PHP fileinfo</td>
+							<td><span class="badge {% if d.phpfileinfo %}bg-green{% else %}bg-red{% endif %}">{% if d.phpfileinfo %}Oui{% else %}Non{% endif %}</span></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>PHP mbstring</td>
+							<td><span class="badge {% if d.phpmbstring %}bg-green{% else %}bg-red{% endif %}">{% if d.phpmbstring %}Oui{% else %}Non{% endif %}</span></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>PHP mysqli</td>
+							<td><span class="badge {% if d.phpmysqli %}bg-green{% else %}bg-red{% endif %}">{% if d.phpmysqli %}Oui{% else %}Non{% endif %}</span></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>PHP mysqlnd</td>
+							<td><span class="badge {% if d.phpmysqlnd %}bg-green{% else %}bg-red{% endif %}">{% if d.phpmysqlnd %}Oui{% else %}Non{% endif %}</span></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>PHP xml</td>
+							<td><span class="badge {% if d.phpxml %}bg-green{% else %}bg-red{% endif %}">{% if d.phpxml %}Oui{% else %}Non{% endif %}</span></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>PHP gd</td>
+							<td><span class="badge {% if d.phpgd %}bg-green{% else %}bg-red{% endif %}">{% if d.phpgd %}Oui{% else %}Non{% endif %}</span></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>PHP intl</td>
+							<td><span class="badge {% if d.phpintl %}bg-green{% else %}bg-red{% endif %}">{% if d.phpintl %}Oui{% else %}Non{% endif %}</span></td>
+							<td></td>
+						</tr>
+					</table>
+				</div>
+
 				<div style="text-align:center;">
 					<a href="?etape=1" class="btn btn-success">Installer GRR</a>
 				</div>
