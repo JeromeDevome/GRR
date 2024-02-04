@@ -24,7 +24,7 @@ include('../include/fichier.class.php');
 $valid = isset($_POST["valid"]) ? $_POST["valid"] : 'no';
 $version_old = isset($_POST["version_old"]) ? $_POST["version_old"] : '';
 
-get_vocab_admin('admin_infos');
+$trad = $vocab;
 
 if ((authGetUserLevel(getUserName(),-1) < 6) && ($valid != 'yes') && $connexionAdminMAJ == 1)
 {
@@ -38,36 +38,31 @@ $result = '';
 $version_old = Settings::get("version");
 
 /* GRR */
-get_vocab_admin("num_version");
-$trad['dNum_version'] = $version_grr." - ".$versionReposite;
-get_vocab_admin("num_versionbdd");
-$trad['dNum_versionbdd'] = $version_old;
-get_vocab_admin("prefixe");
-$trad['dPrefixe'] = TABLE_PREFIX;
-get_vocab_admin("maj_bdd");
+$d['num_version'] = $version_grr." - ".$versionReposite;
+$d['num_versionbdd'] = $version_old;
+$d['prefixe'] = TABLE_PREFIX;
+
 if (verif_version())
-	$trad['dMaj_bdd'] = "<a href=\"../installation/maj.php\" target=\"blank\"><span class=\"label label-danger\">".get_vocab("maj_bdd_not_update")." Cliquez ici pour la mettre à jour.</span></a>";
+	$d['maj_bdd'] = "<a href=\"../installation/maj.php\" target=\"blank\"><span class=\"label label-danger\">".get_vocab("maj_bdd_not_update")." Cliquez ici pour la mettre à jour.</span></a>";
 else
-	$trad['dMaj_bdd'] = "<span class=\"label label-success\">Aucune</span>";
-get_vocab_admin("maj_recherche_grr");
+	$d['maj_bdd'] = "<span class=\"label label-success\">Aucune</span>";
 
 /* Serveur */
-get_vocab_admin("system");
-$trad['dSystem'] = php_uname();
+$d['system'] = php_uname();
 
 // PHP
-$trad['dVersionPHP'] = phpversion();
+$d['versionPHP'] = phpversion();
 
 if (version_compare(phpversion(), $php_mini, '<')) {
-   $trad['dCouleurVersionPHP'] = "bg-red";
+   $d['couleurVersionPHP'] = "bg-red";
 } elseif (version_compare(phpversion(), $php_max_valide, '<=')) {
-   $trad['dCouleurVersionPHP'] = "bg-green";
+   $d['couleurVersionPHP'] = "bg-green";
 } elseif ($php_maxi == "" && version_compare(phpversion(), $php_max_valide, '>')) {
-   $trad['dCouleurVersionPHP'] = "bg-orange";
+   $d['couleurVersionPHP'] = "bg-orange";
 } elseif ($php_maxi != "" && version_compare(phpversion(), $php_maxi, '<=')) {
-   $trad['dCouleurVersionPHP'] = "bg-orange";
+   $d['couleurVersionPHP'] = "bg-orange";
 } elseif ($php_maxi != "" && version_compare(phpversion(), $php_maxi, '>')) {
-   $trad['dCouleurVersionPHP'] = "bg-red";
+   $d['couleurVersionPHP'] = "bg-red";
 }
 
 $d['phpfileinfo'] = extension_loaded("fileinfo");
@@ -85,39 +80,38 @@ ob_end_clean();
 $phpinfo = preg_replace( '%^.*<body>(.*)</body>.*$%ms','$1',$phpinfo);
 
 // BDD
-get_vocab_admin("database");
-$trad['dDatabase'] = $dbsys;
-$trad['dVersionBDD'] = grr_sql_version();
+$d['database'] = $dbsys;
+$d['versionBDD'] = grr_sql_version();
 
 if (version_compare(grr_sql_version(), $mysql_mini, '<')) {
-   $trad['dCouleurVersionMySQL'] = "bg-red";
+   $d['couleurVersionMySQL'] = "bg-red";
 } elseif (version_compare(grr_sql_version(), $mysql_max_valide, '<=')) {
-   $trad['dCouleurVersionMySQL'] = "bg-green";
+   $d['couleurVersionMySQL'] = "bg-green";
 } elseif ($mysql_maxi == "" && version_compare(grr_sql_version(), $mysql_max_valide, '>')) {
-   $trad['dCouleurVersionMySQL'] = "bg-orange";
+   $d['couleurVersionMySQL'] = "bg-orange";
 } elseif ($mysql_maxi != "" && version_compare(grr_sql_version(), $mysql_maxi, '<=')) {
-   $trad['dCouleurVersionMySQL'] = "bg-orange";
+   $d['couleurVersionMySQL'] = "bg-orange";
 } elseif ($mysql_maxi != "" && version_compare(grr_sql_version(), $mysql_maxi, '>')) {
-   $trad['dCouleurVersionMySQL'] = "bg-red";
+   $d['couleurVersionMySQL'] = "bg-red";
 }
 
 
 // Dossier
-$trad['dDossierImgRessourcesEcriture'] = Fichier::TestDroitsDossier("../personnalisation/".$gcDossierImg."/ressources/");
-$trad['dDossierImgLogosEcriture'] =  Fichier::TestDroitsDossier("../personnalisation/".$gcDossierImg."/logos/");
-$trad['dDossierExportEcriture'] =  Fichier::TestDroitsDossier("../export/");
-$trad['dDossierTempEcriture'] =  Fichier::TestDroitsDossier("../temp/");
-$trad['dDossierModulesEcriture'] =  Fichier::TestDroitsDossier("../personnalisation/modules/");
+$d['dossierImgRessourcesEcriture'] = Fichier::TestDroitsDossier("../personnalisation/".$gcDossierImg."/ressources/");
+$d['dossierImgLogosEcriture'] =  Fichier::TestDroitsDossier("../personnalisation/".$gcDossierImg."/logos/");
+$d['dossierExportEcriture'] =  Fichier::TestDroitsDossier("../export/");
+$d['dossierTempEcriture'] =  Fichier::TestDroitsDossier("../temp/");
+$d['dossierModulesEcriture'] =  Fichier::TestDroitsDossier("../personnalisation/modules/");
 
 if(file_exists('../installation/'))
-	$trad['dDossierInstallation'] = 1;
+	$d['dossierInstallation'] = 1;
 
 
 // Temps
-$trad['dTime'] = time();
-$trad['dDate'] = date('d-m-Y');
-$trad['dHeure'] = date("H:i");
-$trad['dTimezone'] = date_default_timezone_get();
+$d['time'] = time();
+$d['date'] = date('d-m-Y');
+$d['heure'] = date("H:i");
+$d['timezone'] = date_default_timezone_get();
 
 
 // Recherche mise à jour sur serveur GRR
@@ -140,32 +134,32 @@ if($recherche_MAJ == 1)
 	$myObj = json_decode($json);
 
 	if($json === FALSE) {
-		$trad['dMaj_SiteGRR'] = "<span class=\"label label-info\">".get_vocab("maj_impossible_rechercher")."</span>". get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a>";
+		$d['maj_SiteGRR'] = "<span class=\"label label-info\">".get_vocab("maj_impossible_rechercher")."</span>". get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a>";
 	} else{
 
 		$derniereVersion = substr($myObj->tag_name,1);
 
 		if (version_compare($version_grr, $derniereVersion, '<')) {
-			$trad['dMaj_SiteGRR'] = "<span class=\"label label-warning\">".get_vocab("maj_dispo")." : ".$myObj->tag_name." - ".$myObj->published_at."</span>";
+			$d['maj_SiteGRR'] = "<span class=\"label label-warning\">".get_vocab("maj_dispo")." : ".$myObj->tag_name." - ".$myObj->published_at."</span>";
 		} else{
-			$trad['dMaj_SiteGRR'] = "<span class=\"label label-success\">".get_vocab("maj_dispo_aucune")."</span>";
+			$d['maj_SiteGRR'] = "<span class=\"label label-success\">".get_vocab("maj_dispo_aucune")."</span>";
 		}
 	}
 } elseif(!$majscript) {
-	$trad['dMaj_SiteGRR'] = "<span class=\"label label-info\">".get_vocab("maj_impossible_rechercher")."</span>". get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a>";
+	$d['maj_SiteGRR'] = "<span class=\"label label-info\">".get_vocab("maj_impossible_rechercher")."</span>". get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a>";
 }
 
 // Fichier configuration
-$trad['dInfosConfigVar'] = '';
-$trad['dInfosConfigDef'] = '';
+$d['infosConfigVar'] = '';
+$d['infosConfigDef'] = '';
 
 foreach ($config_variables as $config){
-	if(is_bool($$config) && $$config == true){
-		$$config = "true";
-	} elseif(is_bool($$config) && $$config == false){
-		$$config = "false";
+	if(is_bool($config) && $config == true){
+		$config = "true";
+	} elseif(is_bool($config) && $config == false){
+		$config = "false";
 	}
-	$trad['dInfosConfigVar'] .= "<li class=\"list-group-item\"><div class=\"row\"><p class=\col col-sm-6\">".$config."</p><b>".$$config."&nbsp;</b></div></li>"; // $$ Normal
+	$d['infosConfigVar'] .= "<li class=\"list-group-item\"><div class=\"row\"><p class=\col col-sm-6\">".$config."</p><b>".$$config."&nbsp;</b></div></li>"; // $$ Normal
 }
 unset($config);
 

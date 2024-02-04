@@ -24,19 +24,19 @@
 					<!-- GRR -->
 					<div class="tab-pane active" id="grr">
 						<ul class="list-group list-group-unbordered">
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.num_version }}</p><b>{{ trad.dNum_version }}</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.num_versionbdd }}</p><b>{{ trad.dNum_versionbdd }}</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.prefixe }}</p><b>{{ trad.dPrefixe }}</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.maj_bdd }}</p><b>{{ trad.dMaj_bdd |raw }} </b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.maj_recherche_grr }}</p><b>{{ trad.dMaj_SiteGRR |raw }}&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.num_version }}</p><b>{{ d.num_version }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.num_versionbdd }}</p><b>{{ d.num_versionbdd }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.prefixe }}</p><b>{{ d.prefixe }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.maj_bdd }}</p><b>{{ d.maj_bdd |raw }} </b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.maj_recherche_grr }}</p><b>{{ d.maj_SiteGRR |raw }}&nbsp;</b></div></li>
 							<li class="list-group-item"><p class="col col-sm-6"><b>Infos support </b><i>(A fournir pour toute demande d'aide)</i> :</p><textarea id="to-copy" rows="8" cols="40">
-{{ trad.num_version }} : {{ trad.dNum_version }}
-{{ trad.num_versionbdd }} : {{ trad.dNum_versionbdd }}
-{{ trad.system }} : {{ trad.dSystem }}
-Version PHP : {{ trad.dVersionPHP }}
-{{ trad.database }} : {{ trad.dDatabase }} => {{ trad.dVersionBDD }}
-Time : {{ trad.dTime }}
-Timezone : {{ trad.dTimezone }}</textarea></li>
+{{ trad.num_version }} : {{ d.num_version }}
+{{ trad.num_versionbdd }} : {{ d.num_versionbdd }}
+{{ trad.system }} : {{ d.system }}
+Version PHP : {{ d.versionPHP }}
+{{ trad.database }} : {{ d.database }} => {{ d.versionBDD }}
+Time : {{ d.time }}
+Timezone : {{ d.timezone }}</textarea></li>
 						</ul>
 						<!-- Infos pour support -->
 
@@ -46,8 +46,8 @@ Timezone : {{ trad.dTimezone }}</textarea></li>
 					<!-- Serveur -->
 					<div class="tab-pane" id="serveur">
 						<ul class="list-group list-group-unbordered">
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.system }}</p><b>{{ trad.dSystem }}</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Version PHP</p><b><small class="badge pull-left {{ trad.dCouleurVersionPHP }}">{{ trad.dVersionPHP }}</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.system }}</p><b>{{ d.system }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Version PHP</p><b><small class="badge pull-left {{ d.couleurVersionPHP }}">{{ d.versionPHP }}</small>&nbsp;</b></div></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">PHP fileinfo</p><b><small class="badge pull-left {% if d.phpfileinfo %}bg-green{% else %}bg-red{% endif %}">{% if d.phpfileinfo %}Oui{% else %}Non{% endif %}</small>&nbsp;</b></div></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">PHP gd</p><b><small class="badge pull-left {% if d.phpgd %}bg-green{% else %}bg-red{% endif %}">{% if d.phpgd %}Oui{% else %}Non{% endif %}</small>&nbsp;</b></div></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">PHP mbstring</p><b><small class="badge pull-left {% if d.phpmbstring %}bg-green{% else %}bg-red{% endif %}">{% if d.phpmbstring %}Oui{% else %}Non{% endif %}</small>&nbsp;</b></div></li>
@@ -55,22 +55,22 @@ Timezone : {{ trad.dTimezone }}</textarea></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">PHP mysqlnd</p><b><small class="badge pull-left {% if d.mysqlnd %}bg-green{% else %}bg-red{% endif %}">{% if d.mysqlnd %}Oui{% else %}Non{% endif %}</small>&nbsp;</b></div></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">PHP xml</p><b><small class="badge pull-left {% if d.phpxml %}bg-green{% else %}bg-red{% endif %}">{% if d.phpxml %}Oui{% else %}Non{% endif %}</small>&nbsp;</b></div></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">PHP intl</p><b><small class="badge pull-left {% if d.phpintl %}bg-green{% else %}bg-red{% endif %}">{% if d.phpintl %}Oui{% else %}Non{% endif %}</small>&nbsp;</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.database }}</p><b>{{ trad.dDatabase }}</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Version BDD</p><b><small class="badge pull-left {{ trad.dCouleurVersionMySQL }}">{{ trad.dVersionBDD }}</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.database }}</p><b>{{ d.database }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Version BDD</p><b><small class="badge pull-left {{ d.couleurVersionMySQL }}">{{ d.versionBDD }}</small>&nbsp;</b></div></li>
 
 							<li class="list-group-item"><b class="col col-sm-12">Dossiers : </b></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Existence dossier "installation"</p><b><small class="badge pull-left {% if trad.dDossierInstallation == 1 %}bg-orange{% else %}bg-green{% endif %}">{% if trad.dDossierInstallation == 1 %}Existant - Nous recommandons de le supprimer{% else %}Innexistant{% endif %}</small>&nbsp;</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Droits dossier "personnalisation/images/logos"</p><b><small class="badge pull-left {% if trad.dDossierImgLogosEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Droits dossier "personnalisation/images/ressources"</p><b><small class="badge pull-left {% if trad.dDossierImgRessourcesEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Droits dossier "export"</p><b><small class="badge pull-left {% if trad.dDossierExportEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Droits dossier "temp"</p><b><small class="badge pull-left {% if trad.dDossierTempEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Droits dossier "personnalisation/modules"</p><b><small class="badge pull-left {% if trad.dDossierModulesEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Existence dossier "installation"</p><b><small class="badge pull-left {% if d.dossierInstallation == 1 %}bg-orange{% else %}bg-green{% endif %}">{% if d.dossierInstallation == 1 %}Existant - Nous recommandons de le supprimer{% else %}Innexistant{% endif %}</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Droits dossier "personnalisation/images/logos"</p><b><small class="badge pull-left {% if d.dossierImgLogosEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Droits dossier "personnalisation/images/ressources"</p><b><small class="badge pull-left {% if d.dossierImgRessourcesEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Droits dossier "export"</p><b><small class="badge pull-left {% if d.dossierExportEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Droits dossier "temp"</p><b><small class="badge pull-left {% if d.dossierTempEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Droits dossier "personnalisation/modules"</p><b><small class="badge pull-left {% if d.dossierModulesEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
 
 							<li class="list-group-item"><b class="col col-sm-12">Temps : </b></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Time</p><b>{{ trad.dTime }}</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Date du serveur (Jour-Mois-Annee)</p><b>{{ trad.dDate }}</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Heure du serveur</p><b>{{ trad.dHeure }}</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Timezone (date_default_timezone_set)</p><b>{{ trad.dTimezone }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Time</p><b>{{ d.time }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Date du serveur (Jour-Mois-Annee)</p><b>{{ d.date }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Heure du serveur</p><b>{{ d.heure }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Timezone (date_default_timezone_set)</p><b>{{ d.timezone }}</b></div></li>
 						</ul>
 					</div>
 
@@ -84,7 +84,7 @@ Timezone : {{ trad.dTimezone }}</textarea></li>
 					<!-- Fichier Config -->
 					<div class="tab-pane" id="fichierconfig">
 						<ul class="list-group list-group-unbordered">
-							{{ trad.dInfosConfigVar |raw }}
+							{{ d.infosConfigVar |raw }}
 						</ul>
 					</div>
 				</div>
