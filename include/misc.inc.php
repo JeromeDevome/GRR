@@ -36,9 +36,9 @@ $versionReposite = "Release-v4.3.0-RC.1";
 // Version PHP minimum
 $php_mini = "7.2.5";
 // Version PHP maximum testé et validé par : JeromeB
-$php_max_valide = "8.1.17";
+$php_max_valide = "8.3.2";
 // Version PHP maximum qui est sensé fonctionné, si compatible avec toutes les versions à ce jour laisser vide
-$php_maxi = "8.1.24";
+$php_maxi = "";
 
 // Version MySQL minimum
 $mysql_mini = "5.4.0";
