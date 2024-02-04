@@ -70,6 +70,13 @@ if (version_compare(phpversion(), $php_mini, '<')) {
    $trad['dCouleurVersionPHP'] = "bg-red";
 }
 
+$d['phpfileinfo'] = extension_loaded("fileinfo");
+$d['phpmbstring'] = extension_loaded("mbstring");
+$d['phpmysqli'] = extension_loaded("mysqli");
+$d['phpmysqlnd'] = extension_loaded("mysqlnd");
+$d['phpxml'] = extension_loaded("xml");
+$d['phpintl'] = extension_loaded("intl");
+$d['phpgd'] = extension_loaded("gd");
 
 ob_start();
 phpinfo();
