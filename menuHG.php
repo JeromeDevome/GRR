@@ -3,9 +3,9 @@
  * menuHG.php
  * Menus haut et gauche calendrier & domaines & ressource & légende
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-05-13 16:20$
+ * Dernière modification : $Date: 2024-02-05 18:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -36,22 +36,23 @@ if ($_GET['pview'] != 1) // en mode prévisualisation de page imprimable, on n'a
         $area_list_format = Settings::get("area_list_format");
     $selecteursH = "";
     $selecteursG = "";
+    $id_user = getUserName();
     if ($area_list_format != "list")
     {
         if ($area_list_format == "select")
         {
-            $selecteursH .= make_site_select_html($pageTout, $id_site, $year, $month, $day, getUserName(),"H");
-            $selecteursH .= make_area_select_html($pageTout, $id_site, $area, $year, $month, $day, getUserName(),"H");
+            $selecteursH .= make_site_select_html($pageTout, $id_site, $year, $month, $day, $id_user,"H");
+            $selecteursH .= make_area_select_html($pageTout, $id_site, $area, $year, $month, $day, $id_user,"H");
             $selecteursH .= make_room_select_html($pageSimple, $area, $room, $year, $month, $day,"H");
-            $selecteursG .= make_site_select_html($pageTout, $id_site, $year, $month, $day, getUserName(),"G");
-            $selecteursG .= make_area_select_html($pageTout, $id_site, $area, $year, $month, $day, getUserName(),"G");
+            $selecteursG .= make_site_select_html($pageTout, $id_site, $year, $month, $day, $id_user,"G");
+            $selecteursG .= make_area_select_html($pageTout, $id_site, $area, $year, $month, $day, $id_user,"G");
             $selecteursG .= make_room_select_html($pageSimple, $area, $room, $year, $month, $day,"G");
         }
         else
         {
             $selecteurs = "";
-            $selecteurs .= make_site_item_html($pageTout, $id_site, $year, $month, $day, getUserName());
-            $selecteurs .= make_area_item_html($pageTout,$id_site, $area, $year, $month, $day, getUserName());
+            $selecteurs .= make_site_item_html($pageTout, $id_site, $year, $month, $day, $id_user);
+            $selecteurs .= make_area_item_html($pageTout,$id_site, $area, $year, $month, $day, $id_user);
             $selecteurs .= make_room_item_html($pageSimple, $area, $room, $year, $month, $day);
             $selecteursG = $selecteurs;
             $selecteursH = $selecteurs;
@@ -60,8 +61,8 @@ if ($_GET['pview'] != 1) // en mode prévisualisation de page imprimable, on n'a
     else
     {
         $selecteurs = "";
-        $selecteurs .= make_site_list_html($pageTout,$id_site,$year,$month,$day,getUserName());
-        $selecteurs .= make_area_list_html($pageTout,$id_site, $area, $year, $month, $day, getUserName());
+        $selecteurs .= make_site_list_html($pageTout,$id_site,$year,$month,$day,$id_user);
+        $selecteurs .= make_area_list_html($pageTout,$id_site, $area, $year, $month, $day, $id_user);
         $selecteurs .= make_room_list_html($pageSimple, $area, $room, $year, $month, $day);
         $selecteursG = $selecteurs;
         $selecteursH = $selecteurs;

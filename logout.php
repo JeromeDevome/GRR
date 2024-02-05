@@ -3,9 +3,9 @@
  * logout.php
  * script de deconnexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-07-27 11:53$
+ * Dernière modification : $Date: 2024-02-05 18:13$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -72,7 +72,6 @@ if (isset($_GET['redirect_page_accueil']) && ($_GET['redirect_page_accueil'] == 
 	header("Location: ./".htmlspecialchars_decode(page_accueil())."");
 	exit;
 }
-// echo begin_page(get_vocab("mrbs"),"no_session");
 header('Content-Type: text/html; charset=utf-8');
 echo '<!DOCTYPE html>'.PHP_EOL.'<html lang="fr">';
 echo pageHead2(get_vocab("mrbs"),"no_session");

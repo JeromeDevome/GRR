@@ -2,9 +2,9 @@
 /**
  * index.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-01 10:00$
+ * Dernière modification : $Date: 2024-02-05 15:57$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -42,7 +42,6 @@ if ($dbsys == "mysql")
 			if (mysqli_select_db($db, "$dbDb"))
 			{
 				// Premier test
-				//@mysqli_query($db, "SET NAMES utf8");
                 $db->set_charset("utf8mb4");
 
 				$j = '0';
@@ -55,14 +54,12 @@ if ($dbsys == "mysql")
 				}
 				if ($flag == 'yes')
 				{
-					//$msg = "<p>La connexion au serveur $dbsys est établie mais certaines tables sont absentes de la base $dbDb.</p>";
                     $msg = "<p>".get_vocab('index_msg1')."</p>";
 					$correct_install = 'no';
 				}
 			}
 			else
 			{
-				//$msg = "La connexion au serveur $dbsys est établie mais impossible de sélectionner la base contenant les tables GRR.";
 				$msg = "<p>".get_vocab('index_msg2')."</p>";
                 $correct_install = 'no';
 			}
@@ -181,7 +178,6 @@ else if ((Settings::get('sso_statut') == 'lemon_visiteur') || (Settings::get('ss
 			header("Location: ".Settings::get("Url_cacher_page_login"));
 		else
 			header("Location: ".htmlspecialchars_decode(page_accueil())."");
-		//header("Location: ./login.php");
 		// Echec de l'authentification lemonldap
 		die();
 		echo "</body></html>";
