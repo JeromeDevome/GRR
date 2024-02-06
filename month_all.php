@@ -1,11 +1,11 @@
 <?php
 /**
  * month_all.php
- * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
+ * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-08-17 10:12$
+ * Dernière modification : $Date: 2024-02-06 16:24$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -37,7 +37,8 @@ include "include/language.inc.php";
 Definition_ressource_domaine_site();
 
 //Récupération des données concernant l'affichage du planning du domaine
-get_planning_area_values($area);
+if($area >0)
+    get_planning_area_values($area);
 
 // Initilisation des variables
 $affiche_pview = '1';
@@ -86,7 +87,7 @@ if ($area <= 0)
 }
 
 // Calcul du niveau de droit de réservation
-$authGetUserLevel = authGetUserLevel($user_name, -1);
+$auth_user_level = authGetUserLevel($user_name, -1);
 // vérifie si la date est dans la période réservable
 if (check_begin_end_bookings($day, $month, $year))
 {
@@ -95,7 +96,7 @@ if (check_begin_end_bookings($day, $month, $year))
 	exit();
 }
 //Renseigne les droits de l'utilisateur, si les droits sont insuffisants, l'utilisateur est averti.
-if ((($authGetUserLevel < 1) && (Settings::get("authentification_obli") == 1)) || authUserAccesArea($user_name, $area) == 0)
+if ((($auth_user_level < 1) && (Settings::get("authentification_obli") == 1)) || authUserAccesArea($user_name, $area) == 0)
 {
     start_page_w_header($day,$month,$year,$type_session);
 	showAccessDenied($back);
@@ -113,10 +114,11 @@ if (Settings::get("verif_reservation_auto") == 0)
 }
 
 // Selection des ressources
-$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display, room_name";
-$ressources = grr_sql_query($sql);
+$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id=? ORDER BY order_display, room_name";
+$ressources = grr_sql_query($sql,"i",[$area]);
 if (!$ressources)
 	fatal_error(0, grr_sql_error());
+$nb_ressources = grr_sql_count($ressources);
 grr_sql_free($ressources);
 
 // options pour l'affichage
@@ -137,7 +139,7 @@ if ($enable_periods == 'y')
 }
 $this_area_name = "";
 $this_room_name = "";
-$this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=$area");
+$this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=?","i",[$area]);
 $i = mktime(0,0,0,$month - 1, 1, $year);
 $yy = date("Y",$i);
 $ym = date("n",$i);
@@ -147,16 +149,16 @@ $tm = date("n",$i);
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
 // un type à exclure ?
 $type_exclu = Settings::get('exclude_type_in_views_all'); // nom du type exclu
-$sql = "SELECT type_letter FROM ".TABLE_PREFIX."_type_area WHERE ".TABLE_PREFIX."_type_area.type_name = '".$type_exclu."' ";
-$res = grr_sql_query1($sql);
+$sql = "SELECT type_letter FROM ".TABLE_PREFIX."_type_area WHERE ".TABLE_PREFIX."_type_area.type_name = ? ";
+$res = grr_sql_query1($sql,"s",[$type_exclu]);
 $typeExclu = ($res != -1)? $res :NULL; // lettre identifiant le type exclu
 grr_sql_free($res);
 //Get all meetings for this month in the area that we care about
 $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
 FROM ((".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id)
 JOIN ".TABLE_PREFIX."_area ON ".TABLE_PREFIX."_area.id = ".TABLE_PREFIX."_room.area_id) 
-WHERE ".TABLE_PREFIX."_area.id = $area 
-AND start_time <= $month_end AND end_time > $month_start 
+WHERE ".TABLE_PREFIX."_area.id =? 
+AND start_time <= ? AND end_time > ? 
 ORDER BY ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time";
 /* contenu de la réponse si succès :
     $row[0] : start_time
@@ -181,7 +183,7 @@ ORDER BY ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time";
     $row[19]: nbparticipantmax
 */
 
-$res = grr_sql_query($sql);
+$res = grr_sql_query($sql,"iii",[$area,$month_end,$month_start]);
 if (!$res)
 	echo grr_sql_error();
 else  //Build an array of information about each day in the month.
@@ -370,7 +372,7 @@ echo "</caption>";
 		}
 	}
 // domaine vide ?
-if (grr_sql_count($ressources) == 0){
+if ($nb_ressources == 0){
     echo "<tbody><tr><td><strong>".get_vocab("no_rooms_for_area")."</strong></td></tr></tbody>";
 }
 else{
@@ -405,7 +407,7 @@ else{
 		$num_week_day = ($weekcol + $weekstarts) % 7;
 		$t = mktime(0, 0, 0, $month,$cday,$year);
 		$name_day = ucfirst(utf8_strftime("%d", $t));
-		$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$t'");
+		$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY=?","i",[$t]);
 		if ($weekcol == 0)
 			echo '<tr>',PHP_EOL;
 		if ($display_day[$num_week_day] == 1) // début condition "on n'affiche pas tous les jours de la semaine"

@@ -3,9 +3,9 @@
  * month.php
  * Interface d'accueil avec affichage par mois pour une ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-05-26 09:15$
+ * Dernière modification : $Date: 2024-02-06 16:13$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -20,10 +20,10 @@ $grr_script_name = "month.php";
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
-include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
-include "include/mincals.inc.php";
 include "include/mrbs_sql.inc.php";
+include "include/functions.inc.php";
+include "include/mincals.inc.php";
 require_once("./include/settings.class.php");
 $settings = new Settings();
 if (!$settings)
@@ -36,7 +36,8 @@ include "include/language.inc.php";
 Definition_ressource_domaine_site();
 
 //Récupération des données concernant l'affichage du planning du domaine
-get_planning_area_values($area);
+if($area >0)
+    get_planning_area_values($area);
 
 // Initilisation des variables
 $affiche_pview = '1';
@@ -115,9 +116,9 @@ if ($enable_periods == 'y')
 	$eveningends = 12;
 	$eveningends_minutes = count($periods_name) - 1;
 }
-$this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=$area");
-$sql = "SELECT * FROM ".TABLE_PREFIX."_room WHERE id=$room";
-$res = grr_sql_query($sql);
+$this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=?", "i", [$area]);
+$sql = "SELECT * FROM ".TABLE_PREFIX."_room WHERE id=?";
+$res = grr_sql_query($sql,"i",[$room]);
 if ($res){
     $this_room = grr_sql_row_keyed($res,0);
 }
@@ -142,9 +143,9 @@ $i = mktime(0, 0, 0,$month + 1, 1, $year);
 $ty = date("Y", $i);
 $tm = date("n", $i);
 
-$authGetUserLevel = authGetUserLevel($user_name,$room);
+$auth_user_level = authGetUserLevel($user_name,$room);
 // si la ressource est restreinte, l'utilisateur peut-il réserver ?
-$user_can_book = $who_can_book || ($authGetUserLevel > 2) || (authBooking($user_name,$room));
+$user_can_book = $who_can_book || ($auth_user_level > 2) || (authBooking($user_name,$room));
 // options pour l'affichage
 $opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants');
 $options = decode_options(Settings::get('cell_month'),$opt);
@@ -153,8 +154,8 @@ $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
 // calcul du contenu du planning
 $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
 FROM (".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id) 
-WHERE ".TABLE_PREFIX."_entry.room_id = ".$room."
-AND start_time <= $month_end AND end_time > $month_start
+WHERE ".TABLE_PREFIX."_entry.room_id = ?
+AND start_time <= ? AND end_time > ?
 ORDER BY start_time";
 /* contenu de la réponse si succès :
     $row[0] : start_time
@@ -178,7 +179,7 @@ ORDER BY start_time";
     $row[18]: create_by
     $row[19]: nbparticipantmax
 */
-$res = grr_sql_query($sql);
+$res = grr_sql_query($sql,"iii",[$room,$month_end,$month_start]);
 if (!$res)
 	echo grr_sql_error();
 else
@@ -279,7 +280,7 @@ else
 }    
 
 // pour le traitement des modules
-include $racine."/include/hook.class.php";
+include "./include/hook.class.php";
 // code html de la page
 header('Content-Type: text/html; charset=utf-8');
 if (!isset($_COOKIE['open']))
@@ -345,7 +346,7 @@ if ($this_room_max  && $_GET['pview'] != 1)
 echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.$this_room_name.' '.$this_room_name_des.' '.$maxCapacite.'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php?area='.$area.'" title="'.get_vocab('see_all_the_rooms_for_several_months').'">'.ucfirst(utf8_strftime("%Y", $month_start)).'</a></h4>'.PHP_EOL;
 if (verif_display_fiche_ressource($user_name, $room) && $_GET['pview'] != 1)
 	echo '<a href="javascript:centrerpopup(\'view_room.php?id_room=',$room,'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="',get_vocab("fiche_ressource"),'"><span class="glyphcolor glyphicon glyphicon-search"></span></a>';
-if ($authGetUserLevel > 2 && $_GET['pview'] != 1)
+if ($auth_user_level > 2 && $_GET['pview'] != 1)
 	echo "<a href=\"./admin/admin_edit_room.php?room=$room\" title='".get_vocab('editroom')."'><span class=\"glyphcolor glyphicon glyphicon-cog\"></span></a>";
 affiche_ressource_empruntee($room);
 if ($this_statut_room == "0")
@@ -393,7 +394,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
     $num_week_day = ($weekcol + $weekstarts) % 7;
     $t = mktime(0, 0, 0, $month, $cday,$year);
     $name_day = ucfirst(utf8_strftime("%d", $t));
-    $jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$t'");
+    $jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY=?","i",[$t]);
     if ($weekcol == 0)
         echo '<tr>',PHP_EOL;
     if ($display_day[$num_week_day] == 1)
@@ -462,12 +463,12 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                 $date_now = time();
                 $hour = date("H",$date_now);
                 $date_booking = mktime(23,59, 0, $month, $cday, $year);
-                if ((($authGetUserLevel > 1) || ($auth_visiteur == 1))
+                if ((($auth_user_level > 1) || ($auth_visiteur == 1))
                     && ($userRoomMaxBooking != 0)
                     && verif_booking_date($user_name, -1, $room, $date_booking, $date_now, $enable_periods)
                     && verif_delais_max_resa_room($user_name, $room, $date_booking)
                     && verif_delais_min_resa_room($user_name, $room, $date_booking, $enable_periods)
-                    && (($this_statut_room == "1") || (($this_statut_room == "0") && ($authGetUserLevel > 2)))
+                    && (($this_statut_room == "1") || (($this_statut_room == "0") && ($auth_user_level > 2)))
                     && $user_can_book
                     && $_GET['pview'] != 1)
                 {
