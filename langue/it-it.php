@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR : fichier de langue italienne
 # GRR: Translations provided by JeromeB & Marc HENNETIER & Antony AUDOUARD
-# Last modification : 2023-11-02
+# Last modification : 2024-02-06
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accettare la prenotazione";
@@ -859,6 +859,7 @@ $vocab['site_name'] = "Nom"; // A traduire
 $vocab['site_pays'] = "Pays"; // A traduire
 $vocab['site_tel'] = "Tel."; // A traduire
 $vocab['site_ville'] = "Ville"; // A traduire
+$vocab['skip_entry_in_conflect'] = "Effettua nuove prenotazioni tranne quelle in conflitto";
 $vocab['smtp_allow_self_signed'] = "Permet les certificats autosignés (Défaut false)";// A traduire
 $vocab['smtp_param_sup'] = "Ci-dessous, des paramètres supplémentaires qui sont réservés pour des utilisateurs avertis."; // A traduire
 $vocab['smtp_port'] = "Port du serveur SMTP"; // A traduire
