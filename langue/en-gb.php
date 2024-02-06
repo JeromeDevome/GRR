@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue anglaise
 # GRR: Translations provided by: JeromeB & Patricia Gaubert-Dubois et Yan Naessens
-# Last modification : 2023-12-05
+# Last modification : 2024-02-06
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accept the reservation ";
@@ -836,6 +836,7 @@ $vocab['site_name'] = "Name";
 $vocab['site_pays'] = "Country";
 $vocab['site_tel'] = "Phone";
 $vocab['site_ville'] = "City";
+$vocab['skip_entry_in_conflict'] = "Make new reservations except those in conflict";
 $vocab['smtp_allow_self_signed'] = "Allow self-signed certificates (Default false)";
 $vocab['smtp_param_sup'] = "Below, additional parameters that are reserved for experienced users.";
 $vocab['smtp_port'] = "SMTP server port"; 
