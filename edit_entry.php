@@ -1329,29 +1329,24 @@ echo '<div id="footer"></div>'.PHP_EOL;
 
 <script type="text/javascript" >
 function insertBeneficiaires(area_,room_,user_,id_){
-// cette fonction donne la liste des items du sélecteur
-    jQuery.ajax({
-        type: 'GET',
-        url : 'edit_entry_beneficiaires.php',
-        data: {
-            area: area_,
-            room: room_,
+	jQuery.ajax({
+		type: 'GET',
+		url: 'edit_entry_beneficiaire.php',
+		data: {
+			area: area_,
+			room: room_,
             user: user_,
-            id  : id_
-        },
-        success: function(returnData)
-        {
-            $("#beneficiaire").select2({
-                data: returnData,
-                dataType: 'json',
-            })
-        },
-        error: function(data)
-		{
-			alert('Erreur lors de l execution de la commande AJAX pour edit_entry_beneficiaires.php ');
+			id: id_
 		},
-        dataType: 'json',
-    })
+		success: function(returnData)
+		{
+			$("#div_beneficiaire").html(returnData);
+		},
+		error: function(data)
+		{
+			alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_beneficiaire.php ');
+		}
+    });
 }
 function insertChampsAdd(area_,id_,room_,olf_){
 	jQuery.ajax({
