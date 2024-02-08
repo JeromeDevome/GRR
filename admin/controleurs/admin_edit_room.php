@@ -328,7 +328,10 @@ if (isset($action))
 if (isset($retour_page))
 	$trad['dHidden2'] = "<input type=\"hidden\" name=\"retour_page\" value=\"".$retour_page."\" />";
 if ($row["id"] != '')
+{
+	$d['idRessource'] = $row["id"];
 	$trad['dHidden3'] = "<input type=\"hidden\" name=\"room\" value=\"".$row["id"]."\" />\n";
+}
 
 get_vocab_admin("access");
 get_vocab_admin("miscellaneous");
