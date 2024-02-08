@@ -110,7 +110,7 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
             //print_r($tab_benef);
         }
         $bnf = array(); // tableau des bénéficiaires autorisés (login,nom,prénom)
-        $sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (etat!='inactif' and statut!='visiteur' ) OR (login='".$id_user."') ORDER BY nom, prenom"; // login = $id_user superflu ?
+        $sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (etat!='inactif') OR (login='".$id_user."') ORDER BY nom, prenom"; // login = $id_user superflu ?
         $res = grr_sql_query($sql);
         if ($res){
             for ($i = 0; ($row = grr_sql_row($res, $i)); $i++) {$bnf[$i] = $row;}
