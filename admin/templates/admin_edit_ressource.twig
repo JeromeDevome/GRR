@@ -86,7 +86,7 @@
 								<label class="col col-sm-8" for="show_fic_room">{{ trad.montrer_fiche_presentation_ressource }}</label>
 								<div class="col col-sm-4">
 									<input type="checkbox" name="show_fic_room" {% if ressource.show_fic_room == 'y' %} checked {% endif %}>
-									<a href="javascript:centrerpopup('../app.php?p=ressourcefiche&id_room=$room',600,480,'scrollbars=yes,statusbar=no,resizable=yes')"><span class="fa fa-search"></span></a>
+									<a href="javascript:centrerpopup('../app.php?p=ressourcefiche&id_room={{d.idRessource}}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')"><span class="fa fa-search"></span></a>
 								</div>
 							</div>
 
@@ -235,7 +235,8 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs4.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs4.min.js?v={{d.versionGRR}}"></script>
+	<script type="text/javascript" src="../js/functions.js?v={{d.versionGRR}}"></script>
 	<script>
 		$(function () {
 			// Summernote
