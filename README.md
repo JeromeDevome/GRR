@@ -20,6 +20,8 @@ Forum : https://site.devome.com/fr/grr/forum-grr
 
 Chat/Discord : https://discord.com/channels/484639573243068417/
 
+Documentation : https://devome.com/GRR/DOC/
+
 ```diff
 + Versions disposant de support et de correctifs: 4.2.X && 4.3.X, les versions précédantes doivent être mise à jour.
 ```
@@ -36,7 +38,7 @@ MySQL: >= 5.4 && <= 5.7
 Installation
 -------------
 
-Pour obtenir une description complète de la procédure d'installation, veuillez vous reporter au fichier "**INSTALL.txt**".
+Pour obtenir une description complète de la procédure d'installation, veuillez vous reporter à la [documentation](https://devome.com/GRR/DOC/installation-et-mise-a-jour/installation)
 
 Pour une installation simplifiée, décompressez simplement cette archive sur un serveur, et indiquez l'adresse où se trouvent les fichiers extraits dans un navigateur (ex: http://www.monsite.fr/grr).
 
@@ -48,17 +50,12 @@ Pour une installation simplifiée, décompressez simplement cette archive sur un
 Mise à jour
 -------------
 
-Vous devez faire une mise à jour classique en suivant la procédure habituelle ( https://site.devome.com/fr/grr/telechargement/category/2-informations-documentations?download=2:mise-a-jour-de-votre-grr) . Attention PHP 7.2.5 minimum !
+Vous devez faire une mise à jour classique en suivant la procédure selon votre version actuelle de GRR : `Attention PHP 7.2.5 minimum !`
+- Version < GRR 4.0.X [Documentation - Mise à jour - Depuis version < 4](https://devome.com/GRR/DOC/installation-et-mise-a-jour/mise-a-jour-depuis-version-less-than-4)
+- Version >= GRR 4.0.X [documentation - Mise à jour - Depuis version >= 4](https://devome.com/GRR/DOC/installation-et-mise-a-jour/mise-a-jour-depuis-version-greater-than-4)
 
 En plus de la mise à jour classique, veuillez rendre accessible le dossier "personnalisation" en écriture. C'est désormais dans ce dossier unique que vos personnalisations seront sauvegardées.
 
-Depuis la version 4.1 le packet php-intl est obligatoire.
-
-- Déplacer votre fichier connect.inc.php dans le dossier "personnalisation"
-- Si vous possédez des modules vous devez les déplacer dans le dossier "personnalisation/modules"
-- Désormais vos variables personnalisées dans "config.inc.php" doivent être dans "/personnalisation/configperso.inc.php" (fichier à créer vous-même, cela empèchera les prochaines mises à jour d'écraser vos modifications)
-
-Vous devrez importer vos images via l'administration.
 
 Licence
 -------------
