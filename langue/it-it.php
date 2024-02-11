@@ -404,6 +404,7 @@ $vocab['envoyer_maintenant_mail_retard'] = "Envoyer immédiatement un mail de no
 $vocab['envoy_mail_specifique'] = "Envoie un mail spécifique"; // A traduire
 $vocab['en_attente_moderation'] = "in attesa di moderazione";
 $vocab['erase_log'] = "Le entrate del giornale precedenti alla data qui di seguito saranno cancellate.";
+$vocab['erreur_caract_login'] = "L'identificatore può contenere solo i seguenti caratteri: A-Z a-z 0-9 _ @ . - (Spazio proibito)";
 $vocab['erreur_choix_statut'] = "Non avete i diritti sufficienti per modificare o creare un utente che ha un statuto di amministratore o di gestore di utenti.";
 $vocab['error'] = "Errore";
 $vocab['error_area'] = "Errore: settore";

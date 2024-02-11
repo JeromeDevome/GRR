@@ -403,6 +403,7 @@ $vocab['envoyer_maintenant_mail_retard'] = "Envoyer immédiatement un mail de no
 $vocab['envoie_mail_specifique'] = "Envoie un mail spécifique";
 $vocab['en_attente_moderation'] = "En attente d'acceptation";
 $vocab['erase_log'] = "Les entrées du journal antérieures à la date ci-dessous seront effacées.";
+$vocab['erreur_caract_login'] = "L'identifiant ne peut contenir que les caractères suivants : A-Z a-z 0-9 _ @ . - (Espace interdit)";
 $vocab['erreur_choix_statut'] = "Vous n'avez pas les droits suffisants pour modifier ou créer un utilisateur ayant un statut d'administrateur ou de gestionnaire d'utilisateurs.";
 $vocab['error'] = "Erreur";
 $vocab['error_area'] = "Erreur : domaine ";
