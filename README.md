@@ -1,6 +1,10 @@
 GRR version stable 3.4.0
 ===================
 
+```diff
+- Version 3.4.0, plus maintenue : vous devriez considérer la mise à jour vers une version plus récente
+```
+
 **Requiert :**
 
 PHP : >= 5.6 && <= 7.2
@@ -10,7 +14,6 @@ http://grr.devome.com/
 
 GRR est un outil de gestion et de réservation de ressources. **GRR** est une adaptation d'une application **MRBS**.
 
-GRR version stable 3.4.0 : des correctifs peuvent être régulièrement apportés suites aux signalements sur les sites github ou grr.devome.com
 
 ----------
 
