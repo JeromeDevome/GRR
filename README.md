@@ -2,6 +2,10 @@ GRR
 version 3.4.2, a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7
 ===================
 
+```diff
+- Version 3.4.2, plus maintenue : vous devriez considérer la mise à jour vers une version plus récente
+```
+
 GRR est un outil de gestion et de réservation de ressources. **GRR** est une adaptation d'une application **MRBS**.
 
 **Requiert :**
