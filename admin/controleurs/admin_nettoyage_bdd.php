@@ -161,6 +161,7 @@ elseif ($numForm == 2) {
                 grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='$row[0]'");
                 grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='$row[0]'");
                 grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_userbook_room WHERE login='$row[0]'");
+                grr_sql_command("DELETE FROM ".TABLE_PREFIX."_utilisateurs_groupes WHERE login='$row[0]'");
             }
         }
     }
@@ -179,6 +180,7 @@ elseif ($numForm == 2) {
                 grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='$row[0]'");
                 grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='$row[0]'");
                 grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_userbook_room WHERE login='$row[0]'");
+                grr_sql_command("DELETE FROM ".TABLE_PREFIX."_utilisateurs_groupes WHERE login='$row[0]'");
             }
         }
     }
