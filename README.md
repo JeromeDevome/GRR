@@ -1,9 +1,12 @@
 
-GRR
+GRR 4.3.X
 ===================
 
 GRR est un outil de gestion et de réservation de ressources. **GRR** est une adaptation d'une application **MRBS**.
 
+```diff
++ Version 4.3.X, version maintenue à jour.
+```
 
 ![GitHub language count](https://img.shields.io/github/languages/count/JeromeDevome/GRR)
 ![GitHub top language](https://img.shields.io/github/languages/top/JeromeDevome/GRR)
