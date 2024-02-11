@@ -1,6 +1,10 @@
 GRR
-version 3, a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7
+version 3.5.0, a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7
 ===================
+
+```diff
+- Version 3.5.0, plus maintenue : vous devriez considérer la mise à jour vers une version plus récente
+```
 
 **Requiert :**
 
