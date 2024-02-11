@@ -404,6 +404,7 @@ $vocab['envoyer_maintenant_mail_retard'] = "Envoyer immédiatement un mail de no
 $vocab['envoy_mail_specifique'] = "Envoie un mail spécifique"; // A traduire
 $vocab['en_attente_moderation'] = "im Warten von Moderation";
 $vocab['erase_log'] = "Die vor dem nachstehenden Datum erfolgten Logbucheintragungen werden gelöscht.";
+$vocab['erreur_caract_login'] = "Der Bezeichner darf nur die folgenden Zeichen enthalten: A-Z a-z 0-9 _ @ . - (Verbotener Raum)";
 $vocab['erreur_choix_statut'] = "Sie haben nicht ausreichendes Recht, um einen Benutzer als Benutzerverwalter oder Administrator zu befördern, oder zu schaffen.";
 $vocab['error'] = "Fehler";
 $vocab['error_area'] = "Fehler: Bereich ";

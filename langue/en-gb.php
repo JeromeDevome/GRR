@@ -403,6 +403,7 @@ $vocab['envoyer_maintenant_mail_retard'] = "Send immediately an e-mail of delay 
 $vocab['envoy_mail_specifique'] = "Send a specific email";
 $vocab['en_attente_moderation'] = "waiting for moderation";
 $vocab['erase_log'] = "Record entries prior to the following date will be deleted.";
+$vocab['erreur_caract_login'] = "The identifier can only contain the following characters: A-Z a-z 0-9 _ @ . - (Forbidden space)";
 $vocab['erreur_choix_statut'] = "You don't have the adequate rights to modify or create a user with an administrator or a user's manager status.";
 $vocab['error'] = "Error";
 $vocab['error_area'] = "Error: area ";

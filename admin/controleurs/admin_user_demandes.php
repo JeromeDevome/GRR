@@ -73,49 +73,56 @@ if (isset($choix) && $choix > 0)
 
 		if($choix == 1) // Acceptation de la demande
 		{
+			$getLogin = trim($getLogin);
 
-			$sql = "SELECT * FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$getLogin."'";
-			$res = grr_sql_query($sql);
-			$nombreligne = grr_sql_count ($res);
-			if ($nombreligne != 0 || $getLogin == "")
-			{
-				$msg = get_vocab("error_exist_login");
-				$erreur = true;
-			}
-			else
-			{
-				$sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET
-				nom='".protect_data_sql($demande['nom'])."',
-				prenom='".protect_data_sql($demande['prenom'])."',
-				login='".protect_data_sql($getLogin)."',
-				password='".protect_data_sql($demande['mdp'])."',
-				changepwd='0',
-				statut='".protect_data_sql($getStatut)."',
-				email='".protect_data_sql($demande['email'])."',
-				etat='actif',
-				default_site = '-1',
-				default_area = '-1',
-				default_room = '-1',
-				default_style = '',
-				default_list_type = 'item',
-				default_language = 'fr-fr',
-				source='local'";
+			$test_login = preg_replace("/([A-Za-z0-9_@.-])/","",$getLogin);
+			if($test_login == ""){
 
-				if (grr_sql_command($sql) < 0)
+				$sql = "SELECT * FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$getLogin."'";
+				$res = grr_sql_query($sql);
+				$nombreligne = grr_sql_count ($res);
+				if ($nombreligne != 0 || $getLogin == "")
 				{
-					fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
+					$msg = get_vocab("error_exist_login");
 					$erreur = true;
 				}
+				else
+				{
+					$sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET
+					nom='".protect_data_sql($demande['nom'])."',
+					prenom='".protect_data_sql($demande['prenom'])."',
+					login='".protect_data_sql($getLogin)."',
+					password='".protect_data_sql($demande['mdp'])."',
+					changepwd='0',
+					statut='".protect_data_sql($getStatut)."',
+					email='".protect_data_sql($demande['email'])."',
+					etat='actif',
+					default_site = '-1',
+					default_area = '-1',
+					default_room = '-1',
+					default_style = '',
+					default_list_type = 'item',
+					default_language = 'fr-fr',
+					source='local'";
 
-				$codes['%identifiant%'] = $getLogin;
-		
-				// Mail au demandeur
-				$templateMail1 = Pages::get('mails_demandecompte2_'.$locale);
-				$sujetEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[0]);
-				$msgEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[1]);
-				Email::Envois($demande['email'], $sujetEncode1, $msgEncode1, $expediteur, '', '');
+					if (grr_sql_command($sql) < 0)
+					{
+						fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
+						$erreur = true;
+					}
 
+					$codes['%identifiant%'] = $getLogin;
+			
+					// Mail au demandeur
+					$templateMail1 = Pages::get('mails_demandecompte2_'.$locale);
+					$sujetEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[0]);
+					$msgEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[1]);
+					Email::Envois($demande['email'], $sujetEncode1, $msgEncode1, $expediteur, '', '');
+
+				}
 			}
+			else
+				$msg = get_vocab("erreur_caract_login");
 
 		}
 		elseif($choix == 2)
