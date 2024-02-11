@@ -261,9 +261,9 @@
                 <fieldset>
                     <legend style="font-weight:bold">{{trad.reservation_en_cours}}</legend>
                     <span class="larger">{{trad.signaler_reservation_en_cours}}{{trad.deux_points}}</span>
-                    <br>{{trad.explications_signaler_reservation_en_cours}}
+                    <br>{{trad.explications_signaler_reservation_en_cours | raw}}
                     {{d.ressourceEmpruntee|raw}}
-                    <br><input type="radio" name="statut_id" value="-" {% if resa.idStatut == "-" %}{% if d.ressourceEmprunteeYes !="yes" %}checked="checked"{% endif %}{% endif %} />{{trad.signaler_reservation_en_cours_option_0}}
+                    <br><input type="radio" name="statut_id" value="-" {% if resa.idStatut == "-" %}{% if d.ressourceEmprunteeYes !="yes" %}checked="checked"{% endif %}{% endif %} />{{trad.signaler_reservation_en_cours_option_0 | raw}}
                     <br><br><input type="radio" name="statut_id" value="y" {% if resa.idStatut == "y" %}checked="checked"{% endif %} />{{trad.signaler_reservation_en_cours_option_1}}
                     <br><br><input type="radio" name="statut_id" value="e" {% if resa.idStatut == "e" %}checked="checked"{% endif %} {% if settings.automatic_mail != "yes" or d.mailBeneficiaire == "" %}checked="checked"{% endif %} />{{trad.signaler_reservation_en_cours_option_2}}
 
