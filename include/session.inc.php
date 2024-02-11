@@ -538,9 +538,13 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 // Test with login and password of the user
                 $l_nom = "";
                 $l_prenom = "";
-                $l_email = $_login."@".$imap_domaine;
+                $l_email = $_login;
                 imap_close($conn_imap);
             }
+			// A ce moment là $_login peut être sous form d'email
+			$identifiant = explode("@", $_login);
+			$_login = $identifiant[0];
+
             // On teste si un utilisateur porte déjà le même login
             $test = grr_sql_query1("SELECT login from ".TABLE_PREFIX."_utilisateurs where login = '".protect_data_sql($_login)."'");
             if ($test != '-1')
