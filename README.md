@@ -3,7 +3,7 @@ version 3.4.3, a vocation à rester compatible avec php5 pour les serveurs non e
 ===================
 
 ```diff
-- Version 3.4.1, plus maintenue : vous devriez considérer la mise à jour vers une version plus récente
+- Version 3.4.3, plus maintenue : vous devriez considérer la mise à jour vers une version plus récente
 ```
 
 **Requiert :**
