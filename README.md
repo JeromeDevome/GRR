@@ -2,6 +2,10 @@ GRR
 version 3.4.1, a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7
 ===================
 
+```diff
+- Version 3.4.1, plus maintenue : vous devriez considérer la mise à jour vers une version plus récente
+```
+
 **Requiert :**
 
 PHP : >= 5.6 && <= 7.2, compatibilité vraisemblable avec PHP 7.3 ; nécessite au moins les modules php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml (*)
