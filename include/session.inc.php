@@ -510,7 +510,12 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     }
     if ($auth_imap == 'yes')
     {
-            // on regarde si un utilisateur imap ayant le meme login existe deja
+		// A ce moment là $_login peut être sous form d'email
+		$l_email = $_login;
+		$identifiant = explode("@", $_login);
+		$_login = $identifiant[0];
+
+        // on regarde si un utilisateur imap ayant le meme login existe deja
         $sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
         FROM ".TABLE_PREFIX."_utilisateurs
         WHERE login = '" . protect_data_sql($_login) . "' and
@@ -527,23 +532,15 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
         else
         {
             // pas d'utilisateur imap ayant le même login dans la base GRR
-            // Lire les infos sur l'utilisateur depuis imap
-           // include "config_imap.inc.php";
-                    // Connexion ? l'annuaire
-            //$conn_imap = grr_connect_imap($imap_adresse,$imap_port,$_login,$_password,$imap_type,$imap_ssl,$imap_cert,$imap_tls);
-			$conn_imap = grr_connect_imap(Settings::get("imap_adresse"),Settings::get("imap_port"),$_login,$_password,Settings::get("imap_type"),Settings::get("imap_ssl"),Settings::get("imap_cert"),Settings::get("imap_tls"),"diag");
+			$conn_imap = grr_connect_imap(Settings::get("imap_adresse"),Settings::get("imap_port"),$_login,$_password,Settings::get("imap_type"),Settings::get("imap_ssl"),Settings::get("imap_cert"),Settings::get("imap_tls"),"normal");
 
 			if ($conn_imap)
             {
                 // Test with login and password of the user
                 $l_nom = "";
                 $l_prenom = "";
-                $l_email = $_login;
                 imap_close($conn_imap);
             }
-			// A ce moment là $_login peut être sous form d'email
-			$identifiant = explode("@", $_login);
-			$_login = $identifiant[0];
 
             // On teste si un utilisateur porte déjà le même login
             $test = grr_sql_query1("SELECT login from ".TABLE_PREFIX."_utilisateurs where login = '".protect_data_sql($_login)."'");
@@ -1086,7 +1083,7 @@ function grr_verif_imap($_login, $_password)
 	if ($_password == '')
 		return false;
 	//include "config_imap.inc.php";
-	$imap_connection = grr_connect_imap(Settings::get("imap_adresse"),Settings::get("imap_port"),$_login,$_password,Settings::get("imap_type"),Settings::get("imap_ssl"),Settings::get("imap_cert"),Settings::get("imap_tls"),"diag");
+	$imap_connection = grr_connect_imap(Settings::get("imap_adresse"),Settings::get("imap_port"),$_login,$_password,Settings::get("imap_type"),Settings::get("imap_ssl"),Settings::get("imap_cert"),Settings::get("imap_tls"),"normal");
 	if ($imap_connection)
 		return $imap_connection;
 	else
@@ -1101,7 +1098,7 @@ function grr_connect_imap($i_adresse,$i_port,$i_login,$i_pwd,$use_type,$use_ssl,
 	if (isset($i_adresse) && !empty($i_adresse))
 		$string1.="{".$i_adresse;
 	else
-		return $out;
+		return "";//$out;
 	if (isset($i_port) && !empty($i_port))
 		$string1 .= ":".$i_port;
 	if (isset($use_type))
@@ -1131,7 +1128,7 @@ function grr_connect_imap($i_adresse,$i_port,$i_login,$i_pwd,$use_type,$use_ssl,
 		{
 			echo "<h2><span style=\"color:green;\">La connexion a réussi !</span></h2>";
 			@imap_close($connect_imap);
-			return true;
+			return $connect_imap;
 		}
 		else
 			return $connect_imap;
