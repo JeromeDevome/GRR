@@ -20,7 +20,9 @@ Forum : https://site.devome.com/fr/grr/forum-grr
 
 Chat/Discord : https://discord.com/channels/484639573243068417/
 
-
+```diff
++ Versions disposant de support et de correctifs: 4.2.X && 4.3.X, les versions précédantes doivent être mise à jour.
+```
 
 **Requiert :**
 
