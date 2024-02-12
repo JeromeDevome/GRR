@@ -3,7 +3,7 @@
  * installation/fonctions/maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-02 16:37$
+ * Dernière modification : $Date: 2024-02-12 16:19$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
@@ -885,8 +885,8 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result .= formatresult("Mise à jour jusqu'à la version 4.0.0 :","<b>","</b>");
 
 		$result_inter .= traiteRequete("DELETE FROM ".TABLE_PREFIX."_setting WHERE NAME='versionRC'");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('display_beneficiaire', '0')");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('display_type', '1')");
+		$result_inter .= traiteRequete("INSERT IGNORE INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('display_beneficiaire', '0')");
+		$result_inter .= traiteRequete("INSERT IGNORE INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('display_type', '1')");
 		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_log_mail (`idlogmail` int(11) NOT NULL AUTO_INCREMENT, `date` int(11) NOT NULL, `de` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, `a` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, `sujet` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, `message` text NOT NULL, PRIMARY KEY (`idlogmail`));");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_allow_self_signed', 'false')");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('smtp_verify_peer_name', 'true')");
@@ -948,7 +948,7 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		
 		$result .= formatresult("Mise à jour jusqu'à la version 4.2.0 :","<b>","</b>");
 
-		$result_inter .= traiteRequete("CREATE TABLE ".TABLE_PREFIX."_utilisateurs_demandes (`idutilisateursdemandes` bigint(20) NOT NULL AUTO_INCREMENT, `nom` varchar(30) NOT NULL, `prenom` varchar(30) NOT NULL, `email` varchar(100) NOT NULL, `telephone` varchar(20) NOT NULL, `mdp` varchar(184) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, `commentaire` text NOT NULL, `datedemande` date NOT NULL, `etat` tinyint(1) NOT NULL DEFAULT 0, `gestionnaire` varchar(40) NOT NULL DEFAULT '', `datechoix` date DEFAULT NULL, PRIMARY KEY (`idutilisateursdemandes`))  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_utilisateurs_demandes (`idutilisateursdemandes` bigint(20) NOT NULL AUTO_INCREMENT, `nom` varchar(30) NOT NULL, `prenom` varchar(30) NOT NULL, `email` varchar(100) NOT NULL, `telephone` varchar(20) NOT NULL, `mdp` varchar(184) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, `commentaire` text NOT NULL, `datedemande` date NOT NULL, `etat` tinyint(1) NOT NULL DEFAULT 0, `gestionnaire` varchar(40) NOT NULL DEFAULT '', `datechoix` date DEFAULT NULL, PRIMARY KEY (`idutilisateursdemandes`))  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
 		
 
 		$ctncgu = grr_sql_query1("SELECT valeur FROM ".TABLE_PREFIX."_page WHERE nom='CGU'");
