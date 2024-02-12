@@ -2,9 +2,9 @@
 /**
  * mysql.inc.php
  * Bibliothèque de fonctions pour le support mysql
- * Dernière modification : $Date: 2023-10-23 15:26$
+ * Dernière modification : $Date: 2024-02-12 16:56$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -133,7 +133,7 @@ function grr_sql_query($sql, $types = NULL, $params = NULL)
         }
     } catch(Exception $e) {
         error_log($e -> getMessage());
-        return -1;
+        return 0;
     }
     return($res);
 }

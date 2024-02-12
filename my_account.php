@@ -3,9 +3,9 @@
  * my_account.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-07-27 16:35$
+ * Dernière modification : $Date: 2024-02-12 17:01$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -34,6 +34,7 @@ if (!grr_resumeSession())
 	header('Location: logout.php?auto=1&url='.$grr_script_name);
 	die();
 };
+$user_id = getUserName();
 /*if (authGetUserLevel(getUserName(), -1) < 2)
 {
 	echo '<script>
@@ -43,6 +44,7 @@ if (!grr_resumeSession())
 };*/
 include_once('include/language.inc.php');
 $msg=getFormVar('message');
+
 if (Settings::get("module_multisite") == "Oui")
 	$use_site = 'y';
 else
@@ -77,62 +79,50 @@ $span = (isset($_POST['span'])&&(($_POST['span']==0)||($_POST['span']==1)))? $_P
 
 if ($valid == 'moi')
 {
-	$sql = "SELECT nom,prenom,email
-	FROM ".TABLE_PREFIX."_utilisateurs
-	WHERE login='".getUserName()."'";
-	$res = grr_sql_query($sql);
+	$sql = "SELECT nom,prenom,email FROM ".TABLE_PREFIX."_utilisateurs WHERE login=?";
+	$res = grr_sql_query($sql,"s",[$user_id]);
 	if ($res)
 	{
 		$row = grr_sql_row($res, 0);
 		$user_nom = $row[0];
 		$user_prenom = $row[1];
 		$user_email = $row[2];
+        $reg_email = isset($_POST['reg_email']) ? clean_input($_POST['reg_email']) : $user_email;
+        $reg_nom = isset($_POST['reg_nom']) ? clean_input($_POST['reg_nom']) : $user_nom;
+        $reg_prenom = isset($_POST['reg_prenom']) ? clean_input($_POST['reg_prenom']) : $user_prenom;
+        $champ_manquant = (trim($reg_nom) == '')||(trim($reg_prenom) == '');
+        // MAJ éventuelles
+        if(IsAllowedToModifyProfil()){
+            if(($user_nom != $reg_nom)&&(trim($reg_nom) != '')){
+                $sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET nom=? WHERE login=?";
+                if(grr_sql_command($sql,"ss",[protect_data_sql($reg_nom),$user_id]) <0)
+                    $erreur = grr_sql_error();
+                $_SESSION['nom'] = htmlspecialchars($reg_nom);
+            }
+            if(($user_prenom != $reg_prenom)&&(trim($reg_prenom) != '')){
+                $sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET prenom=? WHERE login=?";
+                if(grr_sql_command($sql,"ss",[protect_data_sql($reg_prenom),$user_id]) <0)
+                    $erreur = grr_sql_error();
+                $_SESSION['prenom'] = htmlspecialchars($reg_prenom);
+            }
+        }
+        if(IsAllowedToModifyEmail()){
+            if($user_email != $reg_email){
+                $sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET email=? WHERE login=?";
+                if(grr_sql_command($sql,"ss",[protect_data_sql($reg_email),$user_id]) <0)
+                    $erreur = grr_sql_error();
+            }
+        }
+        if(isset($erreur)&&(trim($erreur)!=''))
+            fatal_error(0, get_vocab('message_records_error').$erreur);
+        else 
+            $msg .= "\\n".get_vocab('message_records');
+        if (IsAllowedToModifyProfil() && ($champ_manquant))
+            $msg .= "\\n".str_replace("\'","'",get_vocab('required'));
+
 	}
-	$reg_email = isset($_POST['reg_email']) ? clean_input($_POST['reg_email']) : $user_email;
-	$reg_nom = isset($_POST['reg_nom']) ? clean_input($_POST['reg_nom']) : $user_nom;
-	$reg_prenom = isset($_POST['reg_prenom']) ? clean_input($_POST['reg_prenom']) : $user_prenom;
-	$champ_manquant = 'n';
-	if (trim($reg_nom) == '')
-		$champ_manquant = 'y';
-	if (trim($reg_prenom) == '')
-		$champ_manquant = 'y';
-	if (($user_email != $reg_email) || ($user_nom != $reg_nom) || ($user_prenom != $reg_prenom)) //MAJ
-	{
-		$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET ";
-		$flag_virgule = 'n';
-		if (IsAllowedToModifyProfil())
-		{
-			if (trim($reg_nom) != '')
-			{
-				$sql.="nom = '" . protect_data_sql($reg_nom)."'";
-				$flag_virgule = 'y';
-				$_SESSION['nom'] = htmlspecialchars($reg_nom);
-			}
-			if (trim($reg_prenom) != '')
-			{
-				if ($flag_virgule == 'y') $sql .=",";
-				$sql .= "prenom = '" . protect_data_sql($reg_prenom)."'";
-				$flag_virgule = 'y';
-				$_SESSION['prenom'] = htmlspecialchars($reg_prenom);
-			}
-		}
-		if (IsAllowedToModifyEmail())
-		{
-			if ($flag_virgule == 'y')
-				$sql .= ",";
-			$sql .= "email = '" . protect_data_sql($reg_email)."'";
-		}
-		$sql .= "WHERE login='".getUserName()."'";
-		if ((IsAllowedToModifyProfil()) || (IsAllowedToModifyEmail()))
-		{
-			if (grr_sql_command($sql) < 0)
-				fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
-			else
-				$msg .= "\\n".get_vocab('message_records');
-		}
-	}
-	if (IsAllowedToModifyProfil() && ($champ_manquant=='y'))
-		$msg .= "\\n".str_replace("\'","'",get_vocab('required'));
+    else
+        $msg .= get_vocab('Erreur_lecture');
 }
 if (($valid == 'param')||($valid == 'reset'))
 {
@@ -149,7 +139,7 @@ if (($valid == 'param')||($valid == 'reset'))
 	default_style = '". protect_data_sql($default_style)."',
 	default_list_type = '".protect_data_sql($default_list_type)."',
 	default_language = '".protect_data_sql($default_language)."'
-	WHERE login='".getUserName()."'";
+	WHERE login='".$user_id."'";
 	if (grr_sql_command($sql) < 0)
 		fatal_error(0, get_vocab('message_records_error').grr_sql_error());
 	else
@@ -197,7 +187,7 @@ if (($valid == 'pwd')&& IsAllowedToModifyMdp())
             {
                 VerifyModeDemo();
                 $reg_password1 = password_hash($reg_password1, PASSWORD_DEFAULT);
-                $sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='".protect_data_sql($reg_password1)."' WHERE login='".getUserName()."'";
+                $sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='".protect_data_sql($reg_password1)."' WHERE login='".$user_id."'";
                 if (grr_sql_command($sql) < 0)
                     fatal_error(0, get_vocab('update_pwd_failed') . grr_sql_error());
                 else
@@ -216,7 +206,7 @@ if (($valid == 'pwd')&& IsAllowedToModifyMdp())
 
 // données utilisateur
 $user=array();
-$sql = "SELECT nom,prenom,statut,email,default_site,default_area,default_room,default_style,default_list_type,default_language,source FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".getUserName()."'";
+$sql = "SELECT * FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".$user_id."'";
 $res = grr_sql_query($sql);
 if ($res)
 {
@@ -238,7 +228,7 @@ function menu_moi($user){
     $html .= '<div class="form-group">';
     $html .= '<label class="control-label col-md-2 col-sm-3 col-xs-4" for="login">'.get_vocab('login').get_vocab('deux_points').'</label>';
     $html .= '<div class="col col-md-4 col-sm-6 col-xs-8">';
-    $html .= '<input class="form-control" id="login" type="text" name="login" value="'.getUserName().'" size="30" disabled/>';
+    $html .= '<input class="form-control" id="login" type="text" name="login" value="'.$user['login'].'" size="30" disabled/>';
     $html .= '</div></div>';
     $html .= '<div class="form-group">';
     $html .= '<label class="control-label col-md-2 col-sm-3 col-xs-4" for="nom">'.get_vocab('last_name').get_vocab('deux_points').'*</label>';
@@ -294,7 +284,7 @@ function menu_moi($user){
             <input class="btn btn-primary" type="submit" value="'.get_vocab('save').'" />
             </div>';
     $html .= "</form>";
-	if (IsAllowedToModifyProfil())
+	if ($mod_profil)
 	{
 		$html .= '<p><em>('.str_replace("\'","'",get_vocab('required')).')</em></p>';
 		if ((trim($user['nom']) == "") || (trim($user['prenom']) == ''))
@@ -308,7 +298,7 @@ function menu_conn($login){
     $sql = "SELECT START, SESSION_ID, REMOTE_ADDR, USER_AGENT, REFERER, AUTOCLOSE, END FROM ".TABLE_PREFIX."_log WHERE LOGIN = '".$login."' ORDER by START desc";
     $res = grr_sql_query($sql);
     if (!$res){
-        grr_sql_error();
+        $html = grr_sql_error();
     }
     else {
         // affichage des résultats
@@ -366,8 +356,8 @@ function menu_conn($login){
             $html .= "</tr>\n";
         }
         $html .= "</tbody></table>";
-        return $html;
     }
+    return $html;
 }
 /* met en forme une ligne du tableau des réservations à partir des données SQL et du paramètre $dformat
 */
@@ -378,9 +368,9 @@ function reportone(&$row, $dformat)
 	echo "<tr>";
 		//Affichage de l'heure et de la durée de réservation
 	if ($enable_periods == 'y')
-		list($start_date, $start_time ,$duration, $dur_units) =  describe_period_span($row[1], $row[2]);
+		list($start_date, $start_time ,$duration, $dur_units) =  describe_period_span($row['start_time'], $row['end_time']);
 	else
-		list($start_date, $start_time ,$duration, $dur_units) = describe_span($row[1], $row[2], $dformat);
+		list($start_date, $start_time ,$duration, $dur_units) = describe_span($row['start_time'], $row['end_time'], $dformat);
 
         // Date début réservation
 	echo "<td>".$start_date . "</td>";
@@ -389,33 +379,32 @@ function reportone(&$row, $dformat)
         // Durée réservation
 	echo "<td>".$duration ." ". $dur_units ."</td>";
         //Affiche "area"
-	$area_nom = htmlspecialchars($row[8]);
-	$areadescrip = htmlspecialchars($row[10]);
-	if ($areadescrip != "")
-		$titre_area_descript = "title=\"".$areadescrip."\"";
-	else
-		$titre_area_descript = "";
-	echo "<td ".$titre_area_descript." >".$area_nom."</td>";
+	$area_nom = htmlspecialchars($row['area_name']);
+    echo "<td>".$area_nom."</td>";
 		//Affiche "room"
-	$room = htmlspecialchars($row[9]);
-	echo "<td>".$room."</td>";
+	$room_nom = htmlspecialchars($row['room_name']);
+	if ($row['room_description'] != "")
+		$titre_room_descript = "title=\"".htmlspecialchars($row['room_description'])."\"";
+	else
+		$titre_room_descript = "";
+	echo "<td ".$titre_room_descript." >".$room_nom."</td>";
 		// Breve description (title), avec un lien
-	$breve_description = affichage_lien_resa_planning($row[3],$row[0]);
-	$breve_description = "<a href=\"view_entry.php?id=$row[0]&amp;mode=page\">". $breve_description . "</a>";
+	$breve_description = affichage_lien_resa_planning($row['name'],$row['id']);
+	$breve_description = "<a href=\"view_entry.php?id=".$row['id']."&amp;mode=page\">". $breve_description . "</a>";
 	echo "<td>".$breve_description."</td>\n";
 		//Description complète
-	if ($row[4] != "")
-		$description = nl2br(htmlspecialchars($row[4]));
+	if ($row['description'] != "")
+		$description = nl2br(htmlspecialchars($row['description']));
 	else
 		$description = " ";
 	echo "<td>". $description . "</td>\n";
 		//Type de réservation
-	$et = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$row[5]."'");
+	$et = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter=?","s",[$row['type']]);
 	if ($et == -1)
-		$et = "?".$row[5]."?";
+		$et = "?".$row['type']."?";
 	echo "<td>".$et."</td>\n";
 		//Affichage de la date de la dernière mise à jour
-	echo "<td>". date_time_string($row[7],$dformat) . "</td>\n";
+	echo "<td>". date_time_string($row['timestamp'],$dformat) . "</td>\n";
 	echo "</tr>\n";
 }
 /* paramètres : $login = login de l'utilisateur, $span = 0 : toutes | 1 : à venir
@@ -423,40 +412,40 @@ function reportone(&$row, $dformat)
 function mes_resas($login,$span,$dformat){
     $sql = "SELECT distinct e.id, e.start_time, e.end_time, e.name, e.description, "
     . "e.type, e.beneficiaire, "
-    .  grr_sql_syntax_timestamp_to_unix("e.timestamp")
-    . ", a.area_name, r.room_name, r.description, a.id, e.overload_desc, r.order_display, t.type_name"
+    .  grr_sql_syntax_timestamp_to_unix("e.timestamp")." as timestamp,"
+    . " a.area_name, r.room_name, r.description as room_description, a.id as area_id, e.overload_desc, r.order_display, t.type_name"
 	. ", e.beneficiaire_ext"
     . " FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_room r, ".TABLE_PREFIX."_type_area t"
     . " WHERE e.room_id = r.id AND r.area_id = a.id"
-    . " AND e.beneficiaire = '".$login."' ";
+    . " AND e.beneficiaire = ? ";
     if ($span)
         $sql .= "AND e.start_time >= ".time() ;
     $sql .= " AND  t.type_letter = e.type ";
     $sql .= "ORDER BY e.start_time ASC ";
 
-    $res = grr_sql_query($sql);
+    $res = grr_sql_query($sql,"s",[$login]);
     if (!$res)
         fatal_error(0, grr_sql_error());
-    $nmatch = grr_sql_count($res);
-    if ($nmatch == 0)
-    {
-        echo "<p><b>" . get_vocab("nothing_found") . "</b></p>\n";
-        grr_sql_free($res);
-    }
-    else
-    {
-        echo "<p><b>" . $nmatch . " "
-        . ($nmatch == 1 ? get_vocab("entry_found") : get_vocab("entries_found"))
-        .  "</b></p>\n";
-        echo "<table class='table table-bordered table-condensed'>";
-        echo '<thead><tr><th>Date de début</th><th>Heure</th><th>Durée :</th><th>Domaine</th><th>Ressource</th><th>Brève description</th><th>Description complète </th><th>Type</th><th>Dernière mise à jour</th></tr></thead>';
-        echo '<tbody>';
-        for ($i = 0; ($row = grr_sql_row($res, $i)); $i++){
-            get_planning_area_values($row[11]); // détermine le format d'affichage $dformat
-            reportone($row, $dformat);
+    else{
+        $nmatch = grr_sql_count($res);
+        if($nmatch == 0)
+        {
+            echo "<p><b>" . get_vocab("nothing_found") . "</b></p>\n";
+        }
+        else
+        {
+            echo "<p><b>" . $nmatch . " "
+            . ($nmatch == 1 ? get_vocab("entry_found") : get_vocab("entries_found"))
+            .  "</b></p>\n";
+            echo "<table class='table table-bordered table-condensed'>";
+            echo '<thead><tr><th>Date de début</th><th>Heure</th><th>Durée :</th><th>Domaine</th><th>Ressource</th><th>Brève description</th><th>Description complète </th><th>Type</th><th>Dernière mise à jour</th></tr></thead>';
+            echo '<tbody>';
+            foreach($res as $row){
+                reportone($row, $dformat);
+            }
+            echo '</tbody></table>';
         }
         grr_sql_free($res);
-        echo '</tbody></table>';
     }
 }
 /* paramètres : $login = login de l'utilisateur, $dformat = format des dates, issu de language.inc.php
@@ -492,7 +481,7 @@ affiche_pop_up($msg,'admin');
 				id_site: $('#id_site').val(),
 				// default_area : '<?php echo Settings::get("default_area"); ?>',
                 default_area : '<?php echo $default_area; ?>',
-				session_login:'<?php echo getUserName(); ?>',
+				session_login:'<?php echo $user_id; ?>',
 				use_site:'<?php echo $use_site; ?>',
 				type:'domaine',
 			},
@@ -567,21 +556,19 @@ echo $divs['param'];
 	if ($use_site == 'y')
 	{
 		echo '<h4>'.get_vocab('explain_default_area_and_room_and_site').'</h4>';
-		$sql = "SELECT id,sitecode,sitename
-		FROM ".TABLE_PREFIX."_site
-		ORDER BY id ASC";
-		$resultat = grr_sql_query($sql);
+		$sql = "SELECT id,sitecode,sitename FROM ".TABLE_PREFIX."_site ORDER BY id ASC";
+		$res = grr_sql_query($sql);
 		echo '<div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-4" for="id_site">'.get_vocab('default_site').get_vocab('deux_points').'</label>
 				<div class="col col-md-4 col-sm-6 col-xs-8">
                 <select class="form-control" id="id_site" name="id_site" for="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
 						<option value="-1">'.get_vocab('choose_a_site').'</option>'."\n";
-						for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); $enr++)
+						foreach($res as $row)
 						{
-							echo '<option value="'.$row[0].'"';
-							if ($default_site == $row[0])
+							echo '<option value="'.$row['id'].'"';
+							if ($default_site == $row['id'])
 								echo ' selected="selected" ';
-							echo '>'.htmlspecialchars($row[2]);
+							echo '>'.htmlspecialchars($row['sitename']);
 							echo '</option>'."\n";
 						}
 						echo '</select>
@@ -596,9 +583,9 @@ echo $divs['param'];
 /* Liste des domaines */
 	echo '<div id="div_liste_domaines">';
 	echo '</div>';
+	echo '<input type="hidden" id="id_area" name="id_area" value="'.$default_area.'" />';
 	/* Liste des ressources */
 	echo '<div id="div_liste_ressources">';
-	echo '<input type="hidden" id="id_area" name="id_area" value="'.$default_area.'" />';
 	echo '</div>';
 	/* Au chargement de la page, on initialise les select */
 	echo '<script type="text/javascript">modifier_liste_domaines();</script>'."\n";
@@ -668,7 +655,7 @@ echo $divs['param'];
     </div>';
 echo $divs['pwd'];
 echo '  <h3>'.get_vocab('pwd').'</h3>';
-//echo menu_pwd(getUserName());
+//echo menu_pwd($user_id);
 if (!IsAllowedToModifyMdp()){
     echo '<p class="">'.get_vocab('user_change_pwd_interdit').'</p>';
 }
@@ -710,11 +697,11 @@ else {
 echo '</div>';
 echo $divs['conn'];
 echo '      <h3>'.get_vocab('conn').'</h3>';
-echo menu_conn(getUserName());
+echo menu_conn($user_id);
 echo '</div>';
 echo $divs['resa'];
 echo '      <h3>'.get_vocab('resa').'</h3>';
-echo menu_resa(getUserName(),$span,$dformat);
+echo menu_resa($user_id,$span,$dformat);
 echo '</div>';
 echo '</div>'; // tab content
 echo '</div>'; // container
