@@ -180,11 +180,11 @@ if($upload_Module == 1){
 				}
 				if(!isset($infosModule)){
 					$infosModule = array();
-					$infosModule[0] = "<font color='red'>".get_vocab('Erreur lecture')."</font>";
-					$infosModule[1] = "<font color='red'>".get_vocab('Erreur lecture')."</font>";
-					$infosModule[2] = "<font color='red'>".get_vocab('Erreur lecture')."</font>";
-					$infosModule[3] = "<font color='red'>".get_vocab('Erreur lecture')."</font>";
-					$infosModule[4] = "<font color='red'>".get_vocab('Erreur lecture')."</font>";
+					$infosModule[0] = "<font color='red'>".get_vocab('Erreur_lecture')."</font>";
+					$infosModule[1] = "<font color='red'>".get_vocab('Erreur_lecture')."</font>";
+					$infosModule[2] = "<font color='red'>".get_vocab('Erreur_lecture')."</font>";
+					$infosModule[3] = "<font color='red'>".get_vocab('Erreur_lecture')."</font>";
+					$infosModule[4] = "<font color='red'>".get_vocab('Erreur_lecture')."</font>";
 					$activation = "<font color='red'>".get_vocab('Impossible')."</font>";
 					$lienActivation = "#";
 				} 

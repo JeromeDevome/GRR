@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2023-10-23
+# Last modification : 2024-02-09
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1203,7 +1203,7 @@ $vocab['invalid_file'] = "Le fichier sélectionné n'est pas valide !\\n";
 $vocab['auteur'] = "Auteur";
 $vocab['licence'] = "Licence";
 $vocab['activation'] = "Activation";
-$vocab['Erreur lecture'] = "Erreur lecture";
+$vocab['Erreur_lecture'] = "Erreur lecture";
 $vocab['Impossible'] = "Impossible";
 $vocab['Activer'] = "Activer";
 $vocab['Désactiver'] = "Désactiver";

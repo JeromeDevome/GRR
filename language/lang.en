@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2024-01-10
+# Last modification : 2024-02-09
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -667,7 +667,7 @@ $vocab['names'] = "Name and first name";
 $vocab['navigator'] = "Browser";
 $vocab['ne contient pas'] = "doesn't contain";
 $vocab['necessite fonction mail automatique'] = "requires to activate the function of sending automatic e-mail and to fill the field \"email\" of the borrower.";
-$vocab['new_pwd1'] = "New password (minimum \".$pass_leng.\" characters)";
+$vocab['new_pwd1'] = "New password (minimum ".$pass_leng." characters)";
 $vocab['new_pwd2'] = "New password (to be confirmed)";
 $vocab['next'] = "Next";
 $vocab['Ne_pas_activer_Service_sso'] = "Don't activate the consideration of a SSO";
@@ -751,7 +751,7 @@ $vocab['pview_new_windows1'] = "Open pages in a new window of the browser";
 $vocab['pview_new_windows_msg'] = "Opening of pages in the printable version";
 $vocab['pwd'] = "Password";
 $vocab['pwd_change'] = "Changing password";
-$vocab['pwd_msg_warning'] = "Caution: password is to consist of \".$pass_leng.\" minimum characters (letters, figures, ...). It is highly recommended not to choose a too simple password.";
+$vocab['pwd_msg_warning'] = "Caution: password is to consist of ".$pass_leng." minimum characters (letters, figures, ...). It is highly recommended not to choose a too simple password.";
 $vocab['pwd_msg_warning2'] = "For safety reasons, please use module accessible from homepage \"Managing my account\" if you wish to change your password!";
 $vocab['pwd_strength'] = "Password strength";
 $vocab['pwd_toot_short'] = "Password (".$pass_leng." characters minimum)";
@@ -1209,7 +1209,7 @@ $vocab['invalid_file'] = "The selected file is not valid!\\n";
 $vocab['auteur'] = "Author";
 $vocab['licence'] = "License";
 $vocab['activation'] = "Activation";
-$vocab['Erreur lecture'] = "Reading error";
+$vocab['Erreur_lecture'] = "Reading error";
 $vocab['Impossible'] = "Impossible";
 $vocab['Activer'] = "Activate";
 $vocab['Désactiver'] = "Deactivate";
