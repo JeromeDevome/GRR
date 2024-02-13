@@ -3,7 +3,7 @@
  * my_account.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-12 17:01$
+ * Dernière modification : $Date: 2024-02-13 16:14$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -45,10 +45,24 @@ $user_id = getUserName();
 include_once('include/language.inc.php');
 $msg=getFormVar('message');
 
-if (Settings::get("module_multisite") == "Oui")
+if (Settings::get("module_multisite") == "Oui"){
 	$use_site = 'y';
+    $sites = array();
+    $sql = "SELECT id,sitecode,sitename FROM ".TABLE_PREFIX."_site ORDER BY id ASC";
+	$res = grr_sql_query($sql);
+    if(!$res){
+        $erreur = grr_sql_error();
+        fatal_error(0, get_vocab('message_records_error').$erreur);
+    }
+    else
+        foreach($res as $row){
+            $sites[] = $row;
+        }
+    grr_sql_free($res);
+}
 else
 	$use_site = 'n';
+
 $menus = array('moi','param','pwd','conn','resa');
 $pill = array();
 foreach ($menus as $menu){
@@ -261,7 +275,7 @@ function menu_moi($user){
     $html .= '"';
     if (!$mod_email) 
         $html .= ' disabled';
-    $html .= ' size="30" /></div>';
+    $html .= ' autocomplete="off" size="30" /></div>';
     $html .= '</div>';
 	if ($user['statut'] == "utilisateur")
 		$text_user_statut = get_vocab("statut_user");
@@ -429,9 +443,7 @@ function mes_resas($login,$span,$dformat){
     else{
         $nmatch = grr_sql_count($res);
         if($nmatch == 0)
-        {
             echo "<p><b>" . get_vocab("nothing_found") . "</b></p>\n";
-        }
         else
         {
             echo "<p><b>" . $nmatch . " "
@@ -500,7 +512,7 @@ affiche_pop_up($msg,'admin');
 			dataType: "html",
 			data: {
 				id_area:$('#id_area').val(),
-				// default_room : '<?php echo Settings::get("default_room"); ?>',
+                default_area : '<?php echo $default_area; ?>',
                 default_room : '<?php echo $default_room; ?>',
 				type:'ressource',
 				action:+action,
@@ -514,6 +526,7 @@ affiche_pop_up($msg,'admin');
 		});
 	}
 </script>
+
 <?php
 echo '<div class="container">';
 echo '  <h2>'.get_vocab('my_data').'</h2>';
@@ -534,36 +547,32 @@ echo $divs['param'];
         echo "\n".'<h4>'.get_vocab('explain_area_list_format').'</h4>';
         echo '<div class="radio">
                 <label><input type="radio" name="area_item_format" value="list" ';
-				if ($user['default_list_type'] == 'list')
+				if ($default_list_type == 'list')
 					echo 'checked="checked"';
 				echo ' />'.get_vocab('liste_area_list_format').'</label>
               </div>';
         echo '<div class="radio">
                 <label><input type="radio" name="area_item_format" value="select" ';
-				if ($user['default_list_type'] == 'select')
+				if ($default_list_type == 'select')
 					echo 'checked="checked" ';
 				echo ' />'.get_vocab('select_area_list_format').'</label>
                 </div>';
         echo '<div class="radio">
                 <label><input type="radio" name="area_item_format" value="item" ';
-				if ($user['default_list_type'] == 'item')
+				if ($default_list_type == 'item')
 					echo 'checked="checked" ';
 				echo ' />'.get_vocab('item_area_list_format').'</label>
                 </div> ';
-/**
- * Liste des sites
- */
+/* Liste des sites */
 	if ($use_site == 'y')
 	{
 		echo '<h4>'.get_vocab('explain_default_area_and_room_and_site').'</h4>';
-		$sql = "SELECT id,sitecode,sitename FROM ".TABLE_PREFIX."_site ORDER BY id ASC";
-		$res = grr_sql_query($sql);
 		echo '<div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-4" for="id_site">'.get_vocab('default_site').get_vocab('deux_points').'</label>
 				<div class="col col-md-4 col-sm-6 col-xs-8">
                 <select class="form-control" id="id_site" name="id_site" for="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
 						<option value="-1">'.get_vocab('choose_a_site').'</option>'."\n";
-						foreach($res as $row)
+						foreach($sites as $row)
 						{
 							echo '<option value="'.$row['id'].'"';
 							if ($default_site == $row['id'])
@@ -581,13 +590,13 @@ echo $divs['param'];
 		echo '<input type="hidden" id="id_site" name="id_site" value="-1" />';
 	}
 /* Liste des domaines */
+    //echo '<input type="hidden" id="id_area" name="id_area" value="'.$default_area.'" />';
 	echo '<div id="div_liste_domaines">';
 	echo '</div>';
-	echo '<input type="hidden" id="id_area" name="id_area" value="'.$default_area.'" />';
-	/* Liste des ressources */
+/* Liste des ressources */
 	echo '<div id="div_liste_ressources">';
 	echo '</div>';
-	/* Au chargement de la page, on initialise les select */
+/* Au chargement de la page, on initialise les select */
 	echo '<script type="text/javascript">modifier_liste_domaines();</script>'."\n";
 	echo '<script type="text/javascript">modifier_liste_ressources(1);</script>'."\n";
 /**
@@ -667,13 +676,13 @@ else {
               <div class="form-group">
                 <label class="control-label col-md-4 col-sm-6 col-xs-8" for="opwd">'.get_vocab('old_pwd').get_vocab('deux_points').'</label>
                 <div class="col col-md-3 col-sm-4 col-xs-6">
-                <input class="form-control" id="opwd" type="password" name="reg_password_a" size="20" required /></div>
+                <input class="form-control" id="opwd" type="password" name="reg_password_a" size="20" required autocomplete="off" /></div>
               </div>
               <div class="form-group">
                 <label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd1">'.get_vocab('new_pwd1').get_vocab('deux_points').'</label>
                 <div class="col col-md-3 col-sm-4 col-xs-6">
                 <input id="pwd1" class="form-control" type="password" name="reg_password1" size="20" 
-                onkeyup="runPassword(this.value, \'pwd1\');" required /></div>
+                onkeyup="runPassword(this.value, \'pwd1\');" required autocomplete="off" /></div>
               </div>
               <div class="form-group">
                 <div class="col col-md-4 col-sm-6 col-xs-8"><p class="text-right">'.get_vocab('pwd_strength').get_vocab('deux_points').'</p></div>
@@ -685,7 +694,7 @@ else {
               <div class="form-group">
                 <label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd2">'.get_vocab('new_pwd2').get_vocab('deux_points').'</label>
                 <div class="col col-md-3 col-sm-4 col-xs-6">
-                <input class="form-control" id="pwd2" type="password" name="reg_password2" size="20" required /></div>
+                <input class="form-control" id="pwd2" type="password" name="reg_password2" size="20" required autocomplete="off" /></div>
               </div>';
 	echo '<div id="fixe">
             <input type="hidden" name="valid" value="pwd" />

@@ -3889,7 +3889,9 @@ function verif_display_email($user, $id_room)
 }
 /* function verif_acces_ressource : vérifier l'accès à la ressource
  * $user : le login de l'utilisateur
- * $id_room : l'id de la ressource.
+ * $id_room : l'id de la ressource ou 'all'
+ * si $id_room est entier, renvoie le booléen indiquant si la ressource est accessible
+ * si $id_room est 'all', renvoie le tableau des ressources inaccessibles à $user
  */
 function verif_acces_ressource($user, $id_room)
 {
