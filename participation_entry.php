@@ -3,9 +3,9 @@
  * participation_entry.php
  * Script de traitement de l'inscription/désincription à une réservation acceptant les participants
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-18 12:04$
+ * Dernière modification : $Date: 2024-02-14 11:49$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -16,6 +16,7 @@
  * (at your option) any later version.
  */
 $grr_script_name = "participation_entry.php";
+
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include_once('include/misc.inc.php');
@@ -56,7 +57,7 @@ if ($info = mrbsGetEntryInfo($id))
 		exit();
 	}
     
-	$lvl_participation = grr_sql_query1("SELECT r.active_participant FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE e.id='".$id."'");
+	$lvl_participation = grr_sql_query1("SELECT r.active_participant FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE e.id=?","i",[$id]);
 	if ($lvl_participation < 1)
 	{
         echo 'lvl_participationInf1';
@@ -83,7 +84,7 @@ if ($info = mrbsGetEntryInfo($id))
 		exit();
 	}
 
-	$res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_participants WHERE idresa=$id AND participant='$user_name'");
+	$res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_participants WHERE idresa=? AND participant=?","is",[$id,$user_name]);
     if (!$res)
         fatal_error(0, grr_sql_error());
 
@@ -91,11 +92,11 @@ if ($info = mrbsGetEntryInfo($id))
 		ParticipationAnnulation($id, $user_name);
 	else
 	{
-		$resp = grr_sql_query("SELECT participant FROM ".TABLE_PREFIX."_participants WHERE idresa=$id");
+		$resp = grr_sql_query("SELECT participant FROM ".TABLE_PREFIX."_participants WHERE idresa=?","i",[$id]);
 		if (!$resp)
 			fatal_error(0, grr_sql_error());
 		
-		$maxParticipant = grr_sql_query1("SELECT nbparticipantmax FROM ".TABLE_PREFIX."_entry WHERE id='".$id."'");
+		$maxParticipant = grr_sql_query1("SELECT nbparticipantmax FROM ".TABLE_PREFIX."_entry WHERE id=?","i",[$id]);
 
 		if (grr_sql_count($resp) < $maxParticipant)
 			ParticipationAjout($id, $user_name);
@@ -104,6 +105,7 @@ if ($info = mrbsGetEntryInfo($id))
 			showAccessDenied($back);
 			exit();
 		}
+        grr_sql_free($resp);
 	}
 
 	grr_sql_free($res);

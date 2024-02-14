@@ -3,9 +3,9 @@
  * page.php
  * Script chargeant les pages enregistrées (CGU)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-02-10 20:00$
+ * Dernière modification : $Date: 2024-02-14 11:41$
  * @author    JeromeB
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -20,8 +20,8 @@ $grr_script_name = 'page.php';
 include_once('include/connect.inc.php');
 include_once('include/config.inc.php');
 include_once('include/misc.inc.php');
-include_once('include/functions.inc.php');
 require_once('include/'.$dbsys.'.inc.php');
+include_once('include/functions.inc.php');
 require_once('include/session.inc.php');
 include_once('include/settings.class.php');
 include_once('include/pages.class.php');
