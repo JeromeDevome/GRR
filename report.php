@@ -3,9 +3,9 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-07-27 16:25$
+ * Dernière modification : $Date: 2024-02-16 14:36$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -20,11 +20,10 @@ $grr_script_name = "report.php";
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
-include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
 include "include/mrbs_sql.inc.php";
+include "include/functions.inc.php";
 
-//Paramètres de connexion
 require_once("./include/settings.class.php");
 //Chargement des valeurs de la table settings
 if (!Settings::load())
@@ -34,6 +33,7 @@ require_once("./include/session.inc.php");
 //Si il n'y a pas de session créée, on déconnecte l'utilisateur.
 // Resume session
 include "include/resume_session.php";
+$user_id = getUserName();
 // Paramètres langage
 include "include/language.inc.php";
 // On affiche le lien "format imprimable" en bas de la page
@@ -45,7 +45,7 @@ else
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES): page_accueil();
 
 //Renseigne les droits de l'utilisateur, si les droits sont insuffisants, l'utilisateur est averti.
-if (!verif_access_search(getUserName()))
+if (!verif_access_search($user_id))
 {
 	showAccessDenied($back);
 	exit();
@@ -53,12 +53,12 @@ if (!verif_access_search(getUserName()))
 // Construction des identifiants de la ressource $room, du domaine $area, du site $id_site
 Definition_ressource_domaine_site();
 //Champs de création du rapport.
-$From_day = isset($_GET["From_day"]) ? $_GET["From_day"] : NULL;
-$From_month = isset($_GET["From_month"]) ? $_GET["From_month"] : NULL;
-$From_year = isset($_GET["From_year"]) ? $_GET["From_year"] : NULL;
-$To_day = isset($_GET["To_day"]) ? $_GET["To_day"] : NULL;
-$To_month = isset($_GET["To_month"]) ? $_GET["To_month"] : NULL;
-$To_year = isset($_GET["To_year"]) ? $_GET["To_year"] : NULL;
+$From_day = isset($_GET["From_day"]) ? intval($_GET["From_day"]) : NULL;
+$From_month = isset($_GET["From_month"]) ? intval($_GET["From_month"]) : NULL;
+$From_year = isset($_GET["From_year"]) ? intval($_GET["From_year"]) : NULL;
+$To_day = isset($_GET["To_day"]) ? intval($_GET["To_day"]) : NULL;
+$To_month = isset($_GET["To_month"]) ? intval($_GET["To_month"]) : NULL;
+$To_year = isset($_GET["To_year"]) ? intval($_GET["To_year"]) : NULL;
 $champ = array();
 $texte = array();
 $type_recherche = array();
@@ -78,9 +78,9 @@ if (isset($_GET['champ'][0]))
 }
 $summarize = isset($_GET["summarize"]) ? $_GET["summarize"] : NULL;
 if (!isset($_GET["sumby"]))
-	$_GET["sumby"] = "6";
+	$_GET["sumby"] = 6;
 else
-	settype($_GET["sumby"],"integer");
+	$_GET["sumby"]=intval($_GET["sumby"]);
 $sortby = isset($_GET["sortby"])? $_GET["sortby"] : "d";
 // Si la table j_user_area est vide, il faut modifier la requête
 $test_grr_j_user_area = grr_sql_count(grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_j_user_area"));
@@ -124,13 +124,13 @@ function reporton(&$row, $dformat)
 		$description = " ";
 	echo "<td>". $description . "</td>\n";
 		//Type de réservation
-	$et = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$row[5]."'");
+	$et = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter=?","s",[$row[5]]);
 	if ($et == -1)
 		$et = "?".$row[5]."?";
 	echo "<td>".$et."</td>\n";
 		//Bénéficiaire
-	$sql_beneficiaire = "SELECT prenom, nom FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$row[6]."'";
-	$res_beneficiaire = grr_sql_query($sql_beneficiaire);
+	$sql_beneficiaire = "SELECT prenom, nom FROM ".TABLE_PREFIX."_utilisateurs WHERE login =?";
+	$res_beneficiaire = grr_sql_query($sql_beneficiaire,"s",[$row[6]]);
 	$aff_beneficiaire = " ";
 	if ($res_beneficiaire)
 	{
@@ -138,6 +138,7 @@ function reporton(&$row, $dformat)
         if ($row_user)
             $aff_beneficiaire = htmlspecialchars($row_user[0]) ." ". htmlspecialchars($row_user[1]);
 	}
+    grr_sql_free($res_beneficiaire);
 	if ($aff_beneficiaire == " ")
 	{
 		$benef_ext = explode('|',$row[15]);
@@ -155,8 +156,8 @@ function reporton(&$row, $dformat)
 	foreach ($overload_data as $fieldid=>$fielddata) // Pour chaque champ additionnel de la réservation
 	{
 		// if ($fielddata["confidentiel"] == 'n') filtrage trop strict
-        //if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
-        if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel(getUserName(),$row[11],'area') > 3))
+        //if ((authGetUserLevel($user_id,-1) > 5) || ($fielddata['affichage'] == 'y'))
+        if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel($user_id,$row[11],'area') > 3))
         {
 			$keyTab = array_search($fieldid, $tablOverload);
 			$AddReservation[$keyTab] = $fielddata["valeur"];
@@ -184,7 +185,7 @@ function accumulate(&$row, &$count, &$hours, $report_start, $report_end, &$room_
 {
 	global $vocab;
 	if ($_GET["sumby"] == "5")
-		$temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter = '".$row[$_GET["sumby"]]."'");
+		$temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter =?","s",[$row[$_GET["sumby"]]]);
 	else if (($_GET["sumby"] == "3") || ($_GET["sumby"] == "6"))
 		$temp = $row[$_GET["sumby"]];
 	else
@@ -223,7 +224,7 @@ function accumulate_periods(&$row, &$count, &$hours, $report_start, $report_end,
 	global $vocab, $periods_name;
 	$max_periods = count($periods_name);
 	if ($_GET["sumby"] == "5")
-		$temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter = '".$row[$_GET["sumby"]]."'");
+		$temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter =?","s",[$row[$_GET["sumby"]]]);
 	else if (($_GET["sumby"] == "3") or ($_GET["sumby"] == "6"))
 		$temp = $row[$_GET["sumby"]];
 	else
@@ -291,7 +292,7 @@ function do_summary(&$count, &$hours, &$room_hash, &$breve_description_hash, $en
 		else if ($_GET["sumby"] == "5")
 			$premiere_cellule = get_vocab("type");
 		else
-			$premiere_cellule = grr_sql_query1("SELECT fieldname FROM ".TABLE_PREFIX."_overload WHERE id='".$_GET["sumby"]."'");
+			$premiere_cellule = grr_sql_query1("SELECT fieldname FROM ".TABLE_PREFIX."_overload WHERE id=?","i",[$_GET["sumby"]]);
 		if ($enable_periods == 'y')
 			echo "<hr /><h1>".get_vocab("summary_header_per")."</h1><table class=\"table table-bordered table-striped\">\n";
 		else
@@ -441,12 +442,12 @@ if (($summarize != 4) && ($summarize != 5))
 		if ($_GET["condition_et_ou"] == "AND")
 			echo "checked=\"checked\"";
 		echo " /></td>\n";
-		echo "<td class='CL'>".get_vocab("valide toutes les conditions suivantes")."</td></tr>";
+		echo "<td class='CL'>".get_vocab("Valide_toutes_les_conditions_suivantes")."</td></tr>";
 		echo "<tr><td class=\"CR\"><input type=\"radio\" name=\"condition_et_ou\" value=\"OR\" ";
 		if ($_GET["condition_et_ou"] != "AND")
 			echo "checked=\"checked\"";
 		echo " /></td>\n";
-		echo "<td class='CL'>".get_vocab("Valide au moins une des conditions suivantes")."</td></tr>\n";
+		echo "<td class='CL'>".get_vocab("Valide_au_moins_une_des_conditions_suivantes")."</td></tr>\n";
 		if (isset($texte))
 			$nb_ligne = max((count($texte) +2),5);
 		else
@@ -486,8 +487,8 @@ if (($summarize != 4) && ($summarize != 5))
 			foreach ($overload_fields as $fieldid=>$fielddata)
             {
                 // if ($overload_fields[$fieldname]["confidentiel"] != 'y') filtrage trop strict
-                // if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
-                if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel(getUserName(),-1) > 3))
+                // if ((authGetUserLevel($user_id,-1) > 5) || ($fielddata['affichage'] == 'y'))
+                if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel($user_id,-1) > 3))
                 {
                     echo "<option value='addon_".$fieldid."' ";
                     if (isset($champ[$k]) && ($champ[$k] == "addon_".$fieldid))
@@ -552,8 +553,8 @@ if (($summarize != 4) && ($summarize != 5))
         foreach ($overload_fields as $fieldid=>$fielddata)
         {
             // if ($overload_fields[$fieldname]["confidentiel"] != 'y') filtrage trop strict
-            // if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
-            if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel(getUserName(),-1,'area') > 3))
+            // if ((authGetUserLevel($user_id,-1) > 5) || ($fielddata['affichage'] == 'y'))
+            if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel($user_id,-1,'area') > 3))
             {
                 echo "<option value='".$fieldid."' ";
                 if ($_GET["sumby"] == $fieldid)
@@ -626,23 +627,23 @@ if (isset($_GET["is_posted"]))
 	. ", e.beneficiaire_ext"
     . " FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_room r, ".TABLE_PREFIX."_type_area t";
 	// Si l'utilisateur n'est pas administrateur, seuls les domaines auxquels il a accès sont pris en compte
-    if (authGetUserLevel(getUserName(),-1) < 6)
+    if (authGetUserLevel($user_id,-1) < 6)
         if ($test_grr_j_user_area != 0)
             $sql .= ", ".TABLE_PREFIX."_j_user_area j ";
         $sql .= " WHERE e.room_id = r.id AND r.area_id = a.id";
 	// on ne cherche pas parmi les ressources invisibles pour l'utilisateur
     // Tableau des ressources invisibles pour l'utilisateur
-    $tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
+    $tab_rooms_noaccess = verif_acces_ressource($user_id, 'all');
     foreach ($tab_rooms_noaccess as $key)
     {
         $sql .= " and r.id != $key ";
     }
 	// Si l'utilisateur n'est pas administrateur, seuls les domaines auxquels il a accès sont pris en compte
-    if (authGetUserLevel(getUserName(),-1) < 6)
+    if (authGetUserLevel($user_id,-1) < 6)
         if ($test_grr_j_user_area == 0)
             $sql .= " and a.access='a' ";
         else
-            $sql .= " and ((j.login='".getUserName()."' and j.id_area=a.id and a.access='r') or (a.access='a')) ";
+            $sql .= " and ((j.login='".$user_id."' and j.id_area=a.id and a.access='r') or (a.access='a')) ";
         $sql .= " AND e.start_time < $report_end AND e.end_time > $report_start";
         $k = 0;
         if (isset($champ[0]))
@@ -666,8 +667,8 @@ if (isset($_GET["is_posted"]))
                     foreach ($overload_fields as $fieldid=>$fielddata)
                     {
                         // if ($overload_fields[$fieldname]["confidentiel"] != 'y') filtrage trop strict
-                        // if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
-                        if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel(getUserName(),-1,'area') > 3))
+                        // if ((authGetUserLevel($user_id,-1) > 5) || ($fielddata['affichage'] == 'y'))
+                        if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel($user_id,-1,'area') > 3))
                         {
                             if ($champ[$k] == "addon_".$fieldid)
                                 $sql .=  grr_sql_syntax_caseless_contains_overload("e.overload_desc", $texte[$k], $fieldid, $type_recherche[$k]);
@@ -814,8 +815,8 @@ if (isset($_GET["is_posted"]))
                 foreach ($overload_fields as $fieldid=>$fielddata)
                 {
                     //if ($overload_fields[$fieldname]["confidentiel"] != 'y') // filtrage trop strict
-                    //if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
-                    if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel(getUserName(),-1,'area') > 3))
+                    //if ((authGetUserLevel($user_id,-1) > 5) || ($fielddata['affichage'] == 'y'))
+                    if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel($user_id,-1,'area') > 3))
                     {
                         echo "<td>".$fielddata["name"]."</td>";
                         $tablOverload[$i] = $fieldid;
@@ -846,7 +847,7 @@ if (isset($_GET["is_posted"]))
                 echo "</table>";
             if (($summarize == 2) || ($summarize == 3))
             {
-                // Décompte des créneaux réservées
+                // Décompte des créneaux réservés
                 if (isset($do_sum1))
                     do_summary($count, $hours, $room_hash, $breve_description_hash, 'y', '', "n");
                 // Décompte des heures réservées
@@ -879,8 +880,8 @@ if (isset($_GET["is_posted"]))
                     foreach ($overload_fields as $fieldid=>$fielddata)
                     {
                         // if ($overload_fields[$fieldname]["confidentiel"] != 'y') // filtrage trop strict
-                        //if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
-                        if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel(getUserName(),-1,'area') > 3))
+                        //if ((authGetUserLevel($user_id,-1) > 5) || ($fielddata['affichage'] == 'y'))
+                        if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel($user_id,-1,'area') > 3))
                         {
                             echo $fielddata["name"].";";
                             $tablOverload[$i] = $fieldid;
@@ -931,7 +932,7 @@ if (isset($_GET["is_posted"]))
                     $texte = str_replace(CHR(13)," ", $texte);
                     echo ltrim(rtrim(($texte))) . ";";
                     // Type
-                    $leType = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter = '".$row[5]."'");
+                    $leType = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter =?","s",[$row[5]]);
                     echo $leType .";";
                     //Date derniere modif
                     echo date_time_string($row[7], $dformat) . ";";
@@ -941,8 +942,8 @@ if (isset($_GET["is_posted"]))
                     foreach ($overload_data as $fieldid=>$fielddata) // Pour chaque champ additionnel de la réservation
                     {
                         // if ($fielddata["confidentiel"] == 'n')  filtrage trop strict
-                        //if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
-                        if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel(getUserName(),-1,'area') > 3))
+                        //if ((authGetUserLevel($user_id,-1) > 5) || ($fielddata['affichage'] == 'y'))
+                        if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel($user_id,-1,'area') > 3))
                         {
                             $keyTab = array_search($fieldid, $tablOverload);
                             $AddReservation[$keyTab] = $fielddata["valeur"];
@@ -985,7 +986,7 @@ if (isset($_GET["is_posted"]))
                         echo html_entity_decode($vocab["summarize_by"])." " .html_entity_decode($vocab["type"])." - $day $month $year;";
                     else
                     {
-                        $fieldname = grr_sql_query1("SELECT fieldname FROM ".TABLE_PREFIX."_overload WHERE id='".$_GET["sumby"]."'");
+                        $fieldname = grr_sql_query1("SELECT fieldname FROM ".TABLE_PREFIX."_overload WHERE id=?","i",[$_GET["sumby"]]);
                         echo html_entity_decode($vocab["summarize_by"])." " .html_entity_decode($fieldname)." - $day $month $year;";
                     }
                     echo "\r\n";

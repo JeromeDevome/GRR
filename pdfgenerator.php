@@ -3,9 +3,9 @@
  * pdfgenerator.php
  * Générer les PDF
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-29 11:50$
+ * Dernière modification : $Date: 2024-02-16 12:03$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -21,10 +21,10 @@ $grr_script_name = "pdfgenerator.php";
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
-include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
-include "include/mincals.inc.php";
 include "include/mrbs_sql.inc.php";
+include "include/functions.inc.php";
+include "include/mincals.inc.php";
 require_once("./include/settings.class.php");
 if (!Settings::load())
 	die("Erreur chargement settings");
@@ -70,18 +70,19 @@ else
 	else
 		header('Location: '.Settings::get("grr_url"));
 
-	$sql = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id='".$id."'";
-	$res = grr_sql_query($sql);
+	$sql = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id=?";
+	$res = grr_sql_query($sql,"i",[$id]);
 	if (!$res)
 		fatal_error(0, grr_sql_error());
 
 	$row = grr_sql_row($res, 0);
 	$cle = $row[18];
-	$sql = "SELECT room_name FROM ".TABLE_PREFIX."_room WHERE id='".$row[5]."'";
-	$res = grr_sql_query($sql);
+    grr_sql_free($res);
+	$sql = "SELECT room_name FROM ".TABLE_PREFIX."_room WHERE id=?";
+	$res = grr_sql_query($sql,"i",[$row[5]]);
 	$row2 = grr_sql_row($res, 0);
-
-	$res2 = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks, start_time, end_time FROM ".TABLE_PREFIX."_repeat WHERE id=$row[4]");
+    grr_sql_free($res);
+	$res2 = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks, start_time, end_time FROM ".TABLE_PREFIX."_repeat WHERE id=?","i",[$row[4]]);
 	if (!$res2)
 		fatal_error(0, grr_sql_error());
 
@@ -95,7 +96,7 @@ else
 		$end_time = $row6[5];
 		$duration = $row6[5] - $row6[4];
 	}
-
+    grr_sql_free($res2);
 	if ($row[4]!=0){
 		$period = 1;
 	}else{

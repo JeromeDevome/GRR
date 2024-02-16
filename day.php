@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-01-09 14:58$
+ * Dernière modification : $Date: 2024-02-16 18:09$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -151,11 +151,11 @@ else{
             $alerte = get_vocab("droits_insuffisants_pour_voir_ressources");
         else{
             $ress = "(";
-            foreach($rooms as $room){
+            foreach($rooms as $room_id){
                 if($ress !="(")
-                    $ress .= ",".$room;
+                    $ress .= ",".$room_id;
                 else 
-                    $ress .= $room;
+                    $ress .= $room_id;
             }
             $ress .= ")";
         // recherche des réservations dans ces ressources à la date étudiée
