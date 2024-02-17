@@ -4877,7 +4877,7 @@ Construit les informations à afficher sur les plannings
 */
 function affichage_lien_resa_planning($breve_description, $id_resa)
 {
-	$room = grr_sql_query("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id ='".$id_resa."'");
+	$room = grr_sql_query1("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id ='".$id_resa."'");
 
 	// Brève description ou le numéro de la réservation
 	if( (authGetUserLevel(getUserName(), $room) == 0 && Settings::get("display_short_description_nc") == 1) || 
