@@ -3,9 +3,9 @@
  * traitementcontact.php
  * envoie l'email suite au formulaire
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-08-19 11:59$
+ * Dernière modification : $Date: 2024-02-17 17:28$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -19,10 +19,10 @@ $grr_script_name = "traitementcontact.php";
 
 include "include/connect.inc.php";
 include "include/config.inc.php";
-include "include/functions.inc.php";
 include "include/misc.inc.php";
 include "include/$dbsys.inc.php";
 include "include/mrbs_sql.inc.php";
+include "include/functions.inc.php";
 include "include/language.inc.php";
 include "phpmailer/class.phpmailer.php";
 
@@ -105,8 +105,8 @@ else {// les paramètres ont été entrés,
                 $mail_corps  .= "<b> Sujet de la réservation :".$input['sujet']. "</b><br/><br/>";
 
                 $id = $input['area'] ;
-                $sql_areaName = "SELECT area_name FROM ".TABLE_PREFIX."_area where id = \"$id\" ";
-                $res_areaName = grr_sql_query1($sql_areaName);
+                $sql_areaName = "SELECT area_name FROM ".TABLE_PREFIX."_area where id =? ";
+                $res_areaName = grr_sql_query1($sql_areaName,"i",[$id]);
                 $mail_corps  .= "Domaine : ".$res_areaName. "<br/> ";
                 $mail_corps  .= "Salle : ".$input['room']. "<br/><br/>";
                 $mail_corps  .= "Date  :".$input['start_day']."/".$input['start_month']."/".$input['start_year']. " <br/>";
@@ -117,7 +117,7 @@ else {// les paramètres ont été entrés,
                 }
                 elseif (isset($_POST['start'])){// plage basée sur des créneaux
                     $periods_name = array();
-                    $pnres = grr_sql_query("SELECT nom_periode FROM ".TABLE_PREFIX."_area_periodes WHERE id_area='".$input['area']."' ORDER BY num_periode ASC");
+                    $pnres = grr_sql_query("SELECT nom_periode FROM ".TABLE_PREFIX."_area_periodes WHERE id_area=? ORDER BY num_periode ASC","i",[$input['area']]);
                     if ($pnres){
                         $i = 0; 
                         while (($a = grr_sql_row($pnres, $i++))) 

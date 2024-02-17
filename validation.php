@@ -3,9 +3,9 @@
  * validation.php
  * Interface de validation d'une réservation modérée
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-10-22 16:33$
+ * Dernière modification : $Date: 2024-02-17 18:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -40,9 +40,8 @@ include "include/language.inc.php";
 // vérifie que la réservation existe et que le script est en appel initial
 if (isset($_GET['id'])) // appel initial
 {
-	$id_resa = clean_input($_GET['id']);
-	settype($id_resa,"integer");
-	$room_id = grr_sql_query1("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id='".$id_resa."'");
+	$id_resa = intval($_GET['id']);
+	$room_id = grr_sql_query1("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id=?","i",[$id_resa]);
 	if ($room_id == -1)// erreur ou pas de résultat
 	{
 		start_page_w_header('', '', '', "with_session");
@@ -97,8 +96,8 @@ if (isset($_GET['id'])) // appel initial
 		FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
 		WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
 		AND ".TABLE_PREFIX."_room.area_id = ".TABLE_PREFIX."_area.id
-		AND ".TABLE_PREFIX."_entry.id='".$id_resa."'";
-		$res = grr_sql_query($sql);
+		AND ".TABLE_PREFIX."_entry.id=? ";
+		$res = grr_sql_query($sql,"i",[$id_resa]);
 		if (!$res)
 			fatal_error(0, grr_sql_error());
 		$row = grr_sql_row($res, 0);
@@ -140,7 +139,7 @@ if (isset($_GET['id'])) // appel initial
 			toTimeString($duration, $dur_units);
 		}
 		if ($beneficiaire != "")
-			$mail_exist = grr_sql_query1("SELECT email FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$beneficiaire'");
+			$mail_exist = grr_sql_query1("SELECT email FROM ".TABLE_PREFIX."_utilisateurs WHERE login=?","s",[$beneficiaire]);
 		else
 		{
 			$tab_benef = donne_nom_email($beneficiaire_ext);
@@ -167,7 +166,44 @@ if (isset($_GET['id'])) // appel initial
 		echo nl2br($description);
 		echo '		</td>';
 		echo '	</tr>';
-		$overload_data = mrbsEntryGetOverloadDesc($id_resa);
+		echo '	<tr>';
+		echo '		<td><b>'.get_vocab("room"),get_vocab("deux_points").'</b></td>';
+		echo '		<td>'.nl2br($area_name . " - " . $room_name).'</td>';
+		echo '  </tr>';
+		echo '	<tr>';
+		echo '		<td><b>'.get_vocab("start_date"),get_vocab("deux_points").'</b></td>';
+		echo '		<td>'.$start_date.'</td>';
+		echo '	</tr>';
+		echo '	<tr>';
+		echo '		<td><b>'.get_vocab("duration").'</b></td>';
+		echo '		<td>'.$duration." ".$dur_units.'</td>';
+		echo '	</tr>';
+		echo '	<tr>';
+		echo '		<td><b>'.get_vocab("end_date").'</b></td>';
+		echo '		<td>'.$end_date.'</td>';
+		echo '	</tr>';
+		echo '<tr>',PHP_EOL,'<td><b>',get_vocab("type"),get_vocab("deux_points"),'</b></td>',PHP_EOL;
+			$type_name = grr_sql_query1("SELECT type_name from ".TABLE_PREFIX."_type_area where type_letter=?","s",[$type]);
+			if ($type_name == -1)
+				$type_name = "?$type?";
+		echo '<td>',$type_name,'</td>',PHP_EOL,'</tr>',PHP_EOL;
+		if (($beneficiaire != $create_by)||($beneficiaire_ext != ''))
+		{
+			echo '<tr>';
+			echo '	<td><b>'.get_vocab("reservation_au_nom_de"),get_vocab("deux_points").'</b></td>';
+			echo '	<td>'.affiche_nom_prenom_email($beneficiaire, $beneficiaire_ext, $option_affiche_nom_prenom_email).'</td>';
+			echo '</tr>';
+		}
+		echo '	<tr>';
+		echo '		<td><b>'.get_vocab("created_by"),get_vocab("deux_points").'</b></td>';
+		echo '		<td>'.affiche_nom_prenom_email($create_by, "", $option_affiche_nom_prenom_email);
+		echo '		</td>';
+		echo '	</tr>';
+		echo '	<tr>';
+		echo '		<td><b>'.get_vocab("lastupdate"),get_vocab("deux_points").'</b></td>';
+		echo '		<td>'.$updated.'</td>';
+		echo '	</tr>';
+        $overload_data = mrbsEntryGetOverloadDesc($id_resa);
 		foreach ($overload_data as $fieldname=>$fielddata)
 		{
 			if ($fielddata["confidentiel"] == 'n')
@@ -190,46 +226,9 @@ if (isset($_GET['id'])) // appel initial
 				echo "<td>".bbcode(htmlspecialchars($fielddata["valeur"]), '')."</td></tr>\n";
 			}
 		}
-		echo '	<tr>';
-		echo '		<td><b>'.get_vocab("room"),get_vocab("deux_points").'</b></td>';
-		echo '		<td>'.nl2br($area_name . " - " . $room_name).'</td>';
-		echo '  </tr>';
-		echo '	<tr>';
-		echo '		<td><b>'.get_vocab("start_date"),get_vocab("deux_points").'</b></td>';
-		echo '		<td>'.$start_date.'</td>';
-		echo '	</tr>';
-		echo '	<tr>';
-		echo '		<td><b>'.get_vocab("duration").'</b></td>';
-		echo '		<td>'.$duration." ".$dur_units.'</td>';
-		echo '	</tr>';
-		echo '	<tr>';
-		echo '		<td><b>'.get_vocab("end_date").'</b></td>';
-		echo '		<td>'.$end_date.'</td>';
-		echo '	</tr>';
-		echo '<tr>',PHP_EOL,'<td><b>',get_vocab("type"),get_vocab("deux_points"),'</b></td>',PHP_EOL;
-			$type_name = grr_sql_query1("SELECT type_name from ".TABLE_PREFIX."_type_area where type_letter='".$type."'");
-			if ($type_name == -1)
-				$type_name = "?$type?";
-		echo '<td>',$type_name,'</td>',PHP_EOL,'</tr>',PHP_EOL;
-		if (($beneficiaire != $create_by)||($beneficiaire_ext != ''))
-		{
-			echo '<tr>';
-			echo '	<td><b>'.get_vocab("reservation_au_nom_de"),get_vocab("deux_points").'</b></td>';
-			echo '	<td>'.affiche_nom_prenom_email($beneficiaire, $beneficiaire_ext, $option_affiche_nom_prenom_email).'</td>';
-			echo '</tr>';
-		}
-		echo '	<tr>';
-		echo '		<td><b>'.get_vocab("created_by"),get_vocab("deux_points").'</b></td>';
-		echo '		<td>'.affiche_nom_prenom_email($create_by, "", $option_affiche_nom_prenom_email);
-		echo '		</td>';
-		echo '	</tr>';
-		echo '	<tr>';
-		echo '		<td><b>'.get_vocab("lastupdate"),get_vocab("deux_points").'</b></td>';
-		echo '		<td>'.$updated.'</td>';
-		echo '	</tr>';
         if ($active_ressource_empruntee == 'y')
 			{
-				$id_resa_en_cours = grr_sql_query1("SELECT id from ".TABLE_PREFIX."_entry where room_id = '".$room_id."' and statut_entry='y'");
+				$id_resa_en_cours = grr_sql_query1("SELECT id from ".TABLE_PREFIX."_entry where room_id =? and statut_entry='y'","i",[$room_id]);
 				if ($id_resa ==$id_resa_en_cours)
                     echo '<tr><td><span class="avertissement">(',get_vocab("reservation_en_cours"),') <img src="img_grr/buzy_big.png" align=middle alt="',get_vocab("ressource actuellement empruntee"),'" title="',get_vocab("ressource actuellement empruntee"),'" border="0" width="30" height="30" class="print_image" /></span></td></tr>',PHP_EOL;
 			}
@@ -261,17 +260,19 @@ if (isset($_GET['id'])) // appel initial
 		}
 		elseif ($moderate == 2) // résa acceptée
 		{
-			$sql = "SELECT motivation_moderation, login_moderateur FROM ".TABLE_PREFIX."_entry_moderate WHERE id=".$id_resa;
-			$res = grr_sql_query($sql);
+			$sql = "SELECT motivation_moderation, login_moderateur FROM ".TABLE_PREFIX."_entry_moderate WHERE id=? ";
+			$res = grr_sql_query($sql,"i",[$id_resa]);
 			if (!$res)
 				fatal_error(0, grr_sql_error());
 			$row2 = grr_sql_row($res, 0);
+            grr_sql_free($res);
 			$description = $row2[0];
-			$sql ="SELECT nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$row2[1]."'";
-			$res = grr_sql_query($sql);
+			$sql ="SELECT nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE login =? ";
+			$res = grr_sql_query($sql,"s",[$row2[1]]);
 			if (!$res)
 				fatal_error(0, grr_sql_error());
 			$row3 = grr_sql_row($res, 0);
+            grr_sql_free($res);
 			$nom_modo = $row3[1]. ' '. $row3[0];
 			if (authGetUserLevel($user, -1) > 1)
 			{
@@ -283,17 +284,19 @@ if (isset($_GET['id'])) // appel initial
 		}
 		elseif ($moderate == 3) // résa refusée
 		{
-			$sql = "SELECT motivation_moderation, login_moderateur from ".TABLE_PREFIX."_entry_moderate where id=".$id_resa;
-			$res = grr_sql_query($sql);
+			$sql = "SELECT motivation_moderation, login_moderateur from ".TABLE_PREFIX."_entry_moderate where id=? ";
+			$res = grr_sql_query($sql,"i",[$id_resa]);
 			if (!$res)
 				fatal_error(0, grr_sql_error());
 			$row4 = grr_sql_row($res, 0);
+            grr_sql_free($res);
 			$description = $row4[0];
-			$sql ="SELECT nom, prenom from ".TABLE_PREFIX."_utilisateurs where login = '".$row4[1]."'";
-			$res = grr_sql_query($sql);
+			$sql ="SELECT nom, prenom from ".TABLE_PREFIX."_utilisateurs where login =?";
+			$res = grr_sql_query($sql,"s",[$row4[1]]);
 			if (!$res)
 				fatal_error(0, grr_sql_error());
 			$row5 = grr_sql_row($res, 0);
+            grr_sql_free($res);
 			$nom_modo = $row5[1]. ' '. $row5[0];
 			if (authGetUserLevel($user, -1) > 1)
 			{
@@ -309,7 +312,7 @@ if (isset($_GET['id'])) // appel initial
 		
 		if ($repeat_id != 0) // cas d'une série
 		{
-			$res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks, start_time, end_time FROM ".TABLE_PREFIX."_repeat WHERE id=$repeat_id");
+			$res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks, start_time, end_time FROM ".TABLE_PREFIX."_repeat WHERE id=? ","i",[$repeat_id]);
 			if (!$res)
 				fatal_error(0, grr_sql_error());
 			if (grr_sql_count($res) == 1)
@@ -395,9 +398,11 @@ if (isset($_GET['id'])) // appel initial
             $area_id = 1;
         if (!isset($room))
             $room = 1;
-        if (Settings::get("pdf") == '1'){
-            if ((authGetUserLevel($user, $area_id, "area") > 1) || (authGetUserLevel($user, $room) >= 4))
-                echo '<br><input class="btn btn-primary" onclick="popUpPdf(',$id_resa,')" value="',get_vocab("Generer_pdf"),'" />',PHP_EOL;
+        if(($moderate != 1)&&($moderate != 3)){
+            if (Settings::get("pdf") == '1'){
+                if ((authGetUserLevel($user, $area_id, "area") > 1) || (authGetUserLevel($user, $room) >= 4))
+                    echo '<br><input class="btn btn-primary" onclick="popUpPdf(',$id_resa,')" value="',get_vocab("Generer_pdf"),'" />',PHP_EOL;
+            }
         }
 		// formulaire
 		echo "<form action=\"validation.php\" method=\"post\">";
@@ -501,14 +506,14 @@ elseif (isset($_POST['commit'])&& isset($_POST['action_moderate']))// deuxième 
 	moderate_entry_do($id_resa,$_POST["moderate"], $_POST["description"]);
 	if (isset($_POST['clef']))
 		{
-			$upd = "UPDATE ".TABLE_PREFIX."_entry SET clef='1' WHERE id = '".$id_resa."'";
-			if (grr_sql_command($upd) < 0)
+			$upd = "UPDATE ".TABLE_PREFIX."_entry SET clef='1' WHERE id =?";
+            if (grr_sql_command($upd,"i",[$id_resa]) < 0)
 				fatal_error(0, grr_sql_error());
 		}
 	if (isset($_POST['courrier']))
 		{
-			$upd = "UPDATE ".TABLE_PREFIX."_entry SET courrier='1' WHERE id = '".$id_resa."'";
-			if (grr_sql_command($upd) < 0)
+			$upd = "UPDATE ".TABLE_PREFIX."_entry SET courrier='1' WHERE id =?";
+			if (grr_sql_command($upd,"i",[$id_resa]) < 0)
 				fatal_error(0, grr_sql_error());
 		}
 	header("Location: ".page_accueil());
@@ -519,5 +524,4 @@ else // on ne devrait jamais être ici
 	header("Location: ".page_accueil());
 	die();	
 }
-
 ?>

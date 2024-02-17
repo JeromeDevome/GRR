@@ -2,7 +2,7 @@
 /**
  * mysql.inc.php
  * Bibliothèque de fonctions pour le support mysql
- * Dernière modification : $Date: 2024-02-12 16:56$
+ * Dernière modification : $Date: 2024-02-17 16:00$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -65,11 +65,13 @@ function grr_sql_command($sql, $types=NULL, $params=NULL)
     try{
         if(($types == NULL)&&($params == NULL)){
             $res = $GLOBALS['db_c']->query($sql);
+            $nb = $GLOBALS['db_c']->affected_rows;
         }
         elseif(($types != NULL)&&($params != NULL)){
             $stmt = $GLOBALS['db_c']->prepare($sql);
             $stmt->bind_param($types, ...$params);
             $stmt->execute();
+            $nb = $stmt->affected_rows;
             $stmt->close();
         }
         else 
@@ -78,7 +80,7 @@ function grr_sql_command($sql, $types=NULL, $params=NULL)
         error_log($e -> getMessage());
         return -1;
     }
-    return mysqli_affected_rows($GLOBALS['db_c']);
+    return $nb;
 }
 
 /* Execute an SQL query which should return a single non-negative number value.

@@ -3,7 +3,7 @@
  * swap_entry.php
  * Interface d'échange d'une réservation avec une autre, à choisir
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-16 17:48$
+ * Dernière modification : $Date: 2024-02-17 16:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -84,9 +84,9 @@ if (isset($_GET['id_alt'])){ // les paramètres sont connus
                 $data2 = grr_sql_row($res2,0);
                 $sql3 = " UPDATE ".TABLE_PREFIX."_entry SET room_id =? WHERE id =? "; 
                 $res3 = grr_sql_command($sql3,"ii",[$data1[5],$data2[0]]);
-                if ($res3){
+                if ($res3 != -1){
                     $res4 = grr_sql_command($sql3,"ii",[$data2[5],$data1[0]]);
-                    if ($res4){
+                    if ($res4 != -1){
                         $etape = 3; // échange réussi, envoyer un mail si programmé
                         if (Settings::get("automatic_mail") == 'yes'){
                             $_SESSION['session_message_error'] = send_mail($data1[0],2,$dformat,array(),$data1[5]);
@@ -96,7 +96,7 @@ if (isset($_GET['id_alt'])){ // les paramètres sont connus
                 }
             }
         }
-        if (!$res1 || !$res2 || !$res3 || !$res4){
+        if (!$res1 || !$res2 || ($res3 == -1) || ($res4 == -1)){
             // fatal_error(0,grr_sql_error());
             $_SESSION['session_message_error'] = grr_sql_error();
         }
