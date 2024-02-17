@@ -90,11 +90,10 @@ if ($valid == "yes")
 		//
 		// actions si un nouvel utilisateur a été défini
 		//
-
-		$new_login = trim($new_login);
 		
 		if ((isset($new_login)) && ($new_login != '') )
 		{
+			$new_login = trim($new_login);
 			$test_login = preg_replace("/([A-Za-z0-9_@.-])/","",$new_login);
 			if($test_login == ""){
 				// un gestionnaire d'utilisateurs ne peut pas créer un administrateur général ou un gestionnaire d'utilisateurs
