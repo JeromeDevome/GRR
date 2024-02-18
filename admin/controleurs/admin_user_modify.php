@@ -18,6 +18,8 @@
 
 $grr_script_name = "admin_user_modify.php";
 
+$trad = $vocab;
+
 if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
 {
 	showAccessDenied($back);
