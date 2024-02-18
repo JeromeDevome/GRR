@@ -13,6 +13,17 @@ Version 4.3.0 - En cours de développement
 [Modification] Passage déconnexion sous twig - 5ad51f89 - @JeromeDevome
 [Modification] Passage vue réservation ressource sous twig - 4cbcb487 - @JeromeDevome
 
+-----
+--
+-----
+Version 4.2.5 - 18/02/2024 Généré par @JeromeDevome
+[Correction] Traduction manquante - ba1cf440 - @ynaessens
+[Correction] Liste des visiteurs dans les réservations - 4f877997 - @JeromeDevome
+[Correction] Mise à jour au changement de domanine dans l'éditition de réservation - 0174d14b - @JeromeDevome
+[Correction] Supression d'utilisateur : Liaison groupe - bf2156df - @JeromeDevome
+[Correction] Message d'avertissement si login utilise des caractères invalide - ddf37779 -@JeromeDevome
+[Correction] Connexion IMAP - 20423113 & 92316373 - @JeromeDevome
+[Correction] Supression message d'erreur non critique à la ma mise à jour - d581f6df - @ynaessens
 
 -----
 --
