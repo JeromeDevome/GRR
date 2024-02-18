@@ -1,6 +1,16 @@
 -----
 --
 -----
+Version 4.3.1 - 18/02/2024 Généré par @JeromeDevome
+La version 4.3.1 : Comprend les correction de la version 4.2.5 et :
+[Correction] Lien de la fiche ressource depuis l'administration - bc11a787 - @JeromeDevome
+[Correction] Modification du compte - f350fb2d - @JeromeDevome
+[Correction] Affichage de la brêve description - 1c59567c - @JeromeDevome
+[Correction] Traduction ressource empruntée - 7189cdc2 - @JeromeDevome
+
+-----
+--
+-----
 Version 4.3.0 - 04/02/2024 Généré par @JeromeDevome
 [Ajout] Réservation restreinte - d065d1fa - @ynaessens & @JeromeDevome
 [Ajout] Infos à afficher dans les plannings par rôle d'utilisateur - 202be69e - @JeromeDevome
