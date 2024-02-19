@@ -230,7 +230,7 @@ if (isset($_GET['id'])) // appel initial
 			{
 				$id_resa_en_cours = grr_sql_query1("SELECT id from ".TABLE_PREFIX."_entry where room_id =? and statut_entry='y'","i",[$room_id]);
 				if ($id_resa ==$id_resa_en_cours)
-                    echo '<tr><td><span class="avertissement">(',get_vocab("reservation_en_cours"),') <img src="img_grr/buzy_big.png" align=middle alt="',get_vocab("ressource actuellement empruntee"),'" title="',get_vocab("ressource actuellement empruntee"),'" border="0" width="30" height="30" class="print_image" /></span></td></tr>',PHP_EOL;
+                    echo '<tr><td><span class="avertissement">(',get_vocab("reservation_en_cours"),') <img src="img_grr/buzy_big.png" align=middle alt="',get_vocab("ressource_actuellement_empruntee"),'" title="',get_vocab("ressource_actuellement_empruntee"),'" border="0" width="30" height="30" class="print_image" /></span></td></tr>',PHP_EOL;
 			}
 		if ($keys == 1)
 		{
@@ -401,7 +401,7 @@ if (isset($_GET['id'])) // appel initial
         if(($moderate != 1)&&($moderate != 3)){
             if (Settings::get("pdf") == '1'){
                 if ((authGetUserLevel($user, $area_id, "area") > 1) || (authGetUserLevel($user, $room) >= 4))
-                    echo '<br><input class="btn btn-primary" onclick="popUpPdf(',$id_resa,')" value="',get_vocab("Generer_pdf"),'" />',PHP_EOL;
+                    echo '<br><input class="btn btn-primary" id="pdfgo" onclick="popUpPdf(',$id_resa,')" value="',get_vocab("Generer_pdf"),'" />',PHP_EOL;
             }
         }
 		// formulaire

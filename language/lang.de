@@ -793,7 +793,7 @@ $vocab['reservee au nom de'] = "Reservierung im Namen von ";
 $vocab['Reserver'] = "Buchen";
 $vocab['reset'] = "Basiswerte";
 $vocab['resolution_area'] = "Kleinstmöglicher zu reservierender Zeitraum, in Sekunden (1800 Sekunden = 1/2 Stunde)";
-$vocab['ressource actuellement empruntee'] = "La ressource est actuellement empruntée."; // A traduire
+$vocab["ressource_actuellement_empruntee"] = "La ressource est actuellement empruntée."; // A traduire
 $vocab['ressource_empruntee_non_restituee'] = "Sauf erreur, la ressource suivante que vous avez empruntée n'a pas été restituée. S'il s'agit d'une erreur, veuillez ne pas tenir compte de ce courrier."; // A traduire
 $vocab['ressource_temporairement_indisponible'] = "Zur Zeit nicht verfügbar";
 $vocab['Restauration_de_la_base_GRR'] = "Wiederherstellen der GRR-Datenbank";

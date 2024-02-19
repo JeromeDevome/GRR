@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-02 16:58$
+ * Dernière modification : $Date: 2024-02-19 10:53$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author 	  Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
@@ -662,7 +662,7 @@ if (isset($id)) // édition d'une réservation existante
 			$rep_end_month = date('m', $row['end_date']);
 			$rep_end_year  = date('Y', $row['end_date']);
 			$type = $row['type'];
-			$name = $row['date'];
+			$name = $row['name'];
 			$beneficiaire = $row['beneficiaire'];
 			$description = $row['description'];
 			if ($rep_type==2)
@@ -1116,7 +1116,8 @@ if($periodiciteConfig == 'y')
 					'<input type="button" class="btn btn-primary" value="',get_vocab("click_here_for_series_close"),'" onclick="clicMenu(1);check_5();" />',PHP_EOL,
 			'</div>',PHP_EOL;
 		echo '<div id="menu1" style="display:none;">',PHP_EOL; // choix de la périodicité
-        echo '<p class="F"><b>',get_vocab("rep_type"),'</b></p>',PHP_EOL;
+        echo '<fieldset>';
+        echo '<legend>',get_vocab("rep_type"),'</legend>',PHP_EOL;
         for ($i = 0; $i < 8 ; $i++)
 		{
             if ($i == 6 && Settings::get("jours_cycles_actif") == "Non")
@@ -1212,9 +1213,11 @@ if($periodiciteConfig == 'y')
 		echo "<div class=\"F\"><b>".get_vocab("rep_end_date")."</b>".PHP_EOL;
 		jQuery_DatePicker('rep_end_');
         echo '</div>'.PHP_EOL;
+        echo '</fieldset>';
         if (Settings::get("show_holidays") == 'Oui'){ // on n'affiche ce choix que si les jours fériés et les vacances sont définis
-            echo '<div class="F">'.PHP_EOL;
-            echo '<p><br /><b>'.get_vocab('select_specific_days').'</b></p>';
+            echo '<br />';
+            echo '<fieldset>'.PHP_EOL;
+            echo '<legend>'.get_vocab('select_specific_days').'</legend>';
             // sélection jours de vacances
             // filtrer si les vacances sont activées
             echo '<div>'.PHP_EOL;
@@ -1248,7 +1251,7 @@ if($periodiciteConfig == 'y')
                 echo " checked ";
             echo '/>'.get_vocab("skip_holidays")."</label><br />".PHP_EOL;
             echo '</div>'.PHP_EOL;
-            echo '</div>'.PHP_EOL; // fin bloc jours particuliers
+            echo '</fieldset>'.PHP_EOL; // fin bloc jours particuliers
         }
 		echo "</div>\n"; // fin menu1
 	}

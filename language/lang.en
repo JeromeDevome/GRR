@@ -804,7 +804,7 @@ $vocab['reservee au nom de'] = "Reservation in the name of";
 $vocab['Reserver'] = "Book";
 $vocab['reset'] = "Values by default";
 $vocab['resolution_area'] = "Smaller reservable block, in seconds (1800 seconds = 1/2 an hour)";
-$vocab['ressource actuellement empruntee'] = " The resource is currently borrowed.";
+$vocab["ressource_actuellement_empruntee"] = " The resource is currently borrowed.";
 $vocab['ressource_empruntee_non_restituee'] = " Errors excepted, the following resource you borrowed was not restored. If it is an error, please not take this mail into account.";
 $vocab['ressource_temporairement_indisponible'] = "Temporarily unavailable";
 $vocab['Restauration_de_la_base_GRR'] = "Restauration of GRR base ";

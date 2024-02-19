@@ -792,7 +792,7 @@ $vocab['reservee au nom de'] = "Réservation au nom de "; // A traduire
 $vocab['Reserver'] = "Prenotare";
 $vocab['reset'] = "Valori per difetto";
 $vocab['resolution_area'] = "Più piccolo blocco prenotabile, in secondi (1800 secondi = 1/2 ora)";
-$vocab['ressource actuellement empruntee'] = "La ressource est actuellement empruntée."; // A traduire
+$vocab["ressource_actuellement_empruntee"] = "La ressource est actuellement empruntée."; // A traduire
 $vocab['ressource_empruntee_non_restituee'] = "Sauf erreur, la ressource suivante que vous avez empruntée n'a pas été restituée. S'il s'agit d'une erreur, veuillez ne pas tenir compte de ce courrier."; // A traduire
 $vocab['ressource_temporairement_indisponible'] = "Temporaneamente inalienabile";
 $vocab['Restauration_de_la_base_GRR'] = "Restauration de la base GRR"; // A traduire

@@ -393,7 +393,7 @@ function contenu_cellule($options, $ofl, $vue, $resa, $heures)
 		$affichage .= get_vocab("entryid").$resa['id']."<br>";
 	// Emprunte
 	if($resa['statut_entry'] != "-")
-		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource actuellement empruntee")."\" title=\"".get_vocab("ressource actuellement empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
+		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource_actuellement_empruntee")."\" title=\"".get_vocab("ressource_actuellement_empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
 	// Option réservation
 	if($resa['delais_option_reservation'] > 0)
 		$affichage .=  " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le").time_date_string_jma($resa['option_reservation'],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> ";
@@ -532,14 +532,14 @@ function affiche_ressource_empruntee($id_room, $type = "logo")
 		if ($id_resa != -1)
 		{
 			if ($type == "logo")
-				echo '<a href="view_entry.php?id='.$id_resa.'"><img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("reservation_en_cours").'" width="30" height="30" class="image" /></a>'.PHP_EOL;
+				echo '<a href="view_entry.php?id='.$id_resa.'"><img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource_actuellement_empruntee").'" title="'.get_vocab("reservation_en_cours").'" width="30" height="30" class="image" /></a>'.PHP_EOL;
 			else if ($type == "texte")
 			{
 				$beneficiaire = grr_sql_query1("SELECT beneficiaire FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
 				$beneficiaire_ext = grr_sql_query1("SELECT beneficiaire_ext FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
 				echo '<br /><b><span class="avertissement">'.PHP_EOL;
-				echo '<img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("ressource actuellement empruntee").'" width="30" height="30" class="image" />'.PHP_EOL;
-				echo get_vocab("ressource actuellement empruntee").' '.get_vocab("nom_emprunteur").get_vocab("deux_points").affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"withmail");
+				echo '<img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource_actuellement_empruntee").'" title="'.get_vocab("ressource_actuellement_empruntee").'" width="30" height="30" class="image" />'.PHP_EOL;
+				echo get_vocab("ressource_actuellement_empruntee").' '.get_vocab("nom_emprunteur").get_vocab("deux_points").affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"withmail");
 				echo '<a href="view_entry.php?id='.$id_resa.'&amp;mode=page">'.get_vocab("entryid").$id_resa.'</a>'.PHP_EOL.'</span></b>'.PHP_EOL;
 			}
 			else
@@ -557,14 +557,14 @@ function html_ressource_empruntee($id_room, $type = "logo")
 		if ($id_resa != -1)
 		{
 			if ($type == "logo")
-				$html = '<a href="view_entry.php?id='.$id_resa.'"><img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("reservation_en_cours").'" width="30" height="30" class="image" /></a>'.PHP_EOL;
+				$html = '<a href="view_entry.php?id='.$id_resa.'"><img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource_actuellement_empruntee").'" title="'.get_vocab("reservation_en_cours").'" width="30" height="30" class="image" /></a>'.PHP_EOL;
 			else if ($type == "texte")
 			{
 				$beneficiaire = grr_sql_query1("SELECT beneficiaire FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
 				$beneficiaire_ext = grr_sql_query1("SELECT beneficiaire_ext FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
 				$html = '<br /><b><span class="avertissement">'.PHP_EOL;
-				$html .= '<img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource actuellement empruntee").'" title="'.get_vocab("ressource actuellement empruntee").'" width="30" height="30" class="image" />'.PHP_EOL;
-				$html .= get_vocab("ressource actuellement empruntee").' '.get_vocab("nom_emprunteur").get_vocab("deux_points").affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"withmail");
+				$html .= '<img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource_actuellement_empruntee").'" title="'.get_vocab("ressource_actuellement_empruntee").'" width="30" height="30" class="image" />'.PHP_EOL;
+				$html .= get_vocab("ressource_actuellement_empruntee").' '.get_vocab("nom_emprunteur").get_vocab("deux_points").affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"withmail");
 				$html .= '<a href="view_entry.php?id='.$id_resa.'&amp;mode=page">'.get_vocab("entryid").$id_resa.'</a>'.PHP_EOL.'</span></b>'.PHP_EOL;
 			}
 			else
