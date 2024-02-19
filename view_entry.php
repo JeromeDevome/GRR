@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-19 11:06$
+ * Dernière modification : $Date: 2024-02-19 18:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
@@ -138,9 +138,9 @@ if (strstr($back, 'view_entry.php'))
     else
         $back = $page.".php";
 }
-
+// traitement d'une modération
 if (isset($_GET["action_moderate"])){
-	moderate_entry_do($id,$_GET["moderate"], $_GET["description"]);
+	moderate_entry_do($id,clean_input($_GET["moderate"]), clean_input($_GET["description"]));
 	header("Location: ".$back);
     die();
 }
@@ -445,7 +445,8 @@ if ($repeat_id != 0)
     else fatal_error(0,"erreur de lecture en base de données");
     grr_sql_free($res);
 }
-if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')) // haut de page si mode page
+// calcul de la page
+if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')||($mode == 'valide')) // haut de page si affichage en mode page
 {
     // pour le traitement des modules
     include_once "./include/hook.class.php";
@@ -656,7 +657,8 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
 
 $can_book = verif_booking_date($user_id, $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room($user_id, $room_id, $row[10], $enable_periods) && getWritable($user_id, $id);
 $can_copy = verif_acces_ressource($user_id, $room_id);
-if (($can_book || $can_copy) && (!$was_del))
+$affiche_liens = ((isset($_GET['mode']))&&($_GET['mode'] != 'valide'))||(!isset($_GET['mode']));
+if (($can_book || $can_copy) && (!$was_del) && $affiche_liens)
 {
     echo "<div>";
         $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
@@ -687,7 +689,7 @@ if ($repeat_id != 0)
         $start_date = time_date_string($rep_start_time, $dformat);
 		toTimeString($rep_duration, $dur_units);
 	}
-    $weeklist = array("unused", "every week", "week 1/2", "week 1/3", "week 1/4", "week 1/5");
+    $weeklist = array("unused", "every week", 'week_1_of_2', 'week_1_of_3', 'week_1_of_4', 'week_1_of_5');
     if ($rep_type == 2)
         $affiche_period = get_vocab($weeklist[$rep_num_weeks]);
     else
@@ -840,7 +842,7 @@ if ($fin_session == 'n'){
     echo "<br /><div style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"commit\" value=\"".get_vocab("save")."\" /></div>\n";
     echo '</form>',PHP_EOL;
 } // fin du formulaire
-if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')) // si mode page, on ferme le container
+if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')||($mode == 'valide')) // si mode page, on ferme le container
 {
     if ($back != "")
         echo '<a class="btn btn-default" type="button" href="'.$back.'">'.get_vocab("returnprev").'</a></div>'.PHP_EOL;
