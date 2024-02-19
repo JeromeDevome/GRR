@@ -2861,7 +2861,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		toPeriodString($start_period, $duration, $dur_units);
 	else
 		toTimeString($duration, $dur_units);
-	$weeklist = array("unused", "every week", "week 1/2", "week 1/3", "week 1/4", "week 1/5");
+	$weeklist = array("unused", "every week", 'week_1_of_2', 'week_1_of_3', 'week_1_of_4', 'week_1_of_5');
 	if ($rep_type == 2)
 		$affiche_period = $vocab[$weeklist[$rep_num_weeks]];
 	else

@@ -60,7 +60,7 @@ if ($area_access == 'r')
 	echo " (<span class=\"avertissement\">".get_vocab("access")."</span>)";
 echo "</h3>";
 // On affiche pour les administrateurs les utilisateurs ayant des privilèges sur cette ressource
-echo "\n<h2>".get_vocab('utilisateurs ayant privileges sur domaine')."</h2>";
+echo "\n<h2>".get_vocab('utilisateurs_ayant_privileges_sur_domaine')."</h2>";
 $a_privileges = 'n';
 	// on teste si des utilateurs administrent le domaine
 $req_admin = "SELECT u.login, u.nom, u.prenom, u.etat FROM ".TABLE_PREFIX."_utilisateurs u left join ".TABLE_PREFIX."_j_useradmin_area j on u.login=j.login WHERE j.id_area = '".$area_id."' ORDER BY u.nom, u.prenom";
@@ -79,7 +79,7 @@ if ($res_admin)
 if ($is_admin != '')
 {
 	$a_privileges = 'y';
-	echo "\n<h3><b>".get_vocab("utilisateurs administrateurs domaine")."</b></h3>";
+	echo "\n<h3><b>".get_vocab('utilisateurs_administrateurs_domaine')."</b></h3>";
 	echo $is_admin;
 }
 // Si le domaine est restreint, on teste si des utilateurs y ont accès
@@ -101,7 +101,7 @@ if ($area_access == 'r')
 	if ($is_restreint != '')
 	{
 		$a_privileges = 'y';
-		echo "\n<h3>".get_vocab("utilisateurs acces restreint domaine")."</h3>\n";
+		echo "\n<h3>".get_vocab('utilisateurs_acces_restreint_domaine')."</h3>\n";
 		echo "<p>".$is_restreint."</p>";
 	}
 }

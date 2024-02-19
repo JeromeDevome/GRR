@@ -311,7 +311,7 @@ function delete_site($id)
 {
     if (!(isset($_GET['confirm'])))
     {
-        echo '<h2>'.get_vocab('supprimer site').'</h2>';
+        echo '<h2>'.get_vocab('supprimer_site').'</h2>';
         echo '<h2 style="text-align:center;">' .  get_vocab('sure') . '</h2>';
         echo '<h2 style="text-align:center;"><a href="admin_site.php?action=delete&amp;id='.$id.'&amp;confirm=yes">' . get_vocab('YES') . '!</a>     <a href="admin_site.php?action=delete&amp;id='.$id.'&amp;confirm=no">' . get_vocab('NO') . '!</a></h2>';
     }

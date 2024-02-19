@@ -1103,7 +1103,7 @@ echo "</div>",PHP_EOL;
 
 echo '<!-- ************* Periodic edition ***************** -->',PHP_EOL;
 echo "<div class='col-sm-6 col-xs-12 form-inline'>";
-$weeklist = array("unused","every week","week 1/2","week 1/3","week 1/4","week 1/5");
+$weeklist = array("unused","every week",'week_1_of_2','week_1_of_3','week_1_of_4','week_1_of_5');
 $monthlist = array("firstofmonth","secondofmonth","thirdofmonth","fouthofmonth","fiveofmonth","lastofmonth");
 if($periodiciteConfig == 'y')
 {

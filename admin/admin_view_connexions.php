@@ -41,9 +41,9 @@ if ($res)
     for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
     {
         if ((Settings::get("sso_statut") != "") ||  (Settings::get("ldap_statut") != '') ||  (Settings::get("imap_statut") != ''))
-            echo ("<li>" . $row[1]. " | <a href=\"mailto:" . $row[2] . "\">".get_vocab("sen_a_mail")."</a> |</li>") ;
+            echo ("<li>" . $row[1]. " | <a href=\"mailto:" . $row[2] . "\">".get_vocab('send_a_mail')."</a> |</li>") ;
         else
-            echo ("<li>" . $row[1]. " | <a href=\"mailto:" . $row[2] . "\">".get_vocab("sen_a_mail")."</a> | <a href=\"admin_change_pwd.php?user_login=" . $row[0] . "\">".get_vocab("deconnect_changing_pwd")."</a></li>");
+            echo ("<li>" . $row[1]. " | <a href=\"mailto:" . $row[2] . "\">".get_vocab('send_a_mail')."</a> | <a href=\"admin_change_pwd.php?user_login=" . $row[0] . "\">".get_vocab("deconnect_changing_pwd")."</a></li>");
     }
 }
 echo '	</ul>';
