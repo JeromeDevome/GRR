@@ -112,7 +112,7 @@ if ($a_privileges == 'y')
     }
 }
 elseif ($a_privileges == 'n')
-	echo "<p>".get_vocab("aucun autilisateur").".</p>";
+	echo "<p>".get_vocab('aucun_utilisateur').".</p>";
 
 end_page();
 ?>
