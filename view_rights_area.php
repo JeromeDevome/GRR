@@ -3,9 +3,9 @@
  * view_rights_area.php
  * Liste des privilèges d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-03-20 11:10$
+ * Dernière modification : $Date: 2024-02-22 12:02$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -19,10 +19,10 @@ $grr_script_name = "view_rights_area.php";
 
 include "include/connect.inc.php";
 include "include/config.inc.php";
-include "include/functions.inc.php";
-include "include/$dbsys.inc.php";
 include_once('include/misc.inc.php');
+include "include/$dbsys.inc.php";
 include "include/mrbs_sql.inc.php";
+include "include/functions.inc.php";
 
 // Settings
 require_once("./include/settings.class.php");
@@ -35,78 +35,84 @@ require_once("./include/session.inc.php");
 include "include/resume_session.php";
 // Paramètres langage
 include "include/language.inc.php";
+
 if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
 	$type_session = "no_session";
 else
 	$type_session = "with_session";
-$area_id = isset($_GET["area_id"]) ? $_GET["area_id"] : NULL;
-if (isset($area_id))
-	settype($area_id,"integer");
+$area_id = isset($_GET["area_id"]) ? intval($_GET["area_id"]) : NULL;
 if (authGetUserLevel(getUserName(),$area_id,"area") < 4)
 {
 	showAccessDenied($back);
 	exit();
 }
-echo start_page_wo_header(Settings::get("company").get_vocab("deux_points").get_vocab("mrbs"));
+// les propriétés du domaine
 $res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_area WHERE id='".$area_id."'");
 if (!$res)
-	fatal_error(0, get_vocab('error_room') . $id_room . get_vocab('not_found'));
-$row = grr_sql_row_keyed($res, 0);
+	fatal_error(0, get_vocab('error_room') . $area_id . get_vocab('not_found'));
+$Area = grr_sql_row_keyed($res, 0);
 grr_sql_free($res);
-echo '<h3 style="text-align:center;">';
-echo get_vocab("match_area").get_vocab("deux_points")." ".clean_input($row["area_name"]);
-$area_access = $row["access"];
-if ($area_access == 'r')
-	echo " (<span class=\"avertissement\">".get_vocab("access")."</span>)";
-echo "</h3>";
-// On affiche pour les administrateurs les utilisateurs ayant des privilèges sur cette ressource
-echo "\n<h2>".get_vocab('utilisateurs_ayant_privileges_sur_domaine')."</h2>";
+
+// utilisateurs ayant des privilèges sur cette ressource
 $a_privileges = 'n';
 	// on teste si des utilateurs administrent le domaine
-$req_admin = "SELECT u.login, u.nom, u.prenom, u.etat FROM ".TABLE_PREFIX."_utilisateurs u left join ".TABLE_PREFIX."_j_useradmin_area j on u.login=j.login WHERE j.id_area = '".$area_id."' ORDER BY u.nom, u.prenom";
-$res_admin = grr_sql_query($req_admin);
+$req_admin = "SELECT u.login, u.nom, u.prenom, u.etat FROM ".TABLE_PREFIX."_utilisateurs u left join ".TABLE_PREFIX."_j_useradmin_area j on u.login=j.login WHERE j.id_area =? ORDER BY u.nom, u.prenom";
+$res_admin = grr_sql_query($req_admin,"i",[$area_id]);
 $is_admin = '';
 if ($res_admin)
 {
-	for ($j = 0; ($row_admin = grr_sql_row($res_admin, $j)); $j++)
+	foreach($res_admin as $row)
 	{
-		$is_admin .= $row_admin[1]." ".$row_admin[2]." (".$row_admin[0].")";
-		if ($row_admin[3] == 'inactif')
+		$is_admin .= $row["nom"]." ".$row["prenom"]." (".$row["login"].")";
+		if ($row["etat"] == 'inactif')
 			$is_admin .= "<b> -> ".get_vocab("no_activ_user")."</b>";
 		$is_admin .= "<br />";
 	}
 }
+grr_sql_free($res_admin);
 if ($is_admin != '')
-{
 	$a_privileges = 'y';
-	echo "\n<h3><b>".get_vocab('utilisateurs_administrateurs_domaine')."</b></h3>";
-	echo $is_admin;
-}
 // Si le domaine est restreint, on teste si des utilateurs y ont accès
-if ($area_access == 'r')
+if ($Area["access"] == 'r')
 {
-	$req_restreint = "SELECT u.login, u.nom, u.prenom, u.etat  FROM ".TABLE_PREFIX."_utilisateurs u left join ".TABLE_PREFIX."_j_user_area j on u.login=j.login WHERE j.id_area = '".$area_id."' ORDER BY u.nom, u.prenom";
-	$res_restreint = grr_sql_query($req_restreint);
+	$req_restreint = "SELECT u.login, u.nom, u.prenom, u.etat  FROM ".TABLE_PREFIX."_utilisateurs u JOIN ".TABLE_PREFIX."_j_user_area j ON u.login=j.login WHERE j.id_area =? ORDER BY u.nom, u.prenom";
+	$res_restreint = grr_sql_query($req_restreint,"i",[$area_id]);
 	$is_restreint = '';
 	if ($res_restreint)
 	{
-		for ($j = 0; ($row_restreint = grr_sql_row($res_restreint, $j)); $j++)
+		foreach($res_restreint as $row)
 		{
-			$is_restreint .= $row_restreint[1]." ".$row_restreint[2]." (".$row_restreint[0].")";
-			if ($row_restreint[3] == 'inactif')
+			$is_restreint .= $row["nom"]." ".$row["prenom"]." (".$row["login"].")";
+			if ($row["etat"] == 'inactif')
 				$is_restreint .= "<b> -> ".get_vocab("no_activ_user")."</b>";
 			$is_restreint .= "<br />";
 		}
 	}
+    grr_sql_free($res_restreint);
 	if ($is_restreint != '')
-	{
 		$a_privileges = 'y';
-		echo "\n<h3>".get_vocab('utilisateurs_acces_restreint_domaine')."</h3>\n";
-		echo "<p>".$is_restreint."</p>";
-	}
 }
-if ($a_privileges == 'n')
+// code html
+echo start_page_wo_header(Settings::get("company").get_vocab("deux_points").get_vocab("mrbs"));
+echo '<h3 style="text-align:center;">';
+echo get_vocab("match_area").get_vocab("deux_points")." ".clean_input($Area["area_name"]);
+if ($Area["access"] == 'r')
+	echo " (<span class=\"avertissement\">".get_vocab("access")."</span>)";
+echo "</h3>";
+echo "\n<h2>".get_vocab('utilisateurs_ayant_privileges_sur_domaine')."</h2>";
+if ($a_privileges == 'y')
+{
+    if($is_admin != ''){
+        echo "\n<h3><b>".get_vocab('utilisateurs_administrateurs_domaine')."</b></h3>";
+        echo $is_admin;
+    }
+    if($is_restreint != ''){
+        echo "\n<h3>".get_vocab('utilisateurs_acces_restreint_domaine')."</h3>\n";
+        echo "<p>".$is_restreint."</p>";
+    }
+}
+elseif ($a_privileges == 'n')
 	echo "<p>".get_vocab("aucun autilisateur").".</p>";
-//include "include/trailer.inc.php";
+
 end_page();
 ?>
