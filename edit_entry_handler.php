@@ -525,7 +525,7 @@ try {
                 throw new Exception('erreur');
             }
             if (!(verif_date_option_reservation($option_reservation, $start_time))){
-                $err_type = 'date_confirm_reservation';
+                $err_type = 'error_date_confirm_reservation';
                 throw new Exception('erreur');
             }
             if (!(verif_qui_peut_reserver_pour($room_id, $user, $beneficiaire))){
