@@ -91,6 +91,8 @@ function create_site($id_site)
 
 		get_vocab_admin('save');
 		get_vocab_admin('back');
+
+		echo $twig->render('admin_site_modif.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 	}
 	else
 	{
@@ -123,7 +125,6 @@ function create_site($id_site)
 		read_sites();
 	}
 
-	echo $twig->render('admin_site_modif.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 }
 
 
@@ -217,6 +218,8 @@ function update_site($id)
 		$site['tel'] = $row['tel'];
 		$site['fax'] = $row['fax'];
 
+		echo $twig->render('admin_site_modif.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'site' => $site));
+
 	}
 	else // Sinon, il faut valider le formulaire
 	{
@@ -272,29 +275,20 @@ function update_site($id)
 		read_sites();
 	}
 
-	echo $twig->render('admin_site_modif.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'site' => $site));
 }
 
 
 function delete_site($id)
 {
-	if (isset($_GET['confirm']))
-	{
-		if ($_GET['confirm'] == 'yes')
-		{
-			grr_sql_command("delete from ".TABLE_PREFIX."_site where id='".$_GET['id']."'");
-			grr_sql_command("delete from ".TABLE_PREFIX."_j_site_area where id_site='".$_GET['id']."'");
-			grr_sql_command("delete from ".TABLE_PREFIX."_j_useradmin_site where id_site='".$_GET['id']."'");
-			grr_sql_command("update ".TABLE_PREFIX."_utilisateurs set default_site = '-1' where default_site='".$_GET['id']."'");
-			$test = grr_sql_query1("select VALUE from ".TABLE_PREFIX."_setting where NAME='default_site'");
-			if ($test == $_GET['id'])
-				grr_sql_command("delete from ".TABLE_PREFIX."_setting where NAME='default_site'");
-			// On affiche le tableau des sites
-			read_sites();
-		}
-		else // On affiche le tableau des sites
-			read_sites();
-	}
+		grr_sql_command("delete from ".TABLE_PREFIX."_site where id='".$id."'");
+		grr_sql_command("delete from ".TABLE_PREFIX."_j_site_area where id_site='".$id."'");
+		grr_sql_command("delete from ".TABLE_PREFIX."_j_useradmin_site where id_site='".$id."'");
+		grr_sql_command("update ".TABLE_PREFIX."_utilisateurs set default_site = '-1' where default_site='".$id."'");
+		$test = grr_sql_query1("select VALUE from ".TABLE_PREFIX."_setting where NAME='default_site'");
+		if ($test == $id)
+			grr_sql_command("delete from ".TABLE_PREFIX."_setting where NAME='default_site'");
+		// On affiche le tableau des sites
+		read_sites();
 }
 
 
@@ -303,8 +297,11 @@ function check_right($id)
 	echo 'Vous voulez vérifier les droits pour l\'identifiant '.$id;
 }
 
-
 	$grr_script_name = 'admin_site.php';
+
+	get_vocab_admin('YES');
+	get_vocab_admin('NO');
+	get_vocab_admin('confirm_del');
 
 	if (authGetUserLevel(getUserName(), -1, 'site') < 4)
 	{

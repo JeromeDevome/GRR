@@ -23,12 +23,12 @@
 						<input type="hidden" name="valid" value="yes" />
 						<input type="hidden" name="id" value="{{ trad.dIdSite }}" />
 						
-						{{ form.input('sitecode', trad.site_code, site.code, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
+						{{ form.input('sitecode', trad.site_code, site.code, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1, maxlength:10}) }}
 						{{ form.input('sitename', trad.site_name, site.nom, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
 						{{ form.input('adresse_ligne1', trad.site_adresse_ligne1, site.adresse_ligne1, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
 						{{ form.input('adresse_ligne2', trad.site_adresse_ligne2, site.adresse_ligne2, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
 						{{ form.input('adresse_ligne3', trad.site_adresse_ligne3, site.adresse_ligne3, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
-						{{ form.input('cp', trad.site_cp, site.cp, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+						{{ form.input('cp', trad.site_cp, site.cp, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', maxlength:5}) }}
 						{{ form.input('ville', trad.site_ville, site.ville, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
 						{{ form.input('pays', trad.site_pays, site.pays, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
 						{{ form.input('tel', trad.site_tel, site.tel, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
