@@ -5023,7 +5023,7 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource_actuellement_empruntee")."\" title=\"".get_vocab("ressource_actuellement_empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
 
 	// Option réservation
-	if($resa[10] > 0)
+	if($resa[9] > 0 && $resa[10] > 0)
 		$affichage .=  " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le").time_date_string_jma($resa[9],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> ";
 
 	// Modération
@@ -5210,7 +5210,7 @@ function lien_compact($resa)
 	if($resa[7] != "-")
 		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource_actuellement_empruntee")."\" title=\"".get_vocab("ressource_actuellement_empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
 	// Option réservation
-	if($resa[10] > 0)
+	if($resa[9] > 0 && $resa[10] > 0)
 		$affichage .=  " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le").time_date_string_jma($resa[9],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> ";
 	// Modération
 	if($resa[11] == 1)
