@@ -4566,7 +4566,7 @@ function verify_confirm_reservation()
 		{
 			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 			{
-				$res2 = grr_sql_query("select id from ".TABLE_PREFIX."_entry where option_reservation < '".$date_now."' and option_reservation != '-1' and room_id='".$row[0]."'");
+				$res2 = grr_sql_query("select id from ".TABLE_PREFIX."_entry where option_reservation < '".$date_now."' and option_reservation != '-1' and room_id='".$row[0]."' and supprimer != 1");
 				if (!$res2)
 				{
 					//fatal_error(0, grr_sql_error());
