@@ -1,11 +1,11 @@
 <?php
 /**
  * year.php
- * Interface d'accueil avec affichage par mois sur plusieurs mois des réservation de toutes les ressources d'un domaine
+ * Interface d'accueil avec affichage par mois sur plusieurs mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-04-08 18:14$
+ * Dernière modification : $Date: 2024-02-23 17:39$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -19,10 +19,10 @@ $grr_script_name = "year.php";
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
-include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
-include "include/mincals.inc.php";
 include "include/mrbs_sql.inc.php";
+include "include/functions.inc.php";
+include "include/mincals.inc.php";
 require_once("./include/settings.class.php");
 $settings = new Settings();
 if (!$settings)
@@ -31,27 +31,27 @@ require_once("./include/session.inc.php");
 include "include/resume_session.php";
 include "include/language.inc.php";
 
-// Construction des identifiants du domaine $area, du site $site
-global $area, $site;
+// Construction des identifiants du domaine $area, du site $id_site
+global $area, $id_site;
 
 if (isset($_GET['room'])){
     $area = mrbsGetRoomArea(intval($_GET['room']));
-    $site = mrbsGetAreaSite($area);
+    $id_site = mrbsGetAreaSite($area);
 }
 elseif (isset($_GET['area']))
 {
     $area = intval($_GET['area']);
-    $site = mrbsGetAreaSite($area);
+    $id_site = mrbsGetAreaSite($area);
 }
-elseif (isset($_GET["site"]))
+elseif (isset($_GET["id_site"]))
 {
-    $site = intval($_GET["site"]);
-    $area = get_default_area($site);
+    $id_site = intval($_GET["id_site"]);
+    $area = get_default_area($id_site);
 }
 else
 {
-    $site = get_default_site();
-    $area = get_default_area($site);
+    $id_site = get_default_site();
+    $area = get_default_area($id_site);
 }
 
 // On affiche le lien "format imprimable" en bas de la page
@@ -183,16 +183,16 @@ if ($enable_periods == 'y')
 $all_day = preg_replace("/ /", " ", get_vocab("all_day"));
 // un type à exclure ?
 $type_exclu = Settings::get('exclude_type_in_views_all'); // nom du type exclu
-$sql = "SELECT type_letter FROM ".TABLE_PREFIX."_type_area WHERE ".TABLE_PREFIX."_type_area.type_name = '".$type_exclu."' ";
-$res = grr_sql_query1($sql);
+$sql = "SELECT type_letter FROM ".TABLE_PREFIX."_type_area WHERE ".TABLE_PREFIX."_type_area.type_name =? ";
+$res = grr_sql_query1($sql,"s",[$type_exclu]);
 $typeExclu = ($res != -1)? $res :NULL; // lettre identifiant le type exclu
 grr_sql_free($res);
 //Get all meetings for these months in the area that we care about
 $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
 FROM ((".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id)
 JOIN ".TABLE_PREFIX."_area ON ".TABLE_PREFIX."_area.id = ".TABLE_PREFIX."_room.area_id) 
-WHERE ".TABLE_PREFIX."_area.id = $area 
-AND start_time <= $month_end AND end_time > $month_start 
+WHERE ".TABLE_PREFIX."_area.id =? 
+AND start_time <=? AND end_time >? 
 ORDER BY ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time";
 /* contenu de la réponse si succès :
     $row[0] : start_time
@@ -220,7 +220,7 @@ ORDER BY ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time";
 //The information is stored as:
 // d[monthday]["id"][] = ID of each entry, for linking.
 // d[monthday]["data"][] = "start-stop" times of each entry.
-$res = grr_sql_query($sql);
+$res = grr_sql_query($sql,"iii",[ $area, $month_end, $month_start]);
 if (!$res)
 	echo grr_sql_error();
 else
@@ -337,6 +337,30 @@ else
 }
 grr_sql_free($res);
 
+$this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=? ","i",[$area]);
+// jours cycle
+$jours_cycle = array(); // si un cycle est défini, tableau associatif temps unix => no du jour cycle
+$jours_cycle_start = array();
+$res = grr_sql_query("SELECT DAY,Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY >= ? AND DAY < ? ","ii",[$month_start,$month_end]);
+if($res){
+    foreach($res as $row){
+        $jours_cycle[$row['DAY']]=$row['Jours'];
+        $jours_cycle_start[]=$row['DAY'];
+    }
+}
+else
+    echo grr_sql_error();
+grr_sql_free($res);
+// ressources du domaine
+$sql = "SELECT room_name, capacity, id, description, comment_room, show_comment FROM ".TABLE_PREFIX."_room WHERE area_id=? ORDER BY order_display,room_name";
+$ressources = grr_sql_query($sql,"i",[$area]);
+if(!$ressources)
+    {
+        echo grr_sql_error();
+        die();
+    }
+$domaine_vide = (grr_sql_count($ressources) == 0);
+
 // pour le traitement des modules
 include $racine."/include/hook.class.php";
 // code html
@@ -361,14 +385,13 @@ echo "</header>";
 echo '<div id="chargement"></div>'.PHP_EOL; // à éliminer ?
 // Debut de la page
 echo "<section>";
-$this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=$area");
 // Si format imprimable ($_GET['pview'] = 1), on n'affiche pas cette partie 
 if ($_GET['pview'] != 1)
 {
     echo "<div class='row'>";
         echo "\n<div class=\"col-lg-3 col-md-4 col-xs-12\">\n".PHP_EOL; // choix du site et du domaine
-            	echo make_site_select_html('year.php',$site,$from_year,$from_month,$day,$user_name);
-                echo make_area_select_all_html('year',$site, $area, $from_year, $from_month, $day, $user_name);
+            	echo make_site_select_html('year.php',$id_site,$from_year,$from_month,$day,$user_name);
+                echo make_area_select_all_html('year',$id_site, $area, $from_year, $from_month, $day, $user_name);
         echo "</div>";
         echo "\n<div class=\"col-lg-4 col-md-6 col-xs-12\">\n".PHP_EOL; // choix des dates 
             echo "<form method=\"get\" action=\"year.php\">";
@@ -382,7 +405,7 @@ if ($_GET['pview'] != 1)
             echo "</td></tr>\n";
             echo "<tr><td class=\"CR\">\n";
             echo "<br><p>";
-            echo "<input type=\"hidden\" name=\"site\" value=\"$site\" />\n";
+            echo "<input type=\"hidden\" name=\"site\" value=\"$id_site\" />\n";
             echo "<input type=\"hidden\" name=\"area\" value=\"$area\" />\n";
             echo "<input type=\"submit\" name=\"valider\" value=\"".$vocab["goto"]."\" /></p></td></tr>\n";
             echo "</table>\n";
@@ -425,7 +448,7 @@ while ($month_indice < $month_end)
 		$cyear = date("Y", $t2);
 		$name_day = ucfirst(utf8_strftime("%a<br />%d", $t2)); // On inscrit le quantième du jour dans la deuxième ligne
 		$temp = mktime(0,0,0,$cmonth,$cday,$cyear);
-		$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$temp'");
+//		$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$temp'");
         $t2 = mktime(0,0,0,$month_num,$cday+1,$year_num);
 		if ($display_day[$cweek] == 1)
 		{
@@ -433,38 +456,29 @@ while ($month_indice < $month_end)
             else if (isSchoolHoliday($temp)) {echo tdcell("cell_hours vacance");}
             else {echo tdcell("cell_hours");}
 			echo "<div><a title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\"   href=\"day.php?year=$year_num&amp;month=$month_num&amp;day=$cday&amp;area=$area\">$name_day</a>";
-			if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle)>-1)
-			{
-				if (intval($jour_cycle) > 0)
-					echo "<br /><b><i>".ucfirst(substr(get_vocab("rep_type_6"),0,1)).$jour_cycle."</i></b>";
-				else
-				{
-					if (strlen($jour_cycle)>5)
-						$jour_cycle = substr($jour_cycle,0,3)."..";
-					echo "<br /><b><i>".$jour_cycle."</i></b>";
-				}
-			}
+            if(isset($jours_cycle[$temp]))
+                echo "<br />".preg_replace( "/ /", "<br />", get_vocab("rep_type_6"))." ".$jours_cycle[$temp];
 			echo "</div></td>\n";
 		}
 	}
 	echo "</tr></thead>";
 	// Fin affichage de la première ligne
-	$sql = "SELECT room_name, capacity, id, description, comment_room, show_comment FROM ".TABLE_PREFIX."_room WHERE area_id=$area ORDER BY order_display,room_name";
-	$res = grr_sql_query($sql);
+	//$sql = "SELECT room_name, capacity, id, description, comment_room, show_comment FROM ".TABLE_PREFIX."_room WHERE area_id=$area ORDER BY order_display,room_name";
+	//$res = grr_sql_query($sql);
 	$li = 0;
-    $domaine_vide = (grr_sql_count($res) == 0);
+    //$domaine_vide = (grr_sql_count($res) == 0);
     if ($domaine_vide)
         echo "<tbody><tr><td><strong>".get_vocab("no_rooms_for_area")."</strong></td></tr></tbody>";
     else {
-        for ($ir = 0; ($row = grr_sql_row_keyed($res, $ir)); $ir++)
+        foreach($ressources as $row)
         {
             // calcul de l'accès à la ressource en fonction du niveau de l'utilisateur
-            $verif_acces_ressource = verif_acces_ressource($user_name, $row[2]);
+            $verif_acces_ressource = verif_acces_ressource($user_name, $row['id']);
             if ($verif_acces_ressource) // on n'affiche que les ressources accessibles
             {
                     // Calcul du niveau d'accès aux fiches de réservation détaillées des ressources
-                $acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $row[2]);
-                echo "<tr><th>".htmlspecialchars($row[0]);
+                $acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $row['id']);
+                echo "<tr><th>".htmlspecialchars($row['room_name']);
                 if (verif_display_fiche_ressource($user_name, $row['id']) && $_GET['pview'] != 1)
                 {
                     echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$row['id'].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'">'.PHP_EOL;
@@ -503,7 +517,7 @@ while ($month_indice < $month_end)
                                 }
                                 for ($i = 0; $i < $n; $i++)
                                 {
-                                    if ($d[$cday][$cmonth][$cyear]["room"][$i] == $row[0]) // test peu fiable car c'est l'id qui est unique YN le 26/02/2018
+                                    if ($d[$cday][$cmonth][$cyear]["room"][$i] == $row['room_name']) // test peu fiable car c'est l'id qui est unique YN le 26/02/2018
                                     {
                                         echo "\n<table class='pleine table-bordered' ><tr>\n";
                                         tdcell($d[$cday][$cmonth][$cyear]["color"][$i]);

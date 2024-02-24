@@ -3,9 +3,9 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-05-26 09:29$
+ * Dernière modification : $Date: 2024-03-23 15:31$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -99,8 +99,8 @@ $racineAd = "./admin/";
 
 $debug_flag = FALSE;
 // les données de la ressource
-$sql = "SELECT * FROM ".TABLE_PREFIX."_room WHERE id=$room";
-$res = grr_sql_query($sql);
+$sql = "SELECT * FROM ".TABLE_PREFIX."_room WHERE id=? ";
+$res = grr_sql_query($sql,"i",[$room]);
 if ($res){
     $this_room = grr_sql_row_keyed($res,0);
 }
@@ -108,8 +108,8 @@ else
     echo grr_sql_error();
 grr_sql_free($res);
 // les données du domaine
-$sql = "SELECT * FROM ".TABLE_PREFIX."_area WHERE id=$area";
-$res = grr_sql_query($sql);
+$sql = "SELECT * FROM ".TABLE_PREFIX."_area WHERE id=? ";
+$res = grr_sql_query($sql,"i",[$area]);
 if ($res){
     $this_area = grr_sql_row_keyed($res,0);
 }
@@ -151,8 +151,8 @@ for ($i = 0; $i < 7; $i++)
 }
 $enable_periods = $this_area['enable_periods'];
 if($enable_periods == 'y'){// récupérer les noms des créneaux
-    $sql = "SELECT * FROM ".TABLE_PREFIX."_area_periodes WHERE id_area=$area ";
-    $res = grr_sql_query($sql);
+    $sql = "SELECT * FROM ".TABLE_PREFIX."_area_periodes WHERE id_area=? ";
+    $res = grr_sql_query($sql,"i",[$area]);
     $periods_name = array();
     if($res){
         foreach($res as $row){
@@ -176,11 +176,11 @@ $this_room_show_comment = (isset($this_room['show_comment']))? $this_room['show_
 $who_can_book = (isset($this_room['who_can_book']))? $this_room['who_can_book']:1;
 
 //Pour vérifier si la plage de fin arrive sur un créneau ou non.
-$minutesFinCreneaux = array();
+/* $minutesFinCreneaux = array();
 for($h=0; $h<3600; $h+=$this_area_resolution) {
 	$minutesFinCreneaux[] = date('i', $h);
 }
-
+*/
 if ($this_room_name_des != "")
 	$this_room_name_des = " (".$this_room_name_des.")";
 
@@ -218,8 +218,8 @@ $options_popup = decode_options(Settings::get('popup_week'),$opt);
 // calcul des cellules du planning
 $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
 FROM (".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id) 
-WHERE ".TABLE_PREFIX."_entry.room_id = ".$room."
-AND start_time <= $week_end AND end_time > $week_start
+WHERE ".TABLE_PREFIX."_entry.room_id = ?
+AND start_time <= ? AND end_time > ?
 ORDER BY start_time";
 /* contenu de la réponse si succès :
     $row[0] : start_time
@@ -250,14 +250,14 @@ if ($enable_periods == 'y')
 }
 else
 {
-    $first_slot = $morningstarts * 3600 / $this_area_resolution; 
-    $last_slot = ($eveningends * 3600 + $eveningends_minutes * 60) / $this_area_resolution -1; 
+    $first_slot = 0;//$morningstarts * 3600 / $this_area_resolution; 
+    $last_slot = intval(ceil(($eveningends * 3600 + $eveningends_minutes * 60 - $morningstarts * 3600) / $this_area_resolution)) -1; 
 }
 if ($debug_flag){
     echo "<br />DEBUG: query=$sql <br />$eveningends + $eveningends_minutes / $this_area_resolution <br/>first_slot=$first_slot - last_slot=$last_slot\n";
     print_r($this_area);
 }
-$res = grr_sql_query($sql);
+$res = grr_sql_query($sql,"iii",[$room,$week_end,$week_start]);
 if (!$res)
 	echo grr_sql_error();
 else
@@ -285,8 +285,8 @@ else
         // on sépare les plages définies par horaires et celles définies par créneaux
         if ($enable_periods != 'y') // cas des plages définies par horaires
         {
-            $day_midnight = mktime(0,0,0,$month_current,$day_current,$year_current);
-            $slot = ($t - $day_midnight) % 86400 / $this_area_resolution; // premier slot à afficher
+            $day_start = mktime($morningstarts,0,0,$month_current,$day_current,$year_current);
+            $slot = ($t - $day_start) % 86400 / $this_area_resolution; // premier slot à afficher
        		$heigthSlotHoure = 60/($this_area_resolution/60);
        		do
             {
@@ -322,7 +322,7 @@ else
                     {
                         $d[$weekday][$slot]["horaireDebut"] = $t;
                         $d[$weekday][$slot]["horaireFin"] = $end_t;
-                        $d[$weekday][$slot]["duree"] = ($end_t- $t)/ $this_area_resolution;
+                        $d[$weekday][$slot]["duree"] = intval(ceil(($end_t- $t)/ $this_area_resolution));
                     }
                     // affichage pour debug
                     if ($debug_flag)
@@ -332,9 +332,9 @@ else
                     echo "C2C<br>";
                     }
                     //Si la plage de fin dépasse le créneau, augmenter la durée
-                    if(!in_array(date('i', $d[$weekday][$slot]["horaireFin"]), $minutesFinCreneaux)) {
+                    /*if(!in_array(date('i', $d[$weekday][$slot]["horaireFin"]), $minutesFinCreneaux)) {
                         $d[$weekday][$slot]["duree"] += 1;
-                    }
+                    }*/
                     if ($prev_weekday != $weekday)
                     {
                         $prev_weekday = $weekday;
@@ -476,6 +476,20 @@ if ($authGetUserLevel < 3){// les restrictions ne s'appliquent qu'aux utilisateu
         $max_booking_time = $date_now + $this_room['delais_max_resa_room'] * 86400 + 1; // pb à prévoir les jours de changement d'heure
     }
 }
+// jours cycle
+$jours_cycle = array(); // si un cycle est défini, tableau associatif temps unix => no du jour cycle
+$jours_cycle_start = array();
+$res = grr_sql_query("SELECT DAY,Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY >= ? AND DAY < ? ","ii",[$week_start,$week_end]);
+if($res){
+    foreach($res as $row){
+        $jours_cycle[$row['DAY']]=$row['Jours'];
+        $jours_cycle_start[]=$row['DAY'];
+    }
+}
+else
+    echo grr_sql_error();
+grr_sql_free($res);
+
 // pour le traitement des modules
 include "./include/hook.class.php";
 
@@ -498,7 +512,6 @@ echo "<body>";
 echo "<header>";
 pageHeader2($day, $month, $year, $type_session);
 echo "</header>";
-echo '<div id="chargement"></div>'.PHP_EOL; // à éliminer ?
 // Debut de la page
 echo "<section>".PHP_EOL;
 // Affichage du menu en haut ou à gauche
@@ -620,7 +633,6 @@ for ($t = $week_start; $t < $week_end; $t += 86400)
 	$month_actuel = date("n", $t);
 	$year_actuel  = date("Y",$t);
 	$tt = mktime(0, 0, 0, $month_actuel, $num_day,$year_actuel);
-	$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$i'");
 	if ($display_day[$num_week_day] == 1)
 	{
 		$class = "jour_sem";
@@ -636,13 +648,8 @@ for ($t = $week_start; $t < $week_end; $t += 86400)
         }
         echo "<th class = \"".$class."\" style=\"width:13%;\">";
         echo "<a title=\"".$title.htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"day.php?year=$year_actuel&amp;month=$month_actuel&amp;day=$num_day&amp;area=$area\">". utf8_strftime($dformat, $t)."</a>";
-		if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
-		{
-			if (intval($jour_cycle) > 0)
-				echo "<br />".get_vocab("rep_type_6")." ".$jour_cycle;
-			else
-				echo "<br />".$jour_cycle;
-		}
+		if(isset($jours_cycle[$tt]))
+			echo "<br />".get_vocab("rep_type_6")." ".$jours_cycle[$tt];
 		echo "</th>\n";
     }
     if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))

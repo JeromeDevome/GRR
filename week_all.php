@@ -3,9 +3,9 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-04-08 17:58$
+ * Dernière modification : $Date: 2024-02-23 16:58$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -113,8 +113,8 @@ if (Settings::get("verif_reservation_auto") == 0)
 }
 
 // Selection des ressources
-$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book, comment_room, show_comment FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display, room_name";
-$ressources = grr_sql_query($sql);
+$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book, comment_room, show_comment FROM ".TABLE_PREFIX."_room WHERE area_id=? ORDER BY order_display, room_name";
+$ressources = grr_sql_query($sql,"i",[$area]);
 
 if (!$ressources)
 	fatal_error(0, grr_sql_error());
@@ -143,7 +143,7 @@ $year_week  = date("Y", $time);
 $date_start = mktime($morningstarts, 0, 0, $month_week, $day_week, $year_week);
 $days_in_month = date("t", $date_start);
 $date_end = mktime($eveningends, $eveningends_minutes, 0, $month_week, $day_week + 6, $year_week);
-$this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=$area");
+$this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=? ","i",[$area]);
 switch ($dateformat)
 {
 	case "en":
@@ -164,16 +164,16 @@ $td = date("d", $i);
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
 // un type à exclure ?
 $type_exclu = Settings::get('exclude_type_in_views_all'); // nom du type exclu
-$sql = "SELECT type_letter FROM ".TABLE_PREFIX."_type_area WHERE ".TABLE_PREFIX."_type_area.type_name = '".$type_exclu."' ";
-$res = grr_sql_query1($sql);
+$sql = "SELECT type_letter FROM ".TABLE_PREFIX."_type_area WHERE ".TABLE_PREFIX."_type_area.type_name =? ";
+$res = grr_sql_query1($sql,"s",[$type_exclu]);
 $typeExclu = ($res != -1)? $res :NULL; // lettre identifiant le type exclu
 grr_sql_free($res);
 // les réservations du domaine sur la semaine 
 $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
 FROM ((".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id)
 JOIN ".TABLE_PREFIX."_area ON ".TABLE_PREFIX."_area.id = ".TABLE_PREFIX."_room.area_id) 
-WHERE ".TABLE_PREFIX."_area.id = $area 
-AND start_time <= $date_end AND end_time > $date_start 
+WHERE ".TABLE_PREFIX."_area.id =? 
+AND start_time <=? AND end_time >? 
 ORDER BY start_time";
 //echo $sql;
 /* contenu de la réponse si succès :
@@ -198,7 +198,7 @@ ORDER BY start_time";
     $row[18]: create_by
     $row[19]: nbparticipantmax
 */
-$res2 = grr_sql_query($sql);
+$res2 = grr_sql_query($sql,"iii",[$area, $date_end, $date_start]);
 if (!$res2)
 	echo grr_sql_error();
 else
@@ -308,6 +308,18 @@ else
 	}
     grr_sql_free($res2);
 }
+// jours cycle
+$jours_cycle = array(); // si un cycle est défini, tableau associatif temps unix => no du jour cycle
+$jours_cycle_start = array();
+$res = grr_sql_query("SELECT DAY,Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY >= ? AND DAY < ? ","ii",[$date_start,$date_end]);
+if($res){
+    foreach($res as $row){
+        $jours_cycle[$row['DAY']]=$row['Jours'];
+        $jours_cycle_start[]=$row['DAY'];
+    }
+}
+else
+    echo grr_sql_error();
 // pour le traitement des modules
 include "./include/hook.class.php";
 
@@ -398,7 +410,6 @@ for ($weekcol = 0; $weekcol < 7; $weekcol++)
 	$temp_month2 = utf8_strftime("%b", $t);
 	$temp_year = date("Y", $t);
 	$tt = mktime(0, 0, 0, $temp_month, $num_day, $temp_year);
-	$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE day='$t'");
 	$t += 86400;
 	if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
 	{
@@ -424,13 +435,8 @@ for ($weekcol = 0; $weekcol < 7; $weekcol++)
         if ($class != '') echo $class;
         echo '">'.PHP_EOL;
         echo '<a href="day.php?year='.$temp_year.'&amp;month='.$temp_month.'&amp;day='.$num_day.'&amp;area='.$area.'" title="'.$title.'">'  . day_name(($weekcol + $weekstarts) % 7) . ' '.$num_day.' '.$temp_month2.'</a>'.PHP_EOL;
-		if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
-		{
-			if (intval($jour_cycle) > 0)
-				echo "<br />".get_vocab("rep_type_6")." ".$jour_cycle;
-			else
-				echo "<br />".$jour_cycle;
-		}
+        if(isset($jours_cycle[$tt]))
+            echo "<br />".get_vocab("rep_type_6")." ".$jours_cycle[$tt];
 		echo '</th>'.PHP_EOL;
 	}
 	$num_week_day++;

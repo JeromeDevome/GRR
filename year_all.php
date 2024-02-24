@@ -3,9 +3,9 @@
  * year_all.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservations de toutes les ressources d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-10-17 18:14 $
+ * Dernière modification : $Date: 2024-02-24 10:47 $
  * @author    Yan Naessens, Laurent Delineau 
- * @copyright Copyright 2003-2023 Yan Naessens, Laurent Delineau
+ * @copyright Copyright 2003-2024 Yan Naessens, Laurent Delineau
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -28,10 +28,10 @@ $grr_script_name = "year_all.php";
 include "include/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
-include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
-include "include/mincals.inc.php";
 include "include/mrbs_sql.inc.php";
+include "include/functions.inc.php";
+include "include/mincals.inc.php";
 
 // Settings
 require_once("./include/settings.class.php");
@@ -50,8 +50,7 @@ global $area, $site;
 // echo "paramètres ".$_GET['site']." ".$_GET['area'];
 if (isset($_GET['area']))
 	{
-        $area = clean_input($_GET['area']);
-        settype($area, "integer");
+        $area = intval($_GET['area']);
         $site = mrbsGetAreaSite($area);
     }
     else
@@ -59,8 +58,7 @@ if (isset($_GET['area']))
         $area = NULL;
         if (isset($_GET["site"]))
         {
-            $site = clean_input($_GET["site"]);
-            settype($site, "integer");
+            $site = intval($_GET["site"]);
             $area = get_default_area($site);
         }
         else
@@ -79,6 +77,7 @@ if ($_GET['pview'] == 1)
 	$class_image = "print_image";
 else
 	$class_image = "image";
+
 $from_month = isset($_GET["from_month"]) ? intval($_GET["from_month"]) : (isset($_GET['month'])? intval($_GET['month']) : NULL);
 $from_year = isset($_GET["from_year"]) ? intval($_GET["from_year"]) : (isset($_GET['year'])? intval($_GET['year']) : NULL);
 $to_month = isset($_GET["to_month"]) ? intval($_GET["to_month"]) : (isset($_GET['month'])? intval($_GET['month']) : NULL);
@@ -127,8 +126,8 @@ else
 	$to_year  = date('Y',$date_);
 }
 
-$user_name = getUserName();
-if ((Settings::get("authentification_obli") == 0) && ($user_name == ''))
+$user_id = getUserName();
+if ((Settings::get("authentification_obli") == 0) && ($user_id == ''))
 	$type_session = "no_session";
 else
 	$type_session = "with_session";
@@ -140,7 +139,7 @@ if (check_begin_end_bookings($day, $from_month, $from_year))
 	showNoBookings($day, $from_month, $from_year, $back);
 	exit();
 }
-if (((authGetUserLevel($user_name,-1) < 1) && (Settings::get("authentification_obli") == 1)) || authUserAccesArea($user_name, $area) == 0)
+if (((authGetUserLevel($user_id,-1) < 1) && (Settings::get("authentification_obli") == 1)) || authUserAccesArea($user_id, $area) == 0)
 {
     start_page_w_header($day, $from_month, $from_year, $type_session);
 	showAccessDenied($back);
@@ -172,7 +171,7 @@ VerifNomPrenomUser($type_session);
 //doesn't make sense to not show all entries for the day, and it messes
 //things up when entries cross midnight.
 $month_start = mktime(0, 0, 0, $from_month, 1, $from_year);
-$month_end = mktime(23, 59, 59, $to_month, 1, $to_year);
+$month_end = mktime(23,59,59,$to_month,1,$to_year);
 $days_in_to_month = date("t", $month_end);
 $month_end = mktime(23,59,59,$to_month,$days_in_to_month,$to_year);
 // options pour l'affichage
@@ -181,45 +180,47 @@ $options = decode_options(Settings::get('cell_year_all'),$opt);
 $options_popup = decode_options(Settings::get('popup_year_all'),$opt);
 // un type à exclure ?
 $type_exclu = Settings::get('exclude_type_in_views_all'); // nom du type exclu
-$sql = "SELECT type_letter FROM ".TABLE_PREFIX."_type_area WHERE ".TABLE_PREFIX."_type_area.type_name = '".$type_exclu."' ";
-$res = grr_sql_query1($sql);
+$sql = "SELECT type_letter FROM ".TABLE_PREFIX."_type_area WHERE ".TABLE_PREFIX."_type_area.type_name =? ";
+$res = grr_sql_query1($sql,"s",[$type_exclu]);
 $typeExclu = ($res != -1)? $res :NULL; // lettre identifiant le type exclu
 grr_sql_free($res);
 // construit la liste des ressources et domaines
 if ($site == -1) 
 {   // cas 1 : le multisite n'est pas activé $site devrait être à -1
-    $sql  = "SELECT DISTINCT r.id,r.room_name,a.id FROM ".TABLE_PREFIX."_room r JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id ORDER BY a.order_display,r.order_display";
+    $sql  = "SELECT DISTINCT r.id as room_id,r.room_name,a.id as area_id FROM ".TABLE_PREFIX."_room r JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id ORDER BY a.order_display,r.order_display";
+    $res_dom = grr_sql_query($sql);
 }
 else
 {
     if ($site == 0){$site = get_default_site();} // si le site n'est pas défini, on le met à la valeur par défaut
-    $sql  = "SELECT DISTINCT r.id,r.room_name,a.id FROM ".TABLE_PREFIX."_room r JOIN (SELECT * FROM ".TABLE_PREFIX."_area d JOIN ".TABLE_PREFIX."_j_site_area j ON j.id_area = d.id WHERE j.id_site = ".$site.") a ON r.area_id = a.id ORDER BY a.order_display,r.order_display";
-}    
-$res_dom = grr_sql_query($sql);
+    $sql  = "SELECT DISTINCT r.id as room_id,r.room_name,a.id as area_id FROM ".TABLE_PREFIX."_room r JOIN (SELECT * FROM ".TABLE_PREFIX."_area d JOIN ".TABLE_PREFIX."_j_site_area j ON j.id_area = d.id WHERE j.id_site =? ) a ON r.area_id = a.id ORDER BY a.order_display,r.order_display";
+    $res_dom = grr_sql_query($sql,"i",[$site]);
+}
+
 if (!$res_dom)
 	echo grr_sql_error(); // sortie en cas d'erreur de lecture dans la base MySQL
 else
 {   // on stocke les résultats dans un tableau
     $data = array();
-    for ($i = 0; ($row = grr_sql_row($res_dom, $i)); $i++)
+    foreach($res_dom as $row)
     {
-        $data[$i] = $row;
+        $data[] = $row;
     }
     grr_sql_free($res_dom);
     $rooms = array(); // contiendra les ressources accessibles
     $areas = array(); // contiendra les domaines accessibles
 	foreach ($data as $row)
     {
-        $rooms[$row[0]] = FALSE;
-        $areas[$row[2]] = FALSE;
+        $rooms[$row['room_id']] = FALSE;
+        $areas[$row['area_id']] = FALSE;
     }
     foreach ($data as $row)
     {
-        $verif_acces_ressource = verif_acces_ressource($user_name, $row[0]);
+        $verif_acces_ressource = authUserAccesArea($user_id,$row['area_id'])&& verif_acces_ressource($user_id, $row['room_id']);
         if ($verif_acces_ressource)
         {
-            $rooms[$row[0]] = TRUE;
-            $areas[$row[2]] = TRUE;
+            $rooms[$row['room_id']] = TRUE;
+            $areas[$row['area_id']] = TRUE;
         }
     }
     $v_areas = array(); // contient la suite des identifiants des domaines accessibles, ordonnés selon order_display
@@ -239,9 +240,20 @@ else
     }
     // nom du site
     if ($site > 0){
-        $nom_site = grr_sql_query1("SELECT sitename FROM ".TABLE_PREFIX."_site WHERE id=".$site);
+        $nom_site = grr_sql_query1("SELECT sitename FROM ".TABLE_PREFIX."_site WHERE id=? ","i",[$site]);
     }
     else $nom_site = get_vocab('any_area');
+    // jours cycle
+    $jours_cycle = array(); // si un cycle est défini, tableau associatif temps unix => no du jour cycle
+    $resc = grr_sql_query("SELECT DAY,Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY >= ? AND DAY < ? ","ii",[$month_start,$month_end]);
+    if($resc){
+        foreach($resc as $row){
+            $jours_cycle[$row['DAY']]=$row['Jours'];
+        }
+    }
+    else
+        echo grr_sql_error();
+    grr_sql_free($resc);
     $tables = array(); // contiendra les codes html des tables mensuelles
     // Boucle sur les mois
     $month_indice =  $month_start;
@@ -266,7 +278,7 @@ else
                 $eveningends = 12;
                 $eveningends_minutes = count($periods_name) - 1;
             }
-            $this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=$area");
+            $this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=? ","i",[$area]);
             $tables[$month_indice] .= "<table class='mois table-bordered'>\n";
             $tables[$month_indice] .= "<caption>";
             $tables[$month_indice] .= "<h4>".ucfirst($this_area_name)."</h4>";
@@ -284,7 +296,6 @@ else
                 $cyear = date("Y", $t2);
                 $name_day = ucfirst(utf8_strftime("%a<br />%d", $t2)); // On inscrit le quantième du jour dans la deuxième ligne
                 $temp = mktime(0,0,0,$cmonth,$cday,$cyear);
-                $jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$temp'");
                 $t2 = mktime(0,0,0,$cmonth,$cday+1,$cyear);
                 if ($display_day[$cweek] == 1)
                 {
@@ -292,38 +303,24 @@ else
                     elseif (isSchoolHoliday($temp)) {$tables[$month_indice] .= '<td class="cell_hours vacance">';}
                     else {$tables[$month_indice] .= '<td class="cell_hours">';}
                     $tables[$month_indice] .= "<div><a title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\"   href=\"day.php?year=$year_num&amp;month=$month_num&amp;day=$cday&amp;area=$area\">$name_day</a>";
-                    if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle)>-1)
-                    {
-                        if (intval($jour_cycle) > 0)
-                            $tables[$month_indice] .= "<br /><b><i>".ucfirst(substr(get_vocab("rep_type_6"),0,1)).$jour_cycle."</i></b>";
-                        else
-                        {
-                            if (strlen($jour_cycle)>5)
-                                $jour_cycle = substr($jour_cycle,0,3)."..";
-                            $tables[$month_indice] .= "<br /><b><i>".$jour_cycle."</i></b>";
-                        }
-                    }
+                    if(isset($jours_cycle[$temp]))
+                        $tables[$month_indice] .= "<br />".preg_replace( "/ /", "<br />", get_vocab("rep_type_6"))." ".$jours_cycle[$temp];
                     $tables[$month_indice] .= "</div></td>\n";
                 }
             }
             $tables[$month_indice] .= "</tr>";   // Fin affichage de la première ligne
             // boucle sur les ressources accessibles
-            foreach ($data as list($room_id,$room_name,$area_id))
+            foreach($data as $row)
             {
-                if ($area == $area_id)
+                if ($area == $row['area_id'])
                 {
                     //Used below: localized "all day" text but with non-breaking spaces:
                     $all_day = preg_replace("/ /", " ", get_vocab("all_day"));
                     //Get all meetings for this month in the room that we care about
-                    /*$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
-                    FROM (".TABLE_PREFIX."_entry INNER JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) 
-                      INNER JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
-                    WHERE (start_time <= ".$end_month." AND end_time > ".$begin_month." AND ".TABLE_PREFIX."_entry.room_id=".$room_id.")
-                    ORDER by ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time ";*/
                     $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
                     FROM (".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id) 
-                    WHERE ".TABLE_PREFIX."_entry.room_id = $room_id 
-                    AND start_time <= $end_month AND end_time > $begin_month 
+                    WHERE ".TABLE_PREFIX."_entry.room_id =? 
+                    AND start_time <=? AND end_time >? 
                     ORDER BY ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time";
                     /* contenu de la réponse si succès :
                         $row[0] : start_time
@@ -352,17 +349,17 @@ else
                     // $d[monthday]["id"][] = ID of each entry, for linking.
                     // $d[monthday]["data"][] = "start-stop" times of each entry.
                     $d = array();
-                    $res = grr_sql_query($sql);
-                    if (!$res)
+                    $res2 = grr_sql_query($sql,"iii",[ $row['room_id'], $end_month, $begin_month]);
+                    if (!$res2)
                         echo grr_sql_error();
                     else
                     { // les données sont bien recueillies
-                        foreach($res as $row)
+                        foreach($res2 as $row2)
                         {
-							if ($row["type"] <> $typeExclu)          // identifiant du type à exclure  
+							if ($row2["type"] <> $typeExclu)          // identifiant du type à exclure  
                             {  //Fill in data for each day during the month that this meeting ($row) covers. 
-                                $t = max((int)$row["start_time"], $begin_month);
-                                $end_t = min((int)$row["end_time"], $end_month);
+                                $t = max((int)$row2["start_time"], $begin_month);
+                                $end_t = min((int)$row2["end_time"], $end_month);
                                 $day_num = date("j", $t);
                                 $month_num = date("m", $t);
                                 $year_num  = date("Y", $t);
@@ -372,9 +369,9 @@ else
                                     $midnight = mktime(0, 0, 0, $month_num, $day_num, $year_num);
                                 while ($t < $end_t)
                                 {
-                                    $d[$day_num][$month_num][$year_num]["id"][] = $row["id"];
-                                    $d[$day_num][$month_num][$year_num]["room"][]=$row["room_name"] ;
-                                    $d[$day_num][$month_num][$year_num]["color"][] = $row["type"];
+                                    $d[$day_num][$month_num][$year_num]["id"][] = $row2["id"];
+                                    $d[$day_num][$month_num][$year_num]["room"][]=$row2["room_name"] ;
+                                    $d[$day_num][$month_num][$year_num]["color"][] = $row2["type"];
                                     $midnight_tonight = $midnight + 86400; // potentiellement problématique avec les jours de changement d'heure YN 
                                     //Describe the start and end time, accounting for "all day"
                                     //and for entries starting before/ending after today.
@@ -384,9 +381,9 @@ else
                                     //will incorrectly line break after a -.
                                     if ($enable_periods == 'y')
                                     {
-                                        $start_str = preg_replace("/ /", " ", period_time_string($row["start_time"]));
-                                        $end_str   = preg_replace("/ /", " ", period_time_string($row["end_time"], -1));
-                                        switch (cmp3($row['start_time'], $midnight) . cmp3($row['end_time'], $midnight_tonight))
+                                        $start_str = preg_replace("/ /", " ", period_time_string($row2["start_time"]));
+                                        $end_str   = preg_replace("/ /", " ", period_time_string($row2["end_time"], -1));
+                                        switch (cmp3($row2['start_time'], $midnight) . cmp3($row2['end_time'], $midnight_tonight))
                                         {
                                             case "> < ":
                                             case "= < ":
@@ -420,17 +417,17 @@ else
                                     }
                                     else
                                     {
-                                        switch (cmp3($row['start_time'], $midnight) . cmp3($row['end_time'], $midnight_tonight))
+                                        switch (cmp3($row2['start_time'], $midnight) . cmp3($row2['end_time'], $midnight_tonight))
                                         {
                                             case "> < ":
                                             case "= < ":
-                                            $horaires = date(hour_min_format(), $row['start_time']) . "~" . date(hour_min_format(), $row['end_time']);
+                                            $horaires = date(hour_min_format(), $row2['start_time']) . "~" . date(hour_min_format(), $row2['end_time']);
                                             break;
                                             case "> = ":
-                                            $horaires = date(hour_min_format(), $row['start_time']) . "~24:00";
+                                            $horaires = date(hour_min_format(), $row2['start_time']) . "~24:00";
                                             break;
                                             case "> > ":
-                                            $horaires = date(hour_min_format(), $row['start_time']) . "~==>";
+                                            $horaires = date(hour_min_format(), $row2['start_time']) . "~==>";
                                             break;
                                             case "= = ":
                                             $horaires = $all_day;
@@ -439,7 +436,7 @@ else
                                             $horaires = $all_day . "==>";
                                             break;
                                             case "< < ":
-                                            $horaires = "<==~" . date(hour_min_format(), $row['end_time']);
+                                            $horaires = "<==~" . date(hour_min_format(), $row2['end_time']);
                                             break;
                                             case "< = ":
                                             $horaires = "<==" . $all_day;
@@ -449,9 +446,9 @@ else
                                             break;
                                         }
                                     }
-                                    $d[$day_num][$month_num][$year_num]["lien"][] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
+                                    $d[$day_num][$month_num][$year_num]["lien"][] = contenu_cellule($options, $overloadFieldList, 1, $row2, $horaires);
                                     // Info-bulle
-                                    $d[$day_num][$month_num][$year_num]["data"][] = contenu_popup($options_popup, 1, $row, $horaires);
+                                    $d[$day_num][$month_num][$year_num]["data"][] = contenu_popup($options_popup, 1, $row2, $horaires);
                                     //Only if end time > midnight does the loop continue for the next day.
                                     if ($end_t <= $midnight_tonight)
                                         break;
@@ -463,10 +460,10 @@ else
                             }           // ModifExclure Ajouté
 						}// ici fin du traitement des données pour le domaine et le mois
                         // calcul du code html des données à afficher
-                        $acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $room_id);
+                        $acces_fiche_reservation = verif_acces_fiche_reservation($user_id, $row['room_id']);
                         $tables[$month_indice] .= "<tr>";
                         $tables[$month_indice] .= "<th>";
-                        $tables[$month_indice] .= htmlspecialchars($room_name) ."</th>\n";
+                        $tables[$month_indice] .= htmlspecialchars($row['room_name']) ."</th>\n";
                         $t2 = mktime(0, 0, 0, $month_num, 1, $year_num);
                         for ($k = 0; $k < $days_in_month; $k++)
                         {
@@ -496,7 +493,7 @@ else
                                         }
                                         for ($i = 0; $i < $n; $i++)
                                         {
-                                            if ($d[$cday][$cmonth][$cyear]["room"][$i] == $room_name) // test peu fiable car c'est l'id qui est unique YN le 26/02/2018
+                                            if ($d[$cday][$cmonth][$cyear]["room"][$i] == $row['room_name']) // test peu fiable car c'est l'id qui est unique YN le 26/02/2018
                                             {
                                                 $tables[$month_indice] .= "\n<table class='pleine table-bordered' ><tr>\n";
                                                 $tables[$month_indice] .= "<td class='type".$d[$cday][$cmonth][$cyear]["color"][$i]."'>";
@@ -527,7 +524,7 @@ else
                         $tables[$month_indice] .= "</tr>";
                     }
                 } 
-            grr_sql_free($res);
+            grr_sql_free($res2);
             }    // fin de boucle sur les ressources
         	$tables[$month_indice] .= "</table>\n";
         } // fin de boucle sur les domaines
