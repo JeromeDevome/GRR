@@ -3,9 +3,9 @@
  * dateselector.inc.php
  * Portion de code affichant un sélecteur de date à accès direct, couplé à un calendrier JQuery-datepicker
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-05-15 10:25$
+ * Dernière modification : $Date: 2024-02-24 11:20$
  * @author    Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -24,7 +24,7 @@
 	{
         document.getElementById('day').selectedIndex=<?php echo (date("d")-1); ?>;
 		document.getElementById('month').selectedIndex=<?php echo (date("m")-1);?>;
-		document.getElementById('year').selectedIndex=<?php echo (date("Y")-strftime("%Y", Settings::get("begin_bookings")));?>;
+		document.getElementById('year').selectedIndex=<?php echo (date("Y")-date("Y", Settings::get("begin_bookings")));?>;
   	var p=location.pathname;
 	   	if(!p.match("day.php") && !p.match("week.php") && !p.match("week_all.php") && !p.match("month.php") && !p.match("month_all.php") && !p.match("month_all2.php") && !p.match("year.php"))
     document.getElementById('myform').action ="day.php";
