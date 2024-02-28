@@ -3,9 +3,9 @@
  * admin_calend_vacances_feries.php
  * Interface permettant la définiton des jours fériés ou de vacances
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-10-12 18:43$
+ * Dernière modification : $Date: 2024-02-28 11:41$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -21,37 +21,15 @@ include "../include/admin.inc.php";
 
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 check_access(6, $back);
-# print the page header
-start_page_w_header("", "", "", $type="with_session");
-// Affichage de la colonne de gauche
-include "admin_col_gauche2.php";
-// affichage de la colonne de droite
-echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-echo "<h2>".get_vocab('admin_calend_vacances_feries.php')."</h2>\n";
-echo "\n<p>".get_vocab("vacances_feries_description")."</p>";
+$action = "";
 // premier test : l'affichage des vacances et fériés est-il activé ?
 if ((Settings::get("show_holidays") == 'Non')||(Settings::get("show_holidays") == '')){
-    echo "<p>Il faut activer l'affichage des vacances et jours fériés pour continuer...</p>";
-    echo '<p><a href="admin_config12.php" >Cliquer ici pour activer l\'affichage des vacances et jours fériés</a>';
+  $action = 'test1';
 }
 // deuxième test : le choix entre vacances et fériés est-il fait ?
 else if (!isset($_POST['define_holidays'])){
-    # bascule entre vacances et jours fériés
-    echo '<form action="admin_calend_vacances_feries.php" method="POST" name="bascule">';
-    echo '<div>'.PHP_EOL;
-    echo '<p>'.'<input type="submit" value="'.get_vocab('Definir').'">'.'&nbsp;';
-    echo "<input type='radio' name='define_holidays' value='F' ";
-    if ((!isset($_POST['define_holidays']))||($_POST['define_holidays']=='Oui')){
-        echo 'checked="checked"';
-    }
-    echo " />".PHP_EOL;
-    echo get_vocab("les_jours_feries").'&nbsp;'.PHP_EOL;
-    echo "<input type='radio' name='define_holidays' value='V' />".PHP_EOL;
-    echo get_vocab("les_vacances")."&nbsp;".PHP_EOL;
-    echo "</p></div>";
-    echo '</form>';
-    }
-    else 
+  $action = 'test2';}
+else 
 // troisième test : le choix est fait, on détermine lequel et on traite
         if ((isset($_POST['define_holidays'])) && ($_POST['define_holidays'] == 'F')){
             // traiter les jours fériés
@@ -62,8 +40,8 @@ else if (!isset($_POST['define_holidays'])){
                 $res_old = grr_sql_query("SELECT day FROM ".TABLE_PREFIX."_calendrier_feries");
                 if ($res_old)
                 {
-                    for ($i = 0; ($row_old = grr_sql_row($res_old, $i)); $i++)
-                        $day_old[$i] = $row_old[0];
+                    foreach($res_old as $row_old)
+                        $day_old[] = $row_old['day'];
                 }
                 // On vide la table ".TABLE_PREFIX."_calendrier_feries
                 $sql = "truncate table ".TABLE_PREFIX."_calendrier_feries";
@@ -86,8 +64,8 @@ else if (!isset($_POST['define_holidays'])){
                         if (isset($_POST[$n]))
                         {
                             // On enregistre la valeur dans ".TABLE_PREFIX."_calendrier_feries
-                            $sql = "INSERT INTO ".TABLE_PREFIX."_calendrier_feries set DAY='".$n."'";
-                            if (grr_sql_command($sql) < 0)
+                            $sql = "INSERT INTO ".TABLE_PREFIX."_calendrier_feries set DAY=? ";
+                            if (grr_sql_command($sql,"i",[$n]) < 0)
                                 fatal_error(0, "<p>" . grr_sql_error());
                         }
                         $day++;
@@ -115,60 +93,10 @@ else if (!isset($_POST['define_holidays'])){
                 unset($feries);
                 $i++;
             }
-
-            echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"{$cocheFeries} return false;\">".get_vocab("vacances_feries_FR")."</a></span> || ";
-            echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"setCheckboxesGrr('formulaireF', false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span> || ";
-            echo "<span class='small'><a href='admin_calend_vacances_feries.php' >".get_vocab("returnprev")."</a></span>";
-
-            echo "<form action=\"admin_calend_vacances_feries.php\" method=\"post\" id=\"formulaireF\" name=\"formulaireF\">\n";
-            echo "<table cellspacing=\"20\">\n";
-            $debligne = 1;
-            $inc = 0;
-            $n = $begin_bookings;
-            while ($n <= $end_bookings)
-            {
-                if ($debligne == 1)
-                {
-                    echo "<tr>\n";
-                    $inc = 0;
-                    $debligne = 0;
-                }
-                $inc++;
-                echo "<td>\n";
-                echo cal($month, $year, 2);
-                echo "</td>";
-                if ($inc == 3)
-                {
-                    echo "</tr>";
-                    $debligne = 1;
-                }
-                $month++;
-                if ($month == 13)
-                {
-                    $year++;
-                    $month = 1;
-                }
-                $n = mktime(0,0,0,$month,1,$year);
-            }
-            if ($inc < 3)
-            {
-                $k=$inc;
-                while ($k < 3)
-                {
-                    echo "<td> </td>\n";
-                    $k++;
-                }
-                echo "</tr>";
-            }
-            echo "</table>";
-            echo "<div id=\"fixe\" style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"".get_vocab('save')."\" value=\"".get_vocab("save")."\" />\n";
-            echo "<input class=\"btn btn-primary\" type=\"hidden\" name=\"recordFeries\" value=\"yes\" />\n";
-            echo "<input class=\"btn btn-primary\" type=\"hidden\" name=\"define_holidays\" value=\"F\" />\n";
-            echo "</div>";
-            echo "</form>";
+            $action = 'definirFeries';
         }    
         else if ((isset($_POST['define_holidays'])) && ($_POST['define_holidays'] == 'V')) {
-// traitement des jours de vacances (scolaires)
+        // traitement des jours de vacances (scolaires)
                 if (isset($_POST['recordVacances']) && ($_POST['recordVacances'] == 'yes'))
                 { //phase d'enregistrement des jours de vacances scolaires
                     // On met de côté toutes les dates
@@ -176,8 +104,8 @@ else if (!isset($_POST['define_holidays'])){
                     $res_old = grr_sql_query("SELECT day FROM ".TABLE_PREFIX."_calendrier_vacances");
                     if ($res_old)
                     {
-                        for ($i = 0; ($row_old = grr_sql_row($res_old, $i)); $i++)
-                            $day_old[$i] = $row_old[0];
+                        foreach($res_old as $row_old)
+                            $day_old[] = $row_old['day'];
                     }
                     // On vide la table ".TABLE_PREFIX."_calendrier_vacances
                     $sql = "truncate table ".TABLE_PREFIX."_calendrier_vacances";
@@ -200,9 +128,9 @@ else if (!isset($_POST['define_holidays'])){
                             if (isset($_POST[$n]))
                             {
                                 // On enregistre la valeur dans ".TABLE_PREFIX."_calendrier_vacances
-                                $sql = "INSERT INTO ".TABLE_PREFIX."_calendrier_vacances set DAY='".$n."'";
+                                $sql = "INSERT INTO ".TABLE_PREFIX."_calendrier_vacances set DAY=? ";
                                 // echo "jour ".$n.'<br>';
-                                if (grr_sql_command($sql) < 0)
+                                if (grr_sql_command($sql,"i",[$n]) < 0)
                                     fatal_error(0, "<p>" . grr_sql_error());
                             }
                             $day++;
@@ -228,7 +156,7 @@ else if (!isset($_POST['define_holidays'])){
                 $node = $vacances->calendrier->children();
                 foreach ($node as $key => $value)
                 {
-                if ($value['libelle'] == $zone)
+                    if ($value['libelle'] == $zone)
                     {
                         foreach ($value->vacances as $key => $value)
                         {
@@ -253,59 +181,143 @@ else if (!isset($_POST['define_holidays'])){
                     $cocheVacances .= "setCheckboxesGrrName(document.getElementById('formulaireV'), true, '{$value}'); ";
                 }
                 unset($schoolHoliday);
-
-                echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"{$cocheVacances} return false;\">".get_vocab("vacances_FR").$zone."</a></span> || ";
-                echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"setCheckboxesGrr('formulaireV', false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span> || ";
-                echo "<span class='small'><a href='admin_calend_vacances_feries.php' >".get_vocab("returnprev")."</a></span>\n";
-
-                echo "<form action=\"admin_calend_vacances_feries.php\" method=\"post\" id=\"formulaireV\" name=\"formulaireV\">\n";
-                echo "<table cellspacing=\"20\">\n";
-                $debligne = 1;
-                $inc = 0;
-                $n = $begin_bookings;
-                while ($n <= $end_bookings)
-                {
-                    if ($debligne == 1)
-                    {
-                        echo "<tr>\n";
-                        $inc = 0;
-                        $debligne = 0;
-                    }
-                    $inc++;
-                    echo "<td>\n";
-                    echo cal($month, $year, 3);
-                    echo "</td>";
-                    if ($inc == 3)
-                    {
-                        echo "</tr>";
-                        $debligne = 1;
-                    }
-                    $month++;
-                    if ($month == 13)
-                    {
-                        $year++;
-                        $month = 1;
-                    }
-                    $n = mktime(0,0,0,$month,1,$year);
-                }
-                if ($inc < 3)
-                {
-                    $k=$inc;
-                    while ($k < 3)
-                    {
-                        echo "<td> </td>\n";
-                        $k++;
-                    }
-                    echo "</tr>";
-                }
-                echo "</table>";
-                echo "<div id=\"fixe\" style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"".get_vocab('save')."\" value=\"".get_vocab("save")."\" />\n";
-                echo "<input class=\"btn btn-primary\" type=\"hidden\" name=\"recordVacances\" value=\"yes\" />\n";
-                echo "<input class=\"btn btn-primary\" type=\"hidden\" name=\"define_holidays\" value=\"V\" />\n";
-                echo "</div>";
-                echo "</form>";
+                $action = 'definirVacances';
             }
         else echo "ne devrait pas arriver";
+# print the page header
+start_page_w_header("", "", "", $type="with_session");
+// Affichage de la colonne de gauche
+include "admin_col_gauche2.php";
+// affichage de la colonne de droite
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
+echo "<h2>".get_vocab('admin_calend_vacances_feries.php')."</h2>\n";
+echo "\n<p>".get_vocab("vacances_feries_description")."</p>";
+if ($action == 'test1'){
+    echo "<p>Il faut activer l'affichage des vacances et jours fériés pour continuer...</p>";
+    echo '<p><a href="admin_config12.php" >Cliquer ici pour activer l\'affichage des vacances et jours fériés</a>';
+}
+else if ($action == 'test2'){
+    # bascule entre vacances et jours fériés
+    echo '<form action="admin_calend_vacances_feries.php" method="POST" name="bascule">';
+    echo '<div>'.PHP_EOL;
+    echo '<p>'.'<input type="submit" value="'.get_vocab('Definir').'">'.'&nbsp;';
+    echo "<input type='radio' name='define_holidays' value='F' ";
+    if ((!isset($_POST['define_holidays']))||($_POST['define_holidays']=='Oui')){
+        echo 'checked="checked"';
+    }
+    echo " />".PHP_EOL;
+    echo get_vocab("les_jours_feries").'&nbsp;'.PHP_EOL;
+    echo "<input type='radio' name='define_holidays' value='V' />".PHP_EOL;
+    echo get_vocab("les_vacances")."&nbsp;".PHP_EOL;
+    echo "</p></div>";
+    echo '</form>';
+}
+elseif($action == 'definirFeries')
+{
+  echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"{$cocheFeries} return false;\">".get_vocab("vacances_feries_FR")."</a></span> || ";
+  echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"setCheckboxesGrr('formulaireF', false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span> || ";
+  echo "<span class='small'><a href='admin_calend_vacances_feries.php' >".get_vocab("returnprev")."</a></span>";
+
+  echo "<form action=\"admin_calend_vacances_feries.php\" method=\"post\" id=\"formulaireF\" name=\"formulaireF\">\n";
+  echo "<table cellspacing=\"20\">\n";
+  $debligne = 1;
+  $inc = 0;
+  $n = $begin_bookings;
+  while ($n <= $end_bookings)
+  {
+      if ($debligne == 1)
+      {
+          echo "<tr>\n";
+          $inc = 0;
+          $debligne = 0;
+      }
+      $inc++;
+      echo "<td>\n";
+      echo cal($month, $year, 2);
+      echo "</td>";
+      if ($inc == 3)
+      {
+          echo "</tr>";
+          $debligne = 1;
+      }
+      $month++;
+      if ($month == 13)
+      {
+          $year++;
+          $month = 1;
+      }
+      $n = mktime(0,0,0,$month,1,$year);
+  }
+  if ($inc < 3)
+  {
+      $k=$inc;
+      while ($k < 3)
+      {
+          echo "<td> </td>\n";
+          $k++;
+      }
+      echo "</tr>";
+  }
+  echo "</table>";
+  echo "<div id=\"fixe\" style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"".get_vocab('save')."\" value=\"".get_vocab("save")."\" />\n";
+  echo "<input class=\"btn btn-primary\" type=\"hidden\" name=\"recordFeries\" value=\"yes\" />\n";
+  echo "<input class=\"btn btn-primary\" type=\"hidden\" name=\"define_holidays\" value=\"F\" />\n";
+  echo "</div>";
+  echo "</form>";
+}
+elseif($action == 'definirVacances'){
+  echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"{$cocheVacances} return false;\">".get_vocab("vacances_FR").$zone."</a></span> || ";
+  echo "<span class='small'><a href='admin_calend_vacances_feries.php' onclick=\"setCheckboxesGrr('formulaireV', false, 'all'); return false;\">".get_vocab("uncheck_all_")."</a></span> || ";
+  echo "<span class='small'><a href='admin_calend_vacances_feries.php' >".get_vocab("returnprev")."</a></span>\n";
+
+  echo "<form action=\"admin_calend_vacances_feries.php\" method=\"post\" id=\"formulaireV\" name=\"formulaireV\">\n";
+  echo "<table cellspacing=\"20\">\n";
+  $debligne = 1;
+  $inc = 0;
+  $n = $begin_bookings;
+  while ($n <= $end_bookings)
+  {
+      if ($debligne == 1)
+      {
+          echo "<tr>\n";
+          $inc = 0;
+          $debligne = 0;
+      }
+      $inc++;
+      echo "<td>\n";
+      echo cal($month, $year, 3);
+      echo "</td>";
+      if ($inc == 3)
+      {
+          echo "</tr>";
+          $debligne = 1;
+      }
+      $month++;
+      if ($month == 13)
+      {
+          $year++;
+          $month = 1;
+      }
+      $n = mktime(0,0,0,$month,1,$year);
+  }
+  if ($inc < 3)
+  {
+      $k=$inc;
+      while ($k < 3)
+      {
+          echo "<td> </td>\n";
+          $k++;
+      }
+      echo "</tr>";
+  }
+  echo "</table>";
+  echo "<div id=\"fixe\" style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"".get_vocab('save')."\" value=\"".get_vocab("save")."\" />\n";
+  echo "<input class=\"btn btn-primary\" type=\"hidden\" name=\"recordVacances\" value=\"yes\" />\n";
+  echo "<input class=\"btn btn-primary\" type=\"hidden\" name=\"define_holidays\" value=\"V\" />\n";
+  echo "</div>";
+  echo "</form>";
+
+}
  // fin de l'affichage de la colonne de droite
 echo "</div>\n";
 // et de la page

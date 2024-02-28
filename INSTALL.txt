@@ -30,6 +30,7 @@ Pour installer et faire fonctionner GRR, vous avez besoin de :
 -> Un serveur web/php et un serveur mysql (éventuellement sur la même
 machine)
 -> Nécessité de disposer d'une version de php version supérieure ou égale à 5.6.0 (gestion des variables de type $_SESSION, fonction mysql_real_escape_string(),  ...)
+-> Nécessite au moins les modules php-fileinfo, php-gd, php-iconv, php-mbstring, php-mysqli, php-mysqlnd, php-xml ; si vous utilisez php 8.1+, il faut soit inclure le module php-intl, soit désactiver les messages E_DEPRECATED
 
 ************************************************
 Installation - Etape 1 : Configuration de GRR
