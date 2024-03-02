@@ -1,11 +1,11 @@
 <?php
 /**
  * admin_change_pwd.php
- * Interface de changement du mot de passe pour les administrateurs
+ * Interface de changement du mot de passe par les administrateurs
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 12:03$
+ * Dernière modification : $Date: 2024-03-02 16:24$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -40,8 +40,8 @@ if ($valid == "yes")
         $msg = get_vocab("passwd_error");
     else
     {
-        $sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='" . protect_data_sql($reg_password_c)."' WHERE login='$user_login'";
-        if (grr_sql_command($sql) < 0)
+        $sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='" . protect_data_sql($reg_password_c)."' WHERE login=? ";
+        if (grr_sql_command($sql,"s",[$user_login]) < 0)
             fatal_error(0, get_vocab('update_pwd_failed') . grr_sql_error());
         else
             $msg = get_vocab('update_pwd_succeed');
@@ -53,17 +53,21 @@ $user_source = '';
 // On appelle les informations de l'utilisateur
 if (isset($user_login) && ($user_login!=''))
 {
-    $sql = "SELECT nom,prenom, source FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$user_login'";
-    $res = grr_sql_query($sql);
+    $sql = "SELECT nom,prenom, source FROM ".TABLE_PREFIX."_utilisateurs WHERE login=? ";
+    $res = grr_sql_query($sql,"s",[$user_login]);
     if ($res)
     {
-        for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-        {
-            $user_nom = $row[0];
-            $user_prenom = $row[1];
-            $user_source = $row[2];
-        }
+      if(grr_sql_count($res)>1)
+        $msg = get_vocab('error_exist_login');
+      else{
+        $row = grr_sql_row($res,0);
+        $user_nom = $row[0];
+        $user_prenom = $row[1];
+        $user_source = $row[2];
+      }
     }
+    else 
+      fatal_error("Erreur de lecture en base de données");
 }
 if (($user_source != 'local') && ($user_source != ''))
 {

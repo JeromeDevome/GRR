@@ -3,9 +3,9 @@
  * admin_config_calend1.php
  * Interface permettant à l'administrateur la configuration des paramètres pour le module Jours Cycles
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-10 14:35$
+ * Dernière modification : $Date: 2024-03-02 16:41$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -15,7 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-$grr_script_name = "admin_calend_jour_cycle.php";
+$grr_script_name = "admin_config_calend1.php";
 
 if (!Settings::load())
 	die("Erreur chargement settings");
@@ -23,13 +23,13 @@ if (!Settings::load())
 // Met à jour dans la BD le nombre de jours par cycle
 if (isset($_GET['nombreJours']))
 {
-	if (!Settings::set("nombre_jours_Jours_Cycles", $_GET['nombreJours']))
+	if (!Settings::set("nombre_jours_Jours_Cycles", intval($_GET['nombreJours'])))
 		echo "Erreur lors de l'enregistrement de nombre_jours_Jours_Cycles ! <br />";
 }
 // Met à jour dans la BD le premier jour du premier cycle
 if (isset($_GET['jourDebut']))
 {
-	if (!Settings::set("jour_debut_Jours_Cycles", $_GET['jourDebut']))
+	if (!Settings::set("jour_debut_Jours_Cycles", intval($_GET['jourDebut'])))
 		echo "Erreur lors de l'enregistrement de jour_debut_Jours_Cycles ! <br />";
 }
 // Configurations du nombre de jours par Jours_Cycles et du premier jour du premier Jours_Cycles
