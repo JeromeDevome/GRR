@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '30533fe6f7297f6b230d6cf744c10b0dec3ff581',
+    'reference' => '44d12baa8d49b245fade56c9e99392390f462cc3',
     'name' => 'devome/twig',
   ),
   'versions' => 
@@ -60,7 +60,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '30533fe6f7297f6b230d6cf744c10b0dec3ff581',
+      'reference' => '44d12baa8d49b245fade56c9e99392390f462cc3',
     ),
     'gregwar/captcha' => 
     array (
@@ -162,12 +162,12 @@ private static $installed = array (
     ),
     'symfony/cache' => 
     array (
-      'pretty_version' => 'v5.4.35',
-      'version' => '5.4.35.0',
+      'pretty_version' => 'v5.4.36',
+      'version' => '5.4.36.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'db1adb004e2da984085d0178964eb6f319d3cba1',
+      'reference' => 'a30f316214d908cf5874f700f3f3fb29ceee91ba',
     ),
     'symfony/cache-contracts' => 
     array (
@@ -187,21 +187,21 @@ private static $installed = array (
     ),
     'symfony/config' => 
     array (
-      'pretty_version' => 'v5.4.35',
-      'version' => '5.4.35.0',
+      'pretty_version' => 'v5.4.36',
+      'version' => '5.4.36.0',
       'aliases' => 
       array (
       ),
-      'reference' => '6b763438a22a4f20885e994ad6702f6a3f25430e',
+      'reference' => '0a4f363dc2f13d2f871f917cc563796d9ddc78d1',
     ),
     'symfony/dependency-injection' => 
     array (
-      'pretty_version' => 'v5.4.35',
-      'version' => '5.4.35.0',
+      'pretty_version' => 'v5.4.36',
+      'version' => '5.4.36.0',
       'aliases' => 
       array (
       ),
-      'reference' => '45474d527212ca67cdb93f6c5e6da68f4bc67118',
+      'reference' => 'cc1fb237cd0e6da33005062b13b8485deb6e4440',
     ),
     'symfony/deprecation-contracts' => 
     array (
@@ -214,12 +214,12 @@ private static $installed = array (
     ),
     'symfony/error-handler' => 
     array (
-      'pretty_version' => 'v5.4.35',
-      'version' => '5.4.35.0',
+      'pretty_version' => 'v5.4.36',
+      'version' => '5.4.36.0',
       'aliases' => 
       array (
       ),
-      'reference' => '39225b1e47fdd91a6924b1e7d7a4523da2e1894b',
+      'reference' => '90b1d7799bfc1b3ed5f902e8b334eeb7dba537a1',
     ),
     'symfony/event-dispatcher' => 
     array (
@@ -266,21 +266,21 @@ private static $installed = array (
     ),
     'symfony/form' => 
     array (
-      'pretty_version' => 'v5.4.35',
-      'version' => '5.4.35.0',
+      'pretty_version' => 'v5.4.36',
+      'version' => '5.4.36.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'c827d421caccf467ef1a969e7412a8755fa88093',
+      'reference' => '3bbf663b8021a5a7b8f4bf9b868354db6611a514',
     ),
     'symfony/framework-bundle' => 
     array (
-      'pretty_version' => 'v5.4.35',
-      'version' => '5.4.35.0',
+      'pretty_version' => 'v5.4.36',
+      'version' => '5.4.36.0',
       'aliases' => 
       array (
       ),
-      'reference' => '89805687f360133f18bdedfb32138ce0ddd5383c',
+      'reference' => '224f69093099a507cf84d8c48ceb29e8653a5896',
     ),
     'symfony/http-foundation' => 
     array (
@@ -293,12 +293,12 @@ private static $installed = array (
     ),
     'symfony/http-kernel' => 
     array (
-      'pretty_version' => 'v5.4.35',
-      'version' => '5.4.35.0',
+      'pretty_version' => 'v5.4.36',
+      'version' => '5.4.36.0',
       'aliases' => 
       array (
       ),
-      'reference' => '949bc7721c83fa9f81fc6c9697db0aa340c64f4d',
+      'reference' => '63a872e01fd70802b77023e2f5924170c99b2825',
     ),
     'symfony/options-resolver' => 
     array (
@@ -426,12 +426,12 @@ private static $installed = array (
     ),
     'symfony/string' => 
     array (
-      'pretty_version' => 'v5.4.35',
-      'version' => '5.4.35.0',
+      'pretty_version' => 'v5.4.36',
+      'version' => '5.4.36.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'c209c4d0559acce1c9a2067612cfb5d35756edc2',
+      'reference' => '4e232c83622bd8cd32b794216aa29d0d266d353b',
     ),
     'symfony/translation' => 
     array (
@@ -460,12 +460,12 @@ private static $installed = array (
     ),
     'symfony/var-dumper' => 
     array (
-      'pretty_version' => 'v5.4.35',
-      'version' => '5.4.35.0',
+      'pretty_version' => 'v5.4.36',
+      'version' => '5.4.36.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'ce4685b30e47d94dfc990c5566285ff99ddf012b',
+      'reference' => '2e9c2b11267119d9c90d6b3fdce5e4e9f15e2e90',
     ),
     'symfony/var-exporter' => 
     array (
