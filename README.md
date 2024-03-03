@@ -5,7 +5,7 @@ GRR 4.2.X
 GRR est un outil de gestion et de réservation de ressources. **GRR** est une adaptation d'une application **MRBS**.
 
 ```diff
-+ Version 4.2.X, version maintenue à jour.
+- Version 4.2, plus maintenue : vous devriez considérer la mise à jour vers une version plus récente
 ```
 
 
