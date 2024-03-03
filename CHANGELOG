@@ -1,8 +1,31 @@
 -----
 --
 -----
+Version 4.3.2 - 03/03/2024 Généré par @JeromeDevome
+[Correction] Traduction manquante - 02e751e6 - @JeromeDevome
+[Correction] Affichage des réservations à confirmer - ae9c064f - @JeromeDevome
+[Correction] Réservations à confirmer: ignorer les réservations supprimées - 530bbe29 - @JeromeDevome
+[Correction] Suppression des sites - 2ad69eb6 - @JeromeDevome
+[Correction] Affichage des sites dans l'administration - 2ad69eb6 - @JeromeDevome
+[Correction] Type de réservation par défaut dans un domaine - 9cd84b08 - @JeromeDevome
+[Correction] Choix du site par défaut - 30533fe6 - @JeromeDevome & @bambi1013
+[Correction] Redirection après suppression d'une réservation - 294971f2 - @JeromeDevome
+[Modification] Blocage du nombre de caractère maximum dans le champs de création/modification de site - 2ad69eb6 - @JeromeDevome
+[Modification] Mise à jour sumfony - 6e529d1b & bc70e054 - @JeromeDevome
+
+-----
+--
+-----
 Version 4.3.1 - 18/02/2024 Généré par @JeromeDevome
-La version 4.3.1 : Comprend les correction de la version 4.2.5 et :
+La version 4.3.1 : Comprend les correction de la version 4.2.5 
+[Correction] Traduction manquante - ba1cf440 - @ynaessens
+[Correction] Liste des visiteurs dans les réservations - 4f877997 - @JeromeDevome
+[Correction] Mise à jour au changement de domanine dans l'éditition de réservation - 0174d14b - @JeromeDevome
+[Correction] Supression d'utilisateur : Liaison groupe - bf2156df - @JeromeDevome
+[Correction] Message d'avertissement si login utilise des caractères invalide - ddf37779 -@JeromeDevome
+[Correction] Connexion IMAP - 20423113 & 92316373 - @JeromeDevome
+[Correction] Supression message d'erreur non critique à la ma mise à jour - d581f6df - @ynaessens
+et :
 [Correction] Lien de la fiche ressource depuis l'administration - bc11a787 - @JeromeDevome
 [Correction] Modification du compte - f350fb2d - @JeromeDevome
 [Correction] Affichage de la brêve description - 1c59567c - @JeromeDevome
