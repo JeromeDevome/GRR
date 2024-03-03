@@ -189,7 +189,7 @@ else
 grr_sql_free($res);
 
 // Détermination des ressources à afficher
-if($room_back != 'all')
+if($room_back != 'all' && $room_back != 0)
 	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book, show_comment, comment_room FROM ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($room_back)."' ";
 else
 	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book, show_comment, comment_room FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' ORDER BY order_display, room_name";
@@ -359,7 +359,7 @@ for ($i = 0; ($row = grr_sql_row_keyed($ressources, $i)); $i++)
 		affiche_ressource_empruntee($id_room[$i]);
 		echo '<span id="boutonSelection'.$a.'" style="display:none;">'.PHP_EOL;
 		echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab("see_week_for_this_room")).'" onclick="charger();javascript: location.href=\'week.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('week').'"/>'.PHP_EOL;
-		echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab("see_month_for_this_room")).'" onclick="charger();javascript: location.href=\'month.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('month').'"/>'.PHP_EOL;
+		echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab("see_month_for_this_room")).'" onclick="charger();javascript: location.href=\'app.php?p=mois&year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('month').'"/>'.PHP_EOL;
 		echo '</span>'.PHP_EOL;
 		if (htmlspecialchars($row["description"]).$temp != '')
 		{

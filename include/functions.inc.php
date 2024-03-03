@@ -336,7 +336,7 @@ function decode_options($a,$modele){
 function Definition_ressource_domaine_site()
 {
 	global $room, $area, $id_site;
-	if (isset($_GET['room']))
+	if (isset($_GET['room']) && $_GET['room'] != 'all')
 	{
 		$room = intval(clean_input($_GET['room']));
 		$area = mrbsGetRoomArea($room);
