@@ -23,7 +23,7 @@ Chat/Discord : https://discord.com/channels/484639573243068417/
 Documentation : https://devome.com/GRR/DOC/
 
 ```diff
-+ Versions disposant de support et de correctifs: 4.2.X && 4.3.X, les versions précédantes doivent être mise à jour.
++ Versions disposant de support et de correctifs: 4.3.X, les versions précédantes doivent être mise à jour.
 ```
 
 **Requiert :**
