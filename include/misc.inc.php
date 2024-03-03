@@ -23,7 +23,7 @@ $grr_devel_url = "https://grr.devome.com/";
 
 // Numéro de version actuel
 # Format X.X.XRCX | exemples : 4.0.0a (alpha) ou 4.0.0b (beta) 3.4.0RC1 (Release Candidate) ou 3.4.0 (version OK)
-$version_grr = "4.3.1";
+$version_grr = "4.3.2";
 # Version BDD, deux premirs chiffres = version majeur, les deux suivant la version, évolution de GRR, les 3 derniers une incrémentation à chaque changement
 # Ex 0400003 : 3eme modification sur la branche 4.X.X
 $version_bdd = "0400004";
