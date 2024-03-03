@@ -491,6 +491,10 @@ function afficherMenuGauche(){
 	document.getElementById("voir").style.display = "none";
 }
 
+/*
+* Affichage du menu à gauche ou en haut
+* Paramètre mode: 0 = menu caché; 1 menu à gauche; 2 menu en haut
+*/
 function afficheMenuHG(mode){
     var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
     var menuGw,planningw,realmode;
@@ -537,23 +541,7 @@ function afficheMenuHG(mode){
         $('.floatthead').floatThead('reflow');
     }
 }
-/*
-function menuHaut(){
-        var e=$("div#panel").is(":hidden");
-        if(e)
-        {
-            /*$("div#panel").show("slow");
-            document.getElementById("panel").style.display = "inline-block";
-            $('.floatthead').floatThead('reflow');
-        }
-        else 
-        {
-            /* $("div#panel").hide("slow"); 
-            document.getElementById("panel").style.display = "none";
-            $('.floatthead').floatThead('reflow');
-        }
-        setCookie("open",e,365)
-}*/
+
 /*
  *Fonction permettant l'ouverture d'un PopUP de la page view entry.php pour création d'un pdf
  */
@@ -570,4 +558,3 @@ function toggle_visibility(id) {
 	else
 	   e.style.display = 'none';
  }
- 
