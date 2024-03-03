@@ -6112,6 +6112,26 @@ function insertLogResa($idresa, $idAction, $infos){
 
 }
 
+/*
+Génère le style CSS pour les différents types de réservations
+*/
+function cssTypeResa()
+{
+    // récupération des couleurs des types
+    $types = '';
+    $sql = "SELECT type_letter,couleurhexa,couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE 1";
+    $res = grr_sql_query($sql);
+    if ($res->num_rows > 0) {
+        $types = "<style>".PHP_EOL;
+        while($row = $res->fetch_assoc()) {
+            $types .= "td.type".$row["type_letter"]."{background:".$row["couleurhexa"]." !important;color:".$row["couleurtexte"]." !important;}".PHP_EOL;
+            $types .= "td.type".$row["type_letter"]." a.lienCellule{color:".$row["couleurtexte"]." !important;}".PHP_EOL;
+        }
+        $types .= "</style>".PHP_EOL;
+    }
+
+	return $types;
+}
 
 // suggestions pour reformuler les pages plannings
 function pageHead2($title, $page = "with_session") 
@@ -6158,17 +6178,7 @@ function pageHead2($title, $page = "with_session")
 	}
 	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin, $gcDossierCss, $version_grr;
     // récupération des couleurs des types
-    $types = '';
-    $sql = "SELECT type_letter,couleurhexa,couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE 1";
-    $res = grr_sql_query($sql);
-    if ($res->num_rows > 0) {
-        $types = "<style>".PHP_EOL;
-        while($row = $res->fetch_assoc()) {
-            $types .= "td.type".$row["type_letter"]."{background:".$row["couleurhexa"]." !important;color:".$row["couleurtexte"]." !important;}".PHP_EOL;
-            $types .= "td.type".$row["type_letter"]." a.lienCellule{color:".$row["couleurtexte"]." !important;}".PHP_EOL;
-        }
-        $types .= "</style>".PHP_EOL;
-    }
+    $types = cssTypeResa();
     // code de la partie <head> 
 	$a  = '<head>'.PHP_EOL;
 	$a .= '<meta charset="utf-8">'.PHP_EOL;
