@@ -3,9 +3,9 @@
  * admin_config_imap.php
  * Interface permettant l'activation de la configuration de l'authentification pop/imap  
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-09-12 10:12$
+ * Dernière modification : $Date: 2024-03-03 15:52$
  * @author    Laurent Delineau & JeromeB & Gilles Martin & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -38,6 +38,7 @@ foreach ($imap as $key => $value){
     $imap[$key] = clean_input($value);
     eval('$imap_'.$key.'=$imap[$key];');
 }
+$msg = "";
 
 if (isset($_POST['imap_statut']))
 {
@@ -49,7 +50,7 @@ if (isset($_POST['imap_statut']))
 	else
 	{
 		if (!Settings::set("imap_statut", $_POST['imap_statut']))
-			echo encode_message_utf8($vocab['save_err']." imap_statut !<br />");
+			$msg = encode_message_utf8($vocab['save_err']." imap_statut !<br />");
 		$grrSettings['imap_statut'] = $_POST['imap_statut'];
 	}
 }
@@ -64,13 +65,6 @@ if ((authGetUserLevel(getUserName(),-1) < 5) && ($valid != 'yes'))
 	showAccessDenied($back);
 	exit();
 }
-// début de la page HTML
-start_page_w_header("", "", "", $type="with_session");
-// Affichage de la colonne de gauche
-include "admin_col_gauche2.php";
-// colonne de droite
-echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-echo encode_message_utf8("<h2>".get_vocab('admin_config_imap_pop')."</h2>");
 if ($etape == 1)
 {
 	if (isset($_POST["Valider1"]))
@@ -83,7 +77,7 @@ if ($etape == 1)
 		$imap['cert'] = $_POST["server_cert"];
 		$imap['tls'] = $_POST["server_tls"];
 		$erreur = '';
-		$nom_fic = "include/config_imap.inc.php";
+		$nom_fic = "../include/config_imap.inc.php";
 		if (@file_exists($nom_fic))
 		{
 			$f = @fopen($nom_fic, "w+");
@@ -102,29 +96,43 @@ if ($etape == 1)
 					$erreur .= "<br />".get_vocab('modifier_droits');
 			}
 		}
-		if ($erreur == '')
-		{
-			// On a ouvert un fichier config_imap.inc.php
-			$conn = "<"."?php\n";
-			$conn .= "# ligne suivante : Domaine utilise(necessaire pour le mail)\n";
-			$conn .= "\$imap_domaine=\"$imap_domaine\";\n";
-			$conn .= "# ligne suivante : Adresse du serveur IMAP/POP\n";
-			$conn .= "\$imap_adresse=\"$imap_adresse\";\n";
-			$conn .= "# ligne suivante : le port utilise\n";
-			$conn .= "\$imap_port=\"$imap_port\";\n";
-			$conn .= "# ligne suivante : IMAP ou POP\n";
-			$conn .= "\$imap_type=\"$imap_type\";\n";
-			$conn .= "# ligne suivante : SSL\n";
-			$conn .= "\$imap_ssl=\"$imap_ssl\";\n";
-			$conn .= "# ligne suivante : Certificat\n";
-			$conn .= "\$imap_cert=\"$imap_cert\";\n";
-			$conn .= "# ligne suivante : TLS\n";
-			$conn .= "\$imap_tls=\"$imap_tls\";\n";
-			$conn .= "?".">";
-			@fputs($f, $conn);
-			if (!@fclose($f))
-				$erreur=get_vocab('cant_record')." \"".$nom_fic."\".";
-		}
+    if ($erreur == '')
+    {
+      // On a ouvert un fichier config_imap.inc.php
+      $conn = "<"."?php\n";
+      $conn .= "# ligne suivante : Domaine utilise(necessaire pour le mail)\n";
+      $conn .= "\$imap_domaine=\"$imap_domaine\";\n";
+      $conn .= "# ligne suivante : Adresse du serveur IMAP/POP\n";
+      $conn .= "\$imap_adresse=\"$imap_adresse\";\n";
+      $conn .= "# ligne suivante : le port utilise\n";
+      $conn .= "\$imap_port=\"$imap_port\";\n";
+      $conn .= "# ligne suivante : IMAP ou POP\n";
+      $conn .= "\$imap_type=\"$imap_type\";\n";
+      $conn .= "# ligne suivante : SSL\n";
+      $conn .= "\$imap_ssl=\"$imap_ssl\";\n";
+      $conn .= "# ligne suivante : Certificat\n";
+      $conn .= "\$imap_cert=\"$imap_cert\";\n";
+      $conn .= "# ligne suivante : TLS\n";
+      $conn .= "\$imap_tls=\"$imap_tls\";\n";
+      $conn .= "?".">";
+      fwrite($f, $conn);
+      if (!@fclose($f))
+        $erreur=get_vocab('cant_record')." \"".$nom_fic."\".";
+    }
+  }
+}
+// début de la page HTML
+start_page_w_header("", "", "", $type="with_session");
+// Affichage de la colonne de gauche
+include "admin_col_gauche2.php";
+// colonne de droite
+echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
+affiche_pop_up($msg,"admin");
+echo encode_message_utf8("<h2>".get_vocab('admin_config_imap_pop')."</h2>");
+if ($etape == 1)
+{
+	if (isset($_POST["Valider1"]))
+	{
 		if ($erreur == '')
 			echo encode_message_utf8("<b><span style=\"color:green;\">".get_vocab('imap_record_success')." \"".$nom_fic."\".</span></b>");
 		else
@@ -162,7 +170,6 @@ if ($etape == 1)
 	echo ">POP</option>";
 	echo "</select>";
 
-
 	echo "<select name=\"server_ssl\">";
 	echo " <option value=\"\" ";
 	if ($imap_ssl == "")
@@ -173,6 +180,7 @@ if ($etape == 1)
 		echo "selected=\"selected\"";
 	echo ">".get_vocab('SSL')."</option>";
 	echo "</select>";
+  
 	echo "<select name=\"server_cert\" >";
 	echo "<option value=\"\" ";
 	if ($imap_cert == "")
