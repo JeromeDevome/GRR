@@ -375,7 +375,7 @@ else if ($etape == 2)
 				if ($type_ == $row[1])
 					$select = 1;
 
-				$types[] = array('id' => $row[0], 'nom' => $row[1], 'select' => $select);
+				$types[] = array('id' => $row[1], 'nom' => $row[0], 'select' => $select);
 			}
 		}
 	}

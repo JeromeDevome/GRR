@@ -100,8 +100,8 @@
 									<label class="col col-sm-4" for="type_">{{ trad.type }}</label>
 									<div class="col col-sm-8">
 									<select name="type_" class="form-control" required>
+										<option value="0">{{ trad.choose }}</option>
 										{% for type in types %}
-											<option value="0">{{ trad.choose }}</option>
 											<option value="{{ type.id }}" {% if type.select == 1 %}selected{% endif %}>{{ type.nom }}</option>
 										{% endfor %}
 									</select>
@@ -263,7 +263,7 @@
 				{
 					if (document.getElementById("main").elements[0].value == '')
 					{
-						alert("{{ trad.choose_a_room }}"); ?>");
+						alert("{{ trad.choose_a_room }}");
 						return false;
 					}
 					else
