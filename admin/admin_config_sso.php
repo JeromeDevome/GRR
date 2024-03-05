@@ -3,9 +3,9 @@
  * admin_config_sso.php
  * Interface permettant l'activation de la prise en compte d'un environnement SSO
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-08-02 18:08$
+ * Dernière modification : $Date: 2024-03-05 15:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -30,62 +30,66 @@ if (authGetUserLevel(getUserName(), -1) < 6)
 	showAccessDenied($back);
 	exit();
 }
+$erreur = "";
 if (isset($_POST['valid'])) // enregistrement des données entrées
 {
 	VerifyModeDemo();
 	
 	if (!Settings::set("cas_serveur", $_POST['cas_serveur']))
-		echo "Erreur lors de l'enregistrement de cas_serveur !<br />";
+		$erreur.= get_vocab('save_err')." cas_serveur !<br />";
 	if (!Settings::set("cas_port", $_POST['cas_port']))
-		echo "Erreur lors de l'enregistrement de cas_port !<br />";
+		$erreur.= get_vocab('save_err')." cas_port !<br />";
 	if (!Settings::set("cas_racine", $_POST['cas_racine']))
-		echo "Erreur lors de l'enregistrement de cas_racine !<br />";
+		$erreur.= get_vocab('save_err')." cas_racine !<br />";
     if (!Settings::set("cas_proxy_server", $_POST['cas_proxy_server']))
-		echo "Erreur lors de l'enregistrement de cas_proxy_server !<br />";
+		$erreur.= get_vocab('save_err')." cas_proxy_server !<br />";
     if (!Settings::set("cas_proxy_port", $_POST['cas_proxy_port']))
-		echo "Erreur lors de l'enregistrement de cas_proxy_port !<br />";
+		$erreur.= get_vocab('save_err')." cas_proxy_port !<br />";
     if (!Settings::set("cas_version", $_POST['cas_version']))
-		echo "Erreur lors de l'enregistrement de cas_version !<br />";
+		$erreur.= get_vocab('save_err')." cas_version !<br />";
 	
 	if (!isset($_POST['cacher_lien_deconnecter']))
 		$cacher_lien_deconnecter = "n";
 	else
 		$cacher_lien_deconnecter = "y";
 	if (!Settings::set("cacher_lien_deconnecter", $cacher_lien_deconnecter))
-		echo "Erreur lors de l'enregistrement de cacher_lien_deconnecter !<br />";
+		$erreur.= get_vocab('save_err')." cacher_lien_deconnecter !<br />";
 	if (isset($_POST['Url_portail_sso']))
 	{
 		if (!Settings::set("Url_portail_sso", $_POST['Url_portail_sso']))
-			echo "Erreur lors de l'enregistrement de Url_portail_sso ! <br />";
+			$erreur.= get_vocab('save_err')." Url_portail_sso ! <br />";
 	}
 	if ($_POST['sso_statut'] == "no_sso")
 	{
-		$req = grr_sql_query("delete from ".TABLE_PREFIX."_setting where NAME = 'sso_statut'");
-		$grrSettings['sso_statut'] = '';
+		$req = grr_sql_command("delete from ".TABLE_PREFIX."_setting where NAME = 'sso_statut'");
+    if($req >= 0)
+      $grrSettings['sso_statut'] = '';
+    else
+      $erreur.= get_vocab('save_err')."sso_statut ! <br />";
 	}
 	else
 	{
 		if (!Settings::set("sso_statut", $_POST['sso_statut']))
-			echo "Erreur lors de l'enregistrement de sso_statut !<br />";
+			$erreur.= get_vocab('save_err')." sso_statut !<br />";
 		$grrSettings['sso_statut'] = $_POST['sso_statut'];
 	}
 	if (!Settings::set("lcs_statut_prof", $_POST['lcs_statut_prof']))
-		echo "Erreur lors de l'enregistrement de lcs_statut_prof !<br />";
+		$erreur.= get_vocab('save_err')." lcs_statut_prof !<br />";
 	$grrSettings['lcs_statut_prof'] = $_POST['lcs_statut_prof'];
 	if (!Settings::set("lcs_statut_eleve", $_POST['lcs_statut_eleve']))
-		echo "Erreur lors de l'enregistrement de lcs_statut_eleve !<br />";
+		$erreur.= get_vocab('save_err')." lcs_statut_eleve !<br />";
 	$grrSettings['lcs_statut_eleve'] = $_POST['lcs_statut_eleve'];
 	if (!Settings::set("lcs_liste_groupes_autorises", $_POST['lcs_liste_groupes_autorises']))
-		echo "Erreur lors de l'enregistrement de lcs_liste_groupes_autorises !<br />";
+		$erreur.= get_vocab('save_err')." lcs_liste_groupes_autorises !<br />";
 	$grrSettings['lcs_liste_groupes_autorises'] = $_POST['lcs_liste_groupes_autorises'];
 	if (!Settings::set("http_champ_email", $_POST['http_champ_email']))
-		echo "Erreur lors de l'enregistrement de http_champ_email !<br />";
+		$erreur.= get_vocab('save_err')." http_champ_email !<br />";
 	$grrSettings['http_champ_email'] = $_POST['http_champ_email'];
 	if (!Settings::set("http_champ_nom", $_POST['http_champ_nom']))
-		echo "Erreur lors de l'enregistrement de http_champ_nom !<br />";
+		$erreur.= get_vocab('save_err')." http_champ_nom !<br />";
 	$grrSettings['http_champ_nom'] = $_POST['http_champ_nom'];
 	if (!Settings::set("http_champ_prenom", $_POST['http_champ_prenom']))
-		echo "Erreur lors de l'enregistrement de http_champ_prenom !<br />";
+		$erreur.= get_vocab('save_err')." http_champ_prenom !<br />";
 	$grrSettings['http_champ_prenom'] = $_POST['http_champ_prenom'];
 	if ($_POST['http_sso_domain'] == "")
 		$_POST['http_sso_statut_domain'] = "";
@@ -95,25 +99,25 @@ if (isset($_POST['valid'])) // enregistrement des données entrées
 			$_POST['http_sso_statut_domain'] = "visiteur";
 	}
 	if (!Settings::set("http_sso_domain", $_POST['http_sso_domain']))
-		echo "Erreur lors de l'enregistrement de http_sso_domain !<br />";
+		$erreur.= get_vocab('save_err')." http_sso_domain !<br />";
 	$grrSettings['http_sso_domain'] = $_POST['http_sso_domain'];
 	if (isset($_POST['http_sso_domain']))
 	{
 		if (!Settings::set("http_sso_statut_domain", $_POST['http_sso_statut_domain']))
-			echo "Erreur lors de l'enregistrement de http_sso_statut_domain !<br />";
+			$erreur.= get_vocab('save_err')." http_sso_statut_domain !<br />";
 		$grrSettings['http_sso_statut_domain'] = $_POST['http_sso_statut_domain'];
 	}
 	if (isset($_POST['Url_cacher_page_login']))
 	{
 		if (!Settings::set("Url_cacher_page_login", $_POST['Url_cacher_page_login']))
-			echo "Erreur lors de l'enregistrement de Url_cacher_page_login ! <br />";
+			$erreur.= get_vocab('save_err')." Url_cacher_page_login ! <br />";
 	}
 	if (!isset($_POST['sso_IsNotAllowedModify']))
 		$sso_IsNotAllowedModify = "n";
 	else
 		$sso_IsNotAllowedModify = "y";
 	if (!Settings::set("sso_IsNotAllowedModify", $sso_IsNotAllowedModify))
-		echo "Erreur lors de l'enregistrement de sso_IsNotAllowedModify !<br />";
+		$erreur.= get_vocab('save_err')." sso_IsNotAllowedModify !<br />";
 	if (($_POST['sso_statut'] != "cas_visiteur") && ($_POST['sso_statut'] != "cas_utilisateur"))
 		$sso_active_correspondance_profil_statut = "n";
 	else
@@ -124,7 +128,7 @@ if (isset($_POST['valid'])) // enregistrement des données entrées
 			$sso_active_correspondance_profil_statut = "y";
 	}	
 	if (!Settings::set("sso_ac_corr_profil_statut", $sso_active_correspondance_profil_statut))
-		echo "Erreur lors de l'enregistrement de sso_active_correspondance_profil_statut !<br />";
+		$erreur.= get_vocab('save_err')." sso_active_correspondance_profil_statut !<br />";
 	if (($_POST['sso_statut'] != "cas_visiteur") && ($_POST['sso_statut'] != "cas_utilisateur"))
 		$sso_redirection_accueil_grr = "n";
 	else
@@ -135,7 +139,7 @@ if (isset($_POST['valid'])) // enregistrement des données entrées
 			$sso_redirection_accueil_grr = "y";
 	}
 	if (!Settings::set("sso_redirection_accueil_grr", $sso_redirection_accueil_grr))
-		echo "Erreur lors de l'enregistrement de sso_redirection_accueil_grr !<br />";
+		$erreur.= get_vocab('save_err')." sso_redirection_accueil_grr !<br />";
     if (($_POST['sso_statut'] != "cas_visiteur") && ($_POST['sso_statut'] != "cas_utilisateur"))
 		$cas_logout = "";
 	else
@@ -146,19 +150,20 @@ if (isset($_POST['valid'])) // enregistrement des données entrées
             $cas_logout = clean_input($_POST['cas_logout']);
 	}
 	if (!Settings::set("cas_logout", $cas_logout))
-		echo "Erreur lors de l'enregistrement de cas_logout !<br />";
+		$erreur.= get_vocab('save_err')." cas_logout !<br />";
+  
+  if($erreur == "")
+    $msg = get_vocab('message_records');
+  else
+    $msg = $erreur;
 }
 // récupération des données enregistrées
 $CAS = array('CAS_VERSION_1_0','CAS_VERSION_2_0','CAS_VERSION_3_0','SAML_VERSION_1_1'); // protocoles admissibles
 $cas_version = Settings::get('cas_version');
 
-if (authGetUserLevel(getUserName(), -1) < 6)
-{
-	showAccessDenied($back);
-	exit();
-}
 # print the page header
 start_page_w_header("", "", "", $type="with_session");
+affiche_pop_up($msg,'admin');
 // Affichage de la colonne de gauche
 include "admin_col_gauche2.php";
 // colonne de droite
