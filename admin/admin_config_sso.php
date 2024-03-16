@@ -3,7 +3,7 @@
  * admin_config_sso.php
  * Interface permettant l'activation de la prise en compte d'un environnement SSO
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-03-05 15:30$
+ * Dernière modification : $Date: 2024-03-15 14:28$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -31,6 +31,7 @@ if (authGetUserLevel(getUserName(), -1) < 6)
 	exit();
 }
 $erreur = "";
+$msg="";
 if (isset($_POST['valid'])) // enregistrement des données entrées
 {
 	VerifyModeDemo();

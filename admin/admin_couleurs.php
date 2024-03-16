@@ -121,7 +121,7 @@ if ((isset($_POST['record'])) && (!isset($ok)))
         $fich=fopen("../themes/perso/css/perso.css","a+");
         fwrite($fich,":root{");
         foreach($champs_couleur as $code_js => $code_css)
-		{
+        {
             $couleur = valid_color($_POST[$code_js]);
             fwrite($fich," 
     ".$code_css.": ".$couleur.";");

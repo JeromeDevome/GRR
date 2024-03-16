@@ -3,9 +3,9 @@
  * admin_config11.php
  * Interface permettant à l'administrateur la configuration de paramètres généraux présentant le site GRR
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2023-10-18 11:48$
+ * Dernière modification : $Date: 2024-03-15 17:58$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -19,8 +19,6 @@
 $grr_script_name = "admin_config11.php";
 
 include "../include/admin.inc.php";
-if (!Settings::load())
-    die(get_vocab('error_settings_load'));
 
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 $_SESSION['chemin_retour'] = "admin_accueil.php";
@@ -29,62 +27,46 @@ $month = date("m");
 $year  = date("Y");
 check_access(6, $back);
 // enregistrement des données du formulaire
+$msg="";
 if (isset($_POST['title_home_page'])) {
-    if (!Settings::set('title_home_page', $_POST['title_home_page'])) {
-        echo $vocab['save_err']." title_home_page !<br />";
-        die();
-    }
+    if (!Settings::set('title_home_page', $_POST['title_home_page'])) 
+        $msg.= $vocab['save_err']." title_home_page !<br />";
 }
 if (isset($_POST['message_home_page'])) {
-    if (!Settings::set('message_home_page', $_POST['message_home_page'])) {
-        echo $vocab['save_err']." message_home_page !<br />";
-        die();
-    }
+    if (!Settings::set('message_home_page', $_POST['message_home_page'])) 
+        $msg.= $vocab['save_err']." message_home_page !<br />";
 }
 if (isset($_POST['company'])) {
-    if (!Settings::set('company', $_POST['company'])) {
-        echo $vocab['save_err']." company !<br />";
-        die();
-    }
+    if (!Settings::set('company', $_POST['company']))
+        $msg.= $vocab['save_err']." company !<br />";
 }
 if (isset($_POST['grr_url'])) {
-    if (!Settings::set('grr_url', $_POST['grr_url'])) {
-        echo $vocab['save_err']." grr_url !<br />";
-        die();
-    }
+    if (!Settings::set('grr_url', $_POST['grr_url']))
+        $msg.= $vocab['save_err']." grr_url !<br />";
 }
 if (isset($_POST['ok'])) {
-    if (isset($_POST['use_grr_url'])) {
+    if (isset($_POST['use_grr_url']))
         $use_grr_url = 'y';
-    } else {
+    else
         $use_grr_url = 'n';
-    }
-    if (!Settings::set('use_grr_url', $use_grr_url)) {
-        echo $vocab['save_err']." use_grr_url !<br />";
-        die();
-    }
+    if (!Settings::set('use_grr_url', $use_grr_url))
+        $msg.= $vocab['save_err']." use_grr_url !<br />";
 }
 if (isset($_POST['webmaster_name'])) {
-    if (!Settings::set('webmaster_name', $_POST['webmaster_name'])) {
-        echo $vocab['save_err']." webmaster_name !<br />";
-        die();
-    }
+    if (!Settings::set('webmaster_name', $_POST['webmaster_name']))
+        $msg.= $vocab['save_err']." webmaster_name !<br />";
 }
 if (isset($_POST['webmaster_email'])) {
     $emails = filter_multi_emails($_POST['webmaster_email']);
-    if (!Settings::set('webmaster_email', $emails)) {
-        echo $vocab['save_err']." webmaster_email !<br />";
-        die();
-    }
+    if (!Settings::set('webmaster_email', $emails))
+        $msg.= $vocab['save_err']." webmaster_email !<br />";
 }
 if (isset($_POST['technical_support_email'])) {
     $emails = filter_multi_emails($_POST['technical_support_email']);
-    if (!Settings::set('technical_support_email', $emails)) {
-        echo $vocab['save_err']." technical_support_email !<br />";
-        die();
-    }
+    if (!Settings::set('technical_support_email', $emails))
+        $msg.= $vocab['save_err']." technical_support_email !<br />";
 }
-$msg = '';
+
 if (isset($_POST['ok'])) {
     // Suppression du logo
     if (isset($_POST['sup_img'])) {
@@ -163,7 +145,7 @@ if (isset($_POST['ok'])) {
             else {
                 /* j'ai une image valide, sans data exif, avec un bon type mime */
 
-                /* je test si la destination est writable */
+                /* je teste si la destination est writable */
                 $dest = '../images/';
                 $randName = md5(uniqid(rand(), true));
 
@@ -208,7 +190,7 @@ if (isset($_POST['ok'])) {
                             }
                         }
                     }
-                } 
+                }
                 else {
                     $msg .= get_vocab('errImgTransfer')."\\n";
                     $ok = 'no';
@@ -223,11 +205,8 @@ if (isset($_POST['ok'])) {
 }
 // nombre de calendriers
 if (isset($_POST['nb_calendar'])) {
-    settype($_POST['nb_calendar'], 'integer');
-    if (!Settings::set('nb_calendar', $_POST['nb_calendar'])) {
-        echo get_vocab('save_err')." nb_calendar !<br />";
-        die();
-    }
+    if (!Settings::set('nb_calendar', intval($_POST['nb_calendar'])))
+        $msg.= get_vocab('save_err')." nb_calendar !<br />";
 }
 // début et fin des réservations
 $demande_confirmation = 'no';
@@ -239,13 +218,13 @@ if (isset($_POST['begin_day']) && isset($_POST['begin_month']) && isset($_POST['
         $begin_day--;
     }
     $begin_bookings = mktime(0, 0, 0, $begin_month, $begin_day, $begin_year);
-    $test_del1 = grr_sql_count(grr_sql_query('SELECT * FROM '.TABLE_PREFIX."_entry WHERE (end_time < '$begin_bookings' )"));
-    $test_del2 = grr_sql_count(grr_sql_query('SELECT * FROM '.TABLE_PREFIX."_repeat WHERE (end_date < '$begin_bookings' )"));
+    $test_del1 = grr_sql_count(grr_sql_query('SELECT * FROM '.TABLE_PREFIX."_entry WHERE (end_time < ? )","i",[$begin_bookings]));
+    $test_del2 = grr_sql_count(grr_sql_query('SELECT * FROM '.TABLE_PREFIX."_repeat WHERE (end_date < ? )","i",[$begin_bookings]));
     if (($test_del1 != 0) || ($test_del2 != 0)) {
         $demande_confirmation = 'yes';
     } else {
         if (!Settings::set('begin_bookings', $begin_bookings)) {
-            echo $vocab['save_err']." begin_bookings !<br />";
+            $msg.= $vocab['save_err']." begin_bookings !<br />";
         }
     }
 
@@ -260,13 +239,14 @@ if (isset($_POST['begin_day']) && isset($_POST['begin_month']) && isset($_POST['
         if ($end_bookings < $begin_bookings) {
             $end_bookings = $begin_bookings;
         }
-        $test_del1 = grr_sql_count(grr_sql_query('SELECT * FROM '.TABLE_PREFIX."_entry WHERE (start_time > '$end_bookings')"));
-        $test_del2 = grr_sql_count(grr_sql_query('SELECT * FROM '.TABLE_PREFIX."_repeat WHERE (start_time > '$end_bookings')"));
+        $test_del1 = grr_sql_count(grr_sql_query('SELECT * FROM '.TABLE_PREFIX."_entry WHERE (start_time > ? )","i",[$end_bookings]));
+        $test_del2 = grr_sql_count(grr_sql_query('SELECT * FROM '.TABLE_PREFIX."_repeat WHERE (start_time > ? )","i",[$end_bookings]));
         if (($test_del1 != 0) || ($test_del2 != 0)) {
             $demande_confirmation = 'yes';
-        } else {
+        } 
+        else {
             if (!Settings::set('end_bookings', $end_bookings)) {
-                echo $vocab['save_err']." end_bookings !<br />";
+                $msg.= $vocab['save_err']." end_bookings !<br />";
             }
         }
     }
@@ -277,10 +257,8 @@ if (isset($_POST['begin_day']) && isset($_POST['begin_month']) && isset($_POST['
     }
 }
 if (isset($_POST['message_accueil'])) {
-    if (!Settings::set('message_accueil', $_POST['message_accueil'])) {
-        echo $vocab['save_err']." message_accueil !<br />";
-        die();
-    }
+    if (!Settings::set('message_accueil', $_POST['message_accueil']))
+        $msg.= $vocab['save_err']." message_accueil !<br />";
 }
 // Si pas de problème, message de confirmation
 if (isset($_POST['ok'])) {
@@ -467,11 +445,11 @@ echo '<p>'.get_vocab('message_perso_explain').PHP_EOL;
 if (Settings::get('use_fckeditor') != 1) {
     echo ' '.get_vocab('description_complete2');
 }
-if (Settings::get('use_fckeditor') == 1) {
-    echo '<textarea id="editor1" name="message_accueil" rows="8" cols="120">'.PHP_EOL;
-    echo htmlspecialchars(Settings::get('message_accueil'));
-    echo "</textarea>\n";
-    ?>
+
+echo '<textarea id="editor1" name="message_accueil" rows="8" cols="120">'.PHP_EOL;
+echo htmlspecialchars(Settings::get('message_accueil'));
+echo "</textarea>\n";
+if (Settings::get('use_fckeditor') == 1) {    ?>
 	<script type="text/javascript">
 		//<![CDATA[
 		CKEDITOR.replace( 'editor1',
@@ -492,14 +470,12 @@ if (Settings::get('use_fckeditor') == 1) {
 		//]]>
 	</script>
 	<?php
-
-} else {
-    echo "\n<textarea name=\"message_accueil\" rows=\"8\" cols=\"120\">".htmlspecialchars(Settings::get('message_accueil')).'</textarea>'.PHP_EOL;
 }
 echo '</p>'.PHP_EOL;
 // Adapter les fichiers de langue
 echo '<h3>'.get_vocab('adapter_fichiers_langue').'</h3>'.PHP_EOL;
 echo get_vocab('adapter_fichiers_langue_explain').PHP_EOL;
+echo "<br /><br /><br />";
 echo '<div id="fixe" style="text-align:center;">'.PHP_EOL;
 echo '<input class="btn btn-primary" type="submit" name="ok" value="'.get_vocab('save').'" style="font-variant: small-caps;"/>'.PHP_EOL;
 echo '</div>';

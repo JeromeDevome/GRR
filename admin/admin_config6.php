@@ -3,9 +3,9 @@
  * admin_config6.php
  * Interface permettant à l'administrateur la configuration des paramètres pour les modules externes
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:57$
+ * Dernière modification : $Date: 2024-03-15 15:45$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -31,8 +31,8 @@ if (isset($_GET['activation']))
 {
 	$iter = clean_input($_GET['activation']);
 
-	$sql = "SELECT `nom`, `actif` FROM ".TABLE_PREFIX."_modulesext WHERE `nom` = '".$iter."';";
-	$res = grr_sql_query($sql);
+	$sql = "SELECT `nom`, `actif` FROM ".TABLE_PREFIX."_modulesext WHERE `nom` =? ";
+	$res = grr_sql_query($sql,"s",[$iter]);
 
 	if ($res)
 	{
@@ -45,13 +45,14 @@ if (isset($_GET['activation']))
 				grr_sql_command("UPDATE ".TABLE_PREFIX."_modulesext SET actif = '0' WHERE `nom` = '".protect_data_sql($iter)."'");
 			}
 		} 
-        else{
+    else{
 			if(is_file('../modules/'.$iter.'/installation.php') && is_file('../modules/'.$iter.'/infos.php')){
 				include '../modules/'.$iter.'/installation.php';
 				include '../modules/'.$iter.'/infos.php';
 				Module::Installation($iter, $module_versionBDD);
 				
-			} else{
+			} 
+      else{
 				$msg .= get_vocab('module_info_missing');
 			}
 		}
@@ -64,7 +65,7 @@ if (isset($_POST['ok']) && $upload_Module == 1)
     // Enregistrement du logo
     //$_FILES['doc_file'] = isset($_FILES['doc_file']) ? $_FILES['doc_file'] : null;
 	if($_FILES['file']['error'] > 0) {
-        exit('Erreur n°'.$_FILES['file']['error']);
+    exit('Erreur n°'.$_FILES['file']['error']);
     }    /* Test premier, juste pour bloquer les double extensions */
     if (count(explode('.', $_FILES['doc_file']['name'])) > 2) {
         $msg .= get_vocab('error')." 1 - ".get_vocab('zip_import_err');
@@ -79,7 +80,7 @@ if (isset($_POST['ok']) && $upload_Module == 1)
         } 
         else {
             /* deuxième test passé, l'extension est autorisée */
-			if(is_uploaded_file($_FILES['doc_file']['tmp_name'])){
+            if(is_uploaded_file($_FILES['doc_file']['tmp_name'])){
                 /* je teste si la destination est writable */
                 $dest = '../temp/';
                 $picturePath = $dest.$_FILES['doc_file']['name'];
@@ -91,33 +92,33 @@ if (isset($_POST['ok']) && $upload_Module == 1)
                         $ok = 'no';
                     } 
                     else {
-						$zip = new ZipArchive;
-						if ($zip->open($picturePath) === TRUE) {
-							$zip->extractTo('../modules/');
-							$zip->close();
-						} 
-                        else {
-							$msg .= get_vocab('error')." 8 - ".get_vocab('module_not_installed');
-							$ok = 'no';
-						}
-                        $unlinkReturn = unlink($picturePath);
-                        if (!$unlinkReturn) {
-                            $msg .= get_vocab('error')." 9 - ".get_vocab('archive_not_deleted');
-                            $ok = 'no';
-                        }
+                      $zip = new ZipArchive;
+                      if ($zip->open($picturePath) === TRUE) {
+                        $zip->extractTo('../modules/');
+                        $zip->close();
+                      } 
+                      else {
+                        $msg .= get_vocab('error')." 8 - ".get_vocab('module_not_installed');
+                        $ok = 'no';
+                      }
+                      $unlinkReturn = unlink($picturePath);
+                      if (!$unlinkReturn) {
+                          $msg .= get_vocab('error')." 9 - ".get_vocab('archive_not_deleted');
+                          $ok = 'no';
+                      }
                     }
-                } 
+                }
                 else {
                     $msg .= get_vocab('error')." 5 - ".get_vocab('module_not_recorded').get_vocab('temp_access').get_vocab('refer_to_admin');
                     $ok = 'no';
                 }
-			} 
+            } 
             else {
-			    $msg .= get_vocab('error')." 7 - ".get_vocab('module_not_recorded');
-				$ok = 'no';	
-			}
+              $msg .= get_vocab('error')." 7 - ".get_vocab('module_not_recorded');
+              $ok = 'no';	
+            }
         }
-    } 
+    }
     elseif ($_FILES['doc_file']['name'] != '') {
         $msg .= get_vocab('error')." 6 - ".get_vocab('module_not_recorded').get_vocab('invalid_file');
         $ok = 'no';
@@ -172,7 +173,7 @@ if($upload_Module == 1){
 		if($fileinfo->isFile()) {
 
 		} 
-        else {
+    else {
 			if($iter != "." && $iter != ".."){
 				if(is_file('../modules/'.$iter.'/infos.php')){
 					include '../modules/'.$iter.'/infos.php';
@@ -188,7 +189,7 @@ if($upload_Module == 1){
 					$activation = "<font color='red'>".get_vocab('Impossible')."</font>";
 					$lienActivation = "#";
 				} 
-                else{
+        else{
 					$sql = "SELECT `nom`, `actif` FROM ".TABLE_PREFIX."_modulesext WHERE `nom` = '".$iter."';";
 					$res = grr_sql_query($sql);
 					if ($res)
@@ -203,7 +204,7 @@ if($upload_Module == 1){
 							else
 								$activation = get_vocab("Désactiver");
 						} 
-                        else{
+            else{
 							$activation = get_vocab("Installer");
 						}
 					}

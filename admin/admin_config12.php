@@ -3,7 +3,7 @@
  * admin_config12.php
  * Interface permettant à l'administrateur la configuration de certains paramètres d'affichage
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2024-01-09 15:13$
+ * Dernière modification : $Date: 2024-03-15 18:23$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -19,9 +19,6 @@
 $grr_script_name = "admin_config12.php";
 
 include "../include/admin.inc.php";
-if (!Settings::load()) {
-    die(get_vocab('error_settings_load'));
-}
 
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 $_SESSION['chemin_retour'] = "admin_accueil.php";
@@ -47,110 +44,81 @@ $plan=array('day','week','week_all','month','month_all','month_all2','year','yea
 $opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants');
 
 // enregistrement des données du formulaire
+$msg="";
 // Type d'affichage des listes des domaines et des ressources
 if (isset($_POST['area_list_format'])) {
-    if (!Settings::set('area_list_format', $_POST['area_list_format'])) {
-        echo $vocab['save_err']." area_list_format !<br />";
-        die();
-    }
+    if (!Settings::set('area_list_format', $_POST['area_list_format']))
+        $msg.= $vocab['save_err']." area_list_format !<br />";
 }
 // site par défaut
 if (isset($_POST['id_site'])) {
-    if (!Settings::set('default_site', $_POST['id_site'])) {
-        echo $vocab['save_err']." default_site !<br />";
-        die();
-    }
+    if (!Settings::set('default_site', $_POST['id_site']))
+        $msg.= $vocab['save_err']." default_site !<br />";
 }
 // domaine par défaut
 if (isset($_POST['id_area'])) {
-    if (!Settings::set('default_area', $_POST['id_area'])) {
-        echo $vocab['save_err']." default_area !<br />";
-        die();
-    }
+    if (!Settings::set('default_area', $_POST['id_area']))
+        $msg.= $vocab['save_err']." default_area !<br />";
 }
 // planning par défaut
 if (isset($_POST['id_room'])) {
-    if (!Settings::set('default_room', $_POST['id_room'])) {
-        echo $vocab['save_err']." default_room !<br />";
-        die();
-    }
+    if (!Settings::set('default_room', $_POST['id_room']))
+        $msg.= $vocab['save_err']." default_room !<br />";
 }
 // Style/thème
 if (isset($_POST['default_css'])) {
-    if (!Settings::set('default_css', $_POST['default_css'])) {
-        echo $vocab['save_err']." default_css !<br />";
-        die();
-    }
+    if (!Settings::set('default_css', $_POST['default_css']))
+        $msg.= $vocab['save_err']." default_css !<br />";
 }
 // langage
 if (isset($_POST['default_language'])) {
-    if (!Settings::set('default_language', $_POST['default_language'])) {
-        echo $vocab['save_err']." default_language !<br />";
-        die();
-    }
+    if (!Settings::set('default_language', $_POST['default_language']))
+        $msg.= $vocab['save_err']." default_language !<br />";
     unset($_SESSION['default_language']);
 }
 // menu_gauche
 if (isset($_POST['menu_gauche'])) {
-    if (!Settings::set('menu_gauche', $_POST['menu_gauche'])) {
-        echo $vocab['save_err']." menu_gauche !<br />";
-        die();
-    }
+    if (!Settings::set('menu_gauche', $_POST['menu_gauche']))
+        $msg.= $vocab['save_err']." menu_gauche !<br />";
 }
 // formulaire de contact
 if (isset($_POST['mail_etat_destinataire'])) {
-    if (!Settings::set('mail_etat_destinataire', $_POST['mail_etat_destinataire'])) {
-        echo $vocab['save_err']." mail_etat_destinataire !<br />";
-        die();
-    }
+    if (!Settings::set('mail_etat_destinataire', $_POST['mail_etat_destinataire']))
+        $msg.= $vocab['save_err']." mail_etat_destinataire !<br />";
 }
 if (isset($_POST['mail_destinataire'])) {
-    if (!Settings::set('mail_destinataire', $_POST['mail_destinataire'])) {
-        echo $vocab['save_err']." mail_destinataire !<br />";
-        die();
-    }
+    if (!Settings::set('mail_destinataire', $_POST['mail_destinataire']))
+        $msg.= $vocab['save_err']." mail_destinataire !<br />";
 }
 // limitation des réservations par formulaire 
 if (isset($_POST['nb_max_resa_form'])){
-    if (!Settings::set('nb_max_resa_form', clean_input($_POST['nb_max_resa_form']))) {
-        echo $vocab['save_err']." nb_max_resa_form !<br />";
-        die();
-    }
+    if (!Settings::set('nb_max_resa_form', clean_input($_POST['nb_max_resa_form'])))
+        $msg.= $vocab['save_err']." nb_max_resa_form !<br />";
 }
 // Affichage de l'adresse email
 if (isset($_POST['display_level_email'])) {
-    if (!Settings::set('display_level_email', $_POST['display_level_email'])) {
-        echo $vocab['save_err']." display_level_email !<br />";
-        die();
-    }
+    if (!Settings::set('display_level_email', $_POST['display_level_email']))
+        $msg.= $vocab['save_err']." display_level_email !<br />";
 }
 /*-----MAJ Loïs THOMAS  --> Affichage de la page view_entry pour les réservations  -----*/
 if (isset($_POST['display_level_view_entry'])) {
-    if (!Settings::set('display_level_view_entry', $_POST['display_level_view_entry'])) {
-        echo $vocab['save_err']." display_level_view_entry !<br />";
-        die();
-    }
+    if (!Settings::set('display_level_view_entry', $_POST['display_level_view_entry']))
+        $msg.= $vocab['save_err']." display_level_view_entry !<br />";
 }
 // remplissage de la description brève
 if (isset($_POST['remplissage_description_breve'])) {
-    if (!Settings::set('remplissage_description_breve', $_POST['remplissage_description_breve'])) {
-        echo $vocab['save_err']." remplissage_description_breve !<br />";
-        die();
-    }
+    if (!Settings::set('remplissage_description_breve', $_POST['remplissage_description_breve']))
+        $msg.= $vocab['save_err']." remplissage_description_breve !<br />";
 }
 // remplissage de la description complète
 if (isset($_POST['remplissage_description_complete'])) {
-    if (!Settings::set('remplissage_description_complete', $_POST['remplissage_description_complete'])) {
-        echo $vocab['save_err']." remplissage_description_complete !<br />";
-        die();
-    }
+    if (!Settings::set('remplissage_description_complete', $_POST['remplissage_description_complete']))
+        $msg.= $vocab['save_err']." remplissage_description_complete !<br />";
 }
 // pview_new_windows
 if (isset($_POST['pview_new_windows'])) {
-    if (!Settings::set('pview_new_windows', $_POST['pview_new_windows'])) {
-        echo $vocab['save_err']." pview_new_windows !<br />";
-        die();
-    }
+    if (!Settings::set('pview_new_windows', $_POST['pview_new_windows']))
+        $msg.= $vocab['save_err']." pview_new_windows !<br />";
 }
 
 // pour le traitement des checkboxes
@@ -160,25 +128,19 @@ if (!empty($_POST)) // évite d'effacer les enregistrements lors du deuxième pa
     $display_info_bulle = 1;
     if (isset($_POST['display_info_bulle']))
         $display_info_bulle = 0;
-    if (!Settings::set('display_info_bulle', $display_info_bulle)) {
-        echo $vocab['save_err']." display_info_bulle !<br />";
-        die();
-    }
+    if (!Settings::set('display_info_bulle', $display_info_bulle))
+        $msg.= $vocab['save_err']." display_info_bulle !<br />";
     // contenu des cellules
     foreach ($plan as $p){
         $name = 'cell_'.$p;
         if (isset($_POST[$name])){
             $choix = encode_tableau($_POST[$name],$opt);
-            if (!Settings::set($name, $choix)) {
-                echo $vocab['save_err'].' '.$name." !<br />";
-                die();
-            }
+            if (!Settings::set($name, $choix))
+                $msg.= $vocab['save_err'].' '.$name." !<br />";
         }
         else{ // tout est décoché
-            if(!Settings::set($name, 'FFFFFFF')){
-                echo $vocab['save_err'].' '.$name.' !<br />';
-                die();
-            }
+            if(!Settings::set($name, 'FFFFFFF'))
+                $msg.= $vocab['save_err'].' '.$name.' !<br />';
         }
     }
     // info-bulles
@@ -186,103 +148,79 @@ if (!empty($_POST)) // évite d'effacer les enregistrements lors du deuxième pa
         $name = 'popup_'.$p;
         if (isset($_POST[$name])){
             $choix = encode_tableau($_POST[$name],$opt);
-            if (!Settings::set($name, $choix)) {
-                echo $vocab['save_err'].' '.$name." !<br />";
-                die();
-            }
+            if (!Settings::set($name, $choix))
+                $msg.= $vocab['save_err'].' '.$name." !<br />";
         }
         else{ // tout est décoché
-            if(!Settings::set($name, 'FFFFFFF')){
-                echo $vocab['save_err'].' '.$name.' !<br />';
-                die();
-            }
+            if(!Settings::set($name, 'FFFFFFF'))
+                $msg.= $vocab['save_err'].' '.$name.' !<br />';
         }
     }
     // Option periodicite
     $option_periodicite = 'n';
     if (isset($_POST['periodicite']))
         $option_periodicite = 'y';
-    if (!Settings::set('periodicite', $option_periodicite)) {
-        echo $vocab['save_err']." periodicite !<br />";
-        die();
-    }
+    if (!Settings::set('periodicite', $option_periodicite))
+        $msg.= $vocab['save_err']." periodicite !<br />";
     // Selecteur de date direct
     $select_date_directe = 'n';
     if(isset($_POST['select_date_directe']))
         $select_date_directe = 'y';
-    if (!Settings::set('select_date_directe', $select_date_directe)){
-        echo $vocab['save_err']." select_date_directe !<br />";
-        die();
-    }
+    if (!Settings::set('select_date_directe', $select_date_directe))
+        $msg.= $vocab['save_err']." select_date_directe !<br />";
     /*-----MAJ Loïs THOMAS  -->Affichage ou non de la legende -----*/
     $affiche_legende = 1; // i.e. ne pas afficher
     if (isset($_POST['legend'])) 
         $affiche_legende = 0;
-    if (!Settings::set('legend', $affiche_legende)) {
-        echo $vocab['save_err']." legend !<br />";
-        die();
-    }
+    if (!Settings::set('legend', $affiche_legende))
+        $msg.= $vocab['save_err']." legend !<br />";
     // Affichage imprimante
     $affiche_imprimante = 1; // i.e. ne pas afficher
     if (isset($_POST['imprimante']))
         $affiche_imprimante = 0;
-    if (!Settings::set('imprimante', $affiche_imprimante)) {
-        echo $vocab['save_err']." imprimante !<br />";
-        die();
-    }
+    if (!Settings::set('imprimante', $affiche_imprimante))
+        $msg.= $vocab['save_err']." imprimante !<br />";
     // Affichage pdf 
     $affiche_pdf = 0; // i.e. ne pas afficher
     if (isset($_POST['pdf']))
         $affiche_pdf = 1;
-    if (!Settings::set('pdf', $affiche_pdf)) {
-        echo $vocab['save_err']." affichage pdf !<br />";
-        die();
-    }
+    if (!Settings::set('pdf', $affiche_pdf))
+        $msg.= $vocab['save_err']." affichage pdf !<br />";
     // courrier
     $affiche_courrier = 'n';
     if (isset($_POST['show_courrier']))
         $affiche_courrier = 'y';
-    if (!Settings::set('show_courrier', $affiche_courrier)) {
-        echo $vocab['save_err']." show_courrier !<br />";
-        die();
-    }
+    if (!Settings::set('show_courrier', $affiche_courrier))
+        $msg.= $vocab['save_err']." show_courrier !<br />";
     // vacances et jours fériés
     $affiche_vacances = 'Non';
     if (isset($_POST['show_holidays'])) 
         $affiche_vacances = 'Oui';
-    if (!Settings::set('show_holidays', $affiche_vacances)) {
-        echo $vocab['save_err']." show_holidays !<br />";
-        die();
-    }
+    if (!Settings::set('show_holidays', $affiche_vacances))
+        $msg.= $vocab['save_err']." show_holidays !<br />";
 }
 // zone de vacances scolaires
 if (isset($_POST['holidays_zone'])) {
-    if (!Settings::set('holidays_zone', $_POST['holidays_zone'])) {
-        echo $vocab['save_err']." holidays_zone !<br />";
-        die();
-    }
+    if (!Settings::set('holidays_zone', $_POST['holidays_zone']))
+        $msg.= $vocab['save_err']." holidays_zone !<br />";
 }
 # Lors de l'édition d'un rapport, valeur par défaut en nombre de jours
 # de l'intervalle de temps entre la date de début du rapport et la date de fin du rapport.
 if (isset($_POST['default_report_days'])) {
-    settype($_POST['default_report_days'], 'integer');
-    if ($_POST['default_report_days'] <= 0) {
-        $_POST['default_report_days'] = 0;
+    $default_report_days = intval($_POST['default_report_days']);
+    if ($default_report_days <= 0) {
+        $default_report_days = 0;
     }
-    if (!Settings::set('default_report_days', $_POST['default_report_days'])) {
-        echo $vocab['save_err']." default_report_days !<br />";
-        die();
-    }
+    if (!Settings::set('default_report_days', $default_report_days))
+        $msg.= $vocab['save_err']." default_report_days !<br />";
 }
 if (isset($_POST['longueur_liste_ressources_max'])) {
-    settype($_POST['longueur_liste_ressources_max'], 'integer');
-    if ($_POST['longueur_liste_ressources_max'] <= 0) {
-        $_POST['longueur_liste_ressources_max'] = 1;
+    $longueur_liste_ressources_max = intval($_POST['longueur_liste_ressources_max']);
+    if ($longueur_liste_ressources_max <= 0) {
+        $longueur_liste_ressources_max = 1;
     }
-    if (!Settings::set('longueur_liste_ressources_max', $_POST['longueur_liste_ressources_max'])) {
-        echo $vocab['save_err']." longueur_liste_ressources_max !<br />";
-        die();
-    }
+    if (!Settings::set('longueur_liste_ressources_max', $_POST['longueur_liste_ressources_max']))
+        $msg.= $vocab['save_err']." longueur_liste_ressources_max !<br />";
 }
 /* valeurs existant dans la base, mais pas définies ici
 // Affichage type 

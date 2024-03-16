@@ -3,9 +3,9 @@
  * admin_corresp_statut.php
  * interface de gestion de la correspondance entre profil LDAP et statut GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-08 10:43$
+ * Dernière modification : $Date: 2024-03-16 10:55$
  * @author    Laurent Delineau & JeromeB & Christian Daviau & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -22,7 +22,7 @@ include "../include/admin.inc.php";
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 if (Settings::get("sso_ac_corr_profil_statut") != 'y')
 {
-	showAccessDenied($back);
+	showAccessDenied($back);// message peu pertinent
 	exit();
 }
 check_access(5, $back);
@@ -36,8 +36,8 @@ if ( isset($_GET['action_add']) && ($_GET['action_add'] == 'yes'))
 {
 	if (($_POST['codefonc'] != "") && ($_POST['libfonc'] != "") && ($_POST['statutgrr'] != ""))
 	{
-		$sql = "INSERT INTO ".TABLE_PREFIX."_correspondance_statut (code_fonction, libelle_fonction, statut_grr) VALUES ('".strtoupper(protect_data_sql($_POST['codefonc']))."', '".ucfirst(protect_data_sql($_POST['libfonc']))."','".$_POST['statutgrr']."')";
-		if (grr_sql_command($sql) < 0)
+		$sql = "INSERT INTO ".TABLE_PREFIX."_correspondance_statut (code_fonction, libelle_fonction, statut_grr) VALUES (?,?,?)";
+		if (grr_sql_command($sql,"sss",[strtoupper(protect_data_sql($_POST['codefonc'])),ucfirst(protect_data_sql($_POST['libfonc'])),$_POST['statutgrr']]) < 0)
 			fatal_error(0, "<p>" . grr_sql_error());
 		else
 			$msg = get_vocab("message_records");
@@ -77,11 +77,24 @@ if ((isset($_GET['action_del'])) && ($_GET['js_confirmed'] == 1) && ($_GET['acti
 		$msg = get_vocab("message_records");
 }
 // données à afficher
+$nb_lignes = 0;
 $sql = "SELECT code_fonction, libelle_fonction, statut_grr, id FROM  ".TABLE_PREFIX."_correspondance_statut";
 $res = grr_sql_query($sql);
-$nb_lignes = grr_sql_count($res);
+if(!$res)
+  $msg.=get_vocab('error_reading_database');
+else{
+  $col = array();
+  foreach($res as $row){
+    $col[] = array(1 => $row['code_fonction'], 2 => $row['libelle_fonction'], 3 => $row['statut_grr'], 4 => $row['id']);
+  }
+  $nb_lignes = grr_sql_count($res);
+}
+grr_sql_free($res);
+
 //print the page header
 start_page_w_header("", "", "", $type="with_session");
+// Affichage d'un pop-up
+affiche_pop_up($msg,"admin");
 // Affichage de la colonne de gauche
 include "admin_col_gauche2.php";
 // colonne de droite
@@ -107,31 +120,31 @@ else
 	echo "<td><b>".get_vocab("statut_grr_modif")."</b></td>\n";
 	echo "<td> </td>\n";
 	echo "</tr>";
-	if ($res)
-	{
-		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-		{
-			$codefonc = $row[0];
-			$libfonc = $row[1];
-			$statutgrr = $row[2];
-			// Affichage des numéros et descriptions
-			$col[$i][1] = $codefonc;
-			$col[$i][2] = $libfonc;
-			$col[$i][3] = $statutgrr;
-			echo "<tr>\n";
-			echo "<td>{$col[$i][1]}</td>\n";
-			echo "<td>{$col[$i][2]}</td>\n";
-			echo "<td>{$col[$i][3]}</td>\n";
-			echo "<td><form action=\"admin_corresp_statut.php?action_mod=yes\" method=\"post\">\n<div><input type=\"hidden\" name=\"idfonc\" value=\"$row[3]\" />\n<input type=\"hidden\" name=\"idselect\" value=\"$i\" />\n<select name=\"statut$i\">\n<option value=\"visiteur\">".get_vocab("statut_visitor")."</option>\n<option value=\"utilisateur\">".get_vocab("statut_user")."</option>\n<option value=\"gestionnaire_utilisateur\">".get_vocab("statut_user_administrator")."</option>\n<option value=\"administrateur\">".get_vocab("statut_administrator")."</option>\n</select><br />\n<input type=\"submit\" value=\"".get_vocab("edit")."\" /></div></form></td>\n";
-			echo "<td><a href=\"admin_corresp_statut.php?id=$row[3]&amp;action_del=yes\" onclick=\"return confirmlink(this, '$themessage2', '$themessage')\" >".get_vocab("delete");
-			echo "</a></td>";
-			// Fin de la ligne courante
-			echo "</tr>";
-		}
-	}
+	for($i = 0; $i < $nb_lignes; $i++)
+  {
+    // Affichage des numéros et descriptions
+    echo "<tr>\n";
+    echo "<td>{$col[$i][1]}</td>\n";
+    echo "<td>{$col[$i][2]}</td>\n";
+    echo "<td>{$col[$i][3]}</td>\n";
+    echo "<td><form action=\"admin_corresp_statut.php?action_mod=yes\" method=\"post\">\n
+    <div><input type=\"hidden\" name=\"idfonc\" value=\"{$col[$i][4]}\" />\n
+    <input type=\"hidden\" name=\"idselect\" value=\"$i\" />\n
+    <select name=\"statut$i\">\n
+    <option value=\"visiteur\">".get_vocab("statut_visitor")."</option>\n
+    <option value=\"utilisateur\">".get_vocab("statut_user")."</option>\n
+    <option value=\"gestionnaire_utilisateur\">".get_vocab("statut_user_administrator")."</option>\n
+    <option value=\"administrateur\">".get_vocab("statut_administrator")."</option>\n
+    </select><br />\n
+    <input type=\"submit\" value=\"".get_vocab("edit")."\" /></div>
+    </form></td>\n";
+  echo "<td><a href=\"admin_corresp_statut.php?id={$col[$i][4]}&amp;action_del=yes\" onclick=\"return confirmlink(this, '$themessage2', '$themessage')\" >".get_vocab("delete");
+    echo "</a></td>";
+    // Fin de la ligne courante
+    echo "</tr>";
+  }
 	echo "</table>";
 }
-grr_sql_free($res);
 echo "<br /><hr /><br /><div class='center'><b>".get_vocab("ajout_correspondance_profil_statut")."</b>\n";
 echo "<br /><form action=\"admin_corresp_statut.php?action_add=yes\" method=\"post\"><div>\n";
 echo get_vocab("code_fonction").get_vocab("deux_points")."<input name=\"codefonc\" type=\"text\" size=\"6\" /><br />";
@@ -146,7 +159,5 @@ echo "</select><br /><br />\n";
 echo "<input type=\"submit\" value=\"".get_vocab("OK")."\" /></div></form></div>\n";
 // fin de l'affichage de la colonne de droite
 echo "</div>";
-// Affichage d'un pop-up
-affiche_pop_up($msg,"admin");
 end_page();
 ?>
