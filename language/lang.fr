@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2024-02-09
+# Last modification : 2024-03-17
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1154,18 +1154,23 @@ $vocab['check_right'] = "Vous voulez vérifier les droits pour l'identifiant :";
 $vocab['error_settings_load'] = "Erreur chargement settings";
 $vocab['delete_entry_before'] = "Supprimer des réservations commençant avant une date donnée";
 $vocab['delete_entry_before1'] = "Les réservations antérieures au ";
-$vocab['delete_entry_before2'] = " à 00 heures 00 dans la salle ";
+$vocab['delete_entry_before2'] = " dans la salle ";
 $vocab['delete_entry_before3'] = " ont été supprimées.";
+$vocab['delete_entry_before_confirm'] = "Confirmez que vous voulez bien supprimer les réservations dans les domaines suivants avant cette date";
 $vocab['delete_entry_error'] = "Erreur dans la suppression des réservations dans la salle ";
 $vocab['delete_entry_before_expl'] = "Utiliser ce script pour supprimer des réservations dans des domaines donnés avant une date donnée:<br />toutes les réservations avant la date donnée à minuit dans les domaines cochés seront supprimées";
+$vocab['delete_entry_before_report'] = "Rapport de suppression des réservations avant la date ";
 $vocab['delete_entry_warn'] = "Il est conseillé de procéder à la sauvegarde de la base de données avant la suppression";
 $vocab['delete_entry_areas'] = "Sélectionnez les domaines concernés par la suppression";
 $vocab['delete_entry_end'] = "Jour de fin de la suppression <i>(opération irréversible ! )</i>";
 $vocab['delete_entry_go'] = " Supprimer les réservations ! ";
 $vocab['delete_entry_after'] = "Supprimer des réservations commençant après une date donnée";
 $vocab['delete_entry_after1'] = "Les réservations postérieures au ";
+$vocab['delete_entry_after_confirm'] = "Confirmez que vous voulez bien supprimer les réservations dans les domaines suivants après cette date";
 $vocab['delete_entry_after_expl'] = "Utiliser ce script pour supprimer des réservations dans des domaines donnés après une date donnée:<br />toutes les réservations commençant après la date donnée à 00 heures dans les domaines cochés seront supprimées";
+$vocab['delete_entry_after_report'] = "Rapport de suppression des réservations après la date ";
 $vocab['delete_entry_start'] = "Jour de début de la suppression <i>(opération irréversible ! )</i>";
+$vocab['no_entry_deleted'] = "Aucune réservation n'a été supprimée.";
 $vocab['save_err'] = "Erreur lors de l'enregistrement de ";
 $vocab['backup_pwd_save_err'] = $vocab['save_err']." motdepasse_backup !";
 $vocab['disable_login_save_err'] = $vocab['save_err']." disable_login !";

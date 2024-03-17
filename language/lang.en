@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2024-02-09
+# Last modification : 2024-03-17
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1160,18 +1160,23 @@ $vocab['check_right'] = "You want to check rights for id: ";
 $vocab['error_settings_load'] = "Error loading settings";
 $vocab['delete_entry_before'] = "Delete reservations starting before a given date";
 $vocab['delete_entry_before1'] = "Reservations prior to ";
-$vocab['delete_entry_before2'] = "at 00:00 in the room";
+$vocab['delete_entry_before2'] = " in the room";
 $vocab['delete_entry_before3'] = "have been deleted.";
+$vocab['delete_entry_before_confirm'] = "Confirm that you want to delete reservations in the following areas before this date";
 $vocab['delete_entry_error'] = "Error in deleting reservations in room ";
 $vocab['delete_entry_before_expl'] = "Use this script to delete reservations in given domains before a given date: <br /> all reservations before the given date at midnight in the checked domains will be deleted";
+$vocab['delete_entry_before_report'] = "Report of deletion of reservations before this date";
 $vocab['delete_entry_warn'] = "It is advisable to back up the database before deleting";
 $vocab['delete_entry_areas'] = "Select the domains affected by the deletion";
 $vocab['delete_entry_end'] = "End day of the deletion <i> (irreversible operation!) </i>";
 $vocab['delete_entry_go'] = "Delete reservations!";
 $vocab['delete_entry_after'] = "Delete reservations starting after a given date";
 $vocab['delete_entry_after1'] = "Reservations after ";
+$vocab['delete_entry_after_confirm'] = "Confirm that you want to delete reservations in the following areas after this date";
 $vocab['delete_entry_after_expl'] = "Use this script to delete reservations in given domains after a given date: <br /> all reservations starting after the given date at 00 hours in the checked domains will be deleted";
+$vocab['delete_entry_after_report'] = "Report of deletion of reservations after this date";
 $vocab['delete_entry_start'] = "Start day of the deletion <i> (irreversible operation!) </i>";
+$vocab['no_entry_deleted'] = "No bookings have been deleted.";
 $vocab['save_err'] = "Error saving ";
 $vocab['backup_pwd_save_err'] = $vocab['save_err']." motdepasse_backup !";
 $vocab['disable_login_save_err'] = $vocab['save_err']." disable_login !";
