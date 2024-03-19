@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2024-02-01 18:23$
+ * Dernière modification : $Date: 2024-03-19 13:45$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1646,7 +1646,7 @@ function toPeriodString($start_period, &$dur, &$units)
 function genDateSelectorForm($prefix, $day, $month, $year, $option)
 {
 	global $nb_year_calendar;
-	$selector_data = "";
+	$selector_data = "<div class='btn-group'>";
 	if (!isset($nb_year_calendar))
 		$nb_year_calendar = 5;
 	if (($day == 0) && ( $day != ""))
@@ -1657,7 +1657,7 @@ function genDateSelectorForm($prefix, $day, $month, $year, $option)
 		$year = date("Y");
 	if ($day != "")
 	{
-		$selector_data .= "<select class='test' name=\"{$prefix}day\" id=\"{$prefix}day\">\n";
+		$selector_data .= "<select class='btn btn-default btn-xs' name=\"{$prefix}day\" id=\"{$prefix}day\">\n";
 		for ($i = 1; $i <= 31; $i++)
 		{
 			if ($i < 10)
@@ -1667,7 +1667,7 @@ function genDateSelectorForm($prefix, $day, $month, $year, $option)
 		}
 		$selector_data .= "</select>";
 	}
-	$selector_data .= "<select class='test' name=\"{$prefix}month\" id=\"{$prefix}month\">\n";
+	$selector_data .= "<select class='btn btn-default btn-xs' name=\"{$prefix}month\" id=\"{$prefix}month\">\n";
 	for ($i = 1; $i <= 12; $i++)
 	{
 		$m = utf8_strftime("%b", mktime(0, 0, 0, $i, 1, $year));
@@ -1681,7 +1681,7 @@ function genDateSelectorForm($prefix, $day, $month, $year, $option)
 		}
 	}
 	$selector_data .=  "</select>";
-	$selector_data .=  "<select class='test' name=\"{$prefix}year\" id=\"{$prefix}year\">\n";
+	$selector_data .=  "<select class='btn btn-default btn-xs' name=\"{$prefix}year\" id=\"{$prefix}year\">\n";
 	$min = date("Y", Settings::get("begin_bookings"));
 	if ($option == "more_years")
 		$min = date("Y") - $nb_year_calendar;
@@ -1690,7 +1690,7 @@ function genDateSelectorForm($prefix, $day, $month, $year, $option)
 		$max = date("Y") + $nb_year_calendar;
 	for($i = $min; $i <= $max; $i++)
 		$selector_data .= "<option value=\"$i\" " . ($i == $year ? " selected=\"selected\"" : "") . ">$i</option>\n";
-	$selector_data .= "</select> \n\n";
+	$selector_data .= "</select> \n</div>\n";
 	return $selector_data;
 }
 
@@ -5162,35 +5162,35 @@ function jQuery_DatePicker($typeDate){
 			}
         }
  	$mindate = utf8_strftime("%d/%m/%Y",Settings::get('begin_bookings'));
-    $maxdate = utf8_strftime("%d/%m/%Y",Settings::get('end_bookings'));
-    genDateSelector("".$typeDate, "$day", "$month", "$year","");
+  $maxdate = utf8_strftime("%d/%m/%Y",Settings::get('end_bookings'));
+  genDateSelector("".$typeDate, "$day", "$month", "$year","");
  	echo '<input type="hidden" disabled="disabled" id="mydate_' .$typeDate. '">'.PHP_EOL;
  	echo '<script type="text/javascript">'.PHP_EOL;
  	//echo '	$(function() {'.PHP_EOL;
  		//echo '$(\'#mydate_' .$typeDate. '\').datepicker($.datepicker.regional["fr"] );'.PHP_EOL;
-        echo '$(\'#mydate_' .$typeDate. '\').datepicker($.datepicker.regional["'.$locale.'"] );'.PHP_EOL;
- 		echo '	$(\'#mydate_' .$typeDate. '\').datepicker("option",{'.PHP_EOL;
- 			echo '		beforeShow: readSelected, onSelect: updateSelected,'.PHP_EOL;
- 			echo '		showOn: \'both\', buttonImageOnly: true, buttonImage: \'img_grr/calendar.png\',buttonText: "'.get_vocab('choose_date').'",'.PHP_EOL;
-            //echo '      dayNamesMin: [ "Di","Lu","Ma","Me","Je","Ve","Sa" ],'.PHP_EOL;
-            echo '      minDate:\''.$mindate.'\','.PHP_EOL;
-            echo '      maxDate:\''.$maxdate.'\','.PHP_EOL;
-            echo '      dateFormat:"dd/mm/yy",'.PHP_EOL;
-            echo '});'.PHP_EOL;
-echo '		function readSelected()'.PHP_EOL;
-echo '		{'.PHP_EOL;
-echo '			$(\'#mydate_' .$typeDate. '\').val($(\'#' .$typeDate. 'day\').val() + \'/\' +'.PHP_EOL;
+  echo '$(\'#mydate_' .$typeDate. '\').datepicker($.datepicker.regional["'.$locale.'"] );'.PHP_EOL;
+  echo '	$(\'#mydate_' .$typeDate. '\').datepicker("option",{'.PHP_EOL;
+  echo '		beforeShow: readSelected, onSelect: updateSelected,'.PHP_EOL;
+  echo '		showOn: \'both\', buttonImageOnly: true, buttonImage: \'img_grr/calendar.png\',buttonText: "'.get_vocab('choose_date').'",'.PHP_EOL;
+  //echo '      dayNamesMin: [ "Di","Lu","Ma","Me","Je","Ve","Sa" ],'.PHP_EOL;
+  echo '      minDate:\''.$mindate.'\','.PHP_EOL;
+  echo '      maxDate:\''.$maxdate.'\','.PHP_EOL;
+  echo '      dateFormat:"dd/mm/yy",'.PHP_EOL;
+  echo '});'.PHP_EOL;
+  echo '		function readSelected()'.PHP_EOL;
+  echo '		{'.PHP_EOL;
+  echo '			$(\'#mydate_' .$typeDate. '\').val($(\'#' .$typeDate. 'day\').val() + \'/\' +'.PHP_EOL;
 	echo '			$(\'#' .$typeDate. 'month\').val() + \'/\' + $(\'#' .$typeDate. 'year\').val());'.PHP_EOL;
-echo '			return {};'.PHP_EOL;
-echo '		}'.PHP_EOL;
-echo '		function updateSelected(date)'.PHP_EOL;
-echo '		{'.PHP_EOL;
-echo '			$(\'#' .$typeDate. 'day\').val(date.substring(0, 2));'.PHP_EOL;
-echo '			$(\'#' .$typeDate. 'month\').val(date.substring(3, 5));'.PHP_EOL;
-echo '			$(\'#' .$typeDate. 'year\').val(date.substring(6, 10));'.PHP_EOL;
-echo '		}'.PHP_EOL;
-//echo '	});'.PHP_EOL;
-echo '</script>'.PHP_EOL;
+  echo '			return {};'.PHP_EOL;
+  echo '		}'.PHP_EOL;
+  echo '		function updateSelected(date)'.PHP_EOL;
+  echo '		{'.PHP_EOL;
+  echo '			$(\'#' .$typeDate. 'day\').val(date.substring(0, 2));'.PHP_EOL;
+  echo '			$(\'#' .$typeDate. 'month\').val(date.substring(3, 5));'.PHP_EOL;
+  echo '			$(\'#' .$typeDate. 'year\').val(date.substring(6, 10));'.PHP_EOL;
+  echo '		}'.PHP_EOL;
+  //echo '	});'.PHP_EOL;
+  echo '</script>'.PHP_EOL;
 }
 
 function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaultsec,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format=0)

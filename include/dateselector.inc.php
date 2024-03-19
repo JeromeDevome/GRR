@@ -3,7 +3,7 @@
  * dateselector.inc.php
  * Portion de code affichant un sélecteur de date à accès direct, couplé à un calendrier JQuery-datepicker
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-24 11:20$
+ * Dernière modification : $Date: 2024-03-19 13:45$
  * @author    Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -65,7 +65,7 @@ if ((isset($room)) and ($room > 0))
 if(Settins::get() != )
     echo '<input type="submit" value="'.get_vocab("gototoday").'" onclick="document.pressed=\'a\'" />'.PHP_EOL;
 echo '<br />';*/
-echo '<input type="submit" value="'.get_vocab("allday").'" onclick="document.pressed=\'d\'" />';
-echo '<input type="submit" value="'.get_vocab("week").'" onclick="document.pressed=\'w\'" />';
-echo '<input type="submit" value="'.get_vocab("month").'" onclick="document.pressed=\'m\'" />';
+echo '<input class="btn btn-default btn-sm" type="submit" value="'.get_vocab("allday").'" onclick="document.pressed=\'d\'" />';
+echo '<input class="btn btn-default btn-sm" type="submit" value="'.get_vocab("week").'" onclick="document.pressed=\'w\'" />';
+echo '<input class="btn btn-default btn-sm" type="submit" value="'.get_vocab("month").'" onclick="document.pressed=\'m\'" />';
 echo '</p></div></form>';
