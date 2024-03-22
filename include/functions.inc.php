@@ -344,7 +344,7 @@ function Definition_ressource_domaine_site()
 	}
 	else
 	{
-		$room = NULL;
+		$room = 0;
 		if (isset($_GET['area']))
 		{
 			$area = intval(clean_input($_GET['area']));
