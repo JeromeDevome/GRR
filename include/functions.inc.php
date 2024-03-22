@@ -2930,13 +2930,15 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		require_once 'vendor/phpmailer/phpmailer/src/SMTP.php';
 		require_once 'vendor/phpmailer/phpmailer/src/Exception.php';
 		require_once 'include/mail.class.php';
+		require_once 'include/pages.class.php';
 	}else{
 		require_once '../vendor/phpmailer/phpmailer/src/PHPMailer.php';
 		require_once '../vendor/phpmailer/phpmailer/src/SMTP.php';
 		require_once '../vendor/phpmailer/phpmailer/src/Exception.php';
 		require_once '../include/mail.class.php';
+		require_once '../include/pages.class.php';
 	}
-	require_once 'include/pages.class.php';
+	
 
 	if (!Pages::load())
 		die('Erreur chargement pages');
