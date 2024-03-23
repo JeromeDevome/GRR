@@ -72,6 +72,10 @@ Sous-version 3.5.1c
     mise à jour : vacances.xml
     modification : choix des jours particuliers, uniquement pertinent si les jours fériés ou de vacances sont activés
     modification : acceptation des multi-destinataires dans les liens mailto
+Sous-version 3.5.1d
+    correctif : sécurisation de l'URL de redirection dans login.php
+    correctif : requête mal placée dans admin_maj.php
+    correctif : prise en charge des champs additionnels de type checkbox
     
 -----
 --
