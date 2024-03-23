@@ -3,7 +3,7 @@
  * login.php
  * interface de connexion
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-05 18:09$
+ * Dernière modification : $Date: 2024-03-23 11:29$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -111,8 +111,8 @@ if (isset($_POST['login']) && isset($_POST['password']))
 	}
 	else // la session est ouverte
 	{
-        // si c'est un administrateur qui se connecte, on efface les données anciennes du journal
-        nettoieLogConnexion($nbMaxJoursLogConnexion);
+    // si c'est un administrateur qui se connecte, on efface les données anciennes du journal
+    nettoieLogConnexion($nbMaxJoursLogConnexion);
 		if (isset($_POST['url']))
 		{
 			$url=urldecode($_POST['url']);
@@ -196,8 +196,8 @@ echo '	</tr>';
 echo '</table>';
 if (isset($_GET['url']))
 {
-    // $url = rawurlencode($_GET['url']); c'est trop tard, le passage par GET fait éclater les paramètres
-    echo "<input type=\"hidden\" name=\"url\" value=\"".$_GET['url']."\" />\n";
+    $url = clean_input($_GET['url']);
+    echo "<input type=\"hidden\" name=\"url\" value=\"$url\" />\n";
 }
 echo '<input type="submit" name="submit" value="'.get_vocab("OK").'" style="font-variant: small-caps;" />';
 echo '</fieldset>';
