@@ -599,7 +599,6 @@ if (isset($id)) // édition d'une réservation existante
 	if (grr_sql_count($res) != 1)
 		fatal_error(1, get_vocab('entryid') . $id . get_vocab('not_found'));
 	$row = grr_sql_row_keyed($res, 0);
-    $data = array_merge(array(), $row);
 	grr_sql_free($res);
 	$name = $row['name'];
 	$beneficiaire = $row['beneficiaire'];
