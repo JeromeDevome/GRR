@@ -1,3 +1,13 @@
+Version 4.3.3 - En développement
+[Ajout] Nom du GRR dans l'administration
+[Correction] Réservations en bloc - 54264dbd - @JeromeDevome
+[Correction] Syntaxe URL suppression - 69269935 - @ynaessens
+[Correction] Fonction envois de mail - 0e08c51b - @JeromeDevome
+[Correction] Variable - 1833d9c2 - @JeromeDevome
+[Correction] Redirection si nom ou prénom non renseigné - 71f1896a - @JeromeDevome
+[Correction] Changement de la valeur du paramètre de "Logs mails" - bbb35054 - @JeromeDevome
+[Correction] Exclure les réservations supprimées des quotos - 61df1276 - @JeromeDevome
+
 -----
 --
 -----
