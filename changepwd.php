@@ -70,7 +70,8 @@ if ($valid == 'yes')
 						$msg = get_vocab('update_pwd_succeed');
 						$_SESSION['password'] = $reg_password1;
 						$_SESSION['changepwd'] = 0;
-						header("Location: ./compte/compte.php");
+						if($page != 'moncompte')
+							header("Location: ./compte/compte.php");
 					}
 				}
 			}
