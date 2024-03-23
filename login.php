@@ -111,8 +111,8 @@ if (isset($_POST['login']) && isset($_POST['password']))
 	}
 	else // la session est ouverte
 	{
-    // si c'est un administrateur qui se connecte, on efface les données anciennes du journal
-    nettoieLogConnexion($nbMaxJoursLogConnexion);
+        // si c'est un administrateur qui se connecte, on efface les données anciennes du journal
+        nettoieLogConnexion($nbMaxJoursLogConnexion);
 		if (isset($_POST['url']))
 		{
 			$url=urldecode($_POST['url']);
