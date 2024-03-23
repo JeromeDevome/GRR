@@ -3747,7 +3747,7 @@ function UserRoomMaxBooking($user, $id_room, $number)
 	// y-a-t-il dépassement pour l'ensemble des ressources ?
 	if ($max_booking > 0)
 	{
-		$nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry r WHERE (beneficiaire = '".protect_data_sql($user)."' and end_time > '$now')");
+		$nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry r WHERE (beneficiaire = '".protect_data_sql($user)."' and end_time > '$now') AND supprimer=0");
 		$nb_bookings += $number;
 		if ($nb_bookings > $max_booking)
 			return 0;
@@ -3757,7 +3757,7 @@ function UserRoomMaxBooking($user, $id_room, $number)
 	// y-a-t-il dépassement pour l'ensemble des ressources du domaine ?
 	if ($max_booking_per_area > 0)
 	{
-		$nb_bookings = grr_sql_query1("SELECT count(e.id) FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_room r WHERE (e.room_id=r.id and r.area_id='".$id_area."' and e.beneficiaire = '".protect_data_sql($user)."' and e.end_time > '$now')");
+		$nb_bookings = grr_sql_query1("SELECT count(e.id) FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_room r WHERE (e.room_id=r.id and r.area_id='".$id_area."' and e.beneficiaire = '".protect_data_sql($user)."' and e.end_time > '$now') AND e.supprimer=0");
 		$nb_bookings += $number;
 		if ($nb_bookings > $max_booking_per_area)
 			return 0;
@@ -3767,7 +3767,7 @@ function UserRoomMaxBooking($user, $id_room, $number)
 	// y-a-t-il dépassement pour la ressource
 	if ($max_booking_per_room > 0)
 	{
-		$nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry WHERE (room_id = '".protect_data_sql($id_room)."' and beneficiaire = '".protect_data_sql($user)."' and end_time > '$now')");
+		$nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry WHERE (room_id = '".protect_data_sql($id_room)."' and beneficiaire = '".protect_data_sql($user)."' and end_time > '$now') AND supprimer=0");
 		$nb_bookings += $number;
 		if ($nb_bookings > $max_booking_per_room)
 			return 0;
@@ -3821,7 +3821,7 @@ function UserRoomMaxBookingRange($user, $id_room, $number, $start_time)
 	// y-a-t-il dépassement pour l'ensemble des ressources ?
 	if ($max_booking > 0)
 	{
-		$nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry r WHERE (beneficiaire = '".protect_data_sql($user)."' and end_time > '$now')");
+		$nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry r WHERE (beneficiaire = '".protect_data_sql($user)."' and end_time > '$now') AND supprimer=0");
 		$nb_bookings += $number;
 		if ($nb_bookings > $max_booking)
 			return 0;
@@ -3831,7 +3831,7 @@ function UserRoomMaxBookingRange($user, $id_room, $number, $start_time)
 	// y-a-t-il dépassement pour l'ensemble des ressources du domaine ?
 	if ($max_booking_per_area > 0)
 	{
-		$nb_bookings = grr_sql_query1("SELECT count(e.id) FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_room r WHERE (e.room_id=r.id and r.area_id='".$id_area."' and e.beneficiaire = '".protect_data_sql($user)."' and e.end_time > '$now')");
+		$nb_bookings = grr_sql_query1("SELECT count(e.id) FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_room r WHERE (e.room_id=r.id and r.area_id='".$id_area."' and e.beneficiaire = '".protect_data_sql($user)."' and e.end_time > '$now') AND e.supprimer=0");
 		$nb_bookings += $number;
 		if ($nb_bookings > $max_booking_per_area)
 			return 0;
@@ -3841,7 +3841,7 @@ function UserRoomMaxBookingRange($user, $id_room, $number, $start_time)
 	// y-a-t-il dépassement pour la ressource
 	if ($max_booking_per_room > 0)
 	{
-		$nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry WHERE (room_id = '".protect_data_sql($id_room)."' and beneficiaire = '".protect_data_sql($user)."' and end_time > '$now')");
+		$nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry WHERE (room_id = '".protect_data_sql($id_room)."' and beneficiaire = '".protect_data_sql($user)."' and end_time > '$now') AND supprimer=0");
 		$nb_bookings += $number;
 		if ($nb_bookings > $max_booking_per_room)
 			return 0;
@@ -3854,7 +3854,7 @@ function UserRoomMaxBookingRange($user, $id_room, $number, $start_time)
         room_id = '".protect_data_sql($id_room)."'
         AND beneficiaire = '".protect_data_sql($user)."'
         AND end_time > '".$now."'
-        AND start_time > '".min_int."')");
+        AND start_time > '".min_int."') AND supprimer=0");
         $nb_bookings += $number;
         if ($nb_bookings > $max_booking_per_room)
             return 0;
