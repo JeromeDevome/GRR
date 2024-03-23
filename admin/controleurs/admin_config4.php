@@ -81,6 +81,14 @@ if (isset($_GET['pass_leng']))
 	if (!Settings::set("pass_leng", $_GET['pass_leng']))
 		$msg .= "Erreur lors de l'enregistrement de pass_leng !<br />";
 }
+// Log des mails
+if (isset($_GET['log_mail']))
+{
+	if (!Settings::set("log_mail", $_GET['log_mail']))
+		$msg .= "Erreur lors de l'enregistrement de log_mail !<br />";
+}
+
+
 if (!Settings::load())
 	die("Erreur chargement settings");
 
