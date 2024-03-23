@@ -1520,9 +1520,9 @@ function VerifNomPrenomUser($type)
 	if (($type == "with_session") && ($desactive_VerifNomPrenomUser != 'y') && (IsAllowedToModifyProfil()))
 	{
 		$test = grr_sql_query1("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE (login = '".getUserName()."' AND (nom='' or prenom = ''))");
-		if ($test != -1)
+		if (($test != -1) && ($page != 'moncompte'))
 		{
-			header("Location: /compte/compte.php");
+			header("Location: ./compte/compte.php");
 			die();
 		}
 	}
