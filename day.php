@@ -3,9 +3,9 @@
  * day.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-26 15:26$
+ * Dernière modification : $Date: 2024-03-27 11:32$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -20,10 +20,10 @@ $grr_script_name = "day.php";
 include "personnalisation/connect.inc.php";
 include "include/config.inc.php";
 include "include/misc.inc.php";
-include "include/functions.inc.php";
 include "include/$dbsys.inc.php";
-include "include/mincals.inc.php";
 include "include/mrbs_sql.inc.php";
+include "include/functions.inc.php";
+include "include/mincals.inc.php";
 require_once("./include/settings.class.php");
 $settings = new Settings();
 if (!$settings)
@@ -359,7 +359,7 @@ for ($i = 0; ($row = grr_sql_row_keyed($ressources, $i)); $i++)
 		affiche_ressource_empruntee($id_room[$i]);
 		echo '<span id="boutonSelection'.$a.'" style="display:none;">'.PHP_EOL;
 		echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab("see_week_for_this_room")).'" onclick="charger();javascript: location.href=\'week.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('week').'"/>'.PHP_EOL;
-		echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab("see_month_for_this_room")).'" onclick="charger();javascript: location.href=\'app.php?p=mois&year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('month').'"/>'.PHP_EOL;
+		echo '<input type="button" class="btn btn-default btn-xs" title="'.htmlspecialchars(get_vocab("see_month_for_this_room")).'" onclick="charger();javascript: location.href=\'month.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$id_room[$i].'\';" value="'.get_vocab('month').'"/>'.PHP_EOL;
 		echo '</span>'.PHP_EOL;
 		if (htmlspecialchars($row["description"]).$temp != '')
 		{
