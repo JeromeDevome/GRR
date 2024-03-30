@@ -625,8 +625,8 @@ if ($fin_session == 'n'){
         if ((!$was_del) && ($moderate != 1) && ($userName != '') && (authGetUserLevel($userName,$room_id) >= 3))
         {
             $d['choixEmprunter'] = 1;
-            $d['ressourceEmpruntee'] = affiche_ressource_empruntee($room_id, "texte");
-            $d['ressourceEmprunteeYes'] = affiche_ressource_empruntee($room_id, "autre");
+            $d['ressourceEmpruntee'] = affiche_ressource_empruntee_twig($room_id, "texte");
+            $d['ressourceEmprunteeYes'] = affiche_ressource_empruntee_twig($room_id, "autre");
         }
     }
     if (isset($keys) && isset($courrier))
