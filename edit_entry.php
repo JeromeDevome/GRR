@@ -565,6 +565,7 @@ $type_affichage_reser = isset($Room['type_affichage_reser'])? $Room['type_affich
 $delais_option_reservation = isset($Room['delais_option_reservation'])? $Room['delais_option_reservation']: -1;
 $qui_peut_reserver_pour = isset($Room['qui_peut_reserver_pour'])? $Room['qui_peut_reserver_pour']: -1;
 $active_cle = isset($Room['active_cle'])? $Room['active_cle']: -1;
+$active_ressource_empruntee = grr_sql_query1("SELECT active_ressource_empruntee FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $active_participant  = isset($Room['active_participant'])? $Room['active_participant']: -1;
 $periodiciteConfig = Settings::get("periodicite");
 //$back = isset($_SERVER['HTTP_REFERER'])? htmlspecialchars( $_SERVER['HTTP_REFERER']): '';
@@ -1133,6 +1134,15 @@ if (Settings::get("show_courrier") == 'y'){ // proposition scoubinaire le 12/03/
     echo ' > '.get_vocab("msg_courrier");
     echo '</div>'.PHP_EOL;
 }
+// ressource empruntée
+if(($active_ressource_empruntee == 'y')&& (authGetUserLevel($user_name,$room_id) >= 3)){
+	echo '<tr><td class="CL">'.PHP_EOL;
+	echo '<input name="statut_entry" type="checkbox" value="y" ';
+	if (isset($statut_entry) && $statut_entry == "y")
+		echo 'checked';
+	echo ' ><b> '.get_vocab("signaler_reservation_en_cours");
+	echo '</b><br><br></td></tr>'.PHP_EOL;
+}
 
 echo '<div class="bg-info">',PHP_EOL;
 echo '<p><b>'.get_vocab("required").'</b></p></div>'.PHP_EOL;
@@ -1315,9 +1325,9 @@ echo '<input type="hidden" name="edit_type" value="'.$edit_type.'" />';
 echo '<input type="hidden" name="page" value="'.$page.'" />';
 echo '<input type="hidden" name="room_back" value="'.$room_back.'" />';
 echo '<input type="hidden" name="page_ret" value="'.$page_ret.'" />';
-if (!isset($statut_entry) || ($statut_entry == ""))
-	$statut_entry = "-";
-echo '<input type="hidden" name="statut_entry" value="'.$statut_entry.'" />'.PHP_EOL;
+//if (!isset($statut_entry) || ($statut_entry == ""))
+//	$statut_entry = "-";
+//echo '<input type="hidden" name="statut_entry" value="'.$statut_entry.'" />'.PHP_EOL;
 echo '<input type="hidden" name="create_by" value="'.$create_by.'" />'.PHP_EOL;
 if (($id!=0)&&(!isset($_GET["copier"])))
     echo '<input type="hidden" name="id" value="'.$id.'" />'.PHP_EOL;
