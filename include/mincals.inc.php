@@ -58,7 +58,7 @@
 		private function getDateLink($day, $month, $year)
 		{
 			global $vocab;
-            if (isset($this->room))
+            if (isset($this->room) && $this->room <> 0)
                 return "<a onclick=\"charger();\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_day_for_this_room"))."\" href=\"day.php?year=$year&amp;month=$month&amp;day=$day&amp;room=".$this->room."\"";
             return "<a onclick=\"charger();\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"day.php?year=$year&amp;month=$month&amp;day=$day&amp;area=".$this->area."\"";
         }
