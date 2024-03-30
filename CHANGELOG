@@ -7,6 +7,12 @@ Version 4.3.3 - En développement
 [Correction] Redirection si nom ou prénom non renseigné - 71f1896a - @JeromeDevome
 [Correction] Changement de la valeur du paramètre de "Logs mails" - bbb35054 - @JeromeDevome
 [Correction] Exclure les réservations supprimées des quotos - 61df1276 - @JeromeDevome
+[Correction] Vue journaliere toute les ressources - c2e31bb3 - @JeromeDevome
+[Correction] Accès au jours du mini calendrier - 4556b90d - @JeromeDevome
+[Correction] Regression : Ressource empruntée dans la saisie de réservation - ca18d289 - @JeromeDevome
+[Correction] Vue réservation avec ressource empruntée - b2d6b216 - @JeromeDevome
+[Modification] Changement de lien pour la modération (vue réservation) - 9b1f25cf - @JeromeDevome
+[Modification] Mise à jour des dépendances PHP - 79e522e1 - @JeromeDevome
 
 -----
 --
@@ -21,7 +27,7 @@ Version 4.3.2 - 03/03/2024 Généré par @JeromeDevome
 [Correction] Choix du site par défaut - 30533fe6 - @JeromeDevome & @bambi1013
 [Correction] Redirection après suppression d'une réservation - 294971f2 - @JeromeDevome
 [Modification] Blocage du nombre de caractère maximum dans le champs de création/modification de site - 2ad69eb6 - @JeromeDevome
-[Modification] Mise à jour sumfony - 6e529d1b & bc70e054 - @JeromeDevome
+[Modification] Mise à jour symfony - 6e529d1b & bc70e054 - @JeromeDevome
 
 -----
 --
