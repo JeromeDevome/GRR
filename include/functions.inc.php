@@ -3386,7 +3386,7 @@ Mail pour le gestionnaire, ou l'admin
 	elseif ( ($action == 5) && (count($mail_admin) > 0) )// Réservation en attente de modération, mail pour le modérateur
 	{
 		//$sujet3 = $vocab["subject_mail1"].$room_name." - ".$date_avis.$vocab["subject_mail_moderation"];
-		$codes['%urldetail%'] .= traite_grr_url("","y")."validation.php?id=".$id_entry;
+		$codes['%urldetail%'] .= traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
 		$repondre3 = Settings::get("webmaster_email");
 		if ($expediteur =='')
 			$expediteur = $repondre3;
