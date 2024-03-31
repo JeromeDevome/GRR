@@ -1,4 +1,4 @@
-Version 4.3.3 - En développement
+Version 4.3.3 - 31/03/2024 Généré par @JeromeDevome
 [Ajout] Nom du GRR dans l'administration
 [Correction] Réservations en bloc - 54264dbd - @JeromeDevome
 [Correction] Syntaxe URL suppression - 69269935 - @ynaessens
@@ -11,6 +11,7 @@ Version 4.3.3 - En développement
 [Correction] Accès au jours du mini calendrier - 4556b90d - @JeromeDevome
 [Correction] Regression : Ressource empruntée dans la saisie de réservation - ca18d289 - @JeromeDevome
 [Correction] Vue réservation avec ressource empruntée - b2d6b216 - @JeromeDevome
+[Correction] Raison mail variable non définit - a19ec824 - @JeromeDevome
 [Modification] Changement de lien pour la modération (vue réservation) - 9b1f25cf - @JeromeDevome
 [Modification] Mise à jour des dépendances PHP - 79e522e1 - @JeromeDevome
 
