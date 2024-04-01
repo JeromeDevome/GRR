@@ -15,5 +15,5 @@
         "gregwar/captcha-bundle": "^2.2"
     },
     "description": "Librairies pour GRR",
-    "license": ["GPL"]
+    "license": ["GPL-3.0-or-later"]
 }
