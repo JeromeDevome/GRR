@@ -1,9 +1,10 @@
 {
     "name": "devome/twig",
+    "description": "Composer for GRR",
     "authors": [
         {
             "name": "JeromeDevome",
-            "email": "support@devome.com"
+            "email": "commercial@devome.com"
         }
     ],
     "require": {
