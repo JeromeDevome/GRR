@@ -14,5 +14,6 @@
         "almasaeed2010/adminlte": "~3.2",
         "gregwar/captcha-bundle": "^2.2"
     },
-    "description": "Librairies pour GRR"
+    "description": "Librairies pour GRR",
+    "license": ["GPL"]
 }
