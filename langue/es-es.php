@@ -883,6 +883,7 @@ $vocab['statut'] = "Estatuto";
 $vocab['statut_administrator'] = "Administrador";
 $vocab['statut_grr'] = "Statut GRR"; // A traduire
 $vocab['statut_grr_modif'] = "Modification du statut"; // A traduire
+$vocab['statut_non_connecte'] = "Non connecté";  // A traduire
 $vocab['Statut_par_defaut_utilisateurs_importes'] = "Estatus por defecto de los usuarios importados";
 $vocab['Statut_pour_domaine_particulier'] = "Attribuer un statut à un nom de domaine"; // A traduire
 $vocab['statut_user'] = "Usuario";

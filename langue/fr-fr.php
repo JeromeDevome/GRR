@@ -891,6 +891,7 @@ $vocab['statut'] = "Statut";
 $vocab['statut_administrator'] = "Administrateur";
 $vocab['statut_grr'] = "Statut GRR";
 $vocab['statut_grr_modif'] = "Modification du statut";
+$vocab['statut_non_connecte'] = "Non connecté";
 $vocab['Statut_par_defaut_utilisateurs_importes'] = "Activation et statut par défaut des utilisateurs importés";
 $vocab['Statut_pour_domaine_particulier'] = "Attribuer un statut à un nom de domaine";
 $vocab['statut_user'] = "Usager";
