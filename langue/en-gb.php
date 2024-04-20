@@ -882,6 +882,7 @@ $vocab['statut'] = "Status";
 $vocab['statut_administrator'] = "Administrator";
 $vocab['statut_grr'] = "Status in GRR"; 
 $vocab['statut_grr_modif'] = "Status alteration"; 
+$vocab['statut_non_connecte'] = "No connected";
 $vocab['Statut_par_defaut_utilisateurs_importes'] = "Activation and status by default of imported users";
 $vocab['Statut_pour_domaine_particulier'] = "Bind a status to a domain name"; 
 $vocab['statut_user'] = "User";
