@@ -17,48 +17,50 @@
 	</head>
 
 	<body>
+		{% if d.pview != 1 %}
 		<header>
 			<div id="panel">
 				<div class="logo" height="100">
-					{%if d.logo != ''%}<a href="{{ d.pageAccueil |raw }}"><img src="{{ d.logo }}" alt="logo"></a>{%endif%}
+					{% if d.logo != '' %}<a href="{{ d.pageAccueil|raw }}"><img src="{{ d.logo }}" alt="logo"></a>{% endif %}
 				</div>
 				<div class="accueil">
-					<h2><a href="{{ d.pageAccueil |raw }}">{{ settings.company }}</a></h2>
-					<p>{{ settings.message_accueil |raw }}</p>
+					<h2><a href="{{ d.pageAccueil|raw }}">{{ settings.company }}</a></h2>
+					<p>{{ settings.message_accueil|raw }}</p>
 				</div>
-				{%if lienFormaulaireResa == 1 %}
+				{% if lienFormaulaireResa == 1 %}
 				<div class="contactformulaire">
 					<input class="btn btn-default" type="submit" rel="popup_name" value="{{ trad.reserver }}" onclick="javascript:location.href='app.php?p=contactresa{{ d.paramUrl |raw }}'">
 				</div>
-				{%endif%}
+				{% endif %}
 				<div class="administration">
-				{%if d.lienDeconnexion %}
-					{%if d.lienAdmin != ''%}<br><a href='./{{ d.lienAdmin |raw }}'>{{ trad.admin }}</a>{%endif%}
-					{%if d.nbConnecte %}<br><a href="./admin/admin.php?p=admin_view_connexions">{{ d.nbConnecte }}</a>{%endif%}
-					{%if d.mess_resa %}<br><p class='avertissement'>{{ d.mess_resa }}</p>{%endif%}
-				{%endif%}
+				{% if d.lienDeconnexion %}
+					{% if d.lienAdmin != ''%}<br><a href='./{{ d.lienAdmin|raw }}'>{{ trad.admin }}</a>{% endif %}
+					{% if d.nbConnecte %}<br><a href="./admin/admin.php?p=admin_view_connexions">{{ d.nbConnecte }}</a>{% endif %}
+					{% if d.mess_resa %}<br><p class='avertissement'>{{ d.mess_resa }}</p>{% endif %}
+				{% endif %}
 				</div>
 				<div class="configuration" >
-					{%if d.jsHeure %}
+					{% if d.jsHeure %}
 					<div class="clock">
 						<div id="Date">
 							&nbsp;<span id="hours"></span>h<span id="min"></span>
 						</div>
 					</div>
-					{%endif%}
+					{% endif %}
 					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=fr-fr"><img src="./img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>
 					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=de-de"><img src="./img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>
 					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=en-gb"><img src="./img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>
 					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=it-it"><img src="./img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>
 					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=es-es"><img src="./img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>
-					{%if d.lienDeconnexion %}<br /><a href="./compte/compte.php?{{ d.paramUrl |raw }}">{{ d.nomUtilisateur }} - {{ trad.manage_my_account }}</a>{%endif%}
-					{%if d.accesStats %}<br /><a href="./app.php?p=report">{{ trad.report }}</a>{%endif%}
-					{{ d.lienDeconnexion |raw }}
-					{{ d.lienConnexion |raw }}
+					{% if d.lienDeconnexion %}<br /><a href="./compte/compte.php?{{ d.paramUrl |raw }}">{{ d.nomUtilisateur }} - {{ trad.manage_my_account }}</a>{% endif %}
+					{% if d.accesStats %}<br /><a href="./app.php?p=report">{{ trad.report }}</a>{% endif %}
+					{{ d.lienDeconnexion|raw }}
+					{{ d.lienConnexion|raw }}
 				</div>
 			</div>
 			<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>
 		</header>
+		{% endif %}
 		<section>
 			{% block content %}{% endblock %}
 
@@ -75,8 +77,8 @@
 		<script type="text/javascript" src="./js/functions.js?v={{d.versionGRR}}" ></script>
 		<script type="text/javascript" src="./js/selection.js?v={{d.versionGRR}}" ></script>
 		{% block javascript %}{% endblock %}
-		{%if d.jsHeure %}
+		{% if d.jsHeure %}
 			<script type="text/javascript" src="./js/{{ d.jsHeure }}?v={{d.versionGRR}}"></script>
-		{%endif%}
+		{% endif %}
 	</body>
 </html>

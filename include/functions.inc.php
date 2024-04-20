@@ -15,6 +15,7 @@
  * (at your option) any later version.
  */
 
+ /*
 function returnmsg($type,$test, $status, $msg = '')
 {
 	echo encode_message_utf8('<div class="alert alert-'.$type.'" role="alert"><h3>'.$test);
@@ -22,7 +23,7 @@ function returnmsg($type,$test, $status, $msg = '')
 	if ($msg != '')
 		echo encode_message_utf8("($msg)"),PHP_EOL;
 	echo '</div>',PHP_EOL;
-}
+}*/
 
 function getDaysInMonth($month, $year)
 {
@@ -318,7 +319,7 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 	}
 	return $affichage;
 }
-
+/*
 function decode_options($a,$modele){
     // suppose que l'on a une chaîne $a de {V,F} de longueur égale à celle du $modele
     // renvoie un tableau de booléens True, False indexé par les valeurs du modèle
@@ -329,14 +330,19 @@ function decode_options($a,$modele){
     }
     return $choix;
 }
-
+*/
 /**
  *Fonction qui calcule $room, $area et $id_site à partir de $_GET['room'], $_GET['area'], $_GET['id_site']
  */
 function Definition_ressource_domaine_site()
 {
 	global $room, $area, $id_site;
-	if (isset($_GET['room']) && $_GET['room'] != 'all')
+
+	$id_site = 0;
+	$area = 0;
+	$room = 0;
+
+	if (isset($_GET['room']) && $_GET['room'] != 'all' && $_GET['room'] != 0)
 	{
 		$room = intval(clean_input($_GET['room']));
 		$area = mrbsGetRoomArea($room);
@@ -344,7 +350,6 @@ function Definition_ressource_domaine_site()
 	}
 	else
 	{
-		$room = 0;
 		if (isset($_GET['area']))
 		{
 			$area = intval(clean_input($_GET['area']));
@@ -352,7 +357,6 @@ function Definition_ressource_domaine_site()
 		}
 		else
 		{
-			$area = NULL;
 			if (isset($_GET["id_site"]))
 			{
 				$id_site = intval(clean_input($_GET["id_site"]));
@@ -374,21 +378,21 @@ function bouton_retour_haut()
 		'});',PHP_EOL,'$("#toTop").click(function()',PHP_EOL,'{',PHP_EOL,'$("body,html").animate({scrollTop:0},800);',PHP_EOL,
 		'});',PHP_EOL,'});',PHP_EOL,'</script>',PHP_EOL;
 }
-
+/*
 function bouton_aller_bas()
 {
 	echo '<script type="text/javascript">',PHP_EOL,'$(function()',PHP_EOL,'{',PHP_EOL,'$(window).scroll(function()',PHP_EOL,'{',PHP_EOL,
 		'if ($(this).scrollTop() != 800)',PHP_EOL,'$("#toBot").fadeIn();',PHP_EOL,'else',PHP_EOL,'$("#toBot").fadeOut();',PHP_EOL,
 		'});',PHP_EOL,'$("#toBot").click(function()',PHP_EOL,'{',PHP_EOL,'$("body,html").animate({scrollTop:800},0);',PHP_EOL,
 		'});',PHP_EOL,'});',PHP_EOL,'</script>',PHP_EOL;
-}
+}*/
 /**
  *function affiche_ressource_empruntee
  *- $id_room : identifiant de la ressource
  *- Si la ressource est empruntée, affiche une icône avec un lien vers la réservation pour laquelle la ressource est empruntée.
  * @param string $id_room
  * @return string
- */
+ 
 function affiche_ressource_empruntee($id_room, $type = "logo")
 {
 	$active_ressource_empruntee = grr_sql_query1("SELECT active_ressource_empruntee FROM ".TABLE_PREFIX."_room WHERE id = '".$id_room."'");
@@ -413,7 +417,7 @@ function affiche_ressource_empruntee($id_room, $type = "logo")
 		}
 	}
 }
-
+*/
 /**
  *function affiche_ressource_empruntee_twig
  *- $id_room : identifiant de la ressource
@@ -424,6 +428,7 @@ function affiche_ressource_empruntee($id_room, $type = "logo")
 function affiche_ressource_empruntee_twig($id_room, $type = "logo")
 {
 	$active_ressource_empruntee = grr_sql_query1("SELECT active_ressource_empruntee FROM ".TABLE_PREFIX."_room WHERE id = '".$id_room."'");
+	$valeur = "";
 	if ($active_ressource_empruntee == 'y')
 	{
 		$id_resa = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
@@ -888,17 +893,17 @@ function protect_data_sql($_value)
 // Traite les données envoyées par la methode GET|POST de la variable $_GET|POST["page"], renvoie "day" si la page n'est pas définie
 function verif_page()
 {
-	$pages = array("day", "week", "month", "week_all", "month_all", "month_all2", "year", "year_all");
+	$pages = array("jour", "semaine", "mois", "semaine_all", "mois_all", "mois_all2", "annee", "annee_all");
     $page = (isset($_GET["page"]))? $_GET["page"]:((isset($_POST["page"]))? $_POST["page"]:NULL);
     if (isset($page))
 	{
 		if (in_array($page, $pages))
 			return $page;
 		else
-			return "day";
+			return "jour";
 	}
 	else
-		return "day";
+		return "jour";
 }
 
 function page_accueil($param = 'no')
@@ -924,14 +929,14 @@ function page_accueil($param = 'no')
 		$defaultarea = get_default_area($defaultsite);
 	// Calcul de $page_accueil
 	if ($defaultarea == - 1)
-		$page_accueil = 'day.php?noarea=';
+		$page_accueil = 'app.php?p=jour&noarea=';
 	// le paramètre noarea ne sert à rien, il est juste là pour éviter un cas particulier à traiter avec &amp;id_site= et $param
 	else if ($defaultroom == - 1)
-		$page_accueil = 'day.php?area='.$defaultarea;
+		$page_accueil = 'app.php?p=jour&area='.$defaultarea;
 	else if ($defaultroom == - 2)
-		$page_accueil = 'week_all.php?area='.$defaultarea;
+		$page_accueil = 'pp.php?p=mois_all&area='.$defaultarea;
 	else if ($defaultroom == - 3)
-		$page_accueil = 'month_all.php?area='.$defaultarea;
+		$page_accueil = 'app.php?p=mois_all&area='.$defaultarea;
 	else if ($defaultroom == -4)
 		$page_accueil = 'month_all2.php?area='.$defaultarea;
 	else
@@ -1516,7 +1521,7 @@ function print_header_admin($day = '', $month = '', $year = '', $type_session = 
 function VerifNomPrenomUser($type)
 {
 	// ne pas prendre en compte la page my_account.php
-	global $desactive_VerifNomPrenomUser;
+	global $desactive_VerifNomPrenomUser, $page;
 	if (($type == "with_session") && ($desactive_VerifNomPrenomUser != 'y') && (IsAllowedToModifyProfil()))
 	{
 		$test = grr_sql_query1("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE (login = '".getUserName()."' AND (nom='' or prenom = ''))");
@@ -2145,6 +2150,25 @@ function tdcell($colclass, $width = '')
 		echo '<td class="'.$colclass.'" '.$temp.'>'.PHP_EOL;
 }
 
+//Output a start table cell tag <td> with color class and fallback color. : Twig
+function tdcellT($colclass, $width = '')
+{
+	if ($width != "")
+		$temp = ' style="width:'.$width.'%;" ';
+	else
+		$temp = "";
+
+	if (($colclass >= "A") && ($colclass <= "Z"))
+	{
+		/*$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
+        $couleur_texte = grr_sql_query1("SELECT couleur_texte FROM".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
+		echo '<td style="background-color:'.$couleurhexa.'; color:'.$couleur_texte.';" '.$temp.'>'.PHP_EOL;*/
+        return '<td class="type'.$colclass.'"'.$temp.'>';
+	}
+	else
+		return '<td class="'.$colclass.'" '.$temp.'>'.PHP_EOL;
+}
+
 function tdcell_rowspan($colclass, $step)
 {
 	global $tab_couleur;
@@ -2196,7 +2220,45 @@ function show_colour_key($area_id)
     echo '</table>'.PHP_EOL;
 }
 
+//Display the entry-type color key. This has up to 2 rows, up to 10 columns.
+function show_colour_keyTwig($area_id)
+{
+    $sql = "SELECT DISTINCT t.id, t.type_name, t.type_letter, t.order_display FROM `".TABLE_PREFIX."_type_area` t
+    LEFT JOIN `".TABLE_PREFIX."_j_type_area` j on j.id_type=t.id
+    WHERE (j.id_area IS NULL or j.id_area != '".$area_id."')
+    AND NOT EXISTS (SELECT y.id_type FROM `".TABLE_PREFIX."_j_type_area` y WHERE y.id_type = j.id_type and id_area='".$area_id."')
+    ORDER BY t.order_display";
+    $res = grr_sql_query($sql);
+
+	$affichage = "";
+
+    if ($res)
+    {
+        $nct = -1;
+        for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+        {
+            $type_name = $row[1];
+            $type_letter = $row[2];
+            if ($nct == -1)
+				$affichage .= '<tr>';
+            if (++$nct == 2)
+            {
+                $nct = 0;
+                $affichage .= '</tr><tr>';
+            }
+            $affichage .= tdcellT($type_letter);
+            $affichage .= $type_name.'</td>';
+        }
+        if ($i % 2 == 1)
+			$affichage .= '<td></td>';
+		$affichage .= '</tr>';
+    }
+
+	return $affichage;
+}
+
 //Display the entry-type color keys. This has up to 2 rows, up to 10 columns.
+/*
 function show_colour_keys()
 {
 	echo '<table class="legende">';
@@ -2226,6 +2288,7 @@ function show_colour_keys()
 	}
 	echo '</table>'.PHP_EOL;
 }
+*/
 // transforme une chaine de caractères en couleur hexadécimale valide
 function valid_color($entry)
 {
@@ -2323,7 +2386,7 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user,
 				// on affiche le site uniquement si au moins un domaine est visible par l'utilisateur
 				$nb_sites_a_afficher++;
 				$selected = ($row[0] == $current_site) ? 'selected="selected"' : '';
-				$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$default_area;
+				$link2 ='app.php?p='.$link.'&amp;&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$default_area;
 				$out[] = '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
 			}
 		}
@@ -2394,7 +2457,7 @@ function make_area_select_html( $link, $current_site, $current_area, $year, $mon
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
 			$selected = ($row[0] == $current_area) ? 'selected="selected"' : "";
-			$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
+			$link2 = 'app.php?p='.$link.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
 			if (authUserAccesArea($user,$row[0]) == 1)
 			{
 				$out_html .= '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
@@ -2455,7 +2518,7 @@ function make_area_select_all_html( $link, $current_site, $current_area, $year, 
 	$out_html .= '<div><select class="form-control" name="area" ';
 	$out_html .= ' onchange="area_go()" ';
 	$out_html .= '>'.PHP_EOL;
-    $out_html .= "<option value=\"".$link."_all.php?year=$year";
+    $out_html .= "<option value=\"app.php?p=".$link."_all&amp;year=$year";
     if ($current_site != -1) 
         $out_html .= "&amp;site=$current_site";
     $out_html .= " \">".get_vocab("any_area")."</option>";
@@ -2465,7 +2528,7 @@ function make_area_select_all_html( $link, $current_site, $current_area, $year, 
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
 			$selected = ($row[0] == $current_area) ? 'selected="selected"' : "";
-			$link2 = $link.'.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
+			$link2 = 'app.php?p='.$link.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
 			if (authUserAccesArea($user,$row[0]) == 1)
 			{
 				$out_html .= '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
@@ -2599,13 +2662,13 @@ function make_site_list_html($link, $current_site, $year, $month, $day,$user)
 					if ($row[0] == $current_site)
 					{
 						$out[] = '
-						<b><a id="liste_select"   href="'.$link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$row[0].'" title="'.$row[1].'">&gt; '.htmlspecialchars($row[1]).'</a></b>
+						<b><a id="liste_select"   href="app.php?p='.$link.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$row[0].'" title="'.$row[1].'">&gt; '.htmlspecialchars($row[1]).'</a></b>
 						<br />'."\n";
 					}
 					else
 					{
 						$out[] = '
-						<a id="liste"  href="'.$link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$row[0].'" title="'.$row[1].'">'.htmlspecialchars($row[1]).'</a>
+						<a id="liste"   href="app.php?p='.$link.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$row[0].'" title="'.$row[1].'">'.htmlspecialchars($row[1]).'</a>
 						<br />'."\n";
 					}
 				}
@@ -2670,9 +2733,9 @@ function make_area_list_html($link, $current_site, $current_area, $year, $month,
 			{
 				if ($row[0] == $current_area)
 				{
-					$out_html .= "<a id=\"liste_select\" onclick=\"charger();\" href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\">&gt; ".htmlspecialchars($row[1])."</a></b><br />\n";
+					$out_html .= "<a id=\"liste_select\" onclick=\"charger();\"  href=\"app.php?p='.$link.'&amp;year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\">&gt; ".htmlspecialchars($row[1])."</a></b><br />\n";
 				} else {
-					$out_html .= "<a id=\"liste\" onclick=\"charger();\" href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\"> ".htmlspecialchars($row[1])."</a><br />\n";
+					$out_html .= "<a id=\"liste\" onclick=\"charger();\"  href=\"app.php?p='.$link.'&amp;year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\"> ".htmlspecialchars($row[1])."</a><br />\n";
 				}
 			}
 		}
@@ -2707,7 +2770,7 @@ function make_room_list_html($link,$current_area, $current_room, $year, $month, 
 				if ($row[0] == $current_room)
 					$out_html .= "<span id=\"liste_select\">&gt; ".htmlspecialchars($row[1])."</span><br />\n";
 				else
-					$out_html .= "<a id=\"liste\" onclick=\"charger();\" href=\"".$link.".php?year=$year&amp;month=$month&amp;day=$day&amp;&amp;room=$row[0]\">".htmlspecialchars($row[1]). "</a><br />\n";
+					$out_html .= "<a id=\"liste\" onclick=\"charger();\"  href=\"app.php?p='.$link.'&amp;year=$year&amp;month=$month&amp;day=$day&amp;&amp;room=$row[0]\">".htmlspecialchars($row[1]). "</a><br />\n";
 			}
 		}
 	}
@@ -2838,7 +2901,7 @@ function make_area_item_html( $link, $current_site, $current_area, $year, $month
 	{
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
-			$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
+			$link2 = 'app.php?p='.$link.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
 			if (authUserAccesArea($user, $row[0]) == 1)
 			{
 				if ($current_area != null)
@@ -2881,10 +2944,10 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
 		{
 			if (verif_acces_ressource(getUserName(),$row[0]))
 			{
-				$link2 = $link.'.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$row[0];
+				$link2 = 'app.php?p='.$link.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$row[0];
                 $link_a = $link;
-                if (($link != 'day')&&(!strpos($link,'all'))) {$link_a .= '_all';}
-				$link_all_room = $link_a.'.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$current_area;
+                if (($link != 'jour')&&(!strpos($link,'all'))) {$link_a .= '_all';}
+				$link_all_room = 'app.php?p='.$link_a.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$current_area;
 				if (!isset($_GET['room']))
 				{
 					if (isset($all_ressource) && $all_ressource == 0)
@@ -4345,6 +4408,17 @@ function showAccessDenied($back, $infodebug = '')
 	echo '<p><a href="'.$back.'">'.get_vocab("returnprev").'</a></p>';
 	end_page();
 }
+function showAccessDenied_twig($back, $infodebug = '')
+{
+	global $vocab, $debug_flag;
+	$html = '<h1>'.get_vocab("accessdenied").'</h1>';
+	$html .= '<p>'.get_vocab("norights").'</p>';
+	if($debug_flag)
+		$html .= '<p>'.$infodebug.'</p>';
+	$html .= '<p><a href="'.$back.'">'.get_vocab("returnprev").'</a></p>';
+
+	return $html;
+}
 /* showNoReservation()
  *
  * Displays an appropriate message when reservation does not exist
@@ -4419,6 +4493,21 @@ function showNoBookings($day, $month, $year, $back)
         }
     echo "</p>";
     echo "</body>\n</html>";
+}
+function showNoBookings_twig($day, $month, $year, $back)
+{
+	global $vocab;
+	$date = mktime(0, 0, 0, $month, $day,$year);
+	$html = '<h2>'.get_vocab("nobookings").' '.affiche_date($date).'</h2>';
+	$html .= '<p>'.get_vocab("begin_bookings").'<b>'.affiche_date(Settings::get("begin_bookings")).'</b></p>';
+	$html .= '<p>'.get_vocab("end_bookings").'<b>'.affiche_date(Settings::get("end_bookings")).'</b></p>';
+    $html .= "<p>";
+        if ($back !=''){
+            $html .= "<a href=".$back.">".get_vocab('returnprev')."</a>";
+        }
+		$html .= "</p>";
+
+	return $html;
 }
 /* donne, pour un format français, un résultat de la forme lundi 30 sept.19:17:32
 */
@@ -5026,7 +5115,7 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 
 	// Option réservation
 	if($resa[9] > 0 && $resa[10] > 0)
-		$affichage .=  " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le").time_date_string_jma($resa[9],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> ";
+		$affichage .=  " <span class=\"glyphicon glyphicon-flag\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")." ".time_date_string_jma($resa[9],$dformat)."\" style=\"color:yellow;text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;\"></span>";
 
 	// Modération
 	if($resa[11] == 1)
@@ -6247,6 +6336,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 	global $niveauDossier, $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name, $racine, $racineAd;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $gcDossierImg;
 
+	$parametres_url = "";
     if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
         $parametres_url = htmlspecialchars($_SERVER['QUERY_STRING']);
         

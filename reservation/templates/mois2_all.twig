@@ -1,0 +1,177 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+{% import 'planning.twig' as planning %}
+
+{% block css %}
+{{d.cssTypeResa |raw}}
+{% endblock %}
+
+{% block content %}
+
+<section>
+
+<!-- ! MenuHG  -->
+	{% if d.pview != 1 %}
+		{{ planning.menuGauche(settings, trad, d.selecteursG, d.miniCalentrier, d.selectionDateDirecte, d.legende) }}
+		{{ planning.menuHaut(settings, trad, d.selecteursH, d.miniCalentrier, d.selectionDateDirecte, d.legende) }}
+
+		<div id='planning2'>
+	{% else %}
+		<div id="print_planning">
+	{% endif %}
+
+	<table class="mois floatthead table-bordered table-striped">
+		<caption>
+
+			{% if d.pview != 1 %} <!-- liens mois avant-après et imprimante si page non imprimable -->
+				<div class="ligne23">
+					<div class="left">
+						<button class="btn btn-default btn-xs" onclick="javascript: location.href='app.php?p=mois2_all&amp;year={{d.yy}}&amp;month={{d.ym}}&amp;area={{d.area}}';" ><span class="glyphicon glyphicon-backward"></span> {{trad.monthbefore}}</button>
+					</div>
+
+					{{ planning.imprimante(settings, d.paramUrl) }}
+
+					<div class="right">
+						<button class="btn btn-default btn-xs" onclick="javascript: location.href='app.php?p=mois2_all&amp;year={{d.ty}}&amp;month={{d.tm}}&amp;area={{d.area}}';">{{trad.monthafter}} <span class="glyphicon glyphicon-forward"></span></button>
+					</div>
+				</div>
+			{% endif %}
+
+			<div>
+				{% if d.pview != 1 %} <!-- afficher ou cacher le menu si page non imprimable -->
+					<div class="left">
+						<div id="voir"><button class="btn btn-default btn-sm" onClick="afficheMenuHG({{d.positionMenu}})" title="{{trad.show_left_menu}}"><span class="glyphicon glyphicon-chevron-right"></span></button></div>
+						<div id="cacher"><button class="btn btn-default btn-sm" onClick="afficheMenuHG(0)" title="{{trad.hide_left_menu}}"><span class="glyphicon glyphicon-chevron-left"></span></button></div> 
+					</div>
+				{% endif %}
+
+				<h4 class="titre">
+					{{d.nomDomaine}} - {{trad.all_areas}}<br>
+					{{d.moisActuel}} <a href="app.php?p=annee&amp;area={{d.area}}" title="{{trad.see_all_the_rooms_for_several_months}}">{{d.anneeActuel}}</a>
+                    {% if d.pview != 1 %}
+                        <a href="app.php?p=mois_all&year={{d.gYear}}&amp;month={{d.gMonth}}&amp;area={{d.area}}" title="{{trad.default_room_month_all_bis}}"><span class='glyphicon glyphicon-refresh'></span></a>
+                    {% endif %}
+				</h4>
+
+				{% if d.pview == 1 and d.precedent == 1 %}
+					<span id="lienPrecedent">
+						<button class="btn btn-default btn-xs" onclick="javascript:history.back();">Précedent</button>
+					</span>
+				{% endif %}
+			</div>
+
+		</caption>
+		<thead>
+			<tr>
+                <th class="cell_hours">{{trad.rooms}}</th>
+				{% for jour in joursMois %}
+					<td class="{{jour.class}}">{{jour.nom}}</td>
+                    {% if jour.nomCycle != "" %}<br><i>{{jour.nomCycle}}</i>{% endif %}
+				{% endfor %}
+			</tr>
+		</thead>
+		<tbody>
+            {% for ressource in ressourcesMois %}
+            <tr>
+                <!-- 1ere colonne avec le nom des ressources -->
+                <th>
+                    <a href="app.php?p=mois&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{d.gDay}}&amp;area={{d.area}}&amp;room={{ressource.id}}" title="{{trad.see_week_for_this_room}}">
+                        {{ressource.nom}}
+                    </a>
+                </th>
+
+                <!-- X colonnes suivantes avec les résa par jopurs -->
+                {% for jourR in ressource.joursRessource %}
+                    <td>
+                        {% for resa in jourR.reservations %}
+                            <table class="pleine table-bordered table-striped">
+                                <tr>
+                                    <td class="type{{resa.class}}">
+                                        <span class="small_planning">
+                                            {% if resa.lienFiche %}
+                                                {% if settings.display_level_view_entry == 0 %}
+                                                    <a title="{{resa.titre}}" data-width="675" onclick="request({{resa.idresa}},{{cellule.numJour}},{{d.gMonth}},{{d.gYear}},{{d.room}},mois2_all,readData);" data-rel="popup_name" class="poplight lienCellule">
+                                                {% else %}
+                                                    <a class="lienCellule" title="{{resa.titre}}" href="app.php?p=vuereservation&id={{resa.idresa}}&amp;day={{cellule.numJour}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=mois2_all">
+                                                {% endif %}
+                                            {% endif %}
+                                            {{resa.texte|raw}}
+                                            {% if resa.lienFiche %}
+                                                </a>
+                                            {% endif %}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        {% endfor %}
+
+                        <!-- Si nb de resa supérieur à 11 -->
+                        {% if jourR.autreResa %}
+                            <p>...</p>
+                        {% endif %}
+
+                        {% if jourR.horsResa %}
+                            <div class="empty_cell">
+                                <span class="glyphicon glyphicon-remove" title="{{trad.reservation_impossible}}" style="color:red"></span>
+                            </div>
+                        {% elseif jourR.plageLibre %}
+                        <div class="empty_cell">
+                            <a href="edit_entry.php?room={{ressource.id}}&amp;page=semaine_all&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{jourR.jour}}&amp;
+                            {% if d.usePeriode == "y" %}
+                                period=&amp;
+                            {% else %}
+                                hour={{jourR.heure}}&amp;minute=0
+                            {% endif %}"
+                            title="{{trad.cliquez_pour_effectuer_une_reservation}}"><span class="glyphicon glyphicon-plus"></span></a>
+                        </div>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+		</tbody>
+		<thead>
+			<tr>
+                <th class="cell_hours"></th>
+				{% for jour in joursMois %}
+					<td class="{{jour.class}}">{{jour.nom}}</td>
+                    {% if jour.nomCycle != "" %}<br><i>{{jour.nomCycle}}</i>{% endif %}
+				{% endfor %}
+			</tr>
+		</thead>
+
+	</table>
+
+		{% if d.pview != 1 %}
+			<div id="toTop">
+				<b>{{trad.top_of_page}}</b>
+			</div>
+		{% endif %}
+
+	</div>
+	<div id="popup_name" class="popup_block"></div>
+</section>
+
+
+{% endblock %}
+
+{% block javascript %}
+	{% if d.pview != 1 %}
+		{{ planning.erreurMailAuto(settings, trad, d.sessionMessageErreur) }}
+		{{ planning.boutonRetourHaut() }}
+	{% endif %}
+	{% if d.popupMessage %}
+		{{ planning.popupMsg(settings, d.popupMessage, d.popupAffiche) }}
+	{% endif %}
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#popup_name").draggable({containment: "#container"});
+			$("#popup_name").resizable();
+			afficheMenuHG('{{d.positionMenu}}');
+			if ( $(window).scrollTop() == 0 )
+				$("#toTop").hide(1);
+		});
+	</script>
+{% endblock %}

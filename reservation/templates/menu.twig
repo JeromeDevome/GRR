@@ -1,0 +1,72 @@
+{% macro menuHaut(selecteurSDR, miniCalentrier) %}
+    <div id ="menuHaut" class="row">
+
+        <!-- Sites, domaine et ressources -->
+        <div id ="resource_selectorH" class="col-lg-2 col-md-3 col-xs-12">
+            {{ selecteurSDR|raw }}
+        </div>
+
+        <!-- Sélection date directe -->
+        {% if settings.select_date_directe == "y" %}
+            <form method="GET" action="app.php?p=jour" style="text-align: left;">
+
+                <button class="btn btn-default btn-sm" type="submit">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </button>
+            </form>
+        {% endif %}
+
+        <!-- Mini calendrier(s) -->
+        <div id ="calendriersH" class="col-lg-8 col-md-6 col-xs-12">
+
+        </div>
+
+        <!-- Légende -->
+        {% if settings.legend == 0 %}
+            <div id ="legendeG">
+                <div id ="legendeH" class="col-lg-2 col-md-3 col-xs-12">
+
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro menuGauche(selecteurSDR, miniCalentrier) %}
+    <div id ="menuGauche2">
+
+        <!-- Sélection date directe -->
+        {% if settings.select_date_directe == "y" %}
+            <form method="GET" action="app.php?p=jour">
+                <center>
+
+                    <button class="btn btn-default btn-sm" type="submit">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </button>
+                </center>
+            </form>
+        {% endif %}
+
+        <!-- Mini calendrier(s) -->
+        <div id ="calendriersG">
+            {{miniCalentrier|raw}}
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-xs-12">
+            <!-- Sites, domaine et ressources -->
+            <div id="resource_selectorG">
+                {{ selecteurSDR|raw }}
+            </div>
+
+
+            <!-- Légende -->
+            {% if settings.legend == 0 %}
+                <div id ="legendeG">
+                    <div id ="legendeG">
+                    
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}

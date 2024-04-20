@@ -1,0 +1,123 @@
+{% macro menuHaut(settings, trad, selecteur, miniCalentrier, selectionDateDirecte, legende) %}
+    <div id ="menuHaut" class="row">
+
+        <!-- Sites, domaine et ressources -->
+        <div id ="resource_selectorH" class="col-lg-2 col-md-3 col-xs-12">
+            {{selecteur|raw}}
+        </div>
+
+        <!-- Sélection date directe -->
+        {% if settings.select_date_directe == "y" %}
+            <form method="GET" action="app.php" style="text-align: left;">
+                <input type="hidden" name="p" value="jour">
+                {{selectionDateDirecte|raw}}
+                <button class="btn btn-default btn-sm" type="submit">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </button>
+            </form>
+        {% endif %}
+
+        <!-- Mini calendrier(s) -->
+        <div id ="calendriersH" class="col-lg-8 col-md-6 col-xs-12">
+            {{miniCalentrier|raw}}
+        </div>
+
+        <!-- Légende -->
+        {% if settings.legend == 0 %}
+            <div id ="legendeG">
+                <div id ="legendeH" class="col-lg-2 col-md-3 col-xs-12">
+                    {{legende|raw}}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro menuGauche(settings, trad, selecteur, miniCalentrier, selectionDateDirecte, legende) %}
+    <div id ="menuGauche2">
+
+        <!-- Sélection date directe -->
+        {% if settings.select_date_directe == "y" %}
+            <form method="GET" action="app.php">
+                <input type="hidden" name="p" value="jour">
+                <center>
+                    {{selectionDateDirecte|raw}}
+                    <button class="btn btn-default btn-sm" type="submit">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </button>
+                </center>
+            </form>
+        {% endif %}
+
+        <!-- Mini calendrier(s) -->
+        <div id ="calendriersG">
+            {{miniCalentrier|raw}}
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-xs-12">
+            <!-- Sites, domaine et ressources -->
+            <div id="resource_selectorG">
+                {{selecteur|raw}}
+            </div>
+
+            <!-- Légende -->
+            {% if settings.legend == 0 %}
+                <div id ="legendeG">
+                    <table class="legende">
+                        <caption>{{trad.show_color_key}}</caption>
+                        {{legende|raw}}
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro imprimante(settings, paramUrl) %}
+    <button type="button" class="btn btn-default btn-xs" 
+    {% if settings.pview_new_windows == 1 %}
+        onclick="javascript:window.open('app.php?{% if paramUrl %}{{paramUrl}}&amp;{% endif %}pview=1')">
+    {% else %}
+        onclick="javascript:location.href='app.php?{% if paramUrl %}{{paramUrl}}&amp;{% endif %}pview=1&amp;precedent=1'">
+    {% endif %}
+        <span class="glyphicon glyphicon-print"></span>
+    </button>
+{% endmacro %}
+
+{% macro boutonRetourHaut() %}
+    <script type="text/javascript">
+        $(function(){
+            $(window).scroll(function(){
+                if ($(window).scrollTop() != 0)
+                    $("#toTop").fadeIn();
+                else
+                    $("#toTop").fadeOut();
+            });
+            $("#toTop").click(function(){
+                $("body,html").animate({scrollTop:0},800);
+            });
+        });
+    </script>
+{% endmacro %}
+
+{% macro popupMsg(settings, message, affiche) %}
+
+    {% if message %}
+        {% if settings.javascript_info_disabled == 0 and affiche == 1 %}
+            <script type="text/javascript">
+                alert("{{message}}");
+            </script>
+        {% endif %}
+    {% endif %}
+
+{% endmacro %}
+
+{% macro erreurMailAuto(settings, trad, sessionMessageErreur) %}
+
+    {% if settings.javascript_info_disabled == 0 and sessionMessageErreur %}
+        <script type="text/javascript">
+            alert("{{trad.title_automatic_mail}}\n{{sessionMessageErreur}}\n{{trad.technical_contact}}");
+        </script>
+    {% endif %}
+
+{% endmacro %}

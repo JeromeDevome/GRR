@@ -73,10 +73,10 @@ if (strstr ($back, 'view_entry.php'))
 {
     if (isset($year)&&isset($month)&&isset($day)){
         $page = (isset($_GET['page']))? clean_input($_GET['page']) : "day";
-        $back = $page.'.php?year='.$year.'&month='.$month.'&day='.$day;
-        if (($page == "week_all") || ($page == "month_all") || ($page == "month_all2") || ($page == "day") || ($page == "year") || ($page == "year_all"))
+        $back = 'app.php?p='.$page.'&year='.$year.'&month='.$month.'&day='.$day;
+        if (($page == "semaine_all") || ($page == "mois_all") || ($page == "mois_all2") || ($page == "jour") || ($page == "annee") || ($page == "annee_all"))
             $back .= "&area=".mrbsGetRoomArea($row1['1']);
-        if (($page == "week") || ($page == "month"))
+        if (($page == "semaine") || ($page == "mois"))
             $back .= "&room=".$row1['1'];
     }
     else

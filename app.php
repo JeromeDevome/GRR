@@ -72,9 +72,9 @@ $day = isset($_POST['day']) ? $_POST['day'] : (isset($_GET['day']) ? intval($_GE
 $month = isset($_POST['month']) ? $_POST['month'] : (isset($_GET['month']) ? intval($_GET['month']) : date('m'));
 $year = isset($_POST['year']) ? $_POST['year'] : (isset($_GET['year']) ? intval($_GET['year']) : date('Y'));
 
-$d['dDay'] = $day;
-$d['dMonth'] = $month;
-$d['dYear'] = $year;
+$d['gDay'] = $day;
+$d['gMonth'] = $month;
+$d['gYear'] = $year;
 
 $d['levelUser'] = authGetUserLevel(getUserName(),-1);
 $d['accesStats'] = verif_access_search(getUserName());

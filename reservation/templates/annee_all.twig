@@ -1,0 +1,155 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+{% import 'planning.twig' as planning %}
+
+{% block css %}
+{{d.cssTypeResa |raw}}
+{% endblock %}
+
+{% block content %}
+
+<section>
+
+	{% if d.pview != 1 %}
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-xs-12">
+        </div>
+        <div class="col-lg-4 col-md-6 col-xs-12"><!-- choix des dates -->
+            <form method="get" action="app.php">
+                <input type="hidden" name="p" value="annee_all" />
+                <input type="hidden" name="site" value="{{d.site}}" />
+                <input type="hidden" name="area" value="{{d.area}}" />
+                <table border="0">
+                    <tr>
+                        <td>{{trad.report_start}}{{trad.deux_points}}</td>
+                        <td>{{d.dateDebutHtml|raw}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{trad.report_end}}{{trad.deux_points}}</td>
+                        <td>{{d.dateFintHtml|raw}}</td>
+                    </tr>
+                    <tr>
+                        <td class="CR"><input type="submit" name="valider" value="{{trad.goto}}" /></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+	{% endif %}
+
+    <div class="col-xs-12 center">
+        <h4>{{d.nomSite}} {{trad.all_areas}}</h4>
+        {% if d.pview != 1 %}
+            {{ planning.imprimante(settings, d.paramUrl) }}
+        {% endif %}
+    </div>
+{% for domaineMois in lesMois %}
+	<h3><center>{{domaineMois.nomMois}} {{domaineMois.annee}}</center></h3>
+    {% for mois in domaineMois.lesDomaines %}
+        <table class="mois table-bordered table-striped">
+            <caption>
+                <h4><a href="app?p=mois2_all&month={{mois.numMois}}&year={{mois.annee}}&area={{d.area}}">{{mois.nomMois}}</a> {{mois.nomDomaine}}</h4>
+            </caption>
+            <thead>
+                <tr>
+                    <td class="cell_hours">{{trad.rooms}}</td>
+                    {% for jour in mois.joursMois %}
+                        <td class="{{jour.class}}">
+                            <div>
+                                <a title="{{trad.see_all_the_rooms_for_the_day}}" href="app.php?p=jour&amp;year={{mois.annee}}&amp;month={{mois.numMois}}&amp;day={{jour.num}}&amp;area={{d.area}}"></a>
+                                    {{jour.nom|raw}}
+                                    {% if jour.cycle %}<br>><b><i>{{jour.cycle}}</i></b>{% endif %}
+                                </a>
+                            </div>
+                        </td>
+                    {% endfor %}
+                </tr>
+            </thead>
+            {% for ressource in mois.ressourcesMois %}
+            <tr>
+                <!-- 1ere colonne avec le nom des ressources -->
+                <th>
+                    <a href="app.php?p=mois&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{d.gDay}}&amp;area={{d.area}}&amp;room={{ressource.id}}" title="{{trad.see_week_for_this_room}}">
+                       {{ressource.nom}}
+                    </a>
+                </th>
+                {% for jour in ressource.joursRessource %}
+                    <td>
+                        {% if jour.horsResa %}
+                            <div class="empty_cell">
+                                <span class="glyphicon glyphicon-remove" title="{{trad.reservation_impossible}}" style="color:red"></span>
+                            </div>
+                        {% endif %}
+
+                        {% for resa in jour.reservationsJours %}
+                            <table class="pleine table-bordered">
+                                <tr>
+                                    <td class="type{{resa.type}}">
+                                        {% if resa.lienFiche %}
+                                            {% if settings.display_level_view_entry == 0 %}
+                                                <a title="{{resa.titre|raw}}" data-width="675" onclick="request({{resa.idresa}},{{jour.jour}},{{mois.numMois}},{{mois.annee}},{{d.room}},annee,readData);" data-rel="popup_name" class="poplight lienCellule">
+                                            {% else %}
+                                                <a class="lienCellule" title="{{resa.titre|raw}}" href="app.php?p=vuereservation&id={{resa.idresa}}&amp;day={{jour.jour}}&amp;month={{mois.numMois}}&amp;year={{mois.annee}}&amp;page=annee">
+                                            {% endif %}
+                                        {% endif %}
+                                        {{resa.titre|raw}}
+                                        {% if resa.lienFiche %}
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </table>
+                        {% endfor %}
+                        {% if jour.autreResa %}
+                        <p>...</p>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    {% endfor %}
+{% endfor %}
+    {% if d.pview != 1 %}
+        <div id="toTop">
+            <b>{{trad.top_of_page}}</b>
+        </div>
+    {% endif %}
+
+	<div id="popup_name" class="popup_block"></div>
+</section>
+
+{% if settings.legend == 0 and d.pview != 1 %}
+    <div class="pleine center">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+            <div id ="legendeG">
+                <table class="legende">
+                    <caption>{{trad.show_color_key}}</caption>
+                    {{d.legende|raw}}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+{% endblock %}
+
+{% block javascript %}
+	{% if d.pview != 1 %}
+		{{ planning.erreurMailAuto(settings, trad, d.sessionMessageErreur) }}
+		{{ planning.boutonRetourHaut() }}
+	{% endif %}
+	{% if d.popupMessage %}
+		{{ planning.popupMsg(settings, d.popupMessage, d.popupAffiche) }}
+	{% endif %}
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#popup_name").draggable({containment: "#container"});
+			$("#popup_name").resizable();
+			if ( $(window).scrollTop() == 0 )
+				$("#toTop").hide(1);
+		});
+	</script>
+{% endblock %}

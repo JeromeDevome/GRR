@@ -60,8 +60,8 @@ function mrbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore, $lin
 		$err .= "<li><a href=\"".$link."app.php?p=vuereservation&id=$row[0]\">$row[1]</a>"
 		. " ( " . utf8_strftime('%A %d %B %Y %T', $row[2]) . ") "
 		. "(<a href=\"".$link."day.php?$param_ymd\">".get_vocab("viewday")."</a>"
-			. " | <a href=\"".$link."week.php?room=$room_id&amp;$param_ymd\">".get_vocab("viewweek")."</a>"
-			. " | <a href=\"".$link."month.php?room=$room_id&amp;$param_ym\">".get_vocab("viewmonth")."</a>)</li>\n";
+			. " | <a href=\"".$link."app.php?p=semaine&amp;room=$room_id&amp;$param_ymd\">".get_vocab("viewweek")."</a>"
+			. " | <a href=\"".$link."app.php?p=mois&amp;room=$room_id&amp;$param_ym\">".get_vocab("viewmonth")."</a>)</li>\n";
 	}
 	return $err;
 }

@@ -58,24 +58,10 @@
 		private function getDateLink($day, $month, $year)
 		{
 			global $vocab;
-            if (isset($this->room) && $this->room <> 0)
-                return "<a onclick=\"charger();\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_day_for_this_room"))."\" href=\"day.php?year=$year&amp;month=$month&amp;day=$day&amp;room=".$this->room."\"";
-            return "<a onclick=\"charger();\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"day.php?year=$year&amp;month=$month&amp;day=$day&amp;area=".$this->area."\"";
+            if (isset($this->room) && $this->room != 0 && $this->room <> 0)
+                return "<a onclick=\"\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_day_for_this_room"))."\" href=\"app.php?p=jour&amp;year=$year&amp;month=$month&amp;day=$day&amp;room=".$this->room."\"";
+            return "<a onclick=\"\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"app.php?p=jour&amp;year=$year&amp;month=$month&amp;day=$day&amp;area=".$this->area."\"";
         }
-/* inutile de faire un test pour finalement faire la même chose YN le 07/03/2018
-			if ($this->dmy == 'day')
-			{
-				if (isset($this->room))
-					return "<a onclick=\"charger();\" class=\"calendar\" title=\"".htmlspecialchars(get_vocab("see_day_for_this_room"))."\" href=\"".$this->dmy.".php?year=$year&amp;month=$month&amp;day=$day&amp;room=".$this->room."\"";
-				return "<a onclick=\"charger();\" class=\"calendar\" title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"".$this->dmy.".php?year=$year&amp;month=$month&amp;day=$day&amp;area=".$this->area."\"";
-			}
-			if ($this->dmy != 'day')
-			{
-				if (isset($this->room))
-					return "<a onclick=\"charger();\" class=\"calendar\" title=\"".htmlspecialchars(get_vocab("see_day_for_this_room"))."\" href=\"day.php?year=$year&amp;month=$month&amp;day=$day&amp;room=".$this->room."\"";
-				return "<a onclick=\"charger();\" class=\"calendar\" title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"day.php?year=$year&amp;month=$month&amp;day=$day&amp;area=".$this->area."\"";
-			}
-		} */
 
 		/**
 		 * @param integer $m
@@ -91,10 +77,10 @@
 			$tmp = mktime(0, 0, 0, ($month) + $m, 1, ($year) + $y);
 			$lastmonth = date("m", $tmp);
 			$lastyear = date("Y", $tmp);
-			if (($dmy != 'day') && ($dmy != 'week_all') && ($dmy != 'month_all') && ($dmy != 'month_all2'))
-				return "<button type=\"button\" title=\"".htmlspecialchars(get_vocab($text))."\" class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month.php?year=$lastyear&amp;month=$lastmonth&amp;day=1&amp;area=$this->area&amp;room=$room';\"><span class=\"glyphicon glyphicon-$glyph\"></span></button>\n";
+			if (($dmy != 'jour') && ($dmy != 'semaine_all') && ($dmy != 'mois_all') && ($dmy != 'month_all2'))
+				return "<button type=\"button\" title=\"".htmlspecialchars(get_vocab($text))."\" class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='app.php?p=mois&year=$lastyear&amp;month=$lastmonth&amp;day=1&amp;area=$this->area&amp;room=$room';\"><span class=\"glyphicon glyphicon-$glyph\"></span></button>\n";
 			else
-				return "<button type=\"button\" title=\"".htmlspecialchars(get_vocab($text))."\" class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='".$type_month_all.".php?year=$lastyear&amp;month=$lastmonth&amp;day=1&amp;area=$area';\"><span class=\"glyphicon glyphicon-$glyph\"></span></button>\n";
+				return "<button type=\"button\" title=\"".htmlspecialchars(get_vocab($text))."\" class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='app.php?p=mois_all&year=$lastyear&amp;month=$lastmonth&amp;day=1&amp;area=$area';\"><span class=\"glyphicon glyphicon-$glyph\"></span></button>\n";
 		}
 
 		private function getNumber($weekstarts, $d, $daysInMonth)
@@ -144,12 +130,12 @@
 			while ($d <= $daysInMonth)
 			{
 				$bg_lign = '';
-				if (($week_today == $week) && ($this->h) && (($this->dmy == 'week_all') || ($this->dmy == 'week')))
+				if (($week_today == $week) && ($this->h) && (($this->dmy == 'semaine_all') || ($this->dmy == 'semaine')))
 					$bg_lign = " class=\"week\"";
 				$s .= "<tr ".$bg_lign."><td class=\"calendarcol1\">";
-				$t = "<a onclick=\"charger();\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_week_for_this_area"))."\" href=\"week_all.php?year=$this->year&amp;month=$this->month&amp;day=$temp&amp;area=$this->area\">".sprintf("%02d",$week)."</a>";
-				if (($this->dmy != 'day') && ($this->dmy != 'week_all') && ($this->dmy != 'month_all') && ($this->dmy != 'month_all2'))
-					$t = "<a onclick=\"charger();\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_week_for_this_room"))."\" href=\"week.php?year=$this->year&amp;month=$this->month&amp;day=$temp&amp;area=$this->area&amp;room=$this->room\">".sprintf("%02d",$week)."</a>";
+				$t = "<a onclick=\"\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_week_for_this_area"))."\" href=\"app.php?p=semaine_all&amp;year=$this->year&amp;month=$this->month&amp;day=$temp&amp;area=$this->area\">".sprintf("%02d",$week)."</a>";
+				if (($this->dmy != 'jour') && ($this->dmy != 'semaine_all') && ($this->dmy != 'mois_all') && ($this->dmy != 'month_all2'))
+					$t = "<a onclick=\"\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_week_for_this_room"))."\" href=\"app.php?p=semaine&amp;year=$this->year&amp;month=$this->month&amp;day=$temp&amp;area=$this->area&amp;room=$this->room\">".sprintf("%02d",$week)."</a>";
 				$s .= $t;
 				$temp = $temp + 7;
 				while ((!checkdate($this->month, $temp, $this->year)) && ($temp > 0))
@@ -167,7 +153,7 @@
 
 		private function GetAction()
 		{
-			$action = "day.php?year=".date('Y',time())."&amp;month=".date('m',time())."&amp;day=".date('d',time());
+			$action = "app.php?p=jour&amp;year=".date('Y',time())."&amp;month=".date('m',time())."&amp;day=".date('d',time());
 			if (isset($_GET['area']) && $_GET['area'] != null)
 				$action .= "&amp;area=".intval($_GET['area']) ;
 			if (isset($_GET['room']) && $_GET['room'] != null)
@@ -234,15 +220,15 @@
 			$s .= "<div class=\"btn-group\">";
 			$s .= $this->createlink(0, -1, $this->month, $this->year, $this->dmy, $this->room, $this->area, "previous_year", "backward");
 			$s .= $this->createlink(-1, 0, $this->month, $this->year, $this->dmy, $this->room, $this->area, "monthbefore", "chevron-left");
-			if (($this->dmy != 'day') && ($this->dmy != 'week_all') && ($this->dmy != 'month_all') && ($this->dmy != 'month_all2'))
-				$s .= "<button type=\"button\" title=\"".htmlspecialchars(get_vocab("see_month_for_this_room"))."\" class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='month.php?year=$this->year&amp;month=$this->month&amp;day=1&amp;area=$this->area&amp;room=$this->room';\">$monthName $this->year</button>\n";
+			if (($this->dmy != 'jour') && ($this->dmy != 'semaine_all') && ($this->dmy != 'mois_all') && ($this->dmy != 'month_all2'))
+				$s .= "<button type=\"button\" title=\"".htmlspecialchars(get_vocab("see_month_for_this_room"))."\" class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='app.php?p=mois&year=$this->year&amp;month=$this->month&amp;day=1&amp;area=$this->area&amp;room=$this->room';\">$monthName $this->year</button>\n";
 			else
-				$s .= "<button type=\"button\" title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_month"))."\" class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='".$type_month_all.".php?year=$this->year&amp;month=$this->month&amp;day=1&amp;area=$this->area';\">$monthName $this->year</button>\n";
+				$s .= "<button type=\"button\" title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_month"))."\" class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='app.php?p=mois_all&year=$this->year&amp;month=$this->month&amp;day=1&amp;area=$this->area';\">$monthName $this->year</button>\n";
 			$s .= $this->createlink(1, 0, $this->month, $this->year, $this->dmy, $this->room, $this->area, "monthafter", "chevron-right");
 			$s .= $this->createlink(0, 1, $this->month, $this->year, $this->dmy, $this->room, $this->area, "following_year", "forward");
 			$s .= "</div>";
 			$action = $this->GetAction();
-			$s .= "<br/><button type=\"button\" title=\"".htmlspecialchars(get_vocab("gototoday"))."\" class=\"btn btn-default btn-xs\" onclick=\"charger();javascript: location.href='".$action."';\">".get_vocab("gototoday")."</button>";
+			$s .= "<br/><button type=\"button\" title=\"".htmlspecialchars(get_vocab("gototoday"))."\" class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='".$action."';\">".get_vocab("gototoday")."</button>";
 			$s .= "</caption>";
 			$s .= "<thead><tr><td class=\"calendarcol1\">".get_vocab("semaine")."</td>\n";
 			$s .= $this->getFirstDays();
@@ -292,5 +278,43 @@ function minicals($year, $month, $day, $area, $room, $dmy)
 			$ind++;
 		}
 	}
+}
+
+function minicalsTwig($year, $month, $day, $area, $room, $dmy)
+{
+	global $display_day, $vocab;
+	get_planning_area_values($area);
+	$nb_calendar = Settings::get("nb_calendar");
+	$affichage = "";
+	if ($nb_calendar >= 1)
+	{
+		$month_ = array();
+		$milieu = ($nb_calendar % 2 == 1) ? ($nb_calendar + 1) / 2 : $nb_calendar / 2;
+		for ($k = 1; $k < $milieu; $k++)
+			$month_[] = mktime(0, 0, 0, $month + $k - $milieu, 1, $year);
+		$month_[] = mktime(0, 0, 0, $month, $day, $year);
+		for ($k = $milieu; $k < $nb_calendar; $k++)
+			$month_[] = mktime(0, 0, 0, $month + $k - $milieu + 1, 1, $year);
+		$ind = 1;
+		foreach ($month_ as $key)
+		{
+			if ($ind == 1)
+				$mois_precedent = 1;
+			else
+				$mois_precedent = 0;
+			if ($ind == $nb_calendar)
+				$mois_suivant = 1;
+			else
+				$mois_suivant = 0;
+			if ($ind == $milieu)
+				$flag_surlignage = 1;
+			else
+				$flag_surlignage = 0;
+			$cal = new Calendar(date("d",$key), date("m",$key), date("Y",$key), $flag_surlignage, $area, $room, $dmy, $mois_precedent, $mois_suivant);
+			$affichage .= $cal->getHTML();
+			$ind++;
+		}
+	}
+	return $affichage;
 }
 ?>

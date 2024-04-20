@@ -750,17 +750,17 @@ try {
     {
         $_SESSION['session_message_error'] = $message_error;
             if (($room_back != 'all')&&(strpos($page, 'all') === false)){
-                Header("Location: ".$page.".php?year=$year&month=$month&day=$day&area=$area&room=$room_back");
+                Header("Location: app.php?p=$page&year=$year&month=$month&day=$day&area=$area&room=$room_back");
             }
-            else Header("Location: ".$page.".php?year=$year&month=$month&day=$day&area=$area");
+            else Header("Location: app.php?p=$page&year=$year&month=$month&day=$day&area=$area");
     }
 	else // sinon, retour sur la page de la réservation validée
     {
         if (($room_back != 'all')&&(strpos($page, 'all') === false))
         {
-            Header("Location: ".$page.".php?year=$start_year&month=$start_month&day=$start_day&area=$area&room=$room");
+            Header("Location: app.php?p=$page&year=$start_year&month=$start_month&day=$start_day&area=$area&room=$room");
         }
-        else Header("Location: ".$page.".php?year=$start_year&month=$start_month&day=$start_day&area=$area");
+        else Header("Location: app.php?p=$page&year=$start_year&month=$start_month&day=$start_day&area=$area");
     }
 	exit;
 }// fin try

@@ -46,7 +46,7 @@ $page = verif_page();
 if (isset($_GET["id"]))
 	$id = intval($_GET["id"]);
 else {
-    header("Location: ./day.php");
+    header("Location: ./app.php?p=jour");
 	die();    
 }
 function libelle($type){ // rend la description du type_lettre de réservation

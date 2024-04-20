@@ -1,0 +1,42 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+{% import 'planning.twig' as planning %}
+
+{% block css %}
+{{d.cssTypeResa |raw}}
+{% endblock %}
+
+{% block content %}
+
+<section>
+
+<!-- ! MenuHG  -->
+
+	{{ planning.menuGauche(settings, trad, d.selecteursG, d.miniCalentrier, d.selectionDateDirecte, d.legende) }}
+	{{ planning.menuHaut(settings, trad, d.selecteursH, d.miniCalentrier, d.selectionDateDirecte, d.legende) }}
+
+	<div id='planning2'>
+        {{d.messageErreur|raw}}
+	</div>
+	<div id="popup_name" class="popup_block"></div>
+</section>
+
+
+{% endblock %}
+
+{% block javascript %}
+	{% if d.popupMessage %}
+		{{ planning.popupMsg(settings, d.popupMessage, d.popupAffiche) }}
+	{% endif %}
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#popup_name").draggable({containment: "#container"});
+			$("#popup_name").resizable();
+			afficheMenuHG('{{d.positionMenu}}');
+			if ( $(window).scrollTop() == 0 )
+				$("#toTop").hide(1);
+		});
+	</script>
+{% endblock %}
