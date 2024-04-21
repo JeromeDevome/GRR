@@ -736,15 +736,6 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 	;";
 	grr_sql_query($sql);
 
-	/* Suppression des logs. Bloc supprimé en lien avec la modification de login.php
-	if($nbMaxJoursLogConnexion > 0){
-		$dateActu = date_create($_SESSION['start']);
-		$dateMax = date_sub($dateActu, date_interval_create_from_date_string($nbMaxJoursLogConnexion.' days'));
-		$dateMax = $dateMax->format('Y-m-d H:i:s');
-		$sql = "DELETE FROM ".TABLE_PREFIX."_log WHERE START < '" . $dateMax . "';";
-		grr_sql_query($sql);
-	} */
-
 	// L'utilisateur doit changer son mot de passe
 	if($row['changepwd'] == 1)
 		return "12";
