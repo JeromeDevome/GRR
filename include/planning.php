@@ -45,7 +45,7 @@ $date_now = time();
 
 $d['cssTypeResa'] = cssTypeResa();
 $d['page'] = $page;
-$d['paramUrl'] = $_SERVER['QUERY_STRING'];
+//$d['paramUrl'] = $_SERVER['QUERY_STRING'];
 $d['popupMessage'] = "";
 
 //Construction des identifiants de la ressource $room, du domaine $area, du site $id_site
