@@ -40,7 +40,7 @@ grr_closeSession($auto);
 if (isset($_GET['url']))
 {
 	$url = rawurlencode($_GET['url']);
-	header("Location: login.php?url=".$url);
+	header("Location: app.php?p=login&url=".$url);
 	exit;
 }
 //redirection vers l'url de déconnexion

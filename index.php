@@ -177,7 +177,6 @@ else if ((Settings::get('sso_statut') == 'lemon_visiteur') || (Settings::get('ss
 			header("Location: ".Settings::get("Url_cacher_page_login"));
 		else
 			header("Location: ".htmlspecialchars_decode(page_accueil())."");
-		//header("Location: ./login.php");
 		// Echec de l'authentification lemonldap
 		die();
 		echo "</body></html>";
@@ -435,7 +434,7 @@ else
 				if ((Settings::get("Url_cacher_page_login") != "") && ((!isset($sso_super_admin)) || ($sso_super_admin == false)))
 					header("Location: ".Settings::get("Url_cacher_page_login"));
 				else
-					header("Location: ./login.php");
+					header("Location: ./app.php?p=login");
 			}
 		}
 		else
@@ -443,7 +442,7 @@ else
 			if ((Settings::get("Url_cacher_page_login") != "") && ((!isset($sso_super_admin)) || ($sso_super_admin == false)))
 				header("Location: ".Settings::get("Url_cacher_page_login"));
 			else
-				header("Location: ./login.php");
+				header("Location: ./app.php?p=login");
 		}
 	}
 	else

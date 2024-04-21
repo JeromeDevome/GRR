@@ -43,7 +43,7 @@ if (isset($_GET["id"]))
 	settype($id,"integer");
 }
 else{
-	header("Location: ./login.php");
+	header("Location: ./app.php?p=login");
 	die();
 }
 if ($info = mrbsGetEntryInfo($id))

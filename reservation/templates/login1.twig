@@ -1,0 +1,110 @@
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="Robots" content="noindex" />
+		<title>GRR - {{ settings.company }}</title>
+		<link rel="shortcut icon" href="favicon.ico" />
+		<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css?v={{d.versionGRR}}" />
+		<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui.css?v={{d.versionGRR}}" />
+		<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui-timepicker-addon.css?v={{d.versionGRR}}" >
+		<link rel="stylesheet" type="text/css" href="./themes/default/css/style.css?v={{d.versionGRR}}" />
+		<link rel="stylesheet" type="text/css" href="./{{ d.sheetcss }}" />
+		{{ d.sheetcssperso|raw }}
+        <style>
+            .btn-outlined-black {
+  background-color: #fff;
+  border: 1px solid #1f1e1f;
+  color: #1f1e1f;
+  padding: 8px 16px;
+  line-height: 20px;
+}
+
+
+</style>
+	</head>
+
+
+
+<div class="center">
+    <a href="javascript:history.back()"><img src="{{d.logo}}" alt="logo" style="max-height:200px;"/></a>
+
+    <h1>{{settings.title_home_page}}</h1>
+    <h2>{{settings.company}}</h2>
+
+    <p>{{settings.message_home_page}}</p>
+
+    {% if settings.disable_login == "yes" %}
+        <br><br><p><span class="avertissement">{{trad.msg_login3}}</span></p>
+    {% endif %}
+
+    {% if d.messageLogin %}
+        <br><br><p><span class="avertissement">{{d.messageLogin|raw}}</span></p>
+    {% endif %}
+
+    <form action="app.php" method="post" style="width: 100%; margin-top: 24px; margin-bottom: 48px;">
+
+        {% if d.url %}
+            <input type="hidden" name="url" value="{{d.url}}" />
+        {% endif %}
+
+        {{d.hookLienConnexion1|raw}}
+
+		<fieldset style="padding-top: 8px; padding-bottom: 8px; width: 40%; margin-left: auto; margin-right: auto;">
+			<legend style="font-variant: small-caps;">{{trad.identification}}</legend>
+			<p>{{trad.mentions_legal_connexion}}</p>
+			<table style="width: 100%; border-collapse : separate;border-spacing : 10px;" cellpadding="5" cellspacing="0">
+				<tr>
+					<td style="text-align: right; width: 40%; font-variant: small-caps;">{{trad.login}}</td>
+					<td style="text-align: center; width: 60%;"><input type="text" id="login" name="login" /></td>
+				</tr>
+				<tr>
+					<td style="text-align: right; width: 40%; font-variant: small-caps;">{{trad.pwd}}</td>
+					<td style="text-align: center; width: 60%;"><input type="password" name="password" /></td>
+				</tr>
+                <tr>
+                    <td colspan="2">
+                        <input class="btn btn-primary" type="submit" name="submit" value="{{trad.OK}}" style="font-variant: small-caps; width: 100%;" />
+                    </td>
+                </tr>
+                {% if settings.sso_statut != "cas_visiteur" or settings.sso_statut != "cas_utilisateur" %}
+                <tr>
+                    <td colspan="2">
+                        <a class="btn btn-outlined-black" type="submit" name="submit" href="index.php?force_authentification" style="font-variant: small-caps; width: 100%;" />{{trad.authentification_CAS}}</a>
+                    </td>
+                </tr>
+                {% elseif settings.sso_statut != "" and settings.sso_statut != "no_sso" %}
+                <tr>
+                    <td colspan="2">
+                        <a class="btn btn-outlined-black" type="submit" name="submit" href="index.php" style="font-variant: small-caps; width: 100%;" />{{trad.authentification_CAS}}</a>
+                    </td>
+                </tr>
+                {% endif %}
+			</table>
+			
+		</fieldset>
+    </form>
+
+    {% if settings.fct_crea_cpt == "y" %}
+        <h4><a href="app.php?p=creationcompte">{{trad.crea_compte_inscrivez}}</a></h4><br><br>
+    {% endif %}
+
+    <p>{{d.contactAdmin}} [<a href="app.php?p=page&page=cgu" target="_blank">{{trad.cgu}}</a>]</p>
+
+    <a href="javascript:history.back()">{{trad.previous}} - <b>{{settings.company}}</b></a>
+    <br><br>
+    <p class="small">{{trad.msg_login1|raw}}<a href="{{d.lienGRR}}">{{d.lienGRR}}</a></p>
+</div>
+
+
+    <script type="text/javascript" src="js/functions.js" ></script>
+    <script type="text/javascript">
+		document.getElementById('login').focus();
+	</script>
+
+</body>
+</html>

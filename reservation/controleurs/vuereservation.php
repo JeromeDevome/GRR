@@ -3,10 +3,10 @@
  * vuereservation.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-12-31 16:35$
+ * Dernière modification : $Date: 2024-04-12 17:35$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -50,7 +50,7 @@ if (isset($_GET["id"]))
 }
 else
 {
-	header("Location: ./login.php");
+	header("Location: ./app.php?p=login");
 	die();
 }	
 
