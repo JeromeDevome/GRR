@@ -1207,6 +1207,8 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 				echo '<br /><a href="'.$racine.'/compte/compte.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'. $nomAffichage .' - '.get_vocab("manage_my_account").'</a>'.PHP_EOL;
 				if (verif_access_search(getUserName()))
 					echo '<br/><a href="'.$racine.'app.php?p=report">'.get_vocab("report").'</a>'.PHP_EOL;
+				if($resulHook['hookLienConnexion3'] != "")
+					echo $resulHook['hookLienConnexion3'];
 				$disconnect_link = false;
 				if (!((Settings::get("cacher_lien_deconnecter") == 'y') && (isset($_SESSION['est_authentifie_sso']))))
 				{
@@ -1424,11 +1426,13 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			}
 			else
 			{
+				$resulHook = Hook::Appel("hookLienConnexion3");
 				if( strlen(htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom'])) > 40 )
 					$d['nomUtilisateur'] =  htmlspecialchars($_SESSION['nom']);
 				else
 					$d['nomUtilisateur'] =  htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']);
-
+				if($resulHook['hookLienConnexion3'] != "")
+					$d['lienConnexion'] = $resulHook['hookLienConnexion3'];
 				// Déconnexion
 				$disconnect_link = false;
 				if (!((Settings::get("cacher_lien_deconnecter") == 'y') && (isset($_SESSION['est_authentifie_sso']))))
@@ -6374,6 +6378,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			}
 			else
 			{
+				$resulHook = Hook::Appel("hookLienConnexion3");
 				if( strlen(htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom'])) > 40 )
 					$nomAffichage =  htmlspecialchars($_SESSION['nom']);
 				else
@@ -6382,6 +6387,8 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 				echo '<br /><a href="'.$racine.'compte/compte.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'. $nomAffichage .' - '.get_vocab("manage_my_account").'</a>'.PHP_EOL;
 				if (verif_access_search(getUserName()))
 					echo '<br/><a href="'.$racine.'app.php?p=report">'.get_vocab("report").'</a>'.PHP_EOL;
+				if($resulHook['hookLienConnexion3'] != "")
+					echo $resulHook['hookLienConnexion3'];	
 				$disconnect_link = false;
 				if (!((Settings::get("cacher_lien_deconnecter") == 'y') && (isset($_SESSION['est_authentifie_sso']))))
 				{
