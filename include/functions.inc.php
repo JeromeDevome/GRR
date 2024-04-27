@@ -1199,6 +1199,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			}
 			else
 			{
+				$resulHook = Hook::Appel("hookLienConnexion3");
 				if( strlen(htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom'])) > 40 )
 					$nomAffichage =  htmlspecialchars($_SESSION['nom']);
 				else
