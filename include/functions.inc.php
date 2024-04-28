@@ -3432,7 +3432,10 @@ Mail pour le gestionnaire, ou l'admin
 	// Liste des destinataire
 	// Raison admin : 1:Gestionnaire de la ressource; 2:Admin du domaine; 3:Admin site; 4:Admins
 	list($mail_admin, $raison_admin) = find_active_user_room($room_id);
-	$codes['%raisonmail%'] = $vocab["mail_raison_".$raison_admin];
+	if($raison_admin != 0)
+		$codes['%raisonmail%'] = $vocab["mail_raison_".$raison_admin];
+	else
+		$codes['%raisonmail%'] = "";
 	$destinataire3 = "";
 	if (count($mail_admin) > 0)
 	{
