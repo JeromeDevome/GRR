@@ -516,7 +516,7 @@ if (($can_book || $can_copy) && (!$was_del))
         if ($can_copy)
             $d['lienCopier'] = "edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back&amp;copier=copier";
        if ($can_book)
-            $d['lienEchanger'] = "swap_entry.php?id=$id&amp;page=$page&amp;room_back=$room_back";
+            $d['lienEchanger'] = "app.php?p=echangeresa&amp;id=$id&amp;page=$page&amp;room_back=$room_back";
        if (($can_delete_or_create == "y")&& $can_book)
         {
             $d['lienSupprimer'] = "del_entry.php?id=".$id."&amp;series=0&amp;page=".$page."&amp;room_back=".$room_back;
