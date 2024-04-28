@@ -519,7 +519,7 @@ if (($can_book || $can_copy) && (!$was_del))
             $d['lienEchanger'] = "app.php?p=echangeresa&amp;id=$id&amp;page=$page&amp;room_back=$room_back";
        if (($can_delete_or_create == "y")&& $can_book)
         {
-            $d['lienSupprimer'] = "del_entry.php?id=".$id."&amp;series=0&amp;page=".$page."&amp;room_back=".$room_back;
+            $d['lienSupprimer'] = "app.php?p=supreservation&amp;id=".$id."&amp;series=0&amp;page=".$page."&amp;room_back=".$room_back;
         }
 }
 
@@ -599,7 +599,7 @@ if ($repeat_id != 0)
     if ((getWritable($userName, $id)) && verif_booking_date($userName, $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room($userName, $room_id, $row[10], $enable_periods) && (!$was_del))
 	{	
         $d['lienPeriodeModifier'] = "edit_entry.php?id=".$id."&amp;edit_type=series&amp;day=".$day."&amp;month=".$month."&amp;year=".$year."&amp;page=".$page;
-        $d['lienPeriodeSupprimer'] = "del_entry.php?id=".$id."&amp;series=1&amp;day=".$day."&amp;month=".$month."&amp;year=".$year."&amp;page=".$page;
+        $d['lienPeriodeSupprimer'] = "app.php?p=supreservation&amp;id=".$id."&amp;series=1&amp;day=".$day."&amp;month=".$month."&amp;year=".$year."&amp;page=".$page;
     }
 }
 if (!isset($area_id))
