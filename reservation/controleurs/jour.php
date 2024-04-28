@@ -55,7 +55,7 @@ $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiai
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
 WHERE
 ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id AND ".TABLE_PREFIX."_area.id = ".TABLE_PREFIX."_room.area_id";
-if (isset($room)) 
+if (isset($room) && $room != 0) 
     $sql .= " AND ".TABLE_PREFIX."_room.id = '".$room."' ";
 else 
     $sql .= " AND ".TABLE_PREFIX."_room.area_id = '".$area."' ";
