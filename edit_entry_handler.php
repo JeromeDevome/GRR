@@ -612,8 +612,8 @@ try {
     if ($conflits != ''){
         throw new Exception('conflit');
     }
-// pas de conflit, pas d'erreur, on peut envisager de poser les réservations...
-// quelques vérifications supplémentaires
+    // pas de conflit, pas d'erreur, on peut envisager de poser les réservations...
+    // quelques vérifications supplémentaires
     // reste-t-il qqch à réserver ?
     if ($rep_type != 0 && empty($reps)){
         throw new Exception('serie_vide');
@@ -687,7 +687,7 @@ try {
                 if (isset($id_first_resa) && ($id_first_resa != 0))
                 {
                     if (isset($id) && ($id != 0)) // modification d'une résa existante
-                        $message_error = send_mail($id_first_resa, 2, $dformat, array(), $oldRessource);
+                        $message_error = send_mail($id, 2, $dformat, array(), $oldRessource);
                     else // création
                         if ($send_mail_moderate)
                             $message_error = send_mail($id_first_resa, 5, $dformat); // à modérer
@@ -702,6 +702,7 @@ try {
 						$message_error = send_mail($id_first_resa, 1, $dformat);*/
 				}
 			}
+            mrbsDelEntry(getUserName(), $id, "series", 1);
 		}
 		else
 		{
@@ -737,11 +738,6 @@ try {
 			}
 		}
 		$id = 0; // JeromeB : Réinit l'id de réservation sinon en cas de double ressource celle-ci passe en modif
-	}
-	if (isset($id) && ($id != 0))
-	{
-		if ($rep_type != 0)
-			mrbsDelEntry(getUserName(), $id, "series", 1);
 	}
 	grr_sql_mutex_unlock("".TABLE_PREFIX."_entry");
 	$area = mrbsGetRoomArea($room_id);

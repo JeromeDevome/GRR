@@ -732,7 +732,7 @@ function mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate
 				$id_first_resa = $id_new_resa;
 		}
 	}
-	return $ent;
+	return $id_first_resa;
 }
 /* mrbsGetEntryInfo()
  *
