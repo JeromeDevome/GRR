@@ -129,9 +129,9 @@ else
 				$midnight = mktime(0, 0, 0, $month_num, $day_num, $year_num);
 			while ($t <= $end_t)
 			{
-				$d[$day_num]["id"][] = $row['2'];
-				$d[$day_num]["id_room"][]=$row['17'] ;
-				$d[$day_num]["color"][]=$row['6'];
+				$da[$day_num]["id"][] = $row['2'];
+				$da[$day_num]["id_room"][]=$row['17'] ;
+				$da[$day_num]["color"][]=$row['6'];
 
 				$midnight_tonight = $midnight + 86400;
 				if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
@@ -208,8 +208,8 @@ else
 						break;
 					}
 				}
-				$d[$day_num]["resa"][] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
-				$d[$day_num]["infobulle"][] = affichage_resa_info_bulle($overloadFieldList, 1, $row, $horaires);
+				$da[$day_num]["resa"][] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
+				$da[$day_num]["infobulle"][] = affichage_resa_info_bulle($overloadFieldList, 1, $row, $horaires);
 				if ($row[1] <= $midnight_tonight)
 					break;
 				$t = $midnight = $midnight_tonight;
@@ -219,8 +219,6 @@ else
 	}
     grr_sql_free($res2);
 }
-
-
 
 // Debut de la page
 $d['semaineDebut'] = utf8_strftime($dformat, $date_start);
@@ -345,18 +343,20 @@ foreach($ressources as $row)
 				$no_td = TRUE;
 				$estHorsReservation = est_hors_reservation(mktime(0, 0, 0, $cmonth, $cday, $cyear), $area);
                 $reservationsJour = array();
-				if ((isset($d[$cday]["id"][0])) && !$estHorsReservation)
+				if ((isset($da[$cday]["id"][0])) && !$estHorsReservation)
 				{
-					$n = count($d[$cday]["id"]);
+					$n = count($da[$cday]["id"]);
 					for ($i = 0; $i < $n; $i++)
 					{
-						if ($d[$cday]["id_room"][$i]==$row['id'])
+						if ($da[$cday]["id_room"][$i]==$row['id'])
 						{
 							if ($no_td)
 								$no_td = FALSE;
+
+                        	$reservationsJour[] = array('idresa' => $da[$cday]["id"][$i], 'class' => $da[$cday]["color"][$i], 'texte' => $da[$cday]["resa"][$i], 'bulle' => $da[$cday]["infobulle"][$i], 'lienFiche' => $acces_fiche_reservation);
 						}
-                        $reservationsJour[] = array('idresa' => $d[$cday]["id"][$i], 'class' => $d[$cday]["color"][$i], 'texte' => $d[$cday]["resa"][$i], 'bulle' => $d[$cday]["infobulle"][$i], 'lienFiche' => $acces_fiche_reservation);
 					}
+
 				}
 				if ($no_td)
 				{
