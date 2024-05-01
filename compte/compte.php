@@ -3,9 +3,9 @@
  * admin.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2021-08-23 09:53$
+ * Dernière modification : $Date: 2024-04-28 17:30$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -59,6 +59,7 @@ $d['dYear'] = $year;
 $d['accesStats'] = verif_access_search(getUserName());
 $d['levelUser'] = authGetUserLevel(getUserName(),-1);
 $d['versionGRR'] = $version_grr;
+$d['gNomUser'] = getUserName();
 
 get_vocab_admin('admin');
 get_vocab_admin('manage_my_account');

@@ -1061,8 +1061,8 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 	global $niveauDossier, $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $gcDossierImg;
 	
-	if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
-		header("Location: ./changepwd.php");
+	if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changemdp.php'){
+		header("Location: ./compte/compte.php?p=changemdp");
 	}
 
 	if ($niveauDossier == 2){
@@ -1253,11 +1253,11 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 
 function print_header_twig($day = '', $month = '', $year = '', $type_session = 'with_session')
 {
-	global $niveauDossier, $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
+	global $niveauDossier, $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser,$grr_script_name, $page;
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $d, $gcDossierImg, $gcDossierCss, $version_grr;
 	
-	if(isset($_SESSION['changepwd']) && $_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
-		header("Location: ./changepwd.php");
+	if( isset($_SESSION['changepwd']) && $_SESSION['changepwd'] == 1 && $page != 'changemdp'){
+		header("Location: ./compte/compte.php?p=changemdp");
 	}
 
 	if ($niveauDossier == 1)
@@ -1360,9 +1360,8 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			$month = date("m",$date_);
 			$year  = date("Y",$date_);
 
-
-			//Parmetre url fixe compte / admin
-			$paramUrl = 'day='.$day.'&amp;year='.$year.'&amp;month='.$month;
+			//Parametre url fixe compte / admin
+			$paramUrl = 'p='.$page.'&amp;day='.$day.'&amp;year='.$year.'&amp;month='.$month;
 			$d['paramUrl'] = $paramUrl;
 
 			//Accueil
@@ -1414,7 +1413,8 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			{
 				$parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
 				$_SESSION['chemin_retour'] = traite_grr_url($grr_script_name)."?". $_SERVER['QUERY_STRING'];
-				$d['urlLangue'] = traite_grr_url($grr_script_name);			}
+				$d['urlLangue'] = traite_grr_url($grr_script_name);
+			}
 			if ($type_session == 'no_session')
 			{
 				$resulHook = Hook::Appel("hookLienConnexion2");
@@ -6242,10 +6242,11 @@ function cssTypeResa()
 // suggestions pour reformuler les pages plannings
 function pageHead2($title, $page = "with_session") 
 {
+	global $grr_script_name;
 	if ($page == "with_session")
 	{
-		if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changepwd.php'){
-			header("Location: ./changepwd.php");
+		if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changemdp.php'){
+			header("Location: ./compte/compte.php?p=changemdp");
 		} // est-ce bien placé ? YN le 27/02/2020
 
 		if (isset($_SESSION['default_style']))

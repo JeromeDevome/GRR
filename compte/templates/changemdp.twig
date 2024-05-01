@@ -1,0 +1,39 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+<form action="compte.php?p=changemdp" method="post">
+	<input type="hidden" name="p" value="changemdp" />
+	<input type="hidden" name="valid" value="yes" />
+	<table>
+		<tr><td><b>{{trad.login}} {{trad.deux_points}}</b> {{d.gNomUser}}</td></tr>
+
+		{% if d.droitChanger == 1 %}
+			{% if d.obligatoirement == 1 %}
+				<h2><span class='avertissement'>{{trad.user_change_pwd_obligatoire}}</span></h2>
+			{% endif %}
+
+			<tr>
+				<td>
+					<p>{{trad.pwd_msg_warning}}</p>{{trad.old_pwd}}{{trad.deux_points}}
+					<input type="password" name="reg_password_a" size="20" required />
+					<br />{{trad.new_pwd1}}{{trad.deux_points}}
+					<input type="password" name="reg_password1" size="20" required />
+					<br />{{trad.new_pwd1}}{{trad.deux_points}}
+					<input type="password" name="reg_password2" size="20" required />
+				</td>
+			</tr>
+		{% endif %}
+	</table>
+	<input class="btn btn-primary" type="submit" value="{{trad.save}}" />
+</form>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

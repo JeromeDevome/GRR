@@ -1,11 +1,11 @@
 <?php
 /**
- * changepwd.php
+ * changemdp.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-08-21 16:13$
+ * Dernière modification : $Date: 2024-04-28 17:30$
  * @author    JeromeB
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -15,23 +15,15 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-$grr_script_name = 'changepwd.php';
+$grr_script_name = 'changemdp.php';
 
-include_once('personnalisation/connect.inc.php');
-include_once('include/config.inc.php');
-include_once('include/misc.inc.php');
-require_once('include/'.$dbsys.'.inc.php');
-include_once('include/mrbs_sql.inc.php');
-include_once('include/functions.inc.php');
-require_once('include/session.inc.php');
-include_once('include/settings.class.php');
+$trad = $vocab;
 
 if (!Settings::load())
 	die('Erreur chargement settings');
 $desactive_VerifNomPrenomUser='y';
 
-include_once('include/language.inc.php');
-include "include/resume_session.php";
+$d['masquerMenu'] = 1;
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
@@ -71,7 +63,7 @@ if ($valid == 'yes')
 						$_SESSION['password'] = $reg_password1;
 						$_SESSION['changepwd'] = 0;
 						if($page != 'moncompte')
-							header("Location: ./compte/compte.php");
+							header("Location: ./compte.php");
 					}
 				}
 			}
@@ -81,43 +73,13 @@ if ($valid == 'yes')
 	}
 }
 
-start_page_w_header('','','',$type_session="no_session");
-
 affiche_pop_up($msg,'admin');
-echo ('
-	<div class="container">
-	<form action="changepwd.php" method="post">
-		<input type="hidden" name="valid" value="yes" />
-		<table>');
 
-		echo '<tr><td><b>'.get_vocab('login').get_vocab('deux_points').'</b>';
-		echo getUserName().'</td></tr>';
+if (IsAllowedToModifyMdp() || $_SESSION['changepwd'] == 1)
+    $d['droitChanger'] = 1;
 
-	if (IsAllowedToModifyMdp() || $_SESSION['changepwd'] == 1)
-	{
-		if($_SESSION['changepwd'] == 1)
-			echo "<h2><span class='avertissement'>".get_vocab('user_change_pwd_obligatoire')."</span></h2>";
-		//echo $msg;
-		echo '
-			<tr>
-				<td>
-				
-					<br />
-					<p>'.get_vocab('pwd_msg_warning').'</p>'.get_vocab('old_pwd').get_vocab('deux_points').'
-					<input type="password" name="reg_password_a" size="20" required />
-					<br />'.get_vocab('new_pwd1').get_vocab('deux_points').'
-					<input type="password" name="reg_password1" size="20" required />
-					<br />'.get_vocab('new_pwd1').get_vocab('deux_points').'
-					<input type="password" name="reg_password2" size="20" required />
-				</td>
-			</tr>
-		</table>
-		<hr />';
-		echo '<input class="btn btn-primary" type="submit" value="'.get_vocab('save').'" />';
-	}
+if($_SESSION['changepwd'] == 1)
+    $d['obligatoirement'] = 1;
 
-	echo '</form>
-		</div>                     
-	</body>
-</html>';
+echo $twig->render('changemdp.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 ?>

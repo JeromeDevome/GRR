@@ -7,9 +7,9 @@
 		<meta name="Robots" content="noindex" />
 		<title>GRR - {{ settings.company }}</title>
 		<link rel="shortcut icon" href="../favicon.ico" />
-		<link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css?v={{d.versionGRR}}" />
-		<link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/mod_bootstrap.css?v={{d.versionGRR}}" />
-		<link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/jquery-ui.css?v={{d.versionGRR}}" />
+		<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.min.css?v={{d.versionGRR}}" />
+		<link rel="stylesheet" type="text/css" href="../bootstrap/css/mod_bootstrap.css?v={{d.versionGRR}}" />
+		<link rel="stylesheet" type="text/css" href="../bootstrap/css/jquery-ui.css?v={{d.versionGRR}}" />
 		<link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/jquery-ui-timepicker-addon.css?v={{d.versionGRR}}" >
 		<link rel="stylesheet" type="text/css" href="../themes/default/css/style.css?v={{d.versionGRR}}" />
 		<link rel="stylesheet" type="text/css" href="../{{ d.sheetcss }}" />
@@ -22,52 +22,55 @@
 		<header>
 			<div id="panel">
 				<div class="logo" height="100">
-					{%if d.logo != ''%}<a href="{{ d.pageAccueil |raw }}"><img src="{{ d.logo }}" alt="logo"></a>{%endif%}
+					{% if d.logo != ''%}<a href="{{ d.pageAccueil |raw }}"><img src="{{ d.logo }}" alt="logo"></a>{% endif %}
 				</div>
 				<div class="accueil">
 					<h2><a href="{{ d.pageAccueil |raw }}">{{ settings.company }}</a></h2>
 					<p>{{ settings.message_accueil |raw }}</p>
 				</div>
 				<div class="administration">
-					{%if d.lienAdmin != ''%}<br><a href='../{{ d.lienAdmin |raw }}'>{{ trad.admin }}</a>{%endif%}
-					{%if d.nbConnecte %}<br><a href="../admin/admin.php?p=admin_view_connexions">{{ d.nbConnecte }}</a>{%endif%}
-					{%if d.mess_resa %}<br><p class='avertissement'>{{ d.mess_resa }}</p>{%endif%}
+					{% if d.lienAdmin != '' %}<br><a href='../{{ d.lienAdmin |raw }}'>{{ trad.admin }}</a>{% endif %}
+					{% if d.nbConnecte %}<br><a href="../admin/admin.php?p=admin_view_connexions">{{ d.nbConnecte }}</a>{% endif %}
+					{% if d.mess_resa %}<br><p class='avertissement'>{{ d.mess_resa }}</p>{% endif %}
 				</div>
 				<div class="configuration" >
-					{%if d.jsHeure %}
+					{% if d.jsHeure %}
 					<div class="clock">
 						<div id="Date">
 							&nbsp;<span id="hours"></span>h<span id="min"></span>
 						</div>
 					</div>
-					{%endif%}
+					{% endif %}
 					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=fr"><img src="../img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>
 					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=de"><img src="../img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>
 					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=en"><img src="../img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>
 					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=it"><img src="../img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>
 					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=es"><img src="../img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>
 					<br /><a href="./compte.php?{{ d.paramUrl |raw }}">{{ d.nomUtilisateur }} - {{ trad.manage_my_account }}</a>
-					{%if d.accesStats %}<br /><a href="../app.php?p=report">{{ trad.report }}</a>{%endif%}
+					{% if d.accesStats %}<br /><a href="../app.php?p=report">{{ trad.report }}</a>{% endif %}
 					{{ d.lienDeconnexion |raw }}
 					{{ d.lienConnexion |raw }}
 				</div>
 			</div>
 			<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>
 		</header>
+		
 		<section>
-			<div id="menu-compte" class="col col-lg-2 col-md-2 col-xs-12">
-				
+			{% if d.masquerMenu != 1 %}
+				<div id="menu-compte" class="col col-lg-2 col-md-2 col-xs-12">
 					<br><br><a href="compte.php?p=moncompte" class="btn btn-primary col-lg-12">Mon compte</a>
 					<br><br><a href="compte.php?p=mesconnexions" class="btn btn-primary col-lg-12">Mes connexions</a>
 					<br><br><a href="compte.php?p=mesreservations" class="btn btn-primary col-lg-12">Mes réservations</a>
-				
-			</div>
+				</div>
+			{% endif %}
+
 			<div id="page-compte" class="col col-lg-10 col-md-10 col-xs-12">
 				{% block content %}{% endblock %}
 			</div>
 
 			<div id="popup_name" class="popup_block"></div>
 		</section>
+		
 
 		<script type="text/javascript" src="../js/jquery.min.js?v={{d.versionGRR}}"></script>
 		<script type="text/javascript" src="../js/jquery-ui.min.js?v={{d.versionGRR}}"></script>
@@ -78,9 +81,9 @@
 		<script type="text/javascript" src="../js/popup.js?v={{d.versionGRR}}" charset="utf-8"></script>
 		<script type="text/javascript" src="../js/functions.js?v={{d.versionGRR}}" ></script>
 		<script type="text/javascript" src="../js/selection.js?v={{d.versionGRR}}" ></script>
-		{%if d.jsHeure %}
+		{% if d.jsHeure %}
 			<script type="text/javascript" src="../js/{{ d.jsHeure }}?v={{d.versionGRR}}"></script>
-		{%endif%}
+		{% endif %}
 		{% block javascript %}{% endblock %}
 
 	</body>
