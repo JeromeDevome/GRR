@@ -27,9 +27,9 @@
 					<h2><a href="{{ d.pageAccueil|raw }}">{{ settings.company }}</a></h2>
 					<p>{{ settings.message_accueil|raw }}</p>
 				</div>
-				{% if lienFormaulaireResa == 1 %}
+				{% if d.lienFormaulaireResa == 1 %}
 				<div class="contactformulaire">
-					<input class="btn btn-default" type="submit" rel="popup_name" value="{{ trad.reserver }}" onclick="javascript:location.href='app.php?p=contactresa{{ d.paramUrl |raw }}'">
+					<input class="btn btn-default" type="submit" rel="popup_name" value="{{ trad.reserver }}" onclick="javascript:location.href='app.php?p=contactresa{{ d.paramUrlAccueil |raw }}'">
 				</div>
 				{% endif %}
 				<div class="administration">

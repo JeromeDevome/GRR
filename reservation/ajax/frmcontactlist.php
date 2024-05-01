@@ -16,14 +16,16 @@
  * (at your option) any later version.
  */
 
-include "personnalisation/connect.inc.php";
-include "include/mysql.inc.php";
-include "include/misc.inc.php";
-include "include/functions.inc.php";
+include "../../personnalisation/connect.inc.php";
+include "../../include/mysql.inc.php";
+include "../../include/misc.inc.php";
+include "../../include/functions.inc.php";
 
-$id = $_GET['id'];
+$id = intval($_GET['id']);
+
 if ($id != protect_data_sql($id))
     die('Donnée incorrecte');
+
 $res = grr_sql_query("SELECT room_name,id FROM ".TABLE_PREFIX."_room WHERE area_id = '".protect_data_sql($id)."' ORDER BY room_name");
 $nbresult = mysqli_num_rows($res);
 $user_name = getUserName();

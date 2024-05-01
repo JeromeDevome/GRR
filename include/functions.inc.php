@@ -1374,11 +1374,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 				$d['logo'] = $nom_picture;
 			
 			//Mail réservation
-			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
-			$res = grr_sql_query1($sql);
-			grr_sql_free($res);
-
-			if ( ( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )
+			if ( ( Settings::get("mail_etat_destinataire") == 1 && $type_session == "no_session" ) || ( ( Settings::get("mail_etat_destinataire") == 1 || Settings::get("mail_etat_destinataire") == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )
 			{
 				$d['lienFormaulaireResa'] = 1;
 			}
@@ -6241,7 +6237,7 @@ function cssTypeResa()
 }
 
 // suggestions pour reformuler les pages plannings
-function pageHead2($title, $page = "with_session") 
+/*function pageHead2($title, $page = "with_session") 
 {
 	global $grr_script_name;
 	if ($page == "with_session")
@@ -6344,10 +6340,11 @@ function pageHead2($title, $page = "with_session")
 	$a .= '</head>'.PHP_EOL;
 	return $a;
 }
-
+*/
 /*
 ** Fonction qui affiche le header
 */
+/*
 function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_session', $adm=0)
 {
 	global $niveauDossier, $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name, $racine, $racineAd;
@@ -6404,9 +6401,9 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 			//Accueil
 			echo '<div class="accueil ">',PHP_EOL,'<h2>',PHP_EOL,'<a href="'.$racine.page_accueil('yes'),'day=',$day,'&amp;year=',$year,'&amp;month=',$month,'">',Settings::get("company"),'</a>',PHP_EOL,'</h2>',PHP_EOL, Settings::get('message_accueil'),'</div>',PHP_EOL;
 			//Mail réservation
-			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
-			$res = grr_sql_query1($sql);
-			if ((( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )/*&& acces_formulaire_reservation()*/)
+			//$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
+			//$res = Settings::get("mail_etat_destinataire");
+			if ((( Settings::get("mail_etat_destinataire") == 1 && $type_session == "no_session" ) || ( ( Settings::get("mail_etat_destinataire") == 1 || Settings::get("mail_etat_destinataire") == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) ))
 			{
 				echo '<div class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="'.get_vocab('reserver').'" onClick="javascript:location.href=\'app.php?p=contactresa&day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</div>',PHP_EOL;
 			}
@@ -6514,6 +6511,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 		}
 	}
 }
+*/
 /*
 ** Fonction qui affiche le début d'une page avec entête et balise <section>
 */
