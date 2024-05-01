@@ -1362,10 +1362,11 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 
 			//Parametre url fixe compte / admin
 			$paramUrl = 'p='.$page.'&amp;day='.$day.'&amp;year='.$year.'&amp;month='.$month;
+			$paramUrlAccueil = 'day='.$day.'&amp;year='.$year.'&amp;month='.$month;
 			$d['paramUrl'] = $paramUrl;
 
 			//Accueil
-			$d['pageAccueil'] = $racine.page_accueil('yes').$paramUrl;
+			$d['pageAccueil'] = $racine.page_accueil('yes').$paramUrlAccueil;
 
 			//Logo
 			$nom_picture = $racine."personnalisation/".$gcDossierImg."/logos/".Settings::get("logo");
