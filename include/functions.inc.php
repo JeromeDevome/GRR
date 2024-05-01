@@ -6344,7 +6344,7 @@ function cssTypeResa()
 /*
 ** Fonction qui affiche le header
 */
-/*
+
 function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_session', $adm=0)
 {
 	global $niveauDossier, $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name, $racine, $racineAd;
@@ -6511,7 +6511,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
 		}
 	}
 }
-*/
+
 /*
 ** Fonction qui affiche le début d'une page avec entête et balise <section>
 */
