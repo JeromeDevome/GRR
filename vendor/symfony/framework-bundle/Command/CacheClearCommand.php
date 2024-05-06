@@ -156,7 +156,7 @@ EOF
             }
 
             if ($this->isNfs($realBuildDir)) {
-                $io->note('For better performances, you should move the cache and log directories to a non-shared folder of the VM.');
+                $io->note('For better performance, you should move the cache and log directories to a non-shared folder of the VM.');
                 $fs->remove($realBuildDir);
             } else {
                 $fs->rename($realBuildDir, $oldBuildDir);
@@ -202,7 +202,7 @@ EOF
 
         if (null === $mounts) {
             $mounts = [];
-            if ('/' === \DIRECTORY_SEPARATOR && is_readable('/proc/mounts') && $files = @file('/proc/mounts')) {
+            if ('/' === \DIRECTORY_SEPARATOR && @is_readable('/proc/mounts') && $files = @file('/proc/mounts')) {
                 foreach ($files as $mount) {
                     $mount = \array_slice(explode(' ', $mount), 1, -3);
                     if (!\in_array(array_pop($mount), ['vboxsf', 'nfs'])) {
