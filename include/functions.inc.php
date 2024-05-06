@@ -5249,15 +5249,31 @@ function titre_compact($ofl, $resa, $heures)
 
 	$affichage = "";
 
+	// la ressource associée à la réservation :
+	$room = $resa[5];
+
 	// Heures ou créneaux + symboles <== ==>
 	$affichage .= $heures;
+	$authGetUserLevel = authGetUserLevel(getUserName(), $room);
 
 	// Bénéficiaire
-	if (Settings::get("display_beneficiaire") == 1)
+	if( ($authGetUserLevel == 0 && Settings::get("display_beneficiaire_nc") >= 1) || 
+		($authGetUserLevel == 1 && Settings::get("display_beneficiaire_vi") >= 1) ||
+		($authGetUserLevel == 2 && Settings::get("display_beneficiaire_us") >= 1) || 
+		($authGetUserLevel == 3 && Settings::get("display_beneficiaire_gr") >= 1) || 
+		($authGetUserLevel >= 4 && Settings::get("display_beneficiaire_ad") >= 1)  
+	  )
+	{
 		$affichage .= "\n".affiche_nom_prenom_email($resa[4], $resa[12], "nomail");
+	}
 
 	// Type
-	if (Settings::get("display_type") == 1)
+	if( ($authGetUserLevel == 0 && Settings::get("display_type_nc") >= 1) || 
+		($authGetUserLevel == 1 && Settings::get("display_type_vi") >= 1) ||
+		($authGetUserLevel == 2 && Settings::get("display_type_us") >= 1) || 
+		($authGetUserLevel == 3 && Settings::get("display_type_gr") >= 1) || 
+		($authGetUserLevel >= 4 && Settings::get("display_type_ad") >= 1)  
+	  )
 	{
         $typeResa = grr_sql_query1("SELECT ".TABLE_PREFIX."_type_area.type_name FROM ".TABLE_PREFIX."_type_area JOIN ".TABLE_PREFIX."_entry ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter WHERE ".TABLE_PREFIX."_entry.id = '".$resa[2]."';");
 		if ($typeResa != -1)
@@ -5265,19 +5281,28 @@ function titre_compact($ofl, $resa, $heures)
 	}
 
 	// Brève description ou le numéro de la réservation
-	if ((Settings::get("display_short_description") == 1) && ($resa[3] != ""))
+	if( ($authGetUserLevel == 0 && Settings::get("display_short_description_nc") >= 1) || 
+		($authGetUserLevel == 1 && Settings::get("display_short_description_vi") >= 1) ||
+		($authGetUserLevel == 2 && Settings::get("display_short_description_us") >= 1) || 
+		($authGetUserLevel == 3 && Settings::get("display_short_description_gr") >= 1) || 
+		($authGetUserLevel >= 4 && Settings::get("display_short_description_ad") >= 1) &&
+		$resa[3] != ""
+	  )
 		$affichage .= "\n".htmlspecialchars($resa[3],ENT_NOQUOTES);
 	else
 		$affichage .= "\n".get_vocab("entryid").$resa[2];
 
 	// Description Complète
-	if (Settings::get("display_full_description") == 1)
+	if( ($authGetUserLevel == 0 && Settings::get("display_full_description_nc") >= 1) || 
+		($authGetUserLevel == 1 && Settings::get("display_full_description_vi") >= 1) ||
+		($authGetUserLevel == 2 && Settings::get("display_full_description_us") >= 1) || 
+		($authGetUserLevel == 3 && Settings::get("display_full_description_gr") >= 1) || 
+		($authGetUserLevel >= 4 && Settings::get("display_full_description_ad") >= 1) &&
+		$resa[8] != ""
+	  )
 		$affichage .= "\n".htmlspecialchars($resa[8],ENT_NOQUOTES);
 
 	// Champs Additionnels
-    // la ressource associée à la réservation :
-    $room = $resa[5];
-	// Les champs add :
 	$authGetUserLevel = authGetUserLevel(getUserName(), $room);
 	$overload_data = grrGetOverloadDescArray($ofl, $resa[16]);//mrbsEntryGetOverloadDesc($resa[2]);
 	foreach ($overload_data as $fieldname=>$field)
@@ -5296,19 +5321,43 @@ function lien_compact($resa)
 {
     global $dformat;
 	$affichage = "";
+	$room = $resa[5];
+
+	$authGetUserLevel = authGetUserLevel(getUserName(), $room);
+
 	// Bénéficiaire
-	if (Settings::get("display_beneficiaire") == 1)
+	if( ($authGetUserLevel == 0 && Settings::get("display_beneficiaire_nc") == 1) || 
+		($authGetUserLevel == 1 && Settings::get("display_beneficiaire_vi") == 1) ||
+		($authGetUserLevel == 2 && Settings::get("display_beneficiaire_us") == 1) || 
+		($authGetUserLevel == 3 && Settings::get("display_beneficiaire_gr") == 1) || 
+		($authGetUserLevel >= 4 && Settings::get("display_beneficiaire_ad") == 1)  
+	  )
 		$affichage .= affiche_nom_prenom_email($resa[4], $resa[12], "nomail");
+
 	// Brève description ou le numéro de la réservation
-	if ((Settings::get("display_short_description") == 1) && ($resa[3] != ""))
+	if( ($authGetUserLevel == 0 && Settings::get("display_short_description_nc") == 1) || 
+		($authGetUserLevel == 1 && Settings::get("display_short_description_vi") == 1) ||
+		($authGetUserLevel == 2 && Settings::get("display_short_description_us") == 1) || 
+		($authGetUserLevel == 3 && Settings::get("display_short_description_gr") == 1) || 
+		($authGetUserLevel >= 4 && Settings::get("display_short_description_ad") == 1) &&
+		$resa[3] != ""
+	  )
 		$affichage .= htmlspecialchars($resa[3],ENT_NOQUOTES);
 	else
 		$affichage .= get_vocab("entryid").$resa[2];
+
 	// Description Complète
-	if (Settings::get("display_full_description") == 1)
+	if( ($authGetUserLevel == 0 && Settings::get("display_full_description_nc") == 1) || 
+		($authGetUserLevel == 1 && Settings::get("display_full_description_vi") == 1) ||
+		($authGetUserLevel == 2 && Settings::get("display_full_description_us") == 1) || 
+		($authGetUserLevel == 3 && Settings::get("display_full_description_gr") == 1) || 
+		($authGetUserLevel >= 4 && Settings::get("display_full_description_ad") == 1) &&
+		$resa[8] != ""
+	  )
 		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES);
     // on coupe aux quatre premiers caractères
     $affichage = substr($affichage,0,4)."<br />";
+
 	// Emprunte
 	if($resa[7] != "-")
 		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource_actuellement_empruntee")."\" title=\"".get_vocab("ressource_actuellement_empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
