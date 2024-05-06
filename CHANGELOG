@@ -1,10 +1,12 @@
-Version 4.3.4 - En dev
+Version 4.3.4 - 06/05/2024 Généré par @JeromeDevome
 [Ajout] Nouveau Hook pour module externe - 7011a1a3 - @JeromeDevome
 [Correction] Affiche du html dans le champ brêve description - 23c683c0 - @JeromeDevome
 [Correction] Mise à jour GRR 4.3.0 - d15719ff - @JeromeDevome
 [Correction] Affichage resa compact - fa332a49 - @JeromeDevome
+[Correction] Modification des réservations avec périodicité - 2273a583 - @JeromeDevome
 [Modification] Optimisation suite à 4.3.0 (202be69e) - a700ad79 - @JeromeDevome
 [Modification] Ajout traduction - 5b8b2ddb - @JeromeDevome
+[Modification] Mise à jour des dépendances PHP - fb4f2141 - @JeromeDevome
 
 
 Version 4.3.3 - 31/03/2024 Généré par @JeromeDevome
