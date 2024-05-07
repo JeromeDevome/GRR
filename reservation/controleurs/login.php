@@ -171,5 +171,11 @@ if (Settings::get("webmaster_email") != "")
 
 $d['lienGRR'] = $grr_devel_url;
 
-echo $twig->render('login1.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
+if (Settings::get("login_template") > 0)
+	$numTemplate = Settings::get("login_template");
+else
+	$numTemplate = 1;
+
+
+echo $twig->render('login'.$numTemplate.'.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
 ?>

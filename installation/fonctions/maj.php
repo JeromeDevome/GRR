@@ -1181,8 +1181,21 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 	}
 
 	
-	
+	if (intval($version_old_bdd) < 400005) // Version GRR 4.4.0
+	{
+		
+		$result .= formatresult("Mise à jour jusqu'à la version 4.4.0 :","<b>","</b>");
 
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('login_template', '1');");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('login_logo', '1');");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('login_nom', '1');");
+
+		if ($result_inter == '')
+			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+		else
+			$result .= $result_inter;
+		$result_inter = '';
+	}
 
 	
 

@@ -17,94 +17,101 @@
 		{{ d.sheetcssperso|raw }}
         <style>
             .btn-outlined-black {
-  background-color: #fff;
-  border: 1px solid #1f1e1f;
-  color: #1f1e1f;
-  padding: 8px 16px;
-  line-height: 20px;
-}
-
-
-</style>
+                background-color: #fff;
+                border: 1px solid #1f1e1f;
+                color: #1f1e1f;
+                padding: 8px 16px;
+                line-height: 20px;
+            }
+        </style>
 	</head>
 
+    <body>
 
+        <div class="center">
+            {% if settings.login_logo == 1 %}
+                <a href="javascript:history.back()"><img src="{{d.logo}}" alt="logo" style="max-height:200px;"/></a>
+            {% endif %}
+            <h1>{{settings.title_home_page}}</h1>
+            {% if settings.login_nom == 1 %}
+                <h2>{{settings.company}}</h2>
+            {% endif %}
+            <p>{{settings.message_home_page}}</p>
 
-<div class="center">
-    <a href="javascript:history.back()"><img src="{{d.logo}}" alt="logo" style="max-height:200px;"/></a>
+            {% if settings.disable_login == "yes" %}
+                <br><br><p><span class="avertissement">{{trad.msg_login3}}</span></p>
+            {% endif %}
 
-    <h1>{{settings.title_home_page}}</h1>
-    <h2>{{settings.company}}</h2>
+            {% if d.messageLogin %}
+                <br><br><p><span class="avertissement">{{d.messageLogin|raw}}</span></p>
+            {% endif %}
 
-    <p>{{settings.message_home_page}}</p>
+            <form action="app.php" method="post" style="width: 100%; margin-top: 24px; margin-bottom: 48px;">
 
-    {% if settings.disable_login == "yes" %}
-        <br><br><p><span class="avertissement">{{trad.msg_login3}}</span></p>
-    {% endif %}
-
-    {% if d.messageLogin %}
-        <br><br><p><span class="avertissement">{{d.messageLogin|raw}}</span></p>
-    {% endif %}
-
-    <form action="app.php" method="post" style="width: 100%; margin-top: 24px; margin-bottom: 48px;">
-
-        {% if d.url %}
-            <input type="hidden" name="url" value="{{d.url}}" />
-        {% endif %}
-
-        {{d.hookLienConnexion1|raw}}
-
-		<fieldset style="padding-top: 8px; padding-bottom: 8px; width: 40%; margin-left: auto; margin-right: auto;">
-			<legend style="font-variant: small-caps;">{{trad.identification}}</legend>
-			<p>{{trad.mentions_legal_connexion}}</p>
-			<table style="width: 100%; border-collapse : separate;border-spacing : 10px;" cellpadding="5" cellspacing="0">
-				<tr>
-					<td style="text-align: right; width: 40%; font-variant: small-caps;">{{trad.login}}</td>
-					<td style="text-align: center; width: 60%;"><input type="text" id="login" name="login" /></td>
-				</tr>
-				<tr>
-					<td style="text-align: right; width: 40%; font-variant: small-caps;">{{trad.pwd}}</td>
-					<td style="text-align: center; width: 60%;"><input type="password" name="password" /></td>
-				</tr>
-                <tr>
-                    <td colspan="2">
-                        <input class="btn btn-primary" type="submit" name="submit" value="{{trad.OK}}" style="font-variant: small-caps; width: 100%;" />
-                    </td>
-                </tr>
-                {% if settings.sso_statut != "cas_visiteur" or settings.sso_statut != "cas_utilisateur" %}
-                <tr>
-                    <td colspan="2">
-                        <a class="btn btn-outlined-black" type="submit" name="submit" href="index.php?force_authentification" style="font-variant: small-caps; width: 100%;" />{{trad.authentification_CAS}}</a>
-                    </td>
-                </tr>
-                {% elseif settings.sso_statut != "" and settings.sso_statut != "no_sso" %}
-                <tr>
-                    <td colspan="2">
-                        <a class="btn btn-outlined-black" type="submit" name="submit" href="index.php" style="font-variant: small-caps; width: 100%;" />{{trad.authentification_CAS}}</a>
-                    </td>
-                </tr>
+                {% if d.url %}
+                    <input type="hidden" name="url" value="{{d.url}}" />
                 {% endif %}
-			</table>
-			
-		</fieldset>
-    </form>
 
-    {% if settings.fct_crea_cpt == "y" %}
-        <h4><a href="app.php?p=creationcompte">{{trad.crea_compte_inscrivez}}</a></h4><br><br>
-    {% endif %}
+                {{d.hookLienConnexion1|raw}}
 
-    <p>{{d.contactAdmin}} [<a href="app.php?p=page&page=cgu" target="_blank">{{trad.cgu}}</a>]</p>
+                <fieldset style="padding-top: 8px; padding-bottom: 8px; width: 40%; margin-left: auto; margin-right: auto;">
+                    <legend style="font-variant: small-caps;">{{trad.identification}}</legend>
+                    <p>{{trad.mentions_legal_connexion}}</p>
 
-    <a href="javascript:history.back()">{{trad.previous}} - <b>{{settings.company}}</b></a>
-    <br><br>
-    <p class="small">{{trad.msg_login1|raw}}<a href="{{d.lienGRR}}">{{d.lienGRR}}</a></p>
-</div>
+                    <table style="width: 100%; border-collapse : separate;border-spacing : 10px;" cellpadding="5" cellspacing="0">
+                        {% if settings.sso_statut != "cas_visiteur" or settings.sso_statut != "cas_utilisateur" %}
+                        <tr>
+                            <td colspan="2">
+                                <a class="btn btn-outlined-black" type="submit" name="submit" href="index.php?force_authentification" style="font-variant: small-caps; width: 100%;" />{{trad.authentification_CAS}}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">{{trad.connect_local}}{{trad.deux_points}}</td>
+                        </tr>
+                        {% elseif settings.sso_statut != "" and settings.sso_statut != "no_sso" %}
+                        <tr>
+                            <td colspan="2">
+                                <a class="btn btn-outlined-black" type="submit" name="submit" href="index.php" style="font-variant: small-caps; width: 100%;" />{{trad.authentification_CAS}}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">{{trad.connect_local}}{{trad.deux_points}}</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <td style="text-align: right; width: 40%; font-variant: small-caps;">{{trad.login}}</td>
+                            <td style="text-align: center; width: 60%;"><input type="text" id="login" name="login" /></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; width: 40%; font-variant: small-caps;">{{trad.pwd}}</td>
+                            <td style="text-align: center; width: 60%;"><input type="password" name="password" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <input class="btn btn-primary" type="submit" name="submit" value="{{trad.OK}}" style="font-variant: small-caps; width: 33%;" />
+                            </td>
+                        </tr>
 
+                    </table>
+                    
+                </fieldset>
+            </form>
+
+            {% if settings.fct_crea_cpt == "y" %}
+                <h4><a href="app.php?p=creationcompte">{{trad.crea_compte_inscrivez}}</a></h4><br><br>
+            {% endif %}
+
+            <p>{{d.contactAdmin}} [<a href="app.php?p=page&page=cgu" target="_blank">{{trad.cgu}}</a>]</p>
+
+            <a href="javascript:history.back()">{{trad.previous}} - <b>{{settings.company}}</b></a>
+            <br><br>
+            <p class="small">{{trad.msg_login1|raw}}<a href="{{d.lienGRR}}">{{d.lienGRR}}</a></p>
+        </div>
+
+    </body>
 
     <script type="text/javascript" src="js/functions.js" ></script>
     <script type="text/javascript">
 		document.getElementById('login').focus();
 	</script>
-
-</body>
 </html>

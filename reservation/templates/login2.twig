@@ -1,0 +1,103 @@
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="Robots" content="noindex" />
+		<title>GRR - {{ settings.company }}</title>
+		<link rel="shortcut icon" href="favicon.ico" />
+		<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css?v={{d.versionGRR}}" />
+		<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui.css?v={{d.versionGRR}}" />
+		<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui-timepicker-addon.css?v={{d.versionGRR}}" >
+		<link rel="stylesheet" type="text/css" href="./themes/default/css/style.css?v={{d.versionGRR}}" />
+		<link rel="stylesheet" type="text/css" href="./{{ d.sheetcss }}" />
+		{{ d.sheetcssperso|raw }}
+        <style>
+            .btn-outlined-black {
+                background-color: #fff;
+                border: 1px solid #1f1e1f;
+                color: #1f1e1f;
+                padding: 8px 16px;
+                line-height: 20px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="row">
+            <div class="col-8 col-sm-8">
+                <!-- Image à mettre choisi par l'admin -->
+            </div>
+
+            <div class="col-4 col-sm-4">
+
+                {% if settings.login_logo == 1 %}
+                    <center><a href="javascript:history.back()"><img src="{{d.logo}}" alt="logo" style="max-height:150px;"/></a></center>
+                {% endif %}
+                <h3>{{settings.title_home_page}}</h3>
+                {% if settings.login_nom == 1 %}
+                    <h4>{{settings.company}}</h4>
+                {% endif %}
+                <p>{{settings.message_home_page}}</p>
+
+                {% if settings.disable_login == "yes" %}
+                    <br><br><p><span class="avertissement">{{trad.msg_login3}}</span></p>
+                {% endif %}
+
+                {% if d.messageLogin %}
+                    <br><br><p><span class="avertissement">{{d.messageLogin|raw}}</span></p>
+                {% endif %}
+
+                <form action="app.php" method="post" style="margin-top: 24px">
+
+                    {% if d.url %}
+                        <input type="hidden" name="url" value="{{d.url}}" />
+                    {% endif %}
+
+
+                    {% if settings.sso_statut != "cas_visiteur" or settings.sso_statut != "cas_utilisateur" %}
+                        <a class="btn btn-outlined-black" type="submit" name="submit" href="index.php?force_authentification" style="font-variant: small-caps; width: 100%;" />{{trad.authentification_CAS}}</a>
+                        <br>
+                        {{trad.connect_local}}{{trad.deux_points}}
+                    {% elseif settings.sso_statut != "" and settings.sso_statut != "no_sso" %}
+                        <a class="btn btn-outlined-black" type="submit" name="submit" href="index.php" style="font-variant: small-caps; width: 100%;" />{{trad.authentification_CAS}}</a>
+                        <br>
+                        <p>{{trad.connect_local}}{{trad.deux_points}}</p>
+                    {% endif %}
+                    <br>
+                    <div class="form-group row row col-sm-12">
+                        <div class="col-sm-12 control-label">
+                            <input class="form-control" type="text" id="login" name="login" placeholder="{{trad.login}}">
+                        </div>
+                    </div>
+                    <div class="form-group row row col-sm-12">
+                        <div class="col-sm-12 control-label">
+                            <input class="form-control" type="password" id="password" name="password" placeholder="{{trad.pwd}}">
+                        </div>
+                    </div>
+
+                    <input class="btn btn-primary" type="submit" name="submit" value="{{trad.OK}}" style="font-variant: small-caps; width: 33%;" />
+
+                </form>
+                <br>
+                {% if settings.fct_crea_cpt == "y" %}
+                    <h4><a href="app.php?p=creationcompte">{{trad.crea_compte_inscrivez}}</a></h4><br><br>
+                {% endif %}
+
+                <p>{{d.contactAdmin}} [<a href="app.php?p=page&page=cgu" target="_blank">{{trad.cgu}}</a>]</p>
+
+                <a href="javascript:history.back()">{{trad.previous}}</b></a>
+                <br><br>
+                <p class="small">{{trad.msg_login1|raw}}<a href="{{d.lienGRR}}">{{d.lienGRR}}</a></p>
+            </div>
+        </div>
+    </body>
+
+    <script type="text/javascript" src="js/functions.js" ></script>
+    <script type="text/javascript">
+        document.getElementById('login').focus();
+    </script>
+</html>

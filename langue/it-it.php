@@ -169,7 +169,7 @@ $vocab['aucun_utilisateur_reservant'] = "Nessun utente non privilegiato potrà p
 $vocab['authentification'] = "Autenticazione";
 $vocab['authentification_base_externe'] = "Externe (SSO, LDAP, ...)"; // A traduire
 $vocab['authentification_base_locale'] = "Locale (base GRR)"; // A traduire
-$vocab['authentification_CAS'] = "Autenticarsi presso il Servizio Centrale d'Autenticazione";
+$vocab['authentification_CAS'] = "Autenticarsi utilizzando CAS SSO";
 $vocab['authentification_http'] = "Autenticare Si per HTTP vicino al server";
 $vocab['authentification_lasso'] = "S'authentifier auprès du fournisseur d'identité Lasso"; // A traduire
 $vocab['authentification_lemon'] = "Autenticare Si vicino al Servizio di autenticazione LemonLdap";
@@ -638,7 +638,7 @@ $vocab['msg_clef'] = "Controllare se è preso la chiave";
 $vocab['msg_courrier'] = "Se la convalida casella di posta elettronica";
 $vocab['msg_del_bookings'] = "Attenzione, i cambiamenti delle date d'inizio e di fine delle prenotazioni che avete effettuato comporterà la soppressione definitiva delle prenotazioni già effettuate oltre alle nuove date autorizzate! <br /><br />Essete sicuri di volere continuare?";
 $vocab['msg_explain_log'] = "Le date che appaiono in rosse segnano gli utenti staccati automaticamente dopo troppo un lungo termine d'inattività. Le linee che appaiono in verde segnano gli utenti attualmente collegati.";
-$vocab['msg_login1'] = "GRR è sotto licenza GPL, adattato da <a href='http://mrbs.sourceforge.net'>MRBS</a>.<br />Per ogni informazione che riguarda GRR, andare sul sito : ";
+$vocab['msg_login1'] = "GRR è sotto licenza GPL, adattato da <a href='http://mrbs.sourceforge.net'>MRBS</a>.<br />Per ogni informazione che riguarda GRR: ";
 $vocab['msg_login3'] = "Il sito è temporaneamente inaccessibile. Scusateci di questa perturbazione! !";
 $vocab['msg_login_created'] = "Avete appena creato un nuovo utente. Per difetto, quest'utente è considerato come attivo.";
 $vocab['msg_login_created_error'] = "Un problema si è verificato in occasione della creazione di un nuovo utente! Volete contattare l'appoggio tecnico.";

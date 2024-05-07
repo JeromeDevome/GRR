@@ -169,7 +169,7 @@ $vocab['aucun_utilisateur_reservant'] = "Kein unprivilegierter Benutzer kann buc
 $vocab['authentification'] = "Authentifizierung";
 $vocab['authentification_base_externe'] = "Externe (SSO, LDAP, ...)"; // A traduire
 $vocab['authentification_base_locale'] = "Locale (base GRR)"; // A traduire
-$vocab['authentification_CAS'] = "Bitte authentifizieren Sie sich beim zentralen Authentifizierungsdienst (CAS SSO)";
+$vocab['authentification_CAS'] = "Authentifizierung durch CAS SSO";
 $vocab['authentification_http'] = "HTTP Authentifizierung beim Webserver";
 $vocab['authentification_lasso'] = "S'authentifier auprès du fournisseur d'identité Lasso"; // A traduire
 $vocab['authentification_lemon'] = "Authentifizierung zum Lemonldap System";
@@ -639,7 +639,7 @@ $vocab['msg_clef'] = "Cocher si la clé est empruntée";
 $vocab['msg_courrier'] = "Cocher si courrier de validation";
 $vocab['msg_del_bookings'] = "Achtung, die Änderungen der von Ihnen vorgenommenen Anfangs- und Enddaten der Reservierungen ziehen die endgültige Streichung der bereits vorgenommenen Reservierungen nach sich, die sich au&#x00DF;erhalb der neuen zulässigen Daten befinden! Wollen Sie wirklich fortfahren?";
 $vocab['msg_explain_log'] = "Die in rot erscheinenden Daten markieren die nach einer zu langen Zeit der Inaktivität ausgeloggten Benutzer. Die grün erscheinenden Zeilen markieren die zur Zeit verbundenen Benutzer.";
-$vocab['msg_login1'] = "GRR ist unter GPL Lizenz, die aus <a href='http://mrbs.sourceforge.net'>MRBS</a> adaptiert wurde.<br />Für alle Nachfragen bezüglich GRR, gehen Sie bitte auf die Webseite: ";
+$vocab['msg_login1'] = "GRR ist unter GPL Lizenz, die aus <a href='http://mrbs.sourceforge.net'>MRBS</a> adaptiert wurde.<br />Für alle Nachfragen bezüglich GRR: ";
 $vocab['msg_login3'] = "Die Webseite ist im Moment nicht erreichbar. Bitte entschuldigen Sie die Störung!";
 $vocab['msg_login_created'] = "Sie haben gerade einen neuen Benutzer erstellt. Bis auf weiteres gilt dieser Benutzer als aktiv.";
 $vocab['msg_login_created_error'] = "Beim Erstellen eines neuen Benutzers ist ein Problem aufgetaucht! Wenden Sie sich bitte an den technischen Träger.";

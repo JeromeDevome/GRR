@@ -275,7 +275,7 @@ if (isset($_POST['pview_new_windows'])) {
         $msg .= "Erreur lors de l'enregistrement de pview_new_windows !<br />";
     }
 }
-/*-----MAJ Loïs THOMAS  -->Affichage ou non de la legende -----*/
+// Affichage ou non de la legende
 if (isset($_POST['legend'])) {
     if (!Settings::set('legend', $_POST['legend'])) {
         $msg .= "Erreur lors de l'enregistrement de legend !<br />";
@@ -299,12 +299,33 @@ if (isset($_POST['periodicite'])) {
         $msg .= "Erreur lors de l'enregistrement de periodicite !<br />";
     }
 }
-
+// Générer PDF
 if (isset($_POST['allow_pdf'])) {
     if (!Settings::set('allow_pdf', $_POST['allow_pdf'])) {
         $msg .= "Erreur lors de l'enregistrement de allow_pdf !<br />";
     }
 }
+
+/** Affichage de la page de connexion **/
+    // Template page login
+    if (isset($_POST['login_template'])) {
+        if (!Settings::set('login_template', $_POST['login_template'])) {
+            $msg .= "Erreur lors de l'enregistrement de login_template !<br />";
+        }
+    }
+    // Aficher logo
+    if (isset($_POST['login_logo'])) {
+        if (!Settings::set('login_logo', $_POST['login_logo'])) {
+            $msg .= "Erreur lors de l'enregistrement de login_logo !<br />";
+        }
+    }
+    // Afficher nom établissement
+    if (isset($_POST['login_nom'])) {
+        if (!Settings::set('login_nom', $_POST['login_nom'])) {
+            $msg .= "Erreur lors de l'enregistrement de login_nom !<br />";
+        }
+    }
+
 
 
 // gestion_lien_aide
@@ -321,6 +342,7 @@ if (isset($_POST['gestion_lien_aide'])) {
         $msg .= "Erreur lors de l'enregistrement de gestion_lien_aide !<br />";
     }
 }
+
 # Lors de l'édition d'un rapport, valeur par défaut en nombre de jours
 # de l'intervalle de temps entre la date de début du rapport et la date de fin du rapport.
 if (isset($_POST['default_report_days'])) {

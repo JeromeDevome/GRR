@@ -169,7 +169,7 @@ $vocab['aucun_utilisateur_reservant'] = "Ningún usuario sin privilegios puede r
 $vocab['authentification'] = "Autentificación";
 $vocab['authentification_base_externe'] = "Exterior (SSO, LDAP, ...)";
 $vocab['authentification_base_locale'] = "Locale (base GRR)"; // A traduire
-$vocab['authentification_CAS'] = "Autentificarse en el Servicio Central de Autentificación (CAS SSO)";
+$vocab['authentification_CAS'] = "Autenticación mediante el CAS SSO";
 $vocab['authentification_http'] = "Autentificarse con HTTP al servidor";
 $vocab['authentification_lasso'] = "Autentificarse al proveedor de identidad Lasso";
 $vocab['authentification_lemon'] = "Autentificarse al Servicio de Autentificación LemonLdap";
@@ -637,7 +637,7 @@ $vocab['msg_clef'] = "Cocher si la clé est empruntée"; // A traduire
 $vocab['msg_courrier'] = "Cocher si courrier de validation"; // A traduire
 $vocab['msg_del_bookings'] = "¡Cuidado, los cambios de las fechas de comienzo y de fin de las reservas que efectuó van a ocasionar la supresión definitiva de las reservas ya efectuadas fuera de las nuevas fechas autorizadas ! ¿Está seguro de querer continuar?";
 $vocab['msg_explain_log'] = "Las fechas que aparecen en rojo señalan a los usuarios desconectados automáticamente después de un largo plazo de inactividad. Las líneas que aparecen en verde señalan a los usuarios actualmente conectados.";
-$vocab['msg_login1'] = "GRR es bajo licencia GPL, adaptada de <a href='http://mrbs.sourceforge.net'> MRBS</a>.<br />Para cualquier información relativa a GRR, ir a este sitio : ";
+$vocab['msg_login1'] = "GRR es bajo licencia GPL, adaptada de <a href='http://mrbs.sourceforge.net'> MRBS</a>.<br />Para cualquier información relativa a GRR: ";
 $vocab['msg_login3'] = "El sitio es momentaneamente inaccesible. ¡Le pedimos disculpas por las molestias!";
 $vocab['msg_login_created'] = "Acabe usted de crear un nuevo usuario. Por defecto, este usuario es considerado como activo.";
 $vocab['msg_login_created_error'] = "¡Ocurrió un problema en el momento de la creación de un nuevo usuario! Por favor contacte el soporte técnico.";

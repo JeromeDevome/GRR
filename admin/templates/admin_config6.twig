@@ -428,6 +428,47 @@
 
 						<hr>
 
+						<section id="ouvertureimpression">
+							<h4 class="page-header">Affichage de la page de connexion</h4>
+
+							<!-- Choix affichage de la page de connexion -->
+							<div class="form-group row col-sm-12">
+								<label class="col col-sm-6" for="login_template">Template de la page de connexion</label>
+								<div class="col col-sm-6">
+									<select class="form-control" name="login_template">
+										<option value="1" {% if settings.login_template == '1' %} selected {% endif %}>1 - Centré</option>
+										<option value="2" {% if settings.login_template == '2' %} selected {% endif %}>2 - A droite</option>
+									</select>
+								</div>
+							</div>
+
+							<table class="table table-condensed">
+								<tbody>
+									<tr>
+										<th style="width: 300px"></th>
+										<th style="width: 50px">Afficher</th>
+										<th>Ne pas afficher</th>
+										<th></th>
+									</tr>
+									<tr>
+										<td>Logo</td>
+										<td><input type="radio" name="login_logo" value="1" id="label_11a" {% if settings.login_logo == '1' %} checked {% endif %} /></td>
+										<td><input type="radio" name="login_logo" value="0" id="label_11b" {% if settings.login_logo == '0' %} checked {% endif %} /></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>{{trad.company}}</td>
+										<td><input type="radio" name="login_nom" value="1" id="label_12a" {% if settings.login_nom == '1' %} checked {% endif %} /></td>
+										<td><input type="radio" name="login_nom" value="0" id="label_12b" {% if settings.login_nom == '0' %} checked {% endif %} /></td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+
+						</section>
+
+						<hr>
+
 						<section id="default_report_days_msg">
 							<h4 class="page-header">{{ trad.default_report_days_msg }}</h4>
 							{{ form.input('default_report_days', trad.default_report_days_explain, settings.default_report_days, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
