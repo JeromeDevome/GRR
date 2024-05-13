@@ -785,7 +785,7 @@ else
     fatal_error(1,grr_sql_error());
 grr_sql_free($res);
 // les ressources accessibles
-$area_id = mrbsGetAreaIdFromRoomId($room_id);
+$area_id = mrbsGetRoomArea($room_id);
 $tab_rooms_noaccess = no_book_rooms($user_name);
 $tab_rooms_noaccess[] = 0; // assure un tableau non vide
 $id_exclues = "('" . implode("', '", $tab_rooms_noaccess) . "')";

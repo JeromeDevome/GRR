@@ -2,10 +2,10 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2023-11-07 12:17$
+ * Dernière modification : $Date: 2024-05-07 19:00$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -179,22 +179,6 @@ function mrbsDelEntry($user, $id, $series, $all)
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_repeat WHERE id='".$repeat_id."'");
 	return $removed > 0;
 }
-/**
-*	mrbsGetAreaIdFromRoomId($room_id)
-*/
-function mrbsGetAreaIdFromRoomId($room_id)
-{
-		// Avec la room_id on récupère l'area_id
-	$sqlstring = "SELECT area_id FROM ".TABLE_PREFIX."_room WHERE id=$room_id";
-	$result = grr_sql_query($sqlstring);
-	if (!$result)
-		fatal_error(1, grr_sql_error());
-	if (grr_sql_count($result) != 1)
-		fatal_error(1, get_vocab('roomid') . $id_entry . get_vocab('not_found'));
-	$area_id_row = grr_sql_row($result, 0);
-	grr_sql_free($result);
-	return $area_id_row[0];
-}
 /** mrbsOverloadGetFieldslist()
  *
  * Return an array with all fields name
@@ -229,7 +213,7 @@ function mrbsOverloadGetFieldslist($id_area="", $room_id = 0)
 	{
 		if ($id_area == "")
 		{
-            $fieldslist[$field_row[0]." (".$field_row[4].")"]["name"] = $field_row[0];		
+      $fieldslist[$field_row[0]." (".$field_row[4].")"]["name"] = $field_row[0];		
 			$fieldslist[$field_row[0]." (".$field_row[4].")"]["type"] = $field_row[1];
 			$fieldslist[$field_row[0]." (".$field_row[4].")"]["id"] = $field_row[2];
 			if (trim($field_row[3]) != "")
@@ -296,7 +280,7 @@ function mrbsEntryGetOverloadDesc($id_entry)
 	}
 	if ( $room_id >0 )
 	{
-		$area_id = mrbsGetAreaIdFromRoomId($room_id);
+		$area_id = mrbsGetRoomArea($room_id);
 		// Avec l'id_area on récupère la liste des champs additionnels dans ".TABLE_PREFIX."_overload.
 		$fieldslist = mrbsOverloadGetFieldslist($area_id);
 		foreach ($fieldslist as $field=>$fieldtype)
@@ -441,11 +425,11 @@ function mrbsCreateSingleEntry($starttime, $endtime, $entry_type, $repeat_id, $r
 		{
 			$begin_string = "@".$id_field."@";
 			$end_string = "@/".$id_field."@";
-            // ELM - Gestion des champ additionnels multivalués
-            if (is_array($overload_data[$id_field])) {
-                $valeurs = implode("|", $overload_data[$id_field]);
-                $overload_data[$id_field] = $valeurs;
-            }
+      // ELM - Gestion des champ additionnels multivalués
+      if (is_array($overload_data[$id_field])) {
+          $valeurs = implode("|", $overload_data[$id_field]);
+          $overload_data[$id_field] = $valeurs;
+      }
 			$overload_data_string .= $begin_string.urlencode($overload_data[$id_field]).$end_string;
 		}
 	}
@@ -457,7 +441,7 @@ function mrbsCreateSingleEntry($starttime, $endtime, $entry_type, $repeat_id, $r
 	// s'il s'agit d'une modification d'une ressource déjà modérée et acceptée : on met à jour les infos dans la table ".TABLE_PREFIX."_entry_moderate
 	if ($moderate == 2)
 		moderate_entry_do($new_id, 1, "", "no");
-    else return $new_id;
+  else return $new_id;
 }
 /** mrbsCreateRepeatEntry()
  *
@@ -488,7 +472,7 @@ function mrbsCreateSingleEntry($starttime, $endtime, $entry_type, $repeat_id, $r
 function mrbsCreateRepeatEntry($starttime, $endtime, $rep_type, $rep_enddate, $rep_opt, $room_id, $creator, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks,$overload_data, $rep_jour_c, $courrier, $nbparticipantmax=0)
 {
 	$overload_data_string = "";
-	$area_id = mrbsGetAreaIdFromRoomId($room_id);
+	$area_id = mrbsGetRoomArea($room_id);
 	$overload_fields_list = mrbsOverloadGetFieldslist($area_id);
 	foreach ($overload_fields_list as $field=>$fieldtype)
 	{
@@ -497,15 +481,14 @@ function mrbsCreateRepeatEntry($starttime, $endtime, $rep_type, $rep_enddate, $r
 		{
 			$begin_string = "@".$id_field."@";
 			$end_string = "@/".$id_field."@";
-            // ELM - Gestion des champ additionnels multivalués
-            if (is_array($overload_data[$id_field])) {
-                $valeurs = implode("|", $overload_data[$id_field]);
-                $overload_data[$id_field] = $valeurs;
-            }
+      // ELM - Gestion des champ additionnels multivalués
+      if (is_array($overload_data[$id_field])) {
+        $valeurs = implode("|", $overload_data[$id_field]);
+        $overload_data[$id_field] = $valeurs;
+      }
 			$overload_data_string .= $begin_string.urlencode($overload_data[$id_field]).$end_string;
 		}
 	}
-    
 	$sql = "INSERT INTO ".TABLE_PREFIX."_repeat (start_time, end_time, rep_type, end_date, rep_opt, room_id, create_by, beneficiaire, beneficiaire_ext, type, name, description, rep_num_weeks, overload_desc, jours, courrier, nbparticipantmax) VALUES ($starttime, $endtime,  $rep_type, $rep_enddate, '$rep_opt', $room_id,'".protect_data_sql($creator)."','".protect_data_sql($beneficiaire)."','".protect_data_sql($beneficiaire_ext)."', '".protect_data_sql($type)."', '".protect_data_sql($name)."', '".protect_data_sql($description)."', '$rep_num_weeks','".protect_data_sql($overload_data_string)."',".$rep_jour_c." , ".$courrier.", '".protect_data_sql($nbparticipantmax)."')";
 	if (grr_sql_command($sql) < 0)
 		return 0;
@@ -538,19 +521,19 @@ function get_day_of_month($time, $rep_month_abs1, $rep_month_abs2)
 {
 	$days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
 	$rep = array('first', 'second', 'third', 'fourth', 'fifth', 'last');
-    $time = mktime(0,0,0,date("m",$time)+1,1,date("Y",$time)); // avance d'un mois
-    if (in_array($rep_month_abs1,array(0,1,2,3,5))){
-        $str = $rep[$rep_month_abs1].' '.$days[$rep_month_abs2 - 1].' of '.date("F", $time).' '.date("Y", $time);
-        return array(TRUE,strtotime($str));
-    }
-    if ($rep_month_abs1 == 4){
-        $str = $rep[4].' '.$days[$rep_month_abs2 - 1].' of '.date("F", $time).' '.date("Y", $time);
-        $cinq = strtotime($str,$time);
-        $str = 'last '.$days[$rep_month_abs2 - 1].' of '.date("F", $time).' '.date("Y", $time);
-        $last = strtotime($str,$time);
-        if ($cinq == $last) return array(TRUE,$cinq);
-        else return array(FALSE,$last);
-    }
+  $time = mktime(0,0,0,date("m",$time)+1,1,date("Y",$time)); // avance d'un mois
+  if (in_array($rep_month_abs1,array(0,1,2,3,5))){
+    $str = $rep[$rep_month_abs1].' '.$days[$rep_month_abs2 - 1].' of '.date("F", $time).' '.date("Y", $time);
+    return array(TRUE,strtotime($str));
+  }
+  if ($rep_month_abs1 == 4){
+    $str = $rep[4].' '.$days[$rep_month_abs2 - 1].' of '.date("F", $time).' '.date("Y", $time);
+    $cinq = strtotime($str,$time);
+    $str = 'last '.$days[$rep_month_abs2 - 1].' of '.date("F", $time).' '.date("Y", $time);
+    $last = strtotime($str,$time);
+    if ($cinq == $last) return array(TRUE,$cinq);
+    else return array(FALSE,$last);
+  }
 }
 /** mrbsGetRepeatEntryList
  *
@@ -564,6 +547,7 @@ function get_day_of_month($time, $rep_month_abs1, $rep_month_abs2)
  * $rep_jour_c - Le jour cycle d'une réservation, si aucun 0, si tous les jours du cycle : -1
  * $area     - Le domaine de réservation (pour contrôler la date de fin)
  * $rep_month_abs1, $rep_month_abs2 - X, Y dans le mode "X Y du mois"
+ * $type_jour - tableau de sélection des jours fériés / de vacances scolaires (jf,jv) où jf et jv dans {0,1,2} voir jourValide
  *
  * Returns:
  *   empty     - The entry does not repeat
@@ -580,21 +564,21 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
 	$entrys = array();
 	$entrys_return = array();
 	$k = 0;
-    $valide = TRUE;
-    // recale le jour de départ sur un jour de la série (répétition semaine)
-    if ($rep_type == 2){
-        $start_day = date("w", $time);
-        for ($j=$start_day; ($j<7+$start_day) && !$rep_opt[$j%7]; $j++){
-            $day++;
-        }
+  $valide = TRUE;
+  // recale le jour de départ sur un jour de la série (répétition semaine)
+  if ($rep_type == 2){
+    $start_day = date("w", $time);
+    for ($j=$start_day; ($j<7+$start_day) && !$rep_opt[$j%7]; $j++){
+      $day++;
     }
+  }
 	for($i = 0; $i < $max_ittr; $i++)
 	{
 		$time = mktime($hour, $min, $sec, $month, $day, $year);
 		if ($time > $enddate)
 			break;
 		$time2 = mktime(0, 0, 0, $month, $day, $year);
-        $jour_valide = jourValide($time2,$type_jour);
+    $jour_valide = jourValide($time2,$type_jour);
 		if ($valide && $jour_valide && !(est_hors_reservation($time2,$area)))
 		{
 			$entrys_return[$k] = $time;
@@ -609,22 +593,22 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
 			break;
 			//Weekly repeat
 			case 2:
-            $j = $cur_day = date("w", $time);
-            // Skip over days of the week which are not enabled:
-            do
-            {
-              $day++;
-              $j = ($j + 1) % 7;
-              // If we've got back to the beginning of the week, then skip
-              // over the weeks we've got to miss out (eg miss out one week
-              // if we're repeating every two weeks)
-              if ($j == $start_day)
-              {
-                $day += 7 * ($rep_num_weeks - 1);
-              }
-            }
-            while (($j != $cur_day) && !$rep_opt[$j]);
-            break;
+      $j = $cur_day = date("w", $time);
+      // Skip over days of the week which are not enabled:
+      do
+      {
+        $day++;
+        $j = ($j + 1) % 7;
+        // If we've got back to the beginning of the week, then skip
+        // over the weeks we've got to miss out (eg miss out one week
+        // if we're repeating every two weeks)
+        if ($j == $start_day)
+        {
+          $day += 7 * ($rep_num_weeks - 1);
+        }
+      }
+      while (($j != $cur_day) && !$rep_opt[$j]);
+      break;
 			//Monthly repeat
 			case 3:
 			$month += 1;
@@ -636,37 +620,37 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
 			//Monthly repeat on same week number and day of week
 			case 5:
 			//$day += same_day_next_month($time);
-            $num_jour = date("N",$time); // numéro du jour dans la semaine
-            $num_week = (int)((date("j",$time) - 1) / 7); // décalage voulu
-            return mrbsGetRepeatEntryList($time, $enddate, 7, $rep_opt, $max_ittr, $rep_num_weeks, $rep_jour_c, $area, $num_week, $num_jour);
+      $num_jour = date("N",$time); // numéro du jour dans la semaine
+      $num_week = (int)((date("j",$time) - 1) / 7); // décalage voulu
+      return mrbsGetRepeatEntryList($time, $enddate, 7, $rep_opt, $max_ittr, $rep_num_weeks, $rep_jour_c, $area, $num_week, $num_jour);
 			//Si la périodicité est par Jours/Cycle
 			case 6:
 			$tableFinale = array();
 			$sql = "SELECT * FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY >= '".$time2."' AND DAY <= '".$enddate."'";
-            if (isset($rep_jours_c) && ($rep_jours_c != -1)) $sql.= " AND Jours = '".$rep_jour_c."'";
+      if (isset($rep_jours_c) && ($rep_jours_c != -1)) $sql.= " AND Jours = '".$rep_jour_c."'";
 			$result = grr_sql_query($sql);
-            if ($result){
-                $kk = 0;
-                foreach($result as $table)
-                {
-                    $day   = date("d", $table['DAY']);
-                    $month = date("m", $table['DAY']);
-                    $year  = date("Y", $table['DAY']);
-                    $tableFinale[$kk] = mktime($hour, $min, $sec, $month, $day, $year);
-                    $kk++;
-                }
-            }
+      if ($result){
+        $kk = 0;
+        foreach($result as $table)
+        {
+          $day   = date("d", $table['DAY']);
+          $month = date("m", $table['DAY']);
+          $year  = date("Y", $table['DAY']);
+          $tableFinale[$kk] = mktime($hour, $min, $sec, $month, $day, $year);
+          $kk++;
+        }
+      }
 			return $tableFinale;
-            // X Y du mois
+      // X Y du mois
 			case 7:
-		/*	$your_date = get_day_of_month($time, $rep_month_abs1, $rep_month_abs2);
+      /*	$your_date = get_day_of_month($time, $rep_month_abs1, $rep_month_abs2);
 			$datediff = $your_date - $time;
 			$day += floor($datediff / (60 * 60 * 24)) + 1; */
-            $ans = get_day_of_month($time, $rep_month_abs1, $rep_month_abs2);
-            $valide = $ans[0];
-            $day = date("d",$ans[1]);
-            $month = date("m",$ans[1]);
-            $year = date("Y",$ans[1]);
+      $ans = get_day_of_month($time, $rep_month_abs1, $rep_month_abs2);
+      $valide = $ans[0];
+      $day = date("d",$ans[1]);
+      $month = date("m",$ans[1]);
+      $year = date("Y",$ans[1]);
 			break;
 			//Unknown repeat option
 			default:
@@ -715,8 +699,8 @@ function mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate
 		$rep_opt = $rep_month_abs2;
 	}
 	$reps1 = mrbsGetRepeatEntryList($starttime, $rep_enddate, $rep_type, $rep_opt, $max_rep_entrys, $rep_num_weeks, $rep_jour_c, $area, $rep_month_abs1, $rep_month_abs2);
-    $reps = array_diff($reps1, $ignore); // supprime les entrées à ignorer (par chevauchement avec des réservations à conserver)
-    $reps = array_values($reps); // réindexe le tableau
+  $reps = array_diff($reps1, $ignore); // supprime les entrées à ignorer (par chevauchement avec des réservations à conserver)
+  $reps = array_values($reps); // réindexe le tableau
 	if (count($reps) > $max_rep_entrys)
 		return 0;
 	if (empty($reps))
@@ -734,10 +718,10 @@ function mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate
 		{
 			mrbsCreateSingleEntry($reps[$i], $reps[$i] + $diff, 1, $ent, $room_id, $creator, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation,$overload_data, $moderate, $rep_jour_c,"-", 0, $courrier, $nbparticipantmax);
 			$id_new_resa = grr_sql_insert_id();
-				// s'il s'agit d'une modification d'une ressource déjà modérée et acceptée : on met à jour les infos dans la table ".TABLE_PREFIX."_entry_moderate
+      // s'il s'agit d'une modification d'une ressource déjà modérée et acceptée : on met à jour les infos dans la table ".TABLE_PREFIX."_entry_moderate
 			if ($moderate == 2)
 				moderate_entry_do($id_new_resa,1,"","no");
-				// On récupère l'id de la première réservation de la série et qui sera utilisé pour l'envoi d'un mail
+      // On récupère l'id de la première réservation de la série et qui sera utilisé pour l'envoi d'un mail
 			if ($i == 0)
 				$id_first_resa = $id_new_resa;
 		}
@@ -785,7 +769,7 @@ function grrCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate,
 		$rep_num_weeks = $rep_month_abs1;
 		$rep_opt = $rep_month_abs2;
 	}
-    $count_serie = count($serie);
+  $count_serie = count($serie);
 	if ($count_serie > $max_rep_entrys) // tentative de réserver trop de créneaux
 		return 0;
 	$ent = mrbsCreateRepeatEntry($starttime, $endtime, $rep_type, $rep_enddate, $rep_opt, $room_id, $creator, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks,$overload_data, $rep_jour_c, $courrier, $nbparticipantmax); // agit sur grr_repeat
@@ -796,10 +780,10 @@ function grrCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate,
 		{
 			mrbsCreateSingleEntry($serie[$i], $serie[$i] + $diff, 1, $ent, $room_id, $creator, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation,$overload_data, $moderate, $rep_jour_c,"-", 0, $courrier, $nbparticipantmax);
 			$id_new_resa = grr_sql_insert_id();
-				// s'il s'agit d'une modification d'une ressource déjà modérée et acceptée : on met à jour les infos dans la table grr_entry_moderate
+      // s'il s'agit d'une modification d'une ressource déjà modérée et acceptée : on met à jour les infos dans la table grr_entry_moderate
 			if ($moderate == 2)
 				moderate_entry_do($id_new_resa,1,"","no");
-				// On récupère l'id de la première réservation de la série et qui sera utilisé pour l'envoi d'un mail
+      // On récupère l'id de la première réservation de la série et qui sera utilisé pour l'envoi d'un mail
 			if ($i == 0)
 				$id_first_resa = $id_new_resa;
 		}
@@ -823,26 +807,15 @@ function mrbsGetEntryInfo($id)
 	$res = grr_sql_query($sql);
 	if (!$res)
 		return;
-
-	$ret = array();
-
-	if (grr_sql_count($res) > 0)
-	{
-		$row = grr_sql_row($res, 0);
-		$ret["start_time"]  = $row[0];
-		$ret["end_time"]    = $row[1];
-		$ret["entry_type"]  = $row[2];
-		$ret["repeat_id"]   = $row[3];
-		$ret["room_id"]     = $row[4];
-		$ret["timestamp"]   = $row[5];
-		$ret["beneficiaire"]   = $row[6];
-		$ret["name"]        = $row[7];
-		$ret["type"]        = $row[8];
-		$ret["description"] = $row[9];
-        $ret['moderate']    = $row[10];
-	}
-	grr_sql_free($res);
-	return $ret;
+  else{
+    $ret = array();
+    if (grr_sql_count($res) > 0)
+    {
+      $ret = grr_sql_row_keyed($res, 0);
+    }
+    grr_sql_free($res);
+    return $ret;
+  }
 }
 function mrbsGetRoomArea($id)
 {
@@ -1009,23 +982,23 @@ function grrOverloadGetFieldslist($id_area="", $room_id = 0)
 	foreach($result as $field_row)
 	{
 		if ($id_area == "")
-            $fieldslist[$field_row["id"]]["name"] = $field_row["fieldname"]." (".$field_row["area_name"].")";
-        else 
-            $fieldslist[$field_row["id"]]["name"] = $field_row["fieldname"];
+      $fieldslist[$field_row["id"]]["name"] = $field_row["fieldname"]." (".$field_row["area_name"].")";
+    else 
+      $fieldslist[$field_row["id"]]["name"] = $field_row["fieldname"];
 		$fieldslist[$field_row["id"]]["type"] = $field_row["fieldtype"];
-        if (trim($field_row["fieldlist"]) != "")
-        {
-            $tab_list = explode("|", $field_row["fieldlist"]);
-            foreach ($tab_list as $value)
-            {
-                if (trim($value) != "")
-                    $fieldslist[$field_row["id"]]["list"][] = trim($value);
-            }
-        }
-        $fieldslist[$field_row["id"]]["affichage"] = $field_row["affichage"];
-        $fieldslist[$field_row["id"]]["overload_mail"] = $field_row["overload_mail"];
-        $fieldslist[$field_row["id"]]["obligatoire"] = $field_row["obligatoire"];
-        $fieldslist[$field_row["id"]]["confidentiel"] = $field_row["confidentiel"];
+    if (trim($field_row["fieldlist"]) != "")
+    {
+      $tab_list = explode("|", $field_row["fieldlist"]);
+      foreach ($tab_list as $value)
+      {
+        if (trim($value) != "")
+          $fieldslist[$field_row["id"]]["list"][] = trim($value);
+      }
+    }
+    $fieldslist[$field_row["id"]]["affichage"] = $field_row["affichage"];
+    $fieldslist[$field_row["id"]]["overload_mail"] = $field_row["overload_mail"];
+    $fieldslist[$field_row["id"]]["obligatoire"] = $field_row["obligatoire"];
+    $fieldslist[$field_row["id"]]["confidentiel"] = $field_row["confidentiel"];
 	}
 	return $fieldslist;
 }
@@ -1056,7 +1029,7 @@ function grrEntryGetOverloadDesc($id_entry)
 	}
 	if ( $room_id >0 )
 	{
-		$area_id = mrbsGetAreaIdFromRoomId($room_id);
+		$area_id = mrbsGetRoomArea($room_id);
 		// Avec l'id_area on récupère la liste des champs additionnels dans ".TABLE_PREFIX."_overload.
 		$fieldslist = grrOverloadGetFieldslist($area_id);
 		foreach ($fieldslist as $fieldid=>$fielddata)
@@ -1123,12 +1096,12 @@ function grrEntryGetOverloadDesc($id_entry)
 				$overload_array[$fieldid]["valeur"]='';
 			else
 				$overload_array[$fieldid]["valeur"]=urldecode($result);
-            $sql = "SELECT fieldname, affichage, overload_mail, obligatoire, confidentiel FROM ".TABLE_PREFIX."_overload WHERE id = '".$fieldid."'";
-            $res = grr_sql_query($sql);
-            if (!$res)
-                fatal_error(1, grr_sql_error());
-            $row = grr_sql_row_keyed($res,0);
-            $overload_array[$fieldid]["name"] = $row["fieldname"];
+      $sql = "SELECT fieldname, affichage, overload_mail, obligatoire, confidentiel FROM ".TABLE_PREFIX."_overload WHERE id = '".$fieldid."'";
+      $res = grr_sql_query($sql);
+      if (!$res)
+        fatal_error(1, grr_sql_error());
+      $row = grr_sql_row_keyed($res,0);
+      $overload_array[$fieldid]["name"] = $row["fieldname"];
 			$overload_array[$fieldid]["affichage"] = $row["affichage"];
 			$overload_array[$fieldid]["overload_mail"] = $row["overload_mail"];
 			$overload_array[$fieldid]["obligatoire"] = $row["obligatoire"];
@@ -1160,9 +1133,9 @@ function ParticipationAjout($entry_id, $participant)
  */
 function ParticipationAnnulation($entry_id, $participant)
 {
-    $sql = "DELETE FROM ".TABLE_PREFIX."_participants WHERE idresa=$entry_id AND participant='$participant'";
+  $sql = "DELETE FROM ".TABLE_PREFIX."_participants WHERE idresa=$entry_id AND participant='$participant'";
 	if (grr_sql_command($sql) < 0)
-        fatal_error(0, "Erreur sur la requête ".$sql);
+    fatal_error(0, "Erreur sur la requête ".$sql);
 }
 /** updateParticipants($old_id, $new_id)
 * transfère les participants à la réservation $old_id vers la réservation $new_id
@@ -1170,10 +1143,10 @@ function ParticipationAnnulation($entry_id, $participant)
 */
 function updateParticipants($old_id, $new_id)
 {
-    $nb = grr_sql_query1("SELECT COUNT(*) FROM ".TABLE_PREFIX."_participants WHERE idresa=".$old_id.";");
-    $sql = "UPDATE " .TABLE_PREFIX."_participants SET idresa=".$new_id." WHERE idresa=".$old_id;
-    $res = grr_sql_command($sql);
-    return($res == $nb);
+  $nb = grr_sql_query1("SELECT COUNT(*) FROM ".TABLE_PREFIX."_participants WHERE idresa=".$old_id.";");
+  $sql = "UPDATE " .TABLE_PREFIX."_participants SET idresa=".$new_id." WHERE idresa=".$old_id;
+  $res = grr_sql_command($sql);
+  return($res == $nb);
 }
 /** jourValide($time,$type_jour)
 * valide une date vis à vis des critères jour de vacances scolaires/jour férié
@@ -1184,11 +1157,11 @@ function updateParticipants($old_id, $new_id)
 */ 
 function jourValide($time,$type_jour)
 {
-    list($vacance,$ferie) = $type_jour;
-    $jour_vacance = grr_sql_query1("SELECT * FROM ".TABLE_PREFIX."_calendrier_vacances WHERE DAY = $time");
-    $jour_ferie = grr_sql_query1("SELECT * FROM ".TABLE_PREFIX."_calendrier_feries WHERE DAY = $time");
-    $testV = ($vacance == 0)||(($vacance == 1)&&($jour_vacance > 0))||(($vacance == 2)&&($jour_vacance < 0));
-    $testF = ($ferie == 0)||(($ferie == 1)&&($jour_ferie > 0))||(($ferie == 2)&&($jour_ferie < 0));
-    return($testV && $testF);
+  list($vacance,$ferie) = $type_jour;
+  $jour_vacance = grr_sql_query1("SELECT * FROM ".TABLE_PREFIX."_calendrier_vacances WHERE DAY = $time");
+  $jour_ferie = grr_sql_query1("SELECT * FROM ".TABLE_PREFIX."_calendrier_feries WHERE DAY = $time");
+  $testV = ($vacance == 0)||(($vacance == 1)&&($jour_vacance > 0))||(($vacance == 2)&&($jour_vacance < 0));
+  $testF = ($ferie == 0)||(($ferie == 1)&&($jour_ferie > 0))||(($ferie == 2)&&($jour_ferie < 0));
+  return($testV && $testF);
 }
 ?>
