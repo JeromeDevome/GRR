@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2024-03-17
+# Last modification : 2024-05-13
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -265,7 +265,7 @@ $vocab['click_here_for_series_close'] = "&gt;&gt;&gt;Click here to close the opt
 $vocab['click_here_for_series_open'] = "&gt;&gt;&gt;Click here to open the options of periodicity&lt;&lt;&lt;";
 $vocab['click_here_to_modify_pwd'] = "&gt;&gt;&gt;Click here to modify your password&lt;&lt;&lt;";
 $vocab['cliquez_pour_effectuer_une_reservation'] = "Click to make a reservation";
-$vocab['cocher_jours_a_afficher'] = "Tick below the days to display on different plannings.<br /><b>Comment</b>: if you decide to not to display some days, make sure those days are desactivated in the \"Calendar except reservation\".";
+$vocab['cocher_jours_a_afficher'] = "Tick below the days to display on different plannings.<br /><b>Comment</b>: if you decide not to display some days, make sure those days are deactivated in the \"Calendar except reservation\".";
 $vocab['code_fonction'] = "Identifier in LDAP profile"; 
 $vocab['company'] = "Name of the company/school";
 $vocab['configuration_liens_adresses'] = "email links configuration"; 

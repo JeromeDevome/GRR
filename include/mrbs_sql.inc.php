@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2024-05-07 19:00$
+ * Dernière modification : $Date: 2024-05-14 12:19$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
@@ -1151,15 +1151,16 @@ function updateParticipants($old_id, $new_id)
 /** jourValide($time,$type_jour)
 * valide une date vis à vis des critères jour de vacances scolaires/jour férié
 * paramètres:
-* $time : timestamp du jour à OO:OO
+* $time : timestamp dans le jour
 * $type_jour : tableau de deux entiers (x,y) entre 0 et 2 ; 0 = ts les jours, 1 = jour férié ou de vacance, 2 = jour ouvré ou hors vacances
 * renvoie TRUE|FALSE selon que les deux critères sont satisfaits
 */ 
 function jourValide($time,$type_jour)
 {
+  $time0 = mktime(0,0,0,date("m",$time),date("d",$time),date("Y",$time));
   list($vacance,$ferie) = $type_jour;
-  $jour_vacance = grr_sql_query1("SELECT * FROM ".TABLE_PREFIX."_calendrier_vacances WHERE DAY = $time");
-  $jour_ferie = grr_sql_query1("SELECT * FROM ".TABLE_PREFIX."_calendrier_feries WHERE DAY = $time");
+  $jour_vacance = grr_sql_query1("SELECT * FROM ".TABLE_PREFIX."_calendrier_vacances WHERE DAY = $time0");
+  $jour_ferie = grr_sql_query1("SELECT * FROM ".TABLE_PREFIX."_calendrier_feries WHERE DAY = $time0");
   $testV = ($vacance == 0)||(($vacance == 1)&&($jour_vacance > 0))||(($vacance == 2)&&($jour_vacance < 0));
   $testF = ($ferie == 0)||(($ferie == 1)&&($jour_ferie > 0))||(($ferie == 2)&&($jour_ferie < 0));
   return($testV && $testF);

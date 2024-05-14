@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2024-03-17
+# Last modification : 2024-05-13
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -260,7 +260,7 @@ $vocab['click_here_for_series_close'] = "&gt;&gt;&gt;Cliquez ici pour fermer les
 $vocab['click_here_for_series_open'] = "&lt;&lt;&lt;Cliquez ici pour ouvrir les options de périodicité&gt;&gt;&gt;";
 $vocab['click_here_to_modify_pwd'] = "&gt;&gt;&gt;Cliquez ici pour modifier votre mot de passe&lt;&lt;&lt;";
 $vocab['cliquez_pour_effectuer_une_reservation'] = "Cliquez pour effectuer une réservation";
-$vocab['cocher_jours_a_afficher'] = "Cochez ci-dessous les jours à afficher sur les différents plannings.<br /><b>Remarque </b>: les réservations sont impossibles pour les jours non cochés\".";
+$vocab['cocher_jours_a_afficher'] = "Cochez ci-dessous les jours à afficher sur les différents plannings.<br /><b>Remarque </b>: les réservations sont impossibles pour les jours non cochés.";
 $vocab['code_fonction'] = "Identifiant du profil LDAP";
 $vocab['company'] = "Nom de l'établissement";
 $vocab['configuration_liens_adresses'] = "Configuration des liens email";
