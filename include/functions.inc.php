@@ -2141,7 +2141,7 @@ function tdcell($colclass, $width = '')
 		$temp = "";
 	global $tab_couleur;
 	static $ecolors;
-	if (($colclass >= "A") && ($colclass <= "Z"))
+	if (($colclass >= "A") && ($colclass <= "ZZ"))
 	{
 		/*$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
         $couleur_texte = grr_sql_query1("SELECT couleur_texte FROM".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
