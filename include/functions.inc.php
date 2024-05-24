@@ -2997,9 +2997,15 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	$jours_cycle 				= htmlspecialchars($row[17]);
 	$duration     				= $row[9];
 	if ($enable_periods == 'y')
+	{
 		list($start_period, $start_date) = period_date_string($row[10]);
+		list($start_period, $end_date) = period_date_string($row[11]);
+	}
 	else
+	{
 		$start_date = time_date_string($row[10],$dformat);
+		$end_date = time_date_string($row[11],$dformat);
+	}
 	$rep_type = 0;
 
 	// Recherche du nom de l'ancienne ressource si besoin
@@ -3083,6 +3089,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 
 	// Infos sur la réservation	
 	$codes['%resadatedebut%'] = $start_date;
+	$codes['%resadatefin%'] = $end_date;
 	$codes['%resaduree%'] = $duration." ".$dur_units;
 	if (trim($breve_description) != "")
 		$codes['%resanom%'] = $vocab["namebooker"]." ".$vocab["deux_points"]." ".$breve_description;
