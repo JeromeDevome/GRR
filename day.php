@@ -75,6 +75,23 @@ if (!($desactive_VerifNomPrenomUser))
 // On vérifie que les noms et prénoms ne sont pas vides
 VerifNomPrenomUser($type_session);
 
+// Calcul du niveau de droit de réservation
+$authGetUserLevel = authGetUserLevel($user_name, -1);
+// vérifie si la date est dans la période réservable
+if (check_begin_end_bookings($day, $month, $year))
+{
+    start_page_w_header($day,$month,$year,$type_session);
+	showNoBookings($day, $month, $year, $back);
+	exit();
+}
+//Renseigne les droits de l'utilisateur, si les droits sont insuffisants, l'utilisateur est averti.
+if ((($authGetUserLevel < 1) && (Settings::get("authentification_obli") == 1)) || authUserAccesArea($user_name, $area) == 0)
+{
+    start_page_w_header($day,$month,$year,$type_session);
+	showAccessDenied($back);
+	exit();
+}
+
 // langue utilisée
 $langue= isset($_SESSION['default_language'])? $_SESSION['default_language']: Settings::get('default_language');
 // $room_back sert à pallier l'absence de page day_all => si room_back contient 'all', il ne faut pas passer room en paramètre
