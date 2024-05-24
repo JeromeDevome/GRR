@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '2273a5831660400007ad5af43dc0eaaa3e5ca5cc',
+    'reference' => '2054ea7881efbddcb252f598ea53726015af2592',
     'name' => 'devome/twig',
   ),
   'versions' => 
@@ -60,7 +60,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '2273a5831660400007ad5af43dc0eaaa3e5ca5cc',
+      'reference' => '2054ea7881efbddcb252f598ea53726015af2592',
     ),
     'gregwar/captcha' => 
     array (
@@ -496,12 +496,12 @@ private static $installed = array (
     ),
     'twig/twig' => 
     array (
-      'pretty_version' => 'v3.9.3',
-      'version' => '3.9.3.0',
+      'pretty_version' => 'v3.10.3',
+      'version' => '3.10.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'a842d75fed59cdbcbd3a3ad7fb9eb768fc350d58',
+      'reference' => '67f29781ffafa520b0bbfbd8384674b42db04572',
     ),
   ),
 );
