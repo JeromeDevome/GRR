@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-10-17 10:53$
+ * Dernière modification : $Date: 2024-06-01 18:37$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -934,13 +934,13 @@ function page_accueil($param = 'no')
 	else if ($defaultroom == - 1)
 		$page_accueil = 'app.php?p=jour&area='.$defaultarea;
 	else if ($defaultroom == - 2)
-		$page_accueil = 'pp.php?p=mois_all&area='.$defaultarea;
+		$page_accueil = 'app.php?p=semaine_all&area='.$defaultarea;
 	else if ($defaultroom == - 3)
 		$page_accueil = 'app.php?p=mois_all&area='.$defaultarea;
 	else if ($defaultroom == -4)
-		$page_accueil = 'month_all2.php?area='.$defaultarea;
+		$page_accueil = 'app.php?p=mois_all2.php?area='.$defaultarea;
 	else
-		$page_accueil = 'week.php?area='.$defaultarea.'&amp;room='.$defaultroom;
+		$page_accueil = 'app.php?p=semaine.php?area='.$defaultarea.'&amp;room='.$defaultroom;
 	if ((Settings::get("module_multisite") == "Oui") && ($defaultsite > 0))
 		$page_accueil .= '&amp;id_site='.$defaultsite;
 	if ($param == 'yes')
