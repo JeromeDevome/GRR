@@ -25,7 +25,7 @@ Pré-requis
 ***********
 
 Pour installer et faire fonctionner GRR, vous avez besoin de :
--> Un serveur web/php et un serveur mysql (éventuellement sur la même machine). Pour des raisons de sécurité il est déconseiller d'activer la directive allow_url_include.
+-> Un serveur web/php et un serveur mysql (éventuellement sur la même machine). Pour des raisons de sécurité il est déconseillé d'activer la directive allow_url_include.
 -> Nécessité de disposer d'une version de php version supérieure ou égale à 7.2.5 (moteur de templates Twig, gestion des variables de type $_SESSION, fonction mysql_real_escape_string(),  ...)
 
 ************************************************
