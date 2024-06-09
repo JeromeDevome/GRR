@@ -423,6 +423,7 @@ function affiche_ressource_empruntee($id_room, $type = "logo")
  */
 function affiche_ressource_empruntee_twig($id_room, $type = "logo")
 {
+	$valeur = "";
 	$active_ressource_empruntee = grr_sql_query1("SELECT active_ressource_empruntee FROM ".TABLE_PREFIX."_room WHERE id = '".$id_room."'");
 	if ($active_ressource_empruntee == 'y')
 	{
