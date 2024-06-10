@@ -3,9 +3,9 @@
  * include/mail.class.php
  * fichier de définition d'une classe de traitement des e-mails
  * fait partie de l'application GRR
- * Dernière modification : $Date: 2023-08-29 17:50$
+ * Dernière modification : $Date: 2024-06-10 18:01$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & NaldDev
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -87,7 +87,9 @@ class Email{
 				}
 
 			} elseif (Settings::get('grr_mail_method') == 'mail') {
-				$headers = "From: {$DE}" . "\r\n" .
+        $headers  = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=UTF8' . "\r\n";
+				$headers .= "From: {$DE}" . "\r\n" .
 					"Reply-To: {$DE}" . "\r\n" .
 					'X-Mailer: PHP/' . phpversion();
 
@@ -110,6 +112,5 @@ class Email{
 			$gNbMail++;
 		}
 	}
-
 }
 ?>
