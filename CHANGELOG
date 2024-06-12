@@ -1,3 +1,14 @@
+Version 4.3.5 - 12/06/2024
+[Ajout] Variable date de fin pour les mails - a2bc3831 - @JeromeDevome
+[Ajout] Variable URL de la réservation pour les mails - c77702c8 - @JeromeDevome
+[Correction] Accès sur la vue journalière - dcae040a - @JeromeDevome
+[Correction] Warning PHP vue réservation - 54852e14 - @JeromeDevome
+[Correction] Vocabulaire - a6408a7b & f6a2a31a - @ynaessens
+[Modification] Header du mail - c94dc4fb- @ynaessens
+[Modification] Mise à jour de twig - 0934fcba - @JeromeDevome
+[Modification] Mise à jour symfony - a343823d - @JeromeDevome
+
+
 Version 4.3.4 - 06/05/2024 Généré par @JeromeDevome
 [Ajout] Nouveau Hook pour module externe - 7011a1a3 - @JeromeDevome
 [Correction] Affiche du html dans le champ brêve description - 23c683c0 - @JeromeDevome
