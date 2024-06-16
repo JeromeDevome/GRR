@@ -3,9 +3,9 @@
  * admin_mails.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2023-05-12 20:40$
+ * Dernière modification : $Date: 2024-06-16 11:17$
  * @author    JeromeB
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.

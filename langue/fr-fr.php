@@ -1,7 +1,7 @@
 <?php
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue française
-# Last modification : 2024-02-06
+# Last modification : 2024-06-16
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accepter la réservation";
@@ -564,13 +564,6 @@ $vocab['mail_raison_5'] = "Vous recevez ce mail car votre adresse est renseigné
 $vocab['mail_raison_6'] = "Vous recevez ce mail car vous êtes le bénéficiaire de la réservation.";
 $vocab['mail_sujet'] = "Sujet";
 $vocab['mail_test'] = "Email de test";
-$vocab['mail_type_compte_demande'] = "Demande compte"; // A traduire
-$vocab['mail_type_resa_creation'] = "Création réservation"; // A traduire
-$vocab['mail_type_resa_moderation'] = "Réservation & Modération"; // A traduire
-$vocab['mail_type_resa_modif'] = "Modification réservation"; // A traduire
-$vocab['mail_type_resa_sup'] = "Suppression réservation"; // A traduire
-$vocab['mail_type_resa_resultat'] = "Résultat"; // A traduire
-$vocab['mail_type_resa_retard'] = "Retard"; // A traduire
 $vocab['mail_type_adm_test'] = "Test";
 $vocab['mail_type_compte_demande'] = "Demande compte";
 $vocab['mail_type_resa_creation'] = "Création réservation";
