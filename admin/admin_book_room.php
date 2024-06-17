@@ -3,7 +3,7 @@
  * admin_book_room.php
  * Interface de gestion des accès restreints aux ressources restreintes
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-25 17:16$
+ * Dernière modification : $Date: 2024-06-17 16:14$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -49,8 +49,8 @@ function insereUser($user_id,$room_id){
     }
 }
 
-$id_room = isset($_POST["id_room"]) ? $_POST["id_room"] : (isset($_GET["id_room"]) ? $_GET["id_room"] : -1);
-$id_room = intval(clean_input($id_room));
+$id_room = getFormVar("id_room","int",-1);
+$multisite = Settings::get("module_multisite") == "Oui";
 $reg_user_login = isset($_POST["reg_user_login"]) ? $_POST["reg_user_login"] : NULL;
 $reg_multi_user_login = isset($_POST["reg_multi_user_login"]) ? $_POST["reg_multi_user_login"] : NULL;
 $test_user =  isset($_POST["reg_multi_user_login"]) ? "multi" : (isset($_POST["reg_user_login"]) ? "simple" : NULL);
@@ -88,7 +88,18 @@ if ($action=='del_user')
 # choisir parmi les ressources restreintes
 $this_room_name = "";
 $sel_room = '';
-$sql = "select id, room_name from ".TABLE_PREFIX."_room where who_can_book =0 order by room_name";
+if($multisite)
+  $sql = "SELECT r.id,room_name,area_name,sitename
+          FROM ((`grr_room` r JOIN `grr_area` a ON r.area_id = a.id)
+          JOIN grr_j_site_area ON a.id = id_area)
+          JOIN grr_site s ON s.id = id_site
+          WHERE r.who_can_book = 0
+          ORDER BY room_name";
+else
+  $sql = "SELECT r.id,room_name,area_name
+          FROM `grr_room` r JOIN `grr_area` a ON r.area_id = a.id
+          WHERE r.who_can_book = 0
+          ORDER BY room_name";
 $res = grr_sql_query($sql);
 if (!$res)
     fatal_error(1,grr_sql_error($res));
@@ -97,30 +108,34 @@ else{
     $sel_room .= "\n<form id=\"room\" action=\"admin_book_room.php\" method=\"post\">\n";
     $sel_room .= "<label for='id_room'>".get_vocab('rooms').get_vocab('deux_points')."</label>";
     $sel_room .= "<select id='id_room' name=\"id_room\" onchange=\"room_go()\">";
-    $sel_room .= "\n<option value=\"admin_book_room.php?id_room=-1\">".get_vocab('select')."</option>";
+    $sel_room .= "\n<option value=-1>".get_vocab('select')."</option>";
     foreach($res as $row)
-	{
-		// on vérifie que l'utilisateur connecté a les droits suffisants
-		if (authGetUserLevel($user_name,$id_room)>2)
-		{
-            $selected = ($row['id'] == $id_room) ? "selected = \"selected\"" : "";
-            $link = "admin_book_room.php?id_room=".$row['id'];
-			$sel_room .= "\n<option $selected value=\"$link\">" . htmlspecialchars($row['room_name'])."</option>";
-		}
-	}	$sel_room .= "</select>
-	<script  type=\"text/javascript\" >
-		<!--
-		function room_go()
-		{
-			box = document.getElementById('room').id_room;
-			destination = box.options[box.selectedIndex].value;
-			if (destination) location.href = destination;
-		}
-	// -->
-	</script>
-	<noscript>
-		<div><input type=\"submit\" value=\"Change\" /></div>
-	</noscript>
+    {
+      // on vérifie que l'utilisateur connecté a les droits suffisants
+      if (authGetUserLevel($user_name,$id_room)>2)
+      {
+        $selected = ($row['id'] == $id_room) ? "selected = \"selected\"" : "";
+        $text = '';
+        if($multisite)
+          $text.= $row['sitename']." > ";
+        $text.= $row['area_name']." > ".$row['room_name'];
+        $sel_room .= "\n<option $selected value=\"".$row['id']."\">" . htmlspecialchars($text)."</option>";
+      }
+    }	
+    $sel_room .= "</select>
+    <script  type=\"text/javascript\" >
+      <!--
+      function room_go()
+      {
+        box = document.getElementById('room').id_room;
+        destination = \"./admin_book_room.php\"+\"?id_room=\"+box.options[box.selectedIndex].value;
+        if (destination) location.href = destination;
+      }
+    // -->
+    </script>
+    <noscript>
+      <div><input type=\"submit\" value=\"Change\" /></div>
+    </noscript>
     </form>";
 }
 // utilisateurs autorisés
