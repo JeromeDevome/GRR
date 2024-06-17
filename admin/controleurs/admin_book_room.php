@@ -2,9 +2,9 @@
 /**
  * admin_book_room.php
  * Script de création/modification des ressources de l'application GRR
- * Dernière modification : $Date: 2023-11-10 00:00$
+ * Dernière modification : $Date: 2024-06-17 17:09$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -118,19 +118,34 @@ if ($action=='del_user')
 
 
 // première étape : choisir parmi les ressources restreintes
-$sql = "select id, room_name from ".TABLE_PREFIX."_room where who_can_book =0 order by room_name";
+$multisite = Settings::get("module_multisite") == "Oui";
+if($multisite)
+  $sql = "SELECT r.id,room_name,area_name,sitename
+          FROM ((`grr_room` r JOIN `grr_area` a ON r.area_id = a.id)
+          JOIN grr_j_site_area ON a.id = id_area)
+          JOIN grr_site s ON s.id = id_site
+          WHERE r.who_can_book = 0
+          ORDER BY room_name";
+else
+  $sql = "SELECT r.id,room_name,area_name
+          FROM `grr_room` r JOIN `grr_area` a ON r.area_id = a.id
+          WHERE r.who_can_book = 0
+          ORDER BY room_name";
 $res = grr_sql_query($sql);
 $nb = grr_sql_count($res);
 
 if (!$res)
-    grr_sql_error($res);
+    fatal_error(1,grr_sql_error($res));
 else
 {
-	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+	foreach($res as $row)
 	{
 		// on vérifie que l'utilisateur connecté a les droits suffisants
 		if (authGetUserLevel($user_name,$d['id_room'])>2)
-            $ressources[] = $row;
+      if($multisite)
+        $ressources[] = array($row['id'],($row['sitename']." > ".$row['area_name']." > ".$row['room_name']));
+      else
+        $ressources[] = array($row['id'],$row['area_name'].' > '.$row['room_name']);
 	}
 }
 
