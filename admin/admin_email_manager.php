@@ -3,7 +3,7 @@
  * admin_email_manager.php
  * Interface de gestion des mails automatiques
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-03-18 15:08$
+ * Dernière modification : $Date: 2024-06-17 18:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -111,30 +111,32 @@ else{
   }
 }
 grr_sql_free($res);
-$this_area_name = grr_sql_query1("select area_name from ".TABLE_PREFIX."_area where id=$id_area");
-$this_room_name = grr_sql_query1("select room_name from ".TABLE_PREFIX."_room where id=$room");
-$this_room_name_des = grr_sql_query1("select description from ".TABLE_PREFIX."_room where id=$room");
-$sql = "select id, room_name, description from ".TABLE_PREFIX."_room where area_id=$id_area ";
-	// on ne cherche pas parmi les ressources invisibles pour l'utilisateur
-foreach ($tab_rooms_noaccess as $key)
-{
-	$sql .= " and id != $key ";
-};
-$sql .= "order by room_name";
-$res = grr_sql_query($sql);
-if (!$res)
-  fatal_error(0,grr_sql_error());
-else{
-  $all_rooms = array();
-	foreach($res as $row){
-		if ($row['description'])
-			$temp = " (".htmlspecialchars($row['description']).")";
-		else
-			$temp="";
-    $all_rooms[$row['id']] = htmlspecialchars($row['room_name'].$temp);
-	}
+if($id_area > 0){
+  $this_area_name = grr_sql_query1("select area_name from ".TABLE_PREFIX."_area where id=$id_area");
+  $this_room_name = grr_sql_query1("select room_name from ".TABLE_PREFIX."_room where id=$room");
+  $this_room_name_des = grr_sql_query1("select description from ".TABLE_PREFIX."_room where id=$room");
+  $sql = "select id, room_name, description from ".TABLE_PREFIX."_room where area_id=$id_area ";
+    // on ne cherche pas parmi les ressources invisibles pour l'utilisateur
+  foreach ($tab_rooms_noaccess as $key)
+  {
+    $sql .= " and id != $key ";
+  };
+  $sql .= "order by room_name";
+  $res = grr_sql_query($sql);
+  if (!$res)
+    fatal_error(0,grr_sql_error());
+  else{
+    $all_rooms = array();
+    foreach($res as $row){
+      if ($row['description'])
+        $temp = " (".htmlspecialchars($row['description']).")";
+      else
+        $temp="";
+      $all_rooms[$row['id']] = htmlspecialchars($row['room_name'].$temp);
+    }
+  }
+  grr_sql_free($res);
 }
-grr_sql_free($res);
 $sql = "SELECT u.login, u.nom, u.prenom FROM ".TABLE_PREFIX."_utilisateurs u JOIN ".TABLE_PREFIX."_j_mailuser_room j ON u.login=j.login WHERE j.id_room=? ORDER BY u.nom, u.prenom";
 $res = grr_sql_query($sql,"i",[$room]);
 if(!$res)
@@ -210,7 +212,7 @@ echo "<script type=\"text/javascript\" >
 </noscript>
 </form>";
 
-# Show all rooms in the current area>";
+# Show all rooms in the current area
 # should we show a drop-down for the room list, or not?
 echo "<form id=\"room\" action=\"admin_email_manager.php\" method=\"post\">\n<div>";
 echo "<label for='room_sel'>".get_vocab('rooms')."&nbsp;</label>";
