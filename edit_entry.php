@@ -169,7 +169,7 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
         echo '<input type="hidden" name="beneficiaire" value="'.$id_user.'" />'.PHP_EOL;
     }
 }
-
+/*
 function divTypes($id_user,$room,$area,$type=""){
     $qui_peut_reserver_pour = grr_sql_query1("SELECT qui_peut_reserver_pour FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
     $aff_default = ((authGetUserLevel($id_user,-1,"room") >= $qui_peut_reserver_pour) || (authGetUserLevel($id_user,$area,"area") >= $qui_peut_reserver_pour));
@@ -239,8 +239,8 @@ function divTypes($id_user,$room,$area,$type=""){
         $display_type = '<div class="E"><b>'.get_vocab("type").get_vocab("deux_points").htmlentities($type_nom_unique).'</b>'.PHP_EOL.'<input name="type" type="hidden" value="'.$type_id_unique.'" /></div>'.PHP_EOL;
     
     echo $display_type;
-}
-
+}*/
+/*
 function divChampsAdd($id_resa=0,$id_area=-1,$id_room=-1,$overloadFields=array()){
     // on récupère les données de la réservation si il y en a
     if ($id_resa != 0)
@@ -303,7 +303,7 @@ function divChampsAdd($id_resa=0,$id_area=-1,$id_room=-1,$overloadFields=array()
     $display .= '</div>'.PHP_EOL;
     echo $display;
 }
-
+*/
 // les variables attendues et leur type
 $form_vars = array(
   'create_by'          => 'string',
@@ -1095,13 +1095,14 @@ if (($delais_option_reservation > 0) && (($modif_option_reservation == 'y') || (
 }
 
 // types
-//echo '<div id="div_types">',PHP_EOL;
-//echo '</div>',PHP_EOL;
-divTypes($user_name,$room,$area_id,$etype);
+echo '<div id="div_types">',PHP_EOL;
+echo '</div>',PHP_EOL;
+//divTypes($user_name,$room,$area_id,$etype);
 // champs additionnels
-//echo '<div id="div_champs_add">'.PHP_EOL;
-//echo '</div>'.PHP_EOL;
-divChampsAdd($id,$area,$room,$overloadFields);
+echo '<div id="div_champs_add">'.PHP_EOL;
+echo '</div>'.PHP_EOL;
+
+//divChampsAdd($id,$area,$room,$overloadFields);
 // participants
 if($active_participant > 0){
 	echo '<div class="E">'.PHP_EOL;
@@ -1680,7 +1681,12 @@ function changeRoom(formObj)
     $(".select2").select2();
 }
 </script>
-
+<script type="text/javascript" >
+    insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode($user_name);?>,<?php echo $id?>);
+	insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>);
+	insertTypes(<?php echo $area?>,<?php echo $room?>);
+	// insertProfilBeneficiaire();
+</script>
 	<script type="text/javascript">
 		$('#areas').on('change', function(){
 			$('.multiselect').multiselect('destroy');
@@ -1689,8 +1695,8 @@ function changeRoom(formObj)
 		$(document).ready(function() {
             // insertBeneficiaires(<?php echo $area?>,<?php echo $room?>,<?php echo json_encode($user_name);?>,<?php echo $id?>);
             $("#beneficiaire").select2();
-            //insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>,<?php echo json_encode($overloadFields);?>);
-            //insertTypes(<?php echo $area?>,<?php echo $room?>);
+            insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>,<?php echo json_encode($overloadFields);?>);
+            insertTypes(<?php echo $area?>,<?php echo $room?>);
             //check_4();
 		});
 		document.getElementById('main').name.focus();

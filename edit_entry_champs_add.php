@@ -30,9 +30,9 @@ if (isset($_GET["id"]))
 }
 else
 	die();
-if (isset($_GET['areas']))
+if (isset($_GET['area']))
 {
-	$areas = $_GET['areas'];
+	$areas = $_GET['area'];
 	settype($areas,"integer");
 }
 else

@@ -22,9 +22,9 @@ if (!empty($_GET["type"]))
 else
 	$type = "";
 // paramètres $areas et $rooms requis
-if (isset($_GET['areas']))
+if (isset($_GET['area']))
 {
-	$areas = $_GET['areas'];
+	$areas = $_GET['area'];
 	settype($areas,"integer");
 }
 else
