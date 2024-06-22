@@ -207,8 +207,8 @@ function divTypes($id_user,$room,$area,$type=""){
                     $type_nom_unique = $row['type_name'];
                     $type_id_unique = $row['type_letter'];
                     $display_type .= '<option value="'.$row['type_letter'].'" ';
-                    
-                    if ($type != "" && $type != 0) // Modification d'une réservation
+
+                    if ($type != "") // Modification d'une réservation
                     {
                         if ($type == $row['type_letter'])
                             $display_type .=  ' selected="selected"';
