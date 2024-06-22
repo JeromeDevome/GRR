@@ -3,10 +3,10 @@
  * vuereservation.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-12-31 16:35$
+ * Dernière modification : $Date: 2024-06-21 17:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -116,7 +116,8 @@ $sql = "SELECT ".TABLE_PREFIX."_entry.name,
 ".TABLE_PREFIX."_entry.courrier,
 ".TABLE_PREFIX."_room.active_cle,
 ".TABLE_PREFIX."_entry.nbparticipantmax,
-".TABLE_PREFIX."_room.active_participant
+".TABLE_PREFIX."_room.active_participant,
+".TABLE_PREFIX."_entry.supprimer
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
 WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
 AND ".TABLE_PREFIX."_room.area_id = ".TABLE_PREFIX."_area.id
@@ -156,14 +157,17 @@ if (grr_sql_count($res) < 1)
 	if (!$res_backup)
 		fatal_error(0, grr_sql_error());
 	$row = grr_sql_row($res_backup, 0);
-    if(!is_array($row))
-        fatal_error(0,"pas de réservation sauvegardée");
+  if(!is_array($row))
+    fatal_error(0,"pas de réservation sauvegardée");
 	grr_sql_free($res_backup);
 }
 else
 {
-	$was_del = FALSE;
-	$row = grr_sql_row($res, 0);
+  $row = grr_sql_row_keyed($res, 0);
+	$was_del = $row['supprimer']==1;
+  if($was_del)
+    fatal_error(0,"réservation inexistante ou supprimée");
+	
 }
 grr_sql_free($res);
 $breve_description 	= $row[0];
