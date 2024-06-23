@@ -9,238 +9,273 @@
 
 {% block content %}
 
-<div id="page-resa" class="col col-lg-12 col-md-12 col-xs-12">
-	<div class="container">
+	{% if d.msgErreur %}
+		<br>{{ msgSyst.messageDanger("", d.msgErreur) }}
+	{% endif %}
+	{% if d.msgOk %}
+		<br>{{ msgSyst.messageSuccess("", d.msgOk) }}
+	{% endif %}
 
-		{% if d.msgErreur %}
-			<br>{{ msgSyst.messageDanger("", d.msgErreur) }}
+	<h2>{{d.titre}}</h2>
+	{% if d.moderate %}
+		<h3><span class="texte_ress_moderee">{{trad.reservations_moderees}}</span></h3>
+	{% endif %}
+
+
+	<form id="main" method="get" action="?p=edit_entry_handler">
+		<input type="hidden" name="oldRessource" value="{{d.roomid}}">
+		<input type="hidden" name="rep_id"    value="{{d.rep_id}}" />
+		<input type="hidden" name="edit_type" value="{{d.edit_type}}" />
+		<input type="hidden" name="page" value="{{d.page}}" />
+		<input type="hidden" name="room_back" value="{{d.room_back}}" />
+		<input type="hidden" name="page_ret" value="{{d.ret_page}}" />
+		<input type="hidden" name="create_by" value="{{d.create_by}}" />
+		<input type="hidden" name="type_affichage_reser" value="{{d.type_affichage_reser}}" />
+		{% if d.idresa != 0 and d.copier != 1 %}
+			<input type="hidden" name="id" value="{{ d.idresa }}" />
 		{% endif %}
-		{% if d.msgOk %}
-			<br>{{ msgSyst.messageSuccess("", d.msgOk) }}
-		{% endif %}
+		<div id="error"></div>
+		
 
-		<h2>{{d.titre}}</h2>
+		<div class="row2">
+			<!-- Colonne de Gauche : Données de la réservation -->
+			<div class="col col-sm-6 col-xs-12">
 
-		<form id="main" method="get" action="?p=editentree">
-			<input type="hidden" name="oldRessource" value="{{d.roomid}}">
-			<input type="hidden" name="rep_id"    value="{{d.rep_id}}" />
-			<input type="hidden" name="edit_type" value="{{d.edit_type}}" />
-			<input type="hidden" name="page" value="{{d.page}}" />
-			<input type="hidden" name="room_back" value="{{d.room_back}}" />
-			<input type="hidden" name="page_ret" value="{{d.ret_page}}" />
-			<input type="hidden" name="create_by" value="{{d.create_by}}" />
-			<input type="hidden" name="type_affichage_reser" value="{{d.type_affichage_reser}}" />
-			{% if d.idresa != 0 and d.copier != 1 %}
-				<input type="hidden" name="id" value="{{ d.idresa }}" />
-			{% endif %}
-			<div id="error"></div>
-			
+				<!-- Bénéficiare -->
+				{% if d.flag_qui_peut_reserver_pour %}
+					<div id="choix_beneficiaire" class="row">
+						<div class="col col-sm-9">
+							<div class="input-group">
+								<label for="beneficiaire" >{{trad.reservation_au_nom_de}}{{ trad.deux_points }}</label>
+								<select class="form-select" name="beneficiaire" id="beneficiaire">
+									{{d.selectBeneficiare|raw}}
+								</select>
+							</div>
+						</div>
+						<div class="col col-sm-3">
+							<input type="button" id="bnfdef" class="btn btn-primary" value="{{trad.definir_par_defaut}}" onclick="setdefault('beneficiaire_default',document.getElementById('main').beneficiaire.options[document.getElementById('main').beneficiaire.options.selectedIndex].value)" />
+						</div>
+					</div>
 
-			<div class="row2">
-				<!-- Colonne de Gauche : Données de la réservation -->
-				<div class="col col-sm-6 col-xs-12">
+					<div id="menu4" class="form-inline" {% if d.selectBeneficiareExt %}style="display:none"{% endif %}>
+						<div class="form-group col-sm-6">
+							<div class="input-group">
+								<div class="input-group-addon"><i class="fa-regular fa-user"></i></div>
+								<input class="form-control" type="text" name="benef_ext_nom" value="{{d.selectBeneficiareExt}}" placeholder="{{trad.nom_beneficiaire}}" required onchange="check_4()">
+							</div>
+						</div>
+					</div>
 
-					<table>
-						<div id="div_beneficiaire"></div>
-						<tr>
-							<td class="E"><b>{{ trad.namebooker }}{% if settings.remplissage_description_breve != 0 %} *{% endif %}{{ trad.deux_points }}</b></td>
-						</tr>
-						<tr>
-							<td class="CL">
-								<input id="name" class="pleine form-control" name="name" maxlength="80" size="60" value="{{d.resaBreveDescription}}" />
-							</td>
-						</tr>
+					{% if settings.automatic_mail == "yes" %}
+						<div class="form-group col-sm-6">
+							<div class="input-group">
+								<div class="input-group-addon"><i class="fa-solid fa-envelope"></i></div>
+								<input class="form-control" type="email" name="benef_ext_email" value="{{d.benef_ext_email}}" placeholder="{{trad.email_beneficiaire}}">
+							</div>
+						</div>
+					{% endif %}
 
-						{% if settings.remplissage_description_complete != 2 %}
-							<tr>
-								<td class="E"><b>{{ trad.fulldescription }}{% if settings.remplissage_description_complete == 1 %} *{% endif %}{{ trad.deux_points }}</b></td>
-							</tr>
-							<tr>
-								<td class="TL"><textarea name="description" class="pleine form-control" rows="4" columns="60" >{{d.resaDescription}}</textarea></td>
-							</tr>
-						{% endif %}
+				{% else %}
+					<input type="hidden" name="beneficiaire" value="{{d.gNomUser}}" />
+				{% endif %}
 
-						<tr>
-							<td><div id="div_champs_add"></div></td>
-						</tr>
+				<label for="name">{{ trad.namebooker }}{% if settings.remplissage_description_breve != 0 %} *{% endif %}{{ trad.deux_points }}</label>
+				<input id="name" class="pleine form-control" name="name" maxlength="80" size="60" autocomplete="on" value="{{d.resaBreveDescription}}" />
 
-						{% if d.active_participant > 0 %}
-							<tr>
-								<td class="E">
-									<br><b>{{trad.nb_participant_max}}{{trad.deux_points}}</b>
-									<input name="nbparticipantmax" type="number" value="{{d.nbparticipantmax}}" > {{trad.nb_participant_zero}}
-								</td>
-							</tr>
-						{% endif %}
+					{% if settings.remplissage_description_complete != 2 %}
+						<label for="description">{{ trad.fulldescription }}{% if settings.remplissage_description_complete == 1 %} *{% endif %}{{ trad.deux_points }}</label>
+						<textarea name="description" class="pleine form-control" rows="4" columns="60" >{{d.resaDescription}}</textarea>
+					{% endif %}
 
-						{% if d.formCle == 1 %}
-							<tr>
-								<td class="CL"><br>
-									<input name="keys" type="checkbox" value="y" {% if d.clef == 1 %}checked{% endif %}>
-									<b>{{trad.msg_clef}}</b>
-									<br><br>
-								</td>
-							</tr>
-						{% endif %}
+					{% if d.active_participant > 0 %}
+						<label for="nbparticipantmax">{{trad.nb_participant_max}}{{trad.deux_points}}</label>
+						<input name="nbparticipantmax" type="number" value="{{d.nbparticipantmax}}" > {{trad.nb_participant_zero}}
+					{% endif %}
 
-						{% if d.formCle == 1 %}
-							<tr>
-								<td class="CL"><br>
-									<input name="courrier" type="checkbox" value="y" {% if d.courrier == 1 %}checked{% endif %}>
-									<b>{{trad.msg_courrier}}</b>
-									<br><br>
-								</td>
-							</tr>
-						{% endif %}
+					{% if d.formCle == 1 %}
+						<input name="keys" type="checkbox" value="y" {% if d.clef == 1 %}checked{% endif %}>
+						<label for="keys">{{trad.msg_clef}}</label>
+					{% endif %}
 
-						{% if d.formEmprunte == 1 %}
-							<tr>
-								<td class="CL"><br>
-									<input name="statut_entry" type="checkbox" value="y" {% if d.statut_entry == "y" %}checked{% endif %}>
-									<b>{{trad.signaler_reservation_en_cours}}</b>
-									<br><br>
-								</td>
-							</tr>
-						{% endif %}
+					{% if d.formCle == 1 %}
+						<input name="courrier" type="checkbox" value="y" {% if d.courrier == 1 %}checked{% endif %}>
+						<label for="courrier">{{trad.msg_courrier}}</label>
+					{% endif %}
 
-					<!-- Section date & heure-->
-						<!-- Date & Heure de début -->
-						<tr>
-							<td class="E"><b>{{trad.date}}{{trad.deux_points}}</b></td>
-						</tr>
+					{% if d.formEmprunte == 1 %}
+						<input name="statut_entry" type="checkbox" value="y" {% if d.statut_entry == "y" %}checked{% endif %}>
+						<label for="statut_entry">{{trad.signaler_reservation_en_cours}}</label>
+					{% endif %}
 
-						<tr>
-							<td class="CL">
-								<div class="form-group">
-									{{ d.jQuery_DatePickerTwigStart |raw }}
-									<input type="hidden" disabled="disabled" id="mydate_start_">
-									{% if d.enable_periods == 'y' %}
-										<b>{{trad.period}}</b>
-
-									{% else %}
-										<b>{{trad.time}}</b>
-										{{ d.jQuery_TimePickerStart |raw }}
+				<!-- Section date & heure-->
+					<!-- Date & Heure de début -->
+					<div class="E form-inline">
+						<b>{{trad.date}}{{trad.deux_points}}</b>
+						<div class="form-group">
+							{{ d.selectionDateDebut |raw }}
+							<input type="hidden" disabled="disabled" id="mydate_start_">
+							{% if d.enable_periods == 'y' %}
+								<b>{{trad.period}}</b>
+								<select name="period">
+									{{d.optionHeureDebut |raw}}
+								</select>
+							{% else %}
+								<b>{{trad.time}}</b>
+								{{ d.jQuery_TimePickerStart |raw }}
+							{% endif %}
+						</div>
+					</div>
+					<!-- Pour la fin : Si c'est une durée : -->
+					{% if d.type_affichage_reser == 0 %}
+						<div class="E form-inline">
+							<b>{{trad.duration}}</b>
+							<div class="form-group">
+								<input class="form-control" id="duree" name="duration" type="number" value="{{ d.duration }}" min="1">
+								<select class="form-control" name="dur_units">
+									{{d.option_unite_temps  |raw}}
+								</select>
+								<b>
+									<input name="all_day" type="checkbox" value="yes" /> {{trad.all_day}} 
+									{% if d.enable_periods != 'y' %}
+										( {{d.morningstarts}} H - {{d.af_fin_jour}} ) 
 									{% endif %}
-								</div>
-							</td>
-						</tr>
-
-						<!-- Durée -->
-						{% if d.type_affichage_reser == 0 %}
-							<tr>
-								<td class="E">
-									<b>{{trad.duration}}</b>
-								</td>
-							</tr>
-							<tr>
-								<td class="CL">
-									<div>
-										<input class="form-control" id="duree" name="duration" type="number" value="{{ d.duration }}" min="1">
-										<select class="form-control" name="dur_units">
-											{{d.option_unite_temps  |raw}}
-										</select>
-									</div>
-									<b>
-										<input name="all_day" type="checkbox" value="yes" /> {{trad.all_day}} 
-										{% if d.enable_periods != 'y' %}
-											( {{d.morningstarts}} H - {{d.af_fin_jour}} ) 
-										{% endif %}
-									</b>
-								</td>
-							</tr>
-						<!-- Sinon date et heure de fin -->
-						{% else %}
-							<tr>
-								<td class="E"><b>{{trad.fin_reservation}}{{trad.deux_points}}</b></td>
-							</tr>
-							<tr>
-								<td class="CL" >
-									<div class="form-group">
-										{{d.jQuery_DatePickerTwigEnd |raw}}
-										<input type="hidden" disabled="disabled" id="mydate_end_">
-
-										{% if d.enable_periods == 'y' %}
-
-											<b>{{trad.period}}</b>
-											<select name="end_period">
-												{{d.optionHeureFin |raw}}
-											</select>
-										
-										{% else %}
-											<b>{{trad.time}}</b>
-											{{d.jQuery_TimePickerTwigEnd |raw}}
-
-
-										{% endif %}
-									</div>
-								</td>
-							</tr>
-						{% endif %}
-
-					<!-- Section ressources-->
-						<tr {% if d.nb_domaines == 1 %}style="display:none"{% endif %}>
-							<td class="E"><b>{{trad.match_area}} {{trad.deux_points}}</b></td>
-						</tr>
-
-						<tr {% if d.nb_domaines == 1 %}style="display:none"{% endif %}>
-							<td class="CL" >
-								<div class="col-xs-3">
-									<select class="form-control" id="areas" name="areas" onchange="changeRooms(this.form);" >
-										{{d.optionsDomaine |raw}}
+								</b>
+							</div>
+						</div>
+					<!-- Sinon date et heure de fin -->
+					{% else %}
+						<div class="E form-inline">
+							<b>{{trad.fin_reservation}}{{trad.deux_points}}</b>
+							<div class="form-group">
+								{{d.selectionDateFin |raw}}
+								<input type="hidden" disabled="disabled" id="mydate_end_">
+								{% if d.enable_periods == 'y' %}
+									<b>{{trad.period}}</b>
+									<select name="end_period">
+										{{d.optionHeureFin |raw}}
 									</select>
-								</div>
-							</td>
-						</tr>
+								{% else %}
+									<b>{{trad.time}}</b>
+									{{d.jQuery_TimePickerEnd |raw}}
+								{% endif %}
+							</div>
+						</div>
+					{% endif %}
 
-						<tr>
-							<td class="E">
-								<b>{{trad.rooms}} {{trad.deux_points}}</b>
-							</td>
-						</tr>
+				<!-- Section domaine & ressource(s) -->
+					<div {% if d.nb_domaines == 1 %}style="display:none"{% endif %} class="E form-inline">
+						<label for="areas" class="control-label">{{trad.match_area}} {{trad.deux_points}}</label>
 
-						<tr>
-							<td class="CL" style="vertical-align:top;">
-								<table border="0">
-									<tr>
-										<td>
-											<select name="rooms[]" size="{{d.taille_champ_res}}" multiple="multiple" onchange="changeRoom(this.form) ;">
-												{{d.optionsRessource |raw}}
-											</select>
-										</td>
-										<td> {{trad.ctrl_click}}</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
+						<select class="form-control" id="areas" name="areas" onchange="changeRooms(this.form);" >
+							{{d.optionsDomaine |raw}}
+						</select>
+					</div>
 
-					<!-- Section type resa -->
-						<tr>
-							<td>
-								<div id="div_types"></div>
-							</td>
-						</tr>
-						
-						<!-- -->
-						<tr>
-							<td class="E">{{trad.required}}</td>
-						</tr>
-					</table>
+					<div class="E form-inline">
+						<label for="rooms[]" class="control-label">{{trad.rooms}} {{trad.deux_points}}</label>
+						<select class="form-control" name="rooms[]" size="{{d.taille_champ_res}}" multiple="multiple" onchange="changeRoom(this.form) ;">
+							{{d.optionsRessource |raw}}
+						</select>
+						&nbsp; {{trad.ctrl_click}}
+					</div>
 
-				</div>
+				<!-- Réservation conditionnelle -->
+					{% if d.resaAconfirmer >= 1 %}
+						<div class="E">
+							<div class="col col-xs-12">
+								<div class="alert alert-danger" role="alert"><b>{{trad.reservation_a_confirmer_au_plus_tard_le}}</div>
+									{% if d.resaAconfirmer == 2 %}
+										<select class="form-control" name="option_reservation" size="1">
+											<option value="-1">{{trad.reservation_confirmee}}</option>
+											{{d.optionsResaAconfirmer |raw}}
+										</select>
+									{% elseif d.resaAconfirmer == 3 %}
+										<input type="hidden" name="option_reservation" value="{{d.option_reservation}}" /><b>{{d.resaAconfirmerDate}}</b>
+										<br><input type="checkbox" name="confirm_reservation" value="y" />{{trad.confirmer_reservation}}
+									{% endif %}
+								<br><div class="alert alert-danger" role="alert">{{trad.avertissement_reservation_a_confirmer}}</b></div>
+							</div>
+						</div>
+					{% endif %}
 
-				<!-- Colonne de droite : Périodicité -->
-				<div class='col-sm-6 col-xs-12'>
+				<!-- Section type resa -->
+					<div id="div_types"></div>
 
-				</div>
+					
+				<!-- Participants -->
+					{% if d.active_participant > 0 %}
+						<div class="E">
+							<label for="nbparticipantmax">{{trad.nb_participant_max}}{{trad.deux_points}}</label>
+							<input name="nbparticipantmax" type="number" value="{{d.nbparticipantmax}}" > {{trad.nb_participant_zero}}
+						</div>
+					{% else %}
+						<input name="nbparticipantmax" type="hidden" value="0" />	
+					{% endif %}
 
-				<div id="fixe">
-					<input type="button" class="btn btn-primary" value="{{ trad.cancel }}" onclick="window.location.href='{{ d.ret_page }}'" />
-					<input type="button" class="btn btn-primary" value="{{ trad.save }}" onclick="Save_entry();validate_and_submit();" />
-				</div>
+				<!-- Clef -->
+					{% if d.active_cle == "y" %}
+						<div class="E">
+							<label for="keys">{{trad.status_clef}}{{trad.deux_points}}</label>
+							<input name="keys" type="checkbox" value="y" {% if d.clef == 1%}checked{% endif %} > {{trad.msg_clef}}
+						</div>
+					{% endif %}
+				
+				<!-- Courrier -->
+					{% if settings.show_courrier == "y" %}
+						<div class="E">
+							<label for="courrier">{{trad.status_courrier}}{{trad.deux_points}}</label>
+							<input name="courrier" type="checkbox" value="y" {% if d.courrier == 1%}checked{% endif %} > {{trad.msg_courrier}}
+						</div>
+					{% endif %}
+
+				<!-- Ressource empruntée -->
+					{% if d.active_ressource_empruntee == "y" and d.levelUserRessource >= 3 %}
+						<div class="E">
+							<input name="statut_entry" type="checkbox" value="y" {% if d.statut_entry == 1%}checked{% endif %} > <b>{{trad.signaler_reservation_en_cours}}</b>
+						</div>
+					{% endif %}
+
+				<!-- Champs additionnels -->
+					<div id="div_champs_add"></div>
+
+					<!-- Infos -->
+					<div class="bg-info">
+						<p><b>{{trad.required}}</b></p>
+					</div>
+				</table>
+
 			</div>
-		 </form>
-	</div>
-</div>
+
+			<!-- Colonne de droite : Périodicité -->
+			<div class='col-sm-6 col-xs-12'>
+				{% if d.periodiciteAttache == 0 %}
+					<div id="ouvrir" class="CC">
+						<input type="button" class="btn btn-primary" value="{{trad.click_here_for_series_open|raw}}" onclick="clicMenu(1);check_5();" />
+						<div style="display:none" id="fermer" class="CC">
+							<input type="button" class="btn btn-primary" value="{{trad.click_here_for_series_close|raw}}" onclick="clicMenu(1);check_5();" />
+						</div>
+					</div>
+					<div id="menu1" style="display:none;">
+						<p class="F"><b>{{trad.rep_type}}</b></p>
+
+						{{d.repHTML|raw}}
+
+						<div class="F">
+							<b>{{trad.rep_end_date}}</b>
+							{{d.jQuery_DatePickerRepEnd|raw}}
+						</div>
+					</div>
+				{% else %}
+					<p><b>{{ trad.periodicite_associe}} {{trad.deux_points}}</b></p>
+				{% endif %}
+			</div>
+
+			<div id="fixe">
+				<input type="button" class="btn btn-primary" value="{{ trad.cancel }}" onclick="window.location.href='{{ d.ret_page }}'" /> 
+				<input type="button" class="btn btn-primary" value="{{ trad.save }}" onclick="Save_entry();validate_and_submit();" />
+			</div>
+		</div>
+	</form>
 
 {% endblock %}
 
@@ -527,7 +562,7 @@
 
 	function check_5 (){
 		var menu; var menup; var menu2;
-		menu = document.getElementById('menu1');
+		menu = document.getElementById('menu1');	
 		menup = document.getElementById('menuP');
 		menu2 = document.getElementById('menu2');
 		if ((menu)&&(menu.style.display == "none"))
@@ -559,9 +594,9 @@
 		setCookie('Grr_entry',getFormString(document.forms["main"],true));
 	}
 
-	insertBeneficiaires({{d.domaine}},{{d.ressource}},"{{d.beneficiaire|raw}}",{{d.idresa}});
-	insertChampsAdd({{d.domaine}},{{d.idresa}},{{d.ressource}});
-	insertTypes({{d.domaine}},{{d.ressource}})
+	insertBeneficiaires({{d.domaine}},{{d.roomid}},"{{d.beneficiaire|raw}}",{{d.idresa}});
+	insertChampsAdd({{d.domaine}},{{d.idresa}},{{d.roomid}});
+	insertTypes({{d.domaine}},{{d.roomid}})
 
 	$('#areas').on('change', function(){
 		$('.multiselect').multiselect('destroy');
