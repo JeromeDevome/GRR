@@ -5830,6 +5830,60 @@ $(\'.clockpicker\').clockpicker({
 });
 </script>';
 }
+function jQuery_TimePickerTwig($typeTime, $start_hour, $start_min,$dureepardefaultsec)
+{
+	if (isset ($_GET['id']))
+	{
+		if (isset($start_hour) && isset($start_min))
+		{
+			$hour = $start_hour;
+			$minute = $start_min;
+		}
+		else
+		{
+			$hour = date("h");
+			$minute = date("m");
+		}
+	}
+	else
+	{
+		$hour = (isset ($_GET['hour']))? clean_input($_GET['hour']) : date("h");
+		$minute = (isset ($_GET['minute']))? clean_input($_GET['minute']) : date("m");
+			
+		if ($typeTime == 'end_'){
+            $dureepardefautmin = $dureepardefaultsec/60;
+            if ($dureepardefautmin == 60){
+                $ajout = 1;
+                $hour = $_GET['hour'] + $ajout;
+                $minute ="00";
+            }
+            elseif ($dureepardefautmin < 60){
+                $hour = $_GET['hour'];
+                $minute =$dureepardefautmin;
+            }
+            elseif ($dureepardefautmin > 60){
+                $dureepardefautheure = $dureepardefautmin/60;
+            //	if (($dureepardefautheure % 60)!=0){
+        //		$hour = $_GET['hour']+ $dureepardefautheure;
+                $hour = ($_GET['hour']+ $dureepardefautheure)%24; // Modulo 24
+                $hour = str_pad($hour, 2, 0, STR_PAD_LEFT); // Affichage heure sur 2 digits 
+                $minute = ($_GET['minute'] == 30)? 30 : "00";
+        //		}
+            }
+        }
+	}
+	if ($minute == 0)
+		$minute = '00';
+	// MAJ
+	$html = '<div class="input-group">
+		<input name="' .$typeTime. '" type="time" class="form-control" value="' .$hour. ':' .$minute. '">
+		<span class="input-group-addon">
+			<i class="fa-regular fa-clock"></i>
+		</span>
+	</div>';
+
+	return $html;
+}
 function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaultsec,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format=0)
 {
     $minTime = $morningstarts.":00";
