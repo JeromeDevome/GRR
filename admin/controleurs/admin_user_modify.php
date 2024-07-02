@@ -161,10 +161,6 @@ if ($valid == "yes")
 						{
 							fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
 						}
-						else
-						{
-							$msg = get_vocab("msg_login_created");
-						}
 						$user_login = $new_login;
 
 						// Groupes
@@ -416,6 +412,9 @@ if (isset($user_login) && ($user_login != ''))
 		++$i;
 	}
 
+} else
+{
+	$d['estPasLuiMeme'] = 1;
 }
 if ((authGetUserLevel(getUserName(), -1) < 1) && (Settings::get("authentification_obli") == 1))
 {
