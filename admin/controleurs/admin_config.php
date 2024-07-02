@@ -116,7 +116,15 @@ if (isset($_POST['ok'])) {
     // Enregistrement du logo
 	if (!empty($_FILES['doc_file']['tmp_name']))
 	{
-		list($nomImage, $resultImport) = Import::Image($dossier, 'logo');
+        // Sup. ancien logo
+        $nom_picture = $dossier.Settings::get('logo');
+        if (@file_exists($nom_picture)) {
+            unlink($nom_picture);
+        }
+
+        // Ajout nouveau logo
+        $nom = "logo".uniqid();
+		list($nomImage, $resultImport) = Import::Image($dossier, $nom);
 
 		if($resultImport == ""){
 			if (!Settings::set('logo', $nomImage)) {
