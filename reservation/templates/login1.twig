@@ -101,7 +101,7 @@
                 <h4><a href="app.php?p=creationcompte">{{trad.crea_compte_inscrivez}}</a></h4><br><br>
             {% endif %}
 
-            <p>{{d.contactAdmin}} [<a href="app.php?p=page&page=cgu" target="_blank">{{trad.cgu}}</a>]</p>
+            <p>{{d.contactAdmin|raw}} [<a href="app.php?p=page&page=cgu" target="_blank">{{trad.cgu}}</a>]</p>
 
             <a href="javascript:history.back()">{{trad.previous}} - <b>{{settings.company}}</b></a>
             <br><br>
