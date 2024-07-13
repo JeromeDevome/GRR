@@ -385,10 +385,10 @@ function entre_reservation($room_id,$jour_semaine,$name,$description, $day,$mont
 				// if (isset($_GET['del_entry_in_conflict']) and ($_GET['del_entry_in_conflict']=='yes'))
 				grrDelEntryInConflict($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id, 0);
 				// On teste s'il reste des conflits
-					if ($i == (count($reps)-1)) {
-						$tmp = mrbsCheckFree($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id);
-					} else
-						$tmp = mrbsCheckFree($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id);
+					if ($i == (count($reps)-1))
+						list($beneficaireConflit, $tmp) = mrbsCheckFree($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id);
+					else
+						list($beneficaireConflit, $tmp) = mrbsCheckFree($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id);
 					if(!empty($tmp))
 						$err = $err . $tmp;
 				}

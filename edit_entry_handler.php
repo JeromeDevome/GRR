@@ -579,7 +579,7 @@ try {
                 if (isset($skip_entry_in_conflict) && ($skip_entry_in_conflict == 'yes')){
                     // stocke dans $ignore la liste des nouvelles réservations en conflit
                     for ($i = 0; $i < count($reps); $i++){
-                        $tmp = mrbsCheckFree($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id);
+                        list($beneficaireConflit, $tmp) = mrbsCheckFree($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id);
                         if (!empty($tmp)){
                             $ignore[] = $reps[$i];
                         }
@@ -591,7 +591,7 @@ try {
                 {
                     if (isset($del_entry_in_conflict) && ($del_entry_in_conflict == 'yes'))
                         grrDelEntryInConflict($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id, 0);
-                    $tmp = mrbsCheckFree($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id);
+                    list($beneficaireConflit, $tmp) = mrbsCheckFree($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id);
                     if (!empty($tmp))
                         $conflits = $conflits . $tmp;
                 }
@@ -606,7 +606,8 @@ try {
         {
             if (isset($del_entry_in_conflict) && ($del_entry_in_conflict == 'yes'))
                 grrDelEntryInConflict($room_id, $start_time, $end_time-1, $ignore_id, $repeat_id, 0);
-            $conflits .= mrbsCheckFree($room_id, $start_time, $end_time - 1, $ignore_id, $repeat_id);
+                list($beneficaireConflit, $tmp) = mrbsCheckFree($room_id, $start_time, $end_time - 1, $ignore_id, $repeat_id);
+                $conflits .= $tmp;
         }
     }
     if ($conflits != ''){
@@ -809,7 +810,7 @@ catch (Exception $e){
         echo $conflits;
         if (!isset($hide_title))
             echo "</UL>";
-        if (authGetUserLevel($user,$area,'area') >= 4){
+        if (authGetUserLevel($user,$area,'area') >= 4 || $beneficaireConflit > 0){
             echo '<center>';
             echo '<form method="POST">';
             echo $hiddenInputs;

@@ -34,7 +34,7 @@ function mrbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore, $lin
 {
 	global $vocab;
 	//SELECT any meetings which overlap ($starttime,$endtime) for this room:
-	$sql = "SELECT id, name, start_time FROM ".TABLE_PREFIX."_entry WHERE start_time < '".$endtime."' AND end_time > '".$starttime."' AND room_id = '".$room_id."' AND supprimer = 0";
+	$sql = "SELECT id, name, start_time, beneficiaire FROM ".TABLE_PREFIX."_entry WHERE start_time < '".$endtime."' AND end_time > '".$starttime."' AND room_id = '".$room_id."' AND supprimer = 0";
 	if ($ignore > 0)
 		$sql .= " AND id <> $ignore";
 	if ($repignore > 0)
@@ -52,8 +52,12 @@ function mrbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore, $lin
 	$area = mrbsGetRoomArea($room_id);
 	// Build a string listing all the conflicts:
 	$err = "";
+	$beneficaire = 1;
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
+		if(getUserName() != $row[3])
+			$beneficaire = 0;
+
 		$starts = getdate($row[2]);
 		$param_ym = "area=$area&amp;year=$starts[year]&amp;month=$starts[mon]";
 		$param_ymd = $param_ym . "&amp;day=$starts[mday]";
@@ -63,7 +67,7 @@ function mrbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore, $lin
 			. " | <a href=\"".$link."week.php?room=$room_id&amp;$param_ymd\">".get_vocab("viewweek")."</a>"
 			. " | <a href=\"".$link."month.php?room=$room_id&amp;$param_ym\">".get_vocab("viewmonth")."</a>)</li>\n";
 	}
-	return $err;
+	return array($beneficaire, $err);
 }
 /** grrCheckOverlap()
  *

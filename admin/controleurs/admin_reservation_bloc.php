@@ -173,7 +173,7 @@ if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 									if ($type_resa == "resa")
 									{
 										// Par sécurité, on teste quand même s'il reste des conflits
-										$err = mrbsCheckFree($row[0], $starttime, $endtime, 0,0);
+										list($beneficaireConflit, $err) = mrbsCheckFree($row[0], $starttime, $endtime, 0,0);
 										if (!$err)
 											mrbsCreateSingleEntry(0,$starttime, $endtime, 0, 0, $row[0], getUserName(), $beneficiaire, "", $name, $type_, $description, -1,array(),0,0,'-', 0, 0,0);
 									}

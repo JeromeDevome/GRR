@@ -220,7 +220,7 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
 	$err = '';
 
 	// on vérifie que le créneau est bien libre
-	$occupied=mrbsCheckFree($room_id, $starttime, $endtime, 0, 0,"../");
+	list($beneficaireConflit, $occupied) = mrbsCheckFree($room_id, $starttime, $endtime, 0, 0,"../");
 	// echo date('c',$starttime)." ".date('c',$endtime)."</br>";
 	// echo $libre ;
 	//echo "créneau libre ";
