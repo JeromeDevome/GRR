@@ -3,7 +3,7 @@
  * admin_right_admin.php
  * Interface de gestion des droits d'administration des domaines par les utilisateurs sélectionnés
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-06-16 17:56$
+ * Dernière modification : $Date: 2024-07-14 14:22$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -98,10 +98,14 @@ if ($multisite)
         $sql = "SELECT id,sitecode,sitename FROM ".TABLE_PREFIX."_site s 
         JOIN ".TABLE_PREFIX."_j_useradmin_site j 
         ON s.id = j.id_site
-        WHERE j.login = $user
+        WHERE j.login = '$user'
         ORDER BY sitename ASC";
     }
     $sites = grr_sql_query($sql);
+    $nb_site = grr_sql_count($sites);
+    if($nb_site == 1){
+      $id_site = grr_sql_row($sites,0)[0];
+    }
 }
 // domaines
 if ($multisite)
@@ -155,7 +159,6 @@ echo "<h2>".get_vocab('admin_right_admin.php')."</h2>\n";
 echo "<p><i>".get_vocab("admin_right_admin_explain")."</i></p>\n";
 // sélecteur de site si multisite
 if ($multisite){
-    $nb_site = grr_sql_count($sites);
     if ($nb_site > 1)
     {
         echo '<div >
