@@ -3,9 +3,9 @@
  * admin_right_admin.php
  * Interface de gestion des droits d'administration des domaines par les utilisateurs sélectionnés
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-10-13 10:39$
+ * Dernière modification : $Date: 2024-07-14 14:22$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -98,10 +98,14 @@ if ($multisite)
         $sql = "SELECT id,sitecode,sitename FROM ".TABLE_PREFIX."_site s 
         JOIN ".TABLE_PREFIX."_j_useradmin_site j 
         ON s.id = j.id_site
-        WHERE j.login = $user
+        WHERE j.login = '$user'
         ORDER BY sitename ASC";
     }
     $sites = grr_sql_query($sql);
+    $nb_site = grr_sql_count($sites);
+    if($nb_site == 1){
+      $id_site = grr_sql_row($sites,0)[0];
+    }
 }
 // domaines
 if ($multisite)
@@ -155,11 +159,10 @@ echo "<h2>".get_vocab('admin_right_admin.php')."</h2>\n";
 echo "<p><i>".get_vocab("admin_right_admin_explain")."</i></p>\n";
 // sélecteur de site si multisite
 if ($multisite){
-    $nb_site = grr_sql_count($sites);
     if ($nb_site > 1)
     {
         echo '<div >
-        <form action="./admin_right_admin.php">
+        <form id="site" action="./admin_right_admin.php">
         <label for="liste_site">'.get_vocab('sites').get_vocab('deux_points').'</label>
              <select id="liste_site" name="id_site" onchange="site_go()">
                <option value="-1">'.get_vocab('choose_a_site').'</option>'."\n";
@@ -176,7 +179,7 @@ if ($multisite){
         <!--
             function site_go()
             {
-                box = document.getElementById("liste_site").id_site;
+                box = document.getElementById("site").id_site;
                 destination = "./admin_right_admin.php"+"?id_site="+box.options[box.selectedIndex].value;
                 location.href = destination;
             }
@@ -199,9 +202,9 @@ if ($multisite){
 }
 // sélecteur de domaine (en mode multisite, si le site est choisi)
 if (!empty($areas)){
-    echo '<form action="./admin_right_admin.php">';
-    echo "<label for='area'>".get_vocab("areas")."&nbsp;</label>";
-    echo "<select id='area' name=\"area\" onchange=\"area_go()\">\n";
+    echo '<form id="area" action="./admin_right_admin.php">';
+    echo "<label for='area_list'>".get_vocab("areas")."&nbsp;</label>";
+    echo "<select id='area_list' name=\"area\" onchange=\"area_go()\">\n";
     echo "<option value=\"admin_right_admin.php?id_area=-1\">".get_vocab('select')."</option>\n";
     foreach($areas as $a){
         $selected = ($a['id'] == $id_area) ? " selected " : "";
