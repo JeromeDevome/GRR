@@ -3,9 +3,9 @@
  * admin_right_admin.php
  * Interface de gestion des droits d'administration des utilisateurs
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2024-07-14 19:50$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -22,7 +22,7 @@ $id_area = isset($_POST["id_area"]) ? $_POST["id_area"] : (isset($_GET["id_area"
 if (!isset($id_area))
 	settype($id_area,"integer");
 
-check_access(6, $back);
+check_access(5, $back);
 
 $reg_admin_login = isset($_POST["reg_admin_login"]) ? $_POST["reg_admin_login"] : NULL;
 $reg_multi_admin_login = isset($_POST["reg_multi_admin_login"]) ? $_POST["reg_multi_admin_login"] : NULL;
@@ -97,9 +97,19 @@ affiche_pop_up($msg,"admin");
 $this_area_name = "";
 $utilisateursAdmin = array ();
 $utilisateursAjoutable = array ();
+$user_id = getUserName();
 
-//Show all areas
-$sql = "select id, area_name from ".TABLE_PREFIX."_area order by order_display";
+// domaines administrables
+if(authGetUserLevel($user_id,-1,'area') >= 6) // tous les domaines
+  $sql = "select id, area_name from ".TABLE_PREFIX."_area order by order_display";
+elseif(authGetUserLevel($user_id,-1,'area') >= 5) // les domaines des sites administrables
+  {
+    $sql = "SELECT id,area_name FROM ".TABLE_PREFIX."_area 
+            JOIN (".TABLE_PREFIX."_j_site_area a JOIN ".TABLE_PREFIX."_j_useradmin_site s ON a.id_site = s.id_site) 
+            ON id = id_area 
+            WHERE login = '$user_id'
+            ORDER BY order_display";
+  }
 $res = grr_sql_query($sql);
 if ($res)
 {

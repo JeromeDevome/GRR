@@ -2,9 +2,9 @@
 /**
  * admin_col_gauche.php
  * colonne de gauche des écrans d'administration des sites, des domaines et des ressources de l'application GRR
- * Dernière modification : $Date: 2018-07-22 13:30$
+ * Dernière modification : $Date: 2024-07-14 19:50$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -95,7 +95,7 @@ if ((authGetUserLevel(getUserName(), -1, 'area') >= 6) || (authGetUserLevel(getU
 	$liste[] = 'admin_groupe';
 if ((Settings::get("module_multisite") == "Oui") && (authGetUserLevel(getUserName(), -1, 'area') >= 6))
 	$liste[] = 'admin_admin_site';
-if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
+if (authGetUserLevel(getUserName(), -1, 'area') >= 5)
 	$liste[] = 'admin_right_admin';
 if (authGetUserLevel(getUserName(), -1, 'area') >= 4)
 	$liste[] = 'admin_access_area';
