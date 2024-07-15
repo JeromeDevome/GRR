@@ -2,9 +2,9 @@
 /**
  * admin_edit_room.php
  * Script de création/modification des ressources de l'application GRR
- * Dernière modification : $Date: 2023-09-13 16:29$
+ * Dernière modification : $Date: 2024-07-15 11:05$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -99,26 +99,18 @@ if (!isset($retour_page))
 	$long = strlen($retour_page) - $long_chaine_a_supprimer;
 	$retour_page = substr($retour_page, 0, $long);
 }
-// modification d'une resource : admin ou gestionnaire
+// modification d'une ressource : admin (de domaine, site ou général) ou gestionnaire de la ressource
 if (authGetUserLevel(getUserName(),-1) < 6)
 {
-    if (isset($area_id)){
-        $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_area WHERE id='".$area_id."'");
-        if ($test == -1){
-            showAccessDenied($back);
-            exit();
-        }
-        elseif(authGetUserLevel(getUserName(),$area_id,'area')<4){
-            showAccessDenied($back);
-            exit();
-        }
-    }
-	// Il s'agit d'une modif de ressource
-	elseif (((authGetUserLevel(getUserName(),$room) < 3)) || (!verif_acces_ressource(getUserName(), $room)))
-	{
-		showAccessDenied($back);
-		exit();
-	}
+  $autorisation = FALSE;
+  if(isset($room))
+    $autorisation = (authGetUserLevel(getUserName(),$room) > 2) && (verif_acces_ressource(getUserName(), $room));// gestionnaire de ressource ?
+  if((!$autorisation)&&(isset($area_id)))
+    $autorisation = authGetUserLevel(getUserName(),$area_id,'area') > 3;
+  if(!$autorisation){
+    showAccessDenied($back);
+    exit();
+  }
 }
 $msg ='';
 
