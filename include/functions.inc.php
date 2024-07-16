@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2023-10-17 10:53$
+ * Dernière modification : $Date: 2024-07-16 11:31$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -1862,26 +1862,39 @@ function fatal_error($need_header, $message, $show_form_data = true)
 	exit;
 }
 
-/**
- * Compare une ip à d'autres iP - CIDR
+/** function iptobin($ip)
+ * paramètre : une adresse iP v4 ou v6 supposée valable
+ * rend : une chaîne de 0 ou 1 codant l'adresse sur 32 ou 128 digits 
+ */
+function iptobin($ip){
+    $hex = unpack("H*", inet_pton($ip));
+    $out = "";
+    foreach(str_split($hex[1]) as $char)
+        $out = $out.str_pad( base_convert($char,16,2),4,"0",STR_PAD_LEFT );
+    return $out;
+}
+/** function compare_ip_adr($ip1, $ips2)
+ * paramètres : 
+ *   $ip1 : une adresse iP
+ *   $ips2 : une liste d'adresses iP ou de plages au format CIDR séparées par des points-virgules
+ * rend :
+ *   TRUE ou FALSE 
+ * teste si l'adresse $ip1 est dans la liste $ips2 ou est dans l'une des plages de $ips2
  */
 function compare_ip_adr($ip1, $ips2)
 {
-
 	$ipCorrespondante = false;
     $ip2 = explode(';', $ips2);
 	
-    $resultIP = in_array($ip1,$ip2,true);
+    $resultIP = in_array($ip1,$ip2,true); // teste si l'adresse est dans la liste
 	if($resultIP == false){ // cherche si l'adresse est dans une plage CIDR p.ex. 192.168.1.0/24 --> 192.168.1.0 à 192.168.1.255
         foreach ($ip2 as $ip){
             $slash = strpos($ip,'/');
-            if ($slash !== false){
+            if ($slash !== false){ // $ip2 est une plage CIDR
                 list($net,$mask) = preg_split("~/~",$ip);
-                $lnet=ip2long($net);
-                $lip=ip2long($ip1);
-                $binnet=str_pad( decbin($lnet),32,"0",STR_PAD_LEFT );
+                $binnet=iptobin($net);
                 $firstpart=substr($binnet,0,$mask);
-                $binip=str_pad( decbin($lip),32,"0",STR_PAD_LEFT );
+                $binip=iptobin($ip1);
                 $firstip=substr($binip,0,$mask);
                 $resultIP = (strcmp($firstpart,$firstip)==0);
             }
@@ -1890,12 +1903,11 @@ function compare_ip_adr($ip1, $ips2)
 				break;
 			}
         }
-	} else {
+	} 
+    else {
 		$ipCorrespondante = true;
 	}
-
 	return $ipCorrespondante;
-
 }
 
 //Retourne le domaine par défaut; Utilisé si aucun domaine n'a été défini.
