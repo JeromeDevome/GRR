@@ -16,7 +16,7 @@ div.dtk-focus-alt table.dataTable tbody td.focus {
 
 html.dark table.dataTable tbody th.focus,
 html.dark table.dataTable tbody td.focus {
-  outline-color: #0d6efd;
+  outline-color: rgb(13, 110, 253);
 }
 html.dark table.dataTable tbody tr.selected th.focus,
 html.dark table.dataTable tbody tr.selected td.focus {

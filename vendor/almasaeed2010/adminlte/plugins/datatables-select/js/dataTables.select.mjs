@@ -1,4 +1,4 @@
-/*! Select for DataTables 1.7.0
+/*! Select for DataTables 1.7.0-dev
  * © SpryMedia Ltd - datatables.net/license/mit
  */
 
@@ -12,7 +12,7 @@ let $ = jQuery;
 // Version information for debugger
 DataTable.select = {};
 
-DataTable.select.version = '1.7.0';
+DataTable.select.version = '1.7.0-dev';
 
 DataTable.select.init = function (dt) {
 	var ctx = dt.settings()[0];

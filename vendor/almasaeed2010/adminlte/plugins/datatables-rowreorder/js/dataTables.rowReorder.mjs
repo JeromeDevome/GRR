@@ -1,4 +1,4 @@
-/*! RowReorder 1.4.1
+/*! RowReorder 1.5.0
  * © SpryMedia Ltd - datatables.net/license
  */
 
@@ -12,11 +12,9 @@ let $ = jQuery;
 /**
  * @summary     RowReorder
  * @description Row reordering extension for DataTables
- * @version     1.4.1
- * @file        dataTables.rowReorder.js
+ * @version     1.5.0
  * @author      SpryMedia Ltd
  * @contact     datatables.net
- * @copyright   Copyright 2015-2023 SpryMedia Ltd.
  *
  * This source file is free software, available under the following license:
  *   MIT license - http://datatables.net/license/mit
@@ -40,19 +38,19 @@ let $ = jQuery;
  * Initialisation is done by either:
  *
  * * `rowReorder` parameter in the DataTable initialisation object
- * * `new $.fn.dataTable.RowReorder( table, opts )` after DataTables
+ * * `new DataTable.RowReorder( table, opts )` after DataTables
  *   initialisation.
  *
  *  @class
  *  @param {object} settings DataTables settings object for the host table
  *  @param {object} [opts] Configuration options
  *  @requires jQuery 1.7+
- *  @requires DataTables 1.10.7+
+ *  @requires DataTables 1.11
  */
 var RowReorder = function (dt, opts) {
 	// Sanity check that we are using DataTables 1.10 or newer
-	if (!DataTable.versionCheck || !DataTable.versionCheck('1.10.8')) {
-		throw 'DataTables RowReorder requires DataTables 1.10.8 or newer';
+	if (!DataTable.versionCheck || !DataTable.versionCheck('1.11')) {
+		throw 'DataTables RowReorder requires DataTables 1.11 or newer';
 	}
 
 	// User and defaults configuration object
@@ -67,7 +65,7 @@ var RowReorder = function (dt, opts) {
 		dt: new DataTable.Api(dt),
 
 		/** @type {function} Data fetch function */
-		getDataFn: DataTable.ext.oApi._fnGetObjectDataFn(this.c.dataSrc),
+		getDataFn: DataTable.util.get(this.c.dataSrc),
 
 		/** @type {array} Pixel positions for row insertion calculation */
 		middles: null,
@@ -79,7 +77,7 @@ var RowReorder = function (dt, opts) {
 		scrollInterval: null,
 
 		/** @type {function} Data set function */
-		setDataFn: DataTable.ext.oApi._fnSetObjectDataFn(this.c.dataSrc),
+		setDataFn: DataTable.util.set(this.c.dataSrc),
 
 		/** @type {Object} Mouse down information */
 		start: {
@@ -111,15 +109,15 @@ var RowReorder = function (dt, opts) {
 		cloneParent: null,
 
 		/** @type {jQuery} DataTables scrolling container */
-		dtScroll: $('div.dataTables_scrollBody', this.s.dt.table().container())
+		dtScroll: $('div.dataTables_scrollBody, div.dt-scroll-body', this.s.dt.table().container())
 	};
 
 	// Check if row reorder has already been initialised on this table
 	var settings = this.s.dt.settings()[0];
-	var exisiting = settings.rowreorder;
+	var existing = settings.rowreorder;
 
-	if (exisiting) {
-		return exisiting;
+	if (existing) {
+		return existing;
 	}
 
 	if (!this.dom.dtScroll.length) {
@@ -671,7 +669,6 @@ $.extend(RowReorder.prototype, {
 	 */
 	_shiftScroll: function (e) {
 		var that = this;
-		var dt = this.s.dt;
 		var scroll = this.s.scroll;
 		var runInterval = false;
 		var scrollSpeed = 5;
@@ -769,7 +766,6 @@ $.extend(RowReorder.prototype, {
 	 * @private
 	 */
 	_calcCloneParentArea: function (e) {
-		var dt = this.s.dt;
 		var offset = $(this.dom.cloneParent).offset();
 		var area = {
 			left: offset.left,
@@ -970,7 +966,7 @@ Api.register('rowReorder.disable()', function () {
  * @name RowReorder.version
  * @static
  */
-RowReorder.version = '1.4.1';
+RowReorder.version = '1.5.0';
 
 $.fn.dataTable.RowReorder = RowReorder;
 $.fn.DataTable.RowReorder = RowReorder;

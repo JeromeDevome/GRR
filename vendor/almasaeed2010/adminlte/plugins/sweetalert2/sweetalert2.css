@@ -109,7 +109,6 @@
   position: absolute;
   width: 1.6em;
   height: 3em;
-  transform: rotate(45deg);
   border-radius: 50%;
 }
 .swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=left] {
@@ -195,13 +194,11 @@ div:where(.swal2-container).swal2-top-start > .swal2-popup {
 }
 div:where(.swal2-container).swal2-top > .swal2-popup {
   grid-column: 2;
-  align-self: start;
-  justify-self: center;
+  place-self: start center;
 }
 div:where(.swal2-container).swal2-top-end > .swal2-popup, div:where(.swal2-container).swal2-top-right > .swal2-popup {
   grid-column: 3;
-  align-self: start;
-  justify-self: end;
+  place-self: start end;
 }
 div:where(.swal2-container).swal2-center-start > .swal2-popup, div:where(.swal2-container).swal2-center-left > .swal2-popup {
   grid-row: 2;
@@ -210,14 +207,12 @@ div:where(.swal2-container).swal2-center-start > .swal2-popup, div:where(.swal2-
 div:where(.swal2-container).swal2-center > .swal2-popup {
   grid-column: 2;
   grid-row: 2;
-  align-self: center;
-  justify-self: center;
+  place-self: center center;
 }
 div:where(.swal2-container).swal2-center-end > .swal2-popup, div:where(.swal2-container).swal2-center-right > .swal2-popup {
   grid-column: 3;
   grid-row: 2;
-  align-self: center;
-  justify-self: end;
+  place-self: center end;
 }
 div:where(.swal2-container).swal2-bottom-start > .swal2-popup, div:where(.swal2-container).swal2-bottom-left > .swal2-popup {
   grid-column: 1;
@@ -227,14 +222,12 @@ div:where(.swal2-container).swal2-bottom-start > .swal2-popup, div:where(.swal2-
 div:where(.swal2-container).swal2-bottom > .swal2-popup {
   grid-column: 2;
   grid-row: 3;
-  justify-self: center;
-  align-self: end;
+  place-self: end center;
 }
 div:where(.swal2-container).swal2-bottom-end > .swal2-popup, div:where(.swal2-container).swal2-bottom-right > .swal2-popup {
   grid-column: 3;
   grid-row: 3;
-  align-self: end;
-  justify-self: end;
+  place-self: end end;
 }
 div:where(.swal2-container).swal2-grow-row > .swal2-popup, div:where(.swal2-container).swal2-grow-fullscreen > .swal2-popup {
   grid-column: 1/4;
@@ -323,7 +316,7 @@ div:where(.swal2-container) button:where(.swal2-styled) {
 div:where(.swal2-container) button:where(.swal2-styled):not([disabled]) {
   cursor: pointer;
 }
-div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
+div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm) {
   border: 0;
   border-radius: 0.25em;
   background: initial;
@@ -331,10 +324,10 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
   color: #fff;
   font-size: 1em;
 }
-div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm:focus {
+div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm):focus-visible {
   box-shadow: 0 0 0 3px rgba(112, 102, 224, 0.5);
 }
-div:where(.swal2-container) button:where(.swal2-styled).swal2-deny {
+div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-deny) {
   border: 0;
   border-radius: 0.25em;
   background: initial;
@@ -342,10 +335,10 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-deny {
   color: #fff;
   font-size: 1em;
 }
-div:where(.swal2-container) button:where(.swal2-styled).swal2-deny:focus {
+div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-deny):focus-visible {
   box-shadow: 0 0 0 3px rgba(220, 55, 65, 0.5);
 }
-div:where(.swal2-container) button:where(.swal2-styled).swal2-cancel {
+div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel) {
   border: 0;
   border-radius: 0.25em;
   background: initial;
@@ -353,13 +346,13 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-cancel {
   color: #fff;
   font-size: 1em;
 }
-div:where(.swal2-container) button:where(.swal2-styled).swal2-cancel:focus {
+div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel):focus-visible {
   box-shadow: 0 0 0 3px rgba(110, 120, 129, 0.5);
 }
-div:where(.swal2-container) button:where(.swal2-styled).swal2-default-outline:focus {
+div:where(.swal2-container) button:where(.swal2-styled).swal2-default-outline:focus-visible {
   box-shadow: 0 0 0 3px rgba(100, 150, 200, 0.5);
 }
-div:where(.swal2-container) button:where(.swal2-styled):focus {
+div:where(.swal2-container) button:where(.swal2-styled):focus-visible {
   outline: none;
 }
 div:where(.swal2-container) button:where(.swal2-styled)::-moz-focus-inner {
@@ -418,7 +411,7 @@ div:where(.swal2-container) button:where(.swal2-close):hover {
   background: transparent;
   color: #f27474;
 }
-div:where(.swal2-container) button:where(.swal2-close):focus {
+div:where(.swal2-container) button:where(.swal2-close):focus-visible {
   outline: none;
   box-shadow: inset 0 0 0 3px rgba(100, 150, 200, 0.5);
 }
@@ -428,8 +421,8 @@ div:where(.swal2-container) button:where(.swal2-close)::-moz-focus-inner {
 div:where(.swal2-container) .swal2-html-container {
   z-index: 1;
   justify-content: center;
-  margin: 1em 1.6em 0.3em;
-  padding: 0;
+  margin: 0;
+  padding: 1em 1.6em 0.3em;
   overflow: auto;
   color: inherit;
   font-size: 1.125em;
@@ -700,7 +693,6 @@ div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line] {
   position: absolute;
   width: 3.75em;
   height: 7.5em;
-  transform: rotate(45deg);
   border-radius: 50%;
 }
 div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line][class$=left] {

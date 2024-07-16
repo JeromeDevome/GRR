@@ -47,7 +47,7 @@
 		// Browser
 		factory( jQuery, window, document );
 	}
-}(function( $, window, document, undefined ) {
+}(function( $, window, document ) {
 'use strict';
 var DataTable = $.fn.dataTable;
 
@@ -58,7 +58,8 @@ $.extend(true, DataTable.SearchBuilder.classes, {
 $.extend(true, DataTable.Group.classes, {
     add: 'btn btn-light dtsb-add',
     clearGroup: 'btn btn-light dtsb-clearGroup',
-    logic: 'btn btn-light dtsb-logic'
+    logic: 'btn btn-light dtsb-logic',
+    search: 'btn btn-light dtsb-search'
 });
 $.extend(true, DataTable.Criteria.classes, {
     condition: 'form-control dtsb-condition',

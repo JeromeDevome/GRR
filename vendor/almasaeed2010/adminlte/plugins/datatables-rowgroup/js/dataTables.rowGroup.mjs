@@ -1,4 +1,4 @@
-/*! RowGroup 1.4.1
+/*! RowGroup 1.5.0
  * © SpryMedia Ltd - datatables.net/license
  */
 
@@ -12,7 +12,7 @@ let $ = jQuery;
 /**
  * @summary     RowGroup
  * @description RowGrouping for DataTables
- * @version     1.4.1
+ * @version     1.5.0
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     datatables.net
  * @copyright   SpryMedia Ltd.
@@ -29,8 +29,8 @@ let $ = jQuery;
 
 var RowGroup = function (dt, opts) {
 	// Sanity check that we are using DataTables 1.10 or newer
-	if (!DataTable.versionCheck || !DataTable.versionCheck('1.10.8')) {
-		throw 'RowGroup requires DataTables 1.10.8 or newer';
+	if (!DataTable.versionCheck || !DataTable.versionCheck('1.11')) {
+		throw 'RowGroup requires DataTables 1.11 or newer';
 	}
 
 	// User and defaults configuration object
@@ -193,16 +193,18 @@ $.extend(RowGroup.prototype, {
 	 */
 	_group: function (level, rows) {
 		var fns = Array.isArray(this.c.dataSrc) ? this.c.dataSrc : [this.c.dataSrc];
-		var fn = DataTable.ext.oApi._fnGetObjectDataFn(fns[level]);
+		var fn = DataTable.util.get(fns[level]);
 		var dt = this.s.dt;
 		var group, last;
+		var i, ien;
 		var data = [];
 		var that = this;
 
-		for (var i = 0, ien = rows.length; i < ien; i++) {
+		for (i = 0, ien = rows.length; i < ien; i++) {
 			var rowIndex = rows[i];
 			var rowData = dt.row(rowIndex).data();
-			var group = fn(rowData);
+
+			group = fn(rowData, level);
 
 			if (group === null || group === undefined) {
 				group = that.c.emptyDataGroup;
@@ -221,7 +223,7 @@ $.extend(RowGroup.prototype, {
 		}
 
 		if (fns[level + 1] !== undefined) {
-			for (var i = 0, ien = data.length; i < ien; i++) {
+			for (i = 0, ien = data.length; i < ien; i++) {
 				data[i].children = this._group(level + 1, data[i].rows);
 			}
 		}
@@ -376,7 +378,7 @@ RowGroup.defaults = {
 	}
 };
 
-RowGroup.version = '1.4.1';
+RowGroup.version = '1.5.0';
 
 $.fn.dataTable.RowGroup = RowGroup;
 $.fn.DataTable.RowGroup = RowGroup;

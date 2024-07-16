@@ -83,6 +83,7 @@ div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria input.dtsb-input {
   min-width: 5em;
   max-width: 20em;
   color: inherit;
+  font-size: 1em;
 }
 div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria select.dtsb-dropDown option.dtsb-notItalic,
 div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria input.dtsb-input option.dtsb-notItalic {
@@ -95,7 +96,7 @@ div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria div.dtsb-inputCont {
   flex: 1;
   white-space: nowrap;
 }
-div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria div.dtsb-inputCont span.dtsp-joiner {
+div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria div.dtsb-inputCont span.dtsb-joiner {
   margin-right: 0.8em;
 }
 div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria div.dtsb-inputCont input.dtsb-value {
@@ -132,7 +133,7 @@ div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria div.dtsb-buttonContainer
     padding-top: 0em;
   }
   div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria select.dtsb-dropDown,
-div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria input.dtsb-input {
+  div.dtsb-searchBuilder div.dtsb-group div.dtsb-criteria input.dtsb-input {
     max-width: none;
     width: 100%;
     margin-bottom: 0.8em;
