@@ -1,4 +1,20 @@
-Version 4.3.5 - 12/06/2024
+Version 4.3.6 - 17/07/2024 Généré par @JeromeDevome
+[Ajout] Changer l'état d'un utilisateur - bc8d8b35 - @JeromeDevome
+[Ajout] Possibilité d'écraser des réservations sans être admin du domaine à conditions que les réservations appartiennent à l'utilisateur - ee721e00 - @JeromeDevome
+[Correction] N'affiche pas la page si la réservation a été supprimée - c9fb1928 - @ynaessens
+[Correction] Conservation du type lors d'édition ou de copie - 21855b12 - @JeromeDevome
+[Correction] Actualisation des champs additionnels  lors d'un changement de domaine - 043efb2a - @JeromeDevome
+[Correction] Vocabulaire - b8846160 - @ynaessens
+[Correction] En cas de conflit, réserver les créneaux hors conflit - d1368d3d - @ynaessens
+[Correction] Accès des administrateurs de site à l'administration des domaines - 19a661d3 - @ynaessens
+[Correction] Accès des administrateurs de site à la duplication des domaines - 95b49462 - @ynaessens
+[Correction] Accès des gestionnaires de ressources à la modification des ressources - d6e5cba2 - @ynaessens
+[Correction] Prise en charge des adresses IPv6 - b17e1d87 - @ynaessens
+[Modification] Nom logo aléatoire, problème de cache - 09d4aea3 - @JeromeDevome
+[Modification] Mise à jour symfony - 80d2cbf7 - @JeromeDevome
+[Modification] Mise à jour JS admin - c525737e - @JeromeDevome
+
+Version 4.3.5 - 12/06/2024 Généré par @JeromeDevome
 [Ajout] Variable date de fin pour les mails - a2bc3831 - @JeromeDevome
 [Ajout] Variable URL de la réservation pour les mails - c77702c8 - @JeromeDevome
 [Correction] Accès sur la vue journalière - dcae040a - @JeromeDevome
