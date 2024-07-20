@@ -23,10 +23,6 @@ ControleSession();
 include "./reservation/modeles/report.php";
 
 
-//Récupération des informations relatives au serveur.
-$back = '';
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
 //Renseigne les droits de l'utilisateur, si les droits sont insuffisants, l'utilisateur est averti.
 if (!verif_access_search(getUserName()))
 {
@@ -94,7 +90,7 @@ if (isset($champ[0]))
 }
 else
 {
-	$to_time = mktime(0, 0, 0, $month, $day + Settings::get("default_report_days"), $year);
+	$to_time = mktime(0, 0, 0, $month, $day - Settings::get("default_report_days"), $year);
 	if (!isset($From_day))
 		$From_day = $day;
 	if (!isset($From_month))
