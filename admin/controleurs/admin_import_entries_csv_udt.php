@@ -429,7 +429,6 @@ function entre_reservation($room_id,$jour_semaine,$name,$description, $day,$mont
 	// Si il y a tentative de réserver dans le passé
 	if ($error_booking_in_past == 'yes') {
 		$str_date = utf8_strftime("%d %B %Y, %H:%M", $date_now);
-		//print_header();
 		$erreur=get_vocab("booking_in_past");
 		if ($rep_type != 0 && !empty($reps))  {
 			$erreur.= ",".get_vocab("booking_in_past_explain_with_periodicity");
@@ -443,7 +442,6 @@ function entre_reservation($room_id,$jour_semaine,$name,$description, $day,$mont
 	if ($error_duree_max_resa_area == 'yes') {
 		$area_id = grr_sql_query1("select area_id from ".TABLE_PREFIX."_room where id='".protect_data_sql($room_id)."'");
 		$duree_max_resa_area = grr_sql_query1("select duree_max_resa_area from ".TABLE_PREFIX."_area where id='".$area_id."'");
-		//print_header();
 		$temps_format = $duree_max_resa_area*60;
 		toTimeString($temps_format, $dur_units);
 		$erreur.=  get_vocab("error_duree_max_resa_area").$temps_format ." " .$dur_units;
@@ -453,7 +451,6 @@ function entre_reservation($room_id,$jour_semaine,$name,$description, $day,$mont
 	
 	// Si il y a tentative de réserver au delà du temps limite
 	if ($error_delais_max_resa_room == 'yes') {
-		//print_header();
 		$erreur.=  get_vocab("error_delais_max_resa_room");
 		// $erreur.=  "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
 		return array(false, $txtRetour);
@@ -461,7 +458,6 @@ function entre_reservation($room_id,$jour_semaine,$name,$description, $day,$mont
 	
 	// Dans le cas d'une réservation avec périodicité, s'il y a des créneaux qui se chevauchent
 	if ($error_chevauchement == 'yes') {
-		//print_header();
 		$erreur.=  get_vocab("error_chevauchement");
 		// $erreur.=  "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
 		return array(false, $txtRetour);
@@ -469,7 +465,6 @@ function entre_reservation($room_id,$jour_semaine,$name,$description, $day,$mont
 	
 	// Si il y a tentative de réserver en-deça du temps limite
 	if ($error_delais_min_resa_room == 'yes') {
-		//print_header();
 		$erreur.=  get_vocab("error_delais_min_resa_room");
 		// $erreur.=  "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
 		return array(false, $txtRetour);
@@ -477,7 +472,6 @@ function entre_reservation($room_id,$jour_semaine,$name,$description, $day,$mont
 	
 	// Si la date confirmation est supérieure à la date de début de réservation
 	if ($error_date_option_reservation == 'yes') {
-		//print_header();
 		$erreur.= get_vocab("error_date_confirm_reservation");
 		// $erreur.=  "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
 		return array(false, $txtRetour);
@@ -485,7 +479,6 @@ function entre_reservation($room_id,$jour_semaine,$name,$description, $day,$mont
 	
 	// Si l'utilisateur tente de réserver une ressource non disponible
 	if ($error_booking_room_out == 'yes') {
-		//print_header();
 		$erreur.=  get_vocab("norights");
 		$erreur.=  ", <b>" . get_vocab("tentative_reservation_ressource_indisponible") . "</b>";
 		// $erreur.=  "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
@@ -494,7 +487,6 @@ function entre_reservation($room_id,$jour_semaine,$name,$description, $day,$mont
 	
 	// Si l'utilisateur tente de réserver au nom d'une autre personne pour une ressource pour laquelle il n'a pas le droit
 	if ($error_qui_peut_reserver_pour == 'yes') {
-		//print_header();
 		$erreur.=  get_vocab("error_qui_peut_reserver_pour");
 		// $erreur.=  "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
 		return array(false, $txtRetour);
@@ -502,7 +494,6 @@ function entre_reservation($room_id,$jour_semaine,$name,$description, $day,$mont
 	
 	// L'heure de début ou l'heure de fin de réservation est en dehors des créneaux autorisés.
 	if ($error_heure_debut_fin == 'yes') {
-		//print_header();
 		$erreur.=get_vocab("error_heure_debut_fin");
 		// $erreur.=  "<a href=\"".$back."&amp;Err=yes\">".get_vocab('returnprev')."</a>";
 		return array(false, $txtRetour);
@@ -510,7 +501,6 @@ function entre_reservation($room_id,$jour_semaine,$name,$description, $day,$mont
 	
 	if(strlen($err))
 	{
-		//print_header();
 		$txtRetour .= "<h2>" . get_vocab("sched_conflict") . "</h2>";
 		if(!isset($hide_title))
 		{
