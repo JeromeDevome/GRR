@@ -3,9 +3,9 @@
  * admin_book_room.php
  * Interface de gestion des accès restreints aux ressources restreintes
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-10-13 10:46$
+ * Dernière modification : $Date: 2024-08-01 17:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -125,42 +125,40 @@ affiche_pop_up($msg,"admin");
 # première étape : choisir parmi les ressources restreintes
 $this_room_name = "";
 $out_html = '';
-$out_html .= "\n<form action=\"admin_book_room.php\" method=\"post\">\n";
-$out_html .= "<label for='room'>".get_vocab('rooms').get_vocab('deux_points')."</label>";
-$out_html .= "<select id='room' name=\"room\" onchange=\"room_go()\">";
-$out_html .= "\n<option value=\"admin_book_room.php?id_room=-1\">".get_vocab('select')."</option>";
+$out_html.= '<form id="room" action=\"admin_book_room.php\" method=\"post\">';
+$out_html.= "<label for='room_list'>".get_vocab("rooms")."&nbsp;</label>";
+$out_html.= "<select id='room_list' name=\"room\" onchange=\"room_go()\">\n";
+$out_html.= "<option value=\"-1\">".get_vocab('select')."</option>\n";
 $sql = "select id, room_name from ".TABLE_PREFIX."_room where who_can_book =0 order by room_name";
 $res = grr_sql_query($sql);
 $nb = grr_sql_count($res);
 if (!$res)
     grr_sql_error($res);
-else
+else{
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
 		// on vérifie que l'utilisateur connecté a les droits suffisants
 		if (authGetUserLevel($user_name,$id_room)>2)
 		{
-            $selected = ($row[0] == $id_room) ? "selected = \"selected\"" : "";
-            $link = "admin_book_room.php?id_room=$row[0]";
-			$out_html .= "\n<option $selected value=\"$link\">" . htmlspecialchars($row[1])."</option>";
-			//$existe_domaine = 'yes';
-		}
-	}
-	$out_html .= "</select>
-	<script  type=\"text/javascript\" >
-		<!--
-		function room_go()
-		{
-			box = document.getElementById('room').room;
-			destination = box.options[box.selectedIndex].value;
-			if (destination) location.href = destination;
-		}
-	// -->
-	</script>
-	<noscript>
-		<div><input type=\"submit\" value=\"Change\" /></div>
-	</noscript>
-</form>";
+      $selected = ($row[0] == $id_room) ? "selected = \"selected\"" : "";
+      $out_html.= "\n<option $selected value=\"".$row[0]."\">" . htmlspecialchars($row[1])."</option>";
+    }
+  }
+  $out_html.= "</select>";
+  grr_sql_free($res);
+}
+$out_html.= '  
+    <script type="text/javascript">
+    <!--
+        function room_go()
+        {
+            box = document.getElementById("room").room;
+            destination = "./admin_book_room.php"+"?id_room="+box.options[box.selectedIndex].value;
+            location.href = destination;
+        }
+    // -->
+    </script>
+</form>';
 echo $out_html;
 
 # deuxième étape : la ressource étant choisie, afficher les utilisateurs autorisés à réserver et le formulaire de mise à jour de la liste

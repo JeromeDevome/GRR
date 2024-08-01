@@ -3,7 +3,7 @@
  * admin_right_admin.php
  * Interface de gestion des droits d'administration des domaines par les utilisateurs sélectionnés
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-07-14 14:22$
+ * Dernière modification : $Date: 2024-08-01 17:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -205,7 +205,7 @@ if (!empty($areas)){
     echo '<form id="area" action="./admin_right_admin.php">';
     echo "<label for='area_list'>".get_vocab("areas")."&nbsp;</label>";
     echo "<select id='area_list' name=\"area\" onchange=\"area_go()\">\n";
-    echo "<option value=\"admin_right_admin.php?id_area=-1\">".get_vocab('select')."</option>\n";
+    echo "<option value=\"-1\">".get_vocab('select')."</option>\n";
     foreach($areas as $a){
         $selected = ($a['id'] == $id_area) ? " selected " : "";
 		echo "<option $selected value=\"".$a['id']."\">" . htmlspecialchars($a['area_name'])."</option>\n";
