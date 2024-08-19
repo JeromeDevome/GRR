@@ -3,9 +3,9 @@
  * month_all.php
  * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-08-17 10:12$
+ * Dernière modification : $Date: 2024-08-19 10:13$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -124,10 +124,6 @@ $opt = array('horaires','beneficiaire','short_desc','description','create_by','t
 $options = decode_options(Settings::get('cell_month_all'),$opt);
 $options_popup = decode_options(Settings::get('popup_month_all'),$opt);
 // calcul du contenu du planning
-$month_start = mktime(0, 0, 0, $month, 1, $year);
-$weekday_start = (date("w", $month_start) - $weekstarts + 7) % 7;
-$days_in_month = date("t", $month_start);
-$month_end = mktime(23, 59, 59, $month, $days_in_month, $year);
 if ($enable_periods == 'y')
 {
 	$resolution = 60;
@@ -135,6 +131,10 @@ if ($enable_periods == 'y')
 	$eveningends = 12;
 	$eveningends_minutes = count($periods_name) - 1;
 }
+$month_start = mktime($morningstarts, 0, 0, $month, 1, $year);
+$weekday_start = (date("w", $month_start) - $weekstarts + 7) % 7;
+$days_in_month = date("t", $month_start);
+$month_end = mktime(23, 59, 59, $month, $days_in_month, $year);
 $this_area_name = "";
 $this_room_name = "";
 $this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=$area");

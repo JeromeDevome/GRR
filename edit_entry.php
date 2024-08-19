@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-02 16:00$
+ * Dernière modification : $Date: 2024-08-14 18:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author 	  Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
@@ -528,7 +528,7 @@ else{
 // l'utilisateur est-il autorisé à être ici ?
 if (((authGetUserLevel($user_name,-1) < 2) && (auth_visiteur($user_name,$room) == 0))||(authUserAccesArea($user_name, $area) == 0))
 {
-    start_page_w_header('','','','with_session');
+  start_page_w_header('','','','with_session');
 	showAccessDenied($page_ret);
 	exit();
 }
@@ -754,10 +754,10 @@ else // nouvelle réservation
 		$end_hour  = date("H",$fin);
 		$end_min = date("i",$fin);
 	}
-    $etype          = isset($type)? $type : 0;
-	$type        	= "";
-	$room_id     	= $room;
-	$id				= 0;
+  $etype          = isset($type)? $type : 0;
+	$type        	  = "";
+	$room_id      	= $room;
+	$id				      = 0;
 	$rep_id        	= 0;
 	$rep_type      	= 0;
 	$rep_end_day   	= $day;
@@ -772,7 +772,7 @@ else // nouvelle réservation
 // fin nouvelle réservation
 $Err = getFormVar("Err",'string'); // utilité ?
 if ($enable_periods == 'y')
-	toPeriodString($start_min, $duration, $dur_units);
+  toPeriodString($start_min, $duration, $dur_units);
 else{
     $duree_sec = $duration; // durée en secondes
     toTimeString($duration, $dur_units, true); // durée convertie en clair
@@ -790,7 +790,7 @@ $allareas_id = array();
 if ($res)
 {
 	//for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-    foreach($res as $row)
+  foreach($res as $row)
 	{
 		array_push($allareas_id, $row['id']);
 		if (authUserAccesArea($user_name, $row['id'])==1)
@@ -890,7 +890,7 @@ jQuery_DatePicker('start_');
 if ($enable_periods == 'y')
 {
 	echo '<label for="period">'.get_vocab("period").'</label>'.PHP_EOL;
-	echo '<select name="period">'.PHP_EOL;
+	echo '<select name="period" id="period">'.PHP_EOL;
 	foreach ($periods_name as $p_num => $p_val)
 	{
 		echo '<option value="'.$p_num.'"';
@@ -915,10 +915,10 @@ echo '</div></div>'.PHP_EOL; // fin début
 if ($type_affichage_reser == 0) // sélection de la durée
 {
 	echo '<div class="E form-inline">'.PHP_EOL;
-    echo '<label for="duration">'.get_vocab("duration").'</label>'.PHP_EOL;
+  echo '<label for="duration">'.get_vocab("duration").'</label>'.PHP_EOL;
 	echo '<input class="form-control" id="duration" name="duration" type="number" value="'.$duration.'" min="1">'; 
-    echo '<select class="form-control" name="dur_units">'.PHP_EOL;
-    if ($enable_periods == 'y')
+  echo '<select class="form-control" name="dur_units">'.PHP_EOL;
+  if ($enable_periods == 'y')
 		$units = array("periods", "days");
 	else
 	{
@@ -934,7 +934,7 @@ if ($type_affichage_reser == 0) // sélection de la durée
 		else
 			$units = array("minutes", "hours", "days", "weeks");
 	}
-    foreach($units as $unit)
+  foreach($units as $unit)
 	{
 		echo '<option value="'.$unit.'"';
 		if ($dur_units ==  get_vocab($unit))
@@ -942,22 +942,22 @@ if ($type_affichage_reser == 0) // sélection de la durée
 		echo '>'.get_vocab($unit).'</option>'.PHP_EOL;
 	}
 	echo '</select>'.PHP_EOL;
-    echo "</div>";
+  echo "</div>";
 
 	// l'heure de fin du jour est définie par eveningends et eveningends_minutes
 	// on suppose les données vérifiées : eveningends:eveningends_minutes <= 24:00
-    $af_fin_hr = substr("0".$eveningends,-2,2);
-    $af_fin_min = substr("0".$eveningends_minutes,-2,2);
-    if ($af_fin_min =='60'){
-        $af_fin_hr++;
-        $af_fin_min = '00';
-    }
+  $af_fin_hr = substr("0".$eveningends,-2,2);
+  $af_fin_min = substr("0".$eveningends_minutes,-2,2);
+  if ($af_fin_min =='60'){
+      $af_fin_hr++;
+      $af_fin_min = '00';
+  }
 	$af_fin_jour = $af_fin_hr." H ".$af_fin_min;
 	echo '<b>
           <input name="all_day" type="checkbox" value="yes" />'.get_vocab("all_day");
 	if ($enable_periods != 'y')
 		echo ' ('.$morningstarts.' H - '.$af_fin_jour.')';
-        echo '</b>'.PHP_EOL;
+  echo '</b>'.PHP_EOL;
 }
 else // sélection de l'heure ou du créneau de fin
 {
@@ -1006,7 +1006,7 @@ else
 $res = grr_sql_query($sql);
 if ($res)
 {
-    foreach($res as $row)
+  foreach($res as $row)
 	{
 		if (authUserAccesArea($user_name,$row['id']) == 1)
 		{
@@ -1037,7 +1037,7 @@ echo "<select class='form-control' id=\"rooms[]\" name=\"rooms[]\" size=\"".min(
 if ($res)
 {
 	//for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-    foreach($res as $row)
+  foreach($res as $row)
 	{
 		$selected = "";
 		if ($row['id'] == $room_id)
@@ -1140,8 +1140,6 @@ echo "</div>",PHP_EOL;
 // fin du bloc de "gauche"
 
 echo "<div class='col-sm-6 col-xs-12 form-inline'>";
-//$sql = "SELECT id FROM ".TABLE_PREFIX."_area;";
-//$res = grr_sql_query($sql);
 echo '<!-- ************* Periodic edition ***************** -->',PHP_EOL;
 $weeklist = array("unused","every week","week 1/2","week 1/3","week 1/4","week 1/5");
 $monthlist = array("firstofmonth","secondofmonth","thirdofmonth","fouthofmonth","fiveofmonth","lastofmonth");

@@ -627,7 +627,7 @@ try {
 			$compt = 1; // création
 		if ($rep_type != 0 && !empty($reps))
 		{
-            if (UserRoomMaxBookingRange($user, $room_id, count($reps) - 1 + $compt + $compt_room,$start_time) == 0)
+      if (UserRoomMaxBookingRange($user, $room_id, count($reps) - 1 + $compt + $compt_room,$start_time) == 0)
 			{
 				showAccessDeniedMaxBookings($start_day, $start_month, $start_year, $room_id, $back);
 				exit();
@@ -637,7 +637,7 @@ try {
 		}
 		else
 		{
-            if (UserRoomMaxBookingRange($user, $room_id, $compt + $compt_room,$start_time) == 0)
+      if (UserRoomMaxBookingRange($user, $room_id, $compt + $compt_room,$start_time) == 0)
 			{
 				showAccessDeniedMaxBookings($start_day, $start_month, $start_year, $room_id, $back);
 				exit();
@@ -684,16 +684,16 @@ try {
 			$id_first_resa = grrCreateRepeatingEntrys($start_time, $end_time, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $nbparticipantmax, $rep_month_abs1, $rep_month_abs2, $reps);
 			if (Settings::get("automatic_mail") == 'yes')
 			{
-                if (isset($id_first_resa) && ($id_first_resa != 0))
-                {
-                    if (isset($id) && ($id != 0)) // modification d'une résa existante
-                        $message_error = send_mail($id_first_resa, 2, $dformat, array(), $oldRessource);
-                    else // création
-                        if ($send_mail_moderate)
-                            $message_error = send_mail($id_first_resa, 5, $dformat); // à modérer
-                        else
-                            $message_error = send_mail($id_first_resa, 1, $dformat, array(), $oldRessource);
-                }
+        if (isset($id_first_resa) && ($id_first_resa != 0))
+        {
+            if (isset($id) && ($id != 0)) // modification d'une résa existante
+                $message_error = send_mail($id_first_resa, 2, $dformat, array(), $oldRessource);
+            else // création
+                if ($send_mail_moderate)
+                    $message_error = send_mail($id_first_resa, 5, $dformat); // à modérer
+                else
+                    $message_error = send_mail($id_first_resa, 1, $dformat, array(), $oldRessource);
+        }
 				else // ici $id_first_resa n'est pas défini ou nul, i.e. la série de réservations n'est pas posée => message à modifier ?
 				{/*
 					if ($send_mail_moderate)
@@ -712,16 +712,16 @@ try {
 			$new_id = mrbsCreateSingleEntry($start_time, $end_time, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $keys, $courrier,$nbparticipantmax);
 			if (Settings::get("automatic_mail") == 'yes')
 			{
-                if (isset($new_id) && ($new_id != 0))
-                {
-                    if (isset($id) && ($id != 0)) // modification
-                        $message_error = send_mail($new_id,2,$dformat, array(), $oldRessource);
-                    else // création
-                        if ($send_mail_moderate)
-                            $message_error = send_mail($new_id,5,$dformat);
-                        else
-                            $message_error = send_mail($new_id,1,$dformat, array(), $oldRessource);
-                }
+        if (isset($new_id) && ($new_id != 0))
+        {
+            if (isset($id) && ($id != 0)) // modification
+                $message_error = send_mail($new_id,2,$dformat, array(), $oldRessource);
+            else // création
+                if ($send_mail_moderate)
+                    $message_error = send_mail($new_id,5,$dformat);
+                else
+                    $message_error = send_mail($new_id,1,$dformat, array(), $oldRessource);
+        }
 				else // ici $new_id n'est pas défini ou nul, i.e. la réservation n'est pas posée => message à modifier ?
 				{/*
 					if ($send_mail_moderate)

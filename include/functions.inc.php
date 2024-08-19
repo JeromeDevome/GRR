@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2024-01-29 11:31$
+ * Dernière modification : $Date: 2024-08-19 09:31$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1571,41 +1571,35 @@ function toTimeString(&$dur, &$units, $edition = false)
 		$units = "";
 	}
 }
-// Transforme $dur en un nombre entier
-// $dur : durée
-// $units : unité
-/**
- * @param integer $start_period
+/* function toPeriodString($start_period, &$dur, &$units)
+ * @param integer $start_period, numéro du créneau de départ
+ * @param $dur, durée, donnée en secondes
+ * @param $units, unité
+ * Transforme $dur en un nombre entier
+ * Modifie éventuellement $units en "days" ou "periods"
  */
 function toPeriodString($start_period, &$dur, &$units)
 {
-	// la durée est donnée en secondes
-	global $enable_periods, $periods_name, $vocab;
+	global $enable_periods, $periods_name;
 	$max_periods = count($periods_name);
 	$dur /= 60; // on transforme la durée en minutes
 	// Chaque minute correspond à un créneau
-	if ( $dur >= $max_periods || $start_period == 0 )
+	if ( $dur >= $max_periods )
 	{
-		if ( $start_period == 0 && $dur == $max_periods )
-		{
+    $nb_jours = floor($dur/1440);
+    $plus_period = $dur%1440;
+    if($plus_period == 0){
+      $dur = $nb_jours;
+      $units = get_vocab("days");
+    }
+    elseif($plus_period == $max_periods){
+      $dur = $nb_jours +1;
+      $units = get_vocab("days");
+    }
+    else{
+      $dur = $plus_period + $nb_jours * $max_periods;
 			$units = get_vocab("periods");
-			$dur = $max_periods;
-			return;
-		}
-		$dur /= 60;
-		if (($dur >= 24) && is_int($dur))
-		{
-			$dur /= 24;
-			$units = get_vocab("days");
-			return;
-		}
-		else
-		{
-			$dur *= 60;
-			$dur = ($dur % $max_periods) + floor( $dur/(24*60) ) * $max_periods;
-			$units = get_vocab("periods");
-			return;
-		}
+    }
 	}
 	else
 		$units = get_vocab("periods");
