@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-19 10:53$
+ * Dernière modification : $Date: 2024-08-19 15:35$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author 	  Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
@@ -979,7 +979,7 @@ else // sélection de l'heure ou du créneau de fin
 // domaines
 echo "<div class=\"E form-inline\">";
 if ($nb_areas == 1)
-	echo '<p><b>'.get_vocab("match_area").get_vocab("deux_points").'</b>'.access_areas[$area].'</p>'.PHP_EOL;
+	echo '<p><b>'.get_vocab("match_area").get_vocab("deux_points").'</b>'.$access_areas[$area].'</p>'.PHP_EOL;
 else{
     echo "<label for='areas' class='control-label'>".get_vocab("match_area").get_vocab("deux_points")."</label>".PHP_EOL;
     echo "<select class=\"form-control\" id=\"areas\" name=\"areas\" onchange=\"changeRooms(this.form);\" >";

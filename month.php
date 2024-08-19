@@ -3,7 +3,7 @@
  * month.php
  * Interface d'accueil avec affichage par mois pour une ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-06 16:13$
+ * Dernière modification : $Date: 2024-08-19 15:22$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -103,12 +103,7 @@ if (check_begin_end_bookings($day, $month, $year))
 	showNoBookings($day, $month, $year, $back);
 	exit();
 }
-//Heure de début du mois, cela ne sert à rien de reprendre les valeurs morningstarts/eveningends
-$month_start = mktime(0, 0, 0, $month, 1, $year);
-//Dans quel colonne l'affichage commence: 0 veut dire $weekstarts
-$weekday_start = (date("w", $month_start) - $weekstarts + 7) % 7;
-$days_in_month = date("t", $month_start);
-$month_end = mktime(23, 59, 59, $month, $days_in_month, $year);
+// calcul du planning
 if ($enable_periods == 'y')
 {
 	$resolution = 60;
@@ -116,7 +111,12 @@ if ($enable_periods == 'y')
 	$eveningends = 12;
 	$eveningends_minutes = count($periods_name) - 1;
 }
-$this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=?", "i", [$area]);
+$month_start = mktime($morningstarts, 0, 0, $month, 1, $year);
+//Dans quel colonne l'affichage commence: 0 veut dire $weekstarts
+$weekday_start = (date("w", $month_start) - $weekstarts + 7) % 7;
+$days_in_month = date("t", $month_start);
+$month_end = mktime(23, 59, 59, $month, $days_in_month, $year);
+$this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=$area");
 $sql = "SELECT * FROM ".TABLE_PREFIX."_room WHERE id=?";
 $res = grr_sql_query($sql,"i",[$room]);
 if ($res){
@@ -280,7 +280,7 @@ else
 }    
 
 // pour le traitement des modules
-include "./include/hook.class.php";
+include $racine."/include/hook.class.php";
 // code html de la page
 header('Content-Type: text/html; charset=utf-8');
 if (!isset($_COOKIE['open']))
