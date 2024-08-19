@@ -3,7 +3,7 @@
  * admin_import_entries_csv_udt.php
  * Importe un fichier de réservations au format csv 
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-05-14 18:20$
+ * Dernière modification : $Date: 2024-08-19 16:50$
  * @author    JeromeB & Yan Naessens & Denis Monasse & Laurent Delineau
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -123,12 +123,18 @@ function lit_udt_data(){
         // on passe les repas et les salles non renseignées
         if(($reservation[3]=="repas") || ($reservation[5]=="")) continue;
         // et on insère dans la base de données
-        $sql_query="INSERT INTO ".TABLE_PREFIX."_csv (`id`, `jour`, `heure_deb`, `minute_deb`, `heure_fin`, `minute_fin`, `classe`, `matiere`, `professeur`, `salle`, `groupe`, `regroup`, `eff`, `mo`, `freq`, `aire`)";
-        $sql_query.=" VALUES ('DEFAULT' , '".$jour."' , '".$heure_deb."' , '".$minute_deb."' , '".$heure_fin."' , '".$minute_fin;
-        for($i=2; $i<12; $i++) $sql_query .= "' , '".$reservation[$i];
-           $sql_query .= "');";
+        //$sql_query="INSERT INTO ".TABLE_PREFIX."_csv (`id`, `jour`, `heure_deb`, `minute_deb`, `heure_fin`, `minute_fin`, `classe`, `matiere`, `professeur`, `salle`, `groupe`, `regroup`, `eff`, `mo`, `freq`, `aire`)";
+        //$sql_query.=" VALUES ('DEFAULT' , '".$jour."' , '".$heure_deb."' , '".$minute_deb."' , '".$heure_fin."' , '".$minute_fin;
+        //for($i=2; $i<12; $i++) $sql_query .= "' , '".$reservation[$i];
+        //   $sql_query .= "');";
         //  echo $sql_query."<br />";
-        if(grr_sql_command($sql_query)<0) 
+        $sql_query="INSERT INTO ".TABLE_PREFIX."_csv (`id`, `jour`, `heure_deb`, `minute_deb`, `heure_fin`, `minute_fin`, `classe`, `matiere`, `professeur`, `salle`, `groupe`, `regroup`, `eff`, `mo`, `freq`, `aire`)";
+        $sql_query.=" VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        $types="siiiiissssssisss";
+        $data=['DEFAULT',$jour,$heure_deb,$minute_deb,$heure_fin,$minute_fin];
+        for($i=2; $i<12; $i++)
+          $data[]=$reservation[$i];
+        if(grr_sql_command($sql_query,$types,$data)<0) 
           $erreurs[] = $n." (".$sql_query.")";
         $donnees[] = array($jour,$heure_deb,$minute_deb,$heure_fin,$minute_fin,$reservation[2],$reservation[3],$reservation[4],$reservation[5]);
         $n++;
@@ -192,7 +198,7 @@ function ecrit_udt_data(){
       }
       $room_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_room WHERE room_name=? ",'s',[$salle]);
       if($room_id == -1){
-        // il y aune erreur ou la salle n'est pas connue
+        // il y a une erreur ou la salle n'est pas connue
         $erreurs[] = $salle." Salle inconnue ou erreur de lecture en base de données";
       }
       else{
@@ -319,25 +325,6 @@ function entre_reservation($room_id,$jour_semaine,$name,$description,$begin_time
 
   $area = mrbsGetRoomArea($room_id);
 
-/*  if(strlen($err))
-  {
-    print_header();
-  
-    echo "<h2>" . get_vocab("sched_conflict") . "</h2>";
-    if(!isset($hide_title))
-    {
-      echo get_vocab("conflict");
-      echo "<UL>";
-    }
-    echo $err;
-  
-    if(!isset($hide_title))
-      echo "</UL>";
-      // possibilité de supprimer la (les) réservation(s) afin de valider la nouvelle réservation.
-      if(authGetUserLevel(getUserName(),$area,'area') >= 4)
-        echo "<center><table border=\"1\" cellpadding=\"10\" cellspacing=\"1\"><tr><td class='avertissement'><h3><a href='".traite_grr_url("","y")."edit_entry_handler.php?".$_SERVER['QUERY_STRING']."&amp;del_entry_in_conflict=yes'>".get_vocab("del_entry_in_conflict")."</a></h4></td></tr></table></center><br />";
-  
-  } */
   if(!empty($err))
     return[false,$err];
   else // Retour au calendrier
