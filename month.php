@@ -3,9 +3,9 @@
  * month.php
  * Interface d'accueil avec affichage par mois
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-26 15:27$
+ * Dernière modification : $Date: 2024-08-19 10:37$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -94,12 +94,7 @@ if (!isset($room)){
     echo "</p>";
     die();
 }
-//Heure de début du mois, cela ne sert à rien de reprendre les valeurs morningstarts/eveningends
-$month_start = mktime(0, 0, 0, $month, 1, $year);
-//Dans quel colonne l'affichage commence: 0 veut dire $weekstarts
-$weekday_start = (date("w", $month_start) - $weekstarts + 7) % 7;
-$days_in_month = date("t", $month_start);
-$month_end = mktime(23, 59, 59, $month, $days_in_month, $year);
+// calcul du planning
 if ($enable_periods == 'y')
 {
 	$resolution = 60;
@@ -107,6 +102,11 @@ if ($enable_periods == 'y')
 	$eveningends = 12;
 	$eveningends_minutes = count($periods_name) - 1;
 }
+$month_start = mktime($morningstarts, 0, 0, $month, 1, $year);
+//Dans quel colonne l'affichage commence: 0 veut dire $weekstarts
+$weekday_start = (date("w", $month_start) - $weekstarts + 7) % 7;
+$days_in_month = date("t", $month_start);
+$month_end = mktime(23, 59, 59, $month, $days_in_month, $year);
 $this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=$area");
 $sql = "SELECT * FROM ".TABLE_PREFIX."_room WHERE id=$room";
 $res = grr_sql_query($sql);

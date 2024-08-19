@@ -3,9 +3,9 @@
  * month_all.php
  * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-26 15:27$
+ * Dernière modification : $Date: 2024-08-19 10:34$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -128,10 +128,6 @@ if (grr_sql_count($ressources) == 0)
 }
 grr_sql_free($ressources);
 // calcul du contenu du planning
-$month_start = mktime(0, 0, 0, $month, 1, $year);
-$weekday_start = (date("w", $month_start) - $weekstarts + 7) % 7;
-$days_in_month = date("t", $month_start);
-$month_end = mktime(23, 59, 59, $month, $days_in_month, $year);
 if ($enable_periods == 'y')
 {
 	$resolution = 60;
@@ -139,6 +135,10 @@ if ($enable_periods == 'y')
 	$eveningends = 12;
 	$eveningends_minutes = count($periods_name) - 1;
 }
+$month_start = mktime($morningstarts, 0, 0, $month, 1, $year);
+$weekday_start = (date("w", $month_start) - $weekstarts + 7) % 7;
+$days_in_month = date("t", $month_start);
+$month_end = mktime(23, 59, 59, $month, $days_in_month, $year);
 $this_area_name = "";
 $this_room_name = "";
 $this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=$area");
