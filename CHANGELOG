@@ -4,6 +4,7 @@ Bugs connus sur la version de GitHub :
 Tâches prévues :
  - modularisation de l'authentification
  - gestion des champs additionnels sur plusieurs domaines
+ - attachement de documents à une réservation
 
 -----
 --
@@ -76,7 +77,11 @@ Sous-version 3.5.1d
     correctif : sécurisation de l'URL de redirection dans login.php
     correctif : requête mal placée dans admin_maj.php
     correctif : prise en charge des champs additionnels de type checkbox
-    
+Sous-version 3.5.1e
+    correctif : accès des administrateurs de sites à la gestion des domaines
+    correctif : code javascript
+    correctif : affichage des réservations finissant le dernier jour du mois
+
 -----
 --
 -----
