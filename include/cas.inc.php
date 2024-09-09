@@ -3,14 +3,11 @@
  * cas.inc.php
  * script de redirection vers l'authentification CAS
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-10-02 10:19$
+ * Dernière modification : $Date: 2024-09-09 11:56$
  * @author    Laurent Delineau <laurent.delineau@ac-poitiers.fr>
- * @copyright Copyright 2008-2008 Laurent Delineau
  * @author    JeromeB & Laurent Delineau & Olivier MOUNIER
- * @author    Laurent Delineau
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @author    Yan Naessens
- * @copyright Copyright 2023 Yan Naessens
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -40,7 +37,7 @@ $cas_version = (NULL != Settings::get('cas_version'))? Settings::get('cas_versio
 /* declare le script comme un client CAS
  Si le dernier argument est à true, cela donne la possibilité à phpCAS d'ouvrir une session php.
 */
- phpCAS::client($cas_version,$serveurSSO,$serveurSSOPort,$serveurSSORacine,true);
+ phpCAS::client(constant($cas_version),$serveurSSO,$serveurSSOPort,$serveurSSORacine,true);
  phpCAS::setLang(PHPCAS_LANG_FRENCH);
 
 //            phpCAS::setCasServerCACert();
