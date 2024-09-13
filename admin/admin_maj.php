@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-02 16:30$
+ * Dernière modification : $Date: 2024-09-13 16:04$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
@@ -111,7 +111,6 @@ if (defined('STDIN')&&isset($argv[1])&&$argv[1]==$apikey) {
 if(!$majscript){
     // Session related functions
     require_once("../include/session.inc.php");
-    require_once("../include/resume_session.php");
     // Paramètres langage
     include "../include/language.inc.php";
 }
