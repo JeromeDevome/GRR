@@ -24,18 +24,6 @@
 				<div class="box-body">
 					<p>{{ trad.required }}</p>
 
-					{% if d.connexionExterne == 1 %}
-						<div class="form-group">
-							<label class="col col-sm-4" for="type_authentification">{{ trad.authentification }}</label>
-							<div class="col col-sm-8">
-								<select name="type_authentification" id="select_auth_mode" onchange="display_password_fields(this.id);" class="form-control">
-									<option value="locale" {% if utilisateur.source == 'local' %} selected {% endif %}>{{ trad.authentification_base_locale }}</option>
-									<option value="externe" {% if utilisateur.source == 'ext' %} selected {% endif %}>{{ trad.authentification_base_externe }}</option>
-								</select>
-							</div>
-						</div>
-					{% endif %}
-
 					{% if utilisateur.reg_login !=  '' %}
 						<div class="form-group">
 							<label class="col col-sm-4" for="login">{{ trad.login }}</label>
