@@ -219,6 +219,8 @@ if ($res)
 			$loginPredefinis = strtoupper(remplacer_accents($user_prenom.".".$user_nom));
 		elseif($structureLogin == 9)
 			$loginPredefinis = strtoupper(remplacer_accents($user_prenom."".$user_nom));
+		elseif($structureLogin == 10)
+			$loginPredefinis = strtoupper(remplacer_accents($user_mail));
 		else
 			$loginPredefinis = strtoupper(remplacer_accents($user_nom.".".$user_prenom));
 
