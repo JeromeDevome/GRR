@@ -6289,7 +6289,7 @@ function pageHead2($title, $page = "with_session")
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css?v='.$version_grr.'" />'.PHP_EOL;
 	
 	$a .= '<link rel="stylesheet" type="text/css" href="themes/'.$sheetcss.'/css/style.css?v='.$version_grr.'" />'.PHP_EOL; // le style couleurs prédéfinis
-	if($sheetcss == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css?v='.$version_grr.'"))
+	if($sheetcss == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
 		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css?".Settings::get("sp_time")."\" />".PHP_EOL; // style perso via admin
 		
 	$a .= $types;
