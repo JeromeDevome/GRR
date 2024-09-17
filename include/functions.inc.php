@@ -3135,7 +3135,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		{
 			$row2 = grr_sql_row($res, 0);
 			$rep_type     = $row2[0];
-			$rep_end_date = date($dformat, $row2[1]); //strftime($dformat,$row2[1]);
+			$rep_end_date = time_date_string($row2[1],$dformat);
 			$rep_opt      = $row2[2];
 			$rep_num_weeks = $row2[3];
 		}
