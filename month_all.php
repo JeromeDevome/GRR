@@ -150,7 +150,7 @@ $ty = date("Y",$i);
 $tm = date("n",$i);
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
 //Get all meetings for this month in the area that we care about
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc, ".TABLE_PREFIX."_room.id 
 FROM (".TABLE_PREFIX."_entry INNER JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) 
   INNER JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
 WHERE (start_time <= $month_end AND end_time > $month_start AND area_id='".$area."' AND supprimer = 0)
@@ -173,6 +173,7 @@ ORDER by ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time ";
     $row[14]: courrier
 	$row[15]: Type_name
     $row[16]: overload fields description
+	$row[17]: room id
 */
 
 $res = grr_sql_query($sql);
@@ -187,8 +188,8 @@ else  //Build an array of information about each day in the month.
 	{
 		if ($row['15'] <> (Settings::get('exclude_type_in_views_all')))
         {
-            $verif_acces_ressource[$row[5]] = verif_acces_ressource($user_name, $row[5]);
-            $acces_fiche_reservation[$row[5]] = verif_acces_fiche_reservation($user_name, $row[5]);
+            $verif_acces_ressource[$row[5]] = verif_acces_ressource($user_name, $row[17]); 
+            $acces_fiche_reservation[$row[5]] = verif_acces_fiche_reservation($user_name, $row[17]);
             $t = max((int)$row[0], $month_start);
             $end_t = min((int)$row[1], $month_end);
             $day_num = date("j", $t);
