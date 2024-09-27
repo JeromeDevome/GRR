@@ -106,7 +106,7 @@ if (empty($room))
 $AllSettings = Settings::getAll();
 
 get_vocab_admin('admin_email_manager');
-get_vocab_admin('attention_mail_automatique_désactive');
+get_vocab_admin('attention_mail_automatique_desactive');
 get_vocab_admin('explain_automatic_mail3');
 
 get_vocab_admin('explain_automatic_mail1');

@@ -14,11 +14,18 @@
 				<div class="box-header">
 					<h3 class="box-title">{{ trad.admin_email_manager }}</h3>
 				</div>
+
+				{% if settings.grr_mail_method != 'mail' and  settings.grr_mail_method != 'smtp' %}
+					<div class="callout callout-danger">{{ trad.attention_mail_desactive|raw }}</div>
+				{% endif %}
+
+				{% if settings.automatic_mail != 'yes' %}
+					<div class="callout callout-danger">{{ trad.attention_mail_automatique_desactive|raw }}</div>
+				{% endif %}
+
 				<!-- /.box-header -->
 				<div class="box-body no-padding">
-					{% if settings.automatic_mail != 'yes' %}
-						<h3 class="avertissement">{{ attention_mail_automatique_désactive }}</h3>
-					{% endif %}
+			
 					<p>{{ trad.explain_automatic_mail3 |raw}}</p>
 
 					<hr>

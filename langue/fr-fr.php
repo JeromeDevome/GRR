@@ -160,7 +160,8 @@ $vocab['alterseries'] = "Modifier une série de réservations à laquelle des pa
 $vocab['any_area'] = "Tous les domaines";
 $vocab['archiver'] = "Archiver";
 $vocab['areas'] = "Domaines :";
-$vocab['attention_mail_automatique_désactive'] = "ATTENTION : l'envoi de mails automatiques est actuellement désactivé. Pour l'activer, rendez-vous dans le panneau de configuration générale.";
+$vocab['attention_mail_automatique_desactive'] = "ATTENTION: l'envoi de mails automatiques est actuellement désactivé. <a href=\"admin.php?p=admin_config3\">Configurer</a>";
+$vocab['attention_mail_desactive'] = "ATTENTION: le serveur d'envoi de mails est actuellement désactivé. <a href=\"admin.php?p=admin_config3\">Configurer</a>";
 $vocab['aucune_correspondance'] = "Aucune correspondance profil / statut GRR actuellement enregistrée";
 $vocab['aucune_periodicite_associe'] = "Aucune périodicité n'est associée à cette réservation.";
 $vocab['aucun_autilisateur'] = "Aucun utilisateur ne dispose de privilèges";

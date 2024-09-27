@@ -161,7 +161,8 @@ $vocab['alterseries'] = "¡Modificar una serie de reservas en las que están reg
 $vocab['any_area'] = "Tous les domaines"; // A traduire
 $vocab['archiver'] = "Archiver"; // A traduire
 $vocab['areas'] = "Campos : ";
-$vocab['attention_mail_automatique_désactive'] = "CUIDADO: se desactiva el envío de mails automáticos. Para activarlo, dirijase en el panel de configuración general.";
+$vocab['attention_mail_automatique_desactive'] = "CUIDADO: se desactiva el envío de mails automáticos. <a href=\"admin.php?p=admin_config3\">Configurar</a>";
+$vocab['attention_mail_desactive'] = "CUIDADO: el servidor de envío de correo está actualmente deshabilitado. <a href=\"admin.php?p=admin_config3\">Configurar</a>";
 $vocab['aucune_correspondance'] = "Aucune correspondance profil / statut GRR actuellement enregistrée"; // A traduire
 $vocab['aucune_periodicite_associe'] = "Ninguna periodicidad está asociada a esta reserva.";
 $vocab['aucun_autilisateur'] = "Ningún usuario dispone de privilegios";
