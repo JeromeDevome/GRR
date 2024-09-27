@@ -200,7 +200,6 @@ get_vocab_admin("envoyer_email_avec_formulaire_oui");
 get_vocab_admin("envoyer_email_avec_formulaire_non");
 
 get_vocab_admin("Parametres_configuration_envoi_automatique_mails");
-get_vocab_admin("Explications_des_Parametres_configuration_envoi_automatique_mails");
 get_vocab_admin("methode_mail");
 get_vocab_admin("methode_mail_bloque");
 get_vocab_admin("methode_mail_desactive");
