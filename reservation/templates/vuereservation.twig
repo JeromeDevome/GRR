@@ -179,7 +179,7 @@
                     <input class="btn btn-warning" type="button" onclick="location.href='{{d.lienEchanger|raw}}'" value="{{trad.swapentry}}"/>
                 {% endif %}
                 {% if d.lienSupprimer %}
-                    <a class="btn btn-danger" type="button" href="{{d.lienSupprimer|raw}}" onclick="return confirm('{{trad.confirmdel}}{{trad.deleteentry}}');">{{trad.deleteentry}}</a>
+                    <a class="btn btn-danger" type="button" href="{{d.lienSupprimer|raw}}" onclick="return confirm('{{trad.confirmdel|e('js')}}\n{{trad.deleteentry}}');">{{trad.deleteentry}}</a>
                 {% endif %}
             </div>
         {% endif %}
@@ -214,14 +214,14 @@
             {% if d.lienPeriodeModifier %}
             <tr>
                 <td colspan="2">
-                    <a class="btn btn-primary" type="button" href="{{d.lienPeriodeModifier|raw}}" onclick="return confirm('{{trad.confirmdel}}{{trad.alterseries}}');">{{trad.editseries}}</a>
+                    <a class="btn btn-primary" type="button" href="{{d.lienPeriodeModifier|raw}}" onclick="return confirm('{{trad.confirmdel|e('js')}}\n{{trad.alterseries}}');">{{trad.editseries}}</a>
                 </td>
             </tr>
             {% endif %}
             {% if d.lienPeriodeSupprimer %}
             <tr>
                 <td colspan="2">
-                    <a class="btn btn-danger" type="button" href="{{d.lienPeriodeSupprimer|raw}}" onclick="return confirm('{{trad.confirmdel}}{{trad.deleteseries}}');">{{trad.deleteseries}}</a>
+                    <a class="btn btn-danger" type="button" href="{{d.lienPeriodeSupprimer|raw}}" onclick="return confirm('{{trad.confirmdel|e('js')}}\n{{trad.deleteseries}}');">{{trad.deleteseries}}</a>
                 </td>
             </tr>
             {% endif %}
