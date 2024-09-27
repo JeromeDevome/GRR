@@ -161,7 +161,8 @@ $vocab['alterseries'] = "Durch die Änderung einer Reservierungsreihe, in der Te
 $vocab['any_area'] = "Alle Bereiche";
 $vocab['archiver'] = "Archivieren";
 $vocab['areas'] = "Bereiche: ";
-$vocab['attention_mail_automatique_désactive'] = "Achtung: das Versenden von automatischen E-Mails ist zur Zeit nicht aktiviert. Zwecks Aktivierung bitte zur allgemeinen Konfiguraionsanzeige gehen.";
+$vocab['attention_mail_automatique_desactive'] = "Achtung: das Versenden von automatischen E-Mails ist zur Zeit nicht aktiviert. <a href=\"admin.php?p=admin_config3\">Konfigurieren</a>";
+$vocab['attention_mail_desactive'] = "Achtung: Der E-Mail-Versandserver ist derzeit deaktiviert. <a href=\"admin.php?p=admin_config3\">Konfigurieren</a>";
 $vocab['aucune_correspondance'] = "Aucune correspondance profil / statut GRR actuellement enregistrée"; // A traduire
 $vocab['aucune_periodicite_associe'] = "Aucune périodicité n'est associée à cette réservation."; // A traduire
 $vocab['aucun_autilisateur'] = "Keine Benutzer";

@@ -161,7 +161,8 @@ $vocab['alterseries'] = "La modifica di una serie di prenotazioni in cui sono is
 $vocab['any_area'] = "Tous les domaines";
 $vocab['archiver'] = "Archivio";
 $vocab['areas'] = "Categoria : ";
-$vocab['attention_mail_automatique_désactive'] = "ATTENZIONE: la spedizione di mails automazioni è attualmente disattivata. Per attivarlo, appuntamento nel pannello di configurazione generale.";
+$vocab['attention_mail_automatique_desactive'] = "ATTENZIONE: la spedizione di mails automazioni è attualmente disattivata. <a href=\"admin.php?p=admin_config3\">Configura</a>";
+$vocab['attention_mail_desactive'] = "ATTENZIONE: il server di invio della posta è attualmente disattivata. <a href=\"admin.php?p=admin_config3\">Configura</a>";
 $vocab['aucune_correspondance'] = "Aucune correspondance profil / statut GRR actuellement enregistrée"; // A traduire
 $vocab['aucune_periodicite_associe'] = "Aucune périodicité n'est associée à cette réservation."; // A traduire
 $vocab['aucun_autilisateur'] = "Nessuno utente dispone di privilegi";

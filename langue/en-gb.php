@@ -160,7 +160,8 @@ $vocab['alterseries'] = "Modifying a series of bookings to which participants ar
 $vocab['any_area'] = "All the domains";
 $vocab['archiver'] = "Archive";
 $vocab['areas'] = "Areas: ";
-$vocab['attention_mail_automatique_désactive'] = "CAUTION: the sending of automatic mails is currently disabled. To activate it, go in the general control panel.";
+$vocab['attention_mail_automatique_desactive'] = "CAUTION: the sending of automatic mails is currently disabled. <a href=\"admin.php?p=admin_config3\">Configure</a>";
+$vocab['attention_mail_desactive'] = "CAUTION: the mail sending server is currently disabled. <a href=\"admin.php?p=admin_config3\">Configure</a>";
 $vocab['aucune_correspondance'] = "No Profile / Status GRR correspondence currently recorded";
 $vocab['aucune_periodicite_associe'] = "No periodicity is associated to this reservation.";
 $vocab['aucun_autilisateur'] = "No user has some privileges";
