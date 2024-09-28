@@ -116,20 +116,19 @@ grr_sql_free($res);
 
 // traitement des données
 /* URL de retour. À faire avant l'ouverture de session.
- En effet, nous pourrions passer par edit_entry plus d'une fois, par exemple si nous devons nous reconnecter par timeout. 
+ En effet, nous pourrions passer par editentree plus d'une fois, par exemple si nous devons nous reconnecter par timeout. 
  Nous devons toujours conserver la page d'appel d'origine afin qu'une fois que nous avons quitté edit_entry_handler, nous puissions revenir à la page d'appel (plutôt que d'aller à la vue par défaut). 
  Si c'est la première fois, alors $_SERVER['HTTP_REFERER'] contient l'appelant d'origine. Si c'est la deuxième fois, nous l'aurons stocké dans $page_ret.*/
 if (!isset($page_ret) || ($page_ret == ''))
 {
     $referer = isset($_SERVER['HTTP_REFERER']) ? htmlspecialchars($_SERVER['HTTP_REFERER']) : '';
-    $ref = explode('?',$referer);
-    if (isset($ref[0]) && 
-        ((strpos($ref[0],'edit_entry.php') !== FALSE)||
-         (strpos($ref[0],'view_entry.php') !== FALSE)||
-         (strpos($ref[0],'validation.php') !== FALSE)))
+   
+    if (isset($_GET['p']) && 
+        ((strpos($_GET['p'],'editentree') !== FALSE)||
+         (strpos($_GET['p'],'vuereservation') !== FALSE)))
     {
         if (isset($page) && isset($month) && isset($day) && isset($year)){
-            $page_ret = $page.'.php?month='.$month.'&amp;day='.$day.'&amp;year='.$year;
+            $page_ret = 'app.php?p='.$page.'&amp;month='.$month.'&amp;day='.$day.'&amp;year='.$year;
             if (isset($room))
                 $page_ret .= '&amp;room='.$room;
             elseif ((!strpos($page,"all"))&&($room_back != 'all'))
@@ -227,15 +226,15 @@ else{
 // l'utilisateur est-il autorisé à être ici ?
 if (((authGetUserLevel($user_name,-1) < 2) && (auth_visiteur($user_name,$room) == 0))||(authUserAccesArea($user_name, $area) == 0))
 {
-    start_page_w_header('','','','with_session');
-	showAccessDenied($page_ret);
+	$d['messageErreur'] = showAccessDenied_twig($page_ret);
+	echo $twig->render('erreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
 	exit();
 }
 if (isset($room) && ($room != -1)){// on vérifie que la ressource n'est pas restreinte ou que l'accès est autorisé
     $who_can_book = grr_sql_query1("SELECT who_can_book FROM ".TABLE_PREFIX."_room WHERE id='".$room."' ");
     if (!($who_can_book || (authBooking($user_name,$room)) || (authGetUserLevel($user_name,$room) > 2))){
-        start_page_w_header('','','','with_session');
-        showAccessDenied($page_ret."&alerte=acces");
+        $d['messageErreur'] = showAccessDenied_twig($page_ret."&alerte=acces");
+		echo $twig->render('erreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
         exit();
     }
 }
@@ -265,8 +264,9 @@ if ($longueur_liste_ressources_max == '')
 // le jour est-il ouvert à la réservation ?
 if (check_begin_end_bookings($day, $month, $year))
 {
-    start_page_w_header('','','','with_session');
-	showNoBookings($day, $month, $year, $page_ret);
+   $d['messageErreur'] = showNoBookings_twig($day, $month, $year, $page_ret);
+
+	echo $twig->render('erreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
 	exit();
 }
 // les droits à réserver sont-ils épuisés ?
@@ -278,9 +278,9 @@ else
 //die();
 if (UserRoomMaxBooking($user_name, $room, $compt) == 0)
 {
-    echo "<br> user : ".$user_name." room: ".$room." compt : ".$compt;
-    start_page_w_header('','','','with_session');
-	showAccessDeniedMaxBookings($day, $month, $year, $room, $page_ret);
+    $d['messageErreur'] = "<br> user : ".$user_name." room: ".$room." compt : ".$compt;
+	$d['messageErreur'] .= showAccessDeniedMaxBookings_twig($day, $month, $year, $room, $page_ret);
+	echo $twig->render('erreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
 	exit();
 }
 $etype = 0;
@@ -289,8 +289,8 @@ if (isset($id)) // édition d'une réservation existante
 {
     if (!getWritable($user_name,$id) && ($copier == ''))
     {
-        start_page_w_header('','','','with_session');
-        showAccessDenied($page_ret);
+        $d['messageErreur'] = showAccessDenied_twig($page_ret);
+		echo $twig->render('erreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
         exit;
     }
 	$sql = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id=$id";
@@ -548,9 +548,9 @@ if ($flag_qui_peut_reserver_pour ) // on crée les sélecteurs à afficher
     grr_sql_free($res);
     $option = "";
     if (!isset($benef_ext_nom))
-        $option .= '<option value="" >'.get_vocab("personne_exterieure").'</option>'.PHP_EOL;
+        $option .= '<option>'.get_vocab("personne_exterieure").'</option>'.PHP_EOL;
     else
-        $option .= '<option value="" selected="selected">'.get_vocab("personne_exterieure").'</option>'.PHP_EOL;
+        $option .= '<option selected="selected">'.get_vocab("personne_exterieure").'</option>'.PHP_EOL;
     foreach ($bnf as $b){
         $option .= '<option value="'.$b[0].'" ';
         if (((!$benef && !$benef_ext_nom) && strtolower($user_name) == strtolower($b[0])) || ($benef && $benef == $b[0]))
@@ -721,6 +721,58 @@ if ($res)
 }
 grr_sql_free($res);
 
+
+$d['complementJSchangeRooms'] = "";
+
+
+if ($enable_periods == 'y')
+	$sql = "SELECT id, area_name FROM ".TABLE_PREFIX."_area WHERE id='".$area."' ORDER BY area_name";
+else
+	$sql = "SELECT id, area_name FROM ".TABLE_PREFIX."_area WHERE enable_periods != 'y' ORDER BY area_name";
+$res = grr_sql_query($sql);
+if ($res)
+{
+	$ids = [];
+	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+	{
+		if (authUserAccesArea(getUserName(), $row[0]) == 1)
+		{
+			$ids[] = $row[0];
+		}
+	}
+	// modification proposée par Eric Marie (Github)
+	$sql2 = "SELECT area_id, id, room_name FROM ".TABLE_PREFIX."_room WHERE area_id IN ('" . implode("', '", $ids) . "')";
+	$tab_rooms_noaccess = verif_acces_ressource($user_name, 'all');
+	foreach($tab_rooms_noaccess as $key)
+	{
+		$sql2 .= " AND id != $key ";
+	}
+	$sql2 .= " ORDER BY area_id, room_name";
+
+	$res2 = grr_sql_query($sql2);
+	$results = [];
+	if ($res2)
+	{
+		for ($j = 0; ($row2 = grr_sql_row($res2, $j)); $j++)
+		{
+			$results[$row2[0]][] = [$row2[1], $row2[2]];
+		}
+		foreach($results as $areaId => $rows2) {
+			$d['complementJSchangeRooms'] .= "      case \"".$areaId."\":\n";
+			$d['complementJSchangeRooms'] .= "roomsObj.size=" . min($longueur_liste_ressources_max, count($rows2)) . ";\n";
+			$i = 0;
+			foreach($rows2 as $row2) {
+				$d['complementJSchangeRooms'] .= "roomsObj.options[$i] = new Option(\"".str_replace('"','\\"',$row2[1])."\",".$row2[0] .")\n";
+				$i++;
+			}
+			$d['complementJSchangeRooms'] .= "roomsObj.options[0].selected = true\n";
+			$d['complementJSchangeRooms'] .= "break\n";
+		}
+	}
+	grr_sql_free($res2);
+}
+grr_sql_free($res);
+
 // réservation conditionnelle
 if (($delais_option_reservation > 0) && (($modif_option_reservation == 'y') || ((($modif_option_reservation == 'n') && ($option_reservation != -1)))))
 {
@@ -779,10 +831,11 @@ $monthlist = array("firstofmonth","secondofmonth","thirdofmonth","fouthofmonth",
 
 if($periodiciteConfig == 'y')
 {
+	$d['repHTML'] = "";
+
 	if ( ($edit_type == "series") || (isset($flag_periodicite)))
 	{
         $d['periodiciteAttache'] = 0;
-        $d['repHTML'] = "";
 
 //		echo '<div id="menu1" style="display:none;">',PHP_EOL; // choix de la périodicité
 //        echo '<p class="F"><b>',get_vocab("rep_type"),'</b></p>',PHP_EOL;
@@ -890,7 +943,7 @@ if($periodiciteConfig == 'y')
 			$affiche_period = get_vocab($weeklist[$rep_num_weeks]);
 		else
 			$affiche_period = get_vocab('rep_type_'.$rep_type);
-		echo '<p><b>'.get_vocab('rep_type').'</b> '.$affiche_period.'</p>'."\n";
+		$d['repHTML'] .= '<p><b>'.get_vocab('rep_type').'</b> '.$affiche_period.'</p>'."\n";
 		if ($rep_type != 0)
 		{
 			$opt = '';
@@ -916,17 +969,17 @@ if($periodiciteConfig == 'y')
 			}
 			if ($opt)
 				if ($nb == 1)
-					echo '<p><b>'.get_vocab('rep_rep_day').'</b> '.$opt.'</p>'."\n";
+					$d['repHTML'] .= '<p><b>'.get_vocab('rep_rep_day').'</b> '.$opt.'</p>'."\n";
 				else
-					echo '<p><b>'.get_vocab('rep_rep_days').'</b> '.$opt.'</p>'."\n";
+					$d['repHTML'] .= '<p><b>'.get_vocab('rep_rep_days').'</b> '.$opt.'</p>'."\n";
 				if ($enable_periods=='y') list( $start_period, $start_date) =  period_date_string($start_time);
 				else $start_date = time_date_string($start_time,$dformat);
 				$duration = $end_time - $start_time;
 				if ($enable_periods=='y') toPeriodString($start_period, $duration, $dur_units);
 				else toTimeString($duration, $dur_units, true);
-				echo '<p><b>'.get_vocab("date").get_vocab("deux_points").'</b> '.$start_date.'</p>'."\n";
-				echo '<p><b>'.get_vocab("duration").'</b> '.$duration .' '. $dur_units.'</p>'."\n";
-				echo '<p><b>'.get_vocab('rep_end_date').'</b> '.$rep_end_date.'</p>'."\n";
+				$d['repHTML'] .= '<p><b>'.get_vocab("date").get_vocab("deux_points").'</b> '.$start_date.'</p>'."\n";
+				$d['repHTML'] .= '<p><b>'.get_vocab("duration").'</b> '.$duration .' '. $dur_units.'</p>'."\n";
+				$d['repHTML'] .= '<p><b>'.get_vocab('rep_end_date').'</b> '.$rep_end_date.'</p>'."\n";
 		}
 	}
 }
