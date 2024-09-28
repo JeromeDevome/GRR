@@ -97,12 +97,12 @@ if (isset($choix) && $choix > 0)
 					statut='".protect_data_sql($getStatut)."',
 					email='".protect_data_sql($demande['email'])."',
 					etat='actif',
-					default_site = '-1',
-					default_area = '-1',
-					default_room = '-1',
-					default_style = '',
-					default_list_type = 'item',
-					default_language = 'fr-fr',
+					default_site = '".$settings->get("default_site")."',
+					default_area = '".$settings->get("default_area")."',
+					default_room = '".$settings->get("default_room")."',
+					default_style = '".$settings->get("default_css")."',
+					default_list_type = '".$settings->get("area_list_format")."',
+					default_language = '".$settings->get("default_language")."',
 					source='local'";
 
 					if (grr_sql_command($sql) < 0)
