@@ -101,7 +101,21 @@
 							</div>
 						{% endif %}
 
-						{{ form.input('reg_password', trad.pwd_toot_short, '', {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'password', autocomplete:'new-password'}) }}
+						{{ form.input('reg_password', trad.pwd, '', {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'password', autocomplete:'new-password'}) }}
+						<div class="form-group row row">
+							<div class="col-sm-4"></div>
+							<div class="col-sm-8">
+								{{trad.pwd_toot_short}} 
+								{% if settings.pass_nb_min == 1 %}, {{settings.pass_nb_min}} {{trad.pass_x_min}}{% endif %}
+								{% if settings.pass_nb_min > 1 %}, {{settings.pass_nb_min}}  {{trad.pass_x_mins}}{% endif %}
+								{% if settings.pass_nb_maj == 1 %}, {{settings.pass_nb_maj}} {{trad.pass_x_maj}}{% endif %}
+								{% if settings.pass_nb_maj > 1 %}, {{settings.pass_nb_maj}} {{trad.pass_x_majs}}{% endif %}
+								{% if settings.pass_nb_ch == 1 %}, {{settings.pass_nb_ch}}  {{trad.pass_x_ch}}{% endif %}
+								{% if settings.pass_nb_ch > 1 %}, {{settings.pass_nb_ch}}  {{trad.pass_x_chs}}{% endif %}
+								{% if settings.pass_nb_sp == 1 %}, {{settings.pass_nb_sp}} {{trad.pass_x_sp}}{% endif %}
+								{% if settings.pass_nb_sp > 1 %}, {{settings.pass_nb_sp}} {{trad.pass_x_sps}}{% endif %}
+							</div>
+						</div>
 						{{ form.input('reg_password2', trad.confirm_pwd, '', {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'password'}) }}
 
 						<div class="form-group row col-sm-12">
