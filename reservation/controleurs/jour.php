@@ -253,6 +253,7 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 	{
 		if (verif_acces_ressource($user_name, $room))
 		{
+			$afficherCellule = 0;
 			$statutCellule = 0; //0 vide, 1 réservable, 2 déjà une reservation, 3 hors résa
 			$titre = "";
 			$descr = "";
@@ -287,16 +288,19 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 							if ($id_derniere_ligne_du_bloc != $id)
 								$cellules[$id] = $cellules[$id]-1;
 						}
+						$afficherCellule = 1;
 					}
 					$rowspan = $cellules[$id];
 				}
 				$compteur[$id] = 1;
 			}
+			else
+				$afficherCellule = 1;
 				
 
 			if ( $id == 0 || (est_hors_reservation(mktime(0, 0, 0, $month, $day, $year), $area)))
 			{
-
+				$afficherCellule = 1;
 				$date_booking = mktime($hour, $minute, 0, $month, $day, $year);
                 if ($enable_periods == 'y')
                     $date_booking = mktime(23,59,0,$month,$day,$year);
@@ -323,13 +327,15 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 			}
 			else if ($descr != "")
 			{
+				$afficherCellule = 1;
 				$statutCellule = 2;
                 if (($statut_room[$room] == "1") || (($statut_room[$room] == "0") && ($authLevel > 2) ))
 				{
 					$titre = $today[$room][$t]["who"];
 				}
 			}
-            $cellulesJours[] = array('statut' => $statutCellule, 'class' => $c, 'rowspan' => $rowspan, 'ressource' => $room, 'idresa' => $id, 'titre' => $titre, 'descr' => $descr, 'ficheResa' => $acces_fiche_reservation);
+			if($afficherCellule == 1)
+            	$cellulesJours[] = array('statut' => $statutCellule, 'class' => $c, 'rowspan' => $rowspan, 'ressource' => $room, 'idresa' => $id, 'titre' => $titre, 'descr' => $descr, 'ficheResa' => $acces_fiche_reservation);
 		}
 	}
     $lignesHoraires[] = array('classHoraire' => $classHoraire, 'horairePeriode' => $horairePeriode, 'cellulesJours' => $cellulesJours, 'periode' => $time_t_stripped, 'heure' => $hour, 'minute' => $minute);
