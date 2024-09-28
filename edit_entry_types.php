@@ -60,8 +60,8 @@ $aff_type = max(authGetUserLevel(getUserName(),-1,"room"),authGetUserLevel(getUs
 $nb_type = 0;
 $type_nom_unique = "??";
 $type_id_unique = "??";
-$display_type = '<table><tr><td class="E"><b>'.get_vocab("type")." *".get_vocab("deux_points").'</b></td></tr>'.PHP_EOL;
-$display_type .= '<tr><td class="CL">'.PHP_EOL;
+$display_type = '<b>'.get_vocab("type")." *".get_vocab("deux_points").'</b>'.PHP_EOL;
+$display_type .= PHP_EOL;
 $display_type .= '<select id="type" class="form-control" name="type" size="1" onclick="setdefault(\'type_default\',\'\')">'.PHP_EOL;
 $display_type .= '<option value="0">'.get_vocab("choose").PHP_EOL;
 $sql = "SELECT DISTINCT t.type_name, t.type_letter, t.id, t.order_display FROM ".TABLE_PREFIX."_type_area t
@@ -118,9 +118,9 @@ if (grr_sql_count($res) != 0)
 $display_type .=  '</select>'.PHP_EOL;
 if ($aff_default)
 	$display_type .= '<input type="button" class="btn btn-primary" value="'.get_vocab("definir_par_defaut").'" onclick="setdefault(\'type_default\',document.getElementById(\'main\').type.options[document.getElementById(\'main\').type.options.selectedIndex].text)" />'.PHP_EOL;
-$display_type .= '</td></tr></table>'.PHP_EOL;
+$display_type .= ''.PHP_EOL;
 if ($nb_type > 1)
 	echo $display_type;
 else
-	echo '<table class="pleine"><tr><td class="E"><b>'.get_vocab("type").get_vocab("deux_points").htmlentities($type_nom_unique).'</b>'.PHP_EOL.'<input name="type" type="hidden" value="'.$type_id_unique.'" /></td></tr></table>'.PHP_EOL;
+	echo '<b>'.get_vocab("type").get_vocab("deux_points").htmlentities($type_nom_unique).'</b>'.PHP_EOL.'<input name="type" type="hidden" value="'.$type_id_unique.'" />'.PHP_EOL;
 ?>

@@ -1016,16 +1016,16 @@ function begin_page($title, $page = "with_session")
 		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css?v='.$version_grr.'">'.PHP_EOL;
 	}
 	$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css?v='.$version_grr.'" />'.PHP_EOL; // le style par défaut
-	
+	$a .= '<link rel="stylesheet" type="text/css" href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css">';
 	if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css?v='.$version_grr.'" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/'.$sheetcss.'/css/style.css?v='.$version_grr.'" />'.PHP_EOL; // le style couleurs prédéfinis
 		if($sheetcss == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
 			$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css?".Settings::get("sp_time")."\" />".PHP_EOL; // style perso via admin
 	
-	$a .= '<script type="text/javascript" src="js/jquery.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/jquery-ui.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/jquery.validate.js?v='.$version_grr.'"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="node_modules/jquery/dist/jquery-ui.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
+	//$a .= '<script type="text/javascript" src="js/jquery.validate.js?v='.$version_grr.'"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js?v='.$version_grr.'"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/menu.js?v='.$version_grr.'"></script>'.PHP_EOL;
@@ -1035,8 +1035,6 @@ function begin_page($title, $page = "with_session")
 	{
 		$a .= '<script type="text/javascript" src="js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/bootstrap-multiselect.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/select2.min.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/select2_locale_fr.js"></script>'.PHP_EOL;
 	}
 	if (isset($use_tooltip_js))
 		echo '<script type="text/javascript" src="js/tooltip.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
@@ -1074,8 +1072,6 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 		$racine = "./";
 		$racineAd = "./admin/";
 	}
-
-	include $racine."/include/hook.class.php";
 
 	if (!($desactive_VerifNomPrenomUser))
 		$desactive_VerifNomPrenomUser = 'n';
@@ -1245,7 +1241,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 			echo '</tr>'.PHP_EOL;
 			echo '</table>'.PHP_EOL;
 			echo '</div>'.PHP_EOL;
-			echo '<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>'.PHP_EOL;
+			echo '<a id="open" class="open" href="#"><i class="fa-solid fa-arrows-up-down"></i></a>'.PHP_EOL;
 			echo '</div>'.PHP_EOL;
 		}
 	}
@@ -1839,9 +1835,11 @@ function genDateSelector($prefix, $day, $month, $year, $option)
  */
 function fatal_error($need_header, $message, $show_form_data = true)
 {
-	global $vocab;
+	global $vocab, $twig, $page, $AllSettings, $d, $trad;
+
+
 	if ($need_header)
-		print_header(0, 0, 0, 0);
+		print_header_twig();
 	error_log("GRR: ".$message);
 	if ($show_form_data)
 	{
@@ -1858,8 +1856,16 @@ function fatal_error($need_header, $message, $show_form_data = true)
 	{
 		error_log("GRR SESSION: ".print_r($_SESSION, true));
 	}
-	echo '<p>',$message,'</p>'.PHP_EOL;
-	include "trailer.inc.php";
+	
+
+	if ($need_header)
+	{
+		$d['messageErreur'] = $message;
+		echo $twig->render('erreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
+	}
+	else
+		echo '<p>',$message,'</p>'.PHP_EOL;
+
 	exit;
 }
 
@@ -2574,10 +2580,11 @@ function make_room_select_html($link, $current_area, $current_room, $year, $mont
 	$res = grr_sql_query($sql);
 	if ($res && (grr_sql_count($res)>0)) // il y a des ressources à afficher
 	{
+		if ($link != "jour")
+			$link .= "_all";
+
         $out_html = "<b><i>".get_vocab('rooms').get_vocab("deux_points")."</i></b><br /><form id=\"room_".$pos."\" action=\"".$_SERVER['PHP_SELF']."\"><div><select class=\"form-control\" name=\"room\" onchange=\"room_go_".$pos."()\">";
-        $out_html .= "<option value=\"".$link;
-        if ($link != "day"){$out_html .= "_all";}
-        $out_html .= ".php?year=$year&amp;month=$month&amp;day=$day&amp;area=$current_area\">".get_vocab("all_rooms")."</option>";
+        $out_html .= "<option value=\"app.php?p=$link&amp;year=$year&amp;month=$month&amp;day=$day&amp;area=$current_area\">".get_vocab("all_rooms")."</option>";
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
 			if (verif_acces_ressource(getUserName(),$row[0]))
@@ -2587,7 +2594,7 @@ function make_room_select_html($link, $current_area, $current_room, $year, $mont
 				else
 					$temp = "";
 				$selected = ($row[0] == $current_room) ? "selected=\"selected\"" : "";
-				$link2 = $link.'.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$row[0];
+				$link2 = 'app.php?p='.$link.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$row[0];
 				$out_html .= "<option $selected value=\"$link2\">" . htmlspecialchars($row[1].$temp)."</option>".PHP_EOL;
 			}
 		}
@@ -4439,16 +4446,12 @@ function showAccessDenied_twig($back, $infodebug = '')
  */
 function showNoReservation($day, $month, $year, $back)
 {
-	global $vocab;
-	if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
-		$type_session = "no_session";
-	else
-		$type_session = "with_session";
-	start_page_w_header($day, $month, $year, $type_session);
-	echo '<h1>'.get_vocab("accessdenied").'</h1>';
-	echo '<p>'.get_vocab("noreservation").'</p>';
-	echo '<p><a href="'.$back.'">'.get_vocab("returnprev").'</a></p>';
-    end_page();
+
+	$html = '<h1>'.get_vocab("accessdenied").'</h1>';
+	$html .= '<p>'.get_vocab("noreservation").'</p>';
+	$html .= '<p><a href="'.$back.'">'.get_vocab("returnprev").'</a></p>';
+    
+	return $html;
 }
 /* showAccessDeniedMaxBookings()
  *
@@ -4483,6 +4486,32 @@ function showAccessDeniedMaxBookings($day, $month, $year, $id_room, $back)
 	</p>
 </body>
 </html>';
+}
+function showAccessDeniedMaxBookings_twig($day, $month, $year, $id_room, $back)
+{
+	global $vocab;
+	$html = '<h1>'.get_vocab("accessdenied").'</h1>';
+	$html .= '<p>';
+		// Limitation par ressource
+		$max_booking_per_room = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($id_room)."'");
+		if ($max_booking_per_room >= 0)
+			$html .= get_vocab("msg_max_booking").get_vocab("deux_points").$max_booking_per_room."<br />";
+		// Calcul de l'id de l'area de la ressource.
+		$id_area = mrbsGetRoomArea($id_room);
+		// Limitation par domaine
+		$max_booking_per_area = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_area WHERE id = '".protect_data_sql($id_area)."'");
+		if ($max_booking_per_area >= 0)
+			$html .= get_vocab("msg_max_booking_area").get_vocab("deux_points").$max_booking_per_area."<br />";
+		// Limitation sur l'ensemble des ressources
+		$max_booking_all = Settings::get("UserAllRoomsMaxBooking");
+		if ($max_booking_all >= 0)
+			$html .= get_vocab("msg_max_booking_all").get_vocab("deux_points").$max_booking_all."<br />";
+		$html .= "<br />".get_vocab("accessdeniedtoomanybooking");
+	$html .='</p>
+	<p>
+		<a href="'.$back.'" >'.get_vocab("returnprev").'</a>
+	</p>';
+	return $html;
 }
 /* fonction qui rend TRUE lorsque la date proposée est en dehors de la période réservable
 */
@@ -5132,7 +5161,7 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 
 	// Option réservation
 	if($resa[9] > 0 && $resa[10] > 0)
-		$affichage .=  " <span class=\"glyphicon glyphicon-flag\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")." ".time_date_string_jma($resa[9],$dformat)."\" style=\"color:yellow;text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;\"></span>";
+		$affichage .=  " <i class=\"fa-solid fa-flag\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")." ".time_date_string_jma($resa[9],$dformat)."\" style=\"color:yellow;text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;\"></i>";
 
 	// Modération
 	if($resa[11] == 1)
@@ -5764,7 +5793,7 @@ function jQuery_DatePickerTwig($typeDate){
  	}
 
 	if($typeDate != '')
-		$typeDate = $typeDate."_";
+		$typeDate = $typeDate;
 
  	$retour = genDateSelectorForm($typeDate, "$day", "$month", "$year","");
 
@@ -5816,19 +5845,12 @@ function jQuery_TimePicker($typeTime, $start_hour, $start_min,$dureepardefaultse
 	if ($minute == 0)
 		$minute = '00';
 	// MAJ
-	echo '<div class="input-group clockpicker">
-	<input name="' .$typeTime. '" type="text" class="form-control" value="' .$hour. ':' .$minute. '">
-	<span class="input-group-addon">
-		<span class="glyphicon glyphicon-time"></span>
-	</span>
-</div>';
-echo '<script type="text/javascript">
-$(\'.clockpicker\').clockpicker({
-	align: \'left\',
-	placement: \'top\',
-	donetext: \'Valider\'
-});
-</script>';
+	echo '<div class="input-group">
+		<input name="' .$typeTime. '" type="time" class="form-control" value="' .$hour. ':' .$minute. '">
+		<span class="input-group-addon">
+			<i class="fa-regular fa-clock"></i>
+		</span>
+	</div>';
 }
 function jQuery_TimePickerTwig($typeTime, $start_hour, $start_min,$dureepardefaultsec)
 {
@@ -5875,8 +5897,8 @@ function jQuery_TimePickerTwig($typeTime, $start_hour, $start_min,$dureepardefau
 	if ($minute == 0)
 		$minute = '00';
 	// MAJ
-	$html = '<div class="input-group">
-		<input name="' .$typeTime. '" type="time" class="form-control" value="' .$hour. ':' .$minute. '">
+	$html = '<div class="input-group clockpicker" style="width:auto;">
+		<input name="' .$typeTime. '" type="time" id="clockpicker" class="form-control" value="' .$hour. ':' .$minute. '">
 		<span class="input-group-addon">
 			<i class="fa-regular fa-clock"></i>
 		</span>
@@ -5937,7 +5959,7 @@ function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaults
     <div class="input-group timepicker">
 	<input id="'.$typeTime.'" name="'.$typeTime.'" type="text" class="form-control time" value="'.$hour.':'.$minute. '" >
     <span class="input-group-addon btn" id="'.$typeTime.'clock'.'">
-        <span class="glyphicon glyphicon-time" ></span>
+		<i class="fa-solid fa-clock"></i>
     </span>
 	</div>';
     echo '<script type="text/javascript">
@@ -6346,282 +6368,6 @@ function cssTypeResa()
 	return $types;
 }
 
-// suggestions pour reformuler les pages plannings
-/*function pageHead2($title, $page = "with_session") 
-{
-	global $grr_script_name;
-	if ($page == "with_session")
-	{
-		if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changemdp.php'){
-			header("Location: ./compte/compte.php?p=changemdp");
-		} // est-ce bien placé ? YN le 27/02/2020
-
-		if (isset($_SESSION['default_style']))
-			$sheetcss = $_SESSION['default_style'];
-		else {
-            if (Settings::get("default_css")) 
-				$sheetcss = Settings::get("default_css"); // thème global par défaut
-			else
-				$sheetcss = 'default'; // utilise le thème par défaut s'il n'a pas été défini
-        }
-		if (isset($_GET['default_language']))
-		{
-			$_SESSION['default_language'] = alphanum(clean_input($_GET['default_language']));
-			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
-				header("Location: ".$_SESSION['chemin_retour']);
-			else
-				header("Location: ".traite_grr_url());
-			die();
-		}
-	}
-	else
-	{
-		if (Settings::get("default_css"))
-			$sheetcss = Settings::get("default_css");
-		else
-			$sheetcss = 'default';
-		if (isset($_GET['default_language']))
-		{
-			$_SESSION['default_language'] = alphanum(clean_input($_GET['default_language']));
-			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
-				header("Location: ".$_SESSION['chemin_retour']);
-			else
-				header("Location: ".traite_grr_url());
-			die();
-		}
-	}
-	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $use_admin, $gcDossierCss, $version_grr;
-    // récupération des couleurs des types
-    $types = cssTypeResa();
-    // code de la partie <head> 
-	$a  = '<head>'.PHP_EOL;
-	$a .= '<meta charset="utf-8">'.PHP_EOL;
-	$a .= '<meta http-equiv="X-UA-Compatible" content="IE=edge">'.PHP_EOL;
-	$a .= '<meta name="viewport" content="width=device-width, initial-scale=1">'.PHP_EOL;
-	$a .= '<meta name="Robots" content="noindex" />'.PHP_EOL;
-	$a .= '<title>'.$title.'</title>'.PHP_EOL;
-	$a .= '<link rel="shortcut icon" href="./favicon.ico" />'.PHP_EOL;
-	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css?v='.$version_grr.'" />'.PHP_EOL;
-	if (isset($use_select2))
-	{
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2.css?v='.$version_grr.'" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2-bootstrap.css?v='.$version_grr.'" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-multiselect.css?v='.$version_grr.'">'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css?v='.$version_grr.'">'.PHP_EOL;
-	}
-	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.css?v='.$version_grr.'" />'.PHP_EOL;
-	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css?v='.$version_grr.'" >'.PHP_EOL;
-	$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css?v='.$version_grr.'" />'.PHP_EOL; // le style par défaut
-	
-	if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
-		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css?v='.$version_grr.'" />'.PHP_EOL;
-	
-	$a .= '<link rel="stylesheet" type="text/css" href="themes/'.$sheetcss.'/css/style.css?v='.$version_grr.'" />'.PHP_EOL; // le style couleurs prédéfinis
-	if($sheetcss == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css?v='.$version_grr.'"))
-		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css?".Settings::get("sp_time")."\" />".PHP_EOL; // style perso via admin
-		
-	$a .= $types;
-    $a .= '<script type="text/javascript" src="js/jquery.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/jquery-ui.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/jquery.validate.js?v='.$version_grr.'"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js?v='.$version_grr.'"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/menu.js?v='.$version_grr.'"></script>'.PHP_EOL;
-    $a .= '<script type="text/javascript" src="js/jquery.floatThead.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
-    //$a .= '<script type="text/javascript" src="js/planning2Thead.js"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/popup.js?v='.$version_grr.'" charset="utf-8"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/functions.js?v='.$version_grr.'" ></script>'.PHP_EOL;
-	if (isset($use_select2))
-	{
-		$a .= '<script type="text/javascript" src="js/bootstrap-clockpicker.js?v='.$version_grr.'"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/bootstrap-multiselect.js?v='.$version_grr.'"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/select2.js?v='.$version_grr.'"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/select2_locale_fr.js?v='.$version_grr.'"></script>'.PHP_EOL;
-	}
-	if (isset($use_tooltip_js))
-		echo '<script type="text/javascript" src="./include/tooltip.js?v='.$version_grr.'"></script>'.PHP_EOL;
-	if (!isset($_SESSION['selection']))
-		$a .= '<script type="text/javascript" src="js/selection.js?v='.$version_grr.'" ></script>'.PHP_EOL;
-	if (@file_exists('js/'.$clock_file))
-		$a .= '<script type="text/javascript" src="js/'.$clock_file.'?v='.$version_grr.'"></script>'.PHP_EOL;
-	if (substr(phpversion(), 0, 1) < 7)
-		$a .= get_vocab('not_php');
-
-	$a .= '</head>'.PHP_EOL;
-	return $a;
-}
-*/
-/*
-** Fonction qui affiche le header
-*/
-
-function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_session', $adm=0)
-{
-	global $niveauDossier, $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name, $racine, $racineAd;
-	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $gcDossierImg;
-
-	$parametres_url = "";
-    if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
-        $parametres_url = htmlspecialchars($_SERVER['QUERY_STRING']);
-        
-	$resulHook = Hook::Appel("hookHeader2");
-	echo $resulHook['hookHeader2'];
-	// Si nous ne sommes pas dans un format imprimable
-	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
-	{
-		// If we dont know the right date then make it up
-		if (!isset($day) || !isset($month) || !isset($year) || ($day == '') || ($month == '') || ($year == ''))
-		{
-			$date_now = time();
-			if ($date_now < Settings::get("begin_bookings"))
-				$date_ = Settings::get("begin_bookings");
-			else if ($date_now > Settings::get("end_bookings"))
-				$date_ = Settings::get("end_bookings");
-			else
-				$date_ = $date_now;
-			$day   = date("d",$date_);
-			$month = date("m",$date_);
-			$year  = date("Y",$date_);
-		}
-		if (!(isset($search_str)))
-			$search_str = get_vocab("search_for");
-		if (empty($search_str))
-			$search_str = "";
-		if (!(isset($desactive_bandeau_sup) && ($desactive_bandeau_sup == 1) && ($type_session != 'with_session')))
-		{
-
-			// HOOK
-			$resulHook = Hook::Appel("hookHeader1");
-			echo $resulHook['hookHeader1'];
-
-			// On fabrique une date valide pour la réservation si ce n'est pas le cas
-			$date_ = mktime(0, 0, 0, $month, $day, $year);
-			if ($date_ < Settings::get("begin_bookings"))
-				$date_ = Settings::get("begin_bookings");
-			else if ($date_ > Settings::get("end_bookings"))
-				$date_ = Settings::get("end_bookings");
-			$day   = date("d",$date_);
-			$month = date("m",$date_);
-			$year  = date("Y",$date_);
-			echo '<div id="panel">'.PHP_EOL;
-			//Logo
-			$nom_picture = $racine."personnalisation/".$gcDossierImg."/logos/".Settings::get("logo");
-			if ((Settings::get("logo") != '') && (@file_exists($nom_picture)))
-				echo '<div class="logo" height="100">'.PHP_EOL.'<a href="'.$racine.page_accueil('yes').'day='.$day.'&amp;year='.$year.'&amp;month='.$month.'"><img src="'.$nom_picture.'" alt="logo"/></a>'.PHP_EOL.'</div>'.PHP_EOL;
-			//Accueil
-			echo '<div class="accueil ">',PHP_EOL,'<h2>',PHP_EOL,'<a href="'.$racine.page_accueil('yes'),'day=',$day,'&amp;year=',$year,'&amp;month=',$month,'">',Settings::get("company"),'</a>',PHP_EOL,'</h2>',PHP_EOL, Settings::get('message_accueil'),'</div>',PHP_EOL;
-			//Mail réservation
-			//$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
-			//$res = Settings::get("mail_etat_destinataire");
-			if ((( Settings::get("mail_etat_destinataire") == 1 && $type_session == "no_session" ) || ( ( Settings::get("mail_etat_destinataire") == 1 || Settings::get("mail_etat_destinataire") == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) ))
-			{
-				echo '<div class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="'.get_vocab('reserver').'" onClick="javascript:location.href=\'app.php?p=contactresa&day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</div>',PHP_EOL;
-			}
-			// Administration
-			if ($type_session == "with_session")
-			{
-                $user_name = getUserName();
-                $resaAModerer = resaToModerate($user_name);
-                $nbResaAModerer = count($resaAModerer);
-                $mess_resa = '';
-                if ($nbResaAModerer > 1){$mess_resa = $nbResaAModerer.get_vocab('resasToModerate');}
-                if ($nbResaAModerer == 1){$mess_resa = $nbResaAModerer.get_vocab('resaToModerate');}
-				if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1) || ($mess_resa != '')) // trop large ? YN le 06/01/19
-				{
-					echo '<div class="administration">'.PHP_EOL;
-					if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1))
-                        echo "<br><a href='{$racineAd}admin.php?p=admin_accueil&amp;day={$day}&amp;month={$month}&amp;year={$year}'>".get_vocab('admin')."</a>".PHP_EOL;
-					if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
-					{
-						echo '<br />'.PHP_EOL;
-						how_many_connected();
-                        echo "<br />";
-					}
-                    echo "<p class='avertissement'><a href='{$racineAd}admin.php?p=admin_accueil&amp;".$parametres_url."' class='avertissement'>".$mess_resa."</a></p>".PHP_EOL;
-					echo '</div>'.PHP_EOL;
-				}
-			}
-			//if ($type_session != "with_session")
-			//	echo '<script>selection()</script>'.PHP_EOL;
-			echo '<div class="configuration" >'.PHP_EOL;
-			if (@file_exists('js/'.$clock_file))
-			{
-				echo '<div class="clock">'.PHP_EOL;
-				echo '<div id="Date">'.PHP_EOL;
-				echo '&nbsp;<span id="hours"></span>'.PHP_EOL;
-				echo 'h'.PHP_EOL;
-				echo '<span id="min"></span>'.PHP_EOL;
-				echo '</div></div>'.PHP_EOL;
-			}
-			$_SESSION['chemin_retour'] = '';
-			if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
-			{
-				$_SESSION['chemin_retour'] = traite_grr_url($grr_script_name)."?". $_SERVER['QUERY_STRING'];
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=fr-fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=de-de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=en-gb"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=it-it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=es-es"><img src="'.$racine.'img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>'.PHP_EOL;
-			}
-			if ($type_session == 'no_session')
-			{
-				$resulHook = Hook::Appel("hookLienConnexion2");
-				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
-				{
-					echo '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>'.PHP_EOL;
-					echo '<br /> <small><i><a href="app.php?p=login">'.get_vocab("connect_local").'</a></i></small>'.PHP_EOL;
-				} elseif($resulHook['hookLienConnexion2'] != ""){
-					echo $resulHook['hookLienConnexion2'];	
-				}else{
-					echo '<br /> <a href="app.php?p=login">'.get_vocab("connect").'</a>'.PHP_EOL;
-				}
-			}
-			else
-			{
-				$resulHook = Hook::Appel("hookLienConnexion3");
-				if( strlen(htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom'])) > 40 )
-					$nomAffichage =  htmlspecialchars($_SESSION['nom']);
-				else
-					$nomAffichage =  htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']);
-			
-				echo '<br /><a href="'.$racine.'compte/compte.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'. $nomAffichage .' - '.get_vocab("manage_my_account").'</a>'.PHP_EOL;
-				if (verif_access_search(getUserName()))
-					echo '<br/><a href="'.$racine.'app.php?p=report">'.get_vocab("report").'</a>'.PHP_EOL;
-				if($resulHook['hookLienConnexion3'] != "")
-					echo $resulHook['hookLienConnexion3'];	
-				$disconnect_link = false;
-				if (!((Settings::get("cacher_lien_deconnecter") == 'y') && (isset($_SESSION['est_authentifie_sso']))))
-				{
-					$disconnect_link = true;
-					if (Settings::get("authentification_obli") == 1)
-						echo '<br /> <a href="'.$racine.'app.php?p=deconnexion&auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
-					else
-						echo '<br /> <a href="'.$racine.'app.php?p=deconnexion&auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
-				}
-				if ((Settings::get("Url_portail_sso") != '') && (isset($_SESSION['est_authentifie_sso'])))
-				{
-					if ($disconnect_link)
-						echo ' - '.PHP_EOL;
-					else
-						echo '<br />'.PHP_EOL;
-					echo '<a href="'.Settings::get("Url_portail_sso").'">'.get_vocab("Portail_accueil").'</a>'.PHP_EOL;
-				}
-				if ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_statut') == 'lasso_utilisateur'))
-				{
-					echo '<br />';
-					if ($_SESSION['lasso_nameid'] == NULL)
-						echo '<a href="lasso/federate.php">'.get_vocab('lasso_federate_this_account').'</a>'.PHP_EOL;
-					else
-						echo '<a href="lasso/defederate.php">'.get_vocab('lasso_defederate_this_account').'</a>'.PHP_EOL;
-				}
-			}
-			echo '</div>'.PHP_EOL;
-			echo '</div>'.PHP_EOL;
-			echo '<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>'.PHP_EOL;
-		}
-	}
-}
-
 /*
 ** Fonction qui affiche le début d'une page avec entête et balise <section>
 */
@@ -6644,7 +6390,7 @@ function start_page_w_header($day = '', $month = '', $year = '', $type_session =
         $racine = "./";
         $racineAd = "./admin/";
     }
-    include $racine."/include/hook.class.php";
+
     // code HTML
     header('Content-Type: text/html; charset=utf-8'); // en liaison avec la modification de pageHead2
     /*if (!isset($_COOKIE['open']))

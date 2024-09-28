@@ -28,13 +28,13 @@
 			{% if d.pview != 1 %} <!-- liens mois avant-après et imprimante si page non imprimable -->
 				<div class="ligne23">
 					<div class="left">
-						<button class="btn btn-default btn-xs" onclick="javascript: location.href='app.php?p=mois&amp;year={{d.yy}}&amp;month={{d.ym}}&amp;room={{d.room}}';" ><span class="glyphicon glyphicon-backward"></span> {{trad.monthbefore}}</button>
+						<button class="btn btn-default btn-xs" onclick="javascript: location.href='app.php?p=mois&amp;year={{d.yy}}&amp;month={{d.ym}}&amp;room={{d.room}}';" ><i class="fa-solid fa-angles-left"></i> {{trad.monthbefore}}</button>
 					</div>
 
 					{{ planning.imprimante(settings, d.paramUrl) }}
 
 					<div class="right">
-						<button class="btn btn-default btn-xs" onclick="javascript: location.href='app.php?p=mois&amp;year={{d.ty}}&amp;month={{d.tm}}&amp;room={{d.room}}';">{{trad.monthafter}} <span class="glyphicon glyphicon-forward"></span></button>
+						<button class="btn btn-default btn-xs" onclick="javascript: location.href='app.php?p=mois&amp;year={{d.ty}}&amp;month={{d.tm}}&amp;room={{d.room}}';">{{trad.monthafter}} <i class="fa-solid fa-angles-right"></i></button>
 					</div>
 				</div>
 			{% endif %}
@@ -42,8 +42,8 @@
 			<div>
 				{% if d.pview != 1 %} <!-- afficher ou cacher le menu si page non imprimable -->
 					<div class="left">
-						<div id="voir"><button class="btn btn-default btn-sm" onClick="afficheMenuHG({{d.positionMenu}})" title="{{trad.show_left_menu}}"><span class="glyphicon glyphicon-chevron-right"></span></button></div>
-						<div id="cacher"><button class="btn btn-default btn-sm" onClick="afficheMenuHG(0)" title="{{trad.hide_left_menu}}"><span class="glyphicon glyphicon-chevron-left"></span></button></div> 
+						<div id="voir"><button class="btn btn-default btn-sm" onClick="afficheMenuHG({{d.positionMenu}})" title="{{trad.show_left_menu}}"><i class="fas fa-bars"></i></button></div>
+						<div id="cacher"><button class="btn btn-default btn-sm" onClick="afficheMenuHG(0)" title="{{trad.hide_left_menu}}"><i class="fas fa-bars"></i></button></div> 
 					</div>
 				{% endif %}
 
@@ -53,11 +53,11 @@
 				</h4>
 
 				{% if d.ficheRessource %}
-					<a href="javascript:centrerpopup('app.php?p=ressourcefiche&id_room={{d.room}}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{trad.fiche_ressource}}"><span class="glyphcolor glyphicon glyphicon-search"></span></a>
+					<a href="javascript:centrerpopup('app.php?p=ressourcefiche&id_room={{d.room}}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{trad.fiche_ressource}}"><i class="fa-solid fa-magnifying-glass"></i></a>
 				{% endif %}
 
 				{% if d.configRessource %}
-					<a href="./admin/admin.php?p=admin_edit_room&room={{d.room}}" title="{{d.editroom}}"><span class="glyphcolor glyphicon glyphicon-cog"></span></a>
+					<a href="./admin/admin.php?p=admin_edit_room&room={{d.room}}" title="{{d.editroom}}"><i class="fa-solid fa-gear"></i></a>
 				{% endif %}
 
 				{% if d.statutRessource == 0 %}
@@ -111,7 +111,7 @@
 							<!-- Si hors résa -->
 							{% if cellule.horsResa == true %}
 								<div class="empty_cell">
-									<span class="glyphicon glyphicon-remove" title="{{trad.reservation_impossible}}" style="color:red"></span>
+									<i class="fa-solid fa-xmark" title="{{trad.reservation_impossible}}" style="color:red"></i>
 								</div>
 							{% else %}
 								{% for resa in cellule.reservations %}
@@ -121,7 +121,7 @@
 												<span class="small_planning">
 													{% if resa.lienFiche %}
 														{% if settings.display_level_view_entry == 0 %}
-															<a title="{{resa.titre}}" data-width="675" onclick="request({{resa.idresa}},{{cellule.numJour}},{{d.gMonth}},{{d.gYear}},{{d.room}},month,readData);" data-rel="popup_name" class="poplight lienCellule">
+															<a title="{{resa.titre}}" data-width="675" onclick="request({{resa.idresa}},{{cellule.numJour}},{{d.gMonth}},{{d.gYear}},{{d.room}},'mois',readData);" data-rel="popup_name" class="poplight lienCellule">
 														{% else %}
 															<a class="lienCellule" title="{{resa.titre}}" href="app.php?p=vuereservation&id={{resa.idresa}}&amp;day={{cellule.numJour}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=month">
 														{% endif %}
@@ -145,13 +145,13 @@
 							<!-- Il reste une plage libre : On affiche le + -->
 							{% if cellule.horsResa == false and cellule.plageLibre %}
 								<div class="empty_cell">
-									<a href="edit_entry.php?room={{d.room}}&amp;page=month&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{cellule.numJour}}&amp;
+									<a href="app.php?p=editentree&room={{d.room}}&amp;page=month&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{cellule.numJour}}&amp;
 									{% if d.usePeriode == "y" %}
 										period=&amp;
 									{% else %}
 										hour={{cellule.heure}}&amp;minute=0
 									{% endif %}"
-									title="{{trad.cliquez_pour_effectuer_une_reservation}}"><span class="glyphicon glyphicon-plus"></span></a>
+									title="{{trad.cliquez_pour_effectuer_une_reservation}}"><i class="fa-solid fa-plus"></i></a>
 								</div>
 							{% endif %}
 

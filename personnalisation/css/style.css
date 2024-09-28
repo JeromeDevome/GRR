@@ -15,7 +15,6 @@ td.calendarcol1>a:hover{color: var(--cal-semhovercolor);}
 #planning2 thead{background-color: var(--pl2-entetebgcolor); color: var(--pl2-entetecolor);}
 #planning2 tbody{background-color: var(--pl2-cellbgcolor); color: var(--pl2-cellcolor);}
 .monthday a {background-color: transparent; color: var(--pl2-cellcolor);}
-.glyphicon {color: var(--icons-color);}
 .btn-primary{color: var(--btn-primary-color);background-color: var(--btn-primary-bgcolor);border-color: var(--btn-primary-bordcolor)}
 .btn-primary:hover,.btn-primary:focus{background-color: var(--focus-btn-primary-bgcolor);border-color: var(--focus-btn-primary-bordcolor);color: var(--focus-btn-primary-color);}
 .btn-primary:active{background-color: var(--active-btn-primary-bgcolor);border-color: var(--active-btn-primary-bordcolor);color: var(--active-btn-primary-color);}

@@ -12,7 +12,7 @@
                 <input type="hidden" name="p" value="jour">
                 {{selectionDateDirecte|raw}}
                 <button class="btn btn-default btn-sm" type="submit">
-                    <span class="glyphicon glyphicon-chevron-right"></span>
+                    <i class="fa-solid fa-angles-right"></i>
                 </button>
             </form>
         {% endif %}
@@ -43,7 +43,7 @@
                 <center>
                     {{selectionDateDirecte|raw}}
                     <button class="btn btn-default btn-sm" type="submit">
-                        <span class="glyphicon glyphicon-chevron-right"></span>
+                        <i class="fa-solid fa-angles-right"></i>
                     </button>
                 </center>
             </form>
@@ -80,7 +80,7 @@
     {% else %}
         onclick="javascript:location.href='app.php?{% if paramUrl %}{{paramUrl}}&amp;{% endif %}pview=1&amp;precedent=1'">
     {% endif %}
-        <span class="glyphicon glyphicon-print"></span>
+        <i class="fa-solid fa-print"></i>
     </button>
 {% endmacro %}
 

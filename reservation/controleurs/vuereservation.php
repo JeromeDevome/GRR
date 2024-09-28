@@ -344,9 +344,11 @@ if ((authGetUserLevel($userName, -1) < 1) and (Settings::get("authentification_o
 if (authUserAccesArea($userName, $area) == 0)
 {
 	if (isset($reservation_is_delete))
-		showNoReservation($day, $month, $year, $back);
+        $d['messageErreur'] = showNoReservation($day, $month, $year, $back);
 	else
-		showAccessDenied($back);
+		$d['messageErreur'] = showAccessDenied_twig($back);
+    
+    echo $twig->render('erreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
 	exit();
 }
 $date_now = time();
@@ -512,9 +514,9 @@ if (($can_book || $can_copy) && (!$was_del))
     echo "<div>";
         $room_back = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
         if ($can_book)
-            $d['lienModifier'] = "edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back";
+            $d['lienModifier'] = "app.php?p=editentree&id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back";
         if ($can_copy)
-            $d['lienCopier'] = "edit_entry.php?id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back&amp;copier=copier";
+            $d['lienCopier'] = "app.php?p=editentree&id=$id&amp;day=$day&amp;month=$month&amp;year=$year&amp;page=$page&amp;room_back=$room_back&amp;copier=copier";
        if ($can_book)
             $d['lienEchanger'] = "app.php?p=echangeresa&amp;id=$id&amp;page=$page&amp;room_back=$room_back";
        if (($can_delete_or_create == "y")&& $can_book)
@@ -598,7 +600,7 @@ if ($repeat_id != 0)
 	}
     if ((getWritable($userName, $id)) && verif_booking_date($userName, $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room($userName, $room_id, $row[10], $enable_periods) && (!$was_del))
 	{	
-        $d['lienPeriodeModifier'] = "edit_entry.php?id=".$id."&amp;edit_type=series&amp;day=".$day."&amp;month=".$month."&amp;year=".$year."&amp;page=".$page;
+        $d['lienPeriodeModifier'] = "app.php?p=editentree&id=".$id."&amp;edit_type=series&amp;day=".$day."&amp;month=".$month."&amp;year=".$year."&amp;page=".$page;
         $d['lienPeriodeSupprimer'] = "app.php?p=supreservation&amp;id=".$id."&amp;series=1&amp;day=".$day."&amp;month=".$month."&amp;year=".$year."&amp;page=".$page;
     }
 }

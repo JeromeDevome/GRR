@@ -28,13 +28,13 @@
 			{% if d.pview != 1 %} <!-- liens mois avant-après et imprimante si page non imprimable -->
 				<div class="ligne23">
 					<div class="left">
-						<button class="btn btn-default btn-xs" onclick="javascript: location.href='app.php?p=mois2_all&amp;year={{d.yy}}&amp;month={{d.ym}}&amp;area={{d.area}}';" ><span class="glyphicon glyphicon-backward"></span> {{trad.monthbefore}}</button>
+						<button class="btn btn-default btn-xs" onclick="javascript: location.href='app.php?p=mois2_all&amp;year={{d.yy}}&amp;month={{d.ym}}&amp;area={{d.area}}';" ><i class="fa-solid fa-angles-left"></i> {{trad.monthbefore}}</button>
 					</div>
 
 					{{ planning.imprimante(settings, d.paramUrl) }}
 
 					<div class="right">
-						<button class="btn btn-default btn-xs" onclick="javascript: location.href='app.php?p=mois2_all&amp;year={{d.ty}}&amp;month={{d.tm}}&amp;area={{d.area}}';">{{trad.monthafter}} <span class="glyphicon glyphicon-forward"></span></button>
+						<button class="btn btn-default btn-xs" onclick="javascript: location.href='app.php?p=mois2_all&amp;year={{d.ty}}&amp;month={{d.tm}}&amp;area={{d.area}}';">{{trad.monthafter}} <i class="fa-solid fa-angles-right"></i></button>
 					</div>
 				</div>
 			{% endif %}
@@ -42,8 +42,8 @@
 			<div>
 				{% if d.pview != 1 %} <!-- afficher ou cacher le menu si page non imprimable -->
 					<div class="left">
-						<div id="voir"><button class="btn btn-default btn-sm" onClick="afficheMenuHG({{d.positionMenu}})" title="{{trad.show_left_menu}}"><span class="glyphicon glyphicon-chevron-right"></span></button></div>
-						<div id="cacher"><button class="btn btn-default btn-sm" onClick="afficheMenuHG(0)" title="{{trad.hide_left_menu}}"><span class="glyphicon glyphicon-chevron-left"></span></button></div> 
+						<div id="voir"><button class="btn btn-default btn-sm" onClick="afficheMenuHG({{d.positionMenu}})" title="{{trad.show_left_menu}}"><i class="fas fa-bars"></i></button></div>
+						<div id="cacher"><button class="btn btn-default btn-sm" onClick="afficheMenuHG(0)" title="{{trad.hide_left_menu}}"><i class="fas fa-bars"></i></button></div> 
 					</div>
 				{% endif %}
 
@@ -51,7 +51,7 @@
 					{{d.nomDomaine}} - {{trad.all_areas}}<br>
 					{{d.moisActuel}} <a href="app.php?p=annee&amp;area={{d.area}}" title="{{trad.see_all_the_rooms_for_several_months}}">{{d.anneeActuel}}</a>
                     {% if d.pview != 1 %}
-                        <a href="app.php?p=mois_all&year={{d.gYear}}&amp;month={{d.gMonth}}&amp;area={{d.area}}" title="{{trad.default_room_month_all_bis}}"><span class='glyphicon glyphicon-refresh'></span></a>
+                        <a href="app.php?p=mois_all&year={{d.gYear}}&amp;month={{d.gMonth}}&amp;area={{d.area}}" title="{{trad.default_room_month_all_bis}}"><i class="fa-solid fa-arrows-rotate"></i></a>
                     {% endif %}
 				</h4>
 
@@ -92,7 +92,7 @@
                                         <span class="small_planning">
                                             {% if resa.lienFiche %}
                                                 {% if settings.display_level_view_entry == 0 %}
-                                                    <a title="{{resa.titre}}" data-width="675" onclick="request({{resa.idresa}},{{cellule.numJour}},{{d.gMonth}},{{d.gYear}},{{d.room}},mois2_all,readData);" data-rel="popup_name" class="poplight lienCellule">
+                                                    <a title="{{resa.titre}}" data-width="675" onclick="request({{resa.idresa}},{{cellule.numJour}},{{d.gMonth}},{{d.gYear}},{{d.room}},'mois2_all',readData);" data-rel="popup_name" class="poplight lienCellule">
                                                 {% else %}
                                                     <a class="lienCellule" title="{{resa.titre}}" href="app.php?p=vuereservation&id={{resa.idresa}}&amp;day={{cellule.numJour}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=mois2_all">
                                                 {% endif %}
@@ -114,17 +114,17 @@
 
                         {% if jourR.horsResa %}
                             <div class="empty_cell">
-                                <span class="glyphicon glyphicon-remove" title="{{trad.reservation_impossible}}" style="color:red"></span>
+                                <i class="fa-solid fa-xmark" title="{{trad.reservation_impossible}}" style="color:red"></i>
                             </div>
                         {% elseif jourR.plageLibre %}
                         <div class="empty_cell">
-                            <a href="edit_entry.php?room={{ressource.id}}&amp;page=semaine_all&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{jourR.jour}}&amp;
+                            <a href="app.php?p=editentree&room={{ressource.id}}&amp;page=semaine_all&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{jourR.jour}}&amp;
                             {% if d.usePeriode == "y" %}
                                 period=&amp;
                             {% else %}
                                 hour={{jourR.heure}}&amp;minute=0
                             {% endif %}"
-                            title="{{trad.cliquez_pour_effectuer_une_reservation}}"><span class="glyphicon glyphicon-plus"></span></a>
+                            title="{{trad.cliquez_pour_effectuer_une_reservation}}"><i class="fa-solid fa-plus"></i></a>
                         </div>
                         {% endif %}
                     </td>

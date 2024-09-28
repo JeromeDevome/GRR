@@ -4,7 +4,8 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css?v={{d.versionGRR}}">
+	<link rel="stylesheet" type="text/css" href="node_modules/select2/dist/css/select2.min.css?v={{d.versionGRR}}">
+	<link rel="stylesheet" type="text/css" href="node_modules/clockpicker/dist/bootstrap-clockpicker.min.css?v={{d.versionGRR}}">
 {% endblock %}
 
 {% block content %}
@@ -41,13 +42,14 @@
 			<!-- Colonne de Gauche : Données de la réservation -->
 			<div class="col col-sm-6 col-xs-12">
 
+
 				<!-- Bénéficiare -->
 				{% if d.flag_qui_peut_reserver_pour %}
 					<div id="choix_beneficiaire" class="row">
 						<div class="col col-sm-9">
 							<div class="input-group">
-								<label for="beneficiaire" >{{trad.reservation_au_nom_de}}{{ trad.deux_points }}</label>
-								<select class="form-select" name="beneficiaire" id="beneficiaire">
+								<label for="beneficiaire">{{trad.reservation_au_nom_de}}{{ trad.deux_points }}</label>
+								<select style="min-width:200px;" class="form-select" name="beneficiaire" id="beneficiaire" onchange="setdefault('beneficiaire_default','');check_4();">
 									{{d.selectBeneficiare|raw}}
 								</select>
 							</div>
@@ -57,23 +59,24 @@
 						</div>
 					</div>
 
-					<div id="menu4" class="form-inline" {% if d.selectBeneficiareExt %}style="display:none"{% endif %}>
+					<div id="menu4" class="row" {% if d.selectBeneficiareExt == "" %}style="display:none"{% endif %}>
 						<div class="form-group col-sm-6">
 							<div class="input-group">
 								<div class="input-group-addon"><i class="fa-regular fa-user"></i></div>
 								<input class="form-control" type="text" name="benef_ext_nom" value="{{d.selectBeneficiareExt}}" placeholder="{{trad.nom_beneficiaire}}" required onchange="check_4()">
 							</div>
 						</div>
+
+						{% if settings.automatic_mail == "yes" %}
+							<div class="form-group col-sm-6">
+								<div class="input-group">
+									<div class="input-group-addon"><i class="fa-solid fa-envelope"></i></div>
+									<input class="form-control" type="email" name="benef_ext_email" value="{{d.benef_ext_email}}" placeholder="{{trad.email_beneficiaire}}">
+								</div>
+							</div>
+						{% endif %}
 					</div>
 
-					{% if settings.automatic_mail == "yes" %}
-						<div class="form-group col-sm-6">
-							<div class="input-group">
-								<div class="input-group-addon"><i class="fa-solid fa-envelope"></i></div>
-								<input class="form-control" type="email" name="benef_ext_email" value="{{d.benef_ext_email}}" placeholder="{{trad.email_beneficiaire}}">
-							</div>
-						</div>
-					{% endif %}
 
 				{% else %}
 					<input type="hidden" name="beneficiaire" value="{{d.gNomUser}}" />
@@ -110,8 +113,8 @@
 				<!-- Section date & heure-->
 					<!-- Date & Heure de début -->
 					<div class="E form-inline">
-						<b>{{trad.date}}{{trad.deux_points}}</b>
-						<div class="form-group">
+						<label class="form-label" for="datetimepicker">{{trad.date}}{{trad.deux_points}}</label>
+					
 							{{ d.selectionDateDebut |raw }}
 							<input type="hidden" disabled="disabled" id="mydate_start_">
 							{% if d.enable_periods == 'y' %}
@@ -120,10 +123,10 @@
 									{{d.optionHeureDebut |raw}}
 								</select>
 							{% else %}
-								<b>{{trad.time}}</b>
+								<!--<b>{{trad.time}}</b>-->
 								{{ d.jQuery_TimePickerStart |raw }}
 							{% endif %}
-						</div>
+						
 					</div>
 					<!-- Pour la fin : Si c'est une durée : -->
 					{% if d.type_affichage_reser == 0 %}
@@ -155,7 +158,7 @@
 										{{d.optionHeureFin |raw}}
 									</select>
 								{% else %}
-									<b>{{trad.time}}</b>
+									<!--<b>{{trad.time}}</b>-->
 									{{d.jQuery_TimePickerEnd |raw}}
 								{% endif %}
 							</div>
@@ -173,7 +176,7 @@
 
 					<div class="E form-inline">
 						<label for="rooms[]" class="control-label">{{trad.rooms}} {{trad.deux_points}}</label>
-						<select class="form-control" name="rooms[]" size="{{d.taille_champ_res}}" multiple="multiple" onchange="changeRoom(this.form) ;">
+						<select class="form-control" id="rooms[]" name="rooms[]" size="{{d.taille_champ_res}}" multiple="multiple">
 							{{d.optionsRessource |raw}}
 						</select>
 						&nbsp; {{trad.ctrl_click}}
@@ -199,8 +202,9 @@
 					{% endif %}
 
 				<!-- Section type resa -->
+				<div class="E form-inline">
 					<div id="div_types"></div>
-
+				</div>
 					
 				<!-- Participants -->
 					{% if d.active_participant > 0 %}
@@ -267,6 +271,7 @@
 					</div>
 				{% else %}
 					<p><b>{{ trad.periodicite_associe}} {{trad.deux_points}}</b></p>
+					{{d.repHTML|raw}}
 				{% endif %}
 			</div>
 
@@ -279,10 +284,25 @@
 
 {% endblock %}
 
-{% block javascript %}
-<script type="text/javascript" src="js/bootstrap-clockpicker.js?v={{d.versionGRR}}"></script>
-<script type="text/javascript" >
+{% block javascript %}t>
+<!-- Date & heure -->
+<script src="node_modules/jquery-ui/dist/jquery-ui.min.js"></script>
+<script src="node_modules/jquery-ui/ui/i18n/datepicker-fr.js"></script>
+<script src="node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+<script type="text/javascript" src="node_modules/clockpicker/dist/bootstrap-clockpicker.js?v={{d.versionGRR}}"></script>
+<!-- Select2 JS -->
+<script src="node_modules/select2/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#beneficiaire').select2({
+            placeholder: 'Sélectionnez une option',
+            allowClear: true
+        });
+    });
+</script>
 
+
+<script type="text/javascript" >
 	$(function() {
 		$.datepicker.setDefaults( $.datepicker.regional['fr'] );
  		$('#mydate_start_').datepicker({
@@ -326,6 +346,8 @@
 	$('.clockpicker').clockpicker({
 		align: 'left',
 		placement: 'top',
+		autoclose: true,
+		minuteStep: 15,
 		donetext: 'Valider'
 	});
 
@@ -447,6 +469,7 @@
 
 	function changeRooms( formObj )
 	{
+		var formObj = document.getElementById('main');
 		areasObj = eval( "formObj.areas" );
 		area = areasObj[areasObj.selectedIndex].value
 		roomsObj = eval( "formObj.elements['rooms[]']" )
@@ -459,8 +482,9 @@
 		{		
 			{{d.complementJSchangeRooms |raw}}
 		}
+	
 		roomsObj = eval( "formObj.elements['rooms[]']" );
-        room = roomsObj[roomsObj.selectedIndex].value;
+		room = roomsObj[roomsObj.selectedIndex].value;
 		insertBeneficiaires(area,room,"{{d.beneficiaire}}",{{d.iderasa}});
         insertChampsAdd(area,{{d.idresa}},room);
         insertTypes(area,room);
@@ -599,15 +623,13 @@
 	insertTypes({{d.domaine}},{{d.roomid}})
 
 	$('#areas').on('change', function(){
-		$('.multiselect').multiselect('destroy');
-		$('.multiselect').multiselect();
+		//$('.multiselect').multiselect('destroy');
+		//$('.multiselect').multiselect();
 	});
 	$(document).ready(function() {
-		$('.multiselect').multiselect();
-		$("#select2").select2();
+		//$('.multiselect').multiselect();
+		//$("#select2").select2();
 	});
-
-
 
 </script>
 

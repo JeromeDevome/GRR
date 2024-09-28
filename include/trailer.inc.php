@@ -37,7 +37,7 @@ if ((!isset($_GET['pview']) || ($_GET['pview'] != 1)) && (isset($affiche_pview) 
 			$s .= htmlspecialchars($_SERVER['QUERY_STRING']) . "&amp;";
 		$s .= "pview=1&amp;precedent=1'\"";
 	}
-	$s.= "><span class=\"glyphicon glyphicon-print\"></span></button>";
+	$s.= "><i class=\"fa-solid fa-print\"></i></button>";
 	echo $s;
 }
 // Affichage du message d'erreur en cas d'échec de l'envoi de mails automatiques

@@ -1,7 +1,7 @@
 <?php
 /**
  * edit_entry_beneficiaire.php
- * Page "Ajax" utilisée dans edit_entry.php
+ * Page "Ajax" utilisée dans editentree
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2024-01-30 18:22$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
@@ -109,7 +109,7 @@ else
 	echo '<tr style="display:none" id="menu4"><td>'.PHP_EOL;
 echo '<div class="form-group">'.PHP_EOL;
 echo '    <div class="input-group">'.PHP_EOL;
-echo '      <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>'.PHP_EOL;
+echo '      <div class="input-group-addon"><i class="fa-regular fa-user"></i></div>'.PHP_EOL;
 echo '      <input class="form-control" type="text" name="benef_ext_nom" value="'.htmlspecialchars($tab_benef["nom"]).'" placeholder="'.get_vocab("nom_beneficiaire").'">'.PHP_EOL;
 echo '    </div>'.PHP_EOL;
 echo '  </div>'.PHP_EOL;
@@ -118,7 +118,7 @@ if (Settings::get("automatic_mail") == 'yes')
 {
 	echo '<div class="form-group">'.PHP_EOL;
 	echo '    <div class="input-group">'.PHP_EOL;
-	echo '      <div class="input-group-addon"><span class="glyphicon glyphicon-envelope" ></span></div>'.PHP_EOL;
+	echo '      <div class="input-group-addon"><i class="fa-solid fa-envelope"></i></div>'.PHP_EOL;
 	echo '      <input class="form-control" type="email" name="benef_ext_email" value="'.htmlspecialchars($tab_benef["email"]).'" placeholder="'.get_vocab("email_beneficiaire").'">'.PHP_EOL;
 	echo '    </div>'.PHP_EOL;
 	echo '  </div>'.PHP_EOL;

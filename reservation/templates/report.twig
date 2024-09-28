@@ -219,15 +219,28 @@
 {% endblock %}
 
 {% block javascript %}
+<!--
+<script type="text/javascript" language="javascript" src="node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
+	-->
 	<script type="text/javascript" language="javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" language="javascript" src="js/dataTables_002.js"></script>
+	
 	<script type="text/javascript" language="javascript" src="js/dataTables.js"></script>
+	<script type="text/javascript" language="javascript" src="js/dataTables_002.js"></script>
 	<script type="text/javascript" language="javascript" src="js/buttons_002.js"></script>
 	<script type="text/javascript" language="javascript" src="js/jszip.min.js"></script>
 	<script type="text/javascript" language="javascript" src="js/pdfmake.js"></script>
 	<script type="text/javascript" language="javascript" src="js/vfs_fonts.js"></script>
 	<script type="text/javascript" language="javascript" src="js/buttons_004.js"></script>
 	<script type="text/javascript" language="javascript" src="js/buttons_003.js"></script>
+
+	<script type="text/javascript" language="javascript" src="node_modules/datatables/media/js/dataTables.buttons.min.js"></script>
+
+
+	<script type="text/javascript" language="javascript" src="node_modules/datatables/media/js/buttons.html5.min.js"></script>
+	<script type="text/javascript" language="javascript" src="node_modules/datatables/media/js/buttons.print.min.js"></script>
+	<script type="text/javascript" language="javascript" src="node_modules/datatables/media/js/buttons.colVis.min.js"></script>
+
+
 	<script type="text/javascript" class="init">
 		$(document).ready(function() {
 			var table = $('#example').DataTable( {

@@ -80,7 +80,7 @@
                     <td>
                         {% if jour.horsResa %}
                             <div class="empty_cell">
-                                <span class="glyphicon glyphicon-remove" title="{{trad.reservation_impossible}}" style="color:red"></span>
+                                <i class="fa-solid fa-xmark" title="{{trad.reservation_impossible}}" style="color:red"></i>
                             </div>
                         {% endif %}
 
@@ -90,7 +90,7 @@
                                     <td class="type{{resa.type}}">
                                         {% if resa.lienFiche %}
                                             {% if settings.display_level_view_entry == 0 %}
-                                                <a title="{{resa.titre}}" data-width="675" onclick="request({{resa.idresa}},{{jour.jour}},{{mois.numMois}},{{mois.annee}},{{d.room}},annee,readData);" data-rel="popup_name" class="poplight lienCellule">
+                                                <a title="{{resa.titre}}" data-width="675" onclick="request({{resa.idresa}},{{jour.jour}},{{mois.numMois}},{{mois.annee}},{{d.room}},'annee',readData);" data-rel="popup_name" class="poplight lienCellule">
                                             {% else %}
                                                 <a class="lienCellule" title="{{resa.titre}}" href="app.php?p=vuereservation&id={{resa.idresa}}&amp;day={{jour.jour}}&amp;month={{mois.numMois}}&amp;year={{mois.annee}}&amp;page=annee">
                                             {% endif %}

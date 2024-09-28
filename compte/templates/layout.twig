@@ -14,7 +14,7 @@
 		<link rel="stylesheet" type="text/css" href="../themes/default/css/style.css?v={{d.versionGRR}}" />
 		<link rel="stylesheet" type="text/css" href="../{{ d.sheetcss }}" />
 		{{ d.sheetcssperso|raw }}
-		<link rel="stylesheet" href="../node_modules/bootstrap/AdminLTE/bower_components/font-awesome/css/all.css">
+		<link rel="stylesheet" type="text/css" href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
 		{% block css %}{% endblock %}
 	</head>
 
@@ -52,7 +52,7 @@
 					{{ d.lienConnexion |raw }}
 				</div>
 			</div>
-			<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>
+			<a id="open" class="open" href="#"><i class="fa-solid fa-arrows-up-down"></i></a>
 		</header>
 		
 		<section>
@@ -72,9 +72,9 @@
 		</section>
 		
 
-		<script type="text/javascript" src="../js/jquery.min.js?v={{d.versionGRR}}"></script>
-		<script type="text/javascript" src="../js/jquery-ui.min.js?v={{d.versionGRR}}"></script>
-		<script type="text/javascript" src="../js/jquery.validate.js?v={{d.versionGRR}}"></script>
+		<script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js?v={{d.versionGRR}}"></script>
+		<script type="text/javascript" src="../node_modules/jquery/dist/jquery-ui.min.js?v={{d.versionGRR}}"></script>
+		<!--<script type="text/javascript" src="../js/jquery.validate.js?v={{d.versionGRR}}"></script>-->
 		<script type="text/javascript" src="../js/jquery-ui-timepicker-addon.js?v={{d.versionGRR}}"></script>
 		<script type="text/javascript" src="../node_modules/bootstrap/js/bootstrap.min.js?v={{d.versionGRR}}"></script>
 		<script type="text/javascript" src="../js/menu.js?v={{d.versionGRR}}"></script>

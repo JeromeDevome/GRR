@@ -3,7 +3,8 @@
 	<head>
 		<meta charset="utf-8">
 		<title></title>
-		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css?v={{d.versionGRR}}">
+		<link rel="stylesheet" type="text/css" href="./themes/default/css/style.css?v={{d.versionGRR}}" />
+		<link rel="stylesheet" type="text/css" href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
 	</head>
 	<body>
 		<div id="container">
@@ -25,17 +26,17 @@
 				<input type="hidden" name="type_cible" value="{{d.type_cible}}" />
 
 				<div class="input-group">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span> {{trad.Email_pour_la_reponse}}</span>
+					<span class="input-group-addon"><i class="fa-solid fa-at"></i> {{trad.Email_pour_la_reponse}}</span>
 					<input class="form-control" type="email" name="email_reponse" value="{{d.MailReponse}}" required>
 				</div>
 				<br>
 				<div class="input-group">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-header"></span> {{trad.Objet_du_message}}</span>
+					<span class="input-group-addon"><i class="fa-solid fa-heading"></i> {{trad.Objet_du_message}}</span>
 					<input class="form-control" name="objet_message" type="text" value="" required>
 				</div>
 				<br>
 				<div class="input-group">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-align-left"></span></span>
+					<span class="input-group-addon"><i class="fa-solid fa-align-left"></i></span>
 					<textarea class="form-control" name="message" placeholder="Votre message" cols="50" rows="5" value="" required></textarea>
 				</div>
 				<br>

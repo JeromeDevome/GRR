@@ -412,7 +412,7 @@ try {
     $referer = explode('?',$referer);
     if (!$referer[0])
     {
-        $back = traite_grr_url()."edit_entry.php";
+        $back = traite_grr_url()."app.php?p=editentree";
     }
     else 
         $back = $referer[0]; 
