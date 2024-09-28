@@ -12,7 +12,7 @@
 
 	<p>{{ trad.resa_menu_explain }}</p>
 
-	<form class="form-inline" action="compte.php?p=mesreservations" method="POST">
+	<form class="form-inline" action="compte.php?pc=mesreservations" method="POST">
 		<label class="radio-inline"><input type="radio" name="choix" value="0" {% if d.choix == 0 %}checked{% endif %} />{{ trad.resas_toutes }}</label>
 		<label class="radio-inline"><input type="radio" name="choix" value="1" {% if d.choix == 1 %}checked{% endif %} />{{ trad.resas_a_venir }}</label>
 		<input class="btn btn-default" type="submit" value="{{ trad.goto }}" />

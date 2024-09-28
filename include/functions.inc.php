@@ -1060,7 +1060,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $gcDossierImg;
 	
 	if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changemdp.php'){
-		header("Location: ./compte/compte.php?p=changemdp");
+		header("Location: ./compte/compte.php?pc=changemdp");
 	}
 
 	if ($niveauDossier == 2){
@@ -1253,7 +1253,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $d, $gcDossierImg, $gcDossierCss, $version_grr;
 	
 	if( isset($_SESSION['changepwd']) && $_SESSION['changepwd'] == 1 && $page != 'changemdp'){
-		header("Location: ./compte/compte.php?p=changemdp");
+		header("Location: ./compte/compte.php?pc=changemdp");
 	}
 
 	if ($niveauDossier == 1)

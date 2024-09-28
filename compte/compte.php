@@ -26,8 +26,8 @@ require '../include/twiggrr.class.php';
 require "../include/functions.inc.php";
 
 $page = 'moncompte';
-if(isset($_GET['p'])){
-	$page = alphanum($_GET['p']);
+if(isset($_GET['pc'])){
+	$page = alphanum($_GET['pc']);
 }
 
 include "../include/admin.inc.php";
@@ -91,6 +91,5 @@ foreach ($dossierLister as $fileinfo) {
 if(in_array($page.".php",$listeFichiers))
 	include('controleurs/'.$page.'.php');
 else
-	include('controleurs/index.php');
-
+	echo "erreur";
 ?>

@@ -121,7 +121,7 @@ if (isset($_POST['login']) && isset($_POST['password']))
 	}
 	else if ($result == "12")
 	{
-		header("Location: ./compte/compte.php?p=changemdp");
+		header("Location: ./compte/compte.php?pc=changemdp");
 	}
 	else if ($result == "13")
 	{
