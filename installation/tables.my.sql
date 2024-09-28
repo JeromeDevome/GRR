@@ -63,7 +63,7 @@ CREATE TABLE grr_groupes (`idgroupes` int(11) NOT NULL AUTO_INCREMENT, `nom` var
 DROP TABLE IF EXISTS grr_utilisateurs_demandes;
 CREATE TABLE grr_utilisateurs_demandes (`idutilisateursdemandes` bigint(20) NOT NULL AUTO_INCREMENT, `nom` varchar(30) NOT NULL, `prenom` varchar(30) NOT NULL, `email` varchar(100) NOT NULL, `telephone` varchar(20) NOT NULL, `mdp` varchar(184) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, `commentaire` text NOT NULL, `datedemande` date NOT NULL, `etat` tinyint(1) NOT NULL DEFAULT 0, `gestionnaire` varchar(40) NOT NULL DEFAULT '', `datechoix` date DEFAULT NULL, PRIMARY KEY (`idutilisateursdemandes`))  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 DROP TABLE IF EXISTS grr_utilisateurs_groupes;
-CREATE TABLE grr_utilisateurs_groupes (`idutilisateursgroupes` bigint(20) NOT NULL AUTO_INCREMENT, `login` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL, `idgroupes` int(11) NOT NULL, PRIMARY KEY (`idutilisateursgroupes`), UNIQUE KEY `idutilisateurs` (`login`,`idgroupes`));
+CREATE TABLE grr_utilisateurs_groupes (`idutilisateursgroupes` bigint(20) NOT NULL AUTO_INCREMENT, `login` varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL, `idgroupes` int(11) NOT NULL, PRIMARY KEY (`idutilisateursgroupes`), UNIQUE KEY `idutilisateurs` (`login`,`idgroupes`));
 INSERT INTO grr_type_area VALUES (1, 'Cours', 1, 1, '#1abc9c', '#000000', 'A', 2);
 INSERT INTO grr_type_area VALUES (2, 'Réunion', 2, 2, '#C03000', '#000000', 'B', 2);
 INSERT INTO grr_type_area VALUES (3, 'Autre', 3, 3, '#4BB5C1', '#000000', 'C', 2);

@@ -1181,10 +1181,20 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 	}
 
 	
-	
+	if (intval($version_old_bdd) < 400005) // Version GRR 4.3.7
+	{
+		
+		$result .= formatresult("Mise à jour jusqu'à la version 4.3.7 :","<b>","</b>");
+
+		$result_inter .= traiteRequete("ALTER TABLE  ".TABLE_PREFIX."_utilisateurs_groupes CHANGE login login VARCHAR(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;");
 
 
-	
+		if ($result_inter == '')
+			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+		else
+			$result .= $result_inter;
+		$result_inter = '';
+	}
 
 	// Mise à jour du numéro de version
 	$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='version'");
