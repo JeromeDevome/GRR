@@ -121,7 +121,7 @@ if ($valid == "yes")
 					$msg = get_vocab("erreur_choix_statut");
 					$retry = 'yes';
 				}
-				else if ((($reg_password != $reg_password2) || (strlen($reg_password) < $pass_leng)) && ($reg_source == "local"))
+				else if ((($reg_password != $reg_password2) || (check_password_difficult($reg_password) == false)) && ($reg_source == "local"))
 				{
 					$msg = get_vocab("passwd_error");
 					$retry = 'yes';
@@ -222,7 +222,7 @@ if ($valid == "yes")
 				else
 				{
 					$reg_password_c =  password_hash($reg_password,PASSWORD_DEFAULT);
-					if (($reg_password != $reg_password2) || (strlen($reg_password) < $pass_leng))
+					if (($reg_password != $reg_password2) || (check_password_difficult($reg_password) == false))
 					{
 						$msg = get_vocab("passwd_error");
 						$retry = 'yes';

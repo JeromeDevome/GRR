@@ -25,6 +25,7 @@ get_vocab_admin("admin_config6");
 get_vocab_admin("admin_config7");
 
 $msg = "";
+$trad = $vocab;
 
 if (isset($_GET['motdepasse_backup']))
 {
@@ -73,14 +74,50 @@ if (isset($_GET['sessionMaxLength']))
 		$msg .= "Erreur lors de l'enregistrement de sessionMaxLength !<br />";
 }
 // pass_leng
-if (isset($_GET['pass_leng']))
+settype($_GET['pass_leng'], "integer");
+settype($_GET['pass_nb_min'], "integer");
+settype($_GET['pass_nb_maj'], "integer");
+settype($_GET['pass_nb_ch'], "integer");
+settype($_GET['pass_nb_sp'], "integer");
+
+if($_GET['pass_leng'] >= ($_GET['pass_nb_min'] + $_GET['pass_nb_maj'] + $_GET['pass_nb_ch'] + $_GET['pass_nb_sp']))
 {
-	settype($_GET['pass_leng'], "integer");
-	if ($_GET['pass_leng'] < 1)
-		$_GET['pass_leng'] = 1;
-	if (!Settings::set("pass_leng", $_GET['pass_leng']))
-		$msg .= "Erreur lors de l'enregistrement de pass_leng !<br />";
+	if (isset($_GET['pass_leng']))
+	{
+		if ($_GET['pass_leng'] < 1)
+			$_GET['pass_leng'] = 1;
+		if (!Settings::set("pass_leng", $_GET['pass_leng']))
+			$msg .= "Erreur lors de l'enregistrement de pass_leng !<br />";
+	}
+	// pass_nb_min
+	if (isset($_GET['pass_nb_min']))
+	{
+		if (!Settings::set("pass_nb_min", $_GET['pass_nb_min']))
+			$msg .= "Erreur lors de l'enregistrement de pass_nb_min !<br />";
+	}
+	// pass_nb_maj
+	if (isset($_GET['pass_nb_maj']))
+	{
+		if (!Settings::set("pass_nb_maj", $_GET['pass_nb_maj']))
+			$msg .= "Erreur lors de l'enregistrement de pass_nb_maj !<br />";
+	}
+	// pass_nb_ch
+	if (isset($_GET['pass_nb_ch']))
+	{
+		if (!Settings::set("pass_nb_ch", $_GET['pass_nb_ch']))
+			$msg .= "Erreur lors de l'enregistrement de pass_nb_ch !<br />";
+	}
+	// pass_nb_sp
+	if (isset($_GET['pass_nb_sp']))
+	{
+		if (!Settings::set("pass_nb_sp", $_GET['pass_nb_sp']))
+			$msg .= "Erreur lors de l'enregistrement de pass_nb_sp !<br />";
+	}
+} else {
+	$msg .= $trad['pass_leng_error']."<br />";
 }
+
+
 // Log des mails
 if (isset($_GET['log_mail']))
 {
@@ -105,53 +142,8 @@ if (isset($_GET['ok'])) {
 // Affichage
 
 $AllSettings = Settings::getAll();
-
 $trad['dDbSys'] = $dbsys;
 $trad['dRestaureBBD'] = $restaureBBD;
-
-get_vocab_admin("title_backup");
-get_vocab_admin("explain_backup");
-get_vocab_admin("warning_message_backup");
-get_vocab_admin("submit_backup");
-
-get_vocab_admin("Restauration_de_la_base_GRR");
-get_vocab_admin("Restaurer_la_sauvegarde");
-get_vocab_admin("Restauration_de_la_base_GRR");
-
-get_vocab_admin("execution_automatique_backup");
-get_vocab_admin("execution_automatique_backup_explications");
-get_vocab_admin("execution_automatique_backup_mdp");
-
-get_vocab_admin("title_disable_login");
-get_vocab_admin("explain_disable_login");
-get_vocab_admin("disable_login_on");
-get_vocab_admin("disable_login_off");
-
-get_vocab_admin("admin_menu_various");
-get_vocab_admin("redirection_https");
-get_vocab_admin("Activer_log_email");
-get_vocab_admin("YES");
-get_vocab_admin("NO");
-
-get_vocab_admin("title_ip_autorise");
-get_vocab_admin("explain_ip_autorise");
-
-get_vocab_admin("title_horaire_autorise");
-get_vocab_admin("explain_horaire_autorise");
-
-get_vocab_admin("title_session_max_length");
-get_vocab_admin("session_max_length");
-get_vocab_admin("explain_session_max_length");
-
-get_vocab_admin("pwd");
-get_vocab_admin("pass_leng_explain");
-
-get_vocab_admin("Url_de_deconnexion");
-get_vocab_admin("Url_de_deconnexion_explain");
-get_vocab_admin("Url_de_deconnexion_explain2");
-
-get_vocab_admin("save");
-get_vocab_admin('message_records');
 
 echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 

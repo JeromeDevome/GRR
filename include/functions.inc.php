@@ -181,6 +181,39 @@ function checkPassword($pwd, $pwd_hash, $login, $test_rehash = TRUE){
 }
 
 /**
+ * Fonction de verification que le mot de passe comporte bien les différents prérequis
+ * @param string $pwd
+ */
+function check_password_difficult($pwd)
+{
+
+	$nb_min_caractere = Settings::get("pass_leng");
+	$nb_min_minuscules = Settings::get("pass_nb_min");
+	$nb_min_majuscules = Settings::get("pass_nb_maj");
+	$nb_min_chiffres = Settings::get("pass_nb_ch");
+	$nb_min_speciaux = Settings::get("pass_nb_sp");
+
+    // Compter les caractères correspondant à chaque critère
+    $minuscules = preg_match_all('/[a-z]/', $pwd);
+    $majuscules = preg_match_all('/[A-Z]/', $pwd);
+    $chiffres = preg_match_all('/[0-9]/', $pwd);
+    $speciaux = preg_match_all('/[\W_]/', $pwd); // \W capture tout sauf lettres et chiffres, _ est ajouté explicitement
+
+    // Vérifier si les critères sont remplis
+    if (strlen($pwd) >= $nb_min_caractere &&
+		$minuscules >= $nb_min_minuscules &&
+        $majuscules >= $nb_min_majuscules &&
+        $chiffres >= $nb_min_chiffres &&
+        $speciaux >= $nb_min_speciaux) {
+        return true;
+    } else {
+        return false;
+    }
+
+}
+
+
+/**
  * Fonction de verification d'access
  * @param int $level
  */

@@ -52,7 +52,7 @@ if ($valid == 'yes')
 			{
 				if ($reg_password1 != $reg_password2)
 					$msg = get_vocab('wrong_pwd2');
-				elseif(strlen($reg_password1) < $pass_leng)
+				elseif(check_password_difficult($reg_password1) == false)
 					$msg = get_vocab('mdp_taille').$pass_leng;
 				else
 				{

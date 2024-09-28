@@ -159,6 +159,10 @@ INSERT INTO grr_setting VALUES ('message_home_page', 'En raison du caractère pe
 INSERT INTO grr_setting VALUES ('nb_calendar', '1');
 INSERT INTO grr_setting VALUES ('nombre_jours_Jours_Cycles', '1');
 INSERT INTO grr_setting VALUES ('pass_leng', '8');
+INSERT INTO grr_setting VALUES ('pass_nb_ch', '1');
+INSERT INTO grr_setting VALUES ('pass_nb_maj', '1');
+INSERT INTO grr_setting VALUES ('pass_nb_min', '1');
+INSERT INTO grr_setting VALUES ('pass_nb_sp', '1');
 INSERT INTO grr_setting VALUES ('periodicite', 'y');
 INSERT INTO grr_setting VALUES ('pview_new_windows', '1');
 INSERT INTO grr_setting VALUES ('redirection_https', 'no');

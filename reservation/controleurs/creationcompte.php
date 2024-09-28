@@ -24,7 +24,7 @@ $grr_script_name = "creationcompte.php";
 if (!Pages::load())
 	die('Erreur chargement pages');
 
-
+$trad = $vocab;
 $d['caractMini'] = $pass_leng." caractères minimum"; // $pass_leng est définit dans language.inc.php
 
 /*  */
@@ -78,7 +78,7 @@ if( Settings::get("fct_crea_cpt") == "y" && isset($_POST["nom"])){
 		$d['msgErreur'] .= "Les mots de passe sont différents.<br/><br/>";
 	}
 
-	if (strlen($reg_mdp1) < $pass_leng)
+	if (check_password_difficult($reg_mdp1) == false)
 	{
 		$erreur = true;
 		$d['msgErreur'] .= get_vocab('mdp_taille').$pass_leng.".<br/><br/>";

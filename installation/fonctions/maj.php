@@ -1188,6 +1188,10 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 
 		$result_inter .= traiteRequete("ALTER TABLE  ".TABLE_PREFIX."_utilisateurs_groupes CHANGE login login VARCHAR(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;");
 
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('pass_nb_ch', '0');");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('pass_nb_maj', '0');");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('pass_nb_min', '0');");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('pass_nb_sp', '0');");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
