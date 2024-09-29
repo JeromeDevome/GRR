@@ -825,124 +825,37 @@ $d['levelUserRessource'] = authGetUserLevel($user_name,$room_id);
 * fin du bloc de "gauche"
 * Début du droit  (Périodicités)
 */
+$d['rep_type'] = $rep_type;
+$d['weekstarts'] = $weekstarts;
+$d['rep_month_abs1'] = $rep_month_abs1;
+$d['rep_month_abs2'] = $rep_month_abs2;
 
-$weeklist = array("unused","every_week","week_1_of_2","week_1_of_3","week_1_of_4","week_1_of_5");
-$monthlist = array("firstofmonth","secondofmonth","thirdofmonth","fouthofmonth","fiveofmonth","lastofmonth");
+// Selon 1er jour de la semaine afficher les jours
+for ($da = 0; $da < 7; $da++)
+{
+	$wday = ($da + $weekstarts) % 7;
+	$d['day'.$wday] = day_name($wday);
+}
 
 if($periodiciteConfig == 'y')
 {
-	$d['repHTML'] = "";
 
 	if ( ($edit_type == "series") || (isset($flag_periodicite)))
 	{
+		// Formulaire périodicité
         $d['periodiciteAttache'] = 0;
-
-//		echo '<div id="menu1" style="display:none;">',PHP_EOL; // choix de la périodicité
-//        echo '<p class="F"><b>',get_vocab("rep_type"),'</b></p>',PHP_EOL;
-		
-        for ($i = 0; $i < 8 ; $i++)
-		{
-            if ($i == 6 && Settings::get("jours_cycles_actif") == "Non")
-                continue;
-            elseif ($i != 5)
-            {
-                $d['repHTML'] .= PHP_EOL.'<div><label><input name="rep_type" type="radio" value="'.$i.'"';
-                if (($i == $rep_type) || (($i == 3) && ($rep_type == 5)))
-                    $d['repHTML'] .= ' checked="checked"';
-                $d['repHTML'] .= ' onclick="check_1()" />'.PHP_EOL; // fin input
-                if (($i != 2) && ($i != 3))
-                    $d['repHTML'] .= get_vocab("rep_type_$i").'</label>'.PHP_EOL;
-                if ($i == '2') // semaine
-				{
-                    $d['repHTML'] .= '&nbsp;</label><select class="form-control" name="rep_num_weeks" size="1" onfocus="check_2()" onclick="check_2()">'.PHP_EOL;
-                    $d['repHTML'] .= '<option value="1" >'.get_vocab("every_week").'</option>'.PHP_EOL;
-					for ($weekit = 2; $weekit < 6; $weekit++)
-					{
-                        $d['repHTML'] .= '<option value="'.$weekit.'"';
-						if ($rep_num_weeks == $weekit)
-                            $d['repHTML'] .= ' selected="selected"';
-                        $d['repHTML'] .= '>'.get_vocab($weeklist[$weekit]).'</option>'.PHP_EOL;
-					}
-                    $d['repHTML'] .= '</select>'.PHP_EOL;
-                    $d['repHTML'] .= "<div style=\"display:none\" id=\"menu2\" width=\"100%\">\n"; // jour(s) de la semaine
-                    $d['repHTML'] .= "<div class='F'><b>".get_vocab("rep_rep_day")."</b></div>\n";
-                    $d['repHTML'] .= "<div class=\"CL\">";
-                    for ($da = 0; $da < 7; $da++)
-                    {
-                        $wday = ($da + $weekstarts) % 7;
-                        $d['repHTML'] .= "<input name=\"rep_day[$wday]\" type=\"checkbox\"";
-                        if ($rep_day[$wday])
-                            $d['repHTML'] .= " checked=\"checked\"";
-                        $d['repHTML'] .= " onclick=\"check_1()\" />" . day_name($wday) . "\n";
-                    }
-                    $d['repHTML'] .= "</div>\n</div>\n";
-				}
-                if ($i == '3') // mensuel
-				{
-					$monthrep3 = ($rep_type == 3)? " selected=\"selected\" ": "";
-					$monthrep5 = ($rep_type == 5)? " selected=\"selected\" ": "";
-                    $d['repHTML'] .= '&nbsp;</label><select class="form-control" name="rep_month" size="1" onfocus="check_3()" onclick="check_3()">'.PHP_EOL;
-                    $d['repHTML'] .= "<option value=\"3\" $monthrep3>".get_vocab("rep_type_3")."</option>\n";
-                    $d['repHTML'] .= "<option value=\"5\" $monthrep5>".get_vocab("rep_type_5")."</option>\n";
-                    $d['repHTML'] .= "</select>\n";
-				}
-                if ($i == '7') // X Y du mois
-				{
-                    $d['repHTML'] .= '<select class="form-control" name="rep_month_abs1" size="1" onfocus="check_7()" onclick="check_7()">'.PHP_EOL;
-					for ($weekit = 0; $weekit < 6; $weekit++)
-					{
-                        $d['repHTML'] .= "<option value=\"".$weekit."\"";
-						if ($weekit == $rep_month_abs1)
-                            $d['repHTML'] .= " selected='selected' ";
-                        $d['repHTML'] .= ">".get_vocab($monthlist[$weekit])."</option>\n";
-					}
-                    $d['repHTML'] .= '</select>'.PHP_EOL;
-                    $d['repHTML'] .= '<select class="form-control" name="rep_month_abs2" size="1" onfocus="check_8()" onclick="check_8()">'.PHP_EOL;
-					for ($weekit = 1; $weekit < 8; $weekit++)
-					{
-                        $d['repHTML'] .= "<option value=\"".$weekit."\"";
-						if ($weekit == $rep_month_abs2)
-                            $d['repHTML'] .= " selected='selected' ";
-                        $d['repHTML'] .= ">".day_name($weekit)."</option>\n";
-					}
-                    $d['repHTML'] .= "</select>\n";
-                    $d['repHTML'] .= get_vocab("ofmonth");
-				}
-                if ($i == 6)
-                {
-                    $d['repHTML'] .= "<div id='menuP'>\n"; // choix des jours cycle
-                    $d['repHTML'] .= "<b>Jours/Cycle</b><br />\n";
-                    $d['repHTML'] .= "<div class='form-inline'>";
-                    for ($da = 1; $da <= (Settings::get("nombre_jours_Jours_Cycles")); $da++)
-                    {
-                        $wday = $da;
-                        $d['repHTML'] .= "<input type=\"radio\" name=\"rep_jour_\" value=\"$wday\"";
-                        if (isset($jours_c))
-                        {
-                            if ($da == $jours_c)
-                            $d['repHTML'] .= ' checked="checked"';
-                        }
-                        $d['repHTML'] .= ' onclick="check_1()" />'.get_vocab("rep_type_6").' '.$wday.PHP_EOL;
-                    }
-                    $d['repHTML'] .= '</div>'.PHP_EOL;
-                    $d['repHTML'] .= '</div>'.PHP_EOL;
-                }
-                $d['repHTML'] .= '</div>'.PHP_EOL;
-            }
-        }
-	//	echo "<div class=\"F\"><b>".get_vocab("rep_end_date")."</b>".PHP_EOL;
         $d['jQuery_DatePickerRepEnd'] = jQuery_DatePickerTwig('rep_end_');
-   //     echo '</div>'.PHP_EOL;
-	//	echo "</div>\n"; // fin menu1
 	}
 	else
 	{
         $d['periodiciteAttache'] = 1 ;
+		$d['repHTML'] = "";
 		//echo "<p><b>".get_vocab('periodicite_associe').get_vocab('deux_points')."</b></p>\n";
 		if ($rep_type == 2)
 			$affiche_period = get_vocab($weeklist[$rep_num_weeks]);
 		else
 			$affiche_period = get_vocab('rep_type_'.$rep_type);
+
 		$d['repHTML'] .= '<p><b>'.get_vocab('rep_type').'</b> '.$affiche_period.'</p>'."\n";
 		if ($rep_type != 0)
 		{

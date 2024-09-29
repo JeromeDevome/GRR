@@ -6,6 +6,8 @@
 {% block css %}
 	<link rel="stylesheet" type="text/css" href="node_modules/select2/dist/css/select2.min.css?v={{d.versionGRR}}">
 	<link rel="stylesheet" type="text/css" href="node_modules/clockpicker/dist/bootstrap-clockpicker.min.css?v={{d.versionGRR}}">
+	<link rel="stylesheet" type="text/css" href="node_modules/jquery-ui/dist/themes/base/jquery-ui.css?v={{d.versionGRR}}">
+	<link rel="stylesheet" type="text/css" href="node_modules/jquery-ui/themes/base/datepicker.css?v={{d.versionGRR}}">
 {% endblock %}
 
 {% block content %}
@@ -116,7 +118,7 @@
 						<label class="form-label" for="datetimepicker">{{trad.date}}{{trad.deux_points}}</label>
 					
 							{{ d.selectionDateDebut |raw }}
-							<input type="hidden" disabled="disabled" id="mydate_start_">
+							<input type="hidden" id="mydate_start_" disabled>
 							{% if d.enable_periods == 'y' %}
 								<b>{{trad.period}}</b>
 								<select name="period">
@@ -151,7 +153,7 @@
 							<b>{{trad.fin_reservation}}{{trad.deux_points}}</b>
 							<div class="form-group">
 								{{d.selectionDateFin |raw}}
-								<input type="hidden" disabled="disabled" id="mydate_end_">
+								<input type="hidden" id="mydate_end_" disabled>
 								{% if d.enable_periods == 'y' %}
 									<b>{{trad.period}}</b>
 									<select name="end_period">
@@ -262,7 +264,116 @@
 					<div id="menu1" style="display:none;">
 						<p class="F"><b>{{trad.rep_type}}</b></p>
 
-						{{d.repHTML|raw}}
+						<!-- 0: Aucune -->
+						<div>
+							<input name="rep_type" type="radio" value="0" class="form-check-input" onclick="check_1()" {% if d.rep_type == 0 %}checked{% endif %}/>
+							<label class="form-check-label">{{trad.rep_type_0}}</label>
+						</div>
+
+						<!-- 1: Chaque jour -->
+						<div>
+							<input name="rep_type" type="radio" value="1" class="form-check-input" onclick="check_1()" {% if d.rep_type == 1 %}checked{% endif %}/>
+							<label class="form-check-label">{{trad.rep_type_1}}</label>
+						</div>
+
+						<!-- 2: Chaque semaine -->
+						<div>
+							<div class="row">
+								<div class="col-lg-1">
+									<input name="rep_type" type="radio" value="2" class="form-check-input" onclick="check_1()" {% if d.rep_type == 2 %}checked{% endif %}/>
+								</div>
+
+								<div class="col-lg-11">
+									<select class="form-control" name="rep_num_weeks" size="1" onfocus="check_2()" onclick="check_2()">
+										<option value="1" >{{trad.every_week}}</option>
+										<option value="2" >{{trad.week_1_of_2}}</option>
+										<option value="3" >{{trad.week_1_of_3}}</option>
+										<option value="4" >{{trad.week_1_of_4}}</option>
+										<option value="5" >{{trad.week_1_of_5}}</option>
+									</select>
+								</div>
+							</div>
+							<div style="display:none" id="menu2" width="100%">
+								<div class="F">
+									<b>{{trad.rep_rep_day}}</b>
+								</div>
+								<div class="CL">
+									{% for da in 0..6 %}
+										{% set wday = (da + d.weekstarts) % 7 %}
+										<input name="rep_day[{{ wday }}]" type="checkbox" class="form-check-input" onclick="check_1()" {% if rep_day[wday] %} checked {% endif %} /> {{ d['day' ~ wday] }}
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+
+						<!-- 3&5: Chaque mois -->
+						<div>
+							<div class="row">
+								<div class="col-lg-1">
+									<input name="rep_type" type="radio" value="3" class="form-check-input" onclick="check_1()" {% if d.rep_type == 3 %}checked{% endif %}/>
+								</div>
+
+								<div class="col-lg-11">
+									<select class="form-control" name="rep_month" size="1" onfocus="check_3()" onclick="check_3();check_1()">
+										<option value="3" {% if d.rep_type == 3 %}selected{% endif %}>{{trad.rep_type_3}}</option>
+										<option value="5" {% if d.rep_type == 5 %}selected{% endif %}>{{trad.rep_type_5}}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<!-- 4: Chaque annnée -->
+						<div>
+							<input name="rep_type" type="radio" value="4" class="form-check-input" onclick="check_1()" {% if d.rep_type == 4 %}checked{% endif %}/>
+							<label class="form-check-label">{{trad.rep_type_4}}</label>
+						</div>
+
+						<!-- 6: Chaque jour cycle -->
+						{% if settings.jours_cycles_actif == "Oui" %}
+						<div>
+							<input name="rep_type" type="radio" value="6" class="form-check-input" onclick="check_1()" {% if d.rep_type == 6 %}checked{% endif %}/>
+							<label class="form-check-label">{{trad.rep_type_6}}</label>
+							<div id='menuP'>
+								<div class='form-inline'>
+									{% for da in 1..settings.nombre_jours_Jours_Cycles %}
+										{% set wday = da %}
+										<input type="radio" name="rep_jour_" value="{{ wday }}" class="form-check-input" onclick="check_1()" {% if jours_c is defined and da == jours_c %} checked {% endif %} /> {{ trad.rep_type_6 }} {{ wday }} 
+									{% endfor %}
+								</div>
+							</div>
+
+						</div>
+						{% endif %}
+
+						<!-- 7: Chaque X Y du mois -->
+						<div>
+							<div class="row">
+								<div class="col-lg-2">
+									<input name="rep_type" type="radio" value="7" class="form-check-input" onclick="check_1()" {% if d.rep_type == 7 %}checked{% endif %}/>
+									<label class="form-check-label">{{trad.rep_type_7}}</label>
+								</div>
+
+								<div class="col-lg-2">
+									<select class="form-control" name="rep_month_abs1" size="1" onfocus="check_7()" onclick="check_7()">
+										<option value="0" {% if d.rep_month_abs1 == 0 %}selected{% endif %}>{{trad.firstofmonth}}</option>
+										<option value="1" {% if d.rep_month_abs1 == 1 %}selected{% endif %}>{{trad.secondofmonth}}</option>
+										<option value="2" {% if d.rep_month_abs1 == 1 %}selected{% endif %}>{{trad.thirdofmonth}}</option>
+										<option value="3" {% if d.rep_month_abs1 == 1 %}selected{% endif %}>{{trad.fouthofmonth}}</option>
+										<option value="4" {% if d.rep_month_abs1 == 1 %}selected{% endif %}>{{trad.fiveofmonth}}</option>
+										<option value="5" {% if d.rep_month_abs1 == 1 %}selected{% endif %}>{{trad.lastofmonth}}</option>
+									</select>
+								</div>
+
+								<div class="col-lg-3">
+								<select class="form-control" name="rep_month_abs2" size="1" onfocus="check_8()" onclick="check_8()">
+									{% for da in 0..6 %}
+										{% set wday = (da + d.weekstarts) % 7 %}
+										<option value="{{wday}}" {% if da == d.rep_month_abs2 %} selected {% endif %}>{{ d['day' ~ wday] }}</option>
+									{% endfor %}
+								</select>
+								</div>
+								<label class="col-lg-2 form-check-label">{{trad.ofmonth}}</label>
+							</div>
+						</div>
 
 						<div class="F">
 							<b>{{trad.rep_end_date}}</b>
@@ -289,7 +400,7 @@
 <script src="node_modules/jquery-ui/dist/jquery-ui.min.js"></script>
 <script src="node_modules/jquery-ui/ui/i18n/datepicker-fr.js"></script>
 <script src="node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
-<script type="text/javascript" src="node_modules/clockpicker/dist/bootstrap-clockpicker.js?v={{d.versionGRR}}"></script>
+<script src="node_modules/clockpicker/dist/bootstrap-clockpicker.js"></script>
 <!-- Select2 JS -->
 <script src="node_modules/select2/dist/js/select2.min.js"></script>
 <script>
@@ -536,7 +647,7 @@
 				menu.style.display = "";
 			}
 		}
-		{% if settings.jours_cycles_actif == 'oui' %}
+		{% if settings.jours_cycles_actif == 'Oui' %}
 			menu = document.getElementById('menuP');
 			if (menu)
 			{
