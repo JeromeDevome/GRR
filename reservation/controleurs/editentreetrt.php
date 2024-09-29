@@ -1,11 +1,11 @@
 <?php
 /**
- * edit_entry_handler.php
+ * editentreetrt.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-11-02 10:46$
+ * Dernière modification : $Date: 2024-09-29 16:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -16,34 +16,15 @@
  * (at your option) any later version.
  */
  // les modifications apportées semblent OK avec la méthode GET, à vérifier quand on passera edit_entry en méthode POST
-$grr_script_name = "edit_entry_handler.php";
-include "personnalisation/connect.inc.php";
-include "include/config.inc.php";
-include "include/misc.inc.php";
-include "include/$dbsys.inc.php";
-include "include/mrbs_sql.inc.php";
-include "include/functions.inc.php";
-// Settings
-require_once("./include/settings.class.php");
-//Chargement des valeurs de la table settingS
-if (!Settings::load())
-	die("Erreur chargement settings");
-// Session related functions
-require_once("./include/session.inc.php");
-// paramètres
-//print_r($_COOKIE);
-//print_r($_GET);
-// die();
-// Resume session
-if (!grr_resumeSession())
-{
-	header("Location: ./app.php?p=deconnexion&auto=1&url=$url"); // $url sort de session.inc.php
-	die();
-}
-$user = getUserName(); // ici on devrait avoir un identifiant
-// Paramètres langage
-include "include/language.inc.php";
-// on devrait arriver sur cette page depuis edit_entry ou edit_entry_handler, 
+$grr_script_name = "editentreetrt.php";
+
+$trad = $vocab;
+
+$user =$d['gNomUser'];
+
+print_r($_GET);
+
+// on devrait arriver sur cette page depuis edit_entry ou editentreetrt, 
 // il faudrait vérifier la page d'appel en pensant au timeout qui renvoie vers login.php
 
 // les variables attendues et leur type
@@ -139,11 +120,11 @@ foreach($form_vars as $var => $var_type)
 //die();
 // traitement des données
 // données communes
-$err_type = ''; // contient la partie du message dans le <h2>
-$err_msg = ''; // contient la partie complémentaire du message d'erreur
+$d['err_type'] = ''; // contient la partie du message dans le <h2>
+$d['err_msg'] = ''; // contient la partie complémentaire du message d'erreur
 try {
     if ((!isset($name) or (trim($name) == "")) && (Settings::get("remplissage_description_breve") != '0')){
-        $err_type = 'required';
+        $d['err_type'] = 'required';
         throw new Exception('erreur');
     }
     $beneficiaire = isset($beneficiaire)? clean_input($beneficiaire) : "";
@@ -156,19 +137,19 @@ try {
     {
         if ($beneficiaire_ext == "-1")// est-ce possible ?
         {
-            $err_type="required";
+            $d['err_type']="required";
             throw new Exception('erreur');
         }
         if ($beneficiaire_ext == "-2")// est-ce possible ?
         {
-            $err_type='invalid_owner_email_address';
+            $d['err_type']='invalid_owner_email_address';
             throw new Exception('erreur');
         }
     }
     else
         $beneficiaire_ext = "";
     if ((!isset($rooms[0])||(intval($rooms[0])==0))){
-        $err_type="choose_a_room";
+        $d['err_type']="choose_a_room";
         throw new Exception('erreur');
     }
     else {
@@ -186,8 +167,8 @@ try {
         if (($overload_fields_list[$overfield]["type"] == "numeric") && 
             (isset($$fieldname) && ($$fieldname != '') && (!preg_match("`^[0-9]*\.{0,1}[0-9]*$`",$$fieldname))))
         {
-            $err_type = 'invalid_parameters';
-            $err_msg = $overload_fields_list[$overfield]["name"].get_vocab("deux_points").get_vocab("is_not_numeric");
+            $d['err_type'] = 'invalid_parameters';
+            $d['err_msg'] = $overload_fields_list[$overfield]["name"].get_vocab("deux_points").get_vocab("is_not_numeric");
             throw new Exception('erreur');
         }
         if (isset($$fieldname))
@@ -199,20 +180,20 @@ try {
 
     if (!isset($start_day) || !isset($start_month) || !isset($start_year)) // erreur fatale : date incomplète
     {
-        $err_type="incomplete_date";
+        $d['err_type']="incomplete_date";
         throw new Exception('erreur');
     }
     if (check_begin_end_bookings($start_day, $start_month, $start_year))
     {
         $date = mktime(0, 0, 0, $month, $day,$year);
-        $err_type = "nobookings";
-        $err_msg = '<h3> '.affiche_date($date).'</h3>';
-        $err_msg .= get_vocab("begin_bookings").'<b>'.affiche_date(Settings::get("begin_bookings")).'</b><br />';
-        $err_msg .= get_vocab("end_bookings").'<b>'.affiche_date(Settings::get("end_bookings")).'</b>';
+        $d['err_type'] = "nobookings";
+        $d['err_msg'] = '<h3> '.affiche_date($date).'</h3>';
+        $d['err_msg'] .= get_vocab("begin_bookings").'<b>'.affiche_date(Settings::get("begin_bookings")).'</b><br />';
+        $d['err_msg'] .= get_vocab("end_bookings").'<b>'.affiche_date(Settings::get("end_bookings")).'</b>';
         throw new Exception('erreur');
     }
     if (($enable_periods == 'y')&&(!isset($period))){
-        $err_type = 'missing_period';
+        $d['err_type'] = 'missing_period';
         throw new Exception('erreur');
     }
     
@@ -304,7 +285,7 @@ try {
             if (isset($end_period))
                 $end_minute = $end_period + 1;
             else{
-                $err_type = 'missing_end_period';
+                $d['err_type'] = 'missing_end_period';
                 throw new Exception('erreur');
             }
         }
@@ -321,7 +302,7 @@ try {
             }
         }
         if (!isset($end_day) || !isset($end_month) || !isset($end_year) || !isset($end_hour) || !isset($end_minute) ){
-            $err_type = 'incomplete_end_date';
+            $d['err_type'] = 'incomplete_end_date';
             throw new Exception('erreur');
         }
         else
@@ -351,16 +332,16 @@ try {
     }
     if (($end_time <= $start_time)||(!checkdate($end_month, $end_day, $end_year)))
     {
-        $err_type = 'error_end_date';
-        $err_msg = 'debut '.$start_time.' fin '.$end_time;
-        $err_msg .= '<br />date de fin '.$end_day.'/'.$end_month.'/'.$end_year;
+        $d['err_type'] = 'error_end_date';
+        $d['err_msg'] = 'debut '.$start_time.' fin '.$end_time;
+        $d['err_msg'] .= '<br />date de fin '.$end_day.'/'.$end_month.'/'.$end_year;
         throw new Exception('erreur');
     }
     $starttime_midnight = mktime(0, 0, 0, $start_month, $start_day, $start_year);
     $endtime_midnight = mktime(0, 0, 0, $end_month, $end_day, $end_year);
     if (resa_est_hors_reservation($starttime_midnight , $endtime_midnight))
     {
-        $err_type = 'error_begin_end_date';
+        $d['err_type'] = 'error_begin_end_date';
         throw new Exception('erreur');
     }
     // ici on doit avoir start_time et end_time validés
@@ -419,7 +400,7 @@ try {
     // les autres paramètres devraient être dans les hiddenInputs
     // print_r($back);
     // page de retour vers un planning en cas d'abandon
-    $page_ret = (isset($page_ret))? $page_ret : page_accueil();
+    $d['page_ret'] = (isset($page_ret))? $page_ret : page_accueil();
     // les ressources
     foreach ($rooms as $key=>$room_id){
         $rooms[$key] = intval($room_id);
@@ -437,7 +418,7 @@ try {
     }
     // bloque les accès concurrents à la table
     if (!grr_sql_mutex_lock("".TABLE_PREFIX."_entry")){
-        $err_type = 'failed_to_acquire';
+        $d['err_type'] = 'failed_to_acquire';
         throw new Exception('erreur');
     }
     // teste s'il est autorisé et possible de réserver
@@ -447,44 +428,44 @@ try {
         {
             $diff = $end_time - $start_time;
             if (!grrCheckOverlap($reps, $diff)){
-                $err_type = 'error_chevauchement';
+                $d['err_type'] = 'error_chevauchement';
                 throw new Exception('erreur');
             }
             $i = 0;
             while ($i < count($reps)) // s'arrête à la première erreur par les exceptions
             {
                 if ((authGetUserLevel($user,-1) < 2) && (auth_visiteur($user,$room_id) == 0)){
-                    $err_type = 'reservation_impossible';
-                    $err_msg = get_vocab('norights');
+                    $d['err_type'] = 'reservation_impossible';
+                    $d['err_msg'] = get_vocab('norights');
                     throw new Exception('erreur');
                 }
                 if (!(verif_booking_date($user, -1, $room_id, $reps[$i], $date_now, $enable_periods))){
-                    $err_type = 'booking_in_past';
-                    $err_msg = get_vocab('booking_in_past_explain_with_periodicity');
+                    $d['err_type'] = 'booking_in_past';
+                    $d['err_msg'] = get_vocab('booking_in_past_explain_with_periodicity');
                     throw new Exception('erreur');
                 }
                 if (!(verif_duree_max_resa_area($user, $room_id, $start_time, $end_time))){
-                    $err_type = 'duree_max_resa_aera';
+                    $d['err_type'] = 'duree_max_resa_aera';
                     throw new Exception('erreur');
                 }
                 if (!(verif_delais_max_resa_room($user, $room_id, $reps[$i]))){
-                    $err_type = 'error_delais_max_resa_room';
+                    $d['err_type'] = 'error_delais_max_resa_room';
                     throw new Exception('erreur');
                 }
                 if (!(verif_delais_min_resa_room($user, $room_id, $reps[$i], $enable_periods))){
-                    $err_type = 'error_delais_min_resa_room';
+                    $d['err_type'] = 'error_delais_min_resa_room';
                     throw new Exception('erreur');
                 }
                 if (!(verif_date_option_reservation($option_reservation, $reps[$i]))){
-                    $err_type = 'error_date_confirm_reservation';
+                    $d['err_type'] = 'error_date_confirm_reservation';
                     throw new Exception('erreur');
                 }
                 if (!(verif_qui_peut_reserver_pour($room_id, $user, $beneficiaire))){
-                    $err_type = 'error_qui_peut_reserver_pour';
+                    $d['err_type'] = 'error_qui_peut_reserver_pour';
                     throw new Exception('erreur');
                 }
                 if (!(verif_heure_debut_fin($reps[$i], $reps[$i]+$diff, $area))){
-                    $err_type = 'error_heure_debut_fin';
+                    $d['err_type'] = 'error_heure_debut_fin';
                     throw new Exception('erreur');
                 }
                 $i++;
@@ -493,76 +474,76 @@ try {
         else // réservation unique
         {
             if ((authGetUserLevel($user,$room_id,'room') < 2) && (auth_visiteur($user,$room_id) == 0)){
-                    $err_type = 'booking_room_out';
+                    $d['err_type'] = 'booking_room_out';
                     throw new Exception('erreur');
             }
             if (isset($id) && ($id != 0))
             {
                 if (!(verif_booking_date($user, $id, $room_id, $start_time, $date_now, $enable_periods, $end_time))){
-                    $err_type = 'booking_in_past';
-                    $err_msg = get_vocab('booking_in_past_explain');
+                    $d['err_type'] = 'booking_in_past';
+                    $d['err_msg'] = get_vocab('booking_in_past_explain');
                     throw new Exception('erreur');
                 }
             }
             else
             {
                 if (!(verif_booking_date($user, -1, $room_id, $start_time, $date_now, $enable_periods))){
-                    $err_type = 'booking_in_past';
-                    $err_msg = get_vocab('booking_in_past_explain');
+                    $d['err_type'] = 'booking_in_past';
+                    $d['err_msg'] = get_vocab('booking_in_past_explain');
                     throw new Exception('erreur');
                 }
             }
             if (!(verif_duree_max_resa_area($user, $room_id, $start_time, $end_time))){
-                $err_type = 'duree_max_resa_aera';
+                $d['err_type'] = 'duree_max_resa_aera';
                 throw new Exception('erreur');
             }
             if (!(verif_delais_max_resa_room($user, $room_id, $start_time))){
-                $err_type = 'error_delais_max_resa_room';
+                $d['err_type'] = 'error_delais_max_resa_room';
                 throw new Exception('erreur');
             }
             if (!(verif_delais_min_resa_room($user, $room_id, $start_time, $enable_periods))){
-                $err_type = 'error_delais_min_resa_room';
+                $d['err_type'] = 'error_delais_min_resa_room';
                 throw new Exception('erreur');
             }
             if (!(verif_date_option_reservation($option_reservation, $start_time))){
-                $err_type = 'error_date_confirm_reservation';
+                $d['err_type'] = 'error_date_confirm_reservation';
                 throw new Exception('erreur');
             }
             if (!(verif_qui_peut_reserver_pour($room_id, $user, $beneficiaire))){
-                $err_type = 'error_qui_peut_reserver_pour';
+                $d['err_type'] = 'error_qui_peut_reserver_pour';
                 throw new Exception('erreur');
             }
             if (!(verif_heure_debut_fin($start_time, $end_time, $area))){
-                $err_type = 'error_heure_debut_fin';
+                $d['err_type'] = 'error_heure_debut_fin';
                 throw new Exception('erreur');
             }
             if (resa_est_hors_reservation2($start_time, $end_time, $area)){
-                $err_type = 'error_heure_debut_fin';
+                $d['err_type'] = 'error_heure_debut_fin';
                 throw new Exception('erreur');
             }
         }
         $statut_room = grr_sql_query1("SELECT statut_room from ".TABLE_PREFIX."_room where id = '$room_id'");
         if (($statut_room == "0") && authGetUserLevel($user,$room_id) < 3)
         {
-            $err_type = 'booking_room_out';
+            $d['err_type'] = 'booking_room_out';
             throw new Exception('erreur');
         }
         if (!verif_acces_ressource($user, $room_id))
         {
-            $err_type = 'booking_room_out';
+            $d['err_type'] = 'booking_room_out';
             throw new Exception('erreur');
         }
     }
     if (isset($id) && ($id != 0)){
         if (!getWritable($user, $id)){
-            $err_type = "accessdenied";
-            $err_msg = get_vocab("norights");
+            $d['err_type'] = "accessdenied";
+            $d['err_msg'] = get_vocab("norights");
             throw new Exception('erreur');
         }
     }
     if (authUserAccesArea($user, $area) == 0){
-        $err_type = "accessdenied";
-        $err_msg = get_vocab("norights");
+        $d['err_type'] = "accessdenied";
+        $d['err_msg'] = get_vocab("norights");
         throw new Exception('erreur');
     }
    // echo '1er tests passés';
@@ -786,56 +767,49 @@ catch (Exception $e){
             }
         }
     }
-    if ($ex == 'erreur'){
-        start_page_w_header();
-        echo '<form method="post" action="edit_entry.php">';// ramène à la page d'édition
-        echo $hiddenInputs;
-        echo "<input type='hidden' name='Err' value='yes' >";
-        echo '<h2>'.get_vocab($err_type).'</h2>';
-        if ($err_msg != ''){
-            echo '<p>'.$err_msg.'</p>';
-        }
-        echo "<input class='btn btn-primary' type='submit' value='".get_vocab('returnprev')."' />";
-        echo '</form>';
-    }
-    elseif ($ex == 'conflit'){
-        start_page_w_header();
-        echo "<h2>" . get_vocab("sched_conflict") . "</h2>";
+
+    $d['ex'] = $ex;
+    $d['hiddenInputs'] = $hiddenInputs;
+
+    if ($ex == 'conflit'){
+     //   start_page_w_header();
+     //   echo "<h2>" . get_vocab("sched_conflict") . "</h2>";
+        $d['htmlConflit'] = "";
             if (!isset($hide_title))
             {
-                echo get_vocab("conflict");
-                echo "<UL>";
+                $d['htmlConflit'] .= get_vocab("conflict");
+                $d['htmlConflit'] .= "<UL>";
             }
-        echo $conflits;
+            $d['htmlConflit'] .= $conflits;
         if (!isset($hide_title))
-            echo "</UL>";
+            $d['htmlConflit'] .= "</UL>";
         if (authGetUserLevel($user,$area,'area') >= 4){
-            echo '<center>';
-            echo '<form method="POST">';
-            echo $hiddenInputs;
-            echo '<input type="hidden" name="del_entry_in_conflict" value="yes" />';
-            echo '<input class="btn btn-danger" type="submit" value="'.get_vocab("del_entry_in_conflict").'" />';
-            echo '</form>';
+            $d['htmlConflit'] .= '<center>';
+            $d['htmlConflit'] .= '<form method="POST">';
+            $d['htmlConflit'] .= $hiddenInputs;
+            $d['htmlConflit'] .= '<input type="hidden" name="del_entry_in_conflict" value="yes" />';
+            $d['htmlConflit'] .= '<input class="btn btn-danger" type="submit" value="'.get_vocab("del_entry_in_conflict").'" />';
+            $d['htmlConflit'] .= '</form>';
             if ($rep_type != 0){
-                echo '<form method="POST">';
-                echo $hiddenInputs;
-                echo '<input type="hidden" name="skip_entry_in_conflict" value="yes" />';
-                echo '<input class="btn btn-success" type="submit" value="'.get_vocab("skip_entry_in_conflict").'" />';
-                echo '</form>';
+                $d['htmlConflit'] .= '<form method="POST">';
+                $d['htmlConflit'] .= $hiddenInputs;
+                $d['htmlConflit'] .= '<input type="hidden" name="skip_entry_in_conflict" value="yes" />';
+                $d['htmlConflit'] .= '<input class="btn btn-success" type="submit" value="'.get_vocab("skip_entry_in_conflict").'" />';
+                $d['htmlConflit'] .= '</form>';
             }
-            echo '</center><br />';
+            $d['htmlConflit'] .= '</center><br />';
         }
-        echo '<form action="./edit_entry.php" method="GET">'; // retour à la page d'édition
-        echo $hiddenInputs;
-        echo "<input class='btn btn-primary' type='submit' value='".get_vocab('returnprev')."' />";
-        echo '</form>';
+        $d['htmlConflit'] .= '<form action="./edit_entry.php" method="GET">'; // retour à la page d'édition
+        $d['htmlConflit'] .= $hiddenInputs;
+        $d['htmlConflit'] .= "<input class='btn btn-primary' type='submit' value='".get_vocab('returnprev')."' />";
+        $d['htmlConflit'] .= '</form>';
         // bouton pour abandonner
-        echo '<form action="'.$page_ret.'">';
-        echo '<input class="btn btn-warning" type="submit" value="'.get_vocab('cancel').'" />';
-        echo '</form>';
+     /*   $d['htmlConflit'] .= '<form action="'.$page_ret.'">';
+        $d['htmlConflit'] .= '<input class="btn btn-warning" type="submit" value="'.get_vocab('cancel').'" />';
+        $d['htmlConflit'] .= '</form>';*/
     }
-    elseif($ex == 'serie_vide'){
-        start_page_w_header();
+ /*   elseif($ex == 'serie_vide'){
+       // start_page_w_header();
         echo "<h2>" . get_vocab("sched_conflict") . "</h2>";
         echo '<p>'.get_vocab('all_entries_in_conflict').'</p>'.PHP_EOL;
         echo '<form action="./edit_entry.php" method="GET">'; // retour à la page d'édition
@@ -846,8 +820,8 @@ catch (Exception $e){
         echo '<form action="'.$page_ret.'">';
         echo '<input class="btn btn-warning" type="submit" value="'.get_vocab('cancel').'" />';
         echo '</form>';
-    }
+    }*/
 }
-// code commun
-end_page();
+
+echo $twig->render('editentreetrt.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
 ?>

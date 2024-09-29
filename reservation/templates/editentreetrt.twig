@@ -1,0 +1,82 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+	{% if d.msgErreur %}
+		<br>{{ msgSyst.messageDanger("", d.msgErreur) }}
+	{% endif %}
+	{% if d.msgOk %}
+		<br>{{ msgSyst.messageSuccess("", d.msgOk) }}
+	{% endif %}
+
+	<h2>{{d.titre}}</h2>
+	{% if d.moderate %}
+		<h3><span class="texte_ress_moderee">{{trad.reservations_moderees}}</span></h3>
+	{% endif %}
+
+
+	<form id="main" method="get" action="?p=editentreetrt">
+		<input type="hidden" name="p" value="editentreetrt">
+		<input type="hidden" name="oldRessource" value="{{d.roomid}}">
+		<input type="hidden" name="rep_id"    value="{{d.rep_id}}" />
+		<input type="hidden" name="edit_type" value="{{d.edit_type}}" />
+		<input type="hidden" name="page" value="{{d.page}}" />
+		<input type="hidden" name="room_back" value="{{d.room_back}}" />
+		<input type="hidden" name="page_ret" value="{{d.ret_page}}" />
+		<input type="hidden" name="create_by" value="{{d.create_by}}" />
+		<input type="hidden" name="type_affichage_reser" value="{{d.type_affichage_reser}}" />
+		{% if d.idresa != 0 and d.copier != 1 %}
+			<input type="hidden" name="id" value="{{ d.idresa }}" />
+		{% endif %}
+		<div id="error"></div>
+		
+
+		<div class="row2">
+			<!-- Colonne de Gauche : Données de la réservation -->
+			<div class="col col-sm-12 col-xs-12">
+
+                {% if d.ex == "erreur" %}
+                    <form method="post" action="app.php?p=editentree">
+                        <input type="hidden" name="p" value="editentree" >
+                        {{d.hiddenInputs|raw}}
+                        <input type="hidden" name="Err" value="yes" >
+                        <h2>{{trad[d.err_type]}}</h2>
+                        <small>({{d.err_type}})</small>
+                        <p>{{d.err_msg|raw}}</p>
+                        <input class="btn btn-primary" type="submit" value="{{trad.returnprev}}" />
+                    </form>
+                {% elseif d.ex == "conflit" %}
+                    <h2>{{trad.sched_conflict}}</h2>
+
+                    {{d.htmlConflit|raw}}
+
+                    <a href="{{d.page_ret}}" class="btn btn-warning">{{trad.cancel}}</a>
+
+                {% elseif d.ex == "serie_vide" %} <!-- Tout est en conflit -->
+                    <h2>{{trad.sched_conflict}}</h2>
+                    <p>{{trad.all_entries_in_conflict}}</p>
+                    <form method="post" action="app.php?p=editentree">
+                        <input type="hidden" name="p" value="editentree" >
+                        {{d.hiddenInputs|raw}}
+
+                        <input class="btn btn-primary" type="submit" value="{{trad.returnprev}}" />
+                    </form>
+
+                    <a href="{{d.page_ret}}" class="btn btn-warning">{{trad.cancel}}</a>
+                {% endif %}
+                
+			</div>
+
+		</div>
+	</form>
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

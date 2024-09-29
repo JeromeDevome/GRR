@@ -533,7 +533,7 @@ function entre_reservation($room_id,$jour_semaine,$name,$description,
 				echo "</UL>";
 				// possibilité de supprimer la (les) réservation(s) afin de valider la nouvelle réservation.
 				if(authGetUserLevel(getUserName(),$area,'area') >= 4)
-					echo "<center><table border=\"1\" cellpadding=\"10\" cellspacing=\"1\"><tr><td class='avertissement'><h3><a href='".traite_grr_url("","y")."edit_entry_handler.php?".$_SERVER['QUERY_STRING']."&amp;del_entry_in_conflict=yes'>".get_vocab("del_entry_in_conflict")."</a></h4></td></tr></table></center><br />";
+					echo "<center><table border=\"1\" cellpadding=\"10\" cellspacing=\"1\"><tr><td class='avertissement'><h3><a href='".traite_grr_url("","y")."app.php?p=editentreetrt&amp;".$_SERVER['QUERY_STRING']."&amp;del_entry_in_conflict=yes'>".get_vocab("del_entry_in_conflict")."</a></h4></td></tr></table></center><br />";
 		
 		}
 		return true;

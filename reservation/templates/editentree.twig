@@ -25,7 +25,8 @@
 	{% endif %}
 
 
-	<form id="main" method="get" action="?p=edit_entry_handler">
+	<form id="main" method="get" action="?p=editentreetrt">
+		<input type="hidden" name="p" value="editentreetrt">
 		<input type="hidden" name="oldRessource" value="{{d.roomid}}">
 		<input type="hidden" name="rep_id"    value="{{d.rep_id}}" />
 		<input type="hidden" name="edit_type" value="{{d.edit_type}}" />
@@ -87,30 +88,35 @@
 				<label for="name">{{ trad.namebooker }}{% if settings.remplissage_description_breve != 0 %} *{% endif %}{{ trad.deux_points }}</label>
 				<input id="name" class="pleine form-control" name="name" maxlength="80" size="60" autocomplete="on" value="{{d.resaBreveDescription}}" />
 
-					{% if settings.remplissage_description_complete != 2 %}
-						<label for="description">{{ trad.fulldescription }}{% if settings.remplissage_description_complete == 1 %} *{% endif %}{{ trad.deux_points }}</label>
-						<textarea name="description" class="pleine form-control" rows="4" columns="60" >{{d.resaDescription}}</textarea>
-					{% endif %}
+				<!-- Description complète -->
+				{% if settings.remplissage_description_complete != 2 %}
+					<label for="description">{{ trad.fulldescription }}{% if settings.remplissage_description_complete == 1 %} *{% endif %}{{ trad.deux_points }}</label>
+					<textarea name="description" class="pleine form-control" rows="4" columns="60" >{{d.resaDescription}}</textarea>
+				{% endif %}
 
-					{% if d.active_participant > 0 %}
-						<label for="nbparticipantmax">{{trad.nb_participant_max}}{{trad.deux_points}}</label>
-						<input name="nbparticipantmax" type="number" value="{{d.nbparticipantmax}}" > {{trad.nb_participant_zero}}
-					{% endif %}
+				<!-- Participant -->
+				{% if d.active_participant > 0 %}
+					<label for="nbparticipantmax">{{trad.nb_participant_max}}{{trad.deux_points}}</label>
+					<input name="nbparticipantmax" type="number" value="{{d.nbparticipantmax}}" > {{trad.nb_participant_zero}}
+				{% endif %}
 
-					{% if d.formCle == 1 %}
-						<input name="keys" type="checkbox" value="y" {% if d.clef == 1 %}checked{% endif %}>
-						<label for="keys">{{trad.msg_clef}}</label>
-					{% endif %}
+				<!-- Clé -->
+				{% if d.active_cle == 1 %}
+					<input name="keys" type="checkbox" value="y" {% if d.clef == 1 %}checked{% endif %}>
+					<label for="keys">{{trad.msg_clef}}</label>
+				{% endif %}
 
-					{% if d.formCle == 1 %}
-						<input name="courrier" type="checkbox" value="y" {% if d.courrier == 1 %}checked{% endif %}>
-						<label for="courrier">{{trad.msg_courrier}}</label>
-					{% endif %}
+				<!-- Courrier -->
+				{% if d.courrier == 1 %}
+					<input name="courrier" type="checkbox" value="y" {% if d.courrier == 1 %}checked{% endif %}>
+					<label for="courrier">{{trad.msg_courrier}}</label>
+				{% endif %}
 
-					{% if d.formEmprunte == 1 %}
-						<input name="statut_entry" type="checkbox" value="y" {% if d.statut_entry == "y" %}checked{% endif %}>
-						<label for="statut_entry">{{trad.signaler_reservation_en_cours}}</label>
-					{% endif %}
+				<!-- Emprunté/restititué -->
+				{% if d.active_ressource_empruntee == 1 %}
+					<input name="statut_entry" type="checkbox" value="y" {% if d.statut_entry == "y" %}checked{% endif %}>
+					<label for="statut_entry">{{trad.signaler_reservation_en_cours}}</label>
+				{% endif %}
 
 				<!-- Section date & heure-->
 					<!-- Date & Heure de début -->

@@ -68,9 +68,15 @@ $overload_fields = mrbsOverloadGetFieldslist($areas);
 foreach ($overload_fields as $fieldname=>$fieldtype)
 {
 	if ($overload_fields[$fieldname]["obligatoire"] == "y")
+	{
 		$flag_obli = " *" ;
+		$required = "required";
+	}
 	else
+	{
 		$flag_obli = "";
+		$required = "";
+	}
 	echo "<table class='pleine' id=\"id_".$areas."_".$overload_fields[$fieldname]["id"]."\">";
 	echo "<tr><td class=E><b>".removeMailUnicode($fieldname).$flag_obli."</b></td></tr>\n";
 	if (isset($overload_data[$fieldname]["valeur"]))
@@ -80,9 +86,9 @@ foreach ($overload_fields as $fieldname=>$fieldtype)
 	if ($overload_fields[$fieldname]["type"] == "textarea" )
 		echo "<tr><td><div class=\"col-xs-12\"><textarea class=\"form-control\" name=\"addon_".$overload_fields[$fieldname]["id"]."\">".htmlspecialchars($data,ENT_SUBSTITUTE)."</textarea></div></td></tr>\n";
 	else if ($overload_fields[$fieldname]["type"] == "text" )
-		echo "<tr><td><div class=\"col-xs-12\"><input class=\"form-control\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" /></div></td></tr>\n";
+		echo "<tr><td><div class=\"col-xs-12\"><input class=\"form-control\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" ".$required." /></div></td></tr>\n";
 	else if ($overload_fields[$fieldname]["type"] == "numeric" )
-		echo "<tr><td><div class=\"col-xs-12\"><input class=\"form-control\" size=\"20\" type=\"text\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" /></div></td></tr>\n";
+		echo "<tr><td><div class=\"col-xs-12\"><input class=\"form-control\" size=\"20\" type=\"number\" name=\"addon_".$overload_fields[$fieldname]["id"]."\" value=\"".htmlspecialchars($data,ENT_SUBSTITUTE)."\" ".$required." /></div></td></tr>\n";
     // ELM - Gestion des champs aditionnels multivalués (lignes 86 - 95)
 	else if ($overload_fields[$fieldname]["type"] == "checkbox" ) {
 		echo "<tr><td><div class=\"col-xs-12\">\n";

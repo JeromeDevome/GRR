@@ -117,7 +117,7 @@ grr_sql_free($res);
 // traitement des données
 /* URL de retour. À faire avant l'ouverture de session.
  En effet, nous pourrions passer par editentree plus d'une fois, par exemple si nous devons nous reconnecter par timeout. 
- Nous devons toujours conserver la page d'appel d'origine afin qu'une fois que nous avons quitté edit_entry_handler, nous puissions revenir à la page d'appel (plutôt que d'aller à la vue par défaut). 
+ Nous devons toujours conserver la page d'appel d'origine afin qu'une fois que nous avons quitté editentreetrt, nous puissions revenir à la page d'appel (plutôt que d'aller à la vue par défaut). 
  Si c'est la première fois, alors $_SERVER['HTTP_REFERER'] contient l'appelant d'origine. Si c'est la deuxième fois, nous l'aurons stocké dans $page_ret.*/
 if (!isset($page_ret) || ($page_ret == ''))
 {
@@ -285,7 +285,7 @@ if (UserRoomMaxBooking($user_name, $room, $compt) == 0)
 }
 $etype = 0;
 
-if (isset($id)) // édition d'une réservation existante
+if (isset($id) && $id !=0) // édition d'une réservation existante
 {
     if (!getWritable($user_name,$id) && ($copier == ''))
     {
