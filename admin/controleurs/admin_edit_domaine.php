@@ -401,7 +401,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 	get_vocab_admin('message_records');
 
 	$trad['dIdSite'] = $id_site;
-	$trad['dIpClient'] = OPTION_IP_ADR;
+	$trad['dIpClient'] = $gOptionIp;
 
 		if (isset($action))
 			$trad['dHidden1'] = "<input type=\"hidden\" name=\"action\" value=\"duplique_area\" />";

@@ -35,7 +35,7 @@ if (!$settings)
  */
 function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_login = array(), $tab_groups = array())
 {
-	global $motDePasseConfig;
+	global $motDePasseConfig, $gSessionName;
 	// Initialisation de $auth_ldap
 	$auth_ldap = 'no';
 	// Initialisation de $auth_imap
@@ -609,7 +609,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 	// A ce stade, on dispose dans tous les cas d'un tableau $row contenant les informations nécessaires à l'établissement d'une session
 	//
 	// Session starts now
-    session_name(SESSION_NAME);
+    session_name($gSessionName);
     @session_start();
 	// Is this user already connected ?
     $sql = "SELECT SESSION_ID from ".TABLE_PREFIX."_log where SESSION_ID = '" . session_id() . "' and LOGIN = '" . protect_data_sql($_login) . "' and now() between START and END";
@@ -810,8 +810,9 @@ function ControleSession()
  */
 function grr_resumeSession()
 {
+	global $gSessionName;
 		// Resuming session
-	@session_name(SESSION_NAME); // palliatif aux changements introduits dans php 7.2
+	@session_name($gSessionName); // palliatif aux changements introduits dans php 7.2
 	@session_set_cookie_params(['secure' => true, 'httponly' => true]);
 	@session_start();
 
@@ -877,8 +878,9 @@ function grr_resumeSession()
  */
 function grr_closeSession(&$_auto)
 {
+	global $gSessionName;
 	settype($_auto,"integer");
-	session_name(SESSION_NAME);
+	session_name($gSessionName);
 	@session_start();
 		// Sometimes 'start' may not exist, because the session was previously closed by another window
 		// It's not necessary to ".TABLE_PREFIX."_log this, then

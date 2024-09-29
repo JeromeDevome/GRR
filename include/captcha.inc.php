@@ -3,7 +3,7 @@
 require_once '../vendor/autoload.php';
 require_once './config.inc.php';
 
-session_name(SESSION_NAME);
+session_name($gSessionName);
 @session_start();
 use Gregwar\Captcha\CaptchaBuilder;
 

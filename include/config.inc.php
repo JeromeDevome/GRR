@@ -73,7 +73,7 @@ date_default_timezone_set('Europe/Paris');
 
 # Affichage d'un domaine par defaut en fonction de l'adresse IP de la machine cliente (voir documentation)
 # Mettre 0 ou 1 pour désactiver ou activer la fonction dans la page de gestion des domaines
- define('OPTION_IP_ADR', 1);
+ $gOptionIp = 1;
 
 # Nom de la session PHP.
 # Le nom de session fait référence à l'identifiant de session dans les cookies.
@@ -82,7 +82,7 @@ date_default_timezone_set('Europe/Paris');
 # Mais si un navigateur est amené à se connecter au cours de la même session, à deux sites GRR différents,
 # ces deux sites GRR doivent avoir des noms de session différents.
 # Dans ce cas, il vous faudra changer la valeur GRR ci-dessous par une autre valeur.
- define('SESSION_NAME', "GRR");
+ $gSessionName = "GRR";
 
 # Nombre maximum (+1) de réservations autorisés lors d'une réservation avec périodicité
  $max_rep_entrys = 365 + 1;

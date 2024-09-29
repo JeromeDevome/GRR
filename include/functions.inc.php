@@ -1941,11 +1941,12 @@ function compare_ip_adr($ip1, $ips2)
 //Retourne le domaine par défaut; Utilisé si aucun domaine n'a été défini.
 function get_default_area($id_site = -1)
 {
+	global $gOptionIp;
 	if (Settings::get("module_multisite") == "Oui")
 		$use_multisite = true;
 	else
 		$use_multisite = false;
-	if (OPTION_IP_ADR==1)
+	if ($gOptionIp==1)
 	{
 		$sql = "SELECT ip_adr, id FROM ".TABLE_PREFIX."_area WHERE ip_adr!='' ORDER BY access, order_display, area_name";
 		$res = grr_sql_query($sql);

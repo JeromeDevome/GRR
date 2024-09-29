@@ -25,7 +25,7 @@ if (isset($auto))
 if ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_statut') == 'lasso_utilisateur'))
 {
 	require_once(SPKITLASSO.'/lassospkit_public_api.inc.php');
-	session_name(SESSION_NAME);
+	session_name($gSessionName);
 	@session_start();
 	if (@$_SESSION['lasso_nameid'] != NULL)
 	{
