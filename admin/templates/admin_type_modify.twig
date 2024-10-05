@@ -19,7 +19,7 @@
 				<input type="hidden" name ="p" value="admin_type_modify">
 				<input type="hidden" name ="id_type" value="{{ type.id }}">
 				<div class="box-body">
-					{{ form.input('type_name', trad.type_name, type.type_name, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+					{{ form.input('type_name', trad.type_name, type.type_name, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1, maxlength:30}) }}
 
 					<!-- A mettre menu deroulant -->
 					<div class="form-group row">
@@ -67,7 +67,7 @@
 
 				<!-- /.box-body -->
 				<div class="box-footer">
-					<input type="submit" name="change_done" value="{{ trad.back }}" class="btn btn-default btn-md" />
+					<input type="submit" name="change_done" value="{{ trad.back }}" class="btn btn-default btn-md" formnovalidate/>
 					<input type="submit" name="change_type" value="{{ trad.save }}" class="btn btn-success btn-md pull-right" />
 					<input type="submit" name="change_room_and_back" value="{{ trad.save_and_back }}" class="btn btn-success btn-md pull-right" />
 				</div>
