@@ -91,7 +91,7 @@
 				<!-- Description complète -->
 				{% if settings.remplissage_description_complete != 2 %}
 					<label for="description">{{ trad.fulldescription }}{% if settings.remplissage_description_complete == 1 %} *{% endif %}{{ trad.deux_points }}</label>
-					<textarea name="description" class="pleine form-control" rows="4" columns="60" >{{d.resaDescription}}</textarea>
+					<textarea id="description" name="description" class="pleine form-control" rows="4" columns="60" >{{d.resaDescription}}</textarea>
 				{% endif %}
 
 				<!-- Participant -->
@@ -394,7 +394,7 @@
 
 			<div id="fixe">
 				<input type="button" class="btn btn-primary" value="{{ trad.cancel }}" onclick="window.location.href='{{ d.ret_page }}'" /> 
-				<input type="button" class="btn btn-primary" value="{{ trad.save }}" onclick="Save_entry();validate_and_submit();" />
+				<input type="button" class="btn btn-primary" value="{{ trad.save }}" onclick="validate_and_submit();" />
 			</div>
 		</div>
 	</form>
@@ -477,7 +477,7 @@
 		check_5();
 	{% endif %}
 	{% if d.Err == yes %}
-		timeoutID = window.setTimeout("Load_entry();check_5();",500);
+		//timeoutID = window.setTimeout("Load_entry();check_5();",500);
 	{% endif %}
 
 
@@ -489,7 +489,7 @@
 		{
 			if ((document.forms["main"].beneficiaire.options[0].selected) && (document.forms["main"].benef_ext_nom.value == ""))
 			{
-				$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>{{trad.you_have_not_entered}}{{trad.deux_points}}lcfirst({{trad.nom_beneficiaire}})</div>');
+				$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>{{trad.you_have_not_entered}}{{trad.deux_points}}{{trad.nom_beneficiaire}}</div>');
 				err = 1;
 			}
 		}
@@ -546,7 +546,7 @@
 	function insertBeneficiaires(area_,room_,user_,id_){
 		jQuery.ajax({
 			type: 'GET',
-			url: 'edit_entry_beneficiaire.php',
+			url: './reservation/ajax/edit_entry_beneficiaire.php',
 			data: {
 				area: area_,
 				room: room_,
@@ -567,7 +567,7 @@
 	function insertChampsAdd(areas_,id_,room_){
 		jQuery.ajax({
 			type: 'GET',
-			url: 'edit_entry_champs_add.php',
+			url: './reservation/ajax/edit_entry_champs_add.php',
 			data: {
 				areas: areas_,
 				id: id_,
@@ -618,7 +618,7 @@
 	function insertTypes(areas_,room_){
 		jQuery.ajax({
 			type: 'GET',
-			url: 'edit_entry_types.php',
+			url: 'reservation/ajax/edit_entry_types.php',
 			data: {
 				areas: areas_,
 				type: '<?php echo $etype; ?>',
@@ -693,9 +693,9 @@
 			}
 			else
 			{
-				menu.style.display = "";
+				menu.style.display = "block";
 				{% if settings.remplissage_description_breve == 2 %}
-					document.forms["main"].name.value="";
+					document.forms["main"].name.value=document.forms["main"].benef_ext_nom.value;
 				{% endif %}
 			}
 		}
@@ -720,12 +720,13 @@
 		( "" ? ";expires=" + ( new Date( ( new Date() ).getTime() + ( 1000 * lifeTime ) ) ).toGMTString() : "" ) +
 		( "" ? ";path=" + path : "") +
 		( "" ? ";domain=" + domain : "") +
-		( "" ? ";secure" : "");
+		( "" ? ";secure" : "") +
+		"; SameSite=Lax";
 	}
-
+/*
 	function Load_entry (){
 		recoverInputs(document.forms["main"],retrieveCookie('Grr_entry'),true);
-		{% if d.idera == 0 %}
+		{% if d.idresa == 0 %}
 			if (!document.forms["main"].rep_type[0].checked)
 				clicMenu('1');
 		{% endif %}
@@ -734,7 +735,7 @@
 	function Save_entry (){
 		setCookie('Grr_entry',getFormString(document.forms["main"],true));
 	}
-
+*/
 	insertBeneficiaires({{d.domaine}},{{d.roomid}},"{{d.beneficiaire|raw}}",{{d.idresa}});
 	insertChampsAdd({{d.domaine}},{{d.idresa}},{{d.roomid}});
 	insertTypes({{d.domaine}},{{d.roomid}})

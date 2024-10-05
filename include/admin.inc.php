@@ -16,19 +16,16 @@
  * (at your option) any later version.
  */
 
-if (@file_exists('../personnalisation/connect.inc.php')){
-	include "../personnalisation/connect.inc.php";
-}else{
-	include "./personnalisation/connect.inc.php";
-}
+ if( (!isset($administration) || $administration != true) && (!isset($moncompte) || $moncompte != true))
+ 	include "functions.inc.php";
+
+$prefixeChemin = cheminDetermination($niveauDossier);
+include $prefixeChemin."personnalisation/connect.inc.php";
 
 include "config.inc.php";
 include "$dbsys.inc.php";
 include "mrbs_sql.inc.php";
 include "misc.inc.php";
-if( (!isset($administration) || $administration != true) && (!isset($moncompte) || $moncompte != true))
-	include "functions.inc.php";
-
 
 // Settings
 require_once("settings.class.php");

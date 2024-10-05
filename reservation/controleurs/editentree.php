@@ -154,8 +154,6 @@ if (!isset($page_ret) || ($page_ret == ''))
         $page_ret = isset($referer)? $referer : page_accueil();
 }
 
-// ouverture de session
-require_once("./include/session.inc.php");
 // Resume session
 if (!grr_resumeSession())
 {
@@ -215,7 +213,6 @@ elseif(isset($areas)){ // récupéré dans le formulaire
 }
 else{
 	Definition_ressource_domaine_site(); // rend éventuellement $room -> NULL ce qui pose problème ensuite
-    //echo "<br> ligne 265";
     if (!isset($room)){ 
         $room_back = 'all';
         $room_id = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display,room_name");
@@ -284,7 +281,6 @@ if (UserRoomMaxBooking($user_name, $room, $compt) == 0)
 	exit();
 }
 $etype = 0;
-
 if (isset($id) && $id !=0) // édition d'une réservation existante
 {
     if (!getWritable($user_name,$id) && ($copier == ''))
@@ -415,14 +411,16 @@ else // nouvelle réservation
 		$duration = $duree_par_defaut_reservation_area ;
 	}
 	$edit_type = "series";
-	if (Settings::get("remplissage_description_breve") == '2')
-		$name = $_SESSION['prenom']." ".$_SESSION['nom'];
-	else
-		$name = "";
+	if(!isset($name))
+		if (Settings::get("remplissage_description_breve") == '2')
+			$name = $_SESSION['prenom']." ".$_SESSION['nom'];
+		else
+			$name = "";
 
 	$beneficiaire   = $user_name;
 	$create_by      = $user_name;
-	$description    = "";
+	if(!isset($description))
+		$description    = "";
 	$start_hour     = $hour;
 	$start_min      = (isset($minute)) ? $minute : '00';
 	if ($enable_periods == 'y')
@@ -458,6 +456,7 @@ else // nouvelle réservation
 	$modif_option_reservation = 'y';
 	$d['nbparticipantmax'] = 0;
 }
+
 // fin nouvelle réservation
 $Err = getFormVar("Err",'string'); // utilité ?
 if ($enable_periods == 'y')

@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2024-06-01 18:37$
+ * Dernière modification : $Date: 2024-10-05 19:11$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -14,16 +14,6 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-
- /*
-function returnmsg($type,$test, $status, $msg = '')
-{
-	echo encode_message_utf8('<div class="alert alert-'.$type.'" role="alert"><h3>'.$test);
-	echo encode_message_utf8($status)."</h3>";
-	if ($msg != '')
-		echo encode_message_utf8("($msg)"),PHP_EOL;
-	echo '</div>',PHP_EOL;
-}*/
 
 function getDaysInMonth($month, $year)
 {
@@ -352,18 +342,7 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 	}
 	return $affichage;
 }
-/*
-function decode_options($a,$modele){
-    // suppose que l'on a une chaîne $a de {V,F} de longueur égale à celle du $modele
-    // renvoie un tableau de booléens True, False indexé par les valeurs du modèle
-    $choix = array();
-    $l = count($modele);
-    for($i=0; $i<$l; $i++){
-        $choix[$modele[$i]] = ((isset($a))&&('V' == $a[$i]))? TRUE: FALSE;
-    }
-    return $choix;
-}
-*/
+
 /**
  *Fonction qui calcule $room, $area et $id_site à partir de $_GET['room'], $_GET['area'], $_GET['id_site']
  */
@@ -419,38 +398,7 @@ function bouton_aller_bas()
 		'});',PHP_EOL,'$("#toBot").click(function()',PHP_EOL,'{',PHP_EOL,'$("body,html").animate({scrollTop:800},0);',PHP_EOL,
 		'});',PHP_EOL,'});',PHP_EOL,'</script>',PHP_EOL;
 }*/
-/**
- *function affiche_ressource_empruntee
- *- $id_room : identifiant de la ressource
- *- Si la ressource est empruntée, affiche une icône avec un lien vers la réservation pour laquelle la ressource est empruntée.
- * @param string $id_room
- * @return string
- 
-function affiche_ressource_empruntee($id_room, $type = "logo")
-{
-	$active_ressource_empruntee = grr_sql_query1("SELECT active_ressource_empruntee FROM ".TABLE_PREFIX."_room WHERE id = '".$id_room."'");
-	if ($active_ressource_empruntee == 'y')
-	{
-		$id_resa = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
-		if ($id_resa != -1)
-		{
-			if ($type == "logo")
-				echo '<a href="app.php?p=vuereservation&id='.$id_resa.'"><img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource_actuellement_empruntee").'" title="'.get_vocab("reservation_en_cours").'" width="30" height="30" class="image" /></a>'.PHP_EOL;
-			else if ($type == "texte")
-			{
-				$beneficiaire = grr_sql_query1("SELECT beneficiaire FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
-				$beneficiaire_ext = grr_sql_query1("SELECT beneficiaire_ext FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
-				echo '<br /><b><span class="avertissement">'.PHP_EOL;
-				echo '<img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource_actuellement_empruntee").'" title="'.get_vocab("ressource_actuellement_empruntee").'" width="30" height="30" class="image" />'.PHP_EOL;
-				echo get_vocab("ressource_actuellement_empruntee").' '.get_vocab("nom_emprunteur").get_vocab("deux_points").affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"withmail");
-				echo ' <a href="app.php?p=vuereservation&id='.$id_resa.'&amp;mode=page">'.get_vocab("entryid").$id_resa.'</a>'.PHP_EOL.'</span></b>'.PHP_EOL;
-			}
-			else
-				return "yes";
-		}
-	}
-}
-*/
+
 /**
  *function affiche_ressource_empruntee_twig
  *- $id_room : identifiant de la ressource
@@ -1081,203 +1029,6 @@ function begin_page($title, $page = "with_session")
 	$a .= '</head>'.PHP_EOL;
 	$a .= '<body>'.PHP_EOL;
 	return $a;
-}
-
-
-/*
-** Fonction qui affiche le header
-*/
-function print_header($day = '', $month = '', $year = '', $type_session = 'with_session')
-{
-	global $niveauDossier, $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser, $grr_script_name;
-	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $gcDossierImg;
-	
-	if($_SESSION['changepwd'] == 1 && $grr_script_name != 'changemdp.php'){
-		header("Location: ./compte/compte.php?pc=changemdp");
-	}
-
-	if ($niveauDossier == 2){
-		$adm = 1;
-		$racine = "../";
-		$racineAd = "./";
-	}else{
-		$adm = 0;
-		$racine = "./";
-		$racineAd = "./admin/";
-	}
-
-	if (!($desactive_VerifNomPrenomUser))
-		$desactive_VerifNomPrenomUser = 'n';
-	// On vérifie que les noms et prénoms ne sont pas vides
-	VerifNomPrenomUser($type_session);
-	if ($type_session == "with_session")
-		echo begin_page(Settings::get("company"),"with_session");
-	else
-		echo begin_page(Settings::get("company"),"no_session");
-
-	$resulHook = Hook::Appel("hookHeader2");
-	echo $resulHook['hookHeader2'];
-
-	// Si nous ne sommes pas dans un format imprimable
-	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
-	{
-		// If we dont know the right date then make it up
-		if (!isset($day) || !isset($month) || !isset($year) || ($day == '') || ($month == '') || ($year == ''))
-		{
-			$date_now = time();
-			if ($date_now < Settings::get("begin_bookings"))
-				$date_ = Settings::get("begin_bookings");
-			else if ($date_now > Settings::get("end_bookings"))
-				$date_ = Settings::get("end_bookings");
-			else
-				$date_ = $date_now;
-			$day   = date("d",$date_);
-			$month = date("m",$date_);
-			$year  = date("Y",$date_);
-		}
-		if (!(isset($search_str)))
-			$search_str = get_vocab("search_for");
-		if (empty($search_str))
-			$search_str = "";
-		if (!(isset($desactive_bandeau_sup) && ($desactive_bandeau_sup == 1) && ($type_session != 'with_session')))
-		{
-
-			// HOOK
-			$resulHook = Hook::Appel("hookHeader1");
-			echo $resulHook['hookHeader1'];
-
-			// On fabrique une date valide pour la réservation si ce n'est pas le cas
-			$date_ = mktime(0, 0, 0, $month, $day, $year);
-			if ($date_ < Settings::get("begin_bookings"))
-				$date_ = Settings::get("begin_bookings");
-			else if ($date_ > Settings::get("end_bookings"))
-				$date_ = Settings::get("end_bookings");
-			$day   = date("d",$date_);
-			$month = date("m",$date_);
-			$year  = date("Y",$date_);
-			echo '<div id="toppanel">'.PHP_EOL;
-			echo '<div id="panel">'.PHP_EOL;
-			echo '<table id="header">'.PHP_EOL;
-			echo '<tr>'.PHP_EOL;
-			//Logo
-			$nom_picture = $racine."personnalisation/".$gcDossierImg."/logos/".Settings::get("logo");
-			if ((Settings::get("logo") != '') && (@file_exists($nom_picture)))
-				echo '<td class="logo" height="100">'.PHP_EOL.'<a href="'.$racine.page_accueil('yes').'day='.$day.'&amp;year='.$year.'&amp;month='.$month.'"><img src="'.$nom_picture.'" alt="logo"/></a>'.PHP_EOL.'</td>'.PHP_EOL;
-			//Accueil
-			echo '<td class="accueil ">',PHP_EOL,'<h2>',PHP_EOL,'<a href="'.$racine.page_accueil('yes'),'day=',$day,'&amp;year=',$year,'&amp;month=',$month,'">',Settings::get("company"),'</a>',PHP_EOL,'</h2>',PHP_EOL, Settings::get('message_accueil'),'</td>',PHP_EOL;
-			//Mail réservation
-			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
-			$res = grr_sql_query1($sql);
-			grr_sql_free($res);
-
-			if ( ( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )
-			{
-				echo '<td class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="'.get_vocab('reserver').'" onClick="javascript:location.href=\'app.php?p=contactresa&day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</td>',PHP_EOL;
-			}
-			// Administration
-			if ($type_session == "with_session")
-			{
-                $user_name = getUserName();
-                $mess_resa = resaToModerate($user_name);
-				if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1) || ($mess_resa != ''))
-				{
-					echo '<td class="administration">'.PHP_EOL;
-					if ((authGetUserLevel($user_name, -1, 'area') >= 4) || (authGetUserLevel($user_name, -1, 'user') == 1))
-                        echo "<br><a href='{$racineAd}admin.php?p=admin_accueil&day={$day}&amp;month={$month}&amp;year={$year}'>".get_vocab('admin')."</a>".PHP_EOL;
-					if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
-					{
-						echo '<br />'.PHP_EOL;
-						how_many_connected();
-                        echo "<br />";
-					}
-                    echo "<p class='avertissement'>".$mess_resa."</p>";
-					echo '</td>'.PHP_EOL;
-				}
-			}
-			if ($type_session != "with_session")
-				echo '<script>selection()</script>'.PHP_EOL;
-			echo '<td class="configuration" >'.PHP_EOL;
-			if (@file_exists('js/'.$clock_file))
-			{
-				echo '<div class="clock">'.PHP_EOL;
-				echo '<div id="Date">'.PHP_EOL;
-				echo '&nbsp;<span id="hours"></span>'.PHP_EOL;
-				echo 'h'.PHP_EOL;
-				echo '<span id="min"></span>'.PHP_EOL;
-				echo '</div></div>'.PHP_EOL;
-			}
-			$_SESSION['chemin_retour'] = '';
-			if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
-			{
-				$parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
-				$_SESSION['chemin_retour'] = traite_grr_url($grr_script_name)."?". $_SERVER['QUERY_STRING'];
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=fr-fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=de-de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=en-gb"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=it-it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
-				echo '<a onclick="charger();" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=es-es"><img src="'.$racine.'img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>'.PHP_EOL;
-			}
-			if ($type_session == 'no_session')
-			{
-				$resulHook = Hook::Appel("hookLienConnexion2");
-				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
-				{
-					echo '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>'.PHP_EOL;
-					echo '<br /> <small><i><a href="app.php?p=login">'.get_vocab("connect_local").'</a></i></small>'.PHP_EOL;
-				} elseif($resulHook['hookLienConnexion2'] != ""){
-					echo $resulHook['hookLienConnexion2'];	
-				}
-				else {
-					echo '<br /> <a href="app.php?p=login">'.get_vocab("connect").'</a>'.PHP_EOL;
-				}
-			}
-			else
-			{
-				$resulHook = Hook::Appel("hookLienConnexion3");
-				if( strlen(htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom'])) > 40 )
-					$nomAffichage =  htmlspecialchars($_SESSION['nom']);
-				else
-					$nomAffichage =  htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']);
-			
-				echo '<br /><a href="'.$racine.'/compte/compte.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month.'">'. $nomAffichage .' - '.get_vocab("manage_my_account").'</a>'.PHP_EOL;
-				if (verif_access_search(getUserName()))
-					echo '<br/><a href="'.$racine.'app.php?p=report">'.get_vocab("report").'</a>'.PHP_EOL;
-				if($resulHook['hookLienConnexion3'] != "")
-					echo $resulHook['hookLienConnexion3'];
-				$disconnect_link = false;
-				if (!((Settings::get("cacher_lien_deconnecter") == 'y') && (isset($_SESSION['est_authentifie_sso']))))
-				{
-					$disconnect_link = true;
-					if (Settings::get("authentification_obli") == 1)
-						echo '<br /> <a href="'.$racine.'app.php?p=deconnexion&auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
-					else
-						echo '<br /> <a href="'.$racine.'app.php?p=deconnexion&auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
-				}
-				if ((Settings::get("Url_portail_sso") != '') && (isset($_SESSION['est_authentifie_sso'])))
-				{
-					if ($disconnect_link)
-						echo ' - '.PHP_EOL;
-					else
-						echo '<br />'.PHP_EOL;
-					echo '<a href="'.Settings::get("Url_portail_sso").'">'.get_vocab("Portail_accueil").'</a>'.PHP_EOL;
-				}
-				if ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_statut') == 'lasso_utilisateur'))
-				{
-					echo '<br />';
-					if ($_SESSION['lasso_nameid'] == NULL)
-						echo '<a href="lasso/federate.php">'.get_vocab('lasso_federate_this_account').'</a>'.PHP_EOL;
-					else
-						echo '<a href="lasso/defederate.php">'.get_vocab('lasso_defederate_this_account').'</a>'.PHP_EOL;
-				}
-			}
-			echo '</td>'.PHP_EOL;
-			echo '</tr>'.PHP_EOL;
-			echo '</table>'.PHP_EOL;
-			echo '</div>'.PHP_EOL;
-			echo '<a id="open" class="open" href="#"><i class="fa-solid fa-arrows-up-down"></i></a>'.PHP_EOL;
-			echo '</div>'.PHP_EOL;
-		}
-	}
 }
 
 function print_header_twig($day = '', $month = '', $year = '', $type_session = 'with_session')
@@ -2150,17 +1901,6 @@ function time_date_string_jma($t,$dformat)
 {
 	return utf8_strftime($dformat, $t);
 }
-/*
-ancien code. Je ne vois pas l'intérêt du test YN le 25/09/19
-{
-	global $twentyfourhour_format;
-	//his bit's necessary, because it seems %p in strftime format
-	//strings doesn't work
-	if ($twentyfourhour_format)
-		return utf8_strftime($dformat, $t);
-	else
-		return utf8_strftime($dformat, $t);
-}*/
 
 // Renvoie une balise span avec un style background-color correspondant au type de  la réservation
 function span_bgground($colclass)
@@ -2228,41 +1968,6 @@ function tdcell_rowspan($colclass, $step)
 }
 
 //Display the entry-type color key. This has up to 2 rows, up to 10 columns.
-function show_colour_key($area_id)
-{
-    $sql = "SELECT DISTINCT t.id, t.type_name, t.type_letter, t.order_display FROM `".TABLE_PREFIX."_type_area` t
-    LEFT JOIN `".TABLE_PREFIX."_j_type_area` j on j.id_type=t.id
-    WHERE (j.id_area IS NULL or j.id_area != '".$area_id."')
-    AND NOT EXISTS (SELECT y.id_type FROM `".TABLE_PREFIX."_j_type_area` y WHERE y.id_type = j.id_type and id_area='".$area_id."')
-    ORDER BY t.order_display";
-    $res = grr_sql_query($sql);
-    echo '<table class="legende">';
-    echo '<caption>'.get_vocab("show_color_key").'</caption>'.PHP_EOL;
-    if ($res)
-    {
-        $nct = -1;
-        for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-        {
-            $type_name = $row[1];
-            $type_letter = $row[2];
-            if ($nct == -1)
-                echo '<tr>'.PHP_EOL;
-            if (++$nct == 2)
-            {
-                $nct = 0;
-                echo '</tr>'.PHP_EOL, '<tr>'.PHP_EOL;
-            }
-            tdcell($type_letter);
-            echo $type_name, '</td>'.PHP_EOL;
-        }
-        if ($i % 2 == 1)
-			echo '<td></td>',PHP_EOL;
-		echo '</tr>'.PHP_EOL;
-    }
-    echo '</table>'.PHP_EOL;
-}
-
-//Display the entry-type color key. This has up to 2 rows, up to 10 columns.
 function show_colour_keyTwig($area_id)
 {
     $sql = "SELECT DISTINCT t.id, t.type_name, t.type_letter, t.order_display FROM `".TABLE_PREFIX."_type_area` t
@@ -2299,38 +2004,6 @@ function show_colour_keyTwig($area_id)
 	return $affichage;
 }
 
-//Display the entry-type color keys. This has up to 2 rows, up to 10 columns.
-/*
-function show_colour_keys()
-{
-	echo '<table class="legende">';
-    echo '<caption>'.get_vocab("show_color_key").'</caption>'.PHP_EOL;
-	$sql = "SELECT DISTINCT id, type_name, type_letter, order_display FROM `".TABLE_PREFIX."_type_area` ";
-	$res = grr_sql_query($sql);
-	if ($res)
-	{
-		$nct = -1;
-		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-		{
-            $type_name   = $row[1];
-            $type_letter = $row[2];
-            if ($nct == -1)
-                echo '<tr>'.PHP_EOL;
-            if (++$nct == 2)
-            {
-                $nct = 0;
-                echo '</tr>'.PHP_EOL, '<tr>'.PHP_EOL;
-            }
-            tdcell($type_letter);
-            echo $type_name, '</td>'.PHP_EOL;
-		}
-		if ($i % 2 == 1)
-			echo '<td></td>',PHP_EOL;
-		echo '</tr>'.PHP_EOL;
-	}
-	echo '</table>'.PHP_EOL;
-}
-*/
 // transforme une chaine de caractères en couleur hexadécimale valide
 function valid_color($entry)
 {
@@ -4407,7 +4080,7 @@ function verif_heure_debut_fin($start_time,$end_time,$area)
 function VerifyModeDemo() {
 	if (Settings::get("ActiveModeDemo") == 'y')
 	{
-		print_header("", "", "", "");
+		//print_header_twig();
 		echo "<h1>Opération non autorisée</h1>
 		<p>Vous êtes dans une <b>version de démonstration de GRR</b>.
 			<br />Certaines fonctions ont été volontairement bridées. C'est le cas pour l'opération que vous avez tenté d'effectuer.</p>
@@ -4459,7 +4132,7 @@ function showAccessDenied($back, $infodebug = '')
 	if($debug_flag)
 		echo '<p>'.$infodebug.'</p>';
 	echo '<p><a href="'.$back.'">'.get_vocab("returnprev").'</a></p>';
-	end_page();
+	echo '</section></body></html>';
 }
 function showAccessDenied_twig($back, $infodebug = '')
 {
@@ -4554,20 +4227,6 @@ function check_begin_end_bookings($day, $month, $year)
 	$date = mktime(0,0,0,$month,$day,$year);
 	if (($date < Settings::get("begin_bookings")) || ($date > Settings::get("end_bookings")))
 		return -1;
-}
-function showNoBookings($day, $month, $year, $back)
-{
-	global $vocab;
-	$date = mktime(0, 0, 0, $month, $day,$year);
-	echo '<h2>'.get_vocab("nobookings").' '.affiche_date($date).'</h2>';
-	echo '<p>'.get_vocab("begin_bookings").'<b>'.affiche_date(Settings::get("begin_bookings")).'</b></p>';
-	echo '<p>'.get_vocab("end_bookings").'<b>'.affiche_date(Settings::get("end_bookings")).'</b></p>';
-    echo "<p>";
-        if ($back !=''){
-            echo "<a href=".$back.">".get_vocab('returnprev')."</a>";
-        }
-    echo "</p>";
-    echo "</body>\n</html>";
 }
 function showNoBookings_twig($day, $month, $year, $back)
 {
@@ -5661,93 +5320,11 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
  	else
  		return $_statut;
  }
-/* function jQuery_DatePicker($typeDate)
+/* function jQuery_DatePickerTwig($typeDate)
  * fonction qui rend un sélecteur de date couplé à un calendrier jQuery-DatePicker
  * définit trois input : $typeDate.'day', $typeDate.'month', $typeDate.'year'
  * /!\ changement de spécification : le préfixe $typeDate doit comporter un éventuel '_'
 */
-function jQuery_DatePicker($typeDate){
-
-    if (@file_exists('../personnalisation/connect.inc.php')){
-        $racine = "../";
-    } else{
-        $racine = "./";
-    }
-
-    if ($typeDate == 'rep_end_' && isset($_GET['id'])){
-        $res = grr_sql_query("SELECT repeat_id FROM ".TABLE_PREFIX."_entry WHERE id=".$_GET['id'].";");
-        if (!$res){
-            fatal_error(0, grr_sql_error());
-        }
-        $repeat_id = implode('', grr_sql_row($res, 0));
-        $res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks, start_time, end_time FROM ".TABLE_PREFIX."_repeat WHERE id=$repeat_id");
-        if (!$res){
-            fatal_error(0, grr_sql_error());
-        }
-        if (grr_sql_count($res) == 1){
-            $row6 = grr_sql_row($res, 0);
-            $date = date_parse(date("Y-m-d H:i:s",$row6[1]));
-            $day = $date['day'];
-            $month = $date['month'];
-            $year = $date['year'];
-        }
-        else{
-            $day = (isset ($_GET['day'])) ? clean_input($_GET['day']) : date("d");
-            $month = (isset ($_GET['month']))? clean_input($_GET['month']) : date("m");
-            $year = (isset ($_GET['year']))? clean_input($_GET['year']) : date("Y");
-        }
-    }
-    else{
-        global $start_day, $start_month, $start_year, $end_day, $end_month, $end_year;
-
-        $day = (isset ($_GET['day'])) ? clean_input($_GET['day']) : date("d");
-        if (isset($start_day) && $typeDate=='start_'){
-            $day = $start_day;
-        } 
-        elseif (isset($end_day) && $typeDate=='end_'){
-            $day = $end_day;
-        }
-        $month = (isset ($_GET['month']))? clean_input($_GET['month']) : date("m");
-        if (isset($start_month) && $typeDate=='start_'){
-            $month = $start_month;
-        } 
-        elseif (isset($end_month) && $typeDate=='end_'){
-            $month = $end_month;
-        }
-        $year = (isset ($_GET['year']))? clean_input($_GET['year']) : date("Y");
-        if (isset($start_year) && $typeDate=='start_'){
-            $year = $start_year;
-        } 
-        elseif (isset($end_year) && $typeDate=='end_'){
-            $year = $end_year;
-        }
-    }
- 	$mindate = utf8_strftime("%d/%m/%Y",Settings::get('begin_bookings'));
-    $maxdate = utf8_strftime("%d/%m/%Y",Settings::get('end_bookings'));
-    genDateSelector("".$typeDate, "$day", "$month", "$year","");
- 	echo '<input type="hidden" disabled="disabled" id="mydate_' .$typeDate. '">'.PHP_EOL;
- 	echo '<script>'.PHP_EOL;
- 	echo '	$(function() {'.PHP_EOL;
- 		echo '$.datepicker.setDefaults( $.datepicker.regional[\'fr\'] );'.PHP_EOL;
- 		echo '	$(\'#mydate_' .$typeDate. '\').datepicker({'.PHP_EOL;
- 			echo '		beforeShow: readSelected, onSelect: updateSelected,'.PHP_EOL;
- 			echo '		showOn: \'both\', buttonImageOnly: true, buttonImage: \'img_grr/calendar.png\',buttonText: "Choisir la date"});'.PHP_EOL;
-    echo '		function readSelected()'.PHP_EOL;
-    echo '		{'.PHP_EOL;
-    echo '			$(\'#mydate_' .$typeDate. '\').val($(\'#' .$typeDate. 'day\').val() + \'/\' +'.PHP_EOL;
-	echo '			$(\'#' .$typeDate. 'month\').val() + \'/\' + $(\'#' .$typeDate. 'year\').val());'.PHP_EOL;
-    echo '			return {};'.PHP_EOL;
-    echo '		}'.PHP_EOL;
-    echo '		function updateSelected(date)'.PHP_EOL;
-    echo '		{'.PHP_EOL;
-    echo '			$(\'#' .$typeDate. 'day\').val(date.substring(0, 2));'.PHP_EOL;
-    echo '			$(\'#' .$typeDate. 'month\').val(date.substring(3, 5));'.PHP_EOL;
-    echo '			$(\'#' .$typeDate. 'year\').val(date.substring(6, 10));'.PHP_EOL;
-    echo '		}'.PHP_EOL;
-    echo '	});'.PHP_EOL;
-    echo '</script>'.PHP_EOL;
-}
-
 function jQuery_DatePickerTwig($typeDate){
 
 	if (@file_exists('../personnalisation/connect.inc.php')){
@@ -5834,58 +5411,6 @@ function jQuery_DatePickerTwig($typeDate){
 	return $retour;
 }
 
-function jQuery_TimePicker($typeTime, $start_hour, $start_min,$dureepardefaultsec)
-{
-	if (isset ($_GET['id']))
-	{
-		if (isset($start_hour) && isset($start_min))
-		{
-			$hour = $start_hour;
-			$minute = $start_min;
-		}
-		else
-		{
-			$hour = date("h");
-			$minute = date("m");
-		}
-	}
-	else
-	{
-		$hour = (isset ($_GET['hour']))? clean_input($_GET['hour']) : date("h");
-		$minute = (isset ($_GET['minute']))? clean_input($_GET['minute']) : date("m");
-			
-		if ($typeTime == 'end_'){
-            $dureepardefautmin = $dureepardefaultsec/60;
-            if ($dureepardefautmin == 60){
-                $ajout = 1;
-                $hour = $_GET['hour'] + $ajout;
-                $minute ="00";
-            }
-            elseif ($dureepardefautmin < 60){
-                $hour = $_GET['hour'];
-                $minute =$dureepardefautmin;
-            }
-            elseif ($dureepardefautmin > 60){
-                $dureepardefautheure = $dureepardefautmin/60;
-            //	if (($dureepardefautheure % 60)!=0){
-        //		$hour = $_GET['hour']+ $dureepardefautheure;
-                $hour = ($_GET['hour']+ $dureepardefautheure)%24; // Modulo 24
-                $hour = str_pad($hour, 2, 0, STR_PAD_LEFT); // Affichage heure sur 2 digits 
-                $minute = ($_GET['minute'] == 30)? 30 : "00";
-        //		}
-            }
-        }
-	}
-	if ($minute == 0)
-		$minute = '00';
-	// MAJ
-	echo '<div class="input-group">
-		<input name="' .$typeTime. '" type="time" class="form-control" value="' .$hour. ':' .$minute. '">
-		<span class="input-group-addon">
-			<i class="fa-regular fa-clock"></i>
-		</span>
-	</div>';
-}
 function jQuery_TimePickerTwig($typeTime, $start_hour, $start_min,$dureepardefaultsec)
 {
 	if (isset ($_GET['id']))
@@ -5940,89 +5465,7 @@ function jQuery_TimePickerTwig($typeTime, $start_hour, $start_min,$dureepardefau
 
 	return $html;
 }
-function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaultsec,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format=0)
-{
-    $minTime = $morningstarts.":00";
-    $eveningends_minutes = str_pad($eveningends_minutes, 2, 0, STR_PAD_LEFT);
-    $maxTime = $eveningends.":".$eveningends_minutes;
-	if (isset ($_GET['id']))
-	{
-		if (isset($start_hour) && isset($start_min))
-		{
-			$hour = $start_hour;
-			$minute = $start_min;
-		}
-		else
-		{
-			$hour = date("H");
-			$minute = date("i");
-		}
-	}
-	else
-	{
-		$hour = (isset ($_GET['hour']))? clean_input($_GET['hour']) : date("H");
-		$minute = (isset ($_GET['minute']))? clean_input($_GET['minute']) : date("i");
 
-		if ($typeTime == 'end_')
-        {
-            $dureepardefautmin = $dureepardefaultsec/60;
-            if ($dureepardefautmin == 60){
-                $ajout = 1;
-                $hour += $ajout;
-                $minute ="00";
-            }
-            if ($dureepardefautmin < 60){
-                $minute += $dureepardefautmin;
-                if ($minute >= 60){
-                    $hour++;
-                    $minute = $minute%60;
-                }
-            }
-            if ($dureepardefautmin > 60)
-            {
-                $dureepardefautheure = $dureepardefautmin/60;
-                $hour = ($hour + $dureepardefautheure)%24;
-                $hour = str_pad($hour, 2, 0, STR_PAD_LEFT);
-                $minute += $dureepardefautmin % 60;
-            }
-        }
-        $minute = str_pad($minute, 2, 0, STR_PAD_LEFT);
-	}
-    $timeFormat = ($twentyfourhour_format)? "H:i" : "h:i a";
-	echo '<label for="'.$typeTime.'">'.get_vocab('time').get_vocab('deux_points').'</label>
-    <div class="input-group timepicker">
-	<input id="'.$typeTime.'" name="'.$typeTime.'" type="text" class="form-control time" value="'.$hour.':'.$minute. '" >
-    <span class="input-group-addon btn" id="'.$typeTime.'clock'.'">
-		<i class="fa-solid fa-clock"></i>
-    </span>
-	</div>';
-    echo '<script type="text/javascript">
-        $(\'#'.$typeTime.'\').timepicker({
-            \'step\': '.($resolution/60).',
-            \'scrollDefault\': \''.$hour.':'.$minute.'\',
-            \'minTime\': \''.$minTime.'\',
-            \'maxTime\': \''.$maxTime.'\',
-            \'timeFormat\': \''.$timeFormat.'\',
-            \'forceRoundTime\': true,
-        });
-        $(\'#'.$typeTime.'\').timepicker(\'setTime\', \''.$hour.':'.$minute.'\');
-		$(\'#'.$typeTime.'clock'.'\').on(\'click\', function() {
-            $(\'#'.$typeTime.'\').timepicker(\'show\');
-        });
-        </script>';
-}
-
-function spinner ($duration)
-{
-	echo "<input class=\"form-control\" name=\"duration\" value=\"" .$duration. "\" id=\"spinner\" />";
-	echo "<script type=\"text/javascript\" src=\"js/jquery.mousewheel.js\"></script>";
-	echo "<script>$(function() {
-		$('#spinner').spinner({
-			min: 1,
-			page: 10,
-		});});
-</script>";
-}
 /** supprimerReservationsUtilisateursEXT()
  *
  * Supprime les réservations des membres qui proviennent d'une source "EXT"
@@ -6402,102 +5845,6 @@ function cssTypeResa()
 	return $types;
 }
 
-/*
-** Fonction qui affiche le début d'une page avec entête et balise <section>
-*/
-function start_page_w_header($day = '', $month = '', $year = '', $type_session = 'with_session')
-{
-    global $racine,$racineAd;
-    // pour le traitement des modules
-    if (@file_exists('./admin_access_area.php')){
-        $adm = 1;
-        $racine = "../";
-        $racineAd = "./";
-    }
-	elseif (@file_exists('./compte.php')){
-        $adm = 1;
-        $racine = "../";
-        $racineAd = "./";
-    }
-    else{
-        $adm = 0;
-        $racine = "./";
-        $racineAd = "./admin/";
-    }
-
-    // code HTML
-    header('Content-Type: text/html; charset=utf-8'); // en liaison avec la modification de pageHead2
-    /*if (!isset($_COOKIE['open']))
-	{
-		setcookie("open", "true", time()+3600, "", "", false, false);
-	}*/
-    if (!isset($_COOKIE['open']))
-    {
-        header('Set-Cookie: open=true; SameSite=Lax; Secure=true;');
-    }
-    echo '<!DOCTYPE html>'.PHP_EOL;
-    echo '<html lang="fr">'.PHP_EOL;
-    // section <head>
-    if ($type_session == "with_session")
-        echo pageHead2(Settings::get("company"),"with_session");
-    else
-        echo pageHead2(Settings::get("company"),"no_session");
-    // section <body>
-    echo "<body>";
-    // Menu du haut = section <header>
-    echo "<header>";
-    pageHeader2($day, $month, $year, $type_session, $adm);
-    echo "</header>";
-    // Debut de la page
-    echo '<section>'.PHP_EOL;
-    // doit être fermé par la fonction end_page
-}   
-/*
-** Fonction qui affiche le début d'une page sans entête et avec une balise <section>
-*/
-function start_page_wo_header($titre, $type_session = 'with_session')
-{
-    // pour le traitement des modules
-    if (@file_exists('./admin_access_area.php')){
-        $adm = 1;
-        $racine = "../";
-        $racineAd = "./";
-    }
-    else{
-        $adm = 0;
-        $racine = "./";
-        $racineAd = "./admin/";
-    }
-    include $racine."/include/hook.class.php";
-    // code HTML
-    header('Content-Type: text/html; charset=utf-8');
-    /*if (!isset($_COOKIE['open']))
-	{
-		setcookie("open", "true", time()+3600, "", "", false, false);
-	}*/
-    if (!isset($_COOKIE['open']))
-    {
-        header('Set-Cookie: open=true; SameSite=Lax; Secure=true;');
-    }
-    echo '<!DOCTYPE html>'.PHP_EOL;
-    echo '<html lang="fr">'.PHP_EOL;
-    // section <head>
-    if ($type_session == "with_session")
-        echo pageHead2(Settings::get("company"),"with_session");
-    else
-        echo pageHead2(Settings::get("company"),"no_session");
-    // section <body>
-    echo "<body>";
-    // Debut de la page
-    echo '<section>'.PHP_EOL;
-    // doit être fermé par la fonction end_page
-} 
-/* Fonction qui ferme les balises restées ouvertes dans les précédentes 
-*/
-function end_page()
-{
-    echo '</section></body></html>';
-}
 /* Fonction qui affiche, si un mail n'a pas pu être envoyé, un pop-up avec le message d'erreur
 */
 function display_mail_msg()
@@ -6561,6 +5908,21 @@ function acces_formulaire_reservation(){
         else 
             return ((Settings::get('nb_max_resa_form') - $quota) > 0);
     }
+}
+/** cheminDetermination($ofl,$od)
+ * permet d'obternir les liens depuis la racine GRR selon différents scripts
+ *
+ */
+function cheminDetermination($niv)
+{
+	if($niv == 1)
+		$prefixeChemin = "./";
+	elseif($niv == 2)
+		$prefixeChemin = "../";
+	elseif($niv == 3)
+		$prefixeChemin = "../../";
+
+	return $prefixeChemin;
 }
 /** grrGetOverloadDescArray($ofl,$od)
  *

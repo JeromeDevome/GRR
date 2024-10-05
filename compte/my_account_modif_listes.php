@@ -25,7 +25,7 @@
 //				'domaine'-> on actualise la liste des domaines
 //$action : 1-> on actualise la liste des ressources
 //					2-> on vide la liste des ressouces
-
+$niveauDossier = 2;
 include "../include/admin.inc.php";
 if ((authGetUserLevel(getUserName(), -1) < 1))
 {

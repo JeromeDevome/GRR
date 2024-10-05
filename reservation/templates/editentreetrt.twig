@@ -21,8 +21,8 @@
 	{% endif %}
 
 
-	<form id="main" method="get" action="?p=editentreetrt">
-		<input type="hidden" name="p" value="editentreetrt">
+	<form id="main" method="post" action="app.php?p=editentree">
+		<input type="hidden" name="p" value="editentree">
 		<input type="hidden" name="oldRessource" value="{{d.roomid}}">
 		<input type="hidden" name="rep_id"    value="{{d.rep_id}}" />
 		<input type="hidden" name="edit_type" value="{{d.edit_type}}" />

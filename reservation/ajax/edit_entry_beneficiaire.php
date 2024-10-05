@@ -15,7 +15,9 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-include_once "include/admin.inc.php";
+$niveauDossier = 3;
+
+include_once "../../include/admin.inc.php";
 // vérifications de sécurité : page accessible si utilisateur connecté et usager
 if ((authGetUserLevel(getUserName(),-1) < 2))
 {

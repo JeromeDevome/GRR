@@ -16,7 +16,9 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-include "include/admin.inc.php";
+$niveauDossier = 3;
+
+include "../../include/admin.inc.php";
 /* Ce script a besoin de trois arguments passés par la méthode GET :
 $id : l'identifiant de la réservation (0 si nouvelle réservation)
 $areas : l'identifiant du domaine

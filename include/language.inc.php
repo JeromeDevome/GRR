@@ -48,7 +48,15 @@ $dbDb = (isset($dbDb))? $dbDb : '';
 $pass_leng = "";
 if (isset($fichier_mysql_inc_est_present))
 	$pass_leng = grr_sql_query1("select VALUE from ".TABLE_PREFIX."_setting where NAME = 'pass_leng'");
+
+$prefixeChemin = cheminDetermination($niveauDossier);
 // Fichier de traduction
+if (@file_exists($prefixeChemin."langue/".$locale.".php"))
+	$lang_file = $prefixeChemin."langue/" . $locale.".php";
+else
+	$lang_file =  $prefixeChemin."langue/fr-fr.php";
+
+/*
 if (@file_exists("langue/".$locale.".php"))
 	$lang_file = "langue/" . $locale.".php";
 elseif (@file_exists("../langue/".$locale.".php"))
@@ -56,7 +64,7 @@ elseif (@file_exists("../langue/".$locale.".php"))
 elseif (@file_exists("../langue/fr-fr.php"))
 	$lang_file = "../langue/fr-fr.php";
 else
-	$lang_file = "langue/fr-fr.php";
+	$lang_file = "langue/fr-fr.php";*/
 // Dans le cas où le script verif_auto_grr.php est utilisé en tâche cron, il faut ici, donner le chemin complet.
 if (defined("CHEMIN_COMPLET_GRR"))
 	chdir(CHEMIN_COMPLET_GRR);
