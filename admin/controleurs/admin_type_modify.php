@@ -156,6 +156,8 @@ else
 {
 	$typeResa["id"] = '0';
 	$typeResa["order_display"] = 0;
+	$typeResa["couleurhexa"] = "#C03000";
+	$typeResa["couleurtexte"] = "#FFFFFF";
 	$typeResa["disponible"] = 2;
 	$trad['admin_type_titre'] = get_vocab('admin_type_modify_create');
 }
@@ -168,5 +170,7 @@ for ($i = 1; $i <= 702; $i++)
 	$lettres[$i] = array('lettre' => $letter);
 	$letter++;
 }
+
+echo $twig->render('admin_type_modify.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'type' => $typeResa, 'lettres' => $lettres));
 
 ?>
