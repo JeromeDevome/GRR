@@ -108,10 +108,10 @@ if ($reg_data != 'yes')
 							{
 								case 0:
 								//login
-								$test_login = preg_replace("/([A-Za-z0-9_@. -])/","",$data[$c]);
-								if ($test_login=="")
+								$test_login = preg_replace("/[A-Za-z0-9_@.-]/","",$data[$c]);
+								if ($test_login == "")
 								{
-									$data[$c] =    strtoupper($data[$c]);
+									$data[$c] = strtoupper($data[$c]);
 									$test = grr_sql_count(grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$data[$c]'"));
 									if ($test!='0')
 									{
