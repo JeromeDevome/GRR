@@ -964,7 +964,7 @@ function begin_page($title, $page = "with_session")
 			die();
 		}
 	}
-	global $vocab, $charset_html, $unicode_encoding, $clock_file, $use_select2, $gcDossierCss, $version_grr;
+	global $vocab, $charset_html, $unicode_encoding, $clock_file, $gcDossierCss, $version_grr;
 	header('Content-Type: text/html; charset=utf-8');
 	/*if (!isset($_COOKIE['open']))
 	{
@@ -987,15 +987,6 @@ function begin_page($title, $page = "with_session")
 	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css?v='.$version_grr.'" />'.PHP_EOL;
 	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.css?v='.$version_grr.'" />'.PHP_EOL;
 	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css?v='.$version_grr.'" >'.PHP_EOL;
-	//$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/mod_bootstrap.css" />'.PHP_EOL;
-
-	if (isset($use_select2))
-	{
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2.css?v='.$version_grr.'" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/select2-bootstrap.css?v='.$version_grr.'" />'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-multiselect.css?v='.$version_grr.'">'.PHP_EOL;
-		$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-clockpicker.min.css?v='.$version_grr.'">'.PHP_EOL;
-	}
 	$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css?v='.$version_grr.'" />'.PHP_EOL; // le style par défaut
 	$a .= '<link rel="stylesheet" type="text/css" href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css">';
 	if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
@@ -1009,16 +1000,8 @@ function begin_page($title, $page = "with_session")
 	//$a .= '<script type="text/javascript" src="js/jquery.validate.js?v='.$version_grr.'"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js?v='.$version_grr.'"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/menu.js?v='.$version_grr.'"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/popup.js?v='.$version_grr.'" charset="utf-8"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/functions.js?v='.$version_grr.'" ></script>'.PHP_EOL;
-	if (isset($use_select2))
-	{
-		$a .= '<script type="text/javascript" src="js/bootstrap-clockpicker.js"></script>'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/bootstrap-multiselect.js"></script>'.PHP_EOL;
-	}
-	if (isset($use_tooltip_js))
-		echo '<script type="text/javascript" src="js/tooltip.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="js/functions.min.js?v='.$version_grr.'" ></script>'.PHP_EOL;
 	if (!isset($_SESSION['selection']))
 		$a .= '<script type="text/javascript" src="js/selection.js?v='.$version_grr.'" ></script>'.PHP_EOL;
 	if (@file_exists('js/'.$clock_file))
@@ -1034,7 +1017,7 @@ function begin_page($title, $page = "with_session")
 function print_header_twig($day = '', $month = '', $year = '', $type_session = 'with_session')
 {
 	global $niveauDossier, $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser,$grr_script_name, $page;
-	global $use_prototype, $use_admin, $use_tooltip_js, $desactive_bandeau_sup, $id_site, $use_select2, $d, $gcDossierImg, $gcDossierCss, $version_grr;
+	global $use_prototype, $use_admin, $desactive_bandeau_sup, $id_site, $d, $gcDossierImg, $gcDossierCss, $version_grr;
 	
 	if( isset($_SESSION['changepwd']) && $_SESSION['changepwd'] == 1 && $page != 'changemdp'){
 		header("Location: ./compte/compte.php?pc=changemdp");
@@ -1246,7 +1229,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 function print_header_admin($day = '', $month = '', $year = '', $type_session = 'with_session')
 {
 	global $vocab, $search_str, $grrSettings, $desactive_VerifNomPrenomUser, $grr_script_name;
-	global $use_admin, $id_site, $use_select2, $lienRetour, $lienCompte, $nomAffichage;
+	global $use_admin, $id_site, $lienRetour, $lienCompte, $nomAffichage;
 
 	// Si nous ne sommes pas dans un format imprimable
 	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))

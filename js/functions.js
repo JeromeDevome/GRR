@@ -143,22 +143,6 @@ function confirmButton(theform,themessage)
  	}
  	return true;
 } // end of the 'setCheckboxes()' function
-function _setCheckboxesGrr(the_form, do_check, day)
-{
-	var elts = document.forms[the_form];
-	for (i = 0; i < elts.elements.length; i++)
-	{
-		type = elts.elements[i].type;
-		if (type="checkbox")
-		{
-			if ((elts.elements[i].value== day) || (day=='all'))
-			{
-				elts.elements[i].checked = do_check;
-			}
-		}
-	}
-	return true;
-}
 // end of the 'setCheckboxes()' function
 // Les quatre fonctions qui suivent servent à enregistrer un cookie
 // Elles sont utilisées par edit_entry.php pour conserver les informations de la saisie pour
@@ -167,182 +151,6 @@ function _setCheckboxesGrr(the_form, do_check, day)
 // Voir http://www.howtocreate.co.uk/jslibs/script-saveformvalues
 // les erreurs constatées lors de l'utilisation de champs additionnels sont prévisibles : howtocreate déconseille l'utilisation des scripts lorsque le formulaire est calculé par Javascript :-(
 var FS_INCLUDE_NAMES = 0, FS_EXCLUDE_NAMES = 1, FS_INCLUDE_IDS = 2, FS_EXCLUDE_IDS = 3, FS_INCLUDE_CLASSES = 4, FS_EXCLUDE_CLASSES = 5;
-//Hugo - fonction qui récupère les informations des champs input pour les stocker dans un cookie (Voir http://www.howtocreate.co.uk/jslibs/script-saveformvalues)
-function getFormString( formRef, oAndPass, oTypes, oNames )
-{
-	if (oNames)
-	{
-		oNames = new RegExp((( oTypes > 3 )?'\\b(':'^(')+oNames.replace(/([\\\/\[\]\(\)\.\+\*\{\}\?\^\$\|])/g,'\\$1').replace(/,/g,'|')+(( oTypes > 3 )?')\\b':')$'),'');
-		var oExclude = oTypes % 2;
-	}
-	for (var x = 0, oStr = '', y = false; formRef.elements[x]; x++)
-	{
-		if (formRef.elements[x].type)
-		{
-			if (oNames)
-			{
-				var theAttr = (oTypes > 3) ? formRef.elements[x].className : ((oTypes > 1) ? formRef.elements[x].id : formRef.elements[x].name);
-				if ((oExclude && theAttr && theAttr.match(oNames)) || (!oExclude && !( theAttr && theAttr.match(oNames))))
-				{
-					continue;
-				}
-			}
-			var oE = formRef.elements[x];var oT = oE.type.toLowerCase();
-			if (oT == 'text' || oT == 'textarea' || ( oT == 'password' && oAndPass ) || oT == 'datetime' || oT == 'datetime-local' || oT == 'date' || oT == 'month' || oT == 'week' || oT == 'time' || oT == 'number' || oT == 'range' || oT == 'email' || oT == 'url')
-			{
-				oStr += ( y ? ',' : '' ) + oE.value.replace(/%/g,'%p').replace(/,/g,'%c');
-				y = true;
-			}
-			else if (oT == 'radio' || oT == 'checkbox')
-			{
-				oStr += (y ? ',' : '') + (oE.checked ? '1' : '');
-				y = true;
-			}
-			else if (oT == 'select-one')
-			{
-				oStr += (y ? ',' : '') + oE.selectedIndex;
-				y = true;
-			}
-			else if (oT == 'select-multiple')
-			{
-				for (var oO = oE.options, i = 0; oO[i]; i++ )
-				{
-					oStr += (y ? ',' : '') + (oO[i].selected ? '1' : '');
-					y = true;
-				}
-			}
-		}
-	}
-	return oStr;
-}
-//Hugo - Fonction qui récupère les informations stockées dans le cookie pour les remettre dans les inputs (Voir http://www.howtocreate.co.uk/jslibs/script-saveformvalues)
-function recoverInputs( formRef, oStr, oAndPass, oTypes, oNames )
-{
-	if (oStr)
-	{
-		oStr = oStr.split( ',' );
-		if (oNames)
-		{
-			oNames = new RegExp((( oTypes > 3 )?'\\b(':'^(')+oNames.replace(/([\\\/\[\]\(\)\.\+\*\{\}\?\^\$\|])/g,'\\$1').replace(/,/g,'|')+(( oTypes > 3 )?')\\b':')$'),'');
-			var oExclude = oTypes % 2;
-		}
-		for (var x = 0, y = 0; formRef.elements[x]; x++ )
-		{
-			if (formRef.elements[x].type)
-			{
-				if (oNames)
-				{
-					var theAttr = ( oTypes > 3 ) ? formRef.elements[x].className : ( ( oTypes > 1 ) ? formRef.elements[x].id : formRef.elements[x].name );
-					if ((oExclude && theAttr && theAttr.match(oNames)) || (!oExclude && (!theAttr || !theAttr.match(oNames))))
-					{
-						continue;
-					}
-				}
-				var oE = formRef.elements[x];var oT = oE.type.toLowerCase();
-				if (oT == 'text' || oT == 'textarea' || (oT == 'password' && oAndPass) || oT == 'datetime' || oT == 'datetime-local' || oT == 'date' || oT == 'month' || oT == 'week' || oT == 'time' || oT == 'number' || oT == 'range' || oT == 'email' || oT == 'url' )
-				{
-					oE.value = oStr[y].replace(/%c/g,',').replace(/%p/g,'%');
-					y++;
-				}
-				else if (oT == 'radio' || oT == 'checkbox')
-				{
-					oE.checked = oStr[y] ? true : false;
-					y++;
-				}
-				else if ( oT == 'select-one')
-				{
-					oE.selectedIndex = parseInt( oStr[y]);
-					y++;
-				}
-				else if ( oT == 'select-multiple')
-				{
-					for (var oO = oE.options, i = 0; oO[i]; i++ )
-					{
-						oO[i].selected = oStr[y] ? true : false;
-						y++;
-					}
-				}
-			}
-		}
-	}
-}
-// alternative
-// récupère les champs d'un formulaire et les transforme en une chaîne qui sera stockée dans un cookie
-function getFormString( formRef)
-{
-     var fields = $(formRef).serializeArray();
-     var valeurs = "";
-     $.each(fields, function(i, field){
-       var valeur = field.value.replace(/%/g,'%p').replace(/,/g,'%c'); // code virgule et pourcent
-       valeurs += field.name + ":" + valeur + ",";
-     });
-     return valeurs;
-}
-// parse la chaîne issue du cookie et attribue les valeurs aux champs du formulaire
-function recoverInputs( formRef, oStr)
-{
-    if (oStr) // vérifie que le paramètre est non NULL
-    {
-        oStr = oStr.split( ',' );
-        var valeurs = "";
-        oStr.forEach(myFunction);
-        function myFunction(a){
-            a = a.split(':');
-            valeurs += a[0] + '::'+ a[1] + '??';
-        }
-     $("#panel").append(valeurs);
-    }
-}
-function recoverInputs( formRef, oStr)
-{
-    if (oStr) // vérifie que le paramètre est non NULL
-    {
-        oStr = oStr.split( ',' );
-        oVal = new Object();
-        var valeurs = "";
-        function f(s){
-            s = s.split(':');
-            oVal[s[0]] = s[1];
-        }
-        oStr.forEach(f);
-        for(var v in oVal){
-            valeurs += v + ':::' + oVal[v] + '<br>'; // remplacer par l'affectation des valeurs aux champs du formulaire document.getElementById("queryString").value = "$thisValue";
-        }
-        for (var x = 0; formRef.elements[x]; x++ )
-		{
-			if (formRef.elements[x].type)
-			{
-                var oE = formRef.elements[x];var oT = oE.type.toLowerCase();var oN = oE.name;
-				try{
-                    if (oT == 'text' || oT == 'textarea' || oT == 'password' || oT == 'datetime' || oT == 'datetime-local' || oT == 'date' || oT == 'month' || oT == 'week' || oT == 'time' || oT == 'number' || oT == 'range' || oT == 'email' || oT == 'url' )
-                    {
-                        oE.value = oVal[oN].replace(/%c/g,',').replace(/%p/g,'%'); // si oVal[oN] n'est pas défini: déclenche une erreur, d'où try
-                    }
-                    else if (oT == 'radio' || oT == 'checkbox')
-                    {
-                        oE.checked = oVal[oN] ? true : false;
-                    }
-                    else if ( oT == 'select-one')
-                    {
-                        oE.selectedIndex = parseInt( oVal[oN]);
-                    }
-                    else if ( oT == 'select-multiple')
-                    {
-                        for (var oO = oE.options, i = 0; oO[i]; i++ )
-                        {
-                            oO[i].selected = oVal[oN] ? true : false;
-                        }
-                    }
-                }
-                catch(err)
-                {
-                    continue;
-                }
-            }
-        }
-        //$("#panel").append(valeurs);
-    }
-}
 function retrieveCookie(cookieName)
 {
 	/* retrieved in the format
@@ -416,45 +224,6 @@ function selectionner_liste(IdListe)
 		IdListe.options[i].selected = true;
 	}
 }
-/*-----MAJ Loïs THOMAS  --> Fonctions qui permettent de cacher et afficher le menu à gauche -----*/
-function divaffiche(month_all2)
-{
-	var Nbr = month_all2;
-	if ( Nbr == 1)
-	{
-		document.getElementById("menuGaucheMonthAll2").style.display = "inline-block";
-		// document.getElementById("planningMonthAll2").style.marginLeft = "300px";
-		// document.getElementById("planning").style.width = "75%";
-        document.getElementById("planning").style.width = "auto";
-        document.getElementById("planningMonthAll2").style.width = "auto";
-	}
-	else
-	{
-		document.getElementById("menuGauche").style.display = "block";
-		// document.getElementById("planning").style.marginLeft = "300px";
-		document.getElementById("planning").style.width = "auto";
-	}
-	document.getElementById("cacher").style.display = "inline";
-	document.getElementById("voir").style.display = "none";
-}
-function divcache(month_all2)
-{
-	var Nbr = month_all2;
-	if (Nbr == 1)
-	{
-		document.getElementById("menuGaucheMonthAll2").style.display = "none";
-		document.getElementById("planningMonthAll2").style.marginLeft = "0px";
-		document.getElementById("planningMonthAll2").style.width = "133%";
-	}
-	else
-	{
-		document.getElementById("menuGauche").style.display = "none";
-		document.getElementById("planning").style.marginLeft = "0px";
-		document.getElementById("planning").style.width = "auto";
-	}
-	document.getElementById("cacher").style.display = "none";
-	document.getElementById("voir").style.display = "inline";
-}
 function afficherMoisSemaine(a)
 {
 	var Nb = a;
@@ -475,20 +244,6 @@ function cacherMoisSemaine(a)
 function charger(){
 	var test = document.getElementById("chargement");
 	test.style.display = 'Block';
-}
-
-function cacherMenuGauche(){
-    document.getElementById("menuGauche2").style.display = "none";
-    document.getElementById("planning2").style.width = "100%";
-    document.getElementById("cacher").style.display = "none";
-	document.getElementById("voir").style.display = "inline";
-}
-
-function afficherMenuGauche(){
-    document.getElementById("menuGauche2").style.display = "inline-block";
-    document.getElementById("planning2").style.width = "75%";
-    document.getElementById("cacher").style.display = "inline";
-	document.getElementById("voir").style.display = "none";
 }
 
 /*
@@ -558,3 +313,7 @@ function toggle_visibility(id) {
 	else
 	   e.style.display = 'none';
  }
+ /*
+ *Menu*
+ */
+ function setCookie(e,t,n){var r=new Date;r.setDate(r.getDate()+n);var i=escape(t)+(n==null?"":"; expires="+r.toUTCString());document.cookie=e+"="+i}function getCookie(e){var t,n,r,i=document.cookie.split(";");for(t=0;t<i.length;t++){n=i[t].substr(0,i[t].indexOf("="));r=i[t].substr(i[t].indexOf("=")+1);n=n.replace(/^\s+|\s+$/g,"");if(n==e){return unescape(r)}}}$(document).ready(function(){$("#open").click(function(){var e=$("div#panel").is(":hidden");if(e)$("div#panel").show("slow");else $("div#panel").hide("slow");setCookie("open",e,365)});var e=getCookie("open");if(e=="true"){$("div#panel").show()}else{$("div#panel").hide()}})

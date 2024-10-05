@@ -723,23 +723,10 @@
 		( "" ? ";secure" : "") +
 		"; SameSite=Lax";
 	}
-/*
-	function Load_entry (){
-		recoverInputs(document.forms["main"],retrieveCookie('Grr_entry'),true);
-		{% if d.idresa == 0 %}
-			if (!document.forms["main"].rep_type[0].checked)
-				clicMenu('1');
-		{% endif %}
-	}
-
-	function Save_entry (){
-		setCookie('Grr_entry',getFormString(document.forms["main"],true));
-	}
-*/
 	insertBeneficiaires({{d.domaine}},{{d.roomid}},"{{d.beneficiaire|raw}}",{{d.idresa}});
 	insertChampsAdd({{d.domaine}},{{d.idresa}},{{d.roomid}});
 	insertTypes({{d.domaine}},{{d.roomid}})
-
+/*
 	$('#areas').on('change', function(){
 		//$('.multiselect').multiselect('destroy');
 		//$('.multiselect').multiselect();
@@ -748,7 +735,7 @@
 		//$('.multiselect').multiselect();
 		//$("#select2").select2();
 	});
-
+*/
 </script>
 
 {% endblock %}
