@@ -236,6 +236,7 @@ $vocab['champ_vide_mot_de_passe_inchange'] = "Si vous laissez les champs ci-dess
 $vocab['change'] = "Modificare";
 $vocab['changer_statut_lorsque_ressource_restituee'] = "Lorsque la ressource aura été restituée, rendez-vous à l'adresse suivante pour changer le statut de la réservation"; // A traduire
 $vocab['check_all_the'] = "Intaccare tutti ";
+$vocab['choisir_image_login'] = "Choisir une image à faire apparaître dans la page de connexion (Template 2 uniquement)"; // A traduire
 $vocab['choisir_image_logo'] = "Choisir un logo à faire apparaître dans le coin gauche du bandeau supérieur (png, jpg et gif uniquement)."; // A traduire
 $vocab['choisir_image_ressource'] = "Scegliere un'immagine della risorsa per la scheda di presentazione (png, jpg e gif)";
 $vocab['choix_action'] = "Sceglie il tipo di azione :";

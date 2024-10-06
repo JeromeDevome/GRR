@@ -235,6 +235,7 @@ $vocab['champ_vide_mot_de_passe_inchange'] = "If the fields below are left empty
 $vocab['change'] = "Change";
 $vocab['changer_statut_lorsque_ressource_restituee'] = "When the resource will be restored, go to the following address to change the reservation status.";
 $vocab['check_all_the'] = "Click to select all ";
+$vocab['choisir_image_login'] = "Choose an image to appear on the login page (Template 2 only)";
 $vocab['choisir_image_logo'] = "Choose a logo to show in the left corner of the superior banner (png, jpg and gif only).";
 $vocab['choisir_image_ressource'] = "Choose an image of the resource for presentation card (png, jpg and gif only)";
 $vocab['choix_action'] = "Choose a type of action:";

@@ -154,9 +154,14 @@ MajMysqlModeDemo();
 if ((Settings::get("Url_cacher_page_login") != "") && ((!isset($sso_super_admin)) || ($sso_super_admin == false)) && (!isset($_GET["local"])))
 	header("Location: ./index.php");
 
-$nom_picture = "./personnalisation/".$gcDossierImg."/logos/".Settings::get("logo");
-if ((Settings::get("logo") != '') && (@file_exists($nom_picture)))
-	$d['logo'] = $nom_picture;
+$nom_logo = "./personnalisation/".$gcDossierImg."/logos/".Settings::get("logo");
+if ((Settings::get("logo") != '') && (@file_exists($nom_logo)))
+	$d['logo'] = $nom_logo;
+
+$nom_image = "./personnalisation/".$gcDossierImg."/logos/".Settings::get("image_connexion");
+if ((Settings::get("image_connexion") != '') && (@file_exists($nom_image)))
+	$d['image_connexion'] = $nom_image;
+	
 
 // HOOK
 $resulHook = Hook::Appel("hookLienConnexion1");
@@ -171,6 +176,7 @@ if (Settings::get("webmaster_email") != "")
 
 $d['lienGRR'] = $grr_devel_url;
 
+// Sélection du template
 if (Settings::get("login_template") > 0)
 	$numTemplate = Settings::get("login_template");
 else

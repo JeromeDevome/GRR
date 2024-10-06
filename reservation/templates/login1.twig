@@ -15,6 +15,7 @@
 		<link rel="stylesheet" type="text/css" href="./themes/default/css/style.css?v={{d.versionGRR}}" />
 		<link rel="stylesheet" type="text/css" href="./{{ d.sheetcss }}" />
 		{{ d.sheetcssperso|raw }}
+        <link rel="stylesheet" type="text/css" href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
         <style>
             .btn-outlined-black {
                 background-color: #fff;
@@ -62,7 +63,7 @@
                         {% if settings.sso_statut != "cas_visiteur" or settings.sso_statut != "cas_utilisateur" %}
                         <tr>
                             <td colspan="2">
-                                <a class="btn btn-outlined-black" type="submit" name="submit" href="index.php?force_authentification" style="font-variant: small-caps; width: 100%;" />{{trad.authentification_CAS}}</a>
+                                <a class="btn btn-primary" type="submit" name="submit" href="index.php?force_authentification" style="font-variant: small-caps; width: 100%;" /><i class="fa-solid fa-address-card"></i> {{trad.authentification_CAS}}</a>
                             </td>
                         </tr>
                         <tr>
@@ -71,7 +72,7 @@
                         {% elseif settings.sso_statut != "" and settings.sso_statut != "no_sso" %}
                         <tr>
                             <td colspan="2">
-                                <a class="btn btn-outlined-black" type="submit" name="submit" href="index.php" style="font-variant: small-caps; width: 100%;" />{{trad.authentification_CAS}}</a>
+                                <a class="btn btn-outlined-black" type="submit" name="submit" href="index.php" style="font-variant: small-caps; width: 100%;" /><i class="fa-solid fa-address-card"></i> {{trad.authentification_CAS}}</a>
                             </td>
                         </tr>
                         <tr>
@@ -88,7 +89,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <input class="btn btn-primary" type="submit" name="submit" value="{{trad.OK}}" style="font-variant: small-caps; width: 33%;" />
+                                <input class="btn btn-primary" type="submit" name="submit" value="{{trad.connect}}" />
                             </td>
                         </tr>
 
@@ -98,7 +99,7 @@
             </form>
 
             {% if settings.fct_crea_cpt == "y" %}
-                <h4><a href="app.php?p=creationcompte">{{trad.crea_compte_inscrivez}}</a></h4><br><br>
+                <h4><a href="app.php?p=creationcompte" class="btn btn-primary">{{trad.crea_compte_inscrivez}}</a></h4><br><br>
             {% endif %}
 
             <p>{{d.contactAdmin|raw}} [<a href="app.php?p=page&page=cgu" target="_blank">{{trad.cgu}}</a>]</p>

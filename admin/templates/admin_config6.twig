@@ -38,7 +38,7 @@
               </div>
               <div class="card-body">
 				  <div class="tab-pane active" id="fa-icons">
-					<form action="?p=admin_config6" id="nom_formulaire" method="post">
+					<form enctype="multipart/form-data" action="?p=admin_config6" id="nom_formulaire" method="post">
 						<input type="hidden" name="p" value="admin_config6" />
 						<section id="paramdefaut">
 							<h4 class="page-header">{{ trad.default_parameter_values_title }}</h4>
@@ -464,6 +464,22 @@
 									</tr>
 								</tbody>
 							</table>
+
+							<p>{{ trad.choisir_image_login }}</p>
+							<div class="form-group row col-sm-12">
+								<label class="col col-sm-4" for="doc_file">{{ trad.select_fichier }}</label>
+								<div class="col col-sm-8">
+									<input type="file" name="doc_file" />
+								</div>
+							</div>
+							{% if settings.image_connexion %}
+								<div class="form-group row col-sm-12">
+									<img src="{{d.dossierLogo}}{{ settings.image_connexion }}" alt="logo" title="{{ trad.dLogo }}"/>
+									<div class="col col-sm-8">
+										{{ trad.supprimer_logo }} <input type="checkbox" name="sup_img" />
+									</div>
+								</div>
+							{% endif %}
 
 						</section>
 

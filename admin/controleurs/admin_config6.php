@@ -16,10 +16,13 @@
  * (at your option) any later version.
  */
 
+include('../include/import.class.php');
 
 $trad = $vocab;
 
 $msg = '';
+$dossier = '../personnalisation/'.$gcDossierImg.'/logos/';
+$d['dossierLogo'] = $dossier;
 
 if (isset($_GET['sync'])) {
     if ($_GET['sync'] == 1) {
@@ -325,7 +328,43 @@ if (isset($_POST['allow_pdf'])) {
             $msg .= "Erreur lors de l'enregistrement de login_nom !<br />";
         }
     }
+    // Suppression de l'image de connexion
+    if (isset($_POST['sup_img'])) {
+        $ok1 = false;
+        if ($f = @fopen("$dossier/.test", 'w')) {
+            @fputs($f, '<'.'?php $ok1 = true; ?'.'>');
+            @fclose($f);
+            include "$dossier/.test";
+        }
+        if (!$ok1) {
+            $msg .= "L\'image n\'a pas pu être supprimée : problème d\'écriture sur le répertoire. Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
+            $ok = 'no';
+        } else {
+            $nom_picture = $dossier.Settings::get('image_connexion');
+            if (@file_exists($nom_picture)) {
+                unlink($nom_picture);
+            }
+            if (!Settings::set('image_connexion', '')) {
+                $msg .= "Erreur lors de l'enregistrement l\'image de connexion (2) !\\n";
+                $ok = 'no';
+            }
+        }
+    }
+    // Enregistrement de l'image de connexion
+	if (!empty($_FILES['doc_file']['tmp_name']))
+	{
+		list($nomImage, $resultImport) = Import::Image($dossier, 'image_connexion');
 
+		if($resultImport == ""){
+			if (!Settings::set('image_connexion', $nomImage)) {
+				$msg .= "Erreur lors de l'enregistrement du l\'image de connexion (1) !\\n";
+				$ok = 'no';
+			}
+		} else {
+			$msg .= $resultImport;
+			$ok = 'no';
+		}
+	}
 
 
 // gestion_lien_aide
