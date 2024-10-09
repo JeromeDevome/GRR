@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2024-03-17
+# Last modification : 2024-10-09
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -151,6 +151,8 @@ $vocab['Afficher_description_complete_dans_titre_plannings'] = "Afficher la desc
 $vocab['affiche_dans_les_mails'] = "Inhalt in in automatischen E-Mails anzeigen (sofern diese Funktion aktiviert ist)"; 
 $vocab['affiche_dans_les_vues'] = "Inhalt in Tages-, Wochen- und Monatsansicht anzeigen"; 
 $vocab['ajout_correspondance_profil_statut'] = "Ajouter une correspondance Profil / Statut"; // A traduire
+$vocab['ajout_fichier_joint'] = "Konfigurieren der Funktion „Angehängte Datei“.";
+$vocab['ajout_fichier_joint_explain'] = "Die Funktion „Angehängte Datei“ ermöglicht autorisierten Benutzern das Hochladen von an eine Reservierung angehängten Dateien und autorisierten Benutzern das Anzeigen der angehängten Dateien gemäß den unten definierten Rechten.<br/ >Hochladen und Anzeigen erfolgt über die Reservierungsansichtsseite.";
 $vocab['all'] = "Alle";
 $vocab['allday'] = "Tag";
 $vocab['allow_action_in_past'] = "der bereits getätigten Reservierungen und Änderungen erlauben";

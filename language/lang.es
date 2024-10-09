@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2023-11-02
+# Last modification : 2024-10-09
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -148,6 +148,8 @@ $vocab['Afficher_description_complete_dans_titre_plannings'] = "Afficher la desc
 $vocab['affiche_dans_les_mails'] = "Presentar el contenido en los mails automáticos";
 $vocab['affiche_dans_les_vues'] = "Presentar el contenido en               jornadas, semana y mes";
 $vocab['ajout_correspondance_profil_statut'] = "Ajouter une correspondance Profil / Statut"; // A traduire
+$vocab['ajout_fichier_joint'] = "Configuración de la función \"Archivo adjunto\"";
+$vocab['ajout_fichier_joint_explain'] = "La funcionalidad \"Archivo adjunto\" permite a los usuarios autorizados cargar archivos adjuntos a una reserva y a los usuarios autorizados ver los archivos adjuntos, de acuerdo con los derechos definidos a continuación.<br/ >Cargar y ver se realiza desde la página de visualización de reservas.";
 $vocab['all'] = "Todos";
 $vocab['allday'] = "Jornada";
 $vocab['allow_action_in_past'] = "Permitir las reservas en el pasado así como las modificaciones/supresiones de reservas pasadas.";

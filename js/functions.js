@@ -1,9 +1,9 @@
 /*
  * ./js/functions.js
  * fichier Bibliothèque de fonctions Javascript de GRR
- * Dernière modification : $Date: 2022-01-30 14:51$
+ * Dernière modification : $Date: 2024-10-09 11:13$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -555,4 +555,113 @@ function toggle_visibility(id) {
       e.style.display = 'inline-block';
    else
       e.style.display = 'none';
+}
+//==Gestion des fichiers joints==
+function getfile(){
+  document.getElementById('hiddenfile').click();
+}
+function getvalue(){
+  document.getElementById('selectedfile').value=document.getElementById('hiddenfile').value;
+}
+//upload des fichiers.
+function uploadFiles(){
+
+	var myForm = document.getElementById("uploadForm");
+	var progress = document.getElementById("avancement");
+	var infos = document.getElementById("infos");
+
+	myForm.onsubmit = function(event){
+
+		//désactive le traitement normal du formulaire
+		event.preventDefault();
+
+		//dispo de formData
+		if(window.FormData){
+			var fd = new FormData();
+		}
+		else{
+			alert("FormData non support� par votre navigateur");
+			return;
+		}
+
+		//init ajax
+		var xhr = new XMLHttpRequest();
+
+		//parametre de la requête
+		//myForm.getAttribute("action") = "upload.php";
+		xhr.open("post", myForm.getAttribute("action"), true);
+
+		xhr.onreadystatechange = function(event){
+			if(this.readyState == 4){
+				//affichage du retour texte de la requête
+				infos.innerHTML += event.target.responseText;
+			}
+		};
+		//sur la progression
+		xhr.onprogress = function(event){
+			if(event.lengthComputable){
+				var pourcentage = Math.round(event.loaded*100/event.total);
+				progress.setAttribute("aria-valuenow", pourcentage);
+				progress.value = pourcentage;
+			}
+		};
+
+		//liste des fichiers et id à envoyer
+		var inputFiles = document.getElementById('myFiles');
+		var fichiers = inputFiles.files;
+
+		for(i=0; i<fichiers.length; i++){
+			infos.innerHTML += "Envoi de "+fichiers[i].name+"...<br>";
+			fd.append(inputFiles.name, fichiers[i]);
+		}
+		var id_index = document.getElementById('id_entry');
+		fd.append("id_entry", id_index.value);
+		//envoi des données
+		xhr.send(fd);
+	};
+}
+
+function loadFile(){
+	// vérifie si une ligne est sélectionnée
+	var target = document.getElementById("SelectFile");
+	if(target.selectedIndex == -1){
+		alert("Veuillez selectionner un fichier")
+	}
+	else{
+		//récupère le nom réel du fichier et transmet la demande de récupération.
+		var fileSelected = target.options[target.selectedIndex].value;
+		console.log(fileSelected);
+		window.location.href = 'download_files.php?name='+fileSelected;
+	}
+}
+
+function deleteFile(id,rowIndex,idFile){
+	var dtarget = document.getElementById("table_supprimer");
+		if (confirm("Voulez-vous vraiment supprimer ce fichier ?")){
+			//préparation de l'ajax pour la suppression
+			var retourInfos = document.getElementById("retourInfos");
+			if (window.FormData){
+				var fData = new FormData();
+			}
+			else{
+				alert ("FormData non supporté");
+				return;
+			}
+			var varAjax = new XMLHttpRequest();
+			varAjax.open("post", "deleteFile.php", true);
+			varAjax.onreadystatechange = function(event){
+				if(this.readyState == 4){
+					retourInfos.innerHTML += event.target.responseText;
+					dtarget.deleteRow(rowIndex);
+				}
+			};
+			//préparation des infos de suppression à transmettre.
+			fData.append("idFile", idFile);
+			fData.append("id", id);
+
+			varAjax.send(fData);
+		}
+		else{
+			return;
+		}
 }

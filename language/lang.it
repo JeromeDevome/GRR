@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2024-03-17
+# Last modification : 2024-10-09
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -151,6 +151,8 @@ $vocab['Afficher_description_complete_dans_titre_plannings'] = "Afficher la desc
 $vocab['affiche_dans_les_mails'] = "Afficher le contenu dans les mails automatiques"; // A traduire
 $vocab['affiche_dans_les_vues'] = "Afficher le contenu dans les vues journées, semaine et mois"; // A traduire
 $vocab['ajout_correspondance_profil_statut'] = "Ajouter une correspondance Profil / Statut"; // A traduire
+$vocab['ajout_fichier_joint'] = "Configurazione della funzione \"File allegato\".";
+$vocab['ajout_fichier_joint_explain'] = "La funzionalità \"File allegato\" consente agli utenti autorizzati di caricare i file allegati ad una prenotazione e agli utenti autorizzati di visualizzare i file allegati, secondo i diritti definiti di seguito.<br/>Caricamento e visualizzazione viene effettuato dalla pagina di visualizzazione della prenotazione.";
 $vocab['all'] = "Tutti";
 $vocab['allday'] = "Giorno";
 $vocab['allow_action_in_past'] = "Permettere la prenotazione nel passato come le modifiche/soppressioni di prenotazioni scorse.";

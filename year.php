@@ -3,7 +3,7 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-23 17:39$
+ * Dernière modification : $Date: 2024-10-09 11:17$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -485,7 +485,7 @@ while ($month_indice < $month_end)
                     echo '<span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
                 }
                 if (authGetUserLevel($user_name,$row['id']) > 2 && $_GET['pview'] != 1)
-                    echo '<a href="./admin/admin_edit_room.php?room='.$row['id'].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a>'.PHP_EOL;
+                    echo '<a href="./admin/edit_room.php?room='.$row['id'].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a>'.PHP_EOL;
                 if ($row['show_comment'] == "y" && $_GET['pview'] != 1 && ($row['comment_room'] != "") && ($row['comment_room'] != -1))
                     echo '<div class="center">',$row['comment_room'],'</div>',PHP_EOL;
                 echo  "</th>\n";

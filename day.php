@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-16 18:09$
+ * Dernière modification : $Date: 2024-10-01 18:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -342,7 +342,7 @@ else{
                     if (verif_display_fiche_ressource($user_name, $ress['id']) && $_GET['pview'] != 1)
                         $dcell .= '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$ress['id'].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'"><span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
                     if (authGetUserLevel($user_name,$ress['id']) > 2 && $_GET['pview'] != 1)
-                        $dcell .= '<a href="./admin/admin_edit_room.php?room='.$ress['id'].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a><br/>'.PHP_EOL;
+                        $dcell .= '<a href="./admin/edit_room.php?room='.$ress['id'].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a><br/>'.PHP_EOL;
                     $temp = html_ressource_empruntee($ress['id']);
                     if($temp != "")
                         $dcell .= $temp;
@@ -532,10 +532,10 @@ echo "</section>";
 			$row.find('a').css('padding-top', height/2 - h2/2);
 
 		});
-        $("#popup_name").draggable({containment: "#container"});
+    $("#popup_name").draggable({containment: "#container"});
 		$("#popup_name").resizable();
-        if ( $(window).scrollTop() == 0 )
-            $("#toTop").hide(1);
+    if ( $(window).scrollTop() == 0 )
+      $("#toTop").hide(1);
 	});
 </script>
 </html>

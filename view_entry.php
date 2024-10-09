@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-19 18:30$
+ * Dernière modification : $Date: 2024-10-08 12:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
@@ -445,6 +445,34 @@ if ($repeat_id != 0)
     else fatal_error(0,"erreur de lecture en base de données");
     grr_sql_free($res);
 }
+// données liées aux fichiers attachés
+$droit_acces = authGetUserLevel($user_id, $room_id);
+$res = grr_sql_query("SELECT access_file, user_right, upload_file FROM ".TABLE_PREFIX."_area WHERE id ='".$area."'");
+if(!$res)
+  fatal_error(0,grr_sql_error());
+else{
+  $level = grr_sql_row($res,0);
+  $access_file = $level[0];
+  $user_right = $level[1];
+  $upload_file = $level[2];
+  // gestion fichiers joints si l'utilisateur a les droits et la fonctionnalité est activée
+  if ($id != 0 && $droit_acces>=$user_right && $access_file==1){
+    // récupère la liste des fichiers associé à la réservation.
+    $fRes = grr_sql_query("SELECT id, file_name, public_name from ".TABLE_PREFIX."_files where id_entry = '".$id."'");
+    if (!$fRes){
+      fatal_error(0, grr_sql_error());
+    }
+    else{
+      $attached_files = array();
+      foreach($fRes as $frow){
+        $attached_files[] = $frow;
+      }
+    }
+    grr_sql_free($fRes);
+  }
+}
+
+$mode = isset($_GET['mode'])? $_GET['mode'] : NULL;
 // calcul de la page
 if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')||($mode == 'valide')) // haut de page si affichage en mode page
 {
@@ -653,6 +681,61 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
         echo '<p><hr></p>'.PHP_EOL;
     }
     echo '</div>';
+}
+// Fichiers joints
+// si l'utilisateur a les droits et la fonctionnalité est activée
+if ($id != 0 && $droit_acces >= $user_right && $access_file==1){
+  if ($droit_acces >= $upload_file) { // droit de téléverser
+    echo '<div class="upload">
+					<form id="uploadForm" method="post" action="upload.php" enctype="multipart/form-data">
+					<h4>Choisissez le fichier que vous allez insérer dans cette réservation :</h4>
+          <input type="file" id="hiddenfile" style="display:none" name="myFiles[]" onChange="getvalue();"/>
+          <input type="button" value="Parcourir ..." onclick="getfile();"/>
+          <input type="text" id="selectedfile" name="selectedfile" value="Nom du fichier" />
+          <input type="hidden" id = "id_entry" name="id_entry" value = "'.$id.'">
+          <input type="submit" value="Envoyer" id ="btnValidUpload" onChange="getvalue()">
+					</form>
+					<output id=infos> </output>
+				</div>';
+  }
+  echo '<script type="text/javascript" >
+          function getfile(){
+            document.getElementById(\'hiddenfile\').click();
+          }
+          function getvalue(){
+            document.getElementById(\'selectedfile\').value=document.getElementById(\'hiddenfile\').value;
+          }
+          function getvalue2(){
+            document.getElementById(\'hiddenfile\').value=document.getElementById(\'selectedfile\').value;
+          }
+				</script>';
+  // liste des fichiers joints
+  echo '<fieldset><h4> Fichiers joints : </h4>';
+  if(count($attached_files) > 0){
+    echo '<div class="col-sm-6 col-xs-12">';
+    //définit le chemin d'accès au répertoire contenant les fichiers sur le serveur
+    $uploadDir = realpath(".")."/uploadedFiles/";
+    echo "<table id='table_supprimer'>
+            <tr>
+              <th class='center'>Nom du Fichier</th>
+              <th></th>
+            </tr>";
+    //remplit la liste avec les fichiers récupérés
+    foreach($attached_files as $fRow){
+      echo "<tr>";
+      echo "<td class='center'><a href=\"./images/".$fRow['file_name']."\" download='".$fRow['public_name']."'>".$fRow['public_name']."</a></td>";
+      echo "<td class='center'><a href=\"./deleteFile.php?id=".$fRow['id']." \"><span class='glyphicon glyphicon-trash'></span></a></td>";
+      echo "</tr>";
+      }
+    echo "</table>";
+    echo '<output id="retourInfos"> </output>';
+    echo '</div>';
+    echo "<br/><br/>";
+    echo '</fieldset>';
+  }
+  else{
+    echo "<p>"."Aucun fichier joint"."</p>";
+  }
 }
 
 $can_book = verif_booking_date($user_id, $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room($user_id, $room_id, $row[10], $enable_periods) && getWritable($user_id, $id);

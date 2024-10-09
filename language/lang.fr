@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2024-05-13
+# Last modification : 2024-10-09
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -146,6 +146,8 @@ $vocab['Afficher_description_complete_dans_titre_plannings'] = "Afficher la desc
 $vocab['affiche_dans_les_mails'] = "Afficher le contenu dans les mails automatiques";
 $vocab['affiche_dans_les_vues'] = "Afficher le contenu dans les vues journées, semaine et mois";
 $vocab['ajout_correspondance_profil_statut'] = "Ajouter une correspondance Profil / Statut";
+$vocab['ajout_fichier_joint'] = "Configuration de la fonctionnalité \"Fichier joint\"";
+$vocab['ajout_fichier_joint_explain'] = "La fonctionnalité \"Fichier joint\" permet aux utilisateurs autorisés de téléverser des fichiers attachés à une réservation et aux utilisateurs autorisés de consulter les fichiers attachés, selon les droits définis ci-après.<br/>Le téléversement et la consultation se font depuis la page de consultation d'une réservation.";
 $vocab['all'] = "Tous";
 $vocab['allday'] = "Journée";
 $vocab['allow_action_in_past'] = "Permettre les réservations dans le passé ainsi que les modifications/suppressions de réservations passées.";
