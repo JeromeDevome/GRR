@@ -86,7 +86,6 @@ if ($action=='del_user')
 		$msg = get_vocab("del_user_succeed");
 }
 # choisir parmi les ressources restreintes
-$this_room_name = "";
 $sel_room = '';
 if($multisite)
   $sql = "SELECT r.id,room_name,area_name,sitename

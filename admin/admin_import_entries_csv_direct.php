@@ -310,8 +310,6 @@ else
             Pour éviter une erreur de type "timeout" qui conduirait à une importation incomplète, 
             scindez votre fichier en fichiers plus petits que vous importerez successivement.
         </p>';
-    echo '<hr />';
-    
     echo '<form enctype="multipart/form-data" action="./admin_import_entries_csv_direct.php" id="nom_formulaire" method="post" style="width: 100%;">'.PHP_EOL;
     echo '<p><b>Fichier CSV</b>';
     echo '<input type="file" name="csv" />';

@@ -94,7 +94,7 @@ class Email{
 		} 
 		else
 		{	
-            if ($RE == '') $RE = $DE;
+      if ($RE == '') $RE = $DE;
 			$sujet = mb_encode_mimeheader(html_entity_decode($sujet));
 			$headers = "From: {$DE}" . "\r\n" .
 			"Reply-To: {$RE}" . "\r\n" .
@@ -103,8 +103,7 @@ class Email{
 			'Content-Type: text/plain; charset=utf-8'."\r\n" .
 			'Content-Transfer-Encoding:8bit'."\r\n".
 			'X-Mailer: PHP/' . phpversion()."\r\n";
-
-            //encodage du sujet pour affichage des accents 3/3
+      //encodage du sujet pour affichage des accents 3/3
 			$lesDestinataires = explode(";", $A);
 			for($i=0;$i<count($lesDestinataires);$i++){
 				mail(str_replace(";", ",", $lesDestinataires[$i]), $sujet, str_replace("<br>", "", $message), $headers);
