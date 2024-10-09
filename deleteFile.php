@@ -3,7 +3,7 @@
  * deleteFile.php
  * Utilitaire de suppression d'un fichier attaché à une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-08 12:10$
+ * Dernière modification : $Date: 2024-10-09 11:48$
  * @author    Cédric Berthomé & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -30,20 +30,20 @@ $msg = "";
 
  if ($id != -1){
 	$id = intval($id);
-  $sql = "SELECT file_name FROM ".TABLE_PREFIX."_files where id = '".$id."'";
-  $res = grr_sql_query($sql);
+  $sql = "SELECT file_name FROM ".TABLE_PREFIX."_files where id = ?";
+  $res = grr_sql_query($sql,"i",[$id]);
   if($res){
     $name = grr_sql_row($res,0);
     // prépare chemin du fichier à effacer
     $uploadDir = realpath(".")."/images/";
     $toDelFile = $uploadDir.$name[0];
     //prépare la requête de suppression
-    $delReq = 'delete FROM '.TABLE_PREFIX.'_files where id = '.$id;
+    $delReq = 'delete FROM '.TABLE_PREFIX.'_files where id = ?';
     //vérifie si le fichier existe
     if (@file_exists($toDelFile)){
       // efface le fichier du serveur
       if (unlink($toDelFile)){
-        if (grr_sql_command($delReq) < 0){
+        if (grr_sql_command($delReq,"i",[$id]) < 0){
           $msg = "Erreur de suppression dans la base de donnée.";
         }
         else{
@@ -57,13 +57,14 @@ $msg = "";
     else{
       $msg = "Le fichier n'existe pas, maj de la base de donnée.";
       // fichier n'existe pas, efface sa référence de la base de donnée.
-      if (grr_sql_command($delReq) < 0){
+      if (grr_sql_command($delReq,"i",[$id]) < 0){
         $msg.= "<br/>Erreur de suppression dans la base de donnée.";
       }
       else{
         $msg.= "La base de donnée à été corrigée avec succès.";
       }
     }
+    grr_sql_free($res);
   }
 	else
     $msg = "Erreur de lecture en base de données.";

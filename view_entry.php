@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-08 12:10$
+ * Dernière modification : $Date: 2024-10-09 11:39$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
@@ -408,15 +408,15 @@ if ($type_name == -1)
 if ($active_ressource_empruntee == 'y')
 {
 	$id_resa = grr_sql_query1("SELECT id from ".TABLE_PREFIX."_entry where room_id =? and statut_entry='y'","i",[$room_id]);
-    $affiche_ressource_empruntee = ($id_resa == $id);
+  $affiche_ressource_empruntee = ($id_resa == $id);
 }
 else $affiche_ressource_empruntee = FALSE;
 // réservation déjà modérée
 if(($moderate == 2)||($moderate == 3)){
     $sql = "SELECT motivation_moderation, login_moderateur, nom, prenom 
         FROM ".TABLE_PREFIX."_entry_moderate JOIN ".TABLE_PREFIX."_utilisateurs ON login_moderateur=login
-        WHERE id=".$id;
-    $res = grr_sql_query($sql);
+        WHERE id=?";
+    $res = grr_sql_query($sql,"i",[$id]);
     if (!$res)
         fatal_error(0, grr_sql_error());
     if(grr_sql_count($res)>0){
@@ -447,7 +447,7 @@ if ($repeat_id != 0)
 }
 // données liées aux fichiers attachés
 $droit_acces = authGetUserLevel($user_id, $room_id);
-$res = grr_sql_query("SELECT access_file, user_right, upload_file FROM ".TABLE_PREFIX."_area WHERE id ='".$area."'");
+$res = grr_sql_query("SELECT access_file, user_right, upload_file FROM ".TABLE_PREFIX."_area WHERE id =?","i",[$area]);
 if(!$res)
   fatal_error(0,grr_sql_error());
 else{
@@ -458,7 +458,7 @@ else{
   // gestion fichiers joints si l'utilisateur a les droits et la fonctionnalité est activée
   if ($id != 0 && $droit_acces>=$user_right && $access_file==1){
     // récupère la liste des fichiers associé à la réservation.
-    $fRes = grr_sql_query("SELECT id, file_name, public_name from ".TABLE_PREFIX."_files where id_entry = '".$id."'");
+    $fRes = grr_sql_query("SELECT id, file_name, public_name from ".TABLE_PREFIX."_files where id_entry =? ","i",[$id]);
     if (!$fRes){
       fatal_error(0, grr_sql_error());
     }

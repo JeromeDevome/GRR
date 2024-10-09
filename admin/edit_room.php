@@ -3,7 +3,7 @@
  * ./admin/edit_room.php
  * Interface de creation/modification des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-08 10:28$
+ * Dernière modification : $Date: 2024-10-09 11:56$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -424,8 +424,8 @@ if (($room != -1) || (isset($area_id)))
             rename($dest.$doc_file['name'],$dest."img_".TABLE_PREFIX."".$room.".".$extSafe);
             @chmod($dest."img_".TABLE_PREFIX."".$room.".".$extSafe, 0666);
             $picture_room = "img_".TABLE_PREFIX."".$room.".".$extSafe;
-            $sql_picture = "UPDATE ".TABLE_PREFIX."_room SET picture_room='".protect_data_sql($picture_room)."' WHERE id=".protect_data_sql($room);
-            if (grr_sql_command($sql_picture) < 0){
+            $sql_picture = "UPDATE ".TABLE_PREFIX."_room SET picture_room=? WHERE id=?";
+            if (grr_sql_command($sql_picture,"ss",[protect_data_sql($picture_room),protect_data_sql($room)]) < 0){
                 fatal_error(0, get_vocab('update_room_failed') . grr_sql_error());
                 $ok = 'no';
             }
