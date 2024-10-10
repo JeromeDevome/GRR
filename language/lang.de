@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2024-10-09
+# Last modification : 2024-10-10
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -56,7 +56,14 @@ $vocab['admin_calend_ignore_feries'] = "Klicken Sie hier, um alle Feiertage ausz
 $vocab['admin_calend_jour_cycle.php'] = "Calendrier des \"jours cycle\""; // A traduire
 $vocab['admin_calend_vacances_feries.php'] = "Kalender der Schul- oder Geschäftsferien";
 $vocab['admin_clean_accounts_desc'] = "L'action ci-dessous permet de <b>nettoyer</b> toutes les tables de liaison des comptes utilisateurs. Il s'agit d'une opération de maintenance, normalement inutile et  sans conséquence sur le fonctionnement de GRR. <b>Par précaution, faites une sauvegarde de la base de données au  préalable</b>"; // A traduire
-$vocab['admin_cgu.php'] = "Nutzungsbedingungen"; // A traduire
+$vocab['admin_cgu.php'] = "Anpassbare Seiten";
+$vocab['admin_cgu_record_error'] = "Fehler beim Speichern der Seite";
+$vocab['admin_cgu_h2'] = "Verwaltung der AGB und Startseiten";
+$vocab['admin_cgu_h3_accueil'] = "Bearbeiten der Startseite";
+$vocab['admin_cgu_accueil_explain'] = "Durch die Definition einer Startseite werden Benutzer beim Anmelden oder bei einer Weiterleitung auf diese Seite umgeleitet.";
+$vocab['admin_cgu_choix'] = "Wählen Sie die zu bearbeitende Seite aus";
+$vocab['admin_cgu_cgu'] = "Die AGB-Seite";
+$vocab['admin_cgu_accueil'] = "Die Startseite";
 $vocab['admin_config.php'] = "Allgemeine Konfiguration";
 $vocab['admin_config1.php'] = "Inhalt / Aussehen";
 $vocab['admin_config11.php'] = "Présentation";

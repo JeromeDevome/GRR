@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2024-10-09
+# Last modification : 2024-10-10
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -50,7 +50,14 @@ $vocab['admin_calendar_title.php'] = "Réservation/Suppression en bloc";
 $vocab['admin_calend_ignore.php'] = "Calendrier hors réservation";
 $vocab['admin_calend_jour_cycle.php'] = "Calendrier des \"jours cycle\"";
 $vocab['admin_clean_accounts_desc'] = "L'action ci-dessous permet de <b>nettoyer</b> toutes les tables de liaison des comptes utilisateurs. Il s'agit d'une opération de maintenance, normalement inutile et  sans conséquence sur le fonctionnement de GRR. <b>Par précaution, faites une sauvegarde de la base de données au  préalable</b>";
-$vocab['admin_cgu.php'] = "CGU";
+$vocab['admin_cgu.php'] = "Pages personnalisables";
+$vocab['admin_cgu_record_error'] = "Erreur lors de l'enregistrement de la page";
+$vocab['admin_cgu_h2'] = "Gestion des pages CGU et accueil";
+$vocab['admin_cgu_h3_accueil'] = "Edition de la page d'accueil";
+$vocab['admin_cgu_accueil_explain'] = "En définissant une page d'accueil, les utilisateurs seront redirigés vers cette page lors de leur connexion ou lors d'une redirection.";
+$vocab['admin_cgu_choix'] = "Choisissez la page à éditer";
+$vocab['admin_cgu_cgu'] = "La page des CGU";
+$vocab['admin_cgu_accueil'] = "La page d'accueil";
 $vocab['admin_config.php'] = "Configuration générale";
 $vocab['admin_config1.php'] = "Contenu / Apparence";
 $vocab['admin_config11.php'] = "Accueil";

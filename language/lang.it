@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2024-10-09
+# Last modification : 2024-10-10
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -56,7 +56,14 @@ $vocab['admin_calend_ignore_feries'] = "Clicca per selezionare tutti i giorni fe
 $vocab['admin_calend_jour_cycle.php'] = "Calendrier des \"jours cycle\""; // A traduire
 $vocab['admin_calend_vacances_feries.php'] = "Calendario delle vacanze scolastiche o lavorative";
 $vocab['admin_clean_accounts_desc'] = "L'action ci-dessous permet de <b>nettoyer</b> toutes les tables de liaison des comptes utilisateurs. Il s'agit d'une opération de maintenance, normalement inutile et  sans conséquence sur le fonctionnement de GRR. <b>Par précaution, faites une sauvegarde de la base de données au  préalable</b>"; // A traduire
-$vocab['admin_cgu.php'] = "CGU"; // A traduire
+$vocab['admin_cgu.php'] = "Pagine personalizzabili";
+$vocab['admin_cgu_record_error'] = "Errore nel salvataggio della pagina";
+$vocab['admin_cgu_h2'] = "Gestione CGU e home page";
+$vocab['admin_cgu_h3_accueil'] = "Modifica la pagina iniziale";
+$vocab['admin_cgu_accueil_explain'] = "Definendo una home page, gli utenti verranno reindirizzati a questa pagina quando effettuano l'accesso o durante un reindirizzamento.";
+$vocab['admin_cgu_choix'] = "Scegli la pagina da modificare";
+$vocab['admin_cgu_cgu'] = "La pagina CGU";
+$vocab['admin_cgu_accueil'] = "La pagina iniziale";
 $vocab['admin_config.php'] = "Configurazione generale";
 $vocab['admin_config1.php'] = "Contenu / Apparence"; // A traduire
 $vocab['admin_config11.php'] = "Présentation";

@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2024-10-09
+# Last modification : 2024-10-10
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -58,7 +58,14 @@ $vocab['vacances_FR'] = "Cocher les jours de vacances scolaires de la zone ";
 $vocab['admin_calend_ignore_feries'] = "Click to select all business holidays ";
 $vocab['admin_calend_ignore_vacances'] = "Click to select all school holidays ";
 $vocab['admin_clean_accounts_desc'] = "The following action enables the cleaning of all jointure tables of users accounts. It is a maintenance operation, normally useless and without consequences on GRR operating. <b>You are advised to save data bases before cleaning.";
-$vocab['admin_cgu.php'] = "T&Cs";
+$vocab['admin_cgu.php'] = "Customizable pages";
+$vocab['admin_cgu_record_error'] = "Error while saving the page";
+$vocab['admin_cgu_h2'] = "Management of the T&Cs and home pages";
+$vocab['admin_cgu_h3_accueil'] = "Editing the home page";
+$vocab['admin_cgu_accueil_explain'] = "By defining a home page, users will be redirected to this page when they log in or when they are redirected.";
+$vocab['admin_cgu_choix'] = "Choose the page to edit";
+$vocab['admin_cgu_cgu'] = "The T&Cs page";
+$vocab['admin_cgu_accueil'] = "The home page";
 $vocab['admin_config.php'] = "General configuration";
 $vocab['admin_config1.php'] = "Contents / Appearance";
 $vocab['admin_config11.php'] = "Présentation";
@@ -233,7 +240,7 @@ $vocab['causes_possibles'] = "Possibles causes:";
 $vocab['Cette_journee_ne_correspond_pas_a_un_jour_cycle'] = "This day doesn't correspond to a cycle day";
 $vocab['cgu'] = "T&Cs";
 $vocab['cgu_titre'] = "T&Cs : Terms of Use";
-$vocab['cgu_grr'] = "You can modify the CGU page. You are responsible for the content. <br> For legal information from GRR: <ul> <li> Neither GRR nor the developers are responsible for the content </li> <li> GRR is Open Source software under the GPL license </ li> <li> No data is retrieved from your GRR by the editor </li> <li> User passwords are encrypted </li> <li> User personal information is limited to name, first name and email address </li> </ul>";
+$vocab['cgu_grr'] = "You can modify the T&Cs page. You are responsible for the content. <br> For legal information from GRR: <ul> <li> Neither GRR nor the developers are responsible for the content </li> <li> GRR is Open Source software under the GPL license </ li> <li> No data is retrieved from your GRR by the editor </li> <li> User passwords are encrypted </li> <li> User personal information is limited to name, first name and email address </li> </ul>";
 $vocab['champs_non_remplis'] = "All required fields have not been filled."; 
 $vocab['champ_confidentiel'] = "Confidential area";
 $vocab['champ_obligatoire'] = "Compulsory filling";

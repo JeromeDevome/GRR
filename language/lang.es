@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2024-10-09
+# Last modification : 2024-10-10
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -53,7 +53,14 @@ $vocab['admin_calend_ignore_feries'] = "Haga clic para seleccionar todos los dí
 $vocab['admin_calend_jour_cycle.php'] = "Calendario de los \"días ciclo\"";
 $vocab['admin_calend_vacances_feries.php'] = "Calendario de vacaciones escolares o laborales";
 $vocab['admin_clean_accounts_desc'] = "L'action ci-dessous permet de <b>nettoyer</b> toutes les tables de liaison des comptes utilisateurs. Il s'agit d'une opération de maintenance, normalement inutile et  sans conséquence sur le fonctionnement de GRR. <b>Par précaution, faites une sauvegarde de la base de données au  préalable</b>"; // A traduire
-$vocab['admin_cgu.php'] = "CGU"; // A traduire
+$vocab['admin_cgu.php'] = "Páginas personalizables";
+$vocab['admin_cgu_record_error'] = "Error al guardar la página";
+$vocab['admin_cgu_h2'] = "Gestión de CGU y páginas de inicio";
+$vocab['admin_cgu_h3_accueil'] = "Editando la página de inicio";
+$vocab['admin_cgu_accueil_explain'] = "Al definir una página de inicio, los usuarios serán redirigidos a esta página cuando inicien sesión o durante una redirección.";
+$vocab['admin_cgu_choix'] = "Elija la página para editar";
+$vocab['admin_cgu_cgu'] = "La página CGU";
+$vocab['admin_cgu_accueil'] = "La página de inicio";
 $vocab['admin_config.php'] = "Configuración general";
 $vocab['admin_config1.php'] = "Contenido/Apariencia";
 $vocab['admin_config11.php'] = "Présentation";

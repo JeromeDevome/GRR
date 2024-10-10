@@ -1,10 +1,10 @@
 <?php
 /**
  * page.php
- * Script chargeant les pages enregistrées (CGU)
+ * Script chargeant les pages enregistrées (CGU et accueil)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-14 11:41$
- * @author    JeromeB
+ * Dernière modification : $Date: 2024-10-09 17:52$
+ * @author    JeromeB et Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -38,6 +38,9 @@ if (!isset($_GET['page']))
 	header('Location: logout.php?auto=1&url=$url');
 	die();
 }; */
-
-echo Pages::get('CGU');
+$page = $_GET['page'];
+if($page == 'CGU')
+  echo Pages::get('CGU');
+elseif($page == 'accueil')
+  echo Pages::get('accueil');
 ?>

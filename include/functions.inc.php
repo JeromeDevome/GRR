@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2024-03-19 13:45$
+ * Dernière modification : $Date: 2024-10-10 11:48$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -976,6 +976,10 @@ function verif_page()
 
 function page_accueil($param = 'no')
 {
+  // existe-t-il une page d'accueil imposée ?
+  $page = grr_sql_query1("SELECT nom FROM ".TABLE_PREFIX."_page WHERE nom='accueil';");
+  if($page != -1)
+    return("page.php?page=accueil&amp;");
 	// Definition de $defaultroom
 	if (isset($_SESSION['default_room']))// && ($_SESSION['default_room'] > -5))
 		$defaultroom = $_SESSION['default_room'];
