@@ -15,7 +15,7 @@
 
 					<div class="info-box-content">
 						<span class="info-box-text">{{ trad.users_connected }}</span>
-						<span class="info-box-number"><a href="?p=admin_view_connexions">{{ trad.dNombreConnecte }} / {{ trad.dNombreUtilisateur }}</a></span>
+						<span class="info-box-number"><a href="?p=admin_view_connexions">{{ d.nombreConnecte }} / {{ d.nombreUtilisateur }}</a></span>
 					</div>
 					<!-- /.info-box-content -->
 				</div>
@@ -99,7 +99,7 @@
 											<th>{{ trad.login_name }}</th>
 											<th>{{ trad.begining_of_session }}</th>
 										</tr>
-										{% for log in trad.dDernieresConnexions %}
+										{% for log in d.dernieresConnexions %}
 											<tr {% if log.clos == 0 %}class="success"{% endif %}>
 												{% if log.clos == 0 %}
 													<td><span class="badge bg-green">O</span></td>
@@ -123,7 +123,7 @@
 					<div class="card-header">
 						<h3 class="card-title">
 						<i class="fas fa-th mr-1"></i>
-						{{ trad.dNombreModeration }} réservation(s) à modérer
+						{{ d.nombreModeration }} réservation(s) à modérer
 						</h3>
 					</div><!-- /.card-header -->
 					<div class="card-body">
@@ -139,7 +139,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										{% for resaMode in trad.dListeModeration %}
+										{% for resaMode in d.listeModeration %}
 											<tr>
 												<td>{{ resaMode.ressource }}</td>
 												<td>{{ resaMode.debut }}</td>

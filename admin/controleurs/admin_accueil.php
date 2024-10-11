@@ -23,16 +23,16 @@ get_vocab_admin("admin_accueil");
 $trad['TitrePage'] = $trad['admin_accueil'];
 $trad['SousTitrePage'] = 'Administration';
 
-$trad['dLevel'] =  authGetUserLevel(getUserName(), -1, 'area');
+$d['level'] =  authGetUserLevel(getUserName(), -1, 'area');
 
 // Widget connexion
 get_vocab_admin("users_connected");
-$trad['dNombreConnecte'] = AdminFonctions::NombreDeConnecter();
-$trad['dNombreUtilisateur'] = AdminFonctions::NombreUtilisateurs();
+$d['nombreConnecte'] = AdminFonctions::NombreDeConnecter();
+$d['nombreUtilisateur'] = AdminFonctions::NombreUtilisateurs();
 
 // Widget mot de passe facile
 get_vocab_admin("admin_user_mdp_facile");
-$trad['dNombreMDPFacile'] = "N/A"; //AdminFonctions::NombreUtilisateursMDPfacile();
+$d['nombreMDPFacile'] = "N/A"; //AdminFonctions::NombreUtilisateursMDPfacile();
 
 // WARNING
 $d['alerteTDB'] = AdminFonctions::Warning();
@@ -40,14 +40,14 @@ $d['alerteTDB'] = AdminFonctions::Warning();
 // Widget dernières connexions
 get_vocab_admin("login_name");
 get_vocab_admin("begining_of_session");
-$trad['dDernieresConnexions'] = AdminFonctions::DernieresConnexion(5);
+$d['dernieresConnexions'] = AdminFonctions::DernieresConnexion(5);
 
 // Widget réservations à modérer
 get_vocab_admin("room");
 get_vocab_admin("start_date");
 get_vocab_admin("created_by");
 get_vocab_admin("nom_beneficiaire");
-list($trad['dNombreModeration'], $trad['dListeModeration'])  = AdminFonctions::ReservationsAModerer(getUserName());
+list($d['nombreModeration'], $d['listeModeration'])  = AdminFonctions::ReservationsAModerer(getUserName());
 
 echo $twig->render('admin_accueil.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 ?>
