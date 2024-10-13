@@ -2,9 +2,9 @@
 /**
  * index.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-02-25 18:30$
+ * Dernière modification : $Date: 2024-10-13 18:44$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-204 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -14,6 +14,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+
+$niveauDossier = 1;
 
 require_once("include/config.inc.php");
 if (file_exists("personnalisation/connect.inc.php"))

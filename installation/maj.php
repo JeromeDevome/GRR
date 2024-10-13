@@ -18,6 +18,7 @@
  */
 
 $grr_script_name = "maj.php";
+$niveauDossier = 2;
 
 require_once("../personnalisation/connect.inc.php");
 require_once("../include/config.inc.php");
