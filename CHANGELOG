@@ -1,20 +1,20 @@
-Version 4.3.7 -
+Version 4.3.7 - 13/10/2024 Généré par @JeromeDevome
 [Ajout] Demande de compte, choix : Login = E-Mail - ed1c288f - @JeromeDevome
 [Ajout] Warning dans la gestion des email si envois de mail désactivé - 990215d6 - @JeromeDevome
 [Ajout] Lien dans l'administration vers la documentation en ligne - ff93ea41 - @JeromeDevome
 [Ajout] Paramétrage de la complexité du mot de passe - 5134ddb8 - @JeromeDevome
 [Correction] Affichage des réservations finissant le dernier jour du mois - e6a5c723 - @ynaessens
 [Correction] Affichage de la date de fin de périodicité dans les mails - b54e9fd9 - @JeromeDevome
-[Correction] Affichage de page edition des utilisateurs - 72def5c1 - @JeromeDevome
-[Correction] Lien théme couleur personnalisée - 0a938bcf - @JeromeDevome
+[Correction] Affichage de page édition des utilisateurs - 72def5c1 - @JeromeDevome
+[Correction] Lien thème couleur personnalisée - 0a938bcf - @JeromeDevome
 [Correction] Contrôle accès page month_all - f55c1cc7 - @JeromeDevome
-[Correction] Confirmation supression réservation - 9c2d836c - @JeromeDevome
+[Correction] Confirmation suppression réservation - 9c2d836c - @JeromeDevome
 [Correction] Taille champ login dans les groupes - 8f9239d7 - @JeromeDevome
 [Correction] Valeur par défaut pour les nouveaux utilisateurs - e1e64289 - @JeromeDevome
 [Correction] Vocabulaire et traduction - 805e51e3 & ea935564 - @JeromeDevome
 [Correction] Type de réservations: Choix de la couleur à la création du type - 36d12aae - @JeromeDevome
 [Correction] Interdiction des espaces dans l'identifiant via l'import - d0d92d00 - @JeromeDevome
-[Correction] Nomm du champ URL déconnexion - 0a767864 - @JeromeDevome
+[Correction] Nom du champ URL déconnexion - 0a767864 - @JeromeDevome
 [Modification] Affichage des paramètres serveur de mail - 0a9299fd - @JeromeDevome
 [Modification] Type de réservations: Limitation à la taille du champ est obligation de le remplir - 45985e28 - @JeromeDevome
 [Modification] L'ordre des réservations à modérer est selon la date de début - 650b4773 - @JeromeDevome
