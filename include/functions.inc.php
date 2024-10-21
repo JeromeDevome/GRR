@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2024-10-10 11:48$
+ * Dernière modification : $Date: 2024-10-14 11:10$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -704,24 +704,20 @@ function resaToModerate($user)
     $resas = array();
     $res = false;
     $sql = "SELECT e.id,r.room_name,e.start_time,e.beneficiaire,e.beneficiaire_ext FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id ";
-    if (authGetUserLevel($user,-1) > 5) // admin général
-    {
-        $sql.= " WHERE e.moderate = 1";
+    if (authGetUserLevel($user,-1) > 5){ // admin général
+        $sql.= " WHERE e.moderate = 1 ORDER BY e.start_time ASC";
         $res = grr_sql_query($sql);
     }
-    elseif (isset($_GET['id_site']) && (authGetUserLevel($user,$_GET['id_site'],'site') > 4)) // admin du site
-    {
-        $sql .= " JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = ".$_GET['id_site']." AND e.moderate = 1)";
+    elseif (isset($_GET['id_site']) && (authGetUserLevel($user,intval($_GET['id_site']),'site') > 4)){ // admin du site
+        $sql .= " JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = ".intval($_GET['id_site'])." AND e.moderate = 1) ORDER BY e.start_time ASC";
         $res = grr_sql_query($sql);
     }
-    elseif (isset($_GET['area']) && (authGetUserLevel($user,$_GET['area'],'area') > 3)) // admin du domaine
-    {
-        $sql .= " JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id WHERE (a.id = ".$_GET['area']." AND e.moderate = 1)";
+    elseif (isset($_GET['area']) && (authGetUserLevel($user,intval($_GET['area']),'area') > 3)){ // admin du domaine
+        $sql .= " JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id WHERE (a.id = ".intval($_GET['area'])." AND e.moderate = 1) ORDER BY e.start_time ASC";
         $res = grr_sql_query($sql);
     }
-    elseif (isset($_GET['room']) && (authGetUserLevel($user,$_GET['room'],'room') > 2)) // gestionnaire de la ressource
-    {
-        $sql .= " WHERE (e.moderate = 1 AND e.room_id = ".$_GET['room'].") ";
+    elseif (isset($_GET['room']) && (authGetUserLevel($user,intval($_GET['room']),'room') > 2)){ // gestionnaire de la ressource
+        $sql .= " WHERE (e.moderate = 1 AND e.room_id = ".intval($_GET['room']).") ORDER BY e.start_time ASC";
         $res = grr_sql_query($sql);
     }
     if ($res)
