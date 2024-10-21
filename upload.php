@@ -3,7 +3,7 @@
  * upload.php
  * Utilitaire de téléversement d'un fichier attaché à une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-09 11:44$
+ * Dernière modification : $Date: 2024-10-21 15:23$
  * @author    Cédric Berthomé & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -40,29 +40,46 @@ if (isset ($_FILES) && is_array($_FILES)){
       for($i=0; $i<$nb ; $i++){
         echo "<p> Fichier : ".$_FILES["myFiles"]["name"][$i];
         echo "<br>Taille : ".$_FILES["myFiles"]["size"][$i];
-        //Enregistre les fichiers sur le répertoire de destination et sa référence dans la bdd.
-        $copie = move_uploaded_file($_FILES["myFiles"]["tmp_name"][$i], $uploadDir.$_FILES["myFiles"]["name"][$i]);
-        //prepare le rename du fichier en concaténant l'id_entry de la réservation, un nombre aléatoire et l'extension du fichier.
-        $fileExt = pathinfo($uploadDir.$_FILES["myFiles"]["name"][$i], PATHINFO_EXTENSION);
-        $fileName = $id.mt_rand(0,9999).".".$fileExt;
-        if (rename($uploadDir.$_FILES["myFiles"]["name"][$i], $uploadDir.$fileName)){
-          //ajout dans la base de donnée.
-          $req = "INSERT INTO ".TABLE_PREFIX."_files (id_entry, file_name, public_name) VALUES (?,?,?)";
-          if (grr_sql_command($req,"iss",[$id,protect_data_sql($fileName),protect_data_sql($_FILES["myFiles"]["name"][$i])]) < 0){
-            echo "<br>erreur d'enregistrement sur base de donnée";
-          }
-          else{
-            if ($copie){
-              echo "<br> <span style='color:green'>Fichier enregistré</span></p>";
-              header('Location: week_all.php?');
-            }
-            else{
-              echo "<br><span style='color:red'>Erreur d'enregistrement</span></p>";
-            }
-          }
+        // rejette les fichiers à double extension
+        if (count(explode('.', $_FILES["myFiles"]['name'][$i])) > 2) {
+          echo "<br>type de fichier inconnu";
         }
         else{
-          echo "<br><span style='color:red'>Erreur, le fichier n'a pu être renommé</span></p>";
+          $fileExt = strtolower(pathinfo($uploadDir.$_FILES["myFiles"]["name"][$i], PATHINFO_EXTENSION));
+          if(in_array($fileExt,["jpg","png","gif","pdf"])){
+            //Enregistre les fichiers sur le répertoire de destination et sa référence dans la bdd.
+            $copie = move_uploaded_file($_FILES["myFiles"]["tmp_name"][$i], $uploadDir.$_FILES["myFiles"]["name"][$i]);
+            //prepare le rename du fichier en concaténant l'id_entry de la réservation, un nombre aléatoire et l'extension du fichier.
+            $strf = ""; $str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_";
+            srand(time()*$id);			
+            for($c=0; $c<12; $c++) 
+            {
+              $strf .= $str[rand(0,strlen($str)-1)];
+            }
+            $fileName = $id.$strf.".".$fileExt;
+            if (rename($uploadDir.$_FILES["myFiles"]["name"][$i], $uploadDir.$fileName)){
+              //ajout dans la base de donnée.
+              $req = "INSERT INTO ".TABLE_PREFIX."_files (id_entry, file_name, public_name) VALUES (?,?,?)";
+              if (grr_sql_command($req,"iss",[$id,protect_data_sql($fileName),protect_data_sql($_FILES["myFiles"]["name"][$i])]) < 0){
+                echo "<br>erreur d'enregistrement sur base de donnée";
+              }
+              else{
+                if ($copie){
+                  echo "<br> <span style='color:green'>Fichier enregistré</span></p>";
+                  header('Location: week_all.php?');
+                }
+                else{
+                  echo "<br><span style='color:red'>Erreur d'enregistrement</span></p>";
+                }
+              }
+            }
+            else{
+              echo "<br><span style='color:red'>Erreur, le fichier n'a pu être renommé</span></p>";
+            }
+          }
+          else{ // rejette les fichiers d'extension différente de jpg, png, gif ou pdf
+            echo "<br>type de fichier inconnu";
+          }
         }
       }
     }
