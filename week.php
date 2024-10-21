@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-01 18:00$
+ * Dernière modification : $Date: 2024-10-21 16:12$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -308,7 +308,7 @@ else
                         {   
                             $d[$weekday][$slot]["horaireDebut"] = $t;
                             $d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t));
-                            $d[$weekday][$slot]["duree"] = (mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t))-$t)/$this_area_resolution;
+                            $d[$weekday][$slot]["duree"] = ($d[$weekday][$slot]["horaireFin"]-$d[$weekday][$slot]["horaireDebut"])/$this_area_resolution;
                         }
                         // Les jours entre les deux , Hdebut = Heure debut journée/ Hfin = heure fin journée / duree = ( h fin journée - h debut journée) * nb bloc pr 1h ) 
                         else

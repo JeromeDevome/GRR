@@ -102,7 +102,8 @@ $yy = date("Y", $i);
 $ym = date("m", $i);
 $yd = date("d", $i);
 // jour d'un cycle ?
-$i = mktime(0, 0, 0, $month, $day, $year);
+$now = mktime(0,0,0,$month,$day,$year);
+$i = $now;
 $jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE day='$i'");
 // jour suivant
 $ind = 1;
@@ -263,7 +264,7 @@ else{
                 foreach($ressources as $row){
                     $who_can_book[$row['id']] = $row["who_can_book"];
                 }
-                $hors_reservation = est_hors_reservation(mktime(0, 0, 0, $month, $day, $year), $area);
+                $hors_reservation = est_hors_reservation($now, $area);
                 foreach($rooms as $room_id){
                     $user_can_book = $who_can_book[$room_id] || ($authLevel[$room_id] > 2) || (authBooking($user_name,$room_id));
                     $t = $am7;
@@ -411,7 +412,6 @@ $class = "";
 $title = "";
 if ($settings->get("show_holidays") == "Oui")
 {   
-    $now = mktime(0,0,0,$month,$day,$year);
     if (isHoliday($now)){
         $class .= 'ferie ';
     }
