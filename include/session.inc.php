@@ -3,9 +3,9 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-04-03 11:00$
+ * Dernière modification : $Date: 2024-10-21 14:57$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -66,7 +66,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 			$_statut = "visiteur";
 		else if ($sso == "lasso_utilisateur")
 			$_statut = "utilisateur";
-		$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site
+		$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
 		from ".TABLE_PREFIX."_utilisateurs
 		where login = '" . protect_data_sql($_login) . "' and ";
 		if ($_user_ext_authentifie != 'lasso')
@@ -109,7 +109,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 						//Comme les données de la base on été changés, on doit remettre à jour la variable $row,
 						//Pour que les données mises en sessions soient les bonnes
 						//on récupère les données de l'utilisateur
-						$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site
+						$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
 						FROM ".TABLE_PREFIX."_utilisateurs
 						WHERE login = '" . protect_data_sql($_login) . "' and
 						source = 'ext' and
