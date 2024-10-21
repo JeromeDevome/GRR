@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2024-10-10
+# Last modification : 2024-10-21
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -802,7 +802,7 @@ $vocab['reservee au nom de'] = "Reservierung im Namen von ";
 $vocab['Reserver'] = "Buchen";
 $vocab['reset'] = "Basiswerte";
 $vocab['resolution_area'] = "Kleinstmöglicher zu reservierender Zeitraum, in Sekunden (1800 Sekunden = 1/2 Stunde)";
-$vocab["ressource_actuellement_empruntee"] = "La ressource est actuellement empruntée."; // A traduire
+$vocab['ressource_actuellement_empruntee'] = "La ressource est actuellement empruntée."; // A traduire
 $vocab['ressource_empruntee_non_restituee'] = "Sauf erreur, la ressource suivante que vous avez empruntée n'a pas été restituée. S'il s'agit d'une erreur, veuillez ne pas tenir compte de ce courrier."; // A traduire
 $vocab['ressource_temporairement_indisponible'] = "Zur Zeit nicht verfügbar";
 $vocab['Restauration_de_la_base_GRR'] = "Wiederherstellen der GRR-Datenbank";
