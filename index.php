@@ -82,7 +82,7 @@ if ($dbsys == "mysql")
 	}
 	if ($correct_install == 'no')
 	{
-        echo begin_simple_page("GRR (Gestion et Réservation de Ressources) ", "no_session");
+    echo begin_simple_page("GRR (Gestion et Réservation de Ressources) ", "no_session");
 		echo "<h1 class=\"center\">Gestion et Réservation de Ressources</h1>\n";
 		echo "<div style=\"text-align:center;\"><span style=\"color:red;font-weight:bold\">".$msg."</span>\n";
 		echo "<ul><li>".get_vocab('index_msg5')."<br />";

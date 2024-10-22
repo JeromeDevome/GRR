@@ -81,6 +81,12 @@ Sous-version 3.5.1e
     correctif : accès des administrateurs de sites à la gestion des domaines
     correctif : code javascript
     correctif : affichage des réservations finissant le dernier jour du mois
+Sous-version 3.5.1f
+    amélioration : réduction des appels à mktime()
+    correctif : récupération de la constante CAS_VERSION
+    correctif : problème d'ouverture de session en cas d'identification obligatoire
+    correctif : arrondi implicite obsolète dans week.php
+    MAJ vacances scolaires France
 
 -----
 --

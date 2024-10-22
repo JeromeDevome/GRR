@@ -67,7 +67,7 @@ function traiteRequete($requete = "")
             $retour = "";
             break;
             case "1062":
-            // Présence d'un doublon : création de la cléf impossible
+            // Présence d'un doublon : création de la clé impossible
             $retour = "<span style=\"color:#FF0000;\">Erreur (<b>non critique</b>) sur la requête : <i>".$requete."</i> (".mysqli_errno($GLOBALS['db_c'])." : ".mysqli_error($GLOBALS['db_c']).")</span><br />\n";
             break;
             case "1068":
