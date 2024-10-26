@@ -3,9 +3,9 @@
  * admin_save_mysql.php
  * Script de sauvegarde de la base de donnée mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-10-18 14:06$
+ * Dernière modification : $Date: 2024-10-22 11:31$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -180,7 +180,7 @@ while ($j < count($liste_tables))
 					$lesDonnees = "";
 					for ($mp = 0; $mp < $num_fields; $mp++)
 					{
-						$lesDonnees .= "'" . mysqli_real_escape_string($GLOBALS['db_c'], $rowdata[$mp]) . "'";
+            $lesDonnees .= ($rowdata[$mp] != '')? "'".mysqli_real_escape_string($GLOBALS['db_c'], $rowdata[$mp])."'" : "''";
 						//on ajoute à la fin une virgule si nécessaire
 						if ($mp<$num_fields-1)
 							$lesDonnees .= ", ";

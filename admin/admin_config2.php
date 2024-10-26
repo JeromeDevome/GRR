@@ -3,7 +3,7 @@
  * admin_config2.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (accès et droits)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-03-05 16:21$
+ * Dernière modification : $Date: 2024-10-22 09:13$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -101,7 +101,7 @@ if (Settings::get("authentification_obli") == '0')
 echo " />&nbsp";
 echo get_vocab("authentification_obli0")."\n";
 echo "<br/>";
-echo "<input type='radio' name='authentification_obli' value='0' ";
+echo "<input type='radio' name='authentification_obli' value='1' ";
 if (Settings::get("authentification_obli") == '1')
     echo "checked='checked'";
 echo " />&nbsp";

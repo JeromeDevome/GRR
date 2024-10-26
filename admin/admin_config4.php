@@ -3,7 +3,7 @@
  * admin_config4.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (sécurité, connexions)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-03-15 15:02$
+ * Dernière modification : $Date: 2024-10-22 11:46$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -108,15 +108,13 @@ if ($dbsys == "mysql")
 		echo "\n<hr /><h3>".get_vocab('Restauration_de_la_base_GRR')."</h3>";
 		echo "\n<p>".get_vocab('explain_restore')."</p>";
 		echo "\n<p><span class=\"avertissement\"><i>".get_vocab('warning_restore')."</i></span></p>\n";
-		?>
-		<form method="post" enctype="multipart/form-data" action="admin_open_mysql.php">
-			<div class="center">
-				<input type="file" name="sql_file" size="30" />
-				<br /><br />
-				<input class="btn btn-primary" type="submit" value="<?php echo get_vocab('Restaurer_la_sauvegarde'); ?>" style="font-variant: small-caps;" />
-			</div>
-		</form>
-<?php
+		echo '<form method="post" enctype="multipart/form-data" action="admin_open_mysql.php">';
+		echo '<div class="center">';
+		echo '<input type="file" name="sql_file" />';
+		echo '<br /><br />';
+		echo '<input class="btn btn-primary" type="submit" value="'.get_vocab('Restaurer_la_sauvegarde').'" style="font-variant: small-caps;" />';
+		echo '</div>'.PHP_EOL;
+		echo '</form>'.PHP_EOL;
 	}
 }
 	echo "<form action=\"./admin_config4.php\" method=\"get\">";

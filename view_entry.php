@@ -27,7 +27,7 @@ include_once('include/functions.inc.php');
 
 require_once('include/settings.class.php');
 if (!Settings::load())
-	die("Erreur chargement settings");
+  die("Erreur chargement settings");
 
 require_once("./include/session.inc.php");
 
@@ -53,15 +53,15 @@ function pageHead($title,$locale) // $locale est la langue utilisée
     }
     echo '<head>
     <meta charset="UTF-8">
-	<title>'.$title.'</title>
+  <title>'.$title.'</title>
     <link rel="shortcut icon" href="./favicon.ico" />
-	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css" />';
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css" />';
 //    <link rel="stylesheet" href="./js/flatpickr/flatpickr.min.css">
 //    <link rel="stylesheet" href="./js/flatpickr/airbnb.css">
     echo '<link rel="stylesheet" href="./js/select2/css/select2.min.css" />
     <link rel="stylesheet" href="./bootstrap/css/select2-bootstrap.css" />
-	<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui.min.css" />
-	<link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery.timepicker.min.css" >
+  <link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui.min.css" />
+  <link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery.timepicker.min.css" >
     <link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />
     <link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />';
     echo '
@@ -88,23 +88,23 @@ $page = verif_page();
 $fin_session = (!grr_resumeSession())? 'y':'n';
 if (($fin_session == 'y') && (Settings::get("authentification_obli") == 1))
 {
-	header("Location: ./logout.php?auto=1&url=$url");
-	die();
+  header("Location: ./logout.php?auto=1&url=$url");
+  die();
 }
 $user_id = getUserName();
 if ((Settings::get("authentification_obli") == 0) && ($user_id == ''))
-	$type_session = "no_session";
+  $type_session = "no_session";
 else
-	$type_session = "with_session";
+  $type_session = "with_session";
 // Paramètres langage
 include "include/language.inc.php";
 
 if (isset($_GET["id"]))
-	$id = intval($_GET["id"]);
+  $id = intval($_GET["id"]);
 else
 {
-	header("Location: ./login.php");
-	die();
+  header("Location: ./login.php");
+  die();
 }
 
 unset($reg_statut_id);
@@ -140,8 +140,8 @@ if (strstr($back, 'view_entry.php'))
 }
 // traitement d'une modération
 if (isset($_GET["action_moderate"])){
-	moderate_entry_do($id,clean_input($_GET["moderate"]), clean_input($_GET["description"]));
-	header("Location: ".$back);
+  moderate_entry_do($id,clean_input($_GET["moderate"]), clean_input($_GET["description"]));
+  header("Location: ".$back);
     die();
 }
 
@@ -199,54 +199,54 @@ WHERE ".TABLE_PREFIX."_entry_moderate.id=? ";
 
 $res = grr_sql_query($sql,"i",[$id]);
 if (!$res)
-	fatal_error(0, grr_sql_error());
+  fatal_error(0, grr_sql_error());
 if (grr_sql_count($res) < 1)
 {
-	$reservation_is_delete = 'y';
-	$was_del = TRUE;
-	$res_backup = grr_sql_query($sql_backup,"i",[$id]);
-	if (!$res_backup)
-		fatal_error(0, grr_sql_error());
-	$row = grr_sql_row($res_backup, 0);
+  $reservation_is_delete = 'y';
+  $was_del = TRUE;
+  $res_backup = grr_sql_query($sql_backup,"i",[$id]);
+  if (!$res_backup)
+    fatal_error(0, grr_sql_error());
+  $row = grr_sql_row($res_backup, 0);
     if(!is_array($row))
         fatal_error(0,"pas de réservation sauvegardée");
-	grr_sql_free($res_backup);
+  grr_sql_free($res_backup);
 }
 else
 {
-	$was_del = FALSE;
-	$row = grr_sql_row($res, 0);
+  $was_del = FALSE;
+  $row = grr_sql_row($res, 0);
 }
 grr_sql_free($res);
-$breve_description 	= $row[0];
-$description  		= bbcode(htmlspecialchars($row[1]),'');
-$beneficiaire    	= htmlspecialchars($row[2]);
-$room_name    		= htmlspecialchars($row[3]);
-$area_name    		= htmlspecialchars($row[4]);
-$type         		= $row[5];
-$room_id      		= $row[6];
-$repeat_id    		= $row[7];
-$updated      		= time_date_string($row[8], $dformat);
-$duration     		= $row[9];
-$area      			= $row[12];
-$statut_id 			= $row[13];
-$delais_option_reservation 	= $row[14];
-$option_reservation 		= $row[15];
-$moderate 					= $row[16];
-$beneficiaire_ext   		= htmlspecialchars($row[17]);
-$create_by    				= htmlspecialchars($row[18]);
-$jour_cycle    				= htmlspecialchars($row[19]);
+$breve_description  = $row[0];
+$description      = bbcode(htmlspecialchars($row[1]),'');
+$beneficiaire     = htmlspecialchars($row[2]);
+$room_name        = htmlspecialchars($row[3]);
+$area_name        = htmlspecialchars($row[4]);
+$type             = $row[5];
+$room_id          = $row[6];
+$repeat_id        = $row[7];
+$updated          = time_date_string($row[8], $dformat);
+$duration         = $row[9];
+$area           = $row[12];
+$statut_id      = $row[13];
+$delais_option_reservation  = $row[14];
+$option_reservation     = $row[15];
+$moderate           = $row[16];
+$beneficiaire_ext       = htmlspecialchars($row[17]);
+$create_by            = htmlspecialchars($row[18]);
+$jour_cycle           = htmlspecialchars($row[19]);
 $active_ressource_empruntee = htmlspecialchars($row[20]);
-$keys						= $row[21];
-$courrier					= $row[22];
-$active_cle					= $row[23];
-$nbParticipantMax			= $row[24];
-$rep_type 					= 0;
-$verif_display_email 		= verif_display_email($user_id, $room_id);
+$keys           = $row[21];
+$courrier         = $row[22];
+$active_cle         = $row[23];
+$nbParticipantMax     = $row[24];
+$rep_type           = 0;
+$verif_display_email    = verif_display_email($user_id, $room_id);
 if ($verif_display_email)
-	$option_affiche_nom_prenom_email = "withmail";
+  $option_affiche_nom_prenom_email = "withmail";
 else
-	$option_affiche_nom_prenom_email = "nomail";
+  $option_affiche_nom_prenom_email = "nomail";
 $msg='';
 // traitement du formulaire d'inscription d'un autre participant
 if(isset($_GET["reg_part"]))
@@ -285,26 +285,26 @@ if(isset($_GET["reg_part"]))
 }
 // réservation pour laquelle la fonctionnalité participants est activée
 if($nbParticipantMax > 0){
-	$userParticipe = false;
+  $userParticipe = false;
     $listeParticipants = "";
-	$reg_users = array(); // peut-être différent du précédent si un formulaire a été traité
-	// Compte nb de participants actuel
-	$resp = grr_sql_query("SELECT participant FROM ".TABLE_PREFIX."_participants WHERE idresa=? ","i",[$id]);
+  $reg_users = array(); // peut-être différent du précédent si un formulaire a été traité
+  // Compte nb de participants actuel
+  $resp = grr_sql_query("SELECT participant FROM ".TABLE_PREFIX."_participants WHERE idresa=? ","i",[$id]);
     if (!$resp)
         fatal_error(0, grr_sql_error());
-	$nbParticipantInscrit = grr_sql_count($resp);
-	// Liste des participants
-	if ($nbParticipantInscrit > 0)
-	{
-		foreach($resp as $rowp)
-		{
-			if( $rowp['participant'] == $user_id)
-				$userParticipe = true;
-			$listeParticipants .= affiche_nom_prenom_email($rowp['participant'], "", $option_affiche_nom_prenom_email)."<br />";
+  $nbParticipantInscrit = grr_sql_count($resp);
+  // Liste des participants
+  if ($nbParticipantInscrit > 0)
+  {
+    foreach($resp as $rowp)
+    {
+      if( $rowp['participant'] == $user_id)
+        $userParticipe = true;
+      $listeParticipants .= affiche_nom_prenom_email($rowp['participant'], "", $option_affiche_nom_prenom_email)."<br />";
             $reg_users[] = $rowp['participant'];
-		}
-	}
-	grr_sql_free($resp);
+    }
+  }
+  grr_sql_free($resp);
     $all_users = array();
     $resu = grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE 1");
     if (!$resu)
@@ -318,87 +318,87 @@ if($nbParticipantMax > 0){
 
 if (($fin_session == 'n') && ($user_id!='') && (authGetUserLevel($user_id, $room_id) >= 3) && (isset($_GET['commit'])))
 {
-	if (!$was_del)
-	{
-		if ($reg_statut_id != "")
-		{
-			$upd1 = "UPDATE ".TABLE_PREFIX."_entry SET statut_entry='-' WHERE room_id =?";
-			if (grr_sql_command($upd1,"i",[$room_id]) < 0)
-				fatal_error(0, grr_sql_error());
-			$upd2 = "UPDATE ".TABLE_PREFIX."_entry SET statut_entry=?  WHERE id =?";
-			if (grr_sql_command($upd2,"si",[$reg_statut_id,$id]) < 0)
-				fatal_error(0, grr_sql_error());
-		}
+  if (!$was_del)
+  {
+    if ($reg_statut_id != "")
+    {
+      $upd1 = "UPDATE ".TABLE_PREFIX."_entry SET statut_entry='-' WHERE room_id =?";
+      if (grr_sql_command($upd1,"i",[$room_id]) < 0)
+        fatal_error(0, grr_sql_error());
+      $upd2 = "UPDATE ".TABLE_PREFIX."_entry SET statut_entry=?  WHERE id =?";
+      if (grr_sql_command($upd2,"si",[$reg_statut_id,$id]) < 0)
+        fatal_error(0, grr_sql_error());
+    }
         // clef
-		$clef = (isset($_GET['clef']))? 1: 0;
-		$upd = "UPDATE ".TABLE_PREFIX."_entry SET clef=? WHERE id = ?";
+    $clef = (isset($_GET['clef']))? 1: 0;
+    $upd = "UPDATE ".TABLE_PREFIX."_entry SET clef=? WHERE id = ?";
         if (grr_sql_command($upd,"ii",[$clef,$id]) < 0)
             fatal_error(0, grr_sql_error());
-		// courrier
-		$courrier = (isset($_GET['courrier']))? 1: 0;
+    // courrier
+    $courrier = (isset($_GET['courrier']))? 1: 0;
         $upd = "UPDATE ".TABLE_PREFIX."_entry SET courrier=? WHERE id =? ";
         if (grr_sql_command($upd,"ii",[$courrier,$id]) < 0)
             fatal_error(0, grr_sql_error());
         // envoi de mail
-		if ((isset($_GET["envoyer_mail"])) && (Settings::get("automatic_mail") == 'yes'))
-		{
-			$_SESSION['session_message_error'] = send_mail($id, 7, $dformat);
-			if ($_SESSION['session_message_error'] == "")
-			{
-				$_SESSION['displ_msg'] = "yes";
-				$_SESSION["msg_a_afficher"] = get_vocab("un email envoye")." ".clean_input($_GET["mail_exist"]);
-			}
+    if ((isset($_GET["envoyer_mail"])) && (Settings::get("automatic_mail") == 'yes'))
+    {
+      $_SESSION['session_message_error'] = send_mail($id, 7, $dformat);
+      if ($_SESSION['session_message_error'] == "")
+      {
+        $_SESSION['displ_msg'] = "yes";
+        $_SESSION["msg_a_afficher"] = get_vocab("un email envoye")." ".clean_input($_GET["mail_exist"]);
+      }
             else
                 display_mail_msg();
-		}
+    }
         $back = filter_var($_GET['back'], FILTER_SANITIZE_URL);
-		header("Location: ".$back."");
-		die();
-	}
+    header("Location: ".$back."");
+    die();
+  }
 }
 if (!isset($day) || !isset($month) || !isset($year))
 {
-	$day   = date("d");
-	$month = date("m");
-	$year  = date("Y");
+  $day   = date("d");
+  $month = date("m");
+  $year  = date("Y");
 }
 
 if (@file_exists("language/lang_subst_".$area.".".$locale))
-	include "language/lang_subst_".$area.".".$locale;
+  include "language/lang_subst_".$area.".".$locale;
 if ((authGetUserLevel($user_id, -1) < 1) and (Settings::get("authentification_obli") == 1))
 {
-	showAccessDenied($back);
-	exit();
+  showAccessDenied($back);
+  exit();
 }
 if (authUserAccesArea($user_id, $area) == 0)
 {
-	if (isset($reservation_is_delete))
-		showNoReservation($day, $month, $year, $back);
-	else
-		showAccessDenied($back);
-	exit();
+  if (isset($reservation_is_delete))
+    showNoReservation($day, $month, $year, $back);
+  else
+    showAccessDenied($back);
+  exit();
 }
 $date_now = time();
 
 get_planning_area_values($area);
 if ($enable_periods == 'y')
 {
-	list( $start_period, $start_date) = period_date_string($row[10]);
-	list( , $end_date) =  period_date_string($row[11], -1);
-	toPeriodString($start_period, $duration, $dur_units);
+  list( $start_period, $start_date) = period_date_string($row[10]);
+  list( , $end_date) =  period_date_string($row[11], -1);
+  toPeriodString($start_period, $duration, $dur_units);
 }
 else
 {
-	$start_date = time_date_string($row[10],$dformat);
-	$end_date = time_date_string($row[11], $dformat);
-	toTimeString($duration, $dur_units);
-}	
+  $start_date = time_date_string($row[10],$dformat);
+  $end_date = time_date_string($row[11], $dformat);
+  toTimeString($duration, $dur_units);
+} 
 if ($beneficiaire != "")
-	$mail_exist = grr_sql_query1("SELECT email FROM ".TABLE_PREFIX."_utilisateurs WHERE login=?","s",[$beneficiaire]);
+  $mail_exist = grr_sql_query1("SELECT email FROM ".TABLE_PREFIX."_utilisateurs WHERE login=?","s",[$beneficiaire]);
 else
 {
-	$tab_benef = donne_nom_email($beneficiaire_ext);
-	$mail_exist = $tab_benef["email"];
+  $tab_benef = donne_nom_email($beneficiaire_ext);
+  $mail_exist = $tab_benef["email"];
 }
 // type
 $type_name = grr_sql_query1("SELECT type_name from ".TABLE_PREFIX."_type_area where type_letter=? ","s",[$type]);
@@ -407,7 +407,7 @@ if ($type_name == -1)
 // ressource empruntée ?
 if ($active_ressource_empruntee == 'y')
 {
-	$id_resa = grr_sql_query1("SELECT id from ".TABLE_PREFIX."_entry where room_id =? and statut_entry='y'","i",[$room_id]);
+  $id_resa = grr_sql_query1("SELECT id from ".TABLE_PREFIX."_entry where room_id =? and statut_entry='y'","i",[$room_id]);
   $affiche_ressource_empruntee = ($id_resa == $id);
 }
 else $affiche_ressource_empruntee = FALSE;
@@ -433,14 +433,14 @@ if ($repeat_id != 0)
         fatal_error(0, grr_sql_error());
     if (grr_sql_count($res) > 0)
     {
-        $row6 			= grr_sql_row($res, 0);
-        $rep_type     	= $row6[0];
-        $rep_end_date 	= utf8_strftime($dformat,$row6[1]);
-        $rep_opt      	= $row6[2];
-        $rep_num_weeks 	= $row6[3];
+        $row6       = grr_sql_row($res, 0);
+        $rep_type       = $row6[0];
+        $rep_end_date   = utf8_strftime($dformat,$row6[1]);
+        $rep_opt        = $row6[2];
+        $rep_num_weeks  = $row6[3];
         $rep_start_time = $row6[4];
-        $rep_end_time 	= $row6[5];
-        $rep_duration 	= $row6[5] - $row6[4];
+        $rep_end_time   = $row6[5];
+        $rep_duration   = $row6[5] - $row6[4];
     }
     else fatal_error(0,"erreur de lecture en base de données");
     grr_sql_free($res);
@@ -512,26 +512,26 @@ affiche_pop_up($msg,"admin");
 echo '<fieldset>'.PHP_EOL;
 echo '<table class="table table-noborder">'; // informations de la réservation
 echo '<caption style="font-size:12pt;font-weight:bold">'.get_vocab('entry').get_vocab('deux_points').affichage_lien_resa_planning($breve_description, $id).'</caption>'."\n";
-echo '	<tr>';
-echo '		<td><b>'.get_vocab("description").'</b></td>';
-echo '		<td>'.nl2br($description).'</td>';
-echo '	</tr>';
-echo '	<tr>';
-echo '		<td><b>'.get_vocab("room"),get_vocab("deux_points").'</b></td>';
-echo '		<td>'.nl2br($area_name . " - " . $room_name).'</td>';
-echo '	</tr>';
-echo '	<tr>';
-echo '		<td><b>'.get_vocab("start_date"),get_vocab("deux_points").'</b></td>';
-echo '		<td>'.$start_date.'</td>';
-echo '	</tr>';
-echo '	<tr>';
-echo '		<td><b>'.get_vocab("duration").'</b></td>';
-echo '		<td>'.$duration .' '.$dur_units.'</td>';
-echo '	</tr>';
-echo '	<tr>';
-echo '		<td><b>'.get_vocab("end_date").'</b></td>';
-echo '		<td>'.$end_date.'</td>';
-echo '	</tr>';
+echo '  <tr>';
+echo '    <td><b>'.get_vocab("description").'</b></td>';
+echo '    <td>'.nl2br($description).'</td>';
+echo '  </tr>';
+echo '  <tr>';
+echo '    <td><b>'.get_vocab("room"),get_vocab("deux_points").'</b></td>';
+echo '    <td>'.nl2br($area_name . " - " . $room_name).'</td>';
+echo '  </tr>';
+echo '  <tr>';
+echo '    <td><b>'.get_vocab("start_date"),get_vocab("deux_points").'</b></td>';
+echo '    <td>'.$start_date.'</td>';
+echo '  </tr>';
+echo '  <tr>';
+echo '    <td><b>'.get_vocab("duration").'</b></td>';
+echo '    <td>'.$duration .' '.$dur_units.'</td>';
+echo '  </tr>';
+echo '  <tr>';
+echo '    <td><b>'.get_vocab("end_date").'</b></td>';
+echo '    <td>'.$end_date.'</td>';
+echo '  </tr>';
 echo '<tr>',PHP_EOL,'<td><b>',get_vocab("type"),get_vocab("deux_points"),'</b></td>',PHP_EOL;
 echo '<td>',$type_name,'</td>',PHP_EOL,'</tr>',PHP_EOL;
 if ($beneficiaire != $create_by)
@@ -541,19 +541,19 @@ if ($beneficiaire != $create_by)
     echo '    <td>'.affiche_nom_prenom_email($beneficiaire, $beneficiaire_ext, $option_affiche_nom_prenom_email).'</td>';
     echo '</tr>';
 }
-echo '	<tr>';
-echo '		<td><b>'.get_vocab("created_by").get_vocab("deux_points").'</b></td>';
-echo '		<td>'.affiche_nom_prenom_email($create_by, "", $option_affiche_nom_prenom_email);
-			if ($affiche_ressource_empruntee)
-			{
-				echo '<span class="avertissement">(',get_vocab("reservation_en_cours"),') <img src="img_grr/buzy_big.png" align=middle alt="',get_vocab("ressource_actuellement_empruntee"),'" title="',get_vocab("ressource_actuellement_empruntee"),'" border="0" width="30" height="30" class="print_image" /></span>',PHP_EOL;
-			}
-echo '		</td>';
-echo '	</tr>';
-echo '	<tr>';
-echo '		<td><b>'.get_vocab("lastupdate"),get_vocab("deux_points").'</b></td>';
-echo '		<td>'.$updated.'</td>';
-echo '	</tr>';
+echo '  <tr>';
+echo '    <td><b>'.get_vocab("created_by").get_vocab("deux_points").'</b></td>';
+echo '    <td>'.affiche_nom_prenom_email($create_by, "", $option_affiche_nom_prenom_email);
+      if ($affiche_ressource_empruntee)
+      {
+        echo '<span class="avertissement">(',get_vocab("reservation_en_cours"),') <img src="img_grr/buzy_big.png" align=middle alt="',get_vocab("ressource_actuellement_empruntee"),'" title="',get_vocab("ressource_actuellement_empruntee"),'" border="0" width="30" height="30" class="print_image" /></span>',PHP_EOL;
+      }
+echo '    </td>';
+echo '  </tr>';
+echo '  <tr>';
+echo '    <td><b>'.get_vocab("lastupdate"),get_vocab("deux_points").'</b></td>';
+echo '    <td>'.$updated.'</td>';
+echo '  </tr>';
 // Les champs add :
 $overload_data = mrbsEntryGetOverloadDesc($id);
 /* les champs additionnels s'affichent dans la description si
@@ -568,13 +568,13 @@ foreach ($overload_data as $fieldname=>$field)
     {
         echo "<tr><td><b>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points")."</b></td>";
                 // ELM - Gestion des champs additionnels multivalués
-		$valeurs = explode('|', $field["valeur"]);
-		if (count($valeurs) > 1) {
-			$valeurs = implode(" - ", $valeurs);
-		}
-		else {
-			$valeurs = $field["valeur"];
-		}
+    $valeurs = explode('|', $field["valeur"]);
+    if (count($valeurs) > 1) {
+      $valeurs = implode(" - ", $valeurs);
+    }
+    else {
+      $valeurs = $field["valeur"];
+    }
         echo "<td>".htmlspecialchars($valeurs,ENT_NOQUOTES)."</td></tr>";
     }
 }
@@ -645,10 +645,10 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
     }
     echo '<div>';
     echo "<p><b>".get_vocab("participant_inscrit").get_vocab("deux_points")."</b>";
-	echo $nbParticipantInscrit." / ".$nbParticipantMax."</p>";
+  echo $nbParticipantInscrit." / ".$nbParticipantMax."</p>";
     echo "<button type='button' class='btn btn-primary btn-sm' id='btn_liste_participe' onclick=\"toggle_visibility('liste_participants');toggle_visibility('btn_liste_participe');toggle_visibility('btn_close_liste');\">".get_vocab('participant_list').'</button>';
     echo "<button type='button' class='btn btn-primary btn-sm' id='btn_close_liste' style='display:none' onclick=\"toggle_visibility('liste_participants');toggle_visibility('btn_liste_participe');toggle_visibility('btn_close_liste'); \">".get_vocab('participant_list_hide')."</button>";
-	echo "<p id='liste_participants' style='display:none'>".$listeParticipants."</p>".PHP_EOL;
+  echo "<p id='liste_participants' style='display:none'>".$listeParticipants."</p>".PHP_EOL;
     echo '</div>';
     // selon les droits qui_peut_reserver_pour, affichage d'un bloc permettant l'inscription d'un tiers à l'événement
     if (verif_qui_peut_reserver_pour($room_id, $user_id, '-1'))
@@ -687,16 +687,16 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
 if ($id != 0 && $droit_acces >= $user_right && $access_file==1){
   if ($droit_acces >= $upload_file) { // droit de téléverser
     echo '<div class="upload">
-					<form id="uploadForm" method="post" action="upload.php" enctype="multipart/form-data">
-					<h4>Choisissez le fichier que vous allez insérer dans cette réservation :</h4>
+          <form id="uploadForm" method="post" action="upload.php" enctype="multipart/form-data">
+          <h4>Choisissez le fichier que vous allez insérer dans cette réservation :</h4>
           <input type="file" id="hiddenfile" style="display:none" name="myFiles[]" onChange="getvalue();"/>
           <input type="button" value="Parcourir ..." onclick="getfile();"/>
           <input type="text" id="selectedfile" name="selectedfile" value="Nom du fichier" />
           <input type="hidden" id = "id_entry" name="id_entry" value = "'.$id.'">
           <input type="submit" value="Envoyer" id ="btnValidUpload" onChange="getvalue()">
-					</form>
-					<output id=infos> </output>
-				</div>';
+          </form>
+          <output id=infos> </output>
+        </div>';
   }
   echo '<script type="text/javascript" >
           function getfile(){
@@ -708,7 +708,7 @@ if ($id != 0 && $droit_acces >= $user_right && $access_file==1){
           function getvalue2(){
             document.getElementById(\'hiddenfile\').value=document.getElementById(\'selectedfile\').value;
           }
-				</script>';
+        </script>';
   // liste des fichiers joints
   echo '<fieldset><h4> Fichiers joints : </h4>';
   if(count($attached_files) > 0){
@@ -763,15 +763,15 @@ echo '</fieldset>',PHP_EOL;
 if ($repeat_id != 0)
 {
     if ($enable_periods == 'y')
-	{
+  {
         list( $start_period, $start_date) = period_date_string($rep_start_time);
-		toPeriodString($start_period, $rep_duration, $dur_units);
-	}
+    toPeriodString($start_period, $rep_duration, $dur_units);
+  }
     else
-	{
+  {
         $start_date = time_date_string($rep_start_time, $dformat);
-		toTimeString($rep_duration, $dur_units);
-	}
+    toTimeString($rep_duration, $dur_units);
+  }
     $weeklist = array("unused", "every week", 'week_1_of_2', 'week_1_of_3', 'week_1_of_4', 'week_1_of_5');
     if ($rep_type == 2)
         $affiche_period = get_vocab($weeklist[$rep_num_weeks]);
@@ -804,23 +804,23 @@ if ($repeat_id != 0)
                 else
                     echo '<tr>',PHP_EOL,'<td><b>',get_vocab("rep_rep_days"),'</b></td>',PHP_EOL,'<td>',$opt,'</td>',PHP_EOL,'</tr>',PHP_EOL;
             }
-		if ($rep_type == 6)
-		{
-			if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
-				echo '<tr>',PHP_EOL,'<td><b>',get_vocab("rep_rep_day"),'</b></td>',PHP_EOL,'<td>',get_vocab('jour_cycle'),' ',$jour_cycle,'</td>',PHP_EOL,'</tr>',PHP_EOL;
-		}
+    if ($rep_type == 6)
+    {
+      if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
+        echo '<tr>',PHP_EOL,'<td><b>',get_vocab("rep_rep_day"),'</b></td>',PHP_EOL,'<td>',get_vocab('jour_cycle'),' ',$jour_cycle,'</td>',PHP_EOL,'</tr>',PHP_EOL;
+    }
 
-		echo '<tr><td><b>'.get_vocab("date").get_vocab("deux_points").'</b></td><td>'.$start_date.'</td></tr>';
-		echo '<tr><td><b>'.get_vocab("duration").'</b></td><td>'.$rep_duration .' '. $dur_units.'</td></tr>';
-		echo '<tr><td><b>'.get_vocab('rep_end_date').'</b></td><td>'.$rep_end_date.'</td></tr>';
-	}
+    echo '<tr><td><b>'.get_vocab("date").get_vocab("deux_points").'</b></td><td>'.$start_date.'</td></tr>';
+    echo '<tr><td><b>'.get_vocab("duration").'</b></td><td>'.$rep_duration .' '. $dur_units.'</td></tr>';
+    echo '<tr><td><b>'.get_vocab('rep_end_date').'</b></td><td>'.$rep_end_date.'</td></tr>';
+  }
     if ((getWritable($user_id, $id)) && verif_booking_date($user_id, $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room($user_id, $room_id, $row[10], $enable_periods) && (!$was_del))
-	{	
+  { 
         $message_confirmation = str_replace ( "'"  , "\\'"  ,get_vocab('confirmdel').get_vocab('alterseries'));
         echo '<tr>',PHP_EOL,'<td>',PHP_EOL,'<a class="btn btn-primary" type="button" href="edit_entry.php?id=',$id,'&amp;edit_type=series&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=',$page,'" onclick="return confirm(\'',$message_confirmation,'\');">',get_vocab("editseries"),'</a></td>',PHP_EOL;
-		$message_confirmation = str_replace ( "'"  , "\\'"  , get_vocab("confirmdel").get_vocab("deleteseries"));
-		echo '<td>',PHP_EOL,'<a class="btn btn-danger" type="button" href="del_entry.php?id=',$id,'&amp;series=1&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=',$page,'" onclick="return confirm(\'',$message_confirmation,'\');">',get_vocab("deleteseries"),'</a></td>',PHP_EOL,'</tr>',PHP_EOL;
-	}
+    $message_confirmation = str_replace ( "'"  , "\\'"  , get_vocab("confirmdel").get_vocab("deleteseries"));
+    echo '<td>',PHP_EOL,'<a class="btn btn-danger" type="button" href="del_entry.php?id=',$id,'&amp;series=1&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=',$page,'" onclick="return confirm(\'',$message_confirmation,'\');">',get_vocab("deleteseries"),'</a></td>',PHP_EOL,'</tr>',PHP_EOL;
+  }
     echo '</table>',PHP_EOL,'</fieldset>',PHP_EOL;
 }
 if (!isset($area_id))
@@ -929,16 +929,16 @@ if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')||($mod
 {
     if ($back != "")
         echo '<a class="btn btn-default" type="button" href="'.$back.'">'.get_vocab("returnprev").'</a></div>'.PHP_EOL;
-	echo '</div>',PHP_EOL;
+  echo '</div>',PHP_EOL;
 }
 ?>
 <script>
-    $(document).ready(function() {
-        $(".select2").select2();
-	});
-    $('#avail_users').select2({
-        dropdownParent: $('#popup_name')
-    });
+  $(document).ready(function() {
+    $(".select2").select2();
+  });
+  $('#avail_users').select2({
+    dropdownParent: $('#popup_name')
+  });
 </script>
 <?php end_page();
 ?>
