@@ -65,7 +65,7 @@ function pageHead($title,$locale) // $locale est la langue utilisée
     <link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />
     <link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />';
     echo '
-        <script src="./js/jquery-3.7.0.min.js"></script>
+        <script src="./js/jquery-3.7.1.min.js"></script>
         <script src="./js/jquery-ui.min.js"></script>
         <script src="./js/jquery-ui-i18n.min.js"></script>
         <script src="./js/jquery.validate.js"></script>

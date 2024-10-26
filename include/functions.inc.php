@@ -1110,7 +1110,7 @@ function begin_page($title, $page = "with_session")
         $a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
 		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 			$a .= '<link rel="stylesheet" type="text/css" href="../themes/print/css/style.css" />'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/jquery-3.7.0.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jquery-ui.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jquery.validate.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
@@ -1154,7 +1154,7 @@ function begin_page($title, $page = "with_session")
 			$a .= '<link rel="stylesheet" type="text/css" href="include/admin_grr.css" />'.PHP_EOL;
 		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 			$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/jquery-3.7.0.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/jquery-3.7.1.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jquery-ui-i18n.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
@@ -5659,7 +5659,7 @@ function pageHead2($title, $page = "with_session")
         $a .= $types;
 		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 			$a .= '<link rel="stylesheet" type="text/css" href="../themes/print/css/style.css" />'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="../js/jquery-3.7.0.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jquery-ui.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jquery.validate.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="../js/jquery-ui-timepicker-addon.js"></script>'.PHP_EOL;
@@ -5707,7 +5707,7 @@ function pageHead2($title, $page = "with_session")
 			$a .= '<link rel="stylesheet" type="text/css" href="include/admin_grr.css" />'.PHP_EOL;
 		if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 			$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css" />'.PHP_EOL;
-		$a .= '<script type="text/javascript" src="js/jquery-3.7.0.min.js"></script>'.PHP_EOL;
+		$a .= '<script type="text/javascript" src="js/jquery-3.7.1.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jquery-ui.min.js"></script>'.PHP_EOL;
         $a .= '<script type="text/javascript" src="js/jquery-ui-i18n.min.js"></script>'.PHP_EOL;
 		$a .= '<script type="text/javascript" src="js/jquery.validate.js"></script>'.PHP_EOL;
