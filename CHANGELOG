@@ -2,8 +2,11 @@ Bugs connus sur la version de GitHub :
  - des problèmes se produisent parfois lorsqu'on veut faire une modification/copie de réservation avec un changement de domaine
 
 Tâches prévues :
+ - généralisation de l'utilisation de requêtes SQL préparées
  - modularisation de l'authentification
  - gestion des champs additionnels sur plusieurs domaines
+ - mise à jour des modules externes php et js
+ - évolution vers Bootstrap 5 ou w3.css
 
 -----
 --
@@ -14,8 +17,18 @@ Version 3.5.2RC0 : version en cours de développement, à utiliser en production
     ajout : possibilité d'afficher le formulaire de contact pour réservation dans la page de login
     ajout : possibilité d'afficher un sélecteur de date direct dans le menu gauche
     ajout : possibilité pour un gestionnaire de ressource de déclarer la ressource empruntée depuis la page de réservation
+    ajout : possibilité de définir une page d'accueil personnalisée
+    ajout : fonctionnalité Fichier joint, seuls les fichiers jpg, png, gif ou pdf sont acceptés en pièces jointes aux réservations
     amélioration : fonctionnalité de limitation des réservations sur un intervalle de temps
     amélioration : utilisation de requêtes SQL préparées
+    amélioration : affichage du site et du domaine dans le sélecteur de ressources
+    correctifs divers de code et vocabulaire
+    correctif : erreur d'ouverture de session dans le cas d'une authentification obligatoire
+    correctif : sécurité de l'URL
+    mise à jour jquery-UI en 1.14.0
+    mise à jour jquery en 3.7.1
+    modification : tri des réservations à modérer selon la date de début
+    modification : validation redirige vers view_entry
 
 -----
 --
@@ -76,7 +89,29 @@ Sous-version 3.5.1b
     correctifs : syntaxe bootstrap, html et php
     correctif : acceptation de plusieurs adresses mail pour le support technique et le webmestre
     modification : suppression d'appels directs à mysqli
-    
+Sous-version 3.5.1c
+    amélioration : fichiers de langue
+    correctif : module php requis
+    correctif : prise en charge des champs additionnels de type checkbox
+    correctif : un visiteur connecté avait accès à la page de gestion des utilisateurs
+    mise à jour : vacances.xml
+    modification : choix des jours particuliers, uniquement pertinent si les jours fériés ou de vacances sont activés
+    modification : acceptation des multi-destinataires dans les liens mailto
+Sous-version 3.5.1d
+    correctif : sécurisation de l'URL de redirection dans login.php
+    correctif : requête mal placée dans admin_maj.php
+    correctif : prise en charge des champs additionnels de type checkbox
+Sous-version 3.5.1e
+    correctif : accès des administrateurs de sites à la gestion des domaines
+    correctif : code javascript
+    correctif : affichage des réservations finissant le dernier jour du mois
+Sous-version 3.5.1f
+    amélioration : réduction des appels à mktime()
+    correctif : récupération de la constante CAS_VERSION
+    correctif : problème d'ouverture de session en cas d'identification obligatoire
+    correctif : arrondi implicite obsolète dans week.php
+    MAJ vacances scolaires France
+
 -----
 --
 -----

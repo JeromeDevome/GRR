@@ -1,5 +1,5 @@
 GRR
-version 3, a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7
+version 3.5.2 RC0, a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7
 ===================
 
 -------------------
@@ -57,10 +57,11 @@ Installation
 
 PHP : >= 5.6 && <= 8.2, nécessite au moins les modules php-fileinfo, php-gd, php-iconv, php-mbstring, php-mysqli, php-mysqlnd, php-xml (*)
 si vous utilisez php 8.1+, il faut soit inclure le module php-intl, soit désactiver les messages E_DEPRECATED
+l'utilisation d'une authentification CAS est incompatible avec php 8.2
 
 MySQL: > 5.4 && <= 5.6, compatibilité vraisemblable avec MySQL 5.7, compatible avec MariaDB 10+
 
-GRR v3.5.1 requiert moins de 20 MO d'espace disque pour les scripts.
+GRR v3.5.2 requiert moins de 20 MO d'espace disque pour les scripts.
 
 Pour obtenir une description complète de la procédure d'installation, veuillez vous reporter au fichier "**INSTALL.txt**", notamment pour régler les droits d'accès à certains fichiers ou dossiers.
 
