@@ -3,9 +3,9 @@
  * admin_purge_accounts.php
  * interface de purge des comptes et réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-03-13 11:44$
+ * Dernière modification : $Date: 2024-10-27 15:08$
  * @author    JeromeB & Laurent Delineau & Christian Daviau & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -56,16 +56,18 @@ if (isset($_POST['do_purge_table_liaison']))
             supprimerReservationsUtilisateursEXT("y","y");
         }
     }
+
+$themessage = str_replace ( "'"  , "\\'"  , get_vocab("admin_purge_accounts_confirm"));
+$themessage2 = str_replace ( "'"  , "\\'"  , get_vocab("admin_purge_accounts_confirm2"));
+$themessage3 = str_replace ( "'"  , "\\'"  , get_vocab("admin_purge_tables_confirm"));
+$themessage4 = str_replace ( "'"  , "\\'"  , get_vocab("admin_purge_accounts_confirm4"));
+
 // code HTML    
 start_page_w_header("", "", "", $type="with_session");
 // Affichage de la colonne de gauche
 include "admin_col_gauche2.php";
 // colonne de droite
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-$themessage = str_replace ( "'"  , "\\'"  , get_vocab("admin_purge_accounts_confirm"));
-$themessage2 = str_replace ( "'"  , "\\'"  , get_vocab("admin_purge_accounts_confirm2"));
-$themessage3 = str_replace ( "'"  , "\\'"  , get_vocab("admin_purge_tables_confirm"));
-$themessage4 = str_replace ( "'"  , "\\'"  , get_vocab("admin_purge_accounts_confirm4"));
 echo "<h2>".get_vocab('admin_purge_accounts.php')."</h2>";
 echo get_vocab('admin_clean_accounts_desc');
 echo "<div class='center'>\n
