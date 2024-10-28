@@ -2,7 +2,7 @@
 /**
  * mysql.inc.php
  * Bibliothèque de fonctions pour le support mysql
- * Dernière modification : $Date: 2024-02-17 16:00$
+ * Dernière modification : $Date: 2024-10-28 19:50$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -97,6 +97,33 @@ function grr_sql_query1($sql, $types = NULL, $params = NULL)
     try{
         if(($types == NULL)&&($params == NULL)){
             $res = mysqli_query($GLOBALS['db_c'], $sql);
+            if(($res->num_rows != 1)||($res->field_count != 1)||(($r = $res->fetch_row()[0]) == ""))
+              $r = -1;
+            mysqli_free_result($res);
+            return($r);
+        }
+        elseif(($types != NULL)&&($params != NULL)){
+            $stmt = $GLOBALS['db_c']->prepare($sql);
+            $stmt->bind_param($types, ...$params);
+            $stmt->execute();
+            $res = $stmt->get_result()->fetch_all(MYSQLI_NUM);
+            if((!$res)||(count($res) != 1))
+              $r = -1;
+            else 
+              $r = $res[0][0];
+            $stmt->close();
+            return($r);
+        }
+    } catch(Exception $e) {
+        error_log($e -> getMessage());
+        return -1;
+    }
+}
+/*function grr_sql_query1($sql, $types = NULL, $params = NULL)
+{
+    try{
+        if(($types == NULL)&&($params == NULL)){
+            $res = mysqli_query($GLOBALS['db_c'], $sql);
         }
         elseif(($types != NULL)&&($params != NULL)){
             $stmt = $GLOBALS['db_c']->prepare($sql);
@@ -113,7 +140,7 @@ function grr_sql_query1($sql, $types = NULL, $params = NULL)
         $r = -1;
     mysqli_free_result($res);
     return($r);
-}
+}*/
 /* Execute an SQL query. Returns a database-dependent result handle,
  * which should be passed back to grr_sql_row or grr_sql_row_keyed to get the results.
  * Returns 0 on error; use grr_sql_error to get the error message.
