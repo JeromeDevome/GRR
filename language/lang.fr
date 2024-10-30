@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2024-10-21
+# Last modification : 2024-10-29
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -124,7 +124,7 @@ $vocab['admin_right_admin_explain'] = "En plus de ses droits normaux, l'administ
 $vocab['admin_right_explain'] = "En plus de ses droits normaux, le gestionnaire d'une ressource a la possibilité de modifier ou supprimer n'importe quelle réservation de cette ressource. De plus les restrictions relatives au nombre maximum de réservations de la ressource ne s'appliquent pas.";
 $vocab['admin_room.php'] = "Domaines et ressources";
 $vocab['admin_site.php'] = "Sites";
-$vocab['admin_site_explications'] = "Un site correspond à la localisation géographique d'un domaine;";
+$vocab['admin_site_explications'] = "Un site correspond à la localisation géographique d'un domaine";
 $vocab['admin_type.php'] = "Types de réservation";
 $vocab['admin_type_explications'] = "Par défaut, lors de la création d'un nouveau type de réservations, celui-ci est commun à tous les domaines. Vous pouvez ensuite spécifier, pour chaque domaine, les types valides ou non.";
 $vocab['admin_type_modify_create.php'] = "Ajout d'un nouveau type de réservation";

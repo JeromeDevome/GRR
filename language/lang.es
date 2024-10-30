@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2024-10-21
+# Last modification : 2024-10-30
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -126,7 +126,7 @@ $vocab['admin_right_admin_explain'] = "Además de sus derechos normales, el admi
 $vocab['admin_right_explain'] = "Además de sus derechos normales, el gestor de un recurso tiene la posibilidad de modificar o suprimir cualquier reserva de este recurso. Además las restricciones relativas a las reservas maximales del recurso no se aplican.";
 $vocab['admin_room.php'] = "Ámbitos y recursos";
 $vocab['admin_site.php'] = "Sitios";
-$vocab['admin_site_explications'] = "Un sitio corresponde a la localización geográfica de un campo;";
+$vocab['admin_site_explications'] = "Un sitio corresponde a la localización geográfica de un campo";
 $vocab['admin_type.php'] = "Tipos de reserva ";
 $vocab['admin_type_explications'] = "Cuando se crea un nuevo tipo de reservas, este està común a todos los campos por defecto. Puede entonces especificar, para cada campo, los tipos válidos o no.";
 $vocab['admin_type_modify_create.php'] = "Añadido de un nuevo tipo de reserva ";
