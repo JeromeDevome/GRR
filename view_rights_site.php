@@ -3,7 +3,7 @@
  * view_rights_site.php
  * Liste des privilèges d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-22 14:50$
+ * Dernière modification : $Date: 2024-11-02 16:18$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -56,7 +56,7 @@ if ($res_admin)
 	foreach($res_admin as $row)
 	{
 		$is_admin .= $row["nom"]." ".$row["prenom"]." (".$row["login"].")<br />";
-		if ($row_admin[3] == 'inactif')
+		if ($row['etat'] == 'inactif')
 			$is_admin .= "<b> -> ".get_vocab("no_activ_user")."</b>";
 		$is_admin .= "<br />";
 	}

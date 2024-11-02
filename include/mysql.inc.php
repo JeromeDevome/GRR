@@ -2,7 +2,7 @@
 /**
  * mysql.inc.php
  * Bibliothèque de fonctions pour le support mysql
- * Dernière modification : $Date: 2024-10-28 19:50$
+ * Dernière modification : $Date: 2024-11-02 16:17$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -71,13 +71,15 @@ function grr_sql_command($sql, $types=NULL, $params=NULL)
             $stmt = $GLOBALS['db_c']->prepare($sql);
             $stmt->bind_param($types, ...$params);
             $stmt->execute();
+            $stmt->store_result();
             $nb = $stmt->affected_rows;
             $stmt->close();
         }
         else 
             return -1;  // pourra être amélioré avec php8.2+ où $types peut être omis
-    } catch(Exception $e) {
+    } catch(mysqli_sql_exception $e) {
         error_log($e -> getMessage());
+        $_SESSION['msg_a_afficher'] = $e -> getMessage();
         return -1;
     }
     return $nb;

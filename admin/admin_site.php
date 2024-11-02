@@ -3,7 +3,7 @@
  * admin_site.php
  * Interface d'accueil de Gestion des sites de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-30 11:42$
+ * Dernière modification : $Date: 2024-11-02 16:19$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -60,22 +60,19 @@ if($action == "create"){
     $save = '0';
   }
   elseif($save != '0'){ // enregistrement des données
-    /* $sql="INSERT INTO ".TABLE_PREFIX."_site (sitecode,sitename,adresse_ligne1,adresse_ligne2,adresse_ligne3,cp,ville,pays,tel,fax) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    $sql="INSERT INTO ".TABLE_PREFIX."_site (sitecode,sitename,adresse_ligne1,adresse_ligne2,adresse_ligne3,cp,ville,pays,tel,fax) VALUES (?,?,?,?,?,?,?,?,?,?)";
     $types = "ssssssssss";
     $params = [strtoupper(protect_data_sql($sitecode)),protect_data_sql($sitename),protect_data_sql($adresse_ligne1),protect_data_sql($adresse_ligne2),
     protect_data_sql($adresse_ligne3),protect_data_sql($cp),strtoupper(protect_data_sql($ville)),strtoupper(protect_data_sql($pays)),
-    protect_data_sql($tel),protect_data_sql($fax)]; */
-    $sql="INSERT INTO ".TABLE_PREFIX."_site (sitecode,sitename,adresse_ligne1,adresse_ligne2,adresse_ligne3,cp,ville,pays,tel,fax) 
-    VALUES ('".strtoupper(protect_data_sql($sitecode))."','".protect_data_sql($sitename)."','".protect_data_sql($adresse_ligne1)."','".protect_data_sql($adresse_ligne2)."','".protect_data_sql($adresse_ligne3)."','".protect_data_sql($cp)."','".strtoupper(protect_data_sql($ville))."','".strtoupper(protect_data_sql($pays))."','".protect_data_sql($tel)."','".protect_data_sql($fax)."')";
-    //if (grr_sql_command($sql,$types,$params) < 0){ // on traite les doublons dans sitecode, sitename
-    if (grr_sql_command($sql) < 0){
-      $err_sql = grr_sql_error();
+    protect_data_sql($tel),protect_data_sql($fax)];
+    if (grr_sql_command($sql,$types,$params) < 0){ // on traite les doublons dans sitecode, sitename
+      $err_sql = $_SESSION['msg_a_afficher'];
       if (!strstr($err_sql,"Duplicate entry")){
-          fatal_error(0,$sql.'<p>'.grr_sql_error().'</p>');
+          fatal_error(0,$sql.'<p>§'.grr_sql_error().'§</p>');
       }
       else {
         $save = '0';
-        $msg = get_vocab('duplicate_sitecode_name');
+        $_SESSION['msg_a_afficher'] = $msg = get_vocab('duplicate_sitecode_name');
         $action = 'read';
       }
     }
@@ -94,26 +91,20 @@ elseif($action == 'update'){
     $save = '0';
   }
   elseif($save != '0'){ // enregistrement des données
-    $sql = "UPDATE ".TABLE_PREFIX."_site
-            SET sitecode='".strtoupper(protect_data_sql($sitecode))."',
-            sitename='".protect_data_sql($sitename)."',
-            adresse_ligne1='".protect_data_sql($adresse_ligne1)."',
-            adresse_ligne2='".protect_data_sql($adresse_ligne2)."',
-            adresse_ligne3='".protect_data_sql($adresse_ligne3)."',
-            cp='".protect_data_sql($cp)."',
-            ville='".strtoupper(protect_data_sql($ville))."',
-            pays='".strtoupper(protect_data_sql($pays))."',
-            tel='".protect_data_sql($tel)."',
-            fax='".protect_data_sql($fax)."'
-            WHERE id='".$id_site."'";
-    if (grr_sql_command($sql) < 0){
-      $err_sql = grr_sql_error();
+    $sql = "UPDATE ".TABLE_PREFIX."_site SET sitecode=?,sitename=?,adresse_ligne1=?,adresse_ligne2=?,adresse_ligne3=?,cp=?,ville=?,pays=?,tel=?,fax=?
+            WHERE id=?";
+    $types = "ssssssssssi";
+    $params = [strtoupper(protect_data_sql($sitecode)),protect_data_sql($sitename),protect_data_sql($adresse_ligne1),protect_data_sql($adresse_ligne2),
+    protect_data_sql($adresse_ligne3),protect_data_sql($cp),strtoupper(protect_data_sql($ville)),strtoupper(protect_data_sql($pays)),
+    protect_data_sql($tel),protect_data_sql($fax),$id_site];
+    if (grr_sql_command($sql,$types,$params) < 0){
+      $err_sql = $_SESSION['msg_a_afficher'];
       if (!strstr($err_sql,"Duplicate entry")){
           fatal_error(0,$sql.'<p>'.grr_sql_error().'</p>');
       }
       else {
         $save = '0';
-        $msg = get_vocab('duplicate_sitecode_name');
+        $_SESSION['msg_a_afficher'] = $msg = get_vocab('duplicate_sitecode_name');
         $action = 'read';
       }
     }
