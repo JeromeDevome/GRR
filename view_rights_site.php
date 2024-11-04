@@ -3,7 +3,7 @@
  * view_rights_site.php
  * Liste des privilèges d'un site
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-11-02 16:18$
+ * Dernière modification : $Date: 2024-11-03 18:09$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -50,16 +50,16 @@ grr_sql_free($res);
 // on teste si des utilisateurs administrent le site
 $req_admin = "SELECT u.login, u.nom, u.prenom, u.etat FROM ".TABLE_PREFIX."_utilisateurs u left join ".TABLE_PREFIX."_j_useradmin_site j on u.login=j.login WHERE j.id_site =? ORDER BY u.nom, u.prenom";
 $res_admin = grr_sql_query($req_admin,"i",[$site_id]);
-$is_admin = '';
+$is_admin = array();
 if ($res_admin)
 {
 	foreach($res_admin as $row)
 	{
-		$is_admin .= $row["nom"]." ".$row["prenom"]." (".$row["login"].")<br />";
-		if ($row['etat'] == 'inactif')
+		$is_admin[$row['login']] = [$row["nom"],$row["prenom"],($row['etat'] == 'inactif')? get_vocab("no_activ_user"):''];
+/* 		if ($row['etat'] == 'inactif')
 			$is_admin .= "<b> -> ".get_vocab("no_activ_user")."</b>";
 		$is_admin .= "<br />";
-	}
+ */	}
 }
 else fatal_error(0, get_vocab('failed_to_acquire'));
 // code html
@@ -69,10 +69,15 @@ echo get_vocab("site").get_vocab("deux_points")." ".clean_input($Site["sitename"
 echo "</h3>";
 // On affiche pour les administrateurs les utilisateurs ayant des privilèges sur ce site
 echo "\n<h2>".get_vocab('utilisateurs_ayant_privileges_sur_site')."</h2>";
-if ($is_admin != '')
+if(count($is_admin) != 0)
 {
-	echo "\n<h3><b>".get_vocab("utilisateurs_administrateurs_site")."</b></h3>";
-	echo $is_admin;
+	echo "\n<h3>".get_vocab("utilisateurs_administrateurs_site")."</h3>";
+	foreach($is_admin as $key => $row){
+    echo $row[0]." ".$row[1]." (".$key.")";
+    if($row[2] != '')
+      echo "<b> -> ".$row[2]."</b>";
+    echo "<br/>";
+  }
 }
 else 
     echo "<p>".get_vocab('aucun_utilisateur').".</p>";
