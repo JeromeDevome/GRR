@@ -3,9 +3,9 @@
  * admin_type_modify.php
  * interface de création/modification des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-08-13 16:03$
+ * Dernière modification : $Date: 2024-11-03 19:06$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -23,12 +23,12 @@ $ok = NULL;
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 check_access(6, $back);
 // Initialisation
-$id_type = isset($_GET["id_type"]) ? $_GET["id_type"] : 0;
-$type_name = isset($_GET["type_name"]) ? $_GET["type_name"] : NULL;
-$order_display = isset($_GET["order_display"]) ? $_GET["order_display"] : NULL;
-$type_letter = isset($_GET["type_letter"]) ? $_GET["type_letter"] : NULL;
-$couleur_hexa = isset($_GET["couleurhexa"]) ? valid_color($_GET["couleurhexa"]) : NULL;
-$disponible = isset($_GET["disponible"]) ? $_GET["disponible"] : NULL;
+$id_type = isset($_GET["id_type"]) ? intval($_GET["id_type"]) : 0;
+$type_name = isset($_GET["type_name"]) ? clean_input($_GET["type_name"]) : NULL;
+$order_display = isset($_GET["order_display"]) ? intval($_GET["order_display"]) : NULL;
+$type_letter = isset($_GET["type_letter"]) ? clean_input($_GET["type_letter"]) : NULL;
+$couleur_hexa = isset($_GET["couleurhexa"]) ? valid_color($_GET["couleurhexa"]) : "#FFF";
+$disponible = isset($_GET["disponible"]) ? intval($_GET["disponible"]) : NULL;
 $couleurtexte = isset($_GET["couleurtexte"]) ? valid_color($_GET["couleurtexte"]) : "#000000";
 $msg = '';
 
@@ -85,27 +85,17 @@ if (isset($_GET['change_type']))
     if ($id_type > 0) // type existant : mise à jour
     {
         // Test sur $type_letter
-        $test = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$type_letter."' AND id!='".$id_type."'");
+        $test = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_type_area WHERE type_letter=? AND id!=?","si",[$type_letter,$id_type]);
         if ($test > 0)
             $msg = "Enregistrement impossible : Un type portant la même lettre existe déjà.";
         else
         {
-            $sql = "UPDATE ".TABLE_PREFIX."_type_area SET
-            type_name='".protect_data_sql($type_name)."',
-            order_display =";
-            if (is_numeric($order_display))
-                $sql.=intval($order_display).",";
-            else
-                $sql.=" 0,";
-            $sql.='type_letter="'.protect_data_sql($type_letter).'",';
-            $sql.='couleur=\'1\',';
-            $sql.='couleurhexa="'.protect_data_sql($couleur_hexa).'",';
-            $sql.='disponible="'.protect_data_sql($disponible).'",';
-            $sql.='couleurtexte="'.protect_data_sql($couleurtexte).'"';
-            $sql.=" WHERE id=$id_type";
-            if (grr_sql_command($sql) < 0)
+            $sql = "UPDATE ".TABLE_PREFIX."_type_area SET type_name=?, order_display =?, type_letter=?, couleur=?, couleurhexa=?, disponible=?, couleurtexte=? WHERE id=?";
+            $types = "sisssisi";
+            $params = [protect_data_sql($type_name),intval($order_display),protect_data_sql($type_letter),'1',protect_data_sql($couleur_hexa),intval($disponible),protect_data_sql($couleurtexte),intval($id_type)];
+            if (grr_sql_command($sql,$types,$params) < 0)
             {
-                fatal_error(0, get_vocab('update_type_failed') . grr_sql_error());
+                fatal_error(0, get_vocab('update_type_failed') . $_SESSION['msg_a_afficher']);
                 $ok = 'no';
             }
             else
@@ -115,26 +105,17 @@ if (isset($_GET['change_type']))
     else // nouveau type
     {
         // Test sur $type_letter
-        $test = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$type_letter."'");
+        $test = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_type_area WHERE type_letter=?","s",[protect_data_sql($type_letter)]);
         if ($test > 0)
             $msg = "Enregistrement impossible : Un type portant la même lettre existe déjà.";
         else
         {
-            $sql = "INSERT INTO ".TABLE_PREFIX."_type_area SET
-            type_name='".protect_data_sql($type_name)."',
-            order_display =";
-            if (is_numeric($order_display))
-                $sql.=intval($order_display).",";
-            else
-                $sql.=" 0,";
-            $sql.='type_letter="'.protect_data_sql($type_letter).'",';
-            $sql.='couleur=\'1\',';
-            $sql.='couleurhexa="'.protect_data_sql($couleur_hexa).'",';
-            $sql.='disponible="'.protect_data_sql($disponible).'",';
-            $sql.='couleurtexte="'.protect_data_sql($couleurtexte).'"';
-            if (grr_sql_command($sql) < 0)
+            $sql = "INSERT INTO ".TABLE_PREFIX."_type_area SET type_name=?, order_display =?, type_letter=?, couleur=?, couleurhexa=?, disponible=?, couleurtexte=? ";
+            $types = "sisssis";
+            $params = [protect_data_sql($type_name),intval($order_display),protect_data_sql($type_letter),'1',protect_data_sql($couleur_hexa),intval($disponible),protect_data_sql($couleurtexte)];
+            if (grr_sql_command($sql,$types,$params) < 0)
             {
-                fatal_error(1, "<p>" . grr_sql_error().$sql);
+                fatal_error(0, $_SESSION['msg_a_afficher']);
                 $ok = 'no';
             }
             else
@@ -142,32 +123,7 @@ if (isset($_GET['change_type']))
         }
     }
 }
-// enregistrement des couleurs dans la feuille de style
-/* n'est plus utilisé
-if ((isset($_GET['change_type'])) && (!isset($ok)))
-{
-    try {
-        $fich=fopen("../themes/default/css/types.css","w+"); // première écriture
-        fwrite($fich,"/* fichier de style reprenant les paramètres des types de réservation *//*");
-        fclose($fich);
-        $sql = "SELECT type_letter,couleurhexa,couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE 1";
-        $res = grr_sql_query($sql);
-        $fich=fopen("../themes/default/css/types.css","a+");
-        for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-        {
-            fwrite($fich," 
-td.type".$row[0]."{background:".$row[1]." !important;color:".$row[2]." !important;}
-td.type".$row[0]." a.lienCellule{color:".$row[2]." !important;}
-");
-        }
-        fclose($fich);
-    }
-    catch (Exception $e) {
-        echo 'Exception reçue : ',  $e->getMessage(), "\n";
-        $ok = 'no';
-        die();
-    }
-}*/
+
 // Si pas de problème, retour à la page d'accueil après enregistrement
 if ((isset($_GET['change_done'])) && (!isset($ok)))
 {
@@ -178,7 +134,7 @@ if ((isset($_GET['change_done'])) && (!isset($ok)))
 // les attributs du type à modifier
 if ((isset($id_type)) && ($id_type > 0))
 {
-    $res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_type_area WHERE id=$id_type");
+    $res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_type_area WHERE id=?","i",[$id_type]);
     if (!$res)
         fatal_error(0, get_vocab('message_records_error'));
     $row = grr_sql_row_keyed($res, 0);
@@ -213,7 +169,7 @@ else
     $row["order_display"]  = 0;
     $row["disponible"]  = 2;
     $row["couleur"]  = '';
-    $row["couleurhexa"] = '';
+    $row["couleurhexa"] = '#FFFFFF';
     $row["couleurtexte"] = "#000000";
     echo "<h2>".get_vocab('admin_type_modify_create.php')."</h2>";
 }
@@ -292,9 +248,9 @@ echo "<table class='table-bordered'>\n";
     echo "</tr></table>\n";
     echo "<br />";
     echo "<div class='center'>\n";
-    echo "<input type=\"submit\" name=\"change_type\"  value=\"".get_vocab("save")."\" />";
-    echo "<input type=\"submit\" name=\"change_done\" value=\"".get_vocab("back")."\" />";
-    echo "<input type=\"submit\" name=\"change_type_and_back\" value=\"".get_vocab("save_and_back")."\" />";
+    echo "<input class=\"btn btn-primary\" type=\"submit\" name=\"change_type\"  value=\"".get_vocab("save")."\" />&nbsp;";
+    echo "<input class=\"btn btn-primary\" type=\"submit\" name=\"change_done\" value=\"".get_vocab("back")."\" />&nbsp;";
+    echo "<input class=\"btn btn-primary\" type=\"submit\" name=\"change_type_and_back\" value=\"".get_vocab("save_and_back")."\" />";
     echo "</div>";
 echo '</form>';
 echo '</div>';
