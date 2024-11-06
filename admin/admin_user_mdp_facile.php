@@ -2,9 +2,9 @@
 /**
  * admin_user_mdp_facile.php
  * interface de gestion des utilisateurs de l'application GRR
- * Dernière modification : $Date: 2023-08-17 17:23$
+ * Dernière modification : $Date: 2024-11-06 11:17$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -24,8 +24,8 @@ $order_by = isset($_GET["order_by"]) ? $_GET["order_by"] : 'nom,prenom';
 $msg = '';
 if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1,'user') != 1))
 {
-	showAccessDenied($back);
-	exit();
+  showAccessDenied($back);
+  exit();
 }
 // liste de base des mots de passe faciles
 $liste_mdp = array("azerty", "", "123456", "1234567", "12345678", "0123456789", "000000", "00000000", "admin","azertyui","azertyuiop","grr","administrateur","administrator");
@@ -36,79 +36,75 @@ $sql = "SELECT nom, prenom, statut, login, email, etat, source, password FROM ".
 $res = grr_sql_query($sql);
 if ($res)
 {
-	foreach($res as $row)
-	{
-		// on ajoute à $mdpFacile : login, login en majuscule, login en minuscule, adresse mail
-        $mdpPerso = array();
-        $mdpPerso[] = $row['login'];
-		$mdpPerso[] = strtoupper($row['login']);
-        $mdpPerso[] = strtolower($row['login']);
-        $mdpPerso[] = $row['email'];
-        $mdpFacile = $liste_mdp + $mdpPerso;
-        $test = FALSE;
-        foreach($mdpFacile as $mdp){
-            if(!$test){
-                $test = password_verify($mdp,$row['password']);
-            }
-            if(!$test){
-                $test = (md5($mdp) == $row['password']);
-            }
-            if($test)
-                break;
+  foreach($res as $row)
+  {
+    $user_etat = $row['etat'];
+    if (($user_etat == 'actif') && (($display == 'tous') || ($display == 'actifs')))
+      $affiche = TRUE;
+    else if (($user_etat != 'actif') && (($display == 'tous') || ($display == 'inactifs')))
+      $affiche = TRUE;
+    else
+      $affiche = FALSE;
+    if ($affiche){// les calculs étant lourds, on ne les fait que pour les utilisateurs à afficher
+      // on ajoute à $mdpFacile : login, login en majuscule, login en minuscule, adresse mail
+      $mdpPerso = array();
+      $mdpPerso[] = $row['login'];
+      $mdpPerso[] = strtoupper($row['login']);
+      $mdpPerso[] = strtolower($row['login']);
+      $mdpPerso[] = $row['email'];
+      $mdpFacile = $liste_mdp + $mdpPerso;
+      $test = FALSE;
+      foreach($mdpFacile as $mdp){
+          if(!$test){
+              $test = password_verify($mdp,$row['password']);
+          }
+          if(!$test){
+              $test = (md5($mdp) == $row['password']);
+          }
+          if($test)
+              break;
+      }
+      if($test){
+        $user_nom = htmlspecialchars($row['nom']);
+        $user_prenom = htmlspecialchars($row['prenom']);
+        $user_statut = $row['statut'];
+        $user_login = $row['login'];
+        $user_source = $row['source'];
+        // Affichage du statut
+        if ($user_statut == "administrateur"){
+          $color = 'style_admin';
+          $user_statut_text = get_vocab("statut_administrator");
         }
-    	if($test){
-			$user_nom = htmlspecialchars($row['nom']);
-			$user_prenom = htmlspecialchars($row['prenom']);
-			$user_statut = $row['statut'];
-			$user_login = $row['login'];
-			$user_etat = $row['etat'];
-			$user_source = $row['source'];
-			if (($user_etat == 'actif') && (($display == 'tous') || ($display == 'actifs')))
-				$affiche = TRUE;
-			else if (($user_etat != 'actif') && (($display == 'tous') || ($display == 'inactifs')))
-				$affiche = TRUE;
-			else
-				$affiche = FALSE;
-			if ($affiche)
-			{
-                // Affichage du statut
-				if ($user_statut == "administrateur")
-				{
-					$color = 'style_admin';
-					$user_statut_text = get_vocab("statut_administrator");
-				}
-				if ($user_statut == "visiteur")
-				{
-					$color = 'style_visiteur';
-					$user_statut_text = get_vocab("statut_visitor");
-				}
-				if ($user_statut == "utilisateur")
-				{
-					$color = 'style_utilisateur';
-					$user_statut_text = get_vocab("statut_user");
-				}
-				if ($user_statut == "gestionnaire_utilisateur")
-				{
-					$color = 'style_gestionnaire_utilisateur';
-					$user_statut_text = get_vocab("statut_user_administrator");
-				}
-				if ($user_etat == 'actif'){
-                    $fond = 'fond1';
-                    $user_etat_text = get_vocab('activ_user');
-                }
-				else{
-                    $fond = 'fond2';
-                    $user_etat_text = get_vocab('no_activ_user');
-                }
-				// un gestionnaire d'utilisateurs ne peut pas modifier un administrateur général ou un gestionnaire d'utilisateurs
-				if ((authGetUserLevel(getUserName(), -1, 'user') ==  1) && (($user_statut == "gestionnaire_utilisateur") || ($user_statut == "administrateur")))
-					$lien_modifier = '';
-				else
-					$lien_modifier = "<a href=\"admin_user_modify.php?user_login=".urlencode($user_login)."&amp;display=$display\"><span class='glyphicon glyphicon-edit'></span></a>";
-                $data[] = array($user_login,$user_nom." ".$user_prenom,$user_statut_text,$color,$user_etat_text,$fond,$lien_modifier);
-			}
-		}
-	}
+        if ($user_statut == "visiteur"){
+          $color = 'style_visiteur';
+          $user_statut_text = get_vocab("statut_visitor");
+        }
+        if ($user_statut == "utilisateur"){
+          $color = 'style_utilisateur';
+          $user_statut_text = get_vocab("statut_user");
+        }
+        if ($user_statut == "gestionnaire_utilisateur"){
+          $color = 'style_gestionnaire_utilisateur';
+          $user_statut_text = get_vocab("statut_user_administrator");
+        }
+        if ($user_etat == 'actif'){
+          $fond = 'fond1';
+          $user_etat_text = get_vocab('activ_user');
+        }
+        else{
+          $fond = 'fond2';
+          $user_etat_text = get_vocab('no_activ_user');
+        }
+        // un gestionnaire d'utilisateurs ne peut pas modifier un administrateur général ou un gestionnaire d'utilisateurs
+        if ((authGetUserLevel(getUserName(), -1, 'user') ==  1) && (($user_statut == "gestionnaire_utilisateur") || ($user_statut == "administrateur")))
+          $lien_modifier = '';
+        else
+          $lien_modifier = "<a href=\"admin_user_modify.php?user_login=".urlencode($user_login)."&amp;display=$display\"><span class='glyphicon glyphicon-edit'></span></a>";
+        $data[] = array($user_login,$user_nom." ".$user_prenom,$user_statut_text,$color,$user_etat_text,$fond,$lien_modifier);
+
+      }
+    }
+  }
 }
 
 // code HTML
@@ -126,7 +122,7 @@ echo "<div class='row'>\n";
 echo "<div class='col col-xs-3'><input type=\"submit\" value=\"".get_vocab('goto').get_vocab('deux_points')."\" /></div>";
 echo "<div class='col col-xs-3'><input type=\"radio\" name=\"display\" value=\"tous\"";
 if ($display == 'tous')
-	echo " checked=\"checked\"";
+  echo " checked=\"checked\"";
 echo " />".get_vocab("display_all_user.php")."</div>";
 echo '<div class="col col-xs-3"><input type="radio" name="display" value="actifs" ';
 if ($display == 'actifs') {echo " checked=\"checked\"";}
@@ -137,7 +133,7 @@ echo ' />'.get_vocab("display_user_off.php").'</div>';
 echo '</div>
 <input type="hidden" name="order_by" value="'.$order_by.'" />
 </form>';
-    
+
 if(count($data) != 0) // qqch à afficher ?
 {
     echo "<table class='table table-striped table-bordered'>";

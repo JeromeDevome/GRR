@@ -3,7 +3,7 @@
  * admin_user.php
  * interface de gestion des utilisateurs de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-11-04 17:27$
+ * Dernière modification : $Date: 2024-11-06 10:53$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -22,7 +22,7 @@ include "../include/admin.inc.php";
 $user_id = getUserName();
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 $display = isset($_GET["display"]) ? $_GET["display"] : NULL;
-$order_by = isset($_GET["order_by"]) ? $_GET["order_by"] : NULL;
+$order_by = isset($_GET["order_by"]) ? clean_input($_GET["order_by"]) : NULL;
 $msg = '';
 if ((authGetUserLevel($user_id, -1) < 6) && (authGetUserLevel($user_id, -1,'user') != 1))
 {
@@ -215,19 +215,19 @@ if ((isset($_GET['action_del'])) and ($_GET['js_confirmed'] == 1))
 	if (($temp != $user_id) && ($can_delete == "yes"))
 	{
 		$temp = str_replace('\\', '\\\\', $temp);
-		$sql = "DELETE FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$temp'";
-		if (grr_sql_command($sql) < 0)
+		$sql = "DELETE FROM ".TABLE_PREFIX."_utilisateurs WHERE login=?";
+		if (grr_sql_command($sql,"s",[$temp]) < 0)
 		{
-			fatal_error(1, "<p>" . grr_sql_error());
+			fatal_error(1, "<p>" . $_SESSION['display_msg']);
 		}
 		else
 		{
-			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_mailuser_room WHERE login='$temp'");
-			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE login='$temp'");
-			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE login='$temp'");
-            grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_userbook_room WHERE login='$temp'");
-			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='$temp'");
-			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='$temp'");
+			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_mailuser_room WHERE login=?","s",[$temp]);
+			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE login=?","s",[$temp]);
+			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE login=?","s",[$temp]);
+      grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_userbook_room WHERE login=?","s",[$temp]);
+			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login=?","s",[$temp]);
+			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login=?","s",[$temp]);
 			$msg=get_vocab("del_user_succeed");
 		}
 	}
@@ -276,26 +276,26 @@ if ($res)
       // On teste si l'utilisateur administre un site
         $test_admin_site = grr_sql_query1("SELECT count(s.id) FROM ".TABLE_PREFIX."_site s
           left join ".TABLE_PREFIX."_j_useradmin_site j on s.id=j.id_site
-          WHERE j.login = '".$row['login']."'");
+          WHERE j.login =? ","s",[$row['login']]);
         if (($test_admin_site > 0) || ($user_statut == 'administrateur'))
           $privileges .= "S";
       }
       // On teste si l'utilisateur administre un domaine
       $test_admin = grr_sql_query1("SELECT count(a.area_name) FROM ".TABLE_PREFIX."_area a
         left join ".TABLE_PREFIX."_j_useradmin_area j on a.id=j.id_area
-        WHERE j.login = '".$row['login']."'");
+        WHERE j.login =? ","s",[$row['login']]);
       if (($test_admin > 0) or ($user_statut== 'administrateur'))
         $privileges .= " A";
     // Si le domaine est restreint, on teste si l'utilisateur a accès
       $test_restreint = grr_sql_query1("SELECT count(a.area_name) FROM ".TABLE_PREFIX."_area a
         left join ".TABLE_PREFIX."_j_user_area j on a.id = j.id_area
-        WHERE j.login = '".$row['login']."'");
+        WHERE j.login =? ","s",[$row['login']]);
       if (($test_restreint > 0) or ($user_statut == 'administrateur'))
         $privileges .= " R";
     // On teste si l'utilisateur administre une ressource
       $test_room = grr_sql_query1("SELECT count(r.room_name) FROM ".TABLE_PREFIX."_room r
         left join ".TABLE_PREFIX."_j_user_room j on r.id=j.id_room
-        WHERE j.login = '".$row['login']."'");
+        WHERE j.login =? ","s",[$row['login']]);
       if (($test_room > 0) or ($user_statut == 'administrateur'))
         $privileges .= " G";
     // On teste si l'utilisateur gère les utilisateurs
@@ -304,7 +304,7 @@ if ($res)
     // On teste si l'utilisateur reçoit des mails automatiques
       $test_mail = grr_sql_query1("SELECT count(r.room_name) FROM ".TABLE_PREFIX."_room r
         left join ".TABLE_PREFIX."_j_mailuser_room j on r.id=j.id_room
-        WHERE j.login = '".$row['login']."'");
+        WHERE j.login =? ","s",[$row['login']]);
       if ($test_mail > 0)
         $privileges .= " E";
       // source
