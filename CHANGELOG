@@ -1,3 +1,14 @@
+Version 4.3.8 - 09/11/2024 Généré par @JeromeDevome
+[Correction] Selection demande de compte - c6368752 - @ynaessens
+[Correction] Champ manquant - ea10d530 - @ynaessens
+[Correction] Numéro de version BDD lors de l'installation - a8221546 - @JeromeDevome
+[Correction] Création de compte si valeur defaut null - 78b0e701 - @JeromeDevome
+[Correction] Liste déroulante des zones pour les vacances scolaires - 168bc3a2 - @sdelcroix
+[Correction] Masquer la description complète - 97a1521f - @JeromeDevome
+[Correction] Message : Deux reservations ont le même ID lors d'une base corrompue - 97a1521f - @jfsenechal
+[Modification] Uptade symfony, twig, tcpdf - a8221546 - @JeromeDevome
+
+
 Version 4.3.7 - 13/10/2024 Généré par @JeromeDevome
 [Ajout] Demande de compte, choix : Login = E-Mail - ed1c288f - @JeromeDevome
 [Ajout] Warning dans la gestion des email si envois de mail désactivé - 990215d6 - @JeromeDevome
