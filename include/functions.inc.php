@@ -2788,7 +2788,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		if (!$res)
 			fatal_error(0, grr_sql_error());
 		$test = grr_sql_count($res);
-		if ($test != 1)
+		if ($test > 1)
 			fatal_error(0, "Deux reservations ont le même ID.");
 		else
 		{
