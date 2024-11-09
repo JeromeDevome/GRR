@@ -879,10 +879,12 @@ echo '<label for="name">'.$Booker.'</label>'.PHP_EOL;
 echo '<input class="form-control" id="name" name="name" maxlength="80" size="60" autocomplete="on" value="'.$C.'" />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
 // description complète
-echo '<div>'.PHP_EOL;
-echo '<label for="description">'.$D.'</label>'.PHP_EOL;
-echo '<textarea id="description" name="description" class="form-control" rows="4">'.$E.'</textarea>'.PHP_EOL;
-echo '</div>'.PHP_EOL;
+if (Settings::get("remplissage_description_complete") != '2'){
+    echo '<div>'.PHP_EOL;
+    echo '<label for="description">'.$D.'</label>'.PHP_EOL;
+    echo '<textarea id="description" name="description" class="form-control" rows="4">'.$E.'</textarea>'.PHP_EOL;
+    echo '</div>'.PHP_EOL;
+}
 // date et heure de début
 echo '<div class="E form-inline"><b>'.$date_debut.'</b>'.PHP_EOL;
 echo '<div class="form-group">'.PHP_EOL;
