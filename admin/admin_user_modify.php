@@ -3,9 +3,9 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-10-17 18:30$
+ * Dernière modification : $Date: 2024-11-14 14:54$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -20,15 +20,19 @@ $grr_script_name = "admin_user_modify.php";
 include "../include/admin.inc.php";
 
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
-if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+
+$user_id = getUserName();
+if ((authGetUserLevel($user_id, -1) < 6) && (authGetUserLevel($user_id, -1, 'user') !=  1))
 {
 	showAccessDenied($back);
 	exit();
 }
+unset($user_login);
+$user_login = getFormVar("user_login","string");
 // un gestionnaire d'utilisateurs ne peut pas modifier un administrateur général ou un gestionnaire d'utilisateurs
-if (isset($_GET["user_login"]) && (authGetUserLevel(getUserName(),-1,'user') ==  1))
+if (isset($user_login) && (authGetUserLevel($user_id,-1,'user') ==  1))
 {
-	$test_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".$_GET["user_login"]."'");
+	$test_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login=?","s",[$user_login]);
 	if (($test_statut == "administrateur") or ($test_statut == "gestionnaire_utilisateur"))
 	{
 		showAccessDenied($back);
@@ -36,13 +40,12 @@ if (isset($_GET["user_login"]) && (authGetUserLevel(getUserName(),-1,'user') == 
 	}
 }
 $msg = '';
-unset($user_login);
-$user_login = getFormVar("user_login","string");//isset($_GET["user_login"]) ? $_GET["user_login"] : NULL;
+
 $test_login = ($user_login != NULL)? preg_replace("/([A-Za-z0-9_@. -])/","",$user_login):$user_login;
 if ($test_login != ""){
     $user_login = "";
     $msg = 'login incorrect';} // le login passé en paramètre est non valide, on le vide et on modifie le message
-$valid = getFormVar("valid");//isset($_GET["valid"]) ? $_GET["valid"] : NULL;
+$valid = getFormVar("valid");
 $msg = '';
 $utilisateur = array();
 $utilisateur['nom'] = '';
@@ -51,27 +54,27 @@ $utilisateur['email'] = '';
 $utilisateur['statut'] = '';
 $utilisateur['source'] = 'local';
 $utilisateur['etat'] = '';
-$display = "";
+$display = getFormVar("display","string","");
 $retry = '';
 if ($valid == "yes")
 {
     // Restriction dans le cas d'une démo
     VerifyModeDemo();
-    $reg_nom = getFormVar("reg_nom","string");//isset($_GET["reg_nom"]) ? $_GET["reg_nom"] : NULL;
-    $reg_prenom = getFormVar("reg_prenom","string");//isset($_GET["reg_prenom"]) ? $_GET["reg_prenom"] : NULL;
-    $new_login = getFormVar("new_login","string");//isset($_GET["new_login"]) ? $_GET["new_login"] : NULL;
-    $reg_password = getFormVar("reg_password");//isset($_GET["reg_password"]) ? unslashes($_GET["reg_password"]) : NULL;
+    $reg_nom = getFormVar("reg_nom","string");
+    $reg_prenom = getFormVar("reg_prenom","string");
+    $new_login = getFormVar("new_login","string");
+    $reg_password = getFormVar("reg_password");
     if (isset($reg_password)) 
         $reg_password = unslashes($reg_password);
-    $reg_password2 = getFormVar("reg_password2","string");//isset($_GET["reg_password2"]) ? unslashes($_GET["reg_password2"]) : NULL;
+    $reg_password2 = getFormVar("reg_password2","string");
     if (isset($reg_password2)) 
         $reg_password = unslashes($reg_password2);
-    $reg_changepwd = getFormVar("reg_changepwd","string",0);//isset($_GET["reg_changepwd"]) ? $_GET["reg_changepwd"] : 0;
-    $reg_statut = getFormVar("reg_statut","string");//isset($_GET["reg_statut"]) ? $_GET["reg_statut"] : NULL;
-    $reg_email = getFormVar("reg_email","string");//isset($_GET["reg_email"]) ? $_GET["reg_email"] : NULL;
-    $reg_etat = getFormVar("reg_etat","string");//isset($_GET["reg_etat"]) ? $_GET["reg_etat"] : NULL;
-    $reg_source = getFormVar("reg_source","string");//isset($_GET["reg_source"]) ? $_GET["reg_source"] : NULL;
-    $reg_type_authentification = getFormVar("type_authentification","string","locale");//isset($_GET["type_authentification"]) ? $_GET["type_authentification"] : "locale";
+    $reg_changepwd = getFormVar("reg_changepwd","string",0);
+    $reg_statut = getFormVar("reg_statut","string");
+    $reg_email = getFormVar("reg_email","string");
+    $reg_etat = getFormVar("reg_etat","string");
+    $reg_source = getFormVar("reg_source","string");
+    $reg_type_authentification = getFormVar("type_authentification","string","locale");
     if ($reg_type_authentification != "locale")
         $reg_password = "";
     if (($reg_nom == '') || ($reg_prenom == ''))
@@ -86,7 +89,7 @@ if ($valid == "yes")
         {
             // un gestionnaire d'utilisateurs ne peut pas créer un administrateur général ou un gestionnaire d'utilisateurs
             $test_statut = TRUE;
-            if (authGetUserLevel(getUserName(),-1) < 6)
+            if (authGetUserLevel($user_id,-1) < 6)
             {
                 if (($reg_statut == "administrateur") || ($reg_statut == "gestionnaire_utilisateur"))
                     $test_statut = FALSE;
@@ -116,9 +119,8 @@ if ($valid == "yes")
             }
             else
             {
-                $sql = "SELECT * FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$new_login."'";
-                $res = grr_sql_query($sql);
-                $nombreligne = grr_sql_count ($res);
+                $sql = "SELECT COUNT(*) FROM ".TABLE_PREFIX."_utilisateurs WHERE login =?";
+                $nombreligne = grr_sql_query1($sql,"s",[protect_data_sql($new_login)]);
                 if ($nombreligne != 0)
                 {
                     $msg = get_vocab("error_exist_login");
@@ -126,28 +128,17 @@ if ($valid == "yes")
                 }
                 else
                 {
-                    $sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET
-                    nom='".protect_data_sql($reg_nom)."',
-                    prenom='".protect_data_sql($reg_prenom)."',
-                    login='".protect_data_sql($new_login)."',
-                    password='".protect_data_sql($reg_password_c)."',
-                    changepwd='".protect_data_sql($reg_changepwd)."',
-                    statut='".protect_data_sql($reg_statut)."',
-                    email='".protect_data_sql($reg_email)."',
-                    etat='".protect_data_sql($reg_etat)."',
-                    default_site = '0',
-                    default_area = '0',
-                    default_room = '0',
-                    default_style = '',
-                    default_list_type = '',
-                    default_language = 'fr',";
+                    $sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET nom=?,prenom=?,login=?,password=?,changepwd=?,statut=?,email=?,etat=?,
+                    default_site = '0',default_area = '0',default_room = '0',default_style = '',default_list_type = '',default_language = 'fr',";
+                    $types = "ssssisss";
+                    $params = [protect_data_sql($reg_nom),protect_data_sql($reg_prenom),protect_data_sql($new_login),protect_data_sql($reg_password_c),$reg_changepwd,protect_data_sql($reg_statut),protect_data_sql($reg_email),protect_data_sql($reg_etat)];
                     if ($reg_type_authentification=="locale")
                         $sql .= "source='local'";
                     else
                         $sql .= "source='ext'";
-                    if (grr_sql_command($sql) < 0)
+                    if (grr_sql_command($sql,$types,$params) < 0)
                     {
-                        fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
+                        fatal_error(0, get_vocab("msg_login_created_error") . $_SESSION["msg_a_afficher"]);
                     }
                     else
                     {
@@ -162,9 +153,9 @@ if ($valid == "yes")
         {
             // un gestionnaire d'utilisateurs ne peut pas modifier un administrateur général ou un gestionnaire d'utilisateurs
             $test_statut = TRUE;
-            if (authGetUserLevel(getUserName(),-1) < 6)
+            if (authGetUserLevel($user_id,-1) < 6)
             {
-                $old_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".protect_data_sql($user_login)."'");
+                $old_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login=?","s",[protect_data_sql($user_login)]);
                 if (((($old_statut == "administrateur") || ($old_statut == "gestionnaire_utilisateur")) && ($old_statut != $reg_statut))
                     || ((($old_statut == "utilisateur") || ($old_statut == "visiteur")) && (($reg_statut == "administrateur") || ($reg_statut == "gestionnaire_utilisateur"))))
                     $test_statut = FALSE;
@@ -179,7 +170,7 @@ if ($valid == "yes")
                 // On demande un changement de la source ext->local
                 if (($reg_password == '') && ($reg_password2 == ''))
                 {
-                    $old_mdp = grr_sql_query1("SELECT password FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".protect_data_sql($user_login)."'");
+                    $old_mdp = grr_sql_query1("SELECT password FROM ".TABLE_PREFIX."_utilisateurs WHERE login=?","s",[protect_data_sql($user_login)]);
                     if (($old_mdp == '') || ($old_mdp == -1))
                     {
                         $msg = get_vocab("passwd_error");
@@ -293,7 +284,7 @@ if ($valid == "yes")
 // On appelle les informations de l'utilisateur pour les afficher :
 if (isset($user_login) && ($user_login != ''))
 {
-    $res = grr_sql_query("SELECT nom, prenom, statut, etat, email, source, changepwd FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$user_login'");
+    $res = grr_sql_query("SELECT nom, prenom, statut, etat, email, source, changepwd FROM ".TABLE_PREFIX."_utilisateurs WHERE login=?","s",[protect_data_sql($user_login)]);
     if (!$res)
         fatal_error(0, get_vocab('message_records_error'));
     $utilisateur = grr_sql_row_keyed($res, 0);
@@ -301,135 +292,89 @@ if (isset($user_login) && ($user_login != ''))
     $flag_is_local = $utilisateur['source']=="local";
 }
 // Privilèges
-$html_privileges ='';
+$html_privileges = '';
+
+$privileges = array('site'=>array(),'area'=>array());
 if ((isset($user_login)) && ($user_login != ''))
 {
-    $html_privileges .= "<h2>".get_vocab('liste_privileges').$utilisateur['prenom']." ".$utilisateur['nom']." :</h2>";
-    $a_privileges = 'n';
+  if($utilisateur["statut"] != "administrateur"){
     if (Settings::get("module_multisite") == "Oui")
     {
-        $req_site = "SELECT id, sitename FROM ".TABLE_PREFIX."_site ORDER BY sitename";
-        $res_site = grr_sql_query($req_site);
-        if ($res_site)
-        {
-            for ($i = 0; ($row_site = grr_sql_row($res_site, $i)); $i++)
-            {
-                $test_admin_site = grr_sql_query1("SELECT count(id_site) FROM ".TABLE_PREFIX."_j_useradmin_site j where j.login = '".$user_login."' and j.id_site='".$row_site[0]."'");
-                if ($test_admin_site >= 1)
-                {
-                    $a_privileges = 'y';
-                    $html_privileges .= "<h3>".get_vocab("site").get_vocab("deux_points").$row_site[1]."</h3>";
-                    $html_privileges .= "<ul>";
-                    $html_privileges .= "<li><b>".get_vocab("administrateur du site")."</b></li>";
-                    $html_privileges .= "</ul>";
-                }
+        $req_site = "SELECT id, sitename FROM ".TABLE_PREFIX."_site s JOIN ".TABLE_PREFIX."_j_useradmin_site j ON s.id = j.id_site WHERE j.login = ? ORDER BY sitename";
+        $res_site = grr_sql_query($req_site,"s",[protect_data_sql($user_login)]);
+        if ($res_site){
+            foreach($res_site as $row){
+              $privileges['site'][] = $row;
             }
         }
+        else 
+          fatal_error(0,grr_sql_error());
     }
-    $req_area = "SELECT id, area_name, access FROM ".TABLE_PREFIX."_area ORDER BY order_display";
-    $res_area = grr_sql_query($req_area);
-    if ($res_area)
-    {
-        for ($i = 0; ($row_area = grr_sql_row($res_area, $i)); $i++)
-        {
-            $test_admin = grr_sql_query1("SELECT count(id_area) FROM ".TABLE_PREFIX."_j_useradmin_area j where j.login = '".$user_login."' and j.id_area='".$row_area[0]."'");
-            if ($test_admin >= 1)
-                $is_admin = 'y';
-            else
-                $is_admin = 'n';
-            $nb_room = grr_sql_query1("SELECT count(r.room_name) FROM ".TABLE_PREFIX."_room r
-                left join ".TABLE_PREFIX."_area a on r.area_id=a.id
-                where a.id='".$row_area[0]."'");
-            $req_room = "SELECT r.room_name FROM ".TABLE_PREFIX."_room r
-            left join ".TABLE_PREFIX."_j_user_room j on r.id=j.id_room
-            left join ".TABLE_PREFIX."_area a on r.area_id=a.id
-            where j.login = '".$user_login."' and a.id='".$row_area[0]."'";
-            $res_room = grr_sql_query($req_room);
-            $is_gestionnaire = '';
-            if ($res_room)
-            {
-                if ((grr_sql_count($res_room) == $nb_room) && ($nb_room != 0))
-                    $is_gestionnaire = $vocab["all_rooms"];
-                else
-                {
-                    for ($j = 0; ($row_room = grr_sql_row($res_room, $j)); $j++)
-                    {
-                        $is_gestionnaire .= $row_room[0]."<br />";
-                    }
-                }
-            }
-            $req_mail = "SELECT r.room_name from ".TABLE_PREFIX."_room r
-            left join ".TABLE_PREFIX."_j_mailuser_room j on r.id=j.id_room
-            left join ".TABLE_PREFIX."_area a on r.area_id=a.id
-            where j.login = '".$user_login."' and a.id='".$row_area[0]."'";
-            $res_mail = grr_sql_query($req_mail);
-            $is_mail = '';
-            if ($res_mail)
-            {
-                for ($j = 0; ($row_mail = grr_sql_row($res_mail, $j)); $j++)
-                {
-                    $is_mail .= $row_mail[0]."<br />";
-                }
-            }
-            if ($row_area[2] == 'r')
-            {
-                $test_restreint = grr_sql_query1("SELECT count(id_area) from ".TABLE_PREFIX."_j_user_area j where j.login = '".$user_login."' and j.id_area='".$row_area[0]."'");
-                if ($test_restreint >= 1)
-                    $is_restreint = 'y';
-                else
-                    $is_restreint = 'n';
-            }
-            else
-                $is_restreint = 'n';
-            if (($is_admin == 'y') || ($is_restreint == 'y') || ($is_gestionnaire != '') || ($is_mail != ''))
-            {
-                $a_privileges = 'y';
-                $html_privileges .= "<h3>".get_vocab("match_area").get_vocab("deux_points").$row_area[1];
-                if ($row_area[2] == 'r')
-                    $html_privileges .= " (".$vocab["restricted"].")";
-                $html_privileges .= "</h3>";
-                $html_privileges .= "<ul>";
-                if ($is_admin == 'y')
-                    $html_privileges .= "<li><b>".get_vocab("administrateur du domaine")."</b></li>";
-                if ($is_restreint == 'y')
-                    $html_privileges .= "<li><b>".get_vocab("a acces au domaine")."</b></li>";
-                if ($is_gestionnaire != '')
-                {
-                    $html_privileges .= "<li><b>".get_vocab("gestionnaire des resources suivantes")."</b><br />";
-                    $html_privileges .= $is_gestionnaire;
-                    $html_privileges .= "</li>";
-                }
-                if ($is_mail != '')
-                {
-                    $html_privileges .= "<li><b>".get_vocab("est prevenu par mail")."</b><br />";
-                    $html_privileges .= $is_mail;
-                    $html_privileges .= "</li>";
-                }
-                $html_privileges .= "</ul>";
-            }
+    // les autres privilèges sont regroupés par domaine
+    $sql = "SELECT id, area_name, access FROM ".TABLE_PREFIX."_area ORDER BY order_display";
+    $res_area = grr_sql_query($sql);
+    if($res_area){
+      foreach($res_area as $area){
+        // administrateur du domaine ?
+        $req_adm = "SELECT COUNT(login) FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login = ? AND id_area = ?";
+        $res = grr_sql_query1($req_adm,"si",[$user_login,$area["id"]]);
+        if($res == -1)
+          fatal_error(0,grr_sql_error());
+        elseif($res > 0)
+          $privileges['area'][$area["id"]]["adm"] = TRUE;
+        // si le domaine est restreint, accès au domaine ?
+        if($area['access'] == 'r'){
+          $restreint = grr_sql_query1("SELECT COUNT(login) FROM ".TABLE_PREFIX."_j_user_area j WHERE j.login = ? AND j.id_area= ?","si",[$user_login,$area["id"]]);
+          if($restreint == -1)
+            fatal_error(0,grr_sql_error());
+          elseif($restreint > 0)
+            $privileges['area'][$area["id"]]["acc"] = TRUE;
         }
-    }
-    // peut réserver une ressource restreinte ?
-    $req_room = "SELECT r.id, r.room_name FROM ".TABLE_PREFIX."_room r JOIN ".TABLE_PREFIX."_j_userbook_room j ON j.id_room = r.id WHERE j.login = '".$user_login."'";
-    $res_room = grr_sql_query($req_room);
-    if ($res_room && grr_sql_count($res_room)>0){
-        $html_privileges .= "<h3>".get_vocab('user_can_book')."</h3><ul>";
-        foreach($res_room as $room){
-            $html_privileges .= "<li>".$room['room_name']." (".$room['id'].") </li>";
+        // les ressources du domaine
+        $rooms = array();
+        $sql = "SELECT id, room_name FROM ".TABLE_PREFIX."_room WHERE area_id = ?";
+        $res_room = grr_sql_query($sql,"i",[$area["id"]]);
+        if($res_room){
+          foreach($res_room as $room){
+            $rooms[] = $room;
+            // gestionnaire de cette ressource ?
+            $gere = grr_sql_query1("SELECT count(login) FROM ".TABLE_PREFIX."_j_user_room WHERE login = ? AND id_room = ?","si",[$user_login,$room["id"]]);
+            if($gere == -1)
+              fatal_error(0,grr_sql_error());
+            elseif($gere >0)
+              $privileges['area'][$area["id"]]["ress"][] = $room['room_name'];
+            // reçoit un mail ?
+            $mail = grr_sql_query1("SELECT count(login) FROM ".TABLE_PREFIX."_j_mailuser_room WHERE login = ? AND id_room = ?","si",[$user_login,$room["id"]]);
+            if($mail == -1)
+              fatal_error(0,grr_sql_error());
+            elseif($mail >0)
+              $privileges['area'][$area["id"]]["mail"][] = $room['room_name'];
+            // si cette ressource est restreinte, peut-il réserver ?
+            $rest = grr_sql_query1("SELECT count(login) FROM ".TABLE_PREFIX."_j_userbook_room WHERE login = ? AND id_room = ?","si",[$user_login,$room["id"]]);
+            if($rest == -1)
+              fatal_error(0,grr_sql_error());
+            elseif($rest >0)
+              $privileges['area'][$area["id"]]["rest"][] = $room['room_name'];
+          }
+          $nb_room = count($rooms);
+          $nb_gere = isset($privileges['area'][$area["id"]]["ress"])? count($privileges['area'][$area["id"]]["ress"]):0;
+          if(($nb_gere == $nb_room)&&($nb_room >0))
+            $privileges['area'][$area["id"]]["ress"] = array('all');
         }
-        $html_privileges .= "</ul>";
-        $a_privileges = 'y';
-    }
-    grr_sql_free($res_room);
-
-    if ($a_privileges == 'n')
-    {
-        if ($utilisateur['statut'] == 'administrateur')
-            $html_privileges .=  "<div>".get_vocab("administrateur general").".</div>";
         else
-            $html_privileges .= "<div>".get_vocab("pas de privileges").".</div>";
+          fatal_error(0,grr_sql_error());
+        if((isset($privileges["area"][$area["id"]])) && (count($privileges["area"][$area["id"]])>0))
+          $privileges["area"][$area["id"]]['name'] = $area["area_name"];
+      }
+      grr_sql_free($res);
     }
+    else 
+      fatal_error(0,grr_sql_error());
+  }
 }
+
+$a_privileges = (count($privileges["site"])+count($privileges["area"]))>0;
+
 // code HTML
 // Utilisation de la bibliothèque prototype dans ce script
 $use_prototype = 'y';
@@ -450,17 +395,17 @@ else
     echo "<h2>".get_vocab('admin_user_modify_create.php')."</h2>";
 }
 echo '<p>';
-echo '<a href="admin_user.php?display='.$display.'" type="button" class="btn btn-primary">'.get_vocab("back").'</a>';
-    if (isset($user_login) && ($user_login != ''))
-    {
-        echo "<a href=\"admin_user_modify.php?display=$display\" type='button' class='btn btn-warning'>".get_vocab("display_add_user")."</a>";
-    }
+echo "<a href=\"admin_user.php?display=$display\" type='button' class='btn btn-primary'>".get_vocab("back").'</a>';
+if (isset($user_login) && ($user_login != ''))
+{
+    echo "<a href=\"admin_user_modify.php?display=$display\" type='button' class='btn btn-warning'>".get_vocab("display_add_user")."</a>";
+}
 echo '<br /><br />';
 echo '<div class="avertissement"><b>'.get_vocab("required").'</b></div>';
 echo '</p>';
 
 echo '<form action="admin_user_modify.php" method="POST">';
-echo '<input type="hidden" name="display" value="$display" />';
+echo '<input type="hidden" name="display" value="'.$display.'" />';
 echo '<div>';
     if ((Settings::get("sso_statut") != "") || (Settings::get("ldap_statut") != '') || (Settings::get("imap_statut") != ''))
     {
@@ -497,10 +442,10 @@ echo '<div>';
     echo "\" /></td>\n";
     echo "<td></td><td></td>";
     echo "</tr>\n";
-    echo "<tr><td>".get_vocab("mail_user").get_vocab("deux_points")."</td><td><input type=\"text\" name=\"reg_email\" size=\"30\" value=\"";
+    echo "<tr><td>".get_vocab("mail_user").get_vocab("deux_points")."</td><td><input type=\"email\" name=\"reg_email\" size=\"30\" value=\"";
     if ($utilisateur['email'])
-        echo htmlspecialchars($utilisateur['email']);
-    echo "\" /></td>\n";
+      echo htmlspecialchars($utilisateur['email']);
+    echo "\" autocomplete=\"email\" /></td>\n";
     echo "<td>".get_vocab("statut").get_vocab("deux_points")."</td>\n";
     echo "<td><select name=\"reg_statut\" size=\"1\">\n";
     echo "<option value=\"visiteur\" ";
@@ -516,7 +461,7 @@ echo '<div>';
     }
     echo ">".get_vocab("statut_user")."</option>\n";
 // un gestionnaire d'utilisateurs ne peut pas créer un administrateur général ou un gestionnaire d'utilisateurs
-    if (authGetUserLevel(getUserName(),-1) >= 6)
+    if (authGetUserLevel($user_id,-1) >= 6)
     {
         echo "<option value=\"gestionnaire_utilisateur\" ";
         if ($utilisateur['statut'] == "gestionnaire_utilisateur")
@@ -532,7 +477,7 @@ echo '<div>';
         echo ">".get_vocab("statut_administrator")."</option>\n";
     }
     echo "</select></td>\n";
-    if (is_null($user_login)||(strtolower(getUserName()) != strtolower($user_login)))
+    if (is_null($user_login)||(strtolower($user_id) != strtolower($user_login)))
     {
         echo "<td>".get_vocab("activ_no_activ").get_vocab("deux_points")."</td>";
         echo "<td><select name=\"reg_etat\" size=\"1\">\n";
@@ -556,8 +501,8 @@ echo '<div>';
     echo "<div id='password_fields' >";
     if ((isset($user_login)) && ($user_login!='') && ($flag_is_local=="y"))
         echo "<b>".get_vocab("champ_vide_mot_de_passe_inchange")."</b>";
-    echo "<br />".get_vocab("pwd_toot_short")." *".get_vocab("deux_points")."<input type=\"password\" name=\"reg_password\" size=\"20\" />\n";
-    echo "<br />".get_vocab("confirm_pwd")." *".get_vocab("deux_points")."<input type=\"password\" name=\"reg_password2\" size=\"20\" />\n";
+    echo "<br />".get_vocab("pwd_too_short")." *".get_vocab("deux_points")."<input type=\"password\" name=\"reg_password\" size=\"20\" autocomplete='off' />\n";
+    echo "<br />".get_vocab("confirm_pwd")." *".get_vocab("deux_points")."<input type=\"password\" name=\"reg_password2\" size=\"20\" autocomplete='off' />\n";
     echo '<br /><label for="reg_changepwd">'.get_vocab("user_change_pwd_connexion").'</label>
                                 <input type="checkbox" id="reg_changepwd" name="reg_changepwd" value="1"';
                                 if ($_SESSION['changepwd'] == 1) echo 'checked = "checked"';
@@ -574,7 +519,55 @@ echo '<div>';
         echo "<script  type='text/javascript'> $('#password_fields').hide(); </script>";
     }
     // affichage des privilèges
-    echo $html_privileges;
+    echo "<h2>".get_vocab('liste_privileges').$utilisateur['prenom']." ".$utilisateur['nom']." :</h2>";
+    if($a_privileges){
+      if(count($privileges["site"])>0)
+        foreach($privileges["site"] as $row){
+          echo "<h3>".get_vocab("site").get_vocab("deux_points").$row['sitename']."</h3>";
+          echo "<ul><li><b>".get_vocab("administrateur du site")."</b></li></ul>";
+        }
+      if(count($privileges["area"])>0)
+        foreach($privileges["area"] as $row){
+          echo "<h3>".get_vocab("match_area").get_vocab("deux_points").$row['name']."</h3>";
+          echo "<ul>";
+          if(isset($row["adm"]) && $row['adm'])
+            echo "<li>".get_vocab("administrateur du domaine")."</li>";
+          if(isset($row["acc"]) && $row["acc"])
+            echo "<li>".get_vocab("a acces au domaine")."</li>";
+          if(isset($row["ress"])){
+            echo "<li>".get_vocab("gestionnaire des resources suivantes")."</li>";
+            echo "<ul>";
+            foreach($row["ress"] as $ressource){
+              echo "<li>".$ressource."</li>";
+            }
+            echo "</ul>";
+          }
+          if(isset($row["mail"])){
+            echo "<li>".get_vocab("est prevenu par mail")."</li>";
+            echo "<ul>";
+            foreach($row["mail"] as $ressource){
+              echo "<li>".$ressource."</li>";
+            }
+            echo "</ul>";
+          }
+          if(isset($row["rest"])){
+            echo "<li>".get_vocab('user_can_book')."</li>";
+            echo "<ul>";
+            foreach($row["rest"] as $ressource){
+              echo "<li>".$ressource."</li>";
+            }
+            echo "</li>";
+          }
+          echo "</ul>";
+        }
+    }
+    if(!$a_privileges)
+    {
+        if ($utilisateur['statut'] == 'administrateur')
+          echo "<div>".get_vocab("administrateur general").".</div>";
+        else
+          echo "<div>".get_vocab("pas de privileges").".</div>";
+    }
 echo "</div></section></body>";
 ?>
 <script type='text/javascript'>
