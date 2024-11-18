@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2024-10-30
+# Last modification : 2024-11-18
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1410,4 +1410,12 @@ $vocab['skip_school_holidays'] = " skip school holidays";
 $vocab['Holidays'] = "Holidays";
 $vocab['holidays'] = " public holidays";
 $vocab['skip_holidays'] = " skip public holidays";
+$vocab['recherche_titre'] = "Search for available resources";
+$vocab['recherche_res1'] = "From ";
+$vocab['recherche_res2'] = " to ";
+$vocab['recherche_res3'] = " resources available on ";
+$vocab['recherche_res4'] = " occupied until ";
+$vocab['recherche_res5'] = " last reservation ";
+$vocab['recherche_choix_r'] = " Search for a free resource ";
+$vocab['recherche_choix_s'] = " Search among reservations ";
 ?>

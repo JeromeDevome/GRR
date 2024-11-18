@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2024-10-29
+# Last modification : 2024-11-18
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1404,4 +1404,12 @@ $vocab['skip_school_holidays'] = " jours hors vacances";
 $vocab['Holidays'] = "Jours fériés";
 $vocab['holidays'] = " jours fériés";
 $vocab['skip_holidays'] = " jours ouvrés";
+$vocab['recherche_titre'] = "Recherche de ressources disponibles";
+$vocab['recherche_res1'] = "Du ";
+$vocab['recherche_res2'] = " au ";
+$vocab['recherche_res3'] = " ressources disponibles sur ";
+$vocab['recherche_res4'] = "occupée jusqu'au ";
+$vocab['recherche_res5'] = "dernière réservation";
+$vocab['recherche_choix_r'] = "Rechercher une ressource libre";
+$vocab['recherche_choix_s'] = "Rechercher parmi les réservations";
 ?>

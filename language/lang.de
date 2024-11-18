@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2024-10-21
+# Last modification : 2024-11-18
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1399,4 +1399,12 @@ $vocab['skip_school_holidays'] = " skip school holidays";
 $vocab['Holidays'] = "Holidays";
 $vocab['holidays'] = " public holidays";
 $vocab['skip_holidays'] = " skip public holidays";
+$vocab['recherche_titre'] = "Nach verfügbaren Ressourcen suchen";
+$vocab['recherche_res1'] = "Von";
+$vocab['recherche_res2'] = "au";
+$vocab['recherche_res3'] = " Ressourcen verfügbar am ";
+$vocab['recherche_res4'] = "beschäftigt bis";
+$vocab['recherche_res5'] = "letzte Reservierung";
+$vocab['recherche_choix_r'] = "Nach einer verfügbaren Ressource suchen";
+$vocab['recherche_choix_s'] = "Unter Reservierungen suchen";
 ?>
