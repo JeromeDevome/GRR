@@ -189,6 +189,10 @@ div.dtsp-searchPane div.dt-container div.dataTables_layout_cell,
 div.dtsp-searchPane div.dataTables_wrapper div.dataTables_layout_cell {
   padding: 0;
 }
+div.dtsp-searchPane div.dt-container div.dt-layout-row:not(.dt-layout-table),
+div.dtsp-searchPane div.dataTables_wrapper div.dt-layout-row:not(.dt-layout-table) {
+  margin: 0;
+}
 div.dtsp-searchPane div.dt-container div.dt-scroll-head,
 div.dtsp-searchPane div.dt-container div.dataTables_scrollHead,
 div.dtsp-searchPane div.dataTables_wrapper div.dt-scroll-head,

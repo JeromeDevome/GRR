@@ -3,6 +3,7 @@ div.dt-button-collection {
   z-index: 2002 !important;
 }
 div.dt-button-collection div.dtsb-searchBuilder {
+  box-sizing: border-box;
   padding-left: 1em !important;
   padding-right: 1em !important;
 }
@@ -24,6 +25,7 @@ div.dtsb-searchBuilder {
   cursor: default;
   margin-bottom: 1em;
   text-align: left;
+  width: 100%;
 }
 div.dtsb-searchBuilder button.dtsb-button,
 div.dtsb-searchBuilder select {

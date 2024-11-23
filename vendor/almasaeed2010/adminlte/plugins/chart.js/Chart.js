@@ -1,5 +1,5 @@
 /*!
- * Chart.js v4.4.3
+ * Chart.js v4.4.6
  * https://www.chartjs.org
  * (c) 2024 Chart.js Contributors
  * Released under the MIT License
@@ -437,9 +437,11 @@ function applyStack(stack, value, dsIndex, options = {}) {
     if (value === null) {
         return;
     }
+    let found = false;
     for(i = 0, ilen = keys.length; i < ilen; ++i){
         datasetIndex = +keys[i];
         if (datasetIndex === dsIndex) {
+            found = true;
             if (options.all) {
                 continue;
             }
@@ -449,6 +451,9 @@ function applyStack(stack, value, dsIndex, options = {}) {
         if (isNumberFinite(otherValue) && (singleMode || value === 0 || sign(value) === sign(otherValue))) {
             value += otherValue;
         }
+    }
+    if (!found && !options.all) {
+        return 0;
     }
     return value;
 }
@@ -693,6 +698,7 @@ class DatasetController {
         this._resyncElements(resetNewElements);
         if (stackChanged || oldStacked !== meta._stacked) {
             updateStacks(this, meta._parsed);
+            meta._stacked = isStacked(meta.vScale, meta);
         }
     }
  configure() {
@@ -1487,8 +1493,10 @@ class BarController extends DatasetController {
         const metasets = iScale.getMatchingVisibleMetas(this._type).filter((meta)=>meta.controller.options.grouped);
         const stacked = iScale.options.stacked;
         const stacks = [];
+        const currentParsed = this._cachedMeta.controller.getParsed(dataIndex);
+        const iScaleValue = currentParsed && currentParsed[iScale.axis];
         const skipNull = (meta)=>{
-            const parsed = meta.controller.getParsed(dataIndex);
+            const parsed = meta._parsed.find((item)=>item[iScale.axis] === iScaleValue);
             const val = parsed && parsed[meta.vScale.axis];
             if (isNullOrUndef(val) || isNaN(val)) {
                 return true;
@@ -2756,7 +2764,7 @@ function binarySearch(metaset, axis, value, intersect) {
     const rangeMethod = axis === 'x' ? 'inXRange' : 'inYRange';
     let intersectsItem = false;
     evaluateInteractionItems(chart, axis, position, (element, datasetIndex, index)=>{
-        if (element[rangeMethod](position[axis], useFinalPosition)) {
+        if (element[rangeMethod] && element[rangeMethod](position[axis], useFinalPosition)) {
             items.push({
                 element,
                 datasetIndex,
@@ -5514,7 +5522,7 @@ function needContext(proxy, names) {
     return false;
 }
 
-var version = "4.4.3";
+var version = "4.4.6";
 
 const KNOWN_POSITIONS = [
     'top',
@@ -6046,8 +6054,8 @@ class Chart {
         let i;
         if (this._resizeBeforeDraw) {
             const { width , height  } = this._resizeBeforeDraw;
-            this._resize(width, height);
             this._resizeBeforeDraw = null;
+            this._resize(width, height);
         }
         this.clear();
         if (this.width <= 0 || this.height <= 0) {
@@ -6686,7 +6694,8 @@ class ArcElement extends Element {
         ], useFinalPosition);
         const rAdjust = (this.options.spacing + this.options.borderWidth) / 2;
         const _circumference = valueOrDefault(circumference, endAngle - startAngle);
-        const betweenAngles = _circumference >= TAU || _angleBetween(angle, startAngle, endAngle);
+        const nonZeroBetween = _angleBetween(angle, startAngle, endAngle) && startAngle !== endAngle;
+        const betweenAngles = _circumference >= TAU || nonZeroBetween;
         const withinRadius = _isBetween(distance, innerRadius + rAdjust, outerRadius + rAdjust);
         return betweenAngles && withinRadius;
     }
@@ -7352,6 +7361,9 @@ function containsColorsDefinitions(descriptors) {
 function containsColorsDefinition(descriptor) {
     return descriptor && (descriptor.borderColor || descriptor.backgroundColor);
 }
+function containsDefaultColorsDefenitions() {
+    return defaults.borderColor !== 'rgba(0,0,0,0.1)' || defaults.backgroundColor !== 'rgba(0,0,0,0.1)';
+}
 var plugin_colors = {
     id: 'colors',
     defaults: {
@@ -7364,7 +7376,8 @@ var plugin_colors = {
         }
         const { data: { datasets  } , options: chartOptions  } = chart.config;
         const { elements  } = chartOptions;
-        if (!options.forceOverride && (containsColorsDefinitions(datasets) || containsColorsDefinition(chartOptions) || elements && containsColorsDefinitions(elements))) {
+        const containsColorDefenition = containsColorsDefinitions(datasets) || containsColorsDefinition(chartOptions) || elements && containsColorsDefinitions(elements) || containsDefaultColorsDefenitions();
+        if (!options.forceOverride && containsColorDefenition) {
             return;
         }
         const colorizer = getColorizer(chart);
@@ -8906,6 +8919,9 @@ const positioners = {
                 y += pos.y;
                 ++count;
             }
+        }
+        if (count === 0 || xSet.size === 0) {
+            return false;
         }
         const xAverage = [
             ...xSet
@@ -10659,7 +10675,7 @@ function drawRadiusLine(scale, gridLineOpts, radius, labelCount, borderOpts) {
     ctx.save();
     ctx.strokeStyle = color;
     ctx.lineWidth = lineWidth;
-    ctx.setLineDash(borderOpts.dash);
+    ctx.setLineDash(borderOpts.dash || []);
     ctx.lineDashOffset = borderOpts.dashOffset;
     ctx.beginPath();
     pathRadiusLine(scale, radius, circular, labelCount);
@@ -10863,7 +10879,7 @@ class RadialLinearScale extends LinearScaleBase {
                 ctx.strokeStyle = color;
                 ctx.setLineDash(optsAtIndex.borderDash);
                 ctx.lineDashOffset = optsAtIndex.borderDashOffset;
-                offset = this.getDistanceFromCenterForValue(opts.ticks.reverse ? this.min : this.max);
+                offset = this.getDistanceFromCenterForValue(opts.reverse ? this.min : this.max);
                 position = this.getPointPosition(i, offset);
                 ctx.beginPath();
                 ctx.moveTo(this.xCenter, this.yCenter);

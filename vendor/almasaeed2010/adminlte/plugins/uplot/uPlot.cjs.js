@@ -4,7 +4,7 @@
 *
 * uPlot.js (μPlot)
 * A small, fast chart for time series, lines, areas, ohlc & bars
-* https://github.com/leeoniya/uPlot (v1.6.30)
+* https://github.com/leeoniya/uPlot (v1.6.31)
 */
 
 'use strict';
@@ -169,7 +169,7 @@ function on(ev, el, cb, capt) {
 }
 
 function off(ev, el, cb, capt) {
-	el.removeEventListener(ev, cb, capt ? evOpts2 : evOpts);
+	el.removeEventListener(ev, cb, evOpts);
 }
 
 domEnv && setPxRatio();
@@ -393,15 +393,15 @@ function _rangeNum(_min, _max, cfg) {
 //	if (delta > 0 && delta < abs(_max) / 1e3)
 //		delta = 0;
 
-	// treat data as flat if delta is less than 1 billionth
+	// treat data as flat if delta is less than 1e-24
 	// or range is 11+ orders of magnitude below raw values, e.g. 99999999.99999996 - 100000000.00000004
-	if (delta < 1e-9 || scalarMagDelta > 10) {
+	if (delta < 1e-24 || scalarMagDelta > 10) {
 		delta = 0;
 
 		// if soft mode is 2 and all vals are flat at 0, avoid the 0.1 * 1e3 fallback
 		// this prevents 0,0,0 from ranging to -100,100 when softMin/softMax are -1,1
 		if (_min == 0 || _max == 0) {
-			delta = 1e-9;
+			delta = 1e-24;
 
 			if (softMinMode == 2 && softMin != inf)
 				padMin = 0;
@@ -416,12 +416,12 @@ function _rangeNum(_min, _max, cfg) {
 	let base         = pow(10, floor(mag));
 
 	let _padMin  = nonZeroDelta * (delta == 0 ? (_min == 0 ? .1 : 1) : padMin);
-	let _newMin  = roundDec(incrRoundDn(_min - _padMin, base/10), 9);
+	let _newMin  = roundDec(incrRoundDn(_min - _padMin, base/10), 24);
 	let _softMin = _min >= softMin && (softMinMode == 1 || softMinMode == 3 && _newMin <= softMin || softMinMode == 2 && _newMin >= softMin) ? softMin : inf;
 	let minLim   = max(hardMin, _newMin < _softMin && _min >= _softMin ? _softMin : min(_softMin, _newMin));
 
 	let _padMax  = nonZeroDelta * (delta == 0 ? (_max == 0 ? .1 : 1) : padMax);
-	let _newMax  = roundDec(incrRoundUp(_max + _padMax, base/10), 9);
+	let _newMax  = roundDec(incrRoundUp(_max + _padMax, base/10), 24);
 	let _softMax = _max <= softMax && (softMaxMode == 1 || softMaxMode == 3 && _newMax >= softMax || softMaxMode == 2 && _newMax <= softMax) ? softMax : -inf;
 	let maxLim   = min(hardMax, _newMax > _softMax && _max <= _softMax ? _softMax : max(_softMax, _newMax));
 
@@ -478,9 +478,30 @@ const retTrue = _ => true;
 
 const retEq = (a, b) => a == b;
 
-// this will probably prevent tick incrs > 14 decimal places
-// (we generate up to 17 dec, see fixedDec const)
-const fixFloat = v => roundDec(v, 14);
+const regex6 = /\.\d*?(?=9{6,}|0{6,})/gm;
+
+// e.g. 17999.204999999998 -> 17999.205
+const fixFloat = val => {
+	if (isInt(val) || fixedDec.has(val))
+		return val;
+
+	const str = `${val}`;
+
+	const match = str.match(regex6);
+
+	if (match == null)
+		return val;
+
+	let len = match[0].length - 1;
+
+	// e.g. 1.0000000000000001e-24
+	if (str.indexOf('e-') != -1) {
+		let [num, exp] = str.split('e');
+		return +`${fixFloat(num)}e${exp}`;
+	}
+
+	return roundDec(val, len);
+};
 
 function incrRound(num, incr) {
 	return fixFloat(roundDec(fixFloat(num/incr))*incr);
@@ -523,9 +544,9 @@ function genIncrs(base, minExp, maxExp, mults) {
 		let mag = roundDec(pow(base, exp), expa);
 
 		for (let i = 0; i < mults.length; i++) {
-			let _incr = mults[i] * mag;
-			let dec = (_incr >= 0 && exp >= 0 ? 0 : expa) + (exp >= multDec[i] ? 0 : multDec[i]);
-			let incr = roundDec(_incr, dec);
+			let _incr = base == 10 ? +`${mults[i]}e${exp}` : mults[i] * mag;
+			let dec = (exp >= 0 ? 0 : expa) + (exp >= multDec[i] ? 0 : multDec[i]);
+			let incr = base == 10 ? _incr : roundDec(_incr, dec);
 			incrs.push(incr);
 			fixedDec.set(incr, dec);
 		}
@@ -566,6 +587,8 @@ function fastIsObj(v) {
 
 const TypedArray = Object.getPrototypeOf(Uint8Array);
 
+const __proto__ = "__proto__";
+
 function copy(o, _isObj = isObj) {
 	let out;
 
@@ -584,8 +607,10 @@ function copy(o, _isObj = isObj) {
 		out = o.slice();
 	else if (_isObj(o)) {
 		out = {};
-		for (let k in o)
-			out[k] = copy(o[k], _isObj);
+		for (let k in o) {
+			if (k != __proto__)
+				out[k] = copy(o[k], _isObj);
+		}
 	}
 	else
 		out = o;
@@ -600,10 +625,12 @@ function assign(targ) {
 		let src = args[i];
 
 		for (let key in src) {
-			if (isObj(targ[key]))
-				assign(targ[key], copy(src[key]));
-			else
-				targ[key] = copy(src[key]);
+			if (key != __proto__) {
+				if (isObj(targ[key]))
+					assign(targ[key], copy(src[key]));
+				else
+					targ[key] = copy(src[key]);
+			}
 		}
 	}
 
@@ -945,10 +972,10 @@ const onlyWhole = v => v % 1 == 0;
 const allMults = [1,2,2.5,5];
 
 // ...0.01, 0.02, 0.025, 0.05, 0.1, 0.2, 0.25, 0.5
-const decIncrs = genIncrs(10, -16, 0, allMults);
+const decIncrs = genIncrs(10, -32, 0, allMults);
 
 // 1, 2, 2.5, 5, 10, 20, 25, 50...
-const oneIncrs = genIncrs(10, 0, 16, allMults);
+const oneIncrs = genIncrs(10, 0, 32, allMults);
 
 // 1, 2,      5, 10, 20, 25, 50...
 const wholeIncrs = oneIncrs.filter(onlyWhole);
@@ -1315,6 +1342,7 @@ const cursorOpts = {
 	lock: false,
 	move: cursorMove,
 	points: {
+		one:    false,
 		show:   cursorPointShow,
 		size:   cursorPointSize,
 		width:  0,
@@ -1461,21 +1489,31 @@ function logAxisSplits(self, axisIdx, scaleMin, scaleMax, foundIncr, foundSpace,
 
 	foundIncr = pow(logBase, exp);
 
-	if (logBase == 10 && exp < 0)
-		foundIncr = roundDec(foundIncr, -exp);
+	// boo: 10 ** -24 === 1.0000000000000001e-24
+	// this grabs the proper 1e-24 one
+	if (logBase == 10)
+		foundIncr = numIncrs[closestIdx(foundIncr, numIncrs)];
 
 	let split = scaleMin;
+	let nextMagIncr = foundIncr * logBase;
+
+	if (logBase == 10)
+		nextMagIncr = numIncrs[closestIdx(nextMagIncr, numIncrs)];
 
 	do {
 		splits.push(split);
 		split = split + foundIncr;
 
-		if (logBase == 10)
+		if (logBase == 10 && !fixedDec.has(split))
 			split = roundDec(split, fixedDec.get(foundIncr));
 
-		if (split >= foundIncr * logBase)
+		if (split >= nextMagIncr) {
 			foundIncr = split;
+			nextMagIncr = foundIncr * logBase;
 
+			if (logBase == 10)
+				nextMagIncr = numIncrs[closestIdx(nextMagIncr, numIncrs)];
+		}
 	} while (split <= scaleMax);
 
 	return splits;
@@ -2747,7 +2785,7 @@ function setDefaults(d, xo, yo, initY) {
 }
 
 function setDefaults2(d, xyo) {
-	return d.map((o, i) => i == 0 ? null : assign({}, xyo, o));  // todo: assign() will not merge facet arrays
+	return d.map((o, i) => i == 0 ? {} : assign({}, xyo, o));  // todo: assign() will not merge facet arrays
 }
 
 function setDefault(o, i, xo, yo) {
@@ -2825,6 +2863,7 @@ function uPlot(opts, data, then) {
 		let _val = (
 			scale.distr == 3 ? log10(val > 0 ? val : scale.clamp(self, val, scale.min, scale.max, scale.key)) :
 			scale.distr == 4 ? asinh(val, scale.asinh) :
+			scale.distr == 100 ? scale.fwd(val) :
 			val
 		);
 
@@ -3492,25 +3531,24 @@ function uPlot(opts, data, then) {
 	const focus = self.focus = assign({}, opts.focus || {alpha: 0.3}, cursor.focus);
 
 	const cursorFocus = focus.prox >= 0;
+	const cursorOnePt = cursorFocus && points.one;
 
 	// series-intersection markers
-	let cursorPts = [null];
+	let cursorPts = [];
 	// position caches in CSS pixels
-	let cursorPtsLft = [null];
-	let cursorPtsTop = [null];
+	let cursorPtsLft = [];
+	let cursorPtsTop = [];
 
 	function initCursorPt(s, si) {
-		if (si > 0) {
-			let pt = cursor.points.show(self, si);
+		let pt = points.show(self, si);
 
-			if (pt) {
-				addClass(pt, CURSOR_PT);
-				addClass(pt, s.class);
-				elTrans(pt, -10, -10, plotWidCss, plotHgtCss);
-				over.insertBefore(pt, cursorPts[si]);
+		if (pt) {
+			addClass(pt, CURSOR_PT);
+			addClass(pt, s.class);
+			elTrans(pt, -10, -10, plotWidCss, plotHgtCss);
+			over.insertBefore(pt, cursorPts[si]);
 
-				return pt;
-			}
+			return pt;
 		}
 	}
 
@@ -3523,7 +3561,7 @@ function uPlot(opts, data, then) {
 			s.label = s.label || (isTime ? timeSeriesLabel : numSeriesLabel);
 		}
 
-		if (i > 0) {
+		if (cursorOnePt || i > 0) {
 			s.width  = s.width == null ? 1 : s.width;
 			s.paths  = s.paths || linearPath || retNull;
 			s.fillTo = fnOrSelf(s.fillTo || seriesFillTo);
@@ -3562,13 +3600,18 @@ function uPlot(opts, data, then) {
 		if (cursor.show) {
 			activeIdxs.splice(i, 0, null);
 
-			let pt = initCursorPt(s, i);
+			let pt = null;
 
-			if (pt != null) {
-				cursorPts.splice(i, 0, pt);
-				cursorPtsLft.splice(i, 0, 0);
-				cursorPtsTop.splice(i, 0, 0);
+			if (cursorOnePt) {
+				if (i == 0)
+					pt = initCursorPt(s, i);
 			}
+			else if (i > 0)
+				pt = initCursorPt(s, i);
+
+			cursorPts.splice(i, 0, pt);
+			cursorPtsLft.splice(i, 0, 0);
+			cursorPtsTop.splice(i, 0, 0);
 		}
 
 		fire("addSeries", i);
@@ -3577,7 +3620,7 @@ function uPlot(opts, data, then) {
 	function addSeries(opts, si) {
 		si = si == null ? series.length : si;
 
-		opts = mode == 1 ? setDefault(opts, si, xSeriesOpts, ySeriesOpts) : setDefault(opts, si, null, xySeriesOpts);
+		opts = mode == 1 ? setDefault(opts, si, xSeriesOpts, ySeriesOpts) : setDefault(opts, si, {}, xySeriesOpts);
 
 		series.splice(si, 0, opts);
 		initSeries(series[si], si);
@@ -3599,12 +3642,9 @@ function uPlot(opts, data, then) {
 
 		if (cursor.show) {
 			activeIdxs.splice(i, 1);
-
-			if (cursorPts.length > 1) {
-				cursorPts.splice(i, 1)[0].remove();
-				cursorPtsLft.splice(i, 1);
-				cursorPtsTop.splice(i, 1);
-			}
+			cursorPts.splice(i, 1)[0].remove();
+			cursorPtsLft.splice(i, 1);
+			cursorPtsTop.splice(i, 1);
 		}
 
 		// TODO: de-init no-longer-needed scales?
@@ -4042,8 +4082,8 @@ function uPlot(opts, data, then) {
 
 				let distr = sc.distr;
 
-				sc._min = distr == 3 ? log10(sc.min) : distr == 4 ? asinh(sc.min, sc.asinh) : sc.min;
-				sc._max = distr == 3 ? log10(sc.max) : distr == 4 ? asinh(sc.max, sc.asinh) : sc.max;
+				sc._min = distr == 3 ? log10(sc.min) : distr == 4 ? asinh(sc.min, sc.asinh) : distr == 100 ? sc.fwd(sc.min) : sc.min;
+				sc._max = distr == 3 ? log10(sc.max) : distr == 4 ? asinh(sc.max, sc.asinh) : distr == 100 ? sc.fwd(sc.max) : sc.max;
 
 				changed[k] = anyChanged = true;
 			}
@@ -4730,10 +4770,14 @@ function uPlot(opts, data, then) {
 					vCursor && elTrans(vCursor, round(cursor.left), 0, plotWidCss, plotHgtCss);
 					hCursor && elTrans(hCursor, 0, round(cursor.top), plotWidCss, plotHgtCss);
 
-					for (let i = 1; i < cursorPts.length; i++) {
-						cursorPtsLft[i] *= pctWid;
-						cursorPtsTop[i] *= pctHgt;
-						elTrans(cursorPts[i], incrRoundUp(cursorPtsLft[i], 1), incrRoundUp(cursorPtsTop[i], 1), plotWidCss, plotHgtCss);
+					for (let i = 0; i < cursorPts.length; i++) {
+						let pt = cursorPts[i];
+
+						if (pt != null) {
+							cursorPtsLft[i] *= pctWid;
+							cursorPtsTop[i] *= pctHgt;
+							elTrans(pt, ceil(cursorPtsLft[i]), ceil(cursorPtsTop[i]), plotWidCss, plotHgtCss);
+						}
 					}
 				}
 
@@ -4927,7 +4971,8 @@ function uPlot(opts, data, then) {
 			label && remClass(label, OFF);
 		else {
 			label && addClass(label, OFF);
-			cursorPts.length > 1 && elTrans(cursorPts[i], -10, -10, plotWidCss, plotHgtCss);
+			let pt = cursorOnePt ? cursorPts[0] : cursorPts[i];
+			elTrans(pt, -10, -10, plotWidCss, plotHgtCss);
 		}
 	}
 
@@ -5064,6 +5109,7 @@ function uPlot(opts, data, then) {
 		return (
 			distr == 3 ? pow(10, sv) :
 			distr == 4 ? sinh(sv, sc.asinh) :
+			distr == 100 ? sc.bwd(sv) :
 			sv
 		);
 	}
@@ -5137,13 +5183,14 @@ function uPlot(opts, data, then) {
 			legend.idx = activeIdxs[0];
 		}
 
-		for (let sidx = 0; sidx < series.length; sidx++) {
-			if (sidx > 0 || mode == 1 && !multiValLegend)
-				setLegendValues(sidx, activeIdxs[sidx]);
-		}
+		if (showLegend && legend.live) {
+			for (let sidx = 0; sidx < series.length; sidx++) {
+				if (sidx > 0 || mode == 1 && !multiValLegend)
+					setLegendValues(sidx, activeIdxs[sidx]);
+			}
 
-		if (showLegend && legend.live)
 			syncLegend();
+		}
 
 		shouldSetLegend = false;
 
@@ -5190,6 +5237,7 @@ function uPlot(opts, data, then) {
 		let noDataInRange = i0 > i1; // works for mode 1 only
 
 		closestDist = inf;
+		closestSeries = null;
 
 		// TODO: extract
 		let xDim = scaleX.ori == 0 ? plotWidCss : plotHgtCss;
@@ -5200,9 +5248,8 @@ function uPlot(opts, data, then) {
 			idx = cursor.idx = null;
 
 			for (let i = 0; i < series.length; i++) {
-				if (i > 0) {
-					cursorPts.length > 1 && elTrans(cursorPts[i], -10, -10, plotWidCss, plotHgtCss);
-				}
+				let pt = cursorPts[i];
+				pt != null && elTrans(pt, -10, -10, plotWidCss, plotHgtCss);
 			}
 
 			if (cursorFocus)
@@ -5224,6 +5271,15 @@ function uPlot(opts, data, then) {
 				idx = cursor.idx = closestIdx(valAtPosX, data[0], i0, i1);
 				xPos = valToPosX(data[0][idx], scaleX, xDim, 0);
 			}
+
+			// closest pt values
+			let _ptLft = -10;
+			let _ptTop = -10;
+			let _ptWid = 0;
+			let _ptHgt = 0;
+			let _centered = true;
+			let _ptFill = '';
+			let _ptStroke = '';
 
 			for (let i = mode == 2 ? 1 : 0; i < series.length; i++) {
 				let s = series[i];
@@ -5275,23 +5331,22 @@ function uPlot(opts, data, then) {
 						}
 					}
 
-					let hPos, vPos;
+					if (shouldSetLegend || cursorOnePt) {
+						let hPos, vPos;
 
-					if (scaleX.ori == 0) {
-						hPos = xPos2;
-						vPos = yPos;
-					}
-					else {
-						hPos = yPos;
-						vPos = xPos2;
-					}
-
-					if (shouldSetLegend && cursorPts.length > 1) {
-						elColor(cursorPts[i], cursor.points.fill(self, i), cursor.points.stroke(self, i));
+						if (scaleX.ori == 0) {
+							hPos = xPos2;
+							vPos = yPos;
+						}
+						else {
+							hPos = yPos;
+							vPos = xPos2;
+						}
 
 						let ptWid, ptHgt, ptLft, ptTop,
+							ptStroke, ptFill,
 							centered = true,
-							getBBox = cursor.points.bbox;
+							getBBox = points.bbox;
 
 						if (getBBox != null) {
 							centered = false;
@@ -5306,17 +5361,57 @@ function uPlot(opts, data, then) {
 						else {
 							ptLft = hPos;
 							ptTop = vPos;
-							ptWid = ptHgt = cursor.points.size(self, i);
+							ptWid = ptHgt = points.size(self, i);
 						}
 
+						ptFill = points.fill(self, i);
+						ptStroke = points.stroke(self, i);
 
-						elSize(cursorPts[i], ptWid, ptHgt, centered);
+						if (cursorOnePt) {
+							if (i == closestSeries && closestDist <= focus.prox) {
+								_ptLft = ptLft;
+								_ptTop = ptTop;
+								_ptWid = ptWid;
+								_ptHgt = ptHgt;
+								_centered = centered;
+								_ptFill = ptFill;
+								_ptStroke = ptStroke;
+							}
+						}
+						else {
+							let pt = cursorPts[i];
 
-						cursorPtsLft[i] = ptLft;
-						cursorPtsTop[i] = ptTop;
+							if (pt != null) {
+								cursorPtsLft[i] = ptLft;
+								cursorPtsTop[i] = ptTop;
 
-						elTrans(cursorPts[i], incrRoundUp(ptLft, 1), incrRoundUp(ptTop, 1), plotWidCss, plotHgtCss);
+								elSize(pt, ptWid, ptHgt, centered);
+								elColor(pt, ptFill, ptStroke);
+								elTrans(pt, ceil(ptLft), ceil(ptTop), plotWidCss, plotHgtCss);
+							}
+						}
 					}
+				}
+			}
+
+			// if only using single hover point (at cursorPts[0])
+			// we have trigger styling at last visible series (once closestSeries is settled)
+			if (cursorOnePt) {
+				// some of this logic is similar to series focus below, since it matches the behavior by design
+
+				let p = focus.prox;
+
+				let focusChanged = focusedSeries == null ? closestDist <= p : (closestDist > p || closestSeries != focusedSeries);
+
+				if (shouldSetLegend || focusChanged) {
+					let pt = cursorPts[0];
+
+					cursorPtsLft[0] = _ptLft;
+					cursorPtsTop[0] = _ptTop;
+
+					elSize(pt, _ptWid, _ptHgt, _centered);
+					elColor(pt, _ptFill, _ptStroke);
+					elTrans(pt, ceil(_ptLft), ceil(_ptTop), plotWidCss, plotHgtCss);
 				}
 			}
 		}
@@ -5336,7 +5431,7 @@ function uPlot(opts, data, then) {
 				if (dragX || dragY) {
 					let { left, top, width, height } = src.select;
 
-					let sori = src.scales[xKey].ori;
+					let sori = src.scales[xKeySrc].ori;
 					let sPosToVal = src.posToVal;
 
 					let sOff, sDim, sc, a, b;
@@ -5709,9 +5804,7 @@ function uPlot(opts, data, then) {
 		}
 		else if (cursor.lock) {
 			cursor._lock = !cursor._lock;
-
-			if (!cursor._lock)
-				updateCursor(null, true, false);
+			updateCursor(null, true, false);
 		}
 
 		if (e != null) {
