@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'ea10d530d0e06df2ac28bf41958192c2e07fd383',
+    'reference' => 'a9900c2e67795a99e1a659c32be30c7b695eaf08',
     'name' => 'devome/twig',
   ),
   'versions' => 
@@ -60,7 +60,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'ea10d530d0e06df2ac28bf41958192c2e07fd383',
+      'reference' => 'a9900c2e67795a99e1a659c32be30c7b695eaf08',
     ),
     'gregwar/captcha' => 
     array (
@@ -293,12 +293,12 @@ private static $installed = array (
     ),
     'symfony/http-kernel' => 
     array (
-      'pretty_version' => 'v5.4.46',
-      'version' => '5.4.46.0',
+      'pretty_version' => 'v5.4.47',
+      'version' => '5.4.47.0',
       'aliases' => 
       array (
       ),
-      'reference' => '492ce57430d44e28b30b2c76724bef31dcb73b3e',
+      'reference' => '0ac42d5e16317f15dc5f8ea83742c51d2ed2350f',
     ),
     'symfony/options-resolver' => 
     array (
@@ -392,12 +392,12 @@ private static $installed = array (
     ),
     'symfony/property-info' => 
     array (
-      'pretty_version' => 'v5.4.45',
-      'version' => '5.4.45.0',
+      'pretty_version' => 'v5.4.47',
+      'version' => '5.4.47.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'cec75362b20263758c9c7af4c2f9af82614195ae',
+      'reference' => '4d77ab22c57ef56a943e3f5769b5fe66be546094',
     ),
     'symfony/routing' => 
     array (
@@ -426,12 +426,12 @@ private static $installed = array (
     ),
     'symfony/string' => 
     array (
-      'pretty_version' => 'v5.4.45',
-      'version' => '5.4.45.0',
+      'pretty_version' => 'v5.4.47',
+      'version' => '5.4.47.0',
       'aliases' => 
       array (
       ),
-      'reference' => '7f6807add88b1e2635f3c6de5e1ace631ed7cad2',
+      'reference' => '136ca7d72f72b599f2631aca474a4f8e26719799',
     ),
     'symfony/translation' => 
     array (
@@ -460,12 +460,12 @@ private static $installed = array (
     ),
     'symfony/var-dumper' => 
     array (
-      'pretty_version' => 'v5.4.46',
-      'version' => '5.4.46.0',
+      'pretty_version' => 'v5.4.47',
+      'version' => '5.4.47.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'f51f11e4fc5ca24fa0defcdf4df027078950b9e0',
+      'reference' => 'e13e8dfa8eaab2b0536ef365beddc2af723a9ac0',
     ),
     'symfony/var-exporter' => 
     array (
