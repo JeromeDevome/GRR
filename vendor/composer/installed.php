@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'a9900c2e67795a99e1a659c32be30c7b695eaf08',
+    'reference' => '635aad4aafd6c90986e9351dd8e4c73adcf988bd',
     'name' => 'devome/twig',
   ),
   'versions' => 
@@ -36,7 +36,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'a9900c2e67795a99e1a659c32be30c7b695eaf08',
+      'reference' => '635aad4aafd6c90986e9351dd8e4c73adcf988bd',
     ),
     'gregwar/captcha' => 
     array (
@@ -58,12 +58,12 @@
     ),
     'phpmailer/phpmailer' => 
     array (
-      'pretty_version' => 'v6.9.2',
-      'version' => '6.9.2.0',
+      'pretty_version' => 'v6.9.3',
+      'version' => '6.9.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'a7b17b42fa4887c92146243f3d2f4ccb962af17c',
+      'reference' => '2f5c94fe7493efc213f643c23b1b1c249d40f47e',
     ),
     'psr/cache' => 
     array (
