@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2024-08-19 09:31$
+ * Dernière modification : $Date: 2024-11-29 15:38$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -825,6 +825,7 @@ function grr_backup($id_entry, $login_moderateur, $motivation_moderation)
 	timestamp = '".$row['timestamp']."',
 	create_by = '".$row['create_by']."',
 	beneficiaire = '".$row['beneficiaire']."',
+  beneficiaire_ext = '".$row['beneficiaire_ext']."',
 	name = '".protect_data_sql($row['name'])."',
 	type = '".$row['type']."',
 	description = '".protect_data_sql($row['description'])."',
