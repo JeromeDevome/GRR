@@ -4,7 +4,7 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
-	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs4.min.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs5.min.css">
 	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
 {% endblock %}
 
@@ -334,32 +334,332 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs4.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs5.min.js"></script>
 	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
 	<script>
 		$(function () {
 			// Summernote
-			$('#summernote').summernote()
+      $('#summernote').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
       {% for langue in liste_language %}
-        $('#mails_test_{{langue}}').summernote()
-        $('#mails_resacreation_{{langue}}').summernote()
-        $('#mails_resacreation2_{{langue}}').summernote()
-        $('#mails_resamodification_{{langue}}').summernote()
-        $('#mails_resamodification2_{{langue}}').summernote()
-        $('#mails_resasuppression_{{langue}}').summernote()
-        $('#mails_resasuppression2_{{langue}}').summernote()
-        $('#mails_resasuppression3_{{langue}}').summernote()
-        $('#mails_resamoderation_{{langue}}').summernote()
-        $('#mails_resamoderation2_{{langue}}').summernote()
-        $('#mails_resamoderation3_{{langue}}').summernote()
-        $('#mails_resamoderation4_{{langue}}').summernote()
-        $('#mails_resamoderation5_{{langue}}').summernote()
-        $('#mails_resamoderation6_{{langue}}').summernote()
-        $('#mails_retardrestitution_{{langue}}').summernote()
-        $('#mails_retardrestitution2_{{langue}}').summernote()
-        $('#mails_demandecompte_{{langue}}').summernote()
-        $('#mails_demandecompte2_{{langue}}').summernote()
-        $('#mails_demandecompte3_{{langue}}').summernote()
+        $('#mails_test_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+        $('#mails_resacreation_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+        $('#mails_resacreation2_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+        $('#mails_resamodification_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+        $('#mails_resamodification2_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+        $('#mails_resasuppression_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+        $('#mails_resasuppression2_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+        $('#mails_resasuppression3_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+        $('#mails_resamoderation_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+        $('#mails_resamoderation2_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+        $('#mails_resamoderation3_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+        $('#mails_resamoderation4_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+        $('#mails_resamoderation5_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+        $('#mails_resamoderation6_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+        $('#mails_retardrestitution_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+        $('#mails_retardrestitution2_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+        $('#mails_demandecompte_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+        $('#mails_demandecompte2_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+        $('#mails_demandecompte3_{{langue}}').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
       {% endfor %}
 
 			{%if d.enregistrement%}

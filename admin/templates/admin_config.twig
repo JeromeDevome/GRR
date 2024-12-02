@@ -5,7 +5,7 @@
 
 {% block css %}
 	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/daterangepicker/daterangepicker.css">
-	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs4.min.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs5.min.css">
 	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
 {% endblock %}
 
@@ -118,7 +118,7 @@
 						<section id="message">
 							<h4 class="page-header">{{ trad.message_perso }}</h4>
 							<p>{{ trad.message_perso_explain }}</p>
-							<textarea id="summernote" name="message_accueil" rows="10" cols="80">
+							<textarea id="summernote" name="message_accueil" class="summernote" rows="10" cols="80">
 								{{ settings.message_accueil }}
 							</textarea>
 						</section>
@@ -145,10 +145,11 @@
 	<!-- date-range-picker -->
 	<script src="../vendor/almasaeed2010/adminlte/plugins/moment/moment.min.js"></script>
 	<script src="../vendor/almasaeed2010/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
-	<script src="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs4.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs5.min.js"></script>
 	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
 	<script src="../vendor/almasaeed2010/adminlte/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
 	<script>
+
 		$(function () {
 
 			$("input[data-bootstrap-switch]").each(function(){
@@ -156,8 +157,25 @@
   			 })
 
 			// Summernote
-			$('#summernote').summernote()
-			
+			$('#summernote').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+					]
+				});
+
+
+	
 			// Plage de réservation
 			$('#reservation').daterangepicker({
 			 "locale": {
