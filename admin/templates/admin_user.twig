@@ -151,6 +151,10 @@
 
 		$(document).ready(function() {
 		    $('#tableuser').DataTable( {
+				lengthMenu: [
+					[10, 25, 50, 100, -1],
+					[10, 25, 50, 100, 'All']
+				],
 		        columnDefs: [
 					{
 			            orderable: false,
@@ -169,7 +173,7 @@
 		            selector: 'td:first-child'
 		        },
 		        order: [[ 1, 'asc' ]],
-				"responsive": true, "lengthChange": false, "autoWidth": false,
+				"responsive": true, "autoWidth": false,
 		        buttons: [
                     'copy',
                     'excel',
