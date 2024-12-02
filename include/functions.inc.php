@@ -1285,6 +1285,8 @@ function print_header_admin($day = '', $month = '', $year = '', $type_session = 
  */
 function VerifNomPrenomUser($type)
 {
+	global $page;
+
 	// ne pas prendre en compte la page my_account.php
 	global $desactive_VerifNomPrenomUser, $page;
 	if (($type == "with_session") && ($desactive_VerifNomPrenomUser != 'y') && (IsAllowedToModifyProfil()))
