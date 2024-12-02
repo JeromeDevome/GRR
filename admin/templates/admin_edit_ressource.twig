@@ -4,7 +4,7 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
-	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs4.min.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs5.min.css">
 {% endblock %}
 
 {% block content %}
@@ -235,12 +235,26 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs4.min.js?v={{d.versionGRR}}"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs5.min.js?v={{d.versionGRR}}"></script>
 	<script type="text/javascript" src="../js/functions.js?v={{d.versionGRR}}"></script>
 	<script>
 		$(function () {
-			// Summernote
-			$('#summernote').summernote()
+			$('#summernote').summernote({
+				toolbar: [
+					// [groupName, [list of button]]
+					['style', ['style']],
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']],
+					['fontname', ['fontname']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+				]
+			});
 		}); 
 	</script>
 {% endblock %}
