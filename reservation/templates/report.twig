@@ -231,7 +231,10 @@
 	<script type="text/javascript" class="init">
 		$(document).ready(function() {
 			var table = $('#example').DataTable( {
-				lengthChange: false,
+				lengthMenu: [
+					[10, 25, 50, 100, -1],
+					[10, 25, 50, 100, 'All']
+				],
 				buttons: [ 'copy', 'excel', 'csv',
 					{
 						extend: 'pdfHtml5',
