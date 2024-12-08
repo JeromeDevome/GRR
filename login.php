@@ -60,6 +60,32 @@ if(Settings::get("tokenapi") == "")
 if(Settings::get("tokenuser") == "")
 	Settings::set("tokenuser",  generationToken());
 
+if(Settings::get("idinstallation") == "")
+	Settings::set("idinstallation", uniqid('', true));
+
+// Envois stat serveur
+if($gEnvoisStatGRR == 1){
+
+	if(Settings::get("cronstat") < time()) {
+		Settings::set("cronstat",  time()+60*60*24);
+		$url = "https://grr.devome.com/API/statgrr.php?id=".Settings::get("idinstallation")."&versiongrr=".$version_grr."&versionrepo=".$versionReposite."&versionbdd=".Settings::get("version")."&versionbddprevious=".Settings::get("previousversion")."&firstversion=".Settings::get("firstversion")."&langue=".Settings::get("default_language");
+		if($gEnvoisServeur == 1)
+			$url .= "&php=".phpversion()."&moteursql=".$dbsys."&versionsql=".grr_sql_version()."&os=".preg_replace('/\s+/', '', php_uname('s'));
+
+		// Configuration du contexte HTTP
+		$context = stream_context_create([
+			'http' => [
+				'method' => 'GET',
+				'header' => "Connection: close\r\n", // Fermer la connexion immédiatement
+				'timeout' => 1, // Temps limite pour l'exécution
+			]
+		]);
+
+		// Envoyer la requête sans attendre de réponse
+		@file_get_contents($url, false, $context);
+	}
+}
+
 // User wants to be authentified
 if (isset($_POST['login']) && isset($_POST['password']))
 {
