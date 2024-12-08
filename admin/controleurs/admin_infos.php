@@ -118,7 +118,7 @@ $d['timezone'] = date_default_timezone_get();
 if($recherche_MAJ == 1)
 {
 
-	$url = "https://api.github.com/repos/JeromeDevome/GRR/releases/latest";
+	$url = "https://grr.devome.com/API/majgrr.php";
 	$opts = [
 			'http' => [
 					'method' => 'GET',
