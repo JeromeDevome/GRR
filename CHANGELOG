@@ -1,3 +1,16 @@
+Version 4.3.9 - 09/12/2024 Généré par @JeromeDevome
+[Ajout] Liste des utilisateurs : Sélecteur du nombre de ligne à afficher - 6be5b6ef - @JeromeDevome
+[Ajout] Recherche & Stat : Sélecteur du nombre de ligne à afficher - 22aeafbb - @JeromeDevome
+[Ajout] Stat serveur GRR - 4d04950a - @JeromeDevome
+[Correction] Couleurs pur les types (>Z) sur planning - 3c175540 - @JeromeDevome
+[Correction] Champ summernote dans l'administration (menu déroulant dans les champs texte) - 3be98864 - @JeromeDevome
+[Correction] Redirection vers "moncompte" pour compléter des champs - 9cce28b4 - @JeromeDevome
+[Modification] Date d'ouverture des réservations à l'installation - 1a50840e - @JeromeDevome
+[Modification] Contrôle de version GRR via serveur DEVOME - 67cac734 - @JeromeDevome
+[Modification] Mise à jour librairies JS - ae40fcaf - @JeromeDevome
+[Modification] Mise à jour symfony - 39497b35 & 00d2f4cb - @JeromeDevome
+[Modification] Mise à jour phpmailer - 6bb7d6b5 - @JeromeDevome
+
 Version 4.3.8 - 09/11/2024 Généré par @JeromeDevome
 [Correction] Selection demande de compte - c6368752 - @ynaessens
 [Correction] Champ manquant - ea10d530 - @ynaessens
@@ -37,7 +50,7 @@ Version 4.3.6 - 17/07/2024 Généré par @JeromeDevome
 [Ajout] Possibilité d'écraser des réservations sans être admin du domaine à conditions que les réservations appartiennent à l'utilisateur - ee721e00 - @JeromeDevome
 [Correction] N'affiche pas la page si la réservation a été supprimée - c9fb1928 - @ynaessens
 [Correction] Conservation du type lors d'édition ou de copie - 21855b12 - @JeromeDevome
-[Correction] Actualisation des champs additionnels  lors d'un changement de dom0000000000000000000000000000000000000000000000000aine - 043efb2a - @JeromeDevome
+[Correction] Actualisation des champs additionnels  lors d'un changement de domaine - 043efb2a - @JeromeDevome
 [Correction] Vocabulaire - b8846160 - @ynaessens
 [Correction] En cas de conflit, réserver les créneaux hors conflit - d1368d3d - @ynaessens
 [Correction] Accès des administrateurs de site à l'administration des domaines - 19a661d3 - @ynaessens
