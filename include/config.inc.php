@@ -115,6 +115,16 @@ $restaureBBD = 1;
 #Mode debug || 0: non ; 1: oui - Defaut 0
 $debug_flag = 0;
 
+#Envois donnée stat sur le GRR sur le serveur grr.devome.com || 0: non ; 1: oui - Defaut 1
+# Les données envoyés sont la version de GRR, la langue par défaut, aucune donnée personnel n'est envoyé (pas d'ip, pas de mail...), elles sont anomymes et ne peuvent faire le lien avec votre GRR
+# Vous avez le choix de le désactiver mais le laissez actif cela nous permet de savoir comment nous pouvont maintenir les versions
+$gEnvoisStatGRR = 1;
+#Envois donnée stat du serveur sur le serveur grr.devome.com || 0: non ; 1: oui - Defaut 1
+# Les données envoyés sont la version php, la version sql, l'os, aucune donnée personnel n'est envoyé (pas d'ip, pas de mail...), elles sont anomymes et ne peuvent faire le lien avec votre GRR
+# Vous avez le choix de le désactiver mais le laissez actif cela nous permet de savoir comment maintenir les versions de GRR
+# Si gEnvoisStatGRR = 0 alors dans les cas aucune donnée n'est envoyée
+$gEnvoisServeur = 1;
+
 #Rechercher des MAJ sur le serveur grr.devome.com || 0: non ; 1: oui - Defaut 1
 $recherche_MAJ = 1;
 

@@ -1215,7 +1215,14 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 			$result .= $result_inter;
 		$result_inter = '';
 	}
-	
+
+	// Mise à jour du numéro de version BDD précédent
+	$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='previousversion'");
+	if ($req == -1)
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('previousversion', '".$version_old_bdd."');");
+	else
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE='".$version_old_bdd."' WHERE NAME='previousversion';");
+
 	// Mise à jour du numéro de version
 	$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='version'");
 	if ($req == -1)
