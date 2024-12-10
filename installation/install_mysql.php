@@ -128,6 +128,8 @@ if (@file_exists($nom_fic))
                         $test .= mysqli_query($db, $req);
                         $req = "UPDATE ".$table_prefix."_setting SET value ='".$technical_support_email."' WHERE ".$table_prefix."_setting.name = 'technical_support_email' ";
                         $test .= mysqli_query($db, $req);
+						$req = "UPDATE ".$table_prefix."_setting SET value ='".$version_grr."' WHERE ".$table_prefix."_setting.name = 'firstversion' ";
+                        $test .= mysqli_query($db, $req);
                         $mdp = md5($mdp1);
                         $req = "UPDATE ".$table_prefix."_utilisateurs SET password = '".$mdp."' WHERE ".$table_prefix."_utilisateurs.login = 'ADMINISTRATEUR' ";
                         $test .= mysqli_query($db, $req); 

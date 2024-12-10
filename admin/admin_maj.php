@@ -1054,6 +1054,13 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
         $result .= "<b>Mise à jour du champs qui_peut_reserver_pour : </b><span style=\"color:green;\">Ok !</span><br /><br />";
     }
 
+	// Mise à jour du numéro de version BDD précédent
+	$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='previousversion'");
+	if ($req == -1)
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('previousversion', '".$version_old."');");
+	else
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE='".$version_old."' WHERE NAME='previousversion';");
+
     // Mise à jour du numéro de version
     $req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='version'");
     if ($req == -1)
