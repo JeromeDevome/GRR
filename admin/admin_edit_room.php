@@ -3,9 +3,9 @@
  * admin_edit_room.php
  * Interface de creation/modification des domaines et ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-10-18 10:28$
+ * Dernière modification : $Date: 2024-12-12 10:59$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -58,22 +58,6 @@ if ($booking_range<-1)
 	$booking_range = -1;
 $statut_room = isset($_POST["statut_room"]) ? "0" : "1";
 $show_fic_room = isset($_POST["show_fic_room"]) ? "y" : "n";
-if (isset($_POST["active_ressource_empruntee"]))
-	$active_ressource_empruntee = 'y';
-else
-{
-	$active_ressource_empruntee = 'n';
-	// toutes les reservations sont considerees comme restituee
-	grr_sql_query("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id = '".protect_data_sql($room)."'");
-}
-if (isset($_POST["active_cle"]))
-	$active_cle = 'y';
-else
-{
-	$active_cle = 'n';
-	// toutes les reservations sont considerees comme restituee
-	grr_sql_query("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id = '".protect_data_sql($room)."'");
-}
 $active_participant = isset($_POST["active_participant"]) ? $_POST["active_participant"] : NULL;
 $picture_room = isset($_POST["picture_room"]) ? clean_input($_POST["picture_room"]) : NULL;
 $comment_room = isset($_POST["comment_room"]) ? $_POST["comment_room"] : NULL;
@@ -177,6 +161,22 @@ if ((!empty($room)) || (isset($area_id)))
 	// Enregistrement d'une ressource
 	if (isset($change_room))
 	{
+    if (isset($_POST["active_cle"]))
+      $active_cle = 'y';
+    else
+    {
+      $active_cle = 'n';
+      // toutes les clés sont considerees comme restituees
+      grr_sql_command("update ".TABLE_PREFIX."_entry set clef = 0 where room_id ='$room'");
+    }
+    if (isset($_POST["active_ressource_empruntee"]))
+      $active_ressource_empruntee = 'y';
+    else
+    {
+      $active_ressource_empruntee = 'n';
+      // toutes les reservations sont considerees comme restituees
+      grr_sql_command("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id ='$room'");
+    }
 		if (isset($_POST['sup_img']))
         {
             $dest = '../images/';
