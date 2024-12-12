@@ -2,7 +2,7 @@
 /**
  * admin_edit_room.php
  * Script de création/modification des ressources de l'application GRR
- * Dernière modification : $Date: 2023-09-13 16:29$
+ * Dernière modification : $Date: 2024-12-12 11:55$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens
  * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -45,7 +45,7 @@ if ($max_booking<-1)
 	$max_booking = -1;
 $statut_room = isset($_POST["statut_room"]) ? "0" : "1";
 $show_fic_room = isset($_POST["show_fic_room"]) ? "y" : "n";
-if (isset($_POST["active_ressource_empruntee"]))
+/*if (isset($_POST["active_ressource_empruntee"]))
 	$active_ressource_empruntee = 'y';
 else
 {
@@ -61,7 +61,7 @@ else
 	// toutes les reservations sont considerees comme restituee
 	grr_sql_query("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id = '".$room."'");
 }
-
+*/
 $active_participant = isset($_POST["active_participant"]) ? $_POST["active_participant"] : NULL;
 $picture_room = isset($_POST["picture_room"]) ? $_POST["picture_room"] : '';
 $comment_room = isset($_POST["comment_room"]) ? $_POST["comment_room"] : NULL;
@@ -142,6 +142,22 @@ if (isset($change_room))
 		$allow_action_in_past = 'n';
 	if ($dont_allow_modify == '')
 		$dont_allow_modify = 'n';
+  if (isset($_POST["active_cle"]))
+    $active_cle = 'y';
+  else
+  {
+    $active_cle = 'n';
+    // toutes les clés sont considerees comme restituees
+    grr_sql_command("update ".TABLE_PREFIX."_entry set clef = 0 where room_id ='$room'");
+  }
+  if (isset($_POST["active_ressource_empruntee"]))
+    $active_ressource_empruntee = 'y';
+  else
+  {
+    $active_ressource_empruntee = 'n';
+    // toutes les reservations sont considerees comme restituees
+    grr_sql_command("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id ='$room'");
+  }
 	if ((isset($room)) && !((isset($action) && ($action == "duplique_room"))))
 	{
 		$sql = "UPDATE ".TABLE_PREFIX."_room SET
