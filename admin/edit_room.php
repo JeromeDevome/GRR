@@ -3,7 +3,7 @@
  * ./admin/edit_room.php
  * Interface de creation/modification des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-09 11:56$
+ * Dernière modification : $Date: 2024-12-13 18:18$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -24,23 +24,7 @@ if (Settings::get("module_multisite") == "Oui")
   $id_site = (int)getFormVar("id_site","int",-1);
 $action = clean_input(getFormVar("action","string"));
 $room = (int)getFormVar("room","int",-1);
-if (isset($_POST["active_cle"]))
-  $active_cle = 'y';
-else
-{
-  $active_cle = 'n';
-  // toutes les clés sont considerees comme restituees
-  grr_sql_command("update ".TABLE_PREFIX."_entry set clef = 0 where room_id =? ","i",[$room]);
-}
 $active_participant = (int)getFormVar("active_participant","int",0);
-if (isset($_POST["active_ressource_empruntee"]))
-  $active_ressource_empruntee = 'y';
-else
-{
-  $active_ressource_empruntee = 'n';
-  // toutes les reservations sont considerees comme restituees
-  grr_sql_command("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id =? ","i",[$room]);
-}
 $allow_action_in_past  = isset($_POST["allow_action_in_past"]) ? "y" : NULL;
 $area_id = (int)getFormVar("area_id","int",-1);
 $booking_range = (int)getFormVar("booking_range","int");
@@ -54,11 +38,11 @@ if (isset($_POST["change_room_and_back"]))
   $change_room = "yes";
   $change_done = "yes";
 }
-$comment_room = clean_input(getFormVar("comment_room","string"));
+$comment_room = getFormVar("comment_room","string");
 $delais_min_resa_room = (int)getFormVar("delais_min_resa_room","int");
 $delais_max_resa_room = (int)getFormVar("delais_max_resa_room","int");
 $delais_option_reservation = (int)getFormVar("delais_option_reservation","int");
-$description = clean_input(getFormVar("description","string"));
+$description = getFormVar("description","string");
 $dont_allow_modify  = isset($_POST["dont_allow_modify"]) ? "y" : NULL;
 $id_area = (int)getFormVar("id_area",'int');
 $max_booking = (int)getFormVar("max_booking","int");
@@ -75,7 +59,7 @@ else
 $picture_room = getFormVar("picture_room","string");
 $qui_peut_reserver_pour  = (int)getFormVar("qui_peut_reserver_pour","int");
 $retour_page = clean_input(getFormVar("retour_page","string"));
-$room_name = clean_input(getFormVar("room_name","string"));
+$room_name = getFormVar("room_name","string");
 $room_order = (int)getFormVar("room_order","int",0);
 $show_comment = isset($_POST["show_comment"]) ? "y" : "n";
 $show_fic_room = isset($_POST["show_fic_room"]) ? "y" : "n";
@@ -84,17 +68,7 @@ $type_affichage_reser = (int)getFormVar("type_affichage_reser","int");
 $who_can_book = (int)getFormVar("who_can_book","int",1);
 $who_can_see = (int)getFormVar("who_can_see","int");
 
-/*
-$access = isset($_POST["access"]) ? $_POST["access"] : NULL;
-$ip_adr = isset($_POST["ip_adr"]) ? clean_input($_POST["ip_adr"]) : NULL;
-
-
-$number_periodes = isset($_POST["number_periodes"]) ? $_POST["number_periodes"] : NULL;
-$retour_resa_obli = isset($_POST["retour_resa_obli"]) ? $_POST["retour_resa_obli"] : NULL;
-*/
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES): "./admin_accueil.php";
-
-
 // memorisation du chemin de retour
 if (!isset($retour_page))
 {
@@ -155,7 +129,8 @@ if ($room != -1){
     fatal_error(0, get_vocab('error_room') . $room . get_vocab('not_found'));
   $Room = grr_sql_row_keyed($res, 0);
   grr_sql_free($res);
-  $area_id = $Room['area_id'];
+  if($area_id == -1) 
+    $area_id = $Room['area_id'];
   $area_name = grr_sql_query1("select area_name from ".TABLE_PREFIX."_area where id=? ","i",[$area_id]);
   if ($action == "dupliquer")
     $titre_action = get_vocab("duplique_ressource");
@@ -225,6 +200,22 @@ if (($room != -1) || (isset($area_id)))
   // Enregistrement d'une ressource
   if (isset($change_room))
   {
+    if (isset($_POST["active_cle"]))
+      $active_cle = 'y';
+    else
+    {
+      $active_cle = 'n';
+      // toutes les clés sont considerees comme restituees
+      grr_sql_command("update ".TABLE_PREFIX."_entry set clef = 0 where room_id =? ","i",[$room]);
+    }
+    if (isset($_POST["active_ressource_empruntee"]))
+      $active_ressource_empruntee = 'y';
+    else
+    {
+      $active_ressource_empruntee = 'n';
+      // toutes les reservations sont considerees comme restituees
+      grr_sql_command("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id =? ","i",[$room]);
+    }
     if (isset($_POST['sup_img']))
     {
       $dest = '../images/';
@@ -438,6 +429,16 @@ if (($room != -1) || (isset($area_id)))
         $ok = 'no';
     }
     $msg .= get_vocab("message_records");
+    if(!isset($ok)) // enregistrement réussi, on recharge les valeurs
+    {
+      $res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_room WHERE id=? ","i",[$room]);
+      if (!$res)
+        fatal_error(0, get_vocab('error_room') . $room . get_vocab('not_found'));
+      $Room = grr_sql_row_keyed($res, 0);
+      grr_sql_free($res);
+      $area_id = $Room['area_id'];
+      $area_name = grr_sql_query1("select area_name from ".TABLE_PREFIX."_area where id=? ","i",[$area_id]);
+    }
   }
 }
 // Si pas de probleme, retour à la page d'accueil apres enregistrement
@@ -461,7 +462,9 @@ if ((isset($change_done)) && (!isset($ok)))
 start_page_w_header("", "", "", $type="with_session");
 /*print_r($_POST);
 echo "<br/>";
-print_r($_GET);*/
+print_r($_GET);
+echo "<br/>";
+print_r($Room);*/
 affiche_pop_up($msg,"admin");
 include "admin_col_gauche2.php";
 echo "<div class=\"col-md-9 col-sm-8 col-xs-12\">";
