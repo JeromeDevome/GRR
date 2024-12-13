@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-08-19 15:35$
+ * Dernière modification : $Date: 2024-12-13 16:41$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author 	  Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
@@ -1311,9 +1311,6 @@ echo '<input type="hidden" name="edit_type" value="'.$edit_type.'" />';
 echo '<input type="hidden" name="page" value="'.$page.'" />';
 echo '<input type="hidden" name="room_back" value="'.$room_back.'" />';
 echo '<input type="hidden" name="page_ret" value="'.$page_ret.'" />';
-if (!isset($statut_entry) || ($statut_entry == ""))
-	$statut_entry = "-";
-echo '<input type="hidden" name="statut_entry" value="'.$statut_entry.'" />'.PHP_EOL;
 echo '<input type="hidden" name="create_by" value="'.$create_by.'" />'.PHP_EOL;
 if (($id!=0)&&(!isset($_GET["copier"])))
     echo '<input type="hidden" name="id" value="'.$id.'" />'.PHP_EOL;
