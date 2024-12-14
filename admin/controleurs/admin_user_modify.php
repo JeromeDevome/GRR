@@ -138,6 +138,21 @@ if ($valid == "yes")
 					}
 					else
 					{
+						if(empty($settings->get("default_site")))
+							$defautSite = 0;
+						else
+							$defautSite = $settings->get("default_site");
+
+						if(empty($settings->get("default_area")))
+							$defautDomaine = 0;
+						else
+							$defautDomaine = $settings->get("default_area");
+
+						if(empty($settings->get("default_room")))
+							$defautRessource = 0;
+						else
+							$defautRessource = $settings->get("default_room");
+
 						$sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET
 						nom='".protect_data_sql($reg_nom)."',
 						prenom='".protect_data_sql($reg_prenom)."',
@@ -147,9 +162,9 @@ if ($valid == "yes")
 						statut='".protect_data_sql($reg_statut)."',
 						email='".protect_data_sql($reg_email)."',
 						etat='".protect_data_sql($reg_etat)."',
-						default_site = '".$settings->get("default_site")."',
-						default_area = '".$settings->get("default_area")."',
-						default_room = '".$settings->get("default_room")."',
+						default_site = '".$defautSite."',
+						default_area = '".$defautDomaine."',
+						default_room = '".$defautRessource."',
 						default_style = '".$settings->get("default_css")."',
 						default_list_type = '".$settings->get("area_list_format")."',
 						default_language = '".$settings->get("default_language")."',";
