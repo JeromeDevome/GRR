@@ -128,6 +128,9 @@ $gEnvoisServeur = 1;
 #Rechercher des MAJ sur le serveur grr.devome.com || 0: non ; 1: oui - Defaut 1
 $recherche_MAJ = 1;
 
+# Identifiant du flux de news || Defaut Hkq45qzeuy74cw54sdf7
+$gFluxNewsDevome = "Hkq45qzeuy74cw54sdf7";
+
 #Activer la possibilité d'utiliser l'option forcer MAJ || 0: non ; 1: oui - Defaut 1
 $forcer_MAJ = 1;
 

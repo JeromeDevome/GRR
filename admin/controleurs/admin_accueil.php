@@ -49,5 +49,19 @@ get_vocab_admin("created_by");
 get_vocab_admin("nom_beneficiaire");
 list($trad['dNombreModeration'], $trad['dListeModeration'])  = AdminFonctions::ReservationsAModerer(getUserName());
 
+// Widget news devome
+$url = "https://grr.devome.com/API/information.php?flux=".$gFluxNewsDevome;
+$opts = [
+        'http' => [
+                'method' => 'GET',
+                'header' => [
+                        'User-Agent: PHP'
+                ]
+        ]
+];
+$ctx = stream_context_create($opts);
+$d['newsDevome'] = @file_get_contents( $url, 0, $ctx );
+
+//
 echo $twig->render('admin_accueil.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 ?>
