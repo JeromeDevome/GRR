@@ -53,7 +53,7 @@ CREATE TABLE grr_j_useradmin_site (login varchar(190) CHARACTER SET utf8mb4 COLL
 DROP TABLE IF EXISTS grr_correspondance_statut;
 CREATE TABLE grr_correspondance_statut (id int(11) NOT NULL auto_increment, code_fonction varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, libelle_fonction varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, statut_grr varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,  PRIMARY KEY (id));
 DROP TABLE IF EXISTS grr_page;
-CREATE TABLE grr_page ( nom varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, titre varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '', valeur longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, PRIMARY KEY  (`nom`), systeme tinyint(1) NOT NULL DEFAULT '0');
+CREATE TABLE grr_page ( nom varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, titre varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '', valeur longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, systeme tinyint(1) NOT NULL DEFAULT '0', statutmini varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, lien varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL, nouveauonglet tinyint(1) NOT NULL DEFAULT '1', ordre smallint(6) NOT NULL DEFAULT '0', emplacement smallint(6) NOT NULL DEFAULT '1', PRIMARY KEY  (`nom`));
 DROP TABLE IF EXISTS grr_modulesext;
 CREATE TABLE grr_modulesext ( nom varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL, actif tinyint(1) NOT NULL DEFAULT '0', version INT(11) NOT NULL, PRIMARY KEY  (`nom`));
 DROP TABLE IF EXISTS grr_participants;

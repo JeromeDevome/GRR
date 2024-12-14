@@ -197,6 +197,8 @@ if (Settings::get("webmaster_email") != "")
 		$d['contactAdmin'] = "[".$lien."] ";
 }
 
+$d['liensPerso2'] = liensPerso(2, $d['levelUser']);
+
 $d['lienGRR'] = $grr_devel_url;
 
 // Sélection du template

@@ -83,6 +83,8 @@ $AllSettings = Settings::getAll();
 $d['gNomUser'] = getUserName();
 $d['versionGRR'] = $version_grr;
 
+$d['liensPerso1'] = liensPerso(1, $d['levelUser']);
+
 get_vocab_admin("admin");
 get_vocab_admin("manage_my_account");
 get_vocab_admin("report");

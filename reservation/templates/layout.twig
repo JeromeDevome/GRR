@@ -53,6 +53,7 @@
 					<a onclick="charger();" href="{{ d.urlLangue }}?{{ d.paramUrl |raw }}&amp;default_language=es-es"><img src="./img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>
 					{% if d.lienDeconnexion %}<br /><a href="./compte/compte.php?pc=moncompte&amp;{{ d.paramUrl |raw }}">{{ d.nomUtilisateur }} - {{ trad.manage_my_account }}</a>{% endif %}
 					{% if d.accesStats %}<br /><a href="./app.php?p=report">{{ trad.report }}</a>{% endif %}
+					{{ d.liensPerso1|raw }}
 					{{ d.lienDeconnexion|raw }}
 					{{ d.lienConnexion|raw }}
 				</div>

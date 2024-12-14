@@ -102,6 +102,7 @@
                 <h4><a href="app.php?p=creationcompte" class="btn btn-primary">{{trad.crea_compte_inscrivez}}</a></h4><br><br>
             {% endif %}
 
+            {{ d.liensPerso2|raw }}
             <p>{{d.contactAdmin|raw}} [<a href="app.php?p=page&page=cgu" target="_blank">{{trad.cgu}}</a>]</p>
 
             <a href="javascript:history.back()">{{trad.previous}} - <b>{{settings.company}}</b></a>

@@ -3273,6 +3273,45 @@ function getWritable($user, $id)
         }
     }
 }
+// LiensPerso
+function liensPerso($emplacement, $statutUser)
+{
+	$lienPerso = "";
+
+	$res = grr_sql_query("SELECT nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE emplacement = '".$emplacement."' ORDER BY ordre ASC;");
+	if (!$res)
+		fatal_error(0, grr_sql_error());
+	
+	if (grr_sql_count($res) != 0)
+	{
+		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+		{	
+			if(
+				($row[4] =='nc') || // NC on affiche à tous
+				($row[4] =='visiteur' && $statutUser >= 1 ) ||
+				($row[4] =='utilisateur' && $statutUser >= 2 ) ||
+				($row[4] =='gestionnaire_utilisateur' && $statutUser >= 3 ) ||
+				($row[4] =='administrateur' && $statutUser >= 6 ) 
+			)
+			{
+				if($lienPerso != "")
+					$lienPerso .= " - ";
+
+				$lienPerso .= "<a href='".$row[5]."' ";
+					if($row[6] == 1)
+						$lienPerso .= "target='_blank'";
+				$lienPerso .= ">".$row[1]."</a>";
+			}
+		}
+	}
+
+	if($lienPerso != "")
+		$lienPerso = "<br>".$lienPerso;
+
+
+	return $lienPerso;
+}
+
 //auth_visiteur($user,$id_room)
 //Determine si un visiteur peut réserver une ressource
 //$user - l'identifiant de l'utilisateur

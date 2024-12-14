@@ -97,6 +97,7 @@ $vocab['admin_menu_user'] = "Users and access";
 $vocab['admin_menu_various'] = "Miscellaneous";
 $vocab['admin_nettoyage_bdd'] = "Clean DB";
 $vocab['admin_overload'] = "Additional fields management.";
+$vocab['admin_page'] = "Miscellaneous pages";
 $vocab['admin_purge_accounts'] = "Purge accounts and associated reservations";
 $vocab['admin_purge_accounts_confirm'] = "WARNING : This action will erase all users (Except general administrators), external to GRR and their privileges. Reservations associated with these accounts will not be deleted. Are you sure you want to perform this action ?";
 $vocab['admin_purge_accounts_confirm2'] = "WARNING : This action will erase all users (Except general administrators), external to GRR and their privileges, as well as all associated reservations (past and future). Are you sure you want to perform this action ?";

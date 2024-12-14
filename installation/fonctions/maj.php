@@ -1209,6 +1209,12 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('login_logo', '1');");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('login_nom', '1');");
 
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD `statutmini` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD `lien` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL;");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD `nouveauonglet` TINYINT(1) NOT NULL DEFAULT '1';");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD `ordre` SMALLINT(6) NOT NULL DEFAULT '0';");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD `emplacement` SMALLINT(6) NOT NULL DEFAULT '1';");
+
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
 		else

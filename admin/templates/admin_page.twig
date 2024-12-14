@@ -1,0 +1,215 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col col-xs-12">
+			<h4>Menu haut droit</h4>
+
+			<table class="table table-striped">
+				<tr>
+					<th>{{trad.fieldname}}</th>
+					<th>Statut</th>
+					<th>{{trad.link}}</th>
+					<th>Un autre onglet</th>
+					<th>Ordre</th>
+					<th colspan="2">{{trad.action}}</th>
+				</tr>
+
+				<form method="post" action="admin.php?p=admin_page" >
+					<input type="hidden" name="p" value="admin_page" />
+					<input type="hidden" name="action" value="add" />
+					<input type="hidden" name="emplacement" value="1" />
+					<tr>
+						<td><input type="text" name="titre" size="30" class="form-control" /></td>
+						<td>
+							<select name="statutmini" id="select_auth_mode" class="form-control" size="1">
+								<option value="nc">{{ trad.statut_non_connecte }}</option>
+								<option value="visiteur" selected>{{ trad.statut_visitor }}</option>
+								<option value="utilisateur">{{ trad.statut_user }}</option>
+								<option value="gestionnaire_utilisateur">{{ trad.statut_user_administrator }}</option>
+								<option value="administrateur">{{ trad.statut_administrator }}</option>
+							</select>
+						</td>
+						<td><input type="text" name="lien" size="30" class="form-control" /></td>
+						<td><input type="checkbox" id="nouveauonglet" name="nouveauonglet" value="1" checked /></td>
+						<td><input type="number" name="ordre" size="3" value ="0" class="form-control" /></td>
+						<td colspan="2"><input type="submit" name="submit" value="{{ trad.add }}" class="btn bg-green" /></td>
+					</tr>
+				</form>
+
+				{% for page in lesPages %}
+					{% if page.emplacement == 1 %}
+						<tr>
+							<form method="post" action="?p=admin_page">
+								<input type="hidden" name="p" value="admin_overload" />
+								<input type="hidden" name="nom" value="{{page.nom}}" />
+								<input type="hidden" name="action" value="change" />
+
+								<td><input type="text" name="titre" value="{{ page.titre }}" class="form-control"></td>
+								<td>
+									<select name="statutmini" class="form-control" size="1">
+										<option value="nc" {% if page.statutmini == 'nc' %} selected {% endif %}>{{ trad.statut_non_connecte }}</option>
+										<option value="visiteur" {% if page.statutmini == 'visiteur' %} selected {% endif %}>{{ trad.statut_visitor }}</option>
+										<option value="utilisateur" {% if page.statutmini == 'utilisateur' %} selected {% endif %}>{{ trad.statut_user }}</option>
+										<option value="gestionnaire_utilisateur" {% if page.statutmini == 'gestionnaire_utilisateur' %} selected {% endif %}>{{ trad.statut_user_administrator }}</option>
+										<option value="administrateur" {% if page.statutmini == 'administrateur' %} selected {% endif %}>{{ trad.statut_administrator }}</option>
+									</select>
+								</td>
+								<td><input type="text" name="lien" value="{{ page.lien }}" class="form-control"></td>
+								
+								<td><input type="checkbox" id="nouveauonglet" name="nouveauonglet" value="1"  {% if page.nouveauonglet == 1 %} checked {% endif %}></td>
+								<td><div><input type="number" name="ordre" size="2" value="{{ page.ordre }}" class="form-control" /></div></td>
+								<td><button type="submit" class="btn btn-info btn-md"><i class="icon fa fa-check"></i></button></td>
+							</form>	
+							<form method="post" id="supPage{{page.nom}}" action="?p=admin_page">
+								<input type="hidden" name="p" value="admin_page" />
+								<input type="hidden" name="nom" value="{{page.nom}}" />
+								<input type="hidden" name="action" value="delete" />
+								<td><button type="button" class="btn btn-danger btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="{{trad.confirm_del}} : {{page.titre}}" data-idsup="{{ page.nom }}"><i class="icon fa fa-trash"></i></button></td>
+							</form>	
+						</tr>
+					{% endif %}
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col col-xs-12">
+			<h4>Page de connexion</h4>
+
+			<table class="table table-striped">
+				<tr>
+					<th>{{trad.fieldname}}</th>
+					<th>Statut</th>
+					<th>{{trad.link}}</th>
+					<th>Un autre onglet</th>
+					<th>Ordre</th>
+					<th colspan="2">{{trad.action}}</th>
+				</tr>
+
+				<form method="post" action="admin.php?p=admin_page" >
+					<input type="hidden" name="p" value="admin_page" />
+					<input type="hidden" name="action" value="add" />
+					<input type="hidden" name="emplacement" value="2" />
+					<tr>
+						<td><input type="text" name="titre" size="30" class="form-control" /></td>
+						<td>
+							<select name="statutmini" id="select_auth_mode" class="form-control" size="1">
+								<option value="nc" selected>{{ trad.statut_non_connecte }}</option>
+								<!--<option value="visiteur" >{{ trad.statut_visitor }}</option>
+								<option value="utilisateur">{{ trad.statut_user }}</option>
+								<option value="gestionnaire_utilisateur">{{ trad.statut_user_administrator }}</option>
+								<option value="administrateur">{{ trad.statut_administrator }}</option>-->
+							</select>
+						</td>
+						<td><input type="text" name="lien" size="30" class="form-control" /></td>
+						<td><input type="checkbox" id="nouveauonglet" name="nouveauonglet" value="1" checked /></td>
+						<td><input type="number" name="ordre" size="3" value ="0" class="form-control" /></td>
+						<td colspan="2"><input type="submit" name="submit" value="{{ trad.add }}" class="btn bg-green" /></td>
+					</tr>
+				</form>
+
+				{% for page in lesPages %}
+					{% if page.emplacement == 2 %}
+						<tr>
+							<form method="post" action="?p=admin_page">
+								<input type="hidden" name="p" value="admin_overload" />
+								<input type="hidden" name="nom" value="{{page.nom}}" />
+								<input type="hidden" name="action" value="change" />
+
+								<td><input type="text" name="titre" value="{{ page.titre }}" class="form-control"></td>
+								<td>
+									<select name="statutmini" class="form-control" size="1">
+										<option value="nc" {% if page.statutmini == 'nc' %} selected {% endif %}>{{ trad.statut_non_connecte }}</option>
+									<!--<option value="visiteur" {% if page.statutmini == 'visiteur' %} selected {% endif %}>{{ trad.statut_visitor }}</option>
+										<option value="utilisateur" {% if page.statutmini == 'utilisateur' %} selected {% endif %}>{{ trad.statut_user }}</option>
+										<option value="gestionnaire_utilisateur" {% if page.statutmini == 'gestionnaire_utilisateur' %} selected {% endif %}>{{ trad.statut_user_administrator }}</option>
+										<option value="administrateur" {% if page.statutmini == 'administrateur' %} selected {% endif %}>{{ trad.statut_administrator }}</option>-->
+									</select>
+								</td>
+								<td><input type="text" name="lien" value="{{ page.lien }}" class="form-control"></td>
+								
+								<td><input type="checkbox" id="nouveauonglet" name="nouveauonglet" value="1"  {% if page.nouveauonglet == 1 %} checked {% endif %}></td>
+								<td><div><input type="number" name="ordre" size="2" value="{{ page.ordre }}" class="form-control" /></div></td>
+								<td><button type="submit" class="btn btn-info btn-md"><i class="icon fa fa-check"></i></button></td>
+							</form>	
+							<form method="post" id="supPage{{page.nom}}" action="?p=admin_page">
+								<input type="hidden" name="p" value="admin_page" />
+								<input type="hidden" name="nom" value="{{page.nom}}" />
+								<input type="hidden" name="action" value="delete" />
+								<td><button type="button" class="btn btn-danger btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="{{trad.confirm_del}} : {{page.titre}}" data-idsup="{{ page.nom }}"><i class="icon fa fa-trash"></i></button></td>
+							</form>	
+						</tr>
+					{% endif %}
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+
+
+	<!-- popup modal -->
+	<div class="modal fade" id="modal-warning" style="display: none;" aria-hidden="true">
+		<form action="?p=admin_page" id="formmodal">
+		  <div class="modal-dialog">
+			<div class="modal-content bg-warning">
+			  <div class="modal-header">
+				<h4 class="modal-title">{{trad.confirm_del}}</h4>
+				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">×</span>
+				</button>
+			  </div>
+			  <div class="modal-body">
+				<span class="modaltexte" id="modaltexte"></span><span class="modalidsup" id="modalidsup" hidden></span>
+			  </div>
+			  <div class="modal-footer justify-content-between">
+				  <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">{{trad.NO}}</button>
+				  <button type="submit" id="liensup" class="btn btn-outline-dark">{{trad.YES}}</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</form>
+	  </div><!-- /.modal -->
+
+{% endblock %}
+
+{% block javascript %}
+	<script>
+		// Modal
+		$('#modal-warning').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget) // Button that triggered the modal
+			var idasup = button.data('idsup')// Extract info from data-* attributes
+			var texte = button.data('texte')
+		    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+		    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+		    var modal = $(this)
+		    modal.find('.modalidsup').text(idasup)
+			modal.find('.modaltexte').text(texte)
+		})
+
+		$(function(){
+			$('#formmodal').submit(function(e) {
+			  e.preventDefault()
+			  var $form = $(this)
+			  var v=document.getElementById('modalidsup').innerHTML
+			  $.post($form.attr('action'), $form.serialize())
+			  .done(function(data) {
+				$('#html').html(data);
+				$('#modal-warning').modal('hide');
+				//document.location.href='?p=admin_overload&action=delete&id_overload='+v+';
+				document.getElementById("supPage"+v).submit(); 
+			  })
+			  .fail(function() {
+				alert('Une erreur est survenue : GRRJS')
+			  })
+			})
+		})
+	</script>
+{% endblock %}

@@ -98,6 +98,7 @@ $vocab['admin_menu_user'] = "Benutzer und Zugriff";
 $vocab['admin_menu_various'] = "Verschiedenes";
 $vocab['admin_nettoyage_bdd'] = "Nettoyage BDD"; // A traduire
 $vocab['admin_overload'] = "eigene Felder";
+$vocab['admin_page'] = "Seiten diverse";
 $vocab['admin_purge_accounts'] = "Purge des comptes et des réservations associées";// A traduire
 $vocab['admin_purge_accounts_confirm'] = "ATTENTION : Cette action va effacer tous les utilisateurs (sauf les administrateurs généraux), externes à GRR et leurs privilèges. Les réservations associées à ces comptes ne seront pas supprimées. Etes-vous certain de vouloir effectuer cette action ?"; // A traduire
 $vocab['admin_purge_accounts_confirm2'] = "ATTENTION : Cette action va effacer tous les utilisateurs (sauf les administrateurs généraux), externes à GRR et leurs privilèges, ainsi que toutes les réservations associées (passées et à venir). Etes-vous certain de vouloir effectuer cette action ?"; // A traduire
