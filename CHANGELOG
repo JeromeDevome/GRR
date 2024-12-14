@@ -1,4 +1,91 @@
-Version 4.3.3 - En développement
+Version 4.4.0 - En cours de développement
+
+Version 4.3.9 - 09/12/2024 Généré par @JeromeDevome
+[Ajout] Liste des utilisateurs : Sélecteur du nombre de ligne à afficher - 6be5b6ef - @JeromeDevome
+[Ajout] Recherche & Stat : Sélecteur du nombre de ligne à afficher - 22aeafbb - @JeromeDevome
+[Ajout] Stat serveur GRR - 4d04950a - @JeromeDevome
+[Correction] Couleurs pur les types (>Z) sur planning - 3c175540 - @JeromeDevome
+[Correction] Champ summernote dans l'administration (menu déroulant dans les champs texte) - 3be98864 - @JeromeDevome
+[Correction] Redirection vers "moncompte" pour compléter des champs - 9cce28b4 - @JeromeDevome
+[Modification] Date d'ouverture des réservations à l'installation - 1a50840e - @JeromeDevome
+[Modification] Contrôle de version GRR via serveur DEVOME - 67cac734 - @JeromeDevome
+[Modification] Mise à jour librairies JS - ae40fcaf - @JeromeDevome
+[Modification] Mise à jour symfony - 39497b35 & 00d2f4cb - @JeromeDevome
+[Modification] Mise à jour phpmailer - 6bb7d6b5 - @JeromeDevome
+
+Version 4.3.8 - 09/11/2024 Généré par @JeromeDevome
+[Correction] Selection demande de compte - c6368752 - @ynaessens
+[Correction] Champ manquant - ea10d530 - @ynaessens
+[Correction] Numéro de version BDD lors de l'installation - a8221546 - @JeromeDevome
+[Correction] Création de compte si valeur defaut null - 78b0e701 - @JeromeDevome
+[Correction] Liste déroulante des zones pour les vacances scolaires - 168bc3a2 - @sdelcroix
+[Correction] Masquer la description complète - 97a1521f - @JeromeDevome
+[Correction] Message : Deux reservations ont le même ID lors d'une base corrompue - 97a1521f - @jfsenechal
+[Modification] Uptade symfony, twig, tcpdf - a8221546 - @JeromeDevome
+
+
+Version 4.3.7 - 13/10/2024 Généré par @JeromeDevome
+[Ajout] Demande de compte, choix : Login = E-Mail - ed1c288f - @JeromeDevome
+[Ajout] Warning dans la gestion des email si envois de mail désactivé - 990215d6 - @JeromeDevome
+[Ajout] Lien dans l'administration vers la documentation en ligne - ff93ea41 - @JeromeDevome
+[Ajout] Paramétrage de la complexité du mot de passe - 5134ddb8 - @JeromeDevome
+[Correction] Affichage des réservations finissant le dernier jour du mois - e6a5c723 - @ynaessens
+[Correction] Affichage de la date de fin de périodicité dans les mails - b54e9fd9 - @JeromeDevome
+[Correction] Affichage de page édition des utilisateurs - 72def5c1 - @JeromeDevome
+[Correction] Lien thème couleur personnalisée - 0a938bcf - @JeromeDevome
+[Correction] Contrôle accès page month_all - f55c1cc7 - @JeromeDevome
+[Correction] Confirmation suppression réservation - 9c2d836c - @JeromeDevome
+[Correction] Taille champ login dans les groupes - 8f9239d7 - @JeromeDevome
+[Correction] Valeur par défaut pour les nouveaux utilisateurs - e1e64289 - @JeromeDevome
+[Correction] Vocabulaire et traduction - 805e51e3 & ea935564 - @JeromeDevome
+[Correction] Type de réservations: Choix de la couleur à la création du type - 36d12aae - @JeromeDevome
+[Correction] Interdiction des espaces dans l'identifiant via l'import - d0d92d00 - @JeromeDevome
+[Correction] Nom du champ URL déconnexion - 0a767864 - @JeromeDevome
+[Modification] Affichage des paramètres serveur de mail - 0a9299fd - @JeromeDevome
+[Modification] Type de réservations: Limitation à la taille du champ est obligation de le remplir - 45985e28 - @JeromeDevome
+[Modification] L'ordre des réservations à modérer est selon la date de début - 650b4773 - @JeromeDevome
+[Modification] Uptade symfony - 82fbfc65 - @JeromeDevome
+[Modification] Update phpmailer and tcpdf - a210495a - @JeromeDevome
+
+Version 4.3.6 - 17/07/2024 Généré par @JeromeDevome
+[Ajout] Changer l'état d'un utilisateur - bc8d8b35 - @JeromeDevome
+[Ajout] Possibilité d'écraser des réservations sans être admin du domaine à conditions que les réservations appartiennent à l'utilisateur - ee721e00 - @JeromeDevome
+[Correction] N'affiche pas la page si la réservation a été supprimée - c9fb1928 - @ynaessens
+[Correction] Conservation du type lors d'édition ou de copie - 21855b12 - @JeromeDevome
+[Correction] Actualisation des champs additionnels  lors d'un changement de domaine - 043efb2a - @JeromeDevome
+[Correction] Vocabulaire - b8846160 - @ynaessens
+[Correction] En cas de conflit, réserver les créneaux hors conflit - d1368d3d - @ynaessens
+[Correction] Accès des administrateurs de site à l'administration des domaines - 19a661d3 - @ynaessens
+[Correction] Accès des administrateurs de site à la duplication des domaines - 95b49462 - @ynaessens
+[Correction] Accès des gestionnaires de ressources à la modification des ressources - d6e5cba2 - @ynaessens
+[Correction] Prise en charge des adresses IPv6 - b17e1d87 - @ynaessens
+[Modification] Nom logo aléatoire, problème de cache - 09d4aea3 - @JeromeDevome
+[Modification] Mise à jour symfony - 80d2cbf7 - @JeromeDevome
+[Modification] Mise à jour JS admin - c525737e - @JeromeDevome
+
+Version 4.3.5 - 12/06/2024 Généré par @JeromeDevome
+[Ajout] Variable date de fin pour les mails - a2bc3831 - @JeromeDevome
+[Ajout] Variable URL de la réservation pour les mails - c77702c8 - @JeromeDevome
+[Correction] Accès sur la vue journalière - dcae040a - @JeromeDevome
+[Correction] Warning PHP vue réservation - 54852e14 - @JeromeDevome
+[Correction] Vocabulaire - a6408a7b & f6a2a31a - @ynaessens
+[Modification] Header du mail - c94dc4fb- @ynaessens
+[Modification] Mise à jour de twig - 0934fcba - @JeromeDevome
+[Modification] Mise à jour symfony - a343823d - @JeromeDevome
+
+
+Version 4.3.4 - 06/05/2024 Généré par @JeromeDevome
+[Ajout] Nouveau Hook pour module externe - 7011a1a3 - @JeromeDevome
+[Correction] Affiche du html dans le champ brêve description - 23c683c0 - @JeromeDevome
+[Correction] Mise à jour GRR 4.3.0 - d15719ff - @JeromeDevome
+[Correction] Affichage resa compact - fa332a49 - @JeromeDevome
+[Correction] Modification des réservations avec périodicité - 2273a583 - @JeromeDevome
+[Modification] Optimisation suite à 4.3.0 (202be69e) - a700ad79 - @JeromeDevome
+[Modification] Ajout traduction - 5b8b2ddb - @JeromeDevome
+[Modification] Mise à jour des dépendances PHP - fb4f2141 - @JeromeDevome
+
+
+Version 4.3.3 - 31/03/2024 Généré par @JeromeDevome
 [Ajout] Nom du GRR dans l'administration
 [Correction] Réservations en bloc - 54264dbd - @JeromeDevome
 [Correction] Syntaxe URL suppression - 69269935 - @ynaessens
@@ -11,6 +98,7 @@ Version 4.3.3 - En développement
 [Correction] Accès au jours du mini calendrier - 4556b90d - @JeromeDevome
 [Correction] Regression : Ressource empruntée dans la saisie de réservation - ca18d289 - @JeromeDevome
 [Correction] Vue réservation avec ressource empruntée - b2d6b216 - @JeromeDevome
+[Correction] Raison mail variable non définit - a19ec824 - @JeromeDevome
 [Modification] Changement de lien pour la modération (vue réservation) - 9b1f25cf - @JeromeDevome
 [Modification] Mise à jour des dépendances PHP - 79e522e1 - @JeromeDevome
 
