@@ -37,9 +37,6 @@ $test_user =  isset($_POST["reg_multi_admin_login"]) ? "multi" : (isset($_GET["r
 $action = isset($_GET["action"]) ? $_GET["action"] : NULL;
 $msg = '';
 
-// Si la table j_user_area est vide, il faut modifier la requête
-$test_grr_j_user_area = grr_sql_count(grr_sql_query("SELECT * from ".TABLE_PREFIX."_j_user_area"));
-
 if ($test_user == "multi")
 {
 	foreach ($reg_multi_admin_login as $valeur)
