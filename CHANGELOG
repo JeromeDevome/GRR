@@ -87,7 +87,10 @@ Sous-version 3.5.1f
     correctif : problème d'ouverture de session en cas d'identification obligatoire
     correctif : arrondi implicite obsolète dans week.php
     MAJ vacances scolaires France
-
+Sous-version 3.5.1g
+    correctif : une requête mal placée modifiait à tort le statut de la clé et de la ressource
+    correctif : un champ manquant provoquait une erreur lors de la modération
+    
 -----
 --
 -----
