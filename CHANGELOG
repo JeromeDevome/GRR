@@ -13,6 +13,15 @@ Tâches prévues :
 -----
 
 Version 3.5.2RC1 : version en cours de développement, à utiliser en production avec prudence
+    ajout : statistiques à destination du serveur grr.devome.com, à fins de développement, désactivable depuis config.inc.php
+    correctif : possibilité pour un gestionnaire de déclarer la ressource empruntée depuis la page de réservation
+    correctifs : gestion des caractères spéciaux, récupération des paramètres dans la page d'édition des ressources
+
+-----
+--
+-----
+
+Version 3.5.2RC1 : 
     ajout : fonctionnalité de recherche de ressources disponibles dans un domaine donné sur un intervalle de temps donné
     amélioration : utilisation de requêtes SQL préparées
     

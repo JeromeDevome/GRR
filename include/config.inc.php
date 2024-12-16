@@ -2,9 +2,9 @@
 /**
  * config.inc.php
  * Fichier de configuration de GRR
- * Dernière modification : $Date: 2023-01-27 09:10$
+ * Dernière modification : $Date: 2024-12-16 10:11$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -76,7 +76,7 @@ date_default_timezone_set('Europe/Paris');
 # Mais si un navigateur est amené à se connecter au cours de la même session, à deux sites GRR différents,
 # ces deux sites GRR doivent avoir des noms de session différents.
 # Dans ce cas, il vous faudra changer la valeur GRR ci-dessous par une autre valeur.
- define('SESSION_NAME', "GRRdev3");
+ define('SESSION_NAME', "GRR352");
 
 # Nombre maximum (+1) de réservations autorisés lors d'une réservation avec périodicité
  $max_rep_entrys = 365 + 1;
@@ -109,14 +109,13 @@ $restaureBBD = 1;
 #Mode debug || 0: non ; 1: oui - Defaut 0
 $debug_flag = 0;
 
-#Envois donnée stat sur le GRR sur le serveur grr.devome.com || 0: non ; 1: oui - Defaut 1
-# Les données envoyés sont la version de GRR, la langue par défaut, aucune donnée personnel n'est envoyé (pas d'ip, pas de mail...), elles sont anomymes et ne peuvent faire le lien avec votre GRR
-# Vous avez le choix de le désactiver mais le laissez actif cela nous permet de savoir comment nous pouvont maintenir les versions
+#Envoi données stat sur le GRR sur le serveur grr.devome.com || 0: non ; 1: oui - Defaut 1
+# Les données envoyées sont la version de GRR, la langue par défaut, aucune donnée personnelle n'est envoyée (pas d'ip, pas de mail...), elles sont anomymes et ne peuvent faire le lien avec votre GRR
+# Vous avez le choix de le désactiver mais le laisser actif nous permet de savoir comment nous pouvont maintenir les versions
 $gEnvoisStatGRR = 1;
-#Envois donnée stat du serveur sur le serveur grr.devome.com || 0: non ; 1: oui - Defaut 1
-# Les données envoyés sont la version php, la version sql, l'os, aucune donnée personnel n'est envoyé (pas d'ip, pas de mail...), elles sont anomymes et ne peuvent faire le lien avec votre GRR
-# Vous avez le choix de le désactiver mais le laissez actif cela nous permet de savoir comment maintenir les versions de GRR
-# Si gEnvoisStatGRR = 0 alors dans les cas aucune donnée n'est envoyée
+#Envoi données stat du serveur sur le serveur grr.devome.com || 0: non ; 1: oui - Defaut 1
+# Les données envoyées sont la version php, la version sql, l'os, aucune donnée personnelle n'est envoyée (pas d'ip, pas de mail...), elles sont anomymes et ne peuvent faire le lien avec votre GRR
+# Vous avez le choix de le désactiver mais le laisser actif nous permet de savoir comment maintenir les versions de GRR
 $gEnvoisServeur = 1;
 
 #Rechercher des MAJ sur le serveur grr.devome.com || 0: non ; 1: oui - Defaut 1
