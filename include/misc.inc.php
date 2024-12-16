@@ -60,6 +60,7 @@ $liste_tables = array(
 	"_entry",
 	"_entry_moderate",
 	"_groupes",
+	"_j_group_area",
 	"_j_mailuser_room",
 	"_j_site_area",
 	"_j_type_area",

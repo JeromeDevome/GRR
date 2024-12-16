@@ -48,6 +48,15 @@ if ((isset($_GET['action_del'])) and (isset($_GET['js_confirmed'])) and ($_GET['
 		$msg=get_vocab("del_user_succeed");
 	}
 }
+// Synchro Groupe
+if (isset($_GET['groupe_sync']))
+{
+	$id = $_GET['groupe_sync'];
+	synchro_groupe($id, 0);
+}
+
+
+
 if (isset($mess) and ($mess != ""))
 	echo "<p>".$mess."</p>";
 

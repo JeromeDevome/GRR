@@ -117,6 +117,7 @@ if ($type == "area")
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_type_area WHERE id_area=$id_area");
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE id_area=$id_area");
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_site_area WHERE id_area=$id_area");
+		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_group_area WHERE id_area=$id_area");
 		$test = grr_sql_query1("select VALUE from ".TABLE_PREFIX."_setting WHERE NAME='default_area'");
 		if ($test == $id_area)
 		{

@@ -280,6 +280,10 @@ if ((!empty($id_area)) || (isset($add_area)))
 		$sql = "DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE id_area='$id_area'";
 		if (grr_sql_command($sql) < 0)
 			fatal_error(0, get_vocab('update_area_failed') . grr_sql_error());
+
+		$sql = "DELETE FROM ".TABLE_PREFIX."_j_group_area WHERE id_area='$id_area'";
+		if (grr_sql_command($sql) < 0)
+			fatal_error(0, get_vocab('update_area_failed') . grr_sql_error());
 	}
 	if ((isset($change_done)) && (!isset($ok)))
 	{

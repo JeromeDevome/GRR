@@ -328,10 +328,21 @@ if ($valid == "yes")
 						fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
 				}
 				// Groupes
-				$sql = "DELETE FROM ".TABLE_PREFIX."_utilisateurs_groupes WHERE login='$user_login'";
-				if (grr_sql_command($sql) < 0)
-					fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
+				//Supression
+				$sql = "SELECT idgroupes FROM ".TABLE_PREFIX."_utilisateurs_groupes WHERE login='$user_login'";
+				$res = grr_sql_query($sql);
+				if ($res)
+				{
+					for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+					{
+						$sql = "DELETE FROM ".TABLE_PREFIX."_utilisateurs_groupes WHERE login='$user_login'";
+						if (grr_sql_command($sql) < 0)
+							fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
 
+						synchro_groupe($row[0], 0);
+					}
+				}
+				// Insertion
 				if(isset($groupes_select) && !empty($groupes_select)){
 					foreach ($groupes_select as $valeur)
 					{
@@ -340,6 +351,7 @@ if ($valid == "yes")
 							$sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs_groupes SET login= '$user_login', idgroupes = '$valeur'";
 							if (grr_sql_command($sql) < 0)
 								fatal_error(1, "<p>" . grr_sql_error());
+							synchro_groupe($valeur, 0);
 						}
 					}
 				}

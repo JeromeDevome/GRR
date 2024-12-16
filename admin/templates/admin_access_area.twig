@@ -25,7 +25,7 @@
 								<select name="area" class="form-control" onchange="area_go()">
 									<option value="-1">{{ trad.select }}</option>
 									{% for domaine in domaines %}
-										<option value="{{ domaine.id }}" {% if domaine.id == trad.dIdDomaine %} selected {% endif %}>{{ domaine.nom }}</option>
+										<option value="{{ domaine.id }}" {% if domaine.id == d.idDomaine %} selected {% endif %}>{{ domaine.nom }}</option>
 									{% endfor %}
 								</select>
 							</div>
@@ -35,34 +35,63 @@
 
 					<hr>
 
-					{% if trad.dIdDomaine > 0 %}
+					{% if d.idDomaine > 0 %}
 
-						<form action="?p=admin_access_area" method="post">
-							<input type="hidden" name="p" value="admin_access_area" />
-							<input type="hidden" name="id_area" value="{{ trad.dIdDomaine }}" />
+					<div class="row">
+						<!-- Ajout un utilisateur -->
+						<div class="col col-sm-6">
+							<form action="?p=admin_access_area" method="post">
+								<input type="hidden" name="p" value="admin_access_area" />
+								<input type="hidden" name="id_area" value="{{ d.idDomaine }}" />
 
-							<div class="form-group">
-								<label class="col col-sm-3" for="reg_user_login">{{ trad.add_user_to_list }}</label>
-								<div class="col col-sm-9">
-									<select name="reg_user_login" class="form-control">
-										<option value="">{{ trad.select }}</option>
-										{% for user in utilisateursajoutable %}
-											<option value="{{ user.login }}">{{ user.nom }} {{ user.prenom }}</option>
-										{% endfor %}
-									</select>
+								<div class="form-group">
+									<label class="col col-sm-12" for="reg_user_login">{{ trad.add_user_to_list }}</label>
+									<div class="col col-sm-12">
+										<select name="reg_user_login" class="form-control">
+											<option value="">{{ trad.select }}</option>
+											{% for user in utilisateursajoutable %}
+												<option value="{{ user.login }}">{{ user.nom }} {{ user.prenom }}</option>
+											{% endfor %}
+										</select>
+									</div>
 								</div>
-							</div>
 
-							<div style="text-align:center;">
-								<input class="btn btn-primary" type="submit" value="{{ trad.add }}" />
-							</div>
-						</form>
-
-						{% if trad.dNbUserAjoutable > 0 %}
+								<div style="text-align:center;">
+									<input class="btn btn-primary" type="submit" value="{{ trad.add }}" />
+								</div>
+							</form>
+						</div>
+						<!-- Ajout un groupe -->
+						<div class="col col-sm-6">
+							<form action="?p=admin_access_area" method="post">
+								<input type="hidden" name="p" value="admin_access_area" />
+								<input type="hidden" name="id_area" value="{{ d.idDomaine }}" />
+								<input type="hidden" name="action" value="add_groupe" />
+	
+								<div class="form-group">
+									<label class="col col-sm-12" for="reg_groupe">Ajouter un groupe à la liste</label>
+									<div class="col col-sm-12">
+										<select name="reg_groupe" class="form-control">
+											<option value="">{{ trad.select }}</option>
+											{% for groupe in groupesajoutable %}
+												<option value="{{ groupe.id }}">{{ groupe.nom }}</option>
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+	
+								<div style="text-align:center;">
+									<input class="btn btn-primary" type="submit" value="{{ trad.add }}" />
+								</div>
+							</form>
+						</div>
+					</div>
+					<div="row">
+						{% if d.nbUserAjoutable > 0 %}
 
 							<form action="?p=admin_access_area" method="post">
 								<input type="hidden" name="p" value="admin_access_area" />
-								<input type="hidden" name="id_area" value="{{ trad.dIdDomaine }}" />
+								<input type="hidden" name="id_area" value="{{ d.idDomaine }}" />
 								<div class="form-group">
 									<label class="col col-sm-3" for="agent">{{ trad.add_multiple_user_to_list }}</label>
 									<div class="col col-sm-9">
@@ -84,6 +113,7 @@
 							</form>
 
 						{% endif %}
+					</div>
 
 						<h3>{{ trad.user_area_list }}</h3>
 
@@ -99,7 +129,23 @@
 									<td>{{ useradmin.login }}</td>
 									<td>{{ useradmin.nom }}</td>
 									<td>{{ useradmin.prenom }}</td>
-									<td><a href="?p=admin_access_area&action=del_user&login_user={{ useradmin.login }}&id_area={{ trad.dIdDomaine }}"><i class="fa fa-trash"></i></a></td>
+									<td><a href="?p=admin_access_area&action=del_user&login_user={{ useradmin.login }}&id_area={{ d.idDomaine }}"><i class="fa fa-trash"></i></a></td>
+								</tr>
+							{% endfor %}
+						</table>
+
+
+						<h3>Liste des groupes ayant accès à ce domaine :</h3>
+
+						<table class="table table-striped">
+							<tr>
+								<th>{{ trad.groupes }}</th>
+								<th>{{ trad.action }}</th>
+							</tr>
+							{% for groupeadmin in groupesexep %}
+								<tr>
+									<td>{{ groupeadmin.nom }}</td>
+									<td><a href="?p=admin_access_area&action=del_groupe&groupe={{ groupeadmin.id }}&id_area={{ d.idDomaine }}"><i class="fa fa-trash"></i></a></td>
 								</tr>
 							{% endfor %}
 						</table>
