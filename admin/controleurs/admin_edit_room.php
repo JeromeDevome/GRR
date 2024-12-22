@@ -396,6 +396,7 @@ get_vocab_admin("activer_fonctionalite_gestion_cle");
 get_vocab_admin("activer_fonctionalite_participant");
 get_vocab_admin("visu_fiche_description1");
 get_vocab_admin("visu_fiche_description2");
+get_vocab_admin("visu_fiche_description3");
 get_vocab_admin("who_can_book_explain");
 
 get_vocab_admin("back");
