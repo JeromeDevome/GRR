@@ -3,7 +3,7 @@
  * ./admin/edit_room.php
  * Interface de creation/modification des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-12-13 18:18$
+ * Dernière modification : $Date: 2024-12-23 15:34$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -729,6 +729,10 @@ echo "/></td></tr>\n";
   if ($Room['active_participant'] == 2)
     echo 'selected';
   echo '>'.get_vocab('visu_fiche_description2').'</option>';
+  echo '<option value="3" ';
+  if ($Room['active_participant'] == 3)
+    echo 'selected';
+  echo '>'.get_vocab('visu_fiche_description3').'</option>';
   echo '</select>';
   echo "</td></tr>\n";
   echo "</table>\n";
