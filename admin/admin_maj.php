@@ -3,10 +3,10 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-21 16:05$
+ * Dernière modification : $Date: 2025-01-10 18:55$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -990,9 +990,9 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
             $result .= $result_inter;
         $result_inter = '';
     }
-    if($version_old < "3.5.2.0")
+    if($version_old < "3.5.2.9")
     {
-        $result .= formatResult("Mise à jour jusqu'à la version 3.5.2 RC0:","<b>","</b>");
+        $result .= formatResult("Mise à jour jusqu'à la version 3.5.2 :","<b>","</b>");
         $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_room` ADD `max_booking_on_range` SMALLINT(6) NOT NULL DEFAULT '-1' AFTER `who_can_book`;");
         $result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_files(id int not null auto_increment, id_entry int, file_name varchar(50), public_name varchar(50),Primary key (id)) CHARACTER SET utf8mb4;");
         $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_area` ADD `user_right` INT(11) AFTER `max_booking`;");

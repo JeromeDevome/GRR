@@ -77,7 +77,7 @@ INSERT INTO grr_setting VALUES ('end_bookings', '1767308399');
 INSERT INTO grr_setting VALUES ('title_home_page', 'Gestion et Réservation de Ressources');
 INSERT INTO grr_setting VALUES ('message_home_page', 'En raison du caractère personnel du contenu, ce site est soumis à des restrictions utilisateurs. Pour accéder aux outils de réservation, identifiez-vous :');
 INSERT INTO grr_setting VALUES ('version', '3.5.2');
-INSERT INTO grr_setting VALUES ('versionRC', '2');
+INSERT INTO grr_setting VALUES ('versionRC', '');
 INSERT INTO grr_setting VALUES ('default_language', 'fr');
 INSERT INTO grr_setting VALUES ('url_disconnect', '');
 INSERT INTO grr_setting VALUES ('allow_users_modify_profil', '2');

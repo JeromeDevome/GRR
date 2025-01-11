@@ -1,5 +1,5 @@
 GRR
-version 3.5.2 RC0, a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7
+version 3.5.2, a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7
 ===================
 
 -------------------
@@ -41,6 +41,7 @@ Les ressources sont organisées en domaines et les domaines peuvent être regrou
 * personnalisation des paramètres d'affichage,
 * gestion des clés,
 * importation de fichiers de données pour poser des réservations (csv, emplois du temps UDT ou EDT),
+* possibilité d'attacher un fichier de type jpg, png, gif ou pdf à une réservation
 
 
 Site de présentation : https://grr.devome.com/

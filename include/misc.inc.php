@@ -2,9 +2,9 @@
 /**
  * misc.inc.php
  * fichier de variables diverses
- * Dernière modification : $Date: 2024-12-16 10:20$
+ * Dernière modification : $Date: 2025-01-10 18:50$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -27,7 +27,7 @@ $version_grr = "3.5.2";
 // Utilisez cette variable pour des versions qui corrigent la la version finale sans toucher à la base.
 $sous_version_grr = ""; // a, b, c, ...
 // Numéro de la release candidate (doit être strictement inférieure à 9). Laisser vide s'il s'agit de la version stable.
-$version_grr_RC = "2";
+$version_grr_RC = "";
 // Version repository (GitHub)
 $versionReposite = "";
 
@@ -42,6 +42,7 @@ $liste_tables = array(
 	"_correspondance_statut",
 	"_entry",
 	"_entry_moderate",
+  "_files",
 	"_j_mailuser_room",
 	"_j_site_area",
 	"_j_useradmin_area",
