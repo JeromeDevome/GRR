@@ -5016,7 +5016,7 @@ function affichage_resa_info_bulle($ofl, $vue, $resa, $heures)
 		if (( ($authGetUserLevel >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "") {
 			// ELM - Gestion des champs aditionnels multivalués (lignes 384 - 392)
 			$valeur = str_replace("|", ",", $field["valeur"]);
-			$affichage .= "<i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($valeur,ENT_NOQUOTES|ENT_SUBSTITUTE)."</i>\n";
+			$affichage .= htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($valeur,ENT_NOQUOTES|ENT_SUBSTITUTE)."\n";
 		}
 	}
 
