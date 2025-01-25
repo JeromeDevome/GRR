@@ -2304,10 +2304,12 @@ function make_room_select_html($link, $current_area, $current_room, $year, $mont
 	if ($res && (grr_sql_count($res)>0)) // il y a des ressources à afficher
 	{
 		if ($link != "jour")
-			$link .= "_all";
+			$linkTout = $link."_all";
+		else 
+			$linkTout = $link;
 
         $out_html = "<b><i>".get_vocab('rooms').get_vocab("deux_points")."</i></b><br /><form id=\"room_".$pos."\" action=\"".$_SERVER['PHP_SELF']."\"><div><select class=\"form-control\" name=\"room\" onchange=\"room_go_".$pos."()\">";
-        $out_html .= "<option value=\"app.php?p=$link&amp;year=$year&amp;month=$month&amp;day=$day&amp;area=$current_area\">".get_vocab("all_rooms")."</option>";
+        $out_html .= "<option value=\"app.php?p=$linkTout&amp;year=$year&amp;month=$month&amp;day=$day&amp;area=$current_area\">".get_vocab("all_rooms")."</option>";
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
 			if (verif_acces_ressource(getUserName(),$row[0]))
