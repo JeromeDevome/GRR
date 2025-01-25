@@ -496,12 +496,15 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
     {
         $d["quiPeutReserverPour"] = 1;
 
+        $utilisateurConnecte = array();
+        $participantsEnregistrer = array();
+
         foreach($av_users as $u){
-            $participantsDisponible = array('login' => $u, 'nomPrenom' => affiche_nom_prenom_email($u,"no_mail"));
+            $participantsDisponible[] = array('login' => $u, 'nomPrenom' => affiche_nom_prenom_email($u,"no_mail"));
         }
 
         foreach($reg_users as $u){
-            $participantsEnregistrer = array('login' => $u, 'nomPrenom' => affiche_nom_prenom_email($u,"no_mail"));
+            $participantsEnregistrer[] = array('login' => $u, 'nomPrenom' => affiche_nom_prenom_email($u,"no_mail"));
         }
     }
 }

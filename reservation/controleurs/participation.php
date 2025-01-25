@@ -1,11 +1,11 @@
 <?php
 /**
- * participation_entry.php
+ * participation.php
  * Interface de suppression d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-19 16:00$
+ * Dernière modification : $Date: 2025-01-25 18:40$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -16,23 +16,7 @@
  * (at your option) any later version.
  */
 $grr_script_name = "participation_entry.php";
-include "personnalisation/connect.inc.php";
-include "include/config.inc.php";
-include "include/functions.inc.php";
-include "include/$dbsys.inc.php";
-include_once('include/misc.inc.php');
-include "include/mrbs_sql.inc.php";
 
-require_once("./include/settings.class.php");
-if (!Settings::load())
-	die("Erreur chargement settings");
-require_once("./include/session.inc.php");
-if (!grr_resumeSession())
-{
-	header("Location: ./app.php?p=deconnexion&auto=1&url=$url");
-	die();
-};
-include "include/language.inc.php";
 $series = isset($_GET["series"]) ? $_GET["series"] : NULL;
 if (isset($series))
 	settype($series,"integer");
@@ -124,7 +108,7 @@ if ($info = mrbsGetEntryInfo($id))
 		$_SESSION['displ_msg'] = 'yes';
         $ress = '';
         if ($room_back != 'all')  {$ress = "&room=".$room_back;}
-		Header("Location: ".$page.".php?day=$day&month=$month&year=$year&area=$area".$ress);
+		Header("Location: app.php?p=".$page."&day=$day&month=$month&year=$year&area=$area".$ress);
 		exit();
 	}
 }

@@ -126,9 +126,9 @@
             <div>
                 <h4>{{trad.participants}}{{trad.deux_points}}</h4>
                 {% if d.participationValidation == 1 %}
-                    <a class="btn btn-primary btn-xs" type="button" href="participation_entry.php?id={{resa.id}}&amp;series=0&amp;page={{d.page}}&amp;room_back={{d.room_back}}" onclick="return confirm('{{trad.participant_confirm_validation}}');" />{{trad.participant_validation}}</a>
+                    <a class="btn btn-primary btn-xs" type="button" href="app.php?p=participation&amp;id={{resa.id}}&amp;series=0&amp;page={{d.page}}&amp;room_back={{d.room_back}}" onclick="return confirm('{{trad.participant_confirm_validation}}');" />{{trad.participant_validation}}</a>
                 {% elseif d.participationAnnulation == 1 %}
-                    <a class="btn btn-primary btn-xs" type="button" href="participation_entry.php?id={{resa.id}}&amp;series=0&amp;page={{d.page}}&amp;room_back={{d.room_back}}" onclick="return confirm('{{trad.participant_confirm_annulation}}');" />{{trad.participant_annulation}}</a>
+                    <a class="btn btn-primary btn-xs" type="button" href="app.php?p=participation&amp;id={{resa.id}}&amp;series=0&amp;page={{d.page}}&amp;room_back={{d.room_back}}" onclick="return confirm('{{trad.participant_confirm_annulation}}');" />{{trad.participant_annulation}}</a>
                 {% endif %}
             </div>
             <div>
@@ -139,10 +139,10 @@
 
                 {% if d.quiPeutReserverPour == 1 %}
                     <button type='button' class='btn btn-primary btn-sm' id='btn_participe' onclick="toggle_visibility('form_participant');toggle_visibility('btn_participe');toggle_visibility('btn_close_participe');">{{trad.participant_register_form}}</button>
-                    <button type='button' class='btn btn-primary btn-sm' id='btn_close_participe' style='display:none' onclick="toggle_visibility('form_participant');toggle_visibility('btn_participe');toggle_visibility('btn_close_participe');">{{trad.participant_register_form_hide}}</button>";
-                    <div id="form_participant" style="display:none">';
-                    <h3>{{trad.add_multiple_user_to_list}}{{trad.deux_points}}</h3>';
-                    <form action="app.php" method="GET">';
+                    <button type='button' class='btn btn-primary btn-sm' id='btn_close_participe' style='display:none' onclick="toggle_visibility('form_participant');toggle_visibility('btn_participe');toggle_visibility('btn_close_participe');">{{trad.participant_register_form_hide}}</button>
+                    <div id="form_participant" style="display:none">
+                    <h3>{{trad.add_multiple_user_to_list}}{{trad.deux_points}}</h3>
+                    <form action="app.php" method="GET">
                     <select id="avail_users" name="agent" size="8" style="width:200px;" class ="select2" multiple ondblclick="Deplacer(this.form.agent,this.form.elements['reg_participant[]'])">
                         {% for u in participantsDisponible %}
                             <option value="{{u.login}}">{{u.nomPrenom}}</option>
