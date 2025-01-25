@@ -59,6 +59,7 @@ $d['dYear'] = $year;
 $d['accesStats'] = verif_access_search(getUserName());
 $d['levelUser'] = authGetUserLevel(getUserName(),-1);
 $d['versionGRR'] = $version_grr;
+$d['versionCache'] = hash('sha256', $version_grr.Settings::get("tokenpublic"));
 $d['gNomUser'] = getUserName();
 
 get_vocab_admin('admin');

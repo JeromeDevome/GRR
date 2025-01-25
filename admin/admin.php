@@ -55,6 +55,7 @@ get_vocab_admin('admin_view_connexions');
 
 $d = array();
 $d['version'] = $version_grr;
+$d['versionCache'] = hash('sha256', $version_grr.Settings::get("tokenpublic"));
 $d['nomAffichage'] = $nomAffichage;
 $d['lienRetour'] = $lienRetour;
 $d['lienCompte'] = $lienCompte;

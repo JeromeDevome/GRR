@@ -1041,10 +1041,10 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			if($_SESSION['default_style'] == "perso" && file_exists($racine."personnalisation/".$gcDossierCss."/perso.css"))
 				$d['sheetcssperso'] = "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$racine."personnalisation/".$gcDossierCss."/perso.css?".Settings::get("sp_time")."\" />";
 
-			$d['sheetcss'] = 'themes/'.$_SESSION['default_style'].'/css/style.css?v='.$version_grr;
+			$d['sheetcss'] = 'themes/'.$_SESSION['default_style'].'/css/style.css';
 		}
 		else
-			$d['sheetcss'] = 'themes/default/css/style.css?v='.$version_grr; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
+			$d['sheetcss'] = 'themes/default/css/style.css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
 		if (isset($_GET['default_language']))
 		{
 			$_SESSION['default_language'] = alphanum($_GET['default_language']);
@@ -1065,7 +1065,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			$d['sheetcss'] = 'themes/'.Settings::get("default_css").'/css/style.css?'.Settings::get("sp_time");
 		}
 		else
-			$d['sheetcss'] = 'themes/default/css/style.css?v='.$version_grr.'';
+			$d['sheetcss'] = 'themes/default/css/style.css';
 		if (isset($_GET['default_language']))
 		{
 			$_SESSION['default_language'] = alphanum($_GET['default_language']);

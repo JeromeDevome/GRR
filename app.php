@@ -82,6 +82,7 @@ $AllSettings = Settings::getAll();
 
 $d['gNomUser'] = getUserName();
 $d['versionGRR'] = $version_grr;
+$d['versionCache'] = hash('sha256', $version_grr.Settings::get("tokenpublic"));
 
 $d['liensPerso1'] = liensPerso(1, $d['levelUser']);
 
