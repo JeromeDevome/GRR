@@ -280,7 +280,7 @@ if (UserRoomMaxBooking($user_name, $room, $compt) == 0)
 	echo $twig->render('erreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
 	exit();
 }
-$etype = 0;
+$d['etype'] = 0;
 if (isset($id) && $id !=0) // édition d'une réservation existante
 {
     if (!getWritable($user_name,$id) && ($copier == ''))
@@ -316,7 +316,7 @@ if (isset($id) && $id !=0) // édition d'une réservation existante
 	$end_hour = date('H', $row['end_time']);
 	$end_min  = date('i', $row['end_time']);
 	$duration = $row['end_time']-$row['start_time'];
-	$etype = $row['type'];
+	$d['etype'] = $row['type'];
 	$room_id = $row['room_id'];
 	$entry_type = $row['entry_type'];
 	$rep_id = $row['repeat_id'];
@@ -441,7 +441,7 @@ else // nouvelle réservation
 		$end_hour   = date("H",$fin);
 		$end_min    = date("i",$fin);
 	}
-    $etype          = isset($type)? $type : 0;
+    $d['etype']		= isset($type)? $type : 0;
 	$type        	= "";
 	$room_id     	= $room;
 	$id				= 0;

@@ -621,7 +621,7 @@
 			url: 'reservation/ajax/edit_entry_types.php',
 			data: {
 				areas: areas_,
-				type: '<?php echo $etype; ?>',
+				type: '{{d.etype}}',
 				room: room_,
 			},
 			success: function(returnData){
