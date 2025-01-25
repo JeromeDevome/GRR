@@ -119,6 +119,33 @@ if (isset($_POST['textecontactresa'])) {
         $msg .= "Erreur lors de l'enregistrement du texte contactresa !<br />";
 }
 
+// Calcul plage libre vue semaine_all
+    if(isset($_POST['calcul_plus_semaine_all']) && $_POST['calcul_plus_semaine_all'] = 'on')
+        $calcul_plus_semaine_all = 'y';
+    else
+        $calcul_plus_semaine_all = 'n';
+
+    if (!Settings::set('calcul_plus_semaine_all', $calcul_plus_semaine_all))
+        $msg .= "Erreur lors de l'enregistrement de calcul_plus_semaine_all !<br />";
+
+// Calcul plage libre vue mois
+    if(isset($_POST['calcul_plus_mois']) && $_POST['calcul_plus_mois'] = 'on')
+        $calcul_plus_mois = 'y';
+    else
+        $calcul_plus_mois = 'n';
+
+    if (!Settings::set('calcul_plus_mois', $calcul_plus_mois))
+        $msg .= "Erreur lors de l'enregistrement de calcul_plus_mois !<br />";
+
+// Calcul plage libre vue mois2_all
+    if(isset($_POST['calcul_plus_mois2_all']) && $_POST['calcul_plus_mois2_all'] = 'on')
+        $calcul_plus_mois2_all = 'y';
+    else
+        $calcul_plus_mois2_all = 'n';
+
+    if (!Settings::set('calcul_plus_mois2_all', $calcul_plus_mois2_all))
+        $msg .= "Erreur lors de l'enregistrement de calcul_plus_mois2_all !<br />";
+
 if (!Settings::load()) {
     die('Erreur chargement settings');
 }

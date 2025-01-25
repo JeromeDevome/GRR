@@ -1205,6 +1205,10 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		
 		$result .= formatresult("Mise à jour jusqu'à la version 4.4.0 :","<b>","</b>");
 
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('calcul_plus_mois', 'y');");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('calcul_plus_mois2_all', 'y');");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('calcul_plus_semaine_all', 'y');");
+
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('login_template', '1');");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('login_logo', '1');");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('login_nom', '1');");

@@ -308,11 +308,15 @@ for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement
                         && verif_booking_date($user_name, -1, $row["id"], $date_booking, $date_now, $enable_periods) 
                         && verif_delais_max_resa_room($user_name, $row["id"], $date_booking) 
                         && verif_delais_min_resa_room($user_name, $row["id"], $date_booking, $enable_periods) 
-                        && plages_libre_semaine_ressource($row["id"], $month, $cday, $year) 
                         && (($row["statut_room"] == "1") || (($row["statut_room"] == "0") && (authGetUserLevel($user_name,$row["id"]) > 2) )) 
                         && $user_can_book
                         && $d['pview'] != 1){
-                            $plageLibre = true;
+							if (Settings::get('calcul_plus_semaine_all') == 'n') {
+								$plageLibre = true;
+							} elseif(plages_libre_semaine_ressource($row["id"], $month, $cday, $year))
+							{
+								$plageLibre = true;
+							}
 					}
 				}
 			}

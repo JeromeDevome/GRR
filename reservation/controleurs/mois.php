@@ -311,7 +311,9 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                     $reservations[] = array ('idresa' => $da[$cday]["id"][$i],'td' => tdcellT($da[$cday]["color"][$i]), 'titre' => $da[$cday]["infobulle"][$i], 'texte' => $da[$cday]["resa"][$i], 'lienFiche' => $acces_fiche_reservation);
                 }
             }
-            if (plages_libre_semaine_ressource($room, $month, $cday, $year)){
+            if (Settings::get('calcul_plus_mois') == 'n') {
+                $plageLibre = true;
+            } elseif (plages_libre_semaine_ressource($room, $month, $cday, $year)){
                 $date_now = time();
                 $heure = date("H",$date_now);
                 $date_booking = mktime(23,59, 0, $month, $cday, $year);
@@ -324,7 +326,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                     && $user_can_book
                     && $d['pview'] != 1)
                 {
-                    $plageLibre = true;
+                   $plageLibre = true;
                 }
             }
         }

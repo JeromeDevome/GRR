@@ -50,6 +50,7 @@
 										<a class="nav-link active" id="vert-tabs-divers-tab" data-bs-toggle="pill" href="#vert-tabs-divers" role="tab" aria-controls="vert-tabs-divers" aria-selected="true">Divers</a>
 										<a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-formresa" role="tab" aria-controls="vert-tabs-formresa" aria-selected="true">{{ trad.display_mail_etat_destinataire }}</a>
 										<a class="nav-link" id="vert-tabs-creacompte-tab" data-bs-toggle="pill" href="#vert-tabs-creacompte" role="tab" aria-controls="vert-tabs-creacompte" aria-selected="false">Demande de création de compte</a>
+										<a class="nav-link" id="vert-tabs-performance-tab" data-bs-toggle="pill" href="#vert-tabs-performance" role="tab" aria-controls="vert-tabs-performance" aria-selected="false">Performance</a>
 									</div>
 								</div>
 								<div class="col col-7 col-sm-9">
@@ -148,6 +149,39 @@
 											<input type="checkbox" name="fct_crea_cpt_captcha" value="y" id="label_3y" {% if settings.fct_crea_cpt_captcha == 'y' %} checked {% endif %} /> <label for="label_0z">{{ trad.captcha_utiliser }}</label><br>
 
 										</div><!---->
+
+										<!-- Performance -->
+										<div class="tab-pane fade" id="vert-tabs-performance" role="tabpanel" aria-labelledby="vert-tabs-performance-tab">
+
+											<!-- Calcul plage libre vue semaine_all -->
+											<div class="form-group row row col-sm-12">
+												<label class="col col-sm-6" for="calcul_plus_semaine_all">Calcul plage libre vue semaine ALL</label>
+												<div class="col col-sm-6 control-label">
+													<input type="checkbox" name="calcul_plus_semaine_all" {% if settings.calcul_plus_semaine_all == 'y' %}checked{% endif %} data-bootstrap-switch>
+												</div>
+											</div>
+
+											<!-- Calcul plage libre vue mois -->
+											<div class="form-group row row col-sm-12">
+												<label class="col col-sm-6" for="calcul_plus_mois">Calcul plage libre vue mois</label>
+												<div class="col col-sm-6 control-label">
+													<input type="checkbox" name="calcul_plus_mois" {% if settings.calcul_plus_mois == 'y' %}checked{% endif %} data-bootstrap-switch>
+												</div>
+											</div>
+
+											<!-- Calcul plage libre vue mois2_all -->
+											<div class="form-group row row col-sm-12">
+												<label class="col col-sm-6" for="calcul_plus_mois2_all">Calcul plage libre vue mois ALL</label>
+												<div class="col col-sm-6 control-label">
+													<input type="checkbox" name="calcul_plus_mois2_all" {% if settings.calcul_plus_mois2_all == 'y' %}checked{% endif %} data-bootstrap-switch>
+												</div>
+											</div>
+
+											<hr>
+
+
+
+										</div>
 
 									</div>
 								</div>
