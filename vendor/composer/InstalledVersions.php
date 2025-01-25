@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '68171c411bfab16a0dabb69718aa039281d773fb',
+    'reference' => 'fe0aebb6b4d8911bfe12adb3008570a7dc490d35',
     'name' => 'devome/twig',
   ),
   'versions' => 
@@ -60,7 +60,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '68171c411bfab16a0dabb69718aa039281d773fb',
+      'reference' => 'fe0aebb6b4d8911bfe12adb3008570a7dc490d35',
     ),
     'gregwar/captcha' => 
     array (
@@ -478,12 +478,12 @@ private static $installed = array (
     ),
     'tecnickcom/tcpdf' => 
     array (
-      'pretty_version' => '6.7.8',
-      'version' => '6.7.8.0',
+      'pretty_version' => '6.8.0',
+      'version' => '6.8.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '7956f5e37863c6a569d5ccfae826f353a12a2493',
+      'reference' => '14ffa0e308f5634aa2489568b4b90b24073b6731',
     ),
     'twig/twig' => 
     array (
