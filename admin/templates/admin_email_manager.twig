@@ -82,7 +82,7 @@
 
 						<form action="?p=admin_email_manager" method="get">
 							<input type="hidden" name="p" value="admin_email_manager" />
-							<input type="hidden" name="add_admin" value="yes" />
+							<input type="hidden" name="action" value="add_admin" />
 							<input type="hidden" name="id_area" value="{{ trad.dIdDomaine }}" />
 							<input type="hidden" name="room" value="{{ trad.dIdRessource }}" />
 
@@ -108,6 +108,8 @@
 								<th>{{ trad.login }}</th>
 								<th>{{ trad.last_name }}</th>
 								<th>{{ trad.first_name }}</th>
+								<th>Mail à chaque réservation</th>
+								<th>Mail hebdomadaire</th>
 								<th>{{ trad.action }}</th>
 							</tr>
 							{% for usernotif in utilisateursnotifier %}
@@ -115,7 +117,23 @@
 									<td>{{ usernotif.login }}</td>
 									<td>{{ usernotif.nom }}</td>
 									<td>{{ usernotif.prenom }}</td>
-									<td><a href="?p=admin_email_manager&action=del_admin&login_admin={{ usernotif.login }}&room={{ trad.dIdRessource }}&id_area={{ trad.dIdDomaine }}"><i class="fa fa-trash"></i></a></td>
+									<td>
+										<div class="form-group">
+											<div class="custom-control custom-switch">
+											  <input type="checkbox" class="custom-control-input" id="mailresa{{usernotif.login}}" onclick='window.location.assign("?p=admin_email_manager&amp;reg_admin_login={{ usernotif.login }}&amp;room={{ trad.dIdRessource }}&amp;id_area={{ trad.dIdDomaine }}&amp;action=mailresa&amp;valeur={{usernotif.mailresa}}")' {% if usernotif.mailresa == 1 %} checked {% endif %} > 
+											  <label class="custom-control-label" for="mailresa{{usernotif.login}}"></label>
+											</div>
+										</div>
+									</td>
+									<td>
+										<div class="form-group">
+											<div class="custom-control custom-switch">
+											  <input type="checkbox" class="custom-control-input" id="mailhebdo{{usernotif.login}}" onclick='window.location.assign("?p=admin_email_manager&amp;reg_admin_login={{ usernotif.login }}&amp;room={{ trad.dIdRessource }}&amp;id_area={{ trad.dIdDomaine }}&amp;action=mailhebdo&amp;valeur={{usernotif.mailhebdo}}")' {% if usernotif.mailhebdo == 1 %} checked {% endif %} > 
+											  <label class="custom-control-label" for="mailhebdo{{usernotif.login}}"></label>
+											</div>
+										</div>
+									</td>
+									<td><a href="?p=admin_email_manager&amp;action=del_admin&amp;reg_admin_login={{ usernotif.login }}&amp;room={{ trad.dIdRessource }}&amp;id_area={{ trad.dIdDomaine }}"><i class="fa fa-trash"></i></a></td>
 								</tr>
 							{% endfor %}
 						</table>

@@ -42,60 +42,100 @@ if (isset($_POST['mail1']))
 }
 $reg_admin_login = isset($_GET["reg_admin_login"]) ? $_GET["reg_admin_login"] : NULL;
 $action = isset($_GET["action"]) ? $_GET["action"] : NULL;
+$typemodif = isset($_GET["typemodif"]) ? $_GET["typemodif"] : NULL;
+$valeur = isset($_GET["valeur"]) ? $_GET["valeur"] : 0;
 $msg='';
 
-if ($reg_admin_login) {
-	// On commence par vérifier que le professeur n'est pas déjà présent dans cette liste.
-	if ($room !=-1)
+if ($action && $reg_admin_login)
+{
+	if ($action == "add_admin")
 	{
-		// Ressource
-		// On vérifie que la ressource $room existe
-		$test = grr_sql_query1("select id from ".TABLE_PREFIX."_room where id='".$room."'");
-		if ($test == -1)
+		// On commence par vérifier que le professeur n'est pas déjà présent dans cette liste.
+		if ($room !=-1)
 		{
-			showAccessDenied($back);
-			exit();
-		}
-		if (in_array($room,$tab_rooms_noaccess))
-		{
-			showAccessDenied($back);
-			exit();
-		}
-		// La ressource existe : on vérifie les privilèges de l'utilisateur
-		check_access(4, $back);
-		$sql = "SELECT * FROM ".TABLE_PREFIX."_j_mailuser_room WHERE (login = '$reg_admin_login' and id_room = '$room')";
-		$res = grr_sql_query($sql);
-		$test = grr_sql_count($res);
-		if ($test != "0")
-			$msg = get_vocab("warning_exist");
-		else
-		{
-			if ($reg_admin_login != '')
+			// Ressource
+			// On vérifie que la ressource $room existe
+			$test = grr_sql_query1("select id from ".TABLE_PREFIX."_room where id='".$room."'");
+			if ($test == -1)
 			{
-				$sql = "INSERT INTO ".TABLE_PREFIX."_j_mailuser_room SET login= '$reg_admin_login', id_room = '$room'";
-				if (grr_sql_command($sql) < 0)
-					fatal_error(1, "<p>" . grr_sql_error());
-				else
-					$msg = get_vocab("add_user_succeed");
+				showAccessDenied($back);
+				exit();
+			}
+			if (in_array($room,$tab_rooms_noaccess))
+			{
+				showAccessDenied($back);
+				exit();
+			}
+			// La ressource existe : on vérifie les privilèges de l'utilisateur
+			check_access(4, $back);
+			$sql = "SELECT * FROM ".TABLE_PREFIX."_j_mailuser_room WHERE (login = '$reg_admin_login' and id_room = '$room')";
+			$res = grr_sql_query($sql);
+			$test = grr_sql_count($res);
+			if ($test != "0")
+				$msg = get_vocab("warning_exist");
+			else
+			{
+				if ($reg_admin_login != '')
+				{
+					$sql = "INSERT INTO ".TABLE_PREFIX."_j_mailuser_room SET login= '$reg_admin_login', id_room = '$room'";
+					if (grr_sql_command($sql) < 0)
+						fatal_error(1, "<p>" . grr_sql_error());
+					else
+						$msg = get_vocab("add_user_succeed");
+				}
 			}
 		}
+
 	}
-}
-if ($action)
-{
-	if ($action == "del_admin")
+	elseif ($action == "del_admin")
 	{
 		if (authGetUserLevel(getUserName(),$room) < 4)
 		{
 			showAccessDenied($back);
 			exit();
 		}
-		$sql = "DELETE FROM ".TABLE_PREFIX."_j_mailuser_room WHERE (login='".$_GET['login_admin']."' and id_room = '$room')";
+		$sql = "DELETE FROM ".TABLE_PREFIX."_j_mailuser_room WHERE (login='".$reg_admin_login."' and id_room = '$room')";
 		if (grr_sql_command($sql) < 0)
 			fatal_error(1, "<p>" . grr_sql_error());
 		else
 			$msg = get_vocab("del_user_succeed");
 	}
+	elseif ($action == "mailresa")
+	{
+		if (authGetUserLevel(getUserName(),$room) < 4)
+		{
+			showAccessDenied($back);
+			exit();
+		}
+
+		if($valeur == 0)
+			$valeur = 1;
+		else
+			$valeur = 0;
+		$sql = "UPDATE ".TABLE_PREFIX."_j_mailuser_room  SET mail_resa='".$valeur."' WHERE (login='".$reg_admin_login."' and id_room = '$room')";
+		if (grr_sql_command($sql) < 0)
+			fatal_error(1, "<p>" . grr_sql_error());
+		else
+			$msg = "Modification effectuée.";
+	}
+	elseif($action == 'mailhebdo')
+	{
+		if (authGetUserLevel(getUserName(),$room) < 4)
+		{
+			showAccessDenied($back);
+			exit();
+		}
+
+		if($valeur == 0)
+			$valeur = 1;
+		else
+			$valeur = 0;
+		$sql = "UPDATE ".TABLE_PREFIX."_j_mailuser_room  SET mail_hebdo='".$valeur."' WHERE (login='".$reg_admin_login."' and id_room = '$room')";
+		if (grr_sql_command($sql) < 0)
+			fatal_error(1, "<p>" . grr_sql_error());
+		else
+			$msg = "Modification effectuée.";
+	} 
 }
 
 //affiche_pop_up($msg,"admin");
@@ -175,7 +215,7 @@ elseif ($room <= 0)
 	$trad['mail_user_list'] = get_vocab("no_room");
 else
 {
-	$sql = "SELECT u.login, u.nom, u.prenom FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_mailuser_room j WHERE (j.id_room='$room' and u.login=j.login)  order by u.nom, u.prenom";
+	$sql = "SELECT u.login, u.nom, u.prenom, j.mail_resa, j.mail_hebdo FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_mailuser_room j WHERE (j.id_room='$room' and u.login=j.login)  order by u.nom, u.prenom";
 	$res = grr_sql_query($sql);
 	$nombre = grr_sql_count($res);
 	
@@ -185,7 +225,7 @@ else
 	if ($res)
 	{
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-			$utilisateursNotifier[] = array('login' => $row[0], 'nom' => $row[1], 'prenom' => $row[2]);
+			$utilisateursNotifier[] = array('login' => $row[0], 'nom' => $row[1], 'prenom' => $row[2], 'mailresa' => $row[3], 'mailhebdo' => $row[4]);
 	}
 
 	// Formulaire Ajout

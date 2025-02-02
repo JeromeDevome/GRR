@@ -3025,7 +3025,7 @@ Pour les utilisateurs :
 		$templateMail1 = Pages::get('mails_retardrestitution_'.$locale);
 	}
 
-	$sql = "SELECT u.email FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_mailuser_room j WHERE (j.id_room='".protect_data_sql($room_id)."' AND u.login=j.login and u.etat='actif') ORDER BY u.nom, u.prenom";
+	$sql = "SELECT u.email FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_mailuser_room j WHERE (j.id_room='".protect_data_sql($room_id)."' AND u.login=j.login and u.etat='actif' AND j.mail_resa=1) ORDER BY u.nom, u.prenom";
 	$res = grr_sql_query($sql);
 	$nombre = grr_sql_count($res);
 	$destinataire = "";

@@ -5,7 +5,7 @@ CREATE TABLE grr_calendrier_vacances (  `DAY` int(11) NOT NULL DEFAULT '0');
 DROP TABLE IF EXISTS grr_j_group_area;
 CREATE TABLE IF NOT EXISTS grr_j_group_area `idgroupes` int NOT NULL, id_area int NOT NULL DEFAULT '0', PRIMARY KEY (`idgroupes`,`id_area`);
 DROP TABLE IF EXISTS grr_j_mailuser_room;
-CREATE TABLE grr_j_mailuser_room (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_room int(11) NOT NULL default '0', PRIMARY KEY  (login,id_room) );
+CREATE TABLE grr_j_mailuser_room (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_room int(11) NOT NULL default '0', mail_resa tinyint(1) NOT NULL DEFAULT '1', mail_hebdo tinyint(1) NOT NULL DEFAULT '0', PRIMARY KEY  (login,id_room) );
 DROP TABLE IF EXISTS grr_j_user_area;
 CREATE TABLE grr_j_user_area (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_area int(11) NOT NULL default '0', idgroupes int(11) NOT NULL default '0', PRIMARY KEY  (login,id_area) );
 DROP TABLE IF EXISTS grr_j_user_room;

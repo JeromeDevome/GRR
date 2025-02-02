@@ -1222,6 +1222,8 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_j_group_area (`idgroupes` int NOT NULL, `id_area` int NOT NULL DEFAULT '0', PRIMARY KEY (`idgroupes`,`id_area`));");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_user_area ADD `idgroupes` int(11) NOT NULL DEFAULT '0';");
 
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_mailuser_room ADD `mail_resa` tinyint(1) NOT NULL DEFAULT '1';");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_mailuser_room ADD `mail_hebdo` tinyint(1) NOT NULL DEFAULT '0';");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
