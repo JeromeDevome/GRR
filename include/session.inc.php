@@ -79,7 +79,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 			// L'utilisateur est présent dans la base locale
 			if ($_user_ext_authentifie == "cas")
 			{
-				if ((Settings::get("ldap_statut") != '') && (@function_exists("ldap_connect")) && (@file_exists("../personnalisation/config_ldap.inc.php"))) {
+				if ((Settings::get("ldap_statut") != '') && (@function_exists("ldap_connect")) && (@file_exists("./personnalisation/config_ldap.inc.php"))) {
 					$auth_ldap = 'yes';
 				}
 				$nom_user = $tab_login["user_nom"];
@@ -150,13 +150,13 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 }
 				//2ème cas : LDAP avec SSO CAS ou avec SSO Lemonldap ou avec authentification Apache
 				//on tente de récupérer des infos dans l'annuaire avant d'importer le profil dans GRR
-				else if ((Settings::get("ldap_statut") != '') && (@function_exists("ldap_connect")) && (@file_exists("include/config_ldap.inc.php")) && ($_user_ext_authentifie == 'cas' || $_user_ext_authentifie == 'apache'))
+				else if ((Settings::get("ldap_statut") != '') && (@function_exists("ldap_connect")) && (@file_exists("./personnalisation/config_ldap.inc.php")) && ($_user_ext_authentifie == 'cas' || $_user_ext_authentifie == 'apache'))
                 {
                 // On initialise au cas où on ne réussit pas à récupérer les infos dans l'annuaire.
                     $l_nom = $_login;
                     $l_email = '';
                     $l_prenom = '';
-                    include "../personnalisation/config_ldap.inc.php";
+                    include "./personnalisation/config_ldap.inc.php";
                 // Connexion à l'annuaire
                     $ds = grr_connect_ldap($ldap_adresse,$ldap_port,$ldap_login,$ldap_pwd,$use_tls);
                     $user_dn = grr_ldap_search_user($ds, $ldap_base,Settings::get("ldap_champ_recherche"), $_login, $ldap_filter, "no");
@@ -392,7 +392,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 
             //S'assurer que le fichier est inclus (il existe dans tous les cas où $auth_ldap==yes)
             if(!isset($ldap_group_user_field)) {
-                include "../personnalisation/config_ldap.inc.php";
+                include "./personnalisation/config_ldap.inc.php";
             }
 
             //Aller chercher l'info pour faire la comparaison
