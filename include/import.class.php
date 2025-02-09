@@ -47,7 +47,7 @@ class Import {
         elseif  (preg_match("`\.([^.]+)$`", $doc_file['name'], $match))
 		{
             $ext = strtolower($match[1]);
-            if ($ext != 'jpg' && $ext != 'png'&& $ext != 'gif')
+            if ($ext != 'jpeg' && $ext != 'jpg' && $ext != 'png'&& $ext != 'gif')
             {
                 $msg .= "L\'image n\'a pas pu etre enregistree : les seules extentions autorisees sont gif, png et jpg.\\n";
             }
