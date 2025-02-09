@@ -271,9 +271,10 @@
                                    {
                                        $id = $da[$cday][$cmonth][$cyear]["id"][$i];
                                        $type = $da[$cday][$cmonth][$cyear]["color"][$i];
-                                       $titre = $da[$cday][$cmonth][$cyear]["lien"][$i];
+                                       $lien = $da[$cday][$cmonth][$cyear]["lien"][$i];
+                                       $data = $da[$cday][$cmonth][$cyear]["data"][$i];
    
-                                       $reservationsJours[] = array('idresa' => $id, 'type' => $type, 'titre' => $titre, 'lienFiche' => $acces_fiche_reservation);
+                                       $reservationsJours[] = array('idresa' => $id, 'type' => $type, 'lien' => $lien, 'bulle' => $data, 'lienFiche' => $acces_fiche_reservation);
                                    }
                                }
                            }

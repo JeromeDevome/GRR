@@ -92,9 +92,9 @@
                                         <span class="small_planning">
                                             {% if resa.lienFiche %}
                                                 {% if settings.display_level_view_entry == 0 %}
-                                                    <a title="{{resa.titre}}" data-width="675" onclick="request({{resa.idresa}},{{cellule.numJour}},{{d.gMonth}},{{d.gYear}},{{d.room}},'mois2_all',readData);" data-rel="popup_name" class="poplight lienCellule">
+                                                    <a title="{{resa.bulle}}" data-width="675" onclick="request({{resa.idresa}},{{jourR.jour}},{{d.gMonth}},{{d.gYear}},{{d.room}},'mois2_all',readData);" data-rel="popup_name" class="poplight lienCellule">
                                                 {% else %}
-                                                    <a class="lienCellule" title="{{resa.titre}}" href="app.php?p=vuereservation&id={{resa.idresa}}&amp;day={{cellule.numJour}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=mois2_all">
+                                                    <a class="lienCellule" title="{{resa.bulle}}" href="app.php?p=vuereservation&id={{resa.idresa}}&amp;day={{cellule.numJour}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=mois2_all">
                                                 {% endif %}
                                             {% endif %}
                                             {{resa.texte|raw}}
