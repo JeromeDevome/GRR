@@ -988,6 +988,7 @@ $vocab['type_area'] = "Plusieurs lignes (texte)";
 $vocab['type_color'] = "Couleur";
 $vocab['type_color_actuel'] = "Couleur actuelle";
 $vocab['type_color_fond'] = "Choix de la couleur de fond en hexadécimal";
+$vocab['type_color_icone'] = "Choix de la couleur pour les icones en hexadécimal";
 $vocab['type_color_texte'] = "Choix de la couleur du texte en hexadécimal";
 $vocab['type_de_creneaux'] = "Configuration du type de créneaux";
 $vocab['type_list'] = "Liste";

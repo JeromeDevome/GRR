@@ -4907,7 +4907,7 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 
 	// Emprunte
 	if($resa[7] != "-")
-		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource_actuellement_empruntee")."\" title=\"".get_vocab("ressource_actuellement_empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
+		$affichage .= "<i class=\"icone fa-solid fa-hand\" title=\"".get_vocab("ressource_actuellement_empruntee")."\"></i> ";
 
 	// Option réservation
 	if($resa[9] > 0 && $resa[10] > 0)
@@ -4915,19 +4915,19 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 
 	// Modération
 	if($resa[11] == 1)
-		$affichage .= " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
+		$affichage .= "<i class=\"icone fa-solid fa-clock\" title=\"".get_vocab("en_attente_moderation")."\"></i> ";
 
 	// Clef
 	if($resa[13] == 1)
-		$affichage .= " <img src=\"img_grr/skey.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Clef\"> ";
+		$affichage .= "<i class=\"icone fa-solid fa-key\"></i> ";
 	
 	// Courrier
 	if (Settings::get('show_courrier') == 'y')
 	{
 		if($resa[14] == 1)
-			$affichage .= " <img src=\"img_grr/scourrier.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Courrier\"> ";
+			$affichage .= "<i class=\"icone fa-solid fa-envelope\"></i> ";
 		else
-			$affichage .= " <img src=\"img_grr/hourglass.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Buzy\"> ";
+			$affichage .= "<i class=\"icone fa-solid fa-hourglass-half\"></i> ";
 	}
 
 	return $affichage;
@@ -5146,23 +5146,23 @@ function lien_compact($resa)
 
 	// Emprunte
 	if($resa[7] != "-")
-		$affichage .= "<img src=\"img_grr/buzy.png\" alt=\"".get_vocab("ressource_actuellement_empruntee")."\" title=\"".get_vocab("ressource_actuellement_empruntee")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
+		$affichage .= "<i class=\"icone fa-solid fa-hand\" title=\"".get_vocab("ressource_actuellement_empruntee")."\"></i> ";
 	// Option réservation
 	if($resa[9] > 0 && $resa[10] > 0)
-		$affichage .=  " <img src=\"img_grr/small_flag.png\" alt=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le").time_date_string_jma($resa[9],$dformat)."\" width=\"20\" height=\"20\" class=\"image\" /> ";
+		$affichage .= "<i class=\"icone fa-solid fa-flag\" title=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("reservation_a_confirmer_au_plus_tard_le").time_date_string_jma($resa[9],$dformat)."\"></i> ";
 	// Modération
 	if($resa[11] == 1)
-		$affichage .= " <img src=\"img_grr/flag_moderation.png\" alt=\"".get_vocab("en_attente_moderation")."\" title=\"".get_vocab("en_attente_moderation")."\" width=\"20\" height=\"20\" class=\"image\" /> ";
+		$affichage .= "<i class=\"icone fa-solid fa-clock\" title=\"".get_vocab("en_attente_moderation")."\"></i> ";
 	// Clef
 	if($resa[13] == 1)
-		$affichage .= " <img src=\"img_grr/skey.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Clef\"> ";
+		$affichage .= "<i class=\"icone fa-solid fa-key\"></i> ";
 	// Courrier
 	if (Settings::get('show_courrier') == 'y')
 	{
 		if($resa[14] == 1)
-			$affichage .= " <img src=\"img_grr/scourrier.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Courrier\"> ";
+			$affichage .= " <i class=\"icone fa-solid fa-envelope\"></i> ";
 		else
-			$affichage .= " <img src=\"img_grr/hourglass.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Buzy\"> ";
+			$affichage .= " <i class=\"icone fa-solid fa-hourglass-half\"></i> ";
 	}
 	return $affichage;
 }
@@ -5888,13 +5888,14 @@ function cssTypeResa()
 {
     // récupération des couleurs des types
     $types = '';
-    $sql = "SELECT type_letter,couleurhexa,couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE 1";
+    $sql = "SELECT type_letter,couleurhexa,couleurtexte,couleuricone FROM ".TABLE_PREFIX."_type_area WHERE 1";
     $res = grr_sql_query($sql);
     if ($res->num_rows > 0) {
         $types = "<style>".PHP_EOL;
         while($row = $res->fetch_assoc()) {
             $types .= "td.type".$row["type_letter"]."{background:".$row["couleurhexa"]." !important;color:".$row["couleurtexte"]." !important;}".PHP_EOL;
             $types .= "td.type".$row["type_letter"]." a.lienCellule{color:".$row["couleurtexte"]." !important;}".PHP_EOL;
+			$types .= "td.type".$row["type_letter"]." i.icone{color:".$row["couleuricone"]." !important;}".PHP_EOL;
         }
         $types .= "</style>".PHP_EOL;
     }

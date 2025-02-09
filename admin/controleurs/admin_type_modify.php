@@ -30,6 +30,7 @@ get_vocab_admin("disponible_pour");
 get_vocab_admin("type_color_actuel");
 get_vocab_admin("type_color_fond");
 get_vocab_admin("type_color_texte");
+get_vocab_admin("type_color_icone");
 get_vocab_admin("previsualisation");
 
 get_vocab_admin("save");
@@ -47,6 +48,7 @@ $order_display = isset($_GET["order_display"]) ? $_GET["order_display"] : NULL;
 $type_letter = isset($_GET["type_letter"]) ? $_GET["type_letter"] : NULL;
 $couleur_hexa = isset($_GET["couleurhexa"]) ? $_GET["couleurhexa"] : NULL;
 $couleur_txt = isset($_GET["couleurtexte"]) ? $_GET["couleurtexte"] : NULL;
+$couleur_icone = isset($_GET["couleuricone"]) ? $_GET["couleuricone"] : NULL;
 $disponible = isset($_GET["disponible"]) ? $_GET["disponible"] : NULL;
 $msg = "";
 
@@ -67,6 +69,8 @@ if (isset($_GET['change_type']))
 		$couleur_hexa = "#2ECC71";
 	if ($couleur_txt == '')
 		$couleur_txt = "#000000";
+	if ($couleur_icone == '')
+		$couleur_icone = "#000000";
 	if ($disponible == '')
 		$disponible = "2";
 	if ($id_type > 0) // Modif
@@ -90,6 +94,7 @@ if (isset($_GET['change_type']))
 			$sql = $sql . 'couleur=\'1\',';
 			$sql = $sql . 'couleurhexa="'.$couleur_hexa.'",';
 			$sql = $sql . 'couleurtexte="'.$couleur_txt.'",';
+			$sql = $sql . 'couleuricone="'.$couleur_icone.'",';
 			$sql = $sql . 'disponible="'.$disponible.'"';
 			$sql = $sql . " WHERE id=$id_type";
 			if (grr_sql_command($sql) < 0)
@@ -120,7 +125,8 @@ if (isset($_GET['change_type']))
 			$sql = $sql . 'type_letter="'.$type_letter.'",';
 			$sql = $sql . 'couleur=\'1\',';
 			$sql = $sql . 'couleurhexa="'.$couleur_hexa.'",';
-			$sql = $sql . 'couleurtexte="'.$couleur_txt.'"';
+			$sql = $sql . 'couleurtexte="'.$couleur_txt.'",';
+			$sql = $sql . 'couleuricone="'.$couleur_icone.'"';
 			if (grr_sql_command($sql) < 0)
 			{
 				fatal_error(1, "<p>" . grr_sql_error());

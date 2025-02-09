@@ -978,6 +978,7 @@ $vocab['type_area'] = "Multi-líneas (textarea)";
 $vocab['type_color'] = "Color";
 $vocab['type_color_actuel'] = "Color actual";
 $vocab['type_color_fond'] = "Elección del color de fondo en hexadecimal";
+$vocab['type_color_icone'] = "Choix de la couleur pour les icones en hexadécimal"; // A traduire
 $vocab['type_color_texte'] = "Elección del color de texto en hexadecimal";
 $vocab['type_de_creneaux'] = "Configuración del tipo de horarios";
 $vocab['type_list'] = "Lista";

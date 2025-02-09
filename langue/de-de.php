@@ -979,6 +979,7 @@ $vocab['type_area'] = "Multilinie (textarea)"; // A traduire
 $vocab['type_color'] = "Farbe";
 $vocab['type_color_actuel'] = "Couleur actuelle"; // A traduire
 $vocab['type_color_fond'] = "Choix de la couleur de fond en hexadécimal"; // A traduire
+$vocab['type_color_icone'] = "Choix de la couleur pour les icones en hexadécimal"; // A traduire
 $vocab['type_color_texte'] = "Choix de la couleur du texte en hexadécimal"; // A traduire
 $vocab['type_de_creneaux'] = "Configuration du type de créneaux"; // A traduire
 $vocab['type_list'] = "Liste";

@@ -1225,6 +1225,8 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_mailuser_room ADD `mail_resa` tinyint(1) NOT NULL DEFAULT '1';");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_mailuser_room ADD `mail_hebdo` tinyint(1) NOT NULL DEFAULT '0';");
 
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_type_area ADD `couleuricone` VARCHAR(10) NOT NULL DEFAULT '#000000' AFTER `couleurtexte`;");
+
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
 		else

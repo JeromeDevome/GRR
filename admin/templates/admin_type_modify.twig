@@ -56,6 +56,7 @@
 
 					{{ form.colorpicker2('couleurhexa', trad.type_color_fond, type.couleurhexa, {classLabel: 'col-sm-4', classInput: 'col-sm-3'}) }}
 					{{ form.colorpicker2('couleurtexte', trad.type_color_texte, type.couleurtexte, {classLabel: 'col-sm-4', classInput: 'col-sm-3'}) }}
+					{{ form.colorpicker2('couleuricone', trad.type_color_icone, type.couleuricone, {classLabel: 'col-sm-4', classInput: 'col-sm-3'}) }}
 
 					<div class="form-group row">
 						<label class="col col-sm-4" for="type_color_actuel">{{trad.previsualisation}}</label>
@@ -87,7 +88,7 @@
 		document.getElementById(idchamp).value = input_color;
 		if(idchamp == "couleurhexa")
 			document.getElementById('prevision').style.backgroundColor = input_color;
-		else
+		else if(idchamp == "couleurtexte")
 			document.getElementById('prevision').style.color = input_color;
 	}
 	function updatecolorpicker(idchamp) {
@@ -95,7 +96,7 @@
 		document.getElementById('square'+idchamp).value = input_color;
 		if(idchamp == "couleurhexa")
 			document.getElementById('prevision').style.backgroundColor = input_color;
-		else
+		else if(idchamp == "couleurtexte")
 			document.getElementById('prevision').style.color = input_color;
 	}
 </script>
