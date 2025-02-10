@@ -66,7 +66,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 			$_statut = "visiteur";
 		else if ($sso == "lasso_utilisateur")
 			$_statut = "utilisateur";
-		$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site
+		$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
 		from ".TABLE_PREFIX."_utilisateurs
 		where login = '" . protect_data_sql($_login) . "' and ";
 		if ($_user_ext_authentifie != 'lasso')
@@ -109,7 +109,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 						//Comme les données de la base on été changés, on doit remettre à jour la variable $row,
 						//Pour que les données mises en sessions soient les bonnes
 						//on récupère les données de l'utilisateur
-						$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site
+						$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
 						FROM ".TABLE_PREFIX."_utilisateurs
 						WHERE login = '" . protect_data_sql($_login) . "' and
 						source = 'ext' and
@@ -609,6 +609,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 	// A ce stade, on dispose dans tous les cas d'un tableau $row contenant les informations nécessaires à l'établissement d'une session
 	//
 	// Session starts now
+	session_write_close();		// dde: ajout pou clôturer la session cas ?
     session_name($gSessionName);
     @session_start();
 	// Is this user already connected ?
