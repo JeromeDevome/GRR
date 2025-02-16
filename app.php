@@ -48,6 +48,8 @@ if($page != "deconnexion")
 // pour le traitement des modules
 include "./include/hook.class.php";
 
+include "./verif_auto_grr.php";
+
 $trad = array();
 $back = '';
 
