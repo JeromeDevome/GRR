@@ -90,9 +90,6 @@ if($action == "envoi") //envoi du message
 		$message.="\n".$corps_message."\n";
 		$sujet = $vocab["subject_mail1"]." - ".$objet_message;
 
-		require_once 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
-		require_once 'vendor/phpmailer/phpmailer/src/SMTP.php';
-		require_once 'vendor/phpmailer/phpmailer/src/Exception.php';
 		require_once 'include/mail.class.php';
 
 		$destinataire = Settings::get("webmaster_email");

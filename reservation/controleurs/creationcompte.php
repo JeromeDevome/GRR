@@ -105,11 +105,7 @@ if( Settings::get("fct_crea_cpt") == "y" && isset($_POST["nom"])){
 			fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
 		}
 
-		require_once 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
-		require_once 'vendor/phpmailer/phpmailer/src/SMTP.php';
-		require_once 'vendor/phpmailer/phpmailer/src/Exception.php';
 		require_once 'include/mail.class.php';
-
 
 		//Infos générales
 		$codes = [

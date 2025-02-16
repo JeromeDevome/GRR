@@ -38,9 +38,6 @@ use Gregwar\Captcha\PhraseBuilder;
 // Traitement du formulaire
 if(isset($_POST['nom'])){ 
 
-	require_once 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
-	require_once 'vendor/phpmailer/phpmailer/src/SMTP.php';
-	require_once 'vendor/phpmailer/phpmailer/src/Exception.php';
 	require_once 'include/mail.class.php';
 
 	if (empty($_POST['nom']))
