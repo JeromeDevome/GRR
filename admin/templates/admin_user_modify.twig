@@ -107,12 +107,25 @@
 						{{ form.input('reg_password2', trad.confirm_pwd, '', {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'password'}) }}
 
 						<div class="form-group row col-sm-12">
-							<label class="col col-sm-4" for="cacher_lien_deconnecter">{{ trad.user_change_pwd_connexion }}</label>
+							<label class="col col-sm-4" for="reg_changepwd">{{ trad.user_change_pwd_connexion }}</label>
 							<div class="col col-sm-8">
 								<input type="checkbox" name="reg_changepwd" value="1" {% if utilisateur.changepwd == '1' %} checked {% endif %}>
 							</div>
 						</div>
 					</div>
+
+					<div class="form-group row col-sm-12">
+						<label class="col col-sm-4" for="reg_desactive_mail">Désactiver l'envoi de mail à cet utilisateur</label>
+						<div class="col col-sm-8">
+							<input type="checkbox" name="reg_desactive_mail" value="1" {% if utilisateur.desactive_mail == '1' %} checked {% endif %}>
+						</div>
+					</div>
+
+					<div class="row">
+						<label for="commentaire">Commentaire (visible uniquement par les gestionnaires utilisateurs et les administrateurs) :</label>
+						<textarea class="form-control" id="commentaire" name="reg_commentaire" cols="30" rows="4">{{ utilisateur.commentaire }}</textarea><br/>
+					</div>
+	
 
 					{% if utilisateur.reg_login !=  '' %}
 						<hr>
@@ -166,6 +179,8 @@
 							</div>
 						</div>
 					{% endif %}
+
+					<hr>
 
 					<!-- Gestion des groupes -->
 					<div class="form-group">
