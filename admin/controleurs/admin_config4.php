@@ -50,7 +50,11 @@ if (isset($_GET['redirection_https']))
 // Restriction iP
 if (isset($_GET['ip_autorise']))
 {
-	if (!Settings::set("ip_autorise", $_GET['ip_autorise']))
+	$ctrlIp = true;
+	if($_GET['ip_autorise'] != "")
+		$ctrlIp = valide_ip_adr($_GET['ip_autorise']);
+
+	if ($ctrlIp == false || !Settings::set("ip_autorise", $_GET['ip_autorise']))
 		$msg .= "Erreur lors de l'enregistrement de ip_autorise !<br />";
 }
 // Heure de connexion

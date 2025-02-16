@@ -1674,6 +1674,25 @@ function compare_ip_adr($ip1, $ips2)
 
 }
 
+/**
+ * Contrôle validité ip
+*/
+function valide_ip_adr($input) {
+    $pattern = '/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(;\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})*$/';
+
+    if (preg_match($pattern, $input)) {
+        $ips = explode(';', $input);
+        foreach ($ips as $ip) {
+            if (!filter_var($ip, FILTER_VALIDATE_IP)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
+
 //Retourne le domaine par défaut; Utilisé si aucun domaine n'a été défini.
 function get_default_area($id_site = -1)
 {
