@@ -166,6 +166,7 @@ INSERT INTO grr_setting VALUES ('maj196_qui_peut_reserver_pour', '1');
 INSERT INTO grr_setting VALUES ('menu_gauche', '1');
 INSERT INTO grr_setting VALUES ('message_home_page', 'En raison du caractère personnel du contenu, ce site est soumis à des restrictions utilisateurs. Pour accéder aux outils de réservation, identifiez-vous :');
 INSERT INTO grr_setting VALUES ('nb_calendar', '1');
+INSERT INTO grr_setting VALUES ('nextalertemailhebdo', '1735686000');
 INSERT INTO grr_setting VALUES ('nombre_jours_Jours_Cycles', '1');
 INSERT INTO grr_setting VALUES ('pass_leng', '8');
 INSERT INTO grr_setting VALUES ('pass_nb_ch', '1');

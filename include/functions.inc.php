@@ -4533,6 +4533,237 @@ function verify_retard_reservation()
 		}
 	}
 }
+
+function mail_hebdo()
+{
+	$envoisOk = true;
+
+	if(time() < Settings::get("nextalertemailhebdo")) // Déjà envoyé
+		$envoisOk = false;
+
+	if (Settings::get('grr_mail_method') == 'bloque') // Mail désactivé
+		$envoisOk = false;
+	
+	if (Settings::get("automatic_mail") != 'yes') // Mail automatique désactivé
+		$envoisOk = false;
+
+	if($envoisOk == true){
+		$sql = "SELECT DISTINCT jmr.login, jmr.id_room, u.email 
+				FROM ".TABLE_PREFIX."_j_mailuser_room AS jmr
+				LEFT JOIN ".TABLE_PREFIX."_utilisateurs AS u 
+				ON u.login = jmr.login
+				WHERE jmr.mail_hebdo = '1' AND u.email IS NOT NULL AND u.desactive_mail = 0";
+		$dest = grr_sql_query($sql);
+
+		$logins_rooms = [];
+		for ($i = 0; ($rowD = grr_sql_row_keyed($dest, $i)); $i++) 
+		{
+			$logins_rooms[$rowD['login']]['email'] = $rowD['email'];
+			$logins_rooms[$rowD['login']]['rooms'][] = $rowD['id_room'];
+		}
+
+		//print_r($logins_rooms);
+
+		// On récupère les infos sur les champs additionnels
+		$overload_fields = mrbsOverloadGetFieldslist("");
+		$tablOverload = array();
+		$champsAddTitre = "";
+		$l = 1;
+		foreach ($overload_fields as $fieldname=>$fieldtype)
+		{
+			if ($overload_fields[$fieldname]['overload_mail'] == 'y'){
+				$champsAddTitre .= "<th>".$overload_fields[$fieldname]['name']."</th>";
+				$tablOverload[$l] = $overload_fields[$fieldname]["name"];
+				$l++;
+			}
+		}
+
+
+		// Pour chaque destinataire
+		foreach ($logins_rooms as $login => $data)
+		{
+			$to = $data['email'];
+			$rooms = implode(",", array_map('intval', $data['rooms'])); // Éviter les injections SQL
+
+			// ! Reste  à faire :
+			// ! Internationaliser
+			// ! Optimiser l'affichage
+			// ! Personnalisation administration
+
+			$sql = "SELECT DISTINCT 
+					e.id, e.start_time, e.end_time, e.name, e.description, e.type, 
+					t.type_name, e.beneficiaire, e.room_id, a.area_name, 
+					r.room_name, r.description, a.id, e.overload_desc
+				FROM ".TABLE_PREFIX."_entry e
+				JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id
+				JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id
+				JOIN ".TABLE_PREFIX."_type_area t ON t.type_letter = e.type
+				WHERE e.room_id IN ($rooms) 
+				AND e.supprimer = 0
+				AND e.start_time BETWEEN UNIX_TIMESTAMP(NOW()) 
+									AND UNIX_TIMESTAMP(NOW() + INTERVAL 1 MONTH)
+				ORDER BY e.start_time";
+
+			// echo $sql."<br>";
+			$res = grr_sql_query($sql);
+
+			//Nbre de jour déclenchant le mail de rappel
+			$delai_jour="7";
+			$activation_rappel = 0;
+			$message="Cas pas de message";
+			//Tableaux de stockage des valeurs
+			$tab_rappel_actif = array();
+			$tab_rappel_futur =  array();
+			$j = 0;
+			$k = 0;
+
+			//$nb_ligne = mysqli_num_rows($res);
+			//echo "Nbre lignes = ".$nb_ligne." ";
+
+			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+			{
+				//print_r($row)."<br>";
+
+				//On vérifie si la 1ère date de la requête correspond à demain
+				$date_grr = Date('Y/m/d',$row[1]);
+				//echo $date_grr;
+				$date_jour = Date('Y/m/d');
+				//echo $date_jour;
+				$ecart_date = round(abs(strtotime($date_grr)-strtotime($date_jour))/86400);
+				//echo "<br>"." écart jour = ".$ecart_date."  ";
+
+				//$overload_fields = mrbsOverloadGetFieldslist("");
+				$champsAddValeur = "";
+
+				$overload_data = mrbsEntryGetOverloadDesc($row[0]);
+
+				$nbValeur = count($tablOverload);
+				$AddReservation = array();
+				$champAddValeur = array();
+
+				foreach ($overload_data as $fieldname=>$fielddata) // Pour chaque champ additionnel de la réservation
+				{
+					// if ($fielddata["confidentiel"] == 'n') filtrage trop strict
+					if ($fielddata['overload_mail'] == 'y')
+					{
+						$keyTab = array_search($fieldname, $tablOverload);
+						$AddReservation[$keyTab] = $fielddata["valeur"];
+					}
+				}
+
+				//echo "<br>";
+				$m = 1;
+				while($m <= $nbValeur){
+					if(isset($AddReservation[$m]))
+						$champsAddValeur .= "<td>".$AddReservation[$m]."</td>";
+					else
+						$champsAddValeur .= "<td>-</td>";
+					$m++;
+				}
+			
+				//echo $champsAddValeur;
+
+				//Si la prochaine réservation correspond au délai de rappel
+				if($ecart_date <= $delai_jour)
+				{
+					//flag pour provoquer l'envoi du mail de rappel
+					$activation_rappel = 1;
+				
+					//on stocke les infos pour les afficher plus tard
+					$tab_rappel_actif[$j] = array(Date('d/m/Y',$row[1]),$row[4],$row[10],$row[6],$row[0],$champsAddValeur);
+					$j = $j + 1;
+				
+				} else
+				{
+					//on stocke les infos pour les afficher plus tard
+					$tab_rappel_futur[$k] = array(Date('d/m/Y',$row[1]),$row[4],$row[10],$row[6],$row[0],$champsAddValeur);
+					$k = $k + 1;
+				}
+
+			}
+
+			//Construction du message html
+			//Affichage résultat
+			$message="PROCHAINE(S) RESERVATION(S) / rappel transmis ".$delai_jour." jours avant :"."<br><br>";
+			$message.="<table border='1'>";
+			//Affichage entête
+			$message.="<tr bgcolor='orange'>";
+			$message.="<th>Date</th>";
+			$message.="<th>Description</th>";
+			$message.="<th>Ressource</th>";
+			$message.="<th>Type</th>";
+			$message.="<th>ID Résa</th>";
+			$message.=$champsAddTitre;
+			$message.="</tr>";
+			for ($i=0 ; $i < $j ; $i++)
+			{
+				$message.="<tr>";
+				$message.="<td><font color='red'>".$tab_rappel_actif[$i][0]."</font></td>";
+				$message.="<td><font color='red'>".$tab_rappel_actif[$i][1]."</font></td>";
+				$message.="<td><font color='red'>".$tab_rappel_actif[$i][2]."</font></td>";
+				$message.="<td><font color='red'>".$tab_rappel_actif[$i][3]."</font></td>";
+				$message.="<td><font color='red'>".$tab_rappel_actif[$i][4]."</font></td>";
+				$message.=$tab_rappel_actif[$i][5];
+				$message.="</tr>";
+			}
+			//Fermeture tableau de la liste des rappels
+			$message.="</table>";
+			$message.="<br>";  
+					
+			//Affichage résultat
+			$message.="VISIBILITE DES RESERVATIONS SUR 1 MOIS :"."<br><br>";
+			$message.="<table border='1'>";
+			//Affichage entête
+			$message.="<tr bgcolor='lightgrey'>";
+			$message.="<th>Date</th>";
+			$message.="<th>Description</th>";
+			$message.="<th>Ressource</th>";
+			$message.="<th>Type</th>";
+			$message.="<th>ID Résa</th>";
+			$message.=$champsAddTitre;
+			$message.="</tr>";
+			for ($i=0 ; $i < $k ; $i++)
+			{
+				$message.="<tr>";
+				$message.="<td>".$tab_rappel_futur[$i][0]."</td>";
+				$message.="<td>".$tab_rappel_futur[$i][1]."</td>";
+				$message.="<td>".$tab_rappel_futur[$i][2]."</td>";
+				$message.="<td>".$tab_rappel_futur[$i][3]."</td>";
+				$message.="<td>".$tab_rappel_futur[$i][4]."</td>";
+				$message.= $tab_rappel_futur[$i][5];
+				$message.="</tr>";
+			}
+			//Fermeture tableau de la liste des rappels futurs
+			$message.="</table>";
+			$message.="<br><br>";  
+
+
+			// Sujet
+			$subject = 'RAPPEL RESERVATION SALLE';
+
+			// Envoi
+			//Variable d'activation du rappel
+			if($activation_rappel == "1")
+			{
+				//Envoi du mail  
+				//echo "Mail envoyé<br>";
+				//echo $to."<br>.$subject."<br>.$message."<br>";
+
+				Email::Envois($to, $subject, $message, Settings::get('grr_mail_from'), '', '');
+			}
+
+		}
+
+		// Calculer le prochain lundi
+		$today = new DateTime();
+		$nextMonday = (clone $today)->modify('next monday');
+		$timestampNextMonday = $nextMonday->getTimestamp();
+
+		Settings::set("nextalertemailhebdo", $timestampNextMonday);
+
+		$message ="";
+	}
+}
 /**
  * @param integer $time
  */

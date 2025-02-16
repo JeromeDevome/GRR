@@ -1212,6 +1212,7 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('login_template', '1');");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('login_logo', '1');");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('login_nom', '1');");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('nextalertemailhebdo', '1735686000');");
 
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_page ADD `statutmini` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_page ADD `lien` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL;");
