@@ -140,7 +140,8 @@ if (isset($_POST['login']) && isset($_POST['password']))
 	}
 	else if ($result == "11")
 	{
-
+		$d['messageLogin'] = get_vocab("echec_connexion_GRR");
+		$d['messageLogin'] .= "<br />". get_vocab("echec_authentification_ip");
 	}
 	else if ($result == "12")
 	{

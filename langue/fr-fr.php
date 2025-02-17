@@ -379,6 +379,7 @@ $vocab['duree_max_resa_area2'] = "Durée maximale en jours pour une réservation
 $vocab['duree_par_defaut_reservation_area'] = "Durée par défaut d'une réservation, en secondes (doit être un multiple de la valeur précédente)";
 $vocab['echec_authentification_horaire'] = "La connexion est autorisée entre";
 $vocab['echec_authentification_imap'] = "Echec de l'authentification IMAP";
+$vocab['echec_authentification_ip'] = "Echec de l'authentification, IP non autorisée";
 $vocab['echec_authentification_ldap'] = "Echec de l'authentification ldap";
 $vocab['echec_connexion_GRR'] = "Echec de connexion à GRR.";
 $vocab['edit'] = "Modifier";

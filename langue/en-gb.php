@@ -379,6 +379,7 @@ $vocab['duree_max_resa_area2'] = "Maximal duration in days for a reservation (-1
 $vocab['duree_par_defaut_reservation_area'] = "Duration by default of a reservation, in seconds (has to be a multiple of the previous value)";
 $vocab['echec_authentification_horaire'] = "The connection is authorized between";
 $vocab['echec_authentification_imap'] = "IMAP authentification failed"; 
+$vocab['echec_authentification_ip'] = "Authentification failed, IP no authorize";
 $vocab['echec_authentification_ldap'] = "Ldap authentification failed";
 $vocab['echec_connexion_GRR'] = "GRR connection failed.";
 $vocab['edit'] = "Modify";
