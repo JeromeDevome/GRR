@@ -2886,8 +2886,10 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		'%nometablissement%' => Settings::get('company'),
 		'%urlgrr%' =>  traite_grr_url("","y"),
 		'%webmasteremail%' => Settings::get("webmaster_email"),
+		'%identifiantuser%' => $user_login,
 		'%logincompletuser%' => affiche_nom_prenom_email($user_login,"","formail"),
 		'%logincompletbeneficiaire%' => affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail"),
+		'%identifiantbeneficiaire%' => $beneficiaire,
 		'%domaine%' => $area_name,
 		'%ressource%' => $room_name,
 	];
