@@ -29,6 +29,7 @@ print_r($_GET);
 
 // les variables attendues et leur type
 $form_vars = array(
+  'envoyer_notif'      => 'string',
   'create_by'          => 'string',
   'name'               => 'string',
   'description'        => 'string',
@@ -353,7 +354,11 @@ try {
     $statut_entry = isset($statut_entry)? $statut_entry : "-";
     $rep_jour_c = isset($rep_jour_)? $rep_jour_ : 0;
     $cycle_cplt = isset($cycle_cplt)? intval($cycle_cplt) : 0;
-    if ($cycle_cplt) $rep_jour_c =-1; // indique que le cycle complet est sélectionné
+    $envoyer_notif = 1;
+    if(isset($envoyer_notif) && ($envoyer_notif == 'y'))
+        $envoyer_notif = 0;
+    if ($cycle_cplt)
+        $rep_jour_c =-1; // indique que le cycle complet est sélectionné
     if (($rep_type == 3) && ($rep_month == 3))
         $rep_type = 3;
     if (($rep_type == 3) && ($rep_month == 5))
@@ -663,7 +668,7 @@ try {
 		if ($rep_type != 0)
 		{
 			$id_first_resa = mrbsCreateRepeatingEntrys($start_time, $end_time, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $nbparticipantmax, $rep_month_abs1, $rep_month_abs2);
-			if (Settings::get("automatic_mail") == 'yes')
+			if (Settings::get("automatic_mail") == 'yes' && $envoyer_notif == 1)
 			{
                 if (isset($id_first_resa) && ($id_first_resa != 0))
                 {
@@ -698,7 +703,7 @@ try {
 			{
 				$id = grr_sql_insert_id();
 				insertLogResa($id, 1, 'Création via calendrier');
-				if (Settings::get("automatic_mail") == 'yes')
+				if (Settings::get("automatic_mail") == 'yes' && $envoyer_notif == 1)
 				{
 					if ($send_mail_moderate)
 						$message_error = send_mail($id,5,$dformat);
@@ -709,7 +714,7 @@ try {
 			else
 			{
 				insertLogResa($id, 2, $differenceAvAp);
-				if (Settings::get("automatic_mail") == 'yes')
+				if (Settings::get("automatic_mail") == 'yes' && $envoyer_notif == 1)
 				{
 					if ($send_mail_moderate)
 						$message_error = send_mail($id,5,$dformat);

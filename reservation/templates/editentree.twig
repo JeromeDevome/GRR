@@ -45,6 +45,11 @@
 			<!-- Colonne de Gauche : Données de la réservation -->
 			<div class="col col-sm-6 col-xs-12">
 
+				{% if settings.grr_mail_method != "bloque" and d.levelUserRessource >= 3 %}
+					<div class="alert alert-info" role="alert">
+						<input name="envoyer_notif" type="checkbox" value="y" checked><b>Notifier le bénéficiaire</b>
+					</div>
+				{% endif %}
 
 				<!-- Bénéficiare -->
 				{% if d.flag_qui_peut_reserver_pour %}
