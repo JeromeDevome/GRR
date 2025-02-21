@@ -30,8 +30,8 @@
     <body>
 
         <div class="center">
-            {% if settings.login_logo == 1 %}
-                <a href="javascript:history.back()"><img src="{{d.logo}}" alt="logo" style="max-height:200px;"/></a>
+            {% if settings.login_logo == "1" and settings.logo != ""  %}
+                <img src="{{d.logo}}" alt="logo" style="max-height:200px;"/>
             {% endif %}
             <h1>{{settings.title_home_page}}</h1>
             {% if settings.login_nom == 1 %}
@@ -60,7 +60,7 @@
                     <p>{{trad.mentions_legal_connexion}}</p>
 
                     <table style="width: 100%; border-collapse : separate;border-spacing : 10px;" cellpadding="5" cellspacing="0">
-                        {% if settings.sso_statut != "cas_visiteur" or settings.sso_statut != "cas_utilisateur" %}
+                        {% if settings.sso_statut == "cas_visiteur" or settings.sso_statut == "cas_utilisateur" %}
                         <tr>
                             <td colspan="2">
                                 <a class="btn btn-primary" type="submit" name="submit" href="index.php?force_authentification" style="font-variant: small-caps; width: 100%;" /><i class="fa-solid fa-address-card"></i> {{trad.authentification_CAS}}</a>

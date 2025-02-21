@@ -69,8 +69,8 @@
 
                 <div class="col-xs-0 col-sm-0 col-md-4">
 
-                    {% if settings.login_logo == 1 %}
-                        <center><a href="javascript:history.back()"><img src="{{d.logo}}" alt="logo" style="max-height:150px;"/></a></center>
+                    {% if settings.login_logo == "1" and settings.logo != ""  %}
+                        <center><img src="{{d.logo}}" alt="logo" style="max-height:150px;"/></center>
                     {% endif %}
                     <h3>{{settings.title_home_page}}</h3>
                     {% if settings.login_nom == 1 %}
@@ -87,7 +87,7 @@
                     {% endif %}
 
                     <!-- Connextion Externe -->
-                    {% if settings.sso_statut != "cas_visiteur" or settings.sso_statut != "cas_utilisateur" %}
+                    {% if settings.sso_statut == "cas_visiteur" or settings.sso_statut == "cas_utilisateur" %}
                         <a class="btn btn-primary" type="submit" name="submit" href="index.php?force_authentification" style="font-variant: small-caps; width: 100%;" /><i class="fa-solid fa-address-card"></i> {{trad.authentification_CAS}}</a>
                     {% elseif settings.sso_statut != "" and settings.sso_statut != "no_sso" %}
                         <a class="btn btn-primary" type="submit" name="submit" href="index.php" style="font-variant: small-caps; width: 100%;" /><i class="fa-solid fa-address-card"></i> {{trad.authentification_CAS}}</a>         
