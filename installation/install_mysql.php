@@ -47,6 +47,7 @@ $d['pass_db']		= $pass_db;
 $d['choix_db']		= $choix_db;
 $d['table_new']		= $table_new;
 $d['table_prefix']	= $table_prefix;
+$d['version_grr']	= $version_grr;
 
 
 function begin_html()
