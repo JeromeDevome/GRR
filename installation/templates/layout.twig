@@ -118,6 +118,12 @@
     <section class="content">
 	<div class="container-fluid h-100">
 
+    {% if d.alerteVersion %}
+    <div class="alert alert-danger" role="alert">
+      Version de développement, ne pas utiliser en production ! <a href="https://github.com/JeromeDevome/GRR/releases">Trouver une autre version</a>
+    </div>
+    {% endif %}
+
 		{% block content %}{% endblock %}
 
   </div>
