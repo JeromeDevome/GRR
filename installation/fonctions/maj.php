@@ -1220,6 +1220,8 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_page ADD `ordre` SMALLINT(6) NOT NULL DEFAULT '0';");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_page ADD `emplacement` SMALLINT(6) NOT NULL DEFAULT '1';");
 
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET emplacement = 0 WHERE 1;");
+
 		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_j_group_area (`idgroupes` int NOT NULL, `id_area` int NOT NULL DEFAULT '0', PRIMARY KEY (`idgroupes`,`id_area`));");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_user_area ADD `idgroupes` int(11) NOT NULL DEFAULT '0';");
 
