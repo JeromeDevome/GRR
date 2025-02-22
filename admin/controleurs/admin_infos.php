@@ -122,6 +122,7 @@ if($recherche_MAJ == 1)
 	$opts = [
 			'http' => [
 					'method' => 'GET',
+					'timeout' => 2,
 					'header' => [
 							'User-Agent: PHP'
 					]

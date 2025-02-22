@@ -54,6 +54,7 @@ $url = "https://grr.devome.com/API/information.php?flux=".$gFluxNewsDevome;
 $opts = [
         'http' => [
                 'method' => 'GET',
+                'timeout' => 2,
                 'header' => [
                         'User-Agent: PHP'
                 ]

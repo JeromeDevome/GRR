@@ -66,7 +66,7 @@ if($gEnvoisStatGRR == 1){
 			'http' => [
 				'method' => 'GET',
 				'header' => "Connection: close\r\n", // Fermer la connexion immédiatement
-				'timeout' => 1, // Temps limite pour l'exécution
+				'timeout' => 2, // Temps limite pour l'exécution
 			]
 		]);
 		// Envoyer la requête sans attendre de réponse
