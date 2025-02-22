@@ -146,7 +146,7 @@ if($recherche_MAJ == 1)
 			$d['maj_SiteGRR'] = "<span class=\"label label-success\">".get_vocab("maj_dispo_aucune")."</span>";
 		}
 	}
-} elseif(!$majscript) {
+} else {
 	$d['maj_SiteGRR'] = "<span class=\"label label-info\">".get_vocab("maj_impossible_rechercher")."</span>". get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a>";
 }
 
