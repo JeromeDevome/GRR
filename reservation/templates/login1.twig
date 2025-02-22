@@ -53,13 +53,14 @@
                     <input type="hidden" name="url" value="{{d.url}}" />
                 {% endif %}
 
-                {{d.hookLienConnexion1|raw}}
-
                 <fieldset style="padding-top: 8px; padding-bottom: 8px; width: 40%; margin-left: auto; margin-right: auto;">
                     <legend style="font-variant: small-caps;">{{trad.identification}}</legend>
                     <p>{{trad.mentions_legal_connexion}}</p>
 
                     <table style="width: 100%; border-collapse : separate;border-spacing : 10px;" cellpadding="5" cellspacing="0">
+
+                        {{d.hookLienConnexion1|raw}}
+
                         {% if settings.sso_statut == "cas_visiteur" or settings.sso_statut == "cas_utilisateur" %}
                         <tr>
                             <td colspan="2">
@@ -69,10 +70,28 @@
                         <tr>
                             <td colspan="2">{{trad.connect_local}}{{trad.deux_points}}</td>
                         </tr>
-                        {% elseif settings.sso_statut != "" and settings.sso_statut != "no_sso" %}
+                        {% elseif settings.sso_statut == "lemon_visiteur" or settings.sso_statut == "lemon_utilisateur" %}
                         <tr>
                             <td colspan="2">
-                                <a class="btn btn-outlined-black" type="submit" name="submit" href="index.php" style="font-variant: small-caps; width: 100%;" /><i class="fa-solid fa-address-card"></i> {{trad.authentification_CAS}}</a>
+                                <a class="btn btn-primary" type="submit" name="submit" href="index.php" style="font-variant: small-caps; width: 100%;" /><i class="fa-solid fa-address-card"></i> {{trad.authentification_lemon}}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">{{trad.connect_local}}{{trad.deux_points}}</td>
+                        </tr>
+                        {% elseif settings.sso_statut == "http_visiteur" or settings.sso_statut == "http_utilisateur" %}
+                        <tr>
+                            <td colspan="2">
+                                <a class="btn btn-primary" type="submit" name="submit" href="index.php" style="font-variant: small-caps; width: 100%;" /><i class="fa-solid fa-address-card"></i> {{trad.authentification_lasso}}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">{{trad.connect_local}}{{trad.deux_points}}</td>
+                        </tr>
+                        {% elseif settings.sso_statut == "lemon_visiteur" or settings.sso_statut == "sso_statut" %}
+                        <tr>
+                            <td colspan="2">
+                                <a class="btn btn-primary" type="submit" name="submit" href="index.php" style="font-variant: small-caps; width: 100%;" /><i class="fa-solid fa-address-card"></i> {{trad.authentification_http}}</a>
                             </td>
                         </tr>
                         <tr>
