@@ -95,6 +95,8 @@ if ((authGetUserLevel(getUserName(), -1, 'area') >= 6) || (authGetUserLevel(getU
 	$liste[] = 'admin_groupe';
 if ((Settings::get("module_multisite") == "Oui") && (authGetUserLevel(getUserName(), -1, 'area') >= 6))
 	$liste[] = 'admin_admin_site';
+if ((Settings::get("module_multisite") == "Oui") && (authGetUserLevel(getUserName(), -1, 'area') >= 6))
+	$liste[] = 'admin_access_site';
 if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 	$liste[] = 'admin_right_admin';
 if (authGetUserLevel(getUserName(), -1, 'area') >= 4)

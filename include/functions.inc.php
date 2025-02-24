@@ -2118,7 +2118,11 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user,
 				$nb_sites_a_afficher++;
 				$selected = ($row[0] == $current_site) ? 'selected="selected"' : '';
 				$link2 ='app.php?p='.$link.'&amp;&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$default_area;
-				$out[] = '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
+
+				if (authUserAccesSite($user,$row[0]) == 1)		// DDE: on ne prend que les sites autorisés
+				{
+					$out[] = '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
+				}
 			}
 		}
 	}
@@ -3544,6 +3548,46 @@ function authUserAccesArea($user,$id)
 	else
 	{
 		$sql2 = "SELECT login FROM ".TABLE_PREFIX."_j_user_area WHERE (login = '".protect_data_sql($user)."' and id_area = '".protect_data_sql($id)."')";
+		$res2 = grr_sql_query($sql2);
+		$test2 = grr_sql_count($res2);
+		if ($test2 != "0")
+			return 1;
+		else
+			return 0;
+	}
+}
+/* authUserAccesSite($user,$id)
+ *
+ * Determines if the user access site
+ *
+ * $user - The user name
+ * $id -   Which site are we checking
+ *
+ */
+function authUserAccesSite($user,$id)
+{
+	if ($id == '')
+		return 0;
+	$sql = "SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE (login = '".protect_data_sql($user)."' and statut='administrateur')";
+	$res = grr_sql_query($sql);
+	if (grr_sql_count($res) != "0")
+		return 1;
+	if (Settings::get("module_multisite") == "Oui")
+	{
+		$id_site = mrbsGetAreaSite($id);
+		$sql = "SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site j WHERE j.id_site='".$id_site."' AND j.login='".protect_data_sql($user)."'";
+		$res = grr_sql_query($sql);
+		if (grr_sql_count($res) != "0")
+			return 1;
+	}
+	$sql = "SELECT id FROM ".TABLE_PREFIX."_site WHERE (id = '".protect_data_sql($id)."' and access='r')";
+	$res = grr_sql_query($sql);
+	$test = grr_sql_count($res);
+	if ($test == "0")
+		return 1;
+	else
+	{
+		$sql2 = "SELECT login FROM ".TABLE_PREFIX."_j_user_site WHERE (login = '".protect_data_sql($user)."' and id_site = '".protect_data_sql($id)."')";
 		$res2 = grr_sql_query($sql2);
 		$test2 = grr_sql_count($res2);
 		if ($test2 != "0")

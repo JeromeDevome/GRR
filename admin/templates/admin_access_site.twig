@@ -1,0 +1,200 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block content %}
+	<div class="row">
+		<div class="col col-md-12">
+
+			{% if trad.dMessage %}
+				{{ msgSyst.messageInfo(trad.admin_email_manager, trad.dMessage) }}
+			{% endif %}
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{ trad.admin_access_site }}</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body no-padding">
+
+					<form id="site" action="?p=admin_access_site" method="post">
+
+						<div class="form-group">
+							<label class="col col-sm-3" for="site">{{ trad.sites }}</label>
+							<div class="col col-sm-9">
+								<select name="site" class="form-control" onchange="site_go()">
+									<option value="-1">{{ trad.select }}</option>
+									{% for site in sites %}
+										<option value="{{ site.id }}" {% if site.id == d.idsite %} selected {% endif %}>{{ site.nom }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+
+					</form>
+
+					<hr>
+
+					{% if d.idSite > 0 %}
+
+					<div class="row">
+						<!-- Ajout un utilisateur -->
+						<div class="col col-sm-6">
+							<form action="?p=admin_access_site" method="post">
+								<input type="hidden" name="p" value="admin_access_site" />
+								<input type="hidden" name="id_site" value="{{ d.idSite }}" />
+
+								<div class="form-group">
+									<label class="col col-sm-12" for="reg_user_login">{{ trad.add_user_to_list }}</label>
+									<div class="col col-sm-12">
+										<select name="reg_user_login" class="form-control">
+											<option value="">{{ trad.select }}</option>
+											{% for user in utilisateursajoutable %}
+												<option value="{{ user.login }}">{{ user.nom }} {{ user.prenom }}</option>
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+
+								<div style="text-align:center;">
+									<input class="btn btn-primary" type="submit" value="{{ trad.add }}" />
+								</div>
+							</form>
+						</div>
+						<!-- Ajout un groupe -->
+						<div class="col col-sm-6">
+							<form action="?p=admin_access_site" method="post">
+								<input type="hidden" name="p" value="admin_access_site" />
+								<input type="hidden" name="id_site" value="{{ d.idSite }}" />
+								<input type="hidden" name="action" value="add_groupe" />
+	
+								<div class="form-group">
+									<label class="col col-sm-12" for="reg_groupe">Ajouter un groupe à la liste</label>
+									<div class="col col-sm-12">
+										<select name="reg_groupe" class="form-control">
+											<option value="">{{ trad.select }}</option>
+											{% for groupe in groupesajoutable %}
+												<option value="{{ groupe.id }}">{{ groupe.nom }}</option>
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+	
+								<div style="text-align:center;">
+									<input class="btn btn-primary" type="submit" value="{{ trad.add }}" />
+								</div>
+							</form>
+						</div>
+					</div>
+					<div="row">
+						{% if d.nbUserAjoutable > 0 %}
+
+							<form action="?p=admin_access_site" method="post">
+								<input type="hidden" name="p" value="admin_access_site" />
+								<input type="hidden" name="id_site" value="{{ d.idSite }}" />
+								<div class="form-group">
+									<label class="col col-sm-3" for="agent">{{ trad.add_multiple_user_to_list }}</label>
+									<div class="col col-sm-9">
+										<select name="agent" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.agent,this.form.elements['reg_multi_user_login[]'])">
+											{% for user in utilisateursajoutable %}
+												<option value="{{ user.login }}">{{ user.nom }} {{ user.prenom }}</option>
+											{% endfor %}
+										</select>
+										<button type="button" class="btn btn-danger" onclick="Deplacer(this.form.elements['reg_multi_user_login[]'],this.form.agent)"/><i class="fa fa-arrow-circle-left"></i></button>
+										<button type="button" class="btn btn-success" onclick="Deplacer(this.form.agent,this.form.elements['reg_multi_user_login[]'])"/><i class="fa fa-arrow-circle-right"></i></button>
+										<select name="reg_multi_user_login[]" id="reg_multi_user_login" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.elements['reg_multi_user_login[]'],this.form.agent)">
+										</select>
+									</div>
+								</div>
+
+								<div style="text-align:center;">
+									<input class="btn btn-primary" type="submit" value="{{ trad.add }}" onclick="selectionner_liste(this.form.reg_multi_user_login);" />
+								</div>
+							</form>
+
+						{% endif %}
+					</div>
+
+						<h3>{{ trad.user_site_list }}</h3>
+
+						<table class="table table-striped">
+							<tr>
+								<th>{{ trad.login }}</th>
+								<th>{{ trad.last_name }}</th>
+								<th>{{ trad.first_name }}</th>
+								<th>{{ trad.action }}</th>
+							</tr>
+							{% for useradmin in utilisateursexep %}
+								<tr>
+									<td>{{ useradmin.login }}</td>
+									<td>{{ useradmin.nom }}</td>
+									<td>{{ useradmin.prenom }}</td>
+									<td><a href="?p=admin_access_site&action=del_user&login_user={{ useradmin.login }}&id_site={{ d.idSite }}"><i class="fa fa-trash"></i></a></td>
+								</tr>
+							{% endfor %}
+						</table>
+
+
+						<h3>Liste des groupes ayant accès à ce site :</h3>
+
+						<table class="table table-striped">
+							<tr>
+								<th>{{ trad.groupes }}</th>
+								<th>{{ trad.action }}</th>
+							</tr>
+							{% for groupeadmin in groupesexep %}
+								<tr>
+									<td>{{ groupeadmin.nom }}</td>
+									<td><a href="?p=admin_access_site&action=del_groupe&groupe={{ groupeadmin.id }}&id_site={{ d.idSite }}"><i class="fa fa-trash"></i></a></td>
+								</tr>
+							{% endfor %}
+						</table>
+
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+	<script>
+
+		function site_go()
+		{
+			box = document.getElementById("site").site;
+			destination = box.options[box.selectedIndex].value;
+			if (destination) location.href = "?p=admin_access_site&id_site="+destination;
+		}
+
+		function Deplacer(liste1, liste2)
+		{
+			while (liste1.options.selectedIndex >= 0)
+			{
+				opt = new Option(liste1.options[liste1.options.selectedIndex].text,liste1.options[liste1.options.selectedIndex].value);
+				liste2.options[liste2.options.length] = opt;
+				liste1.options[liste1.options.selectedIndex] = null;
+			}
+		}
+		
+		function vider_liste(IdListe)
+		{
+			var l = IdListe.options.length;
+			for (var i = 0; i < l; i++)
+			{
+				IdListe.options[i] = null;
+			}
+		}
+
+		function selectionner_liste(IdListe)
+		{
+			var l = IdListe.options.length;
+			for(var i = 0; i < l; i++)
+			{
+				IdListe.options[i].selected = true;
+			}
+		}
+
+		vider_liste(document.getElementById('reg_multi_user_login'));
+	</script>
+{% endblock %}

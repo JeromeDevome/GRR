@@ -24,6 +24,13 @@
 						<input type="hidden" name="id" value="{{ trad.dIdSite }}" />
 						
 						{{ form.input('sitecode', trad.site_code, site.code, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1, maxlength:10}) }}
+						<div class="form-group row">
+							<label class="col col-sm-4" for="access">{{ trad.site_access }}</label>
+							<div class="col col-sm-8">
+								<input type="checkbox" name="access" value="y" {% if site.access == 'r' %} checked {% endif %}>
+							</div>
+						</div>
+						{# {{ form.input('access', trad.site_access, site.access, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1, maxlength:10}) }} #}
 						{{ form.input('sitename', trad.site_name, site.nom, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
 						{{ form.input('adresse_ligne1', trad.site_adresse_ligne1, site.adresse_ligne1, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
 						{{ form.input('adresse_ligne2', trad.site_adresse_ligne2, site.adresse_ligne2, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
