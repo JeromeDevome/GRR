@@ -529,28 +529,29 @@ function bbCode($t,$type)
  * FUNCTION: how_many_connected()
  * DESCRIPTION: Si c'est un admin qui est connecté, affiche le nombre de personnes actuellement connectées.
  */
-function how_many_connected()
-{
-	if (authGetUserLevel(getUserName(), -1) >= 6)
-	{
-		$sql = "SELECT login FROM ".TABLE_PREFIX."_log WHERE end > now()";
-		$res = grr_sql_query($sql);
-		$nb_connect = grr_sql_count($res);
+function how_many_connected() {
+        if (authGetUserLevel(getUserName(), -1) >= 6) { 
+                $sql = "SELECT count(login) as cnt FROM ".TABLE_PREFIX."_log WHERE end > now()";
+                $res = grr_sql_query($sql);
+                $tmpsql = mysqli_fetch_assoc($res);
+                $nb_connect = $tmpsql["cnt"];
 		grr_sql_free($res);
 
-		if (@file_exists('./admin_access_area.php')){
-			$racineAd = "./";
-		}else{
-			$racineAd = "./admin/";
-		}
+                if (@file_exists('./admin_access_area.php')){
+                        $racineAd = "./";
+                } else {
+                        $racineAd = "./admin/";
+                }
 
-		if ($nb_connect == 1)
-			echo "<a href='{$racineAd}admin.php?p=admin_view_connexions'>".$nb_connect.get_vocab("one_connected")."</a>".PHP_EOL;
-		else
-			echo "<a href='{$racineAd}admin.php?p=admin_view_connexions'>".$nb_connect.get_vocab("several_connected")."</a>".PHP_EOL;
-		if (verif_version())
-			affiche_pop_up(get_vocab("maj_bdd_not_update").get_vocab("please_go_to_admin_maj.php"),"force");
-	}
+                if ($nb_connect == 1) {
+                  echo "<a href='{$racineAd}admin.php?p=admin_view_connexions'>".$nb_connect.get_vocab("one_connected")."</a>".PHP_EOL;
+                } else {                        
+                  echo "<a href='{$racineAd}admin.php?p=admin_view_connexions'>".$nb_connect.get_vocab("several_connected")."</a>".PHP_EOL;
+                }
+                if (verif_version()) {
+                  affiche_pop_up(get_vocab("maj_bdd_not_update").get_vocab("please_go_to_admin_maj.php"),"force");
+                }
+        }
 }
 
 /**
