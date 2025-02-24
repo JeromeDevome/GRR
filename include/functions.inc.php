@@ -1701,20 +1701,12 @@ function get_default_area($id_site = -1)
 		$use_multisite = true;
 	else
 		$use_multisite = false;
-	if ($gOptionIp==1)
-	{
-		$sql = "SELECT ip_adr, id FROM ".TABLE_PREFIX."_area WHERE ip_adr!='' ORDER BY access, order_display, area_name";
-		$res = grr_sql_query($sql);
-		if ($res)
-		{
-			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-			{
-				if (compare_ip_adr($_SERVER['REMOTE_ADDR'],$row[0]))
-				{
-					return $row[1];
-				}
-			}
-		}
+	if ($gOptionIp==1) {
+		$sql = "SELECT id FROM ".TABLE_PREFIX."_area WHERE ip_adr='".$_SERVER['REMOTE_ADDR']."' ORDER BY access, order_display, area_name LIMIT 1";
+          	$res = grr_sql_query($sql);
+          	if ($row = mysqli_fetch_assoc($res)) {
+            		return $row["id"];
+          	}
 	}
 	if (authGetUserLevel(getUserName(),-1) >= 6)
 	{
