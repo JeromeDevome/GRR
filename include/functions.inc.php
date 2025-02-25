@@ -6291,15 +6291,20 @@ function grrGetOverloadDescArray($ofl,$od)
             }
         }
         // while
-        if (($balise_fermante == 'n' ) || ($balise_ouvrante == 'n'))
+        $sql = "SELECT affichage, overload_mail, obligatoire, confidentiel FROM ".TABLE_PREFIX."_overload WHERE id = '".$ofl[$field]["id"]."'";
+        $res = grr_sql_query($sql);
+        if ($row = mysqli_fetch_assoc($res)) {
+          $overload_array[$field]["id"] = $ofl[$field]["id"];
+          if (($balise_fermante == 'n' ) || ($balise_ouvrante == 'n')) {
             $overload_array[$field]["valeur"]='';
-        else
-            $overload_array[$field]["valeur"]=urldecode($result);
-        $overload_array[$field]["id"] = $ofl[$field]["id"];
-        $overload_array[$field]["affichage"] = grr_sql_query1("SELECT affichage FROM ".TABLE_PREFIX."_overload WHERE id = '".$ofl[$field]["id"]."'");
-        $overload_array[$field]["overload_mail"] = grr_sql_query1("SELECT overload_mail FROM ".TABLE_PREFIX."_overload WHERE id = '".$ofl[$field]["id"]."'");
-        $overload_array[$field]["obligatoire"] = grr_sql_query1("SELECT obligatoire FROM ".TABLE_PREFIX."_overload WHERE id = '".$ofl[$field]["id"]."'");
-        $overload_array[$field]["confidentiel"] = grr_sql_query1("SELECT confidentiel FROM ".TABLE_PREFIX."_overload WHERE id = '".$ofl[$field]["id"]."'");
+           } else {
+             $overload_array[$field]["valeur"]=urldecode($result);
+           }
+          $overload_array[$field]["affichage"] = $row["affichage"];
+          $overload_array[$field]["overload_mail"] = $row["overload_mail"];
+          $overload_array[$field]["obligatoire"] = $row["obligatoire"];
+          $overload_array[$field]["confidentiel"] = $row ["confidentiel"];
+        }
     }
     return $overload_array;
 }
