@@ -5988,78 +5988,62 @@ function supprimerReservationsUtilisateursEXT($avec_resa,$avec_privileges)
  * Supprime les lignes inutiles dans les tables de liaison
  *
  */
-function NettoyerTablesJointure()
-{
+function NettoyerTablesJointure() {
 	$nb = 0;
 	// Table grr_j_mailuser_room
 	$req = "SELECT j.login FROM ".TABLE_PREFIX."_j_mailuser_room j
 	LEFT JOIN ".TABLE_PREFIX."_utilisateurs u on u.login=j.login
 	WHERE (u.login  IS NULL)";
 	$res = grr_sql_query($req);
-	if ($res)
-	{
-		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-		{
-			$nb++;
-			grr_sql_command("delete from ".TABLE_PREFIX."_j_mailuser_room where login='".$row[0]."'");
-		}
+	while ($row = mysqli_fetch_array($res)) {
+		$nb++;
+		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_mailuser_room WHERE login='".$row[0]."'");
 	}
+
 	// Table grr_j_user_area
 	$req = "SELECT j.login FROM ".TABLE_PREFIX."_j_user_area j
 	LEFT JOIN ".TABLE_PREFIX."_utilisateurs u on u.login=j.login
 	WHERE (u.login  IS NULL)";
 	$res = grr_sql_query($req);
-	if ($res)
-	{
-		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-		{
-			$nb++;
-			grr_sql_command("delete from ".TABLE_PREFIX."_j_user_area where login='".$row[0]."'");
-		}
+	while ($row = mysqli_fetch_array($res)) {
+		$nb++;
+		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_area where login='".$row[0]."'");
 	}
+	
 	// Table grr_j_user_room
 	$req = "SELECT j.login FROM ".TABLE_PREFIX."_j_user_room j
 	LEFT JOIN ".TABLE_PREFIX."_utilisateurs u on u.login=j.login
 	WHERE (u.login  IS NULL)";
 	$res = grr_sql_query($req);
-	if ($res)
-	{
-		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-		{
-			$nb++;
-			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE login='".$row[0]."'");
-		}
+	while ($row = mysqli_fetch_array($res)) {
+		$nb++;
+		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE login='".$row[0]."'");
 	}
+	
 	// Table grr_j_useradmin_area
 	$req = "SELECT j.login FROM ".TABLE_PREFIX."_j_useradmin_area j
 	LEFT JOIN ".TABLE_PREFIX."_utilisateurs u on u.login=j.login
 	WHERE (u.login  IS NULL)";
 	$res = grr_sql_query($req);
-	if ($res)
-	{
-		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-		{
-			$nb++;
-			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='".$row[0]."'");
-		}
+	while ($row = mysqli_fetch_array($res)) {
+		$nb++;
+		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='".$row[0]."'");
 	}
+	
 	// Table grr_j_useradmin_site
 	$req = "SELECT j.login FROM ".TABLE_PREFIX."_j_useradmin_site j
 	LEFT JOIN ".TABLE_PREFIX."_utilisateurs u on u.login=j.login
 	WHERE (u.login  IS NULL)";
 	$res = grr_sql_query($req);
-	if ($res)
-	{
-		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-		{
-			$nb++;
-			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='".$row[0]."'");
-		}
+	while ($row = mysqli_fetch_array($res)) {
+		$nb++;
+		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='".$row[0]."'");
 	}
 	// Suppression effective
 	echo "<hr />\n";
 	echo "<p class='avertissement'>".get_vocab("tables_liaison").get_vocab("deux_points").$nb.get_vocab("entres_supprimees")."</p>\n";
 }
+
 if (!function_exists('htmlspecialchars_decode'))
 {
 	function htmlspecialchars_decode($text)
