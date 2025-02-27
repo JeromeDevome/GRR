@@ -3598,7 +3598,17 @@ function authUserAccesSite($user,$id)
 		if ($test2 != "0")
 			return 1;
 		else
-			return 0;
+		{
+			$sql3 = "SELECT login FROM ".TABLE_PREFIX."_j_group_site gs 
+			JOIN ".TABLE_PREFIX."_utilisateurs_groupes ug on ug.idgroupes = gs.idgroupes 
+			WHERE (ug.login = '".protect_data_sql($user)."' and gs.id_site = '".protect_data_sql($id)."')";
+			$res3 = grr_sql_query($sql3);
+			$test3 = grr_sql_count($res3);
+			if ($test3 != "0")
+				return 1;
+			else
+				return 0;
+		}
 	}
 }
 // function UserRoomMaxBooking
