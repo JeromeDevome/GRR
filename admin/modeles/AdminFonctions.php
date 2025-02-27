@@ -17,29 +17,28 @@
 
 class AdminFonctions
 {
-
-	public static function NombreUtilisateurs() // Nombre d'utilisateur enregisté et actif
-	{
-		$sql = "SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE etat = 'actif'";
+    // Nombre d'utilisateur enregisté et actif
+	public static function NombreUtilisateurs()	{
+		$sql = "SELECT count(login) FROM ".TABLE_PREFIX."_utilisateurs WHERE etat = 'actif'";
 		$res = grr_sql_query($sql);
-		$nb_utilisateur = grr_sql_count($res);
+        	$tmpsql = mysqli_fetch_array($res);
+		$nb_utilisateur = $tmpsql[0];
 		grr_sql_free($res);
 
 		return $nb_utilisateur;
 	}
 
-
-	public static function NombreDeConnecter() // Nombre d'utilisateur actuellement connecté
-	{
-		$sql = "SELECT login FROM ".TABLE_PREFIX."_log WHERE end > now()";
+    // Nombre d'utilisateur actuellement connecté
+	public static function NombreDeConnecter() {
+		$sql = "SELECT count(login) FROM ".TABLE_PREFIX."_log WHERE end > now()";
 		$res = grr_sql_query($sql);
-		$nb_connect = grr_sql_count($res);
+        	$tmpsql = mysqli_fetch_array($res);
+		$nb_connect = $tmpsql[0];
 		grr_sql_free($res);
 
 		return $nb_connect;
 	}
-
-
+	
 	public static function NombreUtilisateursMDPfacile() // Nombre d'utilisateurs avec un mot de passe trop simple
 	{
 		global $mdpFacile;
