@@ -5114,6 +5114,24 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 		$resa[8] != ""
 	  )
 		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES)."<br>";
+	
+	// Participant
+	if( ($authGetUserLevel == 0 && Settings::get("display_participants_nc") == 1) || 
+		($authGetUserLevel == 1 && Settings::get("display_participants_vi") == 1) ||
+		($authGetUserLevel == 2 && Settings::get("display_participants_us") == 1) || 
+		($authGetUserLevel == 3 && Settings::get("display_participants_gr") == 1) || 
+		($authGetUserLevel >= 4 && Settings::get("display_participants_ad") == 1) &&
+		$resa[18] != 0
+	)
+	{
+		$sql = "SELECT count(id_participation) FROM ".TABLE_PREFIX."_participants WHERE idresa=".$resa[2];
+		$res = grr_sql_query($sql);
+        	$tmpsql = mysqli_fetch_array($res);
+		$nb_inscrit = $tmpsql[0];
+		grr_sql_free($res);
+
+		$affichage .= $nb_inscrit."/".$resa[18]."<br>";
+	}
 
 	// Champs Additionnels
     // la ressource associée à la réservation :
