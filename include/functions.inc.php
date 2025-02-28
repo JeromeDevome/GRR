@@ -5174,6 +5174,19 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 			$affichage .= "<i class=\"icone fa-solid fa-hourglass-half\"></i> ";
 	}
 
+	// Je participe
+	if($resa[18] != 0)
+	{
+		$sql = "SELECT count(id_participation) FROM ".TABLE_PREFIX."_participants WHERE beneficiaire='".getUserName()."'";
+		$res = grr_sql_query($sql);
+        	$tmpsql = mysqli_fetch_array($res);
+		$present = $tmpsql[0];
+		grr_sql_free($res);
+
+		if($present > 0)
+		$affichage .= "<i class=\"fa-solid fa-person\"></i> ";
+	}
+
 	return $affichage;
 }
 /*
