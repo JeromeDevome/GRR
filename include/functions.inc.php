@@ -1761,7 +1761,7 @@ function get_default_site()
     $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_site WHERE id = ".$id_site);
     if ($test >0){return $id_site;}
     else { // il n'y a pas de site par défaut dans la table setting, on prend le premier site
-        $id_site = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_site ");
+        $id_site = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_site where access <> 'r' ");
         return($id_site);
     }
 }
