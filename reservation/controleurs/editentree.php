@@ -253,7 +253,6 @@ $delais_option_reservation = isset($Room['delais_option_reservation'])? $Room['d
 $qui_peut_reserver_pour = isset($Room['qui_peut_reserver_pour'])? $Room['qui_peut_reserver_pour']: -1;
 $d['active_cle'] = isset($Room['active_cle'])? $Room['active_cle']: -1;
 $d['active_ressource_empruntee'] = grr_sql_query1("SELECT active_ressource_empruntee FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
-$d['active_participant'] = isset($Room['active_participant'])? $Room['active_participant']: -1;
 $periodiciteConfig = Settings::get("periodicite");
 $longueur_liste_ressources_max = Settings::get("longueur_liste_ressources_max");
 if ($longueur_liste_ressources_max == '')
@@ -280,6 +279,15 @@ if (UserRoomMaxBooking($user_name, $room, $compt) == 0)
 	echo $twig->render('erreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
 	exit();
 }
+
+//Participants
+$active_participant = isset($Room['active_participant'])? $Room['active_participant']: -1;
+if($active_participant > 0)
+	if (authGetUserLevel($user_name,$room) >= $Room['active_participant'])
+		$d['active_participant'] = 1;
+
+
+
 $d['etype'] = 0;
 if (isset($id) && $id !=0) // édition d'une réservation existante
 {
