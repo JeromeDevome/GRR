@@ -26,7 +26,7 @@ $grr_devel_url = "https://grr.devome.com/";
 $version_grr = "4.4.0a";
 # Version BDD, deux premirs chiffres = version majeur, les deux suivant la version, évolution de GRR, les 3 derniers une incrémentation à chaque changement
 # Ex 0400003 : 3eme modification sur la branche 4.X.X
-$version_bdd = "0400006";
+$version_bdd = "0400007";
 // Version repository (GitHub) GitHub-Master / Release-v4.0.0-beta.1 / Release-v4.0.0-RC.1 / Release-v4.0.0
 $versionReposite = "GitHub-Master";
 
