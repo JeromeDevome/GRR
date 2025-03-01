@@ -1200,7 +1200,7 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter = '';
 	}
 
-	if (intval($version_old_bdd) < 400006) // Version GRR 4.4.0
+	if (intval($version_old_bdd) < 400006) // Version GRR 4.4.0 alpha
 	{
 		
 		$result .= formatresult("Mise à jour jusqu'à la version 4.4.0 :","<b>","</b>");
@@ -1231,6 +1231,18 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_type_area ADD `couleuricone` VARCHAR(10) NOT NULL DEFAULT '#000000' AFTER `couleurtexte`;");
 
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs ADD `commentaire` MEDIUMTEXT NOT NULL AFTER `source`, ADD `desactive_mail` TINYINT NOT NULL DEFAULT '0' AFTER `commentaire`, ADD `nb_tentative` TINYINT NOT NULL DEFAULT '0' AFTER `desactive_mail`, ADD `date_blocage` INT NOT NULL DEFAULT '0' AFTER `nb_tentative`, ADD `popup` TINYINT NOT NULL DEFAULT '0' AFTER `date_blocage`;");
+
+		if ($result_inter == '')
+			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+		else
+			$result .= $result_inter;
+		$result_inter = '';
+	}
+
+	if (intval($version_old_bdd) < 400007) // Version GRR 4.4.0 béta
+	{
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room` ADD `inscription_participant` tinyint(1) NOT NULL DEFAULT '1' AFTER `active_participant`;");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room` ADD `nb_participant_defaut` smallint NOT NULL DEFAULT '0' AFTER `inscription_participant`;");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");

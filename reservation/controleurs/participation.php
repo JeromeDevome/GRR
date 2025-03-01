@@ -15,7 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-$grr_script_name = "participation_entry.php";
+$grr_script_name = "participation.php";
 
 $series = isset($_GET["series"]) ? $_GET["series"] : NULL;
 if (isset($series))
@@ -38,14 +38,14 @@ if ($info = mrbsGetEntryInfo($id))
 	if (isset($_SERVER['HTTP_REFERER']))
 		$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
 	
-	$authGetUserLevel = authGetUserLevel(getUserName(), -1);
+	$authGetUserLevel = authGetUserLevel(getUserName(), $id);
 	if ($authGetUserLevel < 1)
 	{
 		showAccessDenied($back, 'authGetUserLevel');
 		exit();
 	}
 
-	$lvl_participation = grr_sql_query1("SELECT ".TABLE_PREFIX."_room.active_participant FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id AND ".TABLE_PREFIX."_entry.id='".$id."'");
+	$lvl_participation = grr_sql_query1("SELECT ".TABLE_PREFIX."_room.inscription_participant FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id AND ".TABLE_PREFIX."_entry.id='".$id."'");
 
 	if ($lvl_participation < 1)
 	{
@@ -54,7 +54,7 @@ if ($info = mrbsGetEntryInfo($id))
 	}
 	if($authGetUserLevel < $lvl_participation)
 	{
-		showAccessDenied($back, 'authGetUserLevel_Inf_Lvl_participation');
+		showAccessDenied($back, 'authGetUserLevel_Inf_Lvl_participation;'.$authGetUserLevel.';'.$lvl_participation);
 		exit;
 	}	
 

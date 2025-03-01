@@ -462,7 +462,7 @@ else // nouvelle réservation
 	$rep_jour      	= 0;
 	$option_reservation = -1;
 	$modif_option_reservation = 'y';
-	$d['nbparticipantmax'] = 0;
+	$d['nbparticipantmax'] = $Room['nb_participant_defaut'];
 }
 
 // fin nouvelle réservation
