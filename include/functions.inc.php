@@ -5056,11 +5056,11 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 	$authGetUserLevel = authGetUserLevel(getUserName(), $room);
 
 	// Heures ou créneaux + symboles <== ==>
-	if( ($authGetUserLevel == 0 && Settings::get("display_horaires_nc") == 1) || 
+	if( (($authGetUserLevel == 0 && Settings::get("display_horaires_nc") == 1) || 
 		($authGetUserLevel == 1 && Settings::get("display_horaires_vi") == 1) ||
 		($authGetUserLevel == 2 && Settings::get("display_horaires_us") == 1) || 
 		($authGetUserLevel == 3 && Settings::get("display_horaires_gr") == 1) || 
-		($authGetUserLevel >= 4 && Settings::get("display_horaires_ad") == 1) &&
+		($authGetUserLevel >= 4 && Settings::get("display_horaires_ad") == 1)) &&
 		$heures != ""
  	)
         $affichage .= $heures."<br>";
@@ -5094,11 +5094,11 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 	}
 
 	// Brève description ou le numéro de la réservation
-	if( ($authGetUserLevel == 0 && Settings::get("display_short_description_nc") == 1) || 
+	if( (($authGetUserLevel == 0 && Settings::get("display_short_description_nc") == 1) || 
 		($authGetUserLevel == 1 && Settings::get("display_short_description_vi") == 1) ||
 		($authGetUserLevel == 2 && Settings::get("display_short_description_us") == 1) || 
 		($authGetUserLevel == 3 && Settings::get("display_short_description_gr") == 1) || 
-		($authGetUserLevel >= 4 && Settings::get("display_short_description_ad") == 1) &&
+		($authGetUserLevel >= 4 && Settings::get("display_short_description_ad") == 1)) &&
 		$resa[3] != ""
 	  )
 		$affichage .= htmlspecialchars($resa[3],ENT_NOQUOTES)."<br>";
@@ -5106,21 +5106,21 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 		$affichage .= get_vocab("entryid").$resa[2]."<br>";
 
 	// Description Complète
-	if( ($authGetUserLevel == 0 && Settings::get("display_full_description_nc") == 1) || 
+	if( (($authGetUserLevel == 0 && Settings::get("display_full_description_nc") == 1) || 
 		($authGetUserLevel == 1 && Settings::get("display_full_description_vi") == 1) ||
 		($authGetUserLevel == 2 && Settings::get("display_full_description_us") == 1) || 
 		($authGetUserLevel == 3 && Settings::get("display_full_description_gr") == 1) || 
-		($authGetUserLevel >= 4 && Settings::get("display_full_description_ad") == 1) &&
+		($authGetUserLevel >= 4 && Settings::get("display_full_description_ad") == 1)) &&
 		$resa[8] != ""
 	  )
 		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES)."<br>";
 	
 	// Participant
-	if( ($authGetUserLevel == 0 && Settings::get("display_participants_nc") == 1) || 
+	if( (($authGetUserLevel == 0 && Settings::get("display_participants_nc") == 1) || 
 		($authGetUserLevel == 1 && Settings::get("display_participants_vi") == 1) ||
 		($authGetUserLevel == 2 && Settings::get("display_participants_us") == 1) || 
 		($authGetUserLevel == 3 && Settings::get("display_participants_gr") == 1) || 
-		($authGetUserLevel >= 4 && Settings::get("display_participants_ad") == 1) &&
+		($authGetUserLevel >= 4 && Settings::get("display_participants_ad") == 1)) &&
 		$resa[18] != 0
 	)
 	{
@@ -5202,11 +5202,11 @@ function affichage_resa_info_bulle($ofl, $vue, $resa, $heures)
 	$authGetUserLevel = authGetUserLevel(getUserName(), $room);
 
 	// Heures ou créneaux + symboles <== ==>
-	if( ($authGetUserLevel == 0 && Settings::get("display_horaires_nc") == 2) || 
+	if( (($authGetUserLevel == 0 && Settings::get("display_horaires_nc") == 2) || 
 		($authGetUserLevel == 1 && Settings::get("display_horaires_vi") == 2) ||
 		($authGetUserLevel == 2 && Settings::get("display_horaires_us") == 2) || 
 		($authGetUserLevel == 3 && Settings::get("display_horaires_gr") == 2) || 
-		($authGetUserLevel >= 4 && Settings::get("display_horaires_ad") == 2) &&
+		($authGetUserLevel >= 4 && Settings::get("display_horaires_ad") == 2)) &&
 		$heures != ""
  	)
         $affichage .= $heures."\n";
@@ -5240,11 +5240,11 @@ function affichage_resa_info_bulle($ofl, $vue, $resa, $heures)
 	}
 
 	// Brève description ou le numéro de la réservation
-	if( ($authGetUserLevel == 0 && Settings::get("display_short_description_nc") == 2) || 
+	if( (($authGetUserLevel == 0 && Settings::get("display_short_description_nc") == 2) || 
 		($authGetUserLevel == 1 && Settings::get("display_short_description_vi") == 2) ||
 		($authGetUserLevel == 2 && Settings::get("display_short_description_us") == 2) || 
 		($authGetUserLevel == 3 && Settings::get("display_short_description_gr") == 2) || 
-		($authGetUserLevel >= 4 && Settings::get("display_short_description_ad") == 2) &&
+		($authGetUserLevel >= 4 && Settings::get("display_short_description_ad") == 2)) &&
 		$resa[3] != ""
 	  )
 		$affichage .= htmlspecialchars($resa[3],ENT_NOQUOTES)."\n";
@@ -5252,11 +5252,11 @@ function affichage_resa_info_bulle($ofl, $vue, $resa, $heures)
 		$affichage .= get_vocab("entryid").$resa[2]."\n";
 
 	// Description Complète
-	if( ($authGetUserLevel == 0 && Settings::get("display_full_description_nc") == 2) || 
+	if( (($authGetUserLevel == 0 && Settings::get("display_full_description_nc") == 2) || 
 		($authGetUserLevel == 1 && Settings::get("display_full_description_vi") == 2) ||
 		($authGetUserLevel == 2 && Settings::get("display_full_description_us") == 2) || 
 		($authGetUserLevel == 3 && Settings::get("display_full_description_gr") == 2) || 
-		($authGetUserLevel >= 4 && Settings::get("display_full_description_ad") == 2) &&
+		($authGetUserLevel >= 4 && Settings::get("display_full_description_ad") == 2)) &&
 		$resa[8] != ""
 	  )
 		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES)."\n";
@@ -5324,11 +5324,11 @@ function titre_compact($ofl, $resa, $heures)
 	}
 
 	// Brève description ou le numéro de la réservation
-	if( ($authGetUserLevel == 0 && Settings::get("display_short_description_nc") >= 1) || 
+	if( (($authGetUserLevel == 0 && Settings::get("display_short_description_nc") >= 1) || 
 		($authGetUserLevel == 1 && Settings::get("display_short_description_vi") >= 1) ||
 		($authGetUserLevel == 2 && Settings::get("display_short_description_us") >= 1) || 
 		($authGetUserLevel == 3 && Settings::get("display_short_description_gr") >= 1) || 
-		($authGetUserLevel >= 4 && Settings::get("display_short_description_ad") >= 1) &&
+		($authGetUserLevel >= 4 && Settings::get("display_short_description_ad") >= 1)) &&
 		$resa[3] != ""
 	  )
 		$affichage .= "\n".htmlspecialchars($resa[3],ENT_NOQUOTES);
@@ -5336,11 +5336,11 @@ function titre_compact($ofl, $resa, $heures)
 		$affichage .= "\n".get_vocab("entryid").$resa[2];
 
 	// Description Complète
-	if( ($authGetUserLevel == 0 && Settings::get("display_full_description_nc") >= 1) || 
+	if( (($authGetUserLevel == 0 && Settings::get("display_full_description_nc") >= 1) || 
 		($authGetUserLevel == 1 && Settings::get("display_full_description_vi") >= 1) ||
 		($authGetUserLevel == 2 && Settings::get("display_full_description_us") >= 1) || 
 		($authGetUserLevel == 3 && Settings::get("display_full_description_gr") >= 1) || 
-		($authGetUserLevel >= 4 && Settings::get("display_full_description_ad") >= 1) &&
+		($authGetUserLevel >= 4 && Settings::get("display_full_description_ad") >= 1)) &&
 		$resa[8] != ""
 	  )
 		$affichage .= "\n".htmlspecialchars($resa[8],ENT_NOQUOTES);
@@ -5378,11 +5378,11 @@ function lien_compact($resa)
 		$affichage .= affiche_nom_prenom_email($resa[4], $resa[12], "nomail");
 
 	// Brève description ou le numéro de la réservation
-	if( ($authGetUserLevel == 0 && Settings::get("display_short_description_nc") == 1) || 
+	if( (($authGetUserLevel == 0 && Settings::get("display_short_description_nc") == 1) || 
 		($authGetUserLevel == 1 && Settings::get("display_short_description_vi") == 1) ||
 		($authGetUserLevel == 2 && Settings::get("display_short_description_us") == 1) || 
 		($authGetUserLevel == 3 && Settings::get("display_short_description_gr") == 1) || 
-		($authGetUserLevel >= 4 && Settings::get("display_short_description_ad") == 1) &&
+		($authGetUserLevel >= 4 && Settings::get("display_short_description_ad") == 1)) &&
 		$resa[3] != ""
 	  )
 		$affichage .= htmlspecialchars($resa[3],ENT_NOQUOTES);
@@ -5390,11 +5390,11 @@ function lien_compact($resa)
 		$affichage .= get_vocab("entryid").$resa[2];
 
 	// Description Complète
-	if( ($authGetUserLevel == 0 && Settings::get("display_full_description_nc") == 1) || 
+	if( (($authGetUserLevel == 0 && Settings::get("display_full_description_nc") == 1) || 
 		($authGetUserLevel == 1 && Settings::get("display_full_description_vi") == 1) ||
 		($authGetUserLevel == 2 && Settings::get("display_full_description_us") == 1) || 
 		($authGetUserLevel == 3 && Settings::get("display_full_description_gr") == 1) || 
-		($authGetUserLevel >= 4 && Settings::get("display_full_description_ad") == 1) &&
+		($authGetUserLevel >= 4 && Settings::get("display_full_description_ad") == 1)) &&
 		$resa[8] != ""
 	  )
 		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES);
