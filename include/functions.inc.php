@@ -5177,7 +5177,7 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 	// Je participe
 	if($resa[18] != 0)
 	{
-		$sql = "SELECT count(id_participation) FROM ".TABLE_PREFIX."_participants WHERE beneficiaire='".getUserName()."'";
+		$sql = "SELECT count(id_participation) FROM ".TABLE_PREFIX."_participants WHERE beneficiaire='".getUserName()."' AND idresa = ".$resa[2];
 		$res = grr_sql_query($sql);
         	$tmpsql = mysqli_fetch_array($res);
 		$present = $tmpsql[0];

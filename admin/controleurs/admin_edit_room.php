@@ -331,7 +331,7 @@ else
 	$row['show_fic_room'] = '';
 	$row['active_ressource_empruntee'] = 'n';
 	$row['active_cle'] = 'n';
-	$row['active_participant'] = 'n';
+	$row['active_participant'] = 0;
 	$area_name = grr_sql_query1("select area_name from ".TABLE_PREFIX."_area where id='".$area_id."'");
 
 	$typeAction = get_vocab("addroom");
