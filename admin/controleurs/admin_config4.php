@@ -78,49 +78,50 @@ if (isset($_GET['sessionMaxLength']))
 		$msg .= "Erreur lors de l'enregistrement de sessionMaxLength !<br />";
 }
 // pass_leng
-settype($_GET['pass_leng'], "integer");
-settype($_GET['pass_nb_min'], "integer");
-settype($_GET['pass_nb_maj'], "integer");
-settype($_GET['pass_nb_ch'], "integer");
-settype($_GET['pass_nb_sp'], "integer");
+if (isset($_GET['pass_leng'])) {
+	settype($_GET['pass_leng'], "integer");
+	settype($_GET['pass_nb_min'], "integer");
+	settype($_GET['pass_nb_maj'], "integer");
+	settype($_GET['pass_nb_ch'], "integer");
+	settype($_GET['pass_nb_sp'], "integer");
 
-if($_GET['pass_leng'] >= ($_GET['pass_nb_min'] + $_GET['pass_nb_maj'] + $_GET['pass_nb_ch'] + $_GET['pass_nb_sp']))
-{
-	if (isset($_GET['pass_leng']))
+	if($_GET['pass_leng'] >= ($_GET['pass_nb_min'] + $_GET['pass_nb_maj'] + $_GET['pass_nb_ch'] + $_GET['pass_nb_sp']))
 	{
-		if ($_GET['pass_leng'] < 1)
-			$_GET['pass_leng'] = 1;
-		if (!Settings::set("pass_leng", $_GET['pass_leng']))
-			$msg .= "Erreur lors de l'enregistrement de pass_leng !<br />";
+		if (isset($_GET['pass_leng']))
+		{
+			if ($_GET['pass_leng'] < 1)
+				$_GET['pass_leng'] = 1;
+			if (!Settings::set("pass_leng", $_GET['pass_leng']))
+				$msg .= "Erreur lors de l'enregistrement de pass_leng !<br />";
+		}
+		// pass_nb_min
+		if (isset($_GET['pass_nb_min']))
+		{
+			if (!Settings::set("pass_nb_min", $_GET['pass_nb_min']))
+				$msg .= "Erreur lors de l'enregistrement de pass_nb_min !<br />";
+		}
+		// pass_nb_maj
+		if (isset($_GET['pass_nb_maj']))
+		{
+			if (!Settings::set("pass_nb_maj", $_GET['pass_nb_maj']))
+				$msg .= "Erreur lors de l'enregistrement de pass_nb_maj !<br />";
+		}
+		// pass_nb_ch
+		if (isset($_GET['pass_nb_ch']))
+		{
+			if (!Settings::set("pass_nb_ch", $_GET['pass_nb_ch']))
+				$msg .= "Erreur lors de l'enregistrement de pass_nb_ch !<br />";
+		}
+		// pass_nb_sp
+		if (isset($_GET['pass_nb_sp']))
+		{
+			if (!Settings::set("pass_nb_sp", $_GET['pass_nb_sp']))
+				$msg .= "Erreur lors de l'enregistrement de pass_nb_sp !<br />";
+		}
+	} else {
+		$msg .= $trad['pass_leng_error']."<br />";
 	}
-	// pass_nb_min
-	if (isset($_GET['pass_nb_min']))
-	{
-		if (!Settings::set("pass_nb_min", $_GET['pass_nb_min']))
-			$msg .= "Erreur lors de l'enregistrement de pass_nb_min !<br />";
-	}
-	// pass_nb_maj
-	if (isset($_GET['pass_nb_maj']))
-	{
-		if (!Settings::set("pass_nb_maj", $_GET['pass_nb_maj']))
-			$msg .= "Erreur lors de l'enregistrement de pass_nb_maj !<br />";
-	}
-	// pass_nb_ch
-	if (isset($_GET['pass_nb_ch']))
-	{
-		if (!Settings::set("pass_nb_ch", $_GET['pass_nb_ch']))
-			$msg .= "Erreur lors de l'enregistrement de pass_nb_ch !<br />";
-	}
-	// pass_nb_sp
-	if (isset($_GET['pass_nb_sp']))
-	{
-		if (!Settings::set("pass_nb_sp", $_GET['pass_nb_sp']))
-			$msg .= "Erreur lors de l'enregistrement de pass_nb_sp !<br />";
-	}
-} else {
-	$msg .= $trad['pass_leng_error']."<br />";
 }
-
 
 // Log des mails
 if (isset($_GET['log_mail']))
