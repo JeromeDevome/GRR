@@ -3,7 +3,7 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-04-17 11:14$
+ * Dernière modification : $Date: 2025-04-17 14:16$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
@@ -730,7 +730,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_repeat CHANGE beneficiaire beneficiaire VARCHAR( 100 ) NOT NULL  default '';");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry_moderate CHANGE create_by create_by VARCHAR( 100 ) NOT NULL  default '';");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry_moderate CHANGE beneficiaire beneficiaire VARCHAR( 100 ) NOT NULL  default '';");
-		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_correspondance_statut (id int(11) NOT NULL auto_increment, code_fonction varchar(30) NOT NULL, libelle_fonction varchar(200) NOT NULL, statut_grr varchar(30) NOT NULL,  PRIMARY KEY (id));");
+		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_correspondance_statut (id int(11) NOT NULL auto_increment, code_fonction varchar(30) NOT NULL, libelle_fonction varchar(190) NOT NULL, statut_grr varchar(30) NOT NULL,  PRIMARY KEY (id));");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_type_area ADD disponible VARCHAR(1) NOT NULL DEFAULT '2'");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD show_comment CHAR(1) NOT NULL DEFAULT 'n' AFTER comment_room");
 		if ($result_inter == '')
@@ -937,7 +937,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry ADD `nbparticipantmax` int(11) NOT NULL DEFAULT '0' AFTER `courrier`;");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_repeat ADD `nbparticipantmax` int(11) NOT NULL DEFAULT '0' AFTER `courrier`;");
         $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_type_area` DROP IF EXISTS `couleur_texte`;");
-		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_participants (idresa int(11) NOT NULL, participant varchar(200) NOT NULL, PRIMARY KEY  (idresa,participant));");
+		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_participants (idresa int(11) NOT NULL, participant varchar(190) NOT NULL, PRIMARY KEY  (idresa,participant));");
         $result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('cell_day', 'FVVVVFV'),('cell_month', 'VVVFFFV'),('cell_month_all', 'VVVFFFV'),('cell_month_all2', 'VFFFFFF'),('cell_week', 'FVVVVFV'),('cell_week_all', 'VVVFFFV'),('cell_year', 'VFFFFFF'),('cell_year_all', 'VFFFFFF'),('popup_day', 'VVFFFVV'),('popup_month', 'VVVVVFV'),('popup_month_all', 'VVVVVFV'),('popup_month_all2', 'VVVVVFV'),('popup_week', 'VFFFVFF'),('popup_week_all', 'VVVVVFV'),('popup_year', 'VVVVVFV'),('popup_year_all', 'VVVVVFV');");
         $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_room` CHANGE `delais_min_resa_room` `delais_min_resa_room` MEDIUMINT NOT NULL DEFAULT '0' ;");
 
