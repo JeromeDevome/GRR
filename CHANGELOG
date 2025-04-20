@@ -34,6 +34,10 @@ Version 3.5.2 :
     mise à jour jquery en 3.7.1
     modification : tri des réservations à modérer selon la date de début
     modification : validation redirige vers view_entry
+Sous-version 3.5.2a
+    correctifs : prise en compte de l'encodage du mot de passe, test d'existence de la base de données
+    correctif : vérifications préalables
+    correctif : longueur du champ pour utf8mb4
 
 -----
 --
