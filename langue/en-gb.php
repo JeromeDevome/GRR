@@ -565,6 +565,7 @@ $vocab['mail_raison_2'] = "You are receiving this email because you are the doma
 $vocab['mail_raison_3'] = "You are receiving this email because you are the site administrator and no resource or domain manager is defined with an email address.";
 $vocab['mail_raison_4'] = "You are receiving this email because you are an administrator and no manager is defined with an email address.";
 $vocab['mail_raison_5'] = "You are receiving this email because your address is entered in an overload field.";
+$vocab['mail_raison_6'] = "You are receiving this e-mail because you are the beneficiary of the reservation.";
 $vocab['mail_sujet'] = "Subject";
 $vocab['mail_test'] = "Email test";
 $vocab['mail_type_compte_demande'] = "Demande compte"; // A traduire
