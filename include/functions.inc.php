@@ -3003,7 +3003,7 @@ Pour les utilisateurs :
 		else
 		{
 			foreach ($tab_id_moderes as $id_moderes)
-				$codes['%urldetail%'] .=  "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_moderes;
+				$codes['%urldetail%'] =  "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_moderes;
 		}
 		$templateMail1 = Pages::get('mails_resamoderation2_'.$locale);
 	}
@@ -3015,7 +3015,7 @@ Pour les utilisateurs :
 		else
 			$codes['%maildestinataire%'] .= "";
 
-		$codes['%urldetail%'] .= "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
+		$codes['%urldetail%'] = "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
 		$repondre = Settings::get("webmaster_email");
 		$templateMail1 = Pages::get('mails_retardrestitution_'.$locale);
 	}
@@ -3117,21 +3117,21 @@ Pour le benificiare de la ressource
 		$moderate_description = $rowModerate[1];
 
 		if ($moderate_decision == 2)
-			$codes['%decisionmoderation%'] .= $vocab["moderation_acceptee"];
+			$codes['%decisionmoderation%'] = $vocab["moderation_acceptee"];
 		else if ($moderate_decision == 3)
-			$codes['%decisionmoderation%'] .= $vocab["moderation_refusee"];
+			$codes['%decisionmoderation%'] = $vocab["moderation_refusee"];
 
 		if ($moderate_description != "")
-			$codes['%decisionmotif%'] .= $vocab["motif"].$vocab["deux_points"]."<br>".$moderate_description;
+			$codes['%decisionmotif%'] = $vocab["motif"].$vocab["deux_points"]."<br>".$moderate_description;
 		else
-			$codes['%decisionmotif%'] .= "";
+			$codes['%decisionmotif%'] = "";
 
 		if (count($tab_id_moderes) == 0 )
-			$codes['%urldetail%'] .= traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
+			$codes['%urldetail%'] = traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
 		else
 		{
 			foreach ($tab_id_moderes as $id_moderes)
-				$codes['%urldetail%'] .=  traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_moderes;
+				$codes['%urldetail%'] =  traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_moderes;
 		}
 
 		$templateMail2 = Pages::get('mails_resamoderation4_'.$locale);
@@ -3188,7 +3188,7 @@ Mail pour le gestionnaire, ou l'admin
 	elseif ( ($action == 5) && (count($mail_admin) > 0) )// Réservation en attente de modération, mail pour le modérateur
 	{
 		//$sujet3 = $vocab["subject_mail1"].$room_name." - ".$date_avis.$vocab["subject_mail_moderation"];
-		$codes['%urldetail%'] .= traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
+		$codes['%urldetail%'] = traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
 		$repondre3 = Settings::get("webmaster_email");
 		if ($expediteur =='')
 			$expediteur = $repondre3;
@@ -3209,7 +3209,7 @@ Mail pour le gestionnaire, ou l'admin
 		else
 			$codes['%maildestinataire%'] .= "";
 
-		$codes['%urldetail%'] .= traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
+		$codes['%urldetail%'] = traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
 
 		$templateMail3 = Pages::get('mails_retardrestitution_'.$locale);
 
