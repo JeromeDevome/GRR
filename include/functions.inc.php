@@ -4315,6 +4315,7 @@ function describe_period_span($starts, $ends)
 	global $enable_periods, $periods_name, $vocab, $duration;
 	list($start_period, $start_date) =  period_date_string($starts);
 	list($periodedebut, $datedebut) =  period_date_string_rapport($starts);
+	list($periodefin, $datefin) =  period_date_string_rapport($ends);
 	list( , $end_date) =  period_date_string($ends, -1);
 	$duration = $ends - $starts;
 	toPeriodString($start_period, $duration, $dur_units);
@@ -4323,24 +4324,31 @@ function describe_period_span($starts, $ends)
 		list( , $start_date) =  period_date_string($starts);
 		list( , $end_date) =  period_date_string($ends, -1);
 	}
-	return array($datedebut, $periodedebut, $duration, $dur_units);
+	return array($datedebut, $periodedebut, $duration, $dur_units, $datefin, $periodefin);
 }
 #Convertit l'heure de début et de fin en un tableau donnant date, heure de début et durée.
 function describe_span($starts, $ends, $dformat)
 {
 	global $vocab, $twentyfourhour_format;
 	$start_date = utf8_strftime($dformat, $starts);
+	$end_date = utf8_strftime($dformat, $ends);
 	if ($twentyfourhour_format)
-		$timeformat = "%T";
+	{
+		$timeformatStart = "%T";
+		$timeformatEnds = "%T";
+	}
 	else
 	{
-		$ampm = date("a",$starts);
-		$timeformat = "%I:%M$ampm";
+		$ampmStart = date("a",$starts);
+		$timeformatStart = "%I:%M$ampmStart";
+		$ampmEnds= date("a",$ends);
+		$timeformatEnds = "%I:%M$ampmEnds";
 	}
-	$start_time = utf8_strftime($timeformat, $starts);
+	$start_time = utf8_strftime($timeformatStart, $starts);
+	$end_time = utf8_strftime($timeformatEnds, $ends);
 	$duration = $ends - $starts;
 	toTimeString($duration, $dur_units);
-	return array($start_date, $start_time ,$duration, $dur_units);
+	return array($start_date, $start_time ,$duration, $dur_units, $end_date, $end_time);
 }
 
 function get_planning_area_values($id_area)

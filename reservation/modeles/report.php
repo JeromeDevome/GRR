@@ -35,9 +35,9 @@ function reporton(&$row, $dformat)
 
 	//Affichage de l'heure et de la durée de réservation
 	if ($enable_periods == 'y')
-		list($start_date, $start_time ,$duration, $dur_units) =  describe_period_span($row[1], $row[2]);
+		list($start_date, $start_time, $duration, $dur_units, $end_date, $end_time) =  describe_period_span($row[1], $row[2]);
 	else
-		list($start_date, $start_time ,$duration, $dur_units) = describe_span($row[1], $row[2], $dformat);
+		list($start_date, $start_time, $duration, $dur_units, $end_date, $end_time) = describe_span($row[1], $row[2], $dformat);
 
 	// Durée réservation
 	//echo "<td>".$duration ." ". $dur_units ."</td>";
@@ -99,7 +99,7 @@ function reporton(&$row, $dformat)
 
 	unset($tablOverload);
 	
-	$gListeReservations[] = array('idresa' => $row[0], 'datedebutts' => $row[1], 'datedebut' => $start_date, 'heuredebut' => $start_time, 'duree' => $duration, 'site' => $site,'domaine' => $domaine, 'domainedesc' => $domainedesc, 'ressource' => $ressource, 'beneficiaire' => $aff_beneficiaire, 'descriptionc' => $descriC, 'descriptionl' => $descriL, 'type' => $type, 'datemajts' => $row[7], 'datemaj' => $dateMAJ, 'supprimer' => $row[16], 'moderate' => $row[17], 'champaddvaleur' => $champAddValeur);
+	$gListeReservations[] = array('idresa' => $row[0], 'datedebutts' => $row[1], 'datedebut' => $start_date, 'heuredebut' => $start_time, 'duree' => $duration, 'datefints' => $row[2], 'datefin' => $end_date, 'heurefin' => $end_time, 'site' => $site,'domaine' => $domaine, 'domainedesc' => $domainedesc, 'ressource' => $ressource, 'beneficiaire' => $aff_beneficiaire, 'descriptionc' => $descriC, 'descriptionl' => $descriL, 'type' => $type, 'datemajts' => $row[7], 'datemaj' => $dateMAJ, 'supprimer' => $row[16], 'moderate' => $row[17], 'champaddvaleur' => $champAddValeur);
 
 }
 

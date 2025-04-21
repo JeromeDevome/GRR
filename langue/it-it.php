@@ -295,6 +295,7 @@ $vocab['creneaux_de_reservation_temps'] = "Gli interstizi di prenotazione sono b
 $vocab['ctrl_click'] = "CTRL + clic mouse per scegliere più di una risorsa";
 $vocab['database'] = "Database: ";
 $vocab['date'] = "Inizio della prenotazione";
+$vocab['datefin'] = "Fine della prenotazione";
 $vocab['date2'] = "Data";
 $vocab['dayafter'] = "Andare al giorno seguente";
 $vocab['daybefore'] = "Andare al giorno precedente";

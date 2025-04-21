@@ -149,6 +149,7 @@ get_vocab_admin("nothing_found");
 get_vocab_admin("entry_found");
 get_vocab_admin("entries_found");
 get_vocab_admin("date");
+get_vocab_admin("datefin");
 get_vocab_admin("time");
 get_vocab_admin("duration");
 get_vocab_admin("lastupdate");

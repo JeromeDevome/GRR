@@ -294,6 +294,7 @@ $vocab['creneaux_de_reservation_temps'] = "Les créneaux de réservation sont ba
 $vocab['ctrl_click'] = "CTRL + clic souris pour sélectionner plus d'une ressource";
 $vocab['database'] = "Base de données : ";
 $vocab['date'] = "Début de la réservation";
+$vocab['datefin'] = "Fin de la réservation";
 $vocab['date2'] = "Date";
 $vocab['dayafter'] = "Voir le jour suivant  ";
 $vocab['daybefore'] = "  Voir le jour précédent";

@@ -295,6 +295,7 @@ $vocab['creneaux_de_reservation_temps'] = "Los horarios de reserva están basado
 $vocab['ctrl_click'] = "CTRL + clic en el ratón para seleccionar más de un recurso";
 $vocab['database'] = "Base de datos : ";
 $vocab['date'] = "Principio de la reserva";
+$vocab['datefin'] = "Fin de la reserva";
 $vocab['date2'] = "Fecha";
 $vocab['dayafter'] = "Ir al día siguiente";
 $vocab['daybefore'] = "Ir al día anterior";

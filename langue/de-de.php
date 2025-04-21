@@ -295,6 +295,7 @@ $vocab['creneaux_de_reservation_temps'] = "Reservierungabstände sind auf Zeit g
 $vocab['ctrl_click'] = "CTRL + Mausklick, um mehr als eine Ressource zu wählen";
 $vocab['database'] = "Datenbank: ";
 $vocab['date'] = "Beginn der Reservierung";
+$vocab['datefin'] = "Ende der Reservierung";
 $vocab['date2'] = "Datum";
 $vocab['dayafter'] = "Zum folgenden Tag gehen";
 $vocab['daybefore'] = "Zum vorigen Tag gehen";
