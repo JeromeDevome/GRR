@@ -1241,8 +1241,8 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 
 	if (intval($version_old_bdd) < 400007) // Version GRR 4.4.0 béta
 	{
-		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room` ADD `inscription_participant` tinyint(1) NOT NULL DEFAULT '1' AFTER `active_participant`;");
-		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room` ADD `nb_participant_defaut` smallint NOT NULL DEFAULT '0' AFTER `inscription_participant`;");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD `inscription_participant` tinyint(1) NOT NULL DEFAULT '1' AFTER `active_participant`;");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD `nb_participant_defaut` smallint NOT NULL DEFAULT '0' AFTER `inscription_participant`;");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
