@@ -289,6 +289,9 @@ if ($valid == "yes")
 					$sql = "DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE login='$user_login'";
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
+					$sql = "DELETE FROM ".TABLE_PREFIX."_j_user_site WHERE login='$user_login'";
+					if (grr_sql_command($sql) < 0)
+						fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
 					$sql = "DELETE FROM ".TABLE_PREFIX."_j_mailuser_room WHERE login='$user_login'";
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
@@ -311,6 +314,9 @@ if ($valid == "yes")
 					$sql = "DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE login='$user_login'";
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
+					$sql = "DELETE FROM ".TABLE_PREFIX."_j_user_site WHERE login='$user_login'";
+					if (grr_sql_command($sql) < 0)
+						fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
 					$sql = "DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='$user_login'";
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
@@ -324,6 +330,9 @@ if ($valid == "yes")
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
 					$sql = "DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE login='$user_login'";
+					if (grr_sql_command($sql) < 0)
+						fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
+					$sql = "DELETE FROM ".TABLE_PREFIX."_j_user_site WHERE login='$user_login'";
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
 					$sql = "DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='$user_login'";
@@ -508,27 +517,126 @@ if ($res)
 
 /* Test des privilèges*/
 $dAdministrateurDomaine = "";
+$dAdministrateurSite = "";
 	
 	if ((isset($user_login)) && ($user_login != ''))
 	{
 		$a_privileges = 'n';
-		if (Settings::get("module_multisite") == "Oui")
-		{
-			$req_site = "SELECT id, sitename FROM ".TABLE_PREFIX."_site ORDER BY sitename";
+
+		// if (Settings::get("module_multisite") == "Oui")
+		// {
+		// 	$req_site = "SELECT id, sitename FROM ".TABLE_PREFIX."_site ORDER BY sitename";
+		// 	$res_site = grr_sql_query($req_site);
+		// 	if ($res_site)
+		// 	{
+		// 		for ($i = 0; ($row_site = grr_sql_row($res_site, $i)); $i++)
+		// 		{
+		// 			$test_admin_site = grr_sql_query1("SELECT count(id_site) FROM ".TABLE_PREFIX."_j_useradmin_site j where j.login = '".$user_login."' and j.id_site='".$row_site[0]."'");
+		// 			if ($test_admin_site >= 1)
+		// 			{
+		// 				$a_privileges = 'y';
+		// 				$d['AdministrateurSite'] = "<li>".get_vocab("site")." ".$row_site[1].get_vocab("deux_points")." ".get_vocab("administrateur_du_site")."</li>";
+		// 			}
+		// 		}
+		// 	}
+		// }
+
+		if (Settings::get("module_multisite") == "Oui"){
+			$req_site = "SELECT id, sitename, access FROM ".TABLE_PREFIX."_site ORDER BY sitename";
 			$res_site = grr_sql_query($req_site);
 			if ($res_site)
 			{
 				for ($i = 0; ($row_site = grr_sql_row($res_site, $i)); $i++)
 				{
-					$test_admin_site = grr_sql_query1("SELECT count(id_site) FROM ".TABLE_PREFIX."_j_useradmin_site j where j.login = '".$user_login."' and j.id_site='".$row_site[0]."'");
-					if ($test_admin_site >= 1)
+					$test_admin = grr_sql_query1("SELECT count(id_site) FROM ".TABLE_PREFIX."_j_useradmin_site j where j.login = '".$user_login."' and j.id_site='".$row_site[0]."'");
+					if ($test_admin >= 1)
+						$is_admin = 'y';
+					else
+						$is_admin = 'n';
+					$nb_room = grr_sql_query1("SELECT count(r.room_name) FROM ".TABLE_PREFIX."_room r
+						left join ".TABLE_PREFIX."_area a on r.area_id=a.id
+						left join ".TABLE_PREFIX."_j_site_area sa on a.id=sa.id_area
+						left join ".TABLE_PREFIX."_site s on sa.site_id=s.id
+						where s.id='".$row_site[0]."'");
+					$req_room = "SELECT r.room_name FROM ".TABLE_PREFIX."_room r
+					left join ".TABLE_PREFIX."_j_user_room j on r.id=j.id_room
+					left join ".TABLE_PREFIX."_area a on r.area_id=a.id
+					left join ".TABLE_PREFIX."_j_site_area sa on a.id=sa.id_area
+					left join ".TABLE_PREFIX."_site s on sa.site_id=s.id
+					where j.login = '".$user_login."' and s.id='".$row_site[0]."'";
+					$res_room = grr_sql_query($req_room);
+					$is_gestionnaire = '';
+					if ($res_room)
+					{
+						if ((grr_sql_count($res_room) == $nb_room) && ($nb_room != 0))
+							$is_gestionnaire = $vocab["all_rooms"];
+						else
+						{
+							for ($j = 0; ($row_room = grr_sql_row($res_room, $j)); $j++)
+							{
+								$is_gestionnaire .= $row_room[0]."<br />";
+							}
+						}
+					}
+					$req_mail = "SELECT r.room_name from ".TABLE_PREFIX."_room r
+					left join ".TABLE_PREFIX."_j_mailuser_room j on r.id=j.id_room
+					left join ".TABLE_PREFIX."_area a on r.area_id=a.id
+					left join ".TABLE_PREFIX."_j_site_area sa on a.id=sa.id_area
+					left join ".TABLE_PREFIX."_site s on sa.site_id=s.id
+					where j.login = '".$user_login."' and s.id='".$row_site[0]."'";
+					$res_mail = grr_sql_query($req_mail);
+					$is_mail = '';
+					if ($res_mail)
+					{
+						for ($j = 0; ($row_mail = grr_sql_row($res_mail, $j)); $j++)
+						{
+							$is_mail .= $row_mail[0]."<br />";
+						}
+					}
+					if ($row_site[2] == 'r')
+					{
+						$test_restreint = grr_sql_query1("SELECT count(id_site) from ".TABLE_PREFIX."_j_user_site j where j.login = '".$user_login."' and j.id_site='".$row_site[0]."'");
+						if ($test_restreint >= 1)
+							$is_restreint = 'y';
+						else
+							$is_restreint = 'n';
+					}
+					else
+						$is_restreint = 'n';
+					if (($is_admin == 'y') || ($is_restreint == 'y') || ($is_gestionnaire != '') || ($is_mail != ''))
 					{
 						$a_privileges = 'y';
-						$d['AdministrateurSite'] = "<li>".get_vocab("site")." ".$row_site[1].get_vocab("deux_points")." ".get_vocab("administrateur_du_site")."</li>";
+						$dAdministrateurSite .= "<li>".get_vocab("match_site")." ".$row_site[1];
+						if ($row_site[2] == 'r')
+							$dAdministrateurSite .= " (".$vocab["restricted"].")";
+	
+						$dAdministrateurSite .= get_vocab("deux_points");
+						$dAdministrateurSite .= "<ul>";
+						
+						if ($is_admin == 'y')
+							$dAdministrateurSite .= "<li>".get_vocab("administrateur_du_site")."</li>";
+						if ($is_restreint == 'y')
+							$dAdministrateurSite .= "<li>".get_vocab("a_acces_au_site")."</li>";
+						if ($is_gestionnaire != '')
+						{
+							$dAdministrateurSite .= "<li>".get_vocab("gestionnaire_des_resources_suivantes")."<br />";
+							$dAdministrateurSite .= $is_gestionnaire;
+							$dAdministrateurSite .= "</li>";
+						}
+						if ($is_mail != '')
+						{
+							$dAdministrateurSite .= "<li>".get_vocab("est_prevenu_par_mail")."<br />";
+							$dAdministrateurSite .= $is_mail;
+							$dAdministrateurSite .= "</li>";
+						}
+						$dAdministrateurSite .= "</ul>";
+						
+						$d['AdministrateurSite'] = $dAdministrateurSite;
 					}
 				}
 			}
 		}
+
 		$req_area = "SELECT id, area_name, access FROM ".TABLE_PREFIX."_area ORDER BY order_display";
 		$res_area = grr_sql_query($req_area);
 		if ($res_area)

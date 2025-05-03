@@ -1757,10 +1757,10 @@ function get_default_site()
     }
     // ici l'utilisateur n'est pas reconnu ou il n'a pas de site par défaut : on passe aux informations de la table settings
     $id_site = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME ='default_site' ");
-    $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_site WHERE id = ".$id_site);
+    $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_site WHERE id = ".$id_site." where access != 'r' ");
     if ($test >0){return $id_site;}
     else { // il n'y a pas de site par défaut dans la table setting, on prend le premier site
-        $id_site = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_site ");
+        $id_site = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_site where access != 'r' ");
         return($id_site);
     }
 }
@@ -2117,7 +2117,10 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user,
 				$nb_sites_a_afficher++;
 				$selected = ($row[0] == $current_site) ? 'selected="selected"' : '';
 				$link2 ='app.php?p='.$link.'&amp;&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$default_area;
-				$out[] = '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
+				if (authUserAccesSite($user,$row[0]) == 1)		// DDE: on ne prend que les sites autorisés
+				{
+					$out[] = '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
+				}
 			}
 		}
 	}
@@ -2368,41 +2371,44 @@ function make_site_list_html($link, $current_site, $year, $month, $day,$user)
             $out = array();
 			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 			{
-				// Pour chaque site, on détermine s'il y a des domaines visibles par l'utilisateur
-				$sql = "SELECT id_area
-				FROM ".TABLE_PREFIX."_j_site_area
-				WHERE ".TABLE_PREFIX."_j_site_area.id_site='".$row[0]."'";
-				$res2 = grr_sql_query($sql);
-				$au_moins_un_domaine = false;
-				if ($res2 && grr_sql_count($res2) > 0)
+				if (authUserAccesSite($user,$row[0]) == 1)		// DDE: on ne prend que les sites autorisés
 				{
-					for ($j = 0; ($row2 = grr_sql_row($res2, $j)); $j++)
+					// Pour chaque site, on détermine s'il y a des domaines visibles par l'utilisateur
+					$sql = "SELECT id_area
+					FROM ".TABLE_PREFIX."_j_site_area
+					WHERE ".TABLE_PREFIX."_j_site_area.id_site='".$row[0]."'";
+					$res2 = grr_sql_query($sql);
+					$au_moins_un_domaine = false;
+					if ($res2 && grr_sql_count($res2) > 0)
 					{
-						if (authUserAccesArea($user,$row2[0]) == 1)
+						for ($j = 0; ($row2 = grr_sql_row($res2, $j)); $j++)
 						{
-							// on a trouvé un domaine autorisé
-							$au_moins_un_domaine = true;
-							break;	// On arrête la boucle
+							if (authUserAccesArea($user,$row2[0]) == 1)
+							{
+								// on a trouvé un domaine autorisé
+								$au_moins_un_domaine = true;
+								break;	// On arrête la boucle
+							}
 						}
 					}
-				}
-				// On libère la ressource2
-				grr_sql_free($res2);
-				if ($au_moins_un_domaine)
-				{
-					// on affiche le site uniquement si au moins un domaine est visible par l'utilisateur
-					$nb_sites_a_afficher++;
-					if ($row[0] == $current_site)
+					// On libère la ressource2
+					grr_sql_free($res2);
+					if ($au_moins_un_domaine)
 					{
-						$out[] = '
-						<b><a id="liste_select"   href="app.php?p='.$link.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$row[0].'" title="'.$row[1].'">&gt; '.htmlspecialchars($row[1]).'</a></b>
-						<br />'."\n";
-					}
-					else
-					{
-						$out[] = '
-						<a id="liste"   href="app.php?p='.$link.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$row[0].'" title="'.$row[1].'">'.htmlspecialchars($row[1]).'</a>
-						<br />'."\n";
+						// on affiche le site uniquement si au moins un domaine est visible par l'utilisateur
+						$nb_sites_a_afficher++;
+						if ($row[0] == $current_site)
+						{
+							$out[] = '
+							<b><a id="liste_select"   href="app.php?p='.$link.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$row[0].'" title="'.$row[1].'">&gt; '.htmlspecialchars($row[1]).'</a></b>
+							<br />'."\n";
+						}
+						else
+						{
+							$out[] = '
+							<a id="liste"   href="app.php?p='.$link.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$row[0].'" title="'.$row[1].'">'.htmlspecialchars($row[1]).'</a>
+							<br />'."\n";
+						}
 					}
 				}
 			}
@@ -2563,10 +2569,13 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 				$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day;
 			if ($current_site != null)
 			{
-				if ($current_site == $row[0])
-					$out[] = "<input id=\"item_select\" type=\"button\" class=\"btn btn-primary btn-lg btn-block item_select\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])."\" onclick=\"location.href='$link2';charger();\" />".PHP_EOL;
-				else
-					$out[] = "<input type=\"button\" class=\"btn btn-default btn-lg btn-block item\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])." \" onclick=\"location.href='$link2';charger();\" />".PHP_EOL;
+				if (authUserAccesSite($user,$row[0]) == 1)		// DDE: on ne prend que les sites autorisés
+				{
+					if ($current_site == $row[0])
+						$out[] = "<input id=\"item_select\" type=\"button\" class=\"btn btn-primary btn-lg btn-block item_select\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])."\" onclick=\"location.href='$link2';charger();\" />".PHP_EOL;
+					else
+						$out[] = "<input type=\"button\" class=\"btn btn-default btn-lg btn-block item\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])." \" onclick=\"location.href='$link2';charger();\" />".PHP_EOL;
+				}
 			}
 			else
 				$out[] = "<input type=\"button\" class=\"btn btn-default btn-lg btn-block item\" name=\"$row[0]\" value=\"".htmlspecialchars($row[1])." \" onclick=\"location.href='$link2';charger();\" /><br />".PHP_EOL;
@@ -3545,6 +3554,56 @@ function authUserAccesArea($user,$id)
 			return 1;
 		else
 			return 0;
+	}
+}
+/* authUserAccesSite($user,$id)
+ *
+ * Determines if the user access site
+ *
+ * $user - The user name
+ * $id -   Which site are we checking
+ *
+ */
+function authUserAccesSite($user,$id)
+{
+	if ($id == '')
+		return 0;
+	$sql = "SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE (login = '".protect_data_sql($user)."' and statut='administrateur')";
+	$res = grr_sql_query($sql);
+	if (grr_sql_count($res) != "0")
+		return 1;
+	if (Settings::get("module_multisite") == "Oui")
+	{
+		$id_site = mrbsGetAreaSite($id);
+		$sql = "SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site j WHERE j.id_site='".$id_site."' AND j.login='".protect_data_sql($user)."'";
+		$res = grr_sql_query($sql);
+		if (grr_sql_count($res) != "0")
+			return 1;
+	}
+	$sql = "SELECT id FROM ".TABLE_PREFIX."_site WHERE (id = '".protect_data_sql($id)."' and access='r')";
+	$res = grr_sql_query($sql);
+	$test = grr_sql_count($res);
+	if ($test == "0")
+		return 1;
+	else
+	{
+		$sql2 = "SELECT login FROM ".TABLE_PREFIX."_j_user_site WHERE (login = '".protect_data_sql($user)."' and id_site = '".protect_data_sql($id)."')";
+		$res2 = grr_sql_query($sql2);
+		$test2 = grr_sql_count($res2);
+		if ($test2 != "0")
+			return 1;
+		else
+		{
+			$sql3 = "SELECT login FROM ".TABLE_PREFIX."_j_group_site gs 
+			JOIN ".TABLE_PREFIX."_utilisateurs_groupes ug on ug.idgroupes = gs.idgroupes 
+			WHERE (ug.login = '".protect_data_sql($user)."' and gs.id_site = '".protect_data_sql($id)."')";
+			$res3 = grr_sql_query($sql3);
+			$test3 = grr_sql_count($res3);
+			if ($test3 != "0")
+				return 1;
+			else
+				return 0;
+		}
 	}
 }
 // function UserRoomMaxBooking

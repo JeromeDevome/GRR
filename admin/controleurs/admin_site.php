@@ -55,6 +55,8 @@ function create_site($id_site)
 		$site['id_site'] = isset($_POST['id']) ? $_POST['id'] :  NULL;
 	if (!isset($sitecode))
 		$sitecode = isset($_POST['sitecode']) ? $_POST['sitecode'] : NULL;
+	if (!isset($access))
+		$access = isset($_POST["access"]) ? $_POST["access"] : NULL;
 	if (!isset($sitename))
 		$sitename = isset($_POST['sitename']) ? $_POST['sitename'] :  NULL;
 	if (!isset($adresse_ligne1))
@@ -79,6 +81,7 @@ function create_site($id_site)
 		get_vocab_admin('addsite');
 		get_vocab_admin('required');
 		get_vocab_admin('site_code');
+		get_vocab_admin('site_access');
 		get_vocab_admin('site_name');
 		get_vocab_admin('site_adresse_ligne1');
 		get_vocab_admin('site_adresse_ligne2');
@@ -109,6 +112,7 @@ function create_site($id_site)
 			$sql="INSERT INTO ".TABLE_PREFIX."_site
 			SET sitecode='".strtoupper(protect_data_sql($sitecode))."',
 			sitename='".protect_data_sql($sitename)."',
+			access='".protect_data_sql($access)."',
 			adresse_ligne1='".protect_data_sql($adresse_ligne1)."',
 			adresse_ligne2='".protect_data_sql($adresse_ligne2)."',
 			adresse_ligne3='".protect_data_sql($adresse_ligne3)."',
@@ -184,6 +188,7 @@ function update_site($id)
 	$trad['dAction'] = 'update';
 	get_vocab_admin('required');
 	get_vocab_admin('site_code');
+	get_vocab_admin('site_access');
 	get_vocab_admin('site_name');
 	get_vocab_admin('site_adresse_ligne1');
 	get_vocab_admin('site_adresse_ligne2');
@@ -208,6 +213,7 @@ function update_site($id)
 		$row = grr_sql_row_keyed($res, 0);
 		grr_sql_free($res);
 		$site['code'] = $row['sitecode'];
+		$site['access'] = $row['access'];
 		$site['nom'] = $row['sitename'];
 		$site['adresse_ligne1'] = $row['adresse_ligne1'];
 		$site['adresse_ligne2'] = $row['adresse_ligne2'];
@@ -227,6 +233,8 @@ function update_site($id)
 			$id = isset($_POST['id']) ? $_POST['id'] :  NULL;
 		if (!isset($sitecode))
 			$sitecode = isset($_POST['sitecode']) ? $_POST['sitecode'] : NULL;
+		if (!isset($acces))
+			$access = isset($_POST['access']) ? $_POST['access'] : NULL;
 		if (!isset($sitename))
 			$sitename = isset($_POST['sitename']) ? $_POST['sitename'] :  NULL;
 		if (!isset($adresse_ligne1))
@@ -252,11 +260,17 @@ function update_site($id)
 			$_GET['save'] = 'no';
 			echo '<span class="avertissement">'.get_vocab('required').'</span>';
 		}
+		if ($access)
+			$access='r';
+		else
+			$access='a';
+
 		// Sauvegarde du record
 		if ((isset($_POST['save']) && ($_POST['save']!='no')) || ((isset($_GET['save'])) && ($_GET['save']!='no')))
 		{
 			$sql = "UPDATE ".TABLE_PREFIX."_site
 			SET sitecode='".strtoupper(protect_data_sql($sitecode))."',
+			access='".protect_data_sql($access)."',
 			sitename='".protect_data_sql($sitename)."',
 			adresse_ligne1='".protect_data_sql($adresse_ligne1)."',
 			adresse_ligne2='".protect_data_sql($adresse_ligne2)."',
@@ -282,6 +296,7 @@ function delete_site($id)
 {
 		grr_sql_command("delete from ".TABLE_PREFIX."_site where id='".$id."'");
 		grr_sql_command("delete from ".TABLE_PREFIX."_j_site_area where id_site='".$id."'");
+		grr_sql_command("delete from ".TABLE_PREFIX."_j_group_site where id_site='".$id."'");
 		grr_sql_command("delete from ".TABLE_PREFIX."_j_useradmin_site where id_site='".$id."'");
 		grr_sql_command("update ".TABLE_PREFIX."_utilisateurs set default_site = '-1' where default_site='".$id."'");
 		$test = grr_sql_query1("select VALUE from ".TABLE_PREFIX."_setting where NAME='default_site'");
