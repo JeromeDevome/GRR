@@ -36,7 +36,7 @@ $versionReposite = "GitHub-Master";
 // Version PHP minimum
 $php_mini = "7.2.5";
 // Version PHP maximum testé et validé par : JeromeB
-$php_max_valide = "8.3.17";
+$php_max_valide = "8.3.20";
 // Version PHP maximum qui est sensé fonctionné, si compatible avec toutes les versions à ce jour laisser vide
 $php_maxi = "";
 
@@ -61,6 +61,7 @@ $liste_tables = array(
 	"_entry_moderate",
 	"_groupes",
 	"_j_group_area",
+	"_j_group_site",
 	"_j_mailuser_room",
 	"_j_site_area",
 	"_j_type_area",
@@ -68,6 +69,7 @@ $liste_tables = array(
 	"_j_useradmin_site",
 	"_j_user_area",
 	"_j_user_room",
+	"_j_user_site",
 	"_j_userbook_room",
 	"_log",
 	"_log_mail",

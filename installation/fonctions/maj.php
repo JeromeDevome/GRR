@@ -1244,6 +1244,11 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD `inscription_participant` tinyint(1) NOT NULL DEFAULT '1' AFTER `active_participant`;");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD `nb_participant_defaut` smallint NOT NULL DEFAULT '0' AFTER `inscription_participant`;");
 
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_site ADD `access` CHAR(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'a' AFTER `sitename`;");
+		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_j_user_site (`login` varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,`id_site` int NOT NULL DEFAULT '0',`idgroupes` int NOT NULL DEFAULT '0',PRIMARY KEY (`login`,`id_site`));");
+		$result_inter .= traiteRequete("CREATE TABLE ".TABLE_PREFIX."_j_group_site (`idgroupes` int NOT NULL, `id_site` int NOT NULL DEFAULT '0', PRIMARY KEY (`idgroupes`,`id_site`));");
+
+
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
 		else

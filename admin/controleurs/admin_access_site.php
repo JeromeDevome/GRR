@@ -1,11 +1,11 @@
 <?php
 /**
- * admin_access_area.php
+ * admin_access_site.php
  * Interface de gestion des accès restreints aux sites
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2025-05-03 14:00$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
