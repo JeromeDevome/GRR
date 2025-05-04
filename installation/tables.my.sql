@@ -91,7 +91,7 @@ INSERT INTO grr_setting VALUES ('area_list_format', 'item');
 INSERT INTO grr_setting VALUES ('authentification_obli', '1');
 INSERT INTO grr_setting VALUES ('automatic_mail', 'yes');
 INSERT INTO grr_setting VALUES ('backup_date', '');
-INSERT INTO grr_setting VALUES ('begin_bookings', '1704063600');
+INSERT INTO grr_setting VALUES ('begin_bookings', '1735686000');
 INSERT INTO grr_setting VALUES ('calcul_plus_mois', 'y');
 INSERT INTO grr_setting VALUES ('calcul_plus_mois2_all', 'y');
 INSERT INTO grr_setting VALUES ('calcul_plus_semaine_all', 'y');
