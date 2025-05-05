@@ -58,7 +58,7 @@ CREATE TABLE grr_participants (idresa int(11) NOT NULL, participant varchar(150)
 DROP TABLE IF EXISTS grr_files;
 CREATE TABLE grr_files(id int not null auto_increment, id_entry int, file_name varchar(50), public_name varchar(50),Primary key (id));
 INSERT INTO grr_area VALUES (NULL, 'Domaine 1', 'a', 0, '', 8, 19, -1, 1800, 0, 1, 1, 'n', 'n', 'yyyyyyy', -1, 1800, -1,NULL,NULL,NULL);
-INSERT INTO grr_room VALUES (NULL, '1', 'Ressource 1', '', '0', '-1', '1', 'n', '', '', 'n', '-1', '0', 'n', 'n', '0', '0', '0', '0', '5', 'y', 'y', '0', '0', '-1', 1);
+INSERT INTO grr_room VALUES (NULL, '1', 'Ressource 1', '', '0', '-1', '1', 'n', '', '', 'n', '-1', '0', 'n', 'n', '0', '0', '0', '0', '5', 'y', 'y', '0', '0', '-1', 1, -1);
 INSERT INTO grr_type_area VALUES (1, 'Cours', 1, 1, '#1abc9c', '#000', 'A', 2);
 INSERT INTO grr_type_area VALUES (2, 'Réunion', 2, 2, '#C03000', '#FFF', 'B', 2);
 INSERT INTO grr_type_area VALUES (3, 'Autre', 3, 3, '#4BB5C1', '#000', 'C', 2);
