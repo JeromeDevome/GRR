@@ -3,7 +3,7 @@
  * admin_config12.php
  * Interface permettant à l'administrateur la configuration de certains paramètres d'affichage
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2025-05-05 09:51$
+ * Dernière modification : $Date: 2025-05-06 17:40$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -860,7 +860,7 @@ echo '</form>';
 			type: "get",
 			dataType: "html",
 			data: {
-				id_area:$('id_area').serialize(true),
+				id_area:$('#id_area').val(),
 				default_room : '<?php echo Settings::get('default_room'); ?>',
 				type:'ressource',
 				action:+action,
