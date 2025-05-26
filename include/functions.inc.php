@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2024-11-29 15:45$
+ * Dernière modification : $Date: 2025-05-26 15:35$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -5627,7 +5627,7 @@ function pageHead2($title, $page = "with_session")
     $types = '';
     $sql = "SELECT type_letter,couleurhexa,couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE 1";
     $res = grr_sql_query($sql);
-    if ($res->num_rows > 0) {
+    if ($res && ($res->num_rows > 0)) {
         $types = "<style>".PHP_EOL;
         while($row = $res->fetch_assoc()) {
             $types .= "td.type".$row["type_letter"]."{background:".$row["couleurhexa"]." !important;color:".$row["couleurtexte"]." !important;}".PHP_EOL;
