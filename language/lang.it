@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2024-11-18
+# Last modification : 2025-05-27
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -370,6 +370,8 @@ $vocab['display_week'] = "(visualizzazione 'settimana')";
 $vocab['disponible_pour'] = "Disponible pour"; // A traduire
 $vocab['dlrapportcsv'] = "Teletrasmettere la CSV della relazione";
 $vocab['dlresumecsv'] = "Teletrasmettere la CSV del riassunto";
+$vocab['dlcsv2'] = "File CSV2";
+$vocab['dlcsv2_explain'] = "Il formato del file CSV2 è il formato di importazione delle prenotazioni.";
 $vocab['domaines_de_type_incompatibles'] = "<b>Osservazione : </b> Unica la prenotazione di giornate intere è possibile perché le risorse selezionate appartengono ai campi di tipo differente.";
 $vocab['dont_allow_modify'] = "Non permettere agli utenti, eccetto i gestori e gli amministratori, di modificare o di sopprimere le loro proprie prenotazioni.";
 $vocab['droits_insuffisants_pour_voir_ressources'] = "Vous n'avez pas les droits suffisants pour accéder aux ressource de ce domaine."; // A traduire
@@ -398,6 +400,7 @@ $vocab['end_bookings'] = "Data di fine delle prenotazioni: ";
 $vocab['end_bookings_explain'] = "Non un prenotazione possibile dopo questa data. Più delle prenotazioni già effettuate dopo questa data saranno cancellate della base.";
 $vocab['end_date'] = "Data di fine :";
 $vocab['end_of_session'] = "Fine di sessione";
+$vocab['end_time'] = "Ora di fine";
 $vocab['entres_supprimees'] = " entrée(s) supprimée(s)"; // A traduire
 $vocab['entries_found'] = "prenotazioni trovate";
 $vocab['entry'] = "Prenotazione";

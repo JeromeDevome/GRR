@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2024-11-18
+# Last modification : 2025-05-27
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -373,6 +373,8 @@ $vocab['display_user_off.php'] = "inactive users";
 $vocab['display_user_on.php'] = "active users";
 $vocab['display_week'] = "(display 'week')";
 $vocab['disponible_pour'] = "Available for";
+$vocab['dlcsv2'] = "CSV2 File";
+$vocab['dlcsv2_explain'] = "The CSV2 file format is the booking import format.";
 $vocab['dlrapportcsv'] = "CSV file of the reservations";
 $vocab['dlresumecsv'] = "CSV file of the summary";
 $vocab['domaines_de_type_incompatibles'] = "<b>Comment: </b> Only the reservation of full days is possible because the selected resources belong to different types of areas.";
@@ -404,6 +406,7 @@ $vocab['end_bookings'] = "Reservation end date: ";
 $vocab['end_bookings_explain'] = "No reservation available after this date. Moreover reservations already made after this date will be deleted from database. ";
 $vocab['end_date'] = "End date:";
 $vocab['end_of_session'] = "End of session";
+$vocab['end_time'] = "End time";
 $vocab['entres_supprimees'] = " entry(s) deleted";
 $vocab['entries_found'] = "reservations found";
 $vocab['entry'] = "Reservation";

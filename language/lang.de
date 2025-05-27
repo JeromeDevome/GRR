@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2024-11-18
+# Last modification : 2025-05-27
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -369,6 +369,8 @@ $vocab['display_user_off.php'] = "die nicht aktiven Benutzer";
 $vocab['display_user_on.php'] = "die aktiven Benutzer";
 $vocab['display_week'] = "(Anzeige 'Woche')";
 $vocab['disponible_pour'] = "Verfügbar für";
+$vocab['dlcsv2'] = "CSV2-Datei";
+$vocab['dlcsv2_explain'] = "Das CSV2-Dateiformat ist das Buchungsimportformat.";
 $vocab['dlrapportcsv'] = " Reservierungsdetails als Tabelle (CSV) herunterladen ";
 $vocab['dlresumecsv'] = " Zusammenfassung als Tabelle (CSV) herunterladen ";
 $vocab['domaines_de_type_incompatibles'] = "<b>Bemerkung</b> : Nur die Reservierung von ganzen Tagen ist möglich, da die ausgewählten Ressourcen zu Domänen von verschiedener Art gehören.";
@@ -399,6 +401,7 @@ $vocab['end_bookings'] = "Enddatum der Reservierungen: ";
 $vocab['end_bookings_explain'] = "Nach diesem Datum ist keine Reservierung möglich. Au&#x00DF;erdem werden alle schon erfolgten Reservierungen für die Zeit nach diesem Datum aus der Basis gelöscht.";
 $vocab['end_date'] = "Enddatum:";
 $vocab['end_of_session'] = "Session-Ende";
+$vocab['end_time'] = "Endzeit";
 $vocab['entres_supprimees'] = " entrée(s) supprimée(s)"; // A traduire
 $vocab['entries_found'] = "gefundene Reservierungen";
 $vocab['entry'] = "Reservierung";

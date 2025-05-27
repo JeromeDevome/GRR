@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2024-11-18
+# Last modification : 2025-05-27
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -374,6 +374,8 @@ $vocab['display_user_off.php'] = "les utilisateurs inactifs";
 $vocab['display_user_on.php'] = "les utilisateurs actifs";
 $vocab['display_week'] = "(affichage 'semaine')";
 $vocab['disponible_pour'] = "Disponible pour";
+$vocab['dlcsv2'] = "Fichier CSV2";
+$vocab['dlcsv2_explain'] = "Le format de fichier CSV2 est au format d'importation de réservations.";
 $vocab['dlrapportcsv'] = "Fichier CSV des réservations";
 $vocab['dlresumecsv'] = "Fichier CSV du résumé";
 $vocab['domaines_de_type_incompatibles'] = "<b>Remarque : </b> Seule la réservation de journées entières est possible car les ressources sélectionnées appartiennent à des domaines de type différents.";
@@ -404,6 +406,7 @@ $vocab['end_bookings'] = "Date de fin des réservations : ";
 $vocab['end_bookings_explain'] = "Pas de réservation possible après cette date. De plus les réservations déjà effectuées après cette date seront effacées de la base.";
 $vocab['end_date'] = "Date de fin :";
 $vocab['end_of_session'] = "Fin de session";
+$vocab['end_time'] = "Heure de fin";
 $vocab['entres_supprimees'] = " entrée(s) supprimée(s)";
 $vocab['entries_found'] = "réservations trouvées";
 $vocab['entry'] = "Réservation";

@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2024-11-18
+# Last modification : 2025-05-27
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -370,6 +370,8 @@ $vocab['display_week'] = "(visualización 'semana')";
 $vocab['disponible_pour'] = "Disponible pour"; // A traduire
 $vocab['dlrapportcsv'] = "Fichero CSV de las reservas";
 $vocab['dlresumecsv'] = "Fichero CSV del resumen";
+$vocab['dlcsv2'] = "Archivo CSV2";
+$vocab['dlcsv2_explain'] = "El formato del archivo CSV2 es el formato de importación de reservas.";
 $vocab['domaines_de_type_incompatibles'] = "<b>Observación : </b> sólo la reserva de jornadas enteras es posible porque los recursos seleccionados pertenecen a campos de tipos diferentes.";
 $vocab['dont_allow_modify'] = "No permitir a los usuarios (excepto los gestores y los administradores) de modificar o de suprimir sus propias reservas.";
 $vocab['droits_insuffisants_pour_voir_ressources'] = "Vous n'avez pas les droits suffisants pour accéder aux ressource de ce domaine."; // A traduire
@@ -391,13 +393,14 @@ $vocab['editentry'] = "Modificar una  reservación";
 $vocab['editroom'] = "Modificar el recurso";
 $vocab['editseries'] = "Modificar la periodicidad (y todas las reservas asociadas)";
 $vocab['edittype'] = "Tipos de reservas";
-$vocab['email'] = "Email del usuario :"; // A traduire
+$vocab['email'] = "Email del usuario :";
 $vocab['email beneficiaire'] = "Email del beneficiario";
 $vocab['Email_expediteur_messages_automatiques'] = "Email expedidor de mails automáticos";
 $vocab['end_bookings'] = "Fecha de fin de las reservas : ";
 $vocab['end_bookings_explain'] = "No hay reserva posible tras esta fecha. Además las reservas ya efectuadas tras esta fecha se borrarán de la base.";
 $vocab['end_date'] = "Fecha de fin :";
 $vocab['end_of_session'] = "Fin de sesión";
+$vocab['end_time'] = "Hora de finalización";
 $vocab['entres_supprimees'] = " entrée(s) supprimée(s)"; // A traduire
 $vocab['entries_found'] = "reservas encontradas";
 $vocab['entry'] = "Reserva";
