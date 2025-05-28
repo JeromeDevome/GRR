@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2025-05-27
+# Last modification : 2025-05-28
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -186,9 +186,11 @@ $vocab['all_rooms'] = "All resources";
 $vocab['all_rooms_of_area'] = "For all the resources of the area";
 $vocab['alphanumeric'] = "Alphanumeric value";
 $vocab['alterseries'] = "Modifying a series of bookings to which participants are registered will cancel the registrations!";
+$vocab['any_area'] = "All areas";
 $vocab['areas'] = "Areas: ";
 $vocab['attention_mail_automatique_désactive'] = "CAUTION: the sending of automatic mails is currently disabled. To activate it, go in the general control panel.";
 $vocab['aucun_utilisateur'] = "No user has some privileges";
+$vocab['aucun_utilisateur_reservant'] = "No user without privileges can book.";
 $vocab['aucune_correspondance'] = "No GRR profile / status correspondence currently recorded";
 $vocab['aucune_periodicite_associe'] = "No periodicity is associated to this reservation.";
 $vocab['authentification'] = "Authentification";
@@ -286,6 +288,7 @@ $vocab['config_http_title'] = "Consideration of a HTTP authentification";
 $vocab['config_lasso_title'] = "Consideration of a Lasso environment (SSO)";
 $vocab['config_lcs_title'] = "Consideration of a SSO environment of a LCS server";
 $vocab['config_lemon_title'] = "Consideration of a Lemonladp environment (SSO)";
+$vocab['confirmer'] = "Confirm";
 $vocab['confirmdel'] = "Are you sure you want to delete this reservation?";
 $vocab['confirmer reservation'] = "Tick the box to confirm the reservation";
 $vocab['confirm_del'] = "Confirm deleting";
@@ -447,14 +450,14 @@ $vocab['execution automatique backup explications'] = "An automatic backup can b
 To enable this feature, you need to set a password below.
 <br /> For example, if the password is jamesbond007, the URL of the type: <b> http://mon-site.fr/grr/admin/admin_save_mysql.php?mdp=jamesbond007 </b> will trigger the backup .
 <br /> <b> It is strongly recommended to choose a complex password with letters, numbers and special characters! </b>";
-$vocab['execution automatique backup mdp'] = "Password used to run the script « admin_save_mysql.php »";
+$vocab['execution_automatique_backup_mdp'] = "Password used to run the script « admin_save_mysql.php »";
 $vocab['explain_area_list_format'] = "Type of display for lists of areas and resources";
 $vocab['explain_automatic_mail'] = "In some instances (creation of a reservation, suppression/modification, moderation), <b>GRR can send automatically e-mails </b> to some users. Consult the help to know more about it.<br /><b>Do you wish to use this option?</b> ";
 $vocab['explain_automatic_mail1'] = "When a user <b>reserves a resource, </b>, <b>modifies </b> or <b>deletes </b> a reservation <b>for himself </b> (which he is beneficiary), tick the box opposite in order to send systematically an email of confirmation.";
 $vocab['explain_automatic_mail2'] = "Besides, when a user <b>reserves a resource</b>, <b>modifies</b> or <b>deletes</b> a reservation, some users may be informed by e-mail. For each resource, you can select one or several users who will be informed of the change:";
 $vocab['explain_automatic_mail3'] = " When a user <b>reserves a resource</b>, <b>modifies </b> or <b>deletes </b> a reservation in the name of another user, the latter (if the field e-mail was filled in) is automatically warned by e-mail.";
 $vocab['explain_backup'] = "Creation of a complete backup file of GRR database.In case of a problem on GRR database, use a tool such as PHPMYADMIN to restore database.";
-$vocab['explain_champs recherche'] = "In the case of HTTP authentication, it is possible to attempt to retrieve the names, first names and email addresses of the users using the information contained in the \$_SERVER table and transmitted by the authentication system. <br /> <br /> For example, if \$_SERVER [\"sn \"] contains the name of the user, indicate \"sn \" in the first field below. Likewise indicate \"givenName \" in the second line if \$_SERVER [\"givenName \"] contains the first name and indicate \"mail \" in the third line if \$_SERVER [\"mail \"] contains the mail.";
+$vocab['explain_champs_recherche'] = "In the case of HTTP authentication, it is possible to attempt to retrieve the names, first names and email addresses of the users using the information contained in the \$_SERVER table and transmitted by the authentication system. <br /> <br /> For example, if \$_SERVER [\"sn \"] contains the name of the user, indicate \"sn \" in the first field below. Likewise indicate \"givenName \" in the second line if \$_SERVER [\"givenName \"] contains the first name and indicate \"mail \" in the third line if \$_SERVER [\"mail \"] contains the mail.";
 $vocab['explain_css'] = "Select style/theme";
 $vocab['explain_default_area_and_room'] = "Area and resource by default";
 $vocab['explain_default_area_and_room_and_site'] = "Site, area and resource by default";
@@ -822,6 +825,7 @@ $vocab['ressource_temporairement_indisponible'] = "Temporarily unavailable";
 $vocab['Restauration_de_la_base_GRR'] = "Restauration of GRR base ";
 $vocab['Restaurer_la_sauvegarde'] = " Restore the saving";
 $vocab['restricted'] = "restricted";
+$vocab['retour_planning'] = "Back to the schedule";
 $vocab['returnprev'] = "Back to previous page";
 $vocab['room'] = "Resource";
 $vocab['rooms'] = "Resources";
@@ -951,7 +955,7 @@ $vocab['type_area'] = "Multi-rows (textarea)";
 $vocab['type_color'] = "Color";
 $vocab['type_color_actuel'] = "Current color"; 
 $vocab['type_color_fond'] = "Choice of background color in hexadecimal";
-$vocab['type_color_hexa'] = "Choice of color in hexadecimal";
+$vocab['type_color_texte'] = "Choice of text color in hexadecimal";
 $vocab['type_color_predefinie'] = "Choice among predefined colors";
 $vocab['type_de_creneaux'] = "Configuration of time slots type ";
 $vocab['type_list'] = "List";
@@ -1078,7 +1082,6 @@ $vocab['display_file1'] = "Permit linking files ";
 $vocab['display_file2'] = "The sending files is allowed ";
 $vocab['display_file3'] = "The sending files is not allowed ";
 $vocab['top_of_page'] = "^ Top of page";
-$vocab['nomR'] = "name";
 $vocab['Generer_pdf'] = "Generate PDF";
 $vocab['semaine'] = "Wk";
 $vocab['status_clef'] = "Key status";
@@ -1315,7 +1318,7 @@ $vocab['LDAPinactive'] = "<b> Warning </b>: functions linked to <b>LDAP</b> auth
 $vocab['LDAPimpossible'] = "The LDAP configuration is therefore currently impossible.";
 $vocab['LDAPpossible'] = "If you have access to an <b>LDAP</b> directory, you can configure GRR so that this directory is used to automatically import users.";
 $vocab['LDAPauthActive'] = "LDAP authentication is enabled.";
-$vocab['ChoixStatutDefaut'] = "Choose the status which will be assigned to the people present in the LDAP directory when they connect for the first time. You can then modify this value for each user.";
+$vocab['choixStatutDefaut'] = "Choose the status which will be assigned to the people present in the LDAP directory when they connect for the first time. You can then modify this value for each user.";
 $vocab['desactiverLDAPauth'] = "Deactivate LDAP authentication";
 $vocab['UTF8storage'] = "The data (names, first name ...) are stored in UTF-8 in the directory (default configuration)";
 $vocab['modeDiagnostic'] = "Activate \"diagnostic\" mode in case of connection error, the messages returned by GRR are more explicit, in this way it can be easier to determine the cause of the problem. ";
@@ -1326,7 +1329,7 @@ $vocab['ldapFieldExpl'] = "The value to be indicated above varies according to t
             <br /> Examples of fields generally used for Active Directory: \"samaccountname\", \"userprincipalname\".
             <br /> Although not recommended, you can specify multiple attributes separated by the character | (example: uid | sn | cn). </span>
             ";
-$vocab['connectionsGrrLdap'] = "GRR/LDAP links";
+$vocab['liaisonsGrrLdap'] = "GRR/LDAP links";
 $vocab['familyName'] = "Last name:";
 $vocab['ldapSE3Expl'] = "<b> Special case of SE3 servers </b>: <span class = \"small\"> in the field below, you can specify the list of SE3 groups authorized to access at GRR.
             If the field is left empty, there are no restrictions.
@@ -1337,7 +1340,7 @@ $vocab['ldapAuthInactive'] = "LDAP authentication is not activated.";
 $vocab['LDAPstatutExpl'] = "Activate LDAP authentication by choosing the status which will be assigned to those present
             in the LDAP directory when they connect for the first time.
             You can then modify this value for each user. ";
-$vocab["Failed"] = "Failed";
+$vocab["Echec"] = "Failed";
 $vocab['testConnAnnuaire'] = "Test of connection to the directory";
 $vocab['LDAPV3impossible'] = "Impossible to use the LDAP V3 standard";
 $vocab['TLSimpossible'] = "Impossible to use TLS";
@@ -1351,7 +1354,7 @@ $vocab['testConnChemAnnErr2bis'] = "<b>Problem</b>: The path and the additional 
 $vocab['LDAPadresse'] = "Address of the LDAP directory";
 $vocab['portUtilise'] = "Port used";
 $vocab['ldapPath'] = "Access path to the directory";
-$vocab['filtrLdapSupp'] = "Additional LDAP filter";
+$vocab['filtreLdapSupp'] = "Additional LDAP filter";
 $vocab['ldapLogin'] = "Account for access";
 $vocab['accesAnonyme'] = "Anonymous access.";
 $vocab['newLdapConfig'] = "You can proceed to a new LDAP configuration.";

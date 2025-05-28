@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2025-05-27
+# Last modification : 2025-05-28
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -453,7 +453,7 @@ $vocab['explain_automatic_mail1'] = "Lorsqu'un utilisateur <b>réserve une resso
 $vocab['explain_automatic_mail2'] = "Par ailleurs, lorsqu'un utilisateur <b>réserve une ressource</b>, <b>modifie</b> ou bien <b>supprime</b> une réservation, certains utilisateurs peuvent être prévenus par e-mail. Pour chaque ressource, vous pouvez désigner un ou plusieurs utilisateurs à prévenir :";
 $vocab['explain_automatic_mail3'] = "Lorsqu'un utilisateur <b>réserve une ressource</b>, <b>modifie</b> ou bien <b>supprime</b> une réservation au nom d'un autre utilisateur, ce dernier (si le champ email a été renseigné) en est averti automatiquement par un message e-mail.";
 $vocab['explain_backup'] = "Création d'un fichier de sauvegarde complet de la base GRR. En cas de problème sur la base GRR, utilisez la fonction \"Restaurer la sauvegarde\".";
-$vocab['explain_champs recherche'] = "Dans le cas d'une authentification HTTP, il est possible de tenter de récupérer les noms, prénoms et adresses email des utilisateurs grâce aux informations contenues dans le tableau \$_SERVER et transmises par le système d'authentification. <br /><br />Par exemple, si \$_SERVER[\"sn\"] contient le nom de l'utilisateur, indiquer \"sn\" dans le premier champ ci-dessous. De même indiquez \"givenName\" dans la deuxième ligne si \$_SERVER[\"givenName\"] contient le prénom et indiquez \"mail\" dans la troisième ligne si \$_SERVER[\"mail\"] contient le mail.";
+$vocab['explain_champs_recherche'] = "Dans le cas d'une authentification HTTP, il est possible de tenter de récupérer les noms, prénoms et adresses email des utilisateurs grâce aux informations contenues dans le tableau \$_SERVER et transmises par le système d'authentification. <br /><br />Par exemple, si \$_SERVER[\"sn\"] contient le nom de l'utilisateur, indiquer \"sn\" dans le premier champ ci-dessous. De même indiquez \"givenName\" dans la deuxième ligne si \$_SERVER[\"givenName\"] contient le prénom et indiquez \"mail\" dans la troisième ligne si \$_SERVER[\"mail\"] contient le mail.";
 $vocab['explain_css'] = "Choix du style/thème";
 $vocab['explain_default_area_and_room'] = "Domaine et ressource par défaut";
 $vocab['explain_default_area_and_room_and_site'] = "Site, domaine et ressource par défaut";
@@ -1019,7 +1019,6 @@ $vocab['verif_reservation_auto0'] = "La tâche automatique est déclenchée une 
 $vocab['verif_reservation_auto1'] = "La tâche automatique est déclenchée par l'exécution du script « verif_auto_grr.php ».<br /><i>(nécessite la possibilité de programmer l'exécution automatique et périodique du script verif_auto_grr.php)</i>";
 $vocab['verif_reservation_auto2'] = "Mot de passe utilisé pour l'exécution du script verif_auto_grr.php (uniquement si vous avez choisi la 2ème option)";
 $vocab['verif_reservation_auto3'] = "Chemin complet du dossier d'installation de GRR (uniquement si vous avez choisi la 2ème option et si vous utilisez le script verif_auto_grr.php en tache cron)";
-$vocab['via_fichier'] = "Via un fichier";
 $vocab['view'] = "Voir";
 $vocab['viewday'] = "Voir la journée";
 $vocab['viewmonth'] = "Voir le mois";
@@ -1039,7 +1038,6 @@ $vocab['Vous_avez_modifie'] = "Vous avez modifié ";
 $vocab['Vous_avez_reserve'] = "Vous avez réservé ";
 $vocab['Vous_avez_supprime'] = "Vous avez supprimé ";
 $vocab['warning_exist'] = "L'utilisateur que vous avez tenté d'ajouter appartient déjà à la liste !";
-$vocab['warning_explain'] = "Avertissement/précisions concernant la réservation de cette ressource : le message ci-dessous s'affichera dans différentes vues concernant cette ressource.";
 $vocab['warning_message_backup'] = "Si un message du type \"Maximum execution time exceeded\" apparaît quelques instants après avoir lancé la sauvegarde, cela signifie que la sauvegarde a échoué !";
 $vocab['warning_message_mail'] = "Certains hébergeurs désactivent l'envoi automatique de mails depuis leurs serveurs. Dans ce cas, la fonctionnalité suivante ne fonctionnera pas.";
 $vocab['webmaster_email'] = "Adresse email du gestionnaire du site";
@@ -1076,11 +1074,10 @@ $vocab['display_mail_etat_destinataire_4'] = "Le formulaire de contact réservat
 $vocab['display_mail_etat_destinataire_5'] = "Le formulaire de contact réservation est activé  et accessible depuis la page de connexion";
 $vocab['display_mail_destinataire'] = "Adresse mail du destinataire :";
 $vocab['top_of_page'] = "^ Haut de la page";
-$vocab['nomR'] = "Nom";
-$vocab['display_file'] = "Autoriser l'envoie de fichiers ";
+$vocab['display_file'] = "Autoriser l'envoi de fichiers ";
 $vocab['display_file1'] = "Permettre de lier des fichiers aux réservations ";
-$vocab['display_file2'] = "L'envoie de fichiers est autorisé ";
-$vocab['display_file3'] = "L'envoie de fichiers n'est pas autorisé ";
+$vocab['display_file2'] = "L'envoi de fichiers est autorisé ";
+$vocab['display_file3'] = "L'envoi de fichiers n'est pas autorisé ";
 $vocab['Generer_pdf'] = "Générer un PDF";
 $vocab['semaine'] = "Sem";
 $vocab['status_clef'] = "Statut de la clé";
@@ -1303,8 +1300,6 @@ $vocab['dirURIPortExpl'] = "Dans le doute, laissez la valeur par défaut : 389<b
 $vocab['typeAcces'] = "Type d'accès";
 $vocab['typeAccesExpl'] = "Si le serveur LDAP n'accepte pas d'accès anonyme, veuillez préciser un identifiant (par exemple « cn=jean, o=lycée, c=fr »). Dans le doute, laissez les champs suivants vides pour un accès anonyme.";
 $vocab['ldapPwdWarning'] = "Remarque : des problèmes liés à un mot de passe contenant un ou plusieurs caractères accentués ont déjà été constatés.";
-$vocab['Oui'] = "Oui";
-$vocab['Non'] = "Non";
 $vocab['LDAPinactive'] = "<b>Attention </b> : les fonctions liées à l'authentification <b>LDAP</b> ne sont pas activées sur votre serveur PHP.";
 $vocab['LDAPimpossible'] = "La configuration LDAP est donc actuellement impossible.";
 $vocab['LDAPpossible'] = "Si vous avez accès à un annuaire <b>LDAP</b>, vous pouvez configurer GRR afin que cet annuaire soit utilisé pour importer automatiquement des utilisateurs.";

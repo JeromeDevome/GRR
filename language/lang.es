@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2025-05-27
+# Last modification : 2025-05-28
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -13,7 +13,7 @@ $vocab['accessdeniedtoomanybooking'] = "Acceso rechazado : ¡se rechaza su solic
 $vocab['acces_fiche_reservation_msg'] = "¿Quién tiene acceso a los detalles de la reserva de un recurso?";
 $vocab['action'] = "Acción";
 $vocab['activer_fonctionalite_ressource_empruntee_restituee'] = "Activar la funcionalidad \"recurso prestado/restituido\"";
-$vocab['activer_fonctionalite_gestion_cle'] = "Activer la fonctionnalité \"gestion des clés\""; // A traduire
+$vocab['activer_fonctionalite_gestion_cle'] = "Habilitar la función de \"administración de claves\"";
 $vocab['Activer_module_jours_cycles'] = "Activar las funcionalidades \"días ciclo\"";
 $vocab['Activer_module_multisite'] = "Activar la funcionalidad \"multisitio\"";
 $vocab['Activer_export_xml'] = "Activar la funcionalidad \"Export XML\"";
@@ -181,9 +181,11 @@ $vocab['all_rooms'] = "Todos los recursos";
 $vocab['all_rooms_of_area'] = "Para todos los recursos del campo";
 $vocab['alphanumeric'] = "Valeur alphanumérique";// A traduire
 $vocab['alterseries'] = "¡Modificar una serie de reservas en las que están registrados participantes cancelará las inscripciones!";
-$vocab['areas'] = "Campos : ";
+$vocab['areas'] = "Campos";
+$vocab['any_area'] = "Todas las áreas";
 $vocab['attention_mail_automatique_désactive'] = "CUIDADO: se desactiva el envío de mails automáticos. Para activarlo, dirijase en el panel de configuración general.";
 $vocab['aucun_utilisateur'] = "Ningún usuario dispone de privilegios";
+$vocab['aucun_utilisateur_reservant'] = "Ningún usuario sin privilegios puede reservar.";
 $vocab['aucune_correspondance'] = "Aucune correspondance profil / statut GRR actuellement enregistrée"; // A traduire
 $vocab['aucune_periodicite_associe'] = "Ninguna periodicidad está asociada a esta reserva.";
 $vocab['authentification'] = "Autentificación";
@@ -281,6 +283,7 @@ $vocab['config_http_title'] = "Consideración de una autentificación HTTP";
 $vocab['config_lasso_title'] = "Consideración de un entorno Lasso (SSO)";
 $vocab['config_lcs_title'] = "Consideración de un entorno SSO de un servidor LCS";
 $vocab['config_lemon_title'] = "Consideración de un entorno Lemonldap (SSO)";
+$vocab['confirmer'] = "Confirmar";
 $vocab['confirmdel'] = "¿Está seguro de querer efectuar la acción siguiente?";
 $vocab['confirmer reservation'] = "Marcar la casilla para confirmar la reserva";
 $vocab['confirm_del'] = "Confirmar la supresión";
@@ -813,6 +816,7 @@ $vocab['ressource_temporairement_indisponible'] = "Temporalmente indisponible";
 $vocab['Restauration_de_la_base_GRR'] = "Restauración de la base GRR";
 $vocab['Restaurer_la_sauvegarde'] = "Restaurar la copia de seguridad. ";
 $vocab['restricted'] = "limitado";
+$vocab['retour_planning'] = "Regresar al cronograma";
 $vocab['returnprev'] = "Volver a la página anterior";
 $vocab['room'] = "Recurso :";
 $vocab['rooms'] = "Recursos";
@@ -930,6 +934,10 @@ $vocab['title_session_max_length'] = "Duración máxima de una sesión";
 $vocab['titre_config_Jours_Cycles'] = "Configuración de los \"días ciclos\"";
 $vocab['too_may_entrys'] = "Las opciones elegidas crearán demasiadas reservacs.<br />¡Elija opciones diferentes!";
 $vocab['top_of_page'] = "^ Top of page"; // À traduire
+$vocab['display_file'] = "Permitir envío de archivos";
+$vocab['display_file1'] = "Permitir vincular archivos a reservas";
+$vocab['display_file2'] = "Se permite el envío de archivos";
+$vocab['display_file3'] = "No se permite el envío de archivos";
 $vocab['total'] = "Total";
 $vocab['tous_les_utilisateurs'] = "todos los usuarios";
 $vocab['traite_moderation'] = "trató la petición de reserva de";
@@ -1298,13 +1306,11 @@ $vocab['dirURIPortExpl'] = "Dans le doute, laissez la valeur par défaut : 389<b
 $vocab['typeAcces'] = "Type d'accès";
 $vocab['typeAccesExpl'] = "Si le serveur LDAP n'accepte pas d'accès anonyme, veuillez préciser un identifiant (par exemple « cn=jean, o=lycée, c=fr »). Dans le doute, laissez les champs suivants vides pour un accès anonyme.";
 $vocab['ldapPwdWarning'] = "Remarque : des problèmes liés à un mot de passe contenant un ou plusieurs caractères accentués ont déjà été constatés.";
-$vocab['Oui'] = "Oui";
-$vocab['Non'] = "Non";
 $vocab['LDAPinactive'] = "<b>Attention </b> : les fonctions liées à l'authentification <b>LDAP</b> ne sont pas activées sur votre serveur PHP.";
 $vocab['LDAPimpossible'] = "La configuration LDAP est donc actuellement impossible.";
 $vocab['LDAPpossible'] = "Si vous avez accès à un annuaire <b>LDAP</b>, vous pouvez configurer GRR afin que cet annuaire soit utilisé pour importer automatiquement des utilisateurs.";
 $vocab['LDAPauthActive'] = "L'authentification LDAP est activée.";
-$vocab['choixStatutDefaut'] = "Choisissez le statut qui sera attribué aux personnes présentes dans l'annuaire LDAP lorsqu'elles se connectent pour la première fois. Vous pourrez par la suite modifier cette valeur pour chaque utilisateur.";
+$vocab['choixStatutDefaut'] = "Elija el estado que se asignará a las personas en el directorio LDAP cuando inicien sesión por primera vez. Posteriormente puede modificar este valor para cada usuario.";
 $vocab['desactiverLDAPauth'] = "Désactiver l'authentification LDAP";
 $vocab['UTF8storage'] = "Les données (noms, prénom...) sont stockées en UTF-8 dans l'annuaire (configuration par défaut)";
 $vocab['modeDiagnostic'] = "Activer le mode \"diagnostic\" en cas d'erreur de connexion, les messages renvoyés par GRR sont plus explicites. De cette façon, il peut être plus facile de déterminer la cause du problème.";
