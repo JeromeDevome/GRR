@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2024-05-14 12:19$
+ * Dernière modification : $Date: 2024-12-26 16:01$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
@@ -15,6 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+
 /** mrbsCheckFree()
  *
  * Check to see if the time period specified is free
@@ -834,6 +835,51 @@ function mrbsGetAreaSite($id)
 	else
 		return -1;
 }
+/*
+Arguments :
+$id_entry : identifiant de la réservation
+$login_moderateur : identifiant du modérateur
+$motivation_moderation : texte facultatif
+Insère dans la table ".TABLE_PREFIX."_entry_moderate les valeurs de ".TABLE_PREFIX."_entry dont l'identifiant est $id_entry
+*/
+function grr_backup($id_entry, $login_moderateur, $motivation_moderation)
+{
+  $sql = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id='".$id_entry."'";
+  $res = grr_sql_query($sql);
+  if (!$res)
+    return false;
+  $row = grr_sql_row_keyed($res, 0);
+  grr_sql_free($res);
+  $req = "INSERT INTO ".TABLE_PREFIX."_entry_moderate SET
+  id = '".$row['id']."',
+  start_time = '".$row['start_time']."',
+  end_time  = '".$row['end_time']."',
+  entry_type  = '".$row['entry_type']."',
+  repeat_id  = '".$row['repeat_id']."',
+  room_id = '".$row['room_id']."',
+  timestamp = '".$row['timestamp']."',
+  create_by = '".$row['create_by']."',
+  beneficiaire = '".$row['beneficiaire']."',
+  beneficiaire_ext = '".$row['beneficiaire_ext']."',
+  name = '".protect_data_sql($row['name'])."',
+  type = '".$row['type']."',
+  description = '".protect_data_sql($row['description'])."',
+  statut_entry = '".$row['statut_entry']."',
+  option_reservation = '".$row['option_reservation']."',
+  overload_desc  = '".protect_data_sql($row['overload_desc'])."',
+  moderate = '".$row['moderate']."',
+  motivation_moderation = '".protect_data_sql(strip_tags($motivation_moderation))."',
+  login_moderateur = '".protect_data_sql($login_moderateur)."'";
+  $res = grr_sql_query($req);
+  if (!$res)
+    return false;
+  else
+  {
+    grr_sql_free($res);
+    return true;
+  }
+}
+
 /**
  * @param integer $_id
  * @param integer $_moderate
