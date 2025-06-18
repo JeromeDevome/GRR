@@ -1112,7 +1112,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			$year  = date("Y",$date_);
 
 			//Parametre url fixe compte / admin
-			$paramUrl = 'p='.$page.'&amp;day='.$day.'&amp;year='.$year.'&amp;month='.$month;
+			$paramUrl = 'p='.$page.'&day='.$day.'&year='.$year.'&month='.$month.'&area='.$_GET['area'];
 			$paramUrlAccueil = 'day='.$day.'&amp;year='.$year.'&amp;month='.$month;
 			$d['paramUrl'] = $paramUrl;
 
@@ -1132,7 +1132,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			// Administration
 			if ($type_session == "with_session")
 			{
-				
+
                 $user_name = getUserName();
 				$resaAModerer = resaToModerate($user_name);
                 $nbResaAModerer = count($resaAModerer);
