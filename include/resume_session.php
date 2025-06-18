@@ -1,7 +1,7 @@
 <?php
 /**
  * include/resume_session.php
- * Si session obligatoire ou expiré renvois à la deconnexion
+ * Si session obligatoire ou expiré renvoie à la déconnexion
  * Dernière modification : $Date: 2017-12-16 14:00$
  * @author    JeromeB & Laurent Delineau
  * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
