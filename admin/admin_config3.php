@@ -3,9 +3,9 @@
  * admin_config3.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (interactivité)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-03-12 18:57$
+ * Dernière modification : $Date: 2025-01-27 10:03$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -102,12 +102,14 @@ if ((isset($_POST['smtp_port']))&&(is_numeric($_POST['smtp_port'])))
 // Si Email test renseigné on y envoie un mail
 if (isset($_POST['mail_test']) && !empty($_POST['mail_test']))
 {
-    $mail_test = clean_input($_POST['mail_test']);
-    if (!validate_email($mail_test)){
-        $msg.= get_vocab('invalid_test_mail_address');
-	require_once '../include/mail.class.php';
-	require_once '../phpmailer/PHPMailerAutoload.php';
-	Email::Envois($mail_test, 'GRR, votre système de réservations', "Ceci est un test depuis l'administration de votre GRR.<br>Le mail est arrivé à destination.", Settings::get('grr_mail_from'), '', '');
+  $mail_test = clean_input($_POST['mail_test']);
+  if (!validate_email($mail_test))
+    $msg.= get_vocab('invalid_test_mail_address');
+  else{
+    require_once '../include/mail.class.php';
+    require_once '../phpmailer/PHPMailerAutoload.php';
+    Email::Envois($mail_test, 'GRR, votre système de réservations', "Ceci est un test depuis l'administration de votre GRR.<br>Le mail est arrivé à destination.", Settings::get('grr_mail_from'), '', '');
+  }
 }
 if (isset($_POST['ok']))
 {

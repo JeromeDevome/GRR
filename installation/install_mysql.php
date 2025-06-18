@@ -3,9 +3,9 @@
  * install_mysql.php
  * Interface d'installation de GRR pour un environnement mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-12-24 15:58$
+ * Dernière modification : $Date: 2025-04-16 16:05$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -75,150 +75,153 @@ function mysqli_result($res, $row, $field = 0)
 if (@file_exists($nom_fic))
 {
   require_once($nom_fic);
-  /* fix prefix missing */
-  if ( $table_prefix != NULL ) {
-    $table_prefix_from_user = $table_prefix;
-  } else {
-    $table_prefix_from_user = false;
-  }
-  if ( empty($table_prefix) &&  $table_prefix_from_user !== false) {
-    $table_prefix = $table_prefix_from_user;
-  }
-    // vérification des tables
-  $db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbDb", $dbPort);
-  if ($db)
-  {
-    if (mysqli_select_db($db, "$dbDb"))
+  if(isset($dbDb)){
+    /* fix prefix missing */
+    if ( $table_prefix != NULL ) {
+      $table_prefix_from_user = $table_prefix;
+    } else {
+      $table_prefix_from_user = false;
+    }
+    if ( empty($table_prefix) &&  $table_prefix_from_user !== false) {
+      $table_prefix = $table_prefix_from_user;
+    }
+      // vérification des tables
+    $db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbDb", $dbPort);
+    if ($db)
     {
-      // Premier test
-      $j = '0';
-      $test1 = 'yes';
-      $total = count($liste_tables);
-      $tableManquantes = "";
-      while ($j < $total)
+      if (mysqli_select_db($db, "$dbDb"))
       {
-        $test = mysqli_query($db, "SELECT count(*) FROM ".$table_prefix.$liste_tables[$j]);
-        if (!$test)
+        // Premier test
+        $j = '0';
+        $test1 = 'yes';
+        $total = count($liste_tables);
+        $tableManquantes = "";
+        while ($j < $total)
         {
-          $tableManquantes .= " ". $table_prefix.$liste_tables[$j];
-          $correct_install='no';
-          $test1 = 'no';
+          $test = mysqli_query($db, "SELECT count(*) FROM ".$table_prefix.$liste_tables[$j]);
+          if (!$test)
+          {
+            $tableManquantes .= " ". $table_prefix.$liste_tables[$j];
+            $correct_install='no';
+            $test1 = 'no';
+          }
+          $j++;
         }
-        $j++;
-      }
-      if ($call_test = mysqli_query($db, "SELECT * FROM ".$table_prefix."_setting WHERE NAME='sessionMaxLength'")){
-        $test2 = mysqli_num_rows($call_test);
-        mysqli_free_result($call_test);
-      }
-      else
-        $test2 = 0;
-      if (($test2 != 0) && ($test1 != 'no'))
-      {
-        echo begin_simple_page("Installation de GRR");
-        begin_html();
-        if ($etape == 6)// vérifier que les personnalisations ont bien été prises en compte et lancer GRR
+        if ($call_test = mysqli_query($db, "SELECT * FROM ".$table_prefix."_setting WHERE NAME='sessionMaxLength'")){
+          $test2 = mysqli_num_rows($call_test);
+          mysqli_free_result($call_test);
+        }
+        else
+          $test2 = 0;
+        if (($test2 != 0) && ($test1 != 'no'))
         {
-          if ((strlen($mdp1)>7)&&($mdp1 == $mdp2)){ // les mots de passe sont acceptables, on met à jour la table setting
-            $test = TRUE;
-            $req = "UPDATE ".$table_prefix."_setting SET value ='".$company."' WHERE ".$table_prefix."_setting.name = 'company' ";
-            $test .= mysqli_query($db, $req);
-            $req = "UPDATE ".$table_prefix."_setting SET value ='".$grr_url."' WHERE ".$table_prefix."_setting.name = 'grr_url' ";
-            $test .= mysqli_query($db, $req);
-            $req = "UPDATE ".$table_prefix."_setting SET value ='".$webmaster_email."' WHERE ".$table_prefix."_setting.name = 'webmaster_email' ";
-            $test .= mysqli_query($db, $req);
-            $req = "UPDATE ".$table_prefix."_setting SET value ='".$technical_support_email."' WHERE ".$table_prefix."_setting.name = 'technical_support_email' ";
-            $test .= mysqli_query($db, $req);
-            $req = "UPDATE ".$table_prefix."_setting SET value ='".$version_grr."' WHERE ".$table_prefix."_setting.name = 'firstversion' ";
-            $test .= mysqli_query($db, $req);
-            $mdp = md5($mdp1);
-            $req = "UPDATE ".$table_prefix."_utilisateurs SET password = '".$mdp."' WHERE ".$table_prefix."_utilisateurs.login = 'ADMINISTRATEUR' ";
-            $test .= mysqli_query($db, $req); 
-            $req = "UPDATE ".$table_prefix."_utilisateurs SET email = '".$email."' WHERE ".$table_prefix."_utilisateurs.login = 'ADMINISTRATEUR' ";
-            $test .= mysqli_query($db, $req);
-            if ($test)
-            {
-              echo "<br /><h2>Dernière étape : C'est terminé !</h2>";
-              echo "<p>Vous pouvez maintenant commencer à utiliser le système de réservation de ressources ...</p>";
-              echo "<p>Pour vous connecter la première fois en tant qu'administrateur, utilisez le nom de connexion <b>\"ADMINISTRATEUR\"</b> et le mot de passe renseigné à l'étape précédente</p>";
-              echo "<br /><center><a href = '../login.php'>Se connecter à GRR</a></center>";
+          echo begin_simple_page("Installation de GRR");
+          begin_html();
+          if ($etape == 6)// vérifier que les personnalisations ont bien été prises en compte et lancer GRR
+          {
+            if ((strlen($mdp1)>7)&&($mdp1 == $mdp2)){ // les mots de passe sont acceptables, on met à jour la table setting
+              $test = TRUE;
+              $req = "UPDATE ".$table_prefix."_setting SET value ='".$company."' WHERE ".$table_prefix."_setting.name = 'company' ";
+              $test .= mysqli_query($db, $req);
+              $req = "UPDATE ".$table_prefix."_setting SET value ='".$grr_url."' WHERE ".$table_prefix."_setting.name = 'grr_url' ";
+              $test .= mysqli_query($db, $req);
+              $req = "UPDATE ".$table_prefix."_setting SET value ='".$webmaster_email."' WHERE ".$table_prefix."_setting.name = 'webmaster_email' ";
+              $test .= mysqli_query($db, $req);
+              $req = "UPDATE ".$table_prefix."_setting SET value ='".$technical_support_email."' WHERE ".$table_prefix."_setting.name = 'technical_support_email' ";
+              $test .= mysqli_query($db, $req);
+              $req = "UPDATE ".$table_prefix."_setting SET value ='".$version_grr."' WHERE ".$table_prefix."_setting.name = 'firstversion' ";
+              $test .= mysqli_query($db, $req);
+              $mdp = password_hash($mdp1, PASSWORD_DEFAULT);
+              // $mdp = md5($mdp1);
+              $req = "UPDATE ".$table_prefix."_utilisateurs SET password = '".$mdp."' WHERE ".$table_prefix."_utilisateurs.login = 'ADMINISTRATEUR' ";
+              $test .= mysqli_query($db, $req); 
+              $req = "UPDATE ".$table_prefix."_utilisateurs SET email = '".$email."' WHERE ".$table_prefix."_utilisateurs.login = 'ADMINISTRATEUR' ";
+              $test .= mysqli_query($db, $req);
+              if ($test)
+              {
+                echo "<br /><h2>Dernière étape : C'est terminé !</h2>";
+                echo "<p>Vous pouvez maintenant commencer à utiliser le système de réservation de ressources ...</p>";
+                echo "<p>Pour vous connecter la première fois en tant qu'administrateur, utilisez le nom de connexion <b>\"ADMINISTRATEUR\"</b> et le mot de passe renseigné à l'étape précédente</p>";
+                echo "<br /><center><a href = '../login.php'>Se connecter à GRR</a></center>";
+              }
+              else
+              {
+                echo "<p>Les personnalisations ont échoué. Vérifiez le serveur de bases de données ou revenez à l'étape précédente, ou recommencez l'installation.</p>";
+              }
             }
-            else
+            else // mots de passe non acceptables
             {
-              echo "<p>Les personnalisations ont échoué. Vérifiez le serveur de bases de données ou revenez à l'étape précédente, ou recommencez l'installation.</p>";
+              echo "Les mots de passe sont trop courts ou différents, veuillez retourner à l'étape précédente";
+              echo '<form action="install_mysql.php" method="POST" role="form">';
+              echo "<input type='hidden' name='etape' value='5' />";
+              echo "<input type='hidden' name='adresse_db' value='$adresse_db' />";
+              echo "<input type='hidden' name='port_db' value='$port_db' />";
+              echo "<input type='hidden' name='login_db' value='$login_db' />";
+              echo "<input type='hidden' name='pass_db' value='$pass_db' />";
+              echo "<input type='hidden' name='choix_db' value='$choix_db' />";
+              echo "<input type='hidden' name='table_prefix' value='$table_prefix' />";
+              echo "<input type=\"hidden\" name=\"company\" value=\"$company\" />";
+              echo "<input type='hidden' name='grr_url' value='$grr_url'/>";
+              echo "<input type='hidden' name='webmaster_email' value='$webmaster_email' />";
+              echo "<input type='hidden' name='technical_support_email' value='$technical_support_email' />";
+              echo "<input type='hidden' name='email' value='$email' />";
+              echo "<div style=\"text-align:right;\">";
+              echo '<input type="submit" name="Retour5" value="<< Précédent" />';
+              echo "</div>";
+              echo "</form>";
             }
           }
-          else // mots de passe non acceptables
-          {
-            echo "Les mots de passe sont trop courts ou différents, veuillez retourner à l'étape précédente";
+          elseif ($etape == 5)
+          {// personnalisation de GRR, passer à l'étape 6
+            echo '<h2>Cinquième étape : Personnalisation de votre GRR</h2>';
             echo '<form action="install_mysql.php" method="POST" role="form">';
-            echo "<input type='hidden' name='etape' value='5' />";
+            echo "<input type='hidden' name='etape' value='6' />";
             echo "<input type='hidden' name='adresse_db' value='$adresse_db' />";
             echo "<input type='hidden' name='port_db' value='$port_db' />";
             echo "<input type='hidden' name='login_db' value='$login_db' />";
             echo "<input type='hidden' name='pass_db' value='$pass_db' />";
             echo "<input type='hidden' name='choix_db' value='$choix_db' />";
             echo "<input type='hidden' name='table_prefix' value='$table_prefix' />";
-            echo "<input type=\"hidden\" name=\"company\" value=\"$company\" />";
-            echo "<input type='hidden' name='grr_url' value='$grr_url'/>";
-            echo "<input type='hidden' name='webmaster_email' value='$webmaster_email' />";
-            echo "<input type='hidden' name='technical_support_email' value='$technical_support_email' />";
-            echo "<input type='hidden' name='email' value='$email' />";
+            echo "<div>";
+            echo "<p>Vous pourrez modifier les informations dans la configuration générale après avoir terminé l'installation.</p>";
+            echo "<p><label for='company'>Nom de l'établissement : </label><input type=\"text\" name=\"company\" value=\"$company\" /></p>";
+            echo "<p><label for='grr_url'>URL de GRR : </label><input type='text' name='grr_url' value='$grr_url'/></p>";
+            echo "<p><label for='webmaster_email'>Adresse mail du webmestre : </label><input type='email' name='webmaster_email' value='$webmaster_email' /></p>";
+            echo "<p><label for='technical_support_email'>Adresse mail du support technique : </label><input type='email' name='technical_support_email' value='$technical_support_email' /></p>";
+            echo "<h3>Le compte administrateur : </h3>";
+            echo "<p>Identifiant du compte Administrateur : ADMINISTRATEUR</p>";
+            echo "<p><label for='mdp1'>Mot de passe : </label><input type='password' name='mdp1' required /></p>";
+            echo "<p><label for='mdp2'>Confirmer le mot de passe : </label><input type='password' name='mdp2' required /></p>";
+            echo "<p><label for='email'>Adresse mail de l'administrateur : </label><input type='email' name='email' value='$email' /></p>";
+            echo "</div>";
             echo "<div style=\"text-align:right;\">";
-            echo '<input type="submit" name="Retour5" value="<< Précédent" />';
+            echo '<input type="submit" name="Valider" value="Suivant >> " />';
             echo "</div>";
             echo "</form>";
           }
-        }
-        elseif ($etape == 5)
-        {// personnalisation de GRR, passer à l'étape 6
-          echo '<h2>Cinquième étape : Personnalisation de votre GRR</h2>';
-          echo '<form action="install_mysql.php" method="POST" role="form">';
-          echo "<input type='hidden' name='etape' value='6' />";
-          echo "<input type='hidden' name='adresse_db' value='$adresse_db' />";
-          echo "<input type='hidden' name='port_db' value='$port_db' />";
-          echo "<input type='hidden' name='login_db' value='$login_db' />";
-          echo "<input type='hidden' name='pass_db' value='$pass_db' />";
-          echo "<input type='hidden' name='choix_db' value='$choix_db' />";
-          echo "<input type='hidden' name='table_prefix' value='$table_prefix' />";
-          echo "<div>";
-          echo "<p>Vous pourrez modifier les informations dans la configuration générale après avoir terminé l'installation.</p>";
-          echo "<p><label for='company'>Nom de l'établissement : </label><input type=\"text\" name=\"company\" value=\"$company\" /></p>";
-          echo "<p><label for='grr_url'>URL de GRR : </label><input type='text' name='grr_url' value='$grr_url'/></p>";
-          echo "<p><label for='webmaster_email'>Adresse mail du webmestre : </label><input type='email' name='webmaster_email' value='$webmaster_email' /></p>";
-          echo "<p><label for='technical_support_email'>Adresse mail du support technique : </label><input type='email' name='technical_support_email' value='$technical_support_email' /></p>";
-          echo "<h3>Le compte administrateur : </h3>";
-          echo "<p>Identifiant du compte Administrateur : ADMINISTRATEUR</p>";
-          echo "<p><label for='mdp1'>Mot de passe : </label><input type='password' name='mdp1' required /></p>";
-          echo "<p><label for='mdp2'>Confirmer le mot de passe : </label><input type='password' name='mdp2' required /></p>";
-          echo "<p><label for='email'>Adresse mail de l'administrateur : </label><input type='email' name='email' value='$email' /></p>";
-          echo "</div>";
-          echo "<div style=\"text-align:right;\">";
-          echo '<input type="submit" name="Valider" value="Suivant >> " />';
-          echo "</div>";
-          echo "</form>";
+          else
+          {
+            echo "<h2>Espace interdit - GRR est déjà installé.</h2>";
+          }
+          end_html();
+          die();
         }
         else
         {
-          echo "<h2>Espace interdit - GRR est déjà installé.</h2>";
-        }
-        end_html();
-        die();
-      }
-      else
-      {
-        if ($etape == 5)
-        {
-          echo begin_simple_page("Installation de GRR");
-          begin_html();
-          if ($test1 == 'no')
+          if ($etape == 5)
           {
-            echo "<p>L'installation n'a pas pu se terminer normalement : des tables sont manquantes.".$tableManquantes."</p>";
+            echo begin_simple_page("Installation de GRR");
+            begin_html();
+            if ($test1 == 'no')
+            {
+              echo "<p>L'installation n'a pas pu se terminer normalement : des tables sont manquantes.".$tableManquantes."</p>";
+            }
+            if ($test2 == 0)
+            {
+              echo "<p>L'installation n'a pas pu se terminer normalement : la table ".$table_prefix."_setting est vide ou bien n'existe pas.</p>";
+            }
+            end_html();
           }
-          if ($test2 == 0)
-          {
-            echo "<p>L'installation n'a pas pu se terminer normalement : la table ".$table_prefix."_setting est vide ou bien n'existe pas.</p>";
-          }
-          end_html();
         }
       }
     }

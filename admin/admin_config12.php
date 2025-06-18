@@ -3,9 +3,9 @@
  * admin_config12.php
  * Interface permettant à l'administrateur la configuration de certains paramètres d'affichage
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2024-03-15 18:23$
+ * Dernière modification : $Date: 2025-05-06 17:40$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -254,9 +254,9 @@ else
     $msg = '';
 // données
 if (Settings::get('module_multisite') == 'Oui') {
-    $use_site = TRUE;
+    $use_site = 'y';
 } else {
-    $use_site = FALSE;
+    $use_site = 'n';
 }
 /*
  * Liste des sites
@@ -333,12 +333,12 @@ echo ' />'.PHP_EOL;
 echo '<label for="alf3">'.get_vocab('item_area_list_format').'</label>'.PHP_EOL;
 echo '<br />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
-if ($use_site) 
+if ($use_site == 'y') 
     echo('<h4>'.get_vocab('explain_default_area_and_room_and_site').'</h4>');
 else 
     echo('<h4>'.get_vocab('explain_default_area_and_room').'</h4>');
 // sélecteur de site
-if ($use_site) {
+if ($use_site == 'y') {
     echo '<div id="div_liste_sites" class="col col-xs-12">'.PHP_EOL;
     echo '<div class="form-group">'.PHP_EOL;
     echo '<label for="id_site" class="control-label col-md-3 col-sm-3 col-xs-4">'.get_vocab('default_site').get_vocab('deux_points').'</label>'.PHP_EOL;
@@ -860,7 +860,7 @@ echo '</form>';
 			type: "get",
 			dataType: "html",
 			data: {
-				id_area:$('id_area').serialize(true),
+				id_area:$('#id_area').val(),
 				default_room : '<?php echo Settings::get('default_room'); ?>',
 				type:'ressource',
 				action:+action,

@@ -3,10 +3,10 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-09 11:39$
+ * Dernière modification : $Date: 2025-04-28 10:55$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -502,7 +502,7 @@ if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')||($mod
     else 
         pageHeader2($day, $month, $year, $type_session="no_session");
     echo "</header>";
-
+    echo "<section>";
         echo '<div class="container">';
 /*         if ($back != "")
             echo '<div><a href="',$back,'">',get_vocab("returnprev"),'</a></div>',PHP_EOL; */
@@ -814,14 +814,17 @@ if ($repeat_id != 0)
     echo '<tr><td><b>'.get_vocab("duration").'</b></td><td>'.$rep_duration .' '. $dur_units.'</td></tr>';
     echo '<tr><td><b>'.get_vocab('rep_end_date').'</b></td><td>'.$rep_end_date.'</td></tr>';
   }
+  echo '</table>',PHP_EOL;
     if ((getWritable($user_id, $id)) && verif_booking_date($user_id, $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room($user_id, $room_id, $row[10], $enable_periods) && (!$was_del))
   { 
+    echo "<div>";
         $message_confirmation = str_replace ( "'"  , "\\'"  ,get_vocab('confirmdel').get_vocab('alterseries'));
-        echo '<tr>',PHP_EOL,'<td>',PHP_EOL,'<a class="btn btn-primary" type="button" href="edit_entry.php?id=',$id,'&amp;edit_type=series&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=',$page,'" onclick="return confirm(\'',$message_confirmation,'\');">',get_vocab("editseries"),'</a></td>',PHP_EOL;
+        echo '<a class="btn btn-primary" type="button" href="edit_entry.php?id=',$id,'&amp;edit_type=series&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=',$page,'" onclick="return confirm(\'',$message_confirmation,'\');">',get_vocab("editseries"),'</a>',PHP_EOL;
     $message_confirmation = str_replace ( "'"  , "\\'"  , get_vocab("confirmdel").get_vocab("deleteseries"));
-    echo '<td>',PHP_EOL,'<a class="btn btn-danger" type="button" href="del_entry.php?id=',$id,'&amp;series=1&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=',$page,'" onclick="return confirm(\'',$message_confirmation,'\');">',get_vocab("deleteseries"),'</a></td>',PHP_EOL,'</tr>',PHP_EOL;
+    echo '<a class="btn btn-danger" type="button" href="del_entry.php?id=',$id,'&amp;series=1&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=',$page,'" onclick="return confirm(\'',$message_confirmation,'\');">',get_vocab("deleteseries"),'</a>',PHP_EOL;
+    echo "</div>".PHP_EOL;
   }
-    echo '</table>',PHP_EOL,'</fieldset>',PHP_EOL;
+    echo '</fieldset>',PHP_EOL;
 }
 if (!isset($area_id))
     $area_id = 1;
@@ -928,7 +931,7 @@ if ($fin_session == 'n'){
 if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')||($mode == 'valide')) // si mode page, on ferme le container
 {
     if ($back != "")
-        echo '<a class="btn btn-default" type="button" href="'.$back.'">'.get_vocab("returnprev").'</a></div>'.PHP_EOL;
+        echo '<a class="btn btn-default" type="button" href="'.$back.'">'.get_vocab("returnprev").'</a>'.PHP_EOL;
   echo '</div>',PHP_EOL;
 }
 ?>

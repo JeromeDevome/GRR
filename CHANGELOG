@@ -12,40 +12,32 @@ Tâches prévues :
 --
 -----
 
-Version 3.5.2RC1 : version en cours de développement, à utiliser en production avec prudence
-    ajout : statistiques à destination du serveur grr.devome.com, à fins de développement, désactivable depuis config.inc.php
-    correctif : possibilité pour un gestionnaire de déclarer la ressource empruntée depuis la page de réservation
-    correctifs : gestion des caractères spéciaux, récupération des paramètres dans la page d'édition des ressources
-
------
---
------
-
-Version 3.5.2RC1 : 
-    ajout : fonctionnalité de recherche de ressources disponibles dans un domaine donné sur un intervalle de temps donné
-    amélioration : utilisation de requêtes SQL préparées
-    
------
---
------
-
-Version 3.5.2RC0
+Version 3.5.2 : 
     ajout : afficher le formulaire de demande de réservation même si la connexion est obligatoire
     ajout : possibilité d'afficher le formulaire de contact pour réservation dans la page de login
     ajout : possibilité d'afficher un sélecteur de date direct dans le menu gauche
     ajout : possibilité pour un gestionnaire de ressource de déclarer la ressource empruntée depuis la page de réservation
     ajout : possibilité de définir une page d'accueil personnalisée
     ajout : fonctionnalité Fichier joint, seuls les fichiers jpg, png, gif ou pdf sont acceptés en pièces jointes aux réservations
+    ajout : statistiques à destination du serveur grr.devome.com, à fins de développement, désactivable depuis config.inc.php
+    ajout : fonctionnalité de recherche de ressources disponibles dans un domaine donné sur un intervalle de temps donné
     amélioration : fonctionnalité de limitation des réservations sur un intervalle de temps
     amélioration : utilisation de requêtes SQL préparées
     amélioration : affichage du site et du domaine dans le sélecteur de ressources
+    amélioration : utilisation de requêtes SQL préparées
     correctifs divers de code et vocabulaire
     correctif : erreur d'ouverture de session dans le cas d'une authentification obligatoire
     correctif : sécurité de l'URL
+    correctif : possibilité pour un gestionnaire de déclarer la ressource empruntée depuis la page de réservation
+    correctifs : gestion des caractères spéciaux, récupération des paramètres dans la page d'édition des ressources
     mise à jour jquery-UI en 1.14.0
     mise à jour jquery en 3.7.1
     modification : tri des réservations à modérer selon la date de début
     modification : validation redirige vers view_entry
+Sous-version 3.5.2a
+    correctifs : prise en compte de l'encodage du mot de passe, test d'existence de la base de données
+    correctif : vérifications préalables
+    correctif : longueur du champ pour utf8mb4
 
 -----
 --
@@ -169,7 +161,7 @@ Version 3.4.3
     correctifs : gestion des conflits
     correctifs : notamment pour compatibilité php8
     correctifs : liens de navigation en cas d'édition d'une réservation existante
-	modification : champ REMOTE_ADDR de la table grr_log afin d'accepter les connexions depuis ipv6
+    modification : champ REMOTE_ADDR de la table grr_log afin d'accepter les connexions depuis ipv6
     modification : type du champ delais_min_resa_room afin de pouvoir bloquer une ressource au moins un mois à l'avance
     modification : prise en compte des heures de début et de fin dans le sélecteur (page de réservation)
     modification : rétablissement du fichier .gitignore
