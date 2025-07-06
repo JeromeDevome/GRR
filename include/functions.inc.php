@@ -1006,6 +1006,8 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 {
 	global $niveauDossier, $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser,$grr_script_name, $page;
 	global $use_prototype, $use_admin, $desactive_bandeau_sup, $id_site, $d, $gcDossierImg, $gcDossierCss, $version_grr;
+
+	$area = isset($_GET["area"]) ? $_GET["area"] : 0;
 	
 	if( isset($_SESSION['changepwd']) && $_SESSION['changepwd'] == 1 && $page != 'changemdp'){
 		header("Location: ./compte/compte.php?pc=changemdp");
@@ -1112,7 +1114,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			$year  = date("Y",$date_);
 
 			//Parametre url fixe compte / admin
-			$paramUrl = 'p='.$page.'&day='.$day.'&year='.$year.'&month='.$month.'&area='.$_GET['area'];
+			$paramUrl = 'p='.$page.'&day='.$day.'&year='.$year.'&month='.$month.'&area='.$area;
 			$paramUrlAccueil = 'day='.$day.'&amp;year='.$year.'&amp;month='.$month;
 			$d['paramUrl'] = $paramUrl;
 
