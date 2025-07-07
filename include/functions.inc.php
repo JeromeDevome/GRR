@@ -1171,7 +1171,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
 				{
 					$d['lienConnexion'] =  '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>';
-					$d['lienConnexion'] .=  '<br /> <small><i><a href="app.php?p=login>'.get_vocab("connect_local").'</a></i></small>';
+					$d['lienConnexion'] .=  '<br /> <small><i><a href="app.php?p=login">'.get_vocab("connect_local").'</a></i></small>';
 				} elseif($resulHook['hookLienConnexion2'] != "")
 				{
 					$d['lienConnexion'] = $resulHook['hookLienConnexion2'];
