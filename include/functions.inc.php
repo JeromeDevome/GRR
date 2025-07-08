@@ -1171,7 +1171,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
 				{
 					$d['lienConnexion'] =  '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>';
-					$d['lienConnexion'] .=  '<br /> <small><i><a href="app.php?p=login>'.get_vocab("connect_local").'</a></i></small>';
+					$d['lienConnexion'] .=  '<br /> <small><i><a href="app.php?p=login">'.get_vocab("connect_local").'</a></i></small>';
 				} elseif($resulHook['hookLienConnexion2'] != "")
 				{
 					$d['lienConnexion'] = $resulHook['hookLienConnexion2'];
@@ -2142,7 +2142,15 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user,
 				// on affiche le site uniquement si au moins un domaine est visible par l'utilisateur
 				$nb_sites_a_afficher++;
 				$selected = ($row[0] == $current_site) ? 'selected="selected"' : '';
-				$link2 ='app.php?p='.$link.'&amp;&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$default_area;
+
+				$queryUrl = [
+					'p'		=> $link,
+					'month'	=> $month,
+					'day'	=> $day,
+					'area'	=> $default_area
+				];
+
+				$link2 ='app.php?'.http_build_query($queryUrl);
 				if (authUserAccesSite($user,$row[0]) == 1)		// DDE: on ne prend que les sites autorisés
 				{
 					$out[] = '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
@@ -2421,18 +2429,27 @@ function make_site_list_html($link, $current_site, $year, $month, $day,$user)
 					grr_sql_free($res2);
 					if ($au_moins_un_domaine)
 					{
+						$queryUrl = [
+							'p'			=> $link,
+							'year'		=> $year,
+							'month'		=> $month,
+							'day'		=> $day,
+							'id_site'	=> $row[0]
+						];
+
+						$link2 ='app.php?'.http_build_query($queryUrl);
 						// on affiche le site uniquement si au moins un domaine est visible par l'utilisateur
 						$nb_sites_a_afficher++;
 						if ($row[0] == $current_site)
 						{
 							$out[] = '
-							<b><a id="liste_select"   href="app.php?p='.$link.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$row[0].'" title="'.$row[1].'">&gt; '.htmlspecialchars($row[1]).'</a></b>
+							<b><a id="liste_select" href="'.$link2.'" title="'.$row[1].'">&gt; '.htmlspecialchars($row[1]).'</a></b>
 							<br />'."\n";
 						}
 						else
 						{
 							$out[] = '
-							<a id="liste"   href="app.php?p='.$link.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$row[0].'" title="'.$row[1].'">'.htmlspecialchars($row[1]).'</a>
+							<a id="liste" href="'.$link2.'" title="'.$row[1].'">'.htmlspecialchars($row[1]).'</a>
 							<br />'."\n";
 						}
 					}
@@ -2585,14 +2602,21 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 				}
 			}
 			grr_sql_free($res2);
+
+			$queryUrl = [
+				'p'			=> $link,
+				'year'		=> $year,
+				'month'		=> $month,
+				'day'		=> $day,
+			];
+
 			if ($default_area != -1)
 			{
 				$nb_sites_a_afficher++;
-				$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$default_area;
-				//$out_html .="\n";
+				$queryUrl['area'] = $default_area;
 			}
-			else
-				$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day;
+			$link2 ='app.php?'.http_build_query( $queryUrl );
+
 			if ($current_site != null)
 			{
 				if (authUserAccesSite($user,$row[0]) == 1)		// DDE: on ne prend que les sites autorisés
