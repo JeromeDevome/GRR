@@ -26,7 +26,7 @@
 		<caption>
 
             <div class="ligne23">
-                {% if d.pview != 1 %} <!-- liens mois avant-après et imprimante si page non imprimable -->
+                {% if d.pview != 1 %} <!-- liens semaine avant-après et imprimante si page non imprimable -->
 					<div class="left">
 						<button class="btn btn-default btn-xs" onclick="javascript: location.href='app.php?p=semaine&amp;year={{d.yy}}&amp;month={{d.ym}}&amp;day={{d.yd}}&amp;room={{d.room}}';" ><i class="fa-solid fa-angles-left"></i> {{trad.weekbefore}}</button>
 					</div>
