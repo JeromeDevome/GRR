@@ -227,6 +227,7 @@ $d['nbJoursAffiche'] = $nbJoursAffiche;
 $cellulesMois = array();
 
 $weekcol = 0;
+//Jour avant le mois, on grise !
 if ($weekcol != $weekday_start)
 {
     for ($weekcol = 0; $weekcol < $weekday_start; $weekcol++)
@@ -294,9 +295,12 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
             $plageLibre = false; // Aujourd'hui on ne le gère pas dans mois_all
        // }
         
+        // Une cellule par jour (Du 1er au 31)
+        $cellulesMois[] = array('numJour' => $name_day, 'class' => $class, 'jourCycle' => intval($jour_cycle), 'horsResa' => $horsResa, 'plageLibre' => $plageLibre, "heure" => $heure, "reservations" => $reservations, 'autreResa' => $autreResa);
+
     } // fin condition "on n'affiche pas tous les jours de la semaine"
-    // Une cellule par jour (Du 1er au 31)
-    $cellulesMois[] = array('numJour' => $name_day, 'class' => $class, 'jourCycle' => intval($jour_cycle), 'horsResa' => $horsResa, 'plageLibre' => $plageLibre, "heure" => $heure, "reservations" => $reservations, 'autreResa' => $autreResa);
+    $weekcol++;
+    
 }
 // Fin Première boucle sur les jours du mois !
 // On grise les cellules appartenant au mois suivant
