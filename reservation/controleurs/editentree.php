@@ -555,9 +555,9 @@ if ($flag_qui_peut_reserver_pour ) // on crée les sélecteurs à afficher
     grr_sql_free($res);
     $option = "";
     if (!isset($benef_ext_nom))
-        $option .= '<option>'.get_vocab("personne_exterieure").'</option>'.PHP_EOL;
+        $option .= '<option value="0">'.get_vocab("personne_exterieure").'</option>'.PHP_EOL;
     else
-        $option .= '<option selected="selected">'.get_vocab("personne_exterieure").'</option>'.PHP_EOL;
+        $option .= '<option value="0" selected="selected">'.get_vocab("personne_exterieure").'</option>'.PHP_EOL;
     foreach ($bnf as $b){
         $option .= '<option value="'.$b[0].'" ';
         if (((!$benef && !$benef_ext_nom) && strtolower($user_name) == strtolower($b[0])) || ($benef && $benef == $b[0]))
@@ -572,11 +572,8 @@ if ($flag_qui_peut_reserver_pour ) // on crée les sélecteurs à afficher
         $option .= '<option value="-1" selected="selected" >'.get_vocab("utilisateur_inconnu").$user_name.'</option>'.PHP_EOL;
     }
     $d['selectBeneficiare'] = $option;
-
-    if (!$benef_ext_nom)
-        $d['selectBeneficiareExt'] = $benef_ext_nom;
+    $d['selectBeneficiaireExt'] = $benef_ext_nom;
 }
-
 
 $d['selectionDateDebut'] = jQuery_DatePickerTwig('start_');
 
@@ -854,7 +851,7 @@ if($periodiciteConfig == 'y')
 	{
 		// Formulaire périodicité
         $d['periodiciteAttache'] = 0;
-        $d['jQuery_DatePickerRepEnd'] = jQuery_DatePickerTwig('rep_end_');
+        $d['jQuery_DatePickerRepEnd'] = jQuery_DatePickerTwig('rep_end');
 	}
 	else
 	{
@@ -915,6 +912,8 @@ $d['room_back'] = $room_back;
 $d['page_ret'] = $page_ret;
 $d['create_by'] = $create_by;
 $d['type_affichage_reser'] = $type_affichage_reser;
+$d['rep_day'] = $rep_day;
+$d['rep_num_weeks'] = $rep_num_weeks;
 
 if (isset($_GET["copier"]))
 	$d['copier'] = 1;

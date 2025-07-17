@@ -22,7 +22,7 @@ $trad = $vocab;
 
 $user =$d['gNomUser'];
 
-print_r($_GET);
+//print_r($_GET);
 
 // on devrait arriver sur cette page depuis edit_entry ou editentreetrt, 
 // il faudrait vérifier la page d'appel en pensant au timeout qui renvoie vers login.php
@@ -123,6 +123,7 @@ foreach($form_vars as $var => $var_type)
 // données communes
 $d['err_type'] = ''; // contient la partie du message dans le <h2>
 $d['err_msg'] = ''; // contient la partie complémentaire du message d'erreur
+$message_error = "";
 try {
     if ((!isset($name) or (trim($name) == "")) && (Settings::get("remplissage_description_breve") != '0')){
         $d['err_type'] = 'required';
@@ -132,9 +133,10 @@ try {
     $benef_ext_nom = isset($benef_ext_nom)? clean_input($benef_ext_nom) : "";
     $benef_ext_email = isset($benef_ext_email)? clean_input($benef_ext_email) : "";
     $beneficiaire_ext = concat_nom_email($benef_ext_nom, $benef_ext_email);
+
     if ($beneficiaire == "-1")// est-ce possible ?
         $beneficiaire = $user;
-    if (($beneficiaire) == "")
+    elseif ($beneficiaire == "0")
     {
         if ($beneficiaire_ext == "-1")// est-ce possible ?
         {
@@ -146,9 +148,11 @@ try {
             $d['err_type']='invalid_owner_email_address';
             throw new Exception('erreur');
         }
+        $beneficiaire = "";
     }
     else
         $beneficiaire_ext = "";
+
     if ((!isset($rooms[0])||(intval($rooms[0])==0))){
         $d['err_type']="choose_a_room";
         throw new Exception('erreur');
@@ -372,7 +376,6 @@ try {
     }
     else
         $rep_type = 0; // ce n'est pas une série ou les paramètres sont incomplets
-
     if (!isset($rep_day))
         $rep_day = array();
     $rep_opt = ""; // chaîne des jours choisis
