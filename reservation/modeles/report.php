@@ -114,14 +114,17 @@ function reporton(&$row, $dformat)
 function accumulate(&$row, &$count, &$hours, $report_start, $report_end, &$room_hash, &$breve_description_hash, $csv = "n")
 {
 	global $vocab;
-	if ($_GET["sumby"] == "5")
+
+	if ($_GET["sumby"] == "5") //Type
 		$temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter = '".$row[$_GET["sumby"]]."'");
-	else if (($_GET["sumby"] == "3") || ($_GET["sumby"] == "6"))
+	else if (($_GET["sumby"] == "3") || ($_GET["sumby"] == "6")) //Brève descryption ou bénéficiare
 		$temp = $row[$_GET["sumby"]];
 	else
-		$temp = grrExtractValueFromOverloadDesc($row[12],$_GET["sumby"]);
+		$temp = grrExtractValueFromOverloadDesc($row[12],str_replace('addon_','',$_GET["sumby"]));
+
 	if ($temp == "")
 		$temp = "(Autres)";
+
 	if ($csv == "n")
 	{
 		//Description "Créer par":
@@ -154,15 +157,19 @@ function accumulate(&$row, &$count, &$hours, $report_start, $report_end, &$room_
 function accumulate_periods(&$row, &$count, &$hours, $report_start, $report_end, &$room_hash, &$breve_description_hash, $csv = "n")
 {
 	global $vocab, $periods_name;
+
 	$max_periods = count($periods_name);
+
 	if ($_GET["sumby"] == "5")
 		$temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter = '".$row[$_GET["sumby"]]."'");
 	else if (($_GET["sumby"] == "3") or ($_GET["sumby"] == "6"))
 		$temp = $row[$_GET["sumby"]];
 	else
-		$temp = grrExtractValueFromOverloadDesc($row[12],$_GET["sumby"]);
+		$temp = grrExtractValueFromOverloadDesc($row[12],str_replace('addon_','',$_GET["sumby"]));
+
 	if ($temp == "")
 		$temp = "(Autres)";
+
 	if ($csv == "n")
 	{
 		$breve_description = htmlspecialchars($temp);

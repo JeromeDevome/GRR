@@ -67,7 +67,7 @@ $summarize = isset($_GET["summarize"]) ? $_GET["summarize"] : 1;
 if (!isset($_GET["sumby"]))
 	$_GET["sumby"] = "6";
 else
-	settype($_GET["sumby"],"integer");
+	settype($_GET["sumby"],"string");
 
 $d['sumby'] = $_GET["sumby"];
 //$sortby = isset($_GET["sortby"])? $_GET["sortby"] : "d";
