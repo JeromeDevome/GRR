@@ -832,6 +832,9 @@ $d['levelUserRessource'] = authGetUserLevel($user_name,$room_id);
 * fin du bloc de "gauche"
 * Début du droit  (Périodicités)
 */
+
+$weeklist = array("unused","every_week","week_1_of_2","week_1_of_3","week_1_of_4","week_1_of_5");
+
 $d['rep_type'] = $rep_type;
 $d['weekstarts'] = $weekstarts;
 $d['rep_month_abs1'] = $rep_month_abs1;
