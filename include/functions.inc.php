@@ -5758,12 +5758,6 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
 */
 function jQuery_DatePickerTwig($typeDate){
 
-	if (@file_exists('../personnalisation/connect.inc.php')){
-		$racine = "../";
-	} else{
-		$racine = "./";
-	}
-
 	if ($typeDate == 'rep_end' && isset($_GET['id'])){
 		$res = grr_sql_query("SELECT repeat_id FROM ".TABLE_PREFIX."_entry WHERE id=".$_GET['id'].";");
 		if (!$res){
