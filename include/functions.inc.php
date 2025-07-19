@@ -3011,8 +3011,9 @@ Pour les utilisateurs :
 		//if ($moderate == 1)
 		//	$sujet1 .= " (".$vocab["en_attente_moderation"].")";
 		$repondre = $user_email;
-		if ($room_name != $oldRessource)
-			$codes['%ressource%'] .= $oldRessource." => ".$room_name;
+		if ($room_id != $oldRessource)
+			$codes['%ressource%'] =  $nomAncienneSalle." => ".$room_name;
+		
 		$templateSujet1 = Pages::get('mails_resamodification_'.$locale);
 		$templateMail1 = Pages::get('mails_resamodification_'.$locale);
 	}
