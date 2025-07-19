@@ -851,7 +851,7 @@ if($periodiciteConfig == 'y')
 	{
 		// Formulaire périodicité
         $d['periodiciteAttache'] = 0;
-        $d['jQuery_DatePickerRepEnd'] = jQuery_DatePickerTwig('rep_end');
+        $d['jQuery_DatePickerRepEnd'] = jQuery_DatePickerTwig('rep_end_');
 	}
 	else
 	{
