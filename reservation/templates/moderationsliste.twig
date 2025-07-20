@@ -1,0 +1,59 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+		<div id="container">
+
+			{% if d.acces == 1 %}
+			<div class="col col-md-12 col-sm-12 col-xs-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">
+						<i class="fas fa-th mr-1"></i>
+						{{ d.nbResaAModerer }} réservation(s) à modérer
+						</h3>
+					</div><!-- /.card-header -->
+					<div class="card-body">
+						<div class="tab-content p-0">
+								<table class="table table-condensed">
+									<thead>
+										<tr>
+											<th>{{ trad.room }}</th>
+											<th>{{ trad.start_date }}</th>
+											<th>{{ trad.created_by }}</th>
+											<th>{{ trad.nom_beneficiaire }}</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for resaMode in resas %}
+											<tr>
+												<td>{{ resaMode.ressource }}</td>
+												<td>{{ resaMode.debut }}</td>
+												<td>{{ resaMode.createur }}</td>
+												<td>{{ resaMode.beneficiaire }}</td>
+												<td><a href='{{ resaMode.lien }}'><span class='fa fa-eye'></span></a></td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+						</div>
+					</div><!-- /.card-body -->
+				</div>
+			</div>
+			{% else %}
+				<div class="alert alert-danger" role="alert">
+					Accès réservé
+				</div>
+			{% endif %}
+
+		</div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
