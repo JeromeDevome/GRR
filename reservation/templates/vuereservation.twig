@@ -61,7 +61,11 @@
             </tr>
             <tr>
                 <th>{{trad.lastupdate}}{{trad.deux_points}}</th>
-                <td>{{resa.derniereMAJ}}</td>
+                <td>{{resa.derniereMAJ}}
+                    {% if d.levelUser == 6 %}
+                        <a href="admin/admin.php?p=admin_log_resa&amp;idresa={{resa.id}}"><i class="fa-solid fa-timeline"></i></a>
+                    {% endif %}
+                </td>
             </tr>
             {% for champC in champscomp %}
             <tr>
