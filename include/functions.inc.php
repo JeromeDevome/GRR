@@ -5798,9 +5798,9 @@ function jQuery_DatePickerTwig($typeDate){
 			$day = date("d");
 		}
 
-		if (isset($start_day) && $typeDate=='start'){
+		if (isset($start_day) && $typeDate=='start_'){
 			$day = $start_day;
-		} elseif (isset($end_day) && $typeDate=='end'){
+		} elseif (isset($end_day) && $typeDate=='end_'){
 			$day = $end_day;
 		}
 
@@ -5810,9 +5810,9 @@ function jQuery_DatePickerTwig($typeDate){
 			$month = date("m");
 		}
 
-		if (isset($start_month) && $typeDate=='start'){
+		if (isset($start_month) && $typeDate=='start_'){
 			$month = $start_month;
-		} elseif (isset($end_month) && $typeDate=='end'){
+		} elseif (isset($end_month) && $typeDate=='end_'){
 			$month = $end_month;
 		}
 
@@ -5822,9 +5822,9 @@ function jQuery_DatePickerTwig($typeDate){
 			$year = date("Y");
 		}
 
-		if (isset($start_year) && $typeDate=='start'){
+		if (isset($start_year) && $typeDate=='start_'){
 			$year = $start_year;
-		} elseif (isset($end_year) && $typeDate=='end'){
+		} elseif (isset($end_year) && $typeDate=='end_'){
 			$year = $end_year;
 		}
  	}
