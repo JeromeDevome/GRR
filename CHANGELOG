@@ -1,4 +1,22 @@
-Version 4.4.0
+
+Version 4.4.1 - 22/07/2025 Généré par @JeromeDevome
+[Ajout] Liste des réservations à modérer - ede4065 - @JeromeDevome
+[Ajout] Lien historique de la réservation pour les admins dans la vue réservation - 3646378 - @JeromeDevome
+[Correction] Lien de connexion - 3814e4a - @Aurely9n
+[Correction] Liens semaine avant-après- c8167c7 - @ynaessens
+[Correction] Mail UTF8 - b37217f - @JeromeDevome & @Rico
+[Correction] Correction stat sur champ additionnel - 506c252 - @JeromeDevome
+[Correction] Affichage de la périodicité dans la réservation - b05fd4c - @JeromeDevome 
+[Correction] Numéro jour vue mensuelle (cas jour masqué) - 0f61cd7 - @JeromeDevome
+[Correction] Remplissage certains champs en édition de réservation - 2cc2fa3 - @JeromeDevome
+[Correction] Gestion des conflits de réservation - ef6076c - @JeromeDevome
+[Correction] Champ nombre de participant en double - 78de91d - @JeromeDevome
+[Correction] Fix date début série en modification de réservation - 9c3ffb6 - @JeromeDevome
+[Correction] Nom de la ressource dans l'envois de mail en cas de modification - defa882 - @JeromeDevome
+[Correction] Variable nombre participant max manquante - f5be0b8 - @JeromeDevome
+[Modification] Mise à jour langue espagnol - 4549004 - @JeromeDevome
+
+Version 4.4.0 - 06/07/2025  Généré par @JeromeDevome
 [Ajout] Page de connexion, choix entre deux thèmes - @JeromeDevome
 [Ajout] Page de connexion, possibilité de faire apparaitre le nom de l'établissement, logo...  - @JeromeDevome
 [Ajout] Message d'alerte mail désactivé dans les emails automatiques - 11a74469  - @JeromeDevome
