@@ -3,9 +3,9 @@
  * admin_save_mysql.php
  * Script de sauvegarde de la base de données mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-05-31 18:26$
- * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2025-07-24 10:00$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -50,6 +50,7 @@ if (isset($_GET['mdp']))
 }
 else
 {
+  $niveauDossier = 2;
 	include "../include/admin.inc.php";
 	$back = '';
 	if (isset($_SERVER['HTTP_REFERER']))
