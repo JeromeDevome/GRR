@@ -15,6 +15,15 @@
  * (at your option) any later version.
  */
 
+function returnmsg($type,$test, $status, $msg = '')
+{
+	echo encode_message_utf8('<div class="alert alert-'.$type.'" role="alert"><h3>'.$test);
+	echo encode_message_utf8($status)."</h3>";
+	if ($msg != '')
+		echo encode_message_utf8("($msg)"),PHP_EOL;
+	echo '</div>',PHP_EOL;
+}
+
 function getDaysInMonth($month, $year)
 {
 	return date('t', mktime(0, 0, 0, $month, 1, $year));
@@ -341,6 +350,17 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 		}
 	}
 	return $affichage;
+}
+
+function decode_options($a,$modele){
+    // suppose que l'on a une chaîne $a de {V,F} de longueur égale à celle du $modele
+    // renvoie un tableau de booléens True, False indexé par les valeurs du modèle
+    $choix = array();
+    $l = count($modele);
+    for($i=0; $i<$l; $i++){
+        $choix[$modele[$i]] = ((isset($a))&&('V' == $a[$i]))? TRUE: FALSE;
+    }
+    return $choix;
 }
 
 /**
@@ -2787,7 +2807,6 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		require_once '../include/mail.class.php';
 		require_once '../include/pages.class.php';
 	}
-	
 
 	if (!Pages::load())
 		die('Erreur chargement pages');
