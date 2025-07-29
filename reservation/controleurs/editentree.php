@@ -909,6 +909,7 @@ if($periodiciteConfig == 'y')
 // fin colonne de "droite" et du bloc de réservation
 
 $d['rep_id'] = $rep_id;
+$d['duration'] = $duration;
 $d['edit_type'] = $edit_type;
 $d['page'] = $page;
 $d['room_back'] = $room_back;
