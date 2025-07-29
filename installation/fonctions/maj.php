@@ -3,10 +3,10 @@
  * installation/fonctions/maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-12-22 11:16$
+ * Dernière modification : $Date: 2025-07-29 08:12$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -1230,7 +1230,7 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_type_area ADD `couleuricone` VARCHAR(10) NOT NULL DEFAULT '#000000' AFTER `couleurtexte`;");
 
-		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs ADD `commentaire` MEDIUMTEXT NOT NULL AFTER `source`, ADD `desactive_mail` TINYINT NOT NULL DEFAULT '0' AFTER `commentaire`, ADD `nb_tentative` TINYINT NOT NULL DEFAULT '0' AFTER `desactive_mail`, ADD `date_blocage` INT NOT NULL DEFAULT '0' AFTER `nb_tentative`, ADD `popup` TINYINT NOT NULL DEFAULT '0' AFTER `date_blocage`;");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs ADD `commentaire` MEDIUMTEXT AFTER `source`, ADD `desactive_mail` TINYINT NOT NULL DEFAULT '0' AFTER `commentaire`, ADD `nb_tentative` TINYINT NOT NULL DEFAULT '0' AFTER `desactive_mail`, ADD `date_blocage` INT NOT NULL DEFAULT '0' AFTER `nb_tentative`, ADD `popup` TINYINT NOT NULL DEFAULT '0' AFTER `date_blocage`;");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
