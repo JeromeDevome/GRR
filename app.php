@@ -16,7 +16,10 @@
  * (at your option) any later version.
  */
 
- $niveauDossier = 1;
+use Devome\Grr\Routing\AdminRouter;
+use Devome\Grr\Routing\FrontRouter;
+
+$niveauDossier = 1;
 
 require './vendor/autoload.php';
 require './include/twiggrr.class.php';
@@ -97,7 +100,10 @@ get_vocab_admin("reserver");
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/reservation/templates');
 $twig = new \Twig\Environment($loader,['charset']);
 $twig->addExtension(new TwigGRR());
-
+$twig->addGlobal('router', [
+    'admin' => new AdminRouter(),
+    'front' => new FrontRouter()
+]);
 
 // Sécurité
 $listeFichiers = array();
