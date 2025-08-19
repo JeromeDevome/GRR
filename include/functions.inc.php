@@ -2005,7 +2005,7 @@ function synchro_groupe($idGroupe, $action)
 		{
 			for ($i = 0; ($row2 = grr_sql_row($res2, $i)); $i++)
 			{
-				$sql3 = "SELECT ug.login FROM ".TABLE_PREFIX."_j_group_area jg LEFT JOIN ".TABLE_PREFIX."_utilisateurs_groupes ug ON jg.idgroupes = ug.idgroupes WHERE jg.id_area = $row2[0]";
+				$sql3 = "SELECT ug.login FROM ".TABLE_PREFIX."_j_group_area jg JOIN ".TABLE_PREFIX."_utilisateurs_groupes ug ON jg.idgroupes = ug.idgroupes WHERE jg.id_area = $row2[0]";
 				$res3 = grr_sql_query($sql3);
 
 				for ($i = 0; ($row3 = grr_sql_row($res3, $i)); $i++)
