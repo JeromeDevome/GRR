@@ -1098,10 +1098,12 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 	// Si nous ne sommes pas dans un format imprimable
 	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 	{
+
 		// If we dont know the right date then make it up
 		if (!isset($day) || !isset($month) || !isset($year) || ($day == '') || ($month == '') || ($year == ''))
 		{
 			$date_now = time();
+
 			if ($date_now < Settings::get("begin_bookings"))
 				$date_ = Settings::get("begin_bookings");
 			else if ($date_now > Settings::get("end_bookings"))
@@ -1112,6 +1114,12 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			$month = date("m",$date_);
 			$year  = date("Y",$date_);
 		}
+
+		//Parametre url fixe compte / admin
+		$paramUrl = 'p='.$page.'&day='.$day.'&year='.$year.'&month='.$month.'&area='.$area;
+		$paramUrlAccueil = 'day='.$day.'&amp;year='.$year.'&amp;month='.$month;
+		$d['paramUrl'] = $paramUrl;
+		
 		if (!(isset($search_str)))
 			$search_str = get_vocab("search_for");
 		if (empty($search_str))
@@ -1122,21 +1130,6 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			// HOOK
 			$resulHook = Hook::Appel("hookHeader1");
 			$d['hookHeader1'] = $resulHook['hookHeader1'];
-
-			// On fabrique une date valide pour la réservation si ce n'est pas le cas
-			$date_ = mktime(0, 0, 0, $month, $day, $year);
-			if ($date_ < Settings::get("begin_bookings"))
-				$date_ = Settings::get("begin_bookings");
-			else if ($date_ > Settings::get("end_bookings"))
-				$date_ = Settings::get("end_bookings");
-			$day   = date("d",$date_);
-			$month = date("m",$date_);
-			$year  = date("Y",$date_);
-
-			//Parametre url fixe compte / admin
-			$paramUrl = 'p='.$page.'&day='.$day.'&year='.$year.'&month='.$month.'&area='.$area;
-			$paramUrlAccueil = 'day='.$day.'&amp;year='.$year.'&amp;month='.$month;
-			$d['paramUrl'] = $paramUrl;
 
 			//Accueil
 			$d['pageAccueil'] = $racine.page_accueil('yes').$paramUrlAccueil;
