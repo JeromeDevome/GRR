@@ -306,7 +306,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
 // On grise les cellules appartenant au mois suivant
 if ($weekcol > 0)
 {
-    for (; $weekcol < 7; $weekcol++)
+    for ($weekcol = 0; $weekcol < 7; $weekcol++)
     {
         $num_week_day = ($weekcol + $weekstarts) % 7;
             // on n'affiche pas tous les jours de la semaine
