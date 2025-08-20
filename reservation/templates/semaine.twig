@@ -86,6 +86,7 @@
                 <tr>
                     <td class="{{ligne.classHoraire}}">{{ligne.horairePeriode}}</td>
                     {% for cellule in ligne.cellulesJours %}
+						{% if cellule.statut > 0 %}
                         <td  rowspan="{{cellule.rowspan}}" class="{{cellule.class}}">
 							{% if cellule.statut == 1 %} <!-- Réservable -->
 								<a href="app.php?p=editentree&room={{cellule.ressource}}&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{d.gDay}}&amp;page=semaine&amp;room_back={{cellule.ressource}}&amp;{% if d.usePeriode == "y" %}period={{ligne.periode}}{% else %}hour={{ligne.heure}}&amp;minute={{ligne.minute}}{% endif %}" title="{{trad.cliquez_pour_effectuer_une_reservation}}">
@@ -108,6 +109,7 @@
 								<i class="fa-solid fa-xmark" title="{{trad.reservation_impossible}}" style="color:red"></i>
 							{% endif %}
 						</td>
+						{% endif %}
                     {% endfor %}
                 </tr>
             {% endfor %}
