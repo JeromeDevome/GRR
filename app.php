@@ -68,11 +68,11 @@ if(getUserName() != '')
 else
 	$userConnecte = "no_session";
 
-print_header_twig("", "", "", $userConnecte);
-
 $day = isset($_POST['day']) ? $_POST['day'] : (isset($_GET['day']) ? intval($_GET['day']) : date('d'));
 $month = isset($_POST['month']) ? $_POST['month'] : (isset($_GET['month']) ? intval($_GET['month']) : date('m'));
 $year = isset($_POST['year']) ? $_POST['year'] : (isset($_GET['year']) ? intval($_GET['year']) : date('Y'));
+
+print_header_twig($day, $month, $year, $userConnecte);
 
 $d['gDay'] = $day;
 $d['gMonth'] = $month;
