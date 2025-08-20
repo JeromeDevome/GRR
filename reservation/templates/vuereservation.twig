@@ -179,8 +179,10 @@
                 {% if d.lienCopier %}
                     <input class="btn btn-info" type="button" onclick="location.href='{{d.lienCopier|raw}}'" value="{{trad.copyentry}}"/>
                 {% endif %}
-                {% if d.lienEchanger %}
-                    <input class="btn btn-warning" type="button" onclick="location.href='{{d.lienEchanger|raw}}'" value="{{trad.swapentry}}"/>
+                {% if settings.fct_echange_resa == "y" %}
+                    {% if d.lienEchanger %}
+                        <input class="btn btn-warning" type="button" onclick="location.href='{{d.lienEchanger|raw}}'" value="{{trad.swapentry}}"/>
+                    {% endif %}
                 {% endif %}
                 {% if d.lienSupprimer %}
                     <a class="btn btn-danger" type="button" href="{{d.lienSupprimer|raw}}" onclick="return confirm('{{trad.confirmdel|e('js')}}\n{{trad.deleteentry}}');">{{trad.deleteentry}}</a>
