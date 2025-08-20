@@ -243,6 +243,7 @@ $joursSemaine = array ();
 for ($weekcol = 0; $weekcol < 7; $weekcol++)
 {
     $num_week_day = ($weekcol + $weekstarts) % 7;
+    // on n'affiche pas tous les jours de la semaine
     if ($display_day[$num_week_day] == 1)
     {
         $joursSemaine[] = day_name(($weekcol + $weekstarts) % 7);
@@ -254,6 +255,7 @@ $d['nbJoursAffiche'] = $nbJoursAffiche;
 $cellulesMois = array();
 
 $weekcol = 0;
+// les X jours du mois précédent avant le premier jour du mois visualisé (grisés)
 if ($weekcol != $weekday_start)
 {
     for ($weekcol = 0; $weekcol < $weekday_start; $weekcol++)
@@ -335,10 +337,13 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
 		// Une cellule par jour (Du 1er au 31)
         $cellulesMois[] = array('numJour' => $name_day, 'class' => $class, 'jourCycle' => intval($jour_cycle), 'horsResa' => $horsResa, 'plageLibre' => $plageLibre, "heure" => $heure, "reservations" => $reservations, 'autreResa' => $autreResa);
     }
+    $weekcol++;
 }
+// Fin Première boucle sur les jours du mois !
+// On grise les cellules appartenant au mois suivant
 if ($weekcol > 0)
 {
-    for (; $weekcol < 7; $weekcol++)
+    for ($weekcol = 0; $weekcol < 7; $weekcol++)
     {
         $num_week_day = ($weekcol + $weekstarts)%7;
         if ($display_day[$num_week_day] == 1)
