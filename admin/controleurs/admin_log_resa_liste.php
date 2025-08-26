@@ -31,34 +31,30 @@ get_vocab_admin('mail_message');
 
 get_vocab_admin('users_connected');
 
-$sql = "SELECT id, start_time, end_time, name, supprimer FROM ".TABLE_PREFIX."_entry ORDER by start_time desc";
+$sql = "SELECT id, start_time, FROM_UNIXTIME(start_time,'%d-%m-%Y %H:%i:%s') as st, end_time, FROM_UNIXTIME(end_time,'%d-%m-%Y %H:%i:%s') as et, name, supprimer FROM ".TABLE_PREFIX."_entry ORDER by start_time desc";
 $res = grr_sql_query($sql);
 
 $logsMail = array ();
 
-if ($res)
-{
-	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-	{
-		$logsMail[] = array('idresa' => $row[0], 'debut' => date("d-m-Y H:i:s", $row[1]), 'fin' => date("d-m-Y H:i:s", $row[2]), 'debutts' => $row[1], 'fints' => $row[2], 'titre' => $row[3], 'sup' => $row[4]);
-	}
+while ($row = mysqli_fetch_assoc($res)) {
+  $logsMail[] = array('idresa' => $row["id"],
+                      'debut' => $row["st"],
+                      'fin' => $row["et"],
+                      'debutts' => $row["start_time"],
+                      'fints' => $row["end_time"],
+                      'titre' => $row["name"],
+                      'sup' => $row["supprimer"]);
 }
 
-
-$sql = "select date from ".TABLE_PREFIX."_log_resa order by date";
+$sql = "SELECT count(*) as cnt, FROM_UNIXTIME(date,'%d-%m-%Y') as date FROM ".TABLE_PREFIX."_log_resa ORDER BY date limit 1";
 $res = grr_sql_query($sql);
 
-if($res) {
-	$d['NombreLog'] = grr_sql_count($res);
-    if ($d['NombreLog']>0){
-        $row = grr_sql_row($res, 0);
-        $d['DatePlusAncienne'] = date("d-m-Y", $row[0]);
-    }
-	else 
-        $d['DatePlusAncienne'] = "-";
-} else{
-	$d['NombreLog'] = 0;
-	$d['DatePlusAncienne'] = "-";
+if ($row = mysqli_fetch_assoc($res)) {
+  $d['DatePlusAncienne'] = $row["date"];
+  $d['NombreLog'] = $row["cnt"];
+} else {
+  $d['NombreLog'] = 0;
+  $d['DatePlusAncienne'] = "-";
 }
 
 $d['TitreDateLog'] = get_vocab("log_mail").$d['DatePlusAncienne'];

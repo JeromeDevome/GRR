@@ -47,7 +47,11 @@ $d['pass_db']		= $pass_db;
 $d['choix_db']		= $choix_db;
 $d['table_new']		= $table_new;
 $d['table_prefix']	= $table_prefix;
+$d['version_grr']	= $version_grr;
 
+if ( stristr($version_grr, 'a') || stristr($version_grr, 'b') || stristr($version_grr, 'RC') || stristr($versionReposite, 'github') || stristr($versionReposite, 'alpha')|| stristr($versionReposite, 'beta') || stristr($versionReposite, 'RC') ){
+	$d['alerteVersion'] = 1;
+}
 
 function begin_html()
 {

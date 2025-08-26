@@ -57,11 +57,20 @@ final class EscaperExtension extends AbstractExtension
         ];
     }
 
+    public function getLastModified(): int
+    {
+        return max(
+            parent::getLastModified(),
+            filemtime((new \ReflectionClass(EscaperRuntime::class))->getFileName()),
+        );
+    }
+
     /**
      * @deprecated since Twig 3.10
      */
-    public function setEnvironment(Environment $environment, bool $triggerDeprecation = true): void
+    public function setEnvironment(Environment $environment): void
     {
+        $triggerDeprecation = \func_num_args() > 1 ? func_get_arg(1) : true;
         if ($triggerDeprecation) {
             trigger_deprecation('twig/twig', '3.10', 'The "%s()" method is deprecated and not needed if you are using methods from "Twig\Runtime\EscaperRuntime".', __METHOD__);
         }
@@ -71,6 +80,8 @@ final class EscaperExtension extends AbstractExtension
     }
 
     /**
+     * @return void
+     *
      * @deprecated since Twig 3.10
      */
     public function setEscaperRuntime(EscaperRuntime $escaper)
@@ -121,6 +132,8 @@ final class EscaperExtension extends AbstractExtension
      * @param string                                        $strategy The strategy name that should be used as a strategy in the escape call
      * @param callable(Environment, string, string): string $callable A valid PHP callable
      *
+     * @return void
+     *
      * @deprecated since Twig 3.10
      */
     public function setEscaper($strategy, callable $callable)
@@ -154,6 +167,8 @@ final class EscaperExtension extends AbstractExtension
     }
 
     /**
+     * @return void
+     *
      * @deprecated since Twig 3.10
      */
     public function setSafeClasses(array $safeClasses = [])
@@ -168,6 +183,8 @@ final class EscaperExtension extends AbstractExtension
     }
 
     /**
+     * @return void
+     *
      * @deprecated since Twig 3.10
      */
     public function addSafeClass(string $class, array $strategies)
@@ -183,6 +200,8 @@ final class EscaperExtension extends AbstractExtension
 
     /**
      * @internal
+     *
+     * @return array<string>
      */
     public static function escapeFilterIsSafe(Node $filterArgs)
     {

@@ -84,6 +84,7 @@
 
                 <!-- X colonnes suivantes avec les résa par jopurs -->
                 {% for jourR in ressource.joursRessource %}
+					{% if jourR.statut > 0 %}
                     <td>
                         {% for resa in jourR.reservations %}
                             <table class="pleine table-bordered table-striped">
@@ -112,11 +113,11 @@
                             <p>...</p>
                         {% endif %}
 
-                        {% if jourR.horsResa %}
+                        {% if jourR.statut == 3 %}
                             <div class="empty_cell">
                                 <i class="fa-solid fa-xmark" title="{{trad.reservation_impossible}}" style="color:red"></i>
                             </div>
-                        {% elseif jourR.plageLibre %}
+                        {% elseif  jourR.statut == 1 %}
                         <div class="empty_cell">
                             <a href="app.php?p=editentree&room={{ressource.id}}&amp;page=semaine_all&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{jourR.jour}}&amp;
                             {% if d.usePeriode == "y" %}
@@ -128,6 +129,7 @@
                         </div>
                         {% endif %}
                     </td>
+					{% endif %}
                 {% endfor %}
             </tr>
             {% endfor %}

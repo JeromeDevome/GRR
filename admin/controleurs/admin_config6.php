@@ -260,6 +260,32 @@ if (isset($_POST['display_short_description_ad'])) {
         $msg .= "Erreur lors de l'enregistrement de display_short_description_ad !<br />";
     }
 }
+// Participants
+if (isset($_POST['display_participants_nc'])) {
+    if (!Settings::set('display_participants_nc', $_POST['display_participants_nc'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_participants_nc !<br />";
+    }
+}
+if (isset($_POST['display_participants_vi'])) {
+    if (!Settings::set('display_participants_vi', $_POST['display_participants_vi'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_participants_vi !<br />";
+    }
+}
+if (isset($_POST['display_participants_us'])) {
+    if (!Settings::set('display_participants_us', $_POST['display_participants_us'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_participants_us !<br />";
+    }
+}
+if (isset($_POST['display_participants_gr'])) {
+    if (!Settings::set('display_participants_gr', $_POST['display_participants_gr'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_participants_gr !<br />";
+    }
+}
+if (isset($_POST['display_participants_ad'])) {
+    if (!Settings::set('display_participants_ad', $_POST['display_participants_ad'])) {
+        $msg .= "Erreur lors de l'enregistrement de display_participants_ad !<br />";
+    }
+}
 // remplissage de la description brève
 if (isset($_POST['remplissage_description_breve'])) {
     if (!Settings::set('remplissage_description_breve', $_POST['remplissage_description_breve'])) {

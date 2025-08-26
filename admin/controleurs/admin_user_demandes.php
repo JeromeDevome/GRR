@@ -51,9 +51,6 @@ if (isset($choix) && $choix > 0)
 	{
 		$demande = grr_sql_row_keyed($resDemande, 0);
 
-		require_once '../vendor/phpmailer/phpmailer/src/PHPMailer.php';
-		require_once '../vendor/phpmailer/phpmailer/src/SMTP.php';
-		require_once '../vendor/phpmailer/phpmailer/src/Exception.php';
 		require_once '../include/mail.class.php';
 
 		$expediteur = Settings::get("webmaster_email");

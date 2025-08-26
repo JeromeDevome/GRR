@@ -66,7 +66,7 @@ if($gEnvoisStatGRR == 1){
 			'http' => [
 				'method' => 'GET',
 				'header' => "Connection: close\r\n", // Fermer la connexion immédiatement
-				'timeout' => 1, // Temps limite pour l'exécution
+				'timeout' => 2, // Temps limite pour l'exécution
 			]
 		]);
 		// Envoyer la requête sans attendre de réponse
@@ -140,7 +140,8 @@ if (isset($_POST['login']) && isset($_POST['password']))
 	}
 	else if ($result == "11")
 	{
-
+		$d['messageLogin'] = get_vocab("echec_connexion_GRR");
+		$d['messageLogin'] .= "<br />". get_vocab("echec_authentification_ip");
 	}
 	else if ($result == "12")
 	{

@@ -69,6 +69,8 @@ if ($valid == "yes")
 	$reg_email = isset($_GET["reg_email"]) ? $_GET["reg_email"] : NULL;
 	$reg_etat = isset($_GET["reg_etat"]) ? $_GET["reg_etat"] : "actif";
 	$reg_source = isset($_GET["reg_source"]) ? $_GET["reg_source"] : "local";
+	$reg_desactive_mail = isset($_GET["reg_desactive_mail"]) ? $_GET["reg_desactive_mail"] : 0;
+	$reg_commentaire = isset($_GET["reg_commentaire"]) ? $_GET["reg_commentaire"] : "";
 	$reg_site = isset($_GET["id_site"]) ? $_GET["id_site"] : -1;
 	$reg_area = isset($_GET["id_area"]) ? $_GET["id_area"] : -1;
 	$reg_room = isset($_GET["id_room"]) ? $_GET["id_room"] : -1;
@@ -162,6 +164,8 @@ if ($valid == "yes")
 						statut='".protect_data_sql($reg_statut)."',
 						email='".protect_data_sql($reg_email)."',
 						etat='".protect_data_sql($reg_etat)."',
+						commentaire='".protect_data_sql($reg_commentaire)."',
+						desactive_mail='".protect_data_sql($reg_desactive_mail)."',
 						default_site = '".$defautSite."',
 						default_area = '".$defautDomaine."',
 						default_room = '".$defautRessource."',
@@ -264,6 +268,8 @@ if ($valid == "yes")
 				else
 					$sql .= "source='ext',password='',";
 				$sql .= "etat='".protect_data_sql($reg_etat)."',
+				commentaire='".protect_data_sql($reg_commentaire)."',
+				desactive_mail='".protect_data_sql($reg_desactive_mail)."',
 				default_site='".protect_data_sql($reg_site)."',
 				default_area='".protect_data_sql($reg_area)."',
 				default_room='".protect_data_sql($reg_room)."',
@@ -404,7 +410,7 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
 // On appelle les informations de l'utilisateur pour les afficher :
 if (isset($user_login) && ($user_login != ''))
 {
-	$res = grr_sql_query("SELECT nom, prenom, statut, etat, email, source, changepwd, default_site, default_area, default_room, default_style, default_list_type, default_language FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$user_login'");
+	$res = grr_sql_query("SELECT nom, prenom, statut, etat, email, source, changepwd, default_site, default_area, default_room, default_style, default_list_type, default_language, commentaire, desactive_mail FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$user_login'");
 	if (!$res)
 		fatal_error(0, get_vocab('message_records_error'));
 	$utilisateur = grr_sql_row_keyed($res, 0);

@@ -122,9 +122,6 @@ if (isset($_GET['mail_test']) && !empty($_GET['mail_test']))
 {
 	require_once '../include/pages.class.php';
 	require_once '../include/mail.class.php';
-	require_once '../vendor/phpmailer/phpmailer/src/PHPMailer.php';
-	require_once '../vendor/phpmailer/phpmailer/src/SMTP.php';
-	require_once '../vendor/phpmailer/phpmailer/src/Exception.php';
 	if (!Pages::load())
 		die('Erreur chargement pages');
 	

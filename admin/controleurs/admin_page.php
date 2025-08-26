@@ -148,7 +148,7 @@ get_vocab_admin('cgu_grr');
 get_vocab_admin('save');
 get_vocab_admin('message_records');
 
-
+$lesPages = array();
 $res = grr_sql_query("SELECT nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE emplacement > 0 ORDER BY ordre ASC;");
 if (!$res)
     fatal_error(0, grr_sql_error());

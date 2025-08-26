@@ -63,6 +63,8 @@ else
 }
 */
 $active_participant = isset($_POST["active_participant"]) ? $_POST["active_participant"] : NULL;
+$inscription_participant = isset($_POST["inscription_participant"]) ? $_POST["inscription_participant"] : NULL;
+$nb_participant_defaut = isset($_POST["nb_participant_defaut"]) ? $_POST["nb_participant_defaut"] : 0;
 $picture_room = isset($_POST["picture_room"]) ? $_POST["picture_room"] : '';
 $comment_room = isset($_POST["comment_room"]) ? $_POST["comment_room"] : NULL;
 $show_comment = isset($_POST["show_comment"]) ? "y" : "n";
@@ -172,6 +174,8 @@ if (isset($change_room))
 		active_ressource_empruntee = '".$active_ressource_empruntee."',
 		active_cle = '".$active_cle."',
 		active_participant = '".$active_participant."',
+		inscription_participant = '".$inscription_participant."',
+		nb_participant_defaut = '".$nb_participant_defaut."',
 		capacity='".$capacity."',
 		delais_max_resa_room='".$delais_max_resa_room."',
 		delais_min_resa_room='".$delais_min_resa_room."',
@@ -205,6 +209,8 @@ if (isset($change_room))
 		active_ressource_empruntee = '".$active_ressource_empruntee."',
 		active_cle = '".$active_cle."',
 		active_participant = '".$active_participant."',
+		inscription_participant = '".$inscription_participant."',
+		nb_participant_defaut = '".$nb_participant_defaut."',
 		capacity='".$capacity."',
 		delais_max_resa_room='".$delais_max_resa_room."',
 		delais_min_resa_room='".$delais_min_resa_room."',
@@ -331,7 +337,9 @@ else
 	$row['show_fic_room'] = '';
 	$row['active_ressource_empruntee'] = 'n';
 	$row['active_cle'] = 'n';
-	$row['active_participant'] = 'n';
+	$row['active_participant'] = 0;
+	$row['inscription_participant'] = 1;
+	$row['nb_participant_defaut'] = 0;
 	$area_name = grr_sql_query1("select area_name from ".TABLE_PREFIX."_area where id='".$area_id."'");
 
 	$typeAction = get_vocab("addroom");
@@ -396,6 +404,7 @@ get_vocab_admin("activer_fonctionalite_gestion_cle");
 get_vocab_admin("activer_fonctionalite_participant");
 get_vocab_admin("visu_fiche_description1");
 get_vocab_admin("visu_fiche_description2");
+get_vocab_admin("visu_fiche_description3");
 get_vocab_admin("who_can_book_explain");
 
 get_vocab_admin("back");

@@ -22,13 +22,13 @@
 $grr_devel_url = "https://grr.devome.com/";
 
 // Numéro de version actuel
-# Format X.X.XRCX | exemples : 4.0.0a (alpha) ou 4.0.0b (beta) 3.4.0RC1 (Release Candidate) ou 3.4.0 (version OK)
-$version_grr = "4.4.0";
+# Format X.X.XRCX | exemples : 4.4.0a (alpha) ou 4.4.0b (beta) 4.4.0RC1 (Release Candidate) ou 4.4.0 (version OK)
+$version_grr = "4.4.1";
 # Version BDD, deux premirs chiffres = version majeur, les deux suivant la version, évolution de GRR, les 3 derniers une incrémentation à chaque changement
 # Ex 0400003 : 3eme modification sur la branche 4.X.X
-$version_bdd = "0400004";
+$version_bdd = "0400007";
 // Version repository (GitHub) GitHub-Master / Release-v4.0.0-beta.1 / Release-v4.0.0-RC.1 / Release-v4.0.0
-$versionReposite = "GitHub-Master";
+$versionReposite = "Release-v4.4.1-GitHub-Master";
 
 ################################
 # Configuration Requise
@@ -36,14 +36,14 @@ $versionReposite = "GitHub-Master";
 // Version PHP minimum
 $php_mini = "7.2.5";
 // Version PHP maximum testé et validé par : JeromeB
-$php_max_valide = "8.3.2";
+$php_max_valide = "8.3.20";
 // Version PHP maximum qui est sensé fonctionné, si compatible avec toutes les versions à ce jour laisser vide
 $php_maxi = "";
 
 // Version MySQL minimum
 $mysql_mini = "5.4.0";
 // Version MySQL maximum testé et validé par : JeromeB
-$mysql_max_valide = "5.7.43";
+$mysql_max_valide = "8.4.0";
 // Version MySQL maximum qui est sensé fonctionné
 $mysql_maxi = "";
 
@@ -61,6 +61,7 @@ $liste_tables = array(
 	"_entry_moderate",
 	"_groupes",
 	"_j_group_area",
+	"_j_group_site",
 	"_j_mailuser_room",
 	"_j_site_area",
 	"_j_type_area",
@@ -68,6 +69,7 @@ $liste_tables = array(
 	"_j_useradmin_site",
 	"_j_user_area",
 	"_j_user_room",
+	"_j_user_site",
 	"_j_userbook_room",
 	"_log",
 	"_log_mail",

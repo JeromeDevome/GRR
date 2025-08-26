@@ -33,6 +33,11 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto"> 
       <li class="nav-item">
+        <a class="nav-link" href="https://grr.devome.com/DOC/" target="_blank">
+         Documentation
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="../index.php">
          Retour
         </a>
@@ -50,7 +55,7 @@
 
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="admin.php?p=admin_accueil" class="brand-link">
+    <a href="install_mysql.php" class="brand-link">
       <span class="brand-text font-weight-light">GRR - Installation</span>
     </a>
     <section class="sidebar">
@@ -118,6 +123,12 @@
     <section class="content">
 	<div class="container-fluid h-100">
 
+    {% if d.alerteVersion %}
+    <div class="alert alert-danger" role="alert">
+      Version de développement, ne pas utiliser en production ! <a href="https://github.com/JeromeDevome/GRR/releases">Trouver une autre version</a>
+    </div>
+    {% endif %}
+
 		{% block content %}{% endblock %}
 
   </div>
@@ -127,7 +138,7 @@
 
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong>GRR : Gestion et de Réservations de Ressources - <a href="https://devome.com/">DEVOME</a> - <b>{{ trad.grr_version }}</b> {{ settings.version }}</strong>
+    <strong>GRR : Gestion et de Réservations de Ressources - <a href="https://devome.com/">DEVOME</a> - <b>{{ trad.grr_version }}</b> {{ d.version_grr }}</strong>
   </footer>
 
   <!-- Control Sidebar -->

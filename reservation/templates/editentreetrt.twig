@@ -20,9 +20,9 @@
 		<h3><span class="texte_ress_moderee">{{trad.reservations_moderees}}</span></h3>
 	{% endif %}
 
-
-	<form id="main" method="post" action="app.php?p=editentree">
-		<input type="hidden" name="p" value="editentree">
+<!--
+	<form id="main" method="post" action="app.php">
+		
 		<input type="hidden" name="oldRessource" value="{{d.roomid}}">
 		<input type="hidden" name="rep_id"    value="{{d.rep_id}}" />
 		<input type="hidden" name="edit_type" value="{{d.edit_type}}" />
@@ -34,6 +34,8 @@
 		{% if d.idresa != 0 and d.copier != 1 %}
 			<input type="hidden" name="id" value="{{ d.idresa }}" />
 		{% endif %}
+-->
+
 		<div id="error"></div>
 		
 
@@ -74,7 +76,7 @@
 			</div>
 
 		</div>
-	</form>
+	<!--</form>-->
 
 {% endblock %}
 

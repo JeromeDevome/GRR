@@ -273,9 +273,11 @@ for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement
             $t2 = mktime(0, 0, 0,$month, $k, $year);
 			$cday = date("j", $t2);
 			$cweek = date("w", $t2);
-            $plageLibre = false;
             $autreResa = false;
             $reservationsJour = array();
+			$estHorsReservation = false;
+			$statutCellule = 0; //0 vide, 1 réservable, 2 déjà une reservation, 3 hors résa
+
 			if ($display_day[$cweek] == 1)
 			{
 				$estHorsReservation = est_hors_reservation(mktime(0, 0, 0, $month, $cday, $year), $area);
@@ -312,15 +314,18 @@ for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement
                         && $user_can_book
                         && $d['pview'] != 1){
 							if (Settings::get('calcul_plus_semaine_all') == 'n') {
-								$plageLibre = true;
+								$statutCellule = 1;
 							} elseif(plages_libre_semaine_ressource($row["id"], $month, $cday, $year))
 							{
-								$plageLibre = true;
+								$statutCellule = 1;
 							}
 					}
+				} else
+				{
+					$statutCellule = 3; // hors réservation
 				}
 			}
-            $joursRessource[] = array('jour' => $cday, 'horsResa' => $estHorsReservation, 'plageLibre' => $plageLibre, 'reservations' => $reservationsJour, 'autreResa' => $autreResa);
+            $joursRessource[] = array('statut' => $statutCellule, 'jour' => $cday, 'reservations' => $reservationsJour, 'autreResa' => $autreResa);
 		}
         $ressourcesMois[] = array('id' => $row['id'], 'nom' => $row['room_name'], 'joursRessource' => $joursRessource);
 

@@ -45,6 +45,11 @@
 			<!-- Colonne de Gauche : Données de la réservation -->
 			<div class="col col-sm-6 col-xs-12">
 
+				{% if settings.grr_mail_method != "bloque" and d.levelUserRessource >= 3 %}
+					<div class="alert alert-info" role="alert">
+						<input name="envoyer_notif" type="checkbox" value="y" checked><b>Notifier le bénéficiaire</b>
+					</div>
+				{% endif %}
 
 				<!-- Bénéficiare -->
 				{% if d.flag_qui_peut_reserver_pour %}
@@ -62,11 +67,11 @@
 						</div>
 					</div>
 
-					<div id="menu4" class="row" {% if d.selectBeneficiareExt == "" %}style="display:none"{% endif %}>
+					<div id="menu4" class="row" {% if d.selectBeneficiaireExt == "" %}style="display:none"{% endif %}>
 						<div class="form-group col-sm-6">
 							<div class="input-group">
 								<div class="input-group-addon"><i class="fa-regular fa-user"></i></div>
-								<input class="form-control" type="text" name="benef_ext_nom" value="{{d.selectBeneficiareExt}}" placeholder="{{trad.nom_beneficiaire}}" required onchange="check_4()">
+								<input class="form-control" type="text" name="benef_ext_nom" value="{{d.selectBeneficiaireExt}}" placeholder="{{trad.nom_beneficiaire}}" required onchange="check_4()">
 							</div>
 						</div>
 
@@ -92,12 +97,6 @@
 				{% if settings.remplissage_description_complete != 2 %}
 					<label for="description">{{ trad.fulldescription }}{% if settings.remplissage_description_complete == 1 %} *{% endif %}{{ trad.deux_points }}</label>
 					<textarea id="description" name="description" class="pleine form-control" rows="4" columns="60" >{{d.resaDescription}}</textarea>
-				{% endif %}
-
-				<!-- Participant -->
-				{% if d.active_participant > 0 %}
-					<label for="nbparticipantmax">{{trad.nb_participant_max}}{{trad.deux_points}}</label>
-					<input name="nbparticipantmax" type="number" value="{{d.nbparticipantmax}}" > {{trad.nb_participant_zero}}
 				{% endif %}
 
 				<!-- Clé -->
@@ -291,11 +290,11 @@
 
 								<div class="col-lg-11">
 									<select class="form-control" name="rep_num_weeks" size="1" onfocus="check_2()" onclick="check_2()">
-										<option value="1" >{{trad.every_week}}</option>
-										<option value="2" >{{trad.week_1_of_2}}</option>
-										<option value="3" >{{trad.week_1_of_3}}</option>
-										<option value="4" >{{trad.week_1_of_4}}</option>
-										<option value="5" >{{trad.week_1_of_5}}</option>
+										<option value="1" {% if d.rep_num_weeks == 1 %}selected{% endif %}>{{trad.every_week}}</option>
+										<option value="2" {% if d.rep_num_weeks == 2 %}selected{% endif %}>{{trad.week_1_of_2}}</option>
+										<option value="3" {% if d.rep_num_weeks == 3 %}selected{% endif %}>{{trad.week_1_of_3}}</option>
+										<option value="4" {% if d.rep_num_weeks == 4 %}selected{% endif %}>{{trad.week_1_of_4}}</option>
+										<option value="5" {% if d.rep_num_weeks == 5 %}selected{% endif %}>{{trad.week_1_of_5}}</option>
 									</select>
 								</div>
 							</div>
@@ -306,7 +305,7 @@
 								<div class="CL">
 									{% for da in 0..6 %}
 										{% set wday = (da + d.weekstarts) % 7 %}
-										<input name="rep_day[{{ wday }}]" type="checkbox" class="form-check-input" onclick="check_1()" {% if rep_day[wday] %} checked {% endif %} /> {{ d['day' ~ wday] }}
+										<input name="rep_day[{{ wday }}]" type="checkbox" class="form-check-input" {%if d.rep_day[wday] == 1 %}checked{%endif%} onclick="check_1()" {% if rep_day[wday] %} checked {% endif %} /> {{ d['day' ~ wday] }}
 									{% endfor %}
 								</div>
 							</div>
@@ -469,9 +468,8 @@
 	});
 
 	document.getElementById('main').name.focus();
-	{% if d.cookie %}
-		check_4();
-	{% endif %}
+
+	check_4();
 	{% if d.idresa != 0 and d.flag_periodicite %}
 		clicMenu('1');
 		check_5();

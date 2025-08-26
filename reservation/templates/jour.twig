@@ -29,13 +29,13 @@
                 {% if d.pview != 1 %} <!-- liens mois avant-après et imprimante si page non imprimable -->
                     <div class="ligne23">
                         <div class="left">
-                            <button class="btn btn-default btn-xs" onclick="javascript: location.href='app.php?p=jour&amp;year={{d.yy}}&amp;month={{d.ym}}&amp;day={{d.yd}}&amp;room={{d.room}}';" ><i class="fa-solid fa-angles-left"></i> {{trad.daybefore}}</button>
+                            <button class="btn btn-default btn-xs" onclick="javascript: location.href='app.php?p=jour&amp;year={{d.yy}}&amp;month={{d.ym}}&amp;day={{d.yd}}&amp;room={{d.room}}&amp;area={{d.area}}';" ><i class="fa-solid fa-angles-left"></i> {{trad.daybefore}}</button>
                         </div>
 
                         {{ planning.imprimante(settings, d.paramUrl) }}
 
                         <div class="right">
-                            <button class="btn btn-default btn-xs" onclick="javascript: location.href='app.php?p=jour&amp;year={{d.ty}}&amp;month={{d.tm}}&amp;day={{d.td}}&amp;room={{d.room}}';">{{trad.dayafter}} <i class="fa-solid fa-angles-right"></i></button>
+                            <button class="btn btn-default btn-xs" onclick="javascript: location.href='app.php?p=jour&amp;year={{d.ty}}&amp;month={{d.tm}}&amp;day={{d.td}}&amp;room={{d.room}}&amp;area={{d.area}}';">{{trad.dayafter}} <i class="fa-solid fa-angles-right"></i></button>
                         </div>
                     </div>
                 {% endif %}

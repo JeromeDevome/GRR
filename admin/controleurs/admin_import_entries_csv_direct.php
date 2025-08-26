@@ -149,7 +149,7 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
 	$ampm		= NULL; // AMPM ou 24h
 	$txtRetour	= "";
 	// détermination du type de réservation
-	$type_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_type_area WHERE type_name='".$type."'");
+	//$type_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_type_area WHERE type_name='".$type."'");
 	// voir pour traiter les erreurs 	
 
 	// détermination du starttime

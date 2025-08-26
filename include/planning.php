@@ -157,18 +157,6 @@ if ($d['popupMessage'] != "")
 // On vérifie que les noms et prénoms ne sont pas vides
 VerifNomPrenomUser($type_session);
 
-
-/* On vérifie une fois par jour si le délai de confirmation des réservations est dépassé
-* Si oui, les réservations concernées sont supprimées et un mail automatique est envoyé.
-* On vérifie une fois par jour que les ressources ont été rendue en fin de réservation
-* Si non, une notification email est envoyée
-*/
-if (Settings::get("verif_reservation_auto") == 0)
-{
-    verify_confirm_reservation();
-    verify_retard_reservation();
-}
-
 // Dans le cas d'une selection invalide
 if ($area <= 0)
 {

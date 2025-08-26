@@ -122,36 +122,36 @@ grr_sql_free($res);
 if (!isset($page_ret) || ($page_ret == ''))
 {
     $referer = isset($_SERVER['HTTP_REFERER']) ? htmlspecialchars($_SERVER['HTTP_REFERER']) : '';
-   
+    $page_ret = isset($referer)? $referer : page_accueil();
+
     if (isset($_GET['p']) && 
         ((strpos($_GET['p'],'editentree') !== FALSE)||
          (strpos($_GET['p'],'vuereservation') !== FALSE)))
     {
         if (isset($page) && isset($month) && isset($day) && isset($year)){
-            $page_ret = 'app.php?p='.$page.'&amp;month='.$month.'&amp;day='.$day.'&amp;year='.$year;
+            $queryRet = [
+                'p'     => $page,
+                'month' => $month,
+                'day'   => $day,
+                'year'  => $year,
+            ];
             if (isset($room))
-                $page_ret .= '&amp;room='.$room;
+                $queryRet[ 'room' ] = $room;
             elseif ((!strpos($page,"all"))&&($room_back != 'all'))
-                $page_ret .= "&amp;room=".$room_back;
+                $queryRet[ 'room' ] = $room_back;
             elseif (isset($area))
-                $page_ret .= '&amp;area='.$area;
-            elseif (($room_back !='')&&($room_back != 'all')){
-                $area = mrbsGetRoomArea($room_back);
-                $page_ret .= '&amp;area='.$area;
-            }
+                $queryRet[ 'area' ] = $area;
+            elseif (($room_back !='')&&($room_back != 'all'))
+                $queryRet[ 'area' ] = mrbsGetRoomArea($room_back);
             elseif (($room_back == 'all')&&(isset($id))){
                 $room = grr_sql_query1("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id=".$id."");
-                if ($room != -1){
-                    $area = mrbsGetRoomArea($room);
-                    $page_ret .= '&amp;area='.$area;
-                }
+                if ($room != -1)
+                    $queryRet[ 'area' ] = mrbsGetRoomArea($room);
             }
+            $page_ret = 'app.php?'. http_build_query( $queryRet );
         }
-        else 
-            $page_ret = page_accueil();
     }
-    else 
-        $page_ret = isset($referer)? $referer : page_accueil();
+
 }
 
 // Resume session
@@ -253,7 +253,6 @@ $delais_option_reservation = isset($Room['delais_option_reservation'])? $Room['d
 $qui_peut_reserver_pour = isset($Room['qui_peut_reserver_pour'])? $Room['qui_peut_reserver_pour']: -1;
 $d['active_cle'] = isset($Room['active_cle'])? $Room['active_cle']: -1;
 $d['active_ressource_empruntee'] = grr_sql_query1("SELECT active_ressource_empruntee FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
-$d['active_participant'] = isset($Room['active_participant'])? $Room['active_participant']: -1;
 $periodiciteConfig = Settings::get("periodicite");
 $longueur_liste_ressources_max = Settings::get("longueur_liste_ressources_max");
 if ($longueur_liste_ressources_max == '')
@@ -280,6 +279,15 @@ if (UserRoomMaxBooking($user_name, $room, $compt) == 0)
 	echo $twig->render('erreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
 	exit();
 }
+
+//Participants
+$active_participant = isset($Room['active_participant'])? $Room['active_participant']: -1;
+if($active_participant > 0)
+	if (authGetUserLevel($user_name,$room) >= $Room['active_participant'])
+		$d['active_participant'] = 1;
+
+
+
 $d['etype'] = 0;
 if (isset($id) && $id !=0) // édition d'une réservation existante
 {
@@ -351,6 +359,9 @@ if (isset($id) && $id !=0) // édition d'une réservation existante
 			$day   = date('d', $row[1]);
 			$month = date('m', $row[1]);
 			$year  = date('Y', $row[1]);
+			$start_day = date('d', $row[1]);
+			$start_month = date('m', $row[1]);
+			$start_year = date('Y', $row[1]);
 			$start_hour  = date('H', $row[1]);
 			$start_min   = date('i', $row[1]);
 			$duration    = $row[5]-$row[1];
@@ -454,7 +465,7 @@ else // nouvelle réservation
 	$rep_jour      	= 0;
 	$option_reservation = -1;
 	$modif_option_reservation = 'y';
-	$d['nbparticipantmax'] = 0;
+	$d['nbparticipantmax'] = $Room['nb_participant_defaut'];
 }
 
 // fin nouvelle réservation
@@ -547,9 +558,9 @@ if ($flag_qui_peut_reserver_pour ) // on crée les sélecteurs à afficher
     grr_sql_free($res);
     $option = "";
     if (!isset($benef_ext_nom))
-        $option .= '<option>'.get_vocab("personne_exterieure").'</option>'.PHP_EOL;
+        $option .= '<option value="0">'.get_vocab("personne_exterieure").'</option>'.PHP_EOL;
     else
-        $option .= '<option selected="selected">'.get_vocab("personne_exterieure").'</option>'.PHP_EOL;
+        $option .= '<option value="0" selected="selected">'.get_vocab("personne_exterieure").'</option>'.PHP_EOL;
     foreach ($bnf as $b){
         $option .= '<option value="'.$b[0].'" ';
         if (((!$benef && !$benef_ext_nom) && strtolower($user_name) == strtolower($b[0])) || ($benef && $benef == $b[0]))
@@ -564,11 +575,8 @@ if ($flag_qui_peut_reserver_pour ) // on crée les sélecteurs à afficher
         $option .= '<option value="-1" selected="selected" >'.get_vocab("utilisateur_inconnu").$user_name.'</option>'.PHP_EOL;
     }
     $d['selectBeneficiare'] = $option;
-
-    if (!$benef_ext_nom)
-        $d['selectBeneficiareExt'] = $benef_ext_nom;
+    $d['selectBeneficiaireExt'] = $benef_ext_nom;
 }
-
 
 $d['selectionDateDebut'] = jQuery_DatePickerTwig('start_');
 
@@ -824,6 +832,9 @@ $d['levelUserRessource'] = authGetUserLevel($user_name,$room_id);
 * fin du bloc de "gauche"
 * Début du droit  (Périodicités)
 */
+
+$weeklist = array("unused","every_week","week_1_of_2","week_1_of_3","week_1_of_4","week_1_of_5");
+
 $d['rep_type'] = $rep_type;
 $d['weekstarts'] = $weekstarts;
 $d['rep_month_abs1'] = $rep_month_abs1;
@@ -898,12 +909,15 @@ if($periodiciteConfig == 'y')
 // fin colonne de "droite" et du bloc de réservation
 
 $d['rep_id'] = $rep_id;
+$d['duration'] = $duration;
 $d['edit_type'] = $edit_type;
 $d['page'] = $page;
 $d['room_back'] = $room_back;
 $d['page_ret'] = $page_ret;
 $d['create_by'] = $create_by;
 $d['type_affichage_reser'] = $type_affichage_reser;
+$d['rep_day'] = $rep_day;
+$d['rep_num_weeks'] = $rep_num_weeks;
 
 if (isset($_GET["copier"]))
 	$d['copier'] = 1;

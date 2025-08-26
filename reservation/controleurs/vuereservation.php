@@ -116,7 +116,8 @@ $sql = "SELECT ".TABLE_PREFIX."_entry.name,
 ".TABLE_PREFIX."_entry.courrier,
 ".TABLE_PREFIX."_room.active_cle,
 ".TABLE_PREFIX."_entry.nbparticipantmax,
-".TABLE_PREFIX."_room.active_participant
+".TABLE_PREFIX."_room.active_participant,
+".TABLE_PREFIX."_room.inscription_participant
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
 WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
 AND ".TABLE_PREFIX."_room.area_id = ".TABLE_PREFIX."_area.id
@@ -189,7 +190,7 @@ $keys						= $row[21];
 $courrier					= $row[22];
 $active_cle					= $row[23];
 $nbParticipantMax			= $row[24];
-$quiPeutParticiper          = $row[25];
+$quiPeutParticiper          = $row[26];
 $rep_type 					= 0;
 $verif_display_email 		= verif_display_email($userName, $room_id);
 if ($verif_display_email)
@@ -480,16 +481,13 @@ elseif ($moderate == 2 || $moderate == 3)
 if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité participants est activée
     if(!$userParticipe)
     {
-
-        if( ($nbParticipantInscrit < $nbParticipantMax) && (verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods)) || !(verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods)) && (authGetUserLevel($userName, $room_id) >= $quiPeutParticiper) )
+        if( ($nbParticipantInscrit < $nbParticipantMax) && ((verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods)) || !(verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods))) && (authGetUserLevel($userName, $room_id) >= $quiPeutParticiper) )
             $d["participationValidation"] = 1;
     } 
     else{
-        if( verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods) || !(verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods)) && (authGetUserLevel($userName, $room_id) >= $quiPeutParticiper) )
+        if( (verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods) || !(verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods))) && (authGetUserLevel($userName, $room_id) >= $quiPeutParticiper) )
            $d["participationAnnulation"] = 1;
-
     }
-
 
     // selon les droits qui_peut_reserver_pour, affichage d'un bloc permettant l'inscription d'un tiers à l'événement
     if (verif_qui_peut_reserver_pour($room_id, $userName, '-1'))

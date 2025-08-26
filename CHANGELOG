@@ -1,4 +1,65 @@
-Version 4.4.0 - En cours de développement
+
+Version 4.4.1 - 22/07/2025 Généré par @JeromeDevome
+[Ajout] Liste des réservations à modérer - ede4065 - @JeromeDevome
+[Ajout] Lien historique de la réservation pour les admins dans la vue réservation - 3646378 - @JeromeDevome
+[Correction] Lien de connexion - 3814e4a - @Aurely9n
+[Correction] Liens semaine avant-après- c8167c7 - @ynaessens
+[Correction] Mail UTF8 - b37217f - @JeromeDevome & @Rico
+[Correction] Correction stat sur champ additionnel - 506c252 - @JeromeDevome
+[Correction] Affichage de la périodicité dans la réservation - b05fd4c - @JeromeDevome 
+[Correction] Numéro jour vue mensuelle (cas jour masqué) - 0f61cd7 - @JeromeDevome
+[Correction] Remplissage certains champs en édition de réservation - 2cc2fa3 - @JeromeDevome
+[Correction] Gestion des conflits de réservation - ef6076c - @JeromeDevome
+[Correction] Champ nombre de participant en double - 78de91d - @JeromeDevome
+[Correction] Fix date début série en modification de réservation - 9c3ffb6 - @JeromeDevome
+[Correction] Nom de la ressource dans l'envois de mail en cas de modification - defa882 - @JeromeDevome
+[Correction] Variable nombre participant max manquante - f5be0b8 - @JeromeDevome
+[Modification] Mise à jour langue espagnol - 4549004 - @JeromeDevome
+
+Version 4.4.0 - 06/07/2025  Généré par @JeromeDevome
+[Ajout] Page de connexion, choix entre deux thèmes - @JeromeDevome
+[Ajout] Page de connexion, possibilité de faire apparaitre le nom de l'établissement, logo...  - @JeromeDevome
+[Ajout] Message d'alerte mail désactivé dans les emails automatiques - 11a74469  - @JeromeDevome
+[Ajout] Gestion de lien externe sur différente page - @JeromeDevome
+[Ajout] Envois de mail hebdomadaire - 2b01cd4f - @JeromeDevome
+[Ajout] Actu DEVOME - 9bad522d - @JeromeDevome
+[Ajout] Gestion des accès domaine restreint via les groupes - 02049645 - @JeromeDevome
+[Ajout] Gestion des accès sites restreint via utilisateur et les groupes - 527d676 & 02049645 - @DavidDelehelle & @JeromeDevome
+[Ajout] Options pour améliorer la performance : Désactiver calcul fct plages_libre_semaine_ressource - fe0aebb6 - @JeromeDevome
+[Ajout] Autorisation import image extension .jpeg - e013f288 - @JeromeDevome
+[Ajout] Commentaire dans la fiche utilisateur - 15f774ff - @JeromeDevome
+[Ajout] Possibilité de désactiver l'envoi de mail à un utilisateur - 15f774ff - @JeromeDevome
+[Ajout] Contrôle des ip lors d'ajout de restriction de connexion - e3eee847 - @JeromeDevome
+[Ajout] Possibilité pour un gestionnaire, de désactiver l'envois de mail sur la modification d'une réservation - 613df9ed - @JeromeDevome
+[Ajout] Ajout de deux variables pour la personnalisation des mails - 2ff44f7c - @JeromeDevome
+[Ajout] Message d'avertissement lors de l'installation d'une version non stable - 6897c133 - @JeromeDevome
+[Ajout] Installation, ajout lien vers la documentation - bf8c868d - @JeromeDevome
+[Ajout] Affichage du nombre de participant dans la vue calendrier selon choix admin - f152eb45 - @JeromeDevome
+[Ajout] Affichage d'une icone quand l'utilisateur participe à une réservation - 1cdcf3d9 - @JeromeDevome
+[Ajout] Droit sur l'activation participant apronfondit - d86f2eb7 - @JeromeDevome
+[Ajout] Droit de participer - 4bc08126 - @JeromeDevome
+[Ajout] Nombre de participant par défaut - 4bc08126 - @JeromeDevome
+[Ajout] colonne date fin et heure de fin pour les stats - 7de8241 - @JeromeDevome
+[Correction] Correction date de recherche par défaut - 33ec7268 - @JeromeDevome
+[Correction] Liste des participants - 98294155 - @JeromeDevome
+[Correction] Correction du chemin de recherche de la config LDAP - 199ebf38 - @maxbes
+[Correction] Affichage de la version lors de l'installation - fa8d7ef6 - @JeromeDevome
+[Correction] Correction affichage selon droits - 3f484fe5 - @JeromeDevome
+[Correction] Langue anglaise - @darxmurf
+[Correction] Tri par date log des mails - 583518b - @JeromeDevome
+[Correction] Variable en double dans les mails - d430f5d - @JeromeDevome
+[Correction] Différentes corrections
+[Modification] Passage des pages réservations sous twig - @JeromeDevome
+[Modification] Mise à jour bootstrap - b22b3c82 - @JeromeDevome
+[Modification] Masquer version GRR - 607728ac - @JeromeDevome
+[Modification] Nettoyage de codes - @JeromeDevome
+[Modification] Optimisations - @JeromeDevome & @darxmurf
+[Modification] Refonte des appels automatiques - 29071220 - @JeromeDevome
+[Modification] Mise à jours des librairies - @JeromeDevome
+[Modification] Différentes modications mineures
+[Suppression] Fichiers inutiles - @JeromeDevome
+[Suppression] Documention locale (Pas de mise à jour) - 567795c0 - @JeromeDevome
+
 
 Version 4.3.9 - 09/12/2024 Généré par @JeromeDevome
 [Ajout] Liste des utilisateurs : Sélecteur du nombre de ligne à afficher - 6be5b6ef - @JeromeDevome

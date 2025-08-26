@@ -30,12 +30,19 @@ $series = isset($_GET["series"]) ? $_GET["series"] : NULL;
 if (isset($series))
 	$series = intval($series);
 $page = verif_page();
+
 if (isset($_GET["id"]))
 	$id = intval($_GET["id"]);
 else {
     header("Location: ./app.php?p=jour");
 	die();    
 }
+
+if (Settings::get("fct_echange_resa") != "y"){
+    header("Location: ./app.php?p=jour");
+	die();    
+}
+
 
 if (isset($_GET["id_alt"]))
     $idAlt = intval($_GET['id_alt']);

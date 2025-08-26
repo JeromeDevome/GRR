@@ -40,7 +40,7 @@ if ($res)
 {
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-		$logsMail[] = array('date' => date("d-m-Y H:i:s", $row[0]), 'de' => $row[1], 'a' => $row[2], 'sujet' => $row[3], 'message' => substr($row[4], 0, 50));
+		$logsMail[] = array('datets' => $row[0], 'date' => date("d-m-Y H:i:s", $row[0]), 'de' => $row[1], 'a' => $row[2], 'sujet' => $row[3], 'message' => substr($row[4], 0, 50));
 	}
 }
 

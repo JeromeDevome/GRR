@@ -3,10 +3,10 @@
  * installation/fonctions/maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-12-22 11:16$
+ * Dernière modification : $Date: 2025-07-29 08:12$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -1200,7 +1200,7 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter = '';
 	}
 
-	if (intval($version_old_bdd) < 400006) // Version GRR 4.4.0
+	if (intval($version_old_bdd) < 400006) // Version GRR 4.4.0 alpha
 	{
 		
 		$result .= formatresult("Mise à jour jusqu'à la version 4.4.0 :","<b>","</b>");
@@ -1212,12 +1212,15 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('login_template', '1');");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('login_logo', '1');");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('login_nom', '1');");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('nextalertemailhebdo', '1735686000');");
 
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_page ADD `statutmini` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_page ADD `lien` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL;");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_page ADD `nouveauonglet` TINYINT(1) NOT NULL DEFAULT '1';");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_page ADD `ordre` SMALLINT(6) NOT NULL DEFAULT '0';");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_page ADD `emplacement` SMALLINT(6) NOT NULL DEFAULT '1';");
+
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET emplacement = 0 WHERE 1;");
 
 		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_j_group_area (`idgroupes` int NOT NULL, `id_area` int NOT NULL DEFAULT '0', PRIMARY KEY (`idgroupes`,`id_area`));");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_user_area ADD `idgroupes` int(11) NOT NULL DEFAULT '0';");
@@ -1226,6 +1229,25 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_mailuser_room ADD `mail_hebdo` tinyint(1) NOT NULL DEFAULT '0';");
 
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_type_area ADD `couleuricone` VARCHAR(10) NOT NULL DEFAULT '#000000' AFTER `couleurtexte`;");
+
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs ADD `commentaire` MEDIUMTEXT AFTER `source`, ADD `desactive_mail` TINYINT NOT NULL DEFAULT '0' AFTER `commentaire`, ADD `nb_tentative` TINYINT NOT NULL DEFAULT '0' AFTER `desactive_mail`, ADD `date_blocage` INT NOT NULL DEFAULT '0' AFTER `nb_tentative`, ADD `popup` TINYINT NOT NULL DEFAULT '0' AFTER `date_blocage`;");
+
+		if ($result_inter == '')
+			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+		else
+			$result .= $result_inter;
+		$result_inter = '';
+	}
+
+	if (intval($version_old_bdd) < 400007) // Version GRR 4.4.0 béta
+	{
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD `inscription_participant` tinyint(1) NOT NULL DEFAULT '1' AFTER `active_participant`;");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD `nb_participant_defaut` smallint NOT NULL DEFAULT '0' AFTER `inscription_participant`;");
+
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_site ADD `access` CHAR(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'a' AFTER `sitename`;");
+		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_j_user_site (`login` varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,`id_site` int NOT NULL DEFAULT '0',`idgroupes` int NOT NULL DEFAULT '0',PRIMARY KEY (`login`,`id_site`));");
+		$result_inter .= traiteRequete("CREATE TABLE ".TABLE_PREFIX."_j_group_site (`idgroupes` int NOT NULL, `id_site` int NOT NULL DEFAULT '0', PRIMARY KEY (`idgroupes`,`id_site`));");
+
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");

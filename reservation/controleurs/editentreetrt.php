@@ -22,13 +22,14 @@ $trad = $vocab;
 
 $user =$d['gNomUser'];
 
-print_r($_GET);
+//print_r($_GET);
 
 // on devrait arriver sur cette page depuis edit_entry ou editentreetrt, 
 // il faudrait vérifier la page d'appel en pensant au timeout qui renvoie vers login.php
 
 // les variables attendues et leur type
 $form_vars = array(
+  'envoyer_notif'      => 'string',
   'create_by'          => 'string',
   'name'               => 'string',
   'description'        => 'string',
@@ -122,6 +123,7 @@ foreach($form_vars as $var => $var_type)
 // données communes
 $d['err_type'] = ''; // contient la partie du message dans le <h2>
 $d['err_msg'] = ''; // contient la partie complémentaire du message d'erreur
+$message_error = "";
 try {
     if ((!isset($name) or (trim($name) == "")) && (Settings::get("remplissage_description_breve") != '0')){
         $d['err_type'] = 'required';
@@ -131,9 +133,10 @@ try {
     $benef_ext_nom = isset($benef_ext_nom)? clean_input($benef_ext_nom) : "";
     $benef_ext_email = isset($benef_ext_email)? clean_input($benef_ext_email) : "";
     $beneficiaire_ext = concat_nom_email($benef_ext_nom, $benef_ext_email);
+
     if ($beneficiaire == "-1")// est-ce possible ?
         $beneficiaire = $user;
-    if (($beneficiaire) == "")
+    elseif ($beneficiaire == "0")
     {
         if ($beneficiaire_ext == "-1")// est-ce possible ?
         {
@@ -145,9 +148,11 @@ try {
             $d['err_type']='invalid_owner_email_address';
             throw new Exception('erreur');
         }
+        $beneficiaire = "";
     }
     else
         $beneficiaire_ext = "";
+
     if ((!isset($rooms[0])||(intval($rooms[0])==0))){
         $d['err_type']="choose_a_room";
         throw new Exception('erreur');
@@ -156,6 +161,8 @@ try {
         $room = intval($rooms[0]); // si besoin on renvoie sur la première ressource de la sélection
         $area = mrbsGetRoomArea($room);
     }
+    if(!isset($nbparticipantmax))
+        $nbparticipantmax = 0;
     // les champs additionnels dépendant du domaine, on ne peut les traiter avant 
     $overload_data = array();
     $overload_fields_list = mrbsOverloadGetFieldslist($area);
@@ -353,7 +360,11 @@ try {
     $statut_entry = isset($statut_entry)? $statut_entry : "-";
     $rep_jour_c = isset($rep_jour_)? $rep_jour_ : 0;
     $cycle_cplt = isset($cycle_cplt)? intval($cycle_cplt) : 0;
-    if ($cycle_cplt) $rep_jour_c =-1; // indique que le cycle complet est sélectionné
+    $envoyer_notif = 1;
+    if(isset($envoyer_notif) && ($envoyer_notif == 'y'))
+        $envoyer_notif = 0;
+    if ($cycle_cplt)
+        $rep_jour_c =-1; // indique que le cycle complet est sélectionné
     if (($rep_type == 3) && ($rep_month == 3))
         $rep_type = 3;
     if (($rep_type == 3) && ($rep_month == 5))
@@ -367,7 +378,6 @@ try {
     }
     else
         $rep_type = 0; // ce n'est pas une série ou les paramètres sont incomplets
-
     if (!isset($rep_day))
         $rep_day = array();
     $rep_opt = ""; // chaîne des jours choisis
@@ -565,16 +575,19 @@ try {
                             $ignore[] = $reps[$i];
                         }
                     }
-                    $reps = array_diff($reps,$ignore); // ôte de la liste les nouvelles réservations en conflit
-                    $reps = array_values($reps);
-                }
-                for ($i = 0; $i < count($reps); $i++)
-                {
-                    if (isset($del_entry_in_conflict) && ($del_entry_in_conflict == 'yes'))
+                } elseif(isset($del_entry_in_conflict) && ($del_entry_in_conflict == 'yes')){
+                    for ($i = 0; $i < count($reps); $i++)
+                    {
                         grrDelEntryInConflict($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id, 0);
-                    $tmp = mrbsCheckFree($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id);
-                    if (!empty($tmp))
-                        $conflits = $conflits . $tmp;
+                    }
+                } else
+                {
+                    for ($i = 0; $i < count($reps); $i++)
+                    {
+                        $tmp = mrbsCheckFree($room_id, $reps[$i], $reps[$i] + $diff, $ignore_id, $repeat_id);
+                        if (!empty($tmp))
+                            $conflits = $conflits . $tmp;
+                    }
                 }
             }
             else
@@ -662,8 +675,8 @@ try {
 		}
 		if ($rep_type != 0)
 		{
-			$id_first_resa = mrbsCreateRepeatingEntrys($start_time, $end_time, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $nbparticipantmax, $rep_month_abs1, $rep_month_abs2);
-			if (Settings::get("automatic_mail") == 'yes')
+			$id_first_resa = mrbsCreateRepeatingEntrys($start_time, $end_time, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $nbparticipantmax, $rep_month_abs1, $rep_month_abs2, $ignore);
+			if (Settings::get("automatic_mail") == 'yes' && $envoyer_notif == 1)
 			{
                 if (isset($id_first_resa) && ($id_first_resa != 0))
                 {
@@ -698,7 +711,7 @@ try {
 			{
 				$id = grr_sql_insert_id();
 				insertLogResa($id, 1, 'Création via calendrier');
-				if (Settings::get("automatic_mail") == 'yes')
+				if (Settings::get("automatic_mail") == 'yes' && $envoyer_notif == 1)
 				{
 					if ($send_mail_moderate)
 						$message_error = send_mail($id,5,$dformat);
@@ -709,7 +722,7 @@ try {
 			else
 			{
 				insertLogResa($id, 2, $differenceAvAp);
-				if (Settings::get("automatic_mail") == 'yes')
+				if (Settings::get("automatic_mail") == 'yes' && $envoyer_notif == 1)
 				{
 					if ($send_mail_moderate)
 						$message_error = send_mail($id,5,$dformat);
@@ -772,8 +785,6 @@ catch (Exception $e){
     $d['hiddenInputs'] = $hiddenInputs;
 
     if ($ex == 'conflit'){
-     //   start_page_w_header();
-     //   echo "<h2>" . get_vocab("sched_conflict") . "</h2>";
         $d['htmlConflit'] = "";
             if (!isset($hide_title))
             {
@@ -785,13 +796,15 @@ catch (Exception $e){
             $d['htmlConflit'] .= "</UL>";
         if (authGetUserLevel($user,$area,'area') >= 4){
             $d['htmlConflit'] .= '<center>';
-            $d['htmlConflit'] .= '<form method="POST">';
+            $d['htmlConflit'] .= '<form method="GET">';
+            $d['htmlConflit'] .= '<input type="hidden" name="p" value="editentreetrt">';
             $d['htmlConflit'] .= $hiddenInputs;
             $d['htmlConflit'] .= '<input type="hidden" name="del_entry_in_conflict" value="yes" />';
             $d['htmlConflit'] .= '<input class="btn btn-danger" type="submit" value="'.get_vocab("del_entry_in_conflict").'" />';
             $d['htmlConflit'] .= '</form>';
             if ($rep_type != 0){
-                $d['htmlConflit'] .= '<form method="POST">';
+                $d['htmlConflit'] .= '<form method="GET">';
+                $d['htmlConflit'] .= '<input type="hidden" name="p" value="editentreetrt">';
                 $d['htmlConflit'] .= $hiddenInputs;
                 $d['htmlConflit'] .= '<input type="hidden" name="skip_entry_in_conflict" value="yes" />';
                 $d['htmlConflit'] .= '<input class="btn btn-success" type="submit" value="'.get_vocab("skip_entry_in_conflict").'" />';
@@ -799,28 +812,11 @@ catch (Exception $e){
             }
             $d['htmlConflit'] .= '</center><br />';
         }
-        $d['htmlConflit'] .= '<form action="./edit_entry.php" method="GET">'; // retour à la page d'édition
+        $d['htmlConflit'] .= '<form action="?p=editentree" method="GET">'; // retour à la page d'édition
         $d['htmlConflit'] .= $hiddenInputs;
         $d['htmlConflit'] .= "<input class='btn btn-primary' type='submit' value='".get_vocab('returnprev')."' />";
         $d['htmlConflit'] .= '</form>';
-        // bouton pour abandonner
-     /*   $d['htmlConflit'] .= '<form action="'.$page_ret.'">';
-        $d['htmlConflit'] .= '<input class="btn btn-warning" type="submit" value="'.get_vocab('cancel').'" />';
-        $d['htmlConflit'] .= '</form>';*/
     }
- /*   elseif($ex == 'serie_vide'){
-       // start_page_w_header();
-        echo "<h2>" . get_vocab("sched_conflict") . "</h2>";
-        echo '<p>'.get_vocab('all_entries_in_conflict').'</p>'.PHP_EOL;
-        echo '<form action="./edit_entry.php" method="GET">'; // retour à la page d'édition
-        echo $hiddenInputs;
-        echo "<input class='btn btn-primary' type='submit' value='".get_vocab('returnprev')."' />";
-        echo '</form>';
-        // bouton pour abandonner
-        echo '<form action="'.$page_ret.'">';
-        echo '<input class="btn btn-warning" type="submit" value="'.get_vocab('cancel').'" />';
-        echo '</form>';
-    }*/
 }
 
 echo $twig->render('editentreetrt.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));

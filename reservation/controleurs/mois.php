@@ -80,7 +80,7 @@ $user_can_book = $who_can_book || ($authGetUserLevel > 2) || (authBooking($user_
 
 // calcul du contenu du planning
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, nbparticipantmax
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
 where
 ".TABLE_PREFIX."_entry.room_id = '".$room."' and
@@ -109,6 +109,8 @@ ORDER by start_time, end_time";
     $row[14]: courrier
 	$row[15]: Type_name
     $row[16]: overload fields description
+    $row[17]: room_id
+    $row[18]: nbparticipantmax
 */
 $res = grr_sql_query($sql);
 if (!$res)
@@ -241,6 +243,7 @@ $joursSemaine = array ();
 for ($weekcol = 0; $weekcol < 7; $weekcol++)
 {
     $num_week_day = ($weekcol + $weekstarts) % 7;
+    // on n'affiche pas tous les jours de la semaine
     if ($display_day[$num_week_day] == 1)
     {
         $joursSemaine[] = day_name(($weekcol + $weekstarts) % 7);
@@ -252,6 +255,7 @@ $d['nbJoursAffiche'] = $nbJoursAffiche;
 $cellulesMois = array();
 
 $weekcol = 0;
+// les X jours du mois précédent avant le premier jour du mois visualisé (grisés)
 if ($weekcol != $weekday_start)
 {
     for ($weekcol = 0; $weekcol < $weekday_start; $weekcol++)
@@ -333,10 +337,13 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
 		// Une cellule par jour (Du 1er au 31)
         $cellulesMois[] = array('numJour' => $name_day, 'class' => $class, 'jourCycle' => intval($jour_cycle), 'horsResa' => $horsResa, 'plageLibre' => $plageLibre, "heure" => $heure, "reservations" => $reservations, 'autreResa' => $autreResa);
     }
+    $weekcol++;
 }
+// Fin Première boucle sur les jours du mois !
+// On grise les cellules appartenant au mois suivant
 if ($weekcol > 0)
 {
-    for (; $weekcol < 7; $weekcol++)
+    for ($weekcol = 0; $weekcol < 7; $weekcol++)
     {
         $num_week_day = ($weekcol + $weekstarts)%7;
         if ($display_day[$num_week_day] == 1)

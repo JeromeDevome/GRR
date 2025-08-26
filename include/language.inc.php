@@ -485,8 +485,8 @@ if ($locale != 'fr-fr')
 				// Si la locale sous la forme de deux lettre (de, en, ...) n'est pas reconue par le serveur,
 				// on tente de la mettre sous la forme de_DE, etc...
 				// cas perticulier de l'anglais :
-		if ($locale == 'en-gb')
-			$locale = "en_US";
+		/*if ($locale == 'en-gb')
+			$locale = "en_US";*/
 				// Autre cas :
 		if (strlen($locale) == 2)
 		{

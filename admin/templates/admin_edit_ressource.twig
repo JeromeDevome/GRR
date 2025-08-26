@@ -198,11 +198,31 @@
 								<div class="col col-sm-4">
 									<select class="form-control" name="active_participant">
 										<option value="0" {% if ressource.active_participant == 0 %} selected {% endif %}>{{ trad.personne }}</option>
-										<option value="1" {% if ressource.active_participant == 1 %} selected {% endif %}>{{ trad.visu_fiche_description1 }}</option>
 										<option value="2" {% if ressource.active_participant == 2 %} selected {% endif %}>{{ trad.visu_fiche_description2 }}</option>
+										<option value="3" {% if ressource.active_participant == 3 %} selected {% endif %}>{{ trad.visu_fiche_description3 }}</option>
+										<option value="4" {% if ressource.active_participant == 4 %} selected {% endif %}>{{ trad.visu_fiche_description4 }}</option>
+										<option value="5" {% if ressource.active_participant == 5 %} selected {% endif %}>{{ trad.visu_fiche_description5 }}</option>
+										<option value="6" {% if ressource.active_participant == 6 %} selected {% endif %}>{{ trad.visu_fiche_description6 }}</option>
 									</select>
 								</div>
 							</div>
+
+							<div class="form-group row col-sm-12">
+								<label class="col col-sm-8" for="inscription_participant">Qui peut s'inscrire en tant que participant</label>
+								<div class="col col-sm-4">
+									<select class="form-control" name="inscription_participant">
+										<option value="0" {% if ressource.inscription_participant == 0 %} selected {% endif %}>{{ trad.personne }}</option>
+										<option value="2" {% if ressource.inscription_participant == 1 %} selected {% endif %}>{{ trad.visu_fiche_description1 }}</option>
+										<option value="2" {% if ressource.inscription_participant == 2 %} selected {% endif %}>{{ trad.visu_fiche_description2 }}</option>
+										<option value="3" {% if ressource.inscription_participant == 3 %} selected {% endif %}>{{ trad.visu_fiche_description3 }}</option>
+										<option value="4" {% if ressource.inscription_participant == 4 %} selected {% endif %}>{{ trad.visu_fiche_description4 }}</option>
+										<option value="5" {% if ressource.inscription_participant == 5 %} selected {% endif %}>{{ trad.visu_fiche_description5 }}</option>
+										<option value="6" {% if ressource.inscription_participant == 6 %} selected {% endif %}>{{ trad.visu_fiche_description6 }}</option>
+									</select>
+								</div>
+							</div>
+
+							{{ form.input('nb_participant_defaut', "Nombre de participant par défaut", ressource.nb_participant_defaut, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
 
 						</section>
 					
