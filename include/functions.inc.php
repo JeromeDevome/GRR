@@ -2563,11 +2563,12 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 			if ($default_area != -1)
 			{
 				$nb_sites_a_afficher++;
-				$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$default_area;
+				$link2 = 'app.php?p='.$link.'&year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$default_area;
+
 				//$out_html .="\n";
 			}
 			else
-				$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day;
+				$link2 = 'app.php?p='.$link.'&year='.$year.'&amp;month='.$month.'&amp;day='.$day;
 			if ($current_site != null)
 			{
 				if (authUserAccesSite($user,$row[0]) == 1)		// DDE: on ne prend que les sites autorisés
