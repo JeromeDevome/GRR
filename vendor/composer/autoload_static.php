@@ -78,6 +78,10 @@ class ComposerStaticInit0040f82be54654d33854a41fc4560ac1
             'Gregwar\\CaptchaBundle\\' => 22,
             'Gregwar\\' => 8,
         ),
+        'D' => 
+        array (
+            'Devome\\Grr\\' => 11,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -236,6 +240,10 @@ class ComposerStaticInit0040f82be54654d33854a41fc4560ac1
         'Gregwar\\' => 
         array (
             0 => __DIR__ . '/..' . '/gregwar/captcha/src/Gregwar',
+        ),
+        'Devome\\Grr\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Devome/Grr',
         ),
     );
 
