@@ -1,3 +1,23 @@
+Version 4.4.2 - En développement
+[Correction] Variable manquante pour la sauvegarde - aed762ca - @ynaessens
+[Correction] Bouton annulation, modification réservation - e7622790 - @Aurely9n
+[Correction] Lien vers domaine ou ressource dans mode arborescence - 6b6d65c4 - @ynaessens
+[Correction] Champ commentaire peut être null - 8e3b5244 & 1f6ec663 - @ynaessens & @JeromeDevome
+[Correction] Récupération de la durée lors d'une modification - b8a4c9ee - @JeromeDevome
+[Correction] Affichage des champs additionnel compartant des apostrophes - 35c6a9ec - @JeromeDevome
+[Correction] Liens avant-après dans jour et semaine_all - efafabbe - @ynaessens
+[Correction] Liens dans la vue année - 81da04c8 - @ynaessens
+[Correction] Gestion des sites restreints - 9521016c & 1f6ec663 - @DavidDelehelle & @JeromeDevome
+[Correction] Paramètres de retour sur le planning - 2792d6df - @JeromeDevome
+[Correction] Affichage décalé en vue semaine - 8ba9cdc6 - @JeromeDevome
+[Correction] Affichage décalé en vue mois2 + intialisation variable - 0ff922c5 - @JeromeDevome
+[Correction] Init variable vue mois All - 15e8b289 - @JeromeDevome
+[Correction] Correction affichage vue mois - 81c3f41a - @JeromeDevome
+[Correction] Désactiver la fonction échange de réservation - 8543c4cf - @JeromeDevome
+[Correction] Synchro de groupe - 13a1b7b8 - @DavidDelehelle
+[Correction] Bug en affichage bouton / multisite - f6cec710 - @DavidDelehelle
+[Modification] Optimisation - 7c909c94 & 257d63cd - @JeromeDevome
+
 
 Version 4.4.1 - 22/07/2025 Généré par @JeromeDevome
 [Ajout] Liste des réservations à modérer - ede4065 - @JeromeDevome
