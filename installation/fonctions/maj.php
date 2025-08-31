@@ -1230,7 +1230,7 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_type_area ADD `couleuricone` VARCHAR(10) NOT NULL DEFAULT '#000000' AFTER `couleurtexte`;");
 
-		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs ADD `commentaire` MEDIUMTEXT AFTER `source`, ADD `desactive_mail` TINYINT NOT NULL DEFAULT '0' AFTER `commentaire`, ADD `nb_tentative` TINYINT NOT NULL DEFAULT '0' AFTER `desactive_mail`, ADD `date_blocage` INT NOT NULL DEFAULT '0' AFTER `nb_tentative`, ADD `popup` TINYINT NOT NULL DEFAULT '0' AFTER `date_blocage`;");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs ADD `commentaire` MEDIUMTEXT NOT NULL AFTER `source`, ADD `desactive_mail` TINYINT NOT NULL DEFAULT '0' AFTER `commentaire`, ADD `nb_tentative` TINYINT NOT NULL DEFAULT '0' AFTER `desactive_mail`, ADD `date_blocage` INT NOT NULL DEFAULT '0' AFTER `nb_tentative`, ADD `popup` TINYINT NOT NULL DEFAULT '0' AFTER `date_blocage`;");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
@@ -1248,6 +1248,18 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_j_user_site (`login` varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,`id_site` int NOT NULL DEFAULT '0',`idgroupes` int NOT NULL DEFAULT '0',PRIMARY KEY (`login`,`id_site`));");
 		$result_inter .= traiteRequete("CREATE TABLE ".TABLE_PREFIX."_j_group_site (`idgroupes` int NOT NULL, `id_site` int NOT NULL DEFAULT '0', PRIMARY KEY (`idgroupes`,`id_site`));");
 
+		if ($result_inter == '')
+			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+		else
+			$result .= $result_inter;
+		$result_inter = '';
+	}
+
+	if (intval($version_old_bdd) < 400008) // Version GRR 4.4.2
+	{
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_user_site DROP PRIMARY KEY;");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_user_site ADD CONSTRAINT grr_j_user_site_pk PRIMARY KEY (login,id_site,idgroupes);");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE commentaire commentaire MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL;");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");

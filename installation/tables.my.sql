@@ -12,7 +12,7 @@ CREATE TABLE grr_j_user_area (login varchar(190) CHARACTER SET utf8mb4 COLLATE u
 DROP TABLE IF EXISTS grr_j_user_room;
 CREATE TABLE grr_j_user_room (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_room int(11) NOT NULL default '0', PRIMARY KEY  (login,id_room) );
 DROP TABLE IF EXISTS grr_j_user_site;
-CREATE TABLE grr_j_user_site (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_site int(11) NOT NULL default '0', idgroupes int(11) NOT NULL default '0', PRIMARY KEY  (login,id_site) );
+CREATE TABLE grr_j_user_site (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_site int(11) NOT NULL default '0', idgroupes int(11) NOT NULL default '0', PRIMARY KEY  (login,id_site,idgroupes) );
 DROP TABLE IF EXISTS grr_j_userbook_room;
 CREATE TABLE grr_j_userbook_room (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_room int(11) NOT NULL default '0', PRIMARY KEY  (login,id_room) );
 DROP TABLE IF EXISTS grr_j_useradmin_area;
