@@ -18,7 +18,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-
+/*
 include "../include/misc.inc.php";
 // teste la version de GRR
 $_famille = substr($version_grr,0,1);
@@ -97,4 +97,5 @@ catch(Exception $e){
 $Jsondata = json_encode($data);
 header("Content-Type: application/json; charset=UTF-8");
 echo $Jsondata;
+*/
 ?>
