@@ -3,7 +3,7 @@
  * installation/fonctions/maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-07-29 08:12$
+ * Dernière modification : $Date: 2025-09-02 17:49$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
@@ -1259,7 +1259,7 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 	{
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_user_site DROP PRIMARY KEY;");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_user_site ADD CONSTRAINT grr_j_user_site_pk PRIMARY KEY (login,id_site,idgroupes);");
-		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE commentaire commentaire MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL;");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE commentaire commentaire MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
