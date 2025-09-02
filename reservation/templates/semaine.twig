@@ -60,7 +60,7 @@
 
 				{% if d.pview != 1 %}
                     <!--Capacité-->{% if d.capaciteRessource > 0 %}<span class="small">({{d.capaciteRessource}} {% if d.capaciteRessource > 1 %}{{trad.number_max2}}{% else %}{{trad.number_max}}{% endif %})</span>{% endif %}
-                	<!--Ress indispo-->{% if s.statutRessource == 0 %}<br><span class="texte_ress_tempo_indispo">{{trad.ressource_temporairement_indisponible}}</span>{% endif %}
+                	<!--Ress indispo-->{% if d.statutRessource == 0 %}<br><span class="texte_ress_tempo_indispo">{{trad.ressource_temporairement_indisponible}}</span>{% endif %}
                     <!--Modération-->{% if d.moderationResa != 0 %}<br><span class="texte_ress_moderee">{{trad.reservations_moderees}}</span>{% endif %}
                     <!--Commentaire-->{% if d.afficherCommentaire == "y" and d.commentaireRessource != "" %}<br>{{ressource.ress.10|raw}}{% endif %}
                     <br>
