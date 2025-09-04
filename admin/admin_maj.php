@@ -3,9 +3,9 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-04-17 14:16$
+ * Dernière modification : $Date: 2025-06-18 16:19$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
+ * @author    Arnaud Fornerot pour l'intégation au portail Envole https://envole.ac-dijon.fr/presentation/grr/
  * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -993,11 +993,11 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
     if($version_old < "3.5.2.9")
     {
         $result .= formatResult("Mise à jour jusqu'à la version 3.5.2 :","<b>","</b>");
-        $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_room` ADD `max_booking_on_range` SMALLINT(6) NOT NULL DEFAULT '-1' AFTER `who_can_book`;");
+        $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_room` ADD IF NOT EXISTS `max_booking_on_range` SMALLINT(6) NOT NULL DEFAULT '-1' AFTER `who_can_book`;");
         $result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_files(id int not null auto_increment, id_entry int, file_name varchar(50), public_name varchar(50),Primary key (id)) CHARACTER SET utf8mb4;");
-        $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_area` ADD `user_right` INT(11) AFTER `max_booking`;");
-        $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_area` ADD `access_file` INT(11) AFTER `user_right`;");
-        $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_area` ADD `upload_file` INT(11) AFTER `access_file`;");
+        $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_area` ADD IF NOT EXISTS `user_right` INT(11) AFTER `max_booking`;");
+        $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_area` ADD IF NOT EXISTS `access_file` INT(11) AFTER `user_right`;");
+        $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_area` ADD IF NOT EXISTS `upload_file` INT(11) AFTER `access_file`;");
         if ($result_inter == '')
             $result .= formatResult("Ok !","<span style='color:green;'>","</span>");
         else
