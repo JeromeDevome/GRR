@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2024-11-18
+# Last modification : 2025-05-28
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -374,6 +374,8 @@ $vocab['display_user_off.php'] = "les utilisateurs inactifs";
 $vocab['display_user_on.php'] = "les utilisateurs actifs";
 $vocab['display_week'] = "(affichage 'semaine')";
 $vocab['disponible_pour'] = "Disponible pour";
+$vocab['dlcsv2'] = "Fichier CSV2";
+$vocab['dlcsv2_explain'] = "Le format de fichier CSV2 est au format d'importation de réservations.";
 $vocab['dlrapportcsv'] = "Fichier CSV des réservations";
 $vocab['dlresumecsv'] = "Fichier CSV du résumé";
 $vocab['domaines_de_type_incompatibles'] = "<b>Remarque : </b> Seule la réservation de journées entières est possible car les ressources sélectionnées appartiennent à des domaines de type différents.";
@@ -404,6 +406,7 @@ $vocab['end_bookings'] = "Date de fin des réservations : ";
 $vocab['end_bookings_explain'] = "Pas de réservation possible après cette date. De plus les réservations déjà effectuées après cette date seront effacées de la base.";
 $vocab['end_date'] = "Date de fin :";
 $vocab['end_of_session'] = "Fin de session";
+$vocab['end_time'] = "Heure de fin";
 $vocab['entres_supprimees'] = " entrée(s) supprimée(s)";
 $vocab['entries_found'] = "réservations trouvées";
 $vocab['entry'] = "Réservation";
@@ -450,7 +453,7 @@ $vocab['explain_automatic_mail1'] = "Lorsqu'un utilisateur <b>réserve une resso
 $vocab['explain_automatic_mail2'] = "Par ailleurs, lorsqu'un utilisateur <b>réserve une ressource</b>, <b>modifie</b> ou bien <b>supprime</b> une réservation, certains utilisateurs peuvent être prévenus par e-mail. Pour chaque ressource, vous pouvez désigner un ou plusieurs utilisateurs à prévenir :";
 $vocab['explain_automatic_mail3'] = "Lorsqu'un utilisateur <b>réserve une ressource</b>, <b>modifie</b> ou bien <b>supprime</b> une réservation au nom d'un autre utilisateur, ce dernier (si le champ email a été renseigné) en est averti automatiquement par un message e-mail.";
 $vocab['explain_backup'] = "Création d'un fichier de sauvegarde complet de la base GRR. En cas de problème sur la base GRR, utilisez la fonction \"Restaurer la sauvegarde\".";
-$vocab['explain_champs recherche'] = "Dans le cas d'une authentification HTTP, il est possible de tenter de récupérer les noms, prénoms et adresses email des utilisateurs grâce aux informations contenues dans le tableau \$_SERVER et transmises par le système d'authentification. <br /><br />Par exemple, si \$_SERVER[\"sn\"] contient le nom de l'utilisateur, indiquer \"sn\" dans le premier champ ci-dessous. De même indiquez \"givenName\" dans la deuxième ligne si \$_SERVER[\"givenName\"] contient le prénom et indiquez \"mail\" dans la troisième ligne si \$_SERVER[\"mail\"] contient le mail.";
+$vocab['explain_champs_recherche'] = "Dans le cas d'une authentification HTTP, il est possible de tenter de récupérer les noms, prénoms et adresses email des utilisateurs grâce aux informations contenues dans le tableau \$_SERVER et transmises par le système d'authentification. <br /><br />Par exemple, si \$_SERVER[\"sn\"] contient le nom de l'utilisateur, indiquer \"sn\" dans le premier champ ci-dessous. De même indiquez \"givenName\" dans la deuxième ligne si \$_SERVER[\"givenName\"] contient le prénom et indiquez \"mail\" dans la troisième ligne si \$_SERVER[\"mail\"] contient le mail.";
 $vocab['explain_css'] = "Choix du style/thème";
 $vocab['explain_default_area_and_room'] = "Domaine et ressource par défaut";
 $vocab['explain_default_area_and_room_and_site'] = "Site, domaine et ressource par défaut";
@@ -1073,11 +1076,10 @@ $vocab['display_mail_etat_destinataire_4'] = "Le formulaire de contact réservat
 $vocab['display_mail_etat_destinataire_5'] = "Le formulaire de contact réservation est activé  et accessible depuis la page de connexion";
 $vocab['display_mail_destinataire'] = "Adresse mail du destinataire :";
 $vocab['top_of_page'] = "^ Haut de la page";
-$vocab['nomR'] = "Nom";
-$vocab['display_file'] = "Autoriser l'envoie de fichiers ";
+$vocab['display_file'] = "Autoriser l'envoi de fichiers ";
 $vocab['display_file1'] = "Permettre de lier des fichiers aux réservations ";
-$vocab['display_file2'] = "L'envoie de fichiers est autorisé ";
-$vocab['display_file3'] = "L'envoie de fichiers n'est pas autorisé ";
+$vocab['display_file2'] = "L'envoi de fichiers est autorisé ";
+$vocab['display_file3'] = "L'envoi de fichiers n'est pas autorisé ";
 $vocab['Generer_pdf'] = "Générer un PDF";
 $vocab['semaine'] = "Sem";
 $vocab['status_clef'] = "Statut de la clé";
