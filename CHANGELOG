@@ -38,6 +38,18 @@ Sous-version 3.5.2a
     correctifs : prise en compte de l'encodage du mot de passe, test d'existence de la base de données
     correctif : vérifications préalables
     correctif : longueur du champ pour utf8mb4
+Sous-version 3.5.2b
+    ajout : fonction de sauvegarde des données d'une réservation
+    correctif : champ manquant en installation initiale (les bases mises à jour ne sont pas affectées)
+    correctif : affichage des boutons incorrect dans view_entry en mode pop-up
+    correctif : sélecteur d'affichage par défaut
+    correctif : champ manquant en installation initiale
+    correctif : sélecteurs de domaine et ressource dans mon compte et affichages
+    correctif : erreur en restauration d'une base 3.4.0
+    correctif : évite une erreur en mise à jour forcée
+    mise à jour : fichiers de langue
+    
+
 
 -----
 --
