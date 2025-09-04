@@ -1,9 +1,9 @@
 <?php
 /* settings.class.php
  * Permet de lire et d'écrire les paramètres dans la BDD (Table setting)
- * Dernière modification : $Date: 2017-12-16 14:00$
- * @author    JeromeB & Laurent Delineau
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2024-12-22 16:39$
+ * @author    JeromeB & Laurent Delineau & Yan Naessens
+ * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -38,8 +38,8 @@ class Settings {
 			return false;
 		else
 		{
-			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-				self::$grrSettings[$row[0]] = $row[1];
+			foreach($res as $row)
+				self::$grrSettings[$row["NAME"]] = $row["VALUE"];
 			return true;
 		}
 	}

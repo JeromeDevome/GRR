@@ -478,7 +478,7 @@ if ($locale != 'fr')
 	}
 	else
 	{
-				// Si la locale sous la forme de deux lettre (de, en, ...) n'est pas reconue par le serveur,
+				// Si la locale sous la forme de deux lettres (de, en, ...) n'est pas reconnue par le serveur,
 				// on tente de la mettre sous la forme de_DE, etc...
 				// cas perticulier de l'anglais :
 		if ($locale == 'en')
@@ -486,7 +486,7 @@ if ($locale != 'fr')
 				// Autre cas :
 		if (strlen($locale) == 2)
 		{
-			# Convertit locale=xx en xx_XX, ce qui est approprié à certains système
+			# Convertit locale=xx en xx_XX, ce qui est approprié à certains systèmes
 			$locale = strtolower($locale)."_".strtoupper($locale);
 		}
 		if ($unicode_encoding)

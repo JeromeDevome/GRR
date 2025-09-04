@@ -100,12 +100,12 @@ if ($multisite)
         ON s.id = j.id_site
         WHERE j.login = '$user'
         ORDER BY sitename ASC";
-    }
-    $sites = grr_sql_query($sql);
-    $nb_site = grr_sql_count($sites);
-    if($nb_site == 1){
-      $id_site = grr_sql_row($sites,0)[0];
-    }
+  }
+  $sites = grr_sql_query($sql);
+  $nb_site = grr_sql_count($sites);
+  if($nb_site == 1){
+    $id_site = grr_sql_row($sites,0)[0];
+  }
 }
 // domaines
 if ($multisite)

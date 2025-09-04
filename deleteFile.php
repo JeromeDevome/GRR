@@ -28,8 +28,8 @@ include "include/settings.class.php";
 $id = getFormVar("id","int",-1);
 $msg = "";
 
- if ($id != -1){
-	$id = intval($id);
+if ($id != -1){
+  $id = intval($id);
   $sql = "SELECT file_name FROM ".TABLE_PREFIX."_files where id = ?";
   $res = grr_sql_query($sql,"i",[$id]);
   if($res){
@@ -66,11 +66,11 @@ $msg = "";
     }
     grr_sql_free($res);
   }
-	else
+  else
     $msg = "Erreur de lecture en base de données.";
 }
 else {
-	$msg = "Erreur, aucune donnée reçue.";
+  $msg = "Erreur, aucune donnée reçue.";
 }
 $_SESSION['displ_msg'] = 'yes';
 affiche_pop_up($msg,"user");
