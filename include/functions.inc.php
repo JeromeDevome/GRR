@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2024-10-05 19:11$
+ * Dernière modification : $Date: 2025-09-08 12:10$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -1027,7 +1027,9 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 	global $niveauDossier, $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser,$grr_script_name, $page;
 	global $use_prototype, $use_admin, $desactive_bandeau_sup, $id_site, $d, $gcDossierImg, $gcDossierCss, $version_grr;
 
-	$area = isset($_GET["area"]) ? $_GET["area"] : 0;
+	$area = getFormVar("area","int",0);
+  $room = getFormVar("room","int",0);
+  $id_site = getFormVar("id_site","int",0);
 	
 	if( isset($_SESSION['changepwd']) && $_SESSION['changepwd'] == 1 && $page != 'changemdp'){
 		header("Location: ./compte/compte.php?pc=changemdp");
@@ -1116,7 +1118,13 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 		}
 
 		//Parametre url fixe compte / admin
-		$paramUrl = 'p='.$page.'&day='.$day.'&year='.$year.'&month='.$month.'&area='.$area;
+		$paramUrl = 'p='.$page.'&day='.$day.'&year='.$year.'&month='.$month;
+    if($room)
+      $paramUrl .= "&room=".$room;
+    if($area)
+      $paramUrl .= "&area=".$area;
+    if($id_site)
+      $paramUrl .= "&id_site=".$id_site;
 		$paramUrlAccueil = 'day='.$day.'&amp;year='.$year.'&amp;month='.$month;
 		$d['paramUrl'] = $paramUrl;
 		
@@ -2528,9 +2536,9 @@ function make_area_list_html($link, $current_site, $current_area, $year, $month,
 			{
 				if ($row[0] == $current_area)
 				{
-					$out_html .= "<a id=\"liste_select\" onclick=\"charger();\"  href=\"app.php?p='.$link.'&amp;year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\">&gt; ".htmlspecialchars($row[1])."</a></b><br />\n";
+					$out_html .= "<a id=\"liste_select\" onclick=\"charger();\"  href=\"app.php?p=".$link."&amp;year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\">&gt; ".htmlspecialchars($row[1])."</a></b><br />\n";
 				} else {
-					$out_html .= "<a id=\"liste\" onclick=\"charger();\"  href=\"app.php?p='.$link.'&amp;year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\"> ".htmlspecialchars($row[1])."</a><br />\n";
+					$out_html .= "<a id=\"liste\" onclick=\"charger();\"  href=\"app.php?p=".$link."&amp;year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\"> ".htmlspecialchars($row[1])."</a><br />\n";
 				}
 			}
 		}
@@ -2565,7 +2573,7 @@ function make_room_list_html($link,$current_area, $current_room, $year, $month, 
 				if ($row[0] == $current_room)
 					$out_html .= "<span id=\"liste_select\">&gt; ".htmlspecialchars($row[1])."</span><br />\n";
 				else
-					$out_html .= "<a id=\"liste\" onclick=\"charger();\"  href=\"app.php?p='.$link.'&amp;year=$year&amp;month=$month&amp;day=$day&amp;&amp;room=$row[0]\">".htmlspecialchars($row[1]). "</a><br />\n";
+					$out_html .= "<a id=\"liste\" onclick=\"charger();\"  href=\"app.php?p=".$link."&amp;year=$year&amp;month=$month&amp;day=$day&amp;&amp;room=$row[0]\">".htmlspecialchars($row[1]). "</a><br />\n";
 			}
 		}
 	}
