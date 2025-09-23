@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2025-09-08 12:10$
+ * Dernière modification : $Date: 2025-09-23 12:03$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4667,7 +4667,7 @@ function mail_hebdo()
 	if (Settings::get("automatic_mail") != 'yes') // Mail automatique désactivé
 		$envoisOk = false;
 
-	if($envoisOk == true){
+	if($envoisOk){
 		$sql = "SELECT DISTINCT jmr.login, jmr.id_room, u.email 
 				FROM ".TABLE_PREFIX."_j_mailuser_room AS jmr
 				LEFT JOIN ".TABLE_PREFIX."_utilisateurs AS u 
@@ -4676,7 +4676,7 @@ function mail_hebdo()
 		$dest = grr_sql_query($sql);
 
 		$logins_rooms = [];
-		for ($i = 0; ($rowD = grr_sql_row_keyed($dest, $i)); $i++) 
+		foreach($dest as $rowD) 
 		{
 			$logins_rooms[$rowD['login']]['email'] = $rowD['email'];
 			$logins_rooms[$rowD['login']]['rooms'][] = $rowD['id_room'];
