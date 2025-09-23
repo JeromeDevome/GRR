@@ -16,6 +16,10 @@ Version 4.4.2 - En développement
 [Correction] Désactiver la fonction échange de réservation - 8543c4cf - @JeromeDevome
 [Correction] Synchro de groupe - 13a1b7b8 - @DavidDelehelle
 [Correction] Bug en affichage bouton / multisite - f6cec710 - @DavidDelehelle
+[Correction] Lien pour page imprimable - 6fae6eb5 - @ynaessens
+[Correction] évite une erreur lors de mise à jour depuis GRR v3.9 - 7a821df2 - @ynaessens
+[Correction] évite des erreurs non critiques lors de restauration de données issues de versions antérieures - 4f95e251 - @ynaessens
+[Correction] Sécurisation contre injection SQL - 6b3fd50c - @JeromeDevome
 [Modification] Optimisation - 7c909c94 & 257d63cd - @JeromeDevome
 
 

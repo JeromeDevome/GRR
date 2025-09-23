@@ -196,7 +196,7 @@ INSERT INTO grr_setting VALUES ('url_disconnect', '');
 INSERT INTO grr_setting VALUES ('use_fckeditor', '1');
 INSERT INTO grr_setting VALUES ('UserAllRoomsMaxBooking', '-1');
 INSERT INTO grr_setting VALUES ('verif_reservation_auto', '0');
-INSERT INTO grr_setting VALUES ('version', '0400007');
+INSERT INTO grr_setting VALUES ('version', '0400008');
 INSERT INTO grr_setting VALUES ('visu_fiche_description', '0');
 INSERT INTO grr_setting VALUES ('webmaster_name', 'Webmestre de GRR');
 INSERT INTO grr_setting VALUES ('webmaster_email', 'VariableInstal03');
