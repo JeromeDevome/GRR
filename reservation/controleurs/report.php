@@ -315,41 +315,45 @@ if (isset($_GET["is_posted"]))
 	$k = 0;
 	if (isset($champ[0]))
 	{
+		// Sécurisation du paramètre condition_et_ou
+		$condition_et_ou = (isset($_GET["condition_et_ou"]) && $_GET["condition_et_ou"] === "OR") ? "OR" : "AND";
+
 		$sql .= " AND (";
-			while ($k < count($texte))
+
+		while ($k < count($texte))
+		{
+			if ($champ[$k] == "site")
+				$sql .=  grr_sql_syntax_caseless_contains("s.sitename", $texte[$k], $type_recherche[$k]);
+			if ($champ[$k] == "area")
+				$sql .=  grr_sql_syntax_caseless_contains("a.area_name", $texte[$k], $type_recherche[$k]);
+			if ($champ[$k] == "room")
+				$sql .=  grr_sql_syntax_caseless_contains("r.room_name", $texte[$k], $type_recherche[$k]);
+			if ($champ[$k] == "type")
+				$sql .=  grr_sql_syntax_caseless_contains("t.type_name", $texte[$k], $type_recherche[$k]);
+			if ($champ[$k] == "name")
+				$sql .=  grr_sql_syntax_caseless_contains("e.name", $texte[$k], $type_recherche[$k]);
+			if ($champ[$k] == "descr")
+				$sql .=  grr_sql_syntax_caseless_contains("e.description", $texte[$k], $type_recherche[$k]);
+			if ($champ[$k] == "login"){
+				$sql .=  grr_sql_syntax_caseless_contains("e.beneficiaire", $texte[$k], $type_recherche[$k]);  
+				$sql .= ' OR ';  
+				$sql .=  grr_sql_syntax_caseless_contains("e.beneficiaire_ext", $texte[$k], $type_recherche[$k]);  
+			} 
+			$overload_fields = mrbsOverloadGetFieldslist("");
+			foreach ($overload_fields as $fieldname=>$fieldtype)
 			{
-				if ($champ[$k] == "site")
-					$sql .=  grr_sql_syntax_caseless_contains("s.sitename", $texte[$k], $type_recherche[$k]);
-				if ($champ[$k] == "area")
-					$sql .=  grr_sql_syntax_caseless_contains("a.area_name", $texte[$k], $type_recherche[$k]);
-				if ($champ[$k] == "room")
-					$sql .=  grr_sql_syntax_caseless_contains("r.room_name", $texte[$k], $type_recherche[$k]);
-				if ($champ[$k] == "type")
-					$sql .=  grr_sql_syntax_caseless_contains("t.type_name", $texte[$k], $type_recherche[$k]);
-				if ($champ[$k] == "name")
-					$sql .=  grr_sql_syntax_caseless_contains("e.name", $texte[$k], $type_recherche[$k]);
-				if ($champ[$k] == "descr")
-					$sql .=  grr_sql_syntax_caseless_contains("e.description", $texte[$k], $type_recherche[$k]);
-				if ($champ[$k] == "login"){
-					$sql .=  grr_sql_syntax_caseless_contains("e.beneficiaire", $texte[$k], $type_recherche[$k]);  
-					$sql .= ' OR ';  
-					$sql .=  grr_sql_syntax_caseless_contains("e.beneficiaire_ext", $texte[$k], $type_recherche[$k]);  
-				} 
-				$overload_fields = mrbsOverloadGetFieldslist("");
-				foreach ($overload_fields as $fieldname=>$fieldtype)
+				// if ($overload_fields[$fieldname]["confidentiel"] != 'y') filtrage trop strict
+				if ((authGetUserLevel(getUserName(),-1) > 5) || ($overload_fields[$fieldname]['affichage'] == 'y'))
 				{
-					// if ($overload_fields[$fieldname]["confidentiel"] != 'y') filtrage trop strict
-					if ((authGetUserLevel(getUserName(),-1) > 5) || ($overload_fields[$fieldname]['affichage'] == 'y'))
-					{
-						if ($champ[$k] == "addon_".$overload_fields[$fieldname]["id"])
-							$sql .=  grr_sql_syntax_caseless_contains_overload("e.overload_desc", $texte[$k], $overload_fields[$fieldname]["id"], $type_recherche[$k]);
-					}
+					if ($champ[$k] == "addon_".$overload_fields[$fieldname]["id"])
+						$sql .=  grr_sql_syntax_caseless_contains_overload("e.overload_desc", $texte[$k], $overload_fields[$fieldname]["id"], $type_recherche[$k]);
 				}
-				if ($k < (count($texte) - 1))
-					$sql .= " ".$_GET["condition_et_ou"]." ";
-				$k++;
 			}
-	$sql .= ")";
+			if ($k < (count($texte) - 1))
+				$sql .= " " . $condition_et_ou . " ";
+			$k++;
+		}
+		$sql .= ")";
 	}
 	$sql .= " AND  t.type_letter = e.type ";
 	if (Settings::get("module_multisite") == 'Oui')
