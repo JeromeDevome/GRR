@@ -46,11 +46,11 @@ if (isset($_SERVER['HTTP_REFERER']))
 */
 // a priori inutile, les droits d'accès dépendent d'autres fonctions et l'accès aux données est RGPD compliant
 
-print_header_twig("", "", "", $type="with_session");
-
 $day = isset($_POST['day']) ? $_POST['day'] : (isset($_GET['day']) ? intval($_GET['day']) : date('d'));
 $month = isset($_POST['month']) ? $_POST['month'] : (isset($_GET['month']) ? intval($_GET['month']) : date('m'));
 $year = isset($_POST['year']) ? $_POST['year'] : (isset($_GET['year']) ? intval($_GET['year']) : date('Y'));
+
+print_header_twig($day, $month, $year, "with_session");
 
 $d['dDay'] = $day;
 $d['dMonth'] = $month;

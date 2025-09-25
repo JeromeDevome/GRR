@@ -161,6 +161,8 @@ try {
         $room = intval($rooms[0]); // si besoin on renvoie sur la première ressource de la sélection
         $area = mrbsGetRoomArea($room);
     }
+    if(!isset($nbparticipantmax))
+        $nbparticipantmax = 0;
     // les champs additionnels dépendant du domaine, on ne peut les traiter avant 
     $overload_data = array();
     $overload_fields_list = mrbsOverloadGetFieldslist($area);

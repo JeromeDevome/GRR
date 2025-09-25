@@ -99,12 +99,6 @@
 					<textarea id="description" name="description" class="pleine form-control" rows="4" columns="60" >{{d.resaDescription}}</textarea>
 				{% endif %}
 
-				<!-- Participant -->
-				{% if d.active_participant > 0 %}
-					<label for="nbparticipantmax">{{trad.nb_participant_max}}{{trad.deux_points}}</label>
-					<input name="nbparticipantmax" type="number" value="{{d.nbparticipantmax}}" > {{trad.nb_participant_zero}}
-				{% endif %}
-
 				<!-- Clé -->
 				{% if d.active_cle == 1 %}
 					<input name="keys" type="checkbox" value="y" {% if d.clef == 1 %}checked{% endif %}>

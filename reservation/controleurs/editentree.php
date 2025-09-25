@@ -122,36 +122,36 @@ grr_sql_free($res);
 if (!isset($page_ret) || ($page_ret == ''))
 {
     $referer = isset($_SERVER['HTTP_REFERER']) ? htmlspecialchars($_SERVER['HTTP_REFERER']) : '';
-   
+    $page_ret = isset($referer)? $referer : page_accueil();
+
     if (isset($_GET['p']) && 
         ((strpos($_GET['p'],'editentree') !== FALSE)||
          (strpos($_GET['p'],'vuereservation') !== FALSE)))
     {
         if (isset($page) && isset($month) && isset($day) && isset($year)){
-            $page_ret = 'app.php?p='.$page.'&amp;month='.$month.'&amp;day='.$day.'&amp;year='.$year;
+            $queryRet = [
+                'p'     => $page,
+                'month' => $month,
+                'day'   => $day,
+                'year'  => $year,
+            ];
             if (isset($room))
-                $page_ret .= '&amp;room='.$room;
+                $queryRet[ 'room' ] = $room;
             elseif ((!strpos($page,"all"))&&($room_back != 'all'))
-                $page_ret .= "&amp;room=".$room_back;
+                $queryRet[ 'room' ] = $room_back;
             elseif (isset($area))
-                $page_ret .= '&amp;area='.$area;
-            elseif (($room_back !='')&&($room_back != 'all')){
-                $area = mrbsGetRoomArea($room_back);
-                $page_ret .= '&amp;area='.$area;
-            }
+                $queryRet[ 'area' ] = $area;
+            elseif (($room_back !='')&&($room_back != 'all'))
+                $queryRet[ 'area' ] = mrbsGetRoomArea($room_back);
             elseif (($room_back == 'all')&&(isset($id))){
                 $room = grr_sql_query1("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id=".$id."");
-                if ($room != -1){
-                    $area = mrbsGetRoomArea($room);
-                    $page_ret .= '&amp;area='.$area;
-                }
+                if ($room != -1)
+                    $queryRet[ 'area' ] = mrbsGetRoomArea($room);
             }
+            $page_ret = 'app.php?'. http_build_query( $queryRet );
         }
-        else 
-            $page_ret = page_accueil();
     }
-    else 
-        $page_ret = isset($referer)? $referer : page_accueil();
+
 }
 
 // Resume session
@@ -359,6 +359,9 @@ if (isset($id) && $id !=0) // édition d'une réservation existante
 			$day   = date('d', $row[1]);
 			$month = date('m', $row[1]);
 			$year  = date('Y', $row[1]);
+			$start_day = date('d', $row[1]);
+			$start_month = date('m', $row[1]);
+			$start_year = date('Y', $row[1]);
 			$start_hour  = date('H', $row[1]);
 			$start_min   = date('i', $row[1]);
 			$duration    = $row[5]-$row[1];
@@ -906,6 +909,7 @@ if($periodiciteConfig == 'y')
 // fin colonne de "droite" et du bloc de réservation
 
 $d['rep_id'] = $rep_id;
+$d['duration'] = $duration;
 $d['edit_type'] = $edit_type;
 $d['page'] = $page;
 $d['room_back'] = $room_back;

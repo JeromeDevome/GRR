@@ -422,8 +422,7 @@ function entre_reservation($room_id,$jour_semaine,$name,$description,
 // toujours des initialisations au hasard
                $courrier = 0;
                $overload_data = '';
-			   mrbsCreateRepeatingEntrys($starttime, $endtime,   $rep_type, $rep_enddate, $rep_opt,
-						$room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation,$overload_data, $entry_moderate,$rep_jour_c, $courrier, $rep_month_abs1, $rep_month_abs2);
+			   mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate, $rep_opt,$room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation,$overload_data, $entry_moderate,$rep_jour_c, $courrier,0, $rep_month_abs1, $rep_month_abs2);
 		
 			}
 		

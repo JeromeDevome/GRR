@@ -19,7 +19,10 @@
 // charger le script CAS.php, désormais inclus dans GRR
 include_once('vendor/autoload.php');
 //include_once('./include/CAS.php');
-
+// Enable debugging
+phpCAS::setDebug();
+// Enable verbose error messages. Disable in production!
+phpCAS::setVerbose(true);
 // paramètres du serveur SSO
 // désormais les paramètres sont définis en page d'administration admin_config_sso.php
 $serveurSSO = Settings::get("cas_serveur");

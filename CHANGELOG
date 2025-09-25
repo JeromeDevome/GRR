@@ -1,4 +1,46 @@
-Version 4.4.0
+Version 4.4.2 - 23/09/2025 Généré par @JeromeDevome
+[Correction] Variable manquante pour la sauvegarde - aed762ca - @ynaessens
+[Correction] Bouton annulation, modification réservation - e7622790 - @Aurely9n
+[Correction] Lien vers domaine ou ressource dans mode arborescence - 6b6d65c4 - @ynaessens
+[Correction] Champ commentaire peut être null - 8e3b5244 & 1f6ec663 - @ynaessens & @JeromeDevome
+[Correction] Récupération de la durée lors d'une modification - b8a4c9ee - @JeromeDevome
+[Correction] Affichage des champs additionnel compartant des apostrophes - 35c6a9ec - @JeromeDevome
+[Correction] Liens avant-après dans jour et semaine_all - efafabbe - @ynaessens
+[Correction] Liens dans la vue année - 81da04c8 - @ynaessens
+[Correction] Gestion des sites restreints - 9521016c & 1f6ec663 - @DavidDelehelle & @JeromeDevome
+[Correction] Paramètres de retour sur le planning - 2792d6df - @JeromeDevome
+[Correction] Affichage décalé en vue semaine - 8ba9cdc6 - @JeromeDevome
+[Correction] Affichage décalé en vue mois2 + intialisation variable - 0ff922c5 - @JeromeDevome
+[Correction] Init variable vue mois All - 15e8b289 - @JeromeDevome
+[Correction] Correction affichage vue mois - 81c3f41a - @JeromeDevome
+[Correction] Désactiver la fonction échange de réservation - 8543c4cf - @JeromeDevome
+[Correction] Synchro de groupe - 13a1b7b8 - @DavidDelehelle
+[Correction] Bug en affichage bouton / multisite - f6cec710 - @DavidDelehelle
+[Correction] Lien pour page imprimable - 6fae6eb5 - @ynaessens
+[Correction] évite une erreur lors de mise à jour depuis GRR v3.9 - 7a821df2 - @ynaessens
+[Correction] évite des erreurs non critiques lors de restauration de données issues de versions antérieures - 4f95e251 - @ynaessens
+[Correction] Sécurisation contre injection SQL - 6b3fd50c - @JeromeDevome
+[Modification] Optimisation - 7c909c94 & 257d63cd - @JeromeDevome
+
+
+Version 4.4.1 - 22/07/2025 Généré par @JeromeDevome
+[Ajout] Liste des réservations à modérer - ede4065 - @JeromeDevome
+[Ajout] Lien historique de la réservation pour les admins dans la vue réservation - 3646378 - @JeromeDevome
+[Correction] Lien de connexion - 3814e4a - @Aurely9n
+[Correction] Liens semaine avant-après- c8167c7 - @ynaessens
+[Correction] Mail UTF8 - b37217f - @JeromeDevome & @Rico
+[Correction] Correction stat sur champ additionnel - 506c252 - @JeromeDevome
+[Correction] Affichage de la périodicité dans la réservation - b05fd4c - @JeromeDevome 
+[Correction] Numéro jour vue mensuelle (cas jour masqué) - 0f61cd7 - @JeromeDevome
+[Correction] Remplissage certains champs en édition de réservation - 2cc2fa3 - @JeromeDevome
+[Correction] Gestion des conflits de réservation - ef6076c - @JeromeDevome
+[Correction] Champ nombre de participant en double - 78de91d - @JeromeDevome
+[Correction] Fix date début série en modification de réservation - 9c3ffb6 - @JeromeDevome
+[Correction] Nom de la ressource dans l'envois de mail en cas de modification - defa882 - @JeromeDevome
+[Correction] Variable nombre participant max manquante - f5be0b8 - @JeromeDevome
+[Modification] Mise à jour langue espagnol - 4549004 - @JeromeDevome
+
+Version 4.4.0 - 06/07/2025  Généré par @JeromeDevome
 [Ajout] Page de connexion, choix entre deux thèmes - @JeromeDevome
 [Ajout] Page de connexion, possibilité de faire apparaitre le nom de l'établissement, logo...  - @JeromeDevome
 [Ajout] Message d'alerte mail désactivé dans les emails automatiques - 11a74469  - @JeromeDevome

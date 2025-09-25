@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2024-10-05 19:11$
+ * Dernière modification : $Date: 2025-09-23 12:03$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -14,6 +14,15 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+
+function returnmsg($type,$test, $status, $msg = '')
+{
+	echo encode_message_utf8('<div class="alert alert-'.$type.'" role="alert"><h3>'.$test);
+	echo encode_message_utf8($status)."</h3>";
+	if ($msg != '')
+		echo encode_message_utf8("($msg)"),PHP_EOL;
+	echo '</div>',PHP_EOL;
+}
 
 function getDaysInMonth($month, $year)
 {
@@ -341,6 +350,17 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 		}
 	}
 	return $affichage;
+}
+
+function decode_options($a,$modele){
+    // suppose que l'on a une chaîne $a de {V,F} de longueur égale à celle du $modele
+    // renvoie un tableau de booléens True, False indexé par les valeurs du modèle
+    $choix = array();
+    $l = count($modele);
+    for($i=0; $i<$l; $i++){
+        $choix[$modele[$i]] = ((isset($a))&&('V' == $a[$i]))? TRUE: FALSE;
+    }
+    return $choix;
 }
 
 /**
@@ -1007,7 +1027,9 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 	global $niveauDossier, $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser,$grr_script_name, $page;
 	global $use_prototype, $use_admin, $desactive_bandeau_sup, $id_site, $d, $gcDossierImg, $gcDossierCss, $version_grr;
 
-	$area = isset($_GET["area"]) ? $_GET["area"] : 0;
+	$area = getFormVar("area","int",0);
+  $room = getFormVar("room","int",0);
+  $id_site = getFormVar("id_site","int",0);
 	
 	if( isset($_SESSION['changepwd']) && $_SESSION['changepwd'] == 1 && $page != 'changemdp'){
 		header("Location: ./compte/compte.php?pc=changemdp");
@@ -1078,10 +1100,12 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 	// Si nous ne sommes pas dans un format imprimable
 	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 	{
+
 		// If we dont know the right date then make it up
 		if (!isset($day) || !isset($month) || !isset($year) || ($day == '') || ($month == '') || ($year == ''))
 		{
 			$date_now = time();
+
 			if ($date_now < Settings::get("begin_bookings"))
 				$date_ = Settings::get("begin_bookings");
 			else if ($date_now > Settings::get("end_bookings"))
@@ -1092,6 +1116,18 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			$month = date("m",$date_);
 			$year  = date("Y",$date_);
 		}
+
+		//Parametre url fixe compte / admin
+		$paramUrl = 'p='.$page.'&day='.$day.'&year='.$year.'&month='.$month;
+    if($room)
+      $paramUrl .= "&room=".$room;
+    if($area)
+      $paramUrl .= "&area=".$area;
+    if($id_site)
+      $paramUrl .= "&id_site=".$id_site;
+		$paramUrlAccueil = 'day='.$day.'&amp;year='.$year.'&amp;month='.$month;
+		$d['paramUrl'] = $paramUrl;
+		
 		if (!(isset($search_str)))
 			$search_str = get_vocab("search_for");
 		if (empty($search_str))
@@ -1102,21 +1138,6 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 			// HOOK
 			$resulHook = Hook::Appel("hookHeader1");
 			$d['hookHeader1'] = $resulHook['hookHeader1'];
-
-			// On fabrique une date valide pour la réservation si ce n'est pas le cas
-			$date_ = mktime(0, 0, 0, $month, $day, $year);
-			if ($date_ < Settings::get("begin_bookings"))
-				$date_ = Settings::get("begin_bookings");
-			else if ($date_ > Settings::get("end_bookings"))
-				$date_ = Settings::get("end_bookings");
-			$day   = date("d",$date_);
-			$month = date("m",$date_);
-			$year  = date("Y",$date_);
-
-			//Parametre url fixe compte / admin
-			$paramUrl = 'p='.$page.'&day='.$day.'&year='.$year.'&month='.$month.'&area='.$area;
-			$paramUrlAccueil = 'day='.$day.'&amp;year='.$year.'&amp;month='.$month;
-			$d['paramUrl'] = $paramUrl;
 
 			//Accueil
 			$d['pageAccueil'] = $racine.page_accueil('yes').$paramUrlAccueil;
@@ -2515,9 +2536,9 @@ function make_area_list_html($link, $current_site, $current_area, $year, $month,
 			{
 				if ($row[0] == $current_area)
 				{
-					$out_html .= "<a id=\"liste_select\" onclick=\"charger();\"  href=\"app.php?p='.$link.'&amp;year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\">&gt; ".htmlspecialchars($row[1])."</a></b><br />\n";
+					$out_html .= "<a id=\"liste_select\" onclick=\"charger();\"  href=\"app.php?p=".$link."&amp;year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\">&gt; ".htmlspecialchars($row[1])."</a></b><br />\n";
 				} else {
-					$out_html .= "<a id=\"liste\" onclick=\"charger();\"  href=\"app.php?p='.$link.'&amp;year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\"> ".htmlspecialchars($row[1])."</a><br />\n";
+					$out_html .= "<a id=\"liste\" onclick=\"charger();\"  href=\"app.php?p=".$link."&amp;year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\"> ".htmlspecialchars($row[1])."</a><br />\n";
 				}
 			}
 		}
@@ -2552,7 +2573,7 @@ function make_room_list_html($link,$current_area, $current_room, $year, $month, 
 				if ($row[0] == $current_room)
 					$out_html .= "<span id=\"liste_select\">&gt; ".htmlspecialchars($row[1])."</span><br />\n";
 				else
-					$out_html .= "<a id=\"liste\" onclick=\"charger();\"  href=\"app.php?p='.$link.'&amp;year=$year&amp;month=$month&amp;day=$day&amp;&amp;room=$row[0]\">".htmlspecialchars($row[1]). "</a><br />\n";
+					$out_html .= "<a id=\"liste\" onclick=\"charger();\"  href=\"app.php?p=".$link."&amp;year=$year&amp;month=$month&amp;day=$day&amp;&amp;room=$row[0]\">".htmlspecialchars($row[1]). "</a><br />\n";
 			}
 		}
 	}
@@ -2787,7 +2808,6 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		require_once '../include/mail.class.php';
 		require_once '../include/pages.class.php';
 	}
-	
 
 	if (!Pages::load())
 		die('Erreur chargement pages');
@@ -4647,7 +4667,7 @@ function mail_hebdo()
 	if (Settings::get("automatic_mail") != 'yes') // Mail automatique désactivé
 		$envoisOk = false;
 
-	if($envoisOk == true){
+	if($envoisOk){
 		$sql = "SELECT DISTINCT jmr.login, jmr.id_room, u.email 
 				FROM ".TABLE_PREFIX."_j_mailuser_room AS jmr
 				LEFT JOIN ".TABLE_PREFIX."_utilisateurs AS u 
@@ -4656,7 +4676,7 @@ function mail_hebdo()
 		$dest = grr_sql_query($sql);
 
 		$logins_rooms = [];
-		for ($i = 0; ($rowD = grr_sql_row_keyed($dest, $i)); $i++) 
+		foreach($dest as $rowD) 
 		{
 			$logins_rooms[$rowD['login']]['email'] = $rowD['email'];
 			$logins_rooms[$rowD['login']]['rooms'][] = $rowD['id_room'];
@@ -5798,9 +5818,9 @@ function jQuery_DatePickerTwig($typeDate){
 			$day = date("d");
 		}
 
-		if (isset($start_day) && $typeDate=='start'){
+		if (isset($start_day) && $typeDate=='start_'){
 			$day = $start_day;
-		} elseif (isset($end_day) && $typeDate=='end'){
+		} elseif (isset($end_day) && $typeDate=='end_'){
 			$day = $end_day;
 		}
 
@@ -5810,9 +5830,9 @@ function jQuery_DatePickerTwig($typeDate){
 			$month = date("m");
 		}
 
-		if (isset($start_month) && $typeDate=='start'){
+		if (isset($start_month) && $typeDate=='start_'){
 			$month = $start_month;
-		} elseif (isset($end_month) && $typeDate=='end'){
+		} elseif (isset($end_month) && $typeDate=='end_'){
 			$month = $end_month;
 		}
 
@@ -5822,9 +5842,9 @@ function jQuery_DatePickerTwig($typeDate){
 			$year = date("Y");
 		}
 
-		if (isset($start_year) && $typeDate=='start'){
+		if (isset($start_year) && $typeDate=='start_'){
 			$year = $start_year;
-		} elseif (isset($end_year) && $typeDate=='end'){
+		} elseif (isset($end_year) && $typeDate=='end_'){
 			$year = $end_year;
 		}
  	}

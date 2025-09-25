@@ -3,10 +3,10 @@
  * installation/fonctions/maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-12-22 11:16$
+ * Dernière modification : $Date: 2025-09-23 18:45$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -701,8 +701,8 @@ function execute_maj3($version_old, $version_grr)
 		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#FFBB20' WHERE couleur = '28';");
 		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_type_area SET `couleurhexa` = '#CFCFCF' WHERE couleur > '28';");
 		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_page (`nom` varchar(30) NOT NULL, `valeur` longtext NOT NULL);");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (`nom`, `valeur`) VALUES ('CGU', 'Les CGU');");
-		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_page ADD UNIQUE KEY `nom` (`nom`);");
+    $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_page ADD UNIQUE KEY `nom` (`nom`);");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (`nom`, `valeur`) VALUES ('CGU', 'Les CGU') ON DUPLICATE KEY UPDATE `valeur`='Les CGU';");
 		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_modulesext (`nom` varchar(50) NOT NULL, `actif` tinyint(1) NOT NULL DEFAULT '0', `version` INT(11) NOT NULL);");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_modulesext ADD UNIQUE KEY `nom` (`nom`);");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('imprimante', '0')");
@@ -897,7 +897,7 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("INSERT IGNORE INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('cas_version', 'CAS_VERSION_2_0')");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE `password` `password` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';");
         $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants ADD `id_participation` INT(11) NOT NULL AUTO_INCREMENT FIRST, ADD UNIQUE `UNIQUE` (`id_participation`)"); 
-        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants CHANGE `participant` `beneficiaire` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL"); 
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants CHANGE IF EXISTS `participant` `beneficiaire` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL"); 
         $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants ADD `timestamp` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `idresa`, ADD `cree_par` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `timestamp`");
         $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants ADD `beneficiaire_ext` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `beneficiaire`, ADD `moderation` TINYINT(1) NOT NULL DEFAULT '0' AFTER `beneficiaire_ext`");
 		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_log_resa (idlogresa bigint(20) NOT NULL AUTO_INCREMENT, date int(11) NOT NULL, idresa int(11) NOT NULL, identifiant varchar(100) NOT NULL, action tinyint(3) UNSIGNED NOT NULL, infoscomp text NOT NULL, PRIMARY KEY (`idlogresa`));");
@@ -1212,7 +1212,7 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('login_template', '1');");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('login_logo', '1');");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('login_nom', '1');");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('nextalertemailhebdo', '1735686000');");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('nextalertemailhebdo', '1735686000') ON DUPLICATE KEY UPDATE `value` = '1735686000';");
 
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_page ADD `statutmini` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_page ADD `lien` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL;");
@@ -1246,8 +1246,20 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_site ADD `access` CHAR(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'a' AFTER `sitename`;");
 		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_j_user_site (`login` varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,`id_site` int NOT NULL DEFAULT '0',`idgroupes` int NOT NULL DEFAULT '0',PRIMARY KEY (`login`,`id_site`));");
-		$result_inter .= traiteRequete("CREATE TABLE ".TABLE_PREFIX."_j_group_site (`idgroupes` int NOT NULL, `id_site` int NOT NULL DEFAULT '0', PRIMARY KEY (`idgroupes`,`id_site`));");
+		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_j_group_site (`idgroupes` int NOT NULL, `id_site` int NOT NULL DEFAULT '0', PRIMARY KEY (`idgroupes`,`id_site`));");
 
+		if ($result_inter == '')
+			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+		else
+			$result .= $result_inter;
+		$result_inter = '';
+	}
+
+	if (intval($version_old_bdd) < 400008) // Version GRR 4.4.2
+	{
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_user_site DROP PRIMARY KEY;");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_user_site ADD CONSTRAINT grr_j_user_site_pk PRIMARY KEY (login,id_site,idgroupes);");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE commentaire commentaire MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;");
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
