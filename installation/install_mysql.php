@@ -3,7 +3,7 @@
  * install_mysql.php
  * Interface d'installation de GRR pour un environnement mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-04-16 16:05$
+ * Dernière modification : $Date: 2025-09-25 18:28$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -240,7 +240,7 @@ if ($etape == 4)
     if ($choix_db == "new_grr")
     {
       $sel_db = $table_new;
-      $result = mysqli_query($db, "CREATE DATABASE $sel_db;");
+      $result = mysqli_query($db, "CREATE DATABASE IF NOT EXISTS `$sel_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
     }
     else
     {
@@ -256,9 +256,9 @@ if ($etape == 4)
         $query = fgets($fd, 5000);
         $query = trim($query);
         $query = preg_replace("/DROP TABLE IF EXISTS grr/","DROP TABLE IF EXISTS ".$table_prefix,$query);
-        $query = preg_replace("/CREATE TABLE grr/","CREATE TABLE ".$table_prefix,$query);
+        $query = preg_replace("/CREATE TABLE IF NOT EXISTS grr/","CREATE TABLE IF NOT EXISTS ".$table_prefix,$query);
         $query = preg_replace("/INSERT INTO grr/","INSERT INTO ".$table_prefix,$query);
-
+        
         if ($query != '')
         {
           $reg = mysqli_query($db, $query);
