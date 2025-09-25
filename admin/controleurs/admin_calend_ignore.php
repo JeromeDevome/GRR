@@ -28,28 +28,53 @@ get_vocab_admin('uncheck_all_the');
 get_vocab_admin('admin_calend_ignore_vacances');
 get_vocab_admin('admin_calend_ignore_feries');
 get_vocab_admin('uncheck_all_');
-
+get_vocab_admin('OK');
 get_vocab_admin('save');
+
+
+$annee = isset($_POST['From_year']) ? $_POST['From_year'] : (isset($_GET['From_year']) ? intval($_GET['From_year']) : date('Y'));
+
+if (!isset($From_year))
+	$From_year = $annee;
+
+$d['liste_annees'] = genDateSelectorForm("From_", "", "", $From_year,"");
+$d['From_year'] = $From_year;
+
+$premier_jour_annee = mktime(0, 0, 0, 1, 1, $annee);
+$dernier_jour_annee = mktime(0, 0, 0, 12, 31, $annee);
+
+$begin_bookings = Settings::get("begin_bookings");
+$end_bookings = Settings::get("end_bookings");
+
+if($begin_bookings < $premier_jour_annee){
+	$begin_bookings = $premier_jour_annee;
+}
+
+if($end_bookings > $dernier_jour_annee){
+	$end_bookings = $dernier_jour_annee;
+}
+
+
 
 if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 {
 	// On met de côté toutes les dates
 	$day_old = array();
-	$res_old = grr_sql_query("SELECT day FROM ".TABLE_PREFIX."_calendar");
+	$res_old = grr_sql_query("SELECT day FROM ".TABLE_PREFIX."_calendar WHERE DAY >= '".$begin_bookings."' AND DAY <= '".$end_bookings."'");
 	if ($res_old)
 	{
 		for ($i = 0; ($row_old = grr_sql_row($res_old, $i)); $i++)
 			$day_old[$i] = $row_old[0];
 	}
-	// On vide la table ".TABLE_PREFIX."_calendar
-	$sql = "truncate table ".TABLE_PREFIX."_calendar";
+	// On supprime de la table ".TABLE_PREFIX."_calendar
+	$sql = "DELETE FROM ".TABLE_PREFIX."_calendar WHERE DAY >= '".$begin_bookings."' AND DAY <= '".$end_bookings."'";
 	if (grr_sql_command($sql) < 0)
 		fatal_error(0, "<p>" . grr_sql_error());
 	$result = 0;
-	$end_bookings = Settings::get("end_bookings");
-	$n = Settings::get("begin_bookings");
-	$month = date('m', Settings::get("begin_bookings"));
-	$year = date('Y', Settings::get("begin_bookings"));
+
+	$n = $begin_bookings;
+	$month = date('m', $begin_bookings);
+	$year = date('Y', $begin_bookings);
 	$day = 1;
 	while ($n <= $end_bookings)
 	{
@@ -132,13 +157,14 @@ if (Settings::get("show_holidays") == 'Oui'){ // on n'affiche ce choix que si le
     unset($vacances);
 }
 
-$n = Settings::get("begin_bookings");
-$end_bookings = Settings::get("end_bookings");
+
+
 $debligne = 1;
-$month = date("m", Settings::get("begin_bookings"));
-$year = date("Y", Settings::get("begin_bookings"));
+$month = date("m",$begin_bookings);
+$year = date("Y", $begin_bookings);
 $inc = 0;
 $trad['dCalendrier'] = "";
+$n = $begin_bookings;
 
 while ($n <= $end_bookings)
 {
