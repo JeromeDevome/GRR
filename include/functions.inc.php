@@ -1574,20 +1574,23 @@ function genDateSelectorForm($prefix, $day, $month, $year, $option)
 		}
 		$selector_data .= "</select>";
 	}
-	$selector_data .= "<select class='btn btn-default btn-sm' name=\"{$prefix}month\" id=\"{$prefix}month\">\n";
-	for ($i = 1; $i <= 12; $i++)
+	if ($month != "")
 	{
-		$m = utf8_strftime("%b", mktime(0, 0, 0, $i, 1, $year));
-		if ($i < 10)
+		$selector_data .= "<select class='btn btn-default btn-sm' name=\"{$prefix}month\" id=\"{$prefix}month\">\n";
+		for ($i = 1; $i <= 12; $i++)
 		{
-			$selector_data .=  "<option value=\"0$i\"" . ($i == $month ? " selected=\"selected\"" : "") . ">$m</option>\n";
+			$m = utf8_strftime("%b", mktime(0, 0, 0, $i, 1, $year));
+			if ($i < 10)
+			{
+				$selector_data .=  "<option value=\"0$i\"" . ($i == $month ? " selected=\"selected\"" : "") . ">$m</option>\n";
+			}
+			else
+			{
+				$selector_data .=  "<option value=\"$i\"" . ($i == $month ? " selected=\"selected\"" : "") . ">$m</option>\n";
+			}
 		}
-		else
-		{
-			$selector_data .=  "<option value=\"$i\"" . ($i == $month ? " selected=\"selected\"" : "") . ">$m</option>\n";
-		}
+		$selector_data .=  "</select>";
 	}
-	$selector_data .=  "</select>";
 	$selector_data .=  "<select class='btn btn-default btn-sm' name=\"{$prefix}year\" id=\"{$prefix}year\">\n";
 	$min = date('Y', Settings::get("begin_bookings"));
 	if ($option == "more_years")

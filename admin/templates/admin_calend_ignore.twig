@@ -40,7 +40,16 @@
 							<td colspan="2"><span class="small"><a href="?p=admin_calend_ignore" onclick="setCheckboxesGrr(document.getElementById('formulaire'), false, 'all'); return false;">{{ trad.uncheck_all_ }}</a></span></td>
 					</table>
 
+					<form action="?p=admin_calend_ignore" method="get" id="annee">
+						<input type="hidden" name="p" value="admin_calend_ignore" />
+						{{ trad.annee }} 
+						{{d.liste_annees |raw }}
+						<input class="btn btn-primary" type="submit" name="{{ trad.OK }}" value="{{ trad.OK }}" />
+					</form>
+
 					<form action="?p=admin_calend_ignore" method="post" id="formulaire">
+						<input type="hidden" name="p" value="admin_calend_ignore" />
+						<input type="hidden" name="From_year" value="{{ d.From_year }}" />
 						<table cellspacing="20">
 							{{ trad.dCalendrier |raw }}
 						</table>
