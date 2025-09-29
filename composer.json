@@ -6,6 +6,11 @@
             "email": "support@devome.com"
         }
     ],
+    "autoload": {
+      "psr-4": {
+        "Devome\\Grr\\": "src/Devome/Grr"
+      }
+    },
     "require": {
         "twig/twig": "^3.0",
         "phpmailer/phpmailer": "^6.3",
