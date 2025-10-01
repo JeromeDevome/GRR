@@ -40,9 +40,9 @@
                                 <input type="hidden" name="id_room" value="{{d.id_room}}" />
                                 
                                 <div class="form-group">
-                                    <label class="col col-sm-3" for="reg_admin_login">{{ trad.add_user_to_list }}</label>
+                                    <label class="col col-sm-3" for="f_rul">{{ trad.add_user_to_list }}</label>
                                     <div class="col col-sm-9">
-                                        <select size="1" name="reg_user_login" class="form-control">
+                                        <select size="1" id="f_rul" name="reg_user_login" class="form-control">
                                             <option value="">{{ trad.nobody }}</option>
                                             {% for userA in userAjout %}
                                                 <option value="{{userA.0}}">{{userA.1}} {{userA.2}}</option>
@@ -62,15 +62,15 @@
 								<input type="hidden" name="p" value="admin_book_room" />
 								<input type="hidden" name="id_room" value="{{d.id_room}}" />
 								<div class="form-group">
-									<label class="col col-sm-3" for="reg_admin_login">{{ trad.add_multiple_user_to_list }}</label>
+									<label class="col col-sm-3" for="f_agent">{{ trad.add_multiple_user_to_list }}</label>
 									<div class="col col-sm-9">
-										<select name="agent" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.agent,this.form.elements['reg_multi_user_login[]'])">
+										<select name="agent" size="8" id="f_agent" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.agent,this.form.elements['reg_multi_user_login[]'])">
 											{% for userA in userAjout %}
 												<option value="{{ userA.0 }}">{{ userA.1 }} {{ userA.2 }}</option>
 											{% endfor %}
 										</select>
-										<button type="button" class="btn btn-danger" onclick="Deplacer(this.form.elements['reg_multi_user_login[]'],this.form.agent)"/><i class="fa fa-arrow-circle-left"></i></button>
-										<button type="button" class="btn btn-success" onclick="Deplacer(this.form.agent,this.form.elements['reg_multi_user_login[]'])"/><i class="fa fa-arrow-circle-right"></i></button>
+										<button type="button" class="btn btn-danger" onclick="Deplacer(this.form.elements['reg_multi_user_login[]'],this.form.agent)"><i class="fa fa-arrow-circle-left"></i></button>
+										<button type="button" class="btn btn-success" onclick="Deplacer(this.form.agent,this.form.elements['reg_multi_user_login[]'])"><i class="fa fa-arrow-circle-right"></i></button>
 										<select name="reg_multi_user_login[]" id="reg_multi_user_login" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.elements['reg_multi_user_login[]'],this.form.agent)">
 										</select>
 									</div>

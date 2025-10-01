@@ -23,9 +23,9 @@
 					<form id="area" action="?p=admin_right_admin" method="post">
 
 						<div class="form-group">
-							<label class="col col-sm-3" for="area">{{ trad.areas }}</label>
+							<label class="col col-sm-3" for="f_area">{{ trad.areas }}</label>
 							<div class="col col-sm-9">
-								<select name="area" class="form-control" onchange="area_go()">
+								<select id="f_area" name="area" class="form-control" onchange="area_go()">
 									<option value="-1">{{ trad.select }}</option>
 									{% for domaine in domaines %}
 										<option value="{{ domaine.id }}" {% if domaine.id == trad.dIdDomaine %} selected {% endif %}>{{ domaine.nom }}</option>
@@ -45,9 +45,9 @@
 							<input type="hidden" name="id_area" value="{{ trad.dIdDomaine }}" />
 
 							<div class="form-group">
-								<label class="col col-sm-3" for="reg_admin_login">{{ trad.add_user_to_list }}</label>
+								<label class="col col-sm-3" for="f_ral">{{ trad.add_user_to_list }}</label>
 								<div class="col col-sm-9">
-									<select name="reg_admin_login" class="form-control">
+									<select id="f_ral" name="reg_admin_login" class="form-control">
 										<option value="">{{ trad.select }}</option>
 										{% for user in utilisateursajoutable %}
 											<option value="{{ user.login }}">{{ user.nom }} {{ user.prenom }}</option>
@@ -66,15 +66,15 @@
 							<form action="?p=admin_right_admin" method="post">
 								<input type="hidden" name="id_area" value="{{ trad.dIdDomaine }}" />
 								<div class="form-group">
-									<label class="col col-sm-3" for="reg_admin_login">{{ trad.add_multiple_user_to_list }}</label>
+									<label class="col col-sm-3" for="f_agent">{{ trad.add_multiple_user_to_list }}</label>
 									<div class="col col-sm-9">
-										<select name="agent" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.agent,this.form.elements['reg_multi_admin_login[]'])">
+										<select id="f_agent" name="agent" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.agent,this.form.elements['reg_multi_admin_login[]'])">
 											{% for user in utilisateursajoutable %}
 												<option value="{{ user.login }}">{{ user.nom }} {{ user.prenom }}</option>
 											{% endfor %}
 										</select>
-										<button type="button" class="btn btn-danger" onclick="Deplacer(this.form.elements['reg_multi_admin_login[]'],this.form.agent)"/><i class="fa fa-arrow-circle-left"></i></button>
-										<button type="button" class="btn btn-success" onclick="Deplacer(this.form.agent,this.form.elements['reg_multi_admin_login[]'])"/><i class="fa fa-arrow-circle-right"></i></button>
+										<button type="button" class="btn btn-danger" onclick="Deplacer(this.form.elements['reg_multi_admin_login[]'],this.form.agent)"><i class="fa fa-arrow-circle-left"></i></button>
+										<button type="button" class="btn btn-success" onclick="Deplacer(this.form.agent,this.form.elements['reg_multi_admin_login[]'])"><i class="fa fa-arrow-circle-right"></i></button>
 										<select name="reg_multi_admin_login[]" id="reg_multi_admin_login" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.elements['reg_multi_admin_login[]'],this.form.agent)">
 										</select>
 									</div>

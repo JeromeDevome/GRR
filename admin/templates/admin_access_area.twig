@@ -20,9 +20,9 @@
 					<form id="area" action="?p=admin_access_area" method="post">
 
 						<div class="form-group">
-							<label class="col col-sm-3" for="area">{{ trad.areas }}</label>
+							<label class="col col-sm-3" for="f_area">{{ trad.areas }}</label>
 							<div class="col col-sm-9">
-								<select name="area" class="form-control" onchange="area_go()">
+								<select id="f_area" name="area" class="form-control" onchange="area_go()">
 									<option value="-1">{{ trad.select }}</option>
 									{% for domaine in domaines %}
 										<option value="{{ domaine.id }}" {% if domaine.id == d.idDomaine %} selected {% endif %}>{{ domaine.nom }}</option>
@@ -45,9 +45,9 @@
 								<input type="hidden" name="id_area" value="{{ d.idDomaine }}" />
 
 								<div class="form-group">
-									<label class="col col-sm-12" for="reg_user_login">{{ trad.add_user_to_list }}</label>
+									<label class="col col-sm-12" for="f_rul">{{ trad.add_user_to_list }}</label>
 									<div class="col col-sm-12">
-										<select name="reg_user_login" class="form-control">
+										<select id="f_rul" name="reg_user_login" class="form-control">
 											<option value="">{{ trad.select }}</option>
 											{% for user in utilisateursajoutable %}
 												<option value="{{ user.login }}">{{ user.nom }} {{ user.prenom }}</option>
@@ -69,9 +69,9 @@
 								<input type="hidden" name="action" value="add_groupe" />
 	
 								<div class="form-group">
-									<label class="col col-sm-12" for="reg_groupe">Ajouter un groupe à la liste</label>
+									<label class="col col-sm-12" for="f_groupe">Ajouter un groupe à la liste</label>
 									<div class="col col-sm-12">
-										<select name="reg_groupe" class="form-control">
+										<select id="f_groupe" name="reg_groupe" class="form-control">
 											<option value="">{{ trad.select }}</option>
 											{% for groupe in groupesajoutable %}
 												<option value="{{ groupe.id }}">{{ groupe.nom }}</option>
@@ -93,15 +93,15 @@
 								<input type="hidden" name="p" value="admin_access_area" />
 								<input type="hidden" name="id_area" value="{{ d.idDomaine }}" />
 								<div class="form-group">
-									<label class="col col-sm-3" for="agent">{{ trad.add_multiple_user_to_list }}</label>
+									<label class="col col-sm-3" for="f_agent">{{ trad.add_multiple_user_to_list }}</label>
 									<div class="col col-sm-9">
-										<select name="agent" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.agent,this.form.elements['reg_multi_user_login[]'])">
+										<select id="f_agent" name="agent" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.agent,this.form.elements['reg_multi_user_login[]'])">
 											{% for user in utilisateursajoutable %}
 												<option value="{{ user.login }}">{{ user.nom }} {{ user.prenom }}</option>
 											{% endfor %}
 										</select>
-										<button type="button" class="btn btn-danger" onclick="Deplacer(this.form.elements['reg_multi_user_login[]'],this.form.agent)"/><i class="fa fa-arrow-circle-left"></i></button>
-										<button type="button" class="btn btn-success" onclick="Deplacer(this.form.agent,this.form.elements['reg_multi_user_login[]'])"/><i class="fa fa-arrow-circle-right"></i></button>
+										<button type="button" class="btn btn-danger" onclick="Deplacer(this.form.elements['reg_multi_user_login[]'],this.form.agent)"><i class="fa fa-arrow-circle-left"></i></button>
+										<button type="button" class="btn btn-success" onclick="Deplacer(this.form.agent,this.form.elements['reg_multi_user_login[]'])"><i class="fa fa-arrow-circle-right"></i></button>
 										<select name="reg_multi_user_login[]" id="reg_multi_user_login" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.elements['reg_multi_user_login[]'],this.form.agent)">
 										</select>
 									</div>
