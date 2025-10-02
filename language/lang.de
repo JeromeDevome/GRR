@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2025-07-03
+# Last modification : 2025-10-02
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -493,7 +493,7 @@ $vocab['gototoday'] = "Heute";
 $vocab['grr_mail_sender'] = "Always send emails from the SMTP account";
 $vocab['grr_mail_sender_explain'] = "Some mail servers refuse to send mail from unknown senders. In this cas check the box so that emails are sent from the account mentioned above.";
 $vocab['grr_url'] = "Adresse der Webseite";
-$vocab['grr_url_explain'] = "Verwenden Sie die obige Adresse für bestimmte Links, insbesondere für Links im "druckbaren Format". Wenn Sie das Kontrollkästchen nicht aktivieren oder das obige Feld leer ist, versucht GRR, die Site-Adresse selbst zu ermitteln.";
+$vocab['grr_url_explain'] = "Verwenden Sie die obige Adresse für bestimmte Links, insbesondere für Links im \"druckbaren Format\". Wenn Sie das Kontrollkästchen nicht aktivieren oder das obige Feld leer ist, versucht GRR, die Site-Adresse selbst zu ermitteln.";
 $vocab['grr_version'] = "Version ";
 $vocab['help'] = "Hilfe";
 $vocab['hours'] = "Stunde(n)";
@@ -542,7 +542,7 @@ $vocab['lasso_defederate_this_account'] = "Dieses Konto von Lasso zurückstellen
 $vocab['lasso_federated'] = "Sie sind föderiert.";
 $vocab['lasso_federate_this_account'] = "Dieses Konto mit Lasso föderieren";
 $vocab['lasso_local_user'] = "Lokaler Benutzer";
-$vocab['lasso_nameid_for_idp'] = "Name-ID des Identitätsanbieters";*
+$vocab['lasso_nameid_for_idp'] = "Name-ID des Identitätsanbieters";
 $vocab['lasso_please_connect'] = "Bitte melden Sie sich bei GRR an.";
 $vocab['lasso_SSO_explain'] = "Wenn Sie eine <b>Lasso</b>-Umgebung (ID-FF 1.2 oder SAML 2.0) verwenden, können Sie <b>GRR</b> unten aktivieren, um diesen Dienst zu unterstützen. Weitere Informationen finden Sie in der GRR-Dokumentation.";
 $vocab['lastupdate'] = "Letztes Update";
@@ -858,7 +858,7 @@ $vocab['site_id'] = "Kennung";
 $vocab['site_name'] = "Name";
 $vocab['site_pays'] = "Land";
 $vocab['site_tel'] = "Tel.";
-$vocab['site_ville'] = "Stadt";*
+$vocab['site_ville'] = "Stadt";
 $vocab['sso_actif_cacher_lien_deconnecter'] = "Sie haben die SSO-Unterstützung aktiviert. Aktivieren Sie das Kontrollkästchen gegenüber, wenn der Link <b>„Abmelden“</b> im oberen Banner <b>für Personen, die sich per SSO bei GRR authentifiziert haben, nicht angezeigt werden soll</b>.";
 $vocab['sso_active_correspondance_profil_statut'] = "Die LDAP-<-->Statuszuordnungsschnittstelle in GRR anzeigen.";
 $vocab['sso_active_correspondance_profil_statut_text'] = "Sie können außerdem die Anzeige einer Option im linken Menü unten aktivieren, um ein durch ein LDAP-Attribut (seine Funktion) definiertes Benutzerprofil mit dem Status in GRR abzugleichen. Sie müssen dann auch Ihren CAS-Server und die GRR-Datei config_CAS.inc.php konfigurieren (siehe Dokumentation).";
