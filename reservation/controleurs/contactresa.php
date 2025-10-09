@@ -3,7 +3,7 @@
  * contactresa.php
  * Formulaire de demande de réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-10-09 11:10$
+ * Dernière modification : $Date: 2025-10-09 11:20$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -34,7 +34,7 @@ $d['CtnPage'] =  $infosPage[1];
 
 /*  */
 use Gregwar\Captcha\PhraseBuilder;
-print_r($_POST);
+
 // Traitement du formulaire
 if(isset($_POST['nom'])){ 
 
@@ -134,11 +134,11 @@ $domaineDispo = array();
 
 $sql_areaName = "SELECT id, area_name,resolution_area FROM ".TABLE_PREFIX."_area ORDER BY area_name";
 $res_areaName = grr_sql_query($sql_areaName);
-for ($i = 0; ($row_areaName = grr_sql_row($res_areaName, $i)); $i++)
+foreach($res_areaName as $row)
 {
-	if (authUserAccesArea(getUserName(),$row_areaName[0]) == 1)
+	if (authUserAccesArea(getUserName(),$row['id']) == 1)
 	{
-		$domaineDispo[] = array('id' => $row_areaName[0], 'nom' => $row_areaName[1], 'resolution' => $row_areaName[2]);
+		$domaineDispo[] = array('id' => $row['id'], 'nom' => $row['area_name'], 'resolution' => $row['resolution']);
 	}
 }
 
