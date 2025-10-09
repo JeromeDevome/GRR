@@ -1,11 +1,11 @@
 <?php
 /**
  * contactresa.php
- * Formulaire d'envoi de mail
+ * Formulaire de demande de réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-27 15:40$
+ * Dernière modification : $Date: 2025-10-09 11:10$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -34,7 +34,7 @@ $d['CtnPage'] =  $infosPage[1];
 
 /*  */
 use Gregwar\Captcha\PhraseBuilder;
-
+print_r($_POST);
 // Traitement du formulaire
 if(isset($_POST['nom'])){ 
 
@@ -142,8 +142,7 @@ for ($i = 0; ($row_areaName = grr_sql_row($res_areaName, $i)); $i++)
 	}
 }
 
-$d['jQuery_DatePicker'] = jQuery_DatePickerTwig('start');
-
+$d['jQuery_DatePicker'] = jQuery_DatePickerTwig('start_');
 
 
 echo $twig->render('contactresa.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'domaineDispo' => $domaineDispo));
