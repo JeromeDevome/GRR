@@ -4,6 +4,7 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
 {% endblock %}
 
 {% block content %}
@@ -70,7 +71,7 @@
 				<div class="box-footer">
 					<input type="submit" name="change_done" value="{{ trad.back }}" class="btn btn-default btn-md" />
 					<input type="submit" name="change_type" value="{{ trad.save }}" class="btn btn-success btn-md pull-right" />
-					<input type="submit" name="change_room_and_back" value="{{ trad.save_and_back }}" class="btn btn-success btn-md pull-right" />
+					<input type="submit" name="change_type_and_back" value="{{ trad.save_and_back }}" class="btn btn-success btn-md pull-right" />
 				</div>
 			</form>
           </div>
@@ -82,22 +83,33 @@
 {% endblock %}
 
 {% block javascript %}
-<script>
-	function updatecolor(idchamp) {
-		var input_color = document.getElementById('square'+idchamp).value;
-		document.getElementById(idchamp).value = input_color;
-		if(idchamp == "couleurhexa")
-			document.getElementById('prevision').style.backgroundColor = input_color;
-		else if(idchamp == "couleurtexte")
-			document.getElementById('prevision').style.color = input_color;
-	}
-	function updatecolorpicker(idchamp) {
-		var input_color = document.getElementById(idchamp).value;
-		document.getElementById('square'+idchamp).value = input_color;
-		if(idchamp == "couleurhexa")
-			document.getElementById('prevision').style.backgroundColor = input_color;
-		else if(idchamp == "couleurtexte")
-			document.getElementById('prevision').style.color = input_color;
-	}
-</script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
+	<script>
+		$(function () {
+			{%if d.enregistrement == 1 %}
+				toastr.success("{{d.enregistrement_msg}}")
+			{% elseif d.enregistrement == 2 %}
+				toastr.warning("{{d.enregistrement_msg}}")
+			{% elseif d.enregistrement == 3 %}
+				toastr.error("{{d.enregistrement_msg}}")
+			{% endif %}
+		}); 
+
+		function updatecolor(idchamp) {
+			var input_color = document.getElementById('square'+idchamp).value;
+			document.getElementById(idchamp).value = input_color;
+			if(idchamp == "couleurhexa")
+				document.getElementById('prevision').style.backgroundColor = input_color;
+			else if(idchamp == "couleurtexte")
+				document.getElementById('prevision').style.color = input_color;
+		}
+		function updatecolorpicker(idchamp) {
+			var input_color = document.getElementById(idchamp).value;
+			document.getElementById('square'+idchamp).value = input_color;
+			if(idchamp == "couleurhexa")
+				document.getElementById('prevision').style.backgroundColor = input_color;
+			else if(idchamp == "couleurtexte")
+				document.getElementById('prevision').style.color = input_color;
+		}
+	</script>
 {% endblock %}

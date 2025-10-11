@@ -3,9 +3,9 @@
  * admin_type_modify.php
  * interface de création/modification des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-07-23 21:10$
+ * Dernière modification : $Date: 2025-10-11 17:45$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -50,9 +50,8 @@ $couleur_hexa = isset($_GET["couleurhexa"]) ? $_GET["couleurhexa"] : NULL;
 $couleur_txt = isset($_GET["couleurtexte"]) ? $_GET["couleurtexte"] : NULL;
 $couleur_icone = isset($_GET["couleuricone"]) ? $_GET["couleuricone"] : NULL;
 $disponible = isset($_GET["disponible"]) ? $_GET["disponible"] : NULL;
-$msg = "";
 
-if (isset($_GET["change_room_and_back"]))
+if (isset($_GET["change_type_and_back"]))
 {
 	$_GET['change_type'] = "yes";
 	$_GET['change_done'] = "yes";
@@ -78,7 +77,8 @@ if (isset($_GET['change_type']))
 		$test = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$type_letter."' AND id!='".$id_type."'");
 		if ($test > 0)
 		{
-			$msg = "Enregistrement impossible : Un type portant la même lettre existe déjà.";
+			$d['enregistrement'] = 3;
+			$d['enregistrement_msg'] = "Enregistrement impossible : Un type portant la même lettre existe déjà.";
 			$ok = 'no';
 		}
 		else
@@ -103,14 +103,18 @@ if (isset($_GET['change_type']))
 				$ok = 'no';
 			}
 			else
-				$msg = get_vocab("message_records");
+			{
+				$d['enregistrement'] = 1;
+				$d['enregistrement_msg'] = get_vocab("message_records");
+			}
 		}
 	}
 	else // Ajout
 	{
 		$test = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$type_letter."'");
 		if ($test > 0){
-			$msg = "Enregistrement impossible : Un type portant la même lettre existe déjà !";
+			$d['enregistrement'] = 3;
+			$d['enregistrement_msg'] = "Enregistrement impossible : Un type portant la même lettre existe déjà !";
 			$ok = 'no';
 		}
 		else
@@ -133,7 +137,10 @@ if (isset($_GET['change_type']))
 				$ok = 'no';
 			}
 			else
-				$msg = get_vocab("message_records");
+			{
+				$d['enregistrement'] = 1;
+				$d['enregistrement_msg'] = get_vocab("message_records");
+			}
 		}
 
 	}
@@ -142,11 +149,9 @@ if (isset($_GET['change_type']))
 if ((isset($_GET['change_done'])) && (!isset($ok)))
 {
 	$_SESSION['displ_msg'] = 'yes';
-	Header("Location: "."?p=admin_type&msg=".$msg);
+	Header("Location: "."?p=admin_type&enregistrement=".$d['enregistrement']."&enregistrement_msg=".$d['enregistrement_msg']);
 	exit();
 }
-
-affiche_pop_up($msg,"admin");
 
 if ((isset($id_type)) && ($id_type > 0))
 {

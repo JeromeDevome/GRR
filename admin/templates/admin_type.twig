@@ -2,57 +2,105 @@
 
 {% import 'messagesysteme.twig' as msgSyst %}
 
+{% block css %}
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
+{% endblock %}
+
 {% block content %}
-	<div class="row">
-		<div class="col col-md-12">
-			<div class="callout callout-info">{{trad.admin_type_explications}}</div>
 
-			{% if listeManquant != '' %}
-				{{ msgSyst.messageAlerte(trad.type_resa_manquant_titre, trad.type_resa_manquant_msg ~ listeManquant) }}
-            {% elseif listeManquant == ' ' %}
-                {{ msgSyst.messageAlerte(trad.type_resa_manquant_titre, trad.type_resa_vide_msg) }}
-			{% endif %}
+	<div class="col col-md-12">
+		<div class="callout callout-info">{{trad.admin_type_explications}}</div>
 
-			<div class="box">
-				<div class="box-header">
-					<h3 class="box-title">{{trad.admin_type}}</h3> <a class="btn pull-right bg-green"href="?p=admin_type_modify&id=0">{{trad.display_add_type}}</a>
+		{% if listeManquant != '' %}
+			{{ msgSyst.messageAlerte(trad.type_resa_manquant_titre, trad.type_resa_manquant_msg ~ listeManquant) }}
+		{% elseif listeManquant == ' ' %}
+			{{ msgSyst.messageAlerte(trad.type_resa_manquant_titre, trad.type_resa_vide_msg) }}
+		{% endif %}
+	</div>
+
+	<div class="card">
+		<div class="card-header">
+			<a class="btn pull-right bg-green"href="?p=admin_type_modify&amp;id=0">{{trad.display_add_type}}</a>
+			<a class="btn pull-right bg-info"href="?p=admin_type&amp;action=1">{{trad.display_type_order_identifiant}}</a>
+			<a class="btn pull-right bg-info"href="?p=admin_type&amp;action=2">{{trad.display_type_order_nom}}</a>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body p-0">
+			<table class="table table-striped">
+			<tr>
+				<th style="width: 10px">{{trad.type_num}}</th>
+				<th>{{trad.type_name}}</th>
+				<th style="width: 20px">{{trad.type_color}}</th>
+				<th>{{trad.type_order}}</th>
+				<th>{{trad.disponible_pour}}</th>
+				<th>{{trad.action}}</th>
+			</tr>
+			{% for type in types %}
+				<tr>
+					<td>{{type.type_letter}}</td>
+					<td>{{type.type_name}}</td>
+					<td style="background-color:{{type.couleurhexa}};color:{{type.couleurtexte}};">Texte</td>
+					<td>{{type.order_display}}</td>
+					<td>
+					{% if type.disponible == 2 %}
+						{{trad.all}}
+					{% elseif type.disponible == 3 %}
+						{{trad.gestionnaires_et_administrateurs}}
+					{% elseif type.disponible == 5 %}
+						{{trad.only_administrators}}
+					{% endif %}
+					</td>
+					<td>
+						<a href="?p=admin_type_modify&amp;id_type={{type.id}}" class="btn btn-info btn-md"><i class="icon fa fa-edit"></i></a> 
+						<button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="{{trad.confirm_del}} : {{type.type_letter}}" data-idsup="{{type.id}}"><i class="icon fa fa-trash"></i></button>
+					</td>
+				</tr>
+			{% endfor %}
+			</table>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-header">
+			Fusionner des types :
+		</div>
+		<!-- /.card-header -->
+
+		<form action="?p=admin_type" method="post" id="formfusion">
+			<input type="hidden" name="p" value="admin_type">
+			<input type="hidden" name="actionpost" value="fusionner">
+
+			<div class="row align-items-center">
+				<div class="col-auto">
+					Fusionner l'identifiant
 				</div>
-				<!-- /.box-header -->
-				<div class="box-body no-padding">
-				  <table class="table table-striped">
-					<tr>
-					  <th style="width: 10px">{{trad.type_num}}</th>
-					  <th>{{trad.type_name}}</th>
-					  <th style="width: 20px">{{trad.type_color}}</th>
-					  <th>{{trad.type_order}}</th>
-					  <th>{{trad.disponible_pour}}</th>
-					  <th>{{trad.action}}</th>
-					</tr>
-					{% for type in types %}
-						<tr>
-							<td>{{type.type_letter}}</td>
-							<td>{{type.type_name}}</td>
-							<td style="background-color:{{type.couleurhexa}};color:{{type.couleurtexte}};">Texte</td>
-							<td>{{type.order_display}}</td>
-							<td>
-							{% if type.disponible == 2 %}
-								{{trad.all}}
-							{% elseif type.disponible == 3 %}
-								{{trad.gestionnaires_et_administrateurs}}
-							{% elseif type.disponible == 5 %}
-								{{trad.only_administrators}}
-							{% endif %}
-							</td>
-							<td>
-								<a href="?p=admin_type_modify&id_type={{type.id}}" class="btn btn-info btn-md"><i class="icon fa fa-edit"></i></a> 
-								<button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="{{trad.confirm_del}} : {{type.type_letter}}" data-idsup="{{type.id}}"><i class="icon fa fa-trash"></i></button>
-							</td>
-						</tr>
-					{% endfor %}
-				  </table>
+				<div class="col-2">
+					<select id="type1" name="type1" class="form-control">
+						{% for type in types %}
+							<option value="{{type.id}}">{{type.type_letter}} - {{type.type_name}}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="col-auto">
+					avec l'identifiant
+				</div>
+				<div class="col-2">
+					<select id="type2" name="type2" class="form-control">
+						{% for type in types %}
+							<option value="{{type.id}}">{{type.type_letter}} - {{type.type_name}}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="col-auto">
+					<button type="submit" class="btn btn-warning btn-md" id="fusionnerbtn">
+						<i class="icon fa fa-retweet"></i> Fusionner
+					</button>
 				</div>
 			</div>
-		</div>
+
+		</form>
+		<p><small>Ce premier sera supprimé et toutes les réservations associées seront rattachées au second.</small></p>
+
 	</div>
 
 	<div class="modal fade" id="modal-warning" style="display: none;" aria-hidden="true">
@@ -79,7 +127,18 @@
 {% endblock %}
 
 {% block javascript %}
+	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
 	<script>
+		$(function () {
+			{%if d.enregistrement == 1 %}
+				toastr.success("{{d.enregistrement_msg}}")
+			{% elseif d.enregistrement == 2 %}
+				toastr.warning("{{d.enregistrement_msg}}")
+			{% elseif d.enregistrement == 3 %}
+				toastr.error("{{d.enregistrement_msg}}")
+			{% endif %}
+		}); 
+
 		// Modal
 		$('#modal-warning').on('show.bs.modal', function (event) {
 			var button = $(event.relatedTarget) // Button that triggered the modal
