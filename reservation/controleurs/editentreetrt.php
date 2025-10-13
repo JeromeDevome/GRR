@@ -813,6 +813,7 @@ catch (Exception $e){
             $d['htmlConflit'] .= '</center><br />';
         }
         $d['htmlConflit'] .= '<form action="?p=editentree" method="GET">'; // retour à la page d'édition
+        $d['htmlConflit'] .= '<input type="hidden" name="p" value="editentree">';
         $d['htmlConflit'] .= $hiddenInputs;
         $d['htmlConflit'] .= "<input class='btn btn-primary' type='submit' value='".get_vocab('returnprev')."' />";
         $d['htmlConflit'] .= '</form>';
