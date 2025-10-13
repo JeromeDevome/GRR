@@ -32,7 +32,7 @@
         $typeExclu = (isset($row[0]))? $row[0]:NULL; // lettre identifiant le type exclu
         grr_sql_free($res);
         //Get all meetings for these months in the area that we care about
-        $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc
+        $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc, ".TABLE_PREFIX."_entry.room_id, nbparticipantmax, ".TABLE_PREFIX."_room.confidentiel_resa
         FROM (".TABLE_PREFIX."_entry INNER JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) 
           INNER JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
         WHERE (start_time <= $month_end AND end_time > $month_start AND area_id='".$area."' AND supprimer = 0)
@@ -55,6 +55,9 @@
             $row[14]: courrier
             $row[15]: Type_name
             $row[16]: overload fields description
+            $row[17]: room_id
+            $row[18]: nbparticipantmax
+            $row[19]: confidentiel_resa
         */
         //Build an array of information about each day in the month.
         //The information is stored as:
@@ -88,6 +91,8 @@
                         $da[$day_num][$month_num][$year_num]["lien"][] = lien_compact($row);
                         $da[$day_num][$month_num][$year_num]["room"][]=$row[5] ;
                         $da[$day_num][$month_num][$year_num]["color"][] = $row["type"];
+                        $da[$day_num][$month_num][$year_num]["beneficiaire"][] = $row[4];
+                        $da[$day_num][$month_num][$year_num]["confidentiel_resa"][] = $row[19];
                         $midnight_tonight = $midnight + 86400;
                         //Describe the start and end time, accounting for "all day"
                         //and for entries starting before/ending after today.
@@ -233,7 +238,7 @@
        $ressourcesMois = array();
        for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++)
        {
-              // calcul de l'accès à la ressource en fonction du niveau de l'utilisateur
+            // calcul de l'accès à la ressource en fonction du niveau de l'utilisateur
            $verif_acces_ressource = verif_acces_ressource($user_name, $row[2]);
            if ($verif_acces_ressource) // on n'affiche que les ressources accessibles
            {
@@ -273,8 +278,20 @@
                                        $type = $da[$cday][$cmonth][$cyear]["color"][$i];
                                        $lien = $da[$cday][$cmonth][$cyear]["lien"][$i];
                                        $data = $da[$cday][$cmonth][$cyear]["data"][$i];
+
+                                       	// On n'affiche la fiche résa que si elle n'est pas confidentielle ou si on est l'auteur de la résa ou un gestionnaire
+                                        $ficheResa = $acces_fiche_reservation;
+                                        if($acces_fiche_reservation)
+                                        {
+                                            $authGetUserLevel = authGetUserLevel(getUserName(), $row[2]);
+                                            if($da[$cday][$cmonth][$cyear]["confidentiel_resa"][$i] == 1 && getUserName() != $da[$cday][$cmonth][$cyear]["beneficiaire"][$i] && $authGetUserLevel < 3)
+                                            {
+                                                $ficheResa = false;
+                                                $lien = $id;
+                                            }
+                                        }
    
-                                       $reservationsJours[] = array('idresa' => $id, 'type' => $type, 'lien' => $lien, 'bulle' => $data, 'lienFiche' => $acces_fiche_reservation);
+                                       $reservationsJours[] = array('idresa' => $id, 'type' => $type, 'lien' => $lien, 'bulle' => $data, 'lienFiche' => $ficheResa);
                                    }
                                }
                            }

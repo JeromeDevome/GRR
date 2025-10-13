@@ -281,12 +281,14 @@ if (isset($_GET["is_posted"]))
 	//  16  [15]  bénéficiaire extérieur -> e.beneficiaire_ext
 	//  17  [16]  résa supprimer -> e.supprimer
 	//  18  [17]  moderation -> e.moderate
+	//  19  [18]  resa confidentielle -> r.confidentiel_resa
+	//  20  [19]  id ressource -> e.room_id
     // Tableau des ressources invisibles pour l'utilisateur
     $sql = "SELECT distinct e.id, e.start_time, e.end_time, e.name, e.description, "
     . "e.type, e.beneficiaire, "
     .  grr_sql_syntax_timestamp_to_unix("e.timestamp")
     . ", a.area_name, r.room_name, r.description, a.id, e.overload_desc, r.order_display, t.type_name"
-	. ", e.beneficiaire_ext, e.supprimer, e.moderate";
+	. ", e.beneficiaire_ext, e.supprimer, e.moderate, r.confidentiel_resa, e.room_id";
 	if (Settings::get("module_multisite") == 'Oui')
 		$sql .= ", s.sitename";
 	$sql .= " FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_room r, ".TABLE_PREFIX."_type_area t";

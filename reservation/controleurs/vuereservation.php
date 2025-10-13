@@ -117,7 +117,8 @@ $sql = "SELECT ".TABLE_PREFIX."_entry.name,
 ".TABLE_PREFIX."_room.active_cle,
 ".TABLE_PREFIX."_entry.nbparticipantmax,
 ".TABLE_PREFIX."_room.active_participant,
-".TABLE_PREFIX."_room.inscription_participant
+".TABLE_PREFIX."_room.inscription_participant,
+".TABLE_PREFIX."_room.confidentiel_resa
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
 WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
 AND ".TABLE_PREFIX."_room.area_id = ".TABLE_PREFIX."_area.id
@@ -191,6 +192,7 @@ $courrier					= $row[22];
 $active_cle					= $row[23];
 $nbParticipantMax			= $row[24];
 $quiPeutParticiper          = $row[26];
+$resa_confidentielle        = $row[27];
 $rep_type 					= 0;
 $verif_display_email 		= verif_display_email($userName, $room_id);
 if ($verif_display_email)
@@ -342,6 +344,19 @@ if ((authGetUserLevel($userName, -1) < 1) and (Settings::get("authentification_o
 	showAccessDenied($back);
 	exit();
 }
+
+// Vérification des droits d'accès à la fiche réservation
+$acces_fiche_reservation = verif_acces_fiche_reservation($userName, $room_id);
+if($acces_fiche_reservation)
+    if($resa_confidentielle == 1 && getUserName() != $beneficiaire && authGetUserLevel($userName, $room_id) < 3)
+        $acces_fiche_reservation = false;
+
+if (!$acces_fiche_reservation)
+{
+	showAccessDenied($back);
+	exit();
+}
+
 if (authUserAccesArea($userName, $area) == 0)
 {
 	if (isset($reservation_is_delete))
@@ -509,6 +524,7 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
 
 $can_book = verif_booking_date($userName, $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room($userName, $room_id, $row[10], $enable_periods) && getWritable($userName, $id);
 $can_copy = verif_acces_ressource($userName, $room_id);
+
 if (($can_book || $can_copy) && (!$was_del))
 {
     $d['accesBoutons'] = 1;

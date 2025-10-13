@@ -5221,7 +5221,8 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 		($authGetUserLevel >= 4 && Settings::get("display_beneficiaire_ad") == 1)  
 	  )
 	{
-		$affichage .= affiche_nom_prenom_email($resa[4], $resa[12], "nomail")."<br>";
+		if($resa[19] == 0 || getUserName() == $resa[4] || $authGetUserLevel >= 3) // Si résa confidentielle, on n'affiche le bénéficiaire qu'à l'auteur de la résa ou aux gestionnaires
+			$affichage .= affiche_nom_prenom_email($resa[4], $resa[12], "nomail")."<br>";
 	}
 
 	// Type
@@ -5245,7 +5246,10 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 		($authGetUserLevel >= 4 && Settings::get("display_short_description_ad") == 1)) &&
 		$resa[3] != ""
 	  )
-		$affichage .= htmlspecialchars($resa[3],ENT_NOQUOTES)."<br>";
+	{
+		if($resa[19] == 0 || getUserName() == $resa[4] || $authGetUserLevel >= 3) // Si résa confidentielle, on n'affiche la description qu'à l'auteur de la résa ou aux gestionnaires
+			$affichage .= htmlspecialchars($resa[3],ENT_NOQUOTES)."<br>";
+	}
 	else
 		$affichage .= get_vocab("entryid").$resa[2]."<br>";
 
@@ -5257,8 +5261,11 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 		($authGetUserLevel >= 4 && Settings::get("display_full_description_ad") == 1)) &&
 		$resa[8] != ""
 	  )
-		$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES)."<br>";
-	
+	{
+		if($resa[19] == 0 || getUserName() == $resa[4] || $authGetUserLevel >= 3) // Si résa confidentielle, on n'affiche la description qu'à l'auteur de la résa ou aux gestionnaires
+			$affichage .= htmlspecialchars($resa[8],ENT_NOQUOTES)."<br>";
+	}
+
 	// Participant
 	if( (($authGetUserLevel == 0 && Settings::get("display_participants_nc") == 1) || 
 		($authGetUserLevel == 1 && Settings::get("display_participants_vi") == 1) ||
@@ -5283,13 +5290,16 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 	//$room = (!$res) ? -1 : $res["room_id"]; 
    
 	// Les champs add :
-	$overload_data = grrGetOverloadDescArray($ofl, $resa[16]);//mrbsEntryGetOverloadDesc($resa[2]);
-	foreach ($overload_data as $fieldname=>$field)
+	if($resa[19] == 0 || getUserName() == $resa[4] || $authGetUserLevel >= 3) // Si résa confidentielle, on n'affiche les champs add qu'à l'auteur de la résa ou aux gestionnaires
 	{
-		if (( ($authGetUserLevel >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "") {
-			// ELM - Gestion des champs aditionnels multivalués (lignes 384 - 392)
-			$valeur = str_replace("|", ",", $field["valeur"]);
-			$affichage .= "<i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($valeur,ENT_NOQUOTES|ENT_SUBSTITUTE)."</i><br />";
+		$overload_data = grrGetOverloadDescArray($ofl, $resa[16]);//mrbsEntryGetOverloadDesc($resa[2]);
+		foreach ($overload_data as $fieldname=>$field)
+		{
+			if (( ($authGetUserLevel >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "") {
+				// ELM - Gestion des champs aditionnels multivalués (lignes 384 - 392)
+				$valeur = str_replace("|", ",", $field["valeur"]);
+				$affichage .= "<i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($valeur,ENT_NOQUOTES|ENT_SUBSTITUTE)."</i><br />";
+			}
 		}
 	}
 

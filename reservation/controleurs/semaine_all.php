@@ -24,7 +24,7 @@ include "include/resume_session.php";
 include "include/planning.php";
 
 // Selection des ressources
-$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display, room_name";
+$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book, confidentiel_resa FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display, room_name";
 $ressources = grr_sql_query($sql);
 
 if (!$ressources)
@@ -77,7 +77,7 @@ $d['tm'] = date("m", $i);
 $d['td'] = date("d", $i);
 
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc, ".TABLE_PREFIX."_entry.room_id, nbparticipantmax
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc, ".TABLE_PREFIX."_entry.room_id, nbparticipantmax, ".TABLE_PREFIX."_room.confidentiel_resa
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
 where
 ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id and
@@ -108,6 +108,7 @@ ORDER by start_time, end_time, ".TABLE_PREFIX."_entry.id";
     $row[16]: overload fields description
     $row[17]: room id
 	$row[18]: nbparticipantmax
+	$row[19]: confidentiel_resa
 */
 $res2 = grr_sql_query($sql);
 if (!$res2)
@@ -209,6 +210,7 @@ else
 						break;
 					}
 				}
+				$da[$day_num]["beneficiaire"][] = $row['4'];
 				$da[$day_num]["resa"][] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
 				$da[$day_num]["infobulle"][] = affichage_resa_info_bulle($overloadFieldList, 1, $row, $horaires);
 				if ($row[1] <= $midnight_tonight)
@@ -296,6 +298,7 @@ foreach($ressources as $row)
 		$auth_visiteur = auth_visiteur($user_name, $row['id']);
         $ficheDescription = false;
         $configRess = false;
+		$resa_confidentiel = $row['confidentiel_resa'];
         // si la ressource est restreinte, l'utilisateur peut-il réserver ?
         $user_can_book = $row['who_can_book'] || ($authGetUserLevel > 2) || (authBooking($user_name,$row['id']));
 
@@ -344,17 +347,26 @@ foreach($ressources as $row)
 				$no_td = TRUE;
 				$estHorsReservation = est_hors_reservation(mktime(0, 0, 0, $cmonth, $cday, $cyear), $area);
                 $reservationsJour = array();
+				
 				if ((isset($da[$cday]["id"][0])) && !$estHorsReservation)
 				{
 					$n = count($da[$cday]["id"]);
 					for ($i = 0; $i < $n; $i++)
 					{
+						$ficheResa = $acces_fiche_reservation;
 						if ($da[$cday]["id_room"][$i]==$row['id'])
 						{
 							if ($no_td)
 								$no_td = FALSE;
 
-                        	$reservationsJour[] = array('idresa' => $da[$cday]["id"][$i], 'class' => $da[$cday]["color"][$i], 'texte' => $da[$cday]["resa"][$i], 'bulle' => $da[$cday]["infobulle"][$i], 'lienFiche' => $acces_fiche_reservation);
+							// On n'affiche la fiche résa que si elle n'est pas confidentielle ou si on est l'auteur de la résa ou un gestionnaire
+							if($acces_fiche_reservation)
+							{
+								if($resa_confidentiel == 1 && getUserName() != $da[$cday]["beneficiaire"][$i] && $authGetUserLevel < 3)
+									$ficheResa = false;
+							}
+
+                        	$reservationsJour[] = array('idresa' => $da[$cday]["id"][$i], 'class' => $da[$cday]["color"][$i], 'texte' => $da[$cday]["resa"][$i], 'bulle' => $da[$cday]["infobulle"][$i], 'lienFiche' => $ficheResa);
 						}
 					}
 

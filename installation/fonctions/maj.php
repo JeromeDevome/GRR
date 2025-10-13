@@ -1268,6 +1268,17 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter = '';
 	}
 
+	if (intval($version_old_bdd) < 400009) // Version GRR 4.4.3
+	{
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD confidentiel_resa TINYINT(1) NOT NULL DEFAULT '0' AFTER who_can_book;");
+
+		if ($result_inter == '')
+			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+		else
+			$result .= $result_inter;
+		$result_inter = '';
+	}
+
 	// Mise à jour du numéro de version BDD précédent
 	$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='previousversion'");
 	if ($req == -1)

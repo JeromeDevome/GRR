@@ -72,6 +72,7 @@ $change_done = isset($_POST["change_done"]) ? $_POST["change_done"] : NULL;
 $change_room = isset($_POST["change_room"]) ? $_POST["change_room"] : NULL;
 $type_affichage_reser = isset($_POST["type_affichage_reser"]) ? $_POST["type_affichage_reser"] : NULL;
 $moderate = isset($_POST['moderate']) ? $_POST["moderate"] : NULL;
+$confidentiel_resa  = isset($_POST["confidentiel_resa"]) ? 1 : 0;
 
 if(!isset($_POST["area_order"]) || empty($_POST["area_order"]))
 	$area_order = 0;
@@ -189,7 +190,8 @@ if (isset($change_room))
 		type_affichage_reser='".$type_affichage_reser."',
 		max_booking='".$max_booking."',
 		moderate='".$moderate."',
-		statut_room='".$statut_room."'
+		statut_room='".$statut_room."',
+		confidentiel_resa='".$confidentiel_resa."'
 		WHERE id=$room";
 		if (grr_sql_command($sql) < 0)
 		{
@@ -224,7 +226,8 @@ if (isset($change_room))
 		type_affichage_reser='".$type_affichage_reser."',
 		max_booking='".$max_booking."',
 		moderate='".$moderate."',
-		statut_room='".$statut_room."'";
+		statut_room='".$statut_room."',
+		confidentiel_resa='".$confidentiel_resa."'";
 		if (grr_sql_command($sql) < 0)
 			fatal_error(1, "<p>" . grr_sql_error());
 		$room = mysqli_insert_id($GLOBALS['db_c']);

@@ -24,7 +24,7 @@ include "include/resume_session.php";
 include "include/planning.php";
 
 // Selection des ressources
-$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display, room_name";
+$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, confidentiel_resa FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display, room_name";
 $ressources = grr_sql_query($sql);
 
 if (!$ressources)
@@ -61,7 +61,7 @@ $d['tm'] = date("n",$i);
 
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
 //Get all meetings for this month in the area that we care about
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, nbparticipantmax
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, nbparticipantmax, ".TABLE_PREFIX."_room.confidentiel_resa
 FROM (".TABLE_PREFIX."_entry INNER JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) 
   INNER JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
 WHERE (start_time <= $month_end AND end_time > $month_start AND area_id='".$area."' AND supprimer = 0)
@@ -86,6 +86,7 @@ ORDER by ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time ";
     $row[16]: overload fields description
     $row[17]: room_id
     $row[18]: nbparticipantmax
+    $row[19]: confidentiel_resa
 */
 
 $res = grr_sql_query($sql);
@@ -191,6 +192,8 @@ else  //Build an array of information about each day in the month.
                         break;
                     }
                 }
+                $da[$day_num]["resa_confidentielle"][] = $row[19];
+                $da[$day_num]["beneficiaire"][] = $row[4];
                 $da[$day_num]["resa"][] = affichage_resa_planning_complet($overloadFieldList, 2, $row, $horaires);
 				$da[$day_num]["infobulle"][] = affichage_resa_info_bulle($overloadFieldList, 1, $row, $horaires);
                 //Only if end time > midnight does the loop continue for the next day.
@@ -277,6 +280,8 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                 //If there are 12 or fewer, show them, else show 11 and "...".
                 for ($i = 0; $i < $n; $i++)
                 {
+                    $ficheResa = $acces_fiche_reservation;
+
                     if ($verif_acces_ressource[$da[$cday]["id_room"][$i]]) // On n'affiche pas les réservations des ressources non visibles pour l'utilisateur.
                     {	
                         if ($i == 11 && $n > 12)
@@ -285,7 +290,14 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                             break;
                         }
 
-                        $reservations[] = array ('idresa' => $da[$cday]["id"][$i],'td' => tdcellT($da[$cday]["color"][$i]), 'titre' => $da[$cday]["infobulle"][$i], 'texte' => $da[$cday]["resa"][$i], 'lienFiche' => $acces_fiche_reservation);
+                        // On n'affiche la fiche résa que si elle n'est pas confidentielle ou si on est l'auteur de la résa ou un gestionnaire
+                        if($acces_fiche_reservation)
+                        {
+                            if($da[$cday]["resa_confidentielle"][$i] == 1 && getUserName() != $da[$cday]["beneficiaire"][$i] && $authGetUserLevel < 3)
+                                $ficheResa = false;
+                        }
+
+                        $reservations[] = array ('idresa' => $da[$cday]["id"][$i],'td' => tdcellT($da[$cday]["color"][$i]), 'titre' => $da[$cday]["infobulle"][$i], 'texte' => $da[$cday]["resa"][$i], 'lienFiche' => $ficheResa);
                     }
                 }
             /*

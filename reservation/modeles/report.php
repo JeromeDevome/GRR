@@ -26,8 +26,7 @@ function reporton(&$row, $dformat)
 	$domainedesc = htmlspecialchars($row[10]);
 	$ressource = htmlspecialchars($row[9]);
 
-	// Breve description (title), avec un lien
-	$descriC = affichage_lien_resa_planning($row[3],$row[0]);
+
 
 	$site = "";
 	if (Settings::get("module_multisite") == 'Oui')
@@ -39,34 +38,47 @@ function reporton(&$row, $dformat)
 	else
 		list($start_date, $start_time, $duration, $dur_units, $end_date, $end_time) = describe_span($row[1], $row[2], $dformat);
 
-	// Durée réservation
-	//echo "<td>".$duration ." ". $dur_units ."</td>";
-	//Description
-	if ($row[4] != "")
-		$descriL = nl2br(htmlspecialchars($row[4]));
-	else
-		$descriL = " ";
+	// Gestion réservation confidentielle
+	if($row[18] == 0 || getUserName() == $row[6] || authGetUserLevel(getUserName(), $row[19]) >= 3)
+	{	// OK pas confidentiel ou user propriétaire ou user admin/gestionnaire de la ressource
+
+		// Breve description (title), avec un lien
+		$descriC = affichage_lien_resa_planning($row[3],$row[0]);
+
+		// Description complète
+		if ($row[4] != "")
+			$descriL = nl2br(htmlspecialchars($row[4]));
+		else
+			$descriL = " ";
+
+		// Bénéficiaire
+		$sql_beneficiaire = "SELECT prenom, nom FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$row[6]."'";
+		$res_beneficiaire = grr_sql_query($sql_beneficiaire);
+		$aff_beneficiaire = " ";
+		if ($res_beneficiaire)
+		{
+			$row_user = grr_sql_row($res_beneficiaire, 0);
+			if ($row_user)
+				$aff_beneficiaire = htmlspecialchars($row_user[0]) ." ". htmlspecialchars($row_user[1]);
+		}
+		if ($aff_beneficiaire == " ")
+		{
+			$benef_ext = explode('|',$row[15]);
+			$aff_beneficiaire = htmlspecialchars($benef_ext[0]);
+		}
+
+	} else {
+		$descriL = "*****";
+		$aff_beneficiaire = "*****";
+		$descriC = "*****";
+	}
 
 	//Type de réservation
 	$type = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$row[5]."'");
 	if ($type == -1)
 		$type = "?".$row[5]."?";
 
-	// Bénéficiaire
-	$sql_beneficiaire = "SELECT prenom, nom FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$row[6]."'";
-	$res_beneficiaire = grr_sql_query($sql_beneficiaire);
-	$aff_beneficiaire = " ";
-	if ($res_beneficiaire)
-	{
-		$row_user = grr_sql_row($res_beneficiaire, 0);
-        if ($row_user)
-            $aff_beneficiaire = htmlspecialchars($row_user[0]) ." ". htmlspecialchars($row_user[1]);
-	}
-	if ($aff_beneficiaire == " ")
-	{
-		$benef_ext = explode('|',$row[15]);
-		$aff_beneficiaire = htmlspecialchars($benef_ext[0]);
-	}
+
 	//Affichage de la date de la dernière mise à jour
 	$dateMAJ = date_time_string($row[7],$dformat);
 

@@ -63,6 +63,7 @@ $this_delais_option_reservation = (isset($this_room['delais_option_reservation']
 $this_room_comment = (isset($this_room['comment_room']))? $this_room['comment_room']:'';
 $this_room_show_comment = (isset($this_room['show_comment']))? $this_room['show_comment']:'n';
 $who_can_book = (isset($this_room['who_can_book']))? $this_room['who_can_book']:1;
+$resa_confidentiel = (isset($this_room['confidentiel_resa']))? $this_room['confidentiel_resa']:0;
 grr_sql_free($res);
 
 
@@ -80,7 +81,7 @@ $user_can_book = $who_can_book || ($authGetUserLevel > 2) || (authBooking($user_
 
 // calcul du contenu du planning
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, nbparticipantmax
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, nbparticipantmax, ".TABLE_PREFIX."_room.confidentiel_resa
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
 where
 ".TABLE_PREFIX."_entry.room_id = '".$room."' and
@@ -111,6 +112,7 @@ ORDER by start_time, end_time";
     $row[16]: overload fields description
     $row[17]: room_id
     $row[18]: nbparticipantmax
+    $row[19]: confidentiel_resa
 */
 $res = grr_sql_query($sql);
 if (!$res)
@@ -199,6 +201,7 @@ else
 					break;
 				}
 			}
+            $da[$day_num]["beneficiaire"][] = $row[4];
             $da[$day_num]["resa"][] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
             $da[$day_num]["infobulle"][] = affichage_resa_info_bulle($overloadFieldList, 1, $row, $horaires);
 
@@ -305,6 +308,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                 $n = count($da[$cday]["id"]);
                 for ($i = 0; $i < $n; $i++)
                 {
+                    $ficheResa = $acces_fiche_reservation;
 					// On a plus de 11 résa dans le jour, on n'affiche pas tout
                     if ($i == 11 && $n > 12)
                     {
@@ -312,7 +316,14 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                         break;
                     }
 
-                    $reservations[] = array ('idresa' => $da[$cday]["id"][$i],'td' => tdcellT($da[$cday]["color"][$i]), 'titre' => $da[$cday]["infobulle"][$i], 'texte' => $da[$cday]["resa"][$i], 'lienFiche' => $acces_fiche_reservation);
+                    // On n'affiche la fiche résa que si elle n'est pas confidentielle ou si on est l'auteur de la résa ou un gestionnaire
+                    if($acces_fiche_reservation)
+                    {
+                        if($resa_confidentiel == 1 && getUserName() != $da[$cday]["beneficiaire"][$i] && $authGetUserLevel < 3)
+                            $ficheResa = false;
+                    }
+
+                    $reservations[] = array ('idresa' => $da[$cday]["id"][$i],'td' => tdcellT($da[$cday]["color"][$i]), 'titre' => $da[$cday]["infobulle"][$i], 'texte' => $da[$cday]["resa"][$i], 'lienFiche' => $ficheResa);
                 }
             }
             if (Settings::get('calcul_plus_mois') == 'n') {

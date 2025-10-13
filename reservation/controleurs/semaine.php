@@ -86,6 +86,7 @@ $this_delais_option_reservation = (isset($this_room['delais_option_reservation']
 $d['commentaireRessource'] = (isset($this_room['comment_room']))? $this_room['comment_room']:'';
 $d['afficherCommentaire'] = (isset($this_room['show_comment']))? $this_room['show_comment']:'n';
 $who_can_book = (isset($this_room['who_can_book']))? $this_room['who_can_book']:1;
+$resa_confidentiel = (isset($this_room['confidentiel_resa']))? $this_room['confidentiel_resa']:0;
 grr_sql_free($res);
 
 //Pour vérifier si la plage de fin arrive sur un créneau ou non.
@@ -122,7 +123,7 @@ $acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $room);
 // Teste si l'utilisateur a la possibilité d'effectuer une réservation, compte tenu des limitations éventuelles de la ressource et du nombre de réservations déjà effectuées.
 $UserRoomMaxBooking	= UserRoomMaxBooking($user_name, $room, 1);
 // calcul des cellules du planning
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, nbparticipantmax
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, nbparticipantmax, ".TABLE_PREFIX."_room.confidentiel_resa
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
 WHERE
 ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id AND
@@ -153,6 +154,7 @@ ORDER by start_time";
     $row[16]: overload fields description
     $row[17]: room_id
     $row[18]: nbparticipantmax
+    $row[19]: confidentiel_resa
 */
 if ($enable_periods == 'y')
 {
@@ -256,6 +258,7 @@ else
                         $d[$weekday][$slot]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
                         $d[$weekday][$slot]["id"] = $row["id"];
 						$d[$weekday][$slot]["who"] = affichage_resa_info_bulle($overloadFieldList, 1, $row, $horaires);
+                        $d[$weekday][$slot]["beneficiaire"] = $row["beneficiaire"];
                     }
                 }
                 $t += $this_area_resolution;
@@ -324,6 +327,7 @@ else
                         $d[$weekday][$slot]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
                         $d[$weekday][$slot]["id"] = $row["id"];
 						$d[$weekday][$slot]["who"] = affichage_resa_info_bulle($overloadFieldList, 1, $row, $horaires);
+                        $d[$weekday][$slot]["beneficiaire"] = $row["beneficiaire"];
                     }
                 }
                 $t += 60; 
@@ -469,8 +473,10 @@ for ($slot = $first_slot; $slot <= $last_slot; $slot++)
         $heureete2 = heure_ete_hiver("ete", $wyear,2);
         $heurehiver2 = heure_ete_hiver("hiver", $wyear, 2);
         $statutCellule = 0; //0 vide, 1 réservable, 2 déjà une reservation, 3 hors résa
+        $ficheResa = $acces_fiche_reservation;
         $titre = "";
         $descr = "";
+        $beneficiaire = "";
         $rowspan = 1;
         $c = "";
         $id = 0;
@@ -571,6 +577,7 @@ for ($slot = $first_slot; $slot <= $last_slot; $slot++)
                         $c = "type".$d[$weekday][$slot - $decale_slot * $nb_case]["color"];
                         $titre = $d[$weekday][$slot - $decale_slot * $nb_case]["who"];
                         $descr = $d[$weekday][$slot - $decale_slot * $nb_case]["data"];
+                        $beneficiaire = $d[$weekday][$slot - $decale_slot * $nb_case]["beneficiaire"];
                     }
                 }
             }
@@ -580,7 +587,15 @@ for ($slot = $first_slot; $slot <= $last_slot; $slot++)
         $num_week_day++; // Pour le calcul des jours à afficher
         $num_week_day = $num_week_day % 7; // Pour le calcul des jours à afficher
 
-        $cellulesJours[] = array('statut' => $statutCellule, 'class' => $c, 'rowspan' => $rowspan, 'ressource' => $room, 'idresa' => $id, 'titre' => $titre, 'descr' => $descr, 'ficheResa' => $acces_fiche_reservation);
+        // On n'affiche la fiche résa que si elle n'est pas confidentielle ou si on est l'auteur de la résa ou un gestionnaire
+        if($ficheResa)
+        {
+            if($resa_confidentiel == 1 && getUserName() != $beneficiaire && $authGetUserLevel < 3)
+                $ficheResa = false;
+        }
+
+
+        $cellulesJours[] = array('statut' => $statutCellule, 'class' => $c, 'rowspan' => $rowspan, 'ressource' => $room, 'idresa' => $id, 'titre' => $titre, 'descr' => $descr, 'ficheResa' => $ficheResa);
     } // Fin colonne du jour
     $time_t_stripped = "";
     if ($enable_periods == 'y')
