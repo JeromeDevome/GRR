@@ -911,6 +911,7 @@ $vocab['Statut_par_defaut_utilisateurs_importes'] = "Estatus por defecto de los 
 $vocab['Statut_pour_domaine_particulier'] = "Attribuer un statut à un nom de domaine"; // A traduire
 $vocab['statut_user'] = "Usuario";
 $vocab['statut_user_administrator'] = "Gestor de los usuarios";
+$vocab['statut_user_gestionnaire'] = "Gestor";
 $vocab['statut_visitor'] = "Visitante";
 $vocab['subject_a_moderer'] = "Se debe moderar una petición de reserva:";
 $vocab['subject_mail1'] = "GRR : opinión ";

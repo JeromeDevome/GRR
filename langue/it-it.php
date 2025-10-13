@@ -912,6 +912,7 @@ $vocab['Statut_par_defaut_utilisateurs_importes'] = "Statuto per difetto degli u
 $vocab['Statut_pour_domaine_particulier'] = "Attribuer un statut à un nom de domaine"; // A traduire
 $vocab['statut_user'] = "Utente";
 $vocab['statut_user_administrator'] = "Gestore degli utenti";
+$vocab['statut_user_gestionnaire'] = "Gestore";
 $vocab['statut_visitor'] = "Ospite";
 $vocab['subject_a_moderer'] = "Una domanda di prenotazione è a moderare :";
 $vocab['subject_mail1'] = "GRR : opinione ";

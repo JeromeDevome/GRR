@@ -5195,7 +5195,7 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 	global $dformat;
 
 	$affichage = "";
-	$room = $resa[5];
+	$room = $resa[17];
 
 	$authGetUserLevel = authGetUserLevel(getUserName(), $room);
 
@@ -5342,7 +5342,7 @@ function affichage_resa_info_bulle($ofl, $vue, $resa, $heures)
 {
 
 	$affichage = "";
-	$room = $resa[5];
+	$room = $resa[17];
 	$authGetUserLevel = authGetUserLevel(getUserName(), $room);
 
 	// Heures ou créneaux + symboles <== ==>
@@ -5437,7 +5437,7 @@ function titre_compact($ofl, $resa, $heures)
 	$affichage = "";
 
 	// la ressource associée à la réservation :
-	$room = $resa[5];
+	$room = $resa[17];
 
 	// Heures ou créneaux + symboles <== ==>
 	$affichage .= $heures;
@@ -5508,7 +5508,7 @@ function lien_compact($resa)
 {
     global $dformat;
 	$affichage = "";
-	$room = $resa[5];
+	$room = $resa[17];
 
 	$authGetUserLevel = authGetUserLevel(getUserName(), $room);
 

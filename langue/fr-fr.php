@@ -921,6 +921,7 @@ $vocab['Statut_par_defaut_utilisateurs_importes'] = "Activation et statut par d�
 $vocab['Statut_pour_domaine_particulier'] = "Attribuer un statut à un nom de domaine";
 $vocab['statut_user'] = "Usager";
 $vocab['statut_user_administrator'] = "Gestionnaire des utilisateurs";
+$vocab['statut_user_gestionnaire'] = "Gestionnaire";
 $vocab['statut_visitor'] = "Visiteur";
 $vocab['subject_a_moderer'] = "Une demande de réservation est à modérer :";
 $vocab['subject_mail1'] = "GRR : avis ";

@@ -912,6 +912,7 @@ $vocab['Statut_par_defaut_utilisateurs_importes'] = "Activation and status by de
 $vocab['Statut_pour_domaine_particulier'] = "Bind a status to a domain name"; 
 $vocab['statut_user'] = "User";
 $vocab['statut_user_administrator'] = "Users manager";
+$vocab['statut_user_gestionnaire'] = "Manager";
 $vocab['statut_visitor'] = "Visitor";
 $vocab['subject_a_moderer'] = "A reservation request has to be moderated";
 $vocab['subject_mail1'] = "GRR: notice ";

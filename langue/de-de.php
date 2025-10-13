@@ -912,6 +912,7 @@ $vocab['Statut_par_defaut_utilisateurs_importes'] = "Aktivierung und Konfigurati
 $vocab['Statut_pour_domaine_particulier'] = "Attribuer un statut à un nom de domaine"; // A traduire
 $vocab['statut_user'] = "Benutzer";
 $vocab['statut_user_administrator'] = "Benutzerverwalter";
+$vocab['statut_user_gestionnaire'] = "Gestionnaire"; // A traduire
 $vocab['statut_visitor'] = "Besucher";
 $vocab['subject_a_moderer'] = "Ein Reservierungsantrag ist im Warten von Moderation :";
 $vocab['subject_mail1'] = "GRR: Meldung ";
