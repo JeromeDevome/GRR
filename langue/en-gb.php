@@ -326,6 +326,7 @@ $vocab['delete'] = "Delete";
 $vocab['deleteentry'] = "Delete a reservation";
 $vocab['deletefollowing'] = "You are going to delete the following reservations";
 $vocab['deleteseries'] = "Delete a periodicity";
+$vocab['deleteseriesposterieure'] = "Delete all associated future reservations";
 $vocab['delete_booking'] = " has deleted the reservation of ";
 $vocab['delete_up_to'] = "Delete until";
 $vocab['del_entry_in_conflict'] = "Delete the reservation(s) above in order to confirm the new reservation.";

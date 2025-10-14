@@ -325,6 +325,7 @@ $vocab['delete'] = "Supprimer";
 $vocab['deleteentry'] = "Effacer cette réservation";
 $vocab['deletefollowing'] = "Vous allez supprimer les réservations suivantes";
 $vocab['deleteseries'] = "Effacer la périodicité (et toutes les réservations associées)";
+$vocab['deleteseriesposterieure'] = "Effacer toutes les réservations associées postérieures à cette date";
 $vocab['delete_booking'] = " a supprimé la réservation de ";
 $vocab['delete_up_to'] = "Effacer jusqu'au";
 $vocab['del_entry_in_conflict'] = "Supprimer la (les) réservation(s) ci-dessus afin de valider la nouvelle réservation.";

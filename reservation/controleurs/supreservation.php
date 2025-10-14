@@ -72,11 +72,11 @@ if ($info = mrbsGetEntryInfo($id))
 		showAccessDenied($back);
 		exit();
 	}
-    echo "33";
+    //echo "33";
 	$result = mrbsDelEntry(getUserName(), $id, $series, 1);
 	if ($result)
 	{
-        echo "44";
+        //echo "44";
         $room_back = isset($_GET['room_back']) ? clean_input($_GET['room_back']) : $info['room_id'];
 		$_SESSION['displ_msg'] = 'yes';
         $ress = '';

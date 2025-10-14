@@ -147,6 +147,7 @@ function grrDelEntryInConflict($room_id, $starttime, $endtime, $ignore, $repigno
 function mrbsDelEntry($user, $id, $series, $all)
 {
 	global $correct_diff_time_local_serveur, $enable_periods;
+
 	$date_now = time();
 	$id_room = grr_sql_query1("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id='".$id."'");
 	$repeat_id = grr_sql_query1("SELECT repeat_id FROM ".TABLE_PREFIX."_entry WHERE id='".$id."'");
@@ -157,6 +158,9 @@ function mrbsDelEntry($user, $id, $series, $all)
 		$sql .= "repeat_id='".protect_data_sql($repeat_id)."'";
 	else
 		$sql .= "id='".$id."'";
+	if($series == 2)
+		$sql .= " AND start_time >= (SELECT start_time FROM ".TABLE_PREFIX."_entry WHERE id='".$id."')";
+
 	$res = grr_sql_query($sql);
 	$removed = 0;
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)

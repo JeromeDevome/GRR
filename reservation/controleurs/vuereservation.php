@@ -619,6 +619,7 @@ if ($repeat_id != 0)
 	{	
         $d['lienPeriodeModifier'] = "app.php?p=editentree&id=".$id."&amp;edit_type=series&amp;day=".$day."&amp;month=".$month."&amp;year=".$year."&amp;page=".$page;
         $d['lienPeriodeSupprimer'] = "app.php?p=supreservation&amp;id=".$id."&amp;series=1&amp;day=".$day."&amp;month=".$month."&amp;year=".$year."&amp;page=".$page;
+        $d['lienPeriodeSupprimerPosterieure'] = "app.php?p=supreservation&amp;id=".$id."&amp;series=2&amp;day=".$day."&amp;month=".$month."&amp;year=".$year."&amp;page=".$page;
     }
 }
 if (!isset($area_id))

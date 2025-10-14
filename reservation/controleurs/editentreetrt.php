@@ -696,7 +696,7 @@ try {
 						$message_error = send_mail($id_first_resa, 1, $dformat);*/
 				}
 			}
-            mrbsDelEntry(getUserName(), $id, "series", 1);
+            mrbsDelEntry(getUserName(), $id, 1, 1);
 		}
 		else
 		{

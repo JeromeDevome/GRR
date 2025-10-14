@@ -326,6 +326,7 @@ $vocab['delete'] = "Eliminare";
 $vocab['deleteentry'] = "Cancellare una prenotazione";
 $vocab['deletefollowing'] = "Eliminerete le prenotazioni seguenti: ";
 $vocab['deleteseries'] = "Cancellare una periodicità";
+$vocab['deleteseriesposterieure'] = "Effacer toutes les réservations associées postérieures à cette date"; // A traduire
 $vocab['delete_booking'] = " ha eliminato la prenotazione di ";
 $vocab['delete_up_to'] = "Cancellare a ";
 $vocab['del_entry_in_conflict'] = "Eliminare la (le) prenotazione(i) quì sopra allo scopo di convalidare la nuova prenotazione.";

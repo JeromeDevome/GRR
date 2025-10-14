@@ -227,6 +227,11 @@
             {% if d.lienPeriodeSupprimer %}
             <tr>
                 <td colspan="2">
+                    <a class="btn btn-danger" type="button" href="{{d.lienPeriodeSupprimerPosterieure|raw}}" onclick="return confirm('{{trad.confirmdel|e('js')}}\n{{trad.deleteseriesposterieure}}');">{{trad.deleteseriesposterieure}}</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
                     <a class="btn btn-danger" type="button" href="{{d.lienPeriodeSupprimer|raw}}" onclick="return confirm('{{trad.confirmdel|e('js')}}\n{{trad.deleteseries}}');">{{trad.deleteseries}}</a>
                 </td>
             </tr>
