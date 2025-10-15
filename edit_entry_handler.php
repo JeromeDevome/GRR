@@ -636,7 +636,7 @@ try {
         if($level < 3){     // les gestionnaires ne sont pas limités par les quotas
             // existe-t-il un quota ?
             // quotas globaux
-            if (!isset($id) || ($id = 0)){  // nouvelle réservation
+            if (!isset($id) || ($id == 0)){  // nouvelle réservation
                 $compt = 1;
             }
             else{       // modification d'une réservation existante
