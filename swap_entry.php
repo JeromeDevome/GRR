@@ -3,9 +3,9 @@
  * swap_entry.php
  * Interface d'échange d'une réservation avec une autre, à choisir
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-04-19 18:19$
+ * Dernière modification : $Date: 2025-10-25 15:36$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -79,50 +79,16 @@ if (isset($_GET['id_alt'])){ // les paramètres sont connus
         $res1 = grr_sql_query($sql1);
         if ($res1){
             $data1 = grr_sql_row($res1,0);
-            $sql2 = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id=".$_GET['id_alt'];
+            $sql2 = "SELECT * FROM ".TABLE_PREFIX."_entry WHERE id=".intval($_GET['id_alt']);
             $res2 = grr_sql_query($sql2);
             if ($res2){
                 $data2 = grr_sql_row($res2,0);
-                $sql3 = " UPDATE ".TABLE_PREFIX."_entry SET ";
-            /*    $sql3 .= "entry_type = '".$data1[3]."', ";
-                $sql3 .= "repeat_id = '".$data1[4]."', "; */
-                $sql3 .= "room_id = '".$data1[5]."' ";//"', ";
-            /*    $sql3 .= "create_by = '".$current_user."', ";
-                $sql3 .= "beneficiaire_ext = '".$data1[8]."', ";
-                $sql3 .= "beneficiaire = '".$data1[9]."', ";
-                $sql3 .= "name = '".$data1[10]."', ";
-                $sql3 .= "type = '".$data1[11]."', ";
-                $sql3 .= "description = '".$data1[12]."', ";
-                $sql3 .= "statut_entry = '".$data1[13]."', ";
-                $sql3 .= "option_reservation = '".$data1[14]."', ";
-                $sql3 .= "overload_desc = '".$data1[15]."', ";
-                $sql3 .= "moderate = '".$data1[16]."', ";
-                $sql3 .= "jours = '".$data1[17]."', ";
-                $sql3 .= "clef = '".$data1[18]."', ";
-                $sql3 .= "courrier = '".$data1[19]."' "; */
-                $sql3 .= "WHERE id = ".$data2[0]; 
-                $res3 = grr_sql_query($sql3);
-                if ($res3){                    
-                    $sql4 = " UPDATE ".TABLE_PREFIX."_entry SET ";
-            /*        $sql4 .= "entry_type = '".$data2[3]."', ";
-                    $sql4 .= "repeat_id = '".$data2[4]."', "; */
-                    $sql4 .= "room_id = '".$data2[5]."' ";//"', ";
-            /*        $sql4 .= "create_by = '".$current_user."', ";
-                    $sql4 .= "beneficiaire_ext = '".$data2[8]."', ";
-                    $sql4 .= "beneficiaire = '".$data2[9]."', ";
-                    $sql4 .= "name = '".$data2[10]."', ";
-                    $sql4 .= "type = '".$data2[11]."', ";
-                    $sql4 .= "description = '".$data2[12]."', ";
-                    $sql4 .= "statut_entry = '".$data2[13]."', ";
-                    $sql4 .= "option_reservation = '".$data2[14]."', ";
-                    $sql4 .= "overload_desc = '".$data2[15]."', ";
-                    $sql4 .= "moderate = '".$data2[16]."', ";
-                    $sql4 .= "jours = '".$data2[17]."', ";
-                    $sql4 .= "clef = '".$data2[18]."', ";
-                    $sql4 .= "courrier = '".$data2[19]."' "; */
-                    $sql4 .= "WHERE id = ".$data1[0]; 
-                    $res4 = grr_sql_query($sql4);
-                    if ($res4){
+                $sql3 = " UPDATE ".TABLE_PREFIX."_entry SET room_id =".$data1[5]." WHERE id =".$data2[0]; 
+                $res3 = grr_sql_command($sql3);
+                if ($res3 != -1){
+                  $sql3 = " UPDATE ".TABLE_PREFIX."_entry SET room_id =".$data2[5]." WHERE id =".$data1[0]; 
+                    $res4 = grr_sql_command($sql3);
+                    if ($res4 != -1){
                         $etape = 3; // échange réussi, envoyer un mail si programmé
                         if (Settings::get("automatic_mail") == 'yes'){
                             $_SESSION['session_message_error'] = send_mail($data1[0],2,$dformat,array(),$data1[5]);
@@ -132,7 +98,7 @@ if (isset($_GET['id_alt'])){ // les paramètres sont connus
                 }
             }
         }
-        if (!$res1 || !$res2 || !$res3 || !$res4){
+        if (!$res1 || !$res2 || ($res3 == -1) || ($res4 == -1)){
             $_SESSION['session_message_error'] = grr_sql_error();
         }
     }
@@ -158,7 +124,7 @@ else { // on connaît $id de la réservation à échanger, on va en chercher une
             showAccessDenied($back);
             exit();
         }
-        if (!getWritable($beneficiaire,$current_user, $id))
+        if (!getWritable($current_user, $id))
         {
             showAccessDenied($back);
             exit;
@@ -184,7 +150,7 @@ else { // on connaît $id de la réservation à échanger, on va en chercher une
             $ret_page .= "&amp;room=".$room_back;
         }
         // recherche les réservations qui ont les mêmes heures de début et de fin
-        $sql = "SELECT id FROM ".TABLE_PREFIX."_entry WHERE (start_time = '".$info['start_time']."' AND end_time = '".$info['end_time']."' AND id != '".$id."')";
+        $sql = "SELECT id FROM ".TABLE_PREFIX."_entry WHERE (start_time = ".$info['start_time']." AND end_time = ".$info['end_time']." AND id != ".$id.")";
         $reps = grr_sql_query($sql);
         if (!$reps)
             grr_sql_error($reps);
@@ -199,14 +165,16 @@ else { // on connaît $id de la réservation à échanger, on va en chercher une
                 && verif_acces_fiche_reservation($current_user,$info_alt['room_id']) 
                 && $user_can_book
                 && UserRoomMaxBooking($current_user,$info_alt['room_id'],1)){ // si l'utilisateur peut accéder à la ressource et la modifier, on l'affiche
-
                 $resa_access[$a['id']] = $info_alt;
                 }
         }
+        grr_sql_free($reps);
         $etape = 1;
     }
-    else 
-        showAccessDenied(page_accueil()); // l'utilisateur ne peut accéder à cette réservation... on le renvoie vers la page d'accueil
+    else{
+      showAccessDenied(page_accueil()); // l'utilisateur ne peut accéder à cette réservation... on le renvoie vers la page d'accueil
+      exit;
+    }
 }
 // début de code html, commun à tous les cas
 // pour le traitement des modules
@@ -255,7 +223,7 @@ if ($etape == 1){
             echo "</tr>";
             echo "<tr>";
                 echo "<th><span class='glyphicon glyphicon-arrow-down'></span></th>"; // colonne pour les choix
-                echo "<th>".$info['description']."</th>";
+                echo "<th>".$info['name']."</th>";
                 echo "<th>".time_date_string($info['start_time'],$dformat)."</th>";
                 echo "<th>".time_date_string($info['end_time'],$dformat)."</th>";
                 echo "<th>".roomDesc($info['room_id'])."</th>"; 
@@ -268,7 +236,7 @@ if ($etape == 1){
         foreach($resa_access as $k => $d){
             echo "<tr class='center'>";
             echo "<td><input type='radio' name='id_alt' value=".$k." /></td>"; // colonne pour les choix
-            echo "<td>".$d['description']."</td>";
+            echo "<td>".$d['name']."</td>";
             echo "<td>".time_date_string($d['start_time'],$dformat)."</td>";
             echo "<td>".time_date_string($d['end_time'],$dformat)."</td>";
             echo "<td>".roomDesc($d['room_id'])."</td>";
@@ -292,7 +260,7 @@ if ($etape == 2){
             echo "<th>".get_vocab('type')."</th>";
         echo "</tr>";
         echo "<tr style='text-align:center;'>";
-            echo "<td>".$info['description']."</td>";
+            echo "<td>".$info['name']."</td>";
             echo "<td>".time_date_string($info['start_time'],$dformat)."</td>";
             echo "<td>".time_date_string($info['end_time'],$dformat)."</td>";
             echo "<td>".roomDesc($info['room_id'])."</td>"; 
@@ -311,7 +279,7 @@ if ($etape == 2){
             echo "<th>".get_vocab('type')."</th>";
         echo "</tr>";
         echo "<tr style='text-align:center;'>";
-            echo "<td>".$info_alt['description']."</td>";
+            echo "<td>".$info_alt['name']."</td>";
             echo "<td>".time_date_string($info_alt['start_time'],$dformat)."</td>";
             echo "<td>".time_date_string($info_alt['end_time'],$dformat)."</td>";
             echo "<td>".roomDesc($info_alt['room_id'])."</td>"; 
