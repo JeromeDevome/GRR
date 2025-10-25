@@ -23,13 +23,14 @@
         </div>
 
         <!-- Légende -->
-        {% if settings.legend == 0 %}
-            <div id ="legendeG">
+            {% if settings.legend == 0 %}
                 <div id ="legendeH" class="col-lg-2 col-md-3 col-xs-12">
-                    {{legende|raw}}
+                    <table class="legende">
+                        <caption>{{trad.show_color_key}}</caption>
+                        {{legende|raw}}
+                    </table>
                 </div>
-            </div>
-        {% endif %}
+            {% endif %}
     </div>
 {% endmacro %}
 
