@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2025-10-02
+# Last modification : 2025-10-26
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1005,7 +1005,7 @@ $vocab['utilisateur_rendu_inactif'] = "Advertencia: El usuario seleccionado arri
 $vocab['utilisateurs_reservant'] = "El recurso está restringido. Los siguientes usuarios pueden reservar este recurso:";
 $vocab['utilisateur_simple_visiteur'] = "Advertencia: El usuario seleccionado arriba es un usuario con estatus de \"visitante\".";
 $vocab['utilisateur_supprime'] = "Advertencia: El beneficiario registrado actualmente es un usuario que ha sido eliminado de la base de datos de usuarios.";
-$vocab['utilisateur_doubloon'] = "Varios usuarios tienen el mismo nombre de usuario que el usuario anterior. Reporte este problema al administrador.";
+$vocab['utilisateur_doublon'] = "Varios usuarios tienen el mismo nombre de usuario que el usuario anterior. Reporte este problema al administrador.";
 $vocab['Valide_au_moins_une_des_conditions_suivantes'] = "Válida por lo menos una de las condiciones siguientes";
 $vocab['Valide_toutes_les_conditions_suivantes'] = "Válidas todas las condiciones siguientes";
 $vocab['valid_time_of_day'] = "una hora válida.";

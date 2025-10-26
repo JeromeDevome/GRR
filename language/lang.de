@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2025-10-02
+# Last modification : 2025-10-26
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1000,7 +1000,7 @@ $vocab['utilisateur_rendu_inactif'] = "Warnung: Der oben ausgewählte Benutzer i
 $vocab['utilisateurs_reservant'] = "Die Ressource ist eingeschränkt. Die folgenden Benutzer können diese Ressource reservieren:";
 $vocab['utilisateur_simple_visiteur'] = "Warnung: Der oben ausgewählte Benutzer hat den Status „Besucher“.";
 $vocab['utilisateur_supprime'] = "Warnung: Der aktuell registrierte Begünstigte wurde aus der Benutzerdatenbank gelöscht.";
-$vocab['utilisateur_doubloon'] = "Mehrere Benutzer haben denselben Benutzernamen wie der oben genannte Benutzer. Melden Sie dieses Problem dem Administrator.";
+$vocab['utilisateur_doublon'] = "Mehrere Benutzer haben denselben Benutzernamen wie der oben genannte Benutzer. Melden Sie dieses Problem dem Administrator.";
 $vocab['Valide_au_moins_une_des_conditions_suivantes'] = " wenigstens eine der folgenden Voraussetzungen muss erfüllt sein";
 $vocab['Valide_toutes_les_conditions_suivantes'] = " alle nachfolgenden Voraussetzungen müssen gegeben sein";
 $vocab['valid_time_of_day'] = "eine gültige Uhrzeit.";
