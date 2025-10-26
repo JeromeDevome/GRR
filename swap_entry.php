@@ -3,9 +3,9 @@
  * swap_entry.php
  * Interface d'échange d'une réservation avec une autre, à choisir
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-17 16:00$
+ * Dernière modification : $Date: 2025-10-26 10:33$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -213,7 +213,7 @@ if ($etape == 1){
             echo "</tr>";
             echo "<tr>";
                 echo "<th><span class='glyphicon glyphicon-arrow-down'></span></th>"; // colonne pour les choix
-                echo "<th>".$info['description']."</th>";
+                echo "<th>".$info['name']."</th>";
                 echo "<th>".time_date_string($info['start_time'],$dformat)."</th>";
                 echo "<th>".time_date_string($info['end_time'],$dformat)."</th>";
                 echo "<th>".roomDesc($info['room_id'])."</th>"; 
@@ -226,7 +226,7 @@ if ($etape == 1){
         foreach($resa_access as $k => $d){
             echo "<tr class='center'>";
             echo "<td><input type='radio' name='id_alt' value=".$k." /></td>"; // colonne pour les choix
-            echo "<td>".$d['description']."</td>";
+            echo "<td>".$d['name']."</td>";
             echo "<td>".time_date_string($d['start_time'],$dformat)."</td>";
             echo "<td>".time_date_string($d['end_time'],$dformat)."</td>";
             echo "<td>".roomDesc($d['room_id'])."</td>";
@@ -250,7 +250,7 @@ if ($etape == 2){
             echo "<th>".get_vocab('type')."</th>";
         echo "</tr>";
         echo "<tr style='text-align:center;'>";
-            echo "<td>".$info['description']."</td>";
+            echo "<td>".$info['name']."</td>";
             echo "<td>".time_date_string($info['start_time'],$dformat)."</td>";
             echo "<td>".time_date_string($info['end_time'],$dformat)."</td>";
             echo "<td>".roomDesc($info['room_id'])."</td>"; 
@@ -269,7 +269,7 @@ if ($etape == 2){
             echo "<th>".get_vocab('type')."</th>";
         echo "</tr>";
         echo "<tr style='text-align:center;'>";
-            echo "<td>".$info_alt['description']."</td>";
+            echo "<td>".$info_alt['name']."</td>";
             echo "<td>".time_date_string($info_alt['start_time'],$dformat)."</td>";
             echo "<td>".time_date_string($info_alt['end_time'],$dformat)."</td>";
             echo "<td>".roomDesc($info_alt['room_id'])."</td>"; 
