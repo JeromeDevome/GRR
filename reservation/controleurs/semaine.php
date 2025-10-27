@@ -3,7 +3,7 @@
  * semaine.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-06-27 19:00$
+ * Dernière modification : $Date: 2025-10-27 18:16$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -26,36 +26,26 @@ include "include/planning.php";
 $debug_flag = FALSE;
 // le paramètre $room est obligatoire
 if (!isset($room) || ($room == 0)){
-    $msg = get_vocab('choose_a_room');
-    if ($area == 0) $area = 1;
-    $lien = "app.php?p=semaine_all&area=".$area."&day=".$day."&month=".$month."&year=".$year;
-    echo "<script type='text/javascript'>
-        alert('$msg');
-        document.location.href='$lien';
-    </script>";
-    echo "<p><br/>";
-        echo $msg."<a href='app.php?p=semaine_all'>".get_vocab("link")."</a>";
-    echo "</p>";
-    die();
+  $msg = get_vocab('choose_a_room');
+  if ($area == 0) $area = 1;
+  $lien = "app.php?p=semaine_all&area=".$area."&day=".$day."&month=".$month."&year=".$year;
+  echo "<script type='text/javascript'>
+    alert('$msg');
+    document.location.href='$lien';
+  </script>";
+  echo "<p><br/>";
+  echo $msg."<a href='app.php?p=semaine_all'>".get_vocab("link")."</a>";
+  echo "</p>";
+  die();
 }
 $time = mktime(0, 0, 0, $month, $day, $year);
-// $time_old = $time;
+
 if (($weekday = (date("w", $time) - $weekstarts + 7) % 7) > 0)
-    $time = mktime(0,0,0,$month,$day-$weekday,$year); // recule de $weekday jours, php corrigera en fonction du changement d'heure
-/*	$time -= $weekday * 86400; // recule de $weekday jours, puis corrige en fonction du changement d'heure
-if (!isset($correct_heure_ete_hiver) or ($correct_heure_ete_hiver == 1))
-{
-	if ((heure_ete_hiver("ete",$year,0) <= $time_old) && (heure_ete_hiver("ete",$year,0) >= $time) && ($time_old != $time) && (date("H", $time) == 23))
-		$decal = 3600;
-	else
-		$decal = 0;
-	$time += $decal;
-}*/
+  $time = mktime(0,0,0,$month,$day-$weekday,$year); // recule de $weekday jours, php corrigera en fonction du changement d'heure
 
 $day_week   = date("d", $time); // premier jour de la semaine
 $month_week = date("m", $time);
 $year_week  = date("Y", $time);
-
 
 $am7 = mktime($morningstarts, 0, 0, $month_week, $day_week, $year_week);
 $pm7 = mktime($eveningends, $eveningends_minutes, 0, $month, $day_week, $year_week);
@@ -75,7 +65,7 @@ grr_sql_free($res);
 $sql = "SELECT * FROM ".TABLE_PREFIX."_room WHERE id=$room";
 $res = grr_sql_query($sql);
 if ($res){
-    $this_room = grr_sql_row_keyed($res,0);
+  $this_room = grr_sql_row_keyed($res,0);
 }
 $d['nomRessource'] = (isset($this_room['room_name']))? $this_room['room_name']:"";
 $d['capaciteRessource'] = (isset($this_room['capacity']))? $this_room['capacity']:0;
@@ -92,16 +82,16 @@ grr_sql_free($res);
 //Pour vérifier si la plage de fin arrive sur un créneau ou non.
 $minutesFinCreneaux = array();
 for($h=0; $h<7200; $h+=$this_area_resolution) {
-	$minutesFinCreneaux[] = date('i', $h);
+  $minutesFinCreneaux[] = date('i', $h);
 }
 
 switch ($dateformat) {
-	case "en":
-	$dformat = "%A, %b %d";
-	break;
-	case "fr":
-	$dformat = "%A %d %b";
-	break;
+  case "en":
+  $dformat = "%A, %b %d";
+  break;
+  case "fr":
+  $dformat = "%A %d %b";
+  break;
 }
 $i = mktime(0, 0, 0, $month_week,$day_week - 7, $year_week);
 $d['yy'] = date("Y", $i);
@@ -121,7 +111,7 @@ $user_can_book = $who_can_book || ($authGetUserLevel > 2) || (authBooking($user_
 // Calcul du niveau d'accès aux fiches de réservation détaillées des ressources
 $acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $room);
 // Teste si l'utilisateur a la possibilité d'effectuer une réservation, compte tenu des limitations éventuelles de la ressource et du nombre de réservations déjà effectuées.
-$UserRoomMaxBooking	= UserRoomMaxBooking($user_name, $room, 1);
+$UserRoomMaxBooking = UserRoomMaxBooking($user_name, $room, 1);
 // calcul des cellules du planning
 $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, nbparticipantmax, ".TABLE_PREFIX."_room.confidentiel_resa
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
@@ -167,186 +157,179 @@ else
     $last_slot = ($eveningends * 3600 + $eveningends_minutes * 60) / $resolution -1; 
 }
 if ($debug_flag)
-	echo "<br />DEBUG: query=$sql <br />first_slot=$first_slot - last_slot=$last_slot\n";
+  echo "<br />DEBUG: query=$sql <br />first_slot=$first_slot - last_slot=$last_slot\n";
 $res = grr_sql_query($sql);
 if (!$res)
-	echo grr_sql_error();
+  echo grr_sql_error();
 else
 {
     $overloadFieldList = mrbsOverloadGetFieldslist($area);
-	// Pour toutes les réservations
-	for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
+  // Pour toutes les réservations
+  for ($i = 0; ($row = grr_sql_row_keyed($res, $i)); $i++)
     //foreach($res as $row) incompatible avec la fonction affichage_resa_planning_complet
-	{
-		if ($debug_flag)
-			echo '<br />DEBUG: result $i, id $row[4], starts $row["start_time"] (".affiche_date($row["start_time"])."), ends $row["end_time"] (".affiche_date($row["end_time"]).")\n';
-		$month_debut = date("m",$row["start_time"]);
-		$day_debut = date("d",$row["start_time"]);
-		$year_debut = date("Y",$row["start_time"]); 
-        $debut_jour = mktime($morningstarts,0,0,$month_debut,$day_debut,$year_debut);
-		$t = max(round_t_down($row["start_time"], $resolution, $debut_jour), $week_start); // instant de départ de la tranche de résa
-        $month_current = date("m",$t);
-		$day_current = date("d",$t);
-		$year_current = date("Y",$t);
-		$end_t = min(round_t_up($row["end_time"],$resolution, $debut_jour), $week_end+$this_area_resolution); // instant de fin de la tranche de résa
-		$weekday = (date("w", $t) + 7 - $weekstarts) % 7;
-		$prev_weekday = -1;
-		$firstday = date("d", $t);
-        $lastday = date("d", $end_t);
-        // on sépare les plages définies par horaires et celles définies par créneaux
-        if ($enable_periods != 'y') // cas des plages définies par horaires
+  {
+    if ($debug_flag)
+      echo "<br />DEBUG: result ".$i.", id ".$row[4].", starts ".$row["start_time"]." (".affiche_date($row["start_time"])."), ends ".$row["end_time"]." (".affiche_date($row["end_time"]).")\n";
+    $month_debut = date("m",$row["start_time"]);
+    $day_debut = date("d",$row["start_time"]);
+    $year_debut = date("Y",$row["start_time"]); 
+    $debut_jour = mktime($morningstarts,0,0,$month_debut,$day_debut,$year_debut);
+    $t = max(round_t_down($row["start_time"], $resolution, $debut_jour), $week_start); // instant de départ de la tranche de résa
+    $month_current = date("m",$t);
+    $day_current = date("d",$t);
+    $year_current = date("Y",$t);
+    $end_t = min(round_t_up($row["end_time"],$resolution, $debut_jour), $week_end+$this_area_resolution); // instant de fin de la tranche de résa
+    $weekday = (date("w", $t) + 7 - $weekstarts) % 7;
+    $prev_weekday = -1;
+    $firstday = date("d", $t);
+    $lastday = date("d", $end_t);
+    // on sépare les plages définies par horaires et celles définies par créneaux
+    if ($enable_periods != 'y') // cas des plages définies par horaires
+    {
+      $day_midnight = mktime(0,0,0,$month_current,$day_current,$year_current);
+      $slot = ($t - $day_midnight) % 86400 / $this_area_resolution; // premier slot à afficher
+      $heigthSlotHoure = 60/($this_area_resolution/60);
+      do
+      {
+        if ($debug_flag)
+          echo "<br />DEBUG: t=$t (".affiche_date($t)."), end_t=$end_t (".affiche_date($end_t)."), weekday=$weekday, slot=$slot\n";
+        if ($slot < $first_slot)
         {
-            $day_midnight = mktime(0,0,0,$month_current,$day_current,$year_current);
-            $slot = ($t - $day_midnight) % 86400 / $this_area_resolution; // premier slot à afficher
-       		$heigthSlotHoure = 60/($this_area_resolution/60);
-       		do
-            {
-                if ($debug_flag)
-                    echo "<br />DEBUG: t=$t (".affiche_date($t)."), end_t=$end_t (".affiche_date($end_t)."), weekday=$weekday, slot=$slot\n";
-                if ($slot < $first_slot)
-                {
-                    $slot = $first_slot;
-                    $t = $weekday * 86400 + $am7;
-                    continue;
-                }
-                if ($slot <= $last_slot)
-                {
-                    $d[$weekday][$slot]["color"] = $row["type"];
-
-                    if (($end_t) > mktime(24, 0, 0, date('m',$t), date('d',$t), date('Y',$t))) // fin de réservation dépassant la fin de journée
-                    {
-                        if (date("d", $t) == $firstday) // Premier jour de réservation, Hdebut = Heure debut résa / Hfin = heure fin de journée / duree = (nb bloc d'une journée - nb bloc vides)
-                        {   
-                            $d[$weekday][$slot]["horaireDebut"] = $t;
-                            $d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t));
-                            $d[$weekday][$slot]["duree"] = (mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t))-$t)/$this_area_resolution;
-                        }
-                        // Les jours entre les deux , Hdebut = Heure debut journée/ Hfin = heure fin journée / duree = ( h fin journée - h debut journée) * nb bloc pr 1h ) 
-                        else
-                        {
-                            $d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$t), date('d',$t), date('Y',$t));
-                            $d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t));
-                            $d[$weekday][$slot]["duree"] = (($eveningends+$eveningends_minutes/60-$morningstarts)*$heigthSlotHoure);
-                        }
-                    }
-                    else // fin de réservation ne dépassant pas la fin de la journée ou dernière journée
-                    {
-                        $d[$weekday][$slot]["horaireDebut"] = $t;
-                        $d[$weekday][$slot]["horaireFin"] = $end_t;
-                        $d[$weekday][$slot]["duree"] = ($end_t- $t)/ $this_area_resolution;
-                    }
-                    // affichage pour debug
-                    if ($debug_flag)
-                    {
-                        echo date('j-m-Y H:i:s',$d[$weekday][$slot]["horaireDebut"])." --- ";
-                        echo date('j-m-Y H:i:s',$d[$weekday][$slot]["horaireFin"])." --- ";
-                        echo $d[$weekday][$slot]["duree"]." --- ";
-                        echo "C2C<br>";
-                    }
-                    //Si la plage de fin dépasse le créneau, augmenter la durée
-                    if(!in_array(date('i', $d[$weekday][$slot]["horaireFin"]), $minutesFinCreneaux)) {
-                        $d[$weekday][$slot]["duree"] += 1;
-                    }
-                    if ($prev_weekday != $weekday)
-                    {
-                        $prev_weekday = $weekday;
-                        //$d[$weekday][$slot]["data"] = affichage_lien_resa_planning($row[3],$row[4]);
-                        $heure_fin = date('H:i',$d[$weekday][$slot]["horaireFin"]);
-                        if (($heure_fin == '00:00') && ((date('w',$d[$weekday][$slot]["horaireFin"]) - $weekday) != 1)) 
-                            {$heure_fin = '24:00';}
-                        $horaires = date('H:i',$d[$weekday][$slot]["horaireDebut"]).get_vocab("to"). $heure_fin."";
-                        $d[$weekday][$slot]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
-                        $d[$weekday][$slot]["id"] = $row["id"];
-						$d[$weekday][$slot]["who"] = affichage_resa_info_bulle($overloadFieldList, 1, $row, $horaires);
-                        $d[$weekday][$slot]["beneficiaire"] = $row["beneficiaire"];
-                    }
-                }
-                $t += $this_area_resolution;
-                $slot++;
-                if ($slot > $last_slot)
-                {
-                    $weekday++;
-                    $slot = $first_slot;
-                    $t = $weekday * 86400 + $am7; // pb à prévoir avec changement d'heure ? YN
-                }
-            } while ($t < $end_t);
+          $slot = $first_slot;
+          $t = $weekday * 86400 + $am7;
+          continue;
         }
-        else  // cas des plages définies par créneaux
+        if ($slot <= $last_slot)
         {
-            $slot = 0;
-            do
+          $d[$weekday][$slot]["color"] = $row["type"];
+          if (($end_t) > mktime(24, 0, 0, date('m',$t), date('d',$t), date('Y',$t))) // fin de réservation dépassant la fin de journée
+          {
+            if (date("d", $t) == $firstday) // Premier jour de réservation, Hdebut = Heure debut résa / Hfin = heure fin de journée / duree = (nb bloc d'une journée - nb bloc vides)
+            {   
+              $d[$weekday][$slot]["horaireDebut"] = $t;
+              $d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t));
+              $d[$weekday][$slot]["duree"] = (mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t))-$t)/$this_area_resolution;
+            }
+            // Les jours entre les deux , Hdebut = Heure debut journée/ Hfin = heure fin journée / duree = ( h fin journée - h debut journée) * nb bloc pr 1h ) 
+            else
             {
-                if ($debug_flag)
-                    echo "<br />DEBUG: t=$t (".affiche_date($t)."), end_t=$end_t (".affiche_date($end_t)."), weekday=$weekday, slot=$slot\n";
-                $start_slot = date('i',$t)+60*date('H',$t)-720;
-                $end_slot = date('i',$end_t)+60*date('H',$end_t)-720;
-                if ($slot < $start_slot)
-                {
-                    $slot = $start_slot;
-                    continue;
-                }
-                if ($slot <= $last_slot)
-                {
-                    $d[$weekday][$slot]["color"] = $row["type"];
-
-                    if (($end_t) > mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t))) // fin de réservation dépassant la fin de journée
-                    {
-                        if (date("d", $t) == $firstday) // Premier jour de réservation, Hdebut = Heure debut résa / Hfin = heure fin de journée / duree = (nb bloc d'une journée - nb bloc vides)
-                        {   
-                            $d[$weekday][$slot]["horaireDebut"] = $t;
-                            $d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t));
-                            $d[$weekday][$slot]["duree"] = $last_slot+1-$start_slot; 
-                        }
-                        // Les jours entre les deux , Hdebut = Heure debut journée/ Hfin = heure fin journée / duree = nb de créneaux dans une journée 
-                        else
-                        {
-                            $d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$t), date('d',$t), date('Y',$t));
-                            $d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t))+3600;
-                            $d[$weekday][$slot]["duree"] = count($periods_name); 
-                        }
-                    }
-                    else // fin de réservation ne dépassant pas la fin de la journée ou dernière journée
-                    {
-                        $d[$weekday][$slot]["horaireDebut"] = $t;
-                        $d[$weekday][$slot]["horaireFin"] = $end_t;
-                        $d[$weekday][$slot]["duree"] = $end_slot-$start_slot; 
-                    } 
-                    // affichage pour debug
-                    if ($debug_flag)
-                    {
-                        echo date('j-m-Y H:i:s',$d[$weekday][$slot]["horaireDebut"])." --- ";
-                        echo date('j-m-Y H:i:s',$d[$weekday][$slot]["horaireFin"])." --- ";
-                        echo $d[$weekday][$slot]["duree"]." --- ";
-                        echo "C2C<br>";
-                    }
-            
-                    if ($prev_weekday != $weekday)
-                    {
-                        $prev_weekday = $weekday;
-                        $horaires = "";
-                        $d[$weekday][$slot]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
-                        $d[$weekday][$slot]["id"] = $row["id"];
-						$d[$weekday][$slot]["who"] = affichage_resa_info_bulle($overloadFieldList, 1, $row, $horaires);
-                        $d[$weekday][$slot]["beneficiaire"] = $row["beneficiaire"];
-                    }
-                }
-                $t += 60; 
-                $slot++;
-                if ($slot > $last_slot) // passe au lendemain
-                {
-                    $weekday++;
-                    $day_current++;
-                    $slot = $first_slot;
-                    $t = mktime(12,0,0,$month_current,$day_current,$year_current);
-                }
-            } while ($t < $end_t);
-        }    
-	}
+              $d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$t), date('d',$t), date('Y',$t));
+              $d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t));
+              $d[$weekday][$slot]["duree"] = (($eveningends+$eveningends_minutes/60-$morningstarts)*$heigthSlotHoure);
+            }
+          }
+          else // fin de réservation ne dépassant pas la fin de la journée ou dernière journée
+          {
+            $d[$weekday][$slot]["horaireDebut"] = $t;
+            $d[$weekday][$slot]["horaireFin"] = $end_t;
+            $d[$weekday][$slot]["duree"] = ($end_t- $t)/ $this_area_resolution;
+          }
+          // affichage pour debug
+          if ($debug_flag)
+          {
+            echo date('j-m-Y H:i:s',$d[$weekday][$slot]["horaireDebut"])." --- ";
+            echo date('j-m-Y H:i:s',$d[$weekday][$slot]["horaireFin"])." --- ";
+            echo $d[$weekday][$slot]["duree"]." --- ";
+            echo "C2C<br>";
+          }
+          //Si la plage de fin dépasse le créneau, augmenter la durée
+          if(!in_array(date('i', $d[$weekday][$slot]["horaireFin"]), $minutesFinCreneaux)) {
+            $d[$weekday][$slot]["duree"] += 1;
+          }
+          if ($prev_weekday != $weekday)
+          {
+            $prev_weekday = $weekday;
+            $heure_fin = date('H:i',$d[$weekday][$slot]["horaireFin"]);
+            if (($heure_fin == '00:00') && ((date('w',$d[$weekday][$slot]["horaireFin"]) - $weekday) != 1)) 
+              {$heure_fin = '24:00';}
+            $horaires = date('H:i',$d[$weekday][$slot]["horaireDebut"]).get_vocab("to"). $heure_fin."";
+            $d[$weekday][$slot]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
+            $d[$weekday][$slot]["id"] = $row["id"];
+            $d[$weekday][$slot]["who"] = affichage_resa_info_bulle($overloadFieldList, 1, $row, $horaires);
+          }
+        }
+        $t += $this_area_resolution;
+        $slot++;
+        if ($slot > $last_slot)
+        {
+          $weekday++;
+          $slot = $first_slot;
+          $t = $weekday * 86400 + $am7; // pb à prévoir avec changement d'heure ? YN
+        }
+      } while ($t < $end_t);
+    }
+    else  // cas des plages définies par créneaux
+    {
+      $slot = 0;
+      do
+      {
+        if ($debug_flag)
+          echo "<br />DEBUG: t=$t (".affiche_date($t)."), end_t=$end_t (".affiche_date($end_t)."), weekday=$weekday, slot=$slot\n";
+        $start_slot = date('i',$t)+60*date('H',$t)-720;
+        $end_slot = date('i',$end_t)+60*date('H',$end_t)-720;
+        if ($slot < $start_slot)
+        {
+            $slot = $start_slot;
+            continue;
+        }
+        if ($slot <= $last_slot)
+        {
+          $d[$weekday][$slot]["color"] = $row["type"];
+          if (($end_t) > mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t))) // fin de réservation dépassant la fin de journée
+          {
+            if (date("d", $t) == $firstday) // Premier jour de réservation, Hdebut = Heure debut résa / Hfin = heure fin de journée / duree = (nb bloc d'une journée - nb bloc vides)
+            {   
+              $d[$weekday][$slot]["horaireDebut"] = $t;
+              $d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t));
+              $d[$weekday][$slot]["duree"] = $last_slot+1-$start_slot; 
+            }
+            // Les jours entre les deux , Hdebut = Heure debut journée/ Hfin = heure fin journée / duree = nb de créneaux dans une journée 
+            else
+            {
+              $d[$weekday][$slot]["horaireDebut"] = mktime($morningstarts, 0, 0, date('m',$t), date('d',$t), date('Y',$t));
+              $d[$weekday][$slot]["horaireFin"] = mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t))+3600;
+              $d[$weekday][$slot]["duree"] = count($periods_name); 
+            }
+          }
+          else // fin de réservation ne dépassant pas la fin de la journée ou dernière journée
+          {
+            $d[$weekday][$slot]["horaireDebut"] = $t;
+            $d[$weekday][$slot]["horaireFin"] = $end_t;
+            $d[$weekday][$slot]["duree"] = $end_slot-$start_slot; 
+          } 
+          // affichage pour debug
+          if ($debug_flag)
+          {
+            echo date('j-m-Y H:i:s',$d[$weekday][$slot]["horaireDebut"])." --- ";
+            echo date('j-m-Y H:i:s',$d[$weekday][$slot]["horaireFin"])." --- ";
+            echo $d[$weekday][$slot]["duree"]." --- ";
+            echo "C2C<br>";
+          }
+          if ($prev_weekday != $weekday)
+          {
+            $prev_weekday = $weekday;
+            $horaires = "";
+            $d[$weekday][$slot]["data"] = affichage_resa_planning_complet($overloadFieldList, 1, $row, $horaires);
+            $d[$weekday][$slot]["id"] = $row["id"];
+            $d[$weekday][$slot]["who"] = affichage_resa_info_bulle($overloadFieldList, 1, $row, $horaires);
+          }
+        }
+        $t += 60; 
+        $slot++;
+        if ($slot > $last_slot) // passe au lendemain
+        {
+          $weekday++;
+          $day_current++;
+          $slot = $first_slot;
+          $t = mktime(12,0,0,$month_current,$day_current,$year_current);
+        }
+      } while ($t < $end_t);
+    }    
+  }
 }
 grr_sql_free($res);
 
-
-// début du code HTML
+// paramètres d'affichage pour twig
 if ((!isset($d['pview'])) || ($d['pview'] != 1))
 {
     $positionMenu = Settings::get("menu_gauche");
@@ -366,20 +349,22 @@ $d['semaineActuel'] = get_vocab("week").get_vocab("deux_points").utf8_strftime($
 
 if ($debug_flag)
 {
-	echo "<p>DEBUG:<p><pre>\n";
-	if (gettype($d) == "array")
-	{
+  print_r($d);
+  /*
+  echo "<p>DEBUG:<p><pre>\n";
+  if (gettype($d) == "array")
+  {
         foreach($d as $w_k=>$w_v)
-		{
-	        foreach($w_v as $t_k=>$t_v)
-			{
-	            foreach($t_v as $k_k=>$k_v)
+    {
+          foreach($w_v as $t_k=>$t_v)
+      {
+              foreach($t_v as $k_k=>$k_v)
                     echo "$d[$w_k][$t_k][$k_k] =", $k_v ,"<br/>";
-			}
-		}
-	}
-	else echo "d is not an array!\n";
-	echo "</pre><p>\n";
+      }
+    }
+  }
+  else echo "d is not an array!\n";
+  echo "</pre><p>\n";*/
 } 
 
 $num_week_day = $weekstarts;
@@ -390,46 +375,46 @@ $i = $time;
 $joursSemaine = array ();
 for ($t = $week_start; $t < $week_end; $t += 86400)
 {
-	$num_day = date('d', $t);
-	$month_actuel = date('m', $t);
-	$year_actuel  = date("Y",$t);
-    $nomCycle = "";
-	$tt = mktime(0, 0, 0, $month_actuel, $num_day,$year_actuel);
-	$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$i'");
-	if ($display_day[$num_week_day] == 1)
-	{
-		$class = "cell_hours";
-		$title = "";
-        if ($settings->get("show_holidays") == "Oui")
-        {   
-            if (isHoliday($tt)){
-                $class .= ' ferie';
-            }
-            elseif (isSchoolHoliday($tt)){
-                $class .= ' vacance';
-            }
-        }
-        $nomJour = utf8_strftime($dformat, $t);
-		if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
-			if (intval($jour_cycle) > 0)
-				$nomCycle = get_vocab("rep_type_6")." ".$jour_cycle;
-			else
-                $nomCycle =  "<br />".$jour_cycle;
-
-        $joursSemaine[] = array('numJour' => $num_day, 'nomJour' => $nomJour, 'nomCycle' => $nomCycle, 'class' => $class, 'annee' => $year_actuel, 'mois' => $month_actuel);
-    }
-    if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
+  $num_day = date('d', $t);
+  $month_actuel = date('m', $t);
+  $year_actuel  = date("Y",$t);
+  $nomCycle = "";
+  $tt = mktime(0, 0, 0, $month_actuel, $num_day,$year_actuel);
+  $jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$i'");
+  if ($display_day[$num_week_day] == 1)
+  {
+    $class = "cell_hours";
+    $title = "";
+    if ($settings->get("show_holidays") == "Oui")
     {
-        $num_day = date('d', $t);
-        if (heure_ete_hiver("hiver", $year, 0) == mktime(0, 0, 0, $month, $num_day, $year))
-            $t += 3600;
-        if ((date("H",$t) == "13") || (date("H",$t) == "02"))
-            $t -= 3600;
+      if (isHoliday($tt)){
+        $class .= ' ferie';
+      }
+      elseif (isSchoolHoliday($tt)){
+        $class .= ' vacance';
+      }
     }
-    $i += 86400;
-    $k++;
-    $num_week_day++;
-    $num_week_day = $num_week_day % 7;
+    $nomJour = utf8_strftime($dformat, $t);
+    if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
+      if (intval($jour_cycle) > 0)
+        $nomCycle = get_vocab("rep_type_6")." ".$jour_cycle;
+      else
+        $nomCycle =  "<br />".$jour_cycle;
+
+    $joursSemaine[] = array('numJour' => $num_day, 'nomJour' => $nomJour, 'nomCycle' => $nomCycle, 'class' => $class, 'annee' => $year_actuel, 'mois' => $month_actuel);
+  }
+  if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
+  {
+    $num_day = date('d', $t);
+    if (heure_ete_hiver("hiver", $year, 0) == mktime(0, 0, 0, $month, $num_day, $year))
+      $t += 3600;
+    if ((date("H",$t) == "13") || (date("H",$t) == "02"))
+      $t -= 3600;
+  }
+  $i += 86400;
+  $k++;
+  $num_week_day++;
+  $num_week_day = $num_week_day % 7;
 }
 
 $t = $am7;
@@ -607,6 +592,7 @@ for ($slot = $first_slot; $slot <= $last_slot; $slot++)
 
     $lignesHoraires[] = array('classHoraire' => $classHoraire, 'horairePeriode' => $horairePeriode, 'cellulesJours' => $cellulesJours, 'periode' => $time_t_stripped, 'heure' => $hour, 'minute' => $minute);
 }
-
+//echo "lignesHoraires  ";
+//print_r($lignesHoraires);
 echo $twig->render('semaine.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'joursSemaine' => $joursSemaine, 'lignesHoraires' => $lignesHoraires));
 ?>

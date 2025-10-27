@@ -82,37 +82,41 @@
 			</tr>
 		</thead>
 		<tbody>
-            {% for ligne in lignesHoraires %}
-                <tr>
-                    <td class="{{ligne.classHoraire}}">{{ligne.horairePeriode}}</td>
-                    {% for cellule in ligne.cellulesJours %}
-						{% if cellule.statut > 0 %}
-                        <td  rowspan="{{cellule.rowspan}}" class="{{cellule.class}}">
-							{% if cellule.statut == 1 %} <!-- Réservable -->
-								<a href="app.php?p=editentree&room={{cellule.ressource}}&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{d.gDay}}&amp;page=semaine&amp;room_back={{cellule.ressource}}&amp;{% if d.usePeriode == "y" %}period={{ligne.periode}}{% else %}hour={{ligne.heure}}&amp;minute={{ligne.minute}}{% endif %}" title="{{trad.cliquez_pour_effectuer_une_reservation}}">
-									<i class="fa-solid fa-plus"></i>
-								</a>
-							{% elseif cellule.statut == 2 %} <!-- Possède une réservation -->
-								
-								{% if cellule.ficheResa %}
-									{% if settings.display_level_view_entry == 0 %}
-										<a title="{{cellule.titre}}" data-width="675" onclick="request({{cellule.idresa}},{{d.gDay}},{{d.gMonth}},{{d.gYear}},{{d.room}},'semaine',readData);" data-rel="popup_name" class="poplight lienCellule">
-									{% else %}
-										<a class="lienCellule" title="{{cellule.titre}}" href="app.php?p=vuereservation&id={{cellule.idresa}}&amp;day={{d.gDay}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=semaine">
-									{% endif %}
-										{{cellule.descr|raw}}
-									</a>
-								{% else %}
-									{{cellule.descr|raw}}
-								{% endif %}
-							{% elseif cellule.statut == 3 %} <!-- Hors résa -->
-								<i class="fa-solid fa-xmark" title="{{trad.reservation_impossible}}" style="color:red"></i>
-							{% endif %}
-						</td>
-						{% endif %}
-                    {% endfor %}
-                </tr>
-            {% endfor %}
+    {% for ligne in lignesHoraires %}
+      <tr>
+        <td class="{{ligne.classHoraire}}">{{ligne.horairePeriode}}</td>
+        {% for cellule in ligne.cellulesJours %}
+          {% if cellule.statut == 0 and cellule.class != ''%}
+            <td >
+            {{cellule.descr|raw}}
+            </td>
+          {% endif %}
+          {% if cellule.statut > 0 %}
+            <td  rowspan="{{cellule.rowspan}}" class="{{cellule.class}}">
+            {% if cellule.statut == 1 %} <!-- Réservable -->
+              <a href="app.php?p=editentree&room={{cellule.ressource}}&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{d.gDay}}&amp;page=semaine&amp;room_back={{cellule.ressource}}&amp;{% if d.usePeriode == "y" %}period={{ligne.periode}}{% else %}hour={{ligne.heure}}&amp;minute={{ligne.minute}}{% endif %}" title="{{trad.cliquez_pour_effectuer_une_reservation}}">
+              <i class="fa-solid fa-plus"></i>
+              </a>
+            {% elseif cellule.statut == 2 %} <!-- Possède une réservation -->
+              {% if cellule.ficheResa %}
+                {% if settings.display_level_view_entry == 0 %}
+                  <a title="{{cellule.titre}}" data-width="675" onclick="request({{cellule.idresa}},{{d.gDay}},{{d.gMonth}},{{d.gYear}},{{d.room}},'semaine',readData);" data-rel="popup_name" class="poplight lienCellule">
+                {% else %}
+                  <a class="lienCellule" title="{{cellule.titre}}" href="app.php?p=vuereservation&id={{cellule.idresa}}&amp;day={{d.gDay}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=semaine">
+                {% endif %}
+                {{cellule.descr|raw}}
+                </a>
+              {% else %}
+                {{cellule.descr|raw}}
+              {% endif %}
+            {% elseif cellule.statut == 3 %} <!-- Hors résa -->
+              <i class="fa-solid fa-xmark" title="{{trad.reservation_impossible}}" style="color:red"></i>
+            {% endif %}
+            </td>
+          {% endif %}
+        {% endfor %}
+      </tr>
+    {% endfor %}
 		</tbody>
 
 	</table>
