@@ -150,8 +150,6 @@ try {
         }
         $beneficiaire = "";
     }
-    else
-        $beneficiaire_ext = "";
 
     if ((!isset($rooms[0])||(intval($rooms[0])==0))){
         $d['err_type']="choose_a_room";
