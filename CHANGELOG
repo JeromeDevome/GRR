@@ -48,7 +48,14 @@ Sous-version 3.5.2b
     correctif : erreur en restauration d'une base 3.4.0
     correctif : évite une erreur en mise à jour forcée
     mise à jour : fichiers de langue
-    
+Sous-version 3.5.2c
+    ajout : export au format csv de l'importation de réservations
+    correctif : fonction en doublon de mrbs_sql.inc.php
+    correctif : fonctionnalité de l'afichage de l'historique des connexions
+    correctif : test de variable
+    correctif : affichage de la description dans le formulaire d'échange entre deux réservations
+    mise à jour : fichiers de langue
+    modification : clauses IF NOT EXISTS et CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
 
 
 -----
