@@ -120,7 +120,7 @@
 				<!-- Section date & heure-->
 					<!-- Date & Heure de début -->
 					<div class="E form-inline">
-						<label class="form-label" for="datetimepicker">{{trad.date}}{{trad.deux_points}}</label>
+						<label class="form-label" >{{trad.date}}{{trad.deux_points}}
 					
 							{{ d.selectionDateDebut |raw }}
 							<input type="hidden" id="mydate_start_" disabled>
@@ -133,7 +133,7 @@
 								<!--<b>{{trad.time}}</b>-->
 								{{ d.jQuery_TimePickerStart |raw }}
 							{% endif %}
-						
+						</label>
 					</div>
 					<!-- Pour la fin : Si c'est une durée : -->
 					{% if d.type_affichage_reser == 0 %}
@@ -227,7 +227,7 @@
 					{% if d.active_cle == "y" %}
 						<div class="E">
 							<label for="keys">{{trad.status_clef}}{{trad.deux_points}}</label>
-							<input name="keys" type="checkbox" value="y" {% if d.clef == 1%}checked{% endif %} > {{trad.msg_clef}}
+							<input name="keys" id="keys" type="checkbox" value="y" {% if d.clef == 1%}checked{% endif %} > {{trad.msg_clef}}
 						</div>
 					{% endif %}
 				
@@ -235,7 +235,7 @@
 					{% if settings.show_courrier == "y" %}
 						<div class="E">
 							<label for="courrier">{{trad.status_courrier}}{{trad.deux_points}}</label>
-							<input name="courrier" type="checkbox" value="y" {% if d.courrier == 1%}checked{% endif %} > {{trad.msg_courrier}}
+							<input name="courrier" id="courrier" type="checkbox" value="y" {% if d.courrier == 1%}checked{% endif %} > {{trad.msg_courrier}}
 						</div>
 					{% endif %}
 

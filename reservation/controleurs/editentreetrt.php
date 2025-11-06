@@ -24,7 +24,7 @@ $user =$d['gNomUser'];
 
 //print_r($_GET);
 
-// on devrait arriver sur cette page depuis edit_entry ou editentreetrt, 
+// on devrait arriver sur cette page depuis editentree ou editentreetrt, 
 // il faudrait vérifier la page d'appel en pensant au timeout qui renvoie vers login.php
 
 // les variables attendues et leur type
@@ -215,12 +215,12 @@ try {
         }
     }
     if (isset($start_hour)){
-        settype($start_hour, "integer");
+        $start_hour = intval($start_hour);
         if ($start_hour > 23)
             $start_hour = 23;
     }
     if (isset($start_minute)){
-        settype($start_minute, "integer");
+        $start_minute = intval($start_minute);
         if ($start_minute > 59)
             $start_minute = 59;
     }
@@ -810,7 +810,7 @@ catch (Exception $e){
             }
             $d['htmlConflit'] .= '</center><br />';
         }
-        $d['htmlConflit'] .= '<form action="?p=editentree" method="GET">'; // retour à la page d'édition
+        $d['htmlConflit'] .= '<form action="app.php" method="GET">'; // retour à la page d'édition
         $d['htmlConflit'] .= '<input type="hidden" name="p" value="editentree">';
         $d['htmlConflit'] .= $hiddenInputs;
         $d['htmlConflit'] .= "<input class='btn btn-primary' type='submit' value='".get_vocab('returnprev')."' />";

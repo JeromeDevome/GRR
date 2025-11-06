@@ -3,10 +3,10 @@
  * editentree.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-06-23 12:00$
+ * Dernière modification : $Date: 2025-11-06 15:38$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author 	  Eric Lemeur pour les champs additionnels de type checkbox
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -170,23 +170,26 @@ if (!isset($edit_type))
 $page = verif_page();
 $hour = getFormVar('hour','int'); // depuis un planning
 $minute = getFormVar('minute','int');
-if (!isset($hour) || !isset($minute)){
-    if (isset($start_)){
-        $debut = array();
-        $debut = explode(':', $start_);
-        $start_hour = $debut[0];
-        $start_minute = isset($debut[1])? $debut[1]:'00';
-        $pos = strpos($start_minute," ");
-        if ($pos !== false){
-            $debmin = explode(' ',$start_minute);
-            $start_minute = $debmin[0];
-            if ($debmin[1] == "pm"){$start_hour += 12;}
-        }
+if (!isset($hour) || is_null($hour) || !isset($minute) || is_null($minute)){
+  if (isset($start_)){
+    $debut = array();
+    $debut = explode(':', $start_);
+    $start_hour = $debut[0];
+    $start_minute = isset($debut[1])? $debut[1]:'00';
+    $pos = strpos($start_minute," ");
+    if ($pos !== false){
+        $debmin = explode(' ',$start_minute);
+        $start_minute = $debmin[0];
+        if ($debmin[1] == "pm"){$start_hour += 12;}
     }
+    $hour = $start_hour;
+    $minute = $start_minute;
+  }
 }
-if ($hour < 10) $hour = "0".$hour;
-if ($minute < 10) $minute = "0".$minute;
-
+var_dump($hour);
+$d['hour'] = $hour;
+$d['minute'] = $minute;
+print_r($d);
 global $twentyfourhour_format;
 if (!isset($day) || !isset($month) || !isset($year))
 {
@@ -599,7 +602,7 @@ else
 	}
 	else
 	{
-		$d['jQuery_TimePickerStart'] = jQuery_TimePickerTwig('start_', '', '',$duree_par_defaut_reservation_area,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format);
+		$d['jQuery_TimePickerStart'] = jQuery_TimePickerTwig('start_', date('H'), date('i'),$duree_par_defaut_reservation_area,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format);
 	}
 }
 

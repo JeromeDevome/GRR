@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2025-10-06 12:03$
+ * Dernière modification : $Date: 2025-11-06 15:38$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -5884,33 +5884,33 @@ function jQuery_TimePickerTwig($typeTime, $start_hour, $start_min,$dureepardefau
 		}
 		else
 		{
-			$hour = date("h");
-			$minute = date("m");
+			$hour = date("H");
+			$minute = date("i");
 		}
 	}
 	else
 	{
-		$hour = (isset ($_GET['hour']))? clean_input($_GET['hour']) : date("h");
-		$minute = (isset ($_GET['minute']))? clean_input($_GET['minute']) : date("m");
+		$hour = getFormVar('hour','int',date("H"));
+		$minute = getFormVar('minute','int', date("i"));
 			
 		if ($typeTime == 'end_'){
             $dureepardefautmin = $dureepardefaultsec/60;
             if ($dureepardefautmin == 60){
                 $ajout = 1;
-                $hour = $_GET['hour'] + $ajout;
+                $hour += $ajout;
                 $minute ="00";
             }
             elseif ($dureepardefautmin < 60){
-                $hour = $_GET['hour'];
+                //$hour = $_GET['hour'];
                 $minute =$dureepardefautmin;
             }
             elseif ($dureepardefautmin > 60){
                 $dureepardefautheure = $dureepardefautmin/60;
             //	if (($dureepardefautheure % 60)!=0){
         //		$hour = $_GET['hour']+ $dureepardefautheure;
-                $hour = ($_GET['hour']+ $dureepardefautheure)%24; // Modulo 24
+                $hour = ($hour + $dureepardefautheure)%24; // Modulo 24
                 $hour = str_pad($hour, 2, 0, STR_PAD_LEFT); // Affichage heure sur 2 digits 
-                $minute = ($_GET['minute'] == 30)? 30 : "00";
+                $minute = ($minute == 30)? 30 : "00";
         //		}
             }
         }
@@ -6462,8 +6462,8 @@ function grrGetOverloadDescArray($ofl,$od)
  * rend $default si la valeur recherchée n'est pas référencée
 */
 function getFormVar($nom,$type='',$default=NULL){
-    $valeur = isset($_GET[$nom])? $_GET[$nom] : (isset($_POST[$nom])? $_POST[$nom] : (isset($_COOKIE['nom'])? $_COOKIE['nom'] : $default));
-    if ((isset($valeur)) && ($type !=''))
+    $valeur = isset($_GET[$nom])? $_GET[$nom] : (isset($_POST[$nom])? $_POST[$nom] : (isset($_COOKIE[$nom])? $_COOKIE[$nom] : $default));
+    if ((isset($valeur)) && (($type =='int')||($type =='string')))
         settype($valeur,$type);
     return $valeur;
 }
