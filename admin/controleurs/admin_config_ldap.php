@@ -24,6 +24,23 @@ if (authGetUserLevel(getUserName(), -1) < 6)
 	exit();
 }
 
+// Fonction de validation des filtres LDAP
+function validateLdapFilter($filter) {
+    // Vérifie la syntaxe du filtre LDAP
+    if (empty($filter)) {
+        return '';
+    }
+    // Vérifie les parenthèses
+    if (substr_count($filter, '(') !== substr_count($filter, ')')) {
+        return '';
+    }
+    // Échappe les caractères spéciaux LDAP
+    $filter = ldap_escape($filter, "", LDAP_ESCAPE_FILTER);
+    return $filter;
+}
+
+
+
 $valid		= isset($_POST["valid"]) ? $_POST["valid"] : 'no';
 $etape		= isset($_POST["etape"]) ? $_POST["etape"] : '0';
 $adresse	= isset($_POST["adresse"]) ? $_POST["adresse"] : NULL;
@@ -35,13 +52,20 @@ $use_tls	= FALSE;
 if (isset($_POST["use_tls"]) && $_POST["use_tls"] == 'y')
 	$use_tls = TRUE;
 
-$base_ldap				= isset($_POST["base_ldap"]) ? $_POST["base_ldap"] : NULL;
-$base_ldap_autre		= isset($_POST["base_ldap_autre"]) ? $_POST["base_ldap_autre"] : NULL;
-$ldap_filter			= isset($_POST["ldap_filter"]) ? $_POST["ldap_filter"] : NULL;
-$ldap_group_member_attr = isset($_POST["ldap_group_member_attr"]) ? $_POST["ldap_group_member_attr"] : NULL;
-$ldap_group_base		= isset($_POST["ldap_group_base"]) ? $_POST["ldap_group_base"] : NULL;
-$ldap_group_filter		= isset($_POST["ldap_group_filter"]) ? $_POST["ldap_group_filter"] : NULL;
-$ldap_group_user_field	= isset($_POST["ldap_group_user_field"]) ? $_POST["ldap_group_user_field"] : NULL;
+// Validation des entrées
+$ldap_filter = isset($_POST["ldap_filter"]) ? validateLdapFilter($_POST["ldap_filter"]) : '';
+$ldap_group_filter = isset($_POST["ldap_group_filter"]) ? validateLdapFilter($_POST["ldap_group_filter"]) : '';
+
+// Validation des autres paramètres LDAP
+$base_ldap = isset($_POST["base_ldap"]) ? ldap_escape($_POST["base_ldap"], "", LDAP_ESCAPE_DN) : '';
+$base_ldap_autre = isset($_POST["base_ldap_autre"]) ? ldap_escape($_POST["base_ldap_autre"], "", LDAP_ESCAPE_DN) : '';
+$ldap_group_base = isset($_POST["ldap_group_base"]) ? ldap_escape($_POST["ldap_group_base"], "", LDAP_ESCAPE_DN) : '';
+
+// Validation des attributs LDAP
+$ldap_group_member_attr = isset($_POST["ldap_group_member_attr"]) ? preg_replace('/[^a-zA-Z0-9_-]/', '', $_POST["ldap_group_member_attr"]) : '';
+$ldap_group_user_field = isset($_POST["ldap_group_user_field"]) ? preg_replace('/[^a-zA-Z0-9_-]/', '', $_POST["ldap_group_user_field"]) : '';
+
+
 
 $trad['titre_ldap'] = "Configuration de l'authentification LDAP";
 $trad['dConfigImpossible'] = 0;
