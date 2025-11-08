@@ -186,10 +186,10 @@ if (!isset($hour) || is_null($hour) || !isset($minute) || is_null($minute)){
     $minute = $start_minute;
   }
 }
-var_dump($hour);
+//var_dump($hour);
 $d['hour'] = $hour;
 $d['minute'] = $minute;
-print_r($d);
+//print_r($d);
 global $twentyfourhour_format;
 if (!isset($day) || !isset($month) || !isset($year))
 {

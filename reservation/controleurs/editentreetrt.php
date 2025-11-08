@@ -176,6 +176,12 @@ try {
             $d['err_msg'] = $overload_fields_list[$overfield]["name"].get_vocab("deux_points").get_vocab("is_not_numeric");
             throw new Exception('erreur');
         }
+        if (($overload_fields_list[$overfield]["obligatoire"] == "y") && (isset($$fieldname) && ($$fieldname != '')) == false)
+        {
+            $d['err_type'] = 'required';
+            throw new Exception('erreur');
+        }
+
         if (isset($$fieldname))
             $overload_data[$id_field] = $$fieldname;
         else
