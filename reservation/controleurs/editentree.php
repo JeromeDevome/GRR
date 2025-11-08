@@ -752,7 +752,7 @@ if ($res)
 	}
 	// modification proposée par Eric Marie (Github)
 	$sql2 = "SELECT area_id, id, room_name FROM ".TABLE_PREFIX."_room WHERE area_id IN ('" . implode("', '", $ids) . "')";
-	$tab_rooms_noaccess = verif_acces_ressource($user_name, 'all');
+	$tab_rooms_noaccess = no_book_rooms($user_name);
 	foreach($tab_rooms_noaccess as $key)
 	{
 		$sql2 .= " AND id != $key ";
