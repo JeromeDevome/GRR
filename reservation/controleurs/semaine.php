@@ -580,7 +580,7 @@ for ($slot = $first_slot; $slot <= $last_slot; $slot++)
         }
 
 
-        $cellulesJours[] = array('statut' => $statutCellule, 'class' => $c, 'rowspan' => $rowspan, 'ressource' => $room, 'idresa' => $id, 'titre' => $titre, 'descr' => $descr, 'ficheResa' => $ficheResa);
+        $cellulesJours[] = array('statut' => $statutCellule, 'class' => $c, 'rowspan' => $rowspan, 'ressource' => $room, 'idresa' => $id, 'titre' => $titre, 'descr' => $descr, 'ficheResa' => $ficheResa, 'annee' => $wyear, 'mois' => $wmonth, 'jour' => $wday);
     } // Fin colonne du jour
     $time_t_stripped = "";
     if ($enable_periods == 'y')
