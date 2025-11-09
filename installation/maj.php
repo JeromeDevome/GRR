@@ -17,6 +17,9 @@
  * (at your option) any later version.
  */
 
+header('X-XSS-Protection: 1; mode=block');
+header('X-Content-Type-Options: nosniff');
+
 $grr_script_name = "maj.php";
 $niveauDossier = 2;
 
@@ -46,7 +49,10 @@ if (isset($_POST["version_depart"])) // Etape 2
 }
 elseif (isset($_GET["forcemaj"]) && $forcer_MAJ == 1) // On force la MaJ en passant le numéro de la version de départ en paramètre  
 {
-	$version_depart	= $_GET["forcemaj"];
+	$version_depart = preg_replace('/[^0-9.]/', '', $_GET["forcemaj"]);
+    if (empty($version_depart)) {
+        die("Version invalide");
+    }
 	$force			= true;
 }
 else // On prend la dernière version installée
@@ -83,7 +89,7 @@ if(!$majscript)
 	{
 		echo "<form action=\"maj.php\" method=\"post\">";
 		echo "<p><span style=\"color:red;\"><b>".get_vocab("maj_bdd_not_update");
-		echo " ".get_vocab("maj_version_bdd").$version_depart;
+		echo " ".get_vocab("maj_version_bdd").htmlspecialchars($version_depart, ENT_QUOTES, 'UTF-8');
 		echo "</b></span><br />";
 		echo get_vocab("maj_do_update")."<b>".$version_bdd."</b></p>";
 		echo "<input type=\"submit\" value=\"".get_vocab("maj_submit_update")."\" />";

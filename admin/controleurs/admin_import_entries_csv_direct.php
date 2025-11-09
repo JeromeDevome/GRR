@@ -17,7 +17,17 @@
  */
 
 $grr_script_name = "admin_import_entries_csv_direct.php";
- 
+
+// Fonction de nettoyage des données CSV
+function sanitize_csv_data($value) {
+    global $db;  // Connexion mysqli globale
+    
+    // Supprime les caractères non imprimables
+    $value = preg_replace('/[\x00-\x1F\x7F]/', '', $value);
+    
+    // Échappe les caractères spéciaux SQL
+    return mysqli_real_escape_string($GLOBALS['db_c'], $value);
+}
 
 if (isset($_GET['ok'])) {
     $msg = get_vocab("message_records");
@@ -70,7 +80,7 @@ if(isset($_POST['import'])) {
 	}
 	while($reservation = fgetcsv($fp, $long_max, ";")) {
 		// le jour de la réservation 
-		$date=$reservation[0];
+		$date = sanitize_csv_data($reservation[0]);
 		// on décompose les heures de début et de fin
 		$debut=strtolower($reservation[1]);
 		if($pos_h=strpos($debut,'h')) { 
@@ -88,12 +98,22 @@ if(isset($_POST['import'])) {
 			$heure_deb=intval($fin);
 			$minute_deb=0;
 		}
-		$ressource=strtoupper($reservation[3]);
-		$description=$reservation[4];
-		$type=$reservation[5];
+		$ressource = sanitize_csv_data(strtoupper($reservation[3]));
+ 		$description = sanitize_csv_data($reservation[4]);
+   		$type = sanitize_csv_data($reservation[5]);
 		// et on insère dans la base de données
-		$sql_query="INSERT INTO ".TABLE_PREFIX."_csv2 (`date`, `heure_deb`, `minute_deb`, `heure_fin`, `minute_fin`, `ressource`, `description`, `type`)";
-		$sql_query.=" VALUES ('".$date."' , '".$heure_deb."' , '".$minute_deb."' , '".$heure_fin."' , '".$minute_fin."' , '".$ressource."' , '".$description."' , '".$type."');";
+		$sql_query = "INSERT INTO ".TABLE_PREFIX."_csv2 
+			(`date`, `heure_deb`, `minute_deb`, `heure_fin`, `minute_fin`, `ressource`, `description`, `type`) 
+			VALUES (
+				'$date',
+				'$heure_deb',
+				'$minute_deb', 
+				'$heure_fin',
+				'$minute_fin',
+				'$ressource',
+				'$description',
+				'$type'
+			)";
 		$trad['dResultatEtape1'] .= "<p class=\"text-green\">".$date." ".$heure_deb."h".$minute_deb." à ".$heure_fin."h".$minute_fin." => ".$ressource." : ".$description." ; ".$type."</p>";
 		if(!grr_sql_query($sql_query))
 			$trad['dResultatEtape1'] .= "<p class=\"text-red\">Erreur dans la ligne ".$nb_reservations."(".$sql_query.")</p>";
