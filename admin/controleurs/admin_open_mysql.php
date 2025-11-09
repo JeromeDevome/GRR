@@ -28,8 +28,39 @@ if($restaureBBD == 1){
 	VerifyModeDemo();
 	$detailBackup = "";
 
+	// Contrôle du fichier
+	// Fichier sélectionné via le formulaire
 	if (!$file_name && !$sql_file['name'])
 		exit (get_vocab("admin_import_users_csv11")."<br /><a href=\"?p=admin_config4\">".get_vocab("back")."</a></div></body></html>");
+
+	// Vérification du type de fichier
+	if (!$file_name) {
+		// Vérifie l'extension
+		$extension = strtolower(pathinfo($sql_file['name'], PATHINFO_EXTENSION));
+		if ($extension !== 'sql') {
+			exit("Le fichier doit être au format SQL (.sql)<br /><a href=\"?p=admin_config4\">".get_vocab("back")."</a></div></body></html>");
+		}
+
+		// Vérifie le type MIME
+		$finfo = finfo_open(FILEINFO_MIME_TYPE);
+		$mime_type = finfo_file($finfo, $sql_file['tmp_name']);
+		finfo_close($finfo);
+
+		// Types MIME acceptés pour les fichiers SQL
+		$allowed_mimes = array(
+			'text/plain',
+			'text/x-sql',
+			'application/sql',
+			'application/x-sql'
+		);
+
+		if (!in_array($mime_type, $allowed_mimes)) {
+			exit("Type de fichier non autorisé<br /><a href=\"?p=admin_config4\">".get_vocab("back")."</a></div></body></html>");
+		}
+
+	}
+
+
 	if (!$file_name)
 	{
 		$trad['dNomFichier'] = $sql_file['name'];
