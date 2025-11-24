@@ -3,7 +3,7 @@
  * semaine.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-10-27 18:16$
+ * Dernière modification : $Date: 2025-11-24 15:48$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -201,6 +201,7 @@ else
         }
         if ($slot <= $last_slot)
         {
+          $d[$weekday][$slot]["beneficiaire"] = $row["beneficiaire"];
           $d[$weekday][$slot]["color"] = $row["type"];
           if (($end_t) > mktime(24, 0, 0, date('m',$t), date('d',$t), date('Y',$t))) // fin de réservation dépassant la fin de journée
           {
@@ -274,6 +275,7 @@ else
         }
         if ($slot <= $last_slot)
         {
+          $d[$weekday][$slot]["beneficiaire"] = $row["beneficiaire"];
           $d[$weekday][$slot]["color"] = $row["type"];
           if (($end_t) > mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t))) // fin de réservation dépassant la fin de journée
           {
