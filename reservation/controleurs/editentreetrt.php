@@ -2,10 +2,11 @@
 /**
  * editentreetrt.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
+ * en cas d'erreur, c'est editentreetrt.twig qui affiche l'erreur et un formulaire d'options
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-09-29 16:10$
+ * Dernière modification : $Date: 2025-11-25 16:24$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -29,6 +30,7 @@ $user =$d['gNomUser'];
 
 // les variables attendues et leur type
 $form_vars = array(
+  'Err'                => 'string',
   'envoyer_notif'      => 'string',
   'create_by'          => 'string',
   'name'               => 'string',
@@ -59,7 +61,7 @@ $form_vars = array(
   'rep_type'           => 'int',
   'rep_end_date'       => 'string',
   'rep_day'            => 'array',   // array of bools 0|1
-  'rep_opt'            => 'int',
+  'rep_opt'            => 'string',
   'rep_num_weeks'      => 'int',
   'entry_type'         => 'int',
   'repeat_id'          => 'int',
@@ -83,7 +85,7 @@ $form_vars = array(
   'rep_jour_'          => 'int',
   'cycle_cplt'         => 'string',
   'page'               => 'string', // récupérable dans page_ret, à filtrer parmi celles qui sont acceptables (plannings)
-  'room_back'          => 'string', // palliatif de l'absence de day_all
+  'room_back'          => 'string', // pallie l'absence de day_all
   'page_ret'           => 'string',
   'type_affichage_reser' => 'int',
   'duration'           => 'string',
@@ -760,14 +762,13 @@ try {
 }// fin try
 catch (Exception $e){
     $ex = $e->getMessage();
+    $Err = "y";
     // dans tous les cas, calcul des hidden inputs
     $hiddenInputs = ""; // chaîne des hidden inputs 
     foreach($form_vars as $var=>$var_type){
         if ($var_type == "array"){
-            foreach($$var as $value){
-                if(isset($value)){
-                    $hiddenInputs .= "<input type='hidden' name='{$var}[]' value='".$value."' >";
-                }
+            foreach($$var as $key => $value){
+                    $hiddenInputs .= "<input type='hidden' name='{$var}[$key]' value='".$value."' >";
             }
         }
         elseif(isset($$var)&& ($$var != NULL)){

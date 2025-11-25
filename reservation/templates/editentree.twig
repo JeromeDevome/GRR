@@ -155,8 +155,7 @@
 					<!-- Sinon date et heure de fin -->
 					{% else %}
 						<div class="E form-inline">
-							<b>{{trad.fin_reservation}}{{trad.deux_points}}</b>
-							<div class="form-group">
+							<label class="form-label">{{trad.fin_reservation}}{{trad.deux_points}}
 								{{d.selectionDateFin |raw}}
 								<input type="hidden" id="mydate_end_" disabled>
 								{% if d.enable_periods == 'y' %}
@@ -168,7 +167,7 @@
 									<!--<b>{{trad.time}}</b>-->
 									{{d.jQuery_TimePickerEnd |raw}}
 								{% endif %}
-							</div>
+              </label>
 						</div>
 					{% endif %}
 
@@ -216,8 +215,8 @@
 				<!-- Participants -->
 					{% if d.active_participant > 0 %}
 						<div class="E">
-							<label for="nbparticipantmax">{{trad.nb_participant_max}}{{trad.deux_points}}</label>
-							<input name="nbparticipantmax" type="number" value="{{d.nbparticipantmax}}" > {{trad.nb_participant_zero}}
+							<label>{{trad.nb_participant_max}}{{trad.deux_points}}
+							<input name="nbparticipantmax" type="number" value="{{d.nbparticipantmax}}" ></label> {{trad.nb_participant_zero}}
 						</div>
 					{% else %}
 						<input name="nbparticipantmax" type="hidden" value="0" />	
@@ -253,7 +252,6 @@
 					<div class="bg-info">
 						<p><b>{{trad.required}}</b></p>
 					</div>
-				</table>
 
 			</div>
 
@@ -262,10 +260,10 @@
 				{% if d.periodiciteAttache == 0 %}
 					<div id="ouvrir" class="CC">
 						<input type="button" class="btn btn-primary" value="{{trad.click_here_for_series_open|raw}}" onclick="clicMenu(1);check_5();" />
-						<div style="display:none" id="fermer" class="CC">
+            </div>
+            <div style="display:none" id="fermer" class="CC">
 							<input type="button" class="btn btn-primary" value="{{trad.click_here_for_series_close|raw}}" onclick="clicMenu(1);check_5();" />
 						</div>
-					</div>
 					<div id="menu1" style="display:none;">
 						<p class="F"><b>{{trad.rep_type}}</b></p>
 
