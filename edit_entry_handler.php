@@ -3,7 +3,7 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-11-17 11:31$
+ * Dernière modification : $Date: 2025-11-25 10:56$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -77,7 +77,7 @@ $form_vars = array(
   'rep_type'           => 'int',
   'rep_end_date'       => 'string',
   'rep_day'            => 'array',   // array of bools 0|1
-  'rep_opt'            => 'int',
+  'rep_opt'            => 'string',
   'rep_num_weeks'      => 'int',
   'entry_type'         => 'int',
   'repeat_id'          => 'int',
@@ -822,10 +822,8 @@ catch (Exception $e){
     $hiddenInputs = ""; // chaîne des hidden inputs 
     foreach($form_vars as $var=>$var_type){
         if ($var_type == "array"){
-            foreach($$var as $value){
-                if(isset($value)){
-                    $hiddenInputs .= "<input type='hidden' name='{$var}[]' value='".$value."' >";
-                }
+            foreach($$var as $key => $value){
+                    $hiddenInputs .= "<input type='hidden' name='{$var}[$key]' value='".$value."' >";
             }
         }
         elseif(isset($$var)&& ($$var != NULL)){

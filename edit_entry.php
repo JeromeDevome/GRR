@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-11-17 11:01$
+ * Dernière modification : $Date: 2025-11-24 16:31$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
@@ -333,7 +333,7 @@ $form_vars = array(
   'rep_type'           => 'int',
   'rep_end_date'       => 'string',
   'rep_day'            => 'array',   // array of bools 0|1
-  'rep_opt'            => 'int',
+  'rep_opt'            => 'string',
   'rep_num_weeks'      => 'int',
   'entry_type'         => 'int',
   'repeat_id'          => 'int',
@@ -569,9 +569,9 @@ if (@file_exists("language/lang_subst_".$area.".".$locale))
 
 $type_affichage_reser = isset($Room['type_affichage_reser'])? $Room['type_affichage_reser']: -1;
 $delais_option_reservation = isset($Room['delais_option_reservation'])? $Room['delais_option_reservation']: -1;
-$qui_peut_reserver_pour = isset($Room['qui_peut_reserver_pour'])? $Room['qui_peut_reserver_pour']: -1;
+$qui_peut_reserver_pour = isset($Room['qui_peut_reserver_pour'])? $Room['qui_peut_reserver_pour']: 5;
 $active_cle = isset($Room['active_cle'])? $Room['active_cle']: -1;
-$active_participant  = isset($Room['active_participant'])? $Room['active_participant']: -1;
+$active_participant  = isset($Room['active_participant'])? $Room['active_participant']: 0;
 $periodiciteConfig = Settings::get("periodicite");
 $longueur_liste_ressources_max = Settings::get("longueur_liste_ressources_max");
 if ($longueur_liste_ressources_max == '')
@@ -728,7 +728,8 @@ else // nouvelle réservation
       $name = "";
   $beneficiaire   = $user_name;
   $create_by    = $user_name;
-  $description = "";
+  if(!isset($description))
+    $description    = "";
   $start_hour  = (isset($start_))? $start_hour : $hour;
   $start_min = (isset($start_)) ? $start_min : $minute;
   if ($enable_periods == 'y')
@@ -852,6 +853,9 @@ echo '<html lang="'.$locale.'">'.PHP_EOL;
 pageHead(Settings::get("company"),$locale);
 // section <body>
 echo "<body>";
+/*print_r($_GET);
+echo "<br/>";
+var_dump($rep_opt);*/
 // Menu du haut = section <header>
 echo "<header>";
 pageHeader2($day, $month, $year, $type_session="with_session");
@@ -901,7 +905,8 @@ else
 {
   jQuery_TimePicker2('start_', $start_hour, $start_min,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format);
 }
-echo '</div></div>'.PHP_EOL; // fin début
+echo '</div></div>'.PHP_EOL; 
+// fin début
 if ($type_affichage_reser == 0) // sélection de la durée
 {
   echo '<div class="E form-inline">'.PHP_EOL;
@@ -971,8 +976,8 @@ else // sélection de l'heure ou du créneau de fin
   {
     jQuery_TimePicker2('end_', $end_hour, $end_min,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format);
   }
-  echo '</div></div>'.PHP_EOL; // fin heure de fin
-}
+  echo '</div></div>'.PHP_EOL;
+} // fin heure de fin
 // domaines
 echo "<div class=\"E form-inline\">";
 if ($nb_areas == 1)
