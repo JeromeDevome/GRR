@@ -3,7 +3,7 @@
  * admin_book_room.php
  * Script gérant l'accès aux ressources restreintes de l'application GRR
  * L'affichage est réalisé par admin_book_room.twig
- * Dernière modification : $Date: 2025-11-26 16:23$
+ * Dernière modification : $Date: 2025-11-27 10:39$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -142,7 +142,7 @@ else
 	foreach($res as $row)
 	{
 		// on vérifie que l'utilisateur connecté a les droits suffisants
-		if (authGetUserLevel($user_name,$d['id_room'])>2)
+		if (authGetUserLevel($user_name,$row['id'])>2)
       if($multisite)
         $ressources[] = array($row['id'],($row['sitename']." > ".$row['area_name']." > ".$row['room_name']));
       else
