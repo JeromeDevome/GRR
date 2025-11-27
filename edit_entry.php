@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-11-24 16:31$
+ * Dernière modification : $Date: 2025-11-27 12:04$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
@@ -439,6 +439,12 @@ if (!isset($page_ret) || ($page_ret == ''))
         if ($room != -1){
             $area = mrbsGetRoomArea($room);
             $page_ret .= '&amp;area='.$area;
+        }
+      }
+      elseif(isset($id)){
+        $room = grr_sql_query1("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id= ?","i",[$id]);
+        if ($room > 0){
+            $page_ret .= '&amp;room='.$room;
         }
       }
     }
@@ -1668,6 +1674,14 @@ function changeRoom(formObj)
     insertTypes(area,room);
     $(".select2").select2();
 }
+function check_p(per)
+{
+  if(per > 0){
+    document.getElementById('menu1').style.display = "";
+    document.getElementById('fermer').style.display = "";
+    document.getElementById('ouvrir').style.display = "none";
+  }
+}
 </script>
 
 <script type="text/javascript">
@@ -1681,6 +1695,7 @@ function changeRoom(formObj)
         //insertChampsAdd(<?php echo $area?>,<?php echo $id ?>,<?php echo $room?>,<?php echo json_encode($overloadFields);?>);
         //insertTypes(<?php echo $area?>,<?php echo $room?>);
         //check_4();
+        check_p(<?php echo $rep_type?>);
     });
     document.getElementById('main').name.focus();
     <?php
