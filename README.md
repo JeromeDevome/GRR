@@ -23,12 +23,12 @@ Chat/Discord : https://discord.com/channels/484639573243068417/
 Documentation : https://devome.com/GRR/DOC/
 
 ```diff
-+ Versions disposant de support et de correctifs: 4.4.X, les versions précédantes doivent être mise à jour.
++ Versions disposant de support et de correctifs: 4.4.X, les versions précédentes doivent être mises à jour.
 ```
 
 **Requiert :**
 
-PHP : >= 7.2.5 && <= 8.3; nécessite au moins les modules php-fileinfo, php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml, php-intl (*)
+PHP : >= 8.1.0 && <= 8.3; nécessite au moins les modules php-fileinfo, php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml, php-intl (*)
 MySQL: >= 5.4 && <= 8.4
 
 
