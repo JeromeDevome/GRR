@@ -3,7 +3,7 @@
  * editentree.php
  * script préparant le formulaire qui sera affiché par editentree.twig
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-11-25 16:22$
+ * Dernière modification : $Date: 2025-12-01 11:14$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
@@ -159,7 +159,7 @@ if (!isset($page_ret) || ($page_ret == ''))
             elseif (($room_back == 'all')&&(isset($id))){
                 $area = grr_sql_query1("SELECT area_id FROM ".TABLE_PREFIX."_room r JOIN ".TABLE_PREFIX."_entry e ON r.id = e.room_id WHERE e.id=".$id."");
                 if ($area != -1)
-                    $queryRet[ 'area' ] = $area);
+                    $queryRet[ 'area' ] = $area;
             }
             $page_ret = 'app.php?'. http_build_query( $queryRet );
         }
