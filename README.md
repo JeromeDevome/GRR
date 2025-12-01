@@ -1,5 +1,5 @@
 GRR
-version 3.5.2, a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php7
+version 3.5.2, a vocation à rester compatible avec php5 pour les serveurs non encore mis à jour en php8.1.0
 ===================
 
 -------------------
