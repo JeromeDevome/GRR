@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2025-11-17 11:00$
+ * Dernière modification : $Date: 2025-12-01 10:57$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -3866,10 +3866,10 @@ function verif_acces_ressource($user, $id_room)
     $res = grr_sql_query($sql);
     if (!$res)
       fatal_error(0, grr_sql_error());
-    for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+    foreach($res as $row)
     {
-      if (authGetUserLevel($user,$row[0]) < $row[1])
-        $tab_rooms_noaccess[] = $row[0];
+      if (authGetUserLevel($user,$row['id']) < $row['who_can_see'])
+        $tab_rooms_noaccess[] = $row['id'];
     }
     return $tab_rooms_noaccess;
   }

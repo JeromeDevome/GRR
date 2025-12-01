@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-11-27 12:04$
+ * Dernière modification : $Date: 2025-12-01 10:55$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
@@ -847,6 +847,9 @@ $moderate = isset($Room['moderate'])? $Room['moderate']: -1;
 
 // pour le traitement des modules
 include_once "./include/hook.class.php";
+// pour le calcul des liens
+$racine = "./";
+$racineAd = "./admin/";
 // début du code html
 header('Content-Type: text/html; charset=utf-8');
 if (!isset($_COOKIE['open']))
@@ -1625,7 +1628,7 @@ function changeRooms( formObj )
             }
             // modification proposée par Eric Marie (Github)
             $sql2 = "SELECT area_id, id, room_name FROM ".TABLE_PREFIX."_room WHERE area_id IN ('" . implode("', '", $ids) . "')";
-            $tab_rooms_noaccess = verif_acces_ressource($user_name, 'all');
+            $tab_rooms_noaccess = no_book_rooms($user_name);
             foreach($tab_rooms_noaccess as $key)
             {
                 $sql2 .= " AND id != $key ";
