@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-04-28 10:55$
+ * Dernière modification : $Date: 2025-12-03 18:33$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
@@ -769,7 +769,7 @@ if ($repeat_id != 0)
   }
     else
   {
-        $start_date = time_date_string($rep_start_time, $dformat);
+        $rep_start_date = time_date_string($rep_start_time, $dformat);
     toTimeString($rep_duration, $dur_units);
   }
     $weeklist = array("unused", "every week", 'week_1_of_2', 'week_1_of_3', 'week_1_of_4', 'week_1_of_5');
@@ -810,7 +810,7 @@ if ($repeat_id != 0)
         echo '<tr>',PHP_EOL,'<td><b>',get_vocab("rep_rep_day"),'</b></td>',PHP_EOL,'<td>',get_vocab('jour_cycle'),' ',$jour_cycle,'</td>',PHP_EOL,'</tr>',PHP_EOL;
     }
 
-    echo '<tr><td><b>'.get_vocab("date").get_vocab("deux_points").'</b></td><td>'.$start_date.'</td></tr>';
+    echo '<tr><td><b>'.get_vocab("date").get_vocab("deux_points").'</b></td><td>'.$rep_start_date.'</td></tr>';
     echo '<tr><td><b>'.get_vocab("duration").'</b></td><td>'.$rep_duration .' '. $dur_units.'</td></tr>';
     echo '<tr><td><b>'.get_vocab('rep_end_date').'</b></td><td>'.$rep_end_date.'</td></tr>';
   }
@@ -822,6 +822,7 @@ if ($repeat_id != 0)
         echo '<a class="btn btn-primary" type="button" href="edit_entry.php?id=',$id,'&amp;edit_type=series&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=',$page,'" onclick="return confirm(\'',$message_confirmation,'\');">',get_vocab("editseries"),'</a>',PHP_EOL;
     $message_confirmation = str_replace ( "'"  , "\\'"  , get_vocab("confirmdel").get_vocab("deleteseries"));
     echo '<a class="btn btn-danger" type="button" href="del_entry.php?id=',$id,'&amp;series=1&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=',$page,'" onclick="return confirm(\'',$message_confirmation,'\');">',get_vocab("deleteseries"),'</a>',PHP_EOL;
+    echo '<a class="btn btn-danger" type="button" href="del_entry.php?id=',$id,'&amp;series=2&amp;day=',$day,'&amp;month=',$month,'&amp;year=',$year,'&amp;page=',$page,'" onclick="return confirm(\'',$message_confirmation,'\');">',get_vocab("deleteseriesafter"),$start_date,'</a>',PHP_EOL;
     echo "</div>".PHP_EOL;
   }
     echo '</fieldset>',PHP_EOL;

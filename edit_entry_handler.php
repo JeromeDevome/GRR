@@ -787,12 +787,12 @@ try {
 	if (isset($id) && ($id != 0)) // quand on fait une modification, on efface la réservation ou la série existante
 	{
 		if ($rep_type != 0)
-			mrbsDelEntry($user, $id, "series", 1); // et alors les inscriptions sont perdues
+			mrbsDelEntry($user, $id, 1, 1); // et alors les inscriptions sont perdues
 		else{
-            if (isset($new_id) && ($new_id != 0))
-                updateParticipants($id,$new_id);// réinscrire les participants avant d'effacer
-            mrbsDelEntry($user, $id, NULL, 1);
-        }
+      if (isset($new_id) && ($new_id != 0))
+        updateParticipants($id,$new_id);// réinscrire les participants avant d'effacer
+      mrbsDelEntry($user, $id, 0, 1);
+    }
 	}
     // déverrouille la table
     grr_sql_mutex_unlock("".TABLE_PREFIX."_entry");

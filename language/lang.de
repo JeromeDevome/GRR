@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2025-10-26
+# Last modification : 2025-12-03
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -340,6 +340,7 @@ $vocab['deleteentry'] = "Eintrag löschen";
 $vocab['swap_entry'] = "Zwei Einträge vertauschen";
 $vocab['deletefollowing'] = "Sie werden folgende Reservierungen löschen";
 $vocab['deleteseries'] = "Periode löschen";
+$vocab['deleteseriesafter'] = "Periode löschen, nach ";
 $vocab['delete_booking'] = " hat folgende Reservierung gelöscht. ";
 $vocab['delete_up_to'] = "Löschen bis";
 $vocab['del_entry_in_conflict'] = "Löschen Sie obige Reservierung(en) damit die neue Reservierung gültig wird.";
