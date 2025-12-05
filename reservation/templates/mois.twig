@@ -123,7 +123,7 @@
 														{% if settings.display_level_view_entry == 0 %}
 															<a title="{{resa.titre}}" data-width="675" onclick="request({{resa.idresa}},{{cellule.numJour}},{{d.gMonth}},{{d.gYear}},{{d.room}},'mois',readData);" data-rel="popup_name" class="poplight lienCellule">
 														{% else %}
-															<a class="lienCellule" title="{{resa.titre}}" href="app.php?p=vuereservation&id={{resa.idresa}}&amp;day={{cellule.numJour}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=month">
+															<a class="lienCellule" title="{{resa.titre}}" href="app.php?p=vuereservation&id={{resa.idresa}}&amp;day={{cellule.numJour}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=mois">
 														{% endif %}
 													{% endif %}
 													{{resa.texte|raw}}
@@ -145,7 +145,7 @@
 							<!-- Il reste une plage libre : On affiche le + -->
 							{% if cellule.horsResa == false and cellule.plageLibre %}
 								<div class="empty_cell">
-									<a href="app.php?p=editentree&room={{d.room}}&amp;page=month&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{cellule.numJour}}&amp;
+									<a href="app.php?p=editentree&room={{d.room}}&amp;page=mois&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{cellule.numJour}}&amp;
 									{% if d.usePeriode == "y" %}
 										period=&amp;
 									{% else %}

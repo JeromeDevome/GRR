@@ -879,20 +879,20 @@ function protect_data_sql($_value)
 	return $_value;
 }
 
-// Traite les données envoyées par la methode GET|POST de la variable $_GET|POST["page"], renvoie "day" si la page n'est pas définie
+// Traite les données envoyées par la methode GET|POST de la variable $_GET|POST["page"], renvoie "jour" si la page n'est pas définie
 function verif_page()
 {
-	$pages = array("jour", "semaine", "mois", "semaine_all", "mois_all", "mois_all2", "annee", "annee_all");
-    $page = (isset($_GET["page"]))? $_GET["page"]:((isset($_POST["page"]))? $_POST["page"]:NULL);
-    if (isset($page))
-	{
-		if (in_array($page, $pages))
-			return $page;
-		else
-			return "jour";
-	}
-	else
-		return "jour";
+  $pages = array("jour", "semaine", "mois", "semaine_all", "mois_all", "mois_all2", "annee", "annee_all");
+  $page = (isset($_GET["page"]))? $_GET["page"]:((isset($_POST["page"]))? $_POST["page"]:NULL);
+  if (isset($page))
+  {
+    if (in_array($page, $pages))
+      return $page;
+    else
+      return "jour";
+  }
+  else
+    return "jour";
 }
 
 function page_accueil($param = 'no')
@@ -5873,51 +5873,10 @@ function jQuery_DatePickerTwig($typeDate){
 	return $retour;
 }
 
-function jQuery_TimePickerTwig($typeTime, $start_hour, $start_min,$dureepardefaultsec)
+function jQuery_TimePickerTwig($typeTime, $hour, $minute)
 {
-	if (isset ($_GET['id']))
-	{
-		if (isset($start_hour) && isset($start_min))
-		{
-			$hour = $start_hour;
-			$minute = $start_min;
-		}
-		else
-		{
-			$hour = date("H");
-			$minute = date("i");
-		}
-	}
-	else
-	{
-		$hour = getFormVar('hour','int',date("H"));
-		$minute = getFormVar('minute','int', date("i"));
-			
-		if ($typeTime == 'end_'){
-            $dureepardefautmin = $dureepardefaultsec/60;
-            if ($dureepardefautmin == 60){
-                $ajout = 1;
-                $hour += $ajout;
-                $minute ="00";
-            }
-            elseif ($dureepardefautmin < 60){
-                //$hour = $_GET['hour'];
-                $minute =$dureepardefautmin;
-            }
-            elseif ($dureepardefautmin > 60){
-                $dureepardefautheure = $dureepardefautmin/60;
-            //	if (($dureepardefautheure % 60)!=0){
-        //		$hour = $_GET['hour']+ $dureepardefautheure;
-                $hour = ($hour + $dureepardefautheure)%24; // Modulo 24
-                $hour = str_pad($hour, 2, 0, STR_PAD_LEFT); // Affichage heure sur 2 digits 
-                $minute = ($minute == 30)? 30 : "00";
-        //		}
-            }
-        }
-	}
-	if ($minute == 0)
-		$minute = '00';
-	// MAJ
+  $hour = str_pad($hour, 2, 0, STR_PAD_LEFT); // Affichage heure sur 2 digits
+  $minute = str_pad($minute, 2, 0, STR_PAD_LEFT); // Affichage minutes sur 2 digits
 	$html = '<div class="input-group clockpicker" style="width:auto;">
 		<input name="' .$typeTime. '" type="time" id="clockpicker" class="form-control" value="' .$hour. ':' .$minute. '">
 		<span class="input-group-addon">
@@ -6462,10 +6421,10 @@ function grrGetOverloadDescArray($ofl,$od)
  * rend $default si la valeur recherchée n'est pas référencée
 */
 function getFormVar($nom,$type='',$default=NULL){
-    $valeur = isset($_GET[$nom])? $_GET[$nom] : (isset($_POST[$nom])? $_POST[$nom] : (isset($_COOKIE[$nom])? $_COOKIE[$nom] : $default));
-    if ((isset($valeur)) && (($type =='int')||($type =='string')))
-        settype($valeur,$type);
-    return $valeur;
+  $valeur = isset($_GET[$nom])? $_GET[$nom] : (isset($_POST[$nom])? $_POST[$nom] : (isset($_COOKIE[$nom])? $_COOKIE[$nom] : $default));
+  if ((isset($valeur)) && (($type =='int')||($type =='string')))
+    settype($valeur,$type);
+  return $valeur;
 }
 // Les lignes suivantes permettent la compatibilité de GRR avec la variable register_global à off
 unset($day);
