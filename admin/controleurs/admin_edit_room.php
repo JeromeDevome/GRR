@@ -2,9 +2,9 @@
 /**
  * admin_edit_room.php
  * Script de création/modification des ressources de l'application GRR
- * Dernière modification : $Date: 2024-12-12 11:55$
+ * Dernière modification : $Date: 2025-12-12 09:27$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -151,7 +151,8 @@ if (isset($change_room))
   {
     $active_cle = 'n';
     // toutes les clés sont considerees comme restituees
-    grr_sql_command("update ".TABLE_PREFIX."_entry set clef = 0 where room_id ='$room'");
+    if(!is_null($room))
+      grr_sql_command("update ".TABLE_PREFIX."_entry set clef = 0 where room_id ='$room'");
   }
   if (isset($_POST["active_ressource_empruntee"]))
     $active_ressource_empruntee = 'y';
@@ -159,7 +160,8 @@ if (isset($change_room))
   {
     $active_ressource_empruntee = 'n';
     // toutes les reservations sont considerees comme restituees
-    grr_sql_command("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id ='$room'");
+    if(!is_null($room))
+      grr_sql_command("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id ='$room'");
   }
 	if ((isset($room)) && !((isset($action) && ($action == "duplique_room"))))
 	{
