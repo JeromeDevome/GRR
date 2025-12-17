@@ -51,12 +51,20 @@ Sous-version 3.5.2b
 Sous-version 3.5.2c
     ajout : export au format csv de l'importation de réservations
     correctif : fonction en doublon de mrbs_sql.inc.php
-    correctif : fonctionnalité de l'afichage de l'historique des connexions
+    correctif : fonctionnalité de l'affichage de l'historique des connexions
     correctif : test de variable
     correctif : affichage de la description dans le formulaire d'échange entre deux réservations
     mise à jour : fichiers de langue
     modification : clauses IF NOT EXISTS et CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
-
+Sous-version 3.5.2d
+    ajout : possibilité de supprimer les réservations d'une périodicité après la réservation sélectionnée
+    amélioration : exemple de réalisation de liaison profil LDAP [documentation]
+    correctif : traitement des erreurs d'édition et modification d'une réservation issue d'une série
+    correctif : gestion des données sous forme de tableau
+    correctif : menu périodicité et lien de retour
+    correctifs : liens dans edit_entry
+    mise à jour, conséquence de la mise à jour de twig dans la version 4.4.2 [Readme]
+    modification : droit d'accès pour les gestionnaires de ressources restreintes
 
 -----
 --
