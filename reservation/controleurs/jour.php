@@ -19,7 +19,7 @@ $grr_script_name = "jour.php";
 
 $trad = $vocab;
 
-include "include/resume_session.php";
+//include "include/resume_session.php";
 include "include/planning.php";
 
 $ind = 1;

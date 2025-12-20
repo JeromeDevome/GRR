@@ -19,14 +19,11 @@ $grr_script_name = "supreservation.php";
 
 $series = isset($_GET["series"]) ? $_GET["series"] : NULL;
 if (isset($series))
-	settype($series,"integer");
+	$series = intval($series);
 $page = verif_page();
 
 if (isset($_GET["id"]))
-{
-	$id = clean_input($_GET["id"]);
-	settype($id,"integer");
-}
+	$id = intval(clean_input($_GET["id"]));
 else{
 	header("Location: ./app.php?p=login");
 	die();

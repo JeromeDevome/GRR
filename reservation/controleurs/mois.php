@@ -216,8 +216,6 @@ else
 }
 
 
-// code html de la page
-
 if ((!isset($d['pview'])) || ($d['pview'] != 1))
 {
     $positionMenu = Settings::get("menu_gauche");
