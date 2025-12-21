@@ -314,8 +314,8 @@ if ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_sta
 	}
 	if (grr_resumeSession())
 		header("Location: ".htmlspecialchars_decode(page_accueil())."");
-	// Cas d'une authentification apache
 }
+	// Cas d'une authentification apache
 else if ((Settings::get('sso_statut') == 'http_visiteur') || (Settings::get('sso_statut') == 'http_utilisateur'))
 {
 	// Nous utilisons les fonction d'authentification par PHP (plutôt que par Apache) à l'aide des lignes :
