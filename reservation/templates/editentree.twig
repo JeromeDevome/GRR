@@ -25,7 +25,7 @@
 	{% endif %}
 
 
-	<form id="main" method="get" action="?p=editentreetrt">
+	<form id="main" method="post" action="?p=editentreetrt" enctype="multipart/form-data">
 		<input type="hidden" name="p" value="editentreetrt">
 		<input type="hidden" name="oldRessource" value="{{d.roomid}}">
 		<input type="hidden" name="rep_id"    value="{{d.rep_id}}" />
@@ -246,9 +246,11 @@
 					{% endif %}
 
 				<!-- Champs additionnels -->
+					<br>
 					<div id="div_champs_add"></div>
 
-					<!-- Infos -->
+				<!-- Infos -->
+					<br>
 					<div class="bg-info">
 						<p><b>{{trad.required}}</b></p>
 					</div>

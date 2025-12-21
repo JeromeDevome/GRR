@@ -1,9 +1,9 @@
 /*
  * ./js/functions.js
  * fichier Bibliothèque de fonctions Javascript de GRR
- * Dernière modification : $Date: 2021-04-20 14:51$
+ * Dernière modification : $Date: 2025-12-21 11:10$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -313,6 +313,25 @@ function toggle_visibility(id) {
 	else
 	   e.style.display = 'none';
  }
+
+/*
+ *Fonctions permettant la gestion de l'upload de fichier dans les réservations
+ */
+function getfile(){
+    var el = document.getElementById('hiddenfile');
+    if(el) el.click();
+}
+function getvalue(){
+    var hidden = document.getElementById('hiddenfile');
+    var sel = document.getElementById('selectedfile');
+    if(hidden && sel) sel.value = hidden.value;
+}
+function getvalue2(){
+    var hidden = document.getElementById('hiddenfile');
+    var sel = document.getElementById('selectedfile');
+    if(hidden && sel) hidden.value = sel.value;
+}
+
  /*
  *Menu*
  */

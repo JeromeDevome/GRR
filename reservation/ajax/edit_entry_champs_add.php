@@ -1,12 +1,12 @@
 <?php
 /**
  * edit_entry_champs_add.php
- * Page "Ajax" utilisée pour générer les champs additionnels dans la page de réservation
+ * Page "Ajax" utilisée pour générer les champs additionnels dans la page de réservation & l'import de document
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-08-24 10:20$
+ * Dernière modification : $Date: 2025-12-21 11:40$
  * @author    Laurent Delineau & JeromeB
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -117,6 +117,38 @@ foreach ($overload_fields as $fieldname=>$fieldtype)
 		echo "</select></div>\n</td></tr>\n";
 	}
 	echo "</table>\n";
+}
+
+/** Import de documents **/
+
+$d["gcDossierDoc"] = $gcDossierDoc;
+
+$droit_acces = authGetUserLevel(getUserName(), $room);
+$res = grr_sql_query("SELECT access_file, user_right, upload_file FROM ".TABLE_PREFIX."_area WHERE id =$areas");
+$attached_files = array();
+if(!$res)
+  fatal_error(0,grr_sql_error());
+else{
+  $level = grr_sql_row($res,0);
+  $access_file = $level[0];
+  $user_right = $level[1];
+  $upload_file = $level[2];
+}
+
+if ($droit_acces >= $user_right && $access_file==1){
+    if ($droit_acces >= $upload_file) { // droit de téléverser
+
+		echo '<br>
+		    <div class="upload">
+                <label for="upload">Choisissez le fichier que vous allez insérer dans cette réservation :</label>
+                    <input type="file" id="hiddenfile" style="display:none" name="myFiles[]" onChange="getvalue();"/>
+                    <input type="button" value="Parcourir..." onclick="getfile();"/>
+                    <input type="text" id="selectedfile" name="selectedfile" placeholder="Nom du fichier" />
+                </form>
+                <output id="infos"> </output>
+            </div>';
+
+    }
 }
 
 ?>

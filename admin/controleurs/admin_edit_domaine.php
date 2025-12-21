@@ -17,6 +17,7 @@
 
 $grr_script_name = "admin_edit_domaine.php";
 
+$trad = $vocab;
 $ok = NULL;
 if (Settings::get("module_multisite") == "Oui")
 	$id_site = isset($_POST["id_site"]) ? $_POST["id_site"] : (isset($_GET["id_site"]) ? $_GET["id_site"] : -1);
@@ -32,6 +33,9 @@ $ip_adr = isset($_POST["ip_adr"]) ? $_POST["ip_adr"] : NULL;
 $duree_max_resa_area1  = isset($_POST["duree_max_resa_area1"]) ? $_POST["duree_max_resa_area1"] : NULL;
 $duree_max_resa_area2  = isset($_POST["duree_max_resa_area2"]) ? $_POST["duree_max_resa_area2"] : NULL;
 $max_booking = isset($_POST["max_booking"]) ? $_POST["max_booking"] : NULL;
+$access_file = isset($_POST['access_file'])? 1:0;
+$user_right = (int)getFormVar("user_right","int");
+$upload_file = (int)getFormVar("upload_file","int");
 settype($max_booking, "integer");
 if ($max_booking<-1)
 	$max_booking = -1;
@@ -188,7 +192,10 @@ if ((!empty($id_area)) || (isset($add_area)))
 				enable_periods = '".protect_data_sql($_POST['enable_periods'])."',
 				twentyfourhour_format_area = '".protect_data_sql($_POST['twentyfourhour_format_area'])."',
 				max_booking='".$max_booking."',
-				display_days = '".$display_days."'
+				display_days = '".$display_days."',
+				user_right = '".$user_right."',
+				access_file = ".$access_file.",
+				upload_file = ".$upload_file."
 				WHERE id=$id_area";
 				if (grr_sql_command($sql) < 0)
 				{
@@ -215,7 +222,10 @@ if ((!empty($id_area)) || (isset($add_area)))
 				twentyfourhour_format_area = '".protect_data_sql($_POST['twentyfourhour_format_area'])."',
 				display_days = '".$display_days."',
 				max_booking='".$max_booking."',
-				id_type_par_defaut = '-1'
+				id_type_par_defaut = '-1',
+				user_right = '".$user_right."',
+				access_file = ".$access_file.",
+				upload_file = ".$upload_file."
 				";
 				if (grr_sql_command($sql) < 0)
 					fatal_error(1, "<p>" . grr_sql_error());
@@ -365,44 +375,6 @@ if ((!empty($id_area)) || (isset($add_area)))
 		$trad['editarea'] = get_vocab('addarea');
 	}
 
-	get_vocab_admin('miscellaneous');
-	get_vocab_admin('name');
-	get_vocab_admin('order_display');
-	get_vocab_admin('access');
-	get_vocab_admin('site');
-	get_vocab_admin('choose_a_site');
-	get_vocab_admin('ip_adr');
-	get_vocab_admin('ip_adr_explain');
-
-	get_vocab_admin('configuration_plages_horaires');
-	get_vocab_admin('weekstarts_area');
-	get_vocab_admin('cocher_jours_a_afficher');
-
-	get_vocab_admin("avertissement_change_type");
-
-	get_vocab_admin('type_de_creneaux');
-	get_vocab_admin('creneaux_de_reservation_temps');
-	get_vocab_admin('creneaux_de_reservation_pre_definis');
-	get_vocab_admin('nombre_de_creneaux');
-	get_vocab_admin('goto');
-	get_vocab_admin('intitule_creneau');
-	get_vocab_admin('duree_max_resa_area2');
-
-	get_vocab_admin('morningstarts_area');
-	get_vocab_admin('eveningends_area');
-	get_vocab_admin('eveningends_minutes_area');
-	get_vocab_admin('resolution_area');
-	get_vocab_admin('duree_par_defaut_reservation_area');
-	get_vocab_admin('twentyfourhour_format_area');
-	get_vocab_admin('twentyfourhour_format_12');
-	get_vocab_admin('twentyfourhour_format_24');
-	get_vocab_admin('duree_max_resa_area');
-	get_vocab_admin('max_booking');
-
-	get_vocab_admin('back');
-	get_vocab_admin('save');
-	get_vocab_admin('save_and_back');
-	get_vocab_admin('message_records');
 
 	$trad['dIdSite'] = $id_site;
 	$trad['dIpClient'] = $gOptionIp;

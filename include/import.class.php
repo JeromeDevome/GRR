@@ -1,9 +1,10 @@
 <?php
 /* import.class.php
- * Permet de lire et d'écrire les paramètres dans la BDD (Table setting)
- * Dernière modification : $Date: 2020-05-03 21:00$
+ * Permet d'importer des éléments dans GRR
+ * Ce script fait partie de l'application GRR
+ * Dernière modification : $Date: 2025-12-21 12:00$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -129,6 +130,105 @@ class Import {
 
 		return array($picture_room, $msg);
 	}
+
+
+    public static function DocumentResa($idResa)
+	{
+        global $gcDossierDoc, $_FILES;
+
+
+        $uploadDir = realpath(".")."/personnalisation/".$gcDossierDoc."/";
+        $msg = "";
+        // vérifie qu'une réservation est associée
+        if ($idResa == -1) {
+            $msg .= '<p>'.'Erreur, aucune réservation associée'."</p>";
+            return array($msg);
+        }
+
+        // vérifie la présence de fichiers
+        if (!isset($_FILES['myFiles']) || empty($_FILES['myFiles']['name'])) {
+            $msg .= "<br><span style='color:red'>Erreur, aucun fichier transmis</span></p>";
+            return array($msg);
+        }
+
+        // normalise en tableau si un seul fichier envoyé
+        if (!is_array($_FILES['myFiles']['name'])) {
+            foreach (['name','type','tmp_name','error','size'] as $k) {
+                if (!is_array($_FILES['myFiles'][$k])) {
+                    $_FILES['myFiles'][$k] = array($_FILES['myFiles'][$k]);
+                }
+            }
+        }
+
+        $nb = count($_FILES['myFiles']['name']);
+        if ($nb <= 0) {
+            $msg .= "<br><span style='color:red'>Erreur, aucun fichier envoyé</span></p>";
+            return array($msg);
+        }
+
+        // traite chaque fichier
+        for ($i = 0; $i < $nb; $i++) {
+            $origName = $_FILES['myFiles']['name'][$i];
+            $size = $_FILES['myFiles']['size'][$i];
+            $tmpName = $_FILES['myFiles']['tmp_name'][$i];
+
+            $msg .= "<p> Fichier : ".$origName;
+            $msg .= "<br>Taille : ".$size;
+
+            // rejette les fichiers à double extension
+            if (count(explode('.', $origName)) > 2) {
+                $msg .= "<br>type de fichier inconnu";
+                continue;
+            }
+
+            $fileExt = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
+            if (!in_array($fileExt, ["jpg","jpeg","png","gif","pdf"])) {
+                $msg .= "<br>type de fichier inconnu";
+                continue;
+            }
+
+            if (!is_dir($uploadDir)) @mkdir($uploadDir, 0777, true);
+
+            $copie = @move_uploaded_file($tmpName, $uploadDir.$origName);
+            if (!$copie) {
+                $err = isset($_FILES['myFiles']['error'][$i]) ? $_FILES['myFiles']['error'][$i] : 'unknown';
+                $msg .= "<br><span style='color:red'>move_uploaded_file a échoué (error={$err}). tmp_name={$tmpName}</span>";
+                if (!is_uploaded_file($tmpName)) {
+                    $msg .= "<br><span style='color:red'>(is_uploaded_file=false)</span>";
+                }
+            }
+
+            // prepare le rename du fichier
+            $strf = ""; $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_";
+            srand(time()*$idResa);
+            for ($c = 0; $c < 12; $c++) {
+                $strf .= $chars[rand(0, strlen($chars)-1)];
+            }
+            $fileName = $idResa.$strf.".".$fileExt;
+
+            if (rename($uploadDir.$origName, $uploadDir.$fileName)) {
+                // ajout dans la base de donnée.
+                $req = "INSERT INTO ".TABLE_PREFIX."_files (id_entry, file_name, public_name) VALUES ($idResa,'".protect_data_sql($fileName)."','".protect_data_sql($origName)."')";
+                if (grr_sql_command($req) < 0) {
+                    $msg .= "<br>erreur d'enregistrement sur base de donnée";
+                } else {
+                    if ($copie) {
+                        $msg .= "<br> <span style='color:green'>Fichier enregistré</span></p>";
+                        header('Location: app.php?p=semaine_all');
+                    } else {
+                        $msg .= "<br><span style='color:red'>Erreur d'enregistrement</span></p>";
+                    }
+                }
+            } else {
+                $exists = file_exists($uploadDir.$origName) ? 'yes' : 'no';
+                $writable = is_writable($uploadDir) ? 'yes' : 'no';
+                $msg .= "<br><span style='color:red'>Erreur, le fichier n'a pu être renommé</span>";
+                $msg .= "<br>src_exists={$exists} uploadDir_writable={$writable}";
+            }
+        }
+
+        return array($msg);
+    }
 
 }
 ?>

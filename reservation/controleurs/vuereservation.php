@@ -16,10 +16,12 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-$grr_script_name = 'vuereservation.php'; 
+$grr_script_name = 'vuereservation.php';
 
 $trad = $vocab;
 $page = verif_page();
+
+$d["gcDossierDoc"] = $gcDossierDoc;
 
 /* $fin_session */
 $fin_session = 'n';
@@ -542,6 +544,7 @@ if (($can_book || $can_copy) && (!$was_del))
         }
 }
 
+// Données de la périodicité
 if ($repeat_id != 0)
 {
     $res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks, start_time, end_time FROM ".TABLE_PREFIX."_repeat WHERE id=$repeat_id");
@@ -622,6 +625,36 @@ if ($repeat_id != 0)
         $d['lienPeriodeSupprimerPosterieure'] = "app.php?p=supreservation&amp;id=".$id."&amp;series=2&amp;day=".$day."&amp;month=".$month."&amp;year=".$year."&amp;page=".$page;
     }
 }
+
+// données liées aux fichiers attachés
+$droit_acces = authGetUserLevel($userName, $room_id);
+$res = grr_sql_query("SELECT access_file, user_right, upload_file FROM ".TABLE_PREFIX."_area WHERE id =$area");
+$attached_files = array();
+if(!$res)
+  fatal_error(0,grr_sql_error());
+else{
+  $level = grr_sql_row($res,0);
+  $access_file = $level[0];
+  $user_right = $level[1];
+  $upload_file = $level[2];
+  // gestion fichiers joints si l'utilisateur a les droits et la fonctionnalité est activée
+  if ($id != 0 && $droit_acces>=$user_right && $access_file==1){
+    // récupère la liste des fichiers associé à la réservation.
+    $fRes = grr_sql_query("SELECT id, file_name, public_name from ".TABLE_PREFIX."_files where id_entry =$id");
+    if (!$fRes){
+      fatal_error(0, grr_sql_error());
+    }
+    else{
+      foreach($fRes as $frow){
+        $attached_files[] = $frow;
+      }
+    }
+    grr_sql_free($fRes);
+  }
+}
+
+
+
 if (!isset($area_id))
     $area_id = 1;
 if (!isset($room))
@@ -634,6 +667,16 @@ if (Settings::get("pdf") == '1'){
 
 $d['fin_session'] = $fin_session;
 $d['back'] = $back;
+
+if ($id != 0 && $droit_acces >= $user_right && $access_file==1){
+    $d['accessFile'] = 1;
+    $d['countFile'] = count($attached_files);
+
+
+    if ($droit_acces >= $upload_file) { // droit de téléverser
+        $d['uploadFile'] = 1;
+    }
+}
 
 if ($fin_session == 'n'){
     if (($userName != '') && (authGetUserLevel($userName, $room_id) >= 3) && ($moderate == 1))
@@ -657,5 +700,5 @@ if ($fin_session == 'n'){
 } // fin du formulaire
 
 
-echo $twig->render('vuereservation.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'resa' => $resa, 'participantsDisponible' => $participantsDisponible, 'participantsEnregistrer' => $participantsEnregistrer, 'champscomp' => $champsComp));
+echo $twig->render('vuereservation.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'resa' => $resa, 'participantsDisponible' => $participantsDisponible, 'participantsEnregistrer' => $participantsEnregistrer, 'champscomp' => $champsComp, 'attached_files' => $attached_files));
 ?>

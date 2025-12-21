@@ -1268,9 +1268,16 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter = '';
 	}
 
-	if (intval($version_old_bdd) < 400009) // Version GRR 4.4.3
+	if (intval($version_old_bdd) < 400009) // Version GRR 4.5.0
 	{
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD confidentiel_resa TINYINT(1) NOT NULL DEFAULT '0' AFTER who_can_book;");
+		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_files(id int not null auto_increment, id_entry int, file_name varchar(50), public_name varchar(50),Primary key (id)) CHARACTER SET utf8mb4;");
+		$exists = grr_sql_query1("SHOW COLUMNS FROM ".TABLE_PREFIX."_area LIKE 'user_right'");
+		if ($exists == -1) {
+			$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_area ADD user_right INT(11) AFTER max_booking;");
+			$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_area ADD access_file INT(11) AFTER user_right;");
+			$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_area ADD upload_file INT(11) AFTER access_file;");
+		}
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");

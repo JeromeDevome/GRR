@@ -735,11 +735,20 @@ try {
 					else
 						$message_error = send_mail($id,2,$dformat, array(), $oldRessource);
 				}
-			}
-		}
-		$id = 0; // JeromeB : Réinit l'id de réservation sinon en cas de double ressource celle-ci passe en modif
-	}
-	grr_sql_mutex_unlock("".TABLE_PREFIX."_entry");
+            }
+            }
+            // conserve l'id créé pour l'import des fichiers avant réinitialisation
+            $id_for_import = $id;
+            $id = 0; // JeromeB : Réinit l'id de réservation sinon en cas de double ressource celle-ci passe en modif
+        }
+        grr_sql_mutex_unlock("".TABLE_PREFIX."_entry");
+
+        // si des fichiers ont été envoyés, lance l'import en utilisant l'id de réservation conservé
+        if (!empty($_FILES) && is_array($_FILES) && isset($id_for_import) && $id_for_import > 0){
+            include "./include/import.class.php";
+            Import::DocumentResa($id_for_import);
+        }
+
 	$area = mrbsGetRoomArea($room_id);
 	$_SESSION['displ_msg'] = 'yes';
 	if ($message_error != "") // si erreur, retour à la page d'appel

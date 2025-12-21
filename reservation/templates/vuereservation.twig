@@ -171,6 +171,47 @@
             </div>
         {% endif %}
 
+        {% if d.uploadFile == 1 %}
+            <div class="upload">
+                <h4>Choisissez le fichier que vous allez insérer dans cette réservation :</h4>
+                <form id="uploadForm" method="post" action="app.php?p=gestionfichier&amp;action=1" enctype="multipart/form-data">
+                    <input type="hidden" name="p" value="gestionfichier"/>
+                    <input type="hidden" name="action" value="1"/>
+                    <input type="file" id="hiddenfile" style="display:none" name="myFiles[]" onChange="getvalue();"/>
+                    <input type="button" value="Parcourir..." onclick="getfile();"/>
+                    <input type="text" id="selectedfile" name="selectedfile" value="Nom du fichier" />
+                    <input type="hidden" id = "id" name="id" value = "{{resa.id}}">
+                    <input type="submit" value="Envoyer" id ="btnValidUpload" onChange="getvalue();">
+                </form>
+                <output id="infos"> </output>
+            </div>
+        {% endif %}
+        {% if d.accessFile == 1 %}
+
+            {% if d.countFile > 0 %}
+
+                <fieldset>
+                    <h4>Fichiers joints :</h4>
+                    <div class="col-sm-6 col-xs-12">
+
+                        <table>
+                        {% for file in attached_files %}
+                            <tr>
+                                <td class="center"><a href="./personnalisation/{{d.gcDossierDoc}}/{{file.file_name}}" download="{{file.public_name}}">{{file.public_name}}</a></td>
+                                <td class="center"><a href="app.php?p=gestionfichier&amp;action=2&amp;id={{file.id}}"><i class="fa fa-trash"></i></a></td>
+                            </tr>
+                        {% endfor %}
+                        </table>
+
+                        <output id="retourInfos"></output>
+                    </div>
+                </fieldset>
+                <br/><br/>
+            {% endif %}
+
+        {% endif %}
+
+
         {% if d.accesBoutons == 1 %}
             <div>
                 {% if d.lienModifier %}

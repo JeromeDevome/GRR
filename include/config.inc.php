@@ -244,6 +244,7 @@ $grrPages = array();
 $gcDossierCss = "css";
 $gcDossierImg = "images";
 $gcDossierXml = "xml";
+$gcDossierDoc = "docresa";
 
 ################################
 # Liens personnalisé admin
