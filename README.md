@@ -50,7 +50,7 @@ Pour une installation simplifiée, décompressez simplement cette archive sur un
 Mise à jour
 -------------
 
-Vous devez faire une mise à jour classique en suivant la procédure selon votre version actuelle de GRR : `Attention PHP 7.2.5 minimum !`
+Vous devez faire une mise à jour classique en suivant la procédure selon votre version actuelle de GRR :
 - Version < GRR 4.0.X [Documentation - Mise à jour - Depuis version < 4](https://devome.com/GRR/DOC/installation-et-mise-a-jour/mise-a-jour-depuis-version-less-than-4)
 - Version >= GRR 4.0.X [documentation - Mise à jour - Depuis version >= 4](https://devome.com/GRR/DOC/installation-et-mise-a-jour/mise-a-jour-depuis-version-greater-than-4)
 
