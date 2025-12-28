@@ -25,12 +25,16 @@ Version 4.5.0 - En développement
 [Correction] Droits mal évalués sur la page admin pour la gestion des accès aux ressources restreintes - 33f99acc - @ynaessens
 [Correction] Lien de retour vers un planning mois après réservation - a9408df4 - @ynaessens
 [Correction] Chemin fichier CSS/JS - 824dba95 - @JeromeDevome
+[Correction] Limitation warning PHP si site n'ayant pas de domaine - c07a09bb - @JeromeDevome
+[Correction] Recherche & Stat : Retour à la ligne dans la description - b3658f9b - @JeromeDevome
 [Modification] Calendrier jours ignorés, configuration par année - 711adf56 - @JeromeDevome
 [Modification] Fichier des vacances scolaires 2025 (France) - 03dd20b6 - @ynaessens
 [Modification] Types de réservations : Amélioration de l'affichage et pop-up - 9ed96228 - @JeromeDevome
 [Modification] Autorisation donnée aux gestionnaires de la ressource pour gérer l'accès aux ressources restreintes - 8e3d2891 - @ynaessens
 [Modification] Mise à jour PHPMailer - 5486b136 - @JeromeDevome
 [Modification] Mise à jour des fichier langues - @JeromeDevome & @ynaessens
+[Modification] Si authentification obligatoire et utilisateur non connecté, redirection vers la page de connexion - abf7b77b - @JeromeDevome
+[Modification] Contrôle des tables en utf8mb4_unicode_ci systématique lors de la mise à jour - f12d081a - @JeromeDevome
 
 Version 4.4.2 - 23/09/2025 Généré par @JeromeDevome
 [Correction] Variable manquante pour la sauvegarde - aed762ca - @ynaessens
