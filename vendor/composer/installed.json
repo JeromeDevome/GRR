@@ -122,29 +122,30 @@
         },
         {
             "name": "gregwar/captcha",
-            "version": "v1.2.1",
-            "version_normalized": "1.2.1.0",
+            "version": "v1.3.0",
+            "version_normalized": "1.3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gregwar/Captcha.git",
-                "reference": "229d3cdfe33d6f1349e0aec94a26e9205a6db08e"
+                "reference": "4edbcd09fde4353b94ce550f43460eba73baf2cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Gregwar/Captcha/zipball/229d3cdfe33d6f1349e0aec94a26e9205a6db08e",
-                "reference": "229d3cdfe33d6f1349e0aec94a26e9205a6db08e",
+                "url": "https://api.github.com/repos/Gregwar/Captcha/zipball/4edbcd09fde4353b94ce550f43460eba73baf2cc",
+                "reference": "4edbcd09fde4353b94ce550f43460eba73baf2cc",
                 "shasum": ""
             },
             "require": {
+                "ext-fileinfo": "*",
                 "ext-gd": "*",
                 "ext-mbstring": "*",
                 "php": ">=5.3.0",
                 "symfony/finder": "*"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.4"
+                "phpunit/phpunit": "^4.8.35 || ^5.7.21 || ^6.4 || ^7.0 || ^8.0 || ^9.0"
             },
-            "time": "2023-09-26T13:45:37+00:00",
+            "time": "2025-06-23T12:25:54+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -176,7 +177,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Gregwar/Captcha/issues",
-                "source": "https://github.com/Gregwar/Captcha/tree/v1.2.1"
+                "source": "https://github.com/Gregwar/Captcha/tree/v1.3.0"
             },
             "install-path": "../gregwar/captcha"
         },
