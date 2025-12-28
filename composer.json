@@ -17,7 +17,8 @@
         "tecnickcom/tcpdf": "^6.4",
         "apereo/phpcas": "^1.3",
         "almasaeed2010/adminlte": "~3.2",
-        "gregwar/captcha-bundle": "^2.2"
+        "gregwar/captcha-bundle": "^2.2",
+        "psr/container": "1.1.2"
     },
     "description": "Librairies pour GRR",
     "license": ["GPL-3.0-or-later"]
