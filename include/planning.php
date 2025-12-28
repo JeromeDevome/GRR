@@ -40,6 +40,14 @@ if ((!isset($d['pview'])) || ($d['pview'] != 1))
     $d['positionMenu'] = ($positionMenu != 0)? $positionMenu : 1; // il faut bien que le menu puisse s'afficher, par défaut ce sera à gauche sauf choix autre par setting
 }
 
+// Vérification de l'authentification obligatoire
+if ((Settings::get("authentification_obli") == 1) && (getUserName() == ''))
+{
+	$url = rawurlencode($_GET['url']);
+	header("Location: app.php?p=login&url=".$url);
+	exit;
+}
+
 // initialisation des paramètres de temps
 $date_now = time();
 
