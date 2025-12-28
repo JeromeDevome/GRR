@@ -879,6 +879,8 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 	$result = '';
 	$result_inter = '';
 
+	include "./fonctions/X_to_UTF8.inc.php";
+
 	// On commence la mise à jour 
 	if (intval($version_old_bdd) < 400001) // Version GRR 4.0.0 Béta
 	{
