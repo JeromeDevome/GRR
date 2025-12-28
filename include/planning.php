@@ -55,8 +55,11 @@ $d['area'] = $area;
 $d['id_site'] = $id_site;
 
 //Récupération des données concernant l'affichage du planning du domaine, $enable_periods
-get_planning_area_values($area);
-$d['usePeriode'] = $enable_periods;
+if($area>0)
+{
+    get_planning_area_values($area);
+    $d['usePeriode'] = $enable_periods;
+}
 
 // Hors mode prévisualisation de page imprimable, on affiche les menus
 if ($d['pview'] != 1) {
@@ -119,9 +122,12 @@ if ($d['pview'] != 1) {
 
     $d['selecteursH'] = $selecteursH;
     $d['selecteursG'] = $selecteursG;
-    $d['miniCalentrier'] = minicalsTwig($year, $month, $day, $area, $room, $pageActuel);
-    $d['selectionDateDirecte'] = jQuery_DatePickerTwig('');
-    $d['legende'] = show_colour_keyTwig($area);
+    if($area>0)
+    {
+        $d['miniCalentrier'] = minicalsTwig($year, $month, $day, $area, $room, $pageActuel);
+        $d['selectionDateDirecte'] = jQuery_DatePickerTwig('');
+        $d['legende'] = show_colour_keyTwig($area);
+    }
     $d['classImage'] =  "image";
 
 // Page visualisation imprimable
