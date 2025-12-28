@@ -247,6 +247,12 @@ $gcDossierXml = "xml";
 $gcDossierDoc = "docresa";
 
 ################################
+# Taille maxi upload fichier import
+#################################
+
+$gcTailleMaxDocResa = 20971520; // 2 Mo
+
+################################
 # Liens personnalisé admin
 #################################
 

@@ -134,8 +134,7 @@ class Import {
 
     public static function DocumentResa($idResa)
 	{
-        global $gcDossierDoc, $_FILES;
-
+        global $gcDossierDoc, $gcTailleMaxDocResa, $_FILES;
 
         $uploadDir = realpath(".")."/personnalisation/".$gcDossierDoc."/";
         $msg = "";
@@ -184,6 +183,12 @@ class Import {
             $fileExt = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
             if (!in_array($fileExt, ["jpg","jpeg","png","gif","pdf"])) {
                 $msg .= "<br>type de fichier inconnu";
+                continue;
+            }
+
+            // contrôle de la taille du fichier par rapport à $gcTailleMaxDocResa
+            if ($size > $gcTailleMaxDocResa) {
+                $msg .= "<br><span style='color:red'>Erreur, fichier trop volumineux (max : ".$gcTailleMaxDocResa." octets)</span>";
                 continue;
             }
 
