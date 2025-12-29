@@ -20,50 +20,17 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  * @author Florian Eckerstorfer <florian@eckerstorfer.org>
+ *
+ * @implements DataTransformerInterface<int|float, string>
  */
 class NumberToLocalizedStringTransformer implements DataTransformerInterface
 {
-    /**
-     * @deprecated since Symfony 5.1, use \NumberFormatter::ROUND_CEILING instead.
-     */
-    public const ROUND_CEILING = \NumberFormatter::ROUND_CEILING;
-
-    /**
-     * @deprecated since Symfony 5.1, use \NumberFormatter::ROUND_FLOOR instead.
-     */
-    public const ROUND_FLOOR = \NumberFormatter::ROUND_FLOOR;
-
-    /**
-     * @deprecated since Symfony 5.1, use \NumberFormatter::ROUND_UP instead.
-     */
-    public const ROUND_UP = \NumberFormatter::ROUND_UP;
-
-    /**
-     * @deprecated since Symfony 5.1, use \NumberFormatter::ROUND_DOWN instead.
-     */
-    public const ROUND_DOWN = \NumberFormatter::ROUND_DOWN;
-
-    /**
-     * @deprecated since Symfony 5.1, use \NumberFormatter::ROUND_HALFEVEN instead.
-     */
-    public const ROUND_HALF_EVEN = \NumberFormatter::ROUND_HALFEVEN;
-
-    /**
-     * @deprecated since Symfony 5.1, use \NumberFormatter::ROUND_HALFUP instead.
-     */
-    public const ROUND_HALF_UP = \NumberFormatter::ROUND_HALFUP;
-
-    /**
-     * @deprecated since Symfony 5.1, use \NumberFormatter::ROUND_HALFDOWN instead.
-     */
-    public const ROUND_HALF_DOWN = \NumberFormatter::ROUND_HALFDOWN;
-
     protected $grouping;
 
     protected $roundingMode;
 
-    private $scale;
-    private $locale;
+    private ?int $scale;
+    private ?string $locale;
 
     public function __construct(?int $scale = null, ?bool $grouping = false, ?int $roundingMode = \NumberFormatter::ROUND_HALFUP, ?string $locale = null)
     {
@@ -76,16 +43,14 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
     /**
      * Transforms a number type into localized number.
      *
-     * @param int|float|null $value Number value
-     *
-     * @return string
+     * @param int|float|string|null $value Number value
      *
      * @throws TransformationFailedException if the given value is not numeric
      *                                       or if the value cannot be transformed
      */
-    public function transform($value)
+    public function transform(mixed $value): string
     {
-        if (null === $value) {
+        if (null === $value || '' === $value) {
             return '';
         }
 
@@ -111,12 +76,10 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
      *
      * @param string $value The localized value
      *
-     * @return int|float|null
-     *
      * @throws TransformationFailedException if the given value is not a string
      *                                       or if the value cannot be transformed
      */
-    public function reverseTransform($value)
+    public function reverseTransform(mixed $value): int|float|null
     {
         if (null !== $value && !\is_string($value)) {
             throw new TransformationFailedException('Expected a string.');
@@ -184,7 +147,7 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
             $remainder = trim($remainder, " \t\n\r\0\x0b\xc2\xa0");
 
             if ('' !== $remainder) {
-                throw new TransformationFailedException(sprintf('The number contains unrecognized characters: "%s".', $remainder));
+                throw new TransformationFailedException(\sprintf('The number contains unrecognized characters: "%s".', $remainder));
             }
         }
 
@@ -194,10 +157,8 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
 
     /**
      * Returns a preconfigured \NumberFormatter instance.
-     *
-     * @return \NumberFormatter
      */
-    protected function getNumberFormatter()
+    protected function getNumberFormatter(): \NumberFormatter
     {
         $formatter = new \NumberFormatter($this->locale ?? \Locale::getDefault(), \NumberFormatter::DECIMAL);
 
@@ -214,9 +175,9 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
     /**
      * @internal
      */
-    protected function castParsedValue($value)
+    protected function castParsedValue(int|float $value): int|float
     {
-        if (\is_int($value) && $value === (int) $float = (float) $value) {
+        if (\is_int($value) && (($float = (float) $value) < \PHP_INT_MAX) && $value === (int) $float) {
             return $float;
         }
 
@@ -225,13 +186,13 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
 
     /**
      * Rounds a number according to the configured scale and rounding mode.
-     *
-     * @param int|float $number A number
-     *
-     * @return int|float
      */
-    private function round($number)
+    private function round(int|float $number): int|float
     {
+        if (\is_int($number)) {
+            return $number;
+        }
+
         if (null !== $this->scale && null !== $this->roundingMode) {
             // shift number to maintain the correct scale during rounding
             $roundingCoef = 10 ** $this->scale;

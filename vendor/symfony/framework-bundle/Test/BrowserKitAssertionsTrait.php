@@ -47,7 +47,13 @@ trait BrowserKitAssertionsTrait
     {
         $constraint = new ResponseConstraint\ResponseIsRedirected();
         if ($expectedLocation) {
-            $constraint = LogicalAnd::fromConstraints($constraint, new ResponseConstraint\ResponseHeaderSame('Location', $expectedLocation));
+            if (class_exists(ResponseConstraint\ResponseHeaderLocationSame::class)) {
+                $locationConstraint = new ResponseConstraint\ResponseHeaderLocationSame(self::getRequest(), $expectedLocation);
+            } else {
+                $locationConstraint = new ResponseConstraint\ResponseHeaderSame('Location', $expectedLocation);
+            }
+
+            $constraint = LogicalAnd::fromConstraints($constraint, $locationConstraint);
         }
         if ($expectedCode) {
             $constraint = LogicalAnd::fromConstraints($constraint, new ResponseConstraint\ResponseStatusCodeSame($expectedCode));
@@ -156,7 +162,7 @@ trait BrowserKitAssertionsTrait
         self::assertThat(self::getClient(), $constraint, $message);
     }
 
-    private static function getClient(?AbstractBrowser $newClient = null): ?AbstractBrowser
+    protected static function getClient(?AbstractBrowser $newClient = null): ?AbstractBrowser
     {
         static $client;
 
@@ -165,7 +171,7 @@ trait BrowserKitAssertionsTrait
         }
 
         if (!$client instanceof AbstractBrowser) {
-            static::fail(sprintf('A client must be set to make assertions on it. Did you forget to call "%s::createClient()"?', __CLASS__));
+            static::fail(\sprintf('A client must be set to make assertions on it. Did you forget to call "%s::createClient()"?', __CLASS__));
         }
 
         return $client;

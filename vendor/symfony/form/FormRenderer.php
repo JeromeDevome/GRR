@@ -25,11 +25,11 @@ class FormRenderer implements FormRendererInterface
 {
     public const CACHE_KEY_VAR = 'unique_block_prefix';
 
-    private $engine;
-    private $csrfTokenManager;
-    private $blockNameHierarchyMap = [];
-    private $hierarchyLevelMap = [];
-    private $variableStack = [];
+    private FormRendererEngineInterface $engine;
+    private ?CsrfTokenManagerInterface $csrfTokenManager;
+    private array $blockNameHierarchyMap = [];
+    private array $hierarchyLevelMap = [];
+    private array $variableStack = [];
 
     public function __construct(FormRendererEngineInterface $engine, ?CsrfTokenManagerInterface $csrfTokenManager = null)
     {
@@ -37,26 +37,20 @@ class FormRenderer implements FormRendererInterface
         $this->csrfTokenManager = $csrfTokenManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getEngine()
+    public function getEngine(): FormRendererEngineInterface
     {
         return $this->engine;
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
-    public function setTheme(FormView $view, $themes, bool $useDefaultThemes = true)
+    public function setTheme(FormView $view, mixed $themes, bool $useDefaultThemes = true)
     {
         $this->engine->setTheme($view, $themes, $useDefaultThemes);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function renderCsrfToken(string $tokenId)
+    public function renderCsrfToken(string $tokenId): string
     {
         if (null === $this->csrfTokenManager) {
             throw new BadMethodCallException('CSRF tokens can only be generated if a CsrfTokenManagerInterface is injected in FormRenderer::__construct(). Try running "composer require symfony/security-csrf".');
@@ -65,15 +59,12 @@ class FormRenderer implements FormRendererInterface
         return $this->csrfTokenManager->getToken($tokenId)->getValue();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function renderBlock(FormView $view, string $blockName, array $variables = [])
+    public function renderBlock(FormView $view, string $blockName, array $variables = []): string
     {
         $resource = $this->engine->getResourceForBlockName($view, $blockName);
 
         if (!$resource) {
-            throw new LogicException(sprintf('No block "%s" found while rendering the form.', $blockName));
+            throw new LogicException(\sprintf('No block "%s" found while rendering the form.', $blockName));
         }
 
         $viewCacheKey = $view->vars[self::CACHE_KEY_VAR];
@@ -124,16 +115,13 @@ class FormRenderer implements FormRendererInterface
         return $html;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function searchAndRenderBlock(FormView $view, string $blockNameSuffix, array $variables = [])
+    public function searchAndRenderBlock(FormView $view, string $blockNameSuffix, array $variables = []): string
     {
         $renderOnlyOnce = 'row' === $blockNameSuffix || 'widget' === $blockNameSuffix;
 
         if ($renderOnlyOnce && $view->isRendered()) {
             // This is not allowed, because it would result in rendering same IDs multiple times, which is not valid.
-            throw new BadMethodCallException(sprintf('Field "%s" has already been rendered, save the result of previous render call to a variable and output that instead.', $view->vars['name']));
+            throw new BadMethodCallException(\sprintf('Field "%s" has already been rendered, save the result of previous render call to a variable and output that instead.', $view->vars['name']));
         }
 
         // The cache key for storing the variables and types
@@ -220,10 +208,10 @@ class FormRenderer implements FormRendererInterface
         // Escape if no resource exists for this block
         if (!$resource) {
             if (\count($blockNameHierarchy) !== \count(array_unique($blockNameHierarchy))) {
-                throw new LogicException(sprintf('Unable to render the form because the block names array contains duplicates: "%s".', implode('", "', array_reverse($blockNameHierarchy))));
+                throw new LogicException(\sprintf('Unable to render the form because the block names array contains duplicates: "%s".', implode('", "', array_reverse($blockNameHierarchy))));
             }
 
-            throw new LogicException(sprintf('Unable to render the form as none of the following blocks exist: "%s".', implode('", "', array_reverse($blockNameHierarchy))));
+            throw new LogicException(\sprintf('Unable to render the form as none of the following blocks exist: "%s".', implode('", "', array_reverse($blockNameHierarchy))));
         }
 
         // Merge the passed with the existing attributes
@@ -277,10 +265,7 @@ class FormRenderer implements FormRendererInterface
         return $html;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function humanize(string $text)
+    public function humanize(string $text): string
     {
         return ucfirst(strtolower(trim(preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '], $text))));
     }

@@ -27,13 +27,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class Esi extends AbstractSurrogate
 {
-    public function getName()
+    public function getName(): string
     {
         return 'esi';
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function addSurrogateControl(Response $response)
     {
@@ -42,28 +42,22 @@ class Esi extends AbstractSurrogate
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function renderIncludeTag(string $uri, ?string $alt = null, bool $ignoreErrors = true, string $comment = '')
+    public function renderIncludeTag(string $uri, ?string $alt = null, bool $ignoreErrors = true, string $comment = ''): string
     {
-        $html = sprintf('<esi:include src="%s"%s%s />',
+        $html = \sprintf('<esi:include src="%s"%s%s />',
             $uri,
             $ignoreErrors ? ' onerror="continue"' : '',
-            $alt ? sprintf(' alt="%s"', $alt) : ''
+            $alt ? \sprintf(' alt="%s"', $alt) : ''
         );
 
         if (!empty($comment)) {
-            return sprintf("<esi:comment text=\"%s\" />\n%s", $comment, $html);
+            return \sprintf("<esi:comment text=\"%s\" />\n%s", $comment, $html);
         }
 
         return $html;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(Request $request, Response $response)
+    public function process(Request $request, Response $response): Response
     {
         $type = $response->headers->get('Content-Type');
         if (empty($type)) {

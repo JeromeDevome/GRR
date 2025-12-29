@@ -14,6 +14,7 @@ namespace Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /**
  * A choice type for native PHP enums.
@@ -27,12 +28,18 @@ final class EnumType extends AbstractType
         $resolver
             ->setRequired(['class'])
             ->setAllowedTypes('class', 'string')
-            ->setAllowedValues('class', \Closure::fromCallable('enum_exists'))
-            ->setDefault('choices', static function (Options $options): array {
-                return $options['class']::cases();
-            })
-            ->setDefault('choice_label', static function (\UnitEnum $choice): string {
-                return $choice->name;
+            ->setAllowedValues('class', enum_exists(...))
+            ->setDefault('choices', static fn (Options $options): array => $options['class']::cases())
+            ->setDefault('choice_label', static function (Options $options) {
+                return static function (\UnitEnum $choice, int|string $key): string|TranslatableInterface {
+                    if (\is_int($key)) {
+                        // Key is an integer, use the enum's name (or translatable)
+                        return $choice instanceof TranslatableInterface ? $choice : $choice->name;
+                    }
+
+                    // Key is a string, use it as the label
+                    return $key;
+                };
             })
             ->setDefault('choice_value', static function (Options $options): ?\Closure {
                 if (!is_a($options['class'], \BackedEnum::class, true)) {

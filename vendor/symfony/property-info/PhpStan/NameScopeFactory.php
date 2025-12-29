@@ -22,7 +22,7 @@ final class NameScopeFactory
 {
     public function create(string $calledClassName, ?string $declaringClassName = null): NameScope
     {
-        $declaringClassName = $declaringClassName ?? $calledClassName;
+        $declaringClassName ??= $calledClassName;
 
         $path = explode('\\', $calledClassName);
         $calledClassName = array_pop($path);
@@ -56,7 +56,7 @@ final class NameScopeFactory
 
         if (\is_string($fileName) && is_file($fileName)) {
             if (false === $contents = file_get_contents($fileName)) {
-                throw new \RuntimeException(sprintf('Unable to read file "%s".', $fileName));
+                throw new \RuntimeException(\sprintf('Unable to read file "%s".', $fileName));
             }
 
             $factory = new ContextFactory();

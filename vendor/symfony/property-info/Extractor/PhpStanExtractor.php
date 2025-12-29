@@ -38,21 +38,16 @@ final class PhpStanExtractor implements PropertyTypeExtractorInterface, Construc
     private const ACCESSOR = 1;
     private const MUTATOR = 2;
 
-    /** @var PhpDocParser */
-    private $phpDocParser;
-
-    /** @var Lexer */
-    private $lexer;
-
-    /** @var NameScopeFactory */
-    private $nameScopeFactory;
+    private PhpDocParser $phpDocParser;
+    private Lexer $lexer;
+    private NameScopeFactory $nameScopeFactory;
 
     /** @var array<string, array{PhpDocNode|null, int|null, string|null, string|null}> */
-    private $docBlocks = [];
-    private $phpStanTypeHelper;
-    private $mutatorPrefixes;
-    private $accessorPrefixes;
-    private $arrayMutatorPrefixes;
+    private array $docBlocks = [];
+    private PhpStanTypeHelper $phpStanTypeHelper;
+    private array $mutatorPrefixes;
+    private array $accessorPrefixes;
+    private array $arrayMutatorPrefixes;
 
     /**
      * @param list<string>|null $mutatorPrefixes
@@ -62,11 +57,11 @@ final class PhpStanExtractor implements PropertyTypeExtractorInterface, Construc
     public function __construct(?array $mutatorPrefixes = null, ?array $accessorPrefixes = null, ?array $arrayMutatorPrefixes = null)
     {
         if (!class_exists(ContextFactory::class)) {
-            throw new \LogicException(sprintf('Unable to use the "%s" class as the "phpdocumentor/type-resolver" package is not installed. Try running composer require "phpdocumentor/type-resolver".', __CLASS__));
+            throw new \LogicException(\sprintf('Unable to use the "%s" class as the "phpdocumentor/type-resolver" package is not installed. Try running composer require "phpdocumentor/type-resolver".', __CLASS__));
         }
 
         if (!class_exists(PhpDocParser::class)) {
-            throw new \LogicException(sprintf('Unable to use the "%s" class as the "phpstan/phpdoc-parser" package is not installed. Try running composer require "phpstan/phpdoc-parser".', __CLASS__));
+            throw new \LogicException(\sprintf('Unable to use the "%s" class as the "phpstan/phpdoc-parser" package is not installed. Try running composer require "phpstan/phpdoc-parser".', __CLASS__));
         }
 
         $this->phpStanTypeHelper = new PhpStanTypeHelper();
@@ -115,6 +110,14 @@ final class PhpStanExtractor implements PropertyTypeExtractorInterface, Construc
                 continue;
             }
 
+            if (
+                $tagDocNode->value instanceof ParamTagValueNode
+                && null === $prefix
+                && $tagDocNode->value->parameterName !== '$'.$property
+            ) {
+                continue;
+            }
+
             foreach ($this->phpStanTypeHelper->getTypes($tagDocNode->value, $nameScope) as $type) {
                 switch ($type->getClassName()) {
                     case 'self':
@@ -123,7 +126,7 @@ final class PhpStanExtractor implements PropertyTypeExtractorInterface, Construc
                         break;
 
                     case 'parent':
-                        if (false !== $resolvedClass = $parentClass ?? $parentClass = get_parent_class($class)) {
+                        if (false !== $resolvedClass = $parentClass ??= get_parent_class($class)) {
                             break;
                         }
                         // no break
@@ -170,7 +173,7 @@ final class PhpStanExtractor implements PropertyTypeExtractorInterface, Construc
     {
         try {
             $reflectionClass = new \ReflectionClass($class);
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
             return null;
         }
 
@@ -182,18 +185,14 @@ final class PhpStanExtractor implements PropertyTypeExtractorInterface, Construc
             return null;
         }
 
-        $tokens = new TokenIterator($this->lexer->tokenize($rawDocNode));
-        $phpDocNode = $this->phpDocParser->parse($tokens);
-        $tokens->consumeTokenType(Lexer::TOKEN_END);
+        $phpDocNode = $this->getPhpDocNode($rawDocNode);
 
         return $this->filterDocBlockParams($phpDocNode, $property);
     }
 
     private function filterDocBlockParams(PhpDocNode $docNode, string $allowedParam): ?ParamTagValueNode
     {
-        $tags = array_values(array_filter($docNode->getTagsByName('@param'), function ($tagNode) use ($allowedParam) {
-            return $tagNode instanceof PhpDocTagNode && ('$'.$allowedParam) === $tagNode->value->parameterName;
-        }));
+        $tags = array_values(array_filter($docNode->getTagsByName('@param'), fn ($tagNode) => $tagNode instanceof PhpDocTagNode && ('$'.$allowedParam) === $tagNode->value->parameterName));
 
         if (!$tags) {
             return null;
@@ -215,8 +214,8 @@ final class PhpStanExtractor implements PropertyTypeExtractorInterface, Construc
 
         $ucFirstProperty = ucfirst($property);
 
-        if ([$docBlock, $declaringClass] = $this->getDocBlockFromProperty($class, $property)) {
-            $data = [$docBlock, self::PROPERTY, null, $declaringClass];
+        if ([$docBlock, $source, $declaringClass] = $this->getDocBlockFromProperty($class, $property)) {
+            $data = [$docBlock, $source, null, $declaringClass];
         } elseif ([$docBlock, $_, $declaringClass] = $this->getDocBlockFromMethod($class, $ucFirstProperty, self::ACCESSOR)) {
             $data = [$docBlock, self::ACCESSOR, null, $declaringClass];
         } elseif ([$docBlock, $prefix, $declaringClass] = $this->getDocBlockFromMethod($class, $ucFirstProperty, self::MUTATOR)) {
@@ -229,14 +228,14 @@ final class PhpStanExtractor implements PropertyTypeExtractorInterface, Construc
     }
 
     /**
-     * @return array{PhpDocNode, string}|null
+     * @return array{PhpDocNode, int, string}|null
      */
     private function getDocBlockFromProperty(string $class, string $property): ?array
     {
         // Use a ReflectionProperty instead of $class to get the parent class if applicable
         try {
             $reflectionProperty = new \ReflectionProperty($class, $property);
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
             return null;
         }
 
@@ -248,15 +247,28 @@ final class PhpStanExtractor implements PropertyTypeExtractorInterface, Construc
             }
         }
 
-        if (null === $rawDocNode = $reflectionProperty->getDocComment() ?: null) {
+        // Type can be inside property docblock as `@var`
+        $rawDocNode = $reflectionProperty->getDocComment();
+        $phpDocNode = $rawDocNode ? $this->getPhpDocNode($rawDocNode) : null;
+        $source = self::PROPERTY;
+
+        if (!$phpDocNode?->getTagsByName('@var')) {
+            $phpDocNode = null;
+        }
+
+        // or in the constructor as `@param` for promoted properties
+        if (!$phpDocNode && $reflectionProperty->isPromoted()) {
+            $constructor = new \ReflectionMethod($class, '__construct');
+            $rawDocNode = $constructor->getDocComment();
+            $phpDocNode = $rawDocNode ? $this->getPhpDocNode($rawDocNode) : null;
+            $source = self::MUTATOR;
+        }
+
+        if (!$phpDocNode) {
             return null;
         }
 
-        $tokens = new TokenIterator($this->lexer->tokenize($rawDocNode));
-        $phpDocNode = $this->phpDocParser->parse($tokens);
-        $tokens->consumeTokenType(Lexer::TOKEN_END);
-
-        return [$phpDocNode, $reflectionProperty->class];
+        return [$phpDocNode, $source, $reflectionProperty->class];
     }
 
     /**
@@ -282,7 +294,7 @@ final class PhpStanExtractor implements PropertyTypeExtractorInterface, Construc
                 ) {
                     break;
                 }
-            } catch (\ReflectionException $e) {
+            } catch (\ReflectionException) {
                 // Try the next prefix if the method doesn't exist
             }
         }
@@ -295,10 +307,17 @@ final class PhpStanExtractor implements PropertyTypeExtractorInterface, Construc
             return null;
         }
 
+        $phpDocNode = $this->getPhpDocNode($rawDocNode);
+
+        return [$phpDocNode, $prefix, $reflectionMethod->class];
+    }
+
+    private function getPhpDocNode(string $rawDocNode): PhpDocNode
+    {
         $tokens = new TokenIterator($this->lexer->tokenize($rawDocNode));
         $phpDocNode = $this->phpDocParser->parse($tokens);
         $tokens->consumeTokenType(Lexer::TOKEN_END);
 
-        return [$phpDocNode, $prefix, $reflectionMethod->class];
+        return $phpDocNode;
     }
 }

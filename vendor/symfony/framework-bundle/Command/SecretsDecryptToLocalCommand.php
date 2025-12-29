@@ -12,6 +12,7 @@
 namespace Symfony\Bundle\FrameworkBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Secrets\AbstractVault;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -24,13 +25,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @internal
  */
+#[AsCommand(name: 'secrets:decrypt-to-local', description: 'Decrypt all secrets and stores them in the local vault')]
 final class SecretsDecryptToLocalCommand extends Command
 {
-    protected static $defaultName = 'secrets:decrypt-to-local';
-    protected static $defaultDescription = 'Decrypt all secrets and stores them in the local vault';
-
-    private $vault;
-    private $localVault;
+    private AbstractVault $vault;
+    private ?AbstractVault $localVault;
 
     public function __construct(AbstractVault $vault, ?AbstractVault $localVault = null)
     {
@@ -40,10 +39,9 @@ final class SecretsDecryptToLocalCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription(self::$defaultDescription)
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Force overriding of secrets that already exist in the local vault')
             ->setHelp(<<<'EOF'
 The <info>%command.name%</info> command decrypts all secrets and copies them in the local vault.
@@ -70,7 +68,7 @@ EOF
 
         $secrets = $this->vault->list(true);
 
-        $io->comment(sprintf('%d secret%s found in the vault.', \count($secrets), 1 !== \count($secrets) ? 's' : ''));
+        $io->comment(\sprintf('%d secret%s found in the vault.', \count($secrets), 1 !== \count($secrets) ? 's' : ''));
 
         $skipped = 0;
         if (!$input->getOption('force')) {
@@ -84,14 +82,14 @@ EOF
 
         if ($skipped > 0) {
             $io->warning([
-                sprintf('%d secret%s already overridden in the local vault and will be skipped.', $skipped, 1 !== $skipped ? 's are' : ' is'),
+                \sprintf('%d secret%s already overridden in the local vault and will be skipped.', $skipped, 1 !== $skipped ? 's are' : ' is'),
                 'Use the --force flag to override these.',
             ]);
         }
 
         foreach ($secrets as $k => $v) {
             if (null === $v) {
-                $io->error($this->vault->getLastMessage() ?? sprintf('Secret "%s" has been skipped as there was an error reading it.', $k));
+                $io->error($this->vault->getLastMessage() ?? \sprintf('Secret "%s" has been skipped as there was an error reading it.', $k));
                 continue;
             }
 

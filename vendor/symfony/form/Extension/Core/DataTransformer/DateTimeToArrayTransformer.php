@@ -18,12 +18,14 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  * @author Florian Eckerstorfer <florian@eckerstorfer.org>
+ *
+ * @extends BaseDateTimeTransformer<array>
  */
 class DateTimeToArrayTransformer extends BaseDateTimeTransformer
 {
-    private $pad;
-    private $fields;
-    private $referenceDate;
+    private bool $pad;
+    private array $fields;
+    private \DateTimeInterface $referenceDate;
 
     /**
      * @param string|null   $inputTimezone  The input timezone
@@ -45,11 +47,9 @@ class DateTimeToArrayTransformer extends BaseDateTimeTransformer
      *
      * @param \DateTimeInterface $dateTime A DateTimeInterface object
      *
-     * @return array
-     *
      * @throws TransformationFailedException If the given value is not a \DateTimeInterface
      */
-    public function transform($dateTime)
+    public function transform(mixed $dateTime): array
     {
         if (null === $dateTime) {
             return array_intersect_key([
@@ -67,10 +67,7 @@ class DateTimeToArrayTransformer extends BaseDateTimeTransformer
         }
 
         if ($this->inputTimezone !== $this->outputTimezone) {
-            if (!$dateTime instanceof \DateTimeImmutable) {
-                $dateTime = clone $dateTime;
-            }
-
+            $dateTime = \DateTimeImmutable::createFromInterface($dateTime);
             $dateTime = $dateTime->setTimezone(new \DateTimeZone($this->outputTimezone));
         }
 
@@ -100,12 +97,10 @@ class DateTimeToArrayTransformer extends BaseDateTimeTransformer
      *
      * @param array $value Localized date
      *
-     * @return \DateTime|null
-     *
      * @throws TransformationFailedException If the given value is not an array,
      *                                       if the value could not be transformed
      */
-    public function reverseTransform($value)
+    public function reverseTransform(mixed $value): ?\DateTime
     {
         if (null === $value) {
             return null;
@@ -128,7 +123,7 @@ class DateTimeToArrayTransformer extends BaseDateTimeTransformer
         }
 
         if (\count($emptyFields) > 0) {
-            throw new TransformationFailedException(sprintf('The fields "%s" should not be empty.', implode('", "', $emptyFields)));
+            throw new TransformationFailedException(\sprintf('The fields "%s" should not be empty.', implode('", "', $emptyFields)));
         }
 
         if (isset($value['month']) && !ctype_digit((string) $value['month'])) {
@@ -160,7 +155,7 @@ class DateTimeToArrayTransformer extends BaseDateTimeTransformer
         }
 
         try {
-            $dateTime = new \DateTime(sprintf(
+            $dateTime = new \DateTime(\sprintf(
                 '%s-%s-%s %s:%s:%s',
                 empty($value['year']) ? $this->referenceDate->format('Y') : $value['year'],
                 empty($value['month']) ? $this->referenceDate->format('m') : $value['month'],

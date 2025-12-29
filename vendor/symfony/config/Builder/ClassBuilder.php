@@ -20,21 +20,18 @@ namespace Symfony\Component\Config\Builder;
  */
 class ClassBuilder
 {
-    /** @var string */
-    private $namespace;
-
-    /** @var string */
-    private $name;
+    private string $namespace;
+    private string $name;
 
     /** @var Property[] */
-    private $properties = [];
+    private array $properties = [];
 
     /** @var Method[] */
-    private $methods = [];
-    private $require = [];
-    private $use = [];
-    private $implements = [];
-    private $allowExtraKeys = false;
+    private array $methods = [];
+    private array $require = [];
+    private array $use = [];
+    private array $implements = [];
+    private bool $allowExtraKeys = false;
 
     public function __construct(string $namespace, string $name)
     {
@@ -66,11 +63,11 @@ class ClassBuilder
                 }
                 unset($path[$key]);
             }
-            $require .= sprintf('require_once __DIR__.\DIRECTORY_SEPARATOR.\'%s\';', implode('\'.\DIRECTORY_SEPARATOR.\'', $path))."\n";
+            $require .= \sprintf('require_once __DIR__.\DIRECTORY_SEPARATOR.\'%s\';', implode('\'.\DIRECTORY_SEPARATOR.\'', $path))."\n";
         }
         $use = $require ? "\n" : '';
         foreach (array_keys($this->use) as $statement) {
-            $use .= sprintf('use %s;', $statement)."\n";
+            $use .= \sprintf('use %s;', $statement)."\n";
         }
 
         $implements = [] === $this->implements ? '' : 'implements '.implode(', ', $this->implements);
@@ -129,8 +126,8 @@ BODY
             $property->setType($classType);
         }
         $this->properties[] = $property;
-        $defaultValue = null !== $defaultValue ? sprintf(' = %s', $defaultValue) : '';
-        $property->setContent(sprintf('private $%s%s;', $property->getName(), $defaultValue));
+        $defaultValue = null !== $defaultValue ? \sprintf(' = %s', $defaultValue) : '';
+        $property->setContent(\sprintf('private $%s%s;', $property->getName(), $defaultValue));
 
         return $property;
     }
