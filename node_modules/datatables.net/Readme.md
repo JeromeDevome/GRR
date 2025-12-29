@@ -1,6 +1,6 @@
-# DataTables for jQuery
+# DataTables
 
-This package contains distribution files for the [DataTables library](https://datatables.net) for [jQuery](http://jquery.com/). Only the core software for this library is contained in this package - to be correctly styled, a styling package for DataTables must also be included. Styling options include DataTable's native styling, [Bootstrap](http://getbootstrap.com) and [Foundation](http://foundation.zurb.com/).
+This package contains distribution files for the [DataTables table enhancement library](https://datatables.net). Only the core software for this library is contained in this package - to be correctly styled, a styling package for DataTables must also be included (e.g. default, Bootstrap, Bulma, Foundation or others) - please see the [npm installation documentation on the DataTables site](https://datatables.net/manual/installation#Node.js-/-NPM) for full details.
 
 DataTables is a table enhancing library which adds features such as paging, ordering, search, scrolling and many more to a static HTML page. A comprehensive API is also available that can be used to manipulate the table. Please refer to the [DataTables web-site](//datatables.net) for a full range of documentation and examples.
 
@@ -9,29 +9,34 @@ DataTables is a table enhancing library which adds features such as paging, orde
 
 ### Browser
 
-For inclusion of this library using a standard `<script>` tag, rather than using this package, it is recommended that you use the [DataTables download builder](//datatables.net/download) which can create CDN or locally hosted packages \for you, will all dependencies satisfied.
+To use DataTables with a simple `<script>` tag, rather than using this package, it is recommended that you use the [DataTables download builder](//datatables.net/download) which can create CDN or locally hosted packages for you, will all dependencies satisfied.
 
 ### npm
+
+For installation via npm, yarn and other similar package managers, install this package with your package manager - e.g.:
 
 ```
 npm install datatables.net
 ```
 
-ES3 Syntax
-```
-var $ = require( 'jquery' );
-require( 'datatables.net' )( window, $ );
-```
-
-ES6 Syntax
-```
-import 'datatables.net'
-```
-
-### bower
+Then, to load and initialise DataTables in your code use:
 
 ```
-bower install --save datatables.net
+import DataTable from 'datatables.net';
+
+new DataTable('#myTable', {
+    // initialisation options
+});
+```
+
+If you are using an old version of Node or a CommonJS loader, you might need to use the `require` syntax:
+
+```
+const DataTable = require('datatables.net');
+
+new DataTable('#myTable', {
+    // initialisation options
+});
 ```
 
 
@@ -44,7 +49,6 @@ Full documentation of the DataTables options, API and plug-in interface are avai
 ## Bug / Support
 
 Support for DataTables is available through the [DataTables forums](//datatables.net/forums) and [commercial support options](//datatables.net/support) are available.
-
 
 ### Contributing
 

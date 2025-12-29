@@ -1,0 +1,30 @@
+{
+  "name": "jquery.floatThead",
+  "homepage": "http://mkoryak.github.io/floatThead/",
+  "authors": [
+    "Misha Koryak"
+  ],
+  "description": "Fixed <thead>. Doesn't need any custom css/html. Does what position:sticky can't",
+  "main": [
+    "dist/jquery.floatThead.js",
+    "dist/jquery.floatThead.min.js"
+  ],
+  "browser": [
+    "dist/jquery.floatThead.min.js"
+  ],
+  "keywords": [
+    "float table header", "locked header", "table header", "table", "sticky header", "floatThead", "scrolling table", "fixed header"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "src",
+    "demo",
+    "package.json",
+    ".gitignore"
+  ],
+  "dependencies": {
+    "jquery": ">= 1.8.0"
+  }
+}

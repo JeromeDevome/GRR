@@ -4,8 +4,125 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/buttons.css?v={{d.versionCache}}">
+<style>
+/* Pagination v2 */
+.dataTables_paginate .paginate_button {
+    padding: 0.375rem 0.75rem;
+    margin: 0 0.1rem;
+    border-radius: 0.25rem;
+    border: 1px solid #dee2e6;
+    color: #0d6efd;
+    background: #fff;
+    cursor: pointer;
+}
+.dataTables_paginate .paginate_button.current {
+    background-color: #0d6efd !important;
+    color: #fff !important;
+}
+.dataTables_paginate .paginate_button:hover {
+    background-color: #0b5ed7 !important;
+    color: #fff !important;
+}
+/* Conteneur pagination */
+.dt-paging {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Boutons pagination */
+.dt-paging-button {
+    padding: 0.375rem 0.75rem;
+    margin-left: 0.25rem;
+    border-radius: 0.25rem;
+    border: 1px solid #dee2e6;
+    background-color: #fff;
+    color: #0d6efd;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Bouton actif */
+.dt-paging-button.current {
+    background-color: #0d6efd;
+    color: #fff;
+    border-color: #0d6efd;
+}
+
+/* Hover */
+.dt-paging-button:hover:not(.current):not(.disabled) {
+    background-color: #e9ecef;
+    color: #0d6efd;
+}
+
+/* Désactivé */
+.dt-paging-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.dt-length select {
+    display: inline-block;
+    width: auto;
+    margin-left: 0.25rem;
+}
+
+/* Supprimer le texte autour du select */
+.dt-length label {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: 0;
+}
+
+/* Garder uniquement le select */
+.dt-length label::before,
+.dt-length label::after {
+    display: none !important;
+}
+
+.dt-button-collection {
+    padding: 0.25rem;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+}
+
+.dt-button-collection button {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0.25rem 0.5rem;
+    text-align: left;
+    border: none;
+    background: transparent;
+    color: #212529;
+}
+
+.dt-button-collection button:hover {
+    background-color: #e9ecef;
+    color: #212529;
+}
+.dt-button-collection.dropdown-menu {
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    z-index: 1000;
+    min-width: 10rem;
+    padding: 0.25rem 0;
+    margin: 0.125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+}
+
+</style>
 {% endblock %}
+
 
 {% block content %}
 
@@ -126,7 +243,7 @@
 												{% endif %}
 												<td title="{{resa.domainedesc}}">{{resa.domaine}}</td>
 												<td>{{resa.ressource}}</td>
-												<td><a href="app.php?p=vuereservation&id={{resa.idresa}}">{{resa.descriptionc}}</a></td>
+												<td><a href="app.php?p=vuereservation&amp;id={{resa.idresa}}">{{resa.descriptionc}}</a></td>
 												<td data-order="{{resa.datedebutts}}">{{resa.datedebut}}</td>
                                                 <td>{{resa.heuredebut}}</td>
 												<td>{{resa.duree}}</td>
@@ -163,6 +280,8 @@
                                             <th rowspan="1" colspan="1">{{trad.date}}</th>
 											<th rowspan="1" colspan="1">{{trad.time}}</th>
 											<th rowspan="1" colspan="1">{{trad.duration}}</th>
+											<th rowspan="1" colspan="1">{{trad.datefin}}</th>
+											<th rowspan="1" colspan="1">{{trad.time}}</th>
 											<th rowspan="1" colspan="1">{{trad.match_descr}}</th>
 											<th rowspan="1" colspan="1">{{trad.type}}</th>
 											<th rowspan="1" colspan="1">{{trad.match_login}}</th>
@@ -223,63 +342,125 @@
 {% endblock %}
 
 {% block javascript %}
-<!--
-<script type="text/javascript" language="javascript" src="node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
-	-->
-	<script type="text/javascript" language="javascript" src="js/jquery.js"></script>
-	
-	<script type="text/javascript" language="javascript" src="js/dataTables.js"></script>
-	<script type="text/javascript" language="javascript" src="js/dataTables_002.js"></script>
-	<script type="text/javascript" language="javascript" src="js/buttons_002.js"></script>
-	<script type="text/javascript" language="javascript" src="js/jszip.min.js"></script>
-	<script type="text/javascript" language="javascript" src="js/pdfmake.js"></script>
-	<script type="text/javascript" language="javascript" src="js/vfs_fonts.js"></script>
-	<script type="text/javascript" language="javascript" src="js/buttons_004.js"></script>
-	<script type="text/javascript" language="javascript" src="js/buttons_003.js"></script>
+<!-- DataTables v2 -->
+<script src="node_modules/datatables.net/js/dataTables.min.js"></script>
 
-	<script type="text/javascript" language="javascript" src="node_modules/datatables/media/js/dataTables.buttons.min.js"></script>
+<!-- Buttons v2 -->
+<script src="node_modules/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="node_modules/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="node_modules/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="node_modules/datatables.net-buttons/js/buttons.colVis.min.js"></script>
 
+<!-- Excel / PDF -->
+<script src="js/jszip.min.js"></script>
+<script src="js/pdfmake.js"></script>
+<script src="js/vfs_fonts.js"></script>
 
-	<script type="text/javascript" language="javascript" src="node_modules/datatables/media/js/buttons.html5.min.js"></script>
-	<script type="text/javascript" language="javascript" src="node_modules/datatables/media/js/buttons.print.min.js"></script>
-	<script type="text/javascript" language="javascript" src="node_modules/datatables/media/js/buttons.colVis.min.js"></script>
+<script>
+$(document).ready(function() {
 
+    // ===== Table principale #example =====
+    var table = $('#example').DataTable({
+		lengthChange: true,
+        lengthMenu: [[10, 25, 50, 100, -1],[10, 25, 50, 100, 'All']],
+		dom:
+			"<'row mb-2'<'col-sm-4 d-flex align-items-center'l<'ms-2'B>><'col-sm-8 d-flex justify-content-end'f>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row mt-2'<'col-sm-5'i><'col-sm-7 d-flex justify-content-end'p>>",
 
-	<script type="text/javascript" class="init">
-		$(document).ready(function() {
-			var table = $('#example').DataTable( {
-				lengthMenu: [
-					[10, 25, 50, 100, -1],
-					[10, 25, 50, 100, 'All']
-				],
-				buttons: [ 'copy', 'excel', 'csv',
-					{
-						extend: 'pdfHtml5',
-						orientation: 'landscape',
-						pageSize: 'LEGAL'
-					}
-					, 'colvis' 
-				],
-			} );
+        pagingType: 'full_numbers', // Pagination complète
+		buttons: [
+			{
+				extend: 'copy',
+				className: 'btn btn-primary',
+				exportOptions: {
+					columns: ':visible'
+				}
+			},
+			{
+				extend: 'excel',
+				className: 'btn btn-success',
+				exportOptions: {
+					columns: ':visible'
+				}
+			},
+			{
+				extend: 'csv',
+				className: 'btn btn-info',
+				exportOptions: {
+					columns: ':visible'
+				}
+			},
+			{
+				extend: 'pdfHtml5',
+				className: 'btn btn-danger',
+				orientation: 'landscape',
+				pageSize: 'LEGAL',
+				exportOptions: {
+					columns: ':visible'
+				}
+			},
+			{
+				extend: 'colvis',
+				className: 'btn btn-secondary dropdown-toggle', // style Bootstrap
+				text: 'Colonnes',
+				collectionLayout: 'fixed two-column', // optionnel
+				postfixButtons: [], // aucun bouton supplémentaire
+				collectionTitle: 'Colonnes visibles',
+				init: function(api, node, config) {
+					// Ajouter la classe Bootstrap dropdown-menu à la collection
+					$(node).on('click', function() {
+						setTimeout(() => {
+							$('.dt-button-collection')
+								.addClass('dropdown-menu')
+								.css('display', 'block');
+							$('.dt-button-collection button').each(function() {
+								$(this).addClass('dropdown-item'); // style chaque item
+							});
+						}, 10);
+					});
+				}
+			}
+		],
+		language: {
+			lengthMenu: "_MENU_",
+			search: "",
+			searchPlaceholder: "Rechercher..."
+        },
+		initComplete: function () {
+			$('.dt-input[type="search"]')
+				.addClass('form-control')
+				.css('width', '250px');
 
-			table.buttons().container()
-				.appendTo( '#example_wrapper .col-sm-6:eq(0)' );
-		} );
-		$(document).ready(function() {
-			var table = $('#resume').DataTable( {
-				lengthChange: false,
-				buttons: [ 'copy', 'excel', 'csv',
-					{
-						extend: 'pdfHtml5',
-						orientation: 'landscape',
-						pageSize: 'LEGAL'
-					}
-					, 'colvis' 
-				],
-			} );
+			$('.dt-length select')
+				.addClass('form-select')
+				.css('width', 'auto');
+		}
 
-			table.buttons().container()
-				.appendTo( '#resume_wrapper .col-sm-6:eq(0)' );
-		} );
-	</script>
+    });
+
+    table.buttons().container().appendTo('#example_wrapper .col-sm-6:eq(0)');
+
+    // ===== Table résumé #resume =====
+    var resumeTable = $('#resume').DataTable({
+        lengthChange: false,
+        dom: 'Bfrtip',
+        pagingType: 'full_numbers',
+        buttons: [
+            { extend: 'copy', className: 'dt-btn dt-btn-primary' },
+            { extend: 'excel', className: 'dt-btn dt-btn-success' },
+            { extend: 'csv', className: 'dt-btn dt-btn-info' },
+            { extend: 'pdfHtml5', className: 'dt-btn dt-btn-danger', orientation: 'landscape', pageSize: 'LEGAL' },
+			{ extend: 'colvis', className: 'dt-btn dt-btn-secondary' }
+        ],
+        language: {
+            search: "_INPUT_",
+            searchPlaceholder: "Rechercher..."
+        }
+    });
+
+    resumeTable.buttons().container().appendTo('#resume_wrapper .col-sm-6:eq(0)');
+
+});
+</script>
 {% endblock %}

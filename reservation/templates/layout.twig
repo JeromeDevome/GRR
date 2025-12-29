@@ -66,14 +66,12 @@
 
 			<div id="popup_name" class="popup_block"></div>
 		</section>
-		<script type="text/javascript" src="./js/jquery.min.js?v={{d.versionCache}}"></script>
-		<script type="text/javascript" src="./js/jquery-ui.min.js?v={{d.versionCache}}"></script>
-		<script type="text/javascript" src="./js/jquery-ui-timepicker-addon.js?v={{d.versionCache}}"></script>
-    	<script type="text/javascript" src="./js/jquery.floatThead.min.js"></script>
+		<script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js?v={{d.versionCache}}"></script>
+		<script type="text/javascript" src="./node_modules/jquery-ui/dist/jquery-ui.min.js?v={{d.versionCache}}"></script>
+    	<script type="text/javascript" src="./node_modules/floatthead/dist/jquery.floatThead.min.js?v={{d.versionCache}}"></script>
 		<script type="text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js?v={{d.versionCache}}"></script>
 		<script type="text/javascript" src="./js/popup.js?v={{d.versionCache}}" charset="utf-8"></script>
 		<script type="text/javascript" src="./js/functions.min.js?v={{d.versionCache}}" ></script>
-		<script type="text/javascript" src="./js/selection.js?v={{d.versionCache}}" ></script>
 		{% block javascript %}{% endblock %}
 		{% if d.jsHeure %}
 			<script type="text/javascript" src="./js/{{ d.jsHeure }}?v={{d.versionCache}}"></script>

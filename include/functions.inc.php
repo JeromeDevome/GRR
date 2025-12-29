@@ -1005,13 +1005,9 @@ function begin_page($title, $page = "with_session")
 	
 	$a .= '<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="node_modules/jquery/dist/jquery-ui.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
-	//$a .= '<script type="text/javascript" src="js/jquery.validate.js?v='.$version_grr.'"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js?v='.$version_grr.'"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/popup.js?v='.$version_grr.'" charset="utf-8"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/functions.min.js?v='.$version_grr.'" ></script>'.PHP_EOL;
-	if (!isset($_SESSION['selection']))
-		$a .= '<script type="text/javascript" src="js/selection.js?v='.$version_grr.'" ></script>'.PHP_EOL;
 	if (@file_exists('js/'.$clock_file))
 		$a .= '<script type="text/javascript" src="js/'.$clock_file.'?v='.$version_grr.'"></script>'.PHP_EOL;
 	if (substr(phpversion(), 0, 1) < 7)
@@ -1170,10 +1166,6 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 						$d['nbConnecte'] = nb_connecte();
 				}
 			}
-
-			// ???
-			//if ($type_session != "with_session")
-			//	echo '<script>selection()</script>'.PHP_EOL;
 
 			// Heure selon la langue
 			if (@file_exists($racine.'js/'.$clock_file))

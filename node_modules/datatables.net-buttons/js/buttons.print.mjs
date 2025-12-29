@@ -14,22 +14,6 @@ let $ = jQuery;
 var _link = document.createElement('a');
 
 /**
- * Clone link and style tags, taking into account the need to change the source
- * path.
- *
- * @param  {node}     el Element to convert
- */
-var _styleToAbs = function (el) {
-	var clone = $(el).clone()[0];
-
-	if (clone.nodeName.toLowerCase() === 'link') {
-		clone.href = _relToAbs(clone.href);
-	}
-
-	return clone.outerHTML;
-};
-
-/**
  * Convert a URL from a relative to an absolute address so it will work
  * correctly in the popup window which has no base URL.
  *
@@ -78,20 +62,9 @@ DataTable.ext.buttons.print = {
 			for (var i = 0, ien = d.length; i < ien; i++) {
 				// null and undefined aren't useful in the print output
 				var dataOut = d[i] === null || d[i] === undefined ? '' : d[i];
-				var classAttr = columnClasses[i]
-					? 'class="' + columnClasses[i] + '"'
-					: '';
+				var classAttr = columnClasses[i] ? 'class="' + columnClasses[i] + '"' : '';
 
-				str +=
-					'<' +
-					tag +
-					' ' +
-					classAttr +
-					'>' +
-					dataOut +
-					'</' +
-					tag +
-					'>';
+				str += '<' + tag + ' ' + classAttr + '>' + dataOut + '</' + tag + '>';
 			}
 
 			return str + '</tr>';
@@ -174,26 +147,26 @@ DataTable.ext.buttons.print = {
 		win.document.close();
 
 		// Inject the title and also a copy of the style and link tags from this
-		// document so the table can retain its base styling. Note that we have
-		// to use string manipulation as IE won't allow elements to be created
-		// in the host document and then appended to the new window.
-		var head = '<title>' + exportInfo.title + '</title>';
-		$('style, link').each(function () {
-			head += _styleToAbs(this);
-		});
+		// document so the table can retain its base styling. This avoids
+		// issues with Content Security Policy (CSP) and is compatible with modern browsers.
+		win.document.title = exportInfo.title;
 
-		try {
-			win.document.head.innerHTML = head; // Work around for Edge
-		} catch (e) {
-			$(win.document.head).html(head); // Old IE
-		}
+		$('style, link[rel="stylesheet"]').each(function () {
+			let node = this.cloneNode(true);
+
+			if (node.tagName.toLowerCase() === 'link') {
+				node.href = _relToAbs(node.href);
+			}
+
+			win.document.head.appendChild(node);
+		});
 
 		// Add any custom scripts (for example for paged.js)
 		if (config.customScripts) {
 			config.customScripts.forEach(function (script) {
-				var tag = win.document.createElement("script");
+				var tag = win.document.createElement('script');
 				tag.src = script;
-				win.document.getElementsByTagName("head")[0].appendChild(tag);
+				win.document.getElementsByTagName('head')[0].appendChild(tag);
 			});
 		}
 
