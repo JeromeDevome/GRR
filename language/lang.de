@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2025-12-03
+# Last modification : 2026-01-05
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1420,4 +1420,6 @@ $vocab['recherche_res4'] = "beschäftigt bis";
 $vocab['recherche_res5'] = "letzte Reservierung";
 $vocab['recherche_choix_r'] = "Nach einer verfügbaren Ressource suchen";
 $vocab['recherche_choix_s'] = "Unter Reservierungen suchen";
+$vocab['unknown_room'] = "Unbekannte Ressource";
+$vocab['unknown_area'] = "Unbekannter Bereich";
 ?>

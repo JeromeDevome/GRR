@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2025-12-03
+# Last modification : 2026-01-05
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -1416,4 +1416,6 @@ $vocab['recherche_res4'] = "occupato fino al ";
 $vocab['recherche_res5'] = "ultima prenotazione";
 $vocab['recherche_choix_r'] = "Cerca una risorsa disponibile";
 $vocab['recherche_choix_s'] = "Cerca tra le prenotazioni";
+$vocab['unknown_room'] = "Risorsa sconosciuta";
+$vocab['unknown_area'] = "Area sconosciuta";
 ?>

@@ -3,9 +3,9 @@
  * month_all2.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-01 18:00$
+ * Dernière modification : $Date: 2026-01-05 18:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -36,10 +36,6 @@ include "include/language.inc.php";
 
 //Construction des identifiants de la ressource $room, du domaine $area, du site $id_site
 Definition_ressource_domaine_site();
-
-//Récupération des données concernant l'affichage du planning du domaine
-if($area >0)
-    get_planning_area_values($area);
 
 // Initilisation des variables
 $affiche_pview = '1';
@@ -73,18 +69,38 @@ $adm = 0;
 $racine = "./";
 $racineAd = "./admin/";
 
+//Récupération des données concernant l'affichage du planning du domaine
+if($area >0){
+  $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_area WHERE id = ?","i",[$area]);
+  if($test > 0)
+    get_planning_area_values($area);
+  else{
+    $msg = get_vocab('unknown_area');
+    $area = get_default_area($id_site);
+  }
+}
+else{
+  $msg = get_vocab('unknown_room');
+  $area = get_default_area($id_site);
+}
+if((isset($msg))&&($msg != "")) // les paramètres ne sont pas valides, on renvoie alors vers une page par défaut
+{
+  $lien = "month_all2.php?area=".$area."&day=".$day."&month=".$month."&year=".$year;
+  echo "<script type='text/javascript'>
+        alert('$msg');
+        document.location.href='$lien';
+    </script>";
+  echo "<p><br/>";
+  echo $msg."<a href='month_all2.php'>".get_vocab("link")."</a>";
+  echo "</p>";
+  die();
+}
+
 if (!($desactive_VerifNomPrenomUser))
     $desactive_VerifNomPrenomUser = 'n';
 // On vérifie que les noms et prénoms ne sont pas vides
 VerifNomPrenomUser($type_session);
-// Dans le cas d'une selection invalide
-if ($area <= 0)
-{
-    start_page_w_header($day,$month,$year,$type_session);
-	echo '<h1>'.get_vocab("noareas").'</h1>';
-	echo '<a href="./admin/admin_accueil.php">'.get_vocab("admin").'</a>'.PHP_EOL.'</body>'.PHP_EOL.'</html>';
-	exit();
-}
+
 // vérifie si la date est dans la période réservable
 if (check_begin_end_bookings($day, $month, $year))
 {

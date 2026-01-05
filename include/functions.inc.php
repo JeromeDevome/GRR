@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2025-12-01 10:57$
+ * Dernière modification : $Date: 2026-01-05 18:34$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -1738,6 +1738,7 @@ function compare_ip_adr($ip1, $ips2)
 //Retourne le domaine par défaut; Utilisé si aucun domaine n'a été défini.
 function get_default_area($id_site = -1)
 {
+  $id_site = intval($id_site);
   if (Settings::get("module_multisite") == "Oui")
     $use_multisite = true;
   else
@@ -1747,15 +1748,11 @@ function get_default_area($id_site = -1)
     $sql = "SELECT ip_adr, id FROM ".TABLE_PREFIX."_area WHERE ip_adr!='' ORDER BY access, order_display, area_name";
     $res = grr_sql_query($sql);
     if ($res)
-    {
-      for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+      foreach($res as $row)
       {
-        if (compare_ip_adr($_SERVER['REMOTE_ADDR'],$row[0]))
-        {
-          return intval($row[1]);
-        }
+        if (compare_ip_adr($_SERVER['REMOTE_ADDR'],$row['ip_adr']))
+          return intval($row['id']);
       }
-    }
   }
   if (authGetUserLevel(getUserName(),-1) >= 6)
   {
@@ -4316,6 +4313,7 @@ function get_planning_area_values($id_area)
   $row_ = grr_sql_row($res, 0);
     if (!is_array($row_))
     {
+      echo "Erreur de lecture en base de données";
     include "trailer.inc.php";
     exit;
     }
