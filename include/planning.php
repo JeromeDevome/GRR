@@ -1,11 +1,11 @@
 <?php
 /**
  * planning.php
- * Interface d'accueil avec affichage par mois
+ * Préparation et contrôle des paramètres avant le calcul du planning
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-25 13:45$
+ * Dernière modification : $Date: 2026-01-06 11:47$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -62,6 +62,20 @@ $d['room'] = $room;
 $d['area'] = $area;
 $d['id_site'] = $id_site;
 
+// contrôle des paramètres $room et $area
+$test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_room WHERE id=$room");
+if($test == -1) // $room ne définit pas une ressource
+{
+  $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_area WHERE id=$area");
+  if($test == -1) // $area ne définit pas un domaine
+  {
+    $lien = page_accueil();
+    $d['messageErreur'] = '<h1>'.get_vocab('ressource_ou_domaine_non_defini').'</h1>';
+    $d['messageErreur'] .= '<a href="'.$lien.'">'.get_vocab('Portail_accueil').'</a>';
+    echo $twig->render('planningerreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
+	exit();
+  }
+}
 //Récupération des données concernant l'affichage du planning du domaine, $enable_periods
 if($area>0)
 {
@@ -76,7 +90,7 @@ if ($d['pview'] != 1) {
         $file = $_GET['p'];
     else
     {
-        $path = isset($_SERVER['PHP_SELF'])? $_SERVER['PHP_SELF']:(isset($_SERVER['SCRIPT_NAME'])? $_SERVER['SCRIPT_NAME']:"day");
+        $path = isset($_SERVER['PHP_SELF'])? $_SERVER['PHP_SELF']:(isset($_SERVER['SCRIPT_NAME'])? $_SERVER['SCRIPT_NAME']:"jour");
         $file = basename($path);
     }
 
@@ -196,10 +210,7 @@ $authGetUserLevel = authGetUserLevel($user_name, -1);
 if ((($authGetUserLevel < 1) && (Settings::get("authentification_obli") == 1)) || authUserAccesArea($user_name, $area) == 0)
 {
 	$d['messageErreur'] = showAccessDenied_twig($back);
-    echo $twig->render('planningerreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
+  echo $twig->render('planningerreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
 	exit();
 }
-
-
-
 ?>
