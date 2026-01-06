@@ -3,9 +3,9 @@
  * mois.php
  * Interface d'accueil avec affichage par mois
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-04 15:00$
+ * Dernière modification : $Date: 2026-01-06 16:17$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -23,15 +23,15 @@ include "include/resume_session.php";
 include "include/planning.php";
 
 // en l'absence du paramètre $room, indispensable pour mois.php, on renvoie à mois_all.php
-if (!isset($room)){
+if ((!isset($room))||($room == 0)){
     $msg = get_vocab('choose_a_room');
-    $lien = "?p=mois_all&area=".$area."&month=".$month."&year=".$year;
+    $lien = "app.php?p=mois_all&area=".$area."&month=".$month."&year=".$year;
     echo "<script type='text/javascript'>
         alert('$msg');
         document.location.href='$lien';
     </script>";
     echo "<p><br/>";
-        echo get_vocab('choose_room')."<a href='?p=mois_all'>".get_vocab("link")."</a>";
+        echo get_vocab('choose_a_room')."<a href='$lien'>".get_vocab("link")."</a>";
     echo "</p>";
     die();
 }
