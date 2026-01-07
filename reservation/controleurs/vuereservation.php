@@ -3,10 +3,10 @@
  * vuereservation.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-06-21 17:45$
+ * Dernière modification : $Date: 2026-01-07 15:33$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -341,6 +341,13 @@ if (!isset($day) || !isset($month) || !isset($year))
 if (@file_exists("../personnalisation/langue/lang_subst_".$area."_".$locale.".php"))
 	include "../personnalisation/langue/lang_subst_".$area."_".$locale.".php";
 if ((authGetUserLevel($userName, -1) < 1) and (Settings::get("authentification_obli") == 1))
+{
+	showAccessDenied($back);
+	exit();
+}
+// Vérification des droits d'accès à la fiche réservation
+$acces_fiche_reservation = (verif_acces_fiche_reservation($userName, $room_id))||($userName == $create_by);
+if (!$acces_fiche_reservation)
 {
 	showAccessDenied($back);
 	exit();
