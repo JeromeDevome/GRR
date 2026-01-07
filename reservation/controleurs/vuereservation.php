@@ -3,10 +3,10 @@
  * vuereservation.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-04-12 17:35$
+ * Dernière modification : $Date: 2026-01-07 15:18$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -348,9 +348,9 @@ if ((authGetUserLevel($userName, -1) < 1) and (Settings::get("authentification_o
 }
 
 // Vérification des droits d'accès à la fiche réservation
-$acces_fiche_reservation = verif_acces_fiche_reservation($userName, $room_id);
+$acces_fiche_reservation = (verif_acces_fiche_reservation($userName, $room_id))||($userName == $create_by);
 if($acces_fiche_reservation)
-    if($resa_confidentielle == 1 && getUserName() != $beneficiaire && authGetUserLevel($userName, $room_id) < 3)
+    if(($resa_confidentielle == 1) && ($userName != $beneficiaire) && (authGetUserLevel($userName, $room_id) < 3))
         $acces_fiche_reservation = false;
 
 if (!$acces_fiche_reservation)
