@@ -876,6 +876,8 @@ function execute_maj3($version_old, $version_grr)
 
 function execute_maj4($version_old_bdd, $version_grr_bdd)
 {
+	global $liste_tables, $table_prefix; // Pour X_to_UTF8
+
 	$result = '';
 	$result_inter = '';
 

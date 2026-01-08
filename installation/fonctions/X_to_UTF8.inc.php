@@ -72,16 +72,27 @@ unset ($donnees, $donneesBase);
 
 //! conversion des tables */
 // recherche les tables à convertir
-$donneesTable=array();
+$donneesTable = array();
+
+// `$liste_tables` est présumé défini (inclus ailleurs). Le `table_prefix`
+// doit être défini par l'appelant ; on l'utilise directement.
+$allowedTables = array();
+foreach ($liste_tables as $t) {
+    $allowedTables[] = $table_prefix . $t;
+}
+$allowedLookup = array_map('strtolower', $allowedTables);
+
 $query = mysqli_query($GLOBALS['db_c'], "SHOW table status");
 if ($query) {
-	while ($row = mysqli_fetch_array($query,  MYSQLI_ASSOC)) {
+    while ($row = mysqli_fetch_array($query,  MYSQLI_ASSOC)) {
         if ($row['Collation'] != SET_OK ) {
-            $donneesTable[] = $row['Name'];
+            if (in_array(strtolower($row['Name']), $allowedLookup, true)) {
+                $donneesTable[] = $row['Name'];
+            }
         }
-	}
+    }
 } else {
-	die ('Erreur de lecture de la base');
+    die ('Erreur de lecture de la base');
 }
 
 // conversion des tables et des données
