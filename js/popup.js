@@ -86,3 +86,21 @@ function readData(sData)
 {
 	document.getElementById('popup_name').innerHTML += sData + '<input class=\"closepop btn btn-primary\" type=\"button\" onclick=\"location.href=\'#\'\" title=\"Fermeture\" value=\"Fermer\" ></div> ';
 }
+function request_popup(id, day,month,year,roomBack,currentPage,callback)
+{
+	document.getElementById('popup_name').innerHTML="";
+	var Id = id;
+	var Day = day;
+	var Month = month ;
+	var Year = year ;
+    var RoomBack = roomBack ;
+	var Page = currentPage ;
+	var xhr = getXMLHttpRequest();
+	xhr.onreadystatechange = function()
+	{
+		if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0))
+			callback(xhr.responseText);
+	};
+	xhr.open("GET","app.php?p=page&pageaffiche=popup", true);
+	xhr.send(null);
+}

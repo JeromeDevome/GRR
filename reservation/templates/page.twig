@@ -1,4 +1,6 @@
-{% extends 'layout.twig' %}
+{% extends d.modePage == 1 
+    ? 'layout.twig' 
+    : 'layoutsimple.twig' %}
 
 {% import 'messagesysteme.twig' as msgSyst %}
 {% import 'champs.twig' as form %}
@@ -12,6 +14,11 @@
 	<div class="container">
 		<h1>{{d.TitrePage|raw}}</h1>
 		{{d.CtnPage|raw}}
+
+		{% if d.nomPage == 'popup' %}
+			<br><br><a href="app.php?p=page&amp;pageaffiche=popup&amp;validePopup=1" class="btn btn-success" />Valider et ne plus me rappeler</a>
+			<br><br>
+		{% endif %}
 	</div>
 </div>
 

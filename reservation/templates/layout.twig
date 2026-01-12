@@ -76,5 +76,31 @@
 		{% if d.jsHeure %}
 			<script type="text/javascript" src="./js/{{ d.jsHeure }}?v={{d.versionCache}}"></script>
 		{% endif %}
+		{% if d.gPopup %}
+			{% set modePage = 1 %}
+			<script type="text/javascript">
+				document.addEventListener('DOMContentLoaded', function() {
+					console.log('Appel request avec id=119, day={{ d.gDay }}, month={{ d.gMonth }}, year={{ d.gYear }}');
+					request_popup(119, {{ d.gDay }}, {{ d.gMonth }}, {{ d.gYear }}, 0, 'jour', function(data) {
+						console.log('Données reçues et affichage popup');
+						readData(data);
+						// Déclencher l'affichage de la popup jQuery
+						var popID = 'popup_name';
+						var popWidth = 675;
+						jQuery('#' + popID).fadeIn().css({ 'width': popWidth});
+						var popMargTop = (jQuery('#' + popID).height() + 80) / 2;
+						var popMargLeft = (jQuery('#' + popID).width() + 80) / 2;
+						jQuery('#' + popID).css({
+							'margin-top' : -popMargTop,
+							'margin-left' : -popMargLeft,
+							'top' : '280px',
+							'left' : '600px'
+						});
+						jQuery('body').append('<div id="fade"></div>');
+						jQuery("body,html").animate({scrollTop:0},800);
+					}); 
+				});
+			</script>
+		{% endif %}
 	</body>
 </html>

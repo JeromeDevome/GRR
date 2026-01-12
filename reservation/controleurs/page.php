@@ -21,6 +21,36 @@ $grr_script_name = 'page.php';
 
 $nomPage = alphanum($_GET['pageaffiche']);
 
+$validePopup = isset($_GET['validePopup']) ? alphanum($_GET['validePopup']) : '';
+
+
+if($nomPage == 'popup')
+{
+	if ($userConnecte != "with_session") // popup accessible uniquement aux utilisateurs connectés
+	{
+		die("Accès interdit");
+		exit;
+	}
+
+	$d['modePage'] = 2; // mode popup
+
+	if($validePopup == 1)
+	{
+		// Enregistrement de la validation de la validation popup
+		$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET popup = 0 WHERE login='".getUserName()."' ";
+		$res = grr_sql_query($sql);
+		if(!$res)
+			die("Erreur lors de l'enregistrement de la validation");
+		// Pour le retour à la page précédente
+		header('Location: ' . $_SERVER['HTTP_REFERER']);
+	}
+
+}
+else
+	$d['modePage'] = 1; // mode normal
+
+
+
 if (!Settings::load())
 	die('Erreur chargement settings');
 if (!Pages::load())
@@ -33,7 +63,7 @@ $infosPage = Pages::get($nomPage);
 if($infosPage[2]){
 	$d['CtnPage'] = "Impossible d'y accèder.";
 } else{
-	//$infosPage = Pages::get($nomPage);
+	$d['nomPage'] = $nomPage;
 	$d['TitrePage'] = $infosPage[0];
 	$d['CtnPage'] =  $infosPage[1];
 }

@@ -114,6 +114,13 @@ foreach ($dossierLister as $fileinfo) {
 	}
 }
 
+// Popup
+// Si $back contient p=login
+if ( (strpos($back, 'login') !== false) && $userConnecte == "with_session")
+	$d['gPopup'] = grr_sql_query1("SELECT popup FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".getUserName()."'");
+
+
+// Page demandée
 if(in_array($page.".php",$listeFichiers))
 	include('./reservation/controleurs/'.$page.'.php');
 else
