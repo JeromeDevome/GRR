@@ -19,7 +19,7 @@
 include_once('include/pages.class.php');
 $grr_script_name = 'page.php';
 
-$nomPage = alphanum($_GET['page']);
+$nomPage = alphanum($_GET['pageaffiche']);
 
 if (!Settings::load())
 	die('Erreur chargement settings');
