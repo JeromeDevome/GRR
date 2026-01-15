@@ -3,10 +3,10 @@
  * installation/maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-08-24 16:45$
+ * Dernière modification : $Date: 2026-01-15 21:08$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -124,12 +124,24 @@ if (isset($_POST['maj']) || $majscript)
 		echo encode_message_utf8($result);
 		$version_depart = 4000;
 	}
-	
+
 	echo "<h2>".encode_message_utf8("Résultat de la mise à jour GRR 4 et +")."</h2>";
 	echo "<h3>".$version_depart." => ".$version_bdd."</h3>";
 	$result2 = execute_maj4($version_depart, $version_bdd);
 	echo encode_message_utf8($result2);
     // echo "<p style=\"text-align:center;\"><a href=\"../\">".get_vocab("welcome")."</a></p>";
+
+	// On met une pop up à tout les administrateurs pour les prévenir de la MaJ
+	$sqlQuery = "UPDATE ".TABLE_PREFIX."_utilisateurs SET popup = '1' WHERE statut= 'administrateur'";
+	grr_sql_query($sqlQuery);
+
+	$texte_popup = "Votre GRR a été mis à jour vers la version ".$version_grr.". N'oubliez pas de vérifier les nouvelles options disponibles dans la documentation.";
+
+
+	$sql = "UPDATE ".TABLE_PREFIX."_page set valeur = '" . protect_data_sql($texte_popup) . "' where nom = 'popup'";
+	$res = grr_sql_query($sql);
+
+
 }
 
 
