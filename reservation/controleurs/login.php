@@ -159,9 +159,9 @@ if (isset($_POST['login']) && isset($_POST['password']))
 		nettoieLogEmail($nbMaxJoursLogEmail);
 		if (isset($_POST['url']))
 		{
-			$url=rawurldecode($_POST['url']);
-			header("Location: ".$url);
-			die();
+			$url = rawurldecode($_POST['url']);
+			// Valider et sécuriser la redirection
+			safe_redirect($url, './'.htmlspecialchars_decode(page_accueil()));
 		}
 		else
 		{

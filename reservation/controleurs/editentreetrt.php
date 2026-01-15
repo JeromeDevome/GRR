@@ -777,11 +777,11 @@ catch (Exception $e){
     foreach($form_vars as $var=>$var_type){
         if ($var_type == "array"){
             foreach($$var as $key => $value){
-                    $hiddenInputs .= "<input type='hidden' name='{$var}[$key]' value='".$value."' >";
+                    $hiddenInputs .= "<input type='hidden' name='{$var}[$key]' value='".htmlspecialchars($value, ENT_QUOTES, 'UTF-8')."' >";
             }
         }
         elseif(isset($$var)&& ($$var != NULL)){
-            $hiddenInputs .= "<input type='hidden' name='".$var."' value='".$$var."' >";
+            $hiddenInputs .= "<input type='hidden' name='".$var."' value='".htmlspecialchars($$var, ENT_QUOTES, 'UTF-8')."' >";
         }
     }
     if (isset($overload_fields_list)){ // devrait être superflu
@@ -790,7 +790,7 @@ catch (Exception $e){
             $fieldname = "addon_".$id_field;
             $$fieldname = getFormVar($fieldname,'string');
             if ($$fieldname != NULL){
-                $hiddenInputs .= "<input type='hidden' name='".$fieldname."' value='".$$fieldname."' >";
+                $hiddenInputs .= "<input type='hidden' name='".$fieldname."' value='".htmlspecialchars($$fieldname, ENT_QUOTES, 'UTF-8')."' >";
             }
         }
     }

@@ -15,6 +15,62 @@
  * (at your option) any later version.
  */
 
+/**
+ * Valide que l'URL de redirection appartient au même domaine/protocole/port
+ * Protège contre les attaques de phishing via redirection ouvert
+ * @param string $redirect_url L'URL de redirection à valider
+ * @return bool true si la redirection est sûre, false sinon
+ */
+function is_safe_redirect($redirect_url)
+{
+	// Refuser les URLs vides ou mal formées
+	if (empty($redirect_url) || !is_string($redirect_url))
+		return false;
+	
+	// Parser l'URL cible
+	$parsed_redirect = parse_url($redirect_url);
+	if ($parsed_redirect === false)
+		return false;
+	
+	// Accepter les chemins relatifs internes (commençant par ./ ou /)
+	if (!isset($parsed_redirect['scheme']))
+	{
+		if (strpos($redirect_url, './') === 0 || strpos($redirect_url, '/') === 0)
+			return true;
+		return false;
+	}
+	
+	// Parser l'URL actuelle du serveur
+	$current_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
+	$parsed_current = parse_url($current_url);
+	
+	// Vérifier protocole, hôte et port
+	if (isset($parsed_redirect['scheme']) && $parsed_redirect['scheme'] !== $parsed_current['scheme'])
+		return false;
+	
+	if (isset($parsed_redirect['host']) && $parsed_redirect['host'] !== $parsed_current['host'])
+		return false;
+	
+	if (isset($parsed_redirect['port']) && $parsed_redirect['port'] !== ($parsed_current['port'] ?? null))
+		return false;
+	
+	return true;
+}
+
+/**
+ * Valide et redirige vers une URL interne sûre
+ * @param string $redirect_url L'URL de redirection
+ * @param string $default_url L'URL par défaut si la redirection n'est pas sûre
+ */
+function safe_redirect($redirect_url, $default_url = './')
+{
+	if (is_safe_redirect($redirect_url))
+		header("Location: " . $redirect_url);
+	else
+		header("Location: " . $default_url);
+	exit();
+}
+
 function returnmsg($type,$test, $status, $msg = '')
 {
 	echo encode_message_utf8('<div class="alert alert-'.$type.'" role="alert"><h3>'.$test);
@@ -5787,8 +5843,13 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
 */
 function jQuery_DatePickerTwig($typeDate){
 
+	$getID		= isset($_GET['id']) ? alphanum($_GET['id']) : '';
+	$getDay		= isset($_GET['day']) ? alphanum($_GET['day']) : '';
+	$getMonth	= isset($_GET['month']) ? alphanum($_GET['month']) : '';
+	$getYear	= isset($_GET['year']) ? alphanum($_GET['year']) : '';
+
 	if ($typeDate == 'rep_end_' && isset($_GET['id'])){
-		$res = grr_sql_query("SELECT repeat_id FROM ".TABLE_PREFIX."_entry WHERE id=".$_GET['id'].";");
+		$res = grr_sql_query("SELECT repeat_id FROM ".TABLE_PREFIX."_entry WHERE id=".$getID.";");
 		if (!$res){
 			fatal_error(0, grr_sql_error());
 		}
@@ -5805,15 +5866,15 @@ function jQuery_DatePickerTwig($typeDate){
 			$year = $date['year'];
 		} else{
 			if (isset ($_GET['day']))
-				$day = $_GET['day'];
+				$day = $getDay;
 			else
 				$day = date("d");
 			if (isset ($_GET['month']))
-				$month = $_GET['month'];
+				$month = $getMonth;
 			else
 				$month = date("m");
 			if (isset ($_GET['year']))
-				$year = $_GET['year'];
+				$year = $getYear;
 			else
 				$year = date("Y");
 		}
@@ -5821,7 +5882,7 @@ function jQuery_DatePickerTwig($typeDate){
 		global $start_day, $start_month, $start_year, $end_day, $end_month, $end_year;
 
 		if (isset ($_GET['day'])){
-			$day = $_GET['day'];
+			$day = $getDay;
 		} else{
 			$day = date("d");
 		}
@@ -5833,7 +5894,7 @@ function jQuery_DatePickerTwig($typeDate){
 		}
 
 		if (isset ($_GET['month'])){
-			$month = $_GET['month'];
+			$month = $getMonth;
 		} else{
 			$month = date("m");
 		}
@@ -5845,7 +5906,7 @@ function jQuery_DatePickerTwig($typeDate){
 		}
 
 		if(isset ($_GET['year'])){
-			$year = $_GET['year'];
+			$year = $getYear;
 		} else{
 			$year = date("Y");
 		}

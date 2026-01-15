@@ -210,7 +210,7 @@ if(isset($_GET["reg_part"]))
 {
     $reg_participant = array();
     if(isset($_GET["reg_participant"]))
-        $reg_participant = $_GET['reg_participant'];
+        $reg_participant = clean_input($_GET['reg_participant']);
     // tester s'il est possible d'inscrire tout ce monde !
     $reg_users = array(); // participants déjà inscrits
     $resp = grr_sql_query("SELECT beneficiaire FROM ".TABLE_PREFIX."_participants WHERE idresa=$id");

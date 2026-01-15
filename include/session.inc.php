@@ -611,6 +611,13 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 	// Session starts now
 	session_write_close();		// dde: ajout pou clôturer la session cas ?
     session_name($gSessionName);
+	// Configurer les paramètres de sécurité du cookie avant session_start()
+	@session_set_cookie_params([
+		'lifetime' => Settings::get("sessionMaxLength")*60,  // Durée de vie du cookie
+		'secure' => true,    // Transmettre uniquement via HTTPS
+		'httponly' => true,  // Inaccessible à JavaScript (protection XSS)
+		'samesite' => 'Strict' // Protection CSRF : envoyer le cookie uniquement pour les requêtes du même site
+	]);
     @session_start();
 	// Is this user already connected ?
     $sql = "SELECT SESSION_ID from ".TABLE_PREFIX."_log where SESSION_ID = '" . session_id() . "' and LOGIN = '" . protect_data_sql($_login) . "' and now() between START and END";
@@ -641,6 +648,10 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     $_SESSION['statut'] = $row['statut'];
 	$_SESSION['start'] = date("Y-m-d H:i:s");
 	$_SESSION['maxLength'] = Settings::get("sessionMaxLength");
+	
+	// Régénérer l'ID de session pour prévenir les attaques par Session Fixation
+	session_regenerate_id(true);
+	
     if ($row['default_area'] > 0)
         $_SESSION['default_area'] = $row['default_area'];
     else
@@ -726,13 +737,13 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 
 	$sql = "INSERT INTO ".TABLE_PREFIX."_log (LOGIN, START, SESSION_ID, REMOTE_ADDR, USER_AGENT, REFERER, AUTOCLOSE, END) values (
 		'" . protect_data_sql($_SESSION['login']) . "',
-		'" . $_SESSION['start'] . "',
+		'" . clean_input($_SESSION['start']) . "',
 		'" . session_id() . "',
-		'" . $_SERVER['REMOTE_ADDR'] . "',
-		'" . $useragent . "',
-		'" . $httpreferer . "',
+		'" . clean_input($_SERVER['REMOTE_ADDR']) . "',
+		'" . clean_input($useragent) . "',
+		'" . clean_input($httpreferer) . "',
 		'1',
-		'" . $_SESSION['start'] . "' + interval " . Settings::get("sessionMaxLength") . " minute
+		'" . clean_input($_SESSION['start']) . "' + interval " . Settings::get("sessionMaxLength") . " minute
 		)
 	;";
 	grr_sql_query($sql);
@@ -812,9 +823,15 @@ function ControleSession()
 function grr_resumeSession()
 {
 	global $gSessionName;
-		// Resuming session
+	// Resuming session
 	@session_name($gSessionName); // palliatif aux changements introduits dans php 7.2
-	@session_set_cookie_params(['secure' => true, 'httponly' => true]);
+	// Configurer les paramètres de sécurité du cookie : durée d'expiration, secure, httponly et SameSite pour CSRF
+	@session_set_cookie_params([
+		'lifetime' => 3600,  // Durée de vie du cookie : 1 heure
+		'secure' => true,    // Transmettre uniquement via HTTPS
+		'httponly' => true,  // Inaccessible à JavaScript (protection XSS)
+		'samesite' => 'Strict' // Protection CSRF : envoyer le cookie uniquement pour les requêtes du même site
+	]);
 	@session_start();
 
 		// La session est-elle expirée
@@ -883,19 +900,23 @@ function grr_closeSession(&$_auto)
 	settype($_auto,"integer");
 	session_name($gSessionName);
 	@session_start();
-		// Sometimes 'start' may not exist, because the session was previously closed by another window
-		// It's not necessary to ".TABLE_PREFIX."_log this, then
+	
+	// Régénérer l'ID de session et détruire l'ancien cookie pour prévenir la réutilisation
+	session_regenerate_id(true);
+	
+	// Sometimes 'start' may not exist, because the session was previously closed by another window
+	// It's not necessary to ".TABLE_PREFIX."_log this, then
 	if (isset($_SESSION['start']))
 	{
 		$sql = "update ".TABLE_PREFIX."_log set AUTOCLOSE = '" . $_auto . "', END = now() where SESSION_ID = '" . session_id() . "' and START = '" . $_SESSION['start'] . "'";
 		grr_sql_query($sql);
 	}
-		// Détruit toutes les variables de session
+	// Détruit toutes les variables de session
 	$_SESSION = array();
-		// Détruit le cookie sur le navigateur
+	// Détruit le cookie sur le navigateur
 	$CookieInfo = session_get_cookie_params();
 	@setcookie(session_name(), '', 1, $CookieInfo['path'], true, true);
-		// On détruit la session
+	// On détruit la session
 	session_destroy();
 }
 function grr_verif_ldap($_login, $_password)

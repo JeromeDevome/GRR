@@ -95,13 +95,13 @@ if(!$majscript)
 		echo "<input type=\"submit\" value=\"".get_vocab("maj_submit_update")."\" />";
 		echo "<input type=\"hidden\" name=\"maj\" value=\"yes\" />";
 //		echo "<input type=\"hidden\" name=\"version_depart\" value=\"$version_depart\" />";
-		echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" />";
+		echo "<input type=\"hidden\" name=\"valid\" value=\"".htmlspecialchars($valid, ENT_QUOTES, 'UTF-8')."\" />";
 		echo "</form>";
 	}
 	else
 	{
 		echo "<p>".get_vocab("maj_no_update_to_do")."</p>";
-		echo "<p>Forcer MaJ (ATTENTION) <a href=\"maj.php?forcemaj=".$version_depart."\">Cliquez ici</a></p>";
+		echo "<p>Forcer MaJ (ATTENTION) <a href=\"maj.php?forcemaj=".htmlspecialchars($version_depart, ENT_QUOTES, 'UTF-8')."\">Cliquez ici</a></p>";
 		echo "<p style=\"text-align:center;\"><a href=\"../\">".get_vocab("welcome")."</a></p>";
 	}
 }
