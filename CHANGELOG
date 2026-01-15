@@ -4,6 +4,7 @@ Version 4.5.0 - En développement
 [Ajout] Réservation confidentielle - Limite les informations aux autres usagés - 7f0211b2 - @JeromeDevome
 [Ajout] Suppression des réservations périodique à venir - d3000995 - @JeromeDevome
 [Ajout] Import fichier dans une réservation - 8b091906 - @ynaessens & @JeromeDevome
+[Ajout] Système de notification par pop-up - a94256245 - @JeromeDevome
 [Correction] Le champ commentaire doit avoir une valeur par défaut pour l'authentification LDAP - f7416f0d - @ynaessens
 [Correction] Synchro des groupes - 2fb93cc6 cabcdb8a 015f2a10 e159069e - @DavidDelehelle
 [Correction] Syntaxe HTML dans l'administration - 469345de - @ynaessens
@@ -27,6 +28,11 @@ Version 4.5.0 - En développement
 [Correction] Chemin fichier CSS/JS - 824dba95 - @JeromeDevome
 [Correction] Limitation warning PHP si site n'ayant pas de domaine - c07a09bb - @JeromeDevome
 [Correction] Recherche & Stat : Retour à la ligne dans la description - b3658f9b - @JeromeDevome
+[Correction] Elimination de messages d'erreur au cas où le domaine ou la ressource n'existe pas - fc69c2d2c - @ynaessens
+[Correction] redirection de mois vers mois_all si le paramètre $room n'est pas défini - 37dac3d0b - @ynaessens
+[Correction] Rétablit l'accès inconditionnel à la fiche de réservation pour son créateur - 19c33b36d - @ynaessens
+[Correction] Conflit variable page avec url back - da07bf497 - @JeromeDevome
+[Correction] Divers corrections sécurités - a9743f42f - @JeromeDevome
 [Modification] Calendrier jours ignorés, configuration par année - 711adf56 - @JeromeDevome
 [Modification] Fichier des vacances scolaires 2025 (France) - 03dd20b6 - @ynaessens
 [Modification] Types de réservations : Amélioration de l'affichage et pop-up - 9ed96228 - @JeromeDevome
@@ -35,6 +41,7 @@ Version 4.5.0 - En développement
 [Modification] Mise à jour des fichier langues - @JeromeDevome & @ynaessens
 [Modification] Si authentification obligatoire et utilisateur non connecté, redirection vers la page de connexion - abf7b77b - @JeromeDevome
 [Modification] Contrôle des tables en utf8mb4_unicode_ci systématique lors de la mise à jour - f12d081a - @JeromeDevome
+[Modification] Mise à jour des dépendances PHP - ee9fc5d4a - @JeromeDevome
 
 Version 4.4.2 - 23/09/2025 Généré par @JeromeDevome
 [Correction] Variable manquante pour la sauvegarde - aed762ca - @ynaessens
