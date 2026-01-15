@@ -11,9 +11,11 @@
 {% block content %}
 
 <div id="page-resa" class="col col-lg-12 col-md-12 col-xs-12">
-	<div class="container">
+	<div class="container" style="word-wrap: break-word; overflow-wrap: break-word; max-width: 100%; box-sizing: border-box;">
 		<h1>{{d.TitrePage|raw}}</h1>
-		{{d.CtnPage|raw}}
+		<div style="word-wrap: break-word; overflow-wrap: break-word; white-space: pre-wrap; max-width: 100%; box-sizing: border-box;">
+{{d.CtnPage|raw}}
+		</div>
 
 		{% if d.nomPage == 'popup' %}
 			<br><br><a href="app.php?p=page&amp;pageaffiche=popup&amp;validePopup=1" class="btn btn-success" />Valider et ne plus me rappeler</a>
