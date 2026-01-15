@@ -3,9 +3,9 @@
  * day.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-01 18:00$
+ * Dernière modification : $Date: 2026-01-05 17:33$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -33,9 +33,6 @@ include "include/resume_session.php";
 include "include/language.inc.php";
 //Construction des identifiants de la ressource $room, du domaine $area, du site $id_site
 Definition_ressource_domaine_site();
-
-//Récupération des données concernant l'affichage du planning du domaine
-get_planning_area_values($area);
 
 // Initialisation des variables
 $affiche_pview = '1';
@@ -73,6 +70,33 @@ if (!($desactive_VerifNomPrenomUser))
     $desactive_VerifNomPrenomUser = 'n';
 // On vérifie que les noms et prénoms ne sont pas vides
 VerifNomPrenomUser($type_session);
+
+//Récupération des données concernant l'affichage du planning du domaine
+if($area >0){
+  $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_area WHERE id = ?","i",[$area]);
+  if($test > 0)
+    get_planning_area_values($area);
+  else{
+    $msg = get_vocab('unknown_area');
+    $area = get_default_area($id_site);
+  }
+}
+else{
+  $msg = get_vocab('unknown_room');
+  $area = get_default_area($id_site);
+}
+if((isset($msg))&&($msg != "")) // les paramètres ne sont pas valides, on renvoie alors vers une page par défaut
+{
+  $lien = "day.php?area=".$area."&day=".$day."&month=".$month."&year=".$year;
+  echo "<script type='text/javascript'>
+        alert('$msg');
+        document.location.href='$lien';
+    </script>";
+  echo "<p><br/>";
+  echo $msg."<a href='day.php'>".get_vocab("link")."</a>";
+  echo "</p>";
+  die();
+}
 
 // langue utilisée
 $langue= isset($_SESSION['default_language'])? $_SESSION['default_language']: Settings::get('default_language');
@@ -405,6 +429,11 @@ if ($_GET['pview'] != 1){
 }
 else{
 	echo '<div id="print_planning">'.PHP_EOL;
+}
+if(isset($alerte)){
+  echo $alerte;
+  end_page();
+  die();
 }
 echo "<table class='jour floatthead table-striped table-bordered'>";
 echo "<caption>";

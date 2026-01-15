@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!-- 
  * Ce fichier fait partie de l'application GRR
- * Dernière modification : $Date: 2020-04-09 $
+ * Dernière modification : $Date: 2025-11-28 $
  * @author  Laurent Delineau <laurent.delineau@ac-poitiers.fr>
  * @copyright Copyright 2008-2008 Laurent Delineau
  * @author  Yan Naessens
- * @copyright Copyright 2020 Yan Naessens
+ * @copyright Copyright 2020-2025 Yan Naessens
  * @link   http://www.gnu.org/licenses/licenses.html
  * @filesource
  *
@@ -2748,12 +2748,12 @@ fait de la manière suivante :</p>
 <pre>$user_nom=recuperer_nom(phpCAS::getAttribute('user_nom_ldap'));<br />$user_prenom=recuperer_prenom(phpCAS::getAttribute('user_prenom_ldap'));<br />$user_language=recuperer_language(phpCAS::getAttribute('user_language_ldap'));<br />$user_code_fonction=recuperer_code_fonction(phpCAS::getAttribute('user_code_fonction_ldap'));<br />$user_libelle_fonction=recuperer_libelle_fonction(phpCAS::getAttribute('user_libelle_fonction_ldap'));<br />$user_mail=recuperer_mail(phpCAS::getAttribute('user_mail_ldap'));</pre>
 <p>Explications :</p>
 <ul>
-  <li>$user_nom : nom de l'utilisateur</li>
-  <li>$user_prenom : prénom de l'utilisateur</li>
-  <li>$user_language : langue de l'utilisateur</li>
-  <li>$user_code_fonction : identifiant du profil de l'utilisateur 	dans l'annuaire LDAP</li>
-  <li>$user_libelle_fonction : libellé du profil de l'utilisateur 	dans l'annuaire LDAP</li>
-  <li>$user_mail : mail de l'utilisateur</li>
+  <li>$user_nom_ldap : nom de l'utilisateur</li>
+  <li>$user_prenom_ldap : prénom de l'utilisateur</li>
+  <li>$user_language_ldap : langue de l'utilisateur</li>
+  <li>$user_code_fonction_ldap : identifiant du profil de l'utilisateur 	dans l'annuaire LDAP</li>
+  <li>$user_libelle_fonction_ldap : libellé du profil de l'utilisateur 	dans l'annuaire LDAP</li>
+  <li>$user_mail_ldap : mail de l'utilisateur</li>
 </ul>
 <p>Explication de la première ligne :</p>
 <pre>$user_nom=recuperer_nom(phpCAS::getAttribute('user_nom_ldap'));</pre>
@@ -2794,7 +2794,35 @@ par CAS, son statut dans GRR est déduit du tableau de correspondance.</p>
 pas d’entrée dans la table de correspondance une nouvelle entrée est 
 alors automatiquement créée pour ce profil et le statut par défaut 
 (défini dans la page de gestion du SSO) lui est associé.</p>
-<p>L’administrateur peut par la suite changer le statut associé à ce profil.</p><h2>9.3.Autres paramètres de configuration de GRR dans un environnement CAS</h2>
+<p>L’administrateur peut par la suite changer le statut associé à ce profil.</p>
+<h3 class="western">Un exemple de mise de réalisation d'une correspondance profil / statut</h3>
+<p>Voici les étapes suivies :</p>
+<ol>
+<li><b>Désactiver</b> l’authentification LDAP.</li>
+<li><b>Configurer</b> le SSO.</li>
+<li><b>Activer</b> l’option <i>« Afficher l’interface de mise en correspondance LDAP &lt;--&gt; statut dans GRR »</i>.</li>
+<li><b>Mettre en place</b> le fichier <pre>grr/include/config_CAS.inc.php</pre></li>
+<li><b>Récupérer</b> les attributs depuis phpCAS.
+<pre>$user_nom = recuperer_nom(phpCAS::getAttribute(&#039;departmentNumber&#039;));
+$user_prenom = recuperer_prenom(phpCAS::getAttribute(&#039;givenName&#039;));
+$user_language = recuperer_language(phpCAS::getAttribute(&#039;user_language_ldap&#039;));
+$user_code_fonction = recuperer_code_fonction(phpCAS::getAttribute(&#039;eduPersonPrimaryAffiliation&#039;));
+$user_libelle_fonction = recuperer_libelle_fonction(phpCAS::getAttribute(&#039;eduPersonPrimaryAffiliation&#039;));
+$user_mail = recuperer_mail(phpCAS::getAttribute(&#039;mail&#039;));</pre>
+</li>
+</ol>
+<p>La correspondance s’appuie sur la fonction dans ce fichier</p>
+<pre>function recuperer_code_fonction($user_code_fonction)
+ {
+     return $user_code_fonction;
+ }</pre>
+<p>tableau des correspondances : </p>
+<pre>
+RESEARCHER     EduPersonPrimaryAffiliation     utilisateur     
+FACULTY        EduPersonPrimaryAffiliation     utilisateur     
+EMPLOYEE       EduPersonPrimaryAffiliation     utilisateur     
+STUDENT        EduPersonPrimaryAffiliation     visiteur     </pre>
+<h2>9.3.Autres paramètres de configuration de GRR dans un environnement CAS</h2>
 <style type="text/css">
 	<!--
 		@page { margin: 2cm }

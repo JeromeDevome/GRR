@@ -3,9 +3,9 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-09 11:17$
+ * Dernière modification : $Date: 2026-01-05 18:11$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -31,28 +31,8 @@ require_once("./include/session.inc.php");
 include "include/resume_session.php";
 include "include/language.inc.php";
 
-// Construction des identifiants du domaine $area, du site $id_site
-global $area, $id_site;
-
-if (isset($_GET['room'])){
-    $area = mrbsGetRoomArea(intval($_GET['room']));
-    $id_site = mrbsGetAreaSite($area);
-}
-elseif (isset($_GET['area']))
-{
-    $area = intval($_GET['area']);
-    $id_site = mrbsGetAreaSite($area);
-}
-elseif (isset($_GET["id_site"]))
-{
-    $id_site = intval($_GET["id_site"]);
-    $area = get_default_area($id_site);
-}
-else
-{
-    $id_site = get_default_site();
-    $area = get_default_area($id_site);
-}
+//Construction des identifiants de la ressource $room, du domaine $area, du site $id_site
+Definition_ressource_domaine_site();
 
 // On affiche le lien "format imprimable" en bas de la page
 $affiche_pview = '1';
@@ -169,8 +149,33 @@ $month_end = mktime(23,59,59,$to_month,$days_in_to_month,$to_year);
 $opt = array('horaires','beneficiaire','short_desc','description','create_by','type','participants');
 $options = decode_options(Settings::get('cell_year'),$opt);
 $options_popup = decode_options(Settings::get('popup_year'),$opt);
-// calcul des données à afficher
-get_planning_area_values($area);
+
+//Récupération des données concernant l'affichage du planning du domaine
+if($area >0){
+  $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_area WHERE id = ?","i",[$area]);
+  if($test > 0)
+    get_planning_area_values($area);
+  else{
+    $msg = get_vocab('unknown_area');
+    $area = get_default_area($id_site);
+  }
+}
+else{
+  $msg = get_vocab('unknown_room');
+  $area = get_default_area($id_site);
+}
+if((isset($msg))&&($msg != "")) // les paramètres ne sont pas valides, on renvoie alors vers une page par défaut
+{
+  $lien = "year.php?area=".$area."&day=".$day."&month=".$month."&year=".$year;
+  echo "<script type='text/javascript'>
+        alert('$msg');
+        document.location.href='$lien';
+    </script>";
+  echo "<p><br/>";
+  echo $msg."<a href='year.php'>".get_vocab("link")."</a>";
+  echo "</p>";
+  die();
+}
 
 if ($enable_periods == 'y')
 {

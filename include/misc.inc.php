@@ -2,7 +2,7 @@
 /**
  * misc.inc.php
  * fichier de variables diverses
- * Dernière modification : $Date: 2025-04-20 10:13$
+ * Dernière modification : $Date: 2025-12-17 14:50$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -25,7 +25,7 @@ $grr_devel_url = "http://grr.devome.com/";
 $version_grr = "3.5.2";
 // Numéro de sous-version actuel (a, b, ...)
 // Utilisez cette variable pour des versions qui corrigent la la version finale sans toucher à la base.
-$sous_version_grr = "a"; // a, b, c, ...
+$sous_version_grr = "d"; // a, b, c, ...
 // Numéro de la release candidate (doit être strictement inférieure à 9). Laisser vide s'il s'agit de la version stable.
 $version_grr_RC = "";
 // Version repository (GitHub)
@@ -33,86 +33,86 @@ $versionReposite = "";
 
 # Liste des tables
 $liste_tables = array(
-	"_area",
-	"_area_periodes",
-	"_calendar",
-    "_calendrier_feries",
-	"_calendrier_jours_cycle",
-	"_calendrier_vacances",
-	"_correspondance_statut",
-	"_entry",
-	"_entry_moderate",
+  "_area",
+  "_area_periodes",
+  "_calendar",
+  "_calendrier_feries",
+  "_calendrier_jours_cycle",
+  "_calendrier_vacances",
+  "_correspondance_statut",
+  "_entry",
+  "_entry_moderate",
   "_files",
-	"_j_mailuser_room",
-	"_j_site_area",
-	"_j_useradmin_area",
-	"_j_useradmin_site",
-    "_j_userbook_room",
-	"_j_user_area",
-	"_j_user_room",
-	"_j_type_area",
-	"_log",
-	"_modulesext",
-	"_overload",
-	"_page",
-	"_participants",
-	"_repeat",
-	"_room",
-	"_setting",
-	"_site",
-	"_type_area",
-	"_utilisateurs"
-	);
+  "_j_mailuser_room",
+  "_j_site_area",
+  "_j_useradmin_area",
+  "_j_useradmin_site",
+  "_j_userbook_room",
+  "_j_user_area",
+  "_j_user_room",
+  "_j_type_area",
+  "_log",
+  "_modulesext",
+  "_overload",
+  "_page",
+  "_participants",
+  "_repeat",
+  "_room",
+  "_setting",
+  "_site",
+  "_type_area",
+  "_utilisateurs"
+  );
 
 # Liste des feuilles de style
 $liste_themes = array(
-	"default",
-    "grand_bleu",
-	"vert",
-	"violet",
-	"orange",
-	"bleu",
-	"rouge",
-	"rose",
-	"fluo",
-    "perso"
-	);
+  "default",
+  "grand_bleu",
+  "vert",
+  "violet",
+  "orange",
+  "bleu",
+  "rouge",
+  "rose",
+  "fluo",
+  "perso"
+  );
 
 # Liste des noms des styles
 $liste_name_themes = array(
-    "Defaut",
-	"Grand bleu",
-	"Verdoyant",
-	"Violeta",
-	"Orange Talmont",
-	"Bleu Talmont",
-	"Rouge Feu",
-	"Roseline",
-	"Jaune Fluo",
-    "Perso"
-	);
+  "Defaut",
+  "Grand bleu",
+  "Verdoyant",
+  "Violeta",
+  "Orange Talmont",
+  "Bleu Talmont",
+  "Rouge Feu",
+  "Roseline",
+  "Jaune Fluo",
+  "Perso"
+  );
 
 # Liste des langues
 $liste_language = array(
-	"fr",
-	"de",
-	"en",
-	"it",
-	"es"
-	);
+  "fr",
+  "de",
+  "en",
+  "it",
+  "es"
+  );
 
 # Liste des noms des langues
 $liste_name_language = array(
-	"Français",
-	"Deutsch",
-	"English",
-	"Italiano",
-	"Spanish"
-	);
+  "Français",
+  "Deutsch",
+  "English",
+  "Italiano",
+  "Spanish"
+  );
 
 # Compatibilité avec les version inférieures à 1.9.6
 if ((!isset($table_prefix)) or ($table_prefix==''))
-	$table_prefix="grr";
+  $table_prefix="grr";
 # Définition de TABLE_PREFIX
 define("TABLE_PREFIX",$table_prefix);
 
@@ -151,7 +151,7 @@ $twentyfourhour_format = 1;
 # Ci-dessous des fonctions non officielles (non documentées) de GRR
 # En attendant qu'elles soient implémentées dans GRR avec une interface en ligne
 
-# Vous pouvez indiquer ci-dessous les identifiant de plusieurs ressources qui seront réservables, même par un simple visiteur
+# Vous pouvez indiquer ci-dessous les identifiants de plusieurs ressources qui seront réservables, même par un simple visiteur
 # Par exemple la ligne suivante autorise les simples visiteurs à réserver les ressoures 8, 4 et 5 :
 # $id_room_autorise = array("8", "4", "5");
 $id_room_autorise = array();

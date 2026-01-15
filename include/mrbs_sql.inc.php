@@ -2,10 +2,10 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2024-12-26 16:01$
+ * Dernière modification : $Date: 2025-12-03 18:05$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -138,7 +138,7 @@ function grrDelEntryInConflict($room_id, $starttime, $endtime, $ignore, $repigno
  *
  * $user   - Who's making the request
  * $id     - The entry to delete
- * $series - If set, delete the series, except user modified entrys
+ * $series - If set to 1, delete the series, if set to 2, delete the series after the current booking, except user modified entrys according to $all
  * @param integer $all    - If set, include user modified entrys in the series delete
  *
  * Returns:
@@ -150,15 +150,19 @@ function mrbsDelEntry($user, $id, $series, $all)
 {
 	global $correct_diff_time_local_serveur, $enable_periods;
 	$date_now = time();
+  $id = intval($id);
 	$id_room = grr_sql_query1("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id='".$id."'");
 	$repeat_id = grr_sql_query1("SELECT repeat_id FROM ".TABLE_PREFIX."_entry WHERE id='".$id."'");
+  $repeat_id = intval($repeat_id);
 	if ($repeat_id < 0)
 		return 0;
 	$sql = "SELECT beneficiaire, id, entry_type FROM ".TABLE_PREFIX."_entry WHERE ";
-	if (($series) and ($repeat_id > 0))
-		$sql .= "repeat_id='".protect_data_sql($repeat_id)."'";
+	if (($series > 0) and ($repeat_id > 0))
+		$sql .= "repeat_id='".$repeat_id."'";
+  if(($series == 2) and ($repeat_id > 0))
+    $sql .= " AND start_time >= (SELECT start_time FROM ".TABLE_PREFIX."_entry WHERE id='".$id."')";
 	else
-		$sql .= "id='".protect_data_sql($id)."'";
+		$sql .= "id='".$id."'";
 	$res = grr_sql_query($sql);
 	$removed = 0;
 	foreach($res as $row)
@@ -176,7 +180,7 @@ function mrbsDelEntry($user, $id, $series, $all)
 	}
 	grr_sql_free($res);
 	if ($repeat_id > 0 &&
-		grr_sql_query1("SELECT count(*) FROM ".TABLE_PREFIX."_entry WHERE repeat_id='".protect_data_sql($repeat_id)."'") == 0)
+		grr_sql_query1("SELECT count(*) FROM ".TABLE_PREFIX."_entry WHERE repeat_id='".$repeat_id."'") == 0)
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_repeat WHERE id='".$repeat_id."'");
 	return $removed > 0;
 }

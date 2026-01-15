@@ -3,9 +3,9 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-01-29 11:31$
+ * Dernière modification : $Date: 2025-11-25 10:56$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -77,7 +77,7 @@ $form_vars = array(
   'rep_type'           => 'int',
   'rep_end_date'       => 'string',
   'rep_day'            => 'array',   // array of bools 0|1
-  'rep_opt'            => 'int',
+  'rep_opt'            => 'string',
   'rep_num_weeks'      => 'int',
   'entry_type'         => 'int',
   'repeat_id'          => 'int',
@@ -229,12 +229,12 @@ try {
         }
     }
     if (isset($start_hour)){
-        settype($start_hour, "integer");
+        $start_hour = intval($start_hour);
         if ($start_hour > 23)
             $start_hour = 23;
     }
     if (isset($start_minute)){
-        settype($start_minute, "integer");
+        $start_minute = intval($start_minute);
         if ($start_minute > 59)
             $start_minute = 59;
     }
@@ -431,7 +431,7 @@ try {
     }
     else { // modification d'une réservation existante
         $ignore_id = $id;
-        $repeat_id = grr_sql_query1("SELECT repeat_id FROM ".TABLE_PREFIX."_entry WHERE id=$id");
+        $repeat_id = grr_sql_query1("SELECT repeat_id FROM ".TABLE_PREFIX."_entry WHERE id=?","i",[$id]);
         if ($repeat_id < 0)
             $repeat_id = 0;
     }
@@ -541,7 +541,7 @@ try {
                 throw new Exception('erreur');
             }
         }
-        $statut_room = grr_sql_query1("SELECT statut_room from ".TABLE_PREFIX."_room where id = '$room_id'");
+        $statut_room = grr_sql_query1("SELECT statut_room from ".TABLE_PREFIX."_room where id =?","i",[$room_id]);
         if (($statut_room == "0") && authGetUserLevel($user,$room_id) < 3)
         {
             $err_type = 'booking_room_out';
@@ -636,7 +636,7 @@ try {
         if($level < 3){     // les gestionnaires ne sont pas limités par les quotas
             // existe-t-il un quota ?
             // quotas globaux
-            if (!isset($id) || ($id = 0)){  // nouvelle réservation
+            if (!isset($id) || ($id == 0)){  // nouvelle réservation
                 $compt = 1;
             }
             else{       // modification d'une réservation existante
@@ -787,12 +787,12 @@ try {
 	if (isset($id) && ($id != 0)) // quand on fait une modification, on efface la réservation ou la série existante
 	{
 		if ($rep_type != 0)
-			mrbsDelEntry($user, $id, "series", 1); // et alors les inscriptions sont perdues
+			mrbsDelEntry($user, $id, 1, 1); // et alors les inscriptions sont perdues
 		else{
-            if (isset($new_id) && ($new_id != 0))
-                updateParticipants($id,$new_id);// réinscrire les participants avant d'effacer
-            mrbsDelEntry($user, $id, NULL, 1);
-        }
+      if (isset($new_id) && ($new_id != 0))
+        updateParticipants($id,$new_id);// réinscrire les participants avant d'effacer
+      mrbsDelEntry($user, $id, 0, 1);
+    }
 	}
     // déverrouille la table
     grr_sql_mutex_unlock("".TABLE_PREFIX."_entry");
@@ -822,10 +822,8 @@ catch (Exception $e){
     $hiddenInputs = ""; // chaîne des hidden inputs 
     foreach($form_vars as $var=>$var_type){
         if ($var_type == "array"){
-            foreach($$var as $value){
-                if(isset($value)){
-                    $hiddenInputs .= "<input type='hidden' name='{$var}[]' value='".$value."' >";
-                }
+            foreach($$var as $key => $value){
+                    $hiddenInputs .= "<input type='hidden' name='{$var}[$key]' value='".$value."' >";
             }
         }
         elseif(isset($$var)&& ($$var != NULL)){

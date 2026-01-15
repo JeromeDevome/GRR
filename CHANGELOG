@@ -38,6 +38,33 @@ Sous-version 3.5.2a
     correctifs : prise en compte de l'encodage du mot de passe, test d'existence de la base de données
     correctif : vérifications préalables
     correctif : longueur du champ pour utf8mb4
+Sous-version 3.5.2b
+    ajout : fonction de sauvegarde des données d'une réservation
+    correctif : champ manquant en installation initiale (les bases mises à jour ne sont pas affectées)
+    correctif : affichage des boutons incorrect dans view_entry en mode pop-up
+    correctif : sélecteur d'affichage par défaut
+    correctif : champ manquant en installation initiale
+    correctif : sélecteurs de domaine et ressource dans mon compte et affichages
+    correctif : erreur en restauration d'une base 3.4.0
+    correctif : évite une erreur en mise à jour forcée
+    mise à jour : fichiers de langue
+Sous-version 3.5.2c
+    ajout : export au format csv de l'importation de réservations
+    correctif : fonction en doublon de mrbs_sql.inc.php
+    correctif : fonctionnalité de l'affichage de l'historique des connexions
+    correctif : test de variable
+    correctif : affichage de la description dans le formulaire d'échange entre deux réservations
+    mise à jour : fichiers de langue
+    modification : clauses IF NOT EXISTS et CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+Sous-version 3.5.2d
+    ajout : possibilité de supprimer les réservations d'une périodicité après la réservation sélectionnée
+    amélioration : exemple de réalisation de liaison profil LDAP [documentation]
+    correctif : traitement des erreurs d'édition et modification d'une réservation issue d'une série
+    correctif : gestion des données sous forme de tableau
+    correctif : menu périodicité et lien de retour
+    correctifs : liens dans edit_entry
+    mise à jour, conséquence de la mise à jour de twig dans la version 4.4.2 [Readme]
+    modification : droit d'accès pour les gestionnaires de ressources restreintes
 
 -----
 --

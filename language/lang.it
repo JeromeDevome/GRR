@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2025-05-28
+# Last modification : 2026-01-05
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -339,6 +339,7 @@ $vocab['delete'] = "Eliminare";
 $vocab['deleteentry'] = "Cancellare una prenotazione";
 $vocab['deletefollowing'] = "Eliminerete le prenotazioni seguenti: ";
 $vocab['deleteseries'] = "Cancellare una periodicità";
+$vocab['deleteseriesafter'] = "Cancellare la periodicità dopo ";
 $vocab['delete_booking'] = " ha eliminato la prenotazione di ";
 $vocab['delete_up_to'] = "Cancellare a ";
 $vocab['del_entry_in_conflict'] = "Eliminare la (le) prenotazione(i) quì sopra allo scopo di convalidare la nuova prenotazione.";
@@ -1415,4 +1416,6 @@ $vocab['recherche_res4'] = "occupato fino al ";
 $vocab['recherche_res5'] = "ultima prenotazione";
 $vocab['recherche_choix_r'] = "Cerca una risorsa disponibile";
 $vocab['recherche_choix_s'] = "Cerca tra le prenotazioni";
+$vocab['unknown_room'] = "Risorsa sconosciuta";
+$vocab['unknown_area'] = "Area sconosciuta";
 ?>

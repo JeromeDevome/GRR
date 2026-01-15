@@ -3,9 +3,9 @@
  * admin_book_room.php
  * Interface de gestion des accès restreints aux ressources restreintes
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-06-17 16:14$
+ * Dernière modification : $Date: 2025-11-27 11:14$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -61,7 +61,16 @@ $msg = '';
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES);
-check_access(4, $back); // accès à cette page pour les gestionnaires de domaines
+// accès à cette page pour les gestionnaires de ressources
+if($id_room != -1){
+  if (authGetUserLevel($user_name, $id_room, 'room') < 3)
+	{
+		showAccessDenied($back);
+		exit();
+	}
+}
+else
+  check_access(3, $back);
 
 if ($test_user == "multi")
 {	
@@ -111,7 +120,7 @@ else{
     foreach($res as $row)
     {
       // on vérifie que l'utilisateur connecté a les droits suffisants
-      if (authGetUserLevel($user_name,$id_room)>2)
+      if (authGetUserLevel($user_name,$row['id'],'room')>2)
       {
         $selected = ($row['id'] == $id_room) ? "selected = \"selected\"" : "";
         $text = '';

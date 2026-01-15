@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2025-06-19
+# Last modification : 2026-01-05
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -343,6 +343,7 @@ $vocab['deleteentry'] = "Delete a reservation";
 $vocab['swap_entry'] = "Swap two reservations";
 $vocab['deletefollowing'] = "You are going to delete the following reservations";
 $vocab['deleteseries'] = "Delete a periodicity";
+$vocab['deleteseriesafter'] = "Cancel the series after ";
 $vocab['delete_booking'] = " has deleted the reservation of ";
 $vocab['delete_up_to'] = "Delete until";
 $vocab['del_entry_in_conflict'] = "Delete the reservation(s) above in order to confirm the new reservation.";
@@ -1425,4 +1426,6 @@ $vocab['recherche_res4'] = " occupied until ";
 $vocab['recherche_res5'] = " last reservation ";
 $vocab['recherche_choix_r'] = " Search for a free resource ";
 $vocab['recherche_choix_s'] = " Search among reservations ";
+$vocab['unknown_room'] = "Unknown resource";
+$vocab['unknown_area'] = "Unknown area";
 ?>

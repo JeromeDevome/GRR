@@ -3,9 +3,9 @@
  * month.php
  * Interface d'accueil avec affichage par mois pour une ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-01 18:00$
+ * Dernière modification : $Date: 2026-01-05 17:07$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -35,10 +35,6 @@ include "include/language.inc.php";
 //Construction des identifiants de la ressource $room, du domaine $area, du site $id_site
 Definition_ressource_domaine_site();
 
-//Récupération des données concernant l'affichage du planning du domaine
-if($area >0)
-    get_planning_area_values($area);
-
 // Initilisation des variables
 $affiche_pview = '1';
 if (!isset($_GET['pview']))
@@ -50,11 +46,37 @@ if ($_GET['pview'] == 1)
 	$class_image = "print_image";
 else
 	$class_image = "image";
+
 // initialisation des paramètres de temps
 $date_now = time();
 $day = (isset($_GET['day']))? $_GET['day'] : date("d"); // ou 1 ? YN le 07/03/2018
 $month = (isset($_GET['month']))? $_GET['month'] : date("m");
 $year = (isset($_GET['year']))? $_GET['year'] : date("Y");
+
+// le paramètre $room est obligatoire
+if (!isset($room) || ($room == 0)){
+    $msg = get_vocab('choose_a_room');
+    if (!isset($area)||($area == 0)) $area = get_default_area($id_site);
+    $lien = "month_all.php?area=".$area."&day=".$day."&month=".$month."&year=".$year;
+}
+// la ressource demandée existe-t-elle ?
+if((isset($area))&&($area <= 0)){
+  $msg = get_vocab('unknown_room');
+  $area = get_default_area($id_site);
+  $lien = "month_all.php?area=".$area."&day=".$day."&month=".$month."&year=".$year;
+}
+// on renvoie alors vers une page par défaut
+if(isset($lien)){
+  echo "<script type='text/javascript'>
+        alert('$msg');
+        document.location.href='$lien';
+    </script>";
+  echo "<p><br/>";
+  echo $msg."<a href='month_all.php'>".get_vocab("link")."</a>";
+  echo "</p>";
+  die();
+}
+
 // définition de variables globales
 global $racine, $racineAd, $desactive_VerifNomPrenomUser;
 
@@ -75,27 +97,7 @@ if (!($desactive_VerifNomPrenomUser))
     $desactive_VerifNomPrenomUser = 'n';
 // On vérifie que les noms et prénoms ne sont pas vides
 VerifNomPrenomUser($type_session);
-// Dans le cas d'une selection invalide
-if ($area <= 0)
-{
-    start_page_w_header($day,$month,$year,$type_session);
-	echo '<h1>'.get_vocab("noareas").'</h1>';
-	echo '<a href="./admin/admin_accueil.php">'.get_vocab("admin").'</a>'.PHP_EOL.'</body>'.PHP_EOL.'</html>';
-	exit();
-}
-// en l'absence du paramètre $room, indispensable pour month.php, on renvoie à month_all.php
-if (!isset($room)){
-    $msg = get_vocab('choose_a_room');
-    $lien = "month_all.php?area=".$area."&month=".$month."&year=".$year;
-    echo "<script type='text/javascript'>
-        alert('$msg');
-        document.location.href='$lien';
-    </script>";
-    echo "<p><br/>";
-        echo get_vocab('choose_room')."<a href='month_all.php'>".get_vocab("link")."</a>";
-    echo "</p>";
-    die();
-}
+
 // vérifie si la date est dans la période réservable
 if (check_begin_end_bookings($day, $month, $year))
 {
@@ -103,6 +105,10 @@ if (check_begin_end_bookings($day, $month, $year))
 	showNoBookings($day, $month, $year, $back);
 	exit();
 }
+//Récupération des données concernant l'affichage du planning du domaine
+if($area >0)
+  get_planning_area_values($area);
+
 // calcul du planning
 if ($enable_periods == 'y')
 {

@@ -3,9 +3,9 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-01 18:00$
+ * Dernière modification : $Date: 2026-01-05 17:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -52,6 +52,7 @@ $date_now = time();
 $day = isset($_GET['day']) ? intval($_GET['day']) : date("d");
 $month = isset($_GET['month']) ? intval($_GET['month']) : date("m");
 $year = isset($_GET['year']) ? intval($_GET['year']) : date("Y");
+
 // définition de variables globales
 global $racine, $racineAd, $desactive_VerifNomPrenomUser;
 
@@ -75,16 +76,32 @@ $adm = 0;
 $racine = "./";
 $racineAd = "./admin/";
 
-// Dans le cas d'une selection invalide
-if ($area <= 0)
-{
-    start_page_w_header($day,$month,$year,$type_session);
-	echo '<h1>'.get_vocab("noareas").'</h1>';
-	echo '<a href="./admin/admin_accueil.php">'.get_vocab("admin").'</a>'.PHP_EOL.'</body>'.PHP_EOL.'</html>';
-	exit();
-}
 //Récupération des données concernant l'affichage du planning du domaine
-get_planning_area_values($area);
+if($area >0){
+  $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_area WHERE id = ?","i",[$area]);
+  if($test > 0)
+    get_planning_area_values($area);
+  else{
+    $msg = get_vocab('unknown_area');
+    $area = get_default_area($id_site);
+  }
+}
+else{
+  $msg = get_vocab('unknown_room');
+  $area = get_default_area($id_site);
+}
+if((isset($msg))&&($msg != "")) // les paramètres ne sont pas valides, on renvoie alors vers une page par défaut
+{
+  $lien = "week_all.php?area=".$area."&day=".$day."&month=".$month."&year=".$year;
+  echo "<script type='text/javascript'>
+        alert('$msg');
+        document.location.href='$lien';
+    </script>";
+  echo "<p><br/>";
+  echo $msg."<a href='week_all.php'>".get_vocab("link")."</a>";
+  echo "</p>";
+  die();
+}
 
 // vérifie si la date est dans la période réservable
 if (check_begin_end_bookings($day, $month, $year))

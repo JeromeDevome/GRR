@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2025-06-18 17:03$
+ * Dernière modification : $Date: 2026-01-15 16:16$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -3398,7 +3398,18 @@ function jQuery_DatePicker($typeDate){
   echo '    }'.PHP_EOL;
   echo '</script>'.PHP_EOL;
 }
-function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaultsec,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format=0)
+/* function jQuery_TimePicker2()
+* paramètres :
+* $typeTime : chaîne décrivant le nom donné au champ 
+* start_hour, start_min : entiers donnant l'heure à afficher par défaut
+* $resolution : pas de l'affichage horaire
+* $morningstarts : heure de départ du sélecteur
+* $eveningends, eveningends_minutes : heure et minutes de fin de journée
+* $twentyfourhour_format : format de l'affichage
+* rend :
+* un sélecteur de temps avec une horloge et le code javascript d'activation
+*/
+function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$resolution,$morningstarts,$eveningends,$eveningends_minutes,$twentyfourhour_format=0)
 {
   $minTime = str_pad($morningstarts, 2, 0, STR_PAD_LEFT).":00";
   $end_time = mktime($eveningends,$eveningends_minutes,0,0,0,0);
@@ -3407,63 +3418,23 @@ function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaults
   $maxTime = date("H:i",$end_time);
   if($maxTime == "00:00")
     $maxTime = "24:00";
-  if (isset ($_GET['id']))
-  {
-    if (isset($start_hour) && isset($start_min))
-    {
-      $hour = $start_hour;
-      $minute = $start_min;
-    }
-    else
-    {
-      $hour = date("H");
-      $minute = date("i");
-    }
+  $hour = str_pad($start_hour, 2, 0, STR_PAD_LEFT);
+  $minute = str_pad($start_min, 2, 0, STR_PAD_LEFT);
+  if (($hour.":".$minute) < $minTime){
+    $hour = $morningstarts;
+    $minute = "00";
   }
-  else
-  {
-    $hour = (isset ($_GET['hour']))? clean_input($_GET['hour']) : date("H");
-    $minute = (isset ($_GET['minute']))? clean_input($_GET['minute']) : date("i");
-    $minute = str_pad($minute, 2, 0, STR_PAD_LEFT);
-    if (($hour.":".$minute) < $minTime){
-      $hour = $morningstarts;
-      $minute = "00";
-    }
-    if ($typeTime == 'end_')
-    {
-      $dureepardefautmin = $dureepardefaultsec/60;
-      if ($dureepardefautmin == 60){
-        $hour++;
-        $minute ="00";
-      }
-      if ($dureepardefautmin < 60){
-        $minute += $dureepardefautmin;
-        if ($minute >= 60){
-          $hour++;
-          $minute = $minute%60;
-        }
-      }
-      if ($dureepardefautmin > 60)
-      {
-        $dureepardefautheure = $dureepardefautmin/60;
-        $hour = ($hour + $dureepardefautheure)%24;
-        $hour = str_pad($hour, 2, 0, STR_PAD_LEFT);
-        $minute += $dureepardefautmin % 60;
-      }
-      $minute = str_pad($minute, 2, 0, STR_PAD_LEFT);
-      if (($hour.":".$minute) > $maxTime){
-        $maxTime_split = explode(":",$maxTime);
-        $hour = str_pad($maxTime_split[0], 2, 0, STR_PAD_LEFT);
-        $minute = str_pad($maxTime_split[1], 2, 0, STR_PAD_LEFT);
-      }
-    }
+  if (($hour.":".$minute) > $maxTime){
+    $maxTime_split = explode(":",$maxTime);
+    $hour = str_pad($maxTime_split[0], 2, 0, STR_PAD_LEFT);
+    $minute = str_pad($maxTime_split[1], 2, 0, STR_PAD_LEFT);
   }
   $timeFormat = ($twentyfourhour_format)? "H:i" : "h:i a";
   echo '<label for="'.$typeTime.'">'.get_vocab('time').get_vocab('deux_points').'</label>
     <div class="input-group timepicker">';
   echo '<input id="'.$typeTime.'" name="'.$typeTime.'" type="text" class="form-control time" value="'.$hour.':'.$minute. '" >
     <span class="input-group-addon btn" id="'.$typeTime.'clock'.'">
-        <span class="glyphicon glyphicon-time" ></span>
+      <span class="glyphicon glyphicon-time" ></span>
     </span>
   </div>';
   echo '<script type="text/javascript">
@@ -3477,10 +3448,11 @@ function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$dureepardefaults
       });
       $(\'#'.$typeTime.'\').timepicker(\'setTime\', \''.$hour.':'.$minute.'\');
       $(\'#'.$typeTime.'clock'.'\').on(\'click\', function() {
-            $(\'#'.$typeTime.'\').timepicker(\'show\');
+          $(\'#'.$typeTime.'\').timepicker(\'show\');
       });
-        </script>';
+      </script>';
 }
+
 function returnmsg($type,$test, $status, $msg = '')
 {
   echo encode_message_utf8('<div class="alert alert-'.$type.'" role="alert"><h3>'.$test);
@@ -5671,8 +5643,9 @@ function get_planning_area_values($id_area)
   $row_ = grr_sql_row($res, 0);
     if (!is_array($row_))
     {
-    include "trailer.inc.php";
-    exit;
+      echo "Erreur de lecture en base de données";
+      include "trailer.inc.php";
+      exit;
     }
   $nb_display_day = 0;
   for ($i = 0; $i < 7; $i++)
@@ -5717,6 +5690,7 @@ function get_planning_area_values($id_area)
 //Retourne le domaine par défaut; Utilisé si aucun domaine n'a été défini.
 function get_default_area($id_site = -1)
 {
+  $id_site = intval($id_site);
   if (Settings::get("module_multisite") == "Oui")
     $use_multisite = true;
   else
@@ -5728,7 +5702,7 @@ function get_default_area($id_site = -1)
     if ($res){
       foreach($res as $row){
         if (compare_ip_adr($_SERVER['REMOTE_ADDR'],$row['ip_adr'])){
-          return intval($row[1]);
+          return intval($row['id']);
         }
       }
     }

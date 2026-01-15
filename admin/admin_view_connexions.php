@@ -49,7 +49,7 @@ else
 // historique de connexions
 $hist_year = getFormVar('histYear','string',date("Y"));
 $hist_month = getFormVar('histMonth','string',date("m"));
-$hist_day = getFormVar('histday','string',date("d"));
+$hist_day = getFormVar('histDay','string',date("d"));
 $day_now   = date("d");
 $month_now = date("m");
 $year_now  = date("Y");

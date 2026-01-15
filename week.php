@@ -3,9 +3,9 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-21 16:12$
+ * Dernière modification : $Date: 2026-01-05 11:53$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -56,18 +56,26 @@ $year = (isset($_GET['year']))? $_GET['year'] : date("Y");
 // le paramètre $room est obligatoire
 if (!isset($room) || ($room == 0)){
     $msg = get_vocab('choose_a_room');
-    if (!isset($area)||($area == 0)) $area = 1;
+    if (!isset($area)||($area == 0)) $area = get_default_area($id_site);
     $lien = "week_all.php?area=".$area."&day=".$day."&month=".$month."&year=".$year;
-    echo "<script type='text/javascript'>
+}
+// la ressource demandée existe-t-elle ?
+if((isset($area))&&($area == 0)){
+  $msg = get_vocab('unknown_room');
+  $area = get_default_area($id_site);
+  $lien = "week_all.php?area=".$area."&day=".$day."&month=".$month."&year=".$year;
+}
+// on renvoie alors vers une page par défaut
+if(isset($lien)){
+  echo "<script type='text/javascript'>
         alert('$msg');
         document.location.href='$lien';
     </script>";
-    echo "<p><br/>";
-        echo $msg."<a href='week_all.php'>".get_vocab("link")."</a>";
-    echo "</p>";
-    die();
+  echo "<p><br/>";
+  echo $msg."<a href='week_all.php'>".get_vocab("link")."</a>";
+  echo "</p>";
+  die();
 }
-
 // définition de variables globales
 global $racine, $racineAd, $desactive_VerifNomPrenomUser;
 
@@ -101,11 +109,10 @@ $debug_flag = FALSE;
 // les données de la ressource
 $sql = "SELECT * FROM ".TABLE_PREFIX."_room WHERE id=? ";
 $res = grr_sql_query($sql,"i",[$room]);
-if ($res){
-    $this_room = grr_sql_row_keyed($res,0);
-}
+if ($res)
+  $this_room = grr_sql_row_keyed($res,0);
 else 
-    echo grr_sql_error();
+  echo grr_sql_error();
 grr_sql_free($res);
 // les données du domaine
 $sql = "SELECT * FROM ".TABLE_PREFIX."_area WHERE id=? ";
