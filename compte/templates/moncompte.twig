@@ -11,29 +11,48 @@
 <div>
 	<form id="param_account" action="compte.php?pc=moncompte" method="post">
 
-		<table>
-			{% if d.AvertissementNomPrenom %}
-				<h2 class="avertissement">{{ trad.nom_prenom_valides }}</h2>
-			{% endif %}
-			<tr><td><b>{{ trad.login }}</b></td><td>{{ d.identifiant }}</td></tr>
-			{% if d.modificationNom %}
-                <tr><td><b>{{ trad.last_name }}*</b></td><td><input class="form-control" type="text" name="reg_nom" value="{{ d.user_nom }}" size="30" required></td></tr>
-				<tr><td><b>{{ trad.first_name }}*</b></td><td><input class="form-control" type="text" name="reg_prenom" value="{{ d.user_prenom }}" size="30" required></td></tr>
-			{% else %}
-				<tr><td><b>{{ trad.last_name }}</b></td><td>{{ d.user_nom }}</td></tr>
-				<tr><td><b>{{ trad.first_name }}</b></td><td>{{ d.user_prenom }}</td></tr>
-			{% endif %}
-			{% if d.modificationMail %}
-				<tr><td><b>{{ trad.mail_user }}{% if settings.mail_user_obligatoire == 'y'%}*{%endif%}</b></td><td><input class="form-control" type="email" name="reg_email" value="{{ d.user_email }}" size="30"{% if settings.mail_user_obligatoire == 'y'%} required{%endif%}></td></tr>
-			{% else %}
-				<tr><td><b>{{ trad.mail_user }}{% if settings.mail_user_obligatoire == 'y'%}*{%endif%}</b></td><td>{{ d.user_email }}</td></tr>
-			{% endif %}
-			<tr><td><b>{{ trad.statut }}</b></td><td>{{ d.text_user_statut }}</td></tr>
-		</table>
+    {% if d.AvertissementNomPrenom %}
+      <h2 class="avertissement">{{ trad.nom_prenom_valides }}</h2>
+    {% endif %}
+    <div class="form-group col-xs-12">
+      <label class="control-label col-md-2 col-sm-3 col-xs-4" for="login">{{ trad.login }}</label>
+      <div class="col col-md-4 col-sm-6 col-xs-8"><input class="form-control" id="login" type="text" name="login" value="{{ d.identifiant }}" size="30" disabled/>
+      </div>
+    </div>
+    <div class="form-group col-xs-12">
+      <label class="control-label col-md-2 col-sm-3 col-xs-4" for="nom">{{ trad.last_name }}*</label>
+      <div class="col col-md-4 col-sm-6 col-xs-8">
+        <input class="form-control" id="nom" type="text" name="reg_nom" value="{{ d.user_nom }}" size="30" 
+        {% if d.modificationNom %} required {% else %} disabled {% endif%}
+        />
+      </div>
+    </div>
+    <div class="form-group col-xs-12">
+      <label class="control-label col-md-2 col-sm-3 col-xs-4" for="prenom">{{ trad.first_name }}*</label>
+      <div class="col col-md-4 col-sm-6 col-xs-8">
+        <input class="form-control" id="prenom" type="text" name="reg_prenom" value="{{ d.user_prenom }}" size="30" 
+        {% if d.modificationNom %} required {% else %} disabled {% endif%}
+        />
+      </div>
+    </div>
+    <div class="form-group col-xs-12">
+      <label class="control-label col-md-2 col-sm-3 col-xs-4" for="mail">{{ trad.mail_user }}{% if settings.mail_user_obligatoire == 'y'%}*{%endif%}</label>
+      <div class="col col-md-4 col-sm-6 col-xs-8">
+        <input class="form-control" id="mail" type="text" name="reg_email" value="{{ d.user_email }}" size="30" 
+        {% if settings.mail_user_obligatoire == 'y'%} required{%endif%}
+        {% if not d.modificationMail %} disabled {% endif %}
+        />
+      </div>
+    </div>
+    <div class="form-group col-xs-12">
+      <label class="control-label col-md-2 col-sm-3 col-xs-4" for="statut">{{ trad.statut }}</label>
+      <div class="col col-md-4 col-sm-6 col-xs-8"><input class="form-control" id="statut" type="text" name="statut" value="{{ d.text_user_statut }}" size="30" disabled/>
+      </div>
+    </div>
+    
 		{% if d.modificationNom %}
-			<p>{{ trad.required }}</p>
+			<p><em>{{ trad.required }}</em></p>
 		{% endif %}
-
 		<hr>
 
 		{% if d.modificationMDP %}
@@ -102,42 +121,38 @@
 			</tr>
 		</table>
 
-
+    <div class="col-xs-12">
 		{% if d.levelUser < settings.allow_users_modify_domaine %}
 
 		{% else %}
 			{% if settings.module_multisite == 'Oui' %}
 			<h4>{{ trad.explain_default_area_and_room_and_site }}</h4>
 
-			<table>
-				<tr>
-					<td>{{ trad.default_site }}</td>
-					<td>
+			<div class="col-xs-12" id="div_liste_sites">
+				<div class="form-group">
+					<label class="col-lg-4 col-md-6" for="id_site">{{ trad.default_site }}</label>
+					<div class="col-lg-4 col-md-6">
 						<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
 							<option value="-1">{{ trad.choose_a_site }}</option>
 							{% for site in sites %}
 								<option value="{{ site.idsite }}" {% if site.idsite == d.default_site %} selected {% endif %}>{{ site.nomsite }}</option>
 							{% endfor %}
 						</select>
-					</td>
-				</tr>
-		
+					</div>
+				</div>
+      </div>
 			{% else %}
 				<h4>{{ trad.explain_default_area_and_room }}</h4>
 				<input type="hidden" id="id_site" name="id_site" value="-1" />
 
-				<table>
 			{% endif %}
 
-				<tr>
-					<td colspan="2"><div id="div_liste_domaines"></div></td>
-				</tr>
-				<tr>
-					<td colspan="2"><div id="div_liste_ressources"><input type="hidden" id="id_area" name="id_area" value="{{ d.default_area }}" /></div></td>
-				</tr>
+        <div class="col-xs-12" id="div_liste_domaines"></div>
+        
+				<div class="col-xs-12" id="div_liste_ressources"><input type="hidden" id="id_area" name="id_area" value="{{ d.default_area }}" /></div>
 
-			</table>
 		{% endif %}
+    </div>
 
 		<h4>{{ trad.explain_css }}</h4>
 		<table>
@@ -245,7 +260,9 @@
 			});
 		}
 		
-		modifier_liste_domaines();
-		modifier_liste_ressources(1);
+    $(document).ready(function(){
+      modifier_liste_domaines();
+      modifier_liste_ressources(1);
+    });
 	</script>
 {% endblock %}
