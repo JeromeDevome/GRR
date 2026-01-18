@@ -43,7 +43,7 @@ $php_maxi = "";
 // Version MySQL minimum
 $mysql_mini = "5.4.0";
 // Version MySQL maximum testé et validé par : JeromeB
-$mysql_max_valide = "8.4.0";
+$mysql_max_valide = "9.4.0";
 // Version MySQL maximum qui est sensé fonctionné
 $mysql_maxi = "";
 
