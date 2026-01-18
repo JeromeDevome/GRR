@@ -1276,7 +1276,7 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 	{
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD confidentiel_resa TINYINT(1) NOT NULL DEFAULT '0' AFTER who_can_book;");
 		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_files(id int not null auto_increment, id_entry int, file_name varchar(50), public_name varchar(50),Primary key (id)) CHARACTER SET utf8mb4;");
-		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page VALUES (`nom`, `titre`, `valeur`, `systeme`, `statutmini`, `lien`, `nouveauonglet`, `ordre`, `emplacement`) VALUES ('popup', 'Information', 'Test', 0, '1', '', 1, 0, 0);");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (`nom`, `titre`, `valeur`, `systeme`, `statutmini`, `lien`, `nouveauonglet`, `ordre`, `emplacement`) VALUES ('popup', 'Information', 'Test', 0, '1', '', 1, 0, 0);");
 		$exists = grr_sql_query1("SHOW COLUMNS FROM ".TABLE_PREFIX."_area LIKE 'user_right'");
 		if ($exists == -1) {
 			$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_area ADD user_right INT(11) AFTER max_booking;");
