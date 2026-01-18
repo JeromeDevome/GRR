@@ -2,9 +2,9 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2025-11-06 15:38$
+ * Dernière modification : $Date: 2026-01-18 10:45$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -1028,12 +1028,9 @@ function begin_page($title, $page = "with_session")
 			die();
 		}
 	}
-	global $vocab, $charset_html, $unicode_encoding, $clock_file, $gcDossierCss, $version_grr;
+	global $vocab, $charset_html, $clock_file, $gcDossierCss, $version_grr;
 	header('Content-Type: text/html; charset=utf-8');
-	/*if (!isset($_COOKIE['open']))
-	{
-		setcookie("open", "true", time()+3600, "", "", false, false);
-	}*/
+
     if (!isset($_COOKIE['open']))
     {
         header('Set-Cookie: open=true; SameSite=Lax;');

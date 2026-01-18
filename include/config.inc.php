@@ -2,9 +2,9 @@
 /**
  * config.inc.php
  * Fichier de configuration de GRR
- * Dernière modification : $Date: 2023-04-19 17:59$
+ * Dernière modification : $Date: 2026-01-18 10:45$
  * @author    JeromeB & Laurent Delineau
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -89,7 +89,6 @@ date_default_timezone_set('Europe/Paris');
 
 # Positionner la valeur $unicode_encoding à 1 pour utiliser l'UTF-8 dans toutes les pages et dans la base
 # Dans le cas contraire, les textes stockés dans la base dépendent des différents encodage selon la langue selectionnée par l'utilisateur
-# Il est fortement conseillé de lire le fichier notes-utf8.txt à la racine de cette archive
  $unicode_encoding = 1;
 
 # Après installation de GRR, si vous avez le message "Fatal error: Call to undefined function: mysql_real_escape_string() ...",

@@ -3,7 +3,7 @@
  * installation/maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-15 21:08$
+ * Dernière modification : $Date: 2026-01-18 10:45$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
@@ -70,10 +70,7 @@ if(!$majscript)
 	echo '<html>';
 	echo '<head>';
 	echo '<meta http-equiv="content-type" content="text/html; charset=';
-	if ($unicode_encoding)
-		echo "utf-8";
-	else
-		echo $charset_html;
+	echo $charset_html;
     echo '>';
 	echo '<link rel="stylesheet" href="../themes/default/css/style.css?v='.$version_grr.'" type="text/css">';
 	echo '<link rel="shortcut icon" href="favicon.ico">';

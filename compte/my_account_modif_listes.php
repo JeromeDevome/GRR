@@ -3,7 +3,7 @@
  * my_account_modif_listes.php
  * Page "Ajax" utilisée pour générer les listes de domaines et de ressources, en liaison avec my_account.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-16 14:42$
+ * Dernière modification : $Date: 2026-01-18 10:45$
  * @author    Laurent Delineau & JeromeB
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -161,10 +161,8 @@ if ($_GET['type'] == "ressource")
 		$display_liste .= '</select></div></div>'."\n";
 	}
 }
-if ($unicode_encoding)
-	header("Content-Type: text/html;charset=utf-8");
-else
-	header("Content-Type: text/html;charset=".$charset_html);
+
+header("Content-Type: text/html;charset=".$charset_html);
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 echo $display_liste;
 ?>
