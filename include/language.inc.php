@@ -541,6 +541,10 @@ if (($unicode_encoding) && (!function_exists('iconv')))
 function get_vocab($tag)
 {
 	global $vocab, $charset_html, $unicode_encoding;
+
+	$vocabModule =Hook::Appel("vocab");
+	$vocab = array_merge($vocab, $vocabModule);
+
 	if (!isset($vocab[$tag]))
 		return "<b><span style=\"color:#FF0000;\"><i>(".$tag.")</i></span></b>";
     else {
@@ -564,6 +568,10 @@ function get_vocab($tag)
 function get_vocab_admin($tag)
 {
 	global $vocab, $charset_html, $unicode_encoding, $trad;
+
+	$vocabModule =Hook::Appel("vocab");
+	$vocab = array_merge($vocab, $vocabModule);
+
 	if (!isset($vocab[$tag])) {
 		$trad[$tag] = "(".$tag.")";
 	} 
