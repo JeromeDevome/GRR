@@ -182,7 +182,7 @@ function setCookie(cookieName, cookieValue, lifeTime, path, domain, isSecure)
 	syntax: cookieName=cookieValue[;expires=dataAsString[;path=pathAsString[;domain=domainAsString[;secure]]]]
 	Because of the way that document.cookie behaves, writing this here is equivalent to writing
 	document.cookie = whatIAmWritingNow + "; " + document.cookie; */
-	document.cookie = escape(cookieName) + "=" + escape(cookieValue) + (lifeTime ? ";expires=" + (new Date((new Date()).getTime() + (1000 * lifeTime))).toGMTString() : "") + (path ? ";path=" + path : "") + (domain ? ";domain=" + domain : "") + (isSecure ? ";secure" : "") + "; SameSite=Lax";
+	document.cookie = escape(cookieName) + "=" + escape(cookieValue) + (lifeTime ? ";expires=" + (new Date((new Date()).getTime() + (1000 * lifeTime))).toGMTString() : "") + (path ? ";path=" + path : "") + (domain ? ";domain=" + domain : "") + (isSecure ? ";secure" : "") + "; SameSite=Strict";
 	//check if the cookie has been set/deleted as required
 	if ( lifeTime < 0 )
 	{

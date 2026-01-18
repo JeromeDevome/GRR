@@ -719,7 +719,7 @@
 		( "" ? ";path=" + path : "") +
 		( "" ? ";domain=" + domain : "") +
 		( "" ? ";secure" : "") +
-		"; SameSite=Lax";
+		"; SameSite=Strict";
 	}
 	insertBeneficiaires({{d.domaine}},{{d.roomid}},"{{d.beneficiaire|raw}}",{{d.idresa}});
 	insertChampsAdd({{d.domaine}},{{d.idresa}},{{d.roomid}});

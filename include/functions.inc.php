@@ -1033,7 +1033,7 @@ function begin_page($title, $page = "with_session")
 
     if (!isset($_COOKIE['open']))
     {
-        header('Set-Cookie: open=true; SameSite=Lax;');
+        header('Set-Cookie: open=true; SameSite=Strict;');
     }
 	$a = '<!DOCTYPE html>'.PHP_EOL;
 	$a .= '<html lang="fr">'.PHP_EOL;
@@ -1715,9 +1715,9 @@ function compare_ip_adr($ip1, $ips2)
                 $lnet=ip2long($net);
                 $lip=ip2long($ip1);
                 $binnet=str_pad( decbin($lnet),32,"0",STR_PAD_LEFT );
-                $firstpart=substr($binnet,0,$mask);
+				$firstpart=substr($binnet,0,(int)$mask);
                 $binip=str_pad( decbin($lip),32,"0",STR_PAD_LEFT );
-                $firstip=substr($binip,0,$mask);
+				$firstip=substr($binip,0,(int)$mask);
                 $resultIP = (strcmp($firstpart,$firstip)==0);
             }
             if ($resultIP){

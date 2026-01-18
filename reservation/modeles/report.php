@@ -3,9 +3,9 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2021-09-09
+ * Dernière modification : $Date: 2026-01-10 10:45$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2021 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -127,12 +127,14 @@ function accumulate(&$row, &$count, &$hours, $report_start, $report_end, &$room_
 {
 	global $vocab;
 
-	if ($_GET["sumby"] == "5") //Type
-		$temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter = '".$row[$_GET["sumby"]]."'");
-	else if (($_GET["sumby"] == "3") || ($_GET["sumby"] == "6")) //Brève descryption ou bénéficiare
-		$temp = $row[$_GET["sumby"]];
+	$getSumby = alphanum($_GET["sumby"]);
+
+	if ($getSumby == "5") //Type
+		$temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter = '".$row[$getSumby]."'");
+	else if (($getSumby == "3") || ($getSumby == "6")) //Brève descryption ou bénéficiare
+		$temp = $row[$getSumby];
 	else
-		$temp = grrExtractValueFromOverloadDesc($row[12],str_replace('addon_','',$_GET["sumby"]));
+		$temp = grrExtractValueFromOverloadDesc($row[12],str_replace('addon_','',$getSumby));
 
 	if ($temp == "")
 		$temp = "(Autres)";
@@ -170,14 +172,15 @@ function accumulate_periods(&$row, &$count, &$hours, $report_start, $report_end,
 {
 	global $vocab, $periods_name;
 
+	$getSumby = alphanum($_GET["sumby"]);
 	$max_periods = count($periods_name);
 
-	if ($_GET["sumby"] == "5")
-		$temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter = '".$row[$_GET["sumby"]]."'");
-	else if (($_GET["sumby"] == "3") or ($_GET["sumby"] == "6"))
-		$temp = $row[$_GET["sumby"]];
+	if ($getSumby == "5")
+		$temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter = '".$row[$getSumby]."'");
+	else if (($getSumby == "3") or ($getSumby == "6"))
+		$temp = $row[$getSumby];
 	else
-		$temp = grrExtractValueFromOverloadDesc($row[12],str_replace('addon_','',$_GET["sumby"]));
+		$temp = grrExtractValueFromOverloadDesc($row[12],str_replace('addon_','',$getSumby));
 
 	if ($temp == "")
 		$temp = "(Autres)";
@@ -230,6 +233,7 @@ function do_summary(&$count, &$hours, &$room_hash, &$breve_description_hash, $en
 {
 	global $vocab, $gListeResume;
 
+	$getSumby = alphanum($_GET["sumby"]);
     $rooms = array_keys($room_hash);    
 	ksort($rooms);
     $breve_descriptions = array_keys($breve_description_hash);
@@ -237,14 +241,14 @@ function do_summary(&$count, &$hours, &$room_hash, &$breve_description_hash, $en
 	$n_rooms = sizeof($rooms);
 	$n_names = sizeof($breve_descriptions);
 
-	if ($_GET["sumby"] == "6")
+	if ($getSumby == "6")
 		$premiere_cellule = get_vocab("sum_by_creator");
-	else if ($_GET["sumby"] == "3")
+	else if ($getSumby == "3")
 		$premiere_cellule = get_vocab("sum_by_descrip");
-	else if ($_GET["sumby"] == "5")
+	else if ($getSumby == "5")
 		$premiere_cellule = get_vocab("type");
 	else
-		$premiere_cellule = grr_sql_query1("SELECT fieldname FROM ".TABLE_PREFIX."_overload WHERE id='".$_GET["sumby"]."'");
+		$premiere_cellule = grr_sql_query1("SELECT fieldname FROM ".TABLE_PREFIX."_overload WHERE id='".$getSumby."'");
 
 	$ligne1 = "<th class=\"sorting\" tabindex=\"0\" aria-controls=\"resume\" rowspan=\"1\" colspan=\"1\">".$premiere_cellule." \ ".get_vocab("room")."</th>";
 	$ligneZ = "<th rowspan=\"1\" colspan=\"1\">".$premiere_cellule." \ ".get_vocab("room")."</th>";
