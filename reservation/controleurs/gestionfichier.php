@@ -3,9 +3,9 @@
  * gestionfichier.php
  * Utilitaire de téléversement d'un fichier attaché à une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-12-21 12:00$
+ * Dernière modification : $Date: 2026-18-01 21:30$
  * @author    Cédric Berthomé & Yan Naessens & JeromeB
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-206 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -28,9 +28,15 @@ $uploadDir = realpath(".")."/personnalisation/".$gcDossierDoc."/";
 
 if($action == 1) // import d'un fichier
 {
-  $msg = Import::DocumentResa($id);
+  $result = Import::DocumentResa($id);
 
-  echo $msg;
+  if($result != "")
+  {
+    $msg = $result[0];
+    echo $msg;
+    echo "<script>setTimeout(function() { window.location.href = '".$back."'; }, 5000);</script>";
+  }
+
 
 } elseif($action == 2) // suppression d'un fichier
 {
