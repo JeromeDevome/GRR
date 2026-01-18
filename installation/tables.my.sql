@@ -28,7 +28,7 @@ CREATE TABLE grr_area (id int(11) NOT NULL auto_increment, area_name varchar(30)
 DROP TABLE IF EXISTS grr_entry;
 CREATE TABLE grr_entry (id int(11) NOT NULL auto_increment, start_time int(11) NOT NULL default '0', end_time int(11) NOT NULL default '0', entry_type int(11) NOT NULL default '0', repeat_id int(11) NOT NULL default '0', room_id int(11) NOT NULL default '1',timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, create_by varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', beneficiaire_ext varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', beneficiaire varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', name varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', type char(2) NOT NULL default 'A', description text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci, statut_entry char(1) NOT NULL default '-', option_reservation int(11) NOT NULL default '0',overload_desc text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci, moderate tinyint(1) default '0', jours int(2) NOT NULL default '0', clef int(2) NOT NULL default '0', courrier int(2) NOT NULL default '0', nbparticipantmax int(11) NOT NULL default '0', supprimer tinyint(1) NOT NULL default '0', PRIMARY KEY (id), KEY idxStartTime (start_time), KEY idxEndTime (end_time), KEY room_id (room_id) );
 DROP TABLE IF EXISTS grr_files;
-CREATE TABLE IF NOT EXISTS grr_files (id int(11) NOT NULL AUTO_INCREMENT, id_entry int(11) DEFAULT NULL, file_name varchar(50) DEFAULT NULL, public_name varchar(50) DEFAULT NULL, PRIMARY KEY (`id`));
+CREATE TABLE grr_files (id int(11) NOT NULL AUTO_INCREMENT, id_entry int(11) DEFAULT NULL, file_name varchar(50) DEFAULT NULL, public_name varchar(50) DEFAULT NULL, PRIMARY KEY (`id`));
 DROP TABLE IF EXISTS grr_repeat;
 CREATE TABLE grr_repeat ( id int(11) NOT NULL auto_increment, start_time int(11) NOT NULL default '0', end_time int(11) NOT NULL default '0', rep_type int(11) NOT NULL default '0', end_date int(11) NOT NULL default '0', rep_opt varchar(32) NOT NULL default '', room_id int(11) NOT NULL default '1', timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, create_by varchar(190) NOT NULL default '', beneficiaire_ext varchar(200) NOT NULL default '', beneficiaire varchar(190) NOT NULL default '', name varchar(80) NOT NULL default '', type char(2) NOT NULL default 'A', description text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci, rep_num_weeks tinyint(4) default '0',overload_desc text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci, jours tinyint(2) NOT NULL default '0', courrier int(2) NOT NULL default '0', nbparticipantmax int(11) NOT NULL default '0', PRIMARY KEY  (id));
 DROP TABLE IF EXISTS grr_room;
@@ -198,7 +198,7 @@ INSERT INTO grr_setting VALUES ('url_disconnect', '');
 INSERT INTO grr_setting VALUES ('use_fckeditor', '1');
 INSERT INTO grr_setting VALUES ('UserAllRoomsMaxBooking', '-1');
 INSERT INTO grr_setting VALUES ('verif_reservation_auto', '0');
-INSERT INTO grr_setting VALUES ('version', '0400008');
+INSERT INTO grr_setting VALUES ('version', '0400009');
 INSERT INTO grr_setting VALUES ('visu_fiche_description', '0');
 INSERT INTO grr_setting VALUES ('webmaster_name', 'Webmestre de GRR');
 INSERT INTO grr_setting VALUES ('webmaster_email', 'VariableInstal03');
