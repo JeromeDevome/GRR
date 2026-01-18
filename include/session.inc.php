@@ -612,9 +612,10 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 	session_write_close();		// dde: ajout pou clôturer la session cas ?
     session_name($gSessionName);
 	// Configurer les paramètres de sécurité du cookie avant session_start()
+	$isSecure = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
 	@session_set_cookie_params([
 		'lifetime' => Settings::get("sessionMaxLength")*60,  // Durée de vie du cookie
-		'secure' => true,    // Transmettre uniquement via HTTPS
+		'secure' => $isSecure,    // Transmettre via HTTPS si disponible
 		'httponly' => true,  // Inaccessible à JavaScript (protection XSS)
 		'samesite' => 'Strict' // Protection CSRF : envoyer le cookie uniquement pour les requêtes du même site
 	]);
@@ -826,9 +827,10 @@ function grr_resumeSession()
 	// Resuming session
 	@session_name($gSessionName); // palliatif aux changements introduits dans php 7.2
 	// Configurer les paramètres de sécurité du cookie : durée d'expiration, secure, httponly et SameSite pour CSRF
+	$isSecure = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
 	@session_set_cookie_params([
 		'lifetime' => 3600,  // Durée de vie du cookie : 1 heure
-		'secure' => true,    // Transmettre uniquement via HTTPS
+		'secure' => $isSecure,    // Transmettre via HTTPS si disponible
 		'httponly' => true,  // Inaccessible à JavaScript (protection XSS)
 		'samesite' => 'Strict' // Protection CSRF : envoyer le cookie uniquement pour les requêtes du même site
 	]);
