@@ -185,6 +185,10 @@ if ($d['popupMessage'] != "")
 // On vérifie que les noms et prénoms ne sont pas vides
 VerifNomPrenomUser($type_session);
 
+// HOOK
+$resulHook = Hook::Appel("hookPlanning1");
+$d['hookPlanning1'] = $resulHook['hookPlanning1'];
+
 // Dans le cas d'une selection invalide
 if ($area <= 0)
 {
