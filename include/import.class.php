@@ -2,9 +2,9 @@
 /* import.class.php
  * Permet d'importer des éléments dans GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-12-21 12:00$
+ * Dernière modification : $Date: 2026-01-18 21:30$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -176,13 +176,13 @@ class Import {
 
             // rejette les fichiers à double extension
             if (count(explode('.', $origName)) > 2) {
-                $msg .= "<br>type de fichier inconnu";
+                $msg .= "<br>Type de fichier inconnu";
                 continue;
             }
 
             $fileExt = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
             if (!in_array($fileExt, ["jpg","jpeg","png","gif","pdf"])) {
-                $msg .= "<br>type de fichier inconnu";
+                $msg .= "<br>Type de fichier \"$fileExt\" non autorisé. Autorisés : jpg, jpeg, png, gif, pdf";
                 continue;
             }
 
