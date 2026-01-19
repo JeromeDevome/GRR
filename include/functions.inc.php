@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-01-15 16:16$
+ * Dernière modification : $Date: 2026-01-19 16:35$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -842,6 +842,7 @@ function iptobin($ip){
  * rend :
  *   TRUE ou FALSE 
  * teste si l'adresse $ip1 est dans la liste $ips2 ou est dans l'une des plages de $ips2
+ * n'a pas été testé avec les plages d'IPv6
  */
 function compare_ip_adr($ip1, $ips2)
 {
@@ -854,9 +855,9 @@ function compare_ip_adr($ip1, $ips2)
       if ($slash !== false){ // $ip2 est une plage CIDR
         list($net,$mask) = preg_split("~/~",$ip);
         $binnet=iptobin($net);
-        $firstpart=substr($binnet,0,$mask);
+        $firstpart=substr($binnet,0,(int)$mask);
         $binip=iptobin($ip1);
-        $firstip=substr($binip,0,$mask);
+        $firstip=substr($binip,0,(int)$mask);
         $resultIP = (strcmp($firstpart,$firstip)==0);
       }
       if ($resultIP){
@@ -2338,7 +2339,7 @@ function start_page_w_header($day = '', $month = '', $year = '', $type_session =
     header('Content-Type: text/html; charset=utf-8'); // en liaison avec la modification de pageHead2
     if (!isset($_COOKIE['open']))
     {
-        header('Set-Cookie: open=true; SameSite=Lax');
+        header('Set-Cookie: open=true; SameSite=Strict');
     }
     echo '<!DOCTYPE html>'.PHP_EOL;
     echo '<html lang="fr">'.PHP_EOL;
@@ -2378,7 +2379,7 @@ function start_page_wo_header($titre, $type_session = 'with_session')
     header('Content-Type: text/html; charset=utf-8');
     if (!isset($_COOKIE['open']))
     {
-        header('Set-Cookie: open=true; SameSite=Lax');
+        header('Set-Cookie: open=true; SameSite=Strict');
     }
     echo '<!DOCTYPE html>'.PHP_EOL;
     echo '<html lang="fr">'.PHP_EOL;
@@ -3209,7 +3210,7 @@ function begin_page($title, $page = "with_session")
   header('Content-Type: text/html; charset=utf-8');
   if (!isset($_COOKIE['open']))
   {
-    header('Set-Cookie: open=true; SameSite=Lax');
+    header('Set-Cookie: open=true; SameSite=Strict');
   }
   $a = '<!DOCTYPE html>'.PHP_EOL;
   $a .= '<html lang="fr">'.PHP_EOL;

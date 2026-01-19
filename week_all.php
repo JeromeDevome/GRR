@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-05 17:50$
+ * Dernière modification : $Date: 2026-01-19 16:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -344,7 +344,7 @@ include "./include/hook.class.php";
 header('Content-Type: text/html; charset=utf-8');
 if (!isset($_COOKIE['open']))
 {
-	header('Set-Cookie: open=true; SameSite=Lax');
+	header('Set-Cookie: open=true; SameSite=Strict');
 }
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;
