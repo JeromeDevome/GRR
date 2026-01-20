@@ -4,9 +4,31 @@ GRR
 
 GRR est un outil de gestion et de réservation de ressources. **GRR** est une adaptation d'une application **MRBS**.
 
+![GitHub stars](https://img.shields.io/github/stars/JeromeDevome/GRR)
+![GitHub forks](https://img.shields.io/github/forks/JeromeDevome/GRR)
+![GitHub watchers](https://img.shields.io/github/watchers/JeromeDevome/GRR)
+![GitHub followers](https://img.shields.io/github/followers/JeromeDevome?style=social)
+
+![GitHub last commit](https://img.shields.io/github/last-commit/JeromeDevome/GRR)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/JeromeDevome/GRR)
+![GitHub contributors](https://img.shields.io/github/contributors/JeromeDevome/GRR)
 
 ![GitHub language count](https://img.shields.io/github/languages/count/JeromeDevome/GRR)
+![GitHub repo size](https://img.shields.io/github/repo-size/JeromeDevome/GRR)
+![GitHub code size](https://img.shields.io/github/languages/code-size/JeromeDevome/GRR)
 ![GitHub top language](https://img.shields.io/github/languages/top/JeromeDevome/GRR)
+![Symfony](https://img.shields.io/badge/Symfony-6-black?logo=symfony)
+![PHP](https://img.shields.io/badge/PHP-8-777BB4?logo=php&logoColor=white)
+
+![GRR](https://img.shields.io/badge/GRR-Open%20Source-blue)
+![GitHub license](https://img.shields.io/github/license/JeromeDevome/GRR)
+
+![Traductions](https://img.shields.io/badge/Languages-5-blue?style=flat-square)
+![FR](https://img.shields.io/badge/🇫🇷-FR-blue?style=flat-square)
+![EN](https://img.shields.io/badge/🇬🇧-EN-red?style=flat-square)
+![ES](https://img.shields.io/badge/🇪🇸-ES-yellow?style=flat-square)
+![IT](https://img.shields.io/badge/🇮🇹-IT-green?style=flat-square)
+![DE](https://img.shields.io/badge/🇩🇪-DE-black?style=flat-square)
 
 ![GitHub Release Date](https://img.shields.io/github/release-date/JeromeDevome/GRR?label=date%20release)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/JeromeDevome/GRR)
@@ -14,13 +36,10 @@ GRR est un outil de gestion et de réservation de ressources. **GRR** est une ad
 ![GitHub (Pre-)Release Date](https://img.shields.io/github/release-date-pre/JeromeDevome/GRR?label=date%20pre-releases)
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/JeromeDevome/GRR?include_prereleases&label=pre-release)
 
-Site: https://grr.devome.com/
-
-Forum : https://site.devome.com/fr/grr/forum-grr
-
-Chat/Discord : https://discord.com/channels/484639573243068417/
-
-Documentation : https://devome.com/GRR/DOC/
+[![Site GRR](https://img.shields.io/badge/Site-GRR-blue?style=for-the-badge&logo=google-chrome&logoColor=white)](https://grr.devome.com/)
+[![Forum GRR](https://img.shields.io/badge/Forum-GRR-orange?style=for-the-badge&logo=discourse&logoColor=white)](https://site.devome.com/fr/grr/forum-grr)
+[![Discord](https://img.shields.io/badge/Discord-GRR-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/channels/484639573243068417/)
+[![Documentation](https://img.shields.io/badge/Documentation-GRR-success?style=for-the-badge&logo=readthedocs&logoColor=white)](https://devome.com/GRR/DOC/)
 
 ```diff
 + Versions disposant de support et de correctifs: 4.4.X, les versions précédentes doivent être mises à jour.
@@ -29,7 +48,7 @@ Documentation : https://devome.com/GRR/DOC/
 **Requiert :**
 
 PHP : >= 8.1.0 && <= 8.3; nécessite au moins les modules php-fileinfo, php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml, php-intl (*)
-MySQL: >= 5.4 && <= 8.4
+MySQL: >= 5.4 && <= 9.4
 
 
 
