@@ -3,7 +3,7 @@
  * vuereservation.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-07 15:18$
+ * Dernière modification : $Date: 2026-01-20 15:53$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
@@ -210,7 +210,7 @@ if(isset($_GET["reg_part"]))
 {
     $reg_participant = array();
     if(isset($_GET["reg_participant"]))
-        $reg_participant = clean_input($_GET['reg_participant']);
+        $reg_participant = array_map('clean_input',$_GET['reg_participant']);
     // tester s'il est possible d'inscrire tout ce monde !
     $reg_users = array(); // participants déjà inscrits
     $resp = grr_sql_query("SELECT beneficiaire FROM ".TABLE_PREFIX."_participants WHERE idresa=$id");
