@@ -1,5 +1,6 @@
 
-GRR
+GRR [![Chat Status](https://img.shields.io/discord/484639573243068417.svg)](https://discord.com/channels/484639573243068417/)
+
 ===================
 
 GRR est un outil de gestion et de réservation de ressources. **GRR** est une adaptation d'une application **MRBS**.
@@ -38,7 +39,7 @@ GRR est un outil de gestion et de réservation de ressources. **GRR** est une ad
 
 [![Site GRR](https://img.shields.io/badge/Site-GRR-blue?style=for-the-badge&logo=google-chrome&logoColor=white)](https://grr.devome.com/)
 [![Forum GRR](https://img.shields.io/badge/Forum-GRR-orange?style=for-the-badge&logo=discourse&logoColor=white)](https://site.devome.com/fr/grr/forum-grr)
-[![Discord](https://img.shields.io/badge/Discord-GRR-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/channels/484639573243068417/)
+[![Chat Status](https://img.shields.io/discord/484639573243068417.svg?style=for-the-badge)](https://discord.com/channels/484639573243068417/)
 [![Documentation](https://img.shields.io/badge/Documentation-GRR-success?style=for-the-badge&logo=readthedocs&logoColor=white)](https://devome.com/GRR/DOC/)
 
 ```diff
