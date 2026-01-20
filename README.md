@@ -1,5 +1,5 @@
 
-GRR [![Chat Status](https://img.shields.io/discord/484639573243068417.svg)](https://discord.com/channels/484639573243068417/)
+GRR
 
 ===================
 
