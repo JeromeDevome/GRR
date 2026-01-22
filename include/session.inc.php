@@ -3,7 +3,7 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-18 10:45$
+ * Dernière modification : $Date: 2026-01-22 18:14$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -438,7 +438,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
         // proposition de P. Boissonneault
         if(!isset($user_dn)) {
             if(!isset($ldap_base)) {
-                include "config_ldap.inc.php";
+                include "./personnalisation/config_ldap.inc.php";
             }
             $ds = grr_connect_ldap($ldap_adresse,$ldap_port,$ldap_login,$ldap_pwd,$use_tls);
             $user_dn = grr_ldap_search_user($ds, $ldap_base,Settings::get("ldap_champ_recherche"), $_login, $ldap_filter, "no");
