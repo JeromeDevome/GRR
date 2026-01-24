@@ -1,11 +1,11 @@
 <?php
 /**
  * admin_config5.php
- * Interface permettant à l'administrateur la configuration des paramètres pour le module Jours Cycles
+ * Interface permettant à l'administrateur la configuration des des modules (Jours Cycles, multisite, modules externes)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2026-01-24 17:15$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -111,7 +111,8 @@ if (isset($_GET['activation'])) {
 				Module::Installation($iter, $module_versionBDD);
 				
 			} else{
-				$msg .= "Impossible de trouver le fichier d'installation et ou d'infos !\\n";
+				$d['enregistrement'] = 3;
+				$d['msgToast'] = "Impossible de trouver le fichier d'installation et ou d'infos !\\n";
 			}
 		}
 	}
@@ -127,17 +128,15 @@ if (isset($_POST['ok']) && $upload_Module == 1) {
         exit('Erreur n°'.$_FILES['file']['error']);
     }
     if (count(explode('.', $_FILES['doc_file']['name'])) > 2) {
-
-        $msg .= "Erreur 1 - Le module n\'a pas pu être importé : la seule extention autorisées est zip.\\n";
-        $ok = 'no';
-
+		$d['enregistrement'] = 3;
+        $d['msgToast'] .= "Erreur 1 - Le module n\'a pas pu être importé : la seule extention autorisées est zip.\\n";
     } elseif (preg_match("`\.([^.]+)$`", $_FILES['doc_file']['name'], $match)) {
         /* normalement, si on arrive ici l'image n'a qu'une extension */
 
         $ext = strtolower($match[1]);
         if ($ext != 'zip') {
-            $msg .= "Erreur 2 - Le module n\'a pas pu être importé : la seule extention autorisées est zip.\\n";
-            $ok = 'no';
+			$d['enregistrement'] = 3;
+            $d['msgToast'] .= "Erreur 2 - Le module n\'a pas pu être importé : la seule extention autorisées est zip.\\n";
         } else {
             /* deuxième test passé, l'extension est autorisée */
 
@@ -150,47 +149,42 @@ if (isset($_POST['ok']) && $upload_Module == 1) {
                     /* je copie le logo pour valider avec la fonction move_uploaded_file */
                     $moveUploadReturn = move_uploaded_file($_FILES['doc_file']['tmp_name'], $picturePath);
                     if (!$moveUploadReturn) {
-                        $msg .= "Erreur 3 - Le module n\'a pas pu être importé : problème de transfert. Le fichier ".$_FILES['doc_file']['name']." n\'a pas pu être transféré sur le répertoire \"temp\". Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
-                        $ok = 'no';
+						$d['enregistrement'] = 3;
+                        $d['msgToast'] .= "Erreur 3 - Le module n\'a pas pu être importé : problème de transfert. Le fichier ".$_FILES['doc_file']['name']." n\'a pas pu être transféré sur le répertoire \"temp\". Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
+
                     } else {
 						$zip = new ZipArchive;
 						if ($zip->open($picturePath) === TRUE) {
 							$zip->extractTo('../personnalisation/modules/');
 							$zip->close();
 						} else {
-							$msg .= "Erreur 8 - Le module n\'a pas pu être installé\\n";
-							$ok = 'no';
+							$d['enregistrement'] = 3;
+							$d['msgToast'] .= "Erreur 8 - Le module n\'a pas pu être installé\\n";
 						}
 						
                         $unlinkReturn = unlink($picturePath);
                         if (!$unlinkReturn) {
-                            $msg .= "Erreur 9 - Installation réussie, cependant archive non supprimé.  Cette erreur peut être ignorée.\\n";
-                            $ok = 'no';
+							$d['enregistrement'] = 3;
+                            $d['msgToast'] = "Erreur 9 - Installation réussie, cependant archive non supprimé.  Cette erreur peut être ignorée.\\n";
                         }
                     }
 
                 } else {
-                    $msg .= "Erreur 5 - Le module n\'a pas pu être enregistré : problème d\'écriture sur le répertoire \"temp\". Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
-                    $ok = 'no';
+					$d['enregistrement'] = 3;
+                    $d['msgToast'] .= "Erreur 5 - Le module n\'a pas pu être enregistré : problème d\'écriture sur le répertoire \"temp\". Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
                 }
 			} else{
-			    $msg .= "Erreur 7 - Le module n\'a pas pu être enregistré !\\n";
-				$ok = 'no';	
+				$d['enregistrement'] = 3;
+			    $d['msgToast'] .= "Erreur 7 - Le module n\'a pas pu être enregistré !\\n";
 			}
 			
         }
     } elseif ($_FILES['doc_file']['name'] != '') {
-        $msg .= "Erreur 6 - Le module n\'a pas pu être enregistré : le fichier sélectionné n'est pas valide !\\n";
-        $ok = 'no';
+		$d['enregistrement'] = 3;
+        $d['msgToast'] .= "Erreur 6 - Le module n\'a pas pu être enregistré : le fichier sélectionné n'est pas valide !\\n";
     }
 }
 
-
-if (isset($_GET['ok']))
-{
-	$msg = get_vocab("message_records");
-	affiche_pop_up($msg, "admin");
-}
 
 
 get_vocab_admin("Module_Int_Gestion");
