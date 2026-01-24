@@ -224,9 +224,6 @@ $hexa['focus_btn_primary_color'] = (isset($AllSettings['sp_focus_btn_primary_col
 $hexa['focus_btn_primary_bgcolor'] = (isset($AllSettings['sp_focus_btn_primary_bgcolor']))? valid_color($AllSettings['sp_focus_btn_primary_bgcolor']) : $default_color_tab["focus_btn_primary_bgcolor"];
 $hexa['focus_btn_primary_bordcolor'] = (isset($AllSettings['sp_focus_btn_primary_bordcolor']))? valid_color($AllSettings['sp_focus_btn_primary_bordcolor']) : $default_color_tab["focus_btn_primary_bordcolor"];
 
-
-//affiche_pop_up($msg,"admin");
-
 echo $twig->render('admin_couleurs.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'hexa' => $hexa));
 
 ?>
