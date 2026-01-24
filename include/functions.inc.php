@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-01-18 10:45$
+ * Dernière modification : $Date: 2026-01-24 10:20$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1431,13 +1431,13 @@ function toTimeString(&$dur, &$units, $edition = false)
 			if ($dur >= 60)
 			{
 				$dur /= 60;
-				if (($dur >= 24) && ($dur % 24 == 0))
+				if (($dur >= 24) && (fmod($dur, 24) == 0))
 				{
 					$dur /= 24;
-					if (($dur >= 7) && ($dur % 7 == 0))
+					if (($dur >= 7) && (fmod($dur, 7) == 0))
 					{
 						$dur /= 7;
-						if (($dur >= 52) && ($dur % 52 == 0))
+						if (($dur >= 52) && (fmod($dur, 52) == 0))
 						{
 							$dur  /= 52;
 							$units = get_vocab("years");
