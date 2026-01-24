@@ -1,5 +1,9 @@
 {% extends 'layout.twig' %}
 
+{% block css %}
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
+{% endblock %}
+
 {% import 'messagesysteme.twig' as msgSyst %}
 
 {% block content %}
@@ -13,9 +17,9 @@
 
 			<div class="box">
 				<div class="box-header">
-					<h3 class="box-title">{{trad.admin_type}} : {{trad.dNomDomaine}}</h3>
-					{% if trad.dDroitsAdmin >= 6 %}
-						<a class="btn pull-right bg-green"href="?p=admin_type_modify&id=0">{{trad.display_add_type}}</a>
+					<h3 class="box-title">{{trad.admin_type}} : {{d.nomDomaine}}</h3>
+					{% if d.droitsAdmin >= 6 %}
+						<a class="btn pull-right bg-green"href="?p=admin_type_modify&amp;id=0">{{trad.display_add_type}}</a>
 					{% endif %}
 				</div>
 				<!-- /.box-header -->
@@ -23,7 +27,7 @@
 				
 					<form action="?p=admin_type_area" id="type" method="get">
 						<input type="hidden" name="p" value="admin_type_area" />
-						<input type="hidden" name="id_area" value="{{trad.dIdArea}}" />
+						<input type="hidden" name="id_area" value="{{d.idArea}}" />
 
 						<table class="table table-striped">
 							<tr>
@@ -41,7 +45,7 @@
 									<td style="background-color:{{type.couleurhexa}};color:{{type.couleurtexte}};">Texte</td>
 									<td>{{type.order_display}}</td>
 									<td><input type="checkbox" name="{{ type.id }}" value="y" {% if type.dispodomaine < 1 %}checked{% endif %} /></td>
-									<td><input type="radio" name="id_type_par_defaut" value="{{ type.id }}" {% if trad.dDefautType == type.id %}checked{% endif %} /></td>
+									<td><input type="radio" name="id_type_par_defaut" value="{{ type.id }}" {% if d.defautType == type.id %}checked{% endif %} /></td>
 								</tr>
 							{% endfor %}
 							<tr>
@@ -50,7 +54,7 @@
 								<td></td>
 								<td></td>
 								<td></td>
-								<td><input type="radio" name="id_type_par_defaut" value="-1"{% if trad.dDefautType <= 0 %}checked{% endif %} /> {{ trad.nobody }}</td>
+								<td><input type="radio" name="id_type_par_defaut" value="-1"{% if d.defautType <= 0 %}checked{% endif %} /> {{ trad.nobody }}</td>
 							</tr>
 						</table>
 
@@ -67,4 +71,14 @@
 {% endblock %}
 
 {% block javascript %}
+	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
+	<script>
+		$(function () {
+			{% if d.enregistrement == 1 %}
+				toastr.success("{{d.msgToast}}")
+			{% elseif d.enregistrement == 3 %}
+				toastr.error("{{d.msgToast}}")
+			{% endif %}
+		});
+	</script>
 {% endblock %}
