@@ -3,9 +3,9 @@
  * admin_groupe.php
  * interface de gestion des utilisateurs de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-07-13 16:10$
+ * Dernière modification : $Date: 2026-01-24 11:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -45,7 +45,8 @@ if ((isset($_GET['action_del'])) and (isset($_GET['js_confirmed'])) and ($_GET['
 	}
 	else
 	{
-		$msg=get_vocab("del_user_succeed");
+		$d['enregistrement'] = 1;
+		$d['msgToast'] = "Le groupe a été supprimé avec succès.";
 	}
 }
 // Synchro Groupe
@@ -101,7 +102,6 @@ if ($res)
 	}
 }
 
-affiche_pop_up($msg,"admin");
 
 echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'groupes' => $groupes));
 ?>
