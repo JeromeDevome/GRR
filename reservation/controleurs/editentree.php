@@ -3,10 +3,10 @@
  * editentree.php
  * script préparant le formulaire qui sera affiché par editentree.twig
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-12-01 11:14$
+ * Dernière modification : $Date: 2026-01-24 11:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -688,7 +688,7 @@ if ($type_affichage_reser == 0) // sélection de la durée
 }
 else // sélection de l'heure ou du créneau de fin
 {
-  $d['selectionDateFin'] = genDateSelectorForm('end_',$day,$month,$year,"");
+  $d['selectionDateFin'] = genDateSelectorForm('end_',$end_day,$end_month,$end_year,"");
 
   if ($enable_periods=='y')
   {
