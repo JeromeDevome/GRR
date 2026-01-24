@@ -18,7 +18,6 @@
 
 $grr_script_name = "admin_user_mdp_facile.php";
 
-$msg = '';
 $col = array();
 
 if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1,'user') != 1))
@@ -96,8 +95,6 @@ if ($res)
 	}
 }
 
-// Affichage d'un pop-up
-affiche_pop_up($msg,"admin");
 
 echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateurs' => $col));
 ?>

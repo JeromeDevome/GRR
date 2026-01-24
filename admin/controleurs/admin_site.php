@@ -324,14 +324,6 @@ function check_right($id)
 		exit();
 	}
 
-	if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes') )
-	{
-		$msg = $_GET['msg'];
-		affiche_pop_up($msg,'admin');
-	}
-	else
-		$msg = '';
-
 	// Lecture des paramètres passés à la page
 	$id_site = isset($_POST['id']) ? $_POST['id'] : (isset($_GET['id']) ? $_GET['id'] : NULL);
 	$action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GET['action'] : NULL);
