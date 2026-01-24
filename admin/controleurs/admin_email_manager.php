@@ -138,7 +138,6 @@ if ($action && $reg_admin_login)
 	} 
 }
 
-//affiche_pop_up($msg,"admin");
 
 if (empty($room))
 	$room = -1;

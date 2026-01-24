@@ -140,7 +140,6 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
 } else {
     $msg = '';
 }
-//affiche_pop_up($msg, 'admin');
 
 
 get_vocab_admin('cgu_titre');

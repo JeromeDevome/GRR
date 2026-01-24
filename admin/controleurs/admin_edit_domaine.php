@@ -324,8 +324,6 @@ if ((!empty($id_area)) || (isset($add_area)))
 		$msg = '';
 	}
 
-	//affiche_pop_up($msg,"admin");
-
 	if (isset($id_area))
 	{
 		$res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_area WHERE id=$id_area");
