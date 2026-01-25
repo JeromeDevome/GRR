@@ -73,7 +73,7 @@ if ($valid == 'yes')
 	}
 }
 
-affiche_pop_up($msg,'admin');
+affiche_pop_up($msg,'user');
 
 if (IsAllowedToModifyMdp() || $_SESSION['changepwd'] == 1)
     $d['droitChanger'] = 1;

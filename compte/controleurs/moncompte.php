@@ -233,7 +233,7 @@ if ($res)
 	}
 }
 
-affiche_pop_up($msg,'admin');
+affiche_pop_up($msg,'user');
 
 if ($user_statut == "utilisateur")
 	$text_user_statut = get_vocab("statut_user");

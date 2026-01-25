@@ -414,7 +414,7 @@ if ($type_name == -1)
     $type_name = "?$type?";
 
 // Affichage d'un pop-up
-affiche_pop_up($msg,"admin");
+affiche_pop_up($msg,"user");
 
 
 $resa['id'] = $id;
