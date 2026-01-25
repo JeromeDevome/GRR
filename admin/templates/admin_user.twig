@@ -5,6 +5,7 @@
 	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/datatables-select/css/select.bootstrap4.min.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
 {% endblock %}
 
 {% import 'messagesysteme.twig' as msgSyst %}
@@ -38,7 +39,7 @@
 								<tr>
 									<td></td>
 									{% if utilisateur.8 == 1 %}
-										<td><a href="?p=admin_user_modify&user_login={{utilisateur.1}}&display={{ d.display }}">{{utilisateur.1}}</a></td>
+										<td><a href="?p=admin_user_modify&amp;user_login={{utilisateur.1}}&amp;display={{ d.display }}">{{utilisateur.1}}</a></td>
 									{% else %}
 										<td>{{utilisateur.1}}</td>
 									{% endif %}
@@ -50,7 +51,7 @@
 									<td>{{utilisateur.5}}</td>
 									<td>
 										{% if utilisateur.8 == 1 %}
-											<a href="?p=admin_user_modify&user_login={{utilisateur.1}}&display={{ d.display }}" class="btn btn-info btn-xs"><i class="icon fa fa-edit"></i></a> 
+											<a href="?p=admin_user_modify&amp;user_login={{utilisateur.1}}&amp;display={{ d.display }}" class="btn btn-info btn-xs"><i class="icon fa fa-edit"></i></a> 
 										{% endif %}
 										{% if utilisateur.7 == 1 %}
 											<button type="button" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#modalWarningSupUser" data-idsup="{{ utilisateur.1 }}"><i class="icon fa fa-trash"></i></button>
@@ -71,7 +72,7 @@
 				<!-- /.box-header -->
 				<div class="box-body no-padding">
 					<h4>{{ trad.display_add_user }} :</h4>
-					<a href="?p=admin_user_modify&display={{ trad.dDisplay }}" class="btn btn-primary btn-block">{{ trad.display_add_user }}</a>
+					<a href="?p=admin_user_modify&amp;display={{ trad.dDisplay }}" class="btn btn-primary btn-block">{{ trad.display_add_user }}</a>
 					<a href="?p=admin_import_users_csv" class="btn btn-primary btn-block">{{ trad.via_fichier }}</a>
 					<a href="?p=admin_import_users_elycee" class="btn btn-primary btn-block">Depuis elycée</a>
 					<h4>{{ trad.admin_menu_various }} :</h4>
@@ -121,6 +122,7 @@
 	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
 	<script>
 		// Modal
 		$('#modalWarningSupUser').on('show.bs.modal', function (event) {
@@ -133,6 +135,15 @@
 		})
 
 		$(function(){
+
+			{% if d.enregistrement == 1 %}
+				toastr.success("{{d.msgToast}}")
+			{% elseif d.enregistrement == 2 %}
+				toastr.warning("{{d.msgToast}}")
+			{% elseif d.enregistrement == 3 %}
+				toastr.error("{{d.msgToast}}")
+			{% endif %}
+
 			$('form').submit(function(e) {
 			  e.preventDefault()
 			  var $form = $(this)

@@ -3,9 +3,9 @@
  * admin_user.php
  * interface de gestion des utilisateurs de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2026-01-25 11:30$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -21,7 +21,6 @@ $grr_script_name = "admin_user.php";
 
 $display = isset($_GET["display"]) ? $_GET["display"] : NULL;
 //$order_by = isset($_GET["order_by"]) ? $_GET["order_by"] : NULL;
-$msg = '';
 
 if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1,'user') != 1))
 {
@@ -64,7 +63,9 @@ if ((isset($_GET['action_del'])) and (isset($_GET['js_confirmed'])) and ($_GET['
 			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='$temp'");
 			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='$temp'");
 			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_utilisateurs_groupes WHERE login='$temp'");
-			$msg=get_vocab("del_user_succeed");
+
+			$d['enregistrement'] = 1;
+			$d['msgToast'] = get_vocab("del_user_succeed");
 		}
 	}
 }
@@ -226,5 +227,4 @@ if ($res)
 	}
 }
 
-affiche_pop_up($msg,"admin");
 ?>
