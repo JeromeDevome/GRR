@@ -3,9 +3,9 @@
  * admin_admin_site.php
  * Interface de gestion des administrateurs de sites de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2026-1201-25 12:00$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -35,7 +35,6 @@ $reg_admin_login = isset($_GET["reg_admin_login"]) ? $_GET["reg_admin_login"] : 
 $reg_multi_admin_login = isset($_POST["reg_multi_admin_login"]) ? $_POST["reg_multi_admin_login"] : NULL;
 $test_user =  isset($_POST["reg_multi_admin_login"]) ? "multi" : (isset($_GET["reg_admin_login"]) ? "simple" : NULL);
 $action = isset($_GET["action"]) ? $_GET["action"] : NULL;
-$msg = '';
 
 if ($test_user == "multi")
 {
@@ -55,7 +54,10 @@ if ($test_user == "multi")
 					if (grr_sql_command($sql) < 0)
 						fatal_error(1, "<p>" . grr_sql_error());
 					else
-						$msg= get_vocab("add_multi_user_succeed");
+					{
+						$d['enregistrement'] = 1;
+						$d['msgToast'] = get_vocab("add_multi_user_succeed");
+					}
 				}
 			}
 		}
@@ -72,7 +74,10 @@ elseif($test_user == "simple")
 			if (grr_sql_command($sql) < 0)
 				fatal_error(1, "<p>" . grr_sql_error());
 			else
-				$msg = get_vocab("add_user_succeed");
+			{
+				$d['enregistrement'] = 1;
+				$d['msgToast'] = get_vocab("add_user_succeed");
+			}
 		}
 	}
 }
@@ -87,7 +92,10 @@ if ($action)
 		if (grr_sql_command($sql) < 0)
 			fatal_error(1, "<p>" . grr_sql_error());
 		else
-			$msg = get_vocab("del_user_succeed");
+		{
+			$d['enregistrement'] = 1;
+			$d['msgToast'] = "Utilisateur supprimé de la liste des administrateurs du site.";
+		}
 	}
 }
 
@@ -102,9 +110,6 @@ get_vocab_admin('admin');
 get_vocab_admin('add');
 
 $d['idSite'] = $id_site;
-
-// Affichage d'un pop-up
-affiche_pop_up($msg,"admin");
 
 $utilisateursAdmin = array ();
 $utilisateursAjoutable = array ();
