@@ -1,5 +1,9 @@
 {% extends 'layout.twig' %}
 
+{% block css %}
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
+{% endblock %}
+
 {% import 'messagesysteme.twig' as msgSyst %}
 
 {% block content %}
@@ -158,7 +162,17 @@
 {% endblock %}
 
 {% block javascript %}
+	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
 	<script>
+		$(function () {
+			{% if d.enregistrement == 1 %}
+				toastr.success("{{d.msgToast}}")
+			{% elseif d.enregistrement == 2 %}
+				toastr.warning("{{d.msgToast}}")
+			{% elseif d.enregistrement == 3 %}
+				toastr.error("{{d.msgToast}}")
+			{% endif %}
+		});
 
 		function area_go()
 		{

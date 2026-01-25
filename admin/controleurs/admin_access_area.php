@@ -3,9 +3,9 @@
  * admin_access_area.php
  * Interface de gestion des accès restreints aux domaines
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2026-01-25 11:20$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -28,7 +28,7 @@ $test_user =  isset($_POST["reg_multi_user_login"]) ? "multi" : (isset($_POST["r
 $action = isset($_GET["action"]) ? $_GET["action"] : NULL;
 if($action == NULL)
 	$action = isset($_POST["action"]) ? $_POST["action"] : NULL;
-$msg = '';
+
 
 check_access(4, $back);
 
@@ -48,7 +48,10 @@ if ($test_user == "multi")
 			$res = grr_sql_query($sql);
 			$test = grr_sql_count($res);
 			if ($test > 0)
-				$msg = get_vocab("warning_exist");
+			{
+				$d['enregistrement'] = 2;
+				$d['msgToast'] = get_vocab("warning_exist");
+			}
 			else
 			{
 				if ($valeur != '')
@@ -57,7 +60,10 @@ if ($test_user == "multi")
 					if (grr_sql_command($sql) < 0)
 						fatal_error(1, "<p>" . grr_sql_error());
 					else
-						$msg= get_vocab("add_multi_user_succeed");
+					{
+						$d['enregistrement'] = 1;
+						$d['msgToast'] = get_vocab("add_multi_user_succeed");
+					}
 				}
 			}
 		}
@@ -79,7 +85,10 @@ if ($test_user == "simple")
 		$res = grr_sql_query($sql);
 		$test = grr_sql_count($res);
 		if ($test > 0)
-			$msg = get_vocab("warning_exist");
+		{
+			$d['enregistrement'] = 2;
+			$d['msgToast'] = get_vocab("warning_exist");
+		}
 		else
 		{
 			if ($reg_user_login != '')
@@ -88,7 +97,10 @@ if ($test_user == "simple")
 				if (grr_sql_command($sql) < 0)
 					fatal_error(1, "<p>" . grr_sql_error());
 				else
-					$msg = get_vocab("add_user_succeed");
+				{
+					$d['enregistrement'] = 1;
+					$d['msgToast'] = get_vocab("add_user_succeed");
+				}
 			}
 		}
 	}
@@ -108,7 +120,10 @@ if ($action == "add_groupe")
 		$res = grr_sql_query($sql);
 		$test = grr_sql_count($res);
 		if ($test > 0)
-			$msg = get_vocab("warning_exist");
+		{
+			$d['enregistrement'] = 2;
+			$d['msgToast'] = get_vocab("warning_exist");
+		}
 		else
 		{
 			if ($reg_groupe != '')
@@ -117,7 +132,10 @@ if ($action == "add_groupe")
 				if (grr_sql_command($sql) < 0)
 					fatal_error(1, "<p>" . grr_sql_error());
 				else
-					$msg = get_vocab("add_user_succeed");
+				{
+					$d['enregistrement'] = 1;
+					$d['msgToast'] = get_vocab("add_user_succeed");
+				}
 
 				synchro_groupe($reg_groupe, 1);
 			}
@@ -138,7 +156,10 @@ if ($action=='del_user')
 	if (grr_sql_command($sql) < 0)
 		fatal_error(1, "<p>" . grr_sql_error());
 	else
-		$msg = get_vocab("del_user_succeed");
+	{
+		$d['enregistrement'] = 1;
+		$d['msgToast'] = get_vocab("del_user_succeed");
+	}
 
 } elseif ($action=='del_groupe')
 {
@@ -153,7 +174,10 @@ if ($action=='del_user')
 	if (grr_sql_command($sql) < 0)
 		fatal_error(1, "<p>" . grr_sql_error());
 	else
-		$msg = get_vocab("del_user_succeed");
+	{
+		$d['enregistrement'] = 1;
+		$d['msgToast'] = get_vocab("del_user_succeed");
+	}
 
 	synchro_groupe($groupe, 1);
 }
@@ -164,8 +188,6 @@ if (empty($id_area))
 
 $trad = $vocab;
 $d['idDomaine'] = $id_area;
-
-affiche_pop_up($msg,"admin");
 
 $this_area_name = "";
 $utilisateursExep = array ();
