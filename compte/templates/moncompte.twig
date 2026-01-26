@@ -129,9 +129,9 @@
 			<h4>{{ trad.explain_default_area_and_room_and_site }}</h4>
 
 			<div class="col-xs-12" id="div_liste_sites">
-				<div class="form-group">
-					<label class="col-lg-4 col-md-6" for="id_site">{{ trad.default_site }}</label>
-					<div class="col-lg-4 col-md-6">
+				<div class="form-group row col-sm-12">
+					<label class="col-md-6" for="id_site">{{ trad.default_site }}</label>
+					<div class="col-md-6">
 						<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
 							<option value="-1">{{ trad.choose_a_site }}</option>
 							{% for site in sites %}
