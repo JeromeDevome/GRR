@@ -3,7 +3,7 @@
  * admin_type_area.php
  * interface de gestion des types de réservations pour un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-24 12:10$
+ * Dernière modification : $Date: 2026-01-26 18:33$
  * @author    Laurent Delineau & JeromeB
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -19,7 +19,7 @@
 $grr_script_name = "admin_type_area.php";
 
 // Initialisation
-$id_area = isset($_GET["id_area"]) ? alphanum($_GET["id_area"]) : NULL;
+$id_area = isset($_GET["id_area"]) ? intval($_GET["id_area"]) : NULL; // id_area est un entier
 $types = array();
 
 check_access(4, $back);
@@ -62,20 +62,20 @@ if (isset($_GET['valider']))
 	$nb_types_valides = 0;
 	if ($res)
 	{
-		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+		foreach($res as $row)
 		{
-			if (isset($_GET[$row[0]]))
+			if (isset($_GET[$row['id']]))
 			{
 				$nb_types_valides ++;
-				$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_j_type_area WHERE id_area='".$id_area."' AND id_type = '".$row[0]."'");
+				$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_j_type_area WHERE id_area='".$id_area."' AND id_type = '".$row['id']."'");
 			}
 			else
 			{
-				$type_si_aucun = $row[0];
-				$test = grr_sql_query1("SELECT count(id_type) FROM ".TABLE_PREFIX."_j_type_area WHERE id_area = '".$id_area."' AND id_type = '".$row[0]."'");
+				$type_si_aucun = $row['id'];
+				$test = grr_sql_query1("SELECT count(id_type) FROM ".TABLE_PREFIX."_j_type_area WHERE id_area = '".$id_area."' AND id_type = '".$row['id']."'");
 				if ($test == 0)
 				{
-					$sql1 = "INSERT INTO ".TABLE_PREFIX."_j_type_area SET id_area='".$id_area."', id_type = '".$row[0]."'";
+					$sql1 = "INSERT INTO ".TABLE_PREFIX."_j_type_area SET id_area='".$id_area."', id_type = '".$row['id']."'";
 					if (grr_sql_command($sql1) < 0)
 						fatal_error(1, "<p>" . grr_sql_error());
 				}
@@ -87,12 +87,12 @@ if (isset($_GET['valider']))
 		// Aucun type n'a été sélectionné. Dans ce cas, on impose au moins un type :
 		$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_j_type_area WHERE id_area='".$id_area."' AND id_type = '".$type_si_aucun."'");
 		$d['enregistrement'] = 3;
-		$d['msgToast'] = "Vous devez au définir au moins un type valide !";
+		$d['msgToast'] = get_vocab_admin("def_type_non_valide");
 	}
 	else
 	{
 		$d['enregistrement'] = 1;
-		$d['msgToast'] = "Les modifications ont été enregistrées avec succès.";
+		$d['msgToast'] = get_vocab_admin('modify_succeed');
 	}
 	// Type par défaut :
 	// On enregistre le nouveau type par défaut :
@@ -109,13 +109,11 @@ $nb_lignes = grr_sql_count($res);
 
 if ($res && $nb_lignes > 0)
 {
-	
-
-	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+	foreach($res as $row)
 	{
-		$dispoDomaine = grr_sql_query1("SELECT count(id_type) FROM ".TABLE_PREFIX."_j_type_area WHERE id_area = '".$id_area."' AND id_type = '".$row[0]."'");
+		$dispoDomaine = grr_sql_query1("SELECT count(id_type) FROM ".TABLE_PREFIX."_j_type_area WHERE id_area = '".$id_area."' AND id_type = '".$row['id']."'");
 
-		$types[] = array('id' => $row[0], 'type_letter' => $row[4], 'type_name' => $row[1], 'couleurhexa' => $row[3], 'couleurtexte' => $row[5], 'order_display' => $row[2], 'dispodomaine' => $dispoDomaine);
+		$types[] = array('id' => $row['id'], 'type_letter' => $row['type_letter'], 'type_name' => $row['type_name'], 'couleurhexa' => $row['couleurhexa'], 'couleurtexte' => $row['couleurtexte'], 'order_display' => $row['order_display'], 'dispodomaine' => $dispoDomaine);
 	}
 
 	$d['defautType'] = grr_sql_query1("SELECT id_type_par_defaut FROM ".TABLE_PREFIX."_area WHERE id = '".$id_area."'");

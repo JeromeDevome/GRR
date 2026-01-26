@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML Codage de certains caractères particuliers : &#x00DF; -> "double s" allemand http://www.unicode.org/charts/PDF/U0080.pdf
 # GRR : fichier de langue allemande
 # GRR: Traduction by: JeromeB & Karsten Schinkel & Jean-Yves Migeon
-# Last modification : 2026-01-06
+# Last modification : 2026-01-26
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Reservierung akzeptieren";
@@ -306,6 +306,7 @@ $vocab['daybefore'] = "Zum vorigen Tag gehen";
 $vocab['days'] = "Tag(e)";
 $vocab['debut_Jours_Cycles'] = "Numéro du jour débutant le premier cycle de jours"; // A traduire
 $vocab['declarer_ressource_indisponible'] = "Diese Ressource zeitweilig als unverfügbar erklären. Reservierungen sind also unmöglich.";
+$vocab["def_type_non_valide"] = "Sie müssen mindestens einen gültigen Typ definieren!";
 $vocab['default'] = "Valeurs par défaut"; //A traduire
 $vocab['default_area'] = "Standardbereich: ";
 $vocab['default_parameter_values_title'] = "Einstellungen und Standardanzeige";
@@ -636,6 +637,7 @@ $vocab['modification_parametre_langue'] = "Utilisateurs autorisés à modifier l
 $vocab['modification_parametre_theme'] = "Utilisateurs autorisés à modifier leur thème"; // A traduire
 $vocab['modifier_site'] = "Modifier un site"; // A traduire
 $vocab['modify_booking'] = " hat folgende Reservierung geändert. ";
+$vocab['modify_succeed'] = "Die Änderungen wurden erfolgreich gespeichert.";
 $vocab['Module_Ext_Gestion'] = "Gestion des modules externes"; // A traduire
 $vocab['Module_Ext_Import'] = "Import d'un module externe"; // A traduire
 $vocab['Module_Ext_Import_Description'] = "Vous pouvez importer un module, cependant nous ne pouvons pas assurez : la compatibilité avec GRR, les conséquences de l'installation (lenteur, piratage, bug...), soyez vigilant. Selectionner un fichier :"; // A traduire

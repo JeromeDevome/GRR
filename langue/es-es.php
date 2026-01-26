@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR : fichier de langue espagnole
 # GRR: Traduction By JeromeB
-# Last modification : 2026-01-06
+# Last modification : 2026-01-26
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Aceptar la reserva";
@@ -306,6 +306,7 @@ $vocab['daybefore'] = "Ir al día anterior";
 $vocab['days'] = "día(s)";
 $vocab['debut_Jours_Cycles'] = "Número del día iniciando el primer ciclo de días";
 $vocab['declarer_ressource_indisponible'] = "Declarar este recurso temporalmente indisponible. Entonces las reservas son imposibles.";
+$vocab["def_type_non_valide"] = "¡Debes definir al menos un tipo válido!";
 $vocab['default'] = "Valores predeterminados";
 $vocab['default_area'] = "Campo por defecto : ";
 $vocab['default_parameter_values_title'] = "Elección de los parámetros de visualización por defecto";
@@ -634,6 +635,7 @@ $vocab['modification_parametre_langue'] = "Utilisateurs autorisés à modifier l
 $vocab['modification_parametre_theme'] = "Utilisateurs autorisés à modifier leur thème"; // A traduire
 $vocab['modifier_site'] = "Modificar un sitio";
 $vocab['modify_booking'] = " modificó la reserva de ";
+$vocab['modify_succeed'] = "Los cambios se han guardado correctamente.";
 $vocab['Module_Ext_Gestion'] = "Gestion des modules externes"; // A traduire
 $vocab['Module_Ext_Import'] = "Import d'un module externe"; // A traduire
 $vocab['Module_Ext_Import_Description'] = "Vous pouvez importer un module, cependant nous ne pouvons pas assurez : la compatibilité avec GRR, les conséquences de l'installation (lenteur, piratage, bug...), soyez vigilant. Selectionner un fichier :"; // A traduire

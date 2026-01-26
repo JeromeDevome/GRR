@@ -1415,7 +1415,7 @@ function IsAllowedToModifyMdp() {
 // Transforme $dur en une durée exprimée en années, semaines, jours, heures, minutes et secondes
 // OU en durée numérique exprimée dans l'une des unités de façon fixe, pour l'édition des
 // réservations par durée.
-// $dur : durée sous forme d'une chaine de caractère quandd $edition=false, sinon, durée en valeur numérique.
+// $dur : durée sous forme d'une chaine de caractère quand $edition=false, sinon, durée en valeur numérique.
 // $units : variable conservée uniquement pour compatibilité avec la fonction toTimeString originale
 //          si $edition=false, sinon, contient l'unité utilisée pour $dur
 // $edition : Valeur par défaut : false. Indique si le retour est pour affichage ou pour modifier la durée.

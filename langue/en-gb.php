@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue anglaise
 # GRR: Translations provided by: JeromeB & Patricia Gaubert-Dubois et Yan Naessens
-# Last modification : 2026-01-06
+# Last modification : 2026-01-26
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accept the reservation ";
@@ -306,6 +306,7 @@ $vocab['daybefore'] = "Go to previous day";
 $vocab['days'] = "day (s)";
 $vocab['debut_Jours_Cycles'] = "Number of the day beginning the first cycle of days";
 $vocab['declarer_ressource_indisponible'] = "Declare this ressource temporarily unavailable. The reservations are then mpossible.";
+$vocab["def_type_non_valide"] = "You must define at least one valid type!";
 $vocab['default'] = "Default values";
 $vocab['default_area'] = "Area by default: ";
 $vocab['default_parameter_values_title'] = "Choice of display parameters by default";
@@ -635,6 +636,7 @@ $vocab['modification_parametre_langue'] = "Users authorized to modify their lang
 $vocab['modification_parametre_theme'] = "Users authorized to modify their style";
 $vocab['modifier_site'] = "Modify a website";
 $vocab['modify_booking'] = " has modified the reservation of ";
+$vocab['modify_succeed'] = "The changes have been successfully saved.";
 $vocab['Module_Ext_Gestion'] = "Management of external modules";
 $vocab['Module_Ext_Import'] = "Import of an external module";
 $vocab['Module_Ext_Import_Description'] = "You can import a module, however we cannot confirm : compatibility with GRR, the consequences of the installation (slowness, hacking, bug...), be careful. Select file:";

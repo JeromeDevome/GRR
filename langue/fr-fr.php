@@ -1,7 +1,7 @@
 <?php
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue française
-# Last modification : 2026-01-06
+# Last modification : 2026-01-26
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accepter la réservation";
@@ -240,7 +240,7 @@ $vocab['champ_vide_mot_de_passe_inchange'] = "Si vous laissez les champs ci-dess
 $vocab['change'] = "Modifier";
 $vocab['changer_statut_lorsque_ressource_restituee'] = "Lorsque la ressource aura été restituée, rendez-vous à l'adresse suivante pour changer le statut de la réservation";
 $vocab['check_all_the'] = "Cocher tous les ";
-$vocab['choisir_image_login'] = "Choisir une image à faire apparaître dans la page de connexion (Template 2 uniquement)"; // A traduire
+$vocab['choisir_image_login'] = "Choisir une image à faire apparaître dans la page de connexion (Template 2 uniquement)"; 
 $vocab['choisir_image_logo'] = "Choisir un logo à faire apparaître dans le coin gauche du bandeau supérieur (png, jpg et gif uniquement).";
 $vocab['choisir_image_ressource'] = "Choisir une image de la ressource pour la fiche de présentation (png, jpg et gif uniquement).";
 $vocab['choix_action'] = "Choisissez le type d'action :";
@@ -305,6 +305,7 @@ $vocab['daybefore'] = "  Voir le jour précédent";
 $vocab['days'] = "jour(s)";
 $vocab['debut_Jours_Cycles'] = "Numéro du jour débutant le premier cycle de jours";
 $vocab['declarer_ressource_indisponible'] = "Déclarer cette ressource temporairement non disponible. Les réservations sont alors impossibles.";
+$vocab["def_type_non_valide"] = "Vous devez au définir au moins un type valide !";
 $vocab['default'] = "Valeurs par défaut";
 $vocab['default_area'] = "Domaine par défaut : ";
 $vocab['default_parameter_values_title'] = "Choix des paramètres d'affichage par défaut";
@@ -577,13 +578,13 @@ $vocab['mail_raison_5'] = "Vous recevez ce mail car votre adresse est renseigné
 $vocab['mail_raison_6'] = "Vous recevez ce mail car vous êtes le bénéficiaire de la réservation.";
 $vocab['mail_sujet'] = "Sujet";
 $vocab['mail_test'] = "Email de test";
-$vocab['mail_type_compte_demande'] = "Demande compte"; // A traduire
-$vocab['mail_type_resa_creation'] = "Création réservation"; // A traduire
-$vocab['mail_type_resa_moderation'] = "Réservation & Modération"; // A traduire
-$vocab['mail_type_resa_modif'] = "Modification réservation"; // A traduire
-$vocab['mail_type_resa_sup'] = "Suppression réservation"; // A traduire
-$vocab['mail_type_resa_resultat'] = "Résultat"; // A traduire
-$vocab['mail_type_resa_retard'] = "Retard"; // A traduire
+$vocab['mail_type_compte_demande'] = "Demande compte"; 
+$vocab['mail_type_resa_creation'] = "Création réservation"; 
+$vocab['mail_type_resa_moderation'] = "Réservation & Modération"; 
+$vocab['mail_type_resa_modif'] = "Modification réservation"; 
+$vocab['mail_type_resa_sup'] = "Suppression réservation"; 
+$vocab['mail_type_resa_resultat'] = "Résultat"; 
+$vocab['mail_type_resa_retard'] = "Retard"; 
 $vocab['mail_type_adm_test'] = "Test";
 $vocab['mail_type_compte_demande'] = "Demande compte";
 $vocab['mail_type_resa_creation'] = "Création réservation";
@@ -644,6 +645,7 @@ $vocab['modification_parametre_langue'] = "Utilisateurs autorisés à modifier l
 $vocab['modification_parametre_theme'] = "Utilisateurs autorisés à modifier leur thème";
 $vocab['modifier_site'] = "Modifier un site";
 $vocab['modify_booking'] = " a modifié la réservation de ";
+$vocab['modify_succeed'] = "Les modifications ont été enregistrées avec succès.";
 $vocab['Module_Ext_Gestion'] = "Gestion des modules externes";
 $vocab['Module_Ext_Import'] = "Import d'un module externe";
 $vocab['Module_Ext_Import_Description'] = "Vous pouvez importer un module, cependant nous ne pouvons pas assurez : la compatibilité avec GRR, les conséquences de l'installation (lenteur, piratage, bug...), soyez vigilant. Selectionner un fichier :";
