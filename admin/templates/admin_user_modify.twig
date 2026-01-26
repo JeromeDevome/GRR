@@ -25,13 +25,14 @@
 					<p>{{ trad.required }}</p>
 
 					{% if utilisateur.reg_login !=  '' %}
-						<div class="form-group">
-							<label class="col col-sm-4" for="login">{{ trad.login }}</label>
+						<div class="form-group row">
+							<label class="col col-sm-4" for="new_login">{{ trad.login }}</label>
 							<div class="col col-sm-8">
 								{{ utilisateur.reg_login }}
 							</div>
+              
+						<input type="hidden" name="user_login" id="new_login" value="{{ utilisateur.reg_login }}" />
 						</div>
-						<input type="hidden" name="user_login" value="{{ utilisateur.reg_login }}" />
 					{% else %}
 						{{ form.input('new_login', trad.login, utilisateur.reg_login, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
 					{% endif %}
@@ -44,7 +45,7 @@
 					<div class="form-group row">
 						<label class="col col-sm-4" for="reg_statut">{{ trad.statut }}</label>
 						<div class="input-group col-sm-8">
-							<select name="reg_statut" id="select_auth_mode" class="form-control" size="1">
+							<select name="reg_statut" id="reg_statut" class="form-control" size="1">
 								<option value="visiteur" {% if utilisateur.statut == 'visiteur' %} selected {% endif %}>{{ trad.statut_visitor }}</option>
 								<option value="utilisateur" {% if utilisateur.statut == 'utilisateur' %} selected {% endif %}>{{ trad.statut_user }}</option>
 								{% if d.estAdministrateur ==  1 %}
@@ -56,7 +57,7 @@
 					</div>
 
 					<!-- Etat : Actif/Inactif -->
-					{% if trad.dEstPasLuiMeme == 1 %}
+					{% if d.estPasLuiMeme == 1 %}
 						<div class="form-group row">
 							<label class="col col-sm-4" for="reg_etat">{{ trad.activ_no_activ }}</label>
 							<div class="input-group col-sm-8">
@@ -109,7 +110,7 @@
 						<div class="form-group row col-sm-12">
 							<label class="col col-sm-4" for="reg_changepwd">{{ trad.user_change_pwd_connexion }}</label>
 							<div class="col col-sm-8">
-								<input type="checkbox" name="reg_changepwd" value="1" {% if utilisateur.changepwd == '1' %} checked {% endif %}>
+								<input type="checkbox" name="reg_changepwd" id="reg_changepwd" value="1" {% if utilisateur.changepwd == '1' %} checked {% endif %}>
 							</div>
 						</div>
 					</div>
@@ -117,7 +118,7 @@
 					<div class="form-group row col-sm-12">
 						<label class="col col-sm-4" for="reg_desactive_mail">Désactiver l'envoi de mail à cet utilisateur</label>
 						<div class="col col-sm-8">
-							<input type="checkbox" name="reg_desactive_mail" value="1" {% if utilisateur.desactive_mail == '1' %} checked {% endif %}>
+							<input type="checkbox" name="reg_desactive_mail" id="reg_desactive_mail" value="1" {% if utilisateur.desactive_mail == '1' %} checked {% endif %}>
 						</div>
 					</div>
 
@@ -134,7 +135,7 @@
 						<div class="form-group row col-sm-12">
 							<label class="col col-sm-6" for="area_list_format">{{ trad.explain_area_list_format }}</label>
 							<div class="col col-sm-6">
-								<select class="form-control" name="area_list_format">
+								<select class="form-control" name="area_list_format" id="area_list_format">
 									<option value="list" {% if utilisateur.default_list_type == 'list' %} selected {% endif %}>{{ trad.liste_area_list_format }}</option>
 									<option value="select" {% if utilisateur.default_list_type == 'select' %} selected {% endif %}>{{ trad.select_area_list_format }}</option>
 									<option value="item" {% if utilisateur.default_list_type == 'item' %} selected {% endif %}>{{ trad.item_area_list_format }}</option>
@@ -145,7 +146,7 @@
 						<!-- Site / Domaine et ressource par défaut -->
 						{% if settings.module_multisite == 'Oui' %}
 							<div class="form-group row col-sm-12">
-								<label class="col col-sm-6" for="default_css">{{ trad.default_site }}</label>
+								<label class="col col-sm-6" for="id_site">{{ trad.default_site }}</label>
 								<div class="col col-sm-6">
 									<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
 										<option value="-1">{{ trad.choose_a_site }}</option>
@@ -163,7 +164,7 @@
 						<div class="form-group row col-sm-12">
 							<label class="col col-sm-6" for="default_css">{{ trad.explain_css }}</label>
 							<div class="col col-sm-6">
-								<select class="form-control" name="default_css">
+								<select class="form-control" name="default_css" id="default_css">
 									{{ d.optionTheme | raw }}
 								</select>
 							</div>
@@ -173,7 +174,7 @@
 						<div class="form-group row col-sm-12">
 							<label class="col col-sm-6" for="default_language">{{ trad.choose_language }}</label>
 							<div class="col col-sm-6">
-								<select class="form-control" name="default_language">
+								<select class="form-control" name="default_language" id="default_language">
 									{{ d.optionLangue | raw }}
 								</select>
 							</div>
