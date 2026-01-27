@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue anglaise
 # GRR: Translations provided by: JeromeB & Patricia Gaubert-Dubois et Yan Naessens
-# Last modification : 2026-01-26
+# Last modification : 2026-01-27
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accept the reservation ";
@@ -128,6 +128,16 @@ $vocab['admin_user_modify_create'] = "Add a new user";
 $vocab['admin_user_modify_modify'] = "Edit an existing user";
 $vocab['admin_view_connexions'] = "Connection monitoring";
 $vocab['admin_view_emails'] = "Mails monitoring";
+$vocab['adm_cfg5_msg0'] = "Unable to find the installation or information file!";
+$vocab['adm_cfg5_err1'] = "Error 1 - The module could not be imported: the only allowed extension is zip.";
+$vocab['adm_cfg5_err2'] = "Error 2 - The module could not be imported: the only allowed extension is zip.";
+$vocab['adm_cfg5_err3d'] = "Error 3 - The module could not be imported: transfer problem. The file ";
+$vocab['adm_cfg5_err3f'] = " could not be transferred to the \"temp\" directory. Please report this problem to the server administrator.\\n";
+$vocab['adm_cfg5_err5'] = "Error 5 - The module could not be registered: problem writing to the \"temp\" directory. Please report this problem to the server administrator.\\n";
+$vocab['adm_cfg5_err6'] = "Error 6 - The module could not be registered: the selected file is invalid!\\n";
+$vocab['adm_cfg5_err7'] = "Error 7 - The module could not be registered!\\n";
+$vocab['adm_cfg5_err8'] = "Error 8 - The module could not be installed\\n";
+$vocab['adm_cfg5_err9'] = "Error 9 - Installation successful, however archive not deleted. This error can be ignored.\\n";
 $vocab['affichage_calendriers'] = "Display calendars";
 $vocab['affichage_calendriers_msg'] = "Number of monthly calendars to display on each reservation planning";
 $vocab['affichage_pdf'] = "Display \"Generate pdf\" button";

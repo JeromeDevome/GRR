@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR : fichier de langue espagnole
 # GRR: Traduction By JeromeB
-# Last modification : 2026-01-26
+# Last modification : 2026-01-27
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Aceptar la reserva";
@@ -128,6 +128,16 @@ $vocab['admin_user_modify_create'] = "Añadido de un nuevo usuario";
 $vocab['admin_user_modify_modify'] = "Modificación de un usuario existente";
 $vocab['admin_view_connexions'] = "Control de las conexiones";
 $vocab['admin_view_emails'] = "Seguimiento de los correos"; 
+$vocab['adm_cfg5_msg0'] = "¡No se puede encontrar el archivo de instalación o de información!";
+$vocab['adm_cfg5_err1'] = "Error 1: No se pudo importar el módulo: la única extensión permitida es zip.";
+$vocab['adm_cfg5_err2'] = "Error 2: No se pudo importar el módulo: la única extensión permitida es zip.";
+$vocab['adm_cfg5_err3d'] = "Error 3: No se pudo importar el módulo: problema de transferencia. El archivo ";
+$vocab['adm_cfg5_err3f'] = " no se pudo transferir al directorio \"temp\". Por favor, informe este problema al administrador del servidor.\\n";
+$vocab['adm_cfg5_err5'] = "Error 5 - No se pudo registrar el módulo: Problema al escribir en el directorio \"temp\". Por favor, informe este problema al administrador del servidor.\\n";
+$vocab['adm_cfg5_err6'] = "Error 6 - No se pudo registrar el módulo: ¡El archivo seleccionado no es válido!\\n";
+$vocab['adm_cfg5_err7'] = "Error 7 - No se pudo registrar el módulo!\\n";
+$vocab['adm_cfg5_err8'] = "Error 8 - No se pudo instalar el módulo\\n";
+$vocab['adm_cfg5_err9'] = "Error 9 - Instalación exitosa, pero el archivo no se eliminó. Este error se puede ignorar.\\n";
 $vocab['affichage_calendriers'] = "Presentación de los calendarios";
 $vocab['affichage_calendriers_msg'] = "Cantidad de calendarios mensuales a presentar en cada planificación de reserva ";
 $vocab['affichage_pdf'] = "Presentación del botón \"Generar pdf\"";

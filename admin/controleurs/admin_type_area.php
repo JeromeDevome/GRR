@@ -3,7 +3,7 @@
  * admin_type_area.php
  * interface de gestion des types de réservations pour un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-26 18:33$
+ * Dernière modification : $Date: 2026-01-27 09:57$
  * @author    Laurent Delineau & JeromeB
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -87,12 +87,12 @@ if (isset($_GET['valider']))
 		// Aucun type n'a été sélectionné. Dans ce cas, on impose au moins un type :
 		$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_j_type_area WHERE id_area='".$id_area."' AND id_type = '".$type_si_aucun."'");
 		$d['enregistrement'] = 3;
-		$d['msgToast'] = get_vocab_admin("def_type_non_valide");
+		$d['msgToast'] = get_vocab("def_type_non_valide");
 	}
 	else
 	{
 		$d['enregistrement'] = 1;
-		$d['msgToast'] = get_vocab_admin('modify_succeed');
+		$d['msgToast'] = get_vocab('modify_succeed');
 	}
 	// Type par défaut :
 	// On enregistre le nouveau type par défaut :

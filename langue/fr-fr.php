@@ -1,7 +1,7 @@
 <?php
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue française
-# Last modification : 2026-01-26
+# Last modification : 2026-01-27
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accepter la réservation";
@@ -127,6 +127,16 @@ $vocab['admin_user_modify_create'] = "Ajout d'un nouvel utilisateur";
 $vocab['admin_user_modify_modify'] = "Modification d'un utilisateur existant";
 $vocab['admin_view_connexions'] = "Suivi des connexions";
 $vocab['admin_view_emails'] = "Suivi des mails";
+$vocab['adm_cfg5_msg0'] = "Impossible de trouver le fichier d'installation ou d'infos !";
+$vocab['adm_cfg5_err1'] = "Erreur 1 - Le module n\'a pas pu être importé : la seule extention autorisées est zip.";
+$vocab['adm_cfg5_err2'] = "Erreur 2 - Le module n\'a pas pu être importé : la seule extention autorisées est zip.";
+$vocab['adm_cfg5_err3d'] = "Erreur 3 - Le module n\'a pas pu être importé : problème de transfert. Le fichier ";
+$vocab['adm_cfg5_err3f'] = " n\'a pas pu être transféré sur le répertoire \"temp\". Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
+$vocab['adm_cfg5_err5'] = "Erreur 5 - Le module n\'a pas pu être enregistré : problème d\'écriture sur le répertoire \"temp\". Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
+$vocab['adm_cfg5_err6'] = "Erreur 6 - Le module n\'a pas pu être enregistré : le fichier sélectionné n'est pas valide !\\n";
+$vocab['adm_cfg5_err7'] = "Erreur 7 - Le module n\'a pas pu être enregistré !\\n";
+$vocab['adm_cfg5_err8'] = "Erreur 8 - Le module n\'a pas pu être installé\\n";
+$vocab['adm_cfg5_err9'] = "Erreur 9 - Installation réussie, cependant archive non supprimé.  Cette erreur peut être ignorée.\\n";
 $vocab['affichage_calendriers'] = "Affichage des calendriers";
 $vocab['affichage_calendriers_msg'] = "Nombre de calendriers à afficher sur chaque planning";
 $vocab['affichage_pdf'] = "Affichage du bouton \"Générer pdf\"";
@@ -332,6 +342,7 @@ $vocab['deleteseriesposterieure'] = "Effacer toutes les réservations associées
 $vocab['delete_booking'] = " a supprimé la réservation de ";
 $vocab['delete_up_to'] = "Effacer jusqu'au";
 $vocab['del_entry_in_conflict'] = "Supprimer la (les) réservation(s) ci-dessus afin de valider la nouvelle réservation.";
+$vocab['del_group_succeed'] = "Le groupe a été supprimé avec succès.";
 $vocab['del_user_succeed'] = "Un utilisateur a été supprimé de la liste.";
 $vocab['description'] = "Description";
 $vocab['description_complete'] = "Description complète (visible dans la fiche de présentation)";

@@ -3,7 +3,7 @@
  * admin_groupe.php
  * interface de gestion des utilisateurs de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-24 11:50$
+ * Dernière modification : $Date: 2026-01-27 09:58$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -46,7 +46,7 @@ if ((isset($_GET['action_del'])) and (isset($_GET['js_confirmed'])) and ($_GET['
 	else
 	{
 		$d['enregistrement'] = 1;
-		$d['msgToast'] = "Le groupe a été supprimé avec succès.";
+		$d['msgToast'] = get_vocab('del_group_succeed');
 	}
 }
 // Synchro Groupe

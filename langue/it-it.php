@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR : fichier de langue italienne
 # GRR: Translations provided by JeromeB & Marc HENNETIER & Antony AUDOUARD
-# Last modification : 2026-01-26
+# Last modification : 2026-01-27
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accettare la prenotazione";
@@ -128,6 +128,16 @@ $vocab['admin_user_modify_create'] = "Aggiunta di un nuovo utente";
 $vocab['admin_user_modify_modify'] = "Modifica di un utente esistente";
 $vocab['admin_view_connexions'] = "Seguito dei collegamenti";
 $vocab['admin_view_emails'] = "Suivi des mails"; // A traduire
+$vocab['adm_cfg5_msg0'] = "Impossibile trovare il file di installazione o di informazioni!";
+$vocab['adm_cfg5_err1'] = "Errore 1 - Impossibile importare il modulo: l'unica estensione consentita è zip.";
+$vocab['adm_cfg5_err2'] = "Errore 2 - Impossibile importare il modulo: l'unica estensione consentita è zip.";
+$vocab['adm_cfg5_err3d'] = "Errore 3 - Impossibile importare il modulo: problema di trasferimento. Il file ";
+$vocab['adm_cfg5_err3f'] = " non può essere trasferito nella directory \"temp\". Segnalare il problema all'amministratore del server.\\n";
+$vocab['adm_cfg5_err5'] = "Errore 5 - Impossibile registrare il modulo: problema di scrittura nella directory \"temp\". Segnalare il problema all'amministratore del server.\\n";
+$vocab['adm_cfg5_err6'] = "Errore 6 - Impossibile registrare il modulo: il file selezionato non è valido!\\n";
+$vocab['adm_cfg5_err7'] = "Errore 7 - Impossibile registrare il modulo!\\n";
+$vocab['adm_cfg5_err8'] = "Errore 8 - Impossibile installare il modulo\\n";
+$vocab['adm_cfg5_err9'] = "Errore 9 - Installazione riuscita, ma archivio non eliminato. Questo errore può essere ignorato.\\n";
 $vocab['affichage_calendriers'] = "Affichage des calendriers"; // A traduire
 $vocab['affichage_calendriers_msg'] = "Nombre de calendriers à afficher sur chaque planning"; // A traduire
 $vocab['affichage_pdf'] = "Affichage du bouton \"Générer pdf\""; // A traduire

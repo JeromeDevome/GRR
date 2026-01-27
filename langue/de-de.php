@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML Codage de certains caractères particuliers : &#x00DF; -> "double s" allemand http://www.unicode.org/charts/PDF/U0080.pdf
 # GRR : fichier de langue allemande
 # GRR: Traduction by: JeromeB & Karsten Schinkel & Jean-Yves Migeon
-# Last modification : 2026-01-26
+# Last modification : 2026-01-27
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Reservierung akzeptieren";
@@ -128,6 +128,16 @@ $vocab['admin_user_modify_create'] = "Neuen Benutzer hinzufügen";
 $vocab['admin_user_modify_modify'] = "Existierenden Benutzer ändern";
 $vocab['admin_view_connexions'] = "Betreuung der Verbindungen";
 $vocab['admin_view_emails'] = "Suivi des mails"; // A traduire
+$vocab['adm_cfg5_msg0'] = "Installations- oder Informationsdatei nicht gefunden!";
+$vocab['adm_cfg5_err1'] = "Fehler 1 – Das Modul konnte nicht importiert werden: Die einzige zulässige Dateiendung ist .zip.";
+$vocab['adm_cfg5_err2'] = "Fehler 2 – Das Modul konnte nicht importiert werden: Die einzige zulässige Dateiendung ist .zip.";
+$vocab['adm_cfg5_err3d'] = "Fehler 3 – Das Modul konnte nicht importiert werden: Übertragungsproblem. Die Datei ";
+$vocab['adm_cfg5_err3f'] = " konnte nicht in das Verzeichnis \"temp\" übertragen werden. Bitte melden Sie dieses Problem dem Serveradministrator.\\n";
+$vocab['adm_cfg5_err5'] = "Fehler 5 – Das Modul konnte nicht registriert werden: Problem beim Schreiben in das Verzeichnis \"temp\". Bitte melden Sie dieses Problem dem Serveradministrator.\\n";
+$vocab['adm_cfg5_err6'] = "Fehler 6 – Das Modul konnte nicht registriert werden: Die ausgewählte Datei ist ungültig!\\n";
+$vocab['adm_cfg5_err7'] = "Fehler 7 – Das Modul konnte nicht registriert werden!\\n";
+$vocab['adm_cfg5_err8'] = "Fehler 8 – Das Modul konnte nicht installiert werden\\n";
+$vocab['adm_cfg5_err9'] = "Fehler 9 – Installation erfolgreich, Archiv jedoch nicht gelöscht. Dieser Fehler kann ignoriert werden.\\n";
 $vocab['affichage_calendriers'] = "Affichage des calendriers"; // A traduire
 $vocab['affichage_calendriers_msg'] = "Nombre de calendriers à afficher sur chaque planning"; // A traduire
 $vocab['affichage_pdf'] = "Affichage du bouton \"Générer pdf\""; // A traduire
