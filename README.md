@@ -56,7 +56,7 @@ Installation
 
 **Requiert :**
 
-PHP : >= 5.6 && <= 8.2, nécessite au moins les modules php-fileinfo, php-gd, php-iconv, php-mbstring, php-mysqli, php-mysqlnd, php-xml (*)
+PHP : >= 5.6 && <= 8.2, nécessite au moins les modules php-fileinfo, php-gd, php-iconv, php-mbstring, php-mysqli, php-mysqlnd, php-xml, php-zip (*)
 si vous utilisez php 8.1+, il faut soit inclure le module php-intl, soit désactiver les messages E_DEPRECATED
 l'utilisation d'une authentification CAS est incompatible avec php 8.2
 
