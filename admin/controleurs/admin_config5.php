@@ -3,7 +3,7 @@
  * admin_config5.php
  * Interface permettant à l'administrateur la configuration des des modules (Jours Cycles, multisite, modules externes)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-24 17:15$
+ * Dernière modification : $Date: 2026-01-27 10:55$
  * @author    Laurent Delineau & JeromeB
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -23,6 +23,7 @@ get_vocab_admin("admin_config4");
 get_vocab_admin("admin_config5");
 get_vocab_admin("admin_config6");
 get_vocab_admin("admin_config7");
+$d['msgToast'] = "";
 
 if (!Settings::load())
 	die("Erreur chargement settings");
@@ -112,7 +113,7 @@ if (isset($_GET['activation'])) {
 				
 			} else{
 				$d['enregistrement'] = 3;
-				$d['msgToast'] = "Impossible de trouver le fichier d'installation et ou d'infos !\\n";
+				$d['msgToast'] = get_vocab('adm_cfg5_msg0');
 			}
 		}
 	}
@@ -129,14 +130,14 @@ if (isset($_POST['ok']) && $upload_Module == 1) {
     }
     if (count(explode('.', $_FILES['doc_file']['name'])) > 2) {
 		$d['enregistrement'] = 3;
-        $d['msgToast'] .= "Erreur 1 - Le module n\'a pas pu être importé : la seule extention autorisées est zip.\\n";
+        $d['msgToast'] .= get_vocab('adm_cfg5_err1');
     } elseif (preg_match("`\.([^.]+)$`", $_FILES['doc_file']['name'], $match)) {
         /* normalement, si on arrive ici l'image n'a qu'une extension */
 
         $ext = strtolower($match[1]);
         if ($ext != 'zip') {
 			$d['enregistrement'] = 3;
-            $d['msgToast'] .= "Erreur 2 - Le module n\'a pas pu être importé : la seule extention autorisées est zip.\\n";
+            $d['msgToast'] .= get_vocab('adm_cfg5_err2');
         } else {
             /* deuxième test passé, l'extension est autorisée */
 
@@ -150,7 +151,7 @@ if (isset($_POST['ok']) && $upload_Module == 1) {
                     $moveUploadReturn = move_uploaded_file($_FILES['doc_file']['tmp_name'], $picturePath);
                     if (!$moveUploadReturn) {
 						$d['enregistrement'] = 3;
-                        $d['msgToast'] .= "Erreur 3 - Le module n\'a pas pu être importé : problème de transfert. Le fichier ".$_FILES['doc_file']['name']." n\'a pas pu être transféré sur le répertoire \"temp\". Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
+                        $d['msgToast'] .= get_vocab('adm_cfg5_err3d').$_FILES['doc_file']['name'].get_vocab('adm_cfg5_err3f');
 
                     } else {
 						$zip = new ZipArchive;
@@ -159,29 +160,29 @@ if (isset($_POST['ok']) && $upload_Module == 1) {
 							$zip->close();
 						} else {
 							$d['enregistrement'] = 3;
-							$d['msgToast'] .= "Erreur 8 - Le module n\'a pas pu être installé\\n";
+							$d['msgToast'] .= get_vocab('adm_cfg5_err8');
 						}
 						
                         $unlinkReturn = unlink($picturePath);
                         if (!$unlinkReturn) {
 							$d['enregistrement'] = 3;
-                            $d['msgToast'] = "Erreur 9 - Installation réussie, cependant archive non supprimé.  Cette erreur peut être ignorée.\\n";
+                            $d['msgToast'] = get_vocab('adm_cfg5_err9');
                         }
                     }
 
                 } else {
 					$d['enregistrement'] = 3;
-                    $d['msgToast'] .= "Erreur 5 - Le module n\'a pas pu être enregistré : problème d\'écriture sur le répertoire \"temp\". Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
+                    $d['msgToast'] .= get_vocab('adm_cfg5_err5');
                 }
 			} else{
 				$d['enregistrement'] = 3;
-			    $d['msgToast'] .= "Erreur 7 - Le module n\'a pas pu être enregistré !\\n";
+			    $d['msgToast'] .= get_vocab('adm_cfg5_err7');
 			}
 			
         }
     } elseif ($_FILES['doc_file']['name'] != '') {
 		$d['enregistrement'] = 3;
-        $d['msgToast'] .= "Erreur 6 - Le module n\'a pas pu être enregistré : le fichier sélectionné n'est pas valide !\\n";
+        $d['msgToast'] .= get_vocab('adm_cfg5_err6');
     }
 }
 
