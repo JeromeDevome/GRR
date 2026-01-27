@@ -1,11 +1,11 @@
 <?php
 /**
- * admin_import_user_csv.php
+ * admin_import_users_csv.php
  * script d'importation d'utilisateurs à partir d'un fichier CSV
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-08-20 11:32$
+ * Dernière modification : $Date: 2026-01-27 15:19$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -331,16 +331,16 @@ else
     {
       $types = "ssssssssi";
       $data = [$reg_nom[$row],$reg_prenom[$row],$reg_login[$row],$reg_email[$row],protect_data_sql($reg_mdp[$row]),$reg_type_user[$row],$reg_statut[$row],$reg_type_auth[$row],$reg_changer_pwd[$row]];
-      $regdata = grr_sql_query("INSERT INTO ".TABLE_PREFIX."_utilisateurs SET nom=?,prenom=?,login=?,email=?,password=?,statut=?,etat=?,source=?,changepwd=?",$types,$data);
+      $regdata = grr_sql_command("INSERT INTO ".TABLE_PREFIX."_utilisateurs SET nom=?,prenom=?,login=?,email=?,password=?,statut=?,etat=?,source=?,changepwd=?",$types,$data);
     }
     else
     {
       $types = "sssssssis";
       $data = [$reg_nom[$row],$reg_prenom[$row],$reg_email[$row],protect_data_sql($reg_mdp[$row]),$reg_type_user[$row],$reg_statut[$row],$reg_type_auth[$row],$reg_changer_pwd[$row],$reg_login[$row]];
-      $regdata = grr_sql_query("UPDATE ".TABLE_PREFIX."_utilisateurs SET nom=?,prenom=?,email=?,password=?,statut=?,etat=?,source=?,changepwd=? WHERE login=?",$types,$data);
+      $regdata = grr_sql_command("UPDATE ".TABLE_PREFIX."_utilisateurs SET nom=?,prenom=?,email=?,password=?,statut=?,etat=?,source=?,changepwd=? WHERE login=?",$types,$data);
     }
-    if (!$regdata)
-      $erreur.= "<p><font color=\"red\">".$reg_login[$row].get_vocab("deux_points").get_vocab("message_records_error")."</font></p>";
+    if ($regdata == -1)
+      $erreur.= "<p><font color=\"red\">".$reg_login[$row].get_vocab("deux_points").get_vocab("message_records_error")."</font>".grr_sql_error()."</p>";
     else
     {
       if ($reg_stat[$row] == "nouveau")
@@ -392,6 +392,9 @@ if ($reg_data != 'yes')
         echo $out_html;
         echo $message;
       }
+    }
+  }
+}
 else
 {
   echo $erreur;
