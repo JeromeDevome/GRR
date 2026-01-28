@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-20 15:47$
+ * Dernière modification : $Date: 2026-01-26 16:35$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
@@ -508,7 +508,7 @@ if ((Settings::get("display_level_view_entry") == '1')||($mode == 'page')||($mod
   echo '<div class="container">';
 }
 // Affichage d'un pop-up
-affiche_pop_up($msg,"admin");
+affiche_pop_up($msg);
 echo '<fieldset>'.PHP_EOL;
 echo '<table class="table table-noborder">'; // informations de la réservation
 echo '<caption style="font-size:12pt;font-weight:bold">'.get_vocab('entry').get_vocab('deux_points').affichage_lien_resa_planning($breve_description, $id).'</caption>'."\n";
