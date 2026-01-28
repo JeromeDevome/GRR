@@ -28,7 +28,7 @@ $version_grr = "4.5.0";
 # Ex 0400003 : 3eme modification sur la branche 4.X.X
 $version_bdd = "0400009";
 // Version repository (GitHub) GitHub-Master / Release-v4.0.0-beta.1 / Release-v4.0.0-RC.1 / Release-v4.0.0
-$versionReposite = "Release-v4.5.0";
+$versionReposite = "Release-v4.5.0-GitHub-Master";
 
 ################################
 # Configuration Requise
