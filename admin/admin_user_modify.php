@@ -3,9 +3,9 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-11-14 14:54$
+ * Dernière modification : $Date: 2026-01-28 11:54$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -404,13 +404,15 @@ echo '<br /><br />';
 echo '<div class="avertissement"><b>'.get_vocab("required").'</b></div>';
 echo '</p>';
 
-echo '<form action="admin_user_modify.php" method="POST">';
+echo '<form class="form-horizontal" action="admin_user_modify.php" method="POST">';
 echo '<input type="hidden" name="display" value="'.$display.'" />';
 echo '<div>';
     if ((Settings::get("sso_statut") != "") || (Settings::get("ldap_statut") != '') || (Settings::get("imap_statut") != ''))
     {
-        echo get_vocab("authentification").get_vocab("deux_points");
-        echo "<select id=\"select_auth_mode\" name='type_authentification' onchange=\"display_password_fields(this.id);\">\n";
+      echo "<div class=\"form-group\">";
+        echo "<label class=\"control-label col-md-2 col-sm-3 col-xs-4\" for=\"select_auth_mode\">".get_vocab("authentification").get_vocab("deux_points")."</label>";
+        echo "<div class=\"col col-md-4 col-sm-6 col-xs-8\">";
+        echo "<select class=\"form-control\" id=\"select_auth_mode\" name='type_authentification' onchange=\"display_password_fields(this.id);\">\n";
         echo "<option value='locale'";
         if ($utilisateur['source'] == 'local')
             echo " selected=\"selected\" ";
@@ -419,45 +421,60 @@ echo '<div>';
         if ($utilisateur['source'] == 'ext')
             echo " selected=\"selected\" ";
         echo ">".get_vocab("authentification_base_externe")."</option>\n";
-        echo "</select><br /><br />".PHP_EOL;
+        echo "</select></div></div>".PHP_EOL;
     }
-    echo get_vocab("login")." *".get_vocab("deux_points");
-    if (isset($user_login) && ($user_login!=''))
-    {
-        echo $user_login;
-        echo "<input type=\"hidden\" name=\"reg_login\" value=\"$user_login\" />";
+    echo "<div class='form-group'>";
+    echo "<label class='control-label col-md-2 col-sm-3 col-xs-4' for='login'>";
+    echo get_vocab("login")." *".get_vocab("deux_points")."</label>";
+    echo "<div class='col col-md-4 col-sm-6 col-xs-8'>";
+    if (isset($user_login) && ($user_login!='')){
+        echo "<input class='form-control' type=\"text\" name=\"reg_login\" id='login' value=\"$user_login\" disabled />";
     }
-    else
-    {
-        echo "<input type=\"text\" name=\"new_login\" size=\"40\" required />";
+    else{
+        echo "<input class='form-control' type=\"text\" name=\"new_login\" id='login' size=\"40\" required />";
     }
-    echo "<table class='table-noborder'><tr>".PHP_EOL;
-    echo "<td>".get_vocab("last_name")." *".get_vocab("deux_points")."</td>\n<td><input type=\"text\" name=\"reg_nom\" size=\"40\" value=\"";
+    echo "</div></div>";
+    echo "<div class='form-group'>";
+    echo "<label class='control-label col-md-2 col-sm-3 col-xs-4' for='nom'>";
+    echo get_vocab("last_name")." *".get_vocab("deux_points")."</label>";
+    echo "<div class='col col-md-4 col-sm-6 col-xs-8'>";
+    echo "<input class='form-control' type=\"text\" name=\"reg_nom\" id='nom' size=\"40\" value='";
     if ($utilisateur['nom'])
         echo htmlspecialchars($utilisateur['nom']);
-    echo "\" /></td>\n";
-    echo "<td>".get_vocab("first_name")." *".get_vocab("deux_points")."</td>\n<td><input type=\"text\" name=\"reg_prenom\" size=\"20\" value=\"";
+    echo "' required />";
+    echo "</div></div>";
+    echo "<div class='form-group'>";
+    echo "<label class='control-label col-md-2 col-sm-3 col-xs-4' for='prenom'>";
+    echo get_vocab("first_name")." *".get_vocab("deux_points")."</label>";
+    echo "<div class='col col-md-4 col-sm-6 col-xs-8'>";
+    echo "<input class='form-control' type=\"text\" name=\"reg_prenom\" id='prenom' size=\"40\" value='";
     if ($utilisateur['prenom'])
         echo htmlspecialchars($utilisateur['prenom']);
-    echo "\" /></td>\n";
-    echo "<td></td><td></td>";
-    echo "</tr>\n";
-    echo "<tr><td>".get_vocab("mail_user").get_vocab("deux_points")."</td><td><input type=\"email\" name=\"reg_email\" size=\"30\" value=\"";
+    echo "' required />";
+    echo "</div></div>";
+    echo "<div class='form-group'>";
+    echo "<label class='control-label col-md-2 col-sm-3 col-xs-4' for='mail'>";
+    echo get_vocab("mail_user").get_vocab("deux_points")."</label>";
+    echo "<div class='col col-md-4 col-sm-6 col-xs-8'>";
+    echo "<input class='form-control' type=\"email\" name=\"reg_email\" id='mail' size=\"40\" value='";
     if ($utilisateur['email'])
       echo htmlspecialchars($utilisateur['email']);
-    echo "\" autocomplete=\"email\" /></td>\n";
-    echo "<td>".get_vocab("statut").get_vocab("deux_points")."</td>\n";
-    echo "<td><select name=\"reg_statut\" size=\"1\">\n";
+    echo "' autocomplete='email' />";
+    echo "</div></div>";
+    echo "<div class='form-group'>";
+    echo "<label class='control-label col-md-2 col-sm-3 col-xs-4' for='statut'>";
+    echo get_vocab("statut").get_vocab("deux_points")."</label>";
+    echo "<div class='col col-md-4 col-sm-6 col-xs-8'>";
+    echo "<select class='form-control' name=\"reg_statut\" id='statut' size=\"1\">\n";
     echo "<option value=\"visiteur\" ";
-    if ($utilisateur['statut'] == "visiteur")
-    {
-        echo "selected=\"selected\"";
+    if ($utilisateur['statut'] == "visiteur"){
+        echo "selected ";
     }
     echo ">".get_vocab("statut_visitor")."</option>\n";
     echo "<option value=\"utilisateur\" ";
     if ($utilisateur['statut'] == "utilisateur")
     {
-        echo "selected=\"selected\"";
+        echo "selected ";
     }
     echo ">".get_vocab("statut_user")."</option>\n";
 // un gestionnaire d'utilisateurs ne peut pas créer un administrateur général ou un gestionnaire d'utilisateurs
@@ -466,38 +483,36 @@ echo '<div>';
         echo "<option value=\"gestionnaire_utilisateur\" ";
         if ($utilisateur['statut'] == "gestionnaire_utilisateur")
         {
-            echo "selected=\"selected\"";
+            echo "selected ";
         }
         echo ">".get_vocab("statut_user_administrator")."</option>\n";
         echo "<option value=\"administrateur\" ";
         if ($utilisateur['statut'] == "administrateur")
         {
-            echo "selected=\"selected\"";
+            echo "selected ";
         }
         echo ">".get_vocab("statut_administrator")."</option>\n";
     }
-    echo "</select></td>\n";
-    if (is_null($user_login)||(strtolower($user_id) != strtolower($user_login)))
-    {
-        echo "<td>".get_vocab("activ_no_activ").get_vocab("deux_points")."</td>";
-        echo "<td><select name=\"reg_etat\" size=\"1\">\n";
-        echo "<option value=\"actif\" ";
-        if ($utilisateur['etat'] == "actif")
-            echo "selected=\"selected\"";
-        echo ">".get_vocab("activ_user")."</option>\n";
-        echo "<option value=\"inactif\" ";
-        if ($utilisateur['etat'] == "inactif")
-            echo "selected=\"selected\"";
-        echo ">".get_vocab("no_activ_user")."</option>\n";
-        echo "</select></td>";
-    }
-    else
-    {
-        echo '<td></td><td><input type="hidden" name="reg_etat" value="'.$utilisateur['etat'].'" /></td>\n';
-    }
-    echo "</tr>\n";
-    echo "</table>";
-    
+    echo "</select>\n";
+    echo "</div></div>";
+    echo "<div class='form-group'>";
+    echo "<label class='control-label col-md-2 col-sm-3 col-xs-4' for='etat'>";
+    echo get_vocab("activ_no_activ").get_vocab("deux_points")."</label>";
+    echo "<div class='col col-md-4 col-sm-6 col-xs-8'>";
+    echo "<select class='form-control' name=\"reg_etat\" id='etat' size=\"1\" ";
+    if(($user_login != '')&&(strtolower($user_id) == strtolower($user_login)))
+      echo "disabled ";
+    echo ">";
+    echo "<option value=\"actif\" ";
+    if ($utilisateur['etat'] == "actif")
+      echo "selected ";
+    echo ">".get_vocab("activ_user")."</option>\n";
+    echo "<option value=\"inactif\" ";
+    if ($utilisateur['etat'] == "inactif")
+      echo "selected ";
+    echo ">".get_vocab("no_activ_user")."</option>\n";
+    echo "</select>";
+    echo "</div></div>";    
     echo "<div id='password_fields' >";
     if ((isset($user_login)) && ($user_login!='') && ($flag_is_local=="y"))
         echo "<b>".get_vocab("champ_vide_mot_de_passe_inchange")."</b>";
