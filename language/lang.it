@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2026-01-05
+# Last modification : 2026-01-26
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -317,6 +317,7 @@ $vocab['days'] = "giorno/i";
 $vocab['debut_Jours_Cycles'] = "Numéro du jour débutant le premier cycle de jours"; // A traduire
 $vocab['declarer_ressource_indisponible'] = "Dichiarare questa risorsa temporaneamente inalienabile. Le prenotazioni sono allora impossibili.";
 $vocab['deconnect_changing_pwd'] = "Staccare cambiando el password";
+$vocab["def_type_non_valide"] = "Devi definire almeno un tipo valido!";
 $vocab['default_area'] = "Settore per difetto: ";
 $vocab['default_parameter_values_title'] = "Scelta dei parametri di visualizzazione per difetto";
 $vocab['default_report_days_explain'] = "Valeur par défaut de l'intervalle de temps entre la date de début de recherche et la date de fin (en nombre de jours)"; // A traduire

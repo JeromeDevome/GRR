@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Patricia Gaubert-Dubois et Yan Naessens
 # GRR : fichier de langue anglaise
-# Last modification : 2026-01-05
+# Last modification : 2026-01-26
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -320,6 +320,7 @@ $vocab['days'] = "day(s)";
 $vocab['debut_Jours_Cycles'] = "Number of the day beginning the first cycle of days";
 $vocab['declarer_ressource_indisponible'] = "Declare this ressource temporarily unavailable. The reservations are then mpossible.";
 $vocab['deconnect_changing_pwd'] = "Disconnect through changing password";
+$vocab["def_type_non_valide"] = "You must define at least one valid type!";
 $vocab['default_area'] = "Area by default: ";
 $vocab['default_parameter_values_title'] = "Choice of display parameters by default";
 $vocab['default_report_days_explain'] = "Value by default of the time interval between the start date of the research and the end date (in number of days)";

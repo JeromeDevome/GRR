@@ -1,6 +1,6 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2026-01-05
+# Last modification : 2026-01-26
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -314,6 +314,7 @@ $vocab['days'] = "jour(s)";
 $vocab['debut_Jours_Cycles'] = "Numéro du jour débutant le premier cycle de jours";
 $vocab['declarer_ressource_indisponible'] = "Déclarer cette ressource temporairement non disponible. Les réservations sont alors impossibles.";
 $vocab['deconnect_changing_pwd'] = "Déconnecter en changeant le mot de passe";
+$vocab["def_type_non_valide"] = "Vous devez au définir au moins un type valide !";
 $vocab['default_area'] = "Domaine par défaut : ";
 $vocab['default_parameter_values_title'] = "Choix des paramètres d'affichage par défaut";
 $vocab['default_report_days_explain'] = "Valeur par défaut de l'intervalle de temps entre la date de début de recherche et la date de fin (en nombre de jours)";

@@ -1,7 +1,7 @@
 <?php
 # GRR: Translations provided by: Karsten Schinkel, Jean-Yves Migeon - jeanyves.migeon@free.fr, Alex
 # GRR : fichier de langue allemande
-# Last modification : 2026-01-05
+# Last modification : 2026-01-26
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -317,6 +317,7 @@ $vocab['days'] = "Tag(e)";
 $vocab['debut_Jours_Cycles'] = "Nummer des Tages, an dem der erste Tageszyklus beginnt";
 $vocab['declarer_ressource_indisponible'] = "Diese Ressource zeitweilig als unverfügbar erklären. Reservierungen sind also unmöglich.";
 $vocab['deconnect_changing_pwd'] = "Ausloggen und Passwort ändern";
+$vocab["def_type_non_valide"] = "Sie müssen mindestens einen gültigen Typ definieren!";
 $vocab['default_area'] = "Standardbereich: ";
 $vocab['default_parameter_values_title'] = "Standardeinstellungen";
 $vocab['default_report_days_explain'] = "Standardwert der Zeitspanne zwischen Beginndatum der Suche und Enddatum (Anzahl von Tagen)";
