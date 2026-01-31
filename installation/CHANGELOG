@@ -1,4 +1,4 @@
-Version 4.5.0 - En développement
+Version 4.5.0 - 28/01/2026 Généré par @JeromeDevome
 [Ajout] Types de réservations : Option tri automatique ordre d'affichage des types par identifiant ou nom - 9ed96228 - @JeromeDevome
 [Ajout] Types de réservations : Fusionner deux types de réservation - 9ed96228 - @JeromeDevome
 [Ajout] Réservation confidentielle - Limite les informations aux autres usagés - 7f0211b2 - @JeromeDevome
@@ -38,6 +38,10 @@ Version 4.5.0 - En développement
 [Correction] Fichier non utilisé - b90fc7ee0 - @JeromeDevome
 [Correction] Connexion HTTTP - 07cb84493 - @JeromeDevome
 [Correction] Contrôle IP avec php 8.4 - a8055a170 - @JeromeDevome
+[Correction] Lien vers config_ldap.inc.php - 38007f299 - @JeromeDevome
+[Correction] Warning modif réservation avec date de fin (modulo) - 150df0ccd - @JeromeDevome
+[Correction] Fix date de fin en éditant une réservation - 9b0e847a4 - @JeromeDevome
+[Correction] (dés-)activation d'un compte utilisateur - e6599fc43 - @ynaessens
 [Modification] Calendrier jours ignorés, configuration par année - 711adf56 - @JeromeDevome
 [Modification] Fichier des vacances scolaires 2025 (France) - 03dd20b6 - @ynaessens
 [Modification] Types de réservations : Amélioration de l'affichage et pop-up - 9ed96228 - @JeromeDevome
@@ -47,6 +51,10 @@ Version 4.5.0 - En développement
 [Modification] Si authentification obligatoire et utilisateur non connecté, redirection vers la page de connexion - abf7b77b - @JeromeDevome
 [Modification] Contrôle des tables en utf8mb4_unicode_ci systématique lors de la mise à jour - f12d081a - @JeromeDevome
 [Modification] Mise à jour des dépendances PHP - ee9fc5d4a - @JeromeDevome
+[Modification] Passage de la popup de confirmation en toast bootstrap sur certaines pages admin - @JeromeDevome
+[Modification] Divers nettoyage de code - @JeromeDevome & @ynaessens
+[Modification] homogénéisation du style des sélecteurs de site, domaine et ressource - 80d1d8062 - @ynaessens
+[Modification] Internalisation des traductions dans certaines pages de l'admin - @ynaessens
 
 Version 4.4.2 - 23/09/2025 Généré par @JeromeDevome
 [Correction] Variable manquante pour la sauvegarde - aed762ca - @ynaessens
