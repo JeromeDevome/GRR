@@ -3,9 +3,9 @@
  * contactresa.php
  * Formulaire de demande de réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-10-09 11:20$
+ * Dernière modification : $Date: 2026-01-31 11:36$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -138,7 +138,7 @@ foreach($res_areaName as $row)
 {
 	if (authUserAccesArea(getUserName(),$row['id']) == 1)
 	{
-		$domaineDispo[] = array('id' => $row['id'], 'nom' => $row['area_name'], 'resolution' => $row['resolution']);
+		$domaineDispo[] = array('id' => $row['id'], 'nom' => $row['area_name'], 'resolution' => $row['resolution_area']);
 	}
 }
 
