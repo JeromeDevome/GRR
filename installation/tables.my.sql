@@ -8,7 +8,7 @@ CREATE TABLE grr_j_group_site (idgroupes int NOT NULL, id_site int NOT NULL DEFA
 DROP TABLE IF EXISTS grr_j_mailuser_room;
 CREATE TABLE grr_j_mailuser_room (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_room int(11) NOT NULL default '0', mail_resa tinyint(1) NOT NULL DEFAULT '1', mail_hebdo tinyint(1) NOT NULL DEFAULT '0', PRIMARY KEY  (login,id_room) );
 DROP TABLE IF EXISTS grr_j_user_area;
-CREATE TABLE grr_j_user_area (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_area int(11) NOT NULL default '0', idgroupes int(11) NOT NULL default '0', PRIMARY KEY  (login,id_area) );
+CREATE TABLE grr_j_user_area (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_area int(11) NOT NULL default '0', idgroupes int(11) NOT NULL default '0', PRIMARY KEY  (login,id_area,idgroupes) );
 DROP TABLE IF EXISTS grr_j_user_room;
 CREATE TABLE grr_j_user_room (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_room int(11) NOT NULL default '0', PRIMARY KEY  (login,id_room) );
 DROP TABLE IF EXISTS grr_j_user_site;
@@ -198,7 +198,7 @@ INSERT INTO grr_setting VALUES ('url_disconnect', '');
 INSERT INTO grr_setting VALUES ('use_fckeditor', '1');
 INSERT INTO grr_setting VALUES ('UserAllRoomsMaxBooking', '-1');
 INSERT INTO grr_setting VALUES ('verif_reservation_auto', '0');
-INSERT INTO grr_setting VALUES ('version', '0400009');
+INSERT INTO grr_setting VALUES ('version', '0400010');
 INSERT INTO grr_setting VALUES ('visu_fiche_description', '0');
 INSERT INTO grr_setting VALUES ('webmaster_name', 'Webmestre de GRR');
 INSERT INTO grr_setting VALUES ('webmaster_email', 'VariableInstal03');
