@@ -1,3 +1,7 @@
+Version 4.5.1 - En développement
+[Correction] Définition index dans contactresa - 330b1975b - @ynaessens
+[Correction] Correction clé primaire pour la gestion des droits par domaines restreints - 8a5dffb6d - @JeromeDevome
+
 Version 4.5.0 - 28/01/2026 Généré par @JeromeDevome
 [Ajout] Types de réservations : Option tri automatique ordre d'affichage des types par identifiant ou nom - 9ed96228 - @JeromeDevome
 [Ajout] Types de réservations : Fusionner deux types de réservation - 9ed96228 - @JeromeDevome
