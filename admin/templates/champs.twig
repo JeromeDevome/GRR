@@ -11,7 +11,7 @@
 	<div class="form-group row {{ options.classGroup }}">
 		<label class="{{ options.classLabel }}" for="{{ name }}">{{ label }}</label>
 		<div class="{{ options.classInput }}">
-			<textarea class="form-control" type="text" id="{{ name }}" name="{{ name }}" value="">{{ value }}</textarea>
+			<textarea class="form-control" id="{{ name }}" name="{{ name }}" rows="{{ options.rows ?: 4 }}">{{ value }}</textarea>
 		</div>
 	</div>
 {% endmacro %}
@@ -36,4 +36,25 @@
 			</div>
 		</div>
 	</div>
+{% endmacro %}
+
+{% macro summernote(name, label, value = null, options = []) %}
+	<div class="form-group row {{ options.classGroup }}">
+		{% if label is defined and label|length > 0 %}
+			<label class="{{ options.classLabel }}" for="{{ name }}">{{ label }}</label>
+		{% endif %}
+		<div class="{{ options.classInput }}">
+			<textarea class="form-control summernote" id="{{ name }}" name="{{ options.name ?: name }}" rows="{{ options.rows ?: 10 }}">{{ value }}</textarea>
+		</div>
+	</div>
+	{% if options.init is defined and options.init %}
+	<script>
+	(function($){
+		$(function(){
+			var cfg = {{ options.config|default('{}')|raw }};
+			$('#{{ name }}').summernote(cfg);
+		});
+	})(jQuery);
+	</script>
+	{% endif %}
 {% endmacro %}

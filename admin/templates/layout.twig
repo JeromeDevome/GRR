@@ -12,6 +12,9 @@
 Font Awesome -->
   <link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/fontawesome-free/css/all.min.css">
 
+  <!-- Summernote CSS -->
+  <link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-lite.min.css">
+
   {% block css %}{% endblock %}
   
   <link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/dist/css/adminlte.min.css">
@@ -198,7 +201,68 @@ Font Awesome -->
 </script>
 <script src="../vendor/almasaeed2010/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="../vendor/almasaeed2010/adminlte/dist/js/adminlte.js"></script>
+<script src="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-lite.min.js"></script>
 
+<!-- Configuration globale Summernote Lite pour tous les éditeurs -->
+<script>
+	$(function() {
+		// Initialiser tous les éditeurs Summernote avec configuration complète
+		$('.summernote').summernote({
+			height: 350,
+			minHeight: 200,
+			maxHeight: 600,
+			placeholder: 'Entrez votre texte ici...',
+			spellcheck: true,
+			dialogsInBody: true,
+			disableDragAndDrop: false,
+			toolbar: [
+				['style', ['style']],
+				['fontsize', ['fontsize']],
+				['fontname', ['fontname']],
+				['color', ['color']],
+				['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear', 'superscript', 'subscript']],
+				['para', ['ul', 'ol', 'paragraph']],
+				['height', ['height']],
+				['table', ['table']],
+				['insert', ['link', 'picture', 'video']],
+				['view', ['fullscreen', 'codeview', 'help']],
+				['edit', ['undo', 'redo']]
+			],
+			fontSizes: ['8', '10', '12', '14', '16', '18', '20', '24', '28', '32', '36', '48'],
+			fontNames: ['Arial', 'Courier', 'Georgia', 'Helvetica', 'Times New Roman', 'Trebuchet MS', 'Verdana'],
+			colors: [
+				['#000000', '#424242', '#636363', '#9C27B0', '#3F51B5'],
+				['#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50'],
+				['#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800'],
+				['#FF5722', '#F44336', '#E91E63', '#795548', '#FFFFFF']
+			],
+			popover: {
+				table: [
+					['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
+					['delete', ['deleteRow', 'deleteCol', 'deleteTable']]
+				],
+				link: [
+					['link', ['linkDialogShow', 'unlink']]
+				],
+				image: [
+					['image', ['imagesize100', 'imagesize75', 'imagesize50', 'imagesize25']],
+					['float', ['floatLeft', 'floatRight', 'floatNone']],
+					['remove', ['removeMedia']]
+				]
+			}
+		});
+
+		// Ajouter id/name à toutes les textarea codable créées par Summernote
+		$('.note-codable').each(function(index) {
+			var $parent = $(this).closest('.note-editor');
+			var $textarea = $parent.prev('textarea.summernote');
+			if($textarea.attr('id')) {
+				$(this).attr('id', $textarea.attr('id') + '-codable');
+				$(this).attr('name', $textarea.attr('name') + '_code');
+			}
+		});
+	});
+</script>
 
 {% block javascript %}{% endblock %}
 </body>

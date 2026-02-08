@@ -4,7 +4,6 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
-	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs5.min.css">
 {% endblock %}
 
 {% block content %}
@@ -120,9 +119,7 @@
 							</div>
 
 							<p>{{ trad.description_complete }} :</p>
-							<textarea id="summernote" name="comment_room" rows="10" cols="80">
-								{{ ressource.comment_room }}
-							</textarea>
+							{{ form.summernote('summernote', '', ressource.comment_room, {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: 'comment_room'}) }}
 
 						</section>
 
@@ -263,26 +260,10 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs5.min.js?v={{d.versionCache}}"></script>
 	<script type="text/javascript" src="../js/functions.min.js?v={{d.versionCache}}"></script>
 	<script>
 		$(function () {
-			$('#summernote').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-				]
-			});
+			// Autres scripts...
 		}); 
 	</script>
 {% endblock %}

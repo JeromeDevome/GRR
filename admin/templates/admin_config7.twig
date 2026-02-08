@@ -4,7 +4,6 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
-	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs5.min.css">
 	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
 {% endblock %}
 
@@ -101,7 +100,7 @@
 											<br><br>
 											<h5>Texte avant le formulaire :</h5>
 											<br>
-											<textarea id="summernote" name="textecontactresa" rows="100" cols="80">{{ d.contactresa[1] }}</textarea>
+											{{ form.summernote('summernote', '', d.contactresa[1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: 'textecontactresa'}) }}
 										
 										</div>
 
@@ -203,30 +202,11 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs5.min.js"></script>
 	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
 	<script src="../vendor/almasaeed2010/adminlte/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
 	<script type="text/javascript">
 
 		$(function(){
-			// Summernote
-			$('#summernote').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-				]
-			});
-
 			$("input[data-bootstrap-switch]").each(function(){
    			  $(this).bootstrapSwitch('state', $(this).prop('checked'));
   			})

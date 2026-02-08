@@ -4,7 +4,6 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
-	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs5.min.css">
 	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
 {% endblock %}
 
@@ -62,7 +61,7 @@
                           <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
                             <p>{{trad.mail_desc_admin_test}}</p>
                             {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                            <textarea id="{{namform}}" name="{{namform}}" rows="60" cols="80">{{ pages[namform][1] }}</textarea>
+                            {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform}) }}
                           </div>
                       {% endfor %}
                     </div>
@@ -92,11 +91,11 @@
                          <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
                             <p>{{trad.mail_desc_dest_adm}}</p>
                             {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                            <textarea id="{{namform}}" name="{{namform}}" rows="60" cols="80">{{ pages[namform][1] }}</textarea>
+                            {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform}) }}
                            
                             <p>{{trad.mail_desc_dest_beneficiaire}}</p>
                             {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                            <textarea id="{{namform2}}" name="{{namform2}}" rows="60" cols="80">{{ pages[namform2][1] }}</textarea>
+                            {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
                           </div>
                       {% endfor %}
                     </div>
@@ -126,11 +125,11 @@
                         <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
                           <p>{{trad.mail_desc_dest_adm}}</p>
                           {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          <textarea id="{{namform}}" name="{{namform}}" rows="60" cols="80">{{ pages[namform][1] }}</textarea>
+                          {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform}) }}
                           
                           <p>{{trad.mail_desc_dest_beneficiaire}}</p>
                           {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          <textarea id="{{namform2}}" name="{{namform2}}" rows="60" cols="80">{{ pages[namform2][1] }}</textarea>
+                          {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
                         </div>
                       {% endfor %}
                     </div>
@@ -162,15 +161,15 @@
                         <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
                           <p>{{trad.mail_desc_dest_adm}}</p>
                           {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          <textarea id="{{namform}}" name="{{namform}}" rows="60" cols="80">{{ pages[namform][1] }}</textarea>
+                          {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform}) }}
                           
                           <p>{{trad.mail_desc_dest_beneficiaire}}</p>
                           {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          <textarea id="{{namform2}}" name="{{namform2}}" rows="60" cols="80">{{ pages[namform2][1] }}</textarea>
+                          {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
                           
                           <p>{{trad.mail_desc_dest_supauto}}</p>
                           {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          <textarea id="{{namform3}}" name="{{namform3}}" rows="60" cols="80">{{ pages[namform3][1] }}</textarea>
+                          {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform3}) }}
                         </div>
                       {% endfor %}
                     </div>
@@ -212,33 +211,33 @@
 
                           <p>{{trad.mail_desc_dest_adm}}</p>
                           {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          <textarea id="{{namform}}" name="{{namform}}" rows="60" cols="80">{{ pages[namform][1] }}</textarea>
+                          {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform}) }}
 
                           <p>{{trad.mail_desc_dest_beneficiaire}}</p>
                           {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          <textarea id="{{namform3}}" name="{{namform3}}" rows="60" cols="80">{{ pages[namform3][1] }}</textarea>
+                          {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform3}) }}
 
                           <!-- Résultat de la réservation à modérer -->
                           <h2>{{trad.mail_type_resa_resultat}}</h2>
 
                           <p>{{trad.mail_desc_dest_adm}}</p>
                           {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          <textarea id="{{namform2}}" name="{{namform2}}" rows="60" cols="80">{{ pages[namform2][1] }}</textarea>
+                          {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
 
                           <p>{{trad.mail_desc_dest_beneficiaire}}</p>
                           {{ form.input(titreform4, "", pages[namform4][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          <textarea id="{{namform4}}" name="{{namform4}}" rows="60" cols="80">{{ pages[namform4][1] }}</textarea>
+                          {{ form.summernote(namform4, '', pages[namform4][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform4}) }}
 
                           <p>{{trad.mail_desc_dest_gestionnaire}}</p>
                           {{ form.input(titreform6, "", pages[namform6][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          <textarea id="{{namform6}}" name="{{namform6}}" rows="60" cols="80">{{ pages[namform6][1] }}</textarea>
+                          {{ form.summernote(namform6, '', pages[namform6][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform6}) }}
 
                           <!-- Supression de la réservation à modérer -->
                           <h2>{{trad.mail_type_resa_sup}}</h2>
 
                           <p>{{trad.mail_desc_dest_gestionnaire}}</p>
                           {{ form.input(titreform5, "", pages[namform5][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          <textarea id="{{namform5}}" name="{{namform5}}" rows="60" cols="80">{{ pages[namform5][1] }}</textarea>
+                          {{ form.summernote(namform5, '', pages[namform5][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform5}) }}
 
                         </div>
                       {% endfor %}
@@ -269,11 +268,11 @@
                         <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
                           <p>{{trad.mail_desc_dest_adm}}</p>
                           {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          <textarea id="{{namform}}" name="{{namform}}" rows="60" cols="80">{{ pages[namform][1] }}</textarea>
+                          {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform}) }}
 
                           <p>{{trad.mail_desc_dest_beneficiaire}}</p>
                           {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          <textarea id="{{namform2}}" name="{{namform2}}" rows="60" cols="80">{{ pages[namform2][1] }}</textarea>
+                          {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
                         </div>
                       {% endfor %}
                     </div>
@@ -305,15 +304,15 @@
                         <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
                           <p>{{trad.mail_desc_compte_creation}}</p>
                           {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          <textarea id="{{namform}}" name="{{namform}}" rows="60" cols="80">{{ pages[namform][1] }}</textarea>
+                          {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform}) }}
 
                           <p>{{trad.mail_desc_compte_decision1}}</p>
                           {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          <textarea id="{{namform2}}" name="{{namform2}}" rows="60" cols="80">{{ pages[namform2][1] }}</textarea>
+                          {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
 
                           <p>{{trad.mail_desc_compte_decision2}}</p>
                           {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          <textarea id="{{namform3}}" name="{{namform3}}" rows="60" cols="80">{{ pages[namform3][1] }}</textarea>
+                          {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform3}) }}
                         </div>
                       {% endfor %}
                     </div>
@@ -334,334 +333,9 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs5.min.js"></script>
 	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
 	<script>
 		$(function () {
-			// Summernote
-      $('#summernote').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-      {% for langue in liste_language %}
-        $('#mails_test_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-        $('#mails_resacreation_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-        $('#mails_resacreation2_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-        $('#mails_resamodification_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-        $('#mails_resamodification2_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-        $('#mails_resasuppression_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-        $('#mails_resasuppression2_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-        $('#mails_resasuppression3_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-        $('#mails_resamoderation_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-        $('#mails_resamoderation2_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-        $('#mails_resamoderation3_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-        $('#mails_resamoderation4_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-        $('#mails_resamoderation5_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-        $('#mails_resamoderation6_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-        $('#mails_retardrestitution_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-        $('#mails_retardrestitution2_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-        $('#mails_demandecompte_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-        $('#mails_demandecompte2_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-        $('#mails_demandecompte3_{{langue}}').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-      {% endfor %}
-
 			{%if d.enregistrement%}
 				{%if d.enregistrement == 1 %}
 					toastr.success("{{trad.message_records}}")
@@ -669,7 +343,6 @@
 					toastr.warning("{{d.enregistrement|raw}}")
 				{%endif%}
 			{%endif%}
-
 		}); 
 	</script>
 {% endblock %}

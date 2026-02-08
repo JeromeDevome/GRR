@@ -4,7 +4,6 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
-	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs5.min.css">
 	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
 {% endblock %}
 
@@ -21,7 +20,7 @@
 						<h4 class="page-header">{{ trad.cgu_titre }}</h4>
 						<p>{{ trad.cgu_grr }}</p>
 						{{ form.input('titre', 'Titre', pages.cgu[0], {classGroup: 'col-sm-12', classLabel: 'col-sm-2', classInput: 'col-sm-10 control-label'}) }}
-						<textarea id="summernote" name="CGU" rows="60" cols="80">{{ pages.cgu[1] }}</textarea>
+						{{ form.summernote('summernote', '', pages.cgu[1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: 'CGU'}) }}
 					</section>
 
 					<div style="text-align:center;">
@@ -39,28 +38,9 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../vendor/almasaeed2010/adminlte/plugins/summernote/summernote-bs5.min.js"></script>
 	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
 	<script>
 		$(function () {
-			// Summernote
-			$('#summernote').summernote({
-				toolbar: [
-					// [groupName, [list of button]]
-					['style', ['style']],
-					['style', ['bold', 'italic', 'underline', 'clear']],
-					['font', ['strikethrough', 'superscript', 'subscript']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['height', ['height']],
-					['fontname', ['fontname']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help']]
-					]
-				});
-
 			{%if d.enregistrement%}
 				{%if d.enregistrement == 1 %}
 					toastr.success("{{trad.message_records}}")
@@ -68,7 +48,6 @@
 					toastr.warning("{{d.enregistrement|raw}}")
 				{%endif%}
 			{%endif%}
-
 		}); 
 	</script>
 {% endblock %}

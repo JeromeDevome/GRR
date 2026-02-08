@@ -25,3 +25,22 @@
 		</div>
 	</div>
 {% endmacro %}
+
+{% macro summernote(name, label, value = null, options = []) %}
+	<div class="form-group {{ options.classGroup }}">
+		<label class="{{ options.classLabel }}" for="{{ name }}">{{ label }}</label>
+		<div class="{{ options.classInput }}">
+			<textarea class="form-control summernote" id="{{ name }}" name="{{ name }}" rows="{{ options.rows ?: 10 }}">{{ value }}</textarea>
+		</div>
+	</div>
+	{% if options.init is defined and options.init %}
+	<script>
+		(function($){
+			$(function(){
+				var cfg = {{ options.config|default('{}')|raw }};
+				$('#{{ name }}').summernote(cfg);
+			});
+		})(jQuery);
+	</script>
+	{% endif %}
+{% endmacro %}
