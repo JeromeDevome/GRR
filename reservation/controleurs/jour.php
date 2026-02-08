@@ -3,9 +3,9 @@
  * jour.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-03-03 17:26$
+ * Dernière modification : $Date: 2026-02-08 11:48$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-204 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -193,9 +193,7 @@ for ($i = 0; ($row = grr_sql_row_keyed($ressources, $i)); $i++)
 		$acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $id_room[$i]);
 		$confidentiel_resa[$id_room[$i]] = $row["confidentiel_resa"];
 		$ficheRessource = verif_display_fiche_ressource($user_name, $id_room[$i]);
-        $accessConfig = false;
-		if (authGetUserLevel($user_name,$id_room[$i]) > 2)
-            $accessConfig = true;
+    $acces_config = (authGetUserLevel($user_name,$id_room[$i]) > 2);
 
 		$ressourceEmpruntee = affiche_ressource_empruntee_twig($id_room[$i]);
 
@@ -209,7 +207,7 @@ for ($i = 0; ($row = grr_sql_row_keyed($ressources, $i)); $i++)
 		$rooms[] = $row["id"];
 		$delais_option_reservation[$row["id"]] = $row["delais_option_reservation"];
 
-        $colonnesRess[] = array("a" => $a, "ress" => $row, "largeur" => $room_column_width, "ficheRessource" => $ficheRessource, "accessConfig" => $accessConfig, "ressourceEmpruntee" => $ressourceEmpruntee);
+        $colonnesRess[] = array("a" => $a, "ress" => $row, "largeur" => $room_column_width, "ficheRessource" => $ficheRessource, "acces_config" => $acces_config, "ressourceEmpruntee" => $ressourceEmpruntee);
 	}
 }
 if (count($rooms) == 0)

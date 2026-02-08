@@ -56,7 +56,7 @@
 					<a href="javascript:centrerpopup('app.php?p=ressourcefiche&id_room={{d.room}}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{trad.fiche_ressource}}"><i class="fa-solid fa-magnifying-glass"></i></a>
 				{% endif %}
 
-				{% if d.configRessource %}
+				{% if d.acces_config %}
 					<a href="./admin/admin.php?p=admin_edit_room&room={{d.room}}" title="{{d.editroom}}"><i class="fa-solid fa-gear"></i></a>
 				{% endif %}
 
