@@ -1,13 +1,12 @@
 /*!
  * 
- * Super simple WYSIWYG editor v0.8.20
+ * Super simple WYSIWYG editor v0.9.1
  * https://summernote.org
  *
- *
- * Copyright 2013- Alan Hong and contributors
+ * Copyright 2013~ Hackerwins and contributors
  * Summernote may be freely distributed under the MIT license.
  *
- * Date: 2021-10-14T21:15Z
+ * Date: 2024-10-09T10:28Z
  *
  */
 @font-face {
@@ -333,7 +332,7 @@
  ------------------------------------------ */
 .note-editor.note-frame,
 .note-editor.note-airframe {
-    border: 1px solid #00000032;
+    border: 1px solid rgba(0, 0, 0, 0.1960784314);
 }
 .note-editor.note-frame.codeview .note-editing-area .note-editable,
 .note-editor.note-airframe.codeview .note-editing-area .note-editable {
@@ -355,7 +354,7 @@
 }
 .note-editor.note-frame .note-editing-area .note-editable[contenteditable=false],
 .note-editor.note-airframe .note-editing-area .note-editable[contenteditable=false] {
-    background-color: #8080801d;
+    background-color: rgba(128, 128, 128, 0.1137254902);
 }
 .note-editor.note-frame .note-editing-area .note-codable,
 .note-editor.note-airframe .note-editing-area .note-codable {
@@ -466,10 +465,10 @@
 }
 .note-editor.note-frame .note-statusbar,
 .note-editor.note-airframe .note-statusbar {
-    background-color: #8080801d;
+    background-color: rgba(128, 128, 128, 0.1137254902);
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
-    border-top: 1px solid #00000032;
+    border-top: 1px solid rgba(0, 0, 0, 0.1960784314);
 }
 .note-editor.note-frame .note-statusbar .note-resizebar,
 .note-editor.note-airframe .note-statusbar .note-resizebar {
@@ -482,7 +481,7 @@
 .note-editor.note-airframe .note-statusbar .note-resizebar .note-icon-bar {
     width: 20px;
     margin: 1px auto;
-    border-top: 1px solid #00000032;
+    border-top: 1px solid rgba(0, 0, 0, 0.1960784314);
 }
 .note-editor.note-frame .note-statusbar.locked .note-resizebar,
 .note-editor.note-airframe .note-statusbar.locked .note-resizebar {
@@ -807,6 +806,10 @@
  ------------------------------------------ */
 html .note-fullscreen-body, body .note-fullscreen-body {
     overflow: hidden !important;
+}
+
+.note-editable ul li, .note-editable ol li {
+    list-style-position: inside;
 }
 
 /*# sourceMappingURL=summernote.css.map*/

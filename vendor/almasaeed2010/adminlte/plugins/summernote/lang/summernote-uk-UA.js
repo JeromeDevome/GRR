@@ -1,13 +1,12 @@
 /*!
  * 
- * Super simple WYSIWYG editor v0.8.20
+ * Super simple WYSIWYG editor v0.9.1
  * https://summernote.org
  *
- *
- * Copyright 2013- Alan Hong and contributors
+ * Copyright 2013~ Hackerwins and contributors
  * Summernote may be freely distributed under the MIT license.
  *
- * Date: 2021-10-14T21:15Z
+ * Date: 2024-10-09T10:28Z
  *
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -19,11 +18,11 @@
 		var a = factory();
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(self, function() {
+})(self, () => {
 return /******/ (() => { // webpackBootstrap
 var __webpack_exports__ = {};
 (function ($) {
-  $.extend($.summernote.lang, {
+  $.extend(true, $.summernote.lang, {
     'uk-UA': {
       font: {
         bold: 'Напівжирний',
@@ -73,18 +72,17 @@ var __webpack_exports__ = {};
         edit: 'Редагувати',
         textToDisplay: 'Текст, що відображається',
         url: 'URL для переходу',
-        openInNewWindow: 'Відкривати у новому вікні',
-        useProtocol: 'Використовувати протокол за замовчуванням'
+        openInNewWindow: 'Відкрити у новому вікні'
       },
       table: {
         table: 'Таблиця',
-        addRowAbove: 'Add row above',
-        addRowBelow: 'Add row below',
-        addColLeft: 'Add column left',
-        addColRight: 'Add column right',
-        delRow: 'Delete row',
-        delCol: 'Delete column',
-        delTable: 'Delete table'
+        addRowAbove: 'Додати рядок вище',
+        addRowBelow: 'Додати рядок нижче',
+        addColLeft: 'Додати стовпчик ліворуч',
+        addColRight: 'Додати стовпчик праворуч',
+        delRow: 'Видалити рядок',
+        delCol: 'Видалити стовпчик',
+        delTable: 'Видалити таблицю'
       },
       hr: {
         insert: 'Вставити горизонтальну лінію'
