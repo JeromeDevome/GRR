@@ -2,9 +2,9 @@
 /**
  * AdminFonctions.php
  * Fonctions Général de l'administration
- * Dernière modification : $Date: 2023-02-01 16:59$
+ * Dernière modification : $Date: 2026-02-08 17:30$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -92,6 +92,14 @@ class AdminFonctions
 		if ( $warningBackup == 1  && (time() - 2592000) > Settings::get("backup_date") ){
             $alerteTDB[] = array('type' =>"warning", 'MessageWarning' => "La dernière sauvegarde de la BDD date de plus d'un mois !", 'NomLien' => "Faire une sauvegarde", 'lien' => "admin_save_mysql.php?flag_connect=yes");
 		}
+
+        if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off') {
+            $alerteTDB[] = array('type' =>"warning", 'MessageWarning' => "La connexion n'est pas sécurisée !", 'NomLien' => "Configurer le HTTPS", 'lien' => "?p=admin_config4");
+        }
+
+       if(file_exists('../installation/')){
+            $alerteTDB[] = array('type' =>"warning", 'MessageWarning' => "Le dossier d'installation doit être supprimé pour une installation sécurisée !", 'NomLien' => "", 'lien' => "");
+        }
 
 		return $alerteTDB;
 	}
