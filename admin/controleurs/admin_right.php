@@ -33,6 +33,7 @@ $reg_multi_admin_login = isset($_POST["reg_multi_admin_login"]) ? $_POST["reg_mu
 $test_user =  isset($_POST["reg_multi_admin_login"]) ? "multi" : (isset($_POST["reg_admin_login"]) ? "simple" : NULL);
 $action = isset($_GET["action"]) ? $_GET["action"] : NULL;
 $msg = '';
+$enregistrement = 0;
 if ($test_user == "multi")
 {
 	foreach ($reg_multi_admin_login as $valeur)
