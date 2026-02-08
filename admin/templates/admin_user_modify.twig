@@ -4,7 +4,7 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
-<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
 	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
 {% endblock %}
 
@@ -318,12 +318,12 @@
 			}
 		}
 
-		{%if d.enregistrement%}
-			{%if d.enregistrement == 1 %}
+		{% if d.enregistrement %}
+			{% if d.enregistrement == 1 %}
 				toastr.success("{{trad.message_records}}")
 			{% else %}
 				toastr.warning("{{d.enregistrement|raw}}")
-			{%endif%}
-		{%endif%}
+			{% endif %}
+		{% endif %}
 	</script>
 {% endblock %}

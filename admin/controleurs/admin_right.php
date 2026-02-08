@@ -2,9 +2,9 @@
 /**
  * admin_right.php
  * Interface de gestion des droits de gestion des utilisateurs
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2026-02-08 15:40$
  * @author    JeromeB & Laurent Delineau
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -65,6 +65,7 @@ if ($test_user == "multi")
 			$test = grr_sql_count($res);
 			if ($test != "0")
 			{
+				$enregistrement = 2;
 				$msg = get_vocab("warning_exist");
 			}
 			else
@@ -75,7 +76,10 @@ if ($test_user == "multi")
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, "<p>" . grr_sql_error());
 					else
+					{
+						$enregistrement = 1;
 						$msg = get_vocab("add_multi_user_succeed");
+					}
 				}
 			}
 		}
@@ -114,7 +118,10 @@ if ($test_user == "multi")
 						if (grr_sql_command($sql3) < 0)
 							fatal_error(0, "<p>" . grr_sql_error());
 						else
+						{
+							$enregistrement = 1;
 							$msg = get_vocab("add_multi_user_succeed");
+						}
 					}
 				}
 			}
@@ -152,7 +159,10 @@ if ($test_user == "simple")
 			$res = grr_sql_query($sql);
 			$test = grr_sql_count($res);
 			if ($test != "0")
+			{
+				$enregistrement = 2;
 				$msg = get_vocab("warning_exist");
+			}
 			else
 			{
 				if ($reg_admin_login != '')
@@ -161,7 +171,10 @@ if ($test_user == "simple")
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, "<p>" . grr_sql_error());
 					else
+					{
+						$enregistrement = 1;
 						$msg = get_vocab("add_user_succeed");
+					}
 				}
 			}
 		}
@@ -200,7 +213,10 @@ if ($test_user == "simple")
 						if (grr_sql_command($sql3) < 0)
 							fatal_error(0, "<p>" . grr_sql_error());
 						else
+						{
+							$enregistrement = 1;
 							$msg = get_vocab("add_user_succeed");
+						}
 					}
 				}
 			}
@@ -221,7 +237,10 @@ if ($action)
 		if (grr_sql_command($sql) < 0)
 			fatal_error(0, "<p>" . grr_sql_error());
 		else
+		{
+			$enregistrement = 1;
 			$msg = get_vocab("del_user_succeed");
+		}
 	}
 	if ($action == "del_admin_all")
 	{
@@ -244,7 +263,10 @@ if ($action)
 				if (grr_sql_command($sql2) < 0)
 					fatal_error(0, "<p>" . grr_sql_error());
 				else
+				{
+					$enregistrement = 1;
 					$msg = get_vocab("del_user_succeed");
+				}
 			}
 		}
 	}
@@ -281,9 +303,8 @@ get_vocab_admin('add');
 $trad['dIdDomaine'] = $id_area;
 $trad['dIdRessource'] = $room;
 
-
-// Affichage d'un pop-up
-affiche_pop_up($msg,"admin");
+$d['enregistrement'] = $enregistrement;
+$d['msgToast'] = $msg;
 
 $this_area_name = "";
 $this_room_name = "";

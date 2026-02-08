@@ -297,12 +297,13 @@ if ((!empty($id_area)) || (isset($add_area)))
 	}
 	if ((isset($change_done)) && (!isset($ok)))
 	{
+		$msg .= get_vocab("message_records");
 		if ($msg != '') {
-			$_SESSION['displ_msg'] = 'yes';
+			//$_SESSION['displ_msg'] = 'yes';
 			if (strpos($retour_page, ".php?") == "")
-				$param = "?msg=".$msg;
+				$param = "?ok=1&msg=".$msg;
 			else
-				$param = "&msg=".$msg;
+				$param = "&ok=1&msg=".$msg;
 		} else
 		$param = '';
 		Header("Location: ".$retour_page.$param);
@@ -311,7 +312,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 
 	// Si pas de problème, message de confirmation
 	if (isset($_POST['area_name'])) {
-		$_SESSION['displ_msg'] = 'yes';
+		//$_SESSION['displ_msg'] = 'yes';
 		if ($msg == '') {
 			$d['enregistrement'] = 1;
 		} else{

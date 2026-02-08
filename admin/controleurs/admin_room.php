@@ -1,10 +1,10 @@
 <?php
 /**
  * admin_room.php
- * Interface d'accueil de Gestion des sites de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Interface d'accueil de Gestion des domaines et des ressources de l'application GRR
+ * Dernière modification : $Date: 2026-02-08 15:15$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -32,8 +32,8 @@ check_access(4, $back);
 // Afffichage d'un éventuel message
 if (isset($_GET['msg']))
 {
-	$msg = $_GET['msg'];
-	affiche_pop_up($msg,"admin");
+	$d['enregistrement'] = $_GET['ok'];
+	$d['msgToast'] = $_GET['msg'];
 }
 // If area is set but area name is not known, get the name.
 if ((isset($id_area)) && ($id_area != -1))

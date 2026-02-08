@@ -283,9 +283,9 @@ if ((isset($change_done)) && (!isset($ok)))
 	{
 		$_SESSION['displ_msg'] = 'yes';
 		if (strpos($retour_page, ".php?") == "")
-			$param = "?msg=".$msg;
+			$param = "?ok=1&msg=".$msg;
 		else
-			$param = "&msg=".$msg;
+			$param = "&ok=1&msg=".$msg;
 	}
 	else
 		$param = '';

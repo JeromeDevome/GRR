@@ -2,6 +2,10 @@
 
 {% import 'messagesysteme.twig' as msgSyst %}
 
+{% block css %}
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
+{% endblock %}
+
 {% block content %}
 	<div class="row">
 		<div class="col col-md-12">
@@ -121,9 +125,9 @@
 									<td>{{ useradmin.nom }}</td>
 									<td>{{ useradmin.prenom }}</td>
 									{% if trad.dIdRessource != -1 %}
-										<td><a href="?p=admin_right&action=del_admin&login_admin={{ useradmin.login }}&id_area={{ trad.dIdDomaine }}&room={{ trad.dIdRessource }}"><i class="fa fa-trash"></i></a></td>
+										<td><a href="?p=admin_right&amp;action=del_admin&amp;login_admin={{ useradmin.login }}&amp;id_area={{ trad.dIdDomaine }}&amp;room={{ trad.dIdRessource }}"><i class="fa fa-trash"></i></a></td>
 									{% else %}
-										<td><a href="?p=admin_right&action=del_admin_all&login_admin={{ useradmin.login }}&id_area={{ trad.dIdDomaine }}"><i class="fa fa-trash"></i></a></td>
+										<td><a href="?p=admin_right&amp;action=del_admin_all&amp;login_admin={{ useradmin.login }}&amp;id_area={{ trad.dIdDomaine }}"><i class="fa fa-trash"></i></a></td>
 									{% endif %}
 								</tr>
 							{% endfor %}
@@ -137,7 +141,15 @@
 {% endblock %}
 
 {% block javascript %}
-	<script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
+	<script type="text/javascript">
+		{% if d.enregistrement %}
+			{% if d.enregistrement == 1 %}
+				toastr.success("{{d.msgToast|raw}}")
+			{% else %}
+				toastr.warning("{{d.msgToast|raw}}")
+			{% endif %}
+		{% endif %}
 
 		function area_go()
 		{

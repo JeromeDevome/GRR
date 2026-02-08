@@ -3,9 +3,9 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2026-02-08 15:15$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -393,17 +393,11 @@ if ($valid == "yes")
 
 // Si pas de problème, message de confirmation
 if (isset($_GET['valid'])) {
-    $_SESSION['displ_msg'] = 'yes';
     if ($msg == '') {
         $d['enregistrement'] = 1;
     } else{
         $d['enregistrement'] = $msg;
     }
-}
-if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes')) {
-    $msg = $_GET['msg'];
-} else {
-    $msg = '';
 }
 
 
@@ -464,10 +458,6 @@ if ((authGetUserLevel(getUserName(), -1) < 1) && (Settings::get("authentificatio
 	showAccessDenied($back);
 	exit();
 }
-
-
-// Affichage d'un pop-up
-affiche_pop_up($msg,"admin");
 
 if (isset($user_login) && ($user_login != ''))
 	$trad['admin_user_modify_modify'] = get_vocab('admin_user_modify_modify');
