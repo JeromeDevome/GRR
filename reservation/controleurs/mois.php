@@ -3,7 +3,7 @@
  * mois.php
  * Interface d'accueil avec affichage par mois
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-06 16:17$
+ * Dernière modification : $Date: 2026-02-08 11:59$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -231,8 +231,7 @@ $d['anneeActuel'] = ucfirst(utf8_strftime("%Y ", $month_start));
 if (verif_display_fiche_ressource($user_name, $room) && $d['pview'] != 1)
 	$d['ficheRessource'] = true;
 
-if ($authGetUserLevel > 2 && $d['pview'] != 1)
-    $d['configRessource'] = true;
+$d['acces_config'] = ($authGetUserLevel > 2 && $d['pview'] != 1);
 
 $d['ressourceEmpruntee'] = affiche_ressource_empruntee_twig($room);
 

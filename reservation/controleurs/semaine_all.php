@@ -3,9 +3,9 @@
  * semaine_all.php
  * Permet l'affichage du planning des réservations d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-03-24 15:30$
+ * Dernière modification : $Date: 2026-02-08 12:03$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -297,7 +297,6 @@ foreach($ressources as $row)
 		$authGetUserLevel = authGetUserLevel($user_name, $row['id']);
 		$auth_visiteur = auth_visiteur($user_name, $row['id']);
         $ficheDescription = false;
-        $configRess = false;
 		$resa_confidentiel = $row['confidentiel_resa'];
         // si la ressource est restreinte, l'utilisateur peut-il réserver ?
         $user_can_book = $row['who_can_book'] || ($authGetUserLevel > 2) || (authBooking($user_name,$row['id']));
@@ -310,8 +309,7 @@ foreach($ressources as $row)
 		if (verif_display_fiche_ressource($user_name, $row['id']) && $d['pview'] != 1)
             $ficheDescription = true;
 
-		if (authGetUserLevel($user_name,$row['id']) > 2 && $d['pview'] != 1)
-            $configRess = true;
+		$configRess = (authGetUserLevel($user_name,$row['id']) > 2 && $d['pview'] != 1);
 
 		$emprunte = affiche_ressource_empruntee_twig($row['id']);
 
@@ -406,7 +404,7 @@ foreach($ressources as $row)
 			$num_week_day = $num_week_day % 7;
 		}
 
-        $ressourcesSemaine[] = array('id' => $row['id'], 'nom' => $row['room_name'], 'class' => $classRess, 'annee' => $temp_year, 'mois' => $temp_month, 'capacite' => $row['capacity'], 'fiche' => $ficheDescription, 'config' => $configRess, 'statut' => $row['statut_room'], 'joursRessource' => $joursRessource);
+        $ressourcesSemaine[] = array('id' => $row['id'], 'nom' => $row['room_name'], 'class' => $classRess, 'annee' => $temp_year, 'mois' => $temp_month, 'capacite' => $row['capacity'], 'fiche' => $ficheDescription, 'acces_config' => $configRess, 'statut' => $row['statut_room'], 'joursRessource' => $joursRessource);
 	}
 }
 

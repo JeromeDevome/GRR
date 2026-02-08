@@ -76,7 +76,7 @@
                             <!--Commentaire-->{% if ressource.ress.9 == "y" and ressource.ress.10 != "" %}<br>{{ressource.ress.10|raw}}{% endif %}
                             <br>
                             <!--FicheRessource-->{% if ressource.ficheRessource %}<a href="javascript:centrerpopup('app.php?p=ressourcefiche&id_room={{ressource.ress.2}}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{trad.fiche_ressource}}"><i class="fa-solid fa-magnifying-glass"></i></a> {% endif %}
-                            <!--Accès à la conf de la ress-->{% if ressource.accessConfig %}<a href="./admin/admin.php?p=admin_edit_room&room={{ressource.ress.2}}"><i class="fa-solid fa-gear"></i></a>{% endif %}
+                            <!--Accès à la conf de la ress-->{% if ressource.acces_config %}<a href="./admin/admin.php?p=admin_edit_room&room={{ressource.ress.2}}"><i class="fa-solid fa-gear"></i></a>{% endif %}
                             <!--Ressource emprunté-->{{ressource.ressourceEmpruntee|raw}}
 							<span id="boutonSelection{{ressource.a}}" style="display:none;">
                                 <input type="button" class="btn btn-default btn-xs" title="{{trad.see_week_for_this_room}}" onclick="javascript: location.href='app.php?p=semaine&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{d.gDay}}&amp;room={{ressource.ress.2}}';" value="{{trad.week}}"/>
