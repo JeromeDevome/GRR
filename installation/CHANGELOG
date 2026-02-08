@@ -1,6 +1,14 @@
 Version 4.5.1 - En développement
+[Ajout] Message administration : Dossier installation existant, ou connexion non sécurisée - 74a13cdb4 - @JeromeDevome
 [Correction] Définition index dans contactresa - 330b1975b - @ynaessens
 [Correction] Correction clé primaire pour la gestion des droits par domaines restreints - 8a5dffb6d - @JeromeDevome
+[Correction] Sélection couleur dans les champs texte avancée - 42a5e2977 - @JeromeDevome
+[Correction] Affichage warning serveur mails désactivé - da7b7ea7e - @JeromeDevome
+[Correction] Création d'un site restreint - 0ee28b44a - @JeromeDevome
+[Modification] Unification des paramètres accès à la configuration d'une ressource - 4f707921c - @ynaessens 
+[Modification] Remplacement de popup par toast bootstrap - 83ea332dd - @JeromeDevome
+[Modification] Mise à jour librairies JS Admin - @JeromeDevome
+[Modification] Nettoyage librairies JS Admin - @JeromeDevome
 
 Version 4.5.0 - 28/01/2026 Généré par @JeromeDevome
 [Ajout] Types de réservations : Option tri automatique ordre d'affichage des types par identifiant ou nom - 9ed96228 - @JeromeDevome
