@@ -2,9 +2,9 @@
 /**
  * admin_site.php
  * Interface d'accueil de Gestion des sites de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2026-02-08 15:57$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -106,6 +106,10 @@ function create_site($id_site)
 			$_GET['save'] = 'no';
 			echo '<span class="avertissement">'.get_vocab('required').'</span>';
 		}
+		if ($access)
+			$access='r';
+		else
+			$access='a';
 		// Sauvegarde du record
 		if ((isset($_POST['save']) && ($_POST['save'] != 'no')) || ((isset($_GET['save'])) && ($_GET['save'] != 'no')))
 		{
