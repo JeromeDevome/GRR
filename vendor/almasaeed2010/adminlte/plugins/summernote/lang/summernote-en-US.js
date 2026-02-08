@@ -1,32 +1,33 @@
 /*!
  * 
- * Super simple WYSIWYG editor v0.9.0
+ * Super simple WYSIWYG editor v0.8.20
  * https://summernote.org
  *
- * Copyright 2013~ Hackerwins and contributors
+ *
+ * Copyright 2013- Alan Hong and contributors
  * Summernote may be freely distributed under the MIT license.
  *
- * Date: 2024-09-30T14:42Z
+ * Date: 2021-10-14T21:15Z
  *
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("jquery"));
+		module.exports = factory(require("jQuery"));
 	else if(typeof define === 'function' && define.amd)
-		define(["jquery"], factory);
+		define(["jQuery"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("jquery")) : factory(root["jQuery"]);
+		var a = typeof exports === 'object' ? factory(require("jQuery")) : factory(root["jQuery"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(self, (__WEBPACK_EXTERNAL_MODULE__8938__) => {
+})(self, function(__WEBPACK_EXTERNAL_MODULE__1145__) {
 return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 8938:
+/***/ 1145:
 /***/ ((module) => {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__8938__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__1145__;
 
 /***/ })
 
@@ -99,14 +100,16 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__8938__;
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8938);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1145);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 
 (jquery__WEBPACK_IMPORTED_MODULE_0___default().summernote) = (jquery__WEBPACK_IMPORTED_MODULE_0___default().summernote) || {
   lang: {}
 };
-jquery__WEBPACK_IMPORTED_MODULE_0___default().extend(true, (jquery__WEBPACK_IMPORTED_MODULE_0___default().summernote).lang, {
+jquery__WEBPACK_IMPORTED_MODULE_0___default().extend((jquery__WEBPACK_IMPORTED_MODULE_0___default().summernote.lang), {
   'en-US': {
     font: {
       bold: 'Bold',
@@ -158,7 +161,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default().extend(true, (jquery__WEBPACK_IMPO
       edit: 'Edit',
       textToDisplay: 'Text to display',
       url: 'To what URL should this link go?',
-      openInNewWindow: 'Open in new window'
+      openInNewWindow: 'Open in new window',
+      useProtocol: 'Use default protocol'
     },
     table: {
       table: 'Table',
@@ -266,6 +270,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default().extend(true, (jquery__WEBPACK_IMPO
     }
   }
 });
+})();
+
 /******/ 	return __webpack_exports__;
 /******/ })()
 ;

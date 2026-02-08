@@ -1,12 +1,13 @@
 /*!
  * 
- * Super simple WYSIWYG editor v0.9.0
+ * Super simple WYSIWYG editor v0.8.20
  * https://summernote.org
  *
- * Copyright 2013~ Hackerwins and contributors
+ *
+ * Copyright 2013- Alan Hong and contributors
  * Summernote may be freely distributed under the MIT license.
  *
- * Date: 2024-09-30T14:42Z
+ * Date: 2021-10-14T21:15Z
  *
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -18,11 +19,11 @@
 		var a = factory();
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(self, () => {
+})(self, function() {
 return /******/ (() => { // webpackBootstrap
 var __webpack_exports__ = {};
 (function ($) {
-  $.extend(true, $.summernote.lang, {
+  $.extend($.summernote.lang, {
     'pl-PL': {
       font: {
         bold: 'Pogrubienie',
@@ -42,8 +43,8 @@ var __webpack_exports__ = {};
         resizeFull: 'Zmień rozmiar na 100%',
         resizeHalf: 'Zmień rozmiar na 50%',
         resizeQuarter: 'Zmień rozmiar na 25%',
-        floatLeft: 'Do lewej',
-        floatRight: 'Do prawej',
+        floatLeft: 'Po lewej',
+        floatRight: 'Po prawej',
         floatNone: 'Równo z tekstem',
         shapeRounded: 'Kształt: zaokrąglone',
         shapeCircle: 'Kształt: okrąg',
@@ -89,7 +90,7 @@ var __webpack_exports__ = {};
       },
       style: {
         style: 'Styl',
-        p: 'Paragraf',
+        p: 'pny',
         blockquote: 'Cytat',
         pre: 'Kod',
         h1: 'Nagłówek 1',
@@ -163,7 +164,7 @@ var __webpack_exports__ = {};
         'formatH5': 'Zamień format bloku na H5',
         'formatH6': 'Zamień format bloku na H6',
         'insertHorizontalRule': 'Wstaw poziomą linię',
-        'linkDialog.show': 'Pokaż okno linkowania'
+        'linkDialog.show': 'Pokaż dialog linkowania'
       },
       history: {
         undo: 'Cofnij',

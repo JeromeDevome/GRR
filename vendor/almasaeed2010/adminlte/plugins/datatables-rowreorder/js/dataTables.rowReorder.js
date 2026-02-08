@@ -1,4 +1,4 @@
-/*! RowReorder 1.4.1
+/*! RowReorder 1.5.1
  * © SpryMedia Ltd - datatables.net/license
  */
 
@@ -43,7 +43,7 @@
 		// Browser
 		factory( jQuery, window, document );
 	}
-}(function( $, window, document, undefined ) {
+}(function( $, window, document ) {
 'use strict';
 var DataTable = $.fn.dataTable;
 
@@ -52,11 +52,9 @@ var DataTable = $.fn.dataTable;
 /**
  * @summary     RowReorder
  * @description Row reordering extension for DataTables
- * @version     1.4.1
- * @file        dataTables.rowReorder.js
+ * @version     1.5.1
  * @author      SpryMedia Ltd
  * @contact     datatables.net
- * @copyright   Copyright 2015-2023 SpryMedia Ltd.
  *
  * This source file is free software, available under the following license:
  *   MIT license - http://datatables.net/license/mit
@@ -80,19 +78,19 @@ var DataTable = $.fn.dataTable;
  * Initialisation is done by either:
  *
  * * `rowReorder` parameter in the DataTable initialisation object
- * * `new $.fn.dataTable.RowReorder( table, opts )` after DataTables
+ * * `new DataTable.RowReorder( table, opts )` after DataTables
  *   initialisation.
  *
  *  @class
  *  @param {object} settings DataTables settings object for the host table
  *  @param {object} [opts] Configuration options
  *  @requires jQuery 1.7+
- *  @requires DataTables 1.10.7+
+ *  @requires DataTables 1.11
  */
 var RowReorder = function (dt, opts) {
 	// Sanity check that we are using DataTables 1.10 or newer
-	if (!DataTable.versionCheck || !DataTable.versionCheck('1.10.8')) {
-		throw 'DataTables RowReorder requires DataTables 1.10.8 or newer';
+	if (!DataTable.versionCheck || !DataTable.versionCheck('1.11')) {
+		throw 'DataTables RowReorder requires DataTables 1.11 or newer';
 	}
 
 	// User and defaults configuration object
@@ -107,7 +105,7 @@ var RowReorder = function (dt, opts) {
 		dt: new DataTable.Api(dt),
 
 		/** @type {function} Data fetch function */
-		getDataFn: DataTable.ext.oApi._fnGetObjectDataFn(this.c.dataSrc),
+		getDataFn: DataTable.util.get(this.c.dataSrc),
 
 		/** @type {array} Pixel positions for row insertion calculation */
 		middles: null,
@@ -119,7 +117,7 @@ var RowReorder = function (dt, opts) {
 		scrollInterval: null,
 
 		/** @type {function} Data set function */
-		setDataFn: DataTable.ext.oApi._fnSetObjectDataFn(this.c.dataSrc),
+		setDataFn: DataTable.util.set(this.c.dataSrc),
 
 		/** @type {Object} Mouse down information */
 		start: {
@@ -151,15 +149,15 @@ var RowReorder = function (dt, opts) {
 		cloneParent: null,
 
 		/** @type {jQuery} DataTables scrolling container */
-		dtScroll: $('div.dataTables_scrollBody', this.s.dt.table().container())
+		dtScroll: $('div.dataTables_scrollBody, div.dt-scroll-body', this.s.dt.table().container())
 	};
 
 	// Check if row reorder has already been initialised on this table
 	var settings = this.s.dt.settings()[0];
-	var exisiting = settings.rowreorder;
+	var existing = settings.rowreorder;
 
-	if (exisiting) {
-		return exisiting;
+	if (existing) {
+		return existing;
 	}
 
 	if (!this.dom.dtScroll.length) {
@@ -254,7 +252,7 @@ $.extend(RowReorder.prototype, {
 		// Need to pass the nodes through jQuery to get them in document order,
 		// not what DataTables thinks it is, since we have been altering the
 		// order
-		var nodes = $.unique(dt.rows({ page: 'current' }).nodes().toArray());
+		var nodes = $.uniqueSort(dt.rows({ page: 'current' }).nodes().toArray());
 		var middles = $.map(nodes, function (node, i) {
 			var top = $(node).position().top - headerHeight;
 
@@ -409,7 +407,7 @@ $.extend(RowReorder.prototype, {
 		start.left = this._eventToPage(e, 'X');
 		start.offsetTop = offset.top;
 		start.offsetLeft = offset.left;
-		start.nodes = $.unique(dt.rows({ page: 'current' }).nodes().toArray());
+		start.nodes = $.uniqueSort(dt.rows({ page: 'current' }).nodes().toArray());
 
 		this._cachePositions();
 		this._clone(target);
@@ -470,11 +468,9 @@ $.extend(RowReorder.prototype, {
 		if (cancelable) {
 			var bodyArea = this.s.bodyArea;
 			var cloneArea = this._calcCloneParentArea();
-			this.s.dropAllowed = this._rectanglesIntersect(bodyArea, cloneArea);
 
-			this.s.dropAllowed
-				? $(this.dom.cloneParent).removeClass('drop-not-allowed')
-				: $(this.dom.cloneParent).addClass('drop-not-allowed');
+			this.s.dropAllowed = this._rectanglesIntersect(bodyArea, cloneArea);
+			$(this.dom.cloneParent).toggleClass('drop-not-allowed', !this.s.dropAllowed);
 		}
 
 		// Transform the mouse position into a position in the table's body
@@ -531,7 +527,7 @@ $.extend(RowReorder.prototype, {
 
 		// Calculate the difference
 		var startNodes = this.s.start.nodes;
-		var endNodes = $.unique(dt.rows({ page: 'current' }).nodes().toArray());
+		var endNodes = $.uniqueSort(dt.rows({ page: 'current' }).nodes().toArray());
 		var idDiff = {};
 		var fullDiff = [];
 		var diffNodes = [];
@@ -648,7 +644,7 @@ $.extend(RowReorder.prototype, {
 
 		// Perform the DOM shuffle if it has changed from last time
 		if (this.s.lastInsert === null || this.s.lastInsert !== insertPoint) {
-			var nodes = $.unique(dt.rows({ page: 'current' }).nodes().toArray());
+			var nodes = $.uniqueSort(dt.rows({ page: 'current' }).nodes().toArray());
 			var insertPlacement = '';
 
 			if (insertPoint > this.s.lastInsert) {
@@ -711,7 +707,6 @@ $.extend(RowReorder.prototype, {
 	 */
 	_shiftScroll: function (e) {
 		var that = this;
-		var dt = this.s.dt;
 		var scroll = this.s.scroll;
 		var runInterval = false;
 		var scrollSpeed = 5;
@@ -809,7 +804,6 @@ $.extend(RowReorder.prototype, {
 	 * @private
 	 */
 	_calcCloneParentArea: function (e) {
-		var dt = this.s.dt;
 		var offset = $(this.dom.cloneParent).offset();
 		var area = {
 			left: offset.left,
@@ -845,7 +839,7 @@ $.extend(RowReorder.prototype, {
 		// position
 
 		var dt = this.s.dt;
-		var nodes = $.unique(dt.rows({ page: 'current' }).nodes().toArray());
+		var nodes = $.uniqueSort(dt.rows({ page: 'current' }).nodes().toArray());
 		var rowIndex = -1;
 		var headerHeight = $(dt.table().node()).find('thead').outerHeight();
 
@@ -1010,7 +1004,7 @@ Api.register('rowReorder.disable()', function () {
  * @name RowReorder.version
  * @static
  */
-RowReorder.version = '1.4.1';
+RowReorder.version = '1.5.1';
 
 $.fn.dataTable.RowReorder = RowReorder;
 $.fn.DataTable.RowReorder = RowReorder;

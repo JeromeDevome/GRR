@@ -1,5 +1,5 @@
-/*! AutoFill 2.6.0
- * ©2008-2023 SpryMedia Ltd - datatables.net/license
+/*! AutoFill 2.7.1
+ * © SpryMedia Ltd - datatables.net/license
  */
 
 import jQuery from 'jquery';
@@ -12,7 +12,7 @@ let $ = jQuery;
 /**
  * @summary     AutoFill
  * @description Add Excel like click and drag auto-fill options to DataTables
- * @version     2.6.0
+ * @version     2.7.1
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @copyright   SpryMedia Ltd.
  *
@@ -38,8 +38,8 @@ var _instance = 0;
  */
 var AutoFill = function( dt, opts )
 {
-	if ( ! DataTable.versionCheck || ! DataTable.versionCheck( '1.10.8' ) ) {
-		throw( "Warning: AutoFill requires DataTables 1.10.8 or greater");
+	if ( ! DataTable.versionCheck || ! DataTable.versionCheck( '1.11' ) ) {
+		throw( "Warning: AutoFill requires DataTables 1.11 or greater");
 	}
 
 	// User and defaults configuration object
@@ -204,7 +204,9 @@ $.extend( AutoFill.prototype, {
 	{
 		var that = this;
 		var dt = this.s.dt;
-		var dtScroll = $('div.dataTables_scrollBody', this.s.dt.table().container());
+
+		// Selectors for DataTables 1 and 2 - only one will be matched
+		var dtScroll = $('div.dataTables_scrollBody, div.dt-scroll-body', this.s.dt.table().container());
 
 		// Make the instance accessible to the API
 		dt.settings()[0].autoFill = this;
@@ -315,9 +317,13 @@ $.extend( AutoFill.prototype, {
 				list.append( $('<button/>')
 					.html(actions[ name ].option( dt, cells ))
 					.append( $('<span class="dt-autofill-button"/>').html(dt.i18n('autoFill.button', '&gt;')))
-					.on( 'click', function () {
+					.on( 'click', function (e) {
+						if (e.target.nodeName.toLowerCase() !== 'button') {
+							return;
+						}
+
 						var result = actions[ name ].execute(
-							dt, cells, $(this).closest('li')
+							dt, cells, $(this).closest('button')
 						);
 						that._update( result, cells );
 
@@ -504,7 +510,11 @@ $.extend( AutoFill.prototype, {
 		editor
 			.bubble( nodes, false )
 			.multiSet( idValues )
-			.submit();
+			.submit(null, function () {
+				// If an error happens, Editor will show an alert, and then we need
+				// to finish the edit since we can't do anything else.
+				editor.close();
+			});
 	},
 
 
@@ -793,7 +803,7 @@ $.extend( AutoFill.prototype, {
 					var editField = dtColumns[ cellIndex.column ].editField;
 
 					if ( editField !== undefined ) {
-						data = dtSettings.oApi._fnGetObjectDataFn( editField )( dt.row( cellIndex.row ).data() );
+						data = DataTable.util.get( editField )( dt.row( cellIndex.row ).data() );
 					}
 
 					if ( enabledColumns.indexOf(cellIndex.column) === -1 ) {
@@ -860,7 +870,6 @@ $.extend( AutoFill.prototype, {
 	_shiftScroll: function ( e )
 	{
 		var that = this;
-		var dt = this.s.dt;
 		var scroll = this.s.scroll;
 		var runInterval = false;
 		var scrollSpeed = 5;
@@ -1125,7 +1134,7 @@ AutoFill.actions = {
  * @static
  * @type      String
  */
-AutoFill.version = '2.6.0';
+AutoFill.version = '2.7.1';
 
 
 /**

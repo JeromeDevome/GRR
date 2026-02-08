@@ -1,4 +1,4 @@
-/*! KeyTable 2.10.0
+/*! KeyTable 2.12.2
  * © SpryMedia Ltd - datatables.net/license
  */
 
@@ -12,7 +12,7 @@ let $ = jQuery;
 /**
  * @summary     KeyTable
  * @description Spreadsheet like keyboard navigation for DataTables
- * @version     2.10.0
+ * @version     2.12.2
  * @file        dataTables.keyTable.js
  * @author      SpryMedia Ltd
  * @contact     datatables.net
@@ -44,6 +44,9 @@ var KeyTable = function (dt, opts) {
 	this.s = {
 		/** @type {DataTable.Api} DataTables' API instance */
 		dt: new DataTable.Api(dt),
+
+		/** Indicate when the DataTable is redrawing - take no action on key presses */
+		dtDrawing: false,
 
 		enable: true,
 
@@ -172,8 +175,11 @@ $.extend(KeyTable.prototype, {
 
 		// Key events
 		$(document).on('keydown' + namespace, function (e) {
-			if (!editorBlock) {
+			if (!editorBlock && !that.s.dtDrawing) {
 				that._key(e);
+			}
+			else {
+				e.preventDefault();
 			}
 		});
 
@@ -181,7 +187,7 @@ $.extend(KeyTable.prototype, {
 		if (this.c.blurable) {
 			$(document).on('mousedown' + namespace, function (e) {
 				// Click on the search input will blur focus
-				if ($(e.target).parents('.dataTables_filter').length) {
+				if ($(e.target).parents('.dataTables_filter, .dt-search').length) {
 					that._blur();
 				}
 
@@ -298,8 +304,17 @@ $.extend(KeyTable.prototype, {
 			}
 		});
 
+		// When the table is about to do a draw we need to block key
+		// handling. This is only important for async draws - i.e.
+		// server-side processing.
+		dt.on('preDraw' + namespace + ' scroller-will-draw' + namespace, function (e) {
+			that.s.dtDrawing = true;
+		});
+
 		// Redraw - retain focus on the current cell
 		dt.on('draw' + namespace, function (e) {
+			that.s.dtDrawing = false;
+
 			that._tabInput();
 
 			if (that.s.focusDraw) {
@@ -311,9 +326,15 @@ $.extend(KeyTable.prototype, {
 			if (lastFocus) {
 				var relative = that.s.lastFocus.relative;
 				var info = dt.page.info();
-				var row = relative.row + info.start;
+				var row = relative.row;
 
 				if (info.recordsDisplay === 0) {
+					return;
+				}
+
+				// If the refocus is outside the current draw zone -
+				// don't attempt to refocus onto it
+				if (row < info.start || row > info.start + info.length) {
 					return;
 				}
 
@@ -403,64 +424,69 @@ $.extend(KeyTable.prototype, {
 		var dt = this.s.dt;
 		var that = this;
 		var namespace = this.s.namespace;
+		var opts = this.c.clipboard;
 
 		// IE8 doesn't support getting selected text
 		if (!window.getSelection) {
 			return;
 		}
 
-		$(document).on('copy' + namespace, function (ejq) {
-			var e = ejq.originalEvent;
-			var selection = window.getSelection().toString();
-			var focused = that.s.lastFocus;
+		if (opts === true || opts.copy) {
+			$(document).on('copy' + namespace, function (ejq) {
+				var e = ejq.originalEvent;
+				var selection = window.getSelection().toString();
+				var focused = that.s.lastFocus;
 
-			// Only copy cell text to clipboard if there is no other selection
-			// and there is a focused cell
-			if (!selection && focused) {
-				e.clipboardData.setData(
-					'text/plain',
-					focused.cell.render(that.c.clipboardOrthogonal)
-				);
-				e.preventDefault();
-			}
-		});
-
-		$(document).on('paste' + namespace, function (ejq) {
-			var e = ejq.originalEvent;
-			var focused = that.s.lastFocus;
-			var activeEl = document.activeElement;
-			var editor = that.c.editor;
-			var pastedText;
-
-			if (focused && (!activeEl || activeEl.nodeName.toLowerCase() === 'body')) {
-				e.preventDefault();
-
-				if (window.clipboardData && window.clipboardData.getData) {
-					// IE
-					pastedText = window.clipboardData.getData('Text');
+				// Only copy cell text to clipboard if there is no other selection
+				// and there is a focused cell
+				if (!selection && focused) {
+					e.clipboardData.setData(
+						'text/plain',
+						focused.cell.render(that.c.clipboardOrthogonal)
+					);
+					e.preventDefault();
 				}
-				else if (e.clipboardData && e.clipboardData.getData) {
-					// Everything else
-					pastedText = e.clipboardData.getData('text/plain');
-				}
+			});
+		}
 
-				if (editor) {
-					// Got Editor - need to activate inline editing,
-					// set the value and submit
-					var options = that._inlineOptions(focused.cell.index());
+		if (opts === true || opts.paste) {
+			$(document).on('paste' + namespace, function (ejq) {
+				var e = ejq.originalEvent;
+				var focused = that.s.lastFocus;
+				var activeEl = document.activeElement;
+				var editor = that.c.editor;
+				var pastedText;
 
-					editor
-						.inline(options.cell, options.field, options.options)
-						.set(editor.displayed()[0], pastedText)
-						.submit();
+				if (focused && (!activeEl || activeEl.nodeName.toLowerCase() === 'body')) {
+					e.preventDefault();
+
+					if (window.clipboardData && window.clipboardData.getData) {
+						// IE
+						pastedText = window.clipboardData.getData('Text');
+					}
+					else if (e.clipboardData && e.clipboardData.getData) {
+						// Everything else
+						pastedText = e.clipboardData.getData('text/plain');
+					}
+
+					if (editor) {
+						// Got Editor - need to activate inline editing,
+						// set the value and submit
+						var options = that._inlineOptions(focused.cell.index());
+
+						editor
+							.inline(options.cell, options.field, options.options)
+							.set(editor.displayed()[0], pastedText)
+							.submit();
+					}
+					else {
+						// No editor, so just dump the data in
+						focused.cell.data(pastedText);
+						dt.draw(false);
+					}
 				}
-				else {
-					// No editor, so just dump the data in
-					focused.cell.data(pastedText);
-					dt.draw(false);
-				}
-			}
-		});
+			});
+		}
 	},
 
 	/**
@@ -768,11 +794,13 @@ $.extend(KeyTable.prototype, {
 		}
 
 		// Event and finish
+		var info = dt.page.info();
+
 		this.s.lastFocus = {
 			cell: cell,
 			node: cell.node(),
 			relative: {
-				row: dt.rows({ page: 'current' }).indexes().indexOf(cell.index().row),
+				row: info.start + dt.rows({ page: 'current' }).indexes().indexOf(cell.index().row),
 				column: cell.index().column
 			}
 		};
@@ -792,6 +820,12 @@ $.extend(KeyTable.prototype, {
 		// do nothing for this new key press.
 		if (this.s.waitingForDraw) {
 			e.preventDefault();
+			return;
+		}
+
+		// Ignore key presses in an Editor inline create row - it is not navigatable
+		// by KeyTable
+		if ($(e.target).closest('.dte-inlineAdd').length) {
 			return;
 		}
 
@@ -842,6 +876,12 @@ $.extend(KeyTable.prototype, {
 				break;
 
 			case 27: // esc
+				// If there is an inline edit in the cell, let it blur first,
+				// a second escape will then blur keytable
+				if ($(lastFocus.node).find('div.DTE').length) {
+					return;
+				}
+
 				if (this.c.blurable && enable === true) {
 					this._blur();
 				}
@@ -934,7 +974,7 @@ $.extend(KeyTable.prototype, {
 	_keyAction: function (action) {
 		var editor = this.c.editor;
 
-		if (editor && editor.mode()) {
+		if (editor && editor.mode() && editor.display()) {
 			editor.submit(action);
 		}
 		else {
@@ -1020,7 +1060,6 @@ $.extend(KeyTable.prototype, {
 	 * @private
 	 */
 	_shift: function (e, direction, keyBlurable) {
-		var that = this;
 		var dt = this.s.dt;
 		var pageInfo = dt.page.info();
 		var rows = pageInfo.recordsDisplay;
@@ -1123,14 +1162,16 @@ $.extend(KeyTable.prototype, {
 
 		// Only create the input element once on first class
 		if (!this.s.tabInput) {
-			var div = $('<div><input type="text" tabindex="' + tabIndex + '"/></div>').css({
+			var inputId = 'keytable-focus-capture-' + this.s.namespace.split('-')[1];
+			var input = '<input id="' + inputId + '" type="text" tabindex="' + tabIndex + '"/>'
+			var div = $('<div><label for="' + inputId + '">' + input + '</label></div>').css({
 				position: 'absolute',
 				height: 1,
 				width: 0,
 				overflow: 'hidden'
 			});
 
-			div.children().on('focus', function (e) {
+			div.find('input').on('focus', function (e) {
 				var cell = dt.cell(':eq(0)', that._columns(), { page: 'current' });
 
 				if (cell.any()) {
@@ -1248,7 +1289,7 @@ KeyTable.defaults = {
 	tabIndex: null
 };
 
-KeyTable.version = '2.10.0';
+KeyTable.version = '2.12.2';
 
 $.fn.dataTable.KeyTable = KeyTable;
 $.fn.DataTable.KeyTable = KeyTable;

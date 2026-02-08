@@ -1,12 +1,13 @@
 /*!
  * 
- * Super simple WYSIWYG editor v0.9.0
+ * Super simple WYSIWYG editor v0.8.20
  * https://summernote.org
  *
- * Copyright 2013~ Hackerwins and contributors
+ *
+ * Copyright 2013- Alan Hong and contributors
  * Summernote may be freely distributed under the MIT license.
  *
- * Date: 2024-09-30T14:42Z
+ * Date: 2021-10-14T21:15Z
  *
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -18,11 +19,11 @@
 		var a = factory();
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(self, () => {
+})(self, function() {
 return /******/ (() => { // webpackBootstrap
 var __webpack_exports__ = {};
 (function ($) {
-  $.extend(true, $.summernote.lang, {
+  $.extend($.summernote.lang, {
     'lv-LV': {
       font: {
         bold: 'Treknraksts',
@@ -56,12 +57,12 @@ var __webpack_exports__ = {};
         maximumFileSizeError: 'Faila izmērs pārāk liels!',
         url: 'Attēla URL',
         remove: 'Dzēst attēlu',
-        original: 'Oriģināls'
+        original: 'Original'
       },
       video: {
         video: 'Video',
-        videoLink: 'Video saite',
-        insert: 'Ievietot Video',
+        videoLink: 'Video Link',
+        insert: 'Insert Video',
         url: 'Video URL?',
         providers: '(YouTube, Vimeo, Vine, Instagram, DailyMotion or Youku)'
       },
@@ -71,18 +72,18 @@ var __webpack_exports__ = {};
         unlink: 'Noņemt saiti',
         edit: 'Rediģēt',
         textToDisplay: 'Saites saturs',
-        url: 'Uz kādu URL šai saitei būtu jāved?',
+        url: 'Koks URL adresas yra susietas?',
         openInNewWindow: 'Atvērt jaunā logā'
       },
       table: {
         table: 'Tabula',
-        addRowAbove: 'Pievienot rindu virs',
-        addRowBelow: 'Pievienot rindu zem',
-        addColLeft: 'Pievienot kolonnu pa kreisi',
-        addColRight: 'Pievienot kolonnu pa labi',
-        delRow: 'Dzēst rindu',
-        delCol: 'Dzēst kolonnu',
-        delTable: 'Dzēst tabulu'
+        addRowAbove: 'Add row above',
+        addRowBelow: 'Add row below',
+        addColLeft: 'Add column left',
+        addColRight: 'Add column right',
+        delRow: 'Delete row',
+        delCol: 'Delete column',
+        delTable: 'Delete table'
       },
       hr: {
         insert: 'Ievietot līniju'
@@ -170,8 +171,8 @@ var __webpack_exports__ = {};
         redo: 'Atkārtot (redo)'
       },
       specialChar: {
-        specialChar: 'ĪPAŠIE SIMBOLI',
-        select: 'Izvēlieties īpašos simbolus'
+        specialChar: 'SPECIAL CHARACTERS',
+        select: 'Select Special characters'
       }
     }
   });

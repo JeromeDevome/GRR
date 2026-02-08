@@ -1,4 +1,4 @@
-/*! RowGroup 1.4.1
+/*! RowGroup 1.6.0
  * © SpryMedia Ltd - datatables.net/license
  */
 
@@ -12,7 +12,7 @@ let $ = jQuery;
 /**
  * @summary     RowGroup
  * @description RowGrouping for DataTables
- * @version     1.4.1
+ * @version     1.6.0
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     datatables.net
  * @copyright   SpryMedia Ltd.
@@ -28,9 +28,9 @@ let $ = jQuery;
  */
 
 var RowGroup = function (dt, opts) {
-	// Sanity check that we are using DataTables 1.10 or newer
-	if (!DataTable.versionCheck || !DataTable.versionCheck('1.10.8')) {
-		throw 'RowGroup requires DataTables 1.10.8 or newer';
+	// Sanity check
+	if (!DataTable.versionCheck || !DataTable.versionCheck('2')) {
+		throw new Error('RowGroup requires DataTables 2 or newer');
 	}
 
 	// User and defaults configuration object
@@ -116,10 +116,17 @@ $.extend(RowGroup.prototype, {
 		var that = this;
 		var dt = this.s.dt;
 		var hostSettings = dt.settings()[0];
+		var scroller = $('div.dt-scroll-body', dt.table().container());
 
 		dt.on('draw.dtrg', function (e, s) {
 			if (that.c.enable && hostSettings === s) {
 				that._draw();
+
+				// Restore scrolling position if set and paging wasn't reset
+				if (scrollTop && scroller.scrollTop()) {
+					scroller.scrollTop(scrollTop);
+					scrollTop = null;
+				}
 			}
 		});
 
@@ -130,6 +137,20 @@ $.extend(RowGroup.prototype, {
 		dt.on('destroy', function () {
 			dt.off('.dtrg');
 		});
+
+		// When scrolling is enabled, when adding grouping rows above the scrolling view
+		// port, the browser (both FF and Chrome) will put the element in and adjust the
+		// scrollTop so that it doesn't move the current viewport. This isn't what we
+		// want since prior to the draw the grouping elements were in place, but they then
+		// are removed and reinserted. So we need to shift the scrollTop back to what it
+		// was!
+		var scrollTop = null;
+
+		if (scroller.length) {
+			dt.on('preDraw', function () {
+				scrollTop = scroller.scrollTop();
+			});
+		}
 	},
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -141,9 +162,15 @@ $.extend(RowGroup.prototype, {
 	 * @private
 	 */
 	_adjustColspan: function () {
-		$('tr.' + this.c.className, this.s.dt.table().body())
-			.find('th:visible, td:visible')
-			.attr('colspan', this._colspan());
+		let cells = $('tr.' + this.c.className, this.s.dt.table().body())
+			.find('th:visible, td:visible');
+
+		// Only perform the adjust if there is a single cell. If there is more the renderer must
+		// have returned multiple cells and it is the responsibility of the rendering function to
+		// get the number of cells right.
+		if (cells.length === 1) {
+			cells.attr('colspan', this._colspan());
+		}
 	},
 
 	/**
@@ -167,6 +194,15 @@ $.extend(RowGroup.prototype, {
 	 */
 	_draw: function () {
 		var dt = this.s.dt;
+
+		// Don't do anything if there is no data source
+		if (
+			this.c.dataSrc === null ||
+			(Array.isArray(this.c.dataSrc) && this.c.dataSrc.length === 0)
+		) {
+			return;
+		}
+
 		var groupedRows = this._group(0, dt.rows({ page: 'current' }).indexes());
 
 		this._groupDisplay(0, groupedRows);
@@ -193,16 +229,18 @@ $.extend(RowGroup.prototype, {
 	 */
 	_group: function (level, rows) {
 		var fns = Array.isArray(this.c.dataSrc) ? this.c.dataSrc : [this.c.dataSrc];
-		var fn = DataTable.ext.oApi._fnGetObjectDataFn(fns[level]);
+		var fn = DataTable.util.get(fns[level]);
 		var dt = this.s.dt;
 		var group, last;
+		var i, ien;
 		var data = [];
 		var that = this;
 
-		for (var i = 0, ien = rows.length; i < ien; i++) {
+		for (i = 0, ien = rows.length; i < ien; i++) {
 			var rowIndex = rows[i];
 			var rowData = dt.row(rowIndex).data();
-			var group = fn(rowData);
+
+			group = fn(rowData, level);
 
 			if (group === null || group === undefined) {
 				group = that.c.emptyDataGroup;
@@ -221,7 +259,7 @@ $.extend(RowGroup.prototype, {
 		}
 
 		if (fns[level + 1] !== undefined) {
-			for (var i = 0, ien = data.length; i < ien; i++) {
+			for (i = 0, ien = data.length; i < ien; i++) {
 				data[i].children = this._group(level + 1, data[i].rows);
 			}
 		}
@@ -376,7 +414,7 @@ RowGroup.defaults = {
 	}
 };
 
-RowGroup.version = '1.4.1';
+RowGroup.version = '1.6.0';
 
 $.fn.dataTable.RowGroup = RowGroup;
 $.fn.DataTable.RowGroup = RowGroup;
@@ -409,13 +447,16 @@ DataTable.Api.register('rowGroup().enabled()', function () {
 
 DataTable.Api.register('rowGroup().dataSrc()', function (val) {
 	if (val === undefined) {
-		return this.context[0].rowGroup.dataSrc();
+		let s = this.context[0].rowGroup;
+		return s ? s.dataSrc() : [];
 	}
 
 	return this.iterator('table', function (ctx) {
-		if (ctx.rowGroup) {
-			ctx.rowGroup.dataSrc(val);
+		if (! ctx.rowGroup) {
+			new RowGroup(this.context[0]);
 		}
+		
+		ctx.rowGroup.dataSrc(val);
 	});
 });
 

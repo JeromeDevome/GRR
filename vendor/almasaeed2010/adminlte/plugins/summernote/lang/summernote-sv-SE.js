@@ -1,12 +1,13 @@
 /*!
  * 
- * Super simple WYSIWYG editor v0.9.0
+ * Super simple WYSIWYG editor v0.8.20
  * https://summernote.org
  *
- * Copyright 2013~ Hackerwins and contributors
+ *
+ * Copyright 2013- Alan Hong and contributors
  * Summernote may be freely distributed under the MIT license.
  *
- * Date: 2024-09-30T14:42Z
+ * Date: 2021-10-14T21:15Z
  *
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -18,11 +19,11 @@
 		var a = factory();
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(self, () => {
+})(self, function() {
 return /******/ (() => { // webpackBootstrap
 var __webpack_exports__ = {};
 (function ($) {
-  $.extend(true, $.summernote.lang, {
+  $.extend($.summernote.lang, {
     'sv-SE': {
       font: {
         bold: 'Fet',
@@ -32,8 +33,8 @@ var __webpack_exports__ = {};
         height: 'Radavstånd',
         name: 'Teckensnitt',
         strikethrough: 'Genomstruken',
-        subscript: 'Nedsänkt',
-        superscript: 'Upphöjd',
+        subscript: 'Subscript',
+        superscript: 'Superscript',
         size: 'Teckenstorlek'
       },
       image: {
@@ -45,15 +46,15 @@ var __webpack_exports__ = {};
         floatLeft: 'Vänsterjusterad',
         floatRight: 'Högerjusterad',
         floatNone: 'Ingen justering',
-        shapeRounded: 'Form: Avrundad',
-        shapeCircle: 'Form: Cirkel',
-        shapeThumbnail: 'Form: Miniatyr',
-        shapeNone: 'Form: Ingen',
+        shapeRounded: 'Shape: Rounded',
+        shapeCircle: 'Shape: Circle',
+        shapeThumbnail: 'Shape: Thumbnail',
+        shapeNone: 'Shape: None',
         dragImageHere: 'Dra en bild hit',
-        dropImage: 'Släpp bild eller text',
+        dropImage: 'Drop image or Text',
         selectFromFiles: 'Välj från filer',
-        maximumFileSize: 'Maximal filstorlek',
-        maximumFileSizeError: 'Maximal filstorlek har överskridits.',
+        maximumFileSize: 'Maximum file size',
+        maximumFileSizeError: 'Maximum file size exceeded.',
         url: 'Länk till bild',
         remove: 'Ta bort bild',
         original: 'Original'
@@ -72,17 +73,18 @@ var __webpack_exports__ = {};
         edit: 'Redigera',
         textToDisplay: 'Visningstext',
         url: 'Till vilken URL ska denna länk peka?',
-        openInNewWindow: 'Öppna i ett nytt fönster'
+        openInNewWindow: 'Öppna i ett nytt fönster',
+        useProtocol: 'Använd standardprotokoll'
       },
       table: {
         table: 'Tabell',
-        addRowAbove: 'Lägg till rad ovanför',
-        addRowBelow: 'Lägg till rad under',
-        addColLeft: 'Lägg till kolumn åt vänster',
-        addColRight: 'Lägg till kolumn åt höger',
-        delRow: 'Radera rad',
-        delCol: 'Radera kolumn',
-        delTable: 'Radera tabell'
+        addRowAbove: 'Add row above',
+        addRowBelow: 'Add row below',
+        addColLeft: 'Add column left',
+        addColRight: 'Add column right',
+        delRow: 'Delete row',
+        delCol: 'Delete column',
+        delTable: 'Delete table'
       },
       hr: {
         insert: 'Infoga horisontell linje'
@@ -134,44 +136,44 @@ var __webpack_exports__ = {};
         action: 'Funktion',
         paragraphFormatting: 'Avsnittsformatering',
         documentStyle: 'Dokumentstil',
-        extraKeys: 'Extra tangenter'
+        extraKeys: 'Extra keys'
       },
       help: {
-        'insertParagraph': 'Infoga paragraf',
-        'undo': 'Ångra senaste kommandot',
-        'redo': 'Gör om senaste kommandot',
-        'tab': 'Lägg till indrag',
-        'untab': 'Ta bort indrag',
-        'bold': 'Tillämpa fet stil',
-        'italic': 'Tillämpa kursiv stil',
-        'underline': 'Tillämpa understruken stil',
-        'strikethrough': 'Tillämpa genomstruken stil',
-        'removeFormat': 'Rensa formatering',
-        'justifyLeft': 'Tillämpa vänsterjustering',
-        'justifyCenter': 'Tillämpa centrering',
-        'justifyRight': 'Tillämpa högerjustering',
-        'justifyFull': 'Tillämpa justerad text',
-        'insertUnorderedList': 'Tillämpa punktlista',
-        'insertOrderedList': 'Tillämpa numrerad lista',
-        'outdent': 'Minska indrag för aktuell paragraf',
-        'indent': 'Öka indrag för aktuell paragraf',
-        'formatPara': 'Ändra formatet för aktuellt block till en paragraf (P-tagg)',
-        'formatH1': 'Ändra formatet för aktuellt block till rubrik 1',
-        'formatH2': 'Ändra formatet för aktuellt block till rubrik 2',
-        'formatH3': 'Ändra formatet för aktuellt block till rubrik 3',
-        'formatH4': 'Ändra formatet för aktuellt block till rubrik 4',
-        'formatH5': 'Ändra formatet för aktuellt block till rubrik 5',
-        'formatH6': 'Ändra formatet för aktuellt block till rubrik 6',
-        'insertHorizontalRule': 'Infoga horisontell linje',
-        'linkDialog.show': 'Visa dialogruta för länk'
+        'insertParagraph': 'Insert Paragraph',
+        'undo': 'Undoes the last command',
+        'redo': 'Redoes the last command',
+        'tab': 'Tab',
+        'untab': 'Untab',
+        'bold': 'Set a bold style',
+        'italic': 'Set a italic style',
+        'underline': 'Set a underline style',
+        'strikethrough': 'Set a strikethrough style',
+        'removeFormat': 'Clean a style',
+        'justifyLeft': 'Set left align',
+        'justifyCenter': 'Set center align',
+        'justifyRight': 'Set right align',
+        'justifyFull': 'Set full align',
+        'insertUnorderedList': 'Toggle unordered list',
+        'insertOrderedList': 'Toggle ordered list',
+        'outdent': 'Outdent on current paragraph',
+        'indent': 'Indent on current paragraph',
+        'formatPara': 'Change current block\'s format as a paragraph(P tag)',
+        'formatH1': 'Change current block\'s format as H1',
+        'formatH2': 'Change current block\'s format as H2',
+        'formatH3': 'Change current block\'s format as H3',
+        'formatH4': 'Change current block\'s format as H4',
+        'formatH5': 'Change current block\'s format as H5',
+        'formatH6': 'Change current block\'s format as H6',
+        'insertHorizontalRule': 'Insert horizontal rule',
+        'linkDialog.show': 'Show Link Dialog'
       },
       history: {
         undo: 'Ångra',
         redo: 'Gör om'
       },
       specialChar: {
-        specialChar: 'SPECIALTECKEN',
-        select: 'Välj specialtecken'
+        specialChar: 'SPECIAL CHARACTERS',
+        select: 'Select Special characters'
       }
     }
   });

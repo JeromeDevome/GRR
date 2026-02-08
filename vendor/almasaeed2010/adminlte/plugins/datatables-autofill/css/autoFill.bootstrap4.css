@@ -1,7 +1,7 @@
 div.dt-autofill-handle {
   position: absolute;
-  height: 8px;
-  width: 8px;
+  height: 10px;
+  width: 10px;
   z-index: 10;
   box-sizing: border-box;
   background: #0275d8;
@@ -72,8 +72,10 @@ div.dt-autofill-list > div.dt-autofill-list-items > button:last-child {
   margin-bottom: 0;
 }
 div.dt-autofill-list > div.dt-autofill-list-items > button input[type=number] {
+  display: inline-block;
+  box-sizing: border-box;
   padding: 6px;
-  width: 30px;
+  width: 70px;
   margin: -2px 0;
 }
 div.dt-autofill-list > div.dt-autofill-list-items > button span {
@@ -96,12 +98,12 @@ div.dt-autofill-background {
 }
 
 html.dark div.dt-autofill-handle {
-  background: #6ea8fe;
+  background: rgb(110, 168, 254);
 }
 html.dark div.dt-autofill-select {
   position: absolute;
   z-index: 1001;
-  background-color: #6ea8fe;
+  background-color: rgb(110, 168, 254);
   background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0, 0, 0, 0.5) 5px, rgba(0, 0, 0, 0.5) 10px);
 }
 html.dark div.dt-autofill-list {
@@ -111,10 +113,10 @@ html.dark div.dt-autofill-list {
 html.dark div.dt-autofill-list button {
   color: inherit;
   border: 1px solid rgba(255, 255, 255, 0.175);
-  background-color: #2f3438;
+  background-color: rgb(47, 52, 56);
 }
 html.dark div.dt-autofill-list button:hover {
-  background-color: #404549;
+  background-color: rgb(64, 69, 73);
 }
 
 @media screen and (max-width: 767px) {
@@ -122,7 +124,6 @@ html.dark div.dt-autofill-list button:hover {
     height: 16px;
     width: 16px;
   }
-
   div.dt-autofill-list {
     width: 90%;
     left: 74.5%;

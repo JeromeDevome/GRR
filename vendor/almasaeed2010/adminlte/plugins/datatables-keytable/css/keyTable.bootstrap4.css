@@ -5,7 +5,7 @@ table.dataTable tbody td.focus {
 }
 table.dataTable tbody tr.selected th.focus,
 table.dataTable tbody tr.selected td.focus {
-  outline-color: #013e73;
+  outline-color: rgb(1.0642201835, 62.2568807339, 114.9357798165);
 }
 
 div.dtk-focus-alt table.dataTable tbody th.focus,
@@ -16,11 +16,11 @@ div.dtk-focus-alt table.dataTable tbody td.focus {
 
 html.dark table.dataTable tbody th.focus,
 html.dark table.dataTable tbody td.focus {
-  outline-color: #0d6efd;
+  outline-color: rgb(13, 110, 253);
 }
 html.dark table.dataTable tbody tr.selected th.focus,
 html.dark table.dataTable tbody tr.selected td.focus {
-  outline-color: #0143a3;
+  outline-color: rgb(1.3442622951, 66.5409836066, 162.6557377049);
 }
 html.dark div.dtk-focus-alt table.dataTable tbody th.focus,
 html.dark div.dtk-focus-alt table.dataTable tbody td.focus {

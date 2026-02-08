@@ -1,12 +1,13 @@
 /*!
  * 
- * Super simple WYSIWYG editor v0.9.0
+ * Super simple WYSIWYG editor v0.8.20
  * https://summernote.org
  *
- * Copyright 2013~ Hackerwins and contributors
+ *
+ * Copyright 2013- Alan Hong and contributors
  * Summernote may be freely distributed under the MIT license.
  *
- * Date: 2024-09-30T14:42Z
+ * Date: 2021-10-14T21:15Z
  *
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -18,11 +19,11 @@
 		var a = factory();
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(self, () => {
+})(self, function() {
 return /******/ (() => { // webpackBootstrap
 var __webpack_exports__ = {};
 (function ($) {
-  $.extend(true, $.summernote.lang, {
+  $.extend($.summernote.lang, {
     'es-ES': {
       font: {
         bold: 'Negrita',
@@ -74,7 +75,8 @@ var __webpack_exports__ = {};
         edit: 'Editar',
         textToDisplay: 'Texto a mostrar',
         url: '¿A qué URL lleva este enlace?',
-        openInNewWindow: 'Abrir en una nueva ventana'
+        openInNewWindow: 'Abrir en una nueva ventana',
+        useProtocol: 'Usar el protocolo predefinido'
       },
       table: {
         table: 'Tabla',
