@@ -487,7 +487,7 @@ else // nouvelle réservation
   }
   else
   {
-    $debut      = mktime($start_hour, $start_min, 0, $start_month, $start_day, $start_year);
+    $debut      = mktime($start_hour, $start_min, 0, $month, $day, $year);
     $fin        = $debut + $duree_par_defaut_reservation_area;
     $end_day    = date("d",$fin);
     $end_month  = date("m",$fin);
