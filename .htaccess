@@ -1,0 +1,130 @@
+# ======================================================================
+# GRR - Configuration Apache avancée
+# Gestion des erreurs HTTP, sécurité, performances et optimisations
+# ======================================================================
+
+# ======================================================================
+# 1. GESTION DES ERREURS HTTP PERSONNALISÉES
+# ======================================================================
+ErrorDocument 400 /GitHub/GRR/erreur.php
+ErrorDocument 401 /GitHub/GRR/erreur.php
+ErrorDocument 403 /GitHub/GRR/erreur.php
+ErrorDocument 404 /GitHub/GRR/erreur.php
+ErrorDocument 405 /GitHub/GRR/erreur.php
+ErrorDocument 408 /GitHub/GRR/erreur.php
+ErrorDocument 410 /GitHub/GRR/erreur.php
+ErrorDocument 500 /GitHub/GRR/erreur.php
+ErrorDocument 501 /GitHub/GRR/erreur.php
+ErrorDocument 502 /GitHub/GRR/erreur.php
+ErrorDocument 503 /GitHub/GRR/erreur.php
+ErrorDocument 504 /GitHub/GRR/erreur.php
+
+# ======================================================================
+# 2. SÉCURITÉ - En-têtes HTTP de sécurité
+# ======================================================================
+<IfModule mod_headers.c>
+    # Empêcher l'affichage du type de serveur
+    Header always unset "X-Powered-By"
+    Header unset "X-Powered-By"
+
+    # Sécurité: Désactiver le MIME type sniffing
+    Header set X-Content-Type-Options "nosniff"
+
+    # Sécurité: Policy de référrer
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+
+</IfModule>
+
+# ======================================================================
+# 3. SÉCURITÉ - Protection des fichiers sensibles
+# ======================================================================
+# Interdire l'accès à certains fichiers et dossiers
+<FilesMatch "\.(env|htaccess|htpasswd|git|yml|yaml|conf)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Deny,Allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Interdire l'accès aux dossiers sensibles
+# Utiliser RewriteRule au lieu de DirectoryMatch (plus compatible)
+<IfModule mod_rewrite.c>
+    RewriteRule ^\.git(/|$) - [F,L]
+    RewriteRule ^\.env(/|$) - [F,L]
+    RewriteRule ^\.svn(/|$) - [F,L]
+</IfModule>
+
+# ======================================================================
+# 4. SÉCURITÉ - Désactiver la vue des répertoires
+# ======================================================================
+<IfModule mod_autoindex.c>
+    Options -Indexes
+</IfModule>
+
+# ======================================================================
+# 5. PERFORMANCE - Compression Gzip
+# ======================================================================
+<IfModule mod_deflate.c>
+    # Compression des contenus texte
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE font/opentype
+    AddOutputFilterByType DEFLATE font/truetype
+    AddOutputFilterByType DEFLATE font/eot
+    
+    # Exceptions: certains fichiers ne doivent pas être compressés
+    SetEnvIfNoCase Request_URI \.(?:gif|jpg|jpeg|png|webp|ico|zip|gz|rar|7z)$ no-gzip dont-vary
+    SetEnvIfNoCase Request_URI \.pdf$ no-gzip dont-vary
+</IfModule>
+
+# ======================================================================
+# 6. PHP - Optimisations PHP
+# ======================================================================
+<IfModule mod_php.c>
+    # Afficher les erreurs PHP dans les logs (pas dans le navigateur en prod)
+    php_flag display_errors Off
+    php_flag log_errors On
+    
+    # Limiter la taille des uploads
+    php_value upload_max_filesize 50M
+    php_value post_max_size 50M
+    
+    # Timeout
+    php_value max_execution_time 300
+</IfModule>
+
+# ======================================================================
+# 7. TYPES MIME - Ajouter des types MIME manquants
+# ======================================================================
+<IfModule mod_mime.c>
+    AddType application/javascript .js
+    AddType application/json .json
+    AddEncoding gzip .svgz
+    AddType image/svg+xml .svg
+    AddType font/woff .woff
+    AddType font/woff2 .woff2
+    AddType application/vnd.ms-fontobject .eot
+    AddType font/ttf .ttf
+    AddType font/otf .otf
+</IfModule>
+
+# ======================================================================
+# 8. UTF-8 - Encodage par défaut
+# ======================================================================
+AddDefaultCharset UTF-8
+
+# ======================================================================
+# Fin de la configuration GRR
+# ========================================================================
