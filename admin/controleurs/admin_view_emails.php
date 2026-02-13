@@ -3,9 +3,9 @@
  * admin_view_emails.php
  * Interface de gestion des connexions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-19 15:49$
+ * Dernière modification : $Date: 2026-02-13 17:28$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2022 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -20,6 +20,8 @@ $grr_script_name = "admin_view_emails.php";
 
 check_access(6, $back);
 
+$idlogmail = isset($_GET["idlogmail"]) ? $_GET["idlogmail"] : NULL;
+
 get_vocab_admin('admin_view_emails');
 
 // Afficher : Logs
@@ -29,9 +31,22 @@ get_vocab_admin('mail_a');
 get_vocab_admin('mail_sujet');
 get_vocab_admin('mail_message');
 
-get_vocab_admin('users_connected');
+$logsMail = array ();
 
-$sql = "SELECT date, de, a, sujet, message FROM ".TABLE_PREFIX."_log_mail ORDER by date desc";
+if(($idlogmail != NULL) && ($idlogmail != ""))
+{
+	$sql = "SELECT date, de, a, sujet, message FROM ".TABLE_PREFIX."_log_mail WHERE idlogmail = '$idlogmail'";
+	$res = grr_sql_query($sql);
+	if ($res)
+	{
+		$row = grr_sql_row($res, 0);
+		$visuMail = array('datets' => $row[0], 'date' => date("d-m-Y H:i:s", $row[0]), 'de' => $row[1], 'a' => $row[2], 'sujet' => $row[3], 'message' => $row[4]);
+	}
+}
+
+
+
+$sql = "SELECT date, de, a, sujet, message, idlogmail FROM ".TABLE_PREFIX."_log_mail ORDER by date desc";
 $res = grr_sql_query($sql);
 
 $logsMail = array ();
@@ -40,7 +55,7 @@ if ($res)
 {
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-		$logsMail[] = array('datets' => $row[0], 'date' => date("d-m-Y H:i:s", $row[0]), 'de' => $row[1], 'a' => $row[2], 'sujet' => $row[3], 'message' => substr($row[4], 0, 50));
+		$logsMail[] = array('idlogmail' => $row[5], 'datets' => $row[0], 'date' => date("d-m-Y H:i:s", $row[0]), 'de' => $row[1], 'a' => $row[2], 'sujet' => $row[3], 'message' => substr($row[4], 0, 50));
 	}
 }
 
@@ -62,5 +77,5 @@ if($res) {
 
 $d['TitreDateLog'] = get_vocab("log_mail").$d['DatePlusAncienne'];
 
-echo $twig->render('admin_view_emails.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'logsmail' => $logsMail ));
+echo $twig->render('admin_view_emails.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'logsmail' => $logsMail, 'visuMail' => $visuMail ));
 ?>

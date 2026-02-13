@@ -9,6 +9,26 @@
 {% import 'messagesysteme.twig' as msgSyst %}
 
 {% block content %}
+
+	{% if visuMail %}
+	<div class="col-md-12">
+		<div class="card card-primary card-outline">
+			<div class="card-body p-0">
+				<div class="mailbox-read-info">
+					<h5>{{ visuMail.sujet }}</h5>
+					<h6>From: {{ visuMail.de }}
+						<span class="mailbox-read-time float-right">{{ visuMail.date }}</span></h6>
+					<h6>To: {{ visuMail.a }}</h6>
+				</div>
+				<div class="mailbox-read-message">
+					<p>{{ visuMail.message|raw }}</p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	{% endif %}
+
 	<div class="row">
 		<div class="col col-md-12">
 
@@ -26,6 +46,7 @@
 							  <th>{{trad.mail_a}}</th>
 							  <th>{{trad.mail_sujet}}</th>
 							  <th>{{trad.mail_message}}</th>
+							  <td></td>
 							</tr>
 						</thead>
 						<tbody>
@@ -35,7 +56,8 @@
 									<td>{{ log.de }}</td>
 									<td>{{ log.a }}</td>
 									<td>{{ log.sujet }}</td>
-									<td>{{ log.message }}</td>
+									<td>{{ log.message |striptags }}</td>
+									<td><a href="?p=admin_view_emails&amp;idlogmail={{ log.idlogmail }}" class="btn btn-sm btn-primary"><i class="fa-solid fa-eye"></i></a></td>
 								</tr>
 							{% endfor %}
 						</tbody>
