@@ -213,7 +213,7 @@ class Import {
 
             if (rename($uploadDir.$origName, $uploadDir.$fileName)) {
                 // ajout dans la base de donnée.
-                $req = "INSERT INTO ".TABLE_PREFIX."_files (id_entry, file_name, public_name) VALUES ($idResa,'".protect_data_sql($fileName)."','".protect_data_sql($origName)."')";
+                $req = "INSERT INTO ".TABLE_PREFIX."_files (id_entry, file_name, public_name) VALUES ($idResa,'".protect_data_sql($fileName)."','".protect_data_sql(substr($origName, 0, 50))."')";
                 if (grr_sql_command($req) < 0) {
                     $msg .= "<br>erreur d'enregistrement sur base de donnée";
                 } else {
