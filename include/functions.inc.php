@@ -5386,6 +5386,17 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 		$affichage .= "<i class=\"fa-solid fa-person\"></i> ";
 	}
 
+	// Pièce jointe dans la réservation
+	$sql = "SELECT count(id) FROM ".TABLE_PREFIX."_files WHERE id_entry= ".$resa[2];
+	$res = grr_sql_query($sql);
+		$tmpsql = mysqli_fetch_array($res);
+	$present = $tmpsql[0];
+	grr_sql_free($res);
+
+	if($present > 0)
+	$affichage .= "<i class=\"fa-solid fa-paperclip\"></i> ";
+
+
 	return $affichage;
 }
 /*
