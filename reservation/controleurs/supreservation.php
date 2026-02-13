@@ -53,9 +53,10 @@ if ($info = mrbsGetEntryInfo($id))
 	if (Settings::get("automatic_mail") == 'yes')
 		$_SESSION['session_message_error'] = send_mail($id,3,$dformat);
     // traitement des réservations modérées : envoie un mail au modérateur
-    if ($info['moderate'] != 0){ // cette réservation est à modérer ou a été modérée
-        $_SESSION['session_message_error'] .= send_mail($id,3,$dformat);
-    }
+	// ! Sup en version 4.5.2 car doublons dans l'envois au modérateur
+/* if ($info['moderate'] != 0){ // cette réservation est à modérer ou a été modérée
+    //    $_SESSION['session_message_error'] .= send_mail($id,3,$dformat);
+}*/
 
     display_mail_msg();
 	$room_id = grr_sql_query1("SELECT ".TABLE_PREFIX."_entry.room_id FROM ".TABLE_PREFIX."_entry WHERE ".TABLE_PREFIX."_entry.id='".$id."'");
