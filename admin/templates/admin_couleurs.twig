@@ -5,107 +5,159 @@
 {% block css %}
 	<!-- Toastr -->
 	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
+	<!-- Code mirror -->
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/codemirror/codemirror.css">
+	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/codemirror/theme/monokai.css">
 {% endblock %}
 
 {% import 'messagesysteme.twig' as msgSyst %}
 
 {% block content %}
-		<div class="col col-md-12">
 
-			<div class="box box-primary">
-				<div class="box-header">
-					<h3 class="box-title">{{trad.admin_couleurs}}</h3></a>
-				</div>
-				<div class="box-body no-padding">
-					<p>{{trad.admin_couleurs_explications |raw}}</p>
+	<div class="col-12 col-sm-12">
+		<div class="card card-primary card-tabs">
+			<div class="card-header p-0 pt-1">
+				<ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+					<li class="nav-item">
+						<a class="nav-link active" id="custom-tabs-one-home-tab" data-bs-toggle="tab" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">{{trad.admin_couleurs}}</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" id="custom-tabs-one-profile-tab" data-bs-toggle="tab" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">CSS</a>
+					</li>
+				</ul>
+			</div>
+			<div class="card-body">
+				<div class="tab-content" id="custom-tabs-one-tabContent">
+					<!-- Gestion des couleurs (Boutons et lien) -->
+					<div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
 
-					<form class="form-horizontal" action='?p=admin_couleurs' method='POST'>
+						<div class="col col-md-12">
 
-						<!-- page_header -->
-						<h3>{{trad.page_header}}</h3>
-							{{ form.colorpicker2('header_text', trad.text, hexa.header_text, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('header_bgcolor', trad.bgcolor, hexa.header_bgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('header_hover', trad.hover_text, hexa.header_hover, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+							<div class="box box-primary">
+								<div class="box-body no-padding">
+									<p>{{trad.admin_couleurs_explications |raw}}</p>
 
-						<h3>{{trad.link}}</h3>
-							{{ form.colorpicker2('lien_classique', trad.text, hexa.lien_classique, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+									<form class="form-horizontal" action='?p=admin_couleurs' method='POST'>
 
-						<h3>{{trad.menuG}}</h3>
-							{{ form.colorpicker2('menuG_color', trad.text, hexa.menuG_color, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('menuG_bgcolor', trad.bgcolor, hexa.menuG_bgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+										<!-- page_header -->
+										<h3>{{trad.page_header}}</h3>
+											{{ form.colorpicker2('header_text', trad.text, hexa.header_text, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('header_bgcolor', trad.bgcolor, hexa.header_bgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('header_hover', trad.hover_text, hexa.header_hover, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
 
-						<h3>{{trad.cal_titre}}</h3>
-							{{ form.colorpicker2('cal_titrecolor', trad.text, hexa.cal_titrecolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('cal_titrebgcolor', trad.bgcolor, hexa.cal_titrebgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+										<h3>{{trad.link}}</h3>
+											{{ form.colorpicker2('lien_classique', trad.text, hexa.lien_classique, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
 
-						<h3>{{trad.cal_jours}}</h3>
-							{{ form.colorpicker2('cal_jourscolor', trad.text, hexa.cal_jourscolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('cal_joursbgcolor', trad.bgcolor, hexa.cal_joursbgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+										<h3>{{trad.menuG}}</h3>
+											{{ form.colorpicker2('menuG_color', trad.text, hexa.menuG_color, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('menuG_bgcolor', trad.bgcolor, hexa.menuG_bgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
 
-						<h3>{{trad.cal_sem}}</h3>
-							{{ form.colorpicker2('cal_semcolor', trad.text, hexa.cal_semcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('cal_sembgcolor', trad.bgcolor, hexa.cal_sembgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+										<h3>{{trad.cal_titre}}</h3>
+											{{ form.colorpicker2('cal_titrecolor', trad.text, hexa.cal_titrecolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('cal_titrebgcolor', trad.bgcolor, hexa.cal_titrebgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
 
-						<h3>{{trad.cal_semhovercolor}}</h3>
-							{{ form.colorpicker2('cal_semhovercolor', trad.text, hexa.cal_semhovercolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+										<h3>{{trad.cal_jours}}</h3>
+											{{ form.colorpicker2('cal_jourscolor', trad.text, hexa.cal_jourscolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('cal_joursbgcolor', trad.bgcolor, hexa.cal_joursbgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
 
-						<h3>{{trad.cal_week}}</h3>
-							{{ form.colorpicker2('cal_weekcolor', trad.text, hexa.cal_weekcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('cal_weekbgcolor', trad.bgcolor, hexa.cal_weekbgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+										<h3>{{trad.cal_sem}}</h3>
+											{{ form.colorpicker2('cal_semcolor', trad.text, hexa.cal_semcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('cal_sembgcolor', trad.bgcolor, hexa.cal_sembgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
 
-						<h3>{{trad.cal_cell}}</h3>
-							{{ form.colorpicker2('cal_cellcolor', trad.text, hexa.cal_cellcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('cal_cellbgcolor', trad.bgcolor, hexa.cal_cellbgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+										<h3>{{trad.cal_semhovercolor}}</h3>
+											{{ form.colorpicker2('cal_semhovercolor', trad.text, hexa.cal_semhovercolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
 
-						<h3>{{trad.cal_cellhover}}</h3>
-							{{ form.colorpicker2('cal_cellhovercolor', trad.text, hexa.cal_cellhovercolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('cal_cellhoverbgcolor', trad.bgcolor, hexa.cal_cellhoverbgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+										<h3>{{trad.cal_week}}</h3>
+											{{ form.colorpicker2('cal_weekcolor', trad.text, hexa.cal_weekcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('cal_weekbgcolor', trad.bgcolor, hexa.cal_weekbgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
 
-						<h3>{{trad.cal_current_day_}}</h3>
-							{{ form.colorpicker2('cal_current_day_color', trad.text, hexa.cal_current_day_color, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('cal_current_day_bgcolor', trad.bgcolor, hexa.cal_current_day_bgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+										<h3>{{trad.cal_cell}}</h3>
+											{{ form.colorpicker2('cal_cellcolor', trad.text, hexa.cal_cellcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('cal_cellbgcolor', trad.bgcolor, hexa.cal_cellbgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
 
-						<h3>{{trad.pl2_titre}}</h3>
-							{{ form.colorpicker2('pl2_titrecolor', trad.text, hexa.pl2_titrecolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('pl2_titrebgcolor', trad.bgcolor, hexa.pl2_titrebgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+										<h3>{{trad.cal_cellhover}}</h3>
+											{{ form.colorpicker2('cal_cellhovercolor', trad.text, hexa.cal_cellhovercolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('cal_cellhoverbgcolor', trad.bgcolor, hexa.cal_cellhoverbgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
 
-						<h3>{{trad.pl2_entete}}</h3>
-							{{ form.colorpicker2('pl2_entetecolor', trad.text, hexa.pl2_entetecolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('pl2_entetebgcolor', trad.bgcolor, hexa.pl2_entetebgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+										<h3>{{trad.cal_current_day_}}</h3>
+											{{ form.colorpicker2('cal_current_day_color', trad.text, hexa.cal_current_day_color, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('cal_current_day_bgcolor', trad.bgcolor, hexa.cal_current_day_bgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
 
-						<h3>{{trad.pl2_cell}}</h3>
-							{{ form.colorpicker2('pl2_cellcolor', trad.text, hexa.pl2_cellcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('pl2_cellbgcolor', trad.bgcolor, hexa.pl2_cellbgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+										<h3>{{trad.pl2_titre}}</h3>
+											{{ form.colorpicker2('pl2_titrecolor', trad.text, hexa.pl2_titrecolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('pl2_titrebgcolor', trad.bgcolor, hexa.pl2_titrebgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
 
-						<h3>{{trad.icons_color}}</h3>
-							{{ form.colorpicker2('icons_color', trad.text, hexa.icons_color, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+										<h3>{{trad.pl2_entete}}</h3>
+											{{ form.colorpicker2('pl2_entetecolor', trad.text, hexa.pl2_entetecolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('pl2_entetebgcolor', trad.bgcolor, hexa.pl2_entetebgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
 
-						<h3>{{trad.btn_primary_}}</h3>
-							{{ form.colorpicker2('btn_primary_color', trad.text, hexa.btn_primary_color, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('btn_primary_bgcolor', trad.bgcolor, hexa.btn_primary_bgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('btn_primary_bordcolor', trad.bordcolor, hexa.btn_primary_bordcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+										<h3>{{trad.pl2_cell}}</h3>
+											{{ form.colorpicker2('pl2_cellcolor', trad.text, hexa.pl2_cellcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('pl2_cellbgcolor', trad.bgcolor, hexa.pl2_cellbgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
 
-						<h3>{{trad.active_btn_primary_}}</h3>
-							{{ form.colorpicker2('active_btn_primary_color', trad.text, hexa.active_btn_primary_color, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('active_btn_primary_bgcolor', trad.bgcolor, hexa.active_btn_primary_bgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('active_btn_primary_bordcolor', trad.bordcolor, hexa.active_btn_primary_bordcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+										<h3>{{trad.icons_color}}</h3>
+											{{ form.colorpicker2('icons_color', trad.text, hexa.icons_color, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
 
-						<h3>{{trad.focus_btn_primary_}}</h3>
-							{{ form.colorpicker2('focus_btn_primary_color', trad.text, hexa.focus_btn_primary_color, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('focus_btn_primary_bgcolor', trad.bgcolor, hexa.focus_btn_primary_bgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
-							{{ form.colorpicker2('focus_btn_primary_bordcolor', trad.bordcolor, hexa.focus_btn_primary_bordcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+										<h3>{{trad.btn_primary_}}</h3>
+											{{ form.colorpicker2('btn_primary_color', trad.text, hexa.btn_primary_color, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('btn_primary_bgcolor', trad.bgcolor, hexa.btn_primary_bgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('btn_primary_bordcolor', trad.bordcolor, hexa.btn_primary_bordcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
 
-						<div style="text-align:center;">
-							<a class="btn btn-warning" type="button" href="?p=admin_accueil" style="font-variant: small-caps;">{{trad.cancel}}</a>
-							<a class="btn btn-danger" type="button" href="?p=admin_couleurs&theme=defaut" style="font-variant: small-caps;">{{trad.default}}</a>
-							<input class="btn btn-primary" type="submit" name="record" value="{{trad.save}}" style="font-variant: small-caps;"/>
+										<h3>{{trad.active_btn_primary_}}</h3>
+											{{ form.colorpicker2('active_btn_primary_color', trad.text, hexa.active_btn_primary_color, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('active_btn_primary_bgcolor', trad.bgcolor, hexa.active_btn_primary_bgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('active_btn_primary_bordcolor', trad.bordcolor, hexa.active_btn_primary_bordcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+
+										<h3>{{trad.focus_btn_primary_}}</h3>
+											{{ form.colorpicker2('focus_btn_primary_color', trad.text, hexa.focus_btn_primary_color, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('focus_btn_primary_bgcolor', trad.bgcolor, hexa.focus_btn_primary_bgcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+											{{ form.colorpicker2('focus_btn_primary_bordcolor', trad.bordcolor, hexa.focus_btn_primary_bordcolor, {classLabel: 'col-sm-3', classInput: 'col-sm-3'}) }}
+
+										<div style="text-align:center;">
+											<a class="btn btn-warning" type="button" href="?p=admin_accueil" style="font-variant: small-caps;">{{trad.cancel}}</a>
+											<a class="btn btn-danger" type="button" href="?p=admin_couleurs&amp;theme=defaut" style="font-variant: small-caps;">{{trad.default}}</a>
+											<input class="btn btn-primary" type="submit" name="record" value="{{trad.save}}" style="font-variant: small-caps;"/>
+										</div>
+									</form>
+
+								</div>
+							</div>
+						
 						</div>
-					</form>
-
+					</div>
+					<!-- Fichier CSS -->
+					<div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
+						<div class="row">
+        					<div class="col-md-12">
+								<form class="form-horizontal" action='?p=admin_couleurs' method='POST'>
+									<div class="card card-outline card-info">
+										<div class="card-header">
+											<h3 class="card-title">Code CSS personnalisé</h3>
+											<br><p><div class="bg-danger color-palette"><span>Attention : aucun contrôle sur votre saisie !</span></div></p>
+										</div>
+										<div class="card-body p-0">
+											<textarea id="codeMirrorDemo" name="css_perso" class="p-12">
+{{ css_perso_contenu }}
+											</textarea>
+										</div>
+										<div class="card-footer">
+											<div style="text-align:center;">
+												<a class="btn btn-warning" type="button" href="?p=admin_accueil" style="font-variant: small-caps;">{{trad.cancel}}</a>
+												<a class="btn btn-danger" type="button" href="?p=admin_couleurs&amp;theme=csspersodefaut" style="font-variant: small-caps;">{{trad.default}}</a>
+												<input class="btn btn-primary" type="submit" name="cssperso" value="{{trad.save}}" style="font-variant: small-caps;"/>
+											</div>
+           								</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-		
 		</div>
+	</div>
+
+
 
 	</div>
 {% endblock %}
@@ -113,6 +165,9 @@
 {% block javascript %}
 	<!-- Toastr -->
 	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
+	<!-- CodeMirror -->
+	<script src="../vendor/almasaeed2010/adminlte/plugins/codemirror/codemirror.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/codemirror/mode/css/css.js"></script>
 	<script>
 		function updatecolor(idchamp) {
 			var input_color = document.getElementById('square'+idchamp).value;
@@ -126,6 +181,31 @@
 			{%if d.enregistrement == 1 %}
       			toastr.success("{{trad.message_records}}")
 			{%endif%}
+
+			// Initialiser CodeMirror au clic sur l'onglet CSS
+			var codeMirrorInitialized = false;
+			var tabElement = document.getElementById('custom-tabs-one-profile-tab');
+			
+			tabElement.addEventListener('shown.bs.tab', function() {
+				if (!codeMirrorInitialized) {
+					var codeMirrorDemo = CodeMirror.fromTextArea(document.getElementById('codeMirrorDemo'), {
+						mode: 'css',
+						theme: 'monokai',
+						lineNumbers: true,
+						lineWrapping: true,
+						indentUnit: 2,
+						indentWithTabs: false,
+						matchBrackets: true,
+						autoCloseBrackets: true,
+						viewportMargin: Infinity
+					});
+					// Forcer la hauteur du CodeMirror
+					codeMirrorDemo.setSize('100%', '100%');
+					codeMirrorInitialized = true;
+					// Rafraîchir le layout de CodeMirror
+					codeMirrorDemo.refresh();
+				}
+			});
 		})
 	</script>
 {% endblock %}

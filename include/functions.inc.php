@@ -1053,8 +1053,10 @@ function begin_page($title, $page = "with_session")
 	if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css?v='.$version_grr.'" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/'.$sheetcss.'/css/style.css?v='.$version_grr.'" />'.PHP_EOL; // le style couleurs prédéfinis
-		if($sheetcss == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
-			$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css?".Settings::get("sp_time")."\" />".PHP_EOL; // style perso via admin
+	if($sheetcss == "perso" && file_exists("personnalisation/".$gcDossierCss."/perso.css"))
+		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso.css?".Settings::get("sp_time")."\" />".PHP_EOL; // style perso via admin
+	if(file_exists("personnalisation/".$gcDossierCss."/perso-css.css"))
+		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso-css.css?".Settings::get("sp_time")."\" />".PHP_EOL; // style perso via admin
 	
 	$a .= '<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="node_modules/jquery/dist/jquery-ui.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
@@ -1077,8 +1079,8 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 	global $use_prototype, $use_admin, $desactive_bandeau_sup, $id_site, $d, $gcDossierImg, $gcDossierCss, $version_grr;
 
 	$area = getFormVar("area","int",0);
-  $room = getFormVar("room","int",0);
-  $id_site = getFormVar("id_site","int",0);
+	$room = getFormVar("room","int",0);
+	$id_site = getFormVar("id_site","int",0);
 	
 	if( isset($_SESSION['changepwd']) && $_SESSION['changepwd'] == 1 && $page != 'changemdp'){
 		header("Location: ./compte/compte.php?pc=changemdp");
@@ -1094,6 +1096,10 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 		$desactive_VerifNomPrenomUser = 'n';
 	// On vérifie que les noms et prénoms ne sont pas vides
 	VerifNomPrenomUser($type_session);
+
+	if(file_exists($racine."personnalisation/".$gcDossierCss."/perso-css.css"))
+		$d['sheetcsspersocss'] = "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$racine."personnalisation/".$gcDossierCss."/perso-css.css?".Settings::get("sp_time")."\" />";
+
 
 	if ($type_session == "with_session")
 	{

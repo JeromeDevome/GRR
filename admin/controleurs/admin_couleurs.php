@@ -138,7 +138,7 @@ $default_color_tab=array('header_bgcolor' => '#FFF'
 );
 
 $msg = '';
-if(isset($_GET['theme']) && $_GET['theme'] == 'defaut') // Reset CSS
+if(isset($_GET['theme']) && $_GET['theme'] == 'defaut') // Reset CSS Prédéfini
 {
 	foreach($champs_couleur as $code_js => $code_css)
 	{
@@ -166,6 +166,68 @@ elseif ((isset($_POST['record'])) && (!isset($ok))) // Enregistrement des donné
         }
         fwrite($fich,"}
 ");
+        fclose($fich);
+        Settings::set("sp_time", time());
+    }
+    catch (Exception $e) {
+        echo 'Exception reçue : ',  $e->getMessage(), "\n";
+        $ok = 'no';
+        die();
+    }
+
+    // Si pas de problème, message de confirmation
+    $_SESSION['displ_msg'] = 'yes';
+    if ($msg == '') {
+        $d['enregistrement'] = 1;
+       // $msg = get_vocab('message_records');
+    }
+}
+elseif(isset($_GET['theme']) && $_GET['theme'] == 'csspersodefaut') // Reset CSS Perso
+{
+	if(file_exists("../personnalisation/".$gcDossierCss."/perso-css.css"))
+		unlink("../personnalisation/".$gcDossierCss."/perso-css.css");
+    Settings::set("sp_time", time());
+}
+elseif ((isset($_POST['cssperso'])) && (!isset($ok))) // Enregistrement des données si enregistrement
+{
+    try {
+        // Sécurisation : valider que c'est du CSS uniquement
+        $css_content = $_POST['css_perso'];
+        
+        // Vérifier la présence de codes dangereux
+        $dangerous_patterns = array(
+            '/<\s*script/i',           // Tags script
+            '/<\s*php/i',              // Tags PHP
+            '/<\s*iframe/i',           // iframes
+            '/<\s*embed/i',            // embeds
+            '/<\s*object/i',           // objects
+            '/javascript:/i',          // javascript: protocol
+            '/on\w+\s*=/i',            // Event handlers (onclick, onload, etc)
+            '/expression\s*\(/i',      // CSS expressions
+            '/url\s*\(\s*javascript/i', // javascript in url()
+            '/import\s*url/i',         // CSS import
+            '/behavior\s*:/i',         // CSS behavior
+            '/@import/i',              // @import rules
+            '/php\s*:/i',              // PHP protocol
+            '/data:/i',                // Data URI
+            '/vbscript:/i',            // VBScript protocol
+        );
+        
+        $is_dangerous = false;
+        foreach ($dangerous_patterns as $pattern) {
+            if (preg_match($pattern, $css_content)) {
+                $is_dangerous = true;
+                break;
+            }
+        }
+        
+        if ($is_dangerous) {
+            throw new Exception("Le contenu CSS contient du code non autorisé (JavaScript, PHP, SQL ou autres scripts)");
+        }
+        
+        // Sauvegarder uniquement du CSS valide
+        $fich=fopen("../personnalisation/".$gcDossierCss."/perso-css.css","w+");
+        fwrite($fich,$css_content);
         fclose($fich);
         Settings::set("sp_time", time());
     }
@@ -224,6 +286,15 @@ $hexa['focus_btn_primary_color'] = (isset($AllSettings['sp_focus_btn_primary_col
 $hexa['focus_btn_primary_bgcolor'] = (isset($AllSettings['sp_focus_btn_primary_bgcolor']))? valid_color($AllSettings['sp_focus_btn_primary_bgcolor']) : $default_color_tab["focus_btn_primary_bgcolor"];
 $hexa['focus_btn_primary_bordcolor'] = (isset($AllSettings['sp_focus_btn_primary_bordcolor']))? valid_color($AllSettings['sp_focus_btn_primary_bordcolor']) : $default_color_tab["focus_btn_primary_bordcolor"];
 
-echo $twig->render('admin_couleurs.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'hexa' => $hexa));
+$fichier_css_perso = "../personnalisation/".$gcDossierCss."/perso-css.css";
+if(file_exists($fichier_css_perso)){
+    $css_perso_contenu = file_get_contents($fichier_css_perso);
+}
+else
+{
+    $css_perso_contenu = '';
+}
+
+echo $twig->render('admin_couleurs.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'hexa' => $hexa, 'css_perso_contenu' => $css_perso_contenu));
 
 ?>
