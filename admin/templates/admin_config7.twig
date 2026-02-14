@@ -59,30 +59,24 @@
 										<div class="tab-pane text-left fade active show" id="vert-tabs-divers" role="tabpanel" aria-labelledby="vert-tabs-divers-tab">
 
 											<!-- Périodicité -->
-											<div class="form-group row row col-sm-12">
-												<label class="col col-sm-6" for="periodicite">{{ trad.periodicite_msg }}</label>
-												<div class="col col-sm-6 control-label">
-													<input type="checkbox" name="periodicite" {% if settings.periodicite == 'y' %}checked{% endif %} data-bootstrap-switch>
+											<div class="form-group row col-sm-12">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="periodicite" name="periodicite" {% if settings.periodicite == 'y' %}checked{% endif %} > 
+													<label class="custom-control-label" for="periodicite">{{ trad.periodicite_msg }}</label>
 												</div>
 											</div>
-
-											<hr>
-
 											<!-- Gestion par courrier -->
-											<div class="form-group row row col-sm-12">
-												<label class="col col-sm-6" for="show_courrier">{{ trad.courrier_msg }}</label>
-												<div class="col col-sm-6 control-label">
-													<input type="checkbox" name="show_courrier" {% if settings.show_courrier == 'y' %}checked{% endif %} data-bootstrap-switch>
+											<div class="form-group row col-sm-12">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="show_courrier" name="show_courrier" {% if settings.show_courrier == 'y' %}checked{% endif %} > 
+													<label class="custom-control-label" for="show_courrier">{{ trad.courrier_msg }}</label>
 												</div>
 											</div>
-
-											<hr>
-
 											<!-- Fonction échange réservation -->
-											<div class="form-group row row col-sm-12">
-												<label class="col col-sm-6" for="fct_echange_resa">{{ trad.swapentry }}</label>
-												<div class="col col-sm-6 control-label">
-													<input type="checkbox" name="fct_echange_resa" {% if settings.fct_echange_resa == 'y' %}checked{% endif %} data-bootstrap-switch>
+											<div class="form-group row col-sm-12">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="fct_echange_resa" name="fct_echange_resa" {% if settings.fct_echange_resa == 'y' %}checked{% endif %} > 
+													<label class="custom-control-label" for="fct_echange_resa">{{ trad.swapentry }}</label>
 												</div>
 											</div>
 										</div>
@@ -105,11 +99,13 @@
 										</div>
 
 										<!-- Demandes de création de compte -->
+
+
 										<div class="tab-pane fade" id="vert-tabs-creacompte" role="tabpanel" aria-labelledby="vert-tabs-creacompte-tab">
-											<div class="form-group row row col-sm-12">
-												<label class="col-sm-6" for="fct_crea_cpt"><h4 class="page-header">Demande de création de compte</h4></label>
-												<div class="col-sm-6 control-label">
-													<input type="checkbox" name="fct_crea_cpt" {% if settings.fct_crea_cpt == 'y' %}checked{% endif %} data-bootstrap-switch>
+											<div class="form-group row col-sm-12">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="fct_crea_cpt" name="fct_crea_cpt" {% if settings.fct_crea_cpt == 'y' %}checked{% endif %} > 
+													<label class="custom-control-label" for="fct_crea_cpt"><h4>Demande de création de compte</h4></label>
 												</div>
 											</div>
 
@@ -153,32 +149,26 @@
 										<div class="tab-pane fade" id="vert-tabs-performance" role="tabpanel" aria-labelledby="vert-tabs-performance-tab">
 
 											<!-- Calcul plage libre vue semaine_all -->
-											<div class="form-group row row col-sm-12">
-												<label class="col col-sm-6" for="calcul_plus_semaine_all">Calcul plage libre vue semaine ALL</label>
-												<div class="col col-sm-6 control-label">
-													<input type="checkbox" name="calcul_plus_semaine_all" {% if settings.calcul_plus_semaine_all == 'y' %}checked{% endif %} data-bootstrap-switch>
+											<div class="form-group row col-sm-12">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="calcul_plus_semaine_all" name="calcul_plus_semaine_all" {% if settings.calcul_plus_semaine_all == 'y' %}checked{% endif %} > 
+													<label class="custom-control-label" for="calcul_plus_semaine_all">Calcul plage libre vue semaine ALL</label>
 												</div>
 											</div>
-
 											<!-- Calcul plage libre vue mois -->
-											<div class="form-group row row col-sm-12">
-												<label class="col col-sm-6" for="calcul_plus_mois">Calcul plage libre vue mois</label>
-												<div class="col col-sm-6 control-label">
-													<input type="checkbox" name="calcul_plus_mois" {% if settings.calcul_plus_mois == 'y' %}checked{% endif %} data-bootstrap-switch>
+											<div class="form-group row col-sm-12">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="calcul_plus_mois" name="calcul_plus_mois" {% if settings.calcul_plus_mois == 'y' %}checked{% endif %} > 
+													<label class="custom-control-label" for="calcul_plus_mois">Calcul plage libre vue mois</label>
 												</div>
 											</div>
-
 											<!-- Calcul plage libre vue mois2_all -->
-											<div class="form-group row row col-sm-12">
-												<label class="col col-sm-6" for="calcul_plus_mois2_all">Calcul plage libre vue mois ALL</label>
-												<div class="col col-sm-6 control-label">
-													<input type="checkbox" name="calcul_plus_mois2_all" {% if settings.calcul_plus_mois2_all == 'y' %}checked{% endif %} data-bootstrap-switch>
+											<div class="form-group row col-sm-12">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="calcul_plus_mois2_all" name="calcul_plus_mois2_all" {% if settings.calcul_plus_mois2_all == 'y' %}checked{% endif %} > 
+													<label class="custom-control-label" for="calcul_plus_mois2_all">Calcul plage libre vue mois ALL</label>
 												</div>
 											</div>
-
-											<hr>
-
-
 
 										</div>
 
@@ -203,14 +193,9 @@
 
 {% block javascript %}
 	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
-	<script src="../vendor/almasaeed2010/adminlte/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
 	<script type="text/javascript">
 
 		$(function(){
-			$("input[data-bootstrap-switch]").each(function(){
-   			  $(this).bootstrapSwitch('state', $(this).prop('checked'));
-  			})
-
 			{%if d.enregistrement%}
 				{%if d.enregistrement == 1 %}
 					toastr.success("{{trad.message_records}}")
