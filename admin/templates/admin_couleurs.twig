@@ -5,9 +5,6 @@
 {% block css %}
 	<!-- Toastr -->
 	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
-	<!-- Code mirror -->
-	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/codemirror/codemirror.css">
-	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/codemirror/theme/monokai.css">
 {% endblock %}
 
 {% import 'messagesysteme.twig' as msgSyst %}
@@ -136,7 +133,9 @@
 											<br><p><div class="bg-danger color-palette"><span>Attention : aucun contrôle sur votre saisie !</span></div></p>
 										</div>
 										<div class="card-body p-0">
-											<textarea id="codeMirrorDemo" name="css_perso" class="p-12">
+											<div id="editor" style="height:400px; width:100%;"></div>
+
+											<textarea id="cssContent" name="css_perso" style="display:none;">
 {{ css_perso_contenu }}
 											</textarea>
 										</div>
@@ -166,8 +165,8 @@
 	<!-- Toastr -->
 	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
 	<!-- CodeMirror -->
-	<script src="../vendor/almasaeed2010/adminlte/plugins/codemirror/codemirror.js"></script>
-	<script src="../vendor/almasaeed2010/adminlte/plugins/codemirror/mode/css/css.js"></script>
+	<script src="../vendor/almasaeed2010/adminlte/plugins/ace-editor/ace.js"></script>
+
 	<script>
 		function updatecolor(idchamp) {
 			var input_color = document.getElementById('square'+idchamp).value;
@@ -179,33 +178,29 @@
 		}
 		$(function () {
 			{%if d.enregistrement == 1 %}
-      			toastr.success("{{trad.message_records}}")
+				toastr.success("{{trad.message_records}}")
 			{%endif%}
 
-			// Initialiser CodeMirror au clic sur l'onglet CSS
-			var codeMirrorInitialized = false;
-			var tabElement = document.getElementById('custom-tabs-one-profile-tab');
-			
-			tabElement.addEventListener('shown.bs.tab', function() {
-				if (!codeMirrorInitialized) {
-					var codeMirrorDemo = CodeMirror.fromTextArea(document.getElementById('codeMirrorDemo'), {
-						mode: 'css',
-						theme: 'monokai',
-						lineNumbers: true,
-						lineWrapping: true,
-						indentUnit: 2,
-						indentWithTabs: false,
-						matchBrackets: true,
-						autoCloseBrackets: true,
-						viewportMargin: Infinity
-					});
-					// Forcer la hauteur du CodeMirror
-					codeMirrorDemo.setSize('100%', '100%');
-					codeMirrorInitialized = true;
-					// Rafraîchir le layout de CodeMirror
-					codeMirrorDemo.refresh();
-				}
+			// Initialisation Ace dès le DOM ready
+			ace.config.set("basePath", "../vendor/almasaeed2010/adminlte/plugins/ace-editor");
+
+			var editor = ace.edit("editor");
+			editor.setTheme("ace/theme/monokai");
+			editor.session.setMode("ace/mode/css");
+
+			// Récupérer le contenu existant du textarea
+			var textarea = document.getElementById("cssContent");
+			editor.setValue(textarea.value.trim(), -1);
+
+			// Ajuster la taille si l'onglet est affiché
+			$('#custom-tabs-one-profile-tab').on('shown.bs.tab', function () {
+				editor.resize();
 			});
-		})
+
+			// Synchroniser le textarea avant submit
+			$('form').on('submit', function () {
+				textarea.value = editor.getValue();
+			});
+		});
 	</script>
 {% endblock %}
