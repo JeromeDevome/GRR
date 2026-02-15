@@ -1,4 +1,4 @@
-/*! DataTables 2.3.6
+/*! DataTables 2.3.7
  * © SpryMedia Ltd - datatables.net/license
  */
 
@@ -448,7 +448,7 @@
 			if ( tfoot.length === 0 ) {
 				// If we are a scrolling table, and no footer has been given, then we need to create
 				// a tfoot element for the caption element to be appended to
-				tfoot = $('<tfoot/>').insertAfter(thead);
+				tfoot = $('<tfoot/>').appendTo($this);
 			}
 			oSettings.nTFoot = tfoot[0];
 			
@@ -8884,6 +8884,10 @@
 								return null;
 							}
 	
+							if (col.responsiveVisible === false) {
+								return null;
+							}
+	
 							// Selector
 							if (match[1]) {
 								return $(nodes[idx]).filter(match[1]).length > 0 ? idx : null;
@@ -10288,7 +10292,7 @@
 	 *  @type string
 	 *  @default Version number
 	 */
-	DataTable.version = "2.3.6";
+	DataTable.version = "2.3.7";
 	
 	/**
 	 * Private data store, containing all of the settings objects that are
