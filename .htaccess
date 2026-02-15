@@ -6,18 +6,18 @@
 # ======================================================================
 # 1. GESTION DES ERREURS HTTP PERSONNALISÉES
 # ======================================================================
-ErrorDocument 400 /GitHub/GRR/erreur.php
-ErrorDocument 401 /GitHub/GRR/erreur.php
-ErrorDocument 403 /GitHub/GRR/erreur.php
-ErrorDocument 404 /GitHub/GRR/erreur.php
-ErrorDocument 405 /GitHub/GRR/erreur.php
-ErrorDocument 408 /GitHub/GRR/erreur.php
-ErrorDocument 410 /GitHub/GRR/erreur.php
-ErrorDocument 500 /GitHub/GRR/erreur.php
-ErrorDocument 501 /GitHub/GRR/erreur.php
-ErrorDocument 502 /GitHub/GRR/erreur.php
-ErrorDocument 503 /GitHub/GRR/erreur.php
-ErrorDocument 504 /GitHub/GRR/erreur.php
+ErrorDocument 400 /erreur.php
+ErrorDocument 401 /erreur.php
+ErrorDocument 403 /erreur.php
+ErrorDocument 404 /erreur.php
+ErrorDocument 405 /erreur.php
+ErrorDocument 408 /erreur.php
+ErrorDocument 410 /erreur.php
+ErrorDocument 500 /erreur.php
+ErrorDocument 501 /erreur.php
+ErrorDocument 502 /erreur.php
+ErrorDocument 503 /erreur.php
+ErrorDocument 504 /erreur.php
 
 # ======================================================================
 # 2. SÉCURITÉ - En-têtes HTTP de sécurité
