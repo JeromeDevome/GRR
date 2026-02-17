@@ -1,12 +1,12 @@
-Version 4.5.2 - En développement
+Version 4.5.2 - 17/02/2026 Généré par @JeromeDevome
 [Ajout] Fichier .htaccess pour sécuriser les accès et gérer les erreurs - 3d8607e38 - @JeromeDevome
-[Ajout] Icone trobone pour les réservations comportant des pièves jointe - ff2dbfc3b - @JeromeDevome
+[Ajout] Icône trombone pour les réservations comportant des pièves jointe - ff2dbfc3b - @JeromeDevome
 [Ajout] Visualisation des mails envoyés dans l'administration - 0e662da80 - @JeromeDevome
 [Ajout] Personnalisation code CSS depuis l'administration - 98d40516c - @JeromeDevome
 [Correction] Valeur date de fin d'une réservation sur nouvelle réservation - 82b8df17b - @JeromeDevome
 [Correction] Affichage du sujet et du message dans la liste des mails - d10fe1bbb - @JeromeDevome
 [Correction] Import pièce jointe dans une réservation avec un nom trop long - f99d0898c - @JeromeDevome
-[Correction] Mail envoyé en double aux modérateurs lors d'une supression - 8a7aedbd1 - @JeromeDevome
+[Correction] Mail envoyé en double aux modérateurs lors d'une suppression - 8a7aedbd1 - @JeromeDevome
 [Modification] Mise à jour librairies JS Admin - @JeromeDevome
 [Modification] Nettoyage librairies JS Admin - @JeromeDevome
 
