@@ -2,9 +2,9 @@
 /**
  * misc.inc.php
  * fichier de variables diverses
- * Dernière modification : $Date: 2018-07-20 14:00$
+ * Dernière modification : $Date: 2026-02-26 20:30$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -15,6 +15,12 @@
  * (at your option) any later version.
  */
 
+// On trouve le fichier .gitattributes à la racine du projet alors c'est un projet git, sinon c'est un projet sans git
+if (file_exists("../.gitattributes")) {
+	$gitHub = "-GitHub";
+} else {
+	$gitHub = "";
+}
 
 ################################
 # Development information
@@ -23,12 +29,12 @@ $grr_devel_url = "https://grr.devome.com/";
 
 // Numéro de version actuel
 # Format X.X.XRCX | exemples : 4.4.0a (alpha) ou 4.4.0b (beta) 4.4.0RC1 (Release Candidate) ou 4.4.0 (version OK)
-$version_grr = "4.5.1";
+$version_grr = "4.5.2";
 # Version BDD, deux premirs chiffres = version majeur, les deux suivant la version, évolution de GRR, les 3 derniers une incrémentation à chaque changement
 # Ex 0400003 : 3eme modification sur la branche 4.X.X
 $version_bdd = "0400010";
 // Version repository (GitHub) GitHub-Master / Release-v4.0.0-beta.1 / Release-v4.0.0-RC.1 / Release-v4.0.0
-$versionReposite = "Release-v4.5.1-GitHub-Master";
+$versionReposite = "Release-v4.5.1".$gitHub;
 
 ################################
 # Configuration Requise
@@ -149,7 +155,6 @@ $config_variables = array(
 	"recherche_MAJ",
 	"upload_Module",
 	"nbMaxJoursLogConnexion",
-	"motDePasseConfig",
 	"sso_super_admin",
 	"sso_restrictions",
 	"ldap_restrictions",
@@ -159,7 +164,7 @@ $config_variables = array(
 	"dbsys",
 	"structure",
 	"donnees",
-	"insertComplet"
+	"gcTailleMaxDocResa",
 	);
 
 # Compatibilité avec les version inférieures à 1.9.6

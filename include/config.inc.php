@@ -245,6 +245,10 @@ $gcDossierImg = "images";
 $gcDossierXml = "xml";
 $gcDossierDoc = "docresa";
 
+# Infos dans la partie admin
+$gInfosServeur = true;
+$gInfosDossier = true;
+
 ################################
 # Taille maxi upload fichier import
 #################################

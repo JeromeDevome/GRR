@@ -14,7 +14,7 @@
 				  <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
 					<li class="nav-item"><a class="nav-link active" href="#grr" data-bs-toggle="tab">Infos GRR</a></li>
 					<li class="nav-item"><a class="nav-link" href="#serveur" data-bs-toggle="tab">Serveur</a></li>
-					<li class="nav-item"><a class="nav-link" href="#infosphp" data-bs-toggle="tab">Infos PHP</a></li>
+					{% if d.gInfosServeur %}<li class="nav-item"><a class="nav-link" href="#infosphp" data-bs-toggle="tab">Infos PHP</a></li>{% endif %}
 					<li class="nav-item"><a class="nav-link" href="#fichierconfig" data-bs-toggle="tab">Fichier configuration</a></li>
 					<li class="pull-right"><button type="button" id="copy" class="btn btn-info pull-right btn-block btn-sm">Copier infos pour aide</button></li>
 				  </ul>
@@ -31,10 +31,10 @@
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.maj_recherche_grr }}</p><b>{{ d.maj_SiteGRR |raw }}&nbsp;</b></div></li>
 							<li class="list-group-item"><p class="col col-sm-6"><b>Infos support </b><i>(A fournir pour toute demande d'aide)</i> :</p><textarea id="to-copy" rows="8" cols="40">
 {{ trad.num_version }} : {{ d.num_version }}
-{{ trad.num_versionbdd }} : {{ d.num_versionbdd }}
-{{ trad.system }} : {{ d.system }}
+{{ trad.num_versionbdd }} {{ d.num_versionbdd }}
+{% if d.gInfosServeur %}{{ trad.system }} : {{ d.system }}
 Version PHP : {{ d.versionPHP }}
-{{ trad.database }} : {{ d.database }} => {{ d.versionBDD }}
+{{ trad.database }} {{ d.database }} => {{ d.versionBDD }}{% endif %}
 Time : {{ d.time }}
 Timezone : {{ d.timezone }}</textarea></li>
 						</ul>
@@ -46,6 +46,7 @@ Timezone : {{ d.timezone }}</textarea></li>
 					<!-- Serveur -->
 					<div class="tab-pane" id="serveur">
 						<ul class="list-group list-group-unbordered">
+							{% if d.gInfosServeur %}
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.system }}</p><b>{{ d.system }}</b></div></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Version PHP</p><b><small class="badge pull-left {{ d.couleurVersionPHP }}">{{ d.versionPHP }}</small>&nbsp;</b></div></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">PHP fileinfo</p><b><small class="badge pull-left {% if d.phpfileinfo %}bg-green{% else %}bg-red{% endif %}">{% if d.phpfileinfo %}Oui{% else %}Non{% endif %}</small>&nbsp;</b></div></li>
@@ -57,7 +58,9 @@ Timezone : {{ d.timezone }}</textarea></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">PHP intl</p><b><small class="badge pull-left {% if d.phpintl %}bg-green{% else %}bg-red{% endif %}">{% if d.phpintl %}Oui{% else %}Non{% endif %}</small>&nbsp;</b></div></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.database }}</p><b>{{ d.database }}</b></div></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Version BDD</p><b><small class="badge pull-left {{ d.couleurVersionMySQL }}">{{ d.versionBDD }}</small>&nbsp;</b></div></li>
+							{% endif %}
 
+							{% if d.gInfosDossier %}
 							<li class="list-group-item"><b class="col col-sm-12">Dossiers : </b></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Existence dossier "installation"</p><b><small class="badge pull-left {% if d.dossierInstallation == 1 %}bg-orange{% else %}bg-green{% endif %}">{% if d.dossierInstallation == 1 %}Existant - Nous recommandons de le supprimer{% else %}Innexistant{% endif %}</small>&nbsp;</b></div></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Droits dossier "personnalisation/images/logos"</p><b><small class="badge pull-left {% if d.dossierImgLogosEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
@@ -65,6 +68,7 @@ Timezone : {{ d.timezone }}</textarea></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Droits dossier "export"</p><b><small class="badge pull-left {% if d.dossierExportEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Droits dossier "temp"</p><b><small class="badge pull-left {% if d.dossierTempEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Droits dossier "personnalisation/modules"</p><b><small class="badge pull-left {% if d.dossierModulesEcriture == 1 %}bg-green{% else %}bg-red{% endif %}">Ecriture</small>&nbsp;</b></div></li>
+							{% endif %}
 
 							<li class="list-group-item"><b class="col col-sm-12">Temps : </b></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Time</p><b>{{ d.time }}</b></div></li>
@@ -75,11 +79,13 @@ Timezone : {{ d.timezone }}</textarea></li>
 					</div>
 
 					<!-- Infos PHP -->
+					{% if d.gInfosServeur %}
 					<div class="tab-pane" id="infosphp">
 						
 							{{ infosPHP |raw }}
 
 					</div>
+					{% endif %}
 
 					<!-- Fichier Config -->
 					<div class="tab-pane" id="fichierconfig">

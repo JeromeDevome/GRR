@@ -65,6 +65,9 @@ if (version_compare(phpversion(), $php_mini, '<')) {
    $d['couleurVersionPHP'] = "bg-red";
 }
 
+$d['gInfosServeur'] = $gInfosServeur;
+$d['gInfosDossier'] = $gInfosDossier;
+
 $d['phpfileinfo'] = extension_loaded("fileinfo");
 $d['phpmbstring'] = extension_loaded("mbstring");
 $d['phpmysqli'] = extension_loaded("mysqli");
@@ -160,7 +163,7 @@ foreach ($config_variables as $config){
 	} elseif(is_bool($config) && $config == false){
 		$config = "false";
 	}
-	$d['infosConfigVar'] .= "<li class=\"list-group-item\"><div class=\"row\"><p class=\col col-sm-6\">".$config."</p><b>".$$config."&nbsp;</b></div></li>"; // $$ Normal
+	$d['infosConfigVar'] .= "<li class=\"list-group-item\"><div class=\"row\"><p class=\"col col-sm-6\">".$config."</p> <b>".$$config."&nbsp;</b></div></li>"; // $$ Normal
 }
 unset($config);
 
