@@ -699,6 +699,5 @@ if ($fin_session == 'n'){
 
 } // fin du formulaire
 
-
 echo $twig->render('vuereservation.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'resa' => $resa, 'participantsDisponible' => $participantsDisponible, 'participantsEnregistrer' => $participantsEnregistrer, 'champscomp' => $champsComp, 'attached_files' => $attached_files));
 ?>
