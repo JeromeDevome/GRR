@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-01-05 18:34$
+ * Dernière modification : $Date: 2026-02-19 11:43$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -411,6 +411,14 @@ function contenu_cellule($options, $ofl, $vue, $resa, $heures)
     else
       $affichage .= " <img src=\"img_grr/hourglass.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Buzy\"> ";
   }
+  // symbole pour fichier joint
+  $sql = "SELECT count(id) FROM ".TABLE_PREFIX."_files WHERE id_entry=? ";
+	$res = grr_sql_query($sql,"i",[$resa['id']]);
+	$tmpsql = grr_sql_row($res,0);
+	$present = $tmpsql[0];
+	grr_sql_free($res);
+	if($present > 0)
+    $affichage .= "<span class='glyphicon glyphicon-paperclip'></span> ";
 
   return $affichage;
 }
