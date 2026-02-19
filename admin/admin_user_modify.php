@@ -548,7 +548,7 @@ echo '<div>';
           if(isset($row["adm"]) && $row['adm'])
             echo "<li>".get_vocab("administrateur du domaine")."</li>";
           if(isset($row["acc"]) && $row["acc"])
-            echo "<li>".get_vocab("a acces au domaine")."</li>";
+            echo "<li>".get_vocab("a_acces_au_domaine")."</li>";
           if(isset($row["ress"])){
             echo "<li>".get_vocab("gestionnaire des resources suivantes")."</li>";
             echo "<ul>";

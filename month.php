@@ -3,7 +3,7 @@
  * month.php
  * Interface d'accueil avec affichage par mois pour une ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-19 16:37$
+ * Dernière modification : $Date: 2026-02-19 15:38$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -36,6 +36,8 @@ include "include/language.inc.php";
 Definition_ressource_domaine_site();
 
 // Initilisation des variables
+$acces_config_level = (Settings::get('acces_config'))? Settings::get('acces_config') : 3;
+
 $affiche_pview = '1';
 if (!isset($_GET['pview']))
 	$_GET['pview'] = 0;
@@ -352,7 +354,7 @@ if ($this_room_max  && $_GET['pview'] != 1)
 echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.$this_room_name.' '.$this_room_name_des.' '.$maxCapacite.'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php?area='.$area.'" title="'.get_vocab('see_all_the_rooms_for_several_months').'">'.ucfirst(utf8_strftime("%Y", $month_start)).'</a></h4>'.PHP_EOL;
 if (verif_display_fiche_ressource($user_name, $room) && $_GET['pview'] != 1)
 	echo '<a href="javascript:centrerpopup(\'view_room.php?id_room=',$room,'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="',get_vocab("fiche_ressource"),'"><span class="glyphcolor glyphicon glyphicon-search"></span></a>';
-if ($auth_user_level > 2 && $_GET['pview'] != 1)
+if (($auth_user_level >= $acces_config_level) && ($_GET['pview'] != 1))
 	echo "<a href=\"./admin/edit_room.php?room=$room\" title='".get_vocab('editroom')."'><span class=\"glyphcolor glyphicon glyphicon-cog\"></span></a>";
 affiche_ressource_empruntee($room);
 if ($this_statut_room == "0")

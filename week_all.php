@@ -3,7 +3,7 @@
  * week_all.php
  * Permet l'affichage des réservation d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-19 16:45$
+ * Dernière modification : $Date: 2026-02-19 15:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -37,6 +37,8 @@ include "include/language.inc.php";
 Definition_ressource_domaine_site();
 
 // Initilisation des variables
+$acces_config_level = (Settings::get('acces_config'))? Settings::get('acces_config') : 3;
+
 $affiche_pview = '1';
 if (!isset($_GET['pview']))
 	$_GET['pview'] = 0;
@@ -494,7 +496,7 @@ else{
                 echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$row['id'].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'">'.PHP_EOL;
                 echo '<span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
             }
-            if (authGetUserLevel($user_name,$row['id']) > 2 && $_GET['pview'] != 1)
+            if ((authGetUserLevel($user_name,$row['id']) >= $acces_config_level) && ($_GET['pview'] != 1))
                 echo '<a href="./admin/edit_room.php?room='.$row['id'].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a>'.PHP_EOL;
             affiche_ressource_empruntee($row['id']);
             if ($row['show_comment'] == "y" && $_GET['pview'] != 1 && ($row['comment_room'] != "") && ($row['comment_room'] != -1))

@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-19 16:35$
+ * Dernière modification : $Date: 2026-02-19 15:32$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -35,6 +35,8 @@ include "include/language.inc.php";
 Definition_ressource_domaine_site();
 
 // Initialisation des variables
+$acces_config_level = (Settings::get('acces_config'))? Settings::get('acces_config') : 3;
+
 $affiche_pview = '1';
 if (!isset($_GET['pview']))
 	$_GET['pview'] = 0;
@@ -366,7 +368,7 @@ else{
                         $dcell .= '<span class="small">('.$ress["capacity"].' '.($ress["capacity"] > 1 ? get_vocab("number_max2") : get_vocab("number_max")).')</span><br />'.PHP_EOL;
                     if (verif_display_fiche_ressource($user_name, $ress['id']) && $_GET['pview'] != 1)
                         $dcell .= '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$ress['id'].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'"><span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
-                    if (authGetUserLevel($user_name,$ress['id']) > 2 && $_GET['pview'] != 1)
+                    if ((authGetUserLevel($user_name,$ress['id']) >= $acces_config_level) && ($_GET['pview'] != 1))
                         $dcell .= '<a href="./admin/edit_room.php?room='.$ress['id'].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a><br/>'.PHP_EOL;
                     $temp = html_ressource_empruntee($ress['id']);
                     if($temp != "")
@@ -404,7 +406,7 @@ include $racine."/include/hook.class.php";
 header('Content-Type: text/html; charset=utf-8');
 if (!isset($_COOKIE['open']))
 {
-	header('Set-Cookie: open=true; SameSite=Strict');
+	header('Set-Cookie: open=true; SameSite=Lax');
 }
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;

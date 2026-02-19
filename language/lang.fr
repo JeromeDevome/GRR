@@ -1,12 +1,13 @@
 <?php
 # GRR : fichier de langue française
-# Last modification : 2026-01-26
+# Last modification : 2026-02-19
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
-$vocab['a acces au domaine'] = "Cet utilisateur a accès à ce domaine restreint.";
+$vocab['a_acces_au_domaine'] = "Cet utilisateur a accès à ce domaine restreint.";
 $vocab['accepter_resa'] = "Accepter la réservation";
 $vocab['accepter_resa_serie'] = "Accepter la réservation et toutes les réservations liées par périodicité qui n'ont pas encore été modérées.";
+$vocab['acces_config_msg'] = "Qui peut accéder à la page d'édition d'une ressource ?";
 $vocab['access'] = "Accès restreint";
 $vocab['accessdenied'] = "Accès refusé";
 $vocab['accessdeniedtoomanybooking'] = "Accès refusé : Votre demande de réservation est rejetée car elle dépasserait le maximum de réservations autorisé !";
