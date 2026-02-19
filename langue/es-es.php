@@ -2,11 +2,12 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR : fichier de langue espagnole
 # GRR: Traduction By JeromeB
-# Last modification : 2026-01-27
+# Last modification : 2026-02-19
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Aceptar la reserva";
 $vocab['accepter_resa_serie'] = "Aceptar la reserva y todas las reservas todavía no moderadas unidas por periodicidad.";
+$vocab['acces_config_msg'] = "¿Quién puede acceder a la página de edición de un recurso?";
 $vocab['access'] = "Acceso limitado";
 $vocab['accessdenied'] = "Acceso rechazado";
 $vocab['accessdeniedtoomanybooking'] = "Acceso rechazado : ¡se rechaza su solicitud de reserva ya que superaría el máximo de reservas autorizado!";

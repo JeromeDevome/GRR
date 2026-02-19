@@ -3,7 +3,7 @@
  * semaine_all.php
  * Permet l'affichage du planning des réservations d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-02-08 12:03$
+ * Dernière modification : $Date: 2026-02-19 17:56$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -38,6 +38,9 @@ if (grr_sql_count($ressources) == 0)
 	exit();
 }
 grr_sql_free($ressources);
+
+// accès à l'édition des ressources
+$acces_config_level = (Settings::get('acces_config'))? Settings::get('acces_config') : 3;
 // calcul du contenu du planning
 if ($enable_periods == 'y')
 {
@@ -309,7 +312,7 @@ foreach($ressources as $row)
 		if (verif_display_fiche_ressource($user_name, $row['id']) && $d['pview'] != 1)
             $ficheDescription = true;
 
-		$configRess = (authGetUserLevel($user_name,$row['id']) > 2 && $d['pview'] != 1);
+		$configRess = (authGetUserLevel($user_name,$row['id']) >= $acces_config_level) && ($d['pview'] != 1);
 
 		$emprunte = affiche_ressource_empruntee_twig($row['id']);
 

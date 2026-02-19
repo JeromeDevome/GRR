@@ -2,11 +2,12 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue anglaise
 # GRR: Translations provided by: JeromeB & Patricia Gaubert-Dubois et Yan Naessens
-# Last modification : 2026-01-27
+# Last modification : 2026-02-19
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accept the reservation ";
 $vocab['accepter_resa_serie'] = "Accept the reservation and all reservations bound by periodicity which are not moderated yet.";
+$vocab['acces_config_msg'] = "Who can access the edit page of a resource?";
 $vocab['access'] = "Restricted access";
 $vocab['accessdenied'] = "Access denied";
 $vocab['accessdeniedtoomanybooking'] = "Access denied: You have reached the maximum number of reservations allowed!";

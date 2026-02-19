@@ -3,7 +3,7 @@
  * jour.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-02-08 11:48$
+ * Dernière modification : $Date: 2026-02-19 16:41$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -19,8 +19,10 @@ $grr_script_name = "jour.php";
 
 $trad = $vocab;
 
-//include "include/resume_session.php";
 include "include/planning.php";
+
+// accès à l'édition des ressources
+$acces_config_level = (Settings::get('acces_config'))? Settings::get('acces_config') : 3;
 
 $ind = 1;
 $test = 0;
@@ -145,7 +147,6 @@ if (grr_sql_count($ressources) == 0)
 	exit();
 }
 
-// code HTML
 $title = "";
 if ($settings->get("show_holidays") == "Oui")
 {   
@@ -193,7 +194,7 @@ for ($i = 0; ($row = grr_sql_row_keyed($ressources, $i)); $i++)
 		$acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $id_room[$i]);
 		$confidentiel_resa[$id_room[$i]] = $row["confidentiel_resa"];
 		$ficheRessource = verif_display_fiche_ressource($user_name, $id_room[$i]);
-    $acces_config = (authGetUserLevel($user_name,$id_room[$i]) > 2);
+    $acces_config = (authGetUserLevel($user_name,$id_room[$i]) >= $acces_config_level);
 
 		$ressourceEmpruntee = affiche_ressource_empruntee_twig($id_room[$i]);
 

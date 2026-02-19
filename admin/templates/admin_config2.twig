@@ -78,6 +78,18 @@
 						</section>
 
 						<hr>
+            
+						<section id="acceseditionressource">
+							<h4 class="page-header">{{ trad.acces_config_msg }}</h4>
+							<input type="radio" name="acces_config" value="3" id="label_3ac" {% if settings.acces_config == '3' %} checked {% endif %} /> <label for="label_3ac">{{ trad.visu_fiche_description3 }}</label><br>
+							<input type="radio" name="acces_config" value="4" id="label_4ac" {% if settings.acces_config == '4' %} checked {% endif %} /> <label for="label_4ac">{{ trad.visu_fiche_description4 }}</label><br>
+							{% if settings.module_multisite == 'Oui' %}
+								<input type="radio" name="acces_config" value="5" id="label_5ac" {% if settings.acces_config == '5' %} checked {% endif %} /> <label for="label_5ac">{{ trad.visu_fiche_description5 }}</label><br>
+							{% endif %}
+							<input type="radio" name="acces_config" value="6" id="label_6ac" {% if settings.acces_config == '6' %} checked {% endif %} /> <label for="label_6ac">{{ trad.visu_fiche_description6 }}</label><br>
+						</section>
+
+						<hr>
 
 						<section id="accesstat">
 							<h4 class="page-header">{{ trad.allow_search_level_msg }}</h4>

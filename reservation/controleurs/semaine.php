@@ -3,7 +3,7 @@
  * semaine.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-02-08 11:54$
+ * Dernière modification : $Date: 2026-02-19 17:47$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -38,6 +38,10 @@ if (!isset($room) || ($room == 0)){
   echo "</p>";
   die();
 }
+
+// Initialisation des variables
+$acces_config_level = (Settings::get('acces_config'))? Settings::get('acces_config') : 3;
+
 $time = mktime(0, 0, 0, $month, $day, $year);
 
 if (($weekday = (date("w", $time) - $weekstarts + 7) % 7) > 0)
@@ -342,7 +346,7 @@ if (verif_display_fiche_ressource($user_name, $room) && $d['pview'] != 1)
     $d['ficheRessource'] = true;
 }
 
-$d['acces_config'] = ($authGetUserLevel > 2 && $d['pview'] != 1);
+$d['acces_config'] = ($authGetUserLevel >= $acces_config_level) && ($d['pview'] != 1);
 
 $d['ressourceEmpruntee'] = affiche_ressource_empruntee_twig($room);
 $d['semaineActuel'] = get_vocab("week").get_vocab("deux_points").utf8_strftime($dformat, $week_start).' - '.utf8_strftime($dformat, $week_end);

@@ -3,9 +3,9 @@
  * admin_config2.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2026-02-19 16:30$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -48,6 +48,12 @@ if (isset($_GET['acces_fiche_reservation']))
 {
     if (!Settings::set("acces_fiche_reservation", $_GET['acces_fiche_reservation']))
         $msg .= "Erreur lors de l'enregistrement de acces_fiche_reservation !<br />";
+}
+// Accès page d'édition d'une ressource.
+if (isset($_GET['acces_config']))
+{
+    if (!Settings::set("acces_config", $_GET['acces_config']))
+        $msg .= "Erreur lors de l'enregistrement de acces_config !<br />";
 }
 // Accès à l'outil de recherche/rapport/stat
 if (isset($_GET['allow_search_level']))

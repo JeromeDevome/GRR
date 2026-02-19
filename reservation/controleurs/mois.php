@@ -3,7 +3,7 @@
  * mois.php
  * Interface d'accueil avec affichage par mois
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-02-08 11:59$
+ * Dernière modification : $Date: 2026-02-19 17:37$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -35,6 +35,9 @@ if ((!isset($room))||($room == 0)){
     echo "</p>";
     die();
 }
+
+// accès à l'édition des ressources
+$acces_config_level = (Settings::get('acces_config'))? Settings::get('acces_config') : 3;
 //Heure de début du mois, cela ne sert à rien de reprendre les valeurs morningstarts/eveningends
 $month_start = mktime(0, 0, 0, $month, 1, $year);
 //Dans quel colonne l'affichage commence: 0 veut dire $weekstarts
@@ -231,7 +234,7 @@ $d['anneeActuel'] = ucfirst(utf8_strftime("%Y ", $month_start));
 if (verif_display_fiche_ressource($user_name, $room) && $d['pview'] != 1)
 	$d['ficheRessource'] = true;
 
-$d['acces_config'] = ($authGetUserLevel > 2 && $d['pview'] != 1);
+$d['acces_config'] = ($authGetUserLevel >= $acces_config_level) && ($d['pview'] != 1);
 
 $d['ressourceEmpruntee'] = affiche_ressource_empruntee_twig($room);
 
