@@ -3,10 +3,10 @@
  * admin_maj.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-06-18 16:19$
+ * Dernière modification : $Date: 2026-02-08 11:35$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @author    Arnaud Fornerot pour l'intégation au portail Envole https://envole.ac-dijon.fr/presentation/grr/
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -1127,7 +1127,7 @@ if(!$majscript) {
 	echo "---\n";
 	echo "Time : " .time()."\n";
 	echo "Date du serveur (Jour-Mois-Annee) : " .date('d-m-Y').". Heure : ".date("H:i")."\n";
-	echo "Timezone (date_default_timezone_set) : ".date_default_timezone_get()."\n";
+	echo "Timezone (date_default_timezone_get) : ".date_default_timezone_get()."\n";
 	echo "</textarea>";
 	echo "<hr><h3>".get_vocab("maj_recherche_grr")."</h3>";
 }
