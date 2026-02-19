@@ -3,9 +3,9 @@
  * upload.php
  * Utilitaire de téléversement d'un fichier attaché à une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-21 15:23$
+ * Dernière modification : $Date: 2026-02-19 11:23$
  * @author    Cédric Berthomé & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -60,7 +60,7 @@ if (isset ($_FILES) && is_array($_FILES)){
             if (rename($uploadDir.$_FILES["myFiles"]["name"][$i], $uploadDir.$fileName)){
               //ajout dans la base de donnée.
               $req = "INSERT INTO ".TABLE_PREFIX."_files (id_entry, file_name, public_name) VALUES (?,?,?)";
-              if (grr_sql_command($req,"iss",[$id,protect_data_sql($fileName),protect_data_sql($_FILES["myFiles"]["name"][$i])]) < 0){
+              if (grr_sql_command($req,"iss",[$id,protect_data_sql($fileName),protect_data_sql(substr($_FILES["myFiles"]["name"][$i],0,50))]) < 0){
                 echo "<br>erreur d'enregistrement sur base de donnée";
               }
               else{
