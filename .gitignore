@@ -42,27 +42,24 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-include/connect.inc.php
-include/config_CAS.inc.php
-include/config_ldap.inc.php
-include/cas.inc.php
-include/config.inc.php
-.idea
+# Autres extensions de fichiers à ignorer
+*.test
+
+# Fichiers de personnalisation à ignorer
+personnalisation/css/*.css
+personnalisation/docresa/*
+personnalisation/images/*
+personnalisation/langue/*.php
+personnalisation/modules/*
+
+personnalisation/connect.inc.php
+personnalisation/configperso.inc.php
+personnalisation/config_ldap.inc.php
+personnalisation/config_CAS.inc.php
+
+# Fichiers en cours de développement à ignorer
 /edit_entry_handler.ori.php
 /test_date.php
-*.ori.php
 /year-dev.php
 /year-dev_all.php
 /year2.php
-
-
-personnalisation/images/logos/.test
-images/.test
-personnalisation/connect.inc.php
-personnalisation/css/perso.css
-personnalisation/css/perso-css.css
-personnalisation/langue/lang_subst.fr-fr.php
-personnalisation/configperso.inc.php
-personnalisation/css/perso.css
-personnalisation/config_ldap.inc.php
-personnalisation/docresa/*
