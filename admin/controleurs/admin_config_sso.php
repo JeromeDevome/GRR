@@ -18,6 +18,8 @@
 
 $grr_script_name = "admin_config_sso.php";
 
+$trad = $vocab;
+
 if ((isset($sso_restrictions)) && ($sso_restrictions==true))
 {
 	showAccessDenied($back);
@@ -125,6 +127,21 @@ if (isset($_POST['valid']))
 	}
 	if (!Settings::set("sso_redirection_accueil_grr", $sso_redirection_accueil_grr))
 		echo "Erreur lors de l'enregistrement de sso_redirection_accueil_grr !<br />";
+
+	//Prise en compte des champs d'attributs CAS
+	if (!Settings::set("cas_nom", $_POST['cas_nom']))
+		echo "Erreur lors de l'enregistrement de cas_nom !<br />";
+	if (!Settings::set("cas_prenom", $_POST['cas_prenom']))
+		echo "Erreur lors de l'enregistrement de cas_prenom !<br />";
+	if (!Settings::set("cas_language", $_POST['cas_language']))
+		echo "Erreur lors de l'enregistrement de cas_language !<br />";
+	if (!Settings::set("cas_code_fonction", $_POST['cas_code_fonction']))
+		echo "Erreur lors de l'enregistrement de cas_code_fonction !<br />";
+	if (!Settings::set("cas_libelle_fonction", $_POST['cas_libelle_fonction']))
+		echo "Erreur lors de l'enregistrement de cas_libelle_fonction !<br />";
+	if (!Settings::set("cas_mail", $_POST['cas_mail']))
+		echo "Erreur lors de l'enregistrement de cas_mail !<br />";
+
 }
 
 
@@ -136,56 +153,6 @@ if ((authGetUserLevel(getUserName(), -1) < 6) && ($valid != 'yes'))
 
 $AllSettings = Settings::getAll();
 
-get_vocab_admin("admin_config_sso");
-get_vocab_admin("Ne_pas_activer_Service_sso");
-
-get_vocab_admin("cas_serveur");
-get_vocab_admin("cas_port");
-get_vocab_admin("cas_racine");
-get_vocab_admin("cas_proxy_explain");
-get_vocab_admin("cas_proxy_server");
-get_vocab_admin("cas_proxy_port");
-get_vocab_admin("sso_environnement");
-
-get_vocab_admin("autres_parametres_sso");
-get_vocab_admin("sso_actif_cacher_lien_deconnecter");
-get_vocab_admin("sso_IsNotAllowedModify");
-get_vocab_admin("cacher_page_login");
-get_vocab_admin("Url_portail_sso_explain");
-
-get_vocab_admin("config_cas_title");
-get_vocab_admin("CAS_SSO_explain");
-get_vocab_admin("cas_version");
-get_vocab_admin("Statut_par_defaut_utilisateurs_importes");
-get_vocab_admin("choix_statut_CAS_SSO");
-get_vocab_admin("statut_visitor");
-get_vocab_admin("statut_user");
-get_vocab_admin("sso_redirection_accueil_grr_text1");
-get_vocab_admin("sso_redirection_accueil_grr_text2");
-get_vocab_admin("sso_active_correspondance_profil_statut_text");
-get_vocab_admin("sso_active_correspondance_profil_statut");
-
-get_vocab_admin("config_lemon_title");
-get_vocab_admin("lemon_SSO_explain");
-get_vocab_admin("Statut_par_defaut_utilisateurs_importes");
-get_vocab_admin("choix_statut_lemon_SSO");
-
-get_vocab_admin("config_lasso_title");
-get_vocab_admin("lasso_SSO_explain");
-get_vocab_admin("choix_statut_lasso_SSO");
-
-get_vocab_admin("config_http_title");
-get_vocab_admin("http_SSO_explain");
-get_vocab_admin("choix_statut_http_SSO");
-get_vocab_admin("explain_champs_recherche");
-get_vocab_admin("name");
-get_vocab_admin("first_name");
-get_vocab_admin("mail_user");
-get_vocab_admin("Statut_pour_domaine_particulier");
-get_vocab_admin("http_explain_statut_domaine");
-get_vocab_admin("statut");
-
-get_vocab_admin("save");
 
 	echo $twig->render('admin_config_sso.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 ?>

@@ -3,8 +3,8 @@
  * cas.inc.php
  * script de redirection vers l'authentification CAS
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-04-08 18:36$
- * @copyright Copyright 2008-2023 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2026-02-22 11:30$
+ * @copyright Copyright 2008-2026 Team DEVOME - JeromeB
  * @author    JeromeB & Laurent Delineau & Olivier MOUNIER & Yan Naessens
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -102,4 +102,6 @@ $user_ext_authentifie = 'cas';
 
 if (file_exists("./personnalisation/config_CAS.inc.php"))
 	include("./personnalisation/config_CAS.inc.php");
+else
+	include("./include/config_cas.inc.php");
 ?>

@@ -203,6 +203,23 @@
 									</div>
 								</div>
 
+								<!-- Infos CAS -->
+								<div class="card card-warning" id="card-attributs">
+									<div class="card-header">
+										<h3 class="card-title">{{ trad.config_cas_attributs }}</h3>
+									</div>
+									
+									<div class="card-body">
+										{{ form.input('cas_nom', trad.last_name, settings.cas_nom, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('cas_prenom', trad.first_name, settings.cas_prenom, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('cas_language', trad.cas_language, settings.cas_language, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('cas_code_fonction', trad.cas_code_fonction, settings.cas_code_fonction, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}	
+										{{ form.input('cas_libelle_fonction', trad.cas_libelle_fonction, settings.cas_libelle_fonction, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('cas_mail', trad.mail_user, settings.cas_mail, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+									</div>
+								</div>
+
+
 
 								<div style="text-align:center;">
 									<input type="submit" name="Valider" value="{{ trad.save }}" class="btn btn-success btn-md" />
